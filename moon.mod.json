@@ -1,9 +1,9 @@
 {
     "name": "dijdzv/websys",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "readme": "README.md",
     "source": "src",
-    "supported-targets": ["js"],
+    "preferred-target": "js",
     "description": "MoonBit bindings for Web APIs (DOM, HTML, Canvas, WebGL, etc.)",
     "keywords": [
         "web",

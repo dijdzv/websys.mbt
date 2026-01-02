@@ -22,19 +22,7 @@ Unlike Rust's web-sys which uses Cargo feature flags to include/exclude APIs, th
 moon add dijdzv/websys
 ```
 
-## Usage
-
-```moonbit
-// Get canvas context and draw
-fn main {
-  let canvas = @websys.Document::get_element_by_id("canvas")
-  let ctx = @websys.HTMLCanvasElement::get_context(canvas, "2d")
-
-  // Draw a rectangle
-  @websys.CanvasRenderingContext2D::set_fill_style(ctx, "#ff0000")
-  @websys.CanvasRenderingContext2D::fill_rect(ctx, 10.0, 10.0, 100.0, 100.0)
-}
-```
+See [API documentation](https://mooncakes.io/docs/#/dijdzv/websys/) for usage.
 
 ## Generation
 

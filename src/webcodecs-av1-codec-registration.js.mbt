@@ -1,0 +1,53 @@
+// Generated from WebIDL - DO NOT EDIT
+// Source: @webref/idl/webcodecs-av1-codec-registration
+
+///|
+/// VideoEncoderEncodeOptions dictionary
+pub struct VideoEncoderEncodeOptions {
+  av1 : VideoEncoderEncodeOptionsForAv1?
+  avc : VideoEncoderEncodeOptionsForAvc?
+  hevc : VideoEncoderEncodeOptionsForHevc?
+  vp9 : VideoEncoderEncodeOptionsForVp9?
+  keyFrame : Bool?
+}
+
+/// Create a new VideoEncoderEncodeOptions with default values
+pub fn VideoEncoderEncodeOptions::default() -> VideoEncoderEncodeOptions {
+  VideoEncoderEncodeOptions::{
+    av1: None,
+    avc: None,
+    hevc: None,
+    vp9: None,
+    keyFrame: None,
+  }
+}
+
+/// Convert to JsValue
+pub extern "js" fn VideoEncoderEncodeOptions::to_js(self : VideoEncoderEncodeOptions) -> JsValue =
+  #| (self) => ({
+  #|   av1: self.av1,
+  #|   avc: self.avc,
+  #|   hevc: self.hevc,
+  #|   vp9: self.vp9,
+  #|   keyFrame: self.keyFrame
+  #| })
+
+///|
+/// VideoEncoderEncodeOptionsForAv1 dictionary
+pub struct VideoEncoderEncodeOptionsForAv1 {
+  quantizer : Int??
+}
+
+/// Create a new VideoEncoderEncodeOptionsForAv1 with default values
+pub fn VideoEncoderEncodeOptionsForAv1::default() -> VideoEncoderEncodeOptionsForAv1 {
+  VideoEncoderEncodeOptionsForAv1::{
+    quantizer: None,
+  }
+}
+
+/// Convert to JsValue
+pub extern "js" fn VideoEncoderEncodeOptionsForAv1::to_js(self : VideoEncoderEncodeOptionsForAv1) -> JsValue =
+  #| (self) => ({
+  #|   quantizer: self.quantizer
+  #| })
+

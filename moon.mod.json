@@ -1,0 +1,15 @@
+{
+    "name": "dijdzv/websys",
+    "version": "0.1.0",
+    "source": "src",
+    "description": "MoonBit bindings for Web APIs (DOM, HTML, Canvas, WebGL, etc.)",
+    "keywords": [
+        "web",
+        "dom",
+        "browser",
+        "wasm",
+        "ffi"
+    ],
+    "repository": "https://github.com/dijdzv/websys.mbt",
+    "license": "MIT"
+}

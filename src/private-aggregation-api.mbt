@@ -58,6 +58,9 @@ pub extern "js" fn PrivateAggregation::contribute_to_histogram(self : PrivateAgg
 pub extern "js" fn PrivateAggregation::contribute_to_histogram_on_event(self : PrivateAggregation, event : String, contribution : JsValue) -> Unit =
   #| (self, event, contribution) => self.contributeToHistogramOnEvent(event, contribution)
 
-pub extern "js" fn PrivateAggregation::enable_debug_mode(self : PrivateAggregation, options : PADebugModeOptions) -> Unit =
+pub extern "js" fn PrivateAggregation::enable_debug_mode(self : PrivateAggregation) -> Unit =
+  #| (self) => self.enableDebugMode()
+
+pub extern "js" fn PrivateAggregation::enable_debug_mode_with_options(self : PrivateAggregation, options : PADebugModeOptions) -> Unit =
   #| (self, options) => self.enableDebugMode(options)
 

@@ -157,16 +157,25 @@ pub extern "js" fn PaintRenderingContext2D::stroke_rect(self : PaintRenderingCon
 pub extern "js" fn PaintRenderingContext2D::begin_path(self : PaintRenderingContext2D) -> Unit =
   #| (self) => self.beginPath()
 
-pub extern "js" fn PaintRenderingContext2D::fill(self : PaintRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
+pub extern "js" fn PaintRenderingContext2D::fill(self : PaintRenderingContext2D) -> Unit =
+  #| (self) => self.fill()
+
+pub extern "js" fn PaintRenderingContext2D::fill_with_fill_rule(self : PaintRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
   #| (self, fill_rule) => self.fill(['nonzero', 'evenodd'][fill_rule])
 
 pub extern "js" fn PaintRenderingContext2D::stroke(self : PaintRenderingContext2D) -> Unit =
   #| (self) => self.stroke()
 
-pub extern "js" fn PaintRenderingContext2D::clip(self : PaintRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
+pub extern "js" fn PaintRenderingContext2D::clip(self : PaintRenderingContext2D) -> Unit =
+  #| (self) => self.clip()
+
+pub extern "js" fn PaintRenderingContext2D::clip_with_fill_rule(self : PaintRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
   #| (self, fill_rule) => self.clip(['nonzero', 'evenodd'][fill_rule])
 
-pub extern "js" fn PaintRenderingContext2D::is_point_in_path(self : PaintRenderingContext2D, x : Double, y : Double, fill_rule : CanvasFillRule) -> Bool =
+pub extern "js" fn PaintRenderingContext2D::is_point_in_path(self : PaintRenderingContext2D, x : Double, y : Double) -> Bool =
+  #| (self, x, y) => self.isPointInPath(x, y)
+
+pub extern "js" fn PaintRenderingContext2D::is_point_in_path_with_fill_rule(self : PaintRenderingContext2D, x : Double, y : Double, fill_rule : CanvasFillRule) -> Bool =
   #| (self, x, y, fill_rule) => self.isPointInPath(x, y, ['nonzero', 'evenodd'][fill_rule])
 
 pub extern "js" fn PaintRenderingContext2D::is_point_in_stroke(self : PaintRenderingContext2D, x : Double, y : Double) -> Bool =
@@ -199,10 +208,10 @@ pub extern "js" fn PaintRenderingContext2D::get_miter_limit(self : PaintRenderin
 pub extern "js" fn PaintRenderingContext2D::set_miter_limit(self : PaintRenderingContext2D, value : Double) -> Unit =
   #| (self, value) => { self.miterLimit = value }
 
-pub extern "js" fn PaintRenderingContext2D::set_line_dash(self : PaintRenderingContext2D, segments : JsValue) -> Unit =
+pub extern "js" fn PaintRenderingContext2D::set_line_dash(self : PaintRenderingContext2D, segments : Array[Double]) -> Unit =
   #| (self, segments) => self.setLineDash(segments)
 
-pub extern "js" fn PaintRenderingContext2D::get_line_dash(self : PaintRenderingContext2D) -> JsValue =
+pub extern "js" fn PaintRenderingContext2D::get_line_dash(self : PaintRenderingContext2D) -> Array[Double] =
   #| (self) => self.getLineDash()
 
 pub extern "js" fn PaintRenderingContext2D::get_line_dash_offset(self : PaintRenderingContext2D) -> Double =
@@ -232,13 +241,22 @@ pub extern "js" fn PaintRenderingContext2D::arc_to(self : PaintRenderingContext2
 pub extern "js" fn PaintRenderingContext2D::rect(self : PaintRenderingContext2D, x : Double, y : Double, w : Double, h : Double) -> Unit =
   #| (self, x, y, w, h) => self.rect(x, y, w, h)
 
-pub extern "js" fn PaintRenderingContext2D::round_rect(self : PaintRenderingContext2D, x : Double, y : Double, w : Double, h : Double, radii : JsValue) -> Unit =
+pub extern "js" fn PaintRenderingContext2D::round_rect(self : PaintRenderingContext2D, x : Double, y : Double, w : Double, h : Double) -> Unit =
+  #| (self, x, y, w, h) => self.roundRect(x, y, w, h)
+
+pub extern "js" fn PaintRenderingContext2D::round_rect_with_radii(self : PaintRenderingContext2D, x : Double, y : Double, w : Double, h : Double, radii : JsValue) -> Unit =
   #| (self, x, y, w, h, radii) => self.roundRect(x, y, w, h, radii)
 
-pub extern "js" fn PaintRenderingContext2D::arc(self : PaintRenderingContext2D, x : Double, y : Double, radius : Double, start_angle : Double, end_angle : Double, counterclockwise : Bool) -> Unit =
+pub extern "js" fn PaintRenderingContext2D::arc(self : PaintRenderingContext2D, x : Double, y : Double, radius : Double, start_angle : Double, end_angle : Double) -> Unit =
+  #| (self, x, y, radius, start_angle, end_angle) => self.arc(x, y, radius, start_angle, end_angle)
+
+pub extern "js" fn PaintRenderingContext2D::arc_with_counterclockwise(self : PaintRenderingContext2D, x : Double, y : Double, radius : Double, start_angle : Double, end_angle : Double, counterclockwise : Bool) -> Unit =
   #| (self, x, y, radius, start_angle, end_angle, counterclockwise) => self.arc(x, y, radius, start_angle, end_angle, counterclockwise)
 
-pub extern "js" fn PaintRenderingContext2D::ellipse(self : PaintRenderingContext2D, x : Double, y : Double, radius_x : Double, radius_y : Double, rotation : Double, start_angle : Double, end_angle : Double, counterclockwise : Bool) -> Unit =
+pub extern "js" fn PaintRenderingContext2D::ellipse(self : PaintRenderingContext2D, x : Double, y : Double, radius_x : Double, radius_y : Double, rotation : Double, start_angle : Double, end_angle : Double) -> Unit =
+  #| (self, x, y, radius_x, radius_y, rotation, start_angle, end_angle) => self.ellipse(x, y, radius_x, radius_y, rotation, start_angle, end_angle)
+
+pub extern "js" fn PaintRenderingContext2D::ellipse_with_counterclockwise(self : PaintRenderingContext2D, x : Double, y : Double, radius_x : Double, radius_y : Double, rotation : Double, start_angle : Double, end_angle : Double, counterclockwise : Bool) -> Unit =
   #| (self, x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise) => self.ellipse(x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise)
 
 ///|

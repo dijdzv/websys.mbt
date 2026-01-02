@@ -36,8 +36,8 @@ pub fn PaymentDelegation::from_string(s : String) -> PaymentDelegation? {
 pub struct PaymentRequestDetailsUpdate {
   error : String?
   total : PaymentCurrencyAmount?
-  modifiers : JsValue?
-  shippingOptions : JsValue?
+  modifiers : Array[PaymentDetailsModifier]?
+  shippingOptions : Array[PaymentShippingOption]?
   paymentMethodErrors : JsValue?
   shippingAddressErrors : AddressErrors?
 }
@@ -71,11 +71,11 @@ pub struct PaymentRequestEventInit {
   topOrigin : String?
   paymentRequestOrigin : String?
   paymentRequestId : String?
-  methodData : JsValue?
+  methodData : Array[PaymentMethodData]?
   total : PaymentCurrencyAmount?
-  modifiers : JsValue?
+  modifiers : Array[PaymentDetailsModifier]?
   paymentOptions : PaymentOptions?
-  shippingOptions : JsValue?
+  shippingOptions : Array[PaymentShippingOption]?
 }
 
 /// Create a new PaymentRequestEventInit with default values
@@ -146,7 +146,7 @@ pub extern "js" fn PaymentHandlerResponse::to_js(self : PaymentHandlerResponse) 
 /// AddressInit dictionary
 pub struct AddressInit {
   country : String?
-  addressLine : JsValue?
+  addressLine : Array[String]?
   region : String?
   city : String?
   dependentLocality : String?
@@ -201,7 +201,7 @@ pub extern "js" fn PaymentManager::get_user_hint(self : PaymentManager) -> Strin
 pub extern "js" fn PaymentManager::set_user_hint(self : PaymentManager, value : String) -> Unit =
   #| (self, value) => { self.userHint = value }
 
-pub extern "js" fn PaymentManager::enable_delegations(self : PaymentManager, delegations : JsValue) -> JsValue =
+pub extern "js" fn PaymentManager::enable_delegations(self : PaymentManager, delegations : Array[PaymentDelegation]) -> Promise[Unit] =
   #| (self, delegations) => self.enableDelegations(delegations)
 
 ///|
@@ -214,7 +214,7 @@ pub extern "js" fn CanMakePaymentEvent::to_js_value(self : CanMakePaymentEvent) 
 pub extern "js" fn CanMakePaymentEvent::new(type_ : String) -> CanMakePaymentEvent =
   #| (type_) => new CanMakePaymentEvent(type_)
 
-pub extern "js" fn CanMakePaymentEvent::respond_with(self : CanMakePaymentEvent, can_make_payment_response : JsValue) -> Unit =
+pub extern "js" fn CanMakePaymentEvent::respond_with(self : CanMakePaymentEvent, can_make_payment_response : Promise[Bool]) -> Unit =
   #| (self, can_make_payment_response) => self.respondWith(can_make_payment_response)
 
 ///|
@@ -251,18 +251,24 @@ pub extern "js" fn PaymentRequestEvent::get_payment_options(self : PaymentReques
 pub extern "js" fn PaymentRequestEvent::get_shipping_options(self : PaymentRequestEvent) -> JsValue? =
   #| (self) => self.shippingOptions
 
-pub extern "js" fn PaymentRequestEvent::open_window(self : PaymentRequestEvent, url : String) -> JsValue =
+pub extern "js" fn PaymentRequestEvent::open_window(self : PaymentRequestEvent, url : String) -> Promise[WindowClient?] =
   #| (self, url) => self.openWindow(url)
 
-pub extern "js" fn PaymentRequestEvent::change_payment_method(self : PaymentRequestEvent, method_name : String, method_details : JsValue?) -> JsValue =
+pub extern "js" fn PaymentRequestEvent::change_payment_method(self : PaymentRequestEvent, method_name : String) -> Promise[PaymentRequestDetailsUpdate?] =
+  #| (self, method_name) => self.changePaymentMethod(method_name)
+
+pub extern "js" fn PaymentRequestEvent::change_payment_method_with_method_details(self : PaymentRequestEvent, method_name : String, method_details : JsValue?) -> Promise[PaymentRequestDetailsUpdate?] =
   #| (self, method_name, method_details) => self.changePaymentMethod(method_name, method_details)
 
-pub extern "js" fn PaymentRequestEvent::change_shipping_address(self : PaymentRequestEvent, shipping_address : AddressInit) -> JsValue =
+pub extern "js" fn PaymentRequestEvent::change_shipping_address(self : PaymentRequestEvent) -> Promise[PaymentRequestDetailsUpdate?] =
+  #| (self) => self.changeShippingAddress()
+
+pub extern "js" fn PaymentRequestEvent::change_shipping_address_with_shipping_address(self : PaymentRequestEvent, shipping_address : AddressInit) -> Promise[PaymentRequestDetailsUpdate?] =
   #| (self, shipping_address) => self.changeShippingAddress(shipping_address)
 
-pub extern "js" fn PaymentRequestEvent::change_shipping_option(self : PaymentRequestEvent, shipping_option : String) -> JsValue =
+pub extern "js" fn PaymentRequestEvent::change_shipping_option(self : PaymentRequestEvent, shipping_option : String) -> Promise[PaymentRequestDetailsUpdate?] =
   #| (self, shipping_option) => self.changeShippingOption(shipping_option)
 
-pub extern "js" fn PaymentRequestEvent::respond_with(self : PaymentRequestEvent, handler_response_promise : JsValue) -> Unit =
+pub extern "js" fn PaymentRequestEvent::respond_with(self : PaymentRequestEvent, handler_response_promise : Promise[PaymentHandlerResponse]) -> Unit =
   #| (self, handler_response_promise) => self.respondWith(handler_response_promise)
 

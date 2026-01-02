@@ -180,7 +180,7 @@ pub extern "js" fn LayoutConstraintsOptions::to_js(self : LayoutConstraintsOptio
 ///|
 /// BreakTokenOptions dictionary
 pub struct BreakTokenOptions {
-  childBreakTokens : JsValue?
+  childBreakTokens : Array[ChildBreakToken]?
   data : JsValue?
 }
 
@@ -205,7 +205,7 @@ pub struct FragmentResultOptions {
   inlineSize : Double?
   blockSize : Double?
   autoBlockSize : Double?
-  childFragments : JsValue?
+  childFragments : Array[LayoutFragment]?
   data : JsValue?
   breakToken : BreakTokenOptions?
 }
@@ -275,10 +275,10 @@ pub extern "js" fn LayoutChild::to_js_value(self : LayoutChild) -> JsValue =
 pub extern "js" fn LayoutChild::get_style_map(self : LayoutChild) -> StylePropertyMapReadOnly =
   #| (self) => self.styleMap
 
-pub extern "js" fn LayoutChild::intrinsic_sizes(self : LayoutChild) -> JsValue =
+pub extern "js" fn LayoutChild::intrinsic_sizes(self : LayoutChild) -> Promise[IntrinsicSizes] =
   #| (self) => self.intrinsicSizes()
 
-pub extern "js" fn LayoutChild::layout_next_fragment(self : LayoutChild, constraints : LayoutConstraintsOptions, break_token : ChildBreakToken) -> JsValue =
+pub extern "js" fn LayoutChild::layout_next_fragment(self : LayoutChild, constraints : LayoutConstraintsOptions, break_token : ChildBreakToken) -> Promise[LayoutFragment] =
   #| (self, constraints, break_token) => self.layoutNextFragment(constraints, break_token)
 
 ///|

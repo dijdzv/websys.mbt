@@ -3,11 +3,11 @@
 
 ///|
 /// ClipboardItemData typedef
-pub type ClipboardItemData = JsValue
+pub type ClipboardItemData = Promise[JsValue]
 
 ///|
 /// ClipboardItems typedef
-pub type ClipboardItems = JsValue
+pub type ClipboardItems = Array[ClipboardItem]
 
 ///|
 /// PresentationStyle enum
@@ -58,7 +58,7 @@ pub extern "js" fn ClipboardEventInit::to_js(self : ClipboardEventInit) -> JsVal
 ///|
 /// ClipboardChangeEventInit dictionary
 pub struct ClipboardChangeEventInit {
-  types : JsValue?
+  types : Array[String]?
   changeId : JsValue?
 }
 
@@ -99,7 +99,7 @@ pub extern "js" fn ClipboardItemOptions::to_js(self : ClipboardItemOptions) -> J
 ///|
 /// ClipboardUnsanitizedFormats dictionary
 pub struct ClipboardUnsanitizedFormats {
-  unsanitized : JsValue?
+  unsanitized : Array[String]?
 }
 
 /// Create a new ClipboardUnsanitizedFormats with default values
@@ -179,7 +179,7 @@ pub extern "js" fn ClipboardItem::get_presentation_style(self : ClipboardItem) -
 pub extern "js" fn ClipboardItem::get_types(self : ClipboardItem) -> JsValue =
   #| (self) => self.types
 
-pub extern "js" fn ClipboardItem::get_type(self : ClipboardItem, type_ : String) -> JsValue =
+pub extern "js" fn ClipboardItem::get_type(self : ClipboardItem, type_ : String) -> Promise[Blob] =
   #| (self, type_) => self.getType(type_)
 
 pub extern "js" fn ClipboardItem::supports(type_ : String) -> Bool =
@@ -192,15 +192,18 @@ pub type Clipboard
 pub extern "js" fn Clipboard::to_js_value(self : Clipboard) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Clipboard::read(self : Clipboard, formats : ClipboardUnsanitizedFormats) -> JsValue =
+pub extern "js" fn Clipboard::read(self : Clipboard) -> Promise[ClipboardItems] =
+  #| (self) => self.read()
+
+pub extern "js" fn Clipboard::read_with_formats(self : Clipboard, formats : ClipboardUnsanitizedFormats) -> Promise[ClipboardItems] =
   #| (self, formats) => self.read(formats)
 
-pub extern "js" fn Clipboard::read_text(self : Clipboard) -> JsValue =
+pub extern "js" fn Clipboard::read_text(self : Clipboard) -> Promise[String] =
   #| (self) => self.readText()
 
-pub extern "js" fn Clipboard::write(self : Clipboard, data : ClipboardItems) -> JsValue =
+pub extern "js" fn Clipboard::write(self : Clipboard, data : ClipboardItems) -> Promise[Unit] =
   #| (self, data) => self.write(data)
 
-pub extern "js" fn Clipboard::write_text(self : Clipboard, data : String) -> JsValue =
+pub extern "js" fn Clipboard::write_text(self : Clipboard, data : String) -> Promise[Unit] =
   #| (self, data) => self.writeText(data)
 

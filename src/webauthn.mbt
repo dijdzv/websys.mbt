@@ -341,7 +341,7 @@ pub extern "js" fn RegistrationResponseJSON::to_js(self : RegistrationResponseJS
 pub struct AuthenticatorAttestationResponseJSON {
   clientDataJSON : Base64URLString
   authenticatorData : Base64URLString
-  transports : JsValue
+  transports : Array[String]
   publicKey : Base64URLString?
   publicKeyAlgorithm : COSEAlgorithmIdentifier
   attestationObject : Base64URLString
@@ -352,7 +352,7 @@ pub fn AuthenticatorAttestationResponseJSON::default() -> AuthenticatorAttestati
   AuthenticatorAttestationResponseJSON::{
     clientDataJSON: panic(),
     authenticatorData: panic(),
-    transports: panic(),
+    transports: [],
     publicKey: None,
     publicKeyAlgorithm: panic(),
     attestationObject: panic(),
@@ -469,13 +469,13 @@ pub struct PublicKeyCredentialCreationOptionsJSON {
   rp : PublicKeyCredentialRpEntity
   user : PublicKeyCredentialUserEntityJSON
   challenge : Base64URLString
-  pubKeyCredParams : JsValue
+  pubKeyCredParams : Array[PublicKeyCredentialParameters]
   timeout : Int?
-  excludeCredentials : JsValue?
+  excludeCredentials : Array[PublicKeyCredentialDescriptorJSON]?
   authenticatorSelection : AuthenticatorSelectionCriteria?
-  hints : JsValue?
+  hints : Array[String]?
   attestation : String?
-  attestationFormats : JsValue?
+  attestationFormats : Array[String]?
   extensions : AuthenticationExtensionsClientInputsJSON?
 }
 
@@ -485,7 +485,7 @@ pub fn PublicKeyCredentialCreationOptionsJSON::default() -> PublicKeyCredentialC
     rp: panic(),
     user: panic(),
     challenge: panic(),
-    pubKeyCredParams: panic(),
+    pubKeyCredParams: [],
     timeout: None,
     excludeCredentials: None,
     authenticatorSelection: None,
@@ -542,7 +542,7 @@ pub extern "js" fn PublicKeyCredentialUserEntityJSON::to_js(self : PublicKeyCred
 pub struct PublicKeyCredentialDescriptorJSON {
   type_ : String
   id : Base64URLString
-  transports : JsValue?
+  transports : Array[String]?
 }
 
 /// Create a new PublicKeyCredentialDescriptorJSON with default values
@@ -599,9 +599,9 @@ pub struct PublicKeyCredentialRequestOptionsJSON {
   challenge : Base64URLString
   timeout : Int?
   rpId : String?
-  allowCredentials : JsValue?
+  allowCredentials : Array[PublicKeyCredentialDescriptorJSON]?
   userVerification : String?
-  hints : JsValue?
+  hints : Array[String]?
   extensions : AuthenticationExtensionsClientInputsJSON?
 }
 
@@ -657,7 +657,7 @@ pub extern "js" fn UnknownCredentialOptions::to_js(self : UnknownCredentialOptio
 pub struct AllAcceptedCredentialsOptions {
   rpId : String
   userId : Base64URLString
-  allAcceptedCredentialIds : JsValue
+  allAcceptedCredentialIds : Array[Base64URLString]
 }
 
 /// Create a new AllAcceptedCredentialsOptions with default values
@@ -665,7 +665,7 @@ pub fn AllAcceptedCredentialsOptions::default() -> AllAcceptedCredentialsOptions
   AllAcceptedCredentialsOptions::{
     rpId: "",
     userId: panic(),
-    allAcceptedCredentialIds: panic(),
+    allAcceptedCredentialIds: [],
   }
 }
 
@@ -733,13 +733,13 @@ pub struct PublicKeyCredentialCreationOptions {
   rp : PublicKeyCredentialRpEntity
   user : PublicKeyCredentialUserEntity
   challenge : BufferSource
-  pubKeyCredParams : JsValue
+  pubKeyCredParams : Array[PublicKeyCredentialParameters]
   timeout : Int?
-  excludeCredentials : JsValue?
+  excludeCredentials : Array[PublicKeyCredentialDescriptor]?
   authenticatorSelection : AuthenticatorSelectionCriteria?
-  hints : JsValue?
+  hints : Array[String]?
   attestation : String?
-  attestationFormats : JsValue?
+  attestationFormats : Array[String]?
   extensions : AuthenticationExtensionsClientInputs?
 }
 
@@ -749,7 +749,7 @@ pub fn PublicKeyCredentialCreationOptions::default() -> PublicKeyCredentialCreat
     rp: panic(),
     user: panic(),
     challenge: panic(),
-    pubKeyCredParams: panic(),
+    pubKeyCredParams: [],
     timeout: None,
     excludeCredentials: None,
     authenticatorSelection: None,
@@ -876,9 +876,9 @@ pub struct PublicKeyCredentialRequestOptions {
   challenge : BufferSource
   timeout : Int?
   rpId : String?
-  allowCredentials : JsValue?
+  allowCredentials : Array[PublicKeyCredentialDescriptor]?
   userVerification : String?
-  hints : JsValue?
+  hints : Array[String]?
   extensions : AuthenticationExtensionsClientInputs?
 }
 
@@ -965,7 +965,7 @@ pub extern "js" fn TokenBinding::to_js(self : TokenBinding) -> JsValue =
 pub struct PublicKeyCredentialDescriptor {
   type_ : String
   id : BufferSource
-  transports : JsValue?
+  transports : Array[String]?
 }
 
 /// Create a new PublicKeyCredentialDescriptor with default values
@@ -1255,16 +1255,16 @@ pub extern "js" fn PublicKeyCredential::get_authenticator_attachment(self : Publ
 pub extern "js" fn PublicKeyCredential::get_client_extension_results(self : PublicKeyCredential) -> AuthenticationExtensionsClientOutputs =
   #| (self) => self.getClientExtensionResults()
 
-pub extern "js" fn PublicKeyCredential::is_conditional_mediation_available() -> JsValue =
+pub extern "js" fn PublicKeyCredential::is_conditional_mediation_available() -> Promise[Bool] =
   #| () => PublicKeyCredential.isConditionalMediationAvailable()
 
 pub extern "js" fn PublicKeyCredential::to_j_s_o_n(self : PublicKeyCredential) -> PublicKeyCredentialJSON =
   #| (self) => self.toJSON()
 
-pub extern "js" fn PublicKeyCredential::is_user_verifying_platform_authenticator_available() -> JsValue =
+pub extern "js" fn PublicKeyCredential::is_user_verifying_platform_authenticator_available() -> Promise[Bool] =
   #| () => PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
 
-pub extern "js" fn PublicKeyCredential::get_client_capabilities() -> JsValue =
+pub extern "js" fn PublicKeyCredential::get_client_capabilities() -> Promise[PublicKeyCredentialClientCapabilities] =
   #| () => PublicKeyCredential.getClientCapabilities()
 
 pub extern "js" fn PublicKeyCredential::parse_creation_options_from_j_s_o_n(options : PublicKeyCredentialCreationOptionsJSON) -> PublicKeyCredentialCreationOptions =
@@ -1273,13 +1273,13 @@ pub extern "js" fn PublicKeyCredential::parse_creation_options_from_j_s_o_n(opti
 pub extern "js" fn PublicKeyCredential::parse_request_options_from_j_s_o_n(options : PublicKeyCredentialRequestOptionsJSON) -> PublicKeyCredentialRequestOptions =
   #| (options) => PublicKeyCredential.parseRequestOptionsFromJSON(options)
 
-pub extern "js" fn PublicKeyCredential::signal_unknown_credential(options : UnknownCredentialOptions) -> JsValue =
+pub extern "js" fn PublicKeyCredential::signal_unknown_credential(options : UnknownCredentialOptions) -> Promise[Unit] =
   #| (options) => PublicKeyCredential.signalUnknownCredential(options)
 
-pub extern "js" fn PublicKeyCredential::signal_all_accepted_credentials(options : AllAcceptedCredentialsOptions) -> JsValue =
+pub extern "js" fn PublicKeyCredential::signal_all_accepted_credentials(options : AllAcceptedCredentialsOptions) -> Promise[Unit] =
   #| (options) => PublicKeyCredential.signalAllAcceptedCredentials(options)
 
-pub extern "js" fn PublicKeyCredential::signal_current_user_details(options : CurrentUserDetailsOptions) -> JsValue =
+pub extern "js" fn PublicKeyCredential::signal_current_user_details(options : CurrentUserDetailsOptions) -> Promise[Unit] =
   #| (options) => PublicKeyCredential.signalCurrentUserDetails(options)
 
 ///|
@@ -1305,7 +1305,7 @@ pub extern "js" fn AuthenticatorAttestationResponse::get_client_data_j_s_o_n(sel
 pub extern "js" fn AuthenticatorAttestationResponse::get_attestation_object(self : AuthenticatorAttestationResponse) -> ArrayBuffer =
   #| (self) => self.attestationObject
 
-pub extern "js" fn AuthenticatorAttestationResponse::get_transports(self : AuthenticatorAttestationResponse) -> JsValue =
+pub extern "js" fn AuthenticatorAttestationResponse::get_transports(self : AuthenticatorAttestationResponse) -> Array[String] =
   #| (self) => self.getTransports()
 
 pub extern "js" fn AuthenticatorAttestationResponse::get_authenticator_data(self : AuthenticatorAttestationResponse) -> ArrayBuffer =

@@ -4,6 +4,10 @@
 /// VideoFrameRequestCallback callback interface
 pub type VideoFrameRequestCallback
 
+/// Create VideoFrameRequestCallback from a MoonBit function
+pub extern "js" fn VideoFrameRequestCallback::from_fn(handler : (DOMHighResTimeStamp, VideoFrameCallbackMetadata) -> Unit) -> VideoFrameRequestCallback =
+  #| (handler) => handler
+
 ///|
 /// VideoFrameCallbackMetadata dictionary
 pub struct VideoFrameCallbackMetadata {

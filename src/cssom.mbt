@@ -125,13 +125,16 @@ pub extern "js" fn CSSStyleSheet::get_owner_rule(self : CSSStyleSheet) -> CSSRul
 pub extern "js" fn CSSStyleSheet::get_css_rules(self : CSSStyleSheet) -> CSSRuleList =
   #| (self) => self.cssRules
 
-pub extern "js" fn CSSStyleSheet::insert_rule(self : CSSStyleSheet, rule : CSSOMString, index : Int) -> Int =
+pub extern "js" fn CSSStyleSheet::insert_rule(self : CSSStyleSheet, rule : CSSOMString) -> Int =
+  #| (self, rule) => self.insertRule(rule)
+
+pub extern "js" fn CSSStyleSheet::insert_rule_with_index(self : CSSStyleSheet, rule : CSSOMString, index : Int) -> Int =
   #| (self, rule, index) => self.insertRule(rule, index)
 
 pub extern "js" fn CSSStyleSheet::delete_rule(self : CSSStyleSheet, index : Int) -> Unit =
   #| (self, index) => self.deleteRule(index)
 
-pub extern "js" fn CSSStyleSheet::replace(self : CSSStyleSheet, text : String) -> JsValue =
+pub extern "js" fn CSSStyleSheet::replace(self : CSSStyleSheet, text : String) -> Promise[CSSStyleSheet] =
   #| (self, text) => self.replace(text)
 
 pub extern "js" fn CSSStyleSheet::replace_sync(self : CSSStyleSheet, text : String) -> Unit =
@@ -140,10 +143,16 @@ pub extern "js" fn CSSStyleSheet::replace_sync(self : CSSStyleSheet, text : Stri
 pub extern "js" fn CSSStyleSheet::get_rules(self : CSSStyleSheet) -> CSSRuleList =
   #| (self) => self.rules
 
-pub extern "js" fn CSSStyleSheet::add_rule(self : CSSStyleSheet, selector : String, style : String, index : Int) -> Int =
+pub extern "js" fn CSSStyleSheet::add_rule(self : CSSStyleSheet) -> Int =
+  #| (self) => self.addRule()
+
+pub extern "js" fn CSSStyleSheet::add_rule_with_index(self : CSSStyleSheet, selector : String, style : String, index : Int) -> Int =
   #| (self, selector, style, index) => self.addRule(selector, style, index)
 
-pub extern "js" fn CSSStyleSheet::remove_rule(self : CSSStyleSheet, index : Int) -> Unit =
+pub extern "js" fn CSSStyleSheet::remove_rule(self : CSSStyleSheet) -> Unit =
+  #| (self) => self.removeRule()
+
+pub extern "js" fn CSSStyleSheet::remove_rule_with_index(self : CSSStyleSheet, index : Int) -> Unit =
   #| (self, index) => self.removeRule(index)
 
 ///|
@@ -200,6 +209,45 @@ pub extern "js" fn CSSRule::get_parent_style_sheet(self : CSSRule) -> CSSStyleSh
 pub extern "js" fn CSSRule::get_type(self : CSSRule) -> Int =
   #| (self) => self.type
 
+// CSSRule.STYLE_RULE
+pub let c_s_s_rule_style_rule : Int = 1
+
+// CSSRule.CHARSET_RULE
+pub let c_s_s_rule_charset_rule : Int = 2
+
+// CSSRule.IMPORT_RULE
+pub let c_s_s_rule_import_rule : Int = 3
+
+// CSSRule.MEDIA_RULE
+pub let c_s_s_rule_media_rule : Int = 4
+
+// CSSRule.FONT_FACE_RULE
+pub let c_s_s_rule_font_face_rule : Int = 5
+
+// CSSRule.PAGE_RULE
+pub let c_s_s_rule_page_rule : Int = 6
+
+// CSSRule.MARGIN_RULE
+pub let c_s_s_rule_margin_rule : Int = 9
+
+// CSSRule.NAMESPACE_RULE
+pub let c_s_s_rule_namespace_rule : Int = 10
+
+// CSSRule.KEYFRAMES_RULE
+pub let c_s_s_rule_keyframes_rule : Int = 7
+
+// CSSRule.KEYFRAME_RULE
+pub let c_s_s_rule_keyframe_rule : Int = 8
+
+// CSSRule.SUPPORTS_RULE
+pub let c_s_s_rule_supports_rule : Int = 12
+
+// CSSRule.COUNTER_STYLE_RULE
+pub let c_s_s_rule_counter_style_rule : Int = 11
+
+// CSSRule.FONT_FEATURE_VALUES_RULE
+pub let c_s_s_rule_font_feature_values_rule : Int = 14
+
 ///|
 /// CSSStyleRule interface
 pub type CSSStyleRule
@@ -222,10 +270,52 @@ pub extern "js" fn CSSStyleRule::get_parent_style_sheet(self : CSSStyleRule) -> 
 pub extern "js" fn CSSStyleRule::get_type(self : CSSStyleRule) -> Int =
   #| (self) => self.type
 
+// CSSStyleRule.STYLE_RULE
+pub let c_s_s_style_rule_style_rule : Int = 1
+
+// CSSStyleRule.CHARSET_RULE
+pub let c_s_s_style_rule_charset_rule : Int = 2
+
+// CSSStyleRule.IMPORT_RULE
+pub let c_s_s_style_rule_import_rule : Int = 3
+
+// CSSStyleRule.MEDIA_RULE
+pub let c_s_s_style_rule_media_rule : Int = 4
+
+// CSSStyleRule.FONT_FACE_RULE
+pub let c_s_s_style_rule_font_face_rule : Int = 5
+
+// CSSStyleRule.PAGE_RULE
+pub let c_s_s_style_rule_page_rule : Int = 6
+
+// CSSStyleRule.MARGIN_RULE
+pub let c_s_s_style_rule_margin_rule : Int = 9
+
+// CSSStyleRule.NAMESPACE_RULE
+pub let c_s_s_style_rule_namespace_rule : Int = 10
+
+// CSSStyleRule.KEYFRAMES_RULE
+pub let c_s_s_style_rule_keyframes_rule : Int = 7
+
+// CSSStyleRule.KEYFRAME_RULE
+pub let c_s_s_style_rule_keyframe_rule : Int = 8
+
+// CSSStyleRule.SUPPORTS_RULE
+pub let c_s_s_style_rule_supports_rule : Int = 12
+
+// CSSStyleRule.COUNTER_STYLE_RULE
+pub let c_s_s_style_rule_counter_style_rule : Int = 11
+
+// CSSStyleRule.FONT_FEATURE_VALUES_RULE
+pub let c_s_s_style_rule_font_feature_values_rule : Int = 14
+
 pub extern "js" fn CSSStyleRule::get_css_rules(self : CSSStyleRule) -> CSSRuleList =
   #| (self) => self.cssRules
 
-pub extern "js" fn CSSStyleRule::insert_rule(self : CSSStyleRule, rule : CSSOMString, index : Int) -> Int =
+pub extern "js" fn CSSStyleRule::insert_rule(self : CSSStyleRule, rule : CSSOMString) -> Int =
+  #| (self, rule) => self.insertRule(rule)
+
+pub extern "js" fn CSSStyleRule::insert_rule_with_index(self : CSSStyleRule, rule : CSSOMString, index : Int) -> Int =
   #| (self, rule, index) => self.insertRule(rule, index)
 
 pub extern "js" fn CSSStyleRule::delete_rule(self : CSSStyleRule, index : Int) -> Unit =
@@ -265,6 +355,45 @@ pub extern "js" fn CSSImportRule::get_parent_style_sheet(self : CSSImportRule) -
 pub extern "js" fn CSSImportRule::get_type(self : CSSImportRule) -> Int =
   #| (self) => self.type
 
+// CSSImportRule.STYLE_RULE
+pub let c_s_s_import_rule_style_rule : Int = 1
+
+// CSSImportRule.CHARSET_RULE
+pub let c_s_s_import_rule_charset_rule : Int = 2
+
+// CSSImportRule.IMPORT_RULE
+pub let c_s_s_import_rule_import_rule : Int = 3
+
+// CSSImportRule.MEDIA_RULE
+pub let c_s_s_import_rule_media_rule : Int = 4
+
+// CSSImportRule.FONT_FACE_RULE
+pub let c_s_s_import_rule_font_face_rule : Int = 5
+
+// CSSImportRule.PAGE_RULE
+pub let c_s_s_import_rule_page_rule : Int = 6
+
+// CSSImportRule.MARGIN_RULE
+pub let c_s_s_import_rule_margin_rule : Int = 9
+
+// CSSImportRule.NAMESPACE_RULE
+pub let c_s_s_import_rule_namespace_rule : Int = 10
+
+// CSSImportRule.KEYFRAMES_RULE
+pub let c_s_s_import_rule_keyframes_rule : Int = 7
+
+// CSSImportRule.KEYFRAME_RULE
+pub let c_s_s_import_rule_keyframe_rule : Int = 8
+
+// CSSImportRule.SUPPORTS_RULE
+pub let c_s_s_import_rule_supports_rule : Int = 12
+
+// CSSImportRule.COUNTER_STYLE_RULE
+pub let c_s_s_import_rule_counter_style_rule : Int = 11
+
+// CSSImportRule.FONT_FEATURE_VALUES_RULE
+pub let c_s_s_import_rule_font_feature_values_rule : Int = 14
+
 pub extern "js" fn CSSImportRule::get_href(self : CSSImportRule) -> String =
   #| (self) => self.href
 
@@ -302,10 +431,52 @@ pub extern "js" fn CSSGroupingRule::get_parent_style_sheet(self : CSSGroupingRul
 pub extern "js" fn CSSGroupingRule::get_type(self : CSSGroupingRule) -> Int =
   #| (self) => self.type
 
+// CSSGroupingRule.STYLE_RULE
+pub let c_s_s_grouping_rule_style_rule : Int = 1
+
+// CSSGroupingRule.CHARSET_RULE
+pub let c_s_s_grouping_rule_charset_rule : Int = 2
+
+// CSSGroupingRule.IMPORT_RULE
+pub let c_s_s_grouping_rule_import_rule : Int = 3
+
+// CSSGroupingRule.MEDIA_RULE
+pub let c_s_s_grouping_rule_media_rule : Int = 4
+
+// CSSGroupingRule.FONT_FACE_RULE
+pub let c_s_s_grouping_rule_font_face_rule : Int = 5
+
+// CSSGroupingRule.PAGE_RULE
+pub let c_s_s_grouping_rule_page_rule : Int = 6
+
+// CSSGroupingRule.MARGIN_RULE
+pub let c_s_s_grouping_rule_margin_rule : Int = 9
+
+// CSSGroupingRule.NAMESPACE_RULE
+pub let c_s_s_grouping_rule_namespace_rule : Int = 10
+
+// CSSGroupingRule.KEYFRAMES_RULE
+pub let c_s_s_grouping_rule_keyframes_rule : Int = 7
+
+// CSSGroupingRule.KEYFRAME_RULE
+pub let c_s_s_grouping_rule_keyframe_rule : Int = 8
+
+// CSSGroupingRule.SUPPORTS_RULE
+pub let c_s_s_grouping_rule_supports_rule : Int = 12
+
+// CSSGroupingRule.COUNTER_STYLE_RULE
+pub let c_s_s_grouping_rule_counter_style_rule : Int = 11
+
+// CSSGroupingRule.FONT_FEATURE_VALUES_RULE
+pub let c_s_s_grouping_rule_font_feature_values_rule : Int = 14
+
 pub extern "js" fn CSSGroupingRule::get_css_rules(self : CSSGroupingRule) -> CSSRuleList =
   #| (self) => self.cssRules
 
-pub extern "js" fn CSSGroupingRule::insert_rule(self : CSSGroupingRule, rule : CSSOMString, index : Int) -> Int =
+pub extern "js" fn CSSGroupingRule::insert_rule(self : CSSGroupingRule, rule : CSSOMString) -> Int =
+  #| (self, rule) => self.insertRule(rule)
+
+pub extern "js" fn CSSGroupingRule::insert_rule_with_index(self : CSSGroupingRule, rule : CSSOMString, index : Int) -> Int =
   #| (self, rule, index) => self.insertRule(rule, index)
 
 pub extern "js" fn CSSGroupingRule::delete_rule(self : CSSGroupingRule, index : Int) -> Unit =
@@ -339,7 +510,10 @@ pub extern "js" fn CSSPageDescriptors::get_property_value(self : CSSPageDescript
 pub extern "js" fn CSSPageDescriptors::get_property_priority(self : CSSPageDescriptors, property : CSSOMString) -> CSSOMString =
   #| (self, property) => self.getPropertyPriority(property)
 
-pub extern "js" fn CSSPageDescriptors::set_property(self : CSSPageDescriptors, property : CSSOMString, value : CSSOMString, priority : CSSOMString) -> Unit =
+pub extern "js" fn CSSPageDescriptors::set_property(self : CSSPageDescriptors, property : CSSOMString, value : CSSOMString) -> Unit =
+  #| (self, property, value) => self.setProperty(property, value)
+
+pub extern "js" fn CSSPageDescriptors::set_property_with_priority(self : CSSPageDescriptors, property : CSSOMString, value : CSSOMString, priority : CSSOMString) -> Unit =
   #| (self, property, value, priority) => self.setProperty(property, value, priority)
 
 pub extern "js" fn CSSPageDescriptors::remove_property(self : CSSPageDescriptors, property : CSSOMString) -> CSSOMString =
@@ -424,10 +598,52 @@ pub extern "js" fn CSSPageRule::get_parent_style_sheet(self : CSSPageRule) -> CS
 pub extern "js" fn CSSPageRule::get_type(self : CSSPageRule) -> Int =
   #| (self) => self.type
 
+// CSSPageRule.STYLE_RULE
+pub let c_s_s_page_rule_style_rule : Int = 1
+
+// CSSPageRule.CHARSET_RULE
+pub let c_s_s_page_rule_charset_rule : Int = 2
+
+// CSSPageRule.IMPORT_RULE
+pub let c_s_s_page_rule_import_rule : Int = 3
+
+// CSSPageRule.MEDIA_RULE
+pub let c_s_s_page_rule_media_rule : Int = 4
+
+// CSSPageRule.FONT_FACE_RULE
+pub let c_s_s_page_rule_font_face_rule : Int = 5
+
+// CSSPageRule.PAGE_RULE
+pub let c_s_s_page_rule_page_rule : Int = 6
+
+// CSSPageRule.MARGIN_RULE
+pub let c_s_s_page_rule_margin_rule : Int = 9
+
+// CSSPageRule.NAMESPACE_RULE
+pub let c_s_s_page_rule_namespace_rule : Int = 10
+
+// CSSPageRule.KEYFRAMES_RULE
+pub let c_s_s_page_rule_keyframes_rule : Int = 7
+
+// CSSPageRule.KEYFRAME_RULE
+pub let c_s_s_page_rule_keyframe_rule : Int = 8
+
+// CSSPageRule.SUPPORTS_RULE
+pub let c_s_s_page_rule_supports_rule : Int = 12
+
+// CSSPageRule.COUNTER_STYLE_RULE
+pub let c_s_s_page_rule_counter_style_rule : Int = 11
+
+// CSSPageRule.FONT_FEATURE_VALUES_RULE
+pub let c_s_s_page_rule_font_feature_values_rule : Int = 14
+
 pub extern "js" fn CSSPageRule::get_css_rules(self : CSSPageRule) -> CSSRuleList =
   #| (self) => self.cssRules
 
-pub extern "js" fn CSSPageRule::insert_rule(self : CSSPageRule, rule : CSSOMString, index : Int) -> Int =
+pub extern "js" fn CSSPageRule::insert_rule(self : CSSPageRule, rule : CSSOMString) -> Int =
+  #| (self, rule) => self.insertRule(rule)
+
+pub extern "js" fn CSSPageRule::insert_rule_with_index(self : CSSPageRule, rule : CSSOMString, index : Int) -> Int =
   #| (self, rule, index) => self.insertRule(rule, index)
 
 pub extern "js" fn CSSPageRule::delete_rule(self : CSSPageRule, index : Int) -> Unit =
@@ -464,6 +680,45 @@ pub extern "js" fn CSSMarginRule::get_parent_style_sheet(self : CSSMarginRule) -
 pub extern "js" fn CSSMarginRule::get_type(self : CSSMarginRule) -> Int =
   #| (self) => self.type
 
+// CSSMarginRule.STYLE_RULE
+pub let c_s_s_margin_rule_style_rule : Int = 1
+
+// CSSMarginRule.CHARSET_RULE
+pub let c_s_s_margin_rule_charset_rule : Int = 2
+
+// CSSMarginRule.IMPORT_RULE
+pub let c_s_s_margin_rule_import_rule : Int = 3
+
+// CSSMarginRule.MEDIA_RULE
+pub let c_s_s_margin_rule_media_rule : Int = 4
+
+// CSSMarginRule.FONT_FACE_RULE
+pub let c_s_s_margin_rule_font_face_rule : Int = 5
+
+// CSSMarginRule.PAGE_RULE
+pub let c_s_s_margin_rule_page_rule : Int = 6
+
+// CSSMarginRule.MARGIN_RULE
+pub let c_s_s_margin_rule_margin_rule : Int = 9
+
+// CSSMarginRule.NAMESPACE_RULE
+pub let c_s_s_margin_rule_namespace_rule : Int = 10
+
+// CSSMarginRule.KEYFRAMES_RULE
+pub let c_s_s_margin_rule_keyframes_rule : Int = 7
+
+// CSSMarginRule.KEYFRAME_RULE
+pub let c_s_s_margin_rule_keyframe_rule : Int = 8
+
+// CSSMarginRule.SUPPORTS_RULE
+pub let c_s_s_margin_rule_supports_rule : Int = 12
+
+// CSSMarginRule.COUNTER_STYLE_RULE
+pub let c_s_s_margin_rule_counter_style_rule : Int = 11
+
+// CSSMarginRule.FONT_FEATURE_VALUES_RULE
+pub let c_s_s_margin_rule_font_feature_values_rule : Int = 14
+
 pub extern "js" fn CSSMarginRule::get_name(self : CSSMarginRule) -> CSSOMString =
   #| (self) => self.name
 
@@ -491,6 +746,45 @@ pub extern "js" fn CSSNamespaceRule::get_parent_style_sheet(self : CSSNamespaceR
 
 pub extern "js" fn CSSNamespaceRule::get_type(self : CSSNamespaceRule) -> Int =
   #| (self) => self.type
+
+// CSSNamespaceRule.STYLE_RULE
+pub let c_s_s_namespace_rule_style_rule : Int = 1
+
+// CSSNamespaceRule.CHARSET_RULE
+pub let c_s_s_namespace_rule_charset_rule : Int = 2
+
+// CSSNamespaceRule.IMPORT_RULE
+pub let c_s_s_namespace_rule_import_rule : Int = 3
+
+// CSSNamespaceRule.MEDIA_RULE
+pub let c_s_s_namespace_rule_media_rule : Int = 4
+
+// CSSNamespaceRule.FONT_FACE_RULE
+pub let c_s_s_namespace_rule_font_face_rule : Int = 5
+
+// CSSNamespaceRule.PAGE_RULE
+pub let c_s_s_namespace_rule_page_rule : Int = 6
+
+// CSSNamespaceRule.MARGIN_RULE
+pub let c_s_s_namespace_rule_margin_rule : Int = 9
+
+// CSSNamespaceRule.NAMESPACE_RULE
+pub let c_s_s_namespace_rule_namespace_rule : Int = 10
+
+// CSSNamespaceRule.KEYFRAMES_RULE
+pub let c_s_s_namespace_rule_keyframes_rule : Int = 7
+
+// CSSNamespaceRule.KEYFRAME_RULE
+pub let c_s_s_namespace_rule_keyframe_rule : Int = 8
+
+// CSSNamespaceRule.SUPPORTS_RULE
+pub let c_s_s_namespace_rule_supports_rule : Int = 12
+
+// CSSNamespaceRule.COUNTER_STYLE_RULE
+pub let c_s_s_namespace_rule_counter_style_rule : Int = 11
+
+// CSSNamespaceRule.FONT_FEATURE_VALUES_RULE
+pub let c_s_s_namespace_rule_font_feature_values_rule : Int = 14
 
 pub extern "js" fn CSSNamespaceRule::get_namespace_u_r_i(self : CSSNamespaceRule) -> CSSOMString =
   #| (self) => self.namespaceURI
@@ -526,7 +820,10 @@ pub extern "js" fn CSSStyleDeclaration::get_property_value(self : CSSStyleDeclar
 pub extern "js" fn CSSStyleDeclaration::get_property_priority(self : CSSStyleDeclaration, property : CSSOMString) -> CSSOMString =
   #| (self, property) => self.getPropertyPriority(property)
 
-pub extern "js" fn CSSStyleDeclaration::set_property(self : CSSStyleDeclaration, property : CSSOMString, value : CSSOMString, priority : CSSOMString) -> Unit =
+pub extern "js" fn CSSStyleDeclaration::set_property(self : CSSStyleDeclaration, property : CSSOMString, value : CSSOMString) -> Unit =
+  #| (self, property, value) => self.setProperty(property, value)
+
+pub extern "js" fn CSSStyleDeclaration::set_property_with_priority(self : CSSStyleDeclaration, property : CSSOMString, value : CSSOMString, priority : CSSOMString) -> Unit =
   #| (self, property, value, priority) => self.setProperty(property, value, priority)
 
 pub extern "js" fn CSSStyleDeclaration::remove_property(self : CSSStyleDeclaration, property : CSSOMString) -> CSSOMString =
@@ -563,7 +860,10 @@ pub extern "js" fn CSSStyleProperties::get_property_value(self : CSSStylePropert
 pub extern "js" fn CSSStyleProperties::get_property_priority(self : CSSStyleProperties, property : CSSOMString) -> CSSOMString =
   #| (self, property) => self.getPropertyPriority(property)
 
-pub extern "js" fn CSSStyleProperties::set_property(self : CSSStyleProperties, property : CSSOMString, value : CSSOMString, priority : CSSOMString) -> Unit =
+pub extern "js" fn CSSStyleProperties::set_property(self : CSSStyleProperties, property : CSSOMString, value : CSSOMString) -> Unit =
+  #| (self, property, value) => self.setProperty(property, value)
+
+pub extern "js" fn CSSStyleProperties::set_property_with_priority(self : CSSStyleProperties, property : CSSOMString, value : CSSOMString, priority : CSSOMString) -> Unit =
   #| (self, property, value, priority) => self.setProperty(property, value, priority)
 
 pub extern "js" fn CSSStyleProperties::remove_property(self : CSSStyleProperties, property : CSSOMString) -> CSSOMString =

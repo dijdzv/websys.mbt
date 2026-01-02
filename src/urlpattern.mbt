@@ -74,7 +74,7 @@ pub extern "js" fn URLPatternOptions::to_js(self : URLPatternOptions) -> JsValue
 ///|
 /// URLPatternResult dictionary
 pub struct URLPatternResult {
-  inputs : JsValue?
+  inputs : Array[URLPatternInput]?
   protocol : URLPatternComponentResult?
   username : URLPatternComponentResult?
   password : URLPatternComponentResult?
@@ -146,10 +146,16 @@ pub extern "js" fn URLPattern::to_js_value(self : URLPattern) -> JsValue =
 pub extern "js" fn URLPattern::new(input : URLPatternInput, base_u_r_l : String, options : URLPatternOptions) -> URLPattern =
   #| (input, base_u_r_l, options) => new URLPattern(input, base_u_r_l, options)
 
-pub extern "js" fn URLPattern::test_(self : URLPattern, input : URLPatternInput, base_u_r_l : String) -> Bool =
+pub extern "js" fn URLPattern::test_(self : URLPattern) -> Bool =
+  #| (self) => self.test()
+
+pub extern "js" fn URLPattern::test__with_base_u_r_l(self : URLPattern, input : URLPatternInput, base_u_r_l : String) -> Bool =
   #| (self, input, base_u_r_l) => self.test(input, base_u_r_l)
 
-pub extern "js" fn URLPattern::exec(self : URLPattern, input : URLPatternInput, base_u_r_l : String) -> URLPatternResult? =
+pub extern "js" fn URLPattern::exec(self : URLPattern) -> URLPatternResult? =
+  #| (self) => self.exec()
+
+pub extern "js" fn URLPattern::exec_with_base_u_r_l(self : URLPattern, input : URLPatternInput, base_u_r_l : String) -> URLPatternResult? =
   #| (self, input, base_u_r_l) => self.exec(input, base_u_r_l)
 
 pub extern "js" fn URLPattern::get_protocol(self : URLPattern) -> String =

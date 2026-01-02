@@ -31,6 +31,10 @@ pub fn RemotePlaybackState::from_string(s : String) -> RemotePlaybackState? {
 /// RemotePlaybackAvailabilityCallback callback interface
 pub type RemotePlaybackAvailabilityCallback
 
+/// Create RemotePlaybackAvailabilityCallback from a MoonBit function
+pub extern "js" fn RemotePlaybackAvailabilityCallback::from_fn(handler : (Bool) -> Unit) -> RemotePlaybackAvailabilityCallback =
+  #| (handler) => handler
+
 ///|
 /// RemotePlayback interface
 pub type RemotePlayback
@@ -38,10 +42,13 @@ pub type RemotePlayback
 pub extern "js" fn RemotePlayback::to_js_value(self : RemotePlayback) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn RemotePlayback::watch_availability(self : RemotePlayback, callback : RemotePlaybackAvailabilityCallback) -> JsValue =
+pub extern "js" fn RemotePlayback::watch_availability(self : RemotePlayback, callback : RemotePlaybackAvailabilityCallback) -> Promise[Int] =
   #| (self, callback) => self.watchAvailability(callback)
 
-pub extern "js" fn RemotePlayback::cancel_watch_availability(self : RemotePlayback, id : Int) -> JsValue =
+pub extern "js" fn RemotePlayback::cancel_watch_availability(self : RemotePlayback) -> Promise[Unit] =
+  #| (self) => self.cancelWatchAvailability()
+
+pub extern "js" fn RemotePlayback::cancel_watch_availability_with_id(self : RemotePlayback, id : Int) -> Promise[Unit] =
   #| (self, id) => self.cancelWatchAvailability(id)
 
 pub extern "js" fn RemotePlayback::get_state(self : RemotePlayback) -> RemotePlaybackState =
@@ -65,6 +72,6 @@ pub extern "js" fn RemotePlayback::get_ondisconnect(self : RemotePlayback) -> Ev
 pub extern "js" fn RemotePlayback::set_ondisconnect(self : RemotePlayback, value : EventHandler) -> Unit =
   #| (self, value) => { self.ondisconnect = value }
 
-pub extern "js" fn RemotePlayback::prompt(self : RemotePlayback) -> JsValue =
+pub extern "js" fn RemotePlayback::prompt(self : RemotePlayback) -> Promise[Unit] =
   #| (self) => self.prompt()
 

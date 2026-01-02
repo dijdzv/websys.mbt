@@ -93,9 +93,12 @@ pub extern "js" fn IdleDetector::get_onchange(self : IdleDetector) -> EventHandl
 pub extern "js" fn IdleDetector::set_onchange(self : IdleDetector, value : EventHandler) -> Unit =
   #| (self, value) => { self.onchange = value }
 
-pub extern "js" fn IdleDetector::request_permission() -> JsValue =
+pub extern "js" fn IdleDetector::request_permission() -> Promise[PermissionState] =
   #| () => IdleDetector.requestPermission()
 
-pub extern "js" fn IdleDetector::start(self : IdleDetector, options : IdleOptions) -> JsValue =
+pub extern "js" fn IdleDetector::start(self : IdleDetector) -> Promise[Unit] =
+  #| (self) => self.start()
+
+pub extern "js" fn IdleDetector::start_with_options(self : IdleDetector, options : IdleOptions) -> Promise[Unit] =
   #| (self, options) => self.start(options)
 

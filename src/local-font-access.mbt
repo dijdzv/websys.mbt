@@ -4,7 +4,7 @@
 ///|
 /// QueryOptions dictionary
 pub struct QueryOptions {
-  postscriptNames : JsValue?
+  postscriptNames : Array[String]?
 }
 
 /// Create a new QueryOptions with default values
@@ -27,7 +27,7 @@ pub type FontData
 pub extern "js" fn FontData::to_js_value(self : FontData) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn FontData::blob(self : FontData) -> JsValue =
+pub extern "js" fn FontData::blob(self : FontData) -> Promise[Blob] =
   #| (self) => self.blob()
 
 pub extern "js" fn FontData::get_postscript_name(self : FontData) -> String =

@@ -30,15 +30,15 @@ pub type StorageManager
 pub extern "js" fn StorageManager::to_js_value(self : StorageManager) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn StorageManager::persisted(self : StorageManager) -> JsValue =
+pub extern "js" fn StorageManager::persisted(self : StorageManager) -> Promise[Bool] =
   #| (self) => self.persisted()
 
-pub extern "js" fn StorageManager::persist(self : StorageManager) -> JsValue =
+pub extern "js" fn StorageManager::persist(self : StorageManager) -> Promise[Bool] =
   #| (self) => self.persist()
 
-pub extern "js" fn StorageManager::estimate(self : StorageManager) -> JsValue =
+pub extern "js" fn StorageManager::estimate(self : StorageManager) -> Promise[StorageEstimate] =
   #| (self) => self.estimate()
 
-pub extern "js" fn StorageManager::get_directory(self : StorageManager) -> JsValue =
+pub extern "js" fn StorageManager::get_directory(self : StorageManager) -> Promise[FileSystemDirectoryHandle] =
   #| (self) => self.getDirectory()
 

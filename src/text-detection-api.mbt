@@ -6,7 +6,7 @@
 pub struct DetectedText {
   boundingBox : DOMRectReadOnly
   rawValue : String
-  cornerPoints : JsValue
+  cornerPoints : Array[Point2D]
 }
 
 /// Create a new DetectedText with default values
@@ -14,7 +14,7 @@ pub fn DetectedText::default() -> DetectedText {
   DetectedText::{
     boundingBox: panic(),
     rawValue: "",
-    cornerPoints: panic(),
+    cornerPoints: [],
   }
 }
 
@@ -36,6 +36,6 @@ pub extern "js" fn TextDetector::to_js_value(self : TextDetector) -> JsValue =
 pub extern "js" fn TextDetector::new() -> TextDetector =
   #| () => new TextDetector()
 
-pub extern "js" fn TextDetector::detect(self : TextDetector, image : ImageBitmapSource) -> JsValue =
+pub extern "js" fn TextDetector::detect(self : TextDetector, image : ImageBitmapSource) -> Promise[Array[DetectedText]] =
   #| (self, image) => self.detect(image)
 

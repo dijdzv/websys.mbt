@@ -4,6 +4,10 @@
 /// AnimatorInstanceConstructor callback interface
 pub type AnimatorInstanceConstructor
 
+/// Create AnimatorInstanceConstructor from a MoonBit function
+pub extern "js" fn AnimatorInstanceConstructor::from_fn(handler : (JsValue, JsValue) -> JsValue) -> AnimatorInstanceConstructor =
+  #| (handler) => handler
+
 ///|
 /// AnimationWorkletGlobalScope interface
 pub type AnimationWorkletGlobalScope
@@ -53,6 +57,6 @@ pub type WorkletGroupEffect
 pub extern "js" fn WorkletGroupEffect::to_js_value(self : WorkletGroupEffect) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn WorkletGroupEffect::get_children(self : WorkletGroupEffect) -> JsValue =
+pub extern "js" fn WorkletGroupEffect::get_children(self : WorkletGroupEffect) -> Array[WorkletAnimationEffect] =
   #| (self) => self.getChildren()
 

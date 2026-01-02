@@ -49,6 +49,9 @@ pub extern "js" fn EyeDropper::to_js_value(self : EyeDropper) -> JsValue =
 pub extern "js" fn EyeDropper::new() -> EyeDropper =
   #| () => new EyeDropper()
 
-pub extern "js" fn EyeDropper::open(self : EyeDropper, options : ColorSelectionOptions) -> JsValue =
+pub extern "js" fn EyeDropper::open(self : EyeDropper) -> Promise[ColorSelectionResult] =
+  #| (self) => self.open()
+
+pub extern "js" fn EyeDropper::open_with_options(self : EyeDropper, options : ColorSelectionOptions) -> Promise[ColorSelectionResult] =
   #| (self, options) => self.open(options)
 

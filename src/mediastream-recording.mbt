@@ -175,7 +175,10 @@ pub extern "js" fn MediaRecorder::get_audio_bits_per_second(self : MediaRecorder
 pub extern "js" fn MediaRecorder::get_audio_bitrate_mode(self : MediaRecorder) -> BitrateMode =
   #| (self) => self.audioBitrateMode
 
-pub extern "js" fn MediaRecorder::start(self : MediaRecorder, timeslice : Int) -> Unit =
+pub extern "js" fn MediaRecorder::start(self : MediaRecorder) -> Unit =
+  #| (self) => self.start()
+
+pub extern "js" fn MediaRecorder::start_with_timeslice(self : MediaRecorder, timeslice : Int) -> Unit =
   #| (self, timeslice) => self.start(timeslice)
 
 pub extern "js" fn MediaRecorder::stop(self : MediaRecorder) -> Unit =

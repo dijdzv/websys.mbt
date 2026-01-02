@@ -19,6 +19,27 @@ pub type EXT_disjoint_timer_query
 pub extern "js" fn EXT_disjoint_timer_query::to_js_value(self : EXT_disjoint_timer_query) -> JsValue =
   #| (self) => self
 
+// EXT_disjoint_timer_query.QUERY_COUNTER_BITS_EXT
+pub let e_x_t_disjoint_timer_query_query_counter_bits_ext : Int = 0x8864
+
+// EXT_disjoint_timer_query.CURRENT_QUERY_EXT
+pub let e_x_t_disjoint_timer_query_current_query_ext : Int = 0x8865
+
+// EXT_disjoint_timer_query.QUERY_RESULT_EXT
+pub let e_x_t_disjoint_timer_query_query_result_ext : Int = 0x8866
+
+// EXT_disjoint_timer_query.QUERY_RESULT_AVAILABLE_EXT
+pub let e_x_t_disjoint_timer_query_query_result_available_ext : Int = 0x8867
+
+// EXT_disjoint_timer_query.TIME_ELAPSED_EXT
+pub let e_x_t_disjoint_timer_query_time_elapsed_ext : Int = 0x88BF
+
+// EXT_disjoint_timer_query.TIMESTAMP_EXT
+pub let e_x_t_disjoint_timer_query_timestamp_ext : Int = 0x8E28
+
+// EXT_disjoint_timer_query.GPU_DISJOINT_EXT
+pub let e_x_t_disjoint_timer_query_gpu_disjoint_ext : Int = 0x8FBB
+
 pub extern "js" fn EXT_disjoint_timer_query::create_query_e_x_t(self : EXT_disjoint_timer_query) -> WebGLTimerQueryEXT =
   #| (self) => self.createQueryEXT()
 

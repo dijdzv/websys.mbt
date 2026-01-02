@@ -3,9 +3,9 @@
     "private": true,
     "description": "MoonBit bindings for Web APIs",
     "scripts": {
-        "generate": "bunx webidl-bindgen.mbt --all --per-spec -o ./src/"
+        "generate": "rm -f ./src/*.mbt && webidl-bindgen.mbt --all --per-spec -o ./src/"
     },
     "devDependencies": {
-        "webidl-bindgen.mbt": "^0.2.4"
+        "webidl-bindgen.mbt": "^0.2.5"
     }
 }

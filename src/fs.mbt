@@ -192,13 +192,19 @@ pub extern "js" fn FileSystemHandle::get_kind(self : FileSystemHandle) -> FileSy
 pub extern "js" fn FileSystemHandle::get_name(self : FileSystemHandle) -> String =
   #| (self) => self.name
 
-pub extern "js" fn FileSystemHandle::is_same_entry(self : FileSystemHandle, other : FileSystemHandle) -> JsValue =
+pub extern "js" fn FileSystemHandle::is_same_entry(self : FileSystemHandle, other : FileSystemHandle) -> Promise[Bool] =
   #| (self, other) => self.isSameEntry(other)
 
-pub extern "js" fn FileSystemHandle::query_permission(self : FileSystemHandle, descriptor : FileSystemHandlePermissionDescriptor) -> JsValue =
+pub extern "js" fn FileSystemHandle::query_permission(self : FileSystemHandle) -> Promise[PermissionState] =
+  #| (self) => self.queryPermission()
+
+pub extern "js" fn FileSystemHandle::query_permission_with_descriptor(self : FileSystemHandle, descriptor : FileSystemHandlePermissionDescriptor) -> Promise[PermissionState] =
   #| (self, descriptor) => self.queryPermission(descriptor)
 
-pub extern "js" fn FileSystemHandle::request_permission(self : FileSystemHandle, descriptor : FileSystemHandlePermissionDescriptor) -> JsValue =
+pub extern "js" fn FileSystemHandle::request_permission(self : FileSystemHandle) -> Promise[PermissionState] =
+  #| (self) => self.requestPermission()
+
+pub extern "js" fn FileSystemHandle::request_permission_with_descriptor(self : FileSystemHandle, descriptor : FileSystemHandlePermissionDescriptor) -> Promise[PermissionState] =
   #| (self, descriptor) => self.requestPermission(descriptor)
 
 ///|
@@ -214,22 +220,31 @@ pub extern "js" fn FileSystemFileHandle::get_kind(self : FileSystemFileHandle) -
 pub extern "js" fn FileSystemFileHandle::get_name(self : FileSystemFileHandle) -> String =
   #| (self) => self.name
 
-pub extern "js" fn FileSystemFileHandle::is_same_entry(self : FileSystemFileHandle, other : FileSystemHandle) -> JsValue =
+pub extern "js" fn FileSystemFileHandle::is_same_entry(self : FileSystemFileHandle, other : FileSystemHandle) -> Promise[Bool] =
   #| (self, other) => self.isSameEntry(other)
 
-pub extern "js" fn FileSystemFileHandle::query_permission(self : FileSystemFileHandle, descriptor : FileSystemHandlePermissionDescriptor) -> JsValue =
+pub extern "js" fn FileSystemFileHandle::query_permission(self : FileSystemFileHandle) -> Promise[PermissionState] =
+  #| (self) => self.queryPermission()
+
+pub extern "js" fn FileSystemFileHandle::query_permission_with_descriptor(self : FileSystemFileHandle, descriptor : FileSystemHandlePermissionDescriptor) -> Promise[PermissionState] =
   #| (self, descriptor) => self.queryPermission(descriptor)
 
-pub extern "js" fn FileSystemFileHandle::request_permission(self : FileSystemFileHandle, descriptor : FileSystemHandlePermissionDescriptor) -> JsValue =
+pub extern "js" fn FileSystemFileHandle::request_permission(self : FileSystemFileHandle) -> Promise[PermissionState] =
+  #| (self) => self.requestPermission()
+
+pub extern "js" fn FileSystemFileHandle::request_permission_with_descriptor(self : FileSystemFileHandle, descriptor : FileSystemHandlePermissionDescriptor) -> Promise[PermissionState] =
   #| (self, descriptor) => self.requestPermission(descriptor)
 
-pub extern "js" fn FileSystemFileHandle::get_file(self : FileSystemFileHandle) -> JsValue =
+pub extern "js" fn FileSystemFileHandle::get_file(self : FileSystemFileHandle) -> Promise[File] =
   #| (self) => self.getFile()
 
-pub extern "js" fn FileSystemFileHandle::create_writable(self : FileSystemFileHandle, options : FileSystemCreateWritableOptions) -> JsValue =
+pub extern "js" fn FileSystemFileHandle::create_writable(self : FileSystemFileHandle) -> Promise[FileSystemWritableFileStream] =
+  #| (self) => self.createWritable()
+
+pub extern "js" fn FileSystemFileHandle::create_writable_with_options(self : FileSystemFileHandle, options : FileSystemCreateWritableOptions) -> Promise[FileSystemWritableFileStream] =
   #| (self, options) => self.createWritable(options)
 
-pub extern "js" fn FileSystemFileHandle::create_sync_access_handle(self : FileSystemFileHandle) -> JsValue =
+pub extern "js" fn FileSystemFileHandle::create_sync_access_handle(self : FileSystemFileHandle) -> Promise[FileSystemSyncAccessHandle] =
   #| (self) => self.createSyncAccessHandle()
 
 ///|
@@ -245,28 +260,43 @@ pub extern "js" fn FileSystemDirectoryHandle::get_kind(self : FileSystemDirector
 pub extern "js" fn FileSystemDirectoryHandle::get_name(self : FileSystemDirectoryHandle) -> String =
   #| (self) => self.name
 
-pub extern "js" fn FileSystemDirectoryHandle::is_same_entry(self : FileSystemDirectoryHandle, other : FileSystemHandle) -> JsValue =
+pub extern "js" fn FileSystemDirectoryHandle::is_same_entry(self : FileSystemDirectoryHandle, other : FileSystemHandle) -> Promise[Bool] =
   #| (self, other) => self.isSameEntry(other)
 
-pub extern "js" fn FileSystemDirectoryHandle::query_permission(self : FileSystemDirectoryHandle, descriptor : FileSystemHandlePermissionDescriptor) -> JsValue =
+pub extern "js" fn FileSystemDirectoryHandle::query_permission(self : FileSystemDirectoryHandle) -> Promise[PermissionState] =
+  #| (self) => self.queryPermission()
+
+pub extern "js" fn FileSystemDirectoryHandle::query_permission_with_descriptor(self : FileSystemDirectoryHandle, descriptor : FileSystemHandlePermissionDescriptor) -> Promise[PermissionState] =
   #| (self, descriptor) => self.queryPermission(descriptor)
 
-pub extern "js" fn FileSystemDirectoryHandle::request_permission(self : FileSystemDirectoryHandle, descriptor : FileSystemHandlePermissionDescriptor) -> JsValue =
+pub extern "js" fn FileSystemDirectoryHandle::request_permission(self : FileSystemDirectoryHandle) -> Promise[PermissionState] =
+  #| (self) => self.requestPermission()
+
+pub extern "js" fn FileSystemDirectoryHandle::request_permission_with_descriptor(self : FileSystemDirectoryHandle, descriptor : FileSystemHandlePermissionDescriptor) -> Promise[PermissionState] =
   #| (self, descriptor) => self.requestPermission(descriptor)
 
 pub extern "js" fn FileSystemDirectoryHandle::_unknown_(self : FileSystemDirectoryHandle) -> Unit =
   #| (self) => self._unknown_()
 
-pub extern "js" fn FileSystemDirectoryHandle::get_file_handle(self : FileSystemDirectoryHandle, name : String, options : FileSystemGetFileOptions) -> JsValue =
+pub extern "js" fn FileSystemDirectoryHandle::get_file_handle(self : FileSystemDirectoryHandle, name : String) -> Promise[FileSystemFileHandle] =
+  #| (self, name) => self.getFileHandle(name)
+
+pub extern "js" fn FileSystemDirectoryHandle::get_file_handle_with_options(self : FileSystemDirectoryHandle, name : String, options : FileSystemGetFileOptions) -> Promise[FileSystemFileHandle] =
   #| (self, name, options) => self.getFileHandle(name, options)
 
-pub extern "js" fn FileSystemDirectoryHandle::get_directory_handle(self : FileSystemDirectoryHandle, name : String, options : FileSystemGetDirectoryOptions) -> JsValue =
+pub extern "js" fn FileSystemDirectoryHandle::get_directory_handle(self : FileSystemDirectoryHandle, name : String) -> Promise[FileSystemDirectoryHandle] =
+  #| (self, name) => self.getDirectoryHandle(name)
+
+pub extern "js" fn FileSystemDirectoryHandle::get_directory_handle_with_options(self : FileSystemDirectoryHandle, name : String, options : FileSystemGetDirectoryOptions) -> Promise[FileSystemDirectoryHandle] =
   #| (self, name, options) => self.getDirectoryHandle(name, options)
 
-pub extern "js" fn FileSystemDirectoryHandle::remove_entry(self : FileSystemDirectoryHandle, name : String, options : FileSystemRemoveOptions) -> JsValue =
+pub extern "js" fn FileSystemDirectoryHandle::remove_entry(self : FileSystemDirectoryHandle, name : String) -> Promise[Unit] =
+  #| (self, name) => self.removeEntry(name)
+
+pub extern "js" fn FileSystemDirectoryHandle::remove_entry_with_options(self : FileSystemDirectoryHandle, name : String, options : FileSystemRemoveOptions) -> Promise[Unit] =
   #| (self, name, options) => self.removeEntry(name, options)
 
-pub extern "js" fn FileSystemDirectoryHandle::resolve(self : FileSystemDirectoryHandle, possible_descendant : FileSystemHandle) -> JsValue =
+pub extern "js" fn FileSystemDirectoryHandle::resolve(self : FileSystemDirectoryHandle, possible_descendant : FileSystemHandle) -> Promise[Array[String]] =
   #| (self, possible_descendant) => self.resolve(possible_descendant)
 
 ///|
@@ -276,13 +306,13 @@ pub type FileSystemWritableFileStream
 pub extern "js" fn FileSystemWritableFileStream::to_js_value(self : FileSystemWritableFileStream) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn FileSystemWritableFileStream::write(self : FileSystemWritableFileStream, data : FileSystemWriteChunkType) -> JsValue =
+pub extern "js" fn FileSystemWritableFileStream::write(self : FileSystemWritableFileStream, data : FileSystemWriteChunkType) -> Promise[Unit] =
   #| (self, data) => self.write(data)
 
-pub extern "js" fn FileSystemWritableFileStream::seek(self : FileSystemWritableFileStream, position : Int64) -> JsValue =
+pub extern "js" fn FileSystemWritableFileStream::seek(self : FileSystemWritableFileStream, position : Int64) -> Promise[Unit] =
   #| (self, position) => self.seek(position)
 
-pub extern "js" fn FileSystemWritableFileStream::truncate(self : FileSystemWritableFileStream, size : Int64) -> JsValue =
+pub extern "js" fn FileSystemWritableFileStream::truncate(self : FileSystemWritableFileStream, size : Int64) -> Promise[Unit] =
   #| (self, size) => self.truncate(size)
 
 ///|
@@ -292,10 +322,16 @@ pub type FileSystemSyncAccessHandle
 pub extern "js" fn FileSystemSyncAccessHandle::to_js_value(self : FileSystemSyncAccessHandle) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn FileSystemSyncAccessHandle::read(self : FileSystemSyncAccessHandle, buffer : AllowSharedBufferSource, options : FileSystemReadWriteOptions) -> Int64 =
+pub extern "js" fn FileSystemSyncAccessHandle::read(self : FileSystemSyncAccessHandle, buffer : AllowSharedBufferSource) -> Int64 =
+  #| (self, buffer) => self.read(buffer)
+
+pub extern "js" fn FileSystemSyncAccessHandle::read_with_options(self : FileSystemSyncAccessHandle, buffer : AllowSharedBufferSource, options : FileSystemReadWriteOptions) -> Int64 =
   #| (self, buffer, options) => self.read(buffer, options)
 
-pub extern "js" fn FileSystemSyncAccessHandle::write(self : FileSystemSyncAccessHandle, buffer : AllowSharedBufferSource, options : FileSystemReadWriteOptions) -> Int64 =
+pub extern "js" fn FileSystemSyncAccessHandle::write(self : FileSystemSyncAccessHandle, buffer : AllowSharedBufferSource) -> Int64 =
+  #| (self, buffer) => self.write(buffer)
+
+pub extern "js" fn FileSystemSyncAccessHandle::write_with_options(self : FileSystemSyncAccessHandle, buffer : AllowSharedBufferSource, options : FileSystemReadWriteOptions) -> Int64 =
   #| (self, buffer, options) => self.write(buffer, options)
 
 pub extern "js" fn FileSystemSyncAccessHandle::truncate(self : FileSystemSyncAccessHandle, new_size : Int64) -> Unit =

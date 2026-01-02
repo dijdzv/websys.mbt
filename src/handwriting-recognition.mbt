@@ -55,13 +55,13 @@ pub fn HandwritingInputType::from_string(s : String) -> HandwritingInputType? {
 ///|
 /// HandwritingModelConstraint dictionary
 pub struct HandwritingModelConstraint {
-  languages : JsValue
+  languages : Array[String]
 }
 
 /// Create a new HandwritingModelConstraint with default values
 pub fn HandwritingModelConstraint::default() -> HandwritingModelConstraint {
   HandwritingModelConstraint::{
-    languages: panic(),
+    languages: [],
   }
 }
 
@@ -99,8 +99,8 @@ pub extern "js" fn HandwritingRecognizerQueryResult::to_js(self : HandwritingRec
 ///|
 /// HandwritingHintsQueryResult dictionary
 pub struct HandwritingHintsQueryResult {
-  recognitionType : JsValue?
-  inputType : JsValue?
+  recognitionType : Array[HandwritingRecognitionType]?
+  inputType : Array[HandwritingInputType]?
   textContext : Bool?
   alternatives : Bool?
 }
@@ -181,7 +181,7 @@ pub extern "js" fn HandwritingPoint::to_js(self : HandwritingPoint) -> JsValue =
 /// HandwritingPrediction dictionary
 pub struct HandwritingPrediction {
   text : String
-  segmentationResult : JsValue?
+  segmentationResult : Array[HandwritingSegment]?
 }
 
 /// Create a new HandwritingPrediction with default values
@@ -205,7 +205,7 @@ pub struct HandwritingSegment {
   grapheme : String
   beginIndex : Int
   endIndex : Int
-  drawingSegments : JsValue
+  drawingSegments : Array[HandwritingDrawingSegment]
 }
 
 /// Create a new HandwritingSegment with default values
@@ -214,7 +214,7 @@ pub fn HandwritingSegment::default() -> HandwritingSegment {
     grapheme: "",
     beginIndex: 0,
     endIndex: 0,
-    drawingSegments: panic(),
+    drawingSegments: [],
   }
 }
 
@@ -259,7 +259,10 @@ pub type HandwritingRecognizer
 pub extern "js" fn HandwritingRecognizer::to_js_value(self : HandwritingRecognizer) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn HandwritingRecognizer::start_drawing(self : HandwritingRecognizer, hints : HandwritingHints) -> HandwritingDrawing =
+pub extern "js" fn HandwritingRecognizer::start_drawing(self : HandwritingRecognizer) -> HandwritingDrawing =
+  #| (self) => self.startDrawing()
+
+pub extern "js" fn HandwritingRecognizer::start_drawing_with_hints(self : HandwritingRecognizer, hints : HandwritingHints) -> HandwritingDrawing =
   #| (self, hints) => self.startDrawing(hints)
 
 pub extern "js" fn HandwritingRecognizer::finish(self : HandwritingRecognizer) -> Unit =
@@ -281,10 +284,10 @@ pub extern "js" fn HandwritingDrawing::remove_stroke(self : HandwritingDrawing, 
 pub extern "js" fn HandwritingDrawing::clear(self : HandwritingDrawing) -> Unit =
   #| (self) => self.clear()
 
-pub extern "js" fn HandwritingDrawing::get_strokes(self : HandwritingDrawing) -> JsValue =
+pub extern "js" fn HandwritingDrawing::get_strokes(self : HandwritingDrawing) -> Array[HandwritingStroke] =
   #| (self) => self.getStrokes()
 
-pub extern "js" fn HandwritingDrawing::get_prediction(self : HandwritingDrawing) -> JsValue =
+pub extern "js" fn HandwritingDrawing::get_prediction(self : HandwritingDrawing) -> Promise[Array[HandwritingPrediction]] =
   #| (self) => self.getPrediction()
 
 ///|
@@ -300,7 +303,7 @@ pub extern "js" fn HandwritingStroke::new() -> HandwritingStroke =
 pub extern "js" fn HandwritingStroke::add_point(self : HandwritingStroke, point : HandwritingPoint) -> Unit =
   #| (self, point) => self.addPoint(point)
 
-pub extern "js" fn HandwritingStroke::get_points(self : HandwritingStroke) -> JsValue =
+pub extern "js" fn HandwritingStroke::get_points(self : HandwritingStroke) -> Array[HandwritingPoint] =
   #| (self) => self.getPoints()
 
 pub extern "js" fn HandwritingStroke::clear(self : HandwritingStroke) -> Unit =

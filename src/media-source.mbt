@@ -153,7 +153,10 @@ pub extern "js" fn MediaSource::add_source_buffer(self : MediaSource, type_ : St
 pub extern "js" fn MediaSource::remove_source_buffer(self : MediaSource, source_buffer : SourceBuffer) -> Unit =
   #| (self, source_buffer) => self.removeSourceBuffer(source_buffer)
 
-pub extern "js" fn MediaSource::end_of_stream(self : MediaSource, error : EndOfStreamError) -> Unit =
+pub extern "js" fn MediaSource::end_of_stream(self : MediaSource) -> Unit =
+  #| (self) => self.endOfStream()
+
+pub extern "js" fn MediaSource::end_of_stream_with_error(self : MediaSource, error : EndOfStreamError) -> Unit =
   #| (self, error) => self.endOfStream(['network', 'decode'][error])
 
 pub extern "js" fn MediaSource::set_live_seekable_range(self : MediaSource, start : Double, end : Double) -> Unit =
@@ -340,7 +343,10 @@ pub extern "js" fn ManagedMediaSource::add_source_buffer(self : ManagedMediaSour
 pub extern "js" fn ManagedMediaSource::remove_source_buffer(self : ManagedMediaSource, source_buffer : SourceBuffer) -> Unit =
   #| (self, source_buffer) => self.removeSourceBuffer(source_buffer)
 
-pub extern "js" fn ManagedMediaSource::end_of_stream(self : ManagedMediaSource, error : EndOfStreamError) -> Unit =
+pub extern "js" fn ManagedMediaSource::end_of_stream(self : ManagedMediaSource) -> Unit =
+  #| (self) => self.endOfStream()
+
+pub extern "js" fn ManagedMediaSource::end_of_stream_with_error(self : ManagedMediaSource, error : EndOfStreamError) -> Unit =
   #| (self, error) => self.endOfStream(['network', 'decode'][error])
 
 pub extern "js" fn ManagedMediaSource::set_live_seekable_range(self : ManagedMediaSource, start : Double, end : Double) -> Unit =

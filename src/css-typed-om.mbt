@@ -180,7 +180,7 @@ pub extern "js" fn CSSStyleValue::to_js_value(self : CSSStyleValue) -> JsValue =
 pub extern "js" fn CSSStyleValue::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSStyleValue.parse(property, css_text)
 
-pub extern "js" fn CSSStyleValue::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSStyleValue::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSStyleValue.parseAll(property, css_text)
 
 ///|
@@ -196,7 +196,7 @@ pub extern "js" fn StylePropertyMapReadOnly::_unknown_(self : StylePropertyMapRe
 pub extern "js" fn StylePropertyMapReadOnly::get(self : StylePropertyMapReadOnly, property : String) -> JsValue =
   #| (self, property) => self.get(property)
 
-pub extern "js" fn StylePropertyMapReadOnly::get_all(self : StylePropertyMapReadOnly, property : String) -> JsValue =
+pub extern "js" fn StylePropertyMapReadOnly::get_all(self : StylePropertyMapReadOnly, property : String) -> Array[CSSStyleValue] =
   #| (self, property) => self.getAll(property)
 
 pub extern "js" fn StylePropertyMapReadOnly::has(self : StylePropertyMapReadOnly, property : String) -> Bool =
@@ -218,7 +218,7 @@ pub extern "js" fn StylePropertyMap::_unknown_(self : StylePropertyMap) -> Unit 
 pub extern "js" fn StylePropertyMap::get(self : StylePropertyMap, property : String) -> JsValue =
   #| (self, property) => self.get(property)
 
-pub extern "js" fn StylePropertyMap::get_all(self : StylePropertyMap, property : String) -> JsValue =
+pub extern "js" fn StylePropertyMap::get_all(self : StylePropertyMap, property : String) -> Array[CSSStyleValue] =
   #| (self, property) => self.getAll(property)
 
 pub extern "js" fn StylePropertyMap::has(self : StylePropertyMap, property : String) -> Bool =
@@ -249,10 +249,10 @@ pub extern "js" fn CSSUnparsedValue::to_js_value(self : CSSUnparsedValue) -> JsV
 pub extern "js" fn CSSUnparsedValue::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSUnparsedValue.parse(property, css_text)
 
-pub extern "js" fn CSSUnparsedValue::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSUnparsedValue::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSUnparsedValue.parseAll(property, css_text)
 
-pub extern "js" fn CSSUnparsedValue::new(members : JsValue) -> CSSUnparsedValue =
+pub extern "js" fn CSSUnparsedValue::new(members : Array[CSSUnparsedSegment]) -> CSSUnparsedValue =
   #| (members) => new CSSUnparsedValue(members)
 
 pub extern "js" fn CSSUnparsedValue::_unknown_(self : CSSUnparsedValue) -> Unit =
@@ -296,7 +296,7 @@ pub extern "js" fn CSSKeywordValue::to_js_value(self : CSSKeywordValue) -> JsVal
 pub extern "js" fn CSSKeywordValue::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSKeywordValue.parse(property, css_text)
 
-pub extern "js" fn CSSKeywordValue::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSKeywordValue::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSKeywordValue.parseAll(property, css_text)
 
 pub extern "js" fn CSSKeywordValue::new(value : String) -> CSSKeywordValue =
@@ -318,7 +318,7 @@ pub extern "js" fn CSSNumericValue::to_js_value(self : CSSNumericValue) -> JsVal
 pub extern "js" fn CSSNumericValue::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSNumericValue.parse(property, css_text)
 
-pub extern "js" fn CSSNumericValue::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSNumericValue::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSNumericValue.parseAll(property, css_text)
 
 pub extern "js" fn CSSNumericValue::add(self : CSSNumericValue, values : CSSNumberish) -> CSSNumericValue =
@@ -361,7 +361,7 @@ pub extern "js" fn CSSUnitValue::to_js_value(self : CSSUnitValue) -> JsValue =
 pub extern "js" fn CSSUnitValue::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSUnitValue.parse(property, css_text)
 
-pub extern "js" fn CSSUnitValue::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSUnitValue::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSUnitValue.parseAll(property, css_text)
 
 pub extern "js" fn CSSUnitValue::add(self : CSSUnitValue, values : CSSNumberish) -> CSSNumericValue =
@@ -416,7 +416,7 @@ pub extern "js" fn CSSMathValue::to_js_value(self : CSSMathValue) -> JsValue =
 pub extern "js" fn CSSMathValue::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSMathValue.parse(property, css_text)
 
-pub extern "js" fn CSSMathValue::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSMathValue::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSMathValue.parseAll(property, css_text)
 
 pub extern "js" fn CSSMathValue::add(self : CSSMathValue, values : CSSNumberish) -> CSSNumericValue =
@@ -462,7 +462,7 @@ pub extern "js" fn CSSMathSum::to_js_value(self : CSSMathSum) -> JsValue =
 pub extern "js" fn CSSMathSum::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSMathSum.parse(property, css_text)
 
-pub extern "js" fn CSSMathSum::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSMathSum::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSMathSum.parseAll(property, css_text)
 
 pub extern "js" fn CSSMathSum::add(self : CSSMathSum, values : CSSNumberish) -> CSSNumericValue =
@@ -514,7 +514,7 @@ pub extern "js" fn CSSMathProduct::to_js_value(self : CSSMathProduct) -> JsValue
 pub extern "js" fn CSSMathProduct::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSMathProduct.parse(property, css_text)
 
-pub extern "js" fn CSSMathProduct::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSMathProduct::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSMathProduct.parseAll(property, css_text)
 
 pub extern "js" fn CSSMathProduct::add(self : CSSMathProduct, values : CSSNumberish) -> CSSNumericValue =
@@ -566,7 +566,7 @@ pub extern "js" fn CSSMathNegate::to_js_value(self : CSSMathNegate) -> JsValue =
 pub extern "js" fn CSSMathNegate::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSMathNegate.parse(property, css_text)
 
-pub extern "js" fn CSSMathNegate::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSMathNegate::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSMathNegate.parseAll(property, css_text)
 
 pub extern "js" fn CSSMathNegate::add(self : CSSMathNegate, values : CSSNumberish) -> CSSNumericValue =
@@ -618,7 +618,7 @@ pub extern "js" fn CSSMathInvert::to_js_value(self : CSSMathInvert) -> JsValue =
 pub extern "js" fn CSSMathInvert::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSMathInvert.parse(property, css_text)
 
-pub extern "js" fn CSSMathInvert::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSMathInvert::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSMathInvert.parseAll(property, css_text)
 
 pub extern "js" fn CSSMathInvert::add(self : CSSMathInvert, values : CSSNumberish) -> CSSNumericValue =
@@ -670,7 +670,7 @@ pub extern "js" fn CSSMathMin::to_js_value(self : CSSMathMin) -> JsValue =
 pub extern "js" fn CSSMathMin::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSMathMin.parse(property, css_text)
 
-pub extern "js" fn CSSMathMin::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSMathMin::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSMathMin.parseAll(property, css_text)
 
 pub extern "js" fn CSSMathMin::add(self : CSSMathMin, values : CSSNumberish) -> CSSNumericValue =
@@ -722,7 +722,7 @@ pub extern "js" fn CSSMathMax::to_js_value(self : CSSMathMax) -> JsValue =
 pub extern "js" fn CSSMathMax::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSMathMax.parse(property, css_text)
 
-pub extern "js" fn CSSMathMax::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSMathMax::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSMathMax.parseAll(property, css_text)
 
 pub extern "js" fn CSSMathMax::add(self : CSSMathMax, values : CSSNumberish) -> CSSNumericValue =
@@ -774,7 +774,7 @@ pub extern "js" fn CSSMathClamp::to_js_value(self : CSSMathClamp) -> JsValue =
 pub extern "js" fn CSSMathClamp::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSMathClamp.parse(property, css_text)
 
-pub extern "js" fn CSSMathClamp::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSMathClamp::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSMathClamp.parseAll(property, css_text)
 
 pub extern "js" fn CSSMathClamp::add(self : CSSMathClamp, values : CSSNumberish) -> CSSNumericValue =
@@ -848,10 +848,10 @@ pub extern "js" fn CSSTransformValue::to_js_value(self : CSSTransformValue) -> J
 pub extern "js" fn CSSTransformValue::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSTransformValue.parse(property, css_text)
 
-pub extern "js" fn CSSTransformValue::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSTransformValue::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSTransformValue.parseAll(property, css_text)
 
-pub extern "js" fn CSSTransformValue::new(transforms : JsValue) -> CSSTransformValue =
+pub extern "js" fn CSSTransformValue::new(transforms : Array[CSSTransformComponent]) -> CSSTransformValue =
   #| (transforms) => new CSSTransformValue(transforms)
 
 pub extern "js" fn CSSTransformValue::_unknown_(self : CSSTransformValue) -> Unit =
@@ -1146,7 +1146,7 @@ pub extern "js" fn CSSImageValue::to_js_value(self : CSSImageValue) -> JsValue =
 pub extern "js" fn CSSImageValue::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSImageValue.parse(property, css_text)
 
-pub extern "js" fn CSSImageValue::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSImageValue::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSImageValue.parseAll(property, css_text)
 
 ///|
@@ -1159,7 +1159,7 @@ pub extern "js" fn CSSColorValue::to_js_value(self : CSSColorValue) -> JsValue =
 pub extern "js" fn CSSColorValue::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSColorValue.parse(property, css_text)
 
-pub extern "js" fn CSSColorValue::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSColorValue::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSColorValue.parseAll(property, css_text)
 
 ///|
@@ -1172,7 +1172,7 @@ pub extern "js" fn CSSRGB::to_js_value(self : CSSRGB) -> JsValue =
 pub extern "js" fn CSSRGB::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSRGB.parse(property, css_text)
 
-pub extern "js" fn CSSRGB::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSRGB::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSRGB.parseAll(property, css_text)
 
 pub extern "js" fn CSSRGB::new(r : CSSColorRGBComp, g : CSSColorRGBComp, b : CSSColorRGBComp, alpha : CSSColorPercent) -> CSSRGB =
@@ -1212,7 +1212,7 @@ pub extern "js" fn CSSHSL::to_js_value(self : CSSHSL) -> JsValue =
 pub extern "js" fn CSSHSL::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSHSL.parse(property, css_text)
 
-pub extern "js" fn CSSHSL::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSHSL::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSHSL.parseAll(property, css_text)
 
 pub extern "js" fn CSSHSL::new(h : CSSColorAngle, s : CSSColorPercent, l : CSSColorPercent, alpha : CSSColorPercent) -> CSSHSL =
@@ -1252,7 +1252,7 @@ pub extern "js" fn CSSHWB::to_js_value(self : CSSHWB) -> JsValue =
 pub extern "js" fn CSSHWB::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSHWB.parse(property, css_text)
 
-pub extern "js" fn CSSHWB::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSHWB::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSHWB.parseAll(property, css_text)
 
 pub extern "js" fn CSSHWB::new(h : CSSNumericValue, w : CSSNumberish, b : CSSNumberish, alpha : CSSNumberish) -> CSSHWB =
@@ -1292,7 +1292,7 @@ pub extern "js" fn CSSLab::to_js_value(self : CSSLab) -> JsValue =
 pub extern "js" fn CSSLab::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSLab.parse(property, css_text)
 
-pub extern "js" fn CSSLab::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSLab::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSLab.parseAll(property, css_text)
 
 pub extern "js" fn CSSLab::new(l : CSSColorPercent, a : CSSColorNumber, b : CSSColorNumber, alpha : CSSColorPercent) -> CSSLab =
@@ -1332,7 +1332,7 @@ pub extern "js" fn CSSLCH::to_js_value(self : CSSLCH) -> JsValue =
 pub extern "js" fn CSSLCH::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSLCH.parse(property, css_text)
 
-pub extern "js" fn CSSLCH::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSLCH::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSLCH.parseAll(property, css_text)
 
 pub extern "js" fn CSSLCH::new(l : CSSColorPercent, c : CSSColorPercent, h : CSSColorAngle, alpha : CSSColorPercent) -> CSSLCH =
@@ -1372,7 +1372,7 @@ pub extern "js" fn CSSOKLab::to_js_value(self : CSSOKLab) -> JsValue =
 pub extern "js" fn CSSOKLab::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSOKLab.parse(property, css_text)
 
-pub extern "js" fn CSSOKLab::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSOKLab::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSOKLab.parseAll(property, css_text)
 
 pub extern "js" fn CSSOKLab::new(l : CSSColorPercent, a : CSSColorNumber, b : CSSColorNumber, alpha : CSSColorPercent) -> CSSOKLab =
@@ -1412,7 +1412,7 @@ pub extern "js" fn CSSOKLCH::to_js_value(self : CSSOKLCH) -> JsValue =
 pub extern "js" fn CSSOKLCH::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSOKLCH.parse(property, css_text)
 
-pub extern "js" fn CSSOKLCH::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSOKLCH::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSOKLCH.parseAll(property, css_text)
 
 pub extern "js" fn CSSOKLCH::new(l : CSSColorPercent, c : CSSColorPercent, h : CSSColorAngle, alpha : CSSColorPercent) -> CSSOKLCH =
@@ -1452,10 +1452,10 @@ pub extern "js" fn CSSColor::to_js_value(self : CSSColor) -> JsValue =
 pub extern "js" fn CSSColor::parse(property : String, css_text : String) -> CSSStyleValue =
   #| (property, css_text) => CSSColor.parse(property, css_text)
 
-pub extern "js" fn CSSColor::parse_all(property : String, css_text : String) -> JsValue =
+pub extern "js" fn CSSColor::parse_all(property : String, css_text : String) -> Array[CSSStyleValue] =
   #| (property, css_text) => CSSColor.parseAll(property, css_text)
 
-pub extern "js" fn CSSColor::new(color_space : CSSKeywordish, channels : JsValue, alpha : CSSNumberish) -> CSSColor =
+pub extern "js" fn CSSColor::new(color_space : CSSKeywordish, channels : Array[CSSColorPercent], alpha : CSSNumberish) -> CSSColor =
   #| (color_space, channels, alpha) => new CSSColor(color_space, channels, alpha)
 
 pub extern "js" fn CSSColor::get_color_space(self : CSSColor) -> CSSKeywordish =

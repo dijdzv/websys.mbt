@@ -27,6 +27,9 @@ pub type Scheduling
 pub extern "js" fn Scheduling::to_js_value(self : Scheduling) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Scheduling::is_input_pending(self : Scheduling, is_input_pending_options : IsInputPendingOptions) -> Bool =
+pub extern "js" fn Scheduling::is_input_pending(self : Scheduling) -> Bool =
+  #| (self) => self.isInputPending()
+
+pub extern "js" fn Scheduling::is_input_pending_with_is_input_pending_options(self : Scheduling, is_input_pending_options : IsInputPendingOptions) -> Bool =
   #| (self, is_input_pending_options) => self.isInputPending(is_input_pending_options)
 

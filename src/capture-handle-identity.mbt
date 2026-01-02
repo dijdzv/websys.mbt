@@ -6,7 +6,7 @@
 pub struct CaptureHandleConfig {
   exposeOrigin : Bool?
   handle : String?
-  permittedOrigins : JsValue?
+  permittedOrigins : Array[String]?
 }
 
 /// Create a new CaptureHandleConfig with default values

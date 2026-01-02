@@ -32,7 +32,7 @@ pub fn XRHitTestTrackableType::from_string(s : String) -> XRHitTestTrackableType
 /// XRHitTestOptionsInit dictionary
 pub struct XRHitTestOptionsInit {
   space : XRSpace
-  entityTypes : JsValue?
+  entityTypes : Array[XRHitTestTrackableType]?
   offsetRay : XRRay?
 }
 
@@ -57,7 +57,7 @@ pub extern "js" fn XRHitTestOptionsInit::to_js(self : XRHitTestOptionsInit) -> J
 /// XRTransientInputHitTestOptionsInit dictionary
 pub struct XRTransientInputHitTestOptionsInit {
   profile : String
-  entityTypes : JsValue?
+  entityTypes : Array[XRHitTestTrackableType]?
   offsetRay : XRRay?
 }
 
@@ -136,7 +136,7 @@ pub extern "js" fn XRHitTestResult::to_js_value(self : XRHitTestResult) -> JsVal
 pub extern "js" fn XRHitTestResult::get_pose(self : XRHitTestResult, base_space : XRSpace) -> XRPose? =
   #| (self, base_space) => self.getPose(base_space)
 
-pub extern "js" fn XRHitTestResult::create_anchor(self : XRHitTestResult) -> JsValue =
+pub extern "js" fn XRHitTestResult::create_anchor(self : XRHitTestResult) -> Promise[XRAnchor] =
   #| (self) => self.createAnchor()
 
 ///|

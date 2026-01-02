@@ -55,7 +55,10 @@ pub type DocumentPictureInPicture
 pub extern "js" fn DocumentPictureInPicture::to_js_value(self : DocumentPictureInPicture) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn DocumentPictureInPicture::request_window(self : DocumentPictureInPicture, options : DocumentPictureInPictureOptions) -> JsValue =
+pub extern "js" fn DocumentPictureInPicture::request_window(self : DocumentPictureInPicture) -> Promise[Window] =
+  #| (self) => self.requestWindow()
+
+pub extern "js" fn DocumentPictureInPicture::request_window_with_options(self : DocumentPictureInPicture, options : DocumentPictureInPictureOptions) -> Promise[Window] =
   #| (self, options) => self.requestWindow(options)
 
 pub extern "js" fn DocumentPictureInPicture::get_window(self : DocumentPictureInPicture) -> Window =

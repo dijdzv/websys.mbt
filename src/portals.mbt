@@ -61,10 +61,16 @@ pub extern "js" fn HTMLPortalElement::get_referrer_policy(self : HTMLPortalEleme
 pub extern "js" fn HTMLPortalElement::set_referrer_policy(self : HTMLPortalElement, value : String) -> Unit =
   #| (self, value) => { self.referrerPolicy = value }
 
-pub extern "js" fn HTMLPortalElement::activate(self : HTMLPortalElement, options : PortalActivateOptions) -> JsValue =
+pub extern "js" fn HTMLPortalElement::activate(self : HTMLPortalElement) -> Promise[Unit] =
+  #| (self) => self.activate()
+
+pub extern "js" fn HTMLPortalElement::activate_with_options(self : HTMLPortalElement, options : PortalActivateOptions) -> Promise[Unit] =
   #| (self, options) => self.activate(options)
 
-pub extern "js" fn HTMLPortalElement::post_message(self : HTMLPortalElement, message : JsValue, options : StructuredSerializeOptions) -> Unit =
+pub extern "js" fn HTMLPortalElement::post_message(self : HTMLPortalElement, message : JsValue) -> Unit =
+  #| (self, message) => self.postMessage(message)
+
+pub extern "js" fn HTMLPortalElement::post_message_with_options(self : HTMLPortalElement, message : JsValue, options : StructuredSerializeOptions) -> Unit =
   #| (self, message, options) => self.postMessage(message, options)
 
 pub extern "js" fn HTMLPortalElement::get_onmessage(self : HTMLPortalElement) -> EventHandler =
@@ -86,7 +92,10 @@ pub type PortalHost
 pub extern "js" fn PortalHost::to_js_value(self : PortalHost) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn PortalHost::post_message(self : PortalHost, message : JsValue, options : StructuredSerializeOptions) -> Unit =
+pub extern "js" fn PortalHost::post_message(self : PortalHost, message : JsValue) -> Unit =
+  #| (self, message) => self.postMessage(message)
+
+pub extern "js" fn PortalHost::post_message_with_options(self : PortalHost, message : JsValue, options : StructuredSerializeOptions) -> Unit =
   #| (self, message, options) => self.postMessage(message, options)
 
 pub extern "js" fn PortalHost::get_onmessage(self : PortalHost) -> EventHandler =

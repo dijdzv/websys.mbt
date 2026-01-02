@@ -46,13 +46,16 @@ pub type PeriodicSyncManager
 pub extern "js" fn PeriodicSyncManager::to_js_value(self : PeriodicSyncManager) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn PeriodicSyncManager::register(self : PeriodicSyncManager, tag : String, options : BackgroundSyncOptions) -> JsValue =
+pub extern "js" fn PeriodicSyncManager::register(self : PeriodicSyncManager, tag : String) -> Promise[Unit] =
+  #| (self, tag) => self.register(tag)
+
+pub extern "js" fn PeriodicSyncManager::register_with_options(self : PeriodicSyncManager, tag : String, options : BackgroundSyncOptions) -> Promise[Unit] =
   #| (self, tag, options) => self.register(tag, options)
 
-pub extern "js" fn PeriodicSyncManager::get_tags(self : PeriodicSyncManager) -> JsValue =
+pub extern "js" fn PeriodicSyncManager::get_tags(self : PeriodicSyncManager) -> Promise[Array[String]] =
   #| (self) => self.getTags()
 
-pub extern "js" fn PeriodicSyncManager::unregister(self : PeriodicSyncManager, tag : String) -> JsValue =
+pub extern "js" fn PeriodicSyncManager::unregister(self : PeriodicSyncManager, tag : String) -> Promise[Unit] =
   #| (self, tag) => self.unregister(tag)
 
 ///|

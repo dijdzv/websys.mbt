@@ -153,7 +153,7 @@ pub fn MediaDeviceKind::from_string(s : String) -> MediaDeviceKind? {
 ///|
 /// MediaTrackConstraints dictionary
 pub struct MediaTrackConstraints {
-  advanced : JsValue?
+  advanced : Array[MediaTrackConstraintSet]?
 }
 
 /// Create a new MediaTrackConstraints with default values
@@ -191,7 +191,7 @@ pub extern "js" fn MediaStreamTrackEventInit::to_js(self : MediaStreamTrackEvent
 ///|
 /// DeviceChangeEventInit dictionary
 pub struct DeviceChangeEventInit {
-  devices : JsValue?
+  devices : Array[MediaDeviceInfo]?
 }
 
 /// Create a new DeviceChangeEventInit with default values
@@ -433,13 +433,13 @@ pub extern "js" fn MediaStream::new() -> MediaStream =
 pub extern "js" fn MediaStream::get_id(self : MediaStream) -> String =
   #| (self) => self.id
 
-pub extern "js" fn MediaStream::get_audio_tracks(self : MediaStream) -> JsValue =
+pub extern "js" fn MediaStream::get_audio_tracks(self : MediaStream) -> Array[MediaStreamTrack] =
   #| (self) => self.getAudioTracks()
 
-pub extern "js" fn MediaStream::get_video_tracks(self : MediaStream) -> JsValue =
+pub extern "js" fn MediaStream::get_video_tracks(self : MediaStream) -> Array[MediaStreamTrack] =
   #| (self) => self.getVideoTracks()
 
-pub extern "js" fn MediaStream::get_tracks(self : MediaStream) -> JsValue =
+pub extern "js" fn MediaStream::get_tracks(self : MediaStream) -> Array[MediaStreamTrack] =
   #| (self) => self.getTracks()
 
 pub extern "js" fn MediaStream::get_track_by_id(self : MediaStream, track_id : String) -> MediaStreamTrack? =
@@ -530,7 +530,10 @@ pub extern "js" fn MediaStreamTrack::get_constraints(self : MediaStreamTrack) ->
 pub extern "js" fn MediaStreamTrack::get_settings(self : MediaStreamTrack) -> MediaTrackSettings =
   #| (self) => self.getSettings()
 
-pub extern "js" fn MediaStreamTrack::apply_constraints(self : MediaStreamTrack, constraints : MediaTrackConstraints) -> JsValue =
+pub extern "js" fn MediaStreamTrack::apply_constraints(self : MediaStreamTrack) -> Promise[Unit] =
+  #| (self) => self.applyConstraints()
+
+pub extern "js" fn MediaStreamTrack::apply_constraints_with_constraints(self : MediaStreamTrack, constraints : MediaTrackConstraints) -> Promise[Unit] =
   #| (self, constraints) => self.applyConstraints(constraints)
 
 pub extern "js" fn MediaStreamTrack::get_capture_handle(self : MediaStreamTrack) -> CaptureHandle? =
@@ -542,10 +545,10 @@ pub extern "js" fn MediaStreamTrack::get_oncapturehandlechange(self : MediaStrea
 pub extern "js" fn MediaStreamTrack::set_oncapturehandlechange(self : MediaStreamTrack, value : EventHandler) -> Unit =
   #| (self, value) => { self.oncapturehandlechange = value }
 
-pub extern "js" fn MediaStreamTrack::get_supported_capture_actions(self : MediaStreamTrack) -> JsValue =
+pub extern "js" fn MediaStreamTrack::get_supported_capture_actions(self : MediaStreamTrack) -> Array[String] =
   #| (self) => self.getSupportedCaptureActions()
 
-pub extern "js" fn MediaStreamTrack::send_capture_action(self : MediaStreamTrack, action : CaptureAction) -> JsValue =
+pub extern "js" fn MediaStreamTrack::send_capture_action(self : MediaStreamTrack, action : CaptureAction) -> Promise[Unit] =
   #| (self, action) => self.sendCaptureAction(['next', 'previous', 'first', 'last'][action])
 
 pub extern "js" fn MediaStreamTrack::get_content_hint(self : MediaStreamTrack) -> String =
@@ -602,16 +605,22 @@ pub extern "js" fn MediaDevices::get_ondevicechange(self : MediaDevices) -> Even
 pub extern "js" fn MediaDevices::set_ondevicechange(self : MediaDevices, value : EventHandler) -> Unit =
   #| (self, value) => { self.ondevicechange = value }
 
-pub extern "js" fn MediaDevices::enumerate_devices(self : MediaDevices) -> JsValue =
+pub extern "js" fn MediaDevices::enumerate_devices(self : MediaDevices) -> Promise[Array[MediaDeviceInfo]] =
   #| (self) => self.enumerateDevices()
 
-pub extern "js" fn MediaDevices::select_audio_output(self : MediaDevices, options : AudioOutputOptions) -> JsValue =
+pub extern "js" fn MediaDevices::select_audio_output(self : MediaDevices) -> Promise[MediaDeviceInfo] =
+  #| (self) => self.selectAudioOutput()
+
+pub extern "js" fn MediaDevices::select_audio_output_with_options(self : MediaDevices, options : AudioOutputOptions) -> Promise[MediaDeviceInfo] =
   #| (self, options) => self.selectAudioOutput(options)
 
-pub extern "js" fn MediaDevices::set_capture_handle_config(self : MediaDevices, config : CaptureHandleConfig) -> Unit =
+pub extern "js" fn MediaDevices::set_capture_handle_config(self : MediaDevices) -> Unit =
+  #| (self) => self.setCaptureHandleConfig()
+
+pub extern "js" fn MediaDevices::set_capture_handle_config_with_config(self : MediaDevices, config : CaptureHandleConfig) -> Unit =
   #| (self, config) => self.setCaptureHandleConfig(config)
 
-pub extern "js" fn MediaDevices::set_supported_capture_actions(self : MediaDevices, actions : JsValue) -> Unit =
+pub extern "js" fn MediaDevices::set_supported_capture_actions(self : MediaDevices, actions : Array[String]) -> Unit =
   #| (self, actions) => self.setSupportedCaptureActions(actions)
 
 pub extern "js" fn MediaDevices::get_oncaptureaction(self : MediaDevices) -> EventHandler =
@@ -623,13 +632,22 @@ pub extern "js" fn MediaDevices::set_oncaptureaction(self : MediaDevices, value 
 pub extern "js" fn MediaDevices::get_supported_constraints(self : MediaDevices) -> MediaTrackSupportedConstraints =
   #| (self) => self.getSupportedConstraints()
 
-pub extern "js" fn MediaDevices::get_user_media(self : MediaDevices, constraints : MediaStreamConstraints) -> JsValue =
+pub extern "js" fn MediaDevices::get_user_media(self : MediaDevices) -> Promise[MediaStream] =
+  #| (self) => self.getUserMedia()
+
+pub extern "js" fn MediaDevices::get_user_media_with_constraints(self : MediaDevices, constraints : MediaStreamConstraints) -> Promise[MediaStream] =
   #| (self, constraints) => self.getUserMedia(constraints)
 
-pub extern "js" fn MediaDevices::get_viewport_media(self : MediaDevices, options : DisplayMediaStreamOptions) -> JsValue =
+pub extern "js" fn MediaDevices::get_viewport_media(self : MediaDevices) -> Promise[MediaStream] =
+  #| (self) => self.getViewportMedia()
+
+pub extern "js" fn MediaDevices::get_viewport_media_with_options(self : MediaDevices, options : DisplayMediaStreamOptions) -> Promise[MediaStream] =
   #| (self, options) => self.getViewportMedia(options)
 
-pub extern "js" fn MediaDevices::get_display_media(self : MediaDevices, options : DisplayMediaStreamOptions) -> JsValue =
+pub extern "js" fn MediaDevices::get_display_media(self : MediaDevices) -> Promise[MediaStream] =
+  #| (self) => self.getDisplayMedia()
+
+pub extern "js" fn MediaDevices::get_display_media_with_options(self : MediaDevices, options : DisplayMediaStreamOptions) -> Promise[MediaStream] =
   #| (self, options) => self.getDisplayMedia(options)
 
 ///|

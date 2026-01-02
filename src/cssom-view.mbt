@@ -185,7 +185,7 @@ pub extern "js" fn MediaQueryListEventInit::to_js(self : MediaQueryListEventInit
 ///|
 /// CaretPositionFromPointOptions dictionary
 pub struct CaretPositionFromPointOptions {
-  shadowRoots : JsValue?
+  shadowRoots : Array[ShadowRoot]?
 }
 
 /// Create a new CaretPositionFromPointOptions with default values

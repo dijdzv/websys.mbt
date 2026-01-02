@@ -8,6 +8,9 @@ pub type KeyboardLayoutMap
 pub extern "js" fn KeyboardLayoutMap::to_js_value(self : KeyboardLayoutMap) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn KeyboardLayoutMap::_unknown_(self : KeyboardLayoutMap) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn KeyboardLayoutMap::get(self : KeyboardLayoutMap, key : String) -> String? =
+  #| (self, key) => self.get(key)
+
+pub extern "js" fn KeyboardLayoutMap::has(self : KeyboardLayoutMap, key : String) -> Bool =
+  #| (self, key) => self.has(key)
 

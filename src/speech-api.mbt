@@ -130,14 +130,14 @@ pub fn SpeechSynthesisErrorCode::from_string(s : String) -> SpeechSynthesisError
 ///|
 /// SpeechRecognitionOptions dictionary
 pub struct SpeechRecognitionOptions {
-  langs : JsValue
+  langs : Array[String]
   processLocally : Bool?
 }
 
 /// Create a new SpeechRecognitionOptions with default values
 pub fn SpeechRecognitionOptions::default() -> SpeechRecognitionOptions {
   SpeechRecognitionOptions::{
-    langs: panic(),
+    langs: [],
     processLocally: None,
   }
 }
@@ -319,10 +319,10 @@ pub extern "js" fn SpeechRecognition::stop(self : SpeechRecognition) -> Unit =
 pub extern "js" fn SpeechRecognition::abort(self : SpeechRecognition) -> Unit =
   #| (self) => self.abort()
 
-pub extern "js" fn SpeechRecognition::available(options : SpeechRecognitionOptions) -> JsValue =
+pub extern "js" fn SpeechRecognition::available(options : SpeechRecognitionOptions) -> Promise[AvailabilityStatus] =
   #| (options) => SpeechRecognition.available(options)
 
-pub extern "js" fn SpeechRecognition::install(options : SpeechRecognitionOptions) -> JsValue =
+pub extern "js" fn SpeechRecognition::install(options : SpeechRecognitionOptions) -> Promise[Bool] =
   #| (options) => SpeechRecognition.install(options)
 
 pub extern "js" fn SpeechRecognition::get_onaudiostart(self : SpeechRecognition) -> EventHandler =
@@ -509,10 +509,16 @@ pub extern "js" fn SpeechGrammarList::item(self : SpeechGrammarList, index : Int
 pub extern "js" fn SpeechGrammarList::get(self : SpeechGrammarList, index : Int) -> SpeechGrammar =
   #| (self, index) => self[index]
 
-pub extern "js" fn SpeechGrammarList::add_from_u_r_i(self : SpeechGrammarList, src : String, weight : Double) -> Unit =
+pub extern "js" fn SpeechGrammarList::add_from_u_r_i(self : SpeechGrammarList, src : String) -> Unit =
+  #| (self, src) => self.addFromURI(src)
+
+pub extern "js" fn SpeechGrammarList::add_from_u_r_i_with_weight(self : SpeechGrammarList, src : String, weight : Double) -> Unit =
   #| (self, src, weight) => self.addFromURI(src, weight)
 
-pub extern "js" fn SpeechGrammarList::add_from_string(self : SpeechGrammarList, string : String, weight : Double) -> Unit =
+pub extern "js" fn SpeechGrammarList::add_from_string(self : SpeechGrammarList, string : String) -> Unit =
+  #| (self, string) => self.addFromString(string)
+
+pub extern "js" fn SpeechGrammarList::add_from_string_with_weight(self : SpeechGrammarList, string : String, weight : Double) -> Unit =
   #| (self, string, weight) => self.addFromString(string, weight)
 
 ///|
@@ -565,7 +571,7 @@ pub extern "js" fn SpeechSynthesis::pause(self : SpeechSynthesis) -> Unit =
 pub extern "js" fn SpeechSynthesis::resume_(self : SpeechSynthesis) -> Unit =
   #| (self) => self.resume()
 
-pub extern "js" fn SpeechSynthesis::get_voices(self : SpeechSynthesis) -> JsValue =
+pub extern "js" fn SpeechSynthesis::get_voices(self : SpeechSynthesis) -> Array[SpeechSynthesisVoice] =
   #| (self) => self.getVoices()
 
 ///|

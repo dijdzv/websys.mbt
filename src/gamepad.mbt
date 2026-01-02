@@ -226,13 +226,16 @@ pub extern "js" fn GamepadHapticActuator::to_js_value(self : GamepadHapticActuat
 pub extern "js" fn GamepadHapticActuator::get_effects(self : GamepadHapticActuator) -> JsValue =
   #| (self) => self.effects
 
-pub extern "js" fn GamepadHapticActuator::play_effect(self : GamepadHapticActuator, type_ : GamepadHapticEffectType, params : GamepadEffectParameters) -> JsValue =
+pub extern "js" fn GamepadHapticActuator::play_effect(self : GamepadHapticActuator, type_ : GamepadHapticEffectType) -> Promise[GamepadHapticsResult] =
+  #| (self, type_) => self.playEffect(['dual-rumble', 'trigger-rumble'][type_])
+
+pub extern "js" fn GamepadHapticActuator::play_effect_with_params(self : GamepadHapticActuator, type_ : GamepadHapticEffectType, params : GamepadEffectParameters) -> Promise[GamepadHapticsResult] =
   #| (self, type_, params) => self.playEffect(['dual-rumble', 'trigger-rumble'][type_], params)
 
-pub extern "js" fn GamepadHapticActuator::reset(self : GamepadHapticActuator) -> JsValue =
+pub extern "js" fn GamepadHapticActuator::reset(self : GamepadHapticActuator) -> Promise[GamepadHapticsResult] =
   #| (self) => self.reset()
 
-pub extern "js" fn GamepadHapticActuator::pulse(self : GamepadHapticActuator, value : Double, duration : Double) -> JsValue =
+pub extern "js" fn GamepadHapticActuator::pulse(self : GamepadHapticActuator, value : Double, duration : Double) -> Promise[Bool] =
   #| (self, value, duration) => self.pulse(value, duration)
 
 ///|

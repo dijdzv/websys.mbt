@@ -222,6 +222,21 @@ pub extern "js" fn XMLHttpRequest::get_onreadystatechange(self : XMLHttpRequest)
 pub extern "js" fn XMLHttpRequest::set_onreadystatechange(self : XMLHttpRequest, value : EventHandler) -> Unit =
   #| (self, value) => { self.onreadystatechange = value }
 
+// XMLHttpRequest.UNSENT
+pub let x_m_l_http_request_unsent : Int = 0
+
+// XMLHttpRequest.OPENED
+pub let x_m_l_http_request_opened : Int = 1
+
+// XMLHttpRequest.HEADERS_RECEIVED
+pub let x_m_l_http_request_headers_received : Int = 2
+
+// XMLHttpRequest.LOADING
+pub let x_m_l_http_request_loading : Int = 3
+
+// XMLHttpRequest.DONE
+pub let x_m_l_http_request_done : Int = 4
+
 pub extern "js" fn XMLHttpRequest::get_ready_state(self : XMLHttpRequest) -> Int =
   #| (self) => self.readyState
 
@@ -246,7 +261,10 @@ pub extern "js" fn XMLHttpRequest::set_with_credentials(self : XMLHttpRequest, v
 pub extern "js" fn XMLHttpRequest::get_upload(self : XMLHttpRequest) -> XMLHttpRequestUpload =
   #| (self) => self.upload
 
-pub extern "js" fn XMLHttpRequest::send(self : XMLHttpRequest, body : JsValue) -> Unit =
+pub extern "js" fn XMLHttpRequest::send(self : XMLHttpRequest) -> Unit =
+  #| (self) => self.send()
+
+pub extern "js" fn XMLHttpRequest::send_with_body(self : XMLHttpRequest, body : JsValue) -> Unit =
   #| (self, body) => self.send(body)
 
 pub extern "js" fn XMLHttpRequest::abort(self : XMLHttpRequest) -> Unit =
@@ -310,7 +328,7 @@ pub extern "js" fn FormData::delete(self : FormData, name : String) -> Unit =
 pub extern "js" fn FormData::get(self : FormData, name : String) -> FormDataEntryValue? =
   #| (self, name) => self.get(name)
 
-pub extern "js" fn FormData::get_all(self : FormData, name : String) -> JsValue =
+pub extern "js" fn FormData::get_all(self : FormData, name : String) -> Array[FormDataEntryValue] =
   #| (self, name) => self.getAll(name)
 
 pub extern "js" fn FormData::has(self : FormData, name : String) -> Bool =

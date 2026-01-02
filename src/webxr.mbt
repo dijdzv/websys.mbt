@@ -179,6 +179,10 @@ pub fn XRTargetRayMode::from_string(s : String) -> XRTargetRayMode? {
 /// XRFrameRequestCallback callback interface
 pub type XRFrameRequestCallback
 
+/// Create XRFrameRequestCallback from a MoonBit function
+pub extern "js" fn XRFrameRequestCallback::from_fn(handler : (DOMHighResTimeStamp, XRFrame) -> Unit) -> XRFrameRequestCallback =
+  #| (handler) => handler
+
 ///|
 /// XRRenderStateInit dictionary
 pub struct XRRenderStateInit {
@@ -187,7 +191,7 @@ pub struct XRRenderStateInit {
   passthroughFullyObscured : Bool?
   inlineVerticalFieldOfView : Double?
   baseLayer : XRWebGLLayer??
-  layers : JsValue?
+  layers : Array[XRLayer]?
 }
 
 /// Create a new XRRenderStateInit with default values
@@ -292,16 +296,16 @@ pub extern "js" fn XRInputSourceEventInit::to_js(self : XRInputSourceEventInit) 
 /// XRInputSourcesChangeEventInit dictionary
 pub struct XRInputSourcesChangeEventInit {
   session : XRSession
-  added : JsValue
-  removed : JsValue
+  added : Array[XRInputSource]
+  removed : Array[XRInputSource]
 }
 
 /// Create a new XRInputSourcesChangeEventInit with default values
 pub fn XRInputSourcesChangeEventInit::default() -> XRInputSourcesChangeEventInit {
   XRInputSourcesChangeEventInit::{
     session: panic(),
-    added: panic(),
-    removed: panic(),
+    added: [],
+    removed: [],
   }
 }
 
@@ -389,8 +393,8 @@ pub extern "js" fn XRSessionSupportedPermissionDescriptor::to_js(self : XRSessio
 /// XRPermissionDescriptor dictionary
 pub struct XRPermissionDescriptor {
   mode : XRSessionMode?
-  requiredFeatures : JsValue?
-  optionalFeatures : JsValue?
+  requiredFeatures : Array[String]?
+  optionalFeatures : Array[String]?
 }
 
 /// Create a new XRPermissionDescriptor with default values
@@ -417,10 +421,13 @@ pub type XRSystem
 pub extern "js" fn XRSystem::to_js_value(self : XRSystem) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn XRSystem::is_session_supported(self : XRSystem, mode : XRSessionMode) -> JsValue =
+pub extern "js" fn XRSystem::is_session_supported(self : XRSystem, mode : XRSessionMode) -> Promise[Bool] =
   #| (self, mode) => self.isSessionSupported(['inline', 'immersive-vr', 'immersive-ar'][mode])
 
-pub extern "js" fn XRSystem::request_session(self : XRSystem, mode : XRSessionMode, options : XRSessionInit) -> JsValue =
+pub extern "js" fn XRSystem::request_session(self : XRSystem, mode : XRSessionMode) -> Promise[XRSession] =
+  #| (self, mode) => self.requestSession(['inline', 'immersive-vr', 'immersive-ar'][mode])
+
+pub extern "js" fn XRSystem::request_session_with_options(self : XRSystem, mode : XRSessionMode, options : XRSessionInit) -> Promise[XRSession] =
   #| (self, mode, options) => self.requestSession(['inline', 'immersive-vr', 'immersive-ar'][mode], options)
 
 pub extern "js" fn XRSystem::get_ondevicechange(self : XRSystem) -> EventHandler =
@@ -460,13 +467,16 @@ pub extern "js" fn XRSession::get_enabled_features(self : XRSession) -> JsValue 
 pub extern "js" fn XRSession::get_is_system_keyboard_supported(self : XRSession) -> Bool =
   #| (self) => self.isSystemKeyboardSupported
 
-pub extern "js" fn XRSession::update_render_state(self : XRSession, state : XRRenderStateInit) -> Unit =
+pub extern "js" fn XRSession::update_render_state(self : XRSession) -> Unit =
+  #| (self) => self.updateRenderState()
+
+pub extern "js" fn XRSession::update_render_state_with_state(self : XRSession, state : XRRenderStateInit) -> Unit =
   #| (self, state) => self.updateRenderState(state)
 
-pub extern "js" fn XRSession::update_target_frame_rate(self : XRSession, rate : Double) -> JsValue =
+pub extern "js" fn XRSession::update_target_frame_rate(self : XRSession, rate : Double) -> Promise[Unit] =
   #| (self, rate) => self.updateTargetFrameRate(rate)
 
-pub extern "js" fn XRSession::request_reference_space(self : XRSession, type_ : XRReferenceSpaceType) -> JsValue =
+pub extern "js" fn XRSession::request_reference_space(self : XRSession, type_ : XRReferenceSpaceType) -> Promise[XRReferenceSpace] =
   #| (self, type_) => self.requestReferenceSpace(['viewer', 'local', 'local-floor', 'bounded-floor', 'unbounded'][type_])
 
 pub extern "js" fn XRSession::request_animation_frame(self : XRSession, callback : XRFrameRequestCallback) -> Int =
@@ -475,7 +485,7 @@ pub extern "js" fn XRSession::request_animation_frame(self : XRSession, callback
 pub extern "js" fn XRSession::cancel_animation_frame(self : XRSession, handle : Int) -> Unit =
   #| (self, handle) => self.cancelAnimationFrame(handle)
 
-pub extern "js" fn XRSession::end(self : XRSession) -> JsValue =
+pub extern "js" fn XRSession::end(self : XRSession) -> Promise[Unit] =
   #| (self) => self.end()
 
 pub extern "js" fn XRSession::get_onend(self : XRSession) -> EventHandler =
@@ -541,10 +551,10 @@ pub extern "js" fn XRSession::set_onframeratechange(self : XRSession, value : Ev
 pub extern "js" fn XRSession::get_persistent_anchors(self : XRSession) -> JsValue =
   #| (self) => self.persistentAnchors
 
-pub extern "js" fn XRSession::restore_persistent_anchor(self : XRSession, uuid : String) -> JsValue =
+pub extern "js" fn XRSession::restore_persistent_anchor(self : XRSession, uuid : String) -> Promise[XRAnchor] =
   #| (self, uuid) => self.restorePersistentAnchor(uuid)
 
-pub extern "js" fn XRSession::delete_persistent_anchor(self : XRSession, uuid : String) -> JsValue =
+pub extern "js" fn XRSession::delete_persistent_anchor(self : XRSession, uuid : String) -> Promise[Unit] =
   #| (self, uuid) => self.deletePersistentAnchor(uuid)
 
 pub extern "js" fn XRSession::get_environment_blend_mode(self : XRSession) -> XREnvironmentBlendMode =
@@ -574,19 +584,22 @@ pub extern "js" fn XRSession::resume_depth_sensing(self : XRSession) -> Unit =
 pub extern "js" fn XRSession::get_dom_overlay_state(self : XRSession) -> XRDOMOverlayState? =
   #| (self) => self.domOverlayState
 
-pub extern "js" fn XRSession::request_hit_test_source(self : XRSession, options : XRHitTestOptionsInit) -> JsValue =
+pub extern "js" fn XRSession::request_hit_test_source(self : XRSession, options : XRHitTestOptionsInit) -> Promise[XRHitTestSource] =
   #| (self, options) => self.requestHitTestSource(options)
 
-pub extern "js" fn XRSession::request_hit_test_source_for_transient_input(self : XRSession, options : XRTransientInputHitTestOptionsInit) -> JsValue =
+pub extern "js" fn XRSession::request_hit_test_source_for_transient_input(self : XRSession, options : XRTransientInputHitTestOptionsInit) -> Promise[XRTransientInputHitTestSource] =
   #| (self, options) => self.requestHitTestSourceForTransientInput(options)
 
-pub extern "js" fn XRSession::request_light_probe(self : XRSession, options : XRLightProbeInit) -> JsValue =
+pub extern "js" fn XRSession::request_light_probe(self : XRSession) -> Promise[XRLightProbe] =
+  #| (self) => self.requestLightProbe()
+
+pub extern "js" fn XRSession::request_light_probe_with_options(self : XRSession, options : XRLightProbeInit) -> Promise[XRLightProbe] =
   #| (self, options) => self.requestLightProbe(options)
 
 pub extern "js" fn XRSession::get_preferred_reflection_format(self : XRSession) -> XRReflectionFormat =
   #| (self) => self.preferredReflectionFormat
 
-pub extern "js" fn XRSession::initiate_room_capture(self : XRSession) -> JsValue =
+pub extern "js" fn XRSession::initiate_room_capture(self : XRSession) -> Promise[Unit] =
   #| (self) => self.initiateRoomCapture()
 
 ///|
@@ -633,7 +646,7 @@ pub extern "js" fn XRFrame::get_viewer_pose(self : XRFrame, reference_space : XR
 pub extern "js" fn XRFrame::get_pose(self : XRFrame, space : XRSpace, base_space : XRSpace) -> XRPose? =
   #| (self, space, base_space) => self.getPose(space, base_space)
 
-pub extern "js" fn XRFrame::create_anchor(self : XRFrame, pose : XRRigidTransform, space : XRSpace) -> JsValue =
+pub extern "js" fn XRFrame::create_anchor(self : XRFrame, pose : XRRigidTransform, space : XRSpace) -> Promise[XRAnchor] =
   #| (self, pose, space) => self.createAnchor(pose, space)
 
 pub extern "js" fn XRFrame::get_tracked_anchors(self : XRFrame) -> XRAnchorSet =
@@ -651,16 +664,16 @@ pub extern "js" fn XRFrame::get_depth_information(self : XRFrame, view : XRView)
 pub extern "js" fn XRFrame::get_joint_pose(self : XRFrame, joint : XRJointSpace, base_space : XRSpace) -> XRJointPose? =
   #| (self, joint, base_space) => self.getJointPose(joint, base_space)
 
-pub extern "js" fn XRFrame::fill_joint_radii(self : XRFrame, joint_spaces : JsValue, radii : Float32Array) -> Bool =
+pub extern "js" fn XRFrame::fill_joint_radii(self : XRFrame, joint_spaces : Array[XRJointSpace], radii : Float32Array) -> Bool =
   #| (self, joint_spaces, radii) => self.fillJointRadii(joint_spaces, radii)
 
-pub extern "js" fn XRFrame::fill_poses(self : XRFrame, spaces : JsValue, base_space : XRSpace, transforms : Float32Array) -> Bool =
+pub extern "js" fn XRFrame::fill_poses(self : XRFrame, spaces : Array[XRSpace], base_space : XRSpace, transforms : Float32Array) -> Bool =
   #| (self, spaces, base_space, transforms) => self.fillPoses(spaces, base_space, transforms)
 
-pub extern "js" fn XRFrame::get_hit_test_results(self : XRFrame, hit_test_source : XRHitTestSource) -> JsValue =
+pub extern "js" fn XRFrame::get_hit_test_results(self : XRFrame, hit_test_source : XRHitTestSource) -> Array[XRHitTestResult] =
   #| (self, hit_test_source) => self.getHitTestResults(hit_test_source)
 
-pub extern "js" fn XRFrame::get_hit_test_results_for_transient_input(self : XRFrame, hit_test_source : XRTransientInputHitTestSource) -> JsValue =
+pub extern "js" fn XRFrame::get_hit_test_results_for_transient_input(self : XRFrame, hit_test_source : XRTransientInputHitTestSource) -> Array[XRTransientInputHitTestResult] =
   #| (self, hit_test_source) => self.getHitTestResultsForTransientInput(hit_test_source)
 
 pub extern "js" fn XRFrame::get_light_estimate(self : XRFrame, light_probe : XRLightProbe) -> XRLightEstimate? =

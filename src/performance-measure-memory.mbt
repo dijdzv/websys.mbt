@@ -5,7 +5,7 @@
 /// MemoryMeasurement dictionary
 pub struct MemoryMeasurement {
   bytes : Int64?
-  breakdown : JsValue?
+  breakdown : Array[MemoryBreakdownEntry]?
 }
 
 /// Create a new MemoryMeasurement with default values
@@ -27,8 +27,8 @@ pub extern "js" fn MemoryMeasurement::to_js(self : MemoryMeasurement) -> JsValue
 /// MemoryBreakdownEntry dictionary
 pub struct MemoryBreakdownEntry {
   bytes : Int64?
-  attribution : JsValue?
-  types : JsValue?
+  attribution : Array[MemoryAttribution]?
+  types : Array[String]?
 }
 
 /// Create a new MemoryBreakdownEntry with default values

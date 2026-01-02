@@ -63,6 +63,18 @@ pub extern "js" fn WebSocket::new(url : String, protocols : JsValue) -> WebSocke
 pub extern "js" fn WebSocket::get_url(self : WebSocket) -> String =
   #| (self) => self.url
 
+// WebSocket.CONNECTING
+pub let web_socket_connecting : Int = 0
+
+// WebSocket.OPEN
+pub let web_socket_open : Int = 1
+
+// WebSocket.CLOSING
+pub let web_socket_closing : Int = 2
+
+// WebSocket.CLOSED
+pub let web_socket_closed : Int = 3
+
 pub extern "js" fn WebSocket::get_ready_state(self : WebSocket) -> Int =
   #| (self) => self.readyState
 
@@ -93,7 +105,10 @@ pub extern "js" fn WebSocket::get_extensions(self : WebSocket) -> String =
 pub extern "js" fn WebSocket::get_protocol(self : WebSocket) -> String =
   #| (self) => self.protocol
 
-pub extern "js" fn WebSocket::close(self : WebSocket, code : Int, reason : String) -> Unit =
+pub extern "js" fn WebSocket::close(self : WebSocket) -> Unit =
+  #| (self) => self.close()
+
+pub extern "js" fn WebSocket::close_with_reason(self : WebSocket, code : Int, reason : String) -> Unit =
   #| (self, code, reason) => self.close(code, reason)
 
 pub extern "js" fn WebSocket::get_onmessage(self : WebSocket) -> EventHandler =

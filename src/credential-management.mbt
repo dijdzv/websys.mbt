@@ -162,8 +162,8 @@ pub extern "js" fn PasswordCredentialData::to_js(self : PasswordCredentialData) 
 ///|
 /// FederatedCredentialRequestOptions dictionary
 pub struct FederatedCredentialRequestOptions {
-  providers : JsValue?
-  protocols : JsValue?
+  providers : Array[String]?
+  protocols : Array[String]?
 }
 
 /// Create a new FederatedCredentialRequestOptions with default values
@@ -228,10 +228,10 @@ pub extern "js" fn Credential::get_id(self : Credential) -> String =
 pub extern "js" fn Credential::get_type(self : Credential) -> String =
   #| (self) => self.type
 
-pub extern "js" fn Credential::is_conditional_mediation_available() -> JsValue =
+pub extern "js" fn Credential::is_conditional_mediation_available() -> Promise[Bool] =
   #| () => Credential.isConditionalMediationAvailable()
 
-pub extern "js" fn Credential::will_request_conditional_creation() -> JsValue =
+pub extern "js" fn Credential::will_request_conditional_creation() -> Promise[Unit] =
   #| () => Credential.willRequestConditionalCreation()
 
 ///|
@@ -241,16 +241,22 @@ pub type CredentialsContainer
 pub extern "js" fn CredentialsContainer::to_js_value(self : CredentialsContainer) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn CredentialsContainer::get(self : CredentialsContainer, options : CredentialRequestOptions) -> JsValue =
+pub extern "js" fn CredentialsContainer::get(self : CredentialsContainer) -> Promise[Credential?] =
+  #| (self) => self.get()
+
+pub extern "js" fn CredentialsContainer::get_with_options(self : CredentialsContainer, options : CredentialRequestOptions) -> Promise[Credential?] =
   #| (self, options) => self.get(options)
 
-pub extern "js" fn CredentialsContainer::store(self : CredentialsContainer, credential : Credential) -> JsValue =
+pub extern "js" fn CredentialsContainer::store(self : CredentialsContainer, credential : Credential) -> Promise[Unit] =
   #| (self, credential) => self.store(credential)
 
-pub extern "js" fn CredentialsContainer::create(self : CredentialsContainer, options : CredentialCreationOptions) -> JsValue =
+pub extern "js" fn CredentialsContainer::create(self : CredentialsContainer) -> Promise[Credential?] =
+  #| (self) => self.create()
+
+pub extern "js" fn CredentialsContainer::create_with_options(self : CredentialsContainer, options : CredentialCreationOptions) -> Promise[Credential?] =
   #| (self, options) => self.create(options)
 
-pub extern "js" fn CredentialsContainer::prevent_silent_access(self : CredentialsContainer) -> JsValue =
+pub extern "js" fn CredentialsContainer::prevent_silent_access(self : CredentialsContainer) -> Promise[Unit] =
   #| (self) => self.preventSilentAccess()
 
 ///|
@@ -266,10 +272,10 @@ pub extern "js" fn PasswordCredential::get_id(self : PasswordCredential) -> Stri
 pub extern "js" fn PasswordCredential::get_type(self : PasswordCredential) -> String =
   #| (self) => self.type
 
-pub extern "js" fn PasswordCredential::is_conditional_mediation_available() -> JsValue =
+pub extern "js" fn PasswordCredential::is_conditional_mediation_available() -> Promise[Bool] =
   #| () => PasswordCredential.isConditionalMediationAvailable()
 
-pub extern "js" fn PasswordCredential::will_request_conditional_creation() -> JsValue =
+pub extern "js" fn PasswordCredential::will_request_conditional_creation() -> Promise[Unit] =
   #| () => PasswordCredential.willRequestConditionalCreation()
 
 pub extern "js" fn PasswordCredential::new(form : HTMLFormElement) -> PasswordCredential =
@@ -297,10 +303,10 @@ pub extern "js" fn FederatedCredential::get_id(self : FederatedCredential) -> St
 pub extern "js" fn FederatedCredential::get_type(self : FederatedCredential) -> String =
   #| (self) => self.type
 
-pub extern "js" fn FederatedCredential::is_conditional_mediation_available() -> JsValue =
+pub extern "js" fn FederatedCredential::is_conditional_mediation_available() -> Promise[Bool] =
   #| () => FederatedCredential.isConditionalMediationAvailable()
 
-pub extern "js" fn FederatedCredential::will_request_conditional_creation() -> JsValue =
+pub extern "js" fn FederatedCredential::will_request_conditional_creation() -> Promise[Unit] =
   #| () => FederatedCredential.willRequestConditionalCreation()
 
 pub extern "js" fn FederatedCredential::new(data : FederatedCredentialInit) -> FederatedCredential =

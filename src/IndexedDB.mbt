@@ -344,13 +344,16 @@ pub type IDBFactory
 pub extern "js" fn IDBFactory::to_js_value(self : IDBFactory) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn IDBFactory::open(self : IDBFactory, name : String, version : Int64) -> IDBOpenDBRequest =
+pub extern "js" fn IDBFactory::open(self : IDBFactory, name : String) -> IDBOpenDBRequest =
+  #| (self, name) => self.open(name)
+
+pub extern "js" fn IDBFactory::open_with_version(self : IDBFactory, name : String, version : Int64) -> IDBOpenDBRequest =
   #| (self, name, version) => self.open(name, version)
 
 pub extern "js" fn IDBFactory::delete_database(self : IDBFactory, name : String) -> IDBOpenDBRequest =
   #| (self, name) => self.deleteDatabase(name)
 
-pub extern "js" fn IDBFactory::databases(self : IDBFactory) -> JsValue =
+pub extern "js" fn IDBFactory::databases(self : IDBFactory) -> Promise[Array[IDBDatabaseInfo]] =
   #| (self) => self.databases()
 
 pub extern "js" fn IDBFactory::cmp(self : IDBFactory, first : JsValue, second : JsValue) -> Int =
@@ -372,13 +375,19 @@ pub extern "js" fn IDBDatabase::get_version(self : IDBDatabase) -> Int64 =
 pub extern "js" fn IDBDatabase::get_object_store_names(self : IDBDatabase) -> DOMStringList =
   #| (self) => self.objectStoreNames
 
-pub extern "js" fn IDBDatabase::transaction(self : IDBDatabase, store_names : JsValue, mode : IDBTransactionMode, options : IDBTransactionOptions) -> IDBTransaction =
+pub extern "js" fn IDBDatabase::transaction(self : IDBDatabase, store_names : JsValue) -> IDBTransaction =
+  #| (self, store_names) => self.transaction(store_names)
+
+pub extern "js" fn IDBDatabase::transaction_with_options(self : IDBDatabase, store_names : JsValue, mode : IDBTransactionMode, options : IDBTransactionOptions) -> IDBTransaction =
   #| (self, store_names, mode, options) => self.transaction(store_names, ['readonly', 'readwrite', 'versionchange'][mode], options)
 
 pub extern "js" fn IDBDatabase::close(self : IDBDatabase) -> Unit =
   #| (self) => self.close()
 
-pub extern "js" fn IDBDatabase::create_object_store(self : IDBDatabase, name : String, options : IDBObjectStoreParameters) -> IDBObjectStore =
+pub extern "js" fn IDBDatabase::create_object_store(self : IDBDatabase, name : String) -> IDBObjectStore =
+  #| (self, name) => self.createObjectStore(name)
+
+pub extern "js" fn IDBDatabase::create_object_store_with_options(self : IDBDatabase, name : String, options : IDBObjectStoreParameters) -> IDBObjectStore =
   #| (self, name, options) => self.createObjectStore(name, options)
 
 pub extern "js" fn IDBDatabase::delete_object_store(self : IDBDatabase, name : String) -> Unit =
@@ -433,10 +442,16 @@ pub extern "js" fn IDBObjectStore::get_transaction(self : IDBObjectStore) -> IDB
 pub extern "js" fn IDBObjectStore::get_auto_increment(self : IDBObjectStore) -> Bool =
   #| (self) => self.autoIncrement
 
-pub extern "js" fn IDBObjectStore::put(self : IDBObjectStore, value : JsValue, key : JsValue) -> IDBRequest =
+pub extern "js" fn IDBObjectStore::put(self : IDBObjectStore, value : JsValue) -> IDBRequest =
+  #| (self, value) => self.put(value)
+
+pub extern "js" fn IDBObjectStore::put_with_key(self : IDBObjectStore, value : JsValue, key : JsValue) -> IDBRequest =
   #| (self, value, key) => self.put(value, key)
 
-pub extern "js" fn IDBObjectStore::add(self : IDBObjectStore, value : JsValue, key : JsValue) -> IDBRequest =
+pub extern "js" fn IDBObjectStore::add(self : IDBObjectStore, value : JsValue) -> IDBRequest =
+  #| (self, value) => self.add(value)
+
+pub extern "js" fn IDBObjectStore::add_with_key(self : IDBObjectStore, value : JsValue, key : JsValue) -> IDBRequest =
   #| (self, value, key) => self.add(value, key)
 
 pub extern "js" fn IDBObjectStore::delete(self : IDBObjectStore, query : JsValue) -> IDBRequest =
@@ -451,28 +466,49 @@ pub extern "js" fn IDBObjectStore::get(self : IDBObjectStore, query : JsValue) -
 pub extern "js" fn IDBObjectStore::get_key(self : IDBObjectStore, query : JsValue) -> IDBRequest =
   #| (self, query) => self.getKey(query)
 
-pub extern "js" fn IDBObjectStore::get_all(self : IDBObjectStore, query_or_options : JsValue, count : Int) -> IDBRequest =
+pub extern "js" fn IDBObjectStore::get_all(self : IDBObjectStore) -> IDBRequest =
+  #| (self) => self.getAll()
+
+pub extern "js" fn IDBObjectStore::get_all_with_count(self : IDBObjectStore, query_or_options : JsValue, count : Int) -> IDBRequest =
   #| (self, query_or_options, count) => self.getAll(query_or_options, count)
 
-pub extern "js" fn IDBObjectStore::get_all_keys(self : IDBObjectStore, query_or_options : JsValue, count : Int) -> IDBRequest =
+pub extern "js" fn IDBObjectStore::get_all_keys(self : IDBObjectStore) -> IDBRequest =
+  #| (self) => self.getAllKeys()
+
+pub extern "js" fn IDBObjectStore::get_all_keys_with_count(self : IDBObjectStore, query_or_options : JsValue, count : Int) -> IDBRequest =
   #| (self, query_or_options, count) => self.getAllKeys(query_or_options, count)
 
-pub extern "js" fn IDBObjectStore::get_all_records(self : IDBObjectStore, options : IDBGetAllOptions) -> IDBRequest =
+pub extern "js" fn IDBObjectStore::get_all_records(self : IDBObjectStore) -> IDBRequest =
+  #| (self) => self.getAllRecords()
+
+pub extern "js" fn IDBObjectStore::get_all_records_with_options(self : IDBObjectStore, options : IDBGetAllOptions) -> IDBRequest =
   #| (self, options) => self.getAllRecords(options)
 
-pub extern "js" fn IDBObjectStore::count(self : IDBObjectStore, query : JsValue) -> IDBRequest =
+pub extern "js" fn IDBObjectStore::count(self : IDBObjectStore) -> IDBRequest =
+  #| (self) => self.count()
+
+pub extern "js" fn IDBObjectStore::count_with_query(self : IDBObjectStore, query : JsValue) -> IDBRequest =
   #| (self, query) => self.count(query)
 
-pub extern "js" fn IDBObjectStore::open_cursor(self : IDBObjectStore, query : JsValue, direction : IDBCursorDirection) -> IDBRequest =
+pub extern "js" fn IDBObjectStore::open_cursor(self : IDBObjectStore) -> IDBRequest =
+  #| (self) => self.openCursor()
+
+pub extern "js" fn IDBObjectStore::open_cursor_with_direction(self : IDBObjectStore, query : JsValue, direction : IDBCursorDirection) -> IDBRequest =
   #| (self, query, direction) => self.openCursor(query, ['next', 'nextunique', 'prev', 'prevunique'][direction])
 
-pub extern "js" fn IDBObjectStore::open_key_cursor(self : IDBObjectStore, query : JsValue, direction : IDBCursorDirection) -> IDBRequest =
+pub extern "js" fn IDBObjectStore::open_key_cursor(self : IDBObjectStore) -> IDBRequest =
+  #| (self) => self.openKeyCursor()
+
+pub extern "js" fn IDBObjectStore::open_key_cursor_with_direction(self : IDBObjectStore, query : JsValue, direction : IDBCursorDirection) -> IDBRequest =
   #| (self, query, direction) => self.openKeyCursor(query, ['next', 'nextunique', 'prev', 'prevunique'][direction])
 
 pub extern "js" fn IDBObjectStore::index(self : IDBObjectStore, name : String) -> IDBIndex =
   #| (self, name) => self.index(name)
 
-pub extern "js" fn IDBObjectStore::create_index(self : IDBObjectStore, name : String, key_path : JsValue, options : IDBIndexParameters) -> IDBIndex =
+pub extern "js" fn IDBObjectStore::create_index(self : IDBObjectStore, name : String, key_path : JsValue) -> IDBIndex =
+  #| (self, name, key_path) => self.createIndex(name, key_path)
+
+pub extern "js" fn IDBObjectStore::create_index_with_options(self : IDBObjectStore, name : String, key_path : JsValue, options : IDBIndexParameters) -> IDBIndex =
   #| (self, name, key_path, options) => self.createIndex(name, key_path, options)
 
 pub extern "js" fn IDBObjectStore::delete_index(self : IDBObjectStore, name : String) -> Unit =
@@ -509,22 +545,40 @@ pub extern "js" fn IDBIndex::get(self : IDBIndex, query : JsValue) -> IDBRequest
 pub extern "js" fn IDBIndex::get_key(self : IDBIndex, query : JsValue) -> IDBRequest =
   #| (self, query) => self.getKey(query)
 
-pub extern "js" fn IDBIndex::get_all(self : IDBIndex, query_or_options : JsValue, count : Int) -> IDBRequest =
+pub extern "js" fn IDBIndex::get_all(self : IDBIndex) -> IDBRequest =
+  #| (self) => self.getAll()
+
+pub extern "js" fn IDBIndex::get_all_with_count(self : IDBIndex, query_or_options : JsValue, count : Int) -> IDBRequest =
   #| (self, query_or_options, count) => self.getAll(query_or_options, count)
 
-pub extern "js" fn IDBIndex::get_all_keys(self : IDBIndex, query_or_options : JsValue, count : Int) -> IDBRequest =
+pub extern "js" fn IDBIndex::get_all_keys(self : IDBIndex) -> IDBRequest =
+  #| (self) => self.getAllKeys()
+
+pub extern "js" fn IDBIndex::get_all_keys_with_count(self : IDBIndex, query_or_options : JsValue, count : Int) -> IDBRequest =
   #| (self, query_or_options, count) => self.getAllKeys(query_or_options, count)
 
-pub extern "js" fn IDBIndex::get_all_records(self : IDBIndex, options : IDBGetAllOptions) -> IDBRequest =
+pub extern "js" fn IDBIndex::get_all_records(self : IDBIndex) -> IDBRequest =
+  #| (self) => self.getAllRecords()
+
+pub extern "js" fn IDBIndex::get_all_records_with_options(self : IDBIndex, options : IDBGetAllOptions) -> IDBRequest =
   #| (self, options) => self.getAllRecords(options)
 
-pub extern "js" fn IDBIndex::count(self : IDBIndex, query : JsValue) -> IDBRequest =
+pub extern "js" fn IDBIndex::count(self : IDBIndex) -> IDBRequest =
+  #| (self) => self.count()
+
+pub extern "js" fn IDBIndex::count_with_query(self : IDBIndex, query : JsValue) -> IDBRequest =
   #| (self, query) => self.count(query)
 
-pub extern "js" fn IDBIndex::open_cursor(self : IDBIndex, query : JsValue, direction : IDBCursorDirection) -> IDBRequest =
+pub extern "js" fn IDBIndex::open_cursor(self : IDBIndex) -> IDBRequest =
+  #| (self) => self.openCursor()
+
+pub extern "js" fn IDBIndex::open_cursor_with_direction(self : IDBIndex, query : JsValue, direction : IDBCursorDirection) -> IDBRequest =
   #| (self, query, direction) => self.openCursor(query, ['next', 'nextunique', 'prev', 'prevunique'][direction])
 
-pub extern "js" fn IDBIndex::open_key_cursor(self : IDBIndex, query : JsValue, direction : IDBCursorDirection) -> IDBRequest =
+pub extern "js" fn IDBIndex::open_key_cursor(self : IDBIndex) -> IDBRequest =
+  #| (self) => self.openKeyCursor()
+
+pub extern "js" fn IDBIndex::open_key_cursor_with_direction(self : IDBIndex, query : JsValue, direction : IDBCursorDirection) -> IDBRequest =
   #| (self, query, direction) => self.openKeyCursor(query, ['next', 'nextunique', 'prev', 'prevunique'][direction])
 
 ///|
@@ -602,7 +656,10 @@ pub extern "js" fn IDBCursor::get_request(self : IDBCursor) -> IDBRequest =
 pub extern "js" fn IDBCursor::advance(self : IDBCursor, count : Int) -> Unit =
   #| (self, count) => self.advance(count)
 
-pub extern "js" fn IDBCursor::continue_(self : IDBCursor, key : JsValue) -> Unit =
+pub extern "js" fn IDBCursor::continue_(self : IDBCursor) -> Unit =
+  #| (self) => self.continue()
+
+pub extern "js" fn IDBCursor::continue__with_key(self : IDBCursor, key : JsValue) -> Unit =
   #| (self, key) => self.continue(key)
 
 pub extern "js" fn IDBCursor::continue_primary_key(self : IDBCursor, key : JsValue, primary_key : JsValue) -> Unit =
@@ -639,7 +696,10 @@ pub extern "js" fn IDBCursorWithValue::get_request(self : IDBCursorWithValue) ->
 pub extern "js" fn IDBCursorWithValue::advance(self : IDBCursorWithValue, count : Int) -> Unit =
   #| (self, count) => self.advance(count)
 
-pub extern "js" fn IDBCursorWithValue::continue_(self : IDBCursorWithValue, key : JsValue) -> Unit =
+pub extern "js" fn IDBCursorWithValue::continue_(self : IDBCursorWithValue) -> Unit =
+  #| (self) => self.continue()
+
+pub extern "js" fn IDBCursorWithValue::continue__with_key(self : IDBCursorWithValue, key : JsValue) -> Unit =
   #| (self, key) => self.continue(key)
 
 pub extern "js" fn IDBCursorWithValue::continue_primary_key(self : IDBCursorWithValue, key : JsValue, primary_key : JsValue) -> Unit =

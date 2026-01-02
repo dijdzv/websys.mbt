@@ -32,7 +32,7 @@ pub fn HighlightType::from_string(s : String) -> HighlightType? {
 /// HighlightHitResult dictionary
 pub struct HighlightHitResult {
   highlight : Highlight?
-  ranges : JsValue?
+  ranges : Array[AbstractRange]?
 }
 
 /// Create a new HighlightHitResult with default values
@@ -53,7 +53,7 @@ pub extern "js" fn HighlightHitResult::to_js(self : HighlightHitResult) -> JsVal
 ///|
 /// HighlightsFromPointOptions dictionary
 pub struct HighlightsFromPointOptions {
-  shadowRoots : JsValue?
+  shadowRoots : Array[ShadowRoot]?
 }
 
 /// Create a new HighlightsFromPointOptions with default values
@@ -79,8 +79,17 @@ pub extern "js" fn Highlight::to_js_value(self : Highlight) -> JsValue =
 pub extern "js" fn Highlight::new(initial_ranges : AbstractRange) -> Highlight =
   #| (initial_ranges) => new Highlight(initial_ranges)
 
-pub extern "js" fn Highlight::_unknown_(self : Highlight) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn Highlight::has(self : Highlight, value : AbstractRange) -> Bool =
+  #| (self, value) => self.has(value)
+
+pub extern "js" fn Highlight::add(self : Highlight, value : AbstractRange) -> Unit =
+  #| (self, value) => { self.add(value) }
+
+pub extern "js" fn Highlight::delete(self : Highlight, value : AbstractRange) -> Bool =
+  #| (self, value) => self.delete(value)
+
+pub extern "js" fn Highlight::clear(self : Highlight) -> Unit =
+  #| (self) => { self.clear() }
 
 pub extern "js" fn Highlight::get_priority(self : Highlight) -> Int =
   #| (self) => self.priority
@@ -101,9 +110,24 @@ pub type HighlightRegistry
 pub extern "js" fn HighlightRegistry::to_js_value(self : HighlightRegistry) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn HighlightRegistry::_unknown_(self : HighlightRegistry) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn HighlightRegistry::get(self : HighlightRegistry, key : String) -> Highlight? =
+  #| (self, key) => self.get(key)
 
-pub extern "js" fn HighlightRegistry::highlights_from_point(self : HighlightRegistry, x : Double, y : Double, options : HighlightsFromPointOptions) -> JsValue =
+pub extern "js" fn HighlightRegistry::has(self : HighlightRegistry, key : String) -> Bool =
+  #| (self, key) => self.has(key)
+
+pub extern "js" fn HighlightRegistry::set(self : HighlightRegistry, key : String, value : Highlight) -> Unit =
+  #| (self, key, value) => { self.set(key, value) }
+
+pub extern "js" fn HighlightRegistry::delete(self : HighlightRegistry, key : String) -> Bool =
+  #| (self, key) => self.delete(key)
+
+pub extern "js" fn HighlightRegistry::clear(self : HighlightRegistry) -> Unit =
+  #| (self) => { self.clear() }
+
+pub extern "js" fn HighlightRegistry::highlights_from_point(self : HighlightRegistry, x : Double, y : Double) -> Array[HighlightHitResult] =
+  #| (self, x, y) => self.highlightsFromPoint(x, y)
+
+pub extern "js" fn HighlightRegistry::highlights_from_point_with_options(self : HighlightRegistry, x : Double, y : Double, options : HighlightsFromPointOptions) -> Array[HighlightHitResult] =
   #| (self, x, y, options) => self.highlightsFromPoint(x, y, options)
 

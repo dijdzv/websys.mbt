@@ -8,13 +8,13 @@ pub type NDEFMessageSource = JsValue
 ///|
 /// NDEFMessageInit dictionary
 pub struct NDEFMessageInit {
-  records : JsValue
+  records : Array[NDEFRecordInit]
 }
 
 /// Create a new NDEFMessageInit with default values
 pub fn NDEFMessageInit::default() -> NDEFMessageInit {
   NDEFMessageInit::{
-    records: panic(),
+    records: [],
   }
 }
 
@@ -181,7 +181,7 @@ pub extern "js" fn NDEFRecord::get_encoding(self : NDEFRecord) -> String? =
 pub extern "js" fn NDEFRecord::get_lang(self : NDEFRecord) -> String? =
   #| (self) => self.lang
 
-pub extern "js" fn NDEFRecord::to_records(self : NDEFRecord) -> JsValue =
+pub extern "js" fn NDEFRecord::to_records(self : NDEFRecord) -> Array[NDEFRecord] =
   #| (self) => self.toRecords()
 
 ///|
@@ -206,13 +206,22 @@ pub extern "js" fn NDEFReader::get_onreadingerror(self : NDEFReader) -> EventHan
 pub extern "js" fn NDEFReader::set_onreadingerror(self : NDEFReader, value : EventHandler) -> Unit =
   #| (self, value) => { self.onreadingerror = value }
 
-pub extern "js" fn NDEFReader::scan(self : NDEFReader, options : NDEFScanOptions) -> JsValue =
+pub extern "js" fn NDEFReader::scan(self : NDEFReader) -> Promise[Unit] =
+  #| (self) => self.scan()
+
+pub extern "js" fn NDEFReader::scan_with_options(self : NDEFReader, options : NDEFScanOptions) -> Promise[Unit] =
   #| (self, options) => self.scan(options)
 
-pub extern "js" fn NDEFReader::write(self : NDEFReader, message : NDEFMessageSource, options : NDEFWriteOptions) -> JsValue =
+pub extern "js" fn NDEFReader::write(self : NDEFReader, message : NDEFMessageSource) -> Promise[Unit] =
+  #| (self, message) => self.write(message)
+
+pub extern "js" fn NDEFReader::write_with_options(self : NDEFReader, message : NDEFMessageSource, options : NDEFWriteOptions) -> Promise[Unit] =
   #| (self, message, options) => self.write(message, options)
 
-pub extern "js" fn NDEFReader::make_read_only(self : NDEFReader, options : NDEFMakeReadOnlyOptions) -> JsValue =
+pub extern "js" fn NDEFReader::make_read_only(self : NDEFReader) -> Promise[Unit] =
+  #| (self) => self.makeReadOnly()
+
+pub extern "js" fn NDEFReader::make_read_only_with_options(self : NDEFReader, options : NDEFMakeReadOnlyOptions) -> Promise[Unit] =
   #| (self, options) => self.makeReadOnly(options)
 
 ///|

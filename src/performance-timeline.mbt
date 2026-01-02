@@ -3,10 +3,14 @@
 
 ///|
 /// PerformanceEntryList typedef
-pub type PerformanceEntryList = JsValue
+pub type PerformanceEntryList = Array[PerformanceEntry]
 
 /// PerformanceObserverCallback callback interface
 pub type PerformanceObserverCallback
+
+/// Create PerformanceObserverCallback from a MoonBit function
+pub extern "js" fn PerformanceObserverCallback::from_fn(handler : (PerformanceObserverEntryList, PerformanceObserver, PerformanceObserverCallbackOptions) -> Unit) -> PerformanceObserverCallback =
+  #| (handler) => handler
 
 ///|
 /// PerformanceObserverCallbackOptions dictionary
@@ -65,7 +69,10 @@ pub extern "js" fn PerformanceObserver::to_js_value(self : PerformanceObserver) 
 pub extern "js" fn PerformanceObserver::new(callback : PerformanceObserverCallback) -> PerformanceObserver =
   #| (callback) => new PerformanceObserver(callback)
 
-pub extern "js" fn PerformanceObserver::observe(self : PerformanceObserver, options : PerformanceObserverInit) -> Unit =
+pub extern "js" fn PerformanceObserver::observe(self : PerformanceObserver) -> Unit =
+  #| (self) => self.observe()
+
+pub extern "js" fn PerformanceObserver::observe_with_options(self : PerformanceObserver, options : PerformanceObserverInit) -> Unit =
   #| (self, options) => self.observe(options)
 
 pub extern "js" fn PerformanceObserver::disconnect(self : PerformanceObserver) -> Unit =
@@ -90,6 +97,9 @@ pub extern "js" fn PerformanceObserverEntryList::get_entries(self : PerformanceO
 pub extern "js" fn PerformanceObserverEntryList::get_entries_by_type(self : PerformanceObserverEntryList, type_ : String) -> PerformanceEntryList =
   #| (self, type_) => self.getEntriesByType(type_)
 
-pub extern "js" fn PerformanceObserverEntryList::get_entries_by_name(self : PerformanceObserverEntryList, name : String, type_ : String) -> PerformanceEntryList =
+pub extern "js" fn PerformanceObserverEntryList::get_entries_by_name(self : PerformanceObserverEntryList, name : String) -> PerformanceEntryList =
+  #| (self, name) => self.getEntriesByName(name)
+
+pub extern "js" fn PerformanceObserverEntryList::get_entries_by_name_with_type(self : PerformanceObserverEntryList, name : String, type_ : String) -> PerformanceEntryList =
   #| (self, name, type_) => self.getEntriesByName(name, type_)
 

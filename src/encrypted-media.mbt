@@ -161,12 +161,12 @@ pub fn MediaKeyMessageType::from_string(s : String) -> MediaKeyMessageType? {
 /// MediaKeySystemConfiguration dictionary
 pub struct MediaKeySystemConfiguration {
   label : String?
-  initDataTypes : JsValue?
-  audioCapabilities : JsValue?
-  videoCapabilities : JsValue?
+  initDataTypes : Array[String]?
+  audioCapabilities : Array[MediaKeySystemMediaCapability]?
+  videoCapabilities : Array[MediaKeySystemMediaCapability]?
   distinctiveIdentifier : MediaKeysRequirement?
   persistentState : MediaKeysRequirement?
-  sessionTypes : JsValue?
+  sessionTypes : Array[String]?
 }
 
 /// Create a new MediaKeySystemConfiguration with default values
@@ -295,7 +295,7 @@ pub extern "js" fn MediaKeySystemAccess::get_key_system(self : MediaKeySystemAcc
 pub extern "js" fn MediaKeySystemAccess::get_configuration(self : MediaKeySystemAccess) -> MediaKeySystemConfiguration =
   #| (self) => self.getConfiguration()
 
-pub extern "js" fn MediaKeySystemAccess::create_media_keys(self : MediaKeySystemAccess) -> JsValue =
+pub extern "js" fn MediaKeySystemAccess::create_media_keys(self : MediaKeySystemAccess) -> Promise[MediaKeys] =
   #| (self) => self.createMediaKeys()
 
 ///|
@@ -305,13 +305,19 @@ pub type MediaKeys
 pub extern "js" fn MediaKeys::to_js_value(self : MediaKeys) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn MediaKeys::create_session(self : MediaKeys, session_type : MediaKeySessionType) -> MediaKeySession =
+pub extern "js" fn MediaKeys::create_session(self : MediaKeys) -> MediaKeySession =
+  #| (self) => self.createSession()
+
+pub extern "js" fn MediaKeys::create_session_with_session_type(self : MediaKeys, session_type : MediaKeySessionType) -> MediaKeySession =
   #| (self, session_type) => self.createSession(['temporary', 'persistent-license'][session_type])
 
-pub extern "js" fn MediaKeys::get_status_for_policy(self : MediaKeys, policy : MediaKeysPolicy) -> JsValue =
+pub extern "js" fn MediaKeys::get_status_for_policy(self : MediaKeys) -> Promise[MediaKeyStatus] =
+  #| (self) => self.getStatusForPolicy()
+
+pub extern "js" fn MediaKeys::get_status_for_policy_with_policy(self : MediaKeys, policy : MediaKeysPolicy) -> Promise[MediaKeyStatus] =
   #| (self, policy) => self.getStatusForPolicy(policy)
 
-pub extern "js" fn MediaKeys::set_server_certificate(self : MediaKeys, server_certificate : BufferSource) -> JsValue =
+pub extern "js" fn MediaKeys::set_server_certificate(self : MediaKeys, server_certificate : BufferSource) -> Promise[Bool] =
   #| (self, server_certificate) => self.setServerCertificate(server_certificate)
 
 ///|
@@ -327,7 +333,7 @@ pub extern "js" fn MediaKeySession::get_session_id(self : MediaKeySession) -> St
 pub extern "js" fn MediaKeySession::get_expiration(self : MediaKeySession) -> Double =
   #| (self) => self.expiration
 
-pub extern "js" fn MediaKeySession::get_closed(self : MediaKeySession) -> JsValue =
+pub extern "js" fn MediaKeySession::get_closed(self : MediaKeySession) -> Promise[MediaKeySessionClosedReason] =
   #| (self) => self.closed
 
 pub extern "js" fn MediaKeySession::get_key_statuses(self : MediaKeySession) -> MediaKeyStatusMap =
@@ -345,19 +351,19 @@ pub extern "js" fn MediaKeySession::get_onmessage(self : MediaKeySession) -> Eve
 pub extern "js" fn MediaKeySession::set_onmessage(self : MediaKeySession, value : EventHandler) -> Unit =
   #| (self, value) => { self.onmessage = value }
 
-pub extern "js" fn MediaKeySession::generate_request(self : MediaKeySession, init_data_type : String, init_data : BufferSource) -> JsValue =
+pub extern "js" fn MediaKeySession::generate_request(self : MediaKeySession, init_data_type : String, init_data : BufferSource) -> Promise[Unit] =
   #| (self, init_data_type, init_data) => self.generateRequest(init_data_type, init_data)
 
-pub extern "js" fn MediaKeySession::load(self : MediaKeySession, session_id : String) -> JsValue =
+pub extern "js" fn MediaKeySession::load(self : MediaKeySession, session_id : String) -> Promise[Bool] =
   #| (self, session_id) => self.load(session_id)
 
-pub extern "js" fn MediaKeySession::update(self : MediaKeySession, response : BufferSource) -> JsValue =
+pub extern "js" fn MediaKeySession::update(self : MediaKeySession, response : BufferSource) -> Promise[Unit] =
   #| (self, response) => self.update(response)
 
-pub extern "js" fn MediaKeySession::close(self : MediaKeySession) -> JsValue =
+pub extern "js" fn MediaKeySession::close(self : MediaKeySession) -> Promise[Unit] =
   #| (self) => self.close()
 
-pub extern "js" fn MediaKeySession::remove(self : MediaKeySession) -> JsValue =
+pub extern "js" fn MediaKeySession::remove(self : MediaKeySession) -> Promise[Unit] =
   #| (self) => self.remove()
 
 ///|

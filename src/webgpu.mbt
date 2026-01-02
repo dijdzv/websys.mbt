@@ -1589,7 +1589,7 @@ pub extern "js" fn GPURequestAdapterOptions::to_js(self : GPURequestAdapterOptio
 /// GPUDeviceDescriptor dictionary
 pub struct GPUDeviceDescriptor {
   label : String?
-  requiredFeatures : JsValue?
+  requiredFeatures : Array[GPUFeatureName]?
   requiredLimits : JsValue?
   defaultQueue : GPUQueueDescriptor?
 }
@@ -1651,7 +1651,7 @@ pub struct GPUTextureDescriptor {
   dimension : GPUTextureDimension?
   format : GPUTextureFormat
   usage : GPUTextureUsageFlags
-  viewFormats : JsValue?
+  viewFormats : Array[GPUTextureFormat]?
   textureBindingViewDimension : GPUTextureViewDimension?
 }
 
@@ -1808,14 +1808,14 @@ pub extern "js" fn GPUSamplerDescriptor::to_js(self : GPUSamplerDescriptor) -> J
 /// GPUBindGroupLayoutDescriptor dictionary
 pub struct GPUBindGroupLayoutDescriptor {
   label : String?
-  entries : JsValue
+  entries : Array[GPUBindGroupLayoutEntry]
 }
 
 /// Create a new GPUBindGroupLayoutDescriptor with default values
 pub fn GPUBindGroupLayoutDescriptor::default() -> GPUBindGroupLayoutDescriptor {
   GPUBindGroupLayoutDescriptor::{
     label: None,
-    entries: panic(),
+    entries: [],
   }
 }
 
@@ -1978,7 +1978,7 @@ pub extern "js" fn GPUExternalTextureBindingLayout::to_js(self : GPUExternalText
 pub struct GPUBindGroupDescriptor {
   label : String?
   layout : GPUBindGroupLayout
-  entries : JsValue
+  entries : Array[GPUBindGroupEntry]
 }
 
 /// Create a new GPUBindGroupDescriptor with default values
@@ -1986,7 +1986,7 @@ pub fn GPUBindGroupDescriptor::default() -> GPUBindGroupDescriptor {
   GPUBindGroupDescriptor::{
     label: None,
     layout: panic(),
-    entries: panic(),
+    entries: [],
   }
 }
 
@@ -2049,14 +2049,14 @@ pub extern "js" fn GPUBufferBinding::to_js(self : GPUBufferBinding) -> JsValue =
 /// GPUPipelineLayoutDescriptor dictionary
 pub struct GPUPipelineLayoutDescriptor {
   label : String?
-  bindGroupLayouts : JsValue
+  bindGroupLayouts : Array[GPUBindGroupLayout?]
 }
 
 /// Create a new GPUPipelineLayoutDescriptor with default values
 pub fn GPUPipelineLayoutDescriptor::default() -> GPUPipelineLayoutDescriptor {
   GPUPipelineLayoutDescriptor::{
     label: None,
-    bindGroupLayouts: panic(),
+    bindGroupLayouts: [],
   }
 }
 
@@ -2072,7 +2072,7 @@ pub extern "js" fn GPUPipelineLayoutDescriptor::to_js(self : GPUPipelineLayoutDe
 pub struct GPUShaderModuleDescriptor {
   label : String?
   code : String
-  compilationHints : JsValue?
+  compilationHints : Array[GPUShaderModuleCompilationHint]?
 }
 
 /// Create a new GPUShaderModuleDescriptor with default values
@@ -2304,7 +2304,7 @@ pub struct GPUFragmentState {
   module_ : GPUShaderModule
   entryPoint : String?
   constants : JsValue?
-  targets : JsValue
+  targets : Array[GPUColorTargetState?]
 }
 
 /// Create a new GPUFragmentState with default values
@@ -2313,7 +2313,7 @@ pub fn GPUFragmentState::default() -> GPUFragmentState {
     module_: panic(),
     entryPoint: None,
     constants: None,
-    targets: panic(),
+    targets: [],
   }
 }
 
@@ -2478,7 +2478,7 @@ pub struct GPUVertexState {
   module_ : GPUShaderModule
   entryPoint : String?
   constants : JsValue?
-  buffers : JsValue?
+  buffers : Array[GPUVertexBufferLayout?]?
 }
 
 /// Create a new GPUVertexState with default values
@@ -2505,7 +2505,7 @@ pub extern "js" fn GPUVertexState::to_js(self : GPUVertexState) -> JsValue =
 pub struct GPUVertexBufferLayout {
   arrayStride : GPUSize64
   stepMode : GPUVertexStepMode?
-  attributes : JsValue
+  attributes : Array[GPUVertexAttribute]
 }
 
 /// Create a new GPUVertexBufferLayout with default values
@@ -2513,7 +2513,7 @@ pub fn GPUVertexBufferLayout::default() -> GPUVertexBufferLayout {
   GPUVertexBufferLayout::{
     arrayStride: panic(),
     stepMode: None,
-    attributes: panic(),
+    attributes: [],
   }
 }
 
@@ -2804,7 +2804,7 @@ pub extern "js" fn GPURenderPassTimestampWrites::to_js(self : GPURenderPassTimes
 /// GPURenderPassDescriptor dictionary
 pub struct GPURenderPassDescriptor {
   label : String?
-  colorAttachments : JsValue
+  colorAttachments : Array[GPURenderPassColorAttachment?]
   depthStencilAttachment : GPURenderPassDepthStencilAttachment?
   occlusionQuerySet : GPUQuerySet?
   timestampWrites : GPURenderPassTimestampWrites?
@@ -2815,7 +2815,7 @@ pub struct GPURenderPassDescriptor {
 pub fn GPURenderPassDescriptor::default() -> GPURenderPassDescriptor {
   GPURenderPassDescriptor::{
     label: None,
-    colorAttachments: panic(),
+    colorAttachments: [],
     depthStencilAttachment: None,
     occlusionQuerySet: None,
     timestampWrites: None,
@@ -2915,7 +2915,7 @@ pub extern "js" fn GPURenderPassDepthStencilAttachment::to_js(self : GPURenderPa
 /// GPURenderPassLayout dictionary
 pub struct GPURenderPassLayout {
   label : String?
-  colorFormats : JsValue
+  colorFormats : Array[GPUTextureFormat?]
   depthStencilFormat : GPUTextureFormat?
   sampleCount : GPUSize32?
 }
@@ -2924,7 +2924,7 @@ pub struct GPURenderPassLayout {
 pub fn GPURenderPassLayout::default() -> GPURenderPassLayout {
   GPURenderPassLayout::{
     label: None,
-    colorFormats: panic(),
+    colorFormats: [],
     depthStencilFormat: None,
     sampleCount: None,
   }
@@ -2962,7 +2962,7 @@ pub extern "js" fn GPURenderBundleDescriptor::to_js(self : GPURenderBundleDescri
 /// GPURenderBundleEncoderDescriptor dictionary
 pub struct GPURenderBundleEncoderDescriptor {
   label : String?
-  colorFormats : JsValue
+  colorFormats : Array[GPUTextureFormat?]
   depthStencilFormat : GPUTextureFormat?
   sampleCount : GPUSize32?
   depthReadOnly : Bool?
@@ -2973,7 +2973,7 @@ pub struct GPURenderBundleEncoderDescriptor {
 pub fn GPURenderBundleEncoderDescriptor::default() -> GPURenderBundleEncoderDescriptor {
   GPURenderBundleEncoderDescriptor::{
     label: None,
-    colorFormats: panic(),
+    colorFormats: [],
     depthStencilFormat: None,
     sampleCount: None,
     depthReadOnly: None,
@@ -3061,7 +3061,7 @@ pub struct GPUCanvasConfiguration {
   device : GPUDevice
   format : GPUTextureFormat
   usage : GPUTextureUsageFlags?
-  viewFormats : JsValue?
+  viewFormats : Array[GPUTextureFormat]?
   colorSpace : PredefinedColorSpace?
   toneMapping : GPUCanvasToneMapping?
   alphaMode : GPUCanvasAlphaMode?
@@ -3330,8 +3330,8 @@ pub type GPUSupportedFeatures
 pub extern "js" fn GPUSupportedFeatures::to_js_value(self : GPUSupportedFeatures) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn GPUSupportedFeatures::_unknown_(self : GPUSupportedFeatures) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn GPUSupportedFeatures::has(self : GPUSupportedFeatures, value : String) -> Bool =
+  #| (self, value) => self.has(value)
 
 ///|
 /// WGSLLanguageFeatures interface
@@ -3340,8 +3340,8 @@ pub type WGSLLanguageFeatures
 pub extern "js" fn WGSLLanguageFeatures::to_js_value(self : WGSLLanguageFeatures) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn WGSLLanguageFeatures::_unknown_(self : WGSLLanguageFeatures) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn WGSLLanguageFeatures::has(self : WGSLLanguageFeatures, value : String) -> Bool =
+  #| (self, value) => self.has(value)
 
 ///|
 /// GPUAdapterInfo interface
@@ -3378,7 +3378,10 @@ pub type GPU
 pub extern "js" fn GPU::to_js_value(self : GPU) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn GPU::request_adapter(self : GPU, options : GPURequestAdapterOptions) -> JsValue =
+pub extern "js" fn GPU::request_adapter(self : GPU) -> Promise[GPUAdapter?] =
+  #| (self) => self.requestAdapter()
+
+pub extern "js" fn GPU::request_adapter_with_options(self : GPU, options : GPURequestAdapterOptions) -> Promise[GPUAdapter?] =
   #| (self, options) => self.requestAdapter(options)
 
 pub extern "js" fn GPU::get_preferred_canvas_format(self : GPU) -> GPUTextureFormat =
@@ -3403,7 +3406,10 @@ pub extern "js" fn GPUAdapter::get_limits(self : GPUAdapter) -> GPUSupportedLimi
 pub extern "js" fn GPUAdapter::get_info(self : GPUAdapter) -> GPUAdapterInfo =
   #| (self) => self.info
 
-pub extern "js" fn GPUAdapter::request_device(self : GPUAdapter, descriptor : GPUDeviceDescriptor) -> JsValue =
+pub extern "js" fn GPUAdapter::request_device(self : GPUAdapter) -> Promise[GPUDevice] =
+  #| (self) => self.requestDevice()
+
+pub extern "js" fn GPUAdapter::request_device_with_descriptor(self : GPUAdapter, descriptor : GPUDeviceDescriptor) -> Promise[GPUDevice] =
   #| (self, descriptor) => self.requestDevice(descriptor)
 
 ///|
@@ -3434,7 +3440,10 @@ pub extern "js" fn GPUDevice::create_buffer(self : GPUDevice, descriptor : GPUBu
 pub extern "js" fn GPUDevice::create_texture(self : GPUDevice, descriptor : GPUTextureDescriptor) -> GPUTexture =
   #| (self, descriptor) => self.createTexture(descriptor)
 
-pub extern "js" fn GPUDevice::create_sampler(self : GPUDevice, descriptor : GPUSamplerDescriptor) -> GPUSampler =
+pub extern "js" fn GPUDevice::create_sampler(self : GPUDevice) -> GPUSampler =
+  #| (self) => self.createSampler()
+
+pub extern "js" fn GPUDevice::create_sampler_with_descriptor(self : GPUDevice, descriptor : GPUSamplerDescriptor) -> GPUSampler =
   #| (self, descriptor) => self.createSampler(descriptor)
 
 pub extern "js" fn GPUDevice::import_external_texture(self : GPUDevice, descriptor : GPUExternalTextureDescriptor) -> GPUExternalTexture =
@@ -3458,13 +3467,16 @@ pub extern "js" fn GPUDevice::create_compute_pipeline(self : GPUDevice, descript
 pub extern "js" fn GPUDevice::create_render_pipeline(self : GPUDevice, descriptor : GPURenderPipelineDescriptor) -> GPURenderPipeline =
   #| (self, descriptor) => self.createRenderPipeline(descriptor)
 
-pub extern "js" fn GPUDevice::create_compute_pipeline_async(self : GPUDevice, descriptor : GPUComputePipelineDescriptor) -> JsValue =
+pub extern "js" fn GPUDevice::create_compute_pipeline_async(self : GPUDevice, descriptor : GPUComputePipelineDescriptor) -> Promise[GPUComputePipeline] =
   #| (self, descriptor) => self.createComputePipelineAsync(descriptor)
 
-pub extern "js" fn GPUDevice::create_render_pipeline_async(self : GPUDevice, descriptor : GPURenderPipelineDescriptor) -> JsValue =
+pub extern "js" fn GPUDevice::create_render_pipeline_async(self : GPUDevice, descriptor : GPURenderPipelineDescriptor) -> Promise[GPURenderPipeline] =
   #| (self, descriptor) => self.createRenderPipelineAsync(descriptor)
 
-pub extern "js" fn GPUDevice::create_command_encoder(self : GPUDevice, descriptor : GPUCommandEncoderDescriptor) -> GPUCommandEncoder =
+pub extern "js" fn GPUDevice::create_command_encoder(self : GPUDevice) -> GPUCommandEncoder =
+  #| (self) => self.createCommandEncoder()
+
+pub extern "js" fn GPUDevice::create_command_encoder_with_descriptor(self : GPUDevice, descriptor : GPUCommandEncoderDescriptor) -> GPUCommandEncoder =
   #| (self, descriptor) => self.createCommandEncoder(descriptor)
 
 pub extern "js" fn GPUDevice::create_render_bundle_encoder(self : GPUDevice, descriptor : GPURenderBundleEncoderDescriptor) -> GPURenderBundleEncoder =
@@ -3473,13 +3485,13 @@ pub extern "js" fn GPUDevice::create_render_bundle_encoder(self : GPUDevice, des
 pub extern "js" fn GPUDevice::create_query_set(self : GPUDevice, descriptor : GPUQuerySetDescriptor) -> GPUQuerySet =
   #| (self, descriptor) => self.createQuerySet(descriptor)
 
-pub extern "js" fn GPUDevice::get_lost(self : GPUDevice) -> JsValue =
+pub extern "js" fn GPUDevice::get_lost(self : GPUDevice) -> Promise[GPUDeviceLostInfo] =
   #| (self) => self.lost
 
 pub extern "js" fn GPUDevice::push_error_scope(self : GPUDevice, filter : GPUErrorFilter) -> Unit =
   #| (self, filter) => self.pushErrorScope(['validation', 'out-of-memory', 'internal'][filter])
 
-pub extern "js" fn GPUDevice::pop_error_scope(self : GPUDevice) -> JsValue =
+pub extern "js" fn GPUDevice::pop_error_scope(self : GPUDevice) -> Promise[GPUError?] =
   #| (self) => self.popErrorScope()
 
 pub extern "js" fn GPUDevice::get_onuncapturederror(self : GPUDevice) -> EventHandler =
@@ -3510,10 +3522,16 @@ pub extern "js" fn GPUBuffer::get_usage(self : GPUBuffer) -> GPUFlagsConstant =
 pub extern "js" fn GPUBuffer::get_map_state(self : GPUBuffer) -> GPUBufferMapState =
   #| (self) => self.mapState
 
-pub extern "js" fn GPUBuffer::map_async(self : GPUBuffer, mode : GPUMapModeFlags, offset : GPUSize64, size : GPUSize64) -> JsValue =
+pub extern "js" fn GPUBuffer::map_async(self : GPUBuffer, mode : GPUMapModeFlags) -> Promise[Unit] =
+  #| (self, mode) => self.mapAsync(mode)
+
+pub extern "js" fn GPUBuffer::map_async_with_size(self : GPUBuffer, mode : GPUMapModeFlags, offset : GPUSize64, size : GPUSize64) -> Promise[Unit] =
   #| (self, mode, offset, size) => self.mapAsync(mode, offset, size)
 
-pub extern "js" fn GPUBuffer::get_mapped_range(self : GPUBuffer, offset : GPUSize64, size : GPUSize64) -> ArrayBuffer =
+pub extern "js" fn GPUBuffer::get_mapped_range(self : GPUBuffer) -> ArrayBuffer =
+  #| (self) => self.getMappedRange()
+
+pub extern "js" fn GPUBuffer::get_mapped_range_with_size(self : GPUBuffer, offset : GPUSize64, size : GPUSize64) -> ArrayBuffer =
   #| (self, offset, size) => self.getMappedRange(offset, size)
 
 pub extern "js" fn GPUBuffer::unmap(self : GPUBuffer) -> Unit =
@@ -3535,7 +3553,10 @@ pub type GPUTexture
 pub extern "js" fn GPUTexture::to_js_value(self : GPUTexture) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn GPUTexture::create_view(self : GPUTexture, descriptor : GPUTextureViewDescriptor) -> GPUTextureView =
+pub extern "js" fn GPUTexture::create_view(self : GPUTexture) -> GPUTextureView =
+  #| (self) => self.createView()
+
+pub extern "js" fn GPUTexture::create_view_with_descriptor(self : GPUTexture, descriptor : GPUTextureViewDescriptor) -> GPUTextureView =
   #| (self, descriptor) => self.createView(descriptor)
 
 pub extern "js" fn GPUTexture::destroy(self : GPUTexture) -> Unit =
@@ -3659,7 +3680,7 @@ pub type GPUShaderModule
 pub extern "js" fn GPUShaderModule::to_js_value(self : GPUShaderModule) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn GPUShaderModule::get_compilation_info(self : GPUShaderModule) -> JsValue =
+pub extern "js" fn GPUShaderModule::get_compilation_info(self : GPUShaderModule) -> Promise[GPUCompilationInfo] =
   #| (self) => self.getCompilationInfo()
 
 pub extern "js" fn GPUShaderModule::get_label(self : GPUShaderModule) -> String =
@@ -3771,10 +3792,16 @@ pub extern "js" fn GPUCommandEncoder::to_js_value(self : GPUCommandEncoder) -> J
 pub extern "js" fn GPUCommandEncoder::begin_render_pass(self : GPUCommandEncoder, descriptor : GPURenderPassDescriptor) -> GPURenderPassEncoder =
   #| (self, descriptor) => self.beginRenderPass(descriptor)
 
-pub extern "js" fn GPUCommandEncoder::begin_compute_pass(self : GPUCommandEncoder, descriptor : GPUComputePassDescriptor) -> GPUComputePassEncoder =
+pub extern "js" fn GPUCommandEncoder::begin_compute_pass(self : GPUCommandEncoder) -> GPUComputePassEncoder =
+  #| (self) => self.beginComputePass()
+
+pub extern "js" fn GPUCommandEncoder::begin_compute_pass_with_descriptor(self : GPUCommandEncoder, descriptor : GPUComputePassDescriptor) -> GPUComputePassEncoder =
   #| (self, descriptor) => self.beginComputePass(descriptor)
 
-pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer(self : GPUCommandEncoder, source : GPUBuffer, destination : GPUBuffer, size : GPUSize64) -> Unit =
+pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer(self : GPUCommandEncoder, source : GPUBuffer, destination : GPUBuffer) -> Unit =
+  #| (self, source, destination) => self.copyBufferToBuffer(source, destination)
+
+pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer_with_size(self : GPUCommandEncoder, source : GPUBuffer, destination : GPUBuffer, size : GPUSize64) -> Unit =
   #| (self, source, destination, size) => self.copyBufferToBuffer(source, destination, size)
 
 pub extern "js" fn GPUCommandEncoder::copy_buffer_to_texture(self : GPUCommandEncoder, source : GPUTexelCopyBufferInfo, destination : GPUTexelCopyTextureInfo, copy_size : GPUExtent3D) -> Unit =
@@ -3786,13 +3813,19 @@ pub extern "js" fn GPUCommandEncoder::copy_texture_to_buffer(self : GPUCommandEn
 pub extern "js" fn GPUCommandEncoder::copy_texture_to_texture(self : GPUCommandEncoder, source : GPUTexelCopyTextureInfo, destination : GPUTexelCopyTextureInfo, copy_size : GPUExtent3D) -> Unit =
   #| (self, source, destination, copy_size) => self.copyTextureToTexture(source, destination, copy_size)
 
-pub extern "js" fn GPUCommandEncoder::clear_buffer(self : GPUCommandEncoder, buffer : GPUBuffer, offset : GPUSize64, size : GPUSize64) -> Unit =
+pub extern "js" fn GPUCommandEncoder::clear_buffer(self : GPUCommandEncoder, buffer : GPUBuffer) -> Unit =
+  #| (self, buffer) => self.clearBuffer(buffer)
+
+pub extern "js" fn GPUCommandEncoder::clear_buffer_with_size(self : GPUCommandEncoder, buffer : GPUBuffer, offset : GPUSize64, size : GPUSize64) -> Unit =
   #| (self, buffer, offset, size) => self.clearBuffer(buffer, offset, size)
 
 pub extern "js" fn GPUCommandEncoder::resolve_query_set(self : GPUCommandEncoder, query_set : GPUQuerySet, first_query : GPUSize32, query_count : GPUSize32, destination : GPUBuffer, destination_offset : GPUSize64) -> Unit =
   #| (self, query_set, first_query, query_count, destination, destination_offset) => self.resolveQuerySet(query_set, first_query, query_count, destination, destination_offset)
 
-pub extern "js" fn GPUCommandEncoder::finish(self : GPUCommandEncoder, descriptor : GPUCommandBufferDescriptor) -> GPUCommandBuffer =
+pub extern "js" fn GPUCommandEncoder::finish(self : GPUCommandEncoder) -> GPUCommandBuffer =
+  #| (self) => self.finish()
+
+pub extern "js" fn GPUCommandEncoder::finish_with_descriptor(self : GPUCommandEncoder, descriptor : GPUCommandBufferDescriptor) -> GPUCommandBuffer =
   #| (self, descriptor) => self.finish(descriptor)
 
 pub extern "js" fn GPUCommandEncoder::get_label(self : GPUCommandEncoder) -> String =
@@ -3820,7 +3853,10 @@ pub extern "js" fn GPUComputePassEncoder::to_js_value(self : GPUComputePassEncod
 pub extern "js" fn GPUComputePassEncoder::set_pipeline(self : GPUComputePassEncoder, pipeline : GPUComputePipeline) -> Unit =
   #| (self, pipeline) => self.setPipeline(pipeline)
 
-pub extern "js" fn GPUComputePassEncoder::dispatch_workgroups(self : GPUComputePassEncoder, workgroup_count_x : GPUSize32, workgroup_count_y : GPUSize32, workgroup_count_z : GPUSize32) -> Unit =
+pub extern "js" fn GPUComputePassEncoder::dispatch_workgroups(self : GPUComputePassEncoder, workgroup_count_x : GPUSize32) -> Unit =
+  #| (self, workgroup_count_x) => self.dispatchWorkgroups(workgroup_count_x)
+
+pub extern "js" fn GPUComputePassEncoder::dispatch_workgroups_with_workgroup_count_z(self : GPUComputePassEncoder, workgroup_count_x : GPUSize32, workgroup_count_y : GPUSize32, workgroup_count_z : GPUSize32) -> Unit =
   #| (self, workgroup_count_x, workgroup_count_y, workgroup_count_z) => self.dispatchWorkgroups(workgroup_count_x, workgroup_count_y, workgroup_count_z)
 
 pub extern "js" fn GPUComputePassEncoder::dispatch_workgroups_indirect(self : GPUComputePassEncoder, indirect_buffer : GPUBuffer, indirect_offset : GPUSize64) -> Unit =
@@ -3844,7 +3880,10 @@ pub extern "js" fn GPUComputePassEncoder::pop_debug_group(self : GPUComputePassE
 pub extern "js" fn GPUComputePassEncoder::insert_debug_marker(self : GPUComputePassEncoder, marker_label : String) -> Unit =
   #| (self, marker_label) => self.insertDebugMarker(marker_label)
 
-pub extern "js" fn GPUComputePassEncoder::set_bind_group(self : GPUComputePassEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets : JsValue) -> Unit =
+pub extern "js" fn GPUComputePassEncoder::set_bind_group(self : GPUComputePassEncoder, index : GPUIndex32, bind_group : GPUBindGroup?) -> Unit =
+  #| (self, index, bind_group) => self.setBindGroup(index, bind_group)
+
+pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_dynamic_offsets(self : GPUComputePassEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets : Array[GPUBufferDynamicOffset]) -> Unit =
   #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, bind_group, dynamic_offsets)
 
 ///|
@@ -3872,7 +3911,7 @@ pub extern "js" fn GPURenderPassEncoder::begin_occlusion_query(self : GPURenderP
 pub extern "js" fn GPURenderPassEncoder::end_occlusion_query(self : GPURenderPassEncoder) -> Unit =
   #| (self) => self.endOcclusionQuery()
 
-pub extern "js" fn GPURenderPassEncoder::execute_bundles(self : GPURenderPassEncoder, bundles : JsValue) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::execute_bundles(self : GPURenderPassEncoder, bundles : Array[GPURenderBundle]) -> Unit =
   #| (self, bundles) => self.executeBundles(bundles)
 
 pub extern "js" fn GPURenderPassEncoder::end(self : GPURenderPassEncoder) -> Unit =
@@ -3893,22 +3932,37 @@ pub extern "js" fn GPURenderPassEncoder::pop_debug_group(self : GPURenderPassEnc
 pub extern "js" fn GPURenderPassEncoder::insert_debug_marker(self : GPURenderPassEncoder, marker_label : String) -> Unit =
   #| (self, marker_label) => self.insertDebugMarker(marker_label)
 
-pub extern "js" fn GPURenderPassEncoder::set_bind_group(self : GPURenderPassEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets : JsValue) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_bind_group(self : GPURenderPassEncoder, index : GPUIndex32, bind_group : GPUBindGroup?) -> Unit =
+  #| (self, index, bind_group) => self.setBindGroup(index, bind_group)
+
+pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_dynamic_offsets(self : GPURenderPassEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets : Array[GPUBufferDynamicOffset]) -> Unit =
   #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, bind_group, dynamic_offsets)
 
 pub extern "js" fn GPURenderPassEncoder::set_pipeline(self : GPURenderPassEncoder, pipeline : GPURenderPipeline) -> Unit =
   #| (self, pipeline) => self.setPipeline(pipeline)
 
-pub extern "js" fn GPURenderPassEncoder::set_index_buffer(self : GPURenderPassEncoder, buffer : GPUBuffer, index_format : GPUIndexFormat, offset : GPUSize64, size : GPUSize64) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_index_buffer(self : GPURenderPassEncoder, buffer : GPUBuffer, index_format : GPUIndexFormat) -> Unit =
+  #| (self, buffer, index_format) => self.setIndexBuffer(buffer, ['uint16', 'uint32'][index_format])
+
+pub extern "js" fn GPURenderPassEncoder::set_index_buffer_with_size(self : GPURenderPassEncoder, buffer : GPUBuffer, index_format : GPUIndexFormat, offset : GPUSize64, size : GPUSize64) -> Unit =
   #| (self, buffer, index_format, offset, size) => self.setIndexBuffer(buffer, ['uint16', 'uint32'][index_format], offset, size)
 
-pub extern "js" fn GPURenderPassEncoder::set_vertex_buffer(self : GPURenderPassEncoder, slot : GPUIndex32, buffer : GPUBuffer?, offset : GPUSize64, size : GPUSize64) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_vertex_buffer(self : GPURenderPassEncoder, slot : GPUIndex32, buffer : GPUBuffer?) -> Unit =
+  #| (self, slot, buffer) => self.setVertexBuffer(slot, buffer)
+
+pub extern "js" fn GPURenderPassEncoder::set_vertex_buffer_with_size(self : GPURenderPassEncoder, slot : GPUIndex32, buffer : GPUBuffer?, offset : GPUSize64, size : GPUSize64) -> Unit =
   #| (self, slot, buffer, offset, size) => self.setVertexBuffer(slot, buffer, offset, size)
 
-pub extern "js" fn GPURenderPassEncoder::draw(self : GPURenderPassEncoder, vertex_count : GPUSize32, instance_count : GPUSize32, first_vertex : GPUSize32, first_instance : GPUSize32) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::draw(self : GPURenderPassEncoder, vertex_count : GPUSize32) -> Unit =
+  #| (self, vertex_count) => self.draw(vertex_count)
+
+pub extern "js" fn GPURenderPassEncoder::draw_with_first_instance(self : GPURenderPassEncoder, vertex_count : GPUSize32, instance_count : GPUSize32, first_vertex : GPUSize32, first_instance : GPUSize32) -> Unit =
   #| (self, vertex_count, instance_count, first_vertex, first_instance) => self.draw(vertex_count, instance_count, first_vertex, first_instance)
 
-pub extern "js" fn GPURenderPassEncoder::draw_indexed(self : GPURenderPassEncoder, index_count : GPUSize32, instance_count : GPUSize32, first_index : GPUSize32, base_vertex : GPUSignedOffset32, first_instance : GPUSize32) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::draw_indexed(self : GPURenderPassEncoder, index_count : GPUSize32) -> Unit =
+  #| (self, index_count) => self.drawIndexed(index_count)
+
+pub extern "js" fn GPURenderPassEncoder::draw_indexed_with_first_instance(self : GPURenderPassEncoder, index_count : GPUSize32, instance_count : GPUSize32, first_index : GPUSize32, base_vertex : GPUSignedOffset32, first_instance : GPUSize32) -> Unit =
   #| (self, index_count, instance_count, first_index, base_vertex, first_instance) => self.drawIndexed(index_count, instance_count, first_index, base_vertex, first_instance)
 
 pub extern "js" fn GPURenderPassEncoder::draw_indirect(self : GPURenderPassEncoder, indirect_buffer : GPUBuffer, indirect_offset : GPUSize64) -> Unit =
@@ -3937,7 +3991,10 @@ pub type GPURenderBundleEncoder
 pub extern "js" fn GPURenderBundleEncoder::to_js_value(self : GPURenderBundleEncoder) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn GPURenderBundleEncoder::finish(self : GPURenderBundleEncoder, descriptor : GPURenderBundleDescriptor) -> GPURenderBundle =
+pub extern "js" fn GPURenderBundleEncoder::finish(self : GPURenderBundleEncoder) -> GPURenderBundle =
+  #| (self) => self.finish()
+
+pub extern "js" fn GPURenderBundleEncoder::finish_with_descriptor(self : GPURenderBundleEncoder, descriptor : GPURenderBundleDescriptor) -> GPURenderBundle =
   #| (self, descriptor) => self.finish(descriptor)
 
 pub extern "js" fn GPURenderBundleEncoder::get_label(self : GPURenderBundleEncoder) -> String =
@@ -3955,22 +4012,37 @@ pub extern "js" fn GPURenderBundleEncoder::pop_debug_group(self : GPURenderBundl
 pub extern "js" fn GPURenderBundleEncoder::insert_debug_marker(self : GPURenderBundleEncoder, marker_label : String) -> Unit =
   #| (self, marker_label) => self.insertDebugMarker(marker_label)
 
-pub extern "js" fn GPURenderBundleEncoder::set_bind_group(self : GPURenderBundleEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets : JsValue) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::set_bind_group(self : GPURenderBundleEncoder, index : GPUIndex32, bind_group : GPUBindGroup?) -> Unit =
+  #| (self, index, bind_group) => self.setBindGroup(index, bind_group)
+
+pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_dynamic_offsets(self : GPURenderBundleEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets : Array[GPUBufferDynamicOffset]) -> Unit =
   #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, bind_group, dynamic_offsets)
 
 pub extern "js" fn GPURenderBundleEncoder::set_pipeline(self : GPURenderBundleEncoder, pipeline : GPURenderPipeline) -> Unit =
   #| (self, pipeline) => self.setPipeline(pipeline)
 
-pub extern "js" fn GPURenderBundleEncoder::set_index_buffer(self : GPURenderBundleEncoder, buffer : GPUBuffer, index_format : GPUIndexFormat, offset : GPUSize64, size : GPUSize64) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::set_index_buffer(self : GPURenderBundleEncoder, buffer : GPUBuffer, index_format : GPUIndexFormat) -> Unit =
+  #| (self, buffer, index_format) => self.setIndexBuffer(buffer, ['uint16', 'uint32'][index_format])
+
+pub extern "js" fn GPURenderBundleEncoder::set_index_buffer_with_size(self : GPURenderBundleEncoder, buffer : GPUBuffer, index_format : GPUIndexFormat, offset : GPUSize64, size : GPUSize64) -> Unit =
   #| (self, buffer, index_format, offset, size) => self.setIndexBuffer(buffer, ['uint16', 'uint32'][index_format], offset, size)
 
-pub extern "js" fn GPURenderBundleEncoder::set_vertex_buffer(self : GPURenderBundleEncoder, slot : GPUIndex32, buffer : GPUBuffer?, offset : GPUSize64, size : GPUSize64) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::set_vertex_buffer(self : GPURenderBundleEncoder, slot : GPUIndex32, buffer : GPUBuffer?) -> Unit =
+  #| (self, slot, buffer) => self.setVertexBuffer(slot, buffer)
+
+pub extern "js" fn GPURenderBundleEncoder::set_vertex_buffer_with_size(self : GPURenderBundleEncoder, slot : GPUIndex32, buffer : GPUBuffer?, offset : GPUSize64, size : GPUSize64) -> Unit =
   #| (self, slot, buffer, offset, size) => self.setVertexBuffer(slot, buffer, offset, size)
 
-pub extern "js" fn GPURenderBundleEncoder::draw(self : GPURenderBundleEncoder, vertex_count : GPUSize32, instance_count : GPUSize32, first_vertex : GPUSize32, first_instance : GPUSize32) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::draw(self : GPURenderBundleEncoder, vertex_count : GPUSize32) -> Unit =
+  #| (self, vertex_count) => self.draw(vertex_count)
+
+pub extern "js" fn GPURenderBundleEncoder::draw_with_first_instance(self : GPURenderBundleEncoder, vertex_count : GPUSize32, instance_count : GPUSize32, first_vertex : GPUSize32, first_instance : GPUSize32) -> Unit =
   #| (self, vertex_count, instance_count, first_vertex, first_instance) => self.draw(vertex_count, instance_count, first_vertex, first_instance)
 
-pub extern "js" fn GPURenderBundleEncoder::draw_indexed(self : GPURenderBundleEncoder, index_count : GPUSize32, instance_count : GPUSize32, first_index : GPUSize32, base_vertex : GPUSignedOffset32, first_instance : GPUSize32) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::draw_indexed(self : GPURenderBundleEncoder, index_count : GPUSize32) -> Unit =
+  #| (self, index_count) => self.drawIndexed(index_count)
+
+pub extern "js" fn GPURenderBundleEncoder::draw_indexed_with_first_instance(self : GPURenderBundleEncoder, index_count : GPUSize32, instance_count : GPUSize32, first_index : GPUSize32, base_vertex : GPUSignedOffset32, first_instance : GPUSize32) -> Unit =
   #| (self, index_count, instance_count, first_index, base_vertex, first_instance) => self.drawIndexed(index_count, instance_count, first_index, base_vertex, first_instance)
 
 pub extern "js" fn GPURenderBundleEncoder::draw_indirect(self : GPURenderBundleEncoder, indirect_buffer : GPUBuffer, indirect_offset : GPUSize64) -> Unit =
@@ -3986,13 +4058,16 @@ pub type GPUQueue
 pub extern "js" fn GPUQueue::to_js_value(self : GPUQueue) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn GPUQueue::submit(self : GPUQueue, command_buffers : JsValue) -> Unit =
+pub extern "js" fn GPUQueue::submit(self : GPUQueue, command_buffers : Array[GPUCommandBuffer]) -> Unit =
   #| (self, command_buffers) => self.submit(command_buffers)
 
-pub extern "js" fn GPUQueue::on_submitted_work_done(self : GPUQueue) -> JsValue =
+pub extern "js" fn GPUQueue::on_submitted_work_done(self : GPUQueue) -> Promise[Unit] =
   #| (self) => self.onSubmittedWorkDone()
 
-pub extern "js" fn GPUQueue::write_buffer(self : GPUQueue, buffer : GPUBuffer, buffer_offset : GPUSize64, data : AllowSharedBufferSource, data_offset : GPUSize64, size : GPUSize64) -> Unit =
+pub extern "js" fn GPUQueue::write_buffer(self : GPUQueue, buffer : GPUBuffer, buffer_offset : GPUSize64, data : AllowSharedBufferSource) -> Unit =
+  #| (self, buffer, buffer_offset, data) => self.writeBuffer(buffer, buffer_offset, data)
+
+pub extern "js" fn GPUQueue::write_buffer_with_size(self : GPUQueue, buffer : GPUBuffer, buffer_offset : GPUSize64, data : AllowSharedBufferSource, data_offset : GPUSize64, size : GPUSize64) -> Unit =
   #| (self, buffer, buffer_offset, data, data_offset, size) => self.writeBuffer(buffer, buffer_offset, data, data_offset, size)
 
 pub extern "js" fn GPUQueue::write_texture(self : GPUQueue, destination : GPUTexelCopyTextureInfo, data : AllowSharedBufferSource, data_layout : GPUTexelCopyBufferLayout, size : GPUExtent3D) -> Unit =

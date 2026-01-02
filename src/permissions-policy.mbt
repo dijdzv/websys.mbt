@@ -45,15 +45,18 @@ pub type PermissionsPolicy
 pub extern "js" fn PermissionsPolicy::to_js_value(self : PermissionsPolicy) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn PermissionsPolicy::allows_feature(self : PermissionsPolicy, feature : String, origin : String) -> Bool =
+pub extern "js" fn PermissionsPolicy::allows_feature(self : PermissionsPolicy, feature : String) -> Bool =
+  #| (self, feature) => self.allowsFeature(feature)
+
+pub extern "js" fn PermissionsPolicy::allows_feature_with_origin(self : PermissionsPolicy, feature : String, origin : String) -> Bool =
   #| (self, feature, origin) => self.allowsFeature(feature, origin)
 
-pub extern "js" fn PermissionsPolicy::features(self : PermissionsPolicy) -> JsValue =
+pub extern "js" fn PermissionsPolicy::features(self : PermissionsPolicy) -> Array[String] =
   #| (self) => self.features()
 
-pub extern "js" fn PermissionsPolicy::allowed_features(self : PermissionsPolicy) -> JsValue =
+pub extern "js" fn PermissionsPolicy::allowed_features(self : PermissionsPolicy) -> Array[String] =
   #| (self) => self.allowedFeatures()
 
-pub extern "js" fn PermissionsPolicy::get_allowlist_for_feature(self : PermissionsPolicy, feature : String) -> JsValue =
+pub extern "js" fn PermissionsPolicy::get_allowlist_for_feature(self : PermissionsPolicy, feature : String) -> Array[String] =
   #| (self, feature) => self.getAllowlistForFeature(feature)
 

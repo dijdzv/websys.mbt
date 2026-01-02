@@ -42,7 +42,7 @@ pub type CSSParserAtRule
 pub extern "js" fn CSSParserAtRule::to_js_value(self : CSSParserAtRule) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn CSSParserAtRule::new(name : String, prelude : JsValue, body : JsValue) -> CSSParserAtRule =
+pub extern "js" fn CSSParserAtRule::new(name : String, prelude : Array[CSSToken], body : Array[CSSParserRule]) -> CSSParserAtRule =
   #| (name, prelude, body) => new CSSParserAtRule(name, prelude, body)
 
 pub extern "js" fn CSSParserAtRule::get_name(self : CSSParserAtRule) -> String =
@@ -61,7 +61,7 @@ pub type CSSParserQualifiedRule
 pub extern "js" fn CSSParserQualifiedRule::to_js_value(self : CSSParserQualifiedRule) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn CSSParserQualifiedRule::new(prelude : JsValue, body : JsValue) -> CSSParserQualifiedRule =
+pub extern "js" fn CSSParserQualifiedRule::new(prelude : Array[CSSToken], body : Array[CSSParserRule]) -> CSSParserQualifiedRule =
   #| (prelude, body) => new CSSParserQualifiedRule(prelude, body)
 
 pub extern "js" fn CSSParserQualifiedRule::get_prelude(self : CSSParserQualifiedRule) -> JsValue =
@@ -77,7 +77,7 @@ pub type CSSParserDeclaration
 pub extern "js" fn CSSParserDeclaration::to_js_value(self : CSSParserDeclaration) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn CSSParserDeclaration::new(name : String, body : JsValue) -> CSSParserDeclaration =
+pub extern "js" fn CSSParserDeclaration::new(name : String, body : Array[CSSParserRule]) -> CSSParserDeclaration =
   #| (name, body) => new CSSParserDeclaration(name, body)
 
 pub extern "js" fn CSSParserDeclaration::get_name(self : CSSParserDeclaration) -> String =
@@ -100,7 +100,7 @@ pub type CSSParserBlock
 pub extern "js" fn CSSParserBlock::to_js_value(self : CSSParserBlock) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn CSSParserBlock::new(name : String, body : JsValue) -> CSSParserBlock =
+pub extern "js" fn CSSParserBlock::new(name : String, body : Array[CSSParserValue]) -> CSSParserBlock =
   #| (name, body) => new CSSParserBlock(name, body)
 
 pub extern "js" fn CSSParserBlock::get_name(self : CSSParserBlock) -> String =
@@ -116,7 +116,7 @@ pub type CSSParserFunction
 pub extern "js" fn CSSParserFunction::to_js_value(self : CSSParserFunction) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn CSSParserFunction::new(name : String, args : JsValue) -> CSSParserFunction =
+pub extern "js" fn CSSParserFunction::new(name : String, args : Array[Array[CSSParserValue]]) -> CSSParserFunction =
   #| (name, args) => new CSSParserFunction(name, args)
 
 pub extern "js" fn CSSParserFunction::get_name(self : CSSParserFunction) -> String =

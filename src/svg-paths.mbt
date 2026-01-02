@@ -58,9 +58,12 @@ pub extern "js" fn SVGPathElement::get_point_at_length(self : SVGPathElement, di
 pub extern "js" fn SVGPathElement::get_path_segment_at_length(self : SVGPathElement, distance : Double) -> SVGPathSegment? =
   #| (self, distance) => self.getPathSegmentAtLength(distance)
 
-pub extern "js" fn SVGPathElement::get_path_data(self : SVGPathElement, settings : SVGPathDataSettings) -> JsValue =
+pub extern "js" fn SVGPathElement::get_path_data(self : SVGPathElement) -> Array[SVGPathSegment] =
+  #| (self) => self.getPathData()
+
+pub extern "js" fn SVGPathElement::get_path_data_with_settings(self : SVGPathElement, settings : SVGPathDataSettings) -> Array[SVGPathSegment] =
   #| (self, settings) => self.getPathData(settings)
 
-pub extern "js" fn SVGPathElement::set_path_data(self : SVGPathElement, path_data : JsValue) -> Unit =
+pub extern "js" fn SVGPathElement::set_path_data(self : SVGPathElement, path_data : Array[SVGPathSegment]) -> Unit =
   #| (self, path_data) => self.setPathData(path_data)
 

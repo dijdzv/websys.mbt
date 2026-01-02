@@ -247,7 +247,10 @@ pub extern "js" fn DOMPointReadOnly::get_z(self : DOMPointReadOnly) -> Double =
 pub extern "js" fn DOMPointReadOnly::get_w(self : DOMPointReadOnly) -> Double =
   #| (self) => self.w
 
-pub extern "js" fn DOMPointReadOnly::matrix_transform(self : DOMPointReadOnly, matrix : DOMMatrixInit) -> DOMPoint =
+pub extern "js" fn DOMPointReadOnly::matrix_transform(self : DOMPointReadOnly) -> DOMPoint =
+  #| (self) => self.matrixTransform()
+
+pub extern "js" fn DOMPointReadOnly::matrix_transform_with_matrix(self : DOMPointReadOnly, matrix : DOMMatrixInit) -> DOMPoint =
   #| (self, matrix) => self.matrixTransform(matrix)
 
 pub extern "js" fn DOMPointReadOnly::to_j_s_o_n(self : DOMPointReadOnly) -> JsValue =
@@ -278,7 +281,10 @@ pub extern "js" fn DOMPoint::get_z(self : DOMPoint) -> Double =
 pub extern "js" fn DOMPoint::get_w(self : DOMPoint) -> Double =
   #| (self) => self.w
 
-pub extern "js" fn DOMPoint::matrix_transform(self : DOMPoint, matrix : DOMMatrixInit) -> DOMPoint =
+pub extern "js" fn DOMPoint::matrix_transform(self : DOMPoint) -> DOMPoint =
+  #| (self) => self.matrixTransform()
+
+pub extern "js" fn DOMPoint::matrix_transform_with_matrix(self : DOMPoint, matrix : DOMMatrixInit) -> DOMPoint =
   #| (self, matrix) => self.matrixTransform(matrix)
 
 pub extern "js" fn DOMPoint::to_j_s_o_n(self : DOMPoint) -> JsValue =
@@ -505,34 +511,64 @@ pub extern "js" fn DOMMatrixReadOnly::get_is2_d(self : DOMMatrixReadOnly) -> Boo
 pub extern "js" fn DOMMatrixReadOnly::get_is_identity(self : DOMMatrixReadOnly) -> Bool =
   #| (self) => self.isIdentity
 
-pub extern "js" fn DOMMatrixReadOnly::translate(self : DOMMatrixReadOnly, tx : Double, ty : Double, tz : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrixReadOnly::translate(self : DOMMatrixReadOnly) -> DOMMatrix =
+  #| (self) => self.translate()
+
+pub extern "js" fn DOMMatrixReadOnly::translate_with_tz(self : DOMMatrixReadOnly, tx : Double, ty : Double, tz : Double) -> DOMMatrix =
   #| (self, tx, ty, tz) => self.translate(tx, ty, tz)
 
-pub extern "js" fn DOMMatrixReadOnly::scale(self : DOMMatrixReadOnly, scale_x : Double, scale_y : Double, scale_z : Double, origin_x : Double, origin_y : Double, origin_z : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrixReadOnly::scale(self : DOMMatrixReadOnly) -> DOMMatrix =
+  #| (self) => self.scale()
+
+pub extern "js" fn DOMMatrixReadOnly::scale_with_origin_z(self : DOMMatrixReadOnly, scale_x : Double, scale_y : Double, scale_z : Double, origin_x : Double, origin_y : Double, origin_z : Double) -> DOMMatrix =
   #| (self, scale_x, scale_y, scale_z, origin_x, origin_y, origin_z) => self.scale(scale_x, scale_y, scale_z, origin_x, origin_y, origin_z)
 
-pub extern "js" fn DOMMatrixReadOnly::scale_non_uniform(self : DOMMatrixReadOnly, scale_x : Double, scale_y : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrixReadOnly::scale_non_uniform(self : DOMMatrixReadOnly) -> DOMMatrix =
+  #| (self) => self.scaleNonUniform()
+
+pub extern "js" fn DOMMatrixReadOnly::scale_non_uniform_with_scale_y(self : DOMMatrixReadOnly, scale_x : Double, scale_y : Double) -> DOMMatrix =
   #| (self, scale_x, scale_y) => self.scaleNonUniform(scale_x, scale_y)
 
-pub extern "js" fn DOMMatrixReadOnly::scale3d(self : DOMMatrixReadOnly, scale : Double, origin_x : Double, origin_y : Double, origin_z : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrixReadOnly::scale3d(self : DOMMatrixReadOnly) -> DOMMatrix =
+  #| (self) => self.scale3d()
+
+pub extern "js" fn DOMMatrixReadOnly::scale3d_with_origin_z(self : DOMMatrixReadOnly, scale : Double, origin_x : Double, origin_y : Double, origin_z : Double) -> DOMMatrix =
   #| (self, scale, origin_x, origin_y, origin_z) => self.scale3d(scale, origin_x, origin_y, origin_z)
 
-pub extern "js" fn DOMMatrixReadOnly::rotate(self : DOMMatrixReadOnly, rot_x : Double, rot_y : Double, rot_z : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrixReadOnly::rotate(self : DOMMatrixReadOnly) -> DOMMatrix =
+  #| (self) => self.rotate()
+
+pub extern "js" fn DOMMatrixReadOnly::rotate_with_rot_z(self : DOMMatrixReadOnly, rot_x : Double, rot_y : Double, rot_z : Double) -> DOMMatrix =
   #| (self, rot_x, rot_y, rot_z) => self.rotate(rot_x, rot_y, rot_z)
 
-pub extern "js" fn DOMMatrixReadOnly::rotate_from_vector(self : DOMMatrixReadOnly, x : Double, y : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrixReadOnly::rotate_from_vector(self : DOMMatrixReadOnly) -> DOMMatrix =
+  #| (self) => self.rotateFromVector()
+
+pub extern "js" fn DOMMatrixReadOnly::rotate_from_vector_with_y(self : DOMMatrixReadOnly, x : Double, y : Double) -> DOMMatrix =
   #| (self, x, y) => self.rotateFromVector(x, y)
 
-pub extern "js" fn DOMMatrixReadOnly::rotate_axis_angle(self : DOMMatrixReadOnly, x : Double, y : Double, z : Double, angle : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrixReadOnly::rotate_axis_angle(self : DOMMatrixReadOnly) -> DOMMatrix =
+  #| (self) => self.rotateAxisAngle()
+
+pub extern "js" fn DOMMatrixReadOnly::rotate_axis_angle_with_angle(self : DOMMatrixReadOnly, x : Double, y : Double, z : Double, angle : Double) -> DOMMatrix =
   #| (self, x, y, z, angle) => self.rotateAxisAngle(x, y, z, angle)
 
-pub extern "js" fn DOMMatrixReadOnly::skew_x(self : DOMMatrixReadOnly, sx : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrixReadOnly::skew_x(self : DOMMatrixReadOnly) -> DOMMatrix =
+  #| (self) => self.skewX()
+
+pub extern "js" fn DOMMatrixReadOnly::skew_x_with_sx(self : DOMMatrixReadOnly, sx : Double) -> DOMMatrix =
   #| (self, sx) => self.skewX(sx)
 
-pub extern "js" fn DOMMatrixReadOnly::skew_y(self : DOMMatrixReadOnly, sy : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrixReadOnly::skew_y(self : DOMMatrixReadOnly) -> DOMMatrix =
+  #| (self) => self.skewY()
+
+pub extern "js" fn DOMMatrixReadOnly::skew_y_with_sy(self : DOMMatrixReadOnly, sy : Double) -> DOMMatrix =
   #| (self, sy) => self.skewY(sy)
 
-pub extern "js" fn DOMMatrixReadOnly::multiply(self : DOMMatrixReadOnly, other : DOMMatrixInit) -> DOMMatrix =
+pub extern "js" fn DOMMatrixReadOnly::multiply(self : DOMMatrixReadOnly) -> DOMMatrix =
+  #| (self) => self.multiply()
+
+pub extern "js" fn DOMMatrixReadOnly::multiply_with_other(self : DOMMatrixReadOnly, other : DOMMatrixInit) -> DOMMatrix =
   #| (self, other) => self.multiply(other)
 
 pub extern "js" fn DOMMatrixReadOnly::flip_x(self : DOMMatrixReadOnly) -> DOMMatrix =
@@ -544,7 +580,10 @@ pub extern "js" fn DOMMatrixReadOnly::flip_y(self : DOMMatrixReadOnly) -> DOMMat
 pub extern "js" fn DOMMatrixReadOnly::inverse(self : DOMMatrixReadOnly) -> DOMMatrix =
   #| (self) => self.inverse()
 
-pub extern "js" fn DOMMatrixReadOnly::transform_point(self : DOMMatrixReadOnly, point : DOMPointInit) -> DOMPoint =
+pub extern "js" fn DOMMatrixReadOnly::transform_point(self : DOMMatrixReadOnly) -> DOMPoint =
+  #| (self) => self.transformPoint()
+
+pub extern "js" fn DOMMatrixReadOnly::transform_point_with_point(self : DOMMatrixReadOnly, point : DOMPointInit) -> DOMPoint =
   #| (self, point) => self.transformPoint(point)
 
 pub extern "js" fn DOMMatrixReadOnly::to_float32_array(self : DOMMatrixReadOnly) -> Float32Array =
@@ -647,34 +686,64 @@ pub extern "js" fn DOMMatrix::get_is2_d(self : DOMMatrix) -> Bool =
 pub extern "js" fn DOMMatrix::get_is_identity(self : DOMMatrix) -> Bool =
   #| (self) => self.isIdentity
 
-pub extern "js" fn DOMMatrix::translate(self : DOMMatrix, tx : Double, ty : Double, tz : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::translate(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.translate()
+
+pub extern "js" fn DOMMatrix::translate_with_tz(self : DOMMatrix, tx : Double, ty : Double, tz : Double) -> DOMMatrix =
   #| (self, tx, ty, tz) => self.translate(tx, ty, tz)
 
-pub extern "js" fn DOMMatrix::scale(self : DOMMatrix, scale_x : Double, scale_y : Double, scale_z : Double, origin_x : Double, origin_y : Double, origin_z : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::scale(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.scale()
+
+pub extern "js" fn DOMMatrix::scale_with_origin_z(self : DOMMatrix, scale_x : Double, scale_y : Double, scale_z : Double, origin_x : Double, origin_y : Double, origin_z : Double) -> DOMMatrix =
   #| (self, scale_x, scale_y, scale_z, origin_x, origin_y, origin_z) => self.scale(scale_x, scale_y, scale_z, origin_x, origin_y, origin_z)
 
-pub extern "js" fn DOMMatrix::scale_non_uniform(self : DOMMatrix, scale_x : Double, scale_y : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::scale_non_uniform(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.scaleNonUniform()
+
+pub extern "js" fn DOMMatrix::scale_non_uniform_with_scale_y(self : DOMMatrix, scale_x : Double, scale_y : Double) -> DOMMatrix =
   #| (self, scale_x, scale_y) => self.scaleNonUniform(scale_x, scale_y)
 
-pub extern "js" fn DOMMatrix::scale3d(self : DOMMatrix, scale : Double, origin_x : Double, origin_y : Double, origin_z : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::scale3d(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.scale3d()
+
+pub extern "js" fn DOMMatrix::scale3d_with_origin_z(self : DOMMatrix, scale : Double, origin_x : Double, origin_y : Double, origin_z : Double) -> DOMMatrix =
   #| (self, scale, origin_x, origin_y, origin_z) => self.scale3d(scale, origin_x, origin_y, origin_z)
 
-pub extern "js" fn DOMMatrix::rotate(self : DOMMatrix, rot_x : Double, rot_y : Double, rot_z : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::rotate(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.rotate()
+
+pub extern "js" fn DOMMatrix::rotate_with_rot_z(self : DOMMatrix, rot_x : Double, rot_y : Double, rot_z : Double) -> DOMMatrix =
   #| (self, rot_x, rot_y, rot_z) => self.rotate(rot_x, rot_y, rot_z)
 
-pub extern "js" fn DOMMatrix::rotate_from_vector(self : DOMMatrix, x : Double, y : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::rotate_from_vector(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.rotateFromVector()
+
+pub extern "js" fn DOMMatrix::rotate_from_vector_with_y(self : DOMMatrix, x : Double, y : Double) -> DOMMatrix =
   #| (self, x, y) => self.rotateFromVector(x, y)
 
-pub extern "js" fn DOMMatrix::rotate_axis_angle(self : DOMMatrix, x : Double, y : Double, z : Double, angle : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::rotate_axis_angle(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.rotateAxisAngle()
+
+pub extern "js" fn DOMMatrix::rotate_axis_angle_with_angle(self : DOMMatrix, x : Double, y : Double, z : Double, angle : Double) -> DOMMatrix =
   #| (self, x, y, z, angle) => self.rotateAxisAngle(x, y, z, angle)
 
-pub extern "js" fn DOMMatrix::skew_x(self : DOMMatrix, sx : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::skew_x(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.skewX()
+
+pub extern "js" fn DOMMatrix::skew_x_with_sx(self : DOMMatrix, sx : Double) -> DOMMatrix =
   #| (self, sx) => self.skewX(sx)
 
-pub extern "js" fn DOMMatrix::skew_y(self : DOMMatrix, sy : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::skew_y(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.skewY()
+
+pub extern "js" fn DOMMatrix::skew_y_with_sy(self : DOMMatrix, sy : Double) -> DOMMatrix =
   #| (self, sy) => self.skewY(sy)
 
-pub extern "js" fn DOMMatrix::multiply(self : DOMMatrix, other : DOMMatrixInit) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::multiply(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.multiply()
+
+pub extern "js" fn DOMMatrix::multiply_with_other(self : DOMMatrix, other : DOMMatrixInit) -> DOMMatrix =
   #| (self, other) => self.multiply(other)
 
 pub extern "js" fn DOMMatrix::flip_x(self : DOMMatrix) -> DOMMatrix =
@@ -686,7 +755,10 @@ pub extern "js" fn DOMMatrix::flip_y(self : DOMMatrix) -> DOMMatrix =
 pub extern "js" fn DOMMatrix::inverse(self : DOMMatrix) -> DOMMatrix =
   #| (self) => self.inverse()
 
-pub extern "js" fn DOMMatrix::transform_point(self : DOMMatrix, point : DOMPointInit) -> DOMPoint =
+pub extern "js" fn DOMMatrix::transform_point(self : DOMMatrix) -> DOMPoint =
+  #| (self) => self.transformPoint()
+
+pub extern "js" fn DOMMatrix::transform_point_with_point(self : DOMMatrix, point : DOMPointInit) -> DOMPoint =
   #| (self, point) => self.transformPoint(point)
 
 pub extern "js" fn DOMMatrix::to_float32_array(self : DOMMatrix) -> Float32Array =
@@ -698,34 +770,64 @@ pub extern "js" fn DOMMatrix::to_float64_array(self : DOMMatrix) -> Float64Array
 pub extern "js" fn DOMMatrix::to_j_s_o_n(self : DOMMatrix) -> JsValue =
   #| (self) => self.toJSON()
 
-pub extern "js" fn DOMMatrix::multiply_self(self : DOMMatrix, other : DOMMatrixInit) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::multiply_self(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.multiplySelf()
+
+pub extern "js" fn DOMMatrix::multiply_self_with_other(self : DOMMatrix, other : DOMMatrixInit) -> DOMMatrix =
   #| (self, other) => self.multiplySelf(other)
 
-pub extern "js" fn DOMMatrix::pre_multiply_self(self : DOMMatrix, other : DOMMatrixInit) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::pre_multiply_self(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.preMultiplySelf()
+
+pub extern "js" fn DOMMatrix::pre_multiply_self_with_other(self : DOMMatrix, other : DOMMatrixInit) -> DOMMatrix =
   #| (self, other) => self.preMultiplySelf(other)
 
-pub extern "js" fn DOMMatrix::translate_self(self : DOMMatrix, tx : Double, ty : Double, tz : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::translate_self(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.translateSelf()
+
+pub extern "js" fn DOMMatrix::translate_self_with_tz(self : DOMMatrix, tx : Double, ty : Double, tz : Double) -> DOMMatrix =
   #| (self, tx, ty, tz) => self.translateSelf(tx, ty, tz)
 
-pub extern "js" fn DOMMatrix::scale_self(self : DOMMatrix, scale_x : Double, scale_y : Double, scale_z : Double, origin_x : Double, origin_y : Double, origin_z : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::scale_self(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.scaleSelf()
+
+pub extern "js" fn DOMMatrix::scale_self_with_origin_z(self : DOMMatrix, scale_x : Double, scale_y : Double, scale_z : Double, origin_x : Double, origin_y : Double, origin_z : Double) -> DOMMatrix =
   #| (self, scale_x, scale_y, scale_z, origin_x, origin_y, origin_z) => self.scaleSelf(scale_x, scale_y, scale_z, origin_x, origin_y, origin_z)
 
-pub extern "js" fn DOMMatrix::scale3d_self(self : DOMMatrix, scale : Double, origin_x : Double, origin_y : Double, origin_z : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::scale3d_self(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.scale3dSelf()
+
+pub extern "js" fn DOMMatrix::scale3d_self_with_origin_z(self : DOMMatrix, scale : Double, origin_x : Double, origin_y : Double, origin_z : Double) -> DOMMatrix =
   #| (self, scale, origin_x, origin_y, origin_z) => self.scale3dSelf(scale, origin_x, origin_y, origin_z)
 
-pub extern "js" fn DOMMatrix::rotate_self(self : DOMMatrix, rot_x : Double, rot_y : Double, rot_z : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::rotate_self(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.rotateSelf()
+
+pub extern "js" fn DOMMatrix::rotate_self_with_rot_z(self : DOMMatrix, rot_x : Double, rot_y : Double, rot_z : Double) -> DOMMatrix =
   #| (self, rot_x, rot_y, rot_z) => self.rotateSelf(rot_x, rot_y, rot_z)
 
-pub extern "js" fn DOMMatrix::rotate_from_vector_self(self : DOMMatrix, x : Double, y : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::rotate_from_vector_self(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.rotateFromVectorSelf()
+
+pub extern "js" fn DOMMatrix::rotate_from_vector_self_with_y(self : DOMMatrix, x : Double, y : Double) -> DOMMatrix =
   #| (self, x, y) => self.rotateFromVectorSelf(x, y)
 
-pub extern "js" fn DOMMatrix::rotate_axis_angle_self(self : DOMMatrix, x : Double, y : Double, z : Double, angle : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::rotate_axis_angle_self(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.rotateAxisAngleSelf()
+
+pub extern "js" fn DOMMatrix::rotate_axis_angle_self_with_angle(self : DOMMatrix, x : Double, y : Double, z : Double, angle : Double) -> DOMMatrix =
   #| (self, x, y, z, angle) => self.rotateAxisAngleSelf(x, y, z, angle)
 
-pub extern "js" fn DOMMatrix::skew_x_self(self : DOMMatrix, sx : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::skew_x_self(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.skewXSelf()
+
+pub extern "js" fn DOMMatrix::skew_x_self_with_sx(self : DOMMatrix, sx : Double) -> DOMMatrix =
   #| (self, sx) => self.skewXSelf(sx)
 
-pub extern "js" fn DOMMatrix::skew_y_self(self : DOMMatrix, sy : Double) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::skew_y_self(self : DOMMatrix) -> DOMMatrix =
+  #| (self) => self.skewYSelf()
+
+pub extern "js" fn DOMMatrix::skew_y_self_with_sy(self : DOMMatrix, sy : Double) -> DOMMatrix =
   #| (self, sy) => self.skewYSelf(sy)
 
 pub extern "js" fn DOMMatrix::invert_self(self : DOMMatrix) -> DOMMatrix =

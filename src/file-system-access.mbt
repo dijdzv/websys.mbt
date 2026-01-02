@@ -131,7 +131,7 @@ pub extern "js" fn FilePickerAcceptType::to_js(self : FilePickerAcceptType) -> J
 ///|
 /// FilePickerOptions dictionary
 pub struct FilePickerOptions {
-  types : JsValue?
+  types : Array[FilePickerAcceptType]?
   excludeAcceptAllOption : Bool?
   id : String?
   startIn : StartInDirectory?
@@ -159,7 +159,7 @@ pub extern "js" fn FilePickerOptions::to_js(self : FilePickerOptions) -> JsValue
 ///|
 /// OpenFilePickerOptions dictionary
 pub struct OpenFilePickerOptions {
-  types : JsValue?
+  types : Array[FilePickerAcceptType]?
   excludeAcceptAllOption : Bool?
   id : String?
   startIn : StartInDirectory?
@@ -190,7 +190,7 @@ pub extern "js" fn OpenFilePickerOptions::to_js(self : OpenFilePickerOptions) ->
 ///|
 /// SaveFilePickerOptions dictionary
 pub struct SaveFilePickerOptions {
-  types : JsValue?
+  types : Array[FilePickerAcceptType]?
   excludeAcceptAllOption : Bool?
   id : String?
   startIn : StartInDirectory?

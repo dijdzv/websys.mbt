@@ -149,13 +149,19 @@ pub extern "js" fn PushManager::to_js_value(self : PushManager) -> JsValue =
 pub extern "js" fn PushManager::get_supported_content_encodings(self : PushManager) -> JsValue =
   #| (self) => self.supportedContentEncodings
 
-pub extern "js" fn PushManager::subscribe(self : PushManager, options : PushSubscriptionOptionsInit) -> JsValue =
+pub extern "js" fn PushManager::subscribe(self : PushManager) -> Promise[PushSubscription] =
+  #| (self) => self.subscribe()
+
+pub extern "js" fn PushManager::subscribe_with_options(self : PushManager, options : PushSubscriptionOptionsInit) -> Promise[PushSubscription] =
   #| (self, options) => self.subscribe(options)
 
-pub extern "js" fn PushManager::get_subscription(self : PushManager) -> JsValue =
+pub extern "js" fn PushManager::get_subscription(self : PushManager) -> Promise[PushSubscription?] =
   #| (self) => self.getSubscription()
 
-pub extern "js" fn PushManager::permission_state(self : PushManager, options : PushSubscriptionOptionsInit) -> JsValue =
+pub extern "js" fn PushManager::permission_state(self : PushManager) -> Promise[PermissionState] =
+  #| (self) => self.permissionState()
+
+pub extern "js" fn PushManager::permission_state_with_options(self : PushManager, options : PushSubscriptionOptionsInit) -> Promise[PermissionState] =
   #| (self, options) => self.permissionState(options)
 
 ///|
@@ -190,7 +196,7 @@ pub extern "js" fn PushSubscription::get_options(self : PushSubscription) -> Pus
 pub extern "js" fn PushSubscription::get_key(self : PushSubscription, name : PushEncryptionKeyName) -> ArrayBuffer? =
   #| (self, name) => self.getKey(['p256dh', 'auth'][name])
 
-pub extern "js" fn PushSubscription::unsubscribe(self : PushSubscription) -> JsValue =
+pub extern "js" fn PushSubscription::unsubscribe(self : PushSubscription) -> Promise[Bool] =
   #| (self) => self.unsubscribe()
 
 pub extern "js" fn PushSubscription::to_j_s_o_n(self : PushSubscription) -> PushSubscriptionJSON =

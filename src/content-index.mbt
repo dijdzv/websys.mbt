@@ -41,7 +41,7 @@ pub struct ContentDescription {
   title : String
   description : String
   category : ContentCategory?
-  icons : JsValue?
+  icons : Array[ImageResource]?
   url : String
 }
 
@@ -94,13 +94,13 @@ pub type ContentIndex
 pub extern "js" fn ContentIndex::to_js_value(self : ContentIndex) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ContentIndex::add(self : ContentIndex, description : ContentDescription) -> JsValue =
+pub extern "js" fn ContentIndex::add(self : ContentIndex, description : ContentDescription) -> Promise[Unit] =
   #| (self, description) => self.add(description)
 
-pub extern "js" fn ContentIndex::delete(self : ContentIndex, id : String) -> JsValue =
+pub extern "js" fn ContentIndex::delete(self : ContentIndex, id : String) -> Promise[Unit] =
   #| (self, id) => self.delete(id)
 
-pub extern "js" fn ContentIndex::get_all(self : ContentIndex) -> JsValue =
+pub extern "js" fn ContentIndex::get_all(self : ContentIndex) -> Promise[Array[ContentDescription]] =
   #| (self) => self.getAll()
 
 ///|

@@ -76,13 +76,13 @@ pub type Permissions
 pub extern "js" fn Permissions::to_js_value(self : Permissions) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Permissions::query(self : Permissions, permission_desc : JsValue) -> JsValue =
+pub extern "js" fn Permissions::query(self : Permissions, permission_desc : JsValue) -> Promise[PermissionStatus] =
   #| (self, permission_desc) => self.query(permission_desc)
 
-pub extern "js" fn Permissions::request(self : Permissions, permission_desc : JsValue) -> JsValue =
+pub extern "js" fn Permissions::request(self : Permissions, permission_desc : JsValue) -> Promise[PermissionStatus] =
   #| (self, permission_desc) => self.request(permission_desc)
 
-pub extern "js" fn Permissions::revoke(self : Permissions, permission_desc : JsValue) -> JsValue =
+pub extern "js" fn Permissions::revoke(self : Permissions, permission_desc : JsValue) -> Promise[PermissionStatus] =
   #| (self, permission_desc) => self.revoke(permission_desc)
 
 ///|

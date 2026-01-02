@@ -151,7 +151,7 @@ pub extern "js" fn WebAssemblyInstantiatedSource::to_js(self : WebAssemblyInstan
 /// WebAssemblyCompileOptions dictionary
 pub struct WebAssemblyCompileOptions {
   importedStringConstants : String??
-  builtins : JsValue?
+  builtins : Array[String]?
 }
 
 /// Create a new WebAssemblyCompileOptions with default values
@@ -294,13 +294,13 @@ pub extern "js" fn GlobalDescriptor::to_js(self : GlobalDescriptor) -> JsValue =
 ///|
 /// TagType dictionary
 pub struct TagType {
-  parameters : JsValue
+  parameters : Array[ValueType]
 }
 
 /// Create a new TagType with default values
 pub fn TagType::default() -> TagType {
   TagType::{
-    parameters: panic(),
+    parameters: [],
   }
 }
 
@@ -339,13 +339,13 @@ pub extern "js" fn Module::to_js_value(self : Module) -> JsValue =
 pub extern "js" fn Module::new(bytes : BufferSource, options : WebAssemblyCompileOptions) -> Module =
   #| (bytes, options) => new Module(bytes, options)
 
-pub extern "js" fn Module::exports(module_object : Module) -> JsValue =
+pub extern "js" fn Module::exports(module_object : Module) -> Array[ModuleExportDescriptor] =
   #| (module_object) => Module.exports(module_object)
 
-pub extern "js" fn Module::imports(module_object : Module) -> JsValue =
+pub extern "js" fn Module::imports(module_object : Module) -> Array[ModuleImportDescriptor] =
   #| (module_object) => Module.imports(module_object)
 
-pub extern "js" fn Module::custom_sections(module_object : Module, section_name : String) -> JsValue =
+pub extern "js" fn Module::custom_sections(module_object : Module, section_name : String) -> Array[ArrayBuffer] =
   #| (module_object, section_name) => Module.customSections(module_object, section_name)
 
 ///|
@@ -393,13 +393,19 @@ pub extern "js" fn Table::to_js_value(self : Table) -> JsValue =
 pub extern "js" fn Table::new(descriptor : TableDescriptor, value : JsValue) -> Table =
   #| (descriptor, value) => new Table(descriptor, value)
 
-pub extern "js" fn Table::grow(self : Table, delta : AddressValue, value : JsValue) -> AddressValue =
+pub extern "js" fn Table::grow(self : Table, delta : AddressValue) -> AddressValue =
+  #| (self, delta) => self.grow(delta)
+
+pub extern "js" fn Table::grow_with_value(self : Table, delta : AddressValue, value : JsValue) -> AddressValue =
   #| (self, delta, value) => self.grow(delta, value)
 
 pub extern "js" fn Table::get(self : Table, index : AddressValue) -> JsValue =
   #| (self, index) => self.get(index)
 
-pub extern "js" fn Table::set(self : Table, index : AddressValue, value : JsValue) -> Unit =
+pub extern "js" fn Table::set(self : Table, index : AddressValue) -> Unit =
+  #| (self, index) => self.set(index)
+
+pub extern "js" fn Table::set_with_value(self : Table, index : AddressValue, value : JsValue) -> Unit =
   #| (self, index, value) => self.set(index, value)
 
 pub extern "js" fn Table::get_length(self : Table) -> AddressValue =
@@ -441,7 +447,7 @@ pub type Exception
 pub extern "js" fn Exception::to_js_value(self : Exception) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Exception::new(exception_tag : Tag, payload : JsValue, options : ExceptionOptions) -> Exception =
+pub extern "js" fn Exception::new(exception_tag : Tag, payload : Array[JsValue], options : ExceptionOptions) -> Exception =
   #| (exception_tag, payload, options) => new Exception(exception_tag, payload, options)
 
 pub extern "js" fn Exception::get_arg(self : Exception, index : Int) -> JsValue =

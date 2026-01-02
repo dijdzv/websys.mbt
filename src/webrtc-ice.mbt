@@ -30,7 +30,7 @@ pub extern "js" fn RTCIceParameters::to_js(self : RTCIceParameters) -> JsValue =
 /// RTCIceGatherOptions dictionary
 pub struct RTCIceGatherOptions {
   gatherPolicy : RTCIceTransportPolicy?
-  iceServers : JsValue?
+  iceServers : Array[RTCIceServer]?
 }
 
 /// Create a new RTCIceGatherOptions with default values

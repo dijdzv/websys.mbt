@@ -33,13 +33,16 @@ pub type StorageBucketManager
 pub extern "js" fn StorageBucketManager::to_js_value(self : StorageBucketManager) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn StorageBucketManager::open(self : StorageBucketManager, name : String, options : StorageBucketOptions) -> JsValue =
+pub extern "js" fn StorageBucketManager::open(self : StorageBucketManager, name : String) -> Promise[StorageBucket] =
+  #| (self, name) => self.open(name)
+
+pub extern "js" fn StorageBucketManager::open_with_options(self : StorageBucketManager, name : String, options : StorageBucketOptions) -> Promise[StorageBucket] =
   #| (self, name, options) => self.open(name, options)
 
-pub extern "js" fn StorageBucketManager::keys(self : StorageBucketManager) -> JsValue =
+pub extern "js" fn StorageBucketManager::keys(self : StorageBucketManager) -> Promise[Array[String]] =
   #| (self) => self.keys()
 
-pub extern "js" fn StorageBucketManager::delete(self : StorageBucketManager, name : String) -> JsValue =
+pub extern "js" fn StorageBucketManager::delete(self : StorageBucketManager, name : String) -> Promise[Unit] =
   #| (self, name) => self.delete(name)
 
 ///|
@@ -52,19 +55,19 @@ pub extern "js" fn StorageBucket::to_js_value(self : StorageBucket) -> JsValue =
 pub extern "js" fn StorageBucket::get_name(self : StorageBucket) -> String =
   #| (self) => self.name
 
-pub extern "js" fn StorageBucket::persist(self : StorageBucket) -> JsValue =
+pub extern "js" fn StorageBucket::persist(self : StorageBucket) -> Promise[Bool] =
   #| (self) => self.persist()
 
-pub extern "js" fn StorageBucket::persisted(self : StorageBucket) -> JsValue =
+pub extern "js" fn StorageBucket::persisted(self : StorageBucket) -> Promise[Bool] =
   #| (self) => self.persisted()
 
-pub extern "js" fn StorageBucket::estimate(self : StorageBucket) -> JsValue =
+pub extern "js" fn StorageBucket::estimate(self : StorageBucket) -> Promise[StorageEstimate] =
   #| (self) => self.estimate()
 
-pub extern "js" fn StorageBucket::set_expires(self : StorageBucket, expires : DOMHighResTimeStamp) -> JsValue =
+pub extern "js" fn StorageBucket::set_expires(self : StorageBucket, expires : DOMHighResTimeStamp) -> Promise[Unit] =
   #| (self, expires) => self.setExpires(expires)
 
-pub extern "js" fn StorageBucket::expires(self : StorageBucket) -> JsValue =
+pub extern "js" fn StorageBucket::expires(self : StorageBucket) -> Promise[DOMHighResTimeStamp?] =
   #| (self) => self.expires()
 
 pub extern "js" fn StorageBucket::get_indexed_d_b(self : StorageBucket) -> IDBFactory =
@@ -73,6 +76,6 @@ pub extern "js" fn StorageBucket::get_indexed_d_b(self : StorageBucket) -> IDBFa
 pub extern "js" fn StorageBucket::get_caches(self : StorageBucket) -> CacheStorage =
   #| (self) => self.caches
 
-pub extern "js" fn StorageBucket::get_directory(self : StorageBucket) -> JsValue =
+pub extern "js" fn StorageBucket::get_directory(self : StorageBucket) -> Promise[FileSystemDirectoryHandle] =
   #| (self) => self.getDirectory()
 

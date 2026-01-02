@@ -223,7 +223,10 @@ pub extern "js" fn UIEvent::get_detail(self : UIEvent) -> Int =
 pub extern "js" fn UIEvent::get_source_capabilities(self : UIEvent) -> InputDeviceCapabilities? =
   #| (self) => self.sourceCapabilities
 
-pub extern "js" fn UIEvent::init_u_i_event(self : UIEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int) -> Unit =
+pub extern "js" fn UIEvent::init_u_i_event(self : UIEvent, type_arg : String) -> Unit =
+  #| (self, type_arg) => self.initUIEvent(type_arg)
+
+pub extern "js" fn UIEvent::init_u_i_event_with_detail_arg(self : UIEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int) -> Unit =
   #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg) => self.initUIEvent(type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg)
 
 pub extern "js" fn UIEvent::get_which(self : UIEvent) -> Int =
@@ -248,7 +251,10 @@ pub extern "js" fn FocusEvent::get_detail(self : FocusEvent) -> Int =
 pub extern "js" fn FocusEvent::get_source_capabilities(self : FocusEvent) -> InputDeviceCapabilities? =
   #| (self) => self.sourceCapabilities
 
-pub extern "js" fn FocusEvent::init_u_i_event(self : FocusEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int) -> Unit =
+pub extern "js" fn FocusEvent::init_u_i_event(self : FocusEvent, type_arg : String) -> Unit =
+  #| (self, type_arg) => self.initUIEvent(type_arg)
+
+pub extern "js" fn FocusEvent::init_u_i_event_with_detail_arg(self : FocusEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int) -> Unit =
   #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg) => self.initUIEvent(type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg)
 
 pub extern "js" fn FocusEvent::get_which(self : FocusEvent) -> Int =
@@ -276,7 +282,10 @@ pub extern "js" fn MouseEvent::get_detail(self : MouseEvent) -> Int =
 pub extern "js" fn MouseEvent::get_source_capabilities(self : MouseEvent) -> InputDeviceCapabilities? =
   #| (self) => self.sourceCapabilities
 
-pub extern "js" fn MouseEvent::init_u_i_event(self : MouseEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int) -> Unit =
+pub extern "js" fn MouseEvent::init_u_i_event(self : MouseEvent, type_arg : String) -> Unit =
+  #| (self, type_arg) => self.initUIEvent(type_arg)
+
+pub extern "js" fn MouseEvent::init_u_i_event_with_detail_arg(self : MouseEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int) -> Unit =
   #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg) => self.initUIEvent(type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg)
 
 pub extern "js" fn MouseEvent::get_which(self : MouseEvent) -> Int =
@@ -348,7 +357,10 @@ pub extern "js" fn MouseEvent::get_movement_x(self : MouseEvent) -> Double =
 pub extern "js" fn MouseEvent::get_movement_y(self : MouseEvent) -> Double =
   #| (self) => self.movementY
 
-pub extern "js" fn MouseEvent::init_mouse_event(self : MouseEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int, screen_x_arg : Int, screen_y_arg : Int, client_x_arg : Int, client_y_arg : Int, ctrl_key_arg : Bool, alt_key_arg : Bool, shift_key_arg : Bool, meta_key_arg : Bool, button_arg : Int, related_target_arg : EventTarget?) -> Unit =
+pub extern "js" fn MouseEvent::init_mouse_event(self : MouseEvent, type_arg : String) -> Unit =
+  #| (self, type_arg) => self.initMouseEvent(type_arg)
+
+pub extern "js" fn MouseEvent::init_mouse_event_with_related_target_arg(self : MouseEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int, screen_x_arg : Int, screen_y_arg : Int, client_x_arg : Int, client_y_arg : Int, ctrl_key_arg : Bool, alt_key_arg : Bool, shift_key_arg : Bool, meta_key_arg : Bool, button_arg : Int, related_target_arg : EventTarget?) -> Unit =
   #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg, screen_x_arg, screen_y_arg, client_x_arg, client_y_arg, ctrl_key_arg, alt_key_arg, shift_key_arg, meta_key_arg, button_arg, related_target_arg) => self.initMouseEvent(type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg, screen_x_arg, screen_y_arg, client_x_arg, client_y_arg, ctrl_key_arg, alt_key_arg, shift_key_arg, meta_key_arg, button_arg, related_target_arg)
 
 ///|
@@ -370,7 +382,10 @@ pub extern "js" fn WheelEvent::get_detail(self : WheelEvent) -> Int =
 pub extern "js" fn WheelEvent::get_source_capabilities(self : WheelEvent) -> InputDeviceCapabilities? =
   #| (self) => self.sourceCapabilities
 
-pub extern "js" fn WheelEvent::init_u_i_event(self : WheelEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int) -> Unit =
+pub extern "js" fn WheelEvent::init_u_i_event(self : WheelEvent, type_arg : String) -> Unit =
+  #| (self, type_arg) => self.initUIEvent(type_arg)
+
+pub extern "js" fn WheelEvent::init_u_i_event_with_detail_arg(self : WheelEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int) -> Unit =
   #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg) => self.initUIEvent(type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg)
 
 pub extern "js" fn WheelEvent::get_which(self : WheelEvent) -> Int =
@@ -442,8 +457,20 @@ pub extern "js" fn WheelEvent::get_movement_x(self : WheelEvent) -> Double =
 pub extern "js" fn WheelEvent::get_movement_y(self : WheelEvent) -> Double =
   #| (self) => self.movementY
 
-pub extern "js" fn WheelEvent::init_mouse_event(self : WheelEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int, screen_x_arg : Int, screen_y_arg : Int, client_x_arg : Int, client_y_arg : Int, ctrl_key_arg : Bool, alt_key_arg : Bool, shift_key_arg : Bool, meta_key_arg : Bool, button_arg : Int, related_target_arg : EventTarget?) -> Unit =
+pub extern "js" fn WheelEvent::init_mouse_event(self : WheelEvent, type_arg : String) -> Unit =
+  #| (self, type_arg) => self.initMouseEvent(type_arg)
+
+pub extern "js" fn WheelEvent::init_mouse_event_with_related_target_arg(self : WheelEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int, screen_x_arg : Int, screen_y_arg : Int, client_x_arg : Int, client_y_arg : Int, ctrl_key_arg : Bool, alt_key_arg : Bool, shift_key_arg : Bool, meta_key_arg : Bool, button_arg : Int, related_target_arg : EventTarget?) -> Unit =
   #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg, screen_x_arg, screen_y_arg, client_x_arg, client_y_arg, ctrl_key_arg, alt_key_arg, shift_key_arg, meta_key_arg, button_arg, related_target_arg) => self.initMouseEvent(type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg, screen_x_arg, screen_y_arg, client_x_arg, client_y_arg, ctrl_key_arg, alt_key_arg, shift_key_arg, meta_key_arg, button_arg, related_target_arg)
+
+// WheelEvent.DOM_DELTA_PIXEL
+pub let wheel_event_dom_delta_pixel : Int = 0x00
+
+// WheelEvent.DOM_DELTA_LINE
+pub let wheel_event_dom_delta_line : Int = 0x01
+
+// WheelEvent.DOM_DELTA_PAGE
+pub let wheel_event_dom_delta_page : Int = 0x02
 
 pub extern "js" fn WheelEvent::get_delta_x(self : WheelEvent) -> Double =
   #| (self) => self.deltaX
@@ -476,7 +503,10 @@ pub extern "js" fn InputEvent::get_detail(self : InputEvent) -> Int =
 pub extern "js" fn InputEvent::get_source_capabilities(self : InputEvent) -> InputDeviceCapabilities? =
   #| (self) => self.sourceCapabilities
 
-pub extern "js" fn InputEvent::init_u_i_event(self : InputEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int) -> Unit =
+pub extern "js" fn InputEvent::init_u_i_event(self : InputEvent, type_arg : String) -> Unit =
+  #| (self, type_arg) => self.initUIEvent(type_arg)
+
+pub extern "js" fn InputEvent::init_u_i_event_with_detail_arg(self : InputEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int) -> Unit =
   #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg) => self.initUIEvent(type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg)
 
 pub extern "js" fn InputEvent::get_which(self : InputEvent) -> Int =
@@ -494,7 +524,7 @@ pub extern "js" fn InputEvent::get_input_type(self : InputEvent) -> String =
 pub extern "js" fn InputEvent::get_data_transfer(self : InputEvent) -> DataTransfer? =
   #| (self) => self.dataTransfer
 
-pub extern "js" fn InputEvent::get_target_ranges(self : InputEvent) -> JsValue =
+pub extern "js" fn InputEvent::get_target_ranges(self : InputEvent) -> Array[StaticRange] =
   #| (self) => self.getTargetRanges()
 
 ///|
@@ -516,11 +546,26 @@ pub extern "js" fn KeyboardEvent::get_detail(self : KeyboardEvent) -> Int =
 pub extern "js" fn KeyboardEvent::get_source_capabilities(self : KeyboardEvent) -> InputDeviceCapabilities? =
   #| (self) => self.sourceCapabilities
 
-pub extern "js" fn KeyboardEvent::init_u_i_event(self : KeyboardEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int) -> Unit =
+pub extern "js" fn KeyboardEvent::init_u_i_event(self : KeyboardEvent, type_arg : String) -> Unit =
+  #| (self, type_arg) => self.initUIEvent(type_arg)
+
+pub extern "js" fn KeyboardEvent::init_u_i_event_with_detail_arg(self : KeyboardEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int) -> Unit =
   #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg) => self.initUIEvent(type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg)
 
 pub extern "js" fn KeyboardEvent::get_which(self : KeyboardEvent) -> Int =
   #| (self) => self.which
+
+// KeyboardEvent.DOM_KEY_LOCATION_STANDARD
+pub let keyboard_event_dom_key_location_standard : Int = 0x00
+
+// KeyboardEvent.DOM_KEY_LOCATION_LEFT
+pub let keyboard_event_dom_key_location_left : Int = 0x01
+
+// KeyboardEvent.DOM_KEY_LOCATION_RIGHT
+pub let keyboard_event_dom_key_location_right : Int = 0x02
+
+// KeyboardEvent.DOM_KEY_LOCATION_NUMPAD
+pub let keyboard_event_dom_key_location_numpad : Int = 0x03
 
 pub extern "js" fn KeyboardEvent::get_key(self : KeyboardEvent) -> String =
   #| (self) => self.key
@@ -552,7 +597,10 @@ pub extern "js" fn KeyboardEvent::get_is_composing(self : KeyboardEvent) -> Bool
 pub extern "js" fn KeyboardEvent::get_modifier_state(self : KeyboardEvent, key_arg : String) -> Bool =
   #| (self, key_arg) => self.getModifierState(key_arg)
 
-pub extern "js" fn KeyboardEvent::init_keyboard_event(self : KeyboardEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, key_arg : String, location_arg : Int, ctrl_key : Bool, alt_key : Bool, shift_key : Bool, meta_key : Bool) -> Unit =
+pub extern "js" fn KeyboardEvent::init_keyboard_event(self : KeyboardEvent, type_arg : String) -> Unit =
+  #| (self, type_arg) => self.initKeyboardEvent(type_arg)
+
+pub extern "js" fn KeyboardEvent::init_keyboard_event_with_meta_key(self : KeyboardEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, key_arg : String, location_arg : Int, ctrl_key : Bool, alt_key : Bool, shift_key : Bool, meta_key : Bool) -> Unit =
   #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, key_arg, location_arg, ctrl_key, alt_key, shift_key, meta_key) => self.initKeyboardEvent(type_arg, bubbles_arg, cancelable_arg, view_arg, key_arg, location_arg, ctrl_key, alt_key, shift_key, meta_key)
 
 pub extern "js" fn KeyboardEvent::get_char_code(self : KeyboardEvent) -> Int =
@@ -580,7 +628,10 @@ pub extern "js" fn CompositionEvent::get_detail(self : CompositionEvent) -> Int 
 pub extern "js" fn CompositionEvent::get_source_capabilities(self : CompositionEvent) -> InputDeviceCapabilities? =
   #| (self) => self.sourceCapabilities
 
-pub extern "js" fn CompositionEvent::init_u_i_event(self : CompositionEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int) -> Unit =
+pub extern "js" fn CompositionEvent::init_u_i_event(self : CompositionEvent, type_arg : String) -> Unit =
+  #| (self, type_arg) => self.initUIEvent(type_arg)
+
+pub extern "js" fn CompositionEvent::init_u_i_event_with_detail_arg(self : CompositionEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int) -> Unit =
   #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg) => self.initUIEvent(type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg)
 
 pub extern "js" fn CompositionEvent::get_which(self : CompositionEvent) -> Int =
@@ -589,7 +640,10 @@ pub extern "js" fn CompositionEvent::get_which(self : CompositionEvent) -> Int =
 pub extern "js" fn CompositionEvent::get_data(self : CompositionEvent) -> String =
   #| (self) => self.data
 
-pub extern "js" fn CompositionEvent::init_composition_event(self : CompositionEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : WindowProxy?, data_arg : String) -> Unit =
+pub extern "js" fn CompositionEvent::init_composition_event(self : CompositionEvent, type_arg : String) -> Unit =
+  #| (self, type_arg) => self.initCompositionEvent(type_arg)
+
+pub extern "js" fn CompositionEvent::init_composition_event_with_data_arg(self : CompositionEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : WindowProxy?, data_arg : String) -> Unit =
   #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, data_arg) => self.initCompositionEvent(type_arg, bubbles_arg, cancelable_arg, view_arg, data_arg)
 
 ///|
@@ -611,7 +665,10 @@ pub extern "js" fn TextEvent::get_detail(self : TextEvent) -> Int =
 pub extern "js" fn TextEvent::get_source_capabilities(self : TextEvent) -> InputDeviceCapabilities? =
   #| (self) => self.sourceCapabilities
 
-pub extern "js" fn TextEvent::init_u_i_event(self : TextEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int) -> Unit =
+pub extern "js" fn TextEvent::init_u_i_event(self : TextEvent, type_arg : String) -> Unit =
+  #| (self, type_arg) => self.initUIEvent(type_arg)
+
+pub extern "js" fn TextEvent::init_u_i_event_with_detail_arg(self : TextEvent, type_arg : String, bubbles_arg : Bool, cancelable_arg : Bool, view_arg : Window?, detail_arg : Int) -> Unit =
   #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg) => self.initUIEvent(type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg)
 
 pub extern "js" fn TextEvent::get_which(self : TextEvent) -> Int =
@@ -620,6 +677,9 @@ pub extern "js" fn TextEvent::get_which(self : TextEvent) -> Int =
 pub extern "js" fn TextEvent::get_data(self : TextEvent) -> String =
   #| (self) => self.data
 
-pub extern "js" fn TextEvent::init_text_event(self : TextEvent, type_ : String, bubbles : Bool, cancelable : Bool, view : Window?, data : String) -> Unit =
+pub extern "js" fn TextEvent::init_text_event(self : TextEvent, type_ : String) -> Unit =
+  #| (self, type_) => self.initTextEvent(type_)
+
+pub extern "js" fn TextEvent::init_text_event_with_data(self : TextEvent, type_ : String, bubbles : Bool, cancelable : Bool, view : Window?, data : String) -> Unit =
   #| (self, type_, bubbles, cancelable, view, data) => self.initTextEvent(type_, bubbles, cancelable, view, data)
 

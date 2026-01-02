@@ -4,6 +4,10 @@
 /// IdleRequestCallback callback interface
 pub type IdleRequestCallback
 
+/// Create IdleRequestCallback from a MoonBit function
+pub extern "js" fn IdleRequestCallback::from_fn(handler : (IdleDeadline) -> Unit) -> IdleRequestCallback =
+  #| (handler) => handler
+
 ///|
 /// IdleRequestOptions dictionary
 pub struct IdleRequestOptions {

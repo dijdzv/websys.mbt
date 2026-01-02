@@ -79,7 +79,7 @@ pub struct PrivateToken {
   version : TokenVersion
   operation : OperationType
   refreshPolicy : RefreshPolicy?
-  issuers : JsValue?
+  issuers : Array[String]?
 }
 
 /// Create a new PrivateToken with default values

@@ -39,15 +39,15 @@ pub fn SecurePaymentConfirmationAvailability::from_string(s : String) -> SecureP
 pub struct SecurePaymentConfirmationRequest {
   challenge : BufferSource
   rpId : String
-  credentialIds : JsValue
+  credentialIds : Array[BufferSource]
   instrument : PaymentCredentialInstrument
   timeout : Int?
   payeeName : String?
   payeeOrigin : String?
-  paymentEntitiesLogos : JsValue?
+  paymentEntitiesLogos : Array[PaymentEntityLogo]?
   extensions : AuthenticationExtensionsClientInputs?
-  browserBoundPubKeyCredParams : JsValue?
-  locale : JsValue?
+  browserBoundPubKeyCredParams : Array[PublicKeyCredentialParameters]?
+  locale : Array[String]?
   showOptOut : Bool?
 }
 
@@ -56,7 +56,7 @@ pub fn SecurePaymentConfirmationRequest::default() -> SecurePaymentConfirmationR
   SecurePaymentConfirmationRequest::{
     challenge: panic(),
     rpId: "",
-    credentialIds: panic(),
+    credentialIds: [],
     instrument: panic(),
     timeout: None,
     payeeName: None,
@@ -90,12 +90,12 @@ pub extern "js" fn SecurePaymentConfirmationRequest::to_js(self : SecurePaymentC
 /// AuthenticationExtensionsPaymentInputs dictionary
 pub struct AuthenticationExtensionsPaymentInputs {
   isPayment : Bool?
-  browserBoundPubKeyCredParams : JsValue?
+  browserBoundPubKeyCredParams : Array[PublicKeyCredentialParameters]?
   rpId : String?
   topOrigin : String?
   payeeName : String?
   payeeOrigin : String?
-  paymentEntitiesLogos : JsValue?
+  paymentEntitiesLogos : Array[PaymentEntityLogo]?
   total : PaymentCurrencyAmount?
   instrument : PaymentCredentialInstrument?
 }
@@ -193,7 +193,7 @@ pub struct CollectedClientAdditionalPaymentData {
   topOrigin : String
   payeeName : String?
   payeeOrigin : String?
-  paymentEntitiesLogos : JsValue?
+  paymentEntitiesLogos : Array[PaymentEntityLogo]?
   total : PaymentCurrencyAmount
   instrument : PaymentCredentialInstrument
   browserBoundPublicKey : String?

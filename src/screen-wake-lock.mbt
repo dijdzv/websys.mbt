@@ -29,7 +29,10 @@ pub type WakeLock
 pub extern "js" fn WakeLock::to_js_value(self : WakeLock) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn WakeLock::request(self : WakeLock, type_ : WakeLockType) -> JsValue =
+pub extern "js" fn WakeLock::request(self : WakeLock) -> Promise[WakeLockSentinel] =
+  #| (self) => self.request()
+
+pub extern "js" fn WakeLock::request_with_type(self : WakeLock, type_ : WakeLockType) -> Promise[WakeLockSentinel] =
   #| (self, type_) => self.request(['screen'][type_])
 
 ///|
@@ -45,7 +48,7 @@ pub extern "js" fn WakeLockSentinel::get_released(self : WakeLockSentinel) -> Bo
 pub extern "js" fn WakeLockSentinel::get_type(self : WakeLockSentinel) -> WakeLockType =
   #| (self) => self.type
 
-pub extern "js" fn WakeLockSentinel::release(self : WakeLockSentinel) -> JsValue =
+pub extern "js" fn WakeLockSentinel::release(self : WakeLockSentinel) -> Promise[Unit] =
   #| (self) => self.release()
 
 pub extern "js" fn WakeLockSentinel::get_onrelease(self : WakeLockSentinel) -> EventHandler =

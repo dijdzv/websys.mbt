@@ -3,10 +3,14 @@
 
 ///|
 /// ReportList typedef
-pub type ReportList = JsValue
+pub type ReportList = Array[Report]
 
 /// ReportingObserverCallback callback interface
 pub type ReportingObserverCallback
+
+/// Create ReportingObserverCallback from a MoonBit function
+pub extern "js" fn ReportingObserverCallback::from_fn(handler : (Array[Report], ReportingObserver) -> Unit) -> ReportingObserverCallback =
+  #| (handler) => handler
 
 ///|
 /// ReportBody dictionary
@@ -52,7 +56,7 @@ pub extern "js" fn Report::to_js(self : Report) -> JsValue =
 ///|
 /// ReportingObserverOptions dictionary
 pub struct ReportingObserverOptions {
-  types : JsValue?
+  types : Array[String]?
   buffered : Bool?
 }
 

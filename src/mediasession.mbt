@@ -127,14 +127,18 @@ pub fn MediaSessionEnterPictureInPictureReason::from_string(s : String) -> Media
 /// MediaSessionActionHandler callback interface
 pub type MediaSessionActionHandler
 
+/// Create MediaSessionActionHandler from a MoonBit function
+pub extern "js" fn MediaSessionActionHandler::from_fn(handler : (MediaSessionActionDetails) -> Unit) -> MediaSessionActionHandler =
+  #| (handler) => handler
+
 ///|
 /// MediaMetadataInit dictionary
 pub struct MediaMetadataInit {
   title : String?
   artist : String?
   album : String?
-  artwork : JsValue?
-  chapterInfo : JsValue?
+  artwork : Array[MediaImage]?
+  chapterInfo : Array[ChapterInformationInit]?
 }
 
 /// Create a new MediaMetadataInit with default values
@@ -163,7 +167,7 @@ pub extern "js" fn MediaMetadataInit::to_js(self : MediaMetadataInit) -> JsValue
 pub struct ChapterInformationInit {
   title : String?
   startTime : Double?
-  artwork : JsValue?
+  artwork : Array[MediaImage]?
 }
 
 /// Create a new ChapterInformationInit with default values
@@ -289,16 +293,19 @@ pub extern "js" fn MediaSession::set_playback_state(self : MediaSession, value :
 pub extern "js" fn MediaSession::set_action_handler(self : MediaSession, action : MediaSessionAction, handler : MediaSessionActionHandler?) -> Unit =
   #| (self, action, handler) => self.setActionHandler(['play', 'pause', 'seekbackward', 'seekforward', 'previoustrack', 'nexttrack', 'skipad', 'stop', 'seekto', 'togglemicrophone', 'togglecamera', 'togglescreenshare', 'hangup', 'previousslide', 'nextslide', 'enterpictureinpicture', 'voiceactivity'][action], handler)
 
-pub extern "js" fn MediaSession::set_position_state(self : MediaSession, state : MediaPositionState) -> Unit =
+pub extern "js" fn MediaSession::set_position_state(self : MediaSession) -> Unit =
+  #| (self) => self.setPositionState()
+
+pub extern "js" fn MediaSession::set_position_state_with_state(self : MediaSession, state : MediaPositionState) -> Unit =
   #| (self, state) => self.setPositionState(state)
 
-pub extern "js" fn MediaSession::set_microphone_active(self : MediaSession, active : Bool) -> JsValue =
+pub extern "js" fn MediaSession::set_microphone_active(self : MediaSession, active : Bool) -> Promise[Unit] =
   #| (self, active) => self.setMicrophoneActive(active)
 
-pub extern "js" fn MediaSession::set_camera_active(self : MediaSession, active : Bool) -> JsValue =
+pub extern "js" fn MediaSession::set_camera_active(self : MediaSession, active : Bool) -> Promise[Unit] =
   #| (self, active) => self.setCameraActive(active)
 
-pub extern "js" fn MediaSession::set_screenshare_active(self : MediaSession, active : Bool) -> JsValue =
+pub extern "js" fn MediaSession::set_screenshare_active(self : MediaSession, active : Bool) -> Promise[Unit] =
   #| (self, active) => self.setScreenshareActive(active)
 
 ///|

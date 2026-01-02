@@ -5,7 +5,7 @@
 /// InputEventInit dictionary
 pub struct InputEventInit {
   dataTransfer : DataTransfer??
-  targetRanges : JsValue?
+  targetRanges : Array[StaticRange]?
   data : String??
   isComposing : Bool?
   inputType : String?

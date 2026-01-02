@@ -4,7 +4,7 @@
 ///|
 /// ShareData dictionary
 pub struct ShareData {
-  files : JsValue?
+  files : Array[File]?
   title : String?
   text : String?
   url : String?

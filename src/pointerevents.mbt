@@ -17,8 +17,8 @@ pub struct PointerEventInit {
   pointerType : String?
   isPrimary : Bool?
   persistentDeviceId : Int?
-  coalescedEvents : JsValue?
-  predictedEvents : JsValue?
+  coalescedEvents : Array[PointerEvent]?
+  predictedEvents : Array[PointerEvent]?
 }
 
 /// Create a new PointerEventInit with default values
@@ -111,9 +111,9 @@ pub extern "js" fn PointerEvent::get_is_primary(self : PointerEvent) -> Bool =
 pub extern "js" fn PointerEvent::get_persistent_device_id(self : PointerEvent) -> Int =
   #| (self) => self.persistentDeviceId
 
-pub extern "js" fn PointerEvent::get_coalesced_events(self : PointerEvent) -> JsValue =
+pub extern "js" fn PointerEvent::get_coalesced_events(self : PointerEvent) -> Array[PointerEvent] =
   #| (self) => self.getCoalescedEvents()
 
-pub extern "js" fn PointerEvent::get_predicted_events(self : PointerEvent) -> JsValue =
+pub extern "js" fn PointerEvent::get_predicted_events(self : PointerEvent) -> Array[PointerEvent] =
   #| (self) => self.getPredictedEvents()
 

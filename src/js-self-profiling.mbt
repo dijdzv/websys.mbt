@@ -8,19 +8,19 @@ pub type ProfilerResource = String
 ///|
 /// ProfilerTrace dictionary
 pub struct ProfilerTrace {
-  resources : JsValue
-  frames : JsValue
-  stacks : JsValue
-  samples : JsValue
+  resources : Array[ProfilerResource]
+  frames : Array[ProfilerFrame]
+  stacks : Array[ProfilerStack]
+  samples : Array[ProfilerSample]
 }
 
 /// Create a new ProfilerTrace with default values
 pub fn ProfilerTrace::default() -> ProfilerTrace {
   ProfilerTrace::{
-    resources: panic(),
-    frames: panic(),
-    stacks: panic(),
-    samples: panic(),
+    resources: [],
+    frames: [],
+    stacks: [],
+    samples: [],
   }
 }
 
@@ -143,6 +143,6 @@ pub extern "js" fn Profiler::get_stopped(self : Profiler) -> Bool =
 pub extern "js" fn Profiler::new(options : ProfilerInitOptions) -> Profiler =
   #| (options) => new Profiler(options)
 
-pub extern "js" fn Profiler::stop(self : Profiler) -> JsValue =
+pub extern "js" fn Profiler::stop(self : Profiler) -> Promise[ProfilerTrace] =
   #| (self) => self.stop()
 

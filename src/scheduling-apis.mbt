@@ -120,10 +120,13 @@ pub type Scheduler
 pub extern "js" fn Scheduler::to_js_value(self : Scheduler) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Scheduler::post_task(self : Scheduler, callback : SchedulerPostTaskCallback, options : SchedulerPostTaskOptions) -> JsValue =
+pub extern "js" fn Scheduler::post_task(self : Scheduler, callback : SchedulerPostTaskCallback) -> Promise[JsValue] =
+  #| (self, callback) => self.postTask(callback)
+
+pub extern "js" fn Scheduler::post_task_with_options(self : Scheduler, callback : SchedulerPostTaskCallback, options : SchedulerPostTaskOptions) -> Promise[JsValue] =
   #| (self, callback, options) => self.postTask(callback, options)
 
-pub extern "js" fn Scheduler::yield_(self : Scheduler) -> JsValue =
+pub extern "js" fn Scheduler::yield_(self : Scheduler) -> Promise[Unit] =
   #| (self) => self.yield()
 
 ///|
@@ -159,7 +162,7 @@ pub type TaskSignal
 pub extern "js" fn TaskSignal::to_js_value(self : TaskSignal) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn TaskSignal::any(signals : JsValue, init_ : TaskSignalAnyInit) -> TaskSignal =
+pub extern "js" fn TaskSignal::any(signals : Array[AbortSignal], init_ : TaskSignalAnyInit) -> TaskSignal =
   #| (signals, init_) => TaskSignal.any(signals, init_)
 
 pub extern "js" fn TaskSignal::get_priority(self : TaskSignal) -> TaskPriority =

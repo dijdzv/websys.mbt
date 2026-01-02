@@ -8,11 +8,23 @@ pub type TrustedType = JsValue
 /// CreateHTMLCallback callback interface
 pub type CreateHTMLCallback
 
+/// Create CreateHTMLCallback from a MoonBit function
+pub extern "js" fn CreateHTMLCallback::from_fn(handler : (String, JsValue) -> String?) -> CreateHTMLCallback =
+  #| (handler) => handler
+
 /// CreateScriptCallback callback interface
 pub type CreateScriptCallback
 
+/// Create CreateScriptCallback from a MoonBit function
+pub extern "js" fn CreateScriptCallback::from_fn(handler : (String, JsValue) -> String?) -> CreateScriptCallback =
+  #| (handler) => handler
+
 /// CreateScriptURLCallback callback interface
 pub type CreateScriptURLCallback
+
+/// Create CreateScriptURLCallback from a MoonBit function
+pub extern "js" fn CreateScriptURLCallback::from_fn(handler : (String, JsValue) -> String?) -> CreateScriptURLCallback =
+  #| (handler) => handler
 
 ///|
 /// TrustedTypePolicyOptions dictionary
@@ -76,7 +88,10 @@ pub type TrustedTypePolicyFactory
 pub extern "js" fn TrustedTypePolicyFactory::to_js_value(self : TrustedTypePolicyFactory) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn TrustedTypePolicyFactory::create_policy(self : TrustedTypePolicyFactory, policy_name : String, policy_options : TrustedTypePolicyOptions) -> TrustedTypePolicy =
+pub extern "js" fn TrustedTypePolicyFactory::create_policy(self : TrustedTypePolicyFactory, policy_name : String) -> TrustedTypePolicy =
+  #| (self, policy_name) => self.createPolicy(policy_name)
+
+pub extern "js" fn TrustedTypePolicyFactory::create_policy_with_policy_options(self : TrustedTypePolicyFactory, policy_name : String, policy_options : TrustedTypePolicyOptions) -> TrustedTypePolicy =
   #| (self, policy_name, policy_options) => self.createPolicy(policy_name, policy_options)
 
 pub extern "js" fn TrustedTypePolicyFactory::is_h_t_m_l(self : TrustedTypePolicyFactory, value : JsValue) -> Bool =
@@ -94,10 +109,16 @@ pub extern "js" fn TrustedTypePolicyFactory::get_empty_h_t_m_l(self : TrustedTyp
 pub extern "js" fn TrustedTypePolicyFactory::get_empty_script(self : TrustedTypePolicyFactory) -> TrustedScript =
   #| (self) => self.emptyScript
 
-pub extern "js" fn TrustedTypePolicyFactory::get_attribute_type(self : TrustedTypePolicyFactory, tag_name : String, attribute : String, element_ns : String?, attr_ns : String?) -> String? =
+pub extern "js" fn TrustedTypePolicyFactory::get_attribute_type(self : TrustedTypePolicyFactory, tag_name : String, attribute : String) -> String? =
+  #| (self, tag_name, attribute) => self.getAttributeType(tag_name, attribute)
+
+pub extern "js" fn TrustedTypePolicyFactory::get_attribute_type_with_attr_ns(self : TrustedTypePolicyFactory, tag_name : String, attribute : String, element_ns : String?, attr_ns : String?) -> String? =
   #| (self, tag_name, attribute, element_ns, attr_ns) => self.getAttributeType(tag_name, attribute, element_ns, attr_ns)
 
-pub extern "js" fn TrustedTypePolicyFactory::get_property_type(self : TrustedTypePolicyFactory, tag_name : String, property : String, element_ns : String?) -> String? =
+pub extern "js" fn TrustedTypePolicyFactory::get_property_type(self : TrustedTypePolicyFactory, tag_name : String, property : String) -> String? =
+  #| (self, tag_name, property) => self.getPropertyType(tag_name, property)
+
+pub extern "js" fn TrustedTypePolicyFactory::get_property_type_with_element_ns(self : TrustedTypePolicyFactory, tag_name : String, property : String, element_ns : String?) -> String? =
   #| (self, tag_name, property, element_ns) => self.getPropertyType(tag_name, property, element_ns)
 
 pub extern "js" fn TrustedTypePolicyFactory::get_default_policy(self : TrustedTypePolicyFactory) -> TrustedTypePolicy? =

@@ -59,7 +59,7 @@ pub extern "js" fn PreferenceObject::get_valid_values(self : PreferenceObject) -
 pub extern "js" fn PreferenceObject::clear_override(self : PreferenceObject) -> Unit =
   #| (self) => self.clearOverride()
 
-pub extern "js" fn PreferenceObject::request_override(self : PreferenceObject, value : String?) -> JsValue =
+pub extern "js" fn PreferenceObject::request_override(self : PreferenceObject, value : String?) -> Promise[Unit] =
   #| (self, value) => self.requestOverride(value)
 
 pub extern "js" fn PreferenceObject::get_onchange(self : PreferenceObject) -> EventHandler =

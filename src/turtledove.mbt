@@ -7,7 +7,7 @@ pub type PreviousWinElement = JsValue
 
 ///|
 /// PreviousWin typedef
-pub type PreviousWin = JsValue
+pub type PreviousWin = Array[PreviousWinElement]
 
 ///|
 /// KAnonStatus enum
@@ -47,8 +47,8 @@ pub struct AuctionAd {
   metadata : JsValue?
   buyerReportingId : String?
   buyerAndSellerReportingId : String?
-  selectableBuyerAndSellerReportingIds : JsValue?
-  allowedReportingOrigins : JsValue?
+  selectableBuyerAndSellerReportingIds : Array[String]?
+  allowedReportingOrigins : Array[String]?
   adRenderId : String?
   creativeScanningMetadata : String?
 }
@@ -117,13 +117,13 @@ pub struct GenerateBidInterestGroup {
   biddingWasmHelperURL : String?
   updateURL : String?
   trustedBiddingSignalsURL : String?
-  trustedBiddingSignalsKeys : JsValue?
+  trustedBiddingSignalsKeys : Array[String]?
   trustedBiddingSignalsSlotSizeMode : String?
   maxTrustedBiddingSignalsURLLength : Int?
   trustedBiddingSignalsCoordinator : String?
   userBiddingSignals : JsValue?
-  ads : JsValue?
-  adComponents : JsValue?
+  ads : Array[AuctionAd]?
+  adComponents : Array[AuctionAd]?
   adSizes : JsValue?
   sizeGroups : JsValue?
 }
@@ -209,13 +209,13 @@ pub struct AuctionAdInterestGroup {
   biddingWasmHelperURL : String?
   updateURL : String?
   trustedBiddingSignalsURL : String?
-  trustedBiddingSignalsKeys : JsValue?
+  trustedBiddingSignalsKeys : Array[String]?
   trustedBiddingSignalsSlotSizeMode : String?
   maxTrustedBiddingSignalsURLLength : Int?
   trustedBiddingSignalsCoordinator : String?
   userBiddingSignals : JsValue?
-  ads : JsValue?
-  adComponents : JsValue?
+  ads : Array[AuctionAd]?
+  adComponents : Array[AuctionAd]?
   adSizes : JsValue?
   sizeGroups : JsValue?
   priority : Double?
@@ -378,38 +378,38 @@ pub struct AuctionAdConfig {
   maxTrustedScoringSignalsURLLength : Int?
   trustedScoringSignalsCoordinator : String?
   sendCreativeScanningMetadata : Bool?
-  interestGroupBuyers : JsValue?
-  auctionSignals : JsValue?
-  sellerSignals : JsValue?
-  directFromSellerSignalsHeaderAdSlot : JsValue?
-  deprecatedRenderURLReplacements : JsValue?
+  interestGroupBuyers : Array[String]?
+  auctionSignals : Promise[JsValue]?
+  sellerSignals : Promise[JsValue]?
+  directFromSellerSignalsHeaderAdSlot : Promise[String?]?
+  deprecatedRenderURLReplacements : Promise[JsValue?]?
   sellerTimeout : Int64?
   sellerExperimentGroupId : Int?
-  perBuyerSignals : JsValue?
-  perBuyerTimeouts : JsValue?
-  perBuyerCumulativeTimeouts : JsValue?
+  perBuyerSignals : Promise[JsValue?]?
+  perBuyerTimeouts : Promise[JsValue?]?
+  perBuyerCumulativeTimeouts : Promise[JsValue?]?
   reportingTimeout : Int64?
   sellerCurrency : String?
-  perBuyerCurrencies : JsValue?
+  perBuyerCurrencies : Promise[JsValue?]?
   perBuyerMultiBidLimits : JsValue?
   perBuyerGroupLimits : JsValue?
   perBuyerExperimentGroupIds : JsValue?
   perBuyerPrioritySignals : JsValue?
-  auctionReportBuyerKeys : JsValue?
+  auctionReportBuyerKeys : Array[JsValue]?
   auctionReportBuyers : JsValue?
   auctionReportBuyerDebugModeConfig : AuctionReportBuyerDebugModeConfig?
-  requiredSellerCapabilities : JsValue?
+  requiredSellerCapabilities : Array[String]?
   privateAggregationConfig : ProtectedAudiencePrivateAggregationConfig?
   requestedSize : JsValue?
-  allSlotsRequestedSizes : JsValue?
-  additionalBids : JsValue?
+  allSlotsRequestedSizes : Array[JsValue]?
+  additionalBids : Promise[Unit]?
   auctionNonce : String?
   sellerRealTimeReportingConfig : AuctionRealTimeReportingConfig?
   perBuyerRealTimeReportingConfig : JsValue?
-  componentAuctions : JsValue?
+  componentAuctions : Array[AuctionAdConfig]?
   signal : AbortSignal??
-  resolveToConfig : JsValue?
-  serverResponse : JsValue?
+  resolveToConfig : Promise[Bool]?
+  serverResponse : Promise[Uint8Array]?
   requestId : String?
 }
 
@@ -532,7 +532,7 @@ pub extern "js" fn AdAuctionPerSellerData::to_js(self : AdAuctionPerSellerData) 
 pub struct AdAuctionData {
   requestId : String
   request : Uint8Array?
-  requests : JsValue?
+  requests : Array[AdAuctionPerSellerData]?
 }
 
 /// Create a new AdAuctionData with default values
@@ -579,7 +579,7 @@ pub extern "js" fn AdAuctionOneSeller::to_js(self : AdAuctionOneSeller) -> JsVal
 pub struct AdAuctionDataConfig {
   seller : String?
   coordinatorOrigin : String?
-  sellers : JsValue?
+  sellers : Array[AdAuctionOneSeller]?
   requestSize : Int?
   perBuyerConfig : JsValue?
 }
@@ -637,13 +637,13 @@ pub struct StorageInterestGroup {
   biddingWasmHelperURL : String?
   updateURL : String?
   trustedBiddingSignalsURL : String?
-  trustedBiddingSignalsKeys : JsValue?
+  trustedBiddingSignalsKeys : Array[String]?
   trustedBiddingSignalsSlotSizeMode : String?
   maxTrustedBiddingSignalsURLLength : Int?
   trustedBiddingSignalsCoordinator : String?
   userBiddingSignals : JsValue?
-  ads : JsValue?
-  adComponents : JsValue?
+  ads : Array[AuctionAd]?
+  adComponents : Array[AuctionAd]?
   adSizes : JsValue?
   sizeGroups : JsValue?
   priority : Double?
@@ -653,7 +653,7 @@ pub struct StorageInterestGroup {
   privateAggregationConfig : ProtectedAudiencePrivateAggregationConfig?
   joinCount : Int64?
   bidCount : Int64?
-  prevWinsMs : JsValue?
+  prevWinsMs : Array[PreviousWin]?
   joiningOrigin : String?
   timeSinceGroupJoinedMs : Int64?
   lifetimeRemainingMs : Int64?
@@ -847,7 +847,7 @@ pub struct GenerateBidOutput {
   render : JsValue?
   ad : JsValue?
   selectedBuyerAndSellerReportingId : String?
-  adComponents : JsValue?
+  adComponents : Array[JsValue]?
   adCost : Double?
   modelingSignals : Double?
   allowComponentAuction : Bool?
@@ -900,7 +900,7 @@ pub struct BiddingBrowserSignals {
   multiBidLimit : Int
   requestedSize : JsValue?
   topLevelSeller : String?
-  prevWinsMs : JsValue?
+  prevWinsMs : Array[PreviousWin]?
   wasmHelper : JsValue?
   dataVersion : Int?
   crossOriginDataVersion : Int?
@@ -957,10 +957,10 @@ pub struct ScoringBrowserSignals {
   renderSize : JsValue?
   dataVersion : Int?
   crossOriginDataVersion : Int?
-  adComponents : JsValue?
+  adComponents : Array[String]?
   forDebuggingOnlyInCooldownOrLockout : Bool?
   creativeScanningMetadata : String?
-  adComponentsCreativeScanningMetadata : JsValue?
+  adComponentsCreativeScanningMetadata : Array[String?]?
 }
 
 /// Create a new ScoringBrowserSignals with default values
@@ -1343,13 +1343,19 @@ pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::get_for_debuggin
 pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::get_real_time_reporting(self : InterestGroupBiddingScriptRunnerGlobalScope) -> RealTimeReporting =
   #| (self) => self.realTimeReporting
 
-pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_bid(self : InterestGroupBiddingScriptRunnerGlobalScope, one_or_many_bids : JsValue) -> Bool =
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_bid(self : InterestGroupBiddingScriptRunnerGlobalScope) -> Bool =
+  #| (self) => self.setBid()
+
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_bid_with_one_or_many_bids(self : InterestGroupBiddingScriptRunnerGlobalScope, one_or_many_bids : JsValue) -> Bool =
   #| (self, one_or_many_bids) => self.setBid(one_or_many_bids)
 
 pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_priority(self : InterestGroupBiddingScriptRunnerGlobalScope, priority : Double) -> Unit =
   #| (self, priority) => self.setPriority(priority)
 
-pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_priority_signals_override(self : InterestGroupBiddingScriptRunnerGlobalScope, key : String, priority : Double?) -> Unit =
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_priority_signals_override(self : InterestGroupBiddingScriptRunnerGlobalScope, key : String) -> Unit =
+  #| (self, key) => self.setPrioritySignalsOverride(key)
+
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_priority_signals_override_with_priority(self : InterestGroupBiddingScriptRunnerGlobalScope, key : String, priority : Double?) -> Unit =
   #| (self, key, priority) => self.setPrioritySignalsOverride(key, priority)
 
 ///|

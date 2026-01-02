@@ -8,7 +8,7 @@ pub type ViewTransitionUpdateCallback
 /// StartViewTransitionOptions dictionary
 pub struct StartViewTransitionOptions {
   update : ViewTransitionUpdateCallback??
-  types : JsValue?
+  types : Array[String]?
 }
 
 /// Create a new StartViewTransitionOptions with default values
@@ -46,13 +46,13 @@ pub type ViewTransition
 pub extern "js" fn ViewTransition::to_js_value(self : ViewTransition) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ViewTransition::get_update_callback_done(self : ViewTransition) -> JsValue =
+pub extern "js" fn ViewTransition::get_update_callback_done(self : ViewTransition) -> Promise[Unit] =
   #| (self) => self.updateCallbackDone
 
-pub extern "js" fn ViewTransition::get_ready(self : ViewTransition) -> JsValue =
+pub extern "js" fn ViewTransition::get_ready(self : ViewTransition) -> Promise[Unit] =
   #| (self) => self.ready
 
-pub extern "js" fn ViewTransition::get_finished(self : ViewTransition) -> JsValue =
+pub extern "js" fn ViewTransition::get_finished(self : ViewTransition) -> Promise[Unit] =
   #| (self) => self.finished
 
 pub extern "js" fn ViewTransition::skip_transition(self : ViewTransition) -> Unit =
@@ -67,7 +67,7 @@ pub extern "js" fn ViewTransition::set_types(self : ViewTransition, value : View
 pub extern "js" fn ViewTransition::get_transition_root(self : ViewTransition) -> Element =
   #| (self) => self.transitionRoot
 
-pub extern "js" fn ViewTransition::wait_until(self : ViewTransition, promise : JsValue) -> Unit =
+pub extern "js" fn ViewTransition::wait_until(self : ViewTransition, promise : Promise[JsValue]) -> Unit =
   #| (self, promise) => self.waitUntil(promise)
 
 ///|
@@ -77,6 +77,15 @@ pub type ViewTransitionTypeSet
 pub extern "js" fn ViewTransitionTypeSet::to_js_value(self : ViewTransitionTypeSet) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ViewTransitionTypeSet::_unknown_(self : ViewTransitionTypeSet) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn ViewTransitionTypeSet::has(self : ViewTransitionTypeSet, value : String) -> Bool =
+  #| (self, value) => self.has(value)
+
+pub extern "js" fn ViewTransitionTypeSet::add(self : ViewTransitionTypeSet, value : String) -> Unit =
+  #| (self, value) => { self.add(value) }
+
+pub extern "js" fn ViewTransitionTypeSet::delete(self : ViewTransitionTypeSet, value : String) -> Bool =
+  #| (self, value) => self.delete(value)
+
+pub extern "js" fn ViewTransitionTypeSet::clear(self : ViewTransitionTypeSet) -> Unit =
+  #| (self) => { self.clear() }
 

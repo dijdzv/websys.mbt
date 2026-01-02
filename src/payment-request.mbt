@@ -102,9 +102,9 @@ pub extern "js" fn PaymentCurrencyAmount::to_js(self : PaymentCurrencyAmount) ->
 ///|
 /// PaymentDetailsBase dictionary
 pub struct PaymentDetailsBase {
-  displayItems : JsValue?
-  shippingOptions : JsValue?
-  modifiers : JsValue?
+  displayItems : Array[PaymentItem]?
+  shippingOptions : Array[PaymentShippingOption]?
+  modifiers : Array[PaymentDetailsModifier]?
 }
 
 /// Create a new PaymentDetailsBase with default values
@@ -127,9 +127,9 @@ pub extern "js" fn PaymentDetailsBase::to_js(self : PaymentDetailsBase) -> JsVal
 ///|
 /// PaymentDetailsInit dictionary
 pub struct PaymentDetailsInit {
-  displayItems : JsValue?
-  shippingOptions : JsValue?
-  modifiers : JsValue?
+  displayItems : Array[PaymentItem]?
+  shippingOptions : Array[PaymentShippingOption]?
+  modifiers : Array[PaymentDetailsModifier]?
   id : String?
   total : PaymentItem
 }
@@ -158,9 +158,9 @@ pub extern "js" fn PaymentDetailsInit::to_js(self : PaymentDetailsInit) -> JsVal
 ///|
 /// PaymentDetailsUpdate dictionary
 pub struct PaymentDetailsUpdate {
-  displayItems : JsValue?
-  shippingOptions : JsValue?
-  modifiers : JsValue?
+  displayItems : Array[PaymentItem]?
+  shippingOptions : Array[PaymentShippingOption]?
+  modifiers : Array[PaymentDetailsModifier]?
   error : String?
   total : PaymentItem?
   shippingAddressErrors : AddressErrors?
@@ -200,7 +200,7 @@ pub extern "js" fn PaymentDetailsUpdate::to_js(self : PaymentDetailsUpdate) -> J
 pub struct PaymentDetailsModifier {
   supportedMethods : String
   total : PaymentItem?
-  additionalDisplayItems : JsValue?
+  additionalDisplayItems : Array[PaymentItem]?
   data : JsValue?
 }
 
@@ -473,16 +473,19 @@ pub type PaymentRequest
 pub extern "js" fn PaymentRequest::to_js_value(self : PaymentRequest) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn PaymentRequest::new(method_data : JsValue, details : PaymentDetailsInit, options : PaymentOptions) -> PaymentRequest =
+pub extern "js" fn PaymentRequest::new(method_data : Array[PaymentMethodData], details : PaymentDetailsInit, options : PaymentOptions) -> PaymentRequest =
   #| (method_data, details, options) => new PaymentRequest(method_data, details, options)
 
-pub extern "js" fn PaymentRequest::show(self : PaymentRequest, details_promise : JsValue) -> JsValue =
+pub extern "js" fn PaymentRequest::show(self : PaymentRequest) -> Promise[PaymentResponse] =
+  #| (self) => self.show()
+
+pub extern "js" fn PaymentRequest::show_with_details_promise(self : PaymentRequest, details_promise : Promise[PaymentDetailsUpdate]) -> Promise[PaymentResponse] =
   #| (self, details_promise) => self.show(details_promise)
 
-pub extern "js" fn PaymentRequest::abort(self : PaymentRequest) -> JsValue =
+pub extern "js" fn PaymentRequest::abort(self : PaymentRequest) -> Promise[Unit] =
   #| (self) => self.abort()
 
-pub extern "js" fn PaymentRequest::can_make_payment(self : PaymentRequest) -> JsValue =
+pub extern "js" fn PaymentRequest::can_make_payment(self : PaymentRequest) -> Promise[Bool] =
   #| (self) => self.canMakePayment()
 
 pub extern "js" fn PaymentRequest::get_id(self : PaymentRequest) -> String =
@@ -515,7 +518,7 @@ pub extern "js" fn PaymentRequest::get_onpaymentmethodchange(self : PaymentReque
 pub extern "js" fn PaymentRequest::set_onpaymentmethodchange(self : PaymentRequest, value : EventHandler) -> Unit =
   #| (self, value) => { self.onpaymentmethodchange = value }
 
-pub extern "js" fn PaymentRequest::secure_payment_confirmation_availability() -> JsValue =
+pub extern "js" fn PaymentRequest::secure_payment_confirmation_availability() -> Promise[SecurePaymentConfirmationAvailability] =
   #| () => PaymentRequest.securePaymentConfirmationAvailability()
 
 ///|
@@ -552,10 +555,16 @@ pub extern "js" fn PaymentResponse::get_payer_email(self : PaymentResponse) -> S
 pub extern "js" fn PaymentResponse::get_payer_phone(self : PaymentResponse) -> String? =
   #| (self) => self.payerPhone
 
-pub extern "js" fn PaymentResponse::complete(self : PaymentResponse, result : PaymentComplete, details : PaymentCompleteDetails) -> JsValue =
+pub extern "js" fn PaymentResponse::complete(self : PaymentResponse) -> Promise[Unit] =
+  #| (self) => self.complete()
+
+pub extern "js" fn PaymentResponse::complete_with_details(self : PaymentResponse, result : PaymentComplete, details : PaymentCompleteDetails) -> Promise[Unit] =
   #| (self, result, details) => self.complete(['fail', 'success', 'unknown'][result], details)
 
-pub extern "js" fn PaymentResponse::retry(self : PaymentResponse, error_fields : PaymentValidationErrors) -> JsValue =
+pub extern "js" fn PaymentResponse::retry(self : PaymentResponse) -> Promise[Unit] =
+  #| (self) => self.retry()
+
+pub extern "js" fn PaymentResponse::retry_with_error_fields(self : PaymentResponse, error_fields : PaymentValidationErrors) -> Promise[Unit] =
   #| (self, error_fields) => self.retry(error_fields)
 
 pub extern "js" fn PaymentResponse::get_onpayerdetailchange(self : PaymentResponse) -> EventHandler =
@@ -574,7 +583,7 @@ pub extern "js" fn PaymentMethodChangeEvent::to_js_value(self : PaymentMethodCha
 pub extern "js" fn PaymentMethodChangeEvent::new(type_ : String, event_init_dict : PaymentRequestUpdateEventInit) -> PaymentMethodChangeEvent =
   #| (type_, event_init_dict) => new PaymentMethodChangeEvent(type_, event_init_dict)
 
-pub extern "js" fn PaymentMethodChangeEvent::update_with(self : PaymentMethodChangeEvent, details_promise : JsValue) -> Unit =
+pub extern "js" fn PaymentMethodChangeEvent::update_with(self : PaymentMethodChangeEvent, details_promise : Promise[PaymentDetailsUpdate]) -> Unit =
   #| (self, details_promise) => self.updateWith(details_promise)
 
 pub extern "js" fn PaymentMethodChangeEvent::get_method_name(self : PaymentMethodChangeEvent) -> String =
@@ -593,6 +602,6 @@ pub extern "js" fn PaymentRequestUpdateEvent::to_js_value(self : PaymentRequestU
 pub extern "js" fn PaymentRequestUpdateEvent::new(type_ : String, event_init_dict : PaymentRequestUpdateEventInit) -> PaymentRequestUpdateEvent =
   #| (type_, event_init_dict) => new PaymentRequestUpdateEvent(type_, event_init_dict)
 
-pub extern "js" fn PaymentRequestUpdateEvent::update_with(self : PaymentRequestUpdateEvent, details_promise : JsValue) -> Unit =
+pub extern "js" fn PaymentRequestUpdateEvent::update_with(self : PaymentRequestUpdateEvent, details_promise : Promise[PaymentDetailsUpdate]) -> Unit =
   #| (self, details_promise) => self.updateWith(details_promise)
 

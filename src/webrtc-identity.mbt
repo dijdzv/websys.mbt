@@ -46,8 +46,16 @@ pub fn RTCErrorDetailTypeIdp::from_string(s : String) -> RTCErrorDetailTypeIdp? 
 /// GenerateAssertionCallback callback interface
 pub type GenerateAssertionCallback
 
+/// Create GenerateAssertionCallback from a MoonBit function
+pub extern "js" fn GenerateAssertionCallback::from_fn(handler : (String, String, RTCIdentityProviderOptions) -> Promise[RTCIdentityAssertionResult]) -> GenerateAssertionCallback =
+  #| (handler) => handler
+
 /// ValidateAssertionCallback callback interface
 pub type ValidateAssertionCallback
+
+/// Create ValidateAssertionCallback from a MoonBit function
+pub extern "js" fn ValidateAssertionCallback::from_fn(handler : (String, String) -> Promise[RTCIdentityValidationResult]) -> ValidateAssertionCallback =
+  #| (handler) => handler
 
 ///|
 /// RTCIdentityProvider dictionary
@@ -141,11 +149,11 @@ pub extern "js" fn RTCIdentityValidationResult::to_js(self : RTCIdentityValidati
 /// RTCConfiguration dictionary
 pub struct RTCConfiguration {
   peerIdentity : String?
-  iceServers : JsValue?
+  iceServers : Array[RTCIceServer]?
   iceTransportPolicy : RTCIceTransportPolicy?
   bundlePolicy : RTCBundlePolicy?
   rtcpMuxPolicy : RTCRtcpMuxPolicy?
-  certificates : JsValue?
+  certificates : Array[RTCCertificate]?
   iceCandidatePoolSize : Int?
 }
 

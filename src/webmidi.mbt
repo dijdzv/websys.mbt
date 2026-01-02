@@ -162,8 +162,11 @@ pub type MIDIInputMap
 pub extern "js" fn MIDIInputMap::to_js_value(self : MIDIInputMap) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn MIDIInputMap::_unknown_(self : MIDIInputMap) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn MIDIInputMap::get(self : MIDIInputMap, key : String) -> MIDIInput? =
+  #| (self, key) => self.get(key)
+
+pub extern "js" fn MIDIInputMap::has(self : MIDIInputMap, key : String) -> Bool =
+  #| (self, key) => self.has(key)
 
 ///|
 /// MIDIOutputMap interface
@@ -172,8 +175,11 @@ pub type MIDIOutputMap
 pub extern "js" fn MIDIOutputMap::to_js_value(self : MIDIOutputMap) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn MIDIOutputMap::_unknown_(self : MIDIOutputMap) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn MIDIOutputMap::get(self : MIDIOutputMap, key : String) -> MIDIOutput? =
+  #| (self, key) => self.get(key)
+
+pub extern "js" fn MIDIOutputMap::has(self : MIDIOutputMap, key : String) -> Bool =
+  #| (self, key) => self.has(key)
 
 ///|
 /// MIDIAccess interface
@@ -231,10 +237,10 @@ pub extern "js" fn MIDIPort::get_onstatechange(self : MIDIPort) -> EventHandler 
 pub extern "js" fn MIDIPort::set_onstatechange(self : MIDIPort, value : EventHandler) -> Unit =
   #| (self, value) => { self.onstatechange = value }
 
-pub extern "js" fn MIDIPort::open(self : MIDIPort) -> JsValue =
+pub extern "js" fn MIDIPort::open(self : MIDIPort) -> Promise[MIDIPort] =
   #| (self) => self.open()
 
-pub extern "js" fn MIDIPort::close(self : MIDIPort) -> JsValue =
+pub extern "js" fn MIDIPort::close(self : MIDIPort) -> Promise[MIDIPort] =
   #| (self) => self.close()
 
 ///|
@@ -271,10 +277,10 @@ pub extern "js" fn MIDIInput::get_onstatechange(self : MIDIInput) -> EventHandle
 pub extern "js" fn MIDIInput::set_onstatechange(self : MIDIInput, value : EventHandler) -> Unit =
   #| (self, value) => { self.onstatechange = value }
 
-pub extern "js" fn MIDIInput::open(self : MIDIInput) -> JsValue =
+pub extern "js" fn MIDIInput::open(self : MIDIInput) -> Promise[MIDIPort] =
   #| (self) => self.open()
 
-pub extern "js" fn MIDIInput::close(self : MIDIInput) -> JsValue =
+pub extern "js" fn MIDIInput::close(self : MIDIInput) -> Promise[MIDIPort] =
   #| (self) => self.close()
 
 pub extern "js" fn MIDIInput::get_onmidimessage(self : MIDIInput) -> EventHandler =
@@ -317,13 +323,16 @@ pub extern "js" fn MIDIOutput::get_onstatechange(self : MIDIOutput) -> EventHand
 pub extern "js" fn MIDIOutput::set_onstatechange(self : MIDIOutput, value : EventHandler) -> Unit =
   #| (self, value) => { self.onstatechange = value }
 
-pub extern "js" fn MIDIOutput::open(self : MIDIOutput) -> JsValue =
+pub extern "js" fn MIDIOutput::open(self : MIDIOutput) -> Promise[MIDIPort] =
   #| (self) => self.open()
 
-pub extern "js" fn MIDIOutput::close(self : MIDIOutput) -> JsValue =
+pub extern "js" fn MIDIOutput::close(self : MIDIOutput) -> Promise[MIDIPort] =
   #| (self) => self.close()
 
-pub extern "js" fn MIDIOutput::send(self : MIDIOutput, data : JsValue, timestamp : DOMHighResTimeStamp) -> Unit =
+pub extern "js" fn MIDIOutput::send(self : MIDIOutput, data : Array[Int]) -> Unit =
+  #| (self, data) => self.send(data)
+
+pub extern "js" fn MIDIOutput::send_with_timestamp(self : MIDIOutput, data : Array[Int], timestamp : DOMHighResTimeStamp) -> Unit =
   #| (self, data, timestamp) => self.send(data, timestamp)
 
 pub extern "js" fn MIDIOutput::clear(self : MIDIOutput) -> Unit =

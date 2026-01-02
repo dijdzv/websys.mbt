@@ -43,14 +43,14 @@ pub fn HIDUnitSystem::from_string(s : String) -> HIDUnitSystem? {
 ///|
 /// HIDDeviceRequestOptions dictionary
 pub struct HIDDeviceRequestOptions {
-  filters : JsValue
-  exclusionFilters : JsValue?
+  filters : Array[HIDDeviceFilter]
+  exclusionFilters : Array[HIDDeviceFilter]?
 }
 
 /// Create a new HIDDeviceRequestOptions with default values
 pub fn HIDDeviceRequestOptions::default() -> HIDDeviceRequestOptions {
   HIDDeviceRequestOptions::{
-    filters: panic(),
+    filters: [],
     exclusionFilters: None,
   }
 }
@@ -140,10 +140,10 @@ pub struct HIDCollectionInfo {
   usagePage : Int?
   usage : Int?
   type_ : Int?
-  children : JsValue?
-  inputReports : JsValue?
-  outputReports : JsValue?
-  featureReports : JsValue?
+  children : Array[HIDCollectionInfo]?
+  inputReports : Array[HIDReportInfo]?
+  outputReports : Array[HIDReportInfo]?
+  featureReports : Array[HIDReportInfo]?
 }
 
 /// Create a new HIDCollectionInfo with default values
@@ -175,7 +175,7 @@ pub extern "js" fn HIDCollectionInfo::to_js(self : HIDCollectionInfo) -> JsValue
 /// HIDReportInfo dictionary
 pub struct HIDReportInfo {
   reportId : Int?
-  items : JsValue?
+  items : Array[HIDReportItem]?
 }
 
 /// Create a new HIDReportInfo with default values
@@ -206,7 +206,7 @@ pub struct HIDReportItem {
   hasNull : Bool?
   hasPreferredState : Bool?
   wrap : Bool?
-  usages : JsValue?
+  usages : Array[Int]?
   usageMinimum : Int?
   usageMaximum : Int?
   reportSize : Int?
@@ -223,7 +223,7 @@ pub struct HIDReportItem {
   logicalMaximum : Int?
   physicalMinimum : Int?
   physicalMaximum : Int?
-  strings : JsValue?
+  strings : Array[String]?
 }
 
 /// Create a new HIDReportItem with default values
@@ -312,10 +312,10 @@ pub extern "js" fn HID::get_ondisconnect(self : HID) -> EventHandler =
 pub extern "js" fn HID::set_ondisconnect(self : HID, value : EventHandler) -> Unit =
   #| (self, value) => { self.ondisconnect = value }
 
-pub extern "js" fn HID::get_devices(self : HID) -> JsValue =
+pub extern "js" fn HID::get_devices(self : HID) -> Promise[Array[HIDDevice]] =
   #| (self) => self.getDevices()
 
-pub extern "js" fn HID::request_device(self : HID, options : HIDDeviceRequestOptions) -> JsValue =
+pub extern "js" fn HID::request_device(self : HID, options : HIDDeviceRequestOptions) -> Promise[Array[HIDDevice]] =
   #| (self, options) => self.requestDevice(options)
 
 ///|
@@ -346,22 +346,22 @@ pub extern "js" fn HIDDevice::get_product_name(self : HIDDevice) -> String =
 pub extern "js" fn HIDDevice::get_collections(self : HIDDevice) -> JsValue =
   #| (self) => self.collections
 
-pub extern "js" fn HIDDevice::open(self : HIDDevice) -> JsValue =
+pub extern "js" fn HIDDevice::open(self : HIDDevice) -> Promise[Unit] =
   #| (self) => self.open()
 
-pub extern "js" fn HIDDevice::close(self : HIDDevice) -> JsValue =
+pub extern "js" fn HIDDevice::close(self : HIDDevice) -> Promise[Unit] =
   #| (self) => self.close()
 
-pub extern "js" fn HIDDevice::forget(self : HIDDevice) -> JsValue =
+pub extern "js" fn HIDDevice::forget(self : HIDDevice) -> Promise[Unit] =
   #| (self) => self.forget()
 
-pub extern "js" fn HIDDevice::send_report(self : HIDDevice, report_id : Int, data : BufferSource) -> JsValue =
+pub extern "js" fn HIDDevice::send_report(self : HIDDevice, report_id : Int, data : BufferSource) -> Promise[Unit] =
   #| (self, report_id, data) => self.sendReport(report_id, data)
 
-pub extern "js" fn HIDDevice::send_feature_report(self : HIDDevice, report_id : Int, data : BufferSource) -> JsValue =
+pub extern "js" fn HIDDevice::send_feature_report(self : HIDDevice, report_id : Int, data : BufferSource) -> Promise[Unit] =
   #| (self, report_id, data) => self.sendFeatureReport(report_id, data)
 
-pub extern "js" fn HIDDevice::receive_feature_report(self : HIDDevice, report_id : Int) -> JsValue =
+pub extern "js" fn HIDDevice::receive_feature_report(self : HIDDevice, report_id : Int) -> Promise[DataView] =
   #| (self, report_id) => self.receiveFeatureReport(report_id)
 
 ///|

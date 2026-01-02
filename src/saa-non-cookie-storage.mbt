@@ -121,10 +121,10 @@ pub extern "js" fn StorageAccessHandle::get_locks(self : StorageAccessHandle) ->
 pub extern "js" fn StorageAccessHandle::get_caches(self : StorageAccessHandle) -> CacheStorage =
   #| (self) => self.caches
 
-pub extern "js" fn StorageAccessHandle::get_directory(self : StorageAccessHandle) -> JsValue =
+pub extern "js" fn StorageAccessHandle::get_directory(self : StorageAccessHandle) -> Promise[FileSystemDirectoryHandle] =
   #| (self) => self.getDirectory()
 
-pub extern "js" fn StorageAccessHandle::estimate(self : StorageAccessHandle) -> JsValue =
+pub extern "js" fn StorageAccessHandle::estimate(self : StorageAccessHandle) -> Promise[StorageEstimate] =
   #| (self) => self.estimate()
 
 pub extern "js" fn StorageAccessHandle::create_object_u_r_l(self : StorageAccessHandle, obj : JsValue) -> String =
@@ -136,6 +136,9 @@ pub extern "js" fn StorageAccessHandle::revoke_object_u_r_l(self : StorageAccess
 pub extern "js" fn StorageAccessHandle::broadcast_channel(self : StorageAccessHandle, name : String) -> BroadcastChannel =
   #| (self, name) => self.BroadcastChannel(name)
 
-pub extern "js" fn StorageAccessHandle::shared_worker(self : StorageAccessHandle, script_u_r_l : String, options : JsValue) -> SharedWorker =
+pub extern "js" fn StorageAccessHandle::shared_worker(self : StorageAccessHandle, script_u_r_l : String) -> SharedWorker =
+  #| (self, script_u_r_l) => self.SharedWorker(script_u_r_l)
+
+pub extern "js" fn StorageAccessHandle::shared_worker_with_options(self : StorageAccessHandle, script_u_r_l : String, options : JsValue) -> SharedWorker =
   #| (self, script_u_r_l, options) => self.SharedWorker(script_u_r_l, options)
 

@@ -30,6 +30,6 @@ pub type XRMeshSet
 pub extern "js" fn XRMeshSet::to_js_value(self : XRMeshSet) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn XRMeshSet::_unknown_(self : XRMeshSet) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn XRMeshSet::has(self : XRMeshSet, value : XRMesh) -> Bool =
+  #| (self, value) => self.has(value)
 

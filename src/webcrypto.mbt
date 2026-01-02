@@ -725,55 +725,58 @@ pub type SubtleCrypto
 pub extern "js" fn SubtleCrypto::to_js_value(self : SubtleCrypto) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn SubtleCrypto::encrypt(self : SubtleCrypto, algorithm : AlgorithmIdentifier, key : CryptoKey, data : BufferSource) -> JsValue =
+pub extern "js" fn SubtleCrypto::encrypt(self : SubtleCrypto, algorithm : AlgorithmIdentifier, key : CryptoKey, data : BufferSource) -> Promise[ArrayBuffer] =
   #| (self, algorithm, key, data) => self.encrypt(algorithm, key, data)
 
-pub extern "js" fn SubtleCrypto::decrypt(self : SubtleCrypto, algorithm : AlgorithmIdentifier, key : CryptoKey, data : BufferSource) -> JsValue =
+pub extern "js" fn SubtleCrypto::decrypt(self : SubtleCrypto, algorithm : AlgorithmIdentifier, key : CryptoKey, data : BufferSource) -> Promise[ArrayBuffer] =
   #| (self, algorithm, key, data) => self.decrypt(algorithm, key, data)
 
-pub extern "js" fn SubtleCrypto::sign(self : SubtleCrypto, algorithm : AlgorithmIdentifier, key : CryptoKey, data : BufferSource) -> JsValue =
+pub extern "js" fn SubtleCrypto::sign(self : SubtleCrypto, algorithm : AlgorithmIdentifier, key : CryptoKey, data : BufferSource) -> Promise[ArrayBuffer] =
   #| (self, algorithm, key, data) => self.sign(algorithm, key, data)
 
-pub extern "js" fn SubtleCrypto::verify(self : SubtleCrypto, algorithm : AlgorithmIdentifier, key : CryptoKey, signature : BufferSource, data : BufferSource) -> JsValue =
+pub extern "js" fn SubtleCrypto::verify(self : SubtleCrypto, algorithm : AlgorithmIdentifier, key : CryptoKey, signature : BufferSource, data : BufferSource) -> Promise[Bool] =
   #| (self, algorithm, key, signature, data) => self.verify(algorithm, key, signature, data)
 
-pub extern "js" fn SubtleCrypto::digest(self : SubtleCrypto, algorithm : AlgorithmIdentifier, data : BufferSource) -> JsValue =
+pub extern "js" fn SubtleCrypto::digest(self : SubtleCrypto, algorithm : AlgorithmIdentifier, data : BufferSource) -> Promise[ArrayBuffer] =
   #| (self, algorithm, data) => self.digest(algorithm, data)
 
-pub extern "js" fn SubtleCrypto::generate_key(self : SubtleCrypto, algorithm : AlgorithmIdentifier, extractable : Bool, key_usages : JsValue) -> JsValue =
+pub extern "js" fn SubtleCrypto::generate_key(self : SubtleCrypto, algorithm : AlgorithmIdentifier, extractable : Bool, key_usages : Array[KeyUsage]) -> Promise[JsValue] =
   #| (self, algorithm, extractable, key_usages) => self.generateKey(algorithm, extractable, key_usages)
 
-pub extern "js" fn SubtleCrypto::derive_key(self : SubtleCrypto, algorithm : AlgorithmIdentifier, base_key : CryptoKey, derived_key_type : AlgorithmIdentifier, extractable : Bool, key_usages : JsValue) -> JsValue =
+pub extern "js" fn SubtleCrypto::derive_key(self : SubtleCrypto, algorithm : AlgorithmIdentifier, base_key : CryptoKey, derived_key_type : AlgorithmIdentifier, extractable : Bool, key_usages : Array[KeyUsage]) -> Promise[CryptoKey] =
   #| (self, algorithm, base_key, derived_key_type, extractable, key_usages) => self.deriveKey(algorithm, base_key, derived_key_type, extractable, key_usages)
 
-pub extern "js" fn SubtleCrypto::derive_bits(self : SubtleCrypto, algorithm : AlgorithmIdentifier, base_key : CryptoKey, length : Int?) -> JsValue =
+pub extern "js" fn SubtleCrypto::derive_bits(self : SubtleCrypto, algorithm : AlgorithmIdentifier, base_key : CryptoKey) -> Promise[ArrayBuffer] =
+  #| (self, algorithm, base_key) => self.deriveBits(algorithm, base_key)
+
+pub extern "js" fn SubtleCrypto::derive_bits_with_length(self : SubtleCrypto, algorithm : AlgorithmIdentifier, base_key : CryptoKey, length : Int?) -> Promise[ArrayBuffer] =
   #| (self, algorithm, base_key, length) => self.deriveBits(algorithm, base_key, length)
 
-pub extern "js" fn SubtleCrypto::import_key(self : SubtleCrypto, format : KeyFormat, key_data : JsValue, algorithm : AlgorithmIdentifier, extractable : Bool, key_usages : JsValue) -> JsValue =
+pub extern "js" fn SubtleCrypto::import_key(self : SubtleCrypto, format : KeyFormat, key_data : JsValue, algorithm : AlgorithmIdentifier, extractable : Bool, key_usages : Array[KeyUsage]) -> Promise[CryptoKey] =
   #| (self, format, key_data, algorithm, extractable, key_usages) => self.importKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key_data, algorithm, extractable, key_usages)
 
-pub extern "js" fn SubtleCrypto::export_key(self : SubtleCrypto, format : KeyFormat, key : CryptoKey) -> JsValue =
+pub extern "js" fn SubtleCrypto::export_key(self : SubtleCrypto, format : KeyFormat, key : CryptoKey) -> Promise[JsValue] =
   #| (self, format, key) => self.exportKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key)
 
-pub extern "js" fn SubtleCrypto::wrap_key(self : SubtleCrypto, format : KeyFormat, key : CryptoKey, wrapping_key : CryptoKey, wrap_algorithm : AlgorithmIdentifier) -> JsValue =
+pub extern "js" fn SubtleCrypto::wrap_key(self : SubtleCrypto, format : KeyFormat, key : CryptoKey, wrapping_key : CryptoKey, wrap_algorithm : AlgorithmIdentifier) -> Promise[ArrayBuffer] =
   #| (self, format, key, wrapping_key, wrap_algorithm) => self.wrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key, wrapping_key, wrap_algorithm)
 
-pub extern "js" fn SubtleCrypto::unwrap_key(self : SubtleCrypto, format : KeyFormat, wrapped_key : BufferSource, unwrapping_key : CryptoKey, unwrap_algorithm : AlgorithmIdentifier, unwrapped_key_algorithm : AlgorithmIdentifier, extractable : Bool, key_usages : JsValue) -> JsValue =
+pub extern "js" fn SubtleCrypto::unwrap_key(self : SubtleCrypto, format : KeyFormat, wrapped_key : BufferSource, unwrapping_key : CryptoKey, unwrap_algorithm : AlgorithmIdentifier, unwrapped_key_algorithm : AlgorithmIdentifier, extractable : Bool, key_usages : Array[KeyUsage]) -> Promise[CryptoKey] =
   #| (self, format, wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages) => self.unwrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages)
 
-pub extern "js" fn SubtleCrypto::encapsulate_key(self : SubtleCrypto, encapsulation_algorithm : AlgorithmIdentifier, encapsulation_key : CryptoKey, shared_key_algorithm : AlgorithmIdentifier, extractable : Bool, key_usages : JsValue) -> JsValue =
+pub extern "js" fn SubtleCrypto::encapsulate_key(self : SubtleCrypto, encapsulation_algorithm : AlgorithmIdentifier, encapsulation_key : CryptoKey, shared_key_algorithm : AlgorithmIdentifier, extractable : Bool, key_usages : Array[KeyUsage]) -> Promise[EncapsulatedKey] =
   #| (self, encapsulation_algorithm, encapsulation_key, shared_key_algorithm, extractable, key_usages) => self.encapsulateKey(encapsulation_algorithm, encapsulation_key, shared_key_algorithm, extractable, key_usages)
 
-pub extern "js" fn SubtleCrypto::encapsulate_bits(self : SubtleCrypto, encapsulation_algorithm : AlgorithmIdentifier, encapsulation_key : CryptoKey) -> JsValue =
+pub extern "js" fn SubtleCrypto::encapsulate_bits(self : SubtleCrypto, encapsulation_algorithm : AlgorithmIdentifier, encapsulation_key : CryptoKey) -> Promise[EncapsulatedBits] =
   #| (self, encapsulation_algorithm, encapsulation_key) => self.encapsulateBits(encapsulation_algorithm, encapsulation_key)
 
-pub extern "js" fn SubtleCrypto::decapsulate_key(self : SubtleCrypto, decapsulation_algorithm : AlgorithmIdentifier, decapsulation_key : CryptoKey, ciphertext : BufferSource, shared_key_algorithm : AlgorithmIdentifier, extractable : Bool, key_usages : JsValue) -> JsValue =
+pub extern "js" fn SubtleCrypto::decapsulate_key(self : SubtleCrypto, decapsulation_algorithm : AlgorithmIdentifier, decapsulation_key : CryptoKey, ciphertext : BufferSource, shared_key_algorithm : AlgorithmIdentifier, extractable : Bool, key_usages : Array[KeyUsage]) -> Promise[CryptoKey] =
   #| (self, decapsulation_algorithm, decapsulation_key, ciphertext, shared_key_algorithm, extractable, key_usages) => self.decapsulateKey(decapsulation_algorithm, decapsulation_key, ciphertext, shared_key_algorithm, extractable, key_usages)
 
-pub extern "js" fn SubtleCrypto::decapsulate_bits(self : SubtleCrypto, decapsulation_algorithm : AlgorithmIdentifier, decapsulation_key : CryptoKey, ciphertext : BufferSource) -> JsValue =
+pub extern "js" fn SubtleCrypto::decapsulate_bits(self : SubtleCrypto, decapsulation_algorithm : AlgorithmIdentifier, decapsulation_key : CryptoKey, ciphertext : BufferSource) -> Promise[ArrayBuffer] =
   #| (self, decapsulation_algorithm, decapsulation_key, ciphertext) => self.decapsulateBits(decapsulation_algorithm, decapsulation_key, ciphertext)
 
-pub extern "js" fn SubtleCrypto::get_public_key(self : SubtleCrypto, key : CryptoKey, key_usages : JsValue) -> JsValue =
+pub extern "js" fn SubtleCrypto::get_public_key(self : SubtleCrypto, key : CryptoKey, key_usages : Array[KeyUsage]) -> Promise[CryptoKey] =
   #| (self, key, key_usages) => self.getPublicKey(key, key_usages)
 
 pub extern "js" fn SubtleCrypto::supports(operation : String, algorithm : AlgorithmIdentifier, length : Int?) -> Bool =

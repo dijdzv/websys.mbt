@@ -200,6 +200,18 @@ pub type PerformanceNavigation
 pub extern "js" fn PerformanceNavigation::to_js_value(self : PerformanceNavigation) -> JsValue =
   #| (self) => self
 
+// PerformanceNavigation.TYPE_NAVIGATE
+pub let performance_navigation_type_navigate : Int = 0
+
+// PerformanceNavigation.TYPE_RELOAD
+pub let performance_navigation_type_reload : Int = 1
+
+// PerformanceNavigation.TYPE_BACK_FORWARD
+pub let performance_navigation_type_back_forward : Int = 2
+
+// PerformanceNavigation.TYPE_RESERVED
+pub let performance_navigation_type_reserved : Int = 255
+
 pub extern "js" fn PerformanceNavigation::get_type(self : PerformanceNavigation) -> Int =
   #| (self) => self.type
 

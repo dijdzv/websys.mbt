@@ -173,14 +173,14 @@ pub extern "js" fn USBDeviceFilter::to_js(self : USBDeviceFilter) -> JsValue =
 ///|
 /// USBDeviceRequestOptions dictionary
 pub struct USBDeviceRequestOptions {
-  filters : JsValue
-  exclusionFilters : JsValue?
+  filters : Array[USBDeviceFilter]
+  exclusionFilters : Array[USBDeviceFilter]?
 }
 
 /// Create a new USBDeviceRequestOptions with default values
 pub fn USBDeviceRequestOptions::default() -> USBDeviceRequestOptions {
   USBDeviceRequestOptions::{
-    filters: panic(),
+    filters: [],
     exclusionFilters: None,
   }
 }
@@ -270,8 +270,8 @@ pub extern "js" fn USBBlocklistEntry::to_js(self : USBBlocklistEntry) -> JsValue
 ///|
 /// USBPermissionDescriptor dictionary
 pub struct USBPermissionDescriptor {
-  filters : JsValue?
-  exclusionFilters : JsValue?
+  filters : Array[USBDeviceFilter]?
+  exclusionFilters : Array[USBDeviceFilter]?
 }
 
 /// Create a new USBPermissionDescriptor with default values
@@ -317,7 +317,7 @@ pub extern "js" fn AllowedUSBDevice::to_js(self : AllowedUSBDevice) -> JsValue =
 ///|
 /// USBPermissionStorage dictionary
 pub struct USBPermissionStorage {
-  allowedDevices : JsValue?
+  allowedDevices : Array[AllowedUSBDevice]?
 }
 
 /// Create a new USBPermissionStorage with default values
@@ -352,10 +352,10 @@ pub extern "js" fn USB::get_ondisconnect(self : USB) -> EventHandler =
 pub extern "js" fn USB::set_ondisconnect(self : USB, value : EventHandler) -> Unit =
   #| (self, value) => { self.ondisconnect = value }
 
-pub extern "js" fn USB::get_devices(self : USB) -> JsValue =
+pub extern "js" fn USB::get_devices(self : USB) -> Promise[Array[USBDevice]] =
   #| (self) => self.getDevices()
 
-pub extern "js" fn USB::request_device(self : USB, options : USBDeviceRequestOptions) -> JsValue =
+pub extern "js" fn USB::request_device(self : USB, options : USBDeviceRequestOptions) -> Promise[USBDevice] =
   #| (self, options) => self.requestDevice(options)
 
 ///|
@@ -426,7 +426,7 @@ pub type USBIsochronousInTransferResult
 pub extern "js" fn USBIsochronousInTransferResult::to_js_value(self : USBIsochronousInTransferResult) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn USBIsochronousInTransferResult::new(packets : JsValue, data : DataView?) -> USBIsochronousInTransferResult =
+pub extern "js" fn USBIsochronousInTransferResult::new(packets : Array[USBIsochronousInTransferPacket], data : DataView?) -> USBIsochronousInTransferResult =
   #| (packets, data) => new USBIsochronousInTransferResult(packets, data)
 
 pub extern "js" fn USBIsochronousInTransferResult::get_data(self : USBIsochronousInTransferResult) -> DataView? =
@@ -458,7 +458,7 @@ pub type USBIsochronousOutTransferResult
 pub extern "js" fn USBIsochronousOutTransferResult::to_js_value(self : USBIsochronousOutTransferResult) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn USBIsochronousOutTransferResult::new(packets : JsValue) -> USBIsochronousOutTransferResult =
+pub extern "js" fn USBIsochronousOutTransferResult::new(packets : Array[USBIsochronousOutTransferPacket]) -> USBIsochronousOutTransferResult =
   #| (packets) => new USBIsochronousOutTransferResult(packets)
 
 pub extern "js" fn USBIsochronousOutTransferResult::get_packets(self : USBIsochronousOutTransferResult) -> JsValue =
@@ -522,49 +522,52 @@ pub extern "js" fn USBDevice::get_configurations(self : USBDevice) -> JsValue =
 pub extern "js" fn USBDevice::get_opened(self : USBDevice) -> Bool =
   #| (self) => self.opened
 
-pub extern "js" fn USBDevice::open(self : USBDevice) -> JsValue =
+pub extern "js" fn USBDevice::open(self : USBDevice) -> Promise[Unit] =
   #| (self) => self.open()
 
-pub extern "js" fn USBDevice::close(self : USBDevice) -> JsValue =
+pub extern "js" fn USBDevice::close(self : USBDevice) -> Promise[Unit] =
   #| (self) => self.close()
 
-pub extern "js" fn USBDevice::forget(self : USBDevice) -> JsValue =
+pub extern "js" fn USBDevice::forget(self : USBDevice) -> Promise[Unit] =
   #| (self) => self.forget()
 
-pub extern "js" fn USBDevice::select_configuration(self : USBDevice, configuration_value : Int) -> JsValue =
+pub extern "js" fn USBDevice::select_configuration(self : USBDevice, configuration_value : Int) -> Promise[Unit] =
   #| (self, configuration_value) => self.selectConfiguration(configuration_value)
 
-pub extern "js" fn USBDevice::claim_interface(self : USBDevice, interface_number : Int) -> JsValue =
+pub extern "js" fn USBDevice::claim_interface(self : USBDevice, interface_number : Int) -> Promise[Unit] =
   #| (self, interface_number) => self.claimInterface(interface_number)
 
-pub extern "js" fn USBDevice::release_interface(self : USBDevice, interface_number : Int) -> JsValue =
+pub extern "js" fn USBDevice::release_interface(self : USBDevice, interface_number : Int) -> Promise[Unit] =
   #| (self, interface_number) => self.releaseInterface(interface_number)
 
-pub extern "js" fn USBDevice::select_alternate_interface(self : USBDevice, interface_number : Int, alternate_setting : Int) -> JsValue =
+pub extern "js" fn USBDevice::select_alternate_interface(self : USBDevice, interface_number : Int, alternate_setting : Int) -> Promise[Unit] =
   #| (self, interface_number, alternate_setting) => self.selectAlternateInterface(interface_number, alternate_setting)
 
-pub extern "js" fn USBDevice::control_transfer_in(self : USBDevice, setup : USBControlTransferParameters, length : Int) -> JsValue =
+pub extern "js" fn USBDevice::control_transfer_in(self : USBDevice, setup : USBControlTransferParameters, length : Int) -> Promise[USBInTransferResult] =
   #| (self, setup, length) => self.controlTransferIn(setup, length)
 
-pub extern "js" fn USBDevice::control_transfer_out(self : USBDevice, setup : USBControlTransferParameters, data : BufferSource) -> JsValue =
+pub extern "js" fn USBDevice::control_transfer_out(self : USBDevice, setup : USBControlTransferParameters) -> Promise[USBOutTransferResult] =
+  #| (self, setup) => self.controlTransferOut(setup)
+
+pub extern "js" fn USBDevice::control_transfer_out_with_data(self : USBDevice, setup : USBControlTransferParameters, data : BufferSource) -> Promise[USBOutTransferResult] =
   #| (self, setup, data) => self.controlTransferOut(setup, data)
 
-pub extern "js" fn USBDevice::clear_halt(self : USBDevice, direction : USBDirection, endpoint_number : Int) -> JsValue =
+pub extern "js" fn USBDevice::clear_halt(self : USBDevice, direction : USBDirection, endpoint_number : Int) -> Promise[Unit] =
   #| (self, direction, endpoint_number) => self.clearHalt(['in', 'out'][direction], endpoint_number)
 
-pub extern "js" fn USBDevice::transfer_in(self : USBDevice, endpoint_number : Int, length : Int) -> JsValue =
+pub extern "js" fn USBDevice::transfer_in(self : USBDevice, endpoint_number : Int, length : Int) -> Promise[USBInTransferResult] =
   #| (self, endpoint_number, length) => self.transferIn(endpoint_number, length)
 
-pub extern "js" fn USBDevice::transfer_out(self : USBDevice, endpoint_number : Int, data : BufferSource) -> JsValue =
+pub extern "js" fn USBDevice::transfer_out(self : USBDevice, endpoint_number : Int, data : BufferSource) -> Promise[USBOutTransferResult] =
   #| (self, endpoint_number, data) => self.transferOut(endpoint_number, data)
 
-pub extern "js" fn USBDevice::isochronous_transfer_in(self : USBDevice, endpoint_number : Int, packet_lengths : JsValue) -> JsValue =
+pub extern "js" fn USBDevice::isochronous_transfer_in(self : USBDevice, endpoint_number : Int, packet_lengths : Array[Int]) -> Promise[USBIsochronousInTransferResult] =
   #| (self, endpoint_number, packet_lengths) => self.isochronousTransferIn(endpoint_number, packet_lengths)
 
-pub extern "js" fn USBDevice::isochronous_transfer_out(self : USBDevice, endpoint_number : Int, data : BufferSource, packet_lengths : JsValue) -> JsValue =
+pub extern "js" fn USBDevice::isochronous_transfer_out(self : USBDevice, endpoint_number : Int, data : BufferSource, packet_lengths : Array[Int]) -> Promise[USBIsochronousOutTransferResult] =
   #| (self, endpoint_number, data, packet_lengths) => self.isochronousTransferOut(endpoint_number, data, packet_lengths)
 
-pub extern "js" fn USBDevice::reset(self : USBDevice) -> JsValue =
+pub extern "js" fn USBDevice::reset(self : USBDevice) -> Promise[Unit] =
   #| (self) => self.reset()
 
 ///|

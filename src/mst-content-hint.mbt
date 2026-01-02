@@ -36,7 +36,7 @@ pub fn RTCDegradationPreference::from_string(s : String) -> RTCDegradationPrefer
 pub struct RTCRtpSendParameters {
   degradationPreference : RTCDegradationPreference?
   transactionId : String
-  encodings : JsValue
+  encodings : Array[RTCRtpEncodingParameters]
 }
 
 /// Create a new RTCRtpSendParameters with default values
@@ -44,7 +44,7 @@ pub fn RTCRtpSendParameters::default() -> RTCRtpSendParameters {
   RTCRtpSendParameters::{
     degradationPreference: None,
     transactionId: "",
-    encodings: panic(),
+    encodings: [],
   }
 }
 

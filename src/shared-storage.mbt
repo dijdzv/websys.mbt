@@ -8,6 +8,10 @@ pub type SharedStorageResponse = JsValue
 /// RunFunctionForSharedStorageSelectURLOperation callback interface
 pub type RunFunctionForSharedStorageSelectURLOperation
 
+/// Create RunFunctionForSharedStorageSelectURLOperation from a MoonBit function
+pub extern "js" fn RunFunctionForSharedStorageSelectURLOperation::from_fn(handler : (Array[String], JsValue) -> Promise[Int]) -> RunFunctionForSharedStorageSelectURLOperation =
+  #| (handler) => handler
+
 ///|
 /// SharedStorageUrlWithMetadata dictionary
 pub struct SharedStorageUrlWithMetadata {
@@ -156,10 +160,16 @@ pub type SharedStorageWorklet
 pub extern "js" fn SharedStorageWorklet::to_js_value(self : SharedStorageWorklet) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn SharedStorageWorklet::select_u_r_l(self : SharedStorageWorklet, name : String, urls : JsValue, options : SharedStorageRunOperationMethodOptions) -> JsValue =
+pub extern "js" fn SharedStorageWorklet::select_u_r_l(self : SharedStorageWorklet, name : String, urls : Array[SharedStorageUrlWithMetadata]) -> Promise[SharedStorageResponse] =
+  #| (self, name, urls) => self.selectURL(name, urls)
+
+pub extern "js" fn SharedStorageWorklet::select_u_r_l_with_options(self : SharedStorageWorklet, name : String, urls : Array[SharedStorageUrlWithMetadata], options : SharedStorageRunOperationMethodOptions) -> Promise[SharedStorageResponse] =
   #| (self, name, urls, options) => self.selectURL(name, urls, options)
 
-pub extern "js" fn SharedStorageWorklet::run(self : SharedStorageWorklet, name : String, options : SharedStorageRunOperationMethodOptions) -> JsValue =
+pub extern "js" fn SharedStorageWorklet::run(self : SharedStorageWorklet, name : String) -> Promise[JsValue] =
+  #| (self, name) => self.run(name)
+
+pub extern "js" fn SharedStorageWorklet::run_with_options(self : SharedStorageWorklet, name : String, options : SharedStorageRunOperationMethodOptions) -> Promise[JsValue] =
   #| (self, name, options) => self.run(name, options)
 
 ///|
@@ -178,7 +188,7 @@ pub extern "js" fn SharedStorageWorkletGlobalScope::get_shared_storage(self : Sh
 pub extern "js" fn SharedStorageWorkletGlobalScope::get_private_aggregation(self : SharedStorageWorkletGlobalScope) -> PrivateAggregation =
   #| (self) => self.privateAggregation
 
-pub extern "js" fn SharedStorageWorkletGlobalScope::interest_groups(self : SharedStorageWorkletGlobalScope) -> JsValue =
+pub extern "js" fn SharedStorageWorkletGlobalScope::interest_groups(self : SharedStorageWorkletGlobalScope) -> Promise[Array[StorageInterestGroup]] =
   #| (self) => self.interestGroups()
 
 pub extern "js" fn SharedStorageWorkletGlobalScope::get_navigator(self : SharedStorageWorkletGlobalScope) -> SharedStorageWorkletNavigator =
@@ -238,40 +248,64 @@ pub type SharedStorage
 pub extern "js" fn SharedStorage::to_js_value(self : SharedStorage) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn SharedStorage::get(self : SharedStorage, key : String) -> JsValue =
+pub extern "js" fn SharedStorage::get(self : SharedStorage, key : String) -> Promise[String] =
   #| (self, key) => self.get(key)
 
-pub extern "js" fn SharedStorage::set(self : SharedStorage, key : String, value : String, options : SharedStorageSetMethodOptions) -> JsValue =
+pub extern "js" fn SharedStorage::set(self : SharedStorage, key : String, value : String) -> Promise[JsValue] =
+  #| (self, key, value) => self.set(key, value)
+
+pub extern "js" fn SharedStorage::set_with_options(self : SharedStorage, key : String, value : String, options : SharedStorageSetMethodOptions) -> Promise[JsValue] =
   #| (self, key, value, options) => self.set(key, value, options)
 
-pub extern "js" fn SharedStorage::append(self : SharedStorage, key : String, value : String, options : SharedStorageModifierMethodOptions) -> JsValue =
+pub extern "js" fn SharedStorage::append(self : SharedStorage, key : String, value : String) -> Promise[JsValue] =
+  #| (self, key, value) => self.append(key, value)
+
+pub extern "js" fn SharedStorage::append_with_options(self : SharedStorage, key : String, value : String, options : SharedStorageModifierMethodOptions) -> Promise[JsValue] =
   #| (self, key, value, options) => self.append(key, value, options)
 
-pub extern "js" fn SharedStorage::delete(self : SharedStorage, key : String, options : SharedStorageModifierMethodOptions) -> JsValue =
+pub extern "js" fn SharedStorage::delete(self : SharedStorage, key : String) -> Promise[JsValue] =
+  #| (self, key) => self.delete(key)
+
+pub extern "js" fn SharedStorage::delete_with_options(self : SharedStorage, key : String, options : SharedStorageModifierMethodOptions) -> Promise[JsValue] =
   #| (self, key, options) => self.delete(key, options)
 
-pub extern "js" fn SharedStorage::clear(self : SharedStorage, options : SharedStorageModifierMethodOptions) -> JsValue =
+pub extern "js" fn SharedStorage::clear(self : SharedStorage) -> Promise[JsValue] =
+  #| (self) => self.clear()
+
+pub extern "js" fn SharedStorage::clear_with_options(self : SharedStorage, options : SharedStorageModifierMethodOptions) -> Promise[JsValue] =
   #| (self, options) => self.clear(options)
 
-pub extern "js" fn SharedStorage::batch_update(self : SharedStorage, methods : JsValue, options : SharedStorageModifierMethodOptions) -> JsValue =
+pub extern "js" fn SharedStorage::batch_update(self : SharedStorage, methods : Array[SharedStorageModifierMethod]) -> Promise[JsValue] =
+  #| (self, methods) => self.batchUpdate(methods)
+
+pub extern "js" fn SharedStorage::batch_update_with_options(self : SharedStorage, methods : Array[SharedStorageModifierMethod], options : SharedStorageModifierMethodOptions) -> Promise[JsValue] =
   #| (self, methods, options) => self.batchUpdate(methods, options)
 
-pub extern "js" fn SharedStorage::select_u_r_l(self : SharedStorage, name : String, urls : JsValue, options : SharedStorageRunOperationMethodOptions) -> JsValue =
+pub extern "js" fn SharedStorage::select_u_r_l(self : SharedStorage, name : String, urls : Array[SharedStorageUrlWithMetadata]) -> Promise[SharedStorageResponse] =
+  #| (self, name, urls) => self.selectURL(name, urls)
+
+pub extern "js" fn SharedStorage::select_u_r_l_with_options(self : SharedStorage, name : String, urls : Array[SharedStorageUrlWithMetadata], options : SharedStorageRunOperationMethodOptions) -> Promise[SharedStorageResponse] =
   #| (self, name, urls, options) => self.selectURL(name, urls, options)
 
-pub extern "js" fn SharedStorage::run(self : SharedStorage, name : String, options : SharedStorageRunOperationMethodOptions) -> JsValue =
+pub extern "js" fn SharedStorage::run(self : SharedStorage, name : String) -> Promise[JsValue] =
+  #| (self, name) => self.run(name)
+
+pub extern "js" fn SharedStorage::run_with_options(self : SharedStorage, name : String, options : SharedStorageRunOperationMethodOptions) -> Promise[JsValue] =
   #| (self, name, options) => self.run(name, options)
 
-pub extern "js" fn SharedStorage::create_worklet(self : SharedStorage, module_u_r_l : String, options : SharedStorageWorkletOptions) -> JsValue =
+pub extern "js" fn SharedStorage::create_worklet(self : SharedStorage, module_u_r_l : String) -> Promise[SharedStorageWorklet] =
+  #| (self, module_u_r_l) => self.createWorklet(module_u_r_l)
+
+pub extern "js" fn SharedStorage::create_worklet_with_options(self : SharedStorage, module_u_r_l : String, options : SharedStorageWorkletOptions) -> Promise[SharedStorageWorklet] =
   #| (self, module_u_r_l, options) => self.createWorklet(module_u_r_l, options)
 
 pub extern "js" fn SharedStorage::get_worklet(self : SharedStorage) -> SharedStorageWorklet =
   #| (self) => self.worklet
 
-pub extern "js" fn SharedStorage::length(self : SharedStorage) -> JsValue =
+pub extern "js" fn SharedStorage::length(self : SharedStorage) -> Promise[Int] =
   #| (self) => self.length()
 
-pub extern "js" fn SharedStorage::remaining_budget(self : SharedStorage) -> JsValue =
+pub extern "js" fn SharedStorage::remaining_budget(self : SharedStorage) -> Promise[Double] =
   #| (self) => self.remainingBudget()
 
 pub extern "js" fn SharedStorage::_unknown_(self : SharedStorage) -> Unit =

@@ -52,14 +52,30 @@ pub fn SlotAssignmentMode::from_string(s : String) -> SlotAssignmentMode? {
 /// EventListener callback interface
 pub type EventListener
 
+/// Create EventListener from a MoonBit function
+pub extern "js" fn EventListener::from_fn(handler : (Event) -> Unit) -> EventListener =
+  #| (handler) => handler
+
 /// MutationCallback callback interface
 pub type MutationCallback
+
+/// Create MutationCallback from a MoonBit function
+pub extern "js" fn MutationCallback::from_fn(handler : (Array[MutationRecord], MutationObserver) -> Unit) -> MutationCallback =
+  #| (handler) => handler
 
 /// NodeFilter callback interface
 pub type NodeFilter
 
+/// Create NodeFilter from a MoonBit function
+pub extern "js" fn NodeFilter::from_fn(handler : (Node) -> Int) -> NodeFilter =
+  #| (handler) => handler
+
 /// XPathNSResolver callback interface
 pub type XPathNSResolver
+
+/// Create XPathNSResolver from a MoonBit function
+pub extern "js" fn XPathNSResolver::from_fn(handler : (String?) -> String?) -> XPathNSResolver =
+  #| (handler) => handler
 
 ///|
 /// EventInit dictionary
@@ -170,7 +186,7 @@ pub struct MutationObserverInit {
   subtree : Bool?
   attributeOldValue : Bool?
   characterDataOldValue : Bool?
-  attributeFilter : JsValue?
+  attributeFilter : Array[String]?
 }
 
 /// Create a new MutationObserverInit with default values
@@ -345,8 +361,20 @@ pub extern "js" fn Event::get_src_element(self : Event) -> EventTarget? =
 pub extern "js" fn Event::get_current_target(self : Event) -> EventTarget? =
   #| (self) => self.currentTarget
 
-pub extern "js" fn Event::composed_path(self : Event) -> JsValue =
+pub extern "js" fn Event::composed_path(self : Event) -> Array[EventTarget] =
   #| (self) => self.composedPath()
+
+// Event.NONE
+pub let event_none : Int = 0
+
+// Event.CAPTURING_PHASE
+pub let event_capturing_phase : Int = 1
+
+// Event.AT_TARGET
+pub let event_at_target : Int = 2
+
+// Event.BUBBLING_PHASE
+pub let event_bubbling_phase : Int = 3
 
 pub extern "js" fn Event::get_event_phase(self : Event) -> Int =
   #| (self) => self.eventPhase
@@ -390,7 +418,10 @@ pub extern "js" fn Event::get_is_trusted(self : Event) -> Bool =
 pub extern "js" fn Event::get_time_stamp(self : Event) -> DOMHighResTimeStamp =
   #| (self) => self.timeStamp
 
-pub extern "js" fn Event::init_event(self : Event, type_ : String, bubbles : Bool, cancelable : Bool) -> Unit =
+pub extern "js" fn Event::init_event(self : Event, type_ : String) -> Unit =
+  #| (self, type_) => self.initEvent(type_)
+
+pub extern "js" fn Event::init_event_with_cancelable(self : Event, type_ : String, bubbles : Bool, cancelable : Bool) -> Unit =
   #| (self, type_, bubbles, cancelable) => self.initEvent(type_, bubbles, cancelable)
 
 ///|
@@ -415,8 +446,20 @@ pub extern "js" fn CustomEvent::get_src_element(self : CustomEvent) -> EventTarg
 pub extern "js" fn CustomEvent::get_current_target(self : CustomEvent) -> EventTarget? =
   #| (self) => self.currentTarget
 
-pub extern "js" fn CustomEvent::composed_path(self : CustomEvent) -> JsValue =
+pub extern "js" fn CustomEvent::composed_path(self : CustomEvent) -> Array[EventTarget] =
   #| (self) => self.composedPath()
+
+// CustomEvent.NONE
+pub let custom_event_none : Int = 0
+
+// CustomEvent.CAPTURING_PHASE
+pub let custom_event_capturing_phase : Int = 1
+
+// CustomEvent.AT_TARGET
+pub let custom_event_at_target : Int = 2
+
+// CustomEvent.BUBBLING_PHASE
+pub let custom_event_bubbling_phase : Int = 3
 
 pub extern "js" fn CustomEvent::get_event_phase(self : CustomEvent) -> Int =
   #| (self) => self.eventPhase
@@ -460,13 +503,19 @@ pub extern "js" fn CustomEvent::get_is_trusted(self : CustomEvent) -> Bool =
 pub extern "js" fn CustomEvent::get_time_stamp(self : CustomEvent) -> DOMHighResTimeStamp =
   #| (self) => self.timeStamp
 
-pub extern "js" fn CustomEvent::init_event(self : CustomEvent, type_ : String, bubbles : Bool, cancelable : Bool) -> Unit =
+pub extern "js" fn CustomEvent::init_event(self : CustomEvent, type_ : String) -> Unit =
+  #| (self, type_) => self.initEvent(type_)
+
+pub extern "js" fn CustomEvent::init_event_with_cancelable(self : CustomEvent, type_ : String, bubbles : Bool, cancelable : Bool) -> Unit =
   #| (self, type_, bubbles, cancelable) => self.initEvent(type_, bubbles, cancelable)
 
 pub extern "js" fn CustomEvent::get_detail(self : CustomEvent) -> JsValue =
   #| (self) => self.detail
 
-pub extern "js" fn CustomEvent::init_custom_event(self : CustomEvent, type_ : String, bubbles : Bool, cancelable : Bool, detail : JsValue) -> Unit =
+pub extern "js" fn CustomEvent::init_custom_event(self : CustomEvent, type_ : String) -> Unit =
+  #| (self, type_) => self.initCustomEvent(type_)
+
+pub extern "js" fn CustomEvent::init_custom_event_with_detail(self : CustomEvent, type_ : String, bubbles : Bool, cancelable : Bool, detail : JsValue) -> Unit =
   #| (self, type_, bubbles, cancelable, detail) => self.initCustomEvent(type_, bubbles, cancelable, detail)
 
 ///|
@@ -479,16 +528,25 @@ pub extern "js" fn EventTarget::to_js_value(self : EventTarget) -> JsValue =
 pub extern "js" fn EventTarget::new() -> EventTarget =
   #| () => new EventTarget()
 
-pub extern "js" fn EventTarget::add_event_listener(self : EventTarget, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn EventTarget::add_event_listener(self : EventTarget, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.addEventListener(type_, callback)
+
+pub extern "js" fn EventTarget::add_event_listener_with_options(self : EventTarget, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
-pub extern "js" fn EventTarget::remove_event_listener(self : EventTarget, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn EventTarget::remove_event_listener(self : EventTarget, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.removeEventListener(type_, callback)
+
+pub extern "js" fn EventTarget::remove_event_listener_with_options(self : EventTarget, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
 pub extern "js" fn EventTarget::dispatch_event(self : EventTarget, event : Event) -> Bool =
   #| (self, event) => self.dispatchEvent(event)
 
-pub extern "js" fn EventTarget::when(self : EventTarget, type_ : String, options : ObservableEventListenerOptions) -> Observable =
+pub extern "js" fn EventTarget::when(self : EventTarget, type_ : String) -> Observable =
+  #| (self, type_) => self.when(type_)
+
+pub extern "js" fn EventTarget::when_with_options(self : EventTarget, type_ : String, options : ObservableEventListenerOptions) -> Observable =
   #| (self, type_, options) => self.when(type_, options)
 
 ///|
@@ -504,7 +562,10 @@ pub extern "js" fn AbortController::new() -> AbortController =
 pub extern "js" fn AbortController::get_signal(self : AbortController) -> AbortSignal =
   #| (self) => self.signal
 
-pub extern "js" fn AbortController::abort(self : AbortController, reason : JsValue) -> Unit =
+pub extern "js" fn AbortController::abort(self : AbortController) -> Unit =
+  #| (self) => self.abort()
+
+pub extern "js" fn AbortController::abort_with_reason(self : AbortController, reason : JsValue) -> Unit =
   #| (self, reason) => self.abort(reason)
 
 ///|
@@ -517,16 +578,25 @@ pub extern "js" fn AbortSignal::to_js_value(self : AbortSignal) -> JsValue =
 pub extern "js" fn AbortSignal::new() -> AbortSignal =
   #| () => new AbortSignal()
 
-pub extern "js" fn AbortSignal::add_event_listener(self : AbortSignal, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn AbortSignal::add_event_listener(self : AbortSignal, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.addEventListener(type_, callback)
+
+pub extern "js" fn AbortSignal::add_event_listener_with_options(self : AbortSignal, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
-pub extern "js" fn AbortSignal::remove_event_listener(self : AbortSignal, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn AbortSignal::remove_event_listener(self : AbortSignal, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.removeEventListener(type_, callback)
+
+pub extern "js" fn AbortSignal::remove_event_listener_with_options(self : AbortSignal, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
 pub extern "js" fn AbortSignal::dispatch_event(self : AbortSignal, event : Event) -> Bool =
   #| (self, event) => self.dispatchEvent(event)
 
-pub extern "js" fn AbortSignal::when(self : AbortSignal, type_ : String, options : ObservableEventListenerOptions) -> Observable =
+pub extern "js" fn AbortSignal::when(self : AbortSignal, type_ : String) -> Observable =
+  #| (self, type_) => self.when(type_)
+
+pub extern "js" fn AbortSignal::when_with_options(self : AbortSignal, type_ : String, options : ObservableEventListenerOptions) -> Observable =
   #| (self, type_, options) => self.when(type_, options)
 
 pub extern "js" fn AbortSignal::abort(reason : JsValue) -> AbortSignal =
@@ -535,7 +605,7 @@ pub extern "js" fn AbortSignal::abort(reason : JsValue) -> AbortSignal =
 pub extern "js" fn AbortSignal::timeout(milliseconds : Int64) -> AbortSignal =
   #| (milliseconds) => AbortSignal.timeout(milliseconds)
 
-pub extern "js" fn AbortSignal::any(signals : JsValue) -> AbortSignal =
+pub extern "js" fn AbortSignal::any(signals : Array[AbortSignal]) -> AbortSignal =
   #| (signals) => AbortSignal.any(signals)
 
 pub extern "js" fn AbortSignal::get_aborted(self : AbortSignal) -> Bool =
@@ -604,13 +674,16 @@ pub extern "js" fn MutationObserver::to_js_value(self : MutationObserver) -> JsV
 pub extern "js" fn MutationObserver::new(callback : MutationCallback) -> MutationObserver =
   #| (callback) => new MutationObserver(callback)
 
-pub extern "js" fn MutationObserver::observe(self : MutationObserver, target : Node, options : MutationObserverInit) -> Unit =
+pub extern "js" fn MutationObserver::observe(self : MutationObserver, target : Node) -> Unit =
+  #| (self, target) => self.observe(target)
+
+pub extern "js" fn MutationObserver::observe_with_options(self : MutationObserver, target : Node, options : MutationObserverInit) -> Unit =
   #| (self, target, options) => self.observe(target, options)
 
 pub extern "js" fn MutationObserver::disconnect(self : MutationObserver) -> Unit =
   #| (self) => self.disconnect()
 
-pub extern "js" fn MutationObserver::take_records(self : MutationObserver) -> JsValue =
+pub extern "js" fn MutationObserver::take_records(self : MutationObserver) -> Array[MutationRecord] =
   #| (self) => self.takeRecords()
 
 ///|
@@ -657,17 +730,62 @@ pub extern "js" fn Node::to_js_value(self : Node) -> JsValue =
 pub extern "js" fn Node::new() -> Node =
   #| () => new Node()
 
-pub extern "js" fn Node::add_event_listener(self : Node, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn Node::add_event_listener(self : Node, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.addEventListener(type_, callback)
+
+pub extern "js" fn Node::add_event_listener_with_options(self : Node, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
-pub extern "js" fn Node::remove_event_listener(self : Node, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn Node::remove_event_listener(self : Node, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.removeEventListener(type_, callback)
+
+pub extern "js" fn Node::remove_event_listener_with_options(self : Node, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
 pub extern "js" fn Node::dispatch_event(self : Node, event : Event) -> Bool =
   #| (self, event) => self.dispatchEvent(event)
 
-pub extern "js" fn Node::when(self : Node, type_ : String, options : ObservableEventListenerOptions) -> Observable =
+pub extern "js" fn Node::when(self : Node, type_ : String) -> Observable =
+  #| (self, type_) => self.when(type_)
+
+pub extern "js" fn Node::when_with_options(self : Node, type_ : String, options : ObservableEventListenerOptions) -> Observable =
   #| (self, type_, options) => self.when(type_, options)
+
+// Node.ELEMENT_NODE
+pub let node_element_node : Int = 1
+
+// Node.ATTRIBUTE_NODE
+pub let node_attribute_node : Int = 2
+
+// Node.TEXT_NODE
+pub let node_text_node : Int = 3
+
+// Node.CDATA_SECTION_NODE
+pub let node_cdata_section_node : Int = 4
+
+// Node.ENTITY_REFERENCE_NODE
+pub let node_entity_reference_node : Int = 5
+
+// Node.ENTITY_NODE
+pub let node_entity_node : Int = 6
+
+// Node.PROCESSING_INSTRUCTION_NODE
+pub let node_processing_instruction_node : Int = 7
+
+// Node.COMMENT_NODE
+pub let node_comment_node : Int = 8
+
+// Node.DOCUMENT_NODE
+pub let node_document_node : Int = 9
+
+// Node.DOCUMENT_TYPE_NODE
+pub let node_document_type_node : Int = 10
+
+// Node.DOCUMENT_FRAGMENT_NODE
+pub let node_document_fragment_node : Int = 11
+
+// Node.NOTATION_NODE
+pub let node_notation_node : Int = 12
 
 pub extern "js" fn Node::get_node_type(self : Node) -> Int =
   #| (self) => self.nodeType
@@ -684,7 +802,10 @@ pub extern "js" fn Node::get_is_connected(self : Node) -> Bool =
 pub extern "js" fn Node::get_owner_document(self : Node) -> Document? =
   #| (self) => self.ownerDocument
 
-pub extern "js" fn Node::get_root_node(self : Node, options : GetRootNodeOptions) -> Node =
+pub extern "js" fn Node::get_root_node(self : Node) -> Node =
+  #| (self) => self.getRootNode()
+
+pub extern "js" fn Node::get_root_node_with_options(self : Node, options : GetRootNodeOptions) -> Node =
   #| (self, options) => self.getRootNode(options)
 
 pub extern "js" fn Node::get_parent_node(self : Node) -> Node? =
@@ -726,7 +847,10 @@ pub extern "js" fn Node::set_text_content(self : Node, value : String?) -> Unit 
 pub extern "js" fn Node::normalize(self : Node) -> Unit =
   #| (self) => self.normalize()
 
-pub extern "js" fn Node::clone_node(self : Node, subtree : Bool) -> Node =
+pub extern "js" fn Node::clone_node(self : Node) -> Node =
+  #| (self) => self.cloneNode()
+
+pub extern "js" fn Node::clone_node_with_subtree(self : Node, subtree : Bool) -> Node =
   #| (self, subtree) => self.cloneNode(subtree)
 
 pub extern "js" fn Node::is_equal_node(self : Node, other_node : Node?) -> Bool =
@@ -734,6 +858,24 @@ pub extern "js" fn Node::is_equal_node(self : Node, other_node : Node?) -> Bool 
 
 pub extern "js" fn Node::is_same_node(self : Node, other_node : Node?) -> Bool =
   #| (self, other_node) => self.isSameNode(other_node)
+
+// Node.DOCUMENT_POSITION_DISCONNECTED
+pub let node_document_position_disconnected : Int = 0x01
+
+// Node.DOCUMENT_POSITION_PRECEDING
+pub let node_document_position_preceding : Int = 0x02
+
+// Node.DOCUMENT_POSITION_FOLLOWING
+pub let node_document_position_following : Int = 0x04
+
+// Node.DOCUMENT_POSITION_CONTAINS
+pub let node_document_position_contains : Int = 0x08
+
+// Node.DOCUMENT_POSITION_CONTAINED_BY
+pub let node_document_position_contained_by : Int = 0x10
+
+// Node.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC
+pub let node_document_position_implementation_specific : Int = 0x20
 
 pub extern "js" fn Node::compare_document_position(self : Node, other : Node) -> Int =
   #| (self, other) => self.compareDocumentPosition(other)
@@ -772,17 +914,62 @@ pub extern "js" fn Document::to_js_value(self : Document) -> JsValue =
 pub extern "js" fn Document::new() -> Document =
   #| () => new Document()
 
-pub extern "js" fn Document::add_event_listener(self : Document, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn Document::add_event_listener(self : Document, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.addEventListener(type_, callback)
+
+pub extern "js" fn Document::add_event_listener_with_options(self : Document, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
-pub extern "js" fn Document::remove_event_listener(self : Document, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn Document::remove_event_listener(self : Document, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.removeEventListener(type_, callback)
+
+pub extern "js" fn Document::remove_event_listener_with_options(self : Document, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
 pub extern "js" fn Document::dispatch_event(self : Document, event : Event) -> Bool =
   #| (self, event) => self.dispatchEvent(event)
 
-pub extern "js" fn Document::when(self : Document, type_ : String, options : ObservableEventListenerOptions) -> Observable =
+pub extern "js" fn Document::when(self : Document, type_ : String) -> Observable =
+  #| (self, type_) => self.when(type_)
+
+pub extern "js" fn Document::when_with_options(self : Document, type_ : String, options : ObservableEventListenerOptions) -> Observable =
   #| (self, type_, options) => self.when(type_, options)
+
+// Document.ELEMENT_NODE
+pub let document_element_node : Int = 1
+
+// Document.ATTRIBUTE_NODE
+pub let document_attribute_node : Int = 2
+
+// Document.TEXT_NODE
+pub let document_text_node : Int = 3
+
+// Document.CDATA_SECTION_NODE
+pub let document_cdata_section_node : Int = 4
+
+// Document.ENTITY_REFERENCE_NODE
+pub let document_entity_reference_node : Int = 5
+
+// Document.ENTITY_NODE
+pub let document_entity_node : Int = 6
+
+// Document.PROCESSING_INSTRUCTION_NODE
+pub let document_processing_instruction_node : Int = 7
+
+// Document.COMMENT_NODE
+pub let document_comment_node : Int = 8
+
+// Document.DOCUMENT_NODE
+pub let document_document_node : Int = 9
+
+// Document.DOCUMENT_TYPE_NODE
+pub let document_document_type_node : Int = 10
+
+// Document.DOCUMENT_FRAGMENT_NODE
+pub let document_document_fragment_node : Int = 11
+
+// Document.NOTATION_NODE
+pub let document_notation_node : Int = 12
 
 pub extern "js" fn Document::get_node_type(self : Document) -> Int =
   #| (self) => self.nodeType
@@ -799,7 +986,10 @@ pub extern "js" fn Document::get_is_connected(self : Document) -> Bool =
 pub extern "js" fn Document::get_owner_document(self : Document) -> Document? =
   #| (self) => self.ownerDocument
 
-pub extern "js" fn Document::get_root_node(self : Document, options : GetRootNodeOptions) -> Node =
+pub extern "js" fn Document::get_root_node(self : Document) -> Node =
+  #| (self) => self.getRootNode()
+
+pub extern "js" fn Document::get_root_node_with_options(self : Document, options : GetRootNodeOptions) -> Node =
   #| (self, options) => self.getRootNode(options)
 
 pub extern "js" fn Document::get_parent_node(self : Document) -> Node? =
@@ -841,7 +1031,10 @@ pub extern "js" fn Document::set_text_content(self : Document, value : String?) 
 pub extern "js" fn Document::normalize(self : Document) -> Unit =
   #| (self) => self.normalize()
 
-pub extern "js" fn Document::clone_node(self : Document, subtree : Bool) -> Node =
+pub extern "js" fn Document::clone_node(self : Document) -> Node =
+  #| (self) => self.cloneNode()
+
+pub extern "js" fn Document::clone_node_with_subtree(self : Document, subtree : Bool) -> Node =
   #| (self, subtree) => self.cloneNode(subtree)
 
 pub extern "js" fn Document::is_equal_node(self : Document, other_node : Node?) -> Bool =
@@ -849,6 +1042,24 @@ pub extern "js" fn Document::is_equal_node(self : Document, other_node : Node?) 
 
 pub extern "js" fn Document::is_same_node(self : Document, other_node : Node?) -> Bool =
   #| (self, other_node) => self.isSameNode(other_node)
+
+// Document.DOCUMENT_POSITION_DISCONNECTED
+pub let document_document_position_disconnected : Int = 0x01
+
+// Document.DOCUMENT_POSITION_PRECEDING
+pub let document_document_position_preceding : Int = 0x02
+
+// Document.DOCUMENT_POSITION_FOLLOWING
+pub let document_document_position_following : Int = 0x04
+
+// Document.DOCUMENT_POSITION_CONTAINS
+pub let document_document_position_contains : Int = 0x08
+
+// Document.DOCUMENT_POSITION_CONTAINED_BY
+pub let document_document_position_contained_by : Int = 0x10
+
+// Document.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC
+pub let document_document_position_implementation_specific : Int = 0x20
 
 pub extern "js" fn Document::compare_document_position(self : Document, other : Node) -> Int =
   #| (self, other) => self.compareDocumentPosition(other)
@@ -916,10 +1127,16 @@ pub extern "js" fn Document::get_elements_by_tag_name_n_s(self : Document, names
 pub extern "js" fn Document::get_elements_by_class_name(self : Document, class_names : String) -> HTMLCollection =
   #| (self, class_names) => self.getElementsByClassName(class_names)
 
-pub extern "js" fn Document::create_element(self : Document, local_name : String, options : JsValue) -> Element =
+pub extern "js" fn Document::create_element(self : Document, local_name : String) -> Element =
+  #| (self, local_name) => self.createElement(local_name)
+
+pub extern "js" fn Document::create_element_with_options(self : Document, local_name : String, options : JsValue) -> Element =
   #| (self, local_name, options) => self.createElement(local_name, options)
 
-pub extern "js" fn Document::create_element_n_s(self : Document, namespace_ : String?, qualified_name : String, options : JsValue) -> Element =
+pub extern "js" fn Document::create_element_n_s(self : Document, namespace_ : String?, qualified_name : String) -> Element =
+  #| (self, namespace_, qualified_name) => self.createElementNS(namespace_, qualified_name)
+
+pub extern "js" fn Document::create_element_n_s_with_options(self : Document, namespace_ : String?, qualified_name : String, options : JsValue) -> Element =
   #| (self, namespace_, qualified_name, options) => self.createElementNS(namespace_, qualified_name, options)
 
 pub extern "js" fn Document::create_document_fragment(self : Document) -> DocumentFragment =
@@ -937,7 +1154,10 @@ pub extern "js" fn Document::create_comment(self : Document, data : String) -> C
 pub extern "js" fn Document::create_processing_instruction(self : Document, target : String, data : String) -> ProcessingInstruction =
   #| (self, target, data) => self.createProcessingInstruction(target, data)
 
-pub extern "js" fn Document::import_node(self : Document, node : Node, options : JsValue) -> Node =
+pub extern "js" fn Document::import_node(self : Document, node : Node) -> Node =
+  #| (self, node) => self.importNode(node)
+
+pub extern "js" fn Document::import_node_with_options(self : Document, node : Node, options : JsValue) -> Node =
   #| (self, node, options) => self.importNode(node, options)
 
 pub extern "js" fn Document::adopt_node(self : Document, node : Node) -> Node =
@@ -955,10 +1175,16 @@ pub extern "js" fn Document::create_event(self : Document, interface : String) -
 pub extern "js" fn Document::create_range(self : Document) -> Range =
   #| (self) => self.createRange()
 
-pub extern "js" fn Document::create_node_iterator(self : Document, root : Node, what_to_show : Int, filter : NodeFilter?) -> NodeIterator =
+pub extern "js" fn Document::create_node_iterator(self : Document, root : Node) -> NodeIterator =
+  #| (self, root) => self.createNodeIterator(root)
+
+pub extern "js" fn Document::create_node_iterator_with_filter(self : Document, root : Node, what_to_show : Int, filter : NodeFilter?) -> NodeIterator =
   #| (self, root, what_to_show, filter) => self.createNodeIterator(root, what_to_show, filter)
 
-pub extern "js" fn Document::create_tree_walker(self : Document, root : Node, what_to_show : Int, filter : NodeFilter?) -> TreeWalker =
+pub extern "js" fn Document::create_tree_walker(self : Document, root : Node) -> TreeWalker =
+  #| (self, root) => self.createTreeWalker(root)
+
+pub extern "js" fn Document::create_tree_walker_with_filter(self : Document, root : Node, what_to_show : Int, filter : NodeFilter?) -> TreeWalker =
   #| (self, root, what_to_show, filter) => self.createTreeWalker(root, what_to_show, filter)
 
 pub extern "js" fn Document::get_root_element(self : Document) -> SVGSVGElement? =
@@ -967,7 +1193,10 @@ pub extern "js" fn Document::get_root_element(self : Document) -> SVGSVGElement?
 pub extern "js" fn Document::get_named_flows(self : Document) -> NamedFlowMap =
   #| (self) => self.namedFlows
 
-pub extern "js" fn Document::start_view_transition(self : Document, callback_options : JsValue) -> ViewTransition =
+pub extern "js" fn Document::start_view_transition(self : Document) -> ViewTransition =
+  #| (self) => self.startViewTransition()
+
+pub extern "js" fn Document::start_view_transition_with_callback_options(self : Document, callback_options : JsValue) -> ViewTransition =
   #| (self, callback_options) => self.startViewTransition(callback_options)
 
 pub extern "js" fn Document::get_active_view_transition(self : Document) -> ViewTransition? =
@@ -976,10 +1205,13 @@ pub extern "js" fn Document::get_active_view_transition(self : Document) -> View
 pub extern "js" fn Document::element_from_point(self : Document, x : Double, y : Double) -> Element? =
   #| (self, x, y) => self.elementFromPoint(x, y)
 
-pub extern "js" fn Document::elements_from_point(self : Document, x : Double, y : Double) -> JsValue =
+pub extern "js" fn Document::elements_from_point(self : Document, x : Double, y : Double) -> Array[Element] =
   #| (self, x, y) => self.elementsFromPoint(x, y)
 
-pub extern "js" fn Document::caret_position_from_point(self : Document, x : Double, y : Double, options : CaretPositionFromPointOptions) -> CaretPosition? =
+pub extern "js" fn Document::caret_position_from_point(self : Document, x : Double, y : Double) -> CaretPosition? =
+  #| (self, x, y) => self.caretPositionFromPoint(x, y)
+
+pub extern "js" fn Document::caret_position_from_point_with_options(self : Document, x : Double, y : Double, options : CaretPositionFromPointOptions) -> CaretPosition? =
   #| (self, x, y, options) => self.caretPositionFromPoint(x, y, options)
 
 pub extern "js" fn Document::get_scrolling_element(self : Document) -> Element? =
@@ -997,7 +1229,7 @@ pub extern "js" fn Document::get_fullscreen_enabled(self : Document) -> Bool =
 pub extern "js" fn Document::get_fullscreen(self : Document) -> Bool =
   #| (self) => self.fullscreen
 
-pub extern "js" fn Document::exit_fullscreen(self : Document) -> JsValue =
+pub extern "js" fn Document::exit_fullscreen(self : Document) -> Promise[Unit] =
   #| (self) => self.exitFullscreen()
 
 pub extern "js" fn Document::get_onfullscreenchange(self : Document) -> EventHandler =
@@ -1087,7 +1319,10 @@ pub extern "js" fn Document::get_elements_by_name(self : Document, element_name 
 pub extern "js" fn Document::get_current_script(self : Document) -> HTMLOrSVGScriptElement? =
   #| (self) => self.currentScript
 
-pub extern "js" fn Document::open(self : Document, unused1 : String, unused2 : String) -> Document =
+pub extern "js" fn Document::open(self : Document) -> Document =
+  #| (self) => self.open()
+
+pub extern "js" fn Document::open_with_unused2(self : Document, unused1 : String, unused2 : String) -> Document =
   #| (self, unused1, unused2) => self.open(unused1, unused2)
 
 pub extern "js" fn Document::close(self : Document) -> Unit =
@@ -1111,7 +1346,10 @@ pub extern "js" fn Document::get_design_mode(self : Document) -> String =
 pub extern "js" fn Document::set_design_mode(self : Document, value : String) -> Unit =
   #| (self, value) => { self.designMode = value }
 
-pub extern "js" fn Document::exec_command(self : Document, command_id : String, show_u_i : Bool, value : String) -> Bool =
+pub extern "js" fn Document::exec_command(self : Document, command_id : String) -> Bool =
+  #| (self, command_id) => self.execCommand(command_id)
+
+pub extern "js" fn Document::exec_command_with_value(self : Document, command_id : String, show_u_i : Bool, value : String) -> Bool =
   #| (self, command_id, show_u_i, value) => self.execCommand(command_id, show_u_i, value)
 
 pub extern "js" fn Document::query_command_enabled(self : Document, command_id : String) -> Bool =
@@ -1216,7 +1454,7 @@ pub extern "js" fn Document::get_permissions_policy(self : Document) -> Permissi
 pub extern "js" fn Document::get_picture_in_picture_enabled(self : Document) -> Bool =
   #| (self) => self.pictureInPictureEnabled
 
-pub extern "js" fn Document::exit_picture_in_picture(self : Document) -> JsValue =
+pub extern "js" fn Document::exit_picture_in_picture(self : Document) -> Promise[Unit] =
   #| (self) => self.exitPictureInPicture()
 
 pub extern "js" fn Document::get_onpointerlockchange(self : Document) -> EventHandler =
@@ -1243,10 +1481,10 @@ pub extern "js" fn Document::get_onprerenderingchange(self : Document) -> EventH
 pub extern "js" fn Document::set_onprerenderingchange(self : Document, value : EventHandler) -> Unit =
   #| (self, value) => { self.onprerenderingchange = value }
 
-pub extern "js" fn Document::request_storage_access_for(self : Document, requested_origin : String) -> JsValue =
+pub extern "js" fn Document::request_storage_access_for(self : Document, requested_origin : String) -> Promise[Unit] =
   #| (self, requested_origin) => self.requestStorageAccessFor(requested_origin)
 
-pub extern "js" fn Document::has_unpartitioned_cookie_access(self : Document) -> JsValue =
+pub extern "js" fn Document::has_unpartitioned_cookie_access(self : Document) -> Promise[Bool] =
   #| (self) => self.hasUnpartitionedCookieAccess()
 
 pub extern "js" fn Document::get_fragment_directive(self : Document) -> FragmentDirective =
@@ -1255,16 +1493,16 @@ pub extern "js" fn Document::get_fragment_directive(self : Document) -> Fragment
 pub extern "js" fn Document::get_selection(self : Document) -> Selection? =
   #| (self) => self.getSelection()
 
-pub extern "js" fn Document::has_storage_access(self : Document) -> JsValue =
+pub extern "js" fn Document::has_storage_access(self : Document) -> Promise[Bool] =
   #| (self) => self.hasStorageAccess()
 
-pub extern "js" fn Document::request_storage_access(self : Document) -> JsValue =
+pub extern "js" fn Document::request_storage_access(self : Document) -> Promise[Unit] =
   #| (self) => self.requestStorageAccess()
 
-pub extern "js" fn Document::has_private_token(self : Document, issuer : String) -> JsValue =
+pub extern "js" fn Document::has_private_token(self : Document, issuer : String) -> Promise[Bool] =
   #| (self, issuer) => self.hasPrivateToken(issuer)
 
-pub extern "js" fn Document::has_redemption_record(self : Document, issuer : String) -> JsValue =
+pub extern "js" fn Document::has_redemption_record(self : Document, issuer : String) -> Promise[Bool] =
   #| (self, issuer) => self.hasRedemptionRecord(issuer)
 
 pub extern "js" fn Document::get_timeline(self : Document) -> DocumentTimeline =
@@ -1273,16 +1511,28 @@ pub extern "js" fn Document::get_timeline(self : Document) -> DocumentTimeline =
 pub extern "js" fn Document::get_fonts(self : Document) -> FontFaceSet =
   #| (self) => self.fonts
 
-pub extern "js" fn Document::get_box_quads(self : Document, options : BoxQuadOptions) -> JsValue =
+pub extern "js" fn Document::get_box_quads(self : Document) -> Array[DOMQuad] =
+  #| (self) => self.getBoxQuads()
+
+pub extern "js" fn Document::get_box_quads_with_options(self : Document, options : BoxQuadOptions) -> Array[DOMQuad] =
   #| (self, options) => self.getBoxQuads(options)
 
-pub extern "js" fn Document::convert_quad_from_node(self : Document, quad : DOMQuadInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
+pub extern "js" fn Document::convert_quad_from_node(self : Document, quad : DOMQuadInit, from : GeometryNode) -> DOMQuad =
+  #| (self, quad, from) => self.convertQuadFromNode(quad, from)
+
+pub extern "js" fn Document::convert_quad_from_node_with_options(self : Document, quad : DOMQuadInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
-pub extern "js" fn Document::convert_rect_from_node(self : Document, rect : DOMRectReadOnly, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
+pub extern "js" fn Document::convert_rect_from_node(self : Document, rect : DOMRectReadOnly, from : GeometryNode) -> DOMQuad =
+  #| (self, rect, from) => self.convertRectFromNode(rect, from)
+
+pub extern "js" fn Document::convert_rect_from_node_with_options(self : Document, rect : DOMRectReadOnly, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
-pub extern "js" fn Document::convert_point_from_node(self : Document, point : DOMPointInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMPoint =
+pub extern "js" fn Document::convert_point_from_node(self : Document, point : DOMPointInit, from : GeometryNode) -> DOMPoint =
+  #| (self, point, from) => self.convertPointFromNode(point, from)
+
+pub extern "js" fn Document::convert_point_from_node_with_options(self : Document, point : DOMPointInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMPoint =
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 pub extern "js" fn Document::get_element_by_id(self : Document, element_id : String) -> Element? =
@@ -1312,7 +1562,7 @@ pub extern "js" fn Document::get_picture_in_picture_element(self : Document) -> 
 pub extern "js" fn Document::get_pointer_lock_element(self : Document) -> Element? =
   #| (self) => self.pointerLockElement
 
-pub extern "js" fn Document::get_animations(self : Document) -> JsValue =
+pub extern "js" fn Document::get_animations(self : Document) -> Array[Animation] =
   #| (self) => self.getAnimations()
 
 pub extern "js" fn Document::get_children(self : Document) -> HTMLCollection =
@@ -1345,13 +1595,19 @@ pub extern "js" fn Document::query_selector(self : Document, selectors : String)
 pub extern "js" fn Document::query_selector_all(self : Document, selectors : String) -> NodeList =
   #| (self, selectors) => self.querySelectorAll(selectors)
 
-pub extern "js" fn Document::create_expression(self : Document, expression : String, resolver : XPathNSResolver?) -> XPathExpression =
+pub extern "js" fn Document::create_expression(self : Document, expression : String) -> XPathExpression =
+  #| (self, expression) => self.createExpression(expression)
+
+pub extern "js" fn Document::create_expression_with_resolver(self : Document, expression : String, resolver : XPathNSResolver?) -> XPathExpression =
   #| (self, expression, resolver) => self.createExpression(expression, resolver)
 
 pub extern "js" fn Document::create_n_s_resolver(self : Document, node_resolver : Node) -> Node =
   #| (self, node_resolver) => self.createNSResolver(node_resolver)
 
-pub extern "js" fn Document::evaluate(self : Document, expression : String, context_node : Node, resolver : XPathNSResolver?, type_ : Int, result : XPathResult?) -> XPathResult =
+pub extern "js" fn Document::evaluate(self : Document, expression : String, context_node : Node) -> XPathResult =
+  #| (self, expression, context_node) => self.evaluate(expression, context_node)
+
+pub extern "js" fn Document::evaluate_with_result(self : Document, expression : String, context_node : Node, resolver : XPathNSResolver?, type_ : Int, result : XPathResult?) -> XPathResult =
   #| (self, expression, context_node, resolver, type_, result) => self.evaluate(expression, context_node, resolver, type_, result)
 
 pub extern "js" fn Document::get_onanimationstart(self : Document) -> EventHandler =
@@ -1994,17 +2250,62 @@ pub extern "js" fn XMLDocument::to_js_value(self : XMLDocument) -> JsValue =
 pub extern "js" fn XMLDocument::new() -> XMLDocument =
   #| () => new XMLDocument()
 
-pub extern "js" fn XMLDocument::add_event_listener(self : XMLDocument, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn XMLDocument::add_event_listener(self : XMLDocument, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.addEventListener(type_, callback)
+
+pub extern "js" fn XMLDocument::add_event_listener_with_options(self : XMLDocument, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
-pub extern "js" fn XMLDocument::remove_event_listener(self : XMLDocument, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn XMLDocument::remove_event_listener(self : XMLDocument, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.removeEventListener(type_, callback)
+
+pub extern "js" fn XMLDocument::remove_event_listener_with_options(self : XMLDocument, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
 pub extern "js" fn XMLDocument::dispatch_event(self : XMLDocument, event : Event) -> Bool =
   #| (self, event) => self.dispatchEvent(event)
 
-pub extern "js" fn XMLDocument::when(self : XMLDocument, type_ : String, options : ObservableEventListenerOptions) -> Observable =
+pub extern "js" fn XMLDocument::when(self : XMLDocument, type_ : String) -> Observable =
+  #| (self, type_) => self.when(type_)
+
+pub extern "js" fn XMLDocument::when_with_options(self : XMLDocument, type_ : String, options : ObservableEventListenerOptions) -> Observable =
   #| (self, type_, options) => self.when(type_, options)
+
+// XMLDocument.ELEMENT_NODE
+pub let x_m_l_document_element_node : Int = 1
+
+// XMLDocument.ATTRIBUTE_NODE
+pub let x_m_l_document_attribute_node : Int = 2
+
+// XMLDocument.TEXT_NODE
+pub let x_m_l_document_text_node : Int = 3
+
+// XMLDocument.CDATA_SECTION_NODE
+pub let x_m_l_document_cdata_section_node : Int = 4
+
+// XMLDocument.ENTITY_REFERENCE_NODE
+pub let x_m_l_document_entity_reference_node : Int = 5
+
+// XMLDocument.ENTITY_NODE
+pub let x_m_l_document_entity_node : Int = 6
+
+// XMLDocument.PROCESSING_INSTRUCTION_NODE
+pub let x_m_l_document_processing_instruction_node : Int = 7
+
+// XMLDocument.COMMENT_NODE
+pub let x_m_l_document_comment_node : Int = 8
+
+// XMLDocument.DOCUMENT_NODE
+pub let x_m_l_document_document_node : Int = 9
+
+// XMLDocument.DOCUMENT_TYPE_NODE
+pub let x_m_l_document_document_type_node : Int = 10
+
+// XMLDocument.DOCUMENT_FRAGMENT_NODE
+pub let x_m_l_document_document_fragment_node : Int = 11
+
+// XMLDocument.NOTATION_NODE
+pub let x_m_l_document_notation_node : Int = 12
 
 pub extern "js" fn XMLDocument::get_node_type(self : XMLDocument) -> Int =
   #| (self) => self.nodeType
@@ -2021,7 +2322,10 @@ pub extern "js" fn XMLDocument::get_is_connected(self : XMLDocument) -> Bool =
 pub extern "js" fn XMLDocument::get_owner_document(self : XMLDocument) -> Document? =
   #| (self) => self.ownerDocument
 
-pub extern "js" fn XMLDocument::get_root_node(self : XMLDocument, options : GetRootNodeOptions) -> Node =
+pub extern "js" fn XMLDocument::get_root_node(self : XMLDocument) -> Node =
+  #| (self) => self.getRootNode()
+
+pub extern "js" fn XMLDocument::get_root_node_with_options(self : XMLDocument, options : GetRootNodeOptions) -> Node =
   #| (self, options) => self.getRootNode(options)
 
 pub extern "js" fn XMLDocument::get_parent_node(self : XMLDocument) -> Node? =
@@ -2063,7 +2367,10 @@ pub extern "js" fn XMLDocument::set_text_content(self : XMLDocument, value : Str
 pub extern "js" fn XMLDocument::normalize(self : XMLDocument) -> Unit =
   #| (self) => self.normalize()
 
-pub extern "js" fn XMLDocument::clone_node(self : XMLDocument, subtree : Bool) -> Node =
+pub extern "js" fn XMLDocument::clone_node(self : XMLDocument) -> Node =
+  #| (self) => self.cloneNode()
+
+pub extern "js" fn XMLDocument::clone_node_with_subtree(self : XMLDocument, subtree : Bool) -> Node =
   #| (self, subtree) => self.cloneNode(subtree)
 
 pub extern "js" fn XMLDocument::is_equal_node(self : XMLDocument, other_node : Node?) -> Bool =
@@ -2071,6 +2378,24 @@ pub extern "js" fn XMLDocument::is_equal_node(self : XMLDocument, other_node : N
 
 pub extern "js" fn XMLDocument::is_same_node(self : XMLDocument, other_node : Node?) -> Bool =
   #| (self, other_node) => self.isSameNode(other_node)
+
+// XMLDocument.DOCUMENT_POSITION_DISCONNECTED
+pub let x_m_l_document_document_position_disconnected : Int = 0x01
+
+// XMLDocument.DOCUMENT_POSITION_PRECEDING
+pub let x_m_l_document_document_position_preceding : Int = 0x02
+
+// XMLDocument.DOCUMENT_POSITION_FOLLOWING
+pub let x_m_l_document_document_position_following : Int = 0x04
+
+// XMLDocument.DOCUMENT_POSITION_CONTAINS
+pub let x_m_l_document_document_position_contains : Int = 0x08
+
+// XMLDocument.DOCUMENT_POSITION_CONTAINED_BY
+pub let x_m_l_document_document_position_contained_by : Int = 0x10
+
+// XMLDocument.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC
+pub let x_m_l_document_document_position_implementation_specific : Int = 0x20
 
 pub extern "js" fn XMLDocument::compare_document_position(self : XMLDocument, other : Node) -> Int =
   #| (self, other) => self.compareDocumentPosition(other)
@@ -2138,10 +2463,16 @@ pub extern "js" fn XMLDocument::get_elements_by_tag_name_n_s(self : XMLDocument,
 pub extern "js" fn XMLDocument::get_elements_by_class_name(self : XMLDocument, class_names : String) -> HTMLCollection =
   #| (self, class_names) => self.getElementsByClassName(class_names)
 
-pub extern "js" fn XMLDocument::create_element(self : XMLDocument, local_name : String, options : JsValue) -> Element =
+pub extern "js" fn XMLDocument::create_element(self : XMLDocument, local_name : String) -> Element =
+  #| (self, local_name) => self.createElement(local_name)
+
+pub extern "js" fn XMLDocument::create_element_with_options(self : XMLDocument, local_name : String, options : JsValue) -> Element =
   #| (self, local_name, options) => self.createElement(local_name, options)
 
-pub extern "js" fn XMLDocument::create_element_n_s(self : XMLDocument, namespace_ : String?, qualified_name : String, options : JsValue) -> Element =
+pub extern "js" fn XMLDocument::create_element_n_s(self : XMLDocument, namespace_ : String?, qualified_name : String) -> Element =
+  #| (self, namespace_, qualified_name) => self.createElementNS(namespace_, qualified_name)
+
+pub extern "js" fn XMLDocument::create_element_n_s_with_options(self : XMLDocument, namespace_ : String?, qualified_name : String, options : JsValue) -> Element =
   #| (self, namespace_, qualified_name, options) => self.createElementNS(namespace_, qualified_name, options)
 
 pub extern "js" fn XMLDocument::create_document_fragment(self : XMLDocument) -> DocumentFragment =
@@ -2159,7 +2490,10 @@ pub extern "js" fn XMLDocument::create_comment(self : XMLDocument, data : String
 pub extern "js" fn XMLDocument::create_processing_instruction(self : XMLDocument, target : String, data : String) -> ProcessingInstruction =
   #| (self, target, data) => self.createProcessingInstruction(target, data)
 
-pub extern "js" fn XMLDocument::import_node(self : XMLDocument, node : Node, options : JsValue) -> Node =
+pub extern "js" fn XMLDocument::import_node(self : XMLDocument, node : Node) -> Node =
+  #| (self, node) => self.importNode(node)
+
+pub extern "js" fn XMLDocument::import_node_with_options(self : XMLDocument, node : Node, options : JsValue) -> Node =
   #| (self, node, options) => self.importNode(node, options)
 
 pub extern "js" fn XMLDocument::adopt_node(self : XMLDocument, node : Node) -> Node =
@@ -2177,10 +2511,16 @@ pub extern "js" fn XMLDocument::create_event(self : XMLDocument, interface : Str
 pub extern "js" fn XMLDocument::create_range(self : XMLDocument) -> Range =
   #| (self) => self.createRange()
 
-pub extern "js" fn XMLDocument::create_node_iterator(self : XMLDocument, root : Node, what_to_show : Int, filter : NodeFilter?) -> NodeIterator =
+pub extern "js" fn XMLDocument::create_node_iterator(self : XMLDocument, root : Node) -> NodeIterator =
+  #| (self, root) => self.createNodeIterator(root)
+
+pub extern "js" fn XMLDocument::create_node_iterator_with_filter(self : XMLDocument, root : Node, what_to_show : Int, filter : NodeFilter?) -> NodeIterator =
   #| (self, root, what_to_show, filter) => self.createNodeIterator(root, what_to_show, filter)
 
-pub extern "js" fn XMLDocument::create_tree_walker(self : XMLDocument, root : Node, what_to_show : Int, filter : NodeFilter?) -> TreeWalker =
+pub extern "js" fn XMLDocument::create_tree_walker(self : XMLDocument, root : Node) -> TreeWalker =
+  #| (self, root) => self.createTreeWalker(root)
+
+pub extern "js" fn XMLDocument::create_tree_walker_with_filter(self : XMLDocument, root : Node, what_to_show : Int, filter : NodeFilter?) -> TreeWalker =
   #| (self, root, what_to_show, filter) => self.createTreeWalker(root, what_to_show, filter)
 
 pub extern "js" fn XMLDocument::get_root_element(self : XMLDocument) -> SVGSVGElement? =
@@ -2189,7 +2529,10 @@ pub extern "js" fn XMLDocument::get_root_element(self : XMLDocument) -> SVGSVGEl
 pub extern "js" fn XMLDocument::get_named_flows(self : XMLDocument) -> NamedFlowMap =
   #| (self) => self.namedFlows
 
-pub extern "js" fn XMLDocument::start_view_transition(self : XMLDocument, callback_options : JsValue) -> ViewTransition =
+pub extern "js" fn XMLDocument::start_view_transition(self : XMLDocument) -> ViewTransition =
+  #| (self) => self.startViewTransition()
+
+pub extern "js" fn XMLDocument::start_view_transition_with_callback_options(self : XMLDocument, callback_options : JsValue) -> ViewTransition =
   #| (self, callback_options) => self.startViewTransition(callback_options)
 
 pub extern "js" fn XMLDocument::get_active_view_transition(self : XMLDocument) -> ViewTransition? =
@@ -2198,10 +2541,13 @@ pub extern "js" fn XMLDocument::get_active_view_transition(self : XMLDocument) -
 pub extern "js" fn XMLDocument::element_from_point(self : XMLDocument, x : Double, y : Double) -> Element? =
   #| (self, x, y) => self.elementFromPoint(x, y)
 
-pub extern "js" fn XMLDocument::elements_from_point(self : XMLDocument, x : Double, y : Double) -> JsValue =
+pub extern "js" fn XMLDocument::elements_from_point(self : XMLDocument, x : Double, y : Double) -> Array[Element] =
   #| (self, x, y) => self.elementsFromPoint(x, y)
 
-pub extern "js" fn XMLDocument::caret_position_from_point(self : XMLDocument, x : Double, y : Double, options : CaretPositionFromPointOptions) -> CaretPosition? =
+pub extern "js" fn XMLDocument::caret_position_from_point(self : XMLDocument, x : Double, y : Double) -> CaretPosition? =
+  #| (self, x, y) => self.caretPositionFromPoint(x, y)
+
+pub extern "js" fn XMLDocument::caret_position_from_point_with_options(self : XMLDocument, x : Double, y : Double, options : CaretPositionFromPointOptions) -> CaretPosition? =
   #| (self, x, y, options) => self.caretPositionFromPoint(x, y, options)
 
 pub extern "js" fn XMLDocument::get_scrolling_element(self : XMLDocument) -> Element? =
@@ -2219,7 +2565,7 @@ pub extern "js" fn XMLDocument::get_fullscreen_enabled(self : XMLDocument) -> Bo
 pub extern "js" fn XMLDocument::get_fullscreen(self : XMLDocument) -> Bool =
   #| (self) => self.fullscreen
 
-pub extern "js" fn XMLDocument::exit_fullscreen(self : XMLDocument) -> JsValue =
+pub extern "js" fn XMLDocument::exit_fullscreen(self : XMLDocument) -> Promise[Unit] =
   #| (self) => self.exitFullscreen()
 
 pub extern "js" fn XMLDocument::get_onfullscreenchange(self : XMLDocument) -> EventHandler =
@@ -2309,7 +2655,10 @@ pub extern "js" fn XMLDocument::get_elements_by_name(self : XMLDocument, element
 pub extern "js" fn XMLDocument::get_current_script(self : XMLDocument) -> HTMLOrSVGScriptElement? =
   #| (self) => self.currentScript
 
-pub extern "js" fn XMLDocument::open(self : XMLDocument, unused1 : String, unused2 : String) -> Document =
+pub extern "js" fn XMLDocument::open(self : XMLDocument) -> Document =
+  #| (self) => self.open()
+
+pub extern "js" fn XMLDocument::open_with_unused2(self : XMLDocument, unused1 : String, unused2 : String) -> Document =
   #| (self, unused1, unused2) => self.open(unused1, unused2)
 
 pub extern "js" fn XMLDocument::close(self : XMLDocument) -> Unit =
@@ -2333,7 +2682,10 @@ pub extern "js" fn XMLDocument::get_design_mode(self : XMLDocument) -> String =
 pub extern "js" fn XMLDocument::set_design_mode(self : XMLDocument, value : String) -> Unit =
   #| (self, value) => { self.designMode = value }
 
-pub extern "js" fn XMLDocument::exec_command(self : XMLDocument, command_id : String, show_u_i : Bool, value : String) -> Bool =
+pub extern "js" fn XMLDocument::exec_command(self : XMLDocument, command_id : String) -> Bool =
+  #| (self, command_id) => self.execCommand(command_id)
+
+pub extern "js" fn XMLDocument::exec_command_with_value(self : XMLDocument, command_id : String, show_u_i : Bool, value : String) -> Bool =
   #| (self, command_id, show_u_i, value) => self.execCommand(command_id, show_u_i, value)
 
 pub extern "js" fn XMLDocument::query_command_enabled(self : XMLDocument, command_id : String) -> Bool =
@@ -2438,7 +2790,7 @@ pub extern "js" fn XMLDocument::get_permissions_policy(self : XMLDocument) -> Pe
 pub extern "js" fn XMLDocument::get_picture_in_picture_enabled(self : XMLDocument) -> Bool =
   #| (self) => self.pictureInPictureEnabled
 
-pub extern "js" fn XMLDocument::exit_picture_in_picture(self : XMLDocument) -> JsValue =
+pub extern "js" fn XMLDocument::exit_picture_in_picture(self : XMLDocument) -> Promise[Unit] =
   #| (self) => self.exitPictureInPicture()
 
 pub extern "js" fn XMLDocument::get_onpointerlockchange(self : XMLDocument) -> EventHandler =
@@ -2465,10 +2817,10 @@ pub extern "js" fn XMLDocument::get_onprerenderingchange(self : XMLDocument) -> 
 pub extern "js" fn XMLDocument::set_onprerenderingchange(self : XMLDocument, value : EventHandler) -> Unit =
   #| (self, value) => { self.onprerenderingchange = value }
 
-pub extern "js" fn XMLDocument::request_storage_access_for(self : XMLDocument, requested_origin : String) -> JsValue =
+pub extern "js" fn XMLDocument::request_storage_access_for(self : XMLDocument, requested_origin : String) -> Promise[Unit] =
   #| (self, requested_origin) => self.requestStorageAccessFor(requested_origin)
 
-pub extern "js" fn XMLDocument::has_unpartitioned_cookie_access(self : XMLDocument) -> JsValue =
+pub extern "js" fn XMLDocument::has_unpartitioned_cookie_access(self : XMLDocument) -> Promise[Bool] =
   #| (self) => self.hasUnpartitionedCookieAccess()
 
 pub extern "js" fn XMLDocument::get_fragment_directive(self : XMLDocument) -> FragmentDirective =
@@ -2477,16 +2829,16 @@ pub extern "js" fn XMLDocument::get_fragment_directive(self : XMLDocument) -> Fr
 pub extern "js" fn XMLDocument::get_selection(self : XMLDocument) -> Selection? =
   #| (self) => self.getSelection()
 
-pub extern "js" fn XMLDocument::has_storage_access(self : XMLDocument) -> JsValue =
+pub extern "js" fn XMLDocument::has_storage_access(self : XMLDocument) -> Promise[Bool] =
   #| (self) => self.hasStorageAccess()
 
-pub extern "js" fn XMLDocument::request_storage_access(self : XMLDocument) -> JsValue =
+pub extern "js" fn XMLDocument::request_storage_access(self : XMLDocument) -> Promise[Unit] =
   #| (self) => self.requestStorageAccess()
 
-pub extern "js" fn XMLDocument::has_private_token(self : XMLDocument, issuer : String) -> JsValue =
+pub extern "js" fn XMLDocument::has_private_token(self : XMLDocument, issuer : String) -> Promise[Bool] =
   #| (self, issuer) => self.hasPrivateToken(issuer)
 
-pub extern "js" fn XMLDocument::has_redemption_record(self : XMLDocument, issuer : String) -> JsValue =
+pub extern "js" fn XMLDocument::has_redemption_record(self : XMLDocument, issuer : String) -> Promise[Bool] =
   #| (self, issuer) => self.hasRedemptionRecord(issuer)
 
 pub extern "js" fn XMLDocument::get_timeline(self : XMLDocument) -> DocumentTimeline =
@@ -2495,16 +2847,28 @@ pub extern "js" fn XMLDocument::get_timeline(self : XMLDocument) -> DocumentTime
 pub extern "js" fn XMLDocument::get_fonts(self : XMLDocument) -> FontFaceSet =
   #| (self) => self.fonts
 
-pub extern "js" fn XMLDocument::get_box_quads(self : XMLDocument, options : BoxQuadOptions) -> JsValue =
+pub extern "js" fn XMLDocument::get_box_quads(self : XMLDocument) -> Array[DOMQuad] =
+  #| (self) => self.getBoxQuads()
+
+pub extern "js" fn XMLDocument::get_box_quads_with_options(self : XMLDocument, options : BoxQuadOptions) -> Array[DOMQuad] =
   #| (self, options) => self.getBoxQuads(options)
 
-pub extern "js" fn XMLDocument::convert_quad_from_node(self : XMLDocument, quad : DOMQuadInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
+pub extern "js" fn XMLDocument::convert_quad_from_node(self : XMLDocument, quad : DOMQuadInit, from : GeometryNode) -> DOMQuad =
+  #| (self, quad, from) => self.convertQuadFromNode(quad, from)
+
+pub extern "js" fn XMLDocument::convert_quad_from_node_with_options(self : XMLDocument, quad : DOMQuadInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
-pub extern "js" fn XMLDocument::convert_rect_from_node(self : XMLDocument, rect : DOMRectReadOnly, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
+pub extern "js" fn XMLDocument::convert_rect_from_node(self : XMLDocument, rect : DOMRectReadOnly, from : GeometryNode) -> DOMQuad =
+  #| (self, rect, from) => self.convertRectFromNode(rect, from)
+
+pub extern "js" fn XMLDocument::convert_rect_from_node_with_options(self : XMLDocument, rect : DOMRectReadOnly, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
-pub extern "js" fn XMLDocument::convert_point_from_node(self : XMLDocument, point : DOMPointInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMPoint =
+pub extern "js" fn XMLDocument::convert_point_from_node(self : XMLDocument, point : DOMPointInit, from : GeometryNode) -> DOMPoint =
+  #| (self, point, from) => self.convertPointFromNode(point, from)
+
+pub extern "js" fn XMLDocument::convert_point_from_node_with_options(self : XMLDocument, point : DOMPointInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMPoint =
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 pub extern "js" fn XMLDocument::get_element_by_id(self : XMLDocument, element_id : String) -> Element? =
@@ -2534,7 +2898,7 @@ pub extern "js" fn XMLDocument::get_picture_in_picture_element(self : XMLDocumen
 pub extern "js" fn XMLDocument::get_pointer_lock_element(self : XMLDocument) -> Element? =
   #| (self) => self.pointerLockElement
 
-pub extern "js" fn XMLDocument::get_animations(self : XMLDocument) -> JsValue =
+pub extern "js" fn XMLDocument::get_animations(self : XMLDocument) -> Array[Animation] =
   #| (self) => self.getAnimations()
 
 pub extern "js" fn XMLDocument::get_children(self : XMLDocument) -> HTMLCollection =
@@ -2567,13 +2931,19 @@ pub extern "js" fn XMLDocument::query_selector(self : XMLDocument, selectors : S
 pub extern "js" fn XMLDocument::query_selector_all(self : XMLDocument, selectors : String) -> NodeList =
   #| (self, selectors) => self.querySelectorAll(selectors)
 
-pub extern "js" fn XMLDocument::create_expression(self : XMLDocument, expression : String, resolver : XPathNSResolver?) -> XPathExpression =
+pub extern "js" fn XMLDocument::create_expression(self : XMLDocument, expression : String) -> XPathExpression =
+  #| (self, expression) => self.createExpression(expression)
+
+pub extern "js" fn XMLDocument::create_expression_with_resolver(self : XMLDocument, expression : String, resolver : XPathNSResolver?) -> XPathExpression =
   #| (self, expression, resolver) => self.createExpression(expression, resolver)
 
 pub extern "js" fn XMLDocument::create_n_s_resolver(self : XMLDocument, node_resolver : Node) -> Node =
   #| (self, node_resolver) => self.createNSResolver(node_resolver)
 
-pub extern "js" fn XMLDocument::evaluate(self : XMLDocument, expression : String, context_node : Node, resolver : XPathNSResolver?, type_ : Int, result : XPathResult?) -> XPathResult =
+pub extern "js" fn XMLDocument::evaluate(self : XMLDocument, expression : String, context_node : Node) -> XPathResult =
+  #| (self, expression, context_node) => self.evaluate(expression, context_node)
+
+pub extern "js" fn XMLDocument::evaluate_with_result(self : XMLDocument, expression : String, context_node : Node, resolver : XPathNSResolver?, type_ : Int, result : XPathResult?) -> XPathResult =
   #| (self, expression, context_node, resolver, type_, result) => self.evaluate(expression, context_node, resolver, type_, result)
 
 pub extern "js" fn XMLDocument::get_onanimationstart(self : XMLDocument) -> EventHandler =
@@ -3216,10 +3586,16 @@ pub extern "js" fn DOMImplementation::to_js_value(self : DOMImplementation) -> J
 pub extern "js" fn DOMImplementation::create_document_type(self : DOMImplementation, name : String, public_id : String, system_id : String) -> DocumentType =
   #| (self, name, public_id, system_id) => self.createDocumentType(name, public_id, system_id)
 
-pub extern "js" fn DOMImplementation::create_document(self : DOMImplementation, namespace_ : String?, qualified_name : String, doctype : DocumentType?) -> XMLDocument =
+pub extern "js" fn DOMImplementation::create_document(self : DOMImplementation, namespace_ : String?, qualified_name : String) -> XMLDocument =
+  #| (self, namespace_, qualified_name) => self.createDocument(namespace_, qualified_name)
+
+pub extern "js" fn DOMImplementation::create_document_with_doctype(self : DOMImplementation, namespace_ : String?, qualified_name : String, doctype : DocumentType?) -> XMLDocument =
   #| (self, namespace_, qualified_name, doctype) => self.createDocument(namespace_, qualified_name, doctype)
 
-pub extern "js" fn DOMImplementation::create_h_t_m_l_document(self : DOMImplementation, title : String) -> Document =
+pub extern "js" fn DOMImplementation::create_h_t_m_l_document(self : DOMImplementation) -> Document =
+  #| (self) => self.createHTMLDocument()
+
+pub extern "js" fn DOMImplementation::create_h_t_m_l_document_with_title(self : DOMImplementation, title : String) -> Document =
   #| (self, title) => self.createHTMLDocument(title)
 
 pub extern "js" fn DOMImplementation::has_feature(self : DOMImplementation) -> Bool =
@@ -3235,17 +3611,62 @@ pub extern "js" fn DocumentType::to_js_value(self : DocumentType) -> JsValue =
 pub extern "js" fn DocumentType::new() -> DocumentType =
   #| () => new DocumentType()
 
-pub extern "js" fn DocumentType::add_event_listener(self : DocumentType, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn DocumentType::add_event_listener(self : DocumentType, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.addEventListener(type_, callback)
+
+pub extern "js" fn DocumentType::add_event_listener_with_options(self : DocumentType, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
-pub extern "js" fn DocumentType::remove_event_listener(self : DocumentType, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn DocumentType::remove_event_listener(self : DocumentType, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.removeEventListener(type_, callback)
+
+pub extern "js" fn DocumentType::remove_event_listener_with_options(self : DocumentType, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
 pub extern "js" fn DocumentType::dispatch_event(self : DocumentType, event : Event) -> Bool =
   #| (self, event) => self.dispatchEvent(event)
 
-pub extern "js" fn DocumentType::when(self : DocumentType, type_ : String, options : ObservableEventListenerOptions) -> Observable =
+pub extern "js" fn DocumentType::when(self : DocumentType, type_ : String) -> Observable =
+  #| (self, type_) => self.when(type_)
+
+pub extern "js" fn DocumentType::when_with_options(self : DocumentType, type_ : String, options : ObservableEventListenerOptions) -> Observable =
   #| (self, type_, options) => self.when(type_, options)
+
+// DocumentType.ELEMENT_NODE
+pub let document_type_element_node : Int = 1
+
+// DocumentType.ATTRIBUTE_NODE
+pub let document_type_attribute_node : Int = 2
+
+// DocumentType.TEXT_NODE
+pub let document_type_text_node : Int = 3
+
+// DocumentType.CDATA_SECTION_NODE
+pub let document_type_cdata_section_node : Int = 4
+
+// DocumentType.ENTITY_REFERENCE_NODE
+pub let document_type_entity_reference_node : Int = 5
+
+// DocumentType.ENTITY_NODE
+pub let document_type_entity_node : Int = 6
+
+// DocumentType.PROCESSING_INSTRUCTION_NODE
+pub let document_type_processing_instruction_node : Int = 7
+
+// DocumentType.COMMENT_NODE
+pub let document_type_comment_node : Int = 8
+
+// DocumentType.DOCUMENT_NODE
+pub let document_type_document_node : Int = 9
+
+// DocumentType.DOCUMENT_TYPE_NODE
+pub let document_type_document_type_node : Int = 10
+
+// DocumentType.DOCUMENT_FRAGMENT_NODE
+pub let document_type_document_fragment_node : Int = 11
+
+// DocumentType.NOTATION_NODE
+pub let document_type_notation_node : Int = 12
 
 pub extern "js" fn DocumentType::get_node_type(self : DocumentType) -> Int =
   #| (self) => self.nodeType
@@ -3262,7 +3683,10 @@ pub extern "js" fn DocumentType::get_is_connected(self : DocumentType) -> Bool =
 pub extern "js" fn DocumentType::get_owner_document(self : DocumentType) -> Document? =
   #| (self) => self.ownerDocument
 
-pub extern "js" fn DocumentType::get_root_node(self : DocumentType, options : GetRootNodeOptions) -> Node =
+pub extern "js" fn DocumentType::get_root_node(self : DocumentType) -> Node =
+  #| (self) => self.getRootNode()
+
+pub extern "js" fn DocumentType::get_root_node_with_options(self : DocumentType, options : GetRootNodeOptions) -> Node =
   #| (self, options) => self.getRootNode(options)
 
 pub extern "js" fn DocumentType::get_parent_node(self : DocumentType) -> Node? =
@@ -3304,7 +3728,10 @@ pub extern "js" fn DocumentType::set_text_content(self : DocumentType, value : S
 pub extern "js" fn DocumentType::normalize(self : DocumentType) -> Unit =
   #| (self) => self.normalize()
 
-pub extern "js" fn DocumentType::clone_node(self : DocumentType, subtree : Bool) -> Node =
+pub extern "js" fn DocumentType::clone_node(self : DocumentType) -> Node =
+  #| (self) => self.cloneNode()
+
+pub extern "js" fn DocumentType::clone_node_with_subtree(self : DocumentType, subtree : Bool) -> Node =
   #| (self, subtree) => self.cloneNode(subtree)
 
 pub extern "js" fn DocumentType::is_equal_node(self : DocumentType, other_node : Node?) -> Bool =
@@ -3312,6 +3739,24 @@ pub extern "js" fn DocumentType::is_equal_node(self : DocumentType, other_node :
 
 pub extern "js" fn DocumentType::is_same_node(self : DocumentType, other_node : Node?) -> Bool =
   #| (self, other_node) => self.isSameNode(other_node)
+
+// DocumentType.DOCUMENT_POSITION_DISCONNECTED
+pub let document_type_document_position_disconnected : Int = 0x01
+
+// DocumentType.DOCUMENT_POSITION_PRECEDING
+pub let document_type_document_position_preceding : Int = 0x02
+
+// DocumentType.DOCUMENT_POSITION_FOLLOWING
+pub let document_type_document_position_following : Int = 0x04
+
+// DocumentType.DOCUMENT_POSITION_CONTAINS
+pub let document_type_document_position_contains : Int = 0x08
+
+// DocumentType.DOCUMENT_POSITION_CONTAINED_BY
+pub let document_type_document_position_contained_by : Int = 0x10
+
+// DocumentType.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC
+pub let document_type_document_position_implementation_specific : Int = 0x20
 
 pub extern "js" fn DocumentType::compare_document_position(self : DocumentType, other : Node) -> Int =
   #| (self, other) => self.compareDocumentPosition(other)
@@ -3371,17 +3816,62 @@ pub extern "js" fn DocumentFragment::to_js_value(self : DocumentFragment) -> JsV
 pub extern "js" fn DocumentFragment::new() -> DocumentFragment =
   #| () => new DocumentFragment()
 
-pub extern "js" fn DocumentFragment::add_event_listener(self : DocumentFragment, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn DocumentFragment::add_event_listener(self : DocumentFragment, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.addEventListener(type_, callback)
+
+pub extern "js" fn DocumentFragment::add_event_listener_with_options(self : DocumentFragment, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
-pub extern "js" fn DocumentFragment::remove_event_listener(self : DocumentFragment, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn DocumentFragment::remove_event_listener(self : DocumentFragment, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.removeEventListener(type_, callback)
+
+pub extern "js" fn DocumentFragment::remove_event_listener_with_options(self : DocumentFragment, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
 pub extern "js" fn DocumentFragment::dispatch_event(self : DocumentFragment, event : Event) -> Bool =
   #| (self, event) => self.dispatchEvent(event)
 
-pub extern "js" fn DocumentFragment::when(self : DocumentFragment, type_ : String, options : ObservableEventListenerOptions) -> Observable =
+pub extern "js" fn DocumentFragment::when(self : DocumentFragment, type_ : String) -> Observable =
+  #| (self, type_) => self.when(type_)
+
+pub extern "js" fn DocumentFragment::when_with_options(self : DocumentFragment, type_ : String, options : ObservableEventListenerOptions) -> Observable =
   #| (self, type_, options) => self.when(type_, options)
+
+// DocumentFragment.ELEMENT_NODE
+pub let document_fragment_element_node : Int = 1
+
+// DocumentFragment.ATTRIBUTE_NODE
+pub let document_fragment_attribute_node : Int = 2
+
+// DocumentFragment.TEXT_NODE
+pub let document_fragment_text_node : Int = 3
+
+// DocumentFragment.CDATA_SECTION_NODE
+pub let document_fragment_cdata_section_node : Int = 4
+
+// DocumentFragment.ENTITY_REFERENCE_NODE
+pub let document_fragment_entity_reference_node : Int = 5
+
+// DocumentFragment.ENTITY_NODE
+pub let document_fragment_entity_node : Int = 6
+
+// DocumentFragment.PROCESSING_INSTRUCTION_NODE
+pub let document_fragment_processing_instruction_node : Int = 7
+
+// DocumentFragment.COMMENT_NODE
+pub let document_fragment_comment_node : Int = 8
+
+// DocumentFragment.DOCUMENT_NODE
+pub let document_fragment_document_node : Int = 9
+
+// DocumentFragment.DOCUMENT_TYPE_NODE
+pub let document_fragment_document_type_node : Int = 10
+
+// DocumentFragment.DOCUMENT_FRAGMENT_NODE
+pub let document_fragment_document_fragment_node : Int = 11
+
+// DocumentFragment.NOTATION_NODE
+pub let document_fragment_notation_node : Int = 12
 
 pub extern "js" fn DocumentFragment::get_node_type(self : DocumentFragment) -> Int =
   #| (self) => self.nodeType
@@ -3398,7 +3888,10 @@ pub extern "js" fn DocumentFragment::get_is_connected(self : DocumentFragment) -
 pub extern "js" fn DocumentFragment::get_owner_document(self : DocumentFragment) -> Document? =
   #| (self) => self.ownerDocument
 
-pub extern "js" fn DocumentFragment::get_root_node(self : DocumentFragment, options : GetRootNodeOptions) -> Node =
+pub extern "js" fn DocumentFragment::get_root_node(self : DocumentFragment) -> Node =
+  #| (self) => self.getRootNode()
+
+pub extern "js" fn DocumentFragment::get_root_node_with_options(self : DocumentFragment, options : GetRootNodeOptions) -> Node =
   #| (self, options) => self.getRootNode(options)
 
 pub extern "js" fn DocumentFragment::get_parent_node(self : DocumentFragment) -> Node? =
@@ -3440,7 +3933,10 @@ pub extern "js" fn DocumentFragment::set_text_content(self : DocumentFragment, v
 pub extern "js" fn DocumentFragment::normalize(self : DocumentFragment) -> Unit =
   #| (self) => self.normalize()
 
-pub extern "js" fn DocumentFragment::clone_node(self : DocumentFragment, subtree : Bool) -> Node =
+pub extern "js" fn DocumentFragment::clone_node(self : DocumentFragment) -> Node =
+  #| (self) => self.cloneNode()
+
+pub extern "js" fn DocumentFragment::clone_node_with_subtree(self : DocumentFragment, subtree : Bool) -> Node =
   #| (self, subtree) => self.cloneNode(subtree)
 
 pub extern "js" fn DocumentFragment::is_equal_node(self : DocumentFragment, other_node : Node?) -> Bool =
@@ -3448,6 +3944,24 @@ pub extern "js" fn DocumentFragment::is_equal_node(self : DocumentFragment, othe
 
 pub extern "js" fn DocumentFragment::is_same_node(self : DocumentFragment, other_node : Node?) -> Bool =
   #| (self, other_node) => self.isSameNode(other_node)
+
+// DocumentFragment.DOCUMENT_POSITION_DISCONNECTED
+pub let document_fragment_document_position_disconnected : Int = 0x01
+
+// DocumentFragment.DOCUMENT_POSITION_PRECEDING
+pub let document_fragment_document_position_preceding : Int = 0x02
+
+// DocumentFragment.DOCUMENT_POSITION_FOLLOWING
+pub let document_fragment_document_position_following : Int = 0x04
+
+// DocumentFragment.DOCUMENT_POSITION_CONTAINS
+pub let document_fragment_document_position_contains : Int = 0x08
+
+// DocumentFragment.DOCUMENT_POSITION_CONTAINED_BY
+pub let document_fragment_document_position_contained_by : Int = 0x10
+
+// DocumentFragment.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC
+pub let document_fragment_document_position_implementation_specific : Int = 0x20
 
 pub extern "js" fn DocumentFragment::compare_document_position(self : DocumentFragment, other : Node) -> Int =
   #| (self, other) => self.compareDocumentPosition(other)
@@ -3519,17 +4033,62 @@ pub extern "js" fn ShadowRoot::to_js_value(self : ShadowRoot) -> JsValue =
 pub extern "js" fn ShadowRoot::new() -> ShadowRoot =
   #| () => new ShadowRoot()
 
-pub extern "js" fn ShadowRoot::add_event_listener(self : ShadowRoot, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn ShadowRoot::add_event_listener(self : ShadowRoot, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.addEventListener(type_, callback)
+
+pub extern "js" fn ShadowRoot::add_event_listener_with_options(self : ShadowRoot, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
-pub extern "js" fn ShadowRoot::remove_event_listener(self : ShadowRoot, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn ShadowRoot::remove_event_listener(self : ShadowRoot, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.removeEventListener(type_, callback)
+
+pub extern "js" fn ShadowRoot::remove_event_listener_with_options(self : ShadowRoot, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
 pub extern "js" fn ShadowRoot::dispatch_event(self : ShadowRoot, event : Event) -> Bool =
   #| (self, event) => self.dispatchEvent(event)
 
-pub extern "js" fn ShadowRoot::when(self : ShadowRoot, type_ : String, options : ObservableEventListenerOptions) -> Observable =
+pub extern "js" fn ShadowRoot::when(self : ShadowRoot, type_ : String) -> Observable =
+  #| (self, type_) => self.when(type_)
+
+pub extern "js" fn ShadowRoot::when_with_options(self : ShadowRoot, type_ : String, options : ObservableEventListenerOptions) -> Observable =
   #| (self, type_, options) => self.when(type_, options)
+
+// ShadowRoot.ELEMENT_NODE
+pub let shadow_root_element_node : Int = 1
+
+// ShadowRoot.ATTRIBUTE_NODE
+pub let shadow_root_attribute_node : Int = 2
+
+// ShadowRoot.TEXT_NODE
+pub let shadow_root_text_node : Int = 3
+
+// ShadowRoot.CDATA_SECTION_NODE
+pub let shadow_root_cdata_section_node : Int = 4
+
+// ShadowRoot.ENTITY_REFERENCE_NODE
+pub let shadow_root_entity_reference_node : Int = 5
+
+// ShadowRoot.ENTITY_NODE
+pub let shadow_root_entity_node : Int = 6
+
+// ShadowRoot.PROCESSING_INSTRUCTION_NODE
+pub let shadow_root_processing_instruction_node : Int = 7
+
+// ShadowRoot.COMMENT_NODE
+pub let shadow_root_comment_node : Int = 8
+
+// ShadowRoot.DOCUMENT_NODE
+pub let shadow_root_document_node : Int = 9
+
+// ShadowRoot.DOCUMENT_TYPE_NODE
+pub let shadow_root_document_type_node : Int = 10
+
+// ShadowRoot.DOCUMENT_FRAGMENT_NODE
+pub let shadow_root_document_fragment_node : Int = 11
+
+// ShadowRoot.NOTATION_NODE
+pub let shadow_root_notation_node : Int = 12
 
 pub extern "js" fn ShadowRoot::get_node_type(self : ShadowRoot) -> Int =
   #| (self) => self.nodeType
@@ -3546,7 +4105,10 @@ pub extern "js" fn ShadowRoot::get_is_connected(self : ShadowRoot) -> Bool =
 pub extern "js" fn ShadowRoot::get_owner_document(self : ShadowRoot) -> Document? =
   #| (self) => self.ownerDocument
 
-pub extern "js" fn ShadowRoot::get_root_node(self : ShadowRoot, options : GetRootNodeOptions) -> Node =
+pub extern "js" fn ShadowRoot::get_root_node(self : ShadowRoot) -> Node =
+  #| (self) => self.getRootNode()
+
+pub extern "js" fn ShadowRoot::get_root_node_with_options(self : ShadowRoot, options : GetRootNodeOptions) -> Node =
   #| (self, options) => self.getRootNode(options)
 
 pub extern "js" fn ShadowRoot::get_parent_node(self : ShadowRoot) -> Node? =
@@ -3588,7 +4150,10 @@ pub extern "js" fn ShadowRoot::set_text_content(self : ShadowRoot, value : Strin
 pub extern "js" fn ShadowRoot::normalize(self : ShadowRoot) -> Unit =
   #| (self) => self.normalize()
 
-pub extern "js" fn ShadowRoot::clone_node(self : ShadowRoot, subtree : Bool) -> Node =
+pub extern "js" fn ShadowRoot::clone_node(self : ShadowRoot) -> Node =
+  #| (self) => self.cloneNode()
+
+pub extern "js" fn ShadowRoot::clone_node_with_subtree(self : ShadowRoot, subtree : Bool) -> Node =
   #| (self, subtree) => self.cloneNode(subtree)
 
 pub extern "js" fn ShadowRoot::is_equal_node(self : ShadowRoot, other_node : Node?) -> Bool =
@@ -3596,6 +4161,24 @@ pub extern "js" fn ShadowRoot::is_equal_node(self : ShadowRoot, other_node : Nod
 
 pub extern "js" fn ShadowRoot::is_same_node(self : ShadowRoot, other_node : Node?) -> Bool =
   #| (self, other_node) => self.isSameNode(other_node)
+
+// ShadowRoot.DOCUMENT_POSITION_DISCONNECTED
+pub let shadow_root_document_position_disconnected : Int = 0x01
+
+// ShadowRoot.DOCUMENT_POSITION_PRECEDING
+pub let shadow_root_document_position_preceding : Int = 0x02
+
+// ShadowRoot.DOCUMENT_POSITION_FOLLOWING
+pub let shadow_root_document_position_following : Int = 0x04
+
+// ShadowRoot.DOCUMENT_POSITION_CONTAINS
+pub let shadow_root_document_position_contains : Int = 0x08
+
+// ShadowRoot.DOCUMENT_POSITION_CONTAINED_BY
+pub let shadow_root_document_position_contained_by : Int = 0x10
+
+// ShadowRoot.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC
+pub let shadow_root_document_position_implementation_specific : Int = 0x20
 
 pub extern "js" fn ShadowRoot::compare_document_position(self : ShadowRoot, other : Node) -> Int =
   #| (self, other) => self.compareDocumentPosition(other)
@@ -3684,7 +4267,10 @@ pub extern "js" fn ShadowRoot::set_onslotchange(self : ShadowRoot, value : Event
 pub extern "js" fn ShadowRoot::set_h_t_m_l_unsafe(self : ShadowRoot, html : JsValue) -> Unit =
   #| (self, html) => self.setHTMLUnsafe(html)
 
-pub extern "js" fn ShadowRoot::get_h_t_m_l(self : ShadowRoot, options : GetHTMLOptions) -> String =
+pub extern "js" fn ShadowRoot::get_h_t_m_l(self : ShadowRoot) -> String =
+  #| (self) => self.getHTML()
+
+pub extern "js" fn ShadowRoot::get_h_t_m_l_with_options(self : ShadowRoot, options : GetHTMLOptions) -> String =
   #| (self, options) => self.getHTML(options)
 
 pub extern "js" fn ShadowRoot::get_inner_h_t_m_l(self : ShadowRoot) -> JsValue =
@@ -3717,7 +4303,7 @@ pub extern "js" fn ShadowRoot::get_picture_in_picture_element(self : ShadowRoot)
 pub extern "js" fn ShadowRoot::get_pointer_lock_element(self : ShadowRoot) -> Element? =
   #| (self) => self.pointerLockElement
 
-pub extern "js" fn ShadowRoot::get_animations(self : ShadowRoot) -> JsValue =
+pub extern "js" fn ShadowRoot::get_animations(self : ShadowRoot) -> Array[Animation] =
   #| (self) => self.getAnimations()
 
 ///|
@@ -3730,17 +4316,62 @@ pub extern "js" fn Element::to_js_value(self : Element) -> JsValue =
 pub extern "js" fn Element::new() -> Element =
   #| () => new Element()
 
-pub extern "js" fn Element::add_event_listener(self : Element, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn Element::add_event_listener(self : Element, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.addEventListener(type_, callback)
+
+pub extern "js" fn Element::add_event_listener_with_options(self : Element, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
-pub extern "js" fn Element::remove_event_listener(self : Element, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn Element::remove_event_listener(self : Element, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.removeEventListener(type_, callback)
+
+pub extern "js" fn Element::remove_event_listener_with_options(self : Element, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
 pub extern "js" fn Element::dispatch_event(self : Element, event : Event) -> Bool =
   #| (self, event) => self.dispatchEvent(event)
 
-pub extern "js" fn Element::when(self : Element, type_ : String, options : ObservableEventListenerOptions) -> Observable =
+pub extern "js" fn Element::when(self : Element, type_ : String) -> Observable =
+  #| (self, type_) => self.when(type_)
+
+pub extern "js" fn Element::when_with_options(self : Element, type_ : String, options : ObservableEventListenerOptions) -> Observable =
   #| (self, type_, options) => self.when(type_, options)
+
+// Element.ELEMENT_NODE
+pub let element_element_node : Int = 1
+
+// Element.ATTRIBUTE_NODE
+pub let element_attribute_node : Int = 2
+
+// Element.TEXT_NODE
+pub let element_text_node : Int = 3
+
+// Element.CDATA_SECTION_NODE
+pub let element_cdata_section_node : Int = 4
+
+// Element.ENTITY_REFERENCE_NODE
+pub let element_entity_reference_node : Int = 5
+
+// Element.ENTITY_NODE
+pub let element_entity_node : Int = 6
+
+// Element.PROCESSING_INSTRUCTION_NODE
+pub let element_processing_instruction_node : Int = 7
+
+// Element.COMMENT_NODE
+pub let element_comment_node : Int = 8
+
+// Element.DOCUMENT_NODE
+pub let element_document_node : Int = 9
+
+// Element.DOCUMENT_TYPE_NODE
+pub let element_document_type_node : Int = 10
+
+// Element.DOCUMENT_FRAGMENT_NODE
+pub let element_document_fragment_node : Int = 11
+
+// Element.NOTATION_NODE
+pub let element_notation_node : Int = 12
 
 pub extern "js" fn Element::get_node_type(self : Element) -> Int =
   #| (self) => self.nodeType
@@ -3757,7 +4388,10 @@ pub extern "js" fn Element::get_is_connected(self : Element) -> Bool =
 pub extern "js" fn Element::get_owner_document(self : Element) -> Document? =
   #| (self) => self.ownerDocument
 
-pub extern "js" fn Element::get_root_node(self : Element, options : GetRootNodeOptions) -> Node =
+pub extern "js" fn Element::get_root_node(self : Element) -> Node =
+  #| (self) => self.getRootNode()
+
+pub extern "js" fn Element::get_root_node_with_options(self : Element, options : GetRootNodeOptions) -> Node =
   #| (self, options) => self.getRootNode(options)
 
 pub extern "js" fn Element::get_parent_node(self : Element) -> Node? =
@@ -3799,7 +4433,10 @@ pub extern "js" fn Element::set_text_content(self : Element, value : String?) ->
 pub extern "js" fn Element::normalize(self : Element) -> Unit =
   #| (self) => self.normalize()
 
-pub extern "js" fn Element::clone_node(self : Element, subtree : Bool) -> Node =
+pub extern "js" fn Element::clone_node(self : Element) -> Node =
+  #| (self) => self.cloneNode()
+
+pub extern "js" fn Element::clone_node_with_subtree(self : Element, subtree : Bool) -> Node =
   #| (self, subtree) => self.cloneNode(subtree)
 
 pub extern "js" fn Element::is_equal_node(self : Element, other_node : Node?) -> Bool =
@@ -3807,6 +4444,24 @@ pub extern "js" fn Element::is_equal_node(self : Element, other_node : Node?) ->
 
 pub extern "js" fn Element::is_same_node(self : Element, other_node : Node?) -> Bool =
   #| (self, other_node) => self.isSameNode(other_node)
+
+// Element.DOCUMENT_POSITION_DISCONNECTED
+pub let element_document_position_disconnected : Int = 0x01
+
+// Element.DOCUMENT_POSITION_PRECEDING
+pub let element_document_position_preceding : Int = 0x02
+
+// Element.DOCUMENT_POSITION_FOLLOWING
+pub let element_document_position_following : Int = 0x04
+
+// Element.DOCUMENT_POSITION_CONTAINS
+pub let element_document_position_contains : Int = 0x08
+
+// Element.DOCUMENT_POSITION_CONTAINED_BY
+pub let element_document_position_contained_by : Int = 0x10
+
+// Element.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC
+pub let element_document_position_implementation_specific : Int = 0x20
 
 pub extern "js" fn Element::compare_document_position(self : Element, other : Node) -> Int =
   #| (self, other) => self.compareDocumentPosition(other)
@@ -3874,7 +4529,7 @@ pub extern "js" fn Element::has_attributes(self : Element) -> Bool =
 pub extern "js" fn Element::get_attributes(self : Element) -> NamedNodeMap =
   #| (self) => self.attributes
 
-pub extern "js" fn Element::get_attribute_names(self : Element) -> JsValue =
+pub extern "js" fn Element::get_attribute_names(self : Element) -> Array[String] =
   #| (self) => self.getAttributeNames()
 
 pub extern "js" fn Element::get_attribute(self : Element, qualified_name : String) -> String? =
@@ -3895,7 +4550,10 @@ pub extern "js" fn Element::remove_attribute(self : Element, qualified_name : St
 pub extern "js" fn Element::remove_attribute_n_s(self : Element, namespace_ : String?, local_name : String) -> Unit =
   #| (self, namespace_, local_name) => self.removeAttributeNS(namespace_, local_name)
 
-pub extern "js" fn Element::toggle_attribute(self : Element, qualified_name : String, force : Bool) -> Bool =
+pub extern "js" fn Element::toggle_attribute(self : Element, qualified_name : String) -> Bool =
+  #| (self, qualified_name) => self.toggleAttribute(qualified_name)
+
+pub extern "js" fn Element::toggle_attribute_with_force(self : Element, qualified_name : String, force : Bool) -> Bool =
   #| (self, qualified_name, force) => self.toggleAttribute(qualified_name, force)
 
 pub extern "js" fn Element::has_attribute(self : Element, qualified_name : String) -> Bool =
@@ -3955,10 +4613,16 @@ pub extern "js" fn Element::insert_adjacent_text(self : Element, where_ : String
 pub extern "js" fn Element::get_spatial_navigation_container(self : Element) -> Node =
   #| (self) => self.getSpatialNavigationContainer()
 
-pub extern "js" fn Element::focusable_areas(self : Element, option : FocusableAreasOption) -> JsValue =
+pub extern "js" fn Element::focusable_areas(self : Element) -> Array[Node] =
+  #| (self) => self.focusableAreas()
+
+pub extern "js" fn Element::focusable_areas_with_option(self : Element, option : FocusableAreasOption) -> Array[Node] =
   #| (self, option) => self.focusableAreas(option)
 
-pub extern "js" fn Element::spatial_navigation_search(self : Element, dir : SpatialNavigationDirection, options : SpatialNavigationSearchOptions) -> Node? =
+pub extern "js" fn Element::spatial_navigation_search(self : Element, dir : SpatialNavigationDirection) -> Node? =
+  #| (self, dir) => self.spatialNavigationSearch(['up', 'down', 'left', 'right'][dir])
+
+pub extern "js" fn Element::spatial_navigation_search_with_options(self : Element, dir : SpatialNavigationDirection, options : SpatialNavigationSearchOptions) -> Node? =
   #| (self, dir, options) => self.spatialNavigationSearch(['up', 'down', 'left', 'right'][dir], options)
 
 pub extern "js" fn Element::pseudo(self : Element, type_ : CSSOMString) -> CSSPseudoElement? =
@@ -3970,7 +4634,10 @@ pub extern "js" fn Element::get_part(self : Element) -> DOMTokenList =
 pub extern "js" fn Element::computed_style_map(self : Element) -> StylePropertyMapReadOnly =
   #| (self) => self.computedStyleMap()
 
-pub extern "js" fn Element::start_view_transition(self : Element, callback_options : JsValue) -> ViewTransition =
+pub extern "js" fn Element::start_view_transition(self : Element) -> ViewTransition =
+  #| (self) => self.startViewTransition()
+
+pub extern "js" fn Element::start_view_transition_with_callback_options(self : Element, callback_options : JsValue) -> ViewTransition =
   #| (self, callback_options) => self.startViewTransition(callback_options)
 
 pub extern "js" fn Element::get_active_view_transition(self : Element) -> ViewTransition? =
@@ -3982,19 +4649,34 @@ pub extern "js" fn Element::get_client_rects(self : Element) -> DOMRectList =
 pub extern "js" fn Element::get_bounding_client_rect(self : Element) -> DOMRect =
   #| (self) => self.getBoundingClientRect()
 
-pub extern "js" fn Element::check_visibility(self : Element, options : CheckVisibilityOptions) -> Bool =
+pub extern "js" fn Element::check_visibility(self : Element) -> Bool =
+  #| (self) => self.checkVisibility()
+
+pub extern "js" fn Element::check_visibility_with_options(self : Element, options : CheckVisibilityOptions) -> Bool =
   #| (self, options) => self.checkVisibility(options)
 
-pub extern "js" fn Element::scroll_into_view(self : Element, arg : JsValue) -> JsValue =
+pub extern "js" fn Element::scroll_into_view(self : Element) -> Promise[Unit] =
+  #| (self) => self.scrollIntoView()
+
+pub extern "js" fn Element::scroll_into_view_with_arg(self : Element, arg : JsValue) -> Promise[Unit] =
   #| (self, arg) => self.scrollIntoView(arg)
 
-pub extern "js" fn Element::scroll(self : Element, options : ScrollToOptions) -> JsValue =
+pub extern "js" fn Element::scroll(self : Element) -> Promise[Unit] =
+  #| (self) => self.scroll()
+
+pub extern "js" fn Element::scroll_with_options(self : Element, options : ScrollToOptions) -> Promise[Unit] =
   #| (self, options) => self.scroll(options)
 
-pub extern "js" fn Element::scroll_to(self : Element, options : ScrollToOptions) -> JsValue =
+pub extern "js" fn Element::scroll_to(self : Element) -> Promise[Unit] =
+  #| (self) => self.scrollTo()
+
+pub extern "js" fn Element::scroll_to_with_options(self : Element, options : ScrollToOptions) -> Promise[Unit] =
   #| (self, options) => self.scrollTo(options)
 
-pub extern "js" fn Element::scroll_by(self : Element, options : ScrollToOptions) -> JsValue =
+pub extern "js" fn Element::scroll_by(self : Element) -> Promise[Unit] =
+  #| (self) => self.scrollBy()
+
+pub extern "js" fn Element::scroll_by_with_options(self : Element, options : ScrollToOptions) -> Promise[Unit] =
   #| (self, options) => self.scrollBy(options)
 
 pub extern "js" fn Element::get_scroll_top(self : Element) -> Double =
@@ -4036,7 +4718,10 @@ pub extern "js" fn Element::get_element_timing(self : Element) -> String =
 pub extern "js" fn Element::set_element_timing(self : Element, value : String) -> Unit =
   #| (self, value) => { self.elementTiming = value }
 
-pub extern "js" fn Element::request_fullscreen(self : Element, options : FullscreenOptions) -> JsValue =
+pub extern "js" fn Element::request_fullscreen(self : Element) -> Promise[Unit] =
+  #| (self) => self.requestFullscreen()
+
+pub extern "js" fn Element::request_fullscreen_with_options(self : Element, options : FullscreenOptions) -> Promise[Unit] =
   #| (self, options) => self.requestFullscreen(options)
 
 pub extern "js" fn Element::get_onfullscreenchange(self : Element) -> EventHandler =
@@ -4054,7 +4739,10 @@ pub extern "js" fn Element::set_onfullscreenerror(self : Element, value : EventH
 pub extern "js" fn Element::set_h_t_m_l_unsafe(self : Element, html : JsValue) -> Unit =
   #| (self, html) => self.setHTMLUnsafe(html)
 
-pub extern "js" fn Element::get_h_t_m_l(self : Element, options : GetHTMLOptions) -> String =
+pub extern "js" fn Element::get_h_t_m_l(self : Element) -> String =
+  #| (self) => self.getHTML()
+
+pub extern "js" fn Element::get_h_t_m_l_with_options(self : Element, options : GetHTMLOptions) -> String =
   #| (self, options) => self.getHTML(options)
 
 pub extern "js" fn Element::get_inner_h_t_m_l(self : Element) -> JsValue =
@@ -4081,25 +4769,40 @@ pub extern "js" fn Element::release_pointer_capture(self : Element, pointer_id :
 pub extern "js" fn Element::has_pointer_capture(self : Element, pointer_id : Int) -> Bool =
   #| (self, pointer_id) => self.hasPointerCapture(pointer_id)
 
-pub extern "js" fn Element::request_pointer_lock(self : Element, options : PointerLockOptions) -> JsValue =
+pub extern "js" fn Element::request_pointer_lock(self : Element) -> Promise[Unit] =
+  #| (self) => self.requestPointerLock()
+
+pub extern "js" fn Element::request_pointer_lock_with_options(self : Element, options : PointerLockOptions) -> Promise[Unit] =
   #| (self, options) => self.requestPointerLock(options)
 
 pub extern "js" fn Element::get_region_overset(self : Element) -> CSSOMString =
   #| (self) => self.regionOverset
 
-pub extern "js" fn Element::get_region_flow_ranges(self : Element) -> JsValue =
+pub extern "js" fn Element::get_region_flow_ranges(self : Element) -> Array[Range] =
   #| (self) => self.getRegionFlowRanges()
 
-pub extern "js" fn Element::get_box_quads(self : Element, options : BoxQuadOptions) -> JsValue =
+pub extern "js" fn Element::get_box_quads(self : Element) -> Array[DOMQuad] =
+  #| (self) => self.getBoxQuads()
+
+pub extern "js" fn Element::get_box_quads_with_options(self : Element, options : BoxQuadOptions) -> Array[DOMQuad] =
   #| (self, options) => self.getBoxQuads(options)
 
-pub extern "js" fn Element::convert_quad_from_node(self : Element, quad : DOMQuadInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
+pub extern "js" fn Element::convert_quad_from_node(self : Element, quad : DOMQuadInit, from : GeometryNode) -> DOMQuad =
+  #| (self, quad, from) => self.convertQuadFromNode(quad, from)
+
+pub extern "js" fn Element::convert_quad_from_node_with_options(self : Element, quad : DOMQuadInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
-pub extern "js" fn Element::convert_rect_from_node(self : Element, rect : DOMRectReadOnly, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
+pub extern "js" fn Element::convert_rect_from_node(self : Element, rect : DOMRectReadOnly, from : GeometryNode) -> DOMQuad =
+  #| (self, rect, from) => self.convertRectFromNode(rect, from)
+
+pub extern "js" fn Element::convert_rect_from_node_with_options(self : Element, rect : DOMRectReadOnly, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
-pub extern "js" fn Element::convert_point_from_node(self : Element, point : DOMPointInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMPoint =
+pub extern "js" fn Element::convert_point_from_node(self : Element, point : DOMPointInit, from : GeometryNode) -> DOMPoint =
+  #| (self, point, from) => self.convertPointFromNode(point, from)
+
+pub extern "js" fn Element::convert_point_from_node_with_options(self : Element, point : DOMPointInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMPoint =
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 pub extern "js" fn Element::get_children(self : Element) -> HTMLCollection =
@@ -4465,10 +5168,16 @@ pub extern "js" fn Element::get_aria_value_text(self : Element) -> String? =
 pub extern "js" fn Element::set_aria_value_text(self : Element, value : String?) -> Unit =
   #| (self, value) => { self.ariaValueText = value }
 
-pub extern "js" fn Element::animate(self : Element, keyframes : JsValue?, options : JsValue) -> Animation =
+pub extern "js" fn Element::animate(self : Element, keyframes : JsValue?) -> Animation =
+  #| (self, keyframes) => self.animate(keyframes)
+
+pub extern "js" fn Element::animate_with_options(self : Element, keyframes : JsValue?, options : JsValue) -> Animation =
   #| (self, keyframes, options) => self.animate(keyframes, options)
 
-pub extern "js" fn Element::get_animations(self : Element, options : GetAnimationsOptions) -> JsValue =
+pub extern "js" fn Element::get_animations(self : Element) -> Array[Animation] =
+  #| (self) => self.getAnimations()
+
+pub extern "js" fn Element::get_animations_with_options(self : Element, options : GetAnimationsOptions) -> Array[Animation] =
   #| (self, options) => self.getAnimations(options)
 
 ///|
@@ -4518,17 +5227,62 @@ pub extern "js" fn Attr::to_js_value(self : Attr) -> JsValue =
 pub extern "js" fn Attr::new() -> Attr =
   #| () => new Attr()
 
-pub extern "js" fn Attr::add_event_listener(self : Attr, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn Attr::add_event_listener(self : Attr, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.addEventListener(type_, callback)
+
+pub extern "js" fn Attr::add_event_listener_with_options(self : Attr, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
-pub extern "js" fn Attr::remove_event_listener(self : Attr, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn Attr::remove_event_listener(self : Attr, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.removeEventListener(type_, callback)
+
+pub extern "js" fn Attr::remove_event_listener_with_options(self : Attr, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
 pub extern "js" fn Attr::dispatch_event(self : Attr, event : Event) -> Bool =
   #| (self, event) => self.dispatchEvent(event)
 
-pub extern "js" fn Attr::when(self : Attr, type_ : String, options : ObservableEventListenerOptions) -> Observable =
+pub extern "js" fn Attr::when(self : Attr, type_ : String) -> Observable =
+  #| (self, type_) => self.when(type_)
+
+pub extern "js" fn Attr::when_with_options(self : Attr, type_ : String, options : ObservableEventListenerOptions) -> Observable =
   #| (self, type_, options) => self.when(type_, options)
+
+// Attr.ELEMENT_NODE
+pub let attr_element_node : Int = 1
+
+// Attr.ATTRIBUTE_NODE
+pub let attr_attribute_node : Int = 2
+
+// Attr.TEXT_NODE
+pub let attr_text_node : Int = 3
+
+// Attr.CDATA_SECTION_NODE
+pub let attr_cdata_section_node : Int = 4
+
+// Attr.ENTITY_REFERENCE_NODE
+pub let attr_entity_reference_node : Int = 5
+
+// Attr.ENTITY_NODE
+pub let attr_entity_node : Int = 6
+
+// Attr.PROCESSING_INSTRUCTION_NODE
+pub let attr_processing_instruction_node : Int = 7
+
+// Attr.COMMENT_NODE
+pub let attr_comment_node : Int = 8
+
+// Attr.DOCUMENT_NODE
+pub let attr_document_node : Int = 9
+
+// Attr.DOCUMENT_TYPE_NODE
+pub let attr_document_type_node : Int = 10
+
+// Attr.DOCUMENT_FRAGMENT_NODE
+pub let attr_document_fragment_node : Int = 11
+
+// Attr.NOTATION_NODE
+pub let attr_notation_node : Int = 12
 
 pub extern "js" fn Attr::get_node_type(self : Attr) -> Int =
   #| (self) => self.nodeType
@@ -4545,7 +5299,10 @@ pub extern "js" fn Attr::get_is_connected(self : Attr) -> Bool =
 pub extern "js" fn Attr::get_owner_document(self : Attr) -> Document? =
   #| (self) => self.ownerDocument
 
-pub extern "js" fn Attr::get_root_node(self : Attr, options : GetRootNodeOptions) -> Node =
+pub extern "js" fn Attr::get_root_node(self : Attr) -> Node =
+  #| (self) => self.getRootNode()
+
+pub extern "js" fn Attr::get_root_node_with_options(self : Attr, options : GetRootNodeOptions) -> Node =
   #| (self, options) => self.getRootNode(options)
 
 pub extern "js" fn Attr::get_parent_node(self : Attr) -> Node? =
@@ -4587,7 +5344,10 @@ pub extern "js" fn Attr::set_text_content(self : Attr, value : String?) -> Unit 
 pub extern "js" fn Attr::normalize(self : Attr) -> Unit =
   #| (self) => self.normalize()
 
-pub extern "js" fn Attr::clone_node(self : Attr, subtree : Bool) -> Node =
+pub extern "js" fn Attr::clone_node(self : Attr) -> Node =
+  #| (self) => self.cloneNode()
+
+pub extern "js" fn Attr::clone_node_with_subtree(self : Attr, subtree : Bool) -> Node =
   #| (self, subtree) => self.cloneNode(subtree)
 
 pub extern "js" fn Attr::is_equal_node(self : Attr, other_node : Node?) -> Bool =
@@ -4595,6 +5355,24 @@ pub extern "js" fn Attr::is_equal_node(self : Attr, other_node : Node?) -> Bool 
 
 pub extern "js" fn Attr::is_same_node(self : Attr, other_node : Node?) -> Bool =
   #| (self, other_node) => self.isSameNode(other_node)
+
+// Attr.DOCUMENT_POSITION_DISCONNECTED
+pub let attr_document_position_disconnected : Int = 0x01
+
+// Attr.DOCUMENT_POSITION_PRECEDING
+pub let attr_document_position_preceding : Int = 0x02
+
+// Attr.DOCUMENT_POSITION_FOLLOWING
+pub let attr_document_position_following : Int = 0x04
+
+// Attr.DOCUMENT_POSITION_CONTAINS
+pub let attr_document_position_contains : Int = 0x08
+
+// Attr.DOCUMENT_POSITION_CONTAINED_BY
+pub let attr_document_position_contained_by : Int = 0x10
+
+// Attr.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC
+pub let attr_document_position_implementation_specific : Int = 0x20
 
 pub extern "js" fn Attr::compare_document_position(self : Attr, other : Node) -> Int =
   #| (self, other) => self.compareDocumentPosition(other)
@@ -4657,17 +5435,62 @@ pub extern "js" fn CharacterData::to_js_value(self : CharacterData) -> JsValue =
 pub extern "js" fn CharacterData::new() -> CharacterData =
   #| () => new CharacterData()
 
-pub extern "js" fn CharacterData::add_event_listener(self : CharacterData, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn CharacterData::add_event_listener(self : CharacterData, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.addEventListener(type_, callback)
+
+pub extern "js" fn CharacterData::add_event_listener_with_options(self : CharacterData, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
-pub extern "js" fn CharacterData::remove_event_listener(self : CharacterData, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn CharacterData::remove_event_listener(self : CharacterData, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.removeEventListener(type_, callback)
+
+pub extern "js" fn CharacterData::remove_event_listener_with_options(self : CharacterData, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
 pub extern "js" fn CharacterData::dispatch_event(self : CharacterData, event : Event) -> Bool =
   #| (self, event) => self.dispatchEvent(event)
 
-pub extern "js" fn CharacterData::when(self : CharacterData, type_ : String, options : ObservableEventListenerOptions) -> Observable =
+pub extern "js" fn CharacterData::when(self : CharacterData, type_ : String) -> Observable =
+  #| (self, type_) => self.when(type_)
+
+pub extern "js" fn CharacterData::when_with_options(self : CharacterData, type_ : String, options : ObservableEventListenerOptions) -> Observable =
   #| (self, type_, options) => self.when(type_, options)
+
+// CharacterData.ELEMENT_NODE
+pub let character_data_element_node : Int = 1
+
+// CharacterData.ATTRIBUTE_NODE
+pub let character_data_attribute_node : Int = 2
+
+// CharacterData.TEXT_NODE
+pub let character_data_text_node : Int = 3
+
+// CharacterData.CDATA_SECTION_NODE
+pub let character_data_cdata_section_node : Int = 4
+
+// CharacterData.ENTITY_REFERENCE_NODE
+pub let character_data_entity_reference_node : Int = 5
+
+// CharacterData.ENTITY_NODE
+pub let character_data_entity_node : Int = 6
+
+// CharacterData.PROCESSING_INSTRUCTION_NODE
+pub let character_data_processing_instruction_node : Int = 7
+
+// CharacterData.COMMENT_NODE
+pub let character_data_comment_node : Int = 8
+
+// CharacterData.DOCUMENT_NODE
+pub let character_data_document_node : Int = 9
+
+// CharacterData.DOCUMENT_TYPE_NODE
+pub let character_data_document_type_node : Int = 10
+
+// CharacterData.DOCUMENT_FRAGMENT_NODE
+pub let character_data_document_fragment_node : Int = 11
+
+// CharacterData.NOTATION_NODE
+pub let character_data_notation_node : Int = 12
 
 pub extern "js" fn CharacterData::get_node_type(self : CharacterData) -> Int =
   #| (self) => self.nodeType
@@ -4684,7 +5507,10 @@ pub extern "js" fn CharacterData::get_is_connected(self : CharacterData) -> Bool
 pub extern "js" fn CharacterData::get_owner_document(self : CharacterData) -> Document? =
   #| (self) => self.ownerDocument
 
-pub extern "js" fn CharacterData::get_root_node(self : CharacterData, options : GetRootNodeOptions) -> Node =
+pub extern "js" fn CharacterData::get_root_node(self : CharacterData) -> Node =
+  #| (self) => self.getRootNode()
+
+pub extern "js" fn CharacterData::get_root_node_with_options(self : CharacterData, options : GetRootNodeOptions) -> Node =
   #| (self, options) => self.getRootNode(options)
 
 pub extern "js" fn CharacterData::get_parent_node(self : CharacterData) -> Node? =
@@ -4726,7 +5552,10 @@ pub extern "js" fn CharacterData::set_text_content(self : CharacterData, value :
 pub extern "js" fn CharacterData::normalize(self : CharacterData) -> Unit =
   #| (self) => self.normalize()
 
-pub extern "js" fn CharacterData::clone_node(self : CharacterData, subtree : Bool) -> Node =
+pub extern "js" fn CharacterData::clone_node(self : CharacterData) -> Node =
+  #| (self) => self.cloneNode()
+
+pub extern "js" fn CharacterData::clone_node_with_subtree(self : CharacterData, subtree : Bool) -> Node =
   #| (self, subtree) => self.cloneNode(subtree)
 
 pub extern "js" fn CharacterData::is_equal_node(self : CharacterData, other_node : Node?) -> Bool =
@@ -4734,6 +5563,24 @@ pub extern "js" fn CharacterData::is_equal_node(self : CharacterData, other_node
 
 pub extern "js" fn CharacterData::is_same_node(self : CharacterData, other_node : Node?) -> Bool =
   #| (self, other_node) => self.isSameNode(other_node)
+
+// CharacterData.DOCUMENT_POSITION_DISCONNECTED
+pub let character_data_document_position_disconnected : Int = 0x01
+
+// CharacterData.DOCUMENT_POSITION_PRECEDING
+pub let character_data_document_position_preceding : Int = 0x02
+
+// CharacterData.DOCUMENT_POSITION_FOLLOWING
+pub let character_data_document_position_following : Int = 0x04
+
+// CharacterData.DOCUMENT_POSITION_CONTAINS
+pub let character_data_document_position_contains : Int = 0x08
+
+// CharacterData.DOCUMENT_POSITION_CONTAINED_BY
+pub let character_data_document_position_contained_by : Int = 0x10
+
+// CharacterData.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC
+pub let character_data_document_position_implementation_specific : Int = 0x20
 
 pub extern "js" fn CharacterData::compare_document_position(self : CharacterData, other : Node) -> Int =
   #| (self, other) => self.compareDocumentPosition(other)
@@ -4814,17 +5661,62 @@ pub extern "js" fn Text::to_js_value(self : Text) -> JsValue =
 pub extern "js" fn Text::new() -> Text =
   #| () => new Text()
 
-pub extern "js" fn Text::add_event_listener(self : Text, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn Text::add_event_listener(self : Text, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.addEventListener(type_, callback)
+
+pub extern "js" fn Text::add_event_listener_with_options(self : Text, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
-pub extern "js" fn Text::remove_event_listener(self : Text, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn Text::remove_event_listener(self : Text, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.removeEventListener(type_, callback)
+
+pub extern "js" fn Text::remove_event_listener_with_options(self : Text, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
 pub extern "js" fn Text::dispatch_event(self : Text, event : Event) -> Bool =
   #| (self, event) => self.dispatchEvent(event)
 
-pub extern "js" fn Text::when(self : Text, type_ : String, options : ObservableEventListenerOptions) -> Observable =
+pub extern "js" fn Text::when(self : Text, type_ : String) -> Observable =
+  #| (self, type_) => self.when(type_)
+
+pub extern "js" fn Text::when_with_options(self : Text, type_ : String, options : ObservableEventListenerOptions) -> Observable =
   #| (self, type_, options) => self.when(type_, options)
+
+// Text.ELEMENT_NODE
+pub let text_element_node : Int = 1
+
+// Text.ATTRIBUTE_NODE
+pub let text_attribute_node : Int = 2
+
+// Text.TEXT_NODE
+pub let text_text_node : Int = 3
+
+// Text.CDATA_SECTION_NODE
+pub let text_cdata_section_node : Int = 4
+
+// Text.ENTITY_REFERENCE_NODE
+pub let text_entity_reference_node : Int = 5
+
+// Text.ENTITY_NODE
+pub let text_entity_node : Int = 6
+
+// Text.PROCESSING_INSTRUCTION_NODE
+pub let text_processing_instruction_node : Int = 7
+
+// Text.COMMENT_NODE
+pub let text_comment_node : Int = 8
+
+// Text.DOCUMENT_NODE
+pub let text_document_node : Int = 9
+
+// Text.DOCUMENT_TYPE_NODE
+pub let text_document_type_node : Int = 10
+
+// Text.DOCUMENT_FRAGMENT_NODE
+pub let text_document_fragment_node : Int = 11
+
+// Text.NOTATION_NODE
+pub let text_notation_node : Int = 12
 
 pub extern "js" fn Text::get_node_type(self : Text) -> Int =
   #| (self) => self.nodeType
@@ -4841,7 +5733,10 @@ pub extern "js" fn Text::get_is_connected(self : Text) -> Bool =
 pub extern "js" fn Text::get_owner_document(self : Text) -> Document? =
   #| (self) => self.ownerDocument
 
-pub extern "js" fn Text::get_root_node(self : Text, options : GetRootNodeOptions) -> Node =
+pub extern "js" fn Text::get_root_node(self : Text) -> Node =
+  #| (self) => self.getRootNode()
+
+pub extern "js" fn Text::get_root_node_with_options(self : Text, options : GetRootNodeOptions) -> Node =
   #| (self, options) => self.getRootNode(options)
 
 pub extern "js" fn Text::get_parent_node(self : Text) -> Node? =
@@ -4883,7 +5778,10 @@ pub extern "js" fn Text::set_text_content(self : Text, value : String?) -> Unit 
 pub extern "js" fn Text::normalize(self : Text) -> Unit =
   #| (self) => self.normalize()
 
-pub extern "js" fn Text::clone_node(self : Text, subtree : Bool) -> Node =
+pub extern "js" fn Text::clone_node(self : Text) -> Node =
+  #| (self) => self.cloneNode()
+
+pub extern "js" fn Text::clone_node_with_subtree(self : Text, subtree : Bool) -> Node =
   #| (self, subtree) => self.cloneNode(subtree)
 
 pub extern "js" fn Text::is_equal_node(self : Text, other_node : Node?) -> Bool =
@@ -4891,6 +5789,24 @@ pub extern "js" fn Text::is_equal_node(self : Text, other_node : Node?) -> Bool 
 
 pub extern "js" fn Text::is_same_node(self : Text, other_node : Node?) -> Bool =
   #| (self, other_node) => self.isSameNode(other_node)
+
+// Text.DOCUMENT_POSITION_DISCONNECTED
+pub let text_document_position_disconnected : Int = 0x01
+
+// Text.DOCUMENT_POSITION_PRECEDING
+pub let text_document_position_preceding : Int = 0x02
+
+// Text.DOCUMENT_POSITION_FOLLOWING
+pub let text_document_position_following : Int = 0x04
+
+// Text.DOCUMENT_POSITION_CONTAINS
+pub let text_document_position_contains : Int = 0x08
+
+// Text.DOCUMENT_POSITION_CONTAINED_BY
+pub let text_document_position_contained_by : Int = 0x10
+
+// Text.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC
+pub let text_document_position_implementation_specific : Int = 0x20
 
 pub extern "js" fn Text::compare_document_position(self : Text, other : Node) -> Int =
   #| (self, other) => self.compareDocumentPosition(other)
@@ -4967,16 +5883,28 @@ pub extern "js" fn Text::split_text(self : Text, offset : Int) -> Text =
 pub extern "js" fn Text::get_whole_text(self : Text) -> String =
   #| (self) => self.wholeText
 
-pub extern "js" fn Text::get_box_quads(self : Text, options : BoxQuadOptions) -> JsValue =
+pub extern "js" fn Text::get_box_quads(self : Text) -> Array[DOMQuad] =
+  #| (self) => self.getBoxQuads()
+
+pub extern "js" fn Text::get_box_quads_with_options(self : Text, options : BoxQuadOptions) -> Array[DOMQuad] =
   #| (self, options) => self.getBoxQuads(options)
 
-pub extern "js" fn Text::convert_quad_from_node(self : Text, quad : DOMQuadInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
+pub extern "js" fn Text::convert_quad_from_node(self : Text, quad : DOMQuadInit, from : GeometryNode) -> DOMQuad =
+  #| (self, quad, from) => self.convertQuadFromNode(quad, from)
+
+pub extern "js" fn Text::convert_quad_from_node_with_options(self : Text, quad : DOMQuadInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
-pub extern "js" fn Text::convert_rect_from_node(self : Text, rect : DOMRectReadOnly, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
+pub extern "js" fn Text::convert_rect_from_node(self : Text, rect : DOMRectReadOnly, from : GeometryNode) -> DOMQuad =
+  #| (self, rect, from) => self.convertRectFromNode(rect, from)
+
+pub extern "js" fn Text::convert_rect_from_node_with_options(self : Text, rect : DOMRectReadOnly, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
-pub extern "js" fn Text::convert_point_from_node(self : Text, point : DOMPointInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMPoint =
+pub extern "js" fn Text::convert_point_from_node(self : Text, point : DOMPointInit, from : GeometryNode) -> DOMPoint =
+  #| (self, point, from) => self.convertPointFromNode(point, from)
+
+pub extern "js" fn Text::convert_point_from_node_with_options(self : Text, point : DOMPointInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMPoint =
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 pub extern "js" fn Text::get_assigned_slot(self : Text) -> HTMLSlotElement? =
@@ -4992,17 +5920,62 @@ pub extern "js" fn CDATASection::to_js_value(self : CDATASection) -> JsValue =
 pub extern "js" fn CDATASection::new() -> CDATASection =
   #| () => new CDATASection()
 
-pub extern "js" fn CDATASection::add_event_listener(self : CDATASection, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn CDATASection::add_event_listener(self : CDATASection, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.addEventListener(type_, callback)
+
+pub extern "js" fn CDATASection::add_event_listener_with_options(self : CDATASection, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
-pub extern "js" fn CDATASection::remove_event_listener(self : CDATASection, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn CDATASection::remove_event_listener(self : CDATASection, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.removeEventListener(type_, callback)
+
+pub extern "js" fn CDATASection::remove_event_listener_with_options(self : CDATASection, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
 pub extern "js" fn CDATASection::dispatch_event(self : CDATASection, event : Event) -> Bool =
   #| (self, event) => self.dispatchEvent(event)
 
-pub extern "js" fn CDATASection::when(self : CDATASection, type_ : String, options : ObservableEventListenerOptions) -> Observable =
+pub extern "js" fn CDATASection::when(self : CDATASection, type_ : String) -> Observable =
+  #| (self, type_) => self.when(type_)
+
+pub extern "js" fn CDATASection::when_with_options(self : CDATASection, type_ : String, options : ObservableEventListenerOptions) -> Observable =
   #| (self, type_, options) => self.when(type_, options)
+
+// CDATASection.ELEMENT_NODE
+pub let c_d_a_t_a_section_element_node : Int = 1
+
+// CDATASection.ATTRIBUTE_NODE
+pub let c_d_a_t_a_section_attribute_node : Int = 2
+
+// CDATASection.TEXT_NODE
+pub let c_d_a_t_a_section_text_node : Int = 3
+
+// CDATASection.CDATA_SECTION_NODE
+pub let c_d_a_t_a_section_cdata_section_node : Int = 4
+
+// CDATASection.ENTITY_REFERENCE_NODE
+pub let c_d_a_t_a_section_entity_reference_node : Int = 5
+
+// CDATASection.ENTITY_NODE
+pub let c_d_a_t_a_section_entity_node : Int = 6
+
+// CDATASection.PROCESSING_INSTRUCTION_NODE
+pub let c_d_a_t_a_section_processing_instruction_node : Int = 7
+
+// CDATASection.COMMENT_NODE
+pub let c_d_a_t_a_section_comment_node : Int = 8
+
+// CDATASection.DOCUMENT_NODE
+pub let c_d_a_t_a_section_document_node : Int = 9
+
+// CDATASection.DOCUMENT_TYPE_NODE
+pub let c_d_a_t_a_section_document_type_node : Int = 10
+
+// CDATASection.DOCUMENT_FRAGMENT_NODE
+pub let c_d_a_t_a_section_document_fragment_node : Int = 11
+
+// CDATASection.NOTATION_NODE
+pub let c_d_a_t_a_section_notation_node : Int = 12
 
 pub extern "js" fn CDATASection::get_node_type(self : CDATASection) -> Int =
   #| (self) => self.nodeType
@@ -5019,7 +5992,10 @@ pub extern "js" fn CDATASection::get_is_connected(self : CDATASection) -> Bool =
 pub extern "js" fn CDATASection::get_owner_document(self : CDATASection) -> Document? =
   #| (self) => self.ownerDocument
 
-pub extern "js" fn CDATASection::get_root_node(self : CDATASection, options : GetRootNodeOptions) -> Node =
+pub extern "js" fn CDATASection::get_root_node(self : CDATASection) -> Node =
+  #| (self) => self.getRootNode()
+
+pub extern "js" fn CDATASection::get_root_node_with_options(self : CDATASection, options : GetRootNodeOptions) -> Node =
   #| (self, options) => self.getRootNode(options)
 
 pub extern "js" fn CDATASection::get_parent_node(self : CDATASection) -> Node? =
@@ -5061,7 +6037,10 @@ pub extern "js" fn CDATASection::set_text_content(self : CDATASection, value : S
 pub extern "js" fn CDATASection::normalize(self : CDATASection) -> Unit =
   #| (self) => self.normalize()
 
-pub extern "js" fn CDATASection::clone_node(self : CDATASection, subtree : Bool) -> Node =
+pub extern "js" fn CDATASection::clone_node(self : CDATASection) -> Node =
+  #| (self) => self.cloneNode()
+
+pub extern "js" fn CDATASection::clone_node_with_subtree(self : CDATASection, subtree : Bool) -> Node =
   #| (self, subtree) => self.cloneNode(subtree)
 
 pub extern "js" fn CDATASection::is_equal_node(self : CDATASection, other_node : Node?) -> Bool =
@@ -5069,6 +6048,24 @@ pub extern "js" fn CDATASection::is_equal_node(self : CDATASection, other_node :
 
 pub extern "js" fn CDATASection::is_same_node(self : CDATASection, other_node : Node?) -> Bool =
   #| (self, other_node) => self.isSameNode(other_node)
+
+// CDATASection.DOCUMENT_POSITION_DISCONNECTED
+pub let c_d_a_t_a_section_document_position_disconnected : Int = 0x01
+
+// CDATASection.DOCUMENT_POSITION_PRECEDING
+pub let c_d_a_t_a_section_document_position_preceding : Int = 0x02
+
+// CDATASection.DOCUMENT_POSITION_FOLLOWING
+pub let c_d_a_t_a_section_document_position_following : Int = 0x04
+
+// CDATASection.DOCUMENT_POSITION_CONTAINS
+pub let c_d_a_t_a_section_document_position_contains : Int = 0x08
+
+// CDATASection.DOCUMENT_POSITION_CONTAINED_BY
+pub let c_d_a_t_a_section_document_position_contained_by : Int = 0x10
+
+// CDATASection.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC
+pub let c_d_a_t_a_section_document_position_implementation_specific : Int = 0x20
 
 pub extern "js" fn CDATASection::compare_document_position(self : CDATASection, other : Node) -> Int =
   #| (self, other) => self.compareDocumentPosition(other)
@@ -5145,16 +6142,28 @@ pub extern "js" fn CDATASection::split_text(self : CDATASection, offset : Int) -
 pub extern "js" fn CDATASection::get_whole_text(self : CDATASection) -> String =
   #| (self) => self.wholeText
 
-pub extern "js" fn CDATASection::get_box_quads(self : CDATASection, options : BoxQuadOptions) -> JsValue =
+pub extern "js" fn CDATASection::get_box_quads(self : CDATASection) -> Array[DOMQuad] =
+  #| (self) => self.getBoxQuads()
+
+pub extern "js" fn CDATASection::get_box_quads_with_options(self : CDATASection, options : BoxQuadOptions) -> Array[DOMQuad] =
   #| (self, options) => self.getBoxQuads(options)
 
-pub extern "js" fn CDATASection::convert_quad_from_node(self : CDATASection, quad : DOMQuadInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
+pub extern "js" fn CDATASection::convert_quad_from_node(self : CDATASection, quad : DOMQuadInit, from : GeometryNode) -> DOMQuad =
+  #| (self, quad, from) => self.convertQuadFromNode(quad, from)
+
+pub extern "js" fn CDATASection::convert_quad_from_node_with_options(self : CDATASection, quad : DOMQuadInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
-pub extern "js" fn CDATASection::convert_rect_from_node(self : CDATASection, rect : DOMRectReadOnly, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
+pub extern "js" fn CDATASection::convert_rect_from_node(self : CDATASection, rect : DOMRectReadOnly, from : GeometryNode) -> DOMQuad =
+  #| (self, rect, from) => self.convertRectFromNode(rect, from)
+
+pub extern "js" fn CDATASection::convert_rect_from_node_with_options(self : CDATASection, rect : DOMRectReadOnly, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
-pub extern "js" fn CDATASection::convert_point_from_node(self : CDATASection, point : DOMPointInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMPoint =
+pub extern "js" fn CDATASection::convert_point_from_node(self : CDATASection, point : DOMPointInit, from : GeometryNode) -> DOMPoint =
+  #| (self, point, from) => self.convertPointFromNode(point, from)
+
+pub extern "js" fn CDATASection::convert_point_from_node_with_options(self : CDATASection, point : DOMPointInit, from : GeometryNode, options : ConvertCoordinateOptions) -> DOMPoint =
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 pub extern "js" fn CDATASection::get_assigned_slot(self : CDATASection) -> HTMLSlotElement? =
@@ -5170,17 +6179,62 @@ pub extern "js" fn ProcessingInstruction::to_js_value(self : ProcessingInstructi
 pub extern "js" fn ProcessingInstruction::new() -> ProcessingInstruction =
   #| () => new ProcessingInstruction()
 
-pub extern "js" fn ProcessingInstruction::add_event_listener(self : ProcessingInstruction, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn ProcessingInstruction::add_event_listener(self : ProcessingInstruction, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.addEventListener(type_, callback)
+
+pub extern "js" fn ProcessingInstruction::add_event_listener_with_options(self : ProcessingInstruction, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
-pub extern "js" fn ProcessingInstruction::remove_event_listener(self : ProcessingInstruction, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn ProcessingInstruction::remove_event_listener(self : ProcessingInstruction, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.removeEventListener(type_, callback)
+
+pub extern "js" fn ProcessingInstruction::remove_event_listener_with_options(self : ProcessingInstruction, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
 pub extern "js" fn ProcessingInstruction::dispatch_event(self : ProcessingInstruction, event : Event) -> Bool =
   #| (self, event) => self.dispatchEvent(event)
 
-pub extern "js" fn ProcessingInstruction::when(self : ProcessingInstruction, type_ : String, options : ObservableEventListenerOptions) -> Observable =
+pub extern "js" fn ProcessingInstruction::when(self : ProcessingInstruction, type_ : String) -> Observable =
+  #| (self, type_) => self.when(type_)
+
+pub extern "js" fn ProcessingInstruction::when_with_options(self : ProcessingInstruction, type_ : String, options : ObservableEventListenerOptions) -> Observable =
   #| (self, type_, options) => self.when(type_, options)
+
+// ProcessingInstruction.ELEMENT_NODE
+pub let processing_instruction_element_node : Int = 1
+
+// ProcessingInstruction.ATTRIBUTE_NODE
+pub let processing_instruction_attribute_node : Int = 2
+
+// ProcessingInstruction.TEXT_NODE
+pub let processing_instruction_text_node : Int = 3
+
+// ProcessingInstruction.CDATA_SECTION_NODE
+pub let processing_instruction_cdata_section_node : Int = 4
+
+// ProcessingInstruction.ENTITY_REFERENCE_NODE
+pub let processing_instruction_entity_reference_node : Int = 5
+
+// ProcessingInstruction.ENTITY_NODE
+pub let processing_instruction_entity_node : Int = 6
+
+// ProcessingInstruction.PROCESSING_INSTRUCTION_NODE
+pub let processing_instruction_processing_instruction_node : Int = 7
+
+// ProcessingInstruction.COMMENT_NODE
+pub let processing_instruction_comment_node : Int = 8
+
+// ProcessingInstruction.DOCUMENT_NODE
+pub let processing_instruction_document_node : Int = 9
+
+// ProcessingInstruction.DOCUMENT_TYPE_NODE
+pub let processing_instruction_document_type_node : Int = 10
+
+// ProcessingInstruction.DOCUMENT_FRAGMENT_NODE
+pub let processing_instruction_document_fragment_node : Int = 11
+
+// ProcessingInstruction.NOTATION_NODE
+pub let processing_instruction_notation_node : Int = 12
 
 pub extern "js" fn ProcessingInstruction::get_node_type(self : ProcessingInstruction) -> Int =
   #| (self) => self.nodeType
@@ -5197,7 +6251,10 @@ pub extern "js" fn ProcessingInstruction::get_is_connected(self : ProcessingInst
 pub extern "js" fn ProcessingInstruction::get_owner_document(self : ProcessingInstruction) -> Document? =
   #| (self) => self.ownerDocument
 
-pub extern "js" fn ProcessingInstruction::get_root_node(self : ProcessingInstruction, options : GetRootNodeOptions) -> Node =
+pub extern "js" fn ProcessingInstruction::get_root_node(self : ProcessingInstruction) -> Node =
+  #| (self) => self.getRootNode()
+
+pub extern "js" fn ProcessingInstruction::get_root_node_with_options(self : ProcessingInstruction, options : GetRootNodeOptions) -> Node =
   #| (self, options) => self.getRootNode(options)
 
 pub extern "js" fn ProcessingInstruction::get_parent_node(self : ProcessingInstruction) -> Node? =
@@ -5239,7 +6296,10 @@ pub extern "js" fn ProcessingInstruction::set_text_content(self : ProcessingInst
 pub extern "js" fn ProcessingInstruction::normalize(self : ProcessingInstruction) -> Unit =
   #| (self) => self.normalize()
 
-pub extern "js" fn ProcessingInstruction::clone_node(self : ProcessingInstruction, subtree : Bool) -> Node =
+pub extern "js" fn ProcessingInstruction::clone_node(self : ProcessingInstruction) -> Node =
+  #| (self) => self.cloneNode()
+
+pub extern "js" fn ProcessingInstruction::clone_node_with_subtree(self : ProcessingInstruction, subtree : Bool) -> Node =
   #| (self, subtree) => self.cloneNode(subtree)
 
 pub extern "js" fn ProcessingInstruction::is_equal_node(self : ProcessingInstruction, other_node : Node?) -> Bool =
@@ -5247,6 +6307,24 @@ pub extern "js" fn ProcessingInstruction::is_equal_node(self : ProcessingInstruc
 
 pub extern "js" fn ProcessingInstruction::is_same_node(self : ProcessingInstruction, other_node : Node?) -> Bool =
   #| (self, other_node) => self.isSameNode(other_node)
+
+// ProcessingInstruction.DOCUMENT_POSITION_DISCONNECTED
+pub let processing_instruction_document_position_disconnected : Int = 0x01
+
+// ProcessingInstruction.DOCUMENT_POSITION_PRECEDING
+pub let processing_instruction_document_position_preceding : Int = 0x02
+
+// ProcessingInstruction.DOCUMENT_POSITION_FOLLOWING
+pub let processing_instruction_document_position_following : Int = 0x04
+
+// ProcessingInstruction.DOCUMENT_POSITION_CONTAINS
+pub let processing_instruction_document_position_contains : Int = 0x08
+
+// ProcessingInstruction.DOCUMENT_POSITION_CONTAINED_BY
+pub let processing_instruction_document_position_contained_by : Int = 0x10
+
+// ProcessingInstruction.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC
+pub let processing_instruction_document_position_implementation_specific : Int = 0x20
 
 pub extern "js" fn ProcessingInstruction::compare_document_position(self : ProcessingInstruction, other : Node) -> Int =
   #| (self, other) => self.compareDocumentPosition(other)
@@ -5333,17 +6411,62 @@ pub extern "js" fn Comment::to_js_value(self : Comment) -> JsValue =
 pub extern "js" fn Comment::new() -> Comment =
   #| () => new Comment()
 
-pub extern "js" fn Comment::add_event_listener(self : Comment, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn Comment::add_event_listener(self : Comment, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.addEventListener(type_, callback)
+
+pub extern "js" fn Comment::add_event_listener_with_options(self : Comment, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
-pub extern "js" fn Comment::remove_event_listener(self : Comment, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
+pub extern "js" fn Comment::remove_event_listener(self : Comment, type_ : String, callback : EventListener?) -> Unit =
+  #| (self, type_, callback) => self.removeEventListener(type_, callback)
+
+pub extern "js" fn Comment::remove_event_listener_with_options(self : Comment, type_ : String, callback : EventListener?, options : JsValue) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
 pub extern "js" fn Comment::dispatch_event(self : Comment, event : Event) -> Bool =
   #| (self, event) => self.dispatchEvent(event)
 
-pub extern "js" fn Comment::when(self : Comment, type_ : String, options : ObservableEventListenerOptions) -> Observable =
+pub extern "js" fn Comment::when(self : Comment, type_ : String) -> Observable =
+  #| (self, type_) => self.when(type_)
+
+pub extern "js" fn Comment::when_with_options(self : Comment, type_ : String, options : ObservableEventListenerOptions) -> Observable =
   #| (self, type_, options) => self.when(type_, options)
+
+// Comment.ELEMENT_NODE
+pub let comment_element_node : Int = 1
+
+// Comment.ATTRIBUTE_NODE
+pub let comment_attribute_node : Int = 2
+
+// Comment.TEXT_NODE
+pub let comment_text_node : Int = 3
+
+// Comment.CDATA_SECTION_NODE
+pub let comment_cdata_section_node : Int = 4
+
+// Comment.ENTITY_REFERENCE_NODE
+pub let comment_entity_reference_node : Int = 5
+
+// Comment.ENTITY_NODE
+pub let comment_entity_node : Int = 6
+
+// Comment.PROCESSING_INSTRUCTION_NODE
+pub let comment_processing_instruction_node : Int = 7
+
+// Comment.COMMENT_NODE
+pub let comment_comment_node : Int = 8
+
+// Comment.DOCUMENT_NODE
+pub let comment_document_node : Int = 9
+
+// Comment.DOCUMENT_TYPE_NODE
+pub let comment_document_type_node : Int = 10
+
+// Comment.DOCUMENT_FRAGMENT_NODE
+pub let comment_document_fragment_node : Int = 11
+
+// Comment.NOTATION_NODE
+pub let comment_notation_node : Int = 12
 
 pub extern "js" fn Comment::get_node_type(self : Comment) -> Int =
   #| (self) => self.nodeType
@@ -5360,7 +6483,10 @@ pub extern "js" fn Comment::get_is_connected(self : Comment) -> Bool =
 pub extern "js" fn Comment::get_owner_document(self : Comment) -> Document? =
   #| (self) => self.ownerDocument
 
-pub extern "js" fn Comment::get_root_node(self : Comment, options : GetRootNodeOptions) -> Node =
+pub extern "js" fn Comment::get_root_node(self : Comment) -> Node =
+  #| (self) => self.getRootNode()
+
+pub extern "js" fn Comment::get_root_node_with_options(self : Comment, options : GetRootNodeOptions) -> Node =
   #| (self, options) => self.getRootNode(options)
 
 pub extern "js" fn Comment::get_parent_node(self : Comment) -> Node? =
@@ -5402,7 +6528,10 @@ pub extern "js" fn Comment::set_text_content(self : Comment, value : String?) ->
 pub extern "js" fn Comment::normalize(self : Comment) -> Unit =
   #| (self) => self.normalize()
 
-pub extern "js" fn Comment::clone_node(self : Comment, subtree : Bool) -> Node =
+pub extern "js" fn Comment::clone_node(self : Comment) -> Node =
+  #| (self) => self.cloneNode()
+
+pub extern "js" fn Comment::clone_node_with_subtree(self : Comment, subtree : Bool) -> Node =
   #| (self, subtree) => self.cloneNode(subtree)
 
 pub extern "js" fn Comment::is_equal_node(self : Comment, other_node : Node?) -> Bool =
@@ -5410,6 +6539,24 @@ pub extern "js" fn Comment::is_equal_node(self : Comment, other_node : Node?) ->
 
 pub extern "js" fn Comment::is_same_node(self : Comment, other_node : Node?) -> Bool =
   #| (self, other_node) => self.isSameNode(other_node)
+
+// Comment.DOCUMENT_POSITION_DISCONNECTED
+pub let comment_document_position_disconnected : Int = 0x01
+
+// Comment.DOCUMENT_POSITION_PRECEDING
+pub let comment_document_position_preceding : Int = 0x02
+
+// Comment.DOCUMENT_POSITION_FOLLOWING
+pub let comment_document_position_following : Int = 0x04
+
+// Comment.DOCUMENT_POSITION_CONTAINS
+pub let comment_document_position_contains : Int = 0x08
+
+// Comment.DOCUMENT_POSITION_CONTAINED_BY
+pub let comment_document_position_contained_by : Int = 0x10
+
+// Comment.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC
+pub let comment_document_position_implementation_specific : Int = 0x20
 
 pub extern "js" fn Comment::compare_document_position(self : Comment, other : Node) -> Int =
   #| (self, other) => self.compareDocumentPosition(other)
@@ -5573,7 +6720,10 @@ pub extern "js" fn Range::set_end_before(self : Range, node : Node) -> Unit =
 pub extern "js" fn Range::set_end_after(self : Range, node : Node) -> Unit =
   #| (self, node) => self.setEndAfter(node)
 
-pub extern "js" fn Range::collapse(self : Range, to_start : Bool) -> Unit =
+pub extern "js" fn Range::collapse(self : Range) -> Unit =
+  #| (self) => self.collapse()
+
+pub extern "js" fn Range::collapse_with_to_start(self : Range, to_start : Bool) -> Unit =
   #| (self, to_start) => self.collapse(to_start)
 
 pub extern "js" fn Range::select_node(self : Range, node : Node) -> Unit =
@@ -5581,6 +6731,18 @@ pub extern "js" fn Range::select_node(self : Range, node : Node) -> Unit =
 
 pub extern "js" fn Range::select_node_contents(self : Range, node : Node) -> Unit =
   #| (self, node) => self.selectNodeContents(node)
+
+// Range.START_TO_START
+pub let range_start_to_start : Int = 0
+
+// Range.START_TO_END
+pub let range_start_to_end : Int = 1
+
+// Range.END_TO_END
+pub let range_end_to_end : Int = 2
+
+// Range.END_TO_START
+pub let range_end_to_start : Int = 3
 
 pub extern "js" fn Range::compare_boundary_points(self : Range, how : Int, source_range : Range) -> Int =
   #| (self, how, source_range) => self.compareBoundaryPoints(how, source_range)
@@ -5723,7 +6885,10 @@ pub extern "js" fn DOMTokenList::add(self : DOMTokenList, tokens : String) -> Un
 pub extern "js" fn DOMTokenList::remove(self : DOMTokenList, tokens : String) -> Unit =
   #| (self, tokens) => self.remove(tokens)
 
-pub extern "js" fn DOMTokenList::toggle(self : DOMTokenList, token : String, force : Bool) -> Bool =
+pub extern "js" fn DOMTokenList::toggle(self : DOMTokenList, token : String) -> Bool =
+  #| (self, token) => self.toggle(token)
+
+pub extern "js" fn DOMTokenList::toggle_with_force(self : DOMTokenList, token : String, force : Bool) -> Bool =
   #| (self, token, force) => self.toggle(token, force)
 
 pub extern "js" fn DOMTokenList::replace(self : DOMTokenList, token : String, new_token : String) -> Bool =
@@ -5747,6 +6912,36 @@ pub type XPathResult
 
 pub extern "js" fn XPathResult::to_js_value(self : XPathResult) -> JsValue =
   #| (self) => self
+
+// XPathResult.ANY_TYPE
+pub let x_path_result_any_type : Int = 0
+
+// XPathResult.NUMBER_TYPE
+pub let x_path_result_number_type : Int = 1
+
+// XPathResult.STRING_TYPE
+pub let x_path_result_string_type : Int = 2
+
+// XPathResult.BOOLEAN_TYPE
+pub let x_path_result_boolean_type : Int = 3
+
+// XPathResult.UNORDERED_NODE_ITERATOR_TYPE
+pub let x_path_result_unordered_node_iterator_type : Int = 4
+
+// XPathResult.ORDERED_NODE_ITERATOR_TYPE
+pub let x_path_result_ordered_node_iterator_type : Int = 5
+
+// XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE
+pub let x_path_result_unordered_node_snapshot_type : Int = 6
+
+// XPathResult.ORDERED_NODE_SNAPSHOT_TYPE
+pub let x_path_result_ordered_node_snapshot_type : Int = 7
+
+// XPathResult.ANY_UNORDERED_NODE_TYPE
+pub let x_path_result_any_unordered_node_type : Int = 8
+
+// XPathResult.FIRST_ORDERED_NODE_TYPE
+pub let x_path_result_first_ordered_node_type : Int = 9
 
 pub extern "js" fn XPathResult::get_result_type(self : XPathResult) -> Int =
   #| (self) => self.resultType
@@ -5782,7 +6977,10 @@ pub type XPathExpression
 pub extern "js" fn XPathExpression::to_js_value(self : XPathExpression) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn XPathExpression::evaluate(self : XPathExpression, context_node : Node, type_ : Int, result : XPathResult?) -> XPathResult =
+pub extern "js" fn XPathExpression::evaluate(self : XPathExpression, context_node : Node) -> XPathResult =
+  #| (self, context_node) => self.evaluate(context_node)
+
+pub extern "js" fn XPathExpression::evaluate_with_result(self : XPathExpression, context_node : Node, type_ : Int, result : XPathResult?) -> XPathResult =
   #| (self, context_node, type_, result) => self.evaluate(context_node, type_, result)
 
 ///|
@@ -5795,13 +6993,19 @@ pub extern "js" fn XPathEvaluator::to_js_value(self : XPathEvaluator) -> JsValue
 pub extern "js" fn XPathEvaluator::new() -> XPathEvaluator =
   #| () => new XPathEvaluator()
 
-pub extern "js" fn XPathEvaluator::create_expression(self : XPathEvaluator, expression : String, resolver : XPathNSResolver?) -> XPathExpression =
+pub extern "js" fn XPathEvaluator::create_expression(self : XPathEvaluator, expression : String) -> XPathExpression =
+  #| (self, expression) => self.createExpression(expression)
+
+pub extern "js" fn XPathEvaluator::create_expression_with_resolver(self : XPathEvaluator, expression : String, resolver : XPathNSResolver?) -> XPathExpression =
   #| (self, expression, resolver) => self.createExpression(expression, resolver)
 
 pub extern "js" fn XPathEvaluator::create_n_s_resolver(self : XPathEvaluator, node_resolver : Node) -> Node =
   #| (self, node_resolver) => self.createNSResolver(node_resolver)
 
-pub extern "js" fn XPathEvaluator::evaluate(self : XPathEvaluator, expression : String, context_node : Node, resolver : XPathNSResolver?, type_ : Int, result : XPathResult?) -> XPathResult =
+pub extern "js" fn XPathEvaluator::evaluate(self : XPathEvaluator, expression : String, context_node : Node) -> XPathResult =
+  #| (self, expression, context_node) => self.evaluate(expression, context_node)
+
+pub extern "js" fn XPathEvaluator::evaluate_with_result(self : XPathEvaluator, expression : String, context_node : Node, resolver : XPathNSResolver?, type_ : Int, result : XPathResult?) -> XPathResult =
   #| (self, expression, context_node, resolver, type_, result) => self.evaluate(expression, context_node, resolver, type_, result)
 
 ///|

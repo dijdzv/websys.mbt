@@ -274,14 +274,18 @@ pub fn Availability::from_string(s : String) -> Availability? {
 /// CreateMonitorCallback callback interface
 pub type CreateMonitorCallback
 
+/// Create CreateMonitorCallback from a MoonBit function
+pub extern "js" fn CreateMonitorCallback::from_fn(handler : (CreateMonitor) -> Unit) -> CreateMonitorCallback =
+  #| (handler) => handler
+
 ///|
 /// SummarizerCreateCoreOptions dictionary
 pub struct SummarizerCreateCoreOptions {
   type_ : SummarizerType?
   format : SummarizerFormat?
   length : SummarizerLength?
-  expectedInputLanguages : JsValue?
-  expectedContextLanguages : JsValue?
+  expectedInputLanguages : Array[String]?
+  expectedContextLanguages : Array[String]?
   outputLanguage : String?
 }
 
@@ -314,8 +318,8 @@ pub struct SummarizerCreateOptions {
   type_ : SummarizerType?
   format : SummarizerFormat?
   length : SummarizerLength?
-  expectedInputLanguages : JsValue?
-  expectedContextLanguages : JsValue?
+  expectedInputLanguages : Array[String]?
+  expectedContextLanguages : Array[String]?
   outputLanguage : String?
   signal : AbortSignal?
   monitor : CreateMonitorCallback?
@@ -379,8 +383,8 @@ pub struct WriterCreateCoreOptions {
   tone : WriterTone?
   format : WriterFormat?
   length : WriterLength?
-  expectedInputLanguages : JsValue?
-  expectedContextLanguages : JsValue?
+  expectedInputLanguages : Array[String]?
+  expectedContextLanguages : Array[String]?
   outputLanguage : String?
 }
 
@@ -413,8 +417,8 @@ pub struct WriterCreateOptions {
   tone : WriterTone?
   format : WriterFormat?
   length : WriterLength?
-  expectedInputLanguages : JsValue?
-  expectedContextLanguages : JsValue?
+  expectedInputLanguages : Array[String]?
+  expectedContextLanguages : Array[String]?
   outputLanguage : String?
   signal : AbortSignal?
   monitor : CreateMonitorCallback?
@@ -478,8 +482,8 @@ pub struct RewriterCreateCoreOptions {
   tone : RewriterTone?
   format : RewriterFormat?
   length : RewriterLength?
-  expectedInputLanguages : JsValue?
-  expectedContextLanguages : JsValue?
+  expectedInputLanguages : Array[String]?
+  expectedContextLanguages : Array[String]?
   outputLanguage : String?
 }
 
@@ -512,8 +516,8 @@ pub struct RewriterCreateOptions {
   tone : RewriterTone?
   format : RewriterFormat?
   length : RewriterLength?
-  expectedInputLanguages : JsValue?
-  expectedContextLanguages : JsValue?
+  expectedInputLanguages : Array[String]?
+  expectedContextLanguages : Array[String]?
   outputLanguage : String?
   signal : AbortSignal?
   monitor : CreateMonitorCallback?
@@ -578,16 +582,22 @@ pub type Summarizer
 pub extern "js" fn Summarizer::to_js_value(self : Summarizer) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Summarizer::create(options : SummarizerCreateOptions) -> JsValue =
+pub extern "js" fn Summarizer::create(options : SummarizerCreateOptions) -> Promise[Summarizer] =
   #| (options) => Summarizer.create(options)
 
-pub extern "js" fn Summarizer::availability(options : SummarizerCreateCoreOptions) -> JsValue =
+pub extern "js" fn Summarizer::availability(options : SummarizerCreateCoreOptions) -> Promise[Availability] =
   #| (options) => Summarizer.availability(options)
 
-pub extern "js" fn Summarizer::summarize(self : Summarizer, input : String, options : SummarizerSummarizeOptions) -> JsValue =
+pub extern "js" fn Summarizer::summarize(self : Summarizer, input : String) -> Promise[String] =
+  #| (self, input) => self.summarize(input)
+
+pub extern "js" fn Summarizer::summarize_with_options(self : Summarizer, input : String, options : SummarizerSummarizeOptions) -> Promise[String] =
   #| (self, input, options) => self.summarize(input, options)
 
-pub extern "js" fn Summarizer::summarize_streaming(self : Summarizer, input : String, options : SummarizerSummarizeOptions) -> ReadableStream =
+pub extern "js" fn Summarizer::summarize_streaming(self : Summarizer, input : String) -> ReadableStream =
+  #| (self, input) => self.summarizeStreaming(input)
+
+pub extern "js" fn Summarizer::summarize_streaming_with_options(self : Summarizer, input : String, options : SummarizerSummarizeOptions) -> ReadableStream =
   #| (self, input, options) => self.summarizeStreaming(input, options)
 
 pub extern "js" fn Summarizer::get_shared_context(self : Summarizer) -> String =
@@ -611,7 +621,10 @@ pub extern "js" fn Summarizer::get_expected_context_languages(self : Summarizer)
 pub extern "js" fn Summarizer::get_output_language(self : Summarizer) -> String? =
   #| (self) => self.outputLanguage
 
-pub extern "js" fn Summarizer::measure_input_usage(self : Summarizer, input : String, options : SummarizerSummarizeOptions) -> JsValue =
+pub extern "js" fn Summarizer::measure_input_usage(self : Summarizer, input : String) -> Promise[Double] =
+  #| (self, input) => self.measureInputUsage(input)
+
+pub extern "js" fn Summarizer::measure_input_usage_with_options(self : Summarizer, input : String, options : SummarizerSummarizeOptions) -> Promise[Double] =
   #| (self, input, options) => self.measureInputUsage(input, options)
 
 pub extern "js" fn Summarizer::get_input_quota(self : Summarizer) -> Double =
@@ -627,16 +640,22 @@ pub type Writer
 pub extern "js" fn Writer::to_js_value(self : Writer) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Writer::create(options : WriterCreateOptions) -> JsValue =
+pub extern "js" fn Writer::create(options : WriterCreateOptions) -> Promise[Writer] =
   #| (options) => Writer.create(options)
 
-pub extern "js" fn Writer::availability(options : WriterCreateCoreOptions) -> JsValue =
+pub extern "js" fn Writer::availability(options : WriterCreateCoreOptions) -> Promise[Availability] =
   #| (options) => Writer.availability(options)
 
-pub extern "js" fn Writer::write(self : Writer, input : String, options : WriterWriteOptions) -> JsValue =
+pub extern "js" fn Writer::write(self : Writer, input : String) -> Promise[String] =
+  #| (self, input) => self.write(input)
+
+pub extern "js" fn Writer::write_with_options(self : Writer, input : String, options : WriterWriteOptions) -> Promise[String] =
   #| (self, input, options) => self.write(input, options)
 
-pub extern "js" fn Writer::write_streaming(self : Writer, input : String, options : WriterWriteOptions) -> ReadableStream =
+pub extern "js" fn Writer::write_streaming(self : Writer, input : String) -> ReadableStream =
+  #| (self, input) => self.writeStreaming(input)
+
+pub extern "js" fn Writer::write_streaming_with_options(self : Writer, input : String, options : WriterWriteOptions) -> ReadableStream =
   #| (self, input, options) => self.writeStreaming(input, options)
 
 pub extern "js" fn Writer::get_shared_context(self : Writer) -> String =
@@ -660,7 +679,10 @@ pub extern "js" fn Writer::get_expected_context_languages(self : Writer) -> JsVa
 pub extern "js" fn Writer::get_output_language(self : Writer) -> String? =
   #| (self) => self.outputLanguage
 
-pub extern "js" fn Writer::measure_input_usage(self : Writer, input : String, options : WriterWriteOptions) -> JsValue =
+pub extern "js" fn Writer::measure_input_usage(self : Writer, input : String) -> Promise[Double] =
+  #| (self, input) => self.measureInputUsage(input)
+
+pub extern "js" fn Writer::measure_input_usage_with_options(self : Writer, input : String, options : WriterWriteOptions) -> Promise[Double] =
   #| (self, input, options) => self.measureInputUsage(input, options)
 
 pub extern "js" fn Writer::get_input_quota(self : Writer) -> Double =
@@ -676,16 +698,22 @@ pub type Rewriter
 pub extern "js" fn Rewriter::to_js_value(self : Rewriter) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Rewriter::create(options : RewriterCreateOptions) -> JsValue =
+pub extern "js" fn Rewriter::create(options : RewriterCreateOptions) -> Promise[Rewriter] =
   #| (options) => Rewriter.create(options)
 
-pub extern "js" fn Rewriter::availability(options : RewriterCreateCoreOptions) -> JsValue =
+pub extern "js" fn Rewriter::availability(options : RewriterCreateCoreOptions) -> Promise[Availability] =
   #| (options) => Rewriter.availability(options)
 
-pub extern "js" fn Rewriter::rewrite(self : Rewriter, input : String, options : RewriterRewriteOptions) -> JsValue =
+pub extern "js" fn Rewriter::rewrite(self : Rewriter, input : String) -> Promise[String] =
+  #| (self, input) => self.rewrite(input)
+
+pub extern "js" fn Rewriter::rewrite_with_options(self : Rewriter, input : String, options : RewriterRewriteOptions) -> Promise[String] =
   #| (self, input, options) => self.rewrite(input, options)
 
-pub extern "js" fn Rewriter::rewrite_streaming(self : Rewriter, input : String, options : RewriterRewriteOptions) -> ReadableStream =
+pub extern "js" fn Rewriter::rewrite_streaming(self : Rewriter, input : String) -> ReadableStream =
+  #| (self, input) => self.rewriteStreaming(input)
+
+pub extern "js" fn Rewriter::rewrite_streaming_with_options(self : Rewriter, input : String, options : RewriterRewriteOptions) -> ReadableStream =
   #| (self, input, options) => self.rewriteStreaming(input, options)
 
 pub extern "js" fn Rewriter::get_shared_context(self : Rewriter) -> String =
@@ -709,7 +737,10 @@ pub extern "js" fn Rewriter::get_expected_context_languages(self : Rewriter) -> 
 pub extern "js" fn Rewriter::get_output_language(self : Rewriter) -> String? =
   #| (self) => self.outputLanguage
 
-pub extern "js" fn Rewriter::measure_input_usage(self : Rewriter, input : String, options : RewriterRewriteOptions) -> JsValue =
+pub extern "js" fn Rewriter::measure_input_usage(self : Rewriter, input : String) -> Promise[Double] =
+  #| (self, input) => self.measureInputUsage(input)
+
+pub extern "js" fn Rewriter::measure_input_usage_with_options(self : Rewriter, input : String, options : RewriterRewriteOptions) -> Promise[Double] =
   #| (self, input, options) => self.measureInputUsage(input, options)
 
 pub extern "js" fn Rewriter::get_input_quota(self : Rewriter) -> Double =

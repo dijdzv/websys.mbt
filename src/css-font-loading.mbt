@@ -104,7 +104,7 @@ pub extern "js" fn FontFaceDescriptors::to_js(self : FontFaceDescriptors) -> JsV
 ///|
 /// FontFaceSetLoadEventInit dictionary
 pub struct FontFaceSetLoadEventInit {
-  fontfaces : JsValue?
+  fontfaces : Array[FontFace]?
 }
 
 /// Create a new FontFaceSetLoadEventInit with default values
@@ -199,10 +199,10 @@ pub extern "js" fn FontFace::set_line_gap_override(self : FontFace, value : CSSO
 pub extern "js" fn FontFace::get_status(self : FontFace) -> FontFaceLoadStatus =
   #| (self) => self.status
 
-pub extern "js" fn FontFace::load(self : FontFace) -> JsValue =
+pub extern "js" fn FontFace::load(self : FontFace) -> Promise[FontFace] =
   #| (self) => self.load()
 
-pub extern "js" fn FontFace::get_loaded(self : FontFace) -> JsValue =
+pub extern "js" fn FontFace::get_loaded(self : FontFace) -> Promise[FontFace] =
   #| (self) => self.loaded
 
 pub extern "js" fn FontFace::get_features(self : FontFace) -> FontFaceFeatures =
@@ -250,8 +250,8 @@ pub type FontFaceVariations
 pub extern "js" fn FontFaceVariations::to_js_value(self : FontFaceVariations) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn FontFaceVariations::_unknown_(self : FontFaceVariations) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn FontFaceVariations::has(self : FontFaceVariations, value : FontFaceVariationAxis) -> Bool =
+  #| (self, value) => self.has(value)
 
 ///|
 /// FontFacePalette interface
@@ -311,17 +311,17 @@ pub type FontFaceSet
 pub extern "js" fn FontFaceSet::to_js_value(self : FontFaceSet) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn FontFaceSet::_unknown_(self : FontFaceSet) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn FontFaceSet::has(self : FontFaceSet, value : FontFace) -> Bool =
+  #| (self, value) => self.has(value)
 
-pub extern "js" fn FontFaceSet::add(self : FontFaceSet, font : FontFace) -> FontFaceSet =
-  #| (self, font) => self.add(font)
+pub extern "js" fn FontFaceSet::add(self : FontFaceSet, value : FontFace) -> Unit =
+  #| (self, value) => { self.add(value) }
 
-pub extern "js" fn FontFaceSet::delete(self : FontFaceSet, font : FontFace) -> Bool =
-  #| (self, font) => self.delete(font)
+pub extern "js" fn FontFaceSet::delete(self : FontFaceSet, value : FontFace) -> Bool =
+  #| (self, value) => self.delete(value)
 
 pub extern "js" fn FontFaceSet::clear(self : FontFaceSet) -> Unit =
-  #| (self) => self.clear()
+  #| (self) => { self.clear() }
 
 pub extern "js" fn FontFaceSet::get_onloading(self : FontFaceSet) -> EventHandler =
   #| (self) => self.onloading
@@ -341,13 +341,19 @@ pub extern "js" fn FontFaceSet::get_onloadingerror(self : FontFaceSet) -> EventH
 pub extern "js" fn FontFaceSet::set_onloadingerror(self : FontFaceSet, value : EventHandler) -> Unit =
   #| (self, value) => { self.onloadingerror = value }
 
-pub extern "js" fn FontFaceSet::load(self : FontFaceSet, font : CSSOMString, text : CSSOMString) -> JsValue =
+pub extern "js" fn FontFaceSet::load(self : FontFaceSet, font : CSSOMString) -> Promise[Array[FontFace]] =
+  #| (self, font) => self.load(font)
+
+pub extern "js" fn FontFaceSet::load_with_text(self : FontFaceSet, font : CSSOMString, text : CSSOMString) -> Promise[Array[FontFace]] =
   #| (self, font, text) => self.load(font, text)
 
-pub extern "js" fn FontFaceSet::check(self : FontFaceSet, font : CSSOMString, text : CSSOMString) -> Bool =
+pub extern "js" fn FontFaceSet::check(self : FontFaceSet, font : CSSOMString) -> Bool =
+  #| (self, font) => self.check(font)
+
+pub extern "js" fn FontFaceSet::check_with_text(self : FontFaceSet, font : CSSOMString, text : CSSOMString) -> Bool =
   #| (self, font, text) => self.check(font, text)
 
-pub extern "js" fn FontFaceSet::get_ready(self : FontFaceSet) -> JsValue =
+pub extern "js" fn FontFaceSet::get_ready(self : FontFaceSet) -> Promise[FontFaceSet] =
   #| (self) => self.ready
 
 pub extern "js" fn FontFaceSet::get_status(self : FontFaceSet) -> FontFaceSetLoadStatus =

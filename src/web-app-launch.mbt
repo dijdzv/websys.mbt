@@ -4,6 +4,10 @@
 /// LaunchConsumer callback interface
 pub type LaunchConsumer
 
+/// Create LaunchConsumer from a MoonBit function
+pub extern "js" fn LaunchConsumer::from_fn(handler : (LaunchParams) -> JsValue) -> LaunchConsumer =
+  #| (handler) => handler
+
 ///|
 /// LaunchParams interface
 pub type LaunchParams

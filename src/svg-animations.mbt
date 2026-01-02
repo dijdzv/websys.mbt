@@ -14,7 +14,10 @@ pub extern "js" fn TimeEvent::get_view(self : TimeEvent) -> WindowProxy? =
 pub extern "js" fn TimeEvent::get_detail(self : TimeEvent) -> Int =
   #| (self) => self.detail
 
-pub extern "js" fn TimeEvent::init_time_event(self : TimeEvent, type_arg : String, view_arg : Window?, detail_arg : Int) -> Unit =
+pub extern "js" fn TimeEvent::init_time_event(self : TimeEvent, type_arg : String) -> Unit =
+  #| (self, type_arg) => self.initTimeEvent(type_arg)
+
+pub extern "js" fn TimeEvent::init_time_event_with_detail_arg(self : TimeEvent, type_arg : String, view_arg : Window?, detail_arg : Int) -> Unit =
   #| (self, type_arg, view_arg, detail_arg) => self.initTimeEvent(type_arg, view_arg, detail_arg)
 
 ///|

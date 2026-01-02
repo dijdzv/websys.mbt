@@ -631,8 +631,16 @@ pub fn RTCErrorDetailType::from_string(s : String) -> RTCErrorDetailType? {
 /// RTCPeerConnectionErrorCallback callback interface
 pub type RTCPeerConnectionErrorCallback
 
+/// Create RTCPeerConnectionErrorCallback from a MoonBit function
+pub extern "js" fn RTCPeerConnectionErrorCallback::from_fn(handler : (DOMException) -> Unit) -> RTCPeerConnectionErrorCallback =
+  #| (handler) => handler
+
 /// RTCSessionDescriptionCallback callback interface
 pub type RTCSessionDescriptionCallback
+
+/// Create RTCSessionDescriptionCallback from a MoonBit function
+pub extern "js" fn RTCSessionDescriptionCallback::from_fn(handler : (RTCSessionDescriptionInit) -> Unit) -> RTCSessionDescriptionCallback =
+  #| (handler) => handler
 
 ///|
 /// RTCIceServer dictionary
@@ -898,8 +906,8 @@ pub extern "js" fn RTCCertificateExpiration::to_js(self : RTCCertificateExpirati
 /// RTCRtpTransceiverInit dictionary
 pub struct RTCRtpTransceiverInit {
   direction : RTCRtpTransceiverDirection?
-  streams : JsValue?
-  sendEncodings : JsValue?
+  streams : Array[MediaStream]?
+  sendEncodings : Array[RTCRtpEncodingParameters]?
 }
 
 /// Create a new RTCRtpTransceiverInit with default values
@@ -922,17 +930,17 @@ pub extern "js" fn RTCRtpTransceiverInit::to_js(self : RTCRtpTransceiverInit) ->
 ///|
 /// RTCRtpParameters dictionary
 pub struct RTCRtpParameters {
-  headerExtensions : JsValue
+  headerExtensions : Array[RTCRtpHeaderExtensionParameters]
   rtcp : RTCRtcpParameters
-  codecs : JsValue
+  codecs : Array[RTCRtpCodecParameters]
 }
 
 /// Create a new RTCRtpParameters with default values
 pub fn RTCRtpParameters::default() -> RTCRtpParameters {
   RTCRtpParameters::{
-    headerExtensions: panic(),
+    headerExtensions: [],
     rtcp: panic(),
-    codecs: panic(),
+    codecs: [],
   }
 }
 
@@ -947,17 +955,17 @@ pub extern "js" fn RTCRtpParameters::to_js(self : RTCRtpParameters) -> JsValue =
 ///|
 /// RTCRtpReceiveParameters dictionary
 pub struct RTCRtpReceiveParameters {
-  headerExtensions : JsValue
+  headerExtensions : Array[RTCRtpHeaderExtensionParameters]
   rtcp : RTCRtcpParameters
-  codecs : JsValue
+  codecs : Array[RTCRtpCodecParameters]
 }
 
 /// Create a new RTCRtpReceiveParameters with default values
 pub fn RTCRtpReceiveParameters::default() -> RTCRtpReceiveParameters {
   RTCRtpReceiveParameters::{
-    headerExtensions: panic(),
+    headerExtensions: [],
     rtcp: panic(),
-    codecs: panic(),
+    codecs: [],
   }
 }
 
@@ -1097,15 +1105,15 @@ pub extern "js" fn RTCRtpCodecParameters::to_js(self : RTCRtpCodecParameters) ->
 ///|
 /// RTCRtpCapabilities dictionary
 pub struct RTCRtpCapabilities {
-  codecs : JsValue
-  headerExtensions : JsValue
+  codecs : Array[RTCRtpCodec]
+  headerExtensions : Array[RTCRtpHeaderExtensionCapability]
 }
 
 /// Create a new RTCRtpCapabilities with default values
 pub fn RTCRtpCapabilities::default() -> RTCRtpCapabilities {
   RTCRtpCapabilities::{
-    codecs: panic(),
-    headerExtensions: panic(),
+    codecs: [],
+    headerExtensions: [],
   }
 }
 
@@ -1234,7 +1242,7 @@ pub extern "js" fn RTCDtlsFingerprint::to_js(self : RTCDtlsFingerprint) -> JsVal
 pub struct RTCTrackEventInit {
   receiver : RTCRtpReceiver
   track : MediaStreamTrack
-  streams : JsValue?
+  streams : Array[MediaStream]?
   transceiver : RTCRtpTransceiver
 }
 
@@ -1349,13 +1357,22 @@ pub extern "js" fn RTCPeerConnection::to_js_value(self : RTCPeerConnection) -> J
 pub extern "js" fn RTCPeerConnection::new(configuration : RTCConfiguration) -> RTCPeerConnection =
   #| (configuration) => new RTCPeerConnection(configuration)
 
-pub extern "js" fn RTCPeerConnection::create_offer(self : RTCPeerConnection, options : RTCOfferOptions) -> JsValue =
+pub extern "js" fn RTCPeerConnection::create_offer(self : RTCPeerConnection) -> Promise[RTCSessionDescriptionInit] =
+  #| (self) => self.createOffer()
+
+pub extern "js" fn RTCPeerConnection::create_offer_with_options(self : RTCPeerConnection, options : RTCOfferOptions) -> Promise[RTCSessionDescriptionInit] =
   #| (self, options) => self.createOffer(options)
 
-pub extern "js" fn RTCPeerConnection::create_answer(self : RTCPeerConnection, options : RTCAnswerOptions) -> JsValue =
+pub extern "js" fn RTCPeerConnection::create_answer(self : RTCPeerConnection) -> Promise[RTCSessionDescriptionInit] =
+  #| (self) => self.createAnswer()
+
+pub extern "js" fn RTCPeerConnection::create_answer_with_options(self : RTCPeerConnection, options : RTCAnswerOptions) -> Promise[RTCSessionDescriptionInit] =
   #| (self, options) => self.createAnswer(options)
 
-pub extern "js" fn RTCPeerConnection::set_local_description(self : RTCPeerConnection, description : RTCLocalSessionDescriptionInit) -> JsValue =
+pub extern "js" fn RTCPeerConnection::set_local_description(self : RTCPeerConnection) -> Promise[Unit] =
+  #| (self) => self.setLocalDescription()
+
+pub extern "js" fn RTCPeerConnection::set_local_description_with_description(self : RTCPeerConnection, description : RTCLocalSessionDescriptionInit) -> Promise[Unit] =
   #| (self, description) => self.setLocalDescription(description)
 
 pub extern "js" fn RTCPeerConnection::get_local_description(self : RTCPeerConnection) -> RTCSessionDescription? =
@@ -1367,7 +1384,7 @@ pub extern "js" fn RTCPeerConnection::get_current_local_description(self : RTCPe
 pub extern "js" fn RTCPeerConnection::get_pending_local_description(self : RTCPeerConnection) -> RTCSessionDescription? =
   #| (self) => self.pendingLocalDescription
 
-pub extern "js" fn RTCPeerConnection::set_remote_description(self : RTCPeerConnection, description : RTCSessionDescriptionInit) -> JsValue =
+pub extern "js" fn RTCPeerConnection::set_remote_description(self : RTCPeerConnection, description : RTCSessionDescriptionInit) -> Promise[Unit] =
   #| (self, description) => self.setRemoteDescription(description)
 
 pub extern "js" fn RTCPeerConnection::get_remote_description(self : RTCPeerConnection) -> RTCSessionDescription? =
@@ -1379,7 +1396,10 @@ pub extern "js" fn RTCPeerConnection::get_current_remote_description(self : RTCP
 pub extern "js" fn RTCPeerConnection::get_pending_remote_description(self : RTCPeerConnection) -> RTCSessionDescription? =
   #| (self) => self.pendingRemoteDescription
 
-pub extern "js" fn RTCPeerConnection::add_ice_candidate(self : RTCPeerConnection, candidate : RTCIceCandidateInit) -> JsValue =
+pub extern "js" fn RTCPeerConnection::add_ice_candidate(self : RTCPeerConnection) -> Promise[Unit] =
+  #| (self) => self.addIceCandidate()
+
+pub extern "js" fn RTCPeerConnection::add_ice_candidate_with_candidate(self : RTCPeerConnection, candidate : RTCIceCandidateInit) -> Promise[Unit] =
   #| (self, candidate) => self.addIceCandidate(candidate)
 
 pub extern "js" fn RTCPeerConnection::get_signaling_state(self : RTCPeerConnection) -> RTCSignalingState =
@@ -1403,7 +1423,10 @@ pub extern "js" fn RTCPeerConnection::restart_ice(self : RTCPeerConnection) -> U
 pub extern "js" fn RTCPeerConnection::get_configuration(self : RTCPeerConnection) -> RTCConfiguration =
   #| (self) => self.getConfiguration()
 
-pub extern "js" fn RTCPeerConnection::set_configuration(self : RTCPeerConnection, configuration : RTCConfiguration) -> Unit =
+pub extern "js" fn RTCPeerConnection::set_configuration(self : RTCPeerConnection) -> Unit =
+  #| (self) => self.setConfiguration()
+
+pub extern "js" fn RTCPeerConnection::set_configuration_with_configuration(self : RTCPeerConnection, configuration : RTCConfiguration) -> Unit =
   #| (self, configuration) => self.setConfiguration(configuration)
 
 pub extern "js" fn RTCPeerConnection::close(self : RTCPeerConnection) -> Unit =
@@ -1451,13 +1474,16 @@ pub extern "js" fn RTCPeerConnection::get_onconnectionstatechange(self : RTCPeer
 pub extern "js" fn RTCPeerConnection::set_onconnectionstatechange(self : RTCPeerConnection, value : EventHandler) -> Unit =
   #| (self, value) => { self.onconnectionstatechange = value }
 
-pub extern "js" fn RTCPeerConnection::set_identity_provider(self : RTCPeerConnection, provider : String, options : RTCIdentityProviderOptions) -> Unit =
+pub extern "js" fn RTCPeerConnection::set_identity_provider(self : RTCPeerConnection, provider : String) -> Unit =
+  #| (self, provider) => self.setIdentityProvider(provider)
+
+pub extern "js" fn RTCPeerConnection::set_identity_provider_with_options(self : RTCPeerConnection, provider : String, options : RTCIdentityProviderOptions) -> Unit =
   #| (self, provider, options) => self.setIdentityProvider(provider, options)
 
-pub extern "js" fn RTCPeerConnection::get_identity_assertion(self : RTCPeerConnection) -> JsValue =
+pub extern "js" fn RTCPeerConnection::get_identity_assertion(self : RTCPeerConnection) -> Promise[String] =
   #| (self) => self.getIdentityAssertion()
 
-pub extern "js" fn RTCPeerConnection::get_peer_identity(self : RTCPeerConnection) -> JsValue =
+pub extern "js" fn RTCPeerConnection::get_peer_identity(self : RTCPeerConnection) -> Promise[RTCIdentityAssertion] =
   #| (self) => self.peerIdentity
 
 pub extern "js" fn RTCPeerConnection::get_idp_login_url(self : RTCPeerConnection) -> String? =
@@ -1466,16 +1492,16 @@ pub extern "js" fn RTCPeerConnection::get_idp_login_url(self : RTCPeerConnection
 pub extern "js" fn RTCPeerConnection::get_idp_error_info(self : RTCPeerConnection) -> String? =
   #| (self) => self.idpErrorInfo
 
-pub extern "js" fn RTCPeerConnection::generate_certificate(keygen_algorithm : AlgorithmIdentifier) -> JsValue =
+pub extern "js" fn RTCPeerConnection::generate_certificate(keygen_algorithm : AlgorithmIdentifier) -> Promise[RTCCertificate] =
   #| (keygen_algorithm) => RTCPeerConnection.generateCertificate(keygen_algorithm)
 
-pub extern "js" fn RTCPeerConnection::get_senders(self : RTCPeerConnection) -> JsValue =
+pub extern "js" fn RTCPeerConnection::get_senders(self : RTCPeerConnection) -> Array[RTCRtpSender] =
   #| (self) => self.getSenders()
 
-pub extern "js" fn RTCPeerConnection::get_receivers(self : RTCPeerConnection) -> JsValue =
+pub extern "js" fn RTCPeerConnection::get_receivers(self : RTCPeerConnection) -> Array[RTCRtpReceiver] =
   #| (self) => self.getReceivers()
 
-pub extern "js" fn RTCPeerConnection::get_transceivers(self : RTCPeerConnection) -> JsValue =
+pub extern "js" fn RTCPeerConnection::get_transceivers(self : RTCPeerConnection) -> Array[RTCRtpTransceiver] =
   #| (self) => self.getTransceivers()
 
 pub extern "js" fn RTCPeerConnection::add_track(self : RTCPeerConnection, track : MediaStreamTrack, streams : MediaStream) -> RTCRtpSender =
@@ -1484,7 +1510,10 @@ pub extern "js" fn RTCPeerConnection::add_track(self : RTCPeerConnection, track 
 pub extern "js" fn RTCPeerConnection::remove_track(self : RTCPeerConnection, sender : RTCRtpSender) -> Unit =
   #| (self, sender) => self.removeTrack(sender)
 
-pub extern "js" fn RTCPeerConnection::add_transceiver(self : RTCPeerConnection, track_or_kind : JsValue, init_ : RTCRtpTransceiverInit) -> RTCRtpTransceiver =
+pub extern "js" fn RTCPeerConnection::add_transceiver(self : RTCPeerConnection, track_or_kind : JsValue) -> RTCRtpTransceiver =
+  #| (self, track_or_kind) => self.addTransceiver(track_or_kind)
+
+pub extern "js" fn RTCPeerConnection::add_transceiver_with_init(self : RTCPeerConnection, track_or_kind : JsValue, init_ : RTCRtpTransceiverInit) -> RTCRtpTransceiver =
   #| (self, track_or_kind, init_) => self.addTransceiver(track_or_kind, init_)
 
 pub extern "js" fn RTCPeerConnection::get_ontrack(self : RTCPeerConnection) -> EventHandler =
@@ -1496,7 +1525,10 @@ pub extern "js" fn RTCPeerConnection::set_ontrack(self : RTCPeerConnection, valu
 pub extern "js" fn RTCPeerConnection::get_sctp(self : RTCPeerConnection) -> RTCSctpTransport? =
   #| (self) => self.sctp
 
-pub extern "js" fn RTCPeerConnection::create_data_channel(self : RTCPeerConnection, label : String, data_channel_dict : RTCDataChannelInit) -> RTCDataChannel =
+pub extern "js" fn RTCPeerConnection::create_data_channel(self : RTCPeerConnection, label : String) -> RTCDataChannel =
+  #| (self, label) => self.createDataChannel(label)
+
+pub extern "js" fn RTCPeerConnection::create_data_channel_with_data_channel_dict(self : RTCPeerConnection, label : String, data_channel_dict : RTCDataChannelInit) -> RTCDataChannel =
   #| (self, label, data_channel_dict) => self.createDataChannel(label, data_channel_dict)
 
 pub extern "js" fn RTCPeerConnection::get_ondatachannel(self : RTCPeerConnection) -> EventHandler =
@@ -1505,7 +1537,10 @@ pub extern "js" fn RTCPeerConnection::get_ondatachannel(self : RTCPeerConnection
 pub extern "js" fn RTCPeerConnection::set_ondatachannel(self : RTCPeerConnection, value : EventHandler) -> Unit =
   #| (self, value) => { self.ondatachannel = value }
 
-pub extern "js" fn RTCPeerConnection::get_stats(self : RTCPeerConnection, selector : MediaStreamTrack?) -> JsValue =
+pub extern "js" fn RTCPeerConnection::get_stats(self : RTCPeerConnection) -> Promise[RTCStatsReport] =
+  #| (self) => self.getStats()
+
+pub extern "js" fn RTCPeerConnection::get_stats_with_selector(self : RTCPeerConnection, selector : MediaStreamTrack?) -> Promise[RTCStatsReport] =
   #| (self, selector) => self.getStats(selector)
 
 ///|
@@ -1639,7 +1674,7 @@ pub extern "js" fn RTCCertificate::to_js_value(self : RTCCertificate) -> JsValue
 pub extern "js" fn RTCCertificate::get_expires(self : RTCCertificate) -> EpochTimeStamp =
   #| (self) => self.expires
 
-pub extern "js" fn RTCCertificate::get_fingerprints(self : RTCCertificate) -> JsValue =
+pub extern "js" fn RTCCertificate::get_fingerprints(self : RTCCertificate) -> Array[RTCDtlsFingerprint] =
   #| (self) => self.getFingerprints()
 
 ///|
@@ -1658,19 +1693,22 @@ pub extern "js" fn RTCRtpSender::get_transport(self : RTCRtpSender) -> RTCDtlsTr
 pub extern "js" fn RTCRtpSender::get_capabilities(kind : String) -> RTCRtpCapabilities? =
   #| (kind) => RTCRtpSender.getCapabilities(kind)
 
-pub extern "js" fn RTCRtpSender::set_parameters(self : RTCRtpSender, parameters : RTCRtpSendParameters, set_parameter_options : RTCSetParameterOptions) -> JsValue =
+pub extern "js" fn RTCRtpSender::set_parameters(self : RTCRtpSender, parameters : RTCRtpSendParameters) -> Promise[Unit] =
+  #| (self, parameters) => self.setParameters(parameters)
+
+pub extern "js" fn RTCRtpSender::set_parameters_with_set_parameter_options(self : RTCRtpSender, parameters : RTCRtpSendParameters, set_parameter_options : RTCSetParameterOptions) -> Promise[Unit] =
   #| (self, parameters, set_parameter_options) => self.setParameters(parameters, set_parameter_options)
 
 pub extern "js" fn RTCRtpSender::get_parameters(self : RTCRtpSender) -> RTCRtpSendParameters =
   #| (self) => self.getParameters()
 
-pub extern "js" fn RTCRtpSender::replace_track(self : RTCRtpSender, with_track : MediaStreamTrack?) -> JsValue =
+pub extern "js" fn RTCRtpSender::replace_track(self : RTCRtpSender, with_track : MediaStreamTrack?) -> Promise[Unit] =
   #| (self, with_track) => self.replaceTrack(with_track)
 
 pub extern "js" fn RTCRtpSender::set_streams(self : RTCRtpSender, streams : MediaStream) -> Unit =
   #| (self, streams) => self.setStreams(streams)
 
-pub extern "js" fn RTCRtpSender::get_stats(self : RTCRtpSender) -> JsValue =
+pub extern "js" fn RTCRtpSender::get_stats(self : RTCRtpSender) -> Promise[RTCStatsReport] =
   #| (self) => self.getStats()
 
 pub extern "js" fn RTCRtpSender::get_transform(self : RTCRtpSender) -> RTCRtpTransform? =
@@ -1701,13 +1739,13 @@ pub extern "js" fn RTCRtpReceiver::get_capabilities(kind : String) -> RTCRtpCapa
 pub extern "js" fn RTCRtpReceiver::get_parameters(self : RTCRtpReceiver) -> RTCRtpReceiveParameters =
   #| (self) => self.getParameters()
 
-pub extern "js" fn RTCRtpReceiver::get_contributing_sources(self : RTCRtpReceiver) -> JsValue =
+pub extern "js" fn RTCRtpReceiver::get_contributing_sources(self : RTCRtpReceiver) -> Array[RTCRtpContributingSource] =
   #| (self) => self.getContributingSources()
 
-pub extern "js" fn RTCRtpReceiver::get_synchronization_sources(self : RTCRtpReceiver) -> JsValue =
+pub extern "js" fn RTCRtpReceiver::get_synchronization_sources(self : RTCRtpReceiver) -> Array[RTCRtpSynchronizationSource] =
   #| (self) => self.getSynchronizationSources()
 
-pub extern "js" fn RTCRtpReceiver::get_stats(self : RTCRtpReceiver) -> JsValue =
+pub extern "js" fn RTCRtpReceiver::get_stats(self : RTCRtpReceiver) -> Promise[RTCStatsReport] =
   #| (self) => self.getStats()
 
 pub extern "js" fn RTCRtpReceiver::get_jitter_buffer_target(self : RTCRtpReceiver) -> DOMHighResTimeStamp? =
@@ -1750,7 +1788,7 @@ pub extern "js" fn RTCRtpTransceiver::get_current_direction(self : RTCRtpTransce
 pub extern "js" fn RTCRtpTransceiver::stop(self : RTCRtpTransceiver) -> Unit =
   #| (self) => self.stop()
 
-pub extern "js" fn RTCRtpTransceiver::set_codec_preferences(self : RTCRtpTransceiver, codecs : JsValue) -> Unit =
+pub extern "js" fn RTCRtpTransceiver::set_codec_preferences(self : RTCRtpTransceiver, codecs : Array[RTCRtpCodec]) -> Unit =
   #| (self, codecs) => self.setCodecPreferences(codecs)
 
 ///|
@@ -1766,7 +1804,7 @@ pub extern "js" fn RTCDtlsTransport::get_ice_transport(self : RTCDtlsTransport) 
 pub extern "js" fn RTCDtlsTransport::get_state(self : RTCDtlsTransport) -> RTCDtlsTransportState =
   #| (self) => self.state
 
-pub extern "js" fn RTCDtlsTransport::get_remote_certificates(self : RTCDtlsTransport) -> JsValue =
+pub extern "js" fn RTCDtlsTransport::get_remote_certificates(self : RTCDtlsTransport) -> Array[ArrayBuffer] =
   #| (self) => self.getRemoteCertificates()
 
 pub extern "js" fn RTCDtlsTransport::get_onstatechange(self : RTCDtlsTransport) -> EventHandler =
@@ -1800,10 +1838,10 @@ pub extern "js" fn RTCIceTransport::get_state(self : RTCIceTransport) -> RTCIceT
 pub extern "js" fn RTCIceTransport::get_gathering_state(self : RTCIceTransport) -> RTCIceGathererState =
   #| (self) => self.gatheringState
 
-pub extern "js" fn RTCIceTransport::get_local_candidates(self : RTCIceTransport) -> JsValue =
+pub extern "js" fn RTCIceTransport::get_local_candidates(self : RTCIceTransport) -> Array[RTCIceCandidate] =
   #| (self) => self.getLocalCandidates()
 
-pub extern "js" fn RTCIceTransport::get_remote_candidates(self : RTCIceTransport) -> JsValue =
+pub extern "js" fn RTCIceTransport::get_remote_candidates(self : RTCIceTransport) -> Array[RTCIceCandidate] =
   #| (self) => self.getRemoteCandidates()
 
 pub extern "js" fn RTCIceTransport::get_selected_candidate_pair(self : RTCIceTransport) -> RTCIceCandidatePair? =
@@ -1836,16 +1874,25 @@ pub extern "js" fn RTCIceTransport::set_onselectedcandidatepairchange(self : RTC
 pub extern "js" fn RTCIceTransport::new() -> RTCIceTransport =
   #| () => new RTCIceTransport()
 
-pub extern "js" fn RTCIceTransport::gather(self : RTCIceTransport, options : RTCIceGatherOptions) -> Unit =
+pub extern "js" fn RTCIceTransport::gather(self : RTCIceTransport) -> Unit =
+  #| (self) => self.gather()
+
+pub extern "js" fn RTCIceTransport::gather_with_options(self : RTCIceTransport, options : RTCIceGatherOptions) -> Unit =
   #| (self, options) => self.gather(options)
 
-pub extern "js" fn RTCIceTransport::start(self : RTCIceTransport, remote_parameters : RTCIceParameters, role : RTCIceRole) -> Unit =
+pub extern "js" fn RTCIceTransport::start(self : RTCIceTransport) -> Unit =
+  #| (self) => self.start()
+
+pub extern "js" fn RTCIceTransport::start_with_role(self : RTCIceTransport, remote_parameters : RTCIceParameters, role : RTCIceRole) -> Unit =
   #| (self, remote_parameters, role) => self.start(remote_parameters, ['unknown', 'controlling', 'controlled'][role])
 
 pub extern "js" fn RTCIceTransport::stop(self : RTCIceTransport) -> Unit =
   #| (self) => self.stop()
 
-pub extern "js" fn RTCIceTransport::add_remote_candidate(self : RTCIceTransport, remote_candidate : RTCIceCandidateInit) -> Unit =
+pub extern "js" fn RTCIceTransport::add_remote_candidate(self : RTCIceTransport) -> Unit =
+  #| (self) => self.addRemoteCandidate()
+
+pub extern "js" fn RTCIceTransport::add_remote_candidate_with_remote_candidate(self : RTCIceTransport, remote_candidate : RTCIceCandidateInit) -> Unit =
   #| (self, remote_candidate) => self.addRemoteCandidate(remote_candidate)
 
 pub extern "js" fn RTCIceTransport::get_onerror(self : RTCIceTransport) -> EventHandler =
@@ -2031,7 +2078,10 @@ pub type RTCDTMFSender
 pub extern "js" fn RTCDTMFSender::to_js_value(self : RTCDTMFSender) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn RTCDTMFSender::insert_d_t_m_f(self : RTCDTMFSender, tones : String, duration : Int, inter_tone_gap : Int) -> Unit =
+pub extern "js" fn RTCDTMFSender::insert_d_t_m_f(self : RTCDTMFSender, tones : String) -> Unit =
+  #| (self, tones) => self.insertDTMF(tones)
+
+pub extern "js" fn RTCDTMFSender::insert_d_t_m_f_with_inter_tone_gap(self : RTCDTMFSender, tones : String, duration : Int, inter_tone_gap : Int) -> Unit =
   #| (self, tones, duration, inter_tone_gap) => self.insertDTMF(tones, duration, inter_tone_gap)
 
 pub extern "js" fn RTCDTMFSender::get_ontonechange(self : RTCDTMFSender) -> EventHandler =
@@ -2066,8 +2116,11 @@ pub type RTCStatsReport
 pub extern "js" fn RTCStatsReport::to_js_value(self : RTCStatsReport) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn RTCStatsReport::_unknown_(self : RTCStatsReport) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn RTCStatsReport::get(self : RTCStatsReport, key : String) -> JsValue? =
+  #| (self, key) => self.get(key)
+
+pub extern "js" fn RTCStatsReport::has(self : RTCStatsReport, key : String) -> Bool =
+  #| (self, key) => self.has(key)
 
 ///|
 /// RTCError interface

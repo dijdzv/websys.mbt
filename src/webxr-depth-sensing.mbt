@@ -79,17 +79,17 @@ pub fn XRDepthDataFormat::from_string(s : String) -> XRDepthDataFormat? {
 ///|
 /// XRDepthStateInit dictionary
 pub struct XRDepthStateInit {
-  usagePreference : JsValue
-  dataFormatPreference : JsValue
-  depthTypeRequest : JsValue?
+  usagePreference : Array[XRDepthUsage]
+  dataFormatPreference : Array[XRDepthDataFormat]
+  depthTypeRequest : Array[XRDepthType]?
   matchDepthView : Bool?
 }
 
 /// Create a new XRDepthStateInit with default values
 pub fn XRDepthStateInit::default() -> XRDepthStateInit {
   XRDepthStateInit::{
-    usagePreference: panic(),
-    dataFormatPreference: panic(),
+    usagePreference: [],
+    dataFormatPreference: [],
     depthTypeRequest: None,
     matchDepthView: None,
   }
@@ -109,8 +109,8 @@ pub extern "js" fn XRDepthStateInit::to_js(self : XRDepthStateInit) -> JsValue =
 pub struct XRSessionInit {
   depthSensing : XRDepthStateInit?
   domOverlay : XRDOMOverlayInit??
-  requiredFeatures : JsValue?
-  optionalFeatures : JsValue?
+  requiredFeatures : Array[String]?
+  optionalFeatures : Array[String]?
 }
 
 /// Create a new XRSessionInit with default values

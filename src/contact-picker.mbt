@@ -37,11 +37,11 @@ pub fn ContactProperty::from_string(s : String) -> ContactProperty? {
 ///|
 /// ContactInfo dictionary
 pub struct ContactInfo {
-  address : JsValue?
-  email : JsValue?
-  icon : JsValue?
-  name : JsValue?
-  tel : JsValue?
+  address : Array[ContactAddress]?
+  email : Array[String]?
+  icon : Array[Blob]?
+  name : Array[String]?
+  tel : Array[String]?
 }
 
 /// Create a new ContactInfo with default values
@@ -131,9 +131,12 @@ pub type ContactsManager
 pub extern "js" fn ContactsManager::to_js_value(self : ContactsManager) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ContactsManager::get_properties(self : ContactsManager) -> JsValue =
+pub extern "js" fn ContactsManager::get_properties(self : ContactsManager) -> Promise[Array[ContactProperty]] =
   #| (self) => self.getProperties()
 
-pub extern "js" fn ContactsManager::select(self : ContactsManager, properties : JsValue, options : ContactsSelectOptions) -> JsValue =
+pub extern "js" fn ContactsManager::select(self : ContactsManager, properties : Array[ContactProperty]) -> Promise[Array[ContactInfo]] =
+  #| (self, properties) => self.select(properties)
+
+pub extern "js" fn ContactsManager::select_with_options(self : ContactsManager, properties : Array[ContactProperty], options : ContactsSelectOptions) -> Promise[Array[ContactInfo]] =
   #| (self, properties, options) => self.select(properties, options)
 

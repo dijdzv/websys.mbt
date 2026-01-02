@@ -702,7 +702,10 @@ pub extern "js" fn SVGElement::get_tab_index(self : SVGElement) -> Int =
 pub extern "js" fn SVGElement::set_tab_index(self : SVGElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGElement::focus(self : SVGElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGElement::focus(self : SVGElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGElement::focus_with_options(self : SVGElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGElement::blur(self : SVGElement) -> Unit =
@@ -1387,7 +1390,10 @@ pub extern "js" fn SVGGraphicsElement::get_tab_index(self : SVGGraphicsElement) 
 pub extern "js" fn SVGGraphicsElement::set_tab_index(self : SVGGraphicsElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGGraphicsElement::focus(self : SVGGraphicsElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGGraphicsElement::focus(self : SVGGraphicsElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGGraphicsElement::focus_with_options(self : SVGGraphicsElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGGraphicsElement::blur(self : SVGGraphicsElement) -> Unit =
@@ -1402,7 +1408,10 @@ pub extern "js" fn SVGGraphicsElement::get_style(self : SVGGraphicsElement) -> C
 pub extern "js" fn SVGGraphicsElement::get_transform(self : SVGGraphicsElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGGraphicsElement::get_b_box(self : SVGGraphicsElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGGraphicsElement::get_b_box(self : SVGGraphicsElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGGraphicsElement::get_b_box_with_options(self : SVGGraphicsElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGGraphicsElement::get_c_t_m(self : SVGGraphicsElement) -> DOMMatrix? =
@@ -2090,7 +2099,10 @@ pub extern "js" fn SVGGeometryElement::get_tab_index(self : SVGGeometryElement) 
 pub extern "js" fn SVGGeometryElement::set_tab_index(self : SVGGeometryElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGGeometryElement::focus(self : SVGGeometryElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGGeometryElement::focus(self : SVGGeometryElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGGeometryElement::focus_with_options(self : SVGGeometryElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGGeometryElement::blur(self : SVGGeometryElement) -> Unit =
@@ -2105,7 +2117,10 @@ pub extern "js" fn SVGGeometryElement::get_style(self : SVGGeometryElement) -> C
 pub extern "js" fn SVGGeometryElement::get_transform(self : SVGGeometryElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGGeometryElement::get_b_box(self : SVGGeometryElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGGeometryElement::get_b_box(self : SVGGeometryElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGGeometryElement::get_b_box_with_options(self : SVGGeometryElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGGeometryElement::get_c_t_m(self : SVGGeometryElement) -> DOMMatrix? =
@@ -2123,10 +2138,16 @@ pub extern "js" fn SVGGeometryElement::get_system_language(self : SVGGeometryEle
 pub extern "js" fn SVGGeometryElement::get_path_length(self : SVGGeometryElement) -> SVGAnimatedNumber =
   #| (self) => self.pathLength
 
-pub extern "js" fn SVGGeometryElement::is_point_in_fill(self : SVGGeometryElement, point : DOMPointInit) -> Bool =
+pub extern "js" fn SVGGeometryElement::is_point_in_fill(self : SVGGeometryElement) -> Bool =
+  #| (self) => self.isPointInFill()
+
+pub extern "js" fn SVGGeometryElement::is_point_in_fill_with_point(self : SVGGeometryElement, point : DOMPointInit) -> Bool =
   #| (self, point) => self.isPointInFill(point)
 
-pub extern "js" fn SVGGeometryElement::is_point_in_stroke(self : SVGGeometryElement, point : DOMPointInit) -> Bool =
+pub extern "js" fn SVGGeometryElement::is_point_in_stroke(self : SVGGeometryElement) -> Bool =
+  #| (self) => self.isPointInStroke()
+
+pub extern "js" fn SVGGeometryElement::is_point_in_stroke_with_point(self : SVGGeometryElement, point : DOMPointInit) -> Bool =
   #| (self, point) => self.isPointInStroke(point)
 
 pub extern "js" fn SVGGeometryElement::get_total_length(self : SVGGeometryElement) -> Double =
@@ -2154,6 +2175,39 @@ pub type SVGLength
 
 pub extern "js" fn SVGLength::to_js_value(self : SVGLength) -> JsValue =
   #| (self) => self
+
+// SVGLength.SVG_LENGTHTYPE_UNKNOWN
+pub let s_v_g_length_svg_lengthtype_unknown : Int = 0
+
+// SVGLength.SVG_LENGTHTYPE_NUMBER
+pub let s_v_g_length_svg_lengthtype_number : Int = 1
+
+// SVGLength.SVG_LENGTHTYPE_PERCENTAGE
+pub let s_v_g_length_svg_lengthtype_percentage : Int = 2
+
+// SVGLength.SVG_LENGTHTYPE_EMS
+pub let s_v_g_length_svg_lengthtype_ems : Int = 3
+
+// SVGLength.SVG_LENGTHTYPE_EXS
+pub let s_v_g_length_svg_lengthtype_exs : Int = 4
+
+// SVGLength.SVG_LENGTHTYPE_PX
+pub let s_v_g_length_svg_lengthtype_px : Int = 5
+
+// SVGLength.SVG_LENGTHTYPE_CM
+pub let s_v_g_length_svg_lengthtype_cm : Int = 6
+
+// SVGLength.SVG_LENGTHTYPE_MM
+pub let s_v_g_length_svg_lengthtype_mm : Int = 7
+
+// SVGLength.SVG_LENGTHTYPE_IN
+pub let s_v_g_length_svg_lengthtype_in : Int = 8
+
+// SVGLength.SVG_LENGTHTYPE_PT
+pub let s_v_g_length_svg_lengthtype_pt : Int = 9
+
+// SVGLength.SVG_LENGTHTYPE_PC
+pub let s_v_g_length_svg_lengthtype_pc : Int = 10
 
 pub extern "js" fn SVGLength::get_unit_type(self : SVGLength) -> Int =
   #| (self) => self.unitType
@@ -2188,6 +2242,21 @@ pub type SVGAngle
 
 pub extern "js" fn SVGAngle::to_js_value(self : SVGAngle) -> JsValue =
   #| (self) => self
+
+// SVGAngle.SVG_ANGLETYPE_UNKNOWN
+pub let s_v_g_angle_svg_angletype_unknown : Int = 0
+
+// SVGAngle.SVG_ANGLETYPE_UNSPECIFIED
+pub let s_v_g_angle_svg_angletype_unspecified : Int = 1
+
+// SVGAngle.SVG_ANGLETYPE_DEG
+pub let s_v_g_angle_svg_angletype_deg : Int = 2
+
+// SVGAngle.SVG_ANGLETYPE_RAD
+pub let s_v_g_angle_svg_angletype_rad : Int = 3
+
+// SVGAngle.SVG_ANGLETYPE_GRAD
+pub let s_v_g_angle_svg_angletype_grad : Int = 4
 
 pub extern "js" fn SVGAngle::get_unit_type(self : SVGAngle) -> Int =
   #| (self) => self.unitType
@@ -2487,6 +2556,15 @@ pub type SVGUnitTypes
 
 pub extern "js" fn SVGUnitTypes::to_js_value(self : SVGUnitTypes) -> JsValue =
   #| (self) => self
+
+// SVGUnitTypes.SVG_UNIT_TYPE_UNKNOWN
+pub let s_v_g_unit_types_svg_unit_type_unknown : Int = 0
+
+// SVGUnitTypes.SVG_UNIT_TYPE_USERSPACEONUSE
+pub let s_v_g_unit_types_svg_unit_type_userspaceonuse : Int = 1
+
+// SVGUnitTypes.SVG_UNIT_TYPE_OBJECTBOUNDINGBOX
+pub let s_v_g_unit_types_svg_unit_type_objectboundingbox : Int = 2
 
 ///|
 /// SVGSVGElement interface
@@ -3161,7 +3239,10 @@ pub extern "js" fn SVGSVGElement::get_tab_index(self : SVGSVGElement) -> Int =
 pub extern "js" fn SVGSVGElement::set_tab_index(self : SVGSVGElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGSVGElement::focus(self : SVGSVGElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGSVGElement::focus(self : SVGSVGElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGSVGElement::focus_with_options(self : SVGSVGElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGSVGElement::blur(self : SVGSVGElement) -> Unit =
@@ -3176,7 +3257,10 @@ pub extern "js" fn SVGSVGElement::get_style(self : SVGSVGElement) -> CSSStylePro
 pub extern "js" fn SVGSVGElement::get_transform(self : SVGSVGElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGSVGElement::get_b_box(self : SVGSVGElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGSVGElement::get_b_box(self : SVGSVGElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGSVGElement::get_b_box_with_options(self : SVGSVGElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGSVGElement::get_c_t_m(self : SVGSVGElement) -> DOMMatrix? =
@@ -3248,7 +3332,10 @@ pub extern "js" fn SVGSVGElement::create_s_v_g_rect(self : SVGSVGElement) -> DOM
 pub extern "js" fn SVGSVGElement::create_s_v_g_transform(self : SVGSVGElement) -> SVGTransform =
   #| (self) => self.createSVGTransform()
 
-pub extern "js" fn SVGSVGElement::create_s_v_g_transform_from_matrix(self : SVGSVGElement, matrix : DOMMatrix2DInit) -> SVGTransform =
+pub extern "js" fn SVGSVGElement::create_s_v_g_transform_from_matrix(self : SVGSVGElement) -> SVGTransform =
+  #| (self) => self.createSVGTransformFromMatrix()
+
+pub extern "js" fn SVGSVGElement::create_s_v_g_transform_from_matrix_with_matrix(self : SVGSVGElement, matrix : DOMMatrix2DInit) -> SVGTransform =
   #| (self, matrix) => self.createSVGTransformFromMatrix(matrix)
 
 pub extern "js" fn SVGSVGElement::get_element_by_id(self : SVGSVGElement, element_id : String) -> Element? =
@@ -4086,7 +4173,10 @@ pub extern "js" fn SVGGElement::get_tab_index(self : SVGGElement) -> Int =
 pub extern "js" fn SVGGElement::set_tab_index(self : SVGGElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGGElement::focus(self : SVGGElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGGElement::focus(self : SVGGElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGGElement::focus_with_options(self : SVGGElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGGElement::blur(self : SVGGElement) -> Unit =
@@ -4101,7 +4191,10 @@ pub extern "js" fn SVGGElement::get_style(self : SVGGElement) -> CSSStylePropert
 pub extern "js" fn SVGGElement::get_transform(self : SVGGElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGGElement::get_b_box(self : SVGGElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGGElement::get_b_box(self : SVGGElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGGElement::get_b_box_with_options(self : SVGGElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGGElement::get_c_t_m(self : SVGGElement) -> DOMMatrix? =
@@ -4789,7 +4882,10 @@ pub extern "js" fn SVGDefsElement::get_tab_index(self : SVGDefsElement) -> Int =
 pub extern "js" fn SVGDefsElement::set_tab_index(self : SVGDefsElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGDefsElement::focus(self : SVGDefsElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGDefsElement::focus(self : SVGDefsElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGDefsElement::focus_with_options(self : SVGDefsElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGDefsElement::blur(self : SVGDefsElement) -> Unit =
@@ -4804,7 +4900,10 @@ pub extern "js" fn SVGDefsElement::get_style(self : SVGDefsElement) -> CSSStyleP
 pub extern "js" fn SVGDefsElement::get_transform(self : SVGDefsElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGDefsElement::get_b_box(self : SVGDefsElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGDefsElement::get_b_box(self : SVGDefsElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGDefsElement::get_b_box_with_options(self : SVGDefsElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGDefsElement::get_c_t_m(self : SVGDefsElement) -> DOMMatrix? =
@@ -5492,7 +5591,10 @@ pub extern "js" fn SVGDescElement::get_tab_index(self : SVGDescElement) -> Int =
 pub extern "js" fn SVGDescElement::set_tab_index(self : SVGDescElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGDescElement::focus(self : SVGDescElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGDescElement::focus(self : SVGDescElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGDescElement::focus_with_options(self : SVGDescElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGDescElement::blur(self : SVGDescElement) -> Unit =
@@ -6177,7 +6279,10 @@ pub extern "js" fn SVGMetadataElement::get_tab_index(self : SVGMetadataElement) 
 pub extern "js" fn SVGMetadataElement::set_tab_index(self : SVGMetadataElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGMetadataElement::focus(self : SVGMetadataElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGMetadataElement::focus(self : SVGMetadataElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGMetadataElement::focus_with_options(self : SVGMetadataElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGMetadataElement::blur(self : SVGMetadataElement) -> Unit =
@@ -6862,7 +6967,10 @@ pub extern "js" fn SVGTitleElement::get_tab_index(self : SVGTitleElement) -> Int
 pub extern "js" fn SVGTitleElement::set_tab_index(self : SVGTitleElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGTitleElement::focus(self : SVGTitleElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGTitleElement::focus(self : SVGTitleElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGTitleElement::focus_with_options(self : SVGTitleElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGTitleElement::blur(self : SVGTitleElement) -> Unit =
@@ -7547,7 +7655,10 @@ pub extern "js" fn SVGSymbolElement::get_tab_index(self : SVGSymbolElement) -> I
 pub extern "js" fn SVGSymbolElement::set_tab_index(self : SVGSymbolElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGSymbolElement::focus(self : SVGSymbolElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGSymbolElement::focus(self : SVGSymbolElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGSymbolElement::focus_with_options(self : SVGSymbolElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGSymbolElement::blur(self : SVGSymbolElement) -> Unit =
@@ -7562,7 +7673,10 @@ pub extern "js" fn SVGSymbolElement::get_style(self : SVGSymbolElement) -> CSSSt
 pub extern "js" fn SVGSymbolElement::get_transform(self : SVGSymbolElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGSymbolElement::get_b_box(self : SVGSymbolElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGSymbolElement::get_b_box(self : SVGSymbolElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGSymbolElement::get_b_box_with_options(self : SVGSymbolElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGSymbolElement::get_c_t_m(self : SVGSymbolElement) -> DOMMatrix? =
@@ -8256,7 +8370,10 @@ pub extern "js" fn SVGUseElement::get_tab_index(self : SVGUseElement) -> Int =
 pub extern "js" fn SVGUseElement::set_tab_index(self : SVGUseElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGUseElement::focus(self : SVGUseElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGUseElement::focus(self : SVGUseElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGUseElement::focus_with_options(self : SVGUseElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGUseElement::blur(self : SVGUseElement) -> Unit =
@@ -8271,7 +8388,10 @@ pub extern "js" fn SVGUseElement::get_style(self : SVGUseElement) -> CSSStylePro
 pub extern "js" fn SVGUseElement::get_transform(self : SVGUseElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGUseElement::get_b_box(self : SVGUseElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGUseElement::get_b_box(self : SVGUseElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGUseElement::get_b_box_with_options(self : SVGUseElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGUseElement::get_c_t_m(self : SVGUseElement) -> DOMMatrix? =
@@ -9000,7 +9120,10 @@ pub extern "js" fn SVGSwitchElement::get_tab_index(self : SVGSwitchElement) -> I
 pub extern "js" fn SVGSwitchElement::set_tab_index(self : SVGSwitchElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGSwitchElement::focus(self : SVGSwitchElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGSwitchElement::focus(self : SVGSwitchElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGSwitchElement::focus_with_options(self : SVGSwitchElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGSwitchElement::blur(self : SVGSwitchElement) -> Unit =
@@ -9015,7 +9138,10 @@ pub extern "js" fn SVGSwitchElement::get_style(self : SVGSwitchElement) -> CSSSt
 pub extern "js" fn SVGSwitchElement::get_transform(self : SVGSwitchElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGSwitchElement::get_b_box(self : SVGSwitchElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGSwitchElement::get_b_box(self : SVGSwitchElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGSwitchElement::get_b_box_with_options(self : SVGSwitchElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGSwitchElement::get_c_t_m(self : SVGSwitchElement) -> DOMMatrix? =
@@ -9703,7 +9829,10 @@ pub extern "js" fn SVGStyleElement::get_tab_index(self : SVGStyleElement) -> Int
 pub extern "js" fn SVGStyleElement::set_tab_index(self : SVGStyleElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGStyleElement::focus(self : SVGStyleElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGStyleElement::focus(self : SVGStyleElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGStyleElement::focus_with_options(self : SVGStyleElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGStyleElement::blur(self : SVGStyleElement) -> Unit =
@@ -9749,6 +9878,27 @@ pub type SVGTransform
 pub extern "js" fn SVGTransform::to_js_value(self : SVGTransform) -> JsValue =
   #| (self) => self
 
+// SVGTransform.SVG_TRANSFORM_UNKNOWN
+pub let s_v_g_transform_svg_transform_unknown : Int = 0
+
+// SVGTransform.SVG_TRANSFORM_MATRIX
+pub let s_v_g_transform_svg_transform_matrix : Int = 1
+
+// SVGTransform.SVG_TRANSFORM_TRANSLATE
+pub let s_v_g_transform_svg_transform_translate : Int = 2
+
+// SVGTransform.SVG_TRANSFORM_SCALE
+pub let s_v_g_transform_svg_transform_scale : Int = 3
+
+// SVGTransform.SVG_TRANSFORM_ROTATE
+pub let s_v_g_transform_svg_transform_rotate : Int = 4
+
+// SVGTransform.SVG_TRANSFORM_SKEWX
+pub let s_v_g_transform_svg_transform_skewx : Int = 5
+
+// SVGTransform.SVG_TRANSFORM_SKEWY
+pub let s_v_g_transform_svg_transform_skewy : Int = 6
+
 pub extern "js" fn SVGTransform::get_type(self : SVGTransform) -> Int =
   #| (self) => self.type
 
@@ -9758,7 +9908,10 @@ pub extern "js" fn SVGTransform::get_matrix(self : SVGTransform) -> DOMMatrix =
 pub extern "js" fn SVGTransform::get_angle(self : SVGTransform) -> Double =
   #| (self) => self.angle
 
-pub extern "js" fn SVGTransform::set_matrix(self : SVGTransform, matrix : DOMMatrix2DInit) -> Unit =
+pub extern "js" fn SVGTransform::set_matrix(self : SVGTransform) -> Unit =
+  #| (self) => self.setMatrix()
+
+pub extern "js" fn SVGTransform::set_matrix_with_matrix(self : SVGTransform, matrix : DOMMatrix2DInit) -> Unit =
   #| (self, matrix) => self.setMatrix(matrix)
 
 pub extern "js" fn SVGTransform::set_translate(self : SVGTransform, tx : Double, ty : Double) -> Unit =
@@ -9816,7 +9969,10 @@ pub extern "js" fn SVGTransformList::append_item(self : SVGTransformList, new_it
 pub extern "js" fn SVGTransformList::set(self : SVGTransformList, index : Int, new_item : SVGTransform) -> Unit =
   #| (self, index, new_item) => { self[index] = new_item }
 
-pub extern "js" fn SVGTransformList::create_s_v_g_transform_from_matrix(self : SVGTransformList, matrix : DOMMatrix2DInit) -> SVGTransform =
+pub extern "js" fn SVGTransformList::create_s_v_g_transform_from_matrix(self : SVGTransformList) -> SVGTransform =
+  #| (self) => self.createSVGTransformFromMatrix()
+
+pub extern "js" fn SVGTransformList::create_s_v_g_transform_from_matrix_with_matrix(self : SVGTransformList, matrix : DOMMatrix2DInit) -> SVGTransform =
   #| (self, matrix) => self.createSVGTransformFromMatrix(matrix)
 
 pub extern "js" fn SVGTransformList::consolidate(self : SVGTransformList) -> SVGTransform? =
@@ -9841,6 +9997,48 @@ pub type SVGPreserveAspectRatio
 
 pub extern "js" fn SVGPreserveAspectRatio::to_js_value(self : SVGPreserveAspectRatio) -> JsValue =
   #| (self) => self
+
+// SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_UNKNOWN
+pub let s_v_g_preserve_aspect_ratio_svg_preserveaspectratio_unknown : Int = 0
+
+// SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_NONE
+pub let s_v_g_preserve_aspect_ratio_svg_preserveaspectratio_none : Int = 1
+
+// SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMIN
+pub let s_v_g_preserve_aspect_ratio_svg_preserveaspectratio_xminymin : Int = 2
+
+// SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMIN
+pub let s_v_g_preserve_aspect_ratio_svg_preserveaspectratio_xmidymin : Int = 3
+
+// SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMAXYMIN
+pub let s_v_g_preserve_aspect_ratio_svg_preserveaspectratio_xmaxymin : Int = 4
+
+// SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMID
+pub let s_v_g_preserve_aspect_ratio_svg_preserveaspectratio_xminymid : Int = 5
+
+// SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMID
+pub let s_v_g_preserve_aspect_ratio_svg_preserveaspectratio_xmidymid : Int = 6
+
+// SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMAXYMID
+pub let s_v_g_preserve_aspect_ratio_svg_preserveaspectratio_xmaxymid : Int = 7
+
+// SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMAX
+pub let s_v_g_preserve_aspect_ratio_svg_preserveaspectratio_xminymax : Int = 8
+
+// SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMAX
+pub let s_v_g_preserve_aspect_ratio_svg_preserveaspectratio_xmidymax : Int = 9
+
+// SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMAXYMAX
+pub let s_v_g_preserve_aspect_ratio_svg_preserveaspectratio_xmaxymax : Int = 10
+
+// SVGPreserveAspectRatio.SVG_MEETORSLICE_UNKNOWN
+pub let s_v_g_preserve_aspect_ratio_svg_meetorslice_unknown : Int = 0
+
+// SVGPreserveAspectRatio.SVG_MEETORSLICE_MEET
+pub let s_v_g_preserve_aspect_ratio_svg_meetorslice_meet : Int = 1
+
+// SVGPreserveAspectRatio.SVG_MEETORSLICE_SLICE
+pub let s_v_g_preserve_aspect_ratio_svg_meetorslice_slice : Int = 2
 
 pub extern "js" fn SVGPreserveAspectRatio::get_align(self : SVGPreserveAspectRatio) -> Int =
   #| (self) => self.align
@@ -10540,7 +10738,10 @@ pub extern "js" fn SVGRectElement::get_tab_index(self : SVGRectElement) -> Int =
 pub extern "js" fn SVGRectElement::set_tab_index(self : SVGRectElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGRectElement::focus(self : SVGRectElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGRectElement::focus(self : SVGRectElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGRectElement::focus_with_options(self : SVGRectElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGRectElement::blur(self : SVGRectElement) -> Unit =
@@ -10555,7 +10756,10 @@ pub extern "js" fn SVGRectElement::get_style(self : SVGRectElement) -> CSSStyleP
 pub extern "js" fn SVGRectElement::get_transform(self : SVGRectElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGRectElement::get_b_box(self : SVGRectElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGRectElement::get_b_box(self : SVGRectElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGRectElement::get_b_box_with_options(self : SVGRectElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGRectElement::get_c_t_m(self : SVGRectElement) -> DOMMatrix? =
@@ -10573,10 +10777,16 @@ pub extern "js" fn SVGRectElement::get_system_language(self : SVGRectElement) ->
 pub extern "js" fn SVGRectElement::get_path_length(self : SVGRectElement) -> SVGAnimatedNumber =
   #| (self) => self.pathLength
 
-pub extern "js" fn SVGRectElement::is_point_in_fill(self : SVGRectElement, point : DOMPointInit) -> Bool =
+pub extern "js" fn SVGRectElement::is_point_in_fill(self : SVGRectElement) -> Bool =
+  #| (self) => self.isPointInFill()
+
+pub extern "js" fn SVGRectElement::is_point_in_fill_with_point(self : SVGRectElement, point : DOMPointInit) -> Bool =
   #| (self, point) => self.isPointInFill(point)
 
-pub extern "js" fn SVGRectElement::is_point_in_stroke(self : SVGRectElement, point : DOMPointInit) -> Bool =
+pub extern "js" fn SVGRectElement::is_point_in_stroke(self : SVGRectElement) -> Bool =
+  #| (self) => self.isPointInStroke()
+
+pub extern "js" fn SVGRectElement::is_point_in_stroke_with_point(self : SVGRectElement, point : DOMPointInit) -> Bool =
   #| (self, point) => self.isPointInStroke(point)
 
 pub extern "js" fn SVGRectElement::get_total_length(self : SVGRectElement) -> Double =
@@ -11276,7 +11486,10 @@ pub extern "js" fn SVGCircleElement::get_tab_index(self : SVGCircleElement) -> I
 pub extern "js" fn SVGCircleElement::set_tab_index(self : SVGCircleElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGCircleElement::focus(self : SVGCircleElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGCircleElement::focus(self : SVGCircleElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGCircleElement::focus_with_options(self : SVGCircleElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGCircleElement::blur(self : SVGCircleElement) -> Unit =
@@ -11291,7 +11504,10 @@ pub extern "js" fn SVGCircleElement::get_style(self : SVGCircleElement) -> CSSSt
 pub extern "js" fn SVGCircleElement::get_transform(self : SVGCircleElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGCircleElement::get_b_box(self : SVGCircleElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGCircleElement::get_b_box(self : SVGCircleElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGCircleElement::get_b_box_with_options(self : SVGCircleElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGCircleElement::get_c_t_m(self : SVGCircleElement) -> DOMMatrix? =
@@ -11309,10 +11525,16 @@ pub extern "js" fn SVGCircleElement::get_system_language(self : SVGCircleElement
 pub extern "js" fn SVGCircleElement::get_path_length(self : SVGCircleElement) -> SVGAnimatedNumber =
   #| (self) => self.pathLength
 
-pub extern "js" fn SVGCircleElement::is_point_in_fill(self : SVGCircleElement, point : DOMPointInit) -> Bool =
+pub extern "js" fn SVGCircleElement::is_point_in_fill(self : SVGCircleElement) -> Bool =
+  #| (self) => self.isPointInFill()
+
+pub extern "js" fn SVGCircleElement::is_point_in_fill_with_point(self : SVGCircleElement, point : DOMPointInit) -> Bool =
   #| (self, point) => self.isPointInFill(point)
 
-pub extern "js" fn SVGCircleElement::is_point_in_stroke(self : SVGCircleElement, point : DOMPointInit) -> Bool =
+pub extern "js" fn SVGCircleElement::is_point_in_stroke(self : SVGCircleElement) -> Bool =
+  #| (self) => self.isPointInStroke()
+
+pub extern "js" fn SVGCircleElement::is_point_in_stroke_with_point(self : SVGCircleElement, point : DOMPointInit) -> Bool =
   #| (self, point) => self.isPointInStroke(point)
 
 pub extern "js" fn SVGCircleElement::get_total_length(self : SVGCircleElement) -> Double =
@@ -12003,7 +12225,10 @@ pub extern "js" fn SVGEllipseElement::get_tab_index(self : SVGEllipseElement) ->
 pub extern "js" fn SVGEllipseElement::set_tab_index(self : SVGEllipseElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGEllipseElement::focus(self : SVGEllipseElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGEllipseElement::focus(self : SVGEllipseElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGEllipseElement::focus_with_options(self : SVGEllipseElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGEllipseElement::blur(self : SVGEllipseElement) -> Unit =
@@ -12018,7 +12243,10 @@ pub extern "js" fn SVGEllipseElement::get_style(self : SVGEllipseElement) -> CSS
 pub extern "js" fn SVGEllipseElement::get_transform(self : SVGEllipseElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGEllipseElement::get_b_box(self : SVGEllipseElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGEllipseElement::get_b_box(self : SVGEllipseElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGEllipseElement::get_b_box_with_options(self : SVGEllipseElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGEllipseElement::get_c_t_m(self : SVGEllipseElement) -> DOMMatrix? =
@@ -12036,10 +12264,16 @@ pub extern "js" fn SVGEllipseElement::get_system_language(self : SVGEllipseEleme
 pub extern "js" fn SVGEllipseElement::get_path_length(self : SVGEllipseElement) -> SVGAnimatedNumber =
   #| (self) => self.pathLength
 
-pub extern "js" fn SVGEllipseElement::is_point_in_fill(self : SVGEllipseElement, point : DOMPointInit) -> Bool =
+pub extern "js" fn SVGEllipseElement::is_point_in_fill(self : SVGEllipseElement) -> Bool =
+  #| (self) => self.isPointInFill()
+
+pub extern "js" fn SVGEllipseElement::is_point_in_fill_with_point(self : SVGEllipseElement, point : DOMPointInit) -> Bool =
   #| (self, point) => self.isPointInFill(point)
 
-pub extern "js" fn SVGEllipseElement::is_point_in_stroke(self : SVGEllipseElement, point : DOMPointInit) -> Bool =
+pub extern "js" fn SVGEllipseElement::is_point_in_stroke(self : SVGEllipseElement) -> Bool =
+  #| (self) => self.isPointInStroke()
+
+pub extern "js" fn SVGEllipseElement::is_point_in_stroke_with_point(self : SVGEllipseElement, point : DOMPointInit) -> Bool =
   #| (self, point) => self.isPointInStroke(point)
 
 pub extern "js" fn SVGEllipseElement::get_total_length(self : SVGEllipseElement) -> Double =
@@ -12733,7 +12967,10 @@ pub extern "js" fn SVGLineElement::get_tab_index(self : SVGLineElement) -> Int =
 pub extern "js" fn SVGLineElement::set_tab_index(self : SVGLineElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGLineElement::focus(self : SVGLineElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGLineElement::focus(self : SVGLineElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGLineElement::focus_with_options(self : SVGLineElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGLineElement::blur(self : SVGLineElement) -> Unit =
@@ -12748,7 +12985,10 @@ pub extern "js" fn SVGLineElement::get_style(self : SVGLineElement) -> CSSStyleP
 pub extern "js" fn SVGLineElement::get_transform(self : SVGLineElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGLineElement::get_b_box(self : SVGLineElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGLineElement::get_b_box(self : SVGLineElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGLineElement::get_b_box_with_options(self : SVGLineElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGLineElement::get_c_t_m(self : SVGLineElement) -> DOMMatrix? =
@@ -12766,10 +13006,16 @@ pub extern "js" fn SVGLineElement::get_system_language(self : SVGLineElement) ->
 pub extern "js" fn SVGLineElement::get_path_length(self : SVGLineElement) -> SVGAnimatedNumber =
   #| (self) => self.pathLength
 
-pub extern "js" fn SVGLineElement::is_point_in_fill(self : SVGLineElement, point : DOMPointInit) -> Bool =
+pub extern "js" fn SVGLineElement::is_point_in_fill(self : SVGLineElement) -> Bool =
+  #| (self) => self.isPointInFill()
+
+pub extern "js" fn SVGLineElement::is_point_in_fill_with_point(self : SVGLineElement, point : DOMPointInit) -> Bool =
   #| (self, point) => self.isPointInFill(point)
 
-pub extern "js" fn SVGLineElement::is_point_in_stroke(self : SVGLineElement, point : DOMPointInit) -> Bool =
+pub extern "js" fn SVGLineElement::is_point_in_stroke(self : SVGLineElement) -> Bool =
+  #| (self) => self.isPointInStroke()
+
+pub extern "js" fn SVGLineElement::is_point_in_stroke_with_point(self : SVGLineElement, point : DOMPointInit) -> Bool =
   #| (self, point) => self.isPointInStroke(point)
 
 pub extern "js" fn SVGLineElement::get_total_length(self : SVGLineElement) -> Double =
@@ -13503,7 +13749,10 @@ pub extern "js" fn SVGPolylineElement::get_tab_index(self : SVGPolylineElement) 
 pub extern "js" fn SVGPolylineElement::set_tab_index(self : SVGPolylineElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGPolylineElement::focus(self : SVGPolylineElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGPolylineElement::focus(self : SVGPolylineElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGPolylineElement::focus_with_options(self : SVGPolylineElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGPolylineElement::blur(self : SVGPolylineElement) -> Unit =
@@ -13518,7 +13767,10 @@ pub extern "js" fn SVGPolylineElement::get_style(self : SVGPolylineElement) -> C
 pub extern "js" fn SVGPolylineElement::get_transform(self : SVGPolylineElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGPolylineElement::get_b_box(self : SVGPolylineElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGPolylineElement::get_b_box(self : SVGPolylineElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGPolylineElement::get_b_box_with_options(self : SVGPolylineElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGPolylineElement::get_c_t_m(self : SVGPolylineElement) -> DOMMatrix? =
@@ -13536,10 +13788,16 @@ pub extern "js" fn SVGPolylineElement::get_system_language(self : SVGPolylineEle
 pub extern "js" fn SVGPolylineElement::get_path_length(self : SVGPolylineElement) -> SVGAnimatedNumber =
   #| (self) => self.pathLength
 
-pub extern "js" fn SVGPolylineElement::is_point_in_fill(self : SVGPolylineElement, point : DOMPointInit) -> Bool =
+pub extern "js" fn SVGPolylineElement::is_point_in_fill(self : SVGPolylineElement) -> Bool =
+  #| (self) => self.isPointInFill()
+
+pub extern "js" fn SVGPolylineElement::is_point_in_fill_with_point(self : SVGPolylineElement, point : DOMPointInit) -> Bool =
   #| (self, point) => self.isPointInFill(point)
 
-pub extern "js" fn SVGPolylineElement::is_point_in_stroke(self : SVGPolylineElement, point : DOMPointInit) -> Bool =
+pub extern "js" fn SVGPolylineElement::is_point_in_stroke(self : SVGPolylineElement) -> Bool =
+  #| (self) => self.isPointInStroke()
+
+pub extern "js" fn SVGPolylineElement::is_point_in_stroke_with_point(self : SVGPolylineElement, point : DOMPointInit) -> Bool =
   #| (self, point) => self.isPointInStroke(point)
 
 pub extern "js" fn SVGPolylineElement::get_total_length(self : SVGPolylineElement) -> Double =
@@ -14227,7 +14485,10 @@ pub extern "js" fn SVGPolygonElement::get_tab_index(self : SVGPolygonElement) ->
 pub extern "js" fn SVGPolygonElement::set_tab_index(self : SVGPolygonElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGPolygonElement::focus(self : SVGPolygonElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGPolygonElement::focus(self : SVGPolygonElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGPolygonElement::focus_with_options(self : SVGPolygonElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGPolygonElement::blur(self : SVGPolygonElement) -> Unit =
@@ -14242,7 +14503,10 @@ pub extern "js" fn SVGPolygonElement::get_style(self : SVGPolygonElement) -> CSS
 pub extern "js" fn SVGPolygonElement::get_transform(self : SVGPolygonElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGPolygonElement::get_b_box(self : SVGPolygonElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGPolygonElement::get_b_box(self : SVGPolygonElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGPolygonElement::get_b_box_with_options(self : SVGPolygonElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGPolygonElement::get_c_t_m(self : SVGPolygonElement) -> DOMMatrix? =
@@ -14260,10 +14524,16 @@ pub extern "js" fn SVGPolygonElement::get_system_language(self : SVGPolygonEleme
 pub extern "js" fn SVGPolygonElement::get_path_length(self : SVGPolygonElement) -> SVGAnimatedNumber =
   #| (self) => self.pathLength
 
-pub extern "js" fn SVGPolygonElement::is_point_in_fill(self : SVGPolygonElement, point : DOMPointInit) -> Bool =
+pub extern "js" fn SVGPolygonElement::is_point_in_fill(self : SVGPolygonElement) -> Bool =
+  #| (self) => self.isPointInFill()
+
+pub extern "js" fn SVGPolygonElement::is_point_in_fill_with_point(self : SVGPolygonElement, point : DOMPointInit) -> Bool =
   #| (self, point) => self.isPointInFill(point)
 
-pub extern "js" fn SVGPolygonElement::is_point_in_stroke(self : SVGPolygonElement, point : DOMPointInit) -> Bool =
+pub extern "js" fn SVGPolygonElement::is_point_in_stroke(self : SVGPolygonElement) -> Bool =
+  #| (self) => self.isPointInStroke()
+
+pub extern "js" fn SVGPolygonElement::is_point_in_stroke_with_point(self : SVGPolygonElement, point : DOMPointInit) -> Bool =
   #| (self, point) => self.isPointInStroke(point)
 
 pub extern "js" fn SVGPolygonElement::get_total_length(self : SVGPolygonElement) -> Double =
@@ -14951,7 +15221,10 @@ pub extern "js" fn SVGTextContentElement::get_tab_index(self : SVGTextContentEle
 pub extern "js" fn SVGTextContentElement::set_tab_index(self : SVGTextContentElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGTextContentElement::focus(self : SVGTextContentElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGTextContentElement::focus(self : SVGTextContentElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGTextContentElement::focus_with_options(self : SVGTextContentElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGTextContentElement::blur(self : SVGTextContentElement) -> Unit =
@@ -14966,7 +15239,10 @@ pub extern "js" fn SVGTextContentElement::get_style(self : SVGTextContentElement
 pub extern "js" fn SVGTextContentElement::get_transform(self : SVGTextContentElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGTextContentElement::get_b_box(self : SVGTextContentElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGTextContentElement::get_b_box(self : SVGTextContentElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGTextContentElement::get_b_box_with_options(self : SVGTextContentElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGTextContentElement::get_c_t_m(self : SVGTextContentElement) -> DOMMatrix? =
@@ -14980,6 +15256,15 @@ pub extern "js" fn SVGTextContentElement::get_required_extensions(self : SVGText
 
 pub extern "js" fn SVGTextContentElement::get_system_language(self : SVGTextContentElement) -> SVGStringList =
   #| (self) => self.systemLanguage
+
+// SVGTextContentElement.LENGTHADJUST_UNKNOWN
+pub let s_v_g_text_content_element_lengthadjust_unknown : Int = 0
+
+// SVGTextContentElement.LENGTHADJUST_SPACING
+pub let s_v_g_text_content_element_lengthadjust_spacing : Int = 1
+
+// SVGTextContentElement.LENGTHADJUST_SPACINGANDGLYPHS
+pub let s_v_g_text_content_element_lengthadjust_spacingandglyphs : Int = 2
 
 pub extern "js" fn SVGTextContentElement::get_text_length(self : SVGTextContentElement) -> SVGAnimatedLength =
   #| (self) => self.textLength
@@ -15008,7 +15293,10 @@ pub extern "js" fn SVGTextContentElement::get_extent_of_char(self : SVGTextConte
 pub extern "js" fn SVGTextContentElement::get_rotation_of_char(self : SVGTextContentElement, charnum : Int) -> Double =
   #| (self, charnum) => self.getRotationOfChar(charnum)
 
-pub extern "js" fn SVGTextContentElement::get_char_num_at_position(self : SVGTextContentElement, point : DOMPointInit) -> Int =
+pub extern "js" fn SVGTextContentElement::get_char_num_at_position(self : SVGTextContentElement) -> Int =
+  #| (self) => self.getCharNumAtPosition()
+
+pub extern "js" fn SVGTextContentElement::get_char_num_at_position_with_point(self : SVGTextContentElement, point : DOMPointInit) -> Int =
   #| (self, point) => self.getCharNumAtPosition(point)
 
 pub extern "js" fn SVGTextContentElement::select_sub_string(self : SVGTextContentElement, charnum : Int, nchars : Int) -> Unit =
@@ -15687,7 +15975,10 @@ pub extern "js" fn SVGTextPositioningElement::get_tab_index(self : SVGTextPositi
 pub extern "js" fn SVGTextPositioningElement::set_tab_index(self : SVGTextPositioningElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGTextPositioningElement::focus(self : SVGTextPositioningElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGTextPositioningElement::focus(self : SVGTextPositioningElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGTextPositioningElement::focus_with_options(self : SVGTextPositioningElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGTextPositioningElement::blur(self : SVGTextPositioningElement) -> Unit =
@@ -15702,7 +15993,10 @@ pub extern "js" fn SVGTextPositioningElement::get_style(self : SVGTextPositionin
 pub extern "js" fn SVGTextPositioningElement::get_transform(self : SVGTextPositioningElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGTextPositioningElement::get_b_box(self : SVGTextPositioningElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGTextPositioningElement::get_b_box(self : SVGTextPositioningElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGTextPositioningElement::get_b_box_with_options(self : SVGTextPositioningElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGTextPositioningElement::get_c_t_m(self : SVGTextPositioningElement) -> DOMMatrix? =
@@ -15716,6 +16010,15 @@ pub extern "js" fn SVGTextPositioningElement::get_required_extensions(self : SVG
 
 pub extern "js" fn SVGTextPositioningElement::get_system_language(self : SVGTextPositioningElement) -> SVGStringList =
   #| (self) => self.systemLanguage
+
+// SVGTextPositioningElement.LENGTHADJUST_UNKNOWN
+pub let s_v_g_text_positioning_element_lengthadjust_unknown : Int = 0
+
+// SVGTextPositioningElement.LENGTHADJUST_SPACING
+pub let s_v_g_text_positioning_element_lengthadjust_spacing : Int = 1
+
+// SVGTextPositioningElement.LENGTHADJUST_SPACINGANDGLYPHS
+pub let s_v_g_text_positioning_element_lengthadjust_spacingandglyphs : Int = 2
 
 pub extern "js" fn SVGTextPositioningElement::get_text_length(self : SVGTextPositioningElement) -> SVGAnimatedLength =
   #| (self) => self.textLength
@@ -15744,7 +16047,10 @@ pub extern "js" fn SVGTextPositioningElement::get_extent_of_char(self : SVGTextP
 pub extern "js" fn SVGTextPositioningElement::get_rotation_of_char(self : SVGTextPositioningElement, charnum : Int) -> Double =
   #| (self, charnum) => self.getRotationOfChar(charnum)
 
-pub extern "js" fn SVGTextPositioningElement::get_char_num_at_position(self : SVGTextPositioningElement, point : DOMPointInit) -> Int =
+pub extern "js" fn SVGTextPositioningElement::get_char_num_at_position(self : SVGTextPositioningElement) -> Int =
+  #| (self) => self.getCharNumAtPosition()
+
+pub extern "js" fn SVGTextPositioningElement::get_char_num_at_position_with_point(self : SVGTextPositioningElement, point : DOMPointInit) -> Int =
   #| (self, point) => self.getCharNumAtPosition(point)
 
 pub extern "js" fn SVGTextPositioningElement::select_sub_string(self : SVGTextPositioningElement, charnum : Int, nchars : Int) -> Unit =
@@ -16438,7 +16744,10 @@ pub extern "js" fn SVGTextElement::get_tab_index(self : SVGTextElement) -> Int =
 pub extern "js" fn SVGTextElement::set_tab_index(self : SVGTextElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGTextElement::focus(self : SVGTextElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGTextElement::focus(self : SVGTextElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGTextElement::focus_with_options(self : SVGTextElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGTextElement::blur(self : SVGTextElement) -> Unit =
@@ -16453,7 +16762,10 @@ pub extern "js" fn SVGTextElement::get_style(self : SVGTextElement) -> CSSStyleP
 pub extern "js" fn SVGTextElement::get_transform(self : SVGTextElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGTextElement::get_b_box(self : SVGTextElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGTextElement::get_b_box(self : SVGTextElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGTextElement::get_b_box_with_options(self : SVGTextElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGTextElement::get_c_t_m(self : SVGTextElement) -> DOMMatrix? =
@@ -16467,6 +16779,15 @@ pub extern "js" fn SVGTextElement::get_required_extensions(self : SVGTextElement
 
 pub extern "js" fn SVGTextElement::get_system_language(self : SVGTextElement) -> SVGStringList =
   #| (self) => self.systemLanguage
+
+// SVGTextElement.LENGTHADJUST_UNKNOWN
+pub let s_v_g_text_element_lengthadjust_unknown : Int = 0
+
+// SVGTextElement.LENGTHADJUST_SPACING
+pub let s_v_g_text_element_lengthadjust_spacing : Int = 1
+
+// SVGTextElement.LENGTHADJUST_SPACINGANDGLYPHS
+pub let s_v_g_text_element_lengthadjust_spacingandglyphs : Int = 2
 
 pub extern "js" fn SVGTextElement::get_text_length(self : SVGTextElement) -> SVGAnimatedLength =
   #| (self) => self.textLength
@@ -16495,7 +16816,10 @@ pub extern "js" fn SVGTextElement::get_extent_of_char(self : SVGTextElement, cha
 pub extern "js" fn SVGTextElement::get_rotation_of_char(self : SVGTextElement, charnum : Int) -> Double =
   #| (self, charnum) => self.getRotationOfChar(charnum)
 
-pub extern "js" fn SVGTextElement::get_char_num_at_position(self : SVGTextElement, point : DOMPointInit) -> Int =
+pub extern "js" fn SVGTextElement::get_char_num_at_position(self : SVGTextElement) -> Int =
+  #| (self) => self.getCharNumAtPosition()
+
+pub extern "js" fn SVGTextElement::get_char_num_at_position_with_point(self : SVGTextElement, point : DOMPointInit) -> Int =
   #| (self, point) => self.getCharNumAtPosition(point)
 
 pub extern "js" fn SVGTextElement::select_sub_string(self : SVGTextElement, charnum : Int, nchars : Int) -> Unit =
@@ -17189,7 +17513,10 @@ pub extern "js" fn SVGTSpanElement::get_tab_index(self : SVGTSpanElement) -> Int
 pub extern "js" fn SVGTSpanElement::set_tab_index(self : SVGTSpanElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGTSpanElement::focus(self : SVGTSpanElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGTSpanElement::focus(self : SVGTSpanElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGTSpanElement::focus_with_options(self : SVGTSpanElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGTSpanElement::blur(self : SVGTSpanElement) -> Unit =
@@ -17204,7 +17531,10 @@ pub extern "js" fn SVGTSpanElement::get_style(self : SVGTSpanElement) -> CSSStyl
 pub extern "js" fn SVGTSpanElement::get_transform(self : SVGTSpanElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGTSpanElement::get_b_box(self : SVGTSpanElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGTSpanElement::get_b_box(self : SVGTSpanElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGTSpanElement::get_b_box_with_options(self : SVGTSpanElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGTSpanElement::get_c_t_m(self : SVGTSpanElement) -> DOMMatrix? =
@@ -17218,6 +17548,15 @@ pub extern "js" fn SVGTSpanElement::get_required_extensions(self : SVGTSpanEleme
 
 pub extern "js" fn SVGTSpanElement::get_system_language(self : SVGTSpanElement) -> SVGStringList =
   #| (self) => self.systemLanguage
+
+// SVGTSpanElement.LENGTHADJUST_UNKNOWN
+pub let s_v_g_t_span_element_lengthadjust_unknown : Int = 0
+
+// SVGTSpanElement.LENGTHADJUST_SPACING
+pub let s_v_g_t_span_element_lengthadjust_spacing : Int = 1
+
+// SVGTSpanElement.LENGTHADJUST_SPACINGANDGLYPHS
+pub let s_v_g_t_span_element_lengthadjust_spacingandglyphs : Int = 2
 
 pub extern "js" fn SVGTSpanElement::get_text_length(self : SVGTSpanElement) -> SVGAnimatedLength =
   #| (self) => self.textLength
@@ -17246,7 +17585,10 @@ pub extern "js" fn SVGTSpanElement::get_extent_of_char(self : SVGTSpanElement, c
 pub extern "js" fn SVGTSpanElement::get_rotation_of_char(self : SVGTSpanElement, charnum : Int) -> Double =
   #| (self, charnum) => self.getRotationOfChar(charnum)
 
-pub extern "js" fn SVGTSpanElement::get_char_num_at_position(self : SVGTSpanElement, point : DOMPointInit) -> Int =
+pub extern "js" fn SVGTSpanElement::get_char_num_at_position(self : SVGTSpanElement) -> Int =
+  #| (self) => self.getCharNumAtPosition()
+
+pub extern "js" fn SVGTSpanElement::get_char_num_at_position_with_point(self : SVGTSpanElement, point : DOMPointInit) -> Int =
   #| (self, point) => self.getCharNumAtPosition(point)
 
 pub extern "js" fn SVGTSpanElement::select_sub_string(self : SVGTSpanElement, charnum : Int, nchars : Int) -> Unit =
@@ -17940,7 +18282,10 @@ pub extern "js" fn SVGTextPathElement::get_tab_index(self : SVGTextPathElement) 
 pub extern "js" fn SVGTextPathElement::set_tab_index(self : SVGTextPathElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGTextPathElement::focus(self : SVGTextPathElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGTextPathElement::focus(self : SVGTextPathElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGTextPathElement::focus_with_options(self : SVGTextPathElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGTextPathElement::blur(self : SVGTextPathElement) -> Unit =
@@ -17955,7 +18300,10 @@ pub extern "js" fn SVGTextPathElement::get_style(self : SVGTextPathElement) -> C
 pub extern "js" fn SVGTextPathElement::get_transform(self : SVGTextPathElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGTextPathElement::get_b_box(self : SVGTextPathElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGTextPathElement::get_b_box(self : SVGTextPathElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGTextPathElement::get_b_box_with_options(self : SVGTextPathElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGTextPathElement::get_c_t_m(self : SVGTextPathElement) -> DOMMatrix? =
@@ -17969,6 +18317,15 @@ pub extern "js" fn SVGTextPathElement::get_required_extensions(self : SVGTextPat
 
 pub extern "js" fn SVGTextPathElement::get_system_language(self : SVGTextPathElement) -> SVGStringList =
   #| (self) => self.systemLanguage
+
+// SVGTextPathElement.LENGTHADJUST_UNKNOWN
+pub let s_v_g_text_path_element_lengthadjust_unknown : Int = 0
+
+// SVGTextPathElement.LENGTHADJUST_SPACING
+pub let s_v_g_text_path_element_lengthadjust_spacing : Int = 1
+
+// SVGTextPathElement.LENGTHADJUST_SPACINGANDGLYPHS
+pub let s_v_g_text_path_element_lengthadjust_spacingandglyphs : Int = 2
 
 pub extern "js" fn SVGTextPathElement::get_text_length(self : SVGTextPathElement) -> SVGAnimatedLength =
   #| (self) => self.textLength
@@ -17997,11 +18354,32 @@ pub extern "js" fn SVGTextPathElement::get_extent_of_char(self : SVGTextPathElem
 pub extern "js" fn SVGTextPathElement::get_rotation_of_char(self : SVGTextPathElement, charnum : Int) -> Double =
   #| (self, charnum) => self.getRotationOfChar(charnum)
 
-pub extern "js" fn SVGTextPathElement::get_char_num_at_position(self : SVGTextPathElement, point : DOMPointInit) -> Int =
+pub extern "js" fn SVGTextPathElement::get_char_num_at_position(self : SVGTextPathElement) -> Int =
+  #| (self) => self.getCharNumAtPosition()
+
+pub extern "js" fn SVGTextPathElement::get_char_num_at_position_with_point(self : SVGTextPathElement, point : DOMPointInit) -> Int =
   #| (self, point) => self.getCharNumAtPosition(point)
 
 pub extern "js" fn SVGTextPathElement::select_sub_string(self : SVGTextPathElement, charnum : Int, nchars : Int) -> Unit =
   #| (self, charnum, nchars) => self.selectSubString(charnum, nchars)
+
+// SVGTextPathElement.TEXTPATH_METHODTYPE_UNKNOWN
+pub let s_v_g_text_path_element_textpath_methodtype_unknown : Int = 0
+
+// SVGTextPathElement.TEXTPATH_METHODTYPE_ALIGN
+pub let s_v_g_text_path_element_textpath_methodtype_align : Int = 1
+
+// SVGTextPathElement.TEXTPATH_METHODTYPE_STRETCH
+pub let s_v_g_text_path_element_textpath_methodtype_stretch : Int = 2
+
+// SVGTextPathElement.TEXTPATH_SPACINGTYPE_UNKNOWN
+pub let s_v_g_text_path_element_textpath_spacingtype_unknown : Int = 0
+
+// SVGTextPathElement.TEXTPATH_SPACINGTYPE_AUTO
+pub let s_v_g_text_path_element_textpath_spacingtype_auto : Int = 1
+
+// SVGTextPathElement.TEXTPATH_SPACINGTYPE_EXACT
+pub let s_v_g_text_path_element_textpath_spacingtype_exact : Int = 2
 
 pub extern "js" fn SVGTextPathElement::get_start_offset(self : SVGTextPathElement) -> SVGAnimatedLength =
   #| (self) => self.startOffset
@@ -18688,7 +19066,10 @@ pub extern "js" fn SVGImageElement::get_tab_index(self : SVGImageElement) -> Int
 pub extern "js" fn SVGImageElement::set_tab_index(self : SVGImageElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGImageElement::focus(self : SVGImageElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGImageElement::focus(self : SVGImageElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGImageElement::focus_with_options(self : SVGImageElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGImageElement::blur(self : SVGImageElement) -> Unit =
@@ -18703,7 +19084,10 @@ pub extern "js" fn SVGImageElement::get_style(self : SVGImageElement) -> CSSStyl
 pub extern "js" fn SVGImageElement::get_transform(self : SVGImageElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGImageElement::get_b_box(self : SVGImageElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGImageElement::get_b_box(self : SVGImageElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGImageElement::get_b_box_with_options(self : SVGImageElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGImageElement::get_c_t_m(self : SVGImageElement) -> DOMMatrix? =
@@ -19415,7 +19799,10 @@ pub extern "js" fn SVGForeignObjectElement::get_tab_index(self : SVGForeignObjec
 pub extern "js" fn SVGForeignObjectElement::set_tab_index(self : SVGForeignObjectElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGForeignObjectElement::focus(self : SVGForeignObjectElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGForeignObjectElement::focus(self : SVGForeignObjectElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGForeignObjectElement::focus_with_options(self : SVGForeignObjectElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGForeignObjectElement::blur(self : SVGForeignObjectElement) -> Unit =
@@ -19430,7 +19817,10 @@ pub extern "js" fn SVGForeignObjectElement::get_style(self : SVGForeignObjectEle
 pub extern "js" fn SVGForeignObjectElement::get_transform(self : SVGForeignObjectElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGForeignObjectElement::get_b_box(self : SVGForeignObjectElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGForeignObjectElement::get_b_box(self : SVGForeignObjectElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGForeignObjectElement::get_b_box_with_options(self : SVGForeignObjectElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGForeignObjectElement::get_c_t_m(self : SVGForeignObjectElement) -> DOMMatrix? =
@@ -20130,7 +20520,10 @@ pub extern "js" fn SVGMarkerElement::get_tab_index(self : SVGMarkerElement) -> I
 pub extern "js" fn SVGMarkerElement::set_tab_index(self : SVGMarkerElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGMarkerElement::focus(self : SVGMarkerElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGMarkerElement::focus(self : SVGMarkerElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGMarkerElement::focus_with_options(self : SVGMarkerElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGMarkerElement::blur(self : SVGMarkerElement) -> Unit =
@@ -20141,6 +20534,27 @@ pub extern "js" fn SVGMarkerElement::get_attribute_style_map(self : SVGMarkerEle
 
 pub extern "js" fn SVGMarkerElement::get_style(self : SVGMarkerElement) -> CSSStyleProperties =
   #| (self) => self.style
+
+// SVGMarkerElement.SVG_MARKERUNITS_UNKNOWN
+pub let s_v_g_marker_element_svg_markerunits_unknown : Int = 0
+
+// SVGMarkerElement.SVG_MARKERUNITS_USERSPACEONUSE
+pub let s_v_g_marker_element_svg_markerunits_userspaceonuse : Int = 1
+
+// SVGMarkerElement.SVG_MARKERUNITS_STROKEWIDTH
+pub let s_v_g_marker_element_svg_markerunits_strokewidth : Int = 2
+
+// SVGMarkerElement.SVG_MARKER_ORIENT_UNKNOWN
+pub let s_v_g_marker_element_svg_marker_orient_unknown : Int = 0
+
+// SVGMarkerElement.SVG_MARKER_ORIENT_AUTO
+pub let s_v_g_marker_element_svg_marker_orient_auto : Int = 1
+
+// SVGMarkerElement.SVG_MARKER_ORIENT_ANGLE
+pub let s_v_g_marker_element_svg_marker_orient_angle : Int = 2
+
+// SVGMarkerElement.SVG_MARKER_ORIENT_AUTO_START_REVERSE
+pub let s_v_g_marker_element_svg_marker_orient_auto_start_reverse : Int = 3
 
 pub extern "js" fn SVGMarkerElement::get_ref_x(self : SVGMarkerElement) -> SVGAnimatedLength =
   #| (self) => self.refX
@@ -20854,7 +21268,10 @@ pub extern "js" fn SVGGradientElement::get_tab_index(self : SVGGradientElement) 
 pub extern "js" fn SVGGradientElement::set_tab_index(self : SVGGradientElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGGradientElement::focus(self : SVGGradientElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGGradientElement::focus(self : SVGGradientElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGGradientElement::focus_with_options(self : SVGGradientElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGGradientElement::blur(self : SVGGradientElement) -> Unit =
@@ -20865,6 +21282,18 @@ pub extern "js" fn SVGGradientElement::get_attribute_style_map(self : SVGGradien
 
 pub extern "js" fn SVGGradientElement::get_style(self : SVGGradientElement) -> CSSStyleProperties =
   #| (self) => self.style
+
+// SVGGradientElement.SVG_SPREADMETHOD_UNKNOWN
+pub let s_v_g_gradient_element_svg_spreadmethod_unknown : Int = 0
+
+// SVGGradientElement.SVG_SPREADMETHOD_PAD
+pub let s_v_g_gradient_element_svg_spreadmethod_pad : Int = 1
+
+// SVGGradientElement.SVG_SPREADMETHOD_REFLECT
+pub let s_v_g_gradient_element_svg_spreadmethod_reflect : Int = 2
+
+// SVGGradientElement.SVG_SPREADMETHOD_REPEAT
+pub let s_v_g_gradient_element_svg_spreadmethod_repeat : Int = 3
 
 pub extern "js" fn SVGGradientElement::get_gradient_units(self : SVGGradientElement) -> SVGAnimatedEnumeration =
   #| (self) => self.gradientUnits
@@ -21551,7 +21980,10 @@ pub extern "js" fn SVGLinearGradientElement::get_tab_index(self : SVGLinearGradi
 pub extern "js" fn SVGLinearGradientElement::set_tab_index(self : SVGLinearGradientElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGLinearGradientElement::focus(self : SVGLinearGradientElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGLinearGradientElement::focus(self : SVGLinearGradientElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGLinearGradientElement::focus_with_options(self : SVGLinearGradientElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGLinearGradientElement::blur(self : SVGLinearGradientElement) -> Unit =
@@ -21562,6 +21994,18 @@ pub extern "js" fn SVGLinearGradientElement::get_attribute_style_map(self : SVGL
 
 pub extern "js" fn SVGLinearGradientElement::get_style(self : SVGLinearGradientElement) -> CSSStyleProperties =
   #| (self) => self.style
+
+// SVGLinearGradientElement.SVG_SPREADMETHOD_UNKNOWN
+pub let s_v_g_linear_gradient_element_svg_spreadmethod_unknown : Int = 0
+
+// SVGLinearGradientElement.SVG_SPREADMETHOD_PAD
+pub let s_v_g_linear_gradient_element_svg_spreadmethod_pad : Int = 1
+
+// SVGLinearGradientElement.SVG_SPREADMETHOD_REFLECT
+pub let s_v_g_linear_gradient_element_svg_spreadmethod_reflect : Int = 2
+
+// SVGLinearGradientElement.SVG_SPREADMETHOD_REPEAT
+pub let s_v_g_linear_gradient_element_svg_spreadmethod_repeat : Int = 3
 
 pub extern "js" fn SVGLinearGradientElement::get_gradient_units(self : SVGLinearGradientElement) -> SVGAnimatedEnumeration =
   #| (self) => self.gradientUnits
@@ -22260,7 +22704,10 @@ pub extern "js" fn SVGRadialGradientElement::get_tab_index(self : SVGRadialGradi
 pub extern "js" fn SVGRadialGradientElement::set_tab_index(self : SVGRadialGradientElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGRadialGradientElement::focus(self : SVGRadialGradientElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGRadialGradientElement::focus(self : SVGRadialGradientElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGRadialGradientElement::focus_with_options(self : SVGRadialGradientElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGRadialGradientElement::blur(self : SVGRadialGradientElement) -> Unit =
@@ -22271,6 +22718,18 @@ pub extern "js" fn SVGRadialGradientElement::get_attribute_style_map(self : SVGR
 
 pub extern "js" fn SVGRadialGradientElement::get_style(self : SVGRadialGradientElement) -> CSSStyleProperties =
   #| (self) => self.style
+
+// SVGRadialGradientElement.SVG_SPREADMETHOD_UNKNOWN
+pub let s_v_g_radial_gradient_element_svg_spreadmethod_unknown : Int = 0
+
+// SVGRadialGradientElement.SVG_SPREADMETHOD_PAD
+pub let s_v_g_radial_gradient_element_svg_spreadmethod_pad : Int = 1
+
+// SVGRadialGradientElement.SVG_SPREADMETHOD_REFLECT
+pub let s_v_g_radial_gradient_element_svg_spreadmethod_reflect : Int = 2
+
+// SVGRadialGradientElement.SVG_SPREADMETHOD_REPEAT
+pub let s_v_g_radial_gradient_element_svg_spreadmethod_repeat : Int = 3
 
 pub extern "js" fn SVGRadialGradientElement::get_gradient_units(self : SVGRadialGradientElement) -> SVGAnimatedEnumeration =
   #| (self) => self.gradientUnits
@@ -22975,7 +23434,10 @@ pub extern "js" fn SVGStopElement::get_tab_index(self : SVGStopElement) -> Int =
 pub extern "js" fn SVGStopElement::set_tab_index(self : SVGStopElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGStopElement::focus(self : SVGStopElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGStopElement::focus(self : SVGStopElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGStopElement::focus_with_options(self : SVGStopElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGStopElement::blur(self : SVGStopElement) -> Unit =
@@ -23663,7 +24125,10 @@ pub extern "js" fn SVGPatternElement::get_tab_index(self : SVGPatternElement) ->
 pub extern "js" fn SVGPatternElement::set_tab_index(self : SVGPatternElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGPatternElement::focus(self : SVGPatternElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGPatternElement::focus(self : SVGPatternElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGPatternElement::focus_with_options(self : SVGPatternElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGPatternElement::blur(self : SVGPatternElement) -> Unit =
@@ -24378,7 +24843,10 @@ pub extern "js" fn SVGScriptElement::get_tab_index(self : SVGScriptElement) -> I
 pub extern "js" fn SVGScriptElement::set_tab_index(self : SVGScriptElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGScriptElement::focus(self : SVGScriptElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGScriptElement::focus(self : SVGScriptElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGScriptElement::focus_with_options(self : SVGScriptElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGScriptElement::blur(self : SVGScriptElement) -> Unit =
@@ -25078,7 +25546,10 @@ pub extern "js" fn SVGAElement::get_tab_index(self : SVGAElement) -> Int =
 pub extern "js" fn SVGAElement::set_tab_index(self : SVGAElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGAElement::focus(self : SVGAElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGAElement::focus(self : SVGAElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGAElement::focus_with_options(self : SVGAElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGAElement::blur(self : SVGAElement) -> Unit =
@@ -25093,7 +25564,10 @@ pub extern "js" fn SVGAElement::get_style(self : SVGAElement) -> CSSStylePropert
 pub extern "js" fn SVGAElement::get_transform(self : SVGAElement) -> SVGAnimatedTransformList =
   #| (self) => self.transform
 
-pub extern "js" fn SVGAElement::get_b_box(self : SVGAElement, options : SVGBoundingBoxOptions) -> DOMRect =
+pub extern "js" fn SVGAElement::get_b_box(self : SVGAElement) -> DOMRect =
+  #| (self) => self.getBBox()
+
+pub extern "js" fn SVGAElement::get_b_box_with_options(self : SVGAElement, options : SVGBoundingBoxOptions) -> DOMRect =
   #| (self, options) => self.getBBox(options)
 
 pub extern "js" fn SVGAElement::get_c_t_m(self : SVGAElement) -> DOMMatrix? =
@@ -25883,7 +26357,10 @@ pub extern "js" fn SVGViewElement::get_tab_index(self : SVGViewElement) -> Int =
 pub extern "js" fn SVGViewElement::set_tab_index(self : SVGViewElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn SVGViewElement::focus(self : SVGViewElement, options : FocusOptions) -> Unit =
+pub extern "js" fn SVGViewElement::focus(self : SVGViewElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn SVGViewElement::focus_with_options(self : SVGViewElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn SVGViewElement::blur(self : SVGViewElement) -> Unit =

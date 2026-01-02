@@ -33,7 +33,7 @@ pub struct ItemDetails {
   price : PaymentCurrencyAmount
   type_ : ItemType?
   description : String?
-  iconURLs : JsValue?
+  iconURLs : Array[String]?
   subscriptionPeriod : String?
   freeTrialPeriod : String?
   introductoryPrice : PaymentCurrencyAmount?
@@ -103,15 +103,15 @@ pub type DigitalGoodsService
 pub extern "js" fn DigitalGoodsService::to_js_value(self : DigitalGoodsService) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn DigitalGoodsService::get_details(self : DigitalGoodsService, item_ids : JsValue) -> JsValue =
+pub extern "js" fn DigitalGoodsService::get_details(self : DigitalGoodsService, item_ids : Array[String]) -> Promise[Array[ItemDetails]] =
   #| (self, item_ids) => self.getDetails(item_ids)
 
-pub extern "js" fn DigitalGoodsService::list_purchases(self : DigitalGoodsService) -> JsValue =
+pub extern "js" fn DigitalGoodsService::list_purchases(self : DigitalGoodsService) -> Promise[Array[PurchaseDetails]] =
   #| (self) => self.listPurchases()
 
-pub extern "js" fn DigitalGoodsService::list_purchase_history(self : DigitalGoodsService) -> JsValue =
+pub extern "js" fn DigitalGoodsService::list_purchase_history(self : DigitalGoodsService) -> Promise[Array[PurchaseDetails]] =
   #| (self) => self.listPurchaseHistory()
 
-pub extern "js" fn DigitalGoodsService::consume(self : DigitalGoodsService, purchase_token : String) -> JsValue =
+pub extern "js" fn DigitalGoodsService::consume(self : DigitalGoodsService, purchase_token : String) -> Promise[Unit] =
   #| (self, purchase_token) => self.consume(purchase_token)
 

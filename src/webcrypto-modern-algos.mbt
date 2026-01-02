@@ -148,7 +148,7 @@ pub struct JsonWebKey {
   priv_ : String?
   kty : String?
   use_ : String?
-  key_ops : JsValue?
+  key_ops : Array[String]?
   alg : String?
   ext : Bool?
   crv : String?
@@ -162,7 +162,7 @@ pub struct JsonWebKey {
   dp : String?
   dq : String?
   qi : String?
-  oth : JsValue?
+  oth : Array[RsaOtherPrimesInfo]?
   k : String?
 }
 

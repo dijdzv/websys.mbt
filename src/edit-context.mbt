@@ -154,7 +154,7 @@ pub extern "js" fn TextFormatInit::to_js(self : TextFormatInit) -> JsValue =
 ///|
 /// TextFormatUpdateEventInit dictionary
 pub struct TextFormatUpdateEventInit {
-  textFormats : JsValue?
+  textFormats : Array[TextFormat]?
 }
 
 /// Create a new TextFormatUpdateEventInit with default values
@@ -214,10 +214,10 @@ pub extern "js" fn EditContext::update_control_bounds(self : EditContext, contro
 pub extern "js" fn EditContext::update_selection_bounds(self : EditContext, selection_bounds : DOMRect) -> Unit =
   #| (self, selection_bounds) => self.updateSelectionBounds(selection_bounds)
 
-pub extern "js" fn EditContext::update_character_bounds(self : EditContext, range_start : Int, character_bounds : JsValue) -> Unit =
+pub extern "js" fn EditContext::update_character_bounds(self : EditContext, range_start : Int, character_bounds : Array[DOMRect]) -> Unit =
   #| (self, range_start, character_bounds) => self.updateCharacterBounds(range_start, character_bounds)
 
-pub extern "js" fn EditContext::attached_elements(self : EditContext) -> JsValue =
+pub extern "js" fn EditContext::attached_elements(self : EditContext) -> Array[HTMLElement] =
   #| (self) => self.attachedElements()
 
 pub extern "js" fn EditContext::get_text(self : EditContext) -> String =
@@ -232,7 +232,7 @@ pub extern "js" fn EditContext::get_selection_end(self : EditContext) -> Int =
 pub extern "js" fn EditContext::get_character_bounds_range_start(self : EditContext) -> Int =
   #| (self) => self.characterBoundsRangeStart
 
-pub extern "js" fn EditContext::character_bounds(self : EditContext) -> JsValue =
+pub extern "js" fn EditContext::character_bounds(self : EditContext) -> Array[DOMRect] =
   #| (self) => self.characterBounds()
 
 pub extern "js" fn EditContext::get_ontextupdate(self : EditContext) -> EventHandler =
@@ -322,7 +322,7 @@ pub extern "js" fn TextFormatUpdateEvent::to_js_value(self : TextFormatUpdateEve
 pub extern "js" fn TextFormatUpdateEvent::new(type_ : String, options : TextFormatUpdateEventInit) -> TextFormatUpdateEvent =
   #| (type_, options) => new TextFormatUpdateEvent(type_, options)
 
-pub extern "js" fn TextFormatUpdateEvent::get_text_formats(self : TextFormatUpdateEvent) -> JsValue =
+pub extern "js" fn TextFormatUpdateEvent::get_text_formats(self : TextFormatUpdateEvent) -> Array[TextFormat] =
   #| (self) => self.getTextFormats()
 
 ///|

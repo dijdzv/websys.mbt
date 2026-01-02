@@ -129,7 +129,7 @@ pub extern "js" fn DeviceOrientationEvent::get_gamma(self : DeviceOrientationEve
 pub extern "js" fn DeviceOrientationEvent::get_absolute(self : DeviceOrientationEvent) -> Bool =
   #| (self) => self.absolute
 
-pub extern "js" fn DeviceOrientationEvent::request_permission(absolute : Bool) -> JsValue =
+pub extern "js" fn DeviceOrientationEvent::request_permission(absolute : Bool) -> Promise[PermissionState] =
   #| (absolute) => DeviceOrientationEvent.requestPermission(absolute)
 
 ///|
@@ -186,6 +186,6 @@ pub extern "js" fn DeviceMotionEvent::get_rotation_rate(self : DeviceMotionEvent
 pub extern "js" fn DeviceMotionEvent::get_interval(self : DeviceMotionEvent) -> Double =
   #| (self) => self.interval
 
-pub extern "js" fn DeviceMotionEvent::request_permission() -> JsValue =
+pub extern "js" fn DeviceMotionEvent::request_permission() -> Promise[PermissionState] =
   #| () => DeviceMotionEvent.requestPermission()
 

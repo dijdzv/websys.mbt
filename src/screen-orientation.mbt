@@ -80,7 +80,7 @@ pub type ScreenOrientation
 pub extern "js" fn ScreenOrientation::to_js_value(self : ScreenOrientation) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ScreenOrientation::lock(self : ScreenOrientation, orientation : OrientationLockType) -> JsValue =
+pub extern "js" fn ScreenOrientation::lock(self : ScreenOrientation, orientation : OrientationLockType) -> Promise[Unit] =
   #| (self, orientation) => self.lock(['any', 'natural', 'landscape', 'portrait', 'portrait-primary', 'portrait-secondary', 'landscape-primary', 'landscape-secondary'][orientation])
 
 pub extern "js" fn ScreenOrientation::unlock(self : ScreenOrientation) -> Unit =

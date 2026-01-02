@@ -55,6 +55,10 @@ pub fn PressureState::from_string(s : String) -> PressureState? {
 /// PressureUpdateCallback callback interface
 pub type PressureUpdateCallback
 
+/// Create PressureUpdateCallback from a MoonBit function
+pub extern "js" fn PressureUpdateCallback::from_fn(handler : (Array[PressureRecord], PressureObserver) -> Unit) -> PressureUpdateCallback =
+  #| (handler) => handler
+
 ///|
 /// PressureObserverOptions dictionary
 pub struct PressureObserverOptions {
@@ -84,7 +88,10 @@ pub extern "js" fn PressureObserver::to_js_value(self : PressureObserver) -> JsV
 pub extern "js" fn PressureObserver::new(callback : PressureUpdateCallback) -> PressureObserver =
   #| (callback) => new PressureObserver(callback)
 
-pub extern "js" fn PressureObserver::observe(self : PressureObserver, source : PressureSource, options : PressureObserverOptions) -> JsValue =
+pub extern "js" fn PressureObserver::observe(self : PressureObserver, source : PressureSource) -> Promise[Unit] =
+  #| (self, source) => self.observe(['cpu'][source])
+
+pub extern "js" fn PressureObserver::observe_with_options(self : PressureObserver, source : PressureSource, options : PressureObserverOptions) -> Promise[Unit] =
   #| (self, source, options) => self.observe(['cpu'][source], options)
 
 pub extern "js" fn PressureObserver::unobserve(self : PressureObserver, source : PressureSource) -> Unit =
@@ -93,7 +100,7 @@ pub extern "js" fn PressureObserver::unobserve(self : PressureObserver, source :
 pub extern "js" fn PressureObserver::disconnect(self : PressureObserver) -> Unit =
   #| (self) => self.disconnect()
 
-pub extern "js" fn PressureObserver::take_records(self : PressureObserver) -> JsValue =
+pub extern "js" fn PressureObserver::take_records(self : PressureObserver) -> Array[PressureRecord] =
   #| (self) => self.takeRecords()
 
 pub extern "js" fn PressureObserver::get_known_sources(self : PressureObserver) -> JsValue =

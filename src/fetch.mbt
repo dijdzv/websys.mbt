@@ -365,7 +365,7 @@ pub extern "js" fn Headers::delete(self : Headers, name : String) -> Unit =
 pub extern "js" fn Headers::get(self : Headers, name : String) -> String? =
   #| (self, name) => self.get(name)
 
-pub extern "js" fn Headers::get_set_cookie(self : Headers) -> JsValue =
+pub extern "js" fn Headers::get_set_cookie(self : Headers) -> Array[String] =
   #| (self) => self.getSetCookie()
 
 pub extern "js" fn Headers::has(self : Headers, name : String) -> Bool =
@@ -447,22 +447,22 @@ pub extern "js" fn Request::get_body(self : Request) -> ReadableStream? =
 pub extern "js" fn Request::get_body_used(self : Request) -> Bool =
   #| (self) => self.bodyUsed
 
-pub extern "js" fn Request::array_buffer(self : Request) -> JsValue =
+pub extern "js" fn Request::array_buffer(self : Request) -> Promise[ArrayBuffer] =
   #| (self) => self.arrayBuffer()
 
-pub extern "js" fn Request::blob(self : Request) -> JsValue =
+pub extern "js" fn Request::blob(self : Request) -> Promise[Blob] =
   #| (self) => self.blob()
 
-pub extern "js" fn Request::bytes(self : Request) -> JsValue =
+pub extern "js" fn Request::bytes(self : Request) -> Promise[Uint8Array] =
   #| (self) => self.bytes()
 
-pub extern "js" fn Request::form_data(self : Request) -> JsValue =
+pub extern "js" fn Request::form_data(self : Request) -> Promise[FormData] =
   #| (self) => self.formData()
 
-pub extern "js" fn Request::json(self : Request) -> JsValue =
+pub extern "js" fn Request::json(self : Request) -> Promise[JsValue] =
   #| (self) => self.json()
 
-pub extern "js" fn Request::text(self : Request) -> JsValue =
+pub extern "js" fn Request::text(self : Request) -> Promise[String] =
   #| (self) => self.text()
 
 ///|
@@ -514,19 +514,19 @@ pub extern "js" fn Response::get_body(self : Response) -> ReadableStream? =
 pub extern "js" fn Response::get_body_used(self : Response) -> Bool =
   #| (self) => self.bodyUsed
 
-pub extern "js" fn Response::array_buffer(self : Response) -> JsValue =
+pub extern "js" fn Response::array_buffer(self : Response) -> Promise[ArrayBuffer] =
   #| (self) => self.arrayBuffer()
 
-pub extern "js" fn Response::blob(self : Response) -> JsValue =
+pub extern "js" fn Response::blob(self : Response) -> Promise[Blob] =
   #| (self) => self.blob()
 
-pub extern "js" fn Response::bytes(self : Response) -> JsValue =
+pub extern "js" fn Response::bytes(self : Response) -> Promise[Uint8Array] =
   #| (self) => self.bytes()
 
-pub extern "js" fn Response::form_data(self : Response) -> JsValue =
+pub extern "js" fn Response::form_data(self : Response) -> Promise[FormData] =
   #| (self) => self.formData()
 
-pub extern "js" fn Response::text(self : Response) -> JsValue =
+pub extern "js" fn Response::text(self : Response) -> Promise[String] =
   #| (self) => self.text()
 
 ///|

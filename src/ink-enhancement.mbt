@@ -49,7 +49,10 @@ pub type Ink
 pub extern "js" fn Ink::to_js_value(self : Ink) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Ink::request_presenter(self : Ink, param : InkPresenterParam) -> JsValue =
+pub extern "js" fn Ink::request_presenter(self : Ink) -> Promise[DelegatedInkTrailPresenter] =
+  #| (self) => self.requestPresenter()
+
+pub extern "js" fn Ink::request_presenter_with_param(self : Ink, param : InkPresenterParam) -> Promise[DelegatedInkTrailPresenter] =
   #| (self, param) => self.requestPresenter(param)
 
 ///|

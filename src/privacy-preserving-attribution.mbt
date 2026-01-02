@@ -46,8 +46,8 @@ pub extern "js" fn AttributionAggregationService::to_js(self : AttributionAggreg
 pub struct AttributionImpressionOptions {
   histogramIndex : Int
   matchValue : Int?
-  conversionSites : JsValue?
-  conversionCallers : JsValue?
+  conversionSites : Array[String]?
+  conversionCallers : Array[String]?
   lifetimeDays : Int?
   priority : Int?
 }
@@ -98,10 +98,10 @@ pub struct AttributionConversionOptions {
   epsilon : Double?
   histogramSize : Int
   lookbackDays : Int?
-  matchValues : JsValue?
-  impressionSites : JsValue?
-  impressionCallers : JsValue?
-  credit : JsValue?
+  matchValues : Array[Int]?
+  impressionSites : Array[String]?
+  impressionCallers : Array[String]?
+  credit : Array[Double]?
   value : Int?
   maxValue : Int?
 }
@@ -163,8 +163,11 @@ pub type AttributionAggregationServices
 pub extern "js" fn AttributionAggregationServices::to_js_value(self : AttributionAggregationServices) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn AttributionAggregationServices::_unknown_(self : AttributionAggregationServices) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn AttributionAggregationServices::get(self : AttributionAggregationServices, key : String) -> AttributionAggregationService? =
+  #| (self, key) => self.get(key)
+
+pub extern "js" fn AttributionAggregationServices::has(self : AttributionAggregationServices, key : String) -> Bool =
+  #| (self, key) => self.has(key)
 
 ///|
 /// Attribution interface
@@ -176,9 +179,9 @@ pub extern "js" fn Attribution::to_js_value(self : Attribution) -> JsValue =
 pub extern "js" fn Attribution::get_aggregation_services(self : Attribution) -> AttributionAggregationServices =
   #| (self) => self.aggregationServices
 
-pub extern "js" fn Attribution::save_impression(self : Attribution, options : AttributionImpressionOptions) -> JsValue =
+pub extern "js" fn Attribution::save_impression(self : Attribution, options : AttributionImpressionOptions) -> Promise[AttributionImpressionResult] =
   #| (self, options) => self.saveImpression(options)
 
-pub extern "js" fn Attribution::measure_conversion(self : Attribution, options : AttributionConversionOptions) -> JsValue =
+pub extern "js" fn Attribution::measure_conversion(self : Attribution, options : AttributionConversionOptions) -> Promise[AttributionConversionResult] =
   #| (self, options) => self.measureConversion(options)
 

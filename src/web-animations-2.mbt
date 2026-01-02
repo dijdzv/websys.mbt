@@ -58,6 +58,10 @@ pub fn AnimationTriggerBehavior::from_string(s : String) -> AnimationTriggerBeha
 /// EffectCallback callback interface
 pub type EffectCallback
 
+/// Create EffectCallback from a MoonBit function
+pub extern "js" fn EffectCallback::from_fn(handler : (Double?, JsValue, Animation) -> Unit) -> EffectCallback =
+  #| (handler) => handler
+
 ///|
 /// EffectTiming dictionary
 pub struct EffectTiming {
@@ -409,7 +413,7 @@ pub type GroupEffect
 pub extern "js" fn GroupEffect::to_js_value(self : GroupEffect) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn GroupEffect::new(children : JsValue, timing : JsValue) -> GroupEffect =
+pub extern "js" fn GroupEffect::new(children : Array[AnimationEffect], timing : JsValue) -> GroupEffect =
   #| (children, timing) => new GroupEffect(children, timing)
 
 pub extern "js" fn GroupEffect::get_children(self : GroupEffect) -> AnimationNodeList =
@@ -453,7 +457,7 @@ pub type SequenceEffect
 pub extern "js" fn SequenceEffect::to_js_value(self : SequenceEffect) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn SequenceEffect::new(children : JsValue, timing : JsValue) -> SequenceEffect =
+pub extern "js" fn SequenceEffect::new(children : Array[AnimationEffect], timing : JsValue) -> SequenceEffect =
   #| (children, timing) => new SequenceEffect(children, timing)
 
 pub extern "js" fn SequenceEffect::get_children(self : SequenceEffect) -> AnimationNodeList =

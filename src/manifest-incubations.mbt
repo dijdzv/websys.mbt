@@ -54,6 +54,6 @@ pub extern "js" fn BeforeInstallPromptEvent::to_js_value(self : BeforeInstallPro
 pub extern "js" fn BeforeInstallPromptEvent::new(type_ : String, event_init_dict : EventInit) -> BeforeInstallPromptEvent =
   #| (type_, event_init_dict) => new BeforeInstallPromptEvent(type_, event_init_dict)
 
-pub extern "js" fn BeforeInstallPromptEvent::prompt(self : BeforeInstallPromptEvent) -> JsValue =
+pub extern "js" fn BeforeInstallPromptEvent::prompt(self : BeforeInstallPromptEvent) -> Promise[PromptResponseObject] =
   #| (self) => self.prompt()
 

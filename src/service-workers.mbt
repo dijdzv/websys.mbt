@@ -297,7 +297,7 @@ pub struct RouterCondition {
   requestMode : RequestMode?
   requestDestination : RequestDestination?
   runningStatus : RunningStatus?
-  or : JsValue?
+  or : Array[RouterCondition]?
   not : RouterCondition?
 }
 
@@ -349,11 +349,11 @@ pub extern "js" fn RouterSourceDict::to_js(self : RouterSourceDict) -> JsValue =
 /// FetchEventInit dictionary
 pub struct FetchEventInit {
   request : Request
-  preloadResponse : JsValue?
+  preloadResponse : Promise[JsValue]?
   clientId : String?
   resultingClientId : String?
   replacesClientId : String?
-  handled : JsValue?
+  handled : Promise[Unit]?
 }
 
 /// Create a new FetchEventInit with default values
@@ -386,7 +386,7 @@ pub struct ExtendableMessageEventInit {
   origin : String?
   lastEventId : String?
   source : JsValue?
-  ports : JsValue?
+  ports : Array[MessagePort]?
 }
 
 /// Create a new ExtendableMessageEventInit with default values
@@ -476,7 +476,7 @@ pub extern "js" fn ServiceWorker::get_script_u_r_l(self : ServiceWorker) -> Stri
 pub extern "js" fn ServiceWorker::get_state(self : ServiceWorker) -> ServiceWorkerState =
   #| (self) => self.state
 
-pub extern "js" fn ServiceWorker::post_message(self : ServiceWorker, message : JsValue, transfer : JsValue) -> Unit =
+pub extern "js" fn ServiceWorker::post_message(self : ServiceWorker, message : JsValue, transfer : Array[JsValue]) -> Unit =
   #| (self, message, transfer) => self.postMessage(message, transfer)
 
 pub extern "js" fn ServiceWorker::get_onstatechange(self : ServiceWorker) -> EventHandler =
@@ -516,10 +516,10 @@ pub extern "js" fn ServiceWorkerRegistration::get_scope(self : ServiceWorkerRegi
 pub extern "js" fn ServiceWorkerRegistration::get_update_via_cache(self : ServiceWorkerRegistration) -> ServiceWorkerUpdateViaCache =
   #| (self) => self.updateViaCache
 
-pub extern "js" fn ServiceWorkerRegistration::update(self : ServiceWorkerRegistration) -> JsValue =
+pub extern "js" fn ServiceWorkerRegistration::update(self : ServiceWorkerRegistration) -> Promise[ServiceWorkerRegistration] =
   #| (self) => self.update()
 
-pub extern "js" fn ServiceWorkerRegistration::unregister(self : ServiceWorkerRegistration) -> JsValue =
+pub extern "js" fn ServiceWorkerRegistration::unregister(self : ServiceWorkerRegistration) -> Promise[Bool] =
   #| (self) => self.unregister()
 
 pub extern "js" fn ServiceWorkerRegistration::get_onupdatefound(self : ServiceWorkerRegistration) -> EventHandler =
@@ -540,10 +540,16 @@ pub extern "js" fn ServiceWorkerRegistration::get_index(self : ServiceWorkerRegi
 pub extern "js" fn ServiceWorkerRegistration::get_cookies(self : ServiceWorkerRegistration) -> CookieStoreManager =
   #| (self) => self.cookies
 
-pub extern "js" fn ServiceWorkerRegistration::show_notification(self : ServiceWorkerRegistration, title : String, options : NotificationOptions) -> JsValue =
+pub extern "js" fn ServiceWorkerRegistration::show_notification(self : ServiceWorkerRegistration, title : String) -> Promise[Unit] =
+  #| (self, title) => self.showNotification(title)
+
+pub extern "js" fn ServiceWorkerRegistration::show_notification_with_options(self : ServiceWorkerRegistration, title : String, options : NotificationOptions) -> Promise[Unit] =
   #| (self, title, options) => self.showNotification(title, options)
 
-pub extern "js" fn ServiceWorkerRegistration::get_notifications(self : ServiceWorkerRegistration, filter : GetNotificationOptions) -> JsValue =
+pub extern "js" fn ServiceWorkerRegistration::get_notifications(self : ServiceWorkerRegistration) -> Promise[Array[Notification]] =
+  #| (self) => self.getNotifications()
+
+pub extern "js" fn ServiceWorkerRegistration::get_notifications_with_filter(self : ServiceWorkerRegistration, filter : GetNotificationOptions) -> Promise[Array[Notification]] =
   #| (self, filter) => self.getNotifications(filter)
 
 pub extern "js" fn ServiceWorkerRegistration::get_payment_manager(self : ServiceWorkerRegistration) -> PaymentManager =
@@ -565,16 +571,22 @@ pub extern "js" fn ServiceWorkerContainer::to_js_value(self : ServiceWorkerConta
 pub extern "js" fn ServiceWorkerContainer::get_controller(self : ServiceWorkerContainer) -> ServiceWorker? =
   #| (self) => self.controller
 
-pub extern "js" fn ServiceWorkerContainer::get_ready(self : ServiceWorkerContainer) -> JsValue =
+pub extern "js" fn ServiceWorkerContainer::get_ready(self : ServiceWorkerContainer) -> Promise[ServiceWorkerRegistration] =
   #| (self) => self.ready
 
-pub extern "js" fn ServiceWorkerContainer::register(self : ServiceWorkerContainer, script_u_r_l : JsValue, options : RegistrationOptions) -> JsValue =
+pub extern "js" fn ServiceWorkerContainer::register(self : ServiceWorkerContainer, script_u_r_l : JsValue) -> Promise[ServiceWorkerRegistration] =
+  #| (self, script_u_r_l) => self.register(script_u_r_l)
+
+pub extern "js" fn ServiceWorkerContainer::register_with_options(self : ServiceWorkerContainer, script_u_r_l : JsValue, options : RegistrationOptions) -> Promise[ServiceWorkerRegistration] =
   #| (self, script_u_r_l, options) => self.register(script_u_r_l, options)
 
-pub extern "js" fn ServiceWorkerContainer::get_registration(self : ServiceWorkerContainer, client_u_r_l : String) -> JsValue =
+pub extern "js" fn ServiceWorkerContainer::get_registration(self : ServiceWorkerContainer) -> Promise[JsValue] =
+  #| (self) => self.getRegistration()
+
+pub extern "js" fn ServiceWorkerContainer::get_registration_with_client_u_r_l(self : ServiceWorkerContainer, client_u_r_l : String) -> Promise[JsValue] =
   #| (self, client_u_r_l) => self.getRegistration(client_u_r_l)
 
-pub extern "js" fn ServiceWorkerContainer::get_registrations(self : ServiceWorkerContainer) -> JsValue =
+pub extern "js" fn ServiceWorkerContainer::get_registrations(self : ServiceWorkerContainer) -> Promise[JsValue] =
   #| (self) => self.getRegistrations()
 
 pub extern "js" fn ServiceWorkerContainer::start_messages(self : ServiceWorkerContainer) -> Unit =
@@ -605,16 +617,16 @@ pub type NavigationPreloadManager
 pub extern "js" fn NavigationPreloadManager::to_js_value(self : NavigationPreloadManager) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn NavigationPreloadManager::enable(self : NavigationPreloadManager) -> JsValue =
+pub extern "js" fn NavigationPreloadManager::enable(self : NavigationPreloadManager) -> Promise[Unit] =
   #| (self) => self.enable()
 
-pub extern "js" fn NavigationPreloadManager::disable(self : NavigationPreloadManager) -> JsValue =
+pub extern "js" fn NavigationPreloadManager::disable(self : NavigationPreloadManager) -> Promise[Unit] =
   #| (self) => self.disable()
 
-pub extern "js" fn NavigationPreloadManager::set_header_value(self : NavigationPreloadManager, value : String) -> JsValue =
+pub extern "js" fn NavigationPreloadManager::set_header_value(self : NavigationPreloadManager, value : String) -> Promise[Unit] =
   #| (self, value) => self.setHeaderValue(value)
 
-pub extern "js" fn NavigationPreloadManager::get_state(self : NavigationPreloadManager) -> JsValue =
+pub extern "js" fn NavigationPreloadManager::get_state(self : NavigationPreloadManager) -> Promise[NavigationPreloadState] =
   #| (self) => self.getState()
 
 ///|
@@ -633,7 +645,7 @@ pub extern "js" fn ServiceWorkerGlobalScope::get_registration(self : ServiceWork
 pub extern "js" fn ServiceWorkerGlobalScope::get_service_worker(self : ServiceWorkerGlobalScope) -> ServiceWorker =
   #| (self) => self.serviceWorker
 
-pub extern "js" fn ServiceWorkerGlobalScope::skip_waiting(self : ServiceWorkerGlobalScope) -> JsValue =
+pub extern "js" fn ServiceWorkerGlobalScope::skip_waiting(self : ServiceWorkerGlobalScope) -> Promise[Unit] =
   #| (self) => self.skipWaiting()
 
 pub extern "js" fn ServiceWorkerGlobalScope::get_oninstall(self : ServiceWorkerGlobalScope) -> EventHandler =
@@ -772,7 +784,7 @@ pub extern "js" fn Client::get_id(self : Client) -> String =
 pub extern "js" fn Client::get_type(self : Client) -> ClientType =
   #| (self) => self.type
 
-pub extern "js" fn Client::post_message(self : Client, message : JsValue, transfer : JsValue) -> Unit =
+pub extern "js" fn Client::post_message(self : Client, message : JsValue, transfer : Array[JsValue]) -> Unit =
   #| (self, message, transfer) => self.postMessage(message, transfer)
 
 pub extern "js" fn Client::get_lifecycle_state(self : Client) -> ClientLifecycleState =
@@ -797,7 +809,7 @@ pub extern "js" fn WindowClient::get_id(self : WindowClient) -> String =
 pub extern "js" fn WindowClient::get_type(self : WindowClient) -> ClientType =
   #| (self) => self.type
 
-pub extern "js" fn WindowClient::post_message(self : WindowClient, message : JsValue, transfer : JsValue) -> Unit =
+pub extern "js" fn WindowClient::post_message(self : WindowClient, message : JsValue, transfer : Array[JsValue]) -> Unit =
   #| (self, message, transfer) => self.postMessage(message, transfer)
 
 pub extern "js" fn WindowClient::get_lifecycle_state(self : WindowClient) -> ClientLifecycleState =
@@ -812,10 +824,10 @@ pub extern "js" fn WindowClient::get_focused(self : WindowClient) -> Bool =
 pub extern "js" fn WindowClient::get_ancestor_origins(self : WindowClient) -> JsValue =
   #| (self) => self.ancestorOrigins
 
-pub extern "js" fn WindowClient::focus(self : WindowClient) -> JsValue =
+pub extern "js" fn WindowClient::focus(self : WindowClient) -> Promise[WindowClient] =
   #| (self) => self.focus()
 
-pub extern "js" fn WindowClient::navigate(self : WindowClient, url : String) -> JsValue =
+pub extern "js" fn WindowClient::navigate(self : WindowClient, url : String) -> Promise[WindowClient?] =
   #| (self, url) => self.navigate(url)
 
 ///|
@@ -825,16 +837,19 @@ pub type Clients
 pub extern "js" fn Clients::to_js_value(self : Clients) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Clients::get(self : Clients, id : String) -> JsValue =
+pub extern "js" fn Clients::get(self : Clients, id : String) -> Promise[JsValue] =
   #| (self, id) => self.get(id)
 
-pub extern "js" fn Clients::match_all(self : Clients, options : ClientQueryOptions) -> JsValue =
+pub extern "js" fn Clients::match_all(self : Clients) -> Promise[JsValue] =
+  #| (self) => self.matchAll()
+
+pub extern "js" fn Clients::match_all_with_options(self : Clients, options : ClientQueryOptions) -> Promise[JsValue] =
   #| (self, options) => self.matchAll(options)
 
-pub extern "js" fn Clients::open_window(self : Clients, url : String) -> JsValue =
+pub extern "js" fn Clients::open_window(self : Clients, url : String) -> Promise[WindowClient?] =
   #| (self, url) => self.openWindow(url)
 
-pub extern "js" fn Clients::claim(self : Clients) -> JsValue =
+pub extern "js" fn Clients::claim(self : Clients) -> Promise[Unit] =
   #| (self) => self.claim()
 
 ///|
@@ -847,7 +862,7 @@ pub extern "js" fn ExtendableEvent::to_js_value(self : ExtendableEvent) -> JsVal
 pub extern "js" fn ExtendableEvent::new(type_ : String, event_init_dict : ExtendableEventInit) -> ExtendableEvent =
   #| (type_, event_init_dict) => new ExtendableEvent(type_, event_init_dict)
 
-pub extern "js" fn ExtendableEvent::wait_until(self : ExtendableEvent, f : JsValue) -> Unit =
+pub extern "js" fn ExtendableEvent::wait_until(self : ExtendableEvent, f : Promise[JsValue]) -> Unit =
   #| (self, f) => self.waitUntil(f)
 
 ///|
@@ -860,10 +875,10 @@ pub extern "js" fn InstallEvent::to_js_value(self : InstallEvent) -> JsValue =
 pub extern "js" fn InstallEvent::new(type_ : String, event_init_dict : ExtendableEventInit) -> InstallEvent =
   #| (type_, event_init_dict) => new InstallEvent(type_, event_init_dict)
 
-pub extern "js" fn InstallEvent::wait_until(self : InstallEvent, f : JsValue) -> Unit =
+pub extern "js" fn InstallEvent::wait_until(self : InstallEvent, f : Promise[JsValue]) -> Unit =
   #| (self, f) => self.waitUntil(f)
 
-pub extern "js" fn InstallEvent::add_routes(self : InstallEvent, rules : JsValue) -> JsValue =
+pub extern "js" fn InstallEvent::add_routes(self : InstallEvent, rules : JsValue) -> Promise[Unit] =
   #| (self, rules) => self.addRoutes(rules)
 
 ///|
@@ -876,13 +891,13 @@ pub extern "js" fn FetchEvent::to_js_value(self : FetchEvent) -> JsValue =
 pub extern "js" fn FetchEvent::new(type_ : String, event_init_dict : ExtendableEventInit) -> FetchEvent =
   #| (type_, event_init_dict) => new FetchEvent(type_, event_init_dict)
 
-pub extern "js" fn FetchEvent::wait_until(self : FetchEvent, f : JsValue) -> Unit =
+pub extern "js" fn FetchEvent::wait_until(self : FetchEvent, f : Promise[JsValue]) -> Unit =
   #| (self, f) => self.waitUntil(f)
 
 pub extern "js" fn FetchEvent::get_request(self : FetchEvent) -> Request =
   #| (self) => self.request
 
-pub extern "js" fn FetchEvent::get_preload_response(self : FetchEvent) -> JsValue =
+pub extern "js" fn FetchEvent::get_preload_response(self : FetchEvent) -> Promise[JsValue] =
   #| (self) => self.preloadResponse
 
 pub extern "js" fn FetchEvent::get_client_id(self : FetchEvent) -> String =
@@ -894,10 +909,10 @@ pub extern "js" fn FetchEvent::get_resulting_client_id(self : FetchEvent) -> Str
 pub extern "js" fn FetchEvent::get_replaces_client_id(self : FetchEvent) -> String =
   #| (self) => self.replacesClientId
 
-pub extern "js" fn FetchEvent::get_handled(self : FetchEvent) -> JsValue =
+pub extern "js" fn FetchEvent::get_handled(self : FetchEvent) -> Promise[Unit] =
   #| (self) => self.handled
 
-pub extern "js" fn FetchEvent::respond_with(self : FetchEvent, r : JsValue) -> Unit =
+pub extern "js" fn FetchEvent::respond_with(self : FetchEvent, r : Promise[Response]) -> Unit =
   #| (self, r) => self.respondWith(r)
 
 ///|
@@ -910,7 +925,7 @@ pub extern "js" fn ExtendableMessageEvent::to_js_value(self : ExtendableMessageE
 pub extern "js" fn ExtendableMessageEvent::new(type_ : String, event_init_dict : ExtendableEventInit) -> ExtendableMessageEvent =
   #| (type_, event_init_dict) => new ExtendableMessageEvent(type_, event_init_dict)
 
-pub extern "js" fn ExtendableMessageEvent::wait_until(self : ExtendableMessageEvent, f : JsValue) -> Unit =
+pub extern "js" fn ExtendableMessageEvent::wait_until(self : ExtendableMessageEvent, f : Promise[JsValue]) -> Unit =
   #| (self, f) => self.waitUntil(f)
 
 pub extern "js" fn ExtendableMessageEvent::get_data(self : ExtendableMessageEvent) -> JsValue =
@@ -935,25 +950,37 @@ pub type Cache
 pub extern "js" fn Cache::to_js_value(self : Cache) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Cache::match_(self : Cache, request : RequestInfo, options : CacheQueryOptions) -> JsValue =
+pub extern "js" fn Cache::match_(self : Cache, request : RequestInfo) -> Promise[JsValue] =
+  #| (self, request) => self.match(request)
+
+pub extern "js" fn Cache::match__with_options(self : Cache, request : RequestInfo, options : CacheQueryOptions) -> Promise[JsValue] =
   #| (self, request, options) => self.match(request, options)
 
-pub extern "js" fn Cache::match_all(self : Cache, request : RequestInfo, options : CacheQueryOptions) -> JsValue =
+pub extern "js" fn Cache::match_all(self : Cache) -> Promise[JsValue] =
+  #| (self) => self.matchAll()
+
+pub extern "js" fn Cache::match_all_with_options(self : Cache, request : RequestInfo, options : CacheQueryOptions) -> Promise[JsValue] =
   #| (self, request, options) => self.matchAll(request, options)
 
-pub extern "js" fn Cache::add(self : Cache, request : RequestInfo) -> JsValue =
+pub extern "js" fn Cache::add(self : Cache, request : RequestInfo) -> Promise[Unit] =
   #| (self, request) => self.add(request)
 
-pub extern "js" fn Cache::add_all(self : Cache, requests : JsValue) -> JsValue =
+pub extern "js" fn Cache::add_all(self : Cache, requests : Array[RequestInfo]) -> Promise[Unit] =
   #| (self, requests) => self.addAll(requests)
 
-pub extern "js" fn Cache::put(self : Cache, request : RequestInfo, response : Response) -> JsValue =
+pub extern "js" fn Cache::put(self : Cache, request : RequestInfo, response : Response) -> Promise[Unit] =
   #| (self, request, response) => self.put(request, response)
 
-pub extern "js" fn Cache::delete(self : Cache, request : RequestInfo, options : CacheQueryOptions) -> JsValue =
+pub extern "js" fn Cache::delete(self : Cache, request : RequestInfo) -> Promise[Bool] =
+  #| (self, request) => self.delete(request)
+
+pub extern "js" fn Cache::delete_with_options(self : Cache, request : RequestInfo, options : CacheQueryOptions) -> Promise[Bool] =
   #| (self, request, options) => self.delete(request, options)
 
-pub extern "js" fn Cache::keys(self : Cache, request : RequestInfo, options : CacheQueryOptions) -> JsValue =
+pub extern "js" fn Cache::keys(self : Cache) -> Promise[JsValue] =
+  #| (self) => self.keys()
+
+pub extern "js" fn Cache::keys_with_options(self : Cache, request : RequestInfo, options : CacheQueryOptions) -> Promise[JsValue] =
   #| (self, request, options) => self.keys(request, options)
 
 ///|
@@ -963,18 +990,21 @@ pub type CacheStorage
 pub extern "js" fn CacheStorage::to_js_value(self : CacheStorage) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn CacheStorage::match_(self : CacheStorage, request : RequestInfo, options : MultiCacheQueryOptions) -> JsValue =
+pub extern "js" fn CacheStorage::match_(self : CacheStorage, request : RequestInfo) -> Promise[JsValue] =
+  #| (self, request) => self.match(request)
+
+pub extern "js" fn CacheStorage::match__with_options(self : CacheStorage, request : RequestInfo, options : MultiCacheQueryOptions) -> Promise[JsValue] =
   #| (self, request, options) => self.match(request, options)
 
-pub extern "js" fn CacheStorage::has(self : CacheStorage, cache_name : String) -> JsValue =
+pub extern "js" fn CacheStorage::has(self : CacheStorage, cache_name : String) -> Promise[Bool] =
   #| (self, cache_name) => self.has(cache_name)
 
-pub extern "js" fn CacheStorage::open(self : CacheStorage, cache_name : String) -> JsValue =
+pub extern "js" fn CacheStorage::open(self : CacheStorage, cache_name : String) -> Promise[Cache] =
   #| (self, cache_name) => self.open(cache_name)
 
-pub extern "js" fn CacheStorage::delete(self : CacheStorage, cache_name : String) -> JsValue =
+pub extern "js" fn CacheStorage::delete(self : CacheStorage, cache_name : String) -> Promise[Bool] =
   #| (self, cache_name) => self.delete(cache_name)
 
-pub extern "js" fn CacheStorage::keys(self : CacheStorage) -> JsValue =
+pub extern "js" fn CacheStorage::keys(self : CacheStorage) -> Promise[Array[String]] =
   #| (self) => self.keys()
 

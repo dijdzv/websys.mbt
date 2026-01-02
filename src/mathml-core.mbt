@@ -665,7 +665,10 @@ pub extern "js" fn MathMLElement::get_tab_index(self : MathMLElement) -> Int =
 pub extern "js" fn MathMLElement::set_tab_index(self : MathMLElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn MathMLElement::focus(self : MathMLElement, options : FocusOptions) -> Unit =
+pub extern "js" fn MathMLElement::focus(self : MathMLElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn MathMLElement::focus_with_options(self : MathMLElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn MathMLElement::blur(self : MathMLElement) -> Unit =

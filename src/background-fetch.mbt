@@ -67,7 +67,7 @@ pub fn BackgroundFetchFailureReason::from_string(s : String) -> BackgroundFetchF
 ///|
 /// BackgroundFetchUIOptions dictionary
 pub struct BackgroundFetchUIOptions {
-  icons : JsValue?
+  icons : Array[ImageResource]?
   title : String?
 }
 
@@ -89,7 +89,7 @@ pub extern "js" fn BackgroundFetchUIOptions::to_js(self : BackgroundFetchUIOptio
 ///|
 /// BackgroundFetchOptions dictionary
 pub struct BackgroundFetchOptions {
-  icons : JsValue?
+  icons : Array[ImageResource]?
   title : String?
   downloadTotal : Int64?
 }
@@ -137,13 +137,16 @@ pub type BackgroundFetchManager
 pub extern "js" fn BackgroundFetchManager::to_js_value(self : BackgroundFetchManager) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn BackgroundFetchManager::fetch(self : BackgroundFetchManager, id : String, requests : JsValue, options : BackgroundFetchOptions) -> JsValue =
+pub extern "js" fn BackgroundFetchManager::fetch(self : BackgroundFetchManager, id : String, requests : JsValue) -> Promise[BackgroundFetchRegistration] =
+  #| (self, id, requests) => self.fetch(id, requests)
+
+pub extern "js" fn BackgroundFetchManager::fetch_with_options(self : BackgroundFetchManager, id : String, requests : JsValue, options : BackgroundFetchOptions) -> Promise[BackgroundFetchRegistration] =
   #| (self, id, requests, options) => self.fetch(id, requests, options)
 
-pub extern "js" fn BackgroundFetchManager::get(self : BackgroundFetchManager, id : String) -> JsValue =
+pub extern "js" fn BackgroundFetchManager::get(self : BackgroundFetchManager, id : String) -> Promise[BackgroundFetchRegistration?] =
   #| (self, id) => self.get(id)
 
-pub extern "js" fn BackgroundFetchManager::get_ids(self : BackgroundFetchManager) -> JsValue =
+pub extern "js" fn BackgroundFetchManager::get_ids(self : BackgroundFetchManager) -> Promise[Array[String]] =
   #| (self) => self.getIds()
 
 ///|
@@ -183,13 +186,19 @@ pub extern "js" fn BackgroundFetchRegistration::get_onprogress(self : Background
 pub extern "js" fn BackgroundFetchRegistration::set_onprogress(self : BackgroundFetchRegistration, value : EventHandler) -> Unit =
   #| (self, value) => { self.onprogress = value }
 
-pub extern "js" fn BackgroundFetchRegistration::abort(self : BackgroundFetchRegistration) -> JsValue =
+pub extern "js" fn BackgroundFetchRegistration::abort(self : BackgroundFetchRegistration) -> Promise[Bool] =
   #| (self) => self.abort()
 
-pub extern "js" fn BackgroundFetchRegistration::match_(self : BackgroundFetchRegistration, request : RequestInfo, options : CacheQueryOptions) -> JsValue =
+pub extern "js" fn BackgroundFetchRegistration::match_(self : BackgroundFetchRegistration, request : RequestInfo) -> Promise[BackgroundFetchRecord] =
+  #| (self, request) => self.match(request)
+
+pub extern "js" fn BackgroundFetchRegistration::match__with_options(self : BackgroundFetchRegistration, request : RequestInfo, options : CacheQueryOptions) -> Promise[BackgroundFetchRecord] =
   #| (self, request, options) => self.match(request, options)
 
-pub extern "js" fn BackgroundFetchRegistration::match_all(self : BackgroundFetchRegistration, request : RequestInfo, options : CacheQueryOptions) -> JsValue =
+pub extern "js" fn BackgroundFetchRegistration::match_all(self : BackgroundFetchRegistration) -> Promise[Array[BackgroundFetchRecord]] =
+  #| (self) => self.matchAll()
+
+pub extern "js" fn BackgroundFetchRegistration::match_all_with_options(self : BackgroundFetchRegistration, request : RequestInfo, options : CacheQueryOptions) -> Promise[Array[BackgroundFetchRecord]] =
   #| (self, request, options) => self.matchAll(request, options)
 
 ///|
@@ -202,7 +211,7 @@ pub extern "js" fn BackgroundFetchRecord::to_js_value(self : BackgroundFetchReco
 pub extern "js" fn BackgroundFetchRecord::get_request(self : BackgroundFetchRecord) -> Request =
   #| (self) => self.request
 
-pub extern "js" fn BackgroundFetchRecord::get_response_ready(self : BackgroundFetchRecord) -> JsValue =
+pub extern "js" fn BackgroundFetchRecord::get_response_ready(self : BackgroundFetchRecord) -> Promise[Response] =
   #| (self) => self.responseReady
 
 ///|
@@ -231,6 +240,9 @@ pub extern "js" fn BackgroundFetchUpdateUIEvent::new(type_ : String, init_ : Bac
 pub extern "js" fn BackgroundFetchUpdateUIEvent::get_registration(self : BackgroundFetchUpdateUIEvent) -> BackgroundFetchRegistration =
   #| (self) => self.registration
 
-pub extern "js" fn BackgroundFetchUpdateUIEvent::update_u_i(self : BackgroundFetchUpdateUIEvent, options : BackgroundFetchUIOptions) -> JsValue =
+pub extern "js" fn BackgroundFetchUpdateUIEvent::update_u_i(self : BackgroundFetchUpdateUIEvent) -> Promise[Unit] =
+  #| (self) => self.updateUI()
+
+pub extern "js" fn BackgroundFetchUpdateUIEvent::update_u_i_with_options(self : BackgroundFetchUpdateUIEvent, options : BackgroundFetchUIOptions) -> Promise[Unit] =
   #| (self, options) => self.updateUI(options)
 

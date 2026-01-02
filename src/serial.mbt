@@ -55,8 +55,8 @@ pub fn FlowControlType::from_string(s : String) -> FlowControlType? {
 ///|
 /// SerialPortRequestOptions dictionary
 pub struct SerialPortRequestOptions {
-  filters : JsValue?
-  allowedBluetoothServiceClassIds : JsValue?
+  filters : Array[SerialPortFilter]?
+  allowedBluetoothServiceClassIds : Array[BluetoothServiceUUID]?
 }
 
 /// Create a new SerialPortRequestOptions with default values
@@ -230,10 +230,13 @@ pub extern "js" fn Serial::get_ondisconnect(self : Serial) -> EventHandler =
 pub extern "js" fn Serial::set_ondisconnect(self : Serial, value : EventHandler) -> Unit =
   #| (self, value) => { self.ondisconnect = value }
 
-pub extern "js" fn Serial::get_ports(self : Serial) -> JsValue =
+pub extern "js" fn Serial::get_ports(self : Serial) -> Promise[Array[SerialPort]] =
   #| (self) => self.getPorts()
 
-pub extern "js" fn Serial::request_port(self : Serial, options : SerialPortRequestOptions) -> JsValue =
+pub extern "js" fn Serial::request_port(self : Serial) -> Promise[SerialPort] =
+  #| (self) => self.requestPort()
+
+pub extern "js" fn Serial::request_port_with_options(self : Serial, options : SerialPortRequestOptions) -> Promise[SerialPort] =
   #| (self, options) => self.requestPort(options)
 
 ///|
@@ -267,18 +270,21 @@ pub extern "js" fn SerialPort::get_writable(self : SerialPort) -> WritableStream
 pub extern "js" fn SerialPort::get_info(self : SerialPort) -> SerialPortInfo =
   #| (self) => self.getInfo()
 
-pub extern "js" fn SerialPort::open(self : SerialPort, options : SerialOptions) -> JsValue =
+pub extern "js" fn SerialPort::open(self : SerialPort, options : SerialOptions) -> Promise[Unit] =
   #| (self, options) => self.open(options)
 
-pub extern "js" fn SerialPort::set_signals(self : SerialPort, signals : SerialOutputSignals) -> JsValue =
+pub extern "js" fn SerialPort::set_signals(self : SerialPort) -> Promise[Unit] =
+  #| (self) => self.setSignals()
+
+pub extern "js" fn SerialPort::set_signals_with_signals(self : SerialPort, signals : SerialOutputSignals) -> Promise[Unit] =
   #| (self, signals) => self.setSignals(signals)
 
-pub extern "js" fn SerialPort::get_signals(self : SerialPort) -> JsValue =
+pub extern "js" fn SerialPort::get_signals(self : SerialPort) -> Promise[SerialInputSignals] =
   #| (self) => self.getSignals()
 
-pub extern "js" fn SerialPort::close(self : SerialPort) -> JsValue =
+pub extern "js" fn SerialPort::close(self : SerialPort) -> Promise[Unit] =
   #| (self) => self.close()
 
-pub extern "js" fn SerialPort::forget(self : SerialPort) -> JsValue =
+pub extern "js" fn SerialPort::forget(self : SerialPort) -> Promise[Unit] =
   #| (self) => self.forget()
 

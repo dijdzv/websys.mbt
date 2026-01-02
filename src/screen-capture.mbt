@@ -264,19 +264,19 @@ pub extern "js" fn CaptureController::get_oncapturedmousechange(self : CaptureCo
 pub extern "js" fn CaptureController::set_oncapturedmousechange(self : CaptureController, value : EventHandler) -> Unit =
   #| (self, value) => { self.oncapturedmousechange = value }
 
-pub extern "js" fn CaptureController::get_supported_zoom_levels(self : CaptureController) -> JsValue =
+pub extern "js" fn CaptureController::get_supported_zoom_levels(self : CaptureController) -> Array[Int] =
   #| (self) => self.getSupportedZoomLevels()
 
 pub extern "js" fn CaptureController::get_zoom_level(self : CaptureController) -> Int? =
   #| (self) => self.zoomLevel
 
-pub extern "js" fn CaptureController::increase_zoom_level(self : CaptureController) -> JsValue =
+pub extern "js" fn CaptureController::increase_zoom_level(self : CaptureController) -> Promise[Unit] =
   #| (self) => self.increaseZoomLevel()
 
-pub extern "js" fn CaptureController::decrease_zoom_level(self : CaptureController) -> JsValue =
+pub extern "js" fn CaptureController::decrease_zoom_level(self : CaptureController) -> Promise[Unit] =
   #| (self) => self.decreaseZoomLevel()
 
-pub extern "js" fn CaptureController::reset_zoom_level(self : CaptureController) -> JsValue =
+pub extern "js" fn CaptureController::reset_zoom_level(self : CaptureController) -> Promise[Unit] =
   #| (self) => self.resetZoomLevel()
 
 pub extern "js" fn CaptureController::get_onzoomlevelchange(self : CaptureController) -> EventHandler =
@@ -285,6 +285,6 @@ pub extern "js" fn CaptureController::get_onzoomlevelchange(self : CaptureContro
 pub extern "js" fn CaptureController::set_onzoomlevelchange(self : CaptureController, value : EventHandler) -> Unit =
   #| (self, value) => { self.onzoomlevelchange = value }
 
-pub extern "js" fn CaptureController::forward_wheel(self : CaptureController, element : HTMLElement?) -> JsValue =
+pub extern "js" fn CaptureController::forward_wheel(self : CaptureController, element : HTMLElement?) -> Promise[Unit] =
   #| (self, element) => self.forwardWheel(element)
 

@@ -124,7 +124,7 @@ pub extern "js" fn IdentityCredentialErrorInit::to_js(self : IdentityCredentialE
 ///|
 /// IdentityCredentialRequestOptions dictionary
 pub struct IdentityCredentialRequestOptions {
-  providers : JsValue
+  providers : Array[IdentityProviderRequestOptions]
   context : IdentityCredentialRequestOptionsContext?
   mode : IdentityCredentialRequestOptionsMode?
 }
@@ -132,7 +132,7 @@ pub struct IdentityCredentialRequestOptions {
 /// Create a new IdentityCredentialRequestOptions with default values
 pub fn IdentityCredentialRequestOptions::default() -> IdentityCredentialRequestOptions {
   IdentityCredentialRequestOptions::{
-    providers: panic(),
+    providers: [],
     context: None,
     mode: None,
   }
@@ -175,7 +175,7 @@ pub struct IdentityProviderRequestOptions {
   clientId : String
   loginHint : String?
   domainHint : String?
-  fields : JsValue?
+  fields : Array[String]?
   params : JsValue?
 }
 
@@ -205,7 +205,7 @@ pub extern "js" fn IdentityProviderRequestOptions::to_js(self : IdentityProvider
 ///|
 /// IdentityProviderWellKnown dictionary
 pub struct IdentityProviderWellKnown {
-  provider_urls : JsValue?
+  provider_urls : Array[String]?
   accounts_endpoint : String?
   login_url : String?
 }
@@ -254,7 +254,7 @@ pub extern "js" fn IdentityProviderIcon::to_js(self : IdentityProviderIcon) -> J
 pub struct IdentityProviderBranding {
   background_color : String?
   color : String?
-  icons : JsValue?
+  icons : Array[IdentityProviderIcon]?
   name : String?
 }
 
@@ -327,10 +327,10 @@ pub struct IdentityProviderAccount {
   username : String?
   given_name : String?
   picture : String?
-  approved_clients : JsValue?
-  login_hints : JsValue?
-  domain_hints : JsValue?
-  label_hints : JsValue?
+  approved_clients : Array[String]?
+  login_hints : Array[String]?
+  domain_hints : Array[String]?
+  label_hints : Array[String]?
 }
 
 /// Create a new IdentityProviderAccount with default values
@@ -369,7 +369,7 @@ pub extern "js" fn IdentityProviderAccount::to_js(self : IdentityProviderAccount
 ///|
 /// IdentityProviderAccountList dictionary
 pub struct IdentityProviderAccountList {
-  accounts : JsValue?
+  accounts : Array[IdentityProviderAccount]?
 }
 
 /// Create a new IdentityProviderAccountList with default values
@@ -489,7 +489,7 @@ pub type IdentityCredential
 pub extern "js" fn IdentityCredential::to_js_value(self : IdentityCredential) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn IdentityCredential::disconnect(options : IdentityCredentialDisconnectOptions) -> JsValue =
+pub extern "js" fn IdentityCredential::disconnect(options : IdentityCredentialDisconnectOptions) -> Promise[Unit] =
   #| (options) => IdentityCredential.disconnect(options)
 
 pub extern "js" fn IdentityCredential::get_token(self : IdentityCredential) -> JsValue =
@@ -527,9 +527,9 @@ pub extern "js" fn IdentityProvider::to_js_value(self : IdentityProvider) -> JsV
 pub extern "js" fn IdentityProvider::close() -> Unit =
   #| () => IdentityProvider.close()
 
-pub extern "js" fn IdentityProvider::resolve(token : JsValue, options : IdentityResolveOptions) -> JsValue =
+pub extern "js" fn IdentityProvider::resolve(token : JsValue, options : IdentityResolveOptions) -> Promise[Unit] =
   #| (token, options) => IdentityProvider.resolve(token, options)
 
-pub extern "js" fn IdentityProvider::get_user_info(config : IdentityProviderConfig) -> JsValue =
+pub extern "js" fn IdentityProvider::get_user_info(config : IdentityProviderConfig) -> Promise[Array[IdentityUserInfo]] =
   #| (config) => IdentityProvider.getUserInfo(config)
 

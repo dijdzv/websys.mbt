@@ -3,7 +3,7 @@
 
 ///|
 /// CookieList typedef
-pub type CookieList = JsValue
+pub type CookieList = Array[CookieListItem]
 
 ///|
 /// CookieSameSite enum
@@ -195,16 +195,16 @@ pub type CookieStore
 pub extern "js" fn CookieStore::to_js_value(self : CookieStore) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn CookieStore::get(self : CookieStore, name : String) -> JsValue =
+pub extern "js" fn CookieStore::get(self : CookieStore, name : String) -> Promise[CookieListItem?] =
   #| (self, name) => self.get(name)
 
-pub extern "js" fn CookieStore::get_all(self : CookieStore, name : String) -> JsValue =
+pub extern "js" fn CookieStore::get_all(self : CookieStore, name : String) -> Promise[CookieList] =
   #| (self, name) => self.getAll(name)
 
-pub extern "js" fn CookieStore::set(self : CookieStore, name : String, value : String) -> JsValue =
+pub extern "js" fn CookieStore::set(self : CookieStore, name : String, value : String) -> Promise[Unit] =
   #| (self, name, value) => self.set(name, value)
 
-pub extern "js" fn CookieStore::delete(self : CookieStore, name : String) -> JsValue =
+pub extern "js" fn CookieStore::delete(self : CookieStore, name : String) -> Promise[Unit] =
   #| (self, name) => self.delete(name)
 
 pub extern "js" fn CookieStore::get_onchange(self : CookieStore) -> EventHandler =
@@ -220,13 +220,13 @@ pub type CookieStoreManager
 pub extern "js" fn CookieStoreManager::to_js_value(self : CookieStoreManager) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn CookieStoreManager::subscribe(self : CookieStoreManager, subscriptions : JsValue) -> JsValue =
+pub extern "js" fn CookieStoreManager::subscribe(self : CookieStoreManager, subscriptions : Array[CookieStoreGetOptions]) -> Promise[Unit] =
   #| (self, subscriptions) => self.subscribe(subscriptions)
 
-pub extern "js" fn CookieStoreManager::get_subscriptions(self : CookieStoreManager) -> JsValue =
+pub extern "js" fn CookieStoreManager::get_subscriptions(self : CookieStoreManager) -> Promise[Array[CookieStoreGetOptions]] =
   #| (self) => self.getSubscriptions()
 
-pub extern "js" fn CookieStoreManager::unsubscribe(self : CookieStoreManager, subscriptions : JsValue) -> JsValue =
+pub extern "js" fn CookieStoreManager::unsubscribe(self : CookieStoreManager, subscriptions : Array[CookieStoreGetOptions]) -> Promise[Unit] =
   #| (self, subscriptions) => self.unsubscribe(subscriptions)
 
 ///|

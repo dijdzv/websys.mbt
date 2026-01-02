@@ -968,11 +968,19 @@ pub fn WorkerType::from_string(s : String) -> WorkerType? {
 /// BlobCallback callback interface
 pub type BlobCallback
 
+/// Create BlobCallback from a MoonBit function
+pub extern "js" fn BlobCallback::from_fn(handler : (Blob?) -> Unit) -> BlobCallback =
+  #| (handler) => handler
+
 /// CustomElementConstructor callback interface
 pub type CustomElementConstructor
 
 /// FunctionStringCallback callback interface
 pub type FunctionStringCallback
+
+/// Create FunctionStringCallback from a MoonBit function
+pub extern "js" fn FunctionStringCallback::from_fn(handler : (String) -> Unit) -> FunctionStringCallback =
+  #| (handler) => handler
 
 /// NavigationInterceptHandler callback interface
 pub type NavigationInterceptHandler
@@ -980,17 +988,37 @@ pub type NavigationInterceptHandler
 /// NavigationPrecommitHandler callback interface
 pub type NavigationPrecommitHandler
 
+/// Create NavigationPrecommitHandler from a MoonBit function
+pub extern "js" fn NavigationPrecommitHandler::from_fn(handler : (NavigationPrecommitController) -> Promise[Unit]) -> NavigationPrecommitHandler =
+  #| (handler) => handler
+
 /// EventHandlerNonNull callback interface
 pub type EventHandlerNonNull
+
+/// Create EventHandlerNonNull from a MoonBit function
+pub extern "js" fn EventHandlerNonNull::from_fn(handler : (Event) -> JsValue) -> EventHandlerNonNull =
+  #| (handler) => handler
 
 /// OnErrorEventHandlerNonNull callback interface
 pub type OnErrorEventHandlerNonNull
 
+/// Create OnErrorEventHandlerNonNull from a MoonBit function
+pub extern "js" fn OnErrorEventHandlerNonNull::from_fn(handler : (JsValue, String, Int, Int, JsValue) -> JsValue) -> OnErrorEventHandlerNonNull =
+  #| (handler) => handler
+
 /// OnBeforeUnloadEventHandlerNonNull callback interface
 pub type OnBeforeUnloadEventHandlerNonNull
 
+/// Create OnBeforeUnloadEventHandlerNonNull from a MoonBit function
+pub extern "js" fn OnBeforeUnloadEventHandlerNonNull::from_fn(handler : (Event) -> String?) -> OnBeforeUnloadEventHandlerNonNull =
+  #| (handler) => handler
+
 /// FrameRequestCallback callback interface
 pub type FrameRequestCallback
+
+/// Create FrameRequestCallback from a MoonBit function
+pub extern "js" fn FrameRequestCallback::from_fn(handler : (DOMHighResTimeStamp) -> Unit) -> FrameRequestCallback =
+  #| (handler) => handler
 
 ///|
 /// ShowPopoverOptions dictionary
@@ -1356,7 +1384,7 @@ pub extern "js" fn DragEventInit::to_js(self : DragEventInit) -> JsValue =
 ///|
 /// WindowPostMessageOptions dictionary
 pub struct WindowPostMessageOptions {
-  transfer : JsValue?
+  transfer : Array[JsValue]?
   targetOrigin : String?
 }
 
@@ -1463,8 +1491,8 @@ pub extern "js" fn NavigationReloadOptions::to_js(self : NavigationReloadOptions
 ///|
 /// NavigationResult dictionary
 pub struct NavigationResult {
-  committed : JsValue?
-  finished : JsValue?
+  committed : Promise[NavigationHistoryEntry]?
+  finished : Promise[NavigationHistoryEntry]?
 }
 
 /// Create a new NavigationResult with default values
@@ -1742,7 +1770,7 @@ pub extern "js" fn PromiseRejectionEventInit::to_js(self : PromiseRejectionEvent
 /// GetHTMLOptions dictionary
 pub struct GetHTMLOptions {
   serializableShadowRoots : Bool?
-  shadowRoots : JsValue?
+  shadowRoots : Array[ShadowRoot]?
 }
 
 /// Create a new GetHTMLOptions with default values
@@ -1823,7 +1851,7 @@ pub struct MessageEventInit {
   origin : String?
   lastEventId : String?
   source : MessageEventSource??
-  ports : JsValue?
+  ports : Array[MessagePort]?
 }
 
 /// Create a new MessageEventInit with default values
@@ -1869,7 +1897,7 @@ pub extern "js" fn EventSourceInit::to_js(self : EventSourceInit) -> JsValue =
 ///|
 /// StructuredSerializeOptions dictionary
 pub struct StructuredSerializeOptions {
-  transfer : JsValue?
+  transfer : Array[JsValue]?
 }
 
 /// Create a new StructuredSerializeOptions with default values
@@ -1979,7 +2007,10 @@ pub extern "js" fn HTMLAllCollection::named_item(self : HTMLAllCollection, name 
 pub extern "js" fn HTMLAllCollection::get_named(self : HTMLAllCollection, name : String) -> JsValue =
   #| (self, name) => self[name]
 
-pub extern "js" fn HTMLAllCollection::item(self : HTMLAllCollection, name_or_index : String) -> JsValue =
+pub extern "js" fn HTMLAllCollection::item(self : HTMLAllCollection) -> JsValue =
+  #| (self) => self.item()
+
+pub extern "js" fn HTMLAllCollection::item_with_name_or_index(self : HTMLAllCollection, name_or_index : String) -> JsValue =
   #| (self, name_or_index) => self.item(name_or_index)
 
 ///|
@@ -2024,7 +2055,10 @@ pub extern "js" fn HTMLOptionsCollection::set_length(self : HTMLOptionsCollectio
 pub extern "js" fn HTMLOptionsCollection::set(self : HTMLOptionsCollection, index : Int, option : HTMLOptionElement?) -> Unit =
   #| (self, index, option) => { self[index] = option }
 
-pub extern "js" fn HTMLOptionsCollection::add(self : HTMLOptionsCollection, element : JsValue, before : JsValue) -> Unit =
+pub extern "js" fn HTMLOptionsCollection::add(self : HTMLOptionsCollection, element : JsValue) -> Unit =
+  #| (self, element) => self.add(element)
+
+pub extern "js" fn HTMLOptionsCollection::add_with_before(self : HTMLOptionsCollection, element : JsValue, before : JsValue) -> Unit =
   #| (self, element, before) => self.add(element, before)
 
 pub extern "js" fn HTMLOptionsCollection::remove(self : HTMLOptionsCollection, index : Int) -> Unit =
@@ -2158,13 +2192,19 @@ pub extern "js" fn HTMLElement::set_outer_text(self : HTMLElement, value : Strin
 pub extern "js" fn HTMLElement::attach_internals(self : HTMLElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLElement::show_popover(self : HTMLElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLElement::show_popover(self : HTMLElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLElement::show_popover_with_options(self : HTMLElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLElement::hide_popover(self : HTMLElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLElement::toggle_popover(self : HTMLElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLElement::toggle_popover(self : HTMLElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLElement::toggle_popover_with_options(self : HTMLElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLElement::get_popover(self : HTMLElement) -> String? =
@@ -2893,7 +2933,10 @@ pub extern "js" fn HTMLElement::get_tab_index(self : HTMLElement) -> Int =
 pub extern "js" fn HTMLElement::set_tab_index(self : HTMLElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLElement::focus(self : HTMLElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLElement::focus(self : HTMLElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLElement::focus_with_options(self : HTMLElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLElement::blur(self : HTMLElement) -> Unit =
@@ -3002,13 +3045,19 @@ pub extern "js" fn HTMLUnknownElement::set_outer_text(self : HTMLUnknownElement,
 pub extern "js" fn HTMLUnknownElement::attach_internals(self : HTMLUnknownElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLUnknownElement::show_popover(self : HTMLUnknownElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLUnknownElement::show_popover(self : HTMLUnknownElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLUnknownElement::show_popover_with_options(self : HTMLUnknownElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLUnknownElement::hide_popover(self : HTMLUnknownElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLUnknownElement::toggle_popover(self : HTMLUnknownElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLUnknownElement::toggle_popover(self : HTMLUnknownElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLUnknownElement::toggle_popover_with_options(self : HTMLUnknownElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLUnknownElement::get_popover(self : HTMLUnknownElement) -> String? =
@@ -3737,7 +3786,10 @@ pub extern "js" fn HTMLUnknownElement::get_tab_index(self : HTMLUnknownElement) 
 pub extern "js" fn HTMLUnknownElement::set_tab_index(self : HTMLUnknownElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLUnknownElement::focus(self : HTMLUnknownElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLUnknownElement::focus(self : HTMLUnknownElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLUnknownElement::focus_with_options(self : HTMLUnknownElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLUnknownElement::blur(self : HTMLUnknownElement) -> Unit =
@@ -3862,13 +3914,19 @@ pub extern "js" fn HTMLHtmlElement::set_outer_text(self : HTMLHtmlElement, value
 pub extern "js" fn HTMLHtmlElement::attach_internals(self : HTMLHtmlElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLHtmlElement::show_popover(self : HTMLHtmlElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLHtmlElement::show_popover(self : HTMLHtmlElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLHtmlElement::show_popover_with_options(self : HTMLHtmlElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLHtmlElement::hide_popover(self : HTMLHtmlElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLHtmlElement::toggle_popover(self : HTMLHtmlElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLHtmlElement::toggle_popover(self : HTMLHtmlElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLHtmlElement::toggle_popover_with_options(self : HTMLHtmlElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLHtmlElement::get_popover(self : HTMLHtmlElement) -> String? =
@@ -4597,7 +4655,10 @@ pub extern "js" fn HTMLHtmlElement::get_tab_index(self : HTMLHtmlElement) -> Int
 pub extern "js" fn HTMLHtmlElement::set_tab_index(self : HTMLHtmlElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLHtmlElement::focus(self : HTMLHtmlElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLHtmlElement::focus(self : HTMLHtmlElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLHtmlElement::focus_with_options(self : HTMLHtmlElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLHtmlElement::blur(self : HTMLHtmlElement) -> Unit =
@@ -4712,13 +4773,19 @@ pub extern "js" fn HTMLHeadElement::set_outer_text(self : HTMLHeadElement, value
 pub extern "js" fn HTMLHeadElement::attach_internals(self : HTMLHeadElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLHeadElement::show_popover(self : HTMLHeadElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLHeadElement::show_popover(self : HTMLHeadElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLHeadElement::show_popover_with_options(self : HTMLHeadElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLHeadElement::hide_popover(self : HTMLHeadElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLHeadElement::toggle_popover(self : HTMLHeadElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLHeadElement::toggle_popover(self : HTMLHeadElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLHeadElement::toggle_popover_with_options(self : HTMLHeadElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLHeadElement::get_popover(self : HTMLHeadElement) -> String? =
@@ -5447,7 +5514,10 @@ pub extern "js" fn HTMLHeadElement::get_tab_index(self : HTMLHeadElement) -> Int
 pub extern "js" fn HTMLHeadElement::set_tab_index(self : HTMLHeadElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLHeadElement::focus(self : HTMLHeadElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLHeadElement::focus(self : HTMLHeadElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLHeadElement::focus_with_options(self : HTMLHeadElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLHeadElement::blur(self : HTMLHeadElement) -> Unit =
@@ -5556,13 +5626,19 @@ pub extern "js" fn HTMLTitleElement::set_outer_text(self : HTMLTitleElement, val
 pub extern "js" fn HTMLTitleElement::attach_internals(self : HTMLTitleElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLTitleElement::show_popover(self : HTMLTitleElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLTitleElement::show_popover(self : HTMLTitleElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLTitleElement::show_popover_with_options(self : HTMLTitleElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLTitleElement::hide_popover(self : HTMLTitleElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLTitleElement::toggle_popover(self : HTMLTitleElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLTitleElement::toggle_popover(self : HTMLTitleElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLTitleElement::toggle_popover_with_options(self : HTMLTitleElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLTitleElement::get_popover(self : HTMLTitleElement) -> String? =
@@ -6291,7 +6367,10 @@ pub extern "js" fn HTMLTitleElement::get_tab_index(self : HTMLTitleElement) -> I
 pub extern "js" fn HTMLTitleElement::set_tab_index(self : HTMLTitleElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLTitleElement::focus(self : HTMLTitleElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLTitleElement::focus(self : HTMLTitleElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLTitleElement::focus_with_options(self : HTMLTitleElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLTitleElement::blur(self : HTMLTitleElement) -> Unit =
@@ -6406,13 +6485,19 @@ pub extern "js" fn HTMLBaseElement::set_outer_text(self : HTMLBaseElement, value
 pub extern "js" fn HTMLBaseElement::attach_internals(self : HTMLBaseElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLBaseElement::show_popover(self : HTMLBaseElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLBaseElement::show_popover(self : HTMLBaseElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLBaseElement::show_popover_with_options(self : HTMLBaseElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLBaseElement::hide_popover(self : HTMLBaseElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLBaseElement::toggle_popover(self : HTMLBaseElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLBaseElement::toggle_popover(self : HTMLBaseElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLBaseElement::toggle_popover_with_options(self : HTMLBaseElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLBaseElement::get_popover(self : HTMLBaseElement) -> String? =
@@ -7141,7 +7226,10 @@ pub extern "js" fn HTMLBaseElement::get_tab_index(self : HTMLBaseElement) -> Int
 pub extern "js" fn HTMLBaseElement::set_tab_index(self : HTMLBaseElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLBaseElement::focus(self : HTMLBaseElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLBaseElement::focus(self : HTMLBaseElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLBaseElement::focus_with_options(self : HTMLBaseElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLBaseElement::blur(self : HTMLBaseElement) -> Unit =
@@ -7262,13 +7350,19 @@ pub extern "js" fn HTMLLinkElement::set_outer_text(self : HTMLLinkElement, value
 pub extern "js" fn HTMLLinkElement::attach_internals(self : HTMLLinkElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLLinkElement::show_popover(self : HTMLLinkElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLLinkElement::show_popover(self : HTMLLinkElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLLinkElement::show_popover_with_options(self : HTMLLinkElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLLinkElement::hide_popover(self : HTMLLinkElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLLinkElement::toggle_popover(self : HTMLLinkElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLLinkElement::toggle_popover(self : HTMLLinkElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLLinkElement::toggle_popover_with_options(self : HTMLLinkElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLLinkElement::get_popover(self : HTMLLinkElement) -> String? =
@@ -7997,7 +8091,10 @@ pub extern "js" fn HTMLLinkElement::get_tab_index(self : HTMLLinkElement) -> Int
 pub extern "js" fn HTMLLinkElement::set_tab_index(self : HTMLLinkElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLLinkElement::focus(self : HTMLLinkElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLLinkElement::focus(self : HTMLLinkElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLLinkElement::focus_with_options(self : HTMLLinkElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLLinkElement::blur(self : HTMLLinkElement) -> Unit =
@@ -8214,13 +8311,19 @@ pub extern "js" fn HTMLMetaElement::set_outer_text(self : HTMLMetaElement, value
 pub extern "js" fn HTMLMetaElement::attach_internals(self : HTMLMetaElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLMetaElement::show_popover(self : HTMLMetaElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLMetaElement::show_popover(self : HTMLMetaElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLMetaElement::show_popover_with_options(self : HTMLMetaElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLMetaElement::hide_popover(self : HTMLMetaElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLMetaElement::toggle_popover(self : HTMLMetaElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLMetaElement::toggle_popover(self : HTMLMetaElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLMetaElement::toggle_popover_with_options(self : HTMLMetaElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLMetaElement::get_popover(self : HTMLMetaElement) -> String? =
@@ -8949,7 +9052,10 @@ pub extern "js" fn HTMLMetaElement::get_tab_index(self : HTMLMetaElement) -> Int
 pub extern "js" fn HTMLMetaElement::set_tab_index(self : HTMLMetaElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLMetaElement::focus(self : HTMLMetaElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLMetaElement::focus(self : HTMLMetaElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLMetaElement::focus_with_options(self : HTMLMetaElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLMetaElement::blur(self : HTMLMetaElement) -> Unit =
@@ -9088,13 +9194,19 @@ pub extern "js" fn HTMLStyleElement::set_outer_text(self : HTMLStyleElement, val
 pub extern "js" fn HTMLStyleElement::attach_internals(self : HTMLStyleElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLStyleElement::show_popover(self : HTMLStyleElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLStyleElement::show_popover(self : HTMLStyleElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLStyleElement::show_popover_with_options(self : HTMLStyleElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLStyleElement::hide_popover(self : HTMLStyleElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLStyleElement::toggle_popover(self : HTMLStyleElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLStyleElement::toggle_popover(self : HTMLStyleElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLStyleElement::toggle_popover_with_options(self : HTMLStyleElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLStyleElement::get_popover(self : HTMLStyleElement) -> String? =
@@ -9823,7 +9935,10 @@ pub extern "js" fn HTMLStyleElement::get_tab_index(self : HTMLStyleElement) -> I
 pub extern "js" fn HTMLStyleElement::set_tab_index(self : HTMLStyleElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLStyleElement::focus(self : HTMLStyleElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLStyleElement::focus(self : HTMLStyleElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLStyleElement::focus_with_options(self : HTMLStyleElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLStyleElement::blur(self : HTMLStyleElement) -> Unit =
@@ -9956,13 +10071,19 @@ pub extern "js" fn HTMLBodyElement::set_outer_text(self : HTMLBodyElement, value
 pub extern "js" fn HTMLBodyElement::attach_internals(self : HTMLBodyElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLBodyElement::show_popover(self : HTMLBodyElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLBodyElement::show_popover(self : HTMLBodyElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLBodyElement::show_popover_with_options(self : HTMLBodyElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLBodyElement::hide_popover(self : HTMLBodyElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLBodyElement::toggle_popover(self : HTMLBodyElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLBodyElement::toggle_popover(self : HTMLBodyElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLBodyElement::toggle_popover_with_options(self : HTMLBodyElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLBodyElement::get_popover(self : HTMLBodyElement) -> String? =
@@ -10691,7 +10812,10 @@ pub extern "js" fn HTMLBodyElement::get_tab_index(self : HTMLBodyElement) -> Int
 pub extern "js" fn HTMLBodyElement::set_tab_index(self : HTMLBodyElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLBodyElement::focus(self : HTMLBodyElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLBodyElement::focus(self : HTMLBodyElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLBodyElement::focus_with_options(self : HTMLBodyElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLBodyElement::blur(self : HTMLBodyElement) -> Unit =
@@ -10968,13 +11092,19 @@ pub extern "js" fn HTMLHeadingElement::set_outer_text(self : HTMLHeadingElement,
 pub extern "js" fn HTMLHeadingElement::attach_internals(self : HTMLHeadingElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLHeadingElement::show_popover(self : HTMLHeadingElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLHeadingElement::show_popover(self : HTMLHeadingElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLHeadingElement::show_popover_with_options(self : HTMLHeadingElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLHeadingElement::hide_popover(self : HTMLHeadingElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLHeadingElement::toggle_popover(self : HTMLHeadingElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLHeadingElement::toggle_popover(self : HTMLHeadingElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLHeadingElement::toggle_popover_with_options(self : HTMLHeadingElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLHeadingElement::get_popover(self : HTMLHeadingElement) -> String? =
@@ -11703,7 +11833,10 @@ pub extern "js" fn HTMLHeadingElement::get_tab_index(self : HTMLHeadingElement) 
 pub extern "js" fn HTMLHeadingElement::set_tab_index(self : HTMLHeadingElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLHeadingElement::focus(self : HTMLHeadingElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLHeadingElement::focus(self : HTMLHeadingElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLHeadingElement::focus_with_options(self : HTMLHeadingElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLHeadingElement::blur(self : HTMLHeadingElement) -> Unit =
@@ -11818,13 +11951,19 @@ pub extern "js" fn HTMLParagraphElement::set_outer_text(self : HTMLParagraphElem
 pub extern "js" fn HTMLParagraphElement::attach_internals(self : HTMLParagraphElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLParagraphElement::show_popover(self : HTMLParagraphElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLParagraphElement::show_popover(self : HTMLParagraphElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLParagraphElement::show_popover_with_options(self : HTMLParagraphElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLParagraphElement::hide_popover(self : HTMLParagraphElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLParagraphElement::toggle_popover(self : HTMLParagraphElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLParagraphElement::toggle_popover(self : HTMLParagraphElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLParagraphElement::toggle_popover_with_options(self : HTMLParagraphElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLParagraphElement::get_popover(self : HTMLParagraphElement) -> String? =
@@ -12553,7 +12692,10 @@ pub extern "js" fn HTMLParagraphElement::get_tab_index(self : HTMLParagraphEleme
 pub extern "js" fn HTMLParagraphElement::set_tab_index(self : HTMLParagraphElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLParagraphElement::focus(self : HTMLParagraphElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLParagraphElement::focus(self : HTMLParagraphElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLParagraphElement::focus_with_options(self : HTMLParagraphElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLParagraphElement::blur(self : HTMLParagraphElement) -> Unit =
@@ -12668,13 +12810,19 @@ pub extern "js" fn HTMLHRElement::set_outer_text(self : HTMLHRElement, value : S
 pub extern "js" fn HTMLHRElement::attach_internals(self : HTMLHRElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLHRElement::show_popover(self : HTMLHRElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLHRElement::show_popover(self : HTMLHRElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLHRElement::show_popover_with_options(self : HTMLHRElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLHRElement::hide_popover(self : HTMLHRElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLHRElement::toggle_popover(self : HTMLHRElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLHRElement::toggle_popover(self : HTMLHRElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLHRElement::toggle_popover_with_options(self : HTMLHRElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLHRElement::get_popover(self : HTMLHRElement) -> String? =
@@ -13403,7 +13551,10 @@ pub extern "js" fn HTMLHRElement::get_tab_index(self : HTMLHRElement) -> Int =
 pub extern "js" fn HTMLHRElement::set_tab_index(self : HTMLHRElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLHRElement::focus(self : HTMLHRElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLHRElement::focus(self : HTMLHRElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLHRElement::focus_with_options(self : HTMLHRElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLHRElement::blur(self : HTMLHRElement) -> Unit =
@@ -13542,13 +13693,19 @@ pub extern "js" fn HTMLPreElement::set_outer_text(self : HTMLPreElement, value :
 pub extern "js" fn HTMLPreElement::attach_internals(self : HTMLPreElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLPreElement::show_popover(self : HTMLPreElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLPreElement::show_popover(self : HTMLPreElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLPreElement::show_popover_with_options(self : HTMLPreElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLPreElement::hide_popover(self : HTMLPreElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLPreElement::toggle_popover(self : HTMLPreElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLPreElement::toggle_popover(self : HTMLPreElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLPreElement::toggle_popover_with_options(self : HTMLPreElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLPreElement::get_popover(self : HTMLPreElement) -> String? =
@@ -14277,7 +14434,10 @@ pub extern "js" fn HTMLPreElement::get_tab_index(self : HTMLPreElement) -> Int =
 pub extern "js" fn HTMLPreElement::set_tab_index(self : HTMLPreElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLPreElement::focus(self : HTMLPreElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLPreElement::focus(self : HTMLPreElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLPreElement::focus_with_options(self : HTMLPreElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLPreElement::blur(self : HTMLPreElement) -> Unit =
@@ -14392,13 +14552,19 @@ pub extern "js" fn HTMLQuoteElement::set_outer_text(self : HTMLQuoteElement, val
 pub extern "js" fn HTMLQuoteElement::attach_internals(self : HTMLQuoteElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLQuoteElement::show_popover(self : HTMLQuoteElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLQuoteElement::show_popover(self : HTMLQuoteElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLQuoteElement::show_popover_with_options(self : HTMLQuoteElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLQuoteElement::hide_popover(self : HTMLQuoteElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLQuoteElement::toggle_popover(self : HTMLQuoteElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLQuoteElement::toggle_popover(self : HTMLQuoteElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLQuoteElement::toggle_popover_with_options(self : HTMLQuoteElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLQuoteElement::get_popover(self : HTMLQuoteElement) -> String? =
@@ -15127,7 +15293,10 @@ pub extern "js" fn HTMLQuoteElement::get_tab_index(self : HTMLQuoteElement) -> I
 pub extern "js" fn HTMLQuoteElement::set_tab_index(self : HTMLQuoteElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLQuoteElement::focus(self : HTMLQuoteElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLQuoteElement::focus(self : HTMLQuoteElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLQuoteElement::focus_with_options(self : HTMLQuoteElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLQuoteElement::blur(self : HTMLQuoteElement) -> Unit =
@@ -15242,13 +15411,19 @@ pub extern "js" fn HTMLOListElement::set_outer_text(self : HTMLOListElement, val
 pub extern "js" fn HTMLOListElement::attach_internals(self : HTMLOListElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLOListElement::show_popover(self : HTMLOListElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLOListElement::show_popover(self : HTMLOListElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLOListElement::show_popover_with_options(self : HTMLOListElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLOListElement::hide_popover(self : HTMLOListElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLOListElement::toggle_popover(self : HTMLOListElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLOListElement::toggle_popover(self : HTMLOListElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLOListElement::toggle_popover_with_options(self : HTMLOListElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLOListElement::get_popover(self : HTMLOListElement) -> String? =
@@ -15977,7 +16152,10 @@ pub extern "js" fn HTMLOListElement::get_tab_index(self : HTMLOListElement) -> I
 pub extern "js" fn HTMLOListElement::set_tab_index(self : HTMLOListElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLOListElement::focus(self : HTMLOListElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLOListElement::focus(self : HTMLOListElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLOListElement::focus_with_options(self : HTMLOListElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLOListElement::blur(self : HTMLOListElement) -> Unit =
@@ -16110,13 +16288,19 @@ pub extern "js" fn HTMLUListElement::set_outer_text(self : HTMLUListElement, val
 pub extern "js" fn HTMLUListElement::attach_internals(self : HTMLUListElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLUListElement::show_popover(self : HTMLUListElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLUListElement::show_popover(self : HTMLUListElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLUListElement::show_popover_with_options(self : HTMLUListElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLUListElement::hide_popover(self : HTMLUListElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLUListElement::toggle_popover(self : HTMLUListElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLUListElement::toggle_popover(self : HTMLUListElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLUListElement::toggle_popover_with_options(self : HTMLUListElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLUListElement::get_popover(self : HTMLUListElement) -> String? =
@@ -16845,7 +17029,10 @@ pub extern "js" fn HTMLUListElement::get_tab_index(self : HTMLUListElement) -> I
 pub extern "js" fn HTMLUListElement::set_tab_index(self : HTMLUListElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLUListElement::focus(self : HTMLUListElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLUListElement::focus(self : HTMLUListElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLUListElement::focus_with_options(self : HTMLUListElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLUListElement::blur(self : HTMLUListElement) -> Unit =
@@ -16966,13 +17153,19 @@ pub extern "js" fn HTMLMenuElement::set_outer_text(self : HTMLMenuElement, value
 pub extern "js" fn HTMLMenuElement::attach_internals(self : HTMLMenuElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLMenuElement::show_popover(self : HTMLMenuElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLMenuElement::show_popover(self : HTMLMenuElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLMenuElement::show_popover_with_options(self : HTMLMenuElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLMenuElement::hide_popover(self : HTMLMenuElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLMenuElement::toggle_popover(self : HTMLMenuElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLMenuElement::toggle_popover(self : HTMLMenuElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLMenuElement::toggle_popover_with_options(self : HTMLMenuElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLMenuElement::get_popover(self : HTMLMenuElement) -> String? =
@@ -17701,7 +17894,10 @@ pub extern "js" fn HTMLMenuElement::get_tab_index(self : HTMLMenuElement) -> Int
 pub extern "js" fn HTMLMenuElement::set_tab_index(self : HTMLMenuElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLMenuElement::focus(self : HTMLMenuElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLMenuElement::focus(self : HTMLMenuElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLMenuElement::focus_with_options(self : HTMLMenuElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLMenuElement::blur(self : HTMLMenuElement) -> Unit =
@@ -17816,13 +18012,19 @@ pub extern "js" fn HTMLLIElement::set_outer_text(self : HTMLLIElement, value : S
 pub extern "js" fn HTMLLIElement::attach_internals(self : HTMLLIElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLLIElement::show_popover(self : HTMLLIElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLLIElement::show_popover(self : HTMLLIElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLLIElement::show_popover_with_options(self : HTMLLIElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLLIElement::hide_popover(self : HTMLLIElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLLIElement::toggle_popover(self : HTMLLIElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLLIElement::toggle_popover(self : HTMLLIElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLLIElement::toggle_popover_with_options(self : HTMLLIElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLLIElement::get_popover(self : HTMLLIElement) -> String? =
@@ -18551,7 +18753,10 @@ pub extern "js" fn HTMLLIElement::get_tab_index(self : HTMLLIElement) -> Int =
 pub extern "js" fn HTMLLIElement::set_tab_index(self : HTMLLIElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLLIElement::focus(self : HTMLLIElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLLIElement::focus(self : HTMLLIElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLLIElement::focus_with_options(self : HTMLLIElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLLIElement::blur(self : HTMLLIElement) -> Unit =
@@ -18672,13 +18877,19 @@ pub extern "js" fn HTMLDListElement::set_outer_text(self : HTMLDListElement, val
 pub extern "js" fn HTMLDListElement::attach_internals(self : HTMLDListElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLDListElement::show_popover(self : HTMLDListElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLDListElement::show_popover(self : HTMLDListElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLDListElement::show_popover_with_options(self : HTMLDListElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLDListElement::hide_popover(self : HTMLDListElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLDListElement::toggle_popover(self : HTMLDListElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLDListElement::toggle_popover(self : HTMLDListElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLDListElement::toggle_popover_with_options(self : HTMLDListElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLDListElement::get_popover(self : HTMLDListElement) -> String? =
@@ -19407,7 +19618,10 @@ pub extern "js" fn HTMLDListElement::get_tab_index(self : HTMLDListElement) -> I
 pub extern "js" fn HTMLDListElement::set_tab_index(self : HTMLDListElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLDListElement::focus(self : HTMLDListElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLDListElement::focus(self : HTMLDListElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLDListElement::focus_with_options(self : HTMLDListElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLDListElement::blur(self : HTMLDListElement) -> Unit =
@@ -19522,13 +19736,19 @@ pub extern "js" fn HTMLDivElement::set_outer_text(self : HTMLDivElement, value :
 pub extern "js" fn HTMLDivElement::attach_internals(self : HTMLDivElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLDivElement::show_popover(self : HTMLDivElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLDivElement::show_popover(self : HTMLDivElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLDivElement::show_popover_with_options(self : HTMLDivElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLDivElement::hide_popover(self : HTMLDivElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLDivElement::toggle_popover(self : HTMLDivElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLDivElement::toggle_popover(self : HTMLDivElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLDivElement::toggle_popover_with_options(self : HTMLDivElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLDivElement::get_popover(self : HTMLDivElement) -> String? =
@@ -20257,7 +20477,10 @@ pub extern "js" fn HTMLDivElement::get_tab_index(self : HTMLDivElement) -> Int =
 pub extern "js" fn HTMLDivElement::set_tab_index(self : HTMLDivElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLDivElement::focus(self : HTMLDivElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLDivElement::focus(self : HTMLDivElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLDivElement::focus_with_options(self : HTMLDivElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLDivElement::blur(self : HTMLDivElement) -> Unit =
@@ -20372,13 +20595,19 @@ pub extern "js" fn HTMLAnchorElement::set_outer_text(self : HTMLAnchorElement, v
 pub extern "js" fn HTMLAnchorElement::attach_internals(self : HTMLAnchorElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLAnchorElement::show_popover(self : HTMLAnchorElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLAnchorElement::show_popover(self : HTMLAnchorElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLAnchorElement::show_popover_with_options(self : HTMLAnchorElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLAnchorElement::hide_popover(self : HTMLAnchorElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLAnchorElement::toggle_popover(self : HTMLAnchorElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLAnchorElement::toggle_popover(self : HTMLAnchorElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLAnchorElement::toggle_popover_with_options(self : HTMLAnchorElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLAnchorElement::get_popover(self : HTMLAnchorElement) -> String? =
@@ -21107,7 +21336,10 @@ pub extern "js" fn HTMLAnchorElement::get_tab_index(self : HTMLAnchorElement) ->
 pub extern "js" fn HTMLAnchorElement::set_tab_index(self : HTMLAnchorElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLAnchorElement::focus(self : HTMLAnchorElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLAnchorElement::focus(self : HTMLAnchorElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLAnchorElement::focus_with_options(self : HTMLAnchorElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLAnchorElement::blur(self : HTMLAnchorElement) -> Unit =
@@ -21372,13 +21604,19 @@ pub extern "js" fn HTMLDataElement::set_outer_text(self : HTMLDataElement, value
 pub extern "js" fn HTMLDataElement::attach_internals(self : HTMLDataElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLDataElement::show_popover(self : HTMLDataElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLDataElement::show_popover(self : HTMLDataElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLDataElement::show_popover_with_options(self : HTMLDataElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLDataElement::hide_popover(self : HTMLDataElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLDataElement::toggle_popover(self : HTMLDataElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLDataElement::toggle_popover(self : HTMLDataElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLDataElement::toggle_popover_with_options(self : HTMLDataElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLDataElement::get_popover(self : HTMLDataElement) -> String? =
@@ -22107,7 +22345,10 @@ pub extern "js" fn HTMLDataElement::get_tab_index(self : HTMLDataElement) -> Int
 pub extern "js" fn HTMLDataElement::set_tab_index(self : HTMLDataElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLDataElement::focus(self : HTMLDataElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLDataElement::focus(self : HTMLDataElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLDataElement::focus_with_options(self : HTMLDataElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLDataElement::blur(self : HTMLDataElement) -> Unit =
@@ -22222,13 +22463,19 @@ pub extern "js" fn HTMLTimeElement::set_outer_text(self : HTMLTimeElement, value
 pub extern "js" fn HTMLTimeElement::attach_internals(self : HTMLTimeElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLTimeElement::show_popover(self : HTMLTimeElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLTimeElement::show_popover(self : HTMLTimeElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLTimeElement::show_popover_with_options(self : HTMLTimeElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLTimeElement::hide_popover(self : HTMLTimeElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLTimeElement::toggle_popover(self : HTMLTimeElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLTimeElement::toggle_popover(self : HTMLTimeElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLTimeElement::toggle_popover_with_options(self : HTMLTimeElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLTimeElement::get_popover(self : HTMLTimeElement) -> String? =
@@ -22957,7 +23204,10 @@ pub extern "js" fn HTMLTimeElement::get_tab_index(self : HTMLTimeElement) -> Int
 pub extern "js" fn HTMLTimeElement::set_tab_index(self : HTMLTimeElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLTimeElement::focus(self : HTMLTimeElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLTimeElement::focus(self : HTMLTimeElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLTimeElement::focus_with_options(self : HTMLTimeElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLTimeElement::blur(self : HTMLTimeElement) -> Unit =
@@ -23072,13 +23322,19 @@ pub extern "js" fn HTMLSpanElement::set_outer_text(self : HTMLSpanElement, value
 pub extern "js" fn HTMLSpanElement::attach_internals(self : HTMLSpanElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLSpanElement::show_popover(self : HTMLSpanElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLSpanElement::show_popover(self : HTMLSpanElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLSpanElement::show_popover_with_options(self : HTMLSpanElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLSpanElement::hide_popover(self : HTMLSpanElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLSpanElement::toggle_popover(self : HTMLSpanElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLSpanElement::toggle_popover(self : HTMLSpanElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLSpanElement::toggle_popover_with_options(self : HTMLSpanElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLSpanElement::get_popover(self : HTMLSpanElement) -> String? =
@@ -23807,7 +24063,10 @@ pub extern "js" fn HTMLSpanElement::get_tab_index(self : HTMLSpanElement) -> Int
 pub extern "js" fn HTMLSpanElement::set_tab_index(self : HTMLSpanElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLSpanElement::focus(self : HTMLSpanElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLSpanElement::focus(self : HTMLSpanElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLSpanElement::focus_with_options(self : HTMLSpanElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLSpanElement::blur(self : HTMLSpanElement) -> Unit =
@@ -23916,13 +24175,19 @@ pub extern "js" fn HTMLBRElement::set_outer_text(self : HTMLBRElement, value : S
 pub extern "js" fn HTMLBRElement::attach_internals(self : HTMLBRElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLBRElement::show_popover(self : HTMLBRElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLBRElement::show_popover(self : HTMLBRElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLBRElement::show_popover_with_options(self : HTMLBRElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLBRElement::hide_popover(self : HTMLBRElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLBRElement::toggle_popover(self : HTMLBRElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLBRElement::toggle_popover(self : HTMLBRElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLBRElement::toggle_popover_with_options(self : HTMLBRElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLBRElement::get_popover(self : HTMLBRElement) -> String? =
@@ -24651,7 +24916,10 @@ pub extern "js" fn HTMLBRElement::get_tab_index(self : HTMLBRElement) -> Int =
 pub extern "js" fn HTMLBRElement::set_tab_index(self : HTMLBRElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLBRElement::focus(self : HTMLBRElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLBRElement::focus(self : HTMLBRElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLBRElement::focus_with_options(self : HTMLBRElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLBRElement::blur(self : HTMLBRElement) -> Unit =
@@ -24766,13 +25034,19 @@ pub extern "js" fn HTMLModElement::set_outer_text(self : HTMLModElement, value :
 pub extern "js" fn HTMLModElement::attach_internals(self : HTMLModElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLModElement::show_popover(self : HTMLModElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLModElement::show_popover(self : HTMLModElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLModElement::show_popover_with_options(self : HTMLModElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLModElement::hide_popover(self : HTMLModElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLModElement::toggle_popover(self : HTMLModElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLModElement::toggle_popover(self : HTMLModElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLModElement::toggle_popover_with_options(self : HTMLModElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLModElement::get_popover(self : HTMLModElement) -> String? =
@@ -25501,7 +25775,10 @@ pub extern "js" fn HTMLModElement::get_tab_index(self : HTMLModElement) -> Int =
 pub extern "js" fn HTMLModElement::set_tab_index(self : HTMLModElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLModElement::focus(self : HTMLModElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLModElement::focus(self : HTMLModElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLModElement::focus_with_options(self : HTMLModElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLModElement::blur(self : HTMLModElement) -> Unit =
@@ -25622,13 +25899,19 @@ pub extern "js" fn HTMLPictureElement::set_outer_text(self : HTMLPictureElement,
 pub extern "js" fn HTMLPictureElement::attach_internals(self : HTMLPictureElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLPictureElement::show_popover(self : HTMLPictureElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLPictureElement::show_popover(self : HTMLPictureElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLPictureElement::show_popover_with_options(self : HTMLPictureElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLPictureElement::hide_popover(self : HTMLPictureElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLPictureElement::toggle_popover(self : HTMLPictureElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLPictureElement::toggle_popover(self : HTMLPictureElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLPictureElement::toggle_popover_with_options(self : HTMLPictureElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLPictureElement::get_popover(self : HTMLPictureElement) -> String? =
@@ -26357,7 +26640,10 @@ pub extern "js" fn HTMLPictureElement::get_tab_index(self : HTMLPictureElement) 
 pub extern "js" fn HTMLPictureElement::set_tab_index(self : HTMLPictureElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLPictureElement::focus(self : HTMLPictureElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLPictureElement::focus(self : HTMLPictureElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLPictureElement::focus_with_options(self : HTMLPictureElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLPictureElement::blur(self : HTMLPictureElement) -> Unit =
@@ -26466,13 +26752,19 @@ pub extern "js" fn HTMLSourceElement::set_outer_text(self : HTMLSourceElement, v
 pub extern "js" fn HTMLSourceElement::attach_internals(self : HTMLSourceElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLSourceElement::show_popover(self : HTMLSourceElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLSourceElement::show_popover(self : HTMLSourceElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLSourceElement::show_popover_with_options(self : HTMLSourceElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLSourceElement::hide_popover(self : HTMLSourceElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLSourceElement::toggle_popover(self : HTMLSourceElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLSourceElement::toggle_popover(self : HTMLSourceElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLSourceElement::toggle_popover_with_options(self : HTMLSourceElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLSourceElement::get_popover(self : HTMLSourceElement) -> String? =
@@ -27201,7 +27493,10 @@ pub extern "js" fn HTMLSourceElement::get_tab_index(self : HTMLSourceElement) ->
 pub extern "js" fn HTMLSourceElement::set_tab_index(self : HTMLSourceElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLSourceElement::focus(self : HTMLSourceElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLSourceElement::focus(self : HTMLSourceElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLSourceElement::focus_with_options(self : HTMLSourceElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLSourceElement::blur(self : HTMLSourceElement) -> Unit =
@@ -27352,13 +27647,19 @@ pub extern "js" fn HTMLImageElement::set_outer_text(self : HTMLImageElement, val
 pub extern "js" fn HTMLImageElement::attach_internals(self : HTMLImageElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLImageElement::show_popover(self : HTMLImageElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLImageElement::show_popover(self : HTMLImageElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLImageElement::show_popover_with_options(self : HTMLImageElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLImageElement::hide_popover(self : HTMLImageElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLImageElement::toggle_popover(self : HTMLImageElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLImageElement::toggle_popover(self : HTMLImageElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLImageElement::toggle_popover_with_options(self : HTMLImageElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLImageElement::get_popover(self : HTMLImageElement) -> String? =
@@ -28087,7 +28388,10 @@ pub extern "js" fn HTMLImageElement::get_tab_index(self : HTMLImageElement) -> I
 pub extern "js" fn HTMLImageElement::set_tab_index(self : HTMLImageElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLImageElement::focus(self : HTMLImageElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLImageElement::focus(self : HTMLImageElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLImageElement::focus_with_options(self : HTMLImageElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLImageElement::blur(self : HTMLImageElement) -> Unit =
@@ -28183,7 +28487,7 @@ pub extern "js" fn HTMLImageElement::get_fetch_priority(self : HTMLImageElement)
 pub extern "js" fn HTMLImageElement::set_fetch_priority(self : HTMLImageElement, value : String) -> Unit =
   #| (self, value) => { self.fetchPriority = value }
 
-pub extern "js" fn HTMLImageElement::decode(self : HTMLImageElement) -> JsValue =
+pub extern "js" fn HTMLImageElement::decode(self : HTMLImageElement) -> Promise[Unit] =
   #| (self) => self.decode()
 
 pub extern "js" fn HTMLImageElement::get_x(self : HTMLImageElement) -> Int =
@@ -28349,13 +28653,19 @@ pub extern "js" fn HTMLIFrameElement::set_outer_text(self : HTMLIFrameElement, v
 pub extern "js" fn HTMLIFrameElement::attach_internals(self : HTMLIFrameElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLIFrameElement::show_popover(self : HTMLIFrameElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLIFrameElement::show_popover(self : HTMLIFrameElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLIFrameElement::show_popover_with_options(self : HTMLIFrameElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLIFrameElement::hide_popover(self : HTMLIFrameElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLIFrameElement::toggle_popover(self : HTMLIFrameElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLIFrameElement::toggle_popover(self : HTMLIFrameElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLIFrameElement::toggle_popover_with_options(self : HTMLIFrameElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLIFrameElement::get_popover(self : HTMLIFrameElement) -> String? =
@@ -29084,7 +29394,10 @@ pub extern "js" fn HTMLIFrameElement::get_tab_index(self : HTMLIFrameElement) ->
 pub extern "js" fn HTMLIFrameElement::set_tab_index(self : HTMLIFrameElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLIFrameElement::focus(self : HTMLIFrameElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLIFrameElement::focus(self : HTMLIFrameElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLIFrameElement::focus_with_options(self : HTMLIFrameElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLIFrameElement::blur(self : HTMLIFrameElement) -> Unit =
@@ -29328,13 +29641,19 @@ pub extern "js" fn HTMLEmbedElement::set_outer_text(self : HTMLEmbedElement, val
 pub extern "js" fn HTMLEmbedElement::attach_internals(self : HTMLEmbedElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLEmbedElement::show_popover(self : HTMLEmbedElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLEmbedElement::show_popover(self : HTMLEmbedElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLEmbedElement::show_popover_with_options(self : HTMLEmbedElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLEmbedElement::hide_popover(self : HTMLEmbedElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLEmbedElement::toggle_popover(self : HTMLEmbedElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLEmbedElement::toggle_popover(self : HTMLEmbedElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLEmbedElement::toggle_popover_with_options(self : HTMLEmbedElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLEmbedElement::get_popover(self : HTMLEmbedElement) -> String? =
@@ -30063,7 +30382,10 @@ pub extern "js" fn HTMLEmbedElement::get_tab_index(self : HTMLEmbedElement) -> I
 pub extern "js" fn HTMLEmbedElement::set_tab_index(self : HTMLEmbedElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLEmbedElement::focus(self : HTMLEmbedElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLEmbedElement::focus(self : HTMLEmbedElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLEmbedElement::focus_with_options(self : HTMLEmbedElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLEmbedElement::blur(self : HTMLEmbedElement) -> Unit =
@@ -30211,13 +30533,19 @@ pub extern "js" fn HTMLObjectElement::set_outer_text(self : HTMLObjectElement, v
 pub extern "js" fn HTMLObjectElement::attach_internals(self : HTMLObjectElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLObjectElement::show_popover(self : HTMLObjectElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLObjectElement::show_popover(self : HTMLObjectElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLObjectElement::show_popover_with_options(self : HTMLObjectElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLObjectElement::hide_popover(self : HTMLObjectElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLObjectElement::toggle_popover(self : HTMLObjectElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLObjectElement::toggle_popover(self : HTMLObjectElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLObjectElement::toggle_popover_with_options(self : HTMLObjectElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLObjectElement::get_popover(self : HTMLObjectElement) -> String? =
@@ -30946,7 +31274,10 @@ pub extern "js" fn HTMLObjectElement::get_tab_index(self : HTMLObjectElement) ->
 pub extern "js" fn HTMLObjectElement::set_tab_index(self : HTMLObjectElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLObjectElement::focus(self : HTMLObjectElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLObjectElement::focus(self : HTMLObjectElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLObjectElement::focus_with_options(self : HTMLObjectElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLObjectElement::blur(self : HTMLObjectElement) -> Unit =
@@ -31181,13 +31512,19 @@ pub extern "js" fn HTMLVideoElement::set_outer_text(self : HTMLVideoElement, val
 pub extern "js" fn HTMLVideoElement::attach_internals(self : HTMLVideoElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLVideoElement::show_popover(self : HTMLVideoElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLVideoElement::show_popover(self : HTMLVideoElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLVideoElement::show_popover_with_options(self : HTMLVideoElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLVideoElement::hide_popover(self : HTMLVideoElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLVideoElement::toggle_popover(self : HTMLVideoElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLVideoElement::toggle_popover(self : HTMLVideoElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLVideoElement::toggle_popover_with_options(self : HTMLVideoElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLVideoElement::get_popover(self : HTMLVideoElement) -> String? =
@@ -31916,7 +32253,10 @@ pub extern "js" fn HTMLVideoElement::get_tab_index(self : HTMLVideoElement) -> I
 pub extern "js" fn HTMLVideoElement::set_tab_index(self : HTMLVideoElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLVideoElement::focus(self : HTMLVideoElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLVideoElement::focus(self : HTMLVideoElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLVideoElement::focus_with_options(self : HTMLVideoElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLVideoElement::blur(self : HTMLVideoElement) -> Unit =
@@ -31946,6 +32286,18 @@ pub extern "js" fn HTMLVideoElement::get_cross_origin(self : HTMLVideoElement) -
 pub extern "js" fn HTMLVideoElement::set_cross_origin(self : HTMLVideoElement, value : String?) -> Unit =
   #| (self, value) => { self.crossOrigin = value }
 
+// HTMLVideoElement.NETWORK_EMPTY
+pub let h_t_m_l_video_element_network_empty : Int = 0
+
+// HTMLVideoElement.NETWORK_IDLE
+pub let h_t_m_l_video_element_network_idle : Int = 1
+
+// HTMLVideoElement.NETWORK_LOADING
+pub let h_t_m_l_video_element_network_loading : Int = 2
+
+// HTMLVideoElement.NETWORK_NO_SOURCE
+pub let h_t_m_l_video_element_network_no_source : Int = 3
+
 pub extern "js" fn HTMLVideoElement::get_network_state(self : HTMLVideoElement) -> Int =
   #| (self) => self.networkState
 
@@ -31963,6 +32315,21 @@ pub extern "js" fn HTMLVideoElement::load(self : HTMLVideoElement) -> Unit =
 
 pub extern "js" fn HTMLVideoElement::can_play_type(self : HTMLVideoElement, type_ : String) -> CanPlayTypeResult =
   #| (self, type_) => self.canPlayType(type_)
+
+// HTMLVideoElement.HAVE_NOTHING
+pub let h_t_m_l_video_element_have_nothing : Int = 0
+
+// HTMLVideoElement.HAVE_METADATA
+pub let h_t_m_l_video_element_have_metadata : Int = 1
+
+// HTMLVideoElement.HAVE_CURRENT_DATA
+pub let h_t_m_l_video_element_have_current_data : Int = 2
+
+// HTMLVideoElement.HAVE_FUTURE_DATA
+pub let h_t_m_l_video_element_have_future_data : Int = 3
+
+// HTMLVideoElement.HAVE_ENOUGH_DATA
+pub let h_t_m_l_video_element_have_enough_data : Int = 4
 
 pub extern "js" fn HTMLVideoElement::get_ready_state(self : HTMLVideoElement) -> Int =
   #| (self) => self.readyState
@@ -32027,7 +32394,7 @@ pub extern "js" fn HTMLVideoElement::get_loop(self : HTMLVideoElement) -> Bool =
 pub extern "js" fn HTMLVideoElement::set_loop(self : HTMLVideoElement, value : Bool) -> Unit =
   #| (self, value) => { self.loop = value }
 
-pub extern "js" fn HTMLVideoElement::play(self : HTMLVideoElement) -> JsValue =
+pub extern "js" fn HTMLVideoElement::play(self : HTMLVideoElement) -> Promise[Unit] =
   #| (self) => self.play()
 
 pub extern "js" fn HTMLVideoElement::pause(self : HTMLVideoElement) -> Unit =
@@ -32066,13 +32433,16 @@ pub extern "js" fn HTMLVideoElement::get_video_tracks(self : HTMLVideoElement) -
 pub extern "js" fn HTMLVideoElement::get_text_tracks(self : HTMLVideoElement) -> TextTrackList =
   #| (self) => self.textTracks
 
-pub extern "js" fn HTMLVideoElement::add_text_track(self : HTMLVideoElement, kind : TextTrackKind, label : String, language : String) -> TextTrack =
+pub extern "js" fn HTMLVideoElement::add_text_track(self : HTMLVideoElement, kind : TextTrackKind) -> TextTrack =
+  #| (self, kind) => self.addTextTrack(['subtitles', 'captions', 'descriptions', 'chapters', 'metadata'][kind])
+
+pub extern "js" fn HTMLVideoElement::add_text_track_with_language(self : HTMLVideoElement, kind : TextTrackKind, label : String, language : String) -> TextTrack =
   #| (self, kind, label, language) => self.addTextTrack(['subtitles', 'captions', 'descriptions', 'chapters', 'metadata'][kind], label, language)
 
 pub extern "js" fn HTMLVideoElement::get_sink_id(self : HTMLVideoElement) -> String =
   #| (self) => self.sinkId
 
-pub extern "js" fn HTMLVideoElement::set_sink_id(self : HTMLVideoElement, sink_id : String) -> JsValue =
+pub extern "js" fn HTMLVideoElement::set_sink_id(self : HTMLVideoElement, sink_id : String) -> Promise[Unit] =
   #| (self, sink_id) => self.setSinkId(sink_id)
 
 pub extern "js" fn HTMLVideoElement::get_media_keys(self : HTMLVideoElement) -> MediaKeys? =
@@ -32090,7 +32460,7 @@ pub extern "js" fn HTMLVideoElement::get_onwaitingforkey(self : HTMLVideoElement
 pub extern "js" fn HTMLVideoElement::set_onwaitingforkey(self : HTMLVideoElement, value : EventHandler) -> Unit =
   #| (self, value) => { self.onwaitingforkey = value }
 
-pub extern "js" fn HTMLVideoElement::set_media_keys(self : HTMLVideoElement, media_keys : MediaKeys?) -> JsValue =
+pub extern "js" fn HTMLVideoElement::set_media_keys(self : HTMLVideoElement, media_keys : MediaKeys?) -> Promise[Unit] =
   #| (self, media_keys) => self.setMediaKeys(media_keys)
 
 pub extern "js" fn HTMLVideoElement::capture_stream(self : HTMLVideoElement) -> MediaStream =
@@ -32138,7 +32508,7 @@ pub extern "js" fn HTMLVideoElement::set_plays_inline(self : HTMLVideoElement, v
 pub extern "js" fn HTMLVideoElement::get_video_playback_quality(self : HTMLVideoElement) -> VideoPlaybackQuality =
   #| (self) => self.getVideoPlaybackQuality()
 
-pub extern "js" fn HTMLVideoElement::request_picture_in_picture(self : HTMLVideoElement) -> JsValue =
+pub extern "js" fn HTMLVideoElement::request_picture_in_picture(self : HTMLVideoElement) -> Promise[PictureInPictureWindow] =
   #| (self) => self.requestPictureInPicture()
 
 pub extern "js" fn HTMLVideoElement::get_onenterpictureinpicture(self : HTMLVideoElement) -> EventHandler =
@@ -32268,13 +32638,19 @@ pub extern "js" fn HTMLAudioElement::set_outer_text(self : HTMLAudioElement, val
 pub extern "js" fn HTMLAudioElement::attach_internals(self : HTMLAudioElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLAudioElement::show_popover(self : HTMLAudioElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLAudioElement::show_popover(self : HTMLAudioElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLAudioElement::show_popover_with_options(self : HTMLAudioElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLAudioElement::hide_popover(self : HTMLAudioElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLAudioElement::toggle_popover(self : HTMLAudioElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLAudioElement::toggle_popover(self : HTMLAudioElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLAudioElement::toggle_popover_with_options(self : HTMLAudioElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLAudioElement::get_popover(self : HTMLAudioElement) -> String? =
@@ -33003,7 +33379,10 @@ pub extern "js" fn HTMLAudioElement::get_tab_index(self : HTMLAudioElement) -> I
 pub extern "js" fn HTMLAudioElement::set_tab_index(self : HTMLAudioElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLAudioElement::focus(self : HTMLAudioElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLAudioElement::focus(self : HTMLAudioElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLAudioElement::focus_with_options(self : HTMLAudioElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLAudioElement::blur(self : HTMLAudioElement) -> Unit =
@@ -33033,6 +33412,18 @@ pub extern "js" fn HTMLAudioElement::get_cross_origin(self : HTMLAudioElement) -
 pub extern "js" fn HTMLAudioElement::set_cross_origin(self : HTMLAudioElement, value : String?) -> Unit =
   #| (self, value) => { self.crossOrigin = value }
 
+// HTMLAudioElement.NETWORK_EMPTY
+pub let h_t_m_l_audio_element_network_empty : Int = 0
+
+// HTMLAudioElement.NETWORK_IDLE
+pub let h_t_m_l_audio_element_network_idle : Int = 1
+
+// HTMLAudioElement.NETWORK_LOADING
+pub let h_t_m_l_audio_element_network_loading : Int = 2
+
+// HTMLAudioElement.NETWORK_NO_SOURCE
+pub let h_t_m_l_audio_element_network_no_source : Int = 3
+
 pub extern "js" fn HTMLAudioElement::get_network_state(self : HTMLAudioElement) -> Int =
   #| (self) => self.networkState
 
@@ -33050,6 +33441,21 @@ pub extern "js" fn HTMLAudioElement::load(self : HTMLAudioElement) -> Unit =
 
 pub extern "js" fn HTMLAudioElement::can_play_type(self : HTMLAudioElement, type_ : String) -> CanPlayTypeResult =
   #| (self, type_) => self.canPlayType(type_)
+
+// HTMLAudioElement.HAVE_NOTHING
+pub let h_t_m_l_audio_element_have_nothing : Int = 0
+
+// HTMLAudioElement.HAVE_METADATA
+pub let h_t_m_l_audio_element_have_metadata : Int = 1
+
+// HTMLAudioElement.HAVE_CURRENT_DATA
+pub let h_t_m_l_audio_element_have_current_data : Int = 2
+
+// HTMLAudioElement.HAVE_FUTURE_DATA
+pub let h_t_m_l_audio_element_have_future_data : Int = 3
+
+// HTMLAudioElement.HAVE_ENOUGH_DATA
+pub let h_t_m_l_audio_element_have_enough_data : Int = 4
 
 pub extern "js" fn HTMLAudioElement::get_ready_state(self : HTMLAudioElement) -> Int =
   #| (self) => self.readyState
@@ -33114,7 +33520,7 @@ pub extern "js" fn HTMLAudioElement::get_loop(self : HTMLAudioElement) -> Bool =
 pub extern "js" fn HTMLAudioElement::set_loop(self : HTMLAudioElement, value : Bool) -> Unit =
   #| (self, value) => { self.loop = value }
 
-pub extern "js" fn HTMLAudioElement::play(self : HTMLAudioElement) -> JsValue =
+pub extern "js" fn HTMLAudioElement::play(self : HTMLAudioElement) -> Promise[Unit] =
   #| (self) => self.play()
 
 pub extern "js" fn HTMLAudioElement::pause(self : HTMLAudioElement) -> Unit =
@@ -33153,13 +33559,16 @@ pub extern "js" fn HTMLAudioElement::get_video_tracks(self : HTMLAudioElement) -
 pub extern "js" fn HTMLAudioElement::get_text_tracks(self : HTMLAudioElement) -> TextTrackList =
   #| (self) => self.textTracks
 
-pub extern "js" fn HTMLAudioElement::add_text_track(self : HTMLAudioElement, kind : TextTrackKind, label : String, language : String) -> TextTrack =
+pub extern "js" fn HTMLAudioElement::add_text_track(self : HTMLAudioElement, kind : TextTrackKind) -> TextTrack =
+  #| (self, kind) => self.addTextTrack(['subtitles', 'captions', 'descriptions', 'chapters', 'metadata'][kind])
+
+pub extern "js" fn HTMLAudioElement::add_text_track_with_language(self : HTMLAudioElement, kind : TextTrackKind, label : String, language : String) -> TextTrack =
   #| (self, kind, label, language) => self.addTextTrack(['subtitles', 'captions', 'descriptions', 'chapters', 'metadata'][kind], label, language)
 
 pub extern "js" fn HTMLAudioElement::get_sink_id(self : HTMLAudioElement) -> String =
   #| (self) => self.sinkId
 
-pub extern "js" fn HTMLAudioElement::set_sink_id(self : HTMLAudioElement, sink_id : String) -> JsValue =
+pub extern "js" fn HTMLAudioElement::set_sink_id(self : HTMLAudioElement, sink_id : String) -> Promise[Unit] =
   #| (self, sink_id) => self.setSinkId(sink_id)
 
 pub extern "js" fn HTMLAudioElement::get_media_keys(self : HTMLAudioElement) -> MediaKeys? =
@@ -33177,7 +33586,7 @@ pub extern "js" fn HTMLAudioElement::get_onwaitingforkey(self : HTMLAudioElement
 pub extern "js" fn HTMLAudioElement::set_onwaitingforkey(self : HTMLAudioElement, value : EventHandler) -> Unit =
   #| (self, value) => { self.onwaitingforkey = value }
 
-pub extern "js" fn HTMLAudioElement::set_media_keys(self : HTMLAudioElement, media_keys : MediaKeys?) -> JsValue =
+pub extern "js" fn HTMLAudioElement::set_media_keys(self : HTMLAudioElement, media_keys : MediaKeys?) -> Promise[Unit] =
   #| (self, media_keys) => self.setMediaKeys(media_keys)
 
 pub extern "js" fn HTMLAudioElement::capture_stream(self : HTMLAudioElement) -> MediaStream =
@@ -33295,13 +33704,19 @@ pub extern "js" fn HTMLTrackElement::set_outer_text(self : HTMLTrackElement, val
 pub extern "js" fn HTMLTrackElement::attach_internals(self : HTMLTrackElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLTrackElement::show_popover(self : HTMLTrackElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLTrackElement::show_popover(self : HTMLTrackElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLTrackElement::show_popover_with_options(self : HTMLTrackElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLTrackElement::hide_popover(self : HTMLTrackElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLTrackElement::toggle_popover(self : HTMLTrackElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLTrackElement::toggle_popover(self : HTMLTrackElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLTrackElement::toggle_popover_with_options(self : HTMLTrackElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLTrackElement::get_popover(self : HTMLTrackElement) -> String? =
@@ -34030,7 +34445,10 @@ pub extern "js" fn HTMLTrackElement::get_tab_index(self : HTMLTrackElement) -> I
 pub extern "js" fn HTMLTrackElement::set_tab_index(self : HTMLTrackElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLTrackElement::focus(self : HTMLTrackElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLTrackElement::focus(self : HTMLTrackElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLTrackElement::focus_with_options(self : HTMLTrackElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLTrackElement::blur(self : HTMLTrackElement) -> Unit =
@@ -34065,6 +34483,18 @@ pub extern "js" fn HTMLTrackElement::get_default(self : HTMLTrackElement) -> Boo
 
 pub extern "js" fn HTMLTrackElement::set_default(self : HTMLTrackElement, value : Bool) -> Unit =
   #| (self, value) => { self.default = value }
+
+// HTMLTrackElement.NONE
+pub let h_t_m_l_track_element_none : Int = 0
+
+// HTMLTrackElement.LOADING
+pub let h_t_m_l_track_element_loading : Int = 1
+
+// HTMLTrackElement.LOADED
+pub let h_t_m_l_track_element_loaded : Int = 2
+
+// HTMLTrackElement.ERROR
+pub let h_t_m_l_track_element_error : Int = 3
 
 pub extern "js" fn HTMLTrackElement::get_ready_state(self : HTMLTrackElement) -> Int =
   #| (self) => self.readyState
@@ -34175,13 +34605,19 @@ pub extern "js" fn HTMLMediaElement::set_outer_text(self : HTMLMediaElement, val
 pub extern "js" fn HTMLMediaElement::attach_internals(self : HTMLMediaElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLMediaElement::show_popover(self : HTMLMediaElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLMediaElement::show_popover(self : HTMLMediaElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLMediaElement::show_popover_with_options(self : HTMLMediaElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLMediaElement::hide_popover(self : HTMLMediaElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLMediaElement::toggle_popover(self : HTMLMediaElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLMediaElement::toggle_popover(self : HTMLMediaElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLMediaElement::toggle_popover_with_options(self : HTMLMediaElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLMediaElement::get_popover(self : HTMLMediaElement) -> String? =
@@ -34910,7 +35346,10 @@ pub extern "js" fn HTMLMediaElement::get_tab_index(self : HTMLMediaElement) -> I
 pub extern "js" fn HTMLMediaElement::set_tab_index(self : HTMLMediaElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLMediaElement::focus(self : HTMLMediaElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLMediaElement::focus(self : HTMLMediaElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLMediaElement::focus_with_options(self : HTMLMediaElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLMediaElement::blur(self : HTMLMediaElement) -> Unit =
@@ -34940,6 +35379,18 @@ pub extern "js" fn HTMLMediaElement::get_cross_origin(self : HTMLMediaElement) -
 pub extern "js" fn HTMLMediaElement::set_cross_origin(self : HTMLMediaElement, value : String?) -> Unit =
   #| (self, value) => { self.crossOrigin = value }
 
+// HTMLMediaElement.NETWORK_EMPTY
+pub let h_t_m_l_media_element_network_empty : Int = 0
+
+// HTMLMediaElement.NETWORK_IDLE
+pub let h_t_m_l_media_element_network_idle : Int = 1
+
+// HTMLMediaElement.NETWORK_LOADING
+pub let h_t_m_l_media_element_network_loading : Int = 2
+
+// HTMLMediaElement.NETWORK_NO_SOURCE
+pub let h_t_m_l_media_element_network_no_source : Int = 3
+
 pub extern "js" fn HTMLMediaElement::get_network_state(self : HTMLMediaElement) -> Int =
   #| (self) => self.networkState
 
@@ -34957,6 +35408,21 @@ pub extern "js" fn HTMLMediaElement::load(self : HTMLMediaElement) -> Unit =
 
 pub extern "js" fn HTMLMediaElement::can_play_type(self : HTMLMediaElement, type_ : String) -> CanPlayTypeResult =
   #| (self, type_) => self.canPlayType(type_)
+
+// HTMLMediaElement.HAVE_NOTHING
+pub let h_t_m_l_media_element_have_nothing : Int = 0
+
+// HTMLMediaElement.HAVE_METADATA
+pub let h_t_m_l_media_element_have_metadata : Int = 1
+
+// HTMLMediaElement.HAVE_CURRENT_DATA
+pub let h_t_m_l_media_element_have_current_data : Int = 2
+
+// HTMLMediaElement.HAVE_FUTURE_DATA
+pub let h_t_m_l_media_element_have_future_data : Int = 3
+
+// HTMLMediaElement.HAVE_ENOUGH_DATA
+pub let h_t_m_l_media_element_have_enough_data : Int = 4
 
 pub extern "js" fn HTMLMediaElement::get_ready_state(self : HTMLMediaElement) -> Int =
   #| (self) => self.readyState
@@ -35021,7 +35487,7 @@ pub extern "js" fn HTMLMediaElement::get_loop(self : HTMLMediaElement) -> Bool =
 pub extern "js" fn HTMLMediaElement::set_loop(self : HTMLMediaElement, value : Bool) -> Unit =
   #| (self, value) => { self.loop = value }
 
-pub extern "js" fn HTMLMediaElement::play(self : HTMLMediaElement) -> JsValue =
+pub extern "js" fn HTMLMediaElement::play(self : HTMLMediaElement) -> Promise[Unit] =
   #| (self) => self.play()
 
 pub extern "js" fn HTMLMediaElement::pause(self : HTMLMediaElement) -> Unit =
@@ -35060,13 +35526,16 @@ pub extern "js" fn HTMLMediaElement::get_video_tracks(self : HTMLMediaElement) -
 pub extern "js" fn HTMLMediaElement::get_text_tracks(self : HTMLMediaElement) -> TextTrackList =
   #| (self) => self.textTracks
 
-pub extern "js" fn HTMLMediaElement::add_text_track(self : HTMLMediaElement, kind : TextTrackKind, label : String, language : String) -> TextTrack =
+pub extern "js" fn HTMLMediaElement::add_text_track(self : HTMLMediaElement, kind : TextTrackKind) -> TextTrack =
+  #| (self, kind) => self.addTextTrack(['subtitles', 'captions', 'descriptions', 'chapters', 'metadata'][kind])
+
+pub extern "js" fn HTMLMediaElement::add_text_track_with_language(self : HTMLMediaElement, kind : TextTrackKind, label : String, language : String) -> TextTrack =
   #| (self, kind, label, language) => self.addTextTrack(['subtitles', 'captions', 'descriptions', 'chapters', 'metadata'][kind], label, language)
 
 pub extern "js" fn HTMLMediaElement::get_sink_id(self : HTMLMediaElement) -> String =
   #| (self) => self.sinkId
 
-pub extern "js" fn HTMLMediaElement::set_sink_id(self : HTMLMediaElement, sink_id : String) -> JsValue =
+pub extern "js" fn HTMLMediaElement::set_sink_id(self : HTMLMediaElement, sink_id : String) -> Promise[Unit] =
   #| (self, sink_id) => self.setSinkId(sink_id)
 
 pub extern "js" fn HTMLMediaElement::get_media_keys(self : HTMLMediaElement) -> MediaKeys? =
@@ -35084,7 +35553,7 @@ pub extern "js" fn HTMLMediaElement::get_onwaitingforkey(self : HTMLMediaElement
 pub extern "js" fn HTMLMediaElement::set_onwaitingforkey(self : HTMLMediaElement, value : EventHandler) -> Unit =
   #| (self, value) => { self.onwaitingforkey = value }
 
-pub extern "js" fn HTMLMediaElement::set_media_keys(self : HTMLMediaElement, media_keys : MediaKeys?) -> JsValue =
+pub extern "js" fn HTMLMediaElement::set_media_keys(self : HTMLMediaElement, media_keys : MediaKeys?) -> Promise[Unit] =
   #| (self, media_keys) => self.setMediaKeys(media_keys)
 
 pub extern "js" fn HTMLMediaElement::capture_stream(self : HTMLMediaElement) -> MediaStream =
@@ -35105,6 +35574,18 @@ pub type MediaError
 
 pub extern "js" fn MediaError::to_js_value(self : MediaError) -> JsValue =
   #| (self) => self
+
+// MediaError.MEDIA_ERR_ABORTED
+pub let media_error_media_err_aborted : Int = 1
+
+// MediaError.MEDIA_ERR_NETWORK
+pub let media_error_media_err_network : Int = 2
+
+// MediaError.MEDIA_ERR_DECODE
+pub let media_error_media_err_decode : Int = 3
+
+// MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED
+pub let media_error_media_err_src_not_supported : Int = 4
 
 pub extern "js" fn MediaError::get_code(self : MediaError) -> Int =
   #| (self) => self.code
@@ -35516,13 +35997,19 @@ pub extern "js" fn HTMLMapElement::set_outer_text(self : HTMLMapElement, value :
 pub extern "js" fn HTMLMapElement::attach_internals(self : HTMLMapElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLMapElement::show_popover(self : HTMLMapElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLMapElement::show_popover(self : HTMLMapElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLMapElement::show_popover_with_options(self : HTMLMapElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLMapElement::hide_popover(self : HTMLMapElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLMapElement::toggle_popover(self : HTMLMapElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLMapElement::toggle_popover(self : HTMLMapElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLMapElement::toggle_popover_with_options(self : HTMLMapElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLMapElement::get_popover(self : HTMLMapElement) -> String? =
@@ -36251,7 +36738,10 @@ pub extern "js" fn HTMLMapElement::get_tab_index(self : HTMLMapElement) -> Int =
 pub extern "js" fn HTMLMapElement::set_tab_index(self : HTMLMapElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLMapElement::focus(self : HTMLMapElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLMapElement::focus(self : HTMLMapElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLMapElement::focus_with_options(self : HTMLMapElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLMapElement::blur(self : HTMLMapElement) -> Unit =
@@ -36369,13 +36859,19 @@ pub extern "js" fn HTMLAreaElement::set_outer_text(self : HTMLAreaElement, value
 pub extern "js" fn HTMLAreaElement::attach_internals(self : HTMLAreaElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLAreaElement::show_popover(self : HTMLAreaElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLAreaElement::show_popover(self : HTMLAreaElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLAreaElement::show_popover_with_options(self : HTMLAreaElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLAreaElement::hide_popover(self : HTMLAreaElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLAreaElement::toggle_popover(self : HTMLAreaElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLAreaElement::toggle_popover(self : HTMLAreaElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLAreaElement::toggle_popover_with_options(self : HTMLAreaElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLAreaElement::get_popover(self : HTMLAreaElement) -> String? =
@@ -37104,7 +37600,10 @@ pub extern "js" fn HTMLAreaElement::get_tab_index(self : HTMLAreaElement) -> Int
 pub extern "js" fn HTMLAreaElement::set_tab_index(self : HTMLAreaElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLAreaElement::focus(self : HTMLAreaElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLAreaElement::focus(self : HTMLAreaElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLAreaElement::focus_with_options(self : HTMLAreaElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLAreaElement::blur(self : HTMLAreaElement) -> Unit =
@@ -37339,13 +37838,19 @@ pub extern "js" fn HTMLTableElement::set_outer_text(self : HTMLTableElement, val
 pub extern "js" fn HTMLTableElement::attach_internals(self : HTMLTableElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLTableElement::show_popover(self : HTMLTableElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLTableElement::show_popover(self : HTMLTableElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLTableElement::show_popover_with_options(self : HTMLTableElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLTableElement::hide_popover(self : HTMLTableElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLTableElement::toggle_popover(self : HTMLTableElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLTableElement::toggle_popover(self : HTMLTableElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLTableElement::toggle_popover_with_options(self : HTMLTableElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLTableElement::get_popover(self : HTMLTableElement) -> String? =
@@ -38074,7 +38579,10 @@ pub extern "js" fn HTMLTableElement::get_tab_index(self : HTMLTableElement) -> I
 pub extern "js" fn HTMLTableElement::set_tab_index(self : HTMLTableElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLTableElement::focus(self : HTMLTableElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLTableElement::focus(self : HTMLTableElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLTableElement::focus_with_options(self : HTMLTableElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLTableElement::blur(self : HTMLTableElement) -> Unit =
@@ -38125,7 +38633,10 @@ pub extern "js" fn HTMLTableElement::create_t_body(self : HTMLTableElement) -> H
 pub extern "js" fn HTMLTableElement::get_rows(self : HTMLTableElement) -> HTMLCollection =
   #| (self) => self.rows
 
-pub extern "js" fn HTMLTableElement::insert_row(self : HTMLTableElement, index : Int) -> HTMLTableRowElement =
+pub extern "js" fn HTMLTableElement::insert_row(self : HTMLTableElement) -> HTMLTableRowElement =
+  #| (self) => self.insertRow()
+
+pub extern "js" fn HTMLTableElement::insert_row_with_index(self : HTMLTableElement, index : Int) -> HTMLTableRowElement =
   #| (self, index) => self.insertRow(index)
 
 pub extern "js" fn HTMLTableElement::delete_row(self : HTMLTableElement, index : Int) -> Unit =
@@ -38288,13 +38799,19 @@ pub extern "js" fn HTMLTableCaptionElement::set_outer_text(self : HTMLTableCapti
 pub extern "js" fn HTMLTableCaptionElement::attach_internals(self : HTMLTableCaptionElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLTableCaptionElement::show_popover(self : HTMLTableCaptionElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLTableCaptionElement::show_popover(self : HTMLTableCaptionElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLTableCaptionElement::show_popover_with_options(self : HTMLTableCaptionElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLTableCaptionElement::hide_popover(self : HTMLTableCaptionElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLTableCaptionElement::toggle_popover(self : HTMLTableCaptionElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLTableCaptionElement::toggle_popover(self : HTMLTableCaptionElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLTableCaptionElement::toggle_popover_with_options(self : HTMLTableCaptionElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLTableCaptionElement::get_popover(self : HTMLTableCaptionElement) -> String? =
@@ -39023,7 +39540,10 @@ pub extern "js" fn HTMLTableCaptionElement::get_tab_index(self : HTMLTableCaptio
 pub extern "js" fn HTMLTableCaptionElement::set_tab_index(self : HTMLTableCaptionElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLTableCaptionElement::focus(self : HTMLTableCaptionElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLTableCaptionElement::focus(self : HTMLTableCaptionElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLTableCaptionElement::focus_with_options(self : HTMLTableCaptionElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLTableCaptionElement::blur(self : HTMLTableCaptionElement) -> Unit =
@@ -39138,13 +39658,19 @@ pub extern "js" fn HTMLTableColElement::set_outer_text(self : HTMLTableColElemen
 pub extern "js" fn HTMLTableColElement::attach_internals(self : HTMLTableColElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLTableColElement::show_popover(self : HTMLTableColElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLTableColElement::show_popover(self : HTMLTableColElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLTableColElement::show_popover_with_options(self : HTMLTableColElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLTableColElement::hide_popover(self : HTMLTableColElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLTableColElement::toggle_popover(self : HTMLTableColElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLTableColElement::toggle_popover(self : HTMLTableColElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLTableColElement::toggle_popover_with_options(self : HTMLTableColElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLTableColElement::get_popover(self : HTMLTableColElement) -> String? =
@@ -39873,7 +40399,10 @@ pub extern "js" fn HTMLTableColElement::get_tab_index(self : HTMLTableColElement
 pub extern "js" fn HTMLTableColElement::set_tab_index(self : HTMLTableColElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLTableColElement::focus(self : HTMLTableColElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLTableColElement::focus(self : HTMLTableColElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLTableColElement::focus_with_options(self : HTMLTableColElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLTableColElement::blur(self : HTMLTableColElement) -> Unit =
@@ -40018,13 +40547,19 @@ pub extern "js" fn HTMLTableSectionElement::set_outer_text(self : HTMLTableSecti
 pub extern "js" fn HTMLTableSectionElement::attach_internals(self : HTMLTableSectionElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLTableSectionElement::show_popover(self : HTMLTableSectionElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLTableSectionElement::show_popover(self : HTMLTableSectionElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLTableSectionElement::show_popover_with_options(self : HTMLTableSectionElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLTableSectionElement::hide_popover(self : HTMLTableSectionElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLTableSectionElement::toggle_popover(self : HTMLTableSectionElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLTableSectionElement::toggle_popover(self : HTMLTableSectionElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLTableSectionElement::toggle_popover_with_options(self : HTMLTableSectionElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLTableSectionElement::get_popover(self : HTMLTableSectionElement) -> String? =
@@ -40753,7 +41288,10 @@ pub extern "js" fn HTMLTableSectionElement::get_tab_index(self : HTMLTableSectio
 pub extern "js" fn HTMLTableSectionElement::set_tab_index(self : HTMLTableSectionElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLTableSectionElement::focus(self : HTMLTableSectionElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLTableSectionElement::focus(self : HTMLTableSectionElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLTableSectionElement::focus_with_options(self : HTMLTableSectionElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLTableSectionElement::blur(self : HTMLTableSectionElement) -> Unit =
@@ -40762,7 +41300,10 @@ pub extern "js" fn HTMLTableSectionElement::blur(self : HTMLTableSectionElement)
 pub extern "js" fn HTMLTableSectionElement::get_rows(self : HTMLTableSectionElement) -> HTMLCollection =
   #| (self) => self.rows
 
-pub extern "js" fn HTMLTableSectionElement::insert_row(self : HTMLTableSectionElement, index : Int) -> HTMLTableRowElement =
+pub extern "js" fn HTMLTableSectionElement::insert_row(self : HTMLTableSectionElement) -> HTMLTableRowElement =
+  #| (self) => self.insertRow()
+
+pub extern "js" fn HTMLTableSectionElement::insert_row_with_index(self : HTMLTableSectionElement, index : Int) -> HTMLTableRowElement =
   #| (self, index) => self.insertRow(index)
 
 pub extern "js" fn HTMLTableSectionElement::delete_row(self : HTMLTableSectionElement, index : Int) -> Unit =
@@ -40895,13 +41436,19 @@ pub extern "js" fn HTMLTableRowElement::set_outer_text(self : HTMLTableRowElemen
 pub extern "js" fn HTMLTableRowElement::attach_internals(self : HTMLTableRowElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLTableRowElement::show_popover(self : HTMLTableRowElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLTableRowElement::show_popover(self : HTMLTableRowElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLTableRowElement::show_popover_with_options(self : HTMLTableRowElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLTableRowElement::hide_popover(self : HTMLTableRowElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLTableRowElement::toggle_popover(self : HTMLTableRowElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLTableRowElement::toggle_popover(self : HTMLTableRowElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLTableRowElement::toggle_popover_with_options(self : HTMLTableRowElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLTableRowElement::get_popover(self : HTMLTableRowElement) -> String? =
@@ -41630,7 +42177,10 @@ pub extern "js" fn HTMLTableRowElement::get_tab_index(self : HTMLTableRowElement
 pub extern "js" fn HTMLTableRowElement::set_tab_index(self : HTMLTableRowElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLTableRowElement::focus(self : HTMLTableRowElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLTableRowElement::focus(self : HTMLTableRowElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLTableRowElement::focus_with_options(self : HTMLTableRowElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLTableRowElement::blur(self : HTMLTableRowElement) -> Unit =
@@ -41645,7 +42195,10 @@ pub extern "js" fn HTMLTableRowElement::get_section_row_index(self : HTMLTableRo
 pub extern "js" fn HTMLTableRowElement::get_cells(self : HTMLTableRowElement) -> HTMLCollection =
   #| (self) => self.cells
 
-pub extern "js" fn HTMLTableRowElement::insert_cell(self : HTMLTableRowElement, index : Int) -> HTMLTableCellElement =
+pub extern "js" fn HTMLTableRowElement::insert_cell(self : HTMLTableRowElement) -> HTMLTableCellElement =
+  #| (self) => self.insertCell()
+
+pub extern "js" fn HTMLTableRowElement::insert_cell_with_index(self : HTMLTableRowElement, index : Int) -> HTMLTableCellElement =
   #| (self, index) => self.insertCell(index)
 
 pub extern "js" fn HTMLTableRowElement::delete_cell(self : HTMLTableRowElement, index : Int) -> Unit =
@@ -41784,13 +42337,19 @@ pub extern "js" fn HTMLTableCellElement::set_outer_text(self : HTMLTableCellElem
 pub extern "js" fn HTMLTableCellElement::attach_internals(self : HTMLTableCellElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLTableCellElement::show_popover(self : HTMLTableCellElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLTableCellElement::show_popover(self : HTMLTableCellElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLTableCellElement::show_popover_with_options(self : HTMLTableCellElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLTableCellElement::hide_popover(self : HTMLTableCellElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLTableCellElement::toggle_popover(self : HTMLTableCellElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLTableCellElement::toggle_popover(self : HTMLTableCellElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLTableCellElement::toggle_popover_with_options(self : HTMLTableCellElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLTableCellElement::get_popover(self : HTMLTableCellElement) -> String? =
@@ -42519,7 +43078,10 @@ pub extern "js" fn HTMLTableCellElement::get_tab_index(self : HTMLTableCellEleme
 pub extern "js" fn HTMLTableCellElement::set_tab_index(self : HTMLTableCellElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLTableCellElement::focus(self : HTMLTableCellElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLTableCellElement::focus(self : HTMLTableCellElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLTableCellElement::focus_with_options(self : HTMLTableCellElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLTableCellElement::blur(self : HTMLTableCellElement) -> Unit =
@@ -42715,13 +43277,19 @@ pub extern "js" fn HTMLFormElement::set_outer_text(self : HTMLFormElement, value
 pub extern "js" fn HTMLFormElement::attach_internals(self : HTMLFormElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLFormElement::show_popover(self : HTMLFormElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLFormElement::show_popover(self : HTMLFormElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLFormElement::show_popover_with_options(self : HTMLFormElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLFormElement::hide_popover(self : HTMLFormElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLFormElement::toggle_popover(self : HTMLFormElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLFormElement::toggle_popover(self : HTMLFormElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLFormElement::toggle_popover_with_options(self : HTMLFormElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLFormElement::get_popover(self : HTMLFormElement) -> String? =
@@ -43450,7 +44018,10 @@ pub extern "js" fn HTMLFormElement::get_tab_index(self : HTMLFormElement) -> Int
 pub extern "js" fn HTMLFormElement::set_tab_index(self : HTMLFormElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLFormElement::focus(self : HTMLFormElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLFormElement::focus(self : HTMLFormElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLFormElement::focus_with_options(self : HTMLFormElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLFormElement::blur(self : HTMLFormElement) -> Unit =
@@ -43534,7 +44105,10 @@ pub extern "js" fn HTMLFormElement::get_named(self : HTMLFormElement, name : Str
 pub extern "js" fn HTMLFormElement::submit(self : HTMLFormElement) -> Unit =
   #| (self) => self.submit()
 
-pub extern "js" fn HTMLFormElement::request_submit(self : HTMLFormElement, submitter : HTMLElement?) -> Unit =
+pub extern "js" fn HTMLFormElement::request_submit(self : HTMLFormElement) -> Unit =
+  #| (self) => self.requestSubmit()
+
+pub extern "js" fn HTMLFormElement::request_submit_with_submitter(self : HTMLFormElement, submitter : HTMLElement?) -> Unit =
   #| (self, submitter) => self.requestSubmit(submitter)
 
 pub extern "js" fn HTMLFormElement::reset(self : HTMLFormElement) -> Unit =
@@ -43649,13 +44223,19 @@ pub extern "js" fn HTMLLabelElement::set_outer_text(self : HTMLLabelElement, val
 pub extern "js" fn HTMLLabelElement::attach_internals(self : HTMLLabelElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLLabelElement::show_popover(self : HTMLLabelElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLLabelElement::show_popover(self : HTMLLabelElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLLabelElement::show_popover_with_options(self : HTMLLabelElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLLabelElement::hide_popover(self : HTMLLabelElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLLabelElement::toggle_popover(self : HTMLLabelElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLLabelElement::toggle_popover(self : HTMLLabelElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLLabelElement::toggle_popover_with_options(self : HTMLLabelElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLLabelElement::get_popover(self : HTMLLabelElement) -> String? =
@@ -44384,7 +44964,10 @@ pub extern "js" fn HTMLLabelElement::get_tab_index(self : HTMLLabelElement) -> I
 pub extern "js" fn HTMLLabelElement::set_tab_index(self : HTMLLabelElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLLabelElement::focus(self : HTMLLabelElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLLabelElement::focus(self : HTMLLabelElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLLabelElement::focus_with_options(self : HTMLLabelElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLLabelElement::blur(self : HTMLLabelElement) -> Unit =
@@ -44505,13 +45088,19 @@ pub extern "js" fn HTMLInputElement::set_outer_text(self : HTMLInputElement, val
 pub extern "js" fn HTMLInputElement::attach_internals(self : HTMLInputElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLInputElement::show_popover(self : HTMLInputElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLInputElement::show_popover(self : HTMLInputElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLInputElement::show_popover_with_options(self : HTMLInputElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLInputElement::hide_popover(self : HTMLInputElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLInputElement::toggle_popover(self : HTMLInputElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLInputElement::toggle_popover(self : HTMLInputElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLInputElement::toggle_popover_with_options(self : HTMLInputElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLInputElement::get_popover(self : HTMLInputElement) -> String? =
@@ -45240,7 +45829,10 @@ pub extern "js" fn HTMLInputElement::get_tab_index(self : HTMLInputElement) -> I
 pub extern "js" fn HTMLInputElement::set_tab_index(self : HTMLInputElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLInputElement::focus(self : HTMLInputElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLInputElement::focus(self : HTMLInputElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLInputElement::focus_with_options(self : HTMLInputElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLInputElement::blur(self : HTMLInputElement) -> Unit =
@@ -45468,10 +46060,16 @@ pub extern "js" fn HTMLInputElement::get_width(self : HTMLInputElement) -> Int =
 pub extern "js" fn HTMLInputElement::set_width(self : HTMLInputElement, value : Int) -> Unit =
   #| (self, value) => { self.width = value }
 
-pub extern "js" fn HTMLInputElement::step_up(self : HTMLInputElement, n : Int) -> Unit =
+pub extern "js" fn HTMLInputElement::step_up(self : HTMLInputElement) -> Unit =
+  #| (self) => self.stepUp()
+
+pub extern "js" fn HTMLInputElement::step_up_with_n(self : HTMLInputElement, n : Int) -> Unit =
   #| (self, n) => self.stepUp(n)
 
-pub extern "js" fn HTMLInputElement::step_down(self : HTMLInputElement, n : Int) -> Unit =
+pub extern "js" fn HTMLInputElement::step_down(self : HTMLInputElement) -> Unit =
+  #| (self) => self.stepDown()
+
+pub extern "js" fn HTMLInputElement::step_down_with_n(self : HTMLInputElement, n : Int) -> Unit =
   #| (self, n) => self.stepDown(n)
 
 pub extern "js" fn HTMLInputElement::get_will_validate(self : HTMLInputElement) -> Bool =
@@ -45519,7 +46117,10 @@ pub extern "js" fn HTMLInputElement::set_selection_direction(self : HTMLInputEle
 pub extern "js" fn HTMLInputElement::set_range_text(self : HTMLInputElement, replacement : String) -> Unit =
   #| (self, replacement) => self.setRangeText(replacement)
 
-pub extern "js" fn HTMLInputElement::set_selection_range(self : HTMLInputElement, start : Int, end : Int, direction : String) -> Unit =
+pub extern "js" fn HTMLInputElement::set_selection_range(self : HTMLInputElement, start : Int, end : Int) -> Unit =
+  #| (self, start, end) => self.setSelectionRange(start, end)
+
+pub extern "js" fn HTMLInputElement::set_selection_range_with_direction(self : HTMLInputElement, start : Int, end : Int, direction : String) -> Unit =
   #| (self, start, end, direction) => self.setSelectionRange(start, end, direction)
 
 pub extern "js" fn HTMLInputElement::show_picker(self : HTMLInputElement) -> Unit =
@@ -45667,13 +46268,19 @@ pub extern "js" fn HTMLButtonElement::set_outer_text(self : HTMLButtonElement, v
 pub extern "js" fn HTMLButtonElement::attach_internals(self : HTMLButtonElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLButtonElement::show_popover(self : HTMLButtonElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLButtonElement::show_popover(self : HTMLButtonElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLButtonElement::show_popover_with_options(self : HTMLButtonElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLButtonElement::hide_popover(self : HTMLButtonElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLButtonElement::toggle_popover(self : HTMLButtonElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLButtonElement::toggle_popover(self : HTMLButtonElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLButtonElement::toggle_popover_with_options(self : HTMLButtonElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLButtonElement::get_popover(self : HTMLButtonElement) -> String? =
@@ -46402,7 +47009,10 @@ pub extern "js" fn HTMLButtonElement::get_tab_index(self : HTMLButtonElement) ->
 pub extern "js" fn HTMLButtonElement::set_tab_index(self : HTMLButtonElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLButtonElement::focus(self : HTMLButtonElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLButtonElement::focus(self : HTMLButtonElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLButtonElement::focus_with_options(self : HTMLButtonElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLButtonElement::blur(self : HTMLButtonElement) -> Unit =
@@ -46613,13 +47223,19 @@ pub extern "js" fn HTMLSelectElement::set_outer_text(self : HTMLSelectElement, v
 pub extern "js" fn HTMLSelectElement::attach_internals(self : HTMLSelectElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLSelectElement::show_popover(self : HTMLSelectElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLSelectElement::show_popover(self : HTMLSelectElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLSelectElement::show_popover_with_options(self : HTMLSelectElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLSelectElement::hide_popover(self : HTMLSelectElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLSelectElement::toggle_popover(self : HTMLSelectElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLSelectElement::toggle_popover(self : HTMLSelectElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLSelectElement::toggle_popover_with_options(self : HTMLSelectElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLSelectElement::get_popover(self : HTMLSelectElement) -> String? =
@@ -47348,7 +47964,10 @@ pub extern "js" fn HTMLSelectElement::get_tab_index(self : HTMLSelectElement) ->
 pub extern "js" fn HTMLSelectElement::set_tab_index(self : HTMLSelectElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLSelectElement::focus(self : HTMLSelectElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLSelectElement::focus(self : HTMLSelectElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLSelectElement::focus_with_options(self : HTMLSelectElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLSelectElement::blur(self : HTMLSelectElement) -> Unit =
@@ -47414,7 +48033,10 @@ pub extern "js" fn HTMLSelectElement::get(self : HTMLSelectElement, index : Int)
 pub extern "js" fn HTMLSelectElement::named_item(self : HTMLSelectElement, name : String) -> HTMLOptionElement? =
   #| (self, name) => self.namedItem(name)
 
-pub extern "js" fn HTMLSelectElement::add(self : HTMLSelectElement, element : JsValue, before : JsValue) -> Unit =
+pub extern "js" fn HTMLSelectElement::add(self : HTMLSelectElement, element : JsValue) -> Unit =
+  #| (self, element) => self.add(element)
+
+pub extern "js" fn HTMLSelectElement::add_with_before(self : HTMLSelectElement, element : JsValue, before : JsValue) -> Unit =
   #| (self, element, before) => self.add(element, before)
 
 pub extern "js" fn HTMLSelectElement::remove(self : HTMLSelectElement) -> Unit =
@@ -47565,13 +48187,19 @@ pub extern "js" fn HTMLDataListElement::set_outer_text(self : HTMLDataListElemen
 pub extern "js" fn HTMLDataListElement::attach_internals(self : HTMLDataListElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLDataListElement::show_popover(self : HTMLDataListElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLDataListElement::show_popover(self : HTMLDataListElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLDataListElement::show_popover_with_options(self : HTMLDataListElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLDataListElement::hide_popover(self : HTMLDataListElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLDataListElement::toggle_popover(self : HTMLDataListElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLDataListElement::toggle_popover(self : HTMLDataListElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLDataListElement::toggle_popover_with_options(self : HTMLDataListElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLDataListElement::get_popover(self : HTMLDataListElement) -> String? =
@@ -48300,7 +48928,10 @@ pub extern "js" fn HTMLDataListElement::get_tab_index(self : HTMLDataListElement
 pub extern "js" fn HTMLDataListElement::set_tab_index(self : HTMLDataListElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLDataListElement::focus(self : HTMLDataListElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLDataListElement::focus(self : HTMLDataListElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLDataListElement::focus_with_options(self : HTMLDataListElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLDataListElement::blur(self : HTMLDataListElement) -> Unit =
@@ -48412,13 +49043,19 @@ pub extern "js" fn HTMLOptGroupElement::set_outer_text(self : HTMLOptGroupElemen
 pub extern "js" fn HTMLOptGroupElement::attach_internals(self : HTMLOptGroupElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLOptGroupElement::show_popover(self : HTMLOptGroupElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLOptGroupElement::show_popover(self : HTMLOptGroupElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLOptGroupElement::show_popover_with_options(self : HTMLOptGroupElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLOptGroupElement::hide_popover(self : HTMLOptGroupElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLOptGroupElement::toggle_popover(self : HTMLOptGroupElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLOptGroupElement::toggle_popover(self : HTMLOptGroupElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLOptGroupElement::toggle_popover_with_options(self : HTMLOptGroupElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLOptGroupElement::get_popover(self : HTMLOptGroupElement) -> String? =
@@ -49147,7 +49784,10 @@ pub extern "js" fn HTMLOptGroupElement::get_tab_index(self : HTMLOptGroupElement
 pub extern "js" fn HTMLOptGroupElement::set_tab_index(self : HTMLOptGroupElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLOptGroupElement::focus(self : HTMLOptGroupElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLOptGroupElement::focus(self : HTMLOptGroupElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLOptGroupElement::focus_with_options(self : HTMLOptGroupElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLOptGroupElement::blur(self : HTMLOptGroupElement) -> Unit =
@@ -49268,13 +49908,19 @@ pub extern "js" fn HTMLOptionElement::set_outer_text(self : HTMLOptionElement, v
 pub extern "js" fn HTMLOptionElement::attach_internals(self : HTMLOptionElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLOptionElement::show_popover(self : HTMLOptionElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLOptionElement::show_popover(self : HTMLOptionElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLOptionElement::show_popover_with_options(self : HTMLOptionElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLOptionElement::hide_popover(self : HTMLOptionElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLOptionElement::toggle_popover(self : HTMLOptionElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLOptionElement::toggle_popover(self : HTMLOptionElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLOptionElement::toggle_popover_with_options(self : HTMLOptionElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLOptionElement::get_popover(self : HTMLOptionElement) -> String? =
@@ -50003,7 +50649,10 @@ pub extern "js" fn HTMLOptionElement::get_tab_index(self : HTMLOptionElement) ->
 pub extern "js" fn HTMLOptionElement::set_tab_index(self : HTMLOptionElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLOptionElement::focus(self : HTMLOptionElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLOptionElement::focus(self : HTMLOptionElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLOptionElement::focus_with_options(self : HTMLOptionElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLOptionElement::blur(self : HTMLOptionElement) -> Unit =
@@ -50154,13 +50803,19 @@ pub extern "js" fn HTMLTextAreaElement::set_outer_text(self : HTMLTextAreaElemen
 pub extern "js" fn HTMLTextAreaElement::attach_internals(self : HTMLTextAreaElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLTextAreaElement::show_popover(self : HTMLTextAreaElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLTextAreaElement::show_popover(self : HTMLTextAreaElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLTextAreaElement::show_popover_with_options(self : HTMLTextAreaElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLTextAreaElement::hide_popover(self : HTMLTextAreaElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLTextAreaElement::toggle_popover(self : HTMLTextAreaElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLTextAreaElement::toggle_popover(self : HTMLTextAreaElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLTextAreaElement::toggle_popover_with_options(self : HTMLTextAreaElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLTextAreaElement::get_popover(self : HTMLTextAreaElement) -> String? =
@@ -50889,7 +51544,10 @@ pub extern "js" fn HTMLTextAreaElement::get_tab_index(self : HTMLTextAreaElement
 pub extern "js" fn HTMLTextAreaElement::set_tab_index(self : HTMLTextAreaElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLTextAreaElement::focus(self : HTMLTextAreaElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLTextAreaElement::focus(self : HTMLTextAreaElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLTextAreaElement::focus_with_options(self : HTMLTextAreaElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLTextAreaElement::blur(self : HTMLTextAreaElement) -> Unit =
@@ -51033,7 +51691,10 @@ pub extern "js" fn HTMLTextAreaElement::set_selection_direction(self : HTMLTextA
 pub extern "js" fn HTMLTextAreaElement::set_range_text(self : HTMLTextAreaElement, replacement : String) -> Unit =
   #| (self, replacement) => self.setRangeText(replacement)
 
-pub extern "js" fn HTMLTextAreaElement::set_selection_range(self : HTMLTextAreaElement, start : Int, end : Int, direction : String) -> Unit =
+pub extern "js" fn HTMLTextAreaElement::set_selection_range(self : HTMLTextAreaElement, start : Int, end : Int) -> Unit =
+  #| (self, start, end) => self.setSelectionRange(start, end)
+
+pub extern "js" fn HTMLTextAreaElement::set_selection_range_with_direction(self : HTMLTextAreaElement, start : Int, end : Int, direction : String) -> Unit =
   #| (self, start, end, direction) => self.setSelectionRange(start, end, direction)
 
 ///|
@@ -51139,13 +51800,19 @@ pub extern "js" fn HTMLOutputElement::set_outer_text(self : HTMLOutputElement, v
 pub extern "js" fn HTMLOutputElement::attach_internals(self : HTMLOutputElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLOutputElement::show_popover(self : HTMLOutputElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLOutputElement::show_popover(self : HTMLOutputElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLOutputElement::show_popover_with_options(self : HTMLOutputElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLOutputElement::hide_popover(self : HTMLOutputElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLOutputElement::toggle_popover(self : HTMLOutputElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLOutputElement::toggle_popover(self : HTMLOutputElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLOutputElement::toggle_popover_with_options(self : HTMLOutputElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLOutputElement::get_popover(self : HTMLOutputElement) -> String? =
@@ -51874,7 +52541,10 @@ pub extern "js" fn HTMLOutputElement::get_tab_index(self : HTMLOutputElement) ->
 pub extern "js" fn HTMLOutputElement::set_tab_index(self : HTMLOutputElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLOutputElement::focus(self : HTMLOutputElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLOutputElement::focus(self : HTMLOutputElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLOutputElement::focus_with_options(self : HTMLOutputElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLOutputElement::blur(self : HTMLOutputElement) -> Unit =
@@ -52031,13 +52701,19 @@ pub extern "js" fn HTMLProgressElement::set_outer_text(self : HTMLProgressElemen
 pub extern "js" fn HTMLProgressElement::attach_internals(self : HTMLProgressElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLProgressElement::show_popover(self : HTMLProgressElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLProgressElement::show_popover(self : HTMLProgressElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLProgressElement::show_popover_with_options(self : HTMLProgressElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLProgressElement::hide_popover(self : HTMLProgressElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLProgressElement::toggle_popover(self : HTMLProgressElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLProgressElement::toggle_popover(self : HTMLProgressElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLProgressElement::toggle_popover_with_options(self : HTMLProgressElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLProgressElement::get_popover(self : HTMLProgressElement) -> String? =
@@ -52766,7 +53442,10 @@ pub extern "js" fn HTMLProgressElement::get_tab_index(self : HTMLProgressElement
 pub extern "js" fn HTMLProgressElement::set_tab_index(self : HTMLProgressElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLProgressElement::focus(self : HTMLProgressElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLProgressElement::focus(self : HTMLProgressElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLProgressElement::focus_with_options(self : HTMLProgressElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLProgressElement::blur(self : HTMLProgressElement) -> Unit =
@@ -52893,13 +53572,19 @@ pub extern "js" fn HTMLMeterElement::set_outer_text(self : HTMLMeterElement, val
 pub extern "js" fn HTMLMeterElement::attach_internals(self : HTMLMeterElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLMeterElement::show_popover(self : HTMLMeterElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLMeterElement::show_popover(self : HTMLMeterElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLMeterElement::show_popover_with_options(self : HTMLMeterElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLMeterElement::hide_popover(self : HTMLMeterElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLMeterElement::toggle_popover(self : HTMLMeterElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLMeterElement::toggle_popover(self : HTMLMeterElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLMeterElement::toggle_popover_with_options(self : HTMLMeterElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLMeterElement::get_popover(self : HTMLMeterElement) -> String? =
@@ -53628,7 +54313,10 @@ pub extern "js" fn HTMLMeterElement::get_tab_index(self : HTMLMeterElement) -> I
 pub extern "js" fn HTMLMeterElement::set_tab_index(self : HTMLMeterElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLMeterElement::focus(self : HTMLMeterElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLMeterElement::focus(self : HTMLMeterElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLMeterElement::focus_with_options(self : HTMLMeterElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLMeterElement::blur(self : HTMLMeterElement) -> Unit =
@@ -53776,13 +54464,19 @@ pub extern "js" fn HTMLFieldSetElement::set_outer_text(self : HTMLFieldSetElemen
 pub extern "js" fn HTMLFieldSetElement::attach_internals(self : HTMLFieldSetElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLFieldSetElement::show_popover(self : HTMLFieldSetElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLFieldSetElement::show_popover(self : HTMLFieldSetElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLFieldSetElement::show_popover_with_options(self : HTMLFieldSetElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLFieldSetElement::hide_popover(self : HTMLFieldSetElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLFieldSetElement::toggle_popover(self : HTMLFieldSetElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLFieldSetElement::toggle_popover(self : HTMLFieldSetElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLFieldSetElement::toggle_popover_with_options(self : HTMLFieldSetElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLFieldSetElement::get_popover(self : HTMLFieldSetElement) -> String? =
@@ -54511,7 +55205,10 @@ pub extern "js" fn HTMLFieldSetElement::get_tab_index(self : HTMLFieldSetElement
 pub extern "js" fn HTMLFieldSetElement::set_tab_index(self : HTMLFieldSetElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLFieldSetElement::focus(self : HTMLFieldSetElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLFieldSetElement::focus(self : HTMLFieldSetElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLFieldSetElement::focus_with_options(self : HTMLFieldSetElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLFieldSetElement::blur(self : HTMLFieldSetElement) -> Unit =
@@ -54659,13 +55356,19 @@ pub extern "js" fn HTMLLegendElement::set_outer_text(self : HTMLLegendElement, v
 pub extern "js" fn HTMLLegendElement::attach_internals(self : HTMLLegendElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLLegendElement::show_popover(self : HTMLLegendElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLLegendElement::show_popover(self : HTMLLegendElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLLegendElement::show_popover_with_options(self : HTMLLegendElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLLegendElement::hide_popover(self : HTMLLegendElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLLegendElement::toggle_popover(self : HTMLLegendElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLLegendElement::toggle_popover(self : HTMLLegendElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLLegendElement::toggle_popover_with_options(self : HTMLLegendElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLLegendElement::get_popover(self : HTMLLegendElement) -> String? =
@@ -55394,7 +56097,10 @@ pub extern "js" fn HTMLLegendElement::get_tab_index(self : HTMLLegendElement) ->
 pub extern "js" fn HTMLLegendElement::set_tab_index(self : HTMLLegendElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLLegendElement::focus(self : HTMLLegendElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLLegendElement::focus(self : HTMLLegendElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLLegendElement::focus_with_options(self : HTMLLegendElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLLegendElement::blur(self : HTMLLegendElement) -> Unit =
@@ -55512,13 +56218,19 @@ pub extern "js" fn HTMLSelectedContentElement::set_outer_text(self : HTMLSelecte
 pub extern "js" fn HTMLSelectedContentElement::attach_internals(self : HTMLSelectedContentElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLSelectedContentElement::show_popover(self : HTMLSelectedContentElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLSelectedContentElement::show_popover(self : HTMLSelectedContentElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLSelectedContentElement::show_popover_with_options(self : HTMLSelectedContentElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLSelectedContentElement::hide_popover(self : HTMLSelectedContentElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLSelectedContentElement::toggle_popover(self : HTMLSelectedContentElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLSelectedContentElement::toggle_popover(self : HTMLSelectedContentElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLSelectedContentElement::toggle_popover_with_options(self : HTMLSelectedContentElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLSelectedContentElement::get_popover(self : HTMLSelectedContentElement) -> String? =
@@ -56247,7 +56959,10 @@ pub extern "js" fn HTMLSelectedContentElement::get_tab_index(self : HTMLSelected
 pub extern "js" fn HTMLSelectedContentElement::set_tab_index(self : HTMLSelectedContentElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLSelectedContentElement::focus(self : HTMLSelectedContentElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLSelectedContentElement::focus(self : HTMLSelectedContentElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLSelectedContentElement::focus_with_options(self : HTMLSelectedContentElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLSelectedContentElement::blur(self : HTMLSelectedContentElement) -> Unit =
@@ -56422,13 +57137,19 @@ pub extern "js" fn HTMLDetailsElement::set_outer_text(self : HTMLDetailsElement,
 pub extern "js" fn HTMLDetailsElement::attach_internals(self : HTMLDetailsElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLDetailsElement::show_popover(self : HTMLDetailsElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLDetailsElement::show_popover(self : HTMLDetailsElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLDetailsElement::show_popover_with_options(self : HTMLDetailsElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLDetailsElement::hide_popover(self : HTMLDetailsElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLDetailsElement::toggle_popover(self : HTMLDetailsElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLDetailsElement::toggle_popover(self : HTMLDetailsElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLDetailsElement::toggle_popover_with_options(self : HTMLDetailsElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLDetailsElement::get_popover(self : HTMLDetailsElement) -> String? =
@@ -57157,7 +57878,10 @@ pub extern "js" fn HTMLDetailsElement::get_tab_index(self : HTMLDetailsElement) 
 pub extern "js" fn HTMLDetailsElement::set_tab_index(self : HTMLDetailsElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLDetailsElement::focus(self : HTMLDetailsElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLDetailsElement::focus(self : HTMLDetailsElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLDetailsElement::focus_with_options(self : HTMLDetailsElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLDetailsElement::blur(self : HTMLDetailsElement) -> Unit =
@@ -57278,13 +58002,19 @@ pub extern "js" fn HTMLDialogElement::set_outer_text(self : HTMLDialogElement, v
 pub extern "js" fn HTMLDialogElement::attach_internals(self : HTMLDialogElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLDialogElement::show_popover(self : HTMLDialogElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLDialogElement::show_popover(self : HTMLDialogElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLDialogElement::show_popover_with_options(self : HTMLDialogElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLDialogElement::hide_popover(self : HTMLDialogElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLDialogElement::toggle_popover(self : HTMLDialogElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLDialogElement::toggle_popover(self : HTMLDialogElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLDialogElement::toggle_popover_with_options(self : HTMLDialogElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLDialogElement::get_popover(self : HTMLDialogElement) -> String? =
@@ -58013,7 +58743,10 @@ pub extern "js" fn HTMLDialogElement::get_tab_index(self : HTMLDialogElement) ->
 pub extern "js" fn HTMLDialogElement::set_tab_index(self : HTMLDialogElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLDialogElement::focus(self : HTMLDialogElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLDialogElement::focus(self : HTMLDialogElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLDialogElement::focus_with_options(self : HTMLDialogElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLDialogElement::blur(self : HTMLDialogElement) -> Unit =
@@ -58043,10 +58776,16 @@ pub extern "js" fn HTMLDialogElement::show(self : HTMLDialogElement) -> Unit =
 pub extern "js" fn HTMLDialogElement::show_modal(self : HTMLDialogElement) -> Unit =
   #| (self) => self.showModal()
 
-pub extern "js" fn HTMLDialogElement::close(self : HTMLDialogElement, return_value : String) -> Unit =
+pub extern "js" fn HTMLDialogElement::close(self : HTMLDialogElement) -> Unit =
+  #| (self) => self.close()
+
+pub extern "js" fn HTMLDialogElement::close_with_return_value(self : HTMLDialogElement, return_value : String) -> Unit =
   #| (self, return_value) => self.close(return_value)
 
-pub extern "js" fn HTMLDialogElement::request_close(self : HTMLDialogElement, return_value : String) -> Unit =
+pub extern "js" fn HTMLDialogElement::request_close(self : HTMLDialogElement) -> Unit =
+  #| (self) => self.requestClose()
+
+pub extern "js" fn HTMLDialogElement::request_close_with_return_value(self : HTMLDialogElement, return_value : String) -> Unit =
   #| (self, return_value) => self.requestClose(return_value)
 
 ///|
@@ -58152,13 +58891,19 @@ pub extern "js" fn HTMLScriptElement::set_outer_text(self : HTMLScriptElement, v
 pub extern "js" fn HTMLScriptElement::attach_internals(self : HTMLScriptElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLScriptElement::show_popover(self : HTMLScriptElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLScriptElement::show_popover(self : HTMLScriptElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLScriptElement::show_popover_with_options(self : HTMLScriptElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLScriptElement::hide_popover(self : HTMLScriptElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLScriptElement::toggle_popover(self : HTMLScriptElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLScriptElement::toggle_popover(self : HTMLScriptElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLScriptElement::toggle_popover_with_options(self : HTMLScriptElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLScriptElement::get_popover(self : HTMLScriptElement) -> String? =
@@ -58887,7 +59632,10 @@ pub extern "js" fn HTMLScriptElement::get_tab_index(self : HTMLScriptElement) ->
 pub extern "js" fn HTMLScriptElement::set_tab_index(self : HTMLScriptElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLScriptElement::focus(self : HTMLScriptElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLScriptElement::focus(self : HTMLScriptElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLScriptElement::focus_with_options(self : HTMLScriptElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLScriptElement::blur(self : HTMLScriptElement) -> Unit =
@@ -59086,13 +59834,19 @@ pub extern "js" fn HTMLTemplateElement::set_outer_text(self : HTMLTemplateElemen
 pub extern "js" fn HTMLTemplateElement::attach_internals(self : HTMLTemplateElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLTemplateElement::show_popover(self : HTMLTemplateElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLTemplateElement::show_popover(self : HTMLTemplateElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLTemplateElement::show_popover_with_options(self : HTMLTemplateElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLTemplateElement::hide_popover(self : HTMLTemplateElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLTemplateElement::toggle_popover(self : HTMLTemplateElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLTemplateElement::toggle_popover(self : HTMLTemplateElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLTemplateElement::toggle_popover_with_options(self : HTMLTemplateElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLTemplateElement::get_popover(self : HTMLTemplateElement) -> String? =
@@ -59821,7 +60575,10 @@ pub extern "js" fn HTMLTemplateElement::get_tab_index(self : HTMLTemplateElement
 pub extern "js" fn HTMLTemplateElement::set_tab_index(self : HTMLTemplateElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLTemplateElement::focus(self : HTMLTemplateElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLTemplateElement::focus(self : HTMLTemplateElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLTemplateElement::focus_with_options(self : HTMLTemplateElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLTemplateElement::blur(self : HTMLTemplateElement) -> Unit =
@@ -59963,13 +60720,19 @@ pub extern "js" fn HTMLSlotElement::set_outer_text(self : HTMLSlotElement, value
 pub extern "js" fn HTMLSlotElement::attach_internals(self : HTMLSlotElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLSlotElement::show_popover(self : HTMLSlotElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLSlotElement::show_popover(self : HTMLSlotElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLSlotElement::show_popover_with_options(self : HTMLSlotElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLSlotElement::hide_popover(self : HTMLSlotElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLSlotElement::toggle_popover(self : HTMLSlotElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLSlotElement::toggle_popover(self : HTMLSlotElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLSlotElement::toggle_popover_with_options(self : HTMLSlotElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLSlotElement::get_popover(self : HTMLSlotElement) -> String? =
@@ -60698,7 +61461,10 @@ pub extern "js" fn HTMLSlotElement::get_tab_index(self : HTMLSlotElement) -> Int
 pub extern "js" fn HTMLSlotElement::set_tab_index(self : HTMLSlotElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLSlotElement::focus(self : HTMLSlotElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLSlotElement::focus(self : HTMLSlotElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLSlotElement::focus_with_options(self : HTMLSlotElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLSlotElement::blur(self : HTMLSlotElement) -> Unit =
@@ -60710,10 +61476,16 @@ pub extern "js" fn HTMLSlotElement::get_name(self : HTMLSlotElement) -> String =
 pub extern "js" fn HTMLSlotElement::set_name(self : HTMLSlotElement, value : String) -> Unit =
   #| (self, value) => { self.name = value }
 
-pub extern "js" fn HTMLSlotElement::assigned_nodes(self : HTMLSlotElement, options : AssignedNodesOptions) -> JsValue =
+pub extern "js" fn HTMLSlotElement::assigned_nodes(self : HTMLSlotElement) -> Array[Node] =
+  #| (self) => self.assignedNodes()
+
+pub extern "js" fn HTMLSlotElement::assigned_nodes_with_options(self : HTMLSlotElement, options : AssignedNodesOptions) -> Array[Node] =
   #| (self, options) => self.assignedNodes(options)
 
-pub extern "js" fn HTMLSlotElement::assigned_elements(self : HTMLSlotElement, options : AssignedNodesOptions) -> JsValue =
+pub extern "js" fn HTMLSlotElement::assigned_elements(self : HTMLSlotElement) -> Array[Element] =
+  #| (self) => self.assignedElements()
+
+pub extern "js" fn HTMLSlotElement::assigned_elements_with_options(self : HTMLSlotElement, options : AssignedNodesOptions) -> Array[Element] =
   #| (self, options) => self.assignedElements(options)
 
 pub extern "js" fn HTMLSlotElement::assign(self : HTMLSlotElement, nodes : JsValue) -> Unit =
@@ -60822,13 +61594,19 @@ pub extern "js" fn HTMLCanvasElement::set_outer_text(self : HTMLCanvasElement, v
 pub extern "js" fn HTMLCanvasElement::attach_internals(self : HTMLCanvasElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLCanvasElement::show_popover(self : HTMLCanvasElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLCanvasElement::show_popover(self : HTMLCanvasElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLCanvasElement::show_popover_with_options(self : HTMLCanvasElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLCanvasElement::hide_popover(self : HTMLCanvasElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLCanvasElement::toggle_popover(self : HTMLCanvasElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLCanvasElement::toggle_popover(self : HTMLCanvasElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLCanvasElement::toggle_popover_with_options(self : HTMLCanvasElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLCanvasElement::get_popover(self : HTMLCanvasElement) -> String? =
@@ -61557,7 +62335,10 @@ pub extern "js" fn HTMLCanvasElement::get_tab_index(self : HTMLCanvasElement) ->
 pub extern "js" fn HTMLCanvasElement::set_tab_index(self : HTMLCanvasElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLCanvasElement::focus(self : HTMLCanvasElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLCanvasElement::focus(self : HTMLCanvasElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLCanvasElement::focus_with_options(self : HTMLCanvasElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLCanvasElement::blur(self : HTMLCanvasElement) -> Unit =
@@ -61575,19 +62356,31 @@ pub extern "js" fn HTMLCanvasElement::get_height(self : HTMLCanvasElement) -> In
 pub extern "js" fn HTMLCanvasElement::set_height(self : HTMLCanvasElement, value : Int) -> Unit =
   #| (self, value) => { self.height = value }
 
-pub extern "js" fn HTMLCanvasElement::get_context(self : HTMLCanvasElement, context_id : String, options : JsValue) -> RenderingContext? =
+pub extern "js" fn HTMLCanvasElement::get_context(self : HTMLCanvasElement, context_id : String) -> RenderingContext? =
+  #| (self, context_id) => self.getContext(context_id)
+
+pub extern "js" fn HTMLCanvasElement::get_context_with_options(self : HTMLCanvasElement, context_id : String, options : JsValue) -> RenderingContext? =
   #| (self, context_id, options) => self.getContext(context_id, options)
 
-pub extern "js" fn HTMLCanvasElement::to_data_u_r_l(self : HTMLCanvasElement, type_ : String, quality : JsValue) -> String =
+pub extern "js" fn HTMLCanvasElement::to_data_u_r_l(self : HTMLCanvasElement) -> String =
+  #| (self) => self.toDataURL()
+
+pub extern "js" fn HTMLCanvasElement::to_data_u_r_l_with_quality(self : HTMLCanvasElement, type_ : String, quality : JsValue) -> String =
   #| (self, type_, quality) => self.toDataURL(type_, quality)
 
-pub extern "js" fn HTMLCanvasElement::to_blob(self : HTMLCanvasElement, callback : BlobCallback, type_ : String, quality : JsValue) -> Unit =
+pub extern "js" fn HTMLCanvasElement::to_blob(self : HTMLCanvasElement, callback : BlobCallback) -> Unit =
+  #| (self, callback) => self.toBlob(callback)
+
+pub extern "js" fn HTMLCanvasElement::to_blob_with_quality(self : HTMLCanvasElement, callback : BlobCallback, type_ : String, quality : JsValue) -> Unit =
   #| (self, callback, type_, quality) => self.toBlob(callback, type_, quality)
 
 pub extern "js" fn HTMLCanvasElement::transfer_control_to_offscreen(self : HTMLCanvasElement) -> OffscreenCanvas =
   #| (self) => self.transferControlToOffscreen()
 
-pub extern "js" fn HTMLCanvasElement::capture_stream(self : HTMLCanvasElement, frame_request_rate : Double) -> MediaStream =
+pub extern "js" fn HTMLCanvasElement::capture_stream(self : HTMLCanvasElement) -> MediaStream =
+  #| (self) => self.captureStream()
+
+pub extern "js" fn HTMLCanvasElement::capture_stream_with_frame_request_rate(self : HTMLCanvasElement, frame_request_rate : Double) -> MediaStream =
   #| (self, frame_request_rate) => self.captureStream(frame_request_rate)
 
 ///|
@@ -61726,16 +62519,25 @@ pub extern "js" fn CanvasRenderingContext2D::stroke_rect(self : CanvasRenderingC
 pub extern "js" fn CanvasRenderingContext2D::begin_path(self : CanvasRenderingContext2D) -> Unit =
   #| (self) => self.beginPath()
 
-pub extern "js" fn CanvasRenderingContext2D::fill(self : CanvasRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
+pub extern "js" fn CanvasRenderingContext2D::fill(self : CanvasRenderingContext2D) -> Unit =
+  #| (self) => self.fill()
+
+pub extern "js" fn CanvasRenderingContext2D::fill_with_fill_rule(self : CanvasRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
   #| (self, fill_rule) => self.fill(['nonzero', 'evenodd'][fill_rule])
 
 pub extern "js" fn CanvasRenderingContext2D::stroke(self : CanvasRenderingContext2D) -> Unit =
   #| (self) => self.stroke()
 
-pub extern "js" fn CanvasRenderingContext2D::clip(self : CanvasRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
+pub extern "js" fn CanvasRenderingContext2D::clip(self : CanvasRenderingContext2D) -> Unit =
+  #| (self) => self.clip()
+
+pub extern "js" fn CanvasRenderingContext2D::clip_with_fill_rule(self : CanvasRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
   #| (self, fill_rule) => self.clip(['nonzero', 'evenodd'][fill_rule])
 
-pub extern "js" fn CanvasRenderingContext2D::is_point_in_path(self : CanvasRenderingContext2D, x : Double, y : Double, fill_rule : CanvasFillRule) -> Bool =
+pub extern "js" fn CanvasRenderingContext2D::is_point_in_path(self : CanvasRenderingContext2D, x : Double, y : Double) -> Bool =
+  #| (self, x, y) => self.isPointInPath(x, y)
+
+pub extern "js" fn CanvasRenderingContext2D::is_point_in_path_with_fill_rule(self : CanvasRenderingContext2D, x : Double, y : Double, fill_rule : CanvasFillRule) -> Bool =
   #| (self, x, y, fill_rule) => self.isPointInPath(x, y, ['nonzero', 'evenodd'][fill_rule])
 
 pub extern "js" fn CanvasRenderingContext2D::is_point_in_stroke(self : CanvasRenderingContext2D, x : Double, y : Double) -> Bool =
@@ -61744,10 +62546,16 @@ pub extern "js" fn CanvasRenderingContext2D::is_point_in_stroke(self : CanvasRen
 pub extern "js" fn CanvasRenderingContext2D::draw_focus_if_needed(self : CanvasRenderingContext2D, element : Element) -> Unit =
   #| (self, element) => self.drawFocusIfNeeded(element)
 
-pub extern "js" fn CanvasRenderingContext2D::fill_text(self : CanvasRenderingContext2D, text : String, x : Double, y : Double, max_width : Double) -> Unit =
+pub extern "js" fn CanvasRenderingContext2D::fill_text(self : CanvasRenderingContext2D, text : String, x : Double, y : Double) -> Unit =
+  #| (self, text, x, y) => self.fillText(text, x, y)
+
+pub extern "js" fn CanvasRenderingContext2D::fill_text_with_max_width(self : CanvasRenderingContext2D, text : String, x : Double, y : Double, max_width : Double) -> Unit =
   #| (self, text, x, y, max_width) => self.fillText(text, x, y, max_width)
 
-pub extern "js" fn CanvasRenderingContext2D::stroke_text(self : CanvasRenderingContext2D, text : String, x : Double, y : Double, max_width : Double) -> Unit =
+pub extern "js" fn CanvasRenderingContext2D::stroke_text(self : CanvasRenderingContext2D, text : String, x : Double, y : Double) -> Unit =
+  #| (self, text, x, y) => self.strokeText(text, x, y)
+
+pub extern "js" fn CanvasRenderingContext2D::stroke_text_with_max_width(self : CanvasRenderingContext2D, text : String, x : Double, y : Double, max_width : Double) -> Unit =
   #| (self, text, x, y, max_width) => self.strokeText(text, x, y, max_width)
 
 pub extern "js" fn CanvasRenderingContext2D::measure_text(self : CanvasRenderingContext2D, text : String) -> TextMetrics =
@@ -61756,10 +62564,16 @@ pub extern "js" fn CanvasRenderingContext2D::measure_text(self : CanvasRendering
 pub extern "js" fn CanvasRenderingContext2D::draw_image(self : CanvasRenderingContext2D, image : CanvasImageSource, dx : Double, dy : Double) -> Unit =
   #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
 
-pub extern "js" fn CanvasRenderingContext2D::create_image_data(self : CanvasRenderingContext2D, sw : Int, sh : Int, settings : ImageDataSettings) -> ImageData =
+pub extern "js" fn CanvasRenderingContext2D::create_image_data(self : CanvasRenderingContext2D, sw : Int, sh : Int) -> ImageData =
+  #| (self, sw, sh) => self.createImageData(sw, sh)
+
+pub extern "js" fn CanvasRenderingContext2D::create_image_data_with_settings(self : CanvasRenderingContext2D, sw : Int, sh : Int, settings : ImageDataSettings) -> ImageData =
   #| (self, sw, sh, settings) => self.createImageData(sw, sh, settings)
 
-pub extern "js" fn CanvasRenderingContext2D::get_image_data(self : CanvasRenderingContext2D, sx : Int, sy : Int, sw : Int, sh : Int, settings : ImageDataSettings) -> ImageData =
+pub extern "js" fn CanvasRenderingContext2D::get_image_data(self : CanvasRenderingContext2D, sx : Int, sy : Int, sw : Int, sh : Int) -> ImageData =
+  #| (self, sx, sy, sw, sh) => self.getImageData(sx, sy, sw, sh)
+
+pub extern "js" fn CanvasRenderingContext2D::get_image_data_with_settings(self : CanvasRenderingContext2D, sx : Int, sy : Int, sw : Int, sh : Int, settings : ImageDataSettings) -> ImageData =
   #| (self, sx, sy, sw, sh, settings) => self.getImageData(sx, sy, sw, sh, settings)
 
 pub extern "js" fn CanvasRenderingContext2D::put_image_data(self : CanvasRenderingContext2D, image_data : ImageData, dx : Int, dy : Int) -> Unit =
@@ -61789,10 +62603,10 @@ pub extern "js" fn CanvasRenderingContext2D::get_miter_limit(self : CanvasRender
 pub extern "js" fn CanvasRenderingContext2D::set_miter_limit(self : CanvasRenderingContext2D, value : Double) -> Unit =
   #| (self, value) => { self.miterLimit = value }
 
-pub extern "js" fn CanvasRenderingContext2D::set_line_dash(self : CanvasRenderingContext2D, segments : JsValue) -> Unit =
+pub extern "js" fn CanvasRenderingContext2D::set_line_dash(self : CanvasRenderingContext2D, segments : Array[Double]) -> Unit =
   #| (self, segments) => self.setLineDash(segments)
 
-pub extern "js" fn CanvasRenderingContext2D::get_line_dash(self : CanvasRenderingContext2D) -> JsValue =
+pub extern "js" fn CanvasRenderingContext2D::get_line_dash(self : CanvasRenderingContext2D) -> Array[Double] =
   #| (self) => self.getLineDash()
 
 pub extern "js" fn CanvasRenderingContext2D::get_line_dash_offset(self : CanvasRenderingContext2D) -> Double =
@@ -61888,13 +62702,22 @@ pub extern "js" fn CanvasRenderingContext2D::arc_to(self : CanvasRenderingContex
 pub extern "js" fn CanvasRenderingContext2D::rect(self : CanvasRenderingContext2D, x : Double, y : Double, w : Double, h : Double) -> Unit =
   #| (self, x, y, w, h) => self.rect(x, y, w, h)
 
-pub extern "js" fn CanvasRenderingContext2D::round_rect(self : CanvasRenderingContext2D, x : Double, y : Double, w : Double, h : Double, radii : JsValue) -> Unit =
+pub extern "js" fn CanvasRenderingContext2D::round_rect(self : CanvasRenderingContext2D, x : Double, y : Double, w : Double, h : Double) -> Unit =
+  #| (self, x, y, w, h) => self.roundRect(x, y, w, h)
+
+pub extern "js" fn CanvasRenderingContext2D::round_rect_with_radii(self : CanvasRenderingContext2D, x : Double, y : Double, w : Double, h : Double, radii : JsValue) -> Unit =
   #| (self, x, y, w, h, radii) => self.roundRect(x, y, w, h, radii)
 
-pub extern "js" fn CanvasRenderingContext2D::arc(self : CanvasRenderingContext2D, x : Double, y : Double, radius : Double, start_angle : Double, end_angle : Double, counterclockwise : Bool) -> Unit =
+pub extern "js" fn CanvasRenderingContext2D::arc(self : CanvasRenderingContext2D, x : Double, y : Double, radius : Double, start_angle : Double, end_angle : Double) -> Unit =
+  #| (self, x, y, radius, start_angle, end_angle) => self.arc(x, y, radius, start_angle, end_angle)
+
+pub extern "js" fn CanvasRenderingContext2D::arc_with_counterclockwise(self : CanvasRenderingContext2D, x : Double, y : Double, radius : Double, start_angle : Double, end_angle : Double, counterclockwise : Bool) -> Unit =
   #| (self, x, y, radius, start_angle, end_angle, counterclockwise) => self.arc(x, y, radius, start_angle, end_angle, counterclockwise)
 
-pub extern "js" fn CanvasRenderingContext2D::ellipse(self : CanvasRenderingContext2D, x : Double, y : Double, radius_x : Double, radius_y : Double, rotation : Double, start_angle : Double, end_angle : Double, counterclockwise : Bool) -> Unit =
+pub extern "js" fn CanvasRenderingContext2D::ellipse(self : CanvasRenderingContext2D, x : Double, y : Double, radius_x : Double, radius_y : Double, rotation : Double, start_angle : Double, end_angle : Double) -> Unit =
+  #| (self, x, y, radius_x, radius_y, rotation, start_angle, end_angle) => self.ellipse(x, y, radius_x, radius_y, rotation, start_angle, end_angle)
+
+pub extern "js" fn CanvasRenderingContext2D::ellipse_with_counterclockwise(self : CanvasRenderingContext2D, x : Double, y : Double, radius_x : Double, radius_y : Double, rotation : Double, start_angle : Double, end_angle : Double, counterclockwise : Bool) -> Unit =
   #| (self, x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise) => self.ellipse(x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise)
 
 ///|
@@ -61914,7 +62737,10 @@ pub type CanvasPattern
 pub extern "js" fn CanvasPattern::to_js_value(self : CanvasPattern) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn CanvasPattern::set_transform(self : CanvasPattern, transform : DOMMatrix2DInit) -> Unit =
+pub extern "js" fn CanvasPattern::set_transform(self : CanvasPattern) -> Unit =
+  #| (self) => self.setTransform()
+
+pub extern "js" fn CanvasPattern::set_transform_with_transform(self : CanvasPattern, transform : DOMMatrix2DInit) -> Unit =
   #| (self, transform) => self.setTransform(transform)
 
 ///|
@@ -61970,7 +62796,10 @@ pub extern "js" fn Path2D::to_js_value(self : Path2D) -> JsValue =
 pub extern "js" fn Path2D::new(path : JsValue) -> Path2D =
   #| (path) => new Path2D(path)
 
-pub extern "js" fn Path2D::add_path(self : Path2D, path : Path2D, transform : DOMMatrix2DInit) -> Unit =
+pub extern "js" fn Path2D::add_path(self : Path2D, path : Path2D) -> Unit =
+  #| (self, path) => self.addPath(path)
+
+pub extern "js" fn Path2D::add_path_with_transform(self : Path2D, path : Path2D, transform : DOMMatrix2DInit) -> Unit =
   #| (self, path, transform) => self.addPath(path, transform)
 
 pub extern "js" fn Path2D::close_path(self : Path2D) -> Unit =
@@ -61994,13 +62823,22 @@ pub extern "js" fn Path2D::arc_to(self : Path2D, x1 : Double, y1 : Double, x2 : 
 pub extern "js" fn Path2D::rect(self : Path2D, x : Double, y : Double, w : Double, h : Double) -> Unit =
   #| (self, x, y, w, h) => self.rect(x, y, w, h)
 
-pub extern "js" fn Path2D::round_rect(self : Path2D, x : Double, y : Double, w : Double, h : Double, radii : JsValue) -> Unit =
+pub extern "js" fn Path2D::round_rect(self : Path2D, x : Double, y : Double, w : Double, h : Double) -> Unit =
+  #| (self, x, y, w, h) => self.roundRect(x, y, w, h)
+
+pub extern "js" fn Path2D::round_rect_with_radii(self : Path2D, x : Double, y : Double, w : Double, h : Double, radii : JsValue) -> Unit =
   #| (self, x, y, w, h, radii) => self.roundRect(x, y, w, h, radii)
 
-pub extern "js" fn Path2D::arc(self : Path2D, x : Double, y : Double, radius : Double, start_angle : Double, end_angle : Double, counterclockwise : Bool) -> Unit =
+pub extern "js" fn Path2D::arc(self : Path2D, x : Double, y : Double, radius : Double, start_angle : Double, end_angle : Double) -> Unit =
+  #| (self, x, y, radius, start_angle, end_angle) => self.arc(x, y, radius, start_angle, end_angle)
+
+pub extern "js" fn Path2D::arc_with_counterclockwise(self : Path2D, x : Double, y : Double, radius : Double, start_angle : Double, end_angle : Double, counterclockwise : Bool) -> Unit =
   #| (self, x, y, radius, start_angle, end_angle, counterclockwise) => self.arc(x, y, radius, start_angle, end_angle, counterclockwise)
 
-pub extern "js" fn Path2D::ellipse(self : Path2D, x : Double, y : Double, radius_x : Double, radius_y : Double, rotation : Double, start_angle : Double, end_angle : Double, counterclockwise : Bool) -> Unit =
+pub extern "js" fn Path2D::ellipse(self : Path2D, x : Double, y : Double, radius_x : Double, radius_y : Double, rotation : Double, start_angle : Double, end_angle : Double) -> Unit =
+  #| (self, x, y, radius_x, radius_y, rotation, start_angle, end_angle) => self.ellipse(x, y, radius_x, radius_y, rotation, start_angle, end_angle)
+
+pub extern "js" fn Path2D::ellipse_with_counterclockwise(self : Path2D, x : Double, y : Double, radius_x : Double, radius_y : Double, rotation : Double, start_angle : Double, end_angle : Double, counterclockwise : Bool) -> Unit =
   #| (self, x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise) => self.ellipse(x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise)
 
 ///|
@@ -62038,13 +62876,19 @@ pub extern "js" fn OffscreenCanvas::get_height(self : OffscreenCanvas) -> Int64 
 pub extern "js" fn OffscreenCanvas::set_height(self : OffscreenCanvas, value : Int64) -> Unit =
   #| (self, value) => { self.height = value }
 
-pub extern "js" fn OffscreenCanvas::get_context(self : OffscreenCanvas, context_id : OffscreenRenderingContextId, options : JsValue) -> OffscreenRenderingContext? =
+pub extern "js" fn OffscreenCanvas::get_context(self : OffscreenCanvas, context_id : OffscreenRenderingContextId) -> OffscreenRenderingContext? =
+  #| (self, context_id) => self.getContext(['2d', 'bitmaprenderer', 'webgl', 'webgl2', 'webgpu'][context_id])
+
+pub extern "js" fn OffscreenCanvas::get_context_with_options(self : OffscreenCanvas, context_id : OffscreenRenderingContextId, options : JsValue) -> OffscreenRenderingContext? =
   #| (self, context_id, options) => self.getContext(['2d', 'bitmaprenderer', 'webgl', 'webgl2', 'webgpu'][context_id], options)
 
 pub extern "js" fn OffscreenCanvas::transfer_to_image_bitmap(self : OffscreenCanvas) -> ImageBitmap =
   #| (self) => self.transferToImageBitmap()
 
-pub extern "js" fn OffscreenCanvas::convert_to_blob(self : OffscreenCanvas, options : ImageEncodeOptions) -> JsValue =
+pub extern "js" fn OffscreenCanvas::convert_to_blob(self : OffscreenCanvas) -> Promise[Blob] =
+  #| (self) => self.convertToBlob()
+
+pub extern "js" fn OffscreenCanvas::convert_to_blob_with_options(self : OffscreenCanvas, options : ImageEncodeOptions) -> Promise[Blob] =
   #| (self, options) => self.convertToBlob(options)
 
 pub extern "js" fn OffscreenCanvas::get_oncontextlost(self : OffscreenCanvas) -> EventHandler =
@@ -62195,25 +63039,40 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::stroke_rect(self : Offscre
 pub extern "js" fn OffscreenCanvasRenderingContext2D::begin_path(self : OffscreenCanvasRenderingContext2D) -> Unit =
   #| (self) => self.beginPath()
 
-pub extern "js" fn OffscreenCanvasRenderingContext2D::fill(self : OffscreenCanvasRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
+pub extern "js" fn OffscreenCanvasRenderingContext2D::fill(self : OffscreenCanvasRenderingContext2D) -> Unit =
+  #| (self) => self.fill()
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::fill_with_fill_rule(self : OffscreenCanvasRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
   #| (self, fill_rule) => self.fill(['nonzero', 'evenodd'][fill_rule])
 
 pub extern "js" fn OffscreenCanvasRenderingContext2D::stroke(self : OffscreenCanvasRenderingContext2D) -> Unit =
   #| (self) => self.stroke()
 
-pub extern "js" fn OffscreenCanvasRenderingContext2D::clip(self : OffscreenCanvasRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
+pub extern "js" fn OffscreenCanvasRenderingContext2D::clip(self : OffscreenCanvasRenderingContext2D) -> Unit =
+  #| (self) => self.clip()
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::clip_with_fill_rule(self : OffscreenCanvasRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
   #| (self, fill_rule) => self.clip(['nonzero', 'evenodd'][fill_rule])
 
-pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_path(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double, fill_rule : CanvasFillRule) -> Bool =
+pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_path(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double) -> Bool =
+  #| (self, x, y) => self.isPointInPath(x, y)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_path_with_fill_rule(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double, fill_rule : CanvasFillRule) -> Bool =
   #| (self, x, y, fill_rule) => self.isPointInPath(x, y, ['nonzero', 'evenodd'][fill_rule])
 
 pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_stroke(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double) -> Bool =
   #| (self, x, y) => self.isPointInStroke(x, y)
 
-pub extern "js" fn OffscreenCanvasRenderingContext2D::fill_text(self : OffscreenCanvasRenderingContext2D, text : String, x : Double, y : Double, max_width : Double) -> Unit =
+pub extern "js" fn OffscreenCanvasRenderingContext2D::fill_text(self : OffscreenCanvasRenderingContext2D, text : String, x : Double, y : Double) -> Unit =
+  #| (self, text, x, y) => self.fillText(text, x, y)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::fill_text_with_max_width(self : OffscreenCanvasRenderingContext2D, text : String, x : Double, y : Double, max_width : Double) -> Unit =
   #| (self, text, x, y, max_width) => self.fillText(text, x, y, max_width)
 
-pub extern "js" fn OffscreenCanvasRenderingContext2D::stroke_text(self : OffscreenCanvasRenderingContext2D, text : String, x : Double, y : Double, max_width : Double) -> Unit =
+pub extern "js" fn OffscreenCanvasRenderingContext2D::stroke_text(self : OffscreenCanvasRenderingContext2D, text : String, x : Double, y : Double) -> Unit =
+  #| (self, text, x, y) => self.strokeText(text, x, y)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::stroke_text_with_max_width(self : OffscreenCanvasRenderingContext2D, text : String, x : Double, y : Double, max_width : Double) -> Unit =
   #| (self, text, x, y, max_width) => self.strokeText(text, x, y, max_width)
 
 pub extern "js" fn OffscreenCanvasRenderingContext2D::measure_text(self : OffscreenCanvasRenderingContext2D, text : String) -> TextMetrics =
@@ -62222,10 +63081,16 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::measure_text(self : Offscr
 pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image(self : OffscreenCanvasRenderingContext2D, image : CanvasImageSource, dx : Double, dy : Double) -> Unit =
   #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
 
-pub extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data(self : OffscreenCanvasRenderingContext2D, sw : Int, sh : Int, settings : ImageDataSettings) -> ImageData =
+pub extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data(self : OffscreenCanvasRenderingContext2D, sw : Int, sh : Int) -> ImageData =
+  #| (self, sw, sh) => self.createImageData(sw, sh)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data_with_settings(self : OffscreenCanvasRenderingContext2D, sw : Int, sh : Int, settings : ImageDataSettings) -> ImageData =
   #| (self, sw, sh, settings) => self.createImageData(sw, sh, settings)
 
-pub extern "js" fn OffscreenCanvasRenderingContext2D::get_image_data(self : OffscreenCanvasRenderingContext2D, sx : Int, sy : Int, sw : Int, sh : Int, settings : ImageDataSettings) -> ImageData =
+pub extern "js" fn OffscreenCanvasRenderingContext2D::get_image_data(self : OffscreenCanvasRenderingContext2D, sx : Int, sy : Int, sw : Int, sh : Int) -> ImageData =
+  #| (self, sx, sy, sw, sh) => self.getImageData(sx, sy, sw, sh)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::get_image_data_with_settings(self : OffscreenCanvasRenderingContext2D, sx : Int, sy : Int, sw : Int, sh : Int, settings : ImageDataSettings) -> ImageData =
   #| (self, sx, sy, sw, sh, settings) => self.getImageData(sx, sy, sw, sh, settings)
 
 pub extern "js" fn OffscreenCanvasRenderingContext2D::put_image_data(self : OffscreenCanvasRenderingContext2D, image_data : ImageData, dx : Int, dy : Int) -> Unit =
@@ -62255,10 +63120,10 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::get_miter_limit(self : Off
 pub extern "js" fn OffscreenCanvasRenderingContext2D::set_miter_limit(self : OffscreenCanvasRenderingContext2D, value : Double) -> Unit =
   #| (self, value) => { self.miterLimit = value }
 
-pub extern "js" fn OffscreenCanvasRenderingContext2D::set_line_dash(self : OffscreenCanvasRenderingContext2D, segments : JsValue) -> Unit =
+pub extern "js" fn OffscreenCanvasRenderingContext2D::set_line_dash(self : OffscreenCanvasRenderingContext2D, segments : Array[Double]) -> Unit =
   #| (self, segments) => self.setLineDash(segments)
 
-pub extern "js" fn OffscreenCanvasRenderingContext2D::get_line_dash(self : OffscreenCanvasRenderingContext2D) -> JsValue =
+pub extern "js" fn OffscreenCanvasRenderingContext2D::get_line_dash(self : OffscreenCanvasRenderingContext2D) -> Array[Double] =
   #| (self) => self.getLineDash()
 
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_line_dash_offset(self : OffscreenCanvasRenderingContext2D) -> Double =
@@ -62354,13 +63219,22 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::arc_to(self : OffscreenCan
 pub extern "js" fn OffscreenCanvasRenderingContext2D::rect(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double, w : Double, h : Double) -> Unit =
   #| (self, x, y, w, h) => self.rect(x, y, w, h)
 
-pub extern "js" fn OffscreenCanvasRenderingContext2D::round_rect(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double, w : Double, h : Double, radii : JsValue) -> Unit =
+pub extern "js" fn OffscreenCanvasRenderingContext2D::round_rect(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double, w : Double, h : Double) -> Unit =
+  #| (self, x, y, w, h) => self.roundRect(x, y, w, h)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::round_rect_with_radii(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double, w : Double, h : Double, radii : JsValue) -> Unit =
   #| (self, x, y, w, h, radii) => self.roundRect(x, y, w, h, radii)
 
-pub extern "js" fn OffscreenCanvasRenderingContext2D::arc(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double, radius : Double, start_angle : Double, end_angle : Double, counterclockwise : Bool) -> Unit =
+pub extern "js" fn OffscreenCanvasRenderingContext2D::arc(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double, radius : Double, start_angle : Double, end_angle : Double) -> Unit =
+  #| (self, x, y, radius, start_angle, end_angle) => self.arc(x, y, radius, start_angle, end_angle)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::arc_with_counterclockwise(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double, radius : Double, start_angle : Double, end_angle : Double, counterclockwise : Bool) -> Unit =
   #| (self, x, y, radius, start_angle, end_angle, counterclockwise) => self.arc(x, y, radius, start_angle, end_angle, counterclockwise)
 
-pub extern "js" fn OffscreenCanvasRenderingContext2D::ellipse(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double, radius_x : Double, radius_y : Double, rotation : Double, start_angle : Double, end_angle : Double, counterclockwise : Bool) -> Unit =
+pub extern "js" fn OffscreenCanvasRenderingContext2D::ellipse(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double, radius_x : Double, radius_y : Double, rotation : Double, start_angle : Double, end_angle : Double) -> Unit =
+  #| (self, x, y, radius_x, radius_y, rotation, start_angle, end_angle) => self.ellipse(x, y, radius_x, radius_y, rotation, start_angle, end_angle)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::ellipse_with_counterclockwise(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double, radius_x : Double, radius_y : Double, rotation : Double, start_angle : Double, end_angle : Double, counterclockwise : Bool) -> Unit =
   #| (self, x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise) => self.ellipse(x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise)
 
 ///|
@@ -62373,7 +63247,10 @@ pub extern "js" fn CustomElementRegistry::to_js_value(self : CustomElementRegist
 pub extern "js" fn CustomElementRegistry::new() -> CustomElementRegistry =
   #| () => new CustomElementRegistry()
 
-pub extern "js" fn CustomElementRegistry::define_(self : CustomElementRegistry, name : String, constructor_ : CustomElementConstructor, options : ElementDefinitionOptions) -> Unit =
+pub extern "js" fn CustomElementRegistry::define_(self : CustomElementRegistry, name : String, constructor_ : CustomElementConstructor) -> Unit =
+  #| (self, name, constructor_) => self.define(name, constructor_)
+
+pub extern "js" fn CustomElementRegistry::define__with_options(self : CustomElementRegistry, name : String, constructor_ : CustomElementConstructor, options : ElementDefinitionOptions) -> Unit =
   #| (self, name, constructor_, options) => self.define(name, constructor_, options)
 
 pub extern "js" fn CustomElementRegistry::get(self : CustomElementRegistry, name : String) -> JsValue =
@@ -62382,7 +63259,7 @@ pub extern "js" fn CustomElementRegistry::get(self : CustomElementRegistry, name
 pub extern "js" fn CustomElementRegistry::get_name(self : CustomElementRegistry, constructor_ : CustomElementConstructor) -> String? =
   #| (self, constructor_) => self.getName(constructor_)
 
-pub extern "js" fn CustomElementRegistry::when_defined(self : CustomElementRegistry, name : String) -> JsValue =
+pub extern "js" fn CustomElementRegistry::when_defined(self : CustomElementRegistry, name : String) -> Promise[CustomElementConstructor] =
   #| (self, name) => self.whenDefined(name)
 
 pub extern "js" fn CustomElementRegistry::upgrade(self : CustomElementRegistry, root : Node) -> Unit =
@@ -62401,13 +63278,19 @@ pub extern "js" fn ElementInternals::to_js_value(self : ElementInternals) -> JsV
 pub extern "js" fn ElementInternals::get_shadow_root(self : ElementInternals) -> ShadowRoot? =
   #| (self) => self.shadowRoot
 
-pub extern "js" fn ElementInternals::set_form_value(self : ElementInternals, value : JsValue, state : JsValue) -> Unit =
+pub extern "js" fn ElementInternals::set_form_value(self : ElementInternals, value : JsValue) -> Unit =
+  #| (self, value) => self.setFormValue(value)
+
+pub extern "js" fn ElementInternals::set_form_value_with_state(self : ElementInternals, value : JsValue, state : JsValue) -> Unit =
   #| (self, value, state) => self.setFormValue(value, state)
 
 pub extern "js" fn ElementInternals::get_form(self : ElementInternals) -> HTMLFormElement? =
   #| (self) => self.form
 
-pub extern "js" fn ElementInternals::set_validity(self : ElementInternals, flags : ValidityStateFlags, message : String, anchor : HTMLElement) -> Unit =
+pub extern "js" fn ElementInternals::set_validity(self : ElementInternals) -> Unit =
+  #| (self) => self.setValidity()
+
+pub extern "js" fn ElementInternals::set_validity_with_anchor(self : ElementInternals, flags : ValidityStateFlags, message : String, anchor : HTMLElement) -> Unit =
   #| (self, flags, message, anchor) => self.setValidity(flags, message, anchor)
 
 pub extern "js" fn ElementInternals::get_will_validate(self : ElementInternals) -> Bool =
@@ -62750,8 +63633,17 @@ pub type CustomStateSet
 pub extern "js" fn CustomStateSet::to_js_value(self : CustomStateSet) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn CustomStateSet::_unknown_(self : CustomStateSet) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn CustomStateSet::has(self : CustomStateSet, value : String) -> Bool =
+  #| (self, value) => self.has(value)
+
+pub extern "js" fn CustomStateSet::add(self : CustomStateSet, value : String) -> Unit =
+  #| (self, value) => { self.add(value) }
+
+pub extern "js" fn CustomStateSet::delete(self : CustomStateSet, value : String) -> Bool =
+  #| (self, value) => self.delete(value)
+
+pub extern "js" fn CustomStateSet::clear(self : CustomStateSet) -> Unit =
+  #| (self) => { self.clear() }
 
 ///|
 /// VisibilityStateEntry interface
@@ -62888,7 +63780,10 @@ pub extern "js" fn DataTransfer::get_data(self : DataTransfer, format : String) 
 pub extern "js" fn DataTransfer::set_data(self : DataTransfer, format : String, data : String) -> Unit =
   #| (self, format, data) => self.setData(format, data)
 
-pub extern "js" fn DataTransfer::clear_data(self : DataTransfer, format : String) -> Unit =
+pub extern "js" fn DataTransfer::clear_data(self : DataTransfer) -> Unit =
+  #| (self) => self.clearData()
+
+pub extern "js" fn DataTransfer::clear_data_with_format(self : DataTransfer, format : String) -> Unit =
   #| (self, format) => self.clearData(format)
 
 pub extern "js" fn DataTransfer::get_files(self : DataTransfer) -> FileList =
@@ -62938,7 +63833,7 @@ pub extern "js" fn DataTransferItem::get_as_file(self : DataTransferItem) -> Fil
 pub extern "js" fn DataTransferItem::webkit_get_as_entry(self : DataTransferItem) -> FileSystemEntry? =
   #| (self) => self.webkitGetAsEntry()
 
-pub extern "js" fn DataTransferItem::get_as_file_system_handle(self : DataTransferItem) -> JsValue =
+pub extern "js" fn DataTransferItem::get_as_file_system_handle(self : DataTransferItem) -> Promise[FileSystemHandle?] =
   #| (self) => self.getAsFileSystemHandle()
 
 ///|
@@ -63070,7 +63965,10 @@ pub extern "js" fn Window::get_parent(self : Window) -> WindowProxy? =
 pub extern "js" fn Window::get_frame_element(self : Window) -> Element? =
   #| (self) => self.frameElement
 
-pub extern "js" fn Window::open(self : Window, url : String, target : String, features : String) -> WindowProxy? =
+pub extern "js" fn Window::open(self : Window) -> WindowProxy? =
+  #| (self) => self.open()
+
+pub extern "js" fn Window::open_with_features(self : Window, url : String, target : String, features : String) -> WindowProxy? =
   #| (self, url, target, features) => self.open(url, target, features)
 
 pub extern "js" fn Window::get_named(self : Window, name : String) -> JsValue =
@@ -63088,16 +63986,25 @@ pub extern "js" fn Window::get_origin_agent_cluster(self : Window) -> Bool =
 pub extern "js" fn Window::alert(self : Window) -> Unit =
   #| (self) => self.alert()
 
-pub extern "js" fn Window::confirm(self : Window, message : String) -> Bool =
+pub extern "js" fn Window::confirm(self : Window) -> Bool =
+  #| (self) => self.confirm()
+
+pub extern "js" fn Window::confirm_with_message(self : Window, message : String) -> Bool =
   #| (self, message) => self.confirm(message)
 
-pub extern "js" fn Window::prompt(self : Window, message : String, default : String) -> String? =
+pub extern "js" fn Window::prompt(self : Window) -> String? =
+  #| (self) => self.prompt()
+
+pub extern "js" fn Window::prompt_with_default(self : Window, message : String, default : String) -> String? =
   #| (self, message, default) => self.prompt(message, default)
 
 pub extern "js" fn Window::print(self : Window) -> Unit =
   #| (self) => self.print()
 
-pub extern "js" fn Window::post_message(self : Window, message : JsValue, target_origin : String, transfer : JsValue) -> Unit =
+pub extern "js" fn Window::post_message(self : Window, message : JsValue, target_origin : String) -> Unit =
+  #| (self, message, target_origin) => self.postMessage(message, target_origin)
+
+pub extern "js" fn Window::post_message_with_transfer(self : Window, message : JsValue, target_origin : String, transfer : Array[JsValue]) -> Unit =
   #| (self, message, target_origin, transfer) => self.postMessage(message, target_origin, transfer)
 
 pub extern "js" fn Window::get_credentialless(self : Window) -> Bool =
@@ -63160,13 +64067,22 @@ pub extern "js" fn Window::get_scroll_y(self : Window) -> Double =
 pub extern "js" fn Window::get_page_y_offset(self : Window) -> Double =
   #| (self) => self.pageYOffset
 
-pub extern "js" fn Window::scroll(self : Window, options : ScrollToOptions) -> JsValue =
+pub extern "js" fn Window::scroll(self : Window) -> Promise[Unit] =
+  #| (self) => self.scroll()
+
+pub extern "js" fn Window::scroll_with_options(self : Window, options : ScrollToOptions) -> Promise[Unit] =
   #| (self, options) => self.scroll(options)
 
-pub extern "js" fn Window::scroll_to(self : Window, options : ScrollToOptions) -> JsValue =
+pub extern "js" fn Window::scroll_to(self : Window) -> Promise[Unit] =
+  #| (self) => self.scrollTo()
+
+pub extern "js" fn Window::scroll_to_with_options(self : Window, options : ScrollToOptions) -> Promise[Unit] =
   #| (self, options) => self.scrollTo(options)
 
-pub extern "js" fn Window::scroll_by(self : Window, options : ScrollToOptions) -> JsValue =
+pub extern "js" fn Window::scroll_by(self : Window) -> Promise[Unit] =
+  #| (self) => self.scrollBy()
+
+pub extern "js" fn Window::scroll_by_with_options(self : Window, options : ScrollToOptions) -> Promise[Unit] =
   #| (self, options) => self.scrollBy(options)
 
 pub extern "js" fn Window::get_screen_x(self : Window) -> Int =
@@ -63190,10 +64106,13 @@ pub extern "js" fn Window::get_outer_height(self : Window) -> Int =
 pub extern "js" fn Window::get_device_pixel_ratio(self : Window) -> Double =
   #| (self) => self.devicePixelRatio
 
-pub extern "js" fn Window::get_computed_style(self : Window, elt : Element, pseudo_elt : CSSOMString?) -> CSSStyleProperties =
+pub extern "js" fn Window::get_computed_style(self : Window, elt : Element) -> CSSStyleProperties =
+  #| (self, elt) => self.getComputedStyle(elt)
+
+pub extern "js" fn Window::get_computed_style_with_pseudo_elt(self : Window, elt : Element, pseudo_elt : CSSOMString?) -> CSSStyleProperties =
   #| (self, elt, pseudo_elt) => self.getComputedStyle(elt, pseudo_elt)
 
-pub extern "js" fn Window::get_digital_goods_service(self : Window, service_provider : String) -> JsValue =
+pub extern "js" fn Window::get_digital_goods_service(self : Window, service_provider : String) -> Promise[DigitalGoodsService] =
   #| (self, service_provider) => self.getDigitalGoodsService(service_provider)
 
 pub extern "js" fn Window::get_document_picture_in_picture(self : Window) -> DocumentPictureInPicture =
@@ -63205,16 +64124,28 @@ pub extern "js" fn Window::get_event(self : Window) -> JsValue =
 pub extern "js" fn Window::get_fence(self : Window) -> Fence? =
   #| (self) => self.fence
 
-pub extern "js" fn Window::fetch_later(self : Window, input : RequestInfo, init_ : DeferredRequestInit) -> FetchLaterResult =
+pub extern "js" fn Window::fetch_later(self : Window, input : RequestInfo) -> FetchLaterResult =
+  #| (self, input) => self.fetchLater(input)
+
+pub extern "js" fn Window::fetch_later_with_init(self : Window, input : RequestInfo, init_ : DeferredRequestInit) -> FetchLaterResult =
   #| (self, input, init_) => self.fetchLater(input, init_)
 
-pub extern "js" fn Window::show_open_file_picker(self : Window, options : OpenFilePickerOptions) -> JsValue =
+pub extern "js" fn Window::show_open_file_picker(self : Window) -> Promise[Array[FileSystemFileHandle]] =
+  #| (self) => self.showOpenFilePicker()
+
+pub extern "js" fn Window::show_open_file_picker_with_options(self : Window, options : OpenFilePickerOptions) -> Promise[Array[FileSystemFileHandle]] =
   #| (self, options) => self.showOpenFilePicker(options)
 
-pub extern "js" fn Window::show_save_file_picker(self : Window, options : SaveFilePickerOptions) -> JsValue =
+pub extern "js" fn Window::show_save_file_picker(self : Window) -> Promise[FileSystemFileHandle] =
+  #| (self) => self.showSaveFilePicker()
+
+pub extern "js" fn Window::show_save_file_picker_with_options(self : Window, options : SaveFilePickerOptions) -> Promise[FileSystemFileHandle] =
   #| (self, options) => self.showSaveFilePicker(options)
 
-pub extern "js" fn Window::show_directory_picker(self : Window, options : DirectoryPickerOptions) -> JsValue =
+pub extern "js" fn Window::show_directory_picker(self : Window) -> Promise[FileSystemDirectoryHandle] =
+  #| (self) => self.showDirectoryPicker()
+
+pub extern "js" fn Window::show_directory_picker_with_options(self : Window, options : DirectoryPickerOptions) -> Promise[FileSystemDirectoryHandle] =
   #| (self, options) => self.showDirectoryPicker(options)
 
 pub extern "js" fn Window::capture_events(self : Window) -> Unit =
@@ -63226,7 +64157,10 @@ pub extern "js" fn Window::release_events(self : Window) -> Unit =
 pub extern "js" fn Window::get_external(self : Window) -> External =
   #| (self) => self.external
 
-pub extern "js" fn Window::query_local_fonts(self : Window, options : QueryOptions) -> JsValue =
+pub extern "js" fn Window::query_local_fonts(self : Window) -> Promise[Array[FontData]] =
+  #| (self) => self.queryLocalFonts()
+
+pub extern "js" fn Window::query_local_fonts_with_options(self : Window, options : QueryOptions) -> Promise[Array[FontData]] =
   #| (self, options) => self.queryLocalFonts(options)
 
 pub extern "js" fn Window::get_onappinstalled(self : Window) -> EventHandler =
@@ -63262,7 +64196,10 @@ pub extern "js" fn Window::set_ondevicemotion(self : Window, value : EventHandle
 pub extern "js" fn Window::get_portal_host(self : Window) -> PortalHost? =
   #| (self) => self.portalHost
 
-pub extern "js" fn Window::request_idle_callback(self : Window, callback : IdleRequestCallback, options : IdleRequestOptions) -> Int =
+pub extern "js" fn Window::request_idle_callback(self : Window, callback : IdleRequestCallback) -> Int =
+  #| (self, callback) => self.requestIdleCallback(callback)
+
+pub extern "js" fn Window::request_idle_callback_with_options(self : Window, callback : IdleRequestCallback, options : IdleRequestOptions) -> Int =
   #| (self, callback, options) => self.requestIdleCallback(callback, options)
 
 pub extern "js" fn Window::cancel_idle_callback(self : Window, handle : Int) -> Unit =
@@ -63280,7 +64217,7 @@ pub extern "js" fn Window::get_speech_synthesis(self : Window) -> SpeechSynthesi
 pub extern "js" fn Window::get_launch_queue(self : Window) -> LaunchQueue =
   #| (self) => self.launchQueue
 
-pub extern "js" fn Window::get_screen_details(self : Window) -> JsValue =
+pub extern "js" fn Window::get_screen_details(self : Window) -> Promise[ScreenDetails] =
   #| (self) => self.getScreenDetails()
 
 pub extern "js" fn Window::get_onanimationstart(self : Window) -> EventHandler =
@@ -64042,7 +64979,10 @@ pub extern "js" fn Window::set_onportalactivate(self : Window, value : EventHand
 pub extern "js" fn Window::get_indexed_d_b(self : Window) -> IDBFactory =
   #| (self) => self.indexedDB
 
-pub extern "js" fn Window::fetch(self : Window, input : RequestInfo, init_ : RequestInit) -> JsValue =
+pub extern "js" fn Window::fetch(self : Window, input : RequestInfo) -> Promise[Response] =
+  #| (self, input) => self.fetch(input)
+
+pub extern "js" fn Window::fetch_with_init(self : Window, input : RequestInfo, init_ : RequestInit) -> Promise[Response] =
   #| (self, input, init_) => self.fetch(input, init_)
 
 pub extern "js" fn Window::get_performance(self : Window) -> Performance =
@@ -64066,25 +65006,43 @@ pub extern "js" fn Window::btoa(self : Window, data : String) -> String =
 pub extern "js" fn Window::atob(self : Window, data : String) -> String =
   #| (self, data) => self.atob(data)
 
-pub extern "js" fn Window::set_timeout(self : Window, handler : TimerHandler, timeout : Int, arguments : JsValue) -> Int =
+pub extern "js" fn Window::set_timeout(self : Window, handler : TimerHandler) -> Int =
+  #| (self, handler) => self.setTimeout(handler)
+
+pub extern "js" fn Window::set_timeout_with_arguments(self : Window, handler : TimerHandler, timeout : Int, arguments : JsValue) -> Int =
   #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
 
-pub extern "js" fn Window::clear_timeout(self : Window, id : Int) -> Unit =
+pub extern "js" fn Window::clear_timeout(self : Window) -> Unit =
+  #| (self) => self.clearTimeout()
+
+pub extern "js" fn Window::clear_timeout_with_id(self : Window, id : Int) -> Unit =
   #| (self, id) => self.clearTimeout(id)
 
-pub extern "js" fn Window::set_interval(self : Window, handler : TimerHandler, timeout : Int, arguments : JsValue) -> Int =
+pub extern "js" fn Window::set_interval(self : Window, handler : TimerHandler) -> Int =
+  #| (self, handler) => self.setInterval(handler)
+
+pub extern "js" fn Window::set_interval_with_arguments(self : Window, handler : TimerHandler, timeout : Int, arguments : JsValue) -> Int =
   #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
 
-pub extern "js" fn Window::clear_interval(self : Window, id : Int) -> Unit =
+pub extern "js" fn Window::clear_interval(self : Window) -> Unit =
+  #| (self) => self.clearInterval()
+
+pub extern "js" fn Window::clear_interval_with_id(self : Window, id : Int) -> Unit =
   #| (self, id) => self.clearInterval(id)
 
 pub extern "js" fn Window::queue_microtask(self : Window, callback : VoidFunction) -> Unit =
   #| (self, callback) => self.queueMicrotask(callback)
 
-pub extern "js" fn Window::create_image_bitmap(self : Window, image : ImageBitmapSource, options : ImageBitmapOptions) -> JsValue =
+pub extern "js" fn Window::create_image_bitmap(self : Window, image : ImageBitmapSource) -> Promise[ImageBitmap] =
+  #| (self, image) => self.createImageBitmap(image)
+
+pub extern "js" fn Window::create_image_bitmap_with_options(self : Window, image : ImageBitmapSource, options : ImageBitmapOptions) -> Promise[ImageBitmap] =
   #| (self, image, options) => self.createImageBitmap(image, options)
 
-pub extern "js" fn Window::structured_clone(self : Window, value : JsValue, options : StructuredSerializeOptions) -> JsValue =
+pub extern "js" fn Window::structured_clone(self : Window, value : JsValue) -> JsValue =
+  #| (self, value) => self.structuredClone(value)
+
+pub extern "js" fn Window::structured_clone_with_options(self : Window, value : JsValue, options : StructuredSerializeOptions) -> JsValue =
   #| (self, value, options) => self.structuredClone(value, options)
 
 pub extern "js" fn Window::get_scheduler(self : Window) -> Scheduler =
@@ -64213,7 +65171,10 @@ pub extern "js" fn History::set_scroll_restoration(self : History, value : Scrol
 pub extern "js" fn History::get_state(self : History) -> JsValue =
   #| (self) => self.state
 
-pub extern "js" fn History::go(self : History, delta : Int) -> Unit =
+pub extern "js" fn History::go(self : History) -> Unit =
+  #| (self) => self.go()
+
+pub extern "js" fn History::go_with_delta(self : History, delta : Int) -> Unit =
   #| (self, delta) => self.go(delta)
 
 pub extern "js" fn History::back(self : History) -> Unit =
@@ -64222,10 +65183,16 @@ pub extern "js" fn History::back(self : History) -> Unit =
 pub extern "js" fn History::forward(self : History) -> Unit =
   #| (self) => self.forward()
 
-pub extern "js" fn History::push_state(self : History, data : JsValue, unused : String, url : String?) -> Unit =
+pub extern "js" fn History::push_state(self : History, data : JsValue, unused : String) -> Unit =
+  #| (self, data, unused) => self.pushState(data, unused)
+
+pub extern "js" fn History::push_state_with_url(self : History, data : JsValue, unused : String, url : String?) -> Unit =
   #| (self, data, unused, url) => self.pushState(data, unused, url)
 
-pub extern "js" fn History::replace_state(self : History, data : JsValue, unused : String, url : String?) -> Unit =
+pub extern "js" fn History::replace_state(self : History, data : JsValue, unused : String) -> Unit =
+  #| (self, data, unused) => self.replaceState(data, unused)
+
+pub extern "js" fn History::replace_state_with_url(self : History, data : JsValue, unused : String, url : String?) -> Unit =
   #| (self, data, unused, url) => self.replaceState(data, unused, url)
 
 ///|
@@ -64235,7 +65202,7 @@ pub type Navigation
 pub extern "js" fn Navigation::to_js_value(self : Navigation) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Navigation::entries(self : Navigation) -> JsValue =
+pub extern "js" fn Navigation::entries(self : Navigation) -> Array[NavigationHistoryEntry] =
   #| (self) => self.entries()
 
 pub extern "js" fn Navigation::get_current_entry(self : Navigation) -> NavigationHistoryEntry? =
@@ -64256,19 +65223,34 @@ pub extern "js" fn Navigation::get_can_go_back(self : Navigation) -> Bool =
 pub extern "js" fn Navigation::get_can_go_forward(self : Navigation) -> Bool =
   #| (self) => self.canGoForward
 
-pub extern "js" fn Navigation::navigate(self : Navigation, url : String, options : NavigationNavigateOptions) -> NavigationResult =
+pub extern "js" fn Navigation::navigate(self : Navigation, url : String) -> NavigationResult =
+  #| (self, url) => self.navigate(url)
+
+pub extern "js" fn Navigation::navigate_with_options(self : Navigation, url : String, options : NavigationNavigateOptions) -> NavigationResult =
   #| (self, url, options) => self.navigate(url, options)
 
-pub extern "js" fn Navigation::reload(self : Navigation, options : NavigationReloadOptions) -> NavigationResult =
+pub extern "js" fn Navigation::reload(self : Navigation) -> NavigationResult =
+  #| (self) => self.reload()
+
+pub extern "js" fn Navigation::reload_with_options(self : Navigation, options : NavigationReloadOptions) -> NavigationResult =
   #| (self, options) => self.reload(options)
 
-pub extern "js" fn Navigation::traverse_to(self : Navigation, key : String, options : NavigationOptions) -> NavigationResult =
+pub extern "js" fn Navigation::traverse_to(self : Navigation, key : String) -> NavigationResult =
+  #| (self, key) => self.traverseTo(key)
+
+pub extern "js" fn Navigation::traverse_to_with_options(self : Navigation, key : String, options : NavigationOptions) -> NavigationResult =
   #| (self, key, options) => self.traverseTo(key, options)
 
-pub extern "js" fn Navigation::back(self : Navigation, options : NavigationOptions) -> NavigationResult =
+pub extern "js" fn Navigation::back(self : Navigation) -> NavigationResult =
+  #| (self) => self.back()
+
+pub extern "js" fn Navigation::back_with_options(self : Navigation, options : NavigationOptions) -> NavigationResult =
   #| (self, options) => self.back(options)
 
-pub extern "js" fn Navigation::forward(self : Navigation, options : NavigationOptions) -> NavigationResult =
+pub extern "js" fn Navigation::forward(self : Navigation) -> NavigationResult =
+  #| (self) => self.forward()
+
+pub extern "js" fn Navigation::forward_with_options(self : Navigation, options : NavigationOptions) -> NavigationResult =
   #| (self, options) => self.forward(options)
 
 pub extern "js" fn Navigation::get_onnavigate(self : Navigation) -> EventHandler =
@@ -64342,10 +65324,10 @@ pub extern "js" fn NavigationTransition::get_from(self : NavigationTransition) -
 pub extern "js" fn NavigationTransition::get_to(self : NavigationTransition) -> NavigationDestination =
   #| (self) => self.to
 
-pub extern "js" fn NavigationTransition::get_committed(self : NavigationTransition) -> JsValue =
+pub extern "js" fn NavigationTransition::get_committed(self : NavigationTransition) -> Promise[Unit] =
   #| (self) => self.committed
 
-pub extern "js" fn NavigationTransition::get_finished(self : NavigationTransition) -> JsValue =
+pub extern "js" fn NavigationTransition::get_finished(self : NavigationTransition) -> Promise[Unit] =
   #| (self) => self.finished
 
 ///|
@@ -64407,7 +65389,10 @@ pub extern "js" fn NavigateEvent::get_has_u_a_visual_transition(self : NavigateE
 pub extern "js" fn NavigateEvent::get_source_element(self : NavigateEvent) -> Element? =
   #| (self) => self.sourceElement
 
-pub extern "js" fn NavigateEvent::intercept(self : NavigateEvent, options : NavigationInterceptOptions) -> Unit =
+pub extern "js" fn NavigateEvent::intercept(self : NavigateEvent) -> Unit =
+  #| (self) => self.intercept()
+
+pub extern "js" fn NavigateEvent::intercept_with_options(self : NavigateEvent, options : NavigationInterceptOptions) -> Unit =
   #| (self, options) => self.intercept(options)
 
 pub extern "js" fn NavigateEvent::scroll(self : NavigateEvent) -> Unit =
@@ -64420,7 +65405,10 @@ pub type NavigationPrecommitController
 pub extern "js" fn NavigationPrecommitController::to_js_value(self : NavigationPrecommitController) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn NavigationPrecommitController::redirect(self : NavigationPrecommitController, url : String, options : NavigationNavigateOptions) -> Unit =
+pub extern "js" fn NavigationPrecommitController::redirect(self : NavigationPrecommitController, url : String) -> Unit =
+  #| (self, url) => self.redirect(url)
+
+pub extern "js" fn NavigationPrecommitController::redirect_with_options(self : NavigationPrecommitController, url : String, options : NavigationNavigateOptions) -> Unit =
   #| (self, url, options) => self.redirect(url, options)
 
 pub extern "js" fn NavigationPrecommitController::add_handler(self : NavigationPrecommitController, handler : NavigationInterceptHandler) -> Unit =
@@ -64675,10 +65663,13 @@ pub extern "js" fn Navigator::get_audio_session(self : Navigator) -> AudioSessio
 pub extern "js" fn Navigator::get_autoplay_policy(self : Navigator, type_ : AutoplayPolicyMediaType) -> AutoplayPolicy =
   #| (self, type_) => self.getAutoplayPolicy(['mediaelement', 'audiocontext'][type_])
 
-pub extern "js" fn Navigator::get_battery(self : Navigator) -> JsValue =
+pub extern "js" fn Navigator::get_battery(self : Navigator) -> Promise[BatteryManager] =
   #| (self) => self.getBattery()
 
-pub extern "js" fn Navigator::send_beacon(self : Navigator, url : String, data : BodyInit?) -> Bool =
+pub extern "js" fn Navigator::send_beacon(self : Navigator, url : String) -> Bool =
+  #| (self, url) => self.sendBeacon(url)
+
+pub extern "js" fn Navigator::send_beacon_with_data(self : Navigator, url : String, data : BodyInit?) -> Bool =
   #| (self, url, data) => self.sendBeacon(url, data)
 
 pub extern "js" fn Navigator::get_clipboard(self : Navigator) -> Clipboard =
@@ -64693,31 +65684,34 @@ pub extern "js" fn Navigator::get_credentials(self : Navigator) -> CredentialsCo
 pub extern "js" fn Navigator::get_device_posture(self : Navigator) -> DevicePosture =
   #| (self) => self.devicePosture
 
-pub extern "js" fn Navigator::request_media_key_system_access(self : Navigator, key_system : String, supported_configurations : JsValue) -> JsValue =
+pub extern "js" fn Navigator::request_media_key_system_access(self : Navigator, key_system : String, supported_configurations : Array[MediaKeySystemConfiguration]) -> Promise[MediaKeySystemAccess] =
   #| (self, key_system, supported_configurations) => self.requestMediaKeySystemAccess(key_system, supported_configurations)
 
-pub extern "js" fn Navigator::deprecated_replace_in_u_r_n(self : Navigator, urn_or_config : UrnOrConfig, replacements : JsValue) -> JsValue =
+pub extern "js" fn Navigator::deprecated_replace_in_u_r_n(self : Navigator, urn_or_config : UrnOrConfig, replacements : JsValue) -> Promise[Unit] =
   #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements)
 
-pub extern "js" fn Navigator::deprecated_u_r_nto_u_r_l(self : Navigator, urn_or_config : UrnOrConfig, send_reports : Bool) -> JsValue =
+pub extern "js" fn Navigator::deprecated_u_r_nto_u_r_l(self : Navigator, urn_or_config : UrnOrConfig) -> Promise[String] =
+  #| (self, urn_or_config) => self.deprecatedURNtoURL(urn_or_config)
+
+pub extern "js" fn Navigator::deprecated_u_r_nto_u_r_l_with_send_reports(self : Navigator, urn_or_config : UrnOrConfig, send_reports : Bool) -> Promise[String] =
   #| (self, urn_or_config, send_reports) => self.deprecatedURNtoURL(urn_or_config, send_reports)
 
-pub extern "js" fn Navigator::ad_auction_components(self : Navigator, num_ad_components : Int) -> JsValue =
+pub extern "js" fn Navigator::ad_auction_components(self : Navigator, num_ad_components : Int) -> Array[String] =
   #| (self, num_ad_components) => self.adAuctionComponents(num_ad_components)
 
-pub extern "js" fn Navigator::get_gamepads(self : Navigator) -> JsValue =
+pub extern "js" fn Navigator::get_gamepads(self : Navigator) -> Array[Gamepad?] =
   #| (self) => self.getGamepads()
 
 pub extern "js" fn Navigator::get_geolocation(self : Navigator) -> Geolocation =
   #| (self) => self.geolocation
 
-pub extern "js" fn Navigator::get_installed_related_apps(self : Navigator) -> JsValue =
+pub extern "js" fn Navigator::get_installed_related_apps(self : Navigator) -> Promise[Array[RelatedApplication]] =
   #| (self) => self.getInstalledRelatedApps()
 
-pub extern "js" fn Navigator::query_handwriting_recognizer(self : Navigator, constraint : HandwritingModelConstraint) -> JsValue =
+pub extern "js" fn Navigator::query_handwriting_recognizer(self : Navigator, constraint : HandwritingModelConstraint) -> Promise[HandwritingRecognizerQueryResult?] =
   #| (self, constraint) => self.queryHandwritingRecognizer(constraint)
 
-pub extern "js" fn Navigator::create_handwriting_recognizer(self : Navigator, constraint : HandwritingModelConstraint) -> JsValue =
+pub extern "js" fn Navigator::create_handwriting_recognizer(self : Navigator, constraint : HandwritingModelConstraint) -> Promise[HandwritingRecognizer] =
   #| (self, constraint) => self.createHandwritingRecognizer(constraint)
 
 pub extern "js" fn Navigator::get_user_activation(self : Navigator) -> UserActivation =
@@ -64771,16 +65765,22 @@ pub extern "js" fn Navigator::get_serial(self : Navigator) -> Serial =
 pub extern "js" fn Navigator::get_service_worker(self : Navigator) -> ServiceWorkerContainer =
   #| (self) => self.serviceWorker
 
-pub extern "js" fn Navigator::join_ad_interest_group(self : Navigator, group : AuctionAdInterestGroup) -> JsValue =
+pub extern "js" fn Navigator::join_ad_interest_group(self : Navigator, group : AuctionAdInterestGroup) -> Promise[Unit] =
   #| (self, group) => self.joinAdInterestGroup(group)
 
-pub extern "js" fn Navigator::leave_ad_interest_group(self : Navigator, group : AuctionAdInterestGroupKey) -> JsValue =
+pub extern "js" fn Navigator::leave_ad_interest_group(self : Navigator) -> Promise[Unit] =
+  #| (self) => self.leaveAdInterestGroup()
+
+pub extern "js" fn Navigator::leave_ad_interest_group_with_group(self : Navigator, group : AuctionAdInterestGroupKey) -> Promise[Unit] =
   #| (self, group) => self.leaveAdInterestGroup(group)
 
-pub extern "js" fn Navigator::clear_origin_joined_ad_interest_groups(self : Navigator, owner : String, interest_groups_to_keep : JsValue) -> JsValue =
+pub extern "js" fn Navigator::clear_origin_joined_ad_interest_groups(self : Navigator, owner : String) -> Promise[Unit] =
+  #| (self, owner) => self.clearOriginJoinedAdInterestGroups(owner)
+
+pub extern "js" fn Navigator::clear_origin_joined_ad_interest_groups_with_interest_groups_to_keep(self : Navigator, owner : String, interest_groups_to_keep : Array[String]) -> Promise[Unit] =
   #| (self, owner, interest_groups_to_keep) => self.clearOriginJoinedAdInterestGroups(owner, interest_groups_to_keep)
 
-pub extern "js" fn Navigator::run_ad_auction(self : Navigator, config : AuctionAdConfig) -> JsValue =
+pub extern "js" fn Navigator::run_ad_auction(self : Navigator, config : AuctionAdConfig) -> Promise[JsValue] =
   #| (self, config) => self.runAdAuction(config)
 
 pub extern "js" fn Navigator::get_deprecated_run_ad_auction_enforces_k_anonymity(self : Navigator) -> Bool =
@@ -64789,10 +65789,13 @@ pub extern "js" fn Navigator::get_deprecated_run_ad_auction_enforces_k_anonymity
 pub extern "js" fn Navigator::can_load_ad_auction_fenced_frame(self : Navigator) -> Bool =
   #| (self) => self.canLoadAdAuctionFencedFrame()
 
-pub extern "js" fn Navigator::get_interest_group_ad_auction_data(self : Navigator, config : AdAuctionDataConfig) -> JsValue =
+pub extern "js" fn Navigator::get_interest_group_ad_auction_data(self : Navigator) -> Promise[AdAuctionData] =
+  #| (self) => self.getInterestGroupAdAuctionData()
+
+pub extern "js" fn Navigator::get_interest_group_ad_auction_data_with_config(self : Navigator, config : AdAuctionDataConfig) -> Promise[AdAuctionData] =
   #| (self, config) => self.getInterestGroupAdAuctionData(config)
 
-pub extern "js" fn Navigator::create_auction_nonce(self : Navigator) -> JsValue =
+pub extern "js" fn Navigator::create_auction_nonce(self : Navigator) -> Promise[String] =
   #| (self) => self.createAuctionNonce()
 
 pub extern "js" fn Navigator::update_ad_interest_groups(self : Navigator) -> Unit =
@@ -64810,16 +65813,25 @@ pub extern "js" fn Navigator::get_virtual_keyboard(self : Navigator) -> VirtualK
 pub extern "js" fn Navigator::get_bluetooth(self : Navigator) -> Bluetooth =
   #| (self) => self.bluetooth
 
-pub extern "js" fn Navigator::share(self : Navigator, data : ShareData) -> JsValue =
+pub extern "js" fn Navigator::share(self : Navigator) -> Promise[Unit] =
+  #| (self) => self.share()
+
+pub extern "js" fn Navigator::share_with_data(self : Navigator, data : ShareData) -> Promise[Unit] =
   #| (self, data) => self.share(data)
 
-pub extern "js" fn Navigator::can_share(self : Navigator, data : ShareData) -> Bool =
+pub extern "js" fn Navigator::can_share(self : Navigator) -> Bool =
+  #| (self) => self.canShare()
+
+pub extern "js" fn Navigator::can_share_with_data(self : Navigator, data : ShareData) -> Bool =
   #| (self, data) => self.canShare(data)
 
 pub extern "js" fn Navigator::get_hid(self : Navigator) -> HID =
   #| (self) => self.hid
 
-pub extern "js" fn Navigator::request_m_i_d_i_access(self : Navigator, options : MIDIOptions) -> JsValue =
+pub extern "js" fn Navigator::request_m_i_d_i_access(self : Navigator) -> Promise[MIDIAccess] =
+  #| (self) => self.requestMIDIAccess()
+
+pub extern "js" fn Navigator::request_m_i_d_i_access_with_options(self : Navigator, options : MIDIOptions) -> Promise[MIDIAccess] =
   #| (self, options) => self.requestMIDIAccess(options)
 
 pub extern "js" fn Navigator::get_usb(self : Navigator) -> USB =
@@ -64831,10 +65843,13 @@ pub extern "js" fn Navigator::get_xr(self : Navigator) -> XRSystem =
 pub extern "js" fn Navigator::get_window_controls_overlay(self : Navigator) -> WindowControlsOverlay =
   #| (self) => self.windowControlsOverlay
 
-pub extern "js" fn Navigator::set_app_badge(self : Navigator, contents : Int64) -> JsValue =
+pub extern "js" fn Navigator::set_app_badge(self : Navigator) -> Promise[Unit] =
+  #| (self) => self.setAppBadge()
+
+pub extern "js" fn Navigator::set_app_badge_with_contents(self : Navigator, contents : Int64) -> Promise[Unit] =
   #| (self, contents) => self.setAppBadge(contents)
 
-pub extern "js" fn Navigator::clear_app_badge(self : Navigator) -> JsValue =
+pub extern "js" fn Navigator::clear_app_badge(self : Navigator) -> Promise[Unit] =
   #| (self) => self.clearAppBadge()
 
 pub extern "js" fn Navigator::get_device_memory(self : Navigator) -> Double =
@@ -65096,7 +66111,10 @@ pub extern "js" fn MessageEvent::get_source(self : MessageEvent) -> MessageEvent
 pub extern "js" fn MessageEvent::get_ports(self : MessageEvent) -> JsValue =
   #| (self) => self.ports
 
-pub extern "js" fn MessageEvent::init_message_event(self : MessageEvent, type_ : String, bubbles : Bool, cancelable : Bool, data : JsValue, origin : String, last_event_id : String, source : MessageEventSource?, ports : JsValue) -> Unit =
+pub extern "js" fn MessageEvent::init_message_event(self : MessageEvent, type_ : String) -> Unit =
+  #| (self, type_) => self.initMessageEvent(type_)
+
+pub extern "js" fn MessageEvent::init_message_event_with_ports(self : MessageEvent, type_ : String, bubbles : Bool, cancelable : Bool, data : JsValue, origin : String, last_event_id : String, source : MessageEventSource?, ports : Array[MessagePort]) -> Unit =
   #| (self, type_, bubbles, cancelable, data, origin, last_event_id, source, ports) => self.initMessageEvent(type_, bubbles, cancelable, data, origin, last_event_id, source, ports)
 
 ///|
@@ -65114,6 +66132,15 @@ pub extern "js" fn EventSource::get_url(self : EventSource) -> String =
 
 pub extern "js" fn EventSource::get_with_credentials(self : EventSource) -> Bool =
   #| (self) => self.withCredentials
+
+// EventSource.CONNECTING
+pub let event_source_connecting : Int = 0
+
+// EventSource.OPEN
+pub let event_source_open : Int = 1
+
+// EventSource.CLOSED
+pub let event_source_closed : Int = 2
 
 pub extern "js" fn EventSource::get_ready_state(self : EventSource) -> Int =
   #| (self) => self.readyState
@@ -65162,7 +66189,7 @@ pub type MessagePort
 pub extern "js" fn MessagePort::to_js_value(self : MessagePort) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn MessagePort::post_message(self : MessagePort, message : JsValue, transfer : JsValue) -> Unit =
+pub extern "js" fn MessagePort::post_message(self : MessagePort, message : JsValue, transfer : Array[JsValue]) -> Unit =
   #| (self, message, transfer) => self.postMessage(message, transfer)
 
 pub extern "js" fn MessagePort::start(self : MessagePort) -> Unit =
@@ -65281,7 +66308,10 @@ pub extern "js" fn WorkerGlobalScope::get_fonts(self : WorkerGlobalScope) -> Fon
 pub extern "js" fn WorkerGlobalScope::get_indexed_d_b(self : WorkerGlobalScope) -> IDBFactory =
   #| (self) => self.indexedDB
 
-pub extern "js" fn WorkerGlobalScope::fetch(self : WorkerGlobalScope, input : RequestInfo, init_ : RequestInit) -> JsValue =
+pub extern "js" fn WorkerGlobalScope::fetch(self : WorkerGlobalScope, input : RequestInfo) -> Promise[Response] =
+  #| (self, input) => self.fetch(input)
+
+pub extern "js" fn WorkerGlobalScope::fetch_with_init(self : WorkerGlobalScope, input : RequestInfo, init_ : RequestInit) -> Promise[Response] =
   #| (self, input, init_) => self.fetch(input, init_)
 
 pub extern "js" fn WorkerGlobalScope::get_performance(self : WorkerGlobalScope) -> Performance =
@@ -65305,25 +66335,43 @@ pub extern "js" fn WorkerGlobalScope::btoa(self : WorkerGlobalScope, data : Stri
 pub extern "js" fn WorkerGlobalScope::atob(self : WorkerGlobalScope, data : String) -> String =
   #| (self, data) => self.atob(data)
 
-pub extern "js" fn WorkerGlobalScope::set_timeout(self : WorkerGlobalScope, handler : TimerHandler, timeout : Int, arguments : JsValue) -> Int =
+pub extern "js" fn WorkerGlobalScope::set_timeout(self : WorkerGlobalScope, handler : TimerHandler) -> Int =
+  #| (self, handler) => self.setTimeout(handler)
+
+pub extern "js" fn WorkerGlobalScope::set_timeout_with_arguments(self : WorkerGlobalScope, handler : TimerHandler, timeout : Int, arguments : JsValue) -> Int =
   #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
 
-pub extern "js" fn WorkerGlobalScope::clear_timeout(self : WorkerGlobalScope, id : Int) -> Unit =
+pub extern "js" fn WorkerGlobalScope::clear_timeout(self : WorkerGlobalScope) -> Unit =
+  #| (self) => self.clearTimeout()
+
+pub extern "js" fn WorkerGlobalScope::clear_timeout_with_id(self : WorkerGlobalScope, id : Int) -> Unit =
   #| (self, id) => self.clearTimeout(id)
 
-pub extern "js" fn WorkerGlobalScope::set_interval(self : WorkerGlobalScope, handler : TimerHandler, timeout : Int, arguments : JsValue) -> Int =
+pub extern "js" fn WorkerGlobalScope::set_interval(self : WorkerGlobalScope, handler : TimerHandler) -> Int =
+  #| (self, handler) => self.setInterval(handler)
+
+pub extern "js" fn WorkerGlobalScope::set_interval_with_arguments(self : WorkerGlobalScope, handler : TimerHandler, timeout : Int, arguments : JsValue) -> Int =
   #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
 
-pub extern "js" fn WorkerGlobalScope::clear_interval(self : WorkerGlobalScope, id : Int) -> Unit =
+pub extern "js" fn WorkerGlobalScope::clear_interval(self : WorkerGlobalScope) -> Unit =
+  #| (self) => self.clearInterval()
+
+pub extern "js" fn WorkerGlobalScope::clear_interval_with_id(self : WorkerGlobalScope, id : Int) -> Unit =
   #| (self, id) => self.clearInterval(id)
 
 pub extern "js" fn WorkerGlobalScope::queue_microtask(self : WorkerGlobalScope, callback : VoidFunction) -> Unit =
   #| (self, callback) => self.queueMicrotask(callback)
 
-pub extern "js" fn WorkerGlobalScope::create_image_bitmap(self : WorkerGlobalScope, image : ImageBitmapSource, options : ImageBitmapOptions) -> JsValue =
+pub extern "js" fn WorkerGlobalScope::create_image_bitmap(self : WorkerGlobalScope, image : ImageBitmapSource) -> Promise[ImageBitmap] =
+  #| (self, image) => self.createImageBitmap(image)
+
+pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_options(self : WorkerGlobalScope, image : ImageBitmapSource, options : ImageBitmapOptions) -> Promise[ImageBitmap] =
   #| (self, image, options) => self.createImageBitmap(image, options)
 
-pub extern "js" fn WorkerGlobalScope::structured_clone(self : WorkerGlobalScope, value : JsValue, options : StructuredSerializeOptions) -> JsValue =
+pub extern "js" fn WorkerGlobalScope::structured_clone(self : WorkerGlobalScope, value : JsValue) -> JsValue =
+  #| (self, value) => self.structuredClone(value)
+
+pub extern "js" fn WorkerGlobalScope::structured_clone_with_options(self : WorkerGlobalScope, value : JsValue, options : StructuredSerializeOptions) -> JsValue =
   #| (self, value, options) => self.structuredClone(value, options)
 
 pub extern "js" fn WorkerGlobalScope::get_scheduler(self : WorkerGlobalScope) -> Scheduler =
@@ -65399,7 +66447,10 @@ pub extern "js" fn DedicatedWorkerGlobalScope::get_fonts(self : DedicatedWorkerG
 pub extern "js" fn DedicatedWorkerGlobalScope::get_indexed_d_b(self : DedicatedWorkerGlobalScope) -> IDBFactory =
   #| (self) => self.indexedDB
 
-pub extern "js" fn DedicatedWorkerGlobalScope::fetch(self : DedicatedWorkerGlobalScope, input : RequestInfo, init_ : RequestInit) -> JsValue =
+pub extern "js" fn DedicatedWorkerGlobalScope::fetch(self : DedicatedWorkerGlobalScope, input : RequestInfo) -> Promise[Response] =
+  #| (self, input) => self.fetch(input)
+
+pub extern "js" fn DedicatedWorkerGlobalScope::fetch_with_init(self : DedicatedWorkerGlobalScope, input : RequestInfo, init_ : RequestInit) -> Promise[Response] =
   #| (self, input, init_) => self.fetch(input, init_)
 
 pub extern "js" fn DedicatedWorkerGlobalScope::get_performance(self : DedicatedWorkerGlobalScope) -> Performance =
@@ -65423,25 +66474,43 @@ pub extern "js" fn DedicatedWorkerGlobalScope::btoa(self : DedicatedWorkerGlobal
 pub extern "js" fn DedicatedWorkerGlobalScope::atob(self : DedicatedWorkerGlobalScope, data : String) -> String =
   #| (self, data) => self.atob(data)
 
-pub extern "js" fn DedicatedWorkerGlobalScope::set_timeout(self : DedicatedWorkerGlobalScope, handler : TimerHandler, timeout : Int, arguments : JsValue) -> Int =
+pub extern "js" fn DedicatedWorkerGlobalScope::set_timeout(self : DedicatedWorkerGlobalScope, handler : TimerHandler) -> Int =
+  #| (self, handler) => self.setTimeout(handler)
+
+pub extern "js" fn DedicatedWorkerGlobalScope::set_timeout_with_arguments(self : DedicatedWorkerGlobalScope, handler : TimerHandler, timeout : Int, arguments : JsValue) -> Int =
   #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
 
-pub extern "js" fn DedicatedWorkerGlobalScope::clear_timeout(self : DedicatedWorkerGlobalScope, id : Int) -> Unit =
+pub extern "js" fn DedicatedWorkerGlobalScope::clear_timeout(self : DedicatedWorkerGlobalScope) -> Unit =
+  #| (self) => self.clearTimeout()
+
+pub extern "js" fn DedicatedWorkerGlobalScope::clear_timeout_with_id(self : DedicatedWorkerGlobalScope, id : Int) -> Unit =
   #| (self, id) => self.clearTimeout(id)
 
-pub extern "js" fn DedicatedWorkerGlobalScope::set_interval(self : DedicatedWorkerGlobalScope, handler : TimerHandler, timeout : Int, arguments : JsValue) -> Int =
+pub extern "js" fn DedicatedWorkerGlobalScope::set_interval(self : DedicatedWorkerGlobalScope, handler : TimerHandler) -> Int =
+  #| (self, handler) => self.setInterval(handler)
+
+pub extern "js" fn DedicatedWorkerGlobalScope::set_interval_with_arguments(self : DedicatedWorkerGlobalScope, handler : TimerHandler, timeout : Int, arguments : JsValue) -> Int =
   #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
 
-pub extern "js" fn DedicatedWorkerGlobalScope::clear_interval(self : DedicatedWorkerGlobalScope, id : Int) -> Unit =
+pub extern "js" fn DedicatedWorkerGlobalScope::clear_interval(self : DedicatedWorkerGlobalScope) -> Unit =
+  #| (self) => self.clearInterval()
+
+pub extern "js" fn DedicatedWorkerGlobalScope::clear_interval_with_id(self : DedicatedWorkerGlobalScope, id : Int) -> Unit =
   #| (self, id) => self.clearInterval(id)
 
 pub extern "js" fn DedicatedWorkerGlobalScope::queue_microtask(self : DedicatedWorkerGlobalScope, callback : VoidFunction) -> Unit =
   #| (self, callback) => self.queueMicrotask(callback)
 
-pub extern "js" fn DedicatedWorkerGlobalScope::create_image_bitmap(self : DedicatedWorkerGlobalScope, image : ImageBitmapSource, options : ImageBitmapOptions) -> JsValue =
+pub extern "js" fn DedicatedWorkerGlobalScope::create_image_bitmap(self : DedicatedWorkerGlobalScope, image : ImageBitmapSource) -> Promise[ImageBitmap] =
+  #| (self, image) => self.createImageBitmap(image)
+
+pub extern "js" fn DedicatedWorkerGlobalScope::create_image_bitmap_with_options(self : DedicatedWorkerGlobalScope, image : ImageBitmapSource, options : ImageBitmapOptions) -> Promise[ImageBitmap] =
   #| (self, image, options) => self.createImageBitmap(image, options)
 
-pub extern "js" fn DedicatedWorkerGlobalScope::structured_clone(self : DedicatedWorkerGlobalScope, value : JsValue, options : StructuredSerializeOptions) -> JsValue =
+pub extern "js" fn DedicatedWorkerGlobalScope::structured_clone(self : DedicatedWorkerGlobalScope, value : JsValue) -> JsValue =
+  #| (self, value) => self.structuredClone(value)
+
+pub extern "js" fn DedicatedWorkerGlobalScope::structured_clone_with_options(self : DedicatedWorkerGlobalScope, value : JsValue, options : StructuredSerializeOptions) -> JsValue =
   #| (self, value, options) => self.structuredClone(value, options)
 
 pub extern "js" fn DedicatedWorkerGlobalScope::get_scheduler(self : DedicatedWorkerGlobalScope) -> Scheduler =
@@ -65459,7 +66528,7 @@ pub extern "js" fn DedicatedWorkerGlobalScope::get_crypto(self : DedicatedWorker
 pub extern "js" fn DedicatedWorkerGlobalScope::get_name(self : DedicatedWorkerGlobalScope) -> String =
   #| (self) => self.name
 
-pub extern "js" fn DedicatedWorkerGlobalScope::post_message(self : DedicatedWorkerGlobalScope, message : JsValue, transfer : JsValue) -> Unit =
+pub extern "js" fn DedicatedWorkerGlobalScope::post_message(self : DedicatedWorkerGlobalScope, message : JsValue, transfer : Array[JsValue]) -> Unit =
   #| (self, message, transfer) => self.postMessage(message, transfer)
 
 pub extern "js" fn DedicatedWorkerGlobalScope::close(self : DedicatedWorkerGlobalScope) -> Unit =
@@ -65550,7 +66619,10 @@ pub extern "js" fn SharedWorkerGlobalScope::get_fonts(self : SharedWorkerGlobalS
 pub extern "js" fn SharedWorkerGlobalScope::get_indexed_d_b(self : SharedWorkerGlobalScope) -> IDBFactory =
   #| (self) => self.indexedDB
 
-pub extern "js" fn SharedWorkerGlobalScope::fetch(self : SharedWorkerGlobalScope, input : RequestInfo, init_ : RequestInit) -> JsValue =
+pub extern "js" fn SharedWorkerGlobalScope::fetch(self : SharedWorkerGlobalScope, input : RequestInfo) -> Promise[Response] =
+  #| (self, input) => self.fetch(input)
+
+pub extern "js" fn SharedWorkerGlobalScope::fetch_with_init(self : SharedWorkerGlobalScope, input : RequestInfo, init_ : RequestInit) -> Promise[Response] =
   #| (self, input, init_) => self.fetch(input, init_)
 
 pub extern "js" fn SharedWorkerGlobalScope::get_performance(self : SharedWorkerGlobalScope) -> Performance =
@@ -65574,25 +66646,43 @@ pub extern "js" fn SharedWorkerGlobalScope::btoa(self : SharedWorkerGlobalScope,
 pub extern "js" fn SharedWorkerGlobalScope::atob(self : SharedWorkerGlobalScope, data : String) -> String =
   #| (self, data) => self.atob(data)
 
-pub extern "js" fn SharedWorkerGlobalScope::set_timeout(self : SharedWorkerGlobalScope, handler : TimerHandler, timeout : Int, arguments : JsValue) -> Int =
+pub extern "js" fn SharedWorkerGlobalScope::set_timeout(self : SharedWorkerGlobalScope, handler : TimerHandler) -> Int =
+  #| (self, handler) => self.setTimeout(handler)
+
+pub extern "js" fn SharedWorkerGlobalScope::set_timeout_with_arguments(self : SharedWorkerGlobalScope, handler : TimerHandler, timeout : Int, arguments : JsValue) -> Int =
   #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
 
-pub extern "js" fn SharedWorkerGlobalScope::clear_timeout(self : SharedWorkerGlobalScope, id : Int) -> Unit =
+pub extern "js" fn SharedWorkerGlobalScope::clear_timeout(self : SharedWorkerGlobalScope) -> Unit =
+  #| (self) => self.clearTimeout()
+
+pub extern "js" fn SharedWorkerGlobalScope::clear_timeout_with_id(self : SharedWorkerGlobalScope, id : Int) -> Unit =
   #| (self, id) => self.clearTimeout(id)
 
-pub extern "js" fn SharedWorkerGlobalScope::set_interval(self : SharedWorkerGlobalScope, handler : TimerHandler, timeout : Int, arguments : JsValue) -> Int =
+pub extern "js" fn SharedWorkerGlobalScope::set_interval(self : SharedWorkerGlobalScope, handler : TimerHandler) -> Int =
+  #| (self, handler) => self.setInterval(handler)
+
+pub extern "js" fn SharedWorkerGlobalScope::set_interval_with_arguments(self : SharedWorkerGlobalScope, handler : TimerHandler, timeout : Int, arguments : JsValue) -> Int =
   #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
 
-pub extern "js" fn SharedWorkerGlobalScope::clear_interval(self : SharedWorkerGlobalScope, id : Int) -> Unit =
+pub extern "js" fn SharedWorkerGlobalScope::clear_interval(self : SharedWorkerGlobalScope) -> Unit =
+  #| (self) => self.clearInterval()
+
+pub extern "js" fn SharedWorkerGlobalScope::clear_interval_with_id(self : SharedWorkerGlobalScope, id : Int) -> Unit =
   #| (self, id) => self.clearInterval(id)
 
 pub extern "js" fn SharedWorkerGlobalScope::queue_microtask(self : SharedWorkerGlobalScope, callback : VoidFunction) -> Unit =
   #| (self, callback) => self.queueMicrotask(callback)
 
-pub extern "js" fn SharedWorkerGlobalScope::create_image_bitmap(self : SharedWorkerGlobalScope, image : ImageBitmapSource, options : ImageBitmapOptions) -> JsValue =
+pub extern "js" fn SharedWorkerGlobalScope::create_image_bitmap(self : SharedWorkerGlobalScope, image : ImageBitmapSource) -> Promise[ImageBitmap] =
+  #| (self, image) => self.createImageBitmap(image)
+
+pub extern "js" fn SharedWorkerGlobalScope::create_image_bitmap_with_options(self : SharedWorkerGlobalScope, image : ImageBitmapSource, options : ImageBitmapOptions) -> Promise[ImageBitmap] =
   #| (self, image, options) => self.createImageBitmap(image, options)
 
-pub extern "js" fn SharedWorkerGlobalScope::structured_clone(self : SharedWorkerGlobalScope, value : JsValue, options : StructuredSerializeOptions) -> JsValue =
+pub extern "js" fn SharedWorkerGlobalScope::structured_clone(self : SharedWorkerGlobalScope, value : JsValue) -> JsValue =
+  #| (self, value) => self.structuredClone(value)
+
+pub extern "js" fn SharedWorkerGlobalScope::structured_clone_with_options(self : SharedWorkerGlobalScope, value : JsValue, options : StructuredSerializeOptions) -> JsValue =
   #| (self, value, options) => self.structuredClone(value, options)
 
 pub extern "js" fn SharedWorkerGlobalScope::get_scheduler(self : SharedWorkerGlobalScope) -> Scheduler =
@@ -65632,7 +66722,7 @@ pub extern "js" fn Worker::new(script_u_r_l : JsValue, options : WorkerOptions) 
 pub extern "js" fn Worker::terminate(self : Worker) -> Unit =
   #| (self) => self.terminate()
 
-pub extern "js" fn Worker::post_message(self : Worker, message : JsValue, transfer : JsValue) -> Unit =
+pub extern "js" fn Worker::post_message(self : Worker, message : JsValue, transfer : Array[JsValue]) -> Unit =
   #| (self, message, transfer) => self.postMessage(message, transfer)
 
 pub extern "js" fn Worker::get_onerror(self : Worker) -> EventHandler =
@@ -65697,10 +66787,13 @@ pub extern "js" fn WorkerNavigator::get_hid(self : WorkerNavigator) -> HID =
 pub extern "js" fn WorkerNavigator::get_usb(self : WorkerNavigator) -> USB =
   #| (self) => self.usb
 
-pub extern "js" fn WorkerNavigator::set_app_badge(self : WorkerNavigator, contents : Int64) -> JsValue =
+pub extern "js" fn WorkerNavigator::set_app_badge(self : WorkerNavigator) -> Promise[Unit] =
+  #| (self) => self.setAppBadge()
+
+pub extern "js" fn WorkerNavigator::set_app_badge_with_contents(self : WorkerNavigator, contents : Int64) -> Promise[Unit] =
   #| (self, contents) => self.setAppBadge(contents)
 
-pub extern "js" fn WorkerNavigator::clear_app_badge(self : WorkerNavigator) -> JsValue =
+pub extern "js" fn WorkerNavigator::clear_app_badge(self : WorkerNavigator) -> Promise[Unit] =
   #| (self) => self.clearAppBadge()
 
 pub extern "js" fn WorkerNavigator::get_device_memory(self : WorkerNavigator) -> Double =
@@ -65823,7 +66916,10 @@ pub type Worklet
 pub extern "js" fn Worklet::to_js_value(self : Worklet) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Worklet::add_module(self : Worklet, module_u_r_l : String, options : WorkletOptions) -> JsValue =
+pub extern "js" fn Worklet::add_module(self : Worklet, module_u_r_l : String) -> Promise[Unit] =
+  #| (self, module_u_r_l) => self.addModule(module_u_r_l)
+
+pub extern "js" fn Worklet::add_module_with_options(self : Worklet, module_u_r_l : String, options : WorkletOptions) -> Promise[Unit] =
   #| (self, module_u_r_l, options) => self.addModule(module_u_r_l, options)
 
 ///|
@@ -65885,7 +66981,10 @@ pub extern "js" fn StorageEvent::get_url(self : StorageEvent) -> String =
 pub extern "js" fn StorageEvent::get_storage_area(self : StorageEvent) -> Storage? =
   #| (self) => self.storageArea
 
-pub extern "js" fn StorageEvent::init_storage_event(self : StorageEvent, type_ : String, bubbles : Bool, cancelable : Bool, key : String?, old_value : String?, new_value : String?, url : String, storage_area : Storage?) -> Unit =
+pub extern "js" fn StorageEvent::init_storage_event(self : StorageEvent, type_ : String) -> Unit =
+  #| (self, type_) => self.initStorageEvent(type_)
+
+pub extern "js" fn StorageEvent::init_storage_event_with_storage_area(self : StorageEvent, type_ : String, bubbles : Bool, cancelable : Bool, key : String?, old_value : String?, new_value : String?, url : String, storage_area : Storage?) -> Unit =
   #| (self, type_, bubbles, cancelable, key, old_value, new_value, url, storage_area) => self.initStorageEvent(type_, bubbles, cancelable, key, old_value, new_value, url, storage_area)
 
 ///|
@@ -65991,13 +67090,19 @@ pub extern "js" fn HTMLMarqueeElement::set_outer_text(self : HTMLMarqueeElement,
 pub extern "js" fn HTMLMarqueeElement::attach_internals(self : HTMLMarqueeElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLMarqueeElement::show_popover(self : HTMLMarqueeElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLMarqueeElement::show_popover(self : HTMLMarqueeElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLMarqueeElement::show_popover_with_options(self : HTMLMarqueeElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLMarqueeElement::hide_popover(self : HTMLMarqueeElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLMarqueeElement::toggle_popover(self : HTMLMarqueeElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLMarqueeElement::toggle_popover(self : HTMLMarqueeElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLMarqueeElement::toggle_popover_with_options(self : HTMLMarqueeElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLMarqueeElement::get_popover(self : HTMLMarqueeElement) -> String? =
@@ -66726,7 +67831,10 @@ pub extern "js" fn HTMLMarqueeElement::get_tab_index(self : HTMLMarqueeElement) 
 pub extern "js" fn HTMLMarqueeElement::set_tab_index(self : HTMLMarqueeElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLMarqueeElement::focus(self : HTMLMarqueeElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLMarqueeElement::focus(self : HTMLMarqueeElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLMarqueeElement::focus_with_options(self : HTMLMarqueeElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLMarqueeElement::blur(self : HTMLMarqueeElement) -> Unit =
@@ -66907,13 +68015,19 @@ pub extern "js" fn HTMLFrameSetElement::set_outer_text(self : HTMLFrameSetElemen
 pub extern "js" fn HTMLFrameSetElement::attach_internals(self : HTMLFrameSetElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLFrameSetElement::show_popover(self : HTMLFrameSetElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLFrameSetElement::show_popover(self : HTMLFrameSetElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLFrameSetElement::show_popover_with_options(self : HTMLFrameSetElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLFrameSetElement::hide_popover(self : HTMLFrameSetElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLFrameSetElement::toggle_popover(self : HTMLFrameSetElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLFrameSetElement::toggle_popover(self : HTMLFrameSetElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLFrameSetElement::toggle_popover_with_options(self : HTMLFrameSetElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLFrameSetElement::get_popover(self : HTMLFrameSetElement) -> String? =
@@ -67642,7 +68756,10 @@ pub extern "js" fn HTMLFrameSetElement::get_tab_index(self : HTMLFrameSetElement
 pub extern "js" fn HTMLFrameSetElement::set_tab_index(self : HTMLFrameSetElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLFrameSetElement::focus(self : HTMLFrameSetElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLFrameSetElement::focus(self : HTMLFrameSetElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLFrameSetElement::focus_with_options(self : HTMLFrameSetElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLFrameSetElement::blur(self : HTMLFrameSetElement) -> Unit =
@@ -67889,13 +69006,19 @@ pub extern "js" fn HTMLFrameElement::set_outer_text(self : HTMLFrameElement, val
 pub extern "js" fn HTMLFrameElement::attach_internals(self : HTMLFrameElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLFrameElement::show_popover(self : HTMLFrameElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLFrameElement::show_popover(self : HTMLFrameElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLFrameElement::show_popover_with_options(self : HTMLFrameElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLFrameElement::hide_popover(self : HTMLFrameElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLFrameElement::toggle_popover(self : HTMLFrameElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLFrameElement::toggle_popover(self : HTMLFrameElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLFrameElement::toggle_popover_with_options(self : HTMLFrameElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLFrameElement::get_popover(self : HTMLFrameElement) -> String? =
@@ -68624,7 +69747,10 @@ pub extern "js" fn HTMLFrameElement::get_tab_index(self : HTMLFrameElement) -> I
 pub extern "js" fn HTMLFrameElement::set_tab_index(self : HTMLFrameElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLFrameElement::focus(self : HTMLFrameElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLFrameElement::focus(self : HTMLFrameElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLFrameElement::focus_with_options(self : HTMLFrameElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLFrameElement::blur(self : HTMLFrameElement) -> Unit =
@@ -68787,13 +69913,19 @@ pub extern "js" fn HTMLDirectoryElement::set_outer_text(self : HTMLDirectoryElem
 pub extern "js" fn HTMLDirectoryElement::attach_internals(self : HTMLDirectoryElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLDirectoryElement::show_popover(self : HTMLDirectoryElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLDirectoryElement::show_popover(self : HTMLDirectoryElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLDirectoryElement::show_popover_with_options(self : HTMLDirectoryElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLDirectoryElement::hide_popover(self : HTMLDirectoryElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLDirectoryElement::toggle_popover(self : HTMLDirectoryElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLDirectoryElement::toggle_popover(self : HTMLDirectoryElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLDirectoryElement::toggle_popover_with_options(self : HTMLDirectoryElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLDirectoryElement::get_popover(self : HTMLDirectoryElement) -> String? =
@@ -69522,7 +70654,10 @@ pub extern "js" fn HTMLDirectoryElement::get_tab_index(self : HTMLDirectoryEleme
 pub extern "js" fn HTMLDirectoryElement::set_tab_index(self : HTMLDirectoryElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLDirectoryElement::focus(self : HTMLDirectoryElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLDirectoryElement::focus(self : HTMLDirectoryElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLDirectoryElement::focus_with_options(self : HTMLDirectoryElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLDirectoryElement::blur(self : HTMLDirectoryElement) -> Unit =
@@ -69637,13 +70772,19 @@ pub extern "js" fn HTMLFontElement::set_outer_text(self : HTMLFontElement, value
 pub extern "js" fn HTMLFontElement::attach_internals(self : HTMLFontElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLFontElement::show_popover(self : HTMLFontElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLFontElement::show_popover(self : HTMLFontElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLFontElement::show_popover_with_options(self : HTMLFontElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLFontElement::hide_popover(self : HTMLFontElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLFontElement::toggle_popover(self : HTMLFontElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLFontElement::toggle_popover(self : HTMLFontElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLFontElement::toggle_popover_with_options(self : HTMLFontElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLFontElement::get_popover(self : HTMLFontElement) -> String? =
@@ -70372,7 +71513,10 @@ pub extern "js" fn HTMLFontElement::get_tab_index(self : HTMLFontElement) -> Int
 pub extern "js" fn HTMLFontElement::set_tab_index(self : HTMLFontElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLFontElement::focus(self : HTMLFontElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLFontElement::focus(self : HTMLFontElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLFontElement::focus_with_options(self : HTMLFontElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLFontElement::blur(self : HTMLFontElement) -> Unit =
@@ -70499,13 +71643,19 @@ pub extern "js" fn HTMLParamElement::set_outer_text(self : HTMLParamElement, val
 pub extern "js" fn HTMLParamElement::attach_internals(self : HTMLParamElement) -> ElementInternals =
   #| (self) => self.attachInternals()
 
-pub extern "js" fn HTMLParamElement::show_popover(self : HTMLParamElement, options : ShowPopoverOptions) -> Unit =
+pub extern "js" fn HTMLParamElement::show_popover(self : HTMLParamElement) -> Unit =
+  #| (self) => self.showPopover()
+
+pub extern "js" fn HTMLParamElement::show_popover_with_options(self : HTMLParamElement, options : ShowPopoverOptions) -> Unit =
   #| (self, options) => self.showPopover(options)
 
 pub extern "js" fn HTMLParamElement::hide_popover(self : HTMLParamElement) -> Unit =
   #| (self) => self.hidePopover()
 
-pub extern "js" fn HTMLParamElement::toggle_popover(self : HTMLParamElement, options : JsValue) -> Bool =
+pub extern "js" fn HTMLParamElement::toggle_popover(self : HTMLParamElement) -> Bool =
+  #| (self) => self.togglePopover()
+
+pub extern "js" fn HTMLParamElement::toggle_popover_with_options(self : HTMLParamElement, options : JsValue) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
 pub extern "js" fn HTMLParamElement::get_popover(self : HTMLParamElement) -> String? =
@@ -71234,7 +72384,10 @@ pub extern "js" fn HTMLParamElement::get_tab_index(self : HTMLParamElement) -> I
 pub extern "js" fn HTMLParamElement::set_tab_index(self : HTMLParamElement, value : Int) -> Unit =
   #| (self, value) => { self.tabIndex = value }
 
-pub extern "js" fn HTMLParamElement::focus(self : HTMLParamElement, options : FocusOptions) -> Unit =
+pub extern "js" fn HTMLParamElement::focus(self : HTMLParamElement) -> Unit =
+  #| (self) => self.focus()
+
+pub extern "js" fn HTMLParamElement::focus_with_options(self : HTMLParamElement, options : FocusOptions) -> Unit =
   #| (self, options) => self.focus(options)
 
 pub extern "js" fn HTMLParamElement::blur(self : HTMLParamElement) -> Unit =

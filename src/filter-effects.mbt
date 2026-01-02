@@ -36,6 +36,57 @@ pub type SVGFEBlendElement
 pub extern "js" fn SVGFEBlendElement::to_js_value(self : SVGFEBlendElement) -> JsValue =
   #| (self) => self
 
+// SVGFEBlendElement.SVG_FEBLEND_MODE_UNKNOWN
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_unknown : Int = 0
+
+// SVGFEBlendElement.SVG_FEBLEND_MODE_NORMAL
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_normal : Int = 1
+
+// SVGFEBlendElement.SVG_FEBLEND_MODE_MULTIPLY
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_multiply : Int = 2
+
+// SVGFEBlendElement.SVG_FEBLEND_MODE_SCREEN
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_screen : Int = 3
+
+// SVGFEBlendElement.SVG_FEBLEND_MODE_DARKEN
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_darken : Int = 4
+
+// SVGFEBlendElement.SVG_FEBLEND_MODE_LIGHTEN
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_lighten : Int = 5
+
+// SVGFEBlendElement.SVG_FEBLEND_MODE_OVERLAY
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_overlay : Int = 6
+
+// SVGFEBlendElement.SVG_FEBLEND_MODE_COLOR_DODGE
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_color_dodge : Int = 7
+
+// SVGFEBlendElement.SVG_FEBLEND_MODE_COLOR_BURN
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_color_burn : Int = 8
+
+// SVGFEBlendElement.SVG_FEBLEND_MODE_HARD_LIGHT
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_hard_light : Int = 9
+
+// SVGFEBlendElement.SVG_FEBLEND_MODE_SOFT_LIGHT
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_soft_light : Int = 10
+
+// SVGFEBlendElement.SVG_FEBLEND_MODE_DIFFERENCE
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_difference : Int = 11
+
+// SVGFEBlendElement.SVG_FEBLEND_MODE_EXCLUSION
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_exclusion : Int = 12
+
+// SVGFEBlendElement.SVG_FEBLEND_MODE_HUE
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_hue : Int = 13
+
+// SVGFEBlendElement.SVG_FEBLEND_MODE_SATURATION
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_saturation : Int = 14
+
+// SVGFEBlendElement.SVG_FEBLEND_MODE_COLOR
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_color : Int = 15
+
+// SVGFEBlendElement.SVG_FEBLEND_MODE_LUMINOSITY
+pub let s_v_g_f_e_blend_element_svg_feblend_mode_luminosity : Int = 16
+
 pub extern "js" fn SVGFEBlendElement::get_in1(self : SVGFEBlendElement) -> SVGAnimatedString =
   #| (self) => self.in1
 
@@ -66,6 +117,21 @@ pub type SVGFEColorMatrixElement
 
 pub extern "js" fn SVGFEColorMatrixElement::to_js_value(self : SVGFEColorMatrixElement) -> JsValue =
   #| (self) => self
+
+// SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_UNKNOWN
+pub let s_v_g_f_e_color_matrix_element_svg_fecolormatrix_type_unknown : Int = 0
+
+// SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_MATRIX
+pub let s_v_g_f_e_color_matrix_element_svg_fecolormatrix_type_matrix : Int = 1
+
+// SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_SATURATE
+pub let s_v_g_f_e_color_matrix_element_svg_fecolormatrix_type_saturate : Int = 2
+
+// SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_HUEROTATE
+pub let s_v_g_f_e_color_matrix_element_svg_fecolormatrix_type_huerotate : Int = 3
+
+// SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_LUMINANCETOALPHA
+pub let s_v_g_f_e_color_matrix_element_svg_fecolormatrix_type_luminancetoalpha : Int = 4
 
 pub extern "js" fn SVGFEColorMatrixElement::get_in1(self : SVGFEColorMatrixElement) -> SVGAnimatedString =
   #| (self) => self.in1
@@ -123,6 +189,24 @@ pub type SVGComponentTransferFunctionElement
 pub extern "js" fn SVGComponentTransferFunctionElement::to_js_value(self : SVGComponentTransferFunctionElement) -> JsValue =
   #| (self) => self
 
+// SVGComponentTransferFunctionElement.SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN
+pub let s_v_g_component_transfer_function_element_svg_fecomponenttransfer_type_unknown : Int = 0
+
+// SVGComponentTransferFunctionElement.SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY
+pub let s_v_g_component_transfer_function_element_svg_fecomponenttransfer_type_identity : Int = 1
+
+// SVGComponentTransferFunctionElement.SVG_FECOMPONENTTRANSFER_TYPE_TABLE
+pub let s_v_g_component_transfer_function_element_svg_fecomponenttransfer_type_table : Int = 2
+
+// SVGComponentTransferFunctionElement.SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE
+pub let s_v_g_component_transfer_function_element_svg_fecomponenttransfer_type_discrete : Int = 3
+
+// SVGComponentTransferFunctionElement.SVG_FECOMPONENTTRANSFER_TYPE_LINEAR
+pub let s_v_g_component_transfer_function_element_svg_fecomponenttransfer_type_linear : Int = 4
+
+// SVGComponentTransferFunctionElement.SVG_FECOMPONENTTRANSFER_TYPE_GAMMA
+pub let s_v_g_component_transfer_function_element_svg_fecomponenttransfer_type_gamma : Int = 5
+
 pub extern "js" fn SVGComponentTransferFunctionElement::get_type(self : SVGComponentTransferFunctionElement) -> SVGAnimatedEnumeration =
   #| (self) => self.type
 
@@ -150,6 +234,24 @@ pub type SVGFEFuncRElement
 
 pub extern "js" fn SVGFEFuncRElement::to_js_value(self : SVGFEFuncRElement) -> JsValue =
   #| (self) => self
+
+// SVGFEFuncRElement.SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN
+pub let s_v_g_f_e_func_r_element_svg_fecomponenttransfer_type_unknown : Int = 0
+
+// SVGFEFuncRElement.SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY
+pub let s_v_g_f_e_func_r_element_svg_fecomponenttransfer_type_identity : Int = 1
+
+// SVGFEFuncRElement.SVG_FECOMPONENTTRANSFER_TYPE_TABLE
+pub let s_v_g_f_e_func_r_element_svg_fecomponenttransfer_type_table : Int = 2
+
+// SVGFEFuncRElement.SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE
+pub let s_v_g_f_e_func_r_element_svg_fecomponenttransfer_type_discrete : Int = 3
+
+// SVGFEFuncRElement.SVG_FECOMPONENTTRANSFER_TYPE_LINEAR
+pub let s_v_g_f_e_func_r_element_svg_fecomponenttransfer_type_linear : Int = 4
+
+// SVGFEFuncRElement.SVG_FECOMPONENTTRANSFER_TYPE_GAMMA
+pub let s_v_g_f_e_func_r_element_svg_fecomponenttransfer_type_gamma : Int = 5
 
 pub extern "js" fn SVGFEFuncRElement::get_type(self : SVGFEFuncRElement) -> SVGAnimatedEnumeration =
   #| (self) => self.type
@@ -179,6 +281,24 @@ pub type SVGFEFuncGElement
 pub extern "js" fn SVGFEFuncGElement::to_js_value(self : SVGFEFuncGElement) -> JsValue =
   #| (self) => self
 
+// SVGFEFuncGElement.SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN
+pub let s_v_g_f_e_func_g_element_svg_fecomponenttransfer_type_unknown : Int = 0
+
+// SVGFEFuncGElement.SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY
+pub let s_v_g_f_e_func_g_element_svg_fecomponenttransfer_type_identity : Int = 1
+
+// SVGFEFuncGElement.SVG_FECOMPONENTTRANSFER_TYPE_TABLE
+pub let s_v_g_f_e_func_g_element_svg_fecomponenttransfer_type_table : Int = 2
+
+// SVGFEFuncGElement.SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE
+pub let s_v_g_f_e_func_g_element_svg_fecomponenttransfer_type_discrete : Int = 3
+
+// SVGFEFuncGElement.SVG_FECOMPONENTTRANSFER_TYPE_LINEAR
+pub let s_v_g_f_e_func_g_element_svg_fecomponenttransfer_type_linear : Int = 4
+
+// SVGFEFuncGElement.SVG_FECOMPONENTTRANSFER_TYPE_GAMMA
+pub let s_v_g_f_e_func_g_element_svg_fecomponenttransfer_type_gamma : Int = 5
+
 pub extern "js" fn SVGFEFuncGElement::get_type(self : SVGFEFuncGElement) -> SVGAnimatedEnumeration =
   #| (self) => self.type
 
@@ -206,6 +326,24 @@ pub type SVGFEFuncBElement
 
 pub extern "js" fn SVGFEFuncBElement::to_js_value(self : SVGFEFuncBElement) -> JsValue =
   #| (self) => self
+
+// SVGFEFuncBElement.SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN
+pub let s_v_g_f_e_func_b_element_svg_fecomponenttransfer_type_unknown : Int = 0
+
+// SVGFEFuncBElement.SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY
+pub let s_v_g_f_e_func_b_element_svg_fecomponenttransfer_type_identity : Int = 1
+
+// SVGFEFuncBElement.SVG_FECOMPONENTTRANSFER_TYPE_TABLE
+pub let s_v_g_f_e_func_b_element_svg_fecomponenttransfer_type_table : Int = 2
+
+// SVGFEFuncBElement.SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE
+pub let s_v_g_f_e_func_b_element_svg_fecomponenttransfer_type_discrete : Int = 3
+
+// SVGFEFuncBElement.SVG_FECOMPONENTTRANSFER_TYPE_LINEAR
+pub let s_v_g_f_e_func_b_element_svg_fecomponenttransfer_type_linear : Int = 4
+
+// SVGFEFuncBElement.SVG_FECOMPONENTTRANSFER_TYPE_GAMMA
+pub let s_v_g_f_e_func_b_element_svg_fecomponenttransfer_type_gamma : Int = 5
 
 pub extern "js" fn SVGFEFuncBElement::get_type(self : SVGFEFuncBElement) -> SVGAnimatedEnumeration =
   #| (self) => self.type
@@ -235,6 +373,24 @@ pub type SVGFEFuncAElement
 pub extern "js" fn SVGFEFuncAElement::to_js_value(self : SVGFEFuncAElement) -> JsValue =
   #| (self) => self
 
+// SVGFEFuncAElement.SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN
+pub let s_v_g_f_e_func_a_element_svg_fecomponenttransfer_type_unknown : Int = 0
+
+// SVGFEFuncAElement.SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY
+pub let s_v_g_f_e_func_a_element_svg_fecomponenttransfer_type_identity : Int = 1
+
+// SVGFEFuncAElement.SVG_FECOMPONENTTRANSFER_TYPE_TABLE
+pub let s_v_g_f_e_func_a_element_svg_fecomponenttransfer_type_table : Int = 2
+
+// SVGFEFuncAElement.SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE
+pub let s_v_g_f_e_func_a_element_svg_fecomponenttransfer_type_discrete : Int = 3
+
+// SVGFEFuncAElement.SVG_FECOMPONENTTRANSFER_TYPE_LINEAR
+pub let s_v_g_f_e_func_a_element_svg_fecomponenttransfer_type_linear : Int = 4
+
+// SVGFEFuncAElement.SVG_FECOMPONENTTRANSFER_TYPE_GAMMA
+pub let s_v_g_f_e_func_a_element_svg_fecomponenttransfer_type_gamma : Int = 5
+
 pub extern "js" fn SVGFEFuncAElement::get_type(self : SVGFEFuncAElement) -> SVGAnimatedEnumeration =
   #| (self) => self.type
 
@@ -262,6 +418,27 @@ pub type SVGFECompositeElement
 
 pub extern "js" fn SVGFECompositeElement::to_js_value(self : SVGFECompositeElement) -> JsValue =
   #| (self) => self
+
+// SVGFECompositeElement.SVG_FECOMPOSITE_OPERATOR_UNKNOWN
+pub let s_v_g_f_e_composite_element_svg_fecomposite_operator_unknown : Int = 0
+
+// SVGFECompositeElement.SVG_FECOMPOSITE_OPERATOR_OVER
+pub let s_v_g_f_e_composite_element_svg_fecomposite_operator_over : Int = 1
+
+// SVGFECompositeElement.SVG_FECOMPOSITE_OPERATOR_IN
+pub let s_v_g_f_e_composite_element_svg_fecomposite_operator_in : Int = 2
+
+// SVGFECompositeElement.SVG_FECOMPOSITE_OPERATOR_OUT
+pub let s_v_g_f_e_composite_element_svg_fecomposite_operator_out : Int = 3
+
+// SVGFECompositeElement.SVG_FECOMPOSITE_OPERATOR_ATOP
+pub let s_v_g_f_e_composite_element_svg_fecomposite_operator_atop : Int = 4
+
+// SVGFECompositeElement.SVG_FECOMPOSITE_OPERATOR_XOR
+pub let s_v_g_f_e_composite_element_svg_fecomposite_operator_xor : Int = 5
+
+// SVGFECompositeElement.SVG_FECOMPOSITE_OPERATOR_ARITHMETIC
+pub let s_v_g_f_e_composite_element_svg_fecomposite_operator_arithmetic : Int = 6
 
 pub extern "js" fn SVGFECompositeElement::get_in1(self : SVGFECompositeElement) -> SVGAnimatedString =
   #| (self) => self.in1
@@ -305,6 +482,18 @@ pub type SVGFEConvolveMatrixElement
 
 pub extern "js" fn SVGFEConvolveMatrixElement::to_js_value(self : SVGFEConvolveMatrixElement) -> JsValue =
   #| (self) => self
+
+// SVGFEConvolveMatrixElement.SVG_EDGEMODE_UNKNOWN
+pub let s_v_g_f_e_convolve_matrix_element_svg_edgemode_unknown : Int = 0
+
+// SVGFEConvolveMatrixElement.SVG_EDGEMODE_DUPLICATE
+pub let s_v_g_f_e_convolve_matrix_element_svg_edgemode_duplicate : Int = 1
+
+// SVGFEConvolveMatrixElement.SVG_EDGEMODE_WRAP
+pub let s_v_g_f_e_convolve_matrix_element_svg_edgemode_wrap : Int = 2
+
+// SVGFEConvolveMatrixElement.SVG_EDGEMODE_NONE
+pub let s_v_g_f_e_convolve_matrix_element_svg_edgemode_none : Int = 3
 
 pub extern "js" fn SVGFEConvolveMatrixElement::get_in1(self : SVGFEConvolveMatrixElement) -> SVGAnimatedString =
   #| (self) => self.in1
@@ -461,6 +650,21 @@ pub type SVGFEDisplacementMapElement
 pub extern "js" fn SVGFEDisplacementMapElement::to_js_value(self : SVGFEDisplacementMapElement) -> JsValue =
   #| (self) => self
 
+// SVGFEDisplacementMapElement.SVG_CHANNEL_UNKNOWN
+pub let s_v_g_f_e_displacement_map_element_svg_channel_unknown : Int = 0
+
+// SVGFEDisplacementMapElement.SVG_CHANNEL_R
+pub let s_v_g_f_e_displacement_map_element_svg_channel_r : Int = 1
+
+// SVGFEDisplacementMapElement.SVG_CHANNEL_G
+pub let s_v_g_f_e_displacement_map_element_svg_channel_g : Int = 2
+
+// SVGFEDisplacementMapElement.SVG_CHANNEL_B
+pub let s_v_g_f_e_displacement_map_element_svg_channel_b : Int = 3
+
+// SVGFEDisplacementMapElement.SVG_CHANNEL_A
+pub let s_v_g_f_e_displacement_map_element_svg_channel_a : Int = 4
+
 pub extern "js" fn SVGFEDisplacementMapElement::get_in1(self : SVGFEDisplacementMapElement) -> SVGAnimatedString =
   #| (self) => self.in1
 
@@ -559,6 +763,18 @@ pub type SVGFEGaussianBlurElement
 
 pub extern "js" fn SVGFEGaussianBlurElement::to_js_value(self : SVGFEGaussianBlurElement) -> JsValue =
   #| (self) => self
+
+// SVGFEGaussianBlurElement.SVG_EDGEMODE_UNKNOWN
+pub let s_v_g_f_e_gaussian_blur_element_svg_edgemode_unknown : Int = 0
+
+// SVGFEGaussianBlurElement.SVG_EDGEMODE_DUPLICATE
+pub let s_v_g_f_e_gaussian_blur_element_svg_edgemode_duplicate : Int = 1
+
+// SVGFEGaussianBlurElement.SVG_EDGEMODE_WRAP
+pub let s_v_g_f_e_gaussian_blur_element_svg_edgemode_wrap : Int = 2
+
+// SVGFEGaussianBlurElement.SVG_EDGEMODE_NONE
+pub let s_v_g_f_e_gaussian_blur_element_svg_edgemode_none : Int = 3
 
 pub extern "js" fn SVGFEGaussianBlurElement::get_in1(self : SVGFEGaussianBlurElement) -> SVGAnimatedString =
   #| (self) => self.in1
@@ -659,6 +875,15 @@ pub type SVGFEMorphologyElement
 
 pub extern "js" fn SVGFEMorphologyElement::to_js_value(self : SVGFEMorphologyElement) -> JsValue =
   #| (self) => self
+
+// SVGFEMorphologyElement.SVG_MORPHOLOGY_OPERATOR_UNKNOWN
+pub let s_v_g_f_e_morphology_element_svg_morphology_operator_unknown : Int = 0
+
+// SVGFEMorphologyElement.SVG_MORPHOLOGY_OPERATOR_ERODE
+pub let s_v_g_f_e_morphology_element_svg_morphology_operator_erode : Int = 1
+
+// SVGFEMorphologyElement.SVG_MORPHOLOGY_OPERATOR_DILATE
+pub let s_v_g_f_e_morphology_element_svg_morphology_operator_dilate : Int = 2
 
 pub extern "js" fn SVGFEMorphologyElement::get_in1(self : SVGFEMorphologyElement) -> SVGAnimatedString =
   #| (self) => self.in1
@@ -789,6 +1014,24 @@ pub type SVGFETurbulenceElement
 
 pub extern "js" fn SVGFETurbulenceElement::to_js_value(self : SVGFETurbulenceElement) -> JsValue =
   #| (self) => self
+
+// SVGFETurbulenceElement.SVG_TURBULENCE_TYPE_UNKNOWN
+pub let s_v_g_f_e_turbulence_element_svg_turbulence_type_unknown : Int = 0
+
+// SVGFETurbulenceElement.SVG_TURBULENCE_TYPE_FRACTALNOISE
+pub let s_v_g_f_e_turbulence_element_svg_turbulence_type_fractalnoise : Int = 1
+
+// SVGFETurbulenceElement.SVG_TURBULENCE_TYPE_TURBULENCE
+pub let s_v_g_f_e_turbulence_element_svg_turbulence_type_turbulence : Int = 2
+
+// SVGFETurbulenceElement.SVG_STITCHTYPE_UNKNOWN
+pub let s_v_g_f_e_turbulence_element_svg_stitchtype_unknown : Int = 0
+
+// SVGFETurbulenceElement.SVG_STITCHTYPE_STITCH
+pub let s_v_g_f_e_turbulence_element_svg_stitchtype_stitch : Int = 1
+
+// SVGFETurbulenceElement.SVG_STITCHTYPE_NOSTITCH
+pub let s_v_g_f_e_turbulence_element_svg_stitchtype_nostitch : Int = 2
 
 pub extern "js" fn SVGFETurbulenceElement::get_base_frequency_x(self : SVGFETurbulenceElement) -> SVGAnimatedNumber =
   #| (self) => self.baseFrequencyX

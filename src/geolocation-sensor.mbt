@@ -86,7 +86,7 @@ pub extern "js" fn GeolocationSensor::to_js_value(self : GeolocationSensor) -> J
 pub extern "js" fn GeolocationSensor::new(options : GeolocationSensorOptions) -> GeolocationSensor =
   #| (options) => new GeolocationSensor(options)
 
-pub extern "js" fn GeolocationSensor::read(read_options : ReadOptions) -> JsValue =
+pub extern "js" fn GeolocationSensor::read(read_options : ReadOptions) -> Promise[GeolocationSensorReading] =
   #| (read_options) => GeolocationSensor.read(read_options)
 
 pub extern "js" fn GeolocationSensor::get_latitude(self : GeolocationSensor) -> Double? =

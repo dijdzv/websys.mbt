@@ -77,7 +77,7 @@ pub extern "js" fn FocusableAreasOption::to_js(self : FocusableAreasOption) -> J
 ///|
 /// SpatialNavigationSearchOptions dictionary
 pub struct SpatialNavigationSearchOptions {
-  candidates : JsValue?
+  candidates : Array[Node]?
   container : Node??
 }
 

@@ -4,6 +4,10 @@
 /// IntersectionObserverCallback callback interface
 pub type IntersectionObserverCallback
 
+/// Create IntersectionObserverCallback from a MoonBit function
+pub extern "js" fn IntersectionObserverCallback::from_fn(handler : (Array[IntersectionObserverEntry], IntersectionObserver) -> Unit) -> IntersectionObserverCallback =
+  #| (handler) => handler
+
 ///|
 /// IntersectionObserverEntryInit dictionary
 pub struct IntersectionObserverEntryInit {
@@ -115,7 +119,7 @@ pub extern "js" fn IntersectionObserver::unobserve(self : IntersectionObserver, 
 pub extern "js" fn IntersectionObserver::disconnect(self : IntersectionObserver) -> Unit =
   #| (self) => self.disconnect()
 
-pub extern "js" fn IntersectionObserver::take_records(self : IntersectionObserver) -> JsValue =
+pub extern "js" fn IntersectionObserver::take_records(self : IntersectionObserver) -> Array[IntersectionObserverEntry] =
   #| (self) => self.takeRecords()
 
 ///|

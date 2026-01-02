@@ -16,12 +16,15 @@ pub extern "js" fn JsValue::null() -> JsValue =
 pub extern "js" fn JsValue::from_string(s : String) -> JsValue =
   #| (s) => s
 
+/// JavaScript Promise type
+pub type Promise[T]
+
 // External types (referenced but not defined in WebIDL specs)
 pub type ArrayBuffer
+pub type Uint8Array
 pub type Int32Array
 pub type Uint32Array
 pub type CSSOMString
-pub type Uint8Array
 pub type Float32Array
 pub type Float64Array
 pub type WindowProxy

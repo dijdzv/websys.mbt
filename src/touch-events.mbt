@@ -89,9 +89,9 @@ pub extern "js" fn TouchInit::to_js(self : TouchInit) -> JsValue =
 ///|
 /// TouchEventInit dictionary
 pub struct TouchEventInit {
-  touches : JsValue?
-  targetTouches : JsValue?
-  changedTouches : JsValue?
+  touches : Array[Touch]?
+  targetTouches : Array[Touch]?
+  changedTouches : Array[Touch]?
 }
 
 /// Create a new TouchEventInit with default values

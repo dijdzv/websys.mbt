@@ -54,17 +54,37 @@ pub fn ReadableStreamType::from_string(s : String) -> ReadableStreamType? {
 /// UnderlyingSourceStartCallback callback interface
 pub type UnderlyingSourceStartCallback
 
+/// Create UnderlyingSourceStartCallback from a MoonBit function
+pub extern "js" fn UnderlyingSourceStartCallback::from_fn(handler : (ReadableStreamController) -> JsValue) -> UnderlyingSourceStartCallback =
+  #| (handler) => handler
+
 /// UnderlyingSourcePullCallback callback interface
 pub type UnderlyingSourcePullCallback
+
+/// Create UnderlyingSourcePullCallback from a MoonBit function
+pub extern "js" fn UnderlyingSourcePullCallback::from_fn(handler : (ReadableStreamController) -> Promise[Unit]) -> UnderlyingSourcePullCallback =
+  #| (handler) => handler
 
 /// UnderlyingSourceCancelCallback callback interface
 pub type UnderlyingSourceCancelCallback
 
+/// Create UnderlyingSourceCancelCallback from a MoonBit function
+pub extern "js" fn UnderlyingSourceCancelCallback::from_fn(handler : (JsValue) -> Promise[Unit]) -> UnderlyingSourceCancelCallback =
+  #| (handler) => handler
+
 /// UnderlyingSinkStartCallback callback interface
 pub type UnderlyingSinkStartCallback
 
+/// Create UnderlyingSinkStartCallback from a MoonBit function
+pub extern "js" fn UnderlyingSinkStartCallback::from_fn(handler : (WritableStreamDefaultController) -> JsValue) -> UnderlyingSinkStartCallback =
+  #| (handler) => handler
+
 /// UnderlyingSinkWriteCallback callback interface
 pub type UnderlyingSinkWriteCallback
+
+/// Create UnderlyingSinkWriteCallback from a MoonBit function
+pub extern "js" fn UnderlyingSinkWriteCallback::from_fn(handler : (JsValue, WritableStreamDefaultController) -> Promise[Unit]) -> UnderlyingSinkWriteCallback =
+  #| (handler) => handler
 
 /// UnderlyingSinkCloseCallback callback interface
 pub type UnderlyingSinkCloseCallback
@@ -72,20 +92,44 @@ pub type UnderlyingSinkCloseCallback
 /// UnderlyingSinkAbortCallback callback interface
 pub type UnderlyingSinkAbortCallback
 
+/// Create UnderlyingSinkAbortCallback from a MoonBit function
+pub extern "js" fn UnderlyingSinkAbortCallback::from_fn(handler : (JsValue) -> Promise[Unit]) -> UnderlyingSinkAbortCallback =
+  #| (handler) => handler
+
 /// TransformerStartCallback callback interface
 pub type TransformerStartCallback
+
+/// Create TransformerStartCallback from a MoonBit function
+pub extern "js" fn TransformerStartCallback::from_fn(handler : (TransformStreamDefaultController) -> JsValue) -> TransformerStartCallback =
+  #| (handler) => handler
 
 /// TransformerFlushCallback callback interface
 pub type TransformerFlushCallback
 
+/// Create TransformerFlushCallback from a MoonBit function
+pub extern "js" fn TransformerFlushCallback::from_fn(handler : (TransformStreamDefaultController) -> Promise[Unit]) -> TransformerFlushCallback =
+  #| (handler) => handler
+
 /// TransformerTransformCallback callback interface
 pub type TransformerTransformCallback
+
+/// Create TransformerTransformCallback from a MoonBit function
+pub extern "js" fn TransformerTransformCallback::from_fn(handler : (JsValue, TransformStreamDefaultController) -> Promise[Unit]) -> TransformerTransformCallback =
+  #| (handler) => handler
 
 /// TransformerCancelCallback callback interface
 pub type TransformerCancelCallback
 
+/// Create TransformerCancelCallback from a MoonBit function
+pub extern "js" fn TransformerCancelCallback::from_fn(handler : (JsValue) -> Promise[Unit]) -> TransformerCancelCallback =
+  #| (handler) => handler
+
 /// QueuingStrategySize callback interface
 pub type QueuingStrategySize
+
+/// Create QueuingStrategySize from a MoonBit function
+pub extern "js" fn QueuingStrategySize::from_fn(handler : (JsValue) -> Double) -> QueuingStrategySize =
+  #| (handler) => handler
 
 ///|
 /// ReadableStreamGetReaderOptions dictionary
@@ -369,19 +413,31 @@ pub extern "js" fn ReadableStream::from(async_iterable : JsValue) -> ReadableStr
 pub extern "js" fn ReadableStream::get_locked(self : ReadableStream) -> Bool =
   #| (self) => self.locked
 
-pub extern "js" fn ReadableStream::cancel(self : ReadableStream, reason : JsValue) -> JsValue =
+pub extern "js" fn ReadableStream::cancel(self : ReadableStream) -> Promise[Unit] =
+  #| (self) => self.cancel()
+
+pub extern "js" fn ReadableStream::cancel_with_reason(self : ReadableStream, reason : JsValue) -> Promise[Unit] =
   #| (self, reason) => self.cancel(reason)
 
-pub extern "js" fn ReadableStream::get_reader(self : ReadableStream, options : ReadableStreamGetReaderOptions) -> ReadableStreamReader =
+pub extern "js" fn ReadableStream::get_reader(self : ReadableStream) -> ReadableStreamReader =
+  #| (self) => self.getReader()
+
+pub extern "js" fn ReadableStream::get_reader_with_options(self : ReadableStream, options : ReadableStreamGetReaderOptions) -> ReadableStreamReader =
   #| (self, options) => self.getReader(options)
 
-pub extern "js" fn ReadableStream::pipe_through(self : ReadableStream, transform : ReadableWritablePair, options : StreamPipeOptions) -> ReadableStream =
+pub extern "js" fn ReadableStream::pipe_through(self : ReadableStream, transform : ReadableWritablePair) -> ReadableStream =
+  #| (self, transform) => self.pipeThrough(transform)
+
+pub extern "js" fn ReadableStream::pipe_through_with_options(self : ReadableStream, transform : ReadableWritablePair, options : StreamPipeOptions) -> ReadableStream =
   #| (self, transform, options) => self.pipeThrough(transform, options)
 
-pub extern "js" fn ReadableStream::pipe_to(self : ReadableStream, destination : WritableStream, options : StreamPipeOptions) -> JsValue =
+pub extern "js" fn ReadableStream::pipe_to(self : ReadableStream, destination : WritableStream) -> Promise[Unit] =
+  #| (self, destination) => self.pipeTo(destination)
+
+pub extern "js" fn ReadableStream::pipe_to_with_options(self : ReadableStream, destination : WritableStream, options : StreamPipeOptions) -> Promise[Unit] =
   #| (self, destination, options) => self.pipeTo(destination, options)
 
-pub extern "js" fn ReadableStream::tee(self : ReadableStream) -> JsValue =
+pub extern "js" fn ReadableStream::tee(self : ReadableStream) -> Array[ReadableStream] =
   #| (self) => self.tee()
 
 pub extern "js" fn ReadableStream::_unknown_(self : ReadableStream) -> Unit =
@@ -397,16 +453,19 @@ pub extern "js" fn ReadableStreamDefaultReader::to_js_value(self : ReadableStrea
 pub extern "js" fn ReadableStreamDefaultReader::new(stream : ReadableStream) -> ReadableStreamDefaultReader =
   #| (stream) => new ReadableStreamDefaultReader(stream)
 
-pub extern "js" fn ReadableStreamDefaultReader::read(self : ReadableStreamDefaultReader) -> JsValue =
+pub extern "js" fn ReadableStreamDefaultReader::read(self : ReadableStreamDefaultReader) -> Promise[ReadableStreamReadResult] =
   #| (self) => self.read()
 
 pub extern "js" fn ReadableStreamDefaultReader::release_lock(self : ReadableStreamDefaultReader) -> Unit =
   #| (self) => self.releaseLock()
 
-pub extern "js" fn ReadableStreamDefaultReader::get_closed(self : ReadableStreamDefaultReader) -> JsValue =
+pub extern "js" fn ReadableStreamDefaultReader::get_closed(self : ReadableStreamDefaultReader) -> Promise[Unit] =
   #| (self) => self.closed
 
-pub extern "js" fn ReadableStreamDefaultReader::cancel(self : ReadableStreamDefaultReader, reason : JsValue) -> JsValue =
+pub extern "js" fn ReadableStreamDefaultReader::cancel(self : ReadableStreamDefaultReader) -> Promise[Unit] =
+  #| (self) => self.cancel()
+
+pub extern "js" fn ReadableStreamDefaultReader::cancel_with_reason(self : ReadableStreamDefaultReader, reason : JsValue) -> Promise[Unit] =
   #| (self, reason) => self.cancel(reason)
 
 ///|
@@ -419,16 +478,22 @@ pub extern "js" fn ReadableStreamBYOBReader::to_js_value(self : ReadableStreamBY
 pub extern "js" fn ReadableStreamBYOBReader::new(stream : ReadableStream) -> ReadableStreamBYOBReader =
   #| (stream) => new ReadableStreamBYOBReader(stream)
 
-pub extern "js" fn ReadableStreamBYOBReader::read(self : ReadableStreamBYOBReader, view : ArrayBufferView, options : ReadableStreamBYOBReaderReadOptions) -> JsValue =
+pub extern "js" fn ReadableStreamBYOBReader::read(self : ReadableStreamBYOBReader, view : ArrayBufferView) -> Promise[ReadableStreamReadResult] =
+  #| (self, view) => self.read(view)
+
+pub extern "js" fn ReadableStreamBYOBReader::read_with_options(self : ReadableStreamBYOBReader, view : ArrayBufferView, options : ReadableStreamBYOBReaderReadOptions) -> Promise[ReadableStreamReadResult] =
   #| (self, view, options) => self.read(view, options)
 
 pub extern "js" fn ReadableStreamBYOBReader::release_lock(self : ReadableStreamBYOBReader) -> Unit =
   #| (self) => self.releaseLock()
 
-pub extern "js" fn ReadableStreamBYOBReader::get_closed(self : ReadableStreamBYOBReader) -> JsValue =
+pub extern "js" fn ReadableStreamBYOBReader::get_closed(self : ReadableStreamBYOBReader) -> Promise[Unit] =
   #| (self) => self.closed
 
-pub extern "js" fn ReadableStreamBYOBReader::cancel(self : ReadableStreamBYOBReader, reason : JsValue) -> JsValue =
+pub extern "js" fn ReadableStreamBYOBReader::cancel(self : ReadableStreamBYOBReader) -> Promise[Unit] =
+  #| (self) => self.cancel()
+
+pub extern "js" fn ReadableStreamBYOBReader::cancel_with_reason(self : ReadableStreamBYOBReader, reason : JsValue) -> Promise[Unit] =
   #| (self, reason) => self.cancel(reason)
 
 ///|
@@ -444,10 +509,16 @@ pub extern "js" fn ReadableStreamDefaultController::get_desired_size(self : Read
 pub extern "js" fn ReadableStreamDefaultController::close(self : ReadableStreamDefaultController) -> Unit =
   #| (self) => self.close()
 
-pub extern "js" fn ReadableStreamDefaultController::enqueue(self : ReadableStreamDefaultController, chunk : JsValue) -> Unit =
+pub extern "js" fn ReadableStreamDefaultController::enqueue(self : ReadableStreamDefaultController) -> Unit =
+  #| (self) => self.enqueue()
+
+pub extern "js" fn ReadableStreamDefaultController::enqueue_with_chunk(self : ReadableStreamDefaultController, chunk : JsValue) -> Unit =
   #| (self, chunk) => self.enqueue(chunk)
 
-pub extern "js" fn ReadableStreamDefaultController::error(self : ReadableStreamDefaultController, e : JsValue) -> Unit =
+pub extern "js" fn ReadableStreamDefaultController::error(self : ReadableStreamDefaultController) -> Unit =
+  #| (self) => self.error()
+
+pub extern "js" fn ReadableStreamDefaultController::error_with_e(self : ReadableStreamDefaultController, e : JsValue) -> Unit =
   #| (self, e) => self.error(e)
 
 ///|
@@ -469,7 +540,10 @@ pub extern "js" fn ReadableByteStreamController::close(self : ReadableByteStream
 pub extern "js" fn ReadableByteStreamController::enqueue(self : ReadableByteStreamController, chunk : ArrayBufferView) -> Unit =
   #| (self, chunk) => self.enqueue(chunk)
 
-pub extern "js" fn ReadableByteStreamController::error(self : ReadableByteStreamController, e : JsValue) -> Unit =
+pub extern "js" fn ReadableByteStreamController::error(self : ReadableByteStreamController) -> Unit =
+  #| (self) => self.error()
+
+pub extern "js" fn ReadableByteStreamController::error_with_e(self : ReadableByteStreamController, e : JsValue) -> Unit =
   #| (self, e) => self.error(e)
 
 ///|
@@ -501,10 +575,13 @@ pub extern "js" fn WritableStream::new(underlying_sink : JsValue, strategy : Que
 pub extern "js" fn WritableStream::get_locked(self : WritableStream) -> Bool =
   #| (self) => self.locked
 
-pub extern "js" fn WritableStream::abort(self : WritableStream, reason : JsValue) -> JsValue =
+pub extern "js" fn WritableStream::abort(self : WritableStream) -> Promise[Unit] =
+  #| (self) => self.abort()
+
+pub extern "js" fn WritableStream::abort_with_reason(self : WritableStream, reason : JsValue) -> Promise[Unit] =
   #| (self, reason) => self.abort(reason)
 
-pub extern "js" fn WritableStream::close(self : WritableStream) -> JsValue =
+pub extern "js" fn WritableStream::close(self : WritableStream) -> Promise[Unit] =
   #| (self) => self.close()
 
 pub extern "js" fn WritableStream::get_writer(self : WritableStream) -> WritableStreamDefaultWriter =
@@ -520,25 +597,31 @@ pub extern "js" fn WritableStreamDefaultWriter::to_js_value(self : WritableStrea
 pub extern "js" fn WritableStreamDefaultWriter::new(stream : WritableStream) -> WritableStreamDefaultWriter =
   #| (stream) => new WritableStreamDefaultWriter(stream)
 
-pub extern "js" fn WritableStreamDefaultWriter::get_closed(self : WritableStreamDefaultWriter) -> JsValue =
+pub extern "js" fn WritableStreamDefaultWriter::get_closed(self : WritableStreamDefaultWriter) -> Promise[Unit] =
   #| (self) => self.closed
 
 pub extern "js" fn WritableStreamDefaultWriter::get_desired_size(self : WritableStreamDefaultWriter) -> Double? =
   #| (self) => self.desiredSize
 
-pub extern "js" fn WritableStreamDefaultWriter::get_ready(self : WritableStreamDefaultWriter) -> JsValue =
+pub extern "js" fn WritableStreamDefaultWriter::get_ready(self : WritableStreamDefaultWriter) -> Promise[Unit] =
   #| (self) => self.ready
 
-pub extern "js" fn WritableStreamDefaultWriter::abort(self : WritableStreamDefaultWriter, reason : JsValue) -> JsValue =
+pub extern "js" fn WritableStreamDefaultWriter::abort(self : WritableStreamDefaultWriter) -> Promise[Unit] =
+  #| (self) => self.abort()
+
+pub extern "js" fn WritableStreamDefaultWriter::abort_with_reason(self : WritableStreamDefaultWriter, reason : JsValue) -> Promise[Unit] =
   #| (self, reason) => self.abort(reason)
 
-pub extern "js" fn WritableStreamDefaultWriter::close(self : WritableStreamDefaultWriter) -> JsValue =
+pub extern "js" fn WritableStreamDefaultWriter::close(self : WritableStreamDefaultWriter) -> Promise[Unit] =
   #| (self) => self.close()
 
 pub extern "js" fn WritableStreamDefaultWriter::release_lock(self : WritableStreamDefaultWriter) -> Unit =
   #| (self) => self.releaseLock()
 
-pub extern "js" fn WritableStreamDefaultWriter::write(self : WritableStreamDefaultWriter, chunk : JsValue) -> JsValue =
+pub extern "js" fn WritableStreamDefaultWriter::write(self : WritableStreamDefaultWriter) -> Promise[Unit] =
+  #| (self) => self.write()
+
+pub extern "js" fn WritableStreamDefaultWriter::write_with_chunk(self : WritableStreamDefaultWriter, chunk : JsValue) -> Promise[Unit] =
   #| (self, chunk) => self.write(chunk)
 
 ///|
@@ -551,7 +634,10 @@ pub extern "js" fn WritableStreamDefaultController::to_js_value(self : WritableS
 pub extern "js" fn WritableStreamDefaultController::get_signal(self : WritableStreamDefaultController) -> AbortSignal =
   #| (self) => self.signal
 
-pub extern "js" fn WritableStreamDefaultController::error(self : WritableStreamDefaultController, e : JsValue) -> Unit =
+pub extern "js" fn WritableStreamDefaultController::error(self : WritableStreamDefaultController) -> Unit =
+  #| (self) => self.error()
+
+pub extern "js" fn WritableStreamDefaultController::error_with_e(self : WritableStreamDefaultController, e : JsValue) -> Unit =
   #| (self, e) => self.error(e)
 
 ///|
@@ -580,10 +666,16 @@ pub extern "js" fn TransformStreamDefaultController::to_js_value(self : Transfor
 pub extern "js" fn TransformStreamDefaultController::get_desired_size(self : TransformStreamDefaultController) -> Double? =
   #| (self) => self.desiredSize
 
-pub extern "js" fn TransformStreamDefaultController::enqueue(self : TransformStreamDefaultController, chunk : JsValue) -> Unit =
+pub extern "js" fn TransformStreamDefaultController::enqueue(self : TransformStreamDefaultController) -> Unit =
+  #| (self) => self.enqueue()
+
+pub extern "js" fn TransformStreamDefaultController::enqueue_with_chunk(self : TransformStreamDefaultController, chunk : JsValue) -> Unit =
   #| (self, chunk) => self.enqueue(chunk)
 
-pub extern "js" fn TransformStreamDefaultController::error(self : TransformStreamDefaultController, reason : JsValue) -> Unit =
+pub extern "js" fn TransformStreamDefaultController::error(self : TransformStreamDefaultController) -> Unit =
+  #| (self) => self.error()
+
+pub extern "js" fn TransformStreamDefaultController::error_with_reason(self : TransformStreamDefaultController, reason : JsValue) -> Unit =
   #| (self, reason) => self.error(reason)
 
 pub extern "js" fn TransformStreamDefaultController::terminate(self : TransformStreamDefaultController) -> Unit =

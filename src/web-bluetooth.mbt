@@ -92,11 +92,11 @@ pub extern "js" fn BluetoothServiceDataFilterInit::to_js(self : BluetoothService
 ///|
 /// BluetoothLEScanFilterInit dictionary
 pub struct BluetoothLEScanFilterInit {
-  services : JsValue?
+  services : Array[BluetoothServiceUUID]?
   name : String?
   namePrefix : String?
-  manufacturerData : JsValue?
-  serviceData : JsValue?
+  manufacturerData : Array[BluetoothManufacturerDataFilterInit]?
+  serviceData : Array[BluetoothServiceDataFilterInit]?
 }
 
 /// Create a new BluetoothLEScanFilterInit with default values
@@ -123,10 +123,10 @@ pub extern "js" fn BluetoothLEScanFilterInit::to_js(self : BluetoothLEScanFilter
 ///|
 /// RequestDeviceOptions dictionary
 pub struct RequestDeviceOptions {
-  filters : JsValue?
-  exclusionFilters : JsValue?
-  optionalServices : JsValue?
-  optionalManufacturerData : JsValue?
+  filters : Array[BluetoothLEScanFilterInit]?
+  exclusionFilters : Array[BluetoothLEScanFilterInit]?
+  optionalServices : Array[BluetoothServiceUUID]?
+  optionalManufacturerData : Array[Int]?
   acceptAllDevices : Bool?
 }
 
@@ -155,9 +155,9 @@ pub extern "js" fn RequestDeviceOptions::to_js(self : RequestDeviceOptions) -> J
 /// BluetoothPermissionDescriptor dictionary
 pub struct BluetoothPermissionDescriptor {
   deviceId : String?
-  filters : JsValue?
-  optionalServices : JsValue?
-  optionalManufacturerData : JsValue?
+  filters : Array[BluetoothLEScanFilterInit]?
+  optionalServices : Array[BluetoothServiceUUID]?
+  optionalManufacturerData : Array[Int]?
   acceptAllDevices : Bool?
 }
 
@@ -188,7 +188,7 @@ pub struct AllowedBluetoothDevice {
   deviceId : String
   mayUseGATT : Bool
   allowedServices : JsValue
-  allowedManufacturerData : JsValue
+  allowedManufacturerData : Array[Int]
 }
 
 /// Create a new AllowedBluetoothDevice with default values
@@ -197,7 +197,7 @@ pub fn AllowedBluetoothDevice::default() -> AllowedBluetoothDevice {
     deviceId: "",
     mayUseGATT: false,
     allowedServices: panic(),
-    allowedManufacturerData: panic(),
+    allowedManufacturerData: [],
   }
 }
 
@@ -213,13 +213,13 @@ pub extern "js" fn AllowedBluetoothDevice::to_js(self : AllowedBluetoothDevice) 
 ///|
 /// BluetoothPermissionStorage dictionary
 pub struct BluetoothPermissionStorage {
-  allowedDevices : JsValue
+  allowedDevices : Array[AllowedBluetoothDevice]
 }
 
 /// Create a new BluetoothPermissionStorage with default values
 pub fn BluetoothPermissionStorage::default() -> BluetoothPermissionStorage {
   BluetoothPermissionStorage::{
-    allowedDevices: panic(),
+    allowedDevices: [],
   }
 }
 
@@ -271,7 +271,7 @@ pub extern "js" fn WatchAdvertisementsOptions::to_js(self : WatchAdvertisementsO
 /// BluetoothAdvertisingEventInit dictionary
 pub struct BluetoothAdvertisingEventInit {
   device : BluetoothDevice
-  uuids : JsValue?
+  uuids : Array[JsValue]?
   name : String?
   appearance : Int?
   txPower : Int?
@@ -314,7 +314,7 @@ pub type Bluetooth
 pub extern "js" fn Bluetooth::to_js_value(self : Bluetooth) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Bluetooth::get_availability(self : Bluetooth) -> JsValue =
+pub extern "js" fn Bluetooth::get_availability(self : Bluetooth) -> Promise[Bool] =
   #| (self) => self.getAvailability()
 
 pub extern "js" fn Bluetooth::get_onavailabilitychanged(self : Bluetooth) -> EventHandler =
@@ -326,13 +326,19 @@ pub extern "js" fn Bluetooth::set_onavailabilitychanged(self : Bluetooth, value 
 pub extern "js" fn Bluetooth::get_referring_device(self : Bluetooth) -> BluetoothDevice? =
   #| (self) => self.referringDevice
 
-pub extern "js" fn Bluetooth::get_devices(self : Bluetooth) -> JsValue =
+pub extern "js" fn Bluetooth::get_devices(self : Bluetooth) -> Promise[Array[BluetoothDevice]] =
   #| (self) => self.getDevices()
 
-pub extern "js" fn Bluetooth::request_device(self : Bluetooth, options : RequestDeviceOptions) -> JsValue =
+pub extern "js" fn Bluetooth::request_device(self : Bluetooth) -> Promise[BluetoothDevice] =
+  #| (self) => self.requestDevice()
+
+pub extern "js" fn Bluetooth::request_device_with_options(self : Bluetooth, options : RequestDeviceOptions) -> Promise[BluetoothDevice] =
   #| (self, options) => self.requestDevice(options)
 
-pub extern "js" fn Bluetooth::request_l_e_scan(self : Bluetooth, options : BluetoothLEScanOptions) -> JsValue =
+pub extern "js" fn Bluetooth::request_l_e_scan(self : Bluetooth) -> Promise[BluetoothLEScan] =
+  #| (self) => self.requestLEScan()
+
+pub extern "js" fn Bluetooth::request_l_e_scan_with_options(self : Bluetooth, options : BluetoothLEScanOptions) -> Promise[BluetoothLEScan] =
   #| (self, options) => self.requestLEScan(options)
 
 pub extern "js" fn Bluetooth::get_onadvertisementreceived(self : Bluetooth) -> EventHandler =
@@ -413,10 +419,13 @@ pub extern "js" fn BluetoothDevice::get_name(self : BluetoothDevice) -> String? 
 pub extern "js" fn BluetoothDevice::get_gatt(self : BluetoothDevice) -> BluetoothRemoteGATTServer? =
   #| (self) => self.gatt
 
-pub extern "js" fn BluetoothDevice::forget(self : BluetoothDevice) -> JsValue =
+pub extern "js" fn BluetoothDevice::forget(self : BluetoothDevice) -> Promise[Unit] =
   #| (self) => self.forget()
 
-pub extern "js" fn BluetoothDevice::watch_advertisements(self : BluetoothDevice, options : WatchAdvertisementsOptions) -> JsValue =
+pub extern "js" fn BluetoothDevice::watch_advertisements(self : BluetoothDevice) -> Promise[Unit] =
+  #| (self) => self.watchAdvertisements()
+
+pub extern "js" fn BluetoothDevice::watch_advertisements_with_options(self : BluetoothDevice, options : WatchAdvertisementsOptions) -> Promise[Unit] =
   #| (self, options) => self.watchAdvertisements(options)
 
 pub extern "js" fn BluetoothDevice::get_watching_advertisements(self : BluetoothDevice) -> Bool =
@@ -465,8 +474,11 @@ pub type BluetoothManufacturerDataMap
 pub extern "js" fn BluetoothManufacturerDataMap::to_js_value(self : BluetoothManufacturerDataMap) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn BluetoothManufacturerDataMap::_unknown_(self : BluetoothManufacturerDataMap) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn BluetoothManufacturerDataMap::get(self : BluetoothManufacturerDataMap, key : Int) -> DataView? =
+  #| (self, key) => self.get(key)
+
+pub extern "js" fn BluetoothManufacturerDataMap::has(self : BluetoothManufacturerDataMap, key : Int) -> Bool =
+  #| (self, key) => self.has(key)
 
 ///|
 /// BluetoothServiceDataMap interface
@@ -475,8 +487,11 @@ pub type BluetoothServiceDataMap
 pub extern "js" fn BluetoothServiceDataMap::to_js_value(self : BluetoothServiceDataMap) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn BluetoothServiceDataMap::_unknown_(self : BluetoothServiceDataMap) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn BluetoothServiceDataMap::get(self : BluetoothServiceDataMap, key : UUID) -> DataView? =
+  #| (self, key) => self.get(key)
+
+pub extern "js" fn BluetoothServiceDataMap::has(self : BluetoothServiceDataMap, key : UUID) -> Bool =
+  #| (self, key) => self.has(key)
 
 ///|
 /// BluetoothAdvertisingEvent interface
@@ -525,16 +540,19 @@ pub extern "js" fn BluetoothRemoteGATTServer::get_device(self : BluetoothRemoteG
 pub extern "js" fn BluetoothRemoteGATTServer::get_connected(self : BluetoothRemoteGATTServer) -> Bool =
   #| (self) => self.connected
 
-pub extern "js" fn BluetoothRemoteGATTServer::connect(self : BluetoothRemoteGATTServer) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTServer::connect(self : BluetoothRemoteGATTServer) -> Promise[BluetoothRemoteGATTServer] =
   #| (self) => self.connect()
 
 pub extern "js" fn BluetoothRemoteGATTServer::disconnect(self : BluetoothRemoteGATTServer) -> Unit =
   #| (self) => self.disconnect()
 
-pub extern "js" fn BluetoothRemoteGATTServer::get_primary_service(self : BluetoothRemoteGATTServer, service : BluetoothServiceUUID) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTServer::get_primary_service(self : BluetoothRemoteGATTServer, service : BluetoothServiceUUID) -> Promise[BluetoothRemoteGATTService] =
   #| (self, service) => self.getPrimaryService(service)
 
-pub extern "js" fn BluetoothRemoteGATTServer::get_primary_services(self : BluetoothRemoteGATTServer, service : BluetoothServiceUUID) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTServer::get_primary_services(self : BluetoothRemoteGATTServer) -> Promise[Array[BluetoothRemoteGATTService]] =
+  #| (self) => self.getPrimaryServices()
+
+pub extern "js" fn BluetoothRemoteGATTServer::get_primary_services_with_service(self : BluetoothRemoteGATTServer, service : BluetoothServiceUUID) -> Promise[Array[BluetoothRemoteGATTService]] =
   #| (self, service) => self.getPrimaryServices(service)
 
 ///|
@@ -553,16 +571,22 @@ pub extern "js" fn BluetoothRemoteGATTService::get_uuid(self : BluetoothRemoteGA
 pub extern "js" fn BluetoothRemoteGATTService::get_is_primary(self : BluetoothRemoteGATTService) -> Bool =
   #| (self) => self.isPrimary
 
-pub extern "js" fn BluetoothRemoteGATTService::get_characteristic(self : BluetoothRemoteGATTService, characteristic : BluetoothCharacteristicUUID) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTService::get_characteristic(self : BluetoothRemoteGATTService, characteristic : BluetoothCharacteristicUUID) -> Promise[BluetoothRemoteGATTCharacteristic] =
   #| (self, characteristic) => self.getCharacteristic(characteristic)
 
-pub extern "js" fn BluetoothRemoteGATTService::get_characteristics(self : BluetoothRemoteGATTService, characteristic : BluetoothCharacteristicUUID) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTService::get_characteristics(self : BluetoothRemoteGATTService) -> Promise[Array[BluetoothRemoteGATTCharacteristic]] =
+  #| (self) => self.getCharacteristics()
+
+pub extern "js" fn BluetoothRemoteGATTService::get_characteristics_with_characteristic(self : BluetoothRemoteGATTService, characteristic : BluetoothCharacteristicUUID) -> Promise[Array[BluetoothRemoteGATTCharacteristic]] =
   #| (self, characteristic) => self.getCharacteristics(characteristic)
 
-pub extern "js" fn BluetoothRemoteGATTService::get_included_service(self : BluetoothRemoteGATTService, service : BluetoothServiceUUID) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTService::get_included_service(self : BluetoothRemoteGATTService, service : BluetoothServiceUUID) -> Promise[BluetoothRemoteGATTService] =
   #| (self, service) => self.getIncludedService(service)
 
-pub extern "js" fn BluetoothRemoteGATTService::get_included_services(self : BluetoothRemoteGATTService, service : BluetoothServiceUUID) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTService::get_included_services(self : BluetoothRemoteGATTService) -> Promise[Array[BluetoothRemoteGATTService]] =
+  #| (self) => self.getIncludedServices()
+
+pub extern "js" fn BluetoothRemoteGATTService::get_included_services_with_service(self : BluetoothRemoteGATTService, service : BluetoothServiceUUID) -> Promise[Array[BluetoothRemoteGATTService]] =
   #| (self, service) => self.getIncludedServices(service)
 
 pub extern "js" fn BluetoothRemoteGATTService::get_oncharacteristicvaluechanged(self : BluetoothRemoteGATTService) -> EventHandler =
@@ -608,28 +632,31 @@ pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_properties(self : Blue
 pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_value(self : BluetoothRemoteGATTCharacteristic) -> DataView? =
   #| (self) => self.value
 
-pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptor(self : BluetoothRemoteGATTCharacteristic, descriptor : BluetoothDescriptorUUID) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptor(self : BluetoothRemoteGATTCharacteristic, descriptor : BluetoothDescriptorUUID) -> Promise[BluetoothRemoteGATTDescriptor] =
   #| (self, descriptor) => self.getDescriptor(descriptor)
 
-pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptors(self : BluetoothRemoteGATTCharacteristic, descriptor : BluetoothDescriptorUUID) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptors(self : BluetoothRemoteGATTCharacteristic) -> Promise[Array[BluetoothRemoteGATTDescriptor]] =
+  #| (self) => self.getDescriptors()
+
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptors_with_descriptor(self : BluetoothRemoteGATTCharacteristic, descriptor : BluetoothDescriptorUUID) -> Promise[Array[BluetoothRemoteGATTDescriptor]] =
   #| (self, descriptor) => self.getDescriptors(descriptor)
 
-pub extern "js" fn BluetoothRemoteGATTCharacteristic::read_value(self : BluetoothRemoteGATTCharacteristic) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::read_value(self : BluetoothRemoteGATTCharacteristic) -> Promise[DataView] =
   #| (self) => self.readValue()
 
-pub extern "js" fn BluetoothRemoteGATTCharacteristic::write_value(self : BluetoothRemoteGATTCharacteristic, value : BufferSource) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::write_value(self : BluetoothRemoteGATTCharacteristic, value : BufferSource) -> Promise[Unit] =
   #| (self, value) => self.writeValue(value)
 
-pub extern "js" fn BluetoothRemoteGATTCharacteristic::write_value_with_response(self : BluetoothRemoteGATTCharacteristic, value : BufferSource) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::write_value_with_response(self : BluetoothRemoteGATTCharacteristic, value : BufferSource) -> Promise[Unit] =
   #| (self, value) => self.writeValueWithResponse(value)
 
-pub extern "js" fn BluetoothRemoteGATTCharacteristic::write_value_without_response(self : BluetoothRemoteGATTCharacteristic, value : BufferSource) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::write_value_without_response(self : BluetoothRemoteGATTCharacteristic, value : BufferSource) -> Promise[Unit] =
   #| (self, value) => self.writeValueWithoutResponse(value)
 
-pub extern "js" fn BluetoothRemoteGATTCharacteristic::start_notifications(self : BluetoothRemoteGATTCharacteristic) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::start_notifications(self : BluetoothRemoteGATTCharacteristic) -> Promise[BluetoothRemoteGATTCharacteristic] =
   #| (self) => self.startNotifications()
 
-pub extern "js" fn BluetoothRemoteGATTCharacteristic::stop_notifications(self : BluetoothRemoteGATTCharacteristic) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::stop_notifications(self : BluetoothRemoteGATTCharacteristic) -> Promise[BluetoothRemoteGATTCharacteristic] =
   #| (self) => self.stopNotifications()
 
 pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_oncharacteristicvaluechanged(self : BluetoothRemoteGATTCharacteristic) -> EventHandler =
@@ -688,10 +715,10 @@ pub extern "js" fn BluetoothRemoteGATTDescriptor::get_uuid(self : BluetoothRemot
 pub extern "js" fn BluetoothRemoteGATTDescriptor::get_value(self : BluetoothRemoteGATTDescriptor) -> DataView? =
   #| (self) => self.value
 
-pub extern "js" fn BluetoothRemoteGATTDescriptor::read_value(self : BluetoothRemoteGATTDescriptor) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTDescriptor::read_value(self : BluetoothRemoteGATTDescriptor) -> Promise[DataView] =
   #| (self) => self.readValue()
 
-pub extern "js" fn BluetoothRemoteGATTDescriptor::write_value(self : BluetoothRemoteGATTDescriptor, value : BufferSource) -> JsValue =
+pub extern "js" fn BluetoothRemoteGATTDescriptor::write_value(self : BluetoothRemoteGATTDescriptor, value : BufferSource) -> Promise[Unit] =
   #| (self, value) => self.writeValue(value)
 
 ///|

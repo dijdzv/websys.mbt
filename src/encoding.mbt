@@ -74,7 +74,10 @@ pub extern "js" fn TextDecoder::to_js_value(self : TextDecoder) -> JsValue =
 pub extern "js" fn TextDecoder::new(label : String, options : TextDecoderOptions) -> TextDecoder =
   #| (label, options) => new TextDecoder(label, options)
 
-pub extern "js" fn TextDecoder::decode(self : TextDecoder, input : AllowSharedBufferSource, options : TextDecodeOptions) -> String =
+pub extern "js" fn TextDecoder::decode(self : TextDecoder) -> String =
+  #| (self) => self.decode()
+
+pub extern "js" fn TextDecoder::decode_with_options(self : TextDecoder, input : AllowSharedBufferSource, options : TextDecodeOptions) -> String =
   #| (self, input, options) => self.decode(input, options)
 
 pub extern "js" fn TextDecoder::get_encoding(self : TextDecoder) -> String =
@@ -96,7 +99,10 @@ pub extern "js" fn TextEncoder::to_js_value(self : TextEncoder) -> JsValue =
 pub extern "js" fn TextEncoder::new() -> TextEncoder =
   #| () => new TextEncoder()
 
-pub extern "js" fn TextEncoder::encode(self : TextEncoder, input : String) -> Uint8Array =
+pub extern "js" fn TextEncoder::encode(self : TextEncoder) -> Uint8Array =
+  #| (self) => self.encode()
+
+pub extern "js" fn TextEncoder::encode_with_input(self : TextEncoder, input : String) -> Uint8Array =
   #| (self, input) => self.encode(input)
 
 pub extern "js" fn TextEncoder::encode_into(self : TextEncoder, source : String, destination : Uint8Array) -> TextEncoderEncodeIntoResult =

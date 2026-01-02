@@ -30,10 +30,10 @@ pub type SyncManager
 pub extern "js" fn SyncManager::to_js_value(self : SyncManager) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn SyncManager::register(self : SyncManager, tag : String) -> JsValue =
+pub extern "js" fn SyncManager::register(self : SyncManager, tag : String) -> Promise[Unit] =
   #| (self, tag) => self.register(tag)
 
-pub extern "js" fn SyncManager::get_tags(self : SyncManager) -> JsValue =
+pub extern "js" fn SyncManager::get_tags(self : SyncManager) -> Promise[Array[String]] =
   #| (self) => self.getTags()
 
 ///|

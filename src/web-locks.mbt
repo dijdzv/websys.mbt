@@ -28,6 +28,10 @@ pub fn LockMode::from_string(s : String) -> LockMode? {
 /// LockGrantedCallback callback interface
 pub type LockGrantedCallback
 
+/// Create LockGrantedCallback from a MoonBit function
+pub extern "js" fn LockGrantedCallback::from_fn(handler : (Lock?) -> Promise[JsValue]) -> LockGrantedCallback =
+  #| (handler) => handler
+
 ///|
 /// LockOptions dictionary
 pub struct LockOptions {
@@ -59,8 +63,8 @@ pub extern "js" fn LockOptions::to_js(self : LockOptions) -> JsValue =
 ///|
 /// LockManagerSnapshot dictionary
 pub struct LockManagerSnapshot {
-  held : JsValue?
-  pending : JsValue?
+  held : Array[LockInfo]?
+  pending : Array[LockInfo]?
 }
 
 /// Create a new LockManagerSnapshot with default values
@@ -110,10 +114,10 @@ pub type LockManager
 pub extern "js" fn LockManager::to_js_value(self : LockManager) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn LockManager::request(self : LockManager, name : String, callback : LockGrantedCallback) -> JsValue =
+pub extern "js" fn LockManager::request(self : LockManager, name : String, callback : LockGrantedCallback) -> Promise[JsValue] =
   #| (self, name, callback) => self.request(name, callback)
 
-pub extern "js" fn LockManager::query(self : LockManager) -> JsValue =
+pub extern "js" fn LockManager::query(self : LockManager) -> Promise[LockManagerSnapshot] =
   #| (self) => self.query()
 
 ///|

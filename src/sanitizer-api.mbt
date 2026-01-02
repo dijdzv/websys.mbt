@@ -99,8 +99,8 @@ pub extern "js" fn SanitizerElementNamespace::to_js(self : SanitizerElementNames
 pub struct SanitizerElementNamespaceWithAttributes {
   name : String
   namespace_ : String??
-  attributes : JsValue?
-  removeAttributes : JsValue?
+  attributes : Array[SanitizerAttribute]?
+  removeAttributes : Array[SanitizerAttribute]?
 }
 
 /// Create a new SanitizerElementNamespaceWithAttributes with default values
@@ -147,11 +147,11 @@ pub extern "js" fn SanitizerAttributeNamespace::to_js(self : SanitizerAttributeN
 ///|
 /// SanitizerConfig dictionary
 pub struct SanitizerConfig {
-  elements : JsValue?
-  removeElements : JsValue?
-  replaceWithChildrenElements : JsValue?
-  attributes : JsValue?
-  removeAttributes : JsValue?
+  elements : Array[SanitizerElementWithAttributes]?
+  removeElements : Array[SanitizerElement]?
+  replaceWithChildrenElements : Array[SanitizerElement]?
+  attributes : Array[SanitizerAttribute]?
+  removeAttributes : Array[SanitizerAttribute]?
   comments : Bool?
   dataAttributes : Bool?
 }

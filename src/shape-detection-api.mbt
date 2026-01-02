@@ -114,14 +114,14 @@ pub extern "js" fn FaceDetectorOptions::to_js(self : FaceDetectorOptions) -> JsV
 /// DetectedFace dictionary
 pub struct DetectedFace {
   boundingBox : DOMRectReadOnly
-  landmarks : JsValue
+  landmarks : Array[Landmark]
 }
 
 /// Create a new DetectedFace with default values
 pub fn DetectedFace::default() -> DetectedFace {
   DetectedFace::{
     boundingBox: panic(),
-    landmarks: panic(),
+    landmarks: [],
   }
 }
 
@@ -135,14 +135,14 @@ pub extern "js" fn DetectedFace::to_js(self : DetectedFace) -> JsValue =
 ///|
 /// Landmark dictionary
 pub struct Landmark {
-  locations : JsValue
+  locations : Array[Point2D]
   type_ : LandmarkType?
 }
 
 /// Create a new Landmark with default values
 pub fn Landmark::default() -> Landmark {
   Landmark::{
-    locations: panic(),
+    locations: [],
     type_: None,
   }
 }
@@ -157,7 +157,7 @@ pub extern "js" fn Landmark::to_js(self : Landmark) -> JsValue =
 ///|
 /// BarcodeDetectorOptions dictionary
 pub struct BarcodeDetectorOptions {
-  formats : JsValue?
+  formats : Array[BarcodeFormat]?
 }
 
 /// Create a new BarcodeDetectorOptions with default values
@@ -179,7 +179,7 @@ pub struct DetectedBarcode {
   boundingBox : DOMRectReadOnly
   rawValue : String
   format : BarcodeFormat
-  cornerPoints : JsValue
+  cornerPoints : Array[Point2D]
 }
 
 /// Create a new DetectedBarcode with default values
@@ -188,7 +188,7 @@ pub fn DetectedBarcode::default() -> DetectedBarcode {
     boundingBox: panic(),
     rawValue: "",
     format: panic(),
-    cornerPoints: panic(),
+    cornerPoints: [],
   }
 }
 
@@ -211,7 +211,7 @@ pub extern "js" fn FaceDetector::to_js_value(self : FaceDetector) -> JsValue =
 pub extern "js" fn FaceDetector::new(face_detector_options : FaceDetectorOptions) -> FaceDetector =
   #| (face_detector_options) => new FaceDetector(face_detector_options)
 
-pub extern "js" fn FaceDetector::detect(self : FaceDetector, image : ImageBitmapSource) -> JsValue =
+pub extern "js" fn FaceDetector::detect(self : FaceDetector, image : ImageBitmapSource) -> Promise[Array[DetectedFace]] =
   #| (self, image) => self.detect(image)
 
 ///|
@@ -224,9 +224,9 @@ pub extern "js" fn BarcodeDetector::to_js_value(self : BarcodeDetector) -> JsVal
 pub extern "js" fn BarcodeDetector::new(barcode_detector_options : BarcodeDetectorOptions) -> BarcodeDetector =
   #| (barcode_detector_options) => new BarcodeDetector(barcode_detector_options)
 
-pub extern "js" fn BarcodeDetector::get_supported_formats() -> JsValue =
+pub extern "js" fn BarcodeDetector::get_supported_formats() -> Promise[Array[BarcodeFormat]] =
   #| () => BarcodeDetector.getSupportedFormats()
 
-pub extern "js" fn BarcodeDetector::detect(self : BarcodeDetector, image : ImageBitmapSource) -> JsValue =
+pub extern "js" fn BarcodeDetector::detect(self : BarcodeDetector, image : ImageBitmapSource) -> Promise[Array[DetectedBarcode]] =
   #| (self, image) => self.detect(image)
 

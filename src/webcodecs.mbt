@@ -416,17 +416,37 @@ pub fn VideoMatrixCoefficients::from_string(s : String) -> VideoMatrixCoefficien
 /// AudioDataOutputCallback callback interface
 pub type AudioDataOutputCallback
 
+/// Create AudioDataOutputCallback from a MoonBit function
+pub extern "js" fn AudioDataOutputCallback::from_fn(handler : (AudioData) -> Unit) -> AudioDataOutputCallback =
+  #| (handler) => handler
+
 /// VideoFrameOutputCallback callback interface
 pub type VideoFrameOutputCallback
+
+/// Create VideoFrameOutputCallback from a MoonBit function
+pub extern "js" fn VideoFrameOutputCallback::from_fn(handler : (VideoFrame) -> Unit) -> VideoFrameOutputCallback =
+  #| (handler) => handler
 
 /// EncodedAudioChunkOutputCallback callback interface
 pub type EncodedAudioChunkOutputCallback
 
+/// Create EncodedAudioChunkOutputCallback from a MoonBit function
+pub extern "js" fn EncodedAudioChunkOutputCallback::from_fn(handler : (EncodedAudioChunk, EncodedAudioChunkMetadata) -> Unit) -> EncodedAudioChunkOutputCallback =
+  #| (handler) => handler
+
 /// EncodedVideoChunkOutputCallback callback interface
 pub type EncodedVideoChunkOutputCallback
 
+/// Create EncodedVideoChunkOutputCallback from a MoonBit function
+pub extern "js" fn EncodedVideoChunkOutputCallback::from_fn(handler : (EncodedVideoChunk, EncodedVideoChunkMetadata) -> Unit) -> EncodedVideoChunkOutputCallback =
+  #| (handler) => handler
+
 /// WebCodecsErrorCallback callback interface
 pub type WebCodecsErrorCallback
+
+/// Create WebCodecsErrorCallback from a MoonBit function
+pub extern "js" fn WebCodecsErrorCallback::from_fn(handler : (DOMException) -> Unit) -> WebCodecsErrorCallback =
+  #| (handler) => handler
 
 ///|
 /// AudioDecoderInit dictionary
@@ -751,7 +771,7 @@ pub struct EncodedAudioChunkInit {
   timestamp : Int64
   duration : Int64?
   data : AllowSharedBufferSource
-  transfer : JsValue?
+  transfer : Array[ArrayBuffer]?
 }
 
 /// Create a new EncodedAudioChunkInit with default values
@@ -782,7 +802,7 @@ pub struct EncodedVideoChunkInit {
   timestamp : Int64
   duration : Int64?
   data : AllowSharedBufferSource
-  transfer : JsValue?
+  transfer : Array[ArrayBuffer]?
 }
 
 /// Create a new EncodedVideoChunkInit with default values
@@ -815,7 +835,7 @@ pub struct AudioDataInit {
   numberOfChannels : Int
   timestamp : Int64
   data : BufferSource
-  transfer : JsValue?
+  transfer : Array[ArrayBuffer]?
 }
 
 /// Create a new AudioDataInit with default values
@@ -922,14 +942,14 @@ pub struct VideoFrameBufferInit {
   codedHeight : Int
   timestamp : Int64
   duration : Int64?
-  layout : JsValue?
+  layout : Array[PlaneLayout]?
   visibleRect : DOMRectInit?
   rotation : Double?
   flip : Bool?
   displayWidth : Int?
   displayHeight : Int?
   colorSpace : VideoColorSpaceInit?
-  transfer : JsValue?
+  transfer : Array[ArrayBuffer]?
   metadata : VideoFrameMetadata?
 }
 
@@ -992,7 +1012,7 @@ pub extern "js" fn VideoFrameMetadata::to_js(self : VideoFrameMetadata) -> JsVal
 /// VideoFrameCopyToOptions dictionary
 pub struct VideoFrameCopyToOptions {
   rect : DOMRectInit?
-  layout : JsValue?
+  layout : Array[PlaneLayout]?
   format : VideoPixelFormat?
   colorSpace : PredefinedColorSpace?
 }
@@ -1075,7 +1095,7 @@ pub struct ImageDecoderInit {
   desiredWidth : Int?
   desiredHeight : Int?
   preferAnimation : Bool?
-  transfer : JsValue?
+  transfer : Array[ArrayBuffer]?
 }
 
 /// Create a new ImageDecoderInit with default values
@@ -1175,7 +1195,7 @@ pub extern "js" fn AudioDecoder::configure(self : AudioDecoder, config : AudioDe
 pub extern "js" fn AudioDecoder::decode(self : AudioDecoder, chunk : EncodedAudioChunk) -> Unit =
   #| (self, chunk) => self.decode(chunk)
 
-pub extern "js" fn AudioDecoder::flush(self : AudioDecoder) -> JsValue =
+pub extern "js" fn AudioDecoder::flush(self : AudioDecoder) -> Promise[Unit] =
   #| (self) => self.flush()
 
 pub extern "js" fn AudioDecoder::reset(self : AudioDecoder) -> Unit =
@@ -1184,7 +1204,7 @@ pub extern "js" fn AudioDecoder::reset(self : AudioDecoder) -> Unit =
 pub extern "js" fn AudioDecoder::close(self : AudioDecoder) -> Unit =
   #| (self) => self.close()
 
-pub extern "js" fn AudioDecoder::is_config_supported(config : AudioDecoderConfig) -> JsValue =
+pub extern "js" fn AudioDecoder::is_config_supported(config : AudioDecoderConfig) -> Promise[AudioDecoderSupport] =
   #| (config) => AudioDecoder.isConfigSupported(config)
 
 ///|
@@ -1215,7 +1235,7 @@ pub extern "js" fn VideoDecoder::configure(self : VideoDecoder, config : VideoDe
 pub extern "js" fn VideoDecoder::decode(self : VideoDecoder, chunk : EncodedVideoChunk) -> Unit =
   #| (self, chunk) => self.decode(chunk)
 
-pub extern "js" fn VideoDecoder::flush(self : VideoDecoder) -> JsValue =
+pub extern "js" fn VideoDecoder::flush(self : VideoDecoder) -> Promise[Unit] =
   #| (self) => self.flush()
 
 pub extern "js" fn VideoDecoder::reset(self : VideoDecoder) -> Unit =
@@ -1224,7 +1244,7 @@ pub extern "js" fn VideoDecoder::reset(self : VideoDecoder) -> Unit =
 pub extern "js" fn VideoDecoder::close(self : VideoDecoder) -> Unit =
   #| (self) => self.close()
 
-pub extern "js" fn VideoDecoder::is_config_supported(config : VideoDecoderConfig) -> JsValue =
+pub extern "js" fn VideoDecoder::is_config_supported(config : VideoDecoderConfig) -> Promise[VideoDecoderSupport] =
   #| (config) => VideoDecoder.isConfigSupported(config)
 
 ///|
@@ -1255,7 +1275,7 @@ pub extern "js" fn AudioEncoder::configure(self : AudioEncoder, config : AudioEn
 pub extern "js" fn AudioEncoder::encode(self : AudioEncoder, data : AudioData) -> Unit =
   #| (self, data) => self.encode(data)
 
-pub extern "js" fn AudioEncoder::flush(self : AudioEncoder) -> JsValue =
+pub extern "js" fn AudioEncoder::flush(self : AudioEncoder) -> Promise[Unit] =
   #| (self) => self.flush()
 
 pub extern "js" fn AudioEncoder::reset(self : AudioEncoder) -> Unit =
@@ -1264,7 +1284,7 @@ pub extern "js" fn AudioEncoder::reset(self : AudioEncoder) -> Unit =
 pub extern "js" fn AudioEncoder::close(self : AudioEncoder) -> Unit =
   #| (self) => self.close()
 
-pub extern "js" fn AudioEncoder::is_config_supported(config : AudioEncoderConfig) -> JsValue =
+pub extern "js" fn AudioEncoder::is_config_supported(config : AudioEncoderConfig) -> Promise[AudioEncoderSupport] =
   #| (config) => AudioEncoder.isConfigSupported(config)
 
 ///|
@@ -1292,10 +1312,13 @@ pub extern "js" fn VideoEncoder::set_ondequeue(self : VideoEncoder, value : Even
 pub extern "js" fn VideoEncoder::configure(self : VideoEncoder, config : VideoEncoderConfig) -> Unit =
   #| (self, config) => self.configure(config)
 
-pub extern "js" fn VideoEncoder::encode(self : VideoEncoder, frame : VideoFrame, options : VideoEncoderEncodeOptions) -> Unit =
+pub extern "js" fn VideoEncoder::encode(self : VideoEncoder, frame : VideoFrame) -> Unit =
+  #| (self, frame) => self.encode(frame)
+
+pub extern "js" fn VideoEncoder::encode_with_options(self : VideoEncoder, frame : VideoFrame, options : VideoEncoderEncodeOptions) -> Unit =
   #| (self, frame, options) => self.encode(frame, options)
 
-pub extern "js" fn VideoEncoder::flush(self : VideoEncoder) -> JsValue =
+pub extern "js" fn VideoEncoder::flush(self : VideoEncoder) -> Promise[Unit] =
   #| (self) => self.flush()
 
 pub extern "js" fn VideoEncoder::reset(self : VideoEncoder) -> Unit =
@@ -1304,7 +1327,7 @@ pub extern "js" fn VideoEncoder::reset(self : VideoEncoder) -> Unit =
 pub extern "js" fn VideoEncoder::close(self : VideoEncoder) -> Unit =
   #| (self) => self.close()
 
-pub extern "js" fn VideoEncoder::is_config_supported(config : VideoEncoderConfig) -> JsValue =
+pub extern "js" fn VideoEncoder::is_config_supported(config : VideoEncoderConfig) -> Promise[VideoEncoderSupport] =
   #| (config) => VideoEncoder.isConfigSupported(config)
 
 ///|
@@ -1446,10 +1469,16 @@ pub extern "js" fn VideoFrame::get_color_space(self : VideoFrame) -> VideoColorS
 pub extern "js" fn VideoFrame::metadata(self : VideoFrame) -> VideoFrameMetadata =
   #| (self) => self.metadata()
 
-pub extern "js" fn VideoFrame::allocation_size(self : VideoFrame, options : VideoFrameCopyToOptions) -> Int =
+pub extern "js" fn VideoFrame::allocation_size(self : VideoFrame) -> Int =
+  #| (self) => self.allocationSize()
+
+pub extern "js" fn VideoFrame::allocation_size_with_options(self : VideoFrame, options : VideoFrameCopyToOptions) -> Int =
   #| (self, options) => self.allocationSize(options)
 
-pub extern "js" fn VideoFrame::copy_to(self : VideoFrame, destination : AllowSharedBufferSource, options : VideoFrameCopyToOptions) -> JsValue =
+pub extern "js" fn VideoFrame::copy_to(self : VideoFrame, destination : AllowSharedBufferSource) -> Promise[Array[PlaneLayout]] =
+  #| (self, destination) => self.copyTo(destination)
+
+pub extern "js" fn VideoFrame::copy_to_with_options(self : VideoFrame, destination : AllowSharedBufferSource, options : VideoFrameCopyToOptions) -> Promise[Array[PlaneLayout]] =
   #| (self, destination, options) => self.copyTo(destination, options)
 
 pub extern "js" fn VideoFrame::clone(self : VideoFrame) -> VideoFrame =
@@ -1499,13 +1528,16 @@ pub extern "js" fn ImageDecoder::get_type(self : ImageDecoder) -> String =
 pub extern "js" fn ImageDecoder::get_complete(self : ImageDecoder) -> Bool =
   #| (self) => self.complete
 
-pub extern "js" fn ImageDecoder::get_completed(self : ImageDecoder) -> JsValue =
+pub extern "js" fn ImageDecoder::get_completed(self : ImageDecoder) -> Promise[Unit] =
   #| (self) => self.completed
 
 pub extern "js" fn ImageDecoder::get_tracks(self : ImageDecoder) -> ImageTrackList =
   #| (self) => self.tracks
 
-pub extern "js" fn ImageDecoder::decode(self : ImageDecoder, options : ImageDecodeOptions) -> JsValue =
+pub extern "js" fn ImageDecoder::decode(self : ImageDecoder) -> Promise[ImageDecodeResult] =
+  #| (self) => self.decode()
+
+pub extern "js" fn ImageDecoder::decode_with_options(self : ImageDecoder, options : ImageDecodeOptions) -> Promise[ImageDecodeResult] =
   #| (self, options) => self.decode(options)
 
 pub extern "js" fn ImageDecoder::reset(self : ImageDecoder) -> Unit =
@@ -1514,7 +1546,7 @@ pub extern "js" fn ImageDecoder::reset(self : ImageDecoder) -> Unit =
 pub extern "js" fn ImageDecoder::close(self : ImageDecoder) -> Unit =
   #| (self) => self.close()
 
-pub extern "js" fn ImageDecoder::is_type_supported(type_ : String) -> JsValue =
+pub extern "js" fn ImageDecoder::is_type_supported(type_ : String) -> Promise[Bool] =
   #| (type_) => ImageDecoder.isTypeSupported(type_)
 
 ///|
@@ -1527,7 +1559,7 @@ pub extern "js" fn ImageTrackList::to_js_value(self : ImageTrackList) -> JsValue
 pub extern "js" fn ImageTrackList::get(self : ImageTrackList, index : Int) -> ImageTrack =
   #| (self, index) => self[index]
 
-pub extern "js" fn ImageTrackList::get_ready(self : ImageTrackList) -> JsValue =
+pub extern "js" fn ImageTrackList::get_ready(self : ImageTrackList) -> Promise[Unit] =
   #| (self) => self.ready
 
 pub extern "js" fn ImageTrackList::get_length(self : ImageTrackList) -> Int =

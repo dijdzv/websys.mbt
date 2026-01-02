@@ -95,7 +95,7 @@ pub struct PhotoCapabilities {
   redEyeReduction : RedEyeReduction?
   imageHeight : MediaSettingsRange?
   imageWidth : MediaSettingsRange?
-  fillLightMode : JsValue?
+  fillLightMode : Array[FillLightMode]?
 }
 
 /// Create a new PhotoCapabilities with default values
@@ -303,9 +303,9 @@ pub extern "js" fn MediaTrackSupportedConstraints::to_js(self : MediaTrackSuppor
 ///|
 /// MediaTrackCapabilities dictionary
 pub struct MediaTrackCapabilities {
-  whiteBalanceMode : JsValue?
-  exposureMode : JsValue?
-  focusMode : JsValue?
+  whiteBalanceMode : Array[String]?
+  exposureMode : Array[String]?
+  focusMode : Array[String]?
   exposureCompensation : MediaSettingsRange?
   exposureTime : MediaSettingsRange?
   colorTemperature : MediaSettingsRange?
@@ -318,26 +318,26 @@ pub struct MediaTrackCapabilities {
   pan : MediaSettingsRange?
   tilt : MediaSettingsRange?
   zoom : MediaSettingsRange?
-  torch : JsValue?
+  torch : Array[Bool]?
   width : ULongRange?
   height : ULongRange?
   aspectRatio : DoubleRange?
   frameRate : DoubleRange?
-  facingMode : JsValue?
-  resizeMode : JsValue?
+  facingMode : Array[String]?
+  resizeMode : Array[String]?
   sampleRate : ULongRange?
   sampleSize : ULongRange?
-  echoCancellation : JsValue?
-  autoGainControl : JsValue?
-  noiseSuppression : JsValue?
+  echoCancellation : Array[JsValue]?
+  autoGainControl : Array[Bool]?
+  noiseSuppression : Array[Bool]?
   latency : DoubleRange?
   channelCount : ULongRange?
   deviceId : String?
   groupId : String?
-  backgroundBlur : JsValue?
+  backgroundBlur : Array[Bool]?
   displaySurface : String?
   logicalSurface : Bool?
-  cursor : JsValue?
+  cursor : Array[String]?
 }
 
 /// Create a new MediaTrackCapabilities with default values
@@ -557,7 +557,7 @@ pub struct MediaTrackSettings {
   whiteBalanceMode : String?
   exposureMode : String?
   focusMode : String?
-  pointsOfInterest : JsValue?
+  pointsOfInterest : Array[Point2D]?
   exposureCompensation : Double?
   exposureTime : Double?
   colorTemperature : Double?
@@ -687,8 +687,8 @@ pub extern "js" fn MediaTrackSettings::to_js(self : MediaTrackSettings) -> JsVal
 ///|
 /// ConstrainPoint2DParameters dictionary
 pub struct ConstrainPoint2DParameters {
-  exact : JsValue?
-  ideal : JsValue?
+  exact : Array[Point2D]?
+  ideal : Array[Point2D]?
 }
 
 /// Create a new ConstrainPoint2DParameters with default values
@@ -738,16 +738,19 @@ pub extern "js" fn ImageCapture::to_js_value(self : ImageCapture) -> JsValue =
 pub extern "js" fn ImageCapture::new(video_track : MediaStreamTrack) -> ImageCapture =
   #| (video_track) => new ImageCapture(video_track)
 
-pub extern "js" fn ImageCapture::take_photo(self : ImageCapture, photo_settings : PhotoSettings) -> JsValue =
+pub extern "js" fn ImageCapture::take_photo(self : ImageCapture) -> Promise[Blob] =
+  #| (self) => self.takePhoto()
+
+pub extern "js" fn ImageCapture::take_photo_with_photo_settings(self : ImageCapture, photo_settings : PhotoSettings) -> Promise[Blob] =
   #| (self, photo_settings) => self.takePhoto(photo_settings)
 
-pub extern "js" fn ImageCapture::get_photo_capabilities(self : ImageCapture) -> JsValue =
+pub extern "js" fn ImageCapture::get_photo_capabilities(self : ImageCapture) -> Promise[PhotoCapabilities] =
   #| (self) => self.getPhotoCapabilities()
 
-pub extern "js" fn ImageCapture::get_photo_settings(self : ImageCapture) -> JsValue =
+pub extern "js" fn ImageCapture::get_photo_settings(self : ImageCapture) -> Promise[PhotoSettings] =
   #| (self) => self.getPhotoSettings()
 
-pub extern "js" fn ImageCapture::grab_frame(self : ImageCapture) -> JsValue =
+pub extern "js" fn ImageCapture::grab_frame(self : ImageCapture) -> Promise[ImageBitmap] =
   #| (self) => self.grabFrame()
 
 pub extern "js" fn ImageCapture::get_track(self : ImageCapture) -> MediaStreamTrack =

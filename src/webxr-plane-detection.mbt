@@ -54,6 +54,6 @@ pub type XRPlaneSet
 pub extern "js" fn XRPlaneSet::to_js_value(self : XRPlaneSet) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn XRPlaneSet::_unknown_(self : XRPlaneSet) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn XRPlaneSet::has(self : XRPlaneSet, value : XRPlane) -> Bool =
+  #| (self, value) => self.has(value)
 

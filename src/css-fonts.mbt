@@ -42,11 +42,20 @@ pub type CSSFontFeatureValuesMap
 pub extern "js" fn CSSFontFeatureValuesMap::to_js_value(self : CSSFontFeatureValuesMap) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn CSSFontFeatureValuesMap::_unknown_(self : CSSFontFeatureValuesMap) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn CSSFontFeatureValuesMap::get(self : CSSFontFeatureValuesMap, key : CSSOMString) -> Array[Int]? =
+  #| (self, key) => self.get(key)
 
-pub extern "js" fn CSSFontFeatureValuesMap::set(self : CSSFontFeatureValuesMap, feature_value_name : CSSOMString, values : JsValue) -> Unit =
-  #| (self, feature_value_name, values) => self.set(feature_value_name, values)
+pub extern "js" fn CSSFontFeatureValuesMap::has(self : CSSFontFeatureValuesMap, key : CSSOMString) -> Bool =
+  #| (self, key) => self.has(key)
+
+pub extern "js" fn CSSFontFeatureValuesMap::set(self : CSSFontFeatureValuesMap, key : CSSOMString, value : Array[Int]) -> Unit =
+  #| (self, key, value) => { self.set(key, value) }
+
+pub extern "js" fn CSSFontFeatureValuesMap::delete(self : CSSFontFeatureValuesMap, key : CSSOMString) -> Bool =
+  #| (self, key) => self.delete(key)
+
+pub extern "js" fn CSSFontFeatureValuesMap::clear(self : CSSFontFeatureValuesMap) -> Unit =
+  #| (self) => { self.clear() }
 
 ///|
 /// CSSFontPaletteValuesRule interface

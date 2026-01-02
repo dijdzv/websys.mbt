@@ -68,7 +68,7 @@ pub fn FenceReportingDestination::from_string(s : String) -> FenceReportingDesti
 pub struct FenceEvent {
   eventType : String?
   eventData : String?
-  destination : JsValue?
+  destination : Array[FenceReportingDestination]?
   crossOriginExposed : Bool?
   once : Bool?
   destinationURL : String?
@@ -154,16 +154,22 @@ pub type Fence
 pub extern "js" fn Fence::to_js_value(self : Fence) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Fence::report_event(self : Fence, event : ReportEventType) -> Unit =
+pub extern "js" fn Fence::report_event(self : Fence) -> Unit =
+  #| (self) => self.reportEvent()
+
+pub extern "js" fn Fence::report_event_with_event(self : Fence, event : ReportEventType) -> Unit =
   #| (self, event) => self.reportEvent(event)
 
-pub extern "js" fn Fence::set_report_event_data_for_automatic_beacons(self : Fence, event : FenceEvent) -> Unit =
+pub extern "js" fn Fence::set_report_event_data_for_automatic_beacons(self : Fence) -> Unit =
+  #| (self) => self.setReportEventDataForAutomaticBeacons()
+
+pub extern "js" fn Fence::set_report_event_data_for_automatic_beacons_with_event(self : Fence, event : FenceEvent) -> Unit =
   #| (self, event) => self.setReportEventDataForAutomaticBeacons(event)
 
-pub extern "js" fn Fence::get_nested_configs(self : Fence) -> JsValue =
+pub extern "js" fn Fence::get_nested_configs(self : Fence) -> Array[FencedFrameConfig] =
   #| (self) => self.getNestedConfigs()
 
-pub extern "js" fn Fence::disable_untrusted_network(self : Fence) -> JsValue =
+pub extern "js" fn Fence::disable_untrusted_network(self : Fence) -> Promise[Unit] =
   #| (self) => self.disableUntrustedNetwork()
 
 pub extern "js" fn Fence::notify_event(self : Fence, event : Event) -> Unit =

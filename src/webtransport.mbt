@@ -106,11 +106,11 @@ pub extern "js" fn WebTransportHash::to_js(self : WebTransportHash) -> JsValue =
 pub struct WebTransportOptions {
   allowPooling : Bool?
   requireUnreliable : Bool?
-  serverCertificateHashes : JsValue?
+  serverCertificateHashes : Array[WebTransportHash]?
   congestionControl : WebTransportCongestionControl?
   anticipatedConcurrentIncomingUnidirectionalStreams : Int??
   anticipatedConcurrentIncomingBidirectionalStreams : Int??
-  protocols : JsValue?
+  protocols : Array[String]?
   datagramsReadableType : ReadableStreamType?
 }
 
@@ -391,7 +391,10 @@ pub type WebTransportDatagramDuplexStream
 pub extern "js" fn WebTransportDatagramDuplexStream::to_js_value(self : WebTransportDatagramDuplexStream) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn WebTransportDatagramDuplexStream::create_writable(self : WebTransportDatagramDuplexStream, options : WebTransportSendOptions) -> WebTransportDatagramsWritable =
+pub extern "js" fn WebTransportDatagramDuplexStream::create_writable(self : WebTransportDatagramDuplexStream) -> WebTransportDatagramsWritable =
+  #| (self) => self.createWritable()
+
+pub extern "js" fn WebTransportDatagramDuplexStream::create_writable_with_options(self : WebTransportDatagramDuplexStream, options : WebTransportSendOptions) -> WebTransportDatagramsWritable =
   #| (self, options) => self.createWritable(options)
 
 pub extern "js" fn WebTransportDatagramDuplexStream::get_readable(self : WebTransportDatagramDuplexStream) -> ReadableStream =
@@ -434,13 +437,16 @@ pub extern "js" fn WebTransport::to_js_value(self : WebTransport) -> JsValue =
 pub extern "js" fn WebTransport::new(url : String, options : WebTransportOptions) -> WebTransport =
   #| (url, options) => new WebTransport(url, options)
 
-pub extern "js" fn WebTransport::get_stats(self : WebTransport) -> JsValue =
+pub extern "js" fn WebTransport::get_stats(self : WebTransport) -> Promise[WebTransportConnectionStats] =
   #| (self) => self.getStats()
 
-pub extern "js" fn WebTransport::export_keying_material(self : WebTransport, label : BufferSource, context : BufferSource) -> JsValue =
+pub extern "js" fn WebTransport::export_keying_material(self : WebTransport, label : BufferSource) -> Promise[ArrayBuffer] =
+  #| (self, label) => self.exportKeyingMaterial(label)
+
+pub extern "js" fn WebTransport::export_keying_material_with_context(self : WebTransport, label : BufferSource, context : BufferSource) -> Promise[ArrayBuffer] =
   #| (self, label, context) => self.exportKeyingMaterial(label, context)
 
-pub extern "js" fn WebTransport::get_ready(self : WebTransport) -> JsValue =
+pub extern "js" fn WebTransport::get_ready(self : WebTransport) -> Promise[Unit] =
   #| (self) => self.ready
 
 pub extern "js" fn WebTransport::get_reliability(self : WebTransport) -> WebTransportReliabilityMode =
@@ -464,25 +470,34 @@ pub extern "js" fn WebTransport::set_anticipated_concurrent_incoming_bidirection
 pub extern "js" fn WebTransport::get_protocol(self : WebTransport) -> String =
   #| (self) => self.protocol
 
-pub extern "js" fn WebTransport::get_closed(self : WebTransport) -> JsValue =
+pub extern "js" fn WebTransport::get_closed(self : WebTransport) -> Promise[WebTransportCloseInfo] =
   #| (self) => self.closed
 
-pub extern "js" fn WebTransport::get_draining(self : WebTransport) -> JsValue =
+pub extern "js" fn WebTransport::get_draining(self : WebTransport) -> Promise[Unit] =
   #| (self) => self.draining
 
-pub extern "js" fn WebTransport::close(self : WebTransport, close_info : WebTransportCloseInfo) -> Unit =
+pub extern "js" fn WebTransport::close(self : WebTransport) -> Unit =
+  #| (self) => self.close()
+
+pub extern "js" fn WebTransport::close_with_close_info(self : WebTransport, close_info : WebTransportCloseInfo) -> Unit =
   #| (self, close_info) => self.close(close_info)
 
 pub extern "js" fn WebTransport::get_datagrams(self : WebTransport) -> WebTransportDatagramDuplexStream =
   #| (self) => self.datagrams
 
-pub extern "js" fn WebTransport::create_bidirectional_stream(self : WebTransport, options : WebTransportSendStreamOptions) -> JsValue =
+pub extern "js" fn WebTransport::create_bidirectional_stream(self : WebTransport) -> Promise[WebTransportBidirectionalStream] =
+  #| (self) => self.createBidirectionalStream()
+
+pub extern "js" fn WebTransport::create_bidirectional_stream_with_options(self : WebTransport, options : WebTransportSendStreamOptions) -> Promise[WebTransportBidirectionalStream] =
   #| (self, options) => self.createBidirectionalStream(options)
 
 pub extern "js" fn WebTransport::get_incoming_bidirectional_streams(self : WebTransport) -> ReadableStream =
   #| (self) => self.incomingBidirectionalStreams
 
-pub extern "js" fn WebTransport::create_unidirectional_stream(self : WebTransport, options : WebTransportSendStreamOptions) -> JsValue =
+pub extern "js" fn WebTransport::create_unidirectional_stream(self : WebTransport) -> Promise[WebTransportSendStream] =
+  #| (self) => self.createUnidirectionalStream()
+
+pub extern "js" fn WebTransport::create_unidirectional_stream_with_options(self : WebTransport, options : WebTransportSendStreamOptions) -> Promise[WebTransportSendStream] =
   #| (self, options) => self.createUnidirectionalStream(options)
 
 pub extern "js" fn WebTransport::get_incoming_unidirectional_streams(self : WebTransport) -> ReadableStream =
@@ -513,7 +528,7 @@ pub extern "js" fn WebTransportSendStream::get_send_order(self : WebTransportSen
 pub extern "js" fn WebTransportSendStream::set_send_order(self : WebTransportSendStream, value : Int64) -> Unit =
   #| (self, value) => { self.sendOrder = value }
 
-pub extern "js" fn WebTransportSendStream::get_stats(self : WebTransportSendStream) -> JsValue =
+pub extern "js" fn WebTransportSendStream::get_stats(self : WebTransportSendStream) -> Promise[WebTransportSendStreamStats] =
   #| (self) => self.getStats()
 
 pub extern "js" fn WebTransportSendStream::get_writer(self : WebTransportSendStream) -> WebTransportWriter =
@@ -526,7 +541,7 @@ pub type WebTransportSendGroup
 pub extern "js" fn WebTransportSendGroup::to_js_value(self : WebTransportSendGroup) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn WebTransportSendGroup::get_stats(self : WebTransportSendGroup) -> JsValue =
+pub extern "js" fn WebTransportSendGroup::get_stats(self : WebTransportSendGroup) -> Promise[WebTransportSendStreamStats] =
   #| (self) => self.getStats()
 
 ///|
@@ -536,7 +551,7 @@ pub type WebTransportReceiveStream
 pub extern "js" fn WebTransportReceiveStream::to_js_value(self : WebTransportReceiveStream) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn WebTransportReceiveStream::get_stats(self : WebTransportReceiveStream) -> JsValue =
+pub extern "js" fn WebTransportReceiveStream::get_stats(self : WebTransportReceiveStream) -> Promise[WebTransportReceiveStreamStats] =
   #| (self) => self.getStats()
 
 ///|
@@ -559,7 +574,10 @@ pub type WebTransportWriter
 pub extern "js" fn WebTransportWriter::to_js_value(self : WebTransportWriter) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn WebTransportWriter::atomic_write(self : WebTransportWriter, chunk : JsValue) -> JsValue =
+pub extern "js" fn WebTransportWriter::atomic_write(self : WebTransportWriter) -> Promise[Unit] =
+  #| (self) => self.atomicWrite()
+
+pub extern "js" fn WebTransportWriter::atomic_write_with_chunk(self : WebTransportWriter, chunk : JsValue) -> Promise[Unit] =
   #| (self, chunk) => self.atomicWrite(chunk)
 
 pub extern "js" fn WebTransportWriter::commit(self : WebTransportWriter) -> Unit =

@@ -28,9 +28,9 @@ pub extern "js" fn NavigatorUABrandVersion::to_js(self : NavigatorUABrandVersion
 pub struct UADataValues {
   architecture : String?
   bitness : String?
-  brands : JsValue?
-  formFactors : JsValue?
-  fullVersionList : JsValue?
+  brands : Array[NavigatorUABrandVersion]?
+  formFactors : Array[String]?
+  fullVersionList : Array[NavigatorUABrandVersion]?
   model : String?
   mobile : Bool?
   platform : String?
@@ -75,7 +75,7 @@ pub extern "js" fn UADataValues::to_js(self : UADataValues) -> JsValue =
 ///|
 /// UALowEntropyJSON dictionary
 pub struct UALowEntropyJSON {
-  brands : JsValue?
+  brands : Array[NavigatorUABrandVersion]?
   mobile : Bool?
   platform : String?
 }
@@ -113,7 +113,7 @@ pub extern "js" fn NavigatorUAData::get_mobile(self : NavigatorUAData) -> Bool =
 pub extern "js" fn NavigatorUAData::get_platform(self : NavigatorUAData) -> String =
   #| (self) => self.platform
 
-pub extern "js" fn NavigatorUAData::get_high_entropy_values(self : NavigatorUAData, hints : JsValue) -> JsValue =
+pub extern "js" fn NavigatorUAData::get_high_entropy_values(self : NavigatorUAData, hints : Array[String]) -> Promise[UADataValues] =
   #| (self, hints) => self.getHighEntropyValues(hints)
 
 pub extern "js" fn NavigatorUAData::to_j_s_o_n(self : NavigatorUAData) -> UALowEntropyJSON =

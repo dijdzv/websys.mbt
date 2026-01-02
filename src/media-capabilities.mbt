@@ -295,7 +295,7 @@ pub struct MediaCapabilitiesKeySystemConfiguration {
   initDataType : String?
   distinctiveIdentifier : MediaKeysRequirement?
   persistentState : MediaKeysRequirement?
-  sessionTypes : JsValue?
+  sessionTypes : Array[String]?
   audio : KeySystemTrackConfiguration?
   video : KeySystemTrackConfiguration?
 }
@@ -438,9 +438,9 @@ pub type MediaCapabilities
 pub extern "js" fn MediaCapabilities::to_js_value(self : MediaCapabilities) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn MediaCapabilities::decoding_info(self : MediaCapabilities, configuration : MediaDecodingConfiguration) -> JsValue =
+pub extern "js" fn MediaCapabilities::decoding_info(self : MediaCapabilities, configuration : MediaDecodingConfiguration) -> Promise[MediaCapabilitiesDecodingInfo] =
   #| (self, configuration) => self.decodingInfo(configuration)
 
-pub extern "js" fn MediaCapabilities::encoding_info(self : MediaCapabilities, configuration : MediaEncodingConfiguration) -> JsValue =
+pub extern "js" fn MediaCapabilities::encoding_info(self : MediaCapabilities, configuration : MediaEncodingConfiguration) -> Promise[MediaCapabilitiesEncodingInfo] =
   #| (self, configuration) => self.encodingInfo(configuration)
 

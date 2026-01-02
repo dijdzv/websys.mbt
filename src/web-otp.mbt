@@ -25,7 +25,7 @@ pub fn OTPCredentialTransportType::from_string(s : String) -> OTPCredentialTrans
 ///|
 /// OTPCredentialRequestOptions dictionary
 pub struct OTPCredentialRequestOptions {
-  transport : JsValue?
+  transport : Array[OTPCredentialTransportType]?
 }
 
 /// Create a new OTPCredentialRequestOptions with default values

@@ -4,7 +4,7 @@
 ///|
 /// BluetoothLEScanOptions dictionary
 pub struct BluetoothLEScanOptions {
-  filters : JsValue?
+  filters : Array[BluetoothLEScanFilterInit]?
   keepRepeatedDevices : Bool?
   acceptAllAdvertisements : Bool?
 }
@@ -29,7 +29,7 @@ pub extern "js" fn BluetoothLEScanOptions::to_js(self : BluetoothLEScanOptions) 
 ///|
 /// BluetoothLEScanPermissionDescriptor dictionary
 pub struct BluetoothLEScanPermissionDescriptor {
-  filters : JsValue?
+  filters : Array[BluetoothLEScanFilterInit]?
   keepRepeatedDevices : Bool?
   acceptAllAdvertisements : Bool?
 }
@@ -77,8 +77,11 @@ pub extern "js" fn BluetoothManufacturerDataFilter::to_js_value(self : Bluetooth
 pub extern "js" fn BluetoothManufacturerDataFilter::new(init_ : JsValue) -> BluetoothManufacturerDataFilter =
   #| (init_) => new BluetoothManufacturerDataFilter(init_)
 
-pub extern "js" fn BluetoothManufacturerDataFilter::_unknown_(self : BluetoothManufacturerDataFilter) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn BluetoothManufacturerDataFilter::get(self : BluetoothManufacturerDataFilter, key : Int) -> BluetoothDataFilter? =
+  #| (self, key) => self.get(key)
+
+pub extern "js" fn BluetoothManufacturerDataFilter::has(self : BluetoothManufacturerDataFilter, key : Int) -> Bool =
+  #| (self, key) => self.has(key)
 
 ///|
 /// BluetoothServiceDataFilter interface
@@ -90,8 +93,11 @@ pub extern "js" fn BluetoothServiceDataFilter::to_js_value(self : BluetoothServi
 pub extern "js" fn BluetoothServiceDataFilter::new(init_ : JsValue) -> BluetoothServiceDataFilter =
   #| (init_) => new BluetoothServiceDataFilter(init_)
 
-pub extern "js" fn BluetoothServiceDataFilter::_unknown_(self : BluetoothServiceDataFilter) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn BluetoothServiceDataFilter::get(self : BluetoothServiceDataFilter, key : UUID) -> BluetoothDataFilter? =
+  #| (self, key) => self.get(key)
+
+pub extern "js" fn BluetoothServiceDataFilter::has(self : BluetoothServiceDataFilter, key : UUID) -> Bool =
+  #| (self, key) => self.has(key)
 
 ///|
 /// BluetoothLEScanFilter interface

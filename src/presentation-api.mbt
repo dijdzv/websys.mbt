@@ -125,13 +125,13 @@ pub extern "js" fn PresentationRequest::to_js_value(self : PresentationRequest) 
 pub extern "js" fn PresentationRequest::new(url : String) -> PresentationRequest =
   #| (url) => new PresentationRequest(url)
 
-pub extern "js" fn PresentationRequest::start(self : PresentationRequest) -> JsValue =
+pub extern "js" fn PresentationRequest::start(self : PresentationRequest) -> Promise[PresentationConnection] =
   #| (self) => self.start()
 
-pub extern "js" fn PresentationRequest::reconnect(self : PresentationRequest, presentation_id : String) -> JsValue =
+pub extern "js" fn PresentationRequest::reconnect(self : PresentationRequest, presentation_id : String) -> Promise[PresentationConnection] =
   #| (self, presentation_id) => self.reconnect(presentation_id)
 
-pub extern "js" fn PresentationRequest::get_availability(self : PresentationRequest) -> JsValue =
+pub extern "js" fn PresentationRequest::get_availability(self : PresentationRequest) -> Promise[PresentationAvailability] =
   #| (self) => self.getAvailability()
 
 pub extern "js" fn PresentationRequest::get_onconnectionavailable(self : PresentationRequest) -> EventHandler =
@@ -247,7 +247,7 @@ pub type PresentationReceiver
 pub extern "js" fn PresentationReceiver::to_js_value(self : PresentationReceiver) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn PresentationReceiver::get_connection_list(self : PresentationReceiver) -> JsValue =
+pub extern "js" fn PresentationReceiver::get_connection_list(self : PresentationReceiver) -> Promise[PresentationConnectionList] =
   #| (self) => self.connectionList
 
 ///|

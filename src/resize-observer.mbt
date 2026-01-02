@@ -31,6 +31,10 @@ pub fn ResizeObserverBoxOptions::from_string(s : String) -> ResizeObserverBoxOpt
 /// ResizeObserverCallback callback interface
 pub type ResizeObserverCallback
 
+/// Create ResizeObserverCallback from a MoonBit function
+pub extern "js" fn ResizeObserverCallback::from_fn(handler : (Array[ResizeObserverEntry], ResizeObserver) -> Unit) -> ResizeObserverCallback =
+  #| (handler) => handler
+
 ///|
 /// ResizeObserverOptions dictionary
 pub struct ResizeObserverOptions {
@@ -60,7 +64,10 @@ pub extern "js" fn ResizeObserver::to_js_value(self : ResizeObserver) -> JsValue
 pub extern "js" fn ResizeObserver::new(callback : ResizeObserverCallback) -> ResizeObserver =
   #| (callback) => new ResizeObserver(callback)
 
-pub extern "js" fn ResizeObserver::observe(self : ResizeObserver, target : Element, options : ResizeObserverOptions) -> Unit =
+pub extern "js" fn ResizeObserver::observe(self : ResizeObserver, target : Element) -> Unit =
+  #| (self, target) => self.observe(target)
+
+pub extern "js" fn ResizeObserver::observe_with_options(self : ResizeObserver, target : Element, options : ResizeObserverOptions) -> Unit =
   #| (self, target, options) => self.observe(target, options)
 
 pub extern "js" fn ResizeObserver::unobserve(self : ResizeObserver, target : Element) -> Unit =

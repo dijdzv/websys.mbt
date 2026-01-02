@@ -1014,22 +1014,40 @@ pub extern "js" fn XRWebGLBinding::get_native_projection_scale_factor(self : XRW
 pub extern "js" fn XRWebGLBinding::get_uses_depth_values(self : XRWebGLBinding) -> Bool =
   #| (self) => self.usesDepthValues
 
-pub extern "js" fn XRWebGLBinding::create_projection_layer(self : XRWebGLBinding, init_ : XRProjectionLayerInit) -> XRProjectionLayer =
+pub extern "js" fn XRWebGLBinding::create_projection_layer(self : XRWebGLBinding) -> XRProjectionLayer =
+  #| (self) => self.createProjectionLayer()
+
+pub extern "js" fn XRWebGLBinding::create_projection_layer_with_init(self : XRWebGLBinding, init_ : XRProjectionLayerInit) -> XRProjectionLayer =
   #| (self, init_) => self.createProjectionLayer(init_)
 
-pub extern "js" fn XRWebGLBinding::create_quad_layer(self : XRWebGLBinding, init_ : XRQuadLayerInit) -> XRQuadLayer =
+pub extern "js" fn XRWebGLBinding::create_quad_layer(self : XRWebGLBinding) -> XRQuadLayer =
+  #| (self) => self.createQuadLayer()
+
+pub extern "js" fn XRWebGLBinding::create_quad_layer_with_init(self : XRWebGLBinding, init_ : XRQuadLayerInit) -> XRQuadLayer =
   #| (self, init_) => self.createQuadLayer(init_)
 
-pub extern "js" fn XRWebGLBinding::create_cylinder_layer(self : XRWebGLBinding, init_ : XRCylinderLayerInit) -> XRCylinderLayer =
+pub extern "js" fn XRWebGLBinding::create_cylinder_layer(self : XRWebGLBinding) -> XRCylinderLayer =
+  #| (self) => self.createCylinderLayer()
+
+pub extern "js" fn XRWebGLBinding::create_cylinder_layer_with_init(self : XRWebGLBinding, init_ : XRCylinderLayerInit) -> XRCylinderLayer =
   #| (self, init_) => self.createCylinderLayer(init_)
 
-pub extern "js" fn XRWebGLBinding::create_equirect_layer(self : XRWebGLBinding, init_ : XREquirectLayerInit) -> XREquirectLayer =
+pub extern "js" fn XRWebGLBinding::create_equirect_layer(self : XRWebGLBinding) -> XREquirectLayer =
+  #| (self) => self.createEquirectLayer()
+
+pub extern "js" fn XRWebGLBinding::create_equirect_layer_with_init(self : XRWebGLBinding, init_ : XREquirectLayerInit) -> XREquirectLayer =
   #| (self, init_) => self.createEquirectLayer(init_)
 
-pub extern "js" fn XRWebGLBinding::create_cube_layer(self : XRWebGLBinding, init_ : XRCubeLayerInit) -> XRCubeLayer =
+pub extern "js" fn XRWebGLBinding::create_cube_layer(self : XRWebGLBinding) -> XRCubeLayer =
+  #| (self) => self.createCubeLayer()
+
+pub extern "js" fn XRWebGLBinding::create_cube_layer_with_init(self : XRWebGLBinding, init_ : XRCubeLayerInit) -> XRCubeLayer =
   #| (self, init_) => self.createCubeLayer(init_)
 
-pub extern "js" fn XRWebGLBinding::get_sub_image(self : XRWebGLBinding, layer : XRCompositionLayer, frame : XRFrame, eye : XREye) -> XRWebGLSubImage =
+pub extern "js" fn XRWebGLBinding::get_sub_image(self : XRWebGLBinding, layer : XRCompositionLayer, frame : XRFrame) -> XRWebGLSubImage =
+  #| (self, layer, frame) => self.getSubImage(layer, frame)
+
+pub extern "js" fn XRWebGLBinding::get_sub_image_with_eye(self : XRWebGLBinding, layer : XRCompositionLayer, frame : XRFrame, eye : XREye) -> XRWebGLSubImage =
   #| (self, layer, frame, eye) => self.getSubImage(layer, frame, ['none', 'left', 'right'][eye])
 
 pub extern "js" fn XRWebGLBinding::get_view_sub_image(self : XRWebGLBinding, layer : XRProjectionLayer, view : XRView) -> XRWebGLSubImage =
@@ -1057,13 +1075,22 @@ pub extern "js" fn XRMediaBinding::to_js_value(self : XRMediaBinding) -> JsValue
 pub extern "js" fn XRMediaBinding::new(session : XRSession) -> XRMediaBinding =
   #| (session) => new XRMediaBinding(session)
 
-pub extern "js" fn XRMediaBinding::create_quad_layer(self : XRMediaBinding, video : HTMLVideoElement, init_ : XRMediaQuadLayerInit) -> XRQuadLayer =
+pub extern "js" fn XRMediaBinding::create_quad_layer(self : XRMediaBinding, video : HTMLVideoElement) -> XRQuadLayer =
+  #| (self, video) => self.createQuadLayer(video)
+
+pub extern "js" fn XRMediaBinding::create_quad_layer_with_init(self : XRMediaBinding, video : HTMLVideoElement, init_ : XRMediaQuadLayerInit) -> XRQuadLayer =
   #| (self, video, init_) => self.createQuadLayer(video, init_)
 
-pub extern "js" fn XRMediaBinding::create_cylinder_layer(self : XRMediaBinding, video : HTMLVideoElement, init_ : XRMediaCylinderLayerInit) -> XRCylinderLayer =
+pub extern "js" fn XRMediaBinding::create_cylinder_layer(self : XRMediaBinding, video : HTMLVideoElement) -> XRCylinderLayer =
+  #| (self, video) => self.createCylinderLayer(video)
+
+pub extern "js" fn XRMediaBinding::create_cylinder_layer_with_init(self : XRMediaBinding, video : HTMLVideoElement, init_ : XRMediaCylinderLayerInit) -> XRCylinderLayer =
   #| (self, video, init_) => self.createCylinderLayer(video, init_)
 
-pub extern "js" fn XRMediaBinding::create_equirect_layer(self : XRMediaBinding, video : HTMLVideoElement, init_ : XRMediaEquirectLayerInit) -> XREquirectLayer =
+pub extern "js" fn XRMediaBinding::create_equirect_layer(self : XRMediaBinding, video : HTMLVideoElement) -> XREquirectLayer =
+  #| (self, video) => self.createEquirectLayer(video)
+
+pub extern "js" fn XRMediaBinding::create_equirect_layer_with_init(self : XRMediaBinding, video : HTMLVideoElement, init_ : XRMediaEquirectLayerInit) -> XREquirectLayer =
   #| (self, video, init_) => self.createEquirectLayer(video, init_)
 
 ///|

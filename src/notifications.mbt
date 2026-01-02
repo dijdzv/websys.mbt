@@ -58,6 +58,10 @@ pub fn NotificationDirection::from_string(s : String) -> NotificationDirection? 
 /// NotificationPermissionCallback callback interface
 pub type NotificationPermissionCallback
 
+/// Create NotificationPermissionCallback from a MoonBit function
+pub extern "js" fn NotificationPermissionCallback::from_fn(handler : (NotificationPermission) -> Unit) -> NotificationPermissionCallback =
+  #| (handler) => handler
+
 ///|
 /// NotificationOptions dictionary
 pub struct NotificationOptions {
@@ -75,7 +79,7 @@ pub struct NotificationOptions {
   silent : Bool??
   requireInteraction : Bool?
   data : JsValue?
-  actions : JsValue?
+  actions : Array[NotificationAction]?
 }
 
 /// Create a new NotificationOptions with default values
@@ -201,7 +205,7 @@ pub extern "js" fn Notification::new(title : String, options : NotificationOptio
 pub extern "js" fn Notification::get_permission(self : Notification) -> NotificationPermission =
   #| (self) => self.permission
 
-pub extern "js" fn Notification::request_permission(deprecated_callback : NotificationPermissionCallback) -> JsValue =
+pub extern "js" fn Notification::request_permission(deprecated_callback : NotificationPermissionCallback) -> Promise[NotificationPermission] =
   #| (deprecated_callback) => Notification.requestPermission(deprecated_callback)
 
 pub extern "js" fn Notification::get_max_actions(self : Notification) -> Int =

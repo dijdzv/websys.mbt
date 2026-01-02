@@ -4,13 +4,13 @@
 ///|
 /// DigitalCredentialRequestOptions dictionary
 pub struct DigitalCredentialRequestOptions {
-  requests : JsValue
+  requests : Array[DigitalCredentialGetRequest]
 }
 
 /// Create a new DigitalCredentialRequestOptions with default values
 pub fn DigitalCredentialRequestOptions::default() -> DigitalCredentialRequestOptions {
   DigitalCredentialRequestOptions::{
-    requests: panic(),
+    requests: [],
   }
 }
 
@@ -45,7 +45,7 @@ pub extern "js" fn DigitalCredentialGetRequest::to_js(self : DigitalCredentialGe
 ///|
 /// DigitalCredentialCreationOptions dictionary
 pub struct DigitalCredentialCreationOptions {
-  requests : JsValue?
+  requests : Array[DigitalCredentialCreateRequest]?
 }
 
 /// Create a new DigitalCredentialCreationOptions with default values

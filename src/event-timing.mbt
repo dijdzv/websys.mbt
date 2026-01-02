@@ -5,7 +5,7 @@
 /// PerformanceObserverInit dictionary
 pub struct PerformanceObserverInit {
   durationThreshold : DOMHighResTimeStamp?
-  entryTypes : JsValue?
+  entryTypes : Array[String]?
   type_ : String?
   buffered : Bool?
 }
@@ -64,6 +64,9 @@ pub type EventCounts
 pub extern "js" fn EventCounts::to_js_value(self : EventCounts) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn EventCounts::_unknown_(self : EventCounts) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn EventCounts::get(self : EventCounts, key : String) -> Int64? =
+  #| (self, key) => self.get(key)
+
+pub extern "js" fn EventCounts::has(self : EventCounts, key : String) -> Bool =
+  #| (self, key) => self.has(key)
 

@@ -310,7 +310,10 @@ pub extern "js" fn AnimationTimeline::get_current_time(self : AnimationTimeline)
 pub extern "js" fn AnimationTimeline::get_duration(self : AnimationTimeline) -> CSSNumberish? =
   #| (self) => self.duration
 
-pub extern "js" fn AnimationTimeline::play(self : AnimationTimeline, effect : AnimationEffect?) -> Animation =
+pub extern "js" fn AnimationTimeline::play(self : AnimationTimeline) -> Animation =
+  #| (self) => self.play()
+
+pub extern "js" fn AnimationTimeline::play_with_effect(self : AnimationTimeline, effect : AnimationEffect?) -> Animation =
   #| (self, effect) => self.play(effect)
 
 ///|
@@ -326,7 +329,10 @@ pub extern "js" fn DocumentTimeline::get_current_time(self : DocumentTimeline) -
 pub extern "js" fn DocumentTimeline::get_duration(self : DocumentTimeline) -> CSSNumberish? =
   #| (self) => self.duration
 
-pub extern "js" fn DocumentTimeline::play(self : DocumentTimeline, effect : AnimationEffect?) -> Animation =
+pub extern "js" fn DocumentTimeline::play(self : DocumentTimeline) -> Animation =
+  #| (self) => self.play()
+
+pub extern "js" fn DocumentTimeline::play_with_effect(self : DocumentTimeline, effect : AnimationEffect?) -> Animation =
   #| (self, effect) => self.play(effect)
 
 pub extern "js" fn DocumentTimeline::new(options : DocumentTimelineOptions) -> DocumentTimeline =
@@ -375,10 +381,10 @@ pub extern "js" fn Animation::get_replace_state(self : Animation) -> AnimationRe
 pub extern "js" fn Animation::get_pending(self : Animation) -> Bool =
   #| (self) => self.pending
 
-pub extern "js" fn Animation::get_ready(self : Animation) -> JsValue =
+pub extern "js" fn Animation::get_ready(self : Animation) -> Promise[Animation] =
   #| (self) => self.ready
 
-pub extern "js" fn Animation::get_finished(self : Animation) -> JsValue =
+pub extern "js" fn Animation::get_finished(self : Animation) -> Promise[Animation] =
   #| (self) => self.finished
 
 pub extern "js" fn Animation::get_onfinish(self : Animation) -> EventHandler =
@@ -457,7 +463,10 @@ pub extern "js" fn AnimationEffect::get_timing(self : AnimationEffect) -> Effect
 pub extern "js" fn AnimationEffect::get_computed_timing(self : AnimationEffect) -> ComputedEffectTiming =
   #| (self) => self.getComputedTiming()
 
-pub extern "js" fn AnimationEffect::update_timing(self : AnimationEffect, timing : OptionalEffectTiming) -> Unit =
+pub extern "js" fn AnimationEffect::update_timing(self : AnimationEffect) -> Unit =
+  #| (self) => self.updateTiming()
+
+pub extern "js" fn AnimationEffect::update_timing_with_timing(self : AnimationEffect, timing : OptionalEffectTiming) -> Unit =
   #| (self, timing) => self.updateTiming(timing)
 
 pub extern "js" fn AnimationEffect::get_parent(self : AnimationEffect) -> GroupEffect? =
@@ -494,7 +503,10 @@ pub extern "js" fn KeyframeEffect::get_timing(self : KeyframeEffect) -> EffectTi
 pub extern "js" fn KeyframeEffect::get_computed_timing(self : KeyframeEffect) -> ComputedEffectTiming =
   #| (self) => self.getComputedTiming()
 
-pub extern "js" fn KeyframeEffect::update_timing(self : KeyframeEffect, timing : OptionalEffectTiming) -> Unit =
+pub extern "js" fn KeyframeEffect::update_timing(self : KeyframeEffect) -> Unit =
+  #| (self) => self.updateTiming()
+
+pub extern "js" fn KeyframeEffect::update_timing_with_timing(self : KeyframeEffect, timing : OptionalEffectTiming) -> Unit =
   #| (self, timing) => self.updateTiming(timing)
 
 pub extern "js" fn KeyframeEffect::get_parent(self : KeyframeEffect) -> GroupEffect? =
@@ -539,7 +551,7 @@ pub extern "js" fn KeyframeEffect::get_composite(self : KeyframeEffect) -> Compo
 pub extern "js" fn KeyframeEffect::set_composite(self : KeyframeEffect, value : CompositeOperation) -> Unit =
   #| (self, value) => { self.composite = value }
 
-pub extern "js" fn KeyframeEffect::get_keyframes(self : KeyframeEffect) -> JsValue =
+pub extern "js" fn KeyframeEffect::get_keyframes(self : KeyframeEffect) -> Array[JsValue] =
   #| (self) => self.getKeyframes()
 
 pub extern "js" fn KeyframeEffect::set_keyframes(self : KeyframeEffect, keyframes : JsValue?) -> Unit =

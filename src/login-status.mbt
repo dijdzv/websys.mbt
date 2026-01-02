@@ -32,6 +32,6 @@ pub type NavigatorLogin
 pub extern "js" fn NavigatorLogin::to_js_value(self : NavigatorLogin) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn NavigatorLogin::set_status(self : NavigatorLogin, status : LoginStatus) -> JsValue =
+pub extern "js" fn NavigatorLogin::set_status(self : NavigatorLogin, status : LoginStatus) -> Promise[Unit] =
   #| (self, status) => self.setStatus(['logged-in', 'logged-out'][status])
 

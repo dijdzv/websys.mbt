@@ -36,7 +36,7 @@ pub extern "js" fn CSSFunctionRule::to_js_value(self : CSSFunctionRule) -> JsVal
 pub extern "js" fn CSSFunctionRule::get_name(self : CSSFunctionRule) -> CSSOMString =
   #| (self) => self.name
 
-pub extern "js" fn CSSFunctionRule::get_parameters(self : CSSFunctionRule) -> JsValue =
+pub extern "js" fn CSSFunctionRule::get_parameters(self : CSSFunctionRule) -> Array[FunctionParameter] =
   #| (self) => self.getParameters()
 
 pub extern "js" fn CSSFunctionRule::get_return_type(self : CSSFunctionRule) -> CSSOMString =

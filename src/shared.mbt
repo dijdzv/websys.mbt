@@ -16,6 +16,18 @@ pub extern "js" fn JsValue::null() -> JsValue =
 pub extern "js" fn JsValue::from_string(s : String) -> JsValue =
   #| (s) => s
 
+/// Create JsValue from Int
+pub extern "js" fn JsValue::from_int(i : Int) -> JsValue =
+  #| (i) => i
+
+/// Create JsValue from Double
+pub extern "js" fn JsValue::from_double(d : Double) -> JsValue =
+  #| (d) => d
+
+/// Create JsValue from Bool
+pub extern "js" fn JsValue::from_bool(b : Bool) -> JsValue =
+  #| (b) => b
+
 /// JavaScript Promise type
 pub type Promise[T]
 

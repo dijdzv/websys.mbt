@@ -117,6 +117,9 @@ pub extern "js" fn LockManager::to_js_value(self : LockManager) -> JsValue =
 pub extern "js" fn LockManager::request(self : LockManager, name : String, callback : LockGrantedCallback) -> Promise[JsValue] =
   #| (self, name, callback) => self.request(name, callback)
 
+pub extern "js" fn LockManager::request_with_name_and_options_lock_options_and_callback_lock_granted_callback(self : LockManager, name : String, options : LockOptions, callback : LockGrantedCallback) -> Promise[JsValue] =
+  #| (self, name, options, callback) => self.request(name, options, callback)
+
 pub extern "js" fn LockManager::query(self : LockManager) -> Promise[LockManagerSnapshot] =
   #| (self) => self.query()
 

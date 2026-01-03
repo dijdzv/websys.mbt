@@ -313,6 +313,9 @@ pub extern "js" fn SpeechRecognition::set_phrases(self : SpeechRecognition, valu
 pub extern "js" fn SpeechRecognition::start(self : SpeechRecognition) -> Unit =
   #| (self) => self.start()
 
+pub extern "js" fn SpeechRecognition::start_with_audio_track_media_stream_track(self : SpeechRecognition, audio_track : MediaStreamTrack) -> Unit =
+  #| (self, audio_track) => self.start(audio_track)
+
 pub extern "js" fn SpeechRecognition::stop(self : SpeechRecognition) -> Unit =
   #| (self) => self.stop()
 

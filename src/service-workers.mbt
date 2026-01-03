@@ -476,7 +476,13 @@ pub extern "js" fn ServiceWorker::get_script_u_r_l(self : ServiceWorker) -> Stri
 pub extern "js" fn ServiceWorker::get_state(self : ServiceWorker) -> ServiceWorkerState =
   #| (self) => self.state
 
-pub extern "js" fn ServiceWorker::post_message(self : ServiceWorker, message : JsValue, transfer : Array[JsValue]) -> Unit =
+pub extern "js" fn ServiceWorker::post_message(self : ServiceWorker, message : JsValue) -> Unit =
+  #| (self, message) => self.postMessage(message)
+
+pub extern "js" fn ServiceWorker::post_message_with_options(self : ServiceWorker, message : JsValue, options : StructuredSerializeOptions) -> Unit =
+  #| (self, message, options) => self.postMessage(message, options)
+
+pub extern "js" fn ServiceWorker::post_message_with_message_and_transfer(self : ServiceWorker, message : JsValue, transfer : Array[JsValue]) -> Unit =
   #| (self, message, transfer) => self.postMessage(message, transfer)
 
 pub extern "js" fn ServiceWorker::get_onstatechange(self : ServiceWorker) -> EventHandler =
@@ -784,7 +790,13 @@ pub extern "js" fn Client::get_id(self : Client) -> String =
 pub extern "js" fn Client::get_type(self : Client) -> ClientType =
   #| (self) => self.type
 
-pub extern "js" fn Client::post_message(self : Client, message : JsValue, transfer : Array[JsValue]) -> Unit =
+pub extern "js" fn Client::post_message(self : Client, message : JsValue) -> Unit =
+  #| (self, message) => self.postMessage(message)
+
+pub extern "js" fn Client::post_message_with_options(self : Client, message : JsValue, options : StructuredSerializeOptions) -> Unit =
+  #| (self, message, options) => self.postMessage(message, options)
+
+pub extern "js" fn Client::post_message_with_message_and_transfer(self : Client, message : JsValue, transfer : Array[JsValue]) -> Unit =
   #| (self, message, transfer) => self.postMessage(message, transfer)
 
 pub extern "js" fn Client::get_lifecycle_state(self : Client) -> ClientLifecycleState =

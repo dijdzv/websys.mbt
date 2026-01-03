@@ -1363,17 +1363,29 @@ pub extern "js" fn RTCPeerConnection::create_offer(self : RTCPeerConnection) -> 
 pub extern "js" fn RTCPeerConnection::create_offer_with_options(self : RTCPeerConnection, options : RTCOfferOptions) -> Promise[RTCSessionDescriptionInit] =
   #| (self, options) => self.createOffer(options)
 
+pub extern "js" fn RTCPeerConnection::create_offer_with_success_callback_r_t_c_session_description_callback_and_failure_callback_r_t_c_peer_connection_error_callback(self : RTCPeerConnection, success_callback : RTCSessionDescriptionCallback, failure_callback : RTCPeerConnectionErrorCallback) -> Promise[Unit] =
+  #| (self, success_callback, failure_callback) => self.createOffer(success_callback, failure_callback)
+
+pub extern "js" fn RTCPeerConnection::create_offer_with_success_callback_r_t_c_session_description_callback_and_failure_callback_r_t_c_peer_connection_error_callback_and_options_r_t_c_offer_options(self : RTCPeerConnection, success_callback : RTCSessionDescriptionCallback, failure_callback : RTCPeerConnectionErrorCallback, options : RTCOfferOptions) -> Promise[Unit] =
+  #| (self, success_callback, failure_callback, options) => self.createOffer(success_callback, failure_callback, options)
+
 pub extern "js" fn RTCPeerConnection::create_answer(self : RTCPeerConnection) -> Promise[RTCSessionDescriptionInit] =
   #| (self) => self.createAnswer()
 
 pub extern "js" fn RTCPeerConnection::create_answer_with_options(self : RTCPeerConnection, options : RTCAnswerOptions) -> Promise[RTCSessionDescriptionInit] =
   #| (self, options) => self.createAnswer(options)
 
+pub extern "js" fn RTCPeerConnection::create_answer_with_success_callback_r_t_c_session_description_callback_and_failure_callback_r_t_c_peer_connection_error_callback(self : RTCPeerConnection, success_callback : RTCSessionDescriptionCallback, failure_callback : RTCPeerConnectionErrorCallback) -> Promise[Unit] =
+  #| (self, success_callback, failure_callback) => self.createAnswer(success_callback, failure_callback)
+
 pub extern "js" fn RTCPeerConnection::set_local_description(self : RTCPeerConnection) -> Promise[Unit] =
   #| (self) => self.setLocalDescription()
 
 pub extern "js" fn RTCPeerConnection::set_local_description_with_description(self : RTCPeerConnection, description : RTCLocalSessionDescriptionInit) -> Promise[Unit] =
   #| (self, description) => self.setLocalDescription(description)
+
+pub extern "js" fn RTCPeerConnection::set_local_description_with_description_r_t_c_local_session_description_init_and_success_callback_void_function_and_failure_callback_r_t_c_peer_connection_error_callback(self : RTCPeerConnection, description : RTCLocalSessionDescriptionInit, success_callback : VoidFunction, failure_callback : RTCPeerConnectionErrorCallback) -> Promise[Unit] =
+  #| (self, description, success_callback, failure_callback) => self.setLocalDescription(description, success_callback, failure_callback)
 
 pub extern "js" fn RTCPeerConnection::get_local_description(self : RTCPeerConnection) -> RTCSessionDescription? =
   #| (self) => self.localDescription
@@ -1386,6 +1398,9 @@ pub extern "js" fn RTCPeerConnection::get_pending_local_description(self : RTCPe
 
 pub extern "js" fn RTCPeerConnection::set_remote_description(self : RTCPeerConnection, description : RTCSessionDescriptionInit) -> Promise[Unit] =
   #| (self, description) => self.setRemoteDescription(description)
+
+pub extern "js" fn RTCPeerConnection::set_remote_description_with_description_r_t_c_session_description_init_and_success_callback_void_function_and_failure_callback_r_t_c_peer_connection_error_callback(self : RTCPeerConnection, description : RTCSessionDescriptionInit, success_callback : VoidFunction, failure_callback : RTCPeerConnectionErrorCallback) -> Promise[Unit] =
+  #| (self, description, success_callback, failure_callback) => self.setRemoteDescription(description, success_callback, failure_callback)
 
 pub extern "js" fn RTCPeerConnection::get_remote_description(self : RTCPeerConnection) -> RTCSessionDescription? =
   #| (self) => self.remoteDescription
@@ -1401,6 +1416,9 @@ pub extern "js" fn RTCPeerConnection::add_ice_candidate(self : RTCPeerConnection
 
 pub extern "js" fn RTCPeerConnection::add_ice_candidate_with_candidate(self : RTCPeerConnection, candidate : RTCIceCandidateInit) -> Promise[Unit] =
   #| (self, candidate) => self.addIceCandidate(candidate)
+
+pub extern "js" fn RTCPeerConnection::add_ice_candidate_with_candidate_r_t_c_ice_candidate_init_and_success_callback_void_function_and_failure_callback_r_t_c_peer_connection_error_callback(self : RTCPeerConnection, candidate : RTCIceCandidateInit, success_callback : VoidFunction, failure_callback : RTCPeerConnectionErrorCallback) -> Promise[Unit] =
+  #| (self, candidate, success_callback, failure_callback) => self.addIceCandidate(candidate, success_callback, failure_callback)
 
 pub extern "js" fn RTCPeerConnection::get_signaling_state(self : RTCPeerConnection) -> RTCSignalingState =
   #| (self) => self.signalingState
@@ -2053,6 +2071,15 @@ pub extern "js" fn RTCDataChannel::set_binary_type(self : RTCDataChannel, value 
   #| (self, value) => { self.binaryType = value }
 
 pub extern "js" fn RTCDataChannel::send(self : RTCDataChannel, data : String) -> Unit =
+  #| (self, data) => self.send(data)
+
+pub extern "js" fn RTCDataChannel::send_with_data_blob(self : RTCDataChannel, data : Blob) -> Unit =
+  #| (self, data) => self.send(data)
+
+pub extern "js" fn RTCDataChannel::send_with_data_array_buffer(self : RTCDataChannel, data : ArrayBuffer) -> Unit =
+  #| (self, data) => self.send(data)
+
+pub extern "js" fn RTCDataChannel::send_with_data_array_buffer_view(self : RTCDataChannel, data : ArrayBufferView) -> Unit =
   #| (self, data) => self.send(data)
 
 pub extern "js" fn RTCDataChannel::get_priority(self : RTCDataChannel) -> RTCPriorityType =

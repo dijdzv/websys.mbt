@@ -1576,6 +1576,9 @@ pub extern "js" fn WebGLRenderingContext::make_x_r_compatible(self : WebGLRender
 pub extern "js" fn WebGLRenderingContext::buffer_data(self : WebGLRenderingContext, target : GLenum, size : GLsizeiptr, usage : GLenum) -> Unit =
   #| (self, target, size, usage) => self.bufferData(target, size, usage)
 
+pub extern "js" fn WebGLRenderingContext::buffer_data_with_target_g_lenum_and_data_and_usage_g_lenum(self : WebGLRenderingContext, target : GLenum, data : AllowSharedBufferSource?, usage : GLenum) -> Unit =
+  #| (self, target, data, usage) => self.bufferData(target, data, usage)
+
 pub extern "js" fn WebGLRenderingContext::buffer_sub_data(self : WebGLRenderingContext, target : GLenum, offset : GLintptr, data : AllowSharedBufferSource) -> Unit =
   #| (self, target, offset, data) => self.bufferSubData(target, offset, data)
 
@@ -1588,10 +1591,16 @@ pub extern "js" fn WebGLRenderingContext::compressed_tex_sub_image2_d(self : Web
 pub extern "js" fn WebGLRenderingContext::read_pixels(self : WebGLRenderingContext, x : GLint, y : GLint, width : GLsizei, height : GLsizei, format : GLenum, type_ : GLenum, pixels : ArrayBufferView?) -> Unit =
   #| (self, x, y, width, height, format, type_, pixels) => self.readPixels(x, y, width, height, format, type_, pixels)
 
-pub extern "js" fn WebGLRenderingContext::tex_image2_d(self : WebGLRenderingContext, target : GLenum, level : GLint, internalformat : GLint, width : GLsizei, height : GLsizei, border : GLint, format : GLenum, type_ : GLenum, pixels : ArrayBufferView?) -> Unit =
+pub extern "js" fn WebGLRenderingContext::tex_image2_d(self : WebGLRenderingContext, target : GLenum, level : GLint, internalformat : GLint, format : GLenum, type_ : GLenum, source : TexImageSource) -> Unit =
+  #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
+
+pub extern "js" fn WebGLRenderingContext::tex_image2_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_pixels(self : WebGLRenderingContext, target : GLenum, level : GLint, internalformat : GLint, width : GLsizei, height : GLsizei, border : GLint, format : GLenum, type_ : GLenum, pixels : ArrayBufferView?) -> Unit =
   #| (self, target, level, internalformat, width, height, border, format, type_, pixels) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, pixels)
 
-pub extern "js" fn WebGLRenderingContext::tex_sub_image2_d(self : WebGLRenderingContext, target : GLenum, level : GLint, xoffset : GLint, yoffset : GLint, width : GLsizei, height : GLsizei, format : GLenum, type_ : GLenum, pixels : ArrayBufferView?) -> Unit =
+pub extern "js" fn WebGLRenderingContext::tex_sub_image2_d(self : WebGLRenderingContext, target : GLenum, level : GLint, xoffset : GLint, yoffset : GLint, format : GLenum, type_ : GLenum, source : TexImageSource) -> Unit =
+  #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
+
+pub extern "js" fn WebGLRenderingContext::tex_sub_image2_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_pixels(self : WebGLRenderingContext, target : GLenum, level : GLint, xoffset : GLint, yoffset : GLint, width : GLsizei, height : GLsizei, format : GLenum, type_ : GLenum, pixels : ArrayBufferView?) -> Unit =
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, pixels) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, pixels)
 
 pub extern "js" fn WebGLRenderingContext::uniform1fv(self : WebGLRenderingContext, location : WebGLUniformLocation?, v : Float32List) -> Unit =

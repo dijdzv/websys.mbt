@@ -224,6 +224,15 @@ pub extern "js" fn PresentationConnection::set_onmessage(self : PresentationConn
 pub extern "js" fn PresentationConnection::send(self : PresentationConnection, message : String) -> Unit =
   #| (self, message) => self.send(message)
 
+pub extern "js" fn PresentationConnection::send_with_data_blob(self : PresentationConnection, data : Blob) -> Unit =
+  #| (self, data) => self.send(data)
+
+pub extern "js" fn PresentationConnection::send_with_data_array_buffer(self : PresentationConnection, data : ArrayBuffer) -> Unit =
+  #| (self, data) => self.send(data)
+
+pub extern "js" fn PresentationConnection::send_with_data_array_buffer_view(self : PresentationConnection, data : ArrayBufferView) -> Unit =
+  #| (self, data) => self.send(data)
+
 ///|
 /// PresentationConnectionCloseEvent interface
 pub type PresentationConnectionCloseEvent

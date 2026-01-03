@@ -243,6 +243,12 @@ pub extern "js" fn XMLHttpRequest::get_ready_state(self : XMLHttpRequest) -> Int
 pub extern "js" fn XMLHttpRequest::open(self : XMLHttpRequest, method_ : String, url : String) -> Unit =
   #| (self, method_, url) => self.open(method_, url)
 
+pub extern "js" fn XMLHttpRequest::open_with_method_and_url_and_async(self : XMLHttpRequest, method_ : String, url : String, async_ : Bool) -> Unit =
+  #| (self, method_, url, async_) => self.open(method_, url, async_)
+
+pub extern "js" fn XMLHttpRequest::open_with_method_and_url_and_async_and_username_and_password(self : XMLHttpRequest, method_ : String, url : String, async_ : Bool, username : String?, password : String?) -> Unit =
+  #| (self, method_, url, async_, username, password) => self.open(method_, url, async_, username, password)
+
 pub extern "js" fn XMLHttpRequest::set_request_header(self : XMLHttpRequest, name : String, value : String) -> Unit =
   #| (self, name, value) => self.setRequestHeader(name, value)
 
@@ -322,6 +328,12 @@ pub extern "js" fn FormData::new(form : HTMLFormElement, submitter : HTMLElement
 pub extern "js" fn FormData::append(self : FormData, name : String, value : String) -> Unit =
   #| (self, name, value) => self.append(name, value)
 
+pub extern "js" fn FormData::append_with_name_and_blob_value_blob(self : FormData, name : String, blob_value : Blob) -> Unit =
+  #| (self, name, blob_value) => self.append(name, blob_value)
+
+pub extern "js" fn FormData::append_with_name_and_blob_value_blob_and_filename(self : FormData, name : String, blob_value : Blob, filename : String) -> Unit =
+  #| (self, name, blob_value, filename) => self.append(name, blob_value, filename)
+
 pub extern "js" fn FormData::delete(self : FormData, name : String) -> Unit =
   #| (self, name) => self.delete(name)
 
@@ -336,6 +348,12 @@ pub extern "js" fn FormData::has(self : FormData, name : String) -> Bool =
 
 pub extern "js" fn FormData::set(self : FormData, name : String, value : String) -> Unit =
   #| (self, name, value) => self.set(name, value)
+
+pub extern "js" fn FormData::set_with_name_and_blob_value_blob(self : FormData, name : String, blob_value : Blob) -> Unit =
+  #| (self, name, blob_value) => self.set(name, blob_value)
+
+pub extern "js" fn FormData::set_with_name_and_blob_value_blob_and_filename(self : FormData, name : String, blob_value : Blob, filename : String) -> Unit =
+  #| (self, name, blob_value, filename) => self.set(name, blob_value, filename)
 
 pub extern "js" fn FormData::_unknown_(self : FormData) -> Unit =
   #| (self) => self._unknown_()

@@ -195,17 +195,35 @@ pub type CookieStore
 pub extern "js" fn CookieStore::to_js_value(self : CookieStore) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn CookieStore::get(self : CookieStore, name : String) -> Promise[CookieListItem?] =
+pub extern "js" fn CookieStore::get(self : CookieStore) -> Promise[CookieListItem?] =
+  #| (self) => self.get()
+
+pub extern "js" fn CookieStore::get_with_options(self : CookieStore, options : CookieStoreGetOptions) -> Promise[CookieListItem?] =
+  #| (self, options) => self.get(options)
+
+pub extern "js" fn CookieStore::get_with_name(self : CookieStore, name : String) -> Promise[CookieListItem?] =
   #| (self, name) => self.get(name)
 
-pub extern "js" fn CookieStore::get_all(self : CookieStore, name : String) -> Promise[CookieList] =
+pub extern "js" fn CookieStore::get_all(self : CookieStore) -> Promise[CookieList] =
+  #| (self) => self.getAll()
+
+pub extern "js" fn CookieStore::get_all_with_options(self : CookieStore, options : CookieStoreGetOptions) -> Promise[CookieList] =
+  #| (self, options) => self.getAll(options)
+
+pub extern "js" fn CookieStore::get_all_with_name(self : CookieStore, name : String) -> Promise[CookieList] =
   #| (self, name) => self.getAll(name)
 
-pub extern "js" fn CookieStore::set(self : CookieStore, name : String, value : String) -> Promise[Unit] =
+pub extern "js" fn CookieStore::set(self : CookieStore, options : CookieInit) -> Promise[Unit] =
+  #| (self, options) => self.set(options)
+
+pub extern "js" fn CookieStore::set_with_name_and_value(self : CookieStore, name : String, value : String) -> Promise[Unit] =
   #| (self, name, value) => self.set(name, value)
 
 pub extern "js" fn CookieStore::delete(self : CookieStore, name : String) -> Promise[Unit] =
   #| (self, name) => self.delete(name)
+
+pub extern "js" fn CookieStore::delete_with_options_cookie_store_delete_options(self : CookieStore, options : CookieStoreDeleteOptions) -> Promise[Unit] =
+  #| (self, options) => self.delete(options)
 
 pub extern "js" fn CookieStore::get_onchange(self : CookieStore) -> EventHandler =
   #| (self) => self.onchange

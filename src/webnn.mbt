@@ -2181,6 +2181,9 @@ pub extern "js" fn ML::create_context(self : ML) -> Promise[MLContext] =
 pub extern "js" fn ML::create_context_with_options(self : ML, options : MLContextOptions) -> Promise[MLContext] =
   #| (self, options) => self.createContext(options)
 
+pub extern "js" fn ML::create_context_with_gpu_device_g_p_u_device(self : ML, gpu_device : GPUDevice) -> Promise[MLContext] =
+  #| (self, gpu_device) => self.createContext(gpu_device)
+
 ///|
 /// MLContext interface
 pub type MLContext
@@ -2199,6 +2202,9 @@ pub extern "js" fn MLContext::create_constant_tensor(self : MLContext, descripto
 
 pub extern "js" fn MLContext::read_tensor(self : MLContext, tensor : MLTensor) -> Promise[ArrayBuffer] =
   #| (self, tensor) => self.readTensor(tensor)
+
+pub extern "js" fn MLContext::read_tensor_with_tensor_m_l_tensor_and_output_data_allow_shared_buffer_source(self : MLContext, tensor : MLTensor, output_data : AllowSharedBufferSource) -> Promise[Unit] =
+  #| (self, tensor, output_data) => self.readTensor(tensor, output_data)
 
 pub extern "js" fn MLContext::write_tensor(self : MLContext, tensor : MLTensor, input_data : AllowSharedBufferSource) -> Unit =
   #| (self, tensor, input_data) => self.writeTensor(tensor, input_data)
@@ -2276,7 +2282,13 @@ pub extern "js" fn MLGraphBuilder::new(context : MLContext) -> MLGraphBuilder =
 pub extern "js" fn MLGraphBuilder::input(self : MLGraphBuilder, name : String, descriptor : MLOperandDescriptor) -> MLOperand =
   #| (self, name, descriptor) => self.input(name, descriptor)
 
-pub extern "js" fn MLGraphBuilder::constant(self : MLGraphBuilder, descriptor : MLOperandDescriptor, buffer : AllowSharedBufferSource) -> MLOperand =
+pub extern "js" fn MLGraphBuilder::constant(self : MLGraphBuilder, tensor : MLTensor) -> MLOperand =
+  #| (self, tensor) => self.constant(tensor)
+
+pub extern "js" fn MLGraphBuilder::constant_with_data_type_m_l_operand_data_type_and_value_m_l_number(self : MLGraphBuilder, data_type : MLOperandDataType, value : MLNumber) -> MLOperand =
+  #| (self, data_type, value) => self.constant(['float32', 'float16', 'int32', 'uint32', 'int64', 'uint64', 'int8', 'uint8'][data_type], value)
+
+pub extern "js" fn MLGraphBuilder::constant_with_descriptor_m_l_operand_descriptor_and_buffer_allow_shared_buffer_source(self : MLGraphBuilder, descriptor : MLOperandDescriptor, buffer : AllowSharedBufferSource) -> MLOperand =
   #| (self, descriptor, buffer) => self.constant(descriptor, buffer)
 
 pub extern "js" fn MLGraphBuilder::build(self : MLGraphBuilder, outputs : MLNamedOperands) -> Promise[MLGraph] =

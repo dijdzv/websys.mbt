@@ -46117,6 +46117,12 @@ pub extern "js" fn HTMLInputElement::set_selection_direction(self : HTMLInputEle
 pub extern "js" fn HTMLInputElement::set_range_text(self : HTMLInputElement, replacement : String) -> Unit =
   #| (self, replacement) => self.setRangeText(replacement)
 
+pub extern "js" fn HTMLInputElement::set_range_text_with_replacement_and_start_and_end(self : HTMLInputElement, replacement : String, start : Int, end : Int) -> Unit =
+  #| (self, replacement, start, end) => self.setRangeText(replacement, start, end)
+
+pub extern "js" fn HTMLInputElement::set_range_text_with_replacement_and_start_and_end_and_selection_mode_selection_mode(self : HTMLInputElement, replacement : String, start : Int, end : Int, selection_mode : SelectionMode) -> Unit =
+  #| (self, replacement, start, end, selection_mode) => self.setRangeText(replacement, start, end, ['select', 'start', 'end', 'preserve'][selection_mode])
+
 pub extern "js" fn HTMLInputElement::set_selection_range(self : HTMLInputElement, start : Int, end : Int) -> Unit =
   #| (self, start, end) => self.setSelectionRange(start, end)
 
@@ -48041,6 +48047,9 @@ pub extern "js" fn HTMLSelectElement::add_with_before(self : HTMLSelectElement, 
 
 pub extern "js" fn HTMLSelectElement::remove(self : HTMLSelectElement) -> Unit =
   #| (self) => self.remove()
+
+pub extern "js" fn HTMLSelectElement::remove_with_index(self : HTMLSelectElement, index : Int) -> Unit =
+  #| (self, index) => self.remove(index)
 
 pub extern "js" fn HTMLSelectElement::set(self : HTMLSelectElement, index : Int, option : HTMLOptionElement?) -> Unit =
   #| (self, index, option) => { self[index] = option }
@@ -51690,6 +51699,12 @@ pub extern "js" fn HTMLTextAreaElement::set_selection_direction(self : HTMLTextA
 
 pub extern "js" fn HTMLTextAreaElement::set_range_text(self : HTMLTextAreaElement, replacement : String) -> Unit =
   #| (self, replacement) => self.setRangeText(replacement)
+
+pub extern "js" fn HTMLTextAreaElement::set_range_text_with_replacement_and_start_and_end(self : HTMLTextAreaElement, replacement : String, start : Int, end : Int) -> Unit =
+  #| (self, replacement, start, end) => self.setRangeText(replacement, start, end)
+
+pub extern "js" fn HTMLTextAreaElement::set_range_text_with_replacement_and_start_and_end_and_selection_mode_selection_mode(self : HTMLTextAreaElement, replacement : String, start : Int, end : Int, selection_mode : SelectionMode) -> Unit =
+  #| (self, replacement, start, end, selection_mode) => self.setRangeText(replacement, start, end, ['select', 'start', 'end', 'preserve'][selection_mode])
 
 pub extern "js" fn HTMLTextAreaElement::set_selection_range(self : HTMLTextAreaElement, start : Int, end : Int) -> Unit =
   #| (self, start, end) => self.setSelectionRange(start, end)
@@ -62423,7 +62438,13 @@ pub extern "js" fn CanvasRenderingContext2D::transform(self : CanvasRenderingCon
 pub extern "js" fn CanvasRenderingContext2D::get_transform(self : CanvasRenderingContext2D) -> DOMMatrix =
   #| (self) => self.getTransform()
 
-pub extern "js" fn CanvasRenderingContext2D::set_transform(self : CanvasRenderingContext2D, a : Double, b : Double, c : Double, d : Double, e : Double, f : Double) -> Unit =
+pub extern "js" fn CanvasRenderingContext2D::set_transform(self : CanvasRenderingContext2D) -> Unit =
+  #| (self) => self.setTransform()
+
+pub extern "js" fn CanvasRenderingContext2D::set_transform_with_transform(self : CanvasRenderingContext2D, transform : DOMMatrix2DInit) -> Unit =
+  #| (self, transform) => self.setTransform(transform)
+
+pub extern "js" fn CanvasRenderingContext2D::set_transform_with_a_and_b_and_c_and_d_and_e_and_f(self : CanvasRenderingContext2D, a : Double, b : Double, c : Double, d : Double, e : Double, f : Double) -> Unit =
   #| (self, a, b, c, d, e, f) => self.setTransform(a, b, c, d, e, f)
 
 pub extern "js" fn CanvasRenderingContext2D::reset_transform(self : CanvasRenderingContext2D) -> Unit =
@@ -62525,8 +62546,17 @@ pub extern "js" fn CanvasRenderingContext2D::fill(self : CanvasRenderingContext2
 pub extern "js" fn CanvasRenderingContext2D::fill_with_fill_rule(self : CanvasRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
   #| (self, fill_rule) => self.fill(['nonzero', 'evenodd'][fill_rule])
 
+pub extern "js" fn CanvasRenderingContext2D::fill_with_path_path2_d(self : CanvasRenderingContext2D, path : Path2D) -> Unit =
+  #| (self, path) => self.fill(path)
+
+pub extern "js" fn CanvasRenderingContext2D::fill_with_path_path2_d_and_fill_rule_canvas_fill_rule(self : CanvasRenderingContext2D, path : Path2D, fill_rule : CanvasFillRule) -> Unit =
+  #| (self, path, fill_rule) => self.fill(path, ['nonzero', 'evenodd'][fill_rule])
+
 pub extern "js" fn CanvasRenderingContext2D::stroke(self : CanvasRenderingContext2D) -> Unit =
   #| (self) => self.stroke()
+
+pub extern "js" fn CanvasRenderingContext2D::stroke_with_path_path2_d(self : CanvasRenderingContext2D, path : Path2D) -> Unit =
+  #| (self, path) => self.stroke(path)
 
 pub extern "js" fn CanvasRenderingContext2D::clip(self : CanvasRenderingContext2D) -> Unit =
   #| (self) => self.clip()
@@ -62534,17 +62564,35 @@ pub extern "js" fn CanvasRenderingContext2D::clip(self : CanvasRenderingContext2
 pub extern "js" fn CanvasRenderingContext2D::clip_with_fill_rule(self : CanvasRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
   #| (self, fill_rule) => self.clip(['nonzero', 'evenodd'][fill_rule])
 
+pub extern "js" fn CanvasRenderingContext2D::clip_with_path_path2_d(self : CanvasRenderingContext2D, path : Path2D) -> Unit =
+  #| (self, path) => self.clip(path)
+
+pub extern "js" fn CanvasRenderingContext2D::clip_with_path_path2_d_and_fill_rule_canvas_fill_rule(self : CanvasRenderingContext2D, path : Path2D, fill_rule : CanvasFillRule) -> Unit =
+  #| (self, path, fill_rule) => self.clip(path, ['nonzero', 'evenodd'][fill_rule])
+
 pub extern "js" fn CanvasRenderingContext2D::is_point_in_path(self : CanvasRenderingContext2D, x : Double, y : Double) -> Bool =
   #| (self, x, y) => self.isPointInPath(x, y)
 
 pub extern "js" fn CanvasRenderingContext2D::is_point_in_path_with_fill_rule(self : CanvasRenderingContext2D, x : Double, y : Double, fill_rule : CanvasFillRule) -> Bool =
   #| (self, x, y, fill_rule) => self.isPointInPath(x, y, ['nonzero', 'evenodd'][fill_rule])
 
+pub extern "js" fn CanvasRenderingContext2D::is_point_in_path_with_path_path2_d_and_x_and_y(self : CanvasRenderingContext2D, path : Path2D, x : Double, y : Double) -> Bool =
+  #| (self, path, x, y) => self.isPointInPath(path, x, y)
+
+pub extern "js" fn CanvasRenderingContext2D::is_point_in_path_with_path_path2_d_and_x_and_y_and_fill_rule_canvas_fill_rule(self : CanvasRenderingContext2D, path : Path2D, x : Double, y : Double, fill_rule : CanvasFillRule) -> Bool =
+  #| (self, path, x, y, fill_rule) => self.isPointInPath(path, x, y, ['nonzero', 'evenodd'][fill_rule])
+
 pub extern "js" fn CanvasRenderingContext2D::is_point_in_stroke(self : CanvasRenderingContext2D, x : Double, y : Double) -> Bool =
   #| (self, x, y) => self.isPointInStroke(x, y)
 
+pub extern "js" fn CanvasRenderingContext2D::is_point_in_stroke_with_path_path2_d_and_x_and_y(self : CanvasRenderingContext2D, path : Path2D, x : Double, y : Double) -> Bool =
+  #| (self, path, x, y) => self.isPointInStroke(path, x, y)
+
 pub extern "js" fn CanvasRenderingContext2D::draw_focus_if_needed(self : CanvasRenderingContext2D, element : Element) -> Unit =
   #| (self, element) => self.drawFocusIfNeeded(element)
+
+pub extern "js" fn CanvasRenderingContext2D::draw_focus_if_needed_with_path_path2_d_and_element_element(self : CanvasRenderingContext2D, path : Path2D, element : Element) -> Unit =
+  #| (self, path, element) => self.drawFocusIfNeeded(path, element)
 
 pub extern "js" fn CanvasRenderingContext2D::fill_text(self : CanvasRenderingContext2D, text : String, x : Double, y : Double) -> Unit =
   #| (self, text, x, y) => self.fillText(text, x, y)
@@ -62564,10 +62612,19 @@ pub extern "js" fn CanvasRenderingContext2D::measure_text(self : CanvasRendering
 pub extern "js" fn CanvasRenderingContext2D::draw_image(self : CanvasRenderingContext2D, image : CanvasImageSource, dx : Double, dy : Double) -> Unit =
   #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
 
-pub extern "js" fn CanvasRenderingContext2D::create_image_data(self : CanvasRenderingContext2D, sw : Int, sh : Int) -> ImageData =
+pub extern "js" fn CanvasRenderingContext2D::draw_image_with_image_canvas_image_source_and_dx_and_dy_and_dw_and_dh(self : CanvasRenderingContext2D, image : CanvasImageSource, dx : Double, dy : Double, dw : Double, dh : Double) -> Unit =
+  #| (self, image, dx, dy, dw, dh) => self.drawImage(image, dx, dy, dw, dh)
+
+pub extern "js" fn CanvasRenderingContext2D::draw_image_with_image_canvas_image_source_and_sx_and_sy_and_sw_and_sh_and_dx_and_dy_and_dw_and_dh(self : CanvasRenderingContext2D, image : CanvasImageSource, sx : Double, sy : Double, sw : Double, sh : Double, dx : Double, dy : Double, dw : Double, dh : Double) -> Unit =
+  #| (self, image, sx, sy, sw, sh, dx, dy, dw, dh) => self.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)
+
+pub extern "js" fn CanvasRenderingContext2D::create_image_data(self : CanvasRenderingContext2D, image_data : ImageData) -> ImageData =
+  #| (self, image_data) => self.createImageData(image_data)
+
+pub extern "js" fn CanvasRenderingContext2D::create_image_data_with_sw_and_sh(self : CanvasRenderingContext2D, sw : Int, sh : Int) -> ImageData =
   #| (self, sw, sh) => self.createImageData(sw, sh)
 
-pub extern "js" fn CanvasRenderingContext2D::create_image_data_with_settings(self : CanvasRenderingContext2D, sw : Int, sh : Int, settings : ImageDataSettings) -> ImageData =
+pub extern "js" fn CanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings(self : CanvasRenderingContext2D, sw : Int, sh : Int, settings : ImageDataSettings) -> ImageData =
   #| (self, sw, sh, settings) => self.createImageData(sw, sh, settings)
 
 pub extern "js" fn CanvasRenderingContext2D::get_image_data(self : CanvasRenderingContext2D, sx : Int, sy : Int, sw : Int, sh : Int) -> ImageData =
@@ -62578,6 +62635,9 @@ pub extern "js" fn CanvasRenderingContext2D::get_image_data_with_settings(self :
 
 pub extern "js" fn CanvasRenderingContext2D::put_image_data(self : CanvasRenderingContext2D, image_data : ImageData, dx : Int, dy : Int) -> Unit =
   #| (self, image_data, dx, dy) => self.putImageData(image_data, dx, dy)
+
+pub extern "js" fn CanvasRenderingContext2D::put_image_data_with_image_data_image_data_and_dx_and_dy_and_dirty_x_and_dirty_y_and_dirty_width_and_dirty_height(self : CanvasRenderingContext2D, image_data : ImageData, dx : Int, dy : Int, dirty_x : Int, dirty_y : Int, dirty_width : Int, dirty_height : Int) -> Unit =
+  #| (self, image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height) => self.putImageData(image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height)
 
 pub extern "js" fn CanvasRenderingContext2D::get_line_width(self : CanvasRenderingContext2D) -> Double =
   #| (self) => self.lineWidth
@@ -62943,7 +63003,13 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::transform(self : Offscreen
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_transform(self : OffscreenCanvasRenderingContext2D) -> DOMMatrix =
   #| (self) => self.getTransform()
 
-pub extern "js" fn OffscreenCanvasRenderingContext2D::set_transform(self : OffscreenCanvasRenderingContext2D, a : Double, b : Double, c : Double, d : Double, e : Double, f : Double) -> Unit =
+pub extern "js" fn OffscreenCanvasRenderingContext2D::set_transform(self : OffscreenCanvasRenderingContext2D) -> Unit =
+  #| (self) => self.setTransform()
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::set_transform_with_transform(self : OffscreenCanvasRenderingContext2D, transform : DOMMatrix2DInit) -> Unit =
+  #| (self, transform) => self.setTransform(transform)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::set_transform_with_a_and_b_and_c_and_d_and_e_and_f(self : OffscreenCanvasRenderingContext2D, a : Double, b : Double, c : Double, d : Double, e : Double, f : Double) -> Unit =
   #| (self, a, b, c, d, e, f) => self.setTransform(a, b, c, d, e, f)
 
 pub extern "js" fn OffscreenCanvasRenderingContext2D::reset_transform(self : OffscreenCanvasRenderingContext2D) -> Unit =
@@ -63045,8 +63111,17 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::fill(self : OffscreenCanva
 pub extern "js" fn OffscreenCanvasRenderingContext2D::fill_with_fill_rule(self : OffscreenCanvasRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
   #| (self, fill_rule) => self.fill(['nonzero', 'evenodd'][fill_rule])
 
+pub extern "js" fn OffscreenCanvasRenderingContext2D::fill_with_path_path2_d(self : OffscreenCanvasRenderingContext2D, path : Path2D) -> Unit =
+  #| (self, path) => self.fill(path)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::fill_with_path_path2_d_and_fill_rule_canvas_fill_rule(self : OffscreenCanvasRenderingContext2D, path : Path2D, fill_rule : CanvasFillRule) -> Unit =
+  #| (self, path, fill_rule) => self.fill(path, ['nonzero', 'evenodd'][fill_rule])
+
 pub extern "js" fn OffscreenCanvasRenderingContext2D::stroke(self : OffscreenCanvasRenderingContext2D) -> Unit =
   #| (self) => self.stroke()
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::stroke_with_path_path2_d(self : OffscreenCanvasRenderingContext2D, path : Path2D) -> Unit =
+  #| (self, path) => self.stroke(path)
 
 pub extern "js" fn OffscreenCanvasRenderingContext2D::clip(self : OffscreenCanvasRenderingContext2D) -> Unit =
   #| (self) => self.clip()
@@ -63054,14 +63129,29 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::clip(self : OffscreenCanva
 pub extern "js" fn OffscreenCanvasRenderingContext2D::clip_with_fill_rule(self : OffscreenCanvasRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
   #| (self, fill_rule) => self.clip(['nonzero', 'evenodd'][fill_rule])
 
+pub extern "js" fn OffscreenCanvasRenderingContext2D::clip_with_path_path2_d(self : OffscreenCanvasRenderingContext2D, path : Path2D) -> Unit =
+  #| (self, path) => self.clip(path)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::clip_with_path_path2_d_and_fill_rule_canvas_fill_rule(self : OffscreenCanvasRenderingContext2D, path : Path2D, fill_rule : CanvasFillRule) -> Unit =
+  #| (self, path, fill_rule) => self.clip(path, ['nonzero', 'evenodd'][fill_rule])
+
 pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_path(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double) -> Bool =
   #| (self, x, y) => self.isPointInPath(x, y)
 
 pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_path_with_fill_rule(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double, fill_rule : CanvasFillRule) -> Bool =
   #| (self, x, y, fill_rule) => self.isPointInPath(x, y, ['nonzero', 'evenodd'][fill_rule])
 
+pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_path_with_path_path2_d_and_x_and_y(self : OffscreenCanvasRenderingContext2D, path : Path2D, x : Double, y : Double) -> Bool =
+  #| (self, path, x, y) => self.isPointInPath(path, x, y)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_path_with_path_path2_d_and_x_and_y_and_fill_rule_canvas_fill_rule(self : OffscreenCanvasRenderingContext2D, path : Path2D, x : Double, y : Double, fill_rule : CanvasFillRule) -> Bool =
+  #| (self, path, x, y, fill_rule) => self.isPointInPath(path, x, y, ['nonzero', 'evenodd'][fill_rule])
+
 pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_stroke(self : OffscreenCanvasRenderingContext2D, x : Double, y : Double) -> Bool =
   #| (self, x, y) => self.isPointInStroke(x, y)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_stroke_with_path_path2_d_and_x_and_y(self : OffscreenCanvasRenderingContext2D, path : Path2D, x : Double, y : Double) -> Bool =
+  #| (self, path, x, y) => self.isPointInStroke(path, x, y)
 
 pub extern "js" fn OffscreenCanvasRenderingContext2D::fill_text(self : OffscreenCanvasRenderingContext2D, text : String, x : Double, y : Double) -> Unit =
   #| (self, text, x, y) => self.fillText(text, x, y)
@@ -63081,10 +63171,19 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::measure_text(self : Offscr
 pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image(self : OffscreenCanvasRenderingContext2D, image : CanvasImageSource, dx : Double, dy : Double) -> Unit =
   #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
 
-pub extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data(self : OffscreenCanvasRenderingContext2D, sw : Int, sh : Int) -> ImageData =
+pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_image_canvas_image_source_and_dx_and_dy_and_dw_and_dh(self : OffscreenCanvasRenderingContext2D, image : CanvasImageSource, dx : Double, dy : Double, dw : Double, dh : Double) -> Unit =
+  #| (self, image, dx, dy, dw, dh) => self.drawImage(image, dx, dy, dw, dh)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_image_canvas_image_source_and_sx_and_sy_and_sw_and_sh_and_dx_and_dy_and_dw_and_dh(self : OffscreenCanvasRenderingContext2D, image : CanvasImageSource, sx : Double, sy : Double, sw : Double, sh : Double, dx : Double, dy : Double, dw : Double, dh : Double) -> Unit =
+  #| (self, image, sx, sy, sw, sh, dx, dy, dw, dh) => self.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data(self : OffscreenCanvasRenderingContext2D, image_data : ImageData) -> ImageData =
+  #| (self, image_data) => self.createImageData(image_data)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data_with_sw_and_sh(self : OffscreenCanvasRenderingContext2D, sw : Int, sh : Int) -> ImageData =
   #| (self, sw, sh) => self.createImageData(sw, sh)
 
-pub extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data_with_settings(self : OffscreenCanvasRenderingContext2D, sw : Int, sh : Int, settings : ImageDataSettings) -> ImageData =
+pub extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings(self : OffscreenCanvasRenderingContext2D, sw : Int, sh : Int, settings : ImageDataSettings) -> ImageData =
   #| (self, sw, sh, settings) => self.createImageData(sw, sh, settings)
 
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_image_data(self : OffscreenCanvasRenderingContext2D, sx : Int, sy : Int, sw : Int, sh : Int) -> ImageData =
@@ -63095,6 +63194,9 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::get_image_data_with_settin
 
 pub extern "js" fn OffscreenCanvasRenderingContext2D::put_image_data(self : OffscreenCanvasRenderingContext2D, image_data : ImageData, dx : Int, dy : Int) -> Unit =
   #| (self, image_data, dx, dy) => self.putImageData(image_data, dx, dy)
+
+pub extern "js" fn OffscreenCanvasRenderingContext2D::put_image_data_with_image_data_image_data_and_dx_and_dy_and_dirty_x_and_dirty_y_and_dirty_width_and_dirty_height(self : OffscreenCanvasRenderingContext2D, image_data : ImageData, dx : Int, dy : Int, dirty_x : Int, dirty_y : Int, dirty_width : Int, dirty_height : Int) -> Unit =
+  #| (self, image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height) => self.putImageData(image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height)
 
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_line_width(self : OffscreenCanvasRenderingContext2D) -> Double =
   #| (self) => self.lineWidth
@@ -63802,7 +63904,10 @@ pub extern "js" fn DataTransferItemList::get_length(self : DataTransferItemList)
 pub extern "js" fn DataTransferItemList::get(self : DataTransferItemList, index : Int) -> DataTransferItem =
   #| (self, index) => self[index]
 
-pub extern "js" fn DataTransferItemList::add(self : DataTransferItemList, data : String, type_ : String) -> DataTransferItem? =
+pub extern "js" fn DataTransferItemList::add(self : DataTransferItemList, data : File) -> DataTransferItem? =
+  #| (self, data) => self.add(data)
+
+pub extern "js" fn DataTransferItemList::add_with_data_and_type(self : DataTransferItemList, data : String, type_ : String) -> DataTransferItem? =
   #| (self, data, type_) => self.add(data, type_)
 
 pub extern "js" fn DataTransferItemList::remove(self : DataTransferItemList, index : Int) -> Unit =
@@ -63986,6 +64091,9 @@ pub extern "js" fn Window::get_origin_agent_cluster(self : Window) -> Bool =
 pub extern "js" fn Window::alert(self : Window) -> Unit =
   #| (self) => self.alert()
 
+pub extern "js" fn Window::alert_with_message(self : Window, message : String) -> Unit =
+  #| (self, message) => self.alert(message)
+
 pub extern "js" fn Window::confirm(self : Window) -> Bool =
   #| (self) => self.confirm()
 
@@ -64001,10 +64109,16 @@ pub extern "js" fn Window::prompt_with_default(self : Window, message : String, 
 pub extern "js" fn Window::print(self : Window) -> Unit =
   #| (self) => self.print()
 
-pub extern "js" fn Window::post_message(self : Window, message : JsValue, target_origin : String) -> Unit =
+pub extern "js" fn Window::post_message(self : Window, message : JsValue) -> Unit =
+  #| (self, message) => self.postMessage(message)
+
+pub extern "js" fn Window::post_message_with_options(self : Window, message : JsValue, options : WindowPostMessageOptions) -> Unit =
+  #| (self, message, options) => self.postMessage(message, options)
+
+pub extern "js" fn Window::post_message_with_message_and_target_origin(self : Window, message : JsValue, target_origin : String) -> Unit =
   #| (self, message, target_origin) => self.postMessage(message, target_origin)
 
-pub extern "js" fn Window::post_message_with_transfer(self : Window, message : JsValue, target_origin : String, transfer : Array[JsValue]) -> Unit =
+pub extern "js" fn Window::post_message_with_message_and_target_origin_and_transfer(self : Window, message : JsValue, target_origin : String, transfer : Array[JsValue]) -> Unit =
   #| (self, message, target_origin, transfer) => self.postMessage(message, target_origin, transfer)
 
 pub extern "js" fn Window::get_credentialless(self : Window) -> Bool =
@@ -64073,17 +64187,26 @@ pub extern "js" fn Window::scroll(self : Window) -> Promise[Unit] =
 pub extern "js" fn Window::scroll_with_options(self : Window, options : ScrollToOptions) -> Promise[Unit] =
   #| (self, options) => self.scroll(options)
 
+pub extern "js" fn Window::scroll_with_x_and_y(self : Window, x : Double, y : Double) -> Promise[Unit] =
+  #| (self, x, y) => self.scroll(x, y)
+
 pub extern "js" fn Window::scroll_to(self : Window) -> Promise[Unit] =
   #| (self) => self.scrollTo()
 
 pub extern "js" fn Window::scroll_to_with_options(self : Window, options : ScrollToOptions) -> Promise[Unit] =
   #| (self, options) => self.scrollTo(options)
 
+pub extern "js" fn Window::scroll_to_with_x_and_y(self : Window, x : Double, y : Double) -> Promise[Unit] =
+  #| (self, x, y) => self.scrollTo(x, y)
+
 pub extern "js" fn Window::scroll_by(self : Window) -> Promise[Unit] =
   #| (self) => self.scrollBy()
 
 pub extern "js" fn Window::scroll_by_with_options(self : Window, options : ScrollToOptions) -> Promise[Unit] =
   #| (self, options) => self.scrollBy(options)
+
+pub extern "js" fn Window::scroll_by_with_x_and_y(self : Window, x : Double, y : Double) -> Promise[Unit] =
+  #| (self, x, y) => self.scrollBy(x, y)
 
 pub extern "js" fn Window::get_screen_x(self : Window) -> Int =
   #| (self) => self.screenX
@@ -65039,6 +65162,12 @@ pub extern "js" fn Window::create_image_bitmap(self : Window, image : ImageBitma
 pub extern "js" fn Window::create_image_bitmap_with_options(self : Window, image : ImageBitmapSource, options : ImageBitmapOptions) -> Promise[ImageBitmap] =
   #| (self, image, options) => self.createImageBitmap(image, options)
 
+pub extern "js" fn Window::create_image_bitmap_with_image_image_bitmap_source_and_sx_and_sy_and_sw_and_sh(self : Window, image : ImageBitmapSource, sx : Int, sy : Int, sw : Int, sh : Int) -> Promise[ImageBitmap] =
+  #| (self, image, sx, sy, sw, sh) => self.createImageBitmap(image, sx, sy, sw, sh)
+
+pub extern "js" fn Window::create_image_bitmap_with_image_image_bitmap_source_and_sx_and_sy_and_sw_and_sh_and_options_image_bitmap_options(self : Window, image : ImageBitmapSource, sx : Int, sy : Int, sw : Int, sh : Int, options : ImageBitmapOptions) -> Promise[ImageBitmap] =
+  #| (self, image, sx, sy, sw, sh, options) => self.createImageBitmap(image, sx, sy, sw, sh, options)
+
 pub extern "js" fn Window::structured_clone(self : Window, value : JsValue) -> JsValue =
   #| (self, value) => self.structuredClone(value)
 
@@ -65663,6 +65792,12 @@ pub extern "js" fn Navigator::get_audio_session(self : Navigator) -> AudioSessio
 pub extern "js" fn Navigator::get_autoplay_policy(self : Navigator, type_ : AutoplayPolicyMediaType) -> AutoplayPolicy =
   #| (self, type_) => self.getAutoplayPolicy(['mediaelement', 'audiocontext'][type_])
 
+pub extern "js" fn Navigator::get_autoplay_policy_with_element_h_t_m_l_media_element(self : Navigator, element : HTMLMediaElement) -> AutoplayPolicy =
+  #| (self, element) => self.getAutoplayPolicy(element)
+
+pub extern "js" fn Navigator::get_autoplay_policy_with_context_audio_context(self : Navigator, context : AudioContext) -> AutoplayPolicy =
+  #| (self, context) => self.getAutoplayPolicy(context)
+
 pub extern "js" fn Navigator::get_battery(self : Navigator) -> Promise[BatteryManager] =
   #| (self) => self.getBattery()
 
@@ -66189,7 +66324,13 @@ pub type MessagePort
 pub extern "js" fn MessagePort::to_js_value(self : MessagePort) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn MessagePort::post_message(self : MessagePort, message : JsValue, transfer : Array[JsValue]) -> Unit =
+pub extern "js" fn MessagePort::post_message(self : MessagePort, message : JsValue) -> Unit =
+  #| (self, message) => self.postMessage(message)
+
+pub extern "js" fn MessagePort::post_message_with_options(self : MessagePort, message : JsValue, options : StructuredSerializeOptions) -> Unit =
+  #| (self, message, options) => self.postMessage(message, options)
+
+pub extern "js" fn MessagePort::post_message_with_message_and_transfer(self : MessagePort, message : JsValue, transfer : Array[JsValue]) -> Unit =
   #| (self, message, transfer) => self.postMessage(message, transfer)
 
 pub extern "js" fn MessagePort::start(self : MessagePort) -> Unit =
@@ -66368,6 +66509,12 @@ pub extern "js" fn WorkerGlobalScope::create_image_bitmap(self : WorkerGlobalSco
 pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_options(self : WorkerGlobalScope, image : ImageBitmapSource, options : ImageBitmapOptions) -> Promise[ImageBitmap] =
   #| (self, image, options) => self.createImageBitmap(image, options)
 
+pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_image_image_bitmap_source_and_sx_and_sy_and_sw_and_sh(self : WorkerGlobalScope, image : ImageBitmapSource, sx : Int, sy : Int, sw : Int, sh : Int) -> Promise[ImageBitmap] =
+  #| (self, image, sx, sy, sw, sh) => self.createImageBitmap(image, sx, sy, sw, sh)
+
+pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_image_image_bitmap_source_and_sx_and_sy_and_sw_and_sh_and_options_image_bitmap_options(self : WorkerGlobalScope, image : ImageBitmapSource, sx : Int, sy : Int, sw : Int, sh : Int, options : ImageBitmapOptions) -> Promise[ImageBitmap] =
+  #| (self, image, sx, sy, sw, sh, options) => self.createImageBitmap(image, sx, sy, sw, sh, options)
+
 pub extern "js" fn WorkerGlobalScope::structured_clone(self : WorkerGlobalScope, value : JsValue) -> JsValue =
   #| (self, value) => self.structuredClone(value)
 
@@ -66528,7 +66675,13 @@ pub extern "js" fn DedicatedWorkerGlobalScope::get_crypto(self : DedicatedWorker
 pub extern "js" fn DedicatedWorkerGlobalScope::get_name(self : DedicatedWorkerGlobalScope) -> String =
   #| (self) => self.name
 
-pub extern "js" fn DedicatedWorkerGlobalScope::post_message(self : DedicatedWorkerGlobalScope, message : JsValue, transfer : Array[JsValue]) -> Unit =
+pub extern "js" fn DedicatedWorkerGlobalScope::post_message(self : DedicatedWorkerGlobalScope, message : JsValue) -> Unit =
+  #| (self, message) => self.postMessage(message)
+
+pub extern "js" fn DedicatedWorkerGlobalScope::post_message_with_options(self : DedicatedWorkerGlobalScope, message : JsValue, options : StructuredSerializeOptions) -> Unit =
+  #| (self, message, options) => self.postMessage(message, options)
+
+pub extern "js" fn DedicatedWorkerGlobalScope::post_message_with_message_and_transfer(self : DedicatedWorkerGlobalScope, message : JsValue, transfer : Array[JsValue]) -> Unit =
   #| (self, message, transfer) => self.postMessage(message, transfer)
 
 pub extern "js" fn DedicatedWorkerGlobalScope::close(self : DedicatedWorkerGlobalScope) -> Unit =
@@ -66722,7 +66875,13 @@ pub extern "js" fn Worker::new(script_u_r_l : JsValue, options : WorkerOptions) 
 pub extern "js" fn Worker::terminate(self : Worker) -> Unit =
   #| (self) => self.terminate()
 
-pub extern "js" fn Worker::post_message(self : Worker, message : JsValue, transfer : Array[JsValue]) -> Unit =
+pub extern "js" fn Worker::post_message(self : Worker, message : JsValue) -> Unit =
+  #| (self, message) => self.postMessage(message)
+
+pub extern "js" fn Worker::post_message_with_options(self : Worker, message : JsValue, options : StructuredSerializeOptions) -> Unit =
+  #| (self, message, options) => self.postMessage(message, options)
+
+pub extern "js" fn Worker::post_message_with_message_and_transfer(self : Worker, message : JsValue, transfer : Array[JsValue]) -> Unit =
   #| (self, message, transfer) => self.postMessage(message, transfer)
 
 pub extern "js" fn Worker::get_onerror(self : Worker) -> EventHandler =

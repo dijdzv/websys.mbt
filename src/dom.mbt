@@ -1325,6 +1325,9 @@ pub extern "js" fn Document::open(self : Document) -> Document =
 pub extern "js" fn Document::open_with_unused2(self : Document, unused1 : String, unused2 : String) -> Document =
   #| (self, unused1, unused2) => self.open(unused1, unused2)
 
+pub extern "js" fn Document::open_with_url_and_name_and_features(self : Document, url : String, name : String, features : String) -> WindowProxy? =
+  #| (self, url, name, features) => self.open(url, name, features)
+
 pub extern "js" fn Document::close(self : Document) -> Unit =
   #| (self) => self.close()
 
@@ -4667,17 +4670,26 @@ pub extern "js" fn Element::scroll(self : Element) -> Promise[Unit] =
 pub extern "js" fn Element::scroll_with_options(self : Element, options : ScrollToOptions) -> Promise[Unit] =
   #| (self, options) => self.scroll(options)
 
+pub extern "js" fn Element::scroll_with_x_and_y(self : Element, x : Double, y : Double) -> Promise[Unit] =
+  #| (self, x, y) => self.scroll(x, y)
+
 pub extern "js" fn Element::scroll_to(self : Element) -> Promise[Unit] =
   #| (self) => self.scrollTo()
 
 pub extern "js" fn Element::scroll_to_with_options(self : Element, options : ScrollToOptions) -> Promise[Unit] =
   #| (self, options) => self.scrollTo(options)
 
+pub extern "js" fn Element::scroll_to_with_x_and_y(self : Element, x : Double, y : Double) -> Promise[Unit] =
+  #| (self, x, y) => self.scrollTo(x, y)
+
 pub extern "js" fn Element::scroll_by(self : Element) -> Promise[Unit] =
   #| (self) => self.scrollBy()
 
 pub extern "js" fn Element::scroll_by_with_options(self : Element, options : ScrollToOptions) -> Promise[Unit] =
   #| (self, options) => self.scrollBy(options)
+
+pub extern "js" fn Element::scroll_by_with_x_and_y(self : Element, x : Double, y : Double) -> Promise[Unit] =
+  #| (self, x, y) => self.scrollBy(x, y)
 
 pub extern "js" fn Element::get_scroll_top(self : Element) -> Double =
   #| (self) => self.scrollTop

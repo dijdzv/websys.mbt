@@ -782,3 +782,6 @@ pub extern "js" fn SubtleCrypto::get_public_key(self : SubtleCrypto, key : Crypt
 pub extern "js" fn SubtleCrypto::supports(operation : String, algorithm : AlgorithmIdentifier, length : Int?) -> Bool =
   #| (operation, algorithm, length) => SubtleCrypto.supports(operation, algorithm, length)
 
+pub extern "js" fn SubtleCrypto::supports_with_operation_and_algorithm_algorithm_identifier_and_additional_algorithm_algorithm_identifier(operation : String, algorithm : AlgorithmIdentifier, additional_algorithm : AlgorithmIdentifier) -> Bool =
+  #| (operation, algorithm, additional_algorithm) => SubtleCrypto.supports(operation, algorithm, additional_algorithm)
+

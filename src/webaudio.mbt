@@ -1704,8 +1704,32 @@ pub extern "js" fn AudioNode::connect(self : AudioNode, destination_node : Audio
 pub extern "js" fn AudioNode::connect_with_input(self : AudioNode, destination_node : AudioNode, output : Int, input : Int) -> AudioNode =
   #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
 
+pub extern "js" fn AudioNode::connect_with_destination_param_audio_param(self : AudioNode, destination_param : AudioParam) -> Unit =
+  #| (self, destination_param) => self.connect(destination_param)
+
+pub extern "js" fn AudioNode::connect_with_destination_param_audio_param_and_output(self : AudioNode, destination_param : AudioParam, output : Int) -> Unit =
+  #| (self, destination_param, output) => self.connect(destination_param, output)
+
 pub extern "js" fn AudioNode::disconnect(self : AudioNode) -> Unit =
   #| (self) => self.disconnect()
+
+pub extern "js" fn AudioNode::disconnect_with_output(self : AudioNode, output : Int) -> Unit =
+  #| (self, output) => self.disconnect(output)
+
+pub extern "js" fn AudioNode::disconnect_with_destination_node_audio_node(self : AudioNode, destination_node : AudioNode) -> Unit =
+  #| (self, destination_node) => self.disconnect(destination_node)
+
+pub extern "js" fn AudioNode::disconnect_with_destination_param_audio_param(self : AudioNode, destination_param : AudioParam) -> Unit =
+  #| (self, destination_param) => self.disconnect(destination_param)
+
+pub extern "js" fn AudioNode::disconnect_with_destination_node_audio_node_and_output(self : AudioNode, destination_node : AudioNode, output : Int) -> Unit =
+  #| (self, destination_node, output) => self.disconnect(destination_node, output)
+
+pub extern "js" fn AudioNode::disconnect_with_destination_param_audio_param_and_output(self : AudioNode, destination_param : AudioParam, output : Int) -> Unit =
+  #| (self, destination_param, output) => self.disconnect(destination_param, output)
+
+pub extern "js" fn AudioNode::disconnect_with_destination_node_audio_node_and_output_and_input(self : AudioNode, destination_node : AudioNode, output : Int, input : Int) -> Unit =
+  #| (self, destination_node, output, input) => self.disconnect(destination_node, output, input)
 
 pub extern "js" fn AudioNode::get_context(self : AudioNode) -> BaseAudioContext =
   #| (self) => self.context

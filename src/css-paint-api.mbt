@@ -67,7 +67,13 @@ pub extern "js" fn PaintRenderingContext2D::transform(self : PaintRenderingConte
 pub extern "js" fn PaintRenderingContext2D::get_transform(self : PaintRenderingContext2D) -> DOMMatrix =
   #| (self) => self.getTransform()
 
-pub extern "js" fn PaintRenderingContext2D::set_transform(self : PaintRenderingContext2D, a : Double, b : Double, c : Double, d : Double, e : Double, f : Double) -> Unit =
+pub extern "js" fn PaintRenderingContext2D::set_transform(self : PaintRenderingContext2D) -> Unit =
+  #| (self) => self.setTransform()
+
+pub extern "js" fn PaintRenderingContext2D::set_transform_with_transform(self : PaintRenderingContext2D, transform : DOMMatrix2DInit) -> Unit =
+  #| (self, transform) => self.setTransform(transform)
+
+pub extern "js" fn PaintRenderingContext2D::set_transform_with_a_and_b_and_c_and_d_and_e_and_f(self : PaintRenderingContext2D, a : Double, b : Double, c : Double, d : Double, e : Double, f : Double) -> Unit =
   #| (self, a, b, c, d, e, f) => self.setTransform(a, b, c, d, e, f)
 
 pub extern "js" fn PaintRenderingContext2D::reset_transform(self : PaintRenderingContext2D) -> Unit =
@@ -163,8 +169,17 @@ pub extern "js" fn PaintRenderingContext2D::fill(self : PaintRenderingContext2D)
 pub extern "js" fn PaintRenderingContext2D::fill_with_fill_rule(self : PaintRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
   #| (self, fill_rule) => self.fill(['nonzero', 'evenodd'][fill_rule])
 
+pub extern "js" fn PaintRenderingContext2D::fill_with_path_path2_d(self : PaintRenderingContext2D, path : Path2D) -> Unit =
+  #| (self, path) => self.fill(path)
+
+pub extern "js" fn PaintRenderingContext2D::fill_with_path_path2_d_and_fill_rule_canvas_fill_rule(self : PaintRenderingContext2D, path : Path2D, fill_rule : CanvasFillRule) -> Unit =
+  #| (self, path, fill_rule) => self.fill(path, ['nonzero', 'evenodd'][fill_rule])
+
 pub extern "js" fn PaintRenderingContext2D::stroke(self : PaintRenderingContext2D) -> Unit =
   #| (self) => self.stroke()
+
+pub extern "js" fn PaintRenderingContext2D::stroke_with_path_path2_d(self : PaintRenderingContext2D, path : Path2D) -> Unit =
+  #| (self, path) => self.stroke(path)
 
 pub extern "js" fn PaintRenderingContext2D::clip(self : PaintRenderingContext2D) -> Unit =
   #| (self) => self.clip()
@@ -172,17 +187,38 @@ pub extern "js" fn PaintRenderingContext2D::clip(self : PaintRenderingContext2D)
 pub extern "js" fn PaintRenderingContext2D::clip_with_fill_rule(self : PaintRenderingContext2D, fill_rule : CanvasFillRule) -> Unit =
   #| (self, fill_rule) => self.clip(['nonzero', 'evenodd'][fill_rule])
 
+pub extern "js" fn PaintRenderingContext2D::clip_with_path_path2_d(self : PaintRenderingContext2D, path : Path2D) -> Unit =
+  #| (self, path) => self.clip(path)
+
+pub extern "js" fn PaintRenderingContext2D::clip_with_path_path2_d_and_fill_rule_canvas_fill_rule(self : PaintRenderingContext2D, path : Path2D, fill_rule : CanvasFillRule) -> Unit =
+  #| (self, path, fill_rule) => self.clip(path, ['nonzero', 'evenodd'][fill_rule])
+
 pub extern "js" fn PaintRenderingContext2D::is_point_in_path(self : PaintRenderingContext2D, x : Double, y : Double) -> Bool =
   #| (self, x, y) => self.isPointInPath(x, y)
 
 pub extern "js" fn PaintRenderingContext2D::is_point_in_path_with_fill_rule(self : PaintRenderingContext2D, x : Double, y : Double, fill_rule : CanvasFillRule) -> Bool =
   #| (self, x, y, fill_rule) => self.isPointInPath(x, y, ['nonzero', 'evenodd'][fill_rule])
 
+pub extern "js" fn PaintRenderingContext2D::is_point_in_path_with_path_path2_d_and_x_and_y(self : PaintRenderingContext2D, path : Path2D, x : Double, y : Double) -> Bool =
+  #| (self, path, x, y) => self.isPointInPath(path, x, y)
+
+pub extern "js" fn PaintRenderingContext2D::is_point_in_path_with_path_path2_d_and_x_and_y_and_fill_rule_canvas_fill_rule(self : PaintRenderingContext2D, path : Path2D, x : Double, y : Double, fill_rule : CanvasFillRule) -> Bool =
+  #| (self, path, x, y, fill_rule) => self.isPointInPath(path, x, y, ['nonzero', 'evenodd'][fill_rule])
+
 pub extern "js" fn PaintRenderingContext2D::is_point_in_stroke(self : PaintRenderingContext2D, x : Double, y : Double) -> Bool =
   #| (self, x, y) => self.isPointInStroke(x, y)
 
+pub extern "js" fn PaintRenderingContext2D::is_point_in_stroke_with_path_path2_d_and_x_and_y(self : PaintRenderingContext2D, path : Path2D, x : Double, y : Double) -> Bool =
+  #| (self, path, x, y) => self.isPointInStroke(path, x, y)
+
 pub extern "js" fn PaintRenderingContext2D::draw_image(self : PaintRenderingContext2D, image : CanvasImageSource, dx : Double, dy : Double) -> Unit =
   #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+pub extern "js" fn PaintRenderingContext2D::draw_image_with_image_canvas_image_source_and_dx_and_dy_and_dw_and_dh(self : PaintRenderingContext2D, image : CanvasImageSource, dx : Double, dy : Double, dw : Double, dh : Double) -> Unit =
+  #| (self, image, dx, dy, dw, dh) => self.drawImage(image, dx, dy, dw, dh)
+
+pub extern "js" fn PaintRenderingContext2D::draw_image_with_image_canvas_image_source_and_sx_and_sy_and_sw_and_sh_and_dx_and_dy_and_dw_and_dh(self : PaintRenderingContext2D, image : CanvasImageSource, sx : Double, sy : Double, sw : Double, sh : Double, dx : Double, dy : Double, dw : Double, dh : Double) -> Unit =
+  #| (self, image, sx, sy, sw, sh, dx, dy, dw, dh) => self.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)
 
 pub extern "js" fn PaintRenderingContext2D::get_line_width(self : PaintRenderingContext2D) -> Double =
   #| (self) => self.lineWidth

@@ -3804,6 +3804,12 @@ pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer(self : GPUCommandEnc
 pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer_with_size(self : GPUCommandEncoder, source : GPUBuffer, destination : GPUBuffer, size : GPUSize64) -> Unit =
   #| (self, source, destination, size) => self.copyBufferToBuffer(source, destination, size)
 
+pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer_with_source_g_p_u_buffer_and_source_offset_g_p_u_size64_and_destination_g_p_u_buffer_and_destination_offset_g_p_u_size64(self : GPUCommandEncoder, source : GPUBuffer, source_offset : GPUSize64, destination : GPUBuffer, destination_offset : GPUSize64) -> Unit =
+  #| (self, source, source_offset, destination, destination_offset) => self.copyBufferToBuffer(source, source_offset, destination, destination_offset)
+
+pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer_with_source_g_p_u_buffer_and_source_offset_g_p_u_size64_and_destination_g_p_u_buffer_and_destination_offset_g_p_u_size64_and_size_g_p_u_size64(self : GPUCommandEncoder, source : GPUBuffer, source_offset : GPUSize64, destination : GPUBuffer, destination_offset : GPUSize64, size : GPUSize64) -> Unit =
+  #| (self, source, source_offset, destination, destination_offset, size) => self.copyBufferToBuffer(source, source_offset, destination, destination_offset, size)
+
 pub extern "js" fn GPUCommandEncoder::copy_buffer_to_texture(self : GPUCommandEncoder, source : GPUTexelCopyBufferInfo, destination : GPUTexelCopyTextureInfo, copy_size : GPUExtent3D) -> Unit =
   #| (self, source, destination, copy_size) => self.copyBufferToTexture(source, destination, copy_size)
 
@@ -3886,6 +3892,9 @@ pub extern "js" fn GPUComputePassEncoder::set_bind_group(self : GPUComputePassEn
 pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_dynamic_offsets(self : GPUComputePassEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets : Array[GPUBufferDynamicOffset]) -> Unit =
   #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, bind_group, dynamic_offsets)
 
+pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_index_g_p_u_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_g_p_u_size64_and_dynamic_offsets_data_length_g_p_u_size32(self : GPUComputePassEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets_data : Uint32Array, dynamic_offsets_data_start : GPUSize64, dynamic_offsets_data_length : GPUSize32) -> Unit =
+  #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => self.setBindGroup(index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length)
+
 ///|
 /// GPURenderPassEncoder interface
 pub type GPURenderPassEncoder
@@ -3937,6 +3946,9 @@ pub extern "js" fn GPURenderPassEncoder::set_bind_group(self : GPURenderPassEnco
 
 pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_dynamic_offsets(self : GPURenderPassEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets : Array[GPUBufferDynamicOffset]) -> Unit =
   #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, bind_group, dynamic_offsets)
+
+pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_index_g_p_u_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_g_p_u_size64_and_dynamic_offsets_data_length_g_p_u_size32(self : GPURenderPassEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets_data : Uint32Array, dynamic_offsets_data_start : GPUSize64, dynamic_offsets_data_length : GPUSize32) -> Unit =
+  #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => self.setBindGroup(index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length)
 
 pub extern "js" fn GPURenderPassEncoder::set_pipeline(self : GPURenderPassEncoder, pipeline : GPURenderPipeline) -> Unit =
   #| (self, pipeline) => self.setPipeline(pipeline)
@@ -4017,6 +4029,9 @@ pub extern "js" fn GPURenderBundleEncoder::set_bind_group(self : GPURenderBundle
 
 pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_dynamic_offsets(self : GPURenderBundleEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets : Array[GPUBufferDynamicOffset]) -> Unit =
   #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, bind_group, dynamic_offsets)
+
+pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_index_g_p_u_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_g_p_u_size64_and_dynamic_offsets_data_length_g_p_u_size32(self : GPURenderBundleEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets_data : Uint32Array, dynamic_offsets_data_start : GPUSize64, dynamic_offsets_data_length : GPUSize32) -> Unit =
+  #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => self.setBindGroup(index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length)
 
 pub extern "js" fn GPURenderBundleEncoder::set_pipeline(self : GPURenderBundleEncoder, pipeline : GPURenderPipeline) -> Unit =
   #| (self, pipeline) => self.setPipeline(pipeline)

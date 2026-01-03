@@ -6,6 +6,6 @@
         "generate": "rm -f ./src/*.mbt && webidl-bindgen.mbt --all --per-spec -o ./src/"
     },
     "devDependencies": {
-        "webidl-bindgen.mbt": "^0.2.6"
+        "webidl-bindgen.mbt": "^0.2.7"
     }
 }

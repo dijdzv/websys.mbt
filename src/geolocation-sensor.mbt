@@ -3,110 +3,145 @@
 
 ///|
 /// GeolocationSensorOptions dictionary
-pub struct GeolocationSensorOptions {
-}
+pub struct GeolocationSensorOptions {}
 
+///|
 /// Create a new GeolocationSensorOptions with default values
 pub fn GeolocationSensorOptions::default() -> GeolocationSensorOptions {
-  GeolocationSensorOptions::{
-  }
+  GeolocationSensorOptions::{  }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn GeolocationSensorOptions::to_js(self : GeolocationSensorOptions) -> JsValue =
+pub extern "js" fn GeolocationSensorOptions::to_js(
+  self : GeolocationSensorOptions,
+) -> JsValue =
   #| (self) => ({
   #| })
 
 ///|
 /// ReadOptions dictionary
 pub struct ReadOptions {
-  signal : AbortSignal??
+  signal : Nullable[AbortSignal]
 }
 
+///|
 /// Create a new ReadOptions with default values
 pub fn ReadOptions::default() -> ReadOptions {
-  ReadOptions::{
-    signal: None,
-  }
+  ReadOptions::{ signal: Nullable::Undefined }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn ReadOptions::to_js(self : ReadOptions) -> JsValue =
   #| (self) => ({
-  #|   signal: self.signal
+  #|   signal: ((() => { const v = self.signal; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
 
 ///|
 /// GeolocationSensorReading dictionary
 pub struct GeolocationSensorReading {
-  timestamp : DOMHighResTimeStamp??
-  latitude : Double??
-  longitude : Double??
-  altitude : Double??
-  accuracy : Double??
-  altitudeAccuracy : Double??
-  heading : Double??
-  speed : Double??
+  timestamp : Nullable[DOMHighResTimeStamp]
+  latitude : Nullable[Double]
+  longitude : Nullable[Double]
+  altitude : Nullable[Double]
+  accuracy : Nullable[Double]
+  altitudeAccuracy : Nullable[Double]
+  heading : Nullable[Double]
+  speed : Nullable[Double]
 }
 
+///|
 /// Create a new GeolocationSensorReading with default values
 pub fn GeolocationSensorReading::default() -> GeolocationSensorReading {
   GeolocationSensorReading::{
-    timestamp: None,
-    latitude: None,
-    longitude: None,
-    altitude: None,
-    accuracy: None,
-    altitudeAccuracy: None,
-    heading: None,
-    speed: None,
+    timestamp: Nullable::Undefined,
+    latitude: Nullable::Undefined,
+    longitude: Nullable::Undefined,
+    altitude: Nullable::Undefined,
+    accuracy: Nullable::Undefined,
+    altitudeAccuracy: Nullable::Undefined,
+    heading: Nullable::Undefined,
+    speed: Nullable::Undefined,
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn GeolocationSensorReading::to_js(self : GeolocationSensorReading) -> JsValue =
+pub extern "js" fn GeolocationSensorReading::to_js(
+  self : GeolocationSensorReading,
+) -> JsValue =
   #| (self) => ({
-  #|   timestamp: self.timestamp,
-  #|   latitude: self.latitude,
-  #|   longitude: self.longitude,
-  #|   altitude: self.altitude,
-  #|   accuracy: self.accuracy,
-  #|   altitudeAccuracy: self.altitudeAccuracy,
-  #|   heading: self.heading,
-  #|   speed: self.speed
+  #|   timestamp: ((() => { const v = self.timestamp; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   latitude: ((() => { const v = self.latitude; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   longitude: ((() => { const v = self.longitude; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   altitude: ((() => { const v = self.altitude; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   accuracy: ((() => { const v = self.accuracy; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   altitudeAccuracy: ((() => { const v = self.altitudeAccuracy; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   heading: ((() => { const v = self.heading; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   speed: ((() => { const v = self.speed; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
 
 ///|
 /// GeolocationSensor interface
 pub type GeolocationSensor
 
-pub extern "js" fn GeolocationSensor::to_js_value(self : GeolocationSensor) -> JsValue =
+///|
+pub extern "js" fn GeolocationSensor::to_js_value(
+  self : GeolocationSensor,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn GeolocationSensor::new(options : GeolocationSensorOptions) -> GeolocationSensor =
+///|
+pub extern "js" fn GeolocationSensor::new(
+  options : GeolocationSensorOptions,
+) -> GeolocationSensor =
   #| (options) => new GeolocationSensor(options)
 
-pub extern "js" fn GeolocationSensor::read(read_options : ReadOptions) -> Promise[GeolocationSensorReading] =
+///|
+pub extern "js" fn GeolocationSensor::read(
+  read_options : ReadOptions,
+) -> Promise[GeolocationSensorReading] =
   #| (read_options) => GeolocationSensor.read(read_options)
 
-pub extern "js" fn GeolocationSensor::get_latitude(self : GeolocationSensor) -> Double? =
+///|
+pub extern "js" fn GeolocationSensor::get_latitude(
+  self : GeolocationSensor,
+) -> Double? =
   #| (self) => self.latitude
 
-pub extern "js" fn GeolocationSensor::get_longitude(self : GeolocationSensor) -> Double? =
+///|
+pub extern "js" fn GeolocationSensor::get_longitude(
+  self : GeolocationSensor,
+) -> Double? =
   #| (self) => self.longitude
 
-pub extern "js" fn GeolocationSensor::get_altitude(self : GeolocationSensor) -> Double? =
+///|
+pub extern "js" fn GeolocationSensor::get_altitude(
+  self : GeolocationSensor,
+) -> Double? =
   #| (self) => self.altitude
 
-pub extern "js" fn GeolocationSensor::get_accuracy(self : GeolocationSensor) -> Double? =
+///|
+pub extern "js" fn GeolocationSensor::get_accuracy(
+  self : GeolocationSensor,
+) -> Double? =
   #| (self) => self.accuracy
 
-pub extern "js" fn GeolocationSensor::get_altitude_accuracy(self : GeolocationSensor) -> Double? =
+///|
+pub extern "js" fn GeolocationSensor::get_altitude_accuracy(
+  self : GeolocationSensor,
+) -> Double? =
   #| (self) => self.altitudeAccuracy
 
-pub extern "js" fn GeolocationSensor::get_heading(self : GeolocationSensor) -> Double? =
+///|
+pub extern "js" fn GeolocationSensor::get_heading(
+  self : GeolocationSensor,
+) -> Double? =
   #| (self) => self.heading
 
-pub extern "js" fn GeolocationSensor::get_speed(self : GeolocationSensor) -> Double? =
+///|
+pub extern "js" fn GeolocationSensor::get_speed(
+  self : GeolocationSensor,
+) -> Double? =
   #| (self) => self.speed
-

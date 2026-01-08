@@ -9,8 +9,11 @@ pub(all) enum FullscreenNavigationUI {
   Hide
 }
 
+///|
 /// Convert to string value
-pub fn FullscreenNavigationUI::to_string(self : FullscreenNavigationUI) -> String {
+pub fn FullscreenNavigationUI::to_string(
+  self : FullscreenNavigationUI,
+) -> String {
   match self {
     Auto => "auto"
     Show => "show"
@@ -18,8 +21,11 @@ pub fn FullscreenNavigationUI::to_string(self : FullscreenNavigationUI) -> Strin
   }
 }
 
+///|
 /// Parse from string value
-pub fn FullscreenNavigationUI::from_string(s : String) -> FullscreenNavigationUI? {
+pub fn FullscreenNavigationUI::from_string(
+  s : String,
+) -> FullscreenNavigationUI? {
   match s {
     "auto" => Some(Auto)
     "show" => Some(Show)
@@ -35,18 +41,18 @@ pub struct FullscreenOptions {
   screen : ScreenDetailed?
 }
 
+///|
 /// Create a new FullscreenOptions with default values
 pub fn FullscreenOptions::default() -> FullscreenOptions {
-  FullscreenOptions::{
-    navigationUI: None,
-    screen: None,
-  }
+  FullscreenOptions::{ navigationUI: None, screen: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn FullscreenOptions::to_js(self : FullscreenOptions) -> JsValue =
+pub extern "js" fn FullscreenOptions::to_js(
+  self : FullscreenOptions,
+) -> JsValue =
   #| (self) => ({
-  #|   navigationUI: self.navigationUI,
+  #|   navigationUI: ['auto', 'show', 'hide'][self.navigationUI],
   #|   screen: self.screen
   #| })
-

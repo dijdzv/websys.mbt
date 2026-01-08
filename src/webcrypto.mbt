@@ -6,6 +6,13 @@
 pub type AlgorithmIdentifier = JsValue
 
 ///|
+/// Create AlgorithmIdentifier from String
+pub extern "js" fn AlgorithmIdentifier::from_string(
+  v : String,
+) -> AlgorithmIdentifier =
+  #| (v) => v
+
+///|
 /// HashAlgorithmIdentifier typedef
 pub type HashAlgorithmIdentifier = AlgorithmIdentifier
 
@@ -25,6 +32,7 @@ pub(all) enum KeyType {
   Secret
 }
 
+///|
 /// Convert to string value
 pub fn KeyType::to_string(self : KeyType) -> String {
   match self {
@@ -34,6 +42,7 @@ pub fn KeyType::to_string(self : KeyType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn KeyType::from_string(s : String) -> KeyType? {
   match s {
@@ -50,13 +59,13 @@ pub struct Algorithm {
   name : String
 }
 
+///|
 /// Create a new Algorithm with default values
 pub fn Algorithm::default() -> Algorithm {
-  Algorithm::{
-    name: "",
-  }
+  Algorithm::{ name: "" }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn Algorithm::to_js(self : Algorithm) -> JsValue =
   #| (self) => ({
@@ -69,13 +78,13 @@ pub struct KeyAlgorithm {
   name : String
 }
 
+///|
 /// Create a new KeyAlgorithm with default values
 pub fn KeyAlgorithm::default() -> KeyAlgorithm {
-  KeyAlgorithm::{
-    name: "",
-  }
+  KeyAlgorithm::{ name: "" }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn KeyAlgorithm::to_js(self : KeyAlgorithm) -> JsValue =
   #| (self) => ({
@@ -90,17 +99,17 @@ pub struct RsaOtherPrimesInfo {
   t : String?
 }
 
+///|
 /// Create a new RsaOtherPrimesInfo with default values
 pub fn RsaOtherPrimesInfo::default() -> RsaOtherPrimesInfo {
-  RsaOtherPrimesInfo::{
-    r: None,
-    d: None,
-    t: None,
-  }
+  RsaOtherPrimesInfo::{ r: None, d: None, t: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn RsaOtherPrimesInfo::to_js(self : RsaOtherPrimesInfo) -> JsValue =
+pub extern "js" fn RsaOtherPrimesInfo::to_js(
+  self : RsaOtherPrimesInfo,
+) -> JsValue =
   #| (self) => ({
   #|   r: self.r,
   #|   d: self.d,
@@ -114,14 +123,13 @@ pub struct CryptoKeyPair {
   privateKey : CryptoKey?
 }
 
+///|
 /// Create a new CryptoKeyPair with default values
 pub fn CryptoKeyPair::default() -> CryptoKeyPair {
-  CryptoKeyPair::{
-    publicKey: None,
-    privateKey: None,
-  }
+  CryptoKeyPair::{ publicKey: None, privateKey: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn CryptoKeyPair::to_js(self : CryptoKeyPair) -> JsValue =
   #| (self) => ({
@@ -137,15 +145,13 @@ pub struct RsaKeyGenParams {
   publicExponent : BigInteger
 }
 
+///|
 /// Create a new RsaKeyGenParams with default values
 pub fn RsaKeyGenParams::default() -> RsaKeyGenParams {
-  RsaKeyGenParams::{
-    name: "",
-    modulusLength: 0,
-    publicExponent: panic(),
-  }
+  RsaKeyGenParams::{ name: "", modulusLength: 0, publicExponent: panic() }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn RsaKeyGenParams::to_js(self : RsaKeyGenParams) -> JsValue =
   #| (self) => ({
@@ -163,6 +169,7 @@ pub struct RsaHashedKeyGenParams {
   hash : HashAlgorithmIdentifier
 }
 
+///|
 /// Create a new RsaHashedKeyGenParams with default values
 pub fn RsaHashedKeyGenParams::default() -> RsaHashedKeyGenParams {
   RsaHashedKeyGenParams::{
@@ -173,8 +180,11 @@ pub fn RsaHashedKeyGenParams::default() -> RsaHashedKeyGenParams {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn RsaHashedKeyGenParams::to_js(self : RsaHashedKeyGenParams) -> JsValue =
+pub extern "js" fn RsaHashedKeyGenParams::to_js(
+  self : RsaHashedKeyGenParams,
+) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   modulusLength: self.modulusLength,
@@ -190,15 +200,13 @@ pub struct RsaKeyAlgorithm {
   publicExponent : BigInteger
 }
 
+///|
 /// Create a new RsaKeyAlgorithm with default values
 pub fn RsaKeyAlgorithm::default() -> RsaKeyAlgorithm {
-  RsaKeyAlgorithm::{
-    name: "",
-    modulusLength: 0,
-    publicExponent: panic(),
-  }
+  RsaKeyAlgorithm::{ name: "", modulusLength: 0, publicExponent: panic() }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn RsaKeyAlgorithm::to_js(self : RsaKeyAlgorithm) -> JsValue =
   #| (self) => ({
@@ -216,6 +224,7 @@ pub struct RsaHashedKeyAlgorithm {
   hash : KeyAlgorithm
 }
 
+///|
 /// Create a new RsaHashedKeyAlgorithm with default values
 pub fn RsaHashedKeyAlgorithm::default() -> RsaHashedKeyAlgorithm {
   RsaHashedKeyAlgorithm::{
@@ -226,8 +235,11 @@ pub fn RsaHashedKeyAlgorithm::default() -> RsaHashedKeyAlgorithm {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn RsaHashedKeyAlgorithm::to_js(self : RsaHashedKeyAlgorithm) -> JsValue =
+pub extern "js" fn RsaHashedKeyAlgorithm::to_js(
+  self : RsaHashedKeyAlgorithm,
+) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   modulusLength: self.modulusLength,
@@ -242,16 +254,17 @@ pub struct RsaHashedImportParams {
   hash : HashAlgorithmIdentifier
 }
 
+///|
 /// Create a new RsaHashedImportParams with default values
 pub fn RsaHashedImportParams::default() -> RsaHashedImportParams {
-  RsaHashedImportParams::{
-    name: "",
-    hash: panic(),
-  }
+  RsaHashedImportParams::{ name: "", hash: panic() }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn RsaHashedImportParams::to_js(self : RsaHashedImportParams) -> JsValue =
+pub extern "js" fn RsaHashedImportParams::to_js(
+  self : RsaHashedImportParams,
+) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   hash: self.hash
@@ -264,14 +277,13 @@ pub struct RsaPssParams {
   saltLength : Int
 }
 
+///|
 /// Create a new RsaPssParams with default values
 pub fn RsaPssParams::default() -> RsaPssParams {
-  RsaPssParams::{
-    name: "",
-    saltLength: 0,
-  }
+  RsaPssParams::{ name: "", saltLength: 0 }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn RsaPssParams::to_js(self : RsaPssParams) -> JsValue =
   #| (self) => ({
@@ -286,14 +298,13 @@ pub struct RsaOaepParams {
   label : BufferSource?
 }
 
+///|
 /// Create a new RsaOaepParams with default values
 pub fn RsaOaepParams::default() -> RsaOaepParams {
-  RsaOaepParams::{
-    name: "",
-    label: None,
-  }
+  RsaOaepParams::{ name: "", label: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn RsaOaepParams::to_js(self : RsaOaepParams) -> JsValue =
   #| (self) => ({
@@ -308,14 +319,13 @@ pub struct EcdsaParams {
   hash : HashAlgorithmIdentifier
 }
 
+///|
 /// Create a new EcdsaParams with default values
 pub fn EcdsaParams::default() -> EcdsaParams {
-  EcdsaParams::{
-    name: "",
-    hash: panic(),
-  }
+  EcdsaParams::{ name: "", hash: panic() }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn EcdsaParams::to_js(self : EcdsaParams) -> JsValue =
   #| (self) => ({
@@ -330,14 +340,13 @@ pub struct EcKeyGenParams {
   namedCurve : NamedCurve
 }
 
+///|
 /// Create a new EcKeyGenParams with default values
 pub fn EcKeyGenParams::default() -> EcKeyGenParams {
-  EcKeyGenParams::{
-    name: "",
-    namedCurve: panic(),
-  }
+  EcKeyGenParams::{ name: "", namedCurve: panic() }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn EcKeyGenParams::to_js(self : EcKeyGenParams) -> JsValue =
   #| (self) => ({
@@ -352,14 +361,13 @@ pub struct EcKeyAlgorithm {
   namedCurve : NamedCurve
 }
 
+///|
 /// Create a new EcKeyAlgorithm with default values
 pub fn EcKeyAlgorithm::default() -> EcKeyAlgorithm {
-  EcKeyAlgorithm::{
-    name: "",
-    namedCurve: panic(),
-  }
+  EcKeyAlgorithm::{ name: "", namedCurve: panic() }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn EcKeyAlgorithm::to_js(self : EcKeyAlgorithm) -> JsValue =
   #| (self) => ({
@@ -374,16 +382,17 @@ pub struct EcKeyImportParams {
   namedCurve : NamedCurve
 }
 
+///|
 /// Create a new EcKeyImportParams with default values
 pub fn EcKeyImportParams::default() -> EcKeyImportParams {
-  EcKeyImportParams::{
-    name: "",
-    namedCurve: panic(),
-  }
+  EcKeyImportParams::{ name: "", namedCurve: panic() }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn EcKeyImportParams::to_js(self : EcKeyImportParams) -> JsValue =
+pub extern "js" fn EcKeyImportParams::to_js(
+  self : EcKeyImportParams,
+) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   namedCurve: self.namedCurve
@@ -396,16 +405,17 @@ pub struct EcdhKeyDeriveParams {
   public : CryptoKey
 }
 
+///|
 /// Create a new EcdhKeyDeriveParams with default values
 pub fn EcdhKeyDeriveParams::default() -> EcdhKeyDeriveParams {
-  EcdhKeyDeriveParams::{
-    name: "",
-    public: panic(),
-  }
+  EcdhKeyDeriveParams::{ name: "", public: panic() }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn EcdhKeyDeriveParams::to_js(self : EcdhKeyDeriveParams) -> JsValue =
+pub extern "js" fn EcdhKeyDeriveParams::to_js(
+  self : EcdhKeyDeriveParams,
+) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   public: self.public
@@ -419,15 +429,13 @@ pub struct AesCtrParams {
   length : Int
 }
 
+///|
 /// Create a new AesCtrParams with default values
 pub fn AesCtrParams::default() -> AesCtrParams {
-  AesCtrParams::{
-    name: "",
-    counter: panic(),
-    length: 0,
-  }
+  AesCtrParams::{ name: "", counter: panic(), length: 0 }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn AesCtrParams::to_js(self : AesCtrParams) -> JsValue =
   #| (self) => ({
@@ -443,14 +451,13 @@ pub struct AesKeyAlgorithm {
   length : Int
 }
 
+///|
 /// Create a new AesKeyAlgorithm with default values
 pub fn AesKeyAlgorithm::default() -> AesKeyAlgorithm {
-  AesKeyAlgorithm::{
-    name: "",
-    length: 0,
-  }
+  AesKeyAlgorithm::{ name: "", length: 0 }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn AesKeyAlgorithm::to_js(self : AesKeyAlgorithm) -> JsValue =
   #| (self) => ({
@@ -465,14 +472,13 @@ pub struct AesKeyGenParams {
   length : Int
 }
 
+///|
 /// Create a new AesKeyGenParams with default values
 pub fn AesKeyGenParams::default() -> AesKeyGenParams {
-  AesKeyGenParams::{
-    name: "",
-    length: 0,
-  }
+  AesKeyGenParams::{ name: "", length: 0 }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn AesKeyGenParams::to_js(self : AesKeyGenParams) -> JsValue =
   #| (self) => ({
@@ -487,16 +493,17 @@ pub struct AesDerivedKeyParams {
   length : Int
 }
 
+///|
 /// Create a new AesDerivedKeyParams with default values
 pub fn AesDerivedKeyParams::default() -> AesDerivedKeyParams {
-  AesDerivedKeyParams::{
-    name: "",
-    length: 0,
-  }
+  AesDerivedKeyParams::{ name: "", length: 0 }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AesDerivedKeyParams::to_js(self : AesDerivedKeyParams) -> JsValue =
+pub extern "js" fn AesDerivedKeyParams::to_js(
+  self : AesDerivedKeyParams,
+) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   length: self.length
@@ -509,14 +516,13 @@ pub struct AesCbcParams {
   iv : BufferSource
 }
 
+///|
 /// Create a new AesCbcParams with default values
 pub fn AesCbcParams::default() -> AesCbcParams {
-  AesCbcParams::{
-    name: "",
-    iv: panic(),
-  }
+  AesCbcParams::{ name: "", iv: panic() }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn AesCbcParams::to_js(self : AesCbcParams) -> JsValue =
   #| (self) => ({
@@ -533,16 +539,13 @@ pub struct AesGcmParams {
   tagLength : Int?
 }
 
+///|
 /// Create a new AesGcmParams with default values
 pub fn AesGcmParams::default() -> AesGcmParams {
-  AesGcmParams::{
-    name: "",
-    iv: panic(),
-    additionalData: None,
-    tagLength: None,
-  }
+  AesGcmParams::{ name: "", iv: panic(), additionalData: None, tagLength: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn AesGcmParams::to_js(self : AesGcmParams) -> JsValue =
   #| (self) => ({
@@ -560,15 +563,13 @@ pub struct HmacImportParams {
   length : Int?
 }
 
+///|
 /// Create a new HmacImportParams with default values
 pub fn HmacImportParams::default() -> HmacImportParams {
-  HmacImportParams::{
-    name: "",
-    hash: panic(),
-    length: None,
-  }
+  HmacImportParams::{ name: "", hash: panic(), length: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn HmacImportParams::to_js(self : HmacImportParams) -> JsValue =
   #| (self) => ({
@@ -585,15 +586,13 @@ pub struct HmacKeyAlgorithm {
   length : Int
 }
 
+///|
 /// Create a new HmacKeyAlgorithm with default values
 pub fn HmacKeyAlgorithm::default() -> HmacKeyAlgorithm {
-  HmacKeyAlgorithm::{
-    name: "",
-    hash: panic(),
-    length: 0,
-  }
+  HmacKeyAlgorithm::{ name: "", hash: panic(), length: 0 }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn HmacKeyAlgorithm::to_js(self : HmacKeyAlgorithm) -> JsValue =
   #| (self) => ({
@@ -610,15 +609,13 @@ pub struct HmacKeyGenParams {
   length : Int?
 }
 
+///|
 /// Create a new HmacKeyGenParams with default values
 pub fn HmacKeyGenParams::default() -> HmacKeyGenParams {
-  HmacKeyGenParams::{
-    name: "",
-    hash: panic(),
-    length: None,
-  }
+  HmacKeyGenParams::{ name: "", hash: panic(), length: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn HmacKeyGenParams::to_js(self : HmacKeyGenParams) -> JsValue =
   #| (self) => ({
@@ -636,16 +633,13 @@ pub struct HkdfParams {
   info : BufferSource
 }
 
+///|
 /// Create a new HkdfParams with default values
 pub fn HkdfParams::default() -> HkdfParams {
-  HkdfParams::{
-    name: "",
-    hash: panic(),
-    salt: panic(),
-    info: panic(),
-  }
+  HkdfParams::{ name: "", hash: panic(), salt: panic(), info: panic() }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn HkdfParams::to_js(self : HkdfParams) -> JsValue =
   #| (self) => ({
@@ -664,16 +658,13 @@ pub struct Pbkdf2Params {
   hash : HashAlgorithmIdentifier
 }
 
+///|
 /// Create a new Pbkdf2Params with default values
 pub fn Pbkdf2Params::default() -> Pbkdf2Params {
-  Pbkdf2Params::{
-    name: "",
-    salt: panic(),
-    iterations: 0,
-    hash: panic(),
-  }
+  Pbkdf2Params::{ name: "", salt: panic(), iterations: 0, hash: panic() }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn Pbkdf2Params::to_js(self : Pbkdf2Params) -> JsValue =
   #| (self) => ({
@@ -687,15 +678,22 @@ pub extern "js" fn Pbkdf2Params::to_js(self : Pbkdf2Params) -> JsValue =
 /// Crypto interface
 pub type Crypto
 
+///|
 pub extern "js" fn Crypto::to_js_value(self : Crypto) -> JsValue =
   #| (self) => self
 
+///|
 pub extern "js" fn Crypto::get_subtle(self : Crypto) -> SubtleCrypto =
   #| (self) => self.subtle
 
-pub extern "js" fn Crypto::get_random_values(self : Crypto, array : ArrayBufferView) -> ArrayBufferView =
+///|
+pub extern "js" fn Crypto::get_random_values(
+  self : Crypto,
+  array : ArrayBufferView,
+) -> ArrayBufferView =
   #| (self, array) => self.getRandomValues(array)
 
+///|
 pub extern "js" fn Crypto::random_u_u_i_d(self : Crypto) -> String =
   #| (self) => self.randomUUID()
 
@@ -703,18 +701,23 @@ pub extern "js" fn Crypto::random_u_u_i_d(self : Crypto) -> String =
 /// CryptoKey interface
 pub type CryptoKey
 
+///|
 pub extern "js" fn CryptoKey::to_js_value(self : CryptoKey) -> JsValue =
   #| (self) => self
 
+///|
 pub extern "js" fn CryptoKey::get_type(self : CryptoKey) -> KeyType =
   #| (self) => self.type
 
+///|
 pub extern "js" fn CryptoKey::get_extractable(self : CryptoKey) -> Bool =
   #| (self) => self.extractable
 
+///|
 pub extern "js" fn CryptoKey::get_algorithm(self : CryptoKey) -> JsValue =
   #| (self) => self.algorithm
 
+///|
 pub extern "js" fn CryptoKey::get_usages(self : CryptoKey) -> JsValue =
   #| (self) => self.usages
 
@@ -722,66 +725,194 @@ pub extern "js" fn CryptoKey::get_usages(self : CryptoKey) -> JsValue =
 /// SubtleCrypto interface
 pub type SubtleCrypto
 
+///|
 pub extern "js" fn SubtleCrypto::to_js_value(self : SubtleCrypto) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn SubtleCrypto::encrypt(self : SubtleCrypto, algorithm : AlgorithmIdentifier, key : CryptoKey, data : BufferSource) -> Promise[ArrayBuffer] =
+///|
+pub extern "js" fn SubtleCrypto::encrypt(
+  self : SubtleCrypto,
+  algorithm : AlgorithmIdentifier,
+  key : CryptoKey,
+  data : BufferSource,
+) -> Promise[ArrayBuffer] =
   #| (self, algorithm, key, data) => self.encrypt(algorithm, key, data)
 
-pub extern "js" fn SubtleCrypto::decrypt(self : SubtleCrypto, algorithm : AlgorithmIdentifier, key : CryptoKey, data : BufferSource) -> Promise[ArrayBuffer] =
+///|
+pub extern "js" fn SubtleCrypto::decrypt(
+  self : SubtleCrypto,
+  algorithm : AlgorithmIdentifier,
+  key : CryptoKey,
+  data : BufferSource,
+) -> Promise[ArrayBuffer] =
   #| (self, algorithm, key, data) => self.decrypt(algorithm, key, data)
 
-pub extern "js" fn SubtleCrypto::sign(self : SubtleCrypto, algorithm : AlgorithmIdentifier, key : CryptoKey, data : BufferSource) -> Promise[ArrayBuffer] =
+///|
+pub extern "js" fn SubtleCrypto::sign(
+  self : SubtleCrypto,
+  algorithm : AlgorithmIdentifier,
+  key : CryptoKey,
+  data : BufferSource,
+) -> Promise[ArrayBuffer] =
   #| (self, algorithm, key, data) => self.sign(algorithm, key, data)
 
-pub extern "js" fn SubtleCrypto::verify(self : SubtleCrypto, algorithm : AlgorithmIdentifier, key : CryptoKey, signature : BufferSource, data : BufferSource) -> Promise[Bool] =
+///|
+pub extern "js" fn SubtleCrypto::verify(
+  self : SubtleCrypto,
+  algorithm : AlgorithmIdentifier,
+  key : CryptoKey,
+  signature : BufferSource,
+  data : BufferSource,
+) -> Promise[Bool] =
   #| (self, algorithm, key, signature, data) => self.verify(algorithm, key, signature, data)
 
-pub extern "js" fn SubtleCrypto::digest(self : SubtleCrypto, algorithm : AlgorithmIdentifier, data : BufferSource) -> Promise[ArrayBuffer] =
+///|
+pub extern "js" fn SubtleCrypto::digest(
+  self : SubtleCrypto,
+  algorithm : AlgorithmIdentifier,
+  data : BufferSource,
+) -> Promise[ArrayBuffer] =
   #| (self, algorithm, data) => self.digest(algorithm, data)
 
-pub extern "js" fn SubtleCrypto::generate_key(self : SubtleCrypto, algorithm : AlgorithmIdentifier, extractable : Bool, key_usages : Array[KeyUsage]) -> Promise[JsValue] =
+///|
+pub extern "js" fn SubtleCrypto::generate_key(
+  self : SubtleCrypto,
+  algorithm : AlgorithmIdentifier,
+  extractable : Bool,
+  key_usages : Array[KeyUsage],
+) -> Promise[JsValue] =
   #| (self, algorithm, extractable, key_usages) => self.generateKey(algorithm, extractable, key_usages)
 
-pub extern "js" fn SubtleCrypto::derive_key(self : SubtleCrypto, algorithm : AlgorithmIdentifier, base_key : CryptoKey, derived_key_type : AlgorithmIdentifier, extractable : Bool, key_usages : Array[KeyUsage]) -> Promise[CryptoKey] =
+///|
+pub extern "js" fn SubtleCrypto::derive_key(
+  self : SubtleCrypto,
+  algorithm : AlgorithmIdentifier,
+  base_key : CryptoKey,
+  derived_key_type : AlgorithmIdentifier,
+  extractable : Bool,
+  key_usages : Array[KeyUsage],
+) -> Promise[CryptoKey] =
   #| (self, algorithm, base_key, derived_key_type, extractable, key_usages) => self.deriveKey(algorithm, base_key, derived_key_type, extractable, key_usages)
 
-pub extern "js" fn SubtleCrypto::derive_bits(self : SubtleCrypto, algorithm : AlgorithmIdentifier, base_key : CryptoKey) -> Promise[ArrayBuffer] =
+///|
+pub extern "js" fn SubtleCrypto::derive_bits(
+  self : SubtleCrypto,
+  algorithm : AlgorithmIdentifier,
+  base_key : CryptoKey,
+) -> Promise[ArrayBuffer] =
   #| (self, algorithm, base_key) => self.deriveBits(algorithm, base_key)
 
-pub extern "js" fn SubtleCrypto::derive_bits_with_length(self : SubtleCrypto, algorithm : AlgorithmIdentifier, base_key : CryptoKey, length : Int?) -> Promise[ArrayBuffer] =
+///|
+pub extern "js" fn SubtleCrypto::derive_bits_with_length(
+  self : SubtleCrypto,
+  algorithm : AlgorithmIdentifier,
+  base_key : CryptoKey,
+  length : Int?,
+) -> Promise[ArrayBuffer] =
   #| (self, algorithm, base_key, length) => self.deriveBits(algorithm, base_key, length)
 
-pub extern "js" fn SubtleCrypto::import_key(self : SubtleCrypto, format : KeyFormat, key_data : JsValue, algorithm : AlgorithmIdentifier, extractable : Bool, key_usages : Array[KeyUsage]) -> Promise[CryptoKey] =
+///|
+pub extern "js" fn SubtleCrypto::import_key(
+  self : SubtleCrypto,
+  format : KeyFormat,
+  key_data : JsValue,
+  algorithm : AlgorithmIdentifier,
+  extractable : Bool,
+  key_usages : Array[KeyUsage],
+) -> Promise[CryptoKey] =
   #| (self, format, key_data, algorithm, extractable, key_usages) => self.importKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key_data, algorithm, extractable, key_usages)
 
-pub extern "js" fn SubtleCrypto::export_key(self : SubtleCrypto, format : KeyFormat, key : CryptoKey) -> Promise[JsValue] =
+///|
+pub extern "js" fn SubtleCrypto::export_key(
+  self : SubtleCrypto,
+  format : KeyFormat,
+  key : CryptoKey,
+) -> Promise[JsValue] =
   #| (self, format, key) => self.exportKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key)
 
-pub extern "js" fn SubtleCrypto::wrap_key(self : SubtleCrypto, format : KeyFormat, key : CryptoKey, wrapping_key : CryptoKey, wrap_algorithm : AlgorithmIdentifier) -> Promise[ArrayBuffer] =
+///|
+pub extern "js" fn SubtleCrypto::wrap_key(
+  self : SubtleCrypto,
+  format : KeyFormat,
+  key : CryptoKey,
+  wrapping_key : CryptoKey,
+  wrap_algorithm : AlgorithmIdentifier,
+) -> Promise[ArrayBuffer] =
   #| (self, format, key, wrapping_key, wrap_algorithm) => self.wrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key, wrapping_key, wrap_algorithm)
 
-pub extern "js" fn SubtleCrypto::unwrap_key(self : SubtleCrypto, format : KeyFormat, wrapped_key : BufferSource, unwrapping_key : CryptoKey, unwrap_algorithm : AlgorithmIdentifier, unwrapped_key_algorithm : AlgorithmIdentifier, extractable : Bool, key_usages : Array[KeyUsage]) -> Promise[CryptoKey] =
+///|
+pub extern "js" fn SubtleCrypto::unwrap_key(
+  self : SubtleCrypto,
+  format : KeyFormat,
+  wrapped_key : BufferSource,
+  unwrapping_key : CryptoKey,
+  unwrap_algorithm : AlgorithmIdentifier,
+  unwrapped_key_algorithm : AlgorithmIdentifier,
+  extractable : Bool,
+  key_usages : Array[KeyUsage],
+) -> Promise[CryptoKey] =
   #| (self, format, wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages) => self.unwrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages)
 
-pub extern "js" fn SubtleCrypto::encapsulate_key(self : SubtleCrypto, encapsulation_algorithm : AlgorithmIdentifier, encapsulation_key : CryptoKey, shared_key_algorithm : AlgorithmIdentifier, extractable : Bool, key_usages : Array[KeyUsage]) -> Promise[EncapsulatedKey] =
+///|
+pub extern "js" fn SubtleCrypto::encapsulate_key(
+  self : SubtleCrypto,
+  encapsulation_algorithm : AlgorithmIdentifier,
+  encapsulation_key : CryptoKey,
+  shared_key_algorithm : AlgorithmIdentifier,
+  extractable : Bool,
+  key_usages : Array[KeyUsage],
+) -> Promise[EncapsulatedKey] =
   #| (self, encapsulation_algorithm, encapsulation_key, shared_key_algorithm, extractable, key_usages) => self.encapsulateKey(encapsulation_algorithm, encapsulation_key, shared_key_algorithm, extractable, key_usages)
 
-pub extern "js" fn SubtleCrypto::encapsulate_bits(self : SubtleCrypto, encapsulation_algorithm : AlgorithmIdentifier, encapsulation_key : CryptoKey) -> Promise[EncapsulatedBits] =
+///|
+pub extern "js" fn SubtleCrypto::encapsulate_bits(
+  self : SubtleCrypto,
+  encapsulation_algorithm : AlgorithmIdentifier,
+  encapsulation_key : CryptoKey,
+) -> Promise[EncapsulatedBits] =
   #| (self, encapsulation_algorithm, encapsulation_key) => self.encapsulateBits(encapsulation_algorithm, encapsulation_key)
 
-pub extern "js" fn SubtleCrypto::decapsulate_key(self : SubtleCrypto, decapsulation_algorithm : AlgorithmIdentifier, decapsulation_key : CryptoKey, ciphertext : BufferSource, shared_key_algorithm : AlgorithmIdentifier, extractable : Bool, key_usages : Array[KeyUsage]) -> Promise[CryptoKey] =
+///|
+pub extern "js" fn SubtleCrypto::decapsulate_key(
+  self : SubtleCrypto,
+  decapsulation_algorithm : AlgorithmIdentifier,
+  decapsulation_key : CryptoKey,
+  ciphertext : BufferSource,
+  shared_key_algorithm : AlgorithmIdentifier,
+  extractable : Bool,
+  key_usages : Array[KeyUsage],
+) -> Promise[CryptoKey] =
   #| (self, decapsulation_algorithm, decapsulation_key, ciphertext, shared_key_algorithm, extractable, key_usages) => self.decapsulateKey(decapsulation_algorithm, decapsulation_key, ciphertext, shared_key_algorithm, extractable, key_usages)
 
-pub extern "js" fn SubtleCrypto::decapsulate_bits(self : SubtleCrypto, decapsulation_algorithm : AlgorithmIdentifier, decapsulation_key : CryptoKey, ciphertext : BufferSource) -> Promise[ArrayBuffer] =
+///|
+pub extern "js" fn SubtleCrypto::decapsulate_bits(
+  self : SubtleCrypto,
+  decapsulation_algorithm : AlgorithmIdentifier,
+  decapsulation_key : CryptoKey,
+  ciphertext : BufferSource,
+) -> Promise[ArrayBuffer] =
   #| (self, decapsulation_algorithm, decapsulation_key, ciphertext) => self.decapsulateBits(decapsulation_algorithm, decapsulation_key, ciphertext)
 
-pub extern "js" fn SubtleCrypto::get_public_key(self : SubtleCrypto, key : CryptoKey, key_usages : Array[KeyUsage]) -> Promise[CryptoKey] =
+///|
+pub extern "js" fn SubtleCrypto::get_public_key(
+  self : SubtleCrypto,
+  key : CryptoKey,
+  key_usages : Array[KeyUsage],
+) -> Promise[CryptoKey] =
   #| (self, key, key_usages) => self.getPublicKey(key, key_usages)
 
-pub extern "js" fn SubtleCrypto::supports(operation : String, algorithm : AlgorithmIdentifier, length : Int?) -> Bool =
+///|
+pub extern "js" fn SubtleCrypto::supports(
+  operation : String,
+  algorithm : AlgorithmIdentifier,
+  length : Int?,
+) -> Bool =
   #| (operation, algorithm, length) => SubtleCrypto.supports(operation, algorithm, length)
 
-pub extern "js" fn SubtleCrypto::supports_with_operation_and_algorithm_algorithm_identifier_and_additional_algorithm_algorithm_identifier(operation : String, algorithm : AlgorithmIdentifier, additional_algorithm : AlgorithmIdentifier) -> Bool =
+///|
+pub extern "js" fn SubtleCrypto::supports_with_operation_and_algorithm_algorithm_identifier_and_additional_algorithm_algorithm_identifier(
+  operation : String,
+  algorithm : AlgorithmIdentifier,
+  additional_algorithm : AlgorithmIdentifier,
+) -> Bool =
   #| (operation, algorithm, additional_algorithm) => SubtleCrypto.supports(operation, algorithm, additional_algorithm)
-

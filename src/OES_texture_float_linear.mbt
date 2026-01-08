@@ -5,6 +5,8 @@
 /// OES_texture_float_linear interface
 pub type OES_texture_float_linear
 
-pub extern "js" fn OES_texture_float_linear::to_js_value(self : OES_texture_float_linear) -> JsValue =
+///|
+pub extern "js" fn OES_texture_float_linear::to_js_value(
+  self : OES_texture_float_linear,
+) -> JsValue =
   #| (self) => self
-

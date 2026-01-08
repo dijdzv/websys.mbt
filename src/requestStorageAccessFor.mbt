@@ -7,16 +7,17 @@ pub struct TopLevelStorageAccessPermissionDescriptor {
   requestedOrigin : String?
 }
 
+///|
 /// Create a new TopLevelStorageAccessPermissionDescriptor with default values
 pub fn TopLevelStorageAccessPermissionDescriptor::default() -> TopLevelStorageAccessPermissionDescriptor {
-  TopLevelStorageAccessPermissionDescriptor::{
-    requestedOrigin: None,
-  }
+  TopLevelStorageAccessPermissionDescriptor::{ requestedOrigin: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn TopLevelStorageAccessPermissionDescriptor::to_js(self : TopLevelStorageAccessPermissionDescriptor) -> JsValue =
+pub extern "js" fn TopLevelStorageAccessPermissionDescriptor::to_js(
+  self : TopLevelStorageAccessPermissionDescriptor,
+) -> JsValue =
   #| (self) => ({
   #|   requestedOrigin: self.requestedOrigin
   #| })
-

@@ -10,8 +10,11 @@ pub(all) enum ScriptingPolicyViolationType {
   Eval
 }
 
+///|
 /// Convert to string value
-pub fn ScriptingPolicyViolationType::to_string(self : ScriptingPolicyViolationType) -> String {
+pub fn ScriptingPolicyViolationType::to_string(
+  self : ScriptingPolicyViolationType,
+) -> String {
   match self {
     ExternalScript => "externalScript"
     InlineScript => "inlineScript"
@@ -20,8 +23,11 @@ pub fn ScriptingPolicyViolationType::to_string(self : ScriptingPolicyViolationTy
   }
 }
 
+///|
 /// Parse from string value
-pub fn ScriptingPolicyViolationType::from_string(s : String) -> ScriptingPolicyViolationType? {
+pub fn ScriptingPolicyViolationType::from_string(
+  s : String,
+) -> ScriptingPolicyViolationType? {
   match s {
     "externalScript" => Some(ExternalScript)
     "inlineScript" => Some(InlineScript)
@@ -35,30 +41,33 @@ pub fn ScriptingPolicyViolationType::from_string(s : String) -> ScriptingPolicyV
 /// ScriptingPolicyReportBody dictionary
 pub struct ScriptingPolicyReportBody {
   violationType : String?
-  violationURL : String??
-  violationSample : String??
+  violationURL : Nullable[String]
+  violationSample : Nullable[String]
   lineno : Int?
   colno : Int?
 }
 
+///|
 /// Create a new ScriptingPolicyReportBody with default values
 pub fn ScriptingPolicyReportBody::default() -> ScriptingPolicyReportBody {
   ScriptingPolicyReportBody::{
     violationType: None,
-    violationURL: None,
-    violationSample: None,
+    violationURL: Nullable::Undefined,
+    violationSample: Nullable::Undefined,
     lineno: None,
     colno: None,
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ScriptingPolicyReportBody::to_js(self : ScriptingPolicyReportBody) -> JsValue =
+pub extern "js" fn ScriptingPolicyReportBody::to_js(
+  self : ScriptingPolicyReportBody,
+) -> JsValue =
   #| (self) => ({
   #|   violationType: self.violationType,
-  #|   violationURL: self.violationURL,
-  #|   violationSample: self.violationSample,
+  #|   violationURL: ((() => { const v = self.violationURL; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   violationSample: ((() => { const v = self.violationSample; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   lineno: self.lineno,
   #|   colno: self.colno
   #| })
-

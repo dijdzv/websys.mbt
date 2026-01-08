@@ -8,6 +8,7 @@ pub(all) enum RefreshPolicy {
   Refresh
 }
 
+///|
 /// Convert to string value
 pub fn RefreshPolicy::to_string(self : RefreshPolicy) -> String {
   match self {
@@ -16,6 +17,7 @@ pub fn RefreshPolicy::to_string(self : RefreshPolicy) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn RefreshPolicy::from_string(s : String) -> RefreshPolicy? {
   match s {
@@ -31,6 +33,7 @@ pub(all) enum TokenVersion {
   N1
 }
 
+///|
 /// Convert to string value
 pub fn TokenVersion::to_string(self : TokenVersion) -> String {
   match self {
@@ -38,6 +41,7 @@ pub fn TokenVersion::to_string(self : TokenVersion) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn TokenVersion::from_string(s : String) -> TokenVersion? {
   match s {
@@ -54,6 +58,7 @@ pub(all) enum OperationType {
   TokenRedemption
 }
 
+///|
 /// Convert to string value
 pub fn OperationType::to_string(self : OperationType) -> String {
   match self {
@@ -63,6 +68,7 @@ pub fn OperationType::to_string(self : OperationType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn OperationType::from_string(s : String) -> OperationType? {
   match s {
@@ -82,6 +88,7 @@ pub struct PrivateToken {
   issuers : Array[String]?
 }
 
+///|
 /// Create a new PrivateToken with default values
 pub fn PrivateToken::default() -> PrivateToken {
   PrivateToken::{
@@ -92,12 +99,12 @@ pub fn PrivateToken::default() -> PrivateToken {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn PrivateToken::to_js(self : PrivateToken) -> JsValue =
   #| (self) => ({
-  #|   version: self.version,
-  #|   operation: self.operation,
-  #|   refreshPolicy: self.refreshPolicy,
+  #|   version: ['1'][self.version],
+  #|   operation: ['token-request', 'send-redemption-record', 'token-redemption'][self.operation],
+  #|   refreshPolicy: ['none', 'refresh'][self.refreshPolicy],
   #|   issuers: self.issuers
   #| })
-

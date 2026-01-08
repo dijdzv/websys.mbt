@@ -15,6 +15,7 @@ pub(all) enum ImportExportKind {
   Tag
 }
 
+///|
 /// Convert to string value
 pub fn ImportExportKind::to_string(self : ImportExportKind) -> String {
   match self {
@@ -26,6 +27,7 @@ pub fn ImportExportKind::to_string(self : ImportExportKind) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn ImportExportKind::from_string(s : String) -> ImportExportKind? {
   match s {
@@ -45,6 +47,7 @@ pub(all) enum AddressType {
   I64
 }
 
+///|
 /// Convert to string value
 pub fn AddressType::to_string(self : AddressType) -> String {
   match self {
@@ -53,6 +56,7 @@ pub fn AddressType::to_string(self : AddressType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn AddressType::from_string(s : String) -> AddressType? {
   match s {
@@ -69,6 +73,7 @@ pub(all) enum TableKind {
   Anyfunc
 }
 
+///|
 /// Convert to string value
 pub fn TableKind::to_string(self : TableKind) -> String {
   match self {
@@ -77,6 +82,7 @@ pub fn TableKind::to_string(self : TableKind) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn TableKind::from_string(s : String) -> TableKind? {
   match s {
@@ -98,6 +104,7 @@ pub(all) enum ValueType {
   Anyfunc
 }
 
+///|
 /// Convert to string value
 pub fn ValueType::to_string(self : ValueType) -> String {
   match self {
@@ -111,6 +118,7 @@ pub fn ValueType::to_string(self : ValueType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn ValueType::from_string(s : String) -> ValueType? {
   match s {
@@ -132,16 +140,17 @@ pub struct WebAssemblyInstantiatedSource {
   instance : Instance
 }
 
+///|
 /// Create a new WebAssemblyInstantiatedSource with default values
 pub fn WebAssemblyInstantiatedSource::default() -> WebAssemblyInstantiatedSource {
-  WebAssemblyInstantiatedSource::{
-    module_: panic(),
-    instance: panic(),
-  }
+  WebAssemblyInstantiatedSource::{ module_: panic(), instance: panic() }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn WebAssemblyInstantiatedSource::to_js(self : WebAssemblyInstantiatedSource) -> JsValue =
+pub extern "js" fn WebAssemblyInstantiatedSource::to_js(
+  self : WebAssemblyInstantiatedSource,
+) -> JsValue =
   #| (self) => ({
   #|   module: self.module_,
   #|   instance: self.instance
@@ -150,22 +159,26 @@ pub extern "js" fn WebAssemblyInstantiatedSource::to_js(self : WebAssemblyInstan
 ///|
 /// WebAssemblyCompileOptions dictionary
 pub struct WebAssemblyCompileOptions {
-  importedStringConstants : String??
+  importedStringConstants : Nullable[String]
   builtins : Array[String]?
 }
 
+///|
 /// Create a new WebAssemblyCompileOptions with default values
 pub fn WebAssemblyCompileOptions::default() -> WebAssemblyCompileOptions {
   WebAssemblyCompileOptions::{
-    importedStringConstants: None,
+    importedStringConstants: Nullable::Undefined,
     builtins: None,
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn WebAssemblyCompileOptions::to_js(self : WebAssemblyCompileOptions) -> JsValue =
+pub extern "js" fn WebAssemblyCompileOptions::to_js(
+  self : WebAssemblyCompileOptions,
+) -> JsValue =
   #| (self) => ({
-  #|   importedStringConstants: self.importedStringConstants,
+  #|   importedStringConstants: ((() => { const v = self.importedStringConstants; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   builtins: self.builtins
   #| })
 
@@ -176,19 +189,20 @@ pub struct ModuleExportDescriptor {
   kind : ImportExportKind
 }
 
+///|
 /// Create a new ModuleExportDescriptor with default values
 pub fn ModuleExportDescriptor::default() -> ModuleExportDescriptor {
-  ModuleExportDescriptor::{
-    name: "",
-    kind: panic(),
-  }
+  ModuleExportDescriptor::{ name: "", kind: panic() }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ModuleExportDescriptor::to_js(self : ModuleExportDescriptor) -> JsValue =
+pub extern "js" fn ModuleExportDescriptor::to_js(
+  self : ModuleExportDescriptor,
+) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   kind: self.kind
+  #|   kind: ['function', 'table', 'memory', 'global', 'tag'][self.kind]
   #| })
 
 ///|
@@ -199,21 +213,21 @@ pub struct ModuleImportDescriptor {
   kind : ImportExportKind
 }
 
+///|
 /// Create a new ModuleImportDescriptor with default values
 pub fn ModuleImportDescriptor::default() -> ModuleImportDescriptor {
-  ModuleImportDescriptor::{
-    module_: "",
-    name: "",
-    kind: panic(),
-  }
+  ModuleImportDescriptor::{ module_: "", name: "", kind: panic() }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ModuleImportDescriptor::to_js(self : ModuleImportDescriptor) -> JsValue =
+pub extern "js" fn ModuleImportDescriptor::to_js(
+  self : ModuleImportDescriptor,
+) -> JsValue =
   #| (self) => ({
   #|   module: self.module_,
   #|   name: self.name,
-  #|   kind: self.kind
+  #|   kind: ['function', 'table', 'memory', 'global', 'tag'][self.kind]
   #| })
 
 ///|
@@ -224,21 +238,19 @@ pub struct MemoryDescriptor {
   address : AddressType?
 }
 
+///|
 /// Create a new MemoryDescriptor with default values
 pub fn MemoryDescriptor::default() -> MemoryDescriptor {
-  MemoryDescriptor::{
-    initial: panic(),
-    maximum: None,
-    address: None,
-  }
+  MemoryDescriptor::{ initial: panic(), maximum: None, address: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MemoryDescriptor::to_js(self : MemoryDescriptor) -> JsValue =
   #| (self) => ({
   #|   initial: self.initial,
   #|   maximum: self.maximum,
-  #|   address: self.address
+  #|   address: ['i32', 'i64'][self.address]
   #| })
 
 ///|
@@ -250,6 +262,7 @@ pub struct TableDescriptor {
   address : AddressType?
 }
 
+///|
 /// Create a new TableDescriptor with default values
 pub fn TableDescriptor::default() -> TableDescriptor {
   TableDescriptor::{
@@ -260,13 +273,14 @@ pub fn TableDescriptor::default() -> TableDescriptor {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn TableDescriptor::to_js(self : TableDescriptor) -> JsValue =
   #| (self) => ({
-  #|   element: self.element,
+  #|   element: ['externref', 'anyfunc'][self.element],
   #|   initial: self.initial,
   #|   maximum: self.maximum,
-  #|   address: self.address
+  #|   address: ['i32', 'i64'][self.address]
   #| })
 
 ///|
@@ -276,18 +290,17 @@ pub struct GlobalDescriptor {
   mutable : Bool?
 }
 
+///|
 /// Create a new GlobalDescriptor with default values
 pub fn GlobalDescriptor::default() -> GlobalDescriptor {
-  GlobalDescriptor::{
-    value: panic(),
-    mutable: None,
-  }
+  GlobalDescriptor::{ value: panic(), mutable: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn GlobalDescriptor::to_js(self : GlobalDescriptor) -> JsValue =
   #| (self) => ({
-  #|   value: self.value,
+  #|   value: ['i32', 'i64', 'f32', 'f64', 'v128', 'externref', 'anyfunc'][self.value],
   #|   mutable: self.mutable
   #| })
 
@@ -297,13 +310,13 @@ pub struct TagType {
   parameters : Array[ValueType]
 }
 
+///|
 /// Create a new TagType with default values
 pub fn TagType::default() -> TagType {
-  TagType::{
-    parameters: [],
-  }
+  TagType::{ parameters: [] }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn TagType::to_js(self : TagType) -> JsValue =
   #| (self) => ({
@@ -316,13 +329,13 @@ pub struct ExceptionOptions {
   traceStack : Bool?
 }
 
+///|
 /// Create a new ExceptionOptions with default values
 pub fn ExceptionOptions::default() -> ExceptionOptions {
-  ExceptionOptions::{
-    traceStack: None,
-  }
+  ExceptionOptions::{ traceStack: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn ExceptionOptions::to_js(self : ExceptionOptions) -> JsValue =
   #| (self) => ({
@@ -333,31 +346,52 @@ pub extern "js" fn ExceptionOptions::to_js(self : ExceptionOptions) -> JsValue =
 /// Module interface
 pub type Module
 
+///|
 pub extern "js" fn Module::to_js_value(self : Module) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Module::new(bytes : BufferSource, options : WebAssemblyCompileOptions) -> Module =
+///|
+pub extern "js" fn Module::new(
+  bytes : BufferSource,
+  options : WebAssemblyCompileOptions,
+) -> Module =
   #| (bytes, options) => new Module(bytes, options)
 
-pub extern "js" fn Module::exports(module_object : Module) -> Array[ModuleExportDescriptor] =
+///|
+pub extern "js" fn Module::exports(
+  module_object : Module,
+) -> Array[ModuleExportDescriptor] =
   #| (module_object) => Module.exports(module_object)
 
-pub extern "js" fn Module::imports(module_object : Module) -> Array[ModuleImportDescriptor] =
+///|
+pub extern "js" fn Module::imports(
+  module_object : Module,
+) -> Array[ModuleImportDescriptor] =
   #| (module_object) => Module.imports(module_object)
 
-pub extern "js" fn Module::custom_sections(module_object : Module, section_name : String) -> Array[ArrayBuffer] =
+///|
+pub extern "js" fn Module::custom_sections(
+  module_object : Module,
+  section_name : String,
+) -> Array[ArrayBuffer] =
   #| (module_object, section_name) => Module.customSections(module_object, section_name)
 
 ///|
 /// Instance interface
 pub type Instance
 
+///|
 pub extern "js" fn Instance::to_js_value(self : Instance) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Instance::new(module_ : Module, import_object : JsValue) -> Instance =
+///|
+pub extern "js" fn Instance::new(
+  module_ : Module,
+  import_object : JsValue,
+) -> Instance =
   #| (module_, import_object) => new Instance(module_, import_object)
 
+///|
 pub extern "js" fn Instance::get_exports(self : Instance) -> JsValue =
   #| (self) => self.exports
 
@@ -365,21 +399,30 @@ pub extern "js" fn Instance::get_exports(self : Instance) -> JsValue =
 /// Memory interface
 pub type Memory
 
+///|
 pub extern "js" fn Memory::to_js_value(self : Memory) -> JsValue =
   #| (self) => self
 
+///|
 pub extern "js" fn Memory::new(descriptor : MemoryDescriptor) -> Memory =
   #| (descriptor) => new Memory(descriptor)
 
-pub extern "js" fn Memory::grow(self : Memory, delta : AddressValue) -> AddressValue =
+///|
+pub extern "js" fn Memory::grow(
+  self : Memory,
+  delta : AddressValue,
+) -> AddressValue =
   #| (self, delta) => self.grow(delta)
 
+///|
 pub extern "js" fn Memory::to_fixed_length_buffer(self : Memory) -> ArrayBuffer =
   #| (self) => self.toFixedLengthBuffer()
 
+///|
 pub extern "js" fn Memory::to_resizable_buffer(self : Memory) -> ArrayBuffer =
   #| (self) => self.toResizableBuffer()
 
+///|
 pub extern "js" fn Memory::get_buffer(self : Memory) -> ArrayBuffer =
   #| (self) => self.buffer
 
@@ -387,27 +430,49 @@ pub extern "js" fn Memory::get_buffer(self : Memory) -> ArrayBuffer =
 /// Table interface
 pub type Table
 
+///|
 pub extern "js" fn Table::to_js_value(self : Table) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Table::new(descriptor : TableDescriptor, value : JsValue) -> Table =
+///|
+pub extern "js" fn Table::new(
+  descriptor : TableDescriptor,
+  value : JsValue,
+) -> Table =
   #| (descriptor, value) => new Table(descriptor, value)
 
-pub extern "js" fn Table::grow(self : Table, delta : AddressValue) -> AddressValue =
+///|
+pub extern "js" fn Table::grow(
+  self : Table,
+  delta : AddressValue,
+) -> AddressValue =
   #| (self, delta) => self.grow(delta)
 
-pub extern "js" fn Table::grow_with_value(self : Table, delta : AddressValue, value : JsValue) -> AddressValue =
+///|
+pub extern "js" fn Table::grow_with_value(
+  self : Table,
+  delta : AddressValue,
+  value : JsValue,
+) -> AddressValue =
   #| (self, delta, value) => self.grow(delta, value)
 
+///|
 pub extern "js" fn Table::get(self : Table, index : AddressValue) -> JsValue =
   #| (self, index) => self.get(index)
 
+///|
 pub extern "js" fn Table::set(self : Table, index : AddressValue) -> Unit =
   #| (self, index) => self.set(index)
 
-pub extern "js" fn Table::set_with_value(self : Table, index : AddressValue, value : JsValue) -> Unit =
+///|
+pub extern "js" fn Table::set_with_value(
+  self : Table,
+  index : AddressValue,
+  value : JsValue,
+) -> Unit =
   #| (self, index, value) => self.set(index, value)
 
+///|
 pub extern "js" fn Table::get_length(self : Table) -> AddressValue =
   #| (self) => self.length
 
@@ -415,18 +480,26 @@ pub extern "js" fn Table::get_length(self : Table) -> AddressValue =
 /// Global interface
 pub type Global
 
+///|
 pub extern "js" fn Global::to_js_value(self : Global) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Global::new(descriptor : GlobalDescriptor, v : JsValue) -> Global =
+///|
+pub extern "js" fn Global::new(
+  descriptor : GlobalDescriptor,
+  v : JsValue,
+) -> Global =
   #| (descriptor, v) => new Global(descriptor, v)
 
+///|
 pub extern "js" fn Global::value_of(self : Global) -> JsValue =
   #| (self) => self.valueOf()
 
+///|
 pub extern "js" fn Global::get_value(self : Global) -> JsValue =
   #| (self) => self.value
 
+///|
 pub extern "js" fn Global::set_value(self : Global, value : JsValue) -> Unit =
   #| (self, value) => { self.value = value }
 
@@ -434,9 +507,11 @@ pub extern "js" fn Global::set_value(self : Global, value : JsValue) -> Unit =
 /// Tag interface
 pub type Tag
 
+///|
 pub extern "js" fn Tag::to_js_value(self : Tag) -> JsValue =
   #| (self) => self
 
+///|
 pub extern "js" fn Tag::new(type_ : TagType) -> Tag =
   #| (type_) => new Tag(type_)
 
@@ -444,18 +519,29 @@ pub extern "js" fn Tag::new(type_ : TagType) -> Tag =
 /// Exception interface
 pub type Exception
 
+///|
 pub extern "js" fn Exception::to_js_value(self : Exception) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Exception::new(exception_tag : Tag, payload : Array[JsValue], options : ExceptionOptions) -> Exception =
+///|
+pub extern "js" fn Exception::new(
+  exception_tag : Tag,
+  payload : Array[JsValue],
+  options : ExceptionOptions,
+) -> Exception =
   #| (exception_tag, payload, options) => new Exception(exception_tag, payload, options)
 
+///|
 pub extern "js" fn Exception::get_arg(self : Exception, index : Int) -> JsValue =
   #| (self, index) => self.getArg(index)
 
-pub extern "js" fn Exception::is_(self : Exception, exception_tag : Tag) -> Bool =
+///|
+pub extern "js" fn Exception::is_(
+  self : Exception,
+  exception_tag : Tag,
+) -> Bool =
   #| (self, exception_tag) => self.is(exception_tag)
 
+///|
 pub extern "js" fn Exception::get_stack(self : Exception) -> JsValue =
   #| (self) => self.stack
-

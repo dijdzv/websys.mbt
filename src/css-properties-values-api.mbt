@@ -10,6 +10,7 @@ pub struct PropertyDefinition {
   initialValue : String?
 }
 
+///|
 /// Create a new PropertyDefinition with default values
 pub fn PropertyDefinition::default() -> PropertyDefinition {
   PropertyDefinition::{
@@ -20,8 +21,11 @@ pub fn PropertyDefinition::default() -> PropertyDefinition {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn PropertyDefinition::to_js(self : PropertyDefinition) -> JsValue =
+pub extern "js" fn PropertyDefinition::to_js(
+  self : PropertyDefinition,
+) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   syntax: self.syntax,
@@ -33,18 +37,32 @@ pub extern "js" fn PropertyDefinition::to_js(self : PropertyDefinition) -> JsVal
 /// CSSPropertyRule interface
 pub type CSSPropertyRule
 
-pub extern "js" fn CSSPropertyRule::to_js_value(self : CSSPropertyRule) -> JsValue =
+///|
+pub extern "js" fn CSSPropertyRule::to_js_value(
+  self : CSSPropertyRule,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn CSSPropertyRule::get_name(self : CSSPropertyRule) -> CSSOMString =
+///|
+pub extern "js" fn CSSPropertyRule::get_name(
+  self : CSSPropertyRule,
+) -> CSSOMString =
   #| (self) => self.name
 
-pub extern "js" fn CSSPropertyRule::get_syntax(self : CSSPropertyRule) -> CSSOMString =
+///|
+pub extern "js" fn CSSPropertyRule::get_syntax(
+  self : CSSPropertyRule,
+) -> CSSOMString =
   #| (self) => self.syntax
 
-pub extern "js" fn CSSPropertyRule::get_inherits(self : CSSPropertyRule) -> Bool =
+///|
+pub extern "js" fn CSSPropertyRule::get_inherits(
+  self : CSSPropertyRule,
+) -> Bool =
   #| (self) => self.inherits
 
-pub extern "js" fn CSSPropertyRule::get_initial_value(self : CSSPropertyRule) -> CSSOMString? =
+///|
+pub extern "js" fn CSSPropertyRule::get_initial_value(
+  self : CSSPropertyRule,
+) -> CSSOMString? =
   #| (self) => self.initialValue
-

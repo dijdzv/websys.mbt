@@ -10,8 +10,11 @@ pub(all) enum RTCDegradationPreference {
   MaintainFramerateAndResolution
 }
 
+///|
 /// Convert to string value
-pub fn RTCDegradationPreference::to_string(self : RTCDegradationPreference) -> String {
+pub fn RTCDegradationPreference::to_string(
+  self : RTCDegradationPreference,
+) -> String {
   match self {
     MaintainFramerate => "maintain-framerate"
     MaintainResolution => "maintain-resolution"
@@ -20,8 +23,11 @@ pub fn RTCDegradationPreference::to_string(self : RTCDegradationPreference) -> S
   }
 }
 
+///|
 /// Parse from string value
-pub fn RTCDegradationPreference::from_string(s : String) -> RTCDegradationPreference? {
+pub fn RTCDegradationPreference::from_string(
+  s : String,
+) -> RTCDegradationPreference? {
   match s {
     "maintain-framerate" => Some(MaintainFramerate)
     "maintain-resolution" => Some(MaintainResolution)
@@ -39,6 +45,7 @@ pub struct RTCRtpSendParameters {
   encodings : Array[RTCRtpEncodingParameters]
 }
 
+///|
 /// Create a new RTCRtpSendParameters with default values
 pub fn RTCRtpSendParameters::default() -> RTCRtpSendParameters {
   RTCRtpSendParameters::{
@@ -48,11 +55,13 @@ pub fn RTCRtpSendParameters::default() -> RTCRtpSendParameters {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn RTCRtpSendParameters::to_js(self : RTCRtpSendParameters) -> JsValue =
+pub extern "js" fn RTCRtpSendParameters::to_js(
+  self : RTCRtpSendParameters,
+) -> JsValue =
   #| (self) => ({
-  #|   degradationPreference: self.degradationPreference,
+  #|   degradationPreference: ['maintain-framerate', 'maintain-resolution', 'balanced', 'maintain-framerate-and-resolution'][self.degradationPreference],
   #|   transactionId: self.transactionId,
   #|   encodings: self.encodings
   #| })
-

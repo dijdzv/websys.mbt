@@ -7,15 +7,21 @@ pub(all) enum AttributionAggregationProtocol {
   Dap15Histogram
 }
 
+///|
 /// Convert to string value
-pub fn AttributionAggregationProtocol::to_string(self : AttributionAggregationProtocol) -> String {
+pub fn AttributionAggregationProtocol::to_string(
+  self : AttributionAggregationProtocol,
+) -> String {
   match self {
     Dap15Histogram => "dap-15-histogram"
   }
 }
 
+///|
 /// Parse from string value
-pub fn AttributionAggregationProtocol::from_string(s : String) -> AttributionAggregationProtocol? {
+pub fn AttributionAggregationProtocol::from_string(
+  s : String,
+) -> AttributionAggregationProtocol? {
   match s {
     "dap-15-histogram" => Some(Dap15Histogram)
     _ => None
@@ -28,17 +34,19 @@ pub struct AttributionAggregationService {
   protocol : AttributionAggregationProtocol
 }
 
+///|
 /// Create a new AttributionAggregationService with default values
 pub fn AttributionAggregationService::default() -> AttributionAggregationService {
-  AttributionAggregationService::{
-    protocol: panic(),
-  }
+  AttributionAggregationService::{ protocol: panic() }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AttributionAggregationService::to_js(self : AttributionAggregationService) -> JsValue =
+pub extern "js" fn AttributionAggregationService::to_js(
+  self : AttributionAggregationService,
+) -> JsValue =
   #| (self) => ({
-  #|   protocol: self.protocol
+  #|   protocol: ['dap-15-histogram'][self.protocol]
   #| })
 
 ///|
@@ -52,6 +60,7 @@ pub struct AttributionImpressionOptions {
   priority : Int?
 }
 
+///|
 /// Create a new AttributionImpressionOptions with default values
 pub fn AttributionImpressionOptions::default() -> AttributionImpressionOptions {
   AttributionImpressionOptions::{
@@ -64,8 +73,11 @@ pub fn AttributionImpressionOptions::default() -> AttributionImpressionOptions {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AttributionImpressionOptions::to_js(self : AttributionImpressionOptions) -> JsValue =
+pub extern "js" fn AttributionImpressionOptions::to_js(
+  self : AttributionImpressionOptions,
+) -> JsValue =
   #| (self) => ({
   #|   histogramIndex: self.histogramIndex,
   #|   matchValue: self.matchValue,
@@ -77,17 +89,19 @@ pub extern "js" fn AttributionImpressionOptions::to_js(self : AttributionImpress
 
 ///|
 /// AttributionImpressionResult dictionary
-pub struct AttributionImpressionResult {
-}
+pub struct AttributionImpressionResult {}
 
+///|
 /// Create a new AttributionImpressionResult with default values
 pub fn AttributionImpressionResult::default() -> AttributionImpressionResult {
-  AttributionImpressionResult::{
-  }
+  AttributionImpressionResult::{  }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AttributionImpressionResult::to_js(self : AttributionImpressionResult) -> JsValue =
+pub extern "js" fn AttributionImpressionResult::to_js(
+  self : AttributionImpressionResult,
+) -> JsValue =
   #| (self) => ({
   #| })
 
@@ -106,6 +120,7 @@ pub struct AttributionConversionOptions {
   maxValue : Int?
 }
 
+///|
 /// Create a new AttributionConversionOptions with default values
 pub fn AttributionConversionOptions::default() -> AttributionConversionOptions {
   AttributionConversionOptions::{
@@ -122,8 +137,11 @@ pub fn AttributionConversionOptions::default() -> AttributionConversionOptions {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AttributionConversionOptions::to_js(self : AttributionConversionOptions) -> JsValue =
+pub extern "js" fn AttributionConversionOptions::to_js(
+  self : AttributionConversionOptions,
+) -> JsValue =
   #| (self) => ({
   #|   aggregationService: self.aggregationService,
   #|   epsilon: self.epsilon,
@@ -143,15 +161,17 @@ pub struct AttributionConversionResult {
   report : Uint8Array
 }
 
+///|
 /// Create a new AttributionConversionResult with default values
 pub fn AttributionConversionResult::default() -> AttributionConversionResult {
-  AttributionConversionResult::{
-    report: panic(),
-  }
+  AttributionConversionResult::{ report: panic() }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AttributionConversionResult::to_js(self : AttributionConversionResult) -> JsValue =
+pub extern "js" fn AttributionConversionResult::to_js(
+  self : AttributionConversionResult,
+) -> JsValue =
   #| (self) => ({
   #|   report: self.report
   #| })
@@ -160,28 +180,50 @@ pub extern "js" fn AttributionConversionResult::to_js(self : AttributionConversi
 /// AttributionAggregationServices interface
 pub type AttributionAggregationServices
 
-pub extern "js" fn AttributionAggregationServices::to_js_value(self : AttributionAggregationServices) -> JsValue =
+///|
+pub extern "js" fn AttributionAggregationServices::to_js_value(
+  self : AttributionAggregationServices,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn AttributionAggregationServices::get(self : AttributionAggregationServices, key : String) -> AttributionAggregationService? =
+///|
+pub extern "js" fn AttributionAggregationServices::get(
+  self : AttributionAggregationServices,
+  key : String,
+) -> AttributionAggregationService? =
   #| (self, key) => self.get(key)
 
-pub extern "js" fn AttributionAggregationServices::has(self : AttributionAggregationServices, key : String) -> Bool =
+///|
+pub extern "js" fn AttributionAggregationServices::has(
+  self : AttributionAggregationServices,
+  key : String,
+) -> Bool =
   #| (self, key) => self.has(key)
 
 ///|
 /// Attribution interface
 pub type Attribution
 
+///|
 pub extern "js" fn Attribution::to_js_value(self : Attribution) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Attribution::get_aggregation_services(self : Attribution) -> AttributionAggregationServices =
+///|
+pub extern "js" fn Attribution::get_aggregation_services(
+  self : Attribution,
+) -> AttributionAggregationServices =
   #| (self) => self.aggregationServices
 
-pub extern "js" fn Attribution::save_impression(self : Attribution, options : AttributionImpressionOptions) -> Promise[AttributionImpressionResult] =
+///|
+pub extern "js" fn Attribution::save_impression(
+  self : Attribution,
+  options : AttributionImpressionOptions,
+) -> Promise[AttributionImpressionResult] =
   #| (self, options) => self.saveImpression(options)
 
-pub extern "js" fn Attribution::measure_conversion(self : Attribution, options : AttributionConversionOptions) -> Promise[AttributionConversionResult] =
+///|
+pub extern "js" fn Attribution::measure_conversion(
+  self : Attribution,
+  options : AttributionConversionOptions,
+) -> Promise[AttributionConversionResult] =
   #| (self, options) => self.measureConversion(options)
-

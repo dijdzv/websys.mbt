@@ -5,33 +5,36 @@
 /// DeprecationReportBody dictionary
 pub struct DeprecationReportBody {
   id : String?
-  anticipatedRemoval : JsValue??
+  anticipatedRemoval : Nullable[JsValue]
   message : String?
-  sourceFile : String??
-  lineNumber : Int??
-  columnNumber : Int??
+  sourceFile : Nullable[String]
+  lineNumber : Nullable[Int]
+  columnNumber : Nullable[Int]
 }
 
+///|
 /// Create a new DeprecationReportBody with default values
 pub fn DeprecationReportBody::default() -> DeprecationReportBody {
   DeprecationReportBody::{
     id: None,
-    anticipatedRemoval: None,
+    anticipatedRemoval: Nullable::Undefined,
     message: None,
-    sourceFile: None,
-    lineNumber: None,
-    columnNumber: None,
+    sourceFile: Nullable::Undefined,
+    lineNumber: Nullable::Undefined,
+    columnNumber: Nullable::Undefined,
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn DeprecationReportBody::to_js(self : DeprecationReportBody) -> JsValue =
+pub extern "js" fn DeprecationReportBody::to_js(
+  self : DeprecationReportBody,
+) -> JsValue =
   #| (self) => ({
   #|   id: self.id,
-  #|   anticipatedRemoval: self.anticipatedRemoval,
+  #|   anticipatedRemoval: ((() => { const v = self.anticipatedRemoval; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   message: self.message,
-  #|   sourceFile: self.sourceFile,
-  #|   lineNumber: self.lineNumber,
-  #|   columnNumber: self.columnNumber
+  #|   sourceFile: ((() => { const v = self.sourceFile; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   lineNumber: ((() => { const v = self.lineNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   columnNumber: ((() => { const v = self.columnNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
-

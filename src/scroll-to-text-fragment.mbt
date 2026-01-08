@@ -5,6 +5,8 @@
 /// FragmentDirective interface
 pub type FragmentDirective
 
-pub extern "js" fn FragmentDirective::to_js_value(self : FragmentDirective) -> JsValue =
+///|
+pub extern "js" fn FragmentDirective::to_js_value(
+  self : FragmentDirective,
+) -> JsValue =
   #| (self) => self
-

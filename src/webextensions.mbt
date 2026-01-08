@@ -9,6 +9,7 @@ pub(all) enum RunAt {
   DocumentIdle
 }
 
+///|
 /// Convert to string value
 pub fn RunAt::to_string(self : RunAt) -> String {
   match self {
@@ -18,6 +19,7 @@ pub fn RunAt::to_string(self : RunAt) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn RunAt::from_string(s : String) -> RunAt? {
   match s {
@@ -35,6 +37,7 @@ pub(all) enum ExecutionWorld {
   MAIN
 }
 
+///|
 /// Convert to string value
 pub fn ExecutionWorld::to_string(self : ExecutionWorld) -> String {
   match self {
@@ -43,6 +46,7 @@ pub fn ExecutionWorld::to_string(self : ExecutionWorld) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn ExecutionWorld::from_string(s : String) -> ExecutionWorld? {
   match s {
@@ -51,4 +55,3 @@ pub fn ExecutionWorld::from_string(s : String) -> ExecutionWorld? {
     _ => None
   }
 }
-

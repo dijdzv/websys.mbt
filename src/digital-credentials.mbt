@@ -7,15 +7,17 @@ pub struct DigitalCredentialRequestOptions {
   requests : Array[DigitalCredentialGetRequest]
 }
 
+///|
 /// Create a new DigitalCredentialRequestOptions with default values
 pub fn DigitalCredentialRequestOptions::default() -> DigitalCredentialRequestOptions {
-  DigitalCredentialRequestOptions::{
-    requests: [],
-  }
+  DigitalCredentialRequestOptions::{ requests: [] }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn DigitalCredentialRequestOptions::to_js(self : DigitalCredentialRequestOptions) -> JsValue =
+pub extern "js" fn DigitalCredentialRequestOptions::to_js(
+  self : DigitalCredentialRequestOptions,
+) -> JsValue =
   #| (self) => ({
   #|   requests: self.requests
   #| })
@@ -27,16 +29,17 @@ pub struct DigitalCredentialGetRequest {
   data : JsValue
 }
 
+///|
 /// Create a new DigitalCredentialGetRequest with default values
 pub fn DigitalCredentialGetRequest::default() -> DigitalCredentialGetRequest {
-  DigitalCredentialGetRequest::{
-    protocol: "",
-    data: panic(),
-  }
+  DigitalCredentialGetRequest::{ protocol: "", data: panic() }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn DigitalCredentialGetRequest::to_js(self : DigitalCredentialGetRequest) -> JsValue =
+pub extern "js" fn DigitalCredentialGetRequest::to_js(
+  self : DigitalCredentialGetRequest,
+) -> JsValue =
   #| (self) => ({
   #|   protocol: self.protocol,
   #|   data: self.data
@@ -48,15 +51,17 @@ pub struct DigitalCredentialCreationOptions {
   requests : Array[DigitalCredentialCreateRequest]?
 }
 
+///|
 /// Create a new DigitalCredentialCreationOptions with default values
 pub fn DigitalCredentialCreationOptions::default() -> DigitalCredentialCreationOptions {
-  DigitalCredentialCreationOptions::{
-    requests: None,
-  }
+  DigitalCredentialCreationOptions::{ requests: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn DigitalCredentialCreationOptions::to_js(self : DigitalCredentialCreationOptions) -> JsValue =
+pub extern "js" fn DigitalCredentialCreationOptions::to_js(
+  self : DigitalCredentialCreationOptions,
+) -> JsValue =
   #| (self) => ({
   #|   requests: self.requests
   #| })
@@ -68,16 +73,17 @@ pub struct DigitalCredentialCreateRequest {
   data : JsValue
 }
 
+///|
 /// Create a new DigitalCredentialCreateRequest with default values
 pub fn DigitalCredentialCreateRequest::default() -> DigitalCredentialCreateRequest {
-  DigitalCredentialCreateRequest::{
-    protocol: "",
-    data: panic(),
-  }
+  DigitalCredentialCreateRequest::{ protocol: "", data: panic() }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn DigitalCredentialCreateRequest::to_js(self : DigitalCredentialCreateRequest) -> JsValue =
+pub extern "js" fn DigitalCredentialCreateRequest::to_js(
+  self : DigitalCredentialCreateRequest,
+) -> JsValue =
   #| (self) => ({
   #|   protocol: self.protocol,
   #|   data: self.data
@@ -87,18 +93,32 @@ pub extern "js" fn DigitalCredentialCreateRequest::to_js(self : DigitalCredentia
 /// DigitalCredential interface
 pub type DigitalCredential
 
-pub extern "js" fn DigitalCredential::to_js_value(self : DigitalCredential) -> JsValue =
+///|
+pub extern "js" fn DigitalCredential::to_js_value(
+  self : DigitalCredential,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn DigitalCredential::to_j_s_o_n(self : DigitalCredential) -> JsValue =
+///|
+pub extern "js" fn DigitalCredential::to_j_s_o_n(
+  self : DigitalCredential,
+) -> JsValue =
   #| (self) => self.toJSON()
 
-pub extern "js" fn DigitalCredential::get_protocol(self : DigitalCredential) -> String =
+///|
+pub extern "js" fn DigitalCredential::get_protocol(
+  self : DigitalCredential,
+) -> String =
   #| (self) => self.protocol
 
-pub extern "js" fn DigitalCredential::get_data(self : DigitalCredential) -> JsValue =
+///|
+pub extern "js" fn DigitalCredential::get_data(
+  self : DigitalCredential,
+) -> JsValue =
   #| (self) => self.data
 
-pub extern "js" fn DigitalCredential::user_agent_allows_protocol(protocol : String) -> Bool =
+///|
+pub extern "js" fn DigitalCredential::user_agent_allows_protocol(
+  protocol : String,
+) -> Bool =
   #| (protocol) => DigitalCredential.userAgentAllowsProtocol(protocol)
-

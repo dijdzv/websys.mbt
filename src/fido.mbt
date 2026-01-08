@@ -19,6 +19,7 @@ pub struct AuthenticationExtensionsClientInputs {
   largeBlob : AuthenticationExtensionsLargeBlobInputs?
 }
 
+///|
 /// Create a new AuthenticationExtensionsClientInputs with default values
 pub fn AuthenticationExtensionsClientInputs::default() -> AuthenticationExtensionsClientInputs {
   AuthenticationExtensionsClientInputs::{
@@ -38,8 +39,11 @@ pub fn AuthenticationExtensionsClientInputs::default() -> AuthenticationExtensio
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AuthenticationExtensionsClientInputs::to_js(self : AuthenticationExtensionsClientInputs) -> JsValue =
+pub extern "js" fn AuthenticationExtensionsClientInputs::to_js(
+  self : AuthenticationExtensionsClientInputs,
+) -> JsValue =
   #| (self) => ({
   #|   credentialProtectionPolicy: self.credentialProtectionPolicy,
   #|   enforceCredentialProtectionPolicy: self.enforceCredentialProtectionPolicy,
@@ -63,16 +67,17 @@ pub struct HMACGetSecretInput {
   salt2 : ArrayBuffer?
 }
 
+///|
 /// Create a new HMACGetSecretInput with default values
 pub fn HMACGetSecretInput::default() -> HMACGetSecretInput {
-  HMACGetSecretInput::{
-    salt1: panic(),
-    salt2: None,
-  }
+  HMACGetSecretInput::{ salt1: panic(), salt2: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn HMACGetSecretInput::to_js(self : HMACGetSecretInput) -> JsValue =
+pub extern "js" fn HMACGetSecretInput::to_js(
+  self : HMACGetSecretInput,
+) -> JsValue =
   #| (self) => ({
   #|   salt1: self.salt1,
   #|   salt2: self.salt2
@@ -91,6 +96,7 @@ pub struct AuthenticationExtensionsClientOutputs {
   largeBlob : AuthenticationExtensionsLargeBlobOutputs?
 }
 
+///|
 /// Create a new AuthenticationExtensionsClientOutputs with default values
 pub fn AuthenticationExtensionsClientOutputs::default() -> AuthenticationExtensionsClientOutputs {
   AuthenticationExtensionsClientOutputs::{
@@ -105,8 +111,11 @@ pub fn AuthenticationExtensionsClientOutputs::default() -> AuthenticationExtensi
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AuthenticationExtensionsClientOutputs::to_js(self : AuthenticationExtensionsClientOutputs) -> JsValue =
+pub extern "js" fn AuthenticationExtensionsClientOutputs::to_js(
+  self : AuthenticationExtensionsClientOutputs,
+) -> JsValue =
   #| (self) => ({
   #|   hmacCreateSecret: self.hmacCreateSecret,
   #|   hmacGetSecret: self.hmacGetSecret,
@@ -125,18 +134,18 @@ pub struct HMACGetSecretOutput {
   output2 : ArrayBuffer?
 }
 
+///|
 /// Create a new HMACGetSecretOutput with default values
 pub fn HMACGetSecretOutput::default() -> HMACGetSecretOutput {
-  HMACGetSecretOutput::{
-    output1: panic(),
-    output2: None,
-  }
+  HMACGetSecretOutput::{ output1: panic(), output2: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn HMACGetSecretOutput::to_js(self : HMACGetSecretOutput) -> JsValue =
+pub extern "js" fn HMACGetSecretOutput::to_js(
+  self : HMACGetSecretOutput,
+) -> JsValue =
   #| (self) => ({
   #|   output1: self.output1,
   #|   output2: self.output2
   #| })
-

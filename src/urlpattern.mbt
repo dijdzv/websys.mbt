@@ -6,8 +6,41 @@
 pub type URLPatternInput = JsValue
 
 ///|
+/// Create URLPatternInput from String
+pub extern "js" fn URLPatternInput::from_string(v : String) -> URLPatternInput =
+  #| (v) => v
+
+///|
+/// Create URLPatternInput from URLPatternInit
+pub extern "js" fn URLPatternInput::from_u_r_l_pattern_init(
+  v : URLPatternInit,
+) -> URLPatternInput =
+  #| (v) => v
+
+///|
 /// URLPatternCompatible typedef
 pub type URLPatternCompatible = JsValue
+
+///|
+/// Create URLPatternCompatible from String
+pub extern "js" fn URLPatternCompatible::from_string(
+  v : String,
+) -> URLPatternCompatible =
+  #| (v) => v
+
+///|
+/// Create URLPatternCompatible from URLPatternInit
+pub extern "js" fn URLPatternCompatible::from_u_r_l_pattern_init(
+  v : URLPatternInit,
+) -> URLPatternCompatible =
+  #| (v) => v
+
+///|
+/// Create URLPatternCompatible from URLPattern
+pub extern "js" fn URLPatternCompatible::from_u_r_l_pattern(
+  v : URLPattern,
+) -> URLPatternCompatible =
+  #| (v) => v
 
 ///|
 /// URLPatternInit dictionary
@@ -23,6 +56,7 @@ pub struct URLPatternInit {
   baseURL : String?
 }
 
+///|
 /// Create a new URLPatternInit with default values
 pub fn URLPatternInit::default() -> URLPatternInit {
   URLPatternInit::{
@@ -38,6 +72,7 @@ pub fn URLPatternInit::default() -> URLPatternInit {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn URLPatternInit::to_js(self : URLPatternInit) -> JsValue =
   #| (self) => ({
@@ -58,15 +93,17 @@ pub struct URLPatternOptions {
   ignoreCase : Bool?
 }
 
+///|
 /// Create a new URLPatternOptions with default values
 pub fn URLPatternOptions::default() -> URLPatternOptions {
-  URLPatternOptions::{
-    ignoreCase: None,
-  }
+  URLPatternOptions::{ ignoreCase: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn URLPatternOptions::to_js(self : URLPatternOptions) -> JsValue =
+pub extern "js" fn URLPatternOptions::to_js(
+  self : URLPatternOptions,
+) -> JsValue =
   #| (self) => ({
   #|   ignoreCase: self.ignoreCase
   #| })
@@ -85,6 +122,7 @@ pub struct URLPatternResult {
   hash : URLPatternComponentResult?
 }
 
+///|
 /// Create a new URLPatternResult with default values
 pub fn URLPatternResult::default() -> URLPatternResult {
   URLPatternResult::{
@@ -100,6 +138,7 @@ pub fn URLPatternResult::default() -> URLPatternResult {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn URLPatternResult::to_js(self : URLPatternResult) -> JsValue =
   #| (self) => ({
@@ -121,16 +160,17 @@ pub struct URLPatternComponentResult {
   groups : JsValue?
 }
 
+///|
 /// Create a new URLPatternComponentResult with default values
 pub fn URLPatternComponentResult::default() -> URLPatternComponentResult {
-  URLPatternComponentResult::{
-    input: None,
-    groups: None,
-  }
+  URLPatternComponentResult::{ input: None, groups: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn URLPatternComponentResult::to_js(self : URLPatternComponentResult) -> JsValue =
+pub extern "js" fn URLPatternComponentResult::to_js(
+  self : URLPatternComponentResult,
+) -> JsValue =
   #| (self) => ({
   #|   input: self.input,
   #|   groups: self.groups
@@ -140,48 +180,76 @@ pub extern "js" fn URLPatternComponentResult::to_js(self : URLPatternComponentRe
 /// URLPattern interface
 pub type URLPattern
 
+///|
 pub extern "js" fn URLPattern::to_js_value(self : URLPattern) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn URLPattern::new(input : URLPatternInput, base_u_r_l : String, options : URLPatternOptions) -> URLPattern =
+///|
+pub extern "js" fn URLPattern::new(
+  input : URLPatternInput,
+  base_u_r_l : String,
+  options : URLPatternOptions,
+) -> URLPattern =
   #| (input, base_u_r_l, options) => new URLPattern(input, base_u_r_l, options)
 
+///|
 pub extern "js" fn URLPattern::test_(self : URLPattern) -> Bool =
   #| (self) => self.test()
 
-pub extern "js" fn URLPattern::test__with_base_u_r_l(self : URLPattern, input : URLPatternInput, base_u_r_l : String) -> Bool =
+///|
+pub extern "js" fn URLPattern::test__with_base_u_r_l(
+  self : URLPattern,
+  input : URLPatternInput,
+  base_u_r_l : String,
+) -> Bool =
   #| (self, input, base_u_r_l) => self.test(input, base_u_r_l)
 
+///|
 pub extern "js" fn URLPattern::exec(self : URLPattern) -> URLPatternResult? =
   #| (self) => self.exec()
 
-pub extern "js" fn URLPattern::exec_with_base_u_r_l(self : URLPattern, input : URLPatternInput, base_u_r_l : String) -> URLPatternResult? =
+///|
+pub extern "js" fn URLPattern::exec_with_base_u_r_l(
+  self : URLPattern,
+  input : URLPatternInput,
+  base_u_r_l : String,
+) -> URLPatternResult? =
   #| (self, input, base_u_r_l) => self.exec(input, base_u_r_l)
 
+///|
 pub extern "js" fn URLPattern::get_protocol(self : URLPattern) -> String =
   #| (self) => self.protocol
 
+///|
 pub extern "js" fn URLPattern::get_username(self : URLPattern) -> String =
   #| (self) => self.username
 
+///|
 pub extern "js" fn URLPattern::get_password(self : URLPattern) -> String =
   #| (self) => self.password
 
+///|
 pub extern "js" fn URLPattern::get_hostname(self : URLPattern) -> String =
   #| (self) => self.hostname
 
+///|
 pub extern "js" fn URLPattern::get_port(self : URLPattern) -> String =
   #| (self) => self.port
 
+///|
 pub extern "js" fn URLPattern::get_pathname(self : URLPattern) -> String =
   #| (self) => self.pathname
 
+///|
 pub extern "js" fn URLPattern::get_search(self : URLPattern) -> String =
   #| (self) => self.search
 
+///|
 pub extern "js" fn URLPattern::get_hash(self : URLPattern) -> String =
   #| (self) => self.hash
 
-pub extern "js" fn URLPattern::get_has_reg_exp_groups(self : URLPattern) -> Bool =
+///|
+pub extern "js" fn URLPattern::get_has_reg_exp_groups(
+  self : URLPattern,
+) -> Bool =
   #| (self) => self.hasRegExpGroups
-

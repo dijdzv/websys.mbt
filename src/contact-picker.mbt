@@ -11,6 +11,7 @@ pub(all) enum ContactProperty {
   Tel
 }
 
+///|
 /// Convert to string value
 pub fn ContactProperty::to_string(self : ContactProperty) -> String {
   match self {
@@ -22,6 +23,7 @@ pub fn ContactProperty::to_string(self : ContactProperty) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn ContactProperty::from_string(s : String) -> ContactProperty? {
   match s {
@@ -44,17 +46,13 @@ pub struct ContactInfo {
   tel : Array[String]?
 }
 
+///|
 /// Create a new ContactInfo with default values
 pub fn ContactInfo::default() -> ContactInfo {
-  ContactInfo::{
-    address: None,
-    email: None,
-    icon: None,
-    name: None,
-    tel: None,
-  }
+  ContactInfo::{ address: None, email: None, icon: None, name: None, tel: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn ContactInfo::to_js(self : ContactInfo) -> JsValue =
   #| (self) => ({
@@ -71,15 +69,17 @@ pub struct ContactsSelectOptions {
   multiple : Bool?
 }
 
+///|
 /// Create a new ContactsSelectOptions with default values
 pub fn ContactsSelectOptions::default() -> ContactsSelectOptions {
-  ContactsSelectOptions::{
-    multiple: None,
-  }
+  ContactsSelectOptions::{ multiple: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ContactsSelectOptions::to_js(self : ContactsSelectOptions) -> JsValue =
+pub extern "js" fn ContactsSelectOptions::to_js(
+  self : ContactsSelectOptions,
+) -> JsValue =
   #| (self) => ({
   #|   multiple: self.multiple
   #| })
@@ -88,55 +88,95 @@ pub extern "js" fn ContactsSelectOptions::to_js(self : ContactsSelectOptions) ->
 /// ContactAddress interface
 pub type ContactAddress
 
-pub extern "js" fn ContactAddress::to_js_value(self : ContactAddress) -> JsValue =
+///|
+pub extern "js" fn ContactAddress::to_js_value(
+  self : ContactAddress,
+) -> JsValue =
   #| (self) => self
 
+///|
 pub extern "js" fn ContactAddress::to_j_s_o_n(self : ContactAddress) -> JsValue =
   #| (self) => self.toJSON()
 
+///|
 pub extern "js" fn ContactAddress::get_city(self : ContactAddress) -> String =
   #| (self) => self.city
 
+///|
 pub extern "js" fn ContactAddress::get_country(self : ContactAddress) -> String =
   #| (self) => self.country
 
-pub extern "js" fn ContactAddress::get_dependent_locality(self : ContactAddress) -> String =
+///|
+pub extern "js" fn ContactAddress::get_dependent_locality(
+  self : ContactAddress,
+) -> String =
   #| (self) => self.dependentLocality
 
-pub extern "js" fn ContactAddress::get_organization(self : ContactAddress) -> String =
+///|
+pub extern "js" fn ContactAddress::get_organization(
+  self : ContactAddress,
+) -> String =
   #| (self) => self.organization
 
+///|
 pub extern "js" fn ContactAddress::get_phone(self : ContactAddress) -> String =
   #| (self) => self.phone
 
-pub extern "js" fn ContactAddress::get_postal_code(self : ContactAddress) -> String =
+///|
+pub extern "js" fn ContactAddress::get_postal_code(
+  self : ContactAddress,
+) -> String =
   #| (self) => self.postalCode
 
-pub extern "js" fn ContactAddress::get_recipient(self : ContactAddress) -> String =
+///|
+pub extern "js" fn ContactAddress::get_recipient(
+  self : ContactAddress,
+) -> String =
   #| (self) => self.recipient
 
+///|
 pub extern "js" fn ContactAddress::get_region(self : ContactAddress) -> String =
   #| (self) => self.region
 
-pub extern "js" fn ContactAddress::get_sorting_code(self : ContactAddress) -> String =
+///|
+pub extern "js" fn ContactAddress::get_sorting_code(
+  self : ContactAddress,
+) -> String =
   #| (self) => self.sortingCode
 
-pub extern "js" fn ContactAddress::get_address_line(self : ContactAddress) -> JsValue =
+///|
+pub extern "js" fn ContactAddress::get_address_line(
+  self : ContactAddress,
+) -> JsValue =
   #| (self) => self.addressLine
 
 ///|
 /// ContactsManager interface
 pub type ContactsManager
 
-pub extern "js" fn ContactsManager::to_js_value(self : ContactsManager) -> JsValue =
+///|
+pub extern "js" fn ContactsManager::to_js_value(
+  self : ContactsManager,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ContactsManager::get_properties(self : ContactsManager) -> Promise[Array[ContactProperty]] =
+///|
+pub extern "js" fn ContactsManager::get_properties(
+  self : ContactsManager,
+) -> Promise[Array[ContactProperty]] =
   #| (self) => self.getProperties()
 
-pub extern "js" fn ContactsManager::select(self : ContactsManager, properties : Array[ContactProperty]) -> Promise[Array[ContactInfo]] =
+///|
+pub extern "js" fn ContactsManager::select(
+  self : ContactsManager,
+  properties : Array[ContactProperty],
+) -> Promise[Array[ContactInfo]] =
   #| (self, properties) => self.select(properties)
 
-pub extern "js" fn ContactsManager::select_with_options(self : ContactsManager, properties : Array[ContactProperty], options : ContactsSelectOptions) -> Promise[Array[ContactInfo]] =
+///|
+pub extern "js" fn ContactsManager::select_with_options(
+  self : ContactsManager,
+  properties : Array[ContactProperty],
+  options : ContactsSelectOptions,
+) -> Promise[Array[ContactInfo]] =
   #| (self, properties, options) => self.select(properties, options)
-

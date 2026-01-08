@@ -9,8 +9,11 @@ pub(all) enum XREnvironmentBlendMode {
   Additive
 }
 
+///|
 /// Convert to string value
-pub fn XREnvironmentBlendMode::to_string(self : XREnvironmentBlendMode) -> String {
+pub fn XREnvironmentBlendMode::to_string(
+  self : XREnvironmentBlendMode,
+) -> String {
   match self {
     Opaque => "opaque"
     AlphaBlend => "alpha-blend"
@@ -18,8 +21,11 @@ pub fn XREnvironmentBlendMode::to_string(self : XREnvironmentBlendMode) -> Strin
   }
 }
 
+///|
 /// Parse from string value
-pub fn XREnvironmentBlendMode::from_string(s : String) -> XREnvironmentBlendMode? {
+pub fn XREnvironmentBlendMode::from_string(
+  s : String,
+) -> XREnvironmentBlendMode? {
   match s {
     "opaque" => Some(Opaque)
     "alpha-blend" => Some(AlphaBlend)
@@ -35,6 +41,7 @@ pub(all) enum XRInteractionMode {
   WorldSpace
 }
 
+///|
 /// Convert to string value
 pub fn XRInteractionMode::to_string(self : XRInteractionMode) -> String {
   match self {
@@ -43,6 +50,7 @@ pub fn XRInteractionMode::to_string(self : XRInteractionMode) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn XRInteractionMode::from_string(s : String) -> XRInteractionMode? {
   match s {
@@ -51,4 +59,3 @@ pub fn XRInteractionMode::from_string(s : String) -> XRInteractionMode? {
     _ => None
   }
 }
-

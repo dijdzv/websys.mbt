@@ -10,6 +10,7 @@ pub struct CrashReportBody {
   visibility_state : DocumentVisibilityState?
 }
 
+///|
 /// Create a new CrashReportBody with default values
 pub fn CrashReportBody::default() -> CrashReportBody {
   CrashReportBody::{
@@ -20,12 +21,12 @@ pub fn CrashReportBody::default() -> CrashReportBody {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn CrashReportBody::to_js(self : CrashReportBody) -> JsValue =
   #| (self) => ({
   #|   reason: self.reason,
   #|   stack: self.stack,
   #|   is_top_level: self.is_top_level,
-  #|   visibility_state: self.visibility_state
+  #|   visibility_state: ['visible', 'hidden'][self.visibility_state]
   #| })
-

@@ -6,12 +6,33 @@
 pub type RTCRtpTransform = JsValue
 
 ///|
+/// Create RTCRtpTransform from SFrameTransform
+pub extern "js" fn RTCRtpTransform::from_s_frame_transform(
+  v : SFrameTransform,
+) -> RTCRtpTransform =
+  #| (v) => v
+
+///|
+/// Create RTCRtpTransform from RTCRtpScriptTransform
+pub extern "js" fn RTCRtpTransform::from_r_t_c_rtp_script_transform(
+  v : RTCRtpScriptTransform,
+) -> RTCRtpTransform =
+  #| (v) => v
+
+///|
 /// SmallCryptoKeyID typedef
 pub type SmallCryptoKeyID = Int64
 
 ///|
 /// CryptoKeyID typedef
 pub type CryptoKeyID = JsValue
+
+///|
+/// Create CryptoKeyID from SmallCryptoKeyID
+pub extern "js" fn CryptoKeyID::from_small_crypto_key_i_d(
+  v : SmallCryptoKeyID,
+) -> CryptoKeyID =
+  #| (v) => v
 
 ///|
 /// SFrameCipherSuite enum
@@ -23,6 +44,7 @@ pub(all) enum SFrameCipherSuite {
   AES256GCMSHA512128
 }
 
+///|
 /// Convert to string value
 pub fn SFrameCipherSuite::to_string(self : SFrameCipherSuite) -> String {
   match self {
@@ -34,6 +56,7 @@ pub fn SFrameCipherSuite::to_string(self : SFrameCipherSuite) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn SFrameCipherSuite::from_string(s : String) -> SFrameCipherSuite? {
   match s {
@@ -54,8 +77,11 @@ pub(all) enum SFrameTransformErrorEventType {
   Syntax
 }
 
+///|
 /// Convert to string value
-pub fn SFrameTransformErrorEventType::to_string(self : SFrameTransformErrorEventType) -> String {
+pub fn SFrameTransformErrorEventType::to_string(
+  self : SFrameTransformErrorEventType,
+) -> String {
   match self {
     Authentication => "authentication"
     KeyID => "keyID"
@@ -63,8 +89,11 @@ pub fn SFrameTransformErrorEventType::to_string(self : SFrameTransformErrorEvent
   }
 }
 
+///|
 /// Parse from string value
-pub fn SFrameTransformErrorEventType::from_string(s : String) -> SFrameTransformErrorEventType? {
+pub fn SFrameTransformErrorEventType::from_string(
+  s : String,
+) -> SFrameTransformErrorEventType? {
   match s {
     "authentication" => Some(Authentication)
     "keyID" => Some(KeyID)
@@ -79,17 +108,19 @@ pub struct SFrameTransformOptions {
   cipherSuite : SFrameCipherSuite
 }
 
+///|
 /// Create a new SFrameTransformOptions with default values
 pub fn SFrameTransformOptions::default() -> SFrameTransformOptions {
-  SFrameTransformOptions::{
-    cipherSuite: panic(),
-  }
+  SFrameTransformOptions::{ cipherSuite: panic() }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn SFrameTransformOptions::to_js(self : SFrameTransformOptions) -> JsValue =
+pub extern "js" fn SFrameTransformOptions::to_js(
+  self : SFrameTransformOptions,
+) -> JsValue =
   #| (self) => ({
-  #|   cipherSuite: self.cipherSuite
+  #|   cipherSuite: ['AES_128_CTR_HMAC_SHA256_80', 'AES_128_CTR_HMAC_SHA256_64', 'AES_128_CTR_HMAC_SHA256_32', 'AES_128_GCM_SHA256_128', 'AES_256_GCM_SHA512_128'][self.cipherSuite]
   #| })
 
 ///|
@@ -97,24 +128,28 @@ pub extern "js" fn SFrameTransformOptions::to_js(self : SFrameTransformOptions) 
 pub struct SFrameTransformErrorEventInit {
   errorType : SFrameTransformErrorEventType
   frame : JsValue
-  keyID : CryptoKeyID??
+  keyID : Nullable[CryptoKeyID]
 }
 
+///|
 /// Create a new SFrameTransformErrorEventInit with default values
 pub fn SFrameTransformErrorEventInit::default() -> SFrameTransformErrorEventInit {
   SFrameTransformErrorEventInit::{
     errorType: panic(),
     frame: panic(),
-    keyID: None,
+    keyID: Nullable::Undefined,
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn SFrameTransformErrorEventInit::to_js(self : SFrameTransformErrorEventInit) -> JsValue =
+pub extern "js" fn SFrameTransformErrorEventInit::to_js(
+  self : SFrameTransformErrorEventInit,
+) -> JsValue =
   #| (self) => ({
-  #|   errorType: self.errorType,
+  #|   errorType: ['authentication', 'keyID', 'syntax'][self.errorType],
   #|   frame: self.frame,
-  #|   keyID: self.keyID
+  #|   keyID: ((() => { const v = self.keyID; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
 
 ///|
@@ -130,6 +165,7 @@ pub struct RTCEncodedFrameMetadata {
   mimeType : String?
 }
 
+///|
 /// Create a new RTCEncodedFrameMetadata with default values
 pub fn RTCEncodedFrameMetadata::default() -> RTCEncodedFrameMetadata {
   RTCEncodedFrameMetadata::{
@@ -144,8 +180,11 @@ pub fn RTCEncodedFrameMetadata::default() -> RTCEncodedFrameMetadata {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn RTCEncodedFrameMetadata::to_js(self : RTCEncodedFrameMetadata) -> JsValue =
+pub extern "js" fn RTCEncodedFrameMetadata::to_js(
+  self : RTCEncodedFrameMetadata,
+) -> JsValue =
   #| (self) => ({
   #|   synchronizationSource: self.synchronizationSource,
   #|   payloadType: self.payloadType,
@@ -177,6 +216,7 @@ pub struct RTCEncodedVideoFrameMetadata {
   timestamp : Int64?
 }
 
+///|
 /// Create a new RTCEncodedVideoFrameMetadata with default values
 pub fn RTCEncodedVideoFrameMetadata::default() -> RTCEncodedVideoFrameMetadata {
   RTCEncodedVideoFrameMetadata::{
@@ -198,8 +238,11 @@ pub fn RTCEncodedVideoFrameMetadata::default() -> RTCEncodedVideoFrameMetadata {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn RTCEncodedVideoFrameMetadata::to_js(self : RTCEncodedVideoFrameMetadata) -> JsValue =
+pub extern "js" fn RTCEncodedVideoFrameMetadata::to_js(
+  self : RTCEncodedVideoFrameMetadata,
+) -> JsValue =
   #| (self) => ({
   #|   synchronizationSource: self.synchronizationSource,
   #|   payloadType: self.payloadType,
@@ -224,15 +267,17 @@ pub struct RTCEncodedVideoFrameOptions {
   metadata : RTCEncodedVideoFrameMetadata?
 }
 
+///|
 /// Create a new RTCEncodedVideoFrameOptions with default values
 pub fn RTCEncodedVideoFrameOptions::default() -> RTCEncodedVideoFrameOptions {
-  RTCEncodedVideoFrameOptions::{
-    metadata: None,
-  }
+  RTCEncodedVideoFrameOptions::{ metadata: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn RTCEncodedVideoFrameOptions::to_js(self : RTCEncodedVideoFrameOptions) -> JsValue =
+pub extern "js" fn RTCEncodedVideoFrameOptions::to_js(
+  self : RTCEncodedVideoFrameOptions,
+) -> JsValue =
   #| (self) => ({
   #|   metadata: self.metadata
   #| })
@@ -252,6 +297,7 @@ pub struct RTCEncodedAudioFrameMetadata {
   audioLevel : Double?
 }
 
+///|
 /// Create a new RTCEncodedAudioFrameMetadata with default values
 pub fn RTCEncodedAudioFrameMetadata::default() -> RTCEncodedAudioFrameMetadata {
   RTCEncodedAudioFrameMetadata::{
@@ -268,8 +314,11 @@ pub fn RTCEncodedAudioFrameMetadata::default() -> RTCEncodedAudioFrameMetadata {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn RTCEncodedAudioFrameMetadata::to_js(self : RTCEncodedAudioFrameMetadata) -> JsValue =
+pub extern "js" fn RTCEncodedAudioFrameMetadata::to_js(
+  self : RTCEncodedAudioFrameMetadata,
+) -> JsValue =
   #| (self) => ({
   #|   synchronizationSource: self.synchronizationSource,
   #|   payloadType: self.payloadType,
@@ -289,15 +338,17 @@ pub struct RTCEncodedAudioFrameOptions {
   metadata : RTCEncodedAudioFrameMetadata?
 }
 
+///|
 /// Create a new RTCEncodedAudioFrameOptions with default values
 pub fn RTCEncodedAudioFrameOptions::default() -> RTCEncodedAudioFrameOptions {
-  RTCEncodedAudioFrameOptions::{
-    metadata: None,
-  }
+  RTCEncodedAudioFrameOptions::{ metadata: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn RTCEncodedAudioFrameOptions::to_js(self : RTCEncodedAudioFrameOptions) -> JsValue =
+pub extern "js" fn RTCEncodedAudioFrameOptions::to_js(
+  self : RTCEncodedAudioFrameOptions,
+) -> JsValue =
   #| (self) => ({
   #|   metadata: self.metadata
   #| })
@@ -306,201 +357,384 @@ pub extern "js" fn RTCEncodedAudioFrameOptions::to_js(self : RTCEncodedAudioFram
 /// SFrameTransform interface
 pub type SFrameTransform
 
-pub extern "js" fn SFrameTransform::to_js_value(self : SFrameTransform) -> JsValue =
+///|
+pub extern "js" fn SFrameTransform::to_js_value(
+  self : SFrameTransform,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn SFrameTransform::new(options : SFrameTransformOptions) -> SFrameTransform =
+///|
+pub extern "js" fn SFrameTransform::new(
+  options : SFrameTransformOptions,
+) -> SFrameTransform =
   #| (options) => new SFrameTransform(options)
 
-pub extern "js" fn SFrameTransform::set_encryption_key(self : SFrameTransform, key : CryptoKey) -> Promise[Unit] =
+///|
+pub extern "js" fn SFrameTransform::set_encryption_key(
+  self : SFrameTransform,
+  key : CryptoKey,
+) -> Promise[Unit] =
   #| (self, key) => self.setEncryptionKey(key)
 
-pub extern "js" fn SFrameTransform::set_encryption_key_with_key_i_d(self : SFrameTransform, key : CryptoKey, key_i_d : CryptoKeyID) -> Promise[Unit] =
+///|
+pub extern "js" fn SFrameTransform::set_encryption_key_with_key_i_d(
+  self : SFrameTransform,
+  key : CryptoKey,
+  key_i_d : CryptoKeyID,
+) -> Promise[Unit] =
   #| (self, key, key_i_d) => self.setEncryptionKey(key, key_i_d)
 
-pub extern "js" fn SFrameTransform::get_onerror(self : SFrameTransform) -> EventHandler =
+///|
+pub extern "js" fn SFrameTransform::get_onerror(
+  self : SFrameTransform,
+) -> EventHandler =
   #| (self) => self.onerror
 
-pub extern "js" fn SFrameTransform::set_onerror(self : SFrameTransform, value : EventHandler) -> Unit =
+///|
+pub extern "js" fn SFrameTransform::set_onerror(
+  self : SFrameTransform,
+  value : EventHandler,
+) -> Unit =
   #| (self, value) => { self.onerror = value }
 
 ///|
 /// SFrameEncrypterStream interface
 pub type SFrameEncrypterStream
 
-pub extern "js" fn SFrameEncrypterStream::to_js_value(self : SFrameEncrypterStream) -> JsValue =
+///|
+pub extern "js" fn SFrameEncrypterStream::to_js_value(
+  self : SFrameEncrypterStream,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn SFrameEncrypterStream::new(options : SFrameTransformOptions) -> SFrameEncrypterStream =
+///|
+pub extern "js" fn SFrameEncrypterStream::new(
+  options : SFrameTransformOptions,
+) -> SFrameEncrypterStream =
   #| (options) => new SFrameEncrypterStream(options)
 
-pub extern "js" fn SFrameEncrypterStream::get_readable(self : SFrameEncrypterStream) -> ReadableStream =
+///|
+pub extern "js" fn SFrameEncrypterStream::get_readable(
+  self : SFrameEncrypterStream,
+) -> ReadableStream =
   #| (self) => self.readable
 
-pub extern "js" fn SFrameEncrypterStream::get_writable(self : SFrameEncrypterStream) -> WritableStream =
+///|
+pub extern "js" fn SFrameEncrypterStream::get_writable(
+  self : SFrameEncrypterStream,
+) -> WritableStream =
   #| (self) => self.writable
 
-pub extern "js" fn SFrameEncrypterStream::set_encryption_key(self : SFrameEncrypterStream, key : CryptoKey) -> Promise[Unit] =
+///|
+pub extern "js" fn SFrameEncrypterStream::set_encryption_key(
+  self : SFrameEncrypterStream,
+  key : CryptoKey,
+) -> Promise[Unit] =
   #| (self, key) => self.setEncryptionKey(key)
 
-pub extern "js" fn SFrameEncrypterStream::set_encryption_key_with_key_i_d(self : SFrameEncrypterStream, key : CryptoKey, key_i_d : CryptoKeyID) -> Promise[Unit] =
+///|
+pub extern "js" fn SFrameEncrypterStream::set_encryption_key_with_key_i_d(
+  self : SFrameEncrypterStream,
+  key : CryptoKey,
+  key_i_d : CryptoKeyID,
+) -> Promise[Unit] =
   #| (self, key, key_i_d) => self.setEncryptionKey(key, key_i_d)
 
-pub extern "js" fn SFrameEncrypterStream::get_onerror(self : SFrameEncrypterStream) -> EventHandler =
+///|
+pub extern "js" fn SFrameEncrypterStream::get_onerror(
+  self : SFrameEncrypterStream,
+) -> EventHandler =
   #| (self) => self.onerror
 
-pub extern "js" fn SFrameEncrypterStream::set_onerror(self : SFrameEncrypterStream, value : EventHandler) -> Unit =
+///|
+pub extern "js" fn SFrameEncrypterStream::set_onerror(
+  self : SFrameEncrypterStream,
+  value : EventHandler,
+) -> Unit =
   #| (self, value) => { self.onerror = value }
 
 ///|
 /// SFrameDecrypterStream interface
 pub type SFrameDecrypterStream
 
-pub extern "js" fn SFrameDecrypterStream::to_js_value(self : SFrameDecrypterStream) -> JsValue =
+///|
+pub extern "js" fn SFrameDecrypterStream::to_js_value(
+  self : SFrameDecrypterStream,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn SFrameDecrypterStream::new(options : SFrameTransformOptions) -> SFrameDecrypterStream =
+///|
+pub extern "js" fn SFrameDecrypterStream::new(
+  options : SFrameTransformOptions,
+) -> SFrameDecrypterStream =
   #| (options) => new SFrameDecrypterStream(options)
 
-pub extern "js" fn SFrameDecrypterStream::get_readable(self : SFrameDecrypterStream) -> ReadableStream =
+///|
+pub extern "js" fn SFrameDecrypterStream::get_readable(
+  self : SFrameDecrypterStream,
+) -> ReadableStream =
   #| (self) => self.readable
 
-pub extern "js" fn SFrameDecrypterStream::get_writable(self : SFrameDecrypterStream) -> WritableStream =
+///|
+pub extern "js" fn SFrameDecrypterStream::get_writable(
+  self : SFrameDecrypterStream,
+) -> WritableStream =
   #| (self) => self.writable
 
-pub extern "js" fn SFrameDecrypterStream::set_encryption_key(self : SFrameDecrypterStream, key : CryptoKey) -> Promise[Unit] =
+///|
+pub extern "js" fn SFrameDecrypterStream::set_encryption_key(
+  self : SFrameDecrypterStream,
+  key : CryptoKey,
+) -> Promise[Unit] =
   #| (self, key) => self.setEncryptionKey(key)
 
-pub extern "js" fn SFrameDecrypterStream::set_encryption_key_with_key_i_d(self : SFrameDecrypterStream, key : CryptoKey, key_i_d : CryptoKeyID) -> Promise[Unit] =
+///|
+pub extern "js" fn SFrameDecrypterStream::set_encryption_key_with_key_i_d(
+  self : SFrameDecrypterStream,
+  key : CryptoKey,
+  key_i_d : CryptoKeyID,
+) -> Promise[Unit] =
   #| (self, key, key_i_d) => self.setEncryptionKey(key, key_i_d)
 
-pub extern "js" fn SFrameDecrypterStream::get_onerror(self : SFrameDecrypterStream) -> EventHandler =
+///|
+pub extern "js" fn SFrameDecrypterStream::get_onerror(
+  self : SFrameDecrypterStream,
+) -> EventHandler =
   #| (self) => self.onerror
 
-pub extern "js" fn SFrameDecrypterStream::set_onerror(self : SFrameDecrypterStream, value : EventHandler) -> Unit =
+///|
+pub extern "js" fn SFrameDecrypterStream::set_onerror(
+  self : SFrameDecrypterStream,
+  value : EventHandler,
+) -> Unit =
   #| (self, value) => { self.onerror = value }
 
 ///|
 /// SFrameTransformErrorEvent interface
 pub type SFrameTransformErrorEvent
 
-pub extern "js" fn SFrameTransformErrorEvent::to_js_value(self : SFrameTransformErrorEvent) -> JsValue =
+///|
+pub extern "js" fn SFrameTransformErrorEvent::to_js_value(
+  self : SFrameTransformErrorEvent,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn SFrameTransformErrorEvent::new(type_ : String, event_init_dict : SFrameTransformErrorEventInit) -> SFrameTransformErrorEvent =
+///|
+pub extern "js" fn SFrameTransformErrorEvent::new(
+  type_ : String,
+  event_init_dict : SFrameTransformErrorEventInit,
+) -> SFrameTransformErrorEvent =
   #| (type_, event_init_dict) => new SFrameTransformErrorEvent(type_, event_init_dict)
 
-pub extern "js" fn SFrameTransformErrorEvent::get_error_type(self : SFrameTransformErrorEvent) -> SFrameTransformErrorEventType =
+///|
+pub extern "js" fn SFrameTransformErrorEvent::get_error_type(
+  self : SFrameTransformErrorEvent,
+) -> SFrameTransformErrorEventType =
   #| (self) => self.errorType
 
-pub extern "js" fn SFrameTransformErrorEvent::get_key_i_d(self : SFrameTransformErrorEvent) -> CryptoKeyID? =
+///|
+pub extern "js" fn SFrameTransformErrorEvent::get_key_i_d(
+  self : SFrameTransformErrorEvent,
+) -> CryptoKeyID? =
   #| (self) => self.keyID
 
-pub extern "js" fn SFrameTransformErrorEvent::get_frame(self : SFrameTransformErrorEvent) -> JsValue =
+///|
+pub extern "js" fn SFrameTransformErrorEvent::get_frame(
+  self : SFrameTransformErrorEvent,
+) -> JsValue =
   #| (self) => self.frame
 
 ///|
 /// RTCEncodedVideoFrame interface
 pub type RTCEncodedVideoFrame
 
-pub extern "js" fn RTCEncodedVideoFrame::to_js_value(self : RTCEncodedVideoFrame) -> JsValue =
+///|
+pub extern "js" fn RTCEncodedVideoFrame::to_js_value(
+  self : RTCEncodedVideoFrame,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn RTCEncodedVideoFrame::new(original_frame : RTCEncodedVideoFrame, options : RTCEncodedVideoFrameOptions) -> RTCEncodedVideoFrame =
+///|
+pub extern "js" fn RTCEncodedVideoFrame::new(
+  original_frame : RTCEncodedVideoFrame,
+  options : RTCEncodedVideoFrameOptions,
+) -> RTCEncodedVideoFrame =
   #| (original_frame, options) => new RTCEncodedVideoFrame(original_frame, options)
 
-pub extern "js" fn RTCEncodedVideoFrame::get_type(self : RTCEncodedVideoFrame) -> EncodedVideoChunkType =
+///|
+pub extern "js" fn RTCEncodedVideoFrame::get_type(
+  self : RTCEncodedVideoFrame,
+) -> EncodedVideoChunkType =
   #| (self) => self.type
 
-pub extern "js" fn RTCEncodedVideoFrame::get_data(self : RTCEncodedVideoFrame) -> ArrayBuffer =
+///|
+pub extern "js" fn RTCEncodedVideoFrame::get_data(
+  self : RTCEncodedVideoFrame,
+) -> ArrayBuffer =
   #| (self) => self.data
 
-pub extern "js" fn RTCEncodedVideoFrame::set_data(self : RTCEncodedVideoFrame, value : ArrayBuffer) -> Unit =
+///|
+pub extern "js" fn RTCEncodedVideoFrame::set_data(
+  self : RTCEncodedVideoFrame,
+  value : ArrayBuffer,
+) -> Unit =
   #| (self, value) => { self.data = value }
 
-pub extern "js" fn RTCEncodedVideoFrame::get_metadata(self : RTCEncodedVideoFrame) -> RTCEncodedVideoFrameMetadata =
+///|
+pub extern "js" fn RTCEncodedVideoFrame::get_metadata(
+  self : RTCEncodedVideoFrame,
+) -> RTCEncodedVideoFrameMetadata =
   #| (self) => self.getMetadata()
 
 ///|
 /// RTCEncodedAudioFrame interface
 pub type RTCEncodedAudioFrame
 
-pub extern "js" fn RTCEncodedAudioFrame::to_js_value(self : RTCEncodedAudioFrame) -> JsValue =
+///|
+pub extern "js" fn RTCEncodedAudioFrame::to_js_value(
+  self : RTCEncodedAudioFrame,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn RTCEncodedAudioFrame::new(original_frame : RTCEncodedAudioFrame, options : RTCEncodedAudioFrameOptions) -> RTCEncodedAudioFrame =
+///|
+pub extern "js" fn RTCEncodedAudioFrame::new(
+  original_frame : RTCEncodedAudioFrame,
+  options : RTCEncodedAudioFrameOptions,
+) -> RTCEncodedAudioFrame =
   #| (original_frame, options) => new RTCEncodedAudioFrame(original_frame, options)
 
-pub extern "js" fn RTCEncodedAudioFrame::get_data(self : RTCEncodedAudioFrame) -> ArrayBuffer =
+///|
+pub extern "js" fn RTCEncodedAudioFrame::get_data(
+  self : RTCEncodedAudioFrame,
+) -> ArrayBuffer =
   #| (self) => self.data
 
-pub extern "js" fn RTCEncodedAudioFrame::set_data(self : RTCEncodedAudioFrame, value : ArrayBuffer) -> Unit =
+///|
+pub extern "js" fn RTCEncodedAudioFrame::set_data(
+  self : RTCEncodedAudioFrame,
+  value : ArrayBuffer,
+) -> Unit =
   #| (self, value) => { self.data = value }
 
-pub extern "js" fn RTCEncodedAudioFrame::get_metadata(self : RTCEncodedAudioFrame) -> RTCEncodedAudioFrameMetadata =
+///|
+pub extern "js" fn RTCEncodedAudioFrame::get_metadata(
+  self : RTCEncodedAudioFrame,
+) -> RTCEncodedAudioFrameMetadata =
   #| (self) => self.getMetadata()
 
 ///|
 /// RTCTransformEvent interface
 pub type RTCTransformEvent
 
-pub extern "js" fn RTCTransformEvent::to_js_value(self : RTCTransformEvent) -> JsValue =
+///|
+pub extern "js" fn RTCTransformEvent::to_js_value(
+  self : RTCTransformEvent,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn RTCTransformEvent::get_transformer(self : RTCTransformEvent) -> RTCRtpScriptTransformer =
+///|
+pub extern "js" fn RTCTransformEvent::get_transformer(
+  self : RTCTransformEvent,
+) -> RTCRtpScriptTransformer =
   #| (self) => self.transformer
 
 ///|
 /// RTCRtpScriptTransformer interface
 pub type RTCRtpScriptTransformer
 
-pub extern "js" fn RTCRtpScriptTransformer::to_js_value(self : RTCRtpScriptTransformer) -> JsValue =
+///|
+pub extern "js" fn RTCRtpScriptTransformer::to_js_value(
+  self : RTCRtpScriptTransformer,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn RTCRtpScriptTransformer::get_readable(self : RTCRtpScriptTransformer) -> ReadableStream =
+///|
+pub extern "js" fn RTCRtpScriptTransformer::get_readable(
+  self : RTCRtpScriptTransformer,
+) -> ReadableStream =
   #| (self) => self.readable
 
-pub extern "js" fn RTCRtpScriptTransformer::generate_key_frame(self : RTCRtpScriptTransformer) -> Promise[Unit] =
+///|
+pub extern "js" fn RTCRtpScriptTransformer::generate_key_frame(
+  self : RTCRtpScriptTransformer,
+) -> Promise[Unit] =
   #| (self) => self.generateKeyFrame()
 
-pub extern "js" fn RTCRtpScriptTransformer::generate_key_frame_with_rid(self : RTCRtpScriptTransformer, rid : String) -> Promise[Unit] =
+///|
+pub extern "js" fn RTCRtpScriptTransformer::generate_key_frame_with_rid(
+  self : RTCRtpScriptTransformer,
+  rid : String,
+) -> Promise[Unit] =
   #| (self, rid) => self.generateKeyFrame(rid)
 
-pub extern "js" fn RTCRtpScriptTransformer::send_key_frame_request(self : RTCRtpScriptTransformer) -> Promise[Unit] =
+///|
+pub extern "js" fn RTCRtpScriptTransformer::send_key_frame_request(
+  self : RTCRtpScriptTransformer,
+) -> Promise[Unit] =
   #| (self) => self.sendKeyFrameRequest()
 
-pub extern "js" fn RTCRtpScriptTransformer::get_writable(self : RTCRtpScriptTransformer) -> WritableStream =
+///|
+pub extern "js" fn RTCRtpScriptTransformer::get_writable(
+  self : RTCRtpScriptTransformer,
+) -> WritableStream =
   #| (self) => self.writable
 
-pub extern "js" fn RTCRtpScriptTransformer::get_onkeyframerequest(self : RTCRtpScriptTransformer) -> EventHandler =
+///|
+pub extern "js" fn RTCRtpScriptTransformer::get_onkeyframerequest(
+  self : RTCRtpScriptTransformer,
+) -> EventHandler =
   #| (self) => self.onkeyframerequest
 
-pub extern "js" fn RTCRtpScriptTransformer::set_onkeyframerequest(self : RTCRtpScriptTransformer, value : EventHandler) -> Unit =
+///|
+pub extern "js" fn RTCRtpScriptTransformer::set_onkeyframerequest(
+  self : RTCRtpScriptTransformer,
+  value : EventHandler,
+) -> Unit =
   #| (self, value) => { self.onkeyframerequest = value }
 
-pub extern "js" fn RTCRtpScriptTransformer::get_options(self : RTCRtpScriptTransformer) -> JsValue =
+///|
+pub extern "js" fn RTCRtpScriptTransformer::get_options(
+  self : RTCRtpScriptTransformer,
+) -> JsValue =
   #| (self) => self.options
 
 ///|
 /// RTCRtpScriptTransform interface
 pub type RTCRtpScriptTransform
 
-pub extern "js" fn RTCRtpScriptTransform::to_js_value(self : RTCRtpScriptTransform) -> JsValue =
+///|
+pub extern "js" fn RTCRtpScriptTransform::to_js_value(
+  self : RTCRtpScriptTransform,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn RTCRtpScriptTransform::new(worker : Worker, options : JsValue, transfer : Array[JsValue]) -> RTCRtpScriptTransform =
+///|
+pub extern "js" fn RTCRtpScriptTransform::new(
+  worker : Worker,
+  options : JsValue,
+  transfer : Array[JsValue],
+) -> RTCRtpScriptTransform =
   #| (worker, options, transfer) => new RTCRtpScriptTransform(worker, options, transfer)
 
 ///|
 /// KeyFrameRequestEvent interface
 pub type KeyFrameRequestEvent
 
-pub extern "js" fn KeyFrameRequestEvent::to_js_value(self : KeyFrameRequestEvent) -> JsValue =
+///|
+pub extern "js" fn KeyFrameRequestEvent::to_js_value(
+  self : KeyFrameRequestEvent,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn KeyFrameRequestEvent::new(type_ : String, rid : String) -> KeyFrameRequestEvent =
+///|
+pub extern "js" fn KeyFrameRequestEvent::new(
+  type_ : String,
+  rid : String,
+) -> KeyFrameRequestEvent =
   #| (type_, rid) => new KeyFrameRequestEvent(type_, rid)
 
-pub extern "js" fn KeyFrameRequestEvent::get_rid(self : KeyFrameRequestEvent) -> String? =
+///|
+pub extern "js" fn KeyFrameRequestEvent::get_rid(
+  self : KeyFrameRequestEvent,
+) -> String? =
   #| (self) => self.rid
-

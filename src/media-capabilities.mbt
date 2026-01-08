@@ -9,6 +9,7 @@ pub(all) enum MediaDecodingType {
   Webrtc
 }
 
+///|
 /// Convert to string value
 pub fn MediaDecodingType::to_string(self : MediaDecodingType) -> String {
   match self {
@@ -18,6 +19,7 @@ pub fn MediaDecodingType::to_string(self : MediaDecodingType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn MediaDecodingType::from_string(s : String) -> MediaDecodingType? {
   match s {
@@ -35,6 +37,7 @@ pub(all) enum MediaEncodingType {
   Webrtc
 }
 
+///|
 /// Convert to string value
 pub fn MediaEncodingType::to_string(self : MediaEncodingType) -> String {
   match self {
@@ -43,6 +46,7 @@ pub fn MediaEncodingType::to_string(self : MediaEncodingType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn MediaEncodingType::from_string(s : String) -> MediaEncodingType? {
   match s {
@@ -60,6 +64,7 @@ pub(all) enum HdrMetadataType {
   SmpteSt209440
 }
 
+///|
 /// Convert to string value
 pub fn HdrMetadataType::to_string(self : HdrMetadataType) -> String {
   match self {
@@ -69,6 +74,7 @@ pub fn HdrMetadataType::to_string(self : HdrMetadataType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn HdrMetadataType::from_string(s : String) -> HdrMetadataType? {
   match s {
@@ -87,6 +93,7 @@ pub(all) enum ColorGamut {
   Rec2020
 }
 
+///|
 /// Convert to string value
 pub fn ColorGamut::to_string(self : ColorGamut) -> String {
   match self {
@@ -96,6 +103,7 @@ pub fn ColorGamut::to_string(self : ColorGamut) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn ColorGamut::from_string(s : String) -> ColorGamut? {
   match s {
@@ -114,6 +122,7 @@ pub(all) enum TransferFunction {
   Hlg
 }
 
+///|
 /// Convert to string value
 pub fn TransferFunction::to_string(self : TransferFunction) -> String {
   match self {
@@ -123,6 +132,7 @@ pub fn TransferFunction::to_string(self : TransferFunction) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn TransferFunction::from_string(s : String) -> TransferFunction? {
   match s {
@@ -140,16 +150,17 @@ pub struct MediaConfiguration {
   audio : AudioConfiguration?
 }
 
+///|
 /// Create a new MediaConfiguration with default values
 pub fn MediaConfiguration::default() -> MediaConfiguration {
-  MediaConfiguration::{
-    video: None,
-    audio: None,
-  }
+  MediaConfiguration::{ video: None, audio: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MediaConfiguration::to_js(self : MediaConfiguration) -> JsValue =
+pub extern "js" fn MediaConfiguration::to_js(
+  self : MediaConfiguration,
+) -> JsValue =
   #| (self) => ({
   #|   video: self.video,
   #|   audio: self.audio
@@ -164,6 +175,7 @@ pub struct MediaDecodingConfiguration {
   keySystemConfiguration : MediaCapabilitiesKeySystemConfiguration?
 }
 
+///|
 /// Create a new MediaDecodingConfiguration with default values
 pub fn MediaDecodingConfiguration::default() -> MediaDecodingConfiguration {
   MediaDecodingConfiguration::{
@@ -174,12 +186,15 @@ pub fn MediaDecodingConfiguration::default() -> MediaDecodingConfiguration {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MediaDecodingConfiguration::to_js(self : MediaDecodingConfiguration) -> JsValue =
+pub extern "js" fn MediaDecodingConfiguration::to_js(
+  self : MediaDecodingConfiguration,
+) -> JsValue =
   #| (self) => ({
   #|   video: self.video,
   #|   audio: self.audio,
-  #|   type: self.type_,
+  #|   type: ['file', 'media-source', 'webrtc'][self.type_],
   #|   keySystemConfiguration: self.keySystemConfiguration
   #| })
 
@@ -191,21 +206,21 @@ pub struct MediaEncodingConfiguration {
   type_ : MediaEncodingType
 }
 
+///|
 /// Create a new MediaEncodingConfiguration with default values
 pub fn MediaEncodingConfiguration::default() -> MediaEncodingConfiguration {
-  MediaEncodingConfiguration::{
-    video: None,
-    audio: None,
-    type_: panic(),
-  }
+  MediaEncodingConfiguration::{ video: None, audio: None, type_: panic() }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MediaEncodingConfiguration::to_js(self : MediaEncodingConfiguration) -> JsValue =
+pub extern "js" fn MediaEncodingConfiguration::to_js(
+  self : MediaEncodingConfiguration,
+) -> JsValue =
   #| (self) => ({
   #|   video: self.video,
   #|   audio: self.audio,
-  #|   type: self.type_
+  #|   type: ['record', 'webrtc'][self.type_]
   #| })
 
 ///|
@@ -224,6 +239,7 @@ pub struct VideoConfiguration {
   spatialScalability : Bool?
 }
 
+///|
 /// Create a new VideoConfiguration with default values
 pub fn VideoConfiguration::default() -> VideoConfiguration {
   VideoConfiguration::{
@@ -241,8 +257,11 @@ pub fn VideoConfiguration::default() -> VideoConfiguration {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn VideoConfiguration::to_js(self : VideoConfiguration) -> JsValue =
+pub extern "js" fn VideoConfiguration::to_js(
+  self : VideoConfiguration,
+) -> JsValue =
   #| (self) => ({
   #|   contentType: self.contentType,
   #|   width: self.width,
@@ -250,9 +269,9 @@ pub extern "js" fn VideoConfiguration::to_js(self : VideoConfiguration) -> JsVal
   #|   bitrate: self.bitrate,
   #|   framerate: self.framerate,
   #|   hasAlphaChannel: self.hasAlphaChannel,
-  #|   hdrMetadataType: self.hdrMetadataType,
-  #|   colorGamut: self.colorGamut,
-  #|   transferFunction: self.transferFunction,
+  #|   hdrMetadataType: ['smpteSt2086', 'smpteSt2094-10', 'smpteSt2094-40'][self.hdrMetadataType],
+  #|   colorGamut: ['srgb', 'p3', 'rec2020'][self.colorGamut],
+  #|   transferFunction: ['srgb', 'pq', 'hlg'][self.transferFunction],
   #|   scalabilityMode: self.scalabilityMode,
   #|   spatialScalability: self.spatialScalability
   #| })
@@ -267,6 +286,7 @@ pub struct AudioConfiguration {
   spatialRendering : Bool?
 }
 
+///|
 /// Create a new AudioConfiguration with default values
 pub fn AudioConfiguration::default() -> AudioConfiguration {
   AudioConfiguration::{
@@ -278,8 +298,11 @@ pub fn AudioConfiguration::default() -> AudioConfiguration {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AudioConfiguration::to_js(self : AudioConfiguration) -> JsValue =
+pub extern "js" fn AudioConfiguration::to_js(
+  self : AudioConfiguration,
+) -> JsValue =
   #| (self) => ({
   #|   contentType: self.contentType,
   #|   channels: self.channels,
@@ -300,6 +323,7 @@ pub struct MediaCapabilitiesKeySystemConfiguration {
   video : KeySystemTrackConfiguration?
 }
 
+///|
 /// Create a new MediaCapabilitiesKeySystemConfiguration with default values
 pub fn MediaCapabilitiesKeySystemConfiguration::default() -> MediaCapabilitiesKeySystemConfiguration {
   MediaCapabilitiesKeySystemConfiguration::{
@@ -313,13 +337,16 @@ pub fn MediaCapabilitiesKeySystemConfiguration::default() -> MediaCapabilitiesKe
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MediaCapabilitiesKeySystemConfiguration::to_js(self : MediaCapabilitiesKeySystemConfiguration) -> JsValue =
+pub extern "js" fn MediaCapabilitiesKeySystemConfiguration::to_js(
+  self : MediaCapabilitiesKeySystemConfiguration,
+) -> JsValue =
   #| (self) => ({
   #|   keySystem: self.keySystem,
   #|   initDataType: self.initDataType,
-  #|   distinctiveIdentifier: self.distinctiveIdentifier,
-  #|   persistentState: self.persistentState,
+  #|   distinctiveIdentifier: ['required', 'optional', 'not-allowed'][self.distinctiveIdentifier],
+  #|   persistentState: ['required', 'optional', 'not-allowed'][self.persistentState],
   #|   sessionTypes: self.sessionTypes,
   #|   audio: self.audio,
   #|   video: self.video
@@ -329,22 +356,26 @@ pub extern "js" fn MediaCapabilitiesKeySystemConfiguration::to_js(self : MediaCa
 /// KeySystemTrackConfiguration dictionary
 pub struct KeySystemTrackConfiguration {
   robustness : String?
-  encryptionScheme : String??
+  encryptionScheme : Nullable[String]
 }
 
+///|
 /// Create a new KeySystemTrackConfiguration with default values
 pub fn KeySystemTrackConfiguration::default() -> KeySystemTrackConfiguration {
   KeySystemTrackConfiguration::{
     robustness: None,
-    encryptionScheme: None,
+    encryptionScheme: Nullable::Undefined,
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn KeySystemTrackConfiguration::to_js(self : KeySystemTrackConfiguration) -> JsValue =
+pub extern "js" fn KeySystemTrackConfiguration::to_js(
+  self : KeySystemTrackConfiguration,
+) -> JsValue =
   #| (self) => ({
   #|   robustness: self.robustness,
-  #|   encryptionScheme: self.encryptionScheme
+  #|   encryptionScheme: ((() => { const v = self.encryptionScheme; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
 
 ///|
@@ -355,6 +386,7 @@ pub struct MediaCapabilitiesInfo {
   powerEfficient : Bool
 }
 
+///|
 /// Create a new MediaCapabilitiesInfo with default values
 pub fn MediaCapabilitiesInfo::default() -> MediaCapabilitiesInfo {
   MediaCapabilitiesInfo::{
@@ -364,8 +396,11 @@ pub fn MediaCapabilitiesInfo::default() -> MediaCapabilitiesInfo {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MediaCapabilitiesInfo::to_js(self : MediaCapabilitiesInfo) -> JsValue =
+pub extern "js" fn MediaCapabilitiesInfo::to_js(
+  self : MediaCapabilitiesInfo,
+) -> JsValue =
   #| (self) => ({
   #|   supported: self.supported,
   #|   smooth: self.smooth,
@@ -382,6 +417,7 @@ pub struct MediaCapabilitiesDecodingInfo {
   configuration : MediaDecodingConfiguration
 }
 
+///|
 /// Create a new MediaCapabilitiesDecodingInfo with default values
 pub fn MediaCapabilitiesDecodingInfo::default() -> MediaCapabilitiesDecodingInfo {
   MediaCapabilitiesDecodingInfo::{
@@ -393,8 +429,11 @@ pub fn MediaCapabilitiesDecodingInfo::default() -> MediaCapabilitiesDecodingInfo
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MediaCapabilitiesDecodingInfo::to_js(self : MediaCapabilitiesDecodingInfo) -> JsValue =
+pub extern "js" fn MediaCapabilitiesDecodingInfo::to_js(
+  self : MediaCapabilitiesDecodingInfo,
+) -> JsValue =
   #| (self) => ({
   #|   supported: self.supported,
   #|   smooth: self.smooth,
@@ -412,6 +451,7 @@ pub struct MediaCapabilitiesEncodingInfo {
   configuration : MediaEncodingConfiguration
 }
 
+///|
 /// Create a new MediaCapabilitiesEncodingInfo with default values
 pub fn MediaCapabilitiesEncodingInfo::default() -> MediaCapabilitiesEncodingInfo {
   MediaCapabilitiesEncodingInfo::{
@@ -422,8 +462,11 @@ pub fn MediaCapabilitiesEncodingInfo::default() -> MediaCapabilitiesEncodingInfo
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MediaCapabilitiesEncodingInfo::to_js(self : MediaCapabilitiesEncodingInfo) -> JsValue =
+pub extern "js" fn MediaCapabilitiesEncodingInfo::to_js(
+  self : MediaCapabilitiesEncodingInfo,
+) -> JsValue =
   #| (self) => ({
   #|   supported: self.supported,
   #|   smooth: self.smooth,
@@ -435,12 +478,22 @@ pub extern "js" fn MediaCapabilitiesEncodingInfo::to_js(self : MediaCapabilities
 /// MediaCapabilities interface
 pub type MediaCapabilities
 
-pub extern "js" fn MediaCapabilities::to_js_value(self : MediaCapabilities) -> JsValue =
+///|
+pub extern "js" fn MediaCapabilities::to_js_value(
+  self : MediaCapabilities,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn MediaCapabilities::decoding_info(self : MediaCapabilities, configuration : MediaDecodingConfiguration) -> Promise[MediaCapabilitiesDecodingInfo] =
+///|
+pub extern "js" fn MediaCapabilities::decoding_info(
+  self : MediaCapabilities,
+  configuration : MediaDecodingConfiguration,
+) -> Promise[MediaCapabilitiesDecodingInfo] =
   #| (self, configuration) => self.decodingInfo(configuration)
 
-pub extern "js" fn MediaCapabilities::encoding_info(self : MediaCapabilities, configuration : MediaEncodingConfiguration) -> Promise[MediaCapabilitiesEncodingInfo] =
+///|
+pub extern "js" fn MediaCapabilities::encoding_info(
+  self : MediaCapabilities,
+  configuration : MediaEncodingConfiguration,
+) -> Promise[MediaCapabilitiesEncodingInfo] =
   #| (self, configuration) => self.encodingInfo(configuration)
-

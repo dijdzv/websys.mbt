@@ -8,6 +8,7 @@ pub(all) enum HevcBitstreamFormat {
   Hevc
 }
 
+///|
 /// Convert to string value
 pub fn HevcBitstreamFormat::to_string(self : HevcBitstreamFormat) -> String {
   match self {
@@ -16,6 +17,7 @@ pub fn HevcBitstreamFormat::to_string(self : HevcBitstreamFormat) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn HevcBitstreamFormat::from_string(s : String) -> HevcBitstreamFormat? {
   match s {
@@ -31,35 +33,38 @@ pub struct HevcEncoderConfig {
   format : HevcBitstreamFormat?
 }
 
+///|
 /// Create a new HevcEncoderConfig with default values
 pub fn HevcEncoderConfig::default() -> HevcEncoderConfig {
-  HevcEncoderConfig::{
-    format: None,
-  }
+  HevcEncoderConfig::{ format: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn HevcEncoderConfig::to_js(self : HevcEncoderConfig) -> JsValue =
+pub extern "js" fn HevcEncoderConfig::to_js(
+  self : HevcEncoderConfig,
+) -> JsValue =
   #| (self) => ({
-  #|   format: self.format
+  #|   format: ['annexb', 'hevc'][self.format]
   #| })
 
 ///|
 /// VideoEncoderEncodeOptionsForHevc dictionary
 pub struct VideoEncoderEncodeOptionsForHevc {
-  quantizer : Int??
+  quantizer : Nullable[Int]
 }
 
+///|
 /// Create a new VideoEncoderEncodeOptionsForHevc with default values
 pub fn VideoEncoderEncodeOptionsForHevc::default() -> VideoEncoderEncodeOptionsForHevc {
-  VideoEncoderEncodeOptionsForHevc::{
-    quantizer: None,
-  }
+  VideoEncoderEncodeOptionsForHevc::{ quantizer: Nullable::Undefined }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn VideoEncoderEncodeOptionsForHevc::to_js(self : VideoEncoderEncodeOptionsForHevc) -> JsValue =
+pub extern "js" fn VideoEncoderEncodeOptionsForHevc::to_js(
+  self : VideoEncoderEncodeOptionsForHevc,
+) -> JsValue =
   #| (self) => ({
-  #|   quantizer: self.quantizer
+  #|   quantizer: ((() => { const v = self.quantizer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
-

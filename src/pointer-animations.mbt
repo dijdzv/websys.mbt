@@ -10,6 +10,7 @@ pub(all) enum PointerAxis {
   Y
 }
 
+///|
 /// Convert to string value
 pub fn PointerAxis::to_string(self : PointerAxis) -> String {
   match self {
@@ -20,6 +21,7 @@ pub fn PointerAxis::to_string(self : PointerAxis) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn PointerAxis::from_string(s : String) -> PointerAxis? {
   match s {
@@ -34,38 +36,50 @@ pub fn PointerAxis::from_string(s : String) -> PointerAxis? {
 ///|
 /// PointerTimelineOptions dictionary
 pub struct PointerTimelineOptions {
-  source : Element??
+  source : Nullable[Element]
   axis : PointerAxis?
 }
 
+///|
 /// Create a new PointerTimelineOptions with default values
 pub fn PointerTimelineOptions::default() -> PointerTimelineOptions {
-  PointerTimelineOptions::{
-    source: None,
-    axis: None,
-  }
+  PointerTimelineOptions::{ source: Nullable::Undefined, axis: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn PointerTimelineOptions::to_js(self : PointerTimelineOptions) -> JsValue =
+pub extern "js" fn PointerTimelineOptions::to_js(
+  self : PointerTimelineOptions,
+) -> JsValue =
   #| (self) => ({
-  #|   source: self.source,
-  #|   axis: self.axis
+  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   axis: ['block', 'inline', 'x', 'y'][self.axis]
   #| })
 
 ///|
 /// PointerTimeline interface
 pub type PointerTimeline
 
-pub extern "js" fn PointerTimeline::to_js_value(self : PointerTimeline) -> JsValue =
+///|
+pub extern "js" fn PointerTimeline::to_js_value(
+  self : PointerTimeline,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn PointerTimeline::new(options : PointerTimelineOptions) -> PointerTimeline =
+///|
+pub extern "js" fn PointerTimeline::new(
+  options : PointerTimelineOptions,
+) -> PointerTimeline =
   #| (options) => new PointerTimeline(options)
 
-pub extern "js" fn PointerTimeline::get_source(self : PointerTimeline) -> Element? =
+///|
+pub extern "js" fn PointerTimeline::get_source(
+  self : PointerTimeline,
+) -> Element? =
   #| (self) => self.source
 
-pub extern "js" fn PointerTimeline::get_axis(self : PointerTimeline) -> PointerAxis =
+///|
+pub extern "js" fn PointerTimeline::get_axis(
+  self : PointerTimeline,
+) -> PointerAxis =
   #| (self) => self.axis
-

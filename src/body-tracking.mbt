@@ -89,6 +89,7 @@ pub(all) enum XRBodyJoint {
   RightFootBall
 }
 
+///|
 /// Convert to string value
 pub fn XRBodyJoint::to_string(self : XRBodyJoint) -> String {
   match self {
@@ -148,7 +149,8 @@ pub fn XRBodyJoint::to_string(self : XRBodyJoint) -> String {
     RightHandIndexTip => "right-hand-index-tip"
     RightHandMiddleMetacarpal => "right-hand-middle-metacarpal"
     RightHandMiddlePhalanxProximal => "right-hand-middle-phalanx-proximal"
-    RightHandMiddlePhalanxIntermediate => "right-hand-middle-phalanx-intermediate"
+    RightHandMiddlePhalanxIntermediate =>
+      "right-hand-middle-phalanx-intermediate"
     RightHandMiddlePhalanxDistal => "right-hand-middle-phalanx-distal"
     RightHandMiddleTip => "right-hand-middle-tip"
     RightHandRingMetacarpal => "right-hand-ring-metacarpal"
@@ -158,7 +160,8 @@ pub fn XRBodyJoint::to_string(self : XRBodyJoint) -> String {
     RightHandRingTip => "right-hand-ring-tip"
     RightHandLittleMetacarpal => "right-hand-little-metacarpal"
     RightHandLittlePhalanxProximal => "right-hand-little-phalanx-proximal"
-    RightHandLittlePhalanxIntermediate => "right-hand-little-phalanx-intermediate"
+    RightHandLittlePhalanxIntermediate =>
+      "right-hand-little-phalanx-intermediate"
     RightHandLittlePhalanxDistal => "right-hand-little-phalanx-distal"
     RightHandLittleTip => "right-hand-little-tip"
     LeftUpperLeg => "left-upper-leg"
@@ -178,6 +181,7 @@ pub fn XRBodyJoint::to_string(self : XRBodyJoint) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn XRBodyJoint::from_string(s : String) -> XRBodyJoint? {
   match s {
@@ -206,22 +210,27 @@ pub fn XRBodyJoint::from_string(s : String) -> XRBodyJoint? {
     "left-hand-thumb-tip" => Some(LeftHandThumbTip)
     "left-hand-index-metacarpal" => Some(LeftHandIndexMetacarpal)
     "left-hand-index-phalanx-proximal" => Some(LeftHandIndexPhalanxProximal)
-    "left-hand-index-phalanx-intermediate" => Some(LeftHandIndexPhalanxIntermediate)
+    "left-hand-index-phalanx-intermediate" =>
+      Some(LeftHandIndexPhalanxIntermediate)
     "left-hand-index-phalanx-distal" => Some(LeftHandIndexPhalanxDistal)
     "left-hand-index-tip" => Some(LeftHandIndexTip)
-    "left-hand-middle-phalanx-metacarpal" => Some(LeftHandMiddlePhalanxMetacarpal)
+    "left-hand-middle-phalanx-metacarpal" =>
+      Some(LeftHandMiddlePhalanxMetacarpal)
     "left-hand-middle-phalanx-proximal" => Some(LeftHandMiddlePhalanxProximal)
-    "left-hand-middle-phalanx-intermediate" => Some(LeftHandMiddlePhalanxIntermediate)
+    "left-hand-middle-phalanx-intermediate" =>
+      Some(LeftHandMiddlePhalanxIntermediate)
     "left-hand-middle-phalanx-distal" => Some(LeftHandMiddlePhalanxDistal)
     "left-hand-middle-tip" => Some(LeftHandMiddleTip)
     "left-hand-ring-metacarpal" => Some(LeftHandRingMetacarpal)
     "left-hand-ring-phalanx-proximal" => Some(LeftHandRingPhalanxProximal)
-    "left-hand-ring-phalanx-intermediate" => Some(LeftHandRingPhalanxIntermediate)
+    "left-hand-ring-phalanx-intermediate" =>
+      Some(LeftHandRingPhalanxIntermediate)
     "left-hand-ring-phalanx-distal" => Some(LeftHandRingPhalanxDistal)
     "left-hand-ring-tip" => Some(LeftHandRingTip)
     "left-hand-little-metacarpal" => Some(LeftHandLittleMetacarpal)
     "left-hand-little-phalanx-proximal" => Some(LeftHandLittlePhalanxProximal)
-    "left-hand-little-phalanx-intermediate" => Some(LeftHandLittlePhalanxIntermediate)
+    "left-hand-little-phalanx-intermediate" =>
+      Some(LeftHandLittlePhalanxIntermediate)
     "left-hand-little-phalanx-distal" => Some(LeftHandLittlePhalanxDistal)
     "left-hand-little-tip" => Some(LeftHandLittleTip)
     "right-hand-palm" => Some(RightHandPalm)
@@ -232,22 +241,26 @@ pub fn XRBodyJoint::from_string(s : String) -> XRBodyJoint? {
     "right-hand-thumb-tip" => Some(RightHandThumbTip)
     "right-hand-index-metacarpal" => Some(RightHandIndexMetacarpal)
     "right-hand-index-phalanx-proximal" => Some(RightHandIndexPhalanxProximal)
-    "right-hand-index-phalanx-intermediate" => Some(RightHandIndexPhalanxIntermediate)
+    "right-hand-index-phalanx-intermediate" =>
+      Some(RightHandIndexPhalanxIntermediate)
     "right-hand-index-phalanx-distal" => Some(RightHandIndexPhalanxDistal)
     "right-hand-index-tip" => Some(RightHandIndexTip)
     "right-hand-middle-metacarpal" => Some(RightHandMiddleMetacarpal)
     "right-hand-middle-phalanx-proximal" => Some(RightHandMiddlePhalanxProximal)
-    "right-hand-middle-phalanx-intermediate" => Some(RightHandMiddlePhalanxIntermediate)
+    "right-hand-middle-phalanx-intermediate" =>
+      Some(RightHandMiddlePhalanxIntermediate)
     "right-hand-middle-phalanx-distal" => Some(RightHandMiddlePhalanxDistal)
     "right-hand-middle-tip" => Some(RightHandMiddleTip)
     "right-hand-ring-metacarpal" => Some(RightHandRingMetacarpal)
     "right-hand-ring-phalanx-proximal" => Some(RightHandRingPhalanxProximal)
-    "right-hand-ring-phalanx-intermediate" => Some(RightHandRingPhalanxIntermediate)
+    "right-hand-ring-phalanx-intermediate" =>
+      Some(RightHandRingPhalanxIntermediate)
     "right-hand-ring-phalanx-distal" => Some(RightHandRingPhalanxDistal)
     "right-hand-ring-tip" => Some(RightHandRingTip)
     "right-hand-little-metacarpal" => Some(RightHandLittleMetacarpal)
     "right-hand-little-phalanx-proximal" => Some(RightHandLittlePhalanxProximal)
-    "right-hand-little-phalanx-intermediate" => Some(RightHandLittlePhalanxIntermediate)
+    "right-hand-little-phalanx-intermediate" =>
+      Some(RightHandLittlePhalanxIntermediate)
     "right-hand-little-phalanx-distal" => Some(RightHandLittlePhalanxDistal)
     "right-hand-little-tip" => Some(RightHandLittleTip)
     "left-upper-leg" => Some(LeftUpperLeg)
@@ -272,15 +285,19 @@ pub fn XRBodyJoint::from_string(s : String) -> XRBodyJoint? {
 /// XRBody interface
 pub type XRBody
 
+///|
 pub extern "js" fn XRBody::to_js_value(self : XRBody) -> JsValue =
   #| (self) => self
 
+///|
 pub extern "js" fn XRBody::_unknown_(self : XRBody) -> Unit =
   #| (self) => self._unknown_()
 
+///|
 pub extern "js" fn XRBody::get_size(self : XRBody) -> Int =
   #| (self) => self.size
 
+///|
 pub extern "js" fn XRBody::get(self : XRBody, key : XRBodyJoint) -> XRBodySpace =
   #| (self, key) => self.get(['hips', 'spine-lower', 'spine-middle', 'spine-upper', 'chest', 'neck', 'head', 'left-shoulder', 'left-scapula', 'left-arm-upper', 'left-arm-lower', 'left-hand-wrist-twist', 'right-shoulder', 'right-scapula', 'right-arm-upper', 'right-arm-lower', 'right-hand-wrist-twist', 'left-hand-palm', 'left-hand-wrist', 'left-hand-thumb-metacarpal', 'left-hand-thumb-phalanx-proximal', 'left-hand-thumb-phalanx-distal', 'left-hand-thumb-tip', 'left-hand-index-metacarpal', 'left-hand-index-phalanx-proximal', 'left-hand-index-phalanx-intermediate', 'left-hand-index-phalanx-distal', 'left-hand-index-tip', 'left-hand-middle-phalanx-metacarpal', 'left-hand-middle-phalanx-proximal', 'left-hand-middle-phalanx-intermediate', 'left-hand-middle-phalanx-distal', 'left-hand-middle-tip', 'left-hand-ring-metacarpal', 'left-hand-ring-phalanx-proximal', 'left-hand-ring-phalanx-intermediate', 'left-hand-ring-phalanx-distal', 'left-hand-ring-tip', 'left-hand-little-metacarpal', 'left-hand-little-phalanx-proximal', 'left-hand-little-phalanx-intermediate', 'left-hand-little-phalanx-distal', 'left-hand-little-tip', 'right-hand-palm', 'right-hand-wrist', 'right-hand-thumb-metacarpal', 'right-hand-thumb-phalanx-proximal', 'right-hand-thumb-phalanx-distal', 'right-hand-thumb-tip', 'right-hand-index-metacarpal', 'right-hand-index-phalanx-proximal', 'right-hand-index-phalanx-intermediate', 'right-hand-index-phalanx-distal', 'right-hand-index-tip', 'right-hand-middle-metacarpal', 'right-hand-middle-phalanx-proximal', 'right-hand-middle-phalanx-intermediate', 'right-hand-middle-phalanx-distal', 'right-hand-middle-tip', 'right-hand-ring-metacarpal', 'right-hand-ring-phalanx-proximal', 'right-hand-ring-phalanx-intermediate', 'right-hand-ring-phalanx-distal', 'right-hand-ring-tip', 'right-hand-little-metacarpal', 'right-hand-little-phalanx-proximal', 'right-hand-little-phalanx-intermediate', 'right-hand-little-phalanx-distal', 'right-hand-little-tip', 'left-upper-leg', 'left-lower-leg', 'left-foot-ankle-twist', 'left-foot-ankle', 'left-foot-subtalar', 'left-foot-transverse', 'left-foot-ball', 'right-upper-leg', 'right-lower-leg', 'right-foot-ankle-twist', 'right-foot-ankle', 'right-foot-subtalar', 'right-foot-transverse', 'right-foot-ball'][key])
 
@@ -288,9 +305,12 @@ pub extern "js" fn XRBody::get(self : XRBody, key : XRBodyJoint) -> XRBodySpace 
 /// XRBodySpace interface
 pub type XRBodySpace
 
+///|
 pub extern "js" fn XRBodySpace::to_js_value(self : XRBodySpace) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn XRBodySpace::get_joint_name(self : XRBodySpace) -> XRBodyJoint =
+///|
+pub extern "js" fn XRBodySpace::get_joint_name(
+  self : XRBodySpace,
+) -> XRBodyJoint =
   #| (self) => self.jointName
-

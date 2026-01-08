@@ -8,18 +8,18 @@ pub struct FlacEncoderConfig {
   compressLevel : Int?
 }
 
+///|
 /// Create a new FlacEncoderConfig with default values
 pub fn FlacEncoderConfig::default() -> FlacEncoderConfig {
-  FlacEncoderConfig::{
-    blockSize: None,
-    compressLevel: None,
-  }
+  FlacEncoderConfig::{ blockSize: None, compressLevel: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn FlacEncoderConfig::to_js(self : FlacEncoderConfig) -> JsValue =
+pub extern "js" fn FlacEncoderConfig::to_js(
+  self : FlacEncoderConfig,
+) -> JsValue =
   #| (self) => ({
   #|   blockSize: self.blockSize,
   #|   compressLevel: self.compressLevel
   #| })
-

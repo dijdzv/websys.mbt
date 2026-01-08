@@ -8,6 +8,7 @@ pub(all) enum XRPlaneOrientation {
   Vertical
 }
 
+///|
 /// Convert to string value
 pub fn XRPlaneOrientation::to_string(self : XRPlaneOrientation) -> String {
   match self {
@@ -16,6 +17,7 @@ pub fn XRPlaneOrientation::to_string(self : XRPlaneOrientation) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn XRPlaneOrientation::from_string(s : String) -> XRPlaneOrientation? {
   match s {
@@ -29,21 +31,31 @@ pub fn XRPlaneOrientation::from_string(s : String) -> XRPlaneOrientation? {
 /// XRPlane interface
 pub type XRPlane
 
+///|
 pub extern "js" fn XRPlane::to_js_value(self : XRPlane) -> JsValue =
   #| (self) => self
 
+///|
 pub extern "js" fn XRPlane::get_plane_space(self : XRPlane) -> XRSpace =
   #| (self) => self.planeSpace
 
+///|
 pub extern "js" fn XRPlane::get_polygon(self : XRPlane) -> JsValue =
   #| (self) => self.polygon
 
-pub extern "js" fn XRPlane::get_orientation(self : XRPlane) -> XRPlaneOrientation? =
+///|
+pub extern "js" fn XRPlane::get_orientation(
+  self : XRPlane,
+) -> XRPlaneOrientation? =
   #| (self) => self.orientation
 
-pub extern "js" fn XRPlane::get_last_changed_time(self : XRPlane) -> DOMHighResTimeStamp =
+///|
+pub extern "js" fn XRPlane::get_last_changed_time(
+  self : XRPlane,
+) -> DOMHighResTimeStamp =
   #| (self) => self.lastChangedTime
 
+///|
 pub extern "js" fn XRPlane::get_semantic_label(self : XRPlane) -> String? =
   #| (self) => self.semanticLabel
 
@@ -51,9 +63,10 @@ pub extern "js" fn XRPlane::get_semantic_label(self : XRPlane) -> String? =
 /// XRPlaneSet interface
 pub type XRPlaneSet
 
+///|
 pub extern "js" fn XRPlaneSet::to_js_value(self : XRPlaneSet) -> JsValue =
   #| (self) => self
 
+///|
 pub extern "js" fn XRPlaneSet::has(self : XRPlaneSet, value : XRPlane) -> Bool =
   #| (self, value) => self.has(value)
-

@@ -10,6 +10,7 @@ pub(all) enum ScrollAxis {
   Y
 }
 
+///|
 /// Convert to string value
 pub fn ScrollAxis::to_string(self : ScrollAxis) -> String {
   match self {
@@ -20,6 +21,7 @@ pub fn ScrollAxis::to_string(self : ScrollAxis) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn ScrollAxis::from_string(s : String) -> ScrollAxis? {
   match s {
@@ -34,23 +36,24 @@ pub fn ScrollAxis::from_string(s : String) -> ScrollAxis? {
 ///|
 /// ScrollTimelineOptions dictionary
 pub struct ScrollTimelineOptions {
-  source : Element??
+  source : Nullable[Element]
   axis : ScrollAxis?
 }
 
+///|
 /// Create a new ScrollTimelineOptions with default values
 pub fn ScrollTimelineOptions::default() -> ScrollTimelineOptions {
-  ScrollTimelineOptions::{
-    source: None,
-    axis: None,
-  }
+  ScrollTimelineOptions::{ source: Nullable::Undefined, axis: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ScrollTimelineOptions::to_js(self : ScrollTimelineOptions) -> JsValue =
+pub extern "js" fn ScrollTimelineOptions::to_js(
+  self : ScrollTimelineOptions,
+) -> JsValue =
   #| (self) => ({
-  #|   source: self.source,
-  #|   axis: self.axis
+  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   axis: ['block', 'inline', 'x', 'y'][self.axis]
   #| })
 
 ///|
@@ -61,20 +64,20 @@ pub struct ViewTimelineOptions {
   inset : JsValue?
 }
 
+///|
 /// Create a new ViewTimelineOptions with default values
 pub fn ViewTimelineOptions::default() -> ViewTimelineOptions {
-  ViewTimelineOptions::{
-    subject: None,
-    axis: None,
-    inset: None,
-  }
+  ViewTimelineOptions::{ subject: None, axis: None, inset: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ViewTimelineOptions::to_js(self : ViewTimelineOptions) -> JsValue =
+pub extern "js" fn ViewTimelineOptions::to_js(
+  self : ViewTimelineOptions,
+) -> JsValue =
   #| (self) => ({
   #|   subject: self.subject,
-  #|   axis: self.axis,
+  #|   axis: ['block', 'inline', 'x', 'y'][self.axis],
   #|   inset: self.inset
   #| })
 
@@ -82,40 +85,64 @@ pub extern "js" fn ViewTimelineOptions::to_js(self : ViewTimelineOptions) -> JsV
 /// ScrollTimeline interface
 pub type ScrollTimeline
 
-pub extern "js" fn ScrollTimeline::to_js_value(self : ScrollTimeline) -> JsValue =
+///|
+pub extern "js" fn ScrollTimeline::to_js_value(
+  self : ScrollTimeline,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ScrollTimeline::new(options : ScrollTimelineOptions) -> ScrollTimeline =
+///|
+pub extern "js" fn ScrollTimeline::new(
+  options : ScrollTimelineOptions,
+) -> ScrollTimeline =
   #| (options) => new ScrollTimeline(options)
 
-pub extern "js" fn ScrollTimeline::get_source(self : ScrollTimeline) -> Element? =
+///|
+pub extern "js" fn ScrollTimeline::get_source(
+  self : ScrollTimeline,
+) -> Element? =
   #| (self) => self.source
 
-pub extern "js" fn ScrollTimeline::get_axis(self : ScrollTimeline) -> ScrollAxis =
+///|
+pub extern "js" fn ScrollTimeline::get_axis(
+  self : ScrollTimeline,
+) -> ScrollAxis =
   #| (self) => self.axis
 
 ///|
 /// ViewTimeline interface
 pub type ViewTimeline
 
+///|
 pub extern "js" fn ViewTimeline::to_js_value(self : ViewTimeline) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ViewTimeline::new(options : ScrollTimelineOptions) -> ViewTimeline =
+///|
+pub extern "js" fn ViewTimeline::new(
+  options : ScrollTimelineOptions,
+) -> ViewTimeline =
   #| (options) => new ViewTimeline(options)
 
+///|
 pub extern "js" fn ViewTimeline::get_source(self : ViewTimeline) -> Element? =
   #| (self) => self.source
 
+///|
 pub extern "js" fn ViewTimeline::get_axis(self : ViewTimeline) -> ScrollAxis =
   #| (self) => self.axis
 
+///|
 pub extern "js" fn ViewTimeline::get_subject(self : ViewTimeline) -> Element =
   #| (self) => self.subject
 
-pub extern "js" fn ViewTimeline::get_start_offset(self : ViewTimeline) -> CSSNumericValue =
+///|
+pub extern "js" fn ViewTimeline::get_start_offset(
+  self : ViewTimeline,
+) -> CSSNumericValue =
   #| (self) => self.startOffset
 
-pub extern "js" fn ViewTimeline::get_end_offset(self : ViewTimeline) -> CSSNumericValue =
+///|
+pub extern "js" fn ViewTimeline::get_end_offset(
+  self : ViewTimeline,
+) -> CSSNumericValue =
   #| (self) => self.endOffset
-

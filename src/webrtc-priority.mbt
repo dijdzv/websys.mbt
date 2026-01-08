@@ -10,6 +10,7 @@ pub(all) enum RTCPriorityType {
   High
 }
 
+///|
 /// Convert to string value
 pub fn RTCPriorityType::to_string(self : RTCPriorityType) -> String {
   match self {
@@ -20,6 +21,7 @@ pub fn RTCPriorityType::to_string(self : RTCPriorityType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn RTCPriorityType::from_string(s : String) -> RTCPriorityType? {
   match s {
@@ -44,6 +46,7 @@ pub struct RTCRtpEncodingParameters {
   scaleResolutionDownBy : Double?
 }
 
+///|
 /// Create a new RTCRtpEncodingParameters with default values
 pub fn RTCRtpEncodingParameters::default() -> RTCRtpEncodingParameters {
   RTCRtpEncodingParameters::{
@@ -58,11 +61,14 @@ pub fn RTCRtpEncodingParameters::default() -> RTCRtpEncodingParameters {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn RTCRtpEncodingParameters::to_js(self : RTCRtpEncodingParameters) -> JsValue =
+pub extern "js" fn RTCRtpEncodingParameters::to_js(
+  self : RTCRtpEncodingParameters,
+) -> JsValue =
   #| (self) => ({
-  #|   priority: self.priority,
-  #|   networkPriority: self.networkPriority,
+  #|   priority: ['very-low', 'low', 'medium', 'high'][self.priority],
+  #|   networkPriority: ['very-low', 'low', 'medium', 'high'][self.networkPriority],
   #|   scalabilityMode: self.scalabilityMode,
   #|   active: self.active,
   #|   codec: self.codec,
@@ -83,6 +89,7 @@ pub struct RTCDataChannelInit {
   id : Int?
 }
 
+///|
 /// Create a new RTCDataChannelInit with default values
 pub fn RTCDataChannelInit::default() -> RTCDataChannelInit {
   RTCDataChannelInit::{
@@ -96,10 +103,13 @@ pub fn RTCDataChannelInit::default() -> RTCDataChannelInit {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn RTCDataChannelInit::to_js(self : RTCDataChannelInit) -> JsValue =
+pub extern "js" fn RTCDataChannelInit::to_js(
+  self : RTCDataChannelInit,
+) -> JsValue =
   #| (self) => ({
-  #|   priority: self.priority,
+  #|   priority: ['very-low', 'low', 'medium', 'high'][self.priority],
   #|   ordered: self.ordered,
   #|   maxPacketLifeTime: self.maxPacketLifeTime,
   #|   maxRetransmits: self.maxRetransmits,
@@ -107,4 +117,3 @@ pub extern "js" fn RTCDataChannelInit::to_js(self : RTCDataChannelInit) -> JsVal
   #|   negotiated: self.negotiated,
   #|   id: self.id
   #| })
-

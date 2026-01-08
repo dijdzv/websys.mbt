@@ -10,8 +10,11 @@ pub(all) enum IdentityCredentialRequestOptionsContext {
   Continue
 }
 
+///|
 /// Convert to string value
-pub fn IdentityCredentialRequestOptionsContext::to_string(self : IdentityCredentialRequestOptionsContext) -> String {
+pub fn IdentityCredentialRequestOptionsContext::to_string(
+  self : IdentityCredentialRequestOptionsContext,
+) -> String {
   match self {
     Signin => "signin"
     Signup => "signup"
@@ -20,8 +23,11 @@ pub fn IdentityCredentialRequestOptionsContext::to_string(self : IdentityCredent
   }
 }
 
+///|
 /// Parse from string value
-pub fn IdentityCredentialRequestOptionsContext::from_string(s : String) -> IdentityCredentialRequestOptionsContext? {
+pub fn IdentityCredentialRequestOptionsContext::from_string(
+  s : String,
+) -> IdentityCredentialRequestOptionsContext? {
   match s {
     "signin" => Some(Signin)
     "signup" => Some(Signup)
@@ -38,16 +44,22 @@ pub(all) enum IdentityCredentialRequestOptionsMode {
   Passive
 }
 
+///|
 /// Convert to string value
-pub fn IdentityCredentialRequestOptionsMode::to_string(self : IdentityCredentialRequestOptionsMode) -> String {
+pub fn IdentityCredentialRequestOptionsMode::to_string(
+  self : IdentityCredentialRequestOptionsMode,
+) -> String {
   match self {
     Active => "active"
     Passive => "passive"
   }
 }
 
+///|
 /// Parse from string value
-pub fn IdentityCredentialRequestOptionsMode::from_string(s : String) -> IdentityCredentialRequestOptionsMode? {
+pub fn IdentityCredentialRequestOptionsMode::from_string(
+  s : String,
+) -> IdentityCredentialRequestOptionsMode? {
   match s {
     "active" => Some(Active)
     "passive" => Some(Passive)
@@ -63,6 +75,7 @@ pub struct IdentityCredentialDisconnectOptions {
   accountHint : String
 }
 
+///|
 /// Create a new IdentityCredentialDisconnectOptions with default values
 pub fn IdentityCredentialDisconnectOptions::default() -> IdentityCredentialDisconnectOptions {
   IdentityCredentialDisconnectOptions::{
@@ -72,8 +85,11 @@ pub fn IdentityCredentialDisconnectOptions::default() -> IdentityCredentialDisco
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn IdentityCredentialDisconnectOptions::to_js(self : IdentityCredentialDisconnectOptions) -> JsValue =
+pub extern "js" fn IdentityCredentialDisconnectOptions::to_js(
+  self : IdentityCredentialDisconnectOptions,
+) -> JsValue =
   #| (self) => ({
   #|   configURL: self.configURL,
   #|   clientId: self.clientId,
@@ -86,15 +102,17 @@ pub struct DisconnectedAccount {
   account_id : String
 }
 
+///|
 /// Create a new DisconnectedAccount with default values
 pub fn DisconnectedAccount::default() -> DisconnectedAccount {
-  DisconnectedAccount::{
-    account_id: "",
-  }
+  DisconnectedAccount::{ account_id: "" }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn DisconnectedAccount::to_js(self : DisconnectedAccount) -> JsValue =
+pub extern "js" fn DisconnectedAccount::to_js(
+  self : DisconnectedAccount,
+) -> JsValue =
   #| (self) => ({
   #|   account_id: self.account_id
   #| })
@@ -106,16 +124,17 @@ pub struct IdentityCredentialErrorInit {
   url : String?
 }
 
+///|
 /// Create a new IdentityCredentialErrorInit with default values
 pub fn IdentityCredentialErrorInit::default() -> IdentityCredentialErrorInit {
-  IdentityCredentialErrorInit::{
-    error: None,
-    url: None,
-  }
+  IdentityCredentialErrorInit::{ error: None, url: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn IdentityCredentialErrorInit::to_js(self : IdentityCredentialErrorInit) -> JsValue =
+pub extern "js" fn IdentityCredentialErrorInit::to_js(
+  self : IdentityCredentialErrorInit,
+) -> JsValue =
   #| (self) => ({
   #|   error: self.error,
   #|   url: self.url
@@ -129,21 +148,21 @@ pub struct IdentityCredentialRequestOptions {
   mode : IdentityCredentialRequestOptionsMode?
 }
 
+///|
 /// Create a new IdentityCredentialRequestOptions with default values
 pub fn IdentityCredentialRequestOptions::default() -> IdentityCredentialRequestOptions {
-  IdentityCredentialRequestOptions::{
-    providers: [],
-    context: None,
-    mode: None,
-  }
+  IdentityCredentialRequestOptions::{ providers: [], context: None, mode: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn IdentityCredentialRequestOptions::to_js(self : IdentityCredentialRequestOptions) -> JsValue =
+pub extern "js" fn IdentityCredentialRequestOptions::to_js(
+  self : IdentityCredentialRequestOptions,
+) -> JsValue =
   #| (self) => ({
   #|   providers: self.providers,
-  #|   context: self.context,
-  #|   mode: self.mode
+  #|   context: ['signin', 'signup', 'use', 'continue'][self.context],
+  #|   mode: ['active', 'passive'][self.mode]
   #| })
 
 ///|
@@ -153,16 +172,17 @@ pub struct IdentityProviderConfig {
   clientId : String
 }
 
+///|
 /// Create a new IdentityProviderConfig with default values
 pub fn IdentityProviderConfig::default() -> IdentityProviderConfig {
-  IdentityProviderConfig::{
-    configURL: "",
-    clientId: "",
-  }
+  IdentityProviderConfig::{ configURL: "", clientId: "" }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn IdentityProviderConfig::to_js(self : IdentityProviderConfig) -> JsValue =
+pub extern "js" fn IdentityProviderConfig::to_js(
+  self : IdentityProviderConfig,
+) -> JsValue =
   #| (self) => ({
   #|   configURL: self.configURL,
   #|   clientId: self.clientId
@@ -179,6 +199,7 @@ pub struct IdentityProviderRequestOptions {
   params : JsValue?
 }
 
+///|
 /// Create a new IdentityProviderRequestOptions with default values
 pub fn IdentityProviderRequestOptions::default() -> IdentityProviderRequestOptions {
   IdentityProviderRequestOptions::{
@@ -191,8 +212,11 @@ pub fn IdentityProviderRequestOptions::default() -> IdentityProviderRequestOptio
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn IdentityProviderRequestOptions::to_js(self : IdentityProviderRequestOptions) -> JsValue =
+pub extern "js" fn IdentityProviderRequestOptions::to_js(
+  self : IdentityProviderRequestOptions,
+) -> JsValue =
   #| (self) => ({
   #|   configURL: self.configURL,
   #|   clientId: self.clientId,
@@ -210,6 +234,7 @@ pub struct IdentityProviderWellKnown {
   login_url : String?
 }
 
+///|
 /// Create a new IdentityProviderWellKnown with default values
 pub fn IdentityProviderWellKnown::default() -> IdentityProviderWellKnown {
   IdentityProviderWellKnown::{
@@ -219,8 +244,11 @@ pub fn IdentityProviderWellKnown::default() -> IdentityProviderWellKnown {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn IdentityProviderWellKnown::to_js(self : IdentityProviderWellKnown) -> JsValue =
+pub extern "js" fn IdentityProviderWellKnown::to_js(
+  self : IdentityProviderWellKnown,
+) -> JsValue =
   #| (self) => ({
   #|   provider_urls: self.provider_urls,
   #|   accounts_endpoint: self.accounts_endpoint,
@@ -234,16 +262,17 @@ pub struct IdentityProviderIcon {
   size : Int?
 }
 
+///|
 /// Create a new IdentityProviderIcon with default values
 pub fn IdentityProviderIcon::default() -> IdentityProviderIcon {
-  IdentityProviderIcon::{
-    url: "",
-    size: None,
-  }
+  IdentityProviderIcon::{ url: "", size: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn IdentityProviderIcon::to_js(self : IdentityProviderIcon) -> JsValue =
+pub extern "js" fn IdentityProviderIcon::to_js(
+  self : IdentityProviderIcon,
+) -> JsValue =
   #| (self) => ({
   #|   url: self.url,
   #|   size: self.size
@@ -258,6 +287,7 @@ pub struct IdentityProviderBranding {
   name : String?
 }
 
+///|
 /// Create a new IdentityProviderBranding with default values
 pub fn IdentityProviderBranding::default() -> IdentityProviderBranding {
   IdentityProviderBranding::{
@@ -268,8 +298,11 @@ pub fn IdentityProviderBranding::default() -> IdentityProviderBranding {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn IdentityProviderBranding::to_js(self : IdentityProviderBranding) -> JsValue =
+pub extern "js" fn IdentityProviderBranding::to_js(
+  self : IdentityProviderBranding,
+) -> JsValue =
   #| (self) => ({
   #|   background_color: self.background_color,
   #|   color: self.color,
@@ -290,6 +323,7 @@ pub struct IdentityProviderAPIConfig {
   account_label : String?
 }
 
+///|
 /// Create a new IdentityProviderAPIConfig with default values
 pub fn IdentityProviderAPIConfig::default() -> IdentityProviderAPIConfig {
   IdentityProviderAPIConfig::{
@@ -304,8 +338,11 @@ pub fn IdentityProviderAPIConfig::default() -> IdentityProviderAPIConfig {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn IdentityProviderAPIConfig::to_js(self : IdentityProviderAPIConfig) -> JsValue =
+pub extern "js" fn IdentityProviderAPIConfig::to_js(
+  self : IdentityProviderAPIConfig,
+) -> JsValue =
   #| (self) => ({
   #|   accounts_endpoint: self.accounts_endpoint,
   #|   client_metadata_endpoint: self.client_metadata_endpoint,
@@ -333,6 +370,7 @@ pub struct IdentityProviderAccount {
   label_hints : Array[String]?
 }
 
+///|
 /// Create a new IdentityProviderAccount with default values
 pub fn IdentityProviderAccount::default() -> IdentityProviderAccount {
   IdentityProviderAccount::{
@@ -350,8 +388,11 @@ pub fn IdentityProviderAccount::default() -> IdentityProviderAccount {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn IdentityProviderAccount::to_js(self : IdentityProviderAccount) -> JsValue =
+pub extern "js" fn IdentityProviderAccount::to_js(
+  self : IdentityProviderAccount,
+) -> JsValue =
   #| (self) => ({
   #|   id: self.id,
   #|   name: self.name,
@@ -372,15 +413,17 @@ pub struct IdentityProviderAccountList {
   accounts : Array[IdentityProviderAccount]?
 }
 
+///|
 /// Create a new IdentityProviderAccountList with default values
 pub fn IdentityProviderAccountList::default() -> IdentityProviderAccountList {
-  IdentityProviderAccountList::{
-    accounts: None,
-  }
+  IdentityProviderAccountList::{ accounts: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn IdentityProviderAccountList::to_js(self : IdentityProviderAccountList) -> JsValue =
+pub extern "js" fn IdentityProviderAccountList::to_js(
+  self : IdentityProviderAccountList,
+) -> JsValue =
   #| (self) => ({
   #|   accounts: self.accounts
   #| })
@@ -393,17 +436,17 @@ pub struct IdentityAssertionResponse {
   error : IdentityCredentialErrorInit?
 }
 
+///|
 /// Create a new IdentityAssertionResponse with default values
 pub fn IdentityAssertionResponse::default() -> IdentityAssertionResponse {
-  IdentityAssertionResponse::{
-    token: None,
-    continue_on: None,
-    error: None,
-  }
+  IdentityAssertionResponse::{ token: None, continue_on: None, error: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn IdentityAssertionResponse::to_js(self : IdentityAssertionResponse) -> JsValue =
+pub extern "js" fn IdentityAssertionResponse::to_js(
+  self : IdentityAssertionResponse,
+) -> JsValue =
   #| (self) => ({
   #|   token: self.token,
   #|   continue_on: self.continue_on,
@@ -418,6 +461,7 @@ pub struct IdentityProviderClientMetadata {
   client_is_third_party_to_top_frame_origin : Bool?
 }
 
+///|
 /// Create a new IdentityProviderClientMetadata with default values
 pub fn IdentityProviderClientMetadata::default() -> IdentityProviderClientMetadata {
   IdentityProviderClientMetadata::{
@@ -427,8 +471,11 @@ pub fn IdentityProviderClientMetadata::default() -> IdentityProviderClientMetada
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn IdentityProviderClientMetadata::to_js(self : IdentityProviderClientMetadata) -> JsValue =
+pub extern "js" fn IdentityProviderClientMetadata::to_js(
+  self : IdentityProviderClientMetadata,
+) -> JsValue =
   #| (self) => ({
   #|   privacy_policy_url: self.privacy_policy_url,
   #|   terms_of_service_url: self.terms_of_service_url,
@@ -444,16 +491,13 @@ pub struct IdentityUserInfo {
   picture : String?
 }
 
+///|
 /// Create a new IdentityUserInfo with default values
 pub fn IdentityUserInfo::default() -> IdentityUserInfo {
-  IdentityUserInfo::{
-    email: None,
-    name: None,
-    givenName: None,
-    picture: None,
-  }
+  IdentityUserInfo::{ email: None, name: None, givenName: None, picture: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn IdentityUserInfo::to_js(self : IdentityUserInfo) -> JsValue =
   #| (self) => ({
@@ -469,15 +513,17 @@ pub struct IdentityResolveOptions {
   accountId : String?
 }
 
+///|
 /// Create a new IdentityResolveOptions with default values
 pub fn IdentityResolveOptions::default() -> IdentityResolveOptions {
-  IdentityResolveOptions::{
-    accountId: None,
-  }
+  IdentityResolveOptions::{ accountId: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn IdentityResolveOptions::to_js(self : IdentityResolveOptions) -> JsValue =
+pub extern "js" fn IdentityResolveOptions::to_js(
+  self : IdentityResolveOptions,
+) -> JsValue =
   #| (self) => ({
   #|   accountId: self.accountId
   #| })
@@ -486,50 +532,88 @@ pub extern "js" fn IdentityResolveOptions::to_js(self : IdentityResolveOptions) 
 /// IdentityCredential interface
 pub type IdentityCredential
 
-pub extern "js" fn IdentityCredential::to_js_value(self : IdentityCredential) -> JsValue =
+///|
+pub extern "js" fn IdentityCredential::to_js_value(
+  self : IdentityCredential,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn IdentityCredential::disconnect(options : IdentityCredentialDisconnectOptions) -> Promise[Unit] =
+///|
+pub extern "js" fn IdentityCredential::disconnect(
+  options : IdentityCredentialDisconnectOptions,
+) -> Promise[Unit] =
   #| (options) => IdentityCredential.disconnect(options)
 
-pub extern "js" fn IdentityCredential::get_token(self : IdentityCredential) -> JsValue =
+///|
+pub extern "js" fn IdentityCredential::get_token(
+  self : IdentityCredential,
+) -> JsValue =
   #| (self) => self.token
 
-pub extern "js" fn IdentityCredential::get_is_auto_selected(self : IdentityCredential) -> Bool =
+///|
+pub extern "js" fn IdentityCredential::get_is_auto_selected(
+  self : IdentityCredential,
+) -> Bool =
   #| (self) => self.isAutoSelected
 
-pub extern "js" fn IdentityCredential::get_config_u_r_l(self : IdentityCredential) -> String =
+///|
+pub extern "js" fn IdentityCredential::get_config_u_r_l(
+  self : IdentityCredential,
+) -> String =
   #| (self) => self.configURL
 
 ///|
 /// IdentityCredentialError interface
 pub type IdentityCredentialError
 
-pub extern "js" fn IdentityCredentialError::to_js_value(self : IdentityCredentialError) -> JsValue =
+///|
+pub extern "js" fn IdentityCredentialError::to_js_value(
+  self : IdentityCredentialError,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn IdentityCredentialError::new(message : String, options : IdentityCredentialErrorInit) -> IdentityCredentialError =
+///|
+pub extern "js" fn IdentityCredentialError::new(
+  message : String,
+  options : IdentityCredentialErrorInit,
+) -> IdentityCredentialError =
   #| (message, options) => new IdentityCredentialError(message, options)
 
-pub extern "js" fn IdentityCredentialError::get_error(self : IdentityCredentialError) -> String =
+///|
+pub extern "js" fn IdentityCredentialError::get_error(
+  self : IdentityCredentialError,
+) -> String =
   #| (self) => self.error
 
-pub extern "js" fn IdentityCredentialError::get_url(self : IdentityCredentialError) -> String =
+///|
+pub extern "js" fn IdentityCredentialError::get_url(
+  self : IdentityCredentialError,
+) -> String =
   #| (self) => self.url
 
 ///|
 /// IdentityProvider interface
 pub type IdentityProvider
 
-pub extern "js" fn IdentityProvider::to_js_value(self : IdentityProvider) -> JsValue =
+///|
+pub extern "js" fn IdentityProvider::to_js_value(
+  self : IdentityProvider,
+) -> JsValue =
   #| (self) => self
 
+///|
 pub extern "js" fn IdentityProvider::close() -> Unit =
   #| () => IdentityProvider.close()
 
-pub extern "js" fn IdentityProvider::resolve(token : JsValue, options : IdentityResolveOptions) -> Promise[Unit] =
+///|
+pub extern "js" fn IdentityProvider::resolve(
+  token : JsValue,
+  options : IdentityResolveOptions,
+) -> Promise[Unit] =
   #| (token, options) => IdentityProvider.resolve(token, options)
 
-pub extern "js" fn IdentityProvider::get_user_info(config : IdentityProviderConfig) -> Promise[Array[IdentityUserInfo]] =
+///|
+pub extern "js" fn IdentityProvider::get_user_info(
+  config : IdentityProviderConfig,
+) -> Promise[Array[IdentityUserInfo]] =
   #| (config) => IdentityProvider.getUserInfo(config)
-

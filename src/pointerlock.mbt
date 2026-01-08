@@ -7,15 +7,17 @@ pub struct PointerLockOptions {
   unadjustedMovement : Bool?
 }
 
+///|
 /// Create a new PointerLockOptions with default values
 pub fn PointerLockOptions::default() -> PointerLockOptions {
-  PointerLockOptions::{
-    unadjustedMovement: None,
-  }
+  PointerLockOptions::{ unadjustedMovement: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn PointerLockOptions::to_js(self : PointerLockOptions) -> JsValue =
+pub extern "js" fn PointerLockOptions::to_js(
+  self : PointerLockOptions,
+) -> JsValue =
   #| (self) => ({
   #|   unadjustedMovement: self.unadjustedMovement
   #| })
@@ -31,9 +33,10 @@ pub struct MouseEventInit {
   clientY : Int?
   button : Int?
   buttons : Int?
-  relatedTarget : EventTarget??
+  relatedTarget : Nullable[EventTarget]
 }
 
+///|
 /// Create a new MouseEventInit with default values
 pub fn MouseEventInit::default() -> MouseEventInit {
   MouseEventInit::{
@@ -45,10 +48,11 @@ pub fn MouseEventInit::default() -> MouseEventInit {
     clientY: None,
     button: None,
     buttons: None,
-    relatedTarget: None,
+    relatedTarget: Nullable::Undefined,
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MouseEventInit::to_js(self : MouseEventInit) -> JsValue =
   #| (self) => ({
@@ -60,6 +64,5 @@ pub extern "js" fn MouseEventInit::to_js(self : MouseEventInit) -> JsValue =
   #|   clientY: self.clientY,
   #|   button: self.button,
   #|   buttons: self.buttons,
-  #|   relatedTarget: self.relatedTarget
+  #|   relatedTarget: ((() => { const v = self.relatedTarget; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
-

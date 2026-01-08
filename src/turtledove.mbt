@@ -6,6 +6,20 @@
 pub type PreviousWinElement = JsValue
 
 ///|
+/// Create PreviousWinElement from Int64
+pub extern "js" fn PreviousWinElement::from_int64(
+  v : Int64,
+) -> PreviousWinElement =
+  #| (v) => v
+
+///|
+/// Create PreviousWinElement from AuctionAd
+pub extern "js" fn PreviousWinElement::from_auction_ad(
+  v : AuctionAd,
+) -> PreviousWinElement =
+  #| (v) => v
+
+///|
 /// PreviousWin typedef
 pub type PreviousWin = Array[PreviousWinElement]
 
@@ -18,6 +32,7 @@ pub(all) enum KAnonStatus {
   NotCalculated
 }
 
+///|
 /// Convert to string value
 pub fn KAnonStatus::to_string(self : KAnonStatus) -> String {
   match self {
@@ -28,6 +43,7 @@ pub fn KAnonStatus::to_string(self : KAnonStatus) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn KAnonStatus::from_string(s : String) -> KAnonStatus? {
   match s {
@@ -53,6 +69,7 @@ pub struct AuctionAd {
   creativeScanningMetadata : String?
 }
 
+///|
 /// Create a new AuctionAd with default values
 pub fn AuctionAd::default() -> AuctionAd {
   AuctionAd::{
@@ -68,6 +85,7 @@ pub fn AuctionAd::default() -> AuctionAd {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn AuctionAd::to_js(self : AuctionAd) -> JsValue =
   #| (self) => ({
@@ -89,16 +107,17 @@ pub struct AuctionAdInterestGroupSize {
   height : String
 }
 
+///|
 /// Create a new AuctionAdInterestGroupSize with default values
 pub fn AuctionAdInterestGroupSize::default() -> AuctionAdInterestGroupSize {
-  AuctionAdInterestGroupSize::{
-    width: "",
-    height: "",
-  }
+  AuctionAdInterestGroupSize::{ width: "", height: "" }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AuctionAdInterestGroupSize::to_js(self : AuctionAdInterestGroupSize) -> JsValue =
+pub extern "js" fn AuctionAdInterestGroupSize::to_js(
+  self : AuctionAdInterestGroupSize,
+) -> JsValue =
   #| (self) => ({
   #|   width: self.width,
   #|   height: self.height
@@ -128,6 +147,7 @@ pub struct GenerateBidInterestGroup {
   sizeGroups : JsValue?
 }
 
+///|
 /// Create a new GenerateBidInterestGroup with default values
 pub fn GenerateBidInterestGroup::default() -> GenerateBidInterestGroup {
   GenerateBidInterestGroup::{
@@ -153,8 +173,11 @@ pub fn GenerateBidInterestGroup::default() -> GenerateBidInterestGroup {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn GenerateBidInterestGroup::to_js(self : GenerateBidInterestGroup) -> JsValue =
+pub extern "js" fn GenerateBidInterestGroup::to_js(
+  self : GenerateBidInterestGroup,
+) -> JsValue =
   #| (self) => ({
   #|   owner: self.owner,
   #|   name: self.name,
@@ -183,6 +206,7 @@ pub struct ProtectedAudiencePrivateAggregationConfig {
   aggregationCoordinatorOrigin : String?
 }
 
+///|
 /// Create a new ProtectedAudiencePrivateAggregationConfig with default values
 pub fn ProtectedAudiencePrivateAggregationConfig::default() -> ProtectedAudiencePrivateAggregationConfig {
   ProtectedAudiencePrivateAggregationConfig::{
@@ -190,8 +214,11 @@ pub fn ProtectedAudiencePrivateAggregationConfig::default() -> ProtectedAudience
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ProtectedAudiencePrivateAggregationConfig::to_js(self : ProtectedAudiencePrivateAggregationConfig) -> JsValue =
+pub extern "js" fn ProtectedAudiencePrivateAggregationConfig::to_js(
+  self : ProtectedAudiencePrivateAggregationConfig,
+) -> JsValue =
   #| (self) => ({
   #|   aggregationCoordinatorOrigin: self.aggregationCoordinatorOrigin
   #| })
@@ -225,6 +252,7 @@ pub struct AuctionAdInterestGroup {
   privateAggregationConfig : ProtectedAudiencePrivateAggregationConfig?
 }
 
+///|
 /// Create a new AuctionAdInterestGroup with default values
 pub fn AuctionAdInterestGroup::default() -> AuctionAdInterestGroup {
   AuctionAdInterestGroup::{
@@ -255,8 +283,11 @@ pub fn AuctionAdInterestGroup::default() -> AuctionAdInterestGroup {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AuctionAdInterestGroup::to_js(self : AuctionAdInterestGroup) -> JsValue =
+pub extern "js" fn AuctionAdInterestGroup::to_js(
+  self : AuctionAdInterestGroup,
+) -> JsValue =
   #| (self) => ({
   #|   owner: self.owner,
   #|   name: self.name,
@@ -291,16 +322,17 @@ pub struct AuctionAdInterestGroupKey {
   name : String
 }
 
+///|
 /// Create a new AuctionAdInterestGroupKey with default values
 pub fn AuctionAdInterestGroupKey::default() -> AuctionAdInterestGroupKey {
-  AuctionAdInterestGroupKey::{
-    owner: "",
-    name: "",
-  }
+  AuctionAdInterestGroupKey::{ owner: "", name: "" }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AuctionAdInterestGroupKey::to_js(self : AuctionAdInterestGroupKey) -> JsValue =
+pub extern "js" fn AuctionAdInterestGroupKey::to_js(
+  self : AuctionAdInterestGroupKey,
+) -> JsValue =
   #| (self) => ({
   #|   owner: self.owner,
   #|   name: self.name
@@ -313,16 +345,17 @@ pub struct AuctionReportBuyersConfig {
   scale : Double
 }
 
+///|
 /// Create a new AuctionReportBuyersConfig with default values
 pub fn AuctionReportBuyersConfig::default() -> AuctionReportBuyersConfig {
-  AuctionReportBuyersConfig::{
-    bucket: panic(),
-    scale: 0,
-  }
+  AuctionReportBuyersConfig::{ bucket: panic(), scale: 0 }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AuctionReportBuyersConfig::to_js(self : AuctionReportBuyersConfig) -> JsValue =
+pub extern "js" fn AuctionReportBuyersConfig::to_js(
+  self : AuctionReportBuyersConfig,
+) -> JsValue =
   #| (self) => ({
   #|   bucket: self.bucket,
   #|   scale: self.scale
@@ -332,22 +365,26 @@ pub extern "js" fn AuctionReportBuyersConfig::to_js(self : AuctionReportBuyersCo
 /// AuctionReportBuyerDebugModeConfig dictionary
 pub struct AuctionReportBuyerDebugModeConfig {
   enabled : Bool?
-  debugKey : JsValue??
+  debugKey : Nullable[JsValue]
 }
 
+///|
 /// Create a new AuctionReportBuyerDebugModeConfig with default values
 pub fn AuctionReportBuyerDebugModeConfig::default() -> AuctionReportBuyerDebugModeConfig {
   AuctionReportBuyerDebugModeConfig::{
     enabled: None,
-    debugKey: None,
+    debugKey: Nullable::Undefined,
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AuctionReportBuyerDebugModeConfig::to_js(self : AuctionReportBuyerDebugModeConfig) -> JsValue =
+pub extern "js" fn AuctionReportBuyerDebugModeConfig::to_js(
+  self : AuctionReportBuyerDebugModeConfig,
+) -> JsValue =
   #| (self) => ({
   #|   enabled: self.enabled,
-  #|   debugKey: self.debugKey
+  #|   debugKey: ((() => { const v = self.debugKey; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
 
 ///|
@@ -356,15 +393,17 @@ pub struct AuctionRealTimeReportingConfig {
   type_ : String
 }
 
+///|
 /// Create a new AuctionRealTimeReportingConfig with default values
 pub fn AuctionRealTimeReportingConfig::default() -> AuctionRealTimeReportingConfig {
-  AuctionRealTimeReportingConfig::{
-    type_: "",
-  }
+  AuctionRealTimeReportingConfig::{ type_: "" }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AuctionRealTimeReportingConfig::to_js(self : AuctionRealTimeReportingConfig) -> JsValue =
+pub extern "js" fn AuctionRealTimeReportingConfig::to_js(
+  self : AuctionRealTimeReportingConfig,
+) -> JsValue =
   #| (self) => ({
   #|   type: self.type_
   #| })
@@ -407,12 +446,13 @@ pub struct AuctionAdConfig {
   sellerRealTimeReportingConfig : AuctionRealTimeReportingConfig?
   perBuyerRealTimeReportingConfig : JsValue?
   componentAuctions : Array[AuctionAdConfig]?
-  signal : AbortSignal??
+  signal : Nullable[AbortSignal]
   resolveToConfig : Promise[Bool]?
   serverResponse : Promise[Uint8Array]?
   requestId : String?
 }
 
+///|
 /// Create a new AuctionAdConfig with default values
 pub fn AuctionAdConfig::default() -> AuctionAdConfig {
   AuctionAdConfig::{
@@ -451,13 +491,14 @@ pub fn AuctionAdConfig::default() -> AuctionAdConfig {
     sellerRealTimeReportingConfig: None,
     perBuyerRealTimeReportingConfig: None,
     componentAuctions: None,
-    signal: None,
+    signal: Nullable::Undefined,
     resolveToConfig: None,
     serverResponse: None,
     requestId: None,
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn AuctionAdConfig::to_js(self : AuctionAdConfig) -> JsValue =
   #| (self) => ({
@@ -496,7 +537,7 @@ pub extern "js" fn AuctionAdConfig::to_js(self : AuctionAdConfig) -> JsValue =
   #|   sellerRealTimeReportingConfig: self.sellerRealTimeReportingConfig,
   #|   perBuyerRealTimeReportingConfig: self.perBuyerRealTimeReportingConfig,
   #|   componentAuctions: self.componentAuctions,
-  #|   signal: self.signal,
+  #|   signal: ((() => { const v = self.signal; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   resolveToConfig: self.resolveToConfig,
   #|   serverResponse: self.serverResponse,
   #|   requestId: self.requestId
@@ -510,17 +551,17 @@ pub struct AdAuctionPerSellerData {
   error : String?
 }
 
+///|
 /// Create a new AdAuctionPerSellerData with default values
 pub fn AdAuctionPerSellerData::default() -> AdAuctionPerSellerData {
-  AdAuctionPerSellerData::{
-    seller: "",
-    request: None,
-    error: None,
-  }
+  AdAuctionPerSellerData::{ seller: "", request: None, error: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AdAuctionPerSellerData::to_js(self : AdAuctionPerSellerData) -> JsValue =
+pub extern "js" fn AdAuctionPerSellerData::to_js(
+  self : AdAuctionPerSellerData,
+) -> JsValue =
   #| (self) => ({
   #|   seller: self.seller,
   #|   request: self.request,
@@ -535,15 +576,13 @@ pub struct AdAuctionData {
   requests : Array[AdAuctionPerSellerData]?
 }
 
+///|
 /// Create a new AdAuctionData with default values
 pub fn AdAuctionData::default() -> AdAuctionData {
-  AdAuctionData::{
-    requestId: "",
-    request: None,
-    requests: None,
-  }
+  AdAuctionData::{ requestId: "", request: None, requests: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn AdAuctionData::to_js(self : AdAuctionData) -> JsValue =
   #| (self) => ({
@@ -559,16 +598,17 @@ pub struct AdAuctionOneSeller {
   coordinatorOrigin : String?
 }
 
+///|
 /// Create a new AdAuctionOneSeller with default values
 pub fn AdAuctionOneSeller::default() -> AdAuctionOneSeller {
-  AdAuctionOneSeller::{
-    seller: "",
-    coordinatorOrigin: None,
-  }
+  AdAuctionOneSeller::{ seller: "", coordinatorOrigin: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AdAuctionOneSeller::to_js(self : AdAuctionOneSeller) -> JsValue =
+pub extern "js" fn AdAuctionOneSeller::to_js(
+  self : AdAuctionOneSeller,
+) -> JsValue =
   #| (self) => ({
   #|   seller: self.seller,
   #|   coordinatorOrigin: self.coordinatorOrigin
@@ -584,6 +624,7 @@ pub struct AdAuctionDataConfig {
   perBuyerConfig : JsValue?
 }
 
+///|
 /// Create a new AdAuctionDataConfig with default values
 pub fn AdAuctionDataConfig::default() -> AdAuctionDataConfig {
   AdAuctionDataConfig::{
@@ -595,8 +636,11 @@ pub fn AdAuctionDataConfig::default() -> AdAuctionDataConfig {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AdAuctionDataConfig::to_js(self : AdAuctionDataConfig) -> JsValue =
+pub extern "js" fn AdAuctionDataConfig::to_js(
+  self : AdAuctionDataConfig,
+) -> JsValue =
   #| (self) => ({
   #|   seller: self.seller,
   #|   coordinatorOrigin: self.coordinatorOrigin,
@@ -611,15 +655,17 @@ pub struct AdAuctionDataBuyerConfig {
   targetSize : Int?
 }
 
+///|
 /// Create a new AdAuctionDataBuyerConfig with default values
 pub fn AdAuctionDataBuyerConfig::default() -> AdAuctionDataBuyerConfig {
-  AdAuctionDataBuyerConfig::{
-    targetSize: None,
-  }
+  AdAuctionDataBuyerConfig::{ targetSize: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AdAuctionDataBuyerConfig::to_js(self : AdAuctionDataBuyerConfig) -> JsValue =
+pub extern "js" fn AdAuctionDataBuyerConfig::to_js(
+  self : AdAuctionDataBuyerConfig,
+) -> JsValue =
   #| (self) => ({
   #|   targetSize: self.targetSize
   #| })
@@ -662,6 +708,7 @@ pub struct StorageInterestGroup {
   estimatedSize : Int64?
 }
 
+///|
 /// Create a new StorageInterestGroup with default values
 pub fn StorageInterestGroup::default() -> StorageInterestGroup {
   StorageInterestGroup::{
@@ -701,8 +748,11 @@ pub fn StorageInterestGroup::default() -> StorageInterestGroup {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn StorageInterestGroup::to_js(self : StorageInterestGroup) -> JsValue =
+pub extern "js" fn StorageInterestGroup::to_js(
+  self : StorageInterestGroup,
+) -> JsValue =
   #| (self) => ({
   #|   owner: self.owner,
   #|   name: self.name,
@@ -747,15 +797,13 @@ pub struct PASignalValue {
   offset : JsValue?
 }
 
+///|
 /// Create a new PASignalValue with default values
 pub fn PASignalValue::default() -> PASignalValue {
-  PASignalValue::{
-    baseValue: "",
-    scale: None,
-    offset: None,
-  }
+  PASignalValue::{ baseValue: "", scale: None, offset: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn PASignalValue::to_js(self : PASignalValue) -> JsValue =
   #| (self) => ({
@@ -772,6 +820,7 @@ pub struct PAExtendedHistogramContribution {
   filteringId : JsValue?
 }
 
+///|
 /// Create a new PAExtendedHistogramContribution with default values
 pub fn PAExtendedHistogramContribution::default() -> PAExtendedHistogramContribution {
   PAExtendedHistogramContribution::{
@@ -781,8 +830,11 @@ pub fn PAExtendedHistogramContribution::default() -> PAExtendedHistogramContribu
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn PAExtendedHistogramContribution::to_js(self : PAExtendedHistogramContribution) -> JsValue =
+pub extern "js" fn PAExtendedHistogramContribution::to_js(
+  self : PAExtendedHistogramContribution,
+) -> JsValue =
   #| (self) => ({
   #|   bucket: self.bucket,
   #|   value: self.value,
@@ -797,17 +849,17 @@ pub struct RealTimeContribution {
   latencyThreshold : Int?
 }
 
+///|
 /// Create a new RealTimeContribution with default values
 pub fn RealTimeContribution::default() -> RealTimeContribution {
-  RealTimeContribution::{
-    bucket: 0,
-    priorityWeight: 0,
-    latencyThreshold: None,
-  }
+  RealTimeContribution::{ bucket: 0, priorityWeight: 0, latencyThreshold: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn RealTimeContribution::to_js(self : RealTimeContribution) -> JsValue =
+pub extern "js" fn RealTimeContribution::to_js(
+  self : RealTimeContribution,
+) -> JsValue =
   #| (self) => ({
   #|   bucket: self.bucket,
   #|   priorityWeight: self.priorityWeight,
@@ -822,15 +874,13 @@ pub struct AdRender {
   height : String?
 }
 
+///|
 /// Create a new AdRender with default values
 pub fn AdRender::default() -> AdRender {
-  AdRender::{
-    url: "",
-    width: None,
-    height: None,
-  }
+  AdRender::{ url: "", width: None, height: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn AdRender::to_js(self : AdRender) -> JsValue =
   #| (self) => ({
@@ -855,6 +905,7 @@ pub struct GenerateBidOutput {
   numMandatoryAdComponents : Int?
 }
 
+///|
 /// Create a new GenerateBidOutput with default values
 pub fn GenerateBidOutput::default() -> GenerateBidOutput {
   GenerateBidOutput::{
@@ -872,8 +923,11 @@ pub fn GenerateBidOutput::default() -> GenerateBidOutput {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn GenerateBidOutput::to_js(self : GenerateBidOutput) -> JsValue =
+pub extern "js" fn GenerateBidOutput::to_js(
+  self : GenerateBidOutput,
+) -> JsValue =
   #| (self) => ({
   #|   bid: self.bid,
   #|   bidCurrency: self.bidCurrency,
@@ -907,6 +961,7 @@ pub struct BiddingBrowserSignals {
   forDebuggingOnlyInCooldownOrLockout : Bool?
 }
 
+///|
 /// Create a new BiddingBrowserSignals with default values
 pub fn BiddingBrowserSignals::default() -> BiddingBrowserSignals {
   BiddingBrowserSignals::{
@@ -927,8 +982,11 @@ pub fn BiddingBrowserSignals::default() -> BiddingBrowserSignals {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn BiddingBrowserSignals::to_js(self : BiddingBrowserSignals) -> JsValue =
+pub extern "js" fn BiddingBrowserSignals::to_js(
+  self : BiddingBrowserSignals,
+) -> JsValue =
   #| (self) => ({
   #|   topWindowHostname: self.topWindowHostname,
   #|   seller: self.seller,
@@ -963,6 +1021,7 @@ pub struct ScoringBrowserSignals {
   adComponentsCreativeScanningMetadata : Array[String?]?
 }
 
+///|
 /// Create a new ScoringBrowserSignals with default values
 pub fn ScoringBrowserSignals::default() -> ScoringBrowserSignals {
   ScoringBrowserSignals::{
@@ -981,8 +1040,11 @@ pub fn ScoringBrowserSignals::default() -> ScoringBrowserSignals {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ScoringBrowserSignals::to_js(self : ScoringBrowserSignals) -> JsValue =
+pub extern "js" fn ScoringBrowserSignals::to_js(
+  self : ScoringBrowserSignals,
+) -> JsValue =
   #| (self) => ({
   #|   topWindowHostname: self.topWindowHostname,
   #|   interestGroupOwner: self.interestGroupOwner,
@@ -1014,6 +1076,7 @@ pub struct ReportingBrowserSignals {
   selectedBuyerAndSellerReportingId : String?
 }
 
+///|
 /// Create a new ReportingBrowserSignals with default values
 pub fn ReportingBrowserSignals::default() -> ReportingBrowserSignals {
   ReportingBrowserSignals::{
@@ -1031,8 +1094,11 @@ pub fn ReportingBrowserSignals::default() -> ReportingBrowserSignals {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ReportingBrowserSignals::to_js(self : ReportingBrowserSignals) -> JsValue =
+pub extern "js" fn ReportingBrowserSignals::to_js(
+  self : ReportingBrowserSignals,
+) -> JsValue =
   #| (self) => ({
   #|   topWindowHostname: self.topWindowHostname,
   #|   interestGroupOwner: self.interestGroupOwner,
@@ -1067,6 +1133,7 @@ pub struct ReportResultBrowserSignals {
   dataVersion : Int?
 }
 
+///|
 /// Create a new ReportResultBrowserSignals with default values
 pub fn ReportResultBrowserSignals::default() -> ReportResultBrowserSignals {
   ReportResultBrowserSignals::{
@@ -1088,8 +1155,11 @@ pub fn ReportResultBrowserSignals::default() -> ReportResultBrowserSignals {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ReportResultBrowserSignals::to_js(self : ReportResultBrowserSignals) -> JsValue =
+pub extern "js" fn ReportResultBrowserSignals::to_js(
+  self : ReportResultBrowserSignals,
+) -> JsValue =
   #| (self) => ({
   #|   topWindowHostname: self.topWindowHostname,
   #|   interestGroupOwner: self.interestGroupOwner,
@@ -1132,6 +1202,7 @@ pub struct ReportWinBrowserSignals {
   kAnonStatus : KAnonStatus?
 }
 
+///|
 /// Create a new ReportWinBrowserSignals with default values
 pub fn ReportWinBrowserSignals::default() -> ReportWinBrowserSignals {
   ReportWinBrowserSignals::{
@@ -1157,8 +1228,11 @@ pub fn ReportWinBrowserSignals::default() -> ReportWinBrowserSignals {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ReportWinBrowserSignals::to_js(self : ReportWinBrowserSignals) -> JsValue =
+pub extern "js" fn ReportWinBrowserSignals::to_js(
+  self : ReportWinBrowserSignals,
+) -> JsValue =
   #| (self) => ({
   #|   topWindowHostname: self.topWindowHostname,
   #|   interestGroupOwner: self.interestGroupOwner,
@@ -1178,7 +1252,7 @@ pub extern "js" fn ReportWinBrowserSignals::to_js(self : ReportWinBrowserSignals
   #|   buyerReportingId: self.buyerReportingId,
   #|   modelingSignals: self.modelingSignals,
   #|   dataVersion: self.dataVersion,
-  #|   kAnonStatus: self.kAnonStatus
+  #|   kAnonStatus: ['passedAndEnforced', 'passedNotEnforced', 'belowThreshold', 'notCalculated'][self.kAnonStatus]
   #| })
 
 ///|
@@ -1188,6 +1262,7 @@ pub struct DirectFromSellerSignalsForBuyer {
   perBuyerSignals : JsValue?
 }
 
+///|
 /// Create a new DirectFromSellerSignalsForBuyer with default values
 pub fn DirectFromSellerSignalsForBuyer::default() -> DirectFromSellerSignalsForBuyer {
   DirectFromSellerSignalsForBuyer::{
@@ -1196,8 +1271,11 @@ pub fn DirectFromSellerSignalsForBuyer::default() -> DirectFromSellerSignalsForB
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn DirectFromSellerSignalsForBuyer::to_js(self : DirectFromSellerSignalsForBuyer) -> JsValue =
+pub extern "js" fn DirectFromSellerSignalsForBuyer::to_js(
+  self : DirectFromSellerSignalsForBuyer,
+) -> JsValue =
   #| (self) => ({
   #|   auctionSignals: self.auctionSignals,
   #|   perBuyerSignals: self.perBuyerSignals
@@ -1210,6 +1288,7 @@ pub struct DirectFromSellerSignalsForSeller {
   sellerSignals : JsValue?
 }
 
+///|
 /// Create a new DirectFromSellerSignalsForSeller with default values
 pub fn DirectFromSellerSignalsForSeller::default() -> DirectFromSellerSignalsForSeller {
   DirectFromSellerSignalsForSeller::{
@@ -1218,8 +1297,11 @@ pub fn DirectFromSellerSignalsForSeller::default() -> DirectFromSellerSignalsFor
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn DirectFromSellerSignalsForSeller::to_js(self : DirectFromSellerSignalsForSeller) -> JsValue =
+pub extern "js" fn DirectFromSellerSignalsForSeller::to_js(
+  self : DirectFromSellerSignalsForSeller,
+) -> JsValue =
   #| (self) => ({
   #|   auctionSignals: self.auctionSignals,
   #|   sellerSignals: self.sellerSignals
@@ -1235,6 +1317,7 @@ pub struct ScoreAdOutput {
   allowComponentAuction : Bool?
 }
 
+///|
 /// Create a new ScoreAdOutput with default values
 pub fn ScoreAdOutput::default() -> ScoreAdOutput {
   ScoreAdOutput::{
@@ -1246,6 +1329,7 @@ pub fn ScoreAdOutput::default() -> ScoreAdOutput {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn ScoreAdOutput::to_js(self : ScoreAdOutput) -> JsValue =
   #| (self) => ({
@@ -1260,152 +1344,283 @@ pub extern "js" fn ScoreAdOutput::to_js(self : ScoreAdOutput) -> JsValue =
 /// InterestGroupScriptRunnerGlobalScope interface
 pub type InterestGroupScriptRunnerGlobalScope
 
-pub extern "js" fn InterestGroupScriptRunnerGlobalScope::to_js_value(self : InterestGroupScriptRunnerGlobalScope) -> JsValue =
+///|
+pub extern "js" fn InterestGroupScriptRunnerGlobalScope::to_js_value(
+  self : InterestGroupScriptRunnerGlobalScope,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn InterestGroupScriptRunnerGlobalScope::get_private_aggregation(self : InterestGroupScriptRunnerGlobalScope) -> PrivateAggregation? =
+///|
+pub extern "js" fn InterestGroupScriptRunnerGlobalScope::get_private_aggregation(
+  self : InterestGroupScriptRunnerGlobalScope,
+) -> PrivateAggregation? =
   #| (self) => self.privateAggregation
 
-pub extern "js" fn InterestGroupScriptRunnerGlobalScope::get_protected_audience(self : InterestGroupScriptRunnerGlobalScope) -> ProtectedAudienceUtilities =
+///|
+pub extern "js" fn InterestGroupScriptRunnerGlobalScope::get_protected_audience(
+  self : InterestGroupScriptRunnerGlobalScope,
+) -> ProtectedAudienceUtilities =
   #| (self) => self.protectedAudience
 
 ///|
 /// ProtectedAudienceUtilities interface
 pub type ProtectedAudienceUtilities
 
-pub extern "js" fn ProtectedAudienceUtilities::to_js_value(self : ProtectedAudienceUtilities) -> JsValue =
+///|
+pub extern "js" fn ProtectedAudienceUtilities::to_js_value(
+  self : ProtectedAudienceUtilities,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ProtectedAudienceUtilities::encode_utf8(self : ProtectedAudienceUtilities, input : String) -> Uint8Array =
+///|
+pub extern "js" fn ProtectedAudienceUtilities::encode_utf8(
+  self : ProtectedAudienceUtilities,
+  input : String,
+) -> Uint8Array =
   #| (self, input) => self.encodeUtf8(input)
 
-pub extern "js" fn ProtectedAudienceUtilities::decode_utf8(self : ProtectedAudienceUtilities, bytes : Uint8Array) -> String =
+///|
+pub extern "js" fn ProtectedAudienceUtilities::decode_utf8(
+  self : ProtectedAudienceUtilities,
+  bytes : Uint8Array,
+) -> String =
   #| (self, bytes) => self.decodeUtf8(bytes)
 
 ///|
 /// ForDebuggingOnly interface
 pub type ForDebuggingOnly
 
-pub extern "js" fn ForDebuggingOnly::to_js_value(self : ForDebuggingOnly) -> JsValue =
+///|
+pub extern "js" fn ForDebuggingOnly::to_js_value(
+  self : ForDebuggingOnly,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ForDebuggingOnly::report_ad_auction_win(self : ForDebuggingOnly, url : String) -> Unit =
+///|
+pub extern "js" fn ForDebuggingOnly::report_ad_auction_win(
+  self : ForDebuggingOnly,
+  url : String,
+) -> Unit =
   #| (self, url) => self.reportAdAuctionWin(url)
 
-pub extern "js" fn ForDebuggingOnly::report_ad_auction_loss(self : ForDebuggingOnly, url : String) -> Unit =
+///|
+pub extern "js" fn ForDebuggingOnly::report_ad_auction_loss(
+  self : ForDebuggingOnly,
+  url : String,
+) -> Unit =
   #| (self, url) => self.reportAdAuctionLoss(url)
 
 ///|
 /// RealTimeReporting interface
 pub type RealTimeReporting
 
-pub extern "js" fn RealTimeReporting::to_js_value(self : RealTimeReporting) -> JsValue =
+///|
+pub extern "js" fn RealTimeReporting::to_js_value(
+  self : RealTimeReporting,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn RealTimeReporting::contribute_to_histogram(self : RealTimeReporting, contribution : RealTimeContribution) -> Unit =
+///|
+pub extern "js" fn RealTimeReporting::contribute_to_histogram(
+  self : RealTimeReporting,
+  contribution : RealTimeContribution,
+) -> Unit =
   #| (self, contribution) => self.contributeToHistogram(contribution)
 
 ///|
 /// InterestGroupBiddingAndScoringScriptRunnerGlobalScope interface
 pub type InterestGroupBiddingAndScoringScriptRunnerGlobalScope
 
-pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::to_js_value(self : InterestGroupBiddingAndScoringScriptRunnerGlobalScope) -> JsValue =
+///|
+pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::to_js_value(
+  self : InterestGroupBiddingAndScoringScriptRunnerGlobalScope,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::get_private_aggregation(self : InterestGroupBiddingAndScoringScriptRunnerGlobalScope) -> PrivateAggregation? =
+///|
+pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::get_private_aggregation(
+  self : InterestGroupBiddingAndScoringScriptRunnerGlobalScope,
+) -> PrivateAggregation? =
   #| (self) => self.privateAggregation
 
-pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::get_protected_audience(self : InterestGroupBiddingAndScoringScriptRunnerGlobalScope) -> ProtectedAudienceUtilities =
+///|
+pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::get_protected_audience(
+  self : InterestGroupBiddingAndScoringScriptRunnerGlobalScope,
+) -> ProtectedAudienceUtilities =
   #| (self) => self.protectedAudience
 
-pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::get_for_debugging_only(self : InterestGroupBiddingAndScoringScriptRunnerGlobalScope) -> ForDebuggingOnly =
+///|
+pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::get_for_debugging_only(
+  self : InterestGroupBiddingAndScoringScriptRunnerGlobalScope,
+) -> ForDebuggingOnly =
   #| (self) => self.forDebuggingOnly
 
-pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::get_real_time_reporting(self : InterestGroupBiddingAndScoringScriptRunnerGlobalScope) -> RealTimeReporting =
+///|
+pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::get_real_time_reporting(
+  self : InterestGroupBiddingAndScoringScriptRunnerGlobalScope,
+) -> RealTimeReporting =
   #| (self) => self.realTimeReporting
 
 ///|
 /// InterestGroupBiddingScriptRunnerGlobalScope interface
 pub type InterestGroupBiddingScriptRunnerGlobalScope
 
-pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::to_js_value(self : InterestGroupBiddingScriptRunnerGlobalScope) -> JsValue =
+///|
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::to_js_value(
+  self : InterestGroupBiddingScriptRunnerGlobalScope,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::get_private_aggregation(self : InterestGroupBiddingScriptRunnerGlobalScope) -> PrivateAggregation? =
+///|
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::get_private_aggregation(
+  self : InterestGroupBiddingScriptRunnerGlobalScope,
+) -> PrivateAggregation? =
   #| (self) => self.privateAggregation
 
-pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::get_protected_audience(self : InterestGroupBiddingScriptRunnerGlobalScope) -> ProtectedAudienceUtilities =
+///|
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::get_protected_audience(
+  self : InterestGroupBiddingScriptRunnerGlobalScope,
+) -> ProtectedAudienceUtilities =
   #| (self) => self.protectedAudience
 
-pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::get_for_debugging_only(self : InterestGroupBiddingScriptRunnerGlobalScope) -> ForDebuggingOnly =
+///|
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::get_for_debugging_only(
+  self : InterestGroupBiddingScriptRunnerGlobalScope,
+) -> ForDebuggingOnly =
   #| (self) => self.forDebuggingOnly
 
-pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::get_real_time_reporting(self : InterestGroupBiddingScriptRunnerGlobalScope) -> RealTimeReporting =
+///|
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::get_real_time_reporting(
+  self : InterestGroupBiddingScriptRunnerGlobalScope,
+) -> RealTimeReporting =
   #| (self) => self.realTimeReporting
 
-pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_bid(self : InterestGroupBiddingScriptRunnerGlobalScope) -> Bool =
+///|
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_bid(
+  self : InterestGroupBiddingScriptRunnerGlobalScope,
+) -> Bool =
   #| (self) => self.setBid()
 
-pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_bid_with_one_or_many_bids(self : InterestGroupBiddingScriptRunnerGlobalScope, one_or_many_bids : JsValue) -> Bool =
+///|
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_bid_with_one_or_many_bids(
+  self : InterestGroupBiddingScriptRunnerGlobalScope,
+  one_or_many_bids : JsValue,
+) -> Bool =
   #| (self, one_or_many_bids) => self.setBid(one_or_many_bids)
 
-pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_priority(self : InterestGroupBiddingScriptRunnerGlobalScope, priority : Double) -> Unit =
+///|
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_priority(
+  self : InterestGroupBiddingScriptRunnerGlobalScope,
+  priority : Double,
+) -> Unit =
   #| (self, priority) => self.setPriority(priority)
 
-pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_priority_signals_override(self : InterestGroupBiddingScriptRunnerGlobalScope, key : String) -> Unit =
+///|
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_priority_signals_override(
+  self : InterestGroupBiddingScriptRunnerGlobalScope,
+  key : String,
+) -> Unit =
   #| (self, key) => self.setPrioritySignalsOverride(key)
 
-pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_priority_signals_override_with_priority(self : InterestGroupBiddingScriptRunnerGlobalScope, key : String, priority : Double?) -> Unit =
+///|
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_priority_signals_override_with_priority(
+  self : InterestGroupBiddingScriptRunnerGlobalScope,
+  key : String,
+  priority : Double?,
+) -> Unit =
   #| (self, key, priority) => self.setPrioritySignalsOverride(key, priority)
 
 ///|
 /// InterestGroupScoringScriptRunnerGlobalScope interface
 pub type InterestGroupScoringScriptRunnerGlobalScope
 
-pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::to_js_value(self : InterestGroupScoringScriptRunnerGlobalScope) -> JsValue =
+///|
+pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::to_js_value(
+  self : InterestGroupScoringScriptRunnerGlobalScope,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::get_private_aggregation(self : InterestGroupScoringScriptRunnerGlobalScope) -> PrivateAggregation? =
+///|
+pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::get_private_aggregation(
+  self : InterestGroupScoringScriptRunnerGlobalScope,
+) -> PrivateAggregation? =
   #| (self) => self.privateAggregation
 
-pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::get_protected_audience(self : InterestGroupScoringScriptRunnerGlobalScope) -> ProtectedAudienceUtilities =
+///|
+pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::get_protected_audience(
+  self : InterestGroupScoringScriptRunnerGlobalScope,
+) -> ProtectedAudienceUtilities =
   #| (self) => self.protectedAudience
 
-pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::get_for_debugging_only(self : InterestGroupScoringScriptRunnerGlobalScope) -> ForDebuggingOnly =
+///|
+pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::get_for_debugging_only(
+  self : InterestGroupScoringScriptRunnerGlobalScope,
+) -> ForDebuggingOnly =
   #| (self) => self.forDebuggingOnly
 
-pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::get_real_time_reporting(self : InterestGroupScoringScriptRunnerGlobalScope) -> RealTimeReporting =
+///|
+pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::get_real_time_reporting(
+  self : InterestGroupScoringScriptRunnerGlobalScope,
+) -> RealTimeReporting =
   #| (self) => self.realTimeReporting
 
 ///|
 /// InterestGroupReportingScriptRunnerGlobalScope interface
 pub type InterestGroupReportingScriptRunnerGlobalScope
 
-pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::to_js_value(self : InterestGroupReportingScriptRunnerGlobalScope) -> JsValue =
+///|
+pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::to_js_value(
+  self : InterestGroupReportingScriptRunnerGlobalScope,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::get_private_aggregation(self : InterestGroupReportingScriptRunnerGlobalScope) -> PrivateAggregation? =
+///|
+pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::get_private_aggregation(
+  self : InterestGroupReportingScriptRunnerGlobalScope,
+) -> PrivateAggregation? =
   #| (self) => self.privateAggregation
 
-pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::get_protected_audience(self : InterestGroupReportingScriptRunnerGlobalScope) -> ProtectedAudienceUtilities =
+///|
+pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::get_protected_audience(
+  self : InterestGroupReportingScriptRunnerGlobalScope,
+) -> ProtectedAudienceUtilities =
   #| (self) => self.protectedAudience
 
-pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::send_report_to(self : InterestGroupReportingScriptRunnerGlobalScope, url : String) -> Unit =
+///|
+pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::send_report_to(
+  self : InterestGroupReportingScriptRunnerGlobalScope,
+  url : String,
+) -> Unit =
   #| (self, url) => self.sendReportTo(url)
 
-pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::register_ad_beacon(self : InterestGroupReportingScriptRunnerGlobalScope, map : JsValue) -> Unit =
+///|
+pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::register_ad_beacon(
+  self : InterestGroupReportingScriptRunnerGlobalScope,
+  map : JsValue,
+) -> Unit =
   #| (self, map) => self.registerAdBeacon(map)
 
-pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::register_ad_macro(self : InterestGroupReportingScriptRunnerGlobalScope, name : String, value : String) -> Unit =
+///|
+pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::register_ad_macro(
+  self : InterestGroupReportingScriptRunnerGlobalScope,
+  name : String,
+  value : String,
+) -> Unit =
   #| (self, name, value) => self.registerAdMacro(name, value)
 
 ///|
 /// ProtectedAudience interface
 pub type ProtectedAudience
 
-pub extern "js" fn ProtectedAudience::to_js_value(self : ProtectedAudience) -> JsValue =
+///|
+pub extern "js" fn ProtectedAudience::to_js_value(
+  self : ProtectedAudience,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ProtectedAudience::query_feature_support(self : ProtectedAudience, feature : String) -> JsValue =
+///|
+pub extern "js" fn ProtectedAudience::query_feature_support(
+  self : ProtectedAudience,
+  feature : String,
+) -> JsValue =
   #| (self, feature) => self.queryFeatureSupport(feature)
-

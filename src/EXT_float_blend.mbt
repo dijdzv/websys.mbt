@@ -5,6 +5,8 @@
 /// EXT_float_blend interface
 pub type EXT_float_blend
 
-pub extern "js" fn EXT_float_blend::to_js_value(self : EXT_float_blend) -> JsValue =
+///|
+pub extern "js" fn EXT_float_blend::to_js_value(
+  self : EXT_float_blend,
+) -> JsValue =
   #| (self) => self
-

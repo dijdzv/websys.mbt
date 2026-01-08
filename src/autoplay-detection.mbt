@@ -9,6 +9,7 @@ pub(all) enum AutoplayPolicy {
   Disallowed
 }
 
+///|
 /// Convert to string value
 pub fn AutoplayPolicy::to_string(self : AutoplayPolicy) -> String {
   match self {
@@ -18,6 +19,7 @@ pub fn AutoplayPolicy::to_string(self : AutoplayPolicy) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn AutoplayPolicy::from_string(s : String) -> AutoplayPolicy? {
   match s {
@@ -35,20 +37,25 @@ pub(all) enum AutoplayPolicyMediaType {
   Audiocontext
 }
 
+///|
 /// Convert to string value
-pub fn AutoplayPolicyMediaType::to_string(self : AutoplayPolicyMediaType) -> String {
+pub fn AutoplayPolicyMediaType::to_string(
+  self : AutoplayPolicyMediaType,
+) -> String {
   match self {
     Mediaelement => "mediaelement"
     Audiocontext => "audiocontext"
   }
 }
 
+///|
 /// Parse from string value
-pub fn AutoplayPolicyMediaType::from_string(s : String) -> AutoplayPolicyMediaType? {
+pub fn AutoplayPolicyMediaType::from_string(
+  s : String,
+) -> AutoplayPolicyMediaType? {
   match s {
     "mediaelement" => Some(Mediaelement)
     "audiocontext" => Some(Audiocontext)
     _ => None
   }
 }
-

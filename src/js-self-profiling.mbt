@@ -14,16 +14,13 @@ pub struct ProfilerTrace {
   samples : Array[ProfilerSample]
 }
 
+///|
 /// Create a new ProfilerTrace with default values
 pub fn ProfilerTrace::default() -> ProfilerTrace {
-  ProfilerTrace::{
-    resources: [],
-    frames: [],
-    stacks: [],
-    samples: [],
-  }
+  ProfilerTrace::{ resources: [], frames: [], stacks: [], samples: [] }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn ProfilerTrace::to_js(self : ProfilerTrace) -> JsValue =
   #| (self) => ({
@@ -40,14 +37,13 @@ pub struct ProfilerSample {
   stackId : Int64?
 }
 
+///|
 /// Create a new ProfilerSample with default values
 pub fn ProfilerSample::default() -> ProfilerSample {
-  ProfilerSample::{
-    timestamp: panic(),
-    stackId: None,
-  }
+  ProfilerSample::{ timestamp: panic(), stackId: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn ProfilerSample::to_js(self : ProfilerSample) -> JsValue =
   #| (self) => ({
@@ -62,14 +58,13 @@ pub struct ProfilerStack {
   frameId : Int64
 }
 
+///|
 /// Create a new ProfilerStack with default values
 pub fn ProfilerStack::default() -> ProfilerStack {
-  ProfilerStack::{
-    parentId: None,
-    frameId: 0,
-  }
+  ProfilerStack::{ parentId: None, frameId: 0 }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn ProfilerStack::to_js(self : ProfilerStack) -> JsValue =
   #| (self) => ({
@@ -86,16 +81,13 @@ pub struct ProfilerFrame {
   column : Int64?
 }
 
+///|
 /// Create a new ProfilerFrame with default values
 pub fn ProfilerFrame::default() -> ProfilerFrame {
-  ProfilerFrame::{
-    name: "",
-    resourceId: None,
-    line: None,
-    column: None,
-  }
+  ProfilerFrame::{ name: "", resourceId: None, line: None, column: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn ProfilerFrame::to_js(self : ProfilerFrame) -> JsValue =
   #| (self) => ({
@@ -112,16 +104,17 @@ pub struct ProfilerInitOptions {
   maxBufferSize : Int
 }
 
+///|
 /// Create a new ProfilerInitOptions with default values
 pub fn ProfilerInitOptions::default() -> ProfilerInitOptions {
-  ProfilerInitOptions::{
-    sampleInterval: panic(),
-    maxBufferSize: 0,
-  }
+  ProfilerInitOptions::{ sampleInterval: panic(), maxBufferSize: 0 }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ProfilerInitOptions::to_js(self : ProfilerInitOptions) -> JsValue =
+pub extern "js" fn ProfilerInitOptions::to_js(
+  self : ProfilerInitOptions,
+) -> JsValue =
   #| (self) => ({
   #|   sampleInterval: self.sampleInterval,
   #|   maxBufferSize: self.maxBufferSize
@@ -131,18 +124,24 @@ pub extern "js" fn ProfilerInitOptions::to_js(self : ProfilerInitOptions) -> JsV
 /// Profiler interface
 pub type Profiler
 
+///|
 pub extern "js" fn Profiler::to_js_value(self : Profiler) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Profiler::get_sample_interval(self : Profiler) -> DOMHighResTimeStamp =
+///|
+pub extern "js" fn Profiler::get_sample_interval(
+  self : Profiler,
+) -> DOMHighResTimeStamp =
   #| (self) => self.sampleInterval
 
+///|
 pub extern "js" fn Profiler::get_stopped(self : Profiler) -> Bool =
   #| (self) => self.stopped
 
+///|
 pub extern "js" fn Profiler::new(options : ProfilerInitOptions) -> Profiler =
   #| (options) => new Profiler(options)
 
+///|
 pub extern "js" fn Profiler::stop(self : Profiler) -> Promise[ProfilerTrace] =
   #| (self) => self.stop()
-

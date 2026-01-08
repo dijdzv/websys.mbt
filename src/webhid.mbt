@@ -13,6 +13,7 @@ pub(all) enum HIDUnitSystem {
   Reserved
 }
 
+///|
 /// Convert to string value
 pub fn HIDUnitSystem::to_string(self : HIDUnitSystem) -> String {
   match self {
@@ -26,6 +27,7 @@ pub fn HIDUnitSystem::to_string(self : HIDUnitSystem) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn HIDUnitSystem::from_string(s : String) -> HIDUnitSystem? {
   match s {
@@ -47,16 +49,17 @@ pub struct HIDDeviceRequestOptions {
   exclusionFilters : Array[HIDDeviceFilter]?
 }
 
+///|
 /// Create a new HIDDeviceRequestOptions with default values
 pub fn HIDDeviceRequestOptions::default() -> HIDDeviceRequestOptions {
-  HIDDeviceRequestOptions::{
-    filters: [],
-    exclusionFilters: None,
-  }
+  HIDDeviceRequestOptions::{ filters: [], exclusionFilters: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn HIDDeviceRequestOptions::to_js(self : HIDDeviceRequestOptions) -> JsValue =
+pub extern "js" fn HIDDeviceRequestOptions::to_js(
+  self : HIDDeviceRequestOptions,
+) -> JsValue =
   #| (self) => ({
   #|   filters: self.filters,
   #|   exclusionFilters: self.exclusionFilters
@@ -71,6 +74,7 @@ pub struct HIDDeviceFilter {
   usage : Int?
 }
 
+///|
 /// Create a new HIDDeviceFilter with default values
 pub fn HIDDeviceFilter::default() -> HIDDeviceFilter {
   HIDDeviceFilter::{
@@ -81,6 +85,7 @@ pub fn HIDDeviceFilter::default() -> HIDDeviceFilter {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn HIDDeviceFilter::to_js(self : HIDDeviceFilter) -> JsValue =
   #| (self) => ({
@@ -96,15 +101,17 @@ pub struct HIDConnectionEventInit {
   device : HIDDevice
 }
 
+///|
 /// Create a new HIDConnectionEventInit with default values
 pub fn HIDConnectionEventInit::default() -> HIDConnectionEventInit {
-  HIDConnectionEventInit::{
-    device: panic(),
-  }
+  HIDConnectionEventInit::{ device: panic() }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn HIDConnectionEventInit::to_js(self : HIDConnectionEventInit) -> JsValue =
+pub extern "js" fn HIDConnectionEventInit::to_js(
+  self : HIDConnectionEventInit,
+) -> JsValue =
   #| (self) => ({
   #|   device: self.device
   #| })
@@ -117,17 +124,17 @@ pub struct HIDInputReportEventInit {
   data : DataView
 }
 
+///|
 /// Create a new HIDInputReportEventInit with default values
 pub fn HIDInputReportEventInit::default() -> HIDInputReportEventInit {
-  HIDInputReportEventInit::{
-    device: panic(),
-    reportId: 0,
-    data: panic(),
-  }
+  HIDInputReportEventInit::{ device: panic(), reportId: 0, data: panic() }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn HIDInputReportEventInit::to_js(self : HIDInputReportEventInit) -> JsValue =
+pub extern "js" fn HIDInputReportEventInit::to_js(
+  self : HIDInputReportEventInit,
+) -> JsValue =
   #| (self) => ({
   #|   device: self.device,
   #|   reportId: self.reportId,
@@ -146,6 +153,7 @@ pub struct HIDCollectionInfo {
   featureReports : Array[HIDReportInfo]?
 }
 
+///|
 /// Create a new HIDCollectionInfo with default values
 pub fn HIDCollectionInfo::default() -> HIDCollectionInfo {
   HIDCollectionInfo::{
@@ -159,8 +167,11 @@ pub fn HIDCollectionInfo::default() -> HIDCollectionInfo {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn HIDCollectionInfo::to_js(self : HIDCollectionInfo) -> JsValue =
+pub extern "js" fn HIDCollectionInfo::to_js(
+  self : HIDCollectionInfo,
+) -> JsValue =
   #| (self) => ({
   #|   usagePage: self.usagePage,
   #|   usage: self.usage,
@@ -178,14 +189,13 @@ pub struct HIDReportInfo {
   items : Array[HIDReportItem]?
 }
 
+///|
 /// Create a new HIDReportInfo with default values
 pub fn HIDReportInfo::default() -> HIDReportInfo {
-  HIDReportInfo::{
-    reportId: None,
-    items: None,
-  }
+  HIDReportInfo::{ reportId: None, items: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn HIDReportInfo::to_js(self : HIDReportInfo) -> JsValue =
   #| (self) => ({
@@ -226,6 +236,7 @@ pub struct HIDReportItem {
   strings : Array[String]?
 }
 
+///|
 /// Create a new HIDReportItem with default values
 pub fn HIDReportItem::default() -> HIDReportItem {
   HIDReportItem::{
@@ -260,6 +271,7 @@ pub fn HIDReportItem::default() -> HIDReportItem {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn HIDReportItem::to_js(self : HIDReportItem) -> JsValue =
   #| (self) => ({
@@ -279,7 +291,7 @@ pub extern "js" fn HIDReportItem::to_js(self : HIDReportItem) -> JsValue =
   #|   reportSize: self.reportSize,
   #|   reportCount: self.reportCount,
   #|   unitExponent: self.unitExponent,
-  #|   unitSystem: self.unitSystem,
+  #|   unitSystem: ['none', 'si-linear', 'si-rotation', 'english-linear', 'english-rotation', 'vendor-defined', 'reserved'][self.unitSystem],
   #|   unitFactorLengthExponent: self.unitFactorLengthExponent,
   #|   unitFactorMassExponent: self.unitFactorMassExponent,
   #|   unitFactorTimeExponent: self.unitFactorTimeExponent,
@@ -297,102 +309,170 @@ pub extern "js" fn HIDReportItem::to_js(self : HIDReportItem) -> JsValue =
 /// HID interface
 pub type HID
 
+///|
 pub extern "js" fn HID::to_js_value(self : HID) -> JsValue =
   #| (self) => self
 
+///|
 pub extern "js" fn HID::get_onconnect(self : HID) -> EventHandler =
   #| (self) => self.onconnect
 
+///|
 pub extern "js" fn HID::set_onconnect(self : HID, value : EventHandler) -> Unit =
   #| (self, value) => { self.onconnect = value }
 
+///|
 pub extern "js" fn HID::get_ondisconnect(self : HID) -> EventHandler =
   #| (self) => self.ondisconnect
 
-pub extern "js" fn HID::set_ondisconnect(self : HID, value : EventHandler) -> Unit =
+///|
+pub extern "js" fn HID::set_ondisconnect(
+  self : HID,
+  value : EventHandler,
+) -> Unit =
   #| (self, value) => { self.ondisconnect = value }
 
+///|
 pub extern "js" fn HID::get_devices(self : HID) -> Promise[Array[HIDDevice]] =
   #| (self) => self.getDevices()
 
-pub extern "js" fn HID::request_device(self : HID, options : HIDDeviceRequestOptions) -> Promise[Array[HIDDevice]] =
+///|
+pub extern "js" fn HID::request_device(
+  self : HID,
+  options : HIDDeviceRequestOptions,
+) -> Promise[Array[HIDDevice]] =
   #| (self, options) => self.requestDevice(options)
 
 ///|
 /// HIDDevice interface
 pub type HIDDevice
 
+///|
 pub extern "js" fn HIDDevice::to_js_value(self : HIDDevice) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn HIDDevice::get_oninputreport(self : HIDDevice) -> EventHandler =
+///|
+pub extern "js" fn HIDDevice::get_oninputreport(
+  self : HIDDevice,
+) -> EventHandler =
   #| (self) => self.oninputreport
 
-pub extern "js" fn HIDDevice::set_oninputreport(self : HIDDevice, value : EventHandler) -> Unit =
+///|
+pub extern "js" fn HIDDevice::set_oninputreport(
+  self : HIDDevice,
+  value : EventHandler,
+) -> Unit =
   #| (self, value) => { self.oninputreport = value }
 
+///|
 pub extern "js" fn HIDDevice::get_opened(self : HIDDevice) -> Bool =
   #| (self) => self.opened
 
+///|
 pub extern "js" fn HIDDevice::get_vendor_id(self : HIDDevice) -> Int =
   #| (self) => self.vendorId
 
+///|
 pub extern "js" fn HIDDevice::get_product_id(self : HIDDevice) -> Int =
   #| (self) => self.productId
 
+///|
 pub extern "js" fn HIDDevice::get_product_name(self : HIDDevice) -> String =
   #| (self) => self.productName
 
+///|
 pub extern "js" fn HIDDevice::get_collections(self : HIDDevice) -> JsValue =
   #| (self) => self.collections
 
+///|
 pub extern "js" fn HIDDevice::open(self : HIDDevice) -> Promise[Unit] =
   #| (self) => self.open()
 
+///|
 pub extern "js" fn HIDDevice::close(self : HIDDevice) -> Promise[Unit] =
   #| (self) => self.close()
 
+///|
 pub extern "js" fn HIDDevice::forget(self : HIDDevice) -> Promise[Unit] =
   #| (self) => self.forget()
 
-pub extern "js" fn HIDDevice::send_report(self : HIDDevice, report_id : Int, data : BufferSource) -> Promise[Unit] =
+///|
+pub extern "js" fn HIDDevice::send_report(
+  self : HIDDevice,
+  report_id : Int,
+  data : BufferSource,
+) -> Promise[Unit] =
   #| (self, report_id, data) => self.sendReport(report_id, data)
 
-pub extern "js" fn HIDDevice::send_feature_report(self : HIDDevice, report_id : Int, data : BufferSource) -> Promise[Unit] =
+///|
+pub extern "js" fn HIDDevice::send_feature_report(
+  self : HIDDevice,
+  report_id : Int,
+  data : BufferSource,
+) -> Promise[Unit] =
   #| (self, report_id, data) => self.sendFeatureReport(report_id, data)
 
-pub extern "js" fn HIDDevice::receive_feature_report(self : HIDDevice, report_id : Int) -> Promise[DataView] =
+///|
+pub extern "js" fn HIDDevice::receive_feature_report(
+  self : HIDDevice,
+  report_id : Int,
+) -> Promise[DataView] =
   #| (self, report_id) => self.receiveFeatureReport(report_id)
 
 ///|
 /// HIDConnectionEvent interface
 pub type HIDConnectionEvent
 
-pub extern "js" fn HIDConnectionEvent::to_js_value(self : HIDConnectionEvent) -> JsValue =
+///|
+pub extern "js" fn HIDConnectionEvent::to_js_value(
+  self : HIDConnectionEvent,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn HIDConnectionEvent::new(type_ : String, event_init_dict : HIDConnectionEventInit) -> HIDConnectionEvent =
+///|
+pub extern "js" fn HIDConnectionEvent::new(
+  type_ : String,
+  event_init_dict : HIDConnectionEventInit,
+) -> HIDConnectionEvent =
   #| (type_, event_init_dict) => new HIDConnectionEvent(type_, event_init_dict)
 
-pub extern "js" fn HIDConnectionEvent::get_device(self : HIDConnectionEvent) -> HIDDevice =
+///|
+pub extern "js" fn HIDConnectionEvent::get_device(
+  self : HIDConnectionEvent,
+) -> HIDDevice =
   #| (self) => self.device
 
 ///|
 /// HIDInputReportEvent interface
 pub type HIDInputReportEvent
 
-pub extern "js" fn HIDInputReportEvent::to_js_value(self : HIDInputReportEvent) -> JsValue =
+///|
+pub extern "js" fn HIDInputReportEvent::to_js_value(
+  self : HIDInputReportEvent,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn HIDInputReportEvent::new(type_ : String, event_init_dict : HIDInputReportEventInit) -> HIDInputReportEvent =
+///|
+pub extern "js" fn HIDInputReportEvent::new(
+  type_ : String,
+  event_init_dict : HIDInputReportEventInit,
+) -> HIDInputReportEvent =
   #| (type_, event_init_dict) => new HIDInputReportEvent(type_, event_init_dict)
 
-pub extern "js" fn HIDInputReportEvent::get_device(self : HIDInputReportEvent) -> HIDDevice =
+///|
+pub extern "js" fn HIDInputReportEvent::get_device(
+  self : HIDInputReportEvent,
+) -> HIDDevice =
   #| (self) => self.device
 
-pub extern "js" fn HIDInputReportEvent::get_report_id(self : HIDInputReportEvent) -> Int =
+///|
+pub extern "js" fn HIDInputReportEvent::get_report_id(
+  self : HIDInputReportEvent,
+) -> Int =
   #| (self) => self.reportId
 
-pub extern "js" fn HIDInputReportEvent::get_data(self : HIDInputReportEvent) -> DataView =
+///|
+pub extern "js" fn HIDInputReportEvent::get_data(
+  self : HIDInputReportEvent,
+) -> DataView =
   #| (self) => self.data
-

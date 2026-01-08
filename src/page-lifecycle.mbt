@@ -8,6 +8,7 @@ pub(all) enum ClientLifecycleState {
   Frozen
 }
 
+///|
 /// Convert to string value
 pub fn ClientLifecycleState::to_string(self : ClientLifecycleState) -> String {
   match self {
@@ -16,6 +17,7 @@ pub fn ClientLifecycleState::to_string(self : ClientLifecycleState) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn ClientLifecycleState::from_string(s : String) -> ClientLifecycleState? {
   match s {
@@ -24,4 +26,3 @@ pub fn ClientLifecycleState::from_string(s : String) -> ClientLifecycleState? {
     _ => None
   }
 }
-

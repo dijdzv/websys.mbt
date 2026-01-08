@@ -12,6 +12,7 @@ pub(all) enum AudioSessionType {
   PlayAndRecord
 }
 
+///|
 /// Convert to string value
 pub fn AudioSessionType::to_string(self : AudioSessionType) -> String {
   match self {
@@ -24,6 +25,7 @@ pub fn AudioSessionType::to_string(self : AudioSessionType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn AudioSessionType::from_string(s : String) -> AudioSessionType? {
   match s {
@@ -45,6 +47,7 @@ pub(all) enum AudioSessionState {
   Interrupted
 }
 
+///|
 /// Convert to string value
 pub fn AudioSessionState::to_string(self : AudioSessionState) -> String {
   match self {
@@ -54,6 +57,7 @@ pub fn AudioSessionState::to_string(self : AudioSessionState) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn AudioSessionState::from_string(s : String) -> AudioSessionState? {
   match s {
@@ -68,21 +72,38 @@ pub fn AudioSessionState::from_string(s : String) -> AudioSessionState? {
 /// AudioSession interface
 pub type AudioSession
 
+///|
 pub extern "js" fn AudioSession::to_js_value(self : AudioSession) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn AudioSession::get_type(self : AudioSession) -> AudioSessionType =
+///|
+pub extern "js" fn AudioSession::get_type(
+  self : AudioSession,
+) -> AudioSessionType =
   #| (self) => self.type
 
-pub extern "js" fn AudioSession::set_type(self : AudioSession, value : AudioSessionType) -> Unit =
+///|
+pub extern "js" fn AudioSession::set_type(
+  self : AudioSession,
+  value : AudioSessionType,
+) -> Unit =
   #| (self, value) => { self.type = value }
 
-pub extern "js" fn AudioSession::get_state(self : AudioSession) -> AudioSessionState =
+///|
+pub extern "js" fn AudioSession::get_state(
+  self : AudioSession,
+) -> AudioSessionState =
   #| (self) => self.state
 
-pub extern "js" fn AudioSession::get_onstatechange(self : AudioSession) -> EventHandler =
+///|
+pub extern "js" fn AudioSession::get_onstatechange(
+  self : AudioSession,
+) -> EventHandler =
   #| (self) => self.onstatechange
 
-pub extern "js" fn AudioSession::set_onstatechange(self : AudioSession, value : EventHandler) -> Unit =
+///|
+pub extern "js" fn AudioSession::set_onstatechange(
+  self : AudioSession,
+  value : EventHandler,
+) -> Unit =
   #| (self, value) => { self.onstatechange = value }
-

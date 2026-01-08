@@ -7,15 +7,17 @@ pub struct BackgroundSyncOptions {
   minInterval : Int64?
 }
 
+///|
 /// Create a new BackgroundSyncOptions with default values
 pub fn BackgroundSyncOptions::default() -> BackgroundSyncOptions {
-  BackgroundSyncOptions::{
-    minInterval: None,
-  }
+  BackgroundSyncOptions::{ minInterval: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn BackgroundSyncOptions::to_js(self : BackgroundSyncOptions) -> JsValue =
+pub extern "js" fn BackgroundSyncOptions::to_js(
+  self : BackgroundSyncOptions,
+) -> JsValue =
   #| (self) => ({
   #|   minInterval: self.minInterval
   #| })
@@ -26,15 +28,17 @@ pub struct PeriodicSyncEventInit {
   tag : String
 }
 
+///|
 /// Create a new PeriodicSyncEventInit with default values
 pub fn PeriodicSyncEventInit::default() -> PeriodicSyncEventInit {
-  PeriodicSyncEventInit::{
-    tag: "",
-  }
+  PeriodicSyncEventInit::{ tag: "" }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn PeriodicSyncEventInit::to_js(self : PeriodicSyncEventInit) -> JsValue =
+pub extern "js" fn PeriodicSyncEventInit::to_js(
+  self : PeriodicSyncEventInit,
+) -> JsValue =
   #| (self) => ({
   #|   tag: self.tag
   #| })
@@ -43,31 +47,59 @@ pub extern "js" fn PeriodicSyncEventInit::to_js(self : PeriodicSyncEventInit) ->
 /// PeriodicSyncManager interface
 pub type PeriodicSyncManager
 
-pub extern "js" fn PeriodicSyncManager::to_js_value(self : PeriodicSyncManager) -> JsValue =
+///|
+pub extern "js" fn PeriodicSyncManager::to_js_value(
+  self : PeriodicSyncManager,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn PeriodicSyncManager::register(self : PeriodicSyncManager, tag : String) -> Promise[Unit] =
+///|
+pub extern "js" fn PeriodicSyncManager::register(
+  self : PeriodicSyncManager,
+  tag : String,
+) -> Promise[Unit] =
   #| (self, tag) => self.register(tag)
 
-pub extern "js" fn PeriodicSyncManager::register_with_options(self : PeriodicSyncManager, tag : String, options : BackgroundSyncOptions) -> Promise[Unit] =
+///|
+pub extern "js" fn PeriodicSyncManager::register_with_options(
+  self : PeriodicSyncManager,
+  tag : String,
+  options : BackgroundSyncOptions,
+) -> Promise[Unit] =
   #| (self, tag, options) => self.register(tag, options)
 
-pub extern "js" fn PeriodicSyncManager::get_tags(self : PeriodicSyncManager) -> Promise[Array[String]] =
+///|
+pub extern "js" fn PeriodicSyncManager::get_tags(
+  self : PeriodicSyncManager,
+) -> Promise[Array[String]] =
   #| (self) => self.getTags()
 
-pub extern "js" fn PeriodicSyncManager::unregister(self : PeriodicSyncManager, tag : String) -> Promise[Unit] =
+///|
+pub extern "js" fn PeriodicSyncManager::unregister(
+  self : PeriodicSyncManager,
+  tag : String,
+) -> Promise[Unit] =
   #| (self, tag) => self.unregister(tag)
 
 ///|
 /// PeriodicSyncEvent interface
 pub type PeriodicSyncEvent
 
-pub extern "js" fn PeriodicSyncEvent::to_js_value(self : PeriodicSyncEvent) -> JsValue =
+///|
+pub extern "js" fn PeriodicSyncEvent::to_js_value(
+  self : PeriodicSyncEvent,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn PeriodicSyncEvent::new(type_ : String, init_ : PeriodicSyncEventInit) -> PeriodicSyncEvent =
+///|
+pub extern "js" fn PeriodicSyncEvent::new(
+  type_ : String,
+  init_ : PeriodicSyncEventInit,
+) -> PeriodicSyncEvent =
   #| (type_, init_) => new PeriodicSyncEvent(type_, init_)
 
-pub extern "js" fn PeriodicSyncEvent::get_tag(self : PeriodicSyncEvent) -> String =
+///|
+pub extern "js" fn PeriodicSyncEvent::get_tag(
+  self : PeriodicSyncEvent,
+) -> String =
   #| (self) => self.tag
-

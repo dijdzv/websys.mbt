@@ -10,16 +10,13 @@ pub struct ShareData {
   url : String?
 }
 
+///|
 /// Create a new ShareData with default values
 pub fn ShareData::default() -> ShareData {
-  ShareData::{
-    files: None,
-    title: None,
-    text: None,
-    url: None,
-  }
+  ShareData::{ files: None, title: None, text: None, url: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn ShareData::to_js(self : ShareData) -> JsValue =
   #| (self) => ({
@@ -28,4 +25,3 @@ pub extern "js" fn ShareData::to_js(self : ShareData) -> JsValue =
   #|   text: self.text,
   #|   url: self.url
   #| })
-

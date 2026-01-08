@@ -9,8 +9,11 @@ pub(all) enum MediaSessionPlaybackState {
   Playing
 }
 
+///|
 /// Convert to string value
-pub fn MediaSessionPlaybackState::to_string(self : MediaSessionPlaybackState) -> String {
+pub fn MediaSessionPlaybackState::to_string(
+  self : MediaSessionPlaybackState,
+) -> String {
   match self {
     None => "none"
     Paused => "paused"
@@ -18,8 +21,11 @@ pub fn MediaSessionPlaybackState::to_string(self : MediaSessionPlaybackState) ->
   }
 }
 
+///|
 /// Parse from string value
-pub fn MediaSessionPlaybackState::from_string(s : String) -> MediaSessionPlaybackState? {
+pub fn MediaSessionPlaybackState::from_string(
+  s : String,
+) -> MediaSessionPlaybackState? {
   match s {
     "none" => Some(None)
     "paused" => Some(Paused)
@@ -50,6 +56,7 @@ pub(all) enum MediaSessionAction {
   Voiceactivity
 }
 
+///|
 /// Convert to string value
 pub fn MediaSessionAction::to_string(self : MediaSessionAction) -> String {
   match self {
@@ -73,6 +80,7 @@ pub fn MediaSessionAction::to_string(self : MediaSessionAction) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn MediaSessionAction::from_string(s : String) -> MediaSessionAction? {
   match s {
@@ -105,8 +113,11 @@ pub(all) enum MediaSessionEnterPictureInPictureReason {
   Contentoccluded
 }
 
+///|
 /// Convert to string value
-pub fn MediaSessionEnterPictureInPictureReason::to_string(self : MediaSessionEnterPictureInPictureReason) -> String {
+pub fn MediaSessionEnterPictureInPictureReason::to_string(
+  self : MediaSessionEnterPictureInPictureReason,
+) -> String {
   match self {
     Other => "other"
     Useraction => "useraction"
@@ -114,8 +125,11 @@ pub fn MediaSessionEnterPictureInPictureReason::to_string(self : MediaSessionEnt
   }
 }
 
+///|
 /// Parse from string value
-pub fn MediaSessionEnterPictureInPictureReason::from_string(s : String) -> MediaSessionEnterPictureInPictureReason? {
+pub fn MediaSessionEnterPictureInPictureReason::from_string(
+  s : String,
+) -> MediaSessionEnterPictureInPictureReason? {
   match s {
     "other" => Some(Other)
     "useraction" => Some(Useraction)
@@ -124,11 +138,15 @@ pub fn MediaSessionEnterPictureInPictureReason::from_string(s : String) -> Media
   }
 }
 
+///|
 /// MediaSessionActionHandler callback interface
 pub type MediaSessionActionHandler
 
+///|
 /// Create MediaSessionActionHandler from a MoonBit function
-pub extern "js" fn MediaSessionActionHandler::from_fn(handler : (MediaSessionActionDetails) -> Unit) -> MediaSessionActionHandler =
+pub extern "js" fn MediaSessionActionHandler::from_fn(
+  handler : (MediaSessionActionDetails) -> Unit,
+) -> MediaSessionActionHandler =
   #| (handler) => handler
 
 ///|
@@ -141,6 +159,7 @@ pub struct MediaMetadataInit {
   chapterInfo : Array[ChapterInformationInit]?
 }
 
+///|
 /// Create a new MediaMetadataInit with default values
 pub fn MediaMetadataInit::default() -> MediaMetadataInit {
   MediaMetadataInit::{
@@ -152,8 +171,11 @@ pub fn MediaMetadataInit::default() -> MediaMetadataInit {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MediaMetadataInit::to_js(self : MediaMetadataInit) -> JsValue =
+pub extern "js" fn MediaMetadataInit::to_js(
+  self : MediaMetadataInit,
+) -> JsValue =
   #| (self) => ({
   #|   title: self.title,
   #|   artist: self.artist,
@@ -170,17 +192,17 @@ pub struct ChapterInformationInit {
   artwork : Array[MediaImage]?
 }
 
+///|
 /// Create a new ChapterInformationInit with default values
 pub fn ChapterInformationInit::default() -> ChapterInformationInit {
-  ChapterInformationInit::{
-    title: None,
-    startTime: None,
-    artwork: None,
-  }
+  ChapterInformationInit::{ title: None, startTime: None, artwork: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ChapterInformationInit::to_js(self : ChapterInformationInit) -> JsValue =
+pub extern "js" fn ChapterInformationInit::to_js(
+  self : ChapterInformationInit,
+) -> JsValue =
   #| (self) => ({
   #|   title: self.title,
   #|   startTime: self.startTime,
@@ -195,15 +217,13 @@ pub struct MediaImage {
   type_ : String?
 }
 
+///|
 /// Create a new MediaImage with default values
 pub fn MediaImage::default() -> MediaImage {
-  MediaImage::{
-    src: "",
-    sizes: None,
-    type_: None,
-  }
+  MediaImage::{ src: "", sizes: None, type_: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MediaImage::to_js(self : MediaImage) -> JsValue =
   #| (self) => ({
@@ -220,17 +240,17 @@ pub struct MediaPositionState {
   position : Double?
 }
 
+///|
 /// Create a new MediaPositionState with default values
 pub fn MediaPositionState::default() -> MediaPositionState {
-  MediaPositionState::{
-    duration: None,
-    playbackRate: None,
-    position: None,
-  }
+  MediaPositionState::{ duration: None, playbackRate: None, position: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MediaPositionState::to_js(self : MediaPositionState) -> JsValue =
+pub extern "js" fn MediaPositionState::to_js(
+  self : MediaPositionState,
+) -> JsValue =
   #| (self) => ({
   #|   duration: self.duration,
   #|   playbackRate: self.playbackRate,
@@ -248,6 +268,7 @@ pub struct MediaSessionActionDetails {
   enterPictureInPictureReason : MediaSessionEnterPictureInPictureReason?
 }
 
+///|
 /// Create a new MediaSessionActionDetails with default values
 pub fn MediaSessionActionDetails::default() -> MediaSessionActionDetails {
   MediaSessionActionDetails::{
@@ -260,104 +281,184 @@ pub fn MediaSessionActionDetails::default() -> MediaSessionActionDetails {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MediaSessionActionDetails::to_js(self : MediaSessionActionDetails) -> JsValue =
+pub extern "js" fn MediaSessionActionDetails::to_js(
+  self : MediaSessionActionDetails,
+) -> JsValue =
   #| (self) => ({
-  #|   action: self.action,
+  #|   action: ['play', 'pause', 'seekbackward', 'seekforward', 'previoustrack', 'nexttrack', 'skipad', 'stop', 'seekto', 'togglemicrophone', 'togglecamera', 'togglescreenshare', 'hangup', 'previousslide', 'nextslide', 'enterpictureinpicture', 'voiceactivity'][self.action],
   #|   seekOffset: self.seekOffset,
   #|   seekTime: self.seekTime,
   #|   fastSeek: self.fastSeek,
   #|   isActivating: self.isActivating,
-  #|   enterPictureInPictureReason: self.enterPictureInPictureReason
+  #|   enterPictureInPictureReason: ['other', 'useraction', 'contentoccluded'][self.enterPictureInPictureReason]
   #| })
 
 ///|
 /// MediaSession interface
 pub type MediaSession
 
+///|
 pub extern "js" fn MediaSession::to_js_value(self : MediaSession) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn MediaSession::get_metadata(self : MediaSession) -> MediaMetadata? =
+///|
+pub extern "js" fn MediaSession::get_metadata(
+  self : MediaSession,
+) -> MediaMetadata? =
   #| (self) => self.metadata
 
-pub extern "js" fn MediaSession::set_metadata(self : MediaSession, value : MediaMetadata?) -> Unit =
+///|
+pub extern "js" fn MediaSession::set_metadata(
+  self : MediaSession,
+  value : MediaMetadata?,
+) -> Unit =
   #| (self, value) => { self.metadata = value }
 
-pub extern "js" fn MediaSession::get_playback_state(self : MediaSession) -> MediaSessionPlaybackState =
+///|
+pub extern "js" fn MediaSession::get_playback_state(
+  self : MediaSession,
+) -> MediaSessionPlaybackState =
   #| (self) => self.playbackState
 
-pub extern "js" fn MediaSession::set_playback_state(self : MediaSession, value : MediaSessionPlaybackState) -> Unit =
+///|
+pub extern "js" fn MediaSession::set_playback_state(
+  self : MediaSession,
+  value : MediaSessionPlaybackState,
+) -> Unit =
   #| (self, value) => { self.playbackState = value }
 
-pub extern "js" fn MediaSession::set_action_handler(self : MediaSession, action : MediaSessionAction, handler : MediaSessionActionHandler?) -> Unit =
+///|
+pub extern "js" fn MediaSession::set_action_handler(
+  self : MediaSession,
+  action : MediaSessionAction,
+  handler : MediaSessionActionHandler?,
+) -> Unit =
   #| (self, action, handler) => self.setActionHandler(['play', 'pause', 'seekbackward', 'seekforward', 'previoustrack', 'nexttrack', 'skipad', 'stop', 'seekto', 'togglemicrophone', 'togglecamera', 'togglescreenshare', 'hangup', 'previousslide', 'nextslide', 'enterpictureinpicture', 'voiceactivity'][action], handler)
 
-pub extern "js" fn MediaSession::set_position_state(self : MediaSession) -> Unit =
+///|
+pub extern "js" fn MediaSession::set_position_state(
+  self : MediaSession,
+) -> Unit =
   #| (self) => self.setPositionState()
 
-pub extern "js" fn MediaSession::set_position_state_with_state(self : MediaSession, state : MediaPositionState) -> Unit =
+///|
+pub extern "js" fn MediaSession::set_position_state_with_state(
+  self : MediaSession,
+  state : MediaPositionState,
+) -> Unit =
   #| (self, state) => self.setPositionState(state)
 
-pub extern "js" fn MediaSession::set_microphone_active(self : MediaSession, active : Bool) -> Promise[Unit] =
+///|
+pub extern "js" fn MediaSession::set_microphone_active(
+  self : MediaSession,
+  active : Bool,
+) -> Promise[Unit] =
   #| (self, active) => self.setMicrophoneActive(active)
 
-pub extern "js" fn MediaSession::set_camera_active(self : MediaSession, active : Bool) -> Promise[Unit] =
+///|
+pub extern "js" fn MediaSession::set_camera_active(
+  self : MediaSession,
+  active : Bool,
+) -> Promise[Unit] =
   #| (self, active) => self.setCameraActive(active)
 
-pub extern "js" fn MediaSession::set_screenshare_active(self : MediaSession, active : Bool) -> Promise[Unit] =
+///|
+pub extern "js" fn MediaSession::set_screenshare_active(
+  self : MediaSession,
+  active : Bool,
+) -> Promise[Unit] =
   #| (self, active) => self.setScreenshareActive(active)
 
 ///|
 /// MediaMetadata interface
 pub type MediaMetadata
 
+///|
 pub extern "js" fn MediaMetadata::to_js_value(self : MediaMetadata) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn MediaMetadata::new(init_ : MediaMetadataInit) -> MediaMetadata =
+///|
+pub extern "js" fn MediaMetadata::new(
+  init_ : MediaMetadataInit,
+) -> MediaMetadata =
   #| (init_) => new MediaMetadata(init_)
 
+///|
 pub extern "js" fn MediaMetadata::get_title(self : MediaMetadata) -> String =
   #| (self) => self.title
 
-pub extern "js" fn MediaMetadata::set_title(self : MediaMetadata, value : String) -> Unit =
+///|
+pub extern "js" fn MediaMetadata::set_title(
+  self : MediaMetadata,
+  value : String,
+) -> Unit =
   #| (self, value) => { self.title = value }
 
+///|
 pub extern "js" fn MediaMetadata::get_artist(self : MediaMetadata) -> String =
   #| (self) => self.artist
 
-pub extern "js" fn MediaMetadata::set_artist(self : MediaMetadata, value : String) -> Unit =
+///|
+pub extern "js" fn MediaMetadata::set_artist(
+  self : MediaMetadata,
+  value : String,
+) -> Unit =
   #| (self, value) => { self.artist = value }
 
+///|
 pub extern "js" fn MediaMetadata::get_album(self : MediaMetadata) -> String =
   #| (self) => self.album
 
-pub extern "js" fn MediaMetadata::set_album(self : MediaMetadata, value : String) -> Unit =
+///|
+pub extern "js" fn MediaMetadata::set_album(
+  self : MediaMetadata,
+  value : String,
+) -> Unit =
   #| (self, value) => { self.album = value }
 
+///|
 pub extern "js" fn MediaMetadata::get_artwork(self : MediaMetadata) -> JsValue =
   #| (self) => self.artwork
 
-pub extern "js" fn MediaMetadata::set_artwork(self : MediaMetadata, value : JsValue) -> Unit =
+///|
+pub extern "js" fn MediaMetadata::set_artwork(
+  self : MediaMetadata,
+  value : JsValue,
+) -> Unit =
   #| (self, value) => { self.artwork = value }
 
-pub extern "js" fn MediaMetadata::get_chapter_info(self : MediaMetadata) -> JsValue =
+///|
+pub extern "js" fn MediaMetadata::get_chapter_info(
+  self : MediaMetadata,
+) -> JsValue =
   #| (self) => self.chapterInfo
 
 ///|
 /// ChapterInformation interface
 pub type ChapterInformation
 
-pub extern "js" fn ChapterInformation::to_js_value(self : ChapterInformation) -> JsValue =
+///|
+pub extern "js" fn ChapterInformation::to_js_value(
+  self : ChapterInformation,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ChapterInformation::get_title(self : ChapterInformation) -> String =
+///|
+pub extern "js" fn ChapterInformation::get_title(
+  self : ChapterInformation,
+) -> String =
   #| (self) => self.title
 
-pub extern "js" fn ChapterInformation::get_start_time(self : ChapterInformation) -> Double =
+///|
+pub extern "js" fn ChapterInformation::get_start_time(
+  self : ChapterInformation,
+) -> Double =
   #| (self) => self.startTime
 
-pub extern "js" fn ChapterInformation::get_artwork(self : ChapterInformation) -> JsValue =
+///|
+pub extern "js" fn ChapterInformation::get_artwork(
+  self : ChapterInformation,
+) -> JsValue =
   #| (self) => self.artwork
-

@@ -4,31 +4,32 @@
 ///|
 /// InputEventInit dictionary
 pub struct InputEventInit {
-  dataTransfer : DataTransfer??
+  dataTransfer : Nullable[DataTransfer]
   targetRanges : Array[StaticRange]?
-  data : String??
+  data : Nullable[String]
   isComposing : Bool?
   inputType : String?
 }
 
+///|
 /// Create a new InputEventInit with default values
 pub fn InputEventInit::default() -> InputEventInit {
   InputEventInit::{
-    dataTransfer: None,
+    dataTransfer: Nullable::Undefined,
     targetRanges: None,
-    data: None,
+    data: Nullable::Undefined,
     isComposing: None,
     inputType: None,
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn InputEventInit::to_js(self : InputEventInit) -> JsValue =
   #| (self) => ({
-  #|   dataTransfer: self.dataTransfer,
+  #|   dataTransfer: ((() => { const v = self.dataTransfer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   targetRanges: self.targetRanges,
-  #|   data: self.data,
+  #|   data: ((() => { const v = self.data; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   isComposing: self.isComposing,
   #|   inputType: self.inputType
   #| })
-

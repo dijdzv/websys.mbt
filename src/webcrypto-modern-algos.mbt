@@ -14,6 +14,7 @@ pub(all) enum KeyFormat {
   Jwk
 }
 
+///|
 /// Convert to string value
 pub fn KeyFormat::to_string(self : KeyFormat) -> String {
   match self {
@@ -28,6 +29,7 @@ pub fn KeyFormat::to_string(self : KeyFormat) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn KeyFormat::from_string(s : String) -> KeyFormat? {
   match s {
@@ -60,6 +62,7 @@ pub(all) enum KeyUsage {
   DecapsulateBits
 }
 
+///|
 /// Convert to string value
 pub fn KeyUsage::to_string(self : KeyUsage) -> String {
   match self {
@@ -78,6 +81,7 @@ pub fn KeyUsage::to_string(self : KeyUsage) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn KeyUsage::from_string(s : String) -> KeyUsage? {
   match s {
@@ -104,14 +108,13 @@ pub struct EncapsulatedKey {
   ciphertext : ArrayBuffer?
 }
 
+///|
 /// Create a new EncapsulatedKey with default values
 pub fn EncapsulatedKey::default() -> EncapsulatedKey {
-  EncapsulatedKey::{
-    sharedKey: None,
-    ciphertext: None,
-  }
+  EncapsulatedKey::{ sharedKey: None, ciphertext: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn EncapsulatedKey::to_js(self : EncapsulatedKey) -> JsValue =
   #| (self) => ({
@@ -126,14 +129,13 @@ pub struct EncapsulatedBits {
   ciphertext : ArrayBuffer?
 }
 
+///|
 /// Create a new EncapsulatedBits with default values
 pub fn EncapsulatedBits::default() -> EncapsulatedBits {
-  EncapsulatedBits::{
-    sharedKey: None,
-    ciphertext: None,
-  }
+  EncapsulatedBits::{ sharedKey: None, ciphertext: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn EncapsulatedBits::to_js(self : EncapsulatedBits) -> JsValue =
   #| (self) => ({
@@ -166,6 +168,7 @@ pub struct JsonWebKey {
   k : String?
 }
 
+///|
 /// Create a new JsonWebKey with default values
 pub fn JsonWebKey::default() -> JsonWebKey {
   JsonWebKey::{
@@ -192,6 +195,7 @@ pub fn JsonWebKey::default() -> JsonWebKey {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn JsonWebKey::to_js(self : JsonWebKey) -> JsValue =
   #| (self) => ({
@@ -223,13 +227,13 @@ pub struct ContextParams {
   context : BufferSource?
 }
 
+///|
 /// Create a new ContextParams with default values
 pub fn ContextParams::default() -> ContextParams {
-  ContextParams::{
-    context: None,
-  }
+  ContextParams::{ context: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn ContextParams::to_js(self : ContextParams) -> JsValue =
   #| (self) => ({
@@ -244,15 +248,13 @@ pub struct AeadParams {
   tagLength : Int?
 }
 
+///|
 /// Create a new AeadParams with default values
 pub fn AeadParams::default() -> AeadParams {
-  AeadParams::{
-    iv: panic(),
-    additionalData: None,
-    tagLength: None,
-  }
+  AeadParams::{ iv: panic(), additionalData: None, tagLength: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn AeadParams::to_js(self : AeadParams) -> JsValue =
   #| (self) => ({
@@ -269,15 +271,13 @@ pub struct CShakeParams {
   customization : BufferSource?
 }
 
+///|
 /// Create a new CShakeParams with default values
 pub fn CShakeParams::default() -> CShakeParams {
-  CShakeParams::{
-    length: 0,
-    functionName: None,
-    customization: None,
-  }
+  CShakeParams::{ length: 0, functionName: None, customization: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn CShakeParams::to_js(self : CShakeParams) -> JsValue =
   #| (self) => ({
@@ -292,13 +292,13 @@ pub struct KmacKeyGenParams {
   length : Int?
 }
 
+///|
 /// Create a new KmacKeyGenParams with default values
 pub fn KmacKeyGenParams::default() -> KmacKeyGenParams {
-  KmacKeyGenParams::{
-    length: None,
-  }
+  KmacKeyGenParams::{ length: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn KmacKeyGenParams::to_js(self : KmacKeyGenParams) -> JsValue =
   #| (self) => ({
@@ -311,13 +311,13 @@ pub struct KmacImportParams {
   length : Int?
 }
 
+///|
 /// Create a new KmacImportParams with default values
 pub fn KmacImportParams::default() -> KmacImportParams {
-  KmacImportParams::{
-    length: None,
-  }
+  KmacImportParams::{ length: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn KmacImportParams::to_js(self : KmacImportParams) -> JsValue =
   #| (self) => ({
@@ -330,13 +330,13 @@ pub struct KmacKeyAlgorithm {
   length : Int
 }
 
+///|
 /// Create a new KmacKeyAlgorithm with default values
 pub fn KmacKeyAlgorithm::default() -> KmacKeyAlgorithm {
-  KmacKeyAlgorithm::{
-    length: 0,
-  }
+  KmacKeyAlgorithm::{ length: 0 }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn KmacKeyAlgorithm::to_js(self : KmacKeyAlgorithm) -> JsValue =
   #| (self) => ({
@@ -350,14 +350,13 @@ pub struct KmacParams {
   customization : BufferSource?
 }
 
+///|
 /// Create a new KmacParams with default values
 pub fn KmacParams::default() -> KmacParams {
-  KmacParams::{
-    length: 0,
-    customization: None,
-  }
+  KmacParams::{ length: 0, customization: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn KmacParams::to_js(self : KmacParams) -> JsValue =
   #| (self) => ({
@@ -377,6 +376,7 @@ pub struct Argon2Params {
   associatedData : BufferSource?
 }
 
+///|
 /// Create a new Argon2Params with default values
 pub fn Argon2Params::default() -> Argon2Params {
   Argon2Params::{
@@ -390,6 +390,7 @@ pub fn Argon2Params::default() -> Argon2Params {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn Argon2Params::to_js(self : Argon2Params) -> JsValue =
   #| (self) => ({
@@ -401,4 +402,3 @@ pub extern "js" fn Argon2Params::to_js(self : Argon2Params) -> JsValue =
   #|   secretValue: self.secretValue,
   #|   associatedData: self.associatedData
   #| })
-

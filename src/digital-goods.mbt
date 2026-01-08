@@ -8,6 +8,7 @@ pub(all) enum ItemType {
   Subscription
 }
 
+///|
 /// Convert to string value
 pub fn ItemType::to_string(self : ItemType) -> String {
   match self {
@@ -16,6 +17,7 @@ pub fn ItemType::to_string(self : ItemType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn ItemType::from_string(s : String) -> ItemType? {
   match s {
@@ -41,6 +43,7 @@ pub struct ItemDetails {
   introductoryPriceCycles : Int64?
 }
 
+///|
 /// Create a new ItemDetails with default values
 pub fn ItemDetails::default() -> ItemDetails {
   ItemDetails::{
@@ -58,13 +61,14 @@ pub fn ItemDetails::default() -> ItemDetails {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn ItemDetails::to_js(self : ItemDetails) -> JsValue =
   #| (self) => ({
   #|   itemId: self.itemId,
   #|   title: self.title,
   #|   price: self.price,
-  #|   type: self.type_,
+  #|   type: ['product', 'subscription'][self.type_],
   #|   description: self.description,
   #|   iconURLs: self.iconURLs,
   #|   subscriptionPeriod: self.subscriptionPeriod,
@@ -81,14 +85,13 @@ pub struct PurchaseDetails {
   purchaseToken : String
 }
 
+///|
 /// Create a new PurchaseDetails with default values
 pub fn PurchaseDetails::default() -> PurchaseDetails {
-  PurchaseDetails::{
-    itemId: "",
-    purchaseToken: "",
-  }
+  PurchaseDetails::{ itemId: "", purchaseToken: "" }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn PurchaseDetails::to_js(self : PurchaseDetails) -> JsValue =
   #| (self) => ({
@@ -100,18 +103,34 @@ pub extern "js" fn PurchaseDetails::to_js(self : PurchaseDetails) -> JsValue =
 /// DigitalGoodsService interface
 pub type DigitalGoodsService
 
-pub extern "js" fn DigitalGoodsService::to_js_value(self : DigitalGoodsService) -> JsValue =
+///|
+pub extern "js" fn DigitalGoodsService::to_js_value(
+  self : DigitalGoodsService,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn DigitalGoodsService::get_details(self : DigitalGoodsService, item_ids : Array[String]) -> Promise[Array[ItemDetails]] =
+///|
+pub extern "js" fn DigitalGoodsService::get_details(
+  self : DigitalGoodsService,
+  item_ids : Array[String],
+) -> Promise[Array[ItemDetails]] =
   #| (self, item_ids) => self.getDetails(item_ids)
 
-pub extern "js" fn DigitalGoodsService::list_purchases(self : DigitalGoodsService) -> Promise[Array[PurchaseDetails]] =
+///|
+pub extern "js" fn DigitalGoodsService::list_purchases(
+  self : DigitalGoodsService,
+) -> Promise[Array[PurchaseDetails]] =
   #| (self) => self.listPurchases()
 
-pub extern "js" fn DigitalGoodsService::list_purchase_history(self : DigitalGoodsService) -> Promise[Array[PurchaseDetails]] =
+///|
+pub extern "js" fn DigitalGoodsService::list_purchase_history(
+  self : DigitalGoodsService,
+) -> Promise[Array[PurchaseDetails]] =
   #| (self) => self.listPurchaseHistory()
 
-pub extern "js" fn DigitalGoodsService::consume(self : DigitalGoodsService, purchase_token : String) -> Promise[Unit] =
+///|
+pub extern "js" fn DigitalGoodsService::consume(
+  self : DigitalGoodsService,
+  purchase_token : String,
+) -> Promise[Unit] =
   #| (self, purchase_token) => self.consume(purchase_token)
-

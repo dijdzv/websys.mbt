@@ -8,6 +8,7 @@ pub(all) enum AvcBitstreamFormat {
   Avc
 }
 
+///|
 /// Convert to string value
 pub fn AvcBitstreamFormat::to_string(self : AvcBitstreamFormat) -> String {
   match self {
@@ -16,6 +17,7 @@ pub fn AvcBitstreamFormat::to_string(self : AvcBitstreamFormat) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn AvcBitstreamFormat::from_string(s : String) -> AvcBitstreamFormat? {
   match s {
@@ -45,6 +47,7 @@ pub struct VideoEncoderConfig {
   contentHint : String?
 }
 
+///|
 /// Create a new VideoEncoderConfig with default values
 pub fn VideoEncoderConfig::default() -> VideoEncoderConfig {
   VideoEncoderConfig::{
@@ -66,8 +69,11 @@ pub fn VideoEncoderConfig::default() -> VideoEncoderConfig {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn VideoEncoderConfig::to_js(self : VideoEncoderConfig) -> JsValue =
+pub extern "js" fn VideoEncoderConfig::to_js(
+  self : VideoEncoderConfig,
+) -> JsValue =
   #| (self) => ({
   #|   avc: self.avc,
   #|   hevc: self.hevc,
@@ -78,11 +84,11 @@ pub extern "js" fn VideoEncoderConfig::to_js(self : VideoEncoderConfig) -> JsVal
   #|   displayHeight: self.displayHeight,
   #|   bitrate: self.bitrate,
   #|   framerate: self.framerate,
-  #|   hardwareAcceleration: self.hardwareAcceleration,
-  #|   alpha: self.alpha,
+  #|   hardwareAcceleration: ['no-preference', 'prefer-hardware', 'prefer-software'][self.hardwareAcceleration],
+  #|   alpha: ['keep', 'discard'][self.alpha],
   #|   scalabilityMode: self.scalabilityMode,
-  #|   bitrateMode: self.bitrateMode,
-  #|   latencyMode: self.latencyMode,
+  #|   bitrateMode: ['constant', 'variable', 'quantizer'][self.bitrateMode],
+  #|   latencyMode: ['quality', 'realtime'][self.latencyMode],
   #|   contentHint: self.contentHint
   #| })
 
@@ -92,35 +98,36 @@ pub struct AvcEncoderConfig {
   format : AvcBitstreamFormat?
 }
 
+///|
 /// Create a new AvcEncoderConfig with default values
 pub fn AvcEncoderConfig::default() -> AvcEncoderConfig {
-  AvcEncoderConfig::{
-    format: None,
-  }
+  AvcEncoderConfig::{ format: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn AvcEncoderConfig::to_js(self : AvcEncoderConfig) -> JsValue =
   #| (self) => ({
-  #|   format: self.format
+  #|   format: ['annexb', 'avc'][self.format]
   #| })
 
 ///|
 /// VideoEncoderEncodeOptionsForAvc dictionary
 pub struct VideoEncoderEncodeOptionsForAvc {
-  quantizer : Int??
+  quantizer : Nullable[Int]
 }
 
+///|
 /// Create a new VideoEncoderEncodeOptionsForAvc with default values
 pub fn VideoEncoderEncodeOptionsForAvc::default() -> VideoEncoderEncodeOptionsForAvc {
-  VideoEncoderEncodeOptionsForAvc::{
-    quantizer: None,
-  }
+  VideoEncoderEncodeOptionsForAvc::{ quantizer: Nullable::Undefined }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn VideoEncoderEncodeOptionsForAvc::to_js(self : VideoEncoderEncodeOptionsForAvc) -> JsValue =
+pub extern "js" fn VideoEncoderEncodeOptionsForAvc::to_js(
+  self : VideoEncoderEncodeOptionsForAvc,
+) -> JsValue =
   #| (self) => ({
-  #|   quantizer: self.quantizer
+  #|   quantizer: ((() => { const v = self.quantizer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
-

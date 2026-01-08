@@ -14,6 +14,11 @@ pub type MLDataTypeList = Array[MLOperandDataType]
 pub type MLNumber = JsValue
 
 ///|
+/// Create MLNumber from Double
+pub extern "js" fn MLNumber::from_double(v : Double) -> MLNumber =
+  #| (v) => v
+
+///|
 /// MLNamedOperands typedef
 pub type MLNamedOperands = JsValue
 
@@ -25,6 +30,7 @@ pub(all) enum MLPowerPreference {
   LowPower
 }
 
+///|
 /// Convert to string value
 pub fn MLPowerPreference::to_string(self : MLPowerPreference) -> String {
   match self {
@@ -34,6 +40,7 @@ pub fn MLPowerPreference::to_string(self : MLPowerPreference) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn MLPowerPreference::from_string(s : String) -> MLPowerPreference? {
   match s {
@@ -51,6 +58,7 @@ pub(all) enum MLInputOperandLayout {
   Nhwc
 }
 
+///|
 /// Convert to string value
 pub fn MLInputOperandLayout::to_string(self : MLInputOperandLayout) -> String {
   match self {
@@ -59,6 +67,7 @@ pub fn MLInputOperandLayout::to_string(self : MLInputOperandLayout) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn MLInputOperandLayout::from_string(s : String) -> MLInputOperandLayout? {
   match s {
@@ -81,6 +90,7 @@ pub(all) enum MLOperandDataType {
   Uint8
 }
 
+///|
 /// Convert to string value
 pub fn MLOperandDataType::to_string(self : MLOperandDataType) -> String {
   match self {
@@ -95,6 +105,7 @@ pub fn MLOperandDataType::to_string(self : MLOperandDataType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn MLOperandDataType::from_string(s : String) -> MLOperandDataType? {
   match s {
@@ -119,8 +130,11 @@ pub(all) enum MLConv2dFilterOperandLayout {
   Ihwo
 }
 
+///|
 /// Convert to string value
-pub fn MLConv2dFilterOperandLayout::to_string(self : MLConv2dFilterOperandLayout) -> String {
+pub fn MLConv2dFilterOperandLayout::to_string(
+  self : MLConv2dFilterOperandLayout,
+) -> String {
   match self {
     Oihw => "oihw"
     Hwio => "hwio"
@@ -129,8 +143,11 @@ pub fn MLConv2dFilterOperandLayout::to_string(self : MLConv2dFilterOperandLayout
   }
 }
 
+///|
 /// Parse from string value
-pub fn MLConv2dFilterOperandLayout::from_string(s : String) -> MLConv2dFilterOperandLayout? {
+pub fn MLConv2dFilterOperandLayout::from_string(
+  s : String,
+) -> MLConv2dFilterOperandLayout? {
   match s {
     "oihw" => Some(Oihw)
     "hwio" => Some(Hwio)
@@ -148,8 +165,11 @@ pub(all) enum MLConvTranspose2dFilterOperandLayout {
   Ohwi
 }
 
+///|
 /// Convert to string value
-pub fn MLConvTranspose2dFilterOperandLayout::to_string(self : MLConvTranspose2dFilterOperandLayout) -> String {
+pub fn MLConvTranspose2dFilterOperandLayout::to_string(
+  self : MLConvTranspose2dFilterOperandLayout,
+) -> String {
   match self {
     Iohw => "iohw"
     Hwoi => "hwoi"
@@ -157,8 +177,11 @@ pub fn MLConvTranspose2dFilterOperandLayout::to_string(self : MLConvTranspose2dF
   }
 }
 
+///|
 /// Parse from string value
-pub fn MLConvTranspose2dFilterOperandLayout::from_string(s : String) -> MLConvTranspose2dFilterOperandLayout? {
+pub fn MLConvTranspose2dFilterOperandLayout::from_string(
+  s : String,
+) -> MLConvTranspose2dFilterOperandLayout? {
   match s {
     "iohw" => Some(Iohw)
     "hwoi" => Some(Hwoi)
@@ -174,6 +197,7 @@ pub(all) enum MLGruWeightLayout {
   Rzn
 }
 
+///|
 /// Convert to string value
 pub fn MLGruWeightLayout::to_string(self : MLGruWeightLayout) -> String {
   match self {
@@ -182,6 +206,7 @@ pub fn MLGruWeightLayout::to_string(self : MLGruWeightLayout) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn MLGruWeightLayout::from_string(s : String) -> MLGruWeightLayout? {
   match s {
@@ -199,8 +224,11 @@ pub(all) enum MLRecurrentNetworkActivation {
   Tanh
 }
 
+///|
 /// Convert to string value
-pub fn MLRecurrentNetworkActivation::to_string(self : MLRecurrentNetworkActivation) -> String {
+pub fn MLRecurrentNetworkActivation::to_string(
+  self : MLRecurrentNetworkActivation,
+) -> String {
   match self {
     Relu => "relu"
     Sigmoid => "sigmoid"
@@ -208,8 +236,11 @@ pub fn MLRecurrentNetworkActivation::to_string(self : MLRecurrentNetworkActivati
   }
 }
 
+///|
 /// Parse from string value
-pub fn MLRecurrentNetworkActivation::from_string(s : String) -> MLRecurrentNetworkActivation? {
+pub fn MLRecurrentNetworkActivation::from_string(
+  s : String,
+) -> MLRecurrentNetworkActivation? {
   match s {
     "relu" => Some(Relu)
     "sigmoid" => Some(Sigmoid)
@@ -226,8 +257,11 @@ pub(all) enum MLRecurrentNetworkDirection {
   Both
 }
 
+///|
 /// Convert to string value
-pub fn MLRecurrentNetworkDirection::to_string(self : MLRecurrentNetworkDirection) -> String {
+pub fn MLRecurrentNetworkDirection::to_string(
+  self : MLRecurrentNetworkDirection,
+) -> String {
   match self {
     Forward => "forward"
     Backward => "backward"
@@ -235,8 +269,11 @@ pub fn MLRecurrentNetworkDirection::to_string(self : MLRecurrentNetworkDirection
   }
 }
 
+///|
 /// Parse from string value
-pub fn MLRecurrentNetworkDirection::from_string(s : String) -> MLRecurrentNetworkDirection? {
+pub fn MLRecurrentNetworkDirection::from_string(
+  s : String,
+) -> MLRecurrentNetworkDirection? {
   match s {
     "forward" => Some(Forward)
     "backward" => Some(Backward)
@@ -252,6 +289,7 @@ pub(all) enum MLLstmWeightLayout {
   Ifgo
 }
 
+///|
 /// Convert to string value
 pub fn MLLstmWeightLayout::to_string(self : MLLstmWeightLayout) -> String {
   match self {
@@ -260,6 +298,7 @@ pub fn MLLstmWeightLayout::to_string(self : MLLstmWeightLayout) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn MLLstmWeightLayout::from_string(s : String) -> MLLstmWeightLayout? {
   match s {
@@ -277,6 +316,7 @@ pub(all) enum MLPaddingMode {
   Reflection
 }
 
+///|
 /// Convert to string value
 pub fn MLPaddingMode::to_string(self : MLPaddingMode) -> String {
   match self {
@@ -286,6 +326,7 @@ pub fn MLPaddingMode::to_string(self : MLPaddingMode) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn MLPaddingMode::from_string(s : String) -> MLPaddingMode? {
   match s {
@@ -303,6 +344,7 @@ pub(all) enum MLRoundingType {
   Ceil
 }
 
+///|
 /// Convert to string value
 pub fn MLRoundingType::to_string(self : MLRoundingType) -> String {
   match self {
@@ -311,6 +353,7 @@ pub fn MLRoundingType::to_string(self : MLRoundingType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn MLRoundingType::from_string(s : String) -> MLRoundingType? {
   match s {
@@ -327,6 +370,7 @@ pub(all) enum MLInterpolationMode {
   Linear
 }
 
+///|
 /// Convert to string value
 pub fn MLInterpolationMode::to_string(self : MLInterpolationMode) -> String {
   match self {
@@ -335,6 +379,7 @@ pub fn MLInterpolationMode::to_string(self : MLInterpolationMode) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn MLInterpolationMode::from_string(s : String) -> MLInterpolationMode? {
   match s {
@@ -351,18 +396,17 @@ pub struct MLContextOptions {
   accelerated : Bool?
 }
 
+///|
 /// Create a new MLContextOptions with default values
 pub fn MLContextOptions::default() -> MLContextOptions {
-  MLContextOptions::{
-    powerPreference: None,
-    accelerated: None,
-  }
+  MLContextOptions::{ powerPreference: None, accelerated: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLContextOptions::to_js(self : MLContextOptions) -> JsValue =
   #| (self) => ({
-  #|   powerPreference: self.powerPreference,
+  #|   powerPreference: ['default', 'high-performance', 'low-power'][self.powerPreference],
   #|   accelerated: self.accelerated
   #| })
 
@@ -372,15 +416,17 @@ pub struct MLContextLostInfo {
   message : String?
 }
 
+///|
 /// Create a new MLContextLostInfo with default values
 pub fn MLContextLostInfo::default() -> MLContextLostInfo {
-  MLContextLostInfo::{
-    message: None,
-  }
+  MLContextLostInfo::{ message: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLContextLostInfo::to_js(self : MLContextLostInfo) -> JsValue =
+pub extern "js" fn MLContextLostInfo::to_js(
+  self : MLContextLostInfo,
+) -> JsValue =
   #| (self) => ({
   #|   message: self.message
   #| })
@@ -490,6 +536,7 @@ pub struct MLOpSupportLimits {
   where_ : MLWhereSupportLimits?
 }
 
+///|
 /// Create a new MLOpSupportLimits with default values
 pub fn MLOpSupportLimits::default() -> MLOpSupportLimits {
   MLOpSupportLimits::{
@@ -596,10 +643,13 @@ pub fn MLOpSupportLimits::default() -> MLOpSupportLimits {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLOpSupportLimits::to_js(self : MLOpSupportLimits) -> JsValue =
+pub extern "js" fn MLOpSupportLimits::to_js(
+  self : MLOpSupportLimits,
+) -> JsValue =
   #| (self) => ({
-  #|   preferredInputLayout: self.preferredInputLayout,
+  #|   preferredInputLayout: ['nchw', 'nhwc'][self.preferredInputLayout],
   #|   maxTensorByteLength: self.maxTensorByteLength,
   #|   input: self.input,
   #|   constant: self.constant,
@@ -708,14 +758,13 @@ pub struct MLRankRange {
   max : Int?
 }
 
+///|
 /// Create a new MLRankRange with default values
 pub fn MLRankRange::default() -> MLRankRange {
-  MLRankRange::{
-    min: None,
-    max: None,
-  }
+  MLRankRange::{ min: None, max: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLRankRange::to_js(self : MLRankRange) -> JsValue =
   #| (self) => ({
@@ -730,14 +779,13 @@ pub struct MLTensorLimits {
   rankRange : MLRankRange?
 }
 
+///|
 /// Create a new MLTensorLimits with default values
 pub fn MLTensorLimits::default() -> MLTensorLimits {
-  MLTensorLimits::{
-    dataTypes: None,
-    rankRange: None,
-  }
+  MLTensorLimits::{ dataTypes: None, rankRange: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLTensorLimits::to_js(self : MLTensorLimits) -> JsValue =
   #| (self) => ({
@@ -753,17 +801,17 @@ pub struct MLBinarySupportLimits {
   output : MLTensorLimits?
 }
 
+///|
 /// Create a new MLBinarySupportLimits with default values
 pub fn MLBinarySupportLimits::default() -> MLBinarySupportLimits {
-  MLBinarySupportLimits::{
-    a: None,
-    b: None,
-    output: None,
-  }
+  MLBinarySupportLimits::{ a: None, b: None, output: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLBinarySupportLimits::to_js(self : MLBinarySupportLimits) -> JsValue =
+pub extern "js" fn MLBinarySupportLimits::to_js(
+  self : MLBinarySupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   a: self.a,
   #|   b: self.b,
@@ -777,16 +825,17 @@ pub struct MLSingleInputSupportLimits {
   output : MLTensorLimits?
 }
 
+///|
 /// Create a new MLSingleInputSupportLimits with default values
 pub fn MLSingleInputSupportLimits::default() -> MLSingleInputSupportLimits {
-  MLSingleInputSupportLimits::{
-    input: None,
-    output: None,
-  }
+  MLSingleInputSupportLimits::{ input: None, output: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLSingleInputSupportLimits::to_js(self : MLSingleInputSupportLimits) -> JsValue =
+pub extern "js" fn MLSingleInputSupportLimits::to_js(
+  self : MLSingleInputSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   input: self.input,
   #|   output: self.output
@@ -799,18 +848,19 @@ pub struct MLOperandDescriptor {
   shape : Array[Int]
 }
 
+///|
 /// Create a new MLOperandDescriptor with default values
 pub fn MLOperandDescriptor::default() -> MLOperandDescriptor {
-  MLOperandDescriptor::{
-    dataType: panic(),
-    shape: [],
-  }
+  MLOperandDescriptor::{ dataType: panic(), shape: [] }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLOperandDescriptor::to_js(self : MLOperandDescriptor) -> JsValue =
+pub extern "js" fn MLOperandDescriptor::to_js(
+  self : MLOperandDescriptor,
+) -> JsValue =
   #| (self) => ({
-  #|   dataType: self.dataType,
+  #|   dataType: ['float32', 'float16', 'int32', 'uint32', 'int64', 'uint64', 'int8', 'uint8'][self.dataType],
   #|   shape: self.shape
   #| })
 
@@ -820,15 +870,17 @@ pub struct MLOperatorOptions {
   label : String?
 }
 
+///|
 /// Create a new MLOperatorOptions with default values
 pub fn MLOperatorOptions::default() -> MLOperatorOptions {
-  MLOperatorOptions::{
-    label: None,
-  }
+  MLOperatorOptions::{ label: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLOperatorOptions::to_js(self : MLOperatorOptions) -> JsValue =
+pub extern "js" fn MLOperatorOptions::to_js(
+  self : MLOperatorOptions,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label
   #| })
@@ -842,6 +894,7 @@ pub struct MLTensorDescriptor {
   writable : Bool?
 }
 
+///|
 /// Create a new MLTensorDescriptor with default values
 pub fn MLTensorDescriptor::default() -> MLTensorDescriptor {
   MLTensorDescriptor::{
@@ -852,10 +905,13 @@ pub fn MLTensorDescriptor::default() -> MLTensorDescriptor {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLTensorDescriptor::to_js(self : MLTensorDescriptor) -> JsValue =
+pub extern "js" fn MLTensorDescriptor::to_js(
+  self : MLTensorDescriptor,
+) -> JsValue =
   #| (self) => ({
-  #|   dataType: self.dataType,
+  #|   dataType: ['float32', 'float16', 'int32', 'uint32', 'int64', 'uint64', 'int8', 'uint8'][self.dataType],
   #|   shape: self.shape,
   #|   readable: self.readable,
   #|   writable: self.writable
@@ -869,6 +925,7 @@ pub struct MLArgMinMaxOptions {
   outputDataType : MLOperandDataType?
 }
 
+///|
 /// Create a new MLArgMinMaxOptions with default values
 pub fn MLArgMinMaxOptions::default() -> MLArgMinMaxOptions {
   MLArgMinMaxOptions::{
@@ -878,12 +935,15 @@ pub fn MLArgMinMaxOptions::default() -> MLArgMinMaxOptions {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLArgMinMaxOptions::to_js(self : MLArgMinMaxOptions) -> JsValue =
+pub extern "js" fn MLArgMinMaxOptions::to_js(
+  self : MLArgMinMaxOptions,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   keepDimensions: self.keepDimensions,
-  #|   outputDataType: self.outputDataType
+  #|   outputDataType: ['float32', 'float16', 'int32', 'uint32', 'int64', 'uint64', 'int8', 'uint8'][self.outputDataType]
   #| })
 
 ///|
@@ -896,6 +956,7 @@ pub struct MLBatchNormalizationOptions {
   epsilon : Double?
 }
 
+///|
 /// Create a new MLBatchNormalizationOptions with default values
 pub fn MLBatchNormalizationOptions::default() -> MLBatchNormalizationOptions {
   MLBatchNormalizationOptions::{
@@ -907,8 +968,11 @@ pub fn MLBatchNormalizationOptions::default() -> MLBatchNormalizationOptions {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLBatchNormalizationOptions::to_js(self : MLBatchNormalizationOptions) -> JsValue =
+pub extern "js" fn MLBatchNormalizationOptions::to_js(
+  self : MLBatchNormalizationOptions,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   scale: self.scale,
@@ -928,6 +992,7 @@ pub struct MLBatchNormalizationSupportLimits {
   output : MLTensorLimits?
 }
 
+///|
 /// Create a new MLBatchNormalizationSupportLimits with default values
 pub fn MLBatchNormalizationSupportLimits::default() -> MLBatchNormalizationSupportLimits {
   MLBatchNormalizationSupportLimits::{
@@ -940,8 +1005,11 @@ pub fn MLBatchNormalizationSupportLimits::default() -> MLBatchNormalizationSuppo
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLBatchNormalizationSupportLimits::to_js(self : MLBatchNormalizationSupportLimits) -> JsValue =
+pub extern "js" fn MLBatchNormalizationSupportLimits::to_js(
+  self : MLBatchNormalizationSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   input: self.input,
   #|   mean: self.mean,
@@ -959,15 +1027,13 @@ pub struct MLClampOptions {
   maxValue : MLNumber?
 }
 
+///|
 /// Create a new MLClampOptions with default values
 pub fn MLClampOptions::default() -> MLClampOptions {
-  MLClampOptions::{
-    label: None,
-    minValue: None,
-    maxValue: None,
-  }
+  MLClampOptions::{ label: None, minValue: None, maxValue: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLClampOptions::to_js(self : MLClampOptions) -> JsValue =
   #| (self) => ({
@@ -983,16 +1049,17 @@ pub struct MLConcatSupportLimits {
   output : MLTensorLimits?
 }
 
+///|
 /// Create a new MLConcatSupportLimits with default values
 pub fn MLConcatSupportLimits::default() -> MLConcatSupportLimits {
-  MLConcatSupportLimits::{
-    inputs: None,
-    output: None,
-  }
+  MLConcatSupportLimits::{ inputs: None, output: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLConcatSupportLimits::to_js(self : MLConcatSupportLimits) -> JsValue =
+pub extern "js" fn MLConcatSupportLimits::to_js(
+  self : MLConcatSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   inputs: self.inputs,
   #|   output: self.output
@@ -1011,6 +1078,7 @@ pub struct MLConv2dOptions {
   bias : MLOperand?
 }
 
+///|
 /// Create a new MLConv2dOptions with default values
 pub fn MLConv2dOptions::default() -> MLConv2dOptions {
   MLConv2dOptions::{
@@ -1025,6 +1093,7 @@ pub fn MLConv2dOptions::default() -> MLConv2dOptions {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLConv2dOptions::to_js(self : MLConv2dOptions) -> JsValue =
   #| (self) => ({
@@ -1033,8 +1102,8 @@ pub extern "js" fn MLConv2dOptions::to_js(self : MLConv2dOptions) -> JsValue =
   #|   strides: self.strides,
   #|   dilations: self.dilations,
   #|   groups: self.groups,
-  #|   inputLayout: self.inputLayout,
-  #|   filterLayout: self.filterLayout,
+  #|   inputLayout: ['nchw', 'nhwc'][self.inputLayout],
+  #|   filterLayout: ['oihw', 'hwio', 'ohwi', 'ihwo'][self.filterLayout],
   #|   bias: self.bias
   #| })
 
@@ -1047,18 +1116,17 @@ pub struct MLConv2dSupportLimits {
   output : MLTensorLimits?
 }
 
+///|
 /// Create a new MLConv2dSupportLimits with default values
 pub fn MLConv2dSupportLimits::default() -> MLConv2dSupportLimits {
-  MLConv2dSupportLimits::{
-    input: None,
-    filter: None,
-    bias: None,
-    output: None,
-  }
+  MLConv2dSupportLimits::{ input: None, filter: None, bias: None, output: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLConv2dSupportLimits::to_js(self : MLConv2dSupportLimits) -> JsValue =
+pub extern "js" fn MLConv2dSupportLimits::to_js(
+  self : MLConv2dSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   input: self.input,
   #|   filter: self.filter,
@@ -1081,6 +1149,7 @@ pub struct MLConvTranspose2dOptions {
   bias : MLOperand?
 }
 
+///|
 /// Create a new MLConvTranspose2dOptions with default values
 pub fn MLConvTranspose2dOptions::default() -> MLConvTranspose2dOptions {
   MLConvTranspose2dOptions::{
@@ -1097,8 +1166,11 @@ pub fn MLConvTranspose2dOptions::default() -> MLConvTranspose2dOptions {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLConvTranspose2dOptions::to_js(self : MLConvTranspose2dOptions) -> JsValue =
+pub extern "js" fn MLConvTranspose2dOptions::to_js(
+  self : MLConvTranspose2dOptions,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   padding: self.padding,
@@ -1107,8 +1179,8 @@ pub extern "js" fn MLConvTranspose2dOptions::to_js(self : MLConvTranspose2dOptio
   #|   outputPadding: self.outputPadding,
   #|   outputSizes: self.outputSizes,
   #|   groups: self.groups,
-  #|   inputLayout: self.inputLayout,
-  #|   filterLayout: self.filterLayout,
+  #|   inputLayout: ['nchw', 'nhwc'][self.inputLayout],
+  #|   filterLayout: ['iohw', 'hwoi', 'ohwi'][self.filterLayout],
   #|   bias: self.bias
   #| })
 
@@ -1120,17 +1192,17 @@ pub struct MLCumulativeSumOptions {
   reversed : Bool?
 }
 
+///|
 /// Create a new MLCumulativeSumOptions with default values
 pub fn MLCumulativeSumOptions::default() -> MLCumulativeSumOptions {
-  MLCumulativeSumOptions::{
-    label: None,
-    exclusive: None,
-    reversed: None,
-  }
+  MLCumulativeSumOptions::{ label: None, exclusive: None, reversed: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLCumulativeSumOptions::to_js(self : MLCumulativeSumOptions) -> JsValue =
+pub extern "js" fn MLCumulativeSumOptions::to_js(
+  self : MLCumulativeSumOptions,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   exclusive: self.exclusive,
@@ -1144,16 +1216,17 @@ pub struct MLLogicalNotSupportLimits {
   output : MLTensorLimits?
 }
 
+///|
 /// Create a new MLLogicalNotSupportLimits with default values
 pub fn MLLogicalNotSupportLimits::default() -> MLLogicalNotSupportLimits {
-  MLLogicalNotSupportLimits::{
-    a: None,
-    output: None,
-  }
+  MLLogicalNotSupportLimits::{ a: None, output: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLLogicalNotSupportLimits::to_js(self : MLLogicalNotSupportLimits) -> JsValue =
+pub extern "js" fn MLLogicalNotSupportLimits::to_js(
+  self : MLLogicalNotSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   a: self.a,
   #|   output: self.output
@@ -1168,6 +1241,7 @@ pub struct MLQuantizeDequantizeLinearSupportLimits {
   output : MLTensorLimits?
 }
 
+///|
 /// Create a new MLQuantizeDequantizeLinearSupportLimits with default values
 pub fn MLQuantizeDequantizeLinearSupportLimits::default() -> MLQuantizeDequantizeLinearSupportLimits {
   MLQuantizeDequantizeLinearSupportLimits::{
@@ -1178,8 +1252,11 @@ pub fn MLQuantizeDequantizeLinearSupportLimits::default() -> MLQuantizeDequantiz
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLQuantizeDequantizeLinearSupportLimits::to_js(self : MLQuantizeDequantizeLinearSupportLimits) -> JsValue =
+pub extern "js" fn MLQuantizeDequantizeLinearSupportLimits::to_js(
+  self : MLQuantizeDequantizeLinearSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   input: self.input,
   #|   scale: self.scale,
@@ -1194,14 +1271,13 @@ pub struct MLEluOptions {
   alpha : Double?
 }
 
+///|
 /// Create a new MLEluOptions with default values
 pub fn MLEluOptions::default() -> MLEluOptions {
-  MLEluOptions::{
-    label: None,
-    alpha: None,
-  }
+  MLEluOptions::{ label: None, alpha: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLEluOptions::to_js(self : MLEluOptions) -> JsValue =
   #| (self) => ({
@@ -1216,14 +1292,13 @@ pub struct MLGatherOptions {
   axis : Int?
 }
 
+///|
 /// Create a new MLGatherOptions with default values
 pub fn MLGatherOptions::default() -> MLGatherOptions {
-  MLGatherOptions::{
-    label: None,
-    axis: None,
-  }
+  MLGatherOptions::{ label: None, axis: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLGatherOptions::to_js(self : MLGatherOptions) -> JsValue =
   #| (self) => ({
@@ -1239,17 +1314,17 @@ pub struct MLGatherSupportLimits {
   output : MLTensorLimits?
 }
 
+///|
 /// Create a new MLGatherSupportLimits with default values
 pub fn MLGatherSupportLimits::default() -> MLGatherSupportLimits {
-  MLGatherSupportLimits::{
-    input: None,
-    indices: None,
-    output: None,
-  }
+  MLGatherSupportLimits::{ input: None, indices: None, output: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLGatherSupportLimits::to_js(self : MLGatherSupportLimits) -> JsValue =
+pub extern "js" fn MLGatherSupportLimits::to_js(
+  self : MLGatherSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   input: self.input,
   #|   indices: self.indices,
@@ -1267,6 +1342,7 @@ pub struct MLGemmOptions {
   bTranspose : Bool?
 }
 
+///|
 /// Create a new MLGemmOptions with default values
 pub fn MLGemmOptions::default() -> MLGemmOptions {
   MLGemmOptions::{
@@ -1279,6 +1355,7 @@ pub fn MLGemmOptions::default() -> MLGemmOptions {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLGemmOptions::to_js(self : MLGemmOptions) -> JsValue =
   #| (self) => ({
@@ -1299,18 +1376,17 @@ pub struct MLGemmSupportLimits {
   output : MLTensorLimits?
 }
 
+///|
 /// Create a new MLGemmSupportLimits with default values
 pub fn MLGemmSupportLimits::default() -> MLGemmSupportLimits {
-  MLGemmSupportLimits::{
-    a: None,
-    b: None,
-    c: None,
-    output: None,
-  }
+  MLGemmSupportLimits::{ a: None, b: None, c: None, output: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLGemmSupportLimits::to_js(self : MLGemmSupportLimits) -> JsValue =
+pub extern "js" fn MLGemmSupportLimits::to_js(
+  self : MLGemmSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   a: self.a,
   #|   b: self.b,
@@ -1332,6 +1408,7 @@ pub struct MLGruOptions {
   activations : Array[MLRecurrentNetworkActivation]?
 }
 
+///|
 /// Create a new MLGruOptions with default values
 pub fn MLGruOptions::default() -> MLGruOptions {
   MLGruOptions::{
@@ -1347,6 +1424,7 @@ pub fn MLGruOptions::default() -> MLGruOptions {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLGruOptions::to_js(self : MLGruOptions) -> JsValue =
   #| (self) => ({
@@ -1356,8 +1434,8 @@ pub extern "js" fn MLGruOptions::to_js(self : MLGruOptions) -> JsValue =
   #|   initialHiddenState: self.initialHiddenState,
   #|   resetAfter: self.resetAfter,
   #|   returnSequence: self.returnSequence,
-  #|   direction: self.direction,
-  #|   layout: self.layout,
+  #|   direction: ['forward', 'backward', 'both'][self.direction],
+  #|   layout: ['zrn', 'rzn'][self.layout],
   #|   activations: self.activations
   #| })
 
@@ -1374,6 +1452,7 @@ pub struct MLGruSupportLimits {
   output1 : MLTensorLimits?
 }
 
+///|
 /// Create a new MLGruSupportLimits with default values
 pub fn MLGruSupportLimits::default() -> MLGruSupportLimits {
   MLGruSupportLimits::{
@@ -1388,8 +1467,11 @@ pub fn MLGruSupportLimits::default() -> MLGruSupportLimits {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLGruSupportLimits::to_js(self : MLGruSupportLimits) -> JsValue =
+pub extern "js" fn MLGruSupportLimits::to_js(
+  self : MLGruSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   input: self.input,
   #|   weight: self.weight,
@@ -1412,6 +1494,7 @@ pub struct MLGruCellOptions {
   activations : Array[MLRecurrentNetworkActivation]?
 }
 
+///|
 /// Create a new MLGruCellOptions with default values
 pub fn MLGruCellOptions::default() -> MLGruCellOptions {
   MLGruCellOptions::{
@@ -1424,6 +1507,7 @@ pub fn MLGruCellOptions::default() -> MLGruCellOptions {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLGruCellOptions::to_js(self : MLGruCellOptions) -> JsValue =
   #| (self) => ({
@@ -1431,7 +1515,7 @@ pub extern "js" fn MLGruCellOptions::to_js(self : MLGruCellOptions) -> JsValue =
   #|   bias: self.bias,
   #|   recurrentBias: self.recurrentBias,
   #|   resetAfter: self.resetAfter,
-  #|   layout: self.layout,
+  #|   layout: ['zrn', 'rzn'][self.layout],
   #|   activations: self.activations
   #| })
 
@@ -1447,6 +1531,7 @@ pub struct MLGruCellSupportLimits {
   output : MLTensorLimits?
 }
 
+///|
 /// Create a new MLGruCellSupportLimits with default values
 pub fn MLGruCellSupportLimits::default() -> MLGruCellSupportLimits {
   MLGruCellSupportLimits::{
@@ -1460,8 +1545,11 @@ pub fn MLGruCellSupportLimits::default() -> MLGruCellSupportLimits {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLGruCellSupportLimits::to_js(self : MLGruCellSupportLimits) -> JsValue =
+pub extern "js" fn MLGruCellSupportLimits::to_js(
+  self : MLGruCellSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   input: self.input,
   #|   weight: self.weight,
@@ -1480,17 +1568,17 @@ pub struct MLHardSigmoidOptions {
   beta : Double?
 }
 
+///|
 /// Create a new MLHardSigmoidOptions with default values
 pub fn MLHardSigmoidOptions::default() -> MLHardSigmoidOptions {
-  MLHardSigmoidOptions::{
-    label: None,
-    alpha: None,
-    beta: None,
-  }
+  MLHardSigmoidOptions::{ label: None, alpha: None, beta: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLHardSigmoidOptions::to_js(self : MLHardSigmoidOptions) -> JsValue =
+pub extern "js" fn MLHardSigmoidOptions::to_js(
+  self : MLHardSigmoidOptions,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   alpha: self.alpha,
@@ -1507,6 +1595,7 @@ pub struct MLInstanceNormalizationOptions {
   layout : MLInputOperandLayout?
 }
 
+///|
 /// Create a new MLInstanceNormalizationOptions with default values
 pub fn MLInstanceNormalizationOptions::default() -> MLInstanceNormalizationOptions {
   MLInstanceNormalizationOptions::{
@@ -1518,14 +1607,17 @@ pub fn MLInstanceNormalizationOptions::default() -> MLInstanceNormalizationOptio
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLInstanceNormalizationOptions::to_js(self : MLInstanceNormalizationOptions) -> JsValue =
+pub extern "js" fn MLInstanceNormalizationOptions::to_js(
+  self : MLInstanceNormalizationOptions,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   scale: self.scale,
   #|   bias: self.bias,
   #|   epsilon: self.epsilon,
-  #|   layout: self.layout
+  #|   layout: ['nchw', 'nhwc'][self.layout]
   #| })
 
 ///|
@@ -1537,6 +1629,7 @@ pub struct MLNormalizationSupportLimits {
   output : MLTensorLimits?
 }
 
+///|
 /// Create a new MLNormalizationSupportLimits with default values
 pub fn MLNormalizationSupportLimits::default() -> MLNormalizationSupportLimits {
   MLNormalizationSupportLimits::{
@@ -1547,8 +1640,11 @@ pub fn MLNormalizationSupportLimits::default() -> MLNormalizationSupportLimits {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLNormalizationSupportLimits::to_js(self : MLNormalizationSupportLimits) -> JsValue =
+pub extern "js" fn MLNormalizationSupportLimits::to_js(
+  self : MLNormalizationSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   input: self.input,
   #|   scale: self.scale,
@@ -1566,6 +1662,7 @@ pub struct MLLayerNormalizationOptions {
   epsilon : Double?
 }
 
+///|
 /// Create a new MLLayerNormalizationOptions with default values
 pub fn MLLayerNormalizationOptions::default() -> MLLayerNormalizationOptions {
   MLLayerNormalizationOptions::{
@@ -1577,8 +1674,11 @@ pub fn MLLayerNormalizationOptions::default() -> MLLayerNormalizationOptions {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLLayerNormalizationOptions::to_js(self : MLLayerNormalizationOptions) -> JsValue =
+pub extern "js" fn MLLayerNormalizationOptions::to_js(
+  self : MLLayerNormalizationOptions,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   scale: self.scale,
@@ -1594,16 +1694,17 @@ pub struct MLLeakyReluOptions {
   alpha : Double?
 }
 
+///|
 /// Create a new MLLeakyReluOptions with default values
 pub fn MLLeakyReluOptions::default() -> MLLeakyReluOptions {
-  MLLeakyReluOptions::{
-    label: None,
-    alpha: None,
-  }
+  MLLeakyReluOptions::{ label: None, alpha: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLLeakyReluOptions::to_js(self : MLLeakyReluOptions) -> JsValue =
+pub extern "js" fn MLLeakyReluOptions::to_js(
+  self : MLLeakyReluOptions,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   alpha: self.alpha
@@ -1617,15 +1718,13 @@ pub struct MLLinearOptions {
   beta : Double?
 }
 
+///|
 /// Create a new MLLinearOptions with default values
 pub fn MLLinearOptions::default() -> MLLinearOptions {
-  MLLinearOptions::{
-    label: None,
-    alpha: None,
-    beta: None,
-  }
+  MLLinearOptions::{ label: None, alpha: None, beta: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLLinearOptions::to_js(self : MLLinearOptions) -> JsValue =
   #| (self) => ({
@@ -1649,6 +1748,7 @@ pub struct MLLstmOptions {
   activations : Array[MLRecurrentNetworkActivation]?
 }
 
+///|
 /// Create a new MLLstmOptions with default values
 pub fn MLLstmOptions::default() -> MLLstmOptions {
   MLLstmOptions::{
@@ -1665,6 +1765,7 @@ pub fn MLLstmOptions::default() -> MLLstmOptions {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLLstmOptions::to_js(self : MLLstmOptions) -> JsValue =
   #| (self) => ({
@@ -1675,8 +1776,8 @@ pub extern "js" fn MLLstmOptions::to_js(self : MLLstmOptions) -> JsValue =
   #|   initialHiddenState: self.initialHiddenState,
   #|   initialCellState: self.initialCellState,
   #|   returnSequence: self.returnSequence,
-  #|   direction: self.direction,
-  #|   layout: self.layout,
+  #|   direction: ['forward', 'backward', 'both'][self.direction],
+  #|   layout: ['iofg', 'ifgo'][self.layout],
   #|   activations: self.activations
   #| })
 
@@ -1696,6 +1797,7 @@ pub struct MLLstmSupportLimits {
   output2 : MLTensorLimits?
 }
 
+///|
 /// Create a new MLLstmSupportLimits with default values
 pub fn MLLstmSupportLimits::default() -> MLLstmSupportLimits {
   MLLstmSupportLimits::{
@@ -1713,8 +1815,11 @@ pub fn MLLstmSupportLimits::default() -> MLLstmSupportLimits {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLLstmSupportLimits::to_js(self : MLLstmSupportLimits) -> JsValue =
+pub extern "js" fn MLLstmSupportLimits::to_js(
+  self : MLLstmSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   input: self.input,
   #|   weight: self.weight,
@@ -1740,6 +1845,7 @@ pub struct MLLstmCellOptions {
   activations : Array[MLRecurrentNetworkActivation]?
 }
 
+///|
 /// Create a new MLLstmCellOptions with default values
 pub fn MLLstmCellOptions::default() -> MLLstmCellOptions {
   MLLstmCellOptions::{
@@ -1752,14 +1858,17 @@ pub fn MLLstmCellOptions::default() -> MLLstmCellOptions {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLLstmCellOptions::to_js(self : MLLstmCellOptions) -> JsValue =
+pub extern "js" fn MLLstmCellOptions::to_js(
+  self : MLLstmCellOptions,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   bias: self.bias,
   #|   recurrentBias: self.recurrentBias,
   #|   peepholeWeight: self.peepholeWeight,
-  #|   layout: self.layout,
+  #|   layout: ['iofg', 'ifgo'][self.layout],
   #|   activations: self.activations
   #| })
 
@@ -1778,6 +1887,7 @@ pub struct MLLstmCellSupportLimits {
   output1 : MLTensorLimits?
 }
 
+///|
 /// Create a new MLLstmCellSupportLimits with default values
 pub fn MLLstmCellSupportLimits::default() -> MLLstmCellSupportLimits {
   MLLstmCellSupportLimits::{
@@ -1794,8 +1904,11 @@ pub fn MLLstmCellSupportLimits::default() -> MLLstmCellSupportLimits {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLLstmCellSupportLimits::to_js(self : MLLstmCellSupportLimits) -> JsValue =
+pub extern "js" fn MLLstmCellSupportLimits::to_js(
+  self : MLLstmCellSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   input: self.input,
   #|   weight: self.weight,
@@ -1817,20 +1930,18 @@ pub struct MLPadOptions {
   value : MLNumber?
 }
 
+///|
 /// Create a new MLPadOptions with default values
 pub fn MLPadOptions::default() -> MLPadOptions {
-  MLPadOptions::{
-    label: None,
-    mode: None,
-    value: None,
-  }
+  MLPadOptions::{ label: None, mode: None, value: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLPadOptions::to_js(self : MLPadOptions) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   mode: self.mode,
+  #|   mode: ['constant', 'edge', 'reflection'][self.mode],
   #|   value: self.value
   #| })
 
@@ -1847,6 +1958,7 @@ pub struct MLPool2dOptions {
   outputSizes : Array[Int]?
 }
 
+///|
 /// Create a new MLPool2dOptions with default values
 pub fn MLPool2dOptions::default() -> MLPool2dOptions {
   MLPool2dOptions::{
@@ -1861,6 +1973,7 @@ pub fn MLPool2dOptions::default() -> MLPool2dOptions {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLPool2dOptions::to_js(self : MLPool2dOptions) -> JsValue =
   #| (self) => ({
@@ -1869,8 +1982,8 @@ pub extern "js" fn MLPool2dOptions::to_js(self : MLPool2dOptions) -> JsValue =
   #|   padding: self.padding,
   #|   strides: self.strides,
   #|   dilations: self.dilations,
-  #|   layout: self.layout,
-  #|   outputShapeRounding: self.outputShapeRounding,
+  #|   layout: ['nchw', 'nhwc'][self.layout],
+  #|   outputShapeRounding: ['floor', 'ceil'][self.outputShapeRounding],
   #|   outputSizes: self.outputSizes
   #| })
 
@@ -1882,17 +1995,17 @@ pub struct MLPreluSupportLimits {
   output : MLTensorLimits?
 }
 
+///|
 /// Create a new MLPreluSupportLimits with default values
 pub fn MLPreluSupportLimits::default() -> MLPreluSupportLimits {
-  MLPreluSupportLimits::{
-    input: None,
-    slope: None,
-    output: None,
-  }
+  MLPreluSupportLimits::{ input: None, slope: None, output: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLPreluSupportLimits::to_js(self : MLPreluSupportLimits) -> JsValue =
+pub extern "js" fn MLPreluSupportLimits::to_js(
+  self : MLPreluSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   input: self.input,
   #|   slope: self.slope,
@@ -1907,15 +2020,13 @@ pub struct MLReduceOptions {
   keepDimensions : Bool?
 }
 
+///|
 /// Create a new MLReduceOptions with default values
 pub fn MLReduceOptions::default() -> MLReduceOptions {
-  MLReduceOptions::{
-    label: None,
-    axes: None,
-    keepDimensions: None,
-  }
+  MLReduceOptions::{ label: None, axes: None, keepDimensions: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLReduceOptions::to_js(self : MLReduceOptions) -> JsValue =
   #| (self) => ({
@@ -1934,6 +2045,7 @@ pub struct MLResample2dOptions {
   axes : Array[Int]?
 }
 
+///|
 /// Create a new MLResample2dOptions with default values
 pub fn MLResample2dOptions::default() -> MLResample2dOptions {
   MLResample2dOptions::{
@@ -1945,11 +2057,14 @@ pub fn MLResample2dOptions::default() -> MLResample2dOptions {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLResample2dOptions::to_js(self : MLResample2dOptions) -> JsValue =
+pub extern "js" fn MLResample2dOptions::to_js(
+  self : MLResample2dOptions,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   mode: self.mode,
+  #|   mode: ['nearest-neighbor', 'linear'][self.mode],
   #|   scales: self.scales,
   #|   sizes: self.sizes,
   #|   axes: self.axes
@@ -1962,14 +2077,13 @@ pub struct MLReverseOptions {
   axes : Array[Int]?
 }
 
+///|
 /// Create a new MLReverseOptions with default values
 pub fn MLReverseOptions::default() -> MLReverseOptions {
-  MLReverseOptions::{
-    label: None,
-    axes: None,
-  }
+  MLReverseOptions::{ label: None, axes: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLReverseOptions::to_js(self : MLReverseOptions) -> JsValue =
   #| (self) => ({
@@ -1984,14 +2098,13 @@ pub struct MLScatterOptions {
   axis : Int?
 }
 
+///|
 /// Create a new MLScatterOptions with default values
 pub fn MLScatterOptions::default() -> MLScatterOptions {
-  MLScatterOptions::{
-    label: None,
-    axis: None,
-  }
+  MLScatterOptions::{ label: None, axis: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLScatterOptions::to_js(self : MLScatterOptions) -> JsValue =
   #| (self) => ({
@@ -2008,6 +2121,7 @@ pub struct MLScatterSupportLimits {
   output : MLTensorLimits?
 }
 
+///|
 /// Create a new MLScatterSupportLimits with default values
 pub fn MLScatterSupportLimits::default() -> MLScatterSupportLimits {
   MLScatterSupportLimits::{
@@ -2018,8 +2132,11 @@ pub fn MLScatterSupportLimits::default() -> MLScatterSupportLimits {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLScatterSupportLimits::to_js(self : MLScatterSupportLimits) -> JsValue =
+pub extern "js" fn MLScatterSupportLimits::to_js(
+  self : MLScatterSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   input: self.input,
   #|   indices: self.indices,
@@ -2034,14 +2151,13 @@ pub struct MLSliceOptions {
   strides : Array[Int]?
 }
 
+///|
 /// Create a new MLSliceOptions with default values
 pub fn MLSliceOptions::default() -> MLSliceOptions {
-  MLSliceOptions::{
-    label: None,
-    strides: None,
-  }
+  MLSliceOptions::{ label: None, strides: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLSliceOptions::to_js(self : MLSliceOptions) -> JsValue =
   #| (self) => ({
@@ -2056,14 +2172,13 @@ pub struct MLSplitOptions {
   axis : Int?
 }
 
+///|
 /// Create a new MLSplitOptions with default values
 pub fn MLSplitOptions::default() -> MLSplitOptions {
-  MLSplitOptions::{
-    label: None,
-    axis: None,
-  }
+  MLSplitOptions::{ label: None, axis: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn MLSplitOptions::to_js(self : MLSplitOptions) -> JsValue =
   #| (self) => ({
@@ -2078,16 +2193,17 @@ pub struct MLSplitSupportLimits {
   outputs : MLTensorLimits?
 }
 
+///|
 /// Create a new MLSplitSupportLimits with default values
 pub fn MLSplitSupportLimits::default() -> MLSplitSupportLimits {
-  MLSplitSupportLimits::{
-    input: None,
-    outputs: None,
-  }
+  MLSplitSupportLimits::{ input: None, outputs: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLSplitSupportLimits::to_js(self : MLSplitSupportLimits) -> JsValue =
+pub extern "js" fn MLSplitSupportLimits::to_js(
+  self : MLSplitSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   input: self.input,
   #|   outputs: self.outputs
@@ -2100,16 +2216,17 @@ pub struct MLTransposeOptions {
   permutation : Array[Int]?
 }
 
+///|
 /// Create a new MLTransposeOptions with default values
 pub fn MLTransposeOptions::default() -> MLTransposeOptions {
-  MLTransposeOptions::{
-    label: None,
-    permutation: None,
-  }
+  MLTransposeOptions::{ label: None, permutation: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLTransposeOptions::to_js(self : MLTransposeOptions) -> JsValue =
+pub extern "js" fn MLTransposeOptions::to_js(
+  self : MLTransposeOptions,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   permutation: self.permutation
@@ -2123,17 +2240,17 @@ pub struct MLTriangularOptions {
   diagonal : Int?
 }
 
+///|
 /// Create a new MLTriangularOptions with default values
 pub fn MLTriangularOptions::default() -> MLTriangularOptions {
-  MLTriangularOptions::{
-    label: None,
-    upper: None,
-    diagonal: None,
-  }
+  MLTriangularOptions::{ label: None, upper: None, diagonal: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLTriangularOptions::to_js(self : MLTriangularOptions) -> JsValue =
+pub extern "js" fn MLTriangularOptions::to_js(
+  self : MLTriangularOptions,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   upper: self.upper,
@@ -2149,6 +2266,7 @@ pub struct MLWhereSupportLimits {
   output : MLTensorLimits?
 }
 
+///|
 /// Create a new MLWhereSupportLimits with default values
 pub fn MLWhereSupportLimits::default() -> MLWhereSupportLimits {
   MLWhereSupportLimits::{
@@ -2159,8 +2277,11 @@ pub fn MLWhereSupportLimits::default() -> MLWhereSupportLimits {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MLWhereSupportLimits::to_js(self : MLWhereSupportLimits) -> JsValue =
+pub extern "js" fn MLWhereSupportLimits::to_js(
+  self : MLWhereSupportLimits,
+) -> JsValue =
   #| (self) => ({
   #|   condition: self.condition,
   #|   trueValue: self.trueValue,
@@ -2172,62 +2293,112 @@ pub extern "js" fn MLWhereSupportLimits::to_js(self : MLWhereSupportLimits) -> J
 /// ML interface
 pub type ML
 
+///|
 pub extern "js" fn ML::to_js_value(self : ML) -> JsValue =
   #| (self) => self
 
+///|
 pub extern "js" fn ML::create_context(self : ML) -> Promise[MLContext] =
   #| (self) => self.createContext()
 
-pub extern "js" fn ML::create_context_with_options(self : ML, options : MLContextOptions) -> Promise[MLContext] =
+///|
+pub extern "js" fn ML::create_context_with_options(
+  self : ML,
+  options : MLContextOptions,
+) -> Promise[MLContext] =
   #| (self, options) => self.createContext(options)
 
-pub extern "js" fn ML::create_context_with_gpu_device_g_p_u_device(self : ML, gpu_device : GPUDevice) -> Promise[MLContext] =
+///|
+pub extern "js" fn ML::create_context_with_gpu_device_g_p_u_device(
+  self : ML,
+  gpu_device : GPUDevice,
+) -> Promise[MLContext] =
   #| (self, gpu_device) => self.createContext(gpu_device)
 
 ///|
 /// MLContext interface
 pub type MLContext
 
+///|
 pub extern "js" fn MLContext::to_js_value(self : MLContext) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn MLContext::dispatch(self : MLContext, graph : MLGraph, inputs : MLNamedTensors, outputs : MLNamedTensors) -> Unit =
+///|
+pub extern "js" fn MLContext::dispatch(
+  self : MLContext,
+  graph : MLGraph,
+  inputs : MLNamedTensors,
+  outputs : MLNamedTensors,
+) -> Unit =
   #| (self, graph, inputs, outputs) => self.dispatch(graph, inputs, outputs)
 
-pub extern "js" fn MLContext::create_tensor(self : MLContext, descriptor : MLTensorDescriptor) -> Promise[MLTensor] =
+///|
+pub extern "js" fn MLContext::create_tensor(
+  self : MLContext,
+  descriptor : MLTensorDescriptor,
+) -> Promise[MLTensor] =
   #| (self, descriptor) => self.createTensor(descriptor)
 
-pub extern "js" fn MLContext::create_constant_tensor(self : MLContext, descriptor : MLOperandDescriptor, input_data : AllowSharedBufferSource) -> Promise[MLTensor] =
+///|
+pub extern "js" fn MLContext::create_constant_tensor(
+  self : MLContext,
+  descriptor : MLOperandDescriptor,
+  input_data : AllowSharedBufferSource,
+) -> Promise[MLTensor] =
   #| (self, descriptor, input_data) => self.createConstantTensor(descriptor, input_data)
 
-pub extern "js" fn MLContext::read_tensor(self : MLContext, tensor : MLTensor) -> Promise[ArrayBuffer] =
+///|
+pub extern "js" fn MLContext::read_tensor(
+  self : MLContext,
+  tensor : MLTensor,
+) -> Promise[ArrayBuffer] =
   #| (self, tensor) => self.readTensor(tensor)
 
-pub extern "js" fn MLContext::read_tensor_with_tensor_m_l_tensor_and_output_data_allow_shared_buffer_source(self : MLContext, tensor : MLTensor, output_data : AllowSharedBufferSource) -> Promise[Unit] =
+///|
+pub extern "js" fn MLContext::read_tensor_with_tensor_m_l_tensor_and_output_data_allow_shared_buffer_source(
+  self : MLContext,
+  tensor : MLTensor,
+  output_data : AllowSharedBufferSource,
+) -> Promise[Unit] =
   #| (self, tensor, output_data) => self.readTensor(tensor, output_data)
 
-pub extern "js" fn MLContext::write_tensor(self : MLContext, tensor : MLTensor, input_data : AllowSharedBufferSource) -> Unit =
+///|
+pub extern "js" fn MLContext::write_tensor(
+  self : MLContext,
+  tensor : MLTensor,
+  input_data : AllowSharedBufferSource,
+) -> Unit =
   #| (self, tensor, input_data) => self.writeTensor(tensor, input_data)
 
-pub extern "js" fn MLContext::op_support_limits(self : MLContext) -> MLOpSupportLimits =
+///|
+pub extern "js" fn MLContext::op_support_limits(
+  self : MLContext,
+) -> MLOpSupportLimits =
   #| (self) => self.opSupportLimits()
 
+///|
 pub extern "js" fn MLContext::destroy(self : MLContext) -> Unit =
   #| (self) => self.destroy()
 
+///|
 pub extern "js" fn MLContext::get_accelerated(self : MLContext) -> Bool =
   #| (self) => self.accelerated
 
-pub extern "js" fn MLContext::get_lost(self : MLContext) -> Promise[MLContextLostInfo] =
+///|
+pub extern "js" fn MLContext::get_lost(
+  self : MLContext,
+) -> Promise[MLContextLostInfo] =
   #| (self) => self.lost
 
 ///|
 /// MLGraph interface
 pub type MLGraph
 
+///|
 pub extern "js" fn MLGraph::to_js_value(self : MLGraph) -> JsValue =
   #| (self) => self
 
+///|
 pub extern "js" fn MLGraph::destroy(self : MLGraph) -> Unit =
   #| (self) => self.destroy()
 
@@ -2235,12 +2406,17 @@ pub extern "js" fn MLGraph::destroy(self : MLGraph) -> Unit =
 /// MLOperand interface
 pub type MLOperand
 
+///|
 pub extern "js" fn MLOperand::to_js_value(self : MLOperand) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn MLOperand::get_data_type(self : MLOperand) -> MLOperandDataType =
+///|
+pub extern "js" fn MLOperand::get_data_type(
+  self : MLOperand,
+) -> MLOperandDataType =
   #| (self) => self.dataType
 
+///|
 pub extern "js" fn MLOperand::get_shape(self : MLOperand) -> JsValue =
   #| (self) => self.shape
 
@@ -2248,24 +2424,33 @@ pub extern "js" fn MLOperand::get_shape(self : MLOperand) -> JsValue =
 /// MLTensor interface
 pub type MLTensor
 
+///|
 pub extern "js" fn MLTensor::to_js_value(self : MLTensor) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn MLTensor::get_data_type(self : MLTensor) -> MLOperandDataType =
+///|
+pub extern "js" fn MLTensor::get_data_type(
+  self : MLTensor,
+) -> MLOperandDataType =
   #| (self) => self.dataType
 
+///|
 pub extern "js" fn MLTensor::get_shape(self : MLTensor) -> JsValue =
   #| (self) => self.shape
 
+///|
 pub extern "js" fn MLTensor::get_readable(self : MLTensor) -> Bool =
   #| (self) => self.readable
 
+///|
 pub extern "js" fn MLTensor::get_writable(self : MLTensor) -> Bool =
   #| (self) => self.writable
 
+///|
 pub extern "js" fn MLTensor::get_constant(self : MLTensor) -> Bool =
   #| (self) => self.constant
 
+///|
 pub extern "js" fn MLTensor::destroy(self : MLTensor) -> Unit =
   #| (self) => self.destroy()
 
@@ -2273,594 +2458,1609 @@ pub extern "js" fn MLTensor::destroy(self : MLTensor) -> Unit =
 /// MLGraphBuilder interface
 pub type MLGraphBuilder
 
-pub extern "js" fn MLGraphBuilder::to_js_value(self : MLGraphBuilder) -> JsValue =
+///|
+pub extern "js" fn MLGraphBuilder::to_js_value(
+  self : MLGraphBuilder,
+) -> JsValue =
   #| (self) => self
 
+///|
 pub extern "js" fn MLGraphBuilder::new(context : MLContext) -> MLGraphBuilder =
   #| (context) => new MLGraphBuilder(context)
 
-pub extern "js" fn MLGraphBuilder::input(self : MLGraphBuilder, name : String, descriptor : MLOperandDescriptor) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::input(
+  self : MLGraphBuilder,
+  name : String,
+  descriptor : MLOperandDescriptor,
+) -> MLOperand =
   #| (self, name, descriptor) => self.input(name, descriptor)
 
-pub extern "js" fn MLGraphBuilder::constant(self : MLGraphBuilder, tensor : MLTensor) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::constant(
+  self : MLGraphBuilder,
+  tensor : MLTensor,
+) -> MLOperand =
   #| (self, tensor) => self.constant(tensor)
 
-pub extern "js" fn MLGraphBuilder::constant_with_data_type_m_l_operand_data_type_and_value_m_l_number(self : MLGraphBuilder, data_type : MLOperandDataType, value : MLNumber) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::constant_with_data_type_m_l_operand_data_type_and_value_m_l_number(
+  self : MLGraphBuilder,
+  data_type : MLOperandDataType,
+  value : MLNumber,
+) -> MLOperand =
   #| (self, data_type, value) => self.constant(['float32', 'float16', 'int32', 'uint32', 'int64', 'uint64', 'int8', 'uint8'][data_type], value)
 
-pub extern "js" fn MLGraphBuilder::constant_with_descriptor_m_l_operand_descriptor_and_buffer_allow_shared_buffer_source(self : MLGraphBuilder, descriptor : MLOperandDescriptor, buffer : AllowSharedBufferSource) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::constant_with_descriptor_m_l_operand_descriptor_and_buffer_allow_shared_buffer_source(
+  self : MLGraphBuilder,
+  descriptor : MLOperandDescriptor,
+  buffer : AllowSharedBufferSource,
+) -> MLOperand =
   #| (self, descriptor, buffer) => self.constant(descriptor, buffer)
 
-pub extern "js" fn MLGraphBuilder::build(self : MLGraphBuilder, outputs : MLNamedOperands) -> Promise[MLGraph] =
+///|
+pub extern "js" fn MLGraphBuilder::build(
+  self : MLGraphBuilder,
+  outputs : MLNamedOperands,
+) -> Promise[MLGraph] =
   #| (self, outputs) => self.build(outputs)
 
-pub extern "js" fn MLGraphBuilder::arg_min(self : MLGraphBuilder, input : MLOperand, axis : Int) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::arg_min(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  axis : Int,
+) -> MLOperand =
   #| (self, input, axis) => self.argMin(input, axis)
 
-pub extern "js" fn MLGraphBuilder::arg_min_with_options(self : MLGraphBuilder, input : MLOperand, axis : Int, options : MLArgMinMaxOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::arg_min_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  axis : Int,
+  options : MLArgMinMaxOptions,
+) -> MLOperand =
   #| (self, input, axis, options) => self.argMin(input, axis, options)
 
-pub extern "js" fn MLGraphBuilder::arg_max(self : MLGraphBuilder, input : MLOperand, axis : Int) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::arg_max(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  axis : Int,
+) -> MLOperand =
   #| (self, input, axis) => self.argMax(input, axis)
 
-pub extern "js" fn MLGraphBuilder::arg_max_with_options(self : MLGraphBuilder, input : MLOperand, axis : Int, options : MLArgMinMaxOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::arg_max_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  axis : Int,
+  options : MLArgMinMaxOptions,
+) -> MLOperand =
   #| (self, input, axis, options) => self.argMax(input, axis, options)
 
-pub extern "js" fn MLGraphBuilder::batch_normalization(self : MLGraphBuilder, input : MLOperand, mean : MLOperand, variance : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::batch_normalization(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  mean : MLOperand,
+  variance : MLOperand,
+) -> MLOperand =
   #| (self, input, mean, variance) => self.batchNormalization(input, mean, variance)
 
-pub extern "js" fn MLGraphBuilder::batch_normalization_with_options(self : MLGraphBuilder, input : MLOperand, mean : MLOperand, variance : MLOperand, options : MLBatchNormalizationOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::batch_normalization_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  mean : MLOperand,
+  variance : MLOperand,
+  options : MLBatchNormalizationOptions,
+) -> MLOperand =
   #| (self, input, mean, variance, options) => self.batchNormalization(input, mean, variance, options)
 
-pub extern "js" fn MLGraphBuilder::cast(self : MLGraphBuilder, input : MLOperand, data_type : MLOperandDataType) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::cast(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  data_type : MLOperandDataType,
+) -> MLOperand =
   #| (self, input, data_type) => self.cast(input, ['float32', 'float16', 'int32', 'uint32', 'int64', 'uint64', 'int8', 'uint8'][data_type])
 
-pub extern "js" fn MLGraphBuilder::cast_with_options(self : MLGraphBuilder, input : MLOperand, data_type : MLOperandDataType, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::cast_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  data_type : MLOperandDataType,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, data_type, options) => self.cast(input, ['float32', 'float16', 'int32', 'uint32', 'int64', 'uint64', 'int8', 'uint8'][data_type], options)
 
-pub extern "js" fn MLGraphBuilder::clamp(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::clamp(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.clamp(input)
 
-pub extern "js" fn MLGraphBuilder::clamp_with_options(self : MLGraphBuilder, input : MLOperand, options : MLClampOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::clamp_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLClampOptions,
+) -> MLOperand =
   #| (self, input, options) => self.clamp(input, options)
 
-pub extern "js" fn MLGraphBuilder::concat(self : MLGraphBuilder, inputs : Array[MLOperand], axis : Int) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::concat(
+  self : MLGraphBuilder,
+  inputs : Array[MLOperand],
+  axis : Int,
+) -> MLOperand =
   #| (self, inputs, axis) => self.concat(inputs, axis)
 
-pub extern "js" fn MLGraphBuilder::concat_with_options(self : MLGraphBuilder, inputs : Array[MLOperand], axis : Int, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::concat_with_options(
+  self : MLGraphBuilder,
+  inputs : Array[MLOperand],
+  axis : Int,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, inputs, axis, options) => self.concat(inputs, axis, options)
 
-pub extern "js" fn MLGraphBuilder::conv2d(self : MLGraphBuilder, input : MLOperand, filter : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::conv2d(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  filter : MLOperand,
+) -> MLOperand =
   #| (self, input, filter) => self.conv2d(input, filter)
 
-pub extern "js" fn MLGraphBuilder::conv2d_with_options(self : MLGraphBuilder, input : MLOperand, filter : MLOperand, options : MLConv2dOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::conv2d_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  filter : MLOperand,
+  options : MLConv2dOptions,
+) -> MLOperand =
   #| (self, input, filter, options) => self.conv2d(input, filter, options)
 
-pub extern "js" fn MLGraphBuilder::conv_transpose2d(self : MLGraphBuilder, input : MLOperand, filter : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::conv_transpose2d(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  filter : MLOperand,
+) -> MLOperand =
   #| (self, input, filter) => self.convTranspose2d(input, filter)
 
-pub extern "js" fn MLGraphBuilder::conv_transpose2d_with_options(self : MLGraphBuilder, input : MLOperand, filter : MLOperand, options : MLConvTranspose2dOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::conv_transpose2d_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  filter : MLOperand,
+  options : MLConvTranspose2dOptions,
+) -> MLOperand =
   #| (self, input, filter, options) => self.convTranspose2d(input, filter, options)
 
-pub extern "js" fn MLGraphBuilder::cumulative_sum(self : MLGraphBuilder, input : MLOperand, axis : Int) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::cumulative_sum(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  axis : Int,
+) -> MLOperand =
   #| (self, input, axis) => self.cumulativeSum(input, axis)
 
-pub extern "js" fn MLGraphBuilder::cumulative_sum_with_options(self : MLGraphBuilder, input : MLOperand, axis : Int, options : MLCumulativeSumOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::cumulative_sum_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  axis : Int,
+  options : MLCumulativeSumOptions,
+) -> MLOperand =
   #| (self, input, axis, options) => self.cumulativeSum(input, axis, options)
 
-pub extern "js" fn MLGraphBuilder::add(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::add(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.add(a, b)
 
-pub extern "js" fn MLGraphBuilder::add_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::add_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.add(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::sub(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::sub(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.sub(a, b)
 
-pub extern "js" fn MLGraphBuilder::sub_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::sub_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.sub(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::mul(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::mul(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.mul(a, b)
 
-pub extern "js" fn MLGraphBuilder::mul_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::mul_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.mul(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::div(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::div(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.div(a, b)
 
-pub extern "js" fn MLGraphBuilder::div_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::div_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.div(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::max(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::max(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.max(a, b)
 
-pub extern "js" fn MLGraphBuilder::max_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::max_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.max(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::min(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::min(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.min(a, b)
 
-pub extern "js" fn MLGraphBuilder::min_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::min_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.min(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::pow(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::pow(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.pow(a, b)
 
-pub extern "js" fn MLGraphBuilder::pow_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::pow_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.pow(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::equal(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::equal(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.equal(a, b)
 
-pub extern "js" fn MLGraphBuilder::equal_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::equal_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.equal(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::not_equal(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::not_equal(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.notEqual(a, b)
 
-pub extern "js" fn MLGraphBuilder::not_equal_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::not_equal_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.notEqual(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::greater(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::greater(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.greater(a, b)
 
-pub extern "js" fn MLGraphBuilder::greater_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::greater_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.greater(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::greater_or_equal(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::greater_or_equal(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.greaterOrEqual(a, b)
 
-pub extern "js" fn MLGraphBuilder::greater_or_equal_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::greater_or_equal_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.greaterOrEqual(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::lesser(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::lesser(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.lesser(a, b)
 
-pub extern "js" fn MLGraphBuilder::lesser_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::lesser_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.lesser(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::lesser_or_equal(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::lesser_or_equal(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.lesserOrEqual(a, b)
 
-pub extern "js" fn MLGraphBuilder::lesser_or_equal_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::lesser_or_equal_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.lesserOrEqual(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::logical_not(self : MLGraphBuilder, a : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::logical_not(
+  self : MLGraphBuilder,
+  a : MLOperand,
+) -> MLOperand =
   #| (self, a) => self.logicalNot(a)
 
-pub extern "js" fn MLGraphBuilder::logical_not_with_options(self : MLGraphBuilder, a : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::logical_not_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, options) => self.logicalNot(a, options)
 
-pub extern "js" fn MLGraphBuilder::logical_and(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::logical_and(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.logicalAnd(a, b)
 
-pub extern "js" fn MLGraphBuilder::logical_and_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::logical_and_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.logicalAnd(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::logical_or(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::logical_or(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.logicalOr(a, b)
 
-pub extern "js" fn MLGraphBuilder::logical_or_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::logical_or_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.logicalOr(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::logical_xor(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::logical_xor(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.logicalXor(a, b)
 
-pub extern "js" fn MLGraphBuilder::logical_xor_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::logical_xor_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.logicalXor(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::is_na_n(self : MLGraphBuilder, a : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::is_na_n(
+  self : MLGraphBuilder,
+  a : MLOperand,
+) -> MLOperand =
   #| (self, a) => self.isNaN(a)
 
-pub extern "js" fn MLGraphBuilder::is_na_n_with_options(self : MLGraphBuilder, a : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::is_na_n_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, options) => self.isNaN(a, options)
 
-pub extern "js" fn MLGraphBuilder::is_infinite(self : MLGraphBuilder, a : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::is_infinite(
+  self : MLGraphBuilder,
+  a : MLOperand,
+) -> MLOperand =
   #| (self, a) => self.isInfinite(a)
 
-pub extern "js" fn MLGraphBuilder::is_infinite_with_options(self : MLGraphBuilder, a : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::is_infinite_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, options) => self.isInfinite(a, options)
 
-pub extern "js" fn MLGraphBuilder::abs(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::abs(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.abs(input)
 
-pub extern "js" fn MLGraphBuilder::abs_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::abs_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.abs(input, options)
 
-pub extern "js" fn MLGraphBuilder::ceil(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::ceil(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.ceil(input)
 
-pub extern "js" fn MLGraphBuilder::ceil_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::ceil_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.ceil(input, options)
 
-pub extern "js" fn MLGraphBuilder::cos(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::cos(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.cos(input)
 
-pub extern "js" fn MLGraphBuilder::cos_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::cos_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.cos(input, options)
 
-pub extern "js" fn MLGraphBuilder::erf(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::erf(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.erf(input)
 
-pub extern "js" fn MLGraphBuilder::erf_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::erf_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.erf(input, options)
 
-pub extern "js" fn MLGraphBuilder::exp(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::exp(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.exp(input)
 
-pub extern "js" fn MLGraphBuilder::exp_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::exp_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.exp(input, options)
 
-pub extern "js" fn MLGraphBuilder::floor(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::floor(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.floor(input)
 
-pub extern "js" fn MLGraphBuilder::floor_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::floor_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.floor(input, options)
 
-pub extern "js" fn MLGraphBuilder::identity(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::identity(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.identity(input)
 
-pub extern "js" fn MLGraphBuilder::identity_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::identity_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.identity(input, options)
 
-pub extern "js" fn MLGraphBuilder::log(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::log(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.log(input)
 
-pub extern "js" fn MLGraphBuilder::log_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::log_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.log(input, options)
 
-pub extern "js" fn MLGraphBuilder::neg(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::neg(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.neg(input)
 
-pub extern "js" fn MLGraphBuilder::neg_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::neg_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.neg(input, options)
 
-pub extern "js" fn MLGraphBuilder::reciprocal(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reciprocal(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.reciprocal(input)
 
-pub extern "js" fn MLGraphBuilder::reciprocal_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reciprocal_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.reciprocal(input, options)
 
-pub extern "js" fn MLGraphBuilder::round_even(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::round_even(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.roundEven(input)
 
-pub extern "js" fn MLGraphBuilder::round_even_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::round_even_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.roundEven(input, options)
 
-pub extern "js" fn MLGraphBuilder::sin(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::sin(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.sin(input)
 
-pub extern "js" fn MLGraphBuilder::sin_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::sin_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.sin(input, options)
 
-pub extern "js" fn MLGraphBuilder::sign(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::sign(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.sign(input)
 
-pub extern "js" fn MLGraphBuilder::sign_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::sign_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.sign(input, options)
 
-pub extern "js" fn MLGraphBuilder::sqrt(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::sqrt(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.sqrt(input)
 
-pub extern "js" fn MLGraphBuilder::sqrt_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::sqrt_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.sqrt(input, options)
 
-pub extern "js" fn MLGraphBuilder::tan(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::tan(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.tan(input)
 
-pub extern "js" fn MLGraphBuilder::tan_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::tan_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.tan(input, options)
 
-pub extern "js" fn MLGraphBuilder::dequantize_linear(self : MLGraphBuilder, input : MLOperand, scale : MLOperand, zero_point : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::dequantize_linear(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  scale : MLOperand,
+  zero_point : MLOperand,
+) -> MLOperand =
   #| (self, input, scale, zero_point) => self.dequantizeLinear(input, scale, zero_point)
 
-pub extern "js" fn MLGraphBuilder::dequantize_linear_with_options(self : MLGraphBuilder, input : MLOperand, scale : MLOperand, zero_point : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::dequantize_linear_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  scale : MLOperand,
+  zero_point : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, scale, zero_point, options) => self.dequantizeLinear(input, scale, zero_point, options)
 
-pub extern "js" fn MLGraphBuilder::quantize_linear(self : MLGraphBuilder, input : MLOperand, scale : MLOperand, zero_point : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::quantize_linear(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  scale : MLOperand,
+  zero_point : MLOperand,
+) -> MLOperand =
   #| (self, input, scale, zero_point) => self.quantizeLinear(input, scale, zero_point)
 
-pub extern "js" fn MLGraphBuilder::quantize_linear_with_options(self : MLGraphBuilder, input : MLOperand, scale : MLOperand, zero_point : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::quantize_linear_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  scale : MLOperand,
+  zero_point : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, scale, zero_point, options) => self.quantizeLinear(input, scale, zero_point, options)
 
-pub extern "js" fn MLGraphBuilder::elu(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::elu(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.elu(input)
 
-pub extern "js" fn MLGraphBuilder::elu_with_options(self : MLGraphBuilder, input : MLOperand, options : MLEluOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::elu_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLEluOptions,
+) -> MLOperand =
   #| (self, input, options) => self.elu(input, options)
 
-pub extern "js" fn MLGraphBuilder::expand(self : MLGraphBuilder, input : MLOperand, new_shape : Array[Int]) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::expand(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  new_shape : Array[Int],
+) -> MLOperand =
   #| (self, input, new_shape) => self.expand(input, new_shape)
 
-pub extern "js" fn MLGraphBuilder::expand_with_options(self : MLGraphBuilder, input : MLOperand, new_shape : Array[Int], options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::expand_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  new_shape : Array[Int],
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, new_shape, options) => self.expand(input, new_shape, options)
 
-pub extern "js" fn MLGraphBuilder::gather(self : MLGraphBuilder, input : MLOperand, indices : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::gather(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  indices : MLOperand,
+) -> MLOperand =
   #| (self, input, indices) => self.gather(input, indices)
 
-pub extern "js" fn MLGraphBuilder::gather_with_options(self : MLGraphBuilder, input : MLOperand, indices : MLOperand, options : MLGatherOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::gather_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  indices : MLOperand,
+  options : MLGatherOptions,
+) -> MLOperand =
   #| (self, input, indices, options) => self.gather(input, indices, options)
 
-pub extern "js" fn MLGraphBuilder::gather_elements(self : MLGraphBuilder, input : MLOperand, indices : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::gather_elements(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  indices : MLOperand,
+) -> MLOperand =
   #| (self, input, indices) => self.gatherElements(input, indices)
 
-pub extern "js" fn MLGraphBuilder::gather_elements_with_options(self : MLGraphBuilder, input : MLOperand, indices : MLOperand, options : MLGatherOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::gather_elements_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  indices : MLOperand,
+  options : MLGatherOptions,
+) -> MLOperand =
   #| (self, input, indices, options) => self.gatherElements(input, indices, options)
 
-pub extern "js" fn MLGraphBuilder::gather_n_d(self : MLGraphBuilder, input : MLOperand, indices : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::gather_n_d(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  indices : MLOperand,
+) -> MLOperand =
   #| (self, input, indices) => self.gatherND(input, indices)
 
-pub extern "js" fn MLGraphBuilder::gather_n_d_with_options(self : MLGraphBuilder, input : MLOperand, indices : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::gather_n_d_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  indices : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, indices, options) => self.gatherND(input, indices, options)
 
-pub extern "js" fn MLGraphBuilder::gelu(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::gelu(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.gelu(input)
 
-pub extern "js" fn MLGraphBuilder::gelu_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::gelu_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.gelu(input, options)
 
-pub extern "js" fn MLGraphBuilder::gemm(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::gemm(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.gemm(a, b)
 
-pub extern "js" fn MLGraphBuilder::gemm_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLGemmOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::gemm_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLGemmOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.gemm(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::gru(self : MLGraphBuilder, input : MLOperand, weight : MLOperand, recurrent_weight : MLOperand, steps : Int, hidden_size : Int) -> Array[MLOperand] =
+///|
+pub extern "js" fn MLGraphBuilder::gru(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  weight : MLOperand,
+  recurrent_weight : MLOperand,
+  steps : Int,
+  hidden_size : Int,
+) -> Array[MLOperand] =
   #| (self, input, weight, recurrent_weight, steps, hidden_size) => self.gru(input, weight, recurrent_weight, steps, hidden_size)
 
-pub extern "js" fn MLGraphBuilder::gru_with_options(self : MLGraphBuilder, input : MLOperand, weight : MLOperand, recurrent_weight : MLOperand, steps : Int, hidden_size : Int, options : MLGruOptions) -> Array[MLOperand] =
+///|
+pub extern "js" fn MLGraphBuilder::gru_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  weight : MLOperand,
+  recurrent_weight : MLOperand,
+  steps : Int,
+  hidden_size : Int,
+  options : MLGruOptions,
+) -> Array[MLOperand] =
   #| (self, input, weight, recurrent_weight, steps, hidden_size, options) => self.gru(input, weight, recurrent_weight, steps, hidden_size, options)
 
-pub extern "js" fn MLGraphBuilder::gru_cell(self : MLGraphBuilder, input : MLOperand, weight : MLOperand, recurrent_weight : MLOperand, hidden_state : MLOperand, hidden_size : Int) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::gru_cell(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  weight : MLOperand,
+  recurrent_weight : MLOperand,
+  hidden_state : MLOperand,
+  hidden_size : Int,
+) -> MLOperand =
   #| (self, input, weight, recurrent_weight, hidden_state, hidden_size) => self.gruCell(input, weight, recurrent_weight, hidden_state, hidden_size)
 
-pub extern "js" fn MLGraphBuilder::gru_cell_with_options(self : MLGraphBuilder, input : MLOperand, weight : MLOperand, recurrent_weight : MLOperand, hidden_state : MLOperand, hidden_size : Int, options : MLGruCellOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::gru_cell_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  weight : MLOperand,
+  recurrent_weight : MLOperand,
+  hidden_state : MLOperand,
+  hidden_size : Int,
+  options : MLGruCellOptions,
+) -> MLOperand =
   #| (self, input, weight, recurrent_weight, hidden_state, hidden_size, options) => self.gruCell(input, weight, recurrent_weight, hidden_state, hidden_size, options)
 
-pub extern "js" fn MLGraphBuilder::hard_sigmoid(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::hard_sigmoid(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.hardSigmoid(input)
 
-pub extern "js" fn MLGraphBuilder::hard_sigmoid_with_options(self : MLGraphBuilder, input : MLOperand, options : MLHardSigmoidOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::hard_sigmoid_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLHardSigmoidOptions,
+) -> MLOperand =
   #| (self, input, options) => self.hardSigmoid(input, options)
 
-pub extern "js" fn MLGraphBuilder::hard_swish(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::hard_swish(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.hardSwish(input)
 
-pub extern "js" fn MLGraphBuilder::hard_swish_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::hard_swish_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.hardSwish(input, options)
 
-pub extern "js" fn MLGraphBuilder::instance_normalization(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::instance_normalization(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.instanceNormalization(input)
 
-pub extern "js" fn MLGraphBuilder::instance_normalization_with_options(self : MLGraphBuilder, input : MLOperand, options : MLInstanceNormalizationOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::instance_normalization_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLInstanceNormalizationOptions,
+) -> MLOperand =
   #| (self, input, options) => self.instanceNormalization(input, options)
 
-pub extern "js" fn MLGraphBuilder::layer_normalization(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::layer_normalization(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.layerNormalization(input)
 
-pub extern "js" fn MLGraphBuilder::layer_normalization_with_options(self : MLGraphBuilder, input : MLOperand, options : MLLayerNormalizationOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::layer_normalization_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLLayerNormalizationOptions,
+) -> MLOperand =
   #| (self, input, options) => self.layerNormalization(input, options)
 
-pub extern "js" fn MLGraphBuilder::leaky_relu(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::leaky_relu(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.leakyRelu(input)
 
-pub extern "js" fn MLGraphBuilder::leaky_relu_with_options(self : MLGraphBuilder, input : MLOperand, options : MLLeakyReluOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::leaky_relu_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLLeakyReluOptions,
+) -> MLOperand =
   #| (self, input, options) => self.leakyRelu(input, options)
 
-pub extern "js" fn MLGraphBuilder::linear(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::linear(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.linear(input)
 
-pub extern "js" fn MLGraphBuilder::linear_with_options(self : MLGraphBuilder, input : MLOperand, options : MLLinearOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::linear_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLLinearOptions,
+) -> MLOperand =
   #| (self, input, options) => self.linear(input, options)
 
-pub extern "js" fn MLGraphBuilder::lstm(self : MLGraphBuilder, input : MLOperand, weight : MLOperand, recurrent_weight : MLOperand, steps : Int, hidden_size : Int) -> Array[MLOperand] =
+///|
+pub extern "js" fn MLGraphBuilder::lstm(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  weight : MLOperand,
+  recurrent_weight : MLOperand,
+  steps : Int,
+  hidden_size : Int,
+) -> Array[MLOperand] =
   #| (self, input, weight, recurrent_weight, steps, hidden_size) => self.lstm(input, weight, recurrent_weight, steps, hidden_size)
 
-pub extern "js" fn MLGraphBuilder::lstm_with_options(self : MLGraphBuilder, input : MLOperand, weight : MLOperand, recurrent_weight : MLOperand, steps : Int, hidden_size : Int, options : MLLstmOptions) -> Array[MLOperand] =
+///|
+pub extern "js" fn MLGraphBuilder::lstm_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  weight : MLOperand,
+  recurrent_weight : MLOperand,
+  steps : Int,
+  hidden_size : Int,
+  options : MLLstmOptions,
+) -> Array[MLOperand] =
   #| (self, input, weight, recurrent_weight, steps, hidden_size, options) => self.lstm(input, weight, recurrent_weight, steps, hidden_size, options)
 
-pub extern "js" fn MLGraphBuilder::lstm_cell(self : MLGraphBuilder, input : MLOperand, weight : MLOperand, recurrent_weight : MLOperand, hidden_state : MLOperand, cell_state : MLOperand, hidden_size : Int) -> Array[MLOperand] =
+///|
+pub extern "js" fn MLGraphBuilder::lstm_cell(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  weight : MLOperand,
+  recurrent_weight : MLOperand,
+  hidden_state : MLOperand,
+  cell_state : MLOperand,
+  hidden_size : Int,
+) -> Array[MLOperand] =
   #| (self, input, weight, recurrent_weight, hidden_state, cell_state, hidden_size) => self.lstmCell(input, weight, recurrent_weight, hidden_state, cell_state, hidden_size)
 
-pub extern "js" fn MLGraphBuilder::lstm_cell_with_options(self : MLGraphBuilder, input : MLOperand, weight : MLOperand, recurrent_weight : MLOperand, hidden_state : MLOperand, cell_state : MLOperand, hidden_size : Int, options : MLLstmCellOptions) -> Array[MLOperand] =
+///|
+pub extern "js" fn MLGraphBuilder::lstm_cell_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  weight : MLOperand,
+  recurrent_weight : MLOperand,
+  hidden_state : MLOperand,
+  cell_state : MLOperand,
+  hidden_size : Int,
+  options : MLLstmCellOptions,
+) -> Array[MLOperand] =
   #| (self, input, weight, recurrent_weight, hidden_state, cell_state, hidden_size, options) => self.lstmCell(input, weight, recurrent_weight, hidden_state, cell_state, hidden_size, options)
 
-pub extern "js" fn MLGraphBuilder::matmul(self : MLGraphBuilder, a : MLOperand, b : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::matmul(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+) -> MLOperand =
   #| (self, a, b) => self.matmul(a, b)
 
-pub extern "js" fn MLGraphBuilder::matmul_with_options(self : MLGraphBuilder, a : MLOperand, b : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::matmul_with_options(
+  self : MLGraphBuilder,
+  a : MLOperand,
+  b : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, a, b, options) => self.matmul(a, b, options)
 
-pub extern "js" fn MLGraphBuilder::pad(self : MLGraphBuilder, input : MLOperand, beginning_padding : Array[Int], ending_padding : Array[Int]) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::pad(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  beginning_padding : Array[Int],
+  ending_padding : Array[Int],
+) -> MLOperand =
   #| (self, input, beginning_padding, ending_padding) => self.pad(input, beginning_padding, ending_padding)
 
-pub extern "js" fn MLGraphBuilder::pad_with_options(self : MLGraphBuilder, input : MLOperand, beginning_padding : Array[Int], ending_padding : Array[Int], options : MLPadOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::pad_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  beginning_padding : Array[Int],
+  ending_padding : Array[Int],
+  options : MLPadOptions,
+) -> MLOperand =
   #| (self, input, beginning_padding, ending_padding, options) => self.pad(input, beginning_padding, ending_padding, options)
 
-pub extern "js" fn MLGraphBuilder::average_pool2d(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::average_pool2d(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.averagePool2d(input)
 
-pub extern "js" fn MLGraphBuilder::average_pool2d_with_options(self : MLGraphBuilder, input : MLOperand, options : MLPool2dOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::average_pool2d_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLPool2dOptions,
+) -> MLOperand =
   #| (self, input, options) => self.averagePool2d(input, options)
 
-pub extern "js" fn MLGraphBuilder::l2_pool2d(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::l2_pool2d(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.l2Pool2d(input)
 
-pub extern "js" fn MLGraphBuilder::l2_pool2d_with_options(self : MLGraphBuilder, input : MLOperand, options : MLPool2dOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::l2_pool2d_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLPool2dOptions,
+) -> MLOperand =
   #| (self, input, options) => self.l2Pool2d(input, options)
 
-pub extern "js" fn MLGraphBuilder::max_pool2d(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::max_pool2d(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.maxPool2d(input)
 
-pub extern "js" fn MLGraphBuilder::max_pool2d_with_options(self : MLGraphBuilder, input : MLOperand, options : MLPool2dOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::max_pool2d_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLPool2dOptions,
+) -> MLOperand =
   #| (self, input, options) => self.maxPool2d(input, options)
 
-pub extern "js" fn MLGraphBuilder::prelu(self : MLGraphBuilder, input : MLOperand, slope : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::prelu(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  slope : MLOperand,
+) -> MLOperand =
   #| (self, input, slope) => self.prelu(input, slope)
 
-pub extern "js" fn MLGraphBuilder::prelu_with_options(self : MLGraphBuilder, input : MLOperand, slope : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::prelu_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  slope : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, slope, options) => self.prelu(input, slope, options)
 
-pub extern "js" fn MLGraphBuilder::reduce_l1(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_l1(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.reduceL1(input)
 
-pub extern "js" fn MLGraphBuilder::reduce_l1_with_options(self : MLGraphBuilder, input : MLOperand, options : MLReduceOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_l1_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLReduceOptions,
+) -> MLOperand =
   #| (self, input, options) => self.reduceL1(input, options)
 
-pub extern "js" fn MLGraphBuilder::reduce_l2(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_l2(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.reduceL2(input)
 
-pub extern "js" fn MLGraphBuilder::reduce_l2_with_options(self : MLGraphBuilder, input : MLOperand, options : MLReduceOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_l2_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLReduceOptions,
+) -> MLOperand =
   #| (self, input, options) => self.reduceL2(input, options)
 
-pub extern "js" fn MLGraphBuilder::reduce_log_sum(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_log_sum(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.reduceLogSum(input)
 
-pub extern "js" fn MLGraphBuilder::reduce_log_sum_with_options(self : MLGraphBuilder, input : MLOperand, options : MLReduceOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_log_sum_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLReduceOptions,
+) -> MLOperand =
   #| (self, input, options) => self.reduceLogSum(input, options)
 
-pub extern "js" fn MLGraphBuilder::reduce_log_sum_exp(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_log_sum_exp(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.reduceLogSumExp(input)
 
-pub extern "js" fn MLGraphBuilder::reduce_log_sum_exp_with_options(self : MLGraphBuilder, input : MLOperand, options : MLReduceOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_log_sum_exp_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLReduceOptions,
+) -> MLOperand =
   #| (self, input, options) => self.reduceLogSumExp(input, options)
 
-pub extern "js" fn MLGraphBuilder::reduce_max(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_max(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.reduceMax(input)
 
-pub extern "js" fn MLGraphBuilder::reduce_max_with_options(self : MLGraphBuilder, input : MLOperand, options : MLReduceOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_max_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLReduceOptions,
+) -> MLOperand =
   #| (self, input, options) => self.reduceMax(input, options)
 
-pub extern "js" fn MLGraphBuilder::reduce_mean(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_mean(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.reduceMean(input)
 
-pub extern "js" fn MLGraphBuilder::reduce_mean_with_options(self : MLGraphBuilder, input : MLOperand, options : MLReduceOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_mean_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLReduceOptions,
+) -> MLOperand =
   #| (self, input, options) => self.reduceMean(input, options)
 
-pub extern "js" fn MLGraphBuilder::reduce_min(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_min(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.reduceMin(input)
 
-pub extern "js" fn MLGraphBuilder::reduce_min_with_options(self : MLGraphBuilder, input : MLOperand, options : MLReduceOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_min_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLReduceOptions,
+) -> MLOperand =
   #| (self, input, options) => self.reduceMin(input, options)
 
-pub extern "js" fn MLGraphBuilder::reduce_product(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_product(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.reduceProduct(input)
 
-pub extern "js" fn MLGraphBuilder::reduce_product_with_options(self : MLGraphBuilder, input : MLOperand, options : MLReduceOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_product_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLReduceOptions,
+) -> MLOperand =
   #| (self, input, options) => self.reduceProduct(input, options)
 
-pub extern "js" fn MLGraphBuilder::reduce_sum(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_sum(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.reduceSum(input)
 
-pub extern "js" fn MLGraphBuilder::reduce_sum_with_options(self : MLGraphBuilder, input : MLOperand, options : MLReduceOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_sum_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLReduceOptions,
+) -> MLOperand =
   #| (self, input, options) => self.reduceSum(input, options)
 
-pub extern "js" fn MLGraphBuilder::reduce_sum_square(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_sum_square(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.reduceSumSquare(input)
 
-pub extern "js" fn MLGraphBuilder::reduce_sum_square_with_options(self : MLGraphBuilder, input : MLOperand, options : MLReduceOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reduce_sum_square_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLReduceOptions,
+) -> MLOperand =
   #| (self, input, options) => self.reduceSumSquare(input, options)
 
-pub extern "js" fn MLGraphBuilder::relu(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::relu(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.relu(input)
 
-pub extern "js" fn MLGraphBuilder::relu_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::relu_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.relu(input, options)
 
-pub extern "js" fn MLGraphBuilder::resample2d(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::resample2d(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.resample2d(input)
 
-pub extern "js" fn MLGraphBuilder::resample2d_with_options(self : MLGraphBuilder, input : MLOperand, options : MLResample2dOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::resample2d_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLResample2dOptions,
+) -> MLOperand =
   #| (self, input, options) => self.resample2d(input, options)
 
-pub extern "js" fn MLGraphBuilder::reshape(self : MLGraphBuilder, input : MLOperand, new_shape : Array[Int]) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reshape(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  new_shape : Array[Int],
+) -> MLOperand =
   #| (self, input, new_shape) => self.reshape(input, new_shape)
 
-pub extern "js" fn MLGraphBuilder::reshape_with_options(self : MLGraphBuilder, input : MLOperand, new_shape : Array[Int], options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reshape_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  new_shape : Array[Int],
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, new_shape, options) => self.reshape(input, new_shape, options)
 
-pub extern "js" fn MLGraphBuilder::reverse(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reverse(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.reverse(input)
 
-pub extern "js" fn MLGraphBuilder::reverse_with_options(self : MLGraphBuilder, input : MLOperand, options : MLReverseOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::reverse_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLReverseOptions,
+) -> MLOperand =
   #| (self, input, options) => self.reverse(input, options)
 
-pub extern "js" fn MLGraphBuilder::scatter_elements(self : MLGraphBuilder, input : MLOperand, indices : MLOperand, updates : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::scatter_elements(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  indices : MLOperand,
+  updates : MLOperand,
+) -> MLOperand =
   #| (self, input, indices, updates) => self.scatterElements(input, indices, updates)
 
-pub extern "js" fn MLGraphBuilder::scatter_elements_with_options(self : MLGraphBuilder, input : MLOperand, indices : MLOperand, updates : MLOperand, options : MLScatterOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::scatter_elements_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  indices : MLOperand,
+  updates : MLOperand,
+  options : MLScatterOptions,
+) -> MLOperand =
   #| (self, input, indices, updates, options) => self.scatterElements(input, indices, updates, options)
 
-pub extern "js" fn MLGraphBuilder::scatter_n_d(self : MLGraphBuilder, input : MLOperand, indices : MLOperand, updates : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::scatter_n_d(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  indices : MLOperand,
+  updates : MLOperand,
+) -> MLOperand =
   #| (self, input, indices, updates) => self.scatterND(input, indices, updates)
 
-pub extern "js" fn MLGraphBuilder::scatter_n_d_with_options(self : MLGraphBuilder, input : MLOperand, indices : MLOperand, updates : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::scatter_n_d_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  indices : MLOperand,
+  updates : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, indices, updates, options) => self.scatterND(input, indices, updates, options)
 
-pub extern "js" fn MLGraphBuilder::sigmoid(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::sigmoid(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.sigmoid(input)
 
-pub extern "js" fn MLGraphBuilder::sigmoid_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::sigmoid_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.sigmoid(input, options)
 
-pub extern "js" fn MLGraphBuilder::slice(self : MLGraphBuilder, input : MLOperand, starts : Array[Int], sizes : Array[Int]) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::slice(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  starts : Array[Int],
+  sizes : Array[Int],
+) -> MLOperand =
   #| (self, input, starts, sizes) => self.slice(input, starts, sizes)
 
-pub extern "js" fn MLGraphBuilder::slice_with_options(self : MLGraphBuilder, input : MLOperand, starts : Array[Int], sizes : Array[Int], options : MLSliceOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::slice_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  starts : Array[Int],
+  sizes : Array[Int],
+  options : MLSliceOptions,
+) -> MLOperand =
   #| (self, input, starts, sizes, options) => self.slice(input, starts, sizes, options)
 
-pub extern "js" fn MLGraphBuilder::softmax(self : MLGraphBuilder, input : MLOperand, axis : Int) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::softmax(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  axis : Int,
+) -> MLOperand =
   #| (self, input, axis) => self.softmax(input, axis)
 
-pub extern "js" fn MLGraphBuilder::softmax_with_options(self : MLGraphBuilder, input : MLOperand, axis : Int, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::softmax_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  axis : Int,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, axis, options) => self.softmax(input, axis, options)
 
-pub extern "js" fn MLGraphBuilder::softplus(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::softplus(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.softplus(input)
 
-pub extern "js" fn MLGraphBuilder::softplus_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::softplus_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.softplus(input, options)
 
-pub extern "js" fn MLGraphBuilder::softsign(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::softsign(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.softsign(input)
 
-pub extern "js" fn MLGraphBuilder::softsign_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::softsign_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.softsign(input, options)
 
-pub extern "js" fn MLGraphBuilder::split(self : MLGraphBuilder, input : MLOperand, splits : JsValue) -> Array[MLOperand] =
+///|
+pub extern "js" fn MLGraphBuilder::split(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  splits : JsValue,
+) -> Array[MLOperand] =
   #| (self, input, splits) => self.split(input, splits)
 
-pub extern "js" fn MLGraphBuilder::split_with_options(self : MLGraphBuilder, input : MLOperand, splits : JsValue, options : MLSplitOptions) -> Array[MLOperand] =
+///|
+pub extern "js" fn MLGraphBuilder::split_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  splits : JsValue,
+  options : MLSplitOptions,
+) -> Array[MLOperand] =
   #| (self, input, splits, options) => self.split(input, splits, options)
 
-pub extern "js" fn MLGraphBuilder::tanh(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::tanh(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.tanh(input)
 
-pub extern "js" fn MLGraphBuilder::tanh_with_options(self : MLGraphBuilder, input : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::tanh_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, options) => self.tanh(input, options)
 
-pub extern "js" fn MLGraphBuilder::tile(self : MLGraphBuilder, input : MLOperand, repetitions : Array[Int]) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::tile(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  repetitions : Array[Int],
+) -> MLOperand =
   #| (self, input, repetitions) => self.tile(input, repetitions)
 
-pub extern "js" fn MLGraphBuilder::tile_with_options(self : MLGraphBuilder, input : MLOperand, repetitions : Array[Int], options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::tile_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  repetitions : Array[Int],
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, input, repetitions, options) => self.tile(input, repetitions, options)
 
-pub extern "js" fn MLGraphBuilder::transpose(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::transpose(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.transpose(input)
 
-pub extern "js" fn MLGraphBuilder::transpose_with_options(self : MLGraphBuilder, input : MLOperand, options : MLTransposeOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::transpose_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLTransposeOptions,
+) -> MLOperand =
   #| (self, input, options) => self.transpose(input, options)
 
-pub extern "js" fn MLGraphBuilder::triangular(self : MLGraphBuilder, input : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::triangular(
+  self : MLGraphBuilder,
+  input : MLOperand,
+) -> MLOperand =
   #| (self, input) => self.triangular(input)
 
-pub extern "js" fn MLGraphBuilder::triangular_with_options(self : MLGraphBuilder, input : MLOperand, options : MLTriangularOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::triangular_with_options(
+  self : MLGraphBuilder,
+  input : MLOperand,
+  options : MLTriangularOptions,
+) -> MLOperand =
   #| (self, input, options) => self.triangular(input, options)
 
-pub extern "js" fn MLGraphBuilder::where_(self : MLGraphBuilder, condition : MLOperand, true_value : MLOperand, false_value : MLOperand) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::where_(
+  self : MLGraphBuilder,
+  condition : MLOperand,
+  true_value : MLOperand,
+  false_value : MLOperand,
+) -> MLOperand =
   #| (self, condition, true_value, false_value) => self.where(condition, true_value, false_value)
 
-pub extern "js" fn MLGraphBuilder::where__with_options(self : MLGraphBuilder, condition : MLOperand, true_value : MLOperand, false_value : MLOperand, options : MLOperatorOptions) -> MLOperand =
+///|
+pub extern "js" fn MLGraphBuilder::where__with_options(
+  self : MLGraphBuilder,
+  condition : MLOperand,
+  true_value : MLOperand,
+  false_value : MLOperand,
+  options : MLOperatorOptions,
+) -> MLOperand =
   #| (self, condition, true_value, false_value, options) => self.where(condition, true_value, false_value, options)
-

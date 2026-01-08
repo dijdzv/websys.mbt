@@ -8,6 +8,7 @@ pub(all) enum DevicePostureType {
   Folded
 }
 
+///|
 /// Convert to string value
 pub fn DevicePostureType::to_string(self : DevicePostureType) -> String {
   match self {
@@ -16,6 +17,7 @@ pub fn DevicePostureType::to_string(self : DevicePostureType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn DevicePostureType::from_string(s : String) -> DevicePostureType? {
   match s {
@@ -29,15 +31,25 @@ pub fn DevicePostureType::from_string(s : String) -> DevicePostureType? {
 /// DevicePosture interface
 pub type DevicePosture
 
+///|
 pub extern "js" fn DevicePosture::to_js_value(self : DevicePosture) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn DevicePosture::get_type(self : DevicePosture) -> DevicePostureType =
+///|
+pub extern "js" fn DevicePosture::get_type(
+  self : DevicePosture,
+) -> DevicePostureType =
   #| (self) => self.type
 
-pub extern "js" fn DevicePosture::get_onchange(self : DevicePosture) -> EventHandler =
+///|
+pub extern "js" fn DevicePosture::get_onchange(
+  self : DevicePosture,
+) -> EventHandler =
   #| (self) => self.onchange
 
-pub extern "js" fn DevicePosture::set_onchange(self : DevicePosture, value : EventHandler) -> Unit =
+///|
+pub extern "js" fn DevicePosture::set_onchange(
+  self : DevicePosture,
+  value : EventHandler,
+) -> Unit =
   #| (self, value) => { self.onchange = value }
-

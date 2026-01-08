@@ -7,15 +7,17 @@ pub struct ContentVisibilityAutoStateChangeEventInit {
   skipped : Bool?
 }
 
+///|
 /// Create a new ContentVisibilityAutoStateChangeEventInit with default values
 pub fn ContentVisibilityAutoStateChangeEventInit::default() -> ContentVisibilityAutoStateChangeEventInit {
-  ContentVisibilityAutoStateChangeEventInit::{
-    skipped: None,
-  }
+  ContentVisibilityAutoStateChangeEventInit::{ skipped: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ContentVisibilityAutoStateChangeEventInit::to_js(self : ContentVisibilityAutoStateChangeEventInit) -> JsValue =
+pub extern "js" fn ContentVisibilityAutoStateChangeEventInit::to_js(
+  self : ContentVisibilityAutoStateChangeEventInit,
+) -> JsValue =
   #| (self) => ({
   #|   skipped: self.skipped
   #| })
@@ -24,12 +26,21 @@ pub extern "js" fn ContentVisibilityAutoStateChangeEventInit::to_js(self : Conte
 /// ContentVisibilityAutoStateChangeEvent interface
 pub type ContentVisibilityAutoStateChangeEvent
 
-pub extern "js" fn ContentVisibilityAutoStateChangeEvent::to_js_value(self : ContentVisibilityAutoStateChangeEvent) -> JsValue =
+///|
+pub extern "js" fn ContentVisibilityAutoStateChangeEvent::to_js_value(
+  self : ContentVisibilityAutoStateChangeEvent,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ContentVisibilityAutoStateChangeEvent::new(type_ : String, event_init_dict : ContentVisibilityAutoStateChangeEventInit) -> ContentVisibilityAutoStateChangeEvent =
+///|
+pub extern "js" fn ContentVisibilityAutoStateChangeEvent::new(
+  type_ : String,
+  event_init_dict : ContentVisibilityAutoStateChangeEventInit,
+) -> ContentVisibilityAutoStateChangeEvent =
   #| (type_, event_init_dict) => new ContentVisibilityAutoStateChangeEvent(type_, event_init_dict)
 
-pub extern "js" fn ContentVisibilityAutoStateChangeEvent::get_skipped(self : ContentVisibilityAutoStateChangeEvent) -> Bool =
+///|
+pub extern "js" fn ContentVisibilityAutoStateChangeEvent::get_skipped(
+  self : ContentVisibilityAutoStateChangeEvent,
+) -> Bool =
   #| (self) => self.skipped
-

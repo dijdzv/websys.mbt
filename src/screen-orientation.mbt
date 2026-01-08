@@ -14,6 +14,7 @@ pub(all) enum OrientationLockType {
   LandscapeSecondary
 }
 
+///|
 /// Convert to string value
 pub fn OrientationLockType::to_string(self : OrientationLockType) -> String {
   match self {
@@ -28,6 +29,7 @@ pub fn OrientationLockType::to_string(self : OrientationLockType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn OrientationLockType::from_string(s : String) -> OrientationLockType? {
   match s {
@@ -52,6 +54,7 @@ pub(all) enum OrientationType {
   LandscapeSecondary
 }
 
+///|
 /// Convert to string value
 pub fn OrientationType::to_string(self : OrientationType) -> String {
   match self {
@@ -62,6 +65,7 @@ pub fn OrientationType::to_string(self : OrientationType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn OrientationType::from_string(s : String) -> OrientationType? {
   match s {
@@ -77,24 +81,44 @@ pub fn OrientationType::from_string(s : String) -> OrientationType? {
 /// ScreenOrientation interface
 pub type ScreenOrientation
 
-pub extern "js" fn ScreenOrientation::to_js_value(self : ScreenOrientation) -> JsValue =
+///|
+pub extern "js" fn ScreenOrientation::to_js_value(
+  self : ScreenOrientation,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ScreenOrientation::lock(self : ScreenOrientation, orientation : OrientationLockType) -> Promise[Unit] =
+///|
+pub extern "js" fn ScreenOrientation::lock(
+  self : ScreenOrientation,
+  orientation : OrientationLockType,
+) -> Promise[Unit] =
   #| (self, orientation) => self.lock(['any', 'natural', 'landscape', 'portrait', 'portrait-primary', 'portrait-secondary', 'landscape-primary', 'landscape-secondary'][orientation])
 
+///|
 pub extern "js" fn ScreenOrientation::unlock(self : ScreenOrientation) -> Unit =
   #| (self) => self.unlock()
 
-pub extern "js" fn ScreenOrientation::get_type(self : ScreenOrientation) -> OrientationType =
+///|
+pub extern "js" fn ScreenOrientation::get_type(
+  self : ScreenOrientation,
+) -> OrientationType =
   #| (self) => self.type
 
-pub extern "js" fn ScreenOrientation::get_angle(self : ScreenOrientation) -> Int =
+///|
+pub extern "js" fn ScreenOrientation::get_angle(
+  self : ScreenOrientation,
+) -> Int =
   #| (self) => self.angle
 
-pub extern "js" fn ScreenOrientation::get_onchange(self : ScreenOrientation) -> EventHandler =
+///|
+pub extern "js" fn ScreenOrientation::get_onchange(
+  self : ScreenOrientation,
+) -> EventHandler =
   #| (self) => self.onchange
 
-pub extern "js" fn ScreenOrientation::set_onchange(self : ScreenOrientation, value : EventHandler) -> Unit =
+///|
+pub extern "js" fn ScreenOrientation::set_onchange(
+  self : ScreenOrientation,
+  value : EventHandler,
+) -> Unit =
   #| (self, value) => { self.onchange = value }
-

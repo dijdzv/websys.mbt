@@ -11,6 +11,7 @@ pub(all) enum ContentCategory {
   Audio
 }
 
+///|
 /// Convert to string value
 pub fn ContentCategory::to_string(self : ContentCategory) -> String {
   match self {
@@ -22,6 +23,7 @@ pub fn ContentCategory::to_string(self : ContentCategory) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn ContentCategory::from_string(s : String) -> ContentCategory? {
   match s {
@@ -45,6 +47,7 @@ pub struct ContentDescription {
   url : String
 }
 
+///|
 /// Create a new ContentDescription with default values
 pub fn ContentDescription::default() -> ContentDescription {
   ContentDescription::{
@@ -57,13 +60,16 @@ pub fn ContentDescription::default() -> ContentDescription {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ContentDescription::to_js(self : ContentDescription) -> JsValue =
+pub extern "js" fn ContentDescription::to_js(
+  self : ContentDescription,
+) -> JsValue =
   #| (self) => ({
   #|   id: self.id,
   #|   title: self.title,
   #|   description: self.description,
-  #|   category: self.category,
+  #|   category: ['', 'homepage', 'article', 'video', 'audio'][self.category],
   #|   icons: self.icons,
   #|   url: self.url
   #| })
@@ -74,15 +80,17 @@ pub struct ContentIndexEventInit {
   id : String
 }
 
+///|
 /// Create a new ContentIndexEventInit with default values
 pub fn ContentIndexEventInit::default() -> ContentIndexEventInit {
-  ContentIndexEventInit::{
-    id: "",
-  }
+  ContentIndexEventInit::{ id: "" }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ContentIndexEventInit::to_js(self : ContentIndexEventInit) -> JsValue =
+pub extern "js" fn ContentIndexEventInit::to_js(
+  self : ContentIndexEventInit,
+) -> JsValue =
   #| (self) => ({
   #|   id: self.id
   #| })
@@ -91,28 +99,49 @@ pub extern "js" fn ContentIndexEventInit::to_js(self : ContentIndexEventInit) ->
 /// ContentIndex interface
 pub type ContentIndex
 
+///|
 pub extern "js" fn ContentIndex::to_js_value(self : ContentIndex) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ContentIndex::add(self : ContentIndex, description : ContentDescription) -> Promise[Unit] =
+///|
+pub extern "js" fn ContentIndex::add(
+  self : ContentIndex,
+  description : ContentDescription,
+) -> Promise[Unit] =
   #| (self, description) => self.add(description)
 
-pub extern "js" fn ContentIndex::delete(self : ContentIndex, id : String) -> Promise[Unit] =
+///|
+pub extern "js" fn ContentIndex::delete(
+  self : ContentIndex,
+  id : String,
+) -> Promise[Unit] =
   #| (self, id) => self.delete(id)
 
-pub extern "js" fn ContentIndex::get_all(self : ContentIndex) -> Promise[Array[ContentDescription]] =
+///|
+pub extern "js" fn ContentIndex::get_all(
+  self : ContentIndex,
+) -> Promise[Array[ContentDescription]] =
   #| (self) => self.getAll()
 
 ///|
 /// ContentIndexEvent interface
 pub type ContentIndexEvent
 
-pub extern "js" fn ContentIndexEvent::to_js_value(self : ContentIndexEvent) -> JsValue =
+///|
+pub extern "js" fn ContentIndexEvent::to_js_value(
+  self : ContentIndexEvent,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ContentIndexEvent::new(type_ : String, init_ : ContentIndexEventInit) -> ContentIndexEvent =
+///|
+pub extern "js" fn ContentIndexEvent::new(
+  type_ : String,
+  init_ : ContentIndexEventInit,
+) -> ContentIndexEvent =
   #| (type_, init_) => new ContentIndexEvent(type_, init_)
 
-pub extern "js" fn ContentIndexEvent::get_id(self : ContentIndexEvent) -> String =
+///|
+pub extern "js" fn ContentIndexEvent::get_id(
+  self : ContentIndexEvent,
+) -> String =
   #| (self) => self.id
-

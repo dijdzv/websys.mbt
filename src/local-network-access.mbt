@@ -9,6 +9,7 @@ pub(all) enum IPAddressSpace {
   Loopback
 }
 
+///|
 /// Convert to string value
 pub fn IPAddressSpace::to_string(self : IPAddressSpace) -> String {
   match self {
@@ -18,6 +19,7 @@ pub fn IPAddressSpace::to_string(self : IPAddressSpace) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn IPAddressSpace::from_string(s : String) -> IPAddressSpace? {
   match s {
@@ -27,4 +29,3 @@ pub fn IPAddressSpace::from_string(s : String) -> IPAddressSpace? {
     _ => None
   }
 }
-

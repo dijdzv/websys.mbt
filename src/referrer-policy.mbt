@@ -15,6 +15,7 @@ pub(all) enum ReferrerPolicy {
   UnsafeUrl
 }
 
+///|
 /// Convert to string value
 pub fn ReferrerPolicy::to_string(self : ReferrerPolicy) -> String {
   match self {
@@ -30,6 +31,7 @@ pub fn ReferrerPolicy::to_string(self : ReferrerPolicy) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn ReferrerPolicy::from_string(s : String) -> ReferrerPolicy? {
   match s {
@@ -45,4 +47,3 @@ pub fn ReferrerPolicy::from_string(s : String) -> ReferrerPolicy? {
     _ => None
   }
 }
-

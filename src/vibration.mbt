@@ -5,3 +5,14 @@
 /// VibratePattern typedef
 pub type VibratePattern = JsValue
 
+///|
+/// Create VibratePattern from Int
+pub extern "js" fn VibratePattern::from_int(v : Int) -> VibratePattern =
+  #| (v) => v
+
+///|
+/// Create VibratePattern from Array[Int]
+pub extern "js" fn VibratePattern::from_array_of_int(
+  v : Array[Int],
+) -> VibratePattern =
+  #| (v) => v

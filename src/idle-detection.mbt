@@ -8,6 +8,7 @@ pub(all) enum UserIdleState {
   Idle
 }
 
+///|
 /// Convert to string value
 pub fn UserIdleState::to_string(self : UserIdleState) -> String {
   match self {
@@ -16,6 +17,7 @@ pub fn UserIdleState::to_string(self : UserIdleState) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn UserIdleState::from_string(s : String) -> UserIdleState? {
   match s {
@@ -32,6 +34,7 @@ pub(all) enum ScreenIdleState {
   Unlocked
 }
 
+///|
 /// Convert to string value
 pub fn ScreenIdleState::to_string(self : ScreenIdleState) -> String {
   match self {
@@ -40,6 +43,7 @@ pub fn ScreenIdleState::to_string(self : ScreenIdleState) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn ScreenIdleState::from_string(s : String) -> ScreenIdleState? {
   match s {
@@ -56,14 +60,13 @@ pub struct IdleOptions {
   signal : AbortSignal?
 }
 
+///|
 /// Create a new IdleOptions with default values
 pub fn IdleOptions::default() -> IdleOptions {
-  IdleOptions::{
-    threshold: None,
-    signal: None,
-  }
+  IdleOptions::{ threshold: None, signal: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn IdleOptions::to_js(self : IdleOptions) -> JsValue =
   #| (self) => ({
@@ -75,30 +78,52 @@ pub extern "js" fn IdleOptions::to_js(self : IdleOptions) -> JsValue =
 /// IdleDetector interface
 pub type IdleDetector
 
+///|
 pub extern "js" fn IdleDetector::to_js_value(self : IdleDetector) -> JsValue =
   #| (self) => self
 
+///|
 pub extern "js" fn IdleDetector::new() -> IdleDetector =
   #| () => new IdleDetector()
 
-pub extern "js" fn IdleDetector::get_user_state(self : IdleDetector) -> UserIdleState? =
+///|
+pub extern "js" fn IdleDetector::get_user_state(
+  self : IdleDetector,
+) -> UserIdleState? =
   #| (self) => self.userState
 
-pub extern "js" fn IdleDetector::get_screen_state(self : IdleDetector) -> ScreenIdleState? =
+///|
+pub extern "js" fn IdleDetector::get_screen_state(
+  self : IdleDetector,
+) -> ScreenIdleState? =
   #| (self) => self.screenState
 
-pub extern "js" fn IdleDetector::get_onchange(self : IdleDetector) -> EventHandler =
+///|
+pub extern "js" fn IdleDetector::get_onchange(
+  self : IdleDetector,
+) -> EventHandler =
   #| (self) => self.onchange
 
-pub extern "js" fn IdleDetector::set_onchange(self : IdleDetector, value : EventHandler) -> Unit =
+///|
+pub extern "js" fn IdleDetector::set_onchange(
+  self : IdleDetector,
+  value : EventHandler,
+) -> Unit =
   #| (self, value) => { self.onchange = value }
 
-pub extern "js" fn IdleDetector::request_permission() -> Promise[PermissionState] =
+///|
+pub extern "js" fn IdleDetector::request_permission() -> Promise[
+  PermissionState,
+] =
   #| () => IdleDetector.requestPermission()
 
+///|
 pub extern "js" fn IdleDetector::start(self : IdleDetector) -> Promise[Unit] =
   #| (self) => self.start()
 
-pub extern "js" fn IdleDetector::start_with_options(self : IdleDetector, options : IdleOptions) -> Promise[Unit] =
+///|
+pub extern "js" fn IdleDetector::start_with_options(
+  self : IdleDetector,
+  options : IdleOptions,
+) -> Promise[Unit] =
   #| (self, options) => self.start(options)
-

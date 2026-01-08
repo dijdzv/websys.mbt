@@ -8,6 +8,7 @@ pub(all) enum AacBitstreamFormat {
   Adts
 }
 
+///|
 /// Convert to string value
 pub fn AacBitstreamFormat::to_string(self : AacBitstreamFormat) -> String {
   match self {
@@ -16,6 +17,7 @@ pub fn AacBitstreamFormat::to_string(self : AacBitstreamFormat) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn AacBitstreamFormat::from_string(s : String) -> AacBitstreamFormat? {
   match s {
@@ -38,6 +40,7 @@ pub struct AudioEncoderConfig {
   bitrateMode : BitrateMode?
 }
 
+///|
 /// Create a new AudioEncoderConfig with default values
 pub fn AudioEncoderConfig::default() -> AudioEncoderConfig {
   AudioEncoderConfig::{
@@ -52,8 +55,11 @@ pub fn AudioEncoderConfig::default() -> AudioEncoderConfig {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn AudioEncoderConfig::to_js(self : AudioEncoderConfig) -> JsValue =
+pub extern "js" fn AudioEncoderConfig::to_js(
+  self : AudioEncoderConfig,
+) -> JsValue =
   #| (self) => ({
   #|   aac: self.aac,
   #|   flac: self.flac,
@@ -62,7 +68,7 @@ pub extern "js" fn AudioEncoderConfig::to_js(self : AudioEncoderConfig) -> JsVal
   #|   sampleRate: self.sampleRate,
   #|   numberOfChannels: self.numberOfChannels,
   #|   bitrate: self.bitrate,
-  #|   bitrateMode: self.bitrateMode
+  #|   bitrateMode: ['constant', 'variable'][self.bitrateMode]
   #| })
 
 ///|
@@ -71,16 +77,15 @@ pub struct AacEncoderConfig {
   format : AacBitstreamFormat?
 }
 
+///|
 /// Create a new AacEncoderConfig with default values
 pub fn AacEncoderConfig::default() -> AacEncoderConfig {
-  AacEncoderConfig::{
-    format: None,
-  }
+  AacEncoderConfig::{ format: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn AacEncoderConfig::to_js(self : AacEncoderConfig) -> JsValue =
   #| (self) => ({
-  #|   format: self.format
+  #|   format: ['aac', 'adts'][self.format]
   #| })
-

@@ -5,12 +5,20 @@
 /// CanvasCaptureMediaStreamTrack interface
 pub type CanvasCaptureMediaStreamTrack
 
-pub extern "js" fn CanvasCaptureMediaStreamTrack::to_js_value(self : CanvasCaptureMediaStreamTrack) -> JsValue =
+///|
+pub extern "js" fn CanvasCaptureMediaStreamTrack::to_js_value(
+  self : CanvasCaptureMediaStreamTrack,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn CanvasCaptureMediaStreamTrack::get_canvas(self : CanvasCaptureMediaStreamTrack) -> HTMLCanvasElement =
+///|
+pub extern "js" fn CanvasCaptureMediaStreamTrack::get_canvas(
+  self : CanvasCaptureMediaStreamTrack,
+) -> HTMLCanvasElement =
   #| (self) => self.canvas
 
-pub extern "js" fn CanvasCaptureMediaStreamTrack::request_frame(self : CanvasCaptureMediaStreamTrack) -> Unit =
+///|
+pub extern "js" fn CanvasCaptureMediaStreamTrack::request_frame(
+  self : CanvasCaptureMediaStreamTrack,
+) -> Unit =
   #| (self) => self.requestFrame()
-

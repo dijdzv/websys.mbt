@@ -9,6 +9,7 @@ pub(all) enum RemotePlaybackState {
   Disconnected
 }
 
+///|
 /// Convert to string value
 pub fn RemotePlaybackState::to_string(self : RemotePlaybackState) -> String {
   match self {
@@ -18,6 +19,7 @@ pub fn RemotePlaybackState::to_string(self : RemotePlaybackState) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn RemotePlaybackState::from_string(s : String) -> RemotePlaybackState? {
   match s {
@@ -28,50 +30,94 @@ pub fn RemotePlaybackState::from_string(s : String) -> RemotePlaybackState? {
   }
 }
 
+///|
 /// RemotePlaybackAvailabilityCallback callback interface
 pub type RemotePlaybackAvailabilityCallback
 
+///|
 /// Create RemotePlaybackAvailabilityCallback from a MoonBit function
-pub extern "js" fn RemotePlaybackAvailabilityCallback::from_fn(handler : (Bool) -> Unit) -> RemotePlaybackAvailabilityCallback =
+pub extern "js" fn RemotePlaybackAvailabilityCallback::from_fn(
+  handler : (Bool) -> Unit,
+) -> RemotePlaybackAvailabilityCallback =
   #| (handler) => handler
 
 ///|
 /// RemotePlayback interface
 pub type RemotePlayback
 
-pub extern "js" fn RemotePlayback::to_js_value(self : RemotePlayback) -> JsValue =
+///|
+pub extern "js" fn RemotePlayback::to_js_value(
+  self : RemotePlayback,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn RemotePlayback::watch_availability(self : RemotePlayback, callback : RemotePlaybackAvailabilityCallback) -> Promise[Int] =
+///|
+pub extern "js" fn RemotePlayback::watch_availability(
+  self : RemotePlayback,
+  callback : RemotePlaybackAvailabilityCallback,
+) -> Promise[Int] =
   #| (self, callback) => self.watchAvailability(callback)
 
-pub extern "js" fn RemotePlayback::cancel_watch_availability(self : RemotePlayback) -> Promise[Unit] =
+///|
+pub extern "js" fn RemotePlayback::cancel_watch_availability(
+  self : RemotePlayback,
+) -> Promise[Unit] =
   #| (self) => self.cancelWatchAvailability()
 
-pub extern "js" fn RemotePlayback::cancel_watch_availability_with_id(self : RemotePlayback, id : Int) -> Promise[Unit] =
+///|
+pub extern "js" fn RemotePlayback::cancel_watch_availability_with_id(
+  self : RemotePlayback,
+  id : Int,
+) -> Promise[Unit] =
   #| (self, id) => self.cancelWatchAvailability(id)
 
-pub extern "js" fn RemotePlayback::get_state(self : RemotePlayback) -> RemotePlaybackState =
+///|
+pub extern "js" fn RemotePlayback::get_state(
+  self : RemotePlayback,
+) -> RemotePlaybackState =
   #| (self) => self.state
 
-pub extern "js" fn RemotePlayback::get_onconnecting(self : RemotePlayback) -> EventHandler =
+///|
+pub extern "js" fn RemotePlayback::get_onconnecting(
+  self : RemotePlayback,
+) -> EventHandler =
   #| (self) => self.onconnecting
 
-pub extern "js" fn RemotePlayback::set_onconnecting(self : RemotePlayback, value : EventHandler) -> Unit =
+///|
+pub extern "js" fn RemotePlayback::set_onconnecting(
+  self : RemotePlayback,
+  value : EventHandler,
+) -> Unit =
   #| (self, value) => { self.onconnecting = value }
 
-pub extern "js" fn RemotePlayback::get_onconnect(self : RemotePlayback) -> EventHandler =
+///|
+pub extern "js" fn RemotePlayback::get_onconnect(
+  self : RemotePlayback,
+) -> EventHandler =
   #| (self) => self.onconnect
 
-pub extern "js" fn RemotePlayback::set_onconnect(self : RemotePlayback, value : EventHandler) -> Unit =
+///|
+pub extern "js" fn RemotePlayback::set_onconnect(
+  self : RemotePlayback,
+  value : EventHandler,
+) -> Unit =
   #| (self, value) => { self.onconnect = value }
 
-pub extern "js" fn RemotePlayback::get_ondisconnect(self : RemotePlayback) -> EventHandler =
+///|
+pub extern "js" fn RemotePlayback::get_ondisconnect(
+  self : RemotePlayback,
+) -> EventHandler =
   #| (self) => self.ondisconnect
 
-pub extern "js" fn RemotePlayback::set_ondisconnect(self : RemotePlayback, value : EventHandler) -> Unit =
+///|
+pub extern "js" fn RemotePlayback::set_ondisconnect(
+  self : RemotePlayback,
+  value : EventHandler,
+) -> Unit =
   #| (self, value) => { self.ondisconnect = value }
 
-pub extern "js" fn RemotePlayback::prompt(self : RemotePlayback) -> Promise[Unit] =
+///|
+pub extern "js" fn RemotePlayback::prompt(
+  self : RemotePlayback,
+) -> Promise[Unit] =
   #| (self) => self.prompt()
-

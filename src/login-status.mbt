@@ -8,6 +8,7 @@ pub(all) enum LoginStatus {
   LoggedOut
 }
 
+///|
 /// Convert to string value
 pub fn LoginStatus::to_string(self : LoginStatus) -> String {
   match self {
@@ -16,6 +17,7 @@ pub fn LoginStatus::to_string(self : LoginStatus) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn LoginStatus::from_string(s : String) -> LoginStatus? {
   match s {
@@ -29,9 +31,15 @@ pub fn LoginStatus::from_string(s : String) -> LoginStatus? {
 /// NavigatorLogin interface
 pub type NavigatorLogin
 
-pub extern "js" fn NavigatorLogin::to_js_value(self : NavigatorLogin) -> JsValue =
+///|
+pub extern "js" fn NavigatorLogin::to_js_value(
+  self : NavigatorLogin,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn NavigatorLogin::set_status(self : NavigatorLogin, status : LoginStatus) -> Promise[Unit] =
+///|
+pub extern "js" fn NavigatorLogin::set_status(
+  self : NavigatorLogin,
+  status : LoginStatus,
+) -> Promise[Unit] =
   #| (self, status) => self.setStatus(['logged-in', 'logged-out'][status])
-

@@ -6,6 +6,20 @@
 pub type ConstrainPoint2D = JsValue
 
 ///|
+/// Create ConstrainPoint2D from Array[Point2D]
+pub extern "js" fn ConstrainPoint2D::from_array_of_point2_d(
+  v : Array[Point2D],
+) -> ConstrainPoint2D =
+  #| (v) => v
+
+///|
+/// Create ConstrainPoint2D from ConstrainPoint2DParameters
+pub extern "js" fn ConstrainPoint2D::from_constrain_point2_d_parameters(
+  v : ConstrainPoint2DParameters,
+) -> ConstrainPoint2D =
+  #| (v) => v
+
+///|
 /// RedEyeReduction enum
 pub(all) enum RedEyeReduction {
   Never
@@ -13,6 +27,7 @@ pub(all) enum RedEyeReduction {
   Controllable
 }
 
+///|
 /// Convert to string value
 pub fn RedEyeReduction::to_string(self : RedEyeReduction) -> String {
   match self {
@@ -22,6 +37,7 @@ pub fn RedEyeReduction::to_string(self : RedEyeReduction) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn RedEyeReduction::from_string(s : String) -> RedEyeReduction? {
   match s {
@@ -40,6 +56,7 @@ pub(all) enum FillLightMode {
   Flash
 }
 
+///|
 /// Convert to string value
 pub fn FillLightMode::to_string(self : FillLightMode) -> String {
   match self {
@@ -49,6 +66,7 @@ pub fn FillLightMode::to_string(self : FillLightMode) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn FillLightMode::from_string(s : String) -> FillLightMode? {
   match s {
@@ -68,6 +86,7 @@ pub(all) enum MeteringMode {
   Continuous
 }
 
+///|
 /// Convert to string value
 pub fn MeteringMode::to_string(self : MeteringMode) -> String {
   match self {
@@ -78,6 +97,7 @@ pub fn MeteringMode::to_string(self : MeteringMode) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn MeteringMode::from_string(s : String) -> MeteringMode? {
   match s {
@@ -98,6 +118,7 @@ pub struct PhotoCapabilities {
   fillLightMode : Array[FillLightMode]?
 }
 
+///|
 /// Create a new PhotoCapabilities with default values
 pub fn PhotoCapabilities::default() -> PhotoCapabilities {
   PhotoCapabilities::{
@@ -108,10 +129,13 @@ pub fn PhotoCapabilities::default() -> PhotoCapabilities {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn PhotoCapabilities::to_js(self : PhotoCapabilities) -> JsValue =
+pub extern "js" fn PhotoCapabilities::to_js(
+  self : PhotoCapabilities,
+) -> JsValue =
   #| (self) => ({
-  #|   redEyeReduction: self.redEyeReduction,
+  #|   redEyeReduction: ['never', 'always', 'controllable'][self.redEyeReduction],
   #|   imageHeight: self.imageHeight,
   #|   imageWidth: self.imageWidth,
   #|   fillLightMode: self.fillLightMode
@@ -126,6 +150,7 @@ pub struct PhotoSettings {
   redEyeReduction : Bool?
 }
 
+///|
 /// Create a new PhotoSettings with default values
 pub fn PhotoSettings::default() -> PhotoSettings {
   PhotoSettings::{
@@ -136,10 +161,11 @@ pub fn PhotoSettings::default() -> PhotoSettings {
   }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn PhotoSettings::to_js(self : PhotoSettings) -> JsValue =
   #| (self) => ({
-  #|   fillLightMode: self.fillLightMode,
+  #|   fillLightMode: ['auto', 'off', 'flash'][self.fillLightMode],
   #|   imageHeight: self.imageHeight,
   #|   imageWidth: self.imageWidth,
   #|   redEyeReduction: self.redEyeReduction
@@ -153,17 +179,17 @@ pub struct MediaSettingsRange {
   step : Double?
 }
 
+///|
 /// Create a new MediaSettingsRange with default values
 pub fn MediaSettingsRange::default() -> MediaSettingsRange {
-  MediaSettingsRange::{
-    max: None,
-    min: None,
-    step: None,
-  }
+  MediaSettingsRange::{ max: None, min: None, step: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MediaSettingsRange::to_js(self : MediaSettingsRange) -> JsValue =
+pub extern "js" fn MediaSettingsRange::to_js(
+  self : MediaSettingsRange,
+) -> JsValue =
   #| (self) => ({
   #|   max: self.max,
   #|   min: self.min,
@@ -213,6 +239,7 @@ pub struct MediaTrackSupportedConstraints {
   suppressLocalAudioPlayback : Bool?
 }
 
+///|
 /// Create a new MediaTrackSupportedConstraints with default values
 pub fn MediaTrackSupportedConstraints::default() -> MediaTrackSupportedConstraints {
   MediaTrackSupportedConstraints::{
@@ -257,8 +284,11 @@ pub fn MediaTrackSupportedConstraints::default() -> MediaTrackSupportedConstrain
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MediaTrackSupportedConstraints::to_js(self : MediaTrackSupportedConstraints) -> JsValue =
+pub extern "js" fn MediaTrackSupportedConstraints::to_js(
+  self : MediaTrackSupportedConstraints,
+) -> JsValue =
   #| (self) => ({
   #|   whiteBalanceMode: self.whiteBalanceMode,
   #|   exposureMode: self.exposureMode,
@@ -340,6 +370,7 @@ pub struct MediaTrackCapabilities {
   cursor : Array[String]?
 }
 
+///|
 /// Create a new MediaTrackCapabilities with default values
 pub fn MediaTrackCapabilities::default() -> MediaTrackCapabilities {
   MediaTrackCapabilities::{
@@ -381,8 +412,11 @@ pub fn MediaTrackCapabilities::default() -> MediaTrackCapabilities {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MediaTrackCapabilities::to_js(self : MediaTrackCapabilities) -> JsValue =
+pub extern "js" fn MediaTrackCapabilities::to_js(
+  self : MediaTrackCapabilities,
+) -> JsValue =
   #| (self) => ({
   #|   whiteBalanceMode: self.whiteBalanceMode,
   #|   exposureMode: self.exposureMode,
@@ -464,6 +498,7 @@ pub struct MediaTrackConstraintSet {
   suppressLocalAudioPlayback : ConstrainBoolean?
 }
 
+///|
 /// Create a new MediaTrackConstraintSet with default values
 pub fn MediaTrackConstraintSet::default() -> MediaTrackConstraintSet {
   MediaTrackConstraintSet::{
@@ -508,8 +543,11 @@ pub fn MediaTrackConstraintSet::default() -> MediaTrackConstraintSet {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MediaTrackConstraintSet::to_js(self : MediaTrackConstraintSet) -> JsValue =
+pub extern "js" fn MediaTrackConstraintSet::to_js(
+  self : MediaTrackConstraintSet,
+) -> JsValue =
   #| (self) => ({
   #|   whiteBalanceMode: self.whiteBalanceMode,
   #|   exposureMode: self.exposureMode,
@@ -595,6 +633,7 @@ pub struct MediaTrackSettings {
   screenPixelRatio : Double?
 }
 
+///|
 /// Create a new MediaTrackSettings with default values
 pub fn MediaTrackSettings::default() -> MediaTrackSettings {
   MediaTrackSettings::{
@@ -640,8 +679,11 @@ pub fn MediaTrackSettings::default() -> MediaTrackSettings {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MediaTrackSettings::to_js(self : MediaTrackSettings) -> JsValue =
+pub extern "js" fn MediaTrackSettings::to_js(
+  self : MediaTrackSettings,
+) -> JsValue =
   #| (self) => ({
   #|   whiteBalanceMode: self.whiteBalanceMode,
   #|   exposureMode: self.exposureMode,
@@ -691,16 +733,17 @@ pub struct ConstrainPoint2DParameters {
   ideal : Array[Point2D]?
 }
 
+///|
 /// Create a new ConstrainPoint2DParameters with default values
 pub fn ConstrainPoint2DParameters::default() -> ConstrainPoint2DParameters {
-  ConstrainPoint2DParameters::{
-    exact: None,
-    ideal: None,
-  }
+  ConstrainPoint2DParameters::{ exact: None, ideal: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn ConstrainPoint2DParameters::to_js(self : ConstrainPoint2DParameters) -> JsValue =
+pub extern "js" fn ConstrainPoint2DParameters::to_js(
+  self : ConstrainPoint2DParameters,
+) -> JsValue =
   #| (self) => ({
   #|   exact: self.exact,
   #|   ideal: self.ideal
@@ -713,14 +756,13 @@ pub struct Point2D {
   y : Double?
 }
 
+///|
 /// Create a new Point2D with default values
 pub fn Point2D::default() -> Point2D {
-  Point2D::{
-    x: None,
-    y: None,
-  }
+  Point2D::{ x: None, y: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn Point2D::to_js(self : Point2D) -> JsValue =
   #| (self) => ({
@@ -732,27 +774,49 @@ pub extern "js" fn Point2D::to_js(self : Point2D) -> JsValue =
 /// ImageCapture interface
 pub type ImageCapture
 
+///|
 pub extern "js" fn ImageCapture::to_js_value(self : ImageCapture) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn ImageCapture::new(video_track : MediaStreamTrack) -> ImageCapture =
+///|
+pub extern "js" fn ImageCapture::new(
+  video_track : MediaStreamTrack,
+) -> ImageCapture =
   #| (video_track) => new ImageCapture(video_track)
 
-pub extern "js" fn ImageCapture::take_photo(self : ImageCapture) -> Promise[Blob] =
+///|
+pub extern "js" fn ImageCapture::take_photo(
+  self : ImageCapture,
+) -> Promise[Blob] =
   #| (self) => self.takePhoto()
 
-pub extern "js" fn ImageCapture::take_photo_with_photo_settings(self : ImageCapture, photo_settings : PhotoSettings) -> Promise[Blob] =
+///|
+pub extern "js" fn ImageCapture::take_photo_with_photo_settings(
+  self : ImageCapture,
+  photo_settings : PhotoSettings,
+) -> Promise[Blob] =
   #| (self, photo_settings) => self.takePhoto(photo_settings)
 
-pub extern "js" fn ImageCapture::get_photo_capabilities(self : ImageCapture) -> Promise[PhotoCapabilities] =
+///|
+pub extern "js" fn ImageCapture::get_photo_capabilities(
+  self : ImageCapture,
+) -> Promise[PhotoCapabilities] =
   #| (self) => self.getPhotoCapabilities()
 
-pub extern "js" fn ImageCapture::get_photo_settings(self : ImageCapture) -> Promise[PhotoSettings] =
+///|
+pub extern "js" fn ImageCapture::get_photo_settings(
+  self : ImageCapture,
+) -> Promise[PhotoSettings] =
   #| (self) => self.getPhotoSettings()
 
-pub extern "js" fn ImageCapture::grab_frame(self : ImageCapture) -> Promise[ImageBitmap] =
+///|
+pub extern "js" fn ImageCapture::grab_frame(
+  self : ImageCapture,
+) -> Promise[ImageBitmap] =
   #| (self) => self.grabFrame()
 
-pub extern "js" fn ImageCapture::get_track(self : ImageCapture) -> MediaStreamTrack =
+///|
+pub extern "js" fn ImageCapture::get_track(
+  self : ImageCapture,
+) -> MediaStreamTrack =
   #| (self) => self.track
-

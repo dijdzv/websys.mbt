@@ -9,6 +9,7 @@ pub(all) enum XRDOMOverlayType {
   HeadLocked
 }
 
+///|
 /// Convert to string value
 pub fn XRDOMOverlayType::to_string(self : XRDOMOverlayType) -> String {
   match self {
@@ -18,6 +19,7 @@ pub fn XRDOMOverlayType::to_string(self : XRDOMOverlayType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn XRDOMOverlayType::from_string(s : String) -> XRDOMOverlayType? {
   match s {
@@ -34,13 +36,13 @@ pub struct XRDOMOverlayInit {
   root : Element
 }
 
+///|
 /// Create a new XRDOMOverlayInit with default values
 pub fn XRDOMOverlayInit::default() -> XRDOMOverlayInit {
-  XRDOMOverlayInit::{
-    root: panic(),
-  }
+  XRDOMOverlayInit::{ root: panic() }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn XRDOMOverlayInit::to_js(self : XRDOMOverlayInit) -> JsValue =
   #| (self) => ({
@@ -53,16 +55,17 @@ pub struct XRDOMOverlayState {
   type_ : XRDOMOverlayType?
 }
 
+///|
 /// Create a new XRDOMOverlayState with default values
 pub fn XRDOMOverlayState::default() -> XRDOMOverlayState {
-  XRDOMOverlayState::{
-    type_: None,
-  }
+  XRDOMOverlayState::{ type_: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn XRDOMOverlayState::to_js(self : XRDOMOverlayState) -> JsValue =
+pub extern "js" fn XRDOMOverlayState::to_js(
+  self : XRDOMOverlayState,
+) -> JsValue =
   #| (self) => ({
-  #|   type: self.type_
+  #|   type: ['screen', 'floating', 'head-locked'][self.type_]
   #| })
-

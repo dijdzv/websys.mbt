@@ -6,16 +6,82 @@
 pub type HeadersInit = JsValue
 
 ///|
+/// Create HeadersInit from Array[Array[String]]
+pub extern "js" fn HeadersInit::from_array_of_array_of_string(
+  v : Array[Array[String]],
+) -> HeadersInit =
+  #| (v) => v
+
+///|
 /// XMLHttpRequestBodyInit typedef
 pub type XMLHttpRequestBodyInit = JsValue
+
+///|
+/// Create XMLHttpRequestBodyInit from Blob
+pub extern "js" fn XMLHttpRequestBodyInit::from_blob(
+  v : Blob,
+) -> XMLHttpRequestBodyInit =
+  #| (v) => v
+
+///|
+/// Create XMLHttpRequestBodyInit from BufferSource
+pub extern "js" fn XMLHttpRequestBodyInit::from_buffer_source(
+  v : BufferSource,
+) -> XMLHttpRequestBodyInit =
+  #| (v) => v
+
+///|
+/// Create XMLHttpRequestBodyInit from FormData
+pub extern "js" fn XMLHttpRequestBodyInit::from_form_data(
+  v : FormData,
+) -> XMLHttpRequestBodyInit =
+  #| (v) => v
+
+///|
+/// Create XMLHttpRequestBodyInit from URLSearchParams
+pub extern "js" fn XMLHttpRequestBodyInit::from_u_r_l_search_params(
+  v : URLSearchParams,
+) -> XMLHttpRequestBodyInit =
+  #| (v) => v
+
+///|
+/// Create XMLHttpRequestBodyInit from String
+pub extern "js" fn XMLHttpRequestBodyInit::from_string(
+  v : String,
+) -> XMLHttpRequestBodyInit =
+  #| (v) => v
 
 ///|
 /// BodyInit typedef
 pub type BodyInit = JsValue
 
 ///|
+/// Create BodyInit from ReadableStream
+pub extern "js" fn BodyInit::from_readable_stream(
+  v : ReadableStream,
+) -> BodyInit =
+  #| (v) => v
+
+///|
+/// Create BodyInit from XMLHttpRequestBodyInit
+pub extern "js" fn BodyInit::from_x_m_l_http_request_body_init(
+  v : XMLHttpRequestBodyInit,
+) -> BodyInit =
+  #| (v) => v
+
+///|
 /// RequestInfo typedef
 pub type RequestInfo = JsValue
+
+///|
+/// Create RequestInfo from Request
+pub extern "js" fn RequestInfo::from_request(v : Request) -> RequestInfo =
+  #| (v) => v
+
+///|
+/// Create RequestInfo from String
+pub extern "js" fn RequestInfo::from_string(v : String) -> RequestInfo =
+  #| (v) => v
 
 ///|
 /// RequestDestination enum
@@ -43,6 +109,7 @@ pub(all) enum RequestDestination {
   Xslt
 }
 
+///|
 /// Convert to string value
 pub fn RequestDestination::to_string(self : RequestDestination) -> String {
   match self {
@@ -70,6 +137,7 @@ pub fn RequestDestination::to_string(self : RequestDestination) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn RequestDestination::from_string(s : String) -> RequestDestination? {
   match s {
@@ -107,6 +175,7 @@ pub(all) enum RequestMode {
   Cors
 }
 
+///|
 /// Convert to string value
 pub fn RequestMode::to_string(self : RequestMode) -> String {
   match self {
@@ -117,6 +186,7 @@ pub fn RequestMode::to_string(self : RequestMode) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn RequestMode::from_string(s : String) -> RequestMode? {
   match s {
@@ -136,6 +206,7 @@ pub(all) enum RequestCredentials {
   Include
 }
 
+///|
 /// Convert to string value
 pub fn RequestCredentials::to_string(self : RequestCredentials) -> String {
   match self {
@@ -145,6 +216,7 @@ pub fn RequestCredentials::to_string(self : RequestCredentials) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn RequestCredentials::from_string(s : String) -> RequestCredentials? {
   match s {
@@ -166,6 +238,7 @@ pub(all) enum RequestCache {
   OnlyIfCached
 }
 
+///|
 /// Convert to string value
 pub fn RequestCache::to_string(self : RequestCache) -> String {
   match self {
@@ -178,6 +251,7 @@ pub fn RequestCache::to_string(self : RequestCache) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn RequestCache::from_string(s : String) -> RequestCache? {
   match s {
@@ -199,6 +273,7 @@ pub(all) enum RequestRedirect {
   Manual
 }
 
+///|
 /// Convert to string value
 pub fn RequestRedirect::to_string(self : RequestRedirect) -> String {
   match self {
@@ -208,6 +283,7 @@ pub fn RequestRedirect::to_string(self : RequestRedirect) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn RequestRedirect::from_string(s : String) -> RequestRedirect? {
   match s {
@@ -224,6 +300,7 @@ pub(all) enum RequestDuplex {
   Half
 }
 
+///|
 /// Convert to string value
 pub fn RequestDuplex::to_string(self : RequestDuplex) -> String {
   match self {
@@ -231,6 +308,7 @@ pub fn RequestDuplex::to_string(self : RequestDuplex) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn RequestDuplex::from_string(s : String) -> RequestDuplex? {
   match s {
@@ -247,6 +325,7 @@ pub(all) enum RequestPriority {
   Auto
 }
 
+///|
 /// Convert to string value
 pub fn RequestPriority::to_string(self : RequestPriority) -> String {
   match self {
@@ -256,6 +335,7 @@ pub fn RequestPriority::to_string(self : RequestPriority) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn RequestPriority::from_string(s : String) -> RequestPriority? {
   match s {
@@ -277,6 +357,7 @@ pub(all) enum ResponseType {
   Opaqueredirect
 }
 
+///|
 /// Convert to string value
 pub fn ResponseType::to_string(self : ResponseType) -> String {
   match self {
@@ -289,6 +370,7 @@ pub fn ResponseType::to_string(self : ResponseType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn ResponseType::from_string(s : String) -> ResponseType? {
   match s {
@@ -310,15 +392,13 @@ pub struct ResponseInit {
   headers : HeadersInit?
 }
 
+///|
 /// Create a new ResponseInit with default values
 pub fn ResponseInit::default() -> ResponseInit {
-  ResponseInit::{
-    status: None,
-    statusText: None,
-    headers: None,
-  }
+  ResponseInit::{ status: None, statusText: None, headers: None }
 }
 
+///|
 /// Convert to JsValue
 pub extern "js" fn ResponseInit::to_js(self : ResponseInit) -> JsValue =
   #| (self) => ({
@@ -333,15 +413,17 @@ pub struct DeferredRequestInit {
   activateAfter : DOMHighResTimeStamp?
 }
 
+///|
 /// Create a new DeferredRequestInit with default values
 pub fn DeferredRequestInit::default() -> DeferredRequestInit {
-  DeferredRequestInit::{
-    activateAfter: None,
-  }
+  DeferredRequestInit::{ activateAfter: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn DeferredRequestInit::to_js(self : DeferredRequestInit) -> JsValue =
+pub extern "js" fn DeferredRequestInit::to_js(
+  self : DeferredRequestInit,
+) -> JsValue =
   #| (self) => ({
   #|   activateAfter: self.activateAfter
   #| })
@@ -350,30 +432,47 @@ pub extern "js" fn DeferredRequestInit::to_js(self : DeferredRequestInit) -> JsV
 /// Headers interface
 pub type Headers
 
+///|
 pub extern "js" fn Headers::to_js_value(self : Headers) -> JsValue =
   #| (self) => self
 
+///|
 pub extern "js" fn Headers::new(init_ : HeadersInit) -> Headers =
   #| (init_) => new Headers(init_)
 
-pub extern "js" fn Headers::append(self : Headers, name : String, value : String) -> Unit =
+///|
+pub extern "js" fn Headers::append(
+  self : Headers,
+  name : String,
+  value : String,
+) -> Unit =
   #| (self, name, value) => self.append(name, value)
 
+///|
 pub extern "js" fn Headers::delete(self : Headers, name : String) -> Unit =
   #| (self, name) => self.delete(name)
 
+///|
 pub extern "js" fn Headers::get(self : Headers, name : String) -> String? =
   #| (self, name) => self.get(name)
 
+///|
 pub extern "js" fn Headers::get_set_cookie(self : Headers) -> Array[String] =
   #| (self) => self.getSetCookie()
 
+///|
 pub extern "js" fn Headers::has(self : Headers, name : String) -> Bool =
   #| (self, name) => self.has(name)
 
-pub extern "js" fn Headers::set(self : Headers, name : String, value : String) -> Unit =
+///|
+pub extern "js" fn Headers::set(
+  self : Headers,
+  name : String,
+  value : String,
+) -> Unit =
   #| (self, name, value) => self.set(name, value)
 
+///|
 pub extern "js" fn Headers::_unknown_(self : Headers) -> Unit =
   #| (self) => self._unknown_()
 
@@ -381,87 +480,128 @@ pub extern "js" fn Headers::_unknown_(self : Headers) -> Unit =
 /// Request interface
 pub type Request
 
+///|
 pub extern "js" fn Request::to_js_value(self : Request) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Request::new(input : RequestInfo, init_ : RequestInit) -> Request =
+///|
+pub extern "js" fn Request::new(
+  input : RequestInfo,
+  init_ : RequestInit,
+) -> Request =
   #| (input, init_) => new Request(input, init_)
 
+///|
 pub extern "js" fn Request::get_method(self : Request) -> String =
   #| (self) => self.method
 
+///|
 pub extern "js" fn Request::get_url(self : Request) -> String =
   #| (self) => self.url
 
+///|
 pub extern "js" fn Request::get_headers(self : Request) -> Headers =
   #| (self) => self.headers
 
-pub extern "js" fn Request::get_destination(self : Request) -> RequestDestination =
+///|
+pub extern "js" fn Request::get_destination(
+  self : Request,
+) -> RequestDestination =
   #| (self) => self.destination
 
+///|
 pub extern "js" fn Request::get_referrer(self : Request) -> String =
   #| (self) => self.referrer
 
-pub extern "js" fn Request::get_referrer_policy(self : Request) -> ReferrerPolicy =
+///|
+pub extern "js" fn Request::get_referrer_policy(
+  self : Request,
+) -> ReferrerPolicy =
   #| (self) => self.referrerPolicy
 
+///|
 pub extern "js" fn Request::get_mode(self : Request) -> RequestMode =
   #| (self) => self.mode
 
-pub extern "js" fn Request::get_credentials(self : Request) -> RequestCredentials =
+///|
+pub extern "js" fn Request::get_credentials(
+  self : Request,
+) -> RequestCredentials =
   #| (self) => self.credentials
 
+///|
 pub extern "js" fn Request::get_cache(self : Request) -> RequestCache =
   #| (self) => self.cache
 
+///|
 pub extern "js" fn Request::get_redirect(self : Request) -> RequestRedirect =
   #| (self) => self.redirect
 
+///|
 pub extern "js" fn Request::get_integrity(self : Request) -> String =
   #| (self) => self.integrity
 
+///|
 pub extern "js" fn Request::get_keepalive(self : Request) -> Bool =
   #| (self) => self.keepalive
 
+///|
 pub extern "js" fn Request::get_is_reload_navigation(self : Request) -> Bool =
   #| (self) => self.isReloadNavigation
 
+///|
 pub extern "js" fn Request::get_is_history_navigation(self : Request) -> Bool =
   #| (self) => self.isHistoryNavigation
 
+///|
 pub extern "js" fn Request::get_signal(self : Request) -> AbortSignal =
   #| (self) => self.signal
 
+///|
 pub extern "js" fn Request::get_duplex(self : Request) -> RequestDuplex =
   #| (self) => self.duplex
 
+///|
 pub extern "js" fn Request::clone(self : Request) -> Request =
   #| (self) => self.clone()
 
-pub extern "js" fn Request::get_target_address_space(self : Request) -> IPAddressSpace =
+///|
+pub extern "js" fn Request::get_target_address_space(
+  self : Request,
+) -> IPAddressSpace =
   #| (self) => self.targetAddressSpace
 
+///|
 pub extern "js" fn Request::get_body(self : Request) -> ReadableStream? =
   #| (self) => self.body
 
+///|
 pub extern "js" fn Request::get_body_used(self : Request) -> Bool =
   #| (self) => self.bodyUsed
 
-pub extern "js" fn Request::array_buffer(self : Request) -> Promise[ArrayBuffer] =
+///|
+pub extern "js" fn Request::array_buffer(
+  self : Request,
+) -> Promise[ArrayBuffer] =
   #| (self) => self.arrayBuffer()
 
+///|
 pub extern "js" fn Request::blob(self : Request) -> Promise[Blob] =
   #| (self) => self.blob()
 
+///|
 pub extern "js" fn Request::bytes(self : Request) -> Promise[Uint8Array] =
   #| (self) => self.bytes()
 
+///|
 pub extern "js" fn Request::form_data(self : Request) -> Promise[FormData] =
   #| (self) => self.formData()
 
+///|
 pub extern "js" fn Request::json(self : Request) -> Promise[JsValue] =
   #| (self) => self.json()
 
+///|
 pub extern "js" fn Request::text(self : Request) -> Promise[String] =
   #| (self) => self.text()
 
@@ -469,63 +609,91 @@ pub extern "js" fn Request::text(self : Request) -> Promise[String] =
 /// Response interface
 pub type Response
 
+///|
 pub extern "js" fn Response::to_js_value(self : Response) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn Response::new(body : BodyInit?, init_ : ResponseInit) -> Response =
+///|
+pub extern "js" fn Response::new(
+  body : BodyInit?,
+  init_ : ResponseInit,
+) -> Response =
   #| (body, init_) => new Response(body, init_)
 
+///|
 pub extern "js" fn Response::error() -> Response =
   #| () => Response.error()
 
+///|
 pub extern "js" fn Response::redirect(url : String, status : Int) -> Response =
   #| (url, status) => Response.redirect(url, status)
 
-pub extern "js" fn Response::json(data : JsValue, init_ : ResponseInit) -> Response =
+///|
+pub extern "js" fn Response::json(
+  data : JsValue,
+  init_ : ResponseInit,
+) -> Response =
   #| (data, init_) => Response.json(data, init_)
 
+///|
 pub extern "js" fn Response::get_type(self : Response) -> ResponseType =
   #| (self) => self.type
 
+///|
 pub extern "js" fn Response::get_url(self : Response) -> String =
   #| (self) => self.url
 
+///|
 pub extern "js" fn Response::get_redirected(self : Response) -> Bool =
   #| (self) => self.redirected
 
+///|
 pub extern "js" fn Response::get_status(self : Response) -> Int =
   #| (self) => self.status
 
+///|
 pub extern "js" fn Response::get_ok(self : Response) -> Bool =
   #| (self) => self.ok
 
+///|
 pub extern "js" fn Response::get_status_text(self : Response) -> String =
   #| (self) => self.statusText
 
+///|
 pub extern "js" fn Response::get_headers(self : Response) -> Headers =
   #| (self) => self.headers
 
+///|
 pub extern "js" fn Response::clone(self : Response) -> Response =
   #| (self) => self.clone()
 
+///|
 pub extern "js" fn Response::get_body(self : Response) -> ReadableStream? =
   #| (self) => self.body
 
+///|
 pub extern "js" fn Response::get_body_used(self : Response) -> Bool =
   #| (self) => self.bodyUsed
 
-pub extern "js" fn Response::array_buffer(self : Response) -> Promise[ArrayBuffer] =
+///|
+pub extern "js" fn Response::array_buffer(
+  self : Response,
+) -> Promise[ArrayBuffer] =
   #| (self) => self.arrayBuffer()
 
+///|
 pub extern "js" fn Response::blob(self : Response) -> Promise[Blob] =
   #| (self) => self.blob()
 
+///|
 pub extern "js" fn Response::bytes(self : Response) -> Promise[Uint8Array] =
   #| (self) => self.bytes()
 
+///|
 pub extern "js" fn Response::form_data(self : Response) -> Promise[FormData] =
   #| (self) => self.formData()
 
+///|
 pub extern "js" fn Response::text(self : Response) -> Promise[String] =
   #| (self) => self.text()
 
@@ -533,9 +701,14 @@ pub extern "js" fn Response::text(self : Response) -> Promise[String] =
 /// FetchLaterResult interface
 pub type FetchLaterResult
 
-pub extern "js" fn FetchLaterResult::to_js_value(self : FetchLaterResult) -> JsValue =
+///|
+pub extern "js" fn FetchLaterResult::to_js_value(
+  self : FetchLaterResult,
+) -> JsValue =
   #| (self) => self
 
-pub extern "js" fn FetchLaterResult::get_activated(self : FetchLaterResult) -> Bool =
+///|
+pub extern "js" fn FetchLaterResult::get_activated(
+  self : FetchLaterResult,
+) -> Bool =
   #| (self) => self.activated
-

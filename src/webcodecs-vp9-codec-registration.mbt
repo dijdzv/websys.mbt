@@ -4,19 +4,20 @@
 ///|
 /// VideoEncoderEncodeOptionsForVp9 dictionary
 pub struct VideoEncoderEncodeOptionsForVp9 {
-  quantizer : Int??
+  quantizer : Nullable[Int]
 }
 
+///|
 /// Create a new VideoEncoderEncodeOptionsForVp9 with default values
 pub fn VideoEncoderEncodeOptionsForVp9::default() -> VideoEncoderEncodeOptionsForVp9 {
-  VideoEncoderEncodeOptionsForVp9::{
-    quantizer: None,
-  }
+  VideoEncoderEncodeOptionsForVp9::{ quantizer: Nullable::Undefined }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn VideoEncoderEncodeOptionsForVp9::to_js(self : VideoEncoderEncodeOptionsForVp9) -> JsValue =
+pub extern "js" fn VideoEncoderEncodeOptionsForVp9::to_js(
+  self : VideoEncoderEncodeOptionsForVp9,
+) -> JsValue =
   #| (self) => ({
-  #|   quantizer: self.quantizer
+  #|   quantizer: ((() => { const v = self.quantizer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
-

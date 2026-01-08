@@ -10,6 +10,7 @@ pub struct IntegrityViolationReportBody {
   reportOnly : Bool?
 }
 
+///|
 /// Create a new IntegrityViolationReportBody with default values
 pub fn IntegrityViolationReportBody::default() -> IntegrityViolationReportBody {
   IntegrityViolationReportBody::{
@@ -20,12 +21,14 @@ pub fn IntegrityViolationReportBody::default() -> IntegrityViolationReportBody {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn IntegrityViolationReportBody::to_js(self : IntegrityViolationReportBody) -> JsValue =
+pub extern "js" fn IntegrityViolationReportBody::to_js(
+  self : IntegrityViolationReportBody,
+) -> JsValue =
   #| (self) => ({
   #|   documentURL: self.documentURL,
   #|   blockedURL: self.blockedURL,
   #|   destination: self.destination,
   #|   reportOnly: self.reportOnly
   #| })
-

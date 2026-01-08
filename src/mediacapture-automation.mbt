@@ -8,16 +8,22 @@ pub(all) enum MockCapturePromptResult {
   Denied
 }
 
+///|
 /// Convert to string value
-pub fn MockCapturePromptResult::to_string(self : MockCapturePromptResult) -> String {
+pub fn MockCapturePromptResult::to_string(
+  self : MockCapturePromptResult,
+) -> String {
   match self {
     Granted => "granted"
     Denied => "denied"
   }
 }
 
+///|
 /// Parse from string value
-pub fn MockCapturePromptResult::from_string(s : String) -> MockCapturePromptResult? {
+pub fn MockCapturePromptResult::from_string(
+  s : String,
+) -> MockCapturePromptResult? {
   match s {
     "granted" => Some(Granted)
     "denied" => Some(Denied)
@@ -32,6 +38,7 @@ pub struct MockCapturePromptResultConfiguration {
   getDisplayMedia : MockCapturePromptResult?
 }
 
+///|
 /// Create a new MockCapturePromptResultConfiguration with default values
 pub fn MockCapturePromptResultConfiguration::default() -> MockCapturePromptResultConfiguration {
   MockCapturePromptResultConfiguration::{
@@ -40,11 +47,14 @@ pub fn MockCapturePromptResultConfiguration::default() -> MockCapturePromptResul
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MockCapturePromptResultConfiguration::to_js(self : MockCapturePromptResultConfiguration) -> JsValue =
+pub extern "js" fn MockCapturePromptResultConfiguration::to_js(
+  self : MockCapturePromptResultConfiguration,
+) -> JsValue =
   #| (self) => ({
-  #|   getUserMedia: self.getUserMedia,
-  #|   getDisplayMedia: self.getDisplayMedia
+  #|   getUserMedia: ['granted', 'denied'][self.getUserMedia],
+  #|   getDisplayMedia: ['granted', 'denied'][self.getDisplayMedia]
   #| })
 
 ///|
@@ -55,17 +65,17 @@ pub struct MockCaptureDeviceConfiguration {
   groupId : String?
 }
 
+///|
 /// Create a new MockCaptureDeviceConfiguration with default values
 pub fn MockCaptureDeviceConfiguration::default() -> MockCaptureDeviceConfiguration {
-  MockCaptureDeviceConfiguration::{
-    label: None,
-    deviceId: None,
-    groupId: None,
-  }
+  MockCaptureDeviceConfiguration::{ label: None, deviceId: None, groupId: None }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MockCaptureDeviceConfiguration::to_js(self : MockCaptureDeviceConfiguration) -> JsValue =
+pub extern "js" fn MockCaptureDeviceConfiguration::to_js(
+  self : MockCaptureDeviceConfiguration,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   deviceId: self.deviceId,
@@ -82,6 +92,7 @@ pub struct MockCameraConfiguration {
   facingMode : String?
 }
 
+///|
 /// Create a new MockCameraConfiguration with default values
 pub fn MockCameraConfiguration::default() -> MockCameraConfiguration {
   MockCameraConfiguration::{
@@ -93,8 +104,11 @@ pub fn MockCameraConfiguration::default() -> MockCameraConfiguration {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MockCameraConfiguration::to_js(self : MockCameraConfiguration) -> JsValue =
+pub extern "js" fn MockCameraConfiguration::to_js(
+  self : MockCameraConfiguration,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   deviceId: self.deviceId,
@@ -112,6 +126,7 @@ pub struct MockMicrophoneConfiguration {
   defaultSampleRate : Int?
 }
 
+///|
 /// Create a new MockMicrophoneConfiguration with default values
 pub fn MockMicrophoneConfiguration::default() -> MockMicrophoneConfiguration {
   MockMicrophoneConfiguration::{
@@ -122,12 +137,14 @@ pub fn MockMicrophoneConfiguration::default() -> MockMicrophoneConfiguration {
   }
 }
 
+///|
 /// Convert to JsValue
-pub extern "js" fn MockMicrophoneConfiguration::to_js(self : MockMicrophoneConfiguration) -> JsValue =
+pub extern "js" fn MockMicrophoneConfiguration::to_js(
+  self : MockMicrophoneConfiguration,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   deviceId: self.deviceId,
   #|   groupId: self.groupId,
   #|   defaultSampleRate: self.defaultSampleRate
   #| })
-

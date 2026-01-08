@@ -3,7 +3,13 @@
 
 ///|
 /// CSSStringSource typedef
-pub type CSSStringSource = JsValue
+pub type CSSStringSource
+
+///|
+pub extern "js" fn CSSStringSource::to_js_value(
+  self : CSSStringSource,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create CSSStringSource from String
@@ -19,7 +25,11 @@ pub extern "js" fn CSSStringSource::from_readable_stream(
 
 ///|
 /// CSSToken typedef
-pub type CSSToken = JsValue
+pub type CSSToken
+
+///|
+pub extern "js" fn CSSToken::to_js_value(self : CSSToken) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create CSSToken from String

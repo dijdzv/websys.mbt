@@ -11,7 +11,11 @@ pub type GLuint64 = Int64
 
 ///|
 /// Uint32List typedef
-pub type Uint32List = JsValue
+pub type Uint32List
+
+///|
+pub extern "js" fn Uint32List::to_js_value(self : Uint32List) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create Uint32List from Uint32Array

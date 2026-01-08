@@ -17,5 +17,5 @@ pub fn Ed448Params::default() -> Ed448Params {
 /// Convert to JsValue
 pub extern "js" fn Ed448Params::to_js(self : Ed448Params) -> JsValue =
   #| (self) => ({
-  #|   context: self.context
+  #|   context: self.context.to_js_value()
   #| })

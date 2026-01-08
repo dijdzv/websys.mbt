@@ -3,7 +3,13 @@
 
 ///|
 /// PasswordCredentialInit typedef
-pub type PasswordCredentialInit = JsValue
+pub type PasswordCredentialInit
+
+///|
+pub extern "js" fn PasswordCredentialInit::to_js_value(
+  self : PasswordCredentialInit,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create PasswordCredentialInit from PasswordCredentialData
@@ -150,7 +156,7 @@ pub extern "js" fn CredentialCreationOptions::to_js(
   #| (self) => ({
   #|   mediation: ['silent', 'optional', 'conditional', 'required'][self.mediation],
   #|   signal: self.signal,
-  #|   password: self.password,
+  #|   password: self.password.to_js_value(),
   #|   federated: self.federated,
   #|   digital: self.digital,
   #|   publicKey: self.publicKey

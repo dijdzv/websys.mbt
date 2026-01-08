@@ -3,7 +3,13 @@
 
 ///|
 /// ArrayBufferView typedef
-pub type ArrayBufferView = JsValue
+pub type ArrayBufferView
+
+///|
+pub extern "js" fn ArrayBufferView::to_js_value(
+  self : ArrayBufferView,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create ArrayBufferView from Int8Array
@@ -98,7 +104,11 @@ pub extern "js" fn ArrayBufferView::from_data_view(
 
 ///|
 /// BufferSource typedef
-pub type BufferSource = JsValue
+pub type BufferSource
+
+///|
+pub extern "js" fn BufferSource::to_js_value(self : BufferSource) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create BufferSource from ArrayBufferView
@@ -116,7 +126,13 @@ pub extern "js" fn BufferSource::from_array_buffer(
 
 ///|
 /// AllowSharedBufferSource typedef
-pub type AllowSharedBufferSource = JsValue
+pub type AllowSharedBufferSource
+
+///|
+pub extern "js" fn AllowSharedBufferSource::to_js_value(
+  self : AllowSharedBufferSource,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create AllowSharedBufferSource from ArrayBuffer

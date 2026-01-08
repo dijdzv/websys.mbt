@@ -3,7 +3,13 @@
 
 ///|
 /// StartInDirectory typedef
-pub type StartInDirectory = JsValue
+pub type StartInDirectory
+
+///|
+pub extern "js" fn StartInDirectory::to_js_value(
+  self : StartInDirectory,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create StartInDirectory from WellKnownDirectory
@@ -183,7 +189,7 @@ pub extern "js" fn FilePickerOptions::to_js(
   #|   types: self.types,
   #|   excludeAcceptAllOption: self.excludeAcceptAllOption,
   #|   id: self.id,
-  #|   startIn: self.startIn
+  #|   startIn: self.startIn.to_js_value()
   #| })
 
 ///|
@@ -217,7 +223,7 @@ pub extern "js" fn OpenFilePickerOptions::to_js(
   #|   types: self.types,
   #|   excludeAcceptAllOption: self.excludeAcceptAllOption,
   #|   id: self.id,
-  #|   startIn: self.startIn,
+  #|   startIn: self.startIn.to_js_value(),
   #|   multiple: self.multiple
   #| })
 
@@ -252,7 +258,7 @@ pub extern "js" fn SaveFilePickerOptions::to_js(
   #|   types: self.types,
   #|   excludeAcceptAllOption: self.excludeAcceptAllOption,
   #|   id: self.id,
-  #|   startIn: self.startIn,
+  #|   startIn: self.startIn.to_js_value(),
   #|   suggestedName: ((() => { const v = self.suggestedName; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
 
@@ -277,6 +283,6 @@ pub extern "js" fn DirectoryPickerOptions::to_js(
 ) -> JsValue =
   #| (self) => ({
   #|   id: self.id,
-  #|   startIn: self.startIn,
+  #|   startIn: self.startIn.to_js_value(),
   #|   mode: ['read', 'readwrite'][self.mode]
   #| })

@@ -3,7 +3,13 @@
 
 ///|
 /// VibratePattern typedef
-pub type VibratePattern = JsValue
+pub type VibratePattern
+
+///|
+pub extern "js" fn VibratePattern::to_js_value(
+  self : VibratePattern,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create VibratePattern from Int

@@ -3,7 +3,13 @@
 
 ///|
 /// ConstrainULong typedef
-pub type ConstrainULong = JsValue
+pub type ConstrainULong
+
+///|
+pub extern "js" fn ConstrainULong::to_js_value(
+  self : ConstrainULong,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create ConstrainULong from Int
@@ -19,7 +25,13 @@ pub extern "js" fn ConstrainULong::from_constrain_u_long_range(
 
 ///|
 /// ConstrainDouble typedef
-pub type ConstrainDouble = JsValue
+pub type ConstrainDouble
+
+///|
+pub extern "js" fn ConstrainDouble::to_js_value(
+  self : ConstrainDouble,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create ConstrainDouble from Double
@@ -35,7 +47,13 @@ pub extern "js" fn ConstrainDouble::from_constrain_double_range(
 
 ///|
 /// ConstrainBoolean typedef
-pub type ConstrainBoolean = JsValue
+pub type ConstrainBoolean
+
+///|
+pub extern "js" fn ConstrainBoolean::to_js_value(
+  self : ConstrainBoolean,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create ConstrainBoolean from Bool
@@ -51,7 +69,13 @@ pub extern "js" fn ConstrainBoolean::from_constrain_boolean_parameters(
 
 ///|
 /// ConstrainDOMString typedef
-pub type ConstrainDOMString = JsValue
+pub type ConstrainDOMString
+
+///|
+pub extern "js" fn ConstrainDOMString::to_js_value(
+  self : ConstrainDOMString,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create ConstrainDOMString from String
@@ -76,7 +100,13 @@ pub extern "js" fn ConstrainDOMString::from_constrain_d_o_m_string_parameters(
 
 ///|
 /// ConstrainBooleanOrDOMString typedef
-pub type ConstrainBooleanOrDOMString = JsValue
+pub type ConstrainBooleanOrDOMString
+
+///|
+pub extern "js" fn ConstrainBooleanOrDOMString::to_js_value(
+  self : ConstrainBooleanOrDOMString,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create ConstrainBooleanOrDOMString from Bool

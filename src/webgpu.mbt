@@ -19,7 +19,13 @@ pub type GPUShaderStageFlags = Int
 
 ///|
 /// GPUBindingResource typedef
-pub type GPUBindingResource = JsValue
+pub type GPUBindingResource
+
+///|
+pub extern "js" fn GPUBindingResource::to_js_value(
+  self : GPUBindingResource,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create GPUBindingResource from GPUSampler
@@ -73,7 +79,13 @@ pub type GPUColorWriteFlags = Int
 
 ///|
 /// GPUCopyExternalImageSource typedef
-pub type GPUCopyExternalImageSource = JsValue
+pub type GPUCopyExternalImageSource
+
+///|
+pub extern "js" fn GPUCopyExternalImageSource::to_js_value(
+  self : GPUCopyExternalImageSource,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create GPUCopyExternalImageSource from ImageBitmap
@@ -178,7 +190,11 @@ pub type GPUFlagsConstant = Int
 
 ///|
 /// GPUColor typedef
-pub type GPUColor = JsValue
+pub type GPUColor
+
+///|
+pub extern "js" fn GPUColor::to_js_value(self : GPUColor) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create GPUColor from Array[Double]
@@ -196,7 +212,11 @@ pub extern "js" fn GPUColor::from_g_p_u_color_dict(
 
 ///|
 /// GPUOrigin2D typedef
-pub type GPUOrigin2D = JsValue
+pub type GPUOrigin2D
+
+///|
+pub extern "js" fn GPUOrigin2D::to_js_value(self : GPUOrigin2D) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create GPUOrigin2D from Array[GPUIntegerCoordinate]
@@ -214,7 +234,11 @@ pub extern "js" fn GPUOrigin2D::from_g_p_u_origin2_d_dict(
 
 ///|
 /// GPUOrigin3D typedef
-pub type GPUOrigin3D = JsValue
+pub type GPUOrigin3D
+
+///|
+pub extern "js" fn GPUOrigin3D::to_js_value(self : GPUOrigin3D) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create GPUOrigin3D from Array[GPUIntegerCoordinate]
@@ -232,7 +256,11 @@ pub extern "js" fn GPUOrigin3D::from_g_p_u_origin3_d_dict(
 
 ///|
 /// GPUExtent3D typedef
-pub type GPUExtent3D = JsValue
+pub type GPUExtent3D
+
+///|
+pub extern "js" fn GPUExtent3D::to_js_value(self : GPUExtent3D) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create GPUExtent3D from Array[GPUIntegerCoordinate]
@@ -1927,7 +1955,7 @@ pub extern "js" fn GPUTextureDescriptor::to_js(
 ) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   size: self.size,
+  #|   size: self.size.to_js_value(),
   #|   mipLevelCount: self.mipLevelCount,
   #|   sampleCount: self.sampleCount,
   #|   dimension: ['1d', '2d', '3d'][self.dimension],
@@ -2304,7 +2332,7 @@ pub extern "js" fn GPUBindGroupEntry::to_js(
 ) -> JsValue =
   #| (self) => ({
   #|   binding: self.binding,
-  #|   resource: self.resource
+  #|   resource: self.resource.to_js_value()
   #| })
 
 ///|
@@ -2960,7 +2988,7 @@ pub extern "js" fn GPUTexelCopyTextureInfo::to_js(
   #| (self) => ({
   #|   texture: self.texture,
   #|   mipLevel: self.mipLevel,
-  #|   origin: self.origin,
+  #|   origin: self.origin.to_js_value(),
   #|   aspect: ['all', 'stencil-only', 'depth-only'][self.aspect]
   #| })
 
@@ -2996,7 +3024,7 @@ pub extern "js" fn GPUCopyExternalImageDestInfo::to_js(
   #| (self) => ({
   #|   texture: self.texture,
   #|   mipLevel: self.mipLevel,
-  #|   origin: self.origin,
+  #|   origin: self.origin.to_js_value(),
   #|   aspect: ['all', 'stencil-only', 'depth-only'][self.aspect],
   #|   colorSpace: ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][self.colorSpace],
   #|   premultipliedAlpha: self.premultipliedAlpha
@@ -3022,8 +3050,8 @@ pub extern "js" fn GPUCopyExternalImageSourceInfo::to_js(
   self : GPUCopyExternalImageSourceInfo,
 ) -> JsValue =
   #| (self) => ({
-  #|   source: self.source,
-  #|   origin: self.origin,
+  #|   source: self.source.to_js_value(),
+  #|   origin: self.origin.to_js_value(),
   #|   flipY: self.flipY
   #| })
 
@@ -3221,7 +3249,7 @@ pub extern "js" fn GPURenderPassColorAttachment::to_js(
   #|   view: self.view,
   #|   depthSlice: self.depthSlice,
   #|   resolveTarget: self.resolveTarget,
-  #|   clearValue: self.clearValue,
+  #|   clearValue: self.clearValue.to_js_value(),
   #|   loadOp: ['load', 'clear'][self.loadOp],
   #|   storeOp: ['store', 'discard'][self.storeOp]
   #| })

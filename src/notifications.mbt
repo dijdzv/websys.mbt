@@ -130,7 +130,7 @@ pub extern "js" fn NotificationOptions::to_js(
   #|   image: self.image,
   #|   icon: self.icon,
   #|   badge: self.badge,
-  #|   vibrate: self.vibrate,
+  #|   vibrate: self.vibrate.to_js_value(),
   #|   timestamp: self.timestamp,
   #|   renotify: self.renotify,
   #|   silent: ((() => { const v = self.silent; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),

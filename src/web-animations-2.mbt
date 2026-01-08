@@ -227,10 +227,10 @@ pub extern "js" fn ComputedEffectTiming::to_js(
   #|   iterations: self.iterations,
   #|   direction: ['normal', 'reverse', 'alternate', 'alternate-reverse'][self.direction],
   #|   easing: self.easing,
-  #|   startTime: self.startTime,
-  #|   endTime: self.endTime,
-  #|   activeDuration: self.activeDuration,
-  #|   localTime: ((() => { const v = self.localTime; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   startTime: self.startTime.to_js_value(),
+  #|   endTime: self.endTime.to_js_value(),
+  #|   activeDuration: self.activeDuration.to_js_value(),
+  #|   localTime: ((() => { const v = self.localTime; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0.to_js_value(); })()),
   #|   progress: ((() => { const v = self.progress; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   currentIteration: ((() => { const v = self.currentIteration; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
@@ -407,8 +407,8 @@ pub extern "js" fn AnimationPlaybackEventInit::to_js(
   self : AnimationPlaybackEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   currentTime: ((() => { const v = self.currentTime; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   timelineTime: ((() => { const v = self.timelineTime; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   currentTime: ((() => { const v = self.currentTime; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0.to_js_value(); })()),
+  #|   timelineTime: ((() => { const v = self.timelineTime; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0.to_js_value(); })())
   #| })
 
 ///|

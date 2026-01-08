@@ -3,7 +3,13 @@
 
 ///|
 /// FormDataEntryValue typedef
-pub type FormDataEntryValue = JsValue
+pub type FormDataEntryValue
+
+///|
+pub extern "js" fn FormDataEntryValue::to_js_value(
+  self : FormDataEntryValue,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create FormDataEntryValue from File

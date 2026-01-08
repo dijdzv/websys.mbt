@@ -3,7 +3,13 @@
 
 ///|
 /// RotationMatrixType typedef
-pub type RotationMatrixType = JsValue
+pub type RotationMatrixType
+
+///|
+pub extern "js" fn RotationMatrixType::to_js_value(
+  self : RotationMatrixType,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create RotationMatrixType from Float32Array

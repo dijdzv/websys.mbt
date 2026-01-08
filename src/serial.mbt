@@ -106,7 +106,7 @@ pub extern "js" fn SerialPortFilter::to_js(self : SerialPortFilter) -> JsValue =
   #| (self) => ({
   #|   usbVendorId: self.usbVendorId,
   #|   usbProductId: self.usbProductId,
-  #|   bluetoothServiceClassId: self.bluetoothServiceClassId
+  #|   bluetoothServiceClassId: self.bluetoothServiceClassId.to_js_value()
   #| })
 
 ///|
@@ -133,7 +133,7 @@ pub extern "js" fn SerialPortInfo::to_js(self : SerialPortInfo) -> JsValue =
   #| (self) => ({
   #|   usbVendorId: self.usbVendorId,
   #|   usbProductId: self.usbProductId,
-  #|   bluetoothServiceClassId: self.bluetoothServiceClassId
+  #|   bluetoothServiceClassId: self.bluetoothServiceClassId.to_js_value()
   #| })
 
 ///|

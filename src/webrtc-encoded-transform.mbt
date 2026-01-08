@@ -3,7 +3,13 @@
 
 ///|
 /// RTCRtpTransform typedef
-pub type RTCRtpTransform = JsValue
+pub type RTCRtpTransform
+
+///|
+pub extern "js" fn RTCRtpTransform::to_js_value(
+  self : RTCRtpTransform,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create RTCRtpTransform from SFrameTransform
@@ -25,7 +31,11 @@ pub type SmallCryptoKeyID = Int64
 
 ///|
 /// CryptoKeyID typedef
-pub type CryptoKeyID = JsValue
+pub type CryptoKeyID
+
+///|
+pub extern "js" fn CryptoKeyID::to_js_value(self : CryptoKeyID) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create CryptoKeyID from SmallCryptoKeyID
@@ -149,7 +159,7 @@ pub extern "js" fn SFrameTransformErrorEventInit::to_js(
   #| (self) => ({
   #|   errorType: ['authentication', 'keyID', 'syntax'][self.errorType],
   #|   frame: self.frame,
-  #|   keyID: ((() => { const v = self.keyID; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   keyID: ((() => { const v = self.keyID; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0.to_js_value(); })())
   #| })
 
 ///|

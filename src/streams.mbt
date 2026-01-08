@@ -3,7 +3,13 @@
 
 ///|
 /// ReadableStreamReader typedef
-pub type ReadableStreamReader = JsValue
+pub type ReadableStreamReader
+
+///|
+pub extern "js" fn ReadableStreamReader::to_js_value(
+  self : ReadableStreamReader,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create ReadableStreamReader from ReadableStreamDefaultReader
@@ -21,7 +27,13 @@ pub extern "js" fn ReadableStreamReader::from_readable_stream_b_y_o_b_reader(
 
 ///|
 /// ReadableStreamController typedef
-pub type ReadableStreamController = JsValue
+pub type ReadableStreamController
+
+///|
+pub extern "js" fn ReadableStreamController::to_js_value(
+  self : ReadableStreamController,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create ReadableStreamController from ReadableStreamDefaultController

@@ -3,7 +3,13 @@
 
 ///|
 /// CustomMediaQuery typedef
-pub type CustomMediaQuery = JsValue
+pub type CustomMediaQuery
+
+///|
+pub extern "js" fn CustomMediaQuery::to_js_value(
+  self : CustomMediaQuery,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create CustomMediaQuery from MediaList

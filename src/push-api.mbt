@@ -3,7 +3,13 @@
 
 ///|
 /// PushMessageDataInit typedef
-pub type PushMessageDataInit = JsValue
+pub type PushMessageDataInit
+
+///|
+pub extern "js" fn PushMessageDataInit::to_js_value(
+  self : PushMessageDataInit,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create PushMessageDataInit from BufferSource
@@ -141,7 +147,7 @@ pub fn PushEventInit::default() -> PushEventInit {
 /// Convert to JsValue
 pub extern "js" fn PushEventInit::to_js(self : PushEventInit) -> JsValue =
   #| (self) => ({
-  #|   data: ((() => { const v = self.data; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   data: ((() => { const v = self.data; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0.to_js_value(); })()),
   #|   notification: ((() => { const v = self.notification; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
 

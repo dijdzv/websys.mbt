@@ -3,7 +3,13 @@
 
 ///|
 /// LineAndPositionSetting typedef
-pub type LineAndPositionSetting = JsValue
+pub type LineAndPositionSetting
+
+///|
+pub extern "js" fn LineAndPositionSetting::to_js_value(
+  self : LineAndPositionSetting,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create LineAndPositionSetting from Double

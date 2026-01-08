@@ -115,7 +115,7 @@ pub fn WebTransportHash::default() -> WebTransportHash {
 pub extern "js" fn WebTransportHash::to_js(self : WebTransportHash) -> JsValue =
   #| (self) => ({
   #|   algorithm: self.algorithm,
-  #|   value: self.value
+  #|   value: self.value.to_js_value()
   #| })
 
 ///|

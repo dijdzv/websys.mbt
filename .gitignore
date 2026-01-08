@@ -2,5 +2,6 @@
 node_modules/
 
 # MoonBit
-target/
 .mooncakes/
+_build/
+target

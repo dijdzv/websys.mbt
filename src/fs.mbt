@@ -3,7 +3,13 @@
 
 ///|
 /// FileSystemWriteChunkType typedef
-pub type FileSystemWriteChunkType = JsValue
+pub type FileSystemWriteChunkType
+
+///|
+pub extern "js" fn FileSystemWriteChunkType::to_js_value(
+  self : FileSystemWriteChunkType,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create FileSystemWriteChunkType from BufferSource

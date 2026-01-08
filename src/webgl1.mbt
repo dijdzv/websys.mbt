@@ -59,7 +59,13 @@ pub type GLclampf = Double
 
 ///|
 /// TexImageSource typedef
-pub type TexImageSource = JsValue
+pub type TexImageSource
+
+///|
+pub extern "js" fn TexImageSource::to_js_value(
+  self : TexImageSource,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create TexImageSource from ImageBitmap
@@ -112,7 +118,11 @@ pub extern "js" fn TexImageSource::from_video_frame(
 
 ///|
 /// Float32List typedef
-pub type Float32List = JsValue
+pub type Float32List
+
+///|
+pub extern "js" fn Float32List::to_js_value(self : Float32List) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create Float32List from Float32Array
@@ -130,7 +140,11 @@ pub extern "js" fn Float32List::from_array_of_g_lfloat(
 
 ///|
 /// Int32List typedef
-pub type Int32List = JsValue
+pub type Int32List
+
+///|
+pub extern "js" fn Int32List::to_js_value(self : Int32List) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create Int32List from Int32Array

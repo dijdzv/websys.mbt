@@ -11,7 +11,11 @@ pub type MLDataTypeList = Array[MLOperandDataType]
 
 ///|
 /// MLNumber typedef
-pub type MLNumber = JsValue
+pub type MLNumber
+
+///|
+pub extern "js" fn MLNumber::to_js_value(self : MLNumber) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create MLNumber from Double
@@ -1038,8 +1042,8 @@ pub fn MLClampOptions::default() -> MLClampOptions {
 pub extern "js" fn MLClampOptions::to_js(self : MLClampOptions) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   minValue: self.minValue,
-  #|   maxValue: self.maxValue
+  #|   minValue: self.minValue.to_js_value(),
+  #|   maxValue: self.maxValue.to_js_value()
   #| })
 
 ///|
@@ -1942,7 +1946,7 @@ pub extern "js" fn MLPadOptions::to_js(self : MLPadOptions) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   mode: ['constant', 'edge', 'reflection'][self.mode],
-  #|   value: self.value
+  #|   value: self.value.to_js_value()
   #| })
 
 ///|

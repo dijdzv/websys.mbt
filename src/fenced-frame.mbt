@@ -3,7 +3,11 @@
 
 ///|
 /// UrnOrConfig typedef
-pub type UrnOrConfig = JsValue
+pub type UrnOrConfig
+
+///|
+pub extern "js" fn UrnOrConfig::to_js_value(self : UrnOrConfig) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create UrnOrConfig from String
@@ -19,7 +23,13 @@ pub extern "js" fn UrnOrConfig::from_fenced_frame_config(
 
 ///|
 /// ReportEventType typedef
-pub type ReportEventType = JsValue
+pub type ReportEventType
+
+///|
+pub extern "js" fn ReportEventType::to_js_value(
+  self : ReportEventType,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create ReportEventType from FenceEvent

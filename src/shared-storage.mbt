@@ -3,7 +3,13 @@
 
 ///|
 /// SharedStorageResponse typedef
-pub type SharedStorageResponse = JsValue
+pub type SharedStorageResponse
+
+///|
+pub extern "js" fn SharedStorageResponse::to_js_value(
+  self : SharedStorageResponse,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create SharedStorageResponse from String

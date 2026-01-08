@@ -3,7 +3,13 @@
 
 ///|
 /// XRWebGLRenderingContext typedef
-pub type XRWebGLRenderingContext = JsValue
+pub type XRWebGLRenderingContext
+
+///|
+pub extern "js" fn XRWebGLRenderingContext::to_js_value(
+  self : XRWebGLRenderingContext,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create XRWebGLRenderingContext from WebGLRenderingContext

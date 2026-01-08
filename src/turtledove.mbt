@@ -3,7 +3,13 @@
 
 ///|
 /// PreviousWinElement typedef
-pub type PreviousWinElement = JsValue
+pub type PreviousWinElement
+
+///|
+pub extern "js" fn PreviousWinElement::to_js_value(
+  self : PreviousWinElement,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create PreviousWinElement from Int64

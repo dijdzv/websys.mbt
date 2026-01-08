@@ -864,7 +864,7 @@ pub extern "js" fn PublicKeyCredentialCreationOptions::to_js(
   #| (self) => ({
   #|   rp: self.rp,
   #|   user: self.user,
-  #|   challenge: self.challenge,
+  #|   challenge: self.challenge.to_js_value(),
   #|   pubKeyCredParams: self.pubKeyCredParams,
   #|   timeout: self.timeout,
   #|   excludeCredentials: self.excludeCredentials,
@@ -940,7 +940,7 @@ pub extern "js" fn PublicKeyCredentialUserEntity::to_js(
 ) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   id: self.id,
+  #|   id: self.id.to_js_value(),
   #|   displayName: self.displayName
   #| })
 
@@ -1008,7 +1008,7 @@ pub extern "js" fn PublicKeyCredentialRequestOptions::to_js(
   self : PublicKeyCredentialRequestOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   challenge: self.challenge,
+  #|   challenge: self.challenge.to_js_value(),
   #|   timeout: self.timeout,
   #|   rpId: self.rpId,
   #|   allowCredentials: self.allowCredentials,
@@ -1094,7 +1094,7 @@ pub extern "js" fn PublicKeyCredentialDescriptor::to_js(
 ) -> JsValue =
   #| (self) => ({
   #|   type: self.type_,
-  #|   id: self.id,
+  #|   id: self.id.to_js_value(),
   #|   transports: self.transports
   #| })
 
@@ -1138,8 +1138,8 @@ pub extern "js" fn AuthenticationExtensionsPRFValues::to_js(
   self : AuthenticationExtensionsPRFValues,
 ) -> JsValue =
   #| (self) => ({
-  #|   first: self.first,
-  #|   second: self.second
+  #|   first: self.first.to_js_value(),
+  #|   second: self.second.to_js_value()
   #| })
 
 ///|
@@ -1283,7 +1283,7 @@ pub extern "js" fn AuthenticationExtensionsLargeBlobInputs::to_js(
   #| (self) => ({
   #|   support: self.support,
   #|   read: self.read,
-  #|   write: self.write
+  #|   write: self.write.to_js_value()
   #| })
 
 ///|

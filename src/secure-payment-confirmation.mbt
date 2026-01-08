@@ -84,7 +84,7 @@ pub extern "js" fn SecurePaymentConfirmationRequest::to_js(
   self : SecurePaymentConfirmationRequest,
 ) -> JsValue =
   #| (self) => ({
-  #|   challenge: self.challenge,
+  #|   challenge: self.challenge.to_js_value(),
   #|   rpId: self.rpId,
   #|   credentialIds: self.credentialIds,
   #|   instrument: self.instrument,

@@ -237,7 +237,7 @@ pub fn ContextParams::default() -> ContextParams {
 /// Convert to JsValue
 pub extern "js" fn ContextParams::to_js(self : ContextParams) -> JsValue =
   #| (self) => ({
-  #|   context: self.context
+  #|   context: self.context.to_js_value()
   #| })
 
 ///|
@@ -258,8 +258,8 @@ pub fn AeadParams::default() -> AeadParams {
 /// Convert to JsValue
 pub extern "js" fn AeadParams::to_js(self : AeadParams) -> JsValue =
   #| (self) => ({
-  #|   iv: self.iv,
-  #|   additionalData: self.additionalData,
+  #|   iv: self.iv.to_js_value(),
+  #|   additionalData: self.additionalData.to_js_value(),
   #|   tagLength: self.tagLength
   #| })
 
@@ -282,8 +282,8 @@ pub fn CShakeParams::default() -> CShakeParams {
 pub extern "js" fn CShakeParams::to_js(self : CShakeParams) -> JsValue =
   #| (self) => ({
   #|   length: self.length,
-  #|   functionName: self.functionName,
-  #|   customization: self.customization
+  #|   functionName: self.functionName.to_js_value(),
+  #|   customization: self.customization.to_js_value()
   #| })
 
 ///|
@@ -361,7 +361,7 @@ pub fn KmacParams::default() -> KmacParams {
 pub extern "js" fn KmacParams::to_js(self : KmacParams) -> JsValue =
   #| (self) => ({
   #|   length: self.length,
-  #|   customization: self.customization
+  #|   customization: self.customization.to_js_value()
   #| })
 
 ///|
@@ -394,11 +394,11 @@ pub fn Argon2Params::default() -> Argon2Params {
 /// Convert to JsValue
 pub extern "js" fn Argon2Params::to_js(self : Argon2Params) -> JsValue =
   #| (self) => ({
-  #|   nonce: self.nonce,
+  #|   nonce: self.nonce.to_js_value(),
   #|   parallelism: self.parallelism,
   #|   memory: self.memory,
   #|   passes: self.passes,
   #|   version: self.version,
-  #|   secretValue: self.secretValue,
-  #|   associatedData: self.associatedData
+  #|   secretValue: self.secretValue.to_js_value(),
+  #|   associatedData: self.associatedData.to_js_value()
   #| })

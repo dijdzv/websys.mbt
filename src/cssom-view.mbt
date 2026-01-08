@@ -3,7 +3,11 @@
 
 ///|
 /// GeometryNode typedef
-pub type GeometryNode = JsValue
+pub type GeometryNode
+
+///|
+pub extern "js" fn GeometryNode::to_js_value(self : GeometryNode) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create GeometryNode from Text
@@ -321,7 +325,7 @@ pub fn BoxQuadOptions::default() -> BoxQuadOptions {
 pub extern "js" fn BoxQuadOptions::to_js(self : BoxQuadOptions) -> JsValue =
   #| (self) => ({
   #|   box: ['margin', 'border', 'padding', 'content'][self.box],
-  #|   relativeTo: self.relativeTo
+  #|   relativeTo: self.relativeTo.to_js_value()
   #| })
 
 ///|

@@ -3,7 +3,13 @@
 
 ///|
 /// SanitizerElement typedef
-pub type SanitizerElement = JsValue
+pub type SanitizerElement
+
+///|
+pub extern "js" fn SanitizerElement::to_js_value(
+  self : SanitizerElement,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create SanitizerElement from String
@@ -21,7 +27,13 @@ pub extern "js" fn SanitizerElement::from_sanitizer_element_namespace(
 
 ///|
 /// SanitizerElementWithAttributes typedef
-pub type SanitizerElementWithAttributes = JsValue
+pub type SanitizerElementWithAttributes
+
+///|
+pub extern "js" fn SanitizerElementWithAttributes::to_js_value(
+  self : SanitizerElementWithAttributes,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create SanitizerElementWithAttributes from String
@@ -39,7 +51,13 @@ pub extern "js" fn SanitizerElementWithAttributes::from_sanitizer_element_namesp
 
 ///|
 /// SanitizerAttribute typedef
-pub type SanitizerAttribute = JsValue
+pub type SanitizerAttribute
+
+///|
+pub extern "js" fn SanitizerAttribute::to_js_value(
+  self : SanitizerAttribute,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create SanitizerAttribute from String

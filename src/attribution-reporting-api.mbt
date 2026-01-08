@@ -85,8 +85,8 @@ pub extern "js" fn RequestInit::to_js(self : RequestInit) -> JsValue =
   #| (self) => ({
   #|   attributionReporting: self.attributionReporting,
   #|   method: self.method_,
-  #|   headers: self.headers,
-  #|   body: ((() => { const v = self.body; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   headers: self.headers.to_js_value(),
+  #|   body: ((() => { const v = self.body; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0.to_js_value(); })()),
   #|   referrer: self.referrer,
   #|   referrerPolicy: ['', 'no-referrer', 'no-referrer-when-downgrade', 'same-origin', 'origin', 'strict-origin', 'origin-when-cross-origin', 'strict-origin-when-cross-origin', 'unsafe-url'][self.referrerPolicy],
   #|   mode: ['navigate', 'same-origin', 'no-cors', 'cors'][self.mode],

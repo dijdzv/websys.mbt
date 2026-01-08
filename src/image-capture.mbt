@@ -3,7 +3,13 @@
 
 ///|
 /// ConstrainPoint2D typedef
-pub type ConstrainPoint2D = JsValue
+pub type ConstrainPoint2D
+
+///|
+pub extern "js" fn ConstrainPoint2D::to_js_value(
+  self : ConstrainPoint2D,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create ConstrainPoint2D from Array[Point2D]
@@ -549,44 +555,44 @@ pub extern "js" fn MediaTrackConstraintSet::to_js(
   self : MediaTrackConstraintSet,
 ) -> JsValue =
   #| (self) => ({
-  #|   whiteBalanceMode: self.whiteBalanceMode,
-  #|   exposureMode: self.exposureMode,
-  #|   focusMode: self.focusMode,
-  #|   pointsOfInterest: self.pointsOfInterest,
-  #|   exposureCompensation: self.exposureCompensation,
-  #|   exposureTime: self.exposureTime,
-  #|   colorTemperature: self.colorTemperature,
-  #|   iso: self.iso,
-  #|   brightness: self.brightness,
-  #|   contrast: self.contrast,
-  #|   saturation: self.saturation,
-  #|   sharpness: self.sharpness,
-  #|   focusDistance: self.focusDistance,
+  #|   whiteBalanceMode: self.whiteBalanceMode.to_js_value(),
+  #|   exposureMode: self.exposureMode.to_js_value(),
+  #|   focusMode: self.focusMode.to_js_value(),
+  #|   pointsOfInterest: self.pointsOfInterest.to_js_value(),
+  #|   exposureCompensation: self.exposureCompensation.to_js_value(),
+  #|   exposureTime: self.exposureTime.to_js_value(),
+  #|   colorTemperature: self.colorTemperature.to_js_value(),
+  #|   iso: self.iso.to_js_value(),
+  #|   brightness: self.brightness.to_js_value(),
+  #|   contrast: self.contrast.to_js_value(),
+  #|   saturation: self.saturation.to_js_value(),
+  #|   sharpness: self.sharpness.to_js_value(),
+  #|   focusDistance: self.focusDistance.to_js_value(),
   #|   pan: self.pan,
   #|   tilt: self.tilt,
   #|   zoom: self.zoom,
-  #|   torch: self.torch,
-  #|   width: self.width,
-  #|   height: self.height,
-  #|   aspectRatio: self.aspectRatio,
-  #|   frameRate: self.frameRate,
-  #|   facingMode: self.facingMode,
-  #|   resizeMode: self.resizeMode,
-  #|   sampleRate: self.sampleRate,
-  #|   sampleSize: self.sampleSize,
-  #|   echoCancellation: self.echoCancellation,
-  #|   autoGainControl: self.autoGainControl,
-  #|   noiseSuppression: self.noiseSuppression,
-  #|   latency: self.latency,
-  #|   channelCount: self.channelCount,
-  #|   deviceId: self.deviceId,
-  #|   groupId: self.groupId,
-  #|   backgroundBlur: self.backgroundBlur,
-  #|   displaySurface: self.displaySurface,
-  #|   logicalSurface: self.logicalSurface,
-  #|   cursor: self.cursor,
-  #|   restrictOwnAudio: self.restrictOwnAudio,
-  #|   suppressLocalAudioPlayback: self.suppressLocalAudioPlayback
+  #|   torch: self.torch.to_js_value(),
+  #|   width: self.width.to_js_value(),
+  #|   height: self.height.to_js_value(),
+  #|   aspectRatio: self.aspectRatio.to_js_value(),
+  #|   frameRate: self.frameRate.to_js_value(),
+  #|   facingMode: self.facingMode.to_js_value(),
+  #|   resizeMode: self.resizeMode.to_js_value(),
+  #|   sampleRate: self.sampleRate.to_js_value(),
+  #|   sampleSize: self.sampleSize.to_js_value(),
+  #|   echoCancellation: self.echoCancellation.to_js_value(),
+  #|   autoGainControl: self.autoGainControl.to_js_value(),
+  #|   noiseSuppression: self.noiseSuppression.to_js_value(),
+  #|   latency: self.latency.to_js_value(),
+  #|   channelCount: self.channelCount.to_js_value(),
+  #|   deviceId: self.deviceId.to_js_value(),
+  #|   groupId: self.groupId.to_js_value(),
+  #|   backgroundBlur: self.backgroundBlur.to_js_value(),
+  #|   displaySurface: self.displaySurface.to_js_value(),
+  #|   logicalSurface: self.logicalSurface.to_js_value(),
+  #|   cursor: self.cursor.to_js_value(),
+  #|   restrictOwnAudio: self.restrictOwnAudio.to_js_value(),
+  #|   suppressLocalAudioPlayback: self.suppressLocalAudioPlayback.to_js_value()
   #| })
 
 ///|

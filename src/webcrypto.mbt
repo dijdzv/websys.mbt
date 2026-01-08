@@ -3,7 +3,13 @@
 
 ///|
 /// AlgorithmIdentifier typedef
-pub type AlgorithmIdentifier = JsValue
+pub type AlgorithmIdentifier
+
+///|
+pub extern "js" fn AlgorithmIdentifier::to_js_value(
+  self : AlgorithmIdentifier,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create AlgorithmIdentifier from String
@@ -309,7 +315,7 @@ pub fn RsaOaepParams::default() -> RsaOaepParams {
 pub extern "js" fn RsaOaepParams::to_js(self : RsaOaepParams) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   label: self.label
+  #|   label: self.label.to_js_value()
   #| })
 
 ///|
@@ -440,7 +446,7 @@ pub fn AesCtrParams::default() -> AesCtrParams {
 pub extern "js" fn AesCtrParams::to_js(self : AesCtrParams) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   counter: self.counter,
+  #|   counter: self.counter.to_js_value(),
   #|   length: self.length
   #| })
 
@@ -527,7 +533,7 @@ pub fn AesCbcParams::default() -> AesCbcParams {
 pub extern "js" fn AesCbcParams::to_js(self : AesCbcParams) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   iv: self.iv
+  #|   iv: self.iv.to_js_value()
   #| })
 
 ///|
@@ -550,8 +556,8 @@ pub fn AesGcmParams::default() -> AesGcmParams {
 pub extern "js" fn AesGcmParams::to_js(self : AesGcmParams) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   iv: self.iv,
-  #|   additionalData: self.additionalData,
+  #|   iv: self.iv.to_js_value(),
+  #|   additionalData: self.additionalData.to_js_value(),
   #|   tagLength: self.tagLength
   #| })
 
@@ -645,8 +651,8 @@ pub extern "js" fn HkdfParams::to_js(self : HkdfParams) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   hash: self.hash,
-  #|   salt: self.salt,
-  #|   info: self.info
+  #|   salt: self.salt.to_js_value(),
+  #|   info: self.info.to_js_value()
   #| })
 
 ///|
@@ -669,7 +675,7 @@ pub fn Pbkdf2Params::default() -> Pbkdf2Params {
 pub extern "js" fn Pbkdf2Params::to_js(self : Pbkdf2Params) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   salt: self.salt,
+  #|   salt: self.salt.to_js_value(),
   #|   iterations: self.iterations,
   #|   hash: self.hash
   #| })

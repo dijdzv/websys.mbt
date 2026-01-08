@@ -3,7 +3,13 @@
 
 ///|
 /// URLPatternInput typedef
-pub type URLPatternInput = JsValue
+pub type URLPatternInput
+
+///|
+pub extern "js" fn URLPatternInput::to_js_value(
+  self : URLPatternInput,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create URLPatternInput from String
@@ -19,7 +25,13 @@ pub extern "js" fn URLPatternInput::from_u_r_l_pattern_init(
 
 ///|
 /// URLPatternCompatible typedef
-pub type URLPatternCompatible = JsValue
+pub type URLPatternCompatible
+
+///|
+pub extern "js" fn URLPatternCompatible::to_js_value(
+  self : URLPatternCompatible,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create URLPatternCompatible from String

@@ -3,7 +3,13 @@
 
 ///|
 /// CSSUnparsedSegment typedef
-pub type CSSUnparsedSegment = JsValue
+pub type CSSUnparsedSegment
+
+///|
+pub extern "js" fn CSSUnparsedSegment::to_js_value(
+  self : CSSUnparsedSegment,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create CSSUnparsedSegment from String
@@ -21,7 +27,11 @@ pub extern "js" fn CSSUnparsedSegment::from_c_s_s_variable_reference_value(
 
 ///|
 /// CSSKeywordish typedef
-pub type CSSKeywordish = JsValue
+pub type CSSKeywordish
+
+///|
+pub extern "js" fn CSSKeywordish::to_js_value(self : CSSKeywordish) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create CSSKeywordish from String
@@ -37,7 +47,11 @@ pub extern "js" fn CSSKeywordish::from_c_s_s_keyword_value(
 
 ///|
 /// CSSNumberish typedef
-pub type CSSNumberish = JsValue
+pub type CSSNumberish
+
+///|
+pub extern "js" fn CSSNumberish::to_js_value(self : CSSNumberish) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create CSSNumberish from Double
@@ -53,7 +67,13 @@ pub extern "js" fn CSSNumberish::from_c_s_s_numeric_value(
 
 ///|
 /// CSSPerspectiveValue typedef
-pub type CSSPerspectiveValue = JsValue
+pub type CSSPerspectiveValue
+
+///|
+pub extern "js" fn CSSPerspectiveValue::to_js_value(
+  self : CSSPerspectiveValue,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create CSSPerspectiveValue from CSSNumericValue
@@ -71,7 +91,13 @@ pub extern "js" fn CSSPerspectiveValue::from_c_s_s_keywordish(
 
 ///|
 /// CSSColorRGBComp typedef
-pub type CSSColorRGBComp = JsValue
+pub type CSSColorRGBComp
+
+///|
+pub extern "js" fn CSSColorRGBComp::to_js_value(
+  self : CSSColorRGBComp,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create CSSColorRGBComp from CSSNumberish
@@ -89,7 +115,13 @@ pub extern "js" fn CSSColorRGBComp::from_c_s_s_keywordish(
 
 ///|
 /// CSSColorPercent typedef
-pub type CSSColorPercent = JsValue
+pub type CSSColorPercent
+
+///|
+pub extern "js" fn CSSColorPercent::to_js_value(
+  self : CSSColorPercent,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create CSSColorPercent from CSSNumberish
@@ -107,7 +139,13 @@ pub extern "js" fn CSSColorPercent::from_c_s_s_keywordish(
 
 ///|
 /// CSSColorNumber typedef
-pub type CSSColorNumber = JsValue
+pub type CSSColorNumber
+
+///|
+pub extern "js" fn CSSColorNumber::to_js_value(
+  self : CSSColorNumber,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create CSSColorNumber from CSSNumberish
@@ -125,7 +163,11 @@ pub extern "js" fn CSSColorNumber::from_c_s_s_keywordish(
 
 ///|
 /// CSSColorAngle typedef
-pub type CSSColorAngle = JsValue
+pub type CSSColorAngle
+
+///|
+pub extern "js" fn CSSColorAngle::to_js_value(self : CSSColorAngle) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create CSSColorAngle from CSSNumberish

@@ -5,14 +5,14 @@
     "": {
       "name": "websys.mbt",
       "devDependencies": {
-        "webidl-bindgen.mbt": "^0.2.7",
+        "webidl-bindgen.mbt": "^0.3.2",
       },
     },
   },
   "packages": {
     "@webref/idl": ["@webref/idl@3.70.1", "", { "peerDependencies": { "webidl2": "^24.5.0" } }, "sha512-2yoAt9rRIg9vYLoX0y56IGkalWGQPvoi4b+bG36YHLehjYoHT9Naz22rO+4dWzK/tKfpi4hG5wTVFLjmojb5iQ=="],
 
-    "webidl-bindgen.mbt": ["webidl-bindgen.mbt@0.2.7", "", { "dependencies": { "@webref/idl": "^3.70.1", "webidl2": "^24.4.1" }, "bin": { "webidl-bindgen.mbt": "target/js/release/build/webidl-bindgen.js" } }, "sha512-McQTQJ4BaHuZePQF6/U38qMhXaFIuKcu39ZSEGOIoghp4yrrjoLqrmCeW03X9ZdZIh35pIvXq2sXsz37HrlE3Q=="],
+    "webidl-bindgen.mbt": ["webidl-bindgen.mbt@0.3.2", "", { "dependencies": { "@webref/idl": "^3.70.1", "webidl2": "^24.4.1" }, "bin": { "webidl-bindgen.mbt": "_build/js/release/build/webidl-bindgen.js" } }, "sha512-vfwQqi0gDDuDciqeNR3TBcsrSbeMCSgR/kLToVC14mSSuMD3mbRxaXCWYwL3rXg58IIYcT5CAOefqjBbHojhFQ=="],
 
     "webidl2": ["webidl2@24.5.0", "", {}, "sha512-fxOigKkIem1iAgQ9t4cFOP+kWEA8y6Be/uh50FpJh0FijoeeT/VMrOyJzNLUgjy0rGMEcHeReKDCqj0g9dIe9A=="],
   }

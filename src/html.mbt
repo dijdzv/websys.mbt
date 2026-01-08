@@ -3,7 +3,13 @@
 
 ///|
 /// HTMLOrSVGScriptElement typedef
-pub type HTMLOrSVGScriptElement = JsValue
+pub type HTMLOrSVGScriptElement
+
+///|
+pub extern "js" fn HTMLOrSVGScriptElement::to_js_value(
+  self : HTMLOrSVGScriptElement,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create HTMLOrSVGScriptElement from HTMLScriptElement
@@ -21,7 +27,11 @@ pub extern "js" fn HTMLOrSVGScriptElement::from_s_v_g_script_element(
 
 ///|
 /// MediaProvider typedef
-pub type MediaProvider = JsValue
+pub type MediaProvider
+
+///|
+pub extern "js" fn MediaProvider::to_js_value(self : MediaProvider) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create MediaProvider from MediaStream
@@ -44,7 +54,13 @@ pub extern "js" fn MediaProvider::from_blob(v : Blob) -> MediaProvider =
 
 ///|
 /// RenderingContext typedef
-pub type RenderingContext = JsValue
+pub type RenderingContext
+
+///|
+pub extern "js" fn RenderingContext::to_js_value(
+  self : RenderingContext,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create RenderingContext from CanvasRenderingContext2D
@@ -83,7 +99,13 @@ pub extern "js" fn RenderingContext::from_g_p_u_canvas_context(
 
 ///|
 /// HTMLOrSVGImageElement typedef
-pub type HTMLOrSVGImageElement = JsValue
+pub type HTMLOrSVGImageElement
+
+///|
+pub extern "js" fn HTMLOrSVGImageElement::to_js_value(
+  self : HTMLOrSVGImageElement,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create HTMLOrSVGImageElement from HTMLImageElement
@@ -101,7 +123,13 @@ pub extern "js" fn HTMLOrSVGImageElement::from_s_v_g_image_element(
 
 ///|
 /// CanvasImageSource typedef
-pub type CanvasImageSource = JsValue
+pub type CanvasImageSource
+
+///|
+pub extern "js" fn CanvasImageSource::to_js_value(
+  self : CanvasImageSource,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create CanvasImageSource from HTMLOrSVGImageElement
@@ -147,7 +175,13 @@ pub extern "js" fn CanvasImageSource::from_video_frame(
 
 ///|
 /// OffscreenRenderingContext typedef
-pub type OffscreenRenderingContext = JsValue
+pub type OffscreenRenderingContext
+
+///|
+pub extern "js" fn OffscreenRenderingContext::to_js_value(
+  self : OffscreenRenderingContext,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create OffscreenRenderingContext from OffscreenCanvasRenderingContext2D
@@ -198,7 +232,11 @@ pub type OnBeforeUnloadEventHandler = OnBeforeUnloadEventHandlerNonNull?
 
 ///|
 /// TimerHandler typedef
-pub type TimerHandler = JsValue
+pub type TimerHandler
+
+///|
+pub extern "js" fn TimerHandler::to_js_value(self : TimerHandler) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create TimerHandler from String
@@ -219,7 +257,13 @@ pub extern "js" fn TimerHandler::from_trusted_script(
 
 ///|
 /// ImageDataArray typedef
-pub type ImageDataArray = JsValue
+pub type ImageDataArray
+
+///|
+pub extern "js" fn ImageDataArray::to_js_value(
+  self : ImageDataArray,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create ImageDataArray from Uint8ClampedArray
@@ -237,7 +281,13 @@ pub extern "js" fn ImageDataArray::from_float16_array(
 
 ///|
 /// ImageBitmapSource typedef
-pub type ImageBitmapSource = JsValue
+pub type ImageBitmapSource
+
+///|
+pub extern "js" fn ImageBitmapSource::to_js_value(
+  self : ImageBitmapSource,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create ImageBitmapSource from CanvasImageSource
@@ -260,7 +310,13 @@ pub extern "js" fn ImageBitmapSource::from_image_data(
 
 ///|
 /// MessageEventSource typedef
-pub type MessageEventSource = JsValue
+pub type MessageEventSource
+
+///|
+pub extern "js" fn MessageEventSource::to_js_value(
+  self : MessageEventSource,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create MessageEventSource from WindowProxy
@@ -2273,7 +2329,7 @@ pub extern "js" fn MessageEventInit::to_js(self : MessageEventInit) -> JsValue =
   #|   data: self.data,
   #|   origin: self.origin,
   #|   lastEventId: self.lastEventId,
-  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0.to_js_value(); })()),
   #|   ports: self.ports
   #| })
 

@@ -3,7 +3,11 @@
 
 ///|
 /// RouterSource typedef
-pub type RouterSource = JsValue
+pub type RouterSource
+
+///|
+pub extern "js" fn RouterSource::to_js_value(self : RouterSource) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create RouterSource from RouterSourceDict
@@ -319,7 +323,7 @@ pub fn RouterRule::default() -> RouterRule {
 pub extern "js" fn RouterRule::to_js(self : RouterRule) -> JsValue =
   #| (self) => ({
   #|   condition: self.condition,
-  #|   source: self.source
+  #|   source: self.source.to_js_value()
   #| })
 
 ///|
@@ -352,7 +356,7 @@ pub fn RouterCondition::default() -> RouterCondition {
 /// Convert to JsValue
 pub extern "js" fn RouterCondition::to_js(self : RouterCondition) -> JsValue =
   #| (self) => ({
-  #|   urlPattern: self.urlPattern,
+  #|   urlPattern: self.urlPattern.to_js_value(),
   #|   requestMethod: self.requestMethod,
   #|   requestMode: ['navigate', 'same-origin', 'no-cors', 'cors'][self.requestMode],
   #|   requestDestination: ['', 'audio', 'audioworklet', 'document', 'embed', 'font', 'frame', 'iframe', 'image', 'json', 'manifest', 'object', 'paintworklet', 'report', 'script', 'sharedworker', 'style', 'track', 'video', 'worker', 'xslt'][self.requestDestination],

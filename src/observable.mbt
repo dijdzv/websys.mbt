@@ -3,7 +3,11 @@
 
 ///|
 /// ObserverUnion typedef
-pub type ObserverUnion = JsValue
+pub type ObserverUnion
+
+///|
+pub extern "js" fn ObserverUnion::to_js_value(self : ObserverUnion) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create ObserverUnion from ObservableSubscriptionCallback
@@ -21,7 +25,13 @@ pub extern "js" fn ObserverUnion::from_subscription_observer(
 
 ///|
 /// ObservableInspectorUnion typedef
-pub type ObservableInspectorUnion = JsValue
+pub type ObservableInspectorUnion
+
+///|
+pub extern "js" fn ObservableInspectorUnion::to_js_value(
+  self : ObservableInspectorUnion,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create ObservableInspectorUnion from ObservableSubscriptionCallback

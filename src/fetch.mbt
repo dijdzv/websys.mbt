@@ -3,7 +3,11 @@
 
 ///|
 /// HeadersInit typedef
-pub type HeadersInit = JsValue
+pub type HeadersInit
+
+///|
+pub extern "js" fn HeadersInit::to_js_value(self : HeadersInit) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create HeadersInit from Array[Array[String]]
@@ -14,7 +18,13 @@ pub extern "js" fn HeadersInit::from_array_of_array_of_string(
 
 ///|
 /// XMLHttpRequestBodyInit typedef
-pub type XMLHttpRequestBodyInit = JsValue
+pub type XMLHttpRequestBodyInit
+
+///|
+pub extern "js" fn XMLHttpRequestBodyInit::to_js_value(
+  self : XMLHttpRequestBodyInit,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create XMLHttpRequestBodyInit from Blob
@@ -53,7 +63,11 @@ pub extern "js" fn XMLHttpRequestBodyInit::from_string(
 
 ///|
 /// BodyInit typedef
-pub type BodyInit = JsValue
+pub type BodyInit
+
+///|
+pub extern "js" fn BodyInit::to_js_value(self : BodyInit) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create BodyInit from ReadableStream
@@ -71,7 +85,11 @@ pub extern "js" fn BodyInit::from_x_m_l_http_request_body_init(
 
 ///|
 /// RequestInfo typedef
-pub type RequestInfo = JsValue
+pub type RequestInfo
+
+///|
+pub extern "js" fn RequestInfo::to_js_value(self : RequestInfo) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create RequestInfo from Request
@@ -404,7 +422,7 @@ pub extern "js" fn ResponseInit::to_js(self : ResponseInit) -> JsValue =
   #| (self) => ({
   #|   status: self.status,
   #|   statusText: self.statusText,
-  #|   headers: self.headers
+  #|   headers: self.headers.to_js_value()
   #| })
 
 ///|

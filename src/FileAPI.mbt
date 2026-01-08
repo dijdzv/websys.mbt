@@ -3,7 +3,11 @@
 
 ///|
 /// BlobPart typedef
-pub type BlobPart = JsValue
+pub type BlobPart
+
+///|
+pub extern "js" fn BlobPart::to_js_value(self : BlobPart) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create BlobPart from BufferSource

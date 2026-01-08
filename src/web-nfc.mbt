@@ -3,7 +3,13 @@
 
 ///|
 /// NDEFMessageSource typedef
-pub type NDEFMessageSource = JsValue
+pub type NDEFMessageSource
+
+///|
+pub extern "js" fn NDEFMessageSource::to_js_value(
+  self : NDEFMessageSource,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create NDEFMessageSource from String

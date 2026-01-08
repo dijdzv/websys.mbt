@@ -3,7 +3,11 @@
 
 ///|
 /// TrustedType typedef
-pub type TrustedType = JsValue
+pub type TrustedType
+
+///|
+pub extern "js" fn TrustedType::to_js_value(self : TrustedType) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create TrustedType from TrustedHTML

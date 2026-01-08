@@ -7,7 +7,13 @@ pub type UUID = String
 
 ///|
 /// BluetoothServiceUUID typedef
-pub type BluetoothServiceUUID = JsValue
+pub type BluetoothServiceUUID
+
+///|
+pub extern "js" fn BluetoothServiceUUID::to_js_value(
+  self : BluetoothServiceUUID,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create BluetoothServiceUUID from String
@@ -25,7 +31,13 @@ pub extern "js" fn BluetoothServiceUUID::from_int(
 
 ///|
 /// BluetoothCharacteristicUUID typedef
-pub type BluetoothCharacteristicUUID = JsValue
+pub type BluetoothCharacteristicUUID
+
+///|
+pub extern "js" fn BluetoothCharacteristicUUID::to_js_value(
+  self : BluetoothCharacteristicUUID,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create BluetoothCharacteristicUUID from String
@@ -43,7 +55,13 @@ pub extern "js" fn BluetoothCharacteristicUUID::from_int(
 
 ///|
 /// BluetoothDescriptorUUID typedef
-pub type BluetoothDescriptorUUID = JsValue
+pub type BluetoothDescriptorUUID
+
+///|
+pub extern "js" fn BluetoothDescriptorUUID::to_js_value(
+  self : BluetoothDescriptorUUID,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create BluetoothDescriptorUUID from String
@@ -78,8 +96,8 @@ pub extern "js" fn BluetoothDataFilterInit::to_js(
   self : BluetoothDataFilterInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   dataPrefix: self.dataPrefix,
-  #|   mask: self.mask
+  #|   dataPrefix: self.dataPrefix.to_js_value(),
+  #|   mask: self.mask.to_js_value()
   #| })
 
 ///|
@@ -106,8 +124,8 @@ pub extern "js" fn BluetoothManufacturerDataFilterInit::to_js(
   self : BluetoothManufacturerDataFilterInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   dataPrefix: self.dataPrefix,
-  #|   mask: self.mask,
+  #|   dataPrefix: self.dataPrefix.to_js_value(),
+  #|   mask: self.mask.to_js_value(),
   #|   companyIdentifier: self.companyIdentifier
   #| })
 
@@ -135,9 +153,9 @@ pub extern "js" fn BluetoothServiceDataFilterInit::to_js(
   self : BluetoothServiceDataFilterInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   dataPrefix: self.dataPrefix,
-  #|   mask: self.mask,
-  #|   service: self.service
+  #|   dataPrefix: self.dataPrefix.to_js_value(),
+  #|   mask: self.mask.to_js_value(),
+  #|   service: self.service.to_js_value()
   #| })
 
 ///|

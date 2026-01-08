@@ -3,7 +3,13 @@
 
 ///|
 /// ImageBufferSource typedef
-pub type ImageBufferSource = JsValue
+pub type ImageBufferSource
+
+///|
+pub extern "js" fn ImageBufferSource::to_js_value(
+  self : ImageBufferSource,
+) -> JsValue =
+  #| (self) => self
 
 ///|
 /// Create ImageBufferSource from AllowSharedBufferSource
@@ -649,7 +655,7 @@ pub extern "js" fn EncodedVideoChunkMetadata::to_js(
   #| (self) => ({
   #|   decoderConfig: self.decoderConfig,
   #|   svc: self.svc,
-  #|   alphaSideData: self.alphaSideData
+  #|   alphaSideData: self.alphaSideData.to_js_value()
   #| })
 
 ///|
@@ -794,7 +800,7 @@ pub extern "js" fn AudioDecoderConfig::to_js(
   #|   codec: self.codec,
   #|   sampleRate: self.sampleRate,
   #|   numberOfChannels: self.numberOfChannels,
-  #|   description: self.description
+  #|   description: self.description.to_js_value()
   #| })
 
 ///|
@@ -838,7 +844,7 @@ pub extern "js" fn VideoDecoderConfig::to_js(
 ) -> JsValue =
   #| (self) => ({
   #|   codec: self.codec,
-  #|   description: self.description,
+  #|   description: self.description.to_js_value(),
   #|   codedWidth: self.codedWidth,
   #|   codedHeight: self.codedHeight,
   #|   displayAspectWidth: self.displayAspectWidth,
@@ -881,7 +887,7 @@ pub extern "js" fn EncodedAudioChunkInit::to_js(
   #|   type: ['key', 'delta'][self.type_],
   #|   timestamp: self.timestamp,
   #|   duration: self.duration,
-  #|   data: self.data,
+  #|   data: self.data.to_js_value(),
   #|   transfer: self.transfer
   #| })
 
@@ -916,7 +922,7 @@ pub extern "js" fn EncodedVideoChunkInit::to_js(
   #|   type: ['key', 'delta'][self.type_],
   #|   timestamp: self.timestamp,
   #|   duration: self.duration,
-  #|   data: self.data,
+  #|   data: self.data.to_js_value(),
   #|   transfer: self.transfer
   #| })
 
@@ -955,7 +961,7 @@ pub extern "js" fn AudioDataInit::to_js(self : AudioDataInit) -> JsValue =
   #|   numberOfFrames: self.numberOfFrames,
   #|   numberOfChannels: self.numberOfChannels,
   #|   timestamp: self.timestamp,
-  #|   data: self.data,
+  #|   data: self.data.to_js_value(),
   #|   transfer: self.transfer
   #| })
 
@@ -1232,7 +1238,7 @@ pub fn ImageDecoderInit::default() -> ImageDecoderInit {
 pub extern "js" fn ImageDecoderInit::to_js(self : ImageDecoderInit) -> JsValue =
   #| (self) => ({
   #|   type: self.type_,
-  #|   data: self.data,
+  #|   data: self.data.to_js_value(),
   #|   colorSpaceConversion: ['none', 'default'][self.colorSpaceConversion],
   #|   desiredWidth: self.desiredWidth,
   #|   desiredHeight: self.desiredHeight,

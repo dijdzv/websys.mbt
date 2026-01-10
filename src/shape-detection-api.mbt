@@ -13,9 +13,9 @@ pub(all) enum LandmarkType {
 /// Convert to string value
 pub fn LandmarkType::to_string(self : LandmarkType) -> String {
   match self {
-    Mouth => "mouth"
-    Eye => "eye"
-    Nose => "nose"
+    LandmarkType::Mouth => "mouth"
+    LandmarkType::Eye => "eye"
+    LandmarkType::Nose => "nose"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn LandmarkType::to_string(self : LandmarkType) -> String {
 /// Parse from string value
 pub fn LandmarkType::from_string(s : String) -> LandmarkType? {
   match s {
-    "mouth" => Some(Mouth)
-    "eye" => Some(Eye)
-    "nose" => Some(Nose)
+    "mouth" => Some(LandmarkType::Mouth)
+    "eye" => Some(LandmarkType::Eye)
+    "nose" => Some(LandmarkType::Nose)
     _ => None
   }
 }
@@ -53,20 +53,20 @@ pub(all) enum BarcodeFormat {
 /// Convert to string value
 pub fn BarcodeFormat::to_string(self : BarcodeFormat) -> String {
   match self {
-    Aztec => "aztec"
-    Code128 => "code_128"
-    Code39 => "code_39"
-    Code93 => "code_93"
-    Codabar => "codabar"
-    DataMatrix => "data_matrix"
-    Ean13 => "ean_13"
-    Ean8 => "ean_8"
-    Itf => "itf"
-    Pdf417 => "pdf417"
-    QrCode => "qr_code"
-    Unknown => "unknown"
-    UpcA => "upc_a"
-    UpcE => "upc_e"
+    BarcodeFormat::Aztec => "aztec"
+    BarcodeFormat::Code128 => "code_128"
+    BarcodeFormat::Code39 => "code_39"
+    BarcodeFormat::Code93 => "code_93"
+    BarcodeFormat::Codabar => "codabar"
+    BarcodeFormat::DataMatrix => "data_matrix"
+    BarcodeFormat::Ean13 => "ean_13"
+    BarcodeFormat::Ean8 => "ean_8"
+    BarcodeFormat::Itf => "itf"
+    BarcodeFormat::Pdf417 => "pdf417"
+    BarcodeFormat::QrCode => "qr_code"
+    BarcodeFormat::Unknown => "unknown"
+    BarcodeFormat::UpcA => "upc_a"
+    BarcodeFormat::UpcE => "upc_e"
   }
 }
 
@@ -74,20 +74,20 @@ pub fn BarcodeFormat::to_string(self : BarcodeFormat) -> String {
 /// Parse from string value
 pub fn BarcodeFormat::from_string(s : String) -> BarcodeFormat? {
   match s {
-    "aztec" => Some(Aztec)
-    "code_128" => Some(Code128)
-    "code_39" => Some(Code39)
-    "code_93" => Some(Code93)
-    "codabar" => Some(Codabar)
-    "data_matrix" => Some(DataMatrix)
-    "ean_13" => Some(Ean13)
-    "ean_8" => Some(Ean8)
-    "itf" => Some(Itf)
-    "pdf417" => Some(Pdf417)
-    "qr_code" => Some(QrCode)
-    "unknown" => Some(Unknown)
-    "upc_a" => Some(UpcA)
-    "upc_e" => Some(UpcE)
+    "aztec" => Some(BarcodeFormat::Aztec)
+    "code_128" => Some(BarcodeFormat::Code128)
+    "code_39" => Some(BarcodeFormat::Code39)
+    "code_93" => Some(BarcodeFormat::Code93)
+    "codabar" => Some(BarcodeFormat::Codabar)
+    "data_matrix" => Some(BarcodeFormat::DataMatrix)
+    "ean_13" => Some(BarcodeFormat::Ean13)
+    "ean_8" => Some(BarcodeFormat::Ean8)
+    "itf" => Some(BarcodeFormat::Itf)
+    "pdf417" => Some(BarcodeFormat::Pdf417)
+    "qr_code" => Some(BarcodeFormat::QrCode)
+    "unknown" => Some(BarcodeFormat::Unknown)
+    "upc_a" => Some(BarcodeFormat::UpcA)
+    "upc_e" => Some(BarcodeFormat::UpcE)
     _ => None
   }
 }
@@ -226,7 +226,7 @@ pub extern "js" fn FaceDetector::new(
 pub extern "js" fn FaceDetector::detect(
   self : FaceDetector,
   image : ImageBitmapSource,
-) -> Promise[Array[DetectedFace]] =
+) -> Promise[Unit] =
   #| (self, image) => self.detect(image)
 
 ///|
@@ -246,14 +246,12 @@ pub extern "js" fn BarcodeDetector::new(
   #| (barcode_detector_options) => new BarcodeDetector(barcode_detector_options)
 
 ///|
-pub extern "js" fn BarcodeDetector::get_supported_formats() -> Promise[
-  Array[BarcodeFormat],
-] =
+pub extern "js" fn BarcodeDetector::get_supported_formats() -> Promise[Unit] =
   #| () => BarcodeDetector.getSupportedFormats()
 
 ///|
 pub extern "js" fn BarcodeDetector::detect(
   self : BarcodeDetector,
   image : ImageBitmapSource,
-) -> Promise[Array[DetectedBarcode]] =
+) -> Promise[Unit] =
   #| (self, image) => self.detect(image)

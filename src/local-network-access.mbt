@@ -13,9 +13,9 @@ pub(all) enum IPAddressSpace {
 /// Convert to string value
 pub fn IPAddressSpace::to_string(self : IPAddressSpace) -> String {
   match self {
-    Public => "public"
-    Local => "local"
-    Loopback => "loopback"
+    IPAddressSpace::Public => "public"
+    IPAddressSpace::Local => "local"
+    IPAddressSpace::Loopback => "loopback"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn IPAddressSpace::to_string(self : IPAddressSpace) -> String {
 /// Parse from string value
 pub fn IPAddressSpace::from_string(s : String) -> IPAddressSpace? {
   match s {
-    "public" => Some(Public)
-    "local" => Some(Local)
-    "loopback" => Some(Loopback)
+    "public" => Some(IPAddressSpace::Public)
+    "local" => Some(IPAddressSpace::Local)
+    "loopback" => Some(IPAddressSpace::Loopback)
     _ => None
   }
 }

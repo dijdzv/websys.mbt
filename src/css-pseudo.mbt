@@ -26,7 +26,7 @@ pub extern "js" fn CSSPseudoElement::get_element(
 ///|
 pub extern "js" fn CSSPseudoElement::get_parent(
   self : CSSPseudoElement,
-) -> JsValue =
+) -> ElementOrCSSPseudoElement =
   #| (self) => self.parent
 
 ///|

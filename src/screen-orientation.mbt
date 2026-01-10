@@ -18,14 +18,14 @@ pub(all) enum OrientationLockType {
 /// Convert to string value
 pub fn OrientationLockType::to_string(self : OrientationLockType) -> String {
   match self {
-    Any => "any"
-    Natural => "natural"
-    Landscape => "landscape"
-    Portrait => "portrait"
-    PortraitPrimary => "portrait-primary"
-    PortraitSecondary => "portrait-secondary"
-    LandscapePrimary => "landscape-primary"
-    LandscapeSecondary => "landscape-secondary"
+    OrientationLockType::Any => "any"
+    OrientationLockType::Natural => "natural"
+    OrientationLockType::Landscape => "landscape"
+    OrientationLockType::Portrait => "portrait"
+    OrientationLockType::PortraitPrimary => "portrait-primary"
+    OrientationLockType::PortraitSecondary => "portrait-secondary"
+    OrientationLockType::LandscapePrimary => "landscape-primary"
+    OrientationLockType::LandscapeSecondary => "landscape-secondary"
   }
 }
 
@@ -33,14 +33,14 @@ pub fn OrientationLockType::to_string(self : OrientationLockType) -> String {
 /// Parse from string value
 pub fn OrientationLockType::from_string(s : String) -> OrientationLockType? {
   match s {
-    "any" => Some(Any)
-    "natural" => Some(Natural)
-    "landscape" => Some(Landscape)
-    "portrait" => Some(Portrait)
-    "portrait-primary" => Some(PortraitPrimary)
-    "portrait-secondary" => Some(PortraitSecondary)
-    "landscape-primary" => Some(LandscapePrimary)
-    "landscape-secondary" => Some(LandscapeSecondary)
+    "any" => Some(OrientationLockType::Any)
+    "natural" => Some(OrientationLockType::Natural)
+    "landscape" => Some(OrientationLockType::Landscape)
+    "portrait" => Some(OrientationLockType::Portrait)
+    "portrait-primary" => Some(OrientationLockType::PortraitPrimary)
+    "portrait-secondary" => Some(OrientationLockType::PortraitSecondary)
+    "landscape-primary" => Some(OrientationLockType::LandscapePrimary)
+    "landscape-secondary" => Some(OrientationLockType::LandscapeSecondary)
     _ => None
   }
 }
@@ -58,10 +58,10 @@ pub(all) enum OrientationType {
 /// Convert to string value
 pub fn OrientationType::to_string(self : OrientationType) -> String {
   match self {
-    PortraitPrimary => "portrait-primary"
-    PortraitSecondary => "portrait-secondary"
-    LandscapePrimary => "landscape-primary"
-    LandscapeSecondary => "landscape-secondary"
+    OrientationType::PortraitPrimary => "portrait-primary"
+    OrientationType::PortraitSecondary => "portrait-secondary"
+    OrientationType::LandscapePrimary => "landscape-primary"
+    OrientationType::LandscapeSecondary => "landscape-secondary"
   }
 }
 
@@ -69,10 +69,10 @@ pub fn OrientationType::to_string(self : OrientationType) -> String {
 /// Parse from string value
 pub fn OrientationType::from_string(s : String) -> OrientationType? {
   match s {
-    "portrait-primary" => Some(PortraitPrimary)
-    "portrait-secondary" => Some(PortraitSecondary)
-    "landscape-primary" => Some(LandscapePrimary)
-    "landscape-secondary" => Some(LandscapeSecondary)
+    "portrait-primary" => Some(OrientationType::PortraitPrimary)
+    "portrait-secondary" => Some(OrientationType::PortraitSecondary)
+    "landscape-primary" => Some(OrientationType::LandscapePrimary)
+    "landscape-secondary" => Some(OrientationType::LandscapeSecondary)
     _ => None
   }
 }

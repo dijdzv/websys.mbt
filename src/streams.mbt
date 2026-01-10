@@ -26,6 +26,34 @@ pub extern "js" fn ReadableStreamReader::from_readable_stream_b_y_o_b_reader(
   #| (v) => v
 
 ///|
+/// Check if this ReadableStreamReader is ReadableStreamDefaultReader
+pub extern "js" fn ReadableStreamReader::is_readable_stream_default_reader(
+  self : ReadableStreamReader,
+) -> Bool =
+  #| (self) => self instanceof ReadableStreamDefaultReader
+
+///|
+/// Check if this ReadableStreamReader is ReadableStreamBYOBReader
+pub extern "js" fn ReadableStreamReader::is_readable_stream_b_y_o_b_reader(
+  self : ReadableStreamReader,
+) -> Bool =
+  #| (self) => self instanceof ReadableStreamBYOBReader
+
+///|
+/// Try to get ReadableStreamReader as ReadableStreamDefaultReader
+pub extern "js" fn ReadableStreamReader::as_readable_stream_default_reader(
+  self : ReadableStreamReader,
+) -> ReadableStreamDefaultReader? =
+  #| (self) => (self instanceof ReadableStreamDefaultReader) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ReadableStreamReader as ReadableStreamBYOBReader
+pub extern "js" fn ReadableStreamReader::as_readable_stream_b_y_o_b_reader(
+  self : ReadableStreamReader,
+) -> ReadableStreamBYOBReader? =
+  #| (self) => (self instanceof ReadableStreamBYOBReader) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// ReadableStreamController typedef
 pub type ReadableStreamController
 
@@ -50,6 +78,34 @@ pub extern "js" fn ReadableStreamController::from_readable_byte_stream_controlle
   #| (v) => v
 
 ///|
+/// Check if this ReadableStreamController is ReadableStreamDefaultController
+pub extern "js" fn ReadableStreamController::is_readable_stream_default_controller(
+  self : ReadableStreamController,
+) -> Bool =
+  #| (self) => self instanceof ReadableStreamDefaultController
+
+///|
+/// Check if this ReadableStreamController is ReadableByteStreamController
+pub extern "js" fn ReadableStreamController::is_readable_byte_stream_controller(
+  self : ReadableStreamController,
+) -> Bool =
+  #| (self) => self instanceof ReadableByteStreamController
+
+///|
+/// Try to get ReadableStreamController as ReadableStreamDefaultController
+pub extern "js" fn ReadableStreamController::as_readable_stream_default_controller(
+  self : ReadableStreamController,
+) -> ReadableStreamDefaultController? =
+  #| (self) => (self instanceof ReadableStreamDefaultController) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ReadableStreamController as ReadableByteStreamController
+pub extern "js" fn ReadableStreamController::as_readable_byte_stream_controller(
+  self : ReadableStreamController,
+) -> ReadableByteStreamController? =
+  #| (self) => (self instanceof ReadableByteStreamController) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// ReadableStreamReaderMode enum
 pub(all) enum ReadableStreamReaderMode {
   Byob
@@ -61,7 +117,7 @@ pub fn ReadableStreamReaderMode::to_string(
   self : ReadableStreamReaderMode,
 ) -> String {
   match self {
-    Byob => "byob"
+    ReadableStreamReaderMode::Byob => "byob"
   }
 }
 
@@ -71,7 +127,7 @@ pub fn ReadableStreamReaderMode::from_string(
   s : String,
 ) -> ReadableStreamReaderMode? {
   match s {
-    "byob" => Some(Byob)
+    "byob" => Some(ReadableStreamReaderMode::Byob)
     _ => None
   }
 }
@@ -86,7 +142,7 @@ pub(all) enum ReadableStreamType {
 /// Convert to string value
 pub fn ReadableStreamType::to_string(self : ReadableStreamType) -> String {
   match self {
-    Bytes => "bytes"
+    ReadableStreamType::Bytes => "bytes"
   }
 }
 
@@ -94,7 +150,7 @@ pub fn ReadableStreamType::to_string(self : ReadableStreamType) -> String {
 /// Parse from string value
 pub fn ReadableStreamType::from_string(s : String) -> ReadableStreamType? {
   match s {
-    "bytes" => Some(Bytes)
+    "bytes" => Some(ReadableStreamType::Bytes)
     _ => None
   }
 }

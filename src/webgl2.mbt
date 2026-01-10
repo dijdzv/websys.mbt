@@ -30,6 +30,30 @@ pub extern "js" fn Uint32List::from_array_of_g_luint(
   #| (v) => v
 
 ///|
+/// Check if this Uint32List is Uint32Array
+pub extern "js" fn Uint32List::is_uint32_array(self : Uint32List) -> Bool =
+  #| (self) => self instanceof Uint32Array
+
+///|
+/// Check if this Uint32List is Array[GLuint]
+pub extern "js" fn Uint32List::is_array_of_g_luint(self : Uint32List) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Try to get Uint32List as Uint32Array
+pub extern "js" fn Uint32List::as_uint32_array(
+  self : Uint32List,
+) -> Uint32Array? =
+  #| (self) => (self instanceof Uint32Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get Uint32List as Array[GLuint]
+pub extern "js" fn Uint32List::as_array_of_g_luint(
+  self : Uint32List,
+) -> Array[GLuint]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// WebGLQuery interface
 pub type WebGLQuery
 
@@ -1571,7 +1595,7 @@ pub let web_g_l2_rendering_context_browser_default_webgl : Int = 0x9244
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_canvas(
   self : WebGL2RenderingContext,
-) -> JsValue =
+) -> HTMLCanvasElementOrOffscreenCanvas =
   #| (self) => self.canvas
 
 ///|

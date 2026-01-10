@@ -13,9 +13,9 @@ pub(all) enum MediaDecodingType {
 /// Convert to string value
 pub fn MediaDecodingType::to_string(self : MediaDecodingType) -> String {
   match self {
-    File => "file"
-    MediaSource => "media-source"
-    Webrtc => "webrtc"
+    MediaDecodingType::File => "file"
+    MediaDecodingType::MediaSource => "media-source"
+    MediaDecodingType::Webrtc => "webrtc"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn MediaDecodingType::to_string(self : MediaDecodingType) -> String {
 /// Parse from string value
 pub fn MediaDecodingType::from_string(s : String) -> MediaDecodingType? {
   match s {
-    "file" => Some(File)
-    "media-source" => Some(MediaSource)
-    "webrtc" => Some(Webrtc)
+    "file" => Some(MediaDecodingType::File)
+    "media-source" => Some(MediaDecodingType::MediaSource)
+    "webrtc" => Some(MediaDecodingType::Webrtc)
     _ => None
   }
 }
@@ -41,8 +41,8 @@ pub(all) enum MediaEncodingType {
 /// Convert to string value
 pub fn MediaEncodingType::to_string(self : MediaEncodingType) -> String {
   match self {
-    Record => "record"
-    Webrtc => "webrtc"
+    MediaEncodingType::Record => "record"
+    MediaEncodingType::Webrtc => "webrtc"
   }
 }
 
@@ -50,8 +50,8 @@ pub fn MediaEncodingType::to_string(self : MediaEncodingType) -> String {
 /// Parse from string value
 pub fn MediaEncodingType::from_string(s : String) -> MediaEncodingType? {
   match s {
-    "record" => Some(Record)
-    "webrtc" => Some(Webrtc)
+    "record" => Some(MediaEncodingType::Record)
+    "webrtc" => Some(MediaEncodingType::Webrtc)
     _ => None
   }
 }
@@ -68,9 +68,9 @@ pub(all) enum HdrMetadataType {
 /// Convert to string value
 pub fn HdrMetadataType::to_string(self : HdrMetadataType) -> String {
   match self {
-    SmpteSt2086 => "smpteSt2086"
-    SmpteSt209410 => "smpteSt2094-10"
-    SmpteSt209440 => "smpteSt2094-40"
+    HdrMetadataType::SmpteSt2086 => "smpteSt2086"
+    HdrMetadataType::SmpteSt209410 => "smpteSt2094-10"
+    HdrMetadataType::SmpteSt209440 => "smpteSt2094-40"
   }
 }
 
@@ -78,9 +78,9 @@ pub fn HdrMetadataType::to_string(self : HdrMetadataType) -> String {
 /// Parse from string value
 pub fn HdrMetadataType::from_string(s : String) -> HdrMetadataType? {
   match s {
-    "smpteSt2086" => Some(SmpteSt2086)
-    "smpteSt2094-10" => Some(SmpteSt209410)
-    "smpteSt2094-40" => Some(SmpteSt209440)
+    "smpteSt2086" => Some(HdrMetadataType::SmpteSt2086)
+    "smpteSt2094-10" => Some(HdrMetadataType::SmpteSt209410)
+    "smpteSt2094-40" => Some(HdrMetadataType::SmpteSt209440)
     _ => None
   }
 }
@@ -97,9 +97,9 @@ pub(all) enum ColorGamut {
 /// Convert to string value
 pub fn ColorGamut::to_string(self : ColorGamut) -> String {
   match self {
-    Srgb => "srgb"
-    P3 => "p3"
-    Rec2020 => "rec2020"
+    ColorGamut::Srgb => "srgb"
+    ColorGamut::P3 => "p3"
+    ColorGamut::Rec2020 => "rec2020"
   }
 }
 
@@ -107,9 +107,9 @@ pub fn ColorGamut::to_string(self : ColorGamut) -> String {
 /// Parse from string value
 pub fn ColorGamut::from_string(s : String) -> ColorGamut? {
   match s {
-    "srgb" => Some(Srgb)
-    "p3" => Some(P3)
-    "rec2020" => Some(Rec2020)
+    "srgb" => Some(ColorGamut::Srgb)
+    "p3" => Some(ColorGamut::P3)
+    "rec2020" => Some(ColorGamut::Rec2020)
     _ => None
   }
 }
@@ -126,9 +126,9 @@ pub(all) enum TransferFunction {
 /// Convert to string value
 pub fn TransferFunction::to_string(self : TransferFunction) -> String {
   match self {
-    Srgb => "srgb"
-    Pq => "pq"
-    Hlg => "hlg"
+    TransferFunction::Srgb => "srgb"
+    TransferFunction::Pq => "pq"
+    TransferFunction::Hlg => "hlg"
   }
 }
 
@@ -136,9 +136,9 @@ pub fn TransferFunction::to_string(self : TransferFunction) -> String {
 /// Parse from string value
 pub fn TransferFunction::from_string(s : String) -> TransferFunction? {
   match s {
-    "srgb" => Some(Srgb)
-    "pq" => Some(Pq)
-    "hlg" => Some(Hlg)
+    "srgb" => Some(TransferFunction::Srgb)
+    "pq" => Some(TransferFunction::Pq)
+    "hlg" => Some(TransferFunction::Hlg)
     _ => None
   }
 }

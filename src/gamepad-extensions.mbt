@@ -13,9 +13,9 @@ pub(all) enum GamepadHand {
 /// Convert to string value
 pub fn GamepadHand::to_string(self : GamepadHand) -> String {
   match self {
-    Empty => ""
-    Left => "left"
-    Right => "right"
+    GamepadHand::Empty => ""
+    GamepadHand::Left => "left"
+    GamepadHand::Right => "right"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn GamepadHand::to_string(self : GamepadHand) -> String {
 /// Parse from string value
 pub fn GamepadHand::from_string(s : String) -> GamepadHand? {
   match s {
-    "" => Some(Empty)
-    "left" => Some(Left)
-    "right" => Some(Right)
+    "" => Some(GamepadHand::Empty)
+    "left" => Some(GamepadHand::Left)
+    "right" => Some(GamepadHand::Right)
     _ => None
   }
 }

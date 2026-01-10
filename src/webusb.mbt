@@ -13,9 +13,9 @@ pub(all) enum USBTransferStatus {
 /// Convert to string value
 pub fn USBTransferStatus::to_string(self : USBTransferStatus) -> String {
   match self {
-    Ok => "ok"
-    Stall => "stall"
-    Babble => "babble"
+    USBTransferStatus::Ok => "ok"
+    USBTransferStatus::Stall => "stall"
+    USBTransferStatus::Babble => "babble"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn USBTransferStatus::to_string(self : USBTransferStatus) -> String {
 /// Parse from string value
 pub fn USBTransferStatus::from_string(s : String) -> USBTransferStatus? {
   match s {
-    "ok" => Some(Ok)
-    "stall" => Some(Stall)
-    "babble" => Some(Babble)
+    "ok" => Some(USBTransferStatus::Ok)
+    "stall" => Some(USBTransferStatus::Stall)
+    "babble" => Some(USBTransferStatus::Babble)
     _ => None
   }
 }
@@ -42,9 +42,9 @@ pub(all) enum USBRequestType {
 /// Convert to string value
 pub fn USBRequestType::to_string(self : USBRequestType) -> String {
   match self {
-    Standard => "standard"
-    Class => "class"
-    Vendor => "vendor"
+    USBRequestType::Standard => "standard"
+    USBRequestType::Class => "class"
+    USBRequestType::Vendor => "vendor"
   }
 }
 
@@ -52,9 +52,9 @@ pub fn USBRequestType::to_string(self : USBRequestType) -> String {
 /// Parse from string value
 pub fn USBRequestType::from_string(s : String) -> USBRequestType? {
   match s {
-    "standard" => Some(Standard)
-    "class" => Some(Class)
-    "vendor" => Some(Vendor)
+    "standard" => Some(USBRequestType::Standard)
+    "class" => Some(USBRequestType::Class)
+    "vendor" => Some(USBRequestType::Vendor)
     _ => None
   }
 }
@@ -72,10 +72,10 @@ pub(all) enum USBRecipient {
 /// Convert to string value
 pub fn USBRecipient::to_string(self : USBRecipient) -> String {
   match self {
-    Device => "device"
-    Interface => "interface"
-    Endpoint => "endpoint"
-    Other => "other"
+    USBRecipient::Device => "device"
+    USBRecipient::Interface => "interface"
+    USBRecipient::Endpoint => "endpoint"
+    USBRecipient::Other => "other"
   }
 }
 
@@ -83,10 +83,10 @@ pub fn USBRecipient::to_string(self : USBRecipient) -> String {
 /// Parse from string value
 pub fn USBRecipient::from_string(s : String) -> USBRecipient? {
   match s {
-    "device" => Some(Device)
-    "interface" => Some(Interface)
-    "endpoint" => Some(Endpoint)
-    "other" => Some(Other)
+    "device" => Some(USBRecipient::Device)
+    "interface" => Some(USBRecipient::Interface)
+    "endpoint" => Some(USBRecipient::Endpoint)
+    "other" => Some(USBRecipient::Other)
     _ => None
   }
 }
@@ -102,8 +102,8 @@ pub(all) enum USBDirection {
 /// Convert to string value
 pub fn USBDirection::to_string(self : USBDirection) -> String {
   match self {
-    In => "in"
-    Out => "out"
+    USBDirection::In => "in"
+    USBDirection::Out => "out"
   }
 }
 
@@ -111,8 +111,8 @@ pub fn USBDirection::to_string(self : USBDirection) -> String {
 /// Parse from string value
 pub fn USBDirection::from_string(s : String) -> USBDirection? {
   match s {
-    "in" => Some(In)
-    "out" => Some(Out)
+    "in" => Some(USBDirection::In)
+    "out" => Some(USBDirection::Out)
     _ => None
   }
 }
@@ -129,9 +129,9 @@ pub(all) enum USBEndpointType {
 /// Convert to string value
 pub fn USBEndpointType::to_string(self : USBEndpointType) -> String {
   match self {
-    Bulk => "bulk"
-    Interrupt => "interrupt"
-    Isochronous => "isochronous"
+    USBEndpointType::Bulk => "bulk"
+    USBEndpointType::Interrupt => "interrupt"
+    USBEndpointType::Isochronous => "isochronous"
   }
 }
 
@@ -139,9 +139,9 @@ pub fn USBEndpointType::to_string(self : USBEndpointType) -> String {
 /// Parse from string value
 pub fn USBEndpointType::from_string(s : String) -> USBEndpointType? {
   match s {
-    "bulk" => Some(Bulk)
-    "interrupt" => Some(Interrupt)
-    "isochronous" => Some(Isochronous)
+    "bulk" => Some(USBEndpointType::Bulk)
+    "interrupt" => Some(USBEndpointType::Interrupt)
+    "isochronous" => Some(USBEndpointType::Isochronous)
     _ => None
   }
 }
@@ -381,7 +381,7 @@ pub extern "js" fn USB::set_ondisconnect(
   #| (self, value) => { self.ondisconnect = value }
 
 ///|
-pub extern "js" fn USB::get_devices(self : USB) -> Promise[Array[USBDevice]] =
+pub extern "js" fn USB::get_devices(self : USB) -> Promise[Unit] =
   #| (self) => self.getDevices()
 
 ///|

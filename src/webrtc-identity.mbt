@@ -18,14 +18,14 @@ pub(all) enum RTCErrorDetailTypeIdp {
 /// Convert to string value
 pub fn RTCErrorDetailTypeIdp::to_string(self : RTCErrorDetailTypeIdp) -> String {
   match self {
-    IdpBadScriptFailure => "idp-bad-script-failure"
-    IdpExecutionFailure => "idp-execution-failure"
-    IdpLoadFailure => "idp-load-failure"
-    IdpNeedLogin => "idp-need-login"
-    IdpTimeout => "idp-timeout"
-    IdpTlsFailure => "idp-tls-failure"
-    IdpTokenExpired => "idp-token-expired"
-    IdpTokenInvalid => "idp-token-invalid"
+    RTCErrorDetailTypeIdp::IdpBadScriptFailure => "idp-bad-script-failure"
+    RTCErrorDetailTypeIdp::IdpExecutionFailure => "idp-execution-failure"
+    RTCErrorDetailTypeIdp::IdpLoadFailure => "idp-load-failure"
+    RTCErrorDetailTypeIdp::IdpNeedLogin => "idp-need-login"
+    RTCErrorDetailTypeIdp::IdpTimeout => "idp-timeout"
+    RTCErrorDetailTypeIdp::IdpTlsFailure => "idp-tls-failure"
+    RTCErrorDetailTypeIdp::IdpTokenExpired => "idp-token-expired"
+    RTCErrorDetailTypeIdp::IdpTokenInvalid => "idp-token-invalid"
   }
 }
 
@@ -33,14 +33,14 @@ pub fn RTCErrorDetailTypeIdp::to_string(self : RTCErrorDetailTypeIdp) -> String 
 /// Parse from string value
 pub fn RTCErrorDetailTypeIdp::from_string(s : String) -> RTCErrorDetailTypeIdp? {
   match s {
-    "idp-bad-script-failure" => Some(IdpBadScriptFailure)
-    "idp-execution-failure" => Some(IdpExecutionFailure)
-    "idp-load-failure" => Some(IdpLoadFailure)
-    "idp-need-login" => Some(IdpNeedLogin)
-    "idp-timeout" => Some(IdpTimeout)
-    "idp-tls-failure" => Some(IdpTlsFailure)
-    "idp-token-expired" => Some(IdpTokenExpired)
-    "idp-token-invalid" => Some(IdpTokenInvalid)
+    "idp-bad-script-failure" => Some(RTCErrorDetailTypeIdp::IdpBadScriptFailure)
+    "idp-execution-failure" => Some(RTCErrorDetailTypeIdp::IdpExecutionFailure)
+    "idp-load-failure" => Some(RTCErrorDetailTypeIdp::IdpLoadFailure)
+    "idp-need-login" => Some(RTCErrorDetailTypeIdp::IdpNeedLogin)
+    "idp-timeout" => Some(RTCErrorDetailTypeIdp::IdpTimeout)
+    "idp-tls-failure" => Some(RTCErrorDetailTypeIdp::IdpTlsFailure)
+    "idp-token-expired" => Some(RTCErrorDetailTypeIdp::IdpTokenExpired)
+    "idp-token-invalid" => Some(RTCErrorDetailTypeIdp::IdpTokenInvalid)
     _ => None
   }
 }

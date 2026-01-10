@@ -27,15 +27,15 @@ pub(all) enum ConnectionType {
 /// Convert to string value
 pub fn ConnectionType::to_string(self : ConnectionType) -> String {
   match self {
-    Bluetooth => "bluetooth"
-    Cellular => "cellular"
-    Ethernet => "ethernet"
-    Mixed => "mixed"
-    None => "none"
-    Other => "other"
-    Unknown => "unknown"
-    Wifi => "wifi"
-    Wimax => "wimax"
+    ConnectionType::Bluetooth => "bluetooth"
+    ConnectionType::Cellular => "cellular"
+    ConnectionType::Ethernet => "ethernet"
+    ConnectionType::Mixed => "mixed"
+    ConnectionType::None => "none"
+    ConnectionType::Other => "other"
+    ConnectionType::Unknown => "unknown"
+    ConnectionType::Wifi => "wifi"
+    ConnectionType::Wimax => "wimax"
   }
 }
 
@@ -43,15 +43,15 @@ pub fn ConnectionType::to_string(self : ConnectionType) -> String {
 /// Parse from string value
 pub fn ConnectionType::from_string(s : String) -> ConnectionType? {
   match s {
-    "bluetooth" => Some(Bluetooth)
-    "cellular" => Some(Cellular)
-    "ethernet" => Some(Ethernet)
-    "mixed" => Some(Mixed)
-    "none" => Some(None)
-    "other" => Some(Other)
-    "unknown" => Some(Unknown)
-    "wifi" => Some(Wifi)
-    "wimax" => Some(Wimax)
+    "bluetooth" => Some(ConnectionType::Bluetooth)
+    "cellular" => Some(ConnectionType::Cellular)
+    "ethernet" => Some(ConnectionType::Ethernet)
+    "mixed" => Some(ConnectionType::Mixed)
+    "none" => Some(ConnectionType::None)
+    "other" => Some(ConnectionType::Other)
+    "unknown" => Some(ConnectionType::Unknown)
+    "wifi" => Some(ConnectionType::Wifi)
+    "wimax" => Some(ConnectionType::Wimax)
     _ => None
   }
 }
@@ -71,10 +71,10 @@ pub fn EffectiveConnectionType::to_string(
   self : EffectiveConnectionType,
 ) -> String {
   match self {
-    N2g => "2g"
-    N3g => "3g"
-    N4g => "4g"
-    Slow2g => "slow-2g"
+    EffectiveConnectionType::N2g => "2g"
+    EffectiveConnectionType::N3g => "3g"
+    EffectiveConnectionType::N4g => "4g"
+    EffectiveConnectionType::Slow2g => "slow-2g"
   }
 }
 
@@ -84,10 +84,10 @@ pub fn EffectiveConnectionType::from_string(
   s : String,
 ) -> EffectiveConnectionType? {
   match s {
-    "2g" => Some(N2g)
-    "3g" => Some(N3g)
-    "4g" => Some(N4g)
-    "slow-2g" => Some(Slow2g)
+    "2g" => Some(EffectiveConnectionType::N2g)
+    "3g" => Some(EffectiveConnectionType::N3g)
+    "4g" => Some(EffectiveConnectionType::N4g)
+    "slow-2g" => Some(EffectiveConnectionType::Slow2g)
     _ => None
   }
 }

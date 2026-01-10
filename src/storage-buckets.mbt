@@ -54,7 +54,7 @@ pub extern "js" fn StorageBucketManager::open_with_options(
 ///|
 pub extern "js" fn StorageBucketManager::keys(
   self : StorageBucketManager,
-) -> Promise[Array[String]] =
+) -> Promise[Unit] =
   #| (self) => self.keys()
 
 ///|

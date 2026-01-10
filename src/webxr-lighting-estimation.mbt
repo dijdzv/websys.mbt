@@ -12,8 +12,8 @@ pub(all) enum XRReflectionFormat {
 /// Convert to string value
 pub fn XRReflectionFormat::to_string(self : XRReflectionFormat) -> String {
   match self {
-    Srgba8 => "srgba8"
-    Rgba16f => "rgba16f"
+    XRReflectionFormat::Srgba8 => "srgba8"
+    XRReflectionFormat::Rgba16f => "rgba16f"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn XRReflectionFormat::to_string(self : XRReflectionFormat) -> String {
 /// Parse from string value
 pub fn XRReflectionFormat::from_string(s : String) -> XRReflectionFormat? {
   match s {
-    "srgba8" => Some(Srgba8)
-    "rgba16f" => Some(Rgba16f)
+    "srgba8" => Some(XRReflectionFormat::Srgba8)
+    "rgba16f" => Some(XRReflectionFormat::Rgba16f)
     _ => None
   }
 }

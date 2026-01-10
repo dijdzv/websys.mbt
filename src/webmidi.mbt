@@ -12,8 +12,8 @@ pub(all) enum MIDIPortType {
 /// Convert to string value
 pub fn MIDIPortType::to_string(self : MIDIPortType) -> String {
   match self {
-    Input => "input"
-    Output => "output"
+    MIDIPortType::Input => "input"
+    MIDIPortType::Output => "output"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn MIDIPortType::to_string(self : MIDIPortType) -> String {
 /// Parse from string value
 pub fn MIDIPortType::from_string(s : String) -> MIDIPortType? {
   match s {
-    "input" => Some(Input)
-    "output" => Some(Output)
+    "input" => Some(MIDIPortType::Input)
+    "output" => Some(MIDIPortType::Output)
     _ => None
   }
 }
@@ -38,8 +38,8 @@ pub(all) enum MIDIPortDeviceState {
 /// Convert to string value
 pub fn MIDIPortDeviceState::to_string(self : MIDIPortDeviceState) -> String {
   match self {
-    Disconnected => "disconnected"
-    Connected => "connected"
+    MIDIPortDeviceState::Disconnected => "disconnected"
+    MIDIPortDeviceState::Connected => "connected"
   }
 }
 
@@ -47,8 +47,8 @@ pub fn MIDIPortDeviceState::to_string(self : MIDIPortDeviceState) -> String {
 /// Parse from string value
 pub fn MIDIPortDeviceState::from_string(s : String) -> MIDIPortDeviceState? {
   match s {
-    "disconnected" => Some(Disconnected)
-    "connected" => Some(Connected)
+    "disconnected" => Some(MIDIPortDeviceState::Disconnected)
+    "connected" => Some(MIDIPortDeviceState::Connected)
     _ => None
   }
 }
@@ -67,9 +67,9 @@ pub fn MIDIPortConnectionState::to_string(
   self : MIDIPortConnectionState,
 ) -> String {
   match self {
-    Open => "open"
-    Closed => "closed"
-    Pending => "pending"
+    MIDIPortConnectionState::Open => "open"
+    MIDIPortConnectionState::Closed => "closed"
+    MIDIPortConnectionState::Pending => "pending"
   }
 }
 
@@ -79,9 +79,9 @@ pub fn MIDIPortConnectionState::from_string(
   s : String,
 ) -> MIDIPortConnectionState? {
   match s {
-    "open" => Some(Open)
-    "closed" => Some(Closed)
-    "pending" => Some(Pending)
+    "open" => Some(MIDIPortConnectionState::Open)
+    "closed" => Some(MIDIPortConnectionState::Closed)
+    "pending" => Some(MIDIPortConnectionState::Pending)
     _ => None
   }
 }

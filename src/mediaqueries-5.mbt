@@ -24,6 +24,30 @@ pub extern "js" fn CustomMediaQuery::from_bool(v : Bool) -> CustomMediaQuery =
   #| (v) => v
 
 ///|
+/// Check if this CustomMediaQuery is MediaList
+pub extern "js" fn CustomMediaQuery::is_media_list(
+  self : CustomMediaQuery,
+) -> Bool =
+  #| (self) => self instanceof MediaList
+
+///|
+/// Check if this CustomMediaQuery is Bool
+pub extern "js" fn CustomMediaQuery::is_bool(self : CustomMediaQuery) -> Bool =
+  #| (self) => typeof self === 'boolean'
+
+///|
+/// Try to get CustomMediaQuery as MediaList
+pub extern "js" fn CustomMediaQuery::as_media_list(
+  self : CustomMediaQuery,
+) -> MediaList? =
+  #| (self) => (self instanceof MediaList) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CustomMediaQuery as Bool
+pub extern "js" fn CustomMediaQuery::as_bool(self : CustomMediaQuery) -> Bool? =
+  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// CSSCustomMediaRule interface
 pub type CSSCustomMediaRule
 

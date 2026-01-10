@@ -17,13 +17,13 @@ pub(all) enum HIDUnitSystem {
 /// Convert to string value
 pub fn HIDUnitSystem::to_string(self : HIDUnitSystem) -> String {
   match self {
-    None => "none"
-    SiLinear => "si-linear"
-    SiRotation => "si-rotation"
-    EnglishLinear => "english-linear"
-    EnglishRotation => "english-rotation"
-    VendorDefined => "vendor-defined"
-    Reserved => "reserved"
+    HIDUnitSystem::None => "none"
+    HIDUnitSystem::SiLinear => "si-linear"
+    HIDUnitSystem::SiRotation => "si-rotation"
+    HIDUnitSystem::EnglishLinear => "english-linear"
+    HIDUnitSystem::EnglishRotation => "english-rotation"
+    HIDUnitSystem::VendorDefined => "vendor-defined"
+    HIDUnitSystem::Reserved => "reserved"
   }
 }
 
@@ -31,13 +31,13 @@ pub fn HIDUnitSystem::to_string(self : HIDUnitSystem) -> String {
 /// Parse from string value
 pub fn HIDUnitSystem::from_string(s : String) -> HIDUnitSystem? {
   match s {
-    "none" => Some(None)
-    "si-linear" => Some(SiLinear)
-    "si-rotation" => Some(SiRotation)
-    "english-linear" => Some(EnglishLinear)
-    "english-rotation" => Some(EnglishRotation)
-    "vendor-defined" => Some(VendorDefined)
-    "reserved" => Some(Reserved)
+    "none" => Some(HIDUnitSystem::None)
+    "si-linear" => Some(HIDUnitSystem::SiLinear)
+    "si-rotation" => Some(HIDUnitSystem::SiRotation)
+    "english-linear" => Some(HIDUnitSystem::EnglishLinear)
+    "english-rotation" => Some(HIDUnitSystem::EnglishRotation)
+    "vendor-defined" => Some(HIDUnitSystem::VendorDefined)
+    "reserved" => Some(HIDUnitSystem::Reserved)
     _ => None
   }
 }
@@ -333,14 +333,14 @@ pub extern "js" fn HID::set_ondisconnect(
   #| (self, value) => { self.ondisconnect = value }
 
 ///|
-pub extern "js" fn HID::get_devices(self : HID) -> Promise[Array[HIDDevice]] =
+pub extern "js" fn HID::get_devices(self : HID) -> Promise[Unit] =
   #| (self) => self.getDevices()
 
 ///|
 pub extern "js" fn HID::request_device(
   self : HID,
   options : HIDDeviceRequestOptions,
-) -> Promise[Array[HIDDevice]] =
+) -> Promise[Unit] =
   #| (self, options) => self.requestDevice(options)
 
 ///|

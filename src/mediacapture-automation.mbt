@@ -14,8 +14,8 @@ pub fn MockCapturePromptResult::to_string(
   self : MockCapturePromptResult,
 ) -> String {
   match self {
-    Granted => "granted"
-    Denied => "denied"
+    MockCapturePromptResult::Granted => "granted"
+    MockCapturePromptResult::Denied => "denied"
   }
 }
 
@@ -25,8 +25,8 @@ pub fn MockCapturePromptResult::from_string(
   s : String,
 ) -> MockCapturePromptResult? {
   match s {
-    "granted" => Some(Granted)
-    "denied" => Some(Denied)
+    "granted" => Some(MockCapturePromptResult::Granted)
+    "denied" => Some(MockCapturePromptResult::Denied)
     _ => None
   }
 }

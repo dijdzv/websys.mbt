@@ -12,8 +12,8 @@ pub(all) enum ItemType {
 /// Convert to string value
 pub fn ItemType::to_string(self : ItemType) -> String {
   match self {
-    Product => "product"
-    Subscription => "subscription"
+    ItemType::Product => "product"
+    ItemType::Subscription => "subscription"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn ItemType::to_string(self : ItemType) -> String {
 /// Parse from string value
 pub fn ItemType::from_string(s : String) -> ItemType? {
   match s {
-    "product" => Some(Product)
-    "subscription" => Some(Subscription)
+    "product" => Some(ItemType::Product)
+    "subscription" => Some(ItemType::Subscription)
     _ => None
   }
 }
@@ -113,19 +113,19 @@ pub extern "js" fn DigitalGoodsService::to_js_value(
 pub extern "js" fn DigitalGoodsService::get_details(
   self : DigitalGoodsService,
   item_ids : Array[String],
-) -> Promise[Array[ItemDetails]] =
+) -> Promise[Unit] =
   #| (self, item_ids) => self.getDetails(item_ids)
 
 ///|
 pub extern "js" fn DigitalGoodsService::list_purchases(
   self : DigitalGoodsService,
-) -> Promise[Array[PurchaseDetails]] =
+) -> Promise[Unit] =
   #| (self) => self.listPurchases()
 
 ///|
 pub extern "js" fn DigitalGoodsService::list_purchase_history(
   self : DigitalGoodsService,
-) -> Promise[Array[PurchaseDetails]] =
+) -> Promise[Unit] =
   #| (self) => self.listPurchaseHistory()
 
 ///|

@@ -15,11 +15,11 @@ pub(all) enum XRLayerLayout {
 /// Convert to string value
 pub fn XRLayerLayout::to_string(self : XRLayerLayout) -> String {
   match self {
-    Default => "default"
-    Mono => "mono"
-    Stereo => "stereo"
-    StereoLeftRight => "stereo-left-right"
-    StereoTopBottom => "stereo-top-bottom"
+    XRLayerLayout::Default => "default"
+    XRLayerLayout::Mono => "mono"
+    XRLayerLayout::Stereo => "stereo"
+    XRLayerLayout::StereoLeftRight => "stereo-left-right"
+    XRLayerLayout::StereoTopBottom => "stereo-top-bottom"
   }
 }
 
@@ -27,11 +27,11 @@ pub fn XRLayerLayout::to_string(self : XRLayerLayout) -> String {
 /// Parse from string value
 pub fn XRLayerLayout::from_string(s : String) -> XRLayerLayout? {
   match s {
-    "default" => Some(Default)
-    "mono" => Some(Mono)
-    "stereo" => Some(Stereo)
-    "stereo-left-right" => Some(StereoLeftRight)
-    "stereo-top-bottom" => Some(StereoTopBottom)
+    "default" => Some(XRLayerLayout::Default)
+    "mono" => Some(XRLayerLayout::Mono)
+    "stereo" => Some(XRLayerLayout::Stereo)
+    "stereo-left-right" => Some(XRLayerLayout::StereoLeftRight)
+    "stereo-top-bottom" => Some(XRLayerLayout::StereoTopBottom)
     _ => None
   }
 }
@@ -48,9 +48,9 @@ pub(all) enum XRLayerQuality {
 /// Convert to string value
 pub fn XRLayerQuality::to_string(self : XRLayerQuality) -> String {
   match self {
-    Default => "default"
-    TextOptimized => "text-optimized"
-    GraphicsOptimized => "graphics-optimized"
+    XRLayerQuality::Default => "default"
+    XRLayerQuality::TextOptimized => "text-optimized"
+    XRLayerQuality::GraphicsOptimized => "graphics-optimized"
   }
 }
 
@@ -58,9 +58,9 @@ pub fn XRLayerQuality::to_string(self : XRLayerQuality) -> String {
 /// Parse from string value
 pub fn XRLayerQuality::from_string(s : String) -> XRLayerQuality? {
   match s {
-    "default" => Some(Default)
-    "text-optimized" => Some(TextOptimized)
-    "graphics-optimized" => Some(GraphicsOptimized)
+    "default" => Some(XRLayerQuality::Default)
+    "text-optimized" => Some(XRLayerQuality::TextOptimized)
+    "graphics-optimized" => Some(XRLayerQuality::GraphicsOptimized)
     _ => None
   }
 }
@@ -76,8 +76,8 @@ pub(all) enum XRTextureType {
 /// Convert to string value
 pub fn XRTextureType::to_string(self : XRTextureType) -> String {
   match self {
-    Texture => "texture"
-    TextureArray => "texture-array"
+    XRTextureType::Texture => "texture"
+    XRTextureType::TextureArray => "texture-array"
   }
 }
 
@@ -85,8 +85,8 @@ pub fn XRTextureType::to_string(self : XRTextureType) -> String {
 /// Parse from string value
 pub fn XRTextureType::from_string(s : String) -> XRTextureType? {
   match s {
-    "texture" => Some(Texture)
-    "texture-array" => Some(TextureArray)
+    "texture" => Some(XRTextureType::Texture)
+    "texture-array" => Some(XRTextureType::TextureArray)
     _ => None
   }
 }

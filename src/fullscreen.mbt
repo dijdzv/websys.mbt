@@ -15,9 +15,9 @@ pub fn FullscreenNavigationUI::to_string(
   self : FullscreenNavigationUI,
 ) -> String {
   match self {
-    Auto => "auto"
-    Show => "show"
-    Hide => "hide"
+    FullscreenNavigationUI::Auto => "auto"
+    FullscreenNavigationUI::Show => "show"
+    FullscreenNavigationUI::Hide => "hide"
   }
 }
 
@@ -27,9 +27,9 @@ pub fn FullscreenNavigationUI::from_string(
   s : String,
 ) -> FullscreenNavigationUI? {
   match s {
-    "auto" => Some(Auto)
-    "show" => Some(Show)
-    "hide" => Some(Hide)
+    "auto" => Some(FullscreenNavigationUI::Auto)
+    "show" => Some(FullscreenNavigationUI::Show)
+    "hide" => Some(FullscreenNavigationUI::Hide)
     _ => None
   }
 }

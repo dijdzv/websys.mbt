@@ -12,8 +12,8 @@ pub(all) enum BitrateMode {
 /// Convert to string value
 pub fn BitrateMode::to_string(self : BitrateMode) -> String {
   match self {
-    Constant => "constant"
-    Variable => "variable"
+    BitrateMode::Constant => "constant"
+    BitrateMode::Variable => "variable"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn BitrateMode::to_string(self : BitrateMode) -> String {
 /// Parse from string value
 pub fn BitrateMode::from_string(s : String) -> BitrateMode? {
   match s {
-    "constant" => Some(Constant)
-    "variable" => Some(Variable)
+    "constant" => Some(BitrateMode::Constant)
+    "variable" => Some(BitrateMode::Variable)
     _ => None
   }
 }
@@ -39,9 +39,9 @@ pub(all) enum RecordingState {
 /// Convert to string value
 pub fn RecordingState::to_string(self : RecordingState) -> String {
   match self {
-    Inactive => "inactive"
-    Recording => "recording"
-    Paused => "paused"
+    RecordingState::Inactive => "inactive"
+    RecordingState::Recording => "recording"
+    RecordingState::Paused => "paused"
   }
 }
 
@@ -49,9 +49,9 @@ pub fn RecordingState::to_string(self : RecordingState) -> String {
 /// Parse from string value
 pub fn RecordingState::from_string(s : String) -> RecordingState? {
   match s {
-    "inactive" => Some(Inactive)
-    "recording" => Some(Recording)
-    "paused" => Some(Paused)
+    "inactive" => Some(RecordingState::Inactive)
+    "recording" => Some(RecordingState::Recording)
+    "paused" => Some(RecordingState::Paused)
     _ => None
   }
 }

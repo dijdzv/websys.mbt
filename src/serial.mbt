@@ -13,9 +13,9 @@ pub(all) enum ParityType {
 /// Convert to string value
 pub fn ParityType::to_string(self : ParityType) -> String {
   match self {
-    None => "none"
-    Even => "even"
-    Odd => "odd"
+    ParityType::None => "none"
+    ParityType::Even => "even"
+    ParityType::Odd => "odd"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn ParityType::to_string(self : ParityType) -> String {
 /// Parse from string value
 pub fn ParityType::from_string(s : String) -> ParityType? {
   match s {
-    "none" => Some(None)
-    "even" => Some(Even)
-    "odd" => Some(Odd)
+    "none" => Some(ParityType::None)
+    "even" => Some(ParityType::Even)
+    "odd" => Some(ParityType::Odd)
     _ => None
   }
 }
@@ -41,8 +41,8 @@ pub(all) enum FlowControlType {
 /// Convert to string value
 pub fn FlowControlType::to_string(self : FlowControlType) -> String {
   match self {
-    None => "none"
-    Hardware => "hardware"
+    FlowControlType::None => "none"
+    FlowControlType::Hardware => "hardware"
   }
 }
 
@@ -50,8 +50,8 @@ pub fn FlowControlType::to_string(self : FlowControlType) -> String {
 /// Parse from string value
 pub fn FlowControlType::from_string(s : String) -> FlowControlType? {
   match s {
-    "none" => Some(None)
-    "hardware" => Some(Hardware)
+    "none" => Some(FlowControlType::None)
+    "hardware" => Some(FlowControlType::Hardware)
     _ => None
   }
 }
@@ -264,9 +264,7 @@ pub extern "js" fn Serial::set_ondisconnect(
   #| (self, value) => { self.ondisconnect = value }
 
 ///|
-pub extern "js" fn Serial::get_ports(
-  self : Serial,
-) -> Promise[Array[SerialPort]] =
+pub extern "js" fn Serial::get_ports(self : Serial) -> Promise[Unit] =
   #| (self) => self.getPorts()
 
 ///|

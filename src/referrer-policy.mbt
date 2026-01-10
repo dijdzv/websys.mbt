@@ -19,15 +19,16 @@ pub(all) enum ReferrerPolicy {
 /// Convert to string value
 pub fn ReferrerPolicy::to_string(self : ReferrerPolicy) -> String {
   match self {
-    Empty => ""
-    NoReferrer => "no-referrer"
-    NoReferrerWhenDowngrade => "no-referrer-when-downgrade"
-    SameOrigin => "same-origin"
-    Origin => "origin"
-    StrictOrigin => "strict-origin"
-    OriginWhenCrossOrigin => "origin-when-cross-origin"
-    StrictOriginWhenCrossOrigin => "strict-origin-when-cross-origin"
-    UnsafeUrl => "unsafe-url"
+    ReferrerPolicy::Empty => ""
+    ReferrerPolicy::NoReferrer => "no-referrer"
+    ReferrerPolicy::NoReferrerWhenDowngrade => "no-referrer-when-downgrade"
+    ReferrerPolicy::SameOrigin => "same-origin"
+    ReferrerPolicy::Origin => "origin"
+    ReferrerPolicy::StrictOrigin => "strict-origin"
+    ReferrerPolicy::OriginWhenCrossOrigin => "origin-when-cross-origin"
+    ReferrerPolicy::StrictOriginWhenCrossOrigin =>
+      "strict-origin-when-cross-origin"
+    ReferrerPolicy::UnsafeUrl => "unsafe-url"
   }
 }
 
@@ -35,15 +36,17 @@ pub fn ReferrerPolicy::to_string(self : ReferrerPolicy) -> String {
 /// Parse from string value
 pub fn ReferrerPolicy::from_string(s : String) -> ReferrerPolicy? {
   match s {
-    "" => Some(Empty)
-    "no-referrer" => Some(NoReferrer)
-    "no-referrer-when-downgrade" => Some(NoReferrerWhenDowngrade)
-    "same-origin" => Some(SameOrigin)
-    "origin" => Some(Origin)
-    "strict-origin" => Some(StrictOrigin)
-    "origin-when-cross-origin" => Some(OriginWhenCrossOrigin)
-    "strict-origin-when-cross-origin" => Some(StrictOriginWhenCrossOrigin)
-    "unsafe-url" => Some(UnsafeUrl)
+    "" => Some(ReferrerPolicy::Empty)
+    "no-referrer" => Some(ReferrerPolicy::NoReferrer)
+    "no-referrer-when-downgrade" =>
+      Some(ReferrerPolicy::NoReferrerWhenDowngrade)
+    "same-origin" => Some(ReferrerPolicy::SameOrigin)
+    "origin" => Some(ReferrerPolicy::Origin)
+    "strict-origin" => Some(ReferrerPolicy::StrictOrigin)
+    "origin-when-cross-origin" => Some(ReferrerPolicy::OriginWhenCrossOrigin)
+    "strict-origin-when-cross-origin" =>
+      Some(ReferrerPolicy::StrictOriginWhenCrossOrigin)
+    "unsafe-url" => Some(ReferrerPolicy::UnsafeUrl)
     _ => None
   }
 }

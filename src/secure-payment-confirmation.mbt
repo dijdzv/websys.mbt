@@ -17,11 +17,14 @@ pub fn SecurePaymentConfirmationAvailability::to_string(
   self : SecurePaymentConfirmationAvailability,
 ) -> String {
   match self {
-    Available => "available"
-    UnavailableUnknownReason => "unavailable-unknown-reason"
-    UnavailableFeatureNotEnabled => "unavailable-feature-not-enabled"
-    UnavailableNoPermissionPolicy => "unavailable-no-permission-policy"
-    UnavailableNoUserVerifyingPlatformAuthenticator =>
+    SecurePaymentConfirmationAvailability::Available => "available"
+    SecurePaymentConfirmationAvailability::UnavailableUnknownReason =>
+      "unavailable-unknown-reason"
+    SecurePaymentConfirmationAvailability::UnavailableFeatureNotEnabled =>
+      "unavailable-feature-not-enabled"
+    SecurePaymentConfirmationAvailability::UnavailableNoPermissionPolicy =>
+      "unavailable-no-permission-policy"
+    SecurePaymentConfirmationAvailability::UnavailableNoUserVerifyingPlatformAuthenticator =>
       "unavailable-no-user-verifying-platform-authenticator"
   }
 }
@@ -32,12 +35,17 @@ pub fn SecurePaymentConfirmationAvailability::from_string(
   s : String,
 ) -> SecurePaymentConfirmationAvailability? {
   match s {
-    "available" => Some(Available)
-    "unavailable-unknown-reason" => Some(UnavailableUnknownReason)
-    "unavailable-feature-not-enabled" => Some(UnavailableFeatureNotEnabled)
-    "unavailable-no-permission-policy" => Some(UnavailableNoPermissionPolicy)
+    "available" => Some(SecurePaymentConfirmationAvailability::Available)
+    "unavailable-unknown-reason" =>
+      Some(SecurePaymentConfirmationAvailability::UnavailableUnknownReason)
+    "unavailable-feature-not-enabled" =>
+      Some(SecurePaymentConfirmationAvailability::UnavailableFeatureNotEnabled)
+    "unavailable-no-permission-policy" =>
+      Some(SecurePaymentConfirmationAvailability::UnavailableNoPermissionPolicy)
     "unavailable-no-user-verifying-platform-authenticator" =>
-      Some(UnavailableNoUserVerifyingPlatformAuthenticator)
+      Some(
+        SecurePaymentConfirmationAvailability::UnavailableNoUserVerifyingPlatformAuthenticator,
+      )
     _ => None
   }
 }

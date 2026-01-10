@@ -15,9 +15,9 @@ pub fn MediaSessionPlaybackState::to_string(
   self : MediaSessionPlaybackState,
 ) -> String {
   match self {
-    None => "none"
-    Paused => "paused"
-    Playing => "playing"
+    MediaSessionPlaybackState::None => "none"
+    MediaSessionPlaybackState::Paused => "paused"
+    MediaSessionPlaybackState::Playing => "playing"
   }
 }
 
@@ -27,9 +27,9 @@ pub fn MediaSessionPlaybackState::from_string(
   s : String,
 ) -> MediaSessionPlaybackState? {
   match s {
-    "none" => Some(None)
-    "paused" => Some(Paused)
-    "playing" => Some(Playing)
+    "none" => Some(MediaSessionPlaybackState::None)
+    "paused" => Some(MediaSessionPlaybackState::Paused)
+    "playing" => Some(MediaSessionPlaybackState::Playing)
     _ => None
   }
 }
@@ -60,23 +60,23 @@ pub(all) enum MediaSessionAction {
 /// Convert to string value
 pub fn MediaSessionAction::to_string(self : MediaSessionAction) -> String {
   match self {
-    Play => "play"
-    Pause => "pause"
-    Seekbackward => "seekbackward"
-    Seekforward => "seekforward"
-    Previoustrack => "previoustrack"
-    Nexttrack => "nexttrack"
-    Skipad => "skipad"
-    Stop => "stop"
-    Seekto => "seekto"
-    Togglemicrophone => "togglemicrophone"
-    Togglecamera => "togglecamera"
-    Togglescreenshare => "togglescreenshare"
-    Hangup => "hangup"
-    Previousslide => "previousslide"
-    Nextslide => "nextslide"
-    Enterpictureinpicture => "enterpictureinpicture"
-    Voiceactivity => "voiceactivity"
+    MediaSessionAction::Play => "play"
+    MediaSessionAction::Pause => "pause"
+    MediaSessionAction::Seekbackward => "seekbackward"
+    MediaSessionAction::Seekforward => "seekforward"
+    MediaSessionAction::Previoustrack => "previoustrack"
+    MediaSessionAction::Nexttrack => "nexttrack"
+    MediaSessionAction::Skipad => "skipad"
+    MediaSessionAction::Stop => "stop"
+    MediaSessionAction::Seekto => "seekto"
+    MediaSessionAction::Togglemicrophone => "togglemicrophone"
+    MediaSessionAction::Togglecamera => "togglecamera"
+    MediaSessionAction::Togglescreenshare => "togglescreenshare"
+    MediaSessionAction::Hangup => "hangup"
+    MediaSessionAction::Previousslide => "previousslide"
+    MediaSessionAction::Nextslide => "nextslide"
+    MediaSessionAction::Enterpictureinpicture => "enterpictureinpicture"
+    MediaSessionAction::Voiceactivity => "voiceactivity"
   }
 }
 
@@ -84,23 +84,23 @@ pub fn MediaSessionAction::to_string(self : MediaSessionAction) -> String {
 /// Parse from string value
 pub fn MediaSessionAction::from_string(s : String) -> MediaSessionAction? {
   match s {
-    "play" => Some(Play)
-    "pause" => Some(Pause)
-    "seekbackward" => Some(Seekbackward)
-    "seekforward" => Some(Seekforward)
-    "previoustrack" => Some(Previoustrack)
-    "nexttrack" => Some(Nexttrack)
-    "skipad" => Some(Skipad)
-    "stop" => Some(Stop)
-    "seekto" => Some(Seekto)
-    "togglemicrophone" => Some(Togglemicrophone)
-    "togglecamera" => Some(Togglecamera)
-    "togglescreenshare" => Some(Togglescreenshare)
-    "hangup" => Some(Hangup)
-    "previousslide" => Some(Previousslide)
-    "nextslide" => Some(Nextslide)
-    "enterpictureinpicture" => Some(Enterpictureinpicture)
-    "voiceactivity" => Some(Voiceactivity)
+    "play" => Some(MediaSessionAction::Play)
+    "pause" => Some(MediaSessionAction::Pause)
+    "seekbackward" => Some(MediaSessionAction::Seekbackward)
+    "seekforward" => Some(MediaSessionAction::Seekforward)
+    "previoustrack" => Some(MediaSessionAction::Previoustrack)
+    "nexttrack" => Some(MediaSessionAction::Nexttrack)
+    "skipad" => Some(MediaSessionAction::Skipad)
+    "stop" => Some(MediaSessionAction::Stop)
+    "seekto" => Some(MediaSessionAction::Seekto)
+    "togglemicrophone" => Some(MediaSessionAction::Togglemicrophone)
+    "togglecamera" => Some(MediaSessionAction::Togglecamera)
+    "togglescreenshare" => Some(MediaSessionAction::Togglescreenshare)
+    "hangup" => Some(MediaSessionAction::Hangup)
+    "previousslide" => Some(MediaSessionAction::Previousslide)
+    "nextslide" => Some(MediaSessionAction::Nextslide)
+    "enterpictureinpicture" => Some(MediaSessionAction::Enterpictureinpicture)
+    "voiceactivity" => Some(MediaSessionAction::Voiceactivity)
     _ => None
   }
 }
@@ -119,9 +119,10 @@ pub fn MediaSessionEnterPictureInPictureReason::to_string(
   self : MediaSessionEnterPictureInPictureReason,
 ) -> String {
   match self {
-    Other => "other"
-    Useraction => "useraction"
-    Contentoccluded => "contentoccluded"
+    MediaSessionEnterPictureInPictureReason::Other => "other"
+    MediaSessionEnterPictureInPictureReason::Useraction => "useraction"
+    MediaSessionEnterPictureInPictureReason::Contentoccluded =>
+      "contentoccluded"
   }
 }
 
@@ -131,9 +132,10 @@ pub fn MediaSessionEnterPictureInPictureReason::from_string(
   s : String,
 ) -> MediaSessionEnterPictureInPictureReason? {
   match s {
-    "other" => Some(Other)
-    "useraction" => Some(Useraction)
-    "contentoccluded" => Some(Contentoccluded)
+    "other" => Some(MediaSessionEnterPictureInPictureReason::Other)
+    "useraction" => Some(MediaSessionEnterPictureInPictureReason::Useraction)
+    "contentoccluded" =>
+      Some(MediaSessionEnterPictureInPictureReason::Contentoccluded)
     _ => None
   }
 }

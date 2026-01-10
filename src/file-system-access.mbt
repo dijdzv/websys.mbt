@@ -26,6 +26,34 @@ pub extern "js" fn StartInDirectory::from_file_system_handle(
   #| (v) => v
 
 ///|
+/// Check if this StartInDirectory is WellKnownDirectory
+pub extern "js" fn StartInDirectory::is_well_known_directory(
+  self : StartInDirectory,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this StartInDirectory is FileSystemHandle
+pub extern "js" fn StartInDirectory::is_file_system_handle(
+  self : StartInDirectory,
+) -> Bool =
+  #| (self) => self instanceof FileSystemHandle
+
+///|
+/// Try to get StartInDirectory as WellKnownDirectory
+pub extern "js" fn StartInDirectory::as_well_known_directory(
+  self : StartInDirectory,
+) -> WellKnownDirectory? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get StartInDirectory as FileSystemHandle
+pub extern "js" fn StartInDirectory::as_file_system_handle(
+  self : StartInDirectory,
+) -> FileSystemHandle? =
+  #| (self) => (self instanceof FileSystemHandle) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// FileSystemPermissionMode enum
 pub(all) enum FileSystemPermissionMode {
   Read
@@ -38,8 +66,8 @@ pub fn FileSystemPermissionMode::to_string(
   self : FileSystemPermissionMode,
 ) -> String {
   match self {
-    Read => "read"
-    Readwrite => "readwrite"
+    FileSystemPermissionMode::Read => "read"
+    FileSystemPermissionMode::Readwrite => "readwrite"
   }
 }
 
@@ -49,8 +77,8 @@ pub fn FileSystemPermissionMode::from_string(
   s : String,
 ) -> FileSystemPermissionMode? {
   match s {
-    "read" => Some(Read)
-    "readwrite" => Some(Readwrite)
+    "read" => Some(FileSystemPermissionMode::Read)
+    "readwrite" => Some(FileSystemPermissionMode::Readwrite)
     _ => None
   }
 }
@@ -70,12 +98,12 @@ pub(all) enum WellKnownDirectory {
 /// Convert to string value
 pub fn WellKnownDirectory::to_string(self : WellKnownDirectory) -> String {
   match self {
-    Desktop => "desktop"
-    Documents => "documents"
-    Downloads => "downloads"
-    Music => "music"
-    Pictures => "pictures"
-    Videos => "videos"
+    WellKnownDirectory::Desktop => "desktop"
+    WellKnownDirectory::Documents => "documents"
+    WellKnownDirectory::Downloads => "downloads"
+    WellKnownDirectory::Music => "music"
+    WellKnownDirectory::Pictures => "pictures"
+    WellKnownDirectory::Videos => "videos"
   }
 }
 
@@ -83,12 +111,12 @@ pub fn WellKnownDirectory::to_string(self : WellKnownDirectory) -> String {
 /// Parse from string value
 pub fn WellKnownDirectory::from_string(s : String) -> WellKnownDirectory? {
   match s {
-    "desktop" => Some(Desktop)
-    "documents" => Some(Documents)
-    "downloads" => Some(Downloads)
-    "music" => Some(Music)
-    "pictures" => Some(Pictures)
-    "videos" => Some(Videos)
+    "desktop" => Some(WellKnownDirectory::Desktop)
+    "documents" => Some(WellKnownDirectory::Documents)
+    "downloads" => Some(WellKnownDirectory::Downloads)
+    "music" => Some(WellKnownDirectory::Music)
+    "pictures" => Some(WellKnownDirectory::Pictures)
+    "videos" => Some(WellKnownDirectory::Videos)
     _ => None
   }
 }

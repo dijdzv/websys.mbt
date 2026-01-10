@@ -3,7 +3,7 @@
 
 ///|
 /// ClipboardItemData typedef
-pub type ClipboardItemData = Promise[JsValue]
+pub type ClipboardItemData = Promise[Unit]
 
 ///|
 /// ClipboardItems typedef
@@ -21,9 +21,9 @@ pub(all) enum PresentationStyle {
 /// Convert to string value
 pub fn PresentationStyle::to_string(self : PresentationStyle) -> String {
   match self {
-    Unspecified => "unspecified"
-    Inline => "inline"
-    Attachment => "attachment"
+    PresentationStyle::Unspecified => "unspecified"
+    PresentationStyle::Inline => "inline"
+    PresentationStyle::Attachment => "attachment"
   }
 }
 
@@ -31,9 +31,9 @@ pub fn PresentationStyle::to_string(self : PresentationStyle) -> String {
 /// Parse from string value
 pub fn PresentationStyle::from_string(s : String) -> PresentationStyle? {
   match s {
-    "unspecified" => Some(Unspecified)
-    "inline" => Some(Inline)
-    "attachment" => Some(Attachment)
+    "unspecified" => Some(PresentationStyle::Unspecified)
+    "inline" => Some(PresentationStyle::Inline)
+    "attachment" => Some(PresentationStyle::Attachment)
     _ => None
   }
 }

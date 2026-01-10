@@ -12,8 +12,8 @@ pub(all) enum AacBitstreamFormat {
 /// Convert to string value
 pub fn AacBitstreamFormat::to_string(self : AacBitstreamFormat) -> String {
   match self {
-    Aac => "aac"
-    Adts => "adts"
+    AacBitstreamFormat::Aac => "aac"
+    AacBitstreamFormat::Adts => "adts"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn AacBitstreamFormat::to_string(self : AacBitstreamFormat) -> String {
 /// Parse from string value
 pub fn AacBitstreamFormat::from_string(s : String) -> AacBitstreamFormat? {
   match s {
-    "aac" => Some(Aac)
-    "adts" => Some(Adts)
+    "aac" => Some(AacBitstreamFormat::Aac)
+    "adts" => Some(AacBitstreamFormat::Adts)
     _ => None
   }
 }

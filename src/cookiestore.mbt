@@ -17,9 +17,9 @@ pub(all) enum CookieSameSite {
 /// Convert to string value
 pub fn CookieSameSite::to_string(self : CookieSameSite) -> String {
   match self {
-    Strict => "strict"
-    Lax => "lax"
-    None => "none"
+    CookieSameSite::Strict => "strict"
+    CookieSameSite::Lax => "lax"
+    CookieSameSite::None => "none"
   }
 }
 
@@ -27,9 +27,9 @@ pub fn CookieSameSite::to_string(self : CookieSameSite) -> String {
 /// Parse from string value
 pub fn CookieSameSite::from_string(s : String) -> CookieSameSite? {
   match s {
-    "strict" => Some(Strict)
-    "lax" => Some(Lax)
-    "none" => Some(None)
+    "strict" => Some(CookieSameSite::Strict)
+    "lax" => Some(CookieSameSite::Lax)
+    "none" => Some(CookieSameSite::None)
     _ => None
   }
 }
@@ -308,7 +308,7 @@ pub extern "js" fn CookieStoreManager::subscribe(
 ///|
 pub extern "js" fn CookieStoreManager::get_subscriptions(
   self : CookieStoreManager,
-) -> Promise[Array[CookieStoreGetOptions]] =
+) -> Promise[Unit] =
   #| (self) => self.getSubscriptions()
 
 ///|

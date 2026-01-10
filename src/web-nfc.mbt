@@ -33,6 +33,48 @@ pub extern "js" fn NDEFMessageSource::from_n_d_e_f_message_init(
   #| (v) => v
 
 ///|
+/// Check if this NDEFMessageSource is String
+pub extern "js" fn NDEFMessageSource::is_string(
+  self : NDEFMessageSource,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this NDEFMessageSource is BufferSource
+pub extern "js" fn NDEFMessageSource::is_buffer_source(
+  self : NDEFMessageSource,
+) -> Bool =
+  #| (self) => self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer
+
+///|
+/// Check if this NDEFMessageSource is NDEFMessageInit
+pub extern "js" fn NDEFMessageSource::is_n_d_e_f_message_init(
+  self : NDEFMessageSource,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get NDEFMessageSource as String
+pub extern "js" fn NDEFMessageSource::as_string(
+  self : NDEFMessageSource,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get NDEFMessageSource as BufferSource
+pub extern "js" fn NDEFMessageSource::as_buffer_source(
+  self : NDEFMessageSource,
+) -> BufferSource? =
+  #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get NDEFMessageSource as NDEFMessageInit
+pub extern "js" fn NDEFMessageSource::as_n_d_e_f_message_init(
+  self : NDEFMessageSource,
+) -> NDEFMessageInit? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// NDEFMessageInit dictionary
 pub struct NDEFMessageInit {
   records : Array[NDEFRecordInit]

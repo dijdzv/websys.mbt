@@ -26,6 +26,34 @@ pub extern "js" fn SharedStorageResponse::from_fenced_frame_config(
   #| (v) => v
 
 ///|
+/// Check if this SharedStorageResponse is String
+pub extern "js" fn SharedStorageResponse::is_string(
+  self : SharedStorageResponse,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this SharedStorageResponse is FencedFrameConfig
+pub extern "js" fn SharedStorageResponse::is_fenced_frame_config(
+  self : SharedStorageResponse,
+) -> Bool =
+  #| (self) => self instanceof FencedFrameConfig
+
+///|
+/// Try to get SharedStorageResponse as String
+pub extern "js" fn SharedStorageResponse::as_string(
+  self : SharedStorageResponse,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get SharedStorageResponse as FencedFrameConfig
+pub extern "js" fn SharedStorageResponse::as_fenced_frame_config(
+  self : SharedStorageResponse,
+) -> FencedFrameConfig? =
+  #| (self) => (self instanceof FencedFrameConfig) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// RunFunctionForSharedStorageSelectURLOperation callback interface
 pub type RunFunctionForSharedStorageSelectURLOperation
 
@@ -266,7 +294,7 @@ pub extern "js" fn SharedStorageWorkletGlobalScope::get_private_aggregation(
 ///|
 pub extern "js" fn SharedStorageWorkletGlobalScope::interest_groups(
   self : SharedStorageWorkletGlobalScope,
-) -> Promise[Array[StorageInterestGroup]] =
+) -> Promise[Unit] =
   #| (self) => self.interestGroups()
 
 ///|

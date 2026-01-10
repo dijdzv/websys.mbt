@@ -16,10 +16,10 @@ pub fn ScriptingPolicyViolationType::to_string(
   self : ScriptingPolicyViolationType,
 ) -> String {
   match self {
-    ExternalScript => "externalScript"
-    InlineScript => "inlineScript"
-    InlineEventHandler => "inlineEventHandler"
-    Eval => "eval"
+    ScriptingPolicyViolationType::ExternalScript => "externalScript"
+    ScriptingPolicyViolationType::InlineScript => "inlineScript"
+    ScriptingPolicyViolationType::InlineEventHandler => "inlineEventHandler"
+    ScriptingPolicyViolationType::Eval => "eval"
   }
 }
 
@@ -29,10 +29,11 @@ pub fn ScriptingPolicyViolationType::from_string(
   s : String,
 ) -> ScriptingPolicyViolationType? {
   match s {
-    "externalScript" => Some(ExternalScript)
-    "inlineScript" => Some(InlineScript)
-    "inlineEventHandler" => Some(InlineEventHandler)
-    "eval" => Some(Eval)
+    "externalScript" => Some(ScriptingPolicyViolationType::ExternalScript)
+    "inlineScript" => Some(ScriptingPolicyViolationType::InlineScript)
+    "inlineEventHandler" =>
+      Some(ScriptingPolicyViolationType::InlineEventHandler)
+    "eval" => Some(ScriptingPolicyViolationType::Eval)
     _ => None
   }
 }

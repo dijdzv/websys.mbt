@@ -32,6 +32,50 @@ pub extern "js" fn GeometryNode::from_document(v : Document) -> GeometryNode =
   #| (v) => v
 
 ///|
+/// Check if this GeometryNode is Text
+pub extern "js" fn GeometryNode::is_text(self : GeometryNode) -> Bool =
+  #| (self) => self instanceof Text
+
+///|
+/// Check if this GeometryNode is Element
+pub extern "js" fn GeometryNode::is_element(self : GeometryNode) -> Bool =
+  #| (self) => self instanceof Element
+
+///|
+/// Check if this GeometryNode is CSSPseudoElement
+pub extern "js" fn GeometryNode::is_c_s_s_pseudo_element(
+  self : GeometryNode,
+) -> Bool =
+  #| (self) => self instanceof CSSPseudoElement
+
+///|
+/// Check if this GeometryNode is Document
+pub extern "js" fn GeometryNode::is_document(self : GeometryNode) -> Bool =
+  #| (self) => self instanceof Document
+
+///|
+/// Try to get GeometryNode as Text
+pub extern "js" fn GeometryNode::as_text(self : GeometryNode) -> Text? =
+  #| (self) => (self instanceof Text) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GeometryNode as Element
+pub extern "js" fn GeometryNode::as_element(self : GeometryNode) -> Element? =
+  #| (self) => (self instanceof Element) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GeometryNode as CSSPseudoElement
+pub extern "js" fn GeometryNode::as_c_s_s_pseudo_element(
+  self : GeometryNode,
+) -> CSSPseudoElement? =
+  #| (self) => (self instanceof CSSPseudoElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GeometryNode as Document
+pub extern "js" fn GeometryNode::as_document(self : GeometryNode) -> Document? =
+  #| (self) => (self instanceof Document) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// ScrollBehavior enum
 pub(all) enum ScrollBehavior {
   Auto
@@ -43,9 +87,9 @@ pub(all) enum ScrollBehavior {
 /// Convert to string value
 pub fn ScrollBehavior::to_string(self : ScrollBehavior) -> String {
   match self {
-    Auto => "auto"
-    Instant => "instant"
-    Smooth => "smooth"
+    ScrollBehavior::Auto => "auto"
+    ScrollBehavior::Instant => "instant"
+    ScrollBehavior::Smooth => "smooth"
   }
 }
 
@@ -53,9 +97,9 @@ pub fn ScrollBehavior::to_string(self : ScrollBehavior) -> String {
 /// Parse from string value
 pub fn ScrollBehavior::from_string(s : String) -> ScrollBehavior? {
   match s {
-    "auto" => Some(Auto)
-    "instant" => Some(Instant)
-    "smooth" => Some(Smooth)
+    "auto" => Some(ScrollBehavior::Auto)
+    "instant" => Some(ScrollBehavior::Instant)
+    "smooth" => Some(ScrollBehavior::Smooth)
     _ => None
   }
 }
@@ -73,10 +117,10 @@ pub(all) enum ScrollLogicalPosition {
 /// Convert to string value
 pub fn ScrollLogicalPosition::to_string(self : ScrollLogicalPosition) -> String {
   match self {
-    Start => "start"
-    Center => "center"
-    End => "end"
-    Nearest => "nearest"
+    ScrollLogicalPosition::Start => "start"
+    ScrollLogicalPosition::Center => "center"
+    ScrollLogicalPosition::End => "end"
+    ScrollLogicalPosition::Nearest => "nearest"
   }
 }
 
@@ -84,10 +128,10 @@ pub fn ScrollLogicalPosition::to_string(self : ScrollLogicalPosition) -> String 
 /// Parse from string value
 pub fn ScrollLogicalPosition::from_string(s : String) -> ScrollLogicalPosition? {
   match s {
-    "start" => Some(Start)
-    "center" => Some(Center)
-    "end" => Some(End)
-    "nearest" => Some(Nearest)
+    "start" => Some(ScrollLogicalPosition::Start)
+    "center" => Some(ScrollLogicalPosition::Center)
+    "end" => Some(ScrollLogicalPosition::End)
+    "nearest" => Some(ScrollLogicalPosition::Nearest)
     _ => None
   }
 }
@@ -105,8 +149,8 @@ pub fn ScrollIntoViewContainer::to_string(
   self : ScrollIntoViewContainer,
 ) -> String {
   match self {
-    All => "all"
-    Nearest => "nearest"
+    ScrollIntoViewContainer::All => "all"
+    ScrollIntoViewContainer::Nearest => "nearest"
   }
 }
 
@@ -116,8 +160,8 @@ pub fn ScrollIntoViewContainer::from_string(
   s : String,
 ) -> ScrollIntoViewContainer? {
   match s {
-    "all" => Some(All)
-    "nearest" => Some(Nearest)
+    "all" => Some(ScrollIntoViewContainer::All)
+    "nearest" => Some(ScrollIntoViewContainer::Nearest)
     _ => None
   }
 }
@@ -135,10 +179,10 @@ pub(all) enum CSSBoxType {
 /// Convert to string value
 pub fn CSSBoxType::to_string(self : CSSBoxType) -> String {
   match self {
-    Margin => "margin"
-    Border => "border"
-    Padding => "padding"
-    Content => "content"
+    CSSBoxType::Margin => "margin"
+    CSSBoxType::Border => "border"
+    CSSBoxType::Padding => "padding"
+    CSSBoxType::Content => "content"
   }
 }
 
@@ -146,10 +190,10 @@ pub fn CSSBoxType::to_string(self : CSSBoxType) -> String {
 /// Parse from string value
 pub fn CSSBoxType::from_string(s : String) -> CSSBoxType? {
   match s {
-    "margin" => Some(Margin)
-    "border" => Some(Border)
-    "padding" => Some(Padding)
-    "content" => Some(Content)
+    "margin" => Some(CSSBoxType::Margin)
+    "border" => Some(CSSBoxType::Border)
+    "padding" => Some(CSSBoxType::Padding)
+    "content" => Some(CSSBoxType::Content)
     _ => None
   }
 }

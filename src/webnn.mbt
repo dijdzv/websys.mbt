@@ -23,6 +23,16 @@ pub extern "js" fn MLNumber::from_double(v : Double) -> MLNumber =
   #| (v) => v
 
 ///|
+/// Check if this MLNumber is Double
+pub extern "js" fn MLNumber::is_double(self : MLNumber) -> Bool =
+  #| (self) => typeof self === 'number'
+
+///|
+/// Try to get MLNumber as Double
+pub extern "js" fn MLNumber::as_double(self : MLNumber) -> Double? =
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// MLNamedOperands typedef
 pub type MLNamedOperands = JsValue
 
@@ -38,9 +48,9 @@ pub(all) enum MLPowerPreference {
 /// Convert to string value
 pub fn MLPowerPreference::to_string(self : MLPowerPreference) -> String {
   match self {
-    Default => "default"
-    HighPerformance => "high-performance"
-    LowPower => "low-power"
+    MLPowerPreference::Default => "default"
+    MLPowerPreference::HighPerformance => "high-performance"
+    MLPowerPreference::LowPower => "low-power"
   }
 }
 
@@ -48,9 +58,9 @@ pub fn MLPowerPreference::to_string(self : MLPowerPreference) -> String {
 /// Parse from string value
 pub fn MLPowerPreference::from_string(s : String) -> MLPowerPreference? {
   match s {
-    "default" => Some(Default)
-    "high-performance" => Some(HighPerformance)
-    "low-power" => Some(LowPower)
+    "default" => Some(MLPowerPreference::Default)
+    "high-performance" => Some(MLPowerPreference::HighPerformance)
+    "low-power" => Some(MLPowerPreference::LowPower)
     _ => None
   }
 }
@@ -66,8 +76,8 @@ pub(all) enum MLInputOperandLayout {
 /// Convert to string value
 pub fn MLInputOperandLayout::to_string(self : MLInputOperandLayout) -> String {
   match self {
-    Nchw => "nchw"
-    Nhwc => "nhwc"
+    MLInputOperandLayout::Nchw => "nchw"
+    MLInputOperandLayout::Nhwc => "nhwc"
   }
 }
 
@@ -75,8 +85,8 @@ pub fn MLInputOperandLayout::to_string(self : MLInputOperandLayout) -> String {
 /// Parse from string value
 pub fn MLInputOperandLayout::from_string(s : String) -> MLInputOperandLayout? {
   match s {
-    "nchw" => Some(Nchw)
-    "nhwc" => Some(Nhwc)
+    "nchw" => Some(MLInputOperandLayout::Nchw)
+    "nhwc" => Some(MLInputOperandLayout::Nhwc)
     _ => None
   }
 }
@@ -98,14 +108,14 @@ pub(all) enum MLOperandDataType {
 /// Convert to string value
 pub fn MLOperandDataType::to_string(self : MLOperandDataType) -> String {
   match self {
-    Float32 => "float32"
-    Float16 => "float16"
-    Int32 => "int32"
-    Uint32 => "uint32"
-    Int64 => "int64"
-    Uint64 => "uint64"
-    Int8 => "int8"
-    Uint8 => "uint8"
+    MLOperandDataType::Float32 => "float32"
+    MLOperandDataType::Float16 => "float16"
+    MLOperandDataType::Int32 => "int32"
+    MLOperandDataType::Uint32 => "uint32"
+    MLOperandDataType::Int64 => "int64"
+    MLOperandDataType::Uint64 => "uint64"
+    MLOperandDataType::Int8 => "int8"
+    MLOperandDataType::Uint8 => "uint8"
   }
 }
 
@@ -113,14 +123,14 @@ pub fn MLOperandDataType::to_string(self : MLOperandDataType) -> String {
 /// Parse from string value
 pub fn MLOperandDataType::from_string(s : String) -> MLOperandDataType? {
   match s {
-    "float32" => Some(Float32)
-    "float16" => Some(Float16)
-    "int32" => Some(Int32)
-    "uint32" => Some(Uint32)
-    "int64" => Some(Int64)
-    "uint64" => Some(Uint64)
-    "int8" => Some(Int8)
-    "uint8" => Some(Uint8)
+    "float32" => Some(MLOperandDataType::Float32)
+    "float16" => Some(MLOperandDataType::Float16)
+    "int32" => Some(MLOperandDataType::Int32)
+    "uint32" => Some(MLOperandDataType::Uint32)
+    "int64" => Some(MLOperandDataType::Int64)
+    "uint64" => Some(MLOperandDataType::Uint64)
+    "int8" => Some(MLOperandDataType::Int8)
+    "uint8" => Some(MLOperandDataType::Uint8)
     _ => None
   }
 }
@@ -140,10 +150,10 @@ pub fn MLConv2dFilterOperandLayout::to_string(
   self : MLConv2dFilterOperandLayout,
 ) -> String {
   match self {
-    Oihw => "oihw"
-    Hwio => "hwio"
-    Ohwi => "ohwi"
-    Ihwo => "ihwo"
+    MLConv2dFilterOperandLayout::Oihw => "oihw"
+    MLConv2dFilterOperandLayout::Hwio => "hwio"
+    MLConv2dFilterOperandLayout::Ohwi => "ohwi"
+    MLConv2dFilterOperandLayout::Ihwo => "ihwo"
   }
 }
 
@@ -153,10 +163,10 @@ pub fn MLConv2dFilterOperandLayout::from_string(
   s : String,
 ) -> MLConv2dFilterOperandLayout? {
   match s {
-    "oihw" => Some(Oihw)
-    "hwio" => Some(Hwio)
-    "ohwi" => Some(Ohwi)
-    "ihwo" => Some(Ihwo)
+    "oihw" => Some(MLConv2dFilterOperandLayout::Oihw)
+    "hwio" => Some(MLConv2dFilterOperandLayout::Hwio)
+    "ohwi" => Some(MLConv2dFilterOperandLayout::Ohwi)
+    "ihwo" => Some(MLConv2dFilterOperandLayout::Ihwo)
     _ => None
   }
 }
@@ -175,9 +185,9 @@ pub fn MLConvTranspose2dFilterOperandLayout::to_string(
   self : MLConvTranspose2dFilterOperandLayout,
 ) -> String {
   match self {
-    Iohw => "iohw"
-    Hwoi => "hwoi"
-    Ohwi => "ohwi"
+    MLConvTranspose2dFilterOperandLayout::Iohw => "iohw"
+    MLConvTranspose2dFilterOperandLayout::Hwoi => "hwoi"
+    MLConvTranspose2dFilterOperandLayout::Ohwi => "ohwi"
   }
 }
 
@@ -187,9 +197,9 @@ pub fn MLConvTranspose2dFilterOperandLayout::from_string(
   s : String,
 ) -> MLConvTranspose2dFilterOperandLayout? {
   match s {
-    "iohw" => Some(Iohw)
-    "hwoi" => Some(Hwoi)
-    "ohwi" => Some(Ohwi)
+    "iohw" => Some(MLConvTranspose2dFilterOperandLayout::Iohw)
+    "hwoi" => Some(MLConvTranspose2dFilterOperandLayout::Hwoi)
+    "ohwi" => Some(MLConvTranspose2dFilterOperandLayout::Ohwi)
     _ => None
   }
 }
@@ -205,8 +215,8 @@ pub(all) enum MLGruWeightLayout {
 /// Convert to string value
 pub fn MLGruWeightLayout::to_string(self : MLGruWeightLayout) -> String {
   match self {
-    Zrn => "zrn"
-    Rzn => "rzn"
+    MLGruWeightLayout::Zrn => "zrn"
+    MLGruWeightLayout::Rzn => "rzn"
   }
 }
 
@@ -214,8 +224,8 @@ pub fn MLGruWeightLayout::to_string(self : MLGruWeightLayout) -> String {
 /// Parse from string value
 pub fn MLGruWeightLayout::from_string(s : String) -> MLGruWeightLayout? {
   match s {
-    "zrn" => Some(Zrn)
-    "rzn" => Some(Rzn)
+    "zrn" => Some(MLGruWeightLayout::Zrn)
+    "rzn" => Some(MLGruWeightLayout::Rzn)
     _ => None
   }
 }
@@ -234,9 +244,9 @@ pub fn MLRecurrentNetworkActivation::to_string(
   self : MLRecurrentNetworkActivation,
 ) -> String {
   match self {
-    Relu => "relu"
-    Sigmoid => "sigmoid"
-    Tanh => "tanh"
+    MLRecurrentNetworkActivation::Relu => "relu"
+    MLRecurrentNetworkActivation::Sigmoid => "sigmoid"
+    MLRecurrentNetworkActivation::Tanh => "tanh"
   }
 }
 
@@ -246,9 +256,9 @@ pub fn MLRecurrentNetworkActivation::from_string(
   s : String,
 ) -> MLRecurrentNetworkActivation? {
   match s {
-    "relu" => Some(Relu)
-    "sigmoid" => Some(Sigmoid)
-    "tanh" => Some(Tanh)
+    "relu" => Some(MLRecurrentNetworkActivation::Relu)
+    "sigmoid" => Some(MLRecurrentNetworkActivation::Sigmoid)
+    "tanh" => Some(MLRecurrentNetworkActivation::Tanh)
     _ => None
   }
 }
@@ -267,9 +277,9 @@ pub fn MLRecurrentNetworkDirection::to_string(
   self : MLRecurrentNetworkDirection,
 ) -> String {
   match self {
-    Forward => "forward"
-    Backward => "backward"
-    Both => "both"
+    MLRecurrentNetworkDirection::Forward => "forward"
+    MLRecurrentNetworkDirection::Backward => "backward"
+    MLRecurrentNetworkDirection::Both => "both"
   }
 }
 
@@ -279,9 +289,9 @@ pub fn MLRecurrentNetworkDirection::from_string(
   s : String,
 ) -> MLRecurrentNetworkDirection? {
   match s {
-    "forward" => Some(Forward)
-    "backward" => Some(Backward)
-    "both" => Some(Both)
+    "forward" => Some(MLRecurrentNetworkDirection::Forward)
+    "backward" => Some(MLRecurrentNetworkDirection::Backward)
+    "both" => Some(MLRecurrentNetworkDirection::Both)
     _ => None
   }
 }
@@ -297,8 +307,8 @@ pub(all) enum MLLstmWeightLayout {
 /// Convert to string value
 pub fn MLLstmWeightLayout::to_string(self : MLLstmWeightLayout) -> String {
   match self {
-    Iofg => "iofg"
-    Ifgo => "ifgo"
+    MLLstmWeightLayout::Iofg => "iofg"
+    MLLstmWeightLayout::Ifgo => "ifgo"
   }
 }
 
@@ -306,8 +316,8 @@ pub fn MLLstmWeightLayout::to_string(self : MLLstmWeightLayout) -> String {
 /// Parse from string value
 pub fn MLLstmWeightLayout::from_string(s : String) -> MLLstmWeightLayout? {
   match s {
-    "iofg" => Some(Iofg)
-    "ifgo" => Some(Ifgo)
+    "iofg" => Some(MLLstmWeightLayout::Iofg)
+    "ifgo" => Some(MLLstmWeightLayout::Ifgo)
     _ => None
   }
 }
@@ -324,9 +334,9 @@ pub(all) enum MLPaddingMode {
 /// Convert to string value
 pub fn MLPaddingMode::to_string(self : MLPaddingMode) -> String {
   match self {
-    Constant => "constant"
-    Edge => "edge"
-    Reflection => "reflection"
+    MLPaddingMode::Constant => "constant"
+    MLPaddingMode::Edge => "edge"
+    MLPaddingMode::Reflection => "reflection"
   }
 }
 
@@ -334,9 +344,9 @@ pub fn MLPaddingMode::to_string(self : MLPaddingMode) -> String {
 /// Parse from string value
 pub fn MLPaddingMode::from_string(s : String) -> MLPaddingMode? {
   match s {
-    "constant" => Some(Constant)
-    "edge" => Some(Edge)
-    "reflection" => Some(Reflection)
+    "constant" => Some(MLPaddingMode::Constant)
+    "edge" => Some(MLPaddingMode::Edge)
+    "reflection" => Some(MLPaddingMode::Reflection)
     _ => None
   }
 }
@@ -352,8 +362,8 @@ pub(all) enum MLRoundingType {
 /// Convert to string value
 pub fn MLRoundingType::to_string(self : MLRoundingType) -> String {
   match self {
-    Floor => "floor"
-    Ceil => "ceil"
+    MLRoundingType::Floor => "floor"
+    MLRoundingType::Ceil => "ceil"
   }
 }
 
@@ -361,8 +371,8 @@ pub fn MLRoundingType::to_string(self : MLRoundingType) -> String {
 /// Parse from string value
 pub fn MLRoundingType::from_string(s : String) -> MLRoundingType? {
   match s {
-    "floor" => Some(Floor)
-    "ceil" => Some(Ceil)
+    "floor" => Some(MLRoundingType::Floor)
+    "ceil" => Some(MLRoundingType::Ceil)
     _ => None
   }
 }
@@ -378,8 +388,8 @@ pub(all) enum MLInterpolationMode {
 /// Convert to string value
 pub fn MLInterpolationMode::to_string(self : MLInterpolationMode) -> String {
   match self {
-    NearestNeighbor => "nearest-neighbor"
-    Linear => "linear"
+    MLInterpolationMode::NearestNeighbor => "nearest-neighbor"
+    MLInterpolationMode::Linear => "linear"
   }
 }
 
@@ -387,8 +397,8 @@ pub fn MLInterpolationMode::to_string(self : MLInterpolationMode) -> String {
 /// Parse from string value
 pub fn MLInterpolationMode::from_string(s : String) -> MLInterpolationMode? {
   match s {
-    "nearest-neighbor" => Some(NearestNeighbor)
-    "linear" => Some(Linear)
+    "nearest-neighbor" => Some(MLInterpolationMode::NearestNeighbor)
+    "linear" => Some(MLInterpolationMode::Linear)
     _ => None
   }
 }
@@ -3975,7 +3985,7 @@ pub extern "js" fn MLGraphBuilder::softsign_with_options(
 pub extern "js" fn MLGraphBuilder::split(
   self : MLGraphBuilder,
   input : MLOperand,
-  splits : JsValue,
+  splits : IntOrArrayOfInt,
 ) -> Array[MLOperand] =
   #| (self, input, splits) => self.split(input, splits)
 
@@ -3983,7 +3993,7 @@ pub extern "js" fn MLGraphBuilder::split(
 pub extern "js" fn MLGraphBuilder::split_with_options(
   self : MLGraphBuilder,
   input : MLOperand,
-  splits : JsValue,
+  splits : IntOrArrayOfInt,
   options : MLSplitOptions,
 ) -> Array[MLOperand] =
   #| (self, input, splits, options) => self.split(input, splits, options)

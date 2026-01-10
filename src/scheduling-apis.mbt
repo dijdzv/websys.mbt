@@ -13,9 +13,9 @@ pub(all) enum TaskPriority {
 /// Convert to string value
 pub fn TaskPriority::to_string(self : TaskPriority) -> String {
   match self {
-    UserBlocking => "user-blocking"
-    UserVisible => "user-visible"
-    Background => "background"
+    TaskPriority::UserBlocking => "user-blocking"
+    TaskPriority::UserVisible => "user-visible"
+    TaskPriority::Background => "background"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn TaskPriority::to_string(self : TaskPriority) -> String {
 /// Parse from string value
 pub fn TaskPriority::from_string(s : String) -> TaskPriority? {
   match s {
-    "user-blocking" => Some(UserBlocking)
-    "user-visible" => Some(UserVisible)
-    "background" => Some(Background)
+    "user-blocking" => Some(TaskPriority::UserBlocking)
+    "user-visible" => Some(TaskPriority::UserVisible)
+    "background" => Some(TaskPriority::Background)
     _ => None
   }
 }

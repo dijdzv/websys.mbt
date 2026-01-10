@@ -14,10 +14,10 @@ pub(all) enum AudioContextState {
 /// Convert to string value
 pub fn AudioContextState::to_string(self : AudioContextState) -> String {
   match self {
-    Suspended => "suspended"
-    Running => "running"
-    Closed => "closed"
-    Interrupted => "interrupted"
+    AudioContextState::Suspended => "suspended"
+    AudioContextState::Running => "running"
+    AudioContextState::Closed => "closed"
+    AudioContextState::Interrupted => "interrupted"
   }
 }
 
@@ -25,10 +25,10 @@ pub fn AudioContextState::to_string(self : AudioContextState) -> String {
 /// Parse from string value
 pub fn AudioContextState::from_string(s : String) -> AudioContextState? {
   match s {
-    "suspended" => Some(Suspended)
-    "running" => Some(Running)
-    "closed" => Some(Closed)
-    "interrupted" => Some(Interrupted)
+    "suspended" => Some(AudioContextState::Suspended)
+    "running" => Some(AudioContextState::Running)
+    "closed" => Some(AudioContextState::Closed)
+    "interrupted" => Some(AudioContextState::Interrupted)
     _ => None
   }
 }
@@ -46,8 +46,8 @@ pub fn AudioContextRenderSizeCategory::to_string(
   self : AudioContextRenderSizeCategory,
 ) -> String {
   match self {
-    Default => "default"
-    Hardware => "hardware"
+    AudioContextRenderSizeCategory::Default => "default"
+    AudioContextRenderSizeCategory::Hardware => "hardware"
   }
 }
 
@@ -57,8 +57,8 @@ pub fn AudioContextRenderSizeCategory::from_string(
   s : String,
 ) -> AudioContextRenderSizeCategory? {
   match s {
-    "default" => Some(Default)
-    "hardware" => Some(Hardware)
+    "default" => Some(AudioContextRenderSizeCategory::Default)
+    "hardware" => Some(AudioContextRenderSizeCategory::Hardware)
     _ => None
   }
 }
@@ -77,9 +77,9 @@ pub fn AudioContextLatencyCategory::to_string(
   self : AudioContextLatencyCategory,
 ) -> String {
   match self {
-    Balanced => "balanced"
-    Interactive => "interactive"
-    Playback => "playback"
+    AudioContextLatencyCategory::Balanced => "balanced"
+    AudioContextLatencyCategory::Interactive => "interactive"
+    AudioContextLatencyCategory::Playback => "playback"
   }
 }
 
@@ -89,9 +89,9 @@ pub fn AudioContextLatencyCategory::from_string(
   s : String,
 ) -> AudioContextLatencyCategory? {
   match s {
-    "balanced" => Some(Balanced)
-    "interactive" => Some(Interactive)
-    "playback" => Some(Playback)
+    "balanced" => Some(AudioContextLatencyCategory::Balanced)
+    "interactive" => Some(AudioContextLatencyCategory::Interactive)
+    "playback" => Some(AudioContextLatencyCategory::Playback)
     _ => None
   }
 }
@@ -106,7 +106,7 @@ pub(all) enum AudioSinkType {
 /// Convert to string value
 pub fn AudioSinkType::to_string(self : AudioSinkType) -> String {
   match self {
-    None => "none"
+    AudioSinkType::None => "none"
   }
 }
 
@@ -114,7 +114,7 @@ pub fn AudioSinkType::to_string(self : AudioSinkType) -> String {
 /// Parse from string value
 pub fn AudioSinkType::from_string(s : String) -> AudioSinkType? {
   match s {
-    "none" => Some(None)
+    "none" => Some(AudioSinkType::None)
     _ => None
   }
 }
@@ -131,9 +131,9 @@ pub(all) enum ChannelCountMode {
 /// Convert to string value
 pub fn ChannelCountMode::to_string(self : ChannelCountMode) -> String {
   match self {
-    Max => "max"
-    ClampedMax => "clamped-max"
-    Explicit => "explicit"
+    ChannelCountMode::Max => "max"
+    ChannelCountMode::ClampedMax => "clamped-max"
+    ChannelCountMode::Explicit => "explicit"
   }
 }
 
@@ -141,9 +141,9 @@ pub fn ChannelCountMode::to_string(self : ChannelCountMode) -> String {
 /// Parse from string value
 pub fn ChannelCountMode::from_string(s : String) -> ChannelCountMode? {
   match s {
-    "max" => Some(Max)
-    "clamped-max" => Some(ClampedMax)
-    "explicit" => Some(Explicit)
+    "max" => Some(ChannelCountMode::Max)
+    "clamped-max" => Some(ChannelCountMode::ClampedMax)
+    "explicit" => Some(ChannelCountMode::Explicit)
     _ => None
   }
 }
@@ -159,8 +159,8 @@ pub(all) enum ChannelInterpretation {
 /// Convert to string value
 pub fn ChannelInterpretation::to_string(self : ChannelInterpretation) -> String {
   match self {
-    Speakers => "speakers"
-    Discrete => "discrete"
+    ChannelInterpretation::Speakers => "speakers"
+    ChannelInterpretation::Discrete => "discrete"
   }
 }
 
@@ -168,8 +168,8 @@ pub fn ChannelInterpretation::to_string(self : ChannelInterpretation) -> String 
 /// Parse from string value
 pub fn ChannelInterpretation::from_string(s : String) -> ChannelInterpretation? {
   match s {
-    "speakers" => Some(Speakers)
-    "discrete" => Some(Discrete)
+    "speakers" => Some(ChannelInterpretation::Speakers)
+    "discrete" => Some(ChannelInterpretation::Discrete)
     _ => None
   }
 }
@@ -185,8 +185,8 @@ pub(all) enum AutomationRate {
 /// Convert to string value
 pub fn AutomationRate::to_string(self : AutomationRate) -> String {
   match self {
-    ARate => "a-rate"
-    KRate => "k-rate"
+    AutomationRate::ARate => "a-rate"
+    AutomationRate::KRate => "k-rate"
   }
 }
 
@@ -194,8 +194,8 @@ pub fn AutomationRate::to_string(self : AutomationRate) -> String {
 /// Parse from string value
 pub fn AutomationRate::from_string(s : String) -> AutomationRate? {
   match s {
-    "a-rate" => Some(ARate)
-    "k-rate" => Some(KRate)
+    "a-rate" => Some(AutomationRate::ARate)
+    "k-rate" => Some(AutomationRate::KRate)
     _ => None
   }
 }
@@ -217,14 +217,14 @@ pub(all) enum BiquadFilterType {
 /// Convert to string value
 pub fn BiquadFilterType::to_string(self : BiquadFilterType) -> String {
   match self {
-    Lowpass => "lowpass"
-    Highpass => "highpass"
-    Bandpass => "bandpass"
-    Lowshelf => "lowshelf"
-    Highshelf => "highshelf"
-    Peaking => "peaking"
-    Notch => "notch"
-    Allpass => "allpass"
+    BiquadFilterType::Lowpass => "lowpass"
+    BiquadFilterType::Highpass => "highpass"
+    BiquadFilterType::Bandpass => "bandpass"
+    BiquadFilterType::Lowshelf => "lowshelf"
+    BiquadFilterType::Highshelf => "highshelf"
+    BiquadFilterType::Peaking => "peaking"
+    BiquadFilterType::Notch => "notch"
+    BiquadFilterType::Allpass => "allpass"
   }
 }
 
@@ -232,14 +232,14 @@ pub fn BiquadFilterType::to_string(self : BiquadFilterType) -> String {
 /// Parse from string value
 pub fn BiquadFilterType::from_string(s : String) -> BiquadFilterType? {
   match s {
-    "lowpass" => Some(Lowpass)
-    "highpass" => Some(Highpass)
-    "bandpass" => Some(Bandpass)
-    "lowshelf" => Some(Lowshelf)
-    "highshelf" => Some(Highshelf)
-    "peaking" => Some(Peaking)
-    "notch" => Some(Notch)
-    "allpass" => Some(Allpass)
+    "lowpass" => Some(BiquadFilterType::Lowpass)
+    "highpass" => Some(BiquadFilterType::Highpass)
+    "bandpass" => Some(BiquadFilterType::Bandpass)
+    "lowshelf" => Some(BiquadFilterType::Lowshelf)
+    "highshelf" => Some(BiquadFilterType::Highshelf)
+    "peaking" => Some(BiquadFilterType::Peaking)
+    "notch" => Some(BiquadFilterType::Notch)
+    "allpass" => Some(BiquadFilterType::Allpass)
     _ => None
   }
 }
@@ -258,11 +258,11 @@ pub(all) enum OscillatorType {
 /// Convert to string value
 pub fn OscillatorType::to_string(self : OscillatorType) -> String {
   match self {
-    Sine => "sine"
-    Square => "square"
-    Sawtooth => "sawtooth"
-    Triangle => "triangle"
-    Custom => "custom"
+    OscillatorType::Sine => "sine"
+    OscillatorType::Square => "square"
+    OscillatorType::Sawtooth => "sawtooth"
+    OscillatorType::Triangle => "triangle"
+    OscillatorType::Custom => "custom"
   }
 }
 
@@ -270,11 +270,11 @@ pub fn OscillatorType::to_string(self : OscillatorType) -> String {
 /// Parse from string value
 pub fn OscillatorType::from_string(s : String) -> OscillatorType? {
   match s {
-    "sine" => Some(Sine)
-    "square" => Some(Square)
-    "sawtooth" => Some(Sawtooth)
-    "triangle" => Some(Triangle)
-    "custom" => Some(Custom)
+    "sine" => Some(OscillatorType::Sine)
+    "square" => Some(OscillatorType::Square)
+    "sawtooth" => Some(OscillatorType::Sawtooth)
+    "triangle" => Some(OscillatorType::Triangle)
+    "custom" => Some(OscillatorType::Custom)
     _ => None
   }
 }
@@ -290,8 +290,8 @@ pub(all) enum PanningModelType {
 /// Convert to string value
 pub fn PanningModelType::to_string(self : PanningModelType) -> String {
   match self {
-    Equalpower => "equalpower"
-    HRTF => "HRTF"
+    PanningModelType::Equalpower => "equalpower"
+    PanningModelType::HRTF => "HRTF"
   }
 }
 
@@ -299,8 +299,8 @@ pub fn PanningModelType::to_string(self : PanningModelType) -> String {
 /// Parse from string value
 pub fn PanningModelType::from_string(s : String) -> PanningModelType? {
   match s {
-    "equalpower" => Some(Equalpower)
-    "HRTF" => Some(HRTF)
+    "equalpower" => Some(PanningModelType::Equalpower)
+    "HRTF" => Some(PanningModelType::HRTF)
     _ => None
   }
 }
@@ -317,9 +317,9 @@ pub(all) enum DistanceModelType {
 /// Convert to string value
 pub fn DistanceModelType::to_string(self : DistanceModelType) -> String {
   match self {
-    Linear => "linear"
-    Inverse => "inverse"
-    Exponential => "exponential"
+    DistanceModelType::Linear => "linear"
+    DistanceModelType::Inverse => "inverse"
+    DistanceModelType::Exponential => "exponential"
   }
 }
 
@@ -327,9 +327,9 @@ pub fn DistanceModelType::to_string(self : DistanceModelType) -> String {
 /// Parse from string value
 pub fn DistanceModelType::from_string(s : String) -> DistanceModelType? {
   match s {
-    "linear" => Some(Linear)
-    "inverse" => Some(Inverse)
-    "exponential" => Some(Exponential)
+    "linear" => Some(DistanceModelType::Linear)
+    "inverse" => Some(DistanceModelType::Inverse)
+    "exponential" => Some(DistanceModelType::Exponential)
     _ => None
   }
 }
@@ -346,9 +346,9 @@ pub(all) enum OverSampleType {
 /// Convert to string value
 pub fn OverSampleType::to_string(self : OverSampleType) -> String {
   match self {
-    None => "none"
-    N2x => "2x"
-    N4x => "4x"
+    OverSampleType::None => "none"
+    OverSampleType::N2x => "2x"
+    OverSampleType::N4x => "4x"
   }
 }
 
@@ -356,9 +356,9 @@ pub fn OverSampleType::to_string(self : OverSampleType) -> String {
 /// Parse from string value
 pub fn OverSampleType::from_string(s : String) -> OverSampleType? {
   match s {
-    "none" => Some(None)
-    "2x" => Some(N2x)
-    "4x" => Some(N4x)
+    "none" => Some(OverSampleType::None)
+    "2x" => Some(OverSampleType::N2x)
+    "4x" => Some(OverSampleType::N4x)
     _ => None
   }
 }
@@ -1838,7 +1838,9 @@ pub extern "js" fn AudioContext::get_output_latency(
   #| (self) => self.outputLatency
 
 ///|
-pub extern "js" fn AudioContext::get_sink_id(self : AudioContext) -> JsValue =
+pub extern "js" fn AudioContext::get_sink_id(
+  self : AudioContext,
+) -> StringOrAudioSinkInfo =
   #| (self) => self.sinkId
 
 ///|
@@ -1888,7 +1890,7 @@ pub extern "js" fn AudioContext::close(self : AudioContext) -> Promise[Unit] =
 ///|
 pub extern "js" fn AudioContext::set_sink_id(
   self : AudioContext,
-  sink_id : JsValue,
+  sink_id : StringOrAudioSinkOptions,
 ) -> Promise[Unit] =
   #| (self, sink_id) => self.setSinkId(sink_id)
 

@@ -278,7 +278,7 @@ pub extern "js" fn LanguageDetector::availability(
 pub extern "js" fn LanguageDetector::detect(
   self : LanguageDetector,
   input : String,
-) -> Promise[Array[LanguageDetectionResult]] =
+) -> Promise[Unit] =
   #| (self, input) => self.detect(input)
 
 ///|
@@ -286,7 +286,7 @@ pub extern "js" fn LanguageDetector::detect_with_options(
   self : LanguageDetector,
   input : String,
   options : LanguageDetectorDetectOptions,
-) -> Promise[Array[LanguageDetectionResult]] =
+) -> Promise[Unit] =
   #| (self, input, options) => self.detect(input, options)
 
 ///|

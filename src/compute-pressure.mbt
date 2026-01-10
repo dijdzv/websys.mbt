@@ -11,7 +11,7 @@ pub(all) enum PressureSource {
 /// Convert to string value
 pub fn PressureSource::to_string(self : PressureSource) -> String {
   match self {
-    Cpu => "cpu"
+    PressureSource::Cpu => "cpu"
   }
 }
 
@@ -19,7 +19,7 @@ pub fn PressureSource::to_string(self : PressureSource) -> String {
 /// Parse from string value
 pub fn PressureSource::from_string(s : String) -> PressureSource? {
   match s {
-    "cpu" => Some(Cpu)
+    "cpu" => Some(PressureSource::Cpu)
     _ => None
   }
 }
@@ -37,10 +37,10 @@ pub(all) enum PressureState {
 /// Convert to string value
 pub fn PressureState::to_string(self : PressureState) -> String {
   match self {
-    Nominal => "nominal"
-    Fair => "fair"
-    Serious => "serious"
-    Critical => "critical"
+    PressureState::Nominal => "nominal"
+    PressureState::Fair => "fair"
+    PressureState::Serious => "serious"
+    PressureState::Critical => "critical"
   }
 }
 
@@ -48,10 +48,10 @@ pub fn PressureState::to_string(self : PressureState) -> String {
 /// Parse from string value
 pub fn PressureState::from_string(s : String) -> PressureState? {
   match s {
-    "nominal" => Some(Nominal)
-    "fair" => Some(Fair)
-    "serious" => Some(Serious)
-    "critical" => Some(Critical)
+    "nominal" => Some(PressureState::Nominal)
+    "fair" => Some(PressureState::Fair)
+    "serious" => Some(PressureState::Serious)
+    "critical" => Some(PressureState::Critical)
     _ => None
   }
 }

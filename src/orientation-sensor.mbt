@@ -33,6 +33,48 @@ pub extern "js" fn RotationMatrixType::from_d_o_m_matrix(
   #| (v) => v
 
 ///|
+/// Check if this RotationMatrixType is Float32Array
+pub extern "js" fn RotationMatrixType::is_float32_array(
+  self : RotationMatrixType,
+) -> Bool =
+  #| (self) => self instanceof Float32Array
+
+///|
+/// Check if this RotationMatrixType is Float64Array
+pub extern "js" fn RotationMatrixType::is_float64_array(
+  self : RotationMatrixType,
+) -> Bool =
+  #| (self) => self instanceof Float64Array
+
+///|
+/// Check if this RotationMatrixType is DOMMatrix
+pub extern "js" fn RotationMatrixType::is_d_o_m_matrix(
+  self : RotationMatrixType,
+) -> Bool =
+  #| (self) => self instanceof DOMMatrix
+
+///|
+/// Try to get RotationMatrixType as Float32Array
+pub extern "js" fn RotationMatrixType::as_float32_array(
+  self : RotationMatrixType,
+) -> Float32Array? =
+  #| (self) => (self instanceof Float32Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get RotationMatrixType as Float64Array
+pub extern "js" fn RotationMatrixType::as_float64_array(
+  self : RotationMatrixType,
+) -> Float64Array? =
+  #| (self) => (self instanceof Float64Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get RotationMatrixType as DOMMatrix
+pub extern "js" fn RotationMatrixType::as_d_o_m_matrix(
+  self : RotationMatrixType,
+) -> DOMMatrix? =
+  #| (self) => (self instanceof DOMMatrix) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// OrientationSensorLocalCoordinateSystem enum
 pub(all) enum OrientationSensorLocalCoordinateSystem {
   Device
@@ -45,8 +87,8 @@ pub fn OrientationSensorLocalCoordinateSystem::to_string(
   self : OrientationSensorLocalCoordinateSystem,
 ) -> String {
   match self {
-    Device => "device"
-    Screen => "screen"
+    OrientationSensorLocalCoordinateSystem::Device => "device"
+    OrientationSensorLocalCoordinateSystem::Screen => "screen"
   }
 }
 
@@ -56,8 +98,8 @@ pub fn OrientationSensorLocalCoordinateSystem::from_string(
   s : String,
 ) -> OrientationSensorLocalCoordinateSystem? {
   match s {
-    "device" => Some(Device)
-    "screen" => Some(Screen)
+    "device" => Some(OrientationSensorLocalCoordinateSystem::Device)
+    "screen" => Some(OrientationSensorLocalCoordinateSystem::Screen)
     _ => None
   }
 }

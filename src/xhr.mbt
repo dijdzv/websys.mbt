@@ -26,6 +26,34 @@ pub extern "js" fn FormDataEntryValue::from_string(
   #| (v) => v
 
 ///|
+/// Check if this FormDataEntryValue is File
+pub extern "js" fn FormDataEntryValue::is_file(
+  self : FormDataEntryValue,
+) -> Bool =
+  #| (self) => self instanceof File
+
+///|
+/// Check if this FormDataEntryValue is String
+pub extern "js" fn FormDataEntryValue::is_string(
+  self : FormDataEntryValue,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get FormDataEntryValue as File
+pub extern "js" fn FormDataEntryValue::as_file(
+  self : FormDataEntryValue,
+) -> File? =
+  #| (self) => (self instanceof File) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get FormDataEntryValue as String
+pub extern "js" fn FormDataEntryValue::as_string(
+  self : FormDataEntryValue,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// XMLHttpRequestResponseType enum
 pub(all) enum XMLHttpRequestResponseType {
   Empty
@@ -42,12 +70,12 @@ pub fn XMLHttpRequestResponseType::to_string(
   self : XMLHttpRequestResponseType,
 ) -> String {
   match self {
-    Empty => ""
-    Arraybuffer => "arraybuffer"
-    Blob => "blob"
-    Document => "document"
-    Json => "json"
-    Text => "text"
+    XMLHttpRequestResponseType::Empty => ""
+    XMLHttpRequestResponseType::Arraybuffer => "arraybuffer"
+    XMLHttpRequestResponseType::Blob => "blob"
+    XMLHttpRequestResponseType::Document => "document"
+    XMLHttpRequestResponseType::Json => "json"
+    XMLHttpRequestResponseType::Text => "text"
   }
 }
 
@@ -57,12 +85,12 @@ pub fn XMLHttpRequestResponseType::from_string(
   s : String,
 ) -> XMLHttpRequestResponseType? {
   match s {
-    "" => Some(Empty)
-    "arraybuffer" => Some(Arraybuffer)
-    "blob" => Some(Blob)
-    "document" => Some(Document)
-    "json" => Some(Json)
-    "text" => Some(Text)
+    "" => Some(XMLHttpRequestResponseType::Empty)
+    "arraybuffer" => Some(XMLHttpRequestResponseType::Arraybuffer)
+    "blob" => Some(XMLHttpRequestResponseType::Blob)
+    "document" => Some(XMLHttpRequestResponseType::Document)
+    "json" => Some(XMLHttpRequestResponseType::Json)
+    "text" => Some(XMLHttpRequestResponseType::Text)
     _ => None
   }
 }
@@ -516,7 +544,7 @@ pub extern "js" fn XMLHttpRequest::send(self : XMLHttpRequest) -> Unit =
 ///|
 pub extern "js" fn XMLHttpRequest::send_with_body(
   self : XMLHttpRequest,
-  body : JsValue,
+  body : DocumentOrXMLHttpRequestBodyInit,
 ) -> Unit =
   #| (self, body) => self.send(body)
 

@@ -11,7 +11,7 @@ pub(all) enum WakeLockType {
 /// Convert to string value
 pub fn WakeLockType::to_string(self : WakeLockType) -> String {
   match self {
-    Screen => "screen"
+    WakeLockType::Screen => "screen"
   }
 }
 
@@ -19,7 +19,7 @@ pub fn WakeLockType::to_string(self : WakeLockType) -> String {
 /// Parse from string value
 pub fn WakeLockType::from_string(s : String) -> WakeLockType? {
   match s {
-    "screen" => Some(Screen)
+    "screen" => Some(WakeLockType::Screen)
     _ => None
   }
 }

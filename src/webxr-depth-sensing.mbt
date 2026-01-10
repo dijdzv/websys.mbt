@@ -12,8 +12,8 @@ pub(all) enum XRDepthType {
 /// Convert to string value
 pub fn XRDepthType::to_string(self : XRDepthType) -> String {
   match self {
-    Raw => "raw"
-    Smooth => "smooth"
+    XRDepthType::Raw => "raw"
+    XRDepthType::Smooth => "smooth"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn XRDepthType::to_string(self : XRDepthType) -> String {
 /// Parse from string value
 pub fn XRDepthType::from_string(s : String) -> XRDepthType? {
   match s {
-    "raw" => Some(Raw)
-    "smooth" => Some(Smooth)
+    "raw" => Some(XRDepthType::Raw)
+    "smooth" => Some(XRDepthType::Smooth)
     _ => None
   }
 }
@@ -38,8 +38,8 @@ pub(all) enum XRDepthUsage {
 /// Convert to string value
 pub fn XRDepthUsage::to_string(self : XRDepthUsage) -> String {
   match self {
-    CpuOptimized => "cpu-optimized"
-    GpuOptimized => "gpu-optimized"
+    XRDepthUsage::CpuOptimized => "cpu-optimized"
+    XRDepthUsage::GpuOptimized => "gpu-optimized"
   }
 }
 
@@ -47,8 +47,8 @@ pub fn XRDepthUsage::to_string(self : XRDepthUsage) -> String {
 /// Parse from string value
 pub fn XRDepthUsage::from_string(s : String) -> XRDepthUsage? {
   match s {
-    "cpu-optimized" => Some(CpuOptimized)
-    "gpu-optimized" => Some(GpuOptimized)
+    "cpu-optimized" => Some(XRDepthUsage::CpuOptimized)
+    "gpu-optimized" => Some(XRDepthUsage::GpuOptimized)
     _ => None
   }
 }
@@ -65,9 +65,9 @@ pub(all) enum XRDepthDataFormat {
 /// Convert to string value
 pub fn XRDepthDataFormat::to_string(self : XRDepthDataFormat) -> String {
   match self {
-    LuminanceAlpha => "luminance-alpha"
-    Float32 => "float32"
-    UnsignedShort => "unsigned-short"
+    XRDepthDataFormat::LuminanceAlpha => "luminance-alpha"
+    XRDepthDataFormat::Float32 => "float32"
+    XRDepthDataFormat::UnsignedShort => "unsigned-short"
   }
 }
 
@@ -75,9 +75,9 @@ pub fn XRDepthDataFormat::to_string(self : XRDepthDataFormat) -> String {
 /// Parse from string value
 pub fn XRDepthDataFormat::from_string(s : String) -> XRDepthDataFormat? {
   match s {
-    "luminance-alpha" => Some(LuminanceAlpha)
-    "float32" => Some(Float32)
-    "unsigned-short" => Some(UnsignedShort)
+    "luminance-alpha" => Some(XRDepthDataFormat::LuminanceAlpha)
+    "float32" => Some(XRDepthDataFormat::Float32)
+    "unsigned-short" => Some(XRDepthDataFormat::UnsignedShort)
     _ => None
   }
 }

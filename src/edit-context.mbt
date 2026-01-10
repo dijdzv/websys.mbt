@@ -15,11 +15,11 @@ pub(all) enum UnderlineStyle {
 /// Convert to string value
 pub fn UnderlineStyle::to_string(self : UnderlineStyle) -> String {
   match self {
-    None => "none"
-    Solid => "solid"
-    Dotted => "dotted"
-    Dashed => "dashed"
-    Wavy => "wavy"
+    UnderlineStyle::None => "none"
+    UnderlineStyle::Solid => "solid"
+    UnderlineStyle::Dotted => "dotted"
+    UnderlineStyle::Dashed => "dashed"
+    UnderlineStyle::Wavy => "wavy"
   }
 }
 
@@ -27,11 +27,11 @@ pub fn UnderlineStyle::to_string(self : UnderlineStyle) -> String {
 /// Parse from string value
 pub fn UnderlineStyle::from_string(s : String) -> UnderlineStyle? {
   match s {
-    "none" => Some(None)
-    "solid" => Some(Solid)
-    "dotted" => Some(Dotted)
-    "dashed" => Some(Dashed)
-    "wavy" => Some(Wavy)
+    "none" => Some(UnderlineStyle::None)
+    "solid" => Some(UnderlineStyle::Solid)
+    "dotted" => Some(UnderlineStyle::Dotted)
+    "dashed" => Some(UnderlineStyle::Dashed)
+    "wavy" => Some(UnderlineStyle::Wavy)
     _ => None
   }
 }
@@ -48,9 +48,9 @@ pub(all) enum UnderlineThickness {
 /// Convert to string value
 pub fn UnderlineThickness::to_string(self : UnderlineThickness) -> String {
   match self {
-    None => "none"
-    Thin => "thin"
-    Thick => "thick"
+    UnderlineThickness::None => "none"
+    UnderlineThickness::Thin => "thin"
+    UnderlineThickness::Thick => "thick"
   }
 }
 
@@ -58,9 +58,9 @@ pub fn UnderlineThickness::to_string(self : UnderlineThickness) -> String {
 /// Parse from string value
 pub fn UnderlineThickness::from_string(s : String) -> UnderlineThickness? {
   match s {
-    "none" => Some(None)
-    "thin" => Some(Thin)
-    "thick" => Some(Thick)
+    "none" => Some(UnderlineThickness::None)
+    "thin" => Some(UnderlineThickness::Thin)
+    "thick" => Some(UnderlineThickness::Thick)
     _ => None
   }
 }

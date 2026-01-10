@@ -12,8 +12,8 @@ pub(all) enum TouchType {
 /// Convert to string value
 pub fn TouchType::to_string(self : TouchType) -> String {
   match self {
-    Direct => "direct"
-    Stylus => "stylus"
+    TouchType::Direct => "direct"
+    TouchType::Stylus => "stylus"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn TouchType::to_string(self : TouchType) -> String {
 /// Parse from string value
 pub fn TouchType::from_string(s : String) -> TouchType? {
   match s {
-    "direct" => Some(Direct)
-    "stylus" => Some(Stylus)
+    "direct" => Some(TouchType::Direct)
+    "stylus" => Some(TouchType::Stylus)
     _ => None
   }
 }

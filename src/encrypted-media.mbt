@@ -13,9 +13,9 @@ pub(all) enum MediaKeysRequirement {
 /// Convert to string value
 pub fn MediaKeysRequirement::to_string(self : MediaKeysRequirement) -> String {
   match self {
-    Required => "required"
-    Optional => "optional"
-    NotAllowed => "not-allowed"
+    MediaKeysRequirement::Required => "required"
+    MediaKeysRequirement::Optional => "optional"
+    MediaKeysRequirement::NotAllowed => "not-allowed"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn MediaKeysRequirement::to_string(self : MediaKeysRequirement) -> String {
 /// Parse from string value
 pub fn MediaKeysRequirement::from_string(s : String) -> MediaKeysRequirement? {
   match s {
-    "required" => Some(Required)
-    "optional" => Some(Optional)
-    "not-allowed" => Some(NotAllowed)
+    "required" => Some(MediaKeysRequirement::Required)
+    "optional" => Some(MediaKeysRequirement::Optional)
+    "not-allowed" => Some(MediaKeysRequirement::NotAllowed)
     _ => None
   }
 }
@@ -41,8 +41,8 @@ pub(all) enum MediaKeySessionType {
 /// Convert to string value
 pub fn MediaKeySessionType::to_string(self : MediaKeySessionType) -> String {
   match self {
-    Temporary => "temporary"
-    PersistentLicense => "persistent-license"
+    MediaKeySessionType::Temporary => "temporary"
+    MediaKeySessionType::PersistentLicense => "persistent-license"
   }
 }
 
@@ -50,8 +50,8 @@ pub fn MediaKeySessionType::to_string(self : MediaKeySessionType) -> String {
 /// Parse from string value
 pub fn MediaKeySessionType::from_string(s : String) -> MediaKeySessionType? {
   match s {
-    "temporary" => Some(Temporary)
-    "persistent-license" => Some(PersistentLicense)
+    "temporary" => Some(MediaKeySessionType::Temporary)
+    "persistent-license" => Some(MediaKeySessionType::PersistentLicense)
     _ => None
   }
 }
@@ -72,11 +72,12 @@ pub fn MediaKeySessionClosedReason::to_string(
   self : MediaKeySessionClosedReason,
 ) -> String {
   match self {
-    InternalError => "internal-error"
-    ClosedByApplication => "closed-by-application"
-    ReleaseAcknowledged => "release-acknowledged"
-    HardwareContextReset => "hardware-context-reset"
-    ResourceEvicted => "resource-evicted"
+    MediaKeySessionClosedReason::InternalError => "internal-error"
+    MediaKeySessionClosedReason::ClosedByApplication => "closed-by-application"
+    MediaKeySessionClosedReason::ReleaseAcknowledged => "release-acknowledged"
+    MediaKeySessionClosedReason::HardwareContextReset =>
+      "hardware-context-reset"
+    MediaKeySessionClosedReason::ResourceEvicted => "resource-evicted"
   }
 }
 
@@ -86,11 +87,14 @@ pub fn MediaKeySessionClosedReason::from_string(
   s : String,
 ) -> MediaKeySessionClosedReason? {
   match s {
-    "internal-error" => Some(InternalError)
-    "closed-by-application" => Some(ClosedByApplication)
-    "release-acknowledged" => Some(ReleaseAcknowledged)
-    "hardware-context-reset" => Some(HardwareContextReset)
-    "resource-evicted" => Some(ResourceEvicted)
+    "internal-error" => Some(MediaKeySessionClosedReason::InternalError)
+    "closed-by-application" =>
+      Some(MediaKeySessionClosedReason::ClosedByApplication)
+    "release-acknowledged" =>
+      Some(MediaKeySessionClosedReason::ReleaseAcknowledged)
+    "hardware-context-reset" =>
+      Some(MediaKeySessionClosedReason::HardwareContextReset)
+    "resource-evicted" => Some(MediaKeySessionClosedReason::ResourceEvicted)
     _ => None
   }
 }
@@ -112,14 +116,14 @@ pub(all) enum MediaKeyStatus {
 /// Convert to string value
 pub fn MediaKeyStatus::to_string(self : MediaKeyStatus) -> String {
   match self {
-    Usable => "usable"
-    Expired => "expired"
-    Released => "released"
-    OutputRestricted => "output-restricted"
-    OutputDownscaled => "output-downscaled"
-    UsableInFuture => "usable-in-future"
-    StatusPending => "status-pending"
-    InternalError => "internal-error"
+    MediaKeyStatus::Usable => "usable"
+    MediaKeyStatus::Expired => "expired"
+    MediaKeyStatus::Released => "released"
+    MediaKeyStatus::OutputRestricted => "output-restricted"
+    MediaKeyStatus::OutputDownscaled => "output-downscaled"
+    MediaKeyStatus::UsableInFuture => "usable-in-future"
+    MediaKeyStatus::StatusPending => "status-pending"
+    MediaKeyStatus::InternalError => "internal-error"
   }
 }
 
@@ -127,14 +131,14 @@ pub fn MediaKeyStatus::to_string(self : MediaKeyStatus) -> String {
 /// Parse from string value
 pub fn MediaKeyStatus::from_string(s : String) -> MediaKeyStatus? {
   match s {
-    "usable" => Some(Usable)
-    "expired" => Some(Expired)
-    "released" => Some(Released)
-    "output-restricted" => Some(OutputRestricted)
-    "output-downscaled" => Some(OutputDownscaled)
-    "usable-in-future" => Some(UsableInFuture)
-    "status-pending" => Some(StatusPending)
-    "internal-error" => Some(InternalError)
+    "usable" => Some(MediaKeyStatus::Usable)
+    "expired" => Some(MediaKeyStatus::Expired)
+    "released" => Some(MediaKeyStatus::Released)
+    "output-restricted" => Some(MediaKeyStatus::OutputRestricted)
+    "output-downscaled" => Some(MediaKeyStatus::OutputDownscaled)
+    "usable-in-future" => Some(MediaKeyStatus::UsableInFuture)
+    "status-pending" => Some(MediaKeyStatus::StatusPending)
+    "internal-error" => Some(MediaKeyStatus::InternalError)
     _ => None
   }
 }
@@ -152,10 +156,10 @@ pub(all) enum MediaKeyMessageType {
 /// Convert to string value
 pub fn MediaKeyMessageType::to_string(self : MediaKeyMessageType) -> String {
   match self {
-    LicenseRequest => "license-request"
-    LicenseRenewal => "license-renewal"
-    LicenseRelease => "license-release"
-    IndividualizationRequest => "individualization-request"
+    MediaKeyMessageType::LicenseRequest => "license-request"
+    MediaKeyMessageType::LicenseRenewal => "license-renewal"
+    MediaKeyMessageType::LicenseRelease => "license-release"
+    MediaKeyMessageType::IndividualizationRequest => "individualization-request"
   }
 }
 
@@ -163,10 +167,11 @@ pub fn MediaKeyMessageType::to_string(self : MediaKeyMessageType) -> String {
 /// Parse from string value
 pub fn MediaKeyMessageType::from_string(s : String) -> MediaKeyMessageType? {
   match s {
-    "license-request" => Some(LicenseRequest)
-    "license-renewal" => Some(LicenseRenewal)
-    "license-release" => Some(LicenseRelease)
-    "individualization-request" => Some(IndividualizationRequest)
+    "license-request" => Some(MediaKeyMessageType::LicenseRequest)
+    "license-renewal" => Some(MediaKeyMessageType::LicenseRenewal)
+    "license-release" => Some(MediaKeyMessageType::LicenseRelease)
+    "individualization-request" =>
+      Some(MediaKeyMessageType::IndividualizationRequest)
     _ => None
   }
 }
@@ -500,7 +505,7 @@ pub extern "js" fn MediaKeyStatusMap::has(
 pub extern "js" fn MediaKeyStatusMap::get(
   self : MediaKeyStatusMap,
   key_id : BufferSource,
-) -> JsValue =
+) -> MediaKeyStatusOrVoid =
   #| (self, key_id) => self.get(key_id)
 
 ///|

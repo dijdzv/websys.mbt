@@ -16,12 +16,12 @@ pub(all) enum ScriptInvokerType {
 /// Convert to string value
 pub fn ScriptInvokerType::to_string(self : ScriptInvokerType) -> String {
   match self {
-    ClassicScript => "classic-script"
-    ModuleScript => "module-script"
-    EventListener => "event-listener"
-    UserCallback => "user-callback"
-    ResolvePromise => "resolve-promise"
-    RejectPromise => "reject-promise"
+    ScriptInvokerType::ClassicScript => "classic-script"
+    ScriptInvokerType::ModuleScript => "module-script"
+    ScriptInvokerType::EventListener => "event-listener"
+    ScriptInvokerType::UserCallback => "user-callback"
+    ScriptInvokerType::ResolvePromise => "resolve-promise"
+    ScriptInvokerType::RejectPromise => "reject-promise"
   }
 }
 
@@ -29,12 +29,12 @@ pub fn ScriptInvokerType::to_string(self : ScriptInvokerType) -> String {
 /// Parse from string value
 pub fn ScriptInvokerType::from_string(s : String) -> ScriptInvokerType? {
   match s {
-    "classic-script" => Some(ClassicScript)
-    "module-script" => Some(ModuleScript)
-    "event-listener" => Some(EventListener)
-    "user-callback" => Some(UserCallback)
-    "resolve-promise" => Some(ResolvePromise)
-    "reject-promise" => Some(RejectPromise)
+    "classic-script" => Some(ScriptInvokerType::ClassicScript)
+    "module-script" => Some(ScriptInvokerType::ModuleScript)
+    "event-listener" => Some(ScriptInvokerType::EventListener)
+    "user-callback" => Some(ScriptInvokerType::UserCallback)
+    "resolve-promise" => Some(ScriptInvokerType::ResolvePromise)
+    "reject-promise" => Some(ScriptInvokerType::RejectPromise)
     _ => None
   }
 }
@@ -55,11 +55,11 @@ pub fn ScriptWindowAttribution::to_string(
   self : ScriptWindowAttribution,
 ) -> String {
   match self {
-    Self => "self"
-    Descendant => "descendant"
-    Ancestor => "ancestor"
-    SamePage => "same-page"
-    Other => "other"
+    ScriptWindowAttribution::Self => "self"
+    ScriptWindowAttribution::Descendant => "descendant"
+    ScriptWindowAttribution::Ancestor => "ancestor"
+    ScriptWindowAttribution::SamePage => "same-page"
+    ScriptWindowAttribution::Other => "other"
   }
 }
 
@@ -69,11 +69,11 @@ pub fn ScriptWindowAttribution::from_string(
   s : String,
 ) -> ScriptWindowAttribution? {
   match s {
-    "self" => Some(Self)
-    "descendant" => Some(Descendant)
-    "ancestor" => Some(Ancestor)
-    "same-page" => Some(SamePage)
-    "other" => Some(Other)
+    "self" => Some(ScriptWindowAttribution::Self)
+    "descendant" => Some(ScriptWindowAttribution::Descendant)
+    "ancestor" => Some(ScriptWindowAttribution::Ancestor)
+    "same-page" => Some(ScriptWindowAttribution::SamePage)
+    "other" => Some(ScriptWindowAttribution::Other)
     _ => None
   }
 }

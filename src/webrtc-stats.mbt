@@ -24,20 +24,20 @@ pub(all) enum RTCStatsType {
 /// Convert to string value
 pub fn RTCStatsType::to_string(self : RTCStatsType) -> String {
   match self {
-    Codec => "codec"
-    InboundRtp => "inbound-rtp"
-    OutboundRtp => "outbound-rtp"
-    RemoteInboundRtp => "remote-inbound-rtp"
-    RemoteOutboundRtp => "remote-outbound-rtp"
-    MediaSource => "media-source"
-    MediaPlayout => "media-playout"
-    PeerConnection => "peer-connection"
-    DataChannel => "data-channel"
-    Transport => "transport"
-    CandidatePair => "candidate-pair"
-    LocalCandidate => "local-candidate"
-    RemoteCandidate => "remote-candidate"
-    Certificate => "certificate"
+    RTCStatsType::Codec => "codec"
+    RTCStatsType::InboundRtp => "inbound-rtp"
+    RTCStatsType::OutboundRtp => "outbound-rtp"
+    RTCStatsType::RemoteInboundRtp => "remote-inbound-rtp"
+    RTCStatsType::RemoteOutboundRtp => "remote-outbound-rtp"
+    RTCStatsType::MediaSource => "media-source"
+    RTCStatsType::MediaPlayout => "media-playout"
+    RTCStatsType::PeerConnection => "peer-connection"
+    RTCStatsType::DataChannel => "data-channel"
+    RTCStatsType::Transport => "transport"
+    RTCStatsType::CandidatePair => "candidate-pair"
+    RTCStatsType::LocalCandidate => "local-candidate"
+    RTCStatsType::RemoteCandidate => "remote-candidate"
+    RTCStatsType::Certificate => "certificate"
   }
 }
 
@@ -45,20 +45,20 @@ pub fn RTCStatsType::to_string(self : RTCStatsType) -> String {
 /// Parse from string value
 pub fn RTCStatsType::from_string(s : String) -> RTCStatsType? {
   match s {
-    "codec" => Some(Codec)
-    "inbound-rtp" => Some(InboundRtp)
-    "outbound-rtp" => Some(OutboundRtp)
-    "remote-inbound-rtp" => Some(RemoteInboundRtp)
-    "remote-outbound-rtp" => Some(RemoteOutboundRtp)
-    "media-source" => Some(MediaSource)
-    "media-playout" => Some(MediaPlayout)
-    "peer-connection" => Some(PeerConnection)
-    "data-channel" => Some(DataChannel)
-    "transport" => Some(Transport)
-    "candidate-pair" => Some(CandidatePair)
-    "local-candidate" => Some(LocalCandidate)
-    "remote-candidate" => Some(RemoteCandidate)
-    "certificate" => Some(Certificate)
+    "codec" => Some(RTCStatsType::Codec)
+    "inbound-rtp" => Some(RTCStatsType::InboundRtp)
+    "outbound-rtp" => Some(RTCStatsType::OutboundRtp)
+    "remote-inbound-rtp" => Some(RTCStatsType::RemoteInboundRtp)
+    "remote-outbound-rtp" => Some(RTCStatsType::RemoteOutboundRtp)
+    "media-source" => Some(RTCStatsType::MediaSource)
+    "media-playout" => Some(RTCStatsType::MediaPlayout)
+    "peer-connection" => Some(RTCStatsType::PeerConnection)
+    "data-channel" => Some(RTCStatsType::DataChannel)
+    "transport" => Some(RTCStatsType::Transport)
+    "candidate-pair" => Some(RTCStatsType::CandidatePair)
+    "local-candidate" => Some(RTCStatsType::LocalCandidate)
+    "remote-candidate" => Some(RTCStatsType::RemoteCandidate)
+    "certificate" => Some(RTCStatsType::Certificate)
     _ => None
   }
 }
@@ -78,10 +78,10 @@ pub fn RTCQualityLimitationReason::to_string(
   self : RTCQualityLimitationReason,
 ) -> String {
   match self {
-    None => "none"
-    Cpu => "cpu"
-    Bandwidth => "bandwidth"
-    Other => "other"
+    RTCQualityLimitationReason::None => "none"
+    RTCQualityLimitationReason::Cpu => "cpu"
+    RTCQualityLimitationReason::Bandwidth => "bandwidth"
+    RTCQualityLimitationReason::Other => "other"
   }
 }
 
@@ -91,10 +91,10 @@ pub fn RTCQualityLimitationReason::from_string(
   s : String,
 ) -> RTCQualityLimitationReason? {
   match s {
-    "none" => Some(None)
-    "cpu" => Some(Cpu)
-    "bandwidth" => Some(Bandwidth)
-    "other" => Some(Other)
+    "none" => Some(RTCQualityLimitationReason::None)
+    "cpu" => Some(RTCQualityLimitationReason::Cpu)
+    "bandwidth" => Some(RTCQualityLimitationReason::Bandwidth)
+    "other" => Some(RTCQualityLimitationReason::Other)
     _ => None
   }
 }
@@ -111,9 +111,9 @@ pub(all) enum RTCDtlsRole {
 /// Convert to string value
 pub fn RTCDtlsRole::to_string(self : RTCDtlsRole) -> String {
   match self {
-    Client => "client"
-    Server => "server"
-    Unknown => "unknown"
+    RTCDtlsRole::Client => "client"
+    RTCDtlsRole::Server => "server"
+    RTCDtlsRole::Unknown => "unknown"
   }
 }
 
@@ -121,9 +121,9 @@ pub fn RTCDtlsRole::to_string(self : RTCDtlsRole) -> String {
 /// Parse from string value
 pub fn RTCDtlsRole::from_string(s : String) -> RTCDtlsRole? {
   match s {
-    "client" => Some(Client)
-    "server" => Some(Server)
-    "unknown" => Some(Unknown)
+    "client" => Some(RTCDtlsRole::Client)
+    "server" => Some(RTCDtlsRole::Server)
+    "unknown" => Some(RTCDtlsRole::Unknown)
     _ => None
   }
 }
@@ -144,11 +144,11 @@ pub fn RTCStatsIceCandidatePairState::to_string(
   self : RTCStatsIceCandidatePairState,
 ) -> String {
   match self {
-    Frozen => "frozen"
-    Waiting => "waiting"
-    InProgress => "in-progress"
-    Failed => "failed"
-    Succeeded => "succeeded"
+    RTCStatsIceCandidatePairState::Frozen => "frozen"
+    RTCStatsIceCandidatePairState::Waiting => "waiting"
+    RTCStatsIceCandidatePairState::InProgress => "in-progress"
+    RTCStatsIceCandidatePairState::Failed => "failed"
+    RTCStatsIceCandidatePairState::Succeeded => "succeeded"
   }
 }
 
@@ -158,11 +158,11 @@ pub fn RTCStatsIceCandidatePairState::from_string(
   s : String,
 ) -> RTCStatsIceCandidatePairState? {
   match s {
-    "frozen" => Some(Frozen)
-    "waiting" => Some(Waiting)
-    "in-progress" => Some(InProgress)
-    "failed" => Some(Failed)
-    "succeeded" => Some(Succeeded)
+    "frozen" => Some(RTCStatsIceCandidatePairState::Frozen)
+    "waiting" => Some(RTCStatsIceCandidatePairState::Waiting)
+    "in-progress" => Some(RTCStatsIceCandidatePairState::InProgress)
+    "failed" => Some(RTCStatsIceCandidatePairState::Failed)
+    "succeeded" => Some(RTCStatsIceCandidatePairState::Succeeded)
     _ => None
   }
 }

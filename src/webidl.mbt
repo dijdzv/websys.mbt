@@ -103,6 +103,188 @@ pub extern "js" fn ArrayBufferView::from_data_view(
   #| (v) => v
 
 ///|
+/// Check if this ArrayBufferView is Int8Array
+pub extern "js" fn ArrayBufferView::is_int8_array(
+  self : ArrayBufferView,
+) -> Bool =
+  #| (self) => self instanceof Int8Array
+
+///|
+/// Check if this ArrayBufferView is Int16Array
+pub extern "js" fn ArrayBufferView::is_int16_array(
+  self : ArrayBufferView,
+) -> Bool =
+  #| (self) => self instanceof Int16Array
+
+///|
+/// Check if this ArrayBufferView is Int32Array
+pub extern "js" fn ArrayBufferView::is_int32_array(
+  self : ArrayBufferView,
+) -> Bool =
+  #| (self) => self instanceof Int32Array
+
+///|
+/// Check if this ArrayBufferView is Uint8Array
+pub extern "js" fn ArrayBufferView::is_uint8_array(
+  self : ArrayBufferView,
+) -> Bool =
+  #| (self) => self instanceof Uint8Array
+
+///|
+/// Check if this ArrayBufferView is Uint16Array
+pub extern "js" fn ArrayBufferView::is_uint16_array(
+  self : ArrayBufferView,
+) -> Bool =
+  #| (self) => self instanceof Uint16Array
+
+///|
+/// Check if this ArrayBufferView is Uint32Array
+pub extern "js" fn ArrayBufferView::is_uint32_array(
+  self : ArrayBufferView,
+) -> Bool =
+  #| (self) => self instanceof Uint32Array
+
+///|
+/// Check if this ArrayBufferView is Uint8ClampedArray
+pub extern "js" fn ArrayBufferView::is_uint8_clamped_array(
+  self : ArrayBufferView,
+) -> Bool =
+  #| (self) => self instanceof Uint8ClampedArray
+
+///|
+/// Check if this ArrayBufferView is BigInt64Array
+pub extern "js" fn ArrayBufferView::is_big_int64_array(
+  self : ArrayBufferView,
+) -> Bool =
+  #| (self) => self instanceof BigInt64Array
+
+///|
+/// Check if this ArrayBufferView is BigUint64Array
+pub extern "js" fn ArrayBufferView::is_big_uint64_array(
+  self : ArrayBufferView,
+) -> Bool =
+  #| (self) => self instanceof BigUint64Array
+
+///|
+/// Check if this ArrayBufferView is Float16Array
+pub extern "js" fn ArrayBufferView::is_float16_array(
+  self : ArrayBufferView,
+) -> Bool =
+  #| (self) => self instanceof Float16Array
+
+///|
+/// Check if this ArrayBufferView is Float32Array
+pub extern "js" fn ArrayBufferView::is_float32_array(
+  self : ArrayBufferView,
+) -> Bool =
+  #| (self) => self instanceof Float32Array
+
+///|
+/// Check if this ArrayBufferView is Float64Array
+pub extern "js" fn ArrayBufferView::is_float64_array(
+  self : ArrayBufferView,
+) -> Bool =
+  #| (self) => self instanceof Float64Array
+
+///|
+/// Check if this ArrayBufferView is DataView
+pub extern "js" fn ArrayBufferView::is_data_view(
+  self : ArrayBufferView,
+) -> Bool =
+  #| (self) => self instanceof DataView
+
+///|
+/// Try to get ArrayBufferView as Int8Array
+pub extern "js" fn ArrayBufferView::as_int8_array(
+  self : ArrayBufferView,
+) -> Int8Array? =
+  #| (self) => (self instanceof Int8Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ArrayBufferView as Int16Array
+pub extern "js" fn ArrayBufferView::as_int16_array(
+  self : ArrayBufferView,
+) -> Int16Array? =
+  #| (self) => (self instanceof Int16Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ArrayBufferView as Int32Array
+pub extern "js" fn ArrayBufferView::as_int32_array(
+  self : ArrayBufferView,
+) -> Int32Array? =
+  #| (self) => (self instanceof Int32Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ArrayBufferView as Uint8Array
+pub extern "js" fn ArrayBufferView::as_uint8_array(
+  self : ArrayBufferView,
+) -> Uint8Array? =
+  #| (self) => (self instanceof Uint8Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ArrayBufferView as Uint16Array
+pub extern "js" fn ArrayBufferView::as_uint16_array(
+  self : ArrayBufferView,
+) -> Uint16Array? =
+  #| (self) => (self instanceof Uint16Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ArrayBufferView as Uint32Array
+pub extern "js" fn ArrayBufferView::as_uint32_array(
+  self : ArrayBufferView,
+) -> Uint32Array? =
+  #| (self) => (self instanceof Uint32Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ArrayBufferView as Uint8ClampedArray
+pub extern "js" fn ArrayBufferView::as_uint8_clamped_array(
+  self : ArrayBufferView,
+) -> Uint8ClampedArray? =
+  #| (self) => (self instanceof Uint8ClampedArray) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ArrayBufferView as BigInt64Array
+pub extern "js" fn ArrayBufferView::as_big_int64_array(
+  self : ArrayBufferView,
+) -> BigInt64Array? =
+  #| (self) => (self instanceof BigInt64Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ArrayBufferView as BigUint64Array
+pub extern "js" fn ArrayBufferView::as_big_uint64_array(
+  self : ArrayBufferView,
+) -> BigUint64Array? =
+  #| (self) => (self instanceof BigUint64Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ArrayBufferView as Float16Array
+pub extern "js" fn ArrayBufferView::as_float16_array(
+  self : ArrayBufferView,
+) -> Float16Array? =
+  #| (self) => (self instanceof Float16Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ArrayBufferView as Float32Array
+pub extern "js" fn ArrayBufferView::as_float32_array(
+  self : ArrayBufferView,
+) -> Float32Array? =
+  #| (self) => (self instanceof Float32Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ArrayBufferView as Float64Array
+pub extern "js" fn ArrayBufferView::as_float64_array(
+  self : ArrayBufferView,
+) -> Float64Array? =
+  #| (self) => (self instanceof Float64Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ArrayBufferView as DataView
+pub extern "js" fn ArrayBufferView::as_data_view(
+  self : ArrayBufferView,
+) -> DataView? =
+  #| (self) => (self instanceof DataView) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// BufferSource typedef
 pub type BufferSource
 
@@ -123,6 +305,32 @@ pub extern "js" fn BufferSource::from_array_buffer(
   v : ArrayBuffer,
 ) -> BufferSource =
   #| (v) => v
+
+///|
+/// Check if this BufferSource is ArrayBufferView
+pub extern "js" fn BufferSource::is_array_buffer_view(
+  self : BufferSource,
+) -> Bool =
+  #| (self) => self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView
+
+///|
+/// Check if this BufferSource is ArrayBuffer
+pub extern "js" fn BufferSource::is_array_buffer(self : BufferSource) -> Bool =
+  #| (self) => self instanceof ArrayBuffer
+
+///|
+/// Try to get BufferSource as ArrayBufferView
+pub extern "js" fn BufferSource::as_array_buffer_view(
+  self : BufferSource,
+) -> ArrayBufferView? =
+  #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get BufferSource as ArrayBuffer
+pub extern "js" fn BufferSource::as_array_buffer(
+  self : BufferSource,
+) -> ArrayBuffer? =
+  #| (self) => (self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// AllowSharedBufferSource typedef
@@ -154,6 +362,48 @@ pub extern "js" fn AllowSharedBufferSource::from_array_buffer_view(
   v : ArrayBufferView,
 ) -> AllowSharedBufferSource =
   #| (v) => v
+
+///|
+/// Check if this AllowSharedBufferSource is ArrayBuffer
+pub extern "js" fn AllowSharedBufferSource::is_array_buffer(
+  self : AllowSharedBufferSource,
+) -> Bool =
+  #| (self) => self instanceof ArrayBuffer
+
+///|
+/// Check if this AllowSharedBufferSource is SharedArrayBuffer
+pub extern "js" fn AllowSharedBufferSource::is_shared_array_buffer(
+  self : AllowSharedBufferSource,
+) -> Bool =
+  #| (self) => self instanceof SharedArrayBuffer
+
+///|
+/// Check if this AllowSharedBufferSource is ArrayBufferView
+pub extern "js" fn AllowSharedBufferSource::is_array_buffer_view(
+  self : AllowSharedBufferSource,
+) -> Bool =
+  #| (self) => self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView
+
+///|
+/// Try to get AllowSharedBufferSource as ArrayBuffer
+pub extern "js" fn AllowSharedBufferSource::as_array_buffer(
+  self : AllowSharedBufferSource,
+) -> ArrayBuffer? =
+  #| (self) => (self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get AllowSharedBufferSource as SharedArrayBuffer
+pub extern "js" fn AllowSharedBufferSource::as_shared_array_buffer(
+  self : AllowSharedBufferSource,
+) -> SharedArrayBuffer? =
+  #| (self) => (self instanceof SharedArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get AllowSharedBufferSource as ArrayBufferView
+pub extern "js" fn AllowSharedBufferSource::as_array_buffer_view(
+  self : AllowSharedBufferSource,
+) -> ArrayBufferView? =
+  #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Function callback interface

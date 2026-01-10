@@ -24,6 +24,34 @@ pub extern "js" fn RouterSource::from_router_source_enum(
   #| (v) => v
 
 ///|
+/// Check if this RouterSource is RouterSourceDict
+pub extern "js" fn RouterSource::is_router_source_dict(
+  self : RouterSource,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Check if this RouterSource is RouterSourceEnum
+pub extern "js" fn RouterSource::is_router_source_enum(
+  self : RouterSource,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get RouterSource as RouterSourceDict
+pub extern "js" fn RouterSource::as_router_source_dict(
+  self : RouterSource,
+) -> RouterSourceDict? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get RouterSource as RouterSourceEnum
+pub extern "js" fn RouterSource::as_router_source_enum(
+  self : RouterSource,
+) -> RouterSourceEnum? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// ServiceWorkerState enum
 pub(all) enum ServiceWorkerState {
   Parsed
@@ -38,12 +66,12 @@ pub(all) enum ServiceWorkerState {
 /// Convert to string value
 pub fn ServiceWorkerState::to_string(self : ServiceWorkerState) -> String {
   match self {
-    Parsed => "parsed"
-    Installing => "installing"
-    Installed => "installed"
-    Activating => "activating"
-    Activated => "activated"
-    Redundant => "redundant"
+    ServiceWorkerState::Parsed => "parsed"
+    ServiceWorkerState::Installing => "installing"
+    ServiceWorkerState::Installed => "installed"
+    ServiceWorkerState::Activating => "activating"
+    ServiceWorkerState::Activated => "activated"
+    ServiceWorkerState::Redundant => "redundant"
   }
 }
 
@@ -51,12 +79,12 @@ pub fn ServiceWorkerState::to_string(self : ServiceWorkerState) -> String {
 /// Parse from string value
 pub fn ServiceWorkerState::from_string(s : String) -> ServiceWorkerState? {
   match s {
-    "parsed" => Some(Parsed)
-    "installing" => Some(Installing)
-    "installed" => Some(Installed)
-    "activating" => Some(Activating)
-    "activated" => Some(Activated)
-    "redundant" => Some(Redundant)
+    "parsed" => Some(ServiceWorkerState::Parsed)
+    "installing" => Some(ServiceWorkerState::Installing)
+    "installed" => Some(ServiceWorkerState::Installed)
+    "activating" => Some(ServiceWorkerState::Activating)
+    "activated" => Some(ServiceWorkerState::Activated)
+    "redundant" => Some(ServiceWorkerState::Redundant)
     _ => None
   }
 }
@@ -75,9 +103,9 @@ pub fn ServiceWorkerUpdateViaCache::to_string(
   self : ServiceWorkerUpdateViaCache,
 ) -> String {
   match self {
-    Imports => "imports"
-    All => "all"
-    None => "none"
+    ServiceWorkerUpdateViaCache::Imports => "imports"
+    ServiceWorkerUpdateViaCache::All => "all"
+    ServiceWorkerUpdateViaCache::None => "none"
   }
 }
 
@@ -87,9 +115,9 @@ pub fn ServiceWorkerUpdateViaCache::from_string(
   s : String,
 ) -> ServiceWorkerUpdateViaCache? {
   match s {
-    "imports" => Some(Imports)
-    "all" => Some(All)
-    "none" => Some(None)
+    "imports" => Some(ServiceWorkerUpdateViaCache::Imports)
+    "all" => Some(ServiceWorkerUpdateViaCache::All)
+    "none" => Some(ServiceWorkerUpdateViaCache::None)
     _ => None
   }
 }
@@ -107,10 +135,10 @@ pub(all) enum FrameType {
 /// Convert to string value
 pub fn FrameType::to_string(self : FrameType) -> String {
   match self {
-    Auxiliary => "auxiliary"
-    TopLevel => "top-level"
-    Nested => "nested"
-    None => "none"
+    FrameType::Auxiliary => "auxiliary"
+    FrameType::TopLevel => "top-level"
+    FrameType::Nested => "nested"
+    FrameType::None => "none"
   }
 }
 
@@ -118,10 +146,10 @@ pub fn FrameType::to_string(self : FrameType) -> String {
 /// Parse from string value
 pub fn FrameType::from_string(s : String) -> FrameType? {
   match s {
-    "auxiliary" => Some(Auxiliary)
-    "top-level" => Some(TopLevel)
-    "nested" => Some(Nested)
-    "none" => Some(None)
+    "auxiliary" => Some(FrameType::Auxiliary)
+    "top-level" => Some(FrameType::TopLevel)
+    "nested" => Some(FrameType::Nested)
+    "none" => Some(FrameType::None)
     _ => None
   }
 }
@@ -139,10 +167,10 @@ pub(all) enum ClientType {
 /// Convert to string value
 pub fn ClientType::to_string(self : ClientType) -> String {
   match self {
-    Window => "window"
-    Worker => "worker"
-    Sharedworker => "sharedworker"
-    All => "all"
+    ClientType::Window => "window"
+    ClientType::Worker => "worker"
+    ClientType::Sharedworker => "sharedworker"
+    ClientType::All => "all"
   }
 }
 
@@ -150,10 +178,10 @@ pub fn ClientType::to_string(self : ClientType) -> String {
 /// Parse from string value
 pub fn ClientType::from_string(s : String) -> ClientType? {
   match s {
-    "window" => Some(Window)
-    "worker" => Some(Worker)
-    "sharedworker" => Some(Sharedworker)
-    "all" => Some(All)
+    "window" => Some(ClientType::Window)
+    "worker" => Some(ClientType::Worker)
+    "sharedworker" => Some(ClientType::Sharedworker)
+    "all" => Some(ClientType::All)
     _ => None
   }
 }
@@ -169,8 +197,8 @@ pub(all) enum RunningStatus {
 /// Convert to string value
 pub fn RunningStatus::to_string(self : RunningStatus) -> String {
   match self {
-    Running => "running"
-    NotRunning => "not-running"
+    RunningStatus::Running => "running"
+    RunningStatus::NotRunning => "not-running"
   }
 }
 
@@ -178,8 +206,8 @@ pub fn RunningStatus::to_string(self : RunningStatus) -> String {
 /// Parse from string value
 pub fn RunningStatus::from_string(s : String) -> RunningStatus? {
   match s {
-    "running" => Some(Running)
-    "not-running" => Some(NotRunning)
+    "running" => Some(RunningStatus::Running)
+    "not-running" => Some(RunningStatus::NotRunning)
     _ => None
   }
 }
@@ -197,10 +225,11 @@ pub(all) enum RouterSourceEnum {
 /// Convert to string value
 pub fn RouterSourceEnum::to_string(self : RouterSourceEnum) -> String {
   match self {
-    Cache => "cache"
-    FetchEvent => "fetch-event"
-    Network => "network"
-    RaceNetworkAndFetchHandler => "race-network-and-fetch-handler"
+    RouterSourceEnum::Cache => "cache"
+    RouterSourceEnum::FetchEvent => "fetch-event"
+    RouterSourceEnum::Network => "network"
+    RouterSourceEnum::RaceNetworkAndFetchHandler =>
+      "race-network-and-fetch-handler"
   }
 }
 
@@ -208,10 +237,11 @@ pub fn RouterSourceEnum::to_string(self : RouterSourceEnum) -> String {
 /// Parse from string value
 pub fn RouterSourceEnum::from_string(s : String) -> RouterSourceEnum? {
   match s {
-    "cache" => Some(Cache)
-    "fetch-event" => Some(FetchEvent)
-    "network" => Some(Network)
-    "race-network-and-fetch-handler" => Some(RaceNetworkAndFetchHandler)
+    "cache" => Some(RouterSourceEnum::Cache)
+    "fetch-event" => Some(RouterSourceEnum::FetchEvent)
+    "network" => Some(RouterSourceEnum::Network)
+    "race-network-and-fetch-handler" =>
+      Some(RouterSourceEnum::RaceNetworkAndFetchHandler)
     _ => None
   }
 }
@@ -698,14 +728,14 @@ pub extern "js" fn ServiceWorkerRegistration::show_notification_with_options(
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_notifications(
   self : ServiceWorkerRegistration,
-) -> Promise[Array[Notification]] =
+) -> Promise[Unit] =
   #| (self) => self.getNotifications()
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_notifications_with_filter(
   self : ServiceWorkerRegistration,
   filter : GetNotificationOptions,
-) -> Promise[Array[Notification]] =
+) -> Promise[Unit] =
   #| (self, filter) => self.getNotifications(filter)
 
 ///|
@@ -751,14 +781,14 @@ pub extern "js" fn ServiceWorkerContainer::get_ready(
 ///|
 pub extern "js" fn ServiceWorkerContainer::register(
   self : ServiceWorkerContainer,
-  script_u_r_l : JsValue,
+  script_u_r_l : TrustedScriptURLOrString,
 ) -> Promise[ServiceWorkerRegistration] =
   #| (self, script_u_r_l) => self.register(script_u_r_l)
 
 ///|
 pub extern "js" fn ServiceWorkerContainer::register_with_options(
   self : ServiceWorkerContainer,
-  script_u_r_l : JsValue,
+  script_u_r_l : TrustedScriptURLOrString,
   options : RegistrationOptions,
 ) -> Promise[ServiceWorkerRegistration] =
   #| (self, script_u_r_l, options) => self.register(script_u_r_l, options)
@@ -766,20 +796,20 @@ pub extern "js" fn ServiceWorkerContainer::register_with_options(
 ///|
 pub extern "js" fn ServiceWorkerContainer::get_registration(
   self : ServiceWorkerContainer,
-) -> Promise[JsValue] =
+) -> Promise[Unit] =
   #| (self) => self.getRegistration()
 
 ///|
 pub extern "js" fn ServiceWorkerContainer::get_registration_with_client_u_r_l(
   self : ServiceWorkerContainer,
   client_u_r_l : String,
-) -> Promise[JsValue] =
+) -> Promise[Unit] =
   #| (self, client_u_r_l) => self.getRegistration(client_u_r_l)
 
 ///|
 pub extern "js" fn ServiceWorkerContainer::get_registrations(
   self : ServiceWorkerContainer,
-) -> Promise[JsValue] =
+) -> Promise[Unit] =
   #| (self) => self.getRegistrations()
 
 ///|
@@ -1280,21 +1310,18 @@ pub extern "js" fn Clients::to_js_value(self : Clients) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn Clients::get(
-  self : Clients,
-  id : String,
-) -> Promise[JsValue] =
+pub extern "js" fn Clients::get(self : Clients, id : String) -> Promise[Unit] =
   #| (self, id) => self.get(id)
 
 ///|
-pub extern "js" fn Clients::match_all(self : Clients) -> Promise[JsValue] =
+pub extern "js" fn Clients::match_all(self : Clients) -> Promise[Unit] =
   #| (self) => self.matchAll()
 
 ///|
 pub extern "js" fn Clients::match_all_with_options(
   self : Clients,
   options : ClientQueryOptions,
-) -> Promise[JsValue] =
+) -> Promise[Unit] =
   #| (self, options) => self.matchAll(options)
 
 ///|
@@ -1357,7 +1384,7 @@ pub extern "js" fn InstallEvent::wait_until(
 ///|
 pub extern "js" fn InstallEvent::add_routes(
   self : InstallEvent,
-  rules : JsValue,
+  rules : RouterRuleOrArrayOfRouterRule,
 ) -> Promise[Unit] =
   #| (self, rules) => self.addRoutes(rules)
 
@@ -1465,7 +1492,7 @@ pub extern "js" fn ExtendableMessageEvent::get_last_event_id(
 ///|
 pub extern "js" fn ExtendableMessageEvent::get_source(
   self : ExtendableMessageEvent,
-) -> JsValue =
+) -> ClientOrServiceWorkerOrMessagePort =
   #| (self) => self.source
 
 ///|
@@ -1486,7 +1513,7 @@ pub extern "js" fn Cache::to_js_value(self : Cache) -> JsValue =
 pub extern "js" fn Cache::match_(
   self : Cache,
   request : RequestInfo,
-) -> Promise[JsValue] =
+) -> Promise[Unit] =
   #| (self, request) => self.match(request)
 
 ///|
@@ -1494,11 +1521,11 @@ pub extern "js" fn Cache::match__with_options(
   self : Cache,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[JsValue] =
+) -> Promise[Unit] =
   #| (self, request, options) => self.match(request, options)
 
 ///|
-pub extern "js" fn Cache::match_all(self : Cache) -> Promise[JsValue] =
+pub extern "js" fn Cache::match_all(self : Cache) -> Promise[Unit] =
   #| (self) => self.matchAll()
 
 ///|
@@ -1506,7 +1533,7 @@ pub extern "js" fn Cache::match_all_with_options(
   self : Cache,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[JsValue] =
+) -> Promise[Unit] =
   #| (self, request, options) => self.matchAll(request, options)
 
 ///|
@@ -1547,7 +1574,7 @@ pub extern "js" fn Cache::delete_with_options(
   #| (self, request, options) => self.delete(request, options)
 
 ///|
-pub extern "js" fn Cache::keys(self : Cache) -> Promise[JsValue] =
+pub extern "js" fn Cache::keys(self : Cache) -> Promise[Unit] =
   #| (self) => self.keys()
 
 ///|
@@ -1555,7 +1582,7 @@ pub extern "js" fn Cache::keys_with_options(
   self : Cache,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[JsValue] =
+) -> Promise[Unit] =
   #| (self, request, options) => self.keys(request, options)
 
 ///|
@@ -1570,7 +1597,7 @@ pub extern "js" fn CacheStorage::to_js_value(self : CacheStorage) -> JsValue =
 pub extern "js" fn CacheStorage::match_(
   self : CacheStorage,
   request : RequestInfo,
-) -> Promise[JsValue] =
+) -> Promise[Unit] =
   #| (self, request) => self.match(request)
 
 ///|
@@ -1578,7 +1605,7 @@ pub extern "js" fn CacheStorage::match__with_options(
   self : CacheStorage,
   request : RequestInfo,
   options : MultiCacheQueryOptions,
-) -> Promise[JsValue] =
+) -> Promise[Unit] =
   #| (self, request, options) => self.match(request, options)
 
 ///|
@@ -1603,7 +1630,5 @@ pub extern "js" fn CacheStorage::delete(
   #| (self, cache_name) => self.delete(cache_name)
 
 ///|
-pub extern "js" fn CacheStorage::keys(
-  self : CacheStorage,
-) -> Promise[Array[String]] =
+pub extern "js" fn CacheStorage::keys(self : CacheStorage) -> Promise[Unit] =
   #| (self) => self.keys()

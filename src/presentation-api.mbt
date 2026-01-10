@@ -16,10 +16,10 @@ pub fn PresentationConnectionState::to_string(
   self : PresentationConnectionState,
 ) -> String {
   match self {
-    Connecting => "connecting"
-    Connected => "connected"
-    Closed => "closed"
-    Terminated => "terminated"
+    PresentationConnectionState::Connecting => "connecting"
+    PresentationConnectionState::Connected => "connected"
+    PresentationConnectionState::Closed => "closed"
+    PresentationConnectionState::Terminated => "terminated"
   }
 }
 
@@ -29,10 +29,10 @@ pub fn PresentationConnectionState::from_string(
   s : String,
 ) -> PresentationConnectionState? {
   match s {
-    "connecting" => Some(Connecting)
-    "connected" => Some(Connected)
-    "closed" => Some(Closed)
-    "terminated" => Some(Terminated)
+    "connecting" => Some(PresentationConnectionState::Connecting)
+    "connected" => Some(PresentationConnectionState::Connected)
+    "closed" => Some(PresentationConnectionState::Closed)
+    "terminated" => Some(PresentationConnectionState::Terminated)
     _ => None
   }
 }
@@ -51,9 +51,9 @@ pub fn PresentationConnectionCloseReason::to_string(
   self : PresentationConnectionCloseReason,
 ) -> String {
   match self {
-    Error => "error"
-    Closed => "closed"
-    Wentaway => "wentaway"
+    PresentationConnectionCloseReason::Error => "error"
+    PresentationConnectionCloseReason::Closed => "closed"
+    PresentationConnectionCloseReason::Wentaway => "wentaway"
   }
 }
 
@@ -63,9 +63,9 @@ pub fn PresentationConnectionCloseReason::from_string(
   s : String,
 ) -> PresentationConnectionCloseReason? {
   match s {
-    "error" => Some(Error)
-    "closed" => Some(Closed)
-    "wentaway" => Some(Wentaway)
+    "error" => Some(PresentationConnectionCloseReason::Error)
+    "closed" => Some(PresentationConnectionCloseReason::Closed)
+    "wentaway" => Some(PresentationConnectionCloseReason::Wentaway)
     _ => None
   }
 }

@@ -12,8 +12,8 @@ pub(all) enum ClientLifecycleState {
 /// Convert to string value
 pub fn ClientLifecycleState::to_string(self : ClientLifecycleState) -> String {
   match self {
-    Active => "active"
-    Frozen => "frozen"
+    ClientLifecycleState::Active => "active"
+    ClientLifecycleState::Frozen => "frozen"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn ClientLifecycleState::to_string(self : ClientLifecycleState) -> String {
 /// Parse from string value
 pub fn ClientLifecycleState::from_string(s : String) -> ClientLifecycleState? {
   match s {
-    "active" => Some(Active)
-    "frozen" => Some(Frozen)
+    "active" => Some(ClientLifecycleState::Active)
+    "frozen" => Some(ClientLifecycleState::Frozen)
     _ => None
   }
 }

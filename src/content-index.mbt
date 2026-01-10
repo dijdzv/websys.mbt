@@ -15,11 +15,11 @@ pub(all) enum ContentCategory {
 /// Convert to string value
 pub fn ContentCategory::to_string(self : ContentCategory) -> String {
   match self {
-    Empty => ""
-    Homepage => "homepage"
-    Article => "article"
-    Video => "video"
-    Audio => "audio"
+    ContentCategory::Empty => ""
+    ContentCategory::Homepage => "homepage"
+    ContentCategory::Article => "article"
+    ContentCategory::Video => "video"
+    ContentCategory::Audio => "audio"
   }
 }
 
@@ -27,11 +27,11 @@ pub fn ContentCategory::to_string(self : ContentCategory) -> String {
 /// Parse from string value
 pub fn ContentCategory::from_string(s : String) -> ContentCategory? {
   match s {
-    "" => Some(Empty)
-    "homepage" => Some(Homepage)
-    "article" => Some(Article)
-    "video" => Some(Video)
-    "audio" => Some(Audio)
+    "" => Some(ContentCategory::Empty)
+    "homepage" => Some(ContentCategory::Homepage)
+    "article" => Some(ContentCategory::Article)
+    "video" => Some(ContentCategory::Video)
+    "audio" => Some(ContentCategory::Audio)
     _ => None
   }
 }
@@ -118,9 +118,7 @@ pub extern "js" fn ContentIndex::delete(
   #| (self, id) => self.delete(id)
 
 ///|
-pub extern "js" fn ContentIndex::get_all(
-  self : ContentIndex,
-) -> Promise[Array[ContentDescription]] =
+pub extern "js" fn ContentIndex::get_all(self : ContentIndex) -> Promise[Unit] =
   #| (self) => self.getAll()
 
 ///|

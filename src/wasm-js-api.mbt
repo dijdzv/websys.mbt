@@ -19,11 +19,11 @@ pub(all) enum ImportExportKind {
 /// Convert to string value
 pub fn ImportExportKind::to_string(self : ImportExportKind) -> String {
   match self {
-    Function => "function"
-    Table => "table"
-    Memory => "memory"
-    Global => "global"
-    Tag => "tag"
+    ImportExportKind::Function => "function"
+    ImportExportKind::Table => "table"
+    ImportExportKind::Memory => "memory"
+    ImportExportKind::Global => "global"
+    ImportExportKind::Tag => "tag"
   }
 }
 
@@ -31,11 +31,11 @@ pub fn ImportExportKind::to_string(self : ImportExportKind) -> String {
 /// Parse from string value
 pub fn ImportExportKind::from_string(s : String) -> ImportExportKind? {
   match s {
-    "function" => Some(Function)
-    "table" => Some(Table)
-    "memory" => Some(Memory)
-    "global" => Some(Global)
-    "tag" => Some(Tag)
+    "function" => Some(ImportExportKind::Function)
+    "table" => Some(ImportExportKind::Table)
+    "memory" => Some(ImportExportKind::Memory)
+    "global" => Some(ImportExportKind::Global)
+    "tag" => Some(ImportExportKind::Tag)
     _ => None
   }
 }
@@ -51,8 +51,8 @@ pub(all) enum AddressType {
 /// Convert to string value
 pub fn AddressType::to_string(self : AddressType) -> String {
   match self {
-    I32 => "i32"
-    I64 => "i64"
+    AddressType::I32 => "i32"
+    AddressType::I64 => "i64"
   }
 }
 
@@ -60,8 +60,8 @@ pub fn AddressType::to_string(self : AddressType) -> String {
 /// Parse from string value
 pub fn AddressType::from_string(s : String) -> AddressType? {
   match s {
-    "i32" => Some(I32)
-    "i64" => Some(I64)
+    "i32" => Some(AddressType::I32)
+    "i64" => Some(AddressType::I64)
     _ => None
   }
 }
@@ -77,8 +77,8 @@ pub(all) enum TableKind {
 /// Convert to string value
 pub fn TableKind::to_string(self : TableKind) -> String {
   match self {
-    Externref => "externref"
-    Anyfunc => "anyfunc"
+    TableKind::Externref => "externref"
+    TableKind::Anyfunc => "anyfunc"
   }
 }
 
@@ -86,8 +86,8 @@ pub fn TableKind::to_string(self : TableKind) -> String {
 /// Parse from string value
 pub fn TableKind::from_string(s : String) -> TableKind? {
   match s {
-    "externref" => Some(Externref)
-    "anyfunc" => Some(Anyfunc)
+    "externref" => Some(TableKind::Externref)
+    "anyfunc" => Some(TableKind::Anyfunc)
     _ => None
   }
 }
@@ -108,13 +108,13 @@ pub(all) enum ValueType {
 /// Convert to string value
 pub fn ValueType::to_string(self : ValueType) -> String {
   match self {
-    I32 => "i32"
-    I64 => "i64"
-    F32 => "f32"
-    F64 => "f64"
-    V128 => "v128"
-    Externref => "externref"
-    Anyfunc => "anyfunc"
+    ValueType::I32 => "i32"
+    ValueType::I64 => "i64"
+    ValueType::F32 => "f32"
+    ValueType::F64 => "f64"
+    ValueType::V128 => "v128"
+    ValueType::Externref => "externref"
+    ValueType::Anyfunc => "anyfunc"
   }
 }
 
@@ -122,13 +122,13 @@ pub fn ValueType::to_string(self : ValueType) -> String {
 /// Parse from string value
 pub fn ValueType::from_string(s : String) -> ValueType? {
   match s {
-    "i32" => Some(I32)
-    "i64" => Some(I64)
-    "f32" => Some(F32)
-    "f64" => Some(F64)
-    "v128" => Some(V128)
-    "externref" => Some(Externref)
-    "anyfunc" => Some(Anyfunc)
+    "i32" => Some(ValueType::I32)
+    "i64" => Some(ValueType::I64)
+    "f32" => Some(ValueType::F32)
+    "f64" => Some(ValueType::F64)
+    "v128" => Some(ValueType::V128)
+    "externref" => Some(ValueType::Externref)
+    "anyfunc" => Some(ValueType::Anyfunc)
     _ => None
   }
 }
@@ -543,5 +543,5 @@ pub extern "js" fn Exception::is_(
   #| (self, exception_tag) => self.is(exception_tag)
 
 ///|
-pub extern "js" fn Exception::get_stack(self : Exception) -> JsValue =
+pub extern "js" fn Exception::get_stack(self : Exception) -> StringOrVoid =
   #| (self) => self.stack

@@ -14,8 +14,8 @@ pub fn AppBannerPromptOutcome::to_string(
   self : AppBannerPromptOutcome,
 ) -> String {
   match self {
-    Accepted => "accepted"
-    Dismissed => "dismissed"
+    AppBannerPromptOutcome::Accepted => "accepted"
+    AppBannerPromptOutcome::Dismissed => "dismissed"
   }
 }
 
@@ -25,8 +25,8 @@ pub fn AppBannerPromptOutcome::from_string(
   s : String,
 ) -> AppBannerPromptOutcome? {
   match s {
-    "accepted" => Some(Accepted)
-    "dismissed" => Some(Dismissed)
+    "accepted" => Some(AppBannerPromptOutcome::Accepted)
+    "dismissed" => Some(AppBannerPromptOutcome::Dismissed)
     _ => None
   }
 }

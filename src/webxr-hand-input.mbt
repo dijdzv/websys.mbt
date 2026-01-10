@@ -35,31 +35,35 @@ pub(all) enum XRHandJoint {
 /// Convert to string value
 pub fn XRHandJoint::to_string(self : XRHandJoint) -> String {
   match self {
-    Wrist => "wrist"
-    ThumbMetacarpal => "thumb-metacarpal"
-    ThumbPhalanxProximal => "thumb-phalanx-proximal"
-    ThumbPhalanxDistal => "thumb-phalanx-distal"
-    ThumbTip => "thumb-tip"
-    IndexFingerMetacarpal => "index-finger-metacarpal"
-    IndexFingerPhalanxProximal => "index-finger-phalanx-proximal"
-    IndexFingerPhalanxIntermediate => "index-finger-phalanx-intermediate"
-    IndexFingerPhalanxDistal => "index-finger-phalanx-distal"
-    IndexFingerTip => "index-finger-tip"
-    MiddleFingerMetacarpal => "middle-finger-metacarpal"
-    MiddleFingerPhalanxProximal => "middle-finger-phalanx-proximal"
-    MiddleFingerPhalanxIntermediate => "middle-finger-phalanx-intermediate"
-    MiddleFingerPhalanxDistal => "middle-finger-phalanx-distal"
-    MiddleFingerTip => "middle-finger-tip"
-    RingFingerMetacarpal => "ring-finger-metacarpal"
-    RingFingerPhalanxProximal => "ring-finger-phalanx-proximal"
-    RingFingerPhalanxIntermediate => "ring-finger-phalanx-intermediate"
-    RingFingerPhalanxDistal => "ring-finger-phalanx-distal"
-    RingFingerTip => "ring-finger-tip"
-    PinkyFingerMetacarpal => "pinky-finger-metacarpal"
-    PinkyFingerPhalanxProximal => "pinky-finger-phalanx-proximal"
-    PinkyFingerPhalanxIntermediate => "pinky-finger-phalanx-intermediate"
-    PinkyFingerPhalanxDistal => "pinky-finger-phalanx-distal"
-    PinkyFingerTip => "pinky-finger-tip"
+    XRHandJoint::Wrist => "wrist"
+    XRHandJoint::ThumbMetacarpal => "thumb-metacarpal"
+    XRHandJoint::ThumbPhalanxProximal => "thumb-phalanx-proximal"
+    XRHandJoint::ThumbPhalanxDistal => "thumb-phalanx-distal"
+    XRHandJoint::ThumbTip => "thumb-tip"
+    XRHandJoint::IndexFingerMetacarpal => "index-finger-metacarpal"
+    XRHandJoint::IndexFingerPhalanxProximal => "index-finger-phalanx-proximal"
+    XRHandJoint::IndexFingerPhalanxIntermediate =>
+      "index-finger-phalanx-intermediate"
+    XRHandJoint::IndexFingerPhalanxDistal => "index-finger-phalanx-distal"
+    XRHandJoint::IndexFingerTip => "index-finger-tip"
+    XRHandJoint::MiddleFingerMetacarpal => "middle-finger-metacarpal"
+    XRHandJoint::MiddleFingerPhalanxProximal => "middle-finger-phalanx-proximal"
+    XRHandJoint::MiddleFingerPhalanxIntermediate =>
+      "middle-finger-phalanx-intermediate"
+    XRHandJoint::MiddleFingerPhalanxDistal => "middle-finger-phalanx-distal"
+    XRHandJoint::MiddleFingerTip => "middle-finger-tip"
+    XRHandJoint::RingFingerMetacarpal => "ring-finger-metacarpal"
+    XRHandJoint::RingFingerPhalanxProximal => "ring-finger-phalanx-proximal"
+    XRHandJoint::RingFingerPhalanxIntermediate =>
+      "ring-finger-phalanx-intermediate"
+    XRHandJoint::RingFingerPhalanxDistal => "ring-finger-phalanx-distal"
+    XRHandJoint::RingFingerTip => "ring-finger-tip"
+    XRHandJoint::PinkyFingerMetacarpal => "pinky-finger-metacarpal"
+    XRHandJoint::PinkyFingerPhalanxProximal => "pinky-finger-phalanx-proximal"
+    XRHandJoint::PinkyFingerPhalanxIntermediate =>
+      "pinky-finger-phalanx-intermediate"
+    XRHandJoint::PinkyFingerPhalanxDistal => "pinky-finger-phalanx-distal"
+    XRHandJoint::PinkyFingerTip => "pinky-finger-tip"
   }
 }
 
@@ -67,32 +71,40 @@ pub fn XRHandJoint::to_string(self : XRHandJoint) -> String {
 /// Parse from string value
 pub fn XRHandJoint::from_string(s : String) -> XRHandJoint? {
   match s {
-    "wrist" => Some(Wrist)
-    "thumb-metacarpal" => Some(ThumbMetacarpal)
-    "thumb-phalanx-proximal" => Some(ThumbPhalanxProximal)
-    "thumb-phalanx-distal" => Some(ThumbPhalanxDistal)
-    "thumb-tip" => Some(ThumbTip)
-    "index-finger-metacarpal" => Some(IndexFingerMetacarpal)
-    "index-finger-phalanx-proximal" => Some(IndexFingerPhalanxProximal)
-    "index-finger-phalanx-intermediate" => Some(IndexFingerPhalanxIntermediate)
-    "index-finger-phalanx-distal" => Some(IndexFingerPhalanxDistal)
-    "index-finger-tip" => Some(IndexFingerTip)
-    "middle-finger-metacarpal" => Some(MiddleFingerMetacarpal)
-    "middle-finger-phalanx-proximal" => Some(MiddleFingerPhalanxProximal)
+    "wrist" => Some(XRHandJoint::Wrist)
+    "thumb-metacarpal" => Some(XRHandJoint::ThumbMetacarpal)
+    "thumb-phalanx-proximal" => Some(XRHandJoint::ThumbPhalanxProximal)
+    "thumb-phalanx-distal" => Some(XRHandJoint::ThumbPhalanxDistal)
+    "thumb-tip" => Some(XRHandJoint::ThumbTip)
+    "index-finger-metacarpal" => Some(XRHandJoint::IndexFingerMetacarpal)
+    "index-finger-phalanx-proximal" =>
+      Some(XRHandJoint::IndexFingerPhalanxProximal)
+    "index-finger-phalanx-intermediate" =>
+      Some(XRHandJoint::IndexFingerPhalanxIntermediate)
+    "index-finger-phalanx-distal" => Some(XRHandJoint::IndexFingerPhalanxDistal)
+    "index-finger-tip" => Some(XRHandJoint::IndexFingerTip)
+    "middle-finger-metacarpal" => Some(XRHandJoint::MiddleFingerMetacarpal)
+    "middle-finger-phalanx-proximal" =>
+      Some(XRHandJoint::MiddleFingerPhalanxProximal)
     "middle-finger-phalanx-intermediate" =>
-      Some(MiddleFingerPhalanxIntermediate)
-    "middle-finger-phalanx-distal" => Some(MiddleFingerPhalanxDistal)
-    "middle-finger-tip" => Some(MiddleFingerTip)
-    "ring-finger-metacarpal" => Some(RingFingerMetacarpal)
-    "ring-finger-phalanx-proximal" => Some(RingFingerPhalanxProximal)
-    "ring-finger-phalanx-intermediate" => Some(RingFingerPhalanxIntermediate)
-    "ring-finger-phalanx-distal" => Some(RingFingerPhalanxDistal)
-    "ring-finger-tip" => Some(RingFingerTip)
-    "pinky-finger-metacarpal" => Some(PinkyFingerMetacarpal)
-    "pinky-finger-phalanx-proximal" => Some(PinkyFingerPhalanxProximal)
-    "pinky-finger-phalanx-intermediate" => Some(PinkyFingerPhalanxIntermediate)
-    "pinky-finger-phalanx-distal" => Some(PinkyFingerPhalanxDistal)
-    "pinky-finger-tip" => Some(PinkyFingerTip)
+      Some(XRHandJoint::MiddleFingerPhalanxIntermediate)
+    "middle-finger-phalanx-distal" =>
+      Some(XRHandJoint::MiddleFingerPhalanxDistal)
+    "middle-finger-tip" => Some(XRHandJoint::MiddleFingerTip)
+    "ring-finger-metacarpal" => Some(XRHandJoint::RingFingerMetacarpal)
+    "ring-finger-phalanx-proximal" =>
+      Some(XRHandJoint::RingFingerPhalanxProximal)
+    "ring-finger-phalanx-intermediate" =>
+      Some(XRHandJoint::RingFingerPhalanxIntermediate)
+    "ring-finger-phalanx-distal" => Some(XRHandJoint::RingFingerPhalanxDistal)
+    "ring-finger-tip" => Some(XRHandJoint::RingFingerTip)
+    "pinky-finger-metacarpal" => Some(XRHandJoint::PinkyFingerMetacarpal)
+    "pinky-finger-phalanx-proximal" =>
+      Some(XRHandJoint::PinkyFingerPhalanxProximal)
+    "pinky-finger-phalanx-intermediate" =>
+      Some(XRHandJoint::PinkyFingerPhalanxIntermediate)
+    "pinky-finger-phalanx-distal" => Some(XRHandJoint::PinkyFingerPhalanxDistal)
+    "pinky-finger-tip" => Some(XRHandJoint::PinkyFingerTip)
     _ => None
   }
 }

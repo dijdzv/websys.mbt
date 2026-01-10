@@ -38,9 +38,7 @@ pub extern "js" fn SyncManager::register(
   #| (self, tag) => self.register(tag)
 
 ///|
-pub extern "js" fn SyncManager::get_tags(
-  self : SyncManager,
-) -> Promise[Array[String]] =
+pub extern "js" fn SyncManager::get_tags(self : SyncManager) -> Promise[Unit] =
   #| (self) => self.getTags()
 
 ///|

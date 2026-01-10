@@ -15,9 +15,9 @@ pub fn XRHitTestTrackableType::to_string(
   self : XRHitTestTrackableType,
 ) -> String {
   match self {
-    Point => "point"
-    Plane => "plane"
-    Mesh => "mesh"
+    XRHitTestTrackableType::Point => "point"
+    XRHitTestTrackableType::Plane => "plane"
+    XRHitTestTrackableType::Mesh => "mesh"
   }
 }
 
@@ -27,9 +27,9 @@ pub fn XRHitTestTrackableType::from_string(
   s : String,
 ) -> XRHitTestTrackableType? {
   match s {
-    "point" => Some(Point)
-    "plane" => Some(Plane)
-    "mesh" => Some(Mesh)
+    "point" => Some(XRHitTestTrackableType::Point)
+    "plane" => Some(XRHitTestTrackableType::Plane)
+    "mesh" => Some(XRHitTestTrackableType::Mesh)
     _ => None
   }
 }

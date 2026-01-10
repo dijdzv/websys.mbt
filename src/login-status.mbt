@@ -12,8 +12,8 @@ pub(all) enum LoginStatus {
 /// Convert to string value
 pub fn LoginStatus::to_string(self : LoginStatus) -> String {
   match self {
-    LoggedIn => "logged-in"
-    LoggedOut => "logged-out"
+    LoginStatus::LoggedIn => "logged-in"
+    LoginStatus::LoggedOut => "logged-out"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn LoginStatus::to_string(self : LoginStatus) -> String {
 /// Parse from string value
 pub fn LoginStatus::from_string(s : String) -> LoginStatus? {
   match s {
-    "logged-in" => Some(LoggedIn)
-    "logged-out" => Some(LoggedOut)
+    "logged-in" => Some(LoginStatus::LoggedIn)
+    "logged-out" => Some(LoginStatus::LoggedOut)
     _ => None
   }
 }

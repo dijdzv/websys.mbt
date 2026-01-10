@@ -12,8 +12,8 @@ pub(all) enum LockMode {
 /// Convert to string value
 pub fn LockMode::to_string(self : LockMode) -> String {
   match self {
-    Shared => "shared"
-    Exclusive => "exclusive"
+    LockMode::Shared => "shared"
+    LockMode::Exclusive => "exclusive"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn LockMode::to_string(self : LockMode) -> String {
 /// Parse from string value
 pub fn LockMode::from_string(s : String) -> LockMode? {
   match s {
-    "shared" => Some(Shared)
-    "exclusive" => Some(Exclusive)
+    "shared" => Some(LockMode::Shared)
+    "exclusive" => Some(LockMode::Exclusive)
     _ => None
   }
 }

@@ -24,6 +24,32 @@ pub extern "js" fn CSSStringSource::from_readable_stream(
   #| (v) => v
 
 ///|
+/// Check if this CSSStringSource is String
+pub extern "js" fn CSSStringSource::is_string(self : CSSStringSource) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this CSSStringSource is ReadableStream
+pub extern "js" fn CSSStringSource::is_readable_stream(
+  self : CSSStringSource,
+) -> Bool =
+  #| (self) => self instanceof ReadableStream
+
+///|
+/// Try to get CSSStringSource as String
+pub extern "js" fn CSSStringSource::as_string(
+  self : CSSStringSource,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CSSStringSource as ReadableStream
+pub extern "js" fn CSSStringSource::as_readable_stream(
+  self : CSSStringSource,
+) -> ReadableStream? =
+  #| (self) => (self instanceof ReadableStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// CSSToken typedef
 pub type CSSToken
 
@@ -49,6 +75,40 @@ pub extern "js" fn CSSToken::from_c_s_s_parser_value(
   v : CSSParserValue,
 ) -> CSSToken =
   #| (v) => v
+
+///|
+/// Check if this CSSToken is String
+pub extern "js" fn CSSToken::is_string(self : CSSToken) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this CSSToken is CSSStyleValue
+pub extern "js" fn CSSToken::is_c_s_s_style_value(self : CSSToken) -> Bool =
+  #| (self) => self instanceof CSSStyleValue
+
+///|
+/// Check if this CSSToken is CSSParserValue
+pub extern "js" fn CSSToken::is_c_s_s_parser_value(self : CSSToken) -> Bool =
+  #| (self) => self instanceof CSSParserValue
+
+///|
+/// Try to get CSSToken as String
+pub extern "js" fn CSSToken::as_string(self : CSSToken) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CSSToken as CSSStyleValue
+pub extern "js" fn CSSToken::as_c_s_s_style_value(
+  self : CSSToken,
+) -> CSSStyleValue? =
+  #| (self) => (self instanceof CSSStyleValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CSSToken as CSSParserValue
+pub extern "js" fn CSSToken::as_c_s_s_parser_value(
+  self : CSSToken,
+) -> CSSParserValue? =
+  #| (self) => (self instanceof CSSParserValue) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// CSSParserOptions dictionary

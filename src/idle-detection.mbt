@@ -12,8 +12,8 @@ pub(all) enum UserIdleState {
 /// Convert to string value
 pub fn UserIdleState::to_string(self : UserIdleState) -> String {
   match self {
-    Active => "active"
-    Idle => "idle"
+    UserIdleState::Active => "active"
+    UserIdleState::Idle => "idle"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn UserIdleState::to_string(self : UserIdleState) -> String {
 /// Parse from string value
 pub fn UserIdleState::from_string(s : String) -> UserIdleState? {
   match s {
-    "active" => Some(Active)
-    "idle" => Some(Idle)
+    "active" => Some(UserIdleState::Active)
+    "idle" => Some(UserIdleState::Idle)
     _ => None
   }
 }
@@ -38,8 +38,8 @@ pub(all) enum ScreenIdleState {
 /// Convert to string value
 pub fn ScreenIdleState::to_string(self : ScreenIdleState) -> String {
   match self {
-    Locked => "locked"
-    Unlocked => "unlocked"
+    ScreenIdleState::Locked => "locked"
+    ScreenIdleState::Unlocked => "unlocked"
   }
 }
 
@@ -47,8 +47,8 @@ pub fn ScreenIdleState::to_string(self : ScreenIdleState) -> String {
 /// Parse from string value
 pub fn ScreenIdleState::from_string(s : String) -> ScreenIdleState? {
   match s {
-    "locked" => Some(Locked)
-    "unlocked" => Some(Unlocked)
+    "locked" => Some(ScreenIdleState::Locked)
+    "unlocked" => Some(ScreenIdleState::Unlocked)
     _ => None
   }
 }

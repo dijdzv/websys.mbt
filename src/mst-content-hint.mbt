@@ -16,10 +16,11 @@ pub fn RTCDegradationPreference::to_string(
   self : RTCDegradationPreference,
 ) -> String {
   match self {
-    MaintainFramerate => "maintain-framerate"
-    MaintainResolution => "maintain-resolution"
-    Balanced => "balanced"
-    MaintainFramerateAndResolution => "maintain-framerate-and-resolution"
+    RTCDegradationPreference::MaintainFramerate => "maintain-framerate"
+    RTCDegradationPreference::MaintainResolution => "maintain-resolution"
+    RTCDegradationPreference::Balanced => "balanced"
+    RTCDegradationPreference::MaintainFramerateAndResolution =>
+      "maintain-framerate-and-resolution"
   }
 }
 
@@ -29,10 +30,11 @@ pub fn RTCDegradationPreference::from_string(
   s : String,
 ) -> RTCDegradationPreference? {
   match s {
-    "maintain-framerate" => Some(MaintainFramerate)
-    "maintain-resolution" => Some(MaintainResolution)
-    "balanced" => Some(Balanced)
-    "maintain-framerate-and-resolution" => Some(MaintainFramerateAndResolution)
+    "maintain-framerate" => Some(RTCDegradationPreference::MaintainFramerate)
+    "maintain-resolution" => Some(RTCDegradationPreference::MaintainResolution)
+    "balanced" => Some(RTCDegradationPreference::Balanced)
+    "maintain-framerate-and-resolution" =>
+      Some(RTCDegradationPreference::MaintainFramerateAndResolution)
     _ => None
   }
 }

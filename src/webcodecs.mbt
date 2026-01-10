@@ -26,6 +26,34 @@ pub extern "js" fn ImageBufferSource::from_readable_stream(
   #| (v) => v
 
 ///|
+/// Check if this ImageBufferSource is AllowSharedBufferSource
+pub extern "js" fn ImageBufferSource::is_allow_shared_buffer_source(
+  self : ImageBufferSource,
+) -> Bool =
+  #| (self) => self instanceof ArrayBuffer || self instanceof SharedArrayBuffer || self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView
+
+///|
+/// Check if this ImageBufferSource is ReadableStream
+pub extern "js" fn ImageBufferSource::is_readable_stream(
+  self : ImageBufferSource,
+) -> Bool =
+  #| (self) => self instanceof ReadableStream
+
+///|
+/// Try to get ImageBufferSource as AllowSharedBufferSource
+pub extern "js" fn ImageBufferSource::as_allow_shared_buffer_source(
+  self : ImageBufferSource,
+) -> AllowSharedBufferSource? =
+  #| (self) => (self instanceof ArrayBuffer || self instanceof SharedArrayBuffer || self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ImageBufferSource as ReadableStream
+pub extern "js" fn ImageBufferSource::as_readable_stream(
+  self : ImageBufferSource,
+) -> ReadableStream? =
+  #| (self) => (self instanceof ReadableStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// HardwareAcceleration enum
 pub(all) enum HardwareAcceleration {
   NoPreference
@@ -37,9 +65,9 @@ pub(all) enum HardwareAcceleration {
 /// Convert to string value
 pub fn HardwareAcceleration::to_string(self : HardwareAcceleration) -> String {
   match self {
-    NoPreference => "no-preference"
-    PreferHardware => "prefer-hardware"
-    PreferSoftware => "prefer-software"
+    HardwareAcceleration::NoPreference => "no-preference"
+    HardwareAcceleration::PreferHardware => "prefer-hardware"
+    HardwareAcceleration::PreferSoftware => "prefer-software"
   }
 }
 
@@ -47,9 +75,9 @@ pub fn HardwareAcceleration::to_string(self : HardwareAcceleration) -> String {
 /// Parse from string value
 pub fn HardwareAcceleration::from_string(s : String) -> HardwareAcceleration? {
   match s {
-    "no-preference" => Some(NoPreference)
-    "prefer-hardware" => Some(PreferHardware)
-    "prefer-software" => Some(PreferSoftware)
+    "no-preference" => Some(HardwareAcceleration::NoPreference)
+    "prefer-hardware" => Some(HardwareAcceleration::PreferHardware)
+    "prefer-software" => Some(HardwareAcceleration::PreferSoftware)
     _ => None
   }
 }
@@ -65,8 +93,8 @@ pub(all) enum AlphaOption {
 /// Convert to string value
 pub fn AlphaOption::to_string(self : AlphaOption) -> String {
   match self {
-    Keep => "keep"
-    Discard => "discard"
+    AlphaOption::Keep => "keep"
+    AlphaOption::Discard => "discard"
   }
 }
 
@@ -74,8 +102,8 @@ pub fn AlphaOption::to_string(self : AlphaOption) -> String {
 /// Parse from string value
 pub fn AlphaOption::from_string(s : String) -> AlphaOption? {
   match s {
-    "keep" => Some(Keep)
-    "discard" => Some(Discard)
+    "keep" => Some(AlphaOption::Keep)
+    "discard" => Some(AlphaOption::Discard)
     _ => None
   }
 }
@@ -91,8 +119,8 @@ pub(all) enum LatencyMode {
 /// Convert to string value
 pub fn LatencyMode::to_string(self : LatencyMode) -> String {
   match self {
-    Quality => "quality"
-    Realtime => "realtime"
+    LatencyMode::Quality => "quality"
+    LatencyMode::Realtime => "realtime"
   }
 }
 
@@ -100,8 +128,8 @@ pub fn LatencyMode::to_string(self : LatencyMode) -> String {
 /// Parse from string value
 pub fn LatencyMode::from_string(s : String) -> LatencyMode? {
   match s {
-    "quality" => Some(Quality)
-    "realtime" => Some(Realtime)
+    "quality" => Some(LatencyMode::Quality)
+    "realtime" => Some(LatencyMode::Realtime)
     _ => None
   }
 }
@@ -120,9 +148,9 @@ pub fn VideoEncoderBitrateMode::to_string(
   self : VideoEncoderBitrateMode,
 ) -> String {
   match self {
-    Constant => "constant"
-    Variable => "variable"
-    Quantizer => "quantizer"
+    VideoEncoderBitrateMode::Constant => "constant"
+    VideoEncoderBitrateMode::Variable => "variable"
+    VideoEncoderBitrateMode::Quantizer => "quantizer"
   }
 }
 
@@ -132,9 +160,9 @@ pub fn VideoEncoderBitrateMode::from_string(
   s : String,
 ) -> VideoEncoderBitrateMode? {
   match s {
-    "constant" => Some(Constant)
-    "variable" => Some(Variable)
-    "quantizer" => Some(Quantizer)
+    "constant" => Some(VideoEncoderBitrateMode::Constant)
+    "variable" => Some(VideoEncoderBitrateMode::Variable)
+    "quantizer" => Some(VideoEncoderBitrateMode::Quantizer)
     _ => None
   }
 }
@@ -151,9 +179,9 @@ pub(all) enum CodecState {
 /// Convert to string value
 pub fn CodecState::to_string(self : CodecState) -> String {
   match self {
-    Unconfigured => "unconfigured"
-    Configured => "configured"
-    Closed => "closed"
+    CodecState::Unconfigured => "unconfigured"
+    CodecState::Configured => "configured"
+    CodecState::Closed => "closed"
   }
 }
 
@@ -161,9 +189,9 @@ pub fn CodecState::to_string(self : CodecState) -> String {
 /// Parse from string value
 pub fn CodecState::from_string(s : String) -> CodecState? {
   match s {
-    "unconfigured" => Some(Unconfigured)
-    "configured" => Some(Configured)
-    "closed" => Some(Closed)
+    "unconfigured" => Some(CodecState::Unconfigured)
+    "configured" => Some(CodecState::Configured)
+    "closed" => Some(CodecState::Closed)
     _ => None
   }
 }
@@ -179,8 +207,8 @@ pub(all) enum EncodedAudioChunkType {
 /// Convert to string value
 pub fn EncodedAudioChunkType::to_string(self : EncodedAudioChunkType) -> String {
   match self {
-    Key => "key"
-    Delta => "delta"
+    EncodedAudioChunkType::Key => "key"
+    EncodedAudioChunkType::Delta => "delta"
   }
 }
 
@@ -188,8 +216,8 @@ pub fn EncodedAudioChunkType::to_string(self : EncodedAudioChunkType) -> String 
 /// Parse from string value
 pub fn EncodedAudioChunkType::from_string(s : String) -> EncodedAudioChunkType? {
   match s {
-    "key" => Some(Key)
-    "delta" => Some(Delta)
+    "key" => Some(EncodedAudioChunkType::Key)
+    "delta" => Some(EncodedAudioChunkType::Delta)
     _ => None
   }
 }
@@ -205,8 +233,8 @@ pub(all) enum EncodedVideoChunkType {
 /// Convert to string value
 pub fn EncodedVideoChunkType::to_string(self : EncodedVideoChunkType) -> String {
   match self {
-    Key => "key"
-    Delta => "delta"
+    EncodedVideoChunkType::Key => "key"
+    EncodedVideoChunkType::Delta => "delta"
   }
 }
 
@@ -214,8 +242,8 @@ pub fn EncodedVideoChunkType::to_string(self : EncodedVideoChunkType) -> String 
 /// Parse from string value
 pub fn EncodedVideoChunkType::from_string(s : String) -> EncodedVideoChunkType? {
   match s {
-    "key" => Some(Key)
-    "delta" => Some(Delta)
+    "key" => Some(EncodedVideoChunkType::Key)
+    "delta" => Some(EncodedVideoChunkType::Delta)
     _ => None
   }
 }
@@ -237,14 +265,14 @@ pub(all) enum AudioSampleFormat {
 /// Convert to string value
 pub fn AudioSampleFormat::to_string(self : AudioSampleFormat) -> String {
   match self {
-    U8 => "u8"
-    S16 => "s16"
-    S32 => "s32"
-    F32 => "f32"
-    U8Planar => "u8-planar"
-    S16Planar => "s16-planar"
-    S32Planar => "s32-planar"
-    F32Planar => "f32-planar"
+    AudioSampleFormat::U8 => "u8"
+    AudioSampleFormat::S16 => "s16"
+    AudioSampleFormat::S32 => "s32"
+    AudioSampleFormat::F32 => "f32"
+    AudioSampleFormat::U8Planar => "u8-planar"
+    AudioSampleFormat::S16Planar => "s16-planar"
+    AudioSampleFormat::S32Planar => "s32-planar"
+    AudioSampleFormat::F32Planar => "f32-planar"
   }
 }
 
@@ -252,14 +280,14 @@ pub fn AudioSampleFormat::to_string(self : AudioSampleFormat) -> String {
 /// Parse from string value
 pub fn AudioSampleFormat::from_string(s : String) -> AudioSampleFormat? {
   match s {
-    "u8" => Some(U8)
-    "s16" => Some(S16)
-    "s32" => Some(S32)
-    "f32" => Some(F32)
-    "u8-planar" => Some(U8Planar)
-    "s16-planar" => Some(S16Planar)
-    "s32-planar" => Some(S32Planar)
-    "f32-planar" => Some(F32Planar)
+    "u8" => Some(AudioSampleFormat::U8)
+    "s16" => Some(AudioSampleFormat::S16)
+    "s32" => Some(AudioSampleFormat::S32)
+    "f32" => Some(AudioSampleFormat::F32)
+    "u8-planar" => Some(AudioSampleFormat::U8Planar)
+    "s16-planar" => Some(AudioSampleFormat::S16Planar)
+    "s32-planar" => Some(AudioSampleFormat::S32Planar)
+    "f32-planar" => Some(AudioSampleFormat::F32Planar)
     _ => None
   }
 }
@@ -296,29 +324,29 @@ pub(all) enum VideoPixelFormat {
 /// Convert to string value
 pub fn VideoPixelFormat::to_string(self : VideoPixelFormat) -> String {
   match self {
-    I420 => "I420"
-    I420P10 => "I420P10"
-    I420P12 => "I420P12"
-    I420A => "I420A"
-    I420AP10 => "I420AP10"
-    I420AP12 => "I420AP12"
-    I422 => "I422"
-    I422P10 => "I422P10"
-    I422P12 => "I422P12"
-    I422A => "I422A"
-    I422AP10 => "I422AP10"
-    I422AP12 => "I422AP12"
-    I444 => "I444"
-    I444P10 => "I444P10"
-    I444P12 => "I444P12"
-    I444A => "I444A"
-    I444AP10 => "I444AP10"
-    I444AP12 => "I444AP12"
-    NV12 => "NV12"
-    RGBA => "RGBA"
-    RGBX => "RGBX"
-    BGRA => "BGRA"
-    BGRX => "BGRX"
+    VideoPixelFormat::I420 => "I420"
+    VideoPixelFormat::I420P10 => "I420P10"
+    VideoPixelFormat::I420P12 => "I420P12"
+    VideoPixelFormat::I420A => "I420A"
+    VideoPixelFormat::I420AP10 => "I420AP10"
+    VideoPixelFormat::I420AP12 => "I420AP12"
+    VideoPixelFormat::I422 => "I422"
+    VideoPixelFormat::I422P10 => "I422P10"
+    VideoPixelFormat::I422P12 => "I422P12"
+    VideoPixelFormat::I422A => "I422A"
+    VideoPixelFormat::I422AP10 => "I422AP10"
+    VideoPixelFormat::I422AP12 => "I422AP12"
+    VideoPixelFormat::I444 => "I444"
+    VideoPixelFormat::I444P10 => "I444P10"
+    VideoPixelFormat::I444P12 => "I444P12"
+    VideoPixelFormat::I444A => "I444A"
+    VideoPixelFormat::I444AP10 => "I444AP10"
+    VideoPixelFormat::I444AP12 => "I444AP12"
+    VideoPixelFormat::NV12 => "NV12"
+    VideoPixelFormat::RGBA => "RGBA"
+    VideoPixelFormat::RGBX => "RGBX"
+    VideoPixelFormat::BGRA => "BGRA"
+    VideoPixelFormat::BGRX => "BGRX"
   }
 }
 
@@ -326,29 +354,29 @@ pub fn VideoPixelFormat::to_string(self : VideoPixelFormat) -> String {
 /// Parse from string value
 pub fn VideoPixelFormat::from_string(s : String) -> VideoPixelFormat? {
   match s {
-    "I420" => Some(I420)
-    "I420P10" => Some(I420P10)
-    "I420P12" => Some(I420P12)
-    "I420A" => Some(I420A)
-    "I420AP10" => Some(I420AP10)
-    "I420AP12" => Some(I420AP12)
-    "I422" => Some(I422)
-    "I422P10" => Some(I422P10)
-    "I422P12" => Some(I422P12)
-    "I422A" => Some(I422A)
-    "I422AP10" => Some(I422AP10)
-    "I422AP12" => Some(I422AP12)
-    "I444" => Some(I444)
-    "I444P10" => Some(I444P10)
-    "I444P12" => Some(I444P12)
-    "I444A" => Some(I444A)
-    "I444AP10" => Some(I444AP10)
-    "I444AP12" => Some(I444AP12)
-    "NV12" => Some(NV12)
-    "RGBA" => Some(RGBA)
-    "RGBX" => Some(RGBX)
-    "BGRA" => Some(BGRA)
-    "BGRX" => Some(BGRX)
+    "I420" => Some(VideoPixelFormat::I420)
+    "I420P10" => Some(VideoPixelFormat::I420P10)
+    "I420P12" => Some(VideoPixelFormat::I420P12)
+    "I420A" => Some(VideoPixelFormat::I420A)
+    "I420AP10" => Some(VideoPixelFormat::I420AP10)
+    "I420AP12" => Some(VideoPixelFormat::I420AP12)
+    "I422" => Some(VideoPixelFormat::I422)
+    "I422P10" => Some(VideoPixelFormat::I422P10)
+    "I422P12" => Some(VideoPixelFormat::I422P12)
+    "I422A" => Some(VideoPixelFormat::I422A)
+    "I422AP10" => Some(VideoPixelFormat::I422AP10)
+    "I422AP12" => Some(VideoPixelFormat::I422AP12)
+    "I444" => Some(VideoPixelFormat::I444)
+    "I444P10" => Some(VideoPixelFormat::I444P10)
+    "I444P12" => Some(VideoPixelFormat::I444P12)
+    "I444A" => Some(VideoPixelFormat::I444A)
+    "I444AP10" => Some(VideoPixelFormat::I444AP10)
+    "I444AP12" => Some(VideoPixelFormat::I444AP12)
+    "NV12" => Some(VideoPixelFormat::NV12)
+    "RGBA" => Some(VideoPixelFormat::RGBA)
+    "RGBX" => Some(VideoPixelFormat::RGBX)
+    "BGRA" => Some(VideoPixelFormat::BGRA)
+    "BGRX" => Some(VideoPixelFormat::BGRX)
     _ => None
   }
 }
@@ -367,11 +395,11 @@ pub(all) enum VideoColorPrimaries {
 /// Convert to string value
 pub fn VideoColorPrimaries::to_string(self : VideoColorPrimaries) -> String {
   match self {
-    Bt709 => "bt709"
-    Bt470bg => "bt470bg"
-    Smpte170m => "smpte170m"
-    Bt2020 => "bt2020"
-    Smpte432 => "smpte432"
+    VideoColorPrimaries::Bt709 => "bt709"
+    VideoColorPrimaries::Bt470bg => "bt470bg"
+    VideoColorPrimaries::Smpte170m => "smpte170m"
+    VideoColorPrimaries::Bt2020 => "bt2020"
+    VideoColorPrimaries::Smpte432 => "smpte432"
   }
 }
 
@@ -379,11 +407,11 @@ pub fn VideoColorPrimaries::to_string(self : VideoColorPrimaries) -> String {
 /// Parse from string value
 pub fn VideoColorPrimaries::from_string(s : String) -> VideoColorPrimaries? {
   match s {
-    "bt709" => Some(Bt709)
-    "bt470bg" => Some(Bt470bg)
-    "smpte170m" => Some(Smpte170m)
-    "bt2020" => Some(Bt2020)
-    "smpte432" => Some(Smpte432)
+    "bt709" => Some(VideoColorPrimaries::Bt709)
+    "bt470bg" => Some(VideoColorPrimaries::Bt470bg)
+    "smpte170m" => Some(VideoColorPrimaries::Smpte170m)
+    "bt2020" => Some(VideoColorPrimaries::Bt2020)
+    "smpte432" => Some(VideoColorPrimaries::Smpte432)
     _ => None
   }
 }
@@ -405,12 +433,12 @@ pub fn VideoTransferCharacteristics::to_string(
   self : VideoTransferCharacteristics,
 ) -> String {
   match self {
-    Bt709 => "bt709"
-    Smpte170m => "smpte170m"
-    Iec6196621 => "iec61966-2-1"
-    Linear => "linear"
-    Pq => "pq"
-    Hlg => "hlg"
+    VideoTransferCharacteristics::Bt709 => "bt709"
+    VideoTransferCharacteristics::Smpte170m => "smpte170m"
+    VideoTransferCharacteristics::Iec6196621 => "iec61966-2-1"
+    VideoTransferCharacteristics::Linear => "linear"
+    VideoTransferCharacteristics::Pq => "pq"
+    VideoTransferCharacteristics::Hlg => "hlg"
   }
 }
 
@@ -420,12 +448,12 @@ pub fn VideoTransferCharacteristics::from_string(
   s : String,
 ) -> VideoTransferCharacteristics? {
   match s {
-    "bt709" => Some(Bt709)
-    "smpte170m" => Some(Smpte170m)
-    "iec61966-2-1" => Some(Iec6196621)
-    "linear" => Some(Linear)
-    "pq" => Some(Pq)
-    "hlg" => Some(Hlg)
+    "bt709" => Some(VideoTransferCharacteristics::Bt709)
+    "smpte170m" => Some(VideoTransferCharacteristics::Smpte170m)
+    "iec61966-2-1" => Some(VideoTransferCharacteristics::Iec6196621)
+    "linear" => Some(VideoTransferCharacteristics::Linear)
+    "pq" => Some(VideoTransferCharacteristics::Pq)
+    "hlg" => Some(VideoTransferCharacteristics::Hlg)
     _ => None
   }
 }
@@ -446,11 +474,11 @@ pub fn VideoMatrixCoefficients::to_string(
   self : VideoMatrixCoefficients,
 ) -> String {
   match self {
-    Rgb => "rgb"
-    Bt709 => "bt709"
-    Bt470bg => "bt470bg"
-    Smpte170m => "smpte170m"
-    Bt2020Ncl => "bt2020-ncl"
+    VideoMatrixCoefficients::Rgb => "rgb"
+    VideoMatrixCoefficients::Bt709 => "bt709"
+    VideoMatrixCoefficients::Bt470bg => "bt470bg"
+    VideoMatrixCoefficients::Smpte170m => "smpte170m"
+    VideoMatrixCoefficients::Bt2020Ncl => "bt2020-ncl"
   }
 }
 
@@ -460,11 +488,11 @@ pub fn VideoMatrixCoefficients::from_string(
   s : String,
 ) -> VideoMatrixCoefficients? {
   match s {
-    "rgb" => Some(Rgb)
-    "bt709" => Some(Bt709)
-    "bt470bg" => Some(Bt470bg)
-    "smpte170m" => Some(Smpte170m)
-    "bt2020-ncl" => Some(Bt2020Ncl)
+    "rgb" => Some(VideoMatrixCoefficients::Rgb)
+    "bt709" => Some(VideoMatrixCoefficients::Bt709)
+    "bt470bg" => Some(VideoMatrixCoefficients::Bt470bg)
+    "smpte170m" => Some(VideoMatrixCoefficients::Smpte170m)
+    "bt2020-ncl" => Some(VideoMatrixCoefficients::Bt2020Ncl)
     _ => None
   }
 }
@@ -1815,7 +1843,7 @@ pub extern "js" fn VideoFrame::allocation_size_with_options(
 pub extern "js" fn VideoFrame::copy_to(
   self : VideoFrame,
   destination : AllowSharedBufferSource,
-) -> Promise[Array[PlaneLayout]] =
+) -> Promise[Unit] =
   #| (self, destination) => self.copyTo(destination)
 
 ///|
@@ -1823,7 +1851,7 @@ pub extern "js" fn VideoFrame::copy_to_with_options(
   self : VideoFrame,
   destination : AllowSharedBufferSource,
   options : VideoFrameCopyToOptions,
-) -> Promise[Array[PlaneLayout]] =
+) -> Promise[Unit] =
   #| (self, destination, options) => self.copyTo(destination, options)
 
 ///|

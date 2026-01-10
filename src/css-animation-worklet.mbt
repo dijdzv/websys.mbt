@@ -78,7 +78,7 @@ pub extern "js" fn WorkletAnimation::to_js_value(
 ///|
 pub extern "js" fn WorkletAnimation::new(
   animator_name : String,
-  effects : JsValue,
+  effects : AnimationEffectOrArrayOfAnimationEffect,
   timeline : AnimationTimeline?,
   options : JsValue,
 ) -> WorkletAnimation =

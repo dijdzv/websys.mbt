@@ -13,9 +13,9 @@ pub(all) enum ReadyState {
 /// Convert to string value
 pub fn ReadyState::to_string(self : ReadyState) -> String {
   match self {
-    Closed => "closed"
-    Open => "open"
-    Ended => "ended"
+    ReadyState::Closed => "closed"
+    ReadyState::Open => "open"
+    ReadyState::Ended => "ended"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn ReadyState::to_string(self : ReadyState) -> String {
 /// Parse from string value
 pub fn ReadyState::from_string(s : String) -> ReadyState? {
   match s {
-    "closed" => Some(Closed)
-    "open" => Some(Open)
-    "ended" => Some(Ended)
+    "closed" => Some(ReadyState::Closed)
+    "open" => Some(ReadyState::Open)
+    "ended" => Some(ReadyState::Ended)
     _ => None
   }
 }
@@ -41,8 +41,8 @@ pub(all) enum EndOfStreamError {
 /// Convert to string value
 pub fn EndOfStreamError::to_string(self : EndOfStreamError) -> String {
   match self {
-    Network => "network"
-    Decode => "decode"
+    EndOfStreamError::Network => "network"
+    EndOfStreamError::Decode => "decode"
   }
 }
 
@@ -50,8 +50,8 @@ pub fn EndOfStreamError::to_string(self : EndOfStreamError) -> String {
 /// Parse from string value
 pub fn EndOfStreamError::from_string(s : String) -> EndOfStreamError? {
   match s {
-    "network" => Some(Network)
-    "decode" => Some(Decode)
+    "network" => Some(EndOfStreamError::Network)
+    "decode" => Some(EndOfStreamError::Decode)
     _ => None
   }
 }
@@ -67,8 +67,8 @@ pub(all) enum AppendMode {
 /// Convert to string value
 pub fn AppendMode::to_string(self : AppendMode) -> String {
   match self {
-    Segments => "segments"
-    Sequence => "sequence"
+    AppendMode::Segments => "segments"
+    AppendMode::Sequence => "sequence"
   }
 }
 
@@ -76,8 +76,8 @@ pub fn AppendMode::to_string(self : AppendMode) -> String {
 /// Parse from string value
 pub fn AppendMode::from_string(s : String) -> AppendMode? {
   match s {
-    "segments" => Some(Segments)
-    "sequence" => Some(Sequence)
+    "segments" => Some(AppendMode::Segments)
+    "sequence" => Some(AppendMode::Sequence)
     _ => None
   }
 }

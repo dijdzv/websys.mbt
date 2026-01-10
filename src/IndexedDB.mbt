@@ -12,8 +12,8 @@ pub(all) enum IDBRequestReadyState {
 /// Convert to string value
 pub fn IDBRequestReadyState::to_string(self : IDBRequestReadyState) -> String {
   match self {
-    Pending => "pending"
-    Done => "done"
+    IDBRequestReadyState::Pending => "pending"
+    IDBRequestReadyState::Done => "done"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn IDBRequestReadyState::to_string(self : IDBRequestReadyState) -> String {
 /// Parse from string value
 pub fn IDBRequestReadyState::from_string(s : String) -> IDBRequestReadyState? {
   match s {
-    "pending" => Some(Pending)
-    "done" => Some(Done)
+    "pending" => Some(IDBRequestReadyState::Pending)
+    "done" => Some(IDBRequestReadyState::Done)
     _ => None
   }
 }
@@ -41,9 +41,9 @@ pub fn IDBTransactionDurability::to_string(
   self : IDBTransactionDurability,
 ) -> String {
   match self {
-    Default => "default"
-    Strict => "strict"
-    Relaxed => "relaxed"
+    IDBTransactionDurability::Default => "default"
+    IDBTransactionDurability::Strict => "strict"
+    IDBTransactionDurability::Relaxed => "relaxed"
   }
 }
 
@@ -53,9 +53,9 @@ pub fn IDBTransactionDurability::from_string(
   s : String,
 ) -> IDBTransactionDurability? {
   match s {
-    "default" => Some(Default)
-    "strict" => Some(Strict)
-    "relaxed" => Some(Relaxed)
+    "default" => Some(IDBTransactionDurability::Default)
+    "strict" => Some(IDBTransactionDurability::Strict)
+    "relaxed" => Some(IDBTransactionDurability::Relaxed)
     _ => None
   }
 }
@@ -73,10 +73,10 @@ pub(all) enum IDBCursorDirection {
 /// Convert to string value
 pub fn IDBCursorDirection::to_string(self : IDBCursorDirection) -> String {
   match self {
-    Next => "next"
-    Nextunique => "nextunique"
-    Prev => "prev"
-    Prevunique => "prevunique"
+    IDBCursorDirection::Next => "next"
+    IDBCursorDirection::Nextunique => "nextunique"
+    IDBCursorDirection::Prev => "prev"
+    IDBCursorDirection::Prevunique => "prevunique"
   }
 }
 
@@ -84,10 +84,10 @@ pub fn IDBCursorDirection::to_string(self : IDBCursorDirection) -> String {
 /// Parse from string value
 pub fn IDBCursorDirection::from_string(s : String) -> IDBCursorDirection? {
   match s {
-    "next" => Some(Next)
-    "nextunique" => Some(Nextunique)
-    "prev" => Some(Prev)
-    "prevunique" => Some(Prevunique)
+    "next" => Some(IDBCursorDirection::Next)
+    "nextunique" => Some(IDBCursorDirection::Nextunique)
+    "prev" => Some(IDBCursorDirection::Prev)
+    "prevunique" => Some(IDBCursorDirection::Prevunique)
     _ => None
   }
 }
@@ -104,9 +104,9 @@ pub(all) enum IDBTransactionMode {
 /// Convert to string value
 pub fn IDBTransactionMode::to_string(self : IDBTransactionMode) -> String {
   match self {
-    Readonly => "readonly"
-    Readwrite => "readwrite"
-    Versionchange => "versionchange"
+    IDBTransactionMode::Readonly => "readonly"
+    IDBTransactionMode::Readwrite => "readwrite"
+    IDBTransactionMode::Versionchange => "versionchange"
   }
 }
 
@@ -114,9 +114,9 @@ pub fn IDBTransactionMode::to_string(self : IDBTransactionMode) -> String {
 /// Parse from string value
 pub fn IDBTransactionMode::from_string(s : String) -> IDBTransactionMode? {
   match s {
-    "readonly" => Some(Readonly)
-    "readwrite" => Some(Readwrite)
-    "versionchange" => Some(Versionchange)
+    "readonly" => Some(IDBTransactionMode::Readonly)
+    "readwrite" => Some(IDBTransactionMode::Readwrite)
+    "versionchange" => Some(IDBTransactionMode::Versionchange)
     _ => None
   }
 }
@@ -275,7 +275,9 @@ pub extern "js" fn IDBRequest::get_error(self : IDBRequest) -> DOMException? =
   #| (self) => self.error
 
 ///|
-pub extern "js" fn IDBRequest::get_source(self : IDBRequest) -> JsValue =
+pub extern "js" fn IDBRequest::get_source(
+  self : IDBRequest,
+) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
   #| (self) => self.source
 
 ///|
@@ -337,7 +339,7 @@ pub extern "js" fn IDBOpenDBRequest::get_error(
 ///|
 pub extern "js" fn IDBOpenDBRequest::get_source(
   self : IDBOpenDBRequest,
-) -> JsValue =
+) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
   #| (self) => self.source
 
 ///|
@@ -464,9 +466,7 @@ pub extern "js" fn IDBFactory::delete_database(
   #| (self, name) => self.deleteDatabase(name)
 
 ///|
-pub extern "js" fn IDBFactory::databases(
-  self : IDBFactory,
-) -> Promise[Array[IDBDatabaseInfo]] =
+pub extern "js" fn IDBFactory::databases(self : IDBFactory) -> Promise[Unit] =
   #| (self) => self.databases()
 
 ///|
@@ -502,14 +502,14 @@ pub extern "js" fn IDBDatabase::get_object_store_names(
 ///|
 pub extern "js" fn IDBDatabase::transaction(
   self : IDBDatabase,
-  store_names : JsValue,
+  store_names : StringOrArrayOfString,
 ) -> IDBTransaction =
   #| (self, store_names) => self.transaction(store_names)
 
 ///|
 pub extern "js" fn IDBDatabase::transaction_with_options(
   self : IDBDatabase,
-  store_names : JsValue,
+  store_names : StringOrArrayOfString,
   mode : IDBTransactionMode,
   options : IDBTransactionOptions,
 ) -> IDBTransaction =
@@ -776,7 +776,7 @@ pub extern "js" fn IDBObjectStore::index(
 pub extern "js" fn IDBObjectStore::create_index(
   self : IDBObjectStore,
   name : String,
-  key_path : JsValue,
+  key_path : StringOrArrayOfString,
 ) -> IDBIndex =
   #| (self, name, key_path) => self.createIndex(name, key_path)
 
@@ -784,7 +784,7 @@ pub extern "js" fn IDBObjectStore::create_index(
 pub extern "js" fn IDBObjectStore::create_index_with_options(
   self : IDBObjectStore,
   name : String,
-  key_path : JsValue,
+  key_path : StringOrArrayOfString,
   options : IDBIndexParameters,
 ) -> IDBIndex =
   #| (self, name, key_path, options) => self.createIndex(name, key_path, options)
@@ -1001,7 +1001,9 @@ pub extern "js" fn IDBCursor::to_js_value(self : IDBCursor) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn IDBCursor::get_source(self : IDBCursor) -> JsValue =
+pub extern "js" fn IDBCursor::get_source(
+  self : IDBCursor,
+) -> IDBObjectStoreOrIDBIndex =
   #| (self) => self.source
 
 ///|
@@ -1069,7 +1071,7 @@ pub extern "js" fn IDBCursorWithValue::to_js_value(
 ///|
 pub extern "js" fn IDBCursorWithValue::get_source(
   self : IDBCursorWithValue,
-) -> JsValue =
+) -> IDBObjectStoreOrIDBIndex =
   #| (self) => self.source
 
 ///|

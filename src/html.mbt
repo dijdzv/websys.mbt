@@ -26,6 +26,34 @@ pub extern "js" fn HTMLOrSVGScriptElement::from_s_v_g_script_element(
   #| (v) => v
 
 ///|
+/// Check if this HTMLOrSVGScriptElement is HTMLScriptElement
+pub extern "js" fn HTMLOrSVGScriptElement::is_h_t_m_l_script_element(
+  self : HTMLOrSVGScriptElement,
+) -> Bool =
+  #| (self) => self instanceof HTMLScriptElement
+
+///|
+/// Check if this HTMLOrSVGScriptElement is SVGScriptElement
+pub extern "js" fn HTMLOrSVGScriptElement::is_s_v_g_script_element(
+  self : HTMLOrSVGScriptElement,
+) -> Bool =
+  #| (self) => self instanceof SVGScriptElement
+
+///|
+/// Try to get HTMLOrSVGScriptElement as HTMLScriptElement
+pub extern "js" fn HTMLOrSVGScriptElement::as_h_t_m_l_script_element(
+  self : HTMLOrSVGScriptElement,
+) -> HTMLScriptElement? =
+  #| (self) => (self instanceof HTMLScriptElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get HTMLOrSVGScriptElement as SVGScriptElement
+pub extern "js" fn HTMLOrSVGScriptElement::as_s_v_g_script_element(
+  self : HTMLOrSVGScriptElement,
+) -> SVGScriptElement? =
+  #| (self) => (self instanceof SVGScriptElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// MediaProvider typedef
 pub type MediaProvider
 
@@ -51,6 +79,40 @@ pub extern "js" fn MediaProvider::from_media_source(
 /// Create MediaProvider from Blob
 pub extern "js" fn MediaProvider::from_blob(v : Blob) -> MediaProvider =
   #| (v) => v
+
+///|
+/// Check if this MediaProvider is MediaStream
+pub extern "js" fn MediaProvider::is_media_stream(self : MediaProvider) -> Bool =
+  #| (self) => self instanceof MediaStream
+
+///|
+/// Check if this MediaProvider is MediaSource
+pub extern "js" fn MediaProvider::is_media_source(self : MediaProvider) -> Bool =
+  #| (self) => self instanceof MediaSource
+
+///|
+/// Check if this MediaProvider is Blob
+pub extern "js" fn MediaProvider::is_blob(self : MediaProvider) -> Bool =
+  #| (self) => self instanceof Blob
+
+///|
+/// Try to get MediaProvider as MediaStream
+pub extern "js" fn MediaProvider::as_media_stream(
+  self : MediaProvider,
+) -> MediaStream? =
+  #| (self) => (self instanceof MediaStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get MediaProvider as MediaSource
+pub extern "js" fn MediaProvider::as_media_source(
+  self : MediaProvider,
+) -> MediaSource? =
+  #| (self) => (self instanceof MediaSource) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get MediaProvider as Blob
+pub extern "js" fn MediaProvider::as_blob(self : MediaProvider) -> Blob? =
+  #| (self) => (self instanceof Blob) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// RenderingContext typedef
@@ -98,6 +160,76 @@ pub extern "js" fn RenderingContext::from_g_p_u_canvas_context(
   #| (v) => v
 
 ///|
+/// Check if this RenderingContext is CanvasRenderingContext2D
+pub extern "js" fn RenderingContext::is_canvas_rendering_context2_d(
+  self : RenderingContext,
+) -> Bool =
+  #| (self) => self instanceof CanvasRenderingContext2D
+
+///|
+/// Check if this RenderingContext is ImageBitmapRenderingContext
+pub extern "js" fn RenderingContext::is_image_bitmap_rendering_context(
+  self : RenderingContext,
+) -> Bool =
+  #| (self) => self instanceof ImageBitmapRenderingContext
+
+///|
+/// Check if this RenderingContext is WebGLRenderingContext
+pub extern "js" fn RenderingContext::is_web_g_l_rendering_context(
+  self : RenderingContext,
+) -> Bool =
+  #| (self) => self instanceof WebGLRenderingContext
+
+///|
+/// Check if this RenderingContext is WebGL2RenderingContext
+pub extern "js" fn RenderingContext::is_web_g_l2_rendering_context(
+  self : RenderingContext,
+) -> Bool =
+  #| (self) => self instanceof WebGL2RenderingContext
+
+///|
+/// Check if this RenderingContext is GPUCanvasContext
+pub extern "js" fn RenderingContext::is_g_p_u_canvas_context(
+  self : RenderingContext,
+) -> Bool =
+  #| (self) => self instanceof GPUCanvasContext
+
+///|
+/// Try to get RenderingContext as CanvasRenderingContext2D
+pub extern "js" fn RenderingContext::as_canvas_rendering_context2_d(
+  self : RenderingContext,
+) -> CanvasRenderingContext2D? =
+  #| (self) => (self instanceof CanvasRenderingContext2D) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get RenderingContext as ImageBitmapRenderingContext
+pub extern "js" fn RenderingContext::as_image_bitmap_rendering_context(
+  self : RenderingContext,
+) -> ImageBitmapRenderingContext? =
+  #| (self) => (self instanceof ImageBitmapRenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get RenderingContext as WebGLRenderingContext
+pub extern "js" fn RenderingContext::as_web_g_l_rendering_context(
+  self : RenderingContext,
+) -> WebGLRenderingContext? =
+  #| (self) => (self instanceof WebGLRenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get RenderingContext as WebGL2RenderingContext
+pub extern "js" fn RenderingContext::as_web_g_l2_rendering_context(
+  self : RenderingContext,
+) -> WebGL2RenderingContext? =
+  #| (self) => (self instanceof WebGL2RenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get RenderingContext as GPUCanvasContext
+pub extern "js" fn RenderingContext::as_g_p_u_canvas_context(
+  self : RenderingContext,
+) -> GPUCanvasContext? =
+  #| (self) => (self instanceof GPUCanvasContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// HTMLOrSVGImageElement typedef
 pub type HTMLOrSVGImageElement
 
@@ -120,6 +252,34 @@ pub extern "js" fn HTMLOrSVGImageElement::from_s_v_g_image_element(
   v : SVGImageElement,
 ) -> HTMLOrSVGImageElement =
   #| (v) => v
+
+///|
+/// Check if this HTMLOrSVGImageElement is HTMLImageElement
+pub extern "js" fn HTMLOrSVGImageElement::is_h_t_m_l_image_element(
+  self : HTMLOrSVGImageElement,
+) -> Bool =
+  #| (self) => self instanceof HTMLImageElement
+
+///|
+/// Check if this HTMLOrSVGImageElement is SVGImageElement
+pub extern "js" fn HTMLOrSVGImageElement::is_s_v_g_image_element(
+  self : HTMLOrSVGImageElement,
+) -> Bool =
+  #| (self) => self instanceof SVGImageElement
+
+///|
+/// Try to get HTMLOrSVGImageElement as HTMLImageElement
+pub extern "js" fn HTMLOrSVGImageElement::as_h_t_m_l_image_element(
+  self : HTMLOrSVGImageElement,
+) -> HTMLImageElement? =
+  #| (self) => (self instanceof HTMLImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get HTMLOrSVGImageElement as SVGImageElement
+pub extern "js" fn HTMLOrSVGImageElement::as_s_v_g_image_element(
+  self : HTMLOrSVGImageElement,
+) -> SVGImageElement? =
+  #| (self) => (self instanceof SVGImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// CanvasImageSource typedef
@@ -174,6 +334,90 @@ pub extern "js" fn CanvasImageSource::from_video_frame(
   #| (v) => v
 
 ///|
+/// Check if this CanvasImageSource is HTMLOrSVGImageElement
+pub extern "js" fn CanvasImageSource::is_h_t_m_l_or_s_v_g_image_element(
+  self : CanvasImageSource,
+) -> Bool =
+  #| (self) => self instanceof HTMLImageElement || self instanceof SVGImageElement
+
+///|
+/// Check if this CanvasImageSource is HTMLVideoElement
+pub extern "js" fn CanvasImageSource::is_h_t_m_l_video_element(
+  self : CanvasImageSource,
+) -> Bool =
+  #| (self) => self instanceof HTMLVideoElement
+
+///|
+/// Check if this CanvasImageSource is HTMLCanvasElement
+pub extern "js" fn CanvasImageSource::is_h_t_m_l_canvas_element(
+  self : CanvasImageSource,
+) -> Bool =
+  #| (self) => self instanceof HTMLCanvasElement
+
+///|
+/// Check if this CanvasImageSource is ImageBitmap
+pub extern "js" fn CanvasImageSource::is_image_bitmap(
+  self : CanvasImageSource,
+) -> Bool =
+  #| (self) => self instanceof ImageBitmap
+
+///|
+/// Check if this CanvasImageSource is OffscreenCanvas
+pub extern "js" fn CanvasImageSource::is_offscreen_canvas(
+  self : CanvasImageSource,
+) -> Bool =
+  #| (self) => self instanceof OffscreenCanvas
+
+///|
+/// Check if this CanvasImageSource is VideoFrame
+pub extern "js" fn CanvasImageSource::is_video_frame(
+  self : CanvasImageSource,
+) -> Bool =
+  #| (self) => self instanceof VideoFrame
+
+///|
+/// Try to get CanvasImageSource as HTMLOrSVGImageElement
+pub extern "js" fn CanvasImageSource::as_h_t_m_l_or_s_v_g_image_element(
+  self : CanvasImageSource,
+) -> HTMLOrSVGImageElement? =
+  #| (self) => (self instanceof HTMLImageElement || self instanceof SVGImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CanvasImageSource as HTMLVideoElement
+pub extern "js" fn CanvasImageSource::as_h_t_m_l_video_element(
+  self : CanvasImageSource,
+) -> HTMLVideoElement? =
+  #| (self) => (self instanceof HTMLVideoElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CanvasImageSource as HTMLCanvasElement
+pub extern "js" fn CanvasImageSource::as_h_t_m_l_canvas_element(
+  self : CanvasImageSource,
+) -> HTMLCanvasElement? =
+  #| (self) => (self instanceof HTMLCanvasElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CanvasImageSource as ImageBitmap
+pub extern "js" fn CanvasImageSource::as_image_bitmap(
+  self : CanvasImageSource,
+) -> ImageBitmap? =
+  #| (self) => (self instanceof ImageBitmap) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CanvasImageSource as OffscreenCanvas
+pub extern "js" fn CanvasImageSource::as_offscreen_canvas(
+  self : CanvasImageSource,
+) -> OffscreenCanvas? =
+  #| (self) => (self instanceof OffscreenCanvas) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CanvasImageSource as VideoFrame
+pub extern "js" fn CanvasImageSource::as_video_frame(
+  self : CanvasImageSource,
+) -> VideoFrame? =
+  #| (self) => (self instanceof VideoFrame) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// OffscreenRenderingContext typedef
 pub type OffscreenRenderingContext
 
@@ -219,6 +463,76 @@ pub extern "js" fn OffscreenRenderingContext::from_g_p_u_canvas_context(
   #| (v) => v
 
 ///|
+/// Check if this OffscreenRenderingContext is OffscreenCanvasRenderingContext2D
+pub extern "js" fn OffscreenRenderingContext::is_offscreen_canvas_rendering_context2_d(
+  self : OffscreenRenderingContext,
+) -> Bool =
+  #| (self) => self instanceof OffscreenCanvasRenderingContext2D
+
+///|
+/// Check if this OffscreenRenderingContext is ImageBitmapRenderingContext
+pub extern "js" fn OffscreenRenderingContext::is_image_bitmap_rendering_context(
+  self : OffscreenRenderingContext,
+) -> Bool =
+  #| (self) => self instanceof ImageBitmapRenderingContext
+
+///|
+/// Check if this OffscreenRenderingContext is WebGLRenderingContext
+pub extern "js" fn OffscreenRenderingContext::is_web_g_l_rendering_context(
+  self : OffscreenRenderingContext,
+) -> Bool =
+  #| (self) => self instanceof WebGLRenderingContext
+
+///|
+/// Check if this OffscreenRenderingContext is WebGL2RenderingContext
+pub extern "js" fn OffscreenRenderingContext::is_web_g_l2_rendering_context(
+  self : OffscreenRenderingContext,
+) -> Bool =
+  #| (self) => self instanceof WebGL2RenderingContext
+
+///|
+/// Check if this OffscreenRenderingContext is GPUCanvasContext
+pub extern "js" fn OffscreenRenderingContext::is_g_p_u_canvas_context(
+  self : OffscreenRenderingContext,
+) -> Bool =
+  #| (self) => self instanceof GPUCanvasContext
+
+///|
+/// Try to get OffscreenRenderingContext as OffscreenCanvasRenderingContext2D
+pub extern "js" fn OffscreenRenderingContext::as_offscreen_canvas_rendering_context2_d(
+  self : OffscreenRenderingContext,
+) -> OffscreenCanvasRenderingContext2D? =
+  #| (self) => (self instanceof OffscreenCanvasRenderingContext2D) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get OffscreenRenderingContext as ImageBitmapRenderingContext
+pub extern "js" fn OffscreenRenderingContext::as_image_bitmap_rendering_context(
+  self : OffscreenRenderingContext,
+) -> ImageBitmapRenderingContext? =
+  #| (self) => (self instanceof ImageBitmapRenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get OffscreenRenderingContext as WebGLRenderingContext
+pub extern "js" fn OffscreenRenderingContext::as_web_g_l_rendering_context(
+  self : OffscreenRenderingContext,
+) -> WebGLRenderingContext? =
+  #| (self) => (self instanceof WebGLRenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get OffscreenRenderingContext as WebGL2RenderingContext
+pub extern "js" fn OffscreenRenderingContext::as_web_g_l2_rendering_context(
+  self : OffscreenRenderingContext,
+) -> WebGL2RenderingContext? =
+  #| (self) => (self instanceof WebGL2RenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get OffscreenRenderingContext as GPUCanvasContext
+pub extern "js" fn OffscreenRenderingContext::as_g_p_u_canvas_context(
+  self : OffscreenRenderingContext,
+) -> GPUCanvasContext? =
+  #| (self) => (self instanceof GPUCanvasContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// EventHandler typedef
 pub type EventHandler = EventHandlerNonNull?
 
@@ -256,6 +570,38 @@ pub extern "js" fn TimerHandler::from_trusted_script(
   #| (v) => v
 
 ///|
+/// Check if this TimerHandler is String
+pub extern "js" fn TimerHandler::is_string(self : TimerHandler) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this TimerHandler is Function
+pub extern "js" fn TimerHandler::is_function(self : TimerHandler) -> Bool =
+  #| (self) => typeof self === 'function'
+
+///|
+/// Check if this TimerHandler is TrustedScript
+pub extern "js" fn TimerHandler::is_trusted_script(self : TimerHandler) -> Bool =
+  #| (self) => self instanceof TrustedScript
+
+///|
+/// Try to get TimerHandler as String
+pub extern "js" fn TimerHandler::as_string(self : TimerHandler) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get TimerHandler as Function
+pub extern "js" fn TimerHandler::as_function(self : TimerHandler) -> Function? =
+  #| (self) => (typeof self === 'function') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get TimerHandler as TrustedScript
+pub extern "js" fn TimerHandler::as_trusted_script(
+  self : TimerHandler,
+) -> TrustedScript? =
+  #| (self) => (self instanceof TrustedScript) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// ImageDataArray typedef
 pub type ImageDataArray
 
@@ -278,6 +624,34 @@ pub extern "js" fn ImageDataArray::from_float16_array(
   v : Float16Array,
 ) -> ImageDataArray =
   #| (v) => v
+
+///|
+/// Check if this ImageDataArray is Uint8ClampedArray
+pub extern "js" fn ImageDataArray::is_uint8_clamped_array(
+  self : ImageDataArray,
+) -> Bool =
+  #| (self) => self instanceof Uint8ClampedArray
+
+///|
+/// Check if this ImageDataArray is Float16Array
+pub extern "js" fn ImageDataArray::is_float16_array(
+  self : ImageDataArray,
+) -> Bool =
+  #| (self) => self instanceof Float16Array
+
+///|
+/// Try to get ImageDataArray as Uint8ClampedArray
+pub extern "js" fn ImageDataArray::as_uint8_clamped_array(
+  self : ImageDataArray,
+) -> Uint8ClampedArray? =
+  #| (self) => (self instanceof Uint8ClampedArray) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ImageDataArray as Float16Array
+pub extern "js" fn ImageDataArray::as_float16_array(
+  self : ImageDataArray,
+) -> Float16Array? =
+  #| (self) => (self instanceof Float16Array) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// ImageBitmapSource typedef
@@ -307,6 +681,46 @@ pub extern "js" fn ImageBitmapSource::from_image_data(
   v : ImageData,
 ) -> ImageBitmapSource =
   #| (v) => v
+
+///|
+/// Check if this ImageBitmapSource is CanvasImageSource
+pub extern "js" fn ImageBitmapSource::is_canvas_image_source(
+  self : ImageBitmapSource,
+) -> Bool =
+  #| (self) => self instanceof HTMLImageElement || self instanceof SVGImageElement || self instanceof HTMLVideoElement || self instanceof HTMLCanvasElement || self instanceof ImageBitmap || self instanceof OffscreenCanvas || self instanceof VideoFrame
+
+///|
+/// Check if this ImageBitmapSource is Blob
+pub extern "js" fn ImageBitmapSource::is_blob(self : ImageBitmapSource) -> Bool =
+  #| (self) => self instanceof Blob
+
+///|
+/// Check if this ImageBitmapSource is ImageData
+pub extern "js" fn ImageBitmapSource::is_image_data(
+  self : ImageBitmapSource,
+) -> Bool =
+  #| (self) => self instanceof ImageData
+
+///|
+/// Try to get ImageBitmapSource as CanvasImageSource
+pub extern "js" fn ImageBitmapSource::as_canvas_image_source(
+  self : ImageBitmapSource,
+) -> CanvasImageSource? =
+  #| (self) => (self instanceof HTMLImageElement || self instanceof SVGImageElement || self instanceof HTMLVideoElement || self instanceof HTMLCanvasElement || self instanceof ImageBitmap || self instanceof OffscreenCanvas || self instanceof VideoFrame) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ImageBitmapSource as Blob
+pub extern "js" fn ImageBitmapSource::as_blob(
+  self : ImageBitmapSource,
+) -> Blob? =
+  #| (self) => (self instanceof Blob) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ImageBitmapSource as ImageData
+pub extern "js" fn ImageBitmapSource::as_image_data(
+  self : ImageBitmapSource,
+) -> ImageData? =
+  #| (self) => (self instanceof ImageData) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// MessageEventSource typedef
@@ -340,6 +754,48 @@ pub extern "js" fn MessageEventSource::from_service_worker(
   #| (v) => v
 
 ///|
+/// Check if this MessageEventSource is WindowProxy
+pub extern "js" fn MessageEventSource::is_window_proxy(
+  self : MessageEventSource,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null && self.window === self
+
+///|
+/// Check if this MessageEventSource is MessagePort
+pub extern "js" fn MessageEventSource::is_message_port(
+  self : MessageEventSource,
+) -> Bool =
+  #| (self) => self instanceof MessagePort
+
+///|
+/// Check if this MessageEventSource is ServiceWorker
+pub extern "js" fn MessageEventSource::is_service_worker(
+  self : MessageEventSource,
+) -> Bool =
+  #| (self) => self instanceof ServiceWorker
+
+///|
+/// Try to get MessageEventSource as WindowProxy
+pub extern "js" fn MessageEventSource::as_window_proxy(
+  self : MessageEventSource,
+) -> WindowProxy? =
+  #| (self) => (typeof self === 'object' && self !== null && self.window === self) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get MessageEventSource as MessagePort
+pub extern "js" fn MessageEventSource::as_message_port(
+  self : MessageEventSource,
+) -> MessagePort? =
+  #| (self) => (self instanceof MessagePort) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get MessageEventSource as ServiceWorker
+pub extern "js" fn MessageEventSource::as_service_worker(
+  self : MessageEventSource,
+) -> ServiceWorker? =
+  #| (self) => (self instanceof ServiceWorker) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// DocumentReadyState enum
 pub(all) enum DocumentReadyState {
   Loading
@@ -351,9 +807,9 @@ pub(all) enum DocumentReadyState {
 /// Convert to string value
 pub fn DocumentReadyState::to_string(self : DocumentReadyState) -> String {
   match self {
-    Loading => "loading"
-    Interactive => "interactive"
-    Complete => "complete"
+    DocumentReadyState::Loading => "loading"
+    DocumentReadyState::Interactive => "interactive"
+    DocumentReadyState::Complete => "complete"
   }
 }
 
@@ -361,9 +817,9 @@ pub fn DocumentReadyState::to_string(self : DocumentReadyState) -> String {
 /// Parse from string value
 pub fn DocumentReadyState::from_string(s : String) -> DocumentReadyState? {
   match s {
-    "loading" => Some(Loading)
-    "interactive" => Some(Interactive)
-    "complete" => Some(Complete)
+    "loading" => Some(DocumentReadyState::Loading)
+    "interactive" => Some(DocumentReadyState::Interactive)
+    "complete" => Some(DocumentReadyState::Complete)
     _ => None
   }
 }
@@ -381,8 +837,8 @@ pub fn DocumentVisibilityState::to_string(
   self : DocumentVisibilityState,
 ) -> String {
   match self {
-    Visible => "visible"
-    Hidden => "hidden"
+    DocumentVisibilityState::Visible => "visible"
+    DocumentVisibilityState::Hidden => "hidden"
   }
 }
 
@@ -392,8 +848,8 @@ pub fn DocumentVisibilityState::from_string(
   s : String,
 ) -> DocumentVisibilityState? {
   match s {
-    "visible" => Some(Visible)
-    "hidden" => Some(Hidden)
+    "visible" => Some(DocumentVisibilityState::Visible)
+    "hidden" => Some(DocumentVisibilityState::Hidden)
     _ => None
   }
 }
@@ -410,9 +866,9 @@ pub(all) enum CanPlayTypeResult {
 /// Convert to string value
 pub fn CanPlayTypeResult::to_string(self : CanPlayTypeResult) -> String {
   match self {
-    Empty => ""
-    Maybe => "maybe"
-    Probably => "probably"
+    CanPlayTypeResult::Empty => ""
+    CanPlayTypeResult::Maybe => "maybe"
+    CanPlayTypeResult::Probably => "probably"
   }
 }
 
@@ -420,9 +876,9 @@ pub fn CanPlayTypeResult::to_string(self : CanPlayTypeResult) -> String {
 /// Parse from string value
 pub fn CanPlayTypeResult::from_string(s : String) -> CanPlayTypeResult? {
   match s {
-    "" => Some(Empty)
-    "maybe" => Some(Maybe)
-    "probably" => Some(Probably)
+    "" => Some(CanPlayTypeResult::Empty)
+    "maybe" => Some(CanPlayTypeResult::Maybe)
+    "probably" => Some(CanPlayTypeResult::Probably)
     _ => None
   }
 }
@@ -439,9 +895,9 @@ pub(all) enum TextTrackMode {
 /// Convert to string value
 pub fn TextTrackMode::to_string(self : TextTrackMode) -> String {
   match self {
-    Disabled => "disabled"
-    Hidden => "hidden"
-    Showing => "showing"
+    TextTrackMode::Disabled => "disabled"
+    TextTrackMode::Hidden => "hidden"
+    TextTrackMode::Showing => "showing"
   }
 }
 
@@ -449,9 +905,9 @@ pub fn TextTrackMode::to_string(self : TextTrackMode) -> String {
 /// Parse from string value
 pub fn TextTrackMode::from_string(s : String) -> TextTrackMode? {
   match s {
-    "disabled" => Some(Disabled)
-    "hidden" => Some(Hidden)
-    "showing" => Some(Showing)
+    "disabled" => Some(TextTrackMode::Disabled)
+    "hidden" => Some(TextTrackMode::Hidden)
+    "showing" => Some(TextTrackMode::Showing)
     _ => None
   }
 }
@@ -470,11 +926,11 @@ pub(all) enum TextTrackKind {
 /// Convert to string value
 pub fn TextTrackKind::to_string(self : TextTrackKind) -> String {
   match self {
-    Subtitles => "subtitles"
-    Captions => "captions"
-    Descriptions => "descriptions"
-    Chapters => "chapters"
-    Metadata => "metadata"
+    TextTrackKind::Subtitles => "subtitles"
+    TextTrackKind::Captions => "captions"
+    TextTrackKind::Descriptions => "descriptions"
+    TextTrackKind::Chapters => "chapters"
+    TextTrackKind::Metadata => "metadata"
   }
 }
 
@@ -482,11 +938,11 @@ pub fn TextTrackKind::to_string(self : TextTrackKind) -> String {
 /// Parse from string value
 pub fn TextTrackKind::from_string(s : String) -> TextTrackKind? {
   match s {
-    "subtitles" => Some(Subtitles)
-    "captions" => Some(Captions)
-    "descriptions" => Some(Descriptions)
-    "chapters" => Some(Chapters)
-    "metadata" => Some(Metadata)
+    "subtitles" => Some(TextTrackKind::Subtitles)
+    "captions" => Some(TextTrackKind::Captions)
+    "descriptions" => Some(TextTrackKind::Descriptions)
+    "chapters" => Some(TextTrackKind::Chapters)
+    "metadata" => Some(TextTrackKind::Metadata)
     _ => None
   }
 }
@@ -504,10 +960,10 @@ pub(all) enum SelectionMode {
 /// Convert to string value
 pub fn SelectionMode::to_string(self : SelectionMode) -> String {
   match self {
-    Select => "select"
-    Start => "start"
-    End => "end"
-    Preserve => "preserve"
+    SelectionMode::Select => "select"
+    SelectionMode::Start => "start"
+    SelectionMode::End => "end"
+    SelectionMode::Preserve => "preserve"
   }
 }
 
@@ -515,10 +971,10 @@ pub fn SelectionMode::to_string(self : SelectionMode) -> String {
 /// Parse from string value
 pub fn SelectionMode::from_string(s : String) -> SelectionMode? {
   match s {
-    "select" => Some(Select)
-    "start" => Some(Start)
-    "end" => Some(End)
-    "preserve" => Some(Preserve)
+    "select" => Some(SelectionMode::Select)
+    "start" => Some(SelectionMode::Start)
+    "end" => Some(SelectionMode::End)
+    "preserve" => Some(SelectionMode::Preserve)
     _ => None
   }
 }
@@ -534,8 +990,8 @@ pub(all) enum CanvasColorType {
 /// Convert to string value
 pub fn CanvasColorType::to_string(self : CanvasColorType) -> String {
   match self {
-    Unorm8 => "unorm8"
-    Float16 => "float16"
+    CanvasColorType::Unorm8 => "unorm8"
+    CanvasColorType::Float16 => "float16"
   }
 }
 
@@ -543,8 +999,8 @@ pub fn CanvasColorType::to_string(self : CanvasColorType) -> String {
 /// Parse from string value
 pub fn CanvasColorType::from_string(s : String) -> CanvasColorType? {
   match s {
-    "unorm8" => Some(Unorm8)
-    "float16" => Some(Float16)
+    "unorm8" => Some(CanvasColorType::Unorm8)
+    "float16" => Some(CanvasColorType::Float16)
     _ => None
   }
 }
@@ -560,8 +1016,8 @@ pub(all) enum CanvasFillRule {
 /// Convert to string value
 pub fn CanvasFillRule::to_string(self : CanvasFillRule) -> String {
   match self {
-    Nonzero => "nonzero"
-    Evenodd => "evenodd"
+    CanvasFillRule::Nonzero => "nonzero"
+    CanvasFillRule::Evenodd => "evenodd"
   }
 }
 
@@ -569,8 +1025,8 @@ pub fn CanvasFillRule::to_string(self : CanvasFillRule) -> String {
 /// Parse from string value
 pub fn CanvasFillRule::from_string(s : String) -> CanvasFillRule? {
   match s {
-    "nonzero" => Some(Nonzero)
-    "evenodd" => Some(Evenodd)
+    "nonzero" => Some(CanvasFillRule::Nonzero)
+    "evenodd" => Some(CanvasFillRule::Evenodd)
     _ => None
   }
 }
@@ -587,9 +1043,9 @@ pub(all) enum ImageSmoothingQuality {
 /// Convert to string value
 pub fn ImageSmoothingQuality::to_string(self : ImageSmoothingQuality) -> String {
   match self {
-    Low => "low"
-    Medium => "medium"
-    High => "high"
+    ImageSmoothingQuality::Low => "low"
+    ImageSmoothingQuality::Medium => "medium"
+    ImageSmoothingQuality::High => "high"
   }
 }
 
@@ -597,9 +1053,9 @@ pub fn ImageSmoothingQuality::to_string(self : ImageSmoothingQuality) -> String 
 /// Parse from string value
 pub fn ImageSmoothingQuality::from_string(s : String) -> ImageSmoothingQuality? {
   match s {
-    "low" => Some(Low)
-    "medium" => Some(Medium)
-    "high" => Some(High)
+    "low" => Some(ImageSmoothingQuality::Low)
+    "medium" => Some(ImageSmoothingQuality::Medium)
+    "high" => Some(ImageSmoothingQuality::High)
     _ => None
   }
 }
@@ -616,9 +1072,9 @@ pub(all) enum CanvasLineCap {
 /// Convert to string value
 pub fn CanvasLineCap::to_string(self : CanvasLineCap) -> String {
   match self {
-    Butt => "butt"
-    Round => "round"
-    Square => "square"
+    CanvasLineCap::Butt => "butt"
+    CanvasLineCap::Round => "round"
+    CanvasLineCap::Square => "square"
   }
 }
 
@@ -626,9 +1082,9 @@ pub fn CanvasLineCap::to_string(self : CanvasLineCap) -> String {
 /// Parse from string value
 pub fn CanvasLineCap::from_string(s : String) -> CanvasLineCap? {
   match s {
-    "butt" => Some(Butt)
-    "round" => Some(Round)
-    "square" => Some(Square)
+    "butt" => Some(CanvasLineCap::Butt)
+    "round" => Some(CanvasLineCap::Round)
+    "square" => Some(CanvasLineCap::Square)
     _ => None
   }
 }
@@ -645,9 +1101,9 @@ pub(all) enum CanvasLineJoin {
 /// Convert to string value
 pub fn CanvasLineJoin::to_string(self : CanvasLineJoin) -> String {
   match self {
-    Round => "round"
-    Bevel => "bevel"
-    Miter => "miter"
+    CanvasLineJoin::Round => "round"
+    CanvasLineJoin::Bevel => "bevel"
+    CanvasLineJoin::Miter => "miter"
   }
 }
 
@@ -655,9 +1111,9 @@ pub fn CanvasLineJoin::to_string(self : CanvasLineJoin) -> String {
 /// Parse from string value
 pub fn CanvasLineJoin::from_string(s : String) -> CanvasLineJoin? {
   match s {
-    "round" => Some(Round)
-    "bevel" => Some(Bevel)
-    "miter" => Some(Miter)
+    "round" => Some(CanvasLineJoin::Round)
+    "bevel" => Some(CanvasLineJoin::Bevel)
+    "miter" => Some(CanvasLineJoin::Miter)
     _ => None
   }
 }
@@ -676,11 +1132,11 @@ pub(all) enum CanvasTextAlign {
 /// Convert to string value
 pub fn CanvasTextAlign::to_string(self : CanvasTextAlign) -> String {
   match self {
-    Start => "start"
-    End => "end"
-    Left => "left"
-    Right => "right"
-    Center => "center"
+    CanvasTextAlign::Start => "start"
+    CanvasTextAlign::End => "end"
+    CanvasTextAlign::Left => "left"
+    CanvasTextAlign::Right => "right"
+    CanvasTextAlign::Center => "center"
   }
 }
 
@@ -688,11 +1144,11 @@ pub fn CanvasTextAlign::to_string(self : CanvasTextAlign) -> String {
 /// Parse from string value
 pub fn CanvasTextAlign::from_string(s : String) -> CanvasTextAlign? {
   match s {
-    "start" => Some(Start)
-    "end" => Some(End)
-    "left" => Some(Left)
-    "right" => Some(Right)
-    "center" => Some(Center)
+    "start" => Some(CanvasTextAlign::Start)
+    "end" => Some(CanvasTextAlign::End)
+    "left" => Some(CanvasTextAlign::Left)
+    "right" => Some(CanvasTextAlign::Right)
+    "center" => Some(CanvasTextAlign::Center)
     _ => None
   }
 }
@@ -712,12 +1168,12 @@ pub(all) enum CanvasTextBaseline {
 /// Convert to string value
 pub fn CanvasTextBaseline::to_string(self : CanvasTextBaseline) -> String {
   match self {
-    Top => "top"
-    Hanging => "hanging"
-    Middle => "middle"
-    Alphabetic => "alphabetic"
-    Ideographic => "ideographic"
-    Bottom => "bottom"
+    CanvasTextBaseline::Top => "top"
+    CanvasTextBaseline::Hanging => "hanging"
+    CanvasTextBaseline::Middle => "middle"
+    CanvasTextBaseline::Alphabetic => "alphabetic"
+    CanvasTextBaseline::Ideographic => "ideographic"
+    CanvasTextBaseline::Bottom => "bottom"
   }
 }
 
@@ -725,12 +1181,12 @@ pub fn CanvasTextBaseline::to_string(self : CanvasTextBaseline) -> String {
 /// Parse from string value
 pub fn CanvasTextBaseline::from_string(s : String) -> CanvasTextBaseline? {
   match s {
-    "top" => Some(Top)
-    "hanging" => Some(Hanging)
-    "middle" => Some(Middle)
-    "alphabetic" => Some(Alphabetic)
-    "ideographic" => Some(Ideographic)
-    "bottom" => Some(Bottom)
+    "top" => Some(CanvasTextBaseline::Top)
+    "hanging" => Some(CanvasTextBaseline::Hanging)
+    "middle" => Some(CanvasTextBaseline::Middle)
+    "alphabetic" => Some(CanvasTextBaseline::Alphabetic)
+    "ideographic" => Some(CanvasTextBaseline::Ideographic)
+    "bottom" => Some(CanvasTextBaseline::Bottom)
     _ => None
   }
 }
@@ -747,9 +1203,9 @@ pub(all) enum CanvasDirection {
 /// Convert to string value
 pub fn CanvasDirection::to_string(self : CanvasDirection) -> String {
   match self {
-    Ltr => "ltr"
-    Rtl => "rtl"
-    Inherit => "inherit"
+    CanvasDirection::Ltr => "ltr"
+    CanvasDirection::Rtl => "rtl"
+    CanvasDirection::Inherit => "inherit"
   }
 }
 
@@ -757,9 +1213,9 @@ pub fn CanvasDirection::to_string(self : CanvasDirection) -> String {
 /// Parse from string value
 pub fn CanvasDirection::from_string(s : String) -> CanvasDirection? {
   match s {
-    "ltr" => Some(Ltr)
-    "rtl" => Some(Rtl)
-    "inherit" => Some(Inherit)
+    "ltr" => Some(CanvasDirection::Ltr)
+    "rtl" => Some(CanvasDirection::Rtl)
+    "inherit" => Some(CanvasDirection::Inherit)
     _ => None
   }
 }
@@ -776,9 +1232,9 @@ pub(all) enum CanvasFontKerning {
 /// Convert to string value
 pub fn CanvasFontKerning::to_string(self : CanvasFontKerning) -> String {
   match self {
-    Auto => "auto"
-    Normal => "normal"
-    None => "none"
+    CanvasFontKerning::Auto => "auto"
+    CanvasFontKerning::Normal => "normal"
+    CanvasFontKerning::None => "none"
   }
 }
 
@@ -786,9 +1242,9 @@ pub fn CanvasFontKerning::to_string(self : CanvasFontKerning) -> String {
 /// Parse from string value
 pub fn CanvasFontKerning::from_string(s : String) -> CanvasFontKerning? {
   match s {
-    "auto" => Some(Auto)
-    "normal" => Some(Normal)
-    "none" => Some(None)
+    "auto" => Some(CanvasFontKerning::Auto)
+    "normal" => Some(CanvasFontKerning::Normal)
+    "none" => Some(CanvasFontKerning::None)
     _ => None
   }
 }
@@ -811,15 +1267,15 @@ pub(all) enum CanvasFontStretch {
 /// Convert to string value
 pub fn CanvasFontStretch::to_string(self : CanvasFontStretch) -> String {
   match self {
-    UltraCondensed => "ultra-condensed"
-    ExtraCondensed => "extra-condensed"
-    Condensed => "condensed"
-    SemiCondensed => "semi-condensed"
-    Normal => "normal"
-    SemiExpanded => "semi-expanded"
-    Expanded => "expanded"
-    ExtraExpanded => "extra-expanded"
-    UltraExpanded => "ultra-expanded"
+    CanvasFontStretch::UltraCondensed => "ultra-condensed"
+    CanvasFontStretch::ExtraCondensed => "extra-condensed"
+    CanvasFontStretch::Condensed => "condensed"
+    CanvasFontStretch::SemiCondensed => "semi-condensed"
+    CanvasFontStretch::Normal => "normal"
+    CanvasFontStretch::SemiExpanded => "semi-expanded"
+    CanvasFontStretch::Expanded => "expanded"
+    CanvasFontStretch::ExtraExpanded => "extra-expanded"
+    CanvasFontStretch::UltraExpanded => "ultra-expanded"
   }
 }
 
@@ -827,15 +1283,15 @@ pub fn CanvasFontStretch::to_string(self : CanvasFontStretch) -> String {
 /// Parse from string value
 pub fn CanvasFontStretch::from_string(s : String) -> CanvasFontStretch? {
   match s {
-    "ultra-condensed" => Some(UltraCondensed)
-    "extra-condensed" => Some(ExtraCondensed)
-    "condensed" => Some(Condensed)
-    "semi-condensed" => Some(SemiCondensed)
-    "normal" => Some(Normal)
-    "semi-expanded" => Some(SemiExpanded)
-    "expanded" => Some(Expanded)
-    "extra-expanded" => Some(ExtraExpanded)
-    "ultra-expanded" => Some(UltraExpanded)
+    "ultra-condensed" => Some(CanvasFontStretch::UltraCondensed)
+    "extra-condensed" => Some(CanvasFontStretch::ExtraCondensed)
+    "condensed" => Some(CanvasFontStretch::Condensed)
+    "semi-condensed" => Some(CanvasFontStretch::SemiCondensed)
+    "normal" => Some(CanvasFontStretch::Normal)
+    "semi-expanded" => Some(CanvasFontStretch::SemiExpanded)
+    "expanded" => Some(CanvasFontStretch::Expanded)
+    "extra-expanded" => Some(CanvasFontStretch::ExtraExpanded)
+    "ultra-expanded" => Some(CanvasFontStretch::UltraExpanded)
     _ => None
   }
 }
@@ -856,13 +1312,13 @@ pub(all) enum CanvasFontVariantCaps {
 /// Convert to string value
 pub fn CanvasFontVariantCaps::to_string(self : CanvasFontVariantCaps) -> String {
   match self {
-    Normal => "normal"
-    SmallCaps => "small-caps"
-    AllSmallCaps => "all-small-caps"
-    PetiteCaps => "petite-caps"
-    AllPetiteCaps => "all-petite-caps"
-    Unicase => "unicase"
-    TitlingCaps => "titling-caps"
+    CanvasFontVariantCaps::Normal => "normal"
+    CanvasFontVariantCaps::SmallCaps => "small-caps"
+    CanvasFontVariantCaps::AllSmallCaps => "all-small-caps"
+    CanvasFontVariantCaps::PetiteCaps => "petite-caps"
+    CanvasFontVariantCaps::AllPetiteCaps => "all-petite-caps"
+    CanvasFontVariantCaps::Unicase => "unicase"
+    CanvasFontVariantCaps::TitlingCaps => "titling-caps"
   }
 }
 
@@ -870,13 +1326,13 @@ pub fn CanvasFontVariantCaps::to_string(self : CanvasFontVariantCaps) -> String 
 /// Parse from string value
 pub fn CanvasFontVariantCaps::from_string(s : String) -> CanvasFontVariantCaps? {
   match s {
-    "normal" => Some(Normal)
-    "small-caps" => Some(SmallCaps)
-    "all-small-caps" => Some(AllSmallCaps)
-    "petite-caps" => Some(PetiteCaps)
-    "all-petite-caps" => Some(AllPetiteCaps)
-    "unicase" => Some(Unicase)
-    "titling-caps" => Some(TitlingCaps)
+    "normal" => Some(CanvasFontVariantCaps::Normal)
+    "small-caps" => Some(CanvasFontVariantCaps::SmallCaps)
+    "all-small-caps" => Some(CanvasFontVariantCaps::AllSmallCaps)
+    "petite-caps" => Some(CanvasFontVariantCaps::PetiteCaps)
+    "all-petite-caps" => Some(CanvasFontVariantCaps::AllPetiteCaps)
+    "unicase" => Some(CanvasFontVariantCaps::Unicase)
+    "titling-caps" => Some(CanvasFontVariantCaps::TitlingCaps)
     _ => None
   }
 }
@@ -894,10 +1350,10 @@ pub(all) enum CanvasTextRendering {
 /// Convert to string value
 pub fn CanvasTextRendering::to_string(self : CanvasTextRendering) -> String {
   match self {
-    Auto => "auto"
-    OptimizeSpeed => "optimizeSpeed"
-    OptimizeLegibility => "optimizeLegibility"
-    GeometricPrecision => "geometricPrecision"
+    CanvasTextRendering::Auto => "auto"
+    CanvasTextRendering::OptimizeSpeed => "optimizeSpeed"
+    CanvasTextRendering::OptimizeLegibility => "optimizeLegibility"
+    CanvasTextRendering::GeometricPrecision => "geometricPrecision"
   }
 }
 
@@ -905,10 +1361,10 @@ pub fn CanvasTextRendering::to_string(self : CanvasTextRendering) -> String {
 /// Parse from string value
 pub fn CanvasTextRendering::from_string(s : String) -> CanvasTextRendering? {
   match s {
-    "auto" => Some(Auto)
-    "optimizeSpeed" => Some(OptimizeSpeed)
-    "optimizeLegibility" => Some(OptimizeLegibility)
-    "geometricPrecision" => Some(GeometricPrecision)
+    "auto" => Some(CanvasTextRendering::Auto)
+    "optimizeSpeed" => Some(CanvasTextRendering::OptimizeSpeed)
+    "optimizeLegibility" => Some(CanvasTextRendering::OptimizeLegibility)
+    "geometricPrecision" => Some(CanvasTextRendering::GeometricPrecision)
     _ => None
   }
 }
@@ -929,11 +1385,11 @@ pub fn OffscreenRenderingContextId::to_string(
   self : OffscreenRenderingContextId,
 ) -> String {
   match self {
-    N2d => "2d"
-    Bitmaprenderer => "bitmaprenderer"
-    Webgl => "webgl"
-    Webgl2 => "webgl2"
-    Webgpu => "webgpu"
+    OffscreenRenderingContextId::N2d => "2d"
+    OffscreenRenderingContextId::Bitmaprenderer => "bitmaprenderer"
+    OffscreenRenderingContextId::Webgl => "webgl"
+    OffscreenRenderingContextId::Webgl2 => "webgl2"
+    OffscreenRenderingContextId::Webgpu => "webgpu"
   }
 }
 
@@ -943,11 +1399,11 @@ pub fn OffscreenRenderingContextId::from_string(
   s : String,
 ) -> OffscreenRenderingContextId? {
   match s {
-    "2d" => Some(N2d)
-    "bitmaprenderer" => Some(Bitmaprenderer)
-    "webgl" => Some(Webgl)
-    "webgl2" => Some(Webgl2)
-    "webgpu" => Some(Webgpu)
+    "2d" => Some(OffscreenRenderingContextId::N2d)
+    "bitmaprenderer" => Some(OffscreenRenderingContextId::Bitmaprenderer)
+    "webgl" => Some(OffscreenRenderingContextId::Webgl)
+    "webgl2" => Some(OffscreenRenderingContextId::Webgl2)
+    "webgpu" => Some(OffscreenRenderingContextId::Webgpu)
     _ => None
   }
 }
@@ -965,10 +1421,10 @@ pub(all) enum PredefinedColorSpace {
 /// Convert to string value
 pub fn PredefinedColorSpace::to_string(self : PredefinedColorSpace) -> String {
   match self {
-    Srgb => "srgb"
-    SrgbLinear => "srgb-linear"
-    DisplayP3 => "display-p3"
-    DisplayP3Linear => "display-p3-linear"
+    PredefinedColorSpace::Srgb => "srgb"
+    PredefinedColorSpace::SrgbLinear => "srgb-linear"
+    PredefinedColorSpace::DisplayP3 => "display-p3"
+    PredefinedColorSpace::DisplayP3Linear => "display-p3-linear"
   }
 }
 
@@ -976,10 +1432,10 @@ pub fn PredefinedColorSpace::to_string(self : PredefinedColorSpace) -> String {
 /// Parse from string value
 pub fn PredefinedColorSpace::from_string(s : String) -> PredefinedColorSpace? {
   match s {
-    "srgb" => Some(Srgb)
-    "srgb-linear" => Some(SrgbLinear)
-    "display-p3" => Some(DisplayP3)
-    "display-p3-linear" => Some(DisplayP3Linear)
+    "srgb" => Some(PredefinedColorSpace::Srgb)
+    "srgb-linear" => Some(PredefinedColorSpace::SrgbLinear)
+    "display-p3" => Some(PredefinedColorSpace::DisplayP3)
+    "display-p3-linear" => Some(PredefinedColorSpace::DisplayP3Linear)
     _ => None
   }
 }
@@ -995,8 +1451,8 @@ pub(all) enum ScrollRestoration {
 /// Convert to string value
 pub fn ScrollRestoration::to_string(self : ScrollRestoration) -> String {
   match self {
-    Auto => "auto"
-    Manual => "manual"
+    ScrollRestoration::Auto => "auto"
+    ScrollRestoration::Manual => "manual"
   }
 }
 
@@ -1004,8 +1460,8 @@ pub fn ScrollRestoration::to_string(self : ScrollRestoration) -> String {
 /// Parse from string value
 pub fn ScrollRestoration::from_string(s : String) -> ScrollRestoration? {
   match s {
-    "auto" => Some(Auto)
-    "manual" => Some(Manual)
+    "auto" => Some(ScrollRestoration::Auto)
+    "manual" => Some(ScrollRestoration::Manual)
     _ => None
   }
 }
@@ -1024,9 +1480,9 @@ pub fn NavigationHistoryBehavior::to_string(
   self : NavigationHistoryBehavior,
 ) -> String {
   match self {
-    Auto => "auto"
-    Push => "push"
-    Replace => "replace"
+    NavigationHistoryBehavior::Auto => "auto"
+    NavigationHistoryBehavior::Push => "push"
+    NavigationHistoryBehavior::Replace => "replace"
   }
 }
 
@@ -1036,9 +1492,9 @@ pub fn NavigationHistoryBehavior::from_string(
   s : String,
 ) -> NavigationHistoryBehavior? {
   match s {
-    "auto" => Some(Auto)
-    "push" => Some(Push)
-    "replace" => Some(Replace)
+    "auto" => Some(NavigationHistoryBehavior::Auto)
+    "push" => Some(NavigationHistoryBehavior::Push)
+    "replace" => Some(NavigationHistoryBehavior::Replace)
     _ => None
   }
 }
@@ -1056,10 +1512,10 @@ pub(all) enum NavigationType {
 /// Convert to string value
 pub fn NavigationType::to_string(self : NavigationType) -> String {
   match self {
-    Push => "push"
-    Replace => "replace"
-    Reload => "reload"
-    Traverse => "traverse"
+    NavigationType::Push => "push"
+    NavigationType::Replace => "replace"
+    NavigationType::Reload => "reload"
+    NavigationType::Traverse => "traverse"
   }
 }
 
@@ -1067,10 +1523,10 @@ pub fn NavigationType::to_string(self : NavigationType) -> String {
 /// Parse from string value
 pub fn NavigationType::from_string(s : String) -> NavigationType? {
   match s {
-    "push" => Some(Push)
-    "replace" => Some(Replace)
-    "reload" => Some(Reload)
-    "traverse" => Some(Traverse)
+    "push" => Some(NavigationType::Push)
+    "replace" => Some(NavigationType::Replace)
+    "reload" => Some(NavigationType::Reload)
+    "traverse" => Some(NavigationType::Traverse)
     _ => None
   }
 }
@@ -1086,8 +1542,8 @@ pub(all) enum NavigationFocusReset {
 /// Convert to string value
 pub fn NavigationFocusReset::to_string(self : NavigationFocusReset) -> String {
   match self {
-    AfterTransition => "after-transition"
-    Manual => "manual"
+    NavigationFocusReset::AfterTransition => "after-transition"
+    NavigationFocusReset::Manual => "manual"
   }
 }
 
@@ -1095,8 +1551,8 @@ pub fn NavigationFocusReset::to_string(self : NavigationFocusReset) -> String {
 /// Parse from string value
 pub fn NavigationFocusReset::from_string(s : String) -> NavigationFocusReset? {
   match s {
-    "after-transition" => Some(AfterTransition)
-    "manual" => Some(Manual)
+    "after-transition" => Some(NavigationFocusReset::AfterTransition)
+    "manual" => Some(NavigationFocusReset::Manual)
     _ => None
   }
 }
@@ -1114,8 +1570,8 @@ pub fn NavigationScrollBehavior::to_string(
   self : NavigationScrollBehavior,
 ) -> String {
   match self {
-    AfterTransition => "after-transition"
-    Manual => "manual"
+    NavigationScrollBehavior::AfterTransition => "after-transition"
+    NavigationScrollBehavior::Manual => "manual"
   }
 }
 
@@ -1125,8 +1581,8 @@ pub fn NavigationScrollBehavior::from_string(
   s : String,
 ) -> NavigationScrollBehavior? {
   match s {
-    "after-transition" => Some(AfterTransition)
-    "manual" => Some(Manual)
+    "after-transition" => Some(NavigationScrollBehavior::AfterTransition)
+    "manual" => Some(NavigationScrollBehavior::Manual)
     _ => None
   }
 }
@@ -1147,11 +1603,11 @@ pub fn DOMParserSupportedType::to_string(
   self : DOMParserSupportedType,
 ) -> String {
   match self {
-    TextHtml => "text/html"
-    TextXml => "text/xml"
-    ApplicationXml => "application/xml"
-    ApplicationXhtmlXml => "application/xhtml+xml"
-    ImageSvgXml => "image/svg+xml"
+    DOMParserSupportedType::TextHtml => "text/html"
+    DOMParserSupportedType::TextXml => "text/xml"
+    DOMParserSupportedType::ApplicationXml => "application/xml"
+    DOMParserSupportedType::ApplicationXhtmlXml => "application/xhtml+xml"
+    DOMParserSupportedType::ImageSvgXml => "image/svg+xml"
   }
 }
 
@@ -1161,11 +1617,11 @@ pub fn DOMParserSupportedType::from_string(
   s : String,
 ) -> DOMParserSupportedType? {
   match s {
-    "text/html" => Some(TextHtml)
-    "text/xml" => Some(TextXml)
-    "application/xml" => Some(ApplicationXml)
-    "application/xhtml+xml" => Some(ApplicationXhtmlXml)
-    "image/svg+xml" => Some(ImageSvgXml)
+    "text/html" => Some(DOMParserSupportedType::TextHtml)
+    "text/xml" => Some(DOMParserSupportedType::TextXml)
+    "application/xml" => Some(DOMParserSupportedType::ApplicationXml)
+    "application/xhtml+xml" => Some(DOMParserSupportedType::ApplicationXhtmlXml)
+    "image/svg+xml" => Some(DOMParserSupportedType::ImageSvgXml)
     _ => None
   }
 }
@@ -1181,8 +1637,8 @@ pub(all) enum ImageDataPixelFormat {
 /// Convert to string value
 pub fn ImageDataPixelFormat::to_string(self : ImageDataPixelFormat) -> String {
   match self {
-    RgbaUnorm8 => "rgba-unorm8"
-    RgbaFloat16 => "rgba-float16"
+    ImageDataPixelFormat::RgbaUnorm8 => "rgba-unorm8"
+    ImageDataPixelFormat::RgbaFloat16 => "rgba-float16"
   }
 }
 
@@ -1190,8 +1646,8 @@ pub fn ImageDataPixelFormat::to_string(self : ImageDataPixelFormat) -> String {
 /// Parse from string value
 pub fn ImageDataPixelFormat::from_string(s : String) -> ImageDataPixelFormat? {
   match s {
-    "rgba-unorm8" => Some(RgbaUnorm8)
-    "rgba-float16" => Some(RgbaFloat16)
+    "rgba-unorm8" => Some(ImageDataPixelFormat::RgbaUnorm8)
+    "rgba-float16" => Some(ImageDataPixelFormat::RgbaFloat16)
     _ => None
   }
 }
@@ -1207,8 +1663,8 @@ pub(all) enum ImageOrientation {
 /// Convert to string value
 pub fn ImageOrientation::to_string(self : ImageOrientation) -> String {
   match self {
-    FromImage => "from-image"
-    FlipY => "flipY"
+    ImageOrientation::FromImage => "from-image"
+    ImageOrientation::FlipY => "flipY"
   }
 }
 
@@ -1216,8 +1672,8 @@ pub fn ImageOrientation::to_string(self : ImageOrientation) -> String {
 /// Parse from string value
 pub fn ImageOrientation::from_string(s : String) -> ImageOrientation? {
   match s {
-    "from-image" => Some(FromImage)
-    "flipY" => Some(FlipY)
+    "from-image" => Some(ImageOrientation::FromImage)
+    "flipY" => Some(ImageOrientation::FlipY)
     _ => None
   }
 }
@@ -1234,9 +1690,9 @@ pub(all) enum PremultiplyAlpha {
 /// Convert to string value
 pub fn PremultiplyAlpha::to_string(self : PremultiplyAlpha) -> String {
   match self {
-    None => "none"
-    Premultiply => "premultiply"
-    Default => "default"
+    PremultiplyAlpha::None => "none"
+    PremultiplyAlpha::Premultiply => "premultiply"
+    PremultiplyAlpha::Default => "default"
   }
 }
 
@@ -1244,9 +1700,9 @@ pub fn PremultiplyAlpha::to_string(self : PremultiplyAlpha) -> String {
 /// Parse from string value
 pub fn PremultiplyAlpha::from_string(s : String) -> PremultiplyAlpha? {
   match s {
-    "none" => Some(None)
-    "premultiply" => Some(Premultiply)
-    "default" => Some(Default)
+    "none" => Some(PremultiplyAlpha::None)
+    "premultiply" => Some(PremultiplyAlpha::Premultiply)
+    "default" => Some(PremultiplyAlpha::Default)
     _ => None
   }
 }
@@ -1262,8 +1718,8 @@ pub(all) enum ColorSpaceConversion {
 /// Convert to string value
 pub fn ColorSpaceConversion::to_string(self : ColorSpaceConversion) -> String {
   match self {
-    None => "none"
-    Default => "default"
+    ColorSpaceConversion::None => "none"
+    ColorSpaceConversion::Default => "default"
   }
 }
 
@@ -1271,8 +1727,8 @@ pub fn ColorSpaceConversion::to_string(self : ColorSpaceConversion) -> String {
 /// Parse from string value
 pub fn ColorSpaceConversion::from_string(s : String) -> ColorSpaceConversion? {
   match s {
-    "none" => Some(None)
-    "default" => Some(Default)
+    "none" => Some(ColorSpaceConversion::None)
+    "default" => Some(ColorSpaceConversion::Default)
     _ => None
   }
 }
@@ -1290,10 +1746,10 @@ pub(all) enum ResizeQuality {
 /// Convert to string value
 pub fn ResizeQuality::to_string(self : ResizeQuality) -> String {
   match self {
-    Pixelated => "pixelated"
-    Low => "low"
-    Medium => "medium"
-    High => "high"
+    ResizeQuality::Pixelated => "pixelated"
+    ResizeQuality::Low => "low"
+    ResizeQuality::Medium => "medium"
+    ResizeQuality::High => "high"
   }
 }
 
@@ -1301,10 +1757,10 @@ pub fn ResizeQuality::to_string(self : ResizeQuality) -> String {
 /// Parse from string value
 pub fn ResizeQuality::from_string(s : String) -> ResizeQuality? {
   match s {
-    "pixelated" => Some(Pixelated)
-    "low" => Some(Low)
-    "medium" => Some(Medium)
-    "high" => Some(High)
+    "pixelated" => Some(ResizeQuality::Pixelated)
+    "low" => Some(ResizeQuality::Low)
+    "medium" => Some(ResizeQuality::Medium)
+    "high" => Some(ResizeQuality::High)
     _ => None
   }
 }
@@ -1320,8 +1776,8 @@ pub(all) enum WorkerType {
 /// Convert to string value
 pub fn WorkerType::to_string(self : WorkerType) -> String {
   match self {
-    Classic => "classic"
-    Module => "module"
+    WorkerType::Classic => "classic"
+    WorkerType::Module => "module"
   }
 }
 
@@ -1329,8 +1785,8 @@ pub fn WorkerType::to_string(self : WorkerType) -> String {
 /// Parse from string value
 pub fn WorkerType::from_string(s : String) -> WorkerType? {
   match s {
-    "classic" => Some(Classic)
-    "module" => Some(Module)
+    "classic" => Some(WorkerType::Classic)
+    "module" => Some(WorkerType::Module)
     _ => None
   }
 }
@@ -1394,7 +1850,7 @@ pub type OnErrorEventHandlerNonNull
 ///|
 /// Create OnErrorEventHandlerNonNull from a MoonBit function
 pub extern "js" fn OnErrorEventHandlerNonNull::from_fn(
-  handler : (JsValue, String, Int, Int, JsValue) -> JsValue,
+  handler : (EventOrString, String, Int, Int, JsValue) -> JsValue,
 ) -> OnErrorEventHandlerNonNull =
   #| (handler) => handler
 
@@ -2475,25 +2931,27 @@ pub extern "js" fn HTMLAllCollection::get(
 pub extern "js" fn HTMLAllCollection::named_item(
   self : HTMLAllCollection,
   name : String,
-) -> JsValue =
+) -> HTMLCollectionOrElement =
   #| (self, name) => self.namedItem(name)
 
 ///|
 pub extern "js" fn HTMLAllCollection::get_named(
   self : HTMLAllCollection,
   name : String,
-) -> JsValue =
+) -> HTMLCollectionOrElement =
   #| (self, name) => self[name]
 
 ///|
-pub extern "js" fn HTMLAllCollection::item(self : HTMLAllCollection) -> JsValue =
+pub extern "js" fn HTMLAllCollection::item(
+  self : HTMLAllCollection,
+) -> HTMLCollectionOrElement =
   #| (self) => self.item()
 
 ///|
 pub extern "js" fn HTMLAllCollection::item_with_name_or_index(
   self : HTMLAllCollection,
   name_or_index : String,
-) -> JsValue =
+) -> HTMLCollectionOrElement =
   #| (self, name_or_index) => self.item(name_or_index)
 
 ///|
@@ -2510,14 +2968,14 @@ pub extern "js" fn HTMLFormControlsCollection::to_js_value(
 pub extern "js" fn HTMLFormControlsCollection::named_item(
   self : HTMLFormControlsCollection,
   name : String,
-) -> JsValue =
+) -> RadioNodeListOrElement =
   #| (self, name) => self.namedItem(name)
 
 ///|
 pub extern "js" fn HTMLFormControlsCollection::get_named(
   self : HTMLFormControlsCollection,
   name : String,
-) -> JsValue =
+) -> RadioNodeListOrElement =
   #| (self, name) => self[name]
 
 ///|
@@ -2573,15 +3031,15 @@ pub extern "js" fn HTMLOptionsCollection::set(
 ///|
 pub extern "js" fn HTMLOptionsCollection::add(
   self : HTMLOptionsCollection,
-  element : JsValue,
+  element : HTMLOptionElementOrHTMLOptGroupElement,
 ) -> Unit =
   #| (self, element) => self.add(element)
 
 ///|
 pub extern "js" fn HTMLOptionsCollection::add_with_before(
   self : HTMLOptionsCollection,
-  element : JsValue,
-  before : JsValue,
+  element : HTMLOptionElementOrHTMLOptGroupElement,
+  before : HTMLElementOrInt,
 ) -> Unit =
   #| (self, element, before) => self.add(element, before)
 
@@ -2695,13 +3153,15 @@ pub extern "js" fn HTMLElement::set_dir(
   #| (self, value) => { self.dir = value }
 
 ///|
-pub extern "js" fn HTMLElement::get_hidden(self : HTMLElement) -> JsValue =
+pub extern "js" fn HTMLElement::get_hidden(
+  self : HTMLElement,
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLElement::set_hidden(
   self : HTMLElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -2846,7 +3306,7 @@ pub extern "js" fn HTMLElement::toggle_popover(self : HTMLElement) -> Bool =
 ///|
 pub extern "js" fn HTMLElement::toggle_popover_with_options(
   self : HTMLElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -4442,13 +4902,13 @@ pub extern "js" fn HTMLUnknownElement::set_dir(
 ///|
 pub extern "js" fn HTMLUnknownElement::get_hidden(
   self : HTMLUnknownElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLUnknownElement::set_hidden(
   self : HTMLUnknownElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -4613,7 +5073,7 @@ pub extern "js" fn HTMLUnknownElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLUnknownElement::toggle_popover_with_options(
   self : HTMLUnknownElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -6293,13 +6753,13 @@ pub extern "js" fn HTMLHtmlElement::set_dir(
 ///|
 pub extern "js" fn HTMLHtmlElement::get_hidden(
   self : HTMLHtmlElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLHtmlElement::set_hidden(
   self : HTMLHtmlElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -6462,7 +6922,7 @@ pub extern "js" fn HTMLHtmlElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLHtmlElement::toggle_popover_with_options(
   self : HTMLHtmlElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -8123,13 +8583,13 @@ pub extern "js" fn HTMLHeadElement::set_dir(
 ///|
 pub extern "js" fn HTMLHeadElement::get_hidden(
   self : HTMLHeadElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLHeadElement::set_hidden(
   self : HTMLHeadElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -8292,7 +8752,7 @@ pub extern "js" fn HTMLHeadElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLHeadElement::toggle_popover_with_options(
   self : HTMLHeadElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -9944,13 +10404,13 @@ pub extern "js" fn HTMLTitleElement::set_dir(
 ///|
 pub extern "js" fn HTMLTitleElement::get_hidden(
   self : HTMLTitleElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLTitleElement::set_hidden(
   self : HTMLTitleElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -10113,7 +10573,7 @@ pub extern "js" fn HTMLTitleElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLTitleElement::toggle_popover_with_options(
   self : HTMLTitleElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -11776,13 +12236,13 @@ pub extern "js" fn HTMLBaseElement::set_dir(
 ///|
 pub extern "js" fn HTMLBaseElement::get_hidden(
   self : HTMLBaseElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLBaseElement::set_hidden(
   self : HTMLBaseElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -11945,7 +12405,7 @@ pub extern "js" fn HTMLBaseElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLBaseElement::toggle_popover_with_options(
   self : HTMLBaseElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -13617,13 +14077,13 @@ pub extern "js" fn HTMLLinkElement::set_dir(
 ///|
 pub extern "js" fn HTMLLinkElement::get_hidden(
   self : HTMLLinkElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLLinkElement::set_hidden(
   self : HTMLLinkElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -13786,7 +14246,7 @@ pub extern "js" fn HTMLLinkElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLLinkElement::toggle_popover_with_options(
   self : HTMLLinkElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -15654,13 +16114,13 @@ pub extern "js" fn HTMLMetaElement::set_dir(
 ///|
 pub extern "js" fn HTMLMetaElement::get_hidden(
   self : HTMLMetaElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLMetaElement::set_hidden(
   self : HTMLMetaElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -15823,7 +16283,7 @@ pub extern "js" fn HTMLMetaElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLMetaElement::toggle_popover_with_options(
   self : HTMLMetaElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -17536,13 +17996,13 @@ pub extern "js" fn HTMLStyleElement::set_dir(
 ///|
 pub extern "js" fn HTMLStyleElement::get_hidden(
   self : HTMLStyleElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLStyleElement::set_hidden(
   self : HTMLStyleElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -17705,7 +18165,7 @@ pub extern "js" fn HTMLStyleElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLStyleElement::toggle_popover_with_options(
   self : HTMLStyleElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -19406,13 +19866,13 @@ pub extern "js" fn HTMLBodyElement::set_dir(
 ///|
 pub extern "js" fn HTMLBodyElement::get_hidden(
   self : HTMLBodyElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_hidden(
   self : HTMLBodyElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -19575,7 +20035,7 @@ pub extern "js" fn HTMLBodyElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLBodyElement::toggle_popover_with_options(
   self : HTMLBodyElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -21589,13 +22049,13 @@ pub extern "js" fn HTMLHeadingElement::set_dir(
 ///|
 pub extern "js" fn HTMLHeadingElement::get_hidden(
   self : HTMLHeadingElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLHeadingElement::set_hidden(
   self : HTMLHeadingElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -21760,7 +22220,7 @@ pub extern "js" fn HTMLHeadingElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLHeadingElement::toggle_popover_with_options(
   self : HTMLHeadingElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -23429,13 +23889,13 @@ pub extern "js" fn HTMLParagraphElement::set_dir(
 ///|
 pub extern "js" fn HTMLParagraphElement::get_hidden(
   self : HTMLParagraphElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLParagraphElement::set_hidden(
   self : HTMLParagraphElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -23602,7 +24062,7 @@ pub extern "js" fn HTMLParagraphElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLParagraphElement::toggle_popover_with_options(
   self : HTMLParagraphElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -25263,13 +25723,15 @@ pub extern "js" fn HTMLHRElement::set_dir(
   #| (self, value) => { self.dir = value }
 
 ///|
-pub extern "js" fn HTMLHRElement::get_hidden(self : HTMLHRElement) -> JsValue =
+pub extern "js" fn HTMLHRElement::get_hidden(
+  self : HTMLHRElement,
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLHRElement::set_hidden(
   self : HTMLHRElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -25420,7 +25882,7 @@ pub extern "js" fn HTMLHRElement::toggle_popover(self : HTMLHRElement) -> Bool =
 ///|
 pub extern "js" fn HTMLHRElement::toggle_popover_with_options(
   self : HTMLHRElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -27107,13 +27569,15 @@ pub extern "js" fn HTMLPreElement::set_dir(
   #| (self, value) => { self.dir = value }
 
 ///|
-pub extern "js" fn HTMLPreElement::get_hidden(self : HTMLPreElement) -> JsValue =
+pub extern "js" fn HTMLPreElement::get_hidden(
+  self : HTMLPreElement,
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLPreElement::set_hidden(
   self : HTMLPreElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -27270,7 +27734,7 @@ pub extern "js" fn HTMLPreElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLPreElement::toggle_popover_with_options(
   self : HTMLPreElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -28927,13 +29391,13 @@ pub extern "js" fn HTMLQuoteElement::set_dir(
 ///|
 pub extern "js" fn HTMLQuoteElement::get_hidden(
   self : HTMLQuoteElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLQuoteElement::set_hidden(
   self : HTMLQuoteElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -29096,7 +29560,7 @@ pub extern "js" fn HTMLQuoteElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLQuoteElement::toggle_popover_with_options(
   self : HTMLQuoteElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -30763,13 +31227,13 @@ pub extern "js" fn HTMLOListElement::set_dir(
 ///|
 pub extern "js" fn HTMLOListElement::get_hidden(
   self : HTMLOListElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLOListElement::set_hidden(
   self : HTMLOListElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -30932,7 +31396,7 @@ pub extern "js" fn HTMLOListElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLOListElement::toggle_popover_with_options(
   self : HTMLOListElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -32636,13 +33100,13 @@ pub extern "js" fn HTMLUListElement::set_dir(
 ///|
 pub extern "js" fn HTMLUListElement::get_hidden(
   self : HTMLUListElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLUListElement::set_hidden(
   self : HTMLUListElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -32805,7 +33269,7 @@ pub extern "js" fn HTMLUListElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLUListElement::toggle_popover_with_options(
   self : HTMLUListElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -34481,13 +34945,13 @@ pub extern "js" fn HTMLMenuElement::set_dir(
 ///|
 pub extern "js" fn HTMLMenuElement::get_hidden(
   self : HTMLMenuElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLMenuElement::set_hidden(
   self : HTMLMenuElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -34650,7 +35114,7 @@ pub extern "js" fn HTMLMenuElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLMenuElement::toggle_popover_with_options(
   self : HTMLMenuElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -36303,13 +36767,15 @@ pub extern "js" fn HTMLLIElement::set_dir(
   #| (self, value) => { self.dir = value }
 
 ///|
-pub extern "js" fn HTMLLIElement::get_hidden(self : HTMLLIElement) -> JsValue =
+pub extern "js" fn HTMLLIElement::get_hidden(
+  self : HTMLLIElement,
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLLIElement::set_hidden(
   self : HTMLLIElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -36460,7 +36926,7 @@ pub extern "js" fn HTMLLIElement::toggle_popover(self : HTMLLIElement) -> Bool =
 ///|
 pub extern "js" fn HTMLLIElement::toggle_popover_with_options(
   self : HTMLLIElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -38122,13 +38588,13 @@ pub extern "js" fn HTMLDListElement::set_dir(
 ///|
 pub extern "js" fn HTMLDListElement::get_hidden(
   self : HTMLDListElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLDListElement::set_hidden(
   self : HTMLDListElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -38291,7 +38757,7 @@ pub extern "js" fn HTMLDListElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLDListElement::toggle_popover_with_options(
   self : HTMLDListElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -39950,13 +40416,15 @@ pub extern "js" fn HTMLDivElement::set_dir(
   #| (self, value) => { self.dir = value }
 
 ///|
-pub extern "js" fn HTMLDivElement::get_hidden(self : HTMLDivElement) -> JsValue =
+pub extern "js" fn HTMLDivElement::get_hidden(
+  self : HTMLDivElement,
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLDivElement::set_hidden(
   self : HTMLDivElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -40113,7 +40581,7 @@ pub extern "js" fn HTMLDivElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLDivElement::toggle_popover_with_options(
   self : HTMLDivElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -41772,13 +42240,13 @@ pub extern "js" fn HTMLAnchorElement::set_dir(
 ///|
 pub extern "js" fn HTMLAnchorElement::get_hidden(
   self : HTMLAnchorElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLAnchorElement::set_hidden(
   self : HTMLAnchorElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -41943,7 +42411,7 @@ pub extern "js" fn HTMLAnchorElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLAnchorElement::toggle_popover_with_options(
   self : HTMLAnchorElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -43930,13 +44398,13 @@ pub extern "js" fn HTMLDataElement::set_dir(
 ///|
 pub extern "js" fn HTMLDataElement::get_hidden(
   self : HTMLDataElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLDataElement::set_hidden(
   self : HTMLDataElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -44099,7 +44567,7 @@ pub extern "js" fn HTMLDataElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLDataElement::toggle_popover_with_options(
   self : HTMLDataElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -45758,13 +46226,13 @@ pub extern "js" fn HTMLTimeElement::set_dir(
 ///|
 pub extern "js" fn HTMLTimeElement::get_hidden(
   self : HTMLTimeElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLTimeElement::set_hidden(
   self : HTMLTimeElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -45927,7 +46395,7 @@ pub extern "js" fn HTMLTimeElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLTimeElement::toggle_popover_with_options(
   self : HTMLTimeElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -47588,13 +48056,13 @@ pub extern "js" fn HTMLSpanElement::set_dir(
 ///|
 pub extern "js" fn HTMLSpanElement::get_hidden(
   self : HTMLSpanElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLSpanElement::set_hidden(
   self : HTMLSpanElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -47757,7 +48225,7 @@ pub extern "js" fn HTMLSpanElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLSpanElement::toggle_popover_with_options(
   self : HTMLSpanElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -49399,13 +49867,15 @@ pub extern "js" fn HTMLBRElement::set_dir(
   #| (self, value) => { self.dir = value }
 
 ///|
-pub extern "js" fn HTMLBRElement::get_hidden(self : HTMLBRElement) -> JsValue =
+pub extern "js" fn HTMLBRElement::get_hidden(
+  self : HTMLBRElement,
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLBRElement::set_hidden(
   self : HTMLBRElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -49556,7 +50026,7 @@ pub extern "js" fn HTMLBRElement::toggle_popover(self : HTMLBRElement) -> Bool =
 ///|
 pub extern "js" fn HTMLBRElement::toggle_popover_with_options(
   self : HTMLBRElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -51199,13 +51669,15 @@ pub extern "js" fn HTMLModElement::set_dir(
   #| (self, value) => { self.dir = value }
 
 ///|
-pub extern "js" fn HTMLModElement::get_hidden(self : HTMLModElement) -> JsValue =
+pub extern "js" fn HTMLModElement::get_hidden(
+  self : HTMLModElement,
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLModElement::set_hidden(
   self : HTMLModElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -51362,7 +51834,7 @@ pub extern "js" fn HTMLModElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLModElement::toggle_popover_with_options(
   self : HTMLModElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -53034,13 +53506,13 @@ pub extern "js" fn HTMLPictureElement::set_dir(
 ///|
 pub extern "js" fn HTMLPictureElement::get_hidden(
   self : HTMLPictureElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLPictureElement::set_hidden(
   self : HTMLPictureElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -53205,7 +53677,7 @@ pub extern "js" fn HTMLPictureElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLPictureElement::toggle_popover_with_options(
   self : HTMLPictureElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -54861,13 +55333,13 @@ pub extern "js" fn HTMLSourceElement::set_dir(
 ///|
 pub extern "js" fn HTMLSourceElement::get_hidden(
   self : HTMLSourceElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLSourceElement::set_hidden(
   self : HTMLSourceElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -55032,7 +55504,7 @@ pub extern "js" fn HTMLSourceElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLSourceElement::toggle_popover_with_options(
   self : HTMLSourceElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -56777,13 +57249,13 @@ pub extern "js" fn HTMLImageElement::set_dir(
 ///|
 pub extern "js" fn HTMLImageElement::get_hidden(
   self : HTMLImageElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLImageElement::set_hidden(
   self : HTMLImageElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -56946,7 +57418,7 @@ pub extern "js" fn HTMLImageElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLImageElement::toggle_popover_with_options(
   self : HTMLImageElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -58914,13 +59386,13 @@ pub extern "js" fn HTMLIFrameElement::set_dir(
 ///|
 pub extern "js" fn HTMLIFrameElement::get_hidden(
   self : HTMLIFrameElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLIFrameElement::set_hidden(
   self : HTMLIFrameElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -59085,7 +59557,7 @@ pub extern "js" fn HTMLIFrameElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLIFrameElement::toggle_popover_with_options(
   self : HTMLIFrameElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -60688,13 +61160,13 @@ pub extern "js" fn HTMLIFrameElement::set_src(
 ///|
 pub extern "js" fn HTMLIFrameElement::get_srcdoc(
   self : HTMLIFrameElement,
-) -> JsValue =
+) -> TrustedHTMLOrString =
   #| (self) => self.srcdoc
 
 ///|
 pub extern "js" fn HTMLIFrameElement::set_srcdoc(
   self : HTMLIFrameElement,
-  value : JsValue,
+  value : TrustedHTMLOrString,
 ) -> Unit =
   #| (self, value) => { self.srcdoc = value }
 
@@ -61029,13 +61501,13 @@ pub extern "js" fn HTMLEmbedElement::set_dir(
 ///|
 pub extern "js" fn HTMLEmbedElement::get_hidden(
   self : HTMLEmbedElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLEmbedElement::set_hidden(
   self : HTMLEmbedElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -61198,7 +61670,7 @@ pub extern "js" fn HTMLEmbedElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLEmbedElement::toggle_popover_with_options(
   self : HTMLEmbedElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -62936,13 +63408,13 @@ pub extern "js" fn HTMLObjectElement::set_dir(
 ///|
 pub extern "js" fn HTMLObjectElement::get_hidden(
   self : HTMLObjectElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLObjectElement::set_hidden(
   self : HTMLObjectElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -63107,7 +63579,7 @@ pub extern "js" fn HTMLObjectElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLObjectElement::toggle_popover_with_options(
   self : HTMLObjectElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -65030,13 +65502,13 @@ pub extern "js" fn HTMLVideoElement::set_dir(
 ///|
 pub extern "js" fn HTMLVideoElement::get_hidden(
   self : HTMLVideoElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLVideoElement::set_hidden(
   self : HTMLVideoElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -65199,7 +65671,7 @@ pub extern "js" fn HTMLVideoElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLVideoElement::toggle_popover_with_options(
   self : HTMLVideoElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -67408,13 +67880,13 @@ pub extern "js" fn HTMLAudioElement::set_dir(
 ///|
 pub extern "js" fn HTMLAudioElement::get_hidden(
   self : HTMLAudioElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLAudioElement::set_hidden(
   self : HTMLAudioElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -67577,7 +68049,7 @@ pub extern "js" fn HTMLAudioElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLAudioElement::toggle_popover_with_options(
   self : HTMLAudioElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -69661,13 +70133,13 @@ pub extern "js" fn HTMLTrackElement::set_dir(
 ///|
 pub extern "js" fn HTMLTrackElement::get_hidden(
   self : HTMLTrackElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLTrackElement::set_hidden(
   self : HTMLTrackElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -69830,7 +70302,7 @@ pub extern "js" fn HTMLTrackElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLTrackElement::toggle_popover_with_options(
   self : HTMLTrackElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -71579,13 +72051,13 @@ pub extern "js" fn HTMLMediaElement::set_dir(
 ///|
 pub extern "js" fn HTMLMediaElement::get_hidden(
   self : HTMLMediaElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLMediaElement::set_hidden(
   self : HTMLMediaElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -71748,7 +72220,7 @@ pub extern "js" fn HTMLMediaElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLMediaElement::toggle_popover_with_options(
   self : HTMLMediaElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -74316,7 +74788,9 @@ pub extern "js" fn TrackEvent::new(
   #| (type_, event_init_dict) => new TrackEvent(type_, event_init_dict)
 
 ///|
-pub extern "js" fn TrackEvent::get_track(self : TrackEvent) -> JsValue =
+pub extern "js" fn TrackEvent::get_track(
+  self : TrackEvent,
+) -> VideoTrackOrAudioTrackOrTextTrack =
   #| (self) => self.track
 
 ///|
@@ -74378,13 +74852,15 @@ pub extern "js" fn HTMLMapElement::set_dir(
   #| (self, value) => { self.dir = value }
 
 ///|
-pub extern "js" fn HTMLMapElement::get_hidden(self : HTMLMapElement) -> JsValue =
+pub extern "js" fn HTMLMapElement::get_hidden(
+  self : HTMLMapElement,
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLMapElement::set_hidden(
   self : HTMLMapElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -74541,7 +75017,7 @@ pub extern "js" fn HTMLMapElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLMapElement::toggle_popover_with_options(
   self : HTMLMapElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -76200,13 +76676,13 @@ pub extern "js" fn HTMLAreaElement::set_dir(
 ///|
 pub extern "js" fn HTMLAreaElement::get_hidden(
   self : HTMLAreaElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLAreaElement::set_hidden(
   self : HTMLAreaElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -76369,7 +76845,7 @@ pub extern "js" fn HTMLAreaElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLAreaElement::toggle_popover_with_options(
   self : HTMLAreaElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -78275,13 +78751,13 @@ pub extern "js" fn HTMLTableElement::set_dir(
 ///|
 pub extern "js" fn HTMLTableElement::get_hidden(
   self : HTMLTableElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLTableElement::set_hidden(
   self : HTMLTableElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -78444,7 +78920,7 @@ pub extern "js" fn HTMLTableElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLTableElement::toggle_popover_with_options(
   self : HTMLTableElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -80330,13 +80806,13 @@ pub extern "js" fn HTMLTableCaptionElement::set_dir(
 ///|
 pub extern "js" fn HTMLTableCaptionElement::get_hidden(
   self : HTMLTableCaptionElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLTableCaptionElement::set_hidden(
   self : HTMLTableCaptionElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -80503,7 +80979,7 @@ pub extern "js" fn HTMLTableCaptionElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLTableCaptionElement::toggle_popover_with_options(
   self : HTMLTableCaptionElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -82176,13 +82652,13 @@ pub extern "js" fn HTMLTableColElement::set_dir(
 ///|
 pub extern "js" fn HTMLTableColElement::get_hidden(
   self : HTMLTableColElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLTableColElement::set_hidden(
   self : HTMLTableColElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -82349,7 +82825,7 @@ pub extern "js" fn HTMLTableColElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLTableColElement::toggle_popover_with_options(
   self : HTMLTableColElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -84087,13 +84563,13 @@ pub extern "js" fn HTMLTableSectionElement::set_dir(
 ///|
 pub extern "js" fn HTMLTableSectionElement::get_hidden(
   self : HTMLTableSectionElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLTableSectionElement::set_hidden(
   self : HTMLTableSectionElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -84260,7 +84736,7 @@ pub extern "js" fn HTMLTableSectionElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLTableSectionElement::toggle_popover_with_options(
   self : HTMLTableSectionElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -85998,13 +86474,13 @@ pub extern "js" fn HTMLTableRowElement::set_dir(
 ///|
 pub extern "js" fn HTMLTableRowElement::get_hidden(
   self : HTMLTableRowElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLTableRowElement::set_hidden(
   self : HTMLTableRowElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -86171,7 +86647,7 @@ pub extern "js" fn HTMLTableRowElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLTableRowElement::toggle_popover_with_options(
   self : HTMLTableRowElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -87934,13 +88410,13 @@ pub extern "js" fn HTMLTableCellElement::set_dir(
 ///|
 pub extern "js" fn HTMLTableCellElement::get_hidden(
   self : HTMLTableCellElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLTableCellElement::set_hidden(
   self : HTMLTableCellElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -88107,7 +88583,7 @@ pub extern "js" fn HTMLTableCellElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLTableCellElement::toggle_popover_with_options(
   self : HTMLTableCellElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -89949,13 +90425,13 @@ pub extern "js" fn HTMLFormElement::set_dir(
 ///|
 pub extern "js" fn HTMLFormElement::get_hidden(
   self : HTMLFormElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLFormElement::set_hidden(
   self : HTMLFormElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -90118,7 +90594,7 @@ pub extern "js" fn HTMLFormElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLFormElement::toggle_popover_with_options(
   self : HTMLFormElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -91856,7 +92332,7 @@ pub extern "js" fn HTMLFormElement::get(
 pub extern "js" fn HTMLFormElement::get_named(
   self : HTMLFormElement,
   name : String,
-) -> JsValue =
+) -> RadioNodeListOrElement =
   #| (self, name) => self[name]
 
 ///|
@@ -91959,13 +92435,13 @@ pub extern "js" fn HTMLLabelElement::set_dir(
 ///|
 pub extern "js" fn HTMLLabelElement::get_hidden(
   self : HTMLLabelElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLLabelElement::set_hidden(
   self : HTMLLabelElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -92128,7 +92604,7 @@ pub extern "js" fn HTMLLabelElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLLabelElement::toggle_popover_with_options(
   self : HTMLLabelElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -93807,13 +94283,13 @@ pub extern "js" fn HTMLInputElement::set_dir(
 ///|
 pub extern "js" fn HTMLInputElement::get_hidden(
   self : HTMLInputElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLInputElement::set_hidden(
   self : HTMLInputElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -93976,7 +94452,7 @@ pub extern "js" fn HTMLInputElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLInputElement::toggle_popover_with_options(
   self : HTMLInputElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -96337,13 +96813,13 @@ pub extern "js" fn HTMLButtonElement::set_dir(
 ///|
 pub extern "js" fn HTMLButtonElement::get_hidden(
   self : HTMLButtonElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLButtonElement::set_hidden(
   self : HTMLButtonElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -96508,7 +96984,7 @@ pub extern "js" fn HTMLButtonElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLButtonElement::toggle_popover_with_options(
   self : HTMLButtonElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -98382,13 +98858,13 @@ pub extern "js" fn HTMLSelectElement::set_dir(
 ///|
 pub extern "js" fn HTMLSelectElement::get_hidden(
   self : HTMLSelectElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLSelectElement::set_hidden(
   self : HTMLSelectElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -98553,7 +99029,7 @@ pub extern "js" fn HTMLSelectElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLSelectElement::toggle_popover_with_options(
   self : HTMLSelectElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -100271,15 +100747,15 @@ pub extern "js" fn HTMLSelectElement::named_item(
 ///|
 pub extern "js" fn HTMLSelectElement::add(
   self : HTMLSelectElement,
-  element : JsValue,
+  element : HTMLOptionElementOrHTMLOptGroupElement,
 ) -> Unit =
   #| (self, element) => self.add(element)
 
 ///|
 pub extern "js" fn HTMLSelectElement::add_with_before(
   self : HTMLSelectElement,
-  element : JsValue,
-  before : JsValue,
+  element : HTMLOptionElementOrHTMLOptGroupElement,
+  before : HTMLElementOrInt,
 ) -> Unit =
   #| (self, element, before) => self.add(element, before)
 
@@ -100452,13 +100928,13 @@ pub extern "js" fn HTMLDataListElement::set_dir(
 ///|
 pub extern "js" fn HTMLDataListElement::get_hidden(
   self : HTMLDataListElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLDataListElement::set_hidden(
   self : HTMLDataListElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -100625,7 +101101,7 @@ pub extern "js" fn HTMLDataListElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLDataListElement::toggle_popover_with_options(
   self : HTMLDataListElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -102291,13 +102767,13 @@ pub extern "js" fn HTMLOptGroupElement::set_dir(
 ///|
 pub extern "js" fn HTMLOptGroupElement::get_hidden(
   self : HTMLOptGroupElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLOptGroupElement::set_hidden(
   self : HTMLOptGroupElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -102464,7 +102940,7 @@ pub extern "js" fn HTMLOptGroupElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLOptGroupElement::toggle_popover_with_options(
   self : HTMLOptGroupElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -104150,13 +104626,13 @@ pub extern "js" fn HTMLOptionElement::set_dir(
 ///|
 pub extern "js" fn HTMLOptionElement::get_hidden(
   self : HTMLOptionElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLOptionElement::set_hidden(
   self : HTMLOptionElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -104321,7 +104797,7 @@ pub extern "js" fn HTMLOptionElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLOptionElement::toggle_popover_with_options(
   self : HTMLOptionElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -106067,13 +106543,13 @@ pub extern "js" fn HTMLTextAreaElement::set_dir(
 ///|
 pub extern "js" fn HTMLTextAreaElement::get_hidden(
   self : HTMLTextAreaElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLTextAreaElement::set_hidden(
   self : HTMLTextAreaElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -106240,7 +106716,7 @@ pub extern "js" fn HTMLTextAreaElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLTextAreaElement::toggle_popover_with_options(
   self : HTMLTextAreaElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -108231,13 +108707,13 @@ pub extern "js" fn HTMLOutputElement::set_dir(
 ///|
 pub extern "js" fn HTMLOutputElement::get_hidden(
   self : HTMLOutputElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLOutputElement::set_hidden(
   self : HTMLOutputElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -108402,7 +108878,7 @@ pub extern "js" fn HTMLOutputElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLOutputElement::toggle_popover_with_options(
   self : HTMLOutputElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -110158,13 +110634,13 @@ pub extern "js" fn HTMLProgressElement::set_dir(
 ///|
 pub extern "js" fn HTMLProgressElement::get_hidden(
   self : HTMLProgressElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLProgressElement::set_hidden(
   self : HTMLProgressElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -110331,7 +110807,7 @@ pub extern "js" fn HTMLProgressElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLProgressElement::toggle_popover_with_options(
   self : HTMLProgressElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -112027,13 +112503,13 @@ pub extern "js" fn HTMLMeterElement::set_dir(
 ///|
 pub extern "js" fn HTMLMeterElement::get_hidden(
   self : HTMLMeterElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLMeterElement::set_hidden(
   self : HTMLMeterElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -112196,7 +112672,7 @@ pub extern "js" fn HTMLMeterElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLMeterElement::toggle_popover_with_options(
   self : HTMLMeterElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -113930,13 +114406,13 @@ pub extern "js" fn HTMLFieldSetElement::set_dir(
 ///|
 pub extern "js" fn HTMLFieldSetElement::get_hidden(
   self : HTMLFieldSetElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLFieldSetElement::set_hidden(
   self : HTMLFieldSetElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -114103,7 +114579,7 @@ pub extern "js" fn HTMLFieldSetElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLFieldSetElement::toggle_popover_with_options(
   self : HTMLFieldSetElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -115844,13 +116320,13 @@ pub extern "js" fn HTMLLegendElement::set_dir(
 ///|
 pub extern "js" fn HTMLLegendElement::get_hidden(
   self : HTMLLegendElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLLegendElement::set_hidden(
   self : HTMLLegendElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -116015,7 +116491,7 @@ pub extern "js" fn HTMLLegendElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLLegendElement::toggle_popover_with_options(
   self : HTMLLegendElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -117690,13 +118166,13 @@ pub extern "js" fn HTMLSelectedContentElement::set_dir(
 ///|
 pub extern "js" fn HTMLSelectedContentElement::get_hidden(
   self : HTMLSelectedContentElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLSelectedContentElement::set_hidden(
   self : HTMLSelectedContentElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -117863,7 +118339,7 @@ pub extern "js" fn HTMLSelectedContentElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLSelectedContentElement::toggle_popover_with_options(
   self : HTMLSelectedContentElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -119631,13 +120107,13 @@ pub extern "js" fn HTMLDetailsElement::set_dir(
 ///|
 pub extern "js" fn HTMLDetailsElement::get_hidden(
   self : HTMLDetailsElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLDetailsElement::set_hidden(
   self : HTMLDetailsElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -119802,7 +120278,7 @@ pub extern "js" fn HTMLDetailsElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLDetailsElement::toggle_popover_with_options(
   self : HTMLDetailsElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -121484,13 +121960,13 @@ pub extern "js" fn HTMLDialogElement::set_dir(
 ///|
 pub extern "js" fn HTMLDialogElement::get_hidden(
   self : HTMLDialogElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLDialogElement::set_hidden(
   self : HTMLDialogElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -121655,7 +122131,7 @@ pub extern "js" fn HTMLDialogElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLDialogElement::toggle_popover_with_options(
   self : HTMLDialogElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -123384,13 +123860,13 @@ pub extern "js" fn HTMLScriptElement::set_dir(
 ///|
 pub extern "js" fn HTMLScriptElement::get_hidden(
   self : HTMLScriptElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLScriptElement::set_hidden(
   self : HTMLScriptElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -123555,7 +124031,7 @@ pub extern "js" fn HTMLScriptElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLScriptElement::toggle_popover_with_options(
   self : HTMLScriptElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -125403,13 +125879,13 @@ pub extern "js" fn HTMLTemplateElement::set_dir(
 ///|
 pub extern "js" fn HTMLTemplateElement::get_hidden(
   self : HTMLTemplateElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLTemplateElement::set_hidden(
   self : HTMLTemplateElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -125576,7 +126052,7 @@ pub extern "js" fn HTMLTemplateElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLTemplateElement::toggle_popover_with_options(
   self : HTMLTemplateElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -127301,13 +127777,13 @@ pub extern "js" fn HTMLSlotElement::set_dir(
 ///|
 pub extern "js" fn HTMLSlotElement::get_hidden(
   self : HTMLSlotElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLSlotElement::set_hidden(
   self : HTMLSlotElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -127470,7 +127946,7 @@ pub extern "js" fn HTMLSlotElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLSlotElement::toggle_popover_with_options(
   self : HTMLSlotElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -129095,7 +129571,7 @@ pub extern "js" fn HTMLSlotElement::assigned_elements_with_options(
 ///|
 pub extern "js" fn HTMLSlotElement::assign(
   self : HTMLSlotElement,
-  nodes : JsValue,
+  nodes : ElementOrText,
 ) -> Unit =
   #| (self, nodes) => self.assign(nodes)
 
@@ -129168,13 +129644,13 @@ pub extern "js" fn HTMLCanvasElement::set_dir(
 ///|
 pub extern "js" fn HTMLCanvasElement::get_hidden(
   self : HTMLCanvasElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLCanvasElement::set_hidden(
   self : HTMLCanvasElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -129339,7 +129815,7 @@ pub extern "js" fn HTMLCanvasElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLCanvasElement::toggle_popover_with_options(
   self : HTMLCanvasElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -131189,26 +131665,26 @@ pub extern "js" fn CanvasRenderingContext2D::set_image_smoothing_quality(
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_stroke_style(
   self : CanvasRenderingContext2D,
-) -> JsValue =
+) -> StringOrCanvasGradientOrCanvasPattern =
   #| (self) => self.strokeStyle
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::set_stroke_style(
   self : CanvasRenderingContext2D,
-  value : JsValue,
+  value : StringOrCanvasGradientOrCanvasPattern,
 ) -> Unit =
   #| (self, value) => { self.strokeStyle = value }
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_fill_style(
   self : CanvasRenderingContext2D,
-) -> JsValue =
+) -> StringOrCanvasGradientOrCanvasPattern =
   #| (self) => self.fillStyle
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::set_fill_style(
   self : CanvasRenderingContext2D,
-  value : JsValue,
+  value : StringOrCanvasGradientOrCanvasPattern,
 ) -> Unit =
   #| (self, value) => { self.fillStyle = value }
 
@@ -131939,7 +132415,7 @@ pub extern "js" fn CanvasRenderingContext2D::round_rect_with_radii(
   y : Double,
   w : Double,
   h : Double,
-  radii : JsValue,
+  radii : DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit,
 ) -> Unit =
   #| (self, x, y, w, h, radii) => self.roundRect(x, y, w, h, radii)
 
@@ -132117,7 +132593,7 @@ pub extern "js" fn Path2D::to_js_value(self : Path2D) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn Path2D::new(path : JsValue) -> Path2D =
+pub extern "js" fn Path2D::new(path : Path2DOrString) -> Path2D =
   #| (path) => new Path2D(path)
 
 ///|
@@ -132212,7 +132688,7 @@ pub extern "js" fn Path2D::round_rect_with_radii(
   y : Double,
   w : Double,
   h : Double,
-  radii : JsValue,
+  radii : DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit,
 ) -> Unit =
   #| (self, x, y, w, h, radii) => self.roundRect(x, y, w, h, radii)
 
@@ -132279,7 +132755,7 @@ pub extern "js" fn ImageBitmapRenderingContext::to_js_value(
 ///|
 pub extern "js" fn ImageBitmapRenderingContext::get_canvas(
   self : ImageBitmapRenderingContext,
-) -> JsValue =
+) -> HTMLCanvasElementOrOffscreenCanvas =
   #| (self) => self.canvas
 
 ///|
@@ -132561,26 +133037,26 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::set_image_smoothing_qualit
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_stroke_style(
   self : OffscreenCanvasRenderingContext2D,
-) -> JsValue =
+) -> StringOrCanvasGradientOrCanvasPattern =
   #| (self) => self.strokeStyle
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::set_stroke_style(
   self : OffscreenCanvasRenderingContext2D,
-  value : JsValue,
+  value : StringOrCanvasGradientOrCanvasPattern,
 ) -> Unit =
   #| (self, value) => { self.strokeStyle = value }
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_fill_style(
   self : OffscreenCanvasRenderingContext2D,
-) -> JsValue =
+) -> StringOrCanvasGradientOrCanvasPattern =
   #| (self) => self.fillStyle
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::set_fill_style(
   self : OffscreenCanvasRenderingContext2D,
-  value : JsValue,
+  value : StringOrCanvasGradientOrCanvasPattern,
 ) -> Unit =
   #| (self, value) => { self.fillStyle = value }
 
@@ -133296,7 +133772,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::round_rect_with_radii(
   y : Double,
   w : Double,
   h : Double,
-  radii : JsValue,
+  radii : DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit,
 ) -> Unit =
   #| (self, x, y, w, h, radii) => self.roundRect(x, y, w, h, radii)
 
@@ -133385,7 +133861,7 @@ pub extern "js" fn CustomElementRegistry::define__with_options(
 pub extern "js" fn CustomElementRegistry::get(
   self : CustomElementRegistry,
   name : String,
-) -> JsValue =
+) -> CustomElementConstructorOrVoid =
   #| (self, name) => self.get(name)
 
 ///|
@@ -133435,15 +133911,15 @@ pub extern "js" fn ElementInternals::get_shadow_root(
 ///|
 pub extern "js" fn ElementInternals::set_form_value(
   self : ElementInternals,
-  value : JsValue,
+  value : FileOrStringOrFormData,
 ) -> Unit =
   #| (self, value) => self.setFormValue(value)
 
 ///|
 pub extern "js" fn ElementInternals::set_form_value_with_state(
   self : ElementInternals,
-  value : JsValue,
-  state : JsValue,
+  value : FileOrStringOrFormData,
+  state : FileOrStringOrFormData,
 ) -> Unit =
   #| (self, value, state) => self.setFormValue(value, state)
 
@@ -135048,7 +135524,7 @@ pub extern "js" fn Window::get_document_picture_in_picture(
   #| (self) => self.documentPictureInPicture
 
 ///|
-pub extern "js" fn Window::get_event(self : Window) -> JsValue =
+pub extern "js" fn Window::get_event(self : Window) -> EventOrVoid =
   #| (self) => self.event
 
 ///|
@@ -135073,14 +135549,14 @@ pub extern "js" fn Window::fetch_later_with_init(
 ///|
 pub extern "js" fn Window::show_open_file_picker(
   self : Window,
-) -> Promise[Array[FileSystemFileHandle]] =
+) -> Promise[Unit] =
   #| (self) => self.showOpenFilePicker()
 
 ///|
 pub extern "js" fn Window::show_open_file_picker_with_options(
   self : Window,
   options : OpenFilePickerOptions,
-) -> Promise[Array[FileSystemFileHandle]] =
+) -> Promise[Unit] =
   #| (self, options) => self.showOpenFilePicker(options)
 
 ///|
@@ -135122,16 +135598,14 @@ pub extern "js" fn Window::get_external(self : Window) -> External =
   #| (self) => self.external
 
 ///|
-pub extern "js" fn Window::query_local_fonts(
-  self : Window,
-) -> Promise[Array[FontData]] =
+pub extern "js" fn Window::query_local_fonts(self : Window) -> Promise[Unit] =
   #| (self) => self.queryLocalFonts()
 
 ///|
 pub extern "js" fn Window::query_local_fonts_with_options(
   self : Window,
   options : QueryOptions,
-) -> Promise[Array[FontData]] =
+) -> Promise[Unit] =
   #| (self, options) => self.queryLocalFonts(options)
 
 ///|
@@ -137854,7 +138328,7 @@ pub extern "js" fn DOMParser::new() -> DOMParser =
 ///|
 pub extern "js" fn DOMParser::parse_from_string(
   self : DOMParser,
-  string : JsValue,
+  string : TrustedHTMLOrString,
   type_ : DOMParserSupportedType,
 ) -> Document =
   #| (self, string, type_) => self.parseFromString(string, ['text/html', 'text/xml', 'application/xml', 'application/xhtml+xml', 'image/svg+xml'][type_])
@@ -138003,7 +138477,7 @@ pub extern "js" fn Navigator::get_geolocation(self : Navigator) -> Geolocation =
 ///|
 pub extern "js" fn Navigator::get_installed_related_apps(
   self : Navigator,
-) -> Promise[Array[RelatedApplication]] =
+) -> Promise[Unit] =
   #| (self) => self.getInstalledRelatedApps()
 
 ///|
@@ -138143,7 +138617,7 @@ pub extern "js" fn Navigator::clear_origin_joined_ad_interest_groups_with_intere
 pub extern "js" fn Navigator::run_ad_auction(
   self : Navigator,
   config : AuctionAdConfig,
-) -> Promise[JsValue] =
+) -> Promise[Unit] =
   #| (self, config) => self.runAdAuction(config)
 
 ///|
@@ -138963,7 +139437,7 @@ pub extern "js" fn WorkerGlobalScope::get_navigator(
 ///|
 pub extern "js" fn WorkerGlobalScope::import_scripts(
   self : WorkerGlobalScope,
-  urls : JsValue,
+  urls : TrustedScriptURLOrString,
 ) -> Unit =
   #| (self, urls) => self.importScripts(urls)
 
@@ -139290,7 +139764,7 @@ pub extern "js" fn DedicatedWorkerGlobalScope::get_navigator(
 ///|
 pub extern "js" fn DedicatedWorkerGlobalScope::import_scripts(
   self : DedicatedWorkerGlobalScope,
-  urls : JsValue,
+  urls : TrustedScriptURLOrString,
 ) -> Unit =
   #| (self, urls) => self.importScripts(urls)
 
@@ -139682,7 +140156,7 @@ pub extern "js" fn SharedWorkerGlobalScope::get_navigator(
 ///|
 pub extern "js" fn SharedWorkerGlobalScope::import_scripts(
   self : SharedWorkerGlobalScope,
-  urls : JsValue,
+  urls : TrustedScriptURLOrString,
 ) -> Unit =
   #| (self, urls) => self.importScripts(urls)
 
@@ -139990,7 +140464,7 @@ pub extern "js" fn Worker::to_js_value(self : Worker) -> JsValue =
 
 ///|
 pub extern "js" fn Worker::new(
-  script_u_r_l : JsValue,
+  script_u_r_l : TrustedScriptURLOrString,
   options : WorkerOptions,
 ) -> Worker =
   #| (script_u_r_l, options) => new Worker(script_u_r_l, options)
@@ -140065,8 +140539,8 @@ pub extern "js" fn SharedWorker::to_js_value(self : SharedWorker) -> JsValue =
 
 ///|
 pub extern "js" fn SharedWorker::new(
-  script_u_r_l : JsValue,
-  options : JsValue,
+  script_u_r_l : TrustedScriptURLOrString,
+  options : StringOrWorkerOptions,
 ) -> SharedWorker =
   #| (script_u_r_l, options) => new SharedWorker(script_u_r_l, options)
 
@@ -140548,13 +141022,13 @@ pub extern "js" fn HTMLMarqueeElement::set_dir(
 ///|
 pub extern "js" fn HTMLMarqueeElement::get_hidden(
   self : HTMLMarqueeElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLMarqueeElement::set_hidden(
   self : HTMLMarqueeElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -140719,7 +141193,7 @@ pub extern "js" fn HTMLMarqueeElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLMarqueeElement::toggle_popover_with_options(
   self : HTMLMarqueeElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -142526,13 +143000,13 @@ pub extern "js" fn HTMLFrameSetElement::set_dir(
 ///|
 pub extern "js" fn HTMLFrameSetElement::get_hidden(
   self : HTMLFrameSetElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_hidden(
   self : HTMLFrameSetElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -142699,7 +143173,7 @@ pub extern "js" fn HTMLFrameSetElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLFrameSetElement::toggle_popover_with_options(
   self : HTMLFrameSetElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -144656,13 +145130,13 @@ pub extern "js" fn HTMLFrameElement::set_dir(
 ///|
 pub extern "js" fn HTMLFrameElement::get_hidden(
   self : HTMLFrameElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLFrameElement::set_hidden(
   self : HTMLFrameElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -144825,7 +145299,7 @@ pub extern "js" fn HTMLFrameElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLFrameElement::toggle_popover_with_options(
   self : HTMLFrameElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -146595,13 +147069,13 @@ pub extern "js" fn HTMLDirectoryElement::set_dir(
 ///|
 pub extern "js" fn HTMLDirectoryElement::get_hidden(
   self : HTMLDirectoryElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLDirectoryElement::set_hidden(
   self : HTMLDirectoryElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -146768,7 +147242,7 @@ pub extern "js" fn HTMLDirectoryElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLDirectoryElement::toggle_popover_with_options(
   self : HTMLDirectoryElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -148435,13 +148909,13 @@ pub extern "js" fn HTMLFontElement::set_dir(
 ///|
 pub extern "js" fn HTMLFontElement::get_hidden(
   self : HTMLFontElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLFontElement::set_hidden(
   self : HTMLFontElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -148604,7 +149078,7 @@ pub extern "js" fn HTMLFontElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLFontElement::toggle_popover_with_options(
   self : HTMLFontElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 
@@ -150289,13 +150763,13 @@ pub extern "js" fn HTMLParamElement::set_dir(
 ///|
 pub extern "js" fn HTMLParamElement::get_hidden(
   self : HTMLParamElement,
-) -> JsValue =
+) -> BoolOrDoubleOrString =
   #| (self) => self.hidden
 
 ///|
 pub extern "js" fn HTMLParamElement::set_hidden(
   self : HTMLParamElement,
-  value : JsValue,
+  value : BoolOrDoubleOrString,
 ) -> Unit =
   #| (self, value) => { self.hidden = value }
 
@@ -150458,7 +150932,7 @@ pub extern "js" fn HTMLParamElement::toggle_popover(
 ///|
 pub extern "js" fn HTMLParamElement::toggle_popover_with_options(
   self : HTMLParamElement,
-  options : JsValue,
+  options : TogglePopoverOptionsOrBool,
 ) -> Bool =
   #| (self, options) => self.togglePopover(options)
 

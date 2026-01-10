@@ -24,6 +24,32 @@ pub extern "js" fn URLPatternInput::from_u_r_l_pattern_init(
   #| (v) => v
 
 ///|
+/// Check if this URLPatternInput is String
+pub extern "js" fn URLPatternInput::is_string(self : URLPatternInput) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this URLPatternInput is URLPatternInit
+pub extern "js" fn URLPatternInput::is_u_r_l_pattern_init(
+  self : URLPatternInput,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get URLPatternInput as String
+pub extern "js" fn URLPatternInput::as_string(
+  self : URLPatternInput,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get URLPatternInput as URLPatternInit
+pub extern "js" fn URLPatternInput::as_u_r_l_pattern_init(
+  self : URLPatternInput,
+) -> URLPatternInit? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// URLPatternCompatible typedef
 pub type URLPatternCompatible
 
@@ -53,6 +79,48 @@ pub extern "js" fn URLPatternCompatible::from_u_r_l_pattern(
   v : URLPattern,
 ) -> URLPatternCompatible =
   #| (v) => v
+
+///|
+/// Check if this URLPatternCompatible is String
+pub extern "js" fn URLPatternCompatible::is_string(
+  self : URLPatternCompatible,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this URLPatternCompatible is URLPatternInit
+pub extern "js" fn URLPatternCompatible::is_u_r_l_pattern_init(
+  self : URLPatternCompatible,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Check if this URLPatternCompatible is URLPattern
+pub extern "js" fn URLPatternCompatible::is_u_r_l_pattern(
+  self : URLPatternCompatible,
+) -> Bool =
+  #| (self) => self instanceof URLPattern
+
+///|
+/// Try to get URLPatternCompatible as String
+pub extern "js" fn URLPatternCompatible::as_string(
+  self : URLPatternCompatible,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get URLPatternCompatible as URLPatternInit
+pub extern "js" fn URLPatternCompatible::as_u_r_l_pattern_init(
+  self : URLPatternCompatible,
+) -> URLPatternInit? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get URLPatternCompatible as URLPattern
+pub extern "js" fn URLPatternCompatible::as_u_r_l_pattern(
+  self : URLPatternCompatible,
+) -> URLPattern? =
+  #| (self) => (self instanceof URLPattern) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// URLPatternInit dictionary

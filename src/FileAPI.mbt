@@ -25,6 +25,36 @@ pub extern "js" fn BlobPart::from_string(v : String) -> BlobPart =
   #| (v) => v
 
 ///|
+/// Check if this BlobPart is BufferSource
+pub extern "js" fn BlobPart::is_buffer_source(self : BlobPart) -> Bool =
+  #| (self) => self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer
+
+///|
+/// Check if this BlobPart is Blob
+pub extern "js" fn BlobPart::is_blob(self : BlobPart) -> Bool =
+  #| (self) => self instanceof Blob
+
+///|
+/// Check if this BlobPart is String
+pub extern "js" fn BlobPart::is_string(self : BlobPart) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get BlobPart as BufferSource
+pub extern "js" fn BlobPart::as_buffer_source(self : BlobPart) -> BufferSource? =
+  #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get BlobPart as Blob
+pub extern "js" fn BlobPart::as_blob(self : BlobPart) -> Blob? =
+  #| (self) => (self instanceof Blob) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get BlobPart as String
+pub extern "js" fn BlobPart::as_string(self : BlobPart) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// EndingType enum
 pub(all) enum EndingType {
   Transparent
@@ -35,8 +65,8 @@ pub(all) enum EndingType {
 /// Convert to string value
 pub fn EndingType::to_string(self : EndingType) -> String {
   match self {
-    Transparent => "transparent"
-    Native => "native"
+    EndingType::Transparent => "transparent"
+    EndingType::Native => "native"
   }
 }
 
@@ -44,8 +74,8 @@ pub fn EndingType::to_string(self : EndingType) -> String {
 /// Parse from string value
 pub fn EndingType::from_string(s : String) -> EndingType? {
   match s {
-    "transparent" => Some(Transparent)
-    "native" => Some(Native)
+    "transparent" => Some(EndingType::Transparent)
+    "native" => Some(EndingType::Native)
     _ => None
   }
 }
@@ -302,7 +332,9 @@ pub extern "js" fn FileReader::get_ready_state(self : FileReader) -> Int =
   #| (self) => self.readyState
 
 ///|
-pub extern "js" fn FileReader::get_result(self : FileReader) -> JsValue =
+pub extern "js" fn FileReader::get_result(
+  self : FileReader,
+) -> StringOrArrayBuffer =
   #| (self) => self.result
 
 ///|

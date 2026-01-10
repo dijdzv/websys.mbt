@@ -12,8 +12,8 @@ pub(all) enum AvcBitstreamFormat {
 /// Convert to string value
 pub fn AvcBitstreamFormat::to_string(self : AvcBitstreamFormat) -> String {
   match self {
-    Annexb => "annexb"
-    Avc => "avc"
+    AvcBitstreamFormat::Annexb => "annexb"
+    AvcBitstreamFormat::Avc => "avc"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn AvcBitstreamFormat::to_string(self : AvcBitstreamFormat) -> String {
 /// Parse from string value
 pub fn AvcBitstreamFormat::from_string(s : String) -> AvcBitstreamFormat? {
   match s {
-    "annexb" => Some(Annexb)
-    "avc" => Some(Avc)
+    "annexb" => Some(AvcBitstreamFormat::Annexb)
+    "avc" => Some(AvcBitstreamFormat::Avc)
     _ => None
   }
 }

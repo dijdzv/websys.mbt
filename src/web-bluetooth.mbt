@@ -30,6 +30,34 @@ pub extern "js" fn BluetoothServiceUUID::from_int(
   #| (v) => v
 
 ///|
+/// Check if this BluetoothServiceUUID is String
+pub extern "js" fn BluetoothServiceUUID::is_string(
+  self : BluetoothServiceUUID,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this BluetoothServiceUUID is Int
+pub extern "js" fn BluetoothServiceUUID::is_int(
+  self : BluetoothServiceUUID,
+) -> Bool =
+  #| (self) => typeof self === 'number'
+
+///|
+/// Try to get BluetoothServiceUUID as String
+pub extern "js" fn BluetoothServiceUUID::as_string(
+  self : BluetoothServiceUUID,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get BluetoothServiceUUID as Int
+pub extern "js" fn BluetoothServiceUUID::as_int(
+  self : BluetoothServiceUUID,
+) -> Int? =
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// BluetoothCharacteristicUUID typedef
 pub type BluetoothCharacteristicUUID
 
@@ -54,6 +82,34 @@ pub extern "js" fn BluetoothCharacteristicUUID::from_int(
   #| (v) => v
 
 ///|
+/// Check if this BluetoothCharacteristicUUID is String
+pub extern "js" fn BluetoothCharacteristicUUID::is_string(
+  self : BluetoothCharacteristicUUID,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this BluetoothCharacteristicUUID is Int
+pub extern "js" fn BluetoothCharacteristicUUID::is_int(
+  self : BluetoothCharacteristicUUID,
+) -> Bool =
+  #| (self) => typeof self === 'number'
+
+///|
+/// Try to get BluetoothCharacteristicUUID as String
+pub extern "js" fn BluetoothCharacteristicUUID::as_string(
+  self : BluetoothCharacteristicUUID,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get BluetoothCharacteristicUUID as Int
+pub extern "js" fn BluetoothCharacteristicUUID::as_int(
+  self : BluetoothCharacteristicUUID,
+) -> Int? =
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// BluetoothDescriptorUUID typedef
 pub type BluetoothDescriptorUUID
 
@@ -76,6 +132,34 @@ pub extern "js" fn BluetoothDescriptorUUID::from_int(
   v : Int,
 ) -> BluetoothDescriptorUUID =
   #| (v) => v
+
+///|
+/// Check if this BluetoothDescriptorUUID is String
+pub extern "js" fn BluetoothDescriptorUUID::is_string(
+  self : BluetoothDescriptorUUID,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this BluetoothDescriptorUUID is Int
+pub extern "js" fn BluetoothDescriptorUUID::is_int(
+  self : BluetoothDescriptorUUID,
+) -> Bool =
+  #| (self) => typeof self === 'number'
+
+///|
+/// Try to get BluetoothDescriptorUUID as String
+pub extern "js" fn BluetoothDescriptorUUID::as_string(
+  self : BluetoothDescriptorUUID,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get BluetoothDescriptorUUID as Int
+pub extern "js" fn BluetoothDescriptorUUID::as_int(
+  self : BluetoothDescriptorUUID,
+) -> Int? =
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// BluetoothDataFilterInit dictionary
@@ -434,9 +518,7 @@ pub extern "js" fn Bluetooth::get_referring_device(
   #| (self) => self.referringDevice
 
 ///|
-pub extern "js" fn Bluetooth::get_devices(
-  self : Bluetooth,
-) -> Promise[Array[BluetoothDevice]] =
+pub extern "js" fn Bluetooth::get_devices(self : Bluetooth) -> Promise[Unit] =
   #| (self) => self.getDevices()
 
 ///|
@@ -869,14 +951,14 @@ pub extern "js" fn BluetoothRemoteGATTServer::get_primary_service(
 ///|
 pub extern "js" fn BluetoothRemoteGATTServer::get_primary_services(
   self : BluetoothRemoteGATTServer,
-) -> Promise[Array[BluetoothRemoteGATTService]] =
+) -> Promise[Unit] =
   #| (self) => self.getPrimaryServices()
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTServer::get_primary_services_with_service(
   self : BluetoothRemoteGATTServer,
   service : BluetoothServiceUUID,
-) -> Promise[Array[BluetoothRemoteGATTService]] =
+) -> Promise[Unit] =
   #| (self, service) => self.getPrimaryServices(service)
 
 ///|
@@ -917,14 +999,14 @@ pub extern "js" fn BluetoothRemoteGATTService::get_characteristic(
 ///|
 pub extern "js" fn BluetoothRemoteGATTService::get_characteristics(
   self : BluetoothRemoteGATTService,
-) -> Promise[Array[BluetoothRemoteGATTCharacteristic]] =
+) -> Promise[Unit] =
   #| (self) => self.getCharacteristics()
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTService::get_characteristics_with_characteristic(
   self : BluetoothRemoteGATTService,
   characteristic : BluetoothCharacteristicUUID,
-) -> Promise[Array[BluetoothRemoteGATTCharacteristic]] =
+) -> Promise[Unit] =
   #| (self, characteristic) => self.getCharacteristics(characteristic)
 
 ///|
@@ -937,14 +1019,14 @@ pub extern "js" fn BluetoothRemoteGATTService::get_included_service(
 ///|
 pub extern "js" fn BluetoothRemoteGATTService::get_included_services(
   self : BluetoothRemoteGATTService,
-) -> Promise[Array[BluetoothRemoteGATTService]] =
+) -> Promise[Unit] =
   #| (self) => self.getIncludedServices()
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTService::get_included_services_with_service(
   self : BluetoothRemoteGATTService,
   service : BluetoothServiceUUID,
-) -> Promise[Array[BluetoothRemoteGATTService]] =
+) -> Promise[Unit] =
   #| (self, service) => self.getIncludedServices(service)
 
 ///|
@@ -1043,14 +1125,14 @@ pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptor(
 ///|
 pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptors(
   self : BluetoothRemoteGATTCharacteristic,
-) -> Promise[Array[BluetoothRemoteGATTDescriptor]] =
+) -> Promise[Unit] =
   #| (self) => self.getDescriptors()
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptors_with_descriptor(
   self : BluetoothRemoteGATTCharacteristic,
   descriptor : BluetoothDescriptorUUID,
-) -> Promise[Array[BluetoothRemoteGATTDescriptor]] =
+) -> Promise[Unit] =
   #| (self, descriptor) => self.getDescriptors(descriptor)
 
 ///|
@@ -1219,15 +1301,17 @@ pub extern "js" fn BluetoothUUID::to_js_value(self : BluetoothUUID) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn BluetoothUUID::get_service(name : JsValue) -> UUID =
+pub extern "js" fn BluetoothUUID::get_service(name : StringOrInt) -> UUID =
   #| (name) => BluetoothUUID.getService(name)
 
 ///|
-pub extern "js" fn BluetoothUUID::get_characteristic(name : JsValue) -> UUID =
+pub extern "js" fn BluetoothUUID::get_characteristic(
+  name : StringOrInt,
+) -> UUID =
   #| (name) => BluetoothUUID.getCharacteristic(name)
 
 ///|
-pub extern "js" fn BluetoothUUID::get_descriptor(name : JsValue) -> UUID =
+pub extern "js" fn BluetoothUUID::get_descriptor(name : StringOrInt) -> UUID =
   #| (name) => BluetoothUUID.getDescriptor(name)
 
 ///|

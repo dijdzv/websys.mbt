@@ -16,10 +16,10 @@ pub fn IdentityCredentialRequestOptionsContext::to_string(
   self : IdentityCredentialRequestOptionsContext,
 ) -> String {
   match self {
-    Signin => "signin"
-    Signup => "signup"
-    Use => "use"
-    Continue => "continue"
+    IdentityCredentialRequestOptionsContext::Signin => "signin"
+    IdentityCredentialRequestOptionsContext::Signup => "signup"
+    IdentityCredentialRequestOptionsContext::Use => "use"
+    IdentityCredentialRequestOptionsContext::Continue => "continue"
   }
 }
 
@@ -29,10 +29,10 @@ pub fn IdentityCredentialRequestOptionsContext::from_string(
   s : String,
 ) -> IdentityCredentialRequestOptionsContext? {
   match s {
-    "signin" => Some(Signin)
-    "signup" => Some(Signup)
-    "use" => Some(Use)
-    "continue" => Some(Continue)
+    "signin" => Some(IdentityCredentialRequestOptionsContext::Signin)
+    "signup" => Some(IdentityCredentialRequestOptionsContext::Signup)
+    "use" => Some(IdentityCredentialRequestOptionsContext::Use)
+    "continue" => Some(IdentityCredentialRequestOptionsContext::Continue)
     _ => None
   }
 }
@@ -50,8 +50,8 @@ pub fn IdentityCredentialRequestOptionsMode::to_string(
   self : IdentityCredentialRequestOptionsMode,
 ) -> String {
   match self {
-    Active => "active"
-    Passive => "passive"
+    IdentityCredentialRequestOptionsMode::Active => "active"
+    IdentityCredentialRequestOptionsMode::Passive => "passive"
   }
 }
 
@@ -61,8 +61,8 @@ pub fn IdentityCredentialRequestOptionsMode::from_string(
   s : String,
 ) -> IdentityCredentialRequestOptionsMode? {
   match s {
-    "active" => Some(Active)
-    "passive" => Some(Passive)
+    "active" => Some(IdentityCredentialRequestOptionsMode::Active)
+    "passive" => Some(IdentityCredentialRequestOptionsMode::Passive)
     _ => None
   }
 }
@@ -615,5 +615,5 @@ pub extern "js" fn IdentityProvider::resolve(
 ///|
 pub extern "js" fn IdentityProvider::get_user_info(
   config : IdentityProviderConfig,
-) -> Promise[Array[IdentityUserInfo]] =
+) -> Promise[Unit] =
   #| (config) => IdentityProvider.getUserInfo(config)

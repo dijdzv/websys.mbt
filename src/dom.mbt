@@ -12,8 +12,8 @@ pub(all) enum ShadowRootMode {
 /// Convert to string value
 pub fn ShadowRootMode::to_string(self : ShadowRootMode) -> String {
   match self {
-    Open => "open"
-    Closed => "closed"
+    ShadowRootMode::Open => "open"
+    ShadowRootMode::Closed => "closed"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn ShadowRootMode::to_string(self : ShadowRootMode) -> String {
 /// Parse from string value
 pub fn ShadowRootMode::from_string(s : String) -> ShadowRootMode? {
   match s {
-    "open" => Some(Open)
-    "closed" => Some(Closed)
+    "open" => Some(ShadowRootMode::Open)
+    "closed" => Some(ShadowRootMode::Closed)
     _ => None
   }
 }
@@ -38,8 +38,8 @@ pub(all) enum SlotAssignmentMode {
 /// Convert to string value
 pub fn SlotAssignmentMode::to_string(self : SlotAssignmentMode) -> String {
   match self {
-    Manual => "manual"
-    Named => "named"
+    SlotAssignmentMode::Manual => "manual"
+    SlotAssignmentMode::Named => "named"
   }
 }
 
@@ -47,8 +47,8 @@ pub fn SlotAssignmentMode::to_string(self : SlotAssignmentMode) -> String {
 /// Parse from string value
 pub fn SlotAssignmentMode::from_string(s : String) -> SlotAssignmentMode? {
   match s {
-    "manual" => Some(Manual)
-    "named" => Some(Named)
+    "manual" => Some(SlotAssignmentMode::Manual)
+    "named" => Some(SlotAssignmentMode::Named)
     _ => None
   }
 }
@@ -693,7 +693,7 @@ pub extern "js" fn EventTarget::add_event_listener_with_options(
   self : EventTarget,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : AddEventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
@@ -710,7 +710,7 @@ pub extern "js" fn EventTarget::remove_event_listener_with_options(
   self : EventTarget,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : EventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
@@ -792,7 +792,7 @@ pub extern "js" fn AbortSignal::add_event_listener_with_options(
   self : AbortSignal,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : AddEventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
@@ -809,7 +809,7 @@ pub extern "js" fn AbortSignal::remove_event_listener_with_options(
   self : AbortSignal,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : EventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
@@ -1066,7 +1066,7 @@ pub extern "js" fn Node::add_event_listener_with_options(
   self : Node,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : AddEventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
@@ -1083,7 +1083,7 @@ pub extern "js" fn Node::remove_event_listener_with_options(
   self : Node,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : EventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
@@ -1376,7 +1376,7 @@ pub extern "js" fn Document::add_event_listener_with_options(
   self : Document,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : AddEventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
@@ -1393,7 +1393,7 @@ pub extern "js" fn Document::remove_event_listener_with_options(
   self : Document,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : EventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
@@ -1757,7 +1757,7 @@ pub extern "js" fn Document::create_element(
 pub extern "js" fn Document::create_element_with_options(
   self : Document,
   local_name : String,
-  options : JsValue,
+  options : StringOrElementCreationOptions,
 ) -> Element =
   #| (self, local_name, options) => self.createElement(local_name, options)
 
@@ -1774,7 +1774,7 @@ pub extern "js" fn Document::create_element_n_s_with_options(
   self : Document,
   namespace_ : String?,
   qualified_name : String,
-  options : JsValue,
+  options : StringOrElementCreationOptions,
 ) -> Element =
   #| (self, namespace_, qualified_name, options) => self.createElementNS(namespace_, qualified_name, options)
 
@@ -1821,7 +1821,7 @@ pub extern "js" fn Document::import_node(self : Document, node : Node) -> Node =
 pub extern "js" fn Document::import_node_with_options(
   self : Document,
   node : Node,
-  options : JsValue,
+  options : BoolOrImportNodeOptions,
 ) -> Node =
   #| (self, node, options) => self.importNode(node, options)
 
@@ -1906,7 +1906,7 @@ pub extern "js" fn Document::start_view_transition(
 ///|
 pub extern "js" fn Document::start_view_transition_with_callback_options(
   self : Document,
-  callback_options : JsValue,
+  callback_options : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
 ) -> ViewTransition =
   #| (self, callback_options) => self.startViewTransition(callback_options)
 
@@ -2007,7 +2007,9 @@ pub extern "js" fn Document::set_onfullscreenerror(
   #| (self, value) => { self.onfullscreenerror = value }
 
 ///|
-pub extern "js" fn Document::parse_h_t_m_l_unsafe(html : JsValue) -> Document =
+pub extern "js" fn Document::parse_h_t_m_l_unsafe(
+  html : TrustedHTMLOrString,
+) -> Document =
   #| (html) => Document.parseHTMLUnsafe(html)
 
 ///|
@@ -2151,11 +2153,17 @@ pub extern "js" fn Document::close(self : Document) -> Unit =
   #| (self) => self.close()
 
 ///|
-pub extern "js" fn Document::write(self : Document, text : JsValue) -> Unit =
+pub extern "js" fn Document::write(
+  self : Document,
+  text : TrustedHTMLOrString,
+) -> Unit =
   #| (self, text) => self.write(text)
 
 ///|
-pub extern "js" fn Document::writeln(self : Document, text : JsValue) -> Unit =
+pub extern "js" fn Document::writeln(
+  self : Document,
+  text : TrustedHTMLOrString,
+) -> Unit =
   #| (self, text) => self.writeln(text)
 
 ///|
@@ -2634,17 +2642,23 @@ pub extern "js" fn Document::get_child_element_count(self : Document) -> Int =
   #| (self) => self.childElementCount
 
 ///|
-pub extern "js" fn Document::prepend(self : Document, nodes : JsValue) -> Unit =
+pub extern "js" fn Document::prepend(
+  self : Document,
+  nodes : NodeOrString,
+) -> Unit =
   #| (self, nodes) => self.prepend(nodes)
 
 ///|
-pub extern "js" fn Document::append(self : Document, nodes : JsValue) -> Unit =
+pub extern "js" fn Document::append(
+  self : Document,
+  nodes : NodeOrString,
+) -> Unit =
   #| (self, nodes) => self.append(nodes)
 
 ///|
 pub extern "js" fn Document::replace_children(
   self : Document,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.replaceChildren(nodes)
 
@@ -3951,7 +3965,7 @@ pub extern "js" fn XMLDocument::add_event_listener_with_options(
   self : XMLDocument,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : AddEventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
@@ -3968,7 +3982,7 @@ pub extern "js" fn XMLDocument::remove_event_listener_with_options(
   self : XMLDocument,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : EventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
@@ -4352,7 +4366,7 @@ pub extern "js" fn XMLDocument::create_element(
 pub extern "js" fn XMLDocument::create_element_with_options(
   self : XMLDocument,
   local_name : String,
-  options : JsValue,
+  options : StringOrElementCreationOptions,
 ) -> Element =
   #| (self, local_name, options) => self.createElement(local_name, options)
 
@@ -4369,7 +4383,7 @@ pub extern "js" fn XMLDocument::create_element_n_s_with_options(
   self : XMLDocument,
   namespace_ : String?,
   qualified_name : String,
-  options : JsValue,
+  options : StringOrElementCreationOptions,
 ) -> Element =
   #| (self, namespace_, qualified_name, options) => self.createElementNS(namespace_, qualified_name, options)
 
@@ -4419,7 +4433,7 @@ pub extern "js" fn XMLDocument::import_node(
 pub extern "js" fn XMLDocument::import_node_with_options(
   self : XMLDocument,
   node : Node,
-  options : JsValue,
+  options : BoolOrImportNodeOptions,
 ) -> Node =
   #| (self, node, options) => self.importNode(node, options)
 
@@ -4509,7 +4523,7 @@ pub extern "js" fn XMLDocument::start_view_transition(
 ///|
 pub extern "js" fn XMLDocument::start_view_transition_with_callback_options(
   self : XMLDocument,
-  callback_options : JsValue,
+  callback_options : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
 ) -> ViewTransition =
   #| (self, callback_options) => self.startViewTransition(callback_options)
 
@@ -4617,7 +4631,7 @@ pub extern "js" fn XMLDocument::set_onfullscreenerror(
 
 ///|
 pub extern "js" fn XMLDocument::parse_h_t_m_l_unsafe(
-  html : JsValue,
+  html : TrustedHTMLOrString,
 ) -> Document =
   #| (html) => XMLDocument.parseHTMLUnsafe(html)
 
@@ -4771,14 +4785,14 @@ pub extern "js" fn XMLDocument::close(self : XMLDocument) -> Unit =
 ///|
 pub extern "js" fn XMLDocument::write(
   self : XMLDocument,
-  text : JsValue,
+  text : TrustedHTMLOrString,
 ) -> Unit =
   #| (self, text) => self.write(text)
 
 ///|
 pub extern "js" fn XMLDocument::writeln(
   self : XMLDocument,
-  text : JsValue,
+  text : TrustedHTMLOrString,
 ) -> Unit =
   #| (self, text) => self.writeln(text)
 
@@ -5282,21 +5296,21 @@ pub extern "js" fn XMLDocument::get_child_element_count(
 ///|
 pub extern "js" fn XMLDocument::prepend(
   self : XMLDocument,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.prepend(nodes)
 
 ///|
 pub extern "js" fn XMLDocument::append(
   self : XMLDocument,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.append(nodes)
 
 ///|
 pub extern "js" fn XMLDocument::replace_children(
   self : XMLDocument,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.replaceChildren(nodes)
 
@@ -6772,7 +6786,7 @@ pub extern "js" fn DocumentType::add_event_listener_with_options(
   self : DocumentType,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : AddEventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
@@ -6789,7 +6803,7 @@ pub extern "js" fn DocumentType::remove_event_listener_with_options(
   self : DocumentType,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : EventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
@@ -7109,21 +7123,21 @@ pub extern "js" fn DocumentType::get_system_id(self : DocumentType) -> String =
 ///|
 pub extern "js" fn DocumentType::before(
   self : DocumentType,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.before(nodes)
 
 ///|
 pub extern "js" fn DocumentType::after(
   self : DocumentType,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.after(nodes)
 
 ///|
 pub extern "js" fn DocumentType::replace_with(
   self : DocumentType,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.replaceWith(nodes)
 
@@ -7158,7 +7172,7 @@ pub extern "js" fn DocumentFragment::add_event_listener_with_options(
   self : DocumentFragment,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : AddEventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
@@ -7175,7 +7189,7 @@ pub extern "js" fn DocumentFragment::remove_event_listener_with_options(
   self : DocumentFragment,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : EventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
@@ -7538,21 +7552,21 @@ pub extern "js" fn DocumentFragment::get_child_element_count(
 ///|
 pub extern "js" fn DocumentFragment::prepend(
   self : DocumentFragment,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.prepend(nodes)
 
 ///|
 pub extern "js" fn DocumentFragment::append(
   self : DocumentFragment,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.append(nodes)
 
 ///|
 pub extern "js" fn DocumentFragment::replace_children(
   self : DocumentFragment,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.replaceChildren(nodes)
 
@@ -7603,7 +7617,7 @@ pub extern "js" fn ShadowRoot::add_event_listener_with_options(
   self : ShadowRoot,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : AddEventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
@@ -7620,7 +7634,7 @@ pub extern "js" fn ShadowRoot::remove_event_listener_with_options(
   self : ShadowRoot,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : EventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
@@ -7953,21 +7967,21 @@ pub extern "js" fn ShadowRoot::get_child_element_count(
 ///|
 pub extern "js" fn ShadowRoot::prepend(
   self : ShadowRoot,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.prepend(nodes)
 
 ///|
 pub extern "js" fn ShadowRoot::append(
   self : ShadowRoot,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.append(nodes)
 
 ///|
 pub extern "js" fn ShadowRoot::replace_children(
   self : ShadowRoot,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.replaceChildren(nodes)
 
@@ -8035,7 +8049,7 @@ pub extern "js" fn ShadowRoot::set_onslotchange(
 ///|
 pub extern "js" fn ShadowRoot::set_h_t_m_l_unsafe(
   self : ShadowRoot,
-  html : JsValue,
+  html : TrustedHTMLOrString,
 ) -> Unit =
   #| (self, html) => self.setHTMLUnsafe(html)
 
@@ -8051,13 +8065,15 @@ pub extern "js" fn ShadowRoot::get_h_t_m_l_with_options(
   #| (self, options) => self.getHTML(options)
 
 ///|
-pub extern "js" fn ShadowRoot::get_inner_h_t_m_l(self : ShadowRoot) -> JsValue =
+pub extern "js" fn ShadowRoot::get_inner_h_t_m_l(
+  self : ShadowRoot,
+) -> TrustedHTMLOrString =
   #| (self) => self.innerHTML
 
 ///|
 pub extern "js" fn ShadowRoot::set_inner_h_t_m_l(
   self : ShadowRoot,
-  value : JsValue,
+  value : TrustedHTMLOrString,
 ) -> Unit =
   #| (self, value) => { self.innerHTML = value }
 
@@ -8141,7 +8157,7 @@ pub extern "js" fn Element::add_event_listener_with_options(
   self : Element,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : AddEventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
@@ -8158,7 +8174,7 @@ pub extern "js" fn Element::remove_event_listener_with_options(
   self : Element,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : EventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
@@ -8521,7 +8537,7 @@ pub extern "js" fn Element::get_attribute_n_s(
 pub extern "js" fn Element::set_attribute(
   self : Element,
   qualified_name : String,
-  value : JsValue,
+  value : TrustedTypeOrString,
 ) -> Unit =
   #| (self, qualified_name, value) => self.setAttribute(qualified_name, value)
 
@@ -8530,7 +8546,7 @@ pub extern "js" fn Element::set_attribute_n_s(
   self : Element,
   namespace_ : String?,
   qualified_name : String,
-  value : JsValue,
+  value : TrustedTypeOrString,
 ) -> Unit =
   #| (self, namespace_, qualified_name, value) => self.setAttributeNS(namespace_, qualified_name, value)
 
@@ -8746,7 +8762,7 @@ pub extern "js" fn Element::start_view_transition(
 ///|
 pub extern "js" fn Element::start_view_transition_with_callback_options(
   self : Element,
-  callback_options : JsValue,
+  callback_options : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
 ) -> ViewTransition =
   #| (self, callback_options) => self.startViewTransition(callback_options)
 
@@ -8782,7 +8798,7 @@ pub extern "js" fn Element::scroll_into_view(self : Element) -> Promise[Unit] =
 ///|
 pub extern "js" fn Element::scroll_into_view_with_arg(
   self : Element,
-  arg : JsValue,
+  arg : BoolOrScrollIntoViewOptions,
 ) -> Promise[Unit] =
   #| (self, arg) => self.scrollIntoView(arg)
 
@@ -8944,7 +8960,7 @@ pub extern "js" fn Element::set_onfullscreenerror(
 ///|
 pub extern "js" fn Element::set_h_t_m_l_unsafe(
   self : Element,
-  html : JsValue,
+  html : TrustedHTMLOrString,
 ) -> Unit =
   #| (self, html) => self.setHTMLUnsafe(html)
 
@@ -8960,24 +8976,28 @@ pub extern "js" fn Element::get_h_t_m_l_with_options(
   #| (self, options) => self.getHTML(options)
 
 ///|
-pub extern "js" fn Element::get_inner_h_t_m_l(self : Element) -> JsValue =
+pub extern "js" fn Element::get_inner_h_t_m_l(
+  self : Element,
+) -> TrustedHTMLOrString =
   #| (self) => self.innerHTML
 
 ///|
 pub extern "js" fn Element::set_inner_h_t_m_l(
   self : Element,
-  value : JsValue,
+  value : TrustedHTMLOrString,
 ) -> Unit =
   #| (self, value) => { self.innerHTML = value }
 
 ///|
-pub extern "js" fn Element::get_outer_h_t_m_l(self : Element) -> JsValue =
+pub extern "js" fn Element::get_outer_h_t_m_l(
+  self : Element,
+) -> TrustedHTMLOrString =
   #| (self) => self.outerHTML
 
 ///|
 pub extern "js" fn Element::set_outer_h_t_m_l(
   self : Element,
-  value : JsValue,
+  value : TrustedHTMLOrString,
 ) -> Unit =
   #| (self, value) => { self.outerHTML = value }
 
@@ -8985,7 +9005,7 @@ pub extern "js" fn Element::set_outer_h_t_m_l(
 pub extern "js" fn Element::insert_adjacent_h_t_m_l(
   self : Element,
   position : String,
-  string : JsValue,
+  string : TrustedHTMLOrString,
 ) -> Unit =
   #| (self, position, string) => self.insertAdjacentHTML(position, string)
 
@@ -9112,17 +9132,23 @@ pub extern "js" fn Element::get_child_element_count(self : Element) -> Int =
   #| (self) => self.childElementCount
 
 ///|
-pub extern "js" fn Element::prepend(self : Element, nodes : JsValue) -> Unit =
+pub extern "js" fn Element::prepend(
+  self : Element,
+  nodes : NodeOrString,
+) -> Unit =
   #| (self, nodes) => self.prepend(nodes)
 
 ///|
-pub extern "js" fn Element::append(self : Element, nodes : JsValue) -> Unit =
+pub extern "js" fn Element::append(
+  self : Element,
+  nodes : NodeOrString,
+) -> Unit =
   #| (self, nodes) => self.append(nodes)
 
 ///|
 pub extern "js" fn Element::replace_children(
   self : Element,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.replaceChildren(nodes)
 
@@ -9161,17 +9187,20 @@ pub extern "js" fn Element::get_next_element_sibling(
   #| (self) => self.nextElementSibling
 
 ///|
-pub extern "js" fn Element::before(self : Element, nodes : JsValue) -> Unit =
+pub extern "js" fn Element::before(
+  self : Element,
+  nodes : NodeOrString,
+) -> Unit =
   #| (self, nodes) => self.before(nodes)
 
 ///|
-pub extern "js" fn Element::after(self : Element, nodes : JsValue) -> Unit =
+pub extern "js" fn Element::after(self : Element, nodes : NodeOrString) -> Unit =
   #| (self, nodes) => self.after(nodes)
 
 ///|
 pub extern "js" fn Element::replace_with(
   self : Element,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.replaceWith(nodes)
 
@@ -9785,7 +9814,7 @@ pub extern "js" fn Element::animate(
 pub extern "js" fn Element::animate_with_options(
   self : Element,
   keyframes : JsValue?,
-  options : JsValue,
+  options : DoubleOrKeyframeAnimationOptions,
 ) -> Animation =
   #| (self, keyframes, options) => self.animate(keyframes, options)
 
@@ -9899,7 +9928,7 @@ pub extern "js" fn Attr::add_event_listener_with_options(
   self : Attr,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : AddEventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
@@ -9916,7 +9945,7 @@ pub extern "js" fn Attr::remove_event_listener_with_options(
   self : Attr,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : EventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
@@ -10241,7 +10270,7 @@ pub extern "js" fn CharacterData::add_event_listener_with_options(
   self : CharacterData,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : AddEventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
@@ -10258,7 +10287,7 @@ pub extern "js" fn CharacterData::remove_event_listener_with_options(
   self : CharacterData,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : EventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
@@ -10645,21 +10674,21 @@ pub extern "js" fn CharacterData::get_next_element_sibling(
 ///|
 pub extern "js" fn CharacterData::before(
   self : CharacterData,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.before(nodes)
 
 ///|
 pub extern "js" fn CharacterData::after(
   self : CharacterData,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.after(nodes)
 
 ///|
 pub extern "js" fn CharacterData::replace_with(
   self : CharacterData,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.replaceWith(nodes)
 
@@ -10692,7 +10721,7 @@ pub extern "js" fn Text::add_event_listener_with_options(
   self : Text,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : AddEventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
@@ -10709,7 +10738,7 @@ pub extern "js" fn Text::remove_event_listener_with_options(
   self : Text,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : EventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
@@ -11035,15 +11064,18 @@ pub extern "js" fn Text::get_next_element_sibling(self : Text) -> Element? =
   #| (self) => self.nextElementSibling
 
 ///|
-pub extern "js" fn Text::before(self : Text, nodes : JsValue) -> Unit =
+pub extern "js" fn Text::before(self : Text, nodes : NodeOrString) -> Unit =
   #| (self, nodes) => self.before(nodes)
 
 ///|
-pub extern "js" fn Text::after(self : Text, nodes : JsValue) -> Unit =
+pub extern "js" fn Text::after(self : Text, nodes : NodeOrString) -> Unit =
   #| (self, nodes) => self.after(nodes)
 
 ///|
-pub extern "js" fn Text::replace_with(self : Text, nodes : JsValue) -> Unit =
+pub extern "js" fn Text::replace_with(
+  self : Text,
+  nodes : NodeOrString,
+) -> Unit =
   #| (self, nodes) => self.replaceWith(nodes)
 
 ///|
@@ -11149,7 +11181,7 @@ pub extern "js" fn CDATASection::add_event_listener_with_options(
   self : CDATASection,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : AddEventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
@@ -11166,7 +11198,7 @@ pub extern "js" fn CDATASection::remove_event_listener_with_options(
   self : CDATASection,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : EventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
@@ -11541,21 +11573,21 @@ pub extern "js" fn CDATASection::get_next_element_sibling(
 ///|
 pub extern "js" fn CDATASection::before(
   self : CDATASection,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.before(nodes)
 
 ///|
 pub extern "js" fn CDATASection::after(
   self : CDATASection,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.after(nodes)
 
 ///|
 pub extern "js" fn CDATASection::replace_with(
   self : CDATASection,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.replaceWith(nodes)
 
@@ -11671,7 +11703,7 @@ pub extern "js" fn ProcessingInstruction::add_event_listener_with_options(
   self : ProcessingInstruction,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : AddEventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
@@ -11688,7 +11720,7 @@ pub extern "js" fn ProcessingInstruction::remove_event_listener_with_options(
   self : ProcessingInstruction,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : EventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
@@ -12093,21 +12125,21 @@ pub extern "js" fn ProcessingInstruction::get_next_element_sibling(
 ///|
 pub extern "js" fn ProcessingInstruction::before(
   self : ProcessingInstruction,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.before(nodes)
 
 ///|
 pub extern "js" fn ProcessingInstruction::after(
   self : ProcessingInstruction,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.after(nodes)
 
 ///|
 pub extern "js" fn ProcessingInstruction::replace_with(
   self : ProcessingInstruction,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.replaceWith(nodes)
 
@@ -12154,7 +12186,7 @@ pub extern "js" fn Comment::add_event_listener_with_options(
   self : Comment,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : AddEventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
 
@@ -12171,7 +12203,7 @@ pub extern "js" fn Comment::remove_event_listener_with_options(
   self : Comment,
   type_ : String,
   callback : EventListener?,
-  options : JsValue,
+  options : EventListenerOptionsOrBool,
 ) -> Unit =
   #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
 
@@ -12516,17 +12548,20 @@ pub extern "js" fn Comment::get_next_element_sibling(
   #| (self) => self.nextElementSibling
 
 ///|
-pub extern "js" fn Comment::before(self : Comment, nodes : JsValue) -> Unit =
+pub extern "js" fn Comment::before(
+  self : Comment,
+  nodes : NodeOrString,
+) -> Unit =
   #| (self, nodes) => self.before(nodes)
 
 ///|
-pub extern "js" fn Comment::after(self : Comment, nodes : JsValue) -> Unit =
+pub extern "js" fn Comment::after(self : Comment, nodes : NodeOrString) -> Unit =
   #| (self, nodes) => self.after(nodes)
 
 ///|
 pub extern "js" fn Comment::replace_with(
   self : Comment,
-  nodes : JsValue,
+  nodes : NodeOrString,
 ) -> Unit =
   #| (self, nodes) => self.replaceWith(nodes)
 
@@ -12778,7 +12813,7 @@ pub extern "js" fn Range::get_bounding_client_rect(self : Range) -> DOMRect =
 ///|
 pub extern "js" fn Range::create_contextual_fragment(
   self : Range,
-  string : JsValue,
+  string : TrustedHTMLOrString,
 ) -> DocumentFragment =
   #| (self, string) => self.createContextualFragment(string)
 

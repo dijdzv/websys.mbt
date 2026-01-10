@@ -40,6 +40,62 @@ pub extern "js" fn FileSystemWriteChunkType::from_write_params(
   #| (v) => v
 
 ///|
+/// Check if this FileSystemWriteChunkType is BufferSource
+pub extern "js" fn FileSystemWriteChunkType::is_buffer_source(
+  self : FileSystemWriteChunkType,
+) -> Bool =
+  #| (self) => self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer
+
+///|
+/// Check if this FileSystemWriteChunkType is Blob
+pub extern "js" fn FileSystemWriteChunkType::is_blob(
+  self : FileSystemWriteChunkType,
+) -> Bool =
+  #| (self) => self instanceof Blob
+
+///|
+/// Check if this FileSystemWriteChunkType is String
+pub extern "js" fn FileSystemWriteChunkType::is_string(
+  self : FileSystemWriteChunkType,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this FileSystemWriteChunkType is WriteParams
+pub extern "js" fn FileSystemWriteChunkType::is_write_params(
+  self : FileSystemWriteChunkType,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get FileSystemWriteChunkType as BufferSource
+pub extern "js" fn FileSystemWriteChunkType::as_buffer_source(
+  self : FileSystemWriteChunkType,
+) -> BufferSource? =
+  #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get FileSystemWriteChunkType as Blob
+pub extern "js" fn FileSystemWriteChunkType::as_blob(
+  self : FileSystemWriteChunkType,
+) -> Blob? =
+  #| (self) => (self instanceof Blob) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get FileSystemWriteChunkType as String
+pub extern "js" fn FileSystemWriteChunkType::as_string(
+  self : FileSystemWriteChunkType,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get FileSystemWriteChunkType as WriteParams
+pub extern "js" fn FileSystemWriteChunkType::as_write_params(
+  self : FileSystemWriteChunkType,
+) -> WriteParams? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// FileSystemHandleKind enum
 pub(all) enum FileSystemHandleKind {
   File
@@ -50,8 +106,8 @@ pub(all) enum FileSystemHandleKind {
 /// Convert to string value
 pub fn FileSystemHandleKind::to_string(self : FileSystemHandleKind) -> String {
   match self {
-    File => "file"
-    Directory => "directory"
+    FileSystemHandleKind::File => "file"
+    FileSystemHandleKind::Directory => "directory"
   }
 }
 
@@ -59,8 +115,8 @@ pub fn FileSystemHandleKind::to_string(self : FileSystemHandleKind) -> String {
 /// Parse from string value
 pub fn FileSystemHandleKind::from_string(s : String) -> FileSystemHandleKind? {
   match s {
-    "file" => Some(File)
-    "directory" => Some(Directory)
+    "file" => Some(FileSystemHandleKind::File)
+    "directory" => Some(FileSystemHandleKind::Directory)
     _ => None
   }
 }
@@ -77,9 +133,9 @@ pub(all) enum WriteCommandType {
 /// Convert to string value
 pub fn WriteCommandType::to_string(self : WriteCommandType) -> String {
   match self {
-    Write => "write"
-    Seek => "seek"
-    Truncate => "truncate"
+    WriteCommandType::Write => "write"
+    WriteCommandType::Seek => "seek"
+    WriteCommandType::Truncate => "truncate"
   }
 }
 
@@ -87,9 +143,9 @@ pub fn WriteCommandType::to_string(self : WriteCommandType) -> String {
 /// Parse from string value
 pub fn WriteCommandType::from_string(s : String) -> WriteCommandType? {
   match s {
-    "write" => Some(Write)
-    "seek" => Some(Seek)
-    "truncate" => Some(Truncate)
+    "write" => Some(WriteCommandType::Write)
+    "seek" => Some(WriteCommandType::Seek)
+    "truncate" => Some(WriteCommandType::Truncate)
     _ => None
   }
 }
@@ -474,7 +530,7 @@ pub extern "js" fn FileSystemDirectoryHandle::remove_entry_with_options(
 pub extern "js" fn FileSystemDirectoryHandle::resolve(
   self : FileSystemDirectoryHandle,
   possible_descendant : FileSystemHandle,
-) -> Promise[Array[String]] =
+) -> Promise[Unit] =
   #| (self, possible_descendant) => self.resolve(possible_descendant)
 
 ///|

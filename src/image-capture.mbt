@@ -26,6 +26,34 @@ pub extern "js" fn ConstrainPoint2D::from_constrain_point2_d_parameters(
   #| (v) => v
 
 ///|
+/// Check if this ConstrainPoint2D is Array[Point2D]
+pub extern "js" fn ConstrainPoint2D::is_array_of_point2_d(
+  self : ConstrainPoint2D,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Check if this ConstrainPoint2D is ConstrainPoint2DParameters
+pub extern "js" fn ConstrainPoint2D::is_constrain_point2_d_parameters(
+  self : ConstrainPoint2D,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get ConstrainPoint2D as Array[Point2D]
+pub extern "js" fn ConstrainPoint2D::as_array_of_point2_d(
+  self : ConstrainPoint2D,
+) -> Array[Point2D]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ConstrainPoint2D as ConstrainPoint2DParameters
+pub extern "js" fn ConstrainPoint2D::as_constrain_point2_d_parameters(
+  self : ConstrainPoint2D,
+) -> ConstrainPoint2DParameters? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// RedEyeReduction enum
 pub(all) enum RedEyeReduction {
   Never
@@ -37,9 +65,9 @@ pub(all) enum RedEyeReduction {
 /// Convert to string value
 pub fn RedEyeReduction::to_string(self : RedEyeReduction) -> String {
   match self {
-    Never => "never"
-    Always => "always"
-    Controllable => "controllable"
+    RedEyeReduction::Never => "never"
+    RedEyeReduction::Always => "always"
+    RedEyeReduction::Controllable => "controllable"
   }
 }
 
@@ -47,9 +75,9 @@ pub fn RedEyeReduction::to_string(self : RedEyeReduction) -> String {
 /// Parse from string value
 pub fn RedEyeReduction::from_string(s : String) -> RedEyeReduction? {
   match s {
-    "never" => Some(Never)
-    "always" => Some(Always)
-    "controllable" => Some(Controllable)
+    "never" => Some(RedEyeReduction::Never)
+    "always" => Some(RedEyeReduction::Always)
+    "controllable" => Some(RedEyeReduction::Controllable)
     _ => None
   }
 }
@@ -66,9 +94,9 @@ pub(all) enum FillLightMode {
 /// Convert to string value
 pub fn FillLightMode::to_string(self : FillLightMode) -> String {
   match self {
-    Auto => "auto"
-    Off => "off"
-    Flash => "flash"
+    FillLightMode::Auto => "auto"
+    FillLightMode::Off => "off"
+    FillLightMode::Flash => "flash"
   }
 }
 
@@ -76,9 +104,9 @@ pub fn FillLightMode::to_string(self : FillLightMode) -> String {
 /// Parse from string value
 pub fn FillLightMode::from_string(s : String) -> FillLightMode? {
   match s {
-    "auto" => Some(Auto)
-    "off" => Some(Off)
-    "flash" => Some(Flash)
+    "auto" => Some(FillLightMode::Auto)
+    "off" => Some(FillLightMode::Off)
+    "flash" => Some(FillLightMode::Flash)
     _ => None
   }
 }
@@ -96,10 +124,10 @@ pub(all) enum MeteringMode {
 /// Convert to string value
 pub fn MeteringMode::to_string(self : MeteringMode) -> String {
   match self {
-    None => "none"
-    Manual => "manual"
-    SingleShot => "single-shot"
-    Continuous => "continuous"
+    MeteringMode::None => "none"
+    MeteringMode::Manual => "manual"
+    MeteringMode::SingleShot => "single-shot"
+    MeteringMode::Continuous => "continuous"
   }
 }
 
@@ -107,10 +135,10 @@ pub fn MeteringMode::to_string(self : MeteringMode) -> String {
 /// Parse from string value
 pub fn MeteringMode::from_string(s : String) -> MeteringMode? {
   match s {
-    "none" => Some(None)
-    "manual" => Some(Manual)
-    "single-shot" => Some(SingleShot)
-    "continuous" => Some(Continuous)
+    "none" => Some(MeteringMode::None)
+    "manual" => Some(MeteringMode::Manual)
+    "single-shot" => Some(MeteringMode::SingleShot)
+    "continuous" => Some(MeteringMode::Continuous)
     _ => None
   }
 }

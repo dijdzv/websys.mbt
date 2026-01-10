@@ -71,7 +71,7 @@ pub extern "js" fn PeriodicSyncManager::register_with_options(
 ///|
 pub extern "js" fn PeriodicSyncManager::get_tags(
   self : PeriodicSyncManager,
-) -> Promise[Array[String]] =
+) -> Promise[Unit] =
   #| (self) => self.getTags()
 
 ///|

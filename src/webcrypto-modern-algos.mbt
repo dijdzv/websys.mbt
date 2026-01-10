@@ -18,14 +18,14 @@ pub(all) enum KeyFormat {
 /// Convert to string value
 pub fn KeyFormat::to_string(self : KeyFormat) -> String {
   match self {
-    RawPublic => "raw-public"
-    RawPrivate => "raw-private"
-    RawSeed => "raw-seed"
-    RawSecret => "raw-secret"
-    Raw => "raw"
-    Spki => "spki"
-    Pkcs8 => "pkcs8"
-    Jwk => "jwk"
+    KeyFormat::RawPublic => "raw-public"
+    KeyFormat::RawPrivate => "raw-private"
+    KeyFormat::RawSeed => "raw-seed"
+    KeyFormat::RawSecret => "raw-secret"
+    KeyFormat::Raw => "raw"
+    KeyFormat::Spki => "spki"
+    KeyFormat::Pkcs8 => "pkcs8"
+    KeyFormat::Jwk => "jwk"
   }
 }
 
@@ -33,14 +33,14 @@ pub fn KeyFormat::to_string(self : KeyFormat) -> String {
 /// Parse from string value
 pub fn KeyFormat::from_string(s : String) -> KeyFormat? {
   match s {
-    "raw-public" => Some(RawPublic)
-    "raw-private" => Some(RawPrivate)
-    "raw-seed" => Some(RawSeed)
-    "raw-secret" => Some(RawSecret)
-    "raw" => Some(Raw)
-    "spki" => Some(Spki)
-    "pkcs8" => Some(Pkcs8)
-    "jwk" => Some(Jwk)
+    "raw-public" => Some(KeyFormat::RawPublic)
+    "raw-private" => Some(KeyFormat::RawPrivate)
+    "raw-seed" => Some(KeyFormat::RawSeed)
+    "raw-secret" => Some(KeyFormat::RawSecret)
+    "raw" => Some(KeyFormat::Raw)
+    "spki" => Some(KeyFormat::Spki)
+    "pkcs8" => Some(KeyFormat::Pkcs8)
+    "jwk" => Some(KeyFormat::Jwk)
     _ => None
   }
 }
@@ -66,18 +66,18 @@ pub(all) enum KeyUsage {
 /// Convert to string value
 pub fn KeyUsage::to_string(self : KeyUsage) -> String {
   match self {
-    Encrypt => "encrypt"
-    Decrypt => "decrypt"
-    Sign => "sign"
-    Verify => "verify"
-    DeriveKey => "deriveKey"
-    DeriveBits => "deriveBits"
-    WrapKey => "wrapKey"
-    UnwrapKey => "unwrapKey"
-    EncapsulateKey => "encapsulateKey"
-    EncapsulateBits => "encapsulateBits"
-    DecapsulateKey => "decapsulateKey"
-    DecapsulateBits => "decapsulateBits"
+    KeyUsage::Encrypt => "encrypt"
+    KeyUsage::Decrypt => "decrypt"
+    KeyUsage::Sign => "sign"
+    KeyUsage::Verify => "verify"
+    KeyUsage::DeriveKey => "deriveKey"
+    KeyUsage::DeriveBits => "deriveBits"
+    KeyUsage::WrapKey => "wrapKey"
+    KeyUsage::UnwrapKey => "unwrapKey"
+    KeyUsage::EncapsulateKey => "encapsulateKey"
+    KeyUsage::EncapsulateBits => "encapsulateBits"
+    KeyUsage::DecapsulateKey => "decapsulateKey"
+    KeyUsage::DecapsulateBits => "decapsulateBits"
   }
 }
 
@@ -85,18 +85,18 @@ pub fn KeyUsage::to_string(self : KeyUsage) -> String {
 /// Parse from string value
 pub fn KeyUsage::from_string(s : String) -> KeyUsage? {
   match s {
-    "encrypt" => Some(Encrypt)
-    "decrypt" => Some(Decrypt)
-    "sign" => Some(Sign)
-    "verify" => Some(Verify)
-    "deriveKey" => Some(DeriveKey)
-    "deriveBits" => Some(DeriveBits)
-    "wrapKey" => Some(WrapKey)
-    "unwrapKey" => Some(UnwrapKey)
-    "encapsulateKey" => Some(EncapsulateKey)
-    "encapsulateBits" => Some(EncapsulateBits)
-    "decapsulateKey" => Some(DecapsulateKey)
-    "decapsulateBits" => Some(DecapsulateBits)
+    "encrypt" => Some(KeyUsage::Encrypt)
+    "decrypt" => Some(KeyUsage::Decrypt)
+    "sign" => Some(KeyUsage::Sign)
+    "verify" => Some(KeyUsage::Verify)
+    "deriveKey" => Some(KeyUsage::DeriveKey)
+    "deriveBits" => Some(KeyUsage::DeriveBits)
+    "wrapKey" => Some(KeyUsage::WrapKey)
+    "unwrapKey" => Some(KeyUsage::UnwrapKey)
+    "encapsulateKey" => Some(KeyUsage::EncapsulateKey)
+    "encapsulateBits" => Some(KeyUsage::EncapsulateBits)
+    "decapsulateKey" => Some(KeyUsage::DecapsulateKey)
+    "decapsulateBits" => Some(KeyUsage::DecapsulateBits)
     _ => None
   }
 }

@@ -13,9 +13,9 @@ pub(all) enum XRDOMOverlayType {
 /// Convert to string value
 pub fn XRDOMOverlayType::to_string(self : XRDOMOverlayType) -> String {
   match self {
-    Screen => "screen"
-    Floating => "floating"
-    HeadLocked => "head-locked"
+    XRDOMOverlayType::Screen => "screen"
+    XRDOMOverlayType::Floating => "floating"
+    XRDOMOverlayType::HeadLocked => "head-locked"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn XRDOMOverlayType::to_string(self : XRDOMOverlayType) -> String {
 /// Parse from string value
 pub fn XRDOMOverlayType::from_string(s : String) -> XRDOMOverlayType? {
   match s {
-    "screen" => Some(Screen)
-    "floating" => Some(Floating)
-    "head-locked" => Some(HeadLocked)
+    "screen" => Some(XRDOMOverlayType::Screen)
+    "floating" => Some(XRDOMOverlayType::Floating)
+    "head-locked" => Some(XRDOMOverlayType::HeadLocked)
     _ => None
   }
 }

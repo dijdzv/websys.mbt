@@ -15,9 +15,9 @@ pub fn XREnvironmentBlendMode::to_string(
   self : XREnvironmentBlendMode,
 ) -> String {
   match self {
-    Opaque => "opaque"
-    AlphaBlend => "alpha-blend"
-    Additive => "additive"
+    XREnvironmentBlendMode::Opaque => "opaque"
+    XREnvironmentBlendMode::AlphaBlend => "alpha-blend"
+    XREnvironmentBlendMode::Additive => "additive"
   }
 }
 
@@ -27,9 +27,9 @@ pub fn XREnvironmentBlendMode::from_string(
   s : String,
 ) -> XREnvironmentBlendMode? {
   match s {
-    "opaque" => Some(Opaque)
-    "alpha-blend" => Some(AlphaBlend)
-    "additive" => Some(Additive)
+    "opaque" => Some(XREnvironmentBlendMode::Opaque)
+    "alpha-blend" => Some(XREnvironmentBlendMode::AlphaBlend)
+    "additive" => Some(XREnvironmentBlendMode::Additive)
     _ => None
   }
 }
@@ -45,8 +45,8 @@ pub(all) enum XRInteractionMode {
 /// Convert to string value
 pub fn XRInteractionMode::to_string(self : XRInteractionMode) -> String {
   match self {
-    ScreenSpace => "screen-space"
-    WorldSpace => "world-space"
+    XRInteractionMode::ScreenSpace => "screen-space"
+    XRInteractionMode::WorldSpace => "world-space"
   }
 }
 
@@ -54,8 +54,8 @@ pub fn XRInteractionMode::to_string(self : XRInteractionMode) -> String {
 /// Parse from string value
 pub fn XRInteractionMode::from_string(s : String) -> XRInteractionMode? {
   match s {
-    "screen-space" => Some(ScreenSpace)
-    "world-space" => Some(WorldSpace)
+    "screen-space" => Some(XRInteractionMode::ScreenSpace)
+    "world-space" => Some(XRInteractionMode::WorldSpace)
     _ => None
   }
 }

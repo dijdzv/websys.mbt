@@ -13,9 +13,9 @@ pub(all) enum GamepadMappingType {
 /// Convert to string value
 pub fn GamepadMappingType::to_string(self : GamepadMappingType) -> String {
   match self {
-    Empty => ""
-    Standard => "standard"
-    XrStandard => "xr-standard"
+    GamepadMappingType::Empty => ""
+    GamepadMappingType::Standard => "standard"
+    GamepadMappingType::XrStandard => "xr-standard"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn GamepadMappingType::to_string(self : GamepadMappingType) -> String {
 /// Parse from string value
 pub fn GamepadMappingType::from_string(s : String) -> GamepadMappingType? {
   match s {
-    "" => Some(Empty)
-    "standard" => Some(Standard)
-    "xr-standard" => Some(XrStandard)
+    "" => Some(GamepadMappingType::Empty)
+    "standard" => Some(GamepadMappingType::Standard)
+    "xr-standard" => Some(GamepadMappingType::XrStandard)
     _ => None
   }
 }
@@ -41,8 +41,8 @@ pub(all) enum GamepadHapticsResult {
 /// Convert to string value
 pub fn GamepadHapticsResult::to_string(self : GamepadHapticsResult) -> String {
   match self {
-    Complete => "complete"
-    Preempted => "preempted"
+    GamepadHapticsResult::Complete => "complete"
+    GamepadHapticsResult::Preempted => "preempted"
   }
 }
 
@@ -50,8 +50,8 @@ pub fn GamepadHapticsResult::to_string(self : GamepadHapticsResult) -> String {
 /// Parse from string value
 pub fn GamepadHapticsResult::from_string(s : String) -> GamepadHapticsResult? {
   match s {
-    "complete" => Some(Complete)
-    "preempted" => Some(Preempted)
+    "complete" => Some(GamepadHapticsResult::Complete)
+    "preempted" => Some(GamepadHapticsResult::Preempted)
     _ => None
   }
 }
@@ -69,8 +69,8 @@ pub fn GamepadHapticEffectType::to_string(
   self : GamepadHapticEffectType,
 ) -> String {
   match self {
-    DualRumble => "dual-rumble"
-    TriggerRumble => "trigger-rumble"
+    GamepadHapticEffectType::DualRumble => "dual-rumble"
+    GamepadHapticEffectType::TriggerRumble => "trigger-rumble"
   }
 }
 
@@ -80,8 +80,8 @@ pub fn GamepadHapticEffectType::from_string(
   s : String,
 ) -> GamepadHapticEffectType? {
   match s {
-    "dual-rumble" => Some(DualRumble)
-    "trigger-rumble" => Some(TriggerRumble)
+    "dual-rumble" => Some(GamepadHapticEffectType::DualRumble)
+    "trigger-rumble" => Some(GamepadHapticEffectType::TriggerRumble)
     _ => None
   }
 }

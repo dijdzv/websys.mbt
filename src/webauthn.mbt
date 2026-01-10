@@ -30,8 +30,8 @@ pub fn AuthenticatorAttachment::to_string(
   self : AuthenticatorAttachment,
 ) -> String {
   match self {
-    Platform => "platform"
-    CrossPlatform => "cross-platform"
+    AuthenticatorAttachment::Platform => "platform"
+    AuthenticatorAttachment::CrossPlatform => "cross-platform"
   }
 }
 
@@ -41,8 +41,8 @@ pub fn AuthenticatorAttachment::from_string(
   s : String,
 ) -> AuthenticatorAttachment? {
   match s {
-    "platform" => Some(Platform)
-    "cross-platform" => Some(CrossPlatform)
+    "platform" => Some(AuthenticatorAttachment::Platform)
+    "cross-platform" => Some(AuthenticatorAttachment::CrossPlatform)
     _ => None
   }
 }
@@ -61,9 +61,9 @@ pub fn ResidentKeyRequirement::to_string(
   self : ResidentKeyRequirement,
 ) -> String {
   match self {
-    Discouraged => "discouraged"
-    Preferred => "preferred"
-    Required => "required"
+    ResidentKeyRequirement::Discouraged => "discouraged"
+    ResidentKeyRequirement::Preferred => "preferred"
+    ResidentKeyRequirement::Required => "required"
   }
 }
 
@@ -73,9 +73,9 @@ pub fn ResidentKeyRequirement::from_string(
   s : String,
 ) -> ResidentKeyRequirement? {
   match s {
-    "discouraged" => Some(Discouraged)
-    "preferred" => Some(Preferred)
-    "required" => Some(Required)
+    "discouraged" => Some(ResidentKeyRequirement::Discouraged)
+    "preferred" => Some(ResidentKeyRequirement::Preferred)
+    "required" => Some(ResidentKeyRequirement::Required)
     _ => None
   }
 }
@@ -95,10 +95,10 @@ pub fn AttestationConveyancePreference::to_string(
   self : AttestationConveyancePreference,
 ) -> String {
   match self {
-    None => "none"
-    Indirect => "indirect"
-    Direct => "direct"
-    Enterprise => "enterprise"
+    AttestationConveyancePreference::None => "none"
+    AttestationConveyancePreference::Indirect => "indirect"
+    AttestationConveyancePreference::Direct => "direct"
+    AttestationConveyancePreference::Enterprise => "enterprise"
   }
 }
 
@@ -108,10 +108,10 @@ pub fn AttestationConveyancePreference::from_string(
   s : String,
 ) -> AttestationConveyancePreference? {
   match s {
-    "none" => Some(None)
-    "indirect" => Some(Indirect)
-    "direct" => Some(Direct)
-    "enterprise" => Some(Enterprise)
+    "none" => Some(AttestationConveyancePreference::None)
+    "indirect" => Some(AttestationConveyancePreference::Indirect)
+    "direct" => Some(AttestationConveyancePreference::Direct)
+    "enterprise" => Some(AttestationConveyancePreference::Enterprise)
     _ => None
   }
 }
@@ -127,8 +127,8 @@ pub(all) enum TokenBindingStatus {
 /// Convert to string value
 pub fn TokenBindingStatus::to_string(self : TokenBindingStatus) -> String {
   match self {
-    Present => "present"
-    Supported => "supported"
+    TokenBindingStatus::Present => "present"
+    TokenBindingStatus::Supported => "supported"
   }
 }
 
@@ -136,8 +136,8 @@ pub fn TokenBindingStatus::to_string(self : TokenBindingStatus) -> String {
 /// Parse from string value
 pub fn TokenBindingStatus::from_string(s : String) -> TokenBindingStatus? {
   match s {
-    "present" => Some(Present)
-    "supported" => Some(Supported)
+    "present" => Some(TokenBindingStatus::Present)
+    "supported" => Some(TokenBindingStatus::Supported)
     _ => None
   }
 }
@@ -154,7 +154,7 @@ pub fn PublicKeyCredentialType::to_string(
   self : PublicKeyCredentialType,
 ) -> String {
   match self {
-    PublicKey => "public-key"
+    PublicKeyCredentialType::PublicKey => "public-key"
   }
 }
 
@@ -164,7 +164,7 @@ pub fn PublicKeyCredentialType::from_string(
   s : String,
 ) -> PublicKeyCredentialType? {
   match s {
-    "public-key" => Some(PublicKey)
+    "public-key" => Some(PublicKeyCredentialType::PublicKey)
     _ => None
   }
 }
@@ -186,12 +186,12 @@ pub fn AuthenticatorTransport::to_string(
   self : AuthenticatorTransport,
 ) -> String {
   match self {
-    Usb => "usb"
-    Nfc => "nfc"
-    Ble => "ble"
-    SmartCard => "smart-card"
-    Hybrid => "hybrid"
-    Internal => "internal"
+    AuthenticatorTransport::Usb => "usb"
+    AuthenticatorTransport::Nfc => "nfc"
+    AuthenticatorTransport::Ble => "ble"
+    AuthenticatorTransport::SmartCard => "smart-card"
+    AuthenticatorTransport::Hybrid => "hybrid"
+    AuthenticatorTransport::Internal => "internal"
   }
 }
 
@@ -201,12 +201,12 @@ pub fn AuthenticatorTransport::from_string(
   s : String,
 ) -> AuthenticatorTransport? {
   match s {
-    "usb" => Some(Usb)
-    "nfc" => Some(Nfc)
-    "ble" => Some(Ble)
-    "smart-card" => Some(SmartCard)
-    "hybrid" => Some(Hybrid)
-    "internal" => Some(Internal)
+    "usb" => Some(AuthenticatorTransport::Usb)
+    "nfc" => Some(AuthenticatorTransport::Nfc)
+    "ble" => Some(AuthenticatorTransport::Ble)
+    "smart-card" => Some(AuthenticatorTransport::SmartCard)
+    "hybrid" => Some(AuthenticatorTransport::Hybrid)
+    "internal" => Some(AuthenticatorTransport::Internal)
     _ => None
   }
 }
@@ -225,9 +225,9 @@ pub fn UserVerificationRequirement::to_string(
   self : UserVerificationRequirement,
 ) -> String {
   match self {
-    Required => "required"
-    Preferred => "preferred"
-    Discouraged => "discouraged"
+    UserVerificationRequirement::Required => "required"
+    UserVerificationRequirement::Preferred => "preferred"
+    UserVerificationRequirement::Discouraged => "discouraged"
   }
 }
 
@@ -237,9 +237,9 @@ pub fn UserVerificationRequirement::from_string(
   s : String,
 ) -> UserVerificationRequirement? {
   match s {
-    "required" => Some(Required)
-    "preferred" => Some(Preferred)
-    "discouraged" => Some(Discouraged)
+    "required" => Some(UserVerificationRequirement::Required)
+    "preferred" => Some(UserVerificationRequirement::Preferred)
+    "discouraged" => Some(UserVerificationRequirement::Discouraged)
     _ => None
   }
 }
@@ -262,15 +262,18 @@ pub(all) enum ClientCapability {
 /// Convert to string value
 pub fn ClientCapability::to_string(self : ClientCapability) -> String {
   match self {
-    ConditionalCreate => "conditionalCreate"
-    ConditionalGet => "conditionalGet"
-    HybridTransport => "hybridTransport"
-    PasskeyPlatformAuthenticator => "passkeyPlatformAuthenticator"
-    UserVerifyingPlatformAuthenticator => "userVerifyingPlatformAuthenticator"
-    RelatedOrigins => "relatedOrigins"
-    SignalAllAcceptedCredentials => "signalAllAcceptedCredentials"
-    SignalCurrentUserDetails => "signalCurrentUserDetails"
-    SignalUnknownCredential => "signalUnknownCredential"
+    ClientCapability::ConditionalCreate => "conditionalCreate"
+    ClientCapability::ConditionalGet => "conditionalGet"
+    ClientCapability::HybridTransport => "hybridTransport"
+    ClientCapability::PasskeyPlatformAuthenticator =>
+      "passkeyPlatformAuthenticator"
+    ClientCapability::UserVerifyingPlatformAuthenticator =>
+      "userVerifyingPlatformAuthenticator"
+    ClientCapability::RelatedOrigins => "relatedOrigins"
+    ClientCapability::SignalAllAcceptedCredentials =>
+      "signalAllAcceptedCredentials"
+    ClientCapability::SignalCurrentUserDetails => "signalCurrentUserDetails"
+    ClientCapability::SignalUnknownCredential => "signalUnknownCredential"
   }
 }
 
@@ -278,16 +281,19 @@ pub fn ClientCapability::to_string(self : ClientCapability) -> String {
 /// Parse from string value
 pub fn ClientCapability::from_string(s : String) -> ClientCapability? {
   match s {
-    "conditionalCreate" => Some(ConditionalCreate)
-    "conditionalGet" => Some(ConditionalGet)
-    "hybridTransport" => Some(HybridTransport)
-    "passkeyPlatformAuthenticator" => Some(PasskeyPlatformAuthenticator)
+    "conditionalCreate" => Some(ClientCapability::ConditionalCreate)
+    "conditionalGet" => Some(ClientCapability::ConditionalGet)
+    "hybridTransport" => Some(ClientCapability::HybridTransport)
+    "passkeyPlatformAuthenticator" =>
+      Some(ClientCapability::PasskeyPlatformAuthenticator)
     "userVerifyingPlatformAuthenticator" =>
-      Some(UserVerifyingPlatformAuthenticator)
-    "relatedOrigins" => Some(RelatedOrigins)
-    "signalAllAcceptedCredentials" => Some(SignalAllAcceptedCredentials)
-    "signalCurrentUserDetails" => Some(SignalCurrentUserDetails)
-    "signalUnknownCredential" => Some(SignalUnknownCredential)
+      Some(ClientCapability::UserVerifyingPlatformAuthenticator)
+    "relatedOrigins" => Some(ClientCapability::RelatedOrigins)
+    "signalAllAcceptedCredentials" =>
+      Some(ClientCapability::SignalAllAcceptedCredentials)
+    "signalCurrentUserDetails" =>
+      Some(ClientCapability::SignalCurrentUserDetails)
+    "signalUnknownCredential" => Some(ClientCapability::SignalUnknownCredential)
     _ => None
   }
 }
@@ -306,9 +312,9 @@ pub fn PublicKeyCredentialHint::to_string(
   self : PublicKeyCredentialHint,
 ) -> String {
   match self {
-    SecurityKey => "security-key"
-    ClientDevice => "client-device"
-    Hybrid => "hybrid"
+    PublicKeyCredentialHint::SecurityKey => "security-key"
+    PublicKeyCredentialHint::ClientDevice => "client-device"
+    PublicKeyCredentialHint::Hybrid => "hybrid"
   }
 }
 
@@ -318,9 +324,9 @@ pub fn PublicKeyCredentialHint::from_string(
   s : String,
 ) -> PublicKeyCredentialHint? {
   match s {
-    "security-key" => Some(SecurityKey)
-    "client-device" => Some(ClientDevice)
-    "hybrid" => Some(Hybrid)
+    "security-key" => Some(PublicKeyCredentialHint::SecurityKey)
+    "client-device" => Some(PublicKeyCredentialHint::ClientDevice)
+    "hybrid" => Some(PublicKeyCredentialHint::Hybrid)
     _ => None
   }
 }
@@ -336,8 +342,8 @@ pub(all) enum LargeBlobSupport {
 /// Convert to string value
 pub fn LargeBlobSupport::to_string(self : LargeBlobSupport) -> String {
   match self {
-    Required => "required"
-    Preferred => "preferred"
+    LargeBlobSupport::Required => "required"
+    LargeBlobSupport::Preferred => "preferred"
   }
 }
 
@@ -345,8 +351,8 @@ pub fn LargeBlobSupport::to_string(self : LargeBlobSupport) -> String {
 /// Parse from string value
 pub fn LargeBlobSupport::from_string(s : String) -> LargeBlobSupport? {
   match s {
-    "required" => Some(Required)
-    "preferred" => Some(Preferred)
+    "required" => Some(LargeBlobSupport::Required)
+    "preferred" => Some(LargeBlobSupport::Preferred)
     _ => None
   }
 }

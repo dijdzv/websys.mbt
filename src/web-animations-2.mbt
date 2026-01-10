@@ -14,8 +14,8 @@ pub fn IterationCompositeOperation::to_string(
   self : IterationCompositeOperation,
 ) -> String {
   match self {
-    Replace => "replace"
-    Accumulate => "accumulate"
+    IterationCompositeOperation::Replace => "replace"
+    IterationCompositeOperation::Accumulate => "accumulate"
   }
 }
 
@@ -25,8 +25,8 @@ pub fn IterationCompositeOperation::from_string(
   s : String,
 ) -> IterationCompositeOperation? {
   match s {
-    "replace" => Some(Replace)
-    "accumulate" => Some(Accumulate)
+    "replace" => Some(IterationCompositeOperation::Replace)
+    "accumulate" => Some(IterationCompositeOperation::Accumulate)
     _ => None
   }
 }
@@ -46,10 +46,10 @@ pub fn AnimationTriggerBehavior::to_string(
   self : AnimationTriggerBehavior,
 ) -> String {
   match self {
-    Once => "once"
-    Repeat => "repeat"
-    Alternate => "alternate"
-    State => "state"
+    AnimationTriggerBehavior::Once => "once"
+    AnimationTriggerBehavior::Repeat => "repeat"
+    AnimationTriggerBehavior::Alternate => "alternate"
+    AnimationTriggerBehavior::State => "state"
   }
 }
 
@@ -59,10 +59,10 @@ pub fn AnimationTriggerBehavior::from_string(
   s : String,
 ) -> AnimationTriggerBehavior? {
   match s {
-    "once" => Some(Once)
-    "repeat" => Some(Repeat)
-    "alternate" => Some(Alternate)
-    "state" => Some(State)
+    "once" => Some(AnimationTriggerBehavior::Once)
+    "repeat" => Some(AnimationTriggerBehavior::Repeat)
+    "alternate" => Some(AnimationTriggerBehavior::Alternate)
+    "state" => Some(AnimationTriggerBehavior::State)
     _ => None
   }
 }
@@ -74,7 +74,7 @@ pub type EffectCallback
 ///|
 /// Create EffectCallback from a MoonBit function
 pub extern "js" fn EffectCallback::from_fn(
-  handler : (Double?, JsValue, Animation) -> Unit,
+  handler : (Double?, ElementOrCSSPseudoElement, Animation) -> Unit,
 ) -> EffectCallback =
   #| (handler) => handler
 
@@ -460,7 +460,7 @@ pub extern "js" fn GroupEffect::to_js_value(self : GroupEffect) -> JsValue =
 ///|
 pub extern "js" fn GroupEffect::new(
   children : Array[AnimationEffect],
-  timing : JsValue,
+  timing : DoubleOrEffectTiming,
 ) -> GroupEffect =
   #| (children, timing) => new GroupEffect(children, timing)
 
@@ -543,7 +543,7 @@ pub extern "js" fn SequenceEffect::to_js_value(
 ///|
 pub extern "js" fn SequenceEffect::new(
   children : Array[AnimationEffect],
-  timing : JsValue,
+  timing : DoubleOrEffectTiming,
 ) -> SequenceEffect =
   #| (children, timing) => new SequenceEffect(children, timing)
 

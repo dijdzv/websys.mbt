@@ -14,8 +14,8 @@ pub fn MagnetometerLocalCoordinateSystem::to_string(
   self : MagnetometerLocalCoordinateSystem,
 ) -> String {
   match self {
-    Device => "device"
-    Screen => "screen"
+    MagnetometerLocalCoordinateSystem::Device => "device"
+    MagnetometerLocalCoordinateSystem::Screen => "screen"
   }
 }
 
@@ -25,8 +25,8 @@ pub fn MagnetometerLocalCoordinateSystem::from_string(
   s : String,
 ) -> MagnetometerLocalCoordinateSystem? {
   match s {
-    "device" => Some(Device)
-    "screen" => Some(Screen)
+    "device" => Some(MagnetometerLocalCoordinateSystem::Device)
+    "screen" => Some(MagnetometerLocalCoordinateSystem::Screen)
     _ => None
   }
 }

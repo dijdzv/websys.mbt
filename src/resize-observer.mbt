@@ -15,9 +15,10 @@ pub fn ResizeObserverBoxOptions::to_string(
   self : ResizeObserverBoxOptions,
 ) -> String {
   match self {
-    BorderBox => "border-box"
-    ContentBox => "content-box"
-    DevicePixelContentBox => "device-pixel-content-box"
+    ResizeObserverBoxOptions::BorderBox => "border-box"
+    ResizeObserverBoxOptions::ContentBox => "content-box"
+    ResizeObserverBoxOptions::DevicePixelContentBox =>
+      "device-pixel-content-box"
   }
 }
 
@@ -27,9 +28,10 @@ pub fn ResizeObserverBoxOptions::from_string(
   s : String,
 ) -> ResizeObserverBoxOptions? {
   match s {
-    "border-box" => Some(BorderBox)
-    "content-box" => Some(ContentBox)
-    "device-pixel-content-box" => Some(DevicePixelContentBox)
+    "border-box" => Some(ResizeObserverBoxOptions::BorderBox)
+    "content-box" => Some(ResizeObserverBoxOptions::ContentBox)
+    "device-pixel-content-box" =>
+      Some(ResizeObserverBoxOptions::DevicePixelContentBox)
     _ => None
   }
 }

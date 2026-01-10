@@ -14,10 +14,10 @@ pub(all) enum PaymentDelegation {
 /// Convert to string value
 pub fn PaymentDelegation::to_string(self : PaymentDelegation) -> String {
   match self {
-    ShippingAddress => "shippingAddress"
-    PayerName => "payerName"
-    PayerPhone => "payerPhone"
-    PayerEmail => "payerEmail"
+    PaymentDelegation::ShippingAddress => "shippingAddress"
+    PaymentDelegation::PayerName => "payerName"
+    PaymentDelegation::PayerPhone => "payerPhone"
+    PaymentDelegation::PayerEmail => "payerEmail"
   }
 }
 
@@ -25,10 +25,10 @@ pub fn PaymentDelegation::to_string(self : PaymentDelegation) -> String {
 /// Parse from string value
 pub fn PaymentDelegation::from_string(s : String) -> PaymentDelegation? {
   match s {
-    "shippingAddress" => Some(ShippingAddress)
-    "payerName" => Some(PayerName)
-    "payerPhone" => Some(PayerPhone)
-    "payerEmail" => Some(PayerEmail)
+    "shippingAddress" => Some(PaymentDelegation::ShippingAddress)
+    "payerName" => Some(PaymentDelegation::PayerName)
+    "payerPhone" => Some(PaymentDelegation::PayerPhone)
+    "payerEmail" => Some(PaymentDelegation::PayerEmail)
     _ => None
   }
 }

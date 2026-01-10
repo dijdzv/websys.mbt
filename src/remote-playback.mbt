@@ -13,9 +13,9 @@ pub(all) enum RemotePlaybackState {
 /// Convert to string value
 pub fn RemotePlaybackState::to_string(self : RemotePlaybackState) -> String {
   match self {
-    Connecting => "connecting"
-    Connected => "connected"
-    Disconnected => "disconnected"
+    RemotePlaybackState::Connecting => "connecting"
+    RemotePlaybackState::Connected => "connected"
+    RemotePlaybackState::Disconnected => "disconnected"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn RemotePlaybackState::to_string(self : RemotePlaybackState) -> String {
 /// Parse from string value
 pub fn RemotePlaybackState::from_string(s : String) -> RemotePlaybackState? {
   match s {
-    "connecting" => Some(Connecting)
-    "connected" => Some(Connected)
-    "disconnected" => Some(Disconnected)
+    "connecting" => Some(RemotePlaybackState::Connecting)
+    "connected" => Some(RemotePlaybackState::Connected)
+    "disconnected" => Some(RemotePlaybackState::Disconnected)
     _ => None
   }
 }

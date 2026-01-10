@@ -15,9 +15,9 @@ pub fn WebTransportReliabilityMode::to_string(
   self : WebTransportReliabilityMode,
 ) -> String {
   match self {
-    Pending => "pending"
-    ReliableOnly => "reliable-only"
-    SupportsUnreliable => "supports-unreliable"
+    WebTransportReliabilityMode::Pending => "pending"
+    WebTransportReliabilityMode::ReliableOnly => "reliable-only"
+    WebTransportReliabilityMode::SupportsUnreliable => "supports-unreliable"
   }
 }
 
@@ -27,9 +27,10 @@ pub fn WebTransportReliabilityMode::from_string(
   s : String,
 ) -> WebTransportReliabilityMode? {
   match s {
-    "pending" => Some(Pending)
-    "reliable-only" => Some(ReliableOnly)
-    "supports-unreliable" => Some(SupportsUnreliable)
+    "pending" => Some(WebTransportReliabilityMode::Pending)
+    "reliable-only" => Some(WebTransportReliabilityMode::ReliableOnly)
+    "supports-unreliable" =>
+      Some(WebTransportReliabilityMode::SupportsUnreliable)
     _ => None
   }
 }
@@ -48,9 +49,9 @@ pub fn WebTransportCongestionControl::to_string(
   self : WebTransportCongestionControl,
 ) -> String {
   match self {
-    Default => "default"
-    Throughput => "throughput"
-    LowLatency => "low-latency"
+    WebTransportCongestionControl::Default => "default"
+    WebTransportCongestionControl::Throughput => "throughput"
+    WebTransportCongestionControl::LowLatency => "low-latency"
   }
 }
 
@@ -60,9 +61,9 @@ pub fn WebTransportCongestionControl::from_string(
   s : String,
 ) -> WebTransportCongestionControl? {
   match s {
-    "default" => Some(Default)
-    "throughput" => Some(Throughput)
-    "low-latency" => Some(LowLatency)
+    "default" => Some(WebTransportCongestionControl::Default)
+    "throughput" => Some(WebTransportCongestionControl::Throughput)
+    "low-latency" => Some(WebTransportCongestionControl::LowLatency)
     _ => None
   }
 }
@@ -80,8 +81,8 @@ pub fn WebTransportErrorSource::to_string(
   self : WebTransportErrorSource,
 ) -> String {
   match self {
-    Stream => "stream"
-    Session => "session"
+    WebTransportErrorSource::Stream => "stream"
+    WebTransportErrorSource::Session => "session"
   }
 }
 
@@ -91,8 +92,8 @@ pub fn WebTransportErrorSource::from_string(
   s : String,
 ) -> WebTransportErrorSource? {
   match s {
-    "stream" => Some(Stream)
-    "session" => Some(Session)
+    "stream" => Some(WebTransportErrorSource::Stream)
+    "session" => Some(WebTransportErrorSource::Session)
     _ => None
   }
 }

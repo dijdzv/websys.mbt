@@ -207,26 +207,26 @@ pub extern "js" fn PaintRenderingContext2D::set_image_smoothing_quality(
 ///|
 pub extern "js" fn PaintRenderingContext2D::get_stroke_style(
   self : PaintRenderingContext2D,
-) -> JsValue =
+) -> StringOrCanvasGradientOrCanvasPattern =
   #| (self) => self.strokeStyle
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::set_stroke_style(
   self : PaintRenderingContext2D,
-  value : JsValue,
+  value : StringOrCanvasGradientOrCanvasPattern,
 ) -> Unit =
   #| (self, value) => { self.strokeStyle = value }
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::get_fill_style(
   self : PaintRenderingContext2D,
-) -> JsValue =
+) -> StringOrCanvasGradientOrCanvasPattern =
   #| (self) => self.fillStyle
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::set_fill_style(
   self : PaintRenderingContext2D,
-  value : JsValue,
+  value : StringOrCanvasGradientOrCanvasPattern,
 ) -> Unit =
   #| (self, value) => { self.fillStyle = value }
 
@@ -674,7 +674,7 @@ pub extern "js" fn PaintRenderingContext2D::round_rect_with_radii(
   y : Double,
   w : Double,
   h : Double,
-  radii : JsValue,
+  radii : DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit,
 ) -> Unit =
   #| (self, x, y, w, h, radii) => self.roundRect(x, y, w, h, radii)
 

@@ -26,6 +26,34 @@ pub extern "js" fn PushMessageDataInit::from_string(
   #| (v) => v
 
 ///|
+/// Check if this PushMessageDataInit is BufferSource
+pub extern "js" fn PushMessageDataInit::is_buffer_source(
+  self : PushMessageDataInit,
+) -> Bool =
+  #| (self) => self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer
+
+///|
+/// Check if this PushMessageDataInit is String
+pub extern "js" fn PushMessageDataInit::is_string(
+  self : PushMessageDataInit,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get PushMessageDataInit as BufferSource
+pub extern "js" fn PushMessageDataInit::as_buffer_source(
+  self : PushMessageDataInit,
+) -> BufferSource? =
+  #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get PushMessageDataInit as String
+pub extern "js" fn PushMessageDataInit::as_string(
+  self : PushMessageDataInit,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// PushEncryptionKeyName enum
 pub(all) enum PushEncryptionKeyName {
   P256dh
@@ -36,8 +64,8 @@ pub(all) enum PushEncryptionKeyName {
 /// Convert to string value
 pub fn PushEncryptionKeyName::to_string(self : PushEncryptionKeyName) -> String {
   match self {
-    P256dh => "p256dh"
-    Auth => "auth"
+    PushEncryptionKeyName::P256dh => "p256dh"
+    PushEncryptionKeyName::Auth => "auth"
   }
 }
 
@@ -45,8 +73,8 @@ pub fn PushEncryptionKeyName::to_string(self : PushEncryptionKeyName) -> String 
 /// Parse from string value
 pub fn PushEncryptionKeyName::from_string(s : String) -> PushEncryptionKeyName? {
   match s {
-    "p256dh" => Some(P256dh)
-    "auth" => Some(Auth)
+    "p256dh" => Some(PushEncryptionKeyName::P256dh)
+    "auth" => Some(PushEncryptionKeyName::Auth)
     _ => None
   }
 }

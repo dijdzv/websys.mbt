@@ -12,8 +12,8 @@ pub(all) enum RefreshPolicy {
 /// Convert to string value
 pub fn RefreshPolicy::to_string(self : RefreshPolicy) -> String {
   match self {
-    None => "none"
-    Refresh => "refresh"
+    RefreshPolicy::None => "none"
+    RefreshPolicy::Refresh => "refresh"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn RefreshPolicy::to_string(self : RefreshPolicy) -> String {
 /// Parse from string value
 pub fn RefreshPolicy::from_string(s : String) -> RefreshPolicy? {
   match s {
-    "none" => Some(None)
-    "refresh" => Some(Refresh)
+    "none" => Some(RefreshPolicy::None)
+    "refresh" => Some(RefreshPolicy::Refresh)
     _ => None
   }
 }
@@ -37,7 +37,7 @@ pub(all) enum TokenVersion {
 /// Convert to string value
 pub fn TokenVersion::to_string(self : TokenVersion) -> String {
   match self {
-    N1 => "1"
+    TokenVersion::N1 => "1"
   }
 }
 
@@ -45,7 +45,7 @@ pub fn TokenVersion::to_string(self : TokenVersion) -> String {
 /// Parse from string value
 pub fn TokenVersion::from_string(s : String) -> TokenVersion? {
   match s {
-    "1" => Some(N1)
+    "1" => Some(TokenVersion::N1)
     _ => None
   }
 }
@@ -62,9 +62,9 @@ pub(all) enum OperationType {
 /// Convert to string value
 pub fn OperationType::to_string(self : OperationType) -> String {
   match self {
-    TokenRequest => "token-request"
-    SendRedemptionRecord => "send-redemption-record"
-    TokenRedemption => "token-redemption"
+    OperationType::TokenRequest => "token-request"
+    OperationType::SendRedemptionRecord => "send-redemption-record"
+    OperationType::TokenRedemption => "token-redemption"
   }
 }
 
@@ -72,9 +72,9 @@ pub fn OperationType::to_string(self : OperationType) -> String {
 /// Parse from string value
 pub fn OperationType::from_string(s : String) -> OperationType? {
   match s {
-    "token-request" => Some(TokenRequest)
-    "send-redemption-record" => Some(SendRedemptionRecord)
-    "token-redemption" => Some(TokenRedemption)
+    "token-request" => Some(OperationType::TokenRequest)
+    "send-redemption-record" => Some(OperationType::SendRedemptionRecord)
+    "token-redemption" => Some(OperationType::TokenRedemption)
     _ => None
   }
 }

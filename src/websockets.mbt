@@ -12,8 +12,8 @@ pub(all) enum BinaryType {
 /// Convert to string value
 pub fn BinaryType::to_string(self : BinaryType) -> String {
   match self {
-    Blob => "blob"
-    Arraybuffer => "arraybuffer"
+    BinaryType::Blob => "blob"
+    BinaryType::Arraybuffer => "arraybuffer"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn BinaryType::to_string(self : BinaryType) -> String {
 /// Parse from string value
 pub fn BinaryType::from_string(s : String) -> BinaryType? {
   match s {
-    "blob" => Some(Blob)
-    "arraybuffer" => Some(Arraybuffer)
+    "blob" => Some(BinaryType::Blob)
+    "arraybuffer" => Some(BinaryType::Arraybuffer)
     _ => None
   }
 }
@@ -61,7 +61,7 @@ pub extern "js" fn WebSocket::to_js_value(self : WebSocket) -> JsValue =
 ///|
 pub extern "js" fn WebSocket::new(
   url : String,
-  protocols : JsValue,
+  protocols : StringOrArrayOfString,
 ) -> WebSocket =
   #| (url, protocols) => new WebSocket(url, protocols)
 
@@ -173,7 +173,10 @@ pub extern "js" fn WebSocket::set_binary_type(
   #| (self, value) => { self.binaryType = value }
 
 ///|
-pub extern "js" fn WebSocket::send(self : WebSocket, data : JsValue) -> Unit =
+pub extern "js" fn WebSocket::send(
+  self : WebSocket,
+  data : BufferSourceOrBlobOrString,
+) -> Unit =
   #| (self, data) => self.send(data)
 
 ///|

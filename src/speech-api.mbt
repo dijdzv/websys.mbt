@@ -20,14 +20,14 @@ pub fn SpeechRecognitionErrorCode::to_string(
   self : SpeechRecognitionErrorCode,
 ) -> String {
   match self {
-    NoSpeech => "no-speech"
-    Aborted => "aborted"
-    AudioCapture => "audio-capture"
-    Network => "network"
-    NotAllowed => "not-allowed"
-    ServiceNotAllowed => "service-not-allowed"
-    LanguageNotSupported => "language-not-supported"
-    PhrasesNotSupported => "phrases-not-supported"
+    SpeechRecognitionErrorCode::NoSpeech => "no-speech"
+    SpeechRecognitionErrorCode::Aborted => "aborted"
+    SpeechRecognitionErrorCode::AudioCapture => "audio-capture"
+    SpeechRecognitionErrorCode::Network => "network"
+    SpeechRecognitionErrorCode::NotAllowed => "not-allowed"
+    SpeechRecognitionErrorCode::ServiceNotAllowed => "service-not-allowed"
+    SpeechRecognitionErrorCode::LanguageNotSupported => "language-not-supported"
+    SpeechRecognitionErrorCode::PhrasesNotSupported => "phrases-not-supported"
   }
 }
 
@@ -37,14 +37,16 @@ pub fn SpeechRecognitionErrorCode::from_string(
   s : String,
 ) -> SpeechRecognitionErrorCode? {
   match s {
-    "no-speech" => Some(NoSpeech)
-    "aborted" => Some(Aborted)
-    "audio-capture" => Some(AudioCapture)
-    "network" => Some(Network)
-    "not-allowed" => Some(NotAllowed)
-    "service-not-allowed" => Some(ServiceNotAllowed)
-    "language-not-supported" => Some(LanguageNotSupported)
-    "phrases-not-supported" => Some(PhrasesNotSupported)
+    "no-speech" => Some(SpeechRecognitionErrorCode::NoSpeech)
+    "aborted" => Some(SpeechRecognitionErrorCode::Aborted)
+    "audio-capture" => Some(SpeechRecognitionErrorCode::AudioCapture)
+    "network" => Some(SpeechRecognitionErrorCode::Network)
+    "not-allowed" => Some(SpeechRecognitionErrorCode::NotAllowed)
+    "service-not-allowed" => Some(SpeechRecognitionErrorCode::ServiceNotAllowed)
+    "language-not-supported" =>
+      Some(SpeechRecognitionErrorCode::LanguageNotSupported)
+    "phrases-not-supported" =>
+      Some(SpeechRecognitionErrorCode::PhrasesNotSupported)
     _ => None
   }
 }
@@ -62,10 +64,10 @@ pub(all) enum AvailabilityStatus {
 /// Convert to string value
 pub fn AvailabilityStatus::to_string(self : AvailabilityStatus) -> String {
   match self {
-    Unavailable => "unavailable"
-    Downloadable => "downloadable"
-    Downloading => "downloading"
-    Available => "available"
+    AvailabilityStatus::Unavailable => "unavailable"
+    AvailabilityStatus::Downloadable => "downloadable"
+    AvailabilityStatus::Downloading => "downloading"
+    AvailabilityStatus::Available => "available"
   }
 }
 
@@ -73,10 +75,10 @@ pub fn AvailabilityStatus::to_string(self : AvailabilityStatus) -> String {
 /// Parse from string value
 pub fn AvailabilityStatus::from_string(s : String) -> AvailabilityStatus? {
   match s {
-    "unavailable" => Some(Unavailable)
-    "downloadable" => Some(Downloadable)
-    "downloading" => Some(Downloading)
-    "available" => Some(Available)
+    "unavailable" => Some(AvailabilityStatus::Unavailable)
+    "downloadable" => Some(AvailabilityStatus::Downloadable)
+    "downloading" => Some(AvailabilityStatus::Downloading)
+    "available" => Some(AvailabilityStatus::Available)
     _ => None
   }
 }
@@ -104,18 +106,18 @@ pub fn SpeechSynthesisErrorCode::to_string(
   self : SpeechSynthesisErrorCode,
 ) -> String {
   match self {
-    Canceled => "canceled"
-    Interrupted => "interrupted"
-    AudioBusy => "audio-busy"
-    AudioHardware => "audio-hardware"
-    Network => "network"
-    SynthesisUnavailable => "synthesis-unavailable"
-    SynthesisFailed => "synthesis-failed"
-    LanguageUnavailable => "language-unavailable"
-    VoiceUnavailable => "voice-unavailable"
-    TextTooLong => "text-too-long"
-    InvalidArgument => "invalid-argument"
-    NotAllowed => "not-allowed"
+    SpeechSynthesisErrorCode::Canceled => "canceled"
+    SpeechSynthesisErrorCode::Interrupted => "interrupted"
+    SpeechSynthesisErrorCode::AudioBusy => "audio-busy"
+    SpeechSynthesisErrorCode::AudioHardware => "audio-hardware"
+    SpeechSynthesisErrorCode::Network => "network"
+    SpeechSynthesisErrorCode::SynthesisUnavailable => "synthesis-unavailable"
+    SpeechSynthesisErrorCode::SynthesisFailed => "synthesis-failed"
+    SpeechSynthesisErrorCode::LanguageUnavailable => "language-unavailable"
+    SpeechSynthesisErrorCode::VoiceUnavailable => "voice-unavailable"
+    SpeechSynthesisErrorCode::TextTooLong => "text-too-long"
+    SpeechSynthesisErrorCode::InvalidArgument => "invalid-argument"
+    SpeechSynthesisErrorCode::NotAllowed => "not-allowed"
   }
 }
 
@@ -125,18 +127,20 @@ pub fn SpeechSynthesisErrorCode::from_string(
   s : String,
 ) -> SpeechSynthesisErrorCode? {
   match s {
-    "canceled" => Some(Canceled)
-    "interrupted" => Some(Interrupted)
-    "audio-busy" => Some(AudioBusy)
-    "audio-hardware" => Some(AudioHardware)
-    "network" => Some(Network)
-    "synthesis-unavailable" => Some(SynthesisUnavailable)
-    "synthesis-failed" => Some(SynthesisFailed)
-    "language-unavailable" => Some(LanguageUnavailable)
-    "voice-unavailable" => Some(VoiceUnavailable)
-    "text-too-long" => Some(TextTooLong)
-    "invalid-argument" => Some(InvalidArgument)
-    "not-allowed" => Some(NotAllowed)
+    "canceled" => Some(SpeechSynthesisErrorCode::Canceled)
+    "interrupted" => Some(SpeechSynthesisErrorCode::Interrupted)
+    "audio-busy" => Some(SpeechSynthesisErrorCode::AudioBusy)
+    "audio-hardware" => Some(SpeechSynthesisErrorCode::AudioHardware)
+    "network" => Some(SpeechSynthesisErrorCode::Network)
+    "synthesis-unavailable" =>
+      Some(SpeechSynthesisErrorCode::SynthesisUnavailable)
+    "synthesis-failed" => Some(SpeechSynthesisErrorCode::SynthesisFailed)
+    "language-unavailable" =>
+      Some(SpeechSynthesisErrorCode::LanguageUnavailable)
+    "voice-unavailable" => Some(SpeechSynthesisErrorCode::VoiceUnavailable)
+    "text-too-long" => Some(SpeechSynthesisErrorCode::TextTooLong)
+    "invalid-argument" => Some(SpeechSynthesisErrorCode::InvalidArgument)
+    "not-allowed" => Some(SpeechSynthesisErrorCode::NotAllowed)
     _ => None
   }
 }

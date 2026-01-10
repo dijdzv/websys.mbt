@@ -13,9 +13,9 @@ pub(all) enum RunAt {
 /// Convert to string value
 pub fn RunAt::to_string(self : RunAt) -> String {
   match self {
-    DocumentStart => "document_start"
-    DocumentEnd => "document_end"
-    DocumentIdle => "document_idle"
+    RunAt::DocumentStart => "document_start"
+    RunAt::DocumentEnd => "document_end"
+    RunAt::DocumentIdle => "document_idle"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn RunAt::to_string(self : RunAt) -> String {
 /// Parse from string value
 pub fn RunAt::from_string(s : String) -> RunAt? {
   match s {
-    "document_start" => Some(DocumentStart)
-    "document_end" => Some(DocumentEnd)
-    "document_idle" => Some(DocumentIdle)
+    "document_start" => Some(RunAt::DocumentStart)
+    "document_end" => Some(RunAt::DocumentEnd)
+    "document_idle" => Some(RunAt::DocumentIdle)
     _ => None
   }
 }
@@ -41,8 +41,8 @@ pub(all) enum ExecutionWorld {
 /// Convert to string value
 pub fn ExecutionWorld::to_string(self : ExecutionWorld) -> String {
   match self {
-    ISOLATED => "ISOLATED"
-    MAIN => "MAIN"
+    ExecutionWorld::ISOLATED => "ISOLATED"
+    ExecutionWorld::MAIN => "MAIN"
   }
 }
 
@@ -50,8 +50,8 @@ pub fn ExecutionWorld::to_string(self : ExecutionWorld) -> String {
 /// Parse from string value
 pub fn ExecutionWorld::from_string(s : String) -> ExecutionWorld? {
   match s {
-    "ISOLATED" => Some(ISOLATED)
-    "MAIN" => Some(MAIN)
+    "ISOLATED" => Some(ExecutionWorld::ISOLATED)
+    "MAIN" => Some(ExecutionWorld::MAIN)
     _ => None
   }
 }

@@ -15,7 +15,7 @@ pub extern "js" fn NavigatorManagedData::to_js_value(
 pub extern "js" fn NavigatorManagedData::get_managed_configuration(
   self : NavigatorManagedData,
   keys : Array[String],
-) -> Promise[JsValue] =
+) -> Promise[Unit] =
   #| (self, keys) => self.getManagedConfiguration(keys)
 
 ///|

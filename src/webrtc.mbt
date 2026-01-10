@@ -12,8 +12,8 @@ pub(all) enum RTCIceTransportPolicy {
 /// Convert to string value
 pub fn RTCIceTransportPolicy::to_string(self : RTCIceTransportPolicy) -> String {
   match self {
-    Relay => "relay"
-    All => "all"
+    RTCIceTransportPolicy::Relay => "relay"
+    RTCIceTransportPolicy::All => "all"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn RTCIceTransportPolicy::to_string(self : RTCIceTransportPolicy) -> String 
 /// Parse from string value
 pub fn RTCIceTransportPolicy::from_string(s : String) -> RTCIceTransportPolicy? {
   match s {
-    "relay" => Some(Relay)
-    "all" => Some(All)
+    "relay" => Some(RTCIceTransportPolicy::Relay)
+    "all" => Some(RTCIceTransportPolicy::All)
     _ => None
   }
 }
@@ -39,9 +39,9 @@ pub(all) enum RTCBundlePolicy {
 /// Convert to string value
 pub fn RTCBundlePolicy::to_string(self : RTCBundlePolicy) -> String {
   match self {
-    Balanced => "balanced"
-    MaxCompat => "max-compat"
-    MaxBundle => "max-bundle"
+    RTCBundlePolicy::Balanced => "balanced"
+    RTCBundlePolicy::MaxCompat => "max-compat"
+    RTCBundlePolicy::MaxBundle => "max-bundle"
   }
 }
 
@@ -49,9 +49,9 @@ pub fn RTCBundlePolicy::to_string(self : RTCBundlePolicy) -> String {
 /// Parse from string value
 pub fn RTCBundlePolicy::from_string(s : String) -> RTCBundlePolicy? {
   match s {
-    "balanced" => Some(Balanced)
-    "max-compat" => Some(MaxCompat)
-    "max-bundle" => Some(MaxBundle)
+    "balanced" => Some(RTCBundlePolicy::Balanced)
+    "max-compat" => Some(RTCBundlePolicy::MaxCompat)
+    "max-bundle" => Some(RTCBundlePolicy::MaxBundle)
     _ => None
   }
 }
@@ -66,7 +66,7 @@ pub(all) enum RTCRtcpMuxPolicy {
 /// Convert to string value
 pub fn RTCRtcpMuxPolicy::to_string(self : RTCRtcpMuxPolicy) -> String {
   match self {
-    Require => "require"
+    RTCRtcpMuxPolicy::Require => "require"
   }
 }
 
@@ -74,7 +74,7 @@ pub fn RTCRtcpMuxPolicy::to_string(self : RTCRtcpMuxPolicy) -> String {
 /// Parse from string value
 pub fn RTCRtcpMuxPolicy::from_string(s : String) -> RTCRtcpMuxPolicy? {
   match s {
-    "require" => Some(Require)
+    "require" => Some(RTCRtcpMuxPolicy::Require)
     _ => None
   }
 }
@@ -94,12 +94,12 @@ pub(all) enum RTCSignalingState {
 /// Convert to string value
 pub fn RTCSignalingState::to_string(self : RTCSignalingState) -> String {
   match self {
-    Stable => "stable"
-    HaveLocalOffer => "have-local-offer"
-    HaveRemoteOffer => "have-remote-offer"
-    HaveLocalPranswer => "have-local-pranswer"
-    HaveRemotePranswer => "have-remote-pranswer"
-    Closed => "closed"
+    RTCSignalingState::Stable => "stable"
+    RTCSignalingState::HaveLocalOffer => "have-local-offer"
+    RTCSignalingState::HaveRemoteOffer => "have-remote-offer"
+    RTCSignalingState::HaveLocalPranswer => "have-local-pranswer"
+    RTCSignalingState::HaveRemotePranswer => "have-remote-pranswer"
+    RTCSignalingState::Closed => "closed"
   }
 }
 
@@ -107,12 +107,12 @@ pub fn RTCSignalingState::to_string(self : RTCSignalingState) -> String {
 /// Parse from string value
 pub fn RTCSignalingState::from_string(s : String) -> RTCSignalingState? {
   match s {
-    "stable" => Some(Stable)
-    "have-local-offer" => Some(HaveLocalOffer)
-    "have-remote-offer" => Some(HaveRemoteOffer)
-    "have-local-pranswer" => Some(HaveLocalPranswer)
-    "have-remote-pranswer" => Some(HaveRemotePranswer)
-    "closed" => Some(Closed)
+    "stable" => Some(RTCSignalingState::Stable)
+    "have-local-offer" => Some(RTCSignalingState::HaveLocalOffer)
+    "have-remote-offer" => Some(RTCSignalingState::HaveRemoteOffer)
+    "have-local-pranswer" => Some(RTCSignalingState::HaveLocalPranswer)
+    "have-remote-pranswer" => Some(RTCSignalingState::HaveRemotePranswer)
+    "closed" => Some(RTCSignalingState::Closed)
     _ => None
   }
 }
@@ -129,9 +129,9 @@ pub(all) enum RTCIceGatheringState {
 /// Convert to string value
 pub fn RTCIceGatheringState::to_string(self : RTCIceGatheringState) -> String {
   match self {
-    New => "new"
-    Gathering => "gathering"
-    Complete => "complete"
+    RTCIceGatheringState::New => "new"
+    RTCIceGatheringState::Gathering => "gathering"
+    RTCIceGatheringState::Complete => "complete"
   }
 }
 
@@ -139,9 +139,9 @@ pub fn RTCIceGatheringState::to_string(self : RTCIceGatheringState) -> String {
 /// Parse from string value
 pub fn RTCIceGatheringState::from_string(s : String) -> RTCIceGatheringState? {
   match s {
-    "new" => Some(New)
-    "gathering" => Some(Gathering)
-    "complete" => Some(Complete)
+    "new" => Some(RTCIceGatheringState::New)
+    "gathering" => Some(RTCIceGatheringState::Gathering)
+    "complete" => Some(RTCIceGatheringState::Complete)
     _ => None
   }
 }
@@ -163,12 +163,12 @@ pub fn RTCPeerConnectionState::to_string(
   self : RTCPeerConnectionState,
 ) -> String {
   match self {
-    Closed => "closed"
-    Failed => "failed"
-    Disconnected => "disconnected"
-    New => "new"
-    Connecting => "connecting"
-    Connected => "connected"
+    RTCPeerConnectionState::Closed => "closed"
+    RTCPeerConnectionState::Failed => "failed"
+    RTCPeerConnectionState::Disconnected => "disconnected"
+    RTCPeerConnectionState::New => "new"
+    RTCPeerConnectionState::Connecting => "connecting"
+    RTCPeerConnectionState::Connected => "connected"
   }
 }
 
@@ -178,12 +178,12 @@ pub fn RTCPeerConnectionState::from_string(
   s : String,
 ) -> RTCPeerConnectionState? {
   match s {
-    "closed" => Some(Closed)
-    "failed" => Some(Failed)
-    "disconnected" => Some(Disconnected)
-    "new" => Some(New)
-    "connecting" => Some(Connecting)
-    "connected" => Some(Connected)
+    "closed" => Some(RTCPeerConnectionState::Closed)
+    "failed" => Some(RTCPeerConnectionState::Failed)
+    "disconnected" => Some(RTCPeerConnectionState::Disconnected)
+    "new" => Some(RTCPeerConnectionState::New)
+    "connecting" => Some(RTCPeerConnectionState::Connecting)
+    "connected" => Some(RTCPeerConnectionState::Connected)
     _ => None
   }
 }
@@ -204,13 +204,13 @@ pub(all) enum RTCIceConnectionState {
 /// Convert to string value
 pub fn RTCIceConnectionState::to_string(self : RTCIceConnectionState) -> String {
   match self {
-    Closed => "closed"
-    Failed => "failed"
-    Disconnected => "disconnected"
-    New => "new"
-    Checking => "checking"
-    Completed => "completed"
-    Connected => "connected"
+    RTCIceConnectionState::Closed => "closed"
+    RTCIceConnectionState::Failed => "failed"
+    RTCIceConnectionState::Disconnected => "disconnected"
+    RTCIceConnectionState::New => "new"
+    RTCIceConnectionState::Checking => "checking"
+    RTCIceConnectionState::Completed => "completed"
+    RTCIceConnectionState::Connected => "connected"
   }
 }
 
@@ -218,13 +218,13 @@ pub fn RTCIceConnectionState::to_string(self : RTCIceConnectionState) -> String 
 /// Parse from string value
 pub fn RTCIceConnectionState::from_string(s : String) -> RTCIceConnectionState? {
   match s {
-    "closed" => Some(Closed)
-    "failed" => Some(Failed)
-    "disconnected" => Some(Disconnected)
-    "new" => Some(New)
-    "checking" => Some(Checking)
-    "completed" => Some(Completed)
-    "connected" => Some(Connected)
+    "closed" => Some(RTCIceConnectionState::Closed)
+    "failed" => Some(RTCIceConnectionState::Failed)
+    "disconnected" => Some(RTCIceConnectionState::Disconnected)
+    "new" => Some(RTCIceConnectionState::New)
+    "checking" => Some(RTCIceConnectionState::Checking)
+    "completed" => Some(RTCIceConnectionState::Completed)
+    "connected" => Some(RTCIceConnectionState::Connected)
     _ => None
   }
 }
@@ -242,10 +242,10 @@ pub(all) enum RTCSdpType {
 /// Convert to string value
 pub fn RTCSdpType::to_string(self : RTCSdpType) -> String {
   match self {
-    Offer => "offer"
-    Pranswer => "pranswer"
-    Answer => "answer"
-    Rollback => "rollback"
+    RTCSdpType::Offer => "offer"
+    RTCSdpType::Pranswer => "pranswer"
+    RTCSdpType::Answer => "answer"
+    RTCSdpType::Rollback => "rollback"
   }
 }
 
@@ -253,10 +253,10 @@ pub fn RTCSdpType::to_string(self : RTCSdpType) -> String {
 /// Parse from string value
 pub fn RTCSdpType::from_string(s : String) -> RTCSdpType? {
   match s {
-    "offer" => Some(Offer)
-    "pranswer" => Some(Pranswer)
-    "answer" => Some(Answer)
-    "rollback" => Some(Rollback)
+    "offer" => Some(RTCSdpType::Offer)
+    "pranswer" => Some(RTCSdpType::Pranswer)
+    "answer" => Some(RTCSdpType::Answer)
+    "rollback" => Some(RTCSdpType::Rollback)
     _ => None
   }
 }
@@ -272,8 +272,8 @@ pub(all) enum RTCIceProtocol {
 /// Convert to string value
 pub fn RTCIceProtocol::to_string(self : RTCIceProtocol) -> String {
   match self {
-    Udp => "udp"
-    Tcp => "tcp"
+    RTCIceProtocol::Udp => "udp"
+    RTCIceProtocol::Tcp => "tcp"
   }
 }
 
@@ -281,8 +281,8 @@ pub fn RTCIceProtocol::to_string(self : RTCIceProtocol) -> String {
 /// Parse from string value
 pub fn RTCIceProtocol::from_string(s : String) -> RTCIceProtocol? {
   match s {
-    "udp" => Some(Udp)
-    "tcp" => Some(Tcp)
+    "udp" => Some(RTCIceProtocol::Udp)
+    "tcp" => Some(RTCIceProtocol::Tcp)
     _ => None
   }
 }
@@ -301,9 +301,9 @@ pub fn RTCIceTcpCandidateType::to_string(
   self : RTCIceTcpCandidateType,
 ) -> String {
   match self {
-    Active => "active"
-    Passive => "passive"
-    So => "so"
+    RTCIceTcpCandidateType::Active => "active"
+    RTCIceTcpCandidateType::Passive => "passive"
+    RTCIceTcpCandidateType::So => "so"
   }
 }
 
@@ -313,9 +313,9 @@ pub fn RTCIceTcpCandidateType::from_string(
   s : String,
 ) -> RTCIceTcpCandidateType? {
   match s {
-    "active" => Some(Active)
-    "passive" => Some(Passive)
-    "so" => Some(So)
+    "active" => Some(RTCIceTcpCandidateType::Active)
+    "passive" => Some(RTCIceTcpCandidateType::Passive)
+    "so" => Some(RTCIceTcpCandidateType::So)
     _ => None
   }
 }
@@ -333,10 +333,10 @@ pub(all) enum RTCIceCandidateType {
 /// Convert to string value
 pub fn RTCIceCandidateType::to_string(self : RTCIceCandidateType) -> String {
   match self {
-    Host => "host"
-    Srflx => "srflx"
-    Prflx => "prflx"
-    Relay => "relay"
+    RTCIceCandidateType::Host => "host"
+    RTCIceCandidateType::Srflx => "srflx"
+    RTCIceCandidateType::Prflx => "prflx"
+    RTCIceCandidateType::Relay => "relay"
   }
 }
 
@@ -344,10 +344,10 @@ pub fn RTCIceCandidateType::to_string(self : RTCIceCandidateType) -> String {
 /// Parse from string value
 pub fn RTCIceCandidateType::from_string(s : String) -> RTCIceCandidateType? {
   match s {
-    "host" => Some(Host)
-    "srflx" => Some(Srflx)
-    "prflx" => Some(Prflx)
-    "relay" => Some(Relay)
+    "host" => Some(RTCIceCandidateType::Host)
+    "srflx" => Some(RTCIceCandidateType::Srflx)
+    "prflx" => Some(RTCIceCandidateType::Prflx)
+    "relay" => Some(RTCIceCandidateType::Relay)
     _ => None
   }
 }
@@ -366,9 +366,9 @@ pub fn RTCIceServerTransportProtocol::to_string(
   self : RTCIceServerTransportProtocol,
 ) -> String {
   match self {
-    Udp => "udp"
-    Tcp => "tcp"
-    Tls => "tls"
+    RTCIceServerTransportProtocol::Udp => "udp"
+    RTCIceServerTransportProtocol::Tcp => "tcp"
+    RTCIceServerTransportProtocol::Tls => "tls"
   }
 }
 
@@ -378,9 +378,9 @@ pub fn RTCIceServerTransportProtocol::from_string(
   s : String,
 ) -> RTCIceServerTransportProtocol? {
   match s {
-    "udp" => Some(Udp)
-    "tcp" => Some(Tcp)
-    "tls" => Some(Tls)
+    "udp" => Some(RTCIceServerTransportProtocol::Udp)
+    "tcp" => Some(RTCIceServerTransportProtocol::Tcp)
+    "tls" => Some(RTCIceServerTransportProtocol::Tls)
     _ => None
   }
 }
@@ -401,11 +401,11 @@ pub fn RTCRtpTransceiverDirection::to_string(
   self : RTCRtpTransceiverDirection,
 ) -> String {
   match self {
-    Sendrecv => "sendrecv"
-    Sendonly => "sendonly"
-    Recvonly => "recvonly"
-    Inactive => "inactive"
-    Stopped => "stopped"
+    RTCRtpTransceiverDirection::Sendrecv => "sendrecv"
+    RTCRtpTransceiverDirection::Sendonly => "sendonly"
+    RTCRtpTransceiverDirection::Recvonly => "recvonly"
+    RTCRtpTransceiverDirection::Inactive => "inactive"
+    RTCRtpTransceiverDirection::Stopped => "stopped"
   }
 }
 
@@ -415,11 +415,11 @@ pub fn RTCRtpTransceiverDirection::from_string(
   s : String,
 ) -> RTCRtpTransceiverDirection? {
   match s {
-    "sendrecv" => Some(Sendrecv)
-    "sendonly" => Some(Sendonly)
-    "recvonly" => Some(Recvonly)
-    "inactive" => Some(Inactive)
-    "stopped" => Some(Stopped)
+    "sendrecv" => Some(RTCRtpTransceiverDirection::Sendrecv)
+    "sendonly" => Some(RTCRtpTransceiverDirection::Sendonly)
+    "recvonly" => Some(RTCRtpTransceiverDirection::Recvonly)
+    "inactive" => Some(RTCRtpTransceiverDirection::Inactive)
+    "stopped" => Some(RTCRtpTransceiverDirection::Stopped)
     _ => None
   }
 }
@@ -438,11 +438,11 @@ pub(all) enum RTCDtlsTransportState {
 /// Convert to string value
 pub fn RTCDtlsTransportState::to_string(self : RTCDtlsTransportState) -> String {
   match self {
-    New => "new"
-    Connecting => "connecting"
-    Connected => "connected"
-    Closed => "closed"
-    Failed => "failed"
+    RTCDtlsTransportState::New => "new"
+    RTCDtlsTransportState::Connecting => "connecting"
+    RTCDtlsTransportState::Connected => "connected"
+    RTCDtlsTransportState::Closed => "closed"
+    RTCDtlsTransportState::Failed => "failed"
   }
 }
 
@@ -450,11 +450,11 @@ pub fn RTCDtlsTransportState::to_string(self : RTCDtlsTransportState) -> String 
 /// Parse from string value
 pub fn RTCDtlsTransportState::from_string(s : String) -> RTCDtlsTransportState? {
   match s {
-    "new" => Some(New)
-    "connecting" => Some(Connecting)
-    "connected" => Some(Connected)
-    "closed" => Some(Closed)
-    "failed" => Some(Failed)
+    "new" => Some(RTCDtlsTransportState::New)
+    "connecting" => Some(RTCDtlsTransportState::Connecting)
+    "connected" => Some(RTCDtlsTransportState::Connected)
+    "closed" => Some(RTCDtlsTransportState::Closed)
+    "failed" => Some(RTCDtlsTransportState::Failed)
     _ => None
   }
 }
@@ -471,9 +471,9 @@ pub(all) enum RTCIceGathererState {
 /// Convert to string value
 pub fn RTCIceGathererState::to_string(self : RTCIceGathererState) -> String {
   match self {
-    New => "new"
-    Gathering => "gathering"
-    Complete => "complete"
+    RTCIceGathererState::New => "new"
+    RTCIceGathererState::Gathering => "gathering"
+    RTCIceGathererState::Complete => "complete"
   }
 }
 
@@ -481,9 +481,9 @@ pub fn RTCIceGathererState::to_string(self : RTCIceGathererState) -> String {
 /// Parse from string value
 pub fn RTCIceGathererState::from_string(s : String) -> RTCIceGathererState? {
   match s {
-    "new" => Some(New)
-    "gathering" => Some(Gathering)
-    "complete" => Some(Complete)
+    "new" => Some(RTCIceGathererState::New)
+    "gathering" => Some(RTCIceGathererState::Gathering)
+    "complete" => Some(RTCIceGathererState::Complete)
     _ => None
   }
 }
@@ -504,13 +504,13 @@ pub(all) enum RTCIceTransportState {
 /// Convert to string value
 pub fn RTCIceTransportState::to_string(self : RTCIceTransportState) -> String {
   match self {
-    Closed => "closed"
-    Failed => "failed"
-    Disconnected => "disconnected"
-    New => "new"
-    Checking => "checking"
-    Completed => "completed"
-    Connected => "connected"
+    RTCIceTransportState::Closed => "closed"
+    RTCIceTransportState::Failed => "failed"
+    RTCIceTransportState::Disconnected => "disconnected"
+    RTCIceTransportState::New => "new"
+    RTCIceTransportState::Checking => "checking"
+    RTCIceTransportState::Completed => "completed"
+    RTCIceTransportState::Connected => "connected"
   }
 }
 
@@ -518,13 +518,13 @@ pub fn RTCIceTransportState::to_string(self : RTCIceTransportState) -> String {
 /// Parse from string value
 pub fn RTCIceTransportState::from_string(s : String) -> RTCIceTransportState? {
   match s {
-    "closed" => Some(Closed)
-    "failed" => Some(Failed)
-    "disconnected" => Some(Disconnected)
-    "new" => Some(New)
-    "checking" => Some(Checking)
-    "completed" => Some(Completed)
-    "connected" => Some(Connected)
+    "closed" => Some(RTCIceTransportState::Closed)
+    "failed" => Some(RTCIceTransportState::Failed)
+    "disconnected" => Some(RTCIceTransportState::Disconnected)
+    "new" => Some(RTCIceTransportState::New)
+    "checking" => Some(RTCIceTransportState::Checking)
+    "completed" => Some(RTCIceTransportState::Completed)
+    "connected" => Some(RTCIceTransportState::Connected)
     _ => None
   }
 }
@@ -541,9 +541,9 @@ pub(all) enum RTCIceRole {
 /// Convert to string value
 pub fn RTCIceRole::to_string(self : RTCIceRole) -> String {
   match self {
-    Unknown => "unknown"
-    Controlling => "controlling"
-    Controlled => "controlled"
+    RTCIceRole::Unknown => "unknown"
+    RTCIceRole::Controlling => "controlling"
+    RTCIceRole::Controlled => "controlled"
   }
 }
 
@@ -551,9 +551,9 @@ pub fn RTCIceRole::to_string(self : RTCIceRole) -> String {
 /// Parse from string value
 pub fn RTCIceRole::from_string(s : String) -> RTCIceRole? {
   match s {
-    "unknown" => Some(Unknown)
-    "controlling" => Some(Controlling)
-    "controlled" => Some(Controlled)
+    "unknown" => Some(RTCIceRole::Unknown)
+    "controlling" => Some(RTCIceRole::Controlling)
+    "controlled" => Some(RTCIceRole::Controlled)
     _ => None
   }
 }
@@ -569,8 +569,8 @@ pub(all) enum RTCIceComponent {
 /// Convert to string value
 pub fn RTCIceComponent::to_string(self : RTCIceComponent) -> String {
   match self {
-    Rtp => "rtp"
-    Rtcp => "rtcp"
+    RTCIceComponent::Rtp => "rtp"
+    RTCIceComponent::Rtcp => "rtcp"
   }
 }
 
@@ -578,8 +578,8 @@ pub fn RTCIceComponent::to_string(self : RTCIceComponent) -> String {
 /// Parse from string value
 pub fn RTCIceComponent::from_string(s : String) -> RTCIceComponent? {
   match s {
-    "rtp" => Some(Rtp)
-    "rtcp" => Some(Rtcp)
+    "rtp" => Some(RTCIceComponent::Rtp)
+    "rtcp" => Some(RTCIceComponent::Rtcp)
     _ => None
   }
 }
@@ -596,9 +596,9 @@ pub(all) enum RTCSctpTransportState {
 /// Convert to string value
 pub fn RTCSctpTransportState::to_string(self : RTCSctpTransportState) -> String {
   match self {
-    Connecting => "connecting"
-    Connected => "connected"
-    Closed => "closed"
+    RTCSctpTransportState::Connecting => "connecting"
+    RTCSctpTransportState::Connected => "connected"
+    RTCSctpTransportState::Closed => "closed"
   }
 }
 
@@ -606,9 +606,9 @@ pub fn RTCSctpTransportState::to_string(self : RTCSctpTransportState) -> String 
 /// Parse from string value
 pub fn RTCSctpTransportState::from_string(s : String) -> RTCSctpTransportState? {
   match s {
-    "connecting" => Some(Connecting)
-    "connected" => Some(Connected)
-    "closed" => Some(Closed)
+    "connecting" => Some(RTCSctpTransportState::Connecting)
+    "connected" => Some(RTCSctpTransportState::Connected)
+    "closed" => Some(RTCSctpTransportState::Closed)
     _ => None
   }
 }
@@ -626,10 +626,10 @@ pub(all) enum RTCDataChannelState {
 /// Convert to string value
 pub fn RTCDataChannelState::to_string(self : RTCDataChannelState) -> String {
   match self {
-    Connecting => "connecting"
-    Open => "open"
-    Closing => "closing"
-    Closed => "closed"
+    RTCDataChannelState::Connecting => "connecting"
+    RTCDataChannelState::Open => "open"
+    RTCDataChannelState::Closing => "closing"
+    RTCDataChannelState::Closed => "closed"
   }
 }
 
@@ -637,10 +637,10 @@ pub fn RTCDataChannelState::to_string(self : RTCDataChannelState) -> String {
 /// Parse from string value
 pub fn RTCDataChannelState::from_string(s : String) -> RTCDataChannelState? {
   match s {
-    "connecting" => Some(Connecting)
-    "open" => Some(Open)
-    "closing" => Some(Closing)
-    "closed" => Some(Closed)
+    "connecting" => Some(RTCDataChannelState::Connecting)
+    "open" => Some(RTCDataChannelState::Open)
+    "closing" => Some(RTCDataChannelState::Closing)
+    "closed" => Some(RTCDataChannelState::Closed)
     _ => None
   }
 }
@@ -661,13 +661,14 @@ pub(all) enum RTCErrorDetailType {
 /// Convert to string value
 pub fn RTCErrorDetailType::to_string(self : RTCErrorDetailType) -> String {
   match self {
-    DataChannelFailure => "data-channel-failure"
-    DtlsFailure => "dtls-failure"
-    FingerprintFailure => "fingerprint-failure"
-    SctpFailure => "sctp-failure"
-    SdpSyntaxError => "sdp-syntax-error"
-    HardwareEncoderNotAvailable => "hardware-encoder-not-available"
-    HardwareEncoderError => "hardware-encoder-error"
+    RTCErrorDetailType::DataChannelFailure => "data-channel-failure"
+    RTCErrorDetailType::DtlsFailure => "dtls-failure"
+    RTCErrorDetailType::FingerprintFailure => "fingerprint-failure"
+    RTCErrorDetailType::SctpFailure => "sctp-failure"
+    RTCErrorDetailType::SdpSyntaxError => "sdp-syntax-error"
+    RTCErrorDetailType::HardwareEncoderNotAvailable =>
+      "hardware-encoder-not-available"
+    RTCErrorDetailType::HardwareEncoderError => "hardware-encoder-error"
   }
 }
 
@@ -675,13 +676,14 @@ pub fn RTCErrorDetailType::to_string(self : RTCErrorDetailType) -> String {
 /// Parse from string value
 pub fn RTCErrorDetailType::from_string(s : String) -> RTCErrorDetailType? {
   match s {
-    "data-channel-failure" => Some(DataChannelFailure)
-    "dtls-failure" => Some(DtlsFailure)
-    "fingerprint-failure" => Some(FingerprintFailure)
-    "sctp-failure" => Some(SctpFailure)
-    "sdp-syntax-error" => Some(SdpSyntaxError)
-    "hardware-encoder-not-available" => Some(HardwareEncoderNotAvailable)
-    "hardware-encoder-error" => Some(HardwareEncoderError)
+    "data-channel-failure" => Some(RTCErrorDetailType::DataChannelFailure)
+    "dtls-failure" => Some(RTCErrorDetailType::DtlsFailure)
+    "fingerprint-failure" => Some(RTCErrorDetailType::FingerprintFailure)
+    "sctp-failure" => Some(RTCErrorDetailType::SctpFailure)
+    "sdp-syntax-error" => Some(RTCErrorDetailType::SdpSyntaxError)
+    "hardware-encoder-not-available" =>
+      Some(RTCErrorDetailType::HardwareEncoderNotAvailable)
+    "hardware-encoder-error" => Some(RTCErrorDetailType::HardwareEncoderError)
     _ => None
   }
 }
@@ -1853,14 +1855,14 @@ pub extern "js" fn RTCPeerConnection::remove_track(
 ///|
 pub extern "js" fn RTCPeerConnection::add_transceiver(
   self : RTCPeerConnection,
-  track_or_kind : JsValue,
+  track_or_kind : MediaStreamTrackOrString,
 ) -> RTCRtpTransceiver =
   #| (self, track_or_kind) => self.addTransceiver(track_or_kind)
 
 ///|
 pub extern "js" fn RTCPeerConnection::add_transceiver_with_init(
   self : RTCPeerConnection,
-  track_or_kind : JsValue,
+  track_or_kind : MediaStreamTrackOrString,
   init_ : RTCRtpTransceiverInit,
 ) -> RTCRtpTransceiver =
   #| (self, track_or_kind, init_) => self.addTransceiver(track_or_kind, init_)
@@ -2241,13 +2243,13 @@ pub extern "js" fn RTCRtpSender::get_stats(
 ///|
 pub extern "js" fn RTCRtpSender::get_transform(
   self : RTCRtpSender,
-) -> RTCRtpTransform? =
+) -> RTCRtpSenderTransform? =
   #| (self) => self.transform
 
 ///|
 pub extern "js" fn RTCRtpSender::set_transform(
   self : RTCRtpSender,
-  value : RTCRtpTransform?,
+  value : RTCRtpSenderTransform?,
 ) -> Unit =
   #| (self, value) => { self.transform = value }
 
@@ -2325,13 +2327,13 @@ pub extern "js" fn RTCRtpReceiver::set_jitter_buffer_target(
 ///|
 pub extern "js" fn RTCRtpReceiver::get_transform(
   self : RTCRtpReceiver,
-) -> RTCRtpTransform? =
+) -> RTCRtpReceiverTransform? =
   #| (self) => self.transform
 
 ///|
 pub extern "js" fn RTCRtpReceiver::set_transform(
   self : RTCRtpReceiver,
-  value : RTCRtpTransform?,
+  value : RTCRtpReceiverTransform?,
 ) -> Unit =
   #| (self, value) => { self.transform = value }
 

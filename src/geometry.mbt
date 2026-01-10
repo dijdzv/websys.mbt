@@ -541,7 +541,9 @@ pub extern "js" fn DOMMatrixReadOnly::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn DOMMatrixReadOnly::new(init_ : JsValue) -> DOMMatrixReadOnly =
+pub extern "js" fn DOMMatrixReadOnly::new(
+  init_ : StringOrArrayOfDouble,
+) -> DOMMatrixReadOnly =
   #| (init_) => new DOMMatrixReadOnly(init_)
 
 ///|
@@ -899,7 +901,7 @@ pub extern "js" fn DOMMatrix::to_js_value(self : DOMMatrix) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn DOMMatrix::new(init_ : JsValue) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::new(init_ : StringOrArrayOfDouble) -> DOMMatrix =
   #| (init_) => new DOMMatrix(init_)
 
 ///|

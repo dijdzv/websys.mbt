@@ -12,8 +12,8 @@ pub(all) enum HevcBitstreamFormat {
 /// Convert to string value
 pub fn HevcBitstreamFormat::to_string(self : HevcBitstreamFormat) -> String {
   match self {
-    Annexb => "annexb"
-    Hevc => "hevc"
+    HevcBitstreamFormat::Annexb => "annexb"
+    HevcBitstreamFormat::Hevc => "hevc"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn HevcBitstreamFormat::to_string(self : HevcBitstreamFormat) -> String {
 /// Parse from string value
 pub fn HevcBitstreamFormat::from_string(s : String) -> HevcBitstreamFormat? {
   match s {
-    "annexb" => Some(Annexb)
-    "hevc" => Some(Hevc)
+    "annexb" => Some(HevcBitstreamFormat::Annexb)
+    "hevc" => Some(HevcBitstreamFormat::Hevc)
     _ => None
   }
 }

@@ -26,6 +26,34 @@ pub extern "js" fn CSSUnparsedSegment::from_c_s_s_variable_reference_value(
   #| (v) => v
 
 ///|
+/// Check if this CSSUnparsedSegment is String
+pub extern "js" fn CSSUnparsedSegment::is_string(
+  self : CSSUnparsedSegment,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this CSSUnparsedSegment is CSSVariableReferenceValue
+pub extern "js" fn CSSUnparsedSegment::is_c_s_s_variable_reference_value(
+  self : CSSUnparsedSegment,
+) -> Bool =
+  #| (self) => self instanceof CSSVariableReferenceValue
+
+///|
+/// Try to get CSSUnparsedSegment as String
+pub extern "js" fn CSSUnparsedSegment::as_string(
+  self : CSSUnparsedSegment,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CSSUnparsedSegment as CSSVariableReferenceValue
+pub extern "js" fn CSSUnparsedSegment::as_c_s_s_variable_reference_value(
+  self : CSSUnparsedSegment,
+) -> CSSVariableReferenceValue? =
+  #| (self) => (self instanceof CSSVariableReferenceValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// CSSKeywordish typedef
 pub type CSSKeywordish
 
@@ -46,6 +74,30 @@ pub extern "js" fn CSSKeywordish::from_c_s_s_keyword_value(
   #| (v) => v
 
 ///|
+/// Check if this CSSKeywordish is String
+pub extern "js" fn CSSKeywordish::is_string(self : CSSKeywordish) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this CSSKeywordish is CSSKeywordValue
+pub extern "js" fn CSSKeywordish::is_c_s_s_keyword_value(
+  self : CSSKeywordish,
+) -> Bool =
+  #| (self) => self instanceof CSSKeywordValue
+
+///|
+/// Try to get CSSKeywordish as String
+pub extern "js" fn CSSKeywordish::as_string(self : CSSKeywordish) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CSSKeywordish as CSSKeywordValue
+pub extern "js" fn CSSKeywordish::as_c_s_s_keyword_value(
+  self : CSSKeywordish,
+) -> CSSKeywordValue? =
+  #| (self) => (self instanceof CSSKeywordValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// CSSNumberish typedef
 pub type CSSNumberish
 
@@ -64,6 +116,30 @@ pub extern "js" fn CSSNumberish::from_c_s_s_numeric_value(
   v : CSSNumericValue,
 ) -> CSSNumberish =
   #| (v) => v
+
+///|
+/// Check if this CSSNumberish is Double
+pub extern "js" fn CSSNumberish::is_double(self : CSSNumberish) -> Bool =
+  #| (self) => typeof self === 'number'
+
+///|
+/// Check if this CSSNumberish is CSSNumericValue
+pub extern "js" fn CSSNumberish::is_c_s_s_numeric_value(
+  self : CSSNumberish,
+) -> Bool =
+  #| (self) => self instanceof CSSNumericValue
+
+///|
+/// Try to get CSSNumberish as Double
+pub extern "js" fn CSSNumberish::as_double(self : CSSNumberish) -> Double? =
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CSSNumberish as CSSNumericValue
+pub extern "js" fn CSSNumberish::as_c_s_s_numeric_value(
+  self : CSSNumberish,
+) -> CSSNumericValue? =
+  #| (self) => (self instanceof CSSNumericValue) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// CSSPerspectiveValue typedef
@@ -90,6 +166,34 @@ pub extern "js" fn CSSPerspectiveValue::from_c_s_s_keywordish(
   #| (v) => v
 
 ///|
+/// Check if this CSSPerspectiveValue is CSSNumericValue
+pub extern "js" fn CSSPerspectiveValue::is_c_s_s_numeric_value(
+  self : CSSPerspectiveValue,
+) -> Bool =
+  #| (self) => self instanceof CSSNumericValue
+
+///|
+/// Check if this CSSPerspectiveValue is CSSKeywordish
+pub extern "js" fn CSSPerspectiveValue::is_c_s_s_keywordish(
+  self : CSSPerspectiveValue,
+) -> Bool =
+  #| (self) => typeof self === 'string' || self instanceof CSSKeywordValue
+
+///|
+/// Try to get CSSPerspectiveValue as CSSNumericValue
+pub extern "js" fn CSSPerspectiveValue::as_c_s_s_numeric_value(
+  self : CSSPerspectiveValue,
+) -> CSSNumericValue? =
+  #| (self) => (self instanceof CSSNumericValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CSSPerspectiveValue as CSSKeywordish
+pub extern "js" fn CSSPerspectiveValue::as_c_s_s_keywordish(
+  self : CSSPerspectiveValue,
+) -> CSSKeywordish? =
+  #| (self) => (typeof self === 'string' || self instanceof CSSKeywordValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// CSSColorRGBComp typedef
 pub type CSSColorRGBComp
 
@@ -112,6 +216,34 @@ pub extern "js" fn CSSColorRGBComp::from_c_s_s_keywordish(
   v : CSSKeywordish,
 ) -> CSSColorRGBComp =
   #| (v) => v
+
+///|
+/// Check if this CSSColorRGBComp is CSSNumberish
+pub extern "js" fn CSSColorRGBComp::is_c_s_s_numberish(
+  self : CSSColorRGBComp,
+) -> Bool =
+  #| (self) => typeof self === 'number' || self instanceof CSSNumericValue
+
+///|
+/// Check if this CSSColorRGBComp is CSSKeywordish
+pub extern "js" fn CSSColorRGBComp::is_c_s_s_keywordish(
+  self : CSSColorRGBComp,
+) -> Bool =
+  #| (self) => typeof self === 'string' || self instanceof CSSKeywordValue
+
+///|
+/// Try to get CSSColorRGBComp as CSSNumberish
+pub extern "js" fn CSSColorRGBComp::as_c_s_s_numberish(
+  self : CSSColorRGBComp,
+) -> CSSNumberish? =
+  #| (self) => (typeof self === 'number' || self instanceof CSSNumericValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CSSColorRGBComp as CSSKeywordish
+pub extern "js" fn CSSColorRGBComp::as_c_s_s_keywordish(
+  self : CSSColorRGBComp,
+) -> CSSKeywordish? =
+  #| (self) => (typeof self === 'string' || self instanceof CSSKeywordValue) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// CSSColorPercent typedef
@@ -138,6 +270,34 @@ pub extern "js" fn CSSColorPercent::from_c_s_s_keywordish(
   #| (v) => v
 
 ///|
+/// Check if this CSSColorPercent is CSSNumberish
+pub extern "js" fn CSSColorPercent::is_c_s_s_numberish(
+  self : CSSColorPercent,
+) -> Bool =
+  #| (self) => typeof self === 'number' || self instanceof CSSNumericValue
+
+///|
+/// Check if this CSSColorPercent is CSSKeywordish
+pub extern "js" fn CSSColorPercent::is_c_s_s_keywordish(
+  self : CSSColorPercent,
+) -> Bool =
+  #| (self) => typeof self === 'string' || self instanceof CSSKeywordValue
+
+///|
+/// Try to get CSSColorPercent as CSSNumberish
+pub extern "js" fn CSSColorPercent::as_c_s_s_numberish(
+  self : CSSColorPercent,
+) -> CSSNumberish? =
+  #| (self) => (typeof self === 'number' || self instanceof CSSNumericValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CSSColorPercent as CSSKeywordish
+pub extern "js" fn CSSColorPercent::as_c_s_s_keywordish(
+  self : CSSColorPercent,
+) -> CSSKeywordish? =
+  #| (self) => (typeof self === 'string' || self instanceof CSSKeywordValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// CSSColorNumber typedef
 pub type CSSColorNumber
 
@@ -162,6 +322,34 @@ pub extern "js" fn CSSColorNumber::from_c_s_s_keywordish(
   #| (v) => v
 
 ///|
+/// Check if this CSSColorNumber is CSSNumberish
+pub extern "js" fn CSSColorNumber::is_c_s_s_numberish(
+  self : CSSColorNumber,
+) -> Bool =
+  #| (self) => typeof self === 'number' || self instanceof CSSNumericValue
+
+///|
+/// Check if this CSSColorNumber is CSSKeywordish
+pub extern "js" fn CSSColorNumber::is_c_s_s_keywordish(
+  self : CSSColorNumber,
+) -> Bool =
+  #| (self) => typeof self === 'string' || self instanceof CSSKeywordValue
+
+///|
+/// Try to get CSSColorNumber as CSSNumberish
+pub extern "js" fn CSSColorNumber::as_c_s_s_numberish(
+  self : CSSColorNumber,
+) -> CSSNumberish? =
+  #| (self) => (typeof self === 'number' || self instanceof CSSNumericValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CSSColorNumber as CSSKeywordish
+pub extern "js" fn CSSColorNumber::as_c_s_s_keywordish(
+  self : CSSColorNumber,
+) -> CSSKeywordish? =
+  #| (self) => (typeof self === 'string' || self instanceof CSSKeywordValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// CSSColorAngle typedef
 pub type CSSColorAngle
 
@@ -184,6 +372,34 @@ pub extern "js" fn CSSColorAngle::from_c_s_s_keywordish(
   #| (v) => v
 
 ///|
+/// Check if this CSSColorAngle is CSSNumberish
+pub extern "js" fn CSSColorAngle::is_c_s_s_numberish(
+  self : CSSColorAngle,
+) -> Bool =
+  #| (self) => typeof self === 'number' || self instanceof CSSNumericValue
+
+///|
+/// Check if this CSSColorAngle is CSSKeywordish
+pub extern "js" fn CSSColorAngle::is_c_s_s_keywordish(
+  self : CSSColorAngle,
+) -> Bool =
+  #| (self) => typeof self === 'string' || self instanceof CSSKeywordValue
+
+///|
+/// Try to get CSSColorAngle as CSSNumberish
+pub extern "js" fn CSSColorAngle::as_c_s_s_numberish(
+  self : CSSColorAngle,
+) -> CSSNumberish? =
+  #| (self) => (typeof self === 'number' || self instanceof CSSNumericValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CSSColorAngle as CSSKeywordish
+pub extern "js" fn CSSColorAngle::as_c_s_s_keywordish(
+  self : CSSColorAngle,
+) -> CSSKeywordish? =
+  #| (self) => (typeof self === 'string' || self instanceof CSSKeywordValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// CSSNumericBaseType enum
 pub(all) enum CSSNumericBaseType {
   Length
@@ -199,13 +415,13 @@ pub(all) enum CSSNumericBaseType {
 /// Convert to string value
 pub fn CSSNumericBaseType::to_string(self : CSSNumericBaseType) -> String {
   match self {
-    Length => "length"
-    Angle => "angle"
-    Time => "time"
-    Frequency => "frequency"
-    Resolution => "resolution"
-    Flex => "flex"
-    Percent => "percent"
+    CSSNumericBaseType::Length => "length"
+    CSSNumericBaseType::Angle => "angle"
+    CSSNumericBaseType::Time => "time"
+    CSSNumericBaseType::Frequency => "frequency"
+    CSSNumericBaseType::Resolution => "resolution"
+    CSSNumericBaseType::Flex => "flex"
+    CSSNumericBaseType::Percent => "percent"
   }
 }
 
@@ -213,13 +429,13 @@ pub fn CSSNumericBaseType::to_string(self : CSSNumericBaseType) -> String {
 /// Parse from string value
 pub fn CSSNumericBaseType::from_string(s : String) -> CSSNumericBaseType? {
   match s {
-    "length" => Some(Length)
-    "angle" => Some(Angle)
-    "time" => Some(Time)
-    "frequency" => Some(Frequency)
-    "resolution" => Some(Resolution)
-    "flex" => Some(Flex)
-    "percent" => Some(Percent)
+    "length" => Some(CSSNumericBaseType::Length)
+    "angle" => Some(CSSNumericBaseType::Angle)
+    "time" => Some(CSSNumericBaseType::Time)
+    "frequency" => Some(CSSNumericBaseType::Frequency)
+    "resolution" => Some(CSSNumericBaseType::Resolution)
+    "flex" => Some(CSSNumericBaseType::Flex)
+    "percent" => Some(CSSNumericBaseType::Percent)
     _ => None
   }
 }
@@ -240,13 +456,13 @@ pub(all) enum CSSMathOperator {
 /// Convert to string value
 pub fn CSSMathOperator::to_string(self : CSSMathOperator) -> String {
   match self {
-    Sum => "sum"
-    Product => "product"
-    Negate => "negate"
-    Invert => "invert"
-    Min => "min"
-    Max => "max"
-    Clamp => "clamp"
+    CSSMathOperator::Sum => "sum"
+    CSSMathOperator::Product => "product"
+    CSSMathOperator::Negate => "negate"
+    CSSMathOperator::Invert => "invert"
+    CSSMathOperator::Min => "min"
+    CSSMathOperator::Max => "max"
+    CSSMathOperator::Clamp => "clamp"
   }
 }
 
@@ -254,13 +470,13 @@ pub fn CSSMathOperator::to_string(self : CSSMathOperator) -> String {
 /// Parse from string value
 pub fn CSSMathOperator::from_string(s : String) -> CSSMathOperator? {
   match s {
-    "sum" => Some(Sum)
-    "product" => Some(Product)
-    "negate" => Some(Negate)
-    "invert" => Some(Invert)
-    "min" => Some(Min)
-    "max" => Some(Max)
-    "clamp" => Some(Clamp)
+    "sum" => Some(CSSMathOperator::Sum)
+    "product" => Some(CSSMathOperator::Product)
+    "negate" => Some(CSSMathOperator::Negate)
+    "invert" => Some(CSSMathOperator::Invert)
+    "min" => Some(CSSMathOperator::Min)
+    "max" => Some(CSSMathOperator::Max)
+    "clamp" => Some(CSSMathOperator::Clamp)
     _ => None
   }
 }
@@ -370,7 +586,7 @@ pub extern "js" fn StylePropertyMapReadOnly::_unknown_(
 pub extern "js" fn StylePropertyMapReadOnly::get(
   self : StylePropertyMapReadOnly,
   property : String,
-) -> JsValue =
+) -> VoidOrCSSStyleValue =
   #| (self, property) => self.get(property)
 
 ///|
@@ -411,7 +627,7 @@ pub extern "js" fn StylePropertyMap::_unknown_(self : StylePropertyMap) -> Unit 
 pub extern "js" fn StylePropertyMap::get(
   self : StylePropertyMap,
   property : String,
-) -> JsValue =
+) -> VoidOrCSSStyleValue =
   #| (self, property) => self.get(property)
 
 ///|
@@ -436,7 +652,7 @@ pub extern "js" fn StylePropertyMap::get_size(self : StylePropertyMap) -> Int =
 pub extern "js" fn StylePropertyMap::set(
   self : StylePropertyMap,
   property : String,
-  values : JsValue,
+  values : CSSStyleValueOrString,
 ) -> Unit =
   #| (self, property, values) => self.set(property, values)
 
@@ -444,7 +660,7 @@ pub extern "js" fn StylePropertyMap::set(
 pub extern "js" fn StylePropertyMap::append(
   self : StylePropertyMap,
   property : String,
-  values : JsValue,
+  values : CSSStyleValueOrString,
 ) -> Unit =
   #| (self, property, values) => self.append(property, values)
 

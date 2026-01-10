@@ -14,8 +14,8 @@ pub fn SecurityPolicyViolationEventDisposition::to_string(
   self : SecurityPolicyViolationEventDisposition,
 ) -> String {
   match self {
-    Enforce => "enforce"
-    Report => "report"
+    SecurityPolicyViolationEventDisposition::Enforce => "enforce"
+    SecurityPolicyViolationEventDisposition::Report => "report"
   }
 }
 
@@ -25,8 +25,8 @@ pub fn SecurityPolicyViolationEventDisposition::from_string(
   s : String,
 ) -> SecurityPolicyViolationEventDisposition? {
   match s {
-    "enforce" => Some(Enforce)
-    "report" => Some(Report)
+    "enforce" => Some(SecurityPolicyViolationEventDisposition::Enforce)
+    "report" => Some(SecurityPolicyViolationEventDisposition::Report)
     _ => None
   }
 }

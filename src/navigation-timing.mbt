@@ -13,9 +13,9 @@ pub(all) enum NavigationTimingType {
 /// Convert to string value
 pub fn NavigationTimingType::to_string(self : NavigationTimingType) -> String {
   match self {
-    Navigate => "navigate"
-    Reload => "reload"
-    BackForward => "back_forward"
+    NavigationTimingType::Navigate => "navigate"
+    NavigationTimingType::Reload => "reload"
+    NavigationTimingType::BackForward => "back_forward"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn NavigationTimingType::to_string(self : NavigationTimingType) -> String {
 /// Parse from string value
 pub fn NavigationTimingType::from_string(s : String) -> NavigationTimingType? {
   match s {
-    "navigate" => Some(Navigate)
-    "reload" => Some(Reload)
-    "back_forward" => Some(BackForward)
+    "navigate" => Some(NavigationTimingType::Navigate)
+    "reload" => Some(NavigationTimingType::Reload)
+    "back_forward" => Some(NavigationTimingType::BackForward)
     _ => None
   }
 }
@@ -43,8 +43,8 @@ pub fn PerformanceTimingConfidenceValue::to_string(
   self : PerformanceTimingConfidenceValue,
 ) -> String {
   match self {
-    High => "high"
-    Low => "low"
+    PerformanceTimingConfidenceValue::High => "high"
+    PerformanceTimingConfidenceValue::Low => "low"
   }
 }
 
@@ -54,8 +54,8 @@ pub fn PerformanceTimingConfidenceValue::from_string(
   s : String,
 ) -> PerformanceTimingConfidenceValue? {
   match s {
-    "high" => Some(High)
-    "low" => Some(Low)
+    "high" => Some(PerformanceTimingConfidenceValue::High)
+    "low" => Some(PerformanceTimingConfidenceValue::Low)
     _ => None
   }
 }

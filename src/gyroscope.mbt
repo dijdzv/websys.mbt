@@ -14,8 +14,8 @@ pub fn GyroscopeLocalCoordinateSystem::to_string(
   self : GyroscopeLocalCoordinateSystem,
 ) -> String {
   match self {
-    Device => "device"
-    Screen => "screen"
+    GyroscopeLocalCoordinateSystem::Device => "device"
+    GyroscopeLocalCoordinateSystem::Screen => "screen"
   }
 }
 
@@ -25,8 +25,8 @@ pub fn GyroscopeLocalCoordinateSystem::from_string(
   s : String,
 ) -> GyroscopeLocalCoordinateSystem? {
   match s {
-    "device" => Some(Device)
-    "screen" => Some(Screen)
+    "device" => Some(GyroscopeLocalCoordinateSystem::Device)
+    "screen" => Some(GyroscopeLocalCoordinateSystem::Screen)
     _ => None
   }
 }

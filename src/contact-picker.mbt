@@ -15,11 +15,11 @@ pub(all) enum ContactProperty {
 /// Convert to string value
 pub fn ContactProperty::to_string(self : ContactProperty) -> String {
   match self {
-    Address => "address"
-    Email => "email"
-    Icon => "icon"
-    Name => "name"
-    Tel => "tel"
+    ContactProperty::Address => "address"
+    ContactProperty::Email => "email"
+    ContactProperty::Icon => "icon"
+    ContactProperty::Name => "name"
+    ContactProperty::Tel => "tel"
   }
 }
 
@@ -27,11 +27,11 @@ pub fn ContactProperty::to_string(self : ContactProperty) -> String {
 /// Parse from string value
 pub fn ContactProperty::from_string(s : String) -> ContactProperty? {
   match s {
-    "address" => Some(Address)
-    "email" => Some(Email)
-    "icon" => Some(Icon)
-    "name" => Some(Name)
-    "tel" => Some(Tel)
+    "address" => Some(ContactProperty::Address)
+    "email" => Some(ContactProperty::Email)
+    "icon" => Some(ContactProperty::Icon)
+    "name" => Some(ContactProperty::Name)
+    "tel" => Some(ContactProperty::Tel)
     _ => None
   }
 }
@@ -163,14 +163,14 @@ pub extern "js" fn ContactsManager::to_js_value(
 ///|
 pub extern "js" fn ContactsManager::get_properties(
   self : ContactsManager,
-) -> Promise[Array[ContactProperty]] =
+) -> Promise[Unit] =
   #| (self) => self.getProperties()
 
 ///|
 pub extern "js" fn ContactsManager::select(
   self : ContactsManager,
   properties : Array[ContactProperty],
-) -> Promise[Array[ContactInfo]] =
+) -> Promise[Unit] =
   #| (self, properties) => self.select(properties)
 
 ///|
@@ -178,5 +178,5 @@ pub extern "js" fn ContactsManager::select_with_options(
   self : ContactsManager,
   properties : Array[ContactProperty],
   options : ContactsSelectOptions,
-) -> Promise[Array[ContactInfo]] =
+) -> Promise[Unit] =
   #| (self, properties, options) => self.select(properties, options)

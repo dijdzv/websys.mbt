@@ -13,9 +13,9 @@ pub(all) enum PermissionState {
 /// Convert to string value
 pub fn PermissionState::to_string(self : PermissionState) -> String {
   match self {
-    Granted => "granted"
-    Denied => "denied"
-    Prompt => "prompt"
+    PermissionState::Granted => "granted"
+    PermissionState::Denied => "denied"
+    PermissionState::Prompt => "prompt"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn PermissionState::to_string(self : PermissionState) -> String {
 /// Parse from string value
 pub fn PermissionState::from_string(s : String) -> PermissionState? {
   match s {
-    "granted" => Some(Granted)
-    "denied" => Some(Denied)
-    "prompt" => Some(Prompt)
+    "granted" => Some(PermissionState::Granted)
+    "denied" => Some(PermissionState::Denied)
+    "prompt" => Some(PermissionState::Prompt)
     _ => None
   }
 }

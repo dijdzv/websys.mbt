@@ -12,8 +12,8 @@ pub(all) enum XRPlaneOrientation {
 /// Convert to string value
 pub fn XRPlaneOrientation::to_string(self : XRPlaneOrientation) -> String {
   match self {
-    Horizontal => "horizontal"
-    Vertical => "vertical"
+    XRPlaneOrientation::Horizontal => "horizontal"
+    XRPlaneOrientation::Vertical => "vertical"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn XRPlaneOrientation::to_string(self : XRPlaneOrientation) -> String {
 /// Parse from string value
 pub fn XRPlaneOrientation::from_string(s : String) -> XRPlaneOrientation? {
   match s {
-    "horizontal" => Some(Horizontal)
-    "vertical" => Some(Vertical)
+    "horizontal" => Some(XRPlaneOrientation::Horizontal)
+    "vertical" => Some(XRPlaneOrientation::Vertical)
     _ => None
   }
 }

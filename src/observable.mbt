@@ -24,6 +24,34 @@ pub extern "js" fn ObserverUnion::from_subscription_observer(
   #| (v) => v
 
 ///|
+/// Check if this ObserverUnion is ObservableSubscriptionCallback
+pub extern "js" fn ObserverUnion::is_observable_subscription_callback(
+  self : ObserverUnion,
+) -> Bool =
+  #| (self) => typeof self === 'function'
+
+///|
+/// Check if this ObserverUnion is SubscriptionObserver
+pub extern "js" fn ObserverUnion::is_subscription_observer(
+  self : ObserverUnion,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get ObserverUnion as ObservableSubscriptionCallback
+pub extern "js" fn ObserverUnion::as_observable_subscription_callback(
+  self : ObserverUnion,
+) -> ObservableSubscriptionCallback? =
+  #| (self) => (typeof self === 'function') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ObserverUnion as SubscriptionObserver
+pub extern "js" fn ObserverUnion::as_subscription_observer(
+  self : ObserverUnion,
+) -> SubscriptionObserver? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// ObservableInspectorUnion typedef
 pub type ObservableInspectorUnion
 
@@ -46,6 +74,34 @@ pub extern "js" fn ObservableInspectorUnion::from_observable_inspector(
   v : ObservableInspector,
 ) -> ObservableInspectorUnion =
   #| (v) => v
+
+///|
+/// Check if this ObservableInspectorUnion is ObservableSubscriptionCallback
+pub extern "js" fn ObservableInspectorUnion::is_observable_subscription_callback(
+  self : ObservableInspectorUnion,
+) -> Bool =
+  #| (self) => typeof self === 'function'
+
+///|
+/// Check if this ObservableInspectorUnion is ObservableInspector
+pub extern "js" fn ObservableInspectorUnion::is_observable_inspector(
+  self : ObservableInspectorUnion,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get ObservableInspectorUnion as ObservableSubscriptionCallback
+pub extern "js" fn ObservableInspectorUnion::as_observable_subscription_callback(
+  self : ObservableInspectorUnion,
+) -> ObservableSubscriptionCallback? =
+  #| (self) => (typeof self === 'function') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ObservableInspectorUnion as ObservableInspector
+pub extern "js" fn ObservableInspectorUnion::as_observable_inspector(
+  self : ObservableInspectorUnion,
+) -> ObservableInspector? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// SubscribeCallback callback interface
@@ -378,16 +434,14 @@ pub extern "js" fn Observable::finally_(
   #| (self, callback) => self.finally(callback)
 
 ///|
-pub extern "js" fn Observable::to_array(
-  self : Observable,
-) -> Promise[Array[JsValue]] =
+pub extern "js" fn Observable::to_array(self : Observable) -> Promise[Unit] =
   #| (self) => self.toArray()
 
 ///|
 pub extern "js" fn Observable::to_array_with_options(
   self : Observable,
   options : SubscribeOptions,
-) -> Promise[Array[JsValue]] =
+) -> Promise[Unit] =
   #| (self, options) => self.toArray(options)
 
 ///|

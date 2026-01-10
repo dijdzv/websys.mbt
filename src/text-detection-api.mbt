@@ -40,5 +40,5 @@ pub extern "js" fn TextDetector::new() -> TextDetector =
 pub extern "js" fn TextDetector::detect(
   self : TextDetector,
   image : ImageBitmapSource,
-) -> Promise[Array[DetectedText]] =
+) -> Promise[Unit] =
   #| (self, image) => self.detect(image)

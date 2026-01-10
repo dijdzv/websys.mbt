@@ -114,7 +114,7 @@ pub extern "js" fn IntersectionObserver::new(
 ///|
 pub extern "js" fn IntersectionObserver::get_root(
   self : IntersectionObserver,
-) -> JsValue =
+) -> ElementOrDocument =
   #| (self) => self.root
 
 ///|

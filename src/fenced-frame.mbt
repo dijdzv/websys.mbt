@@ -22,6 +22,30 @@ pub extern "js" fn UrnOrConfig::from_fenced_frame_config(
   #| (v) => v
 
 ///|
+/// Check if this UrnOrConfig is String
+pub extern "js" fn UrnOrConfig::is_string(self : UrnOrConfig) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this UrnOrConfig is FencedFrameConfig
+pub extern "js" fn UrnOrConfig::is_fenced_frame_config(
+  self : UrnOrConfig,
+) -> Bool =
+  #| (self) => self instanceof FencedFrameConfig
+
+///|
+/// Try to get UrnOrConfig as String
+pub extern "js" fn UrnOrConfig::as_string(self : UrnOrConfig) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get UrnOrConfig as FencedFrameConfig
+pub extern "js" fn UrnOrConfig::as_fenced_frame_config(
+  self : UrnOrConfig,
+) -> FencedFrameConfig? =
+  #| (self) => (self instanceof FencedFrameConfig) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// ReportEventType typedef
 pub type ReportEventType
 
@@ -44,6 +68,32 @@ pub extern "js" fn ReportEventType::from_string(v : String) -> ReportEventType =
   #| (v) => v
 
 ///|
+/// Check if this ReportEventType is FenceEvent
+pub extern "js" fn ReportEventType::is_fence_event(
+  self : ReportEventType,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Check if this ReportEventType is String
+pub extern "js" fn ReportEventType::is_string(self : ReportEventType) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get ReportEventType as FenceEvent
+pub extern "js" fn ReportEventType::as_fence_event(
+  self : ReportEventType,
+) -> FenceEvent? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ReportEventType as String
+pub extern "js" fn ReportEventType::as_string(
+  self : ReportEventType,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// OpaqueProperty enum
 pub(all) enum OpaqueProperty {
   Opaque
@@ -53,7 +103,7 @@ pub(all) enum OpaqueProperty {
 /// Convert to string value
 pub fn OpaqueProperty::to_string(self : OpaqueProperty) -> String {
   match self {
-    Opaque => "opaque"
+    OpaqueProperty::Opaque => "opaque"
   }
 }
 
@@ -61,7 +111,7 @@ pub fn OpaqueProperty::to_string(self : OpaqueProperty) -> String {
 /// Parse from string value
 pub fn OpaqueProperty::from_string(s : String) -> OpaqueProperty? {
   match s {
-    "opaque" => Some(Opaque)
+    "opaque" => Some(OpaqueProperty::Opaque)
     _ => None
   }
 }
@@ -82,11 +132,12 @@ pub fn FenceReportingDestination::to_string(
   self : FenceReportingDestination,
 ) -> String {
   match self {
-    Buyer => "buyer"
-    Seller => "seller"
-    ComponentSeller => "component-seller"
-    DirectSeller => "direct-seller"
-    SharedStorageSelectUrl => "shared-storage-select-url"
+    FenceReportingDestination::Buyer => "buyer"
+    FenceReportingDestination::Seller => "seller"
+    FenceReportingDestination::ComponentSeller => "component-seller"
+    FenceReportingDestination::DirectSeller => "direct-seller"
+    FenceReportingDestination::SharedStorageSelectUrl =>
+      "shared-storage-select-url"
   }
 }
 
@@ -96,11 +147,12 @@ pub fn FenceReportingDestination::from_string(
   s : String,
 ) -> FenceReportingDestination? {
   match s {
-    "buyer" => Some(Buyer)
-    "seller" => Some(Seller)
-    "component-seller" => Some(ComponentSeller)
-    "direct-seller" => Some(DirectSeller)
-    "shared-storage-select-url" => Some(SharedStorageSelectUrl)
+    "buyer" => Some(FenceReportingDestination::Buyer)
+    "seller" => Some(FenceReportingDestination::Seller)
+    "component-seller" => Some(FenceReportingDestination::ComponentSeller)
+    "direct-seller" => Some(FenceReportingDestination::DirectSeller)
+    "shared-storage-select-url" =>
+      Some(FenceReportingDestination::SharedStorageSelectUrl)
     _ => None
   }
 }

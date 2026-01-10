@@ -14,10 +14,10 @@ pub(all) enum FontFaceLoadStatus {
 /// Convert to string value
 pub fn FontFaceLoadStatus::to_string(self : FontFaceLoadStatus) -> String {
   match self {
-    Unloaded => "unloaded"
-    Loading => "loading"
-    Loaded => "loaded"
-    Error => "error"
+    FontFaceLoadStatus::Unloaded => "unloaded"
+    FontFaceLoadStatus::Loading => "loading"
+    FontFaceLoadStatus::Loaded => "loaded"
+    FontFaceLoadStatus::Error => "error"
   }
 }
 
@@ -25,10 +25,10 @@ pub fn FontFaceLoadStatus::to_string(self : FontFaceLoadStatus) -> String {
 /// Parse from string value
 pub fn FontFaceLoadStatus::from_string(s : String) -> FontFaceLoadStatus? {
   match s {
-    "unloaded" => Some(Unloaded)
-    "loading" => Some(Loading)
-    "loaded" => Some(Loaded)
-    "error" => Some(Error)
+    "unloaded" => Some(FontFaceLoadStatus::Unloaded)
+    "loading" => Some(FontFaceLoadStatus::Loading)
+    "loaded" => Some(FontFaceLoadStatus::Loaded)
+    "error" => Some(FontFaceLoadStatus::Error)
     _ => None
   }
 }
@@ -44,8 +44,8 @@ pub(all) enum FontFaceSetLoadStatus {
 /// Convert to string value
 pub fn FontFaceSetLoadStatus::to_string(self : FontFaceSetLoadStatus) -> String {
   match self {
-    Loading => "loading"
-    Loaded => "loaded"
+    FontFaceSetLoadStatus::Loading => "loading"
+    FontFaceSetLoadStatus::Loaded => "loaded"
   }
 }
 
@@ -53,8 +53,8 @@ pub fn FontFaceSetLoadStatus::to_string(self : FontFaceSetLoadStatus) -> String 
 /// Parse from string value
 pub fn FontFaceSetLoadStatus::from_string(s : String) -> FontFaceSetLoadStatus? {
   match s {
-    "loading" => Some(Loading)
-    "loaded" => Some(Loaded)
+    "loading" => Some(FontFaceSetLoadStatus::Loading)
+    "loaded" => Some(FontFaceSetLoadStatus::Loaded)
     _ => None
   }
 }
@@ -141,7 +141,7 @@ pub extern "js" fn FontFace::to_js_value(self : FontFace) -> JsValue =
 ///|
 pub extern "js" fn FontFace::new(
   family : CSSOMString,
-  source : JsValue,
+  source : CSSOMStringOrBufferSource,
   descriptors : FontFaceDescriptors,
 ) -> FontFace =
   #| (family, source, descriptors) => new FontFace(family, source, descriptors)
@@ -531,7 +531,7 @@ pub extern "js" fn FontFaceSet::set_onloadingerror(
 pub extern "js" fn FontFaceSet::load(
   self : FontFaceSet,
   font : CSSOMString,
-) -> Promise[Array[FontFace]] =
+) -> Promise[Unit] =
   #| (self, font) => self.load(font)
 
 ///|
@@ -539,7 +539,7 @@ pub extern "js" fn FontFaceSet::load_with_text(
   self : FontFaceSet,
   font : CSSOMString,
   text : CSSOMString,
-) -> Promise[Array[FontFace]] =
+) -> Promise[Unit] =
   #| (self, font, text) => self.load(font, text)
 
 ///|

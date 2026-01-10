@@ -152,7 +152,7 @@ pub extern "js" fn Performance::measure(
 pub extern "js" fn Performance::measure_with_end_mark(
   self : Performance,
   measure_name : String,
-  start_or_measure_options : JsValue,
+  start_or_measure_options : StringOrPerformanceMeasureOptions,
   end_mark : String,
 ) -> PerformanceMeasure =
   #| (self, measure_name, start_or_measure_options, end_mark) => self.measure(measure_name, start_or_measure_options, end_mark)

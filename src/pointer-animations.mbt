@@ -14,10 +14,10 @@ pub(all) enum PointerAxis {
 /// Convert to string value
 pub fn PointerAxis::to_string(self : PointerAxis) -> String {
   match self {
-    Block => "block"
-    Inline => "inline"
-    X => "x"
-    Y => "y"
+    PointerAxis::Block => "block"
+    PointerAxis::Inline => "inline"
+    PointerAxis::X => "x"
+    PointerAxis::Y => "y"
   }
 }
 
@@ -25,10 +25,10 @@ pub fn PointerAxis::to_string(self : PointerAxis) -> String {
 /// Parse from string value
 pub fn PointerAxis::from_string(s : String) -> PointerAxis? {
   match s {
-    "block" => Some(Block)
-    "inline" => Some(Inline)
-    "x" => Some(X)
-    "y" => Some(Y)
+    "block" => Some(PointerAxis::Block)
+    "inline" => Some(PointerAxis::Inline)
+    "x" => Some(PointerAxis::X)
+    "y" => Some(PointerAxis::Y)
     _ => None
   }
 }

@@ -13,9 +13,9 @@ pub(all) enum CompressionFormat {
 /// Convert to string value
 pub fn CompressionFormat::to_string(self : CompressionFormat) -> String {
   match self {
-    Deflate => "deflate"
-    DeflateRaw => "deflate-raw"
-    Gzip => "gzip"
+    CompressionFormat::Deflate => "deflate"
+    CompressionFormat::DeflateRaw => "deflate-raw"
+    CompressionFormat::Gzip => "gzip"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn CompressionFormat::to_string(self : CompressionFormat) -> String {
 /// Parse from string value
 pub fn CompressionFormat::from_string(s : String) -> CompressionFormat? {
   match s {
-    "deflate" => Some(Deflate)
-    "deflate-raw" => Some(DeflateRaw)
-    "gzip" => Some(Gzip)
+    "deflate" => Some(CompressionFormat::Deflate)
+    "deflate-raw" => Some(CompressionFormat::DeflateRaw)
+    "gzip" => Some(CompressionFormat::Gzip)
     _ => None
   }
 }

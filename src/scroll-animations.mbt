@@ -14,10 +14,10 @@ pub(all) enum ScrollAxis {
 /// Convert to string value
 pub fn ScrollAxis::to_string(self : ScrollAxis) -> String {
   match self {
-    Block => "block"
-    Inline => "inline"
-    X => "x"
-    Y => "y"
+    ScrollAxis::Block => "block"
+    ScrollAxis::Inline => "inline"
+    ScrollAxis::X => "x"
+    ScrollAxis::Y => "y"
   }
 }
 
@@ -25,10 +25,10 @@ pub fn ScrollAxis::to_string(self : ScrollAxis) -> String {
 /// Parse from string value
 pub fn ScrollAxis::from_string(s : String) -> ScrollAxis? {
   match s {
-    "block" => Some(Block)
-    "inline" => Some(Inline)
-    "x" => Some(X)
-    "y" => Some(Y)
+    "block" => Some(ScrollAxis::Block)
+    "inline" => Some(ScrollAxis::Inline)
+    "x" => Some(ScrollAxis::X)
+    "y" => Some(ScrollAxis::Y)
     _ => None
   }
 }

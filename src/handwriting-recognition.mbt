@@ -14,8 +14,8 @@ pub fn HandwritingRecognitionType::to_string(
   self : HandwritingRecognitionType,
 ) -> String {
   match self {
-    Text => "text"
-    PerCharacter => "per-character"
+    HandwritingRecognitionType::Text => "text"
+    HandwritingRecognitionType::PerCharacter => "per-character"
   }
 }
 
@@ -25,8 +25,8 @@ pub fn HandwritingRecognitionType::from_string(
   s : String,
 ) -> HandwritingRecognitionType? {
   match s {
-    "text" => Some(Text)
-    "per-character" => Some(PerCharacter)
+    "text" => Some(HandwritingRecognitionType::Text)
+    "per-character" => Some(HandwritingRecognitionType::PerCharacter)
     _ => None
   }
 }
@@ -43,9 +43,9 @@ pub(all) enum HandwritingInputType {
 /// Convert to string value
 pub fn HandwritingInputType::to_string(self : HandwritingInputType) -> String {
   match self {
-    Mouse => "mouse"
-    Stylus => "stylus"
-    Touch => "touch"
+    HandwritingInputType::Mouse => "mouse"
+    HandwritingInputType::Stylus => "stylus"
+    HandwritingInputType::Touch => "touch"
   }
 }
 
@@ -53,9 +53,9 @@ pub fn HandwritingInputType::to_string(self : HandwritingInputType) -> String {
 /// Parse from string value
 pub fn HandwritingInputType::from_string(s : String) -> HandwritingInputType? {
   match s {
-    "mouse" => Some(Mouse)
-    "stylus" => Some(Stylus)
-    "touch" => Some(Touch)
+    "mouse" => Some(HandwritingInputType::Mouse)
+    "stylus" => Some(HandwritingInputType::Stylus)
+    "touch" => Some(HandwritingInputType::Touch)
     _ => None
   }
 }
@@ -345,7 +345,7 @@ pub extern "js" fn HandwritingDrawing::get_strokes(
 ///|
 pub extern "js" fn HandwritingDrawing::get_prediction(
   self : HandwritingDrawing,
-) -> Promise[Array[HandwritingPrediction]] =
+) -> Promise[Unit] =
   #| (self) => self.getPrediction()
 
 ///|

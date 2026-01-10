@@ -12,8 +12,8 @@ pub(all) enum DevicePostureType {
 /// Convert to string value
 pub fn DevicePostureType::to_string(self : DevicePostureType) -> String {
   match self {
-    Continuous => "continuous"
-    Folded => "folded"
+    DevicePostureType::Continuous => "continuous"
+    DevicePostureType::Folded => "folded"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn DevicePostureType::to_string(self : DevicePostureType) -> String {
 /// Parse from string value
 pub fn DevicePostureType::from_string(s : String) -> DevicePostureType? {
   match s {
-    "continuous" => Some(Continuous)
-    "folded" => Some(Folded)
+    "continuous" => Some(DevicePostureType::Continuous)
+    "folded" => Some(DevicePostureType::Folded)
     _ => None
   }
 }

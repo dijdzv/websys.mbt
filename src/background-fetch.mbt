@@ -13,9 +13,9 @@ pub(all) enum BackgroundFetchResult {
 /// Convert to string value
 pub fn BackgroundFetchResult::to_string(self : BackgroundFetchResult) -> String {
   match self {
-    Empty => ""
-    Success => "success"
-    Failure => "failure"
+    BackgroundFetchResult::Empty => ""
+    BackgroundFetchResult::Success => "success"
+    BackgroundFetchResult::Failure => "failure"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn BackgroundFetchResult::to_string(self : BackgroundFetchResult) -> String 
 /// Parse from string value
 pub fn BackgroundFetchResult::from_string(s : String) -> BackgroundFetchResult? {
   match s {
-    "" => Some(Empty)
-    "success" => Some(Success)
-    "failure" => Some(Failure)
+    "" => Some(BackgroundFetchResult::Empty)
+    "success" => Some(BackgroundFetchResult::Success)
+    "failure" => Some(BackgroundFetchResult::Failure)
     _ => None
   }
 }
@@ -47,12 +47,13 @@ pub fn BackgroundFetchFailureReason::to_string(
   self : BackgroundFetchFailureReason,
 ) -> String {
   match self {
-    Empty => ""
-    Aborted => "aborted"
-    BadStatus => "bad-status"
-    FetchError => "fetch-error"
-    QuotaExceeded => "quota-exceeded"
-    DownloadTotalExceeded => "download-total-exceeded"
+    BackgroundFetchFailureReason::Empty => ""
+    BackgroundFetchFailureReason::Aborted => "aborted"
+    BackgroundFetchFailureReason::BadStatus => "bad-status"
+    BackgroundFetchFailureReason::FetchError => "fetch-error"
+    BackgroundFetchFailureReason::QuotaExceeded => "quota-exceeded"
+    BackgroundFetchFailureReason::DownloadTotalExceeded =>
+      "download-total-exceeded"
   }
 }
 
@@ -62,12 +63,13 @@ pub fn BackgroundFetchFailureReason::from_string(
   s : String,
 ) -> BackgroundFetchFailureReason? {
   match s {
-    "" => Some(Empty)
-    "aborted" => Some(Aborted)
-    "bad-status" => Some(BadStatus)
-    "fetch-error" => Some(FetchError)
-    "quota-exceeded" => Some(QuotaExceeded)
-    "download-total-exceeded" => Some(DownloadTotalExceeded)
+    "" => Some(BackgroundFetchFailureReason::Empty)
+    "aborted" => Some(BackgroundFetchFailureReason::Aborted)
+    "bad-status" => Some(BackgroundFetchFailureReason::BadStatus)
+    "fetch-error" => Some(BackgroundFetchFailureReason::FetchError)
+    "quota-exceeded" => Some(BackgroundFetchFailureReason::QuotaExceeded)
+    "download-total-exceeded" =>
+      Some(BackgroundFetchFailureReason::DownloadTotalExceeded)
     _ => None
   }
 }
@@ -155,7 +157,7 @@ pub extern "js" fn BackgroundFetchManager::to_js_value(
 pub extern "js" fn BackgroundFetchManager::fetch(
   self : BackgroundFetchManager,
   id : String,
-  requests : JsValue,
+  requests : RequestInfoOrArrayOfRequestInfo,
 ) -> Promise[BackgroundFetchRegistration] =
   #| (self, id, requests) => self.fetch(id, requests)
 
@@ -163,7 +165,7 @@ pub extern "js" fn BackgroundFetchManager::fetch(
 pub extern "js" fn BackgroundFetchManager::fetch_with_options(
   self : BackgroundFetchManager,
   id : String,
-  requests : JsValue,
+  requests : RequestInfoOrArrayOfRequestInfo,
   options : BackgroundFetchOptions,
 ) -> Promise[BackgroundFetchRegistration] =
   #| (self, id, requests, options) => self.fetch(id, requests, options)
@@ -178,7 +180,7 @@ pub extern "js" fn BackgroundFetchManager::get(
 ///|
 pub extern "js" fn BackgroundFetchManager::get_ids(
   self : BackgroundFetchManager,
-) -> Promise[Array[String]] =
+) -> Promise[Unit] =
   #| (self) => self.getIds()
 
 ///|
@@ -276,7 +278,7 @@ pub extern "js" fn BackgroundFetchRegistration::match__with_options(
 ///|
 pub extern "js" fn BackgroundFetchRegistration::match_all(
   self : BackgroundFetchRegistration,
-) -> Promise[Array[BackgroundFetchRecord]] =
+) -> Promise[Unit] =
   #| (self) => self.matchAll()
 
 ///|
@@ -284,7 +286,7 @@ pub extern "js" fn BackgroundFetchRegistration::match_all_with_options(
   self : BackgroundFetchRegistration,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[Array[BackgroundFetchRecord]] =
+) -> Promise[Unit] =
   #| (self, request, options) => self.matchAll(request, options)
 
 ///|

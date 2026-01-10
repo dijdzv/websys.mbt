@@ -26,6 +26,34 @@ pub extern "js" fn XRWebGLRenderingContext::from_web_g_l2_rendering_context(
   #| (v) => v
 
 ///|
+/// Check if this XRWebGLRenderingContext is WebGLRenderingContext
+pub extern "js" fn XRWebGLRenderingContext::is_web_g_l_rendering_context(
+  self : XRWebGLRenderingContext,
+) -> Bool =
+  #| (self) => self instanceof WebGLRenderingContext
+
+///|
+/// Check if this XRWebGLRenderingContext is WebGL2RenderingContext
+pub extern "js" fn XRWebGLRenderingContext::is_web_g_l2_rendering_context(
+  self : XRWebGLRenderingContext,
+) -> Bool =
+  #| (self) => self instanceof WebGL2RenderingContext
+
+///|
+/// Try to get XRWebGLRenderingContext as WebGLRenderingContext
+pub extern "js" fn XRWebGLRenderingContext::as_web_g_l_rendering_context(
+  self : XRWebGLRenderingContext,
+) -> WebGLRenderingContext? =
+  #| (self) => (self instanceof WebGLRenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get XRWebGLRenderingContext as WebGL2RenderingContext
+pub extern "js" fn XRWebGLRenderingContext::as_web_g_l2_rendering_context(
+  self : XRWebGLRenderingContext,
+) -> WebGL2RenderingContext? =
+  #| (self) => (self instanceof WebGL2RenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// XRSessionMode enum
 pub(all) enum XRSessionMode {
   Inline
@@ -37,9 +65,9 @@ pub(all) enum XRSessionMode {
 /// Convert to string value
 pub fn XRSessionMode::to_string(self : XRSessionMode) -> String {
   match self {
-    Inline => "inline"
-    ImmersiveVr => "immersive-vr"
-    ImmersiveAr => "immersive-ar"
+    XRSessionMode::Inline => "inline"
+    XRSessionMode::ImmersiveVr => "immersive-vr"
+    XRSessionMode::ImmersiveAr => "immersive-ar"
   }
 }
 
@@ -47,9 +75,9 @@ pub fn XRSessionMode::to_string(self : XRSessionMode) -> String {
 /// Parse from string value
 pub fn XRSessionMode::from_string(s : String) -> XRSessionMode? {
   match s {
-    "inline" => Some(Inline)
-    "immersive-vr" => Some(ImmersiveVr)
-    "immersive-ar" => Some(ImmersiveAr)
+    "inline" => Some(XRSessionMode::Inline)
+    "immersive-vr" => Some(XRSessionMode::ImmersiveVr)
+    "immersive-ar" => Some(XRSessionMode::ImmersiveAr)
     _ => None
   }
 }
@@ -66,9 +94,9 @@ pub(all) enum XRVisibilityState {
 /// Convert to string value
 pub fn XRVisibilityState::to_string(self : XRVisibilityState) -> String {
   match self {
-    Visible => "visible"
-    VisibleBlurred => "visible-blurred"
-    Hidden => "hidden"
+    XRVisibilityState::Visible => "visible"
+    XRVisibilityState::VisibleBlurred => "visible-blurred"
+    XRVisibilityState::Hidden => "hidden"
   }
 }
 
@@ -76,9 +104,9 @@ pub fn XRVisibilityState::to_string(self : XRVisibilityState) -> String {
 /// Parse from string value
 pub fn XRVisibilityState::from_string(s : String) -> XRVisibilityState? {
   match s {
-    "visible" => Some(Visible)
-    "visible-blurred" => Some(VisibleBlurred)
-    "hidden" => Some(Hidden)
+    "visible" => Some(XRVisibilityState::Visible)
+    "visible-blurred" => Some(XRVisibilityState::VisibleBlurred)
+    "hidden" => Some(XRVisibilityState::Hidden)
     _ => None
   }
 }
@@ -97,11 +125,11 @@ pub(all) enum XRReferenceSpaceType {
 /// Convert to string value
 pub fn XRReferenceSpaceType::to_string(self : XRReferenceSpaceType) -> String {
   match self {
-    Viewer => "viewer"
-    Local => "local"
-    LocalFloor => "local-floor"
-    BoundedFloor => "bounded-floor"
-    Unbounded => "unbounded"
+    XRReferenceSpaceType::Viewer => "viewer"
+    XRReferenceSpaceType::Local => "local"
+    XRReferenceSpaceType::LocalFloor => "local-floor"
+    XRReferenceSpaceType::BoundedFloor => "bounded-floor"
+    XRReferenceSpaceType::Unbounded => "unbounded"
   }
 }
 
@@ -109,11 +137,11 @@ pub fn XRReferenceSpaceType::to_string(self : XRReferenceSpaceType) -> String {
 /// Parse from string value
 pub fn XRReferenceSpaceType::from_string(s : String) -> XRReferenceSpaceType? {
   match s {
-    "viewer" => Some(Viewer)
-    "local" => Some(Local)
-    "local-floor" => Some(LocalFloor)
-    "bounded-floor" => Some(BoundedFloor)
-    "unbounded" => Some(Unbounded)
+    "viewer" => Some(XRReferenceSpaceType::Viewer)
+    "local" => Some(XRReferenceSpaceType::Local)
+    "local-floor" => Some(XRReferenceSpaceType::LocalFloor)
+    "bounded-floor" => Some(XRReferenceSpaceType::BoundedFloor)
+    "unbounded" => Some(XRReferenceSpaceType::Unbounded)
     _ => None
   }
 }
@@ -130,9 +158,9 @@ pub(all) enum XREye {
 /// Convert to string value
 pub fn XREye::to_string(self : XREye) -> String {
   match self {
-    None => "none"
-    Left => "left"
-    Right => "right"
+    XREye::None => "none"
+    XREye::Left => "left"
+    XREye::Right => "right"
   }
 }
 
@@ -140,9 +168,9 @@ pub fn XREye::to_string(self : XREye) -> String {
 /// Parse from string value
 pub fn XREye::from_string(s : String) -> XREye? {
   match s {
-    "none" => Some(None)
-    "left" => Some(Left)
-    "right" => Some(Right)
+    "none" => Some(XREye::None)
+    "left" => Some(XREye::Left)
+    "right" => Some(XREye::Right)
     _ => None
   }
 }
@@ -159,9 +187,9 @@ pub(all) enum XRHandedness {
 /// Convert to string value
 pub fn XRHandedness::to_string(self : XRHandedness) -> String {
   match self {
-    None => "none"
-    Left => "left"
-    Right => "right"
+    XRHandedness::None => "none"
+    XRHandedness::Left => "left"
+    XRHandedness::Right => "right"
   }
 }
 
@@ -169,9 +197,9 @@ pub fn XRHandedness::to_string(self : XRHandedness) -> String {
 /// Parse from string value
 pub fn XRHandedness::from_string(s : String) -> XRHandedness? {
   match s {
-    "none" => Some(None)
-    "left" => Some(Left)
-    "right" => Some(Right)
+    "none" => Some(XRHandedness::None)
+    "left" => Some(XRHandedness::Left)
+    "right" => Some(XRHandedness::Right)
     _ => None
   }
 }
@@ -189,10 +217,10 @@ pub(all) enum XRTargetRayMode {
 /// Convert to string value
 pub fn XRTargetRayMode::to_string(self : XRTargetRayMode) -> String {
   match self {
-    Gaze => "gaze"
-    TrackedPointer => "tracked-pointer"
-    Screen => "screen"
-    TransientPointer => "transient-pointer"
+    XRTargetRayMode::Gaze => "gaze"
+    XRTargetRayMode::TrackedPointer => "tracked-pointer"
+    XRTargetRayMode::Screen => "screen"
+    XRTargetRayMode::TransientPointer => "transient-pointer"
   }
 }
 
@@ -200,10 +228,10 @@ pub fn XRTargetRayMode::to_string(self : XRTargetRayMode) -> String {
 /// Parse from string value
 pub fn XRTargetRayMode::from_string(s : String) -> XRTargetRayMode? {
   match s {
-    "gaze" => Some(Gaze)
-    "tracked-pointer" => Some(TrackedPointer)
-    "screen" => Some(Screen)
-    "transient-pointer" => Some(TransientPointer)
+    "gaze" => Some(XRTargetRayMode::Gaze)
+    "tracked-pointer" => Some(XRTargetRayMode::TrackedPointer)
+    "screen" => Some(XRTargetRayMode::Screen)
+    "transient-pointer" => Some(XRTargetRayMode::TransientPointer)
     _ => None
   }
 }

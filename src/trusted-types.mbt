@@ -31,6 +31,44 @@ pub extern "js" fn TrustedType::from_trusted_script_u_r_l(
   #| (v) => v
 
 ///|
+/// Check if this TrustedType is TrustedHTML
+pub extern "js" fn TrustedType::is_trusted_h_t_m_l(self : TrustedType) -> Bool =
+  #| (self) => self instanceof TrustedHTML
+
+///|
+/// Check if this TrustedType is TrustedScript
+pub extern "js" fn TrustedType::is_trusted_script(self : TrustedType) -> Bool =
+  #| (self) => self instanceof TrustedScript
+
+///|
+/// Check if this TrustedType is TrustedScriptURL
+pub extern "js" fn TrustedType::is_trusted_script_u_r_l(
+  self : TrustedType,
+) -> Bool =
+  #| (self) => self instanceof TrustedScriptURL
+
+///|
+/// Try to get TrustedType as TrustedHTML
+pub extern "js" fn TrustedType::as_trusted_h_t_m_l(
+  self : TrustedType,
+) -> TrustedHTML? =
+  #| (self) => (self instanceof TrustedHTML) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get TrustedType as TrustedScript
+pub extern "js" fn TrustedType::as_trusted_script(
+  self : TrustedType,
+) -> TrustedScript? =
+  #| (self) => (self instanceof TrustedScript) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get TrustedType as TrustedScriptURL
+pub extern "js" fn TrustedType::as_trusted_script_u_r_l(
+  self : TrustedType,
+) -> TrustedScriptURL? =
+  #| (self) => (self instanceof TrustedScriptURL) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// CreateHTMLCallback callback interface
 pub type CreateHTMLCallback
 

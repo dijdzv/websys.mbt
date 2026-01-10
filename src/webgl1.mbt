@@ -117,6 +117,102 @@ pub extern "js" fn TexImageSource::from_video_frame(
   #| (v) => v
 
 ///|
+/// Check if this TexImageSource is ImageBitmap
+pub extern "js" fn TexImageSource::is_image_bitmap(
+  self : TexImageSource,
+) -> Bool =
+  #| (self) => self instanceof ImageBitmap
+
+///|
+/// Check if this TexImageSource is ImageData
+pub extern "js" fn TexImageSource::is_image_data(self : TexImageSource) -> Bool =
+  #| (self) => self instanceof ImageData
+
+///|
+/// Check if this TexImageSource is HTMLImageElement
+pub extern "js" fn TexImageSource::is_h_t_m_l_image_element(
+  self : TexImageSource,
+) -> Bool =
+  #| (self) => self instanceof HTMLImageElement
+
+///|
+/// Check if this TexImageSource is HTMLCanvasElement
+pub extern "js" fn TexImageSource::is_h_t_m_l_canvas_element(
+  self : TexImageSource,
+) -> Bool =
+  #| (self) => self instanceof HTMLCanvasElement
+
+///|
+/// Check if this TexImageSource is HTMLVideoElement
+pub extern "js" fn TexImageSource::is_h_t_m_l_video_element(
+  self : TexImageSource,
+) -> Bool =
+  #| (self) => self instanceof HTMLVideoElement
+
+///|
+/// Check if this TexImageSource is OffscreenCanvas
+pub extern "js" fn TexImageSource::is_offscreen_canvas(
+  self : TexImageSource,
+) -> Bool =
+  #| (self) => self instanceof OffscreenCanvas
+
+///|
+/// Check if this TexImageSource is VideoFrame
+pub extern "js" fn TexImageSource::is_video_frame(
+  self : TexImageSource,
+) -> Bool =
+  #| (self) => self instanceof VideoFrame
+
+///|
+/// Try to get TexImageSource as ImageBitmap
+pub extern "js" fn TexImageSource::as_image_bitmap(
+  self : TexImageSource,
+) -> ImageBitmap? =
+  #| (self) => (self instanceof ImageBitmap) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get TexImageSource as ImageData
+pub extern "js" fn TexImageSource::as_image_data(
+  self : TexImageSource,
+) -> ImageData? =
+  #| (self) => (self instanceof ImageData) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get TexImageSource as HTMLImageElement
+pub extern "js" fn TexImageSource::as_h_t_m_l_image_element(
+  self : TexImageSource,
+) -> HTMLImageElement? =
+  #| (self) => (self instanceof HTMLImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get TexImageSource as HTMLCanvasElement
+pub extern "js" fn TexImageSource::as_h_t_m_l_canvas_element(
+  self : TexImageSource,
+) -> HTMLCanvasElement? =
+  #| (self) => (self instanceof HTMLCanvasElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get TexImageSource as HTMLVideoElement
+pub extern "js" fn TexImageSource::as_h_t_m_l_video_element(
+  self : TexImageSource,
+) -> HTMLVideoElement? =
+  #| (self) => (self instanceof HTMLVideoElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get TexImageSource as OffscreenCanvas
+pub extern "js" fn TexImageSource::as_offscreen_canvas(
+  self : TexImageSource,
+) -> OffscreenCanvas? =
+  #| (self) => (self instanceof OffscreenCanvas) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get TexImageSource as VideoFrame
+pub extern "js" fn TexImageSource::as_video_frame(
+  self : TexImageSource,
+) -> VideoFrame? =
+  #| (self) => (self instanceof VideoFrame) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// Float32List typedef
 pub type Float32List
 
@@ -139,6 +235,32 @@ pub extern "js" fn Float32List::from_array_of_g_lfloat(
   #| (v) => v
 
 ///|
+/// Check if this Float32List is Float32Array
+pub extern "js" fn Float32List::is_float32_array(self : Float32List) -> Bool =
+  #| (self) => self instanceof Float32Array
+
+///|
+/// Check if this Float32List is Array[GLfloat]
+pub extern "js" fn Float32List::is_array_of_g_lfloat(
+  self : Float32List,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Try to get Float32List as Float32Array
+pub extern "js" fn Float32List::as_float32_array(
+  self : Float32List,
+) -> Float32Array? =
+  #| (self) => (self instanceof Float32Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get Float32List as Array[GLfloat]
+pub extern "js" fn Float32List::as_array_of_g_lfloat(
+  self : Float32List,
+) -> Array[GLfloat]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// Int32List typedef
 pub type Int32List
 
@@ -159,6 +281,28 @@ pub extern "js" fn Int32List::from_array_of_g_lint(
   #| (v) => v
 
 ///|
+/// Check if this Int32List is Int32Array
+pub extern "js" fn Int32List::is_int32_array(self : Int32List) -> Bool =
+  #| (self) => self instanceof Int32Array
+
+///|
+/// Check if this Int32List is Array[GLint]
+pub extern "js" fn Int32List::is_array_of_g_lint(self : Int32List) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Try to get Int32List as Int32Array
+pub extern "js" fn Int32List::as_int32_array(self : Int32List) -> Int32Array? =
+  #| (self) => (self instanceof Int32Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get Int32List as Array[GLint]
+pub extern "js" fn Int32List::as_array_of_g_lint(
+  self : Int32List,
+) -> Array[GLint]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// WebGLPowerPreference enum
 pub(all) enum WebGLPowerPreference {
   Default
@@ -170,9 +314,9 @@ pub(all) enum WebGLPowerPreference {
 /// Convert to string value
 pub fn WebGLPowerPreference::to_string(self : WebGLPowerPreference) -> String {
   match self {
-    Default => "default"
-    LowPower => "low-power"
-    HighPerformance => "high-performance"
+    WebGLPowerPreference::Default => "default"
+    WebGLPowerPreference::LowPower => "low-power"
+    WebGLPowerPreference::HighPerformance => "high-performance"
   }
 }
 
@@ -180,9 +324,9 @@ pub fn WebGLPowerPreference::to_string(self : WebGLPowerPreference) -> String {
 /// Parse from string value
 pub fn WebGLPowerPreference::from_string(s : String) -> WebGLPowerPreference? {
   match s {
-    "default" => Some(Default)
-    "low-power" => Some(LowPower)
-    "high-performance" => Some(HighPerformance)
+    "default" => Some(WebGLPowerPreference::Default)
+    "low-power" => Some(WebGLPowerPreference::LowPower)
+    "high-performance" => Some(WebGLPowerPreference::HighPerformance)
     _ => None
   }
 }
@@ -1957,7 +2101,7 @@ pub let web_g_l_rendering_context_browser_default_webgl : Int = 0x9244
 ///|
 pub extern "js" fn WebGLRenderingContext::get_canvas(
   self : WebGLRenderingContext,
-) -> JsValue =
+) -> HTMLCanvasElementOrOffscreenCanvas =
   #| (self) => self.canvas
 
 ///|

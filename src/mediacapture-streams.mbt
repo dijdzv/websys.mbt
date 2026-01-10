@@ -24,6 +24,30 @@ pub extern "js" fn ConstrainULong::from_constrain_u_long_range(
   #| (v) => v
 
 ///|
+/// Check if this ConstrainULong is Int
+pub extern "js" fn ConstrainULong::is_int(self : ConstrainULong) -> Bool =
+  #| (self) => typeof self === 'number'
+
+///|
+/// Check if this ConstrainULong is ConstrainULongRange
+pub extern "js" fn ConstrainULong::is_constrain_u_long_range(
+  self : ConstrainULong,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get ConstrainULong as Int
+pub extern "js" fn ConstrainULong::as_int(self : ConstrainULong) -> Int? =
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ConstrainULong as ConstrainULongRange
+pub extern "js" fn ConstrainULong::as_constrain_u_long_range(
+  self : ConstrainULong,
+) -> ConstrainULongRange? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// ConstrainDouble typedef
 pub type ConstrainDouble
 
@@ -46,6 +70,32 @@ pub extern "js" fn ConstrainDouble::from_constrain_double_range(
   #| (v) => v
 
 ///|
+/// Check if this ConstrainDouble is Double
+pub extern "js" fn ConstrainDouble::is_double(self : ConstrainDouble) -> Bool =
+  #| (self) => typeof self === 'number'
+
+///|
+/// Check if this ConstrainDouble is ConstrainDoubleRange
+pub extern "js" fn ConstrainDouble::is_constrain_double_range(
+  self : ConstrainDouble,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get ConstrainDouble as Double
+pub extern "js" fn ConstrainDouble::as_double(
+  self : ConstrainDouble,
+) -> Double? =
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ConstrainDouble as ConstrainDoubleRange
+pub extern "js" fn ConstrainDouble::as_constrain_double_range(
+  self : ConstrainDouble,
+) -> ConstrainDoubleRange? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// ConstrainBoolean typedef
 pub type ConstrainBoolean
 
@@ -66,6 +116,30 @@ pub extern "js" fn ConstrainBoolean::from_constrain_boolean_parameters(
   v : ConstrainBooleanParameters,
 ) -> ConstrainBoolean =
   #| (v) => v
+
+///|
+/// Check if this ConstrainBoolean is Bool
+pub extern "js" fn ConstrainBoolean::is_bool(self : ConstrainBoolean) -> Bool =
+  #| (self) => typeof self === 'boolean'
+
+///|
+/// Check if this ConstrainBoolean is ConstrainBooleanParameters
+pub extern "js" fn ConstrainBoolean::is_constrain_boolean_parameters(
+  self : ConstrainBoolean,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get ConstrainBoolean as Bool
+pub extern "js" fn ConstrainBoolean::as_bool(self : ConstrainBoolean) -> Bool? =
+  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ConstrainBoolean as ConstrainBooleanParameters
+pub extern "js" fn ConstrainBoolean::as_constrain_boolean_parameters(
+  self : ConstrainBoolean,
+) -> ConstrainBooleanParameters? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// ConstrainDOMString typedef
@@ -99,6 +173,48 @@ pub extern "js" fn ConstrainDOMString::from_constrain_d_o_m_string_parameters(
   #| (v) => v
 
 ///|
+/// Check if this ConstrainDOMString is String
+pub extern "js" fn ConstrainDOMString::is_string(
+  self : ConstrainDOMString,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this ConstrainDOMString is Array[String]
+pub extern "js" fn ConstrainDOMString::is_array_of_string(
+  self : ConstrainDOMString,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Check if this ConstrainDOMString is ConstrainDOMStringParameters
+pub extern "js" fn ConstrainDOMString::is_constrain_d_o_m_string_parameters(
+  self : ConstrainDOMString,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get ConstrainDOMString as String
+pub extern "js" fn ConstrainDOMString::as_string(
+  self : ConstrainDOMString,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ConstrainDOMString as Array[String]
+pub extern "js" fn ConstrainDOMString::as_array_of_string(
+  self : ConstrainDOMString,
+) -> Array[String]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ConstrainDOMString as ConstrainDOMStringParameters
+pub extern "js" fn ConstrainDOMString::as_constrain_d_o_m_string_parameters(
+  self : ConstrainDOMString,
+) -> ConstrainDOMStringParameters? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// ConstrainBooleanOrDOMString typedef
 pub type ConstrainBooleanOrDOMString
 
@@ -130,6 +246,48 @@ pub extern "js" fn ConstrainBooleanOrDOMString::from_constrain_boolean_or_d_o_m_
   #| (v) => v
 
 ///|
+/// Check if this ConstrainBooleanOrDOMString is Bool
+pub extern "js" fn ConstrainBooleanOrDOMString::is_bool(
+  self : ConstrainBooleanOrDOMString,
+) -> Bool =
+  #| (self) => typeof self === 'boolean'
+
+///|
+/// Check if this ConstrainBooleanOrDOMString is String
+pub extern "js" fn ConstrainBooleanOrDOMString::is_string(
+  self : ConstrainBooleanOrDOMString,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this ConstrainBooleanOrDOMString is ConstrainBooleanOrDOMStringParameters
+pub extern "js" fn ConstrainBooleanOrDOMString::is_constrain_boolean_or_d_o_m_string_parameters(
+  self : ConstrainBooleanOrDOMString,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get ConstrainBooleanOrDOMString as Bool
+pub extern "js" fn ConstrainBooleanOrDOMString::as_bool(
+  self : ConstrainBooleanOrDOMString,
+) -> Bool? =
+  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ConstrainBooleanOrDOMString as String
+pub extern "js" fn ConstrainBooleanOrDOMString::as_string(
+  self : ConstrainBooleanOrDOMString,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ConstrainBooleanOrDOMString as ConstrainBooleanOrDOMStringParameters
+pub extern "js" fn ConstrainBooleanOrDOMString::as_constrain_boolean_or_d_o_m_string_parameters(
+  self : ConstrainBooleanOrDOMString,
+) -> ConstrainBooleanOrDOMStringParameters? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// MediaStreamTrackState enum
 pub(all) enum MediaStreamTrackState {
   Live
@@ -140,8 +298,8 @@ pub(all) enum MediaStreamTrackState {
 /// Convert to string value
 pub fn MediaStreamTrackState::to_string(self : MediaStreamTrackState) -> String {
   match self {
-    Live => "live"
-    Ended => "ended"
+    MediaStreamTrackState::Live => "live"
+    MediaStreamTrackState::Ended => "ended"
   }
 }
 
@@ -149,8 +307,8 @@ pub fn MediaStreamTrackState::to_string(self : MediaStreamTrackState) -> String 
 /// Parse from string value
 pub fn MediaStreamTrackState::from_string(s : String) -> MediaStreamTrackState? {
   match s {
-    "live" => Some(Live)
-    "ended" => Some(Ended)
+    "live" => Some(MediaStreamTrackState::Live)
+    "ended" => Some(MediaStreamTrackState::Ended)
     _ => None
   }
 }
@@ -168,10 +326,10 @@ pub(all) enum VideoFacingModeEnum {
 /// Convert to string value
 pub fn VideoFacingModeEnum::to_string(self : VideoFacingModeEnum) -> String {
   match self {
-    User => "user"
-    Environment => "environment"
-    Left => "left"
-    Right => "right"
+    VideoFacingModeEnum::User => "user"
+    VideoFacingModeEnum::Environment => "environment"
+    VideoFacingModeEnum::Left => "left"
+    VideoFacingModeEnum::Right => "right"
   }
 }
 
@@ -179,10 +337,10 @@ pub fn VideoFacingModeEnum::to_string(self : VideoFacingModeEnum) -> String {
 /// Parse from string value
 pub fn VideoFacingModeEnum::from_string(s : String) -> VideoFacingModeEnum? {
   match s {
-    "user" => Some(User)
-    "environment" => Some(Environment)
-    "left" => Some(Left)
-    "right" => Some(Right)
+    "user" => Some(VideoFacingModeEnum::User)
+    "environment" => Some(VideoFacingModeEnum::Environment)
+    "left" => Some(VideoFacingModeEnum::Left)
+    "right" => Some(VideoFacingModeEnum::Right)
     _ => None
   }
 }
@@ -198,8 +356,8 @@ pub(all) enum VideoResizeModeEnum {
 /// Convert to string value
 pub fn VideoResizeModeEnum::to_string(self : VideoResizeModeEnum) -> String {
   match self {
-    None => "none"
-    CropAndScale => "crop-and-scale"
+    VideoResizeModeEnum::None => "none"
+    VideoResizeModeEnum::CropAndScale => "crop-and-scale"
   }
 }
 
@@ -207,8 +365,8 @@ pub fn VideoResizeModeEnum::to_string(self : VideoResizeModeEnum) -> String {
 /// Parse from string value
 pub fn VideoResizeModeEnum::from_string(s : String) -> VideoResizeModeEnum? {
   match s {
-    "none" => Some(None)
-    "crop-and-scale" => Some(CropAndScale)
+    "none" => Some(VideoResizeModeEnum::None)
+    "crop-and-scale" => Some(VideoResizeModeEnum::CropAndScale)
     _ => None
   }
 }
@@ -226,8 +384,8 @@ pub fn EchoCancellationModeEnum::to_string(
   self : EchoCancellationModeEnum,
 ) -> String {
   match self {
-    All => "all"
-    RemoteOnly => "remote-only"
+    EchoCancellationModeEnum::All => "all"
+    EchoCancellationModeEnum::RemoteOnly => "remote-only"
   }
 }
 
@@ -237,8 +395,8 @@ pub fn EchoCancellationModeEnum::from_string(
   s : String,
 ) -> EchoCancellationModeEnum? {
   match s {
-    "all" => Some(All)
-    "remote-only" => Some(RemoteOnly)
+    "all" => Some(EchoCancellationModeEnum::All)
+    "remote-only" => Some(EchoCancellationModeEnum::RemoteOnly)
     _ => None
   }
 }
@@ -255,9 +413,9 @@ pub(all) enum MediaDeviceKind {
 /// Convert to string value
 pub fn MediaDeviceKind::to_string(self : MediaDeviceKind) -> String {
   match self {
-    Audioinput => "audioinput"
-    Audiooutput => "audiooutput"
-    Videoinput => "videoinput"
+    MediaDeviceKind::Audioinput => "audioinput"
+    MediaDeviceKind::Audiooutput => "audiooutput"
+    MediaDeviceKind::Videoinput => "videoinput"
   }
 }
 
@@ -265,9 +423,9 @@ pub fn MediaDeviceKind::to_string(self : MediaDeviceKind) -> String {
 /// Parse from string value
 pub fn MediaDeviceKind::from_string(s : String) -> MediaDeviceKind? {
   match s {
-    "audioinput" => Some(Audioinput)
-    "audiooutput" => Some(Audiooutput)
-    "videoinput" => Some(Videoinput)
+    "audioinput" => Some(MediaDeviceKind::Audioinput)
+    "audiooutput" => Some(MediaDeviceKind::Audiooutput)
+    "videoinput" => Some(MediaDeviceKind::Videoinput)
     _ => None
   }
 }
@@ -905,7 +1063,7 @@ pub extern "js" fn MediaDevices::set_ondevicechange(
 ///|
 pub extern "js" fn MediaDevices::enumerate_devices(
   self : MediaDevices,
-) -> Promise[Array[MediaDeviceInfo]] =
+) -> Promise[Unit] =
   #| (self) => self.enumerateDevices()
 
 ///|

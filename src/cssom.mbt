@@ -94,7 +94,9 @@ pub extern "js" fn StyleSheet::get_href(self : StyleSheet) -> String? =
   #| (self) => self.href
 
 ///|
-pub extern "js" fn StyleSheet::get_owner_node(self : StyleSheet) -> JsValue =
+pub extern "js" fn StyleSheet::get_owner_node(
+  self : StyleSheet,
+) -> ElementOrProcessingInstruction =
   #| (self) => self.ownerNode
 
 ///|
@@ -141,7 +143,7 @@ pub extern "js" fn CSSStyleSheet::get_href(self : CSSStyleSheet) -> String? =
 ///|
 pub extern "js" fn CSSStyleSheet::get_owner_node(
   self : CSSStyleSheet,
-) -> JsValue =
+) -> ElementOrProcessingInstruction =
   #| (self) => self.ownerNode
 
 ///|

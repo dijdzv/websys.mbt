@@ -13,9 +13,9 @@ pub(all) enum PaymentShippingType {
 /// Convert to string value
 pub fn PaymentShippingType::to_string(self : PaymentShippingType) -> String {
   match self {
-    Shipping => "shipping"
-    Delivery => "delivery"
-    Pickup => "pickup"
+    PaymentShippingType::Shipping => "shipping"
+    PaymentShippingType::Delivery => "delivery"
+    PaymentShippingType::Pickup => "pickup"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn PaymentShippingType::to_string(self : PaymentShippingType) -> String {
 /// Parse from string value
 pub fn PaymentShippingType::from_string(s : String) -> PaymentShippingType? {
   match s {
-    "shipping" => Some(Shipping)
-    "delivery" => Some(Delivery)
-    "pickup" => Some(Pickup)
+    "shipping" => Some(PaymentShippingType::Shipping)
+    "delivery" => Some(PaymentShippingType::Delivery)
+    "pickup" => Some(PaymentShippingType::Pickup)
     _ => None
   }
 }
@@ -42,9 +42,9 @@ pub(all) enum PaymentComplete {
 /// Convert to string value
 pub fn PaymentComplete::to_string(self : PaymentComplete) -> String {
   match self {
-    Fail => "fail"
-    Success => "success"
-    Unknown => "unknown"
+    PaymentComplete::Fail => "fail"
+    PaymentComplete::Success => "success"
+    PaymentComplete::Unknown => "unknown"
   }
 }
 
@@ -52,9 +52,9 @@ pub fn PaymentComplete::to_string(self : PaymentComplete) -> String {
 /// Parse from string value
 pub fn PaymentComplete::from_string(s : String) -> PaymentComplete? {
   match s {
-    "fail" => Some(Fail)
-    "success" => Some(Success)
-    "unknown" => Some(Unknown)
+    "fail" => Some(PaymentComplete::Fail)
+    "success" => Some(PaymentComplete::Success)
+    "unknown" => Some(PaymentComplete::Unknown)
     _ => None
   }
 }

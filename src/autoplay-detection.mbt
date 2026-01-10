@@ -13,9 +13,9 @@ pub(all) enum AutoplayPolicy {
 /// Convert to string value
 pub fn AutoplayPolicy::to_string(self : AutoplayPolicy) -> String {
   match self {
-    Allowed => "allowed"
-    AllowedMuted => "allowed-muted"
-    Disallowed => "disallowed"
+    AutoplayPolicy::Allowed => "allowed"
+    AutoplayPolicy::AllowedMuted => "allowed-muted"
+    AutoplayPolicy::Disallowed => "disallowed"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn AutoplayPolicy::to_string(self : AutoplayPolicy) -> String {
 /// Parse from string value
 pub fn AutoplayPolicy::from_string(s : String) -> AutoplayPolicy? {
   match s {
-    "allowed" => Some(Allowed)
-    "allowed-muted" => Some(AllowedMuted)
-    "disallowed" => Some(Disallowed)
+    "allowed" => Some(AutoplayPolicy::Allowed)
+    "allowed-muted" => Some(AutoplayPolicy::AllowedMuted)
+    "disallowed" => Some(AutoplayPolicy::Disallowed)
     _ => None
   }
 }
@@ -43,8 +43,8 @@ pub fn AutoplayPolicyMediaType::to_string(
   self : AutoplayPolicyMediaType,
 ) -> String {
   match self {
-    Mediaelement => "mediaelement"
-    Audiocontext => "audiocontext"
+    AutoplayPolicyMediaType::Mediaelement => "mediaelement"
+    AutoplayPolicyMediaType::Audiocontext => "audiocontext"
   }
 }
 
@@ -54,8 +54,8 @@ pub fn AutoplayPolicyMediaType::from_string(
   s : String,
 ) -> AutoplayPolicyMediaType? {
   match s {
-    "mediaelement" => Some(Mediaelement)
-    "audiocontext" => Some(Audiocontext)
+    "mediaelement" => Some(AutoplayPolicyMediaType::Mediaelement)
+    "audiocontext" => Some(AutoplayPolicyMediaType::Audiocontext)
     _ => None
   }
 }

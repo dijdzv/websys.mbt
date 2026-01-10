@@ -14,10 +14,10 @@ pub(all) enum RTCPriorityType {
 /// Convert to string value
 pub fn RTCPriorityType::to_string(self : RTCPriorityType) -> String {
   match self {
-    VeryLow => "very-low"
-    Low => "low"
-    Medium => "medium"
-    High => "high"
+    RTCPriorityType::VeryLow => "very-low"
+    RTCPriorityType::Low => "low"
+    RTCPriorityType::Medium => "medium"
+    RTCPriorityType::High => "high"
   }
 }
 
@@ -25,10 +25,10 @@ pub fn RTCPriorityType::to_string(self : RTCPriorityType) -> String {
 /// Parse from string value
 pub fn RTCPriorityType::from_string(s : String) -> RTCPriorityType? {
   match s {
-    "very-low" => Some(VeryLow)
-    "low" => Some(Low)
-    "medium" => Some(Medium)
-    "high" => Some(High)
+    "very-low" => Some(RTCPriorityType::VeryLow)
+    "low" => Some(RTCPriorityType::Low)
+    "medium" => Some(RTCPriorityType::Medium)
+    "high" => Some(RTCPriorityType::High)
     _ => None
   }
 }

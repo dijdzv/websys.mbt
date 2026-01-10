@@ -15,9 +15,9 @@ pub fn NotificationPermission::to_string(
   self : NotificationPermission,
 ) -> String {
   match self {
-    Default => "default"
-    Denied => "denied"
-    Granted => "granted"
+    NotificationPermission::Default => "default"
+    NotificationPermission::Denied => "denied"
+    NotificationPermission::Granted => "granted"
   }
 }
 
@@ -27,9 +27,9 @@ pub fn NotificationPermission::from_string(
   s : String,
 ) -> NotificationPermission? {
   match s {
-    "default" => Some(Default)
-    "denied" => Some(Denied)
-    "granted" => Some(Granted)
+    "default" => Some(NotificationPermission::Default)
+    "denied" => Some(NotificationPermission::Denied)
+    "granted" => Some(NotificationPermission::Granted)
     _ => None
   }
 }
@@ -46,9 +46,9 @@ pub(all) enum NotificationDirection {
 /// Convert to string value
 pub fn NotificationDirection::to_string(self : NotificationDirection) -> String {
   match self {
-    Auto => "auto"
-    Ltr => "ltr"
-    Rtl => "rtl"
+    NotificationDirection::Auto => "auto"
+    NotificationDirection::Ltr => "ltr"
+    NotificationDirection::Rtl => "rtl"
   }
 }
 
@@ -56,9 +56,9 @@ pub fn NotificationDirection::to_string(self : NotificationDirection) -> String 
 /// Parse from string value
 pub fn NotificationDirection::from_string(s : String) -> NotificationDirection? {
   match s {
-    "auto" => Some(Auto)
-    "ltr" => Some(Ltr)
-    "rtl" => Some(Rtl)
+    "auto" => Some(NotificationDirection::Auto)
+    "ltr" => Some(NotificationDirection::Ltr)
+    "rtl" => Some(NotificationDirection::Rtl)
     _ => None
   }
 }

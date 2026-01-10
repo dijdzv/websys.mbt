@@ -14,8 +14,8 @@ pub fn AccelerometerLocalCoordinateSystem::to_string(
   self : AccelerometerLocalCoordinateSystem,
 ) -> String {
   match self {
-    Device => "device"
-    Screen => "screen"
+    AccelerometerLocalCoordinateSystem::Device => "device"
+    AccelerometerLocalCoordinateSystem::Screen => "screen"
   }
 }
 
@@ -25,8 +25,8 @@ pub fn AccelerometerLocalCoordinateSystem::from_string(
   s : String,
 ) -> AccelerometerLocalCoordinateSystem? {
   match s {
-    "device" => Some(Device)
-    "screen" => Some(Screen)
+    "device" => Some(AccelerometerLocalCoordinateSystem::Device)
+    "screen" => Some(AccelerometerLocalCoordinateSystem::Screen)
     _ => None
   }
 }

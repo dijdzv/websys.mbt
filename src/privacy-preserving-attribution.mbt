@@ -13,7 +13,7 @@ pub fn AttributionAggregationProtocol::to_string(
   self : AttributionAggregationProtocol,
 ) -> String {
   match self {
-    Dap15Histogram => "dap-15-histogram"
+    AttributionAggregationProtocol::Dap15Histogram => "dap-15-histogram"
   }
 }
 
@@ -23,7 +23,7 @@ pub fn AttributionAggregationProtocol::from_string(
   s : String,
 ) -> AttributionAggregationProtocol? {
   match s {
-    "dap-15-histogram" => Some(Dap15Histogram)
+    "dap-15-histogram" => Some(AttributionAggregationProtocol::Dap15Histogram)
     _ => None
   }
 }

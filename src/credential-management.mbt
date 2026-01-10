@@ -26,6 +26,34 @@ pub extern "js" fn PasswordCredentialInit::from_h_t_m_l_form_element(
   #| (v) => v
 
 ///|
+/// Check if this PasswordCredentialInit is PasswordCredentialData
+pub extern "js" fn PasswordCredentialInit::is_password_credential_data(
+  self : PasswordCredentialInit,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Check if this PasswordCredentialInit is HTMLFormElement
+pub extern "js" fn PasswordCredentialInit::is_h_t_m_l_form_element(
+  self : PasswordCredentialInit,
+) -> Bool =
+  #| (self) => self instanceof HTMLFormElement
+
+///|
+/// Try to get PasswordCredentialInit as PasswordCredentialData
+pub extern "js" fn PasswordCredentialInit::as_password_credential_data(
+  self : PasswordCredentialInit,
+) -> PasswordCredentialData? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get PasswordCredentialInit as HTMLFormElement
+pub extern "js" fn PasswordCredentialInit::as_h_t_m_l_form_element(
+  self : PasswordCredentialInit,
+) -> HTMLFormElement? =
+  #| (self) => (self instanceof HTMLFormElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// CredentialMediationRequirement enum
 pub(all) enum CredentialMediationRequirement {
   Silent
@@ -40,10 +68,10 @@ pub fn CredentialMediationRequirement::to_string(
   self : CredentialMediationRequirement,
 ) -> String {
   match self {
-    Silent => "silent"
-    Optional => "optional"
-    Conditional => "conditional"
-    Required => "required"
+    CredentialMediationRequirement::Silent => "silent"
+    CredentialMediationRequirement::Optional => "optional"
+    CredentialMediationRequirement::Conditional => "conditional"
+    CredentialMediationRequirement::Required => "required"
   }
 }
 
@@ -53,10 +81,10 @@ pub fn CredentialMediationRequirement::from_string(
   s : String,
 ) -> CredentialMediationRequirement? {
   match s {
-    "silent" => Some(Silent)
-    "optional" => Some(Optional)
-    "conditional" => Some(Conditional)
-    "required" => Some(Required)
+    "silent" => Some(CredentialMediationRequirement::Silent)
+    "optional" => Some(CredentialMediationRequirement::Optional)
+    "conditional" => Some(CredentialMediationRequirement::Conditional)
+    "required" => Some(CredentialMediationRequirement::Required)
     _ => None
   }
 }

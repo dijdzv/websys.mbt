@@ -26,6 +26,32 @@ pub extern "js" fn SanitizerElement::from_sanitizer_element_namespace(
   #| (v) => v
 
 ///|
+/// Check if this SanitizerElement is String
+pub extern "js" fn SanitizerElement::is_string(self : SanitizerElement) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this SanitizerElement is SanitizerElementNamespace
+pub extern "js" fn SanitizerElement::is_sanitizer_element_namespace(
+  self : SanitizerElement,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get SanitizerElement as String
+pub extern "js" fn SanitizerElement::as_string(
+  self : SanitizerElement,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get SanitizerElement as SanitizerElementNamespace
+pub extern "js" fn SanitizerElement::as_sanitizer_element_namespace(
+  self : SanitizerElement,
+) -> SanitizerElementNamespace? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// SanitizerElementWithAttributes typedef
 pub type SanitizerElementWithAttributes
 
@@ -48,6 +74,34 @@ pub extern "js" fn SanitizerElementWithAttributes::from_sanitizer_element_namesp
   v : SanitizerElementNamespaceWithAttributes,
 ) -> SanitizerElementWithAttributes =
   #| (v) => v
+
+///|
+/// Check if this SanitizerElementWithAttributes is String
+pub extern "js" fn SanitizerElementWithAttributes::is_string(
+  self : SanitizerElementWithAttributes,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this SanitizerElementWithAttributes is SanitizerElementNamespaceWithAttributes
+pub extern "js" fn SanitizerElementWithAttributes::is_sanitizer_element_namespace_with_attributes(
+  self : SanitizerElementWithAttributes,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get SanitizerElementWithAttributes as String
+pub extern "js" fn SanitizerElementWithAttributes::as_string(
+  self : SanitizerElementWithAttributes,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get SanitizerElementWithAttributes as SanitizerElementNamespaceWithAttributes
+pub extern "js" fn SanitizerElementWithAttributes::as_sanitizer_element_namespace_with_attributes(
+  self : SanitizerElementWithAttributes,
+) -> SanitizerElementNamespaceWithAttributes? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// SanitizerAttribute typedef
@@ -74,6 +128,34 @@ pub extern "js" fn SanitizerAttribute::from_sanitizer_attribute_namespace(
   #| (v) => v
 
 ///|
+/// Check if this SanitizerAttribute is String
+pub extern "js" fn SanitizerAttribute::is_string(
+  self : SanitizerAttribute,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this SanitizerAttribute is SanitizerAttributeNamespace
+pub extern "js" fn SanitizerAttribute::is_sanitizer_attribute_namespace(
+  self : SanitizerAttribute,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get SanitizerAttribute as String
+pub extern "js" fn SanitizerAttribute::as_string(
+  self : SanitizerAttribute,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get SanitizerAttribute as SanitizerAttributeNamespace
+pub extern "js" fn SanitizerAttribute::as_sanitizer_attribute_namespace(
+  self : SanitizerAttribute,
+) -> SanitizerAttributeNamespace? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// SanitizerPresets enum
 pub(all) enum SanitizerPresets {
   Default
@@ -83,7 +165,7 @@ pub(all) enum SanitizerPresets {
 /// Convert to string value
 pub fn SanitizerPresets::to_string(self : SanitizerPresets) -> String {
   match self {
-    Default => "default"
+    SanitizerPresets::Default => "default"
   }
 }
 
@@ -91,7 +173,7 @@ pub fn SanitizerPresets::to_string(self : SanitizerPresets) -> String {
 /// Parse from string value
 pub fn SanitizerPresets::from_string(s : String) -> SanitizerPresets? {
   match s {
-    "default" => Some(Default)
+    "default" => Some(SanitizerPresets::Default)
     _ => None
   }
 }
@@ -262,7 +344,9 @@ pub extern "js" fn Sanitizer::to_js_value(self : Sanitizer) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn Sanitizer::new(configuration : JsValue) -> Sanitizer =
+pub extern "js" fn Sanitizer::new(
+  configuration : SanitizerConfigOrSanitizerPresets,
+) -> Sanitizer =
   #| (configuration) => new Sanitizer(configuration)
 
 ///|

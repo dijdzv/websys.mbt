@@ -19,6 +19,20 @@ pub extern "js" fn AlgorithmIdentifier::from_string(
   #| (v) => v
 
 ///|
+/// Check if this AlgorithmIdentifier is String
+pub extern "js" fn AlgorithmIdentifier::is_string(
+  self : AlgorithmIdentifier,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get AlgorithmIdentifier as String
+pub extern "js" fn AlgorithmIdentifier::as_string(
+  self : AlgorithmIdentifier,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// HashAlgorithmIdentifier typedef
 pub type HashAlgorithmIdentifier = AlgorithmIdentifier
 
@@ -42,9 +56,9 @@ pub(all) enum KeyType {
 /// Convert to string value
 pub fn KeyType::to_string(self : KeyType) -> String {
   match self {
-    Public => "public"
-    Private => "private"
-    Secret => "secret"
+    KeyType::Public => "public"
+    KeyType::Private => "private"
+    KeyType::Secret => "secret"
   }
 }
 
@@ -52,9 +66,9 @@ pub fn KeyType::to_string(self : KeyType) -> String {
 /// Parse from string value
 pub fn KeyType::from_string(s : String) -> KeyType? {
   match s {
-    "public" => Some(Public)
-    "private" => Some(Private)
-    "secret" => Some(Secret)
+    "public" => Some(KeyType::Public)
+    "private" => Some(KeyType::Private)
+    "secret" => Some(KeyType::Secret)
     _ => None
   }
 }
@@ -786,7 +800,7 @@ pub extern "js" fn SubtleCrypto::generate_key(
   algorithm : AlgorithmIdentifier,
   extractable : Bool,
   key_usages : Array[KeyUsage],
-) -> Promise[JsValue] =
+) -> Promise[Unit] =
   #| (self, algorithm, extractable, key_usages) => self.generateKey(algorithm, extractable, key_usages)
 
 ///|
@@ -821,7 +835,7 @@ pub extern "js" fn SubtleCrypto::derive_bits_with_length(
 pub extern "js" fn SubtleCrypto::import_key(
   self : SubtleCrypto,
   format : KeyFormat,
-  key_data : JsValue,
+  key_data : BufferSourceOrJsonWebKey,
   algorithm : AlgorithmIdentifier,
   extractable : Bool,
   key_usages : Array[KeyUsage],
@@ -833,7 +847,7 @@ pub extern "js" fn SubtleCrypto::export_key(
   self : SubtleCrypto,
   format : KeyFormat,
   key : CryptoKey,
-) -> Promise[JsValue] =
+) -> Promise[Unit] =
   #| (self, format, key) => self.exportKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key)
 
 ///|

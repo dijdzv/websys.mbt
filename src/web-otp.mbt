@@ -13,7 +13,7 @@ pub fn OTPCredentialTransportType::to_string(
   self : OTPCredentialTransportType,
 ) -> String {
   match self {
-    Sms => "sms"
+    OTPCredentialTransportType::Sms => "sms"
   }
 }
 
@@ -23,7 +23,7 @@ pub fn OTPCredentialTransportType::from_string(
   s : String,
 ) -> OTPCredentialTransportType? {
   match s {
-    "sms" => Some(Sms)
+    "sms" => Some(OTPCredentialTransportType::Sms)
     _ => None
   }
 }

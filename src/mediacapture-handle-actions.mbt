@@ -14,10 +14,10 @@ pub(all) enum CaptureAction {
 /// Convert to string value
 pub fn CaptureAction::to_string(self : CaptureAction) -> String {
   match self {
-    Next => "next"
-    Previous => "previous"
-    First => "first"
-    Last => "last"
+    CaptureAction::Next => "next"
+    CaptureAction::Previous => "previous"
+    CaptureAction::First => "first"
+    CaptureAction::Last => "last"
   }
 }
 
@@ -25,10 +25,10 @@ pub fn CaptureAction::to_string(self : CaptureAction) -> String {
 /// Parse from string value
 pub fn CaptureAction::from_string(s : String) -> CaptureAction? {
   match s {
-    "next" => Some(Next)
-    "previous" => Some(Previous)
-    "first" => Some(First)
-    "last" => Some(Last)
+    "next" => Some(CaptureAction::Next)
+    "previous" => Some(CaptureAction::Previous)
+    "first" => Some(CaptureAction::First)
+    "last" => Some(CaptureAction::Last)
     _ => None
   }
 }

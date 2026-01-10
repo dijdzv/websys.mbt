@@ -14,10 +14,10 @@ pub(all) enum SummarizerType {
 /// Convert to string value
 pub fn SummarizerType::to_string(self : SummarizerType) -> String {
   match self {
-    Tldr => "tldr"
-    Teaser => "teaser"
-    KeyPoints => "key-points"
-    Headline => "headline"
+    SummarizerType::Tldr => "tldr"
+    SummarizerType::Teaser => "teaser"
+    SummarizerType::KeyPoints => "key-points"
+    SummarizerType::Headline => "headline"
   }
 }
 
@@ -25,10 +25,10 @@ pub fn SummarizerType::to_string(self : SummarizerType) -> String {
 /// Parse from string value
 pub fn SummarizerType::from_string(s : String) -> SummarizerType? {
   match s {
-    "tldr" => Some(Tldr)
-    "teaser" => Some(Teaser)
-    "key-points" => Some(KeyPoints)
-    "headline" => Some(Headline)
+    "tldr" => Some(SummarizerType::Tldr)
+    "teaser" => Some(SummarizerType::Teaser)
+    "key-points" => Some(SummarizerType::KeyPoints)
+    "headline" => Some(SummarizerType::Headline)
     _ => None
   }
 }
@@ -44,8 +44,8 @@ pub(all) enum SummarizerFormat {
 /// Convert to string value
 pub fn SummarizerFormat::to_string(self : SummarizerFormat) -> String {
   match self {
-    PlainText => "plain-text"
-    Markdown => "markdown"
+    SummarizerFormat::PlainText => "plain-text"
+    SummarizerFormat::Markdown => "markdown"
   }
 }
 
@@ -53,8 +53,8 @@ pub fn SummarizerFormat::to_string(self : SummarizerFormat) -> String {
 /// Parse from string value
 pub fn SummarizerFormat::from_string(s : String) -> SummarizerFormat? {
   match s {
-    "plain-text" => Some(PlainText)
-    "markdown" => Some(Markdown)
+    "plain-text" => Some(SummarizerFormat::PlainText)
+    "markdown" => Some(SummarizerFormat::Markdown)
     _ => None
   }
 }
@@ -71,9 +71,9 @@ pub(all) enum SummarizerLength {
 /// Convert to string value
 pub fn SummarizerLength::to_string(self : SummarizerLength) -> String {
   match self {
-    Short => "short"
-    Medium => "medium"
-    Long => "long"
+    SummarizerLength::Short => "short"
+    SummarizerLength::Medium => "medium"
+    SummarizerLength::Long => "long"
   }
 }
 
@@ -81,9 +81,9 @@ pub fn SummarizerLength::to_string(self : SummarizerLength) -> String {
 /// Parse from string value
 pub fn SummarizerLength::from_string(s : String) -> SummarizerLength? {
   match s {
-    "short" => Some(Short)
-    "medium" => Some(Medium)
-    "long" => Some(Long)
+    "short" => Some(SummarizerLength::Short)
+    "medium" => Some(SummarizerLength::Medium)
+    "long" => Some(SummarizerLength::Long)
     _ => None
   }
 }
@@ -100,9 +100,9 @@ pub(all) enum WriterTone {
 /// Convert to string value
 pub fn WriterTone::to_string(self : WriterTone) -> String {
   match self {
-    Formal => "formal"
-    Neutral => "neutral"
-    Casual => "casual"
+    WriterTone::Formal => "formal"
+    WriterTone::Neutral => "neutral"
+    WriterTone::Casual => "casual"
   }
 }
 
@@ -110,9 +110,9 @@ pub fn WriterTone::to_string(self : WriterTone) -> String {
 /// Parse from string value
 pub fn WriterTone::from_string(s : String) -> WriterTone? {
   match s {
-    "formal" => Some(Formal)
-    "neutral" => Some(Neutral)
-    "casual" => Some(Casual)
+    "formal" => Some(WriterTone::Formal)
+    "neutral" => Some(WriterTone::Neutral)
+    "casual" => Some(WriterTone::Casual)
     _ => None
   }
 }
@@ -128,8 +128,8 @@ pub(all) enum WriterFormat {
 /// Convert to string value
 pub fn WriterFormat::to_string(self : WriterFormat) -> String {
   match self {
-    PlainText => "plain-text"
-    Markdown => "markdown"
+    WriterFormat::PlainText => "plain-text"
+    WriterFormat::Markdown => "markdown"
   }
 }
 
@@ -137,8 +137,8 @@ pub fn WriterFormat::to_string(self : WriterFormat) -> String {
 /// Parse from string value
 pub fn WriterFormat::from_string(s : String) -> WriterFormat? {
   match s {
-    "plain-text" => Some(PlainText)
-    "markdown" => Some(Markdown)
+    "plain-text" => Some(WriterFormat::PlainText)
+    "markdown" => Some(WriterFormat::Markdown)
     _ => None
   }
 }
@@ -155,9 +155,9 @@ pub(all) enum WriterLength {
 /// Convert to string value
 pub fn WriterLength::to_string(self : WriterLength) -> String {
   match self {
-    Short => "short"
-    Medium => "medium"
-    Long => "long"
+    WriterLength::Short => "short"
+    WriterLength::Medium => "medium"
+    WriterLength::Long => "long"
   }
 }
 
@@ -165,9 +165,9 @@ pub fn WriterLength::to_string(self : WriterLength) -> String {
 /// Parse from string value
 pub fn WriterLength::from_string(s : String) -> WriterLength? {
   match s {
-    "short" => Some(Short)
-    "medium" => Some(Medium)
-    "long" => Some(Long)
+    "short" => Some(WriterLength::Short)
+    "medium" => Some(WriterLength::Medium)
+    "long" => Some(WriterLength::Long)
     _ => None
   }
 }
@@ -184,9 +184,9 @@ pub(all) enum RewriterTone {
 /// Convert to string value
 pub fn RewriterTone::to_string(self : RewriterTone) -> String {
   match self {
-    AsIs => "as-is"
-    MoreFormal => "more-formal"
-    MoreCasual => "more-casual"
+    RewriterTone::AsIs => "as-is"
+    RewriterTone::MoreFormal => "more-formal"
+    RewriterTone::MoreCasual => "more-casual"
   }
 }
 
@@ -194,9 +194,9 @@ pub fn RewriterTone::to_string(self : RewriterTone) -> String {
 /// Parse from string value
 pub fn RewriterTone::from_string(s : String) -> RewriterTone? {
   match s {
-    "as-is" => Some(AsIs)
-    "more-formal" => Some(MoreFormal)
-    "more-casual" => Some(MoreCasual)
+    "as-is" => Some(RewriterTone::AsIs)
+    "more-formal" => Some(RewriterTone::MoreFormal)
+    "more-casual" => Some(RewriterTone::MoreCasual)
     _ => None
   }
 }
@@ -213,9 +213,9 @@ pub(all) enum RewriterFormat {
 /// Convert to string value
 pub fn RewriterFormat::to_string(self : RewriterFormat) -> String {
   match self {
-    AsIs => "as-is"
-    PlainText => "plain-text"
-    Markdown => "markdown"
+    RewriterFormat::AsIs => "as-is"
+    RewriterFormat::PlainText => "plain-text"
+    RewriterFormat::Markdown => "markdown"
   }
 }
 
@@ -223,9 +223,9 @@ pub fn RewriterFormat::to_string(self : RewriterFormat) -> String {
 /// Parse from string value
 pub fn RewriterFormat::from_string(s : String) -> RewriterFormat? {
   match s {
-    "as-is" => Some(AsIs)
-    "plain-text" => Some(PlainText)
-    "markdown" => Some(Markdown)
+    "as-is" => Some(RewriterFormat::AsIs)
+    "plain-text" => Some(RewriterFormat::PlainText)
+    "markdown" => Some(RewriterFormat::Markdown)
     _ => None
   }
 }
@@ -242,9 +242,9 @@ pub(all) enum RewriterLength {
 /// Convert to string value
 pub fn RewriterLength::to_string(self : RewriterLength) -> String {
   match self {
-    AsIs => "as-is"
-    Shorter => "shorter"
-    Longer => "longer"
+    RewriterLength::AsIs => "as-is"
+    RewriterLength::Shorter => "shorter"
+    RewriterLength::Longer => "longer"
   }
 }
 
@@ -252,9 +252,9 @@ pub fn RewriterLength::to_string(self : RewriterLength) -> String {
 /// Parse from string value
 pub fn RewriterLength::from_string(s : String) -> RewriterLength? {
   match s {
-    "as-is" => Some(AsIs)
-    "shorter" => Some(Shorter)
-    "longer" => Some(Longer)
+    "as-is" => Some(RewriterLength::AsIs)
+    "shorter" => Some(RewriterLength::Shorter)
+    "longer" => Some(RewriterLength::Longer)
     _ => None
   }
 }
@@ -272,10 +272,10 @@ pub(all) enum Availability {
 /// Convert to string value
 pub fn Availability::to_string(self : Availability) -> String {
   match self {
-    Unavailable => "unavailable"
-    Downloadable => "downloadable"
-    Downloading => "downloading"
-    Available => "available"
+    Availability::Unavailable => "unavailable"
+    Availability::Downloadable => "downloadable"
+    Availability::Downloading => "downloading"
+    Availability::Available => "available"
   }
 }
 
@@ -283,10 +283,10 @@ pub fn Availability::to_string(self : Availability) -> String {
 /// Parse from string value
 pub fn Availability::from_string(s : String) -> Availability? {
   match s {
-    "unavailable" => Some(Unavailable)
-    "downloadable" => Some(Downloadable)
-    "downloading" => Some(Downloading)
-    "available" => Some(Available)
+    "unavailable" => Some(Availability::Unavailable)
+    "downloadable" => Some(Availability::Downloadable)
+    "downloading" => Some(Availability::Downloading)
+    "available" => Some(Availability::Available)
     _ => None
   }
 }

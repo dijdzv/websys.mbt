@@ -16,10 +16,10 @@ pub fn SpatialNavigationDirection::to_string(
   self : SpatialNavigationDirection,
 ) -> String {
   match self {
-    Up => "up"
-    Down => "down"
-    Left => "left"
-    Right => "right"
+    SpatialNavigationDirection::Up => "up"
+    SpatialNavigationDirection::Down => "down"
+    SpatialNavigationDirection::Left => "left"
+    SpatialNavigationDirection::Right => "right"
   }
 }
 
@@ -29,10 +29,10 @@ pub fn SpatialNavigationDirection::from_string(
   s : String,
 ) -> SpatialNavigationDirection? {
   match s {
-    "up" => Some(Up)
-    "down" => Some(Down)
-    "left" => Some(Left)
-    "right" => Some(Right)
+    "up" => Some(SpatialNavigationDirection::Up)
+    "down" => Some(SpatialNavigationDirection::Down)
+    "left" => Some(SpatialNavigationDirection::Left)
+    "right" => Some(SpatialNavigationDirection::Right)
     _ => None
   }
 }
@@ -50,8 +50,8 @@ pub fn FocusableAreaSearchMode::to_string(
   self : FocusableAreaSearchMode,
 ) -> String {
   match self {
-    Visible => "visible"
-    All => "all"
+    FocusableAreaSearchMode::Visible => "visible"
+    FocusableAreaSearchMode::All => "all"
   }
 }
 
@@ -61,8 +61,8 @@ pub fn FocusableAreaSearchMode::from_string(
   s : String,
 ) -> FocusableAreaSearchMode? {
   match s {
-    "visible" => Some(Visible)
-    "all" => Some(All)
+    "visible" => Some(FocusableAreaSearchMode::Visible)
+    "all" => Some(FocusableAreaSearchMode::All)
     _ => None
   }
 }

@@ -70,6 +70,90 @@ pub extern "js" fn GPUBindingResource::from_g_p_u_external_texture(
   #| (v) => v
 
 ///|
+/// Check if this GPUBindingResource is GPUSampler
+pub extern "js" fn GPUBindingResource::is_g_p_u_sampler(
+  self : GPUBindingResource,
+) -> Bool =
+  #| (self) => self instanceof GPUSampler
+
+///|
+/// Check if this GPUBindingResource is GPUTexture
+pub extern "js" fn GPUBindingResource::is_g_p_u_texture(
+  self : GPUBindingResource,
+) -> Bool =
+  #| (self) => self instanceof GPUTexture
+
+///|
+/// Check if this GPUBindingResource is GPUTextureView
+pub extern "js" fn GPUBindingResource::is_g_p_u_texture_view(
+  self : GPUBindingResource,
+) -> Bool =
+  #| (self) => self instanceof GPUTextureView
+
+///|
+/// Check if this GPUBindingResource is GPUBuffer
+pub extern "js" fn GPUBindingResource::is_g_p_u_buffer(
+  self : GPUBindingResource,
+) -> Bool =
+  #| (self) => self instanceof GPUBuffer
+
+///|
+/// Check if this GPUBindingResource is GPUBufferBinding
+pub extern "js" fn GPUBindingResource::is_g_p_u_buffer_binding(
+  self : GPUBindingResource,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Check if this GPUBindingResource is GPUExternalTexture
+pub extern "js" fn GPUBindingResource::is_g_p_u_external_texture(
+  self : GPUBindingResource,
+) -> Bool =
+  #| (self) => self instanceof GPUExternalTexture
+
+///|
+/// Try to get GPUBindingResource as GPUSampler
+pub extern "js" fn GPUBindingResource::as_g_p_u_sampler(
+  self : GPUBindingResource,
+) -> GPUSampler? =
+  #| (self) => (self instanceof GPUSampler) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GPUBindingResource as GPUTexture
+pub extern "js" fn GPUBindingResource::as_g_p_u_texture(
+  self : GPUBindingResource,
+) -> GPUTexture? =
+  #| (self) => (self instanceof GPUTexture) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GPUBindingResource as GPUTextureView
+pub extern "js" fn GPUBindingResource::as_g_p_u_texture_view(
+  self : GPUBindingResource,
+) -> GPUTextureView? =
+  #| (self) => (self instanceof GPUTextureView) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GPUBindingResource as GPUBuffer
+pub extern "js" fn GPUBindingResource::as_g_p_u_buffer(
+  self : GPUBindingResource,
+) -> GPUBuffer? =
+  #| (self) => (self instanceof GPUBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GPUBindingResource as GPUBufferBinding
+pub extern "js" fn GPUBindingResource::as_g_p_u_buffer_binding(
+  self : GPUBindingResource,
+) -> GPUBufferBinding? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GPUBindingResource as GPUExternalTexture
+pub extern "js" fn GPUBindingResource::as_g_p_u_external_texture(
+  self : GPUBindingResource,
+) -> GPUExternalTexture? =
+  #| (self) => (self instanceof GPUExternalTexture) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// GPUPipelineConstantValue typedef
 pub type GPUPipelineConstantValue = Double
 
@@ -135,6 +219,104 @@ pub extern "js" fn GPUCopyExternalImageSource::from_offscreen_canvas(
   v : OffscreenCanvas,
 ) -> GPUCopyExternalImageSource =
   #| (v) => v
+
+///|
+/// Check if this GPUCopyExternalImageSource is ImageBitmap
+pub extern "js" fn GPUCopyExternalImageSource::is_image_bitmap(
+  self : GPUCopyExternalImageSource,
+) -> Bool =
+  #| (self) => self instanceof ImageBitmap
+
+///|
+/// Check if this GPUCopyExternalImageSource is ImageData
+pub extern "js" fn GPUCopyExternalImageSource::is_image_data(
+  self : GPUCopyExternalImageSource,
+) -> Bool =
+  #| (self) => self instanceof ImageData
+
+///|
+/// Check if this GPUCopyExternalImageSource is HTMLImageElement
+pub extern "js" fn GPUCopyExternalImageSource::is_h_t_m_l_image_element(
+  self : GPUCopyExternalImageSource,
+) -> Bool =
+  #| (self) => self instanceof HTMLImageElement
+
+///|
+/// Check if this GPUCopyExternalImageSource is HTMLVideoElement
+pub extern "js" fn GPUCopyExternalImageSource::is_h_t_m_l_video_element(
+  self : GPUCopyExternalImageSource,
+) -> Bool =
+  #| (self) => self instanceof HTMLVideoElement
+
+///|
+/// Check if this GPUCopyExternalImageSource is VideoFrame
+pub extern "js" fn GPUCopyExternalImageSource::is_video_frame(
+  self : GPUCopyExternalImageSource,
+) -> Bool =
+  #| (self) => self instanceof VideoFrame
+
+///|
+/// Check if this GPUCopyExternalImageSource is HTMLCanvasElement
+pub extern "js" fn GPUCopyExternalImageSource::is_h_t_m_l_canvas_element(
+  self : GPUCopyExternalImageSource,
+) -> Bool =
+  #| (self) => self instanceof HTMLCanvasElement
+
+///|
+/// Check if this GPUCopyExternalImageSource is OffscreenCanvas
+pub extern "js" fn GPUCopyExternalImageSource::is_offscreen_canvas(
+  self : GPUCopyExternalImageSource,
+) -> Bool =
+  #| (self) => self instanceof OffscreenCanvas
+
+///|
+/// Try to get GPUCopyExternalImageSource as ImageBitmap
+pub extern "js" fn GPUCopyExternalImageSource::as_image_bitmap(
+  self : GPUCopyExternalImageSource,
+) -> ImageBitmap? =
+  #| (self) => (self instanceof ImageBitmap) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GPUCopyExternalImageSource as ImageData
+pub extern "js" fn GPUCopyExternalImageSource::as_image_data(
+  self : GPUCopyExternalImageSource,
+) -> ImageData? =
+  #| (self) => (self instanceof ImageData) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GPUCopyExternalImageSource as HTMLImageElement
+pub extern "js" fn GPUCopyExternalImageSource::as_h_t_m_l_image_element(
+  self : GPUCopyExternalImageSource,
+) -> HTMLImageElement? =
+  #| (self) => (self instanceof HTMLImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GPUCopyExternalImageSource as HTMLVideoElement
+pub extern "js" fn GPUCopyExternalImageSource::as_h_t_m_l_video_element(
+  self : GPUCopyExternalImageSource,
+) -> HTMLVideoElement? =
+  #| (self) => (self instanceof HTMLVideoElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GPUCopyExternalImageSource as VideoFrame
+pub extern "js" fn GPUCopyExternalImageSource::as_video_frame(
+  self : GPUCopyExternalImageSource,
+) -> VideoFrame? =
+  #| (self) => (self instanceof VideoFrame) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GPUCopyExternalImageSource as HTMLCanvasElement
+pub extern "js" fn GPUCopyExternalImageSource::as_h_t_m_l_canvas_element(
+  self : GPUCopyExternalImageSource,
+) -> HTMLCanvasElement? =
+  #| (self) => (self instanceof HTMLCanvasElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GPUCopyExternalImageSource as OffscreenCanvas
+pub extern "js" fn GPUCopyExternalImageSource::as_offscreen_canvas(
+  self : GPUCopyExternalImageSource,
+) -> OffscreenCanvas? =
+  #| (self) => (self instanceof OffscreenCanvas) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// GPUBufferDynamicOffset typedef
@@ -211,6 +393,30 @@ pub extern "js" fn GPUColor::from_g_p_u_color_dict(
   #| (v) => v
 
 ///|
+/// Check if this GPUColor is Array[Double]
+pub extern "js" fn GPUColor::is_array_of_double(self : GPUColor) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Check if this GPUColor is GPUColorDict
+pub extern "js" fn GPUColor::is_g_p_u_color_dict(self : GPUColor) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get GPUColor as Array[Double]
+pub extern "js" fn GPUColor::as_array_of_double(
+  self : GPUColor,
+) -> Array[Double]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GPUColor as GPUColorDict
+pub extern "js" fn GPUColor::as_g_p_u_color_dict(
+  self : GPUColor,
+) -> GPUColorDict? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// GPUOrigin2D typedef
 pub type GPUOrigin2D
 
@@ -231,6 +437,34 @@ pub extern "js" fn GPUOrigin2D::from_g_p_u_origin2_d_dict(
   v : GPUOrigin2DDict,
 ) -> GPUOrigin2D =
   #| (v) => v
+
+///|
+/// Check if this GPUOrigin2D is Array[GPUIntegerCoordinate]
+pub extern "js" fn GPUOrigin2D::is_array_of_g_p_u_integer_coordinate(
+  self : GPUOrigin2D,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Check if this GPUOrigin2D is GPUOrigin2DDict
+pub extern "js" fn GPUOrigin2D::is_g_p_u_origin2_d_dict(
+  self : GPUOrigin2D,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get GPUOrigin2D as Array[GPUIntegerCoordinate]
+pub extern "js" fn GPUOrigin2D::as_array_of_g_p_u_integer_coordinate(
+  self : GPUOrigin2D,
+) -> Array[GPUIntegerCoordinate]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GPUOrigin2D as GPUOrigin2DDict
+pub extern "js" fn GPUOrigin2D::as_g_p_u_origin2_d_dict(
+  self : GPUOrigin2D,
+) -> GPUOrigin2DDict? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// GPUOrigin3D typedef
@@ -255,6 +489,34 @@ pub extern "js" fn GPUOrigin3D::from_g_p_u_origin3_d_dict(
   #| (v) => v
 
 ///|
+/// Check if this GPUOrigin3D is Array[GPUIntegerCoordinate]
+pub extern "js" fn GPUOrigin3D::is_array_of_g_p_u_integer_coordinate(
+  self : GPUOrigin3D,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Check if this GPUOrigin3D is GPUOrigin3DDict
+pub extern "js" fn GPUOrigin3D::is_g_p_u_origin3_d_dict(
+  self : GPUOrigin3D,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get GPUOrigin3D as Array[GPUIntegerCoordinate]
+pub extern "js" fn GPUOrigin3D::as_array_of_g_p_u_integer_coordinate(
+  self : GPUOrigin3D,
+) -> Array[GPUIntegerCoordinate]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GPUOrigin3D as GPUOrigin3DDict
+pub extern "js" fn GPUOrigin3D::as_g_p_u_origin3_d_dict(
+  self : GPUOrigin3D,
+) -> GPUOrigin3DDict? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// GPUExtent3D typedef
 pub type GPUExtent3D
 
@@ -277,6 +539,34 @@ pub extern "js" fn GPUExtent3D::from_g_p_u_extent3_d_dict(
   #| (v) => v
 
 ///|
+/// Check if this GPUExtent3D is Array[GPUIntegerCoordinate]
+pub extern "js" fn GPUExtent3D::is_array_of_g_p_u_integer_coordinate(
+  self : GPUExtent3D,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Check if this GPUExtent3D is GPUExtent3DDict
+pub extern "js" fn GPUExtent3D::is_g_p_u_extent3_d_dict(
+  self : GPUExtent3D,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get GPUExtent3D as Array[GPUIntegerCoordinate]
+pub extern "js" fn GPUExtent3D::as_array_of_g_p_u_integer_coordinate(
+  self : GPUExtent3D,
+) -> Array[GPUIntegerCoordinate]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GPUExtent3D as GPUExtent3DDict
+pub extern "js" fn GPUExtent3D::as_g_p_u_extent3_d_dict(
+  self : GPUExtent3D,
+) -> GPUExtent3DDict? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// GPUPowerPreference enum
 pub(all) enum GPUPowerPreference {
   LowPower
@@ -287,8 +577,8 @@ pub(all) enum GPUPowerPreference {
 /// Convert to string value
 pub fn GPUPowerPreference::to_string(self : GPUPowerPreference) -> String {
   match self {
-    LowPower => "low-power"
-    HighPerformance => "high-performance"
+    GPUPowerPreference::LowPower => "low-power"
+    GPUPowerPreference::HighPerformance => "high-performance"
   }
 }
 
@@ -296,8 +586,8 @@ pub fn GPUPowerPreference::to_string(self : GPUPowerPreference) -> String {
 /// Parse from string value
 pub fn GPUPowerPreference::from_string(s : String) -> GPUPowerPreference? {
   match s {
-    "low-power" => Some(LowPower)
-    "high-performance" => Some(HighPerformance)
+    "low-power" => Some(GPUPowerPreference::LowPower)
+    "high-performance" => Some(GPUPowerPreference::HighPerformance)
     _ => None
   }
 }
@@ -333,28 +623,30 @@ pub(all) enum GPUFeatureName {
 /// Convert to string value
 pub fn GPUFeatureName::to_string(self : GPUFeatureName) -> String {
   match self {
-    CoreFeaturesAndLimits => "core-features-and-limits"
-    DepthClipControl => "depth-clip-control"
-    Depth32floatStencil8 => "depth32float-stencil8"
-    TextureCompressionBc => "texture-compression-bc"
-    TextureCompressionBcSliced3d => "texture-compression-bc-sliced-3d"
-    TextureCompressionEtc2 => "texture-compression-etc2"
-    TextureCompressionAstc => "texture-compression-astc"
-    TextureCompressionAstcSliced3d => "texture-compression-astc-sliced-3d"
-    TimestampQuery => "timestamp-query"
-    IndirectFirstInstance => "indirect-first-instance"
-    ShaderF16 => "shader-f16"
-    Rg11b10ufloatRenderable => "rg11b10ufloat-renderable"
-    Bgra8unormStorage => "bgra8unorm-storage"
-    Float32Filterable => "float32-filterable"
-    Float32Blendable => "float32-blendable"
-    ClipDistances => "clip-distances"
-    DualSourceBlending => "dual-source-blending"
-    Subgroups => "subgroups"
-    TextureFormatsTier1 => "texture-formats-tier1"
-    TextureFormatsTier2 => "texture-formats-tier2"
-    PrimitiveIndex => "primitive-index"
-    TextureComponentSwizzle => "texture-component-swizzle"
+    GPUFeatureName::CoreFeaturesAndLimits => "core-features-and-limits"
+    GPUFeatureName::DepthClipControl => "depth-clip-control"
+    GPUFeatureName::Depth32floatStencil8 => "depth32float-stencil8"
+    GPUFeatureName::TextureCompressionBc => "texture-compression-bc"
+    GPUFeatureName::TextureCompressionBcSliced3d =>
+      "texture-compression-bc-sliced-3d"
+    GPUFeatureName::TextureCompressionEtc2 => "texture-compression-etc2"
+    GPUFeatureName::TextureCompressionAstc => "texture-compression-astc"
+    GPUFeatureName::TextureCompressionAstcSliced3d =>
+      "texture-compression-astc-sliced-3d"
+    GPUFeatureName::TimestampQuery => "timestamp-query"
+    GPUFeatureName::IndirectFirstInstance => "indirect-first-instance"
+    GPUFeatureName::ShaderF16 => "shader-f16"
+    GPUFeatureName::Rg11b10ufloatRenderable => "rg11b10ufloat-renderable"
+    GPUFeatureName::Bgra8unormStorage => "bgra8unorm-storage"
+    GPUFeatureName::Float32Filterable => "float32-filterable"
+    GPUFeatureName::Float32Blendable => "float32-blendable"
+    GPUFeatureName::ClipDistances => "clip-distances"
+    GPUFeatureName::DualSourceBlending => "dual-source-blending"
+    GPUFeatureName::Subgroups => "subgroups"
+    GPUFeatureName::TextureFormatsTier1 => "texture-formats-tier1"
+    GPUFeatureName::TextureFormatsTier2 => "texture-formats-tier2"
+    GPUFeatureName::PrimitiveIndex => "primitive-index"
+    GPUFeatureName::TextureComponentSwizzle => "texture-component-swizzle"
   }
 }
 
@@ -362,28 +654,30 @@ pub fn GPUFeatureName::to_string(self : GPUFeatureName) -> String {
 /// Parse from string value
 pub fn GPUFeatureName::from_string(s : String) -> GPUFeatureName? {
   match s {
-    "core-features-and-limits" => Some(CoreFeaturesAndLimits)
-    "depth-clip-control" => Some(DepthClipControl)
-    "depth32float-stencil8" => Some(Depth32floatStencil8)
-    "texture-compression-bc" => Some(TextureCompressionBc)
-    "texture-compression-bc-sliced-3d" => Some(TextureCompressionBcSliced3d)
-    "texture-compression-etc2" => Some(TextureCompressionEtc2)
-    "texture-compression-astc" => Some(TextureCompressionAstc)
-    "texture-compression-astc-sliced-3d" => Some(TextureCompressionAstcSliced3d)
-    "timestamp-query" => Some(TimestampQuery)
-    "indirect-first-instance" => Some(IndirectFirstInstance)
-    "shader-f16" => Some(ShaderF16)
-    "rg11b10ufloat-renderable" => Some(Rg11b10ufloatRenderable)
-    "bgra8unorm-storage" => Some(Bgra8unormStorage)
-    "float32-filterable" => Some(Float32Filterable)
-    "float32-blendable" => Some(Float32Blendable)
-    "clip-distances" => Some(ClipDistances)
-    "dual-source-blending" => Some(DualSourceBlending)
-    "subgroups" => Some(Subgroups)
-    "texture-formats-tier1" => Some(TextureFormatsTier1)
-    "texture-formats-tier2" => Some(TextureFormatsTier2)
-    "primitive-index" => Some(PrimitiveIndex)
-    "texture-component-swizzle" => Some(TextureComponentSwizzle)
+    "core-features-and-limits" => Some(GPUFeatureName::CoreFeaturesAndLimits)
+    "depth-clip-control" => Some(GPUFeatureName::DepthClipControl)
+    "depth32float-stencil8" => Some(GPUFeatureName::Depth32floatStencil8)
+    "texture-compression-bc" => Some(GPUFeatureName::TextureCompressionBc)
+    "texture-compression-bc-sliced-3d" =>
+      Some(GPUFeatureName::TextureCompressionBcSliced3d)
+    "texture-compression-etc2" => Some(GPUFeatureName::TextureCompressionEtc2)
+    "texture-compression-astc" => Some(GPUFeatureName::TextureCompressionAstc)
+    "texture-compression-astc-sliced-3d" =>
+      Some(GPUFeatureName::TextureCompressionAstcSliced3d)
+    "timestamp-query" => Some(GPUFeatureName::TimestampQuery)
+    "indirect-first-instance" => Some(GPUFeatureName::IndirectFirstInstance)
+    "shader-f16" => Some(GPUFeatureName::ShaderF16)
+    "rg11b10ufloat-renderable" => Some(GPUFeatureName::Rg11b10ufloatRenderable)
+    "bgra8unorm-storage" => Some(GPUFeatureName::Bgra8unormStorage)
+    "float32-filterable" => Some(GPUFeatureName::Float32Filterable)
+    "float32-blendable" => Some(GPUFeatureName::Float32Blendable)
+    "clip-distances" => Some(GPUFeatureName::ClipDistances)
+    "dual-source-blending" => Some(GPUFeatureName::DualSourceBlending)
+    "subgroups" => Some(GPUFeatureName::Subgroups)
+    "texture-formats-tier1" => Some(GPUFeatureName::TextureFormatsTier1)
+    "texture-formats-tier2" => Some(GPUFeatureName::TextureFormatsTier2)
+    "primitive-index" => Some(GPUFeatureName::PrimitiveIndex)
+    "texture-component-swizzle" => Some(GPUFeatureName::TextureComponentSwizzle)
     _ => None
   }
 }
@@ -400,9 +694,9 @@ pub(all) enum GPUBufferMapState {
 /// Convert to string value
 pub fn GPUBufferMapState::to_string(self : GPUBufferMapState) -> String {
   match self {
-    Unmapped => "unmapped"
-    Pending => "pending"
-    Mapped => "mapped"
+    GPUBufferMapState::Unmapped => "unmapped"
+    GPUBufferMapState::Pending => "pending"
+    GPUBufferMapState::Mapped => "mapped"
   }
 }
 
@@ -410,9 +704,9 @@ pub fn GPUBufferMapState::to_string(self : GPUBufferMapState) -> String {
 /// Parse from string value
 pub fn GPUBufferMapState::from_string(s : String) -> GPUBufferMapState? {
   match s {
-    "unmapped" => Some(Unmapped)
-    "pending" => Some(Pending)
-    "mapped" => Some(Mapped)
+    "unmapped" => Some(GPUBufferMapState::Unmapped)
+    "pending" => Some(GPUBufferMapState::Pending)
+    "mapped" => Some(GPUBufferMapState::Mapped)
     _ => None
   }
 }
@@ -429,9 +723,9 @@ pub(all) enum GPUTextureDimension {
 /// Convert to string value
 pub fn GPUTextureDimension::to_string(self : GPUTextureDimension) -> String {
   match self {
-    N1d => "1d"
-    N2d => "2d"
-    N3d => "3d"
+    GPUTextureDimension::N1d => "1d"
+    GPUTextureDimension::N2d => "2d"
+    GPUTextureDimension::N3d => "3d"
   }
 }
 
@@ -439,9 +733,9 @@ pub fn GPUTextureDimension::to_string(self : GPUTextureDimension) -> String {
 /// Parse from string value
 pub fn GPUTextureDimension::from_string(s : String) -> GPUTextureDimension? {
   match s {
-    "1d" => Some(N1d)
-    "2d" => Some(N2d)
-    "3d" => Some(N3d)
+    "1d" => Some(GPUTextureDimension::N1d)
+    "2d" => Some(GPUTextureDimension::N2d)
+    "3d" => Some(GPUTextureDimension::N3d)
     _ => None
   }
 }
@@ -463,12 +757,12 @@ pub fn GPUTextureViewDimension::to_string(
   self : GPUTextureViewDimension,
 ) -> String {
   match self {
-    N1d => "1d"
-    N2d => "2d"
-    N2dArray => "2d-array"
-    Cube => "cube"
-    CubeArray => "cube-array"
-    N3d => "3d"
+    GPUTextureViewDimension::N1d => "1d"
+    GPUTextureViewDimension::N2d => "2d"
+    GPUTextureViewDimension::N2dArray => "2d-array"
+    GPUTextureViewDimension::Cube => "cube"
+    GPUTextureViewDimension::CubeArray => "cube-array"
+    GPUTextureViewDimension::N3d => "3d"
   }
 }
 
@@ -478,12 +772,12 @@ pub fn GPUTextureViewDimension::from_string(
   s : String,
 ) -> GPUTextureViewDimension? {
   match s {
-    "1d" => Some(N1d)
-    "2d" => Some(N2d)
-    "2d-array" => Some(N2dArray)
-    "cube" => Some(Cube)
-    "cube-array" => Some(CubeArray)
-    "3d" => Some(N3d)
+    "1d" => Some(GPUTextureViewDimension::N1d)
+    "2d" => Some(GPUTextureViewDimension::N2d)
+    "2d-array" => Some(GPUTextureViewDimension::N2dArray)
+    "cube" => Some(GPUTextureViewDimension::Cube)
+    "cube-array" => Some(GPUTextureViewDimension::CubeArray)
+    "3d" => Some(GPUTextureViewDimension::N3d)
     _ => None
   }
 }
@@ -500,9 +794,9 @@ pub(all) enum GPUTextureAspect {
 /// Convert to string value
 pub fn GPUTextureAspect::to_string(self : GPUTextureAspect) -> String {
   match self {
-    All => "all"
-    StencilOnly => "stencil-only"
-    DepthOnly => "depth-only"
+    GPUTextureAspect::All => "all"
+    GPUTextureAspect::StencilOnly => "stencil-only"
+    GPUTextureAspect::DepthOnly => "depth-only"
   }
 }
 
@@ -510,9 +804,9 @@ pub fn GPUTextureAspect::to_string(self : GPUTextureAspect) -> String {
 /// Parse from string value
 pub fn GPUTextureAspect::from_string(s : String) -> GPUTextureAspect? {
   match s {
-    "all" => Some(All)
-    "stencil-only" => Some(StencilOnly)
-    "depth-only" => Some(DepthOnly)
+    "all" => Some(GPUTextureAspect::All)
+    "stencil-only" => Some(GPUTextureAspect::StencilOnly)
+    "depth-only" => Some(GPUTextureAspect::DepthOnly)
     _ => None
   }
 }
@@ -627,107 +921,107 @@ pub(all) enum GPUTextureFormat {
 /// Convert to string value
 pub fn GPUTextureFormat::to_string(self : GPUTextureFormat) -> String {
   match self {
-    R8unorm => "r8unorm"
-    R8snorm => "r8snorm"
-    R8uint => "r8uint"
-    R8sint => "r8sint"
-    R16unorm => "r16unorm"
-    R16snorm => "r16snorm"
-    R16uint => "r16uint"
-    R16sint => "r16sint"
-    R16float => "r16float"
-    Rg8unorm => "rg8unorm"
-    Rg8snorm => "rg8snorm"
-    Rg8uint => "rg8uint"
-    Rg8sint => "rg8sint"
-    R32uint => "r32uint"
-    R32sint => "r32sint"
-    R32float => "r32float"
-    Rg16unorm => "rg16unorm"
-    Rg16snorm => "rg16snorm"
-    Rg16uint => "rg16uint"
-    Rg16sint => "rg16sint"
-    Rg16float => "rg16float"
-    Rgba8unorm => "rgba8unorm"
-    Rgba8unormSrgb => "rgba8unorm-srgb"
-    Rgba8snorm => "rgba8snorm"
-    Rgba8uint => "rgba8uint"
-    Rgba8sint => "rgba8sint"
-    Bgra8unorm => "bgra8unorm"
-    Bgra8unormSrgb => "bgra8unorm-srgb"
-    Rgb9e5ufloat => "rgb9e5ufloat"
-    Rgb10a2uint => "rgb10a2uint"
-    Rgb10a2unorm => "rgb10a2unorm"
-    Rg11b10ufloat => "rg11b10ufloat"
-    Rg32uint => "rg32uint"
-    Rg32sint => "rg32sint"
-    Rg32float => "rg32float"
-    Rgba16unorm => "rgba16unorm"
-    Rgba16snorm => "rgba16snorm"
-    Rgba16uint => "rgba16uint"
-    Rgba16sint => "rgba16sint"
-    Rgba16float => "rgba16float"
-    Rgba32uint => "rgba32uint"
-    Rgba32sint => "rgba32sint"
-    Rgba32float => "rgba32float"
-    Stencil8 => "stencil8"
-    Depth16unorm => "depth16unorm"
-    Depth24plus => "depth24plus"
-    Depth24plusStencil8 => "depth24plus-stencil8"
-    Depth32float => "depth32float"
-    Depth32floatStencil8 => "depth32float-stencil8"
-    Bc1RgbaUnorm => "bc1-rgba-unorm"
-    Bc1RgbaUnormSrgb => "bc1-rgba-unorm-srgb"
-    Bc2RgbaUnorm => "bc2-rgba-unorm"
-    Bc2RgbaUnormSrgb => "bc2-rgba-unorm-srgb"
-    Bc3RgbaUnorm => "bc3-rgba-unorm"
-    Bc3RgbaUnormSrgb => "bc3-rgba-unorm-srgb"
-    Bc4RUnorm => "bc4-r-unorm"
-    Bc4RSnorm => "bc4-r-snorm"
-    Bc5RgUnorm => "bc5-rg-unorm"
-    Bc5RgSnorm => "bc5-rg-snorm"
-    Bc6hRgbUfloat => "bc6h-rgb-ufloat"
-    Bc6hRgbFloat => "bc6h-rgb-float"
-    Bc7RgbaUnorm => "bc7-rgba-unorm"
-    Bc7RgbaUnormSrgb => "bc7-rgba-unorm-srgb"
-    Etc2Rgb8unorm => "etc2-rgb8unorm"
-    Etc2Rgb8unormSrgb => "etc2-rgb8unorm-srgb"
-    Etc2Rgb8a1unorm => "etc2-rgb8a1unorm"
-    Etc2Rgb8a1unormSrgb => "etc2-rgb8a1unorm-srgb"
-    Etc2Rgba8unorm => "etc2-rgba8unorm"
-    Etc2Rgba8unormSrgb => "etc2-rgba8unorm-srgb"
-    EacR11unorm => "eac-r11unorm"
-    EacR11snorm => "eac-r11snorm"
-    EacRg11unorm => "eac-rg11unorm"
-    EacRg11snorm => "eac-rg11snorm"
-    Astc4x4Unorm => "astc-4x4-unorm"
-    Astc4x4UnormSrgb => "astc-4x4-unorm-srgb"
-    Astc5x4Unorm => "astc-5x4-unorm"
-    Astc5x4UnormSrgb => "astc-5x4-unorm-srgb"
-    Astc5x5Unorm => "astc-5x5-unorm"
-    Astc5x5UnormSrgb => "astc-5x5-unorm-srgb"
-    Astc6x5Unorm => "astc-6x5-unorm"
-    Astc6x5UnormSrgb => "astc-6x5-unorm-srgb"
-    Astc6x6Unorm => "astc-6x6-unorm"
-    Astc6x6UnormSrgb => "astc-6x6-unorm-srgb"
-    Astc8x5Unorm => "astc-8x5-unorm"
-    Astc8x5UnormSrgb => "astc-8x5-unorm-srgb"
-    Astc8x6Unorm => "astc-8x6-unorm"
-    Astc8x6UnormSrgb => "astc-8x6-unorm-srgb"
-    Astc8x8Unorm => "astc-8x8-unorm"
-    Astc8x8UnormSrgb => "astc-8x8-unorm-srgb"
-    Astc10x5Unorm => "astc-10x5-unorm"
-    Astc10x5UnormSrgb => "astc-10x5-unorm-srgb"
-    Astc10x6Unorm => "astc-10x6-unorm"
-    Astc10x6UnormSrgb => "astc-10x6-unorm-srgb"
-    Astc10x8Unorm => "astc-10x8-unorm"
-    Astc10x8UnormSrgb => "astc-10x8-unorm-srgb"
-    Astc10x10Unorm => "astc-10x10-unorm"
-    Astc10x10UnormSrgb => "astc-10x10-unorm-srgb"
-    Astc12x10Unorm => "astc-12x10-unorm"
-    Astc12x10UnormSrgb => "astc-12x10-unorm-srgb"
-    Astc12x12Unorm => "astc-12x12-unorm"
-    Astc12x12UnormSrgb => "astc-12x12-unorm-srgb"
+    GPUTextureFormat::R8unorm => "r8unorm"
+    GPUTextureFormat::R8snorm => "r8snorm"
+    GPUTextureFormat::R8uint => "r8uint"
+    GPUTextureFormat::R8sint => "r8sint"
+    GPUTextureFormat::R16unorm => "r16unorm"
+    GPUTextureFormat::R16snorm => "r16snorm"
+    GPUTextureFormat::R16uint => "r16uint"
+    GPUTextureFormat::R16sint => "r16sint"
+    GPUTextureFormat::R16float => "r16float"
+    GPUTextureFormat::Rg8unorm => "rg8unorm"
+    GPUTextureFormat::Rg8snorm => "rg8snorm"
+    GPUTextureFormat::Rg8uint => "rg8uint"
+    GPUTextureFormat::Rg8sint => "rg8sint"
+    GPUTextureFormat::R32uint => "r32uint"
+    GPUTextureFormat::R32sint => "r32sint"
+    GPUTextureFormat::R32float => "r32float"
+    GPUTextureFormat::Rg16unorm => "rg16unorm"
+    GPUTextureFormat::Rg16snorm => "rg16snorm"
+    GPUTextureFormat::Rg16uint => "rg16uint"
+    GPUTextureFormat::Rg16sint => "rg16sint"
+    GPUTextureFormat::Rg16float => "rg16float"
+    GPUTextureFormat::Rgba8unorm => "rgba8unorm"
+    GPUTextureFormat::Rgba8unormSrgb => "rgba8unorm-srgb"
+    GPUTextureFormat::Rgba8snorm => "rgba8snorm"
+    GPUTextureFormat::Rgba8uint => "rgba8uint"
+    GPUTextureFormat::Rgba8sint => "rgba8sint"
+    GPUTextureFormat::Bgra8unorm => "bgra8unorm"
+    GPUTextureFormat::Bgra8unormSrgb => "bgra8unorm-srgb"
+    GPUTextureFormat::Rgb9e5ufloat => "rgb9e5ufloat"
+    GPUTextureFormat::Rgb10a2uint => "rgb10a2uint"
+    GPUTextureFormat::Rgb10a2unorm => "rgb10a2unorm"
+    GPUTextureFormat::Rg11b10ufloat => "rg11b10ufloat"
+    GPUTextureFormat::Rg32uint => "rg32uint"
+    GPUTextureFormat::Rg32sint => "rg32sint"
+    GPUTextureFormat::Rg32float => "rg32float"
+    GPUTextureFormat::Rgba16unorm => "rgba16unorm"
+    GPUTextureFormat::Rgba16snorm => "rgba16snorm"
+    GPUTextureFormat::Rgba16uint => "rgba16uint"
+    GPUTextureFormat::Rgba16sint => "rgba16sint"
+    GPUTextureFormat::Rgba16float => "rgba16float"
+    GPUTextureFormat::Rgba32uint => "rgba32uint"
+    GPUTextureFormat::Rgba32sint => "rgba32sint"
+    GPUTextureFormat::Rgba32float => "rgba32float"
+    GPUTextureFormat::Stencil8 => "stencil8"
+    GPUTextureFormat::Depth16unorm => "depth16unorm"
+    GPUTextureFormat::Depth24plus => "depth24plus"
+    GPUTextureFormat::Depth24plusStencil8 => "depth24plus-stencil8"
+    GPUTextureFormat::Depth32float => "depth32float"
+    GPUTextureFormat::Depth32floatStencil8 => "depth32float-stencil8"
+    GPUTextureFormat::Bc1RgbaUnorm => "bc1-rgba-unorm"
+    GPUTextureFormat::Bc1RgbaUnormSrgb => "bc1-rgba-unorm-srgb"
+    GPUTextureFormat::Bc2RgbaUnorm => "bc2-rgba-unorm"
+    GPUTextureFormat::Bc2RgbaUnormSrgb => "bc2-rgba-unorm-srgb"
+    GPUTextureFormat::Bc3RgbaUnorm => "bc3-rgba-unorm"
+    GPUTextureFormat::Bc3RgbaUnormSrgb => "bc3-rgba-unorm-srgb"
+    GPUTextureFormat::Bc4RUnorm => "bc4-r-unorm"
+    GPUTextureFormat::Bc4RSnorm => "bc4-r-snorm"
+    GPUTextureFormat::Bc5RgUnorm => "bc5-rg-unorm"
+    GPUTextureFormat::Bc5RgSnorm => "bc5-rg-snorm"
+    GPUTextureFormat::Bc6hRgbUfloat => "bc6h-rgb-ufloat"
+    GPUTextureFormat::Bc6hRgbFloat => "bc6h-rgb-float"
+    GPUTextureFormat::Bc7RgbaUnorm => "bc7-rgba-unorm"
+    GPUTextureFormat::Bc7RgbaUnormSrgb => "bc7-rgba-unorm-srgb"
+    GPUTextureFormat::Etc2Rgb8unorm => "etc2-rgb8unorm"
+    GPUTextureFormat::Etc2Rgb8unormSrgb => "etc2-rgb8unorm-srgb"
+    GPUTextureFormat::Etc2Rgb8a1unorm => "etc2-rgb8a1unorm"
+    GPUTextureFormat::Etc2Rgb8a1unormSrgb => "etc2-rgb8a1unorm-srgb"
+    GPUTextureFormat::Etc2Rgba8unorm => "etc2-rgba8unorm"
+    GPUTextureFormat::Etc2Rgba8unormSrgb => "etc2-rgba8unorm-srgb"
+    GPUTextureFormat::EacR11unorm => "eac-r11unorm"
+    GPUTextureFormat::EacR11snorm => "eac-r11snorm"
+    GPUTextureFormat::EacRg11unorm => "eac-rg11unorm"
+    GPUTextureFormat::EacRg11snorm => "eac-rg11snorm"
+    GPUTextureFormat::Astc4x4Unorm => "astc-4x4-unorm"
+    GPUTextureFormat::Astc4x4UnormSrgb => "astc-4x4-unorm-srgb"
+    GPUTextureFormat::Astc5x4Unorm => "astc-5x4-unorm"
+    GPUTextureFormat::Astc5x4UnormSrgb => "astc-5x4-unorm-srgb"
+    GPUTextureFormat::Astc5x5Unorm => "astc-5x5-unorm"
+    GPUTextureFormat::Astc5x5UnormSrgb => "astc-5x5-unorm-srgb"
+    GPUTextureFormat::Astc6x5Unorm => "astc-6x5-unorm"
+    GPUTextureFormat::Astc6x5UnormSrgb => "astc-6x5-unorm-srgb"
+    GPUTextureFormat::Astc6x6Unorm => "astc-6x6-unorm"
+    GPUTextureFormat::Astc6x6UnormSrgb => "astc-6x6-unorm-srgb"
+    GPUTextureFormat::Astc8x5Unorm => "astc-8x5-unorm"
+    GPUTextureFormat::Astc8x5UnormSrgb => "astc-8x5-unorm-srgb"
+    GPUTextureFormat::Astc8x6Unorm => "astc-8x6-unorm"
+    GPUTextureFormat::Astc8x6UnormSrgb => "astc-8x6-unorm-srgb"
+    GPUTextureFormat::Astc8x8Unorm => "astc-8x8-unorm"
+    GPUTextureFormat::Astc8x8UnormSrgb => "astc-8x8-unorm-srgb"
+    GPUTextureFormat::Astc10x5Unorm => "astc-10x5-unorm"
+    GPUTextureFormat::Astc10x5UnormSrgb => "astc-10x5-unorm-srgb"
+    GPUTextureFormat::Astc10x6Unorm => "astc-10x6-unorm"
+    GPUTextureFormat::Astc10x6UnormSrgb => "astc-10x6-unorm-srgb"
+    GPUTextureFormat::Astc10x8Unorm => "astc-10x8-unorm"
+    GPUTextureFormat::Astc10x8UnormSrgb => "astc-10x8-unorm-srgb"
+    GPUTextureFormat::Astc10x10Unorm => "astc-10x10-unorm"
+    GPUTextureFormat::Astc10x10UnormSrgb => "astc-10x10-unorm-srgb"
+    GPUTextureFormat::Astc12x10Unorm => "astc-12x10-unorm"
+    GPUTextureFormat::Astc12x10UnormSrgb => "astc-12x10-unorm-srgb"
+    GPUTextureFormat::Astc12x12Unorm => "astc-12x12-unorm"
+    GPUTextureFormat::Astc12x12UnormSrgb => "astc-12x12-unorm-srgb"
   }
 }
 
@@ -735,107 +1029,107 @@ pub fn GPUTextureFormat::to_string(self : GPUTextureFormat) -> String {
 /// Parse from string value
 pub fn GPUTextureFormat::from_string(s : String) -> GPUTextureFormat? {
   match s {
-    "r8unorm" => Some(R8unorm)
-    "r8snorm" => Some(R8snorm)
-    "r8uint" => Some(R8uint)
-    "r8sint" => Some(R8sint)
-    "r16unorm" => Some(R16unorm)
-    "r16snorm" => Some(R16snorm)
-    "r16uint" => Some(R16uint)
-    "r16sint" => Some(R16sint)
-    "r16float" => Some(R16float)
-    "rg8unorm" => Some(Rg8unorm)
-    "rg8snorm" => Some(Rg8snorm)
-    "rg8uint" => Some(Rg8uint)
-    "rg8sint" => Some(Rg8sint)
-    "r32uint" => Some(R32uint)
-    "r32sint" => Some(R32sint)
-    "r32float" => Some(R32float)
-    "rg16unorm" => Some(Rg16unorm)
-    "rg16snorm" => Some(Rg16snorm)
-    "rg16uint" => Some(Rg16uint)
-    "rg16sint" => Some(Rg16sint)
-    "rg16float" => Some(Rg16float)
-    "rgba8unorm" => Some(Rgba8unorm)
-    "rgba8unorm-srgb" => Some(Rgba8unormSrgb)
-    "rgba8snorm" => Some(Rgba8snorm)
-    "rgba8uint" => Some(Rgba8uint)
-    "rgba8sint" => Some(Rgba8sint)
-    "bgra8unorm" => Some(Bgra8unorm)
-    "bgra8unorm-srgb" => Some(Bgra8unormSrgb)
-    "rgb9e5ufloat" => Some(Rgb9e5ufloat)
-    "rgb10a2uint" => Some(Rgb10a2uint)
-    "rgb10a2unorm" => Some(Rgb10a2unorm)
-    "rg11b10ufloat" => Some(Rg11b10ufloat)
-    "rg32uint" => Some(Rg32uint)
-    "rg32sint" => Some(Rg32sint)
-    "rg32float" => Some(Rg32float)
-    "rgba16unorm" => Some(Rgba16unorm)
-    "rgba16snorm" => Some(Rgba16snorm)
-    "rgba16uint" => Some(Rgba16uint)
-    "rgba16sint" => Some(Rgba16sint)
-    "rgba16float" => Some(Rgba16float)
-    "rgba32uint" => Some(Rgba32uint)
-    "rgba32sint" => Some(Rgba32sint)
-    "rgba32float" => Some(Rgba32float)
-    "stencil8" => Some(Stencil8)
-    "depth16unorm" => Some(Depth16unorm)
-    "depth24plus" => Some(Depth24plus)
-    "depth24plus-stencil8" => Some(Depth24plusStencil8)
-    "depth32float" => Some(Depth32float)
-    "depth32float-stencil8" => Some(Depth32floatStencil8)
-    "bc1-rgba-unorm" => Some(Bc1RgbaUnorm)
-    "bc1-rgba-unorm-srgb" => Some(Bc1RgbaUnormSrgb)
-    "bc2-rgba-unorm" => Some(Bc2RgbaUnorm)
-    "bc2-rgba-unorm-srgb" => Some(Bc2RgbaUnormSrgb)
-    "bc3-rgba-unorm" => Some(Bc3RgbaUnorm)
-    "bc3-rgba-unorm-srgb" => Some(Bc3RgbaUnormSrgb)
-    "bc4-r-unorm" => Some(Bc4RUnorm)
-    "bc4-r-snorm" => Some(Bc4RSnorm)
-    "bc5-rg-unorm" => Some(Bc5RgUnorm)
-    "bc5-rg-snorm" => Some(Bc5RgSnorm)
-    "bc6h-rgb-ufloat" => Some(Bc6hRgbUfloat)
-    "bc6h-rgb-float" => Some(Bc6hRgbFloat)
-    "bc7-rgba-unorm" => Some(Bc7RgbaUnorm)
-    "bc7-rgba-unorm-srgb" => Some(Bc7RgbaUnormSrgb)
-    "etc2-rgb8unorm" => Some(Etc2Rgb8unorm)
-    "etc2-rgb8unorm-srgb" => Some(Etc2Rgb8unormSrgb)
-    "etc2-rgb8a1unorm" => Some(Etc2Rgb8a1unorm)
-    "etc2-rgb8a1unorm-srgb" => Some(Etc2Rgb8a1unormSrgb)
-    "etc2-rgba8unorm" => Some(Etc2Rgba8unorm)
-    "etc2-rgba8unorm-srgb" => Some(Etc2Rgba8unormSrgb)
-    "eac-r11unorm" => Some(EacR11unorm)
-    "eac-r11snorm" => Some(EacR11snorm)
-    "eac-rg11unorm" => Some(EacRg11unorm)
-    "eac-rg11snorm" => Some(EacRg11snorm)
-    "astc-4x4-unorm" => Some(Astc4x4Unorm)
-    "astc-4x4-unorm-srgb" => Some(Astc4x4UnormSrgb)
-    "astc-5x4-unorm" => Some(Astc5x4Unorm)
-    "astc-5x4-unorm-srgb" => Some(Astc5x4UnormSrgb)
-    "astc-5x5-unorm" => Some(Astc5x5Unorm)
-    "astc-5x5-unorm-srgb" => Some(Astc5x5UnormSrgb)
-    "astc-6x5-unorm" => Some(Astc6x5Unorm)
-    "astc-6x5-unorm-srgb" => Some(Astc6x5UnormSrgb)
-    "astc-6x6-unorm" => Some(Astc6x6Unorm)
-    "astc-6x6-unorm-srgb" => Some(Astc6x6UnormSrgb)
-    "astc-8x5-unorm" => Some(Astc8x5Unorm)
-    "astc-8x5-unorm-srgb" => Some(Astc8x5UnormSrgb)
-    "astc-8x6-unorm" => Some(Astc8x6Unorm)
-    "astc-8x6-unorm-srgb" => Some(Astc8x6UnormSrgb)
-    "astc-8x8-unorm" => Some(Astc8x8Unorm)
-    "astc-8x8-unorm-srgb" => Some(Astc8x8UnormSrgb)
-    "astc-10x5-unorm" => Some(Astc10x5Unorm)
-    "astc-10x5-unorm-srgb" => Some(Astc10x5UnormSrgb)
-    "astc-10x6-unorm" => Some(Astc10x6Unorm)
-    "astc-10x6-unorm-srgb" => Some(Astc10x6UnormSrgb)
-    "astc-10x8-unorm" => Some(Astc10x8Unorm)
-    "astc-10x8-unorm-srgb" => Some(Astc10x8UnormSrgb)
-    "astc-10x10-unorm" => Some(Astc10x10Unorm)
-    "astc-10x10-unorm-srgb" => Some(Astc10x10UnormSrgb)
-    "astc-12x10-unorm" => Some(Astc12x10Unorm)
-    "astc-12x10-unorm-srgb" => Some(Astc12x10UnormSrgb)
-    "astc-12x12-unorm" => Some(Astc12x12Unorm)
-    "astc-12x12-unorm-srgb" => Some(Astc12x12UnormSrgb)
+    "r8unorm" => Some(GPUTextureFormat::R8unorm)
+    "r8snorm" => Some(GPUTextureFormat::R8snorm)
+    "r8uint" => Some(GPUTextureFormat::R8uint)
+    "r8sint" => Some(GPUTextureFormat::R8sint)
+    "r16unorm" => Some(GPUTextureFormat::R16unorm)
+    "r16snorm" => Some(GPUTextureFormat::R16snorm)
+    "r16uint" => Some(GPUTextureFormat::R16uint)
+    "r16sint" => Some(GPUTextureFormat::R16sint)
+    "r16float" => Some(GPUTextureFormat::R16float)
+    "rg8unorm" => Some(GPUTextureFormat::Rg8unorm)
+    "rg8snorm" => Some(GPUTextureFormat::Rg8snorm)
+    "rg8uint" => Some(GPUTextureFormat::Rg8uint)
+    "rg8sint" => Some(GPUTextureFormat::Rg8sint)
+    "r32uint" => Some(GPUTextureFormat::R32uint)
+    "r32sint" => Some(GPUTextureFormat::R32sint)
+    "r32float" => Some(GPUTextureFormat::R32float)
+    "rg16unorm" => Some(GPUTextureFormat::Rg16unorm)
+    "rg16snorm" => Some(GPUTextureFormat::Rg16snorm)
+    "rg16uint" => Some(GPUTextureFormat::Rg16uint)
+    "rg16sint" => Some(GPUTextureFormat::Rg16sint)
+    "rg16float" => Some(GPUTextureFormat::Rg16float)
+    "rgba8unorm" => Some(GPUTextureFormat::Rgba8unorm)
+    "rgba8unorm-srgb" => Some(GPUTextureFormat::Rgba8unormSrgb)
+    "rgba8snorm" => Some(GPUTextureFormat::Rgba8snorm)
+    "rgba8uint" => Some(GPUTextureFormat::Rgba8uint)
+    "rgba8sint" => Some(GPUTextureFormat::Rgba8sint)
+    "bgra8unorm" => Some(GPUTextureFormat::Bgra8unorm)
+    "bgra8unorm-srgb" => Some(GPUTextureFormat::Bgra8unormSrgb)
+    "rgb9e5ufloat" => Some(GPUTextureFormat::Rgb9e5ufloat)
+    "rgb10a2uint" => Some(GPUTextureFormat::Rgb10a2uint)
+    "rgb10a2unorm" => Some(GPUTextureFormat::Rgb10a2unorm)
+    "rg11b10ufloat" => Some(GPUTextureFormat::Rg11b10ufloat)
+    "rg32uint" => Some(GPUTextureFormat::Rg32uint)
+    "rg32sint" => Some(GPUTextureFormat::Rg32sint)
+    "rg32float" => Some(GPUTextureFormat::Rg32float)
+    "rgba16unorm" => Some(GPUTextureFormat::Rgba16unorm)
+    "rgba16snorm" => Some(GPUTextureFormat::Rgba16snorm)
+    "rgba16uint" => Some(GPUTextureFormat::Rgba16uint)
+    "rgba16sint" => Some(GPUTextureFormat::Rgba16sint)
+    "rgba16float" => Some(GPUTextureFormat::Rgba16float)
+    "rgba32uint" => Some(GPUTextureFormat::Rgba32uint)
+    "rgba32sint" => Some(GPUTextureFormat::Rgba32sint)
+    "rgba32float" => Some(GPUTextureFormat::Rgba32float)
+    "stencil8" => Some(GPUTextureFormat::Stencil8)
+    "depth16unorm" => Some(GPUTextureFormat::Depth16unorm)
+    "depth24plus" => Some(GPUTextureFormat::Depth24plus)
+    "depth24plus-stencil8" => Some(GPUTextureFormat::Depth24plusStencil8)
+    "depth32float" => Some(GPUTextureFormat::Depth32float)
+    "depth32float-stencil8" => Some(GPUTextureFormat::Depth32floatStencil8)
+    "bc1-rgba-unorm" => Some(GPUTextureFormat::Bc1RgbaUnorm)
+    "bc1-rgba-unorm-srgb" => Some(GPUTextureFormat::Bc1RgbaUnormSrgb)
+    "bc2-rgba-unorm" => Some(GPUTextureFormat::Bc2RgbaUnorm)
+    "bc2-rgba-unorm-srgb" => Some(GPUTextureFormat::Bc2RgbaUnormSrgb)
+    "bc3-rgba-unorm" => Some(GPUTextureFormat::Bc3RgbaUnorm)
+    "bc3-rgba-unorm-srgb" => Some(GPUTextureFormat::Bc3RgbaUnormSrgb)
+    "bc4-r-unorm" => Some(GPUTextureFormat::Bc4RUnorm)
+    "bc4-r-snorm" => Some(GPUTextureFormat::Bc4RSnorm)
+    "bc5-rg-unorm" => Some(GPUTextureFormat::Bc5RgUnorm)
+    "bc5-rg-snorm" => Some(GPUTextureFormat::Bc5RgSnorm)
+    "bc6h-rgb-ufloat" => Some(GPUTextureFormat::Bc6hRgbUfloat)
+    "bc6h-rgb-float" => Some(GPUTextureFormat::Bc6hRgbFloat)
+    "bc7-rgba-unorm" => Some(GPUTextureFormat::Bc7RgbaUnorm)
+    "bc7-rgba-unorm-srgb" => Some(GPUTextureFormat::Bc7RgbaUnormSrgb)
+    "etc2-rgb8unorm" => Some(GPUTextureFormat::Etc2Rgb8unorm)
+    "etc2-rgb8unorm-srgb" => Some(GPUTextureFormat::Etc2Rgb8unormSrgb)
+    "etc2-rgb8a1unorm" => Some(GPUTextureFormat::Etc2Rgb8a1unorm)
+    "etc2-rgb8a1unorm-srgb" => Some(GPUTextureFormat::Etc2Rgb8a1unormSrgb)
+    "etc2-rgba8unorm" => Some(GPUTextureFormat::Etc2Rgba8unorm)
+    "etc2-rgba8unorm-srgb" => Some(GPUTextureFormat::Etc2Rgba8unormSrgb)
+    "eac-r11unorm" => Some(GPUTextureFormat::EacR11unorm)
+    "eac-r11snorm" => Some(GPUTextureFormat::EacR11snorm)
+    "eac-rg11unorm" => Some(GPUTextureFormat::EacRg11unorm)
+    "eac-rg11snorm" => Some(GPUTextureFormat::EacRg11snorm)
+    "astc-4x4-unorm" => Some(GPUTextureFormat::Astc4x4Unorm)
+    "astc-4x4-unorm-srgb" => Some(GPUTextureFormat::Astc4x4UnormSrgb)
+    "astc-5x4-unorm" => Some(GPUTextureFormat::Astc5x4Unorm)
+    "astc-5x4-unorm-srgb" => Some(GPUTextureFormat::Astc5x4UnormSrgb)
+    "astc-5x5-unorm" => Some(GPUTextureFormat::Astc5x5Unorm)
+    "astc-5x5-unorm-srgb" => Some(GPUTextureFormat::Astc5x5UnormSrgb)
+    "astc-6x5-unorm" => Some(GPUTextureFormat::Astc6x5Unorm)
+    "astc-6x5-unorm-srgb" => Some(GPUTextureFormat::Astc6x5UnormSrgb)
+    "astc-6x6-unorm" => Some(GPUTextureFormat::Astc6x6Unorm)
+    "astc-6x6-unorm-srgb" => Some(GPUTextureFormat::Astc6x6UnormSrgb)
+    "astc-8x5-unorm" => Some(GPUTextureFormat::Astc8x5Unorm)
+    "astc-8x5-unorm-srgb" => Some(GPUTextureFormat::Astc8x5UnormSrgb)
+    "astc-8x6-unorm" => Some(GPUTextureFormat::Astc8x6Unorm)
+    "astc-8x6-unorm-srgb" => Some(GPUTextureFormat::Astc8x6UnormSrgb)
+    "astc-8x8-unorm" => Some(GPUTextureFormat::Astc8x8Unorm)
+    "astc-8x8-unorm-srgb" => Some(GPUTextureFormat::Astc8x8UnormSrgb)
+    "astc-10x5-unorm" => Some(GPUTextureFormat::Astc10x5Unorm)
+    "astc-10x5-unorm-srgb" => Some(GPUTextureFormat::Astc10x5UnormSrgb)
+    "astc-10x6-unorm" => Some(GPUTextureFormat::Astc10x6Unorm)
+    "astc-10x6-unorm-srgb" => Some(GPUTextureFormat::Astc10x6UnormSrgb)
+    "astc-10x8-unorm" => Some(GPUTextureFormat::Astc10x8Unorm)
+    "astc-10x8-unorm-srgb" => Some(GPUTextureFormat::Astc10x8UnormSrgb)
+    "astc-10x10-unorm" => Some(GPUTextureFormat::Astc10x10Unorm)
+    "astc-10x10-unorm-srgb" => Some(GPUTextureFormat::Astc10x10UnormSrgb)
+    "astc-12x10-unorm" => Some(GPUTextureFormat::Astc12x10Unorm)
+    "astc-12x10-unorm-srgb" => Some(GPUTextureFormat::Astc12x10UnormSrgb)
+    "astc-12x12-unorm" => Some(GPUTextureFormat::Astc12x12Unorm)
+    "astc-12x12-unorm-srgb" => Some(GPUTextureFormat::Astc12x12UnormSrgb)
     _ => None
   }
 }
@@ -852,9 +1146,9 @@ pub(all) enum GPUAddressMode {
 /// Convert to string value
 pub fn GPUAddressMode::to_string(self : GPUAddressMode) -> String {
   match self {
-    ClampToEdge => "clamp-to-edge"
-    Repeat => "repeat"
-    MirrorRepeat => "mirror-repeat"
+    GPUAddressMode::ClampToEdge => "clamp-to-edge"
+    GPUAddressMode::Repeat => "repeat"
+    GPUAddressMode::MirrorRepeat => "mirror-repeat"
   }
 }
 
@@ -862,9 +1156,9 @@ pub fn GPUAddressMode::to_string(self : GPUAddressMode) -> String {
 /// Parse from string value
 pub fn GPUAddressMode::from_string(s : String) -> GPUAddressMode? {
   match s {
-    "clamp-to-edge" => Some(ClampToEdge)
-    "repeat" => Some(Repeat)
-    "mirror-repeat" => Some(MirrorRepeat)
+    "clamp-to-edge" => Some(GPUAddressMode::ClampToEdge)
+    "repeat" => Some(GPUAddressMode::Repeat)
+    "mirror-repeat" => Some(GPUAddressMode::MirrorRepeat)
     _ => None
   }
 }
@@ -880,8 +1174,8 @@ pub(all) enum GPUFilterMode {
 /// Convert to string value
 pub fn GPUFilterMode::to_string(self : GPUFilterMode) -> String {
   match self {
-    Nearest => "nearest"
-    Linear => "linear"
+    GPUFilterMode::Nearest => "nearest"
+    GPUFilterMode::Linear => "linear"
   }
 }
 
@@ -889,8 +1183,8 @@ pub fn GPUFilterMode::to_string(self : GPUFilterMode) -> String {
 /// Parse from string value
 pub fn GPUFilterMode::from_string(s : String) -> GPUFilterMode? {
   match s {
-    "nearest" => Some(Nearest)
-    "linear" => Some(Linear)
+    "nearest" => Some(GPUFilterMode::Nearest)
+    "linear" => Some(GPUFilterMode::Linear)
     _ => None
   }
 }
@@ -906,8 +1200,8 @@ pub(all) enum GPUMipmapFilterMode {
 /// Convert to string value
 pub fn GPUMipmapFilterMode::to_string(self : GPUMipmapFilterMode) -> String {
   match self {
-    Nearest => "nearest"
-    Linear => "linear"
+    GPUMipmapFilterMode::Nearest => "nearest"
+    GPUMipmapFilterMode::Linear => "linear"
   }
 }
 
@@ -915,8 +1209,8 @@ pub fn GPUMipmapFilterMode::to_string(self : GPUMipmapFilterMode) -> String {
 /// Parse from string value
 pub fn GPUMipmapFilterMode::from_string(s : String) -> GPUMipmapFilterMode? {
   match s {
-    "nearest" => Some(Nearest)
-    "linear" => Some(Linear)
+    "nearest" => Some(GPUMipmapFilterMode::Nearest)
+    "linear" => Some(GPUMipmapFilterMode::Linear)
     _ => None
   }
 }
@@ -938,14 +1232,14 @@ pub(all) enum GPUCompareFunction {
 /// Convert to string value
 pub fn GPUCompareFunction::to_string(self : GPUCompareFunction) -> String {
   match self {
-    Never => "never"
-    Less => "less"
-    Equal => "equal"
-    LessEqual => "less-equal"
-    Greater => "greater"
-    NotEqual => "not-equal"
-    GreaterEqual => "greater-equal"
-    Always => "always"
+    GPUCompareFunction::Never => "never"
+    GPUCompareFunction::Less => "less"
+    GPUCompareFunction::Equal => "equal"
+    GPUCompareFunction::LessEqual => "less-equal"
+    GPUCompareFunction::Greater => "greater"
+    GPUCompareFunction::NotEqual => "not-equal"
+    GPUCompareFunction::GreaterEqual => "greater-equal"
+    GPUCompareFunction::Always => "always"
   }
 }
 
@@ -953,14 +1247,14 @@ pub fn GPUCompareFunction::to_string(self : GPUCompareFunction) -> String {
 /// Parse from string value
 pub fn GPUCompareFunction::from_string(s : String) -> GPUCompareFunction? {
   match s {
-    "never" => Some(Never)
-    "less" => Some(Less)
-    "equal" => Some(Equal)
-    "less-equal" => Some(LessEqual)
-    "greater" => Some(Greater)
-    "not-equal" => Some(NotEqual)
-    "greater-equal" => Some(GreaterEqual)
-    "always" => Some(Always)
+    "never" => Some(GPUCompareFunction::Never)
+    "less" => Some(GPUCompareFunction::Less)
+    "equal" => Some(GPUCompareFunction::Equal)
+    "less-equal" => Some(GPUCompareFunction::LessEqual)
+    "greater" => Some(GPUCompareFunction::Greater)
+    "not-equal" => Some(GPUCompareFunction::NotEqual)
+    "greater-equal" => Some(GPUCompareFunction::GreaterEqual)
+    "always" => Some(GPUCompareFunction::Always)
     _ => None
   }
 }
@@ -977,9 +1271,9 @@ pub(all) enum GPUBufferBindingType {
 /// Convert to string value
 pub fn GPUBufferBindingType::to_string(self : GPUBufferBindingType) -> String {
   match self {
-    Uniform => "uniform"
-    Storage => "storage"
-    ReadOnlyStorage => "read-only-storage"
+    GPUBufferBindingType::Uniform => "uniform"
+    GPUBufferBindingType::Storage => "storage"
+    GPUBufferBindingType::ReadOnlyStorage => "read-only-storage"
   }
 }
 
@@ -987,9 +1281,9 @@ pub fn GPUBufferBindingType::to_string(self : GPUBufferBindingType) -> String {
 /// Parse from string value
 pub fn GPUBufferBindingType::from_string(s : String) -> GPUBufferBindingType? {
   match s {
-    "uniform" => Some(Uniform)
-    "storage" => Some(Storage)
-    "read-only-storage" => Some(ReadOnlyStorage)
+    "uniform" => Some(GPUBufferBindingType::Uniform)
+    "storage" => Some(GPUBufferBindingType::Storage)
+    "read-only-storage" => Some(GPUBufferBindingType::ReadOnlyStorage)
     _ => None
   }
 }
@@ -1006,9 +1300,9 @@ pub(all) enum GPUSamplerBindingType {
 /// Convert to string value
 pub fn GPUSamplerBindingType::to_string(self : GPUSamplerBindingType) -> String {
   match self {
-    Filtering => "filtering"
-    NonFiltering => "non-filtering"
-    Comparison => "comparison"
+    GPUSamplerBindingType::Filtering => "filtering"
+    GPUSamplerBindingType::NonFiltering => "non-filtering"
+    GPUSamplerBindingType::Comparison => "comparison"
   }
 }
 
@@ -1016,9 +1310,9 @@ pub fn GPUSamplerBindingType::to_string(self : GPUSamplerBindingType) -> String 
 /// Parse from string value
 pub fn GPUSamplerBindingType::from_string(s : String) -> GPUSamplerBindingType? {
   match s {
-    "filtering" => Some(Filtering)
-    "non-filtering" => Some(NonFiltering)
-    "comparison" => Some(Comparison)
+    "filtering" => Some(GPUSamplerBindingType::Filtering)
+    "non-filtering" => Some(GPUSamplerBindingType::NonFiltering)
+    "comparison" => Some(GPUSamplerBindingType::Comparison)
     _ => None
   }
 }
@@ -1037,11 +1331,11 @@ pub(all) enum GPUTextureSampleType {
 /// Convert to string value
 pub fn GPUTextureSampleType::to_string(self : GPUTextureSampleType) -> String {
   match self {
-    Float => "float"
-    UnfilterableFloat => "unfilterable-float"
-    Depth => "depth"
-    Sint => "sint"
-    Uint => "uint"
+    GPUTextureSampleType::Float => "float"
+    GPUTextureSampleType::UnfilterableFloat => "unfilterable-float"
+    GPUTextureSampleType::Depth => "depth"
+    GPUTextureSampleType::Sint => "sint"
+    GPUTextureSampleType::Uint => "uint"
   }
 }
 
@@ -1049,11 +1343,11 @@ pub fn GPUTextureSampleType::to_string(self : GPUTextureSampleType) -> String {
 /// Parse from string value
 pub fn GPUTextureSampleType::from_string(s : String) -> GPUTextureSampleType? {
   match s {
-    "float" => Some(Float)
-    "unfilterable-float" => Some(UnfilterableFloat)
-    "depth" => Some(Depth)
-    "sint" => Some(Sint)
-    "uint" => Some(Uint)
+    "float" => Some(GPUTextureSampleType::Float)
+    "unfilterable-float" => Some(GPUTextureSampleType::UnfilterableFloat)
+    "depth" => Some(GPUTextureSampleType::Depth)
+    "sint" => Some(GPUTextureSampleType::Sint)
+    "uint" => Some(GPUTextureSampleType::Uint)
     _ => None
   }
 }
@@ -1072,9 +1366,9 @@ pub fn GPUStorageTextureAccess::to_string(
   self : GPUStorageTextureAccess,
 ) -> String {
   match self {
-    WriteOnly => "write-only"
-    ReadOnly => "read-only"
-    ReadWrite => "read-write"
+    GPUStorageTextureAccess::WriteOnly => "write-only"
+    GPUStorageTextureAccess::ReadOnly => "read-only"
+    GPUStorageTextureAccess::ReadWrite => "read-write"
   }
 }
 
@@ -1084,9 +1378,9 @@ pub fn GPUStorageTextureAccess::from_string(
   s : String,
 ) -> GPUStorageTextureAccess? {
   match s {
-    "write-only" => Some(WriteOnly)
-    "read-only" => Some(ReadOnly)
-    "read-write" => Some(ReadWrite)
+    "write-only" => Some(GPUStorageTextureAccess::WriteOnly)
+    "read-only" => Some(GPUStorageTextureAccess::ReadOnly)
+    "read-write" => Some(GPUStorageTextureAccess::ReadWrite)
     _ => None
   }
 }
@@ -1105,9 +1399,9 @@ pub fn GPUCompilationMessageType::to_string(
   self : GPUCompilationMessageType,
 ) -> String {
   match self {
-    Error => "error"
-    Warning => "warning"
-    Info => "info"
+    GPUCompilationMessageType::Error => "error"
+    GPUCompilationMessageType::Warning => "warning"
+    GPUCompilationMessageType::Info => "info"
   }
 }
 
@@ -1117,9 +1411,9 @@ pub fn GPUCompilationMessageType::from_string(
   s : String,
 ) -> GPUCompilationMessageType? {
   match s {
-    "error" => Some(Error)
-    "warning" => Some(Warning)
-    "info" => Some(Info)
+    "error" => Some(GPUCompilationMessageType::Error)
+    "warning" => Some(GPUCompilationMessageType::Warning)
+    "info" => Some(GPUCompilationMessageType::Info)
     _ => None
   }
 }
@@ -1137,8 +1431,8 @@ pub fn GPUPipelineErrorReason::to_string(
   self : GPUPipelineErrorReason,
 ) -> String {
   match self {
-    Validation => "validation"
-    Internal => "internal"
+    GPUPipelineErrorReason::Validation => "validation"
+    GPUPipelineErrorReason::Internal => "internal"
   }
 }
 
@@ -1148,8 +1442,8 @@ pub fn GPUPipelineErrorReason::from_string(
   s : String,
 ) -> GPUPipelineErrorReason? {
   match s {
-    "validation" => Some(Validation)
-    "internal" => Some(Internal)
+    "validation" => Some(GPUPipelineErrorReason::Validation)
+    "internal" => Some(GPUPipelineErrorReason::Internal)
     _ => None
   }
 }
@@ -1164,7 +1458,7 @@ pub(all) enum GPUAutoLayoutMode {
 /// Convert to string value
 pub fn GPUAutoLayoutMode::to_string(self : GPUAutoLayoutMode) -> String {
   match self {
-    Auto => "auto"
+    GPUAutoLayoutMode::Auto => "auto"
   }
 }
 
@@ -1172,7 +1466,7 @@ pub fn GPUAutoLayoutMode::to_string(self : GPUAutoLayoutMode) -> String {
 /// Parse from string value
 pub fn GPUAutoLayoutMode::from_string(s : String) -> GPUAutoLayoutMode? {
   match s {
-    "auto" => Some(Auto)
+    "auto" => Some(GPUAutoLayoutMode::Auto)
     _ => None
   }
 }
@@ -1191,11 +1485,11 @@ pub(all) enum GPUPrimitiveTopology {
 /// Convert to string value
 pub fn GPUPrimitiveTopology::to_string(self : GPUPrimitiveTopology) -> String {
   match self {
-    PointList => "point-list"
-    LineList => "line-list"
-    LineStrip => "line-strip"
-    TriangleList => "triangle-list"
-    TriangleStrip => "triangle-strip"
+    GPUPrimitiveTopology::PointList => "point-list"
+    GPUPrimitiveTopology::LineList => "line-list"
+    GPUPrimitiveTopology::LineStrip => "line-strip"
+    GPUPrimitiveTopology::TriangleList => "triangle-list"
+    GPUPrimitiveTopology::TriangleStrip => "triangle-strip"
   }
 }
 
@@ -1203,11 +1497,11 @@ pub fn GPUPrimitiveTopology::to_string(self : GPUPrimitiveTopology) -> String {
 /// Parse from string value
 pub fn GPUPrimitiveTopology::from_string(s : String) -> GPUPrimitiveTopology? {
   match s {
-    "point-list" => Some(PointList)
-    "line-list" => Some(LineList)
-    "line-strip" => Some(LineStrip)
-    "triangle-list" => Some(TriangleList)
-    "triangle-strip" => Some(TriangleStrip)
+    "point-list" => Some(GPUPrimitiveTopology::PointList)
+    "line-list" => Some(GPUPrimitiveTopology::LineList)
+    "line-strip" => Some(GPUPrimitiveTopology::LineStrip)
+    "triangle-list" => Some(GPUPrimitiveTopology::TriangleList)
+    "triangle-strip" => Some(GPUPrimitiveTopology::TriangleStrip)
     _ => None
   }
 }
@@ -1223,8 +1517,8 @@ pub(all) enum GPUFrontFace {
 /// Convert to string value
 pub fn GPUFrontFace::to_string(self : GPUFrontFace) -> String {
   match self {
-    Ccw => "ccw"
-    Cw => "cw"
+    GPUFrontFace::Ccw => "ccw"
+    GPUFrontFace::Cw => "cw"
   }
 }
 
@@ -1232,8 +1526,8 @@ pub fn GPUFrontFace::to_string(self : GPUFrontFace) -> String {
 /// Parse from string value
 pub fn GPUFrontFace::from_string(s : String) -> GPUFrontFace? {
   match s {
-    "ccw" => Some(Ccw)
-    "cw" => Some(Cw)
+    "ccw" => Some(GPUFrontFace::Ccw)
+    "cw" => Some(GPUFrontFace::Cw)
     _ => None
   }
 }
@@ -1250,9 +1544,9 @@ pub(all) enum GPUCullMode {
 /// Convert to string value
 pub fn GPUCullMode::to_string(self : GPUCullMode) -> String {
   match self {
-    None => "none"
-    Front => "front"
-    Back => "back"
+    GPUCullMode::None => "none"
+    GPUCullMode::Front => "front"
+    GPUCullMode::Back => "back"
   }
 }
 
@@ -1260,9 +1554,9 @@ pub fn GPUCullMode::to_string(self : GPUCullMode) -> String {
 /// Parse from string value
 pub fn GPUCullMode::from_string(s : String) -> GPUCullMode? {
   match s {
-    "none" => Some(None)
-    "front" => Some(Front)
-    "back" => Some(Back)
+    "none" => Some(GPUCullMode::None)
+    "front" => Some(GPUCullMode::Front)
+    "back" => Some(GPUCullMode::Back)
     _ => None
   }
 }
@@ -1293,23 +1587,23 @@ pub(all) enum GPUBlendFactor {
 /// Convert to string value
 pub fn GPUBlendFactor::to_string(self : GPUBlendFactor) -> String {
   match self {
-    Zero => "zero"
-    One => "one"
-    Src => "src"
-    OneMinusSrc => "one-minus-src"
-    SrcAlpha => "src-alpha"
-    OneMinusSrcAlpha => "one-minus-src-alpha"
-    Dst => "dst"
-    OneMinusDst => "one-minus-dst"
-    DstAlpha => "dst-alpha"
-    OneMinusDstAlpha => "one-minus-dst-alpha"
-    SrcAlphaSaturated => "src-alpha-saturated"
-    Constant => "constant"
-    OneMinusConstant => "one-minus-constant"
-    Src1 => "src1"
-    OneMinusSrc1 => "one-minus-src1"
-    Src1Alpha => "src1-alpha"
-    OneMinusSrc1Alpha => "one-minus-src1-alpha"
+    GPUBlendFactor::Zero => "zero"
+    GPUBlendFactor::One => "one"
+    GPUBlendFactor::Src => "src"
+    GPUBlendFactor::OneMinusSrc => "one-minus-src"
+    GPUBlendFactor::SrcAlpha => "src-alpha"
+    GPUBlendFactor::OneMinusSrcAlpha => "one-minus-src-alpha"
+    GPUBlendFactor::Dst => "dst"
+    GPUBlendFactor::OneMinusDst => "one-minus-dst"
+    GPUBlendFactor::DstAlpha => "dst-alpha"
+    GPUBlendFactor::OneMinusDstAlpha => "one-minus-dst-alpha"
+    GPUBlendFactor::SrcAlphaSaturated => "src-alpha-saturated"
+    GPUBlendFactor::Constant => "constant"
+    GPUBlendFactor::OneMinusConstant => "one-minus-constant"
+    GPUBlendFactor::Src1 => "src1"
+    GPUBlendFactor::OneMinusSrc1 => "one-minus-src1"
+    GPUBlendFactor::Src1Alpha => "src1-alpha"
+    GPUBlendFactor::OneMinusSrc1Alpha => "one-minus-src1-alpha"
   }
 }
 
@@ -1317,23 +1611,23 @@ pub fn GPUBlendFactor::to_string(self : GPUBlendFactor) -> String {
 /// Parse from string value
 pub fn GPUBlendFactor::from_string(s : String) -> GPUBlendFactor? {
   match s {
-    "zero" => Some(Zero)
-    "one" => Some(One)
-    "src" => Some(Src)
-    "one-minus-src" => Some(OneMinusSrc)
-    "src-alpha" => Some(SrcAlpha)
-    "one-minus-src-alpha" => Some(OneMinusSrcAlpha)
-    "dst" => Some(Dst)
-    "one-minus-dst" => Some(OneMinusDst)
-    "dst-alpha" => Some(DstAlpha)
-    "one-minus-dst-alpha" => Some(OneMinusDstAlpha)
-    "src-alpha-saturated" => Some(SrcAlphaSaturated)
-    "constant" => Some(Constant)
-    "one-minus-constant" => Some(OneMinusConstant)
-    "src1" => Some(Src1)
-    "one-minus-src1" => Some(OneMinusSrc1)
-    "src1-alpha" => Some(Src1Alpha)
-    "one-minus-src1-alpha" => Some(OneMinusSrc1Alpha)
+    "zero" => Some(GPUBlendFactor::Zero)
+    "one" => Some(GPUBlendFactor::One)
+    "src" => Some(GPUBlendFactor::Src)
+    "one-minus-src" => Some(GPUBlendFactor::OneMinusSrc)
+    "src-alpha" => Some(GPUBlendFactor::SrcAlpha)
+    "one-minus-src-alpha" => Some(GPUBlendFactor::OneMinusSrcAlpha)
+    "dst" => Some(GPUBlendFactor::Dst)
+    "one-minus-dst" => Some(GPUBlendFactor::OneMinusDst)
+    "dst-alpha" => Some(GPUBlendFactor::DstAlpha)
+    "one-minus-dst-alpha" => Some(GPUBlendFactor::OneMinusDstAlpha)
+    "src-alpha-saturated" => Some(GPUBlendFactor::SrcAlphaSaturated)
+    "constant" => Some(GPUBlendFactor::Constant)
+    "one-minus-constant" => Some(GPUBlendFactor::OneMinusConstant)
+    "src1" => Some(GPUBlendFactor::Src1)
+    "one-minus-src1" => Some(GPUBlendFactor::OneMinusSrc1)
+    "src1-alpha" => Some(GPUBlendFactor::Src1Alpha)
+    "one-minus-src1-alpha" => Some(GPUBlendFactor::OneMinusSrc1Alpha)
     _ => None
   }
 }
@@ -1352,11 +1646,11 @@ pub(all) enum GPUBlendOperation {
 /// Convert to string value
 pub fn GPUBlendOperation::to_string(self : GPUBlendOperation) -> String {
   match self {
-    Add => "add"
-    Subtract => "subtract"
-    ReverseSubtract => "reverse-subtract"
-    Min => "min"
-    Max => "max"
+    GPUBlendOperation::Add => "add"
+    GPUBlendOperation::Subtract => "subtract"
+    GPUBlendOperation::ReverseSubtract => "reverse-subtract"
+    GPUBlendOperation::Min => "min"
+    GPUBlendOperation::Max => "max"
   }
 }
 
@@ -1364,11 +1658,11 @@ pub fn GPUBlendOperation::to_string(self : GPUBlendOperation) -> String {
 /// Parse from string value
 pub fn GPUBlendOperation::from_string(s : String) -> GPUBlendOperation? {
   match s {
-    "add" => Some(Add)
-    "subtract" => Some(Subtract)
-    "reverse-subtract" => Some(ReverseSubtract)
-    "min" => Some(Min)
-    "max" => Some(Max)
+    "add" => Some(GPUBlendOperation::Add)
+    "subtract" => Some(GPUBlendOperation::Subtract)
+    "reverse-subtract" => Some(GPUBlendOperation::ReverseSubtract)
+    "min" => Some(GPUBlendOperation::Min)
+    "max" => Some(GPUBlendOperation::Max)
     _ => None
   }
 }
@@ -1390,14 +1684,14 @@ pub(all) enum GPUStencilOperation {
 /// Convert to string value
 pub fn GPUStencilOperation::to_string(self : GPUStencilOperation) -> String {
   match self {
-    Keep => "keep"
-    Zero => "zero"
-    Replace => "replace"
-    Invert => "invert"
-    IncrementClamp => "increment-clamp"
-    DecrementClamp => "decrement-clamp"
-    IncrementWrap => "increment-wrap"
-    DecrementWrap => "decrement-wrap"
+    GPUStencilOperation::Keep => "keep"
+    GPUStencilOperation::Zero => "zero"
+    GPUStencilOperation::Replace => "replace"
+    GPUStencilOperation::Invert => "invert"
+    GPUStencilOperation::IncrementClamp => "increment-clamp"
+    GPUStencilOperation::DecrementClamp => "decrement-clamp"
+    GPUStencilOperation::IncrementWrap => "increment-wrap"
+    GPUStencilOperation::DecrementWrap => "decrement-wrap"
   }
 }
 
@@ -1405,14 +1699,14 @@ pub fn GPUStencilOperation::to_string(self : GPUStencilOperation) -> String {
 /// Parse from string value
 pub fn GPUStencilOperation::from_string(s : String) -> GPUStencilOperation? {
   match s {
-    "keep" => Some(Keep)
-    "zero" => Some(Zero)
-    "replace" => Some(Replace)
-    "invert" => Some(Invert)
-    "increment-clamp" => Some(IncrementClamp)
-    "decrement-clamp" => Some(DecrementClamp)
-    "increment-wrap" => Some(IncrementWrap)
-    "decrement-wrap" => Some(DecrementWrap)
+    "keep" => Some(GPUStencilOperation::Keep)
+    "zero" => Some(GPUStencilOperation::Zero)
+    "replace" => Some(GPUStencilOperation::Replace)
+    "invert" => Some(GPUStencilOperation::Invert)
+    "increment-clamp" => Some(GPUStencilOperation::IncrementClamp)
+    "decrement-clamp" => Some(GPUStencilOperation::DecrementClamp)
+    "increment-wrap" => Some(GPUStencilOperation::IncrementWrap)
+    "decrement-wrap" => Some(GPUStencilOperation::DecrementWrap)
     _ => None
   }
 }
@@ -1428,8 +1722,8 @@ pub(all) enum GPUIndexFormat {
 /// Convert to string value
 pub fn GPUIndexFormat::to_string(self : GPUIndexFormat) -> String {
   match self {
-    Uint16 => "uint16"
-    Uint32 => "uint32"
+    GPUIndexFormat::Uint16 => "uint16"
+    GPUIndexFormat::Uint32 => "uint32"
   }
 }
 
@@ -1437,8 +1731,8 @@ pub fn GPUIndexFormat::to_string(self : GPUIndexFormat) -> String {
 /// Parse from string value
 pub fn GPUIndexFormat::from_string(s : String) -> GPUIndexFormat? {
   match s {
-    "uint16" => Some(Uint16)
-    "uint32" => Some(Uint32)
+    "uint16" => Some(GPUIndexFormat::Uint16)
+    "uint32" => Some(GPUIndexFormat::Uint32)
     _ => None
   }
 }
@@ -1493,47 +1787,47 @@ pub(all) enum GPUVertexFormat {
 /// Convert to string value
 pub fn GPUVertexFormat::to_string(self : GPUVertexFormat) -> String {
   match self {
-    Uint8 => "uint8"
-    Uint8x2 => "uint8x2"
-    Uint8x4 => "uint8x4"
-    Sint8 => "sint8"
-    Sint8x2 => "sint8x2"
-    Sint8x4 => "sint8x4"
-    Unorm8 => "unorm8"
-    Unorm8x2 => "unorm8x2"
-    Unorm8x4 => "unorm8x4"
-    Snorm8 => "snorm8"
-    Snorm8x2 => "snorm8x2"
-    Snorm8x4 => "snorm8x4"
-    Uint16 => "uint16"
-    Uint16x2 => "uint16x2"
-    Uint16x4 => "uint16x4"
-    Sint16 => "sint16"
-    Sint16x2 => "sint16x2"
-    Sint16x4 => "sint16x4"
-    Unorm16 => "unorm16"
-    Unorm16x2 => "unorm16x2"
-    Unorm16x4 => "unorm16x4"
-    Snorm16 => "snorm16"
-    Snorm16x2 => "snorm16x2"
-    Snorm16x4 => "snorm16x4"
-    Float16 => "float16"
-    Float16x2 => "float16x2"
-    Float16x4 => "float16x4"
-    Float32 => "float32"
-    Float32x2 => "float32x2"
-    Float32x3 => "float32x3"
-    Float32x4 => "float32x4"
-    Uint32 => "uint32"
-    Uint32x2 => "uint32x2"
-    Uint32x3 => "uint32x3"
-    Uint32x4 => "uint32x4"
-    Sint32 => "sint32"
-    Sint32x2 => "sint32x2"
-    Sint32x3 => "sint32x3"
-    Sint32x4 => "sint32x4"
-    Unorm1010102 => "unorm10-10-10-2"
-    Unorm8x4Bgra => "unorm8x4-bgra"
+    GPUVertexFormat::Uint8 => "uint8"
+    GPUVertexFormat::Uint8x2 => "uint8x2"
+    GPUVertexFormat::Uint8x4 => "uint8x4"
+    GPUVertexFormat::Sint8 => "sint8"
+    GPUVertexFormat::Sint8x2 => "sint8x2"
+    GPUVertexFormat::Sint8x4 => "sint8x4"
+    GPUVertexFormat::Unorm8 => "unorm8"
+    GPUVertexFormat::Unorm8x2 => "unorm8x2"
+    GPUVertexFormat::Unorm8x4 => "unorm8x4"
+    GPUVertexFormat::Snorm8 => "snorm8"
+    GPUVertexFormat::Snorm8x2 => "snorm8x2"
+    GPUVertexFormat::Snorm8x4 => "snorm8x4"
+    GPUVertexFormat::Uint16 => "uint16"
+    GPUVertexFormat::Uint16x2 => "uint16x2"
+    GPUVertexFormat::Uint16x4 => "uint16x4"
+    GPUVertexFormat::Sint16 => "sint16"
+    GPUVertexFormat::Sint16x2 => "sint16x2"
+    GPUVertexFormat::Sint16x4 => "sint16x4"
+    GPUVertexFormat::Unorm16 => "unorm16"
+    GPUVertexFormat::Unorm16x2 => "unorm16x2"
+    GPUVertexFormat::Unorm16x4 => "unorm16x4"
+    GPUVertexFormat::Snorm16 => "snorm16"
+    GPUVertexFormat::Snorm16x2 => "snorm16x2"
+    GPUVertexFormat::Snorm16x4 => "snorm16x4"
+    GPUVertexFormat::Float16 => "float16"
+    GPUVertexFormat::Float16x2 => "float16x2"
+    GPUVertexFormat::Float16x4 => "float16x4"
+    GPUVertexFormat::Float32 => "float32"
+    GPUVertexFormat::Float32x2 => "float32x2"
+    GPUVertexFormat::Float32x3 => "float32x3"
+    GPUVertexFormat::Float32x4 => "float32x4"
+    GPUVertexFormat::Uint32 => "uint32"
+    GPUVertexFormat::Uint32x2 => "uint32x2"
+    GPUVertexFormat::Uint32x3 => "uint32x3"
+    GPUVertexFormat::Uint32x4 => "uint32x4"
+    GPUVertexFormat::Sint32 => "sint32"
+    GPUVertexFormat::Sint32x2 => "sint32x2"
+    GPUVertexFormat::Sint32x3 => "sint32x3"
+    GPUVertexFormat::Sint32x4 => "sint32x4"
+    GPUVertexFormat::Unorm1010102 => "unorm10-10-10-2"
+    GPUVertexFormat::Unorm8x4Bgra => "unorm8x4-bgra"
   }
 }
 
@@ -1541,47 +1835,47 @@ pub fn GPUVertexFormat::to_string(self : GPUVertexFormat) -> String {
 /// Parse from string value
 pub fn GPUVertexFormat::from_string(s : String) -> GPUVertexFormat? {
   match s {
-    "uint8" => Some(Uint8)
-    "uint8x2" => Some(Uint8x2)
-    "uint8x4" => Some(Uint8x4)
-    "sint8" => Some(Sint8)
-    "sint8x2" => Some(Sint8x2)
-    "sint8x4" => Some(Sint8x4)
-    "unorm8" => Some(Unorm8)
-    "unorm8x2" => Some(Unorm8x2)
-    "unorm8x4" => Some(Unorm8x4)
-    "snorm8" => Some(Snorm8)
-    "snorm8x2" => Some(Snorm8x2)
-    "snorm8x4" => Some(Snorm8x4)
-    "uint16" => Some(Uint16)
-    "uint16x2" => Some(Uint16x2)
-    "uint16x4" => Some(Uint16x4)
-    "sint16" => Some(Sint16)
-    "sint16x2" => Some(Sint16x2)
-    "sint16x4" => Some(Sint16x4)
-    "unorm16" => Some(Unorm16)
-    "unorm16x2" => Some(Unorm16x2)
-    "unorm16x4" => Some(Unorm16x4)
-    "snorm16" => Some(Snorm16)
-    "snorm16x2" => Some(Snorm16x2)
-    "snorm16x4" => Some(Snorm16x4)
-    "float16" => Some(Float16)
-    "float16x2" => Some(Float16x2)
-    "float16x4" => Some(Float16x4)
-    "float32" => Some(Float32)
-    "float32x2" => Some(Float32x2)
-    "float32x3" => Some(Float32x3)
-    "float32x4" => Some(Float32x4)
-    "uint32" => Some(Uint32)
-    "uint32x2" => Some(Uint32x2)
-    "uint32x3" => Some(Uint32x3)
-    "uint32x4" => Some(Uint32x4)
-    "sint32" => Some(Sint32)
-    "sint32x2" => Some(Sint32x2)
-    "sint32x3" => Some(Sint32x3)
-    "sint32x4" => Some(Sint32x4)
-    "unorm10-10-10-2" => Some(Unorm1010102)
-    "unorm8x4-bgra" => Some(Unorm8x4Bgra)
+    "uint8" => Some(GPUVertexFormat::Uint8)
+    "uint8x2" => Some(GPUVertexFormat::Uint8x2)
+    "uint8x4" => Some(GPUVertexFormat::Uint8x4)
+    "sint8" => Some(GPUVertexFormat::Sint8)
+    "sint8x2" => Some(GPUVertexFormat::Sint8x2)
+    "sint8x4" => Some(GPUVertexFormat::Sint8x4)
+    "unorm8" => Some(GPUVertexFormat::Unorm8)
+    "unorm8x2" => Some(GPUVertexFormat::Unorm8x2)
+    "unorm8x4" => Some(GPUVertexFormat::Unorm8x4)
+    "snorm8" => Some(GPUVertexFormat::Snorm8)
+    "snorm8x2" => Some(GPUVertexFormat::Snorm8x2)
+    "snorm8x4" => Some(GPUVertexFormat::Snorm8x4)
+    "uint16" => Some(GPUVertexFormat::Uint16)
+    "uint16x2" => Some(GPUVertexFormat::Uint16x2)
+    "uint16x4" => Some(GPUVertexFormat::Uint16x4)
+    "sint16" => Some(GPUVertexFormat::Sint16)
+    "sint16x2" => Some(GPUVertexFormat::Sint16x2)
+    "sint16x4" => Some(GPUVertexFormat::Sint16x4)
+    "unorm16" => Some(GPUVertexFormat::Unorm16)
+    "unorm16x2" => Some(GPUVertexFormat::Unorm16x2)
+    "unorm16x4" => Some(GPUVertexFormat::Unorm16x4)
+    "snorm16" => Some(GPUVertexFormat::Snorm16)
+    "snorm16x2" => Some(GPUVertexFormat::Snorm16x2)
+    "snorm16x4" => Some(GPUVertexFormat::Snorm16x4)
+    "float16" => Some(GPUVertexFormat::Float16)
+    "float16x2" => Some(GPUVertexFormat::Float16x2)
+    "float16x4" => Some(GPUVertexFormat::Float16x4)
+    "float32" => Some(GPUVertexFormat::Float32)
+    "float32x2" => Some(GPUVertexFormat::Float32x2)
+    "float32x3" => Some(GPUVertexFormat::Float32x3)
+    "float32x4" => Some(GPUVertexFormat::Float32x4)
+    "uint32" => Some(GPUVertexFormat::Uint32)
+    "uint32x2" => Some(GPUVertexFormat::Uint32x2)
+    "uint32x3" => Some(GPUVertexFormat::Uint32x3)
+    "uint32x4" => Some(GPUVertexFormat::Uint32x4)
+    "sint32" => Some(GPUVertexFormat::Sint32)
+    "sint32x2" => Some(GPUVertexFormat::Sint32x2)
+    "sint32x3" => Some(GPUVertexFormat::Sint32x3)
+    "sint32x4" => Some(GPUVertexFormat::Sint32x4)
+    "unorm10-10-10-2" => Some(GPUVertexFormat::Unorm1010102)
+    "unorm8x4-bgra" => Some(GPUVertexFormat::Unorm8x4Bgra)
     _ => None
   }
 }
@@ -1597,8 +1891,8 @@ pub(all) enum GPUVertexStepMode {
 /// Convert to string value
 pub fn GPUVertexStepMode::to_string(self : GPUVertexStepMode) -> String {
   match self {
-    Vertex => "vertex"
-    Instance => "instance"
+    GPUVertexStepMode::Vertex => "vertex"
+    GPUVertexStepMode::Instance => "instance"
   }
 }
 
@@ -1606,8 +1900,8 @@ pub fn GPUVertexStepMode::to_string(self : GPUVertexStepMode) -> String {
 /// Parse from string value
 pub fn GPUVertexStepMode::from_string(s : String) -> GPUVertexStepMode? {
   match s {
-    "vertex" => Some(Vertex)
-    "instance" => Some(Instance)
+    "vertex" => Some(GPUVertexStepMode::Vertex)
+    "instance" => Some(GPUVertexStepMode::Instance)
     _ => None
   }
 }
@@ -1623,8 +1917,8 @@ pub(all) enum GPULoadOp {
 /// Convert to string value
 pub fn GPULoadOp::to_string(self : GPULoadOp) -> String {
   match self {
-    Load => "load"
-    Clear => "clear"
+    GPULoadOp::Load => "load"
+    GPULoadOp::Clear => "clear"
   }
 }
 
@@ -1632,8 +1926,8 @@ pub fn GPULoadOp::to_string(self : GPULoadOp) -> String {
 /// Parse from string value
 pub fn GPULoadOp::from_string(s : String) -> GPULoadOp? {
   match s {
-    "load" => Some(Load)
-    "clear" => Some(Clear)
+    "load" => Some(GPULoadOp::Load)
+    "clear" => Some(GPULoadOp::Clear)
     _ => None
   }
 }
@@ -1649,8 +1943,8 @@ pub(all) enum GPUStoreOp {
 /// Convert to string value
 pub fn GPUStoreOp::to_string(self : GPUStoreOp) -> String {
   match self {
-    Store => "store"
-    Discard => "discard"
+    GPUStoreOp::Store => "store"
+    GPUStoreOp::Discard => "discard"
   }
 }
 
@@ -1658,8 +1952,8 @@ pub fn GPUStoreOp::to_string(self : GPUStoreOp) -> String {
 /// Parse from string value
 pub fn GPUStoreOp::from_string(s : String) -> GPUStoreOp? {
   match s {
-    "store" => Some(Store)
-    "discard" => Some(Discard)
+    "store" => Some(GPUStoreOp::Store)
+    "discard" => Some(GPUStoreOp::Discard)
     _ => None
   }
 }
@@ -1675,8 +1969,8 @@ pub(all) enum GPUQueryType {
 /// Convert to string value
 pub fn GPUQueryType::to_string(self : GPUQueryType) -> String {
   match self {
-    Occlusion => "occlusion"
-    Timestamp => "timestamp"
+    GPUQueryType::Occlusion => "occlusion"
+    GPUQueryType::Timestamp => "timestamp"
   }
 }
 
@@ -1684,8 +1978,8 @@ pub fn GPUQueryType::to_string(self : GPUQueryType) -> String {
 /// Parse from string value
 pub fn GPUQueryType::from_string(s : String) -> GPUQueryType? {
   match s {
-    "occlusion" => Some(Occlusion)
-    "timestamp" => Some(Timestamp)
+    "occlusion" => Some(GPUQueryType::Occlusion)
+    "timestamp" => Some(GPUQueryType::Timestamp)
     _ => None
   }
 }
@@ -1701,8 +1995,8 @@ pub(all) enum GPUCanvasAlphaMode {
 /// Convert to string value
 pub fn GPUCanvasAlphaMode::to_string(self : GPUCanvasAlphaMode) -> String {
   match self {
-    Opaque => "opaque"
-    Premultiplied => "premultiplied"
+    GPUCanvasAlphaMode::Opaque => "opaque"
+    GPUCanvasAlphaMode::Premultiplied => "premultiplied"
   }
 }
 
@@ -1710,8 +2004,8 @@ pub fn GPUCanvasAlphaMode::to_string(self : GPUCanvasAlphaMode) -> String {
 /// Parse from string value
 pub fn GPUCanvasAlphaMode::from_string(s : String) -> GPUCanvasAlphaMode? {
   match s {
-    "opaque" => Some(Opaque)
-    "premultiplied" => Some(Premultiplied)
+    "opaque" => Some(GPUCanvasAlphaMode::Opaque)
+    "premultiplied" => Some(GPUCanvasAlphaMode::Premultiplied)
     _ => None
   }
 }
@@ -1729,8 +2023,8 @@ pub fn GPUCanvasToneMappingMode::to_string(
   self : GPUCanvasToneMappingMode,
 ) -> String {
   match self {
-    Standard => "standard"
-    Extended => "extended"
+    GPUCanvasToneMappingMode::Standard => "standard"
+    GPUCanvasToneMappingMode::Extended => "extended"
   }
 }
 
@@ -1740,8 +2034,8 @@ pub fn GPUCanvasToneMappingMode::from_string(
   s : String,
 ) -> GPUCanvasToneMappingMode? {
   match s {
-    "standard" => Some(Standard)
-    "extended" => Some(Extended)
+    "standard" => Some(GPUCanvasToneMappingMode::Standard)
+    "extended" => Some(GPUCanvasToneMappingMode::Extended)
     _ => None
   }
 }
@@ -1757,8 +2051,8 @@ pub(all) enum GPUDeviceLostReason {
 /// Convert to string value
 pub fn GPUDeviceLostReason::to_string(self : GPUDeviceLostReason) -> String {
   match self {
-    Unknown => "unknown"
-    Destroyed => "destroyed"
+    GPUDeviceLostReason::Unknown => "unknown"
+    GPUDeviceLostReason::Destroyed => "destroyed"
   }
 }
 
@@ -1766,8 +2060,8 @@ pub fn GPUDeviceLostReason::to_string(self : GPUDeviceLostReason) -> String {
 /// Parse from string value
 pub fn GPUDeviceLostReason::from_string(s : String) -> GPUDeviceLostReason? {
   match s {
-    "unknown" => Some(Unknown)
-    "destroyed" => Some(Destroyed)
+    "unknown" => Some(GPUDeviceLostReason::Unknown)
+    "destroyed" => Some(GPUDeviceLostReason::Destroyed)
     _ => None
   }
 }
@@ -1784,9 +2078,9 @@ pub(all) enum GPUErrorFilter {
 /// Convert to string value
 pub fn GPUErrorFilter::to_string(self : GPUErrorFilter) -> String {
   match self {
-    Validation => "validation"
-    OutOfMemory => "out-of-memory"
-    Internal => "internal"
+    GPUErrorFilter::Validation => "validation"
+    GPUErrorFilter::OutOfMemory => "out-of-memory"
+    GPUErrorFilter::Internal => "internal"
   }
 }
 
@@ -1794,9 +2088,9 @@ pub fn GPUErrorFilter::to_string(self : GPUErrorFilter) -> String {
 /// Parse from string value
 pub fn GPUErrorFilter::from_string(s : String) -> GPUErrorFilter? {
   match s {
-    "validation" => Some(Validation)
-    "out-of-memory" => Some(OutOfMemory)
-    "internal" => Some(Internal)
+    "validation" => Some(GPUErrorFilter::Validation)
+    "out-of-memory" => Some(GPUErrorFilter::OutOfMemory)
+    "internal" => Some(GPUErrorFilter::Internal)
     _ => None
   }
 }
@@ -4316,7 +4610,7 @@ pub extern "js" fn GPUTexture::get_usage(self : GPUTexture) -> GPUFlagsConstant 
 ///|
 pub extern "js" fn GPUTexture::get_texture_binding_view_dimension(
   self : GPUTexture,
-) -> JsValue =
+) -> GPUTextureViewDimensionOrVoid =
   #| (self) => self.textureBindingViewDimension
 
 ///|
@@ -5467,7 +5761,7 @@ pub extern "js" fn GPUCanvasContext::to_js_value(
 ///|
 pub extern "js" fn GPUCanvasContext::get_canvas(
   self : GPUCanvasContext,
-) -> JsValue =
+) -> HTMLCanvasElementOrOffscreenCanvas =
   #| (self) => self.canvas
 
 ///|

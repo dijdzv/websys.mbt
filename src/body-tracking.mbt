@@ -93,91 +93,114 @@ pub(all) enum XRBodyJoint {
 /// Convert to string value
 pub fn XRBodyJoint::to_string(self : XRBodyJoint) -> String {
   match self {
-    Hips => "hips"
-    SpineLower => "spine-lower"
-    SpineMiddle => "spine-middle"
-    SpineUpper => "spine-upper"
-    Chest => "chest"
-    Neck => "neck"
-    Head => "head"
-    LeftShoulder => "left-shoulder"
-    LeftScapula => "left-scapula"
-    LeftArmUpper => "left-arm-upper"
-    LeftArmLower => "left-arm-lower"
-    LeftHandWristTwist => "left-hand-wrist-twist"
-    RightShoulder => "right-shoulder"
-    RightScapula => "right-scapula"
-    RightArmUpper => "right-arm-upper"
-    RightArmLower => "right-arm-lower"
-    RightHandWristTwist => "right-hand-wrist-twist"
-    LeftHandPalm => "left-hand-palm"
-    LeftHandWrist => "left-hand-wrist"
-    LeftHandThumbMetacarpal => "left-hand-thumb-metacarpal"
-    LeftHandThumbPhalanxProximal => "left-hand-thumb-phalanx-proximal"
-    LeftHandThumbPhalanxDistal => "left-hand-thumb-phalanx-distal"
-    LeftHandThumbTip => "left-hand-thumb-tip"
-    LeftHandIndexMetacarpal => "left-hand-index-metacarpal"
-    LeftHandIndexPhalanxProximal => "left-hand-index-phalanx-proximal"
-    LeftHandIndexPhalanxIntermediate => "left-hand-index-phalanx-intermediate"
-    LeftHandIndexPhalanxDistal => "left-hand-index-phalanx-distal"
-    LeftHandIndexTip => "left-hand-index-tip"
-    LeftHandMiddlePhalanxMetacarpal => "left-hand-middle-phalanx-metacarpal"
-    LeftHandMiddlePhalanxProximal => "left-hand-middle-phalanx-proximal"
-    LeftHandMiddlePhalanxIntermediate => "left-hand-middle-phalanx-intermediate"
-    LeftHandMiddlePhalanxDistal => "left-hand-middle-phalanx-distal"
-    LeftHandMiddleTip => "left-hand-middle-tip"
-    LeftHandRingMetacarpal => "left-hand-ring-metacarpal"
-    LeftHandRingPhalanxProximal => "left-hand-ring-phalanx-proximal"
-    LeftHandRingPhalanxIntermediate => "left-hand-ring-phalanx-intermediate"
-    LeftHandRingPhalanxDistal => "left-hand-ring-phalanx-distal"
-    LeftHandRingTip => "left-hand-ring-tip"
-    LeftHandLittleMetacarpal => "left-hand-little-metacarpal"
-    LeftHandLittlePhalanxProximal => "left-hand-little-phalanx-proximal"
-    LeftHandLittlePhalanxIntermediate => "left-hand-little-phalanx-intermediate"
-    LeftHandLittlePhalanxDistal => "left-hand-little-phalanx-distal"
-    LeftHandLittleTip => "left-hand-little-tip"
-    RightHandPalm => "right-hand-palm"
-    RightHandWrist => "right-hand-wrist"
-    RightHandThumbMetacarpal => "right-hand-thumb-metacarpal"
-    RightHandThumbPhalanxProximal => "right-hand-thumb-phalanx-proximal"
-    RightHandThumbPhalanxDistal => "right-hand-thumb-phalanx-distal"
-    RightHandThumbTip => "right-hand-thumb-tip"
-    RightHandIndexMetacarpal => "right-hand-index-metacarpal"
-    RightHandIndexPhalanxProximal => "right-hand-index-phalanx-proximal"
-    RightHandIndexPhalanxIntermediate => "right-hand-index-phalanx-intermediate"
-    RightHandIndexPhalanxDistal => "right-hand-index-phalanx-distal"
-    RightHandIndexTip => "right-hand-index-tip"
-    RightHandMiddleMetacarpal => "right-hand-middle-metacarpal"
-    RightHandMiddlePhalanxProximal => "right-hand-middle-phalanx-proximal"
-    RightHandMiddlePhalanxIntermediate =>
+    XRBodyJoint::Hips => "hips"
+    XRBodyJoint::SpineLower => "spine-lower"
+    XRBodyJoint::SpineMiddle => "spine-middle"
+    XRBodyJoint::SpineUpper => "spine-upper"
+    XRBodyJoint::Chest => "chest"
+    XRBodyJoint::Neck => "neck"
+    XRBodyJoint::Head => "head"
+    XRBodyJoint::LeftShoulder => "left-shoulder"
+    XRBodyJoint::LeftScapula => "left-scapula"
+    XRBodyJoint::LeftArmUpper => "left-arm-upper"
+    XRBodyJoint::LeftArmLower => "left-arm-lower"
+    XRBodyJoint::LeftHandWristTwist => "left-hand-wrist-twist"
+    XRBodyJoint::RightShoulder => "right-shoulder"
+    XRBodyJoint::RightScapula => "right-scapula"
+    XRBodyJoint::RightArmUpper => "right-arm-upper"
+    XRBodyJoint::RightArmLower => "right-arm-lower"
+    XRBodyJoint::RightHandWristTwist => "right-hand-wrist-twist"
+    XRBodyJoint::LeftHandPalm => "left-hand-palm"
+    XRBodyJoint::LeftHandWrist => "left-hand-wrist"
+    XRBodyJoint::LeftHandThumbMetacarpal => "left-hand-thumb-metacarpal"
+    XRBodyJoint::LeftHandThumbPhalanxProximal =>
+      "left-hand-thumb-phalanx-proximal"
+    XRBodyJoint::LeftHandThumbPhalanxDistal => "left-hand-thumb-phalanx-distal"
+    XRBodyJoint::LeftHandThumbTip => "left-hand-thumb-tip"
+    XRBodyJoint::LeftHandIndexMetacarpal => "left-hand-index-metacarpal"
+    XRBodyJoint::LeftHandIndexPhalanxProximal =>
+      "left-hand-index-phalanx-proximal"
+    XRBodyJoint::LeftHandIndexPhalanxIntermediate =>
+      "left-hand-index-phalanx-intermediate"
+    XRBodyJoint::LeftHandIndexPhalanxDistal => "left-hand-index-phalanx-distal"
+    XRBodyJoint::LeftHandIndexTip => "left-hand-index-tip"
+    XRBodyJoint::LeftHandMiddlePhalanxMetacarpal =>
+      "left-hand-middle-phalanx-metacarpal"
+    XRBodyJoint::LeftHandMiddlePhalanxProximal =>
+      "left-hand-middle-phalanx-proximal"
+    XRBodyJoint::LeftHandMiddlePhalanxIntermediate =>
+      "left-hand-middle-phalanx-intermediate"
+    XRBodyJoint::LeftHandMiddlePhalanxDistal =>
+      "left-hand-middle-phalanx-distal"
+    XRBodyJoint::LeftHandMiddleTip => "left-hand-middle-tip"
+    XRBodyJoint::LeftHandRingMetacarpal => "left-hand-ring-metacarpal"
+    XRBodyJoint::LeftHandRingPhalanxProximal =>
+      "left-hand-ring-phalanx-proximal"
+    XRBodyJoint::LeftHandRingPhalanxIntermediate =>
+      "left-hand-ring-phalanx-intermediate"
+    XRBodyJoint::LeftHandRingPhalanxDistal => "left-hand-ring-phalanx-distal"
+    XRBodyJoint::LeftHandRingTip => "left-hand-ring-tip"
+    XRBodyJoint::LeftHandLittleMetacarpal => "left-hand-little-metacarpal"
+    XRBodyJoint::LeftHandLittlePhalanxProximal =>
+      "left-hand-little-phalanx-proximal"
+    XRBodyJoint::LeftHandLittlePhalanxIntermediate =>
+      "left-hand-little-phalanx-intermediate"
+    XRBodyJoint::LeftHandLittlePhalanxDistal =>
+      "left-hand-little-phalanx-distal"
+    XRBodyJoint::LeftHandLittleTip => "left-hand-little-tip"
+    XRBodyJoint::RightHandPalm => "right-hand-palm"
+    XRBodyJoint::RightHandWrist => "right-hand-wrist"
+    XRBodyJoint::RightHandThumbMetacarpal => "right-hand-thumb-metacarpal"
+    XRBodyJoint::RightHandThumbPhalanxProximal =>
+      "right-hand-thumb-phalanx-proximal"
+    XRBodyJoint::RightHandThumbPhalanxDistal =>
+      "right-hand-thumb-phalanx-distal"
+    XRBodyJoint::RightHandThumbTip => "right-hand-thumb-tip"
+    XRBodyJoint::RightHandIndexMetacarpal => "right-hand-index-metacarpal"
+    XRBodyJoint::RightHandIndexPhalanxProximal =>
+      "right-hand-index-phalanx-proximal"
+    XRBodyJoint::RightHandIndexPhalanxIntermediate =>
+      "right-hand-index-phalanx-intermediate"
+    XRBodyJoint::RightHandIndexPhalanxDistal =>
+      "right-hand-index-phalanx-distal"
+    XRBodyJoint::RightHandIndexTip => "right-hand-index-tip"
+    XRBodyJoint::RightHandMiddleMetacarpal => "right-hand-middle-metacarpal"
+    XRBodyJoint::RightHandMiddlePhalanxProximal =>
+      "right-hand-middle-phalanx-proximal"
+    XRBodyJoint::RightHandMiddlePhalanxIntermediate =>
       "right-hand-middle-phalanx-intermediate"
-    RightHandMiddlePhalanxDistal => "right-hand-middle-phalanx-distal"
-    RightHandMiddleTip => "right-hand-middle-tip"
-    RightHandRingMetacarpal => "right-hand-ring-metacarpal"
-    RightHandRingPhalanxProximal => "right-hand-ring-phalanx-proximal"
-    RightHandRingPhalanxIntermediate => "right-hand-ring-phalanx-intermediate"
-    RightHandRingPhalanxDistal => "right-hand-ring-phalanx-distal"
-    RightHandRingTip => "right-hand-ring-tip"
-    RightHandLittleMetacarpal => "right-hand-little-metacarpal"
-    RightHandLittlePhalanxProximal => "right-hand-little-phalanx-proximal"
-    RightHandLittlePhalanxIntermediate =>
+    XRBodyJoint::RightHandMiddlePhalanxDistal =>
+      "right-hand-middle-phalanx-distal"
+    XRBodyJoint::RightHandMiddleTip => "right-hand-middle-tip"
+    XRBodyJoint::RightHandRingMetacarpal => "right-hand-ring-metacarpal"
+    XRBodyJoint::RightHandRingPhalanxProximal =>
+      "right-hand-ring-phalanx-proximal"
+    XRBodyJoint::RightHandRingPhalanxIntermediate =>
+      "right-hand-ring-phalanx-intermediate"
+    XRBodyJoint::RightHandRingPhalanxDistal => "right-hand-ring-phalanx-distal"
+    XRBodyJoint::RightHandRingTip => "right-hand-ring-tip"
+    XRBodyJoint::RightHandLittleMetacarpal => "right-hand-little-metacarpal"
+    XRBodyJoint::RightHandLittlePhalanxProximal =>
+      "right-hand-little-phalanx-proximal"
+    XRBodyJoint::RightHandLittlePhalanxIntermediate =>
       "right-hand-little-phalanx-intermediate"
-    RightHandLittlePhalanxDistal => "right-hand-little-phalanx-distal"
-    RightHandLittleTip => "right-hand-little-tip"
-    LeftUpperLeg => "left-upper-leg"
-    LeftLowerLeg => "left-lower-leg"
-    LeftFootAnkleTwist => "left-foot-ankle-twist"
-    LeftFootAnkle => "left-foot-ankle"
-    LeftFootSubtalar => "left-foot-subtalar"
-    LeftFootTransverse => "left-foot-transverse"
-    LeftFootBall => "left-foot-ball"
-    RightUpperLeg => "right-upper-leg"
-    RightLowerLeg => "right-lower-leg"
-    RightFootAnkleTwist => "right-foot-ankle-twist"
-    RightFootAnkle => "right-foot-ankle"
-    RightFootSubtalar => "right-foot-subtalar"
-    RightFootTransverse => "right-foot-transverse"
-    RightFootBall => "right-foot-ball"
+    XRBodyJoint::RightHandLittlePhalanxDistal =>
+      "right-hand-little-phalanx-distal"
+    XRBodyJoint::RightHandLittleTip => "right-hand-little-tip"
+    XRBodyJoint::LeftUpperLeg => "left-upper-leg"
+    XRBodyJoint::LeftLowerLeg => "left-lower-leg"
+    XRBodyJoint::LeftFootAnkleTwist => "left-foot-ankle-twist"
+    XRBodyJoint::LeftFootAnkle => "left-foot-ankle"
+    XRBodyJoint::LeftFootSubtalar => "left-foot-subtalar"
+    XRBodyJoint::LeftFootTransverse => "left-foot-transverse"
+    XRBodyJoint::LeftFootBall => "left-foot-ball"
+    XRBodyJoint::RightUpperLeg => "right-upper-leg"
+    XRBodyJoint::RightLowerLeg => "right-lower-leg"
+    XRBodyJoint::RightFootAnkleTwist => "right-foot-ankle-twist"
+    XRBodyJoint::RightFootAnkle => "right-foot-ankle"
+    XRBodyJoint::RightFootSubtalar => "right-foot-subtalar"
+    XRBodyJoint::RightFootTransverse => "right-foot-transverse"
+    XRBodyJoint::RightFootBall => "right-foot-ball"
   }
 }
 
@@ -185,98 +208,120 @@ pub fn XRBodyJoint::to_string(self : XRBodyJoint) -> String {
 /// Parse from string value
 pub fn XRBodyJoint::from_string(s : String) -> XRBodyJoint? {
   match s {
-    "hips" => Some(Hips)
-    "spine-lower" => Some(SpineLower)
-    "spine-middle" => Some(SpineMiddle)
-    "spine-upper" => Some(SpineUpper)
-    "chest" => Some(Chest)
-    "neck" => Some(Neck)
-    "head" => Some(Head)
-    "left-shoulder" => Some(LeftShoulder)
-    "left-scapula" => Some(LeftScapula)
-    "left-arm-upper" => Some(LeftArmUpper)
-    "left-arm-lower" => Some(LeftArmLower)
-    "left-hand-wrist-twist" => Some(LeftHandWristTwist)
-    "right-shoulder" => Some(RightShoulder)
-    "right-scapula" => Some(RightScapula)
-    "right-arm-upper" => Some(RightArmUpper)
-    "right-arm-lower" => Some(RightArmLower)
-    "right-hand-wrist-twist" => Some(RightHandWristTwist)
-    "left-hand-palm" => Some(LeftHandPalm)
-    "left-hand-wrist" => Some(LeftHandWrist)
-    "left-hand-thumb-metacarpal" => Some(LeftHandThumbMetacarpal)
-    "left-hand-thumb-phalanx-proximal" => Some(LeftHandThumbPhalanxProximal)
-    "left-hand-thumb-phalanx-distal" => Some(LeftHandThumbPhalanxDistal)
-    "left-hand-thumb-tip" => Some(LeftHandThumbTip)
-    "left-hand-index-metacarpal" => Some(LeftHandIndexMetacarpal)
-    "left-hand-index-phalanx-proximal" => Some(LeftHandIndexPhalanxProximal)
+    "hips" => Some(XRBodyJoint::Hips)
+    "spine-lower" => Some(XRBodyJoint::SpineLower)
+    "spine-middle" => Some(XRBodyJoint::SpineMiddle)
+    "spine-upper" => Some(XRBodyJoint::SpineUpper)
+    "chest" => Some(XRBodyJoint::Chest)
+    "neck" => Some(XRBodyJoint::Neck)
+    "head" => Some(XRBodyJoint::Head)
+    "left-shoulder" => Some(XRBodyJoint::LeftShoulder)
+    "left-scapula" => Some(XRBodyJoint::LeftScapula)
+    "left-arm-upper" => Some(XRBodyJoint::LeftArmUpper)
+    "left-arm-lower" => Some(XRBodyJoint::LeftArmLower)
+    "left-hand-wrist-twist" => Some(XRBodyJoint::LeftHandWristTwist)
+    "right-shoulder" => Some(XRBodyJoint::RightShoulder)
+    "right-scapula" => Some(XRBodyJoint::RightScapula)
+    "right-arm-upper" => Some(XRBodyJoint::RightArmUpper)
+    "right-arm-lower" => Some(XRBodyJoint::RightArmLower)
+    "right-hand-wrist-twist" => Some(XRBodyJoint::RightHandWristTwist)
+    "left-hand-palm" => Some(XRBodyJoint::LeftHandPalm)
+    "left-hand-wrist" => Some(XRBodyJoint::LeftHandWrist)
+    "left-hand-thumb-metacarpal" => Some(XRBodyJoint::LeftHandThumbMetacarpal)
+    "left-hand-thumb-phalanx-proximal" =>
+      Some(XRBodyJoint::LeftHandThumbPhalanxProximal)
+    "left-hand-thumb-phalanx-distal" =>
+      Some(XRBodyJoint::LeftHandThumbPhalanxDistal)
+    "left-hand-thumb-tip" => Some(XRBodyJoint::LeftHandThumbTip)
+    "left-hand-index-metacarpal" => Some(XRBodyJoint::LeftHandIndexMetacarpal)
+    "left-hand-index-phalanx-proximal" =>
+      Some(XRBodyJoint::LeftHandIndexPhalanxProximal)
     "left-hand-index-phalanx-intermediate" =>
-      Some(LeftHandIndexPhalanxIntermediate)
-    "left-hand-index-phalanx-distal" => Some(LeftHandIndexPhalanxDistal)
-    "left-hand-index-tip" => Some(LeftHandIndexTip)
+      Some(XRBodyJoint::LeftHandIndexPhalanxIntermediate)
+    "left-hand-index-phalanx-distal" =>
+      Some(XRBodyJoint::LeftHandIndexPhalanxDistal)
+    "left-hand-index-tip" => Some(XRBodyJoint::LeftHandIndexTip)
     "left-hand-middle-phalanx-metacarpal" =>
-      Some(LeftHandMiddlePhalanxMetacarpal)
-    "left-hand-middle-phalanx-proximal" => Some(LeftHandMiddlePhalanxProximal)
+      Some(XRBodyJoint::LeftHandMiddlePhalanxMetacarpal)
+    "left-hand-middle-phalanx-proximal" =>
+      Some(XRBodyJoint::LeftHandMiddlePhalanxProximal)
     "left-hand-middle-phalanx-intermediate" =>
-      Some(LeftHandMiddlePhalanxIntermediate)
-    "left-hand-middle-phalanx-distal" => Some(LeftHandMiddlePhalanxDistal)
-    "left-hand-middle-tip" => Some(LeftHandMiddleTip)
-    "left-hand-ring-metacarpal" => Some(LeftHandRingMetacarpal)
-    "left-hand-ring-phalanx-proximal" => Some(LeftHandRingPhalanxProximal)
+      Some(XRBodyJoint::LeftHandMiddlePhalanxIntermediate)
+    "left-hand-middle-phalanx-distal" =>
+      Some(XRBodyJoint::LeftHandMiddlePhalanxDistal)
+    "left-hand-middle-tip" => Some(XRBodyJoint::LeftHandMiddleTip)
+    "left-hand-ring-metacarpal" => Some(XRBodyJoint::LeftHandRingMetacarpal)
+    "left-hand-ring-phalanx-proximal" =>
+      Some(XRBodyJoint::LeftHandRingPhalanxProximal)
     "left-hand-ring-phalanx-intermediate" =>
-      Some(LeftHandRingPhalanxIntermediate)
-    "left-hand-ring-phalanx-distal" => Some(LeftHandRingPhalanxDistal)
-    "left-hand-ring-tip" => Some(LeftHandRingTip)
-    "left-hand-little-metacarpal" => Some(LeftHandLittleMetacarpal)
-    "left-hand-little-phalanx-proximal" => Some(LeftHandLittlePhalanxProximal)
+      Some(XRBodyJoint::LeftHandRingPhalanxIntermediate)
+    "left-hand-ring-phalanx-distal" =>
+      Some(XRBodyJoint::LeftHandRingPhalanxDistal)
+    "left-hand-ring-tip" => Some(XRBodyJoint::LeftHandRingTip)
+    "left-hand-little-metacarpal" => Some(XRBodyJoint::LeftHandLittleMetacarpal)
+    "left-hand-little-phalanx-proximal" =>
+      Some(XRBodyJoint::LeftHandLittlePhalanxProximal)
     "left-hand-little-phalanx-intermediate" =>
-      Some(LeftHandLittlePhalanxIntermediate)
-    "left-hand-little-phalanx-distal" => Some(LeftHandLittlePhalanxDistal)
-    "left-hand-little-tip" => Some(LeftHandLittleTip)
-    "right-hand-palm" => Some(RightHandPalm)
-    "right-hand-wrist" => Some(RightHandWrist)
-    "right-hand-thumb-metacarpal" => Some(RightHandThumbMetacarpal)
-    "right-hand-thumb-phalanx-proximal" => Some(RightHandThumbPhalanxProximal)
-    "right-hand-thumb-phalanx-distal" => Some(RightHandThumbPhalanxDistal)
-    "right-hand-thumb-tip" => Some(RightHandThumbTip)
-    "right-hand-index-metacarpal" => Some(RightHandIndexMetacarpal)
-    "right-hand-index-phalanx-proximal" => Some(RightHandIndexPhalanxProximal)
+      Some(XRBodyJoint::LeftHandLittlePhalanxIntermediate)
+    "left-hand-little-phalanx-distal" =>
+      Some(XRBodyJoint::LeftHandLittlePhalanxDistal)
+    "left-hand-little-tip" => Some(XRBodyJoint::LeftHandLittleTip)
+    "right-hand-palm" => Some(XRBodyJoint::RightHandPalm)
+    "right-hand-wrist" => Some(XRBodyJoint::RightHandWrist)
+    "right-hand-thumb-metacarpal" => Some(XRBodyJoint::RightHandThumbMetacarpal)
+    "right-hand-thumb-phalanx-proximal" =>
+      Some(XRBodyJoint::RightHandThumbPhalanxProximal)
+    "right-hand-thumb-phalanx-distal" =>
+      Some(XRBodyJoint::RightHandThumbPhalanxDistal)
+    "right-hand-thumb-tip" => Some(XRBodyJoint::RightHandThumbTip)
+    "right-hand-index-metacarpal" => Some(XRBodyJoint::RightHandIndexMetacarpal)
+    "right-hand-index-phalanx-proximal" =>
+      Some(XRBodyJoint::RightHandIndexPhalanxProximal)
     "right-hand-index-phalanx-intermediate" =>
-      Some(RightHandIndexPhalanxIntermediate)
-    "right-hand-index-phalanx-distal" => Some(RightHandIndexPhalanxDistal)
-    "right-hand-index-tip" => Some(RightHandIndexTip)
-    "right-hand-middle-metacarpal" => Some(RightHandMiddleMetacarpal)
-    "right-hand-middle-phalanx-proximal" => Some(RightHandMiddlePhalanxProximal)
+      Some(XRBodyJoint::RightHandIndexPhalanxIntermediate)
+    "right-hand-index-phalanx-distal" =>
+      Some(XRBodyJoint::RightHandIndexPhalanxDistal)
+    "right-hand-index-tip" => Some(XRBodyJoint::RightHandIndexTip)
+    "right-hand-middle-metacarpal" =>
+      Some(XRBodyJoint::RightHandMiddleMetacarpal)
+    "right-hand-middle-phalanx-proximal" =>
+      Some(XRBodyJoint::RightHandMiddlePhalanxProximal)
     "right-hand-middle-phalanx-intermediate" =>
-      Some(RightHandMiddlePhalanxIntermediate)
-    "right-hand-middle-phalanx-distal" => Some(RightHandMiddlePhalanxDistal)
-    "right-hand-middle-tip" => Some(RightHandMiddleTip)
-    "right-hand-ring-metacarpal" => Some(RightHandRingMetacarpal)
-    "right-hand-ring-phalanx-proximal" => Some(RightHandRingPhalanxProximal)
+      Some(XRBodyJoint::RightHandMiddlePhalanxIntermediate)
+    "right-hand-middle-phalanx-distal" =>
+      Some(XRBodyJoint::RightHandMiddlePhalanxDistal)
+    "right-hand-middle-tip" => Some(XRBodyJoint::RightHandMiddleTip)
+    "right-hand-ring-metacarpal" => Some(XRBodyJoint::RightHandRingMetacarpal)
+    "right-hand-ring-phalanx-proximal" =>
+      Some(XRBodyJoint::RightHandRingPhalanxProximal)
     "right-hand-ring-phalanx-intermediate" =>
-      Some(RightHandRingPhalanxIntermediate)
-    "right-hand-ring-phalanx-distal" => Some(RightHandRingPhalanxDistal)
-    "right-hand-ring-tip" => Some(RightHandRingTip)
-    "right-hand-little-metacarpal" => Some(RightHandLittleMetacarpal)
-    "right-hand-little-phalanx-proximal" => Some(RightHandLittlePhalanxProximal)
+      Some(XRBodyJoint::RightHandRingPhalanxIntermediate)
+    "right-hand-ring-phalanx-distal" =>
+      Some(XRBodyJoint::RightHandRingPhalanxDistal)
+    "right-hand-ring-tip" => Some(XRBodyJoint::RightHandRingTip)
+    "right-hand-little-metacarpal" =>
+      Some(XRBodyJoint::RightHandLittleMetacarpal)
+    "right-hand-little-phalanx-proximal" =>
+      Some(XRBodyJoint::RightHandLittlePhalanxProximal)
     "right-hand-little-phalanx-intermediate" =>
-      Some(RightHandLittlePhalanxIntermediate)
-    "right-hand-little-phalanx-distal" => Some(RightHandLittlePhalanxDistal)
-    "right-hand-little-tip" => Some(RightHandLittleTip)
-    "left-upper-leg" => Some(LeftUpperLeg)
-    "left-lower-leg" => Some(LeftLowerLeg)
-    "left-foot-ankle-twist" => Some(LeftFootAnkleTwist)
-    "left-foot-ankle" => Some(LeftFootAnkle)
-    "left-foot-subtalar" => Some(LeftFootSubtalar)
-    "left-foot-transverse" => Some(LeftFootTransverse)
-    "left-foot-ball" => Some(LeftFootBall)
-    "right-upper-leg" => Some(RightUpperLeg)
-    "right-lower-leg" => Some(RightLowerLeg)
-    "right-foot-ankle-twist" => Some(RightFootAnkleTwist)
-    "right-foot-ankle" => Some(RightFootAnkle)
-    "right-foot-subtalar" => Some(RightFootSubtalar)
-    "right-foot-transverse" => Some(RightFootTransverse)
-    "right-foot-ball" => Some(RightFootBall)
+      Some(XRBodyJoint::RightHandLittlePhalanxIntermediate)
+    "right-hand-little-phalanx-distal" =>
+      Some(XRBodyJoint::RightHandLittlePhalanxDistal)
+    "right-hand-little-tip" => Some(XRBodyJoint::RightHandLittleTip)
+    "left-upper-leg" => Some(XRBodyJoint::LeftUpperLeg)
+    "left-lower-leg" => Some(XRBodyJoint::LeftLowerLeg)
+    "left-foot-ankle-twist" => Some(XRBodyJoint::LeftFootAnkleTwist)
+    "left-foot-ankle" => Some(XRBodyJoint::LeftFootAnkle)
+    "left-foot-subtalar" => Some(XRBodyJoint::LeftFootSubtalar)
+    "left-foot-transverse" => Some(XRBodyJoint::LeftFootTransverse)
+    "left-foot-ball" => Some(XRBodyJoint::LeftFootBall)
+    "right-upper-leg" => Some(XRBodyJoint::RightUpperLeg)
+    "right-lower-leg" => Some(XRBodyJoint::RightLowerLeg)
+    "right-foot-ankle-twist" => Some(XRBodyJoint::RightFootAnkleTwist)
+    "right-foot-ankle" => Some(XRBodyJoint::RightFootAnkle)
+    "right-foot-subtalar" => Some(XRBodyJoint::RightFootSubtalar)
+    "right-foot-transverse" => Some(XRBodyJoint::RightFootTransverse)
+    "right-foot-ball" => Some(XRBodyJoint::RightFootBall)
     _ => None
   }
 }

@@ -26,6 +26,34 @@ pub extern "js" fn PreviousWinElement::from_auction_ad(
   #| (v) => v
 
 ///|
+/// Check if this PreviousWinElement is Int64
+pub extern "js" fn PreviousWinElement::is_int64(
+  self : PreviousWinElement,
+) -> Bool =
+  #| (self) => typeof self === 'number'
+
+///|
+/// Check if this PreviousWinElement is AuctionAd
+pub extern "js" fn PreviousWinElement::is_auction_ad(
+  self : PreviousWinElement,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get PreviousWinElement as Int64
+pub extern "js" fn PreviousWinElement::as_int64(
+  self : PreviousWinElement,
+) -> Int64? =
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get PreviousWinElement as AuctionAd
+pub extern "js" fn PreviousWinElement::as_auction_ad(
+  self : PreviousWinElement,
+) -> AuctionAd? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// PreviousWin typedef
 pub type PreviousWin = Array[PreviousWinElement]
 
@@ -42,10 +70,10 @@ pub(all) enum KAnonStatus {
 /// Convert to string value
 pub fn KAnonStatus::to_string(self : KAnonStatus) -> String {
   match self {
-    PassedAndEnforced => "passedAndEnforced"
-    PassedNotEnforced => "passedNotEnforced"
-    BelowThreshold => "belowThreshold"
-    NotCalculated => "notCalculated"
+    KAnonStatus::PassedAndEnforced => "passedAndEnforced"
+    KAnonStatus::PassedNotEnforced => "passedNotEnforced"
+    KAnonStatus::BelowThreshold => "belowThreshold"
+    KAnonStatus::NotCalculated => "notCalculated"
   }
 }
 
@@ -53,10 +81,10 @@ pub fn KAnonStatus::to_string(self : KAnonStatus) -> String {
 /// Parse from string value
 pub fn KAnonStatus::from_string(s : String) -> KAnonStatus? {
   match s {
-    "passedAndEnforced" => Some(PassedAndEnforced)
-    "passedNotEnforced" => Some(PassedNotEnforced)
-    "belowThreshold" => Some(BelowThreshold)
-    "notCalculated" => Some(NotCalculated)
+    "passedAndEnforced" => Some(KAnonStatus::PassedAndEnforced)
+    "passedNotEnforced" => Some(KAnonStatus::PassedNotEnforced)
+    "belowThreshold" => Some(KAnonStatus::BelowThreshold)
+    "notCalculated" => Some(KAnonStatus::NotCalculated)
     _ => None
   }
 }
@@ -427,15 +455,15 @@ pub struct AuctionAdConfig {
   auctionSignals : Promise[JsValue]?
   sellerSignals : Promise[JsValue]?
   directFromSellerSignalsHeaderAdSlot : Promise[String?]?
-  deprecatedRenderURLReplacements : Promise[JsValue?]?
+  deprecatedRenderURLReplacements : Promise[Unit]?
   sellerTimeout : Int64?
   sellerExperimentGroupId : Int?
-  perBuyerSignals : Promise[JsValue?]?
-  perBuyerTimeouts : Promise[JsValue?]?
-  perBuyerCumulativeTimeouts : Promise[JsValue?]?
+  perBuyerSignals : Promise[Unit]?
+  perBuyerTimeouts : Promise[Unit]?
+  perBuyerCumulativeTimeouts : Promise[Unit]?
   reportingTimeout : Int64?
   sellerCurrency : String?
-  perBuyerCurrencies : Promise[JsValue?]?
+  perBuyerCurrencies : Promise[Unit]?
   perBuyerMultiBidLimits : JsValue?
   perBuyerGroupLimits : JsValue?
   perBuyerExperimentGroupIds : JsValue?
@@ -1510,7 +1538,7 @@ pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_bid(
 ///|
 pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_bid_with_one_or_many_bids(
   self : InterestGroupBiddingScriptRunnerGlobalScope,
-  one_or_many_bids : JsValue,
+  one_or_many_bids : GenerateBidOutputOrArrayOfGenerateBidOutput,
 ) -> Bool =
   #| (self, one_or_many_bids) => self.setBid(one_or_many_bids)
 

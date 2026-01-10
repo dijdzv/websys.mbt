@@ -114,7 +114,7 @@ pub extern "js" fn URL::to_j_s_o_n(self : URL) -> String =
   #| (self) => self.toJSON()
 
 ///|
-pub extern "js" fn URL::create_object_u_r_l(obj : JsValue) -> String =
+pub extern "js" fn URL::create_object_u_r_l(obj : BlobOrMediaSource) -> String =
   #| (obj) => URL.createObjectURL(obj)
 
 ///|
@@ -132,7 +132,9 @@ pub extern "js" fn URLSearchParams::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn URLSearchParams::new(init_ : JsValue) -> URLSearchParams =
+pub extern "js" fn URLSearchParams::new(
+  init_ : ArrayOfArrayOfStringOrAnyOrString,
+) -> URLSearchParams =
   #| (init_) => new URLSearchParams(init_)
 
 ///|

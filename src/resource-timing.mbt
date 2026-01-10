@@ -14,8 +14,8 @@ pub fn RenderBlockingStatusType::to_string(
   self : RenderBlockingStatusType,
 ) -> String {
   match self {
-    Blocking => "blocking"
-    NonBlocking => "non-blocking"
+    RenderBlockingStatusType::Blocking => "blocking"
+    RenderBlockingStatusType::NonBlocking => "non-blocking"
   }
 }
 
@@ -25,8 +25,8 @@ pub fn RenderBlockingStatusType::from_string(
   s : String,
 ) -> RenderBlockingStatusType? {
   match s {
-    "blocking" => Some(Blocking)
-    "non-blocking" => Some(NonBlocking)
+    "blocking" => Some(RenderBlockingStatusType::Blocking)
+    "non-blocking" => Some(RenderBlockingStatusType::NonBlocking)
     _ => None
   }
 }

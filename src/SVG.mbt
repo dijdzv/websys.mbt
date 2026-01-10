@@ -5145,13 +5145,13 @@ pub extern "js" fn SVGAnimatedString::to_js_value(
 ///|
 pub extern "js" fn SVGAnimatedString::get_base_val(
   self : SVGAnimatedString,
-) -> JsValue =
+) -> StringOrTrustedScriptURL =
   #| (self) => self.baseVal
 
 ///|
 pub extern "js" fn SVGAnimatedString::set_base_val(
   self : SVGAnimatedString,
-  value : JsValue,
+  value : StringOrTrustedScriptURL,
 ) -> Unit =
   #| (self, value) => { self.baseVal = value }
 
@@ -17749,7 +17749,7 @@ pub extern "js" fn ShadowAnimation::to_js_value(
 ///|
 pub extern "js" fn ShadowAnimation::new(
   source : Animation,
-  new_target : JsValue,
+  new_target : ElementOrCSSPseudoElement,
 ) -> ShadowAnimation =
   #| (source, new_target) => new ShadowAnimation(source, new_target)
 

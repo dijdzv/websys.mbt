@@ -14,10 +14,10 @@ pub(all) enum AnimationPlayState {
 /// Convert to string value
 pub fn AnimationPlayState::to_string(self : AnimationPlayState) -> String {
   match self {
-    Idle => "idle"
-    Running => "running"
-    Paused => "paused"
-    Finished => "finished"
+    AnimationPlayState::Idle => "idle"
+    AnimationPlayState::Running => "running"
+    AnimationPlayState::Paused => "paused"
+    AnimationPlayState::Finished => "finished"
   }
 }
 
@@ -25,10 +25,10 @@ pub fn AnimationPlayState::to_string(self : AnimationPlayState) -> String {
 /// Parse from string value
 pub fn AnimationPlayState::from_string(s : String) -> AnimationPlayState? {
   match s {
-    "idle" => Some(Idle)
-    "running" => Some(Running)
-    "paused" => Some(Paused)
-    "finished" => Some(Finished)
+    "idle" => Some(AnimationPlayState::Idle)
+    "running" => Some(AnimationPlayState::Running)
+    "paused" => Some(AnimationPlayState::Paused)
+    "finished" => Some(AnimationPlayState::Finished)
     _ => None
   }
 }
@@ -45,9 +45,9 @@ pub(all) enum AnimationReplaceState {
 /// Convert to string value
 pub fn AnimationReplaceState::to_string(self : AnimationReplaceState) -> String {
   match self {
-    Active => "active"
-    Removed => "removed"
-    Persisted => "persisted"
+    AnimationReplaceState::Active => "active"
+    AnimationReplaceState::Removed => "removed"
+    AnimationReplaceState::Persisted => "persisted"
   }
 }
 
@@ -55,9 +55,9 @@ pub fn AnimationReplaceState::to_string(self : AnimationReplaceState) -> String 
 /// Parse from string value
 pub fn AnimationReplaceState::from_string(s : String) -> AnimationReplaceState? {
   match s {
-    "active" => Some(Active)
-    "removed" => Some(Removed)
-    "persisted" => Some(Persisted)
+    "active" => Some(AnimationReplaceState::Active)
+    "removed" => Some(AnimationReplaceState::Removed)
+    "persisted" => Some(AnimationReplaceState::Persisted)
     _ => None
   }
 }
@@ -76,11 +76,11 @@ pub(all) enum FillMode {
 /// Convert to string value
 pub fn FillMode::to_string(self : FillMode) -> String {
   match self {
-    None => "none"
-    Forwards => "forwards"
-    Backwards => "backwards"
-    Both => "both"
-    Auto => "auto"
+    FillMode::None => "none"
+    FillMode::Forwards => "forwards"
+    FillMode::Backwards => "backwards"
+    FillMode::Both => "both"
+    FillMode::Auto => "auto"
   }
 }
 
@@ -88,11 +88,11 @@ pub fn FillMode::to_string(self : FillMode) -> String {
 /// Parse from string value
 pub fn FillMode::from_string(s : String) -> FillMode? {
   match s {
-    "none" => Some(None)
-    "forwards" => Some(Forwards)
-    "backwards" => Some(Backwards)
-    "both" => Some(Both)
-    "auto" => Some(Auto)
+    "none" => Some(FillMode::None)
+    "forwards" => Some(FillMode::Forwards)
+    "backwards" => Some(FillMode::Backwards)
+    "both" => Some(FillMode::Both)
+    "auto" => Some(FillMode::Auto)
     _ => None
   }
 }
@@ -110,10 +110,10 @@ pub(all) enum PlaybackDirection {
 /// Convert to string value
 pub fn PlaybackDirection::to_string(self : PlaybackDirection) -> String {
   match self {
-    Normal => "normal"
-    Reverse => "reverse"
-    Alternate => "alternate"
-    AlternateReverse => "alternate-reverse"
+    PlaybackDirection::Normal => "normal"
+    PlaybackDirection::Reverse => "reverse"
+    PlaybackDirection::Alternate => "alternate"
+    PlaybackDirection::AlternateReverse => "alternate-reverse"
   }
 }
 
@@ -121,10 +121,10 @@ pub fn PlaybackDirection::to_string(self : PlaybackDirection) -> String {
 /// Parse from string value
 pub fn PlaybackDirection::from_string(s : String) -> PlaybackDirection? {
   match s {
-    "normal" => Some(Normal)
-    "reverse" => Some(Reverse)
-    "alternate" => Some(Alternate)
-    "alternate-reverse" => Some(AlternateReverse)
+    "normal" => Some(PlaybackDirection::Normal)
+    "reverse" => Some(PlaybackDirection::Reverse)
+    "alternate" => Some(PlaybackDirection::Alternate)
+    "alternate-reverse" => Some(PlaybackDirection::AlternateReverse)
     _ => None
   }
 }
@@ -141,9 +141,9 @@ pub(all) enum CompositeOperation {
 /// Convert to string value
 pub fn CompositeOperation::to_string(self : CompositeOperation) -> String {
   match self {
-    Replace => "replace"
-    Add => "add"
-    Accumulate => "accumulate"
+    CompositeOperation::Replace => "replace"
+    CompositeOperation::Add => "add"
+    CompositeOperation::Accumulate => "accumulate"
   }
 }
 
@@ -151,9 +151,9 @@ pub fn CompositeOperation::to_string(self : CompositeOperation) -> String {
 /// Parse from string value
 pub fn CompositeOperation::from_string(s : String) -> CompositeOperation? {
   match s {
-    "replace" => Some(Replace)
-    "add" => Some(Add)
-    "accumulate" => Some(Accumulate)
+    "replace" => Some(CompositeOperation::Replace)
+    "add" => Some(CompositeOperation::Add)
+    "accumulate" => Some(CompositeOperation::Accumulate)
     _ => None
   }
 }
@@ -173,10 +173,10 @@ pub fn CompositeOperationOrAuto::to_string(
   self : CompositeOperationOrAuto,
 ) -> String {
   match self {
-    Replace => "replace"
-    Add => "add"
-    Accumulate => "accumulate"
-    Auto => "auto"
+    CompositeOperationOrAuto::Replace => "replace"
+    CompositeOperationOrAuto::Add => "add"
+    CompositeOperationOrAuto::Accumulate => "accumulate"
+    CompositeOperationOrAuto::Auto => "auto"
   }
 }
 
@@ -186,10 +186,10 @@ pub fn CompositeOperationOrAuto::from_string(
   s : String,
 ) -> CompositeOperationOrAuto? {
   match s {
-    "replace" => Some(Replace)
-    "add" => Some(Add)
-    "accumulate" => Some(Accumulate)
-    "auto" => Some(Auto)
+    "replace" => Some(CompositeOperationOrAuto::Replace)
+    "add" => Some(CompositeOperationOrAuto::Add)
+    "accumulate" => Some(CompositeOperationOrAuto::Accumulate)
+    "auto" => Some(CompositeOperationOrAuto::Auto)
     _ => None
   }
 }
@@ -743,7 +743,7 @@ pub extern "js" fn KeyframeEffect::remove(self : KeyframeEffect) -> Unit =
 pub extern "js" fn KeyframeEffect::new(
   target : Element?,
   keyframes : JsValue?,
-  options : JsValue,
+  options : DoubleOrKeyframeEffectOptions,
 ) -> KeyframeEffect =
   #| (target, keyframes, options) => new KeyframeEffect(target, keyframes, options)
 

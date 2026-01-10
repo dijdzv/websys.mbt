@@ -12,8 +12,8 @@ pub(all) enum ChildDisplayType {
 /// Convert to string value
 pub fn ChildDisplayType::to_string(self : ChildDisplayType) -> String {
   match self {
-    Block => "block"
-    Normal => "normal"
+    ChildDisplayType::Block => "block"
+    ChildDisplayType::Normal => "normal"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn ChildDisplayType::to_string(self : ChildDisplayType) -> String {
 /// Parse from string value
 pub fn ChildDisplayType::from_string(s : String) -> ChildDisplayType? {
   match s {
-    "block" => Some(Block)
-    "normal" => Some(Normal)
+    "block" => Some(ChildDisplayType::Block)
+    "normal" => Some(ChildDisplayType::Normal)
     _ => None
   }
 }
@@ -38,8 +38,8 @@ pub(all) enum LayoutSizingMode {
 /// Convert to string value
 pub fn LayoutSizingMode::to_string(self : LayoutSizingMode) -> String {
   match self {
-    BlockLike => "block-like"
-    Manual => "manual"
+    LayoutSizingMode::BlockLike => "block-like"
+    LayoutSizingMode::Manual => "manual"
   }
 }
 
@@ -47,8 +47,8 @@ pub fn LayoutSizingMode::to_string(self : LayoutSizingMode) -> String {
 /// Parse from string value
 pub fn LayoutSizingMode::from_string(s : String) -> LayoutSizingMode? {
   match s {
-    "block-like" => Some(BlockLike)
-    "manual" => Some(Manual)
+    "block-like" => Some(LayoutSizingMode::BlockLike)
+    "manual" => Some(LayoutSizingMode::Manual)
     _ => None
   }
 }
@@ -68,10 +68,10 @@ pub fn BlockFragmentationType::to_string(
   self : BlockFragmentationType,
 ) -> String {
   match self {
-    None => "none"
-    Page => "page"
-    Column => "column"
-    Region => "region"
+    BlockFragmentationType::None => "none"
+    BlockFragmentationType::Page => "page"
+    BlockFragmentationType::Column => "column"
+    BlockFragmentationType::Region => "region"
   }
 }
 
@@ -81,10 +81,10 @@ pub fn BlockFragmentationType::from_string(
   s : String,
 ) -> BlockFragmentationType? {
   match s {
-    "none" => Some(None)
-    "page" => Some(Page)
-    "column" => Some(Column)
-    "region" => Some(Region)
+    "none" => Some(BlockFragmentationType::None)
+    "page" => Some(BlockFragmentationType::Page)
+    "column" => Some(BlockFragmentationType::Column)
+    "region" => Some(BlockFragmentationType::Region)
     _ => None
   }
 }
@@ -103,11 +103,11 @@ pub(all) enum BreakType {
 /// Convert to string value
 pub fn BreakType::to_string(self : BreakType) -> String {
   match self {
-    None => "none"
-    Line => "line"
-    Column => "column"
-    Page => "page"
-    Region => "region"
+    BreakType::None => "none"
+    BreakType::Line => "line"
+    BreakType::Column => "column"
+    BreakType::Page => "page"
+    BreakType::Region => "region"
   }
 }
 
@@ -115,11 +115,11 @@ pub fn BreakType::to_string(self : BreakType) -> String {
 /// Parse from string value
 pub fn BreakType::from_string(s : String) -> BreakType? {
   match s {
-    "none" => Some(None)
-    "line" => Some(Line)
-    "column" => Some(Column)
-    "page" => Some(Page)
-    "region" => Some(Region)
+    "none" => Some(BreakType::None)
+    "line" => Some(BreakType::Line)
+    "column" => Some(BreakType::Column)
+    "page" => Some(BreakType::Page)
+    "region" => Some(BreakType::Region)
     _ => None
   }
 }

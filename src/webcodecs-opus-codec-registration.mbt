@@ -12,8 +12,8 @@ pub(all) enum OpusBitstreamFormat {
 /// Convert to string value
 pub fn OpusBitstreamFormat::to_string(self : OpusBitstreamFormat) -> String {
   match self {
-    Opus => "opus"
-    Ogg => "ogg"
+    OpusBitstreamFormat::Opus => "opus"
+    OpusBitstreamFormat::Ogg => "ogg"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn OpusBitstreamFormat::to_string(self : OpusBitstreamFormat) -> String {
 /// Parse from string value
 pub fn OpusBitstreamFormat::from_string(s : String) -> OpusBitstreamFormat? {
   match s {
-    "opus" => Some(Opus)
-    "ogg" => Some(Ogg)
+    "opus" => Some(OpusBitstreamFormat::Opus)
+    "ogg" => Some(OpusBitstreamFormat::Ogg)
     _ => None
   }
 }
@@ -39,9 +39,9 @@ pub(all) enum OpusSignal {
 /// Convert to string value
 pub fn OpusSignal::to_string(self : OpusSignal) -> String {
   match self {
-    Auto => "auto"
-    Music => "music"
-    Voice => "voice"
+    OpusSignal::Auto => "auto"
+    OpusSignal::Music => "music"
+    OpusSignal::Voice => "voice"
   }
 }
 
@@ -49,9 +49,9 @@ pub fn OpusSignal::to_string(self : OpusSignal) -> String {
 /// Parse from string value
 pub fn OpusSignal::from_string(s : String) -> OpusSignal? {
   match s {
-    "auto" => Some(Auto)
-    "music" => Some(Music)
-    "voice" => Some(Voice)
+    "auto" => Some(OpusSignal::Auto)
+    "music" => Some(OpusSignal::Music)
+    "voice" => Some(OpusSignal::Voice)
     _ => None
   }
 }
@@ -68,9 +68,9 @@ pub(all) enum OpusApplication {
 /// Convert to string value
 pub fn OpusApplication::to_string(self : OpusApplication) -> String {
   match self {
-    Voip => "voip"
-    Audio => "audio"
-    Lowdelay => "lowdelay"
+    OpusApplication::Voip => "voip"
+    OpusApplication::Audio => "audio"
+    OpusApplication::Lowdelay => "lowdelay"
   }
 }
 
@@ -78,9 +78,9 @@ pub fn OpusApplication::to_string(self : OpusApplication) -> String {
 /// Parse from string value
 pub fn OpusApplication::from_string(s : String) -> OpusApplication? {
   match s {
-    "voip" => Some(Voip)
-    "audio" => Some(Audio)
-    "lowdelay" => Some(Lowdelay)
+    "voip" => Some(OpusApplication::Voip)
+    "audio" => Some(OpusApplication::Audio)
+    "lowdelay" => Some(OpusApplication::Lowdelay)
     _ => None
   }
 }

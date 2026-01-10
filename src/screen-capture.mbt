@@ -15,9 +15,10 @@ pub fn CaptureStartFocusBehavior::to_string(
   self : CaptureStartFocusBehavior,
 ) -> String {
   match self {
-    FocusCapturingApplication => "focus-capturing-application"
-    FocusCapturedSurface => "focus-captured-surface"
-    NoFocusChange => "no-focus-change"
+    CaptureStartFocusBehavior::FocusCapturingApplication =>
+      "focus-capturing-application"
+    CaptureStartFocusBehavior::FocusCapturedSurface => "focus-captured-surface"
+    CaptureStartFocusBehavior::NoFocusChange => "no-focus-change"
   }
 }
 
@@ -27,9 +28,11 @@ pub fn CaptureStartFocusBehavior::from_string(
   s : String,
 ) -> CaptureStartFocusBehavior? {
   match s {
-    "focus-capturing-application" => Some(FocusCapturingApplication)
-    "focus-captured-surface" => Some(FocusCapturedSurface)
-    "no-focus-change" => Some(NoFocusChange)
+    "focus-capturing-application" =>
+      Some(CaptureStartFocusBehavior::FocusCapturingApplication)
+    "focus-captured-surface" =>
+      Some(CaptureStartFocusBehavior::FocusCapturedSurface)
+    "no-focus-change" => Some(CaptureStartFocusBehavior::NoFocusChange)
     _ => None
   }
 }
@@ -47,8 +50,8 @@ pub fn SelfCapturePreferenceEnum::to_string(
   self : SelfCapturePreferenceEnum,
 ) -> String {
   match self {
-    Include => "include"
-    Exclude => "exclude"
+    SelfCapturePreferenceEnum::Include => "include"
+    SelfCapturePreferenceEnum::Exclude => "exclude"
   }
 }
 
@@ -58,8 +61,8 @@ pub fn SelfCapturePreferenceEnum::from_string(
   s : String,
 ) -> SelfCapturePreferenceEnum? {
   match s {
-    "include" => Some(Include)
-    "exclude" => Some(Exclude)
+    "include" => Some(SelfCapturePreferenceEnum::Include)
+    "exclude" => Some(SelfCapturePreferenceEnum::Exclude)
     _ => None
   }
 }
@@ -77,8 +80,8 @@ pub fn SystemAudioPreferenceEnum::to_string(
   self : SystemAudioPreferenceEnum,
 ) -> String {
   match self {
-    Include => "include"
-    Exclude => "exclude"
+    SystemAudioPreferenceEnum::Include => "include"
+    SystemAudioPreferenceEnum::Exclude => "exclude"
   }
 }
 
@@ -88,8 +91,8 @@ pub fn SystemAudioPreferenceEnum::from_string(
   s : String,
 ) -> SystemAudioPreferenceEnum? {
   match s {
-    "include" => Some(Include)
-    "exclude" => Some(Exclude)
+    "include" => Some(SystemAudioPreferenceEnum::Include)
+    "exclude" => Some(SystemAudioPreferenceEnum::Exclude)
     _ => None
   }
 }
@@ -108,9 +111,9 @@ pub fn WindowAudioPreferenceEnum::to_string(
   self : WindowAudioPreferenceEnum,
 ) -> String {
   match self {
-    System => "system"
-    Window => "window"
-    Exclude => "exclude"
+    WindowAudioPreferenceEnum::System => "system"
+    WindowAudioPreferenceEnum::Window => "window"
+    WindowAudioPreferenceEnum::Exclude => "exclude"
   }
 }
 
@@ -120,9 +123,9 @@ pub fn WindowAudioPreferenceEnum::from_string(
   s : String,
 ) -> WindowAudioPreferenceEnum? {
   match s {
-    "system" => Some(System)
-    "window" => Some(Window)
-    "exclude" => Some(Exclude)
+    "system" => Some(WindowAudioPreferenceEnum::System)
+    "window" => Some(WindowAudioPreferenceEnum::Window)
+    "exclude" => Some(WindowAudioPreferenceEnum::Exclude)
     _ => None
   }
 }
@@ -140,8 +143,8 @@ pub fn SurfaceSwitchingPreferenceEnum::to_string(
   self : SurfaceSwitchingPreferenceEnum,
 ) -> String {
   match self {
-    Include => "include"
-    Exclude => "exclude"
+    SurfaceSwitchingPreferenceEnum::Include => "include"
+    SurfaceSwitchingPreferenceEnum::Exclude => "exclude"
   }
 }
 
@@ -151,8 +154,8 @@ pub fn SurfaceSwitchingPreferenceEnum::from_string(
   s : String,
 ) -> SurfaceSwitchingPreferenceEnum? {
   match s {
-    "include" => Some(Include)
-    "exclude" => Some(Exclude)
+    "include" => Some(SurfaceSwitchingPreferenceEnum::Include)
+    "exclude" => Some(SurfaceSwitchingPreferenceEnum::Exclude)
     _ => None
   }
 }
@@ -170,8 +173,8 @@ pub fn MonitorTypeSurfacesEnum::to_string(
   self : MonitorTypeSurfacesEnum,
 ) -> String {
   match self {
-    Include => "include"
-    Exclude => "exclude"
+    MonitorTypeSurfacesEnum::Include => "include"
+    MonitorTypeSurfacesEnum::Exclude => "exclude"
   }
 }
 
@@ -181,8 +184,8 @@ pub fn MonitorTypeSurfacesEnum::from_string(
   s : String,
 ) -> MonitorTypeSurfacesEnum? {
   match s {
-    "include" => Some(Include)
-    "exclude" => Some(Exclude)
+    "include" => Some(MonitorTypeSurfacesEnum::Include)
+    "exclude" => Some(MonitorTypeSurfacesEnum::Exclude)
     _ => None
   }
 }
@@ -201,9 +204,9 @@ pub fn DisplayCaptureSurfaceType::to_string(
   self : DisplayCaptureSurfaceType,
 ) -> String {
   match self {
-    Monitor => "monitor"
-    Window => "window"
-    Browser => "browser"
+    DisplayCaptureSurfaceType::Monitor => "monitor"
+    DisplayCaptureSurfaceType::Window => "window"
+    DisplayCaptureSurfaceType::Browser => "browser"
   }
 }
 
@@ -213,9 +216,9 @@ pub fn DisplayCaptureSurfaceType::from_string(
   s : String,
 ) -> DisplayCaptureSurfaceType? {
   match s {
-    "monitor" => Some(Monitor)
-    "window" => Some(Window)
-    "browser" => Some(Browser)
+    "monitor" => Some(DisplayCaptureSurfaceType::Monitor)
+    "window" => Some(DisplayCaptureSurfaceType::Window)
+    "browser" => Some(DisplayCaptureSurfaceType::Browser)
     _ => None
   }
 }
@@ -234,9 +237,9 @@ pub fn CursorCaptureConstraint::to_string(
   self : CursorCaptureConstraint,
 ) -> String {
   match self {
-    Never => "never"
-    Always => "always"
-    Motion => "motion"
+    CursorCaptureConstraint::Never => "never"
+    CursorCaptureConstraint::Always => "always"
+    CursorCaptureConstraint::Motion => "motion"
   }
 }
 
@@ -246,9 +249,9 @@ pub fn CursorCaptureConstraint::from_string(
   s : String,
 ) -> CursorCaptureConstraint? {
   match s {
-    "never" => Some(Never)
-    "always" => Some(Always)
-    "motion" => Some(Motion)
+    "never" => Some(CursorCaptureConstraint::Never)
+    "always" => Some(CursorCaptureConstraint::Always)
+    "motion" => Some(CursorCaptureConstraint::Motion)
     _ => None
   }
 }

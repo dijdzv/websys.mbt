@@ -13,9 +13,9 @@ pub(all) enum HighlightType {
 /// Convert to string value
 pub fn HighlightType::to_string(self : HighlightType) -> String {
   match self {
-    Highlight => "highlight"
-    SpellingError => "spelling-error"
-    GrammarError => "grammar-error"
+    HighlightType::Highlight => "highlight"
+    HighlightType::SpellingError => "spelling-error"
+    HighlightType::GrammarError => "grammar-error"
   }
 }
 
@@ -23,9 +23,9 @@ pub fn HighlightType::to_string(self : HighlightType) -> String {
 /// Parse from string value
 pub fn HighlightType::from_string(s : String) -> HighlightType? {
   match s {
-    "highlight" => Some(Highlight)
-    "spelling-error" => Some(SpellingError)
-    "grammar-error" => Some(GrammarError)
+    "highlight" => Some(HighlightType::Highlight)
+    "spelling-error" => Some(HighlightType::SpellingError)
+    "grammar-error" => Some(HighlightType::GrammarError)
     _ => None
   }
 }

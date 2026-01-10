@@ -26,6 +26,34 @@ pub extern "js" fn LineAndPositionSetting::from_auto_keyword(
   #| (v) => v
 
 ///|
+/// Check if this LineAndPositionSetting is Double
+pub extern "js" fn LineAndPositionSetting::is_double(
+  self : LineAndPositionSetting,
+) -> Bool =
+  #| (self) => typeof self === 'number'
+
+///|
+/// Check if this LineAndPositionSetting is AutoKeyword
+pub extern "js" fn LineAndPositionSetting::is_auto_keyword(
+  self : LineAndPositionSetting,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get LineAndPositionSetting as Double
+pub extern "js" fn LineAndPositionSetting::as_double(
+  self : LineAndPositionSetting,
+) -> Double? =
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get LineAndPositionSetting as AutoKeyword
+pub extern "js" fn LineAndPositionSetting::as_auto_keyword(
+  self : LineAndPositionSetting,
+) -> AutoKeyword? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// AutoKeyword enum
 pub(all) enum AutoKeyword {
   Auto
@@ -35,7 +63,7 @@ pub(all) enum AutoKeyword {
 /// Convert to string value
 pub fn AutoKeyword::to_string(self : AutoKeyword) -> String {
   match self {
-    Auto => "auto"
+    AutoKeyword::Auto => "auto"
   }
 }
 
@@ -43,7 +71,7 @@ pub fn AutoKeyword::to_string(self : AutoKeyword) -> String {
 /// Parse from string value
 pub fn AutoKeyword::from_string(s : String) -> AutoKeyword? {
   match s {
-    "auto" => Some(Auto)
+    "auto" => Some(AutoKeyword::Auto)
     _ => None
   }
 }
@@ -60,9 +88,9 @@ pub(all) enum DirectionSetting {
 /// Convert to string value
 pub fn DirectionSetting::to_string(self : DirectionSetting) -> String {
   match self {
-    Empty => ""
-    Rl => "rl"
-    Lr => "lr"
+    DirectionSetting::Empty => ""
+    DirectionSetting::Rl => "rl"
+    DirectionSetting::Lr => "lr"
   }
 }
 
@@ -70,9 +98,9 @@ pub fn DirectionSetting::to_string(self : DirectionSetting) -> String {
 /// Parse from string value
 pub fn DirectionSetting::from_string(s : String) -> DirectionSetting? {
   match s {
-    "" => Some(Empty)
-    "rl" => Some(Rl)
-    "lr" => Some(Lr)
+    "" => Some(DirectionSetting::Empty)
+    "rl" => Some(DirectionSetting::Rl)
+    "lr" => Some(DirectionSetting::Lr)
     _ => None
   }
 }
@@ -89,9 +117,9 @@ pub(all) enum LineAlignSetting {
 /// Convert to string value
 pub fn LineAlignSetting::to_string(self : LineAlignSetting) -> String {
   match self {
-    Start => "start"
-    Center => "center"
-    End => "end"
+    LineAlignSetting::Start => "start"
+    LineAlignSetting::Center => "center"
+    LineAlignSetting::End => "end"
   }
 }
 
@@ -99,9 +127,9 @@ pub fn LineAlignSetting::to_string(self : LineAlignSetting) -> String {
 /// Parse from string value
 pub fn LineAlignSetting::from_string(s : String) -> LineAlignSetting? {
   match s {
-    "start" => Some(Start)
-    "center" => Some(Center)
-    "end" => Some(End)
+    "start" => Some(LineAlignSetting::Start)
+    "center" => Some(LineAlignSetting::Center)
+    "end" => Some(LineAlignSetting::End)
     _ => None
   }
 }
@@ -119,10 +147,10 @@ pub(all) enum PositionAlignSetting {
 /// Convert to string value
 pub fn PositionAlignSetting::to_string(self : PositionAlignSetting) -> String {
   match self {
-    LineLeft => "line-left"
-    Center => "center"
-    LineRight => "line-right"
-    Auto => "auto"
+    PositionAlignSetting::LineLeft => "line-left"
+    PositionAlignSetting::Center => "center"
+    PositionAlignSetting::LineRight => "line-right"
+    PositionAlignSetting::Auto => "auto"
   }
 }
 
@@ -130,10 +158,10 @@ pub fn PositionAlignSetting::to_string(self : PositionAlignSetting) -> String {
 /// Parse from string value
 pub fn PositionAlignSetting::from_string(s : String) -> PositionAlignSetting? {
   match s {
-    "line-left" => Some(LineLeft)
-    "center" => Some(Center)
-    "line-right" => Some(LineRight)
-    "auto" => Some(Auto)
+    "line-left" => Some(PositionAlignSetting::LineLeft)
+    "center" => Some(PositionAlignSetting::Center)
+    "line-right" => Some(PositionAlignSetting::LineRight)
+    "auto" => Some(PositionAlignSetting::Auto)
     _ => None
   }
 }
@@ -152,11 +180,11 @@ pub(all) enum AlignSetting {
 /// Convert to string value
 pub fn AlignSetting::to_string(self : AlignSetting) -> String {
   match self {
-    Start => "start"
-    Center => "center"
-    End => "end"
-    Left => "left"
-    Right => "right"
+    AlignSetting::Start => "start"
+    AlignSetting::Center => "center"
+    AlignSetting::End => "end"
+    AlignSetting::Left => "left"
+    AlignSetting::Right => "right"
   }
 }
 
@@ -164,11 +192,11 @@ pub fn AlignSetting::to_string(self : AlignSetting) -> String {
 /// Parse from string value
 pub fn AlignSetting::from_string(s : String) -> AlignSetting? {
   match s {
-    "start" => Some(Start)
-    "center" => Some(Center)
-    "end" => Some(End)
-    "left" => Some(Left)
-    "right" => Some(Right)
+    "start" => Some(AlignSetting::Start)
+    "center" => Some(AlignSetting::Center)
+    "end" => Some(AlignSetting::End)
+    "left" => Some(AlignSetting::Left)
+    "right" => Some(AlignSetting::Right)
     _ => None
   }
 }
@@ -184,8 +212,8 @@ pub(all) enum ScrollSetting {
 /// Convert to string value
 pub fn ScrollSetting::to_string(self : ScrollSetting) -> String {
   match self {
-    Empty => ""
-    Up => "up"
+    ScrollSetting::Empty => ""
+    ScrollSetting::Up => "up"
   }
 }
 
@@ -193,8 +221,8 @@ pub fn ScrollSetting::to_string(self : ScrollSetting) -> String {
 /// Parse from string value
 pub fn ScrollSetting::from_string(s : String) -> ScrollSetting? {
   match s {
-    "" => Some(Empty)
-    "up" => Some(Up)
+    "" => Some(ScrollSetting::Empty)
+    "up" => Some(ScrollSetting::Up)
     _ => None
   }
 }

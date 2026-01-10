@@ -12,8 +12,8 @@ pub(all) enum SameSiteCookiesType {
 /// Convert to string value
 pub fn SameSiteCookiesType::to_string(self : SameSiteCookiesType) -> String {
   match self {
-    All => "all"
-    None => "none"
+    SameSiteCookiesType::All => "all"
+    SameSiteCookiesType::None => "none"
   }
 }
 
@@ -21,8 +21,8 @@ pub fn SameSiteCookiesType::to_string(self : SameSiteCookiesType) -> String {
 /// Parse from string value
 pub fn SameSiteCookiesType::from_string(s : String) -> SameSiteCookiesType? {
   match s {
-    "all" => Some(All)
-    "none" => Some(None)
+    "all" => Some(SameSiteCookiesType::All)
+    "none" => Some(SameSiteCookiesType::None)
     _ => None
   }
 }
@@ -162,7 +162,7 @@ pub extern "js" fn StorageAccessHandle::estimate(
 ///|
 pub extern "js" fn StorageAccessHandle::create_object_u_r_l(
   self : StorageAccessHandle,
-  obj : JsValue,
+  obj : BlobOrMediaSource,
 ) -> String =
   #| (self, obj) => self.createObjectURL(obj)
 
@@ -191,6 +191,6 @@ pub extern "js" fn StorageAccessHandle::shared_worker(
 pub extern "js" fn StorageAccessHandle::shared_worker_with_options(
   self : StorageAccessHandle,
   script_u_r_l : String,
-  options : JsValue,
+  options : StringOrSharedWorkerOptions,
 ) -> SharedWorker =
   #| (self, script_u_r_l, options) => self.SharedWorker(script_u_r_l, options)

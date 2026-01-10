@@ -16,12 +16,12 @@ pub(all) enum AudioSessionType {
 /// Convert to string value
 pub fn AudioSessionType::to_string(self : AudioSessionType) -> String {
   match self {
-    Auto => "auto"
-    Playback => "playback"
-    Transient => "transient"
-    TransientSolo => "transient-solo"
-    Ambient => "ambient"
-    PlayAndRecord => "play-and-record"
+    AudioSessionType::Auto => "auto"
+    AudioSessionType::Playback => "playback"
+    AudioSessionType::Transient => "transient"
+    AudioSessionType::TransientSolo => "transient-solo"
+    AudioSessionType::Ambient => "ambient"
+    AudioSessionType::PlayAndRecord => "play-and-record"
   }
 }
 
@@ -29,12 +29,12 @@ pub fn AudioSessionType::to_string(self : AudioSessionType) -> String {
 /// Parse from string value
 pub fn AudioSessionType::from_string(s : String) -> AudioSessionType? {
   match s {
-    "auto" => Some(Auto)
-    "playback" => Some(Playback)
-    "transient" => Some(Transient)
-    "transient-solo" => Some(TransientSolo)
-    "ambient" => Some(Ambient)
-    "play-and-record" => Some(PlayAndRecord)
+    "auto" => Some(AudioSessionType::Auto)
+    "playback" => Some(AudioSessionType::Playback)
+    "transient" => Some(AudioSessionType::Transient)
+    "transient-solo" => Some(AudioSessionType::TransientSolo)
+    "ambient" => Some(AudioSessionType::Ambient)
+    "play-and-record" => Some(AudioSessionType::PlayAndRecord)
     _ => None
   }
 }
@@ -51,9 +51,9 @@ pub(all) enum AudioSessionState {
 /// Convert to string value
 pub fn AudioSessionState::to_string(self : AudioSessionState) -> String {
   match self {
-    Inactive => "inactive"
-    Active => "active"
-    Interrupted => "interrupted"
+    AudioSessionState::Inactive => "inactive"
+    AudioSessionState::Active => "active"
+    AudioSessionState::Interrupted => "interrupted"
   }
 }
 
@@ -61,9 +61,9 @@ pub fn AudioSessionState::to_string(self : AudioSessionState) -> String {
 /// Parse from string value
 pub fn AudioSessionState::from_string(s : String) -> AudioSessionState? {
   match s {
-    "inactive" => Some(Inactive)
-    "active" => Some(Active)
-    "interrupted" => Some(Interrupted)
+    "inactive" => Some(AudioSessionState::Inactive)
+    "active" => Some(AudioSessionState::Active)
+    "interrupted" => Some(AudioSessionState::Interrupted)
     _ => None
   }
 }

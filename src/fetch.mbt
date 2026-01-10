@@ -17,6 +17,20 @@ pub extern "js" fn HeadersInit::from_array_of_array_of_string(
   #| (v) => v
 
 ///|
+/// Check if this HeadersInit is Array[Array[String]]
+pub extern "js" fn HeadersInit::is_array_of_array_of_string(
+  self : HeadersInit,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Try to get HeadersInit as Array[Array[String]]
+pub extern "js" fn HeadersInit::as_array_of_array_of_string(
+  self : HeadersInit,
+) -> Array[Array[String]]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// XMLHttpRequestBodyInit typedef
 pub type XMLHttpRequestBodyInit
 
@@ -62,6 +76,76 @@ pub extern "js" fn XMLHttpRequestBodyInit::from_string(
   #| (v) => v
 
 ///|
+/// Check if this XMLHttpRequestBodyInit is Blob
+pub extern "js" fn XMLHttpRequestBodyInit::is_blob(
+  self : XMLHttpRequestBodyInit,
+) -> Bool =
+  #| (self) => self instanceof Blob
+
+///|
+/// Check if this XMLHttpRequestBodyInit is BufferSource
+pub extern "js" fn XMLHttpRequestBodyInit::is_buffer_source(
+  self : XMLHttpRequestBodyInit,
+) -> Bool =
+  #| (self) => self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer
+
+///|
+/// Check if this XMLHttpRequestBodyInit is FormData
+pub extern "js" fn XMLHttpRequestBodyInit::is_form_data(
+  self : XMLHttpRequestBodyInit,
+) -> Bool =
+  #| (self) => self instanceof FormData
+
+///|
+/// Check if this XMLHttpRequestBodyInit is URLSearchParams
+pub extern "js" fn XMLHttpRequestBodyInit::is_u_r_l_search_params(
+  self : XMLHttpRequestBodyInit,
+) -> Bool =
+  #| (self) => self instanceof URLSearchParams
+
+///|
+/// Check if this XMLHttpRequestBodyInit is String
+pub extern "js" fn XMLHttpRequestBodyInit::is_string(
+  self : XMLHttpRequestBodyInit,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get XMLHttpRequestBodyInit as Blob
+pub extern "js" fn XMLHttpRequestBodyInit::as_blob(
+  self : XMLHttpRequestBodyInit,
+) -> Blob? =
+  #| (self) => (self instanceof Blob) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get XMLHttpRequestBodyInit as BufferSource
+pub extern "js" fn XMLHttpRequestBodyInit::as_buffer_source(
+  self : XMLHttpRequestBodyInit,
+) -> BufferSource? =
+  #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get XMLHttpRequestBodyInit as FormData
+pub extern "js" fn XMLHttpRequestBodyInit::as_form_data(
+  self : XMLHttpRequestBodyInit,
+) -> FormData? =
+  #| (self) => (self instanceof FormData) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get XMLHttpRequestBodyInit as URLSearchParams
+pub extern "js" fn XMLHttpRequestBodyInit::as_u_r_l_search_params(
+  self : XMLHttpRequestBodyInit,
+) -> URLSearchParams? =
+  #| (self) => (self instanceof URLSearchParams) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get XMLHttpRequestBodyInit as String
+pub extern "js" fn XMLHttpRequestBodyInit::as_string(
+  self : XMLHttpRequestBodyInit,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// BodyInit typedef
 pub type BodyInit
 
@@ -84,6 +168,32 @@ pub extern "js" fn BodyInit::from_x_m_l_http_request_body_init(
   #| (v) => v
 
 ///|
+/// Check if this BodyInit is ReadableStream
+pub extern "js" fn BodyInit::is_readable_stream(self : BodyInit) -> Bool =
+  #| (self) => self instanceof ReadableStream
+
+///|
+/// Check if this BodyInit is XMLHttpRequestBodyInit
+pub extern "js" fn BodyInit::is_x_m_l_http_request_body_init(
+  self : BodyInit,
+) -> Bool =
+  #| (self) => self instanceof Blob || self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer || self instanceof FormData || self instanceof URLSearchParams || typeof self === 'string'
+
+///|
+/// Try to get BodyInit as ReadableStream
+pub extern "js" fn BodyInit::as_readable_stream(
+  self : BodyInit,
+) -> ReadableStream? =
+  #| (self) => (self instanceof ReadableStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get BodyInit as XMLHttpRequestBodyInit
+pub extern "js" fn BodyInit::as_x_m_l_http_request_body_init(
+  self : BodyInit,
+) -> XMLHttpRequestBodyInit? =
+  #| (self) => (self instanceof Blob || self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer || self instanceof FormData || self instanceof URLSearchParams || typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// RequestInfo typedef
 pub type RequestInfo
 
@@ -100,6 +210,26 @@ pub extern "js" fn RequestInfo::from_request(v : Request) -> RequestInfo =
 /// Create RequestInfo from String
 pub extern "js" fn RequestInfo::from_string(v : String) -> RequestInfo =
   #| (v) => v
+
+///|
+/// Check if this RequestInfo is Request
+pub extern "js" fn RequestInfo::is_request(self : RequestInfo) -> Bool =
+  #| (self) => self instanceof Request
+
+///|
+/// Check if this RequestInfo is String
+pub extern "js" fn RequestInfo::is_string(self : RequestInfo) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get RequestInfo as Request
+pub extern "js" fn RequestInfo::as_request(self : RequestInfo) -> Request? =
+  #| (self) => (self instanceof Request) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get RequestInfo as String
+pub extern "js" fn RequestInfo::as_string(self : RequestInfo) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// RequestDestination enum
@@ -131,27 +261,27 @@ pub(all) enum RequestDestination {
 /// Convert to string value
 pub fn RequestDestination::to_string(self : RequestDestination) -> String {
   match self {
-    Empty => ""
-    Audio => "audio"
-    Audioworklet => "audioworklet"
-    Document => "document"
-    Embed => "embed"
-    Font => "font"
-    Frame => "frame"
-    Iframe => "iframe"
-    Image => "image"
-    Json => "json"
-    Manifest => "manifest"
-    Object => "object"
-    Paintworklet => "paintworklet"
-    Report => "report"
-    Script => "script"
-    Sharedworker => "sharedworker"
-    Style => "style"
-    Track => "track"
-    Video => "video"
-    Worker => "worker"
-    Xslt => "xslt"
+    RequestDestination::Empty => ""
+    RequestDestination::Audio => "audio"
+    RequestDestination::Audioworklet => "audioworklet"
+    RequestDestination::Document => "document"
+    RequestDestination::Embed => "embed"
+    RequestDestination::Font => "font"
+    RequestDestination::Frame => "frame"
+    RequestDestination::Iframe => "iframe"
+    RequestDestination::Image => "image"
+    RequestDestination::Json => "json"
+    RequestDestination::Manifest => "manifest"
+    RequestDestination::Object => "object"
+    RequestDestination::Paintworklet => "paintworklet"
+    RequestDestination::Report => "report"
+    RequestDestination::Script => "script"
+    RequestDestination::Sharedworker => "sharedworker"
+    RequestDestination::Style => "style"
+    RequestDestination::Track => "track"
+    RequestDestination::Video => "video"
+    RequestDestination::Worker => "worker"
+    RequestDestination::Xslt => "xslt"
   }
 }
 
@@ -159,27 +289,27 @@ pub fn RequestDestination::to_string(self : RequestDestination) -> String {
 /// Parse from string value
 pub fn RequestDestination::from_string(s : String) -> RequestDestination? {
   match s {
-    "" => Some(Empty)
-    "audio" => Some(Audio)
-    "audioworklet" => Some(Audioworklet)
-    "document" => Some(Document)
-    "embed" => Some(Embed)
-    "font" => Some(Font)
-    "frame" => Some(Frame)
-    "iframe" => Some(Iframe)
-    "image" => Some(Image)
-    "json" => Some(Json)
-    "manifest" => Some(Manifest)
-    "object" => Some(Object)
-    "paintworklet" => Some(Paintworklet)
-    "report" => Some(Report)
-    "script" => Some(Script)
-    "sharedworker" => Some(Sharedworker)
-    "style" => Some(Style)
-    "track" => Some(Track)
-    "video" => Some(Video)
-    "worker" => Some(Worker)
-    "xslt" => Some(Xslt)
+    "" => Some(RequestDestination::Empty)
+    "audio" => Some(RequestDestination::Audio)
+    "audioworklet" => Some(RequestDestination::Audioworklet)
+    "document" => Some(RequestDestination::Document)
+    "embed" => Some(RequestDestination::Embed)
+    "font" => Some(RequestDestination::Font)
+    "frame" => Some(RequestDestination::Frame)
+    "iframe" => Some(RequestDestination::Iframe)
+    "image" => Some(RequestDestination::Image)
+    "json" => Some(RequestDestination::Json)
+    "manifest" => Some(RequestDestination::Manifest)
+    "object" => Some(RequestDestination::Object)
+    "paintworklet" => Some(RequestDestination::Paintworklet)
+    "report" => Some(RequestDestination::Report)
+    "script" => Some(RequestDestination::Script)
+    "sharedworker" => Some(RequestDestination::Sharedworker)
+    "style" => Some(RequestDestination::Style)
+    "track" => Some(RequestDestination::Track)
+    "video" => Some(RequestDestination::Video)
+    "worker" => Some(RequestDestination::Worker)
+    "xslt" => Some(RequestDestination::Xslt)
     _ => None
   }
 }
@@ -197,10 +327,10 @@ pub(all) enum RequestMode {
 /// Convert to string value
 pub fn RequestMode::to_string(self : RequestMode) -> String {
   match self {
-    Navigate => "navigate"
-    SameOrigin => "same-origin"
-    NoCors => "no-cors"
-    Cors => "cors"
+    RequestMode::Navigate => "navigate"
+    RequestMode::SameOrigin => "same-origin"
+    RequestMode::NoCors => "no-cors"
+    RequestMode::Cors => "cors"
   }
 }
 
@@ -208,10 +338,10 @@ pub fn RequestMode::to_string(self : RequestMode) -> String {
 /// Parse from string value
 pub fn RequestMode::from_string(s : String) -> RequestMode? {
   match s {
-    "navigate" => Some(Navigate)
-    "same-origin" => Some(SameOrigin)
-    "no-cors" => Some(NoCors)
-    "cors" => Some(Cors)
+    "navigate" => Some(RequestMode::Navigate)
+    "same-origin" => Some(RequestMode::SameOrigin)
+    "no-cors" => Some(RequestMode::NoCors)
+    "cors" => Some(RequestMode::Cors)
     _ => None
   }
 }
@@ -228,9 +358,9 @@ pub(all) enum RequestCredentials {
 /// Convert to string value
 pub fn RequestCredentials::to_string(self : RequestCredentials) -> String {
   match self {
-    Omit => "omit"
-    SameOrigin => "same-origin"
-    Include => "include"
+    RequestCredentials::Omit => "omit"
+    RequestCredentials::SameOrigin => "same-origin"
+    RequestCredentials::Include => "include"
   }
 }
 
@@ -238,9 +368,9 @@ pub fn RequestCredentials::to_string(self : RequestCredentials) -> String {
 /// Parse from string value
 pub fn RequestCredentials::from_string(s : String) -> RequestCredentials? {
   match s {
-    "omit" => Some(Omit)
-    "same-origin" => Some(SameOrigin)
-    "include" => Some(Include)
+    "omit" => Some(RequestCredentials::Omit)
+    "same-origin" => Some(RequestCredentials::SameOrigin)
+    "include" => Some(RequestCredentials::Include)
     _ => None
   }
 }
@@ -260,12 +390,12 @@ pub(all) enum RequestCache {
 /// Convert to string value
 pub fn RequestCache::to_string(self : RequestCache) -> String {
   match self {
-    Default => "default"
-    NoStore => "no-store"
-    Reload => "reload"
-    NoCache => "no-cache"
-    ForceCache => "force-cache"
-    OnlyIfCached => "only-if-cached"
+    RequestCache::Default => "default"
+    RequestCache::NoStore => "no-store"
+    RequestCache::Reload => "reload"
+    RequestCache::NoCache => "no-cache"
+    RequestCache::ForceCache => "force-cache"
+    RequestCache::OnlyIfCached => "only-if-cached"
   }
 }
 
@@ -273,12 +403,12 @@ pub fn RequestCache::to_string(self : RequestCache) -> String {
 /// Parse from string value
 pub fn RequestCache::from_string(s : String) -> RequestCache? {
   match s {
-    "default" => Some(Default)
-    "no-store" => Some(NoStore)
-    "reload" => Some(Reload)
-    "no-cache" => Some(NoCache)
-    "force-cache" => Some(ForceCache)
-    "only-if-cached" => Some(OnlyIfCached)
+    "default" => Some(RequestCache::Default)
+    "no-store" => Some(RequestCache::NoStore)
+    "reload" => Some(RequestCache::Reload)
+    "no-cache" => Some(RequestCache::NoCache)
+    "force-cache" => Some(RequestCache::ForceCache)
+    "only-if-cached" => Some(RequestCache::OnlyIfCached)
     _ => None
   }
 }
@@ -295,9 +425,9 @@ pub(all) enum RequestRedirect {
 /// Convert to string value
 pub fn RequestRedirect::to_string(self : RequestRedirect) -> String {
   match self {
-    Follow => "follow"
-    Error => "error"
-    Manual => "manual"
+    RequestRedirect::Follow => "follow"
+    RequestRedirect::Error => "error"
+    RequestRedirect::Manual => "manual"
   }
 }
 
@@ -305,9 +435,9 @@ pub fn RequestRedirect::to_string(self : RequestRedirect) -> String {
 /// Parse from string value
 pub fn RequestRedirect::from_string(s : String) -> RequestRedirect? {
   match s {
-    "follow" => Some(Follow)
-    "error" => Some(Error)
-    "manual" => Some(Manual)
+    "follow" => Some(RequestRedirect::Follow)
+    "error" => Some(RequestRedirect::Error)
+    "manual" => Some(RequestRedirect::Manual)
     _ => None
   }
 }
@@ -322,7 +452,7 @@ pub(all) enum RequestDuplex {
 /// Convert to string value
 pub fn RequestDuplex::to_string(self : RequestDuplex) -> String {
   match self {
-    Half => "half"
+    RequestDuplex::Half => "half"
   }
 }
 
@@ -330,7 +460,7 @@ pub fn RequestDuplex::to_string(self : RequestDuplex) -> String {
 /// Parse from string value
 pub fn RequestDuplex::from_string(s : String) -> RequestDuplex? {
   match s {
-    "half" => Some(Half)
+    "half" => Some(RequestDuplex::Half)
     _ => None
   }
 }
@@ -347,9 +477,9 @@ pub(all) enum RequestPriority {
 /// Convert to string value
 pub fn RequestPriority::to_string(self : RequestPriority) -> String {
   match self {
-    High => "high"
-    Low => "low"
-    Auto => "auto"
+    RequestPriority::High => "high"
+    RequestPriority::Low => "low"
+    RequestPriority::Auto => "auto"
   }
 }
 
@@ -357,9 +487,9 @@ pub fn RequestPriority::to_string(self : RequestPriority) -> String {
 /// Parse from string value
 pub fn RequestPriority::from_string(s : String) -> RequestPriority? {
   match s {
-    "high" => Some(High)
-    "low" => Some(Low)
-    "auto" => Some(Auto)
+    "high" => Some(RequestPriority::High)
+    "low" => Some(RequestPriority::Low)
+    "auto" => Some(RequestPriority::Auto)
     _ => None
   }
 }
@@ -379,12 +509,12 @@ pub(all) enum ResponseType {
 /// Convert to string value
 pub fn ResponseType::to_string(self : ResponseType) -> String {
   match self {
-    Basic => "basic"
-    Cors => "cors"
-    Default => "default"
-    Error => "error"
-    Opaque => "opaque"
-    Opaqueredirect => "opaqueredirect"
+    ResponseType::Basic => "basic"
+    ResponseType::Cors => "cors"
+    ResponseType::Default => "default"
+    ResponseType::Error => "error"
+    ResponseType::Opaque => "opaque"
+    ResponseType::Opaqueredirect => "opaqueredirect"
   }
 }
 
@@ -392,12 +522,12 @@ pub fn ResponseType::to_string(self : ResponseType) -> String {
 /// Parse from string value
 pub fn ResponseType::from_string(s : String) -> ResponseType? {
   match s {
-    "basic" => Some(Basic)
-    "cors" => Some(Cors)
-    "default" => Some(Default)
-    "error" => Some(Error)
-    "opaque" => Some(Opaque)
-    "opaqueredirect" => Some(Opaqueredirect)
+    "basic" => Some(ResponseType::Basic)
+    "cors" => Some(ResponseType::Cors)
+    "default" => Some(ResponseType::Default)
+    "error" => Some(ResponseType::Error)
+    "opaque" => Some(ResponseType::Opaque)
+    "opaqueredirect" => Some(ResponseType::Opaqueredirect)
     _ => None
   }
 }

@@ -22,8 +22,6 @@ Unlike Rust's web-sys which uses Cargo feature flags to include/exclude APIs, th
 moon add dijdzv/websys
 ```
 
-See [API documentation](https://mooncakes.io/docs/#/dijdzv/websys/) for usage.
-
 ## Generation
 
 This package is auto-generated from WebIDL specifications using [webidl-bindgen.mbt](https://www.npmjs.com/package/webidl-bindgen.mbt):

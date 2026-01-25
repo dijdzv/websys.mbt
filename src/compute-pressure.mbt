@@ -99,6 +99,34 @@ pub extern "js" fn PressureObserver::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PressureObserver (unchecked)
+pub extern "js" fn PressureObserver::from_js_value(
+  v : JsValue,
+) -> PressureObserver =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PressureObserver (checked with instanceof)
+pub extern "js" fn PressureObserver::from_js_value_opt(
+  v : JsValue,
+) -> PressureObserver? =
+  #| (v) => (v instanceof PressureObserver) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PressureObserver (checked with instanceof)
+pub extern "js" fn JsValue::as_pressure_observer(
+  self : JsValue,
+) -> PressureObserver? =
+  #| (self) => (self instanceof PressureObserver) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PressureObserver (unchecked)
+pub extern "js" fn JsValue::to_pressure_observer(
+  self : JsValue,
+) -> PressureObserver =
+  #| (self) => self
+
+///|
 pub extern "js" fn PressureObserver::new(
   callback : PressureUpdateCallback,
 ) -> PressureObserver =
@@ -155,6 +183,32 @@ pub extern "js" fn PressureRecord::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PressureRecord (unchecked)
+pub extern "js" fn PressureRecord::from_js_value(v : JsValue) -> PressureRecord =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PressureRecord (checked with instanceof)
+pub extern "js" fn PressureRecord::from_js_value_opt(
+  v : JsValue,
+) -> PressureRecord? =
+  #| (v) => (v instanceof PressureRecord) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PressureRecord (checked with instanceof)
+pub extern "js" fn JsValue::as_pressure_record(
+  self : JsValue,
+) -> PressureRecord? =
+  #| (self) => (self instanceof PressureRecord) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PressureRecord (unchecked)
+pub extern "js" fn JsValue::to_pressure_record(
+  self : JsValue,
+) -> PressureRecord =
+  #| (self) => self
+
+///|
 pub extern "js" fn PressureRecord::get_source(
   self : PressureRecord,
 ) -> PressureSource =
@@ -173,5 +227,5 @@ pub extern "js" fn PressureRecord::get_time(
   #| (self) => self.time
 
 ///|
-pub extern "js" fn PressureRecord::to_j_s_o_n(self : PressureRecord) -> JsValue =
+pub extern "js" fn PressureRecord::to_json(self : PressureRecord) -> JsValue =
   #| (self) => self.toJSON()

@@ -1329,6 +1329,34 @@ pub extern "js" fn AudioDecoder::to_js_value(self : AudioDecoder) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to AudioDecoder (unchecked)
+pub extern "js" fn AudioDecoder::from_js_value(v : JsValue) -> AudioDecoder =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioDecoder (checked with instanceof)
+pub extern "js" fn AudioDecoder::from_js_value_opt(
+  v : JsValue,
+) -> AudioDecoder? =
+  #| (v) => (v instanceof AudioDecoder) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioDecoder (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_decoder(self : JsValue) -> AudioDecoder? =
+  #| (self) => (self instanceof AudioDecoder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioDecoder (unchecked)
+pub extern "js" fn JsValue::to_audio_decoder(self : JsValue) -> AudioDecoder =
+  #| (self) => self
+
+///|
+pub extern "js" fn AudioDecoder::to_event_target(
+  self : AudioDecoder,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn AudioDecoder::new(init_ : AudioDecoderInit) -> AudioDecoder =
   #| (init_) => new AudioDecoder(init_)
 
@@ -1393,6 +1421,34 @@ pub type VideoDecoder
 
 ///|
 pub extern "js" fn VideoDecoder::to_js_value(self : VideoDecoder) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to VideoDecoder (unchecked)
+pub extern "js" fn VideoDecoder::from_js_value(v : JsValue) -> VideoDecoder =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to VideoDecoder (checked with instanceof)
+pub extern "js" fn VideoDecoder::from_js_value_opt(
+  v : JsValue,
+) -> VideoDecoder? =
+  #| (v) => (v instanceof VideoDecoder) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to VideoDecoder (checked with instanceof)
+pub extern "js" fn JsValue::as_video_decoder(self : JsValue) -> VideoDecoder? =
+  #| (self) => (self instanceof VideoDecoder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to VideoDecoder (unchecked)
+pub extern "js" fn JsValue::to_video_decoder(self : JsValue) -> VideoDecoder =
+  #| (self) => self
+
+///|
+pub extern "js" fn VideoDecoder::to_event_target(
+  self : VideoDecoder,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -1463,6 +1519,34 @@ pub extern "js" fn AudioEncoder::to_js_value(self : AudioEncoder) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to AudioEncoder (unchecked)
+pub extern "js" fn AudioEncoder::from_js_value(v : JsValue) -> AudioEncoder =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioEncoder (checked with instanceof)
+pub extern "js" fn AudioEncoder::from_js_value_opt(
+  v : JsValue,
+) -> AudioEncoder? =
+  #| (v) => (v instanceof AudioEncoder) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioEncoder (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_encoder(self : JsValue) -> AudioEncoder? =
+  #| (self) => (self instanceof AudioEncoder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioEncoder (unchecked)
+pub extern "js" fn JsValue::to_audio_encoder(self : JsValue) -> AudioEncoder =
+  #| (self) => self
+
+///|
+pub extern "js" fn AudioEncoder::to_event_target(
+  self : AudioEncoder,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn AudioEncoder::new(init_ : AudioEncoderInit) -> AudioEncoder =
   #| (init_) => new AudioEncoder(init_)
 
@@ -1527,6 +1611,34 @@ pub type VideoEncoder
 
 ///|
 pub extern "js" fn VideoEncoder::to_js_value(self : VideoEncoder) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to VideoEncoder (unchecked)
+pub extern "js" fn VideoEncoder::from_js_value(v : JsValue) -> VideoEncoder =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to VideoEncoder (checked with instanceof)
+pub extern "js" fn VideoEncoder::from_js_value_opt(
+  v : JsValue,
+) -> VideoEncoder? =
+  #| (v) => (v instanceof VideoEncoder) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to VideoEncoder (checked with instanceof)
+pub extern "js" fn JsValue::as_video_encoder(self : JsValue) -> VideoEncoder? =
+  #| (self) => (self instanceof VideoEncoder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to VideoEncoder (unchecked)
+pub extern "js" fn JsValue::to_video_encoder(self : JsValue) -> VideoEncoder =
+  #| (self) => self
+
+///|
+pub extern "js" fn VideoEncoder::to_event_target(
+  self : VideoEncoder,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -1607,6 +1719,34 @@ pub extern "js" fn EncodedAudioChunk::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to EncodedAudioChunk (unchecked)
+pub extern "js" fn EncodedAudioChunk::from_js_value(
+  v : JsValue,
+) -> EncodedAudioChunk =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to EncodedAudioChunk (checked with instanceof)
+pub extern "js" fn EncodedAudioChunk::from_js_value_opt(
+  v : JsValue,
+) -> EncodedAudioChunk? =
+  #| (v) => (v instanceof EncodedAudioChunk) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to EncodedAudioChunk (checked with instanceof)
+pub extern "js" fn JsValue::as_encoded_audio_chunk(
+  self : JsValue,
+) -> EncodedAudioChunk? =
+  #| (self) => (self instanceof EncodedAudioChunk) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to EncodedAudioChunk (unchecked)
+pub extern "js" fn JsValue::to_encoded_audio_chunk(
+  self : JsValue,
+) -> EncodedAudioChunk =
+  #| (self) => self
+
+///|
 pub extern "js" fn EncodedAudioChunk::new(
   init_ : EncodedAudioChunkInit,
 ) -> EncodedAudioChunk =
@@ -1628,7 +1768,7 @@ pub extern "js" fn EncodedAudioChunk::get_timestamp(
 pub extern "js" fn EncodedAudioChunk::get_duration(
   self : EncodedAudioChunk,
 ) -> Int64? =
-  #| (self) => self.duration
+  #| (self) => { const v = self.duration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn EncodedAudioChunk::get_byte_length(
@@ -1654,6 +1794,34 @@ pub extern "js" fn EncodedVideoChunk::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to EncodedVideoChunk (unchecked)
+pub extern "js" fn EncodedVideoChunk::from_js_value(
+  v : JsValue,
+) -> EncodedVideoChunk =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to EncodedVideoChunk (checked with instanceof)
+pub extern "js" fn EncodedVideoChunk::from_js_value_opt(
+  v : JsValue,
+) -> EncodedVideoChunk? =
+  #| (v) => (v instanceof EncodedVideoChunk) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to EncodedVideoChunk (checked with instanceof)
+pub extern "js" fn JsValue::as_encoded_video_chunk(
+  self : JsValue,
+) -> EncodedVideoChunk? =
+  #| (self) => (self instanceof EncodedVideoChunk) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to EncodedVideoChunk (unchecked)
+pub extern "js" fn JsValue::to_encoded_video_chunk(
+  self : JsValue,
+) -> EncodedVideoChunk =
+  #| (self) => self
+
+///|
 pub extern "js" fn EncodedVideoChunk::new(
   init_ : EncodedVideoChunkInit,
 ) -> EncodedVideoChunk =
@@ -1675,7 +1843,7 @@ pub extern "js" fn EncodedVideoChunk::get_timestamp(
 pub extern "js" fn EncodedVideoChunk::get_duration(
   self : EncodedVideoChunk,
 ) -> Int64? =
-  #| (self) => self.duration
+  #| (self) => { const v = self.duration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn EncodedVideoChunk::get_byte_length(
@@ -1699,6 +1867,26 @@ pub extern "js" fn AudioData::to_js_value(self : AudioData) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to AudioData (unchecked)
+pub extern "js" fn AudioData::from_js_value(v : JsValue) -> AudioData =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioData (checked with instanceof)
+pub extern "js" fn AudioData::from_js_value_opt(v : JsValue) -> AudioData? =
+  #| (v) => (v instanceof AudioData) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioData (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_data(self : JsValue) -> AudioData? =
+  #| (self) => (self instanceof AudioData) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioData (unchecked)
+pub extern "js" fn JsValue::to_audio_data(self : JsValue) -> AudioData =
+  #| (self) => self
+
+///|
 pub extern "js" fn AudioData::new(init_ : AudioDataInit) -> AudioData =
   #| (init_) => new AudioData(init_)
 
@@ -1706,7 +1894,7 @@ pub extern "js" fn AudioData::new(init_ : AudioDataInit) -> AudioData =
 pub extern "js" fn AudioData::get_format(
   self : AudioData,
 ) -> AudioSampleFormat? =
-  #| (self) => self.format
+  #| (self) => { const v = self.format; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn AudioData::get_sample_rate(self : AudioData) -> Double =
@@ -1760,6 +1948,26 @@ pub extern "js" fn VideoFrame::to_js_value(self : VideoFrame) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to VideoFrame (unchecked)
+pub extern "js" fn VideoFrame::from_js_value(v : JsValue) -> VideoFrame =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to VideoFrame (checked with instanceof)
+pub extern "js" fn VideoFrame::from_js_value_opt(v : JsValue) -> VideoFrame? =
+  #| (v) => (v instanceof VideoFrame) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to VideoFrame (checked with instanceof)
+pub extern "js" fn JsValue::as_video_frame(self : JsValue) -> VideoFrame? =
+  #| (self) => (self instanceof VideoFrame) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to VideoFrame (unchecked)
+pub extern "js" fn JsValue::to_video_frame(self : JsValue) -> VideoFrame =
+  #| (self) => self
+
+///|
 pub extern "js" fn VideoFrame::new(
   image : CanvasImageSource,
   init_ : VideoFrameInit,
@@ -1770,7 +1978,7 @@ pub extern "js" fn VideoFrame::new(
 pub extern "js" fn VideoFrame::get_format(
   self : VideoFrame,
 ) -> VideoPixelFormat? =
-  #| (self) => self.format
+  #| (self) => { const v = self.format; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn VideoFrame::get_coded_width(self : VideoFrame) -> Int =
@@ -1784,13 +1992,13 @@ pub extern "js" fn VideoFrame::get_coded_height(self : VideoFrame) -> Int =
 pub extern "js" fn VideoFrame::get_coded_rect(
   self : VideoFrame,
 ) -> DOMRectReadOnly? =
-  #| (self) => self.codedRect
+  #| (self) => { const v = self.codedRect; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn VideoFrame::get_visible_rect(
   self : VideoFrame,
 ) -> DOMRectReadOnly? =
-  #| (self) => self.visibleRect
+  #| (self) => { const v = self.visibleRect; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn VideoFrame::get_rotation(self : VideoFrame) -> Double =
@@ -1810,7 +2018,7 @@ pub extern "js" fn VideoFrame::get_display_height(self : VideoFrame) -> Int =
 
 ///|
 pub extern "js" fn VideoFrame::get_duration(self : VideoFrame) -> Int64? =
-  #| (self) => self.duration
+  #| (self) => { const v = self.duration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn VideoFrame::get_timestamp(self : VideoFrame) -> Int64 =
@@ -1843,7 +2051,7 @@ pub extern "js" fn VideoFrame::allocation_size_with_options(
 pub extern "js" fn VideoFrame::copy_to(
   self : VideoFrame,
   destination : AllowSharedBufferSource,
-) -> Promise[Unit] =
+) -> Promise[Array[PlaneLayout]] =
   #| (self, destination) => self.copyTo(destination)
 
 ///|
@@ -1851,7 +2059,7 @@ pub extern "js" fn VideoFrame::copy_to_with_options(
   self : VideoFrame,
   destination : AllowSharedBufferSource,
   options : VideoFrameCopyToOptions,
-) -> Promise[Unit] =
+) -> Promise[Array[PlaneLayout]] =
   #| (self, destination, options) => self.copyTo(destination, options)
 
 ///|
@@ -1873,6 +2081,34 @@ pub extern "js" fn VideoColorSpace::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to VideoColorSpace (unchecked)
+pub extern "js" fn VideoColorSpace::from_js_value(
+  v : JsValue,
+) -> VideoColorSpace =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to VideoColorSpace (checked with instanceof)
+pub extern "js" fn VideoColorSpace::from_js_value_opt(
+  v : JsValue,
+) -> VideoColorSpace? =
+  #| (v) => (v instanceof VideoColorSpace) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to VideoColorSpace (checked with instanceof)
+pub extern "js" fn JsValue::as_video_color_space(
+  self : JsValue,
+) -> VideoColorSpace? =
+  #| (self) => (self instanceof VideoColorSpace) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to VideoColorSpace (unchecked)
+pub extern "js" fn JsValue::to_video_color_space(
+  self : JsValue,
+) -> VideoColorSpace =
+  #| (self) => self
+
+///|
 pub extern "js" fn VideoColorSpace::new(
   init_ : VideoColorSpaceInit,
 ) -> VideoColorSpace =
@@ -1882,28 +2118,28 @@ pub extern "js" fn VideoColorSpace::new(
 pub extern "js" fn VideoColorSpace::get_primaries(
   self : VideoColorSpace,
 ) -> VideoColorPrimaries? =
-  #| (self) => self.primaries
+  #| (self) => { const v = self.primaries; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn VideoColorSpace::get_transfer(
   self : VideoColorSpace,
 ) -> VideoTransferCharacteristics? =
-  #| (self) => self.transfer
+  #| (self) => { const v = self.transfer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn VideoColorSpace::get_matrix(
   self : VideoColorSpace,
 ) -> VideoMatrixCoefficients? =
-  #| (self) => self.matrix
+  #| (self) => { const v = self.matrix; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn VideoColorSpace::get_full_range(
   self : VideoColorSpace,
 ) -> Bool? =
-  #| (self) => self.fullRange
+  #| (self) => { const v = self.fullRange; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
-pub extern "js" fn VideoColorSpace::to_j_s_o_n(
+pub extern "js" fn VideoColorSpace::to_json(
   self : VideoColorSpace,
 ) -> VideoColorSpaceInit =
   #| (self) => self.toJSON()
@@ -1914,6 +2150,28 @@ pub type ImageDecoder
 
 ///|
 pub extern "js" fn ImageDecoder::to_js_value(self : ImageDecoder) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to ImageDecoder (unchecked)
+pub extern "js" fn ImageDecoder::from_js_value(v : JsValue) -> ImageDecoder =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ImageDecoder (checked with instanceof)
+pub extern "js" fn ImageDecoder::from_js_value_opt(
+  v : JsValue,
+) -> ImageDecoder? =
+  #| (v) => (v instanceof ImageDecoder) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ImageDecoder (checked with instanceof)
+pub extern "js" fn JsValue::as_image_decoder(self : JsValue) -> ImageDecoder? =
+  #| (self) => (self instanceof ImageDecoder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ImageDecoder (unchecked)
+pub extern "js" fn JsValue::to_image_decoder(self : JsValue) -> ImageDecoder =
   #| (self) => self
 
 ///|
@@ -1978,6 +2236,32 @@ pub extern "js" fn ImageTrackList::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ImageTrackList (unchecked)
+pub extern "js" fn ImageTrackList::from_js_value(v : JsValue) -> ImageTrackList =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ImageTrackList (checked with instanceof)
+pub extern "js" fn ImageTrackList::from_js_value_opt(
+  v : JsValue,
+) -> ImageTrackList? =
+  #| (v) => (v instanceof ImageTrackList) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ImageTrackList (checked with instanceof)
+pub extern "js" fn JsValue::as_image_track_list(
+  self : JsValue,
+) -> ImageTrackList? =
+  #| (self) => (self instanceof ImageTrackList) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ImageTrackList (unchecked)
+pub extern "js" fn JsValue::to_image_track_list(
+  self : JsValue,
+) -> ImageTrackList =
+  #| (self) => self
+
+///|
 pub extern "js" fn ImageTrackList::get(
   self : ImageTrackList,
   index : Int,
@@ -2004,7 +2288,7 @@ pub extern "js" fn ImageTrackList::get_selected_index(
 pub extern "js" fn ImageTrackList::get_selected_track(
   self : ImageTrackList,
 ) -> ImageTrack? =
-  #| (self) => self.selectedTrack
+  #| (self) => { const v = self.selectedTrack; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// ImageTrack interface
@@ -2012,6 +2296,26 @@ pub type ImageTrack
 
 ///|
 pub extern "js" fn ImageTrack::to_js_value(self : ImageTrack) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to ImageTrack (unchecked)
+pub extern "js" fn ImageTrack::from_js_value(v : JsValue) -> ImageTrack =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ImageTrack (checked with instanceof)
+pub extern "js" fn ImageTrack::from_js_value_opt(v : JsValue) -> ImageTrack? =
+  #| (v) => (v instanceof ImageTrack) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ImageTrack (checked with instanceof)
+pub extern "js" fn JsValue::as_image_track(self : JsValue) -> ImageTrack? =
+  #| (self) => (self instanceof ImageTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ImageTrack (unchecked)
+pub extern "js" fn JsValue::to_image_track(self : JsValue) -> ImageTrack =
   #| (self) => self
 
 ///|

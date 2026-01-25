@@ -109,88 +109,6 @@ pub extern "js" fn CredentialData::to_js(self : CredentialData) -> JsValue =
   #| })
 
 ///|
-/// CredentialRequestOptions dictionary
-pub struct CredentialRequestOptions {
-  mediation : CredentialMediationRequirement?
-  signal : AbortSignal?
-  password : Bool?
-  federated : FederatedCredentialRequestOptions?
-  digital : DigitalCredentialRequestOptions?
-  identity : IdentityCredentialRequestOptions?
-  otp : OTPCredentialRequestOptions?
-  publicKey : PublicKeyCredentialRequestOptions?
-}
-
-///|
-/// Create a new CredentialRequestOptions with default values
-pub fn CredentialRequestOptions::default() -> CredentialRequestOptions {
-  CredentialRequestOptions::{
-    mediation: None,
-    signal: None,
-    password: None,
-    federated: None,
-    digital: None,
-    identity: None,
-    otp: None,
-    publicKey: None,
-  }
-}
-
-///|
-/// Convert to JsValue
-pub extern "js" fn CredentialRequestOptions::to_js(
-  self : CredentialRequestOptions,
-) -> JsValue =
-  #| (self) => ({
-  #|   mediation: ['silent', 'optional', 'conditional', 'required'][self.mediation],
-  #|   signal: self.signal,
-  #|   password: self.password,
-  #|   federated: self.federated,
-  #|   digital: self.digital,
-  #|   identity: self.identity,
-  #|   otp: self.otp,
-  #|   publicKey: self.publicKey
-  #| })
-
-///|
-/// CredentialCreationOptions dictionary
-pub struct CredentialCreationOptions {
-  mediation : CredentialMediationRequirement?
-  signal : AbortSignal?
-  password : PasswordCredentialInit?
-  federated : FederatedCredentialInit?
-  digital : DigitalCredentialCreationOptions?
-  publicKey : PublicKeyCredentialCreationOptions?
-}
-
-///|
-/// Create a new CredentialCreationOptions with default values
-pub fn CredentialCreationOptions::default() -> CredentialCreationOptions {
-  CredentialCreationOptions::{
-    mediation: None,
-    signal: None,
-    password: None,
-    federated: None,
-    digital: None,
-    publicKey: None,
-  }
-}
-
-///|
-/// Convert to JsValue
-pub extern "js" fn CredentialCreationOptions::to_js(
-  self : CredentialCreationOptions,
-) -> JsValue =
-  #| (self) => ({
-  #|   mediation: ['silent', 'optional', 'conditional', 'required'][self.mediation],
-  #|   signal: self.signal,
-  #|   password: self.password.to_js_value(),
-  #|   federated: self.federated,
-  #|   digital: self.digital,
-  #|   publicKey: self.publicKey
-  #| })
-
-///|
 /// PasswordCredentialData dictionary
 pub struct PasswordCredentialData {
   id : String
@@ -295,6 +213,62 @@ pub extern "js" fn Credential::to_js_value(self : Credential) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Credential (unchecked)
+pub extern "js" fn Credential::from_js_value(v : JsValue) -> Credential =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Credential (checked with instanceof)
+pub extern "js" fn Credential::from_js_value_opt(v : JsValue) -> Credential? =
+  #| (v) => (v instanceof Credential) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Credential (checked with instanceof)
+pub extern "js" fn JsValue::as_credential(self : JsValue) -> Credential? =
+  #| (self) => (self instanceof Credential) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Credential (unchecked)
+pub extern "js" fn JsValue::to_credential(self : JsValue) -> Credential =
+  #| (self) => self
+
+///|
+pub extern "js" fn Credential::as_identity_credential(
+  self : Credential,
+) -> IdentityCredential? =
+  #| (self) => (self instanceof IdentityCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Credential::as_digital_credential(
+  self : Credential,
+) -> DigitalCredential? =
+  #| (self) => (self instanceof DigitalCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Credential::as_otp_credential(
+  self : Credential,
+) -> OTPCredential? =
+  #| (self) => (self instanceof OTPCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Credential::as_public_key_credential(
+  self : Credential,
+) -> PublicKeyCredential? =
+  #| (self) => (self instanceof PublicKeyCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Credential::as_password_credential(
+  self : Credential,
+) -> PasswordCredential? =
+  #| (self) => (self instanceof PasswordCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Credential::as_federated_credential(
+  self : Credential,
+) -> FederatedCredential? =
+  #| (self) => (self instanceof FederatedCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn Credential::get_id(self : Credential) -> String =
   #| (self) => self.id
 
@@ -325,17 +299,45 @@ pub extern "js" fn CredentialsContainer::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CredentialsContainer (unchecked)
+pub extern "js" fn CredentialsContainer::from_js_value(
+  v : JsValue,
+) -> CredentialsContainer =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CredentialsContainer (checked with instanceof)
+pub extern "js" fn CredentialsContainer::from_js_value_opt(
+  v : JsValue,
+) -> CredentialsContainer? =
+  #| (v) => (v instanceof CredentialsContainer) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CredentialsContainer (checked with instanceof)
+pub extern "js" fn JsValue::as_credentials_container(
+  self : JsValue,
+) -> CredentialsContainer? =
+  #| (self) => (self instanceof CredentialsContainer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CredentialsContainer (unchecked)
+pub extern "js" fn JsValue::to_credentials_container(
+  self : JsValue,
+) -> CredentialsContainer =
+  #| (self) => self
+
+///|
 pub extern "js" fn CredentialsContainer::get(
   self : CredentialsContainer,
 ) -> Promise[Credential?] =
-  #| (self) => self.get()
+  #| (self) => self.get().then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
 
 ///|
 pub extern "js" fn CredentialsContainer::get_with_options(
   self : CredentialsContainer,
   options : CredentialRequestOptions,
 ) -> Promise[Credential?] =
-  #| (self, options) => self.get(options)
+  #| (self, options) => self.get(options).then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
 
 ///|
 pub extern "js" fn CredentialsContainer::store(
@@ -348,14 +350,14 @@ pub extern "js" fn CredentialsContainer::store(
 pub extern "js" fn CredentialsContainer::create(
   self : CredentialsContainer,
 ) -> Promise[Credential?] =
-  #| (self) => self.create()
+  #| (self) => self.create().then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
 
 ///|
 pub extern "js" fn CredentialsContainer::create_with_options(
   self : CredentialsContainer,
   options : CredentialCreationOptions,
 ) -> Promise[Credential?] =
-  #| (self, options) => self.create(options)
+  #| (self, options) => self.create(options).then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
 
 ///|
 pub extern "js" fn CredentialsContainer::prevent_silent_access(
@@ -374,28 +376,38 @@ pub extern "js" fn PasswordCredential::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn PasswordCredential::get_id(
+/// Cast JsValue to PasswordCredential (unchecked)
+pub extern "js" fn PasswordCredential::from_js_value(
+  v : JsValue,
+) -> PasswordCredential =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PasswordCredential (checked with instanceof)
+pub extern "js" fn PasswordCredential::from_js_value_opt(
+  v : JsValue,
+) -> PasswordCredential? =
+  #| (v) => (v instanceof PasswordCredential) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PasswordCredential (checked with instanceof)
+pub extern "js" fn JsValue::as_password_credential(
+  self : JsValue,
+) -> PasswordCredential? =
+  #| (self) => (self instanceof PasswordCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PasswordCredential (unchecked)
+pub extern "js" fn JsValue::to_password_credential(
+  self : JsValue,
+) -> PasswordCredential =
+  #| (self) => self
+
+///|
+pub extern "js" fn PasswordCredential::to_credential(
   self : PasswordCredential,
-) -> String =
-  #| (self) => self.id
-
-///|
-pub extern "js" fn PasswordCredential::get_type(
-  self : PasswordCredential,
-) -> String =
-  #| (self) => self.type
-
-///|
-pub extern "js" fn PasswordCredential::is_conditional_mediation_available() -> Promise[
-  Bool,
-] =
-  #| () => PasswordCredential.isConditionalMediationAvailable()
-
-///|
-pub extern "js" fn PasswordCredential::will_request_conditional_creation() -> Promise[
-  Unit,
-] =
-  #| () => PasswordCredential.willRequestConditionalCreation()
+) -> Credential =
+  #| (self) => self
 
 ///|
 pub extern "js" fn PasswordCredential::new(
@@ -416,7 +428,7 @@ pub extern "js" fn PasswordCredential::get_name(
   #| (self) => self.name
 
 ///|
-pub extern "js" fn PasswordCredential::get_icon_u_r_l(
+pub extern "js" fn PasswordCredential::get_icon_url(
   self : PasswordCredential,
 ) -> String =
   #| (self) => self.iconURL
@@ -432,28 +444,38 @@ pub extern "js" fn FederatedCredential::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn FederatedCredential::get_id(
+/// Cast JsValue to FederatedCredential (unchecked)
+pub extern "js" fn FederatedCredential::from_js_value(
+  v : JsValue,
+) -> FederatedCredential =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FederatedCredential (checked with instanceof)
+pub extern "js" fn FederatedCredential::from_js_value_opt(
+  v : JsValue,
+) -> FederatedCredential? =
+  #| (v) => (v instanceof FederatedCredential) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FederatedCredential (checked with instanceof)
+pub extern "js" fn JsValue::as_federated_credential(
+  self : JsValue,
+) -> FederatedCredential? =
+  #| (self) => (self instanceof FederatedCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FederatedCredential (unchecked)
+pub extern "js" fn JsValue::to_federated_credential(
+  self : JsValue,
+) -> FederatedCredential =
+  #| (self) => self
+
+///|
+pub extern "js" fn FederatedCredential::to_credential(
   self : FederatedCredential,
-) -> String =
-  #| (self) => self.id
-
-///|
-pub extern "js" fn FederatedCredential::get_type(
-  self : FederatedCredential,
-) -> String =
-  #| (self) => self.type
-
-///|
-pub extern "js" fn FederatedCredential::is_conditional_mediation_available() -> Promise[
-  Bool,
-] =
-  #| () => FederatedCredential.isConditionalMediationAvailable()
-
-///|
-pub extern "js" fn FederatedCredential::will_request_conditional_creation() -> Promise[
-  Unit,
-] =
-  #| () => FederatedCredential.willRequestConditionalCreation()
+) -> Credential =
+  #| (self) => self
 
 ///|
 pub extern "js" fn FederatedCredential::new(
@@ -471,7 +493,7 @@ pub extern "js" fn FederatedCredential::get_provider(
 pub extern "js" fn FederatedCredential::get_protocol(
   self : FederatedCredential,
 ) -> String? =
-  #| (self) => self.protocol
+  #| (self) => { const v = self.protocol; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn FederatedCredential::get_name(
@@ -480,7 +502,7 @@ pub extern "js" fn FederatedCredential::get_name(
   #| (self) => self.name
 
 ///|
-pub extern "js" fn FederatedCredential::get_icon_u_r_l(
+pub extern "js" fn FederatedCredential::get_icon_url(
   self : FederatedCredential,
 ) -> String =
   #| (self) => self.iconURL

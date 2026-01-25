@@ -61,6 +61,50 @@ pub extern "js" fn Accelerometer::to_js_value(self : Accelerometer) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Accelerometer (unchecked)
+pub extern "js" fn Accelerometer::from_js_value(v : JsValue) -> Accelerometer =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Accelerometer (checked with instanceof)
+pub extern "js" fn Accelerometer::from_js_value_opt(
+  v : JsValue,
+) -> Accelerometer? =
+  #| (v) => (v instanceof Accelerometer) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Accelerometer (checked with instanceof)
+pub extern "js" fn JsValue::as_accelerometer(self : JsValue) -> Accelerometer? =
+  #| (self) => (self instanceof Accelerometer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Accelerometer (unchecked)
+pub extern "js" fn JsValue::to_accelerometer(self : JsValue) -> Accelerometer =
+  #| (self) => self
+
+///|
+pub extern "js" fn Accelerometer::to_sensor(self : Accelerometer) -> Sensor =
+  #| (self) => self
+
+///|
+pub extern "js" fn Accelerometer::to_event_target(
+  self : Accelerometer,
+) -> EventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn Accelerometer::as_linear_acceleration_sensor(
+  self : Accelerometer,
+) -> LinearAccelerationSensor? =
+  #| (self) => (self instanceof LinearAccelerationSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Accelerometer::as_gravity_sensor(
+  self : Accelerometer,
+) -> GravitySensor? =
+  #| (self) => (self instanceof GravitySensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn Accelerometer::new(
   options : AccelerometerSensorOptions,
 ) -> Accelerometer =
@@ -68,15 +112,15 @@ pub extern "js" fn Accelerometer::new(
 
 ///|
 pub extern "js" fn Accelerometer::get_x(self : Accelerometer) -> Double? =
-  #| (self) => self.x
+  #| (self) => { const v = self.x; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Accelerometer::get_y(self : Accelerometer) -> Double? =
-  #| (self) => self.y
+  #| (self) => { const v = self.y; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Accelerometer::get_z(self : Accelerometer) -> Double? =
-  #| (self) => self.z
+  #| (self) => { const v = self.z; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// LinearAccelerationSensor interface
@@ -89,28 +133,56 @@ pub extern "js" fn LinearAccelerationSensor::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to LinearAccelerationSensor (unchecked)
+pub extern "js" fn LinearAccelerationSensor::from_js_value(
+  v : JsValue,
+) -> LinearAccelerationSensor =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to LinearAccelerationSensor (checked with instanceof)
+pub extern "js" fn LinearAccelerationSensor::from_js_value_opt(
+  v : JsValue,
+) -> LinearAccelerationSensor? =
+  #| (v) => (v instanceof LinearAccelerationSensor) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to LinearAccelerationSensor (checked with instanceof)
+pub extern "js" fn JsValue::as_linear_acceleration_sensor(
+  self : JsValue,
+) -> LinearAccelerationSensor? =
+  #| (self) => (self instanceof LinearAccelerationSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to LinearAccelerationSensor (unchecked)
+pub extern "js" fn JsValue::to_linear_acceleration_sensor(
+  self : JsValue,
+) -> LinearAccelerationSensor =
+  #| (self) => self
+
+///|
+pub extern "js" fn LinearAccelerationSensor::to_accelerometer(
+  self : LinearAccelerationSensor,
+) -> Accelerometer =
+  #| (self) => self
+
+///|
+pub extern "js" fn LinearAccelerationSensor::to_sensor(
+  self : LinearAccelerationSensor,
+) -> Sensor =
+  #| (self) => self
+
+///|
+pub extern "js" fn LinearAccelerationSensor::to_event_target(
+  self : LinearAccelerationSensor,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn LinearAccelerationSensor::new(
   options : AccelerometerSensorOptions,
 ) -> LinearAccelerationSensor =
   #| (options) => new LinearAccelerationSensor(options)
-
-///|
-pub extern "js" fn LinearAccelerationSensor::get_x(
-  self : LinearAccelerationSensor,
-) -> Double? =
-  #| (self) => self.x
-
-///|
-pub extern "js" fn LinearAccelerationSensor::get_y(
-  self : LinearAccelerationSensor,
-) -> Double? =
-  #| (self) => self.y
-
-///|
-pub extern "js" fn LinearAccelerationSensor::get_z(
-  self : LinearAccelerationSensor,
-) -> Double? =
-  #| (self) => self.z
 
 ///|
 /// GravitySensor interface
@@ -121,19 +193,45 @@ pub extern "js" fn GravitySensor::to_js_value(self : GravitySensor) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to GravitySensor (unchecked)
+pub extern "js" fn GravitySensor::from_js_value(v : JsValue) -> GravitySensor =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GravitySensor (checked with instanceof)
+pub extern "js" fn GravitySensor::from_js_value_opt(
+  v : JsValue,
+) -> GravitySensor? =
+  #| (v) => (v instanceof GravitySensor) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GravitySensor (checked with instanceof)
+pub extern "js" fn JsValue::as_gravity_sensor(self : JsValue) -> GravitySensor? =
+  #| (self) => (self instanceof GravitySensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GravitySensor (unchecked)
+pub extern "js" fn JsValue::to_gravity_sensor(self : JsValue) -> GravitySensor =
+  #| (self) => self
+
+///|
+pub extern "js" fn GravitySensor::to_accelerometer(
+  self : GravitySensor,
+) -> Accelerometer =
+  #| (self) => self
+
+///|
+pub extern "js" fn GravitySensor::to_sensor(self : GravitySensor) -> Sensor =
+  #| (self) => self
+
+///|
+pub extern "js" fn GravitySensor::to_event_target(
+  self : GravitySensor,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn GravitySensor::new(
   options : AccelerometerSensorOptions,
 ) -> GravitySensor =
   #| (options) => new GravitySensor(options)
-
-///|
-pub extern "js" fn GravitySensor::get_x(self : GravitySensor) -> Double? =
-  #| (self) => self.x
-
-///|
-pub extern "js" fn GravitySensor::get_y(self : GravitySensor) -> Double? =
-  #| (self) => self.y
-
-///|
-pub extern "js" fn GravitySensor::get_z(self : GravitySensor) -> Double? =
-  #| (self) => self.z

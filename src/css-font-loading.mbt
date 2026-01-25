@@ -139,6 +139,26 @@ pub extern "js" fn FontFace::to_js_value(self : FontFace) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to FontFace (unchecked)
+pub extern "js" fn FontFace::from_js_value(v : JsValue) -> FontFace =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FontFace (checked with instanceof)
+pub extern "js" fn FontFace::from_js_value_opt(v : JsValue) -> FontFace? =
+  #| (v) => (v instanceof FontFace) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FontFace (checked with instanceof)
+pub extern "js" fn JsValue::as_font_face(self : JsValue) -> FontFace? =
+  #| (self) => (self instanceof FontFace) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FontFace (unchecked)
+pub extern "js" fn JsValue::to_font_face(self : JsValue) -> FontFace =
+  #| (self) => self
+
+///|
 pub extern "js" fn FontFace::new(
   family : CSSOMString,
   source : CSSOMStringOrBufferSource,
@@ -314,6 +334,34 @@ pub extern "js" fn FontFaceFeatures::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to FontFaceFeatures (unchecked)
+pub extern "js" fn FontFaceFeatures::from_js_value(
+  v : JsValue,
+) -> FontFaceFeatures =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FontFaceFeatures (checked with instanceof)
+pub extern "js" fn FontFaceFeatures::from_js_value_opt(
+  v : JsValue,
+) -> FontFaceFeatures? =
+  #| (v) => (v instanceof FontFaceFeatures) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FontFaceFeatures (checked with instanceof)
+pub extern "js" fn JsValue::as_font_face_features(
+  self : JsValue,
+) -> FontFaceFeatures? =
+  #| (self) => (self instanceof FontFaceFeatures) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FontFaceFeatures (unchecked)
+pub extern "js" fn JsValue::to_font_face_features(
+  self : JsValue,
+) -> FontFaceFeatures =
+  #| (self) => self
+
+///|
 /// FontFaceVariationAxis interface
 pub type FontFaceVariationAxis
 
@@ -321,6 +369,34 @@ pub type FontFaceVariationAxis
 pub extern "js" fn FontFaceVariationAxis::to_js_value(
   self : FontFaceVariationAxis,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to FontFaceVariationAxis (unchecked)
+pub extern "js" fn FontFaceVariationAxis::from_js_value(
+  v : JsValue,
+) -> FontFaceVariationAxis =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FontFaceVariationAxis (checked with instanceof)
+pub extern "js" fn FontFaceVariationAxis::from_js_value_opt(
+  v : JsValue,
+) -> FontFaceVariationAxis? =
+  #| (v) => (v instanceof FontFaceVariationAxis) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FontFaceVariationAxis (checked with instanceof)
+pub extern "js" fn JsValue::as_font_face_variation_axis(
+  self : JsValue,
+) -> FontFaceVariationAxis? =
+  #| (self) => (self instanceof FontFaceVariationAxis) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FontFaceVariationAxis (unchecked)
+pub extern "js" fn JsValue::to_font_face_variation_axis(
+  self : JsValue,
+) -> FontFaceVariationAxis =
   #| (self) => self
 
 ///|
@@ -364,6 +440,34 @@ pub extern "js" fn FontFaceVariations::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to FontFaceVariations (unchecked)
+pub extern "js" fn FontFaceVariations::from_js_value(
+  v : JsValue,
+) -> FontFaceVariations =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FontFaceVariations (checked with instanceof)
+pub extern "js" fn FontFaceVariations::from_js_value_opt(
+  v : JsValue,
+) -> FontFaceVariations? =
+  #| (v) => (v instanceof FontFaceVariations) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FontFaceVariations (checked with instanceof)
+pub extern "js" fn JsValue::as_font_face_variations(
+  self : JsValue,
+) -> FontFaceVariations? =
+  #| (self) => (self instanceof FontFaceVariations) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FontFaceVariations (unchecked)
+pub extern "js" fn JsValue::to_font_face_variations(
+  self : JsValue,
+) -> FontFaceVariations =
+  #| (self) => self
+
+///|
 pub extern "js" fn FontFaceVariations::has(
   self : FontFaceVariations,
   value : FontFaceVariationAxis,
@@ -378,6 +482,34 @@ pub type FontFacePalette
 pub extern "js" fn FontFacePalette::to_js_value(
   self : FontFacePalette,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to FontFacePalette (unchecked)
+pub extern "js" fn FontFacePalette::from_js_value(
+  v : JsValue,
+) -> FontFacePalette =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FontFacePalette (checked with instanceof)
+pub extern "js" fn FontFacePalette::from_js_value_opt(
+  v : JsValue,
+) -> FontFacePalette? =
+  #| (v) => (v instanceof FontFacePalette) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FontFacePalette (checked with instanceof)
+pub extern "js" fn JsValue::as_font_face_palette(
+  self : JsValue,
+) -> FontFacePalette? =
+  #| (self) => (self instanceof FontFacePalette) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FontFacePalette (unchecked)
+pub extern "js" fn JsValue::to_font_face_palette(
+  self : JsValue,
+) -> FontFacePalette =
   #| (self) => self
 
 ///|
@@ -418,6 +550,34 @@ pub extern "js" fn FontFacePalettes::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to FontFacePalettes (unchecked)
+pub extern "js" fn FontFacePalettes::from_js_value(
+  v : JsValue,
+) -> FontFacePalettes =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FontFacePalettes (checked with instanceof)
+pub extern "js" fn FontFacePalettes::from_js_value_opt(
+  v : JsValue,
+) -> FontFacePalettes? =
+  #| (v) => (v instanceof FontFacePalettes) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FontFacePalettes (checked with instanceof)
+pub extern "js" fn JsValue::as_font_face_palettes(
+  self : JsValue,
+) -> FontFacePalettes? =
+  #| (self) => (self instanceof FontFacePalettes) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FontFacePalettes (unchecked)
+pub extern "js" fn JsValue::to_font_face_palettes(
+  self : JsValue,
+) -> FontFacePalettes =
+  #| (self) => self
+
+///|
 pub extern "js" fn FontFacePalettes::_unknown_(self : FontFacePalettes) -> Unit =
   #| (self) => self._unknown_()
 
@@ -443,6 +603,40 @@ pub extern "js" fn FontFaceSetLoadEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to FontFaceSetLoadEvent (unchecked)
+pub extern "js" fn FontFaceSetLoadEvent::from_js_value(
+  v : JsValue,
+) -> FontFaceSetLoadEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FontFaceSetLoadEvent (checked with instanceof)
+pub extern "js" fn FontFaceSetLoadEvent::from_js_value_opt(
+  v : JsValue,
+) -> FontFaceSetLoadEvent? =
+  #| (v) => (v instanceof FontFaceSetLoadEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FontFaceSetLoadEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_font_face_set_load_event(
+  self : JsValue,
+) -> FontFaceSetLoadEvent? =
+  #| (self) => (self instanceof FontFaceSetLoadEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FontFaceSetLoadEvent (unchecked)
+pub extern "js" fn JsValue::to_font_face_set_load_event(
+  self : JsValue,
+) -> FontFaceSetLoadEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn FontFaceSetLoadEvent::to_event(
+  self : FontFaceSetLoadEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn FontFaceSetLoadEvent::new(
   type_ : CSSOMString,
   event_init_dict : FontFaceSetLoadEventInit,
@@ -461,6 +655,32 @@ pub type FontFaceSet
 
 ///|
 pub extern "js" fn FontFaceSet::to_js_value(self : FontFaceSet) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to FontFaceSet (unchecked)
+pub extern "js" fn FontFaceSet::from_js_value(v : JsValue) -> FontFaceSet =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FontFaceSet (checked with instanceof)
+pub extern "js" fn FontFaceSet::from_js_value_opt(v : JsValue) -> FontFaceSet? =
+  #| (v) => (v instanceof FontFaceSet) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FontFaceSet (checked with instanceof)
+pub extern "js" fn JsValue::as_font_face_set(self : JsValue) -> FontFaceSet? =
+  #| (self) => (self instanceof FontFaceSet) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FontFaceSet (unchecked)
+pub extern "js" fn JsValue::to_font_face_set(self : JsValue) -> FontFaceSet =
+  #| (self) => self
+
+///|
+pub extern "js" fn FontFaceSet::to_event_target(
+  self : FontFaceSet,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -531,7 +751,7 @@ pub extern "js" fn FontFaceSet::set_onloadingerror(
 pub extern "js" fn FontFaceSet::load(
   self : FontFaceSet,
   font : CSSOMString,
-) -> Promise[Unit] =
+) -> Promise[Array[FontFace]] =
   #| (self, font) => self.load(font)
 
 ///|
@@ -539,7 +759,7 @@ pub extern "js" fn FontFaceSet::load_with_text(
   self : FontFaceSet,
   font : CSSOMString,
   text : CSSOMString,
-) -> Promise[Unit] =
+) -> Promise[Array[FontFace]] =
   #| (self, font, text) => self.load(font, text)
 
 ///|

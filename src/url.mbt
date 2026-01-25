@@ -10,12 +10,32 @@ pub extern "js" fn URL::to_js_value(self : URL) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to URL (unchecked)
+pub extern "js" fn URL::from_js_value(v : JsValue) -> URL =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to URL (checked with instanceof)
+pub extern "js" fn URL::from_js_value_opt(v : JsValue) -> URL? =
+  #| (v) => (v instanceof URL) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to URL (checked with instanceof)
+pub extern "js" fn JsValue::as_url(self : JsValue) -> URL? =
+  #| (self) => (self instanceof URL) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to URL (unchecked)
+pub extern "js" fn JsValue::to_url(self : JsValue) -> URL =
+  #| (self) => self
+
+///|
 pub extern "js" fn URL::new(url : String, base : String) -> URL =
   #| (url, base) => new URL(url, base)
 
 ///|
 pub extern "js" fn URL::parse(url : String, base : String) -> URL? =
-  #| (url, base) => URL.parse(url, base)
+  #| (url, base) => { const v = URL.parse(url, base); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn URL::can_parse(url : String, base : String) -> Bool =
@@ -110,15 +130,15 @@ pub extern "js" fn URL::set_hash(self : URL, value : String) -> Unit =
   #| (self, value) => { self.hash = value }
 
 ///|
-pub extern "js" fn URL::to_j_s_o_n(self : URL) -> String =
+pub extern "js" fn URL::to_json(self : URL) -> String =
   #| (self) => self.toJSON()
 
 ///|
-pub extern "js" fn URL::create_object_u_r_l(obj : BlobOrMediaSource) -> String =
+pub extern "js" fn URL::create_object_url(obj : BlobOrMediaSource) -> String =
   #| (obj) => URL.createObjectURL(obj)
 
 ///|
-pub extern "js" fn URL::revoke_object_u_r_l(url : String) -> Unit =
+pub extern "js" fn URL::revoke_object_url(url : String) -> Unit =
   #| (url) => URL.revokeObjectURL(url)
 
 ///|
@@ -129,6 +149,34 @@ pub type URLSearchParams
 pub extern "js" fn URLSearchParams::to_js_value(
   self : URLSearchParams,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to URLSearchParams (unchecked)
+pub extern "js" fn URLSearchParams::from_js_value(
+  v : JsValue,
+) -> URLSearchParams =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to URLSearchParams (checked with instanceof)
+pub extern "js" fn URLSearchParams::from_js_value_opt(
+  v : JsValue,
+) -> URLSearchParams? =
+  #| (v) => (v instanceof URLSearchParams) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to URLSearchParams (checked with instanceof)
+pub extern "js" fn JsValue::as_url_search_params(
+  self : JsValue,
+) -> URLSearchParams? =
+  #| (self) => (self instanceof URLSearchParams) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to URLSearchParams (unchecked)
+pub extern "js" fn JsValue::to_url_search_params(
+  self : JsValue,
+) -> URLSearchParams =
   #| (self) => self
 
 ///|
@@ -169,7 +217,7 @@ pub extern "js" fn URLSearchParams::get(
   self : URLSearchParams,
   name : String,
 ) -> String? =
-  #| (self, name) => self.get(name)
+  #| (self, name) => { const v = self.get(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn URLSearchParams::get_all(

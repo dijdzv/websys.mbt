@@ -141,6 +141,50 @@ pub extern "js" fn IdentityCredentialErrorInit::to_js(
   #| })
 
 ///|
+/// CredentialRequestOptions dictionary
+pub struct CredentialRequestOptions {
+  identity : IdentityCredentialRequestOptions?
+  digital : DigitalCredentialRequestOptions?
+  otp : OTPCredentialRequestOptions?
+  publicKey : PublicKeyCredentialRequestOptions?
+  mediation : CredentialMediationRequirement?
+  signal : AbortSignal?
+  password : Bool?
+  federated : FederatedCredentialRequestOptions?
+}
+
+///|
+/// Create a new CredentialRequestOptions with default values
+pub fn CredentialRequestOptions::default() -> CredentialRequestOptions {
+  CredentialRequestOptions::{
+    identity: None,
+    digital: None,
+    otp: None,
+    publicKey: None,
+    mediation: None,
+    signal: None,
+    password: None,
+    federated: None,
+  }
+}
+
+///|
+/// Convert to JsValue
+pub extern "js" fn CredentialRequestOptions::to_js(
+  self : CredentialRequestOptions,
+) -> JsValue =
+  #| (self) => ({
+  #|   identity: self.identity,
+  #|   digital: self.digital,
+  #|   otp: self.otp,
+  #|   publicKey: self.publicKey,
+  #|   mediation: ['silent', 'optional', 'conditional', 'required'][self.mediation],
+  #|   signal: self.signal,
+  #|   password: self.password,
+  #|   federated: self.federated
+  #| })
+
+///|
 /// IdentityCredentialRequestOptions dictionary
 pub struct IdentityCredentialRequestOptions {
   providers : Array[IdentityProviderRequestOptions]
@@ -539,6 +583,40 @@ pub extern "js" fn IdentityCredential::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to IdentityCredential (unchecked)
+pub extern "js" fn IdentityCredential::from_js_value(
+  v : JsValue,
+) -> IdentityCredential =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IdentityCredential (checked with instanceof)
+pub extern "js" fn IdentityCredential::from_js_value_opt(
+  v : JsValue,
+) -> IdentityCredential? =
+  #| (v) => (v instanceof IdentityCredential) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IdentityCredential (checked with instanceof)
+pub extern "js" fn JsValue::as_identity_credential(
+  self : JsValue,
+) -> IdentityCredential? =
+  #| (self) => (self instanceof IdentityCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IdentityCredential (unchecked)
+pub extern "js" fn JsValue::to_identity_credential(
+  self : JsValue,
+) -> IdentityCredential =
+  #| (self) => self
+
+///|
+pub extern "js" fn IdentityCredential::to_credential(
+  self : IdentityCredential,
+) -> Credential =
+  #| (self) => self
+
+///|
 pub extern "js" fn IdentityCredential::disconnect(
   options : IdentityCredentialDisconnectOptions,
 ) -> Promise[Unit] =
@@ -557,7 +635,7 @@ pub extern "js" fn IdentityCredential::get_is_auto_selected(
   #| (self) => self.isAutoSelected
 
 ///|
-pub extern "js" fn IdentityCredential::get_config_u_r_l(
+pub extern "js" fn IdentityCredential::get_config_url(
   self : IdentityCredential,
 ) -> String =
   #| (self) => self.configURL
@@ -570,6 +648,40 @@ pub type IdentityCredentialError
 pub extern "js" fn IdentityCredentialError::to_js_value(
   self : IdentityCredentialError,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to IdentityCredentialError (unchecked)
+pub extern "js" fn IdentityCredentialError::from_js_value(
+  v : JsValue,
+) -> IdentityCredentialError =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IdentityCredentialError (checked with instanceof)
+pub extern "js" fn IdentityCredentialError::from_js_value_opt(
+  v : JsValue,
+) -> IdentityCredentialError? =
+  #| (v) => (v instanceof IdentityCredentialError) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IdentityCredentialError (checked with instanceof)
+pub extern "js" fn JsValue::as_identity_credential_error(
+  self : JsValue,
+) -> IdentityCredentialError? =
+  #| (self) => (self instanceof IdentityCredentialError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IdentityCredentialError (unchecked)
+pub extern "js" fn JsValue::to_identity_credential_error(
+  self : JsValue,
+) -> IdentityCredentialError =
+  #| (self) => self
+
+///|
+pub extern "js" fn IdentityCredentialError::to_dom_exception(
+  self : IdentityCredentialError,
+) -> DOMException =
   #| (self) => self
 
 ///|
@@ -602,6 +714,34 @@ pub extern "js" fn IdentityProvider::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to IdentityProvider (unchecked)
+pub extern "js" fn IdentityProvider::from_js_value(
+  v : JsValue,
+) -> IdentityProvider =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IdentityProvider (checked with instanceof)
+pub extern "js" fn IdentityProvider::from_js_value_opt(
+  v : JsValue,
+) -> IdentityProvider? =
+  #| (v) => (v instanceof IdentityProvider) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IdentityProvider (checked with instanceof)
+pub extern "js" fn JsValue::as_identity_provider(
+  self : JsValue,
+) -> IdentityProvider? =
+  #| (self) => (self instanceof IdentityProvider) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IdentityProvider (unchecked)
+pub extern "js" fn JsValue::to_identity_provider(
+  self : JsValue,
+) -> IdentityProvider =
+  #| (self) => self
+
+///|
 pub extern "js" fn IdentityProvider::close() -> Unit =
   #| () => IdentityProvider.close()
 
@@ -615,5 +755,5 @@ pub extern "js" fn IdentityProvider::resolve(
 ///|
 pub extern "js" fn IdentityProvider::get_user_info(
   config : IdentityProviderConfig,
-) -> Promise[Unit] =
+) -> Promise[Array[IdentityUserInfo]] =
   #| (config) => IdentityProvider.getUserInfo(config)

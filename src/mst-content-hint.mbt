@@ -38,32 +38,3 @@ pub fn RTCDegradationPreference::from_string(
     _ => None
   }
 }
-
-///|
-/// RTCRtpSendParameters dictionary
-pub struct RTCRtpSendParameters {
-  degradationPreference : RTCDegradationPreference?
-  transactionId : String
-  encodings : Array[RTCRtpEncodingParameters]
-}
-
-///|
-/// Create a new RTCRtpSendParameters with default values
-pub fn RTCRtpSendParameters::default() -> RTCRtpSendParameters {
-  RTCRtpSendParameters::{
-    degradationPreference: None,
-    transactionId: "",
-    encodings: [],
-  }
-}
-
-///|
-/// Convert to JsValue
-pub extern "js" fn RTCRtpSendParameters::to_js(
-  self : RTCRtpSendParameters,
-) -> JsValue =
-  #| (self) => ({
-  #|   degradationPreference: ['maintain-framerate', 'maintain-resolution', 'balanced', 'maintain-framerate-and-resolution'][self.degradationPreference],
-  #|   transactionId: self.transactionId,
-  #|   encodings: self.encodings
-  #| })

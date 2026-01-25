@@ -59,10 +59,10 @@ pub extern "js" fn IntersectionObserverEntryInit::to_js(
 ///|
 /// IntersectionObserverInit dictionary
 pub struct IntersectionObserverInit {
-  root : JsValue?
+  root : ElementOrDocument?
   rootMargin : String?
   scrollMargin : String?
-  threshold : JsValue?
+  threshold : DoubleOrArrayOfDouble?
   delay : Int?
   trackVisibility : Bool?
 }
@@ -102,6 +102,34 @@ pub type IntersectionObserver
 pub extern "js" fn IntersectionObserver::to_js_value(
   self : IntersectionObserver,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to IntersectionObserver (unchecked)
+pub extern "js" fn IntersectionObserver::from_js_value(
+  v : JsValue,
+) -> IntersectionObserver =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IntersectionObserver (checked with instanceof)
+pub extern "js" fn IntersectionObserver::from_js_value_opt(
+  v : JsValue,
+) -> IntersectionObserver? =
+  #| (v) => (v instanceof IntersectionObserver) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IntersectionObserver (checked with instanceof)
+pub extern "js" fn JsValue::as_intersection_observer(
+  self : JsValue,
+) -> IntersectionObserver? =
+  #| (self) => (self instanceof IntersectionObserver) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IntersectionObserver (unchecked)
+pub extern "js" fn JsValue::to_intersection_observer(
+  self : JsValue,
+) -> IntersectionObserver =
   #| (self) => self
 
 ///|
@@ -184,6 +212,34 @@ pub extern "js" fn IntersectionObserverEntry::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to IntersectionObserverEntry (unchecked)
+pub extern "js" fn IntersectionObserverEntry::from_js_value(
+  v : JsValue,
+) -> IntersectionObserverEntry =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IntersectionObserverEntry (checked with instanceof)
+pub extern "js" fn IntersectionObserverEntry::from_js_value_opt(
+  v : JsValue,
+) -> IntersectionObserverEntry? =
+  #| (v) => (v instanceof IntersectionObserverEntry) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IntersectionObserverEntry (checked with instanceof)
+pub extern "js" fn JsValue::as_intersection_observer_entry(
+  self : JsValue,
+) -> IntersectionObserverEntry? =
+  #| (self) => (self instanceof IntersectionObserverEntry) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IntersectionObserverEntry (unchecked)
+pub extern "js" fn JsValue::to_intersection_observer_entry(
+  self : JsValue,
+) -> IntersectionObserverEntry =
+  #| (self) => self
+
+///|
 pub extern "js" fn IntersectionObserverEntry::new(
   intersection_observer_entry_init : IntersectionObserverEntryInit,
 ) -> IntersectionObserverEntry =
@@ -199,7 +255,7 @@ pub extern "js" fn IntersectionObserverEntry::get_time(
 pub extern "js" fn IntersectionObserverEntry::get_root_bounds(
   self : IntersectionObserverEntry,
 ) -> DOMRectReadOnly? =
-  #| (self) => self.rootBounds
+  #| (self) => { const v = self.rootBounds; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn IntersectionObserverEntry::get_bounding_client_rect(

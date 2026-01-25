@@ -207,24 +207,50 @@ pub extern "js" fn CookieStore::to_js_value(self : CookieStore) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to CookieStore (unchecked)
+pub extern "js" fn CookieStore::from_js_value(v : JsValue) -> CookieStore =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CookieStore (checked with instanceof)
+pub extern "js" fn CookieStore::from_js_value_opt(v : JsValue) -> CookieStore? =
+  #| (v) => (v instanceof CookieStore) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CookieStore (checked with instanceof)
+pub extern "js" fn JsValue::as_cookie_store(self : JsValue) -> CookieStore? =
+  #| (self) => (self instanceof CookieStore) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CookieStore (unchecked)
+pub extern "js" fn JsValue::to_cookie_store(self : JsValue) -> CookieStore =
+  #| (self) => self
+
+///|
+pub extern "js" fn CookieStore::to_event_target(
+  self : CookieStore,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn CookieStore::get(
   self : CookieStore,
 ) -> Promise[CookieListItem?] =
-  #| (self) => self.get()
+  #| (self) => self.get().then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
 
 ///|
 pub extern "js" fn CookieStore::get_with_options(
   self : CookieStore,
   options : CookieStoreGetOptions,
 ) -> Promise[CookieListItem?] =
-  #| (self, options) => self.get(options)
+  #| (self, options) => self.get(options).then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
 
 ///|
 pub extern "js" fn CookieStore::get_with_name(
   self : CookieStore,
   name : String,
 ) -> Promise[CookieListItem?] =
-  #| (self, name) => self.get(name)
+  #| (self, name) => self.get(name).then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
 
 ///|
 pub extern "js" fn CookieStore::get_all(
@@ -299,6 +325,34 @@ pub extern "js" fn CookieStoreManager::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CookieStoreManager (unchecked)
+pub extern "js" fn CookieStoreManager::from_js_value(
+  v : JsValue,
+) -> CookieStoreManager =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CookieStoreManager (checked with instanceof)
+pub extern "js" fn CookieStoreManager::from_js_value_opt(
+  v : JsValue,
+) -> CookieStoreManager? =
+  #| (v) => (v instanceof CookieStoreManager) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CookieStoreManager (checked with instanceof)
+pub extern "js" fn JsValue::as_cookie_store_manager(
+  self : JsValue,
+) -> CookieStoreManager? =
+  #| (self) => (self instanceof CookieStoreManager) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CookieStoreManager (unchecked)
+pub extern "js" fn JsValue::to_cookie_store_manager(
+  self : JsValue,
+) -> CookieStoreManager =
+  #| (self) => self
+
+///|
 pub extern "js" fn CookieStoreManager::subscribe(
   self : CookieStoreManager,
   subscriptions : Array[CookieStoreGetOptions],
@@ -308,7 +362,7 @@ pub extern "js" fn CookieStoreManager::subscribe(
 ///|
 pub extern "js" fn CookieStoreManager::get_subscriptions(
   self : CookieStoreManager,
-) -> Promise[Unit] =
+) -> Promise[Array[CookieStoreGetOptions]] =
   #| (self) => self.getSubscriptions()
 
 ///|
@@ -326,6 +380,40 @@ pub type CookieChangeEvent
 pub extern "js" fn CookieChangeEvent::to_js_value(
   self : CookieChangeEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CookieChangeEvent (unchecked)
+pub extern "js" fn CookieChangeEvent::from_js_value(
+  v : JsValue,
+) -> CookieChangeEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CookieChangeEvent (checked with instanceof)
+pub extern "js" fn CookieChangeEvent::from_js_value_opt(
+  v : JsValue,
+) -> CookieChangeEvent? =
+  #| (v) => (v instanceof CookieChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CookieChangeEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_cookie_change_event(
+  self : JsValue,
+) -> CookieChangeEvent? =
+  #| (self) => (self instanceof CookieChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CookieChangeEvent (unchecked)
+pub extern "js" fn JsValue::to_cookie_change_event(
+  self : JsValue,
+) -> CookieChangeEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn CookieChangeEvent::to_event(
+  self : CookieChangeEvent,
+) -> Event =
   #| (self) => self
 
 ///|
@@ -355,6 +443,46 @@ pub type ExtendableCookieChangeEvent
 pub extern "js" fn ExtendableCookieChangeEvent::to_js_value(
   self : ExtendableCookieChangeEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to ExtendableCookieChangeEvent (unchecked)
+pub extern "js" fn ExtendableCookieChangeEvent::from_js_value(
+  v : JsValue,
+) -> ExtendableCookieChangeEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ExtendableCookieChangeEvent (checked with instanceof)
+pub extern "js" fn ExtendableCookieChangeEvent::from_js_value_opt(
+  v : JsValue,
+) -> ExtendableCookieChangeEvent? =
+  #| (v) => (v instanceof ExtendableCookieChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ExtendableCookieChangeEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_extendable_cookie_change_event(
+  self : JsValue,
+) -> ExtendableCookieChangeEvent? =
+  #| (self) => (self instanceof ExtendableCookieChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ExtendableCookieChangeEvent (unchecked)
+pub extern "js" fn JsValue::to_extendable_cookie_change_event(
+  self : JsValue,
+) -> ExtendableCookieChangeEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn ExtendableCookieChangeEvent::to_extendable_event(
+  self : ExtendableCookieChangeEvent,
+) -> ExtendableEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn ExtendableCookieChangeEvent::to_event(
+  self : ExtendableCookieChangeEvent,
+) -> Event =
   #| (self) => self
 
 ///|

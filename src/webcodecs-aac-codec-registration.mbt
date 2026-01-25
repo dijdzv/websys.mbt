@@ -28,50 +28,6 @@ pub fn AacBitstreamFormat::from_string(s : String) -> AacBitstreamFormat? {
 }
 
 ///|
-/// AudioEncoderConfig dictionary
-pub struct AudioEncoderConfig {
-  aac : AacEncoderConfig?
-  flac : FlacEncoderConfig?
-  opus : OpusEncoderConfig?
-  codec : String
-  sampleRate : Int
-  numberOfChannels : Int
-  bitrate : Int64?
-  bitrateMode : BitrateMode?
-}
-
-///|
-/// Create a new AudioEncoderConfig with default values
-pub fn AudioEncoderConfig::default() -> AudioEncoderConfig {
-  AudioEncoderConfig::{
-    aac: None,
-    flac: None,
-    opus: None,
-    codec: "",
-    sampleRate: 0,
-    numberOfChannels: 0,
-    bitrate: None,
-    bitrateMode: None,
-  }
-}
-
-///|
-/// Convert to JsValue
-pub extern "js" fn AudioEncoderConfig::to_js(
-  self : AudioEncoderConfig,
-) -> JsValue =
-  #| (self) => ({
-  #|   aac: self.aac,
-  #|   flac: self.flac,
-  #|   opus: self.opus,
-  #|   codec: self.codec,
-  #|   sampleRate: self.sampleRate,
-  #|   numberOfChannels: self.numberOfChannels,
-  #|   bitrate: self.bitrate,
-  #|   bitrateMode: ['constant', 'variable'][self.bitrateMode]
-  #| })
-
-///|
 /// AacEncoderConfig dictionary
 pub struct AacEncoderConfig {
   format : AacBitstreamFormat?

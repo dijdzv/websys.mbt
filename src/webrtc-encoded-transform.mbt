@@ -471,6 +471,34 @@ pub extern "js" fn SFrameSenderTransform::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SFrameSenderTransform (unchecked)
+pub extern "js" fn SFrameSenderTransform::from_js_value(
+  v : JsValue,
+) -> SFrameSenderTransform =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SFrameSenderTransform (checked with instanceof)
+pub extern "js" fn SFrameSenderTransform::from_js_value_opt(
+  v : JsValue,
+) -> SFrameSenderTransform? =
+  #| (v) => (v instanceof SFrameSenderTransform) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SFrameSenderTransform (checked with instanceof)
+pub extern "js" fn JsValue::as_s_frame_sender_transform(
+  self : JsValue,
+) -> SFrameSenderTransform? =
+  #| (self) => (self instanceof SFrameSenderTransform) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SFrameSenderTransform (unchecked)
+pub extern "js" fn JsValue::to_s_frame_sender_transform(
+  self : JsValue,
+) -> SFrameSenderTransform =
+  #| (self) => self
+
+///|
 pub extern "js" fn SFrameSenderTransform::new(
   options : SFrameTransformOptions,
 ) -> SFrameSenderTransform =
@@ -505,6 +533,40 @@ pub type SFrameReceiverTransform
 pub extern "js" fn SFrameReceiverTransform::to_js_value(
   self : SFrameReceiverTransform,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SFrameReceiverTransform (unchecked)
+pub extern "js" fn SFrameReceiverTransform::from_js_value(
+  v : JsValue,
+) -> SFrameReceiverTransform =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SFrameReceiverTransform (checked with instanceof)
+pub extern "js" fn SFrameReceiverTransform::from_js_value_opt(
+  v : JsValue,
+) -> SFrameReceiverTransform? =
+  #| (v) => (v instanceof SFrameReceiverTransform) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SFrameReceiverTransform (checked with instanceof)
+pub extern "js" fn JsValue::as_s_frame_receiver_transform(
+  self : JsValue,
+) -> SFrameReceiverTransform? =
+  #| (self) => (self instanceof SFrameReceiverTransform) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SFrameReceiverTransform (unchecked)
+pub extern "js" fn JsValue::to_s_frame_receiver_transform(
+  self : JsValue,
+) -> SFrameReceiverTransform =
+  #| (self) => self
+
+///|
+pub extern "js" fn SFrameReceiverTransform::to_event_target(
+  self : SFrameReceiverTransform,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -549,6 +611,40 @@ pub type SFrameEncrypterStream
 pub extern "js" fn SFrameEncrypterStream::to_js_value(
   self : SFrameEncrypterStream,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SFrameEncrypterStream (unchecked)
+pub extern "js" fn SFrameEncrypterStream::from_js_value(
+  v : JsValue,
+) -> SFrameEncrypterStream =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SFrameEncrypterStream (checked with instanceof)
+pub extern "js" fn SFrameEncrypterStream::from_js_value_opt(
+  v : JsValue,
+) -> SFrameEncrypterStream? =
+  #| (v) => (v instanceof SFrameEncrypterStream) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SFrameEncrypterStream (checked with instanceof)
+pub extern "js" fn JsValue::as_s_frame_encrypter_stream(
+  self : JsValue,
+) -> SFrameEncrypterStream? =
+  #| (self) => (self instanceof SFrameEncrypterStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SFrameEncrypterStream (unchecked)
+pub extern "js" fn JsValue::to_s_frame_encrypter_stream(
+  self : JsValue,
+) -> SFrameEncrypterStream =
+  #| (self) => self
+
+///|
+pub extern "js" fn SFrameEncrypterStream::to_event_target(
+  self : SFrameEncrypterStream,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -598,6 +694,40 @@ pub type SFrameDecrypterStream
 pub extern "js" fn SFrameDecrypterStream::to_js_value(
   self : SFrameDecrypterStream,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SFrameDecrypterStream (unchecked)
+pub extern "js" fn SFrameDecrypterStream::from_js_value(
+  v : JsValue,
+) -> SFrameDecrypterStream =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SFrameDecrypterStream (checked with instanceof)
+pub extern "js" fn SFrameDecrypterStream::from_js_value_opt(
+  v : JsValue,
+) -> SFrameDecrypterStream? =
+  #| (v) => (v instanceof SFrameDecrypterStream) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SFrameDecrypterStream (checked with instanceof)
+pub extern "js" fn JsValue::as_s_frame_decrypter_stream(
+  self : JsValue,
+) -> SFrameDecrypterStream? =
+  #| (self) => (self instanceof SFrameDecrypterStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SFrameDecrypterStream (unchecked)
+pub extern "js" fn JsValue::to_s_frame_decrypter_stream(
+  self : JsValue,
+) -> SFrameDecrypterStream =
+  #| (self) => self
+
+///|
+pub extern "js" fn SFrameDecrypterStream::to_event_target(
+  self : SFrameDecrypterStream,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -657,6 +787,40 @@ pub extern "js" fn SFrameTransformErrorEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SFrameTransformErrorEvent (unchecked)
+pub extern "js" fn SFrameTransformErrorEvent::from_js_value(
+  v : JsValue,
+) -> SFrameTransformErrorEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SFrameTransformErrorEvent (checked with instanceof)
+pub extern "js" fn SFrameTransformErrorEvent::from_js_value_opt(
+  v : JsValue,
+) -> SFrameTransformErrorEvent? =
+  #| (v) => (v instanceof SFrameTransformErrorEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SFrameTransformErrorEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_s_frame_transform_error_event(
+  self : JsValue,
+) -> SFrameTransformErrorEvent? =
+  #| (self) => (self instanceof SFrameTransformErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SFrameTransformErrorEvent (unchecked)
+pub extern "js" fn JsValue::to_s_frame_transform_error_event(
+  self : JsValue,
+) -> SFrameTransformErrorEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn SFrameTransformErrorEvent::to_event(
+  self : SFrameTransformErrorEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn SFrameTransformErrorEvent::new(
   type_ : String,
   event_init_dict : SFrameTransformErrorEventInit,
@@ -670,10 +834,10 @@ pub extern "js" fn SFrameTransformErrorEvent::get_error_type(
   #| (self) => self.errorType
 
 ///|
-pub extern "js" fn SFrameTransformErrorEvent::get_key_i_d(
+pub extern "js" fn SFrameTransformErrorEvent::get_key_id(
   self : SFrameTransformErrorEvent,
 ) -> CryptoKeyID? =
-  #| (self) => self.keyID
+  #| (self) => { const v = self.keyID; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn SFrameTransformErrorEvent::get_frame(
@@ -689,6 +853,34 @@ pub type RTCEncodedVideoFrame
 pub extern "js" fn RTCEncodedVideoFrame::to_js_value(
   self : RTCEncodedVideoFrame,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to RTCEncodedVideoFrame (unchecked)
+pub extern "js" fn RTCEncodedVideoFrame::from_js_value(
+  v : JsValue,
+) -> RTCEncodedVideoFrame =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCEncodedVideoFrame (checked with instanceof)
+pub extern "js" fn RTCEncodedVideoFrame::from_js_value_opt(
+  v : JsValue,
+) -> RTCEncodedVideoFrame? =
+  #| (v) => (v instanceof RTCEncodedVideoFrame) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCEncodedVideoFrame (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_encoded_video_frame(
+  self : JsValue,
+) -> RTCEncodedVideoFrame? =
+  #| (self) => (self instanceof RTCEncodedVideoFrame) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCEncodedVideoFrame (unchecked)
+pub extern "js" fn JsValue::to_rtc_encoded_video_frame(
+  self : JsValue,
+) -> RTCEncodedVideoFrame =
   #| (self) => self
 
 ///|
@@ -734,6 +926,34 @@ pub extern "js" fn RTCEncodedAudioFrame::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCEncodedAudioFrame (unchecked)
+pub extern "js" fn RTCEncodedAudioFrame::from_js_value(
+  v : JsValue,
+) -> RTCEncodedAudioFrame =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCEncodedAudioFrame (checked with instanceof)
+pub extern "js" fn RTCEncodedAudioFrame::from_js_value_opt(
+  v : JsValue,
+) -> RTCEncodedAudioFrame? =
+  #| (v) => (v instanceof RTCEncodedAudioFrame) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCEncodedAudioFrame (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_encoded_audio_frame(
+  self : JsValue,
+) -> RTCEncodedAudioFrame? =
+  #| (self) => (self instanceof RTCEncodedAudioFrame) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCEncodedAudioFrame (unchecked)
+pub extern "js" fn JsValue::to_rtc_encoded_audio_frame(
+  self : JsValue,
+) -> RTCEncodedAudioFrame =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCEncodedAudioFrame::new(
   original_frame : RTCEncodedAudioFrame,
   options : RTCEncodedAudioFrameOptions,
@@ -770,6 +990,34 @@ pub extern "js" fn RTCRtpScriptTransform::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCRtpScriptTransform (unchecked)
+pub extern "js" fn RTCRtpScriptTransform::from_js_value(
+  v : JsValue,
+) -> RTCRtpScriptTransform =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCRtpScriptTransform (checked with instanceof)
+pub extern "js" fn RTCRtpScriptTransform::from_js_value_opt(
+  v : JsValue,
+) -> RTCRtpScriptTransform? =
+  #| (v) => (v instanceof RTCRtpScriptTransform) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCRtpScriptTransform (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_rtp_script_transform(
+  self : JsValue,
+) -> RTCRtpScriptTransform? =
+  #| (self) => (self instanceof RTCRtpScriptTransform) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCRtpScriptTransform (unchecked)
+pub extern "js" fn JsValue::to_rtc_rtp_script_transform(
+  self : JsValue,
+) -> RTCRtpScriptTransform =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCRtpScriptTransform::new(
   worker : Worker,
   options : JsValue,
@@ -785,6 +1033,40 @@ pub type RTCRtpScriptTransformer
 pub extern "js" fn RTCRtpScriptTransformer::to_js_value(
   self : RTCRtpScriptTransformer,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to RTCRtpScriptTransformer (unchecked)
+pub extern "js" fn RTCRtpScriptTransformer::from_js_value(
+  v : JsValue,
+) -> RTCRtpScriptTransformer =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCRtpScriptTransformer (checked with instanceof)
+pub extern "js" fn RTCRtpScriptTransformer::from_js_value_opt(
+  v : JsValue,
+) -> RTCRtpScriptTransformer? =
+  #| (v) => (v instanceof RTCRtpScriptTransformer) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCRtpScriptTransformer (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_rtp_script_transformer(
+  self : JsValue,
+) -> RTCRtpScriptTransformer? =
+  #| (self) => (self instanceof RTCRtpScriptTransformer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCRtpScriptTransformer (unchecked)
+pub extern "js" fn JsValue::to_rtc_rtp_script_transformer(
+  self : JsValue,
+) -> RTCRtpScriptTransformer =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCRtpScriptTransformer::to_event_target(
+  self : RTCRtpScriptTransformer,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -848,6 +1130,40 @@ pub extern "js" fn RTCTransformEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCTransformEvent (unchecked)
+pub extern "js" fn RTCTransformEvent::from_js_value(
+  v : JsValue,
+) -> RTCTransformEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCTransformEvent (checked with instanceof)
+pub extern "js" fn RTCTransformEvent::from_js_value_opt(
+  v : JsValue,
+) -> RTCTransformEvent? =
+  #| (v) => (v instanceof RTCTransformEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCTransformEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_transform_event(
+  self : JsValue,
+) -> RTCTransformEvent? =
+  #| (self) => (self instanceof RTCTransformEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCTransformEvent (unchecked)
+pub extern "js" fn JsValue::to_rtc_transform_event(
+  self : JsValue,
+) -> RTCTransformEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCTransformEvent::to_event(
+  self : RTCTransformEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCTransformEvent::get_transformer(
   self : RTCTransformEvent,
 ) -> RTCRtpScriptTransformer =
@@ -864,6 +1180,40 @@ pub extern "js" fn KeyFrameRequestEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to KeyFrameRequestEvent (unchecked)
+pub extern "js" fn KeyFrameRequestEvent::from_js_value(
+  v : JsValue,
+) -> KeyFrameRequestEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to KeyFrameRequestEvent (checked with instanceof)
+pub extern "js" fn KeyFrameRequestEvent::from_js_value_opt(
+  v : JsValue,
+) -> KeyFrameRequestEvent? =
+  #| (v) => (v instanceof KeyFrameRequestEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to KeyFrameRequestEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_key_frame_request_event(
+  self : JsValue,
+) -> KeyFrameRequestEvent? =
+  #| (self) => (self instanceof KeyFrameRequestEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to KeyFrameRequestEvent (unchecked)
+pub extern "js" fn JsValue::to_key_frame_request_event(
+  self : JsValue,
+) -> KeyFrameRequestEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn KeyFrameRequestEvent::to_event(
+  self : KeyFrameRequestEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn KeyFrameRequestEvent::new(
   type_ : String,
   rid : String,
@@ -874,4 +1224,4 @@ pub extern "js" fn KeyFrameRequestEvent::new(
 pub extern "js" fn KeyFrameRequestEvent::get_rid(
   self : KeyFrameRequestEvent,
 ) -> String? =
-  #| (self) => self.rid
+  #| (self) => { const v = self.rid; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }

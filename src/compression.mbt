@@ -41,6 +41,34 @@ pub extern "js" fn CompressionStream::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CompressionStream (unchecked)
+pub extern "js" fn CompressionStream::from_js_value(
+  v : JsValue,
+) -> CompressionStream =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CompressionStream (checked with instanceof)
+pub extern "js" fn CompressionStream::from_js_value_opt(
+  v : JsValue,
+) -> CompressionStream? =
+  #| (v) => (v instanceof CompressionStream) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CompressionStream (checked with instanceof)
+pub extern "js" fn JsValue::as_compression_stream(
+  self : JsValue,
+) -> CompressionStream? =
+  #| (self) => (self instanceof CompressionStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CompressionStream (unchecked)
+pub extern "js" fn JsValue::to_compression_stream(
+  self : JsValue,
+) -> CompressionStream =
+  #| (self) => self
+
+///|
 pub extern "js" fn CompressionStream::new(
   format : CompressionFormat,
 ) -> CompressionStream =
@@ -66,6 +94,34 @@ pub type DecompressionStream
 pub extern "js" fn DecompressionStream::to_js_value(
   self : DecompressionStream,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to DecompressionStream (unchecked)
+pub extern "js" fn DecompressionStream::from_js_value(
+  v : JsValue,
+) -> DecompressionStream =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to DecompressionStream (checked with instanceof)
+pub extern "js" fn DecompressionStream::from_js_value_opt(
+  v : JsValue,
+) -> DecompressionStream? =
+  #| (v) => (v instanceof DecompressionStream) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to DecompressionStream (checked with instanceof)
+pub extern "js" fn JsValue::as_decompression_stream(
+  self : JsValue,
+) -> DecompressionStream? =
+  #| (self) => (self instanceof DecompressionStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to DecompressionStream (unchecked)
+pub extern "js" fn JsValue::to_decompression_stream(
+  self : JsValue,
+) -> DecompressionStream =
   #| (self) => self
 
 ///|

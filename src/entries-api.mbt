@@ -77,6 +77,46 @@ pub extern "js" fn FileSystemEntry::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to FileSystemEntry (unchecked)
+pub extern "js" fn FileSystemEntry::from_js_value(
+  v : JsValue,
+) -> FileSystemEntry =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FileSystemEntry (checked with instanceof)
+pub extern "js" fn FileSystemEntry::from_js_value_opt(
+  v : JsValue,
+) -> FileSystemEntry? =
+  #| (v) => (v instanceof FileSystemEntry) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FileSystemEntry (checked with instanceof)
+pub extern "js" fn JsValue::as_file_system_entry(
+  self : JsValue,
+) -> FileSystemEntry? =
+  #| (self) => (self instanceof FileSystemEntry) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FileSystemEntry (unchecked)
+pub extern "js" fn JsValue::to_file_system_entry(
+  self : JsValue,
+) -> FileSystemEntry =
+  #| (self) => self
+
+///|
+pub extern "js" fn FileSystemEntry::as_file_system_directory_entry(
+  self : FileSystemEntry,
+) -> FileSystemDirectoryEntry? =
+  #| (self) => (self instanceof FileSystemDirectoryEntry) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn FileSystemEntry::as_file_system_file_entry(
+  self : FileSystemEntry,
+) -> FileSystemFileEntry? =
+  #| (self) => (self instanceof FileSystemFileEntry) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn FileSystemEntry::get_is_file(self : FileSystemEntry) -> Bool =
   #| (self) => self.isFile
 
@@ -125,48 +165,38 @@ pub extern "js" fn FileSystemDirectoryEntry::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn FileSystemDirectoryEntry::get_is_file(
-  self : FileSystemDirectoryEntry,
-) -> Bool =
-  #| (self) => self.isFile
+/// Cast JsValue to FileSystemDirectoryEntry (unchecked)
+pub extern "js" fn FileSystemDirectoryEntry::from_js_value(
+  v : JsValue,
+) -> FileSystemDirectoryEntry =
+  #| (v) => v
 
 ///|
-pub extern "js" fn FileSystemDirectoryEntry::get_is_directory(
-  self : FileSystemDirectoryEntry,
-) -> Bool =
-  #| (self) => self.isDirectory
+/// Safely cast JsValue to FileSystemDirectoryEntry (checked with instanceof)
+pub extern "js" fn FileSystemDirectoryEntry::from_js_value_opt(
+  v : JsValue,
+) -> FileSystemDirectoryEntry? =
+  #| (v) => (v instanceof FileSystemDirectoryEntry) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn FileSystemDirectoryEntry::get_name(
-  self : FileSystemDirectoryEntry,
-) -> String =
-  #| (self) => self.name
+/// Safely cast JsValue to FileSystemDirectoryEntry (checked with instanceof)
+pub extern "js" fn JsValue::as_file_system_directory_entry(
+  self : JsValue,
+) -> FileSystemDirectoryEntry? =
+  #| (self) => (self instanceof FileSystemDirectoryEntry) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn FileSystemDirectoryEntry::get_full_path(
-  self : FileSystemDirectoryEntry,
-) -> String =
-  #| (self) => self.fullPath
+/// Cast JsValue to FileSystemDirectoryEntry (unchecked)
+pub extern "js" fn JsValue::to_file_system_directory_entry(
+  self : JsValue,
+) -> FileSystemDirectoryEntry =
+  #| (self) => self
 
 ///|
-pub extern "js" fn FileSystemDirectoryEntry::get_filesystem(
+pub extern "js" fn FileSystemDirectoryEntry::to_file_system_entry(
   self : FileSystemDirectoryEntry,
-) -> FileSystem =
-  #| (self) => self.filesystem
-
-///|
-pub extern "js" fn FileSystemDirectoryEntry::get_parent(
-  self : FileSystemDirectoryEntry,
-) -> Unit =
-  #| (self) => self.getParent()
-
-///|
-pub extern "js" fn FileSystemDirectoryEntry::get_parent_with_error_callback(
-  self : FileSystemDirectoryEntry,
-  success_callback : FileSystemEntryCallback,
-  error_callback : ErrorCallback,
-) -> Unit =
-  #| (self, success_callback, error_callback) => self.getParent(success_callback, error_callback)
+) -> FileSystemEntry =
+  #| (self) => self
 
 ///|
 pub extern "js" fn FileSystemDirectoryEntry::create_reader(
@@ -217,6 +247,34 @@ pub extern "js" fn FileSystemDirectoryReader::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to FileSystemDirectoryReader (unchecked)
+pub extern "js" fn FileSystemDirectoryReader::from_js_value(
+  v : JsValue,
+) -> FileSystemDirectoryReader =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FileSystemDirectoryReader (checked with instanceof)
+pub extern "js" fn FileSystemDirectoryReader::from_js_value_opt(
+  v : JsValue,
+) -> FileSystemDirectoryReader? =
+  #| (v) => (v instanceof FileSystemDirectoryReader) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FileSystemDirectoryReader (checked with instanceof)
+pub extern "js" fn JsValue::as_file_system_directory_reader(
+  self : JsValue,
+) -> FileSystemDirectoryReader? =
+  #| (self) => (self instanceof FileSystemDirectoryReader) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FileSystemDirectoryReader (unchecked)
+pub extern "js" fn JsValue::to_file_system_directory_reader(
+  self : JsValue,
+) -> FileSystemDirectoryReader =
+  #| (self) => self
+
+///|
 pub extern "js" fn FileSystemDirectoryReader::read_entries(
   self : FileSystemDirectoryReader,
   success_callback : FileSystemEntriesCallback,
@@ -242,48 +300,38 @@ pub extern "js" fn FileSystemFileEntry::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn FileSystemFileEntry::get_is_file(
-  self : FileSystemFileEntry,
-) -> Bool =
-  #| (self) => self.isFile
+/// Cast JsValue to FileSystemFileEntry (unchecked)
+pub extern "js" fn FileSystemFileEntry::from_js_value(
+  v : JsValue,
+) -> FileSystemFileEntry =
+  #| (v) => v
 
 ///|
-pub extern "js" fn FileSystemFileEntry::get_is_directory(
-  self : FileSystemFileEntry,
-) -> Bool =
-  #| (self) => self.isDirectory
+/// Safely cast JsValue to FileSystemFileEntry (checked with instanceof)
+pub extern "js" fn FileSystemFileEntry::from_js_value_opt(
+  v : JsValue,
+) -> FileSystemFileEntry? =
+  #| (v) => (v instanceof FileSystemFileEntry) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn FileSystemFileEntry::get_name(
-  self : FileSystemFileEntry,
-) -> String =
-  #| (self) => self.name
+/// Safely cast JsValue to FileSystemFileEntry (checked with instanceof)
+pub extern "js" fn JsValue::as_file_system_file_entry(
+  self : JsValue,
+) -> FileSystemFileEntry? =
+  #| (self) => (self instanceof FileSystemFileEntry) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn FileSystemFileEntry::get_full_path(
-  self : FileSystemFileEntry,
-) -> String =
-  #| (self) => self.fullPath
+/// Cast JsValue to FileSystemFileEntry (unchecked)
+pub extern "js" fn JsValue::to_file_system_file_entry(
+  self : JsValue,
+) -> FileSystemFileEntry =
+  #| (self) => self
 
 ///|
-pub extern "js" fn FileSystemFileEntry::get_filesystem(
+pub extern "js" fn FileSystemFileEntry::to_file_system_entry(
   self : FileSystemFileEntry,
-) -> FileSystem =
-  #| (self) => self.filesystem
-
-///|
-pub extern "js" fn FileSystemFileEntry::get_parent(
-  self : FileSystemFileEntry,
-) -> Unit =
-  #| (self) => self.getParent()
-
-///|
-pub extern "js" fn FileSystemFileEntry::get_parent_with_error_callback(
-  self : FileSystemFileEntry,
-  success_callback : FileSystemEntryCallback,
-  error_callback : ErrorCallback,
-) -> Unit =
-  #| (self, success_callback, error_callback) => self.getParent(success_callback, error_callback)
+) -> FileSystemEntry =
+  #| (self) => self
 
 ///|
 pub extern "js" fn FileSystemFileEntry::file(
@@ -306,6 +354,26 @@ pub type FileSystem
 
 ///|
 pub extern "js" fn FileSystem::to_js_value(self : FileSystem) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to FileSystem (unchecked)
+pub extern "js" fn FileSystem::from_js_value(v : JsValue) -> FileSystem =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FileSystem (checked with instanceof)
+pub extern "js" fn FileSystem::from_js_value_opt(v : JsValue) -> FileSystem? =
+  #| (v) => (v instanceof FileSystem) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FileSystem (checked with instanceof)
+pub extern "js" fn JsValue::as_file_system(self : JsValue) -> FileSystem? =
+  #| (self) => (self instanceof FileSystem) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FileSystem (unchecked)
+pub extern "js" fn JsValue::to_file_system(self : JsValue) -> FileSystem =
   #| (self) => self
 
 ///|

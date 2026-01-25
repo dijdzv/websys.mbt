@@ -67,6 +67,40 @@ pub extern "js" fn PointerTimeline::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PointerTimeline (unchecked)
+pub extern "js" fn PointerTimeline::from_js_value(
+  v : JsValue,
+) -> PointerTimeline =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PointerTimeline (checked with instanceof)
+pub extern "js" fn PointerTimeline::from_js_value_opt(
+  v : JsValue,
+) -> PointerTimeline? =
+  #| (v) => (v instanceof PointerTimeline) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PointerTimeline (checked with instanceof)
+pub extern "js" fn JsValue::as_pointer_timeline(
+  self : JsValue,
+) -> PointerTimeline? =
+  #| (self) => (self instanceof PointerTimeline) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PointerTimeline (unchecked)
+pub extern "js" fn JsValue::to_pointer_timeline(
+  self : JsValue,
+) -> PointerTimeline =
+  #| (self) => self
+
+///|
+pub extern "js" fn PointerTimeline::to_animation_timeline(
+  self : PointerTimeline,
+) -> AnimationTimeline =
+  #| (self) => self
+
+///|
 pub extern "js" fn PointerTimeline::new(
   options : PointerTimelineOptions,
 ) -> PointerTimeline =
@@ -76,7 +110,7 @@ pub extern "js" fn PointerTimeline::new(
 pub extern "js" fn PointerTimeline::get_source(
   self : PointerTimeline,
 ) -> Element? =
-  #| (self) => self.source
+  #| (self) => { const v = self.source; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PointerTimeline::get_axis(

@@ -12,6 +12,38 @@ pub extern "js" fn BatteryManager::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BatteryManager (unchecked)
+pub extern "js" fn BatteryManager::from_js_value(v : JsValue) -> BatteryManager =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BatteryManager (checked with instanceof)
+pub extern "js" fn BatteryManager::from_js_value_opt(
+  v : JsValue,
+) -> BatteryManager? =
+  #| (v) => (v instanceof BatteryManager) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BatteryManager (checked with instanceof)
+pub extern "js" fn JsValue::as_battery_manager(
+  self : JsValue,
+) -> BatteryManager? =
+  #| (self) => (self instanceof BatteryManager) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BatteryManager (unchecked)
+pub extern "js" fn JsValue::to_battery_manager(
+  self : JsValue,
+) -> BatteryManager =
+  #| (self) => self
+
+///|
+pub extern "js" fn BatteryManager::to_event_target(
+  self : BatteryManager,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn BatteryManager::get_charging(self : BatteryManager) -> Bool =
   #| (self) => self.charging
 

@@ -46,6 +46,44 @@ pub extern "js" fn DigitalCredentialGetRequest::to_js(
   #| })
 
 ///|
+/// CredentialCreationOptions dictionary
+pub struct CredentialCreationOptions {
+  digital : DigitalCredentialCreationOptions?
+  publicKey : PublicKeyCredentialCreationOptions?
+  mediation : CredentialMediationRequirement?
+  signal : AbortSignal?
+  password : PasswordCredentialInit?
+  federated : FederatedCredentialInit?
+}
+
+///|
+/// Create a new CredentialCreationOptions with default values
+pub fn CredentialCreationOptions::default() -> CredentialCreationOptions {
+  CredentialCreationOptions::{
+    digital: None,
+    publicKey: None,
+    mediation: None,
+    signal: None,
+    password: None,
+    federated: None,
+  }
+}
+
+///|
+/// Convert to JsValue
+pub extern "js" fn CredentialCreationOptions::to_js(
+  self : CredentialCreationOptions,
+) -> JsValue =
+  #| (self) => ({
+  #|   digital: self.digital,
+  #|   publicKey: self.publicKey,
+  #|   mediation: ['silent', 'optional', 'conditional', 'required'][self.mediation],
+  #|   signal: self.signal,
+  #|   password: self.password.to_js_value(),
+  #|   federated: self.federated
+  #| })
+
+///|
 /// DigitalCredentialCreationOptions dictionary
 pub struct DigitalCredentialCreationOptions {
   requests : Array[DigitalCredentialCreateRequest]?
@@ -100,7 +138,41 @@ pub extern "js" fn DigitalCredential::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn DigitalCredential::to_j_s_o_n(
+/// Cast JsValue to DigitalCredential (unchecked)
+pub extern "js" fn DigitalCredential::from_js_value(
+  v : JsValue,
+) -> DigitalCredential =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to DigitalCredential (checked with instanceof)
+pub extern "js" fn DigitalCredential::from_js_value_opt(
+  v : JsValue,
+) -> DigitalCredential? =
+  #| (v) => (v instanceof DigitalCredential) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to DigitalCredential (checked with instanceof)
+pub extern "js" fn JsValue::as_digital_credential(
+  self : JsValue,
+) -> DigitalCredential? =
+  #| (self) => (self instanceof DigitalCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to DigitalCredential (unchecked)
+pub extern "js" fn JsValue::to_digital_credential(
+  self : JsValue,
+) -> DigitalCredential =
+  #| (self) => self
+
+///|
+pub extern "js" fn DigitalCredential::to_credential(
+  self : DigitalCredential,
+) -> Credential =
+  #| (self) => self
+
+///|
+pub extern "js" fn DigitalCredential::to_json(
   self : DigitalCredential,
 ) -> JsValue =
   #| (self) => self.toJSON()

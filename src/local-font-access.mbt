@@ -29,6 +29,26 @@ pub extern "js" fn FontData::to_js_value(self : FontData) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to FontData (unchecked)
+pub extern "js" fn FontData::from_js_value(v : JsValue) -> FontData =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FontData (checked with instanceof)
+pub extern "js" fn FontData::from_js_value_opt(v : JsValue) -> FontData? =
+  #| (v) => (v instanceof FontData) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FontData (checked with instanceof)
+pub extern "js" fn JsValue::as_font_data(self : JsValue) -> FontData? =
+  #| (self) => (self instanceof FontData) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FontData (unchecked)
+pub extern "js" fn JsValue::to_font_data(self : JsValue) -> FontData =
+  #| (self) => self
+
+///|
 pub extern "js" fn FontData::blob(self : FontData) -> Promise[Blob] =
   #| (self) => self.blob()
 

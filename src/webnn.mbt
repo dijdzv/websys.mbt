@@ -2312,6 +2312,26 @@ pub extern "js" fn ML::to_js_value(self : ML) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to ML (unchecked)
+pub extern "js" fn ML::from_js_value(v : JsValue) -> ML =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ML (checked with instanceof)
+pub extern "js" fn ML::from_js_value_opt(v : JsValue) -> ML? =
+  #| (v) => (v instanceof ML) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ML (checked with instanceof)
+pub extern "js" fn JsValue::as_ml(self : JsValue) -> ML? =
+  #| (self) => (self instanceof ML) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ML (unchecked)
+pub extern "js" fn JsValue::to_ml(self : JsValue) -> ML =
+  #| (self) => self
+
+///|
 pub extern "js" fn ML::create_context(self : ML) -> Promise[MLContext] =
   #| (self) => self.createContext()
 
@@ -2323,7 +2343,7 @@ pub extern "js" fn ML::create_context_with_options(
   #| (self, options) => self.createContext(options)
 
 ///|
-pub extern "js" fn ML::create_context_with_gpu_device_g_p_u_device(
+pub extern "js" fn ML::create_context_with_gpu_device_gpu_device(
   self : ML,
   gpu_device : GPUDevice,
 ) -> Promise[MLContext] =
@@ -2335,6 +2355,26 @@ pub type MLContext
 
 ///|
 pub extern "js" fn MLContext::to_js_value(self : MLContext) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to MLContext (unchecked)
+pub extern "js" fn MLContext::from_js_value(v : JsValue) -> MLContext =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MLContext (checked with instanceof)
+pub extern "js" fn MLContext::from_js_value_opt(v : JsValue) -> MLContext? =
+  #| (v) => (v instanceof MLContext) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MLContext (checked with instanceof)
+pub extern "js" fn JsValue::as_ml_context(self : JsValue) -> MLContext? =
+  #| (self) => (self instanceof MLContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MLContext (unchecked)
+pub extern "js" fn JsValue::to_ml_context(self : JsValue) -> MLContext =
   #| (self) => self
 
 ///|
@@ -2369,7 +2409,7 @@ pub extern "js" fn MLContext::read_tensor(
   #| (self, tensor) => self.readTensor(tensor)
 
 ///|
-pub extern "js" fn MLContext::read_tensor_with_tensor_m_l_tensor_and_output_data_allow_shared_buffer_source(
+pub extern "js" fn MLContext::read_tensor_with_tensor_ml_tensor_and_output_data_allow_shared_buffer_source(
   self : MLContext,
   tensor : MLTensor,
   output_data : AllowSharedBufferSource,
@@ -2413,6 +2453,26 @@ pub extern "js" fn MLGraph::to_js_value(self : MLGraph) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to MLGraph (unchecked)
+pub extern "js" fn MLGraph::from_js_value(v : JsValue) -> MLGraph =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MLGraph (checked with instanceof)
+pub extern "js" fn MLGraph::from_js_value_opt(v : JsValue) -> MLGraph? =
+  #| (v) => (v instanceof MLGraph) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MLGraph (checked with instanceof)
+pub extern "js" fn JsValue::as_ml_graph(self : JsValue) -> MLGraph? =
+  #| (self) => (self instanceof MLGraph) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MLGraph (unchecked)
+pub extern "js" fn JsValue::to_ml_graph(self : JsValue) -> MLGraph =
+  #| (self) => self
+
+///|
 pub extern "js" fn MLGraph::destroy(self : MLGraph) -> Unit =
   #| (self) => self.destroy()
 
@@ -2422,6 +2482,26 @@ pub type MLOperand
 
 ///|
 pub extern "js" fn MLOperand::to_js_value(self : MLOperand) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to MLOperand (unchecked)
+pub extern "js" fn MLOperand::from_js_value(v : JsValue) -> MLOperand =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MLOperand (checked with instanceof)
+pub extern "js" fn MLOperand::from_js_value_opt(v : JsValue) -> MLOperand? =
+  #| (v) => (v instanceof MLOperand) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MLOperand (checked with instanceof)
+pub extern "js" fn JsValue::as_ml_operand(self : JsValue) -> MLOperand? =
+  #| (self) => (self instanceof MLOperand) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MLOperand (unchecked)
+pub extern "js" fn JsValue::to_ml_operand(self : JsValue) -> MLOperand =
   #| (self) => self
 
 ///|
@@ -2440,6 +2520,26 @@ pub type MLTensor
 
 ///|
 pub extern "js" fn MLTensor::to_js_value(self : MLTensor) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to MLTensor (unchecked)
+pub extern "js" fn MLTensor::from_js_value(v : JsValue) -> MLTensor =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MLTensor (checked with instanceof)
+pub extern "js" fn MLTensor::from_js_value_opt(v : JsValue) -> MLTensor? =
+  #| (v) => (v instanceof MLTensor) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MLTensor (checked with instanceof)
+pub extern "js" fn JsValue::as_ml_tensor(self : JsValue) -> MLTensor? =
+  #| (self) => (self instanceof MLTensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MLTensor (unchecked)
+pub extern "js" fn JsValue::to_ml_tensor(self : JsValue) -> MLTensor =
   #| (self) => self
 
 ///|
@@ -2479,6 +2579,32 @@ pub extern "js" fn MLGraphBuilder::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to MLGraphBuilder (unchecked)
+pub extern "js" fn MLGraphBuilder::from_js_value(v : JsValue) -> MLGraphBuilder =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MLGraphBuilder (checked with instanceof)
+pub extern "js" fn MLGraphBuilder::from_js_value_opt(
+  v : JsValue,
+) -> MLGraphBuilder? =
+  #| (v) => (v instanceof MLGraphBuilder) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MLGraphBuilder (checked with instanceof)
+pub extern "js" fn JsValue::as_ml_graph_builder(
+  self : JsValue,
+) -> MLGraphBuilder? =
+  #| (self) => (self instanceof MLGraphBuilder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MLGraphBuilder (unchecked)
+pub extern "js" fn JsValue::to_ml_graph_builder(
+  self : JsValue,
+) -> MLGraphBuilder =
+  #| (self) => self
+
+///|
 pub extern "js" fn MLGraphBuilder::new(context : MLContext) -> MLGraphBuilder =
   #| (context) => new MLGraphBuilder(context)
 
@@ -2498,7 +2624,7 @@ pub extern "js" fn MLGraphBuilder::constant(
   #| (self, tensor) => self.constant(tensor)
 
 ///|
-pub extern "js" fn MLGraphBuilder::constant_with_data_type_m_l_operand_data_type_and_value_m_l_number(
+pub extern "js" fn MLGraphBuilder::constant_with_data_type_ml_operand_data_type_and_value_ml_number(
   self : MLGraphBuilder,
   data_type : MLOperandDataType,
   value : MLNumber,
@@ -2506,7 +2632,7 @@ pub extern "js" fn MLGraphBuilder::constant_with_data_type_m_l_operand_data_type
   #| (self, data_type, value) => self.constant(['float32', 'float16', 'int32', 'uint32', 'int64', 'uint64', 'int8', 'uint8'][data_type], value)
 
 ///|
-pub extern "js" fn MLGraphBuilder::constant_with_descriptor_m_l_operand_descriptor_and_buffer_allow_shared_buffer_source(
+pub extern "js" fn MLGraphBuilder::constant_with_descriptor_ml_operand_descriptor_and_buffer_allow_shared_buffer_source(
   self : MLGraphBuilder,
   descriptor : MLOperandDescriptor,
   buffer : AllowSharedBufferSource,
@@ -3320,7 +3446,7 @@ pub extern "js" fn MLGraphBuilder::gather_elements_with_options(
   #| (self, input, indices, options) => self.gatherElements(input, indices, options)
 
 ///|
-pub extern "js" fn MLGraphBuilder::gather_n_d(
+pub extern "js" fn MLGraphBuilder::gather_nd(
   self : MLGraphBuilder,
   input : MLOperand,
   indices : MLOperand,
@@ -3328,7 +3454,7 @@ pub extern "js" fn MLGraphBuilder::gather_n_d(
   #| (self, input, indices) => self.gatherND(input, indices)
 
 ///|
-pub extern "js" fn MLGraphBuilder::gather_n_d_with_options(
+pub extern "js" fn MLGraphBuilder::gather_nd_with_options(
   self : MLGraphBuilder,
   input : MLOperand,
   indices : MLOperand,
@@ -3882,7 +4008,7 @@ pub extern "js" fn MLGraphBuilder::scatter_elements_with_options(
   #| (self, input, indices, updates, options) => self.scatterElements(input, indices, updates, options)
 
 ///|
-pub extern "js" fn MLGraphBuilder::scatter_n_d(
+pub extern "js" fn MLGraphBuilder::scatter_nd(
   self : MLGraphBuilder,
   input : MLOperand,
   indices : MLOperand,
@@ -3891,7 +4017,7 @@ pub extern "js" fn MLGraphBuilder::scatter_n_d(
   #| (self, input, indices, updates) => self.scatterND(input, indices, updates)
 
 ///|
-pub extern "js" fn MLGraphBuilder::scatter_n_d_with_options(
+pub extern "js" fn MLGraphBuilder::scatter_nd_with_options(
   self : MLGraphBuilder,
   input : MLOperand,
   indices : MLOperand,

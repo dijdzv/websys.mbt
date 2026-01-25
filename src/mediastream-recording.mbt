@@ -127,6 +127,34 @@ pub extern "js" fn MediaRecorder::to_js_value(self : MediaRecorder) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to MediaRecorder (unchecked)
+pub extern "js" fn MediaRecorder::from_js_value(v : JsValue) -> MediaRecorder =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaRecorder (checked with instanceof)
+pub extern "js" fn MediaRecorder::from_js_value_opt(
+  v : JsValue,
+) -> MediaRecorder? =
+  #| (v) => (v instanceof MediaRecorder) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaRecorder (checked with instanceof)
+pub extern "js" fn JsValue::as_media_recorder(self : JsValue) -> MediaRecorder? =
+  #| (self) => (self instanceof MediaRecorder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaRecorder (unchecked)
+pub extern "js" fn JsValue::to_media_recorder(self : JsValue) -> MediaRecorder =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaRecorder::to_event_target(
+  self : MediaRecorder,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn MediaRecorder::new(
   stream : MediaStream,
   options : MediaRecorderOptions,
@@ -282,6 +310,30 @@ pub type BlobEvent
 
 ///|
 pub extern "js" fn BlobEvent::to_js_value(self : BlobEvent) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to BlobEvent (unchecked)
+pub extern "js" fn BlobEvent::from_js_value(v : JsValue) -> BlobEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BlobEvent (checked with instanceof)
+pub extern "js" fn BlobEvent::from_js_value_opt(v : JsValue) -> BlobEvent? =
+  #| (v) => (v instanceof BlobEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BlobEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_blob_event(self : JsValue) -> BlobEvent? =
+  #| (self) => (self instanceof BlobEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BlobEvent (unchecked)
+pub extern "js" fn JsValue::to_blob_event(self : JsValue) -> BlobEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn BlobEvent::to_event(self : BlobEvent) -> Event =
   #| (self) => self
 
 ///|

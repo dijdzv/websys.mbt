@@ -290,6 +290,34 @@ pub extern "js" fn HandwritingRecognizer::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to HandwritingRecognizer (unchecked)
+pub extern "js" fn HandwritingRecognizer::from_js_value(
+  v : JsValue,
+) -> HandwritingRecognizer =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to HandwritingRecognizer (checked with instanceof)
+pub extern "js" fn HandwritingRecognizer::from_js_value_opt(
+  v : JsValue,
+) -> HandwritingRecognizer? =
+  #| (v) => (v instanceof HandwritingRecognizer) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to HandwritingRecognizer (checked with instanceof)
+pub extern "js" fn JsValue::as_handwriting_recognizer(
+  self : JsValue,
+) -> HandwritingRecognizer? =
+  #| (self) => (self instanceof HandwritingRecognizer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to HandwritingRecognizer (unchecked)
+pub extern "js" fn JsValue::to_handwriting_recognizer(
+  self : JsValue,
+) -> HandwritingRecognizer =
+  #| (self) => self
+
+///|
 pub extern "js" fn HandwritingRecognizer::start_drawing(
   self : HandwritingRecognizer,
 ) -> HandwritingDrawing =
@@ -319,6 +347,34 @@ pub extern "js" fn HandwritingDrawing::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to HandwritingDrawing (unchecked)
+pub extern "js" fn HandwritingDrawing::from_js_value(
+  v : JsValue,
+) -> HandwritingDrawing =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to HandwritingDrawing (checked with instanceof)
+pub extern "js" fn HandwritingDrawing::from_js_value_opt(
+  v : JsValue,
+) -> HandwritingDrawing? =
+  #| (v) => (v instanceof HandwritingDrawing) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to HandwritingDrawing (checked with instanceof)
+pub extern "js" fn JsValue::as_handwriting_drawing(
+  self : JsValue,
+) -> HandwritingDrawing? =
+  #| (self) => (self instanceof HandwritingDrawing) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to HandwritingDrawing (unchecked)
+pub extern "js" fn JsValue::to_handwriting_drawing(
+  self : JsValue,
+) -> HandwritingDrawing =
+  #| (self) => self
+
+///|
 pub extern "js" fn HandwritingDrawing::add_stroke(
   self : HandwritingDrawing,
   stroke : HandwritingStroke,
@@ -345,7 +401,7 @@ pub extern "js" fn HandwritingDrawing::get_strokes(
 ///|
 pub extern "js" fn HandwritingDrawing::get_prediction(
   self : HandwritingDrawing,
-) -> Promise[Unit] =
+) -> Promise[Array[HandwritingPrediction]] =
   #| (self) => self.getPrediction()
 
 ///|
@@ -356,6 +412,34 @@ pub type HandwritingStroke
 pub extern "js" fn HandwritingStroke::to_js_value(
   self : HandwritingStroke,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to HandwritingStroke (unchecked)
+pub extern "js" fn HandwritingStroke::from_js_value(
+  v : JsValue,
+) -> HandwritingStroke =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to HandwritingStroke (checked with instanceof)
+pub extern "js" fn HandwritingStroke::from_js_value_opt(
+  v : JsValue,
+) -> HandwritingStroke? =
+  #| (v) => (v instanceof HandwritingStroke) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to HandwritingStroke (checked with instanceof)
+pub extern "js" fn JsValue::as_handwriting_stroke(
+  self : JsValue,
+) -> HandwritingStroke? =
+  #| (self) => (self instanceof HandwritingStroke) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to HandwritingStroke (unchecked)
+pub extern "js" fn JsValue::to_handwriting_stroke(
+  self : JsValue,
+) -> HandwritingStroke =
   #| (self) => self
 
 ///|

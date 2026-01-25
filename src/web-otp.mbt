@@ -58,5 +58,33 @@ pub extern "js" fn OTPCredential::to_js_value(self : OTPCredential) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to OTPCredential (unchecked)
+pub extern "js" fn OTPCredential::from_js_value(v : JsValue) -> OTPCredential =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to OTPCredential (checked with instanceof)
+pub extern "js" fn OTPCredential::from_js_value_opt(
+  v : JsValue,
+) -> OTPCredential? =
+  #| (v) => (v instanceof OTPCredential) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to OTPCredential (checked with instanceof)
+pub extern "js" fn JsValue::as_otp_credential(self : JsValue) -> OTPCredential? =
+  #| (self) => (self instanceof OTPCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to OTPCredential (unchecked)
+pub extern "js" fn JsValue::to_otp_credential(self : JsValue) -> OTPCredential =
+  #| (self) => self
+
+///|
+pub extern "js" fn OTPCredential::to_credential(
+  self : OTPCredential,
+) -> Credential =
+  #| (self) => self
+
+///|
 pub extern "js" fn OTPCredential::get_code(self : OTPCredential) -> String =
   #| (self) => self.code

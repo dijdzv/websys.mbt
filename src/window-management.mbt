@@ -10,6 +10,34 @@ pub extern "js" fn ScreenDetails::to_js_value(self : ScreenDetails) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to ScreenDetails (unchecked)
+pub extern "js" fn ScreenDetails::from_js_value(v : JsValue) -> ScreenDetails =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ScreenDetails (checked with instanceof)
+pub extern "js" fn ScreenDetails::from_js_value_opt(
+  v : JsValue,
+) -> ScreenDetails? =
+  #| (v) => (v instanceof ScreenDetails) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ScreenDetails (checked with instanceof)
+pub extern "js" fn JsValue::as_screen_details(self : JsValue) -> ScreenDetails? =
+  #| (self) => (self instanceof ScreenDetails) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ScreenDetails (unchecked)
+pub extern "js" fn JsValue::to_screen_details(self : JsValue) -> ScreenDetails =
+  #| (self) => self
+
+///|
+pub extern "js" fn ScreenDetails::to_event_target(
+  self : ScreenDetails,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn ScreenDetails::get_screens(self : ScreenDetails) -> JsValue =
   #| (self) => self.screens
 
@@ -53,6 +81,36 @@ pub type ScreenDetailed
 pub extern "js" fn ScreenDetailed::to_js_value(
   self : ScreenDetailed,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to ScreenDetailed (unchecked)
+pub extern "js" fn ScreenDetailed::from_js_value(v : JsValue) -> ScreenDetailed =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ScreenDetailed (checked with instanceof)
+pub extern "js" fn ScreenDetailed::from_js_value_opt(
+  v : JsValue,
+) -> ScreenDetailed? =
+  #| (v) => (v instanceof ScreenDetailed) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ScreenDetailed (checked with instanceof)
+pub extern "js" fn JsValue::as_screen_detailed(
+  self : JsValue,
+) -> ScreenDetailed? =
+  #| (self) => (self instanceof ScreenDetailed) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ScreenDetailed (unchecked)
+pub extern "js" fn JsValue::to_screen_detailed(
+  self : JsValue,
+) -> ScreenDetailed =
+  #| (self) => self
+
+///|
+pub extern "js" fn ScreenDetailed::to_screen(self : ScreenDetailed) -> Screen =
   #| (self) => self
 
 ///|

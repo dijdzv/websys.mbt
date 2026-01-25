@@ -126,6 +126,34 @@ pub extern "js" fn XRHitTestSource::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to XRHitTestSource (unchecked)
+pub extern "js" fn XRHitTestSource::from_js_value(
+  v : JsValue,
+) -> XRHitTestSource =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRHitTestSource (checked with instanceof)
+pub extern "js" fn XRHitTestSource::from_js_value_opt(
+  v : JsValue,
+) -> XRHitTestSource? =
+  #| (v) => (v instanceof XRHitTestSource) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRHitTestSource (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_hit_test_source(
+  self : JsValue,
+) -> XRHitTestSource? =
+  #| (self) => (self instanceof XRHitTestSource) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRHitTestSource (unchecked)
+pub extern "js" fn JsValue::to_xr_hit_test_source(
+  self : JsValue,
+) -> XRHitTestSource =
+  #| (self) => self
+
+///|
 pub extern "js" fn XRHitTestSource::cancel(self : XRHitTestSource) -> Unit =
   #| (self) => self.cancel()
 
@@ -137,6 +165,34 @@ pub type XRTransientInputHitTestSource
 pub extern "js" fn XRTransientInputHitTestSource::to_js_value(
   self : XRTransientInputHitTestSource,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to XRTransientInputHitTestSource (unchecked)
+pub extern "js" fn XRTransientInputHitTestSource::from_js_value(
+  v : JsValue,
+) -> XRTransientInputHitTestSource =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRTransientInputHitTestSource (checked with instanceof)
+pub extern "js" fn XRTransientInputHitTestSource::from_js_value_opt(
+  v : JsValue,
+) -> XRTransientInputHitTestSource? =
+  #| (v) => (v instanceof XRTransientInputHitTestSource) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRTransientInputHitTestSource (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_transient_input_hit_test_source(
+  self : JsValue,
+) -> XRTransientInputHitTestSource? =
+  #| (self) => (self instanceof XRTransientInputHitTestSource) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRTransientInputHitTestSource (unchecked)
+pub extern "js" fn JsValue::to_xr_transient_input_hit_test_source(
+  self : JsValue,
+) -> XRTransientInputHitTestSource =
   #| (self) => self
 
 ///|
@@ -156,11 +212,39 @@ pub extern "js" fn XRHitTestResult::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to XRHitTestResult (unchecked)
+pub extern "js" fn XRHitTestResult::from_js_value(
+  v : JsValue,
+) -> XRHitTestResult =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRHitTestResult (checked with instanceof)
+pub extern "js" fn XRHitTestResult::from_js_value_opt(
+  v : JsValue,
+) -> XRHitTestResult? =
+  #| (v) => (v instanceof XRHitTestResult) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRHitTestResult (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_hit_test_result(
+  self : JsValue,
+) -> XRHitTestResult? =
+  #| (self) => (self instanceof XRHitTestResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRHitTestResult (unchecked)
+pub extern "js" fn JsValue::to_xr_hit_test_result(
+  self : JsValue,
+) -> XRHitTestResult =
+  #| (self) => self
+
+///|
 pub extern "js" fn XRHitTestResult::get_pose(
   self : XRHitTestResult,
   base_space : XRSpace,
 ) -> XRPose? =
-  #| (self, base_space) => self.getPose(base_space)
+  #| (self, base_space) => { const v = self.getPose(base_space); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn XRHitTestResult::create_anchor(
@@ -176,6 +260,34 @@ pub type XRTransientInputHitTestResult
 pub extern "js" fn XRTransientInputHitTestResult::to_js_value(
   self : XRTransientInputHitTestResult,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to XRTransientInputHitTestResult (unchecked)
+pub extern "js" fn XRTransientInputHitTestResult::from_js_value(
+  v : JsValue,
+) -> XRTransientInputHitTestResult =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRTransientInputHitTestResult (checked with instanceof)
+pub extern "js" fn XRTransientInputHitTestResult::from_js_value_opt(
+  v : JsValue,
+) -> XRTransientInputHitTestResult? =
+  #| (v) => (v instanceof XRTransientInputHitTestResult) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRTransientInputHitTestResult (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_transient_input_hit_test_result(
+  self : JsValue,
+) -> XRTransientInputHitTestResult? =
+  #| (self) => (self instanceof XRTransientInputHitTestResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRTransientInputHitTestResult (unchecked)
+pub extern "js" fn JsValue::to_xr_transient_input_hit_test_result(
+  self : JsValue,
+) -> XRTransientInputHitTestResult =
   #| (self) => self
 
 ///|
@@ -196,6 +308,26 @@ pub type XRRay
 
 ///|
 pub extern "js" fn XRRay::to_js_value(self : XRRay) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to XRRay (unchecked)
+pub extern "js" fn XRRay::from_js_value(v : JsValue) -> XRRay =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRRay (checked with instanceof)
+pub extern "js" fn XRRay::from_js_value_opt(v : JsValue) -> XRRay? =
+  #| (v) => (v instanceof XRRay) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRRay (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_ray(self : JsValue) -> XRRay? =
+  #| (self) => (self instanceof XRRay) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRRay (unchecked)
+pub extern "js" fn JsValue::to_xr_ray(self : JsValue) -> XRRay =
   #| (self) => self
 
 ///|

@@ -11,7 +11,35 @@ pub extern "js" fn KHR_parallel_shader_compile::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
+///|
+/// Cast JsValue to KHR_parallel_shader_compile (unchecked)
+pub extern "js" fn KHR_parallel_shader_compile::from_js_value(
+  v : JsValue,
+) -> KHR_parallel_shader_compile =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to KHR_parallel_shader_compile (checked with instanceof)
+pub extern "js" fn KHR_parallel_shader_compile::from_js_value_opt(
+  v : JsValue,
+) -> KHR_parallel_shader_compile? =
+  #| (v) => (v instanceof KHR_parallel_shader_compile) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to KHR_parallel_shader_compile (checked with instanceof)
+pub extern "js" fn JsValue::as_khr_parallel_shader_compile(
+  self : JsValue,
+) -> KHR_parallel_shader_compile? =
+  #| (self) => (self instanceof KHR_parallel_shader_compile) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to KHR_parallel_shader_compile (unchecked)
+pub extern "js" fn JsValue::to_khr_parallel_shader_compile(
+  self : JsValue,
+) -> KHR_parallel_shader_compile =
+  #| (self) => self
+
 // KHR_parallel_shader_compile.COMPLETION_STATUS_KHR
 
 ///|
-pub let k_h_r_parallel_shader_compile_completion_status_khr : Int = 0x91B1
+pub let khr_parallel_shader_compile_completion_status_khr : Int = 0x91B1

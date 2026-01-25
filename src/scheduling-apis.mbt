@@ -104,7 +104,7 @@ pub extern "js" fn TaskControllerInit::to_js(
 ///|
 /// TaskSignalAnyInit dictionary
 pub struct TaskSignalAnyInit {
-  priority : JsValue?
+  priority : TaskPriorityOrTaskSignal?
 }
 
 ///|
@@ -128,6 +128,26 @@ pub type Scheduler
 
 ///|
 pub extern "js" fn Scheduler::to_js_value(self : Scheduler) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to Scheduler (unchecked)
+pub extern "js" fn Scheduler::from_js_value(v : JsValue) -> Scheduler =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Scheduler (checked with instanceof)
+pub extern "js" fn Scheduler::from_js_value_opt(v : JsValue) -> Scheduler? =
+  #| (v) => (v instanceof Scheduler) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Scheduler (checked with instanceof)
+pub extern "js" fn JsValue::as_scheduler(self : JsValue) -> Scheduler? =
+  #| (self) => (self instanceof Scheduler) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Scheduler (unchecked)
+pub extern "js" fn JsValue::to_scheduler(self : JsValue) -> Scheduler =
   #| (self) => self
 
 ///|
@@ -160,6 +180,40 @@ pub extern "js" fn TaskPriorityChangeEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to TaskPriorityChangeEvent (unchecked)
+pub extern "js" fn TaskPriorityChangeEvent::from_js_value(
+  v : JsValue,
+) -> TaskPriorityChangeEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to TaskPriorityChangeEvent (checked with instanceof)
+pub extern "js" fn TaskPriorityChangeEvent::from_js_value_opt(
+  v : JsValue,
+) -> TaskPriorityChangeEvent? =
+  #| (v) => (v instanceof TaskPriorityChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to TaskPriorityChangeEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_task_priority_change_event(
+  self : JsValue,
+) -> TaskPriorityChangeEvent? =
+  #| (self) => (self instanceof TaskPriorityChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to TaskPriorityChangeEvent (unchecked)
+pub extern "js" fn JsValue::to_task_priority_change_event(
+  self : JsValue,
+) -> TaskPriorityChangeEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn TaskPriorityChangeEvent::to_event(
+  self : TaskPriorityChangeEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn TaskPriorityChangeEvent::new(
   type_ : String,
   priority_change_event_init_dict : TaskPriorityChangeEventInit,
@@ -183,6 +237,38 @@ pub extern "js" fn TaskController::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to TaskController (unchecked)
+pub extern "js" fn TaskController::from_js_value(v : JsValue) -> TaskController =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to TaskController (checked with instanceof)
+pub extern "js" fn TaskController::from_js_value_opt(
+  v : JsValue,
+) -> TaskController? =
+  #| (v) => (v instanceof TaskController) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to TaskController (checked with instanceof)
+pub extern "js" fn JsValue::as_task_controller(
+  self : JsValue,
+) -> TaskController? =
+  #| (self) => (self instanceof TaskController) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to TaskController (unchecked)
+pub extern "js" fn JsValue::to_task_controller(
+  self : JsValue,
+) -> TaskController =
+  #| (self) => self
+
+///|
+pub extern "js" fn TaskController::to_abort_controller(
+  self : TaskController,
+) -> AbortController =
+  #| (self) => self
+
+///|
 pub extern "js" fn TaskController::new(
   init_ : TaskControllerInit,
 ) -> TaskController =
@@ -201,6 +287,38 @@ pub type TaskSignal
 
 ///|
 pub extern "js" fn TaskSignal::to_js_value(self : TaskSignal) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to TaskSignal (unchecked)
+pub extern "js" fn TaskSignal::from_js_value(v : JsValue) -> TaskSignal =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to TaskSignal (checked with instanceof)
+pub extern "js" fn TaskSignal::from_js_value_opt(v : JsValue) -> TaskSignal? =
+  #| (v) => (v instanceof TaskSignal) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to TaskSignal (checked with instanceof)
+pub extern "js" fn JsValue::as_task_signal(self : JsValue) -> TaskSignal? =
+  #| (self) => (self instanceof TaskSignal) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to TaskSignal (unchecked)
+pub extern "js" fn JsValue::to_task_signal(self : JsValue) -> TaskSignal =
+  #| (self) => self
+
+///|
+pub extern "js" fn TaskSignal::to_abort_signal(
+  self : TaskSignal,
+) -> AbortSignal =
+  #| (self) => self
+
+///|
+pub extern "js" fn TaskSignal::to_event_target(
+  self : TaskSignal,
+) -> EventTarget =
   #| (self) => self
 
 ///|

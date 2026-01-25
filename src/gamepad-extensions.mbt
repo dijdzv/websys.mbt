@@ -39,6 +39,26 @@ pub extern "js" fn GamepadPose::to_js_value(self : GamepadPose) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to GamepadPose (unchecked)
+pub extern "js" fn GamepadPose::from_js_value(v : JsValue) -> GamepadPose =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GamepadPose (checked with instanceof)
+pub extern "js" fn GamepadPose::from_js_value_opt(v : JsValue) -> GamepadPose? =
+  #| (v) => (v instanceof GamepadPose) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GamepadPose (checked with instanceof)
+pub extern "js" fn JsValue::as_gamepad_pose(self : JsValue) -> GamepadPose? =
+  #| (self) => (self instanceof GamepadPose) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GamepadPose (unchecked)
+pub extern "js" fn JsValue::to_gamepad_pose(self : JsValue) -> GamepadPose =
+  #| (self) => self
+
+///|
 pub extern "js" fn GamepadPose::get_has_orientation(self : GamepadPose) -> Bool =
   #| (self) => self.hasOrientation
 
@@ -50,34 +70,34 @@ pub extern "js" fn GamepadPose::get_has_position(self : GamepadPose) -> Bool =
 pub extern "js" fn GamepadPose::get_position(
   self : GamepadPose,
 ) -> Float32Array? =
-  #| (self) => self.position
+  #| (self) => { const v = self.position; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn GamepadPose::get_linear_velocity(
   self : GamepadPose,
 ) -> Float32Array? =
-  #| (self) => self.linearVelocity
+  #| (self) => { const v = self.linearVelocity; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn GamepadPose::get_linear_acceleration(
   self : GamepadPose,
 ) -> Float32Array? =
-  #| (self) => self.linearAcceleration
+  #| (self) => { const v = self.linearAcceleration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn GamepadPose::get_orientation(
   self : GamepadPose,
 ) -> Float32Array? =
-  #| (self) => self.orientation
+  #| (self) => { const v = self.orientation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn GamepadPose::get_angular_velocity(
   self : GamepadPose,
 ) -> Float32Array? =
-  #| (self) => self.angularVelocity
+  #| (self) => { const v = self.angularVelocity; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn GamepadPose::get_angular_acceleration(
   self : GamepadPose,
 ) -> Float32Array? =
-  #| (self) => self.angularAcceleration
+  #| (self) => { const v = self.angularAcceleration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }

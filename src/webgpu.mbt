@@ -2313,7 +2313,7 @@ pub extern "js" fn GPUTextureViewDescriptor::to_js(
 /// GPUExternalTextureDescriptor dictionary
 pub struct GPUExternalTextureDescriptor {
   label : String?
-  source : JsValue
+  source : HTMLVideoElementOrVideoFrame
   colorSpace : PredefinedColorSpace?
 }
 
@@ -2656,7 +2656,7 @@ pub extern "js" fn GPUBufferBinding::to_js(self : GPUBufferBinding) -> JsValue =
 /// GPUPipelineLayoutDescriptor dictionary
 pub struct GPUPipelineLayoutDescriptor {
   label : String?
-  bindGroupLayouts : Array[GPUBindGroupLayout?]
+  bindGroupLayouts : Array[JsValue]
 }
 
 ///|
@@ -2704,7 +2704,7 @@ pub extern "js" fn GPUShaderModuleDescriptor::to_js(
 /// GPUShaderModuleCompilationHint dictionary
 pub struct GPUShaderModuleCompilationHint {
   entryPoint : String
-  layout : JsValue?
+  layout : GPUPipelineLayoutOrGPUAutoLayoutMode?
 }
 
 ///|
@@ -2748,7 +2748,7 @@ pub extern "js" fn GPUPipelineErrorInit::to_js(
 /// GPUPipelineDescriptorBase dictionary
 pub struct GPUPipelineDescriptorBase {
   label : String?
-  layout : JsValue
+  layout : GPUPipelineLayoutOrGPUAutoLayoutMode
 }
 
 ///|
@@ -2796,7 +2796,7 @@ pub extern "js" fn GPUProgrammableStage::to_js(
 /// GPUComputePipelineDescriptor dictionary
 pub struct GPUComputePipelineDescriptor {
   label : String?
-  layout : JsValue
+  layout : GPUPipelineLayoutOrGPUAutoLayoutMode
   compute : GPUProgrammableStage
 }
 
@@ -2825,7 +2825,7 @@ pub extern "js" fn GPUComputePipelineDescriptor::to_js(
 /// GPURenderPipelineDescriptor dictionary
 pub struct GPURenderPipelineDescriptor {
   label : String?
-  layout : JsValue
+  layout : GPUPipelineLayoutOrGPUAutoLayoutMode
   vertex : GPUVertexState
   primitive : GPUPrimitiveState?
   depthStencil : GPUDepthStencilState?
@@ -2928,7 +2928,7 @@ pub struct GPUFragmentState {
   module_ : GPUShaderModule
   entryPoint : String?
   constants : JsValue?
-  targets : Array[GPUColorTargetState?]
+  targets : Array[JsValue]
 }
 
 ///|
@@ -3111,7 +3111,7 @@ pub struct GPUVertexState {
   module_ : GPUShaderModule
   entryPoint : String?
   constants : JsValue?
-  buffers : Array[GPUVertexBufferLayout?]?
+  buffers : Array[JsValue]?
 }
 
 ///|
@@ -3476,7 +3476,7 @@ pub extern "js" fn GPURenderPassTimestampWrites::to_js(
 /// GPURenderPassDescriptor dictionary
 pub struct GPURenderPassDescriptor {
   label : String?
-  colorAttachments : Array[GPURenderPassColorAttachment?]
+  colorAttachments : Array[JsValue]
   depthStencilAttachment : GPURenderPassDepthStencilAttachment?
   occlusionQuerySet : GPUQuerySet?
   timestampWrites : GPURenderPassTimestampWrites?
@@ -3513,9 +3513,9 @@ pub extern "js" fn GPURenderPassDescriptor::to_js(
 ///|
 /// GPURenderPassColorAttachment dictionary
 pub struct GPURenderPassColorAttachment {
-  view : JsValue
+  view : GPUTextureOrGPUTextureView
   depthSlice : GPUIntegerCoordinate?
-  resolveTarget : JsValue?
+  resolveTarget : GPUTextureOrGPUTextureView?
   clearValue : GPUColor?
   loadOp : GPULoadOp
   storeOp : GPUStoreOp
@@ -3551,7 +3551,7 @@ pub extern "js" fn GPURenderPassColorAttachment::to_js(
 ///|
 /// GPURenderPassDepthStencilAttachment dictionary
 pub struct GPURenderPassDepthStencilAttachment {
-  view : JsValue
+  view : GPUTextureOrGPUTextureView
   depthClearValue : Double?
   depthLoadOp : GPULoadOp?
   depthStoreOp : GPUStoreOp?
@@ -3599,7 +3599,7 @@ pub extern "js" fn GPURenderPassDepthStencilAttachment::to_js(
 /// GPURenderPassLayout dictionary
 pub struct GPURenderPassLayout {
   label : String?
-  colorFormats : Array[GPUTextureFormat?]
+  colorFormats : Array[JsValue]
   depthStencilFormat : GPUTextureFormat?
   sampleCount : GPUSize32?
 }
@@ -3652,7 +3652,7 @@ pub extern "js" fn GPURenderBundleDescriptor::to_js(
 /// GPURenderBundleEncoderDescriptor dictionary
 pub struct GPURenderBundleEncoderDescriptor {
   label : String?
-  colorFormats : Array[GPUTextureFormat?]
+  colorFormats : Array[JsValue]
   depthStencilFormat : GPUTextureFormat?
   sampleCount : GPUSize32?
   depthReadOnly : Bool?
@@ -3918,6 +3918,34 @@ pub extern "js" fn GPUSupportedLimits::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to GPUSupportedLimits (unchecked)
+pub extern "js" fn GPUSupportedLimits::from_js_value(
+  v : JsValue,
+) -> GPUSupportedLimits =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUSupportedLimits (checked with instanceof)
+pub extern "js" fn GPUSupportedLimits::from_js_value_opt(
+  v : JsValue,
+) -> GPUSupportedLimits? =
+  #| (v) => (v instanceof GPUSupportedLimits) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUSupportedLimits (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_supported_limits(
+  self : JsValue,
+) -> GPUSupportedLimits? =
+  #| (self) => (self instanceof GPUSupportedLimits) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUSupportedLimits (unchecked)
+pub extern "js" fn JsValue::to_gpu_supported_limits(
+  self : JsValue,
+) -> GPUSupportedLimits =
+  #| (self) => self
+
+///|
 pub extern "js" fn GPUSupportedLimits::get_max_texture_dimension1_d(
   self : GPUSupportedLimits,
 ) -> Int =
@@ -4138,6 +4166,34 @@ pub extern "js" fn GPUSupportedFeatures::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to GPUSupportedFeatures (unchecked)
+pub extern "js" fn GPUSupportedFeatures::from_js_value(
+  v : JsValue,
+) -> GPUSupportedFeatures =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUSupportedFeatures (checked with instanceof)
+pub extern "js" fn GPUSupportedFeatures::from_js_value_opt(
+  v : JsValue,
+) -> GPUSupportedFeatures? =
+  #| (v) => (v instanceof GPUSupportedFeatures) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUSupportedFeatures (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_supported_features(
+  self : JsValue,
+) -> GPUSupportedFeatures? =
+  #| (self) => (self instanceof GPUSupportedFeatures) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUSupportedFeatures (unchecked)
+pub extern "js" fn JsValue::to_gpu_supported_features(
+  self : JsValue,
+) -> GPUSupportedFeatures =
+  #| (self) => self
+
+///|
 pub extern "js" fn GPUSupportedFeatures::has(
   self : GPUSupportedFeatures,
   value : String,
@@ -4155,6 +4211,34 @@ pub extern "js" fn WGSLLanguageFeatures::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to WGSLLanguageFeatures (unchecked)
+pub extern "js" fn WGSLLanguageFeatures::from_js_value(
+  v : JsValue,
+) -> WGSLLanguageFeatures =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WGSLLanguageFeatures (checked with instanceof)
+pub extern "js" fn WGSLLanguageFeatures::from_js_value_opt(
+  v : JsValue,
+) -> WGSLLanguageFeatures? =
+  #| (v) => (v instanceof WGSLLanguageFeatures) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WGSLLanguageFeatures (checked with instanceof)
+pub extern "js" fn JsValue::as_wgsl_language_features(
+  self : JsValue,
+) -> WGSLLanguageFeatures? =
+  #| (self) => (self instanceof WGSLLanguageFeatures) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WGSLLanguageFeatures (unchecked)
+pub extern "js" fn JsValue::to_wgsl_language_features(
+  self : JsValue,
+) -> WGSLLanguageFeatures =
+  #| (self) => self
+
+///|
 pub extern "js" fn WGSLLanguageFeatures::has(
   self : WGSLLanguageFeatures,
   value : String,
@@ -4169,6 +4253,32 @@ pub type GPUAdapterInfo
 pub extern "js" fn GPUAdapterInfo::to_js_value(
   self : GPUAdapterInfo,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPUAdapterInfo (unchecked)
+pub extern "js" fn GPUAdapterInfo::from_js_value(v : JsValue) -> GPUAdapterInfo =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUAdapterInfo (checked with instanceof)
+pub extern "js" fn GPUAdapterInfo::from_js_value_opt(
+  v : JsValue,
+) -> GPUAdapterInfo? =
+  #| (v) => (v instanceof GPUAdapterInfo) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUAdapterInfo (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_adapter_info(
+  self : JsValue,
+) -> GPUAdapterInfo? =
+  #| (self) => (self instanceof GPUAdapterInfo) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUAdapterInfo (unchecked)
+pub extern "js" fn JsValue::to_gpu_adapter_info(
+  self : JsValue,
+) -> GPUAdapterInfo =
   #| (self) => self
 
 ///|
@@ -4218,15 +4328,35 @@ pub extern "js" fn GPU::to_js_value(self : GPU) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to GPU (unchecked)
+pub extern "js" fn GPU::from_js_value(v : JsValue) -> GPU =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPU (checked with instanceof)
+pub extern "js" fn GPU::from_js_value_opt(v : JsValue) -> GPU? =
+  #| (v) => (v instanceof GPU) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPU (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu(self : JsValue) -> GPU? =
+  #| (self) => (self instanceof GPU) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPU (unchecked)
+pub extern "js" fn JsValue::to_gpu(self : JsValue) -> GPU =
+  #| (self) => self
+
+///|
 pub extern "js" fn GPU::request_adapter(self : GPU) -> Promise[GPUAdapter?] =
-  #| (self) => self.requestAdapter()
+  #| (self) => self.requestAdapter().then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
 
 ///|
 pub extern "js" fn GPU::request_adapter_with_options(
   self : GPU,
   options : GPURequestAdapterOptions,
 ) -> Promise[GPUAdapter?] =
-  #| (self, options) => self.requestAdapter(options)
+  #| (self, options) => self.requestAdapter(options).then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
 
 ///|
 pub extern "js" fn GPU::get_preferred_canvas_format(
@@ -4246,6 +4376,26 @@ pub type GPUAdapter
 
 ///|
 pub extern "js" fn GPUAdapter::to_js_value(self : GPUAdapter) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPUAdapter (unchecked)
+pub extern "js" fn GPUAdapter::from_js_value(v : JsValue) -> GPUAdapter =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUAdapter (checked with instanceof)
+pub extern "js" fn GPUAdapter::from_js_value_opt(v : JsValue) -> GPUAdapter? =
+  #| (v) => (v instanceof GPUAdapter) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUAdapter (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_adapter(self : JsValue) -> GPUAdapter? =
+  #| (self) => (self instanceof GPUAdapter) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUAdapter (unchecked)
+pub extern "js" fn JsValue::to_gpu_adapter(self : JsValue) -> GPUAdapter =
   #| (self) => self
 
 ///|
@@ -4283,6 +4433,30 @@ pub type GPUDevice
 
 ///|
 pub extern "js" fn GPUDevice::to_js_value(self : GPUDevice) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPUDevice (unchecked)
+pub extern "js" fn GPUDevice::from_js_value(v : JsValue) -> GPUDevice =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUDevice (checked with instanceof)
+pub extern "js" fn GPUDevice::from_js_value_opt(v : JsValue) -> GPUDevice? =
+  #| (v) => (v instanceof GPUDevice) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUDevice (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_device(self : JsValue) -> GPUDevice? =
+  #| (self) => (self instanceof GPUDevice) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUDevice (unchecked)
+pub extern "js" fn JsValue::to_gpu_device(self : JsValue) -> GPUDevice =
+  #| (self) => self
+
+///|
+pub extern "js" fn GPUDevice::to_event_target(self : GPUDevice) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -4443,7 +4617,7 @@ pub extern "js" fn GPUDevice::push_error_scope(
 pub extern "js" fn GPUDevice::pop_error_scope(
   self : GPUDevice,
 ) -> Promise[GPUError?] =
-  #| (self) => self.popErrorScope()
+  #| (self) => self.popErrorScope().then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
 
 ///|
 pub extern "js" fn GPUDevice::get_onuncapturederror(
@@ -4475,6 +4649,26 @@ pub type GPUBuffer
 
 ///|
 pub extern "js" fn GPUBuffer::to_js_value(self : GPUBuffer) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPUBuffer (unchecked)
+pub extern "js" fn GPUBuffer::from_js_value(v : JsValue) -> GPUBuffer =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUBuffer (checked with instanceof)
+pub extern "js" fn GPUBuffer::from_js_value_opt(v : JsValue) -> GPUBuffer? =
+  #| (v) => (v instanceof GPUBuffer) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUBuffer (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_buffer(self : JsValue) -> GPUBuffer? =
+  #| (self) => (self instanceof GPUBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUBuffer (unchecked)
+pub extern "js" fn JsValue::to_gpu_buffer(self : JsValue) -> GPUBuffer =
   #| (self) => self
 
 ///|
@@ -4544,6 +4738,26 @@ pub type GPUTexture
 
 ///|
 pub extern "js" fn GPUTexture::to_js_value(self : GPUTexture) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPUTexture (unchecked)
+pub extern "js" fn GPUTexture::from_js_value(v : JsValue) -> GPUTexture =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUTexture (checked with instanceof)
+pub extern "js" fn GPUTexture::from_js_value_opt(v : JsValue) -> GPUTexture? =
+  #| (v) => (v instanceof GPUTexture) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUTexture (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_texture(self : JsValue) -> GPUTexture? =
+  #| (self) => (self instanceof GPUTexture) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUTexture (unchecked)
+pub extern "js" fn JsValue::to_gpu_texture(self : JsValue) -> GPUTexture =
   #| (self) => self
 
 ///|
@@ -4635,6 +4849,32 @@ pub extern "js" fn GPUTextureView::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to GPUTextureView (unchecked)
+pub extern "js" fn GPUTextureView::from_js_value(v : JsValue) -> GPUTextureView =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUTextureView (checked with instanceof)
+pub extern "js" fn GPUTextureView::from_js_value_opt(
+  v : JsValue,
+) -> GPUTextureView? =
+  #| (v) => (v instanceof GPUTextureView) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUTextureView (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_texture_view(
+  self : JsValue,
+) -> GPUTextureView? =
+  #| (self) => (self instanceof GPUTextureView) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUTextureView (unchecked)
+pub extern "js" fn JsValue::to_gpu_texture_view(
+  self : JsValue,
+) -> GPUTextureView =
+  #| (self) => self
+
+///|
 pub extern "js" fn GPUTextureView::get_label(self : GPUTextureView) -> String =
   #| (self) => self.label
 
@@ -4653,6 +4893,34 @@ pub type GPUExternalTexture
 pub extern "js" fn GPUExternalTexture::to_js_value(
   self : GPUExternalTexture,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPUExternalTexture (unchecked)
+pub extern "js" fn GPUExternalTexture::from_js_value(
+  v : JsValue,
+) -> GPUExternalTexture =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUExternalTexture (checked with instanceof)
+pub extern "js" fn GPUExternalTexture::from_js_value_opt(
+  v : JsValue,
+) -> GPUExternalTexture? =
+  #| (v) => (v instanceof GPUExternalTexture) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUExternalTexture (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_external_texture(
+  self : JsValue,
+) -> GPUExternalTexture? =
+  #| (self) => (self instanceof GPUExternalTexture) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUExternalTexture (unchecked)
+pub extern "js" fn JsValue::to_gpu_external_texture(
+  self : JsValue,
+) -> GPUExternalTexture =
   #| (self) => self
 
 ///|
@@ -4677,6 +4945,26 @@ pub extern "js" fn GPUSampler::to_js_value(self : GPUSampler) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to GPUSampler (unchecked)
+pub extern "js" fn GPUSampler::from_js_value(v : JsValue) -> GPUSampler =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUSampler (checked with instanceof)
+pub extern "js" fn GPUSampler::from_js_value_opt(v : JsValue) -> GPUSampler? =
+  #| (v) => (v instanceof GPUSampler) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUSampler (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_sampler(self : JsValue) -> GPUSampler? =
+  #| (self) => (self instanceof GPUSampler) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUSampler (unchecked)
+pub extern "js" fn JsValue::to_gpu_sampler(self : JsValue) -> GPUSampler =
+  #| (self) => self
+
+///|
 pub extern "js" fn GPUSampler::get_label(self : GPUSampler) -> String =
   #| (self) => self.label
 
@@ -4695,6 +4983,34 @@ pub type GPUBindGroupLayout
 pub extern "js" fn GPUBindGroupLayout::to_js_value(
   self : GPUBindGroupLayout,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPUBindGroupLayout (unchecked)
+pub extern "js" fn GPUBindGroupLayout::from_js_value(
+  v : JsValue,
+) -> GPUBindGroupLayout =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUBindGroupLayout (checked with instanceof)
+pub extern "js" fn GPUBindGroupLayout::from_js_value_opt(
+  v : JsValue,
+) -> GPUBindGroupLayout? =
+  #| (v) => (v instanceof GPUBindGroupLayout) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUBindGroupLayout (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_bind_group_layout(
+  self : JsValue,
+) -> GPUBindGroupLayout? =
+  #| (self) => (self instanceof GPUBindGroupLayout) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUBindGroupLayout (unchecked)
+pub extern "js" fn JsValue::to_gpu_bind_group_layout(
+  self : JsValue,
+) -> GPUBindGroupLayout =
   #| (self) => self
 
 ///|
@@ -4719,6 +5035,28 @@ pub extern "js" fn GPUBindGroup::to_js_value(self : GPUBindGroup) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to GPUBindGroup (unchecked)
+pub extern "js" fn GPUBindGroup::from_js_value(v : JsValue) -> GPUBindGroup =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUBindGroup (checked with instanceof)
+pub extern "js" fn GPUBindGroup::from_js_value_opt(
+  v : JsValue,
+) -> GPUBindGroup? =
+  #| (v) => (v instanceof GPUBindGroup) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUBindGroup (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_bind_group(self : JsValue) -> GPUBindGroup? =
+  #| (self) => (self instanceof GPUBindGroup) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUBindGroup (unchecked)
+pub extern "js" fn JsValue::to_gpu_bind_group(self : JsValue) -> GPUBindGroup =
+  #| (self) => self
+
+///|
 pub extern "js" fn GPUBindGroup::get_label(self : GPUBindGroup) -> String =
   #| (self) => self.label
 
@@ -4737,6 +5075,34 @@ pub type GPUPipelineLayout
 pub extern "js" fn GPUPipelineLayout::to_js_value(
   self : GPUPipelineLayout,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPUPipelineLayout (unchecked)
+pub extern "js" fn GPUPipelineLayout::from_js_value(
+  v : JsValue,
+) -> GPUPipelineLayout =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUPipelineLayout (checked with instanceof)
+pub extern "js" fn GPUPipelineLayout::from_js_value_opt(
+  v : JsValue,
+) -> GPUPipelineLayout? =
+  #| (v) => (v instanceof GPUPipelineLayout) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUPipelineLayout (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_pipeline_layout(
+  self : JsValue,
+) -> GPUPipelineLayout? =
+  #| (self) => (self instanceof GPUPipelineLayout) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUPipelineLayout (unchecked)
+pub extern "js" fn JsValue::to_gpu_pipeline_layout(
+  self : JsValue,
+) -> GPUPipelineLayout =
   #| (self) => self
 
 ///|
@@ -4760,6 +5126,34 @@ pub type GPUShaderModule
 pub extern "js" fn GPUShaderModule::to_js_value(
   self : GPUShaderModule,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPUShaderModule (unchecked)
+pub extern "js" fn GPUShaderModule::from_js_value(
+  v : JsValue,
+) -> GPUShaderModule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUShaderModule (checked with instanceof)
+pub extern "js" fn GPUShaderModule::from_js_value_opt(
+  v : JsValue,
+) -> GPUShaderModule? =
+  #| (v) => (v instanceof GPUShaderModule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUShaderModule (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_shader_module(
+  self : JsValue,
+) -> GPUShaderModule? =
+  #| (self) => (self instanceof GPUShaderModule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUShaderModule (unchecked)
+pub extern "js" fn JsValue::to_gpu_shader_module(
+  self : JsValue,
+) -> GPUShaderModule =
   #| (self) => self
 
 ///|
@@ -4787,6 +5181,34 @@ pub type GPUCompilationMessage
 pub extern "js" fn GPUCompilationMessage::to_js_value(
   self : GPUCompilationMessage,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPUCompilationMessage (unchecked)
+pub extern "js" fn GPUCompilationMessage::from_js_value(
+  v : JsValue,
+) -> GPUCompilationMessage =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUCompilationMessage (checked with instanceof)
+pub extern "js" fn GPUCompilationMessage::from_js_value_opt(
+  v : JsValue,
+) -> GPUCompilationMessage? =
+  #| (v) => (v instanceof GPUCompilationMessage) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUCompilationMessage (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_compilation_message(
+  self : JsValue,
+) -> GPUCompilationMessage? =
+  #| (self) => (self instanceof GPUCompilationMessage) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUCompilationMessage (unchecked)
+pub extern "js" fn JsValue::to_gpu_compilation_message(
+  self : JsValue,
+) -> GPUCompilationMessage =
   #| (self) => self
 
 ///|
@@ -4836,6 +5258,34 @@ pub extern "js" fn GPUCompilationInfo::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to GPUCompilationInfo (unchecked)
+pub extern "js" fn GPUCompilationInfo::from_js_value(
+  v : JsValue,
+) -> GPUCompilationInfo =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUCompilationInfo (checked with instanceof)
+pub extern "js" fn GPUCompilationInfo::from_js_value_opt(
+  v : JsValue,
+) -> GPUCompilationInfo? =
+  #| (v) => (v instanceof GPUCompilationInfo) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUCompilationInfo (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_compilation_info(
+  self : JsValue,
+) -> GPUCompilationInfo? =
+  #| (self) => (self instanceof GPUCompilationInfo) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUCompilationInfo (unchecked)
+pub extern "js" fn JsValue::to_gpu_compilation_info(
+  self : JsValue,
+) -> GPUCompilationInfo =
+  #| (self) => self
+
+///|
 pub extern "js" fn GPUCompilationInfo::get_messages(
   self : GPUCompilationInfo,
 ) -> JsValue =
@@ -4849,6 +5299,40 @@ pub type GPUPipelineError
 pub extern "js" fn GPUPipelineError::to_js_value(
   self : GPUPipelineError,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPUPipelineError (unchecked)
+pub extern "js" fn GPUPipelineError::from_js_value(
+  v : JsValue,
+) -> GPUPipelineError =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUPipelineError (checked with instanceof)
+pub extern "js" fn GPUPipelineError::from_js_value_opt(
+  v : JsValue,
+) -> GPUPipelineError? =
+  #| (v) => (v instanceof GPUPipelineError) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUPipelineError (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_pipeline_error(
+  self : JsValue,
+) -> GPUPipelineError? =
+  #| (self) => (self instanceof GPUPipelineError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUPipelineError (unchecked)
+pub extern "js" fn JsValue::to_gpu_pipeline_error(
+  self : JsValue,
+) -> GPUPipelineError =
+  #| (self) => self
+
+///|
+pub extern "js" fn GPUPipelineError::to_dom_exception(
+  self : GPUPipelineError,
+) -> DOMException =
   #| (self) => self
 
 ///|
@@ -4872,6 +5356,34 @@ pub type GPUComputePipeline
 pub extern "js" fn GPUComputePipeline::to_js_value(
   self : GPUComputePipeline,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPUComputePipeline (unchecked)
+pub extern "js" fn GPUComputePipeline::from_js_value(
+  v : JsValue,
+) -> GPUComputePipeline =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUComputePipeline (checked with instanceof)
+pub extern "js" fn GPUComputePipeline::from_js_value_opt(
+  v : JsValue,
+) -> GPUComputePipeline? =
+  #| (v) => (v instanceof GPUComputePipeline) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUComputePipeline (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_compute_pipeline(
+  self : JsValue,
+) -> GPUComputePipeline? =
+  #| (self) => (self instanceof GPUComputePipeline) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUComputePipeline (unchecked)
+pub extern "js" fn JsValue::to_gpu_compute_pipeline(
+  self : JsValue,
+) -> GPUComputePipeline =
   #| (self) => self
 
 ///|
@@ -4905,6 +5417,34 @@ pub extern "js" fn GPURenderPipeline::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to GPURenderPipeline (unchecked)
+pub extern "js" fn GPURenderPipeline::from_js_value(
+  v : JsValue,
+) -> GPURenderPipeline =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPURenderPipeline (checked with instanceof)
+pub extern "js" fn GPURenderPipeline::from_js_value_opt(
+  v : JsValue,
+) -> GPURenderPipeline? =
+  #| (v) => (v instanceof GPURenderPipeline) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPURenderPipeline (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_render_pipeline(
+  self : JsValue,
+) -> GPURenderPipeline? =
+  #| (self) => (self instanceof GPURenderPipeline) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPURenderPipeline (unchecked)
+pub extern "js" fn JsValue::to_gpu_render_pipeline(
+  self : JsValue,
+) -> GPURenderPipeline =
+  #| (self) => self
+
+///|
 pub extern "js" fn GPURenderPipeline::get_label(
   self : GPURenderPipeline,
 ) -> String =
@@ -4935,6 +5475,34 @@ pub extern "js" fn GPUCommandBuffer::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to GPUCommandBuffer (unchecked)
+pub extern "js" fn GPUCommandBuffer::from_js_value(
+  v : JsValue,
+) -> GPUCommandBuffer =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUCommandBuffer (checked with instanceof)
+pub extern "js" fn GPUCommandBuffer::from_js_value_opt(
+  v : JsValue,
+) -> GPUCommandBuffer? =
+  #| (v) => (v instanceof GPUCommandBuffer) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUCommandBuffer (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_command_buffer(
+  self : JsValue,
+) -> GPUCommandBuffer? =
+  #| (self) => (self instanceof GPUCommandBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUCommandBuffer (unchecked)
+pub extern "js" fn JsValue::to_gpu_command_buffer(
+  self : JsValue,
+) -> GPUCommandBuffer =
+  #| (self) => self
+
+///|
 pub extern "js" fn GPUCommandBuffer::get_label(
   self : GPUCommandBuffer,
 ) -> String =
@@ -4955,6 +5523,34 @@ pub type GPUCommandEncoder
 pub extern "js" fn GPUCommandEncoder::to_js_value(
   self : GPUCommandEncoder,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPUCommandEncoder (unchecked)
+pub extern "js" fn GPUCommandEncoder::from_js_value(
+  v : JsValue,
+) -> GPUCommandEncoder =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUCommandEncoder (checked with instanceof)
+pub extern "js" fn GPUCommandEncoder::from_js_value_opt(
+  v : JsValue,
+) -> GPUCommandEncoder? =
+  #| (v) => (v instanceof GPUCommandEncoder) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUCommandEncoder (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_command_encoder(
+  self : JsValue,
+) -> GPUCommandEncoder? =
+  #| (self) => (self instanceof GPUCommandEncoder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUCommandEncoder (unchecked)
+pub extern "js" fn JsValue::to_gpu_command_encoder(
+  self : JsValue,
+) -> GPUCommandEncoder =
   #| (self) => self
 
 ///|
@@ -4995,7 +5591,7 @@ pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer_with_size(
   #| (self, source, destination, size) => self.copyBufferToBuffer(source, destination, size)
 
 ///|
-pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer_with_source_g_p_u_buffer_and_source_offset_g_p_u_size64_and_destination_g_p_u_buffer_and_destination_offset_g_p_u_size64(
+pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer_with_source_gpu_buffer_and_source_offset_gpu_size64_and_destination_gpu_buffer_and_destination_offset_gpu_size64(
   self : GPUCommandEncoder,
   source : GPUBuffer,
   source_offset : GPUSize64,
@@ -5005,7 +5601,7 @@ pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer_with_source_g_p_u_bu
   #| (self, source, source_offset, destination, destination_offset) => self.copyBufferToBuffer(source, source_offset, destination, destination_offset)
 
 ///|
-pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer_with_source_g_p_u_buffer_and_source_offset_g_p_u_size64_and_destination_g_p_u_buffer_and_destination_offset_g_p_u_size64_and_size_g_p_u_size64(
+pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer_with_source_gpu_buffer_and_source_offset_gpu_size64_and_destination_gpu_buffer_and_destination_offset_gpu_size64_and_size_gpu_size64(
   self : GPUCommandEncoder,
   source : GPUBuffer,
   source_offset : GPUSize64,
@@ -5126,6 +5722,34 @@ pub extern "js" fn GPUComputePassEncoder::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to GPUComputePassEncoder (unchecked)
+pub extern "js" fn GPUComputePassEncoder::from_js_value(
+  v : JsValue,
+) -> GPUComputePassEncoder =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUComputePassEncoder (checked with instanceof)
+pub extern "js" fn GPUComputePassEncoder::from_js_value_opt(
+  v : JsValue,
+) -> GPUComputePassEncoder? =
+  #| (v) => (v instanceof GPUComputePassEncoder) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUComputePassEncoder (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_compute_pass_encoder(
+  self : JsValue,
+) -> GPUComputePassEncoder? =
+  #| (self) => (self instanceof GPUComputePassEncoder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUComputePassEncoder (unchecked)
+pub extern "js" fn JsValue::to_gpu_compute_pass_encoder(
+  self : JsValue,
+) -> GPUComputePassEncoder =
+  #| (self) => self
+
+///|
 pub extern "js" fn GPUComputePassEncoder::set_pipeline(
   self : GPUComputePassEncoder,
   pipeline : GPUComputePipeline,
@@ -5213,7 +5837,7 @@ pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_dynamic_offsets(
   #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, bind_group, dynamic_offsets)
 
 ///|
-pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_index_g_p_u_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_g_p_u_size64_and_dynamic_offsets_data_length_g_p_u_size32(
+pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_index_gpu_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_gpu_size64_and_dynamic_offsets_data_length_gpu_size32(
   self : GPUComputePassEncoder,
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
@@ -5231,6 +5855,34 @@ pub type GPURenderPassEncoder
 pub extern "js" fn GPURenderPassEncoder::to_js_value(
   self : GPURenderPassEncoder,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPURenderPassEncoder (unchecked)
+pub extern "js" fn GPURenderPassEncoder::from_js_value(
+  v : JsValue,
+) -> GPURenderPassEncoder =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPURenderPassEncoder (checked with instanceof)
+pub extern "js" fn GPURenderPassEncoder::from_js_value_opt(
+  v : JsValue,
+) -> GPURenderPassEncoder? =
+  #| (v) => (v instanceof GPURenderPassEncoder) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPURenderPassEncoder (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_render_pass_encoder(
+  self : JsValue,
+) -> GPURenderPassEncoder? =
+  #| (self) => (self instanceof GPURenderPassEncoder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPURenderPassEncoder (unchecked)
+pub extern "js" fn JsValue::to_gpu_render_pass_encoder(
+  self : JsValue,
+) -> GPURenderPassEncoder =
   #| (self) => self
 
 ///|
@@ -5346,7 +5998,7 @@ pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_dynamic_offsets(
   #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, bind_group, dynamic_offsets)
 
 ///|
-pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_index_g_p_u_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_g_p_u_size64_and_dynamic_offsets_data_length_g_p_u_size32(
+pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_index_gpu_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_gpu_size64_and_dynamic_offsets_data_length_gpu_size32(
   self : GPURenderPassEncoder,
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
@@ -5461,6 +6113,34 @@ pub extern "js" fn GPURenderBundle::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to GPURenderBundle (unchecked)
+pub extern "js" fn GPURenderBundle::from_js_value(
+  v : JsValue,
+) -> GPURenderBundle =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPURenderBundle (checked with instanceof)
+pub extern "js" fn GPURenderBundle::from_js_value_opt(
+  v : JsValue,
+) -> GPURenderBundle? =
+  #| (v) => (v instanceof GPURenderBundle) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPURenderBundle (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_render_bundle(
+  self : JsValue,
+) -> GPURenderBundle? =
+  #| (self) => (self instanceof GPURenderBundle) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPURenderBundle (unchecked)
+pub extern "js" fn JsValue::to_gpu_render_bundle(
+  self : JsValue,
+) -> GPURenderBundle =
+  #| (self) => self
+
+///|
 pub extern "js" fn GPURenderBundle::get_label(self : GPURenderBundle) -> String =
   #| (self) => self.label
 
@@ -5479,6 +6159,34 @@ pub type GPURenderBundleEncoder
 pub extern "js" fn GPURenderBundleEncoder::to_js_value(
   self : GPURenderBundleEncoder,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPURenderBundleEncoder (unchecked)
+pub extern "js" fn GPURenderBundleEncoder::from_js_value(
+  v : JsValue,
+) -> GPURenderBundleEncoder =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPURenderBundleEncoder (checked with instanceof)
+pub extern "js" fn GPURenderBundleEncoder::from_js_value_opt(
+  v : JsValue,
+) -> GPURenderBundleEncoder? =
+  #| (v) => (v instanceof GPURenderBundleEncoder) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPURenderBundleEncoder (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_render_bundle_encoder(
+  self : JsValue,
+) -> GPURenderBundleEncoder? =
+  #| (self) => (self instanceof GPURenderBundleEncoder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPURenderBundleEncoder (unchecked)
+pub extern "js" fn JsValue::to_gpu_render_bundle_encoder(
+  self : JsValue,
+) -> GPURenderBundleEncoder =
   #| (self) => self
 
 ///|
@@ -5545,7 +6253,7 @@ pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_dynamic_offsets(
   #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, bind_group, dynamic_offsets)
 
 ///|
-pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_index_g_p_u_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_g_p_u_size64_and_dynamic_offsets_data_length_g_p_u_size32(
+pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_index_gpu_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_gpu_size64_and_dynamic_offsets_data_length_gpu_size32(
   self : GPURenderBundleEncoder,
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
@@ -5658,6 +6366,26 @@ pub extern "js" fn GPUQueue::to_js_value(self : GPUQueue) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to GPUQueue (unchecked)
+pub extern "js" fn GPUQueue::from_js_value(v : JsValue) -> GPUQueue =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUQueue (checked with instanceof)
+pub extern "js" fn GPUQueue::from_js_value_opt(v : JsValue) -> GPUQueue? =
+  #| (v) => (v instanceof GPUQueue) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUQueue (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_queue(self : JsValue) -> GPUQueue? =
+  #| (self) => (self instanceof GPUQueue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUQueue (unchecked)
+pub extern "js" fn JsValue::to_gpu_queue(self : JsValue) -> GPUQueue =
+  #| (self) => self
+
+///|
 pub extern "js" fn GPUQueue::submit(
   self : GPUQueue,
   command_buffers : Array[GPUCommandBuffer],
@@ -5726,6 +6454,26 @@ pub extern "js" fn GPUQuerySet::to_js_value(self : GPUQuerySet) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to GPUQuerySet (unchecked)
+pub extern "js" fn GPUQuerySet::from_js_value(v : JsValue) -> GPUQuerySet =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUQuerySet (checked with instanceof)
+pub extern "js" fn GPUQuerySet::from_js_value_opt(v : JsValue) -> GPUQuerySet? =
+  #| (v) => (v instanceof GPUQuerySet) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUQuerySet (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_query_set(self : JsValue) -> GPUQuerySet? =
+  #| (self) => (self instanceof GPUQuerySet) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUQuerySet (unchecked)
+pub extern "js" fn JsValue::to_gpu_query_set(self : JsValue) -> GPUQuerySet =
+  #| (self) => self
+
+///|
 pub extern "js" fn GPUQuerySet::destroy(self : GPUQuerySet) -> Unit =
   #| (self) => self.destroy()
 
@@ -5759,6 +6507,34 @@ pub extern "js" fn GPUCanvasContext::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to GPUCanvasContext (unchecked)
+pub extern "js" fn GPUCanvasContext::from_js_value(
+  v : JsValue,
+) -> GPUCanvasContext =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUCanvasContext (checked with instanceof)
+pub extern "js" fn GPUCanvasContext::from_js_value_opt(
+  v : JsValue,
+) -> GPUCanvasContext? =
+  #| (v) => (v instanceof GPUCanvasContext) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUCanvasContext (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_canvas_context(
+  self : JsValue,
+) -> GPUCanvasContext? =
+  #| (self) => (self instanceof GPUCanvasContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUCanvasContext (unchecked)
+pub extern "js" fn JsValue::to_gpu_canvas_context(
+  self : JsValue,
+) -> GPUCanvasContext =
+  #| (self) => self
+
+///|
 pub extern "js" fn GPUCanvasContext::get_canvas(
   self : GPUCanvasContext,
 ) -> HTMLCanvasElementOrOffscreenCanvas =
@@ -5781,7 +6557,7 @@ pub extern "js" fn GPUCanvasContext::unconfigure(
 pub extern "js" fn GPUCanvasContext::get_configuration(
   self : GPUCanvasContext,
 ) -> GPUCanvasConfiguration? =
-  #| (self) => self.getConfiguration()
+  #| (self) => { const v = self.getConfiguration(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn GPUCanvasContext::get_current_texture(
@@ -5797,6 +6573,34 @@ pub type GPUDeviceLostInfo
 pub extern "js" fn GPUDeviceLostInfo::to_js_value(
   self : GPUDeviceLostInfo,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPUDeviceLostInfo (unchecked)
+pub extern "js" fn GPUDeviceLostInfo::from_js_value(
+  v : JsValue,
+) -> GPUDeviceLostInfo =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUDeviceLostInfo (checked with instanceof)
+pub extern "js" fn GPUDeviceLostInfo::from_js_value_opt(
+  v : JsValue,
+) -> GPUDeviceLostInfo? =
+  #| (v) => (v instanceof GPUDeviceLostInfo) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUDeviceLostInfo (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_device_lost_info(
+  self : JsValue,
+) -> GPUDeviceLostInfo? =
+  #| (self) => (self instanceof GPUDeviceLostInfo) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUDeviceLostInfo (unchecked)
+pub extern "js" fn JsValue::to_gpu_device_lost_info(
+  self : JsValue,
+) -> GPUDeviceLostInfo =
   #| (self) => self
 
 ///|
@@ -5820,6 +6624,44 @@ pub extern "js" fn GPUError::to_js_value(self : GPUError) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to GPUError (unchecked)
+pub extern "js" fn GPUError::from_js_value(v : JsValue) -> GPUError =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUError (checked with instanceof)
+pub extern "js" fn GPUError::from_js_value_opt(v : JsValue) -> GPUError? =
+  #| (v) => (v instanceof GPUError) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUError (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_error(self : JsValue) -> GPUError? =
+  #| (self) => (self instanceof GPUError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUError (unchecked)
+pub extern "js" fn JsValue::to_gpu_error(self : JsValue) -> GPUError =
+  #| (self) => self
+
+///|
+pub extern "js" fn GPUError::as_gpu_validation_error(
+  self : GPUError,
+) -> GPUValidationError? =
+  #| (self) => (self instanceof GPUValidationError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn GPUError::as_gpu_out_of_memory_error(
+  self : GPUError,
+) -> GPUOutOfMemoryError? =
+  #| (self) => (self instanceof GPUOutOfMemoryError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn GPUError::as_gpu_internal_error(
+  self : GPUError,
+) -> GPUInternalError? =
+  #| (self) => (self instanceof GPUInternalError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn GPUError::get_message(self : GPUError) -> String =
   #| (self) => self.message
 
@@ -5834,10 +6676,38 @@ pub extern "js" fn GPUValidationError::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn GPUValidationError::get_message(
+/// Cast JsValue to GPUValidationError (unchecked)
+pub extern "js" fn GPUValidationError::from_js_value(
+  v : JsValue,
+) -> GPUValidationError =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUValidationError (checked with instanceof)
+pub extern "js" fn GPUValidationError::from_js_value_opt(
+  v : JsValue,
+) -> GPUValidationError? =
+  #| (v) => (v instanceof GPUValidationError) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUValidationError (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_validation_error(
+  self : JsValue,
+) -> GPUValidationError? =
+  #| (self) => (self instanceof GPUValidationError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUValidationError (unchecked)
+pub extern "js" fn JsValue::to_gpu_validation_error(
+  self : JsValue,
+) -> GPUValidationError =
+  #| (self) => self
+
+///|
+pub extern "js" fn GPUValidationError::to_gpu_error(
   self : GPUValidationError,
-) -> String =
-  #| (self) => self.message
+) -> GPUError =
+  #| (self) => self
 
 ///|
 pub extern "js" fn GPUValidationError::new(
@@ -5856,10 +6726,38 @@ pub extern "js" fn GPUOutOfMemoryError::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn GPUOutOfMemoryError::get_message(
+/// Cast JsValue to GPUOutOfMemoryError (unchecked)
+pub extern "js" fn GPUOutOfMemoryError::from_js_value(
+  v : JsValue,
+) -> GPUOutOfMemoryError =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUOutOfMemoryError (checked with instanceof)
+pub extern "js" fn GPUOutOfMemoryError::from_js_value_opt(
+  v : JsValue,
+) -> GPUOutOfMemoryError? =
+  #| (v) => (v instanceof GPUOutOfMemoryError) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUOutOfMemoryError (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_out_of_memory_error(
+  self : JsValue,
+) -> GPUOutOfMemoryError? =
+  #| (self) => (self instanceof GPUOutOfMemoryError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUOutOfMemoryError (unchecked)
+pub extern "js" fn JsValue::to_gpu_out_of_memory_error(
+  self : JsValue,
+) -> GPUOutOfMemoryError =
+  #| (self) => self
+
+///|
+pub extern "js" fn GPUOutOfMemoryError::to_gpu_error(
   self : GPUOutOfMemoryError,
-) -> String =
-  #| (self) => self.message
+) -> GPUError =
+  #| (self) => self
 
 ///|
 pub extern "js" fn GPUOutOfMemoryError::new(
@@ -5878,10 +6776,38 @@ pub extern "js" fn GPUInternalError::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn GPUInternalError::get_message(
+/// Cast JsValue to GPUInternalError (unchecked)
+pub extern "js" fn GPUInternalError::from_js_value(
+  v : JsValue,
+) -> GPUInternalError =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUInternalError (checked with instanceof)
+pub extern "js" fn GPUInternalError::from_js_value_opt(
+  v : JsValue,
+) -> GPUInternalError? =
+  #| (v) => (v instanceof GPUInternalError) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUInternalError (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_internal_error(
+  self : JsValue,
+) -> GPUInternalError? =
+  #| (self) => (self instanceof GPUInternalError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUInternalError (unchecked)
+pub extern "js" fn JsValue::to_gpu_internal_error(
+  self : JsValue,
+) -> GPUInternalError =
+  #| (self) => self
+
+///|
+pub extern "js" fn GPUInternalError::to_gpu_error(
   self : GPUInternalError,
-) -> String =
-  #| (self) => self.message
+) -> GPUError =
+  #| (self) => self
 
 ///|
 pub extern "js" fn GPUInternalError::new(message : String) -> GPUInternalError =
@@ -5895,6 +6821,40 @@ pub type GPUUncapturedErrorEvent
 pub extern "js" fn GPUUncapturedErrorEvent::to_js_value(
   self : GPUUncapturedErrorEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GPUUncapturedErrorEvent (unchecked)
+pub extern "js" fn GPUUncapturedErrorEvent::from_js_value(
+  v : JsValue,
+) -> GPUUncapturedErrorEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GPUUncapturedErrorEvent (checked with instanceof)
+pub extern "js" fn GPUUncapturedErrorEvent::from_js_value_opt(
+  v : JsValue,
+) -> GPUUncapturedErrorEvent? =
+  #| (v) => (v instanceof GPUUncapturedErrorEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GPUUncapturedErrorEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_gpu_uncaptured_error_event(
+  self : JsValue,
+) -> GPUUncapturedErrorEvent? =
+  #| (self) => (self instanceof GPUUncapturedErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GPUUncapturedErrorEvent (unchecked)
+pub extern "js" fn JsValue::to_gpu_uncaptured_error_event(
+  self : JsValue,
+) -> GPUUncapturedErrorEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn GPUUncapturedErrorEvent::to_event(
+  self : GPUUncapturedErrorEvent,
+) -> Event =
   #| (self) => self
 
 ///|

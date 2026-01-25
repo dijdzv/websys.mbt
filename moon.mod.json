@@ -1,7 +1,9 @@
 {
     "name": "dijdzv/websys",
     "version": "0.1.5",
-    "deps": {},
+    "deps": {
+        "moonbitlang/async": "0.16"
+    },
     "readme": "README.md",
     "repository": "https://github.com/dijdzv/websys.mbt",
     "license": "MIT",

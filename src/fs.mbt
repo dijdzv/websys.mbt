@@ -240,7 +240,7 @@ pub struct WriteParams {
   type_ : WriteCommandType
   size : Nullable[Int64]
   position : Nullable[Int64]
-  data : JsValue?
+  data : BufferSourceOrBlobOrString?
 }
 
 ///|
@@ -294,6 +294,46 @@ pub extern "js" fn FileSystemHandle::to_js_value(
   self : FileSystemHandle,
 ) -> JsValue =
   #| (self) => self
+
+///|
+/// Cast JsValue to FileSystemHandle (unchecked)
+pub extern "js" fn FileSystemHandle::from_js_value(
+  v : JsValue,
+) -> FileSystemHandle =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FileSystemHandle (checked with instanceof)
+pub extern "js" fn FileSystemHandle::from_js_value_opt(
+  v : JsValue,
+) -> FileSystemHandle? =
+  #| (v) => (v instanceof FileSystemHandle) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FileSystemHandle (checked with instanceof)
+pub extern "js" fn JsValue::as_file_system_handle(
+  self : JsValue,
+) -> FileSystemHandle? =
+  #| (self) => (self instanceof FileSystemHandle) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FileSystemHandle (unchecked)
+pub extern "js" fn JsValue::to_file_system_handle(
+  self : JsValue,
+) -> FileSystemHandle =
+  #| (self) => self
+
+///|
+pub extern "js" fn FileSystemHandle::as_file_system_file_handle(
+  self : FileSystemHandle,
+) -> FileSystemFileHandle? =
+  #| (self) => (self instanceof FileSystemFileHandle) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn FileSystemHandle::as_file_system_directory_handle(
+  self : FileSystemHandle,
+) -> FileSystemDirectoryHandle? =
+  #| (self) => (self instanceof FileSystemDirectoryHandle) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn FileSystemHandle::get_kind(
@@ -351,49 +391,38 @@ pub extern "js" fn FileSystemFileHandle::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn FileSystemFileHandle::get_kind(
-  self : FileSystemFileHandle,
-) -> FileSystemHandleKind =
-  #| (self) => self.kind
+/// Cast JsValue to FileSystemFileHandle (unchecked)
+pub extern "js" fn FileSystemFileHandle::from_js_value(
+  v : JsValue,
+) -> FileSystemFileHandle =
+  #| (v) => v
 
 ///|
-pub extern "js" fn FileSystemFileHandle::get_name(
-  self : FileSystemFileHandle,
-) -> String =
-  #| (self) => self.name
+/// Safely cast JsValue to FileSystemFileHandle (checked with instanceof)
+pub extern "js" fn FileSystemFileHandle::from_js_value_opt(
+  v : JsValue,
+) -> FileSystemFileHandle? =
+  #| (v) => (v instanceof FileSystemFileHandle) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn FileSystemFileHandle::is_same_entry(
-  self : FileSystemFileHandle,
-  other : FileSystemHandle,
-) -> Promise[Bool] =
-  #| (self, other) => self.isSameEntry(other)
+/// Safely cast JsValue to FileSystemFileHandle (checked with instanceof)
+pub extern "js" fn JsValue::as_file_system_file_handle(
+  self : JsValue,
+) -> FileSystemFileHandle? =
+  #| (self) => (self instanceof FileSystemFileHandle) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn FileSystemFileHandle::query_permission(
-  self : FileSystemFileHandle,
-) -> Promise[PermissionState] =
-  #| (self) => self.queryPermission()
+/// Cast JsValue to FileSystemFileHandle (unchecked)
+pub extern "js" fn JsValue::to_file_system_file_handle(
+  self : JsValue,
+) -> FileSystemFileHandle =
+  #| (self) => self
 
 ///|
-pub extern "js" fn FileSystemFileHandle::query_permission_with_descriptor(
+pub extern "js" fn FileSystemFileHandle::to_file_system_handle(
   self : FileSystemFileHandle,
-  descriptor : FileSystemHandlePermissionDescriptor,
-) -> Promise[PermissionState] =
-  #| (self, descriptor) => self.queryPermission(descriptor)
-
-///|
-pub extern "js" fn FileSystemFileHandle::request_permission(
-  self : FileSystemFileHandle,
-) -> Promise[PermissionState] =
-  #| (self) => self.requestPermission()
-
-///|
-pub extern "js" fn FileSystemFileHandle::request_permission_with_descriptor(
-  self : FileSystemFileHandle,
-  descriptor : FileSystemHandlePermissionDescriptor,
-) -> Promise[PermissionState] =
-  #| (self, descriptor) => self.requestPermission(descriptor)
+) -> FileSystemHandle =
+  #| (self) => self
 
 ///|
 pub extern "js" fn FileSystemFileHandle::get_file(
@@ -431,49 +460,38 @@ pub extern "js" fn FileSystemDirectoryHandle::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn FileSystemDirectoryHandle::get_kind(
-  self : FileSystemDirectoryHandle,
-) -> FileSystemHandleKind =
-  #| (self) => self.kind
+/// Cast JsValue to FileSystemDirectoryHandle (unchecked)
+pub extern "js" fn FileSystemDirectoryHandle::from_js_value(
+  v : JsValue,
+) -> FileSystemDirectoryHandle =
+  #| (v) => v
 
 ///|
-pub extern "js" fn FileSystemDirectoryHandle::get_name(
-  self : FileSystemDirectoryHandle,
-) -> String =
-  #| (self) => self.name
+/// Safely cast JsValue to FileSystemDirectoryHandle (checked with instanceof)
+pub extern "js" fn FileSystemDirectoryHandle::from_js_value_opt(
+  v : JsValue,
+) -> FileSystemDirectoryHandle? =
+  #| (v) => (v instanceof FileSystemDirectoryHandle) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn FileSystemDirectoryHandle::is_same_entry(
-  self : FileSystemDirectoryHandle,
-  other : FileSystemHandle,
-) -> Promise[Bool] =
-  #| (self, other) => self.isSameEntry(other)
+/// Safely cast JsValue to FileSystemDirectoryHandle (checked with instanceof)
+pub extern "js" fn JsValue::as_file_system_directory_handle(
+  self : JsValue,
+) -> FileSystemDirectoryHandle? =
+  #| (self) => (self instanceof FileSystemDirectoryHandle) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn FileSystemDirectoryHandle::query_permission(
-  self : FileSystemDirectoryHandle,
-) -> Promise[PermissionState] =
-  #| (self) => self.queryPermission()
+/// Cast JsValue to FileSystemDirectoryHandle (unchecked)
+pub extern "js" fn JsValue::to_file_system_directory_handle(
+  self : JsValue,
+) -> FileSystemDirectoryHandle =
+  #| (self) => self
 
 ///|
-pub extern "js" fn FileSystemDirectoryHandle::query_permission_with_descriptor(
+pub extern "js" fn FileSystemDirectoryHandle::to_file_system_handle(
   self : FileSystemDirectoryHandle,
-  descriptor : FileSystemHandlePermissionDescriptor,
-) -> Promise[PermissionState] =
-  #| (self, descriptor) => self.queryPermission(descriptor)
-
-///|
-pub extern "js" fn FileSystemDirectoryHandle::request_permission(
-  self : FileSystemDirectoryHandle,
-) -> Promise[PermissionState] =
-  #| (self) => self.requestPermission()
-
-///|
-pub extern "js" fn FileSystemDirectoryHandle::request_permission_with_descriptor(
-  self : FileSystemDirectoryHandle,
-  descriptor : FileSystemHandlePermissionDescriptor,
-) -> Promise[PermissionState] =
-  #| (self, descriptor) => self.requestPermission(descriptor)
+) -> FileSystemHandle =
+  #| (self) => self
 
 ///|
 pub extern "js" fn FileSystemDirectoryHandle::_unknown_(
@@ -530,7 +548,7 @@ pub extern "js" fn FileSystemDirectoryHandle::remove_entry_with_options(
 pub extern "js" fn FileSystemDirectoryHandle::resolve(
   self : FileSystemDirectoryHandle,
   possible_descendant : FileSystemHandle,
-) -> Promise[Unit] =
+) -> Promise[Array[String]] =
   #| (self, possible_descendant) => self.resolve(possible_descendant)
 
 ///|
@@ -541,6 +559,40 @@ pub type FileSystemWritableFileStream
 pub extern "js" fn FileSystemWritableFileStream::to_js_value(
   self : FileSystemWritableFileStream,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to FileSystemWritableFileStream (unchecked)
+pub extern "js" fn FileSystemWritableFileStream::from_js_value(
+  v : JsValue,
+) -> FileSystemWritableFileStream =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FileSystemWritableFileStream (checked with instanceof)
+pub extern "js" fn FileSystemWritableFileStream::from_js_value_opt(
+  v : JsValue,
+) -> FileSystemWritableFileStream? =
+  #| (v) => (v instanceof FileSystemWritableFileStream) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FileSystemWritableFileStream (checked with instanceof)
+pub extern "js" fn JsValue::as_file_system_writable_file_stream(
+  self : JsValue,
+) -> FileSystemWritableFileStream? =
+  #| (self) => (self instanceof FileSystemWritableFileStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FileSystemWritableFileStream (unchecked)
+pub extern "js" fn JsValue::to_file_system_writable_file_stream(
+  self : JsValue,
+) -> FileSystemWritableFileStream =
+  #| (self) => self
+
+///|
+pub extern "js" fn FileSystemWritableFileStream::to_writable_stream(
+  self : FileSystemWritableFileStream,
+) -> WritableStream =
   #| (self) => self
 
 ///|
@@ -572,6 +624,34 @@ pub type FileSystemSyncAccessHandle
 pub extern "js" fn FileSystemSyncAccessHandle::to_js_value(
   self : FileSystemSyncAccessHandle,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to FileSystemSyncAccessHandle (unchecked)
+pub extern "js" fn FileSystemSyncAccessHandle::from_js_value(
+  v : JsValue,
+) -> FileSystemSyncAccessHandle =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FileSystemSyncAccessHandle (checked with instanceof)
+pub extern "js" fn FileSystemSyncAccessHandle::from_js_value_opt(
+  v : JsValue,
+) -> FileSystemSyncAccessHandle? =
+  #| (v) => (v instanceof FileSystemSyncAccessHandle) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FileSystemSyncAccessHandle (checked with instanceof)
+pub extern "js" fn JsValue::as_file_system_sync_access_handle(
+  self : JsValue,
+) -> FileSystemSyncAccessHandle? =
+  #| (self) => (self instanceof FileSystemSyncAccessHandle) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FileSystemSyncAccessHandle (unchecked)
+pub extern "js" fn JsValue::to_file_system_sync_access_handle(
+  self : JsValue,
+) -> FileSystemSyncAccessHandle =
   #| (self) => self
 
 ///|

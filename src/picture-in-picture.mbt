@@ -33,6 +33,40 @@ pub extern "js" fn PictureInPictureWindow::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PictureInPictureWindow (unchecked)
+pub extern "js" fn PictureInPictureWindow::from_js_value(
+  v : JsValue,
+) -> PictureInPictureWindow =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PictureInPictureWindow (checked with instanceof)
+pub extern "js" fn PictureInPictureWindow::from_js_value_opt(
+  v : JsValue,
+) -> PictureInPictureWindow? =
+  #| (v) => (v instanceof PictureInPictureWindow) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PictureInPictureWindow (checked with instanceof)
+pub extern "js" fn JsValue::as_picture_in_picture_window(
+  self : JsValue,
+) -> PictureInPictureWindow? =
+  #| (self) => (self instanceof PictureInPictureWindow) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PictureInPictureWindow (unchecked)
+pub extern "js" fn JsValue::to_picture_in_picture_window(
+  self : JsValue,
+) -> PictureInPictureWindow =
+  #| (self) => self
+
+///|
+pub extern "js" fn PictureInPictureWindow::to_event_target(
+  self : PictureInPictureWindow,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn PictureInPictureWindow::get_width(
   self : PictureInPictureWindow,
 ) -> Int =
@@ -65,6 +99,40 @@ pub type PictureInPictureEvent
 pub extern "js" fn PictureInPictureEvent::to_js_value(
   self : PictureInPictureEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to PictureInPictureEvent (unchecked)
+pub extern "js" fn PictureInPictureEvent::from_js_value(
+  v : JsValue,
+) -> PictureInPictureEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PictureInPictureEvent (checked with instanceof)
+pub extern "js" fn PictureInPictureEvent::from_js_value_opt(
+  v : JsValue,
+) -> PictureInPictureEvent? =
+  #| (v) => (v instanceof PictureInPictureEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PictureInPictureEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_picture_in_picture_event(
+  self : JsValue,
+) -> PictureInPictureEvent? =
+  #| (self) => (self instanceof PictureInPictureEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PictureInPictureEvent (unchecked)
+pub extern "js" fn JsValue::to_picture_in_picture_event(
+  self : JsValue,
+) -> PictureInPictureEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn PictureInPictureEvent::to_event(
+  self : PictureInPictureEvent,
+) -> Event =
   #| (self) => self
 
 ///|

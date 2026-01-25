@@ -352,7 +352,7 @@ pub extern "js" fn BluetoothPermissionDescriptor::to_js(
 pub struct AllowedBluetoothDevice {
   deviceId : String
   mayUseGATT : Bool
-  allowedServices : JsValue
+  allowedServices : StringOrArrayOfUUID
   allowedManufacturerData : Array[Int]
 }
 
@@ -444,7 +444,7 @@ pub extern "js" fn WatchAdvertisementsOptions::to_js(
 /// BluetoothAdvertisingEventInit dictionary
 pub struct BluetoothAdvertisingEventInit {
   device : BluetoothDevice
-  uuids : Array[JsValue]?
+  uuids : Array[StringOrInt]?
   name : String?
   appearance : Int?
   txPower : Int?
@@ -493,6 +493,30 @@ pub extern "js" fn Bluetooth::to_js_value(self : Bluetooth) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Bluetooth (unchecked)
+pub extern "js" fn Bluetooth::from_js_value(v : JsValue) -> Bluetooth =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Bluetooth (checked with instanceof)
+pub extern "js" fn Bluetooth::from_js_value_opt(v : JsValue) -> Bluetooth? =
+  #| (v) => (v instanceof Bluetooth) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Bluetooth (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth(self : JsValue) -> Bluetooth? =
+  #| (self) => (self instanceof Bluetooth) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Bluetooth (unchecked)
+pub extern "js" fn JsValue::to_bluetooth(self : JsValue) -> Bluetooth =
+  #| (self) => self
+
+///|
+pub extern "js" fn Bluetooth::to_event_target(self : Bluetooth) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn Bluetooth::get_availability(
   self : Bluetooth,
 ) -> Promise[Bool] =
@@ -515,10 +539,12 @@ pub extern "js" fn Bluetooth::set_onavailabilitychanged(
 pub extern "js" fn Bluetooth::get_referring_device(
   self : Bluetooth,
 ) -> BluetoothDevice? =
-  #| (self) => self.referringDevice
+  #| (self) => { const v = self.referringDevice; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
-pub extern "js" fn Bluetooth::get_devices(self : Bluetooth) -> Promise[Unit] =
+pub extern "js" fn Bluetooth::get_devices(
+  self : Bluetooth,
+) -> Promise[Array[BluetoothDevice]] =
   #| (self) => self.getDevices()
 
 ///|
@@ -535,13 +561,13 @@ pub extern "js" fn Bluetooth::request_device_with_options(
   #| (self, options) => self.requestDevice(options)
 
 ///|
-pub extern "js" fn Bluetooth::request_l_e_scan(
+pub extern "js" fn Bluetooth::request_le_scan(
   self : Bluetooth,
 ) -> Promise[BluetoothLEScan] =
   #| (self) => self.requestLEScan()
 
 ///|
-pub extern "js" fn Bluetooth::request_l_e_scan_with_options(
+pub extern "js" fn Bluetooth::request_le_scan_with_options(
   self : Bluetooth,
   options : BluetoothLEScanOptions,
 ) -> Promise[BluetoothLEScan] =
@@ -636,6 +662,46 @@ pub extern "js" fn BluetoothPermissionResult::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BluetoothPermissionResult (unchecked)
+pub extern "js" fn BluetoothPermissionResult::from_js_value(
+  v : JsValue,
+) -> BluetoothPermissionResult =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothPermissionResult (checked with instanceof)
+pub extern "js" fn BluetoothPermissionResult::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothPermissionResult? =
+  #| (v) => (v instanceof BluetoothPermissionResult) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothPermissionResult (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_permission_result(
+  self : JsValue,
+) -> BluetoothPermissionResult? =
+  #| (self) => (self instanceof BluetoothPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothPermissionResult (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_permission_result(
+  self : JsValue,
+) -> BluetoothPermissionResult =
+  #| (self) => self
+
+///|
+pub extern "js" fn BluetoothPermissionResult::to_permission_status(
+  self : BluetoothPermissionResult,
+) -> PermissionStatus =
+  #| (self) => self
+
+///|
+pub extern "js" fn BluetoothPermissionResult::to_event_target(
+  self : BluetoothPermissionResult,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn BluetoothPermissionResult::get_devices(
   self : BluetoothPermissionResult,
 ) -> JsValue =
@@ -654,6 +720,30 @@ pub type ValueEvent
 
 ///|
 pub extern "js" fn ValueEvent::to_js_value(self : ValueEvent) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to ValueEvent (unchecked)
+pub extern "js" fn ValueEvent::from_js_value(v : JsValue) -> ValueEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ValueEvent (checked with instanceof)
+pub extern "js" fn ValueEvent::from_js_value_opt(v : JsValue) -> ValueEvent? =
+  #| (v) => (v instanceof ValueEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ValueEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_value_event(self : JsValue) -> ValueEvent? =
+  #| (self) => (self instanceof ValueEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ValueEvent (unchecked)
+pub extern "js" fn JsValue::to_value_event(self : JsValue) -> ValueEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn ValueEvent::to_event(self : ValueEvent) -> Event =
   #| (self) => self
 
 ///|
@@ -678,18 +768,52 @@ pub extern "js" fn BluetoothDevice::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BluetoothDevice (unchecked)
+pub extern "js" fn BluetoothDevice::from_js_value(
+  v : JsValue,
+) -> BluetoothDevice =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothDevice (checked with instanceof)
+pub extern "js" fn BluetoothDevice::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothDevice? =
+  #| (v) => (v instanceof BluetoothDevice) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothDevice (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_device(
+  self : JsValue,
+) -> BluetoothDevice? =
+  #| (self) => (self instanceof BluetoothDevice) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothDevice (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_device(
+  self : JsValue,
+) -> BluetoothDevice =
+  #| (self) => self
+
+///|
+pub extern "js" fn BluetoothDevice::to_event_target(
+  self : BluetoothDevice,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn BluetoothDevice::get_id(self : BluetoothDevice) -> String =
   #| (self) => self.id
 
 ///|
 pub extern "js" fn BluetoothDevice::get_name(self : BluetoothDevice) -> String? =
-  #| (self) => self.name
+  #| (self) => { const v = self.name; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn BluetoothDevice::get_gatt(
   self : BluetoothDevice,
 ) -> BluetoothRemoteGATTServer? =
-  #| (self) => self.gatt
+  #| (self) => { const v = self.gatt; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn BluetoothDevice::forget(
@@ -805,11 +929,39 @@ pub extern "js" fn BluetoothManufacturerDataMap::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BluetoothManufacturerDataMap (unchecked)
+pub extern "js" fn BluetoothManufacturerDataMap::from_js_value(
+  v : JsValue,
+) -> BluetoothManufacturerDataMap =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothManufacturerDataMap (checked with instanceof)
+pub extern "js" fn BluetoothManufacturerDataMap::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothManufacturerDataMap? =
+  #| (v) => (v instanceof BluetoothManufacturerDataMap) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothManufacturerDataMap (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_manufacturer_data_map(
+  self : JsValue,
+) -> BluetoothManufacturerDataMap? =
+  #| (self) => (self instanceof BluetoothManufacturerDataMap) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothManufacturerDataMap (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_manufacturer_data_map(
+  self : JsValue,
+) -> BluetoothManufacturerDataMap =
+  #| (self) => self
+
+///|
 pub extern "js" fn BluetoothManufacturerDataMap::get(
   self : BluetoothManufacturerDataMap,
   key : Int,
 ) -> DataView? =
-  #| (self, key) => self.get(key)
+  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn BluetoothManufacturerDataMap::has(
@@ -829,11 +981,39 @@ pub extern "js" fn BluetoothServiceDataMap::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BluetoothServiceDataMap (unchecked)
+pub extern "js" fn BluetoothServiceDataMap::from_js_value(
+  v : JsValue,
+) -> BluetoothServiceDataMap =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothServiceDataMap (checked with instanceof)
+pub extern "js" fn BluetoothServiceDataMap::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothServiceDataMap? =
+  #| (v) => (v instanceof BluetoothServiceDataMap) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothServiceDataMap (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_service_data_map(
+  self : JsValue,
+) -> BluetoothServiceDataMap? =
+  #| (self) => (self instanceof BluetoothServiceDataMap) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothServiceDataMap (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_service_data_map(
+  self : JsValue,
+) -> BluetoothServiceDataMap =
+  #| (self) => self
+
+///|
 pub extern "js" fn BluetoothServiceDataMap::get(
   self : BluetoothServiceDataMap,
   key : UUID,
 ) -> DataView? =
-  #| (self, key) => self.get(key)
+  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn BluetoothServiceDataMap::has(
@@ -850,6 +1030,40 @@ pub type BluetoothAdvertisingEvent
 pub extern "js" fn BluetoothAdvertisingEvent::to_js_value(
   self : BluetoothAdvertisingEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to BluetoothAdvertisingEvent (unchecked)
+pub extern "js" fn BluetoothAdvertisingEvent::from_js_value(
+  v : JsValue,
+) -> BluetoothAdvertisingEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothAdvertisingEvent (checked with instanceof)
+pub extern "js" fn BluetoothAdvertisingEvent::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothAdvertisingEvent? =
+  #| (v) => (v instanceof BluetoothAdvertisingEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothAdvertisingEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_advertising_event(
+  self : JsValue,
+) -> BluetoothAdvertisingEvent? =
+  #| (self) => (self instanceof BluetoothAdvertisingEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothAdvertisingEvent (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_advertising_event(
+  self : JsValue,
+) -> BluetoothAdvertisingEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn BluetoothAdvertisingEvent::to_event(
+  self : BluetoothAdvertisingEvent,
+) -> Event =
   #| (self) => self
 
 ///|
@@ -875,25 +1089,25 @@ pub extern "js" fn BluetoothAdvertisingEvent::get_uuids(
 pub extern "js" fn BluetoothAdvertisingEvent::get_name(
   self : BluetoothAdvertisingEvent,
 ) -> String? =
-  #| (self) => self.name
+  #| (self) => { const v = self.name; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn BluetoothAdvertisingEvent::get_appearance(
   self : BluetoothAdvertisingEvent,
 ) -> Int? =
-  #| (self) => self.appearance
+  #| (self) => { const v = self.appearance; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn BluetoothAdvertisingEvent::get_tx_power(
   self : BluetoothAdvertisingEvent,
 ) -> Int? =
-  #| (self) => self.txPower
+  #| (self) => { const v = self.txPower; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn BluetoothAdvertisingEvent::get_rssi(
   self : BluetoothAdvertisingEvent,
 ) -> Int? =
-  #| (self) => self.rssi
+  #| (self) => { const v = self.rssi; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn BluetoothAdvertisingEvent::get_manufacturer_data(
@@ -915,6 +1129,34 @@ pub type BluetoothRemoteGATTServer
 pub extern "js" fn BluetoothRemoteGATTServer::to_js_value(
   self : BluetoothRemoteGATTServer,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to BluetoothRemoteGATTServer (unchecked)
+pub extern "js" fn BluetoothRemoteGATTServer::from_js_value(
+  v : JsValue,
+) -> BluetoothRemoteGATTServer =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothRemoteGATTServer (checked with instanceof)
+pub extern "js" fn BluetoothRemoteGATTServer::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothRemoteGATTServer? =
+  #| (v) => (v instanceof BluetoothRemoteGATTServer) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothRemoteGATTServer (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_remote_gatt_server(
+  self : JsValue,
+) -> BluetoothRemoteGATTServer? =
+  #| (self) => (self instanceof BluetoothRemoteGATTServer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothRemoteGATTServer (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_remote_gatt_server(
+  self : JsValue,
+) -> BluetoothRemoteGATTServer =
   #| (self) => self
 
 ///|
@@ -951,14 +1193,14 @@ pub extern "js" fn BluetoothRemoteGATTServer::get_primary_service(
 ///|
 pub extern "js" fn BluetoothRemoteGATTServer::get_primary_services(
   self : BluetoothRemoteGATTServer,
-) -> Promise[Unit] =
+) -> Promise[Array[BluetoothRemoteGATTService]] =
   #| (self) => self.getPrimaryServices()
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTServer::get_primary_services_with_service(
   self : BluetoothRemoteGATTServer,
   service : BluetoothServiceUUID,
-) -> Promise[Unit] =
+) -> Promise[Array[BluetoothRemoteGATTService]] =
   #| (self, service) => self.getPrimaryServices(service)
 
 ///|
@@ -969,6 +1211,40 @@ pub type BluetoothRemoteGATTService
 pub extern "js" fn BluetoothRemoteGATTService::to_js_value(
   self : BluetoothRemoteGATTService,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to BluetoothRemoteGATTService (unchecked)
+pub extern "js" fn BluetoothRemoteGATTService::from_js_value(
+  v : JsValue,
+) -> BluetoothRemoteGATTService =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothRemoteGATTService (checked with instanceof)
+pub extern "js" fn BluetoothRemoteGATTService::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothRemoteGATTService? =
+  #| (v) => (v instanceof BluetoothRemoteGATTService) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothRemoteGATTService (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_remote_gatt_service(
+  self : JsValue,
+) -> BluetoothRemoteGATTService? =
+  #| (self) => (self instanceof BluetoothRemoteGATTService) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothRemoteGATTService (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_remote_gatt_service(
+  self : JsValue,
+) -> BluetoothRemoteGATTService =
+  #| (self) => self
+
+///|
+pub extern "js" fn BluetoothRemoteGATTService::to_event_target(
+  self : BluetoothRemoteGATTService,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -999,14 +1275,14 @@ pub extern "js" fn BluetoothRemoteGATTService::get_characteristic(
 ///|
 pub extern "js" fn BluetoothRemoteGATTService::get_characteristics(
   self : BluetoothRemoteGATTService,
-) -> Promise[Unit] =
+) -> Promise[Array[BluetoothRemoteGATTCharacteristic]] =
   #| (self) => self.getCharacteristics()
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTService::get_characteristics_with_characteristic(
   self : BluetoothRemoteGATTService,
   characteristic : BluetoothCharacteristicUUID,
-) -> Promise[Unit] =
+) -> Promise[Array[BluetoothRemoteGATTCharacteristic]] =
   #| (self, characteristic) => self.getCharacteristics(characteristic)
 
 ///|
@@ -1019,14 +1295,14 @@ pub extern "js" fn BluetoothRemoteGATTService::get_included_service(
 ///|
 pub extern "js" fn BluetoothRemoteGATTService::get_included_services(
   self : BluetoothRemoteGATTService,
-) -> Promise[Unit] =
+) -> Promise[Array[BluetoothRemoteGATTService]] =
   #| (self) => self.getIncludedServices()
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTService::get_included_services_with_service(
   self : BluetoothRemoteGATTService,
   service : BluetoothServiceUUID,
-) -> Promise[Unit] =
+) -> Promise[Array[BluetoothRemoteGATTService]] =
   #| (self, service) => self.getIncludedServices(service)
 
 ///|
@@ -1092,6 +1368,40 @@ pub extern "js" fn BluetoothRemoteGATTCharacteristic::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BluetoothRemoteGATTCharacteristic (unchecked)
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::from_js_value(
+  v : JsValue,
+) -> BluetoothRemoteGATTCharacteristic =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothRemoteGATTCharacteristic (checked with instanceof)
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothRemoteGATTCharacteristic? =
+  #| (v) => (v instanceof BluetoothRemoteGATTCharacteristic) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothRemoteGATTCharacteristic (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_remote_gatt_characteristic(
+  self : JsValue,
+) -> BluetoothRemoteGATTCharacteristic? =
+  #| (self) => (self instanceof BluetoothRemoteGATTCharacteristic) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothRemoteGATTCharacteristic (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_remote_gatt_characteristic(
+  self : JsValue,
+) -> BluetoothRemoteGATTCharacteristic =
+  #| (self) => self
+
+///|
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::to_event_target(
+  self : BluetoothRemoteGATTCharacteristic,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_service(
   self : BluetoothRemoteGATTCharacteristic,
 ) -> BluetoothRemoteGATTService =
@@ -1113,7 +1423,7 @@ pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_properties(
 pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_value(
   self : BluetoothRemoteGATTCharacteristic,
 ) -> DataView? =
-  #| (self) => self.value
+  #| (self) => { const v = self.value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptor(
@@ -1125,14 +1435,14 @@ pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptor(
 ///|
 pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptors(
   self : BluetoothRemoteGATTCharacteristic,
-) -> Promise[Unit] =
+) -> Promise[Array[BluetoothRemoteGATTDescriptor]] =
   #| (self) => self.getDescriptors()
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptors_with_descriptor(
   self : BluetoothRemoteGATTCharacteristic,
   descriptor : BluetoothDescriptorUUID,
-) -> Promise[Unit] =
+) -> Promise[Array[BluetoothRemoteGATTDescriptor]] =
   #| (self, descriptor) => self.getDescriptors(descriptor)
 
 ///|
@@ -1195,6 +1505,34 @@ pub type BluetoothCharacteristicProperties
 pub extern "js" fn BluetoothCharacteristicProperties::to_js_value(
   self : BluetoothCharacteristicProperties,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to BluetoothCharacteristicProperties (unchecked)
+pub extern "js" fn BluetoothCharacteristicProperties::from_js_value(
+  v : JsValue,
+) -> BluetoothCharacteristicProperties =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothCharacteristicProperties (checked with instanceof)
+pub extern "js" fn BluetoothCharacteristicProperties::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothCharacteristicProperties? =
+  #| (v) => (v instanceof BluetoothCharacteristicProperties) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothCharacteristicProperties (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_characteristic_properties(
+  self : JsValue,
+) -> BluetoothCharacteristicProperties? =
+  #| (self) => (self instanceof BluetoothCharacteristicProperties) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothCharacteristicProperties (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_characteristic_properties(
+  self : JsValue,
+) -> BluetoothCharacteristicProperties =
   #| (self) => self
 
 ///|
@@ -1262,6 +1600,34 @@ pub extern "js" fn BluetoothRemoteGATTDescriptor::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BluetoothRemoteGATTDescriptor (unchecked)
+pub extern "js" fn BluetoothRemoteGATTDescriptor::from_js_value(
+  v : JsValue,
+) -> BluetoothRemoteGATTDescriptor =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothRemoteGATTDescriptor (checked with instanceof)
+pub extern "js" fn BluetoothRemoteGATTDescriptor::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothRemoteGATTDescriptor? =
+  #| (v) => (v instanceof BluetoothRemoteGATTDescriptor) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothRemoteGATTDescriptor (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_remote_gatt_descriptor(
+  self : JsValue,
+) -> BluetoothRemoteGATTDescriptor? =
+  #| (self) => (self instanceof BluetoothRemoteGATTDescriptor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothRemoteGATTDescriptor (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_remote_gatt_descriptor(
+  self : JsValue,
+) -> BluetoothRemoteGATTDescriptor =
+  #| (self) => self
+
+///|
 pub extern "js" fn BluetoothRemoteGATTDescriptor::get_characteristic(
   self : BluetoothRemoteGATTDescriptor,
 ) -> BluetoothRemoteGATTCharacteristic =
@@ -1277,7 +1643,7 @@ pub extern "js" fn BluetoothRemoteGATTDescriptor::get_uuid(
 pub extern "js" fn BluetoothRemoteGATTDescriptor::get_value(
   self : BluetoothRemoteGATTDescriptor,
 ) -> DataView? =
-  #| (self) => self.value
+  #| (self) => { const v = self.value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTDescriptor::read_value(
@@ -1301,6 +1667,28 @@ pub extern "js" fn BluetoothUUID::to_js_value(self : BluetoothUUID) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to BluetoothUUID (unchecked)
+pub extern "js" fn BluetoothUUID::from_js_value(v : JsValue) -> BluetoothUUID =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothUUID (checked with instanceof)
+pub extern "js" fn BluetoothUUID::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothUUID? =
+  #| (v) => (v instanceof BluetoothUUID) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothUUID (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_uuid(self : JsValue) -> BluetoothUUID? =
+  #| (self) => (self instanceof BluetoothUUID) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothUUID (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_uuid(self : JsValue) -> BluetoothUUID =
+  #| (self) => self
+
+///|
 pub extern "js" fn BluetoothUUID::get_service(name : StringOrInt) -> UUID =
   #| (name) => BluetoothUUID.getService(name)
 
@@ -1315,5 +1703,5 @@ pub extern "js" fn BluetoothUUID::get_descriptor(name : StringOrInt) -> UUID =
   #| (name) => BluetoothUUID.getDescriptor(name)
 
 ///|
-pub extern "js" fn BluetoothUUID::canonical_u_u_i_d(alias_ : Int) -> UUID =
+pub extern "js" fn BluetoothUUID::canonical_uuid(alias_ : Int) -> UUID =
   #| (alias_) => BluetoothUUID.canonicalUUID(alias_)

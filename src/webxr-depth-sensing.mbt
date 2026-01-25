@@ -116,9 +116,9 @@ pub extern "js" fn XRDepthStateInit::to_js(self : XRDepthStateInit) -> JsValue =
 /// XRSessionInit dictionary
 pub struct XRSessionInit {
   depthSensing : XRDepthStateInit?
-  domOverlay : Nullable[XRDOMOverlayInit]
   requiredFeatures : Array[String]?
   optionalFeatures : Array[String]?
+  domOverlay : Nullable[XRDOMOverlayInit]
 }
 
 ///|
@@ -126,9 +126,9 @@ pub struct XRSessionInit {
 pub fn XRSessionInit::default() -> XRSessionInit {
   XRSessionInit::{
     depthSensing: None,
-    domOverlay: Nullable::Undefined,
     requiredFeatures: None,
     optionalFeatures: None,
+    domOverlay: Nullable::Undefined,
   }
 }
 
@@ -137,9 +137,9 @@ pub fn XRSessionInit::default() -> XRSessionInit {
 pub extern "js" fn XRSessionInit::to_js(self : XRSessionInit) -> JsValue =
   #| (self) => ({
   #|   depthSensing: self.depthSensing,
-  #|   domOverlay: ((() => { const v = self.domOverlay; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   requiredFeatures: self.requiredFeatures,
-  #|   optionalFeatures: self.optionalFeatures
+  #|   optionalFeatures: self.optionalFeatures,
+  #|   domOverlay: ((() => { const v = self.domOverlay; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
 
 ///|
@@ -151,6 +151,46 @@ pub extern "js" fn XRDepthInformation::to_js_value(
   self : XRDepthInformation,
 ) -> JsValue =
   #| (self) => self
+
+///|
+/// Cast JsValue to XRDepthInformation (unchecked)
+pub extern "js" fn XRDepthInformation::from_js_value(
+  v : JsValue,
+) -> XRDepthInformation =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRDepthInformation (checked with instanceof)
+pub extern "js" fn XRDepthInformation::from_js_value_opt(
+  v : JsValue,
+) -> XRDepthInformation? =
+  #| (v) => (v instanceof XRDepthInformation) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRDepthInformation (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_depth_information(
+  self : JsValue,
+) -> XRDepthInformation? =
+  #| (self) => (self instanceof XRDepthInformation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRDepthInformation (unchecked)
+pub extern "js" fn JsValue::to_xr_depth_information(
+  self : JsValue,
+) -> XRDepthInformation =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRDepthInformation::as_xrcpu_depth_information(
+  self : XRDepthInformation,
+) -> XRCPUDepthInformation? =
+  #| (self) => (self instanceof XRCPUDepthInformation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn XRDepthInformation::as_xr_web_gl_depth_information(
+  self : XRDepthInformation,
+) -> XRWebGLDepthInformation? =
+  #| (self) => (self instanceof XRWebGLDepthInformation) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn XRDepthInformation::get_width(
@@ -199,40 +239,38 @@ pub extern "js" fn XRCPUDepthInformation::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn XRCPUDepthInformation::get_width(
-  self : XRCPUDepthInformation,
-) -> Int =
-  #| (self) => self.width
+/// Cast JsValue to XRCPUDepthInformation (unchecked)
+pub extern "js" fn XRCPUDepthInformation::from_js_value(
+  v : JsValue,
+) -> XRCPUDepthInformation =
+  #| (v) => v
 
 ///|
-pub extern "js" fn XRCPUDepthInformation::get_height(
-  self : XRCPUDepthInformation,
-) -> Int =
-  #| (self) => self.height
+/// Safely cast JsValue to XRCPUDepthInformation (checked with instanceof)
+pub extern "js" fn XRCPUDepthInformation::from_js_value_opt(
+  v : JsValue,
+) -> XRCPUDepthInformation? =
+  #| (v) => (v instanceof XRCPUDepthInformation) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn XRCPUDepthInformation::get_norm_depth_buffer_from_norm_view(
-  self : XRCPUDepthInformation,
-) -> XRRigidTransform =
-  #| (self) => self.normDepthBufferFromNormView
+/// Safely cast JsValue to XRCPUDepthInformation (checked with instanceof)
+pub extern "js" fn JsValue::as_xrcpu_depth_information(
+  self : JsValue,
+) -> XRCPUDepthInformation? =
+  #| (self) => (self instanceof XRCPUDepthInformation) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn XRCPUDepthInformation::get_raw_value_to_meters(
-  self : XRCPUDepthInformation,
-) -> Double =
-  #| (self) => self.rawValueToMeters
+/// Cast JsValue to XRCPUDepthInformation (unchecked)
+pub extern "js" fn JsValue::to_xrcpu_depth_information(
+  self : JsValue,
+) -> XRCPUDepthInformation =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XRCPUDepthInformation::get_projection_matrix(
+pub extern "js" fn XRCPUDepthInformation::to_xr_depth_information(
   self : XRCPUDepthInformation,
-) -> Float32Array =
-  #| (self) => self.projectionMatrix
-
-///|
-pub extern "js" fn XRCPUDepthInformation::get_transform(
-  self : XRCPUDepthInformation,
-) -> XRRigidTransform =
-  #| (self) => self.transform
+) -> XRDepthInformation =
+  #| (self) => self
 
 ///|
 pub extern "js" fn XRCPUDepthInformation::get_data(
@@ -259,40 +297,38 @@ pub extern "js" fn XRWebGLDepthInformation::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn XRWebGLDepthInformation::get_width(
-  self : XRWebGLDepthInformation,
-) -> Int =
-  #| (self) => self.width
+/// Cast JsValue to XRWebGLDepthInformation (unchecked)
+pub extern "js" fn XRWebGLDepthInformation::from_js_value(
+  v : JsValue,
+) -> XRWebGLDepthInformation =
+  #| (v) => v
 
 ///|
-pub extern "js" fn XRWebGLDepthInformation::get_height(
-  self : XRWebGLDepthInformation,
-) -> Int =
-  #| (self) => self.height
+/// Safely cast JsValue to XRWebGLDepthInformation (checked with instanceof)
+pub extern "js" fn XRWebGLDepthInformation::from_js_value_opt(
+  v : JsValue,
+) -> XRWebGLDepthInformation? =
+  #| (v) => (v instanceof XRWebGLDepthInformation) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn XRWebGLDepthInformation::get_norm_depth_buffer_from_norm_view(
-  self : XRWebGLDepthInformation,
-) -> XRRigidTransform =
-  #| (self) => self.normDepthBufferFromNormView
+/// Safely cast JsValue to XRWebGLDepthInformation (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_web_gl_depth_information(
+  self : JsValue,
+) -> XRWebGLDepthInformation? =
+  #| (self) => (self instanceof XRWebGLDepthInformation) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn XRWebGLDepthInformation::get_raw_value_to_meters(
-  self : XRWebGLDepthInformation,
-) -> Double =
-  #| (self) => self.rawValueToMeters
+/// Cast JsValue to XRWebGLDepthInformation (unchecked)
+pub extern "js" fn JsValue::to_xr_web_gl_depth_information(
+  self : JsValue,
+) -> XRWebGLDepthInformation =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XRWebGLDepthInformation::get_projection_matrix(
+pub extern "js" fn XRWebGLDepthInformation::to_xr_depth_information(
   self : XRWebGLDepthInformation,
-) -> Float32Array =
-  #| (self) => self.projectionMatrix
-
-///|
-pub extern "js" fn XRWebGLDepthInformation::get_transform(
-  self : XRWebGLDepthInformation,
-) -> XRRigidTransform =
-  #| (self) => self.transform
+) -> XRDepthInformation =
+  #| (self) => self
 
 ///|
 pub extern "js" fn XRWebGLDepthInformation::get_texture(
@@ -310,4 +346,4 @@ pub extern "js" fn XRWebGLDepthInformation::get_texture_type(
 pub extern "js" fn XRWebGLDepthInformation::get_image_index(
   self : XRWebGLDepthInformation,
 ) -> Int? =
-  #| (self) => self.imageIndex
+  #| (self) => { const v = self.imageIndex; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }

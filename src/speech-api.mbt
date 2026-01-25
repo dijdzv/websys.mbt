@@ -298,6 +298,40 @@ pub extern "js" fn SpeechRecognition::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SpeechRecognition (unchecked)
+pub extern "js" fn SpeechRecognition::from_js_value(
+  v : JsValue,
+) -> SpeechRecognition =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SpeechRecognition (checked with instanceof)
+pub extern "js" fn SpeechRecognition::from_js_value_opt(
+  v : JsValue,
+) -> SpeechRecognition? =
+  #| (v) => (v instanceof SpeechRecognition) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SpeechRecognition (checked with instanceof)
+pub extern "js" fn JsValue::as_speech_recognition(
+  self : JsValue,
+) -> SpeechRecognition? =
+  #| (self) => (self instanceof SpeechRecognition) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SpeechRecognition (unchecked)
+pub extern "js" fn JsValue::to_speech_recognition(
+  self : JsValue,
+) -> SpeechRecognition =
+  #| (self) => self
+
+///|
+pub extern "js" fn SpeechRecognition::to_event_target(
+  self : SpeechRecognition,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn SpeechRecognition::new() -> SpeechRecognition =
   #| () => new SpeechRecognition()
 
@@ -577,6 +611,40 @@ pub extern "js" fn SpeechRecognitionErrorEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SpeechRecognitionErrorEvent (unchecked)
+pub extern "js" fn SpeechRecognitionErrorEvent::from_js_value(
+  v : JsValue,
+) -> SpeechRecognitionErrorEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SpeechRecognitionErrorEvent (checked with instanceof)
+pub extern "js" fn SpeechRecognitionErrorEvent::from_js_value_opt(
+  v : JsValue,
+) -> SpeechRecognitionErrorEvent? =
+  #| (v) => (v instanceof SpeechRecognitionErrorEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SpeechRecognitionErrorEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_speech_recognition_error_event(
+  self : JsValue,
+) -> SpeechRecognitionErrorEvent? =
+  #| (self) => (self instanceof SpeechRecognitionErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SpeechRecognitionErrorEvent (unchecked)
+pub extern "js" fn JsValue::to_speech_recognition_error_event(
+  self : JsValue,
+) -> SpeechRecognitionErrorEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn SpeechRecognitionErrorEvent::to_event(
+  self : SpeechRecognitionErrorEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn SpeechRecognitionErrorEvent::new(
   type_ : String,
   event_init_dict : SpeechRecognitionErrorEventInit,
@@ -606,6 +674,34 @@ pub extern "js" fn SpeechRecognitionAlternative::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SpeechRecognitionAlternative (unchecked)
+pub extern "js" fn SpeechRecognitionAlternative::from_js_value(
+  v : JsValue,
+) -> SpeechRecognitionAlternative =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SpeechRecognitionAlternative (checked with instanceof)
+pub extern "js" fn SpeechRecognitionAlternative::from_js_value_opt(
+  v : JsValue,
+) -> SpeechRecognitionAlternative? =
+  #| (v) => (v instanceof SpeechRecognitionAlternative) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SpeechRecognitionAlternative (checked with instanceof)
+pub extern "js" fn JsValue::as_speech_recognition_alternative(
+  self : JsValue,
+) -> SpeechRecognitionAlternative? =
+  #| (self) => (self instanceof SpeechRecognitionAlternative) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SpeechRecognitionAlternative (unchecked)
+pub extern "js" fn JsValue::to_speech_recognition_alternative(
+  self : JsValue,
+) -> SpeechRecognitionAlternative =
+  #| (self) => self
+
+///|
 pub extern "js" fn SpeechRecognitionAlternative::get_transcript(
   self : SpeechRecognitionAlternative,
 ) -> String =
@@ -625,6 +721,34 @@ pub type SpeechRecognitionResult
 pub extern "js" fn SpeechRecognitionResult::to_js_value(
   self : SpeechRecognitionResult,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SpeechRecognitionResult (unchecked)
+pub extern "js" fn SpeechRecognitionResult::from_js_value(
+  v : JsValue,
+) -> SpeechRecognitionResult =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SpeechRecognitionResult (checked with instanceof)
+pub extern "js" fn SpeechRecognitionResult::from_js_value_opt(
+  v : JsValue,
+) -> SpeechRecognitionResult? =
+  #| (v) => (v instanceof SpeechRecognitionResult) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SpeechRecognitionResult (checked with instanceof)
+pub extern "js" fn JsValue::as_speech_recognition_result(
+  self : JsValue,
+) -> SpeechRecognitionResult? =
+  #| (self) => (self instanceof SpeechRecognitionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SpeechRecognitionResult (unchecked)
+pub extern "js" fn JsValue::to_speech_recognition_result(
+  self : JsValue,
+) -> SpeechRecognitionResult =
   #| (self) => self
 
 ///|
@@ -664,6 +788,34 @@ pub extern "js" fn SpeechRecognitionResultList::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SpeechRecognitionResultList (unchecked)
+pub extern "js" fn SpeechRecognitionResultList::from_js_value(
+  v : JsValue,
+) -> SpeechRecognitionResultList =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SpeechRecognitionResultList (checked with instanceof)
+pub extern "js" fn SpeechRecognitionResultList::from_js_value_opt(
+  v : JsValue,
+) -> SpeechRecognitionResultList? =
+  #| (v) => (v instanceof SpeechRecognitionResultList) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SpeechRecognitionResultList (checked with instanceof)
+pub extern "js" fn JsValue::as_speech_recognition_result_list(
+  self : JsValue,
+) -> SpeechRecognitionResultList? =
+  #| (self) => (self instanceof SpeechRecognitionResultList) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SpeechRecognitionResultList (unchecked)
+pub extern "js" fn JsValue::to_speech_recognition_result_list(
+  self : JsValue,
+) -> SpeechRecognitionResultList =
+  #| (self) => self
+
+///|
 pub extern "js" fn SpeechRecognitionResultList::get_length(
   self : SpeechRecognitionResultList,
 ) -> Int =
@@ -694,6 +846,40 @@ pub extern "js" fn SpeechRecognitionEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SpeechRecognitionEvent (unchecked)
+pub extern "js" fn SpeechRecognitionEvent::from_js_value(
+  v : JsValue,
+) -> SpeechRecognitionEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SpeechRecognitionEvent (checked with instanceof)
+pub extern "js" fn SpeechRecognitionEvent::from_js_value_opt(
+  v : JsValue,
+) -> SpeechRecognitionEvent? =
+  #| (v) => (v instanceof SpeechRecognitionEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SpeechRecognitionEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_speech_recognition_event(
+  self : JsValue,
+) -> SpeechRecognitionEvent? =
+  #| (self) => (self instanceof SpeechRecognitionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SpeechRecognitionEvent (unchecked)
+pub extern "js" fn JsValue::to_speech_recognition_event(
+  self : JsValue,
+) -> SpeechRecognitionEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn SpeechRecognitionEvent::to_event(
+  self : SpeechRecognitionEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn SpeechRecognitionEvent::new(
   type_ : String,
   event_init_dict : SpeechRecognitionEventInit,
@@ -718,6 +904,28 @@ pub type SpeechGrammar
 
 ///|
 pub extern "js" fn SpeechGrammar::to_js_value(self : SpeechGrammar) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SpeechGrammar (unchecked)
+pub extern "js" fn SpeechGrammar::from_js_value(v : JsValue) -> SpeechGrammar =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SpeechGrammar (checked with instanceof)
+pub extern "js" fn SpeechGrammar::from_js_value_opt(
+  v : JsValue,
+) -> SpeechGrammar? =
+  #| (v) => (v instanceof SpeechGrammar) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SpeechGrammar (checked with instanceof)
+pub extern "js" fn JsValue::as_speech_grammar(self : JsValue) -> SpeechGrammar? =
+  #| (self) => (self instanceof SpeechGrammar) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SpeechGrammar (unchecked)
+pub extern "js" fn JsValue::to_speech_grammar(self : JsValue) -> SpeechGrammar =
   #| (self) => self
 
 ///|
@@ -753,6 +961,34 @@ pub extern "js" fn SpeechGrammarList::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SpeechGrammarList (unchecked)
+pub extern "js" fn SpeechGrammarList::from_js_value(
+  v : JsValue,
+) -> SpeechGrammarList =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SpeechGrammarList (checked with instanceof)
+pub extern "js" fn SpeechGrammarList::from_js_value_opt(
+  v : JsValue,
+) -> SpeechGrammarList? =
+  #| (v) => (v instanceof SpeechGrammarList) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SpeechGrammarList (checked with instanceof)
+pub extern "js" fn JsValue::as_speech_grammar_list(
+  self : JsValue,
+) -> SpeechGrammarList? =
+  #| (self) => (self instanceof SpeechGrammarList) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SpeechGrammarList (unchecked)
+pub extern "js" fn JsValue::to_speech_grammar_list(
+  self : JsValue,
+) -> SpeechGrammarList =
+  #| (self) => self
+
+///|
 pub extern "js" fn SpeechGrammarList::new() -> SpeechGrammarList =
   #| () => new SpeechGrammarList()
 
@@ -777,14 +1013,14 @@ pub extern "js" fn SpeechGrammarList::get(
   #| (self, index) => self[index]
 
 ///|
-pub extern "js" fn SpeechGrammarList::add_from_u_r_i(
+pub extern "js" fn SpeechGrammarList::add_from_uri(
   self : SpeechGrammarList,
   src : String,
 ) -> Unit =
   #| (self, src) => self.addFromURI(src)
 
 ///|
-pub extern "js" fn SpeechGrammarList::add_from_u_r_i_with_weight(
+pub extern "js" fn SpeechGrammarList::add_from_uri_with_weight(
   self : SpeechGrammarList,
   src : String,
   weight : Double,
@@ -817,6 +1053,34 @@ pub extern "js" fn SpeechRecognitionPhrase::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SpeechRecognitionPhrase (unchecked)
+pub extern "js" fn SpeechRecognitionPhrase::from_js_value(
+  v : JsValue,
+) -> SpeechRecognitionPhrase =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SpeechRecognitionPhrase (checked with instanceof)
+pub extern "js" fn SpeechRecognitionPhrase::from_js_value_opt(
+  v : JsValue,
+) -> SpeechRecognitionPhrase? =
+  #| (v) => (v instanceof SpeechRecognitionPhrase) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SpeechRecognitionPhrase (checked with instanceof)
+pub extern "js" fn JsValue::as_speech_recognition_phrase(
+  self : JsValue,
+) -> SpeechRecognitionPhrase? =
+  #| (self) => (self instanceof SpeechRecognitionPhrase) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SpeechRecognitionPhrase (unchecked)
+pub extern "js" fn JsValue::to_speech_recognition_phrase(
+  self : JsValue,
+) -> SpeechRecognitionPhrase =
+  #| (self) => self
+
+///|
 pub extern "js" fn SpeechRecognitionPhrase::new(
   phrase : String,
   boost : Double,
@@ -843,6 +1107,40 @@ pub type SpeechSynthesis
 pub extern "js" fn SpeechSynthesis::to_js_value(
   self : SpeechSynthesis,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SpeechSynthesis (unchecked)
+pub extern "js" fn SpeechSynthesis::from_js_value(
+  v : JsValue,
+) -> SpeechSynthesis =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SpeechSynthesis (checked with instanceof)
+pub extern "js" fn SpeechSynthesis::from_js_value_opt(
+  v : JsValue,
+) -> SpeechSynthesis? =
+  #| (v) => (v instanceof SpeechSynthesis) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SpeechSynthesis (checked with instanceof)
+pub extern "js" fn JsValue::as_speech_synthesis(
+  self : JsValue,
+) -> SpeechSynthesis? =
+  #| (self) => (self instanceof SpeechSynthesis) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SpeechSynthesis (unchecked)
+pub extern "js" fn JsValue::to_speech_synthesis(
+  self : JsValue,
+) -> SpeechSynthesis =
+  #| (self) => self
+
+///|
+pub extern "js" fn SpeechSynthesis::to_event_target(
+  self : SpeechSynthesis,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -908,6 +1206,40 @@ pub extern "js" fn SpeechSynthesisUtterance::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SpeechSynthesisUtterance (unchecked)
+pub extern "js" fn SpeechSynthesisUtterance::from_js_value(
+  v : JsValue,
+) -> SpeechSynthesisUtterance =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SpeechSynthesisUtterance (checked with instanceof)
+pub extern "js" fn SpeechSynthesisUtterance::from_js_value_opt(
+  v : JsValue,
+) -> SpeechSynthesisUtterance? =
+  #| (v) => (v instanceof SpeechSynthesisUtterance) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SpeechSynthesisUtterance (checked with instanceof)
+pub extern "js" fn JsValue::as_speech_synthesis_utterance(
+  self : JsValue,
+) -> SpeechSynthesisUtterance? =
+  #| (self) => (self instanceof SpeechSynthesisUtterance) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SpeechSynthesisUtterance (unchecked)
+pub extern "js" fn JsValue::to_speech_synthesis_utterance(
+  self : JsValue,
+) -> SpeechSynthesisUtterance =
+  #| (self) => self
+
+///|
+pub extern "js" fn SpeechSynthesisUtterance::to_event_target(
+  self : SpeechSynthesisUtterance,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn SpeechSynthesisUtterance::new(
   text : String,
 ) -> SpeechSynthesisUtterance =
@@ -943,7 +1275,7 @@ pub extern "js" fn SpeechSynthesisUtterance::set_lang(
 pub extern "js" fn SpeechSynthesisUtterance::get_voice(
   self : SpeechSynthesisUtterance,
 ) -> SpeechSynthesisVoice? =
-  #| (self) => self.voice
+  #| (self) => { const v = self.voice; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn SpeechSynthesisUtterance::set_voice(
@@ -1093,6 +1425,46 @@ pub extern "js" fn SpeechSynthesisEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SpeechSynthesisEvent (unchecked)
+pub extern "js" fn SpeechSynthesisEvent::from_js_value(
+  v : JsValue,
+) -> SpeechSynthesisEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SpeechSynthesisEvent (checked with instanceof)
+pub extern "js" fn SpeechSynthesisEvent::from_js_value_opt(
+  v : JsValue,
+) -> SpeechSynthesisEvent? =
+  #| (v) => (v instanceof SpeechSynthesisEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SpeechSynthesisEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_speech_synthesis_event(
+  self : JsValue,
+) -> SpeechSynthesisEvent? =
+  #| (self) => (self instanceof SpeechSynthesisEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SpeechSynthesisEvent (unchecked)
+pub extern "js" fn JsValue::to_speech_synthesis_event(
+  self : JsValue,
+) -> SpeechSynthesisEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn SpeechSynthesisEvent::to_event(
+  self : SpeechSynthesisEvent,
+) -> Event =
+  #| (self) => self
+
+///|
+pub extern "js" fn SpeechSynthesisEvent::as_speech_synthesis_error_event(
+  self : SpeechSynthesisEvent,
+) -> SpeechSynthesisErrorEvent? =
+  #| (self) => (self instanceof SpeechSynthesisErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn SpeechSynthesisEvent::new(
   type_ : String,
   event_init_dict : SpeechSynthesisEventInit,
@@ -1140,41 +1512,51 @@ pub extern "js" fn SpeechSynthesisErrorEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SpeechSynthesisErrorEvent (unchecked)
+pub extern "js" fn SpeechSynthesisErrorEvent::from_js_value(
+  v : JsValue,
+) -> SpeechSynthesisErrorEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SpeechSynthesisErrorEvent (checked with instanceof)
+pub extern "js" fn SpeechSynthesisErrorEvent::from_js_value_opt(
+  v : JsValue,
+) -> SpeechSynthesisErrorEvent? =
+  #| (v) => (v instanceof SpeechSynthesisErrorEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SpeechSynthesisErrorEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_speech_synthesis_error_event(
+  self : JsValue,
+) -> SpeechSynthesisErrorEvent? =
+  #| (self) => (self instanceof SpeechSynthesisErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SpeechSynthesisErrorEvent (unchecked)
+pub extern "js" fn JsValue::to_speech_synthesis_error_event(
+  self : JsValue,
+) -> SpeechSynthesisErrorEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn SpeechSynthesisErrorEvent::to_speech_synthesis_event(
+  self : SpeechSynthesisErrorEvent,
+) -> SpeechSynthesisEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn SpeechSynthesisErrorEvent::to_event(
+  self : SpeechSynthesisErrorEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn SpeechSynthesisErrorEvent::new(
   type_ : String,
-  event_init_dict : SpeechSynthesisEventInit,
+  event_init_dict : SpeechSynthesisErrorEventInit,
 ) -> SpeechSynthesisErrorEvent =
   #| (type_, event_init_dict) => new SpeechSynthesisErrorEvent(type_, event_init_dict)
-
-///|
-pub extern "js" fn SpeechSynthesisErrorEvent::get_utterance(
-  self : SpeechSynthesisErrorEvent,
-) -> SpeechSynthesisUtterance =
-  #| (self) => self.utterance
-
-///|
-pub extern "js" fn SpeechSynthesisErrorEvent::get_char_index(
-  self : SpeechSynthesisErrorEvent,
-) -> Int =
-  #| (self) => self.charIndex
-
-///|
-pub extern "js" fn SpeechSynthesisErrorEvent::get_char_length(
-  self : SpeechSynthesisErrorEvent,
-) -> Int =
-  #| (self) => self.charLength
-
-///|
-pub extern "js" fn SpeechSynthesisErrorEvent::get_elapsed_time(
-  self : SpeechSynthesisErrorEvent,
-) -> Double =
-  #| (self) => self.elapsedTime
-
-///|
-pub extern "js" fn SpeechSynthesisErrorEvent::get_name(
-  self : SpeechSynthesisErrorEvent,
-) -> String =
-  #| (self) => self.name
 
 ///|
 pub extern "js" fn SpeechSynthesisErrorEvent::get_error(
@@ -1193,7 +1575,35 @@ pub extern "js" fn SpeechSynthesisVoice::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn SpeechSynthesisVoice::get_voice_u_r_i(
+/// Cast JsValue to SpeechSynthesisVoice (unchecked)
+pub extern "js" fn SpeechSynthesisVoice::from_js_value(
+  v : JsValue,
+) -> SpeechSynthesisVoice =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SpeechSynthesisVoice (checked with instanceof)
+pub extern "js" fn SpeechSynthesisVoice::from_js_value_opt(
+  v : JsValue,
+) -> SpeechSynthesisVoice? =
+  #| (v) => (v instanceof SpeechSynthesisVoice) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SpeechSynthesisVoice (checked with instanceof)
+pub extern "js" fn JsValue::as_speech_synthesis_voice(
+  self : JsValue,
+) -> SpeechSynthesisVoice? =
+  #| (self) => (self instanceof SpeechSynthesisVoice) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SpeechSynthesisVoice (unchecked)
+pub extern "js" fn JsValue::to_speech_synthesis_voice(
+  self : JsValue,
+) -> SpeechSynthesisVoice =
+  #| (self) => self
+
+///|
+pub extern "js" fn SpeechSynthesisVoice::get_voice_uri(
   self : SpeechSynthesisVoice,
 ) -> String =
   #| (self) => self.voiceURI

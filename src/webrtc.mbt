@@ -713,7 +713,7 @@ pub extern "js" fn RTCSessionDescriptionCallback::from_fn(
 ///|
 /// RTCIceServer dictionary
 pub struct RTCIceServer {
-  urls : JsValue
+  urls : StringOrArrayOfString
   username : String?
   credential : String?
 }
@@ -1041,6 +1041,44 @@ pub extern "js" fn RTCRtpParameters::to_js(self : RTCRtpParameters) -> JsValue =
   #| })
 
 ///|
+/// RTCRtpSendParameters dictionary
+pub struct RTCRtpSendParameters {
+  headerExtensions : Array[RTCRtpHeaderExtensionParameters]
+  rtcp : RTCRtcpParameters
+  codecs : Array[RTCRtpCodecParameters]
+  transactionId : String
+  encodings : Array[RTCRtpEncodingParameters]
+  degradationPreference : RTCDegradationPreference?
+}
+
+///|
+/// Create a new RTCRtpSendParameters with default values
+pub fn RTCRtpSendParameters::default() -> RTCRtpSendParameters {
+  RTCRtpSendParameters::{
+    headerExtensions: [],
+    rtcp: panic(),
+    codecs: [],
+    transactionId: "",
+    encodings: [],
+    degradationPreference: None,
+  }
+}
+
+///|
+/// Convert to JsValue
+pub extern "js" fn RTCRtpSendParameters::to_js(
+  self : RTCRtpSendParameters,
+) -> JsValue =
+  #| (self) => ({
+  #|   headerExtensions: self.headerExtensions,
+  #|   rtcp: self.rtcp,
+  #|   codecs: self.codecs,
+  #|   transactionId: self.transactionId,
+  #|   encodings: self.encodings,
+  #|   degradationPreference: ['maintain-framerate', 'maintain-resolution', 'balanced', 'maintain-framerate-and-resolution'][self.degradationPreference]
+  #| })
+
+///|
 /// RTCRtpReceiveParameters dictionary
 pub struct RTCRtpReceiveParameters {
   headerExtensions : Array[RTCRtpHeaderExtensionParameters]
@@ -1344,6 +1382,29 @@ pub extern "js" fn RTCDtlsFingerprint::to_js(
   #| })
 
 ///|
+/// RTCIceParameters dictionary
+pub struct RTCIceParameters {
+  usernameFragment : String?
+  password : String?
+  iceLite : Bool?
+}
+
+///|
+/// Create a new RTCIceParameters with default values
+pub fn RTCIceParameters::default() -> RTCIceParameters {
+  RTCIceParameters::{ usernameFragment: None, password: None, iceLite: None }
+}
+
+///|
+/// Convert to JsValue
+pub extern "js" fn RTCIceParameters::to_js(self : RTCIceParameters) -> JsValue =
+  #| (self) => ({
+  #|   usernameFragment: self.usernameFragment,
+  #|   password: self.password,
+  #|   iceLite: self.iceLite
+  #| })
+
+///|
 /// RTCTrackEventInit dictionary
 pub struct RTCTrackEventInit {
   receiver : RTCRtpReceiver
@@ -1472,6 +1533,40 @@ pub extern "js" fn RTCPeerConnection::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCPeerConnection (unchecked)
+pub extern "js" fn RTCPeerConnection::from_js_value(
+  v : JsValue,
+) -> RTCPeerConnection =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCPeerConnection (checked with instanceof)
+pub extern "js" fn RTCPeerConnection::from_js_value_opt(
+  v : JsValue,
+) -> RTCPeerConnection? =
+  #| (v) => (v instanceof RTCPeerConnection) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCPeerConnection (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_peer_connection(
+  self : JsValue,
+) -> RTCPeerConnection? =
+  #| (self) => (self instanceof RTCPeerConnection) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCPeerConnection (unchecked)
+pub extern "js" fn JsValue::to_rtc_peer_connection(
+  self : JsValue,
+) -> RTCPeerConnection =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCPeerConnection::to_event_target(
+  self : RTCPeerConnection,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCPeerConnection::new(
   configuration : RTCConfiguration,
 ) -> RTCPeerConnection =
@@ -1491,7 +1586,7 @@ pub extern "js" fn RTCPeerConnection::create_offer_with_options(
   #| (self, options) => self.createOffer(options)
 
 ///|
-pub extern "js" fn RTCPeerConnection::create_offer_with_success_callback_r_t_c_session_description_callback_and_failure_callback_r_t_c_peer_connection_error_callback(
+pub extern "js" fn RTCPeerConnection::create_offer_with_success_callback_rtc_session_description_callback_and_failure_callback_rtc_peer_connection_error_callback(
   self : RTCPeerConnection,
   success_callback : RTCSessionDescriptionCallback,
   failure_callback : RTCPeerConnectionErrorCallback,
@@ -1499,7 +1594,7 @@ pub extern "js" fn RTCPeerConnection::create_offer_with_success_callback_r_t_c_s
   #| (self, success_callback, failure_callback) => self.createOffer(success_callback, failure_callback)
 
 ///|
-pub extern "js" fn RTCPeerConnection::create_offer_with_success_callback_r_t_c_session_description_callback_and_failure_callback_r_t_c_peer_connection_error_callback_and_options_r_t_c_offer_options(
+pub extern "js" fn RTCPeerConnection::create_offer_with_success_callback_rtc_session_description_callback_and_failure_callback_rtc_peer_connection_error_callback_and_options_rtc_offer_options(
   self : RTCPeerConnection,
   success_callback : RTCSessionDescriptionCallback,
   failure_callback : RTCPeerConnectionErrorCallback,
@@ -1521,7 +1616,7 @@ pub extern "js" fn RTCPeerConnection::create_answer_with_options(
   #| (self, options) => self.createAnswer(options)
 
 ///|
-pub extern "js" fn RTCPeerConnection::create_answer_with_success_callback_r_t_c_session_description_callback_and_failure_callback_r_t_c_peer_connection_error_callback(
+pub extern "js" fn RTCPeerConnection::create_answer_with_success_callback_rtc_session_description_callback_and_failure_callback_rtc_peer_connection_error_callback(
   self : RTCPeerConnection,
   success_callback : RTCSessionDescriptionCallback,
   failure_callback : RTCPeerConnectionErrorCallback,
@@ -1542,7 +1637,7 @@ pub extern "js" fn RTCPeerConnection::set_local_description_with_description(
   #| (self, description) => self.setLocalDescription(description)
 
 ///|
-pub extern "js" fn RTCPeerConnection::set_local_description_with_description_r_t_c_local_session_description_init_and_success_callback_void_function_and_failure_callback_r_t_c_peer_connection_error_callback(
+pub extern "js" fn RTCPeerConnection::set_local_description_with_description_rtc_local_session_description_init_and_success_callback_void_function_and_failure_callback_rtc_peer_connection_error_callback(
   self : RTCPeerConnection,
   description : RTCLocalSessionDescriptionInit,
   success_callback : VoidFunction,
@@ -1554,19 +1649,19 @@ pub extern "js" fn RTCPeerConnection::set_local_description_with_description_r_t
 pub extern "js" fn RTCPeerConnection::get_local_description(
   self : RTCPeerConnection,
 ) -> RTCSessionDescription? =
-  #| (self) => self.localDescription
+  #| (self) => { const v = self.localDescription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCPeerConnection::get_current_local_description(
   self : RTCPeerConnection,
 ) -> RTCSessionDescription? =
-  #| (self) => self.currentLocalDescription
+  #| (self) => { const v = self.currentLocalDescription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCPeerConnection::get_pending_local_description(
   self : RTCPeerConnection,
 ) -> RTCSessionDescription? =
-  #| (self) => self.pendingLocalDescription
+  #| (self) => { const v = self.pendingLocalDescription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCPeerConnection::set_remote_description(
@@ -1576,7 +1671,7 @@ pub extern "js" fn RTCPeerConnection::set_remote_description(
   #| (self, description) => self.setRemoteDescription(description)
 
 ///|
-pub extern "js" fn RTCPeerConnection::set_remote_description_with_description_r_t_c_session_description_init_and_success_callback_void_function_and_failure_callback_r_t_c_peer_connection_error_callback(
+pub extern "js" fn RTCPeerConnection::set_remote_description_with_description_rtc_session_description_init_and_success_callback_void_function_and_failure_callback_rtc_peer_connection_error_callback(
   self : RTCPeerConnection,
   description : RTCSessionDescriptionInit,
   success_callback : VoidFunction,
@@ -1588,19 +1683,19 @@ pub extern "js" fn RTCPeerConnection::set_remote_description_with_description_r_
 pub extern "js" fn RTCPeerConnection::get_remote_description(
   self : RTCPeerConnection,
 ) -> RTCSessionDescription? =
-  #| (self) => self.remoteDescription
+  #| (self) => { const v = self.remoteDescription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCPeerConnection::get_current_remote_description(
   self : RTCPeerConnection,
 ) -> RTCSessionDescription? =
-  #| (self) => self.currentRemoteDescription
+  #| (self) => { const v = self.currentRemoteDescription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCPeerConnection::get_pending_remote_description(
   self : RTCPeerConnection,
 ) -> RTCSessionDescription? =
-  #| (self) => self.pendingRemoteDescription
+  #| (self) => { const v = self.pendingRemoteDescription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCPeerConnection::add_ice_candidate(
@@ -1616,7 +1711,7 @@ pub extern "js" fn RTCPeerConnection::add_ice_candidate_with_candidate(
   #| (self, candidate) => self.addIceCandidate(candidate)
 
 ///|
-pub extern "js" fn RTCPeerConnection::add_ice_candidate_with_candidate_r_t_c_ice_candidate_init_and_success_callback_void_function_and_failure_callback_r_t_c_peer_connection_error_callback(
+pub extern "js" fn RTCPeerConnection::add_ice_candidate_with_candidate_rtc_ice_candidate_init_and_success_callback_void_function_and_failure_callback_rtc_peer_connection_error_callback(
   self : RTCPeerConnection,
   candidate : RTCIceCandidateInit,
   success_callback : VoidFunction,
@@ -1652,7 +1747,7 @@ pub extern "js" fn RTCPeerConnection::get_connection_state(
 pub extern "js" fn RTCPeerConnection::get_can_trickle_ice_candidates(
   self : RTCPeerConnection,
 ) -> Bool? =
-  #| (self) => self.canTrickleIceCandidates
+  #| (self) => { const v = self.canTrickleIceCandidates; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCPeerConnection::restart_ice(
@@ -1805,13 +1900,13 @@ pub extern "js" fn RTCPeerConnection::get_peer_identity(
 pub extern "js" fn RTCPeerConnection::get_idp_login_url(
   self : RTCPeerConnection,
 ) -> String? =
-  #| (self) => self.idpLoginUrl
+  #| (self) => { const v = self.idpLoginUrl; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCPeerConnection::get_idp_error_info(
   self : RTCPeerConnection,
 ) -> String? =
-  #| (self) => self.idpErrorInfo
+  #| (self) => { const v = self.idpErrorInfo; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCPeerConnection::generate_certificate(
@@ -1884,7 +1979,7 @@ pub extern "js" fn RTCPeerConnection::set_ontrack(
 pub extern "js" fn RTCPeerConnection::get_sctp(
   self : RTCPeerConnection,
 ) -> RTCSctpTransport? =
-  #| (self) => self.sctp
+  #| (self) => { const v = self.sctp; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCPeerConnection::create_data_channel(
@@ -1938,6 +2033,34 @@ pub extern "js" fn RTCSessionDescription::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCSessionDescription (unchecked)
+pub extern "js" fn RTCSessionDescription::from_js_value(
+  v : JsValue,
+) -> RTCSessionDescription =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCSessionDescription (checked with instanceof)
+pub extern "js" fn RTCSessionDescription::from_js_value_opt(
+  v : JsValue,
+) -> RTCSessionDescription? =
+  #| (v) => (v instanceof RTCSessionDescription) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCSessionDescription (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_session_description(
+  self : JsValue,
+) -> RTCSessionDescription? =
+  #| (self) => (self instanceof RTCSessionDescription) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCSessionDescription (unchecked)
+pub extern "js" fn JsValue::to_rtc_session_description(
+  self : JsValue,
+) -> RTCSessionDescription =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCSessionDescription::new(
   description_init_dict : RTCSessionDescriptionInit,
 ) -> RTCSessionDescription =
@@ -1956,7 +2079,7 @@ pub extern "js" fn RTCSessionDescription::get_sdp(
   #| (self) => self.sdp
 
 ///|
-pub extern "js" fn RTCSessionDescription::to_j_s_o_n(
+pub extern "js" fn RTCSessionDescription::to_json(
   self : RTCSessionDescription,
 ) -> RTCSessionDescriptionInit =
   #| (self) => self.toJSON()
@@ -1969,6 +2092,34 @@ pub type RTCIceCandidate
 pub extern "js" fn RTCIceCandidate::to_js_value(
   self : RTCIceCandidate,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to RTCIceCandidate (unchecked)
+pub extern "js" fn RTCIceCandidate::from_js_value(
+  v : JsValue,
+) -> RTCIceCandidate =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCIceCandidate (checked with instanceof)
+pub extern "js" fn RTCIceCandidate::from_js_value_opt(
+  v : JsValue,
+) -> RTCIceCandidate? =
+  #| (v) => (v instanceof RTCIceCandidate) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCIceCandidate (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_ice_candidate(
+  self : JsValue,
+) -> RTCIceCandidate? =
+  #| (self) => (self instanceof RTCIceCandidate) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCIceCandidate (unchecked)
+pub extern "js" fn JsValue::to_rtc_ice_candidate(
+  self : JsValue,
+) -> RTCIceCandidate =
   #| (self) => self
 
 ///|
@@ -1987,90 +2138,90 @@ pub extern "js" fn RTCIceCandidate::get_candidate(
 pub extern "js" fn RTCIceCandidate::get_sdp_mid(
   self : RTCIceCandidate,
 ) -> String? =
-  #| (self) => self.sdpMid
+  #| (self) => { const v = self.sdpMid; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceCandidate::get_sdp_m_line_index(
   self : RTCIceCandidate,
 ) -> Int? =
-  #| (self) => self.sdpMLineIndex
+  #| (self) => { const v = self.sdpMLineIndex; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceCandidate::get_foundation(
   self : RTCIceCandidate,
 ) -> String? =
-  #| (self) => self.foundation
+  #| (self) => { const v = self.foundation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceCandidate::get_component(
   self : RTCIceCandidate,
 ) -> RTCIceComponent? =
-  #| (self) => self.component
+  #| (self) => { const v = self.component; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceCandidate::get_priority(
   self : RTCIceCandidate,
 ) -> Int? =
-  #| (self) => self.priority
+  #| (self) => { const v = self.priority; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceCandidate::get_address(
   self : RTCIceCandidate,
 ) -> String? =
-  #| (self) => self.address
+  #| (self) => { const v = self.address; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceCandidate::get_protocol(
   self : RTCIceCandidate,
 ) -> RTCIceProtocol? =
-  #| (self) => self.protocol
+  #| (self) => { const v = self.protocol; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceCandidate::get_port(self : RTCIceCandidate) -> Int? =
-  #| (self) => self.port
+  #| (self) => { const v = self.port; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceCandidate::get_type(
   self : RTCIceCandidate,
 ) -> RTCIceCandidateType? =
-  #| (self) => self.type
+  #| (self) => { const v = self.type; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceCandidate::get_tcp_type(
   self : RTCIceCandidate,
 ) -> RTCIceTcpCandidateType? =
-  #| (self) => self.tcpType
+  #| (self) => { const v = self.tcpType; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceCandidate::get_related_address(
   self : RTCIceCandidate,
 ) -> String? =
-  #| (self) => self.relatedAddress
+  #| (self) => { const v = self.relatedAddress; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceCandidate::get_related_port(
   self : RTCIceCandidate,
 ) -> Int? =
-  #| (self) => self.relatedPort
+  #| (self) => { const v = self.relatedPort; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceCandidate::get_username_fragment(
   self : RTCIceCandidate,
 ) -> String? =
-  #| (self) => self.usernameFragment
+  #| (self) => { const v = self.usernameFragment; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceCandidate::get_relay_protocol(
   self : RTCIceCandidate,
 ) -> RTCIceServerTransportProtocol? =
-  #| (self) => self.relayProtocol
+  #| (self) => { const v = self.relayProtocol; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceCandidate::get_url(self : RTCIceCandidate) -> String? =
-  #| (self) => self.url
+  #| (self) => { const v = self.url; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
-pub extern "js" fn RTCIceCandidate::to_j_s_o_n(
+pub extern "js" fn RTCIceCandidate::to_json(
   self : RTCIceCandidate,
 ) -> RTCIceCandidateInit =
   #| (self) => self.toJSON()
@@ -2086,6 +2237,40 @@ pub extern "js" fn RTCPeerConnectionIceEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCPeerConnectionIceEvent (unchecked)
+pub extern "js" fn RTCPeerConnectionIceEvent::from_js_value(
+  v : JsValue,
+) -> RTCPeerConnectionIceEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCPeerConnectionIceEvent (checked with instanceof)
+pub extern "js" fn RTCPeerConnectionIceEvent::from_js_value_opt(
+  v : JsValue,
+) -> RTCPeerConnectionIceEvent? =
+  #| (v) => (v instanceof RTCPeerConnectionIceEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCPeerConnectionIceEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_peer_connection_ice_event(
+  self : JsValue,
+) -> RTCPeerConnectionIceEvent? =
+  #| (self) => (self instanceof RTCPeerConnectionIceEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCPeerConnectionIceEvent (unchecked)
+pub extern "js" fn JsValue::to_rtc_peer_connection_ice_event(
+  self : JsValue,
+) -> RTCPeerConnectionIceEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCPeerConnectionIceEvent::to_event(
+  self : RTCPeerConnectionIceEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCPeerConnectionIceEvent::new(
   type_ : String,
   event_init_dict : RTCPeerConnectionIceEventInit,
@@ -2096,13 +2281,13 @@ pub extern "js" fn RTCPeerConnectionIceEvent::new(
 pub extern "js" fn RTCPeerConnectionIceEvent::get_candidate(
   self : RTCPeerConnectionIceEvent,
 ) -> RTCIceCandidate? =
-  #| (self) => self.candidate
+  #| (self) => { const v = self.candidate; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCPeerConnectionIceEvent::get_url(
   self : RTCPeerConnectionIceEvent,
 ) -> String? =
-  #| (self) => self.url
+  #| (self) => { const v = self.url; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// RTCPeerConnectionIceErrorEvent interface
@@ -2112,6 +2297,40 @@ pub type RTCPeerConnectionIceErrorEvent
 pub extern "js" fn RTCPeerConnectionIceErrorEvent::to_js_value(
   self : RTCPeerConnectionIceErrorEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to RTCPeerConnectionIceErrorEvent (unchecked)
+pub extern "js" fn RTCPeerConnectionIceErrorEvent::from_js_value(
+  v : JsValue,
+) -> RTCPeerConnectionIceErrorEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCPeerConnectionIceErrorEvent (checked with instanceof)
+pub extern "js" fn RTCPeerConnectionIceErrorEvent::from_js_value_opt(
+  v : JsValue,
+) -> RTCPeerConnectionIceErrorEvent? =
+  #| (v) => (v instanceof RTCPeerConnectionIceErrorEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCPeerConnectionIceErrorEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_peer_connection_ice_error_event(
+  self : JsValue,
+) -> RTCPeerConnectionIceErrorEvent? =
+  #| (self) => (self instanceof RTCPeerConnectionIceErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCPeerConnectionIceErrorEvent (unchecked)
+pub extern "js" fn JsValue::to_rtc_peer_connection_ice_error_event(
+  self : JsValue,
+) -> RTCPeerConnectionIceErrorEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCPeerConnectionIceErrorEvent::to_event(
+  self : RTCPeerConnectionIceErrorEvent,
+) -> Event =
   #| (self) => self
 
 ///|
@@ -2125,13 +2344,13 @@ pub extern "js" fn RTCPeerConnectionIceErrorEvent::new(
 pub extern "js" fn RTCPeerConnectionIceErrorEvent::get_address(
   self : RTCPeerConnectionIceErrorEvent,
 ) -> String? =
-  #| (self) => self.address
+  #| (self) => { const v = self.address; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCPeerConnectionIceErrorEvent::get_port(
   self : RTCPeerConnectionIceErrorEvent,
 ) -> Int? =
-  #| (self) => self.port
+  #| (self) => { const v = self.port; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCPeerConnectionIceErrorEvent::get_url(
@@ -2162,6 +2381,32 @@ pub extern "js" fn RTCCertificate::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCCertificate (unchecked)
+pub extern "js" fn RTCCertificate::from_js_value(v : JsValue) -> RTCCertificate =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCCertificate (checked with instanceof)
+pub extern "js" fn RTCCertificate::from_js_value_opt(
+  v : JsValue,
+) -> RTCCertificate? =
+  #| (v) => (v instanceof RTCCertificate) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCCertificate (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_certificate(
+  self : JsValue,
+) -> RTCCertificate? =
+  #| (self) => (self instanceof RTCCertificate) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCCertificate (unchecked)
+pub extern "js" fn JsValue::to_rtc_certificate(
+  self : JsValue,
+) -> RTCCertificate =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCCertificate::get_expires(
   self : RTCCertificate,
 ) -> EpochTimeStamp =
@@ -2182,22 +2427,44 @@ pub extern "js" fn RTCRtpSender::to_js_value(self : RTCRtpSender) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCRtpSender (unchecked)
+pub extern "js" fn RTCRtpSender::from_js_value(v : JsValue) -> RTCRtpSender =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCRtpSender (checked with instanceof)
+pub extern "js" fn RTCRtpSender::from_js_value_opt(
+  v : JsValue,
+) -> RTCRtpSender? =
+  #| (v) => (v instanceof RTCRtpSender) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCRtpSender (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_rtp_sender(self : JsValue) -> RTCRtpSender? =
+  #| (self) => (self instanceof RTCRtpSender) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCRtpSender (unchecked)
+pub extern "js" fn JsValue::to_rtc_rtp_sender(self : JsValue) -> RTCRtpSender =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCRtpSender::get_track(
   self : RTCRtpSender,
 ) -> MediaStreamTrack? =
-  #| (self) => self.track
+  #| (self) => { const v = self.track; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCRtpSender::get_transport(
   self : RTCRtpSender,
 ) -> RTCDtlsTransport? =
-  #| (self) => self.transport
+  #| (self) => { const v = self.transport; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCRtpSender::get_capabilities(
   kind : String,
 ) -> RTCRtpCapabilities? =
-  #| (kind) => RTCRtpSender.getCapabilities(kind)
+  #| (kind) => { const v = RTCRtpSender.getCapabilities(kind); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCRtpSender::set_parameters(
@@ -2244,7 +2511,7 @@ pub extern "js" fn RTCRtpSender::get_stats(
 pub extern "js" fn RTCRtpSender::get_transform(
   self : RTCRtpSender,
 ) -> RTCRtpSenderTransform? =
-  #| (self) => self.transform
+  #| (self) => { const v = self.transform; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCRtpSender::set_transform(
@@ -2257,7 +2524,7 @@ pub extern "js" fn RTCRtpSender::set_transform(
 pub extern "js" fn RTCRtpSender::get_dtmf(
   self : RTCRtpSender,
 ) -> RTCDTMFSender? =
-  #| (self) => self.dtmf
+  #| (self) => { const v = self.dtmf; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// RTCRtpReceiver interface
@@ -2270,6 +2537,32 @@ pub extern "js" fn RTCRtpReceiver::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCRtpReceiver (unchecked)
+pub extern "js" fn RTCRtpReceiver::from_js_value(v : JsValue) -> RTCRtpReceiver =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCRtpReceiver (checked with instanceof)
+pub extern "js" fn RTCRtpReceiver::from_js_value_opt(
+  v : JsValue,
+) -> RTCRtpReceiver? =
+  #| (v) => (v instanceof RTCRtpReceiver) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCRtpReceiver (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_rtp_receiver(
+  self : JsValue,
+) -> RTCRtpReceiver? =
+  #| (self) => (self instanceof RTCRtpReceiver) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCRtpReceiver (unchecked)
+pub extern "js" fn JsValue::to_rtc_rtp_receiver(
+  self : JsValue,
+) -> RTCRtpReceiver =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCRtpReceiver::get_track(
   self : RTCRtpReceiver,
 ) -> MediaStreamTrack =
@@ -2279,13 +2572,13 @@ pub extern "js" fn RTCRtpReceiver::get_track(
 pub extern "js" fn RTCRtpReceiver::get_transport(
   self : RTCRtpReceiver,
 ) -> RTCDtlsTransport? =
-  #| (self) => self.transport
+  #| (self) => { const v = self.transport; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCRtpReceiver::get_capabilities(
   kind : String,
 ) -> RTCRtpCapabilities? =
-  #| (kind) => RTCRtpReceiver.getCapabilities(kind)
+  #| (kind) => { const v = RTCRtpReceiver.getCapabilities(kind); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCRtpReceiver::get_parameters(
@@ -2315,7 +2608,7 @@ pub extern "js" fn RTCRtpReceiver::get_stats(
 pub extern "js" fn RTCRtpReceiver::get_jitter_buffer_target(
   self : RTCRtpReceiver,
 ) -> DOMHighResTimeStamp? =
-  #| (self) => self.jitterBufferTarget
+  #| (self) => { const v = self.jitterBufferTarget; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCRtpReceiver::set_jitter_buffer_target(
@@ -2328,7 +2621,7 @@ pub extern "js" fn RTCRtpReceiver::set_jitter_buffer_target(
 pub extern "js" fn RTCRtpReceiver::get_transform(
   self : RTCRtpReceiver,
 ) -> RTCRtpReceiverTransform? =
-  #| (self) => self.transform
+  #| (self) => { const v = self.transform; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCRtpReceiver::set_transform(
@@ -2348,10 +2641,38 @@ pub extern "js" fn RTCRtpTransceiver::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCRtpTransceiver (unchecked)
+pub extern "js" fn RTCRtpTransceiver::from_js_value(
+  v : JsValue,
+) -> RTCRtpTransceiver =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCRtpTransceiver (checked with instanceof)
+pub extern "js" fn RTCRtpTransceiver::from_js_value_opt(
+  v : JsValue,
+) -> RTCRtpTransceiver? =
+  #| (v) => (v instanceof RTCRtpTransceiver) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCRtpTransceiver (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_rtp_transceiver(
+  self : JsValue,
+) -> RTCRtpTransceiver? =
+  #| (self) => (self instanceof RTCRtpTransceiver) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCRtpTransceiver (unchecked)
+pub extern "js" fn JsValue::to_rtc_rtp_transceiver(
+  self : JsValue,
+) -> RTCRtpTransceiver =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCRtpTransceiver::get_mid(
   self : RTCRtpTransceiver,
 ) -> String? =
-  #| (self) => self.mid
+  #| (self) => { const v = self.mid; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCRtpTransceiver::get_sender(
@@ -2382,7 +2703,7 @@ pub extern "js" fn RTCRtpTransceiver::set_direction(
 pub extern "js" fn RTCRtpTransceiver::get_current_direction(
   self : RTCRtpTransceiver,
 ) -> RTCRtpTransceiverDirection? =
-  #| (self) => self.currentDirection
+  #| (self) => { const v = self.currentDirection; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCRtpTransceiver::stop(self : RTCRtpTransceiver) -> Unit =
@@ -2403,6 +2724,40 @@ pub type RTCDtlsTransport
 pub extern "js" fn RTCDtlsTransport::to_js_value(
   self : RTCDtlsTransport,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to RTCDtlsTransport (unchecked)
+pub extern "js" fn RTCDtlsTransport::from_js_value(
+  v : JsValue,
+) -> RTCDtlsTransport =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCDtlsTransport (checked with instanceof)
+pub extern "js" fn RTCDtlsTransport::from_js_value_opt(
+  v : JsValue,
+) -> RTCDtlsTransport? =
+  #| (v) => (v instanceof RTCDtlsTransport) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCDtlsTransport (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_dtls_transport(
+  self : JsValue,
+) -> RTCDtlsTransport? =
+  #| (self) => (self instanceof RTCDtlsTransport) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCDtlsTransport (unchecked)
+pub extern "js" fn JsValue::to_rtc_dtls_transport(
+  self : JsValue,
+) -> RTCDtlsTransport =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCDtlsTransport::to_event_target(
+  self : RTCDtlsTransport,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -2460,6 +2815,40 @@ pub extern "js" fn RTCIceTransport::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCIceTransport (unchecked)
+pub extern "js" fn RTCIceTransport::from_js_value(
+  v : JsValue,
+) -> RTCIceTransport =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCIceTransport (checked with instanceof)
+pub extern "js" fn RTCIceTransport::from_js_value_opt(
+  v : JsValue,
+) -> RTCIceTransport? =
+  #| (v) => (v instanceof RTCIceTransport) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCIceTransport (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_ice_transport(
+  self : JsValue,
+) -> RTCIceTransport? =
+  #| (self) => (self instanceof RTCIceTransport) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCIceTransport (unchecked)
+pub extern "js" fn JsValue::to_rtc_ice_transport(
+  self : JsValue,
+) -> RTCIceTransport =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCIceTransport::to_event_target(
+  self : RTCIceTransport,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCIceTransport::get_role(
   self : RTCIceTransport,
 ) -> RTCIceRole =
@@ -2499,19 +2888,19 @@ pub extern "js" fn RTCIceTransport::get_remote_candidates(
 pub extern "js" fn RTCIceTransport::get_selected_candidate_pair(
   self : RTCIceTransport,
 ) -> RTCIceCandidatePair? =
-  #| (self) => self.getSelectedCandidatePair()
+  #| (self) => { const v = self.getSelectedCandidatePair(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceTransport::get_local_parameters(
   self : RTCIceTransport,
 ) -> RTCIceParameters? =
-  #| (self) => self.getLocalParameters()
+  #| (self) => { const v = self.getLocalParameters(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceTransport::get_remote_parameters(
   self : RTCIceTransport,
 ) -> RTCIceParameters? =
-  #| (self) => self.getRemoteParameters()
+  #| (self) => { const v = self.getRemoteParameters(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCIceTransport::get_onstatechange(
@@ -2633,6 +3022,34 @@ pub extern "js" fn RTCIceCandidatePair::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCIceCandidatePair (unchecked)
+pub extern "js" fn RTCIceCandidatePair::from_js_value(
+  v : JsValue,
+) -> RTCIceCandidatePair =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCIceCandidatePair (checked with instanceof)
+pub extern "js" fn RTCIceCandidatePair::from_js_value_opt(
+  v : JsValue,
+) -> RTCIceCandidatePair? =
+  #| (v) => (v instanceof RTCIceCandidatePair) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCIceCandidatePair (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_ice_candidate_pair(
+  self : JsValue,
+) -> RTCIceCandidatePair? =
+  #| (self) => (self instanceof RTCIceCandidatePair) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCIceCandidatePair (unchecked)
+pub extern "js" fn JsValue::to_rtc_ice_candidate_pair(
+  self : JsValue,
+) -> RTCIceCandidatePair =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCIceCandidatePair::get_local(
   self : RTCIceCandidatePair,
 ) -> RTCIceCandidate =
@@ -2650,6 +3067,34 @@ pub type RTCTrackEvent
 
 ///|
 pub extern "js" fn RTCTrackEvent::to_js_value(self : RTCTrackEvent) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to RTCTrackEvent (unchecked)
+pub extern "js" fn RTCTrackEvent::from_js_value(v : JsValue) -> RTCTrackEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCTrackEvent (checked with instanceof)
+pub extern "js" fn RTCTrackEvent::from_js_value_opt(
+  v : JsValue,
+) -> RTCTrackEvent? =
+  #| (v) => (v instanceof RTCTrackEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCTrackEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_track_event(
+  self : JsValue,
+) -> RTCTrackEvent? =
+  #| (self) => (self instanceof RTCTrackEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCTrackEvent (unchecked)
+pub extern "js" fn JsValue::to_rtc_track_event(self : JsValue) -> RTCTrackEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCTrackEvent::to_event(self : RTCTrackEvent) -> Event =
   #| (self) => self
 
 ///|
@@ -2692,6 +3137,40 @@ pub extern "js" fn RTCSctpTransport::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCSctpTransport (unchecked)
+pub extern "js" fn RTCSctpTransport::from_js_value(
+  v : JsValue,
+) -> RTCSctpTransport =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCSctpTransport (checked with instanceof)
+pub extern "js" fn RTCSctpTransport::from_js_value_opt(
+  v : JsValue,
+) -> RTCSctpTransport? =
+  #| (v) => (v instanceof RTCSctpTransport) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCSctpTransport (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_sctp_transport(
+  self : JsValue,
+) -> RTCSctpTransport? =
+  #| (self) => (self instanceof RTCSctpTransport) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCSctpTransport (unchecked)
+pub extern "js" fn JsValue::to_rtc_sctp_transport(
+  self : JsValue,
+) -> RTCSctpTransport =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCSctpTransport::to_event_target(
+  self : RTCSctpTransport,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCSctpTransport::get_transport(
   self : RTCSctpTransport,
 ) -> RTCDtlsTransport =
@@ -2713,7 +3192,7 @@ pub extern "js" fn RTCSctpTransport::get_max_message_size(
 pub extern "js" fn RTCSctpTransport::get_max_channels(
   self : RTCSctpTransport,
 ) -> Int? =
-  #| (self) => self.maxChannels
+  #| (self) => { const v = self.maxChannels; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCSctpTransport::get_onstatechange(
@@ -2739,6 +3218,38 @@ pub extern "js" fn RTCDataChannel::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCDataChannel (unchecked)
+pub extern "js" fn RTCDataChannel::from_js_value(v : JsValue) -> RTCDataChannel =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCDataChannel (checked with instanceof)
+pub extern "js" fn RTCDataChannel::from_js_value_opt(
+  v : JsValue,
+) -> RTCDataChannel? =
+  #| (v) => (v instanceof RTCDataChannel) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCDataChannel (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_data_channel(
+  self : JsValue,
+) -> RTCDataChannel? =
+  #| (self) => (self instanceof RTCDataChannel) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCDataChannel (unchecked)
+pub extern "js" fn JsValue::to_rtc_data_channel(
+  self : JsValue,
+) -> RTCDataChannel =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCDataChannel::to_event_target(
+  self : RTCDataChannel,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCDataChannel::get_label(self : RTCDataChannel) -> String =
   #| (self) => self.label
 
@@ -2750,13 +3261,13 @@ pub extern "js" fn RTCDataChannel::get_ordered(self : RTCDataChannel) -> Bool =
 pub extern "js" fn RTCDataChannel::get_max_packet_life_time(
   self : RTCDataChannel,
 ) -> Int? =
-  #| (self) => self.maxPacketLifeTime
+  #| (self) => { const v = self.maxPacketLifeTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCDataChannel::get_max_retransmits(
   self : RTCDataChannel,
 ) -> Int? =
-  #| (self) => self.maxRetransmits
+  #| (self) => { const v = self.maxRetransmits; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCDataChannel::get_protocol(
@@ -2772,7 +3283,7 @@ pub extern "js" fn RTCDataChannel::get_negotiated(
 
 ///|
 pub extern "js" fn RTCDataChannel::get_id(self : RTCDataChannel) -> Int? =
-  #| (self) => self.id
+  #| (self) => { const v = self.id; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCDataChannel::get_ready_state(
@@ -2939,6 +3450,40 @@ pub extern "js" fn RTCDataChannelEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCDataChannelEvent (unchecked)
+pub extern "js" fn RTCDataChannelEvent::from_js_value(
+  v : JsValue,
+) -> RTCDataChannelEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCDataChannelEvent (checked with instanceof)
+pub extern "js" fn RTCDataChannelEvent::from_js_value_opt(
+  v : JsValue,
+) -> RTCDataChannelEvent? =
+  #| (v) => (v instanceof RTCDataChannelEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCDataChannelEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_data_channel_event(
+  self : JsValue,
+) -> RTCDataChannelEvent? =
+  #| (self) => (self instanceof RTCDataChannelEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCDataChannelEvent (unchecked)
+pub extern "js" fn JsValue::to_rtc_data_channel_event(
+  self : JsValue,
+) -> RTCDataChannelEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCDataChannelEvent::to_event(
+  self : RTCDataChannelEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCDataChannelEvent::new(
   type_ : String,
   event_init_dict : RTCDataChannelEventInit,
@@ -2960,14 +3505,42 @@ pub extern "js" fn RTCDTMFSender::to_js_value(self : RTCDTMFSender) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn RTCDTMFSender::insert_d_t_m_f(
+/// Cast JsValue to RTCDTMFSender (unchecked)
+pub extern "js" fn RTCDTMFSender::from_js_value(v : JsValue) -> RTCDTMFSender =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCDTMFSender (checked with instanceof)
+pub extern "js" fn RTCDTMFSender::from_js_value_opt(
+  v : JsValue,
+) -> RTCDTMFSender? =
+  #| (v) => (v instanceof RTCDTMFSender) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCDTMFSender (checked with instanceof)
+pub extern "js" fn JsValue::as_rtcdtmf_sender(self : JsValue) -> RTCDTMFSender? =
+  #| (self) => (self instanceof RTCDTMFSender) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCDTMFSender (unchecked)
+pub extern "js" fn JsValue::to_rtcdtmf_sender(self : JsValue) -> RTCDTMFSender =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCDTMFSender::to_event_target(
+  self : RTCDTMFSender,
+) -> EventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCDTMFSender::insert_dtmf(
   self : RTCDTMFSender,
   tones : String,
 ) -> Unit =
   #| (self, tones) => self.insertDTMF(tones)
 
 ///|
-pub extern "js" fn RTCDTMFSender::insert_d_t_m_f_with_inter_tone_gap(
+pub extern "js" fn RTCDTMFSender::insert_dtmf_with_inter_tone_gap(
   self : RTCDTMFSender,
   tones : String,
   duration : Int,
@@ -2989,7 +3562,7 @@ pub extern "js" fn RTCDTMFSender::set_ontonechange(
   #| (self, value) => { self.ontonechange = value }
 
 ///|
-pub extern "js" fn RTCDTMFSender::get_can_insert_d_t_m_f(
+pub extern "js" fn RTCDTMFSender::get_can_insert_dtmf(
   self : RTCDTMFSender,
 ) -> Bool =
   #| (self) => self.canInsertDTMF
@@ -3008,6 +3581,40 @@ pub type RTCDTMFToneChangeEvent
 pub extern "js" fn RTCDTMFToneChangeEvent::to_js_value(
   self : RTCDTMFToneChangeEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to RTCDTMFToneChangeEvent (unchecked)
+pub extern "js" fn RTCDTMFToneChangeEvent::from_js_value(
+  v : JsValue,
+) -> RTCDTMFToneChangeEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCDTMFToneChangeEvent (checked with instanceof)
+pub extern "js" fn RTCDTMFToneChangeEvent::from_js_value_opt(
+  v : JsValue,
+) -> RTCDTMFToneChangeEvent? =
+  #| (v) => (v instanceof RTCDTMFToneChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCDTMFToneChangeEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_rtcdtmf_tone_change_event(
+  self : JsValue,
+) -> RTCDTMFToneChangeEvent? =
+  #| (self) => (self instanceof RTCDTMFToneChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCDTMFToneChangeEvent (unchecked)
+pub extern "js" fn JsValue::to_rtcdtmf_tone_change_event(
+  self : JsValue,
+) -> RTCDTMFToneChangeEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCDTMFToneChangeEvent::to_event(
+  self : RTCDTMFToneChangeEvent,
+) -> Event =
   #| (self) => self
 
 ///|
@@ -3034,11 +3641,37 @@ pub extern "js" fn RTCStatsReport::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCStatsReport (unchecked)
+pub extern "js" fn RTCStatsReport::from_js_value(v : JsValue) -> RTCStatsReport =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCStatsReport (checked with instanceof)
+pub extern "js" fn RTCStatsReport::from_js_value_opt(
+  v : JsValue,
+) -> RTCStatsReport? =
+  #| (v) => (v instanceof RTCStatsReport) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCStatsReport (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_stats_report(
+  self : JsValue,
+) -> RTCStatsReport? =
+  #| (self) => (self instanceof RTCStatsReport) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCStatsReport (unchecked)
+pub extern "js" fn JsValue::to_rtc_stats_report(
+  self : JsValue,
+) -> RTCStatsReport =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCStatsReport::get(
   self : RTCStatsReport,
   key : String,
 ) -> JsValue? =
-  #| (self, key) => self.get(key)
+  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCStatsReport::has(
@@ -3056,6 +3689,30 @@ pub extern "js" fn RTCError::to_js_value(self : RTCError) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCError (unchecked)
+pub extern "js" fn RTCError::from_js_value(v : JsValue) -> RTCError =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCError (checked with instanceof)
+pub extern "js" fn RTCError::from_js_value_opt(v : JsValue) -> RTCError? =
+  #| (v) => (v instanceof RTCError) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCError (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_error(self : JsValue) -> RTCError? =
+  #| (self) => (self instanceof RTCError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCError (unchecked)
+pub extern "js" fn JsValue::to_rtc_error(self : JsValue) -> RTCError =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCError::to_dom_exception(self : RTCError) -> DOMException =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCError::new(
   init_ : RTCErrorInit,
   message : String,
@@ -3070,25 +3727,25 @@ pub extern "js" fn RTCError::get_error_detail(
 
 ///|
 pub extern "js" fn RTCError::get_sdp_line_number(self : RTCError) -> Int? =
-  #| (self) => self.sdpLineNumber
+  #| (self) => { const v = self.sdpLineNumber; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCError::get_sctp_cause_code(self : RTCError) -> Int? =
-  #| (self) => self.sctpCauseCode
+  #| (self) => { const v = self.sctpCauseCode; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCError::get_received_alert(self : RTCError) -> Int? =
-  #| (self) => self.receivedAlert
+  #| (self) => { const v = self.receivedAlert; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCError::get_sent_alert(self : RTCError) -> Int? =
-  #| (self) => self.sentAlert
+  #| (self) => { const v = self.sentAlert; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn RTCError::get_http_request_status_code(
   self : RTCError,
 ) -> Int? =
-  #| (self) => self.httpRequestStatusCode
+  #| (self) => { const v = self.httpRequestStatusCode; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// RTCErrorEvent interface
@@ -3096,6 +3753,34 @@ pub type RTCErrorEvent
 
 ///|
 pub extern "js" fn RTCErrorEvent::to_js_value(self : RTCErrorEvent) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to RTCErrorEvent (unchecked)
+pub extern "js" fn RTCErrorEvent::from_js_value(v : JsValue) -> RTCErrorEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCErrorEvent (checked with instanceof)
+pub extern "js" fn RTCErrorEvent::from_js_value_opt(
+  v : JsValue,
+) -> RTCErrorEvent? =
+  #| (v) => (v instanceof RTCErrorEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCErrorEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_error_event(
+  self : JsValue,
+) -> RTCErrorEvent? =
+  #| (self) => (self instanceof RTCErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCErrorEvent (unchecked)
+pub extern "js" fn JsValue::to_rtc_error_event(self : JsValue) -> RTCErrorEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCErrorEvent::to_event(self : RTCErrorEvent) -> Event =
   #| (self) => self
 
 ///|

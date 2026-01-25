@@ -553,6 +553,158 @@ pub extern "js" fn CSSStyleValue::to_js_value(self : CSSStyleValue) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSStyleValue (unchecked)
+pub extern "js" fn CSSStyleValue::from_js_value(v : JsValue) -> CSSStyleValue =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSStyleValue (checked with instanceof)
+pub extern "js" fn CSSStyleValue::from_js_value_opt(
+  v : JsValue,
+) -> CSSStyleValue? =
+  #| (v) => (v instanceof CSSStyleValue) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSStyleValue (checked with instanceof)
+pub extern "js" fn JsValue::as_css_style_value(
+  self : JsValue,
+) -> CSSStyleValue? =
+  #| (self) => (self instanceof CSSStyleValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSStyleValue (unchecked)
+pub extern "js" fn JsValue::to_css_style_value(self : JsValue) -> CSSStyleValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_unparsed_value(
+  self : CSSStyleValue,
+) -> CSSUnparsedValue? =
+  #| (self) => (self instanceof CSSUnparsedValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_keyword_value(
+  self : CSSStyleValue,
+) -> CSSKeywordValue? =
+  #| (self) => (self instanceof CSSKeywordValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_numeric_value(
+  self : CSSStyleValue,
+) -> CSSNumericValue? =
+  #| (self) => (self instanceof CSSNumericValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_unit_value(
+  self : CSSStyleValue,
+) -> CSSUnitValue? =
+  #| (self) => (self instanceof CSSUnitValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_math_value(
+  self : CSSStyleValue,
+) -> CSSMathValue? =
+  #| (self) => (self instanceof CSSMathValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_math_sum(
+  self : CSSStyleValue,
+) -> CSSMathSum? =
+  #| (self) => (self instanceof CSSMathSum) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_math_product(
+  self : CSSStyleValue,
+) -> CSSMathProduct? =
+  #| (self) => (self instanceof CSSMathProduct) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_math_negate(
+  self : CSSStyleValue,
+) -> CSSMathNegate? =
+  #| (self) => (self instanceof CSSMathNegate) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_math_invert(
+  self : CSSStyleValue,
+) -> CSSMathInvert? =
+  #| (self) => (self instanceof CSSMathInvert) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_math_min(
+  self : CSSStyleValue,
+) -> CSSMathMin? =
+  #| (self) => (self instanceof CSSMathMin) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_math_max(
+  self : CSSStyleValue,
+) -> CSSMathMax? =
+  #| (self) => (self instanceof CSSMathMax) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_math_clamp(
+  self : CSSStyleValue,
+) -> CSSMathClamp? =
+  #| (self) => (self instanceof CSSMathClamp) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_transform_value(
+  self : CSSStyleValue,
+) -> CSSTransformValue? =
+  #| (self) => (self instanceof CSSTransformValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_image_value(
+  self : CSSStyleValue,
+) -> CSSImageValue? =
+  #| (self) => (self instanceof CSSImageValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_color_value(
+  self : CSSStyleValue,
+) -> CSSColorValue? =
+  #| (self) => (self instanceof CSSColorValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_cssrgb(self : CSSStyleValue) -> CSSRGB? =
+  #| (self) => (self instanceof CSSRGB) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_csshsl(self : CSSStyleValue) -> CSSHSL? =
+  #| (self) => (self instanceof CSSHSL) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_csshwb(self : CSSStyleValue) -> CSSHWB? =
+  #| (self) => (self instanceof CSSHWB) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_lab(self : CSSStyleValue) -> CSSLab? =
+  #| (self) => (self instanceof CSSLab) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_csslch(self : CSSStyleValue) -> CSSLCH? =
+  #| (self) => (self instanceof CSSLCH) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_cssok_lab(
+  self : CSSStyleValue,
+) -> CSSOKLab? =
+  #| (self) => (self instanceof CSSOKLab) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_cssoklch(
+  self : CSSStyleValue,
+) -> CSSOKLCH? =
+  #| (self) => (self instanceof CSSOKLCH) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleValue::as_css_color(
+  self : CSSStyleValue,
+) -> CSSColor? =
+  #| (self) => (self instanceof CSSColor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn CSSStyleValue::parse(
   property : String,
   css_text : String,
@@ -575,6 +727,40 @@ pub extern "js" fn StylePropertyMapReadOnly::to_js_value(
   self : StylePropertyMapReadOnly,
 ) -> JsValue =
   #| (self) => self
+
+///|
+/// Cast JsValue to StylePropertyMapReadOnly (unchecked)
+pub extern "js" fn StylePropertyMapReadOnly::from_js_value(
+  v : JsValue,
+) -> StylePropertyMapReadOnly =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to StylePropertyMapReadOnly (checked with instanceof)
+pub extern "js" fn StylePropertyMapReadOnly::from_js_value_opt(
+  v : JsValue,
+) -> StylePropertyMapReadOnly? =
+  #| (v) => (v instanceof StylePropertyMapReadOnly) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to StylePropertyMapReadOnly (checked with instanceof)
+pub extern "js" fn JsValue::as_style_property_map_read_only(
+  self : JsValue,
+) -> StylePropertyMapReadOnly? =
+  #| (self) => (self instanceof StylePropertyMapReadOnly) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to StylePropertyMapReadOnly (unchecked)
+pub extern "js" fn JsValue::to_style_property_map_read_only(
+  self : JsValue,
+) -> StylePropertyMapReadOnly =
+  #| (self) => self
+
+///|
+pub extern "js" fn StylePropertyMapReadOnly::as_style_property_map(
+  self : StylePropertyMapReadOnly,
+) -> StylePropertyMap? =
+  #| (self) => (self instanceof StylePropertyMap) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn StylePropertyMapReadOnly::_unknown_(
@@ -620,33 +806,38 @@ pub extern "js" fn StylePropertyMap::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn StylePropertyMap::_unknown_(self : StylePropertyMap) -> Unit =
-  #| (self) => self._unknown_()
+/// Cast JsValue to StylePropertyMap (unchecked)
+pub extern "js" fn StylePropertyMap::from_js_value(
+  v : JsValue,
+) -> StylePropertyMap =
+  #| (v) => v
 
 ///|
-pub extern "js" fn StylePropertyMap::get(
+/// Safely cast JsValue to StylePropertyMap (checked with instanceof)
+pub extern "js" fn StylePropertyMap::from_js_value_opt(
+  v : JsValue,
+) -> StylePropertyMap? =
+  #| (v) => (v instanceof StylePropertyMap) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to StylePropertyMap (checked with instanceof)
+pub extern "js" fn JsValue::as_style_property_map(
+  self : JsValue,
+) -> StylePropertyMap? =
+  #| (self) => (self instanceof StylePropertyMap) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to StylePropertyMap (unchecked)
+pub extern "js" fn JsValue::to_style_property_map(
+  self : JsValue,
+) -> StylePropertyMap =
+  #| (self) => self
+
+///|
+pub extern "js" fn StylePropertyMap::to_style_property_map_read_only(
   self : StylePropertyMap,
-  property : String,
-) -> VoidOrCSSStyleValue =
-  #| (self, property) => self.get(property)
-
-///|
-pub extern "js" fn StylePropertyMap::get_all(
-  self : StylePropertyMap,
-  property : String,
-) -> Array[CSSStyleValue] =
-  #| (self, property) => self.getAll(property)
-
-///|
-pub extern "js" fn StylePropertyMap::has(
-  self : StylePropertyMap,
-  property : String,
-) -> Bool =
-  #| (self, property) => self.has(property)
-
-///|
-pub extern "js" fn StylePropertyMap::get_size(self : StylePropertyMap) -> Int =
-  #| (self) => self.size
+) -> StylePropertyMapReadOnly =
+  #| (self) => self
 
 ///|
 pub extern "js" fn StylePropertyMap::set(
@@ -686,18 +877,38 @@ pub extern "js" fn CSSUnparsedValue::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSUnparsedValue::parse(
-  property : String,
-  css_text : String,
-) -> CSSStyleValue =
-  #| (property, css_text) => CSSUnparsedValue.parse(property, css_text)
+/// Cast JsValue to CSSUnparsedValue (unchecked)
+pub extern "js" fn CSSUnparsedValue::from_js_value(
+  v : JsValue,
+) -> CSSUnparsedValue =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSUnparsedValue::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSUnparsedValue.parseAll(property, css_text)
+/// Safely cast JsValue to CSSUnparsedValue (checked with instanceof)
+pub extern "js" fn CSSUnparsedValue::from_js_value_opt(
+  v : JsValue,
+) -> CSSUnparsedValue? =
+  #| (v) => (v instanceof CSSUnparsedValue) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSUnparsedValue (checked with instanceof)
+pub extern "js" fn JsValue::as_css_unparsed_value(
+  self : JsValue,
+) -> CSSUnparsedValue? =
+  #| (self) => (self instanceof CSSUnparsedValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSUnparsedValue (unchecked)
+pub extern "js" fn JsValue::to_css_unparsed_value(
+  self : JsValue,
+) -> CSSUnparsedValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSUnparsedValue::to_css_style_value(
+  self : CSSUnparsedValue,
+) -> CSSStyleValue =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSUnparsedValue::new(
@@ -739,6 +950,34 @@ pub extern "js" fn CSSVariableReferenceValue::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSVariableReferenceValue (unchecked)
+pub extern "js" fn CSSVariableReferenceValue::from_js_value(
+  v : JsValue,
+) -> CSSVariableReferenceValue =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSVariableReferenceValue (checked with instanceof)
+pub extern "js" fn CSSVariableReferenceValue::from_js_value_opt(
+  v : JsValue,
+) -> CSSVariableReferenceValue? =
+  #| (v) => (v instanceof CSSVariableReferenceValue) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSVariableReferenceValue (checked with instanceof)
+pub extern "js" fn JsValue::as_css_variable_reference_value(
+  self : JsValue,
+) -> CSSVariableReferenceValue? =
+  #| (self) => (self instanceof CSSVariableReferenceValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSVariableReferenceValue (unchecked)
+pub extern "js" fn JsValue::to_css_variable_reference_value(
+  self : JsValue,
+) -> CSSVariableReferenceValue =
+  #| (self) => self
+
+///|
 pub extern "js" fn CSSVariableReferenceValue::new(
   variable : String,
   fallback : CSSUnparsedValue?,
@@ -762,7 +1001,7 @@ pub extern "js" fn CSSVariableReferenceValue::set_variable(
 pub extern "js" fn CSSVariableReferenceValue::get_fallback(
   self : CSSVariableReferenceValue,
 ) -> CSSUnparsedValue? =
-  #| (self) => self.fallback
+  #| (self) => { const v = self.fallback; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// CSSKeywordValue interface
@@ -775,18 +1014,38 @@ pub extern "js" fn CSSKeywordValue::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSKeywordValue::parse(
-  property : String,
-  css_text : String,
-) -> CSSStyleValue =
-  #| (property, css_text) => CSSKeywordValue.parse(property, css_text)
+/// Cast JsValue to CSSKeywordValue (unchecked)
+pub extern "js" fn CSSKeywordValue::from_js_value(
+  v : JsValue,
+) -> CSSKeywordValue =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSKeywordValue::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSKeywordValue.parseAll(property, css_text)
+/// Safely cast JsValue to CSSKeywordValue (checked with instanceof)
+pub extern "js" fn CSSKeywordValue::from_js_value_opt(
+  v : JsValue,
+) -> CSSKeywordValue? =
+  #| (v) => (v instanceof CSSKeywordValue) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSKeywordValue (checked with instanceof)
+pub extern "js" fn JsValue::as_css_keyword_value(
+  self : JsValue,
+) -> CSSKeywordValue? =
+  #| (self) => (self instanceof CSSKeywordValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSKeywordValue (unchecked)
+pub extern "js" fn JsValue::to_css_keyword_value(
+  self : JsValue,
+) -> CSSKeywordValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSKeywordValue::to_css_style_value(
+  self : CSSKeywordValue,
+) -> CSSStyleValue =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSKeywordValue::new(value : String) -> CSSKeywordValue =
@@ -814,18 +1073,92 @@ pub extern "js" fn CSSNumericValue::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSNumericValue::parse(
-  property : String,
-  css_text : String,
-) -> CSSStyleValue =
-  #| (property, css_text) => CSSNumericValue.parse(property, css_text)
+/// Cast JsValue to CSSNumericValue (unchecked)
+pub extern "js" fn CSSNumericValue::from_js_value(
+  v : JsValue,
+) -> CSSNumericValue =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSNumericValue::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSNumericValue.parseAll(property, css_text)
+/// Safely cast JsValue to CSSNumericValue (checked with instanceof)
+pub extern "js" fn CSSNumericValue::from_js_value_opt(
+  v : JsValue,
+) -> CSSNumericValue? =
+  #| (v) => (v instanceof CSSNumericValue) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSNumericValue (checked with instanceof)
+pub extern "js" fn JsValue::as_css_numeric_value(
+  self : JsValue,
+) -> CSSNumericValue? =
+  #| (self) => (self instanceof CSSNumericValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSNumericValue (unchecked)
+pub extern "js" fn JsValue::to_css_numeric_value(
+  self : JsValue,
+) -> CSSNumericValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSNumericValue::to_css_style_value(
+  self : CSSNumericValue,
+) -> CSSStyleValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSNumericValue::as_css_unit_value(
+  self : CSSNumericValue,
+) -> CSSUnitValue? =
+  #| (self) => (self instanceof CSSUnitValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSNumericValue::as_css_math_value(
+  self : CSSNumericValue,
+) -> CSSMathValue? =
+  #| (self) => (self instanceof CSSMathValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSNumericValue::as_css_math_sum(
+  self : CSSNumericValue,
+) -> CSSMathSum? =
+  #| (self) => (self instanceof CSSMathSum) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSNumericValue::as_css_math_product(
+  self : CSSNumericValue,
+) -> CSSMathProduct? =
+  #| (self) => (self instanceof CSSMathProduct) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSNumericValue::as_css_math_negate(
+  self : CSSNumericValue,
+) -> CSSMathNegate? =
+  #| (self) => (self instanceof CSSMathNegate) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSNumericValue::as_css_math_invert(
+  self : CSSNumericValue,
+) -> CSSMathInvert? =
+  #| (self) => (self instanceof CSSMathInvert) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSNumericValue::as_css_math_min(
+  self : CSSNumericValue,
+) -> CSSMathMin? =
+  #| (self) => (self instanceof CSSMathMin) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSNumericValue::as_css_math_max(
+  self : CSSNumericValue,
+) -> CSSMathMax? =
+  #| (self) => (self instanceof CSSMathMax) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSNumericValue::as_css_math_clamp(
+  self : CSSNumericValue,
+) -> CSSMathClamp? =
+  #| (self) => (self instanceof CSSMathClamp) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSNumericValue::add(
@@ -897,6 +1230,10 @@ pub extern "js" fn CSSNumericValue::type_(
   #| (self) => self.type()
 
 ///|
+pub extern "js" fn CSSNumericValue::parse(css_text : String) -> CSSNumericValue =
+  #| (css_text) => CSSNumericValue.parse(css_text)
+
+///|
 /// CSSUnitValue interface
 pub type CSSUnitValue
 
@@ -905,85 +1242,38 @@ pub extern "js" fn CSSUnitValue::to_js_value(self : CSSUnitValue) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSUnitValue::parse(
-  property : String,
-  css_text : String,
+/// Cast JsValue to CSSUnitValue (unchecked)
+pub extern "js" fn CSSUnitValue::from_js_value(v : JsValue) -> CSSUnitValue =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSUnitValue (checked with instanceof)
+pub extern "js" fn CSSUnitValue::from_js_value_opt(
+  v : JsValue,
+) -> CSSUnitValue? =
+  #| (v) => (v instanceof CSSUnitValue) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSUnitValue (checked with instanceof)
+pub extern "js" fn JsValue::as_css_unit_value(self : JsValue) -> CSSUnitValue? =
+  #| (self) => (self instanceof CSSUnitValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSUnitValue (unchecked)
+pub extern "js" fn JsValue::to_css_unit_value(self : JsValue) -> CSSUnitValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSUnitValue::to_css_numeric_value(
+  self : CSSUnitValue,
+) -> CSSNumericValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSUnitValue::to_css_style_value(
+  self : CSSUnitValue,
 ) -> CSSStyleValue =
-  #| (property, css_text) => CSSUnitValue.parse(property, css_text)
-
-///|
-pub extern "js" fn CSSUnitValue::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSUnitValue.parseAll(property, css_text)
-
-///|
-pub extern "js" fn CSSUnitValue::add(
-  self : CSSUnitValue,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.add(values)
-
-///|
-pub extern "js" fn CSSUnitValue::sub(
-  self : CSSUnitValue,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.sub(values)
-
-///|
-pub extern "js" fn CSSUnitValue::mul(
-  self : CSSUnitValue,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.mul(values)
-
-///|
-pub extern "js" fn CSSUnitValue::div(
-  self : CSSUnitValue,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.div(values)
-
-///|
-pub extern "js" fn CSSUnitValue::min(
-  self : CSSUnitValue,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.min(values)
-
-///|
-pub extern "js" fn CSSUnitValue::max(
-  self : CSSUnitValue,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.max(values)
-
-///|
-pub extern "js" fn CSSUnitValue::equals(
-  self : CSSUnitValue,
-  value : CSSNumberish,
-) -> Bool =
-  #| (self, value) => self.equals(value)
-
-///|
-pub extern "js" fn CSSUnitValue::to(
-  self : CSSUnitValue,
-  unit : String,
-) -> CSSUnitValue =
-  #| (self, unit) => self.to(unit)
-
-///|
-pub extern "js" fn CSSUnitValue::to_sum(
-  self : CSSUnitValue,
-  units : String,
-) -> CSSMathSum =
-  #| (self, units) => self.toSum(units)
-
-///|
-pub extern "js" fn CSSUnitValue::type_(self : CSSUnitValue) -> CSSNumericType =
-  #| (self) => self.type()
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSUnitValue::new(
@@ -1016,85 +1306,80 @@ pub extern "js" fn CSSMathValue::to_js_value(self : CSSMathValue) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSMathValue::parse(
-  property : String,
-  css_text : String,
+/// Cast JsValue to CSSMathValue (unchecked)
+pub extern "js" fn CSSMathValue::from_js_value(v : JsValue) -> CSSMathValue =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSMathValue (checked with instanceof)
+pub extern "js" fn CSSMathValue::from_js_value_opt(
+  v : JsValue,
+) -> CSSMathValue? =
+  #| (v) => (v instanceof CSSMathValue) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSMathValue (checked with instanceof)
+pub extern "js" fn JsValue::as_css_math_value(self : JsValue) -> CSSMathValue? =
+  #| (self) => (self instanceof CSSMathValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSMathValue (unchecked)
+pub extern "js" fn JsValue::to_css_math_value(self : JsValue) -> CSSMathValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathValue::to_css_numeric_value(
+  self : CSSMathValue,
+) -> CSSNumericValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathValue::to_css_style_value(
+  self : CSSMathValue,
 ) -> CSSStyleValue =
-  #| (property, css_text) => CSSMathValue.parse(property, css_text)
+  #| (self) => self
 
 ///|
-pub extern "js" fn CSSMathValue::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSMathValue.parseAll(property, css_text)
-
-///|
-pub extern "js" fn CSSMathValue::add(
+pub extern "js" fn CSSMathValue::as_css_math_sum(
   self : CSSMathValue,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.add(values)
+) -> CSSMathSum? =
+  #| (self) => (self instanceof CSSMathSum) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSMathValue::sub(
+pub extern "js" fn CSSMathValue::as_css_math_product(
   self : CSSMathValue,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.sub(values)
+) -> CSSMathProduct? =
+  #| (self) => (self instanceof CSSMathProduct) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSMathValue::mul(
+pub extern "js" fn CSSMathValue::as_css_math_negate(
   self : CSSMathValue,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.mul(values)
+) -> CSSMathNegate? =
+  #| (self) => (self instanceof CSSMathNegate) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSMathValue::div(
+pub extern "js" fn CSSMathValue::as_css_math_invert(
   self : CSSMathValue,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.div(values)
+) -> CSSMathInvert? =
+  #| (self) => (self instanceof CSSMathInvert) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSMathValue::min(
+pub extern "js" fn CSSMathValue::as_css_math_min(
   self : CSSMathValue,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.min(values)
+) -> CSSMathMin? =
+  #| (self) => (self instanceof CSSMathMin) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSMathValue::max(
+pub extern "js" fn CSSMathValue::as_css_math_max(
   self : CSSMathValue,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.max(values)
+) -> CSSMathMax? =
+  #| (self) => (self instanceof CSSMathMax) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSMathValue::equals(
+pub extern "js" fn CSSMathValue::as_css_math_clamp(
   self : CSSMathValue,
-  value : CSSNumberish,
-) -> Bool =
-  #| (self, value) => self.equals(value)
-
-///|
-pub extern "js" fn CSSMathValue::to(
-  self : CSSMathValue,
-  unit : String,
-) -> CSSUnitValue =
-  #| (self, unit) => self.to(unit)
-
-///|
-pub extern "js" fn CSSMathValue::to_sum(
-  self : CSSMathValue,
-  units : String,
-) -> CSSMathSum =
-  #| (self, units) => self.toSum(units)
-
-///|
-pub extern "js" fn CSSMathValue::type_(self : CSSMathValue) -> CSSNumericType =
-  #| (self) => self.type()
+) -> CSSMathClamp? =
+  #| (self) => (self instanceof CSSMathClamp) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSMathValue::get_operator(
@@ -1111,91 +1396,42 @@ pub extern "js" fn CSSMathSum::to_js_value(self : CSSMathSum) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSMathSum::parse(
-  property : String,
-  css_text : String,
+/// Cast JsValue to CSSMathSum (unchecked)
+pub extern "js" fn CSSMathSum::from_js_value(v : JsValue) -> CSSMathSum =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSMathSum (checked with instanceof)
+pub extern "js" fn CSSMathSum::from_js_value_opt(v : JsValue) -> CSSMathSum? =
+  #| (v) => (v instanceof CSSMathSum) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSMathSum (checked with instanceof)
+pub extern "js" fn JsValue::as_css_math_sum(self : JsValue) -> CSSMathSum? =
+  #| (self) => (self instanceof CSSMathSum) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSMathSum (unchecked)
+pub extern "js" fn JsValue::to_css_math_sum(self : JsValue) -> CSSMathSum =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathSum::to_css_math_value(
+  self : CSSMathSum,
+) -> CSSMathValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathSum::to_css_numeric_value(
+  self : CSSMathSum,
+) -> CSSNumericValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathSum::to_css_style_value(
+  self : CSSMathSum,
 ) -> CSSStyleValue =
-  #| (property, css_text) => CSSMathSum.parse(property, css_text)
-
-///|
-pub extern "js" fn CSSMathSum::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSMathSum.parseAll(property, css_text)
-
-///|
-pub extern "js" fn CSSMathSum::add(
-  self : CSSMathSum,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.add(values)
-
-///|
-pub extern "js" fn CSSMathSum::sub(
-  self : CSSMathSum,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.sub(values)
-
-///|
-pub extern "js" fn CSSMathSum::mul(
-  self : CSSMathSum,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.mul(values)
-
-///|
-pub extern "js" fn CSSMathSum::div(
-  self : CSSMathSum,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.div(values)
-
-///|
-pub extern "js" fn CSSMathSum::min(
-  self : CSSMathSum,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.min(values)
-
-///|
-pub extern "js" fn CSSMathSum::max(
-  self : CSSMathSum,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.max(values)
-
-///|
-pub extern "js" fn CSSMathSum::equals(
-  self : CSSMathSum,
-  value : CSSNumberish,
-) -> Bool =
-  #| (self, value) => self.equals(value)
-
-///|
-pub extern "js" fn CSSMathSum::to(
-  self : CSSMathSum,
-  unit : String,
-) -> CSSUnitValue =
-  #| (self, unit) => self.to(unit)
-
-///|
-pub extern "js" fn CSSMathSum::to_sum(
-  self : CSSMathSum,
-  units : String,
-) -> CSSMathSum =
-  #| (self, units) => self.toSum(units)
-
-///|
-pub extern "js" fn CSSMathSum::type_(self : CSSMathSum) -> CSSNumericType =
-  #| (self) => self.type()
-
-///|
-pub extern "js" fn CSSMathSum::get_operator(
-  self : CSSMathSum,
-) -> CSSMathOperator =
-  #| (self) => self.operator
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSMathSum::new(args : CSSNumberish) -> CSSMathSum =
@@ -1216,93 +1452,48 @@ pub extern "js" fn CSSMathProduct::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSMathProduct::parse(
-  property : String,
-  css_text : String,
+/// Cast JsValue to CSSMathProduct (unchecked)
+pub extern "js" fn CSSMathProduct::from_js_value(v : JsValue) -> CSSMathProduct =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSMathProduct (checked with instanceof)
+pub extern "js" fn CSSMathProduct::from_js_value_opt(
+  v : JsValue,
+) -> CSSMathProduct? =
+  #| (v) => (v instanceof CSSMathProduct) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSMathProduct (checked with instanceof)
+pub extern "js" fn JsValue::as_css_math_product(
+  self : JsValue,
+) -> CSSMathProduct? =
+  #| (self) => (self instanceof CSSMathProduct) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSMathProduct (unchecked)
+pub extern "js" fn JsValue::to_css_math_product(
+  self : JsValue,
+) -> CSSMathProduct =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathProduct::to_css_math_value(
+  self : CSSMathProduct,
+) -> CSSMathValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathProduct::to_css_numeric_value(
+  self : CSSMathProduct,
+) -> CSSNumericValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathProduct::to_css_style_value(
+  self : CSSMathProduct,
 ) -> CSSStyleValue =
-  #| (property, css_text) => CSSMathProduct.parse(property, css_text)
-
-///|
-pub extern "js" fn CSSMathProduct::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSMathProduct.parseAll(property, css_text)
-
-///|
-pub extern "js" fn CSSMathProduct::add(
-  self : CSSMathProduct,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.add(values)
-
-///|
-pub extern "js" fn CSSMathProduct::sub(
-  self : CSSMathProduct,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.sub(values)
-
-///|
-pub extern "js" fn CSSMathProduct::mul(
-  self : CSSMathProduct,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.mul(values)
-
-///|
-pub extern "js" fn CSSMathProduct::div(
-  self : CSSMathProduct,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.div(values)
-
-///|
-pub extern "js" fn CSSMathProduct::min(
-  self : CSSMathProduct,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.min(values)
-
-///|
-pub extern "js" fn CSSMathProduct::max(
-  self : CSSMathProduct,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.max(values)
-
-///|
-pub extern "js" fn CSSMathProduct::equals(
-  self : CSSMathProduct,
-  value : CSSNumberish,
-) -> Bool =
-  #| (self, value) => self.equals(value)
-
-///|
-pub extern "js" fn CSSMathProduct::to(
-  self : CSSMathProduct,
-  unit : String,
-) -> CSSUnitValue =
-  #| (self, unit) => self.to(unit)
-
-///|
-pub extern "js" fn CSSMathProduct::to_sum(
-  self : CSSMathProduct,
-  units : String,
-) -> CSSMathSum =
-  #| (self, units) => self.toSum(units)
-
-///|
-pub extern "js" fn CSSMathProduct::type_(
-  self : CSSMathProduct,
-) -> CSSNumericType =
-  #| (self) => self.type()
-
-///|
-pub extern "js" fn CSSMathProduct::get_operator(
-  self : CSSMathProduct,
-) -> CSSMathOperator =
-  #| (self) => self.operator
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSMathProduct::new(args : CSSNumberish) -> CSSMathProduct =
@@ -1323,91 +1514,46 @@ pub extern "js" fn CSSMathNegate::to_js_value(self : CSSMathNegate) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSMathNegate::parse(
-  property : String,
-  css_text : String,
+/// Cast JsValue to CSSMathNegate (unchecked)
+pub extern "js" fn CSSMathNegate::from_js_value(v : JsValue) -> CSSMathNegate =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSMathNegate (checked with instanceof)
+pub extern "js" fn CSSMathNegate::from_js_value_opt(
+  v : JsValue,
+) -> CSSMathNegate? =
+  #| (v) => (v instanceof CSSMathNegate) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSMathNegate (checked with instanceof)
+pub extern "js" fn JsValue::as_css_math_negate(
+  self : JsValue,
+) -> CSSMathNegate? =
+  #| (self) => (self instanceof CSSMathNegate) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSMathNegate (unchecked)
+pub extern "js" fn JsValue::to_css_math_negate(self : JsValue) -> CSSMathNegate =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathNegate::to_css_math_value(
+  self : CSSMathNegate,
+) -> CSSMathValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathNegate::to_css_numeric_value(
+  self : CSSMathNegate,
+) -> CSSNumericValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathNegate::to_css_style_value(
+  self : CSSMathNegate,
 ) -> CSSStyleValue =
-  #| (property, css_text) => CSSMathNegate.parse(property, css_text)
-
-///|
-pub extern "js" fn CSSMathNegate::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSMathNegate.parseAll(property, css_text)
-
-///|
-pub extern "js" fn CSSMathNegate::add(
-  self : CSSMathNegate,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.add(values)
-
-///|
-pub extern "js" fn CSSMathNegate::sub(
-  self : CSSMathNegate,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.sub(values)
-
-///|
-pub extern "js" fn CSSMathNegate::mul(
-  self : CSSMathNegate,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.mul(values)
-
-///|
-pub extern "js" fn CSSMathNegate::div(
-  self : CSSMathNegate,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.div(values)
-
-///|
-pub extern "js" fn CSSMathNegate::min(
-  self : CSSMathNegate,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.min(values)
-
-///|
-pub extern "js" fn CSSMathNegate::max(
-  self : CSSMathNegate,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.max(values)
-
-///|
-pub extern "js" fn CSSMathNegate::equals(
-  self : CSSMathNegate,
-  value : CSSNumberish,
-) -> Bool =
-  #| (self, value) => self.equals(value)
-
-///|
-pub extern "js" fn CSSMathNegate::to(
-  self : CSSMathNegate,
-  unit : String,
-) -> CSSUnitValue =
-  #| (self, unit) => self.to(unit)
-
-///|
-pub extern "js" fn CSSMathNegate::to_sum(
-  self : CSSMathNegate,
-  units : String,
-) -> CSSMathSum =
-  #| (self, units) => self.toSum(units)
-
-///|
-pub extern "js" fn CSSMathNegate::type_(self : CSSMathNegate) -> CSSNumericType =
-  #| (self) => self.type()
-
-///|
-pub extern "js" fn CSSMathNegate::get_operator(
-  self : CSSMathNegate,
-) -> CSSMathOperator =
-  #| (self) => self.operator
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSMathNegate::new(arg : CSSNumberish) -> CSSMathNegate =
@@ -1428,91 +1574,46 @@ pub extern "js" fn CSSMathInvert::to_js_value(self : CSSMathInvert) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSMathInvert::parse(
-  property : String,
-  css_text : String,
+/// Cast JsValue to CSSMathInvert (unchecked)
+pub extern "js" fn CSSMathInvert::from_js_value(v : JsValue) -> CSSMathInvert =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSMathInvert (checked with instanceof)
+pub extern "js" fn CSSMathInvert::from_js_value_opt(
+  v : JsValue,
+) -> CSSMathInvert? =
+  #| (v) => (v instanceof CSSMathInvert) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSMathInvert (checked with instanceof)
+pub extern "js" fn JsValue::as_css_math_invert(
+  self : JsValue,
+) -> CSSMathInvert? =
+  #| (self) => (self instanceof CSSMathInvert) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSMathInvert (unchecked)
+pub extern "js" fn JsValue::to_css_math_invert(self : JsValue) -> CSSMathInvert =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathInvert::to_css_math_value(
+  self : CSSMathInvert,
+) -> CSSMathValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathInvert::to_css_numeric_value(
+  self : CSSMathInvert,
+) -> CSSNumericValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathInvert::to_css_style_value(
+  self : CSSMathInvert,
 ) -> CSSStyleValue =
-  #| (property, css_text) => CSSMathInvert.parse(property, css_text)
-
-///|
-pub extern "js" fn CSSMathInvert::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSMathInvert.parseAll(property, css_text)
-
-///|
-pub extern "js" fn CSSMathInvert::add(
-  self : CSSMathInvert,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.add(values)
-
-///|
-pub extern "js" fn CSSMathInvert::sub(
-  self : CSSMathInvert,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.sub(values)
-
-///|
-pub extern "js" fn CSSMathInvert::mul(
-  self : CSSMathInvert,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.mul(values)
-
-///|
-pub extern "js" fn CSSMathInvert::div(
-  self : CSSMathInvert,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.div(values)
-
-///|
-pub extern "js" fn CSSMathInvert::min(
-  self : CSSMathInvert,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.min(values)
-
-///|
-pub extern "js" fn CSSMathInvert::max(
-  self : CSSMathInvert,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.max(values)
-
-///|
-pub extern "js" fn CSSMathInvert::equals(
-  self : CSSMathInvert,
-  value : CSSNumberish,
-) -> Bool =
-  #| (self, value) => self.equals(value)
-
-///|
-pub extern "js" fn CSSMathInvert::to(
-  self : CSSMathInvert,
-  unit : String,
-) -> CSSUnitValue =
-  #| (self, unit) => self.to(unit)
-
-///|
-pub extern "js" fn CSSMathInvert::to_sum(
-  self : CSSMathInvert,
-  units : String,
-) -> CSSMathSum =
-  #| (self, units) => self.toSum(units)
-
-///|
-pub extern "js" fn CSSMathInvert::type_(self : CSSMathInvert) -> CSSNumericType =
-  #| (self) => self.type()
-
-///|
-pub extern "js" fn CSSMathInvert::get_operator(
-  self : CSSMathInvert,
-) -> CSSMathOperator =
-  #| (self) => self.operator
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSMathInvert::new(arg : CSSNumberish) -> CSSMathInvert =
@@ -1533,91 +1634,42 @@ pub extern "js" fn CSSMathMin::to_js_value(self : CSSMathMin) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSMathMin::parse(
-  property : String,
-  css_text : String,
+/// Cast JsValue to CSSMathMin (unchecked)
+pub extern "js" fn CSSMathMin::from_js_value(v : JsValue) -> CSSMathMin =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSMathMin (checked with instanceof)
+pub extern "js" fn CSSMathMin::from_js_value_opt(v : JsValue) -> CSSMathMin? =
+  #| (v) => (v instanceof CSSMathMin) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSMathMin (checked with instanceof)
+pub extern "js" fn JsValue::as_css_math_min(self : JsValue) -> CSSMathMin? =
+  #| (self) => (self instanceof CSSMathMin) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSMathMin (unchecked)
+pub extern "js" fn JsValue::to_css_math_min(self : JsValue) -> CSSMathMin =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathMin::to_css_math_value(
+  self : CSSMathMin,
+) -> CSSMathValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathMin::to_css_numeric_value(
+  self : CSSMathMin,
+) -> CSSNumericValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathMin::to_css_style_value(
+  self : CSSMathMin,
 ) -> CSSStyleValue =
-  #| (property, css_text) => CSSMathMin.parse(property, css_text)
-
-///|
-pub extern "js" fn CSSMathMin::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSMathMin.parseAll(property, css_text)
-
-///|
-pub extern "js" fn CSSMathMin::add(
-  self : CSSMathMin,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.add(values)
-
-///|
-pub extern "js" fn CSSMathMin::sub(
-  self : CSSMathMin,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.sub(values)
-
-///|
-pub extern "js" fn CSSMathMin::mul(
-  self : CSSMathMin,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.mul(values)
-
-///|
-pub extern "js" fn CSSMathMin::div(
-  self : CSSMathMin,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.div(values)
-
-///|
-pub extern "js" fn CSSMathMin::min(
-  self : CSSMathMin,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.min(values)
-
-///|
-pub extern "js" fn CSSMathMin::max(
-  self : CSSMathMin,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.max(values)
-
-///|
-pub extern "js" fn CSSMathMin::equals(
-  self : CSSMathMin,
-  value : CSSNumberish,
-) -> Bool =
-  #| (self, value) => self.equals(value)
-
-///|
-pub extern "js" fn CSSMathMin::to(
-  self : CSSMathMin,
-  unit : String,
-) -> CSSUnitValue =
-  #| (self, unit) => self.to(unit)
-
-///|
-pub extern "js" fn CSSMathMin::to_sum(
-  self : CSSMathMin,
-  units : String,
-) -> CSSMathSum =
-  #| (self, units) => self.toSum(units)
-
-///|
-pub extern "js" fn CSSMathMin::type_(self : CSSMathMin) -> CSSNumericType =
-  #| (self) => self.type()
-
-///|
-pub extern "js" fn CSSMathMin::get_operator(
-  self : CSSMathMin,
-) -> CSSMathOperator =
-  #| (self) => self.operator
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSMathMin::new(args : CSSNumberish) -> CSSMathMin =
@@ -1636,91 +1688,42 @@ pub extern "js" fn CSSMathMax::to_js_value(self : CSSMathMax) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSMathMax::parse(
-  property : String,
-  css_text : String,
+/// Cast JsValue to CSSMathMax (unchecked)
+pub extern "js" fn CSSMathMax::from_js_value(v : JsValue) -> CSSMathMax =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSMathMax (checked with instanceof)
+pub extern "js" fn CSSMathMax::from_js_value_opt(v : JsValue) -> CSSMathMax? =
+  #| (v) => (v instanceof CSSMathMax) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSMathMax (checked with instanceof)
+pub extern "js" fn JsValue::as_css_math_max(self : JsValue) -> CSSMathMax? =
+  #| (self) => (self instanceof CSSMathMax) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSMathMax (unchecked)
+pub extern "js" fn JsValue::to_css_math_max(self : JsValue) -> CSSMathMax =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathMax::to_css_math_value(
+  self : CSSMathMax,
+) -> CSSMathValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathMax::to_css_numeric_value(
+  self : CSSMathMax,
+) -> CSSNumericValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathMax::to_css_style_value(
+  self : CSSMathMax,
 ) -> CSSStyleValue =
-  #| (property, css_text) => CSSMathMax.parse(property, css_text)
-
-///|
-pub extern "js" fn CSSMathMax::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSMathMax.parseAll(property, css_text)
-
-///|
-pub extern "js" fn CSSMathMax::add(
-  self : CSSMathMax,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.add(values)
-
-///|
-pub extern "js" fn CSSMathMax::sub(
-  self : CSSMathMax,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.sub(values)
-
-///|
-pub extern "js" fn CSSMathMax::mul(
-  self : CSSMathMax,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.mul(values)
-
-///|
-pub extern "js" fn CSSMathMax::div(
-  self : CSSMathMax,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.div(values)
-
-///|
-pub extern "js" fn CSSMathMax::min(
-  self : CSSMathMax,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.min(values)
-
-///|
-pub extern "js" fn CSSMathMax::max(
-  self : CSSMathMax,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.max(values)
-
-///|
-pub extern "js" fn CSSMathMax::equals(
-  self : CSSMathMax,
-  value : CSSNumberish,
-) -> Bool =
-  #| (self, value) => self.equals(value)
-
-///|
-pub extern "js" fn CSSMathMax::to(
-  self : CSSMathMax,
-  unit : String,
-) -> CSSUnitValue =
-  #| (self, unit) => self.to(unit)
-
-///|
-pub extern "js" fn CSSMathMax::to_sum(
-  self : CSSMathMax,
-  units : String,
-) -> CSSMathSum =
-  #| (self, units) => self.toSum(units)
-
-///|
-pub extern "js" fn CSSMathMax::type_(self : CSSMathMax) -> CSSNumericType =
-  #| (self) => self.type()
-
-///|
-pub extern "js" fn CSSMathMax::get_operator(
-  self : CSSMathMax,
-) -> CSSMathOperator =
-  #| (self) => self.operator
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSMathMax::new(args : CSSNumberish) -> CSSMathMax =
@@ -1739,91 +1742,44 @@ pub extern "js" fn CSSMathClamp::to_js_value(self : CSSMathClamp) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSMathClamp::parse(
-  property : String,
-  css_text : String,
+/// Cast JsValue to CSSMathClamp (unchecked)
+pub extern "js" fn CSSMathClamp::from_js_value(v : JsValue) -> CSSMathClamp =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSMathClamp (checked with instanceof)
+pub extern "js" fn CSSMathClamp::from_js_value_opt(
+  v : JsValue,
+) -> CSSMathClamp? =
+  #| (v) => (v instanceof CSSMathClamp) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSMathClamp (checked with instanceof)
+pub extern "js" fn JsValue::as_css_math_clamp(self : JsValue) -> CSSMathClamp? =
+  #| (self) => (self instanceof CSSMathClamp) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSMathClamp (unchecked)
+pub extern "js" fn JsValue::to_css_math_clamp(self : JsValue) -> CSSMathClamp =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathClamp::to_css_math_value(
+  self : CSSMathClamp,
+) -> CSSMathValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathClamp::to_css_numeric_value(
+  self : CSSMathClamp,
+) -> CSSNumericValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMathClamp::to_css_style_value(
+  self : CSSMathClamp,
 ) -> CSSStyleValue =
-  #| (property, css_text) => CSSMathClamp.parse(property, css_text)
-
-///|
-pub extern "js" fn CSSMathClamp::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSMathClamp.parseAll(property, css_text)
-
-///|
-pub extern "js" fn CSSMathClamp::add(
-  self : CSSMathClamp,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.add(values)
-
-///|
-pub extern "js" fn CSSMathClamp::sub(
-  self : CSSMathClamp,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.sub(values)
-
-///|
-pub extern "js" fn CSSMathClamp::mul(
-  self : CSSMathClamp,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.mul(values)
-
-///|
-pub extern "js" fn CSSMathClamp::div(
-  self : CSSMathClamp,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.div(values)
-
-///|
-pub extern "js" fn CSSMathClamp::min(
-  self : CSSMathClamp,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.min(values)
-
-///|
-pub extern "js" fn CSSMathClamp::max(
-  self : CSSMathClamp,
-  values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.max(values)
-
-///|
-pub extern "js" fn CSSMathClamp::equals(
-  self : CSSMathClamp,
-  value : CSSNumberish,
-) -> Bool =
-  #| (self, value) => self.equals(value)
-
-///|
-pub extern "js" fn CSSMathClamp::to(
-  self : CSSMathClamp,
-  unit : String,
-) -> CSSUnitValue =
-  #| (self, unit) => self.to(unit)
-
-///|
-pub extern "js" fn CSSMathClamp::to_sum(
-  self : CSSMathClamp,
-  units : String,
-) -> CSSMathSum =
-  #| (self, units) => self.toSum(units)
-
-///|
-pub extern "js" fn CSSMathClamp::type_(self : CSSMathClamp) -> CSSNumericType =
-  #| (self) => self.type()
-
-///|
-pub extern "js" fn CSSMathClamp::get_operator(
-  self : CSSMathClamp,
-) -> CSSMathOperator =
-  #| (self) => self.operator
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSMathClamp::new(
@@ -1862,6 +1818,34 @@ pub extern "js" fn CSSNumericArray::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSNumericArray (unchecked)
+pub extern "js" fn CSSNumericArray::from_js_value(
+  v : JsValue,
+) -> CSSNumericArray =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSNumericArray (checked with instanceof)
+pub extern "js" fn CSSNumericArray::from_js_value_opt(
+  v : JsValue,
+) -> CSSNumericArray? =
+  #| (v) => (v instanceof CSSNumericArray) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSNumericArray (checked with instanceof)
+pub extern "js" fn JsValue::as_css_numeric_array(
+  self : JsValue,
+) -> CSSNumericArray? =
+  #| (self) => (self instanceof CSSNumericArray) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSNumericArray (unchecked)
+pub extern "js" fn JsValue::to_css_numeric_array(
+  self : JsValue,
+) -> CSSNumericArray =
+  #| (self) => self
+
+///|
 pub extern "js" fn CSSNumericArray::_unknown_(self : CSSNumericArray) -> Unit =
   #| (self) => self._unknown_()
 
@@ -1887,18 +1871,38 @@ pub extern "js" fn CSSTransformValue::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSTransformValue::parse(
-  property : String,
-  css_text : String,
-) -> CSSStyleValue =
-  #| (property, css_text) => CSSTransformValue.parse(property, css_text)
+/// Cast JsValue to CSSTransformValue (unchecked)
+pub extern "js" fn CSSTransformValue::from_js_value(
+  v : JsValue,
+) -> CSSTransformValue =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSTransformValue::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSTransformValue.parseAll(property, css_text)
+/// Safely cast JsValue to CSSTransformValue (checked with instanceof)
+pub extern "js" fn CSSTransformValue::from_js_value_opt(
+  v : JsValue,
+) -> CSSTransformValue? =
+  #| (v) => (v instanceof CSSTransformValue) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSTransformValue (checked with instanceof)
+pub extern "js" fn JsValue::as_css_transform_value(
+  self : JsValue,
+) -> CSSTransformValue? =
+  #| (self) => (self instanceof CSSTransformValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSTransformValue (unchecked)
+pub extern "js" fn JsValue::to_css_transform_value(
+  self : JsValue,
+) -> CSSTransformValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSTransformValue::to_css_style_value(
+  self : CSSTransformValue,
+) -> CSSStyleValue =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSTransformValue::new(
@@ -1956,6 +1960,82 @@ pub extern "js" fn CSSTransformComponent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSTransformComponent (unchecked)
+pub extern "js" fn CSSTransformComponent::from_js_value(
+  v : JsValue,
+) -> CSSTransformComponent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSTransformComponent (checked with instanceof)
+pub extern "js" fn CSSTransformComponent::from_js_value_opt(
+  v : JsValue,
+) -> CSSTransformComponent? =
+  #| (v) => (v instanceof CSSTransformComponent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSTransformComponent (checked with instanceof)
+pub extern "js" fn JsValue::as_css_transform_component(
+  self : JsValue,
+) -> CSSTransformComponent? =
+  #| (self) => (self instanceof CSSTransformComponent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSTransformComponent (unchecked)
+pub extern "js" fn JsValue::to_css_transform_component(
+  self : JsValue,
+) -> CSSTransformComponent =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSTransformComponent::as_css_translate(
+  self : CSSTransformComponent,
+) -> CSSTranslate? =
+  #| (self) => (self instanceof CSSTranslate) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSTransformComponent::as_css_rotate(
+  self : CSSTransformComponent,
+) -> CSSRotate? =
+  #| (self) => (self instanceof CSSRotate) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSTransformComponent::as_css_scale(
+  self : CSSTransformComponent,
+) -> CSSScale? =
+  #| (self) => (self instanceof CSSScale) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSTransformComponent::as_css_skew(
+  self : CSSTransformComponent,
+) -> CSSSkew? =
+  #| (self) => (self instanceof CSSSkew) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSTransformComponent::as_css_skew_x(
+  self : CSSTransformComponent,
+) -> CSSSkewX? =
+  #| (self) => (self instanceof CSSSkewX) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSTransformComponent::as_css_skew_y(
+  self : CSSTransformComponent,
+) -> CSSSkewY? =
+  #| (self) => (self instanceof CSSSkewY) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSTransformComponent::as_css_perspective(
+  self : CSSTransformComponent,
+) -> CSSPerspective? =
+  #| (self) => (self instanceof CSSPerspective) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSTransformComponent::as_css_matrix_component(
+  self : CSSTransformComponent,
+) -> CSSMatrixComponent? =
+  #| (self) => (self instanceof CSSMatrixComponent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn CSSTransformComponent::get_is2_d(
   self : CSSTransformComponent,
 ) -> Bool =
@@ -1983,19 +2063,32 @@ pub extern "js" fn CSSTranslate::to_js_value(self : CSSTranslate) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSTranslate::get_is2_d(self : CSSTranslate) -> Bool =
-  #| (self) => self.is2D
+/// Cast JsValue to CSSTranslate (unchecked)
+pub extern "js" fn CSSTranslate::from_js_value(v : JsValue) -> CSSTranslate =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSTranslate::set_is2_d(
+/// Safely cast JsValue to CSSTranslate (checked with instanceof)
+pub extern "js" fn CSSTranslate::from_js_value_opt(
+  v : JsValue,
+) -> CSSTranslate? =
+  #| (v) => (v instanceof CSSTranslate) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSTranslate (checked with instanceof)
+pub extern "js" fn JsValue::as_css_translate(self : JsValue) -> CSSTranslate? =
+  #| (self) => (self instanceof CSSTranslate) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSTranslate (unchecked)
+pub extern "js" fn JsValue::to_css_translate(self : JsValue) -> CSSTranslate =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSTranslate::to_css_transform_component(
   self : CSSTranslate,
-  value : Bool,
-) -> Unit =
-  #| (self, value) => { self.is2D = value }
-
-///|
-pub extern "js" fn CSSTranslate::to_matrix(self : CSSTranslate) -> DOMMatrix =
-  #| (self) => self.toMatrix()
+) -> CSSTransformComponent =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSTranslate::new(
@@ -2047,16 +2140,30 @@ pub extern "js" fn CSSRotate::to_js_value(self : CSSRotate) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSRotate::get_is2_d(self : CSSRotate) -> Bool =
-  #| (self) => self.is2D
+/// Cast JsValue to CSSRotate (unchecked)
+pub extern "js" fn CSSRotate::from_js_value(v : JsValue) -> CSSRotate =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSRotate::set_is2_d(self : CSSRotate, value : Bool) -> Unit =
-  #| (self, value) => { self.is2D = value }
+/// Safely cast JsValue to CSSRotate (checked with instanceof)
+pub extern "js" fn CSSRotate::from_js_value_opt(v : JsValue) -> CSSRotate? =
+  #| (v) => (v instanceof CSSRotate) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSRotate::to_matrix(self : CSSRotate) -> DOMMatrix =
-  #| (self) => self.toMatrix()
+/// Safely cast JsValue to CSSRotate (checked with instanceof)
+pub extern "js" fn JsValue::as_css_rotate(self : JsValue) -> CSSRotate? =
+  #| (self) => (self instanceof CSSRotate) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSRotate (unchecked)
+pub extern "js" fn JsValue::to_css_rotate(self : JsValue) -> CSSRotate =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSRotate::to_css_transform_component(
+  self : CSSRotate,
+) -> CSSTransformComponent =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSRotate::new(angle : CSSNumericValue) -> CSSRotate =
@@ -2115,16 +2222,30 @@ pub extern "js" fn CSSScale::to_js_value(self : CSSScale) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSScale::get_is2_d(self : CSSScale) -> Bool =
-  #| (self) => self.is2D
+/// Cast JsValue to CSSScale (unchecked)
+pub extern "js" fn CSSScale::from_js_value(v : JsValue) -> CSSScale =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSScale::set_is2_d(self : CSSScale, value : Bool) -> Unit =
-  #| (self, value) => { self.is2D = value }
+/// Safely cast JsValue to CSSScale (checked with instanceof)
+pub extern "js" fn CSSScale::from_js_value_opt(v : JsValue) -> CSSScale? =
+  #| (v) => (v instanceof CSSScale) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSScale::to_matrix(self : CSSScale) -> DOMMatrix =
-  #| (self) => self.toMatrix()
+/// Safely cast JsValue to CSSScale (checked with instanceof)
+pub extern "js" fn JsValue::as_css_scale(self : JsValue) -> CSSScale? =
+  #| (self) => (self instanceof CSSScale) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSScale (unchecked)
+pub extern "js" fn JsValue::to_css_scale(self : JsValue) -> CSSScale =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSScale::to_css_transform_component(
+  self : CSSScale,
+) -> CSSTransformComponent =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSScale::new(
@@ -2176,16 +2297,30 @@ pub extern "js" fn CSSSkew::to_js_value(self : CSSSkew) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSSkew::get_is2_d(self : CSSSkew) -> Bool =
-  #| (self) => self.is2D
+/// Cast JsValue to CSSSkew (unchecked)
+pub extern "js" fn CSSSkew::from_js_value(v : JsValue) -> CSSSkew =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSSkew::set_is2_d(self : CSSSkew, value : Bool) -> Unit =
-  #| (self, value) => { self.is2D = value }
+/// Safely cast JsValue to CSSSkew (checked with instanceof)
+pub extern "js" fn CSSSkew::from_js_value_opt(v : JsValue) -> CSSSkew? =
+  #| (v) => (v instanceof CSSSkew) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSSkew::to_matrix(self : CSSSkew) -> DOMMatrix =
-  #| (self) => self.toMatrix()
+/// Safely cast JsValue to CSSSkew (checked with instanceof)
+pub extern "js" fn JsValue::as_css_skew(self : JsValue) -> CSSSkew? =
+  #| (self) => (self instanceof CSSSkew) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSSkew (unchecked)
+pub extern "js" fn JsValue::to_css_skew(self : JsValue) -> CSSSkew =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSSkew::to_css_transform_component(
+  self : CSSSkew,
+) -> CSSTransformComponent =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSSkew::new(
@@ -2225,16 +2360,30 @@ pub extern "js" fn CSSSkewX::to_js_value(self : CSSSkewX) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSSkewX::get_is2_d(self : CSSSkewX) -> Bool =
-  #| (self) => self.is2D
+/// Cast JsValue to CSSSkewX (unchecked)
+pub extern "js" fn CSSSkewX::from_js_value(v : JsValue) -> CSSSkewX =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSSkewX::set_is2_d(self : CSSSkewX, value : Bool) -> Unit =
-  #| (self, value) => { self.is2D = value }
+/// Safely cast JsValue to CSSSkewX (checked with instanceof)
+pub extern "js" fn CSSSkewX::from_js_value_opt(v : JsValue) -> CSSSkewX? =
+  #| (v) => (v instanceof CSSSkewX) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSSkewX::to_matrix(self : CSSSkewX) -> DOMMatrix =
-  #| (self) => self.toMatrix()
+/// Safely cast JsValue to CSSSkewX (checked with instanceof)
+pub extern "js" fn JsValue::as_css_skew_x(self : JsValue) -> CSSSkewX? =
+  #| (self) => (self instanceof CSSSkewX) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSSkewX (unchecked)
+pub extern "js" fn JsValue::to_css_skew_x(self : JsValue) -> CSSSkewX =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSSkewX::to_css_transform_component(
+  self : CSSSkewX,
+) -> CSSTransformComponent =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSSkewX::new(ax : CSSNumericValue) -> CSSSkewX =
@@ -2260,16 +2409,30 @@ pub extern "js" fn CSSSkewY::to_js_value(self : CSSSkewY) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSSkewY::get_is2_d(self : CSSSkewY) -> Bool =
-  #| (self) => self.is2D
+/// Cast JsValue to CSSSkewY (unchecked)
+pub extern "js" fn CSSSkewY::from_js_value(v : JsValue) -> CSSSkewY =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSSkewY::set_is2_d(self : CSSSkewY, value : Bool) -> Unit =
-  #| (self, value) => { self.is2D = value }
+/// Safely cast JsValue to CSSSkewY (checked with instanceof)
+pub extern "js" fn CSSSkewY::from_js_value_opt(v : JsValue) -> CSSSkewY? =
+  #| (v) => (v instanceof CSSSkewY) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSSkewY::to_matrix(self : CSSSkewY) -> DOMMatrix =
-  #| (self) => self.toMatrix()
+/// Safely cast JsValue to CSSSkewY (checked with instanceof)
+pub extern "js" fn JsValue::as_css_skew_y(self : JsValue) -> CSSSkewY? =
+  #| (self) => (self instanceof CSSSkewY) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSSkewY (unchecked)
+pub extern "js" fn JsValue::to_css_skew_y(self : JsValue) -> CSSSkewY =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSSkewY::to_css_transform_component(
+  self : CSSSkewY,
+) -> CSSTransformComponent =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSSkewY::new(ay : CSSNumericValue) -> CSSSkewY =
@@ -2297,21 +2460,36 @@ pub extern "js" fn CSSPerspective::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSPerspective::get_is2_d(self : CSSPerspective) -> Bool =
-  #| (self) => self.is2D
+/// Cast JsValue to CSSPerspective (unchecked)
+pub extern "js" fn CSSPerspective::from_js_value(v : JsValue) -> CSSPerspective =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSPerspective::set_is2_d(
-  self : CSSPerspective,
-  value : Bool,
-) -> Unit =
-  #| (self, value) => { self.is2D = value }
+/// Safely cast JsValue to CSSPerspective (checked with instanceof)
+pub extern "js" fn CSSPerspective::from_js_value_opt(
+  v : JsValue,
+) -> CSSPerspective? =
+  #| (v) => (v instanceof CSSPerspective) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSPerspective::to_matrix(
+/// Safely cast JsValue to CSSPerspective (checked with instanceof)
+pub extern "js" fn JsValue::as_css_perspective(
+  self : JsValue,
+) -> CSSPerspective? =
+  #| (self) => (self instanceof CSSPerspective) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSPerspective (unchecked)
+pub extern "js" fn JsValue::to_css_perspective(
+  self : JsValue,
+) -> CSSPerspective =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSPerspective::to_css_transform_component(
   self : CSSPerspective,
-) -> DOMMatrix =
-  #| (self) => self.toMatrix()
+) -> CSSTransformComponent =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSPerspective::new(
@@ -2343,23 +2521,38 @@ pub extern "js" fn CSSMatrixComponent::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSMatrixComponent::get_is2_d(
-  self : CSSMatrixComponent,
-) -> Bool =
-  #| (self) => self.is2D
+/// Cast JsValue to CSSMatrixComponent (unchecked)
+pub extern "js" fn CSSMatrixComponent::from_js_value(
+  v : JsValue,
+) -> CSSMatrixComponent =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSMatrixComponent::set_is2_d(
-  self : CSSMatrixComponent,
-  value : Bool,
-) -> Unit =
-  #| (self, value) => { self.is2D = value }
+/// Safely cast JsValue to CSSMatrixComponent (checked with instanceof)
+pub extern "js" fn CSSMatrixComponent::from_js_value_opt(
+  v : JsValue,
+) -> CSSMatrixComponent? =
+  #| (v) => (v instanceof CSSMatrixComponent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSMatrixComponent::to_matrix(
+/// Safely cast JsValue to CSSMatrixComponent (checked with instanceof)
+pub extern "js" fn JsValue::as_css_matrix_component(
+  self : JsValue,
+) -> CSSMatrixComponent? =
+  #| (self) => (self instanceof CSSMatrixComponent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSMatrixComponent (unchecked)
+pub extern "js" fn JsValue::to_css_matrix_component(
+  self : JsValue,
+) -> CSSMatrixComponent =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMatrixComponent::to_css_transform_component(
   self : CSSMatrixComponent,
-) -> DOMMatrix =
-  #| (self) => self.toMatrix()
+) -> CSSTransformComponent =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSMatrixComponent::new(
@@ -2390,18 +2583,34 @@ pub extern "js" fn CSSImageValue::to_js_value(self : CSSImageValue) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSImageValue::parse(
-  property : String,
-  css_text : String,
-) -> CSSStyleValue =
-  #| (property, css_text) => CSSImageValue.parse(property, css_text)
+/// Cast JsValue to CSSImageValue (unchecked)
+pub extern "js" fn CSSImageValue::from_js_value(v : JsValue) -> CSSImageValue =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSImageValue::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSImageValue.parseAll(property, css_text)
+/// Safely cast JsValue to CSSImageValue (checked with instanceof)
+pub extern "js" fn CSSImageValue::from_js_value_opt(
+  v : JsValue,
+) -> CSSImageValue? =
+  #| (v) => (v instanceof CSSImageValue) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSImageValue (checked with instanceof)
+pub extern "js" fn JsValue::as_css_image_value(
+  self : JsValue,
+) -> CSSImageValue? =
+  #| (self) => (self instanceof CSSImageValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSImageValue (unchecked)
+pub extern "js" fn JsValue::to_css_image_value(self : JsValue) -> CSSImageValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSImageValue::to_css_style_value(
+  self : CSSImageValue,
+) -> CSSStyleValue =
+  #| (self) => self
 
 ///|
 /// CSSColorValue interface
@@ -2412,18 +2621,78 @@ pub extern "js" fn CSSColorValue::to_js_value(self : CSSColorValue) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSColorValue::parse(
-  property : String,
-  css_text : String,
-) -> CSSStyleValue =
-  #| (property, css_text) => CSSColorValue.parse(property, css_text)
+/// Cast JsValue to CSSColorValue (unchecked)
+pub extern "js" fn CSSColorValue::from_js_value(v : JsValue) -> CSSColorValue =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSColorValue::parse_all(
-  property : String,
+/// Safely cast JsValue to CSSColorValue (checked with instanceof)
+pub extern "js" fn CSSColorValue::from_js_value_opt(
+  v : JsValue,
+) -> CSSColorValue? =
+  #| (v) => (v instanceof CSSColorValue) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSColorValue (checked with instanceof)
+pub extern "js" fn JsValue::as_css_color_value(
+  self : JsValue,
+) -> CSSColorValue? =
+  #| (self) => (self instanceof CSSColorValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSColorValue (unchecked)
+pub extern "js" fn JsValue::to_css_color_value(self : JsValue) -> CSSColorValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSColorValue::to_css_style_value(
+  self : CSSColorValue,
+) -> CSSStyleValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSColorValue::as_cssrgb(self : CSSColorValue) -> CSSRGB? =
+  #| (self) => (self instanceof CSSRGB) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSColorValue::as_csshsl(self : CSSColorValue) -> CSSHSL? =
+  #| (self) => (self instanceof CSSHSL) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSColorValue::as_csshwb(self : CSSColorValue) -> CSSHWB? =
+  #| (self) => (self instanceof CSSHWB) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSColorValue::as_css_lab(self : CSSColorValue) -> CSSLab? =
+  #| (self) => (self instanceof CSSLab) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSColorValue::as_csslch(self : CSSColorValue) -> CSSLCH? =
+  #| (self) => (self instanceof CSSLCH) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSColorValue::as_cssok_lab(
+  self : CSSColorValue,
+) -> CSSOKLab? =
+  #| (self) => (self instanceof CSSOKLab) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSColorValue::as_cssoklch(
+  self : CSSColorValue,
+) -> CSSOKLCH? =
+  #| (self) => (self instanceof CSSOKLCH) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSColorValue::as_css_color(
+  self : CSSColorValue,
+) -> CSSColor? =
+  #| (self) => (self instanceof CSSColor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSColorValue::parse(
   css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSColorValue.parseAll(property, css_text)
+) -> CSSColorValueOrCSSStyleValue =
+  #| (css_text) => CSSColorValue.parse(css_text)
 
 ///|
 /// CSSRGB interface
@@ -2434,18 +2703,32 @@ pub extern "js" fn CSSRGB::to_js_value(self : CSSRGB) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSRGB::parse(
-  property : String,
-  css_text : String,
-) -> CSSStyleValue =
-  #| (property, css_text) => CSSRGB.parse(property, css_text)
+/// Cast JsValue to CSSRGB (unchecked)
+pub extern "js" fn CSSRGB::from_js_value(v : JsValue) -> CSSRGB =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSRGB::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSRGB.parseAll(property, css_text)
+/// Safely cast JsValue to CSSRGB (checked with instanceof)
+pub extern "js" fn CSSRGB::from_js_value_opt(v : JsValue) -> CSSRGB? =
+  #| (v) => (v instanceof CSSRGB) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSRGB (checked with instanceof)
+pub extern "js" fn JsValue::as_cssrgb(self : JsValue) -> CSSRGB? =
+  #| (self) => (self instanceof CSSRGB) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSRGB (unchecked)
+pub extern "js" fn JsValue::to_cssrgb(self : JsValue) -> CSSRGB =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSRGB::to_css_color_value(self : CSSRGB) -> CSSColorValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSRGB::to_css_style_value(self : CSSRGB) -> CSSStyleValue =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSRGB::new(
@@ -2509,18 +2792,32 @@ pub extern "js" fn CSSHSL::to_js_value(self : CSSHSL) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSHSL::parse(
-  property : String,
-  css_text : String,
-) -> CSSStyleValue =
-  #| (property, css_text) => CSSHSL.parse(property, css_text)
+/// Cast JsValue to CSSHSL (unchecked)
+pub extern "js" fn CSSHSL::from_js_value(v : JsValue) -> CSSHSL =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSHSL::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSHSL.parseAll(property, css_text)
+/// Safely cast JsValue to CSSHSL (checked with instanceof)
+pub extern "js" fn CSSHSL::from_js_value_opt(v : JsValue) -> CSSHSL? =
+  #| (v) => (v instanceof CSSHSL) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSHSL (checked with instanceof)
+pub extern "js" fn JsValue::as_csshsl(self : JsValue) -> CSSHSL? =
+  #| (self) => (self instanceof CSSHSL) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSHSL (unchecked)
+pub extern "js" fn JsValue::to_csshsl(self : JsValue) -> CSSHSL =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSHSL::to_css_color_value(self : CSSHSL) -> CSSColorValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSHSL::to_css_style_value(self : CSSHSL) -> CSSStyleValue =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSHSL::new(
@@ -2581,18 +2878,32 @@ pub extern "js" fn CSSHWB::to_js_value(self : CSSHWB) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSHWB::parse(
-  property : String,
-  css_text : String,
-) -> CSSStyleValue =
-  #| (property, css_text) => CSSHWB.parse(property, css_text)
+/// Cast JsValue to CSSHWB (unchecked)
+pub extern "js" fn CSSHWB::from_js_value(v : JsValue) -> CSSHWB =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSHWB::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSHWB.parseAll(property, css_text)
+/// Safely cast JsValue to CSSHWB (checked with instanceof)
+pub extern "js" fn CSSHWB::from_js_value_opt(v : JsValue) -> CSSHWB? =
+  #| (v) => (v instanceof CSSHWB) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSHWB (checked with instanceof)
+pub extern "js" fn JsValue::as_csshwb(self : JsValue) -> CSSHWB? =
+  #| (self) => (self instanceof CSSHWB) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSHWB (unchecked)
+pub extern "js" fn JsValue::to_csshwb(self : JsValue) -> CSSHWB =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSHWB::to_css_color_value(self : CSSHWB) -> CSSColorValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSHWB::to_css_style_value(self : CSSHWB) -> CSSStyleValue =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSHWB::new(
@@ -2650,18 +2961,32 @@ pub extern "js" fn CSSLab::to_js_value(self : CSSLab) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSLab::parse(
-  property : String,
-  css_text : String,
-) -> CSSStyleValue =
-  #| (property, css_text) => CSSLab.parse(property, css_text)
+/// Cast JsValue to CSSLab (unchecked)
+pub extern "js" fn CSSLab::from_js_value(v : JsValue) -> CSSLab =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSLab::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSLab.parseAll(property, css_text)
+/// Safely cast JsValue to CSSLab (checked with instanceof)
+pub extern "js" fn CSSLab::from_js_value_opt(v : JsValue) -> CSSLab? =
+  #| (v) => (v instanceof CSSLab) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSLab (checked with instanceof)
+pub extern "js" fn JsValue::as_css_lab(self : JsValue) -> CSSLab? =
+  #| (self) => (self instanceof CSSLab) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSLab (unchecked)
+pub extern "js" fn JsValue::to_css_lab(self : JsValue) -> CSSLab =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSLab::to_css_color_value(self : CSSLab) -> CSSColorValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSLab::to_css_style_value(self : CSSLab) -> CSSStyleValue =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSLab::new(
@@ -2719,18 +3044,32 @@ pub extern "js" fn CSSLCH::to_js_value(self : CSSLCH) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSLCH::parse(
-  property : String,
-  css_text : String,
-) -> CSSStyleValue =
-  #| (property, css_text) => CSSLCH.parse(property, css_text)
+/// Cast JsValue to CSSLCH (unchecked)
+pub extern "js" fn CSSLCH::from_js_value(v : JsValue) -> CSSLCH =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSLCH::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSLCH.parseAll(property, css_text)
+/// Safely cast JsValue to CSSLCH (checked with instanceof)
+pub extern "js" fn CSSLCH::from_js_value_opt(v : JsValue) -> CSSLCH? =
+  #| (v) => (v instanceof CSSLCH) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSLCH (checked with instanceof)
+pub extern "js" fn JsValue::as_csslch(self : JsValue) -> CSSLCH? =
+  #| (self) => (self instanceof CSSLCH) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSLCH (unchecked)
+pub extern "js" fn JsValue::to_csslch(self : JsValue) -> CSSLCH =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSLCH::to_css_color_value(self : CSSLCH) -> CSSColorValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSLCH::to_css_style_value(self : CSSLCH) -> CSSStyleValue =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSLCH::new(
@@ -2791,18 +3130,36 @@ pub extern "js" fn CSSOKLab::to_js_value(self : CSSOKLab) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSOKLab::parse(
-  property : String,
-  css_text : String,
-) -> CSSStyleValue =
-  #| (property, css_text) => CSSOKLab.parse(property, css_text)
+/// Cast JsValue to CSSOKLab (unchecked)
+pub extern "js" fn CSSOKLab::from_js_value(v : JsValue) -> CSSOKLab =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSOKLab::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSOKLab.parseAll(property, css_text)
+/// Safely cast JsValue to CSSOKLab (checked with instanceof)
+pub extern "js" fn CSSOKLab::from_js_value_opt(v : JsValue) -> CSSOKLab? =
+  #| (v) => (v instanceof CSSOKLab) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSOKLab (checked with instanceof)
+pub extern "js" fn JsValue::as_cssok_lab(self : JsValue) -> CSSOKLab? =
+  #| (self) => (self instanceof CSSOKLab) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSOKLab (unchecked)
+pub extern "js" fn JsValue::to_cssok_lab(self : JsValue) -> CSSOKLab =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSOKLab::to_css_color_value(
+  self : CSSOKLab,
+) -> CSSColorValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSOKLab::to_css_style_value(
+  self : CSSOKLab,
+) -> CSSStyleValue =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSOKLab::new(
@@ -2866,18 +3223,36 @@ pub extern "js" fn CSSOKLCH::to_js_value(self : CSSOKLCH) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSOKLCH::parse(
-  property : String,
-  css_text : String,
-) -> CSSStyleValue =
-  #| (property, css_text) => CSSOKLCH.parse(property, css_text)
+/// Cast JsValue to CSSOKLCH (unchecked)
+pub extern "js" fn CSSOKLCH::from_js_value(v : JsValue) -> CSSOKLCH =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSOKLCH::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSOKLCH.parseAll(property, css_text)
+/// Safely cast JsValue to CSSOKLCH (checked with instanceof)
+pub extern "js" fn CSSOKLCH::from_js_value_opt(v : JsValue) -> CSSOKLCH? =
+  #| (v) => (v instanceof CSSOKLCH) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSOKLCH (checked with instanceof)
+pub extern "js" fn JsValue::as_cssoklch(self : JsValue) -> CSSOKLCH? =
+  #| (self) => (self instanceof CSSOKLCH) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSOKLCH (unchecked)
+pub extern "js" fn JsValue::to_cssoklch(self : JsValue) -> CSSOKLCH =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSOKLCH::to_css_color_value(
+  self : CSSOKLCH,
+) -> CSSColorValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSOKLCH::to_css_style_value(
+  self : CSSOKLCH,
+) -> CSSStyleValue =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSOKLCH::new(
@@ -2941,18 +3316,36 @@ pub extern "js" fn CSSColor::to_js_value(self : CSSColor) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSColor::parse(
-  property : String,
-  css_text : String,
-) -> CSSStyleValue =
-  #| (property, css_text) => CSSColor.parse(property, css_text)
+/// Cast JsValue to CSSColor (unchecked)
+pub extern "js" fn CSSColor::from_js_value(v : JsValue) -> CSSColor =
+  #| (v) => v
 
 ///|
-pub extern "js" fn CSSColor::parse_all(
-  property : String,
-  css_text : String,
-) -> Array[CSSStyleValue] =
-  #| (property, css_text) => CSSColor.parseAll(property, css_text)
+/// Safely cast JsValue to CSSColor (checked with instanceof)
+pub extern "js" fn CSSColor::from_js_value_opt(v : JsValue) -> CSSColor? =
+  #| (v) => (v instanceof CSSColor) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSColor (checked with instanceof)
+pub extern "js" fn JsValue::as_css_color(self : JsValue) -> CSSColor? =
+  #| (self) => (self instanceof CSSColor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSColor (unchecked)
+pub extern "js" fn JsValue::to_css_color(self : JsValue) -> CSSColor =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSColor::to_css_color_value(
+  self : CSSColor,
+) -> CSSColorValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSColor::to_css_style_value(
+  self : CSSColor,
+) -> CSSStyleValue =
+  #| (self) => self
 
 ///|
 pub extern "js" fn CSSColor::new(

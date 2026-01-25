@@ -31,6 +31,10 @@ pub extern "js" fn AttributionReportingRequestOptions::to_js(
 /// RequestInit dictionary
 pub struct RequestInit {
   attributionReporting : AttributionReportingRequestOptions?
+  targetAddressSpace : IPAddressSpace?
+  adAuctionHeaders : Bool?
+  sharedStorageWritable : Bool?
+  privateToken : PrivateToken?
   method_ : String?
   headers : HeadersInit?
   body : Nullable[BodyInit]
@@ -46,10 +50,6 @@ pub struct RequestInit {
   duplex : RequestDuplex?
   priority : RequestPriority?
   window : JsValue?
-  targetAddressSpace : IPAddressSpace?
-  sharedStorageWritable : Bool?
-  privateToken : PrivateToken?
-  adAuctionHeaders : Bool?
 }
 
 ///|
@@ -57,6 +57,10 @@ pub struct RequestInit {
 pub fn RequestInit::default() -> RequestInit {
   RequestInit::{
     attributionReporting: None,
+    targetAddressSpace: None,
+    adAuctionHeaders: None,
+    sharedStorageWritable: None,
+    privateToken: None,
     method_: None,
     headers: None,
     body: Nullable::Undefined,
@@ -72,10 +76,6 @@ pub fn RequestInit::default() -> RequestInit {
     duplex: None,
     priority: None,
     window: None,
-    targetAddressSpace: None,
-    sharedStorageWritable: None,
-    privateToken: None,
-    adAuctionHeaders: None,
   }
 }
 
@@ -84,6 +84,10 @@ pub fn RequestInit::default() -> RequestInit {
 pub extern "js" fn RequestInit::to_js(self : RequestInit) -> JsValue =
   #| (self) => ({
   #|   attributionReporting: self.attributionReporting,
+  #|   targetAddressSpace: ['public', 'local', 'loopback'][self.targetAddressSpace],
+  #|   adAuctionHeaders: self.adAuctionHeaders,
+  #|   sharedStorageWritable: self.sharedStorageWritable,
+  #|   privateToken: self.privateToken,
   #|   method: self.method_,
   #|   headers: self.headers.to_js_value(),
   #|   body: ((() => { const v = self.body; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0.to_js_value(); })()),
@@ -98,9 +102,5 @@ pub extern "js" fn RequestInit::to_js(self : RequestInit) -> JsValue =
   #|   signal: ((() => { const v = self.signal; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   duplex: ['half'][self.duplex],
   #|   priority: ['high', 'low', 'auto'][self.priority],
-  #|   window: self.window,
-  #|   targetAddressSpace: ['public', 'local', 'loopback'][self.targetAddressSpace],
-  #|   sharedStorageWritable: self.sharedStorageWritable,
-  #|   privateToken: self.privateToken,
-  #|   adAuctionHeaders: self.adAuctionHeaders
+  #|   window: self.window
   #| })

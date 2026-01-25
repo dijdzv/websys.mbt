@@ -122,6 +122,26 @@ pub extern "js" fn Touch::to_js_value(self : Touch) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Touch (unchecked)
+pub extern "js" fn Touch::from_js_value(v : JsValue) -> Touch =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Touch (checked with instanceof)
+pub extern "js" fn Touch::from_js_value_opt(v : JsValue) -> Touch? =
+  #| (v) => (v instanceof Touch) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Touch (checked with instanceof)
+pub extern "js" fn JsValue::as_touch(self : JsValue) -> Touch? =
+  #| (self) => (self instanceof Touch) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Touch (unchecked)
+pub extern "js" fn JsValue::to_touch(self : JsValue) -> Touch =
+  #| (self) => self
+
+///|
 pub extern "js" fn Touch::new(touch_init_dict : TouchInit) -> Touch =
   #| (touch_init_dict) => new Touch(touch_init_dict)
 
@@ -194,16 +214,36 @@ pub extern "js" fn TouchList::to_js_value(self : TouchList) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to TouchList (unchecked)
+pub extern "js" fn TouchList::from_js_value(v : JsValue) -> TouchList =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to TouchList (checked with instanceof)
+pub extern "js" fn TouchList::from_js_value_opt(v : JsValue) -> TouchList? =
+  #| (v) => (v instanceof TouchList) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to TouchList (checked with instanceof)
+pub extern "js" fn JsValue::as_touch_list(self : JsValue) -> TouchList? =
+  #| (self) => (self instanceof TouchList) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to TouchList (unchecked)
+pub extern "js" fn JsValue::to_touch_list(self : JsValue) -> TouchList =
+  #| (self) => self
+
+///|
 pub extern "js" fn TouchList::get_length(self : TouchList) -> Int =
   #| (self) => self.length
 
 ///|
 pub extern "js" fn TouchList::item(self : TouchList, index : Int) -> Touch? =
-  #| (self, index) => self.item(index)
+  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn TouchList::get(self : TouchList, index : Int) -> Touch? =
-  #| (self, index) => self[index]
+  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// TouchEvent interface
@@ -211,6 +251,34 @@ pub type TouchEvent
 
 ///|
 pub extern "js" fn TouchEvent::to_js_value(self : TouchEvent) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to TouchEvent (unchecked)
+pub extern "js" fn TouchEvent::from_js_value(v : JsValue) -> TouchEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to TouchEvent (checked with instanceof)
+pub extern "js" fn TouchEvent::from_js_value_opt(v : JsValue) -> TouchEvent? =
+  #| (v) => (v instanceof TouchEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to TouchEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_touch_event(self : JsValue) -> TouchEvent? =
+  #| (self) => (self instanceof TouchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to TouchEvent (unchecked)
+pub extern "js" fn JsValue::to_touch_event(self : JsValue) -> TouchEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn TouchEvent::to_ui_event(self : TouchEvent) -> UIEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn TouchEvent::to_event(self : TouchEvent) -> Event =
   #| (self) => self
 
 ///|

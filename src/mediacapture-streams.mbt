@@ -431,15 +431,352 @@ pub fn MediaDeviceKind::from_string(s : String) -> MediaDeviceKind? {
 }
 
 ///|
+/// MediaTrackSupportedConstraints dictionary
+pub struct MediaTrackSupportedConstraints {
+  width : Bool?
+  height : Bool?
+  aspectRatio : Bool?
+  frameRate : Bool?
+  facingMode : Bool?
+  resizeMode : Bool?
+  sampleRate : Bool?
+  sampleSize : Bool?
+  echoCancellation : Bool?
+  autoGainControl : Bool?
+  noiseSuppression : Bool?
+  latency : Bool?
+  channelCount : Bool?
+  deviceId : Bool?
+  groupId : Bool?
+  backgroundBlur : Bool?
+  displaySurface : Bool?
+  logicalSurface : Bool?
+  cursor : Bool?
+  restrictOwnAudio : Bool?
+  suppressLocalAudioPlayback : Bool?
+  whiteBalanceMode : Bool?
+  exposureMode : Bool?
+  focusMode : Bool?
+  pointsOfInterest : Bool?
+  exposureCompensation : Bool?
+  exposureTime : Bool?
+  colorTemperature : Bool?
+  iso : Bool?
+  brightness : Bool?
+  contrast : Bool?
+  pan : Bool?
+  saturation : Bool?
+  sharpness : Bool?
+  focusDistance : Bool?
+  tilt : Bool?
+  zoom : Bool?
+  torch : Bool?
+}
+
+///|
+/// Create a new MediaTrackSupportedConstraints with default values
+pub fn MediaTrackSupportedConstraints::default() -> MediaTrackSupportedConstraints {
+  MediaTrackSupportedConstraints::{
+    width: None,
+    height: None,
+    aspectRatio: None,
+    frameRate: None,
+    facingMode: None,
+    resizeMode: None,
+    sampleRate: None,
+    sampleSize: None,
+    echoCancellation: None,
+    autoGainControl: None,
+    noiseSuppression: None,
+    latency: None,
+    channelCount: None,
+    deviceId: None,
+    groupId: None,
+    backgroundBlur: None,
+    displaySurface: None,
+    logicalSurface: None,
+    cursor: None,
+    restrictOwnAudio: None,
+    suppressLocalAudioPlayback: None,
+    whiteBalanceMode: None,
+    exposureMode: None,
+    focusMode: None,
+    pointsOfInterest: None,
+    exposureCompensation: None,
+    exposureTime: None,
+    colorTemperature: None,
+    iso: None,
+    brightness: None,
+    contrast: None,
+    pan: None,
+    saturation: None,
+    sharpness: None,
+    focusDistance: None,
+    tilt: None,
+    zoom: None,
+    torch: None,
+  }
+}
+
+///|
+/// Convert to JsValue
+pub extern "js" fn MediaTrackSupportedConstraints::to_js(
+  self : MediaTrackSupportedConstraints,
+) -> JsValue =
+  #| (self) => ({
+  #|   width: self.width,
+  #|   height: self.height,
+  #|   aspectRatio: self.aspectRatio,
+  #|   frameRate: self.frameRate,
+  #|   facingMode: self.facingMode,
+  #|   resizeMode: self.resizeMode,
+  #|   sampleRate: self.sampleRate,
+  #|   sampleSize: self.sampleSize,
+  #|   echoCancellation: self.echoCancellation,
+  #|   autoGainControl: self.autoGainControl,
+  #|   noiseSuppression: self.noiseSuppression,
+  #|   latency: self.latency,
+  #|   channelCount: self.channelCount,
+  #|   deviceId: self.deviceId,
+  #|   groupId: self.groupId,
+  #|   backgroundBlur: self.backgroundBlur,
+  #|   displaySurface: self.displaySurface,
+  #|   logicalSurface: self.logicalSurface,
+  #|   cursor: self.cursor,
+  #|   restrictOwnAudio: self.restrictOwnAudio,
+  #|   suppressLocalAudioPlayback: self.suppressLocalAudioPlayback,
+  #|   whiteBalanceMode: self.whiteBalanceMode,
+  #|   exposureMode: self.exposureMode,
+  #|   focusMode: self.focusMode,
+  #|   pointsOfInterest: self.pointsOfInterest,
+  #|   exposureCompensation: self.exposureCompensation,
+  #|   exposureTime: self.exposureTime,
+  #|   colorTemperature: self.colorTemperature,
+  #|   iso: self.iso,
+  #|   brightness: self.brightness,
+  #|   contrast: self.contrast,
+  #|   pan: self.pan,
+  #|   saturation: self.saturation,
+  #|   sharpness: self.sharpness,
+  #|   focusDistance: self.focusDistance,
+  #|   tilt: self.tilt,
+  #|   zoom: self.zoom,
+  #|   torch: self.torch
+  #| })
+
+///|
+/// MediaTrackCapabilities dictionary
+pub struct MediaTrackCapabilities {
+  width : ULongRange?
+  height : ULongRange?
+  aspectRatio : DoubleRange?
+  frameRate : DoubleRange?
+  facingMode : Array[String]?
+  resizeMode : Array[String]?
+  sampleRate : ULongRange?
+  sampleSize : ULongRange?
+  echoCancellation : Array[BoolOrString]?
+  autoGainControl : Array[Bool]?
+  noiseSuppression : Array[Bool]?
+  latency : DoubleRange?
+  channelCount : ULongRange?
+  deviceId : String?
+  groupId : String?
+  backgroundBlur : Array[Bool]?
+  displaySurface : String?
+  logicalSurface : Bool?
+  cursor : Array[String]?
+  whiteBalanceMode : Array[String]?
+  exposureMode : Array[String]?
+  focusMode : Array[String]?
+  exposureCompensation : MediaSettingsRange?
+  exposureTime : MediaSettingsRange?
+  colorTemperature : MediaSettingsRange?
+  iso : MediaSettingsRange?
+  brightness : MediaSettingsRange?
+  contrast : MediaSettingsRange?
+  saturation : MediaSettingsRange?
+  sharpness : MediaSettingsRange?
+  focusDistance : MediaSettingsRange?
+  pan : MediaSettingsRange?
+  tilt : MediaSettingsRange?
+  zoom : MediaSettingsRange?
+  torch : Array[Bool]?
+}
+
+///|
+/// Create a new MediaTrackCapabilities with default values
+pub fn MediaTrackCapabilities::default() -> MediaTrackCapabilities {
+  MediaTrackCapabilities::{
+    width: None,
+    height: None,
+    aspectRatio: None,
+    frameRate: None,
+    facingMode: None,
+    resizeMode: None,
+    sampleRate: None,
+    sampleSize: None,
+    echoCancellation: None,
+    autoGainControl: None,
+    noiseSuppression: None,
+    latency: None,
+    channelCount: None,
+    deviceId: None,
+    groupId: None,
+    backgroundBlur: None,
+    displaySurface: None,
+    logicalSurface: None,
+    cursor: None,
+    whiteBalanceMode: None,
+    exposureMode: None,
+    focusMode: None,
+    exposureCompensation: None,
+    exposureTime: None,
+    colorTemperature: None,
+    iso: None,
+    brightness: None,
+    contrast: None,
+    saturation: None,
+    sharpness: None,
+    focusDistance: None,
+    pan: None,
+    tilt: None,
+    zoom: None,
+    torch: None,
+  }
+}
+
+///|
+/// Convert to JsValue
+pub extern "js" fn MediaTrackCapabilities::to_js(
+  self : MediaTrackCapabilities,
+) -> JsValue =
+  #| (self) => ({
+  #|   width: self.width,
+  #|   height: self.height,
+  #|   aspectRatio: self.aspectRatio,
+  #|   frameRate: self.frameRate,
+  #|   facingMode: self.facingMode,
+  #|   resizeMode: self.resizeMode,
+  #|   sampleRate: self.sampleRate,
+  #|   sampleSize: self.sampleSize,
+  #|   echoCancellation: self.echoCancellation,
+  #|   autoGainControl: self.autoGainControl,
+  #|   noiseSuppression: self.noiseSuppression,
+  #|   latency: self.latency,
+  #|   channelCount: self.channelCount,
+  #|   deviceId: self.deviceId,
+  #|   groupId: self.groupId,
+  #|   backgroundBlur: self.backgroundBlur,
+  #|   displaySurface: self.displaySurface,
+  #|   logicalSurface: self.logicalSurface,
+  #|   cursor: self.cursor,
+  #|   whiteBalanceMode: self.whiteBalanceMode,
+  #|   exposureMode: self.exposureMode,
+  #|   focusMode: self.focusMode,
+  #|   exposureCompensation: self.exposureCompensation,
+  #|   exposureTime: self.exposureTime,
+  #|   colorTemperature: self.colorTemperature,
+  #|   iso: self.iso,
+  #|   brightness: self.brightness,
+  #|   contrast: self.contrast,
+  #|   saturation: self.saturation,
+  #|   sharpness: self.sharpness,
+  #|   focusDistance: self.focusDistance,
+  #|   pan: self.pan,
+  #|   tilt: self.tilt,
+  #|   zoom: self.zoom,
+  #|   torch: self.torch
+  #| })
+
+///|
 /// MediaTrackConstraints dictionary
 pub struct MediaTrackConstraints {
+  width : ConstrainULong?
+  height : ConstrainULong?
+  aspectRatio : ConstrainDouble?
+  frameRate : ConstrainDouble?
+  facingMode : ConstrainDOMString?
+  resizeMode : ConstrainDOMString?
+  sampleRate : ConstrainULong?
+  sampleSize : ConstrainULong?
+  echoCancellation : ConstrainBooleanOrDOMString?
+  autoGainControl : ConstrainBoolean?
+  noiseSuppression : ConstrainBoolean?
+  latency : ConstrainDouble?
+  channelCount : ConstrainULong?
+  deviceId : ConstrainDOMString?
+  groupId : ConstrainDOMString?
+  backgroundBlur : ConstrainBoolean?
+  displaySurface : ConstrainDOMString?
+  logicalSurface : ConstrainBoolean?
+  cursor : ConstrainDOMString?
+  restrictOwnAudio : ConstrainBoolean?
+  suppressLocalAudioPlayback : ConstrainBoolean?
+  whiteBalanceMode : ConstrainDOMString?
+  exposureMode : ConstrainDOMString?
+  focusMode : ConstrainDOMString?
+  pointsOfInterest : ConstrainPoint2D?
+  exposureCompensation : ConstrainDouble?
+  exposureTime : ConstrainDouble?
+  colorTemperature : ConstrainDouble?
+  iso : ConstrainDouble?
+  brightness : ConstrainDouble?
+  contrast : ConstrainDouble?
+  saturation : ConstrainDouble?
+  sharpness : ConstrainDouble?
+  focusDistance : ConstrainDouble?
+  pan : BoolOrConstrainDouble?
+  tilt : BoolOrConstrainDouble?
+  zoom : BoolOrConstrainDouble?
+  torch : ConstrainBoolean?
   advanced : Array[MediaTrackConstraintSet]?
 }
 
 ///|
 /// Create a new MediaTrackConstraints with default values
 pub fn MediaTrackConstraints::default() -> MediaTrackConstraints {
-  MediaTrackConstraints::{ advanced: None }
+  MediaTrackConstraints::{
+    width: None,
+    height: None,
+    aspectRatio: None,
+    frameRate: None,
+    facingMode: None,
+    resizeMode: None,
+    sampleRate: None,
+    sampleSize: None,
+    echoCancellation: None,
+    autoGainControl: None,
+    noiseSuppression: None,
+    latency: None,
+    channelCount: None,
+    deviceId: None,
+    groupId: None,
+    backgroundBlur: None,
+    displaySurface: None,
+    logicalSurface: None,
+    cursor: None,
+    restrictOwnAudio: None,
+    suppressLocalAudioPlayback: None,
+    whiteBalanceMode: None,
+    exposureMode: None,
+    focusMode: None,
+    pointsOfInterest: None,
+    exposureCompensation: None,
+    exposureTime: None,
+    colorTemperature: None,
+    iso: None,
+    brightness: None,
+    contrast: None,
+    saturation: None,
+    sharpness: None,
+    focusDistance: None,
+    pan: None,
+    tilt: None,
+    zoom: None,
+    torch: None,
+    advanced: None,
+  }
 }
 
 ///|
@@ -448,7 +785,316 @@ pub extern "js" fn MediaTrackConstraints::to_js(
   self : MediaTrackConstraints,
 ) -> JsValue =
   #| (self) => ({
+  #|   width: self.width.to_js_value(),
+  #|   height: self.height.to_js_value(),
+  #|   aspectRatio: self.aspectRatio.to_js_value(),
+  #|   frameRate: self.frameRate.to_js_value(),
+  #|   facingMode: self.facingMode.to_js_value(),
+  #|   resizeMode: self.resizeMode.to_js_value(),
+  #|   sampleRate: self.sampleRate.to_js_value(),
+  #|   sampleSize: self.sampleSize.to_js_value(),
+  #|   echoCancellation: self.echoCancellation.to_js_value(),
+  #|   autoGainControl: self.autoGainControl.to_js_value(),
+  #|   noiseSuppression: self.noiseSuppression.to_js_value(),
+  #|   latency: self.latency.to_js_value(),
+  #|   channelCount: self.channelCount.to_js_value(),
+  #|   deviceId: self.deviceId.to_js_value(),
+  #|   groupId: self.groupId.to_js_value(),
+  #|   backgroundBlur: self.backgroundBlur.to_js_value(),
+  #|   displaySurface: self.displaySurface.to_js_value(),
+  #|   logicalSurface: self.logicalSurface.to_js_value(),
+  #|   cursor: self.cursor.to_js_value(),
+  #|   restrictOwnAudio: self.restrictOwnAudio.to_js_value(),
+  #|   suppressLocalAudioPlayback: self.suppressLocalAudioPlayback.to_js_value(),
+  #|   whiteBalanceMode: self.whiteBalanceMode.to_js_value(),
+  #|   exposureMode: self.exposureMode.to_js_value(),
+  #|   focusMode: self.focusMode.to_js_value(),
+  #|   pointsOfInterest: self.pointsOfInterest.to_js_value(),
+  #|   exposureCompensation: self.exposureCompensation.to_js_value(),
+  #|   exposureTime: self.exposureTime.to_js_value(),
+  #|   colorTemperature: self.colorTemperature.to_js_value(),
+  #|   iso: self.iso.to_js_value(),
+  #|   brightness: self.brightness.to_js_value(),
+  #|   contrast: self.contrast.to_js_value(),
+  #|   saturation: self.saturation.to_js_value(),
+  #|   sharpness: self.sharpness.to_js_value(),
+  #|   focusDistance: self.focusDistance.to_js_value(),
+  #|   pan: self.pan,
+  #|   tilt: self.tilt,
+  #|   zoom: self.zoom,
+  #|   torch: self.torch.to_js_value(),
   #|   advanced: self.advanced
+  #| })
+
+///|
+/// MediaTrackConstraintSet dictionary
+pub struct MediaTrackConstraintSet {
+  width : ConstrainULong?
+  height : ConstrainULong?
+  aspectRatio : ConstrainDouble?
+  frameRate : ConstrainDouble?
+  facingMode : ConstrainDOMString?
+  resizeMode : ConstrainDOMString?
+  sampleRate : ConstrainULong?
+  sampleSize : ConstrainULong?
+  echoCancellation : ConstrainBooleanOrDOMString?
+  autoGainControl : ConstrainBoolean?
+  noiseSuppression : ConstrainBoolean?
+  latency : ConstrainDouble?
+  channelCount : ConstrainULong?
+  deviceId : ConstrainDOMString?
+  groupId : ConstrainDOMString?
+  backgroundBlur : ConstrainBoolean?
+  displaySurface : ConstrainDOMString?
+  logicalSurface : ConstrainBoolean?
+  cursor : ConstrainDOMString?
+  restrictOwnAudio : ConstrainBoolean?
+  suppressLocalAudioPlayback : ConstrainBoolean?
+  whiteBalanceMode : ConstrainDOMString?
+  exposureMode : ConstrainDOMString?
+  focusMode : ConstrainDOMString?
+  pointsOfInterest : ConstrainPoint2D?
+  exposureCompensation : ConstrainDouble?
+  exposureTime : ConstrainDouble?
+  colorTemperature : ConstrainDouble?
+  iso : ConstrainDouble?
+  brightness : ConstrainDouble?
+  contrast : ConstrainDouble?
+  saturation : ConstrainDouble?
+  sharpness : ConstrainDouble?
+  focusDistance : ConstrainDouble?
+  pan : BoolOrConstrainDouble?
+  tilt : BoolOrConstrainDouble?
+  zoom : BoolOrConstrainDouble?
+  torch : ConstrainBoolean?
+}
+
+///|
+/// Create a new MediaTrackConstraintSet with default values
+pub fn MediaTrackConstraintSet::default() -> MediaTrackConstraintSet {
+  MediaTrackConstraintSet::{
+    width: None,
+    height: None,
+    aspectRatio: None,
+    frameRate: None,
+    facingMode: None,
+    resizeMode: None,
+    sampleRate: None,
+    sampleSize: None,
+    echoCancellation: None,
+    autoGainControl: None,
+    noiseSuppression: None,
+    latency: None,
+    channelCount: None,
+    deviceId: None,
+    groupId: None,
+    backgroundBlur: None,
+    displaySurface: None,
+    logicalSurface: None,
+    cursor: None,
+    restrictOwnAudio: None,
+    suppressLocalAudioPlayback: None,
+    whiteBalanceMode: None,
+    exposureMode: None,
+    focusMode: None,
+    pointsOfInterest: None,
+    exposureCompensation: None,
+    exposureTime: None,
+    colorTemperature: None,
+    iso: None,
+    brightness: None,
+    contrast: None,
+    saturation: None,
+    sharpness: None,
+    focusDistance: None,
+    pan: None,
+    tilt: None,
+    zoom: None,
+    torch: None,
+  }
+}
+
+///|
+/// Convert to JsValue
+pub extern "js" fn MediaTrackConstraintSet::to_js(
+  self : MediaTrackConstraintSet,
+) -> JsValue =
+  #| (self) => ({
+  #|   width: self.width.to_js_value(),
+  #|   height: self.height.to_js_value(),
+  #|   aspectRatio: self.aspectRatio.to_js_value(),
+  #|   frameRate: self.frameRate.to_js_value(),
+  #|   facingMode: self.facingMode.to_js_value(),
+  #|   resizeMode: self.resizeMode.to_js_value(),
+  #|   sampleRate: self.sampleRate.to_js_value(),
+  #|   sampleSize: self.sampleSize.to_js_value(),
+  #|   echoCancellation: self.echoCancellation.to_js_value(),
+  #|   autoGainControl: self.autoGainControl.to_js_value(),
+  #|   noiseSuppression: self.noiseSuppression.to_js_value(),
+  #|   latency: self.latency.to_js_value(),
+  #|   channelCount: self.channelCount.to_js_value(),
+  #|   deviceId: self.deviceId.to_js_value(),
+  #|   groupId: self.groupId.to_js_value(),
+  #|   backgroundBlur: self.backgroundBlur.to_js_value(),
+  #|   displaySurface: self.displaySurface.to_js_value(),
+  #|   logicalSurface: self.logicalSurface.to_js_value(),
+  #|   cursor: self.cursor.to_js_value(),
+  #|   restrictOwnAudio: self.restrictOwnAudio.to_js_value(),
+  #|   suppressLocalAudioPlayback: self.suppressLocalAudioPlayback.to_js_value(),
+  #|   whiteBalanceMode: self.whiteBalanceMode.to_js_value(),
+  #|   exposureMode: self.exposureMode.to_js_value(),
+  #|   focusMode: self.focusMode.to_js_value(),
+  #|   pointsOfInterest: self.pointsOfInterest.to_js_value(),
+  #|   exposureCompensation: self.exposureCompensation.to_js_value(),
+  #|   exposureTime: self.exposureTime.to_js_value(),
+  #|   colorTemperature: self.colorTemperature.to_js_value(),
+  #|   iso: self.iso.to_js_value(),
+  #|   brightness: self.brightness.to_js_value(),
+  #|   contrast: self.contrast.to_js_value(),
+  #|   saturation: self.saturation.to_js_value(),
+  #|   sharpness: self.sharpness.to_js_value(),
+  #|   focusDistance: self.focusDistance.to_js_value(),
+  #|   pan: self.pan,
+  #|   tilt: self.tilt,
+  #|   zoom: self.zoom,
+  #|   torch: self.torch.to_js_value()
+  #| })
+
+///|
+/// MediaTrackSettings dictionary
+pub struct MediaTrackSettings {
+  width : Int?
+  height : Int?
+  aspectRatio : Double?
+  frameRate : Double?
+  facingMode : String?
+  resizeMode : String?
+  sampleRate : Int?
+  sampleSize : Int?
+  echoCancellation : BoolOrString?
+  autoGainControl : Bool?
+  noiseSuppression : Bool?
+  latency : Double?
+  channelCount : Int?
+  deviceId : String?
+  groupId : String?
+  backgroundBlur : Bool?
+  displaySurface : String?
+  logicalSurface : Bool?
+  cursor : String?
+  restrictOwnAudio : Bool?
+  suppressLocalAudioPlayback : Bool?
+  screenPixelRatio : Double?
+  whiteBalanceMode : String?
+  exposureMode : String?
+  focusMode : String?
+  pointsOfInterest : Array[Point2D]?
+  exposureCompensation : Double?
+  exposureTime : Double?
+  colorTemperature : Double?
+  iso : Double?
+  brightness : Double?
+  contrast : Double?
+  saturation : Double?
+  sharpness : Double?
+  focusDistance : Double?
+  pan : Double?
+  tilt : Double?
+  zoom : Double?
+  torch : Bool?
+}
+
+///|
+/// Create a new MediaTrackSettings with default values
+pub fn MediaTrackSettings::default() -> MediaTrackSettings {
+  MediaTrackSettings::{
+    width: None,
+    height: None,
+    aspectRatio: None,
+    frameRate: None,
+    facingMode: None,
+    resizeMode: None,
+    sampleRate: None,
+    sampleSize: None,
+    echoCancellation: None,
+    autoGainControl: None,
+    noiseSuppression: None,
+    latency: None,
+    channelCount: None,
+    deviceId: None,
+    groupId: None,
+    backgroundBlur: None,
+    displaySurface: None,
+    logicalSurface: None,
+    cursor: None,
+    restrictOwnAudio: None,
+    suppressLocalAudioPlayback: None,
+    screenPixelRatio: None,
+    whiteBalanceMode: None,
+    exposureMode: None,
+    focusMode: None,
+    pointsOfInterest: None,
+    exposureCompensation: None,
+    exposureTime: None,
+    colorTemperature: None,
+    iso: None,
+    brightness: None,
+    contrast: None,
+    saturation: None,
+    sharpness: None,
+    focusDistance: None,
+    pan: None,
+    tilt: None,
+    zoom: None,
+    torch: None,
+  }
+}
+
+///|
+/// Convert to JsValue
+pub extern "js" fn MediaTrackSettings::to_js(
+  self : MediaTrackSettings,
+) -> JsValue =
+  #| (self) => ({
+  #|   width: self.width,
+  #|   height: self.height,
+  #|   aspectRatio: self.aspectRatio,
+  #|   frameRate: self.frameRate,
+  #|   facingMode: self.facingMode,
+  #|   resizeMode: self.resizeMode,
+  #|   sampleRate: self.sampleRate,
+  #|   sampleSize: self.sampleSize,
+  #|   echoCancellation: self.echoCancellation,
+  #|   autoGainControl: self.autoGainControl,
+  #|   noiseSuppression: self.noiseSuppression,
+  #|   latency: self.latency,
+  #|   channelCount: self.channelCount,
+  #|   deviceId: self.deviceId,
+  #|   groupId: self.groupId,
+  #|   backgroundBlur: self.backgroundBlur,
+  #|   displaySurface: self.displaySurface,
+  #|   logicalSurface: self.logicalSurface,
+  #|   cursor: self.cursor,
+  #|   restrictOwnAudio: self.restrictOwnAudio,
+  #|   suppressLocalAudioPlayback: self.suppressLocalAudioPlayback,
+  #|   screenPixelRatio: self.screenPixelRatio,
+  #|   whiteBalanceMode: self.whiteBalanceMode,
+  #|   exposureMode: self.exposureMode,
+  #|   focusMode: self.focusMode,
+  #|   pointsOfInterest: self.pointsOfInterest,
+  #|   exposureCompensation: self.exposureCompensation,
+  #|   exposureTime: self.exposureTime,
+  #|   colorTemperature: self.colorTemperature,
+  #|   iso: self.iso,
+  #|   brightness: self.brightness,
+  #|   contrast: self.contrast,
+  #|   saturation: self.saturation,
+  #|   sharpness: self.sharpness,
+  #|   focusDistance: self.focusDistance,
+  #|   pan: self.pan,
+  #|   tilt: self.tilt,
+  #|   zoom: self.zoom,
+  #|   torch: self.torch
   #| })
 
 ///|
@@ -496,10 +1142,10 @@ pub extern "js" fn DeviceChangeEventInit::to_js(
 ///|
 /// MediaStreamConstraints dictionary
 pub struct MediaStreamConstraints {
-  video : JsValue?
-  audio : JsValue?
-  preferCurrentTab : Bool?
+  video : BoolOrMediaTrackConstraints?
+  audio : BoolOrMediaTrackConstraints?
   peerIdentity : String?
+  preferCurrentTab : Bool?
 }
 
 ///|
@@ -508,8 +1154,8 @@ pub fn MediaStreamConstraints::default() -> MediaStreamConstraints {
   MediaStreamConstraints::{
     video: None,
     audio: None,
-    preferCurrentTab: None,
     peerIdentity: None,
+    preferCurrentTab: None,
   }
 }
 
@@ -521,8 +1167,8 @@ pub extern "js" fn MediaStreamConstraints::to_js(
   #| (self) => ({
   #|   video: self.video,
   #|   audio: self.audio,
-  #|   preferCurrentTab: self.preferCurrentTab,
-  #|   peerIdentity: self.peerIdentity
+  #|   peerIdentity: self.peerIdentity,
+  #|   preferCurrentTab: self.preferCurrentTab
   #| })
 
 ///|
@@ -647,8 +1293,8 @@ pub extern "js" fn ConstrainBooleanParameters::to_js(
 ///|
 /// ConstrainDOMStringParameters dictionary
 pub struct ConstrainDOMStringParameters {
-  exact : JsValue?
-  ideal : JsValue?
+  exact : StringOrArrayOfString?
+  ideal : StringOrArrayOfString?
 }
 
 ///|
@@ -670,8 +1316,8 @@ pub extern "js" fn ConstrainDOMStringParameters::to_js(
 ///|
 /// ConstrainBooleanOrDOMStringParameters dictionary
 pub struct ConstrainBooleanOrDOMStringParameters {
-  exact : JsValue?
-  ideal : JsValue?
+  exact : BoolOrString?
+  ideal : BoolOrString?
 }
 
 ///|
@@ -720,6 +1366,32 @@ pub extern "js" fn MediaStream::to_js_value(self : MediaStream) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to MediaStream (unchecked)
+pub extern "js" fn MediaStream::from_js_value(v : JsValue) -> MediaStream =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaStream (checked with instanceof)
+pub extern "js" fn MediaStream::from_js_value_opt(v : JsValue) -> MediaStream? =
+  #| (v) => (v instanceof MediaStream) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaStream (checked with instanceof)
+pub extern "js" fn JsValue::as_media_stream(self : JsValue) -> MediaStream? =
+  #| (self) => (self instanceof MediaStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaStream (unchecked)
+pub extern "js" fn JsValue::to_media_stream(self : JsValue) -> MediaStream =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaStream::to_event_target(
+  self : MediaStream,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn MediaStream::new() -> MediaStream =
   #| () => new MediaStream()
 
@@ -750,7 +1422,7 @@ pub extern "js" fn MediaStream::get_track_by_id(
   self : MediaStream,
   track_id : String,
 ) -> MediaStreamTrack? =
-  #| (self, track_id) => self.getTrackById(track_id)
+  #| (self, track_id) => { const v = self.getTrackById(track_id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn MediaStream::add_track(
@@ -809,6 +1481,52 @@ pub extern "js" fn MediaStreamTrack::to_js_value(
   self : MediaStreamTrack,
 ) -> JsValue =
   #| (self) => self
+
+///|
+/// Cast JsValue to MediaStreamTrack (unchecked)
+pub extern "js" fn MediaStreamTrack::from_js_value(
+  v : JsValue,
+) -> MediaStreamTrack =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaStreamTrack (checked with instanceof)
+pub extern "js" fn MediaStreamTrack::from_js_value_opt(
+  v : JsValue,
+) -> MediaStreamTrack? =
+  #| (v) => (v instanceof MediaStreamTrack) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaStreamTrack (checked with instanceof)
+pub extern "js" fn JsValue::as_media_stream_track(
+  self : JsValue,
+) -> MediaStreamTrack? =
+  #| (self) => (self instanceof MediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaStreamTrack (unchecked)
+pub extern "js" fn JsValue::to_media_stream_track(
+  self : JsValue,
+) -> MediaStreamTrack =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaStreamTrack::to_event_target(
+  self : MediaStreamTrack,
+) -> EventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaStreamTrack::as_browser_capture_media_stream_track(
+  self : MediaStreamTrack,
+) -> BrowserCaptureMediaStreamTrack? =
+  #| (self) => (self instanceof BrowserCaptureMediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn MediaStreamTrack::as_canvas_capture_media_stream_track(
+  self : MediaStreamTrack,
+) -> CanvasCaptureMediaStreamTrack? =
+  #| (self) => (self instanceof CanvasCaptureMediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn MediaStreamTrack::get_kind(
@@ -930,25 +1648,6 @@ pub extern "js" fn MediaStreamTrack::apply_constraints_with_constraints(
   #| (self, constraints) => self.applyConstraints(constraints)
 
 ///|
-pub extern "js" fn MediaStreamTrack::get_capture_handle(
-  self : MediaStreamTrack,
-) -> CaptureHandle? =
-  #| (self) => self.getCaptureHandle()
-
-///|
-pub extern "js" fn MediaStreamTrack::get_oncapturehandlechange(
-  self : MediaStreamTrack,
-) -> EventHandler =
-  #| (self) => self.oncapturehandlechange
-
-///|
-pub extern "js" fn MediaStreamTrack::set_oncapturehandlechange(
-  self : MediaStreamTrack,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.oncapturehandlechange = value }
-
-///|
 pub extern "js" fn MediaStreamTrack::get_supported_capture_actions(
   self : MediaStreamTrack,
 ) -> Array[String] =
@@ -960,19 +1659,6 @@ pub extern "js" fn MediaStreamTrack::send_capture_action(
   action : CaptureAction,
 ) -> Promise[Unit] =
   #| (self, action) => self.sendCaptureAction(['next', 'previous', 'first', 'last'][action])
-
-///|
-pub extern "js" fn MediaStreamTrack::get_content_hint(
-  self : MediaStreamTrack,
-) -> String =
-  #| (self) => self.contentHint
-
-///|
-pub extern "js" fn MediaStreamTrack::set_content_hint(
-  self : MediaStreamTrack,
-  value : String,
-) -> Unit =
-  #| (self, value) => { self.contentHint = value }
 
 ///|
 pub extern "js" fn MediaStreamTrack::get_isolated(
@@ -994,6 +1680,38 @@ pub extern "js" fn MediaStreamTrack::set_onisolationchange(
   #| (self, value) => { self.onisolationchange = value }
 
 ///|
+pub extern "js" fn MediaStreamTrack::get_capture_handle(
+  self : MediaStreamTrack,
+) -> CaptureHandle? =
+  #| (self) => { const v = self.getCaptureHandle(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+
+///|
+pub extern "js" fn MediaStreamTrack::get_oncapturehandlechange(
+  self : MediaStreamTrack,
+) -> EventHandler =
+  #| (self) => self.oncapturehandlechange
+
+///|
+pub extern "js" fn MediaStreamTrack::set_oncapturehandlechange(
+  self : MediaStreamTrack,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.oncapturehandlechange = value }
+
+///|
+pub extern "js" fn MediaStreamTrack::get_content_hint(
+  self : MediaStreamTrack,
+) -> String =
+  #| (self) => self.contentHint
+
+///|
+pub extern "js" fn MediaStreamTrack::set_content_hint(
+  self : MediaStreamTrack,
+  value : String,
+) -> Unit =
+  #| (self, value) => { self.contentHint = value }
+
+///|
 /// MediaStreamTrackEvent interface
 pub type MediaStreamTrackEvent
 
@@ -1001,6 +1719,40 @@ pub type MediaStreamTrackEvent
 pub extern "js" fn MediaStreamTrackEvent::to_js_value(
   self : MediaStreamTrackEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to MediaStreamTrackEvent (unchecked)
+pub extern "js" fn MediaStreamTrackEvent::from_js_value(
+  v : JsValue,
+) -> MediaStreamTrackEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaStreamTrackEvent (checked with instanceof)
+pub extern "js" fn MediaStreamTrackEvent::from_js_value_opt(
+  v : JsValue,
+) -> MediaStreamTrackEvent? =
+  #| (v) => (v instanceof MediaStreamTrackEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaStreamTrackEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_media_stream_track_event(
+  self : JsValue,
+) -> MediaStreamTrackEvent? =
+  #| (self) => (self instanceof MediaStreamTrackEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaStreamTrackEvent (unchecked)
+pub extern "js" fn JsValue::to_media_stream_track_event(
+  self : JsValue,
+) -> MediaStreamTrackEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaStreamTrackEvent::to_event(
+  self : MediaStreamTrackEvent,
+) -> Event =
   #| (self) => self
 
 ///|
@@ -1027,6 +1779,40 @@ pub extern "js" fn OverconstrainedError::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to OverconstrainedError (unchecked)
+pub extern "js" fn OverconstrainedError::from_js_value(
+  v : JsValue,
+) -> OverconstrainedError =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to OverconstrainedError (checked with instanceof)
+pub extern "js" fn OverconstrainedError::from_js_value_opt(
+  v : JsValue,
+) -> OverconstrainedError? =
+  #| (v) => (v instanceof OverconstrainedError) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to OverconstrainedError (checked with instanceof)
+pub extern "js" fn JsValue::as_overconstrained_error(
+  self : JsValue,
+) -> OverconstrainedError? =
+  #| (self) => (self instanceof OverconstrainedError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to OverconstrainedError (unchecked)
+pub extern "js" fn JsValue::to_overconstrained_error(
+  self : JsValue,
+) -> OverconstrainedError =
+  #| (self) => self
+
+///|
+pub extern "js" fn OverconstrainedError::to_dom_exception(
+  self : OverconstrainedError,
+) -> DOMException =
+  #| (self) => self
+
+///|
 pub extern "js" fn OverconstrainedError::new(
   constraint : String,
   message : String,
@@ -1048,6 +1834,34 @@ pub extern "js" fn MediaDevices::to_js_value(self : MediaDevices) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to MediaDevices (unchecked)
+pub extern "js" fn MediaDevices::from_js_value(v : JsValue) -> MediaDevices =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaDevices (checked with instanceof)
+pub extern "js" fn MediaDevices::from_js_value_opt(
+  v : JsValue,
+) -> MediaDevices? =
+  #| (v) => (v instanceof MediaDevices) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaDevices (checked with instanceof)
+pub extern "js" fn JsValue::as_media_devices(self : JsValue) -> MediaDevices? =
+  #| (self) => (self instanceof MediaDevices) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaDevices (unchecked)
+pub extern "js" fn JsValue::to_media_devices(self : JsValue) -> MediaDevices =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaDevices::to_event_target(
+  self : MediaDevices,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn MediaDevices::get_ondevicechange(
   self : MediaDevices,
 ) -> EventHandler =
@@ -1063,8 +1877,21 @@ pub extern "js" fn MediaDevices::set_ondevicechange(
 ///|
 pub extern "js" fn MediaDevices::enumerate_devices(
   self : MediaDevices,
-) -> Promise[Unit] =
+) -> Promise[Array[MediaDeviceInfo]] =
   #| (self) => self.enumerateDevices()
+
+///|
+pub extern "js" fn MediaDevices::get_viewport_media(
+  self : MediaDevices,
+) -> Promise[MediaStream] =
+  #| (self) => self.getViewportMedia()
+
+///|
+pub extern "js" fn MediaDevices::get_viewport_media_with_options(
+  self : MediaDevices,
+  options : DisplayMediaStreamOptions,
+) -> Promise[MediaStream] =
+  #| (self, options) => self.getViewportMedia(options)
 
 ///|
 pub extern "js" fn MediaDevices::select_audio_output(
@@ -1078,19 +1905,6 @@ pub extern "js" fn MediaDevices::select_audio_output_with_options(
   options : AudioOutputOptions,
 ) -> Promise[MediaDeviceInfo] =
   #| (self, options) => self.selectAudioOutput(options)
-
-///|
-pub extern "js" fn MediaDevices::set_capture_handle_config(
-  self : MediaDevices,
-) -> Unit =
-  #| (self) => self.setCaptureHandleConfig()
-
-///|
-pub extern "js" fn MediaDevices::set_capture_handle_config_with_config(
-  self : MediaDevices,
-  config : CaptureHandleConfig,
-) -> Unit =
-  #| (self, config) => self.setCaptureHandleConfig(config)
 
 ///|
 pub extern "js" fn MediaDevices::set_supported_capture_actions(
@@ -1132,19 +1946,6 @@ pub extern "js" fn MediaDevices::get_user_media_with_constraints(
   #| (self, constraints) => self.getUserMedia(constraints)
 
 ///|
-pub extern "js" fn MediaDevices::get_viewport_media(
-  self : MediaDevices,
-) -> Promise[MediaStream] =
-  #| (self) => self.getViewportMedia()
-
-///|
-pub extern "js" fn MediaDevices::get_viewport_media_with_options(
-  self : MediaDevices,
-  options : DisplayMediaStreamOptions,
-) -> Promise[MediaStream] =
-  #| (self, options) => self.getViewportMedia(options)
-
-///|
 pub extern "js" fn MediaDevices::get_display_media(
   self : MediaDevices,
 ) -> Promise[MediaStream] =
@@ -1158,6 +1959,19 @@ pub extern "js" fn MediaDevices::get_display_media_with_options(
   #| (self, options) => self.getDisplayMedia(options)
 
 ///|
+pub extern "js" fn MediaDevices::set_capture_handle_config(
+  self : MediaDevices,
+) -> Unit =
+  #| (self) => self.setCaptureHandleConfig()
+
+///|
+pub extern "js" fn MediaDevices::set_capture_handle_config_with_config(
+  self : MediaDevices,
+  config : CaptureHandleConfig,
+) -> Unit =
+  #| (self, config) => self.setCaptureHandleConfig(config)
+
+///|
 /// MediaDeviceInfo interface
 pub type MediaDeviceInfo
 
@@ -1166,6 +1980,40 @@ pub extern "js" fn MediaDeviceInfo::to_js_value(
   self : MediaDeviceInfo,
 ) -> JsValue =
   #| (self) => self
+
+///|
+/// Cast JsValue to MediaDeviceInfo (unchecked)
+pub extern "js" fn MediaDeviceInfo::from_js_value(
+  v : JsValue,
+) -> MediaDeviceInfo =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaDeviceInfo (checked with instanceof)
+pub extern "js" fn MediaDeviceInfo::from_js_value_opt(
+  v : JsValue,
+) -> MediaDeviceInfo? =
+  #| (v) => (v instanceof MediaDeviceInfo) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaDeviceInfo (checked with instanceof)
+pub extern "js" fn JsValue::as_media_device_info(
+  self : JsValue,
+) -> MediaDeviceInfo? =
+  #| (self) => (self instanceof MediaDeviceInfo) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaDeviceInfo (unchecked)
+pub extern "js" fn JsValue::to_media_device_info(
+  self : JsValue,
+) -> MediaDeviceInfo =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaDeviceInfo::as_input_device_info(
+  self : MediaDeviceInfo,
+) -> InputDeviceInfo? =
+  #| (self) => (self instanceof InputDeviceInfo) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn MediaDeviceInfo::get_device_id(
@@ -1190,9 +2038,7 @@ pub extern "js" fn MediaDeviceInfo::get_group_id(
   #| (self) => self.groupId
 
 ///|
-pub extern "js" fn MediaDeviceInfo::to_j_s_o_n(
-  self : MediaDeviceInfo,
-) -> JsValue =
+pub extern "js" fn MediaDeviceInfo::to_json(self : MediaDeviceInfo) -> JsValue =
   #| (self) => self.toJSON()
 
 ///|
@@ -1206,32 +2052,38 @@ pub extern "js" fn InputDeviceInfo::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn InputDeviceInfo::get_device_id(
-  self : InputDeviceInfo,
-) -> String =
-  #| (self) => self.deviceId
+/// Cast JsValue to InputDeviceInfo (unchecked)
+pub extern "js" fn InputDeviceInfo::from_js_value(
+  v : JsValue,
+) -> InputDeviceInfo =
+  #| (v) => v
 
 ///|
-pub extern "js" fn InputDeviceInfo::get_kind(
-  self : InputDeviceInfo,
-) -> MediaDeviceKind =
-  #| (self) => self.kind
+/// Safely cast JsValue to InputDeviceInfo (checked with instanceof)
+pub extern "js" fn InputDeviceInfo::from_js_value_opt(
+  v : JsValue,
+) -> InputDeviceInfo? =
+  #| (v) => (v instanceof InputDeviceInfo) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn InputDeviceInfo::get_label(self : InputDeviceInfo) -> String =
-  #| (self) => self.label
+/// Safely cast JsValue to InputDeviceInfo (checked with instanceof)
+pub extern "js" fn JsValue::as_input_device_info(
+  self : JsValue,
+) -> InputDeviceInfo? =
+  #| (self) => (self instanceof InputDeviceInfo) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn InputDeviceInfo::get_group_id(
-  self : InputDeviceInfo,
-) -> String =
-  #| (self) => self.groupId
+/// Cast JsValue to InputDeviceInfo (unchecked)
+pub extern "js" fn JsValue::to_input_device_info(
+  self : JsValue,
+) -> InputDeviceInfo =
+  #| (self) => self
 
 ///|
-pub extern "js" fn InputDeviceInfo::to_j_s_o_n(
+pub extern "js" fn InputDeviceInfo::to_media_device_info(
   self : InputDeviceInfo,
-) -> JsValue =
-  #| (self) => self.toJSON()
+) -> MediaDeviceInfo =
+  #| (self) => self
 
 ///|
 pub extern "js" fn InputDeviceInfo::get_capabilities(
@@ -1247,6 +2099,40 @@ pub type DeviceChangeEvent
 pub extern "js" fn DeviceChangeEvent::to_js_value(
   self : DeviceChangeEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to DeviceChangeEvent (unchecked)
+pub extern "js" fn DeviceChangeEvent::from_js_value(
+  v : JsValue,
+) -> DeviceChangeEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to DeviceChangeEvent (checked with instanceof)
+pub extern "js" fn DeviceChangeEvent::from_js_value_opt(
+  v : JsValue,
+) -> DeviceChangeEvent? =
+  #| (v) => (v instanceof DeviceChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to DeviceChangeEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_device_change_event(
+  self : JsValue,
+) -> DeviceChangeEvent? =
+  #| (self) => (self instanceof DeviceChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to DeviceChangeEvent (unchecked)
+pub extern "js" fn JsValue::to_device_change_event(
+  self : JsValue,
+) -> DeviceChangeEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn DeviceChangeEvent::to_event(
+  self : DeviceChangeEvent,
+) -> Event =
   #| (self) => self
 
 ///|

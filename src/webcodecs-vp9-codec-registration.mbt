@@ -2,6 +2,41 @@
 // Source: @webref/idl/webcodecs-vp9-codec-registration
 
 ///|
+/// VideoEncoderEncodeOptions dictionary
+pub struct VideoEncoderEncodeOptions {
+  vp9 : VideoEncoderEncodeOptionsForVp9?
+  av1 : VideoEncoderEncodeOptionsForAv1?
+  avc : VideoEncoderEncodeOptionsForAvc?
+  hevc : VideoEncoderEncodeOptionsForHevc?
+  keyFrame : Bool?
+}
+
+///|
+/// Create a new VideoEncoderEncodeOptions with default values
+pub fn VideoEncoderEncodeOptions::default() -> VideoEncoderEncodeOptions {
+  VideoEncoderEncodeOptions::{
+    vp9: None,
+    av1: None,
+    avc: None,
+    hevc: None,
+    keyFrame: None,
+  }
+}
+
+///|
+/// Convert to JsValue
+pub extern "js" fn VideoEncoderEncodeOptions::to_js(
+  self : VideoEncoderEncodeOptions,
+) -> JsValue =
+  #| (self) => ({
+  #|   vp9: self.vp9,
+  #|   av1: self.av1,
+  #|   avc: self.avc,
+  #|   hevc: self.hevc,
+  #|   keyFrame: self.keyFrame
+  #| })
+
+///|
 /// VideoEncoderEncodeOptionsForVp9 dictionary
 pub struct VideoEncoderEncodeOptionsForVp9 {
   quantizer : Nullable[Int]

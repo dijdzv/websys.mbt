@@ -192,7 +192,7 @@ pub extern "js" fn IDBTransactionOptions::to_js(
 ///|
 /// IDBObjectStoreParameters dictionary
 pub struct IDBObjectStoreParameters {
-  keyPath : JsValue?
+  keyPath : StringOrArrayOfString?
   autoIncrement : Bool?
 }
 
@@ -267,12 +267,44 @@ pub extern "js" fn IDBRequest::to_js_value(self : IDBRequest) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to IDBRequest (unchecked)
+pub extern "js" fn IDBRequest::from_js_value(v : JsValue) -> IDBRequest =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IDBRequest (checked with instanceof)
+pub extern "js" fn IDBRequest::from_js_value_opt(v : JsValue) -> IDBRequest? =
+  #| (v) => (v instanceof IDBRequest) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IDBRequest (checked with instanceof)
+pub extern "js" fn JsValue::as_idb_request(self : JsValue) -> IDBRequest? =
+  #| (self) => (self instanceof IDBRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IDBRequest (unchecked)
+pub extern "js" fn JsValue::to_idb_request(self : JsValue) -> IDBRequest =
+  #| (self) => self
+
+///|
+pub extern "js" fn IDBRequest::to_event_target(
+  self : IDBRequest,
+) -> EventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn IDBRequest::as_idb_open_db_request(
+  self : IDBRequest,
+) -> IDBOpenDBRequest? =
+  #| (self) => (self instanceof IDBOpenDBRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn IDBRequest::get_result(self : IDBRequest) -> JsValue =
   #| (self) => self.result
 
 ///|
 pub extern "js" fn IDBRequest::get_error(self : IDBRequest) -> DOMException? =
-  #| (self) => self.error
+  #| (self) => { const v = self.error; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn IDBRequest::get_source(
@@ -284,7 +316,7 @@ pub extern "js" fn IDBRequest::get_source(
 pub extern "js" fn IDBRequest::get_transaction(
   self : IDBRequest,
 ) -> IDBTransaction? =
-  #| (self) => self.transaction
+  #| (self) => { const v = self.transaction; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn IDBRequest::get_ready_state(
@@ -325,60 +357,44 @@ pub extern "js" fn IDBOpenDBRequest::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn IDBOpenDBRequest::get_result(
-  self : IDBOpenDBRequest,
-) -> JsValue =
-  #| (self) => self.result
+/// Cast JsValue to IDBOpenDBRequest (unchecked)
+pub extern "js" fn IDBOpenDBRequest::from_js_value(
+  v : JsValue,
+) -> IDBOpenDBRequest =
+  #| (v) => v
 
 ///|
-pub extern "js" fn IDBOpenDBRequest::get_error(
-  self : IDBOpenDBRequest,
-) -> DOMException? =
-  #| (self) => self.error
+/// Safely cast JsValue to IDBOpenDBRequest (checked with instanceof)
+pub extern "js" fn IDBOpenDBRequest::from_js_value_opt(
+  v : JsValue,
+) -> IDBOpenDBRequest? =
+  #| (v) => (v instanceof IDBOpenDBRequest) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn IDBOpenDBRequest::get_source(
-  self : IDBOpenDBRequest,
-) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
-  #| (self) => self.source
+/// Safely cast JsValue to IDBOpenDBRequest (checked with instanceof)
+pub extern "js" fn JsValue::as_idb_open_db_request(
+  self : JsValue,
+) -> IDBOpenDBRequest? =
+  #| (self) => (self instanceof IDBOpenDBRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn IDBOpenDBRequest::get_transaction(
-  self : IDBOpenDBRequest,
-) -> IDBTransaction? =
-  #| (self) => self.transaction
+/// Cast JsValue to IDBOpenDBRequest (unchecked)
+pub extern "js" fn JsValue::to_idb_open_db_request(
+  self : JsValue,
+) -> IDBOpenDBRequest =
+  #| (self) => self
 
 ///|
-pub extern "js" fn IDBOpenDBRequest::get_ready_state(
+pub extern "js" fn IDBOpenDBRequest::to_idb_request(
   self : IDBOpenDBRequest,
-) -> IDBRequestReadyState =
-  #| (self) => self.readyState
+) -> IDBRequest =
+  #| (self) => self
 
 ///|
-pub extern "js" fn IDBOpenDBRequest::get_onsuccess(
+pub extern "js" fn IDBOpenDBRequest::to_event_target(
   self : IDBOpenDBRequest,
-) -> EventHandler =
-  #| (self) => self.onsuccess
-
-///|
-pub extern "js" fn IDBOpenDBRequest::set_onsuccess(
-  self : IDBOpenDBRequest,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onsuccess = value }
-
-///|
-pub extern "js" fn IDBOpenDBRequest::get_onerror(
-  self : IDBOpenDBRequest,
-) -> EventHandler =
-  #| (self) => self.onerror
-
-///|
-pub extern "js" fn IDBOpenDBRequest::set_onerror(
-  self : IDBOpenDBRequest,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onerror = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn IDBOpenDBRequest::get_onblocked(
@@ -417,6 +433,40 @@ pub extern "js" fn IDBVersionChangeEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to IDBVersionChangeEvent (unchecked)
+pub extern "js" fn IDBVersionChangeEvent::from_js_value(
+  v : JsValue,
+) -> IDBVersionChangeEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IDBVersionChangeEvent (checked with instanceof)
+pub extern "js" fn IDBVersionChangeEvent::from_js_value_opt(
+  v : JsValue,
+) -> IDBVersionChangeEvent? =
+  #| (v) => (v instanceof IDBVersionChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IDBVersionChangeEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_idb_version_change_event(
+  self : JsValue,
+) -> IDBVersionChangeEvent? =
+  #| (self) => (self instanceof IDBVersionChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IDBVersionChangeEvent (unchecked)
+pub extern "js" fn JsValue::to_idb_version_change_event(
+  self : JsValue,
+) -> IDBVersionChangeEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn IDBVersionChangeEvent::to_event(
+  self : IDBVersionChangeEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn IDBVersionChangeEvent::new(
   type_ : String,
   event_init_dict : IDBVersionChangeEventInit,
@@ -433,7 +483,7 @@ pub extern "js" fn IDBVersionChangeEvent::get_old_version(
 pub extern "js" fn IDBVersionChangeEvent::get_new_version(
   self : IDBVersionChangeEvent,
 ) -> Int64? =
-  #| (self) => self.newVersion
+  #| (self) => { const v = self.newVersion; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// IDBFactory interface
@@ -441,6 +491,26 @@ pub type IDBFactory
 
 ///|
 pub extern "js" fn IDBFactory::to_js_value(self : IDBFactory) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to IDBFactory (unchecked)
+pub extern "js" fn IDBFactory::from_js_value(v : JsValue) -> IDBFactory =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IDBFactory (checked with instanceof)
+pub extern "js" fn IDBFactory::from_js_value_opt(v : JsValue) -> IDBFactory? =
+  #| (v) => (v instanceof IDBFactory) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IDBFactory (checked with instanceof)
+pub extern "js" fn JsValue::as_idb_factory(self : JsValue) -> IDBFactory? =
+  #| (self) => (self instanceof IDBFactory) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IDBFactory (unchecked)
+pub extern "js" fn JsValue::to_idb_factory(self : JsValue) -> IDBFactory =
   #| (self) => self
 
 ///|
@@ -466,7 +536,9 @@ pub extern "js" fn IDBFactory::delete_database(
   #| (self, name) => self.deleteDatabase(name)
 
 ///|
-pub extern "js" fn IDBFactory::databases(self : IDBFactory) -> Promise[Unit] =
+pub extern "js" fn IDBFactory::databases(
+  self : IDBFactory,
+) -> Promise[Array[IDBDatabaseInfo]] =
   #| (self) => self.databases()
 
 ///|
@@ -483,6 +555,32 @@ pub type IDBDatabase
 
 ///|
 pub extern "js" fn IDBDatabase::to_js_value(self : IDBDatabase) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to IDBDatabase (unchecked)
+pub extern "js" fn IDBDatabase::from_js_value(v : JsValue) -> IDBDatabase =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IDBDatabase (checked with instanceof)
+pub extern "js" fn IDBDatabase::from_js_value_opt(v : JsValue) -> IDBDatabase? =
+  #| (v) => (v instanceof IDBDatabase) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IDBDatabase (checked with instanceof)
+pub extern "js" fn JsValue::as_idb_database(self : JsValue) -> IDBDatabase? =
+  #| (self) => (self instanceof IDBDatabase) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IDBDatabase (unchecked)
+pub extern "js" fn JsValue::to_idb_database(self : JsValue) -> IDBDatabase =
+  #| (self) => self
+
+///|
+pub extern "js" fn IDBDatabase::to_event_target(
+  self : IDBDatabase,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -595,6 +693,32 @@ pub type IDBObjectStore
 pub extern "js" fn IDBObjectStore::to_js_value(
   self : IDBObjectStore,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to IDBObjectStore (unchecked)
+pub extern "js" fn IDBObjectStore::from_js_value(v : JsValue) -> IDBObjectStore =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IDBObjectStore (checked with instanceof)
+pub extern "js" fn IDBObjectStore::from_js_value_opt(
+  v : JsValue,
+) -> IDBObjectStore? =
+  #| (v) => (v instanceof IDBObjectStore) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IDBObjectStore (checked with instanceof)
+pub extern "js" fn JsValue::as_idb_object_store(
+  self : JsValue,
+) -> IDBObjectStore? =
+  #| (self) => (self instanceof IDBObjectStore) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IDBObjectStore (unchecked)
+pub extern "js" fn JsValue::to_idb_object_store(
+  self : JsValue,
+) -> IDBObjectStore =
   #| (self) => self
 
 ///|
@@ -805,6 +929,26 @@ pub extern "js" fn IDBIndex::to_js_value(self : IDBIndex) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to IDBIndex (unchecked)
+pub extern "js" fn IDBIndex::from_js_value(v : JsValue) -> IDBIndex =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IDBIndex (checked with instanceof)
+pub extern "js" fn IDBIndex::from_js_value_opt(v : JsValue) -> IDBIndex? =
+  #| (v) => (v instanceof IDBIndex) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IDBIndex (checked with instanceof)
+pub extern "js" fn JsValue::as_idb_index(self : JsValue) -> IDBIndex? =
+  #| (self) => (self instanceof IDBIndex) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IDBIndex (unchecked)
+pub extern "js" fn JsValue::to_idb_index(self : JsValue) -> IDBIndex =
+  #| (self) => self
+
+///|
 pub extern "js" fn IDBIndex::get_name(self : IDBIndex) -> String =
   #| (self) => self.name
 
@@ -923,6 +1067,26 @@ pub extern "js" fn IDBKeyRange::to_js_value(self : IDBKeyRange) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to IDBKeyRange (unchecked)
+pub extern "js" fn IDBKeyRange::from_js_value(v : JsValue) -> IDBKeyRange =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IDBKeyRange (checked with instanceof)
+pub extern "js" fn IDBKeyRange::from_js_value_opt(v : JsValue) -> IDBKeyRange? =
+  #| (v) => (v instanceof IDBKeyRange) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IDBKeyRange (checked with instanceof)
+pub extern "js" fn JsValue::as_idb_key_range(self : JsValue) -> IDBKeyRange? =
+  #| (self) => (self instanceof IDBKeyRange) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IDBKeyRange (unchecked)
+pub extern "js" fn JsValue::to_idb_key_range(self : JsValue) -> IDBKeyRange =
+  #| (self) => self
+
+///|
 pub extern "js" fn IDBKeyRange::get_lower(self : IDBKeyRange) -> JsValue =
   #| (self) => self.lower
 
@@ -981,6 +1145,26 @@ pub extern "js" fn IDBRecord::to_js_value(self : IDBRecord) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to IDBRecord (unchecked)
+pub extern "js" fn IDBRecord::from_js_value(v : JsValue) -> IDBRecord =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IDBRecord (checked with instanceof)
+pub extern "js" fn IDBRecord::from_js_value_opt(v : JsValue) -> IDBRecord? =
+  #| (v) => (v instanceof IDBRecord) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IDBRecord (checked with instanceof)
+pub extern "js" fn JsValue::as_idb_record(self : JsValue) -> IDBRecord? =
+  #| (self) => (self instanceof IDBRecord) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IDBRecord (unchecked)
+pub extern "js" fn JsValue::to_idb_record(self : JsValue) -> IDBRecord =
+  #| (self) => self
+
+///|
 pub extern "js" fn IDBRecord::get_key(self : IDBRecord) -> JsValue =
   #| (self) => self.key
 
@@ -999,6 +1183,32 @@ pub type IDBCursor
 ///|
 pub extern "js" fn IDBCursor::to_js_value(self : IDBCursor) -> JsValue =
   #| (self) => self
+
+///|
+/// Cast JsValue to IDBCursor (unchecked)
+pub extern "js" fn IDBCursor::from_js_value(v : JsValue) -> IDBCursor =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IDBCursor (checked with instanceof)
+pub extern "js" fn IDBCursor::from_js_value_opt(v : JsValue) -> IDBCursor? =
+  #| (v) => (v instanceof IDBCursor) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IDBCursor (checked with instanceof)
+pub extern "js" fn JsValue::as_idb_cursor(self : JsValue) -> IDBCursor? =
+  #| (self) => (self instanceof IDBCursor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IDBCursor (unchecked)
+pub extern "js" fn JsValue::to_idb_cursor(self : JsValue) -> IDBCursor =
+  #| (self) => self
+
+///|
+pub extern "js" fn IDBCursor::as_idb_cursor_with_value(
+  self : IDBCursor,
+) -> IDBCursorWithValue? =
+  #| (self) => (self instanceof IDBCursorWithValue) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn IDBCursor::get_source(
@@ -1069,75 +1279,38 @@ pub extern "js" fn IDBCursorWithValue::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn IDBCursorWithValue::get_source(
-  self : IDBCursorWithValue,
-) -> IDBObjectStoreOrIDBIndex =
-  #| (self) => self.source
+/// Cast JsValue to IDBCursorWithValue (unchecked)
+pub extern "js" fn IDBCursorWithValue::from_js_value(
+  v : JsValue,
+) -> IDBCursorWithValue =
+  #| (v) => v
 
 ///|
-pub extern "js" fn IDBCursorWithValue::get_direction(
-  self : IDBCursorWithValue,
-) -> IDBCursorDirection =
-  #| (self) => self.direction
+/// Safely cast JsValue to IDBCursorWithValue (checked with instanceof)
+pub extern "js" fn IDBCursorWithValue::from_js_value_opt(
+  v : JsValue,
+) -> IDBCursorWithValue? =
+  #| (v) => (v instanceof IDBCursorWithValue) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn IDBCursorWithValue::get_key(
-  self : IDBCursorWithValue,
-) -> JsValue =
-  #| (self) => self.key
+/// Safely cast JsValue to IDBCursorWithValue (checked with instanceof)
+pub extern "js" fn JsValue::as_idb_cursor_with_value(
+  self : JsValue,
+) -> IDBCursorWithValue? =
+  #| (self) => (self instanceof IDBCursorWithValue) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn IDBCursorWithValue::get_primary_key(
-  self : IDBCursorWithValue,
-) -> JsValue =
-  #| (self) => self.primaryKey
+/// Cast JsValue to IDBCursorWithValue (unchecked)
+pub extern "js" fn JsValue::to_idb_cursor_with_value(
+  self : JsValue,
+) -> IDBCursorWithValue =
+  #| (self) => self
 
 ///|
-pub extern "js" fn IDBCursorWithValue::get_request(
+pub extern "js" fn IDBCursorWithValue::to_idb_cursor(
   self : IDBCursorWithValue,
-) -> IDBRequest =
-  #| (self) => self.request
-
-///|
-pub extern "js" fn IDBCursorWithValue::advance(
-  self : IDBCursorWithValue,
-  count : Int,
-) -> Unit =
-  #| (self, count) => self.advance(count)
-
-///|
-pub extern "js" fn IDBCursorWithValue::continue_(
-  self : IDBCursorWithValue,
-) -> Unit =
-  #| (self) => self.continue()
-
-///|
-pub extern "js" fn IDBCursorWithValue::continue__with_key(
-  self : IDBCursorWithValue,
-  key : JsValue,
-) -> Unit =
-  #| (self, key) => self.continue(key)
-
-///|
-pub extern "js" fn IDBCursorWithValue::continue_primary_key(
-  self : IDBCursorWithValue,
-  key : JsValue,
-  primary_key : JsValue,
-) -> Unit =
-  #| (self, key, primary_key) => self.continuePrimaryKey(key, primary_key)
-
-///|
-pub extern "js" fn IDBCursorWithValue::update(
-  self : IDBCursorWithValue,
-  value : JsValue,
-) -> IDBRequest =
-  #| (self, value) => self.update(value)
-
-///|
-pub extern "js" fn IDBCursorWithValue::delete(
-  self : IDBCursorWithValue,
-) -> IDBRequest =
-  #| (self) => self.delete()
+) -> IDBCursor =
+  #| (self) => self
 
 ///|
 pub extern "js" fn IDBCursorWithValue::get_value(
@@ -1153,6 +1326,38 @@ pub type IDBTransaction
 pub extern "js" fn IDBTransaction::to_js_value(
   self : IDBTransaction,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to IDBTransaction (unchecked)
+pub extern "js" fn IDBTransaction::from_js_value(v : JsValue) -> IDBTransaction =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IDBTransaction (checked with instanceof)
+pub extern "js" fn IDBTransaction::from_js_value_opt(
+  v : JsValue,
+) -> IDBTransaction? =
+  #| (v) => (v instanceof IDBTransaction) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IDBTransaction (checked with instanceof)
+pub extern "js" fn JsValue::as_idb_transaction(
+  self : JsValue,
+) -> IDBTransaction? =
+  #| (self) => (self instanceof IDBTransaction) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IDBTransaction (unchecked)
+pub extern "js" fn JsValue::to_idb_transaction(
+  self : JsValue,
+) -> IDBTransaction =
+  #| (self) => self
+
+///|
+pub extern "js" fn IDBTransaction::to_event_target(
+  self : IDBTransaction,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -1181,7 +1386,7 @@ pub extern "js" fn IDBTransaction::get_db(self : IDBTransaction) -> IDBDatabase 
 pub extern "js" fn IDBTransaction::get_error(
   self : IDBTransaction,
 ) -> DOMException? =
-  #| (self) => self.error
+  #| (self) => { const v = self.error; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn IDBTransaction::object_store(

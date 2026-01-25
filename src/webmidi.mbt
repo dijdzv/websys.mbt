@@ -179,11 +179,33 @@ pub extern "js" fn MIDIInputMap::to_js_value(self : MIDIInputMap) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to MIDIInputMap (unchecked)
+pub extern "js" fn MIDIInputMap::from_js_value(v : JsValue) -> MIDIInputMap =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MIDIInputMap (checked with instanceof)
+pub extern "js" fn MIDIInputMap::from_js_value_opt(
+  v : JsValue,
+) -> MIDIInputMap? =
+  #| (v) => (v instanceof MIDIInputMap) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MIDIInputMap (checked with instanceof)
+pub extern "js" fn JsValue::as_midi_input_map(self : JsValue) -> MIDIInputMap? =
+  #| (self) => (self instanceof MIDIInputMap) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MIDIInputMap (unchecked)
+pub extern "js" fn JsValue::to_midi_input_map(self : JsValue) -> MIDIInputMap =
+  #| (self) => self
+
+///|
 pub extern "js" fn MIDIInputMap::get(
   self : MIDIInputMap,
   key : String,
 ) -> MIDIInput? =
-  #| (self, key) => self.get(key)
+  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn MIDIInputMap::has(self : MIDIInputMap, key : String) -> Bool =
@@ -198,11 +220,35 @@ pub extern "js" fn MIDIOutputMap::to_js_value(self : MIDIOutputMap) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to MIDIOutputMap (unchecked)
+pub extern "js" fn MIDIOutputMap::from_js_value(v : JsValue) -> MIDIOutputMap =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MIDIOutputMap (checked with instanceof)
+pub extern "js" fn MIDIOutputMap::from_js_value_opt(
+  v : JsValue,
+) -> MIDIOutputMap? =
+  #| (v) => (v instanceof MIDIOutputMap) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MIDIOutputMap (checked with instanceof)
+pub extern "js" fn JsValue::as_midi_output_map(
+  self : JsValue,
+) -> MIDIOutputMap? =
+  #| (self) => (self instanceof MIDIOutputMap) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MIDIOutputMap (unchecked)
+pub extern "js" fn JsValue::to_midi_output_map(self : JsValue) -> MIDIOutputMap =
+  #| (self) => self
+
+///|
 pub extern "js" fn MIDIOutputMap::get(
   self : MIDIOutputMap,
   key : String,
 ) -> MIDIOutput? =
-  #| (self, key) => self.get(key)
+  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn MIDIOutputMap::has(
@@ -217,6 +263,32 @@ pub type MIDIAccess
 
 ///|
 pub extern "js" fn MIDIAccess::to_js_value(self : MIDIAccess) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to MIDIAccess (unchecked)
+pub extern "js" fn MIDIAccess::from_js_value(v : JsValue) -> MIDIAccess =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MIDIAccess (checked with instanceof)
+pub extern "js" fn MIDIAccess::from_js_value_opt(v : JsValue) -> MIDIAccess? =
+  #| (v) => (v instanceof MIDIAccess) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MIDIAccess (checked with instanceof)
+pub extern "js" fn JsValue::as_midi_access(self : JsValue) -> MIDIAccess? =
+  #| (self) => (self instanceof MIDIAccess) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MIDIAccess (unchecked)
+pub extern "js" fn JsValue::to_midi_access(self : JsValue) -> MIDIAccess =
+  #| (self) => self
+
+///|
+pub extern "js" fn MIDIAccess::to_event_target(
+  self : MIDIAccess,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -253,16 +325,48 @@ pub extern "js" fn MIDIPort::to_js_value(self : MIDIPort) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to MIDIPort (unchecked)
+pub extern "js" fn MIDIPort::from_js_value(v : JsValue) -> MIDIPort =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MIDIPort (checked with instanceof)
+pub extern "js" fn MIDIPort::from_js_value_opt(v : JsValue) -> MIDIPort? =
+  #| (v) => (v instanceof MIDIPort) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MIDIPort (checked with instanceof)
+pub extern "js" fn JsValue::as_midi_port(self : JsValue) -> MIDIPort? =
+  #| (self) => (self instanceof MIDIPort) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MIDIPort (unchecked)
+pub extern "js" fn JsValue::to_midi_port(self : JsValue) -> MIDIPort =
+  #| (self) => self
+
+///|
+pub extern "js" fn MIDIPort::to_event_target(self : MIDIPort) -> EventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn MIDIPort::as_midi_input(self : MIDIPort) -> MIDIInput? =
+  #| (self) => (self instanceof MIDIInput) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn MIDIPort::as_midi_output(self : MIDIPort) -> MIDIOutput? =
+  #| (self) => (self instanceof MIDIOutput) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn MIDIPort::get_id(self : MIDIPort) -> String =
   #| (self) => self.id
 
 ///|
 pub extern "js" fn MIDIPort::get_manufacturer(self : MIDIPort) -> String? =
-  #| (self) => self.manufacturer
+  #| (self) => { const v = self.manufacturer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn MIDIPort::get_name(self : MIDIPort) -> String? =
-  #| (self) => self.name
+  #| (self) => { const v = self.name; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn MIDIPort::get_type(self : MIDIPort) -> MIDIPortType =
@@ -270,7 +374,7 @@ pub extern "js" fn MIDIPort::get_type(self : MIDIPort) -> MIDIPortType =
 
 ///|
 pub extern "js" fn MIDIPort::get_version(self : MIDIPort) -> String? =
-  #| (self) => self.version
+  #| (self) => { const v = self.version; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn MIDIPort::get_state(self : MIDIPort) -> MIDIPortDeviceState =
@@ -310,57 +414,32 @@ pub extern "js" fn MIDIInput::to_js_value(self : MIDIInput) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn MIDIInput::get_id(self : MIDIInput) -> String =
-  #| (self) => self.id
+/// Cast JsValue to MIDIInput (unchecked)
+pub extern "js" fn MIDIInput::from_js_value(v : JsValue) -> MIDIInput =
+  #| (v) => v
 
 ///|
-pub extern "js" fn MIDIInput::get_manufacturer(self : MIDIInput) -> String? =
-  #| (self) => self.manufacturer
+/// Safely cast JsValue to MIDIInput (checked with instanceof)
+pub extern "js" fn MIDIInput::from_js_value_opt(v : JsValue) -> MIDIInput? =
+  #| (v) => (v instanceof MIDIInput) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn MIDIInput::get_name(self : MIDIInput) -> String? =
-  #| (self) => self.name
+/// Safely cast JsValue to MIDIInput (checked with instanceof)
+pub extern "js" fn JsValue::as_midi_input(self : JsValue) -> MIDIInput? =
+  #| (self) => (self instanceof MIDIInput) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn MIDIInput::get_type(self : MIDIInput) -> MIDIPortType =
-  #| (self) => self.type
+/// Cast JsValue to MIDIInput (unchecked)
+pub extern "js" fn JsValue::to_midi_input(self : JsValue) -> MIDIInput =
+  #| (self) => self
 
 ///|
-pub extern "js" fn MIDIInput::get_version(self : MIDIInput) -> String? =
-  #| (self) => self.version
+pub extern "js" fn MIDIInput::to_midi_port(self : MIDIInput) -> MIDIPort =
+  #| (self) => self
 
 ///|
-pub extern "js" fn MIDIInput::get_state(
-  self : MIDIInput,
-) -> MIDIPortDeviceState =
-  #| (self) => self.state
-
-///|
-pub extern "js" fn MIDIInput::get_connection(
-  self : MIDIInput,
-) -> MIDIPortConnectionState =
-  #| (self) => self.connection
-
-///|
-pub extern "js" fn MIDIInput::get_onstatechange(
-  self : MIDIInput,
-) -> EventHandler =
-  #| (self) => self.onstatechange
-
-///|
-pub extern "js" fn MIDIInput::set_onstatechange(
-  self : MIDIInput,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onstatechange = value }
-
-///|
-pub extern "js" fn MIDIInput::open(self : MIDIInput) -> Promise[MIDIPort] =
-  #| (self) => self.open()
-
-///|
-pub extern "js" fn MIDIInput::close(self : MIDIInput) -> Promise[MIDIPort] =
-  #| (self) => self.close()
+pub extern "js" fn MIDIInput::to_event_target(self : MIDIInput) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn MIDIInput::get_onmidimessage(
@@ -384,57 +463,34 @@ pub extern "js" fn MIDIOutput::to_js_value(self : MIDIOutput) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn MIDIOutput::get_id(self : MIDIOutput) -> String =
-  #| (self) => self.id
+/// Cast JsValue to MIDIOutput (unchecked)
+pub extern "js" fn MIDIOutput::from_js_value(v : JsValue) -> MIDIOutput =
+  #| (v) => v
 
 ///|
-pub extern "js" fn MIDIOutput::get_manufacturer(self : MIDIOutput) -> String? =
-  #| (self) => self.manufacturer
+/// Safely cast JsValue to MIDIOutput (checked with instanceof)
+pub extern "js" fn MIDIOutput::from_js_value_opt(v : JsValue) -> MIDIOutput? =
+  #| (v) => (v instanceof MIDIOutput) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn MIDIOutput::get_name(self : MIDIOutput) -> String? =
-  #| (self) => self.name
+/// Safely cast JsValue to MIDIOutput (checked with instanceof)
+pub extern "js" fn JsValue::as_midi_output(self : JsValue) -> MIDIOutput? =
+  #| (self) => (self instanceof MIDIOutput) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn MIDIOutput::get_type(self : MIDIOutput) -> MIDIPortType =
-  #| (self) => self.type
+/// Cast JsValue to MIDIOutput (unchecked)
+pub extern "js" fn JsValue::to_midi_output(self : JsValue) -> MIDIOutput =
+  #| (self) => self
 
 ///|
-pub extern "js" fn MIDIOutput::get_version(self : MIDIOutput) -> String? =
-  #| (self) => self.version
+pub extern "js" fn MIDIOutput::to_midi_port(self : MIDIOutput) -> MIDIPort =
+  #| (self) => self
 
 ///|
-pub extern "js" fn MIDIOutput::get_state(
+pub extern "js" fn MIDIOutput::to_event_target(
   self : MIDIOutput,
-) -> MIDIPortDeviceState =
-  #| (self) => self.state
-
-///|
-pub extern "js" fn MIDIOutput::get_connection(
-  self : MIDIOutput,
-) -> MIDIPortConnectionState =
-  #| (self) => self.connection
-
-///|
-pub extern "js" fn MIDIOutput::get_onstatechange(
-  self : MIDIOutput,
-) -> EventHandler =
-  #| (self) => self.onstatechange
-
-///|
-pub extern "js" fn MIDIOutput::set_onstatechange(
-  self : MIDIOutput,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onstatechange = value }
-
-///|
-pub extern "js" fn MIDIOutput::open(self : MIDIOutput) -> Promise[MIDIPort] =
-  #| (self) => self.open()
-
-///|
-pub extern "js" fn MIDIOutput::close(self : MIDIOutput) -> Promise[MIDIPort] =
-  #| (self) => self.close()
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn MIDIOutput::send(
@@ -466,6 +522,38 @@ pub extern "js" fn MIDIMessageEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to MIDIMessageEvent (unchecked)
+pub extern "js" fn MIDIMessageEvent::from_js_value(
+  v : JsValue,
+) -> MIDIMessageEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MIDIMessageEvent (checked with instanceof)
+pub extern "js" fn MIDIMessageEvent::from_js_value_opt(
+  v : JsValue,
+) -> MIDIMessageEvent? =
+  #| (v) => (v instanceof MIDIMessageEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MIDIMessageEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_midi_message_event(
+  self : JsValue,
+) -> MIDIMessageEvent? =
+  #| (self) => (self instanceof MIDIMessageEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MIDIMessageEvent (unchecked)
+pub extern "js" fn JsValue::to_midi_message_event(
+  self : JsValue,
+) -> MIDIMessageEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn MIDIMessageEvent::to_event(self : MIDIMessageEvent) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn MIDIMessageEvent::new(
   type_ : String,
   event_init_dict : MIDIMessageEventInit,
@@ -476,7 +564,7 @@ pub extern "js" fn MIDIMessageEvent::new(
 pub extern "js" fn MIDIMessageEvent::get_data(
   self : MIDIMessageEvent,
 ) -> Uint8Array? =
-  #| (self) => self.data
+  #| (self) => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// MIDIConnectionEvent interface
@@ -486,6 +574,40 @@ pub type MIDIConnectionEvent
 pub extern "js" fn MIDIConnectionEvent::to_js_value(
   self : MIDIConnectionEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to MIDIConnectionEvent (unchecked)
+pub extern "js" fn MIDIConnectionEvent::from_js_value(
+  v : JsValue,
+) -> MIDIConnectionEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MIDIConnectionEvent (checked with instanceof)
+pub extern "js" fn MIDIConnectionEvent::from_js_value_opt(
+  v : JsValue,
+) -> MIDIConnectionEvent? =
+  #| (v) => (v instanceof MIDIConnectionEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MIDIConnectionEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_midi_connection_event(
+  self : JsValue,
+) -> MIDIConnectionEvent? =
+  #| (self) => (self instanceof MIDIConnectionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MIDIConnectionEvent (unchecked)
+pub extern "js" fn JsValue::to_midi_connection_event(
+  self : JsValue,
+) -> MIDIConnectionEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn MIDIConnectionEvent::to_event(
+  self : MIDIConnectionEvent,
+) -> Event =
   #| (self) => self
 
 ///|
@@ -499,4 +621,4 @@ pub extern "js" fn MIDIConnectionEvent::new(
 pub extern "js" fn MIDIConnectionEvent::get_port(
   self : MIDIConnectionEvent,
 ) -> MIDIPort? =
-  #| (self) => self.port
+  #| (self) => { const v = self.port; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }

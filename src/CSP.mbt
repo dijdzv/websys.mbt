@@ -151,6 +151,40 @@ pub extern "js" fn SecurityPolicyViolationEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SecurityPolicyViolationEvent (unchecked)
+pub extern "js" fn SecurityPolicyViolationEvent::from_js_value(
+  v : JsValue,
+) -> SecurityPolicyViolationEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SecurityPolicyViolationEvent (checked with instanceof)
+pub extern "js" fn SecurityPolicyViolationEvent::from_js_value_opt(
+  v : JsValue,
+) -> SecurityPolicyViolationEvent? =
+  #| (v) => (v instanceof SecurityPolicyViolationEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SecurityPolicyViolationEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_security_policy_violation_event(
+  self : JsValue,
+) -> SecurityPolicyViolationEvent? =
+  #| (self) => (self instanceof SecurityPolicyViolationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SecurityPolicyViolationEvent (unchecked)
+pub extern "js" fn JsValue::to_security_policy_violation_event(
+  self : JsValue,
+) -> SecurityPolicyViolationEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn SecurityPolicyViolationEvent::to_event(
+  self : SecurityPolicyViolationEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn SecurityPolicyViolationEvent::new(
   type_ : String,
   event_init_dict : SecurityPolicyViolationEventInit,
@@ -158,7 +192,7 @@ pub extern "js" fn SecurityPolicyViolationEvent::new(
   #| (type_, event_init_dict) => new SecurityPolicyViolationEvent(type_, event_init_dict)
 
 ///|
-pub extern "js" fn SecurityPolicyViolationEvent::get_document_u_r_i(
+pub extern "js" fn SecurityPolicyViolationEvent::get_document_uri(
   self : SecurityPolicyViolationEvent,
 ) -> String =
   #| (self) => self.documentURI
@@ -170,7 +204,7 @@ pub extern "js" fn SecurityPolicyViolationEvent::get_referrer(
   #| (self) => self.referrer
 
 ///|
-pub extern "js" fn SecurityPolicyViolationEvent::get_blocked_u_r_i(
+pub extern "js" fn SecurityPolicyViolationEvent::get_blocked_uri(
   self : SecurityPolicyViolationEvent,
 ) -> String =
   #| (self) => self.blockedURI

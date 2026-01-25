@@ -1390,6 +1390,40 @@ pub extern "js" fn PublicKeyCredential::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PublicKeyCredential (unchecked)
+pub extern "js" fn PublicKeyCredential::from_js_value(
+  v : JsValue,
+) -> PublicKeyCredential =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PublicKeyCredential (checked with instanceof)
+pub extern "js" fn PublicKeyCredential::from_js_value_opt(
+  v : JsValue,
+) -> PublicKeyCredential? =
+  #| (v) => (v instanceof PublicKeyCredential) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PublicKeyCredential (checked with instanceof)
+pub extern "js" fn JsValue::as_public_key_credential(
+  self : JsValue,
+) -> PublicKeyCredential? =
+  #| (self) => (self instanceof PublicKeyCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PublicKeyCredential (unchecked)
+pub extern "js" fn JsValue::to_public_key_credential(
+  self : JsValue,
+) -> PublicKeyCredential =
+  #| (self) => self
+
+///|
+pub extern "js" fn PublicKeyCredential::to_credential(
+  self : PublicKeyCredential,
+) -> Credential =
+  #| (self) => self
+
+///|
 pub extern "js" fn PublicKeyCredential::get_raw_id(
   self : PublicKeyCredential,
 ) -> ArrayBuffer =
@@ -1405,7 +1439,7 @@ pub extern "js" fn PublicKeyCredential::get_response(
 pub extern "js" fn PublicKeyCredential::get_authenticator_attachment(
   self : PublicKeyCredential,
 ) -> String? =
-  #| (self) => self.authenticatorAttachment
+  #| (self) => { const v = self.authenticatorAttachment; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PublicKeyCredential::get_client_extension_results(
@@ -1420,7 +1454,7 @@ pub extern "js" fn PublicKeyCredential::is_conditional_mediation_available() -> 
   #| () => PublicKeyCredential.isConditionalMediationAvailable()
 
 ///|
-pub extern "js" fn PublicKeyCredential::to_j_s_o_n(
+pub extern "js" fn PublicKeyCredential::to_json(
   self : PublicKeyCredential,
 ) -> PublicKeyCredentialJSON =
   #| (self) => self.toJSON()
@@ -1438,13 +1472,13 @@ pub extern "js" fn PublicKeyCredential::get_client_capabilities() -> Promise[
   #| () => PublicKeyCredential.getClientCapabilities()
 
 ///|
-pub extern "js" fn PublicKeyCredential::parse_creation_options_from_j_s_o_n(
+pub extern "js" fn PublicKeyCredential::parse_creation_options_from_json(
   options : PublicKeyCredentialCreationOptionsJSON,
 ) -> PublicKeyCredentialCreationOptions =
   #| (options) => PublicKeyCredential.parseCreationOptionsFromJSON(options)
 
 ///|
-pub extern "js" fn PublicKeyCredential::parse_request_options_from_j_s_o_n(
+pub extern "js" fn PublicKeyCredential::parse_request_options_from_json(
   options : PublicKeyCredentialRequestOptionsJSON,
 ) -> PublicKeyCredentialRequestOptions =
   #| (options) => PublicKeyCredential.parseRequestOptionsFromJSON(options)
@@ -1478,7 +1512,47 @@ pub extern "js" fn AuthenticatorResponse::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn AuthenticatorResponse::get_client_data_j_s_o_n(
+/// Cast JsValue to AuthenticatorResponse (unchecked)
+pub extern "js" fn AuthenticatorResponse::from_js_value(
+  v : JsValue,
+) -> AuthenticatorResponse =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AuthenticatorResponse (checked with instanceof)
+pub extern "js" fn AuthenticatorResponse::from_js_value_opt(
+  v : JsValue,
+) -> AuthenticatorResponse? =
+  #| (v) => (v instanceof AuthenticatorResponse) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AuthenticatorResponse (checked with instanceof)
+pub extern "js" fn JsValue::as_authenticator_response(
+  self : JsValue,
+) -> AuthenticatorResponse? =
+  #| (self) => (self instanceof AuthenticatorResponse) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AuthenticatorResponse (unchecked)
+pub extern "js" fn JsValue::to_authenticator_response(
+  self : JsValue,
+) -> AuthenticatorResponse =
+  #| (self) => self
+
+///|
+pub extern "js" fn AuthenticatorResponse::as_authenticator_attestation_response(
+  self : AuthenticatorResponse,
+) -> AuthenticatorAttestationResponse? =
+  #| (self) => (self instanceof AuthenticatorAttestationResponse) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AuthenticatorResponse::as_authenticator_assertion_response(
+  self : AuthenticatorResponse,
+) -> AuthenticatorAssertionResponse? =
+  #| (self) => (self instanceof AuthenticatorAssertionResponse) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AuthenticatorResponse::get_client_data_json(
   self : AuthenticatorResponse,
 ) -> ArrayBuffer =
   #| (self) => self.clientDataJSON
@@ -1494,10 +1568,38 @@ pub extern "js" fn AuthenticatorAttestationResponse::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn AuthenticatorAttestationResponse::get_client_data_j_s_o_n(
+/// Cast JsValue to AuthenticatorAttestationResponse (unchecked)
+pub extern "js" fn AuthenticatorAttestationResponse::from_js_value(
+  v : JsValue,
+) -> AuthenticatorAttestationResponse =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AuthenticatorAttestationResponse (checked with instanceof)
+pub extern "js" fn AuthenticatorAttestationResponse::from_js_value_opt(
+  v : JsValue,
+) -> AuthenticatorAttestationResponse? =
+  #| (v) => (v instanceof AuthenticatorAttestationResponse) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AuthenticatorAttestationResponse (checked with instanceof)
+pub extern "js" fn JsValue::as_authenticator_attestation_response(
+  self : JsValue,
+) -> AuthenticatorAttestationResponse? =
+  #| (self) => (self instanceof AuthenticatorAttestationResponse) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AuthenticatorAttestationResponse (unchecked)
+pub extern "js" fn JsValue::to_authenticator_attestation_response(
+  self : JsValue,
+) -> AuthenticatorAttestationResponse =
+  #| (self) => self
+
+///|
+pub extern "js" fn AuthenticatorAttestationResponse::to_authenticator_response(
   self : AuthenticatorAttestationResponse,
-) -> ArrayBuffer =
-  #| (self) => self.clientDataJSON
+) -> AuthenticatorResponse =
+  #| (self) => self
 
 ///|
 pub extern "js" fn AuthenticatorAttestationResponse::get_attestation_object(
@@ -1521,7 +1623,7 @@ pub extern "js" fn AuthenticatorAttestationResponse::get_authenticator_data(
 pub extern "js" fn AuthenticatorAttestationResponse::get_public_key(
   self : AuthenticatorAttestationResponse,
 ) -> ArrayBuffer? =
-  #| (self) => self.getPublicKey()
+  #| (self) => { const v = self.getPublicKey(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn AuthenticatorAttestationResponse::get_public_key_algorithm(
@@ -1540,10 +1642,38 @@ pub extern "js" fn AuthenticatorAssertionResponse::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn AuthenticatorAssertionResponse::get_client_data_j_s_o_n(
+/// Cast JsValue to AuthenticatorAssertionResponse (unchecked)
+pub extern "js" fn AuthenticatorAssertionResponse::from_js_value(
+  v : JsValue,
+) -> AuthenticatorAssertionResponse =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AuthenticatorAssertionResponse (checked with instanceof)
+pub extern "js" fn AuthenticatorAssertionResponse::from_js_value_opt(
+  v : JsValue,
+) -> AuthenticatorAssertionResponse? =
+  #| (v) => (v instanceof AuthenticatorAssertionResponse) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AuthenticatorAssertionResponse (checked with instanceof)
+pub extern "js" fn JsValue::as_authenticator_assertion_response(
+  self : JsValue,
+) -> AuthenticatorAssertionResponse? =
+  #| (self) => (self instanceof AuthenticatorAssertionResponse) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AuthenticatorAssertionResponse (unchecked)
+pub extern "js" fn JsValue::to_authenticator_assertion_response(
+  self : JsValue,
+) -> AuthenticatorAssertionResponse =
+  #| (self) => self
+
+///|
+pub extern "js" fn AuthenticatorAssertionResponse::to_authenticator_response(
   self : AuthenticatorAssertionResponse,
-) -> ArrayBuffer =
-  #| (self) => self.clientDataJSON
+) -> AuthenticatorResponse =
+  #| (self) => self
 
 ///|
 pub extern "js" fn AuthenticatorAssertionResponse::get_authenticator_data(
@@ -1561,4 +1691,4 @@ pub extern "js" fn AuthenticatorAssertionResponse::get_signature(
 pub extern "js" fn AuthenticatorAssertionResponse::get_user_handle(
   self : AuthenticatorAssertionResponse,
 ) -> ArrayBuffer? =
-  #| (self) => self.userHandle
+  #| (self) => { const v = self.userHandle; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }

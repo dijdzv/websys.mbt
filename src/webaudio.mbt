@@ -410,10 +410,10 @@ pub extern "js" fn AudioWorkletProcessCallback::from_fn(
 ///|
 /// AudioContextOptions dictionary
 pub struct AudioContextOptions {
-  latencyHint : JsValue?
+  latencyHint : AudioContextLatencyCategoryOrDouble?
   sampleRate : Double?
-  sinkId : JsValue?
-  renderSizeHint : JsValue?
+  sinkId : StringOrAudioSinkOptions?
+  renderSizeHint : AudioContextRenderSizeCategoryOrInt?
 }
 
 ///|
@@ -485,7 +485,7 @@ pub struct OfflineAudioContextOptions {
   numberOfChannels : Int?
   length : Int
   sampleRate : Double
-  renderSizeHint : JsValue?
+  renderSizeHint : AudioContextRenderSizeCategoryOrInt?
 }
 
 ///|
@@ -1368,6 +1368,52 @@ pub extern "js" fn BaseAudioContext::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BaseAudioContext (unchecked)
+pub extern "js" fn BaseAudioContext::from_js_value(
+  v : JsValue,
+) -> BaseAudioContext =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BaseAudioContext (checked with instanceof)
+pub extern "js" fn BaseAudioContext::from_js_value_opt(
+  v : JsValue,
+) -> BaseAudioContext? =
+  #| (v) => (v instanceof BaseAudioContext) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BaseAudioContext (checked with instanceof)
+pub extern "js" fn JsValue::as_base_audio_context(
+  self : JsValue,
+) -> BaseAudioContext? =
+  #| (self) => (self instanceof BaseAudioContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BaseAudioContext (unchecked)
+pub extern "js" fn JsValue::to_base_audio_context(
+  self : JsValue,
+) -> BaseAudioContext =
+  #| (self) => self
+
+///|
+pub extern "js" fn BaseAudioContext::to_event_target(
+  self : BaseAudioContext,
+) -> EventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn BaseAudioContext::as_audio_context(
+  self : BaseAudioContext,
+) -> AudioContext? =
+  #| (self) => (self instanceof AudioContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn BaseAudioContext::as_offline_audio_context(
+  self : BaseAudioContext,
+) -> OfflineAudioContext? =
+  #| (self) => (self instanceof OfflineAudioContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn BaseAudioContext::get_destination(
   self : BaseAudioContext,
 ) -> AudioDestinationNode =
@@ -1513,7 +1559,7 @@ pub extern "js" fn BaseAudioContext::create_gain(
   #| (self) => self.createGain()
 
 ///|
-pub extern "js" fn BaseAudioContext::create_i_i_r_filter(
+pub extern "js" fn BaseAudioContext::create_iir_filter(
   self : BaseAudioContext,
   feedforward : Array[Double],
   feedback : Array[Double],
@@ -1601,223 +1647,38 @@ pub extern "js" fn AudioContext::to_js_value(self : AudioContext) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn AudioContext::get_destination(
+/// Cast JsValue to AudioContext (unchecked)
+pub extern "js" fn AudioContext::from_js_value(v : JsValue) -> AudioContext =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioContext (checked with instanceof)
+pub extern "js" fn AudioContext::from_js_value_opt(
+  v : JsValue,
+) -> AudioContext? =
+  #| (v) => (v instanceof AudioContext) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioContext (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_context(self : JsValue) -> AudioContext? =
+  #| (self) => (self instanceof AudioContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioContext (unchecked)
+pub extern "js" fn JsValue::to_audio_context(self : JsValue) -> AudioContext =
+  #| (self) => self
+
+///|
+pub extern "js" fn AudioContext::to_base_audio_context(
   self : AudioContext,
-) -> AudioDestinationNode =
-  #| (self) => self.destination
+) -> BaseAudioContext =
+  #| (self) => self
 
 ///|
-pub extern "js" fn AudioContext::get_sample_rate(self : AudioContext) -> Double =
-  #| (self) => self.sampleRate
-
-///|
-pub extern "js" fn AudioContext::get_current_time(
+pub extern "js" fn AudioContext::to_event_target(
   self : AudioContext,
-) -> Double =
-  #| (self) => self.currentTime
-
-///|
-pub extern "js" fn AudioContext::get_listener(
-  self : AudioContext,
-) -> AudioListener =
-  #| (self) => self.listener
-
-///|
-pub extern "js" fn AudioContext::get_state(
-  self : AudioContext,
-) -> AudioContextState =
-  #| (self) => self.state
-
-///|
-pub extern "js" fn AudioContext::get_render_quantum_size(
-  self : AudioContext,
-) -> Int =
-  #| (self) => self.renderQuantumSize
-
-///|
-pub extern "js" fn AudioContext::get_audio_worklet(
-  self : AudioContext,
-) -> AudioWorklet =
-  #| (self) => self.audioWorklet
-
-///|
-pub extern "js" fn AudioContext::get_onstatechange(
-  self : AudioContext,
-) -> EventHandler =
-  #| (self) => self.onstatechange
-
-///|
-pub extern "js" fn AudioContext::set_onstatechange(
-  self : AudioContext,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onstatechange = value }
-
-///|
-pub extern "js" fn AudioContext::create_analyser(
-  self : AudioContext,
-) -> AnalyserNode =
-  #| (self) => self.createAnalyser()
-
-///|
-pub extern "js" fn AudioContext::create_biquad_filter(
-  self : AudioContext,
-) -> BiquadFilterNode =
-  #| (self) => self.createBiquadFilter()
-
-///|
-pub extern "js" fn AudioContext::create_buffer(
-  self : AudioContext,
-  number_of_channels : Int,
-  length : Int,
-  sample_rate : Double,
-) -> AudioBuffer =
-  #| (self, number_of_channels, length, sample_rate) => self.createBuffer(number_of_channels, length, sample_rate)
-
-///|
-pub extern "js" fn AudioContext::create_buffer_source(
-  self : AudioContext,
-) -> AudioBufferSourceNode =
-  #| (self) => self.createBufferSource()
-
-///|
-pub extern "js" fn AudioContext::create_channel_merger(
-  self : AudioContext,
-) -> ChannelMergerNode =
-  #| (self) => self.createChannelMerger()
-
-///|
-pub extern "js" fn AudioContext::create_channel_merger_with_number_of_inputs(
-  self : AudioContext,
-  number_of_inputs : Int,
-) -> ChannelMergerNode =
-  #| (self, number_of_inputs) => self.createChannelMerger(number_of_inputs)
-
-///|
-pub extern "js" fn AudioContext::create_channel_splitter(
-  self : AudioContext,
-) -> ChannelSplitterNode =
-  #| (self) => self.createChannelSplitter()
-
-///|
-pub extern "js" fn AudioContext::create_channel_splitter_with_number_of_outputs(
-  self : AudioContext,
-  number_of_outputs : Int,
-) -> ChannelSplitterNode =
-  #| (self, number_of_outputs) => self.createChannelSplitter(number_of_outputs)
-
-///|
-pub extern "js" fn AudioContext::create_constant_source(
-  self : AudioContext,
-) -> ConstantSourceNode =
-  #| (self) => self.createConstantSource()
-
-///|
-pub extern "js" fn AudioContext::create_convolver(
-  self : AudioContext,
-) -> ConvolverNode =
-  #| (self) => self.createConvolver()
-
-///|
-pub extern "js" fn AudioContext::create_delay(self : AudioContext) -> DelayNode =
-  #| (self) => self.createDelay()
-
-///|
-pub extern "js" fn AudioContext::create_delay_with_max_delay_time(
-  self : AudioContext,
-  max_delay_time : Double,
-) -> DelayNode =
-  #| (self, max_delay_time) => self.createDelay(max_delay_time)
-
-///|
-pub extern "js" fn AudioContext::create_dynamics_compressor(
-  self : AudioContext,
-) -> DynamicsCompressorNode =
-  #| (self) => self.createDynamicsCompressor()
-
-///|
-pub extern "js" fn AudioContext::create_gain(self : AudioContext) -> GainNode =
-  #| (self) => self.createGain()
-
-///|
-pub extern "js" fn AudioContext::create_i_i_r_filter(
-  self : AudioContext,
-  feedforward : Array[Double],
-  feedback : Array[Double],
-) -> IIRFilterNode =
-  #| (self, feedforward, feedback) => self.createIIRFilter(feedforward, feedback)
-
-///|
-pub extern "js" fn AudioContext::create_oscillator(
-  self : AudioContext,
-) -> OscillatorNode =
-  #| (self) => self.createOscillator()
-
-///|
-pub extern "js" fn AudioContext::create_panner(
-  self : AudioContext,
-) -> PannerNode =
-  #| (self) => self.createPanner()
-
-///|
-pub extern "js" fn AudioContext::create_periodic_wave(
-  self : AudioContext,
-  real : Array[Double],
-  imag : Array[Double],
-) -> PeriodicWave =
-  #| (self, real, imag) => self.createPeriodicWave(real, imag)
-
-///|
-pub extern "js" fn AudioContext::create_periodic_wave_with_constraints(
-  self : AudioContext,
-  real : Array[Double],
-  imag : Array[Double],
-  constraints : PeriodicWaveConstraints,
-) -> PeriodicWave =
-  #| (self, real, imag, constraints) => self.createPeriodicWave(real, imag, constraints)
-
-///|
-pub extern "js" fn AudioContext::create_script_processor(
-  self : AudioContext,
-) -> ScriptProcessorNode =
-  #| (self) => self.createScriptProcessor()
-
-///|
-pub extern "js" fn AudioContext::create_script_processor_with_number_of_output_channels(
-  self : AudioContext,
-  buffer_size : Int,
-  number_of_input_channels : Int,
-  number_of_output_channels : Int,
-) -> ScriptProcessorNode =
-  #| (self, buffer_size, number_of_input_channels, number_of_output_channels) => self.createScriptProcessor(buffer_size, number_of_input_channels, number_of_output_channels)
-
-///|
-pub extern "js" fn AudioContext::create_stereo_panner(
-  self : AudioContext,
-) -> StereoPannerNode =
-  #| (self) => self.createStereoPanner()
-
-///|
-pub extern "js" fn AudioContext::create_wave_shaper(
-  self : AudioContext,
-) -> WaveShaperNode =
-  #| (self) => self.createWaveShaper()
-
-///|
-pub extern "js" fn AudioContext::decode_audio_data(
-  self : AudioContext,
-  audio_data : ArrayBuffer,
-) -> Promise[AudioBuffer] =
-  #| (self, audio_data) => self.decodeAudioData(audio_data)
-
-///|
-pub extern "js" fn AudioContext::decode_audio_data_with_error_callback(
-  self : AudioContext,
-  audio_data : ArrayBuffer,
-  success_callback : DecodeSuccessCallback?,
-  error_callback : DecodeErrorCallback?,
-) -> Promise[AudioBuffer] =
-  #| (self, audio_data, success_callback, error_callback) => self.decodeAudioData(audio_data, success_callback, error_callback)
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn AudioContext::new(
@@ -1868,6 +1729,12 @@ pub extern "js" fn AudioContext::set_onerror(
   value : EventHandler,
 ) -> Unit =
   #| (self, value) => { self.onerror = value }
+
+///|
+pub extern "js" fn AudioContext::get_playback_stats(
+  self : AudioContext,
+) -> AudioPlaybackStats =
+  #| (self) => self.playbackStats
 
 ///|
 pub extern "js" fn AudioContext::get_output_timestamp(
@@ -1930,6 +1797,30 @@ pub extern "js" fn AudioSinkInfo::to_js_value(self : AudioSinkInfo) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to AudioSinkInfo (unchecked)
+pub extern "js" fn AudioSinkInfo::from_js_value(v : JsValue) -> AudioSinkInfo =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioSinkInfo (checked with instanceof)
+pub extern "js" fn AudioSinkInfo::from_js_value_opt(
+  v : JsValue,
+) -> AudioSinkInfo? =
+  #| (v) => (v instanceof AudioSinkInfo) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioSinkInfo (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_sink_info(
+  self : JsValue,
+) -> AudioSinkInfo? =
+  #| (self) => (self instanceof AudioSinkInfo) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioSinkInfo (unchecked)
+pub extern "js" fn JsValue::to_audio_sink_info(self : JsValue) -> AudioSinkInfo =
+  #| (self) => self
+
+///|
 pub extern "js" fn AudioSinkInfo::get_type(
   self : AudioSinkInfo,
 ) -> AudioSinkType =
@@ -1946,229 +1837,44 @@ pub extern "js" fn OfflineAudioContext::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn OfflineAudioContext::get_destination(
-  self : OfflineAudioContext,
-) -> AudioDestinationNode =
-  #| (self) => self.destination
+/// Cast JsValue to OfflineAudioContext (unchecked)
+pub extern "js" fn OfflineAudioContext::from_js_value(
+  v : JsValue,
+) -> OfflineAudioContext =
+  #| (v) => v
 
 ///|
-pub extern "js" fn OfflineAudioContext::get_sample_rate(
-  self : OfflineAudioContext,
-) -> Double =
-  #| (self) => self.sampleRate
+/// Safely cast JsValue to OfflineAudioContext (checked with instanceof)
+pub extern "js" fn OfflineAudioContext::from_js_value_opt(
+  v : JsValue,
+) -> OfflineAudioContext? =
+  #| (v) => (v instanceof OfflineAudioContext) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn OfflineAudioContext::get_current_time(
-  self : OfflineAudioContext,
-) -> Double =
-  #| (self) => self.currentTime
+/// Safely cast JsValue to OfflineAudioContext (checked with instanceof)
+pub extern "js" fn JsValue::as_offline_audio_context(
+  self : JsValue,
+) -> OfflineAudioContext? =
+  #| (self) => (self instanceof OfflineAudioContext) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn OfflineAudioContext::get_listener(
-  self : OfflineAudioContext,
-) -> AudioListener =
-  #| (self) => self.listener
+/// Cast JsValue to OfflineAudioContext (unchecked)
+pub extern "js" fn JsValue::to_offline_audio_context(
+  self : JsValue,
+) -> OfflineAudioContext =
+  #| (self) => self
 
 ///|
-pub extern "js" fn OfflineAudioContext::get_state(
+pub extern "js" fn OfflineAudioContext::to_base_audio_context(
   self : OfflineAudioContext,
-) -> AudioContextState =
-  #| (self) => self.state
+) -> BaseAudioContext =
+  #| (self) => self
 
 ///|
-pub extern "js" fn OfflineAudioContext::get_render_quantum_size(
+pub extern "js" fn OfflineAudioContext::to_event_target(
   self : OfflineAudioContext,
-) -> Int =
-  #| (self) => self.renderQuantumSize
-
-///|
-pub extern "js" fn OfflineAudioContext::get_audio_worklet(
-  self : OfflineAudioContext,
-) -> AudioWorklet =
-  #| (self) => self.audioWorklet
-
-///|
-pub extern "js" fn OfflineAudioContext::get_onstatechange(
-  self : OfflineAudioContext,
-) -> EventHandler =
-  #| (self) => self.onstatechange
-
-///|
-pub extern "js" fn OfflineAudioContext::set_onstatechange(
-  self : OfflineAudioContext,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onstatechange = value }
-
-///|
-pub extern "js" fn OfflineAudioContext::create_analyser(
-  self : OfflineAudioContext,
-) -> AnalyserNode =
-  #| (self) => self.createAnalyser()
-
-///|
-pub extern "js" fn OfflineAudioContext::create_biquad_filter(
-  self : OfflineAudioContext,
-) -> BiquadFilterNode =
-  #| (self) => self.createBiquadFilter()
-
-///|
-pub extern "js" fn OfflineAudioContext::create_buffer(
-  self : OfflineAudioContext,
-  number_of_channels : Int,
-  length : Int,
-  sample_rate : Double,
-) -> AudioBuffer =
-  #| (self, number_of_channels, length, sample_rate) => self.createBuffer(number_of_channels, length, sample_rate)
-
-///|
-pub extern "js" fn OfflineAudioContext::create_buffer_source(
-  self : OfflineAudioContext,
-) -> AudioBufferSourceNode =
-  #| (self) => self.createBufferSource()
-
-///|
-pub extern "js" fn OfflineAudioContext::create_channel_merger(
-  self : OfflineAudioContext,
-) -> ChannelMergerNode =
-  #| (self) => self.createChannelMerger()
-
-///|
-pub extern "js" fn OfflineAudioContext::create_channel_merger_with_number_of_inputs(
-  self : OfflineAudioContext,
-  number_of_inputs : Int,
-) -> ChannelMergerNode =
-  #| (self, number_of_inputs) => self.createChannelMerger(number_of_inputs)
-
-///|
-pub extern "js" fn OfflineAudioContext::create_channel_splitter(
-  self : OfflineAudioContext,
-) -> ChannelSplitterNode =
-  #| (self) => self.createChannelSplitter()
-
-///|
-pub extern "js" fn OfflineAudioContext::create_channel_splitter_with_number_of_outputs(
-  self : OfflineAudioContext,
-  number_of_outputs : Int,
-) -> ChannelSplitterNode =
-  #| (self, number_of_outputs) => self.createChannelSplitter(number_of_outputs)
-
-///|
-pub extern "js" fn OfflineAudioContext::create_constant_source(
-  self : OfflineAudioContext,
-) -> ConstantSourceNode =
-  #| (self) => self.createConstantSource()
-
-///|
-pub extern "js" fn OfflineAudioContext::create_convolver(
-  self : OfflineAudioContext,
-) -> ConvolverNode =
-  #| (self) => self.createConvolver()
-
-///|
-pub extern "js" fn OfflineAudioContext::create_delay(
-  self : OfflineAudioContext,
-) -> DelayNode =
-  #| (self) => self.createDelay()
-
-///|
-pub extern "js" fn OfflineAudioContext::create_delay_with_max_delay_time(
-  self : OfflineAudioContext,
-  max_delay_time : Double,
-) -> DelayNode =
-  #| (self, max_delay_time) => self.createDelay(max_delay_time)
-
-///|
-pub extern "js" fn OfflineAudioContext::create_dynamics_compressor(
-  self : OfflineAudioContext,
-) -> DynamicsCompressorNode =
-  #| (self) => self.createDynamicsCompressor()
-
-///|
-pub extern "js" fn OfflineAudioContext::create_gain(
-  self : OfflineAudioContext,
-) -> GainNode =
-  #| (self) => self.createGain()
-
-///|
-pub extern "js" fn OfflineAudioContext::create_i_i_r_filter(
-  self : OfflineAudioContext,
-  feedforward : Array[Double],
-  feedback : Array[Double],
-) -> IIRFilterNode =
-  #| (self, feedforward, feedback) => self.createIIRFilter(feedforward, feedback)
-
-///|
-pub extern "js" fn OfflineAudioContext::create_oscillator(
-  self : OfflineAudioContext,
-) -> OscillatorNode =
-  #| (self) => self.createOscillator()
-
-///|
-pub extern "js" fn OfflineAudioContext::create_panner(
-  self : OfflineAudioContext,
-) -> PannerNode =
-  #| (self) => self.createPanner()
-
-///|
-pub extern "js" fn OfflineAudioContext::create_periodic_wave(
-  self : OfflineAudioContext,
-  real : Array[Double],
-  imag : Array[Double],
-) -> PeriodicWave =
-  #| (self, real, imag) => self.createPeriodicWave(real, imag)
-
-///|
-pub extern "js" fn OfflineAudioContext::create_periodic_wave_with_constraints(
-  self : OfflineAudioContext,
-  real : Array[Double],
-  imag : Array[Double],
-  constraints : PeriodicWaveConstraints,
-) -> PeriodicWave =
-  #| (self, real, imag, constraints) => self.createPeriodicWave(real, imag, constraints)
-
-///|
-pub extern "js" fn OfflineAudioContext::create_script_processor(
-  self : OfflineAudioContext,
-) -> ScriptProcessorNode =
-  #| (self) => self.createScriptProcessor()
-
-///|
-pub extern "js" fn OfflineAudioContext::create_script_processor_with_number_of_output_channels(
-  self : OfflineAudioContext,
-  buffer_size : Int,
-  number_of_input_channels : Int,
-  number_of_output_channels : Int,
-) -> ScriptProcessorNode =
-  #| (self, buffer_size, number_of_input_channels, number_of_output_channels) => self.createScriptProcessor(buffer_size, number_of_input_channels, number_of_output_channels)
-
-///|
-pub extern "js" fn OfflineAudioContext::create_stereo_panner(
-  self : OfflineAudioContext,
-) -> StereoPannerNode =
-  #| (self) => self.createStereoPanner()
-
-///|
-pub extern "js" fn OfflineAudioContext::create_wave_shaper(
-  self : OfflineAudioContext,
-) -> WaveShaperNode =
-  #| (self) => self.createWaveShaper()
-
-///|
-pub extern "js" fn OfflineAudioContext::decode_audio_data(
-  self : OfflineAudioContext,
-  audio_data : ArrayBuffer,
-) -> Promise[AudioBuffer] =
-  #| (self, audio_data) => self.decodeAudioData(audio_data)
-
-///|
-pub extern "js" fn OfflineAudioContext::decode_audio_data_with_error_callback(
-  self : OfflineAudioContext,
-  audio_data : ArrayBuffer,
-  success_callback : DecodeSuccessCallback?,
-  error_callback : DecodeErrorCallback?,
-) -> Promise[AudioBuffer] =
-  #| (self, audio_data, success_callback, error_callback) => self.decodeAudioData(audio_data, success_callback, error_callback)
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn OfflineAudioContext::new(
@@ -2225,6 +1931,40 @@ pub extern "js" fn OfflineAudioCompletionEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to OfflineAudioCompletionEvent (unchecked)
+pub extern "js" fn OfflineAudioCompletionEvent::from_js_value(
+  v : JsValue,
+) -> OfflineAudioCompletionEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to OfflineAudioCompletionEvent (checked with instanceof)
+pub extern "js" fn OfflineAudioCompletionEvent::from_js_value_opt(
+  v : JsValue,
+) -> OfflineAudioCompletionEvent? =
+  #| (v) => (v instanceof OfflineAudioCompletionEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to OfflineAudioCompletionEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_offline_audio_completion_event(
+  self : JsValue,
+) -> OfflineAudioCompletionEvent? =
+  #| (self) => (self instanceof OfflineAudioCompletionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to OfflineAudioCompletionEvent (unchecked)
+pub extern "js" fn JsValue::to_offline_audio_completion_event(
+  self : JsValue,
+) -> OfflineAudioCompletionEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn OfflineAudioCompletionEvent::to_event(
+  self : OfflineAudioCompletionEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn OfflineAudioCompletionEvent::new(
   type_ : String,
   event_init_dict : OfflineAudioCompletionEventInit,
@@ -2243,6 +1983,26 @@ pub type AudioBuffer
 
 ///|
 pub extern "js" fn AudioBuffer::to_js_value(self : AudioBuffer) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to AudioBuffer (unchecked)
+pub extern "js" fn AudioBuffer::from_js_value(v : JsValue) -> AudioBuffer =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioBuffer (checked with instanceof)
+pub extern "js" fn AudioBuffer::from_js_value_opt(v : JsValue) -> AudioBuffer? =
+  #| (v) => (v instanceof AudioBuffer) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioBuffer (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_buffer(self : JsValue) -> AudioBuffer? =
+  #| (self) => (self instanceof AudioBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioBuffer (unchecked)
+pub extern "js" fn JsValue::to_audio_buffer(self : JsValue) -> AudioBuffer =
   #| (self) => self
 
 ///|
@@ -2317,6 +2077,162 @@ pub type AudioNode
 ///|
 pub extern "js" fn AudioNode::to_js_value(self : AudioNode) -> JsValue =
   #| (self) => self
+
+///|
+/// Cast JsValue to AudioNode (unchecked)
+pub extern "js" fn AudioNode::from_js_value(v : JsValue) -> AudioNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioNode (checked with instanceof)
+pub extern "js" fn AudioNode::from_js_value_opt(v : JsValue) -> AudioNode? =
+  #| (v) => (v instanceof AudioNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioNode (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_node(self : JsValue) -> AudioNode? =
+  #| (self) => (self instanceof AudioNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioNode (unchecked)
+pub extern "js" fn JsValue::to_audio_node(self : JsValue) -> AudioNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn AudioNode::to_event_target(self : AudioNode) -> EventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn AudioNode::as_audio_scheduled_source_node(
+  self : AudioNode,
+) -> AudioScheduledSourceNode? =
+  #| (self) => (self instanceof AudioScheduledSourceNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_analyser_node(
+  self : AudioNode,
+) -> AnalyserNode? =
+  #| (self) => (self instanceof AnalyserNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_audio_buffer_source_node(
+  self : AudioNode,
+) -> AudioBufferSourceNode? =
+  #| (self) => (self instanceof AudioBufferSourceNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_audio_destination_node(
+  self : AudioNode,
+) -> AudioDestinationNode? =
+  #| (self) => (self instanceof AudioDestinationNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_biquad_filter_node(
+  self : AudioNode,
+) -> BiquadFilterNode? =
+  #| (self) => (self instanceof BiquadFilterNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_channel_merger_node(
+  self : AudioNode,
+) -> ChannelMergerNode? =
+  #| (self) => (self instanceof ChannelMergerNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_channel_splitter_node(
+  self : AudioNode,
+) -> ChannelSplitterNode? =
+  #| (self) => (self instanceof ChannelSplitterNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_constant_source_node(
+  self : AudioNode,
+) -> ConstantSourceNode? =
+  #| (self) => (self instanceof ConstantSourceNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_convolver_node(
+  self : AudioNode,
+) -> ConvolverNode? =
+  #| (self) => (self instanceof ConvolverNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_delay_node(self : AudioNode) -> DelayNode? =
+  #| (self) => (self instanceof DelayNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_dynamics_compressor_node(
+  self : AudioNode,
+) -> DynamicsCompressorNode? =
+  #| (self) => (self instanceof DynamicsCompressorNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_gain_node(self : AudioNode) -> GainNode? =
+  #| (self) => (self instanceof GainNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_iir_filter_node(
+  self : AudioNode,
+) -> IIRFilterNode? =
+  #| (self) => (self instanceof IIRFilterNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_media_element_audio_source_node(
+  self : AudioNode,
+) -> MediaElementAudioSourceNode? =
+  #| (self) => (self instanceof MediaElementAudioSourceNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_media_stream_audio_destination_node(
+  self : AudioNode,
+) -> MediaStreamAudioDestinationNode? =
+  #| (self) => (self instanceof MediaStreamAudioDestinationNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_media_stream_audio_source_node(
+  self : AudioNode,
+) -> MediaStreamAudioSourceNode? =
+  #| (self) => (self instanceof MediaStreamAudioSourceNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_media_stream_track_audio_source_node(
+  self : AudioNode,
+) -> MediaStreamTrackAudioSourceNode? =
+  #| (self) => (self instanceof MediaStreamTrackAudioSourceNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_oscillator_node(
+  self : AudioNode,
+) -> OscillatorNode? =
+  #| (self) => (self instanceof OscillatorNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_panner_node(self : AudioNode) -> PannerNode? =
+  #| (self) => (self instanceof PannerNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_script_processor_node(
+  self : AudioNode,
+) -> ScriptProcessorNode? =
+  #| (self) => (self instanceof ScriptProcessorNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_stereo_panner_node(
+  self : AudioNode,
+) -> StereoPannerNode? =
+  #| (self) => (self instanceof StereoPannerNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_wave_shaper_node(
+  self : AudioNode,
+) -> WaveShaperNode? =
+  #| (self) => (self instanceof WaveShaperNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn AudioNode::as_audio_worklet_node(
+  self : AudioNode,
+) -> AudioWorkletNode? =
+  #| (self) => (self instanceof AudioWorkletNode) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn AudioNode::connect(
@@ -2457,6 +2373,26 @@ pub extern "js" fn AudioParam::to_js_value(self : AudioParam) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to AudioParam (unchecked)
+pub extern "js" fn AudioParam::from_js_value(v : JsValue) -> AudioParam =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioParam (checked with instanceof)
+pub extern "js" fn AudioParam::from_js_value_opt(v : JsValue) -> AudioParam? =
+  #| (v) => (v instanceof AudioParam) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioParam (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_param(self : JsValue) -> AudioParam? =
+  #| (self) => (self instanceof AudioParam) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioParam (unchecked)
+pub extern "js" fn JsValue::to_audio_param(self : JsValue) -> AudioParam =
+  #| (self) => self
+
+///|
 pub extern "js" fn AudioParam::get_value(self : AudioParam) -> Double =
   #| (self) => self.value
 
@@ -2559,83 +2495,62 @@ pub extern "js" fn AudioScheduledSourceNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn AudioScheduledSourceNode::connect(
+/// Cast JsValue to AudioScheduledSourceNode (unchecked)
+pub extern "js" fn AudioScheduledSourceNode::from_js_value(
+  v : JsValue,
+) -> AudioScheduledSourceNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioScheduledSourceNode (checked with instanceof)
+pub extern "js" fn AudioScheduledSourceNode::from_js_value_opt(
+  v : JsValue,
+) -> AudioScheduledSourceNode? =
+  #| (v) => (v instanceof AudioScheduledSourceNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioScheduledSourceNode (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_scheduled_source_node(
+  self : JsValue,
+) -> AudioScheduledSourceNode? =
+  #| (self) => (self instanceof AudioScheduledSourceNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioScheduledSourceNode (unchecked)
+pub extern "js" fn JsValue::to_audio_scheduled_source_node(
+  self : JsValue,
+) -> AudioScheduledSourceNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn AudioScheduledSourceNode::to_audio_node(
   self : AudioScheduledSourceNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn AudioScheduledSourceNode::connect_with_input(
+pub extern "js" fn AudioScheduledSourceNode::to_event_target(
   self : AudioScheduledSourceNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
+) -> EventTarget =
+  #| (self) => self
 
 ///|
-pub extern "js" fn AudioScheduledSourceNode::disconnect(
+pub extern "js" fn AudioScheduledSourceNode::as_audio_buffer_source_node(
   self : AudioScheduledSourceNode,
-) -> Unit =
-  #| (self) => self.disconnect()
+) -> AudioBufferSourceNode? =
+  #| (self) => (self instanceof AudioBufferSourceNode) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn AudioScheduledSourceNode::get_context(
+pub extern "js" fn AudioScheduledSourceNode::as_constant_source_node(
   self : AudioScheduledSourceNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
+) -> ConstantSourceNode? =
+  #| (self) => (self instanceof ConstantSourceNode) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn AudioScheduledSourceNode::get_number_of_inputs(
+pub extern "js" fn AudioScheduledSourceNode::as_oscillator_node(
   self : AudioScheduledSourceNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn AudioScheduledSourceNode::get_number_of_outputs(
-  self : AudioScheduledSourceNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn AudioScheduledSourceNode::get_channel_count(
-  self : AudioScheduledSourceNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn AudioScheduledSourceNode::set_channel_count(
-  self : AudioScheduledSourceNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn AudioScheduledSourceNode::get_channel_count_mode(
-  self : AudioScheduledSourceNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn AudioScheduledSourceNode::set_channel_count_mode(
-  self : AudioScheduledSourceNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn AudioScheduledSourceNode::get_channel_interpretation(
-  self : AudioScheduledSourceNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn AudioScheduledSourceNode::set_channel_interpretation(
-  self : AudioScheduledSourceNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> OscillatorNode? =
+  #| (self) => (self instanceof OscillatorNode) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn AudioScheduledSourceNode::get_onended(
@@ -2685,79 +2600,38 @@ pub extern "js" fn AnalyserNode::to_js_value(self : AnalyserNode) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn AnalyserNode::connect(
+/// Cast JsValue to AnalyserNode (unchecked)
+pub extern "js" fn AnalyserNode::from_js_value(v : JsValue) -> AnalyserNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AnalyserNode (checked with instanceof)
+pub extern "js" fn AnalyserNode::from_js_value_opt(
+  v : JsValue,
+) -> AnalyserNode? =
+  #| (v) => (v instanceof AnalyserNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AnalyserNode (checked with instanceof)
+pub extern "js" fn JsValue::as_analyser_node(self : JsValue) -> AnalyserNode? =
+  #| (self) => (self instanceof AnalyserNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AnalyserNode (unchecked)
+pub extern "js" fn JsValue::to_analyser_node(self : JsValue) -> AnalyserNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn AnalyserNode::to_audio_node(
   self : AnalyserNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn AnalyserNode::connect_with_input(
+pub extern "js" fn AnalyserNode::to_event_target(
   self : AnalyserNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn AnalyserNode::disconnect(self : AnalyserNode) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn AnalyserNode::get_context(
-  self : AnalyserNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn AnalyserNode::get_number_of_inputs(
-  self : AnalyserNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn AnalyserNode::get_number_of_outputs(
-  self : AnalyserNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn AnalyserNode::get_channel_count(self : AnalyserNode) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn AnalyserNode::set_channel_count(
-  self : AnalyserNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn AnalyserNode::get_channel_count_mode(
-  self : AnalyserNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn AnalyserNode::set_channel_count_mode(
-  self : AnalyserNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn AnalyserNode::get_channel_interpretation(
-  self : AnalyserNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn AnalyserNode::set_channel_interpretation(
-  self : AnalyserNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn AnalyserNode::new(
@@ -2861,122 +2735,50 @@ pub extern "js" fn AudioBufferSourceNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn AudioBufferSourceNode::connect(
+/// Cast JsValue to AudioBufferSourceNode (unchecked)
+pub extern "js" fn AudioBufferSourceNode::from_js_value(
+  v : JsValue,
+) -> AudioBufferSourceNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioBufferSourceNode (checked with instanceof)
+pub extern "js" fn AudioBufferSourceNode::from_js_value_opt(
+  v : JsValue,
+) -> AudioBufferSourceNode? =
+  #| (v) => (v instanceof AudioBufferSourceNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioBufferSourceNode (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_buffer_source_node(
+  self : JsValue,
+) -> AudioBufferSourceNode? =
+  #| (self) => (self instanceof AudioBufferSourceNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioBufferSourceNode (unchecked)
+pub extern "js" fn JsValue::to_audio_buffer_source_node(
+  self : JsValue,
+) -> AudioBufferSourceNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn AudioBufferSourceNode::to_audio_scheduled_source_node(
   self : AudioBufferSourceNode,
-  destination_node : AudioNode,
+) -> AudioScheduledSourceNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn AudioBufferSourceNode::to_audio_node(
+  self : AudioBufferSourceNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn AudioBufferSourceNode::connect_with_input(
+pub extern "js" fn AudioBufferSourceNode::to_event_target(
   self : AudioBufferSourceNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn AudioBufferSourceNode::disconnect(
-  self : AudioBufferSourceNode,
-) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn AudioBufferSourceNode::get_context(
-  self : AudioBufferSourceNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn AudioBufferSourceNode::get_number_of_inputs(
-  self : AudioBufferSourceNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn AudioBufferSourceNode::get_number_of_outputs(
-  self : AudioBufferSourceNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn AudioBufferSourceNode::get_channel_count(
-  self : AudioBufferSourceNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn AudioBufferSourceNode::set_channel_count(
-  self : AudioBufferSourceNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn AudioBufferSourceNode::get_channel_count_mode(
-  self : AudioBufferSourceNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn AudioBufferSourceNode::set_channel_count_mode(
-  self : AudioBufferSourceNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn AudioBufferSourceNode::get_channel_interpretation(
-  self : AudioBufferSourceNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn AudioBufferSourceNode::set_channel_interpretation(
-  self : AudioBufferSourceNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
-
-///|
-pub extern "js" fn AudioBufferSourceNode::get_onended(
-  self : AudioBufferSourceNode,
-) -> EventHandler =
-  #| (self) => self.onended
-
-///|
-pub extern "js" fn AudioBufferSourceNode::set_onended(
-  self : AudioBufferSourceNode,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onended = value }
-
-///|
-pub extern "js" fn AudioBufferSourceNode::start(
-  self : AudioBufferSourceNode,
-) -> Unit =
-  #| (self) => self.start()
-
-///|
-pub extern "js" fn AudioBufferSourceNode::start_with_when(
-  self : AudioBufferSourceNode,
-  when : Double,
-) -> Unit =
-  #| (self, when) => self.start(when)
-
-///|
-pub extern "js" fn AudioBufferSourceNode::stop(
-  self : AudioBufferSourceNode,
-) -> Unit =
-  #| (self) => self.stop()
-
-///|
-pub extern "js" fn AudioBufferSourceNode::stop_with_when(
-  self : AudioBufferSourceNode,
-  when : Double,
-) -> Unit =
-  #| (self, when) => self.stop(when)
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn AudioBufferSourceNode::new(
@@ -2989,7 +2791,7 @@ pub extern "js" fn AudioBufferSourceNode::new(
 pub extern "js" fn AudioBufferSourceNode::get_buffer(
   self : AudioBufferSourceNode,
 ) -> AudioBuffer? =
-  #| (self) => self.buffer
+  #| (self) => { const v = self.buffer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn AudioBufferSourceNode::set_buffer(
@@ -3050,6 +2852,21 @@ pub extern "js" fn AudioBufferSourceNode::set_loop_end(
   #| (self, value) => { self.loopEnd = value }
 
 ///|
+pub extern "js" fn AudioBufferSourceNode::start(
+  self : AudioBufferSourceNode,
+) -> Unit =
+  #| (self) => self.start()
+
+///|
+pub extern "js" fn AudioBufferSourceNode::start_with_duration(
+  self : AudioBufferSourceNode,
+  when : Double,
+  offset : Double,
+  duration : Double,
+) -> Unit =
+  #| (self, when, offset, duration) => self.start(when, offset, duration)
+
+///|
 /// AudioDestinationNode interface
 pub type AudioDestinationNode
 
@@ -3060,83 +2877,44 @@ pub extern "js" fn AudioDestinationNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn AudioDestinationNode::connect(
+/// Cast JsValue to AudioDestinationNode (unchecked)
+pub extern "js" fn AudioDestinationNode::from_js_value(
+  v : JsValue,
+) -> AudioDestinationNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioDestinationNode (checked with instanceof)
+pub extern "js" fn AudioDestinationNode::from_js_value_opt(
+  v : JsValue,
+) -> AudioDestinationNode? =
+  #| (v) => (v instanceof AudioDestinationNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioDestinationNode (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_destination_node(
+  self : JsValue,
+) -> AudioDestinationNode? =
+  #| (self) => (self instanceof AudioDestinationNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioDestinationNode (unchecked)
+pub extern "js" fn JsValue::to_audio_destination_node(
+  self : JsValue,
+) -> AudioDestinationNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn AudioDestinationNode::to_audio_node(
   self : AudioDestinationNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn AudioDestinationNode::connect_with_input(
+pub extern "js" fn AudioDestinationNode::to_event_target(
   self : AudioDestinationNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn AudioDestinationNode::disconnect(
-  self : AudioDestinationNode,
-) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn AudioDestinationNode::get_context(
-  self : AudioDestinationNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn AudioDestinationNode::get_number_of_inputs(
-  self : AudioDestinationNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn AudioDestinationNode::get_number_of_outputs(
-  self : AudioDestinationNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn AudioDestinationNode::get_channel_count(
-  self : AudioDestinationNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn AudioDestinationNode::set_channel_count(
-  self : AudioDestinationNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn AudioDestinationNode::get_channel_count_mode(
-  self : AudioDestinationNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn AudioDestinationNode::set_channel_count_mode(
-  self : AudioDestinationNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn AudioDestinationNode::get_channel_interpretation(
-  self : AudioDestinationNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn AudioDestinationNode::set_channel_interpretation(
-  self : AudioDestinationNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn AudioDestinationNode::get_max_channel_count(
@@ -3150,6 +2928,28 @@ pub type AudioListener
 
 ///|
 pub extern "js" fn AudioListener::to_js_value(self : AudioListener) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to AudioListener (unchecked)
+pub extern "js" fn AudioListener::from_js_value(v : JsValue) -> AudioListener =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioListener (checked with instanceof)
+pub extern "js" fn AudioListener::from_js_value_opt(
+  v : JsValue,
+) -> AudioListener? =
+  #| (v) => (v instanceof AudioListener) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioListener (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_listener(self : JsValue) -> AudioListener? =
+  #| (self) => (self instanceof AudioListener) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioListener (unchecked)
+pub extern "js" fn JsValue::to_audio_listener(self : JsValue) -> AudioListener =
   #| (self) => self
 
 ///|
@@ -3232,6 +3032,40 @@ pub extern "js" fn AudioProcessingEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to AudioProcessingEvent (unchecked)
+pub extern "js" fn AudioProcessingEvent::from_js_value(
+  v : JsValue,
+) -> AudioProcessingEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioProcessingEvent (checked with instanceof)
+pub extern "js" fn AudioProcessingEvent::from_js_value_opt(
+  v : JsValue,
+) -> AudioProcessingEvent? =
+  #| (v) => (v instanceof AudioProcessingEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioProcessingEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_processing_event(
+  self : JsValue,
+) -> AudioProcessingEvent? =
+  #| (self) => (self instanceof AudioProcessingEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioProcessingEvent (unchecked)
+pub extern "js" fn JsValue::to_audio_processing_event(
+  self : JsValue,
+) -> AudioProcessingEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn AudioProcessingEvent::to_event(
+  self : AudioProcessingEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn AudioProcessingEvent::new(
   type_ : String,
   event_init_dict : AudioProcessingEventInit,
@@ -3267,83 +3101,44 @@ pub extern "js" fn BiquadFilterNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn BiquadFilterNode::connect(
+/// Cast JsValue to BiquadFilterNode (unchecked)
+pub extern "js" fn BiquadFilterNode::from_js_value(
+  v : JsValue,
+) -> BiquadFilterNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BiquadFilterNode (checked with instanceof)
+pub extern "js" fn BiquadFilterNode::from_js_value_opt(
+  v : JsValue,
+) -> BiquadFilterNode? =
+  #| (v) => (v instanceof BiquadFilterNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BiquadFilterNode (checked with instanceof)
+pub extern "js" fn JsValue::as_biquad_filter_node(
+  self : JsValue,
+) -> BiquadFilterNode? =
+  #| (self) => (self instanceof BiquadFilterNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BiquadFilterNode (unchecked)
+pub extern "js" fn JsValue::to_biquad_filter_node(
+  self : JsValue,
+) -> BiquadFilterNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn BiquadFilterNode::to_audio_node(
   self : BiquadFilterNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn BiquadFilterNode::connect_with_input(
+pub extern "js" fn BiquadFilterNode::to_event_target(
   self : BiquadFilterNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn BiquadFilterNode::disconnect(
-  self : BiquadFilterNode,
-) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn BiquadFilterNode::get_context(
-  self : BiquadFilterNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn BiquadFilterNode::get_number_of_inputs(
-  self : BiquadFilterNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn BiquadFilterNode::get_number_of_outputs(
-  self : BiquadFilterNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn BiquadFilterNode::get_channel_count(
-  self : BiquadFilterNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn BiquadFilterNode::set_channel_count(
-  self : BiquadFilterNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn BiquadFilterNode::get_channel_count_mode(
-  self : BiquadFilterNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn BiquadFilterNode::set_channel_count_mode(
-  self : BiquadFilterNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn BiquadFilterNode::get_channel_interpretation(
-  self : BiquadFilterNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn BiquadFilterNode::set_channel_interpretation(
-  self : BiquadFilterNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn BiquadFilterNode::new(
@@ -3409,83 +3204,44 @@ pub extern "js" fn ChannelMergerNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn ChannelMergerNode::connect(
+/// Cast JsValue to ChannelMergerNode (unchecked)
+pub extern "js" fn ChannelMergerNode::from_js_value(
+  v : JsValue,
+) -> ChannelMergerNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ChannelMergerNode (checked with instanceof)
+pub extern "js" fn ChannelMergerNode::from_js_value_opt(
+  v : JsValue,
+) -> ChannelMergerNode? =
+  #| (v) => (v instanceof ChannelMergerNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ChannelMergerNode (checked with instanceof)
+pub extern "js" fn JsValue::as_channel_merger_node(
+  self : JsValue,
+) -> ChannelMergerNode? =
+  #| (self) => (self instanceof ChannelMergerNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ChannelMergerNode (unchecked)
+pub extern "js" fn JsValue::to_channel_merger_node(
+  self : JsValue,
+) -> ChannelMergerNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn ChannelMergerNode::to_audio_node(
   self : ChannelMergerNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn ChannelMergerNode::connect_with_input(
+pub extern "js" fn ChannelMergerNode::to_event_target(
   self : ChannelMergerNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn ChannelMergerNode::disconnect(
-  self : ChannelMergerNode,
-) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn ChannelMergerNode::get_context(
-  self : ChannelMergerNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn ChannelMergerNode::get_number_of_inputs(
-  self : ChannelMergerNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn ChannelMergerNode::get_number_of_outputs(
-  self : ChannelMergerNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn ChannelMergerNode::get_channel_count(
-  self : ChannelMergerNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn ChannelMergerNode::set_channel_count(
-  self : ChannelMergerNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn ChannelMergerNode::get_channel_count_mode(
-  self : ChannelMergerNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn ChannelMergerNode::set_channel_count_mode(
-  self : ChannelMergerNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn ChannelMergerNode::get_channel_interpretation(
-  self : ChannelMergerNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn ChannelMergerNode::set_channel_interpretation(
-  self : ChannelMergerNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn ChannelMergerNode::new(
@@ -3505,83 +3261,44 @@ pub extern "js" fn ChannelSplitterNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn ChannelSplitterNode::connect(
+/// Cast JsValue to ChannelSplitterNode (unchecked)
+pub extern "js" fn ChannelSplitterNode::from_js_value(
+  v : JsValue,
+) -> ChannelSplitterNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ChannelSplitterNode (checked with instanceof)
+pub extern "js" fn ChannelSplitterNode::from_js_value_opt(
+  v : JsValue,
+) -> ChannelSplitterNode? =
+  #| (v) => (v instanceof ChannelSplitterNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ChannelSplitterNode (checked with instanceof)
+pub extern "js" fn JsValue::as_channel_splitter_node(
+  self : JsValue,
+) -> ChannelSplitterNode? =
+  #| (self) => (self instanceof ChannelSplitterNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ChannelSplitterNode (unchecked)
+pub extern "js" fn JsValue::to_channel_splitter_node(
+  self : JsValue,
+) -> ChannelSplitterNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn ChannelSplitterNode::to_audio_node(
   self : ChannelSplitterNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn ChannelSplitterNode::connect_with_input(
+pub extern "js" fn ChannelSplitterNode::to_event_target(
   self : ChannelSplitterNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn ChannelSplitterNode::disconnect(
-  self : ChannelSplitterNode,
-) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn ChannelSplitterNode::get_context(
-  self : ChannelSplitterNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn ChannelSplitterNode::get_number_of_inputs(
-  self : ChannelSplitterNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn ChannelSplitterNode::get_number_of_outputs(
-  self : ChannelSplitterNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn ChannelSplitterNode::get_channel_count(
-  self : ChannelSplitterNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn ChannelSplitterNode::set_channel_count(
-  self : ChannelSplitterNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn ChannelSplitterNode::get_channel_count_mode(
-  self : ChannelSplitterNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn ChannelSplitterNode::set_channel_count_mode(
-  self : ChannelSplitterNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn ChannelSplitterNode::get_channel_interpretation(
-  self : ChannelSplitterNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn ChannelSplitterNode::set_channel_interpretation(
-  self : ChannelSplitterNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn ChannelSplitterNode::new(
@@ -3601,118 +3318,50 @@ pub extern "js" fn ConstantSourceNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn ConstantSourceNode::connect(
+/// Cast JsValue to ConstantSourceNode (unchecked)
+pub extern "js" fn ConstantSourceNode::from_js_value(
+  v : JsValue,
+) -> ConstantSourceNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ConstantSourceNode (checked with instanceof)
+pub extern "js" fn ConstantSourceNode::from_js_value_opt(
+  v : JsValue,
+) -> ConstantSourceNode? =
+  #| (v) => (v instanceof ConstantSourceNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ConstantSourceNode (checked with instanceof)
+pub extern "js" fn JsValue::as_constant_source_node(
+  self : JsValue,
+) -> ConstantSourceNode? =
+  #| (self) => (self instanceof ConstantSourceNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ConstantSourceNode (unchecked)
+pub extern "js" fn JsValue::to_constant_source_node(
+  self : JsValue,
+) -> ConstantSourceNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn ConstantSourceNode::to_audio_scheduled_source_node(
   self : ConstantSourceNode,
-  destination_node : AudioNode,
+) -> AudioScheduledSourceNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn ConstantSourceNode::to_audio_node(
+  self : ConstantSourceNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn ConstantSourceNode::connect_with_input(
+pub extern "js" fn ConstantSourceNode::to_event_target(
   self : ConstantSourceNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn ConstantSourceNode::disconnect(
-  self : ConstantSourceNode,
-) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn ConstantSourceNode::get_context(
-  self : ConstantSourceNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn ConstantSourceNode::get_number_of_inputs(
-  self : ConstantSourceNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn ConstantSourceNode::get_number_of_outputs(
-  self : ConstantSourceNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn ConstantSourceNode::get_channel_count(
-  self : ConstantSourceNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn ConstantSourceNode::set_channel_count(
-  self : ConstantSourceNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn ConstantSourceNode::get_channel_count_mode(
-  self : ConstantSourceNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn ConstantSourceNode::set_channel_count_mode(
-  self : ConstantSourceNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn ConstantSourceNode::get_channel_interpretation(
-  self : ConstantSourceNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn ConstantSourceNode::set_channel_interpretation(
-  self : ConstantSourceNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
-
-///|
-pub extern "js" fn ConstantSourceNode::get_onended(
-  self : ConstantSourceNode,
-) -> EventHandler =
-  #| (self) => self.onended
-
-///|
-pub extern "js" fn ConstantSourceNode::set_onended(
-  self : ConstantSourceNode,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onended = value }
-
-///|
-pub extern "js" fn ConstantSourceNode::start(self : ConstantSourceNode) -> Unit =
-  #| (self) => self.start()
-
-///|
-pub extern "js" fn ConstantSourceNode::start_with_when(
-  self : ConstantSourceNode,
-  when : Double,
-) -> Unit =
-  #| (self, when) => self.start(when)
-
-///|
-pub extern "js" fn ConstantSourceNode::stop(self : ConstantSourceNode) -> Unit =
-  #| (self) => self.stop()
-
-///|
-pub extern "js" fn ConstantSourceNode::stop_with_when(
-  self : ConstantSourceNode,
-  when : Double,
-) -> Unit =
-  #| (self, when) => self.stop(when)
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn ConstantSourceNode::new(
@@ -3736,81 +3385,38 @@ pub extern "js" fn ConvolverNode::to_js_value(self : ConvolverNode) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn ConvolverNode::connect(
+/// Cast JsValue to ConvolverNode (unchecked)
+pub extern "js" fn ConvolverNode::from_js_value(v : JsValue) -> ConvolverNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ConvolverNode (checked with instanceof)
+pub extern "js" fn ConvolverNode::from_js_value_opt(
+  v : JsValue,
+) -> ConvolverNode? =
+  #| (v) => (v instanceof ConvolverNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ConvolverNode (checked with instanceof)
+pub extern "js" fn JsValue::as_convolver_node(self : JsValue) -> ConvolverNode? =
+  #| (self) => (self instanceof ConvolverNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ConvolverNode (unchecked)
+pub extern "js" fn JsValue::to_convolver_node(self : JsValue) -> ConvolverNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn ConvolverNode::to_audio_node(
   self : ConvolverNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn ConvolverNode::connect_with_input(
+pub extern "js" fn ConvolverNode::to_event_target(
   self : ConvolverNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn ConvolverNode::disconnect(self : ConvolverNode) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn ConvolverNode::get_context(
-  self : ConvolverNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn ConvolverNode::get_number_of_inputs(
-  self : ConvolverNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn ConvolverNode::get_number_of_outputs(
-  self : ConvolverNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn ConvolverNode::get_channel_count(
-  self : ConvolverNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn ConvolverNode::set_channel_count(
-  self : ConvolverNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn ConvolverNode::get_channel_count_mode(
-  self : ConvolverNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn ConvolverNode::set_channel_count_mode(
-  self : ConvolverNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn ConvolverNode::get_channel_interpretation(
-  self : ConvolverNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn ConvolverNode::set_channel_interpretation(
-  self : ConvolverNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn ConvolverNode::new(
@@ -3823,7 +3429,7 @@ pub extern "js" fn ConvolverNode::new(
 pub extern "js" fn ConvolverNode::get_buffer(
   self : ConvolverNode,
 ) -> AudioBuffer? =
-  #| (self) => self.buffer
+  #| (self) => { const v = self.buffer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn ConvolverNode::set_buffer(
@@ -3852,73 +3458,32 @@ pub extern "js" fn DelayNode::to_js_value(self : DelayNode) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn DelayNode::connect(
-  self : DelayNode,
-  destination_node : AudioNode,
-) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+/// Cast JsValue to DelayNode (unchecked)
+pub extern "js" fn DelayNode::from_js_value(v : JsValue) -> DelayNode =
+  #| (v) => v
 
 ///|
-pub extern "js" fn DelayNode::connect_with_input(
-  self : DelayNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
+/// Safely cast JsValue to DelayNode (checked with instanceof)
+pub extern "js" fn DelayNode::from_js_value_opt(v : JsValue) -> DelayNode? =
+  #| (v) => (v instanceof DelayNode) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn DelayNode::disconnect(self : DelayNode) -> Unit =
-  #| (self) => self.disconnect()
+/// Safely cast JsValue to DelayNode (checked with instanceof)
+pub extern "js" fn JsValue::as_delay_node(self : JsValue) -> DelayNode? =
+  #| (self) => (self instanceof DelayNode) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn DelayNode::get_context(self : DelayNode) -> BaseAudioContext =
-  #| (self) => self.context
+/// Cast JsValue to DelayNode (unchecked)
+pub extern "js" fn JsValue::to_delay_node(self : JsValue) -> DelayNode =
+  #| (self) => self
 
 ///|
-pub extern "js" fn DelayNode::get_number_of_inputs(self : DelayNode) -> Int =
-  #| (self) => self.numberOfInputs
+pub extern "js" fn DelayNode::to_audio_node(self : DelayNode) -> AudioNode =
+  #| (self) => self
 
 ///|
-pub extern "js" fn DelayNode::get_number_of_outputs(self : DelayNode) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn DelayNode::get_channel_count(self : DelayNode) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn DelayNode::set_channel_count(
-  self : DelayNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn DelayNode::get_channel_count_mode(
-  self : DelayNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn DelayNode::set_channel_count_mode(
-  self : DelayNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn DelayNode::get_channel_interpretation(
-  self : DelayNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn DelayNode::set_channel_interpretation(
-  self : DelayNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+pub extern "js" fn DelayNode::to_event_target(self : DelayNode) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn DelayNode::new(
@@ -3942,83 +3507,44 @@ pub extern "js" fn DynamicsCompressorNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn DynamicsCompressorNode::connect(
+/// Cast JsValue to DynamicsCompressorNode (unchecked)
+pub extern "js" fn DynamicsCompressorNode::from_js_value(
+  v : JsValue,
+) -> DynamicsCompressorNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to DynamicsCompressorNode (checked with instanceof)
+pub extern "js" fn DynamicsCompressorNode::from_js_value_opt(
+  v : JsValue,
+) -> DynamicsCompressorNode? =
+  #| (v) => (v instanceof DynamicsCompressorNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to DynamicsCompressorNode (checked with instanceof)
+pub extern "js" fn JsValue::as_dynamics_compressor_node(
+  self : JsValue,
+) -> DynamicsCompressorNode? =
+  #| (self) => (self instanceof DynamicsCompressorNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to DynamicsCompressorNode (unchecked)
+pub extern "js" fn JsValue::to_dynamics_compressor_node(
+  self : JsValue,
+) -> DynamicsCompressorNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn DynamicsCompressorNode::to_audio_node(
   self : DynamicsCompressorNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn DynamicsCompressorNode::connect_with_input(
+pub extern "js" fn DynamicsCompressorNode::to_event_target(
   self : DynamicsCompressorNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn DynamicsCompressorNode::disconnect(
-  self : DynamicsCompressorNode,
-) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn DynamicsCompressorNode::get_context(
-  self : DynamicsCompressorNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn DynamicsCompressorNode::get_number_of_inputs(
-  self : DynamicsCompressorNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn DynamicsCompressorNode::get_number_of_outputs(
-  self : DynamicsCompressorNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn DynamicsCompressorNode::get_channel_count(
-  self : DynamicsCompressorNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn DynamicsCompressorNode::set_channel_count(
-  self : DynamicsCompressorNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn DynamicsCompressorNode::get_channel_count_mode(
-  self : DynamicsCompressorNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn DynamicsCompressorNode::set_channel_count_mode(
-  self : DynamicsCompressorNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn DynamicsCompressorNode::get_channel_interpretation(
-  self : DynamicsCompressorNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn DynamicsCompressorNode::set_channel_interpretation(
-  self : DynamicsCompressorNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn DynamicsCompressorNode::new(
@@ -4072,73 +3598,32 @@ pub extern "js" fn GainNode::to_js_value(self : GainNode) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn GainNode::connect(
-  self : GainNode,
-  destination_node : AudioNode,
-) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+/// Cast JsValue to GainNode (unchecked)
+pub extern "js" fn GainNode::from_js_value(v : JsValue) -> GainNode =
+  #| (v) => v
 
 ///|
-pub extern "js" fn GainNode::connect_with_input(
-  self : GainNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
+/// Safely cast JsValue to GainNode (checked with instanceof)
+pub extern "js" fn GainNode::from_js_value_opt(v : JsValue) -> GainNode? =
+  #| (v) => (v instanceof GainNode) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn GainNode::disconnect(self : GainNode) -> Unit =
-  #| (self) => self.disconnect()
+/// Safely cast JsValue to GainNode (checked with instanceof)
+pub extern "js" fn JsValue::as_gain_node(self : JsValue) -> GainNode? =
+  #| (self) => (self instanceof GainNode) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn GainNode::get_context(self : GainNode) -> BaseAudioContext =
-  #| (self) => self.context
+/// Cast JsValue to GainNode (unchecked)
+pub extern "js" fn JsValue::to_gain_node(self : JsValue) -> GainNode =
+  #| (self) => self
 
 ///|
-pub extern "js" fn GainNode::get_number_of_inputs(self : GainNode) -> Int =
-  #| (self) => self.numberOfInputs
+pub extern "js" fn GainNode::to_audio_node(self : GainNode) -> AudioNode =
+  #| (self) => self
 
 ///|
-pub extern "js" fn GainNode::get_number_of_outputs(self : GainNode) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn GainNode::get_channel_count(self : GainNode) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn GainNode::set_channel_count(
-  self : GainNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn GainNode::get_channel_count_mode(
-  self : GainNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn GainNode::set_channel_count_mode(
-  self : GainNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn GainNode::get_channel_interpretation(
-  self : GainNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn GainNode::set_channel_interpretation(
-  self : GainNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+pub extern "js" fn GainNode::to_event_target(self : GainNode) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn GainNode::new(
@@ -4160,81 +3645,40 @@ pub extern "js" fn IIRFilterNode::to_js_value(self : IIRFilterNode) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn IIRFilterNode::connect(
+/// Cast JsValue to IIRFilterNode (unchecked)
+pub extern "js" fn IIRFilterNode::from_js_value(v : JsValue) -> IIRFilterNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IIRFilterNode (checked with instanceof)
+pub extern "js" fn IIRFilterNode::from_js_value_opt(
+  v : JsValue,
+) -> IIRFilterNode? =
+  #| (v) => (v instanceof IIRFilterNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IIRFilterNode (checked with instanceof)
+pub extern "js" fn JsValue::as_iir_filter_node(
+  self : JsValue,
+) -> IIRFilterNode? =
+  #| (self) => (self instanceof IIRFilterNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IIRFilterNode (unchecked)
+pub extern "js" fn JsValue::to_iir_filter_node(self : JsValue) -> IIRFilterNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn IIRFilterNode::to_audio_node(
   self : IIRFilterNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn IIRFilterNode::connect_with_input(
+pub extern "js" fn IIRFilterNode::to_event_target(
   self : IIRFilterNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn IIRFilterNode::disconnect(self : IIRFilterNode) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn IIRFilterNode::get_context(
-  self : IIRFilterNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn IIRFilterNode::get_number_of_inputs(
-  self : IIRFilterNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn IIRFilterNode::get_number_of_outputs(
-  self : IIRFilterNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn IIRFilterNode::get_channel_count(
-  self : IIRFilterNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn IIRFilterNode::set_channel_count(
-  self : IIRFilterNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn IIRFilterNode::get_channel_count_mode(
-  self : IIRFilterNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn IIRFilterNode::set_channel_count_mode(
-  self : IIRFilterNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn IIRFilterNode::get_channel_interpretation(
-  self : IIRFilterNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn IIRFilterNode::set_channel_interpretation(
-  self : IIRFilterNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn IIRFilterNode::new(
@@ -4263,83 +3707,44 @@ pub extern "js" fn MediaElementAudioSourceNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaElementAudioSourceNode::connect(
+/// Cast JsValue to MediaElementAudioSourceNode (unchecked)
+pub extern "js" fn MediaElementAudioSourceNode::from_js_value(
+  v : JsValue,
+) -> MediaElementAudioSourceNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaElementAudioSourceNode (checked with instanceof)
+pub extern "js" fn MediaElementAudioSourceNode::from_js_value_opt(
+  v : JsValue,
+) -> MediaElementAudioSourceNode? =
+  #| (v) => (v instanceof MediaElementAudioSourceNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaElementAudioSourceNode (checked with instanceof)
+pub extern "js" fn JsValue::as_media_element_audio_source_node(
+  self : JsValue,
+) -> MediaElementAudioSourceNode? =
+  #| (self) => (self instanceof MediaElementAudioSourceNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaElementAudioSourceNode (unchecked)
+pub extern "js" fn JsValue::to_media_element_audio_source_node(
+  self : JsValue,
+) -> MediaElementAudioSourceNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaElementAudioSourceNode::to_audio_node(
   self : MediaElementAudioSourceNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn MediaElementAudioSourceNode::connect_with_input(
+pub extern "js" fn MediaElementAudioSourceNode::to_event_target(
   self : MediaElementAudioSourceNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn MediaElementAudioSourceNode::disconnect(
-  self : MediaElementAudioSourceNode,
-) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn MediaElementAudioSourceNode::get_context(
-  self : MediaElementAudioSourceNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn MediaElementAudioSourceNode::get_number_of_inputs(
-  self : MediaElementAudioSourceNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn MediaElementAudioSourceNode::get_number_of_outputs(
-  self : MediaElementAudioSourceNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn MediaElementAudioSourceNode::get_channel_count(
-  self : MediaElementAudioSourceNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn MediaElementAudioSourceNode::set_channel_count(
-  self : MediaElementAudioSourceNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn MediaElementAudioSourceNode::get_channel_count_mode(
-  self : MediaElementAudioSourceNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn MediaElementAudioSourceNode::set_channel_count_mode(
-  self : MediaElementAudioSourceNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn MediaElementAudioSourceNode::get_channel_interpretation(
-  self : MediaElementAudioSourceNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn MediaElementAudioSourceNode::set_channel_interpretation(
-  self : MediaElementAudioSourceNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn MediaElementAudioSourceNode::new(
@@ -4365,83 +3770,44 @@ pub extern "js" fn MediaStreamAudioDestinationNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaStreamAudioDestinationNode::connect(
+/// Cast JsValue to MediaStreamAudioDestinationNode (unchecked)
+pub extern "js" fn MediaStreamAudioDestinationNode::from_js_value(
+  v : JsValue,
+) -> MediaStreamAudioDestinationNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaStreamAudioDestinationNode (checked with instanceof)
+pub extern "js" fn MediaStreamAudioDestinationNode::from_js_value_opt(
+  v : JsValue,
+) -> MediaStreamAudioDestinationNode? =
+  #| (v) => (v instanceof MediaStreamAudioDestinationNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaStreamAudioDestinationNode (checked with instanceof)
+pub extern "js" fn JsValue::as_media_stream_audio_destination_node(
+  self : JsValue,
+) -> MediaStreamAudioDestinationNode? =
+  #| (self) => (self instanceof MediaStreamAudioDestinationNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaStreamAudioDestinationNode (unchecked)
+pub extern "js" fn JsValue::to_media_stream_audio_destination_node(
+  self : JsValue,
+) -> MediaStreamAudioDestinationNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaStreamAudioDestinationNode::to_audio_node(
   self : MediaStreamAudioDestinationNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn MediaStreamAudioDestinationNode::connect_with_input(
+pub extern "js" fn MediaStreamAudioDestinationNode::to_event_target(
   self : MediaStreamAudioDestinationNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn MediaStreamAudioDestinationNode::disconnect(
-  self : MediaStreamAudioDestinationNode,
-) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn MediaStreamAudioDestinationNode::get_context(
-  self : MediaStreamAudioDestinationNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn MediaStreamAudioDestinationNode::get_number_of_inputs(
-  self : MediaStreamAudioDestinationNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn MediaStreamAudioDestinationNode::get_number_of_outputs(
-  self : MediaStreamAudioDestinationNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn MediaStreamAudioDestinationNode::get_channel_count(
-  self : MediaStreamAudioDestinationNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn MediaStreamAudioDestinationNode::set_channel_count(
-  self : MediaStreamAudioDestinationNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn MediaStreamAudioDestinationNode::get_channel_count_mode(
-  self : MediaStreamAudioDestinationNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn MediaStreamAudioDestinationNode::set_channel_count_mode(
-  self : MediaStreamAudioDestinationNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn MediaStreamAudioDestinationNode::get_channel_interpretation(
-  self : MediaStreamAudioDestinationNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn MediaStreamAudioDestinationNode::set_channel_interpretation(
-  self : MediaStreamAudioDestinationNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn MediaStreamAudioDestinationNode::new(
@@ -4467,83 +3833,44 @@ pub extern "js" fn MediaStreamAudioSourceNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaStreamAudioSourceNode::connect(
+/// Cast JsValue to MediaStreamAudioSourceNode (unchecked)
+pub extern "js" fn MediaStreamAudioSourceNode::from_js_value(
+  v : JsValue,
+) -> MediaStreamAudioSourceNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaStreamAudioSourceNode (checked with instanceof)
+pub extern "js" fn MediaStreamAudioSourceNode::from_js_value_opt(
+  v : JsValue,
+) -> MediaStreamAudioSourceNode? =
+  #| (v) => (v instanceof MediaStreamAudioSourceNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaStreamAudioSourceNode (checked with instanceof)
+pub extern "js" fn JsValue::as_media_stream_audio_source_node(
+  self : JsValue,
+) -> MediaStreamAudioSourceNode? =
+  #| (self) => (self instanceof MediaStreamAudioSourceNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaStreamAudioSourceNode (unchecked)
+pub extern "js" fn JsValue::to_media_stream_audio_source_node(
+  self : JsValue,
+) -> MediaStreamAudioSourceNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaStreamAudioSourceNode::to_audio_node(
   self : MediaStreamAudioSourceNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn MediaStreamAudioSourceNode::connect_with_input(
+pub extern "js" fn MediaStreamAudioSourceNode::to_event_target(
   self : MediaStreamAudioSourceNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn MediaStreamAudioSourceNode::disconnect(
-  self : MediaStreamAudioSourceNode,
-) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn MediaStreamAudioSourceNode::get_context(
-  self : MediaStreamAudioSourceNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn MediaStreamAudioSourceNode::get_number_of_inputs(
-  self : MediaStreamAudioSourceNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn MediaStreamAudioSourceNode::get_number_of_outputs(
-  self : MediaStreamAudioSourceNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn MediaStreamAudioSourceNode::get_channel_count(
-  self : MediaStreamAudioSourceNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn MediaStreamAudioSourceNode::set_channel_count(
-  self : MediaStreamAudioSourceNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn MediaStreamAudioSourceNode::get_channel_count_mode(
-  self : MediaStreamAudioSourceNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn MediaStreamAudioSourceNode::set_channel_count_mode(
-  self : MediaStreamAudioSourceNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn MediaStreamAudioSourceNode::get_channel_interpretation(
-  self : MediaStreamAudioSourceNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn MediaStreamAudioSourceNode::set_channel_interpretation(
-  self : MediaStreamAudioSourceNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn MediaStreamAudioSourceNode::new(
@@ -4569,83 +3896,44 @@ pub extern "js" fn MediaStreamTrackAudioSourceNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaStreamTrackAudioSourceNode::connect(
+/// Cast JsValue to MediaStreamTrackAudioSourceNode (unchecked)
+pub extern "js" fn MediaStreamTrackAudioSourceNode::from_js_value(
+  v : JsValue,
+) -> MediaStreamTrackAudioSourceNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaStreamTrackAudioSourceNode (checked with instanceof)
+pub extern "js" fn MediaStreamTrackAudioSourceNode::from_js_value_opt(
+  v : JsValue,
+) -> MediaStreamTrackAudioSourceNode? =
+  #| (v) => (v instanceof MediaStreamTrackAudioSourceNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaStreamTrackAudioSourceNode (checked with instanceof)
+pub extern "js" fn JsValue::as_media_stream_track_audio_source_node(
+  self : JsValue,
+) -> MediaStreamTrackAudioSourceNode? =
+  #| (self) => (self instanceof MediaStreamTrackAudioSourceNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaStreamTrackAudioSourceNode (unchecked)
+pub extern "js" fn JsValue::to_media_stream_track_audio_source_node(
+  self : JsValue,
+) -> MediaStreamTrackAudioSourceNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaStreamTrackAudioSourceNode::to_audio_node(
   self : MediaStreamTrackAudioSourceNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn MediaStreamTrackAudioSourceNode::connect_with_input(
+pub extern "js" fn MediaStreamTrackAudioSourceNode::to_event_target(
   self : MediaStreamTrackAudioSourceNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn MediaStreamTrackAudioSourceNode::disconnect(
-  self : MediaStreamTrackAudioSourceNode,
-) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn MediaStreamTrackAudioSourceNode::get_context(
-  self : MediaStreamTrackAudioSourceNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn MediaStreamTrackAudioSourceNode::get_number_of_inputs(
-  self : MediaStreamTrackAudioSourceNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn MediaStreamTrackAudioSourceNode::get_number_of_outputs(
-  self : MediaStreamTrackAudioSourceNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn MediaStreamTrackAudioSourceNode::get_channel_count(
-  self : MediaStreamTrackAudioSourceNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn MediaStreamTrackAudioSourceNode::set_channel_count(
-  self : MediaStreamTrackAudioSourceNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn MediaStreamTrackAudioSourceNode::get_channel_count_mode(
-  self : MediaStreamTrackAudioSourceNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn MediaStreamTrackAudioSourceNode::set_channel_count_mode(
-  self : MediaStreamTrackAudioSourceNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn MediaStreamTrackAudioSourceNode::get_channel_interpretation(
-  self : MediaStreamTrackAudioSourceNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn MediaStreamTrackAudioSourceNode::set_channel_interpretation(
-  self : MediaStreamTrackAudioSourceNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn MediaStreamTrackAudioSourceNode::new(
@@ -4665,116 +3953,48 @@ pub extern "js" fn OscillatorNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn OscillatorNode::connect(
+/// Cast JsValue to OscillatorNode (unchecked)
+pub extern "js" fn OscillatorNode::from_js_value(v : JsValue) -> OscillatorNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to OscillatorNode (checked with instanceof)
+pub extern "js" fn OscillatorNode::from_js_value_opt(
+  v : JsValue,
+) -> OscillatorNode? =
+  #| (v) => (v instanceof OscillatorNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to OscillatorNode (checked with instanceof)
+pub extern "js" fn JsValue::as_oscillator_node(
+  self : JsValue,
+) -> OscillatorNode? =
+  #| (self) => (self instanceof OscillatorNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to OscillatorNode (unchecked)
+pub extern "js" fn JsValue::to_oscillator_node(
+  self : JsValue,
+) -> OscillatorNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn OscillatorNode::to_audio_scheduled_source_node(
   self : OscillatorNode,
-  destination_node : AudioNode,
+) -> AudioScheduledSourceNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn OscillatorNode::to_audio_node(
+  self : OscillatorNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn OscillatorNode::connect_with_input(
+pub extern "js" fn OscillatorNode::to_event_target(
   self : OscillatorNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn OscillatorNode::disconnect(self : OscillatorNode) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn OscillatorNode::get_context(
-  self : OscillatorNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn OscillatorNode::get_number_of_inputs(
-  self : OscillatorNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn OscillatorNode::get_number_of_outputs(
-  self : OscillatorNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn OscillatorNode::get_channel_count(
-  self : OscillatorNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn OscillatorNode::set_channel_count(
-  self : OscillatorNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn OscillatorNode::get_channel_count_mode(
-  self : OscillatorNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn OscillatorNode::set_channel_count_mode(
-  self : OscillatorNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn OscillatorNode::get_channel_interpretation(
-  self : OscillatorNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn OscillatorNode::set_channel_interpretation(
-  self : OscillatorNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
-
-///|
-pub extern "js" fn OscillatorNode::get_onended(
-  self : OscillatorNode,
-) -> EventHandler =
-  #| (self) => self.onended
-
-///|
-pub extern "js" fn OscillatorNode::set_onended(
-  self : OscillatorNode,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onended = value }
-
-///|
-pub extern "js" fn OscillatorNode::start(self : OscillatorNode) -> Unit =
-  #| (self) => self.start()
-
-///|
-pub extern "js" fn OscillatorNode::start_with_when(
-  self : OscillatorNode,
-  when : Double,
-) -> Unit =
-  #| (self, when) => self.start(when)
-
-///|
-pub extern "js" fn OscillatorNode::stop(self : OscillatorNode) -> Unit =
-  #| (self) => self.stop()
-
-///|
-pub extern "js" fn OscillatorNode::stop_with_when(
-  self : OscillatorNode,
-  when : Double,
-) -> Unit =
-  #| (self, when) => self.stop(when)
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn OscillatorNode::new(
@@ -4824,75 +4044,34 @@ pub extern "js" fn PannerNode::to_js_value(self : PannerNode) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn PannerNode::connect(
+/// Cast JsValue to PannerNode (unchecked)
+pub extern "js" fn PannerNode::from_js_value(v : JsValue) -> PannerNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PannerNode (checked with instanceof)
+pub extern "js" fn PannerNode::from_js_value_opt(v : JsValue) -> PannerNode? =
+  #| (v) => (v instanceof PannerNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PannerNode (checked with instanceof)
+pub extern "js" fn JsValue::as_panner_node(self : JsValue) -> PannerNode? =
+  #| (self) => (self instanceof PannerNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PannerNode (unchecked)
+pub extern "js" fn JsValue::to_panner_node(self : JsValue) -> PannerNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn PannerNode::to_audio_node(self : PannerNode) -> AudioNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn PannerNode::to_event_target(
   self : PannerNode,
-  destination_node : AudioNode,
-) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
-
-///|
-pub extern "js" fn PannerNode::connect_with_input(
-  self : PannerNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn PannerNode::disconnect(self : PannerNode) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn PannerNode::get_context(
-  self : PannerNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn PannerNode::get_number_of_inputs(self : PannerNode) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn PannerNode::get_number_of_outputs(self : PannerNode) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn PannerNode::get_channel_count(self : PannerNode) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn PannerNode::set_channel_count(
-  self : PannerNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn PannerNode::get_channel_count_mode(
-  self : PannerNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn PannerNode::set_channel_count_mode(
-  self : PannerNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn PannerNode::get_channel_interpretation(
-  self : PannerNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn PannerNode::set_channel_interpretation(
-  self : PannerNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn PannerNode::new(
@@ -5054,6 +4233,28 @@ pub extern "js" fn PeriodicWave::to_js_value(self : PeriodicWave) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to PeriodicWave (unchecked)
+pub extern "js" fn PeriodicWave::from_js_value(v : JsValue) -> PeriodicWave =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PeriodicWave (checked with instanceof)
+pub extern "js" fn PeriodicWave::from_js_value_opt(
+  v : JsValue,
+) -> PeriodicWave? =
+  #| (v) => (v instanceof PeriodicWave) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PeriodicWave (checked with instanceof)
+pub extern "js" fn JsValue::as_periodic_wave(self : JsValue) -> PeriodicWave? =
+  #| (self) => (self instanceof PeriodicWave) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PeriodicWave (unchecked)
+pub extern "js" fn JsValue::to_periodic_wave(self : JsValue) -> PeriodicWave =
+  #| (self) => self
+
+///|
 pub extern "js" fn PeriodicWave::new(
   context : BaseAudioContext,
   options : PeriodicWaveOptions,
@@ -5071,83 +4272,44 @@ pub extern "js" fn ScriptProcessorNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn ScriptProcessorNode::connect(
+/// Cast JsValue to ScriptProcessorNode (unchecked)
+pub extern "js" fn ScriptProcessorNode::from_js_value(
+  v : JsValue,
+) -> ScriptProcessorNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ScriptProcessorNode (checked with instanceof)
+pub extern "js" fn ScriptProcessorNode::from_js_value_opt(
+  v : JsValue,
+) -> ScriptProcessorNode? =
+  #| (v) => (v instanceof ScriptProcessorNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ScriptProcessorNode (checked with instanceof)
+pub extern "js" fn JsValue::as_script_processor_node(
+  self : JsValue,
+) -> ScriptProcessorNode? =
+  #| (self) => (self instanceof ScriptProcessorNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ScriptProcessorNode (unchecked)
+pub extern "js" fn JsValue::to_script_processor_node(
+  self : JsValue,
+) -> ScriptProcessorNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn ScriptProcessorNode::to_audio_node(
   self : ScriptProcessorNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn ScriptProcessorNode::connect_with_input(
+pub extern "js" fn ScriptProcessorNode::to_event_target(
   self : ScriptProcessorNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn ScriptProcessorNode::disconnect(
-  self : ScriptProcessorNode,
-) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn ScriptProcessorNode::get_context(
-  self : ScriptProcessorNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn ScriptProcessorNode::get_number_of_inputs(
-  self : ScriptProcessorNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn ScriptProcessorNode::get_number_of_outputs(
-  self : ScriptProcessorNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn ScriptProcessorNode::get_channel_count(
-  self : ScriptProcessorNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn ScriptProcessorNode::set_channel_count(
-  self : ScriptProcessorNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn ScriptProcessorNode::get_channel_count_mode(
-  self : ScriptProcessorNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn ScriptProcessorNode::set_channel_count_mode(
-  self : ScriptProcessorNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn ScriptProcessorNode::get_channel_interpretation(
-  self : ScriptProcessorNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn ScriptProcessorNode::set_channel_interpretation(
-  self : ScriptProcessorNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn ScriptProcessorNode::get_onaudioprocess(
@@ -5179,83 +4341,44 @@ pub extern "js" fn StereoPannerNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn StereoPannerNode::connect(
+/// Cast JsValue to StereoPannerNode (unchecked)
+pub extern "js" fn StereoPannerNode::from_js_value(
+  v : JsValue,
+) -> StereoPannerNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to StereoPannerNode (checked with instanceof)
+pub extern "js" fn StereoPannerNode::from_js_value_opt(
+  v : JsValue,
+) -> StereoPannerNode? =
+  #| (v) => (v instanceof StereoPannerNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to StereoPannerNode (checked with instanceof)
+pub extern "js" fn JsValue::as_stereo_panner_node(
+  self : JsValue,
+) -> StereoPannerNode? =
+  #| (self) => (self instanceof StereoPannerNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to StereoPannerNode (unchecked)
+pub extern "js" fn JsValue::to_stereo_panner_node(
+  self : JsValue,
+) -> StereoPannerNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn StereoPannerNode::to_audio_node(
   self : StereoPannerNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn StereoPannerNode::connect_with_input(
+pub extern "js" fn StereoPannerNode::to_event_target(
   self : StereoPannerNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn StereoPannerNode::disconnect(
-  self : StereoPannerNode,
-) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn StereoPannerNode::get_context(
-  self : StereoPannerNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn StereoPannerNode::get_number_of_inputs(
-  self : StereoPannerNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn StereoPannerNode::get_number_of_outputs(
-  self : StereoPannerNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn StereoPannerNode::get_channel_count(
-  self : StereoPannerNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn StereoPannerNode::set_channel_count(
-  self : StereoPannerNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn StereoPannerNode::get_channel_count_mode(
-  self : StereoPannerNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn StereoPannerNode::set_channel_count_mode(
-  self : StereoPannerNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn StereoPannerNode::get_channel_interpretation(
-  self : StereoPannerNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn StereoPannerNode::set_channel_interpretation(
-  self : StereoPannerNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn StereoPannerNode::new(
@@ -5281,81 +4404,42 @@ pub extern "js" fn WaveShaperNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn WaveShaperNode::connect(
+/// Cast JsValue to WaveShaperNode (unchecked)
+pub extern "js" fn WaveShaperNode::from_js_value(v : JsValue) -> WaveShaperNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WaveShaperNode (checked with instanceof)
+pub extern "js" fn WaveShaperNode::from_js_value_opt(
+  v : JsValue,
+) -> WaveShaperNode? =
+  #| (v) => (v instanceof WaveShaperNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WaveShaperNode (checked with instanceof)
+pub extern "js" fn JsValue::as_wave_shaper_node(
+  self : JsValue,
+) -> WaveShaperNode? =
+  #| (self) => (self instanceof WaveShaperNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WaveShaperNode (unchecked)
+pub extern "js" fn JsValue::to_wave_shaper_node(
+  self : JsValue,
+) -> WaveShaperNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn WaveShaperNode::to_audio_node(
   self : WaveShaperNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn WaveShaperNode::connect_with_input(
+pub extern "js" fn WaveShaperNode::to_event_target(
   self : WaveShaperNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn WaveShaperNode::disconnect(self : WaveShaperNode) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn WaveShaperNode::get_context(
-  self : WaveShaperNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn WaveShaperNode::get_number_of_inputs(
-  self : WaveShaperNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn WaveShaperNode::get_number_of_outputs(
-  self : WaveShaperNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn WaveShaperNode::get_channel_count(
-  self : WaveShaperNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn WaveShaperNode::set_channel_count(
-  self : WaveShaperNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn WaveShaperNode::get_channel_count_mode(
-  self : WaveShaperNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn WaveShaperNode::set_channel_count_mode(
-  self : WaveShaperNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn WaveShaperNode::get_channel_interpretation(
-  self : WaveShaperNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn WaveShaperNode::set_channel_interpretation(
-  self : WaveShaperNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn WaveShaperNode::new(
@@ -5368,7 +4452,7 @@ pub extern "js" fn WaveShaperNode::new(
 pub extern "js" fn WaveShaperNode::get_curve(
   self : WaveShaperNode,
 ) -> Float32Array? =
-  #| (self) => self.curve
+  #| (self) => { const v = self.curve; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WaveShaperNode::set_curve(
@@ -5399,6 +4483,32 @@ pub extern "js" fn AudioWorklet::to_js_value(self : AudioWorklet) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to AudioWorklet (unchecked)
+pub extern "js" fn AudioWorklet::from_js_value(v : JsValue) -> AudioWorklet =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioWorklet (checked with instanceof)
+pub extern "js" fn AudioWorklet::from_js_value_opt(
+  v : JsValue,
+) -> AudioWorklet? =
+  #| (v) => (v instanceof AudioWorklet) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioWorklet (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_worklet(self : JsValue) -> AudioWorklet? =
+  #| (self) => (self instanceof AudioWorklet) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioWorklet (unchecked)
+pub extern "js" fn JsValue::to_audio_worklet(self : JsValue) -> AudioWorklet =
+  #| (self) => self
+
+///|
+pub extern "js" fn AudioWorklet::to_worklet(self : AudioWorklet) -> Worklet =
+  #| (self) => self
+
+///|
 pub extern "js" fn AudioWorklet::get_port(self : AudioWorklet) -> MessagePort =
   #| (self) => self.port
 
@@ -5410,6 +4520,40 @@ pub type AudioWorkletGlobalScope
 pub extern "js" fn AudioWorkletGlobalScope::to_js_value(
   self : AudioWorkletGlobalScope,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to AudioWorkletGlobalScope (unchecked)
+pub extern "js" fn AudioWorkletGlobalScope::from_js_value(
+  v : JsValue,
+) -> AudioWorkletGlobalScope =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioWorkletGlobalScope (checked with instanceof)
+pub extern "js" fn AudioWorkletGlobalScope::from_js_value_opt(
+  v : JsValue,
+) -> AudioWorkletGlobalScope? =
+  #| (v) => (v instanceof AudioWorkletGlobalScope) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioWorkletGlobalScope (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_worklet_global_scope(
+  self : JsValue,
+) -> AudioWorkletGlobalScope? =
+  #| (self) => (self instanceof AudioWorkletGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioWorkletGlobalScope (unchecked)
+pub extern "js" fn JsValue::to_audio_worklet_global_scope(
+  self : JsValue,
+) -> AudioWorkletGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn AudioWorkletGlobalScope::to_worklet_global_scope(
+  self : AudioWorkletGlobalScope,
+) -> WorkletGlobalScope =
   #| (self) => self
 
 ///|
@@ -5459,11 +4603,35 @@ pub extern "js" fn AudioParamMap::to_js_value(self : AudioParamMap) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to AudioParamMap (unchecked)
+pub extern "js" fn AudioParamMap::from_js_value(v : JsValue) -> AudioParamMap =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioParamMap (checked with instanceof)
+pub extern "js" fn AudioParamMap::from_js_value_opt(
+  v : JsValue,
+) -> AudioParamMap? =
+  #| (v) => (v instanceof AudioParamMap) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioParamMap (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_param_map(
+  self : JsValue,
+) -> AudioParamMap? =
+  #| (self) => (self instanceof AudioParamMap) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioParamMap (unchecked)
+pub extern "js" fn JsValue::to_audio_param_map(self : JsValue) -> AudioParamMap =
+  #| (self) => self
+
+///|
 pub extern "js" fn AudioParamMap::get(
   self : AudioParamMap,
   key : String,
 ) -> AudioParam? =
-  #| (self, key) => self.get(key)
+  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn AudioParamMap::has(
@@ -5483,83 +4651,44 @@ pub extern "js" fn AudioWorkletNode::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn AudioWorkletNode::connect(
+/// Cast JsValue to AudioWorkletNode (unchecked)
+pub extern "js" fn AudioWorkletNode::from_js_value(
+  v : JsValue,
+) -> AudioWorkletNode =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioWorkletNode (checked with instanceof)
+pub extern "js" fn AudioWorkletNode::from_js_value_opt(
+  v : JsValue,
+) -> AudioWorkletNode? =
+  #| (v) => (v instanceof AudioWorkletNode) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioWorkletNode (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_worklet_node(
+  self : JsValue,
+) -> AudioWorkletNode? =
+  #| (self) => (self instanceof AudioWorkletNode) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioWorkletNode (unchecked)
+pub extern "js" fn JsValue::to_audio_worklet_node(
+  self : JsValue,
+) -> AudioWorkletNode =
+  #| (self) => self
+
+///|
+pub extern "js" fn AudioWorkletNode::to_audio_node(
   self : AudioWorkletNode,
-  destination_node : AudioNode,
 ) -> AudioNode =
-  #| (self, destination_node) => self.connect(destination_node)
+  #| (self) => self
 
 ///|
-pub extern "js" fn AudioWorkletNode::connect_with_input(
+pub extern "js" fn AudioWorkletNode::to_event_target(
   self : AudioWorkletNode,
-  destination_node : AudioNode,
-  output : Int,
-  input : Int,
-) -> AudioNode =
-  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
-
-///|
-pub extern "js" fn AudioWorkletNode::disconnect(
-  self : AudioWorkletNode,
-) -> Unit =
-  #| (self) => self.disconnect()
-
-///|
-pub extern "js" fn AudioWorkletNode::get_context(
-  self : AudioWorkletNode,
-) -> BaseAudioContext =
-  #| (self) => self.context
-
-///|
-pub extern "js" fn AudioWorkletNode::get_number_of_inputs(
-  self : AudioWorkletNode,
-) -> Int =
-  #| (self) => self.numberOfInputs
-
-///|
-pub extern "js" fn AudioWorkletNode::get_number_of_outputs(
-  self : AudioWorkletNode,
-) -> Int =
-  #| (self) => self.numberOfOutputs
-
-///|
-pub extern "js" fn AudioWorkletNode::get_channel_count(
-  self : AudioWorkletNode,
-) -> Int =
-  #| (self) => self.channelCount
-
-///|
-pub extern "js" fn AudioWorkletNode::set_channel_count(
-  self : AudioWorkletNode,
-  value : Int,
-) -> Unit =
-  #| (self, value) => { self.channelCount = value }
-
-///|
-pub extern "js" fn AudioWorkletNode::get_channel_count_mode(
-  self : AudioWorkletNode,
-) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
-
-///|
-pub extern "js" fn AudioWorkletNode::set_channel_count_mode(
-  self : AudioWorkletNode,
-  value : ChannelCountMode,
-) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
-
-///|
-pub extern "js" fn AudioWorkletNode::get_channel_interpretation(
-  self : AudioWorkletNode,
-) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
-
-///|
-pub extern "js" fn AudioWorkletNode::set_channel_interpretation(
-  self : AudioWorkletNode,
-  value : ChannelInterpretation,
-) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn AudioWorkletNode::new(
@@ -5605,6 +4734,34 @@ pub extern "js" fn AudioWorkletProcessor::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to AudioWorkletProcessor (unchecked)
+pub extern "js" fn AudioWorkletProcessor::from_js_value(
+  v : JsValue,
+) -> AudioWorkletProcessor =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioWorkletProcessor (checked with instanceof)
+pub extern "js" fn AudioWorkletProcessor::from_js_value_opt(
+  v : JsValue,
+) -> AudioWorkletProcessor? =
+  #| (v) => (v instanceof AudioWorkletProcessor) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioWorkletProcessor (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_worklet_processor(
+  self : JsValue,
+) -> AudioWorkletProcessor? =
+  #| (self) => (self instanceof AudioWorkletProcessor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioWorkletProcessor (unchecked)
+pub extern "js" fn JsValue::to_audio_worklet_processor(
+  self : JsValue,
+) -> AudioWorkletProcessor =
+  #| (self) => self
+
+///|
 pub extern "js" fn AudioWorkletProcessor::new() -> AudioWorkletProcessor =
   #| () => new AudioWorkletProcessor()
 
@@ -5613,3 +4770,89 @@ pub extern "js" fn AudioWorkletProcessor::get_port(
   self : AudioWorkletProcessor,
 ) -> MessagePort =
   #| (self) => self.port
+
+///|
+/// AudioPlaybackStats interface
+pub type AudioPlaybackStats
+
+///|
+pub extern "js" fn AudioPlaybackStats::to_js_value(
+  self : AudioPlaybackStats,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to AudioPlaybackStats (unchecked)
+pub extern "js" fn AudioPlaybackStats::from_js_value(
+  v : JsValue,
+) -> AudioPlaybackStats =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioPlaybackStats (checked with instanceof)
+pub extern "js" fn AudioPlaybackStats::from_js_value_opt(
+  v : JsValue,
+) -> AudioPlaybackStats? =
+  #| (v) => (v instanceof AudioPlaybackStats) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioPlaybackStats (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_playback_stats(
+  self : JsValue,
+) -> AudioPlaybackStats? =
+  #| (self) => (self instanceof AudioPlaybackStats) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioPlaybackStats (unchecked)
+pub extern "js" fn JsValue::to_audio_playback_stats(
+  self : JsValue,
+) -> AudioPlaybackStats =
+  #| (self) => self
+
+///|
+pub extern "js" fn AudioPlaybackStats::get_underrun_duration(
+  self : AudioPlaybackStats,
+) -> Double =
+  #| (self) => self.underrunDuration
+
+///|
+pub extern "js" fn AudioPlaybackStats::get_underrun_events(
+  self : AudioPlaybackStats,
+) -> Int =
+  #| (self) => self.underrunEvents
+
+///|
+pub extern "js" fn AudioPlaybackStats::get_total_duration(
+  self : AudioPlaybackStats,
+) -> Double =
+  #| (self) => self.totalDuration
+
+///|
+pub extern "js" fn AudioPlaybackStats::get_average_latency(
+  self : AudioPlaybackStats,
+) -> Double =
+  #| (self) => self.averageLatency
+
+///|
+pub extern "js" fn AudioPlaybackStats::get_minimum_latency(
+  self : AudioPlaybackStats,
+) -> Double =
+  #| (self) => self.minimumLatency
+
+///|
+pub extern "js" fn AudioPlaybackStats::get_maximum_latency(
+  self : AudioPlaybackStats,
+) -> Double =
+  #| (self) => self.maximumLatency
+
+///|
+pub extern "js" fn AudioPlaybackStats::reset_latency(
+  self : AudioPlaybackStats,
+) -> Unit =
+  #| (self) => self.resetLatency()
+
+///|
+pub extern "js" fn AudioPlaybackStats::to_json(
+  self : AudioPlaybackStats,
+) -> JsValue =
+  #| (self) => self.toJSON()

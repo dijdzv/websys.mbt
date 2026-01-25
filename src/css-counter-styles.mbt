@@ -12,6 +12,40 @@ pub extern "js" fn CSSCounterStyleRule::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSCounterStyleRule (unchecked)
+pub extern "js" fn CSSCounterStyleRule::from_js_value(
+  v : JsValue,
+) -> CSSCounterStyleRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSCounterStyleRule (checked with instanceof)
+pub extern "js" fn CSSCounterStyleRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSCounterStyleRule? =
+  #| (v) => (v instanceof CSSCounterStyleRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSCounterStyleRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_counter_style_rule(
+  self : JsValue,
+) -> CSSCounterStyleRule? =
+  #| (self) => (self instanceof CSSCounterStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSCounterStyleRule (unchecked)
+pub extern "js" fn JsValue::to_css_counter_style_rule(
+  self : JsValue,
+) -> CSSCounterStyleRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSCounterStyleRule::to_css_rule(
+  self : CSSCounterStyleRule,
+) -> CSSRule =
+  #| (self) => self
+
+///|
 pub extern "js" fn CSSCounterStyleRule::get_name(
   self : CSSCounterStyleRule,
 ) -> CSSOMString =

@@ -10,8 +10,32 @@ pub extern "js" fn TimeEvent::to_js_value(self : TimeEvent) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to TimeEvent (unchecked)
+pub extern "js" fn TimeEvent::from_js_value(v : JsValue) -> TimeEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to TimeEvent (checked with instanceof)
+pub extern "js" fn TimeEvent::from_js_value_opt(v : JsValue) -> TimeEvent? =
+  #| (v) => (v instanceof TimeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to TimeEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_time_event(self : JsValue) -> TimeEvent? =
+  #| (self) => (self instanceof TimeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to TimeEvent (unchecked)
+pub extern "js" fn JsValue::to_time_event(self : JsValue) -> TimeEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn TimeEvent::to_event(self : TimeEvent) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn TimeEvent::get_view(self : TimeEvent) -> WindowProxy? =
-  #| (self) => self.view
+  #| (self) => { const v = self.view; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn TimeEvent::get_detail(self : TimeEvent) -> Int =
@@ -44,10 +68,86 @@ pub extern "js" fn SVGAnimationElement::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SVGAnimationElement (unchecked)
+pub extern "js" fn SVGAnimationElement::from_js_value(
+  v : JsValue,
+) -> SVGAnimationElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGAnimationElement (checked with instanceof)
+pub extern "js" fn SVGAnimationElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGAnimationElement? =
+  #| (v) => (v instanceof SVGAnimationElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGAnimationElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svg_animation_element(
+  self : JsValue,
+) -> SVGAnimationElement? =
+  #| (self) => (self instanceof SVGAnimationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGAnimationElement (unchecked)
+pub extern "js" fn JsValue::to_svg_animation_element(
+  self : JsValue,
+) -> SVGAnimationElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGAnimationElement::to_svg_element(
+  self : SVGAnimationElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGAnimationElement::to_element(
+  self : SVGAnimationElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGAnimationElement::to_node(
+  self : SVGAnimationElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGAnimationElement::to_event_target(
+  self : SVGAnimationElement,
+) -> EventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGAnimationElement::as_svg_animate_element(
+  self : SVGAnimationElement,
+) -> SVGAnimateElement? =
+  #| (self) => (self instanceof SVGAnimateElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGAnimationElement::as_svg_set_element(
+  self : SVGAnimationElement,
+) -> SVGSetElement? =
+  #| (self) => (self instanceof SVGSetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGAnimationElement::as_svg_animate_motion_element(
+  self : SVGAnimationElement,
+) -> SVGAnimateMotionElement? =
+  #| (self) => (self instanceof SVGAnimateMotionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGAnimationElement::as_svg_animate_transform_element(
+  self : SVGAnimationElement,
+) -> SVGAnimateTransformElement? =
+  #| (self) => (self instanceof SVGAnimateTransformElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn SVGAnimationElement::get_target_element(
   self : SVGAnimationElement,
 ) -> SVGElement? =
-  #| (self) => self.targetElement
+  #| (self) => { const v = self.targetElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn SVGAnimationElement::get_onbegin(
@@ -155,105 +255,60 @@ pub extern "js" fn SVGAnimateElement::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateElement::get_target_element(
-  self : SVGAnimateElement,
-) -> SVGElement? =
-  #| (self) => self.targetElement
+/// Cast JsValue to SVGAnimateElement (unchecked)
+pub extern "js" fn SVGAnimateElement::from_js_value(
+  v : JsValue,
+) -> SVGAnimateElement =
+  #| (v) => v
 
 ///|
-pub extern "js" fn SVGAnimateElement::get_onbegin(
-  self : SVGAnimateElement,
-) -> EventHandler =
-  #| (self) => self.onbegin
+/// Safely cast JsValue to SVGAnimateElement (checked with instanceof)
+pub extern "js" fn SVGAnimateElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGAnimateElement? =
+  #| (v) => (v instanceof SVGAnimateElement) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn SVGAnimateElement::set_onbegin(
-  self : SVGAnimateElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onbegin = value }
+/// Safely cast JsValue to SVGAnimateElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svg_animate_element(
+  self : JsValue,
+) -> SVGAnimateElement? =
+  #| (self) => (self instanceof SVGAnimateElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn SVGAnimateElement::get_onend(
-  self : SVGAnimateElement,
-) -> EventHandler =
-  #| (self) => self.onend
+/// Cast JsValue to SVGAnimateElement (unchecked)
+pub extern "js" fn JsValue::to_svg_animate_element(
+  self : JsValue,
+) -> SVGAnimateElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateElement::set_onend(
+pub extern "js" fn SVGAnimateElement::to_svg_animation_element(
   self : SVGAnimateElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onend = value }
+) -> SVGAnimationElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateElement::get_onrepeat(
+pub extern "js" fn SVGAnimateElement::to_svg_element(
   self : SVGAnimateElement,
-) -> EventHandler =
-  #| (self) => self.onrepeat
+) -> SVGElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateElement::set_onrepeat(
+pub extern "js" fn SVGAnimateElement::to_element(
   self : SVGAnimateElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onrepeat = value }
+) -> Element =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateElement::get_start_time(
-  self : SVGAnimateElement,
-) -> Double =
-  #| (self) => self.getStartTime()
+pub extern "js" fn SVGAnimateElement::to_node(self : SVGAnimateElement) -> Node =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateElement::get_current_time(
+pub extern "js" fn SVGAnimateElement::to_event_target(
   self : SVGAnimateElement,
-) -> Double =
-  #| (self) => self.getCurrentTime()
-
-///|
-pub extern "js" fn SVGAnimateElement::get_simple_duration(
-  self : SVGAnimateElement,
-) -> Double =
-  #| (self) => self.getSimpleDuration()
-
-///|
-pub extern "js" fn SVGAnimateElement::begin_element(
-  self : SVGAnimateElement,
-) -> Unit =
-  #| (self) => self.beginElement()
-
-///|
-pub extern "js" fn SVGAnimateElement::begin_element_at(
-  self : SVGAnimateElement,
-  offset : Double,
-) -> Unit =
-  #| (self, offset) => self.beginElementAt(offset)
-
-///|
-pub extern "js" fn SVGAnimateElement::end_element(
-  self : SVGAnimateElement,
-) -> Unit =
-  #| (self) => self.endElement()
-
-///|
-pub extern "js" fn SVGAnimateElement::end_element_at(
-  self : SVGAnimateElement,
-  offset : Double,
-) -> Unit =
-  #| (self, offset) => self.endElementAt(offset)
-
-///|
-pub extern "js" fn SVGAnimateElement::get_required_extensions(
-  self : SVGAnimateElement,
-) -> SVGStringList =
-  #| (self) => self.requiredExtensions
-
-///|
-pub extern "js" fn SVGAnimateElement::get_system_language(
-  self : SVGAnimateElement,
-) -> SVGStringList =
-  #| (self) => self.systemLanguage
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 /// SVGSetElement interface
@@ -264,101 +319,54 @@ pub extern "js" fn SVGSetElement::to_js_value(self : SVGSetElement) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn SVGSetElement::get_target_element(
+/// Cast JsValue to SVGSetElement (unchecked)
+pub extern "js" fn SVGSetElement::from_js_value(v : JsValue) -> SVGSetElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGSetElement (checked with instanceof)
+pub extern "js" fn SVGSetElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGSetElement? =
+  #| (v) => (v instanceof SVGSetElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGSetElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svg_set_element(
+  self : JsValue,
+) -> SVGSetElement? =
+  #| (self) => (self instanceof SVGSetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGSetElement (unchecked)
+pub extern "js" fn JsValue::to_svg_set_element(self : JsValue) -> SVGSetElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGSetElement::to_svg_animation_element(
   self : SVGSetElement,
-) -> SVGElement? =
-  #| (self) => self.targetElement
+) -> SVGAnimationElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGSetElement::get_onbegin(
+pub extern "js" fn SVGSetElement::to_svg_element(
   self : SVGSetElement,
-) -> EventHandler =
-  #| (self) => self.onbegin
+) -> SVGElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGSetElement::set_onbegin(
+pub extern "js" fn SVGSetElement::to_element(self : SVGSetElement) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGSetElement::to_node(self : SVGSetElement) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGSetElement::to_event_target(
   self : SVGSetElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onbegin = value }
-
-///|
-pub extern "js" fn SVGSetElement::get_onend(
-  self : SVGSetElement,
-) -> EventHandler =
-  #| (self) => self.onend
-
-///|
-pub extern "js" fn SVGSetElement::set_onend(
-  self : SVGSetElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onend = value }
-
-///|
-pub extern "js" fn SVGSetElement::get_onrepeat(
-  self : SVGSetElement,
-) -> EventHandler =
-  #| (self) => self.onrepeat
-
-///|
-pub extern "js" fn SVGSetElement::set_onrepeat(
-  self : SVGSetElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onrepeat = value }
-
-///|
-pub extern "js" fn SVGSetElement::get_start_time(
-  self : SVGSetElement,
-) -> Double =
-  #| (self) => self.getStartTime()
-
-///|
-pub extern "js" fn SVGSetElement::get_current_time(
-  self : SVGSetElement,
-) -> Double =
-  #| (self) => self.getCurrentTime()
-
-///|
-pub extern "js" fn SVGSetElement::get_simple_duration(
-  self : SVGSetElement,
-) -> Double =
-  #| (self) => self.getSimpleDuration()
-
-///|
-pub extern "js" fn SVGSetElement::begin_element(self : SVGSetElement) -> Unit =
-  #| (self) => self.beginElement()
-
-///|
-pub extern "js" fn SVGSetElement::begin_element_at(
-  self : SVGSetElement,
-  offset : Double,
-) -> Unit =
-  #| (self, offset) => self.beginElementAt(offset)
-
-///|
-pub extern "js" fn SVGSetElement::end_element(self : SVGSetElement) -> Unit =
-  #| (self) => self.endElement()
-
-///|
-pub extern "js" fn SVGSetElement::end_element_at(
-  self : SVGSetElement,
-  offset : Double,
-) -> Unit =
-  #| (self, offset) => self.endElementAt(offset)
-
-///|
-pub extern "js" fn SVGSetElement::get_required_extensions(
-  self : SVGSetElement,
-) -> SVGStringList =
-  #| (self) => self.requiredExtensions
-
-///|
-pub extern "js" fn SVGSetElement::get_system_language(
-  self : SVGSetElement,
-) -> SVGStringList =
-  #| (self) => self.systemLanguage
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 /// SVGAnimateMotionElement interface
@@ -371,105 +379,62 @@ pub extern "js" fn SVGAnimateMotionElement::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateMotionElement::get_target_element(
-  self : SVGAnimateMotionElement,
-) -> SVGElement? =
-  #| (self) => self.targetElement
+/// Cast JsValue to SVGAnimateMotionElement (unchecked)
+pub extern "js" fn SVGAnimateMotionElement::from_js_value(
+  v : JsValue,
+) -> SVGAnimateMotionElement =
+  #| (v) => v
 
 ///|
-pub extern "js" fn SVGAnimateMotionElement::get_onbegin(
-  self : SVGAnimateMotionElement,
-) -> EventHandler =
-  #| (self) => self.onbegin
+/// Safely cast JsValue to SVGAnimateMotionElement (checked with instanceof)
+pub extern "js" fn SVGAnimateMotionElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGAnimateMotionElement? =
+  #| (v) => (v instanceof SVGAnimateMotionElement) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn SVGAnimateMotionElement::set_onbegin(
-  self : SVGAnimateMotionElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onbegin = value }
+/// Safely cast JsValue to SVGAnimateMotionElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svg_animate_motion_element(
+  self : JsValue,
+) -> SVGAnimateMotionElement? =
+  #| (self) => (self instanceof SVGAnimateMotionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn SVGAnimateMotionElement::get_onend(
-  self : SVGAnimateMotionElement,
-) -> EventHandler =
-  #| (self) => self.onend
+/// Cast JsValue to SVGAnimateMotionElement (unchecked)
+pub extern "js" fn JsValue::to_svg_animate_motion_element(
+  self : JsValue,
+) -> SVGAnimateMotionElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateMotionElement::set_onend(
+pub extern "js" fn SVGAnimateMotionElement::to_svg_animation_element(
   self : SVGAnimateMotionElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onend = value }
+) -> SVGAnimationElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateMotionElement::get_onrepeat(
+pub extern "js" fn SVGAnimateMotionElement::to_svg_element(
   self : SVGAnimateMotionElement,
-) -> EventHandler =
-  #| (self) => self.onrepeat
+) -> SVGElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateMotionElement::set_onrepeat(
+pub extern "js" fn SVGAnimateMotionElement::to_element(
   self : SVGAnimateMotionElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onrepeat = value }
+) -> Element =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateMotionElement::get_start_time(
+pub extern "js" fn SVGAnimateMotionElement::to_node(
   self : SVGAnimateMotionElement,
-) -> Double =
-  #| (self) => self.getStartTime()
+) -> Node =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateMotionElement::get_current_time(
+pub extern "js" fn SVGAnimateMotionElement::to_event_target(
   self : SVGAnimateMotionElement,
-) -> Double =
-  #| (self) => self.getCurrentTime()
-
-///|
-pub extern "js" fn SVGAnimateMotionElement::get_simple_duration(
-  self : SVGAnimateMotionElement,
-) -> Double =
-  #| (self) => self.getSimpleDuration()
-
-///|
-pub extern "js" fn SVGAnimateMotionElement::begin_element(
-  self : SVGAnimateMotionElement,
-) -> Unit =
-  #| (self) => self.beginElement()
-
-///|
-pub extern "js" fn SVGAnimateMotionElement::begin_element_at(
-  self : SVGAnimateMotionElement,
-  offset : Double,
-) -> Unit =
-  #| (self, offset) => self.beginElementAt(offset)
-
-///|
-pub extern "js" fn SVGAnimateMotionElement::end_element(
-  self : SVGAnimateMotionElement,
-) -> Unit =
-  #| (self) => self.endElement()
-
-///|
-pub extern "js" fn SVGAnimateMotionElement::end_element_at(
-  self : SVGAnimateMotionElement,
-  offset : Double,
-) -> Unit =
-  #| (self, offset) => self.endElementAt(offset)
-
-///|
-pub extern "js" fn SVGAnimateMotionElement::get_required_extensions(
-  self : SVGAnimateMotionElement,
-) -> SVGStringList =
-  #| (self) => self.requiredExtensions
-
-///|
-pub extern "js" fn SVGAnimateMotionElement::get_system_language(
-  self : SVGAnimateMotionElement,
-) -> SVGStringList =
-  #| (self) => self.systemLanguage
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 /// SVGMPathElement interface
@@ -479,6 +444,56 @@ pub type SVGMPathElement
 pub extern "js" fn SVGMPathElement::to_js_value(
   self : SVGMPathElement,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SVGMPathElement (unchecked)
+pub extern "js" fn SVGMPathElement::from_js_value(
+  v : JsValue,
+) -> SVGMPathElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGMPathElement (checked with instanceof)
+pub extern "js" fn SVGMPathElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGMPathElement? =
+  #| (v) => (v instanceof SVGMPathElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGMPathElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgm_path_element(
+  self : JsValue,
+) -> SVGMPathElement? =
+  #| (self) => (self instanceof SVGMPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGMPathElement (unchecked)
+pub extern "js" fn JsValue::to_svgm_path_element(
+  self : JsValue,
+) -> SVGMPathElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGMPathElement::to_svg_element(
+  self : SVGMPathElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGMPathElement::to_element(
+  self : SVGMPathElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGMPathElement::to_node(self : SVGMPathElement) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGMPathElement::to_event_target(
+  self : SVGMPathElement,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -498,102 +513,59 @@ pub extern "js" fn SVGAnimateTransformElement::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateTransformElement::get_target_element(
-  self : SVGAnimateTransformElement,
-) -> SVGElement? =
-  #| (self) => self.targetElement
+/// Cast JsValue to SVGAnimateTransformElement (unchecked)
+pub extern "js" fn SVGAnimateTransformElement::from_js_value(
+  v : JsValue,
+) -> SVGAnimateTransformElement =
+  #| (v) => v
 
 ///|
-pub extern "js" fn SVGAnimateTransformElement::get_onbegin(
-  self : SVGAnimateTransformElement,
-) -> EventHandler =
-  #| (self) => self.onbegin
+/// Safely cast JsValue to SVGAnimateTransformElement (checked with instanceof)
+pub extern "js" fn SVGAnimateTransformElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGAnimateTransformElement? =
+  #| (v) => (v instanceof SVGAnimateTransformElement) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn SVGAnimateTransformElement::set_onbegin(
-  self : SVGAnimateTransformElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onbegin = value }
+/// Safely cast JsValue to SVGAnimateTransformElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svg_animate_transform_element(
+  self : JsValue,
+) -> SVGAnimateTransformElement? =
+  #| (self) => (self instanceof SVGAnimateTransformElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn SVGAnimateTransformElement::get_onend(
-  self : SVGAnimateTransformElement,
-) -> EventHandler =
-  #| (self) => self.onend
+/// Cast JsValue to SVGAnimateTransformElement (unchecked)
+pub extern "js" fn JsValue::to_svg_animate_transform_element(
+  self : JsValue,
+) -> SVGAnimateTransformElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateTransformElement::set_onend(
+pub extern "js" fn SVGAnimateTransformElement::to_svg_animation_element(
   self : SVGAnimateTransformElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onend = value }
+) -> SVGAnimationElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateTransformElement::get_onrepeat(
+pub extern "js" fn SVGAnimateTransformElement::to_svg_element(
   self : SVGAnimateTransformElement,
-) -> EventHandler =
-  #| (self) => self.onrepeat
+) -> SVGElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateTransformElement::set_onrepeat(
+pub extern "js" fn SVGAnimateTransformElement::to_element(
   self : SVGAnimateTransformElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onrepeat = value }
+) -> Element =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateTransformElement::get_start_time(
+pub extern "js" fn SVGAnimateTransformElement::to_node(
   self : SVGAnimateTransformElement,
-) -> Double =
-  #| (self) => self.getStartTime()
+) -> Node =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGAnimateTransformElement::get_current_time(
+pub extern "js" fn SVGAnimateTransformElement::to_event_target(
   self : SVGAnimateTransformElement,
-) -> Double =
-  #| (self) => self.getCurrentTime()
-
-///|
-pub extern "js" fn SVGAnimateTransformElement::get_simple_duration(
-  self : SVGAnimateTransformElement,
-) -> Double =
-  #| (self) => self.getSimpleDuration()
-
-///|
-pub extern "js" fn SVGAnimateTransformElement::begin_element(
-  self : SVGAnimateTransformElement,
-) -> Unit =
-  #| (self) => self.beginElement()
-
-///|
-pub extern "js" fn SVGAnimateTransformElement::begin_element_at(
-  self : SVGAnimateTransformElement,
-  offset : Double,
-) -> Unit =
-  #| (self, offset) => self.beginElementAt(offset)
-
-///|
-pub extern "js" fn SVGAnimateTransformElement::end_element(
-  self : SVGAnimateTransformElement,
-) -> Unit =
-  #| (self) => self.endElement()
-
-///|
-pub extern "js" fn SVGAnimateTransformElement::end_element_at(
-  self : SVGAnimateTransformElement,
-  offset : Double,
-) -> Unit =
-  #| (self, offset) => self.endElementAt(offset)
-
-///|
-pub extern "js" fn SVGAnimateTransformElement::get_required_extensions(
-  self : SVGAnimateTransformElement,
-) -> SVGStringList =
-  #| (self) => self.requiredExtensions
-
-///|
-pub extern "js" fn SVGAnimateTransformElement::get_system_language(
-  self : SVGAnimateTransformElement,
-) -> SVGStringList =
-  #| (self) => self.systemLanguage
+) -> EventTarget =
+  #| (self) => self

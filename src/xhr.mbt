@@ -131,6 +131,52 @@ pub extern "js" fn XMLHttpRequestEventTarget::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to XMLHttpRequestEventTarget (unchecked)
+pub extern "js" fn XMLHttpRequestEventTarget::from_js_value(
+  v : JsValue,
+) -> XMLHttpRequestEventTarget =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XMLHttpRequestEventTarget (checked with instanceof)
+pub extern "js" fn XMLHttpRequestEventTarget::from_js_value_opt(
+  v : JsValue,
+) -> XMLHttpRequestEventTarget? =
+  #| (v) => (v instanceof XMLHttpRequestEventTarget) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XMLHttpRequestEventTarget (checked with instanceof)
+pub extern "js" fn JsValue::as_xml_http_request_event_target(
+  self : JsValue,
+) -> XMLHttpRequestEventTarget? =
+  #| (self) => (self instanceof XMLHttpRequestEventTarget) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XMLHttpRequestEventTarget (unchecked)
+pub extern "js" fn JsValue::to_xml_http_request_event_target(
+  self : JsValue,
+) -> XMLHttpRequestEventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn XMLHttpRequestEventTarget::to_event_target(
+  self : XMLHttpRequestEventTarget,
+) -> EventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn XMLHttpRequestEventTarget::as_xml_http_request_upload(
+  self : XMLHttpRequestEventTarget,
+) -> XMLHttpRequestUpload? =
+  #| (self) => (self instanceof XMLHttpRequestUpload) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn XMLHttpRequestEventTarget::as_xml_http_request(
+  self : XMLHttpRequestEventTarget,
+) -> XMLHttpRequest? =
+  #| (self) => (self instanceof XMLHttpRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn XMLHttpRequestEventTarget::get_onloadstart(
   self : XMLHttpRequestEventTarget,
 ) -> EventHandler =
@@ -232,95 +278,44 @@ pub extern "js" fn XMLHttpRequestUpload::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn XMLHttpRequestUpload::get_onloadstart(
-  self : XMLHttpRequestUpload,
-) -> EventHandler =
-  #| (self) => self.onloadstart
+/// Cast JsValue to XMLHttpRequestUpload (unchecked)
+pub extern "js" fn XMLHttpRequestUpload::from_js_value(
+  v : JsValue,
+) -> XMLHttpRequestUpload =
+  #| (v) => v
 
 ///|
-pub extern "js" fn XMLHttpRequestUpload::set_onloadstart(
-  self : XMLHttpRequestUpload,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onloadstart = value }
+/// Safely cast JsValue to XMLHttpRequestUpload (checked with instanceof)
+pub extern "js" fn XMLHttpRequestUpload::from_js_value_opt(
+  v : JsValue,
+) -> XMLHttpRequestUpload? =
+  #| (v) => (v instanceof XMLHttpRequestUpload) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn XMLHttpRequestUpload::get_onprogress(
-  self : XMLHttpRequestUpload,
-) -> EventHandler =
-  #| (self) => self.onprogress
+/// Safely cast JsValue to XMLHttpRequestUpload (checked with instanceof)
+pub extern "js" fn JsValue::as_xml_http_request_upload(
+  self : JsValue,
+) -> XMLHttpRequestUpload? =
+  #| (self) => (self instanceof XMLHttpRequestUpload) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn XMLHttpRequestUpload::set_onprogress(
-  self : XMLHttpRequestUpload,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onprogress = value }
+/// Cast JsValue to XMLHttpRequestUpload (unchecked)
+pub extern "js" fn JsValue::to_xml_http_request_upload(
+  self : JsValue,
+) -> XMLHttpRequestUpload =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XMLHttpRequestUpload::get_onabort(
+pub extern "js" fn XMLHttpRequestUpload::to_xml_http_request_event_target(
   self : XMLHttpRequestUpload,
-) -> EventHandler =
-  #| (self) => self.onabort
+) -> XMLHttpRequestEventTarget =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XMLHttpRequestUpload::set_onabort(
+pub extern "js" fn XMLHttpRequestUpload::to_event_target(
   self : XMLHttpRequestUpload,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onabort = value }
-
-///|
-pub extern "js" fn XMLHttpRequestUpload::get_onerror(
-  self : XMLHttpRequestUpload,
-) -> EventHandler =
-  #| (self) => self.onerror
-
-///|
-pub extern "js" fn XMLHttpRequestUpload::set_onerror(
-  self : XMLHttpRequestUpload,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onerror = value }
-
-///|
-pub extern "js" fn XMLHttpRequestUpload::get_onload(
-  self : XMLHttpRequestUpload,
-) -> EventHandler =
-  #| (self) => self.onload
-
-///|
-pub extern "js" fn XMLHttpRequestUpload::set_onload(
-  self : XMLHttpRequestUpload,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onload = value }
-
-///|
-pub extern "js" fn XMLHttpRequestUpload::get_ontimeout(
-  self : XMLHttpRequestUpload,
-) -> EventHandler =
-  #| (self) => self.ontimeout
-
-///|
-pub extern "js" fn XMLHttpRequestUpload::set_ontimeout(
-  self : XMLHttpRequestUpload,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.ontimeout = value }
-
-///|
-pub extern "js" fn XMLHttpRequestUpload::get_onloadend(
-  self : XMLHttpRequestUpload,
-) -> EventHandler =
-  #| (self) => self.onloadend
-
-///|
-pub extern "js" fn XMLHttpRequestUpload::set_onloadend(
-  self : XMLHttpRequestUpload,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onloadend = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 /// XMLHttpRequest interface
@@ -333,95 +328,42 @@ pub extern "js" fn XMLHttpRequest::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn XMLHttpRequest::get_onloadstart(
-  self : XMLHttpRequest,
-) -> EventHandler =
-  #| (self) => self.onloadstart
+/// Cast JsValue to XMLHttpRequest (unchecked)
+pub extern "js" fn XMLHttpRequest::from_js_value(v : JsValue) -> XMLHttpRequest =
+  #| (v) => v
 
 ///|
-pub extern "js" fn XMLHttpRequest::set_onloadstart(
-  self : XMLHttpRequest,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onloadstart = value }
+/// Safely cast JsValue to XMLHttpRequest (checked with instanceof)
+pub extern "js" fn XMLHttpRequest::from_js_value_opt(
+  v : JsValue,
+) -> XMLHttpRequest? =
+  #| (v) => (v instanceof XMLHttpRequest) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn XMLHttpRequest::get_onprogress(
-  self : XMLHttpRequest,
-) -> EventHandler =
-  #| (self) => self.onprogress
+/// Safely cast JsValue to XMLHttpRequest (checked with instanceof)
+pub extern "js" fn JsValue::as_xml_http_request(
+  self : JsValue,
+) -> XMLHttpRequest? =
+  #| (self) => (self instanceof XMLHttpRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn XMLHttpRequest::set_onprogress(
-  self : XMLHttpRequest,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onprogress = value }
+/// Cast JsValue to XMLHttpRequest (unchecked)
+pub extern "js" fn JsValue::to_xml_http_request(
+  self : JsValue,
+) -> XMLHttpRequest =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XMLHttpRequest::get_onabort(
+pub extern "js" fn XMLHttpRequest::to_xml_http_request_event_target(
   self : XMLHttpRequest,
-) -> EventHandler =
-  #| (self) => self.onabort
+) -> XMLHttpRequestEventTarget =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XMLHttpRequest::set_onabort(
+pub extern "js" fn XMLHttpRequest::to_event_target(
   self : XMLHttpRequest,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onabort = value }
-
-///|
-pub extern "js" fn XMLHttpRequest::get_onerror(
-  self : XMLHttpRequest,
-) -> EventHandler =
-  #| (self) => self.onerror
-
-///|
-pub extern "js" fn XMLHttpRequest::set_onerror(
-  self : XMLHttpRequest,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onerror = value }
-
-///|
-pub extern "js" fn XMLHttpRequest::get_onload(
-  self : XMLHttpRequest,
-) -> EventHandler =
-  #| (self) => self.onload
-
-///|
-pub extern "js" fn XMLHttpRequest::set_onload(
-  self : XMLHttpRequest,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onload = value }
-
-///|
-pub extern "js" fn XMLHttpRequest::get_ontimeout(
-  self : XMLHttpRequest,
-) -> EventHandler =
-  #| (self) => self.ontimeout
-
-///|
-pub extern "js" fn XMLHttpRequest::set_ontimeout(
-  self : XMLHttpRequest,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.ontimeout = value }
-
-///|
-pub extern "js" fn XMLHttpRequest::get_onloadend(
-  self : XMLHttpRequest,
-) -> EventHandler =
-  #| (self) => self.onloadend
-
-///|
-pub extern "js" fn XMLHttpRequest::set_onloadend(
-  self : XMLHttpRequest,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onloadend = value }
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn XMLHttpRequest::new() -> XMLHttpRequest =
@@ -443,27 +385,27 @@ pub extern "js" fn XMLHttpRequest::set_onreadystatechange(
 // XMLHttpRequest.UNSENT
 
 ///|
-pub let x_m_l_http_request_unsent : Int = 0
+pub let xml_http_request_unsent : Int = 0
 
 // XMLHttpRequest.OPENED
 
 ///|
-pub let x_m_l_http_request_opened : Int = 1
+pub let xml_http_request_opened : Int = 1
 
 // XMLHttpRequest.HEADERS_RECEIVED
 
 ///|
-pub let x_m_l_http_request_headers_received : Int = 2
+pub let xml_http_request_headers_received : Int = 2
 
 // XMLHttpRequest.LOADING
 
 ///|
-pub let x_m_l_http_request_loading : Int = 3
+pub let xml_http_request_loading : Int = 3
 
 // XMLHttpRequest.DONE
 
 ///|
-pub let x_m_l_http_request_done : Int = 4
+pub let xml_http_request_done : Int = 4
 
 ///|
 pub extern "js" fn XMLHttpRequest::get_ready_state(
@@ -553,7 +495,7 @@ pub extern "js" fn XMLHttpRequest::abort(self : XMLHttpRequest) -> Unit =
   #| (self) => self.abort()
 
 ///|
-pub extern "js" fn XMLHttpRequest::get_response_u_r_l(
+pub extern "js" fn XMLHttpRequest::get_response_url(
   self : XMLHttpRequest,
 ) -> String =
   #| (self) => self.responseURL
@@ -573,7 +515,7 @@ pub extern "js" fn XMLHttpRequest::get_response_header(
   self : XMLHttpRequest,
   name : String,
 ) -> String? =
-  #| (self, name) => self.getResponseHeader(name)
+  #| (self, name) => { const v = self.getResponseHeader(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn XMLHttpRequest::get_all_response_headers(
@@ -614,10 +556,10 @@ pub extern "js" fn XMLHttpRequest::get_response_text(
   #| (self) => self.responseText
 
 ///|
-pub extern "js" fn XMLHttpRequest::get_response_x_m_l(
+pub extern "js" fn XMLHttpRequest::get_response_xml(
   self : XMLHttpRequest,
 ) -> Document? =
-  #| (self) => self.responseXML
+  #| (self) => { const v = self.responseXML; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn XMLHttpRequest::set_attribution_reporting(
@@ -639,6 +581,26 @@ pub type FormData
 
 ///|
 pub extern "js" fn FormData::to_js_value(self : FormData) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to FormData (unchecked)
+pub extern "js" fn FormData::from_js_value(v : JsValue) -> FormData =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FormData (checked with instanceof)
+pub extern "js" fn FormData::from_js_value_opt(v : JsValue) -> FormData? =
+  #| (v) => (v instanceof FormData) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FormData (checked with instanceof)
+pub extern "js" fn JsValue::as_form_data(self : JsValue) -> FormData? =
+  #| (self) => (self instanceof FormData) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FormData (unchecked)
+pub extern "js" fn JsValue::to_form_data(self : JsValue) -> FormData =
   #| (self) => self
 
 ///|
@@ -682,7 +644,7 @@ pub extern "js" fn FormData::get(
   self : FormData,
   name : String,
 ) -> FormDataEntryValue? =
-  #| (self, name) => self.get(name)
+  #| (self, name) => { const v = self.get(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn FormData::get_all(
@@ -730,6 +692,32 @@ pub type ProgressEvent
 
 ///|
 pub extern "js" fn ProgressEvent::to_js_value(self : ProgressEvent) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to ProgressEvent (unchecked)
+pub extern "js" fn ProgressEvent::from_js_value(v : JsValue) -> ProgressEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ProgressEvent (checked with instanceof)
+pub extern "js" fn ProgressEvent::from_js_value_opt(
+  v : JsValue,
+) -> ProgressEvent? =
+  #| (v) => (v instanceof ProgressEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ProgressEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_progress_event(self : JsValue) -> ProgressEvent? =
+  #| (self) => (self instanceof ProgressEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ProgressEvent (unchecked)
+pub extern "js" fn JsValue::to_progress_event(self : JsValue) -> ProgressEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn ProgressEvent::to_event(self : ProgressEvent) -> Event =
   #| (self) => self
 
 ///|

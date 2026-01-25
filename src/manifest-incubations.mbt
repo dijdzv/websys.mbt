@@ -63,6 +63,40 @@ pub extern "js" fn BeforeInstallPromptEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BeforeInstallPromptEvent (unchecked)
+pub extern "js" fn BeforeInstallPromptEvent::from_js_value(
+  v : JsValue,
+) -> BeforeInstallPromptEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BeforeInstallPromptEvent (checked with instanceof)
+pub extern "js" fn BeforeInstallPromptEvent::from_js_value_opt(
+  v : JsValue,
+) -> BeforeInstallPromptEvent? =
+  #| (v) => (v instanceof BeforeInstallPromptEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BeforeInstallPromptEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_before_install_prompt_event(
+  self : JsValue,
+) -> BeforeInstallPromptEvent? =
+  #| (self) => (self instanceof BeforeInstallPromptEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BeforeInstallPromptEvent (unchecked)
+pub extern "js" fn JsValue::to_before_install_prompt_event(
+  self : JsValue,
+) -> BeforeInstallPromptEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn BeforeInstallPromptEvent::to_event(
+  self : BeforeInstallPromptEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn BeforeInstallPromptEvent::new(
   type_ : String,
   event_init_dict : EventInit,

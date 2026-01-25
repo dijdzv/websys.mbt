@@ -65,6 +65,40 @@ pub extern "js" fn CaptureActionEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CaptureActionEvent (unchecked)
+pub extern "js" fn CaptureActionEvent::from_js_value(
+  v : JsValue,
+) -> CaptureActionEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CaptureActionEvent (checked with instanceof)
+pub extern "js" fn CaptureActionEvent::from_js_value_opt(
+  v : JsValue,
+) -> CaptureActionEvent? =
+  #| (v) => (v instanceof CaptureActionEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CaptureActionEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_capture_action_event(
+  self : JsValue,
+) -> CaptureActionEvent? =
+  #| (self) => (self instanceof CaptureActionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CaptureActionEvent (unchecked)
+pub extern "js" fn JsValue::to_capture_action_event(
+  self : JsValue,
+) -> CaptureActionEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn CaptureActionEvent::to_event(
+  self : CaptureActionEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn CaptureActionEvent::new(
   init_ : CaptureActionEventInit,
 ) -> CaptureActionEvent =

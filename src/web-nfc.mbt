@@ -222,6 +222,26 @@ pub extern "js" fn NDEFMessage::to_js_value(self : NDEFMessage) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to NDEFMessage (unchecked)
+pub extern "js" fn NDEFMessage::from_js_value(v : JsValue) -> NDEFMessage =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to NDEFMessage (checked with instanceof)
+pub extern "js" fn NDEFMessage::from_js_value_opt(v : JsValue) -> NDEFMessage? =
+  #| (v) => (v instanceof NDEFMessage) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to NDEFMessage (checked with instanceof)
+pub extern "js" fn JsValue::as_ndef_message(self : JsValue) -> NDEFMessage? =
+  #| (self) => (self instanceof NDEFMessage) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to NDEFMessage (unchecked)
+pub extern "js" fn JsValue::to_ndef_message(self : JsValue) -> NDEFMessage =
+  #| (self) => self
+
+///|
 pub extern "js" fn NDEFMessage::new(
   message_init : NDEFMessageInit,
 ) -> NDEFMessage =
@@ -240,6 +260,26 @@ pub extern "js" fn NDEFRecord::to_js_value(self : NDEFRecord) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to NDEFRecord (unchecked)
+pub extern "js" fn NDEFRecord::from_js_value(v : JsValue) -> NDEFRecord =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to NDEFRecord (checked with instanceof)
+pub extern "js" fn NDEFRecord::from_js_value_opt(v : JsValue) -> NDEFRecord? =
+  #| (v) => (v instanceof NDEFRecord) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to NDEFRecord (checked with instanceof)
+pub extern "js" fn JsValue::as_ndef_record(self : JsValue) -> NDEFRecord? =
+  #| (self) => (self instanceof NDEFRecord) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to NDEFRecord (unchecked)
+pub extern "js" fn JsValue::to_ndef_record(self : JsValue) -> NDEFRecord =
+  #| (self) => self
+
+///|
 pub extern "js" fn NDEFRecord::new(record_init : NDEFRecordInit) -> NDEFRecord =
   #| (record_init) => new NDEFRecord(record_init)
 
@@ -249,23 +289,23 @@ pub extern "js" fn NDEFRecord::get_record_type(self : NDEFRecord) -> String =
 
 ///|
 pub extern "js" fn NDEFRecord::get_media_type(self : NDEFRecord) -> String? =
-  #| (self) => self.mediaType
+  #| (self) => { const v = self.mediaType; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn NDEFRecord::get_id(self : NDEFRecord) -> String? =
-  #| (self) => self.id
+  #| (self) => { const v = self.id; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn NDEFRecord::get_data(self : NDEFRecord) -> DataView? =
-  #| (self) => self.data
+  #| (self) => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn NDEFRecord::get_encoding(self : NDEFRecord) -> String? =
-  #| (self) => self.encoding
+  #| (self) => { const v = self.encoding; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn NDEFRecord::get_lang(self : NDEFRecord) -> String? =
-  #| (self) => self.lang
+  #| (self) => { const v = self.lang; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn NDEFRecord::to_records(
@@ -279,6 +319,32 @@ pub type NDEFReader
 
 ///|
 pub extern "js" fn NDEFReader::to_js_value(self : NDEFReader) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to NDEFReader (unchecked)
+pub extern "js" fn NDEFReader::from_js_value(v : JsValue) -> NDEFReader =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to NDEFReader (checked with instanceof)
+pub extern "js" fn NDEFReader::from_js_value_opt(v : JsValue) -> NDEFReader? =
+  #| (v) => (v instanceof NDEFReader) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to NDEFReader (checked with instanceof)
+pub extern "js" fn JsValue::as_ndef_reader(self : JsValue) -> NDEFReader? =
+  #| (self) => (self instanceof NDEFReader) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to NDEFReader (unchecked)
+pub extern "js" fn JsValue::to_ndef_reader(self : JsValue) -> NDEFReader =
+  #| (self) => self
+
+///|
+pub extern "js" fn NDEFReader::to_event_target(
+  self : NDEFReader,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -356,6 +422,38 @@ pub type NDEFReadingEvent
 pub extern "js" fn NDEFReadingEvent::to_js_value(
   self : NDEFReadingEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to NDEFReadingEvent (unchecked)
+pub extern "js" fn NDEFReadingEvent::from_js_value(
+  v : JsValue,
+) -> NDEFReadingEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to NDEFReadingEvent (checked with instanceof)
+pub extern "js" fn NDEFReadingEvent::from_js_value_opt(
+  v : JsValue,
+) -> NDEFReadingEvent? =
+  #| (v) => (v instanceof NDEFReadingEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to NDEFReadingEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_ndef_reading_event(
+  self : JsValue,
+) -> NDEFReadingEvent? =
+  #| (self) => (self instanceof NDEFReadingEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to NDEFReadingEvent (unchecked)
+pub extern "js" fn JsValue::to_ndef_reading_event(
+  self : JsValue,
+) -> NDEFReadingEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn NDEFReadingEvent::to_event(self : NDEFReadingEvent) -> Event =
   #| (self) => self
 
 ///|

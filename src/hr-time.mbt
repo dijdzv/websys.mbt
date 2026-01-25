@@ -18,6 +18,32 @@ pub extern "js" fn Performance::to_js_value(self : Performance) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Performance (unchecked)
+pub extern "js" fn Performance::from_js_value(v : JsValue) -> Performance =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Performance (checked with instanceof)
+pub extern "js" fn Performance::from_js_value_opt(v : JsValue) -> Performance? =
+  #| (v) => (v instanceof Performance) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Performance (checked with instanceof)
+pub extern "js" fn JsValue::as_performance(self : JsValue) -> Performance? =
+  #| (self) => (self instanceof Performance) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Performance (unchecked)
+pub extern "js" fn JsValue::to_performance(self : JsValue) -> Performance =
+  #| (self) => self
+
+///|
+pub extern "js" fn Performance::to_event_target(
+  self : Performance,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn Performance::now(self : Performance) -> DOMHighResTimeStamp =
   #| (self) => self.now()
 
@@ -28,92 +54,8 @@ pub extern "js" fn Performance::get_time_origin(
   #| (self) => self.timeOrigin
 
 ///|
-pub extern "js" fn Performance::to_j_s_o_n(self : Performance) -> JsValue =
+pub extern "js" fn Performance::to_json(self : Performance) -> JsValue =
   #| (self) => self.toJSON()
-
-///|
-pub extern "js" fn Performance::get_event_counts(
-  self : Performance,
-) -> EventCounts =
-  #| (self) => self.eventCounts
-
-///|
-pub extern "js" fn Performance::get_interaction_count(
-  self : Performance,
-) -> Int64 =
-  #| (self) => self.interactionCount
-
-///|
-pub extern "js" fn Performance::get_timing(
-  self : Performance,
-) -> PerformanceTiming =
-  #| (self) => self.timing
-
-///|
-pub extern "js" fn Performance::get_navigation(
-  self : Performance,
-) -> PerformanceNavigation =
-  #| (self) => self.navigation
-
-///|
-pub extern "js" fn Performance::measure_user_agent_specific_memory(
-  self : Performance,
-) -> Promise[MemoryMeasurement] =
-  #| (self) => self.measureUserAgentSpecificMemory()
-
-///|
-pub extern "js" fn Performance::get_entries(
-  self : Performance,
-) -> PerformanceEntryList =
-  #| (self) => self.getEntries()
-
-///|
-pub extern "js" fn Performance::get_entries_by_type(
-  self : Performance,
-  type_ : String,
-) -> PerformanceEntryList =
-  #| (self, type_) => self.getEntriesByType(type_)
-
-///|
-pub extern "js" fn Performance::get_entries_by_name(
-  self : Performance,
-  name : String,
-) -> PerformanceEntryList =
-  #| (self, name) => self.getEntriesByName(name)
-
-///|
-pub extern "js" fn Performance::get_entries_by_name_with_type(
-  self : Performance,
-  name : String,
-  type_ : String,
-) -> PerformanceEntryList =
-  #| (self, name, type_) => self.getEntriesByName(name, type_)
-
-///|
-pub extern "js" fn Performance::clear_resource_timings(
-  self : Performance,
-) -> Unit =
-  #| (self) => self.clearResourceTimings()
-
-///|
-pub extern "js" fn Performance::set_resource_timing_buffer_size(
-  self : Performance,
-  max_size : Int,
-) -> Unit =
-  #| (self, max_size) => self.setResourceTimingBufferSize(max_size)
-
-///|
-pub extern "js" fn Performance::get_onresourcetimingbufferfull(
-  self : Performance,
-) -> EventHandler =
-  #| (self) => self.onresourcetimingbufferfull
-
-///|
-pub extern "js" fn Performance::set_onresourcetimingbufferfull(
-  self : Performance,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onresourcetimingbufferfull = value }
 
 ///|
 pub extern "js" fn Performance::mark(
@@ -167,3 +109,87 @@ pub extern "js" fn Performance::clear_measures_with_measure_name(
   measure_name : String,
 ) -> Unit =
   #| (self, measure_name) => self.clearMeasures(measure_name)
+
+///|
+pub extern "js" fn Performance::get_timing(
+  self : Performance,
+) -> PerformanceTiming =
+  #| (self) => self.timing
+
+///|
+pub extern "js" fn Performance::get_navigation(
+  self : Performance,
+) -> PerformanceNavigation =
+  #| (self) => self.navigation
+
+///|
+pub extern "js" fn Performance::get_entries(
+  self : Performance,
+) -> PerformanceEntryList =
+  #| (self) => self.getEntries()
+
+///|
+pub extern "js" fn Performance::get_entries_by_type(
+  self : Performance,
+  type_ : String,
+) -> PerformanceEntryList =
+  #| (self, type_) => self.getEntriesByType(type_)
+
+///|
+pub extern "js" fn Performance::get_entries_by_name(
+  self : Performance,
+  name : String,
+) -> PerformanceEntryList =
+  #| (self, name) => self.getEntriesByName(name)
+
+///|
+pub extern "js" fn Performance::get_entries_by_name_with_type(
+  self : Performance,
+  name : String,
+  type_ : String,
+) -> PerformanceEntryList =
+  #| (self, name, type_) => self.getEntriesByName(name, type_)
+
+///|
+pub extern "js" fn Performance::measure_user_agent_specific_memory(
+  self : Performance,
+) -> Promise[MemoryMeasurement] =
+  #| (self) => self.measureUserAgentSpecificMemory()
+
+///|
+pub extern "js" fn Performance::clear_resource_timings(
+  self : Performance,
+) -> Unit =
+  #| (self) => self.clearResourceTimings()
+
+///|
+pub extern "js" fn Performance::set_resource_timing_buffer_size(
+  self : Performance,
+  max_size : Int,
+) -> Unit =
+  #| (self, max_size) => self.setResourceTimingBufferSize(max_size)
+
+///|
+pub extern "js" fn Performance::get_onresourcetimingbufferfull(
+  self : Performance,
+) -> EventHandler =
+  #| (self) => self.onresourcetimingbufferfull
+
+///|
+pub extern "js" fn Performance::set_onresourcetimingbufferfull(
+  self : Performance,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onresourcetimingbufferfull = value }
+
+///|
+pub extern "js" fn Performance::get_event_counts(
+  self : Performance,
+) -> EventCounts =
+  #| (self) => self.eventCounts
+
+///|
+pub extern "js" fn Performance::get_interaction_count(
+  self : Performance,
+) -> Int64 =
+  #| (self) => self.interactionCount

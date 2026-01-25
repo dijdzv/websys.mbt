@@ -53,6 +53,34 @@ pub extern "js" fn PermissionsPolicy::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PermissionsPolicy (unchecked)
+pub extern "js" fn PermissionsPolicy::from_js_value(
+  v : JsValue,
+) -> PermissionsPolicy =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PermissionsPolicy (checked with instanceof)
+pub extern "js" fn PermissionsPolicy::from_js_value_opt(
+  v : JsValue,
+) -> PermissionsPolicy? =
+  #| (v) => (v instanceof PermissionsPolicy) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PermissionsPolicy (checked with instanceof)
+pub extern "js" fn JsValue::as_permissions_policy(
+  self : JsValue,
+) -> PermissionsPolicy? =
+  #| (self) => (self instanceof PermissionsPolicy) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PermissionsPolicy (unchecked)
+pub extern "js" fn JsValue::to_permissions_policy(
+  self : JsValue,
+) -> PermissionsPolicy =
+  #| (self) => self
+
+///|
 pub extern "js" fn PermissionsPolicy::allows_feature(
   self : PermissionsPolicy,
   feature : String,

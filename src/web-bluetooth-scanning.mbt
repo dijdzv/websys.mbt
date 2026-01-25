@@ -70,6 +70,34 @@ pub extern "js" fn BluetoothDataFilter::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BluetoothDataFilter (unchecked)
+pub extern "js" fn BluetoothDataFilter::from_js_value(
+  v : JsValue,
+) -> BluetoothDataFilter =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothDataFilter (checked with instanceof)
+pub extern "js" fn BluetoothDataFilter::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothDataFilter? =
+  #| (v) => (v instanceof BluetoothDataFilter) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothDataFilter (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_data_filter(
+  self : JsValue,
+) -> BluetoothDataFilter? =
+  #| (self) => (self instanceof BluetoothDataFilter) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothDataFilter (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_data_filter(
+  self : JsValue,
+) -> BluetoothDataFilter =
+  #| (self) => self
+
+///|
 pub extern "js" fn BluetoothDataFilter::new(
   init_ : BluetoothDataFilterInit,
 ) -> BluetoothDataFilter =
@@ -98,6 +126,34 @@ pub extern "js" fn BluetoothManufacturerDataFilter::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BluetoothManufacturerDataFilter (unchecked)
+pub extern "js" fn BluetoothManufacturerDataFilter::from_js_value(
+  v : JsValue,
+) -> BluetoothManufacturerDataFilter =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothManufacturerDataFilter (checked with instanceof)
+pub extern "js" fn BluetoothManufacturerDataFilter::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothManufacturerDataFilter? =
+  #| (v) => (v instanceof BluetoothManufacturerDataFilter) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothManufacturerDataFilter (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_manufacturer_data_filter(
+  self : JsValue,
+) -> BluetoothManufacturerDataFilter? =
+  #| (self) => (self instanceof BluetoothManufacturerDataFilter) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothManufacturerDataFilter (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_manufacturer_data_filter(
+  self : JsValue,
+) -> BluetoothManufacturerDataFilter =
+  #| (self) => self
+
+///|
 pub extern "js" fn BluetoothManufacturerDataFilter::new(
   init_ : JsValue,
 ) -> BluetoothManufacturerDataFilter =
@@ -108,7 +164,7 @@ pub extern "js" fn BluetoothManufacturerDataFilter::get(
   self : BluetoothManufacturerDataFilter,
   key : Int,
 ) -> BluetoothDataFilter? =
-  #| (self, key) => self.get(key)
+  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn BluetoothManufacturerDataFilter::has(
@@ -128,6 +184,34 @@ pub extern "js" fn BluetoothServiceDataFilter::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BluetoothServiceDataFilter (unchecked)
+pub extern "js" fn BluetoothServiceDataFilter::from_js_value(
+  v : JsValue,
+) -> BluetoothServiceDataFilter =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothServiceDataFilter (checked with instanceof)
+pub extern "js" fn BluetoothServiceDataFilter::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothServiceDataFilter? =
+  #| (v) => (v instanceof BluetoothServiceDataFilter) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothServiceDataFilter (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_service_data_filter(
+  self : JsValue,
+) -> BluetoothServiceDataFilter? =
+  #| (self) => (self instanceof BluetoothServiceDataFilter) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothServiceDataFilter (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_service_data_filter(
+  self : JsValue,
+) -> BluetoothServiceDataFilter =
+  #| (self) => self
+
+///|
 pub extern "js" fn BluetoothServiceDataFilter::new(
   init_ : JsValue,
 ) -> BluetoothServiceDataFilter =
@@ -138,7 +222,7 @@ pub extern "js" fn BluetoothServiceDataFilter::get(
   self : BluetoothServiceDataFilter,
   key : UUID,
 ) -> BluetoothDataFilter? =
-  #| (self, key) => self.get(key)
+  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn BluetoothServiceDataFilter::has(
@@ -158,6 +242,34 @@ pub extern "js" fn BluetoothLEScanFilter::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BluetoothLEScanFilter (unchecked)
+pub extern "js" fn BluetoothLEScanFilter::from_js_value(
+  v : JsValue,
+) -> BluetoothLEScanFilter =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothLEScanFilter (checked with instanceof)
+pub extern "js" fn BluetoothLEScanFilter::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothLEScanFilter? =
+  #| (v) => (v instanceof BluetoothLEScanFilter) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothLEScanFilter (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_le_scan_filter(
+  self : JsValue,
+) -> BluetoothLEScanFilter? =
+  #| (self) => (self instanceof BluetoothLEScanFilter) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothLEScanFilter (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_le_scan_filter(
+  self : JsValue,
+) -> BluetoothLEScanFilter =
+  #| (self) => self
+
+///|
 pub extern "js" fn BluetoothLEScanFilter::new(
   init_ : BluetoothLEScanFilterInit,
 ) -> BluetoothLEScanFilter =
@@ -167,13 +279,13 @@ pub extern "js" fn BluetoothLEScanFilter::new(
 pub extern "js" fn BluetoothLEScanFilter::get_name(
   self : BluetoothLEScanFilter,
 ) -> String? =
-  #| (self) => self.name
+  #| (self) => { const v = self.name; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn BluetoothLEScanFilter::get_name_prefix(
   self : BluetoothLEScanFilter,
 ) -> String? =
-  #| (self) => self.namePrefix
+  #| (self) => { const v = self.namePrefix; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn BluetoothLEScanFilter::get_services(
@@ -201,6 +313,34 @@ pub type BluetoothLEScan
 pub extern "js" fn BluetoothLEScan::to_js_value(
   self : BluetoothLEScan,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to BluetoothLEScan (unchecked)
+pub extern "js" fn BluetoothLEScan::from_js_value(
+  v : JsValue,
+) -> BluetoothLEScan =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothLEScan (checked with instanceof)
+pub extern "js" fn BluetoothLEScan::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothLEScan? =
+  #| (v) => (v instanceof BluetoothLEScan) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothLEScan (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_le_scan(
+  self : JsValue,
+) -> BluetoothLEScan? =
+  #| (self) => (self instanceof BluetoothLEScan) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothLEScan (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_le_scan(
+  self : JsValue,
+) -> BluetoothLEScan =
   #| (self) => self
 
 ///|
@@ -237,6 +377,46 @@ pub type BluetoothLEScanPermissionResult
 pub extern "js" fn BluetoothLEScanPermissionResult::to_js_value(
   self : BluetoothLEScanPermissionResult,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to BluetoothLEScanPermissionResult (unchecked)
+pub extern "js" fn BluetoothLEScanPermissionResult::from_js_value(
+  v : JsValue,
+) -> BluetoothLEScanPermissionResult =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BluetoothLEScanPermissionResult (checked with instanceof)
+pub extern "js" fn BluetoothLEScanPermissionResult::from_js_value_opt(
+  v : JsValue,
+) -> BluetoothLEScanPermissionResult? =
+  #| (v) => (v instanceof BluetoothLEScanPermissionResult) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BluetoothLEScanPermissionResult (checked with instanceof)
+pub extern "js" fn JsValue::as_bluetooth_le_scan_permission_result(
+  self : JsValue,
+) -> BluetoothLEScanPermissionResult? =
+  #| (self) => (self instanceof BluetoothLEScanPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BluetoothLEScanPermissionResult (unchecked)
+pub extern "js" fn JsValue::to_bluetooth_le_scan_permission_result(
+  self : JsValue,
+) -> BluetoothLEScanPermissionResult =
+  #| (self) => self
+
+///|
+pub extern "js" fn BluetoothLEScanPermissionResult::to_permission_status(
+  self : BluetoothLEScanPermissionResult,
+) -> PermissionStatus =
+  #| (self) => self
+
+///|
+pub extern "js" fn BluetoothLEScanPermissionResult::to_event_target(
+  self : BluetoothLEScanPermissionResult,
+) -> EventTarget =
   #| (self) => self
 
 ///|

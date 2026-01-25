@@ -230,7 +230,41 @@ pub extern "js" fn SharedStorageWorklet::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn SharedStorageWorklet::select_u_r_l(
+/// Cast JsValue to SharedStorageWorklet (unchecked)
+pub extern "js" fn SharedStorageWorklet::from_js_value(
+  v : JsValue,
+) -> SharedStorageWorklet =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SharedStorageWorklet (checked with instanceof)
+pub extern "js" fn SharedStorageWorklet::from_js_value_opt(
+  v : JsValue,
+) -> SharedStorageWorklet? =
+  #| (v) => (v instanceof SharedStorageWorklet) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SharedStorageWorklet (checked with instanceof)
+pub extern "js" fn JsValue::as_shared_storage_worklet(
+  self : JsValue,
+) -> SharedStorageWorklet? =
+  #| (self) => (self instanceof SharedStorageWorklet) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SharedStorageWorklet (unchecked)
+pub extern "js" fn JsValue::to_shared_storage_worklet(
+  self : JsValue,
+) -> SharedStorageWorklet =
+  #| (self) => self
+
+///|
+pub extern "js" fn SharedStorageWorklet::to_worklet(
+  self : SharedStorageWorklet,
+) -> Worklet =
+  #| (self) => self
+
+///|
+pub extern "js" fn SharedStorageWorklet::select_url(
   self : SharedStorageWorklet,
   name : String,
   urls : Array[SharedStorageUrlWithMetadata],
@@ -238,7 +272,7 @@ pub extern "js" fn SharedStorageWorklet::select_u_r_l(
   #| (self, name, urls) => self.selectURL(name, urls)
 
 ///|
-pub extern "js" fn SharedStorageWorklet::select_u_r_l_with_options(
+pub extern "js" fn SharedStorageWorklet::select_url_with_options(
   self : SharedStorageWorklet,
   name : String,
   urls : Array[SharedStorageUrlWithMetadata],
@@ -272,6 +306,40 @@ pub extern "js" fn SharedStorageWorkletGlobalScope::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SharedStorageWorkletGlobalScope (unchecked)
+pub extern "js" fn SharedStorageWorkletGlobalScope::from_js_value(
+  v : JsValue,
+) -> SharedStorageWorkletGlobalScope =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SharedStorageWorkletGlobalScope (checked with instanceof)
+pub extern "js" fn SharedStorageWorkletGlobalScope::from_js_value_opt(
+  v : JsValue,
+) -> SharedStorageWorkletGlobalScope? =
+  #| (v) => (v instanceof SharedStorageWorkletGlobalScope) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SharedStorageWorkletGlobalScope (checked with instanceof)
+pub extern "js" fn JsValue::as_shared_storage_worklet_global_scope(
+  self : JsValue,
+) -> SharedStorageWorkletGlobalScope? =
+  #| (self) => (self instanceof SharedStorageWorkletGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SharedStorageWorkletGlobalScope (unchecked)
+pub extern "js" fn JsValue::to_shared_storage_worklet_global_scope(
+  self : JsValue,
+) -> SharedStorageWorkletGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn SharedStorageWorkletGlobalScope::to_worklet_global_scope(
+  self : SharedStorageWorkletGlobalScope,
+) -> WorkletGlobalScope =
+  #| (self) => self
+
+///|
 pub extern "js" fn SharedStorageWorkletGlobalScope::register(
   self : SharedStorageWorkletGlobalScope,
   name : String,
@@ -294,7 +362,7 @@ pub extern "js" fn SharedStorageWorkletGlobalScope::get_private_aggregation(
 ///|
 pub extern "js" fn SharedStorageWorkletGlobalScope::interest_groups(
   self : SharedStorageWorkletGlobalScope,
-) -> Promise[Unit] =
+) -> Promise[Array[StorageInterestGroup]] =
   #| (self) => self.interestGroups()
 
 ///|
@@ -314,6 +382,58 @@ pub extern "js" fn SharedStorageModifierMethod::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SharedStorageModifierMethod (unchecked)
+pub extern "js" fn SharedStorageModifierMethod::from_js_value(
+  v : JsValue,
+) -> SharedStorageModifierMethod =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SharedStorageModifierMethod (checked with instanceof)
+pub extern "js" fn SharedStorageModifierMethod::from_js_value_opt(
+  v : JsValue,
+) -> SharedStorageModifierMethod? =
+  #| (v) => (v instanceof SharedStorageModifierMethod) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SharedStorageModifierMethod (checked with instanceof)
+pub extern "js" fn JsValue::as_shared_storage_modifier_method(
+  self : JsValue,
+) -> SharedStorageModifierMethod? =
+  #| (self) => (self instanceof SharedStorageModifierMethod) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SharedStorageModifierMethod (unchecked)
+pub extern "js" fn JsValue::to_shared_storage_modifier_method(
+  self : JsValue,
+) -> SharedStorageModifierMethod =
+  #| (self) => self
+
+///|
+pub extern "js" fn SharedStorageModifierMethod::as_shared_storage_set_method(
+  self : SharedStorageModifierMethod,
+) -> SharedStorageSetMethod? =
+  #| (self) => (self instanceof SharedStorageSetMethod) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SharedStorageModifierMethod::as_shared_storage_append_method(
+  self : SharedStorageModifierMethod,
+) -> SharedStorageAppendMethod? =
+  #| (self) => (self instanceof SharedStorageAppendMethod) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SharedStorageModifierMethod::as_shared_storage_delete_method(
+  self : SharedStorageModifierMethod,
+) -> SharedStorageDeleteMethod? =
+  #| (self) => (self instanceof SharedStorageDeleteMethod) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SharedStorageModifierMethod::as_shared_storage_clear_method(
+  self : SharedStorageModifierMethod,
+) -> SharedStorageClearMethod? =
+  #| (self) => (self instanceof SharedStorageClearMethod) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// SharedStorageSetMethod interface
 pub type SharedStorageSetMethod
 
@@ -321,6 +441,40 @@ pub type SharedStorageSetMethod
 pub extern "js" fn SharedStorageSetMethod::to_js_value(
   self : SharedStorageSetMethod,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SharedStorageSetMethod (unchecked)
+pub extern "js" fn SharedStorageSetMethod::from_js_value(
+  v : JsValue,
+) -> SharedStorageSetMethod =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SharedStorageSetMethod (checked with instanceof)
+pub extern "js" fn SharedStorageSetMethod::from_js_value_opt(
+  v : JsValue,
+) -> SharedStorageSetMethod? =
+  #| (v) => (v instanceof SharedStorageSetMethod) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SharedStorageSetMethod (checked with instanceof)
+pub extern "js" fn JsValue::as_shared_storage_set_method(
+  self : JsValue,
+) -> SharedStorageSetMethod? =
+  #| (self) => (self instanceof SharedStorageSetMethod) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SharedStorageSetMethod (unchecked)
+pub extern "js" fn JsValue::to_shared_storage_set_method(
+  self : JsValue,
+) -> SharedStorageSetMethod =
+  #| (self) => self
+
+///|
+pub extern "js" fn SharedStorageSetMethod::to_shared_storage_modifier_method(
+  self : SharedStorageSetMethod,
+) -> SharedStorageModifierMethod =
   #| (self) => self
 
 ///|
@@ -342,6 +496,40 @@ pub extern "js" fn SharedStorageAppendMethod::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SharedStorageAppendMethod (unchecked)
+pub extern "js" fn SharedStorageAppendMethod::from_js_value(
+  v : JsValue,
+) -> SharedStorageAppendMethod =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SharedStorageAppendMethod (checked with instanceof)
+pub extern "js" fn SharedStorageAppendMethod::from_js_value_opt(
+  v : JsValue,
+) -> SharedStorageAppendMethod? =
+  #| (v) => (v instanceof SharedStorageAppendMethod) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SharedStorageAppendMethod (checked with instanceof)
+pub extern "js" fn JsValue::as_shared_storage_append_method(
+  self : JsValue,
+) -> SharedStorageAppendMethod? =
+  #| (self) => (self instanceof SharedStorageAppendMethod) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SharedStorageAppendMethod (unchecked)
+pub extern "js" fn JsValue::to_shared_storage_append_method(
+  self : JsValue,
+) -> SharedStorageAppendMethod =
+  #| (self) => self
+
+///|
+pub extern "js" fn SharedStorageAppendMethod::to_shared_storage_modifier_method(
+  self : SharedStorageAppendMethod,
+) -> SharedStorageModifierMethod =
+  #| (self) => self
+
+///|
 pub extern "js" fn SharedStorageAppendMethod::new(
   key : String,
   value : String,
@@ -357,6 +545,40 @@ pub type SharedStorageDeleteMethod
 pub extern "js" fn SharedStorageDeleteMethod::to_js_value(
   self : SharedStorageDeleteMethod,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SharedStorageDeleteMethod (unchecked)
+pub extern "js" fn SharedStorageDeleteMethod::from_js_value(
+  v : JsValue,
+) -> SharedStorageDeleteMethod =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SharedStorageDeleteMethod (checked with instanceof)
+pub extern "js" fn SharedStorageDeleteMethod::from_js_value_opt(
+  v : JsValue,
+) -> SharedStorageDeleteMethod? =
+  #| (v) => (v instanceof SharedStorageDeleteMethod) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SharedStorageDeleteMethod (checked with instanceof)
+pub extern "js" fn JsValue::as_shared_storage_delete_method(
+  self : JsValue,
+) -> SharedStorageDeleteMethod? =
+  #| (self) => (self instanceof SharedStorageDeleteMethod) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SharedStorageDeleteMethod (unchecked)
+pub extern "js" fn JsValue::to_shared_storage_delete_method(
+  self : JsValue,
+) -> SharedStorageDeleteMethod =
+  #| (self) => self
+
+///|
+pub extern "js" fn SharedStorageDeleteMethod::to_shared_storage_modifier_method(
+  self : SharedStorageDeleteMethod,
+) -> SharedStorageModifierMethod =
   #| (self) => self
 
 ///|
@@ -377,6 +599,40 @@ pub extern "js" fn SharedStorageClearMethod::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SharedStorageClearMethod (unchecked)
+pub extern "js" fn SharedStorageClearMethod::from_js_value(
+  v : JsValue,
+) -> SharedStorageClearMethod =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SharedStorageClearMethod (checked with instanceof)
+pub extern "js" fn SharedStorageClearMethod::from_js_value_opt(
+  v : JsValue,
+) -> SharedStorageClearMethod? =
+  #| (v) => (v instanceof SharedStorageClearMethod) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SharedStorageClearMethod (checked with instanceof)
+pub extern "js" fn JsValue::as_shared_storage_clear_method(
+  self : JsValue,
+) -> SharedStorageClearMethod? =
+  #| (self) => (self instanceof SharedStorageClearMethod) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SharedStorageClearMethod (unchecked)
+pub extern "js" fn JsValue::to_shared_storage_clear_method(
+  self : JsValue,
+) -> SharedStorageClearMethod =
+  #| (self) => self
+
+///|
+pub extern "js" fn SharedStorageClearMethod::to_shared_storage_modifier_method(
+  self : SharedStorageClearMethod,
+) -> SharedStorageModifierMethod =
+  #| (self) => self
+
+///|
 pub extern "js" fn SharedStorageClearMethod::new(
   options : SharedStorageModifierMethodOptions,
 ) -> SharedStorageClearMethod =
@@ -388,6 +644,28 @@ pub type SharedStorage
 
 ///|
 pub extern "js" fn SharedStorage::to_js_value(self : SharedStorage) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SharedStorage (unchecked)
+pub extern "js" fn SharedStorage::from_js_value(v : JsValue) -> SharedStorage =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SharedStorage (checked with instanceof)
+pub extern "js" fn SharedStorage::from_js_value_opt(
+  v : JsValue,
+) -> SharedStorage? =
+  #| (v) => (v instanceof SharedStorage) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SharedStorage (checked with instanceof)
+pub extern "js" fn JsValue::as_shared_storage(self : JsValue) -> SharedStorage? =
+  #| (self) => (self instanceof SharedStorage) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SharedStorage (unchecked)
+pub extern "js" fn JsValue::to_shared_storage(self : JsValue) -> SharedStorage =
   #| (self) => self
 
 ///|
@@ -475,7 +753,7 @@ pub extern "js" fn SharedStorage::batch_update_with_options(
   #| (self, methods, options) => self.batchUpdate(methods, options)
 
 ///|
-pub extern "js" fn SharedStorage::select_u_r_l(
+pub extern "js" fn SharedStorage::select_url(
   self : SharedStorage,
   name : String,
   urls : Array[SharedStorageUrlWithMetadata],
@@ -483,7 +761,7 @@ pub extern "js" fn SharedStorage::select_u_r_l(
   #| (self, name, urls) => self.selectURL(name, urls)
 
 ///|
-pub extern "js" fn SharedStorage::select_u_r_l_with_options(
+pub extern "js" fn SharedStorage::select_url_with_options(
   self : SharedStorage,
   name : String,
   urls : Array[SharedStorageUrlWithMetadata],
@@ -509,17 +787,17 @@ pub extern "js" fn SharedStorage::run_with_options(
 ///|
 pub extern "js" fn SharedStorage::create_worklet(
   self : SharedStorage,
-  module_u_r_l : String,
+  module_url : String,
 ) -> Promise[SharedStorageWorklet] =
-  #| (self, module_u_r_l) => self.createWorklet(module_u_r_l)
+  #| (self, module_url) => self.createWorklet(module_url)
 
 ///|
 pub extern "js" fn SharedStorage::create_worklet_with_options(
   self : SharedStorage,
-  module_u_r_l : String,
+  module_url : String,
   options : SharedStorageWorkletOptions,
 ) -> Promise[SharedStorageWorklet] =
-  #| (self, module_u_r_l, options) => self.createWorklet(module_u_r_l, options)
+  #| (self, module_url, options) => self.createWorklet(module_url, options)
 
 ///|
 pub extern "js" fn SharedStorage::get_worklet(
@@ -549,6 +827,34 @@ pub type SharedStorageWorkletNavigator
 pub extern "js" fn SharedStorageWorkletNavigator::to_js_value(
   self : SharedStorageWorkletNavigator,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SharedStorageWorkletNavigator (unchecked)
+pub extern "js" fn SharedStorageWorkletNavigator::from_js_value(
+  v : JsValue,
+) -> SharedStorageWorkletNavigator =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SharedStorageWorkletNavigator (checked with instanceof)
+pub extern "js" fn SharedStorageWorkletNavigator::from_js_value_opt(
+  v : JsValue,
+) -> SharedStorageWorkletNavigator? =
+  #| (v) => (v instanceof SharedStorageWorkletNavigator) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SharedStorageWorkletNavigator (checked with instanceof)
+pub extern "js" fn JsValue::as_shared_storage_worklet_navigator(
+  self : JsValue,
+) -> SharedStorageWorkletNavigator? =
+  #| (self) => (self instanceof SharedStorageWorkletNavigator) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SharedStorageWorkletNavigator (unchecked)
+pub extern "js" fn JsValue::to_shared_storage_worklet_navigator(
+  self : JsValue,
+) -> SharedStorageWorkletNavigator =
   #| (self) => self
 
 ///|

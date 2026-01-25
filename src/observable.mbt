@@ -302,6 +302,26 @@ pub extern "js" fn Subscriber::to_js_value(self : Subscriber) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Subscriber (unchecked)
+pub extern "js" fn Subscriber::from_js_value(v : JsValue) -> Subscriber =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Subscriber (checked with instanceof)
+pub extern "js" fn Subscriber::from_js_value_opt(v : JsValue) -> Subscriber? =
+  #| (v) => (v instanceof Subscriber) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Subscriber (checked with instanceof)
+pub extern "js" fn JsValue::as_subscriber(self : JsValue) -> Subscriber? =
+  #| (self) => (self instanceof Subscriber) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Subscriber (unchecked)
+pub extern "js" fn JsValue::to_subscriber(self : JsValue) -> Subscriber =
+  #| (self) => self
+
+///|
 pub extern "js" fn Subscriber::next(self : Subscriber, value : JsValue) -> Unit =
   #| (self, value) => self.next(value)
 
@@ -337,6 +357,26 @@ pub type Observable
 
 ///|
 pub extern "js" fn Observable::to_js_value(self : Observable) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to Observable (unchecked)
+pub extern "js" fn Observable::from_js_value(v : JsValue) -> Observable =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Observable (checked with instanceof)
+pub extern "js" fn Observable::from_js_value_opt(v : JsValue) -> Observable? =
+  #| (v) => (v instanceof Observable) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Observable (checked with instanceof)
+pub extern "js" fn JsValue::as_observable(self : JsValue) -> Observable? =
+  #| (self) => (self instanceof Observable) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Observable (unchecked)
+pub extern "js" fn JsValue::to_observable(self : JsValue) -> Observable =
   #| (self) => self
 
 ///|
@@ -434,14 +474,16 @@ pub extern "js" fn Observable::finally_(
   #| (self, callback) => self.finally(callback)
 
 ///|
-pub extern "js" fn Observable::to_array(self : Observable) -> Promise[Unit] =
+pub extern "js" fn Observable::to_array(
+  self : Observable,
+) -> Promise[Array[JsValue]] =
   #| (self) => self.toArray()
 
 ///|
 pub extern "js" fn Observable::to_array_with_options(
   self : Observable,
   options : SubscribeOptions,
-) -> Promise[Unit] =
+) -> Promise[Array[JsValue]] =
   #| (self, options) => self.toArray(options)
 
 ///|

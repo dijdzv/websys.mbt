@@ -88,6 +88,40 @@ pub extern "js" fn ScreenOrientation::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ScreenOrientation (unchecked)
+pub extern "js" fn ScreenOrientation::from_js_value(
+  v : JsValue,
+) -> ScreenOrientation =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ScreenOrientation (checked with instanceof)
+pub extern "js" fn ScreenOrientation::from_js_value_opt(
+  v : JsValue,
+) -> ScreenOrientation? =
+  #| (v) => (v instanceof ScreenOrientation) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ScreenOrientation (checked with instanceof)
+pub extern "js" fn JsValue::as_screen_orientation(
+  self : JsValue,
+) -> ScreenOrientation? =
+  #| (self) => (self instanceof ScreenOrientation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ScreenOrientation (unchecked)
+pub extern "js" fn JsValue::to_screen_orientation(
+  self : JsValue,
+) -> ScreenOrientation =
+  #| (self) => self
+
+///|
+pub extern "js" fn ScreenOrientation::to_event_target(
+  self : ScreenOrientation,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn ScreenOrientation::lock(
   self : ScreenOrientation,
   orientation : OrientationLockType,

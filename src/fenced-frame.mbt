@@ -204,6 +204,58 @@ pub extern "js" fn HTMLFencedFrameElement::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to HTMLFencedFrameElement (unchecked)
+pub extern "js" fn HTMLFencedFrameElement::from_js_value(
+  v : JsValue,
+) -> HTMLFencedFrameElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to HTMLFencedFrameElement (checked with instanceof)
+pub extern "js" fn HTMLFencedFrameElement::from_js_value_opt(
+  v : JsValue,
+) -> HTMLFencedFrameElement? =
+  #| (v) => (v instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to HTMLFencedFrameElement (checked with instanceof)
+pub extern "js" fn JsValue::as_html_fenced_frame_element(
+  self : JsValue,
+) -> HTMLFencedFrameElement? =
+  #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to HTMLFencedFrameElement (unchecked)
+pub extern "js" fn JsValue::to_html_fenced_frame_element(
+  self : JsValue,
+) -> HTMLFencedFrameElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn HTMLFencedFrameElement::to_html_element(
+  self : HTMLFencedFrameElement,
+) -> HTMLElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn HTMLFencedFrameElement::to_element(
+  self : HTMLFencedFrameElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn HTMLFencedFrameElement::to_node(
+  self : HTMLFencedFrameElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn HTMLFencedFrameElement::to_event_target(
+  self : HTMLFencedFrameElement,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn HTMLFencedFrameElement::new() -> HTMLFencedFrameElement =
   #| () => new HTMLFencedFrameElement()
 
@@ -211,7 +263,7 @@ pub extern "js" fn HTMLFencedFrameElement::new() -> HTMLFencedFrameElement =
 pub extern "js" fn HTMLFencedFrameElement::get_config(
   self : HTMLFencedFrameElement,
 ) -> FencedFrameConfig? =
-  #| (self) => self.config
+  #| (self) => { const v = self.config; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn HTMLFencedFrameElement::set_config(
@@ -276,6 +328,34 @@ pub extern "js" fn FencedFrameConfig::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to FencedFrameConfig (unchecked)
+pub extern "js" fn FencedFrameConfig::from_js_value(
+  v : JsValue,
+) -> FencedFrameConfig =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FencedFrameConfig (checked with instanceof)
+pub extern "js" fn FencedFrameConfig::from_js_value_opt(
+  v : JsValue,
+) -> FencedFrameConfig? =
+  #| (v) => (v instanceof FencedFrameConfig) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FencedFrameConfig (checked with instanceof)
+pub extern "js" fn JsValue::as_fenced_frame_config(
+  self : JsValue,
+) -> FencedFrameConfig? =
+  #| (self) => (self instanceof FencedFrameConfig) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FencedFrameConfig (unchecked)
+pub extern "js" fn JsValue::to_fenced_frame_config(
+  self : JsValue,
+) -> FencedFrameConfig =
+  #| (self) => self
+
+///|
 pub extern "js" fn FencedFrameConfig::new(url : String) -> FencedFrameConfig =
   #| (url) => new FencedFrameConfig(url)
 
@@ -292,6 +372,26 @@ pub type Fence
 
 ///|
 pub extern "js" fn Fence::to_js_value(self : Fence) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to Fence (unchecked)
+pub extern "js" fn Fence::from_js_value(v : JsValue) -> Fence =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Fence (checked with instanceof)
+pub extern "js" fn Fence::from_js_value_opt(v : JsValue) -> Fence? =
+  #| (v) => (v instanceof Fence) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Fence (checked with instanceof)
+pub extern "js" fn JsValue::as_fence(self : JsValue) -> Fence? =
+  #| (self) => (self instanceof Fence) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Fence (unchecked)
+pub extern "js" fn JsValue::to_fence(self : JsValue) -> Fence =
   #| (self) => self
 
 ///|

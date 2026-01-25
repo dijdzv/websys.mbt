@@ -55,6 +55,26 @@ pub extern "js" fn Geolocation::to_js_value(self : Geolocation) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Geolocation (unchecked)
+pub extern "js" fn Geolocation::from_js_value(v : JsValue) -> Geolocation =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Geolocation (checked with instanceof)
+pub extern "js" fn Geolocation::from_js_value_opt(v : JsValue) -> Geolocation? =
+  #| (v) => (v instanceof Geolocation) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Geolocation (checked with instanceof)
+pub extern "js" fn JsValue::as_geolocation(self : JsValue) -> Geolocation? =
+  #| (self) => (self instanceof Geolocation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Geolocation (unchecked)
+pub extern "js" fn JsValue::to_geolocation(self : JsValue) -> Geolocation =
+  #| (self) => self
+
+///|
 pub extern "js" fn Geolocation::get_current_position(
   self : Geolocation,
   success_callback : PositionCallback,
@@ -104,6 +124,34 @@ pub extern "js" fn GeolocationPosition::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to GeolocationPosition (unchecked)
+pub extern "js" fn GeolocationPosition::from_js_value(
+  v : JsValue,
+) -> GeolocationPosition =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GeolocationPosition (checked with instanceof)
+pub extern "js" fn GeolocationPosition::from_js_value_opt(
+  v : JsValue,
+) -> GeolocationPosition? =
+  #| (v) => (v instanceof GeolocationPosition) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GeolocationPosition (checked with instanceof)
+pub extern "js" fn JsValue::as_geolocation_position(
+  self : JsValue,
+) -> GeolocationPosition? =
+  #| (self) => (self instanceof GeolocationPosition) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GeolocationPosition (unchecked)
+pub extern "js" fn JsValue::to_geolocation_position(
+  self : JsValue,
+) -> GeolocationPosition =
+  #| (self) => self
+
+///|
 pub extern "js" fn GeolocationPosition::get_coords(
   self : GeolocationPosition,
 ) -> GeolocationCoordinates =
@@ -116,7 +164,7 @@ pub extern "js" fn GeolocationPosition::get_timestamp(
   #| (self) => self.timestamp
 
 ///|
-pub extern "js" fn GeolocationPosition::to_j_s_o_n(
+pub extern "js" fn GeolocationPosition::to_json(
   self : GeolocationPosition,
 ) -> JsValue =
   #| (self) => self.toJSON()
@@ -129,6 +177,34 @@ pub type GeolocationCoordinates
 pub extern "js" fn GeolocationCoordinates::to_js_value(
   self : GeolocationCoordinates,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GeolocationCoordinates (unchecked)
+pub extern "js" fn GeolocationCoordinates::from_js_value(
+  v : JsValue,
+) -> GeolocationCoordinates =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GeolocationCoordinates (checked with instanceof)
+pub extern "js" fn GeolocationCoordinates::from_js_value_opt(
+  v : JsValue,
+) -> GeolocationCoordinates? =
+  #| (v) => (v instanceof GeolocationCoordinates) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GeolocationCoordinates (checked with instanceof)
+pub extern "js" fn JsValue::as_geolocation_coordinates(
+  self : JsValue,
+) -> GeolocationCoordinates? =
+  #| (self) => (self instanceof GeolocationCoordinates) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GeolocationCoordinates (unchecked)
+pub extern "js" fn JsValue::to_geolocation_coordinates(
+  self : JsValue,
+) -> GeolocationCoordinates =
   #| (self) => self
 
 ///|
@@ -153,28 +229,28 @@ pub extern "js" fn GeolocationCoordinates::get_longitude(
 pub extern "js" fn GeolocationCoordinates::get_altitude(
   self : GeolocationCoordinates,
 ) -> Double? =
-  #| (self) => self.altitude
+  #| (self) => { const v = self.altitude; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn GeolocationCoordinates::get_altitude_accuracy(
   self : GeolocationCoordinates,
 ) -> Double? =
-  #| (self) => self.altitudeAccuracy
+  #| (self) => { const v = self.altitudeAccuracy; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn GeolocationCoordinates::get_heading(
   self : GeolocationCoordinates,
 ) -> Double? =
-  #| (self) => self.heading
+  #| (self) => { const v = self.heading; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn GeolocationCoordinates::get_speed(
   self : GeolocationCoordinates,
 ) -> Double? =
-  #| (self) => self.speed
+  #| (self) => { const v = self.speed; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
-pub extern "js" fn GeolocationCoordinates::to_j_s_o_n(
+pub extern "js" fn GeolocationCoordinates::to_json(
   self : GeolocationCoordinates,
 ) -> JsValue =
   #| (self) => self.toJSON()
@@ -187,6 +263,34 @@ pub type GeolocationPositionError
 pub extern "js" fn GeolocationPositionError::to_js_value(
   self : GeolocationPositionError,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GeolocationPositionError (unchecked)
+pub extern "js" fn GeolocationPositionError::from_js_value(
+  v : JsValue,
+) -> GeolocationPositionError =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GeolocationPositionError (checked with instanceof)
+pub extern "js" fn GeolocationPositionError::from_js_value_opt(
+  v : JsValue,
+) -> GeolocationPositionError? =
+  #| (v) => (v instanceof GeolocationPositionError) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GeolocationPositionError (checked with instanceof)
+pub extern "js" fn JsValue::as_geolocation_position_error(
+  self : JsValue,
+) -> GeolocationPositionError? =
+  #| (self) => (self instanceof GeolocationPositionError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GeolocationPositionError (unchecked)
+pub extern "js" fn JsValue::to_geolocation_position_error(
+  self : JsValue,
+) -> GeolocationPositionError =
   #| (self) => self
 
 // GeolocationPositionError.PERMISSION_DENIED

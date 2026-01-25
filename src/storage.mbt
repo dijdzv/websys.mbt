@@ -33,6 +33,32 @@ pub extern "js" fn StorageManager::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to StorageManager (unchecked)
+pub extern "js" fn StorageManager::from_js_value(v : JsValue) -> StorageManager =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to StorageManager (checked with instanceof)
+pub extern "js" fn StorageManager::from_js_value_opt(
+  v : JsValue,
+) -> StorageManager? =
+  #| (v) => (v instanceof StorageManager) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to StorageManager (checked with instanceof)
+pub extern "js" fn JsValue::as_storage_manager(
+  self : JsValue,
+) -> StorageManager? =
+  #| (self) => (self instanceof StorageManager) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to StorageManager (unchecked)
+pub extern "js" fn JsValue::to_storage_manager(
+  self : JsValue,
+) -> StorageManager =
+  #| (self) => self
+
+///|
 pub extern "js" fn StorageManager::persisted(
   self : StorageManager,
 ) -> Promise[Bool] =

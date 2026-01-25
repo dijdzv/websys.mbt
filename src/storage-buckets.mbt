@@ -37,6 +37,34 @@ pub extern "js" fn StorageBucketManager::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to StorageBucketManager (unchecked)
+pub extern "js" fn StorageBucketManager::from_js_value(
+  v : JsValue,
+) -> StorageBucketManager =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to StorageBucketManager (checked with instanceof)
+pub extern "js" fn StorageBucketManager::from_js_value_opt(
+  v : JsValue,
+) -> StorageBucketManager? =
+  #| (v) => (v instanceof StorageBucketManager) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to StorageBucketManager (checked with instanceof)
+pub extern "js" fn JsValue::as_storage_bucket_manager(
+  self : JsValue,
+) -> StorageBucketManager? =
+  #| (self) => (self instanceof StorageBucketManager) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to StorageBucketManager (unchecked)
+pub extern "js" fn JsValue::to_storage_bucket_manager(
+  self : JsValue,
+) -> StorageBucketManager =
+  #| (self) => self
+
+///|
 pub extern "js" fn StorageBucketManager::open(
   self : StorageBucketManager,
   name : String,
@@ -54,7 +82,7 @@ pub extern "js" fn StorageBucketManager::open_with_options(
 ///|
 pub extern "js" fn StorageBucketManager::keys(
   self : StorageBucketManager,
-) -> Promise[Unit] =
+) -> Promise[Array[String]] =
   #| (self) => self.keys()
 
 ///|
@@ -70,6 +98,28 @@ pub type StorageBucket
 
 ///|
 pub extern "js" fn StorageBucket::to_js_value(self : StorageBucket) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to StorageBucket (unchecked)
+pub extern "js" fn StorageBucket::from_js_value(v : JsValue) -> StorageBucket =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to StorageBucket (checked with instanceof)
+pub extern "js" fn StorageBucket::from_js_value_opt(
+  v : JsValue,
+) -> StorageBucket? =
+  #| (v) => (v instanceof StorageBucket) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to StorageBucket (checked with instanceof)
+pub extern "js" fn JsValue::as_storage_bucket(self : JsValue) -> StorageBucket? =
+  #| (self) => (self instanceof StorageBucket) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to StorageBucket (unchecked)
+pub extern "js" fn JsValue::to_storage_bucket(self : JsValue) -> StorageBucket =
   #| (self) => self
 
 ///|
@@ -105,10 +155,10 @@ pub extern "js" fn StorageBucket::set_expires(
 pub extern "js" fn StorageBucket::expires(
   self : StorageBucket,
 ) -> Promise[DOMHighResTimeStamp?] =
-  #| (self) => self.expires()
+  #| (self) => self.expires().then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
 
 ///|
-pub extern "js" fn StorageBucket::get_indexed_d_b(
+pub extern "js" fn StorageBucket::get_indexed_db(
   self : StorageBucket,
 ) -> IDBFactory =
   #| (self) => self.indexedDB

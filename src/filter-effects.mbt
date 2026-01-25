@@ -12,6 +12,56 @@ pub extern "js" fn SVGFilterElement::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SVGFilterElement (unchecked)
+pub extern "js" fn SVGFilterElement::from_js_value(
+  v : JsValue,
+) -> SVGFilterElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFilterElement (checked with instanceof)
+pub extern "js" fn SVGFilterElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFilterElement? =
+  #| (v) => (v instanceof SVGFilterElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFilterElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svg_filter_element(
+  self : JsValue,
+) -> SVGFilterElement? =
+  #| (self) => (self instanceof SVGFilterElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFilterElement (unchecked)
+pub extern "js" fn JsValue::to_svg_filter_element(
+  self : JsValue,
+) -> SVGFilterElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFilterElement::to_svg_element(
+  self : SVGFilterElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFilterElement::to_element(
+  self : SVGFilterElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFilterElement::to_node(self : SVGFilterElement) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFilterElement::to_event_target(
+  self : SVGFilterElement,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn SVGFilterElement::get_filter_units(
   self : SVGFilterElement,
 ) -> SVGAnimatedEnumeration =
@@ -63,90 +113,140 @@ pub extern "js" fn SVGFEBlendElement::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
+///|
+/// Cast JsValue to SVGFEBlendElement (unchecked)
+pub extern "js" fn SVGFEBlendElement::from_js_value(
+  v : JsValue,
+) -> SVGFEBlendElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFEBlendElement (checked with instanceof)
+pub extern "js" fn SVGFEBlendElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEBlendElement? =
+  #| (v) => (v instanceof SVGFEBlendElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFEBlendElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_blend_element(
+  self : JsValue,
+) -> SVGFEBlendElement? =
+  #| (self) => (self instanceof SVGFEBlendElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFEBlendElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_blend_element(
+  self : JsValue,
+) -> SVGFEBlendElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEBlendElement::to_svg_element(
+  self : SVGFEBlendElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEBlendElement::to_element(
+  self : SVGFEBlendElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEBlendElement::to_node(self : SVGFEBlendElement) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEBlendElement::to_event_target(
+  self : SVGFEBlendElement,
+) -> EventTarget =
+  #| (self) => self
+
 // SVGFEBlendElement.SVG_FEBLEND_MODE_UNKNOWN
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_unknown : Int = 0
+pub let svgfe_blend_element_svg_feblend_mode_unknown : Int = 0
 
 // SVGFEBlendElement.SVG_FEBLEND_MODE_NORMAL
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_normal : Int = 1
+pub let svgfe_blend_element_svg_feblend_mode_normal : Int = 1
 
 // SVGFEBlendElement.SVG_FEBLEND_MODE_MULTIPLY
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_multiply : Int = 2
+pub let svgfe_blend_element_svg_feblend_mode_multiply : Int = 2
 
 // SVGFEBlendElement.SVG_FEBLEND_MODE_SCREEN
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_screen : Int = 3
+pub let svgfe_blend_element_svg_feblend_mode_screen : Int = 3
 
 // SVGFEBlendElement.SVG_FEBLEND_MODE_DARKEN
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_darken : Int = 4
+pub let svgfe_blend_element_svg_feblend_mode_darken : Int = 4
 
 // SVGFEBlendElement.SVG_FEBLEND_MODE_LIGHTEN
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_lighten : Int = 5
+pub let svgfe_blend_element_svg_feblend_mode_lighten : Int = 5
 
 // SVGFEBlendElement.SVG_FEBLEND_MODE_OVERLAY
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_overlay : Int = 6
+pub let svgfe_blend_element_svg_feblend_mode_overlay : Int = 6
 
 // SVGFEBlendElement.SVG_FEBLEND_MODE_COLOR_DODGE
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_color_dodge : Int = 7
+pub let svgfe_blend_element_svg_feblend_mode_color_dodge : Int = 7
 
 // SVGFEBlendElement.SVG_FEBLEND_MODE_COLOR_BURN
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_color_burn : Int = 8
+pub let svgfe_blend_element_svg_feblend_mode_color_burn : Int = 8
 
 // SVGFEBlendElement.SVG_FEBLEND_MODE_HARD_LIGHT
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_hard_light : Int = 9
+pub let svgfe_blend_element_svg_feblend_mode_hard_light : Int = 9
 
 // SVGFEBlendElement.SVG_FEBLEND_MODE_SOFT_LIGHT
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_soft_light : Int = 10
+pub let svgfe_blend_element_svg_feblend_mode_soft_light : Int = 10
 
 // SVGFEBlendElement.SVG_FEBLEND_MODE_DIFFERENCE
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_difference : Int = 11
+pub let svgfe_blend_element_svg_feblend_mode_difference : Int = 11
 
 // SVGFEBlendElement.SVG_FEBLEND_MODE_EXCLUSION
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_exclusion : Int = 12
+pub let svgfe_blend_element_svg_feblend_mode_exclusion : Int = 12
 
 // SVGFEBlendElement.SVG_FEBLEND_MODE_HUE
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_hue : Int = 13
+pub let svgfe_blend_element_svg_feblend_mode_hue : Int = 13
 
 // SVGFEBlendElement.SVG_FEBLEND_MODE_SATURATION
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_saturation : Int = 14
+pub let svgfe_blend_element_svg_feblend_mode_saturation : Int = 14
 
 // SVGFEBlendElement.SVG_FEBLEND_MODE_COLOR
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_color : Int = 15
+pub let svgfe_blend_element_svg_feblend_mode_color : Int = 15
 
 // SVGFEBlendElement.SVG_FEBLEND_MODE_LUMINOSITY
 
 ///|
-pub let s_v_g_f_e_blend_element_svg_feblend_mode_luminosity : Int = 16
+pub let svgfe_blend_element_svg_feblend_mode_luminosity : Int = 16
 
 ///|
 pub extern "js" fn SVGFEBlendElement::get_in1(
@@ -206,30 +306,82 @@ pub extern "js" fn SVGFEColorMatrixElement::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
+///|
+/// Cast JsValue to SVGFEColorMatrixElement (unchecked)
+pub extern "js" fn SVGFEColorMatrixElement::from_js_value(
+  v : JsValue,
+) -> SVGFEColorMatrixElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFEColorMatrixElement (checked with instanceof)
+pub extern "js" fn SVGFEColorMatrixElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEColorMatrixElement? =
+  #| (v) => (v instanceof SVGFEColorMatrixElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFEColorMatrixElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_color_matrix_element(
+  self : JsValue,
+) -> SVGFEColorMatrixElement? =
+  #| (self) => (self instanceof SVGFEColorMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFEColorMatrixElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_color_matrix_element(
+  self : JsValue,
+) -> SVGFEColorMatrixElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEColorMatrixElement::to_svg_element(
+  self : SVGFEColorMatrixElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEColorMatrixElement::to_element(
+  self : SVGFEColorMatrixElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEColorMatrixElement::to_node(
+  self : SVGFEColorMatrixElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEColorMatrixElement::to_event_target(
+  self : SVGFEColorMatrixElement,
+) -> EventTarget =
+  #| (self) => self
+
 // SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_UNKNOWN
 
 ///|
-pub let s_v_g_f_e_color_matrix_element_svg_fecolormatrix_type_unknown : Int = 0
+pub let svgfe_color_matrix_element_svg_fecolormatrix_type_unknown : Int = 0
 
 // SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_MATRIX
 
 ///|
-pub let s_v_g_f_e_color_matrix_element_svg_fecolormatrix_type_matrix : Int = 1
+pub let svgfe_color_matrix_element_svg_fecolormatrix_type_matrix : Int = 1
 
 // SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_SATURATE
 
 ///|
-pub let s_v_g_f_e_color_matrix_element_svg_fecolormatrix_type_saturate : Int = 2
+pub let svgfe_color_matrix_element_svg_fecolormatrix_type_saturate : Int = 2
 
 // SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_HUEROTATE
 
 ///|
-pub let s_v_g_f_e_color_matrix_element_svg_fecolormatrix_type_huerotate : Int = 3
+pub let svgfe_color_matrix_element_svg_fecolormatrix_type_huerotate : Int = 3
 
 // SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_LUMINANCETOALPHA
 
 ///|
-pub let s_v_g_f_e_color_matrix_element_svg_fecolormatrix_type_luminancetoalpha : Int = 4
+pub let svgfe_color_matrix_element_svg_fecolormatrix_type_luminancetoalpha : Int = 4
 
 ///|
 pub extern "js" fn SVGFEColorMatrixElement::get_in1(
@@ -290,6 +442,58 @@ pub extern "js" fn SVGFEComponentTransferElement::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SVGFEComponentTransferElement (unchecked)
+pub extern "js" fn SVGFEComponentTransferElement::from_js_value(
+  v : JsValue,
+) -> SVGFEComponentTransferElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFEComponentTransferElement (checked with instanceof)
+pub extern "js" fn SVGFEComponentTransferElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEComponentTransferElement? =
+  #| (v) => (v instanceof SVGFEComponentTransferElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFEComponentTransferElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_component_transfer_element(
+  self : JsValue,
+) -> SVGFEComponentTransferElement? =
+  #| (self) => (self instanceof SVGFEComponentTransferElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFEComponentTransferElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_component_transfer_element(
+  self : JsValue,
+) -> SVGFEComponentTransferElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEComponentTransferElement::to_svg_element(
+  self : SVGFEComponentTransferElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEComponentTransferElement::to_element(
+  self : SVGFEComponentTransferElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEComponentTransferElement::to_node(
+  self : SVGFEComponentTransferElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEComponentTransferElement::to_event_target(
+  self : SVGFEComponentTransferElement,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn SVGFEComponentTransferElement::get_in1(
   self : SVGFEComponentTransferElement,
 ) -> SVGAnimatedString =
@@ -335,35 +539,111 @@ pub extern "js" fn SVGComponentTransferFunctionElement::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
+///|
+/// Cast JsValue to SVGComponentTransferFunctionElement (unchecked)
+pub extern "js" fn SVGComponentTransferFunctionElement::from_js_value(
+  v : JsValue,
+) -> SVGComponentTransferFunctionElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGComponentTransferFunctionElement (checked with instanceof)
+pub extern "js" fn SVGComponentTransferFunctionElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGComponentTransferFunctionElement? =
+  #| (v) => (v instanceof SVGComponentTransferFunctionElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGComponentTransferFunctionElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svg_component_transfer_function_element(
+  self : JsValue,
+) -> SVGComponentTransferFunctionElement? =
+  #| (self) => (self instanceof SVGComponentTransferFunctionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGComponentTransferFunctionElement (unchecked)
+pub extern "js" fn JsValue::to_svg_component_transfer_function_element(
+  self : JsValue,
+) -> SVGComponentTransferFunctionElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGComponentTransferFunctionElement::to_svg_element(
+  self : SVGComponentTransferFunctionElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGComponentTransferFunctionElement::to_element(
+  self : SVGComponentTransferFunctionElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGComponentTransferFunctionElement::to_node(
+  self : SVGComponentTransferFunctionElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGComponentTransferFunctionElement::to_event_target(
+  self : SVGComponentTransferFunctionElement,
+) -> EventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGComponentTransferFunctionElement::as_svgfe_func_r_element(
+  self : SVGComponentTransferFunctionElement,
+) -> SVGFEFuncRElement? =
+  #| (self) => (self instanceof SVGFEFuncRElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGComponentTransferFunctionElement::as_svgfe_func_g_element(
+  self : SVGComponentTransferFunctionElement,
+) -> SVGFEFuncGElement? =
+  #| (self) => (self instanceof SVGFEFuncGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGComponentTransferFunctionElement::as_svgfe_func_b_element(
+  self : SVGComponentTransferFunctionElement,
+) -> SVGFEFuncBElement? =
+  #| (self) => (self instanceof SVGFEFuncBElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGComponentTransferFunctionElement::as_svgfe_func_a_element(
+  self : SVGComponentTransferFunctionElement,
+) -> SVGFEFuncAElement? =
+  #| (self) => (self instanceof SVGFEFuncAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
 // SVGComponentTransferFunctionElement.SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN
 
 ///|
-pub let s_v_g_component_transfer_function_element_svg_fecomponenttransfer_type_unknown : Int = 0
+pub let svg_component_transfer_function_element_svg_fecomponenttransfer_type_unknown : Int = 0
 
 // SVGComponentTransferFunctionElement.SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY
 
 ///|
-pub let s_v_g_component_transfer_function_element_svg_fecomponenttransfer_type_identity : Int = 1
+pub let svg_component_transfer_function_element_svg_fecomponenttransfer_type_identity : Int = 1
 
 // SVGComponentTransferFunctionElement.SVG_FECOMPONENTTRANSFER_TYPE_TABLE
 
 ///|
-pub let s_v_g_component_transfer_function_element_svg_fecomponenttransfer_type_table : Int = 2
+pub let svg_component_transfer_function_element_svg_fecomponenttransfer_type_table : Int = 2
 
 // SVGComponentTransferFunctionElement.SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE
 
 ///|
-pub let s_v_g_component_transfer_function_element_svg_fecomponenttransfer_type_discrete : Int = 3
+pub let svg_component_transfer_function_element_svg_fecomponenttransfer_type_discrete : Int = 3
 
 // SVGComponentTransferFunctionElement.SVG_FECOMPONENTTRANSFER_TYPE_LINEAR
 
 ///|
-pub let s_v_g_component_transfer_function_element_svg_fecomponenttransfer_type_linear : Int = 4
+pub let svg_component_transfer_function_element_svg_fecomponenttransfer_type_linear : Int = 4
 
 // SVGComponentTransferFunctionElement.SVG_FECOMPONENTTRANSFER_TYPE_GAMMA
 
 ///|
-pub let s_v_g_component_transfer_function_element_svg_fecomponenttransfer_type_gamma : Int = 5
+pub let svg_component_transfer_function_element_svg_fecomponenttransfer_type_gamma : Int = 5
 
 ///|
 pub extern "js" fn SVGComponentTransferFunctionElement::get_type(
@@ -417,77 +697,61 @@ pub extern "js" fn SVGFEFuncRElement::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
-// SVGFEFuncRElement.SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN
+///|
+/// Cast JsValue to SVGFEFuncRElement (unchecked)
+pub extern "js" fn SVGFEFuncRElement::from_js_value(
+  v : JsValue,
+) -> SVGFEFuncRElement =
+  #| (v) => v
 
 ///|
-pub let s_v_g_f_e_func_r_element_svg_fecomponenttransfer_type_unknown : Int = 0
-
-// SVGFEFuncRElement.SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY
-
-///|
-pub let s_v_g_f_e_func_r_element_svg_fecomponenttransfer_type_identity : Int = 1
-
-// SVGFEFuncRElement.SVG_FECOMPONENTTRANSFER_TYPE_TABLE
+/// Safely cast JsValue to SVGFEFuncRElement (checked with instanceof)
+pub extern "js" fn SVGFEFuncRElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEFuncRElement? =
+  #| (v) => (v instanceof SVGFEFuncRElement) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub let s_v_g_f_e_func_r_element_svg_fecomponenttransfer_type_table : Int = 2
-
-// SVGFEFuncRElement.SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE
-
-///|
-pub let s_v_g_f_e_func_r_element_svg_fecomponenttransfer_type_discrete : Int = 3
-
-// SVGFEFuncRElement.SVG_FECOMPONENTTRANSFER_TYPE_LINEAR
+/// Safely cast JsValue to SVGFEFuncRElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_func_r_element(
+  self : JsValue,
+) -> SVGFEFuncRElement? =
+  #| (self) => (self instanceof SVGFEFuncRElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub let s_v_g_f_e_func_r_element_svg_fecomponenttransfer_type_linear : Int = 4
-
-// SVGFEFuncRElement.SVG_FECOMPONENTTRANSFER_TYPE_GAMMA
+/// Cast JsValue to SVGFEFuncRElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_func_r_element(
+  self : JsValue,
+) -> SVGFEFuncRElement =
+  #| (self) => self
 
 ///|
-pub let s_v_g_f_e_func_r_element_svg_fecomponenttransfer_type_gamma : Int = 5
-
-///|
-pub extern "js" fn SVGFEFuncRElement::get_type(
+pub extern "js" fn SVGFEFuncRElement::to_svg_component_transfer_function_element(
   self : SVGFEFuncRElement,
-) -> SVGAnimatedEnumeration =
-  #| (self) => self.type
+) -> SVGComponentTransferFunctionElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGFEFuncRElement::get_table_values(
+pub extern "js" fn SVGFEFuncRElement::to_svg_element(
   self : SVGFEFuncRElement,
-) -> SVGAnimatedNumberList =
-  #| (self) => self.tableValues
+) -> SVGElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGFEFuncRElement::get_slope(
+pub extern "js" fn SVGFEFuncRElement::to_element(
   self : SVGFEFuncRElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.slope
+) -> Element =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGFEFuncRElement::get_intercept(
-  self : SVGFEFuncRElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.intercept
+pub extern "js" fn SVGFEFuncRElement::to_node(self : SVGFEFuncRElement) -> Node =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGFEFuncRElement::get_amplitude(
+pub extern "js" fn SVGFEFuncRElement::to_event_target(
   self : SVGFEFuncRElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.amplitude
-
-///|
-pub extern "js" fn SVGFEFuncRElement::get_exponent(
-  self : SVGFEFuncRElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.exponent
-
-///|
-pub extern "js" fn SVGFEFuncRElement::get_offset(
-  self : SVGFEFuncRElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.offset
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 /// SVGFEFuncGElement interface
@@ -499,77 +763,61 @@ pub extern "js" fn SVGFEFuncGElement::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
-// SVGFEFuncGElement.SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN
+///|
+/// Cast JsValue to SVGFEFuncGElement (unchecked)
+pub extern "js" fn SVGFEFuncGElement::from_js_value(
+  v : JsValue,
+) -> SVGFEFuncGElement =
+  #| (v) => v
 
 ///|
-pub let s_v_g_f_e_func_g_element_svg_fecomponenttransfer_type_unknown : Int = 0
-
-// SVGFEFuncGElement.SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY
-
-///|
-pub let s_v_g_f_e_func_g_element_svg_fecomponenttransfer_type_identity : Int = 1
-
-// SVGFEFuncGElement.SVG_FECOMPONENTTRANSFER_TYPE_TABLE
+/// Safely cast JsValue to SVGFEFuncGElement (checked with instanceof)
+pub extern "js" fn SVGFEFuncGElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEFuncGElement? =
+  #| (v) => (v instanceof SVGFEFuncGElement) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub let s_v_g_f_e_func_g_element_svg_fecomponenttransfer_type_table : Int = 2
-
-// SVGFEFuncGElement.SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE
-
-///|
-pub let s_v_g_f_e_func_g_element_svg_fecomponenttransfer_type_discrete : Int = 3
-
-// SVGFEFuncGElement.SVG_FECOMPONENTTRANSFER_TYPE_LINEAR
+/// Safely cast JsValue to SVGFEFuncGElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_func_g_element(
+  self : JsValue,
+) -> SVGFEFuncGElement? =
+  #| (self) => (self instanceof SVGFEFuncGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub let s_v_g_f_e_func_g_element_svg_fecomponenttransfer_type_linear : Int = 4
-
-// SVGFEFuncGElement.SVG_FECOMPONENTTRANSFER_TYPE_GAMMA
+/// Cast JsValue to SVGFEFuncGElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_func_g_element(
+  self : JsValue,
+) -> SVGFEFuncGElement =
+  #| (self) => self
 
 ///|
-pub let s_v_g_f_e_func_g_element_svg_fecomponenttransfer_type_gamma : Int = 5
-
-///|
-pub extern "js" fn SVGFEFuncGElement::get_type(
+pub extern "js" fn SVGFEFuncGElement::to_svg_component_transfer_function_element(
   self : SVGFEFuncGElement,
-) -> SVGAnimatedEnumeration =
-  #| (self) => self.type
+) -> SVGComponentTransferFunctionElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGFEFuncGElement::get_table_values(
+pub extern "js" fn SVGFEFuncGElement::to_svg_element(
   self : SVGFEFuncGElement,
-) -> SVGAnimatedNumberList =
-  #| (self) => self.tableValues
+) -> SVGElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGFEFuncGElement::get_slope(
+pub extern "js" fn SVGFEFuncGElement::to_element(
   self : SVGFEFuncGElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.slope
+) -> Element =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGFEFuncGElement::get_intercept(
-  self : SVGFEFuncGElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.intercept
+pub extern "js" fn SVGFEFuncGElement::to_node(self : SVGFEFuncGElement) -> Node =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGFEFuncGElement::get_amplitude(
+pub extern "js" fn SVGFEFuncGElement::to_event_target(
   self : SVGFEFuncGElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.amplitude
-
-///|
-pub extern "js" fn SVGFEFuncGElement::get_exponent(
-  self : SVGFEFuncGElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.exponent
-
-///|
-pub extern "js" fn SVGFEFuncGElement::get_offset(
-  self : SVGFEFuncGElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.offset
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 /// SVGFEFuncBElement interface
@@ -581,77 +829,61 @@ pub extern "js" fn SVGFEFuncBElement::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
-// SVGFEFuncBElement.SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN
+///|
+/// Cast JsValue to SVGFEFuncBElement (unchecked)
+pub extern "js" fn SVGFEFuncBElement::from_js_value(
+  v : JsValue,
+) -> SVGFEFuncBElement =
+  #| (v) => v
 
 ///|
-pub let s_v_g_f_e_func_b_element_svg_fecomponenttransfer_type_unknown : Int = 0
-
-// SVGFEFuncBElement.SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY
-
-///|
-pub let s_v_g_f_e_func_b_element_svg_fecomponenttransfer_type_identity : Int = 1
-
-// SVGFEFuncBElement.SVG_FECOMPONENTTRANSFER_TYPE_TABLE
+/// Safely cast JsValue to SVGFEFuncBElement (checked with instanceof)
+pub extern "js" fn SVGFEFuncBElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEFuncBElement? =
+  #| (v) => (v instanceof SVGFEFuncBElement) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub let s_v_g_f_e_func_b_element_svg_fecomponenttransfer_type_table : Int = 2
-
-// SVGFEFuncBElement.SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE
-
-///|
-pub let s_v_g_f_e_func_b_element_svg_fecomponenttransfer_type_discrete : Int = 3
-
-// SVGFEFuncBElement.SVG_FECOMPONENTTRANSFER_TYPE_LINEAR
+/// Safely cast JsValue to SVGFEFuncBElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_func_b_element(
+  self : JsValue,
+) -> SVGFEFuncBElement? =
+  #| (self) => (self instanceof SVGFEFuncBElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub let s_v_g_f_e_func_b_element_svg_fecomponenttransfer_type_linear : Int = 4
-
-// SVGFEFuncBElement.SVG_FECOMPONENTTRANSFER_TYPE_GAMMA
+/// Cast JsValue to SVGFEFuncBElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_func_b_element(
+  self : JsValue,
+) -> SVGFEFuncBElement =
+  #| (self) => self
 
 ///|
-pub let s_v_g_f_e_func_b_element_svg_fecomponenttransfer_type_gamma : Int = 5
-
-///|
-pub extern "js" fn SVGFEFuncBElement::get_type(
+pub extern "js" fn SVGFEFuncBElement::to_svg_component_transfer_function_element(
   self : SVGFEFuncBElement,
-) -> SVGAnimatedEnumeration =
-  #| (self) => self.type
+) -> SVGComponentTransferFunctionElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGFEFuncBElement::get_table_values(
+pub extern "js" fn SVGFEFuncBElement::to_svg_element(
   self : SVGFEFuncBElement,
-) -> SVGAnimatedNumberList =
-  #| (self) => self.tableValues
+) -> SVGElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGFEFuncBElement::get_slope(
+pub extern "js" fn SVGFEFuncBElement::to_element(
   self : SVGFEFuncBElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.slope
+) -> Element =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGFEFuncBElement::get_intercept(
-  self : SVGFEFuncBElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.intercept
+pub extern "js" fn SVGFEFuncBElement::to_node(self : SVGFEFuncBElement) -> Node =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGFEFuncBElement::get_amplitude(
+pub extern "js" fn SVGFEFuncBElement::to_event_target(
   self : SVGFEFuncBElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.amplitude
-
-///|
-pub extern "js" fn SVGFEFuncBElement::get_exponent(
-  self : SVGFEFuncBElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.exponent
-
-///|
-pub extern "js" fn SVGFEFuncBElement::get_offset(
-  self : SVGFEFuncBElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.offset
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 /// SVGFEFuncAElement interface
@@ -663,77 +895,61 @@ pub extern "js" fn SVGFEFuncAElement::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
-// SVGFEFuncAElement.SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN
+///|
+/// Cast JsValue to SVGFEFuncAElement (unchecked)
+pub extern "js" fn SVGFEFuncAElement::from_js_value(
+  v : JsValue,
+) -> SVGFEFuncAElement =
+  #| (v) => v
 
 ///|
-pub let s_v_g_f_e_func_a_element_svg_fecomponenttransfer_type_unknown : Int = 0
-
-// SVGFEFuncAElement.SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY
-
-///|
-pub let s_v_g_f_e_func_a_element_svg_fecomponenttransfer_type_identity : Int = 1
-
-// SVGFEFuncAElement.SVG_FECOMPONENTTRANSFER_TYPE_TABLE
+/// Safely cast JsValue to SVGFEFuncAElement (checked with instanceof)
+pub extern "js" fn SVGFEFuncAElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEFuncAElement? =
+  #| (v) => (v instanceof SVGFEFuncAElement) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub let s_v_g_f_e_func_a_element_svg_fecomponenttransfer_type_table : Int = 2
-
-// SVGFEFuncAElement.SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE
-
-///|
-pub let s_v_g_f_e_func_a_element_svg_fecomponenttransfer_type_discrete : Int = 3
-
-// SVGFEFuncAElement.SVG_FECOMPONENTTRANSFER_TYPE_LINEAR
+/// Safely cast JsValue to SVGFEFuncAElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_func_a_element(
+  self : JsValue,
+) -> SVGFEFuncAElement? =
+  #| (self) => (self instanceof SVGFEFuncAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub let s_v_g_f_e_func_a_element_svg_fecomponenttransfer_type_linear : Int = 4
-
-// SVGFEFuncAElement.SVG_FECOMPONENTTRANSFER_TYPE_GAMMA
+/// Cast JsValue to SVGFEFuncAElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_func_a_element(
+  self : JsValue,
+) -> SVGFEFuncAElement =
+  #| (self) => self
 
 ///|
-pub let s_v_g_f_e_func_a_element_svg_fecomponenttransfer_type_gamma : Int = 5
-
-///|
-pub extern "js" fn SVGFEFuncAElement::get_type(
+pub extern "js" fn SVGFEFuncAElement::to_svg_component_transfer_function_element(
   self : SVGFEFuncAElement,
-) -> SVGAnimatedEnumeration =
-  #| (self) => self.type
+) -> SVGComponentTransferFunctionElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGFEFuncAElement::get_table_values(
+pub extern "js" fn SVGFEFuncAElement::to_svg_element(
   self : SVGFEFuncAElement,
-) -> SVGAnimatedNumberList =
-  #| (self) => self.tableValues
+) -> SVGElement =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGFEFuncAElement::get_slope(
+pub extern "js" fn SVGFEFuncAElement::to_element(
   self : SVGFEFuncAElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.slope
+) -> Element =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGFEFuncAElement::get_intercept(
-  self : SVGFEFuncAElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.intercept
+pub extern "js" fn SVGFEFuncAElement::to_node(self : SVGFEFuncAElement) -> Node =
+  #| (self) => self
 
 ///|
-pub extern "js" fn SVGFEFuncAElement::get_amplitude(
+pub extern "js" fn SVGFEFuncAElement::to_event_target(
   self : SVGFEFuncAElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.amplitude
-
-///|
-pub extern "js" fn SVGFEFuncAElement::get_exponent(
-  self : SVGFEFuncAElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.exponent
-
-///|
-pub extern "js" fn SVGFEFuncAElement::get_offset(
-  self : SVGFEFuncAElement,
-) -> SVGAnimatedNumber =
-  #| (self) => self.offset
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 /// SVGFECompositeElement interface
@@ -745,40 +961,92 @@ pub extern "js" fn SVGFECompositeElement::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
+///|
+/// Cast JsValue to SVGFECompositeElement (unchecked)
+pub extern "js" fn SVGFECompositeElement::from_js_value(
+  v : JsValue,
+) -> SVGFECompositeElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFECompositeElement (checked with instanceof)
+pub extern "js" fn SVGFECompositeElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFECompositeElement? =
+  #| (v) => (v instanceof SVGFECompositeElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFECompositeElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_composite_element(
+  self : JsValue,
+) -> SVGFECompositeElement? =
+  #| (self) => (self instanceof SVGFECompositeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFECompositeElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_composite_element(
+  self : JsValue,
+) -> SVGFECompositeElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFECompositeElement::to_svg_element(
+  self : SVGFECompositeElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFECompositeElement::to_element(
+  self : SVGFECompositeElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFECompositeElement::to_node(
+  self : SVGFECompositeElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFECompositeElement::to_event_target(
+  self : SVGFECompositeElement,
+) -> EventTarget =
+  #| (self) => self
+
 // SVGFECompositeElement.SVG_FECOMPOSITE_OPERATOR_UNKNOWN
 
 ///|
-pub let s_v_g_f_e_composite_element_svg_fecomposite_operator_unknown : Int = 0
+pub let svgfe_composite_element_svg_fecomposite_operator_unknown : Int = 0
 
 // SVGFECompositeElement.SVG_FECOMPOSITE_OPERATOR_OVER
 
 ///|
-pub let s_v_g_f_e_composite_element_svg_fecomposite_operator_over : Int = 1
+pub let svgfe_composite_element_svg_fecomposite_operator_over : Int = 1
 
 // SVGFECompositeElement.SVG_FECOMPOSITE_OPERATOR_IN
 
 ///|
-pub let s_v_g_f_e_composite_element_svg_fecomposite_operator_in : Int = 2
+pub let svgfe_composite_element_svg_fecomposite_operator_in : Int = 2
 
 // SVGFECompositeElement.SVG_FECOMPOSITE_OPERATOR_OUT
 
 ///|
-pub let s_v_g_f_e_composite_element_svg_fecomposite_operator_out : Int = 3
+pub let svgfe_composite_element_svg_fecomposite_operator_out : Int = 3
 
 // SVGFECompositeElement.SVG_FECOMPOSITE_OPERATOR_ATOP
 
 ///|
-pub let s_v_g_f_e_composite_element_svg_fecomposite_operator_atop : Int = 4
+pub let svgfe_composite_element_svg_fecomposite_operator_atop : Int = 4
 
 // SVGFECompositeElement.SVG_FECOMPOSITE_OPERATOR_XOR
 
 ///|
-pub let s_v_g_f_e_composite_element_svg_fecomposite_operator_xor : Int = 5
+pub let svgfe_composite_element_svg_fecomposite_operator_xor : Int = 5
 
 // SVGFECompositeElement.SVG_FECOMPOSITE_OPERATOR_ARITHMETIC
 
 ///|
-pub let s_v_g_f_e_composite_element_svg_fecomposite_operator_arithmetic : Int = 6
+pub let svgfe_composite_element_svg_fecomposite_operator_arithmetic : Int = 6
 
 ///|
 pub extern "js" fn SVGFECompositeElement::get_in1(
@@ -862,25 +1130,77 @@ pub extern "js" fn SVGFEConvolveMatrixElement::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
+///|
+/// Cast JsValue to SVGFEConvolveMatrixElement (unchecked)
+pub extern "js" fn SVGFEConvolveMatrixElement::from_js_value(
+  v : JsValue,
+) -> SVGFEConvolveMatrixElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFEConvolveMatrixElement (checked with instanceof)
+pub extern "js" fn SVGFEConvolveMatrixElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEConvolveMatrixElement? =
+  #| (v) => (v instanceof SVGFEConvolveMatrixElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFEConvolveMatrixElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_convolve_matrix_element(
+  self : JsValue,
+) -> SVGFEConvolveMatrixElement? =
+  #| (self) => (self instanceof SVGFEConvolveMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFEConvolveMatrixElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_convolve_matrix_element(
+  self : JsValue,
+) -> SVGFEConvolveMatrixElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEConvolveMatrixElement::to_svg_element(
+  self : SVGFEConvolveMatrixElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEConvolveMatrixElement::to_element(
+  self : SVGFEConvolveMatrixElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEConvolveMatrixElement::to_node(
+  self : SVGFEConvolveMatrixElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEConvolveMatrixElement::to_event_target(
+  self : SVGFEConvolveMatrixElement,
+) -> EventTarget =
+  #| (self) => self
+
 // SVGFEConvolveMatrixElement.SVG_EDGEMODE_UNKNOWN
 
 ///|
-pub let s_v_g_f_e_convolve_matrix_element_svg_edgemode_unknown : Int = 0
+pub let svgfe_convolve_matrix_element_svg_edgemode_unknown : Int = 0
 
 // SVGFEConvolveMatrixElement.SVG_EDGEMODE_DUPLICATE
 
 ///|
-pub let s_v_g_f_e_convolve_matrix_element_svg_edgemode_duplicate : Int = 1
+pub let svgfe_convolve_matrix_element_svg_edgemode_duplicate : Int = 1
 
 // SVGFEConvolveMatrixElement.SVG_EDGEMODE_WRAP
 
 ///|
-pub let s_v_g_f_e_convolve_matrix_element_svg_edgemode_wrap : Int = 2
+pub let svgfe_convolve_matrix_element_svg_edgemode_wrap : Int = 2
 
 // SVGFEConvolveMatrixElement.SVG_EDGEMODE_NONE
 
 ///|
-pub let s_v_g_f_e_convolve_matrix_element_svg_edgemode_none : Int = 3
+pub let svgfe_convolve_matrix_element_svg_edgemode_none : Int = 3
 
 ///|
 pub extern "js" fn SVGFEConvolveMatrixElement::get_in1(
@@ -995,6 +1315,58 @@ pub extern "js" fn SVGFEDiffuseLightingElement::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SVGFEDiffuseLightingElement (unchecked)
+pub extern "js" fn SVGFEDiffuseLightingElement::from_js_value(
+  v : JsValue,
+) -> SVGFEDiffuseLightingElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFEDiffuseLightingElement (checked with instanceof)
+pub extern "js" fn SVGFEDiffuseLightingElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEDiffuseLightingElement? =
+  #| (v) => (v instanceof SVGFEDiffuseLightingElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFEDiffuseLightingElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_diffuse_lighting_element(
+  self : JsValue,
+) -> SVGFEDiffuseLightingElement? =
+  #| (self) => (self instanceof SVGFEDiffuseLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFEDiffuseLightingElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_diffuse_lighting_element(
+  self : JsValue,
+) -> SVGFEDiffuseLightingElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEDiffuseLightingElement::to_svg_element(
+  self : SVGFEDiffuseLightingElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEDiffuseLightingElement::to_element(
+  self : SVGFEDiffuseLightingElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEDiffuseLightingElement::to_node(
+  self : SVGFEDiffuseLightingElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEDiffuseLightingElement::to_event_target(
+  self : SVGFEDiffuseLightingElement,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn SVGFEDiffuseLightingElement::get_in1(
   self : SVGFEDiffuseLightingElement,
 ) -> SVGAnimatedString =
@@ -1065,6 +1437,58 @@ pub extern "js" fn SVGFEDistantLightElement::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SVGFEDistantLightElement (unchecked)
+pub extern "js" fn SVGFEDistantLightElement::from_js_value(
+  v : JsValue,
+) -> SVGFEDistantLightElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFEDistantLightElement (checked with instanceof)
+pub extern "js" fn SVGFEDistantLightElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEDistantLightElement? =
+  #| (v) => (v instanceof SVGFEDistantLightElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFEDistantLightElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_distant_light_element(
+  self : JsValue,
+) -> SVGFEDistantLightElement? =
+  #| (self) => (self instanceof SVGFEDistantLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFEDistantLightElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_distant_light_element(
+  self : JsValue,
+) -> SVGFEDistantLightElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEDistantLightElement::to_svg_element(
+  self : SVGFEDistantLightElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEDistantLightElement::to_element(
+  self : SVGFEDistantLightElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEDistantLightElement::to_node(
+  self : SVGFEDistantLightElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEDistantLightElement::to_event_target(
+  self : SVGFEDistantLightElement,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn SVGFEDistantLightElement::get_azimuth(
   self : SVGFEDistantLightElement,
 ) -> SVGAnimatedNumber =
@@ -1084,6 +1508,58 @@ pub type SVGFEPointLightElement
 pub extern "js" fn SVGFEPointLightElement::to_js_value(
   self : SVGFEPointLightElement,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SVGFEPointLightElement (unchecked)
+pub extern "js" fn SVGFEPointLightElement::from_js_value(
+  v : JsValue,
+) -> SVGFEPointLightElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFEPointLightElement (checked with instanceof)
+pub extern "js" fn SVGFEPointLightElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEPointLightElement? =
+  #| (v) => (v instanceof SVGFEPointLightElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFEPointLightElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_point_light_element(
+  self : JsValue,
+) -> SVGFEPointLightElement? =
+  #| (self) => (self instanceof SVGFEPointLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFEPointLightElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_point_light_element(
+  self : JsValue,
+) -> SVGFEPointLightElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEPointLightElement::to_svg_element(
+  self : SVGFEPointLightElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEPointLightElement::to_element(
+  self : SVGFEPointLightElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEPointLightElement::to_node(
+  self : SVGFEPointLightElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEPointLightElement::to_event_target(
+  self : SVGFEPointLightElement,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -1112,6 +1588,58 @@ pub type SVGFESpotLightElement
 pub extern "js" fn SVGFESpotLightElement::to_js_value(
   self : SVGFESpotLightElement,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SVGFESpotLightElement (unchecked)
+pub extern "js" fn SVGFESpotLightElement::from_js_value(
+  v : JsValue,
+) -> SVGFESpotLightElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFESpotLightElement (checked with instanceof)
+pub extern "js" fn SVGFESpotLightElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFESpotLightElement? =
+  #| (v) => (v instanceof SVGFESpotLightElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFESpotLightElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_spot_light_element(
+  self : JsValue,
+) -> SVGFESpotLightElement? =
+  #| (self) => (self instanceof SVGFESpotLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFESpotLightElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_spot_light_element(
+  self : JsValue,
+) -> SVGFESpotLightElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFESpotLightElement::to_svg_element(
+  self : SVGFESpotLightElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFESpotLightElement::to_element(
+  self : SVGFESpotLightElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFESpotLightElement::to_node(
+  self : SVGFESpotLightElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFESpotLightElement::to_event_target(
+  self : SVGFESpotLightElement,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -1172,30 +1700,82 @@ pub extern "js" fn SVGFEDisplacementMapElement::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
+///|
+/// Cast JsValue to SVGFEDisplacementMapElement (unchecked)
+pub extern "js" fn SVGFEDisplacementMapElement::from_js_value(
+  v : JsValue,
+) -> SVGFEDisplacementMapElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFEDisplacementMapElement (checked with instanceof)
+pub extern "js" fn SVGFEDisplacementMapElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEDisplacementMapElement? =
+  #| (v) => (v instanceof SVGFEDisplacementMapElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFEDisplacementMapElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_displacement_map_element(
+  self : JsValue,
+) -> SVGFEDisplacementMapElement? =
+  #| (self) => (self instanceof SVGFEDisplacementMapElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFEDisplacementMapElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_displacement_map_element(
+  self : JsValue,
+) -> SVGFEDisplacementMapElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEDisplacementMapElement::to_svg_element(
+  self : SVGFEDisplacementMapElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEDisplacementMapElement::to_element(
+  self : SVGFEDisplacementMapElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEDisplacementMapElement::to_node(
+  self : SVGFEDisplacementMapElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEDisplacementMapElement::to_event_target(
+  self : SVGFEDisplacementMapElement,
+) -> EventTarget =
+  #| (self) => self
+
 // SVGFEDisplacementMapElement.SVG_CHANNEL_UNKNOWN
 
 ///|
-pub let s_v_g_f_e_displacement_map_element_svg_channel_unknown : Int = 0
+pub let svgfe_displacement_map_element_svg_channel_unknown : Int = 0
 
 // SVGFEDisplacementMapElement.SVG_CHANNEL_R
 
 ///|
-pub let s_v_g_f_e_displacement_map_element_svg_channel_r : Int = 1
+pub let svgfe_displacement_map_element_svg_channel_r : Int = 1
 
 // SVGFEDisplacementMapElement.SVG_CHANNEL_G
 
 ///|
-pub let s_v_g_f_e_displacement_map_element_svg_channel_g : Int = 2
+pub let svgfe_displacement_map_element_svg_channel_g : Int = 2
 
 // SVGFEDisplacementMapElement.SVG_CHANNEL_B
 
 ///|
-pub let s_v_g_f_e_displacement_map_element_svg_channel_b : Int = 3
+pub let svgfe_displacement_map_element_svg_channel_b : Int = 3
 
 // SVGFEDisplacementMapElement.SVG_CHANNEL_A
 
 ///|
-pub let s_v_g_f_e_displacement_map_element_svg_channel_a : Int = 4
+pub let svgfe_displacement_map_element_svg_channel_a : Int = 4
 
 ///|
 pub extern "js" fn SVGFEDisplacementMapElement::get_in1(
@@ -1265,6 +1845,58 @@ pub type SVGFEDropShadowElement
 pub extern "js" fn SVGFEDropShadowElement::to_js_value(
   self : SVGFEDropShadowElement,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SVGFEDropShadowElement (unchecked)
+pub extern "js" fn SVGFEDropShadowElement::from_js_value(
+  v : JsValue,
+) -> SVGFEDropShadowElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFEDropShadowElement (checked with instanceof)
+pub extern "js" fn SVGFEDropShadowElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEDropShadowElement? =
+  #| (v) => (v instanceof SVGFEDropShadowElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFEDropShadowElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_drop_shadow_element(
+  self : JsValue,
+) -> SVGFEDropShadowElement? =
+  #| (self) => (self instanceof SVGFEDropShadowElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFEDropShadowElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_drop_shadow_element(
+  self : JsValue,
+) -> SVGFEDropShadowElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEDropShadowElement::to_svg_element(
+  self : SVGFEDropShadowElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEDropShadowElement::to_element(
+  self : SVGFEDropShadowElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEDropShadowElement::to_node(
+  self : SVGFEDropShadowElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEDropShadowElement::to_event_target(
+  self : SVGFEDropShadowElement,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -1346,6 +1978,56 @@ pub extern "js" fn SVGFEFloodElement::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SVGFEFloodElement (unchecked)
+pub extern "js" fn SVGFEFloodElement::from_js_value(
+  v : JsValue,
+) -> SVGFEFloodElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFEFloodElement (checked with instanceof)
+pub extern "js" fn SVGFEFloodElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEFloodElement? =
+  #| (v) => (v instanceof SVGFEFloodElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFEFloodElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_flood_element(
+  self : JsValue,
+) -> SVGFEFloodElement? =
+  #| (self) => (self instanceof SVGFEFloodElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFEFloodElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_flood_element(
+  self : JsValue,
+) -> SVGFEFloodElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEFloodElement::to_svg_element(
+  self : SVGFEFloodElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEFloodElement::to_element(
+  self : SVGFEFloodElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEFloodElement::to_node(self : SVGFEFloodElement) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEFloodElement::to_event_target(
+  self : SVGFEFloodElement,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn SVGFEFloodElement::get_x(
   self : SVGFEFloodElement,
 ) -> SVGAnimatedLength =
@@ -1385,25 +2067,77 @@ pub extern "js" fn SVGFEGaussianBlurElement::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
+///|
+/// Cast JsValue to SVGFEGaussianBlurElement (unchecked)
+pub extern "js" fn SVGFEGaussianBlurElement::from_js_value(
+  v : JsValue,
+) -> SVGFEGaussianBlurElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFEGaussianBlurElement (checked with instanceof)
+pub extern "js" fn SVGFEGaussianBlurElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEGaussianBlurElement? =
+  #| (v) => (v instanceof SVGFEGaussianBlurElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFEGaussianBlurElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_gaussian_blur_element(
+  self : JsValue,
+) -> SVGFEGaussianBlurElement? =
+  #| (self) => (self instanceof SVGFEGaussianBlurElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFEGaussianBlurElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_gaussian_blur_element(
+  self : JsValue,
+) -> SVGFEGaussianBlurElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEGaussianBlurElement::to_svg_element(
+  self : SVGFEGaussianBlurElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEGaussianBlurElement::to_element(
+  self : SVGFEGaussianBlurElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEGaussianBlurElement::to_node(
+  self : SVGFEGaussianBlurElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEGaussianBlurElement::to_event_target(
+  self : SVGFEGaussianBlurElement,
+) -> EventTarget =
+  #| (self) => self
+
 // SVGFEGaussianBlurElement.SVG_EDGEMODE_UNKNOWN
 
 ///|
-pub let s_v_g_f_e_gaussian_blur_element_svg_edgemode_unknown : Int = 0
+pub let svgfe_gaussian_blur_element_svg_edgemode_unknown : Int = 0
 
 // SVGFEGaussianBlurElement.SVG_EDGEMODE_DUPLICATE
 
 ///|
-pub let s_v_g_f_e_gaussian_blur_element_svg_edgemode_duplicate : Int = 1
+pub let svgfe_gaussian_blur_element_svg_edgemode_duplicate : Int = 1
 
 // SVGFEGaussianBlurElement.SVG_EDGEMODE_WRAP
 
 ///|
-pub let s_v_g_f_e_gaussian_blur_element_svg_edgemode_wrap : Int = 2
+pub let svgfe_gaussian_blur_element_svg_edgemode_wrap : Int = 2
 
 // SVGFEGaussianBlurElement.SVG_EDGEMODE_NONE
 
 ///|
-pub let s_v_g_f_e_gaussian_blur_element_svg_edgemode_none : Int = 3
+pub let svgfe_gaussian_blur_element_svg_edgemode_none : Int = 3
 
 ///|
 pub extern "js" fn SVGFEGaussianBlurElement::get_in1(
@@ -1478,6 +2212,56 @@ pub extern "js" fn SVGFEImageElement::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SVGFEImageElement (unchecked)
+pub extern "js" fn SVGFEImageElement::from_js_value(
+  v : JsValue,
+) -> SVGFEImageElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFEImageElement (checked with instanceof)
+pub extern "js" fn SVGFEImageElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEImageElement? =
+  #| (v) => (v instanceof SVGFEImageElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFEImageElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_image_element(
+  self : JsValue,
+) -> SVGFEImageElement? =
+  #| (self) => (self instanceof SVGFEImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFEImageElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_image_element(
+  self : JsValue,
+) -> SVGFEImageElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEImageElement::to_svg_element(
+  self : SVGFEImageElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEImageElement::to_element(
+  self : SVGFEImageElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEImageElement::to_node(self : SVGFEImageElement) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEImageElement::to_event_target(
+  self : SVGFEImageElement,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn SVGFEImageElement::get_preserve_aspect_ratio(
   self : SVGFEImageElement,
 ) -> SVGAnimatedPreserveAspectRatio =
@@ -1536,6 +2320,56 @@ pub extern "js" fn SVGFEMergeElement::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SVGFEMergeElement (unchecked)
+pub extern "js" fn SVGFEMergeElement::from_js_value(
+  v : JsValue,
+) -> SVGFEMergeElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFEMergeElement (checked with instanceof)
+pub extern "js" fn SVGFEMergeElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEMergeElement? =
+  #| (v) => (v instanceof SVGFEMergeElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFEMergeElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_merge_element(
+  self : JsValue,
+) -> SVGFEMergeElement? =
+  #| (self) => (self instanceof SVGFEMergeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFEMergeElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_merge_element(
+  self : JsValue,
+) -> SVGFEMergeElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEMergeElement::to_svg_element(
+  self : SVGFEMergeElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEMergeElement::to_element(
+  self : SVGFEMergeElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEMergeElement::to_node(self : SVGFEMergeElement) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEMergeElement::to_event_target(
+  self : SVGFEMergeElement,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn SVGFEMergeElement::get_x(
   self : SVGFEMergeElement,
 ) -> SVGAnimatedLength =
@@ -1576,6 +2410,58 @@ pub extern "js" fn SVGFEMergeNodeElement::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SVGFEMergeNodeElement (unchecked)
+pub extern "js" fn SVGFEMergeNodeElement::from_js_value(
+  v : JsValue,
+) -> SVGFEMergeNodeElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFEMergeNodeElement (checked with instanceof)
+pub extern "js" fn SVGFEMergeNodeElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEMergeNodeElement? =
+  #| (v) => (v instanceof SVGFEMergeNodeElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFEMergeNodeElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_merge_node_element(
+  self : JsValue,
+) -> SVGFEMergeNodeElement? =
+  #| (self) => (self instanceof SVGFEMergeNodeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFEMergeNodeElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_merge_node_element(
+  self : JsValue,
+) -> SVGFEMergeNodeElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEMergeNodeElement::to_svg_element(
+  self : SVGFEMergeNodeElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEMergeNodeElement::to_element(
+  self : SVGFEMergeNodeElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEMergeNodeElement::to_node(
+  self : SVGFEMergeNodeElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEMergeNodeElement::to_event_target(
+  self : SVGFEMergeNodeElement,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn SVGFEMergeNodeElement::get_in1(
   self : SVGFEMergeNodeElement,
 ) -> SVGAnimatedString =
@@ -1591,20 +2477,72 @@ pub extern "js" fn SVGFEMorphologyElement::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
+///|
+/// Cast JsValue to SVGFEMorphologyElement (unchecked)
+pub extern "js" fn SVGFEMorphologyElement::from_js_value(
+  v : JsValue,
+) -> SVGFEMorphologyElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFEMorphologyElement (checked with instanceof)
+pub extern "js" fn SVGFEMorphologyElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEMorphologyElement? =
+  #| (v) => (v instanceof SVGFEMorphologyElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFEMorphologyElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_morphology_element(
+  self : JsValue,
+) -> SVGFEMorphologyElement? =
+  #| (self) => (self instanceof SVGFEMorphologyElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFEMorphologyElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_morphology_element(
+  self : JsValue,
+) -> SVGFEMorphologyElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEMorphologyElement::to_svg_element(
+  self : SVGFEMorphologyElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEMorphologyElement::to_element(
+  self : SVGFEMorphologyElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEMorphologyElement::to_node(
+  self : SVGFEMorphologyElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEMorphologyElement::to_event_target(
+  self : SVGFEMorphologyElement,
+) -> EventTarget =
+  #| (self) => self
+
 // SVGFEMorphologyElement.SVG_MORPHOLOGY_OPERATOR_UNKNOWN
 
 ///|
-pub let s_v_g_f_e_morphology_element_svg_morphology_operator_unknown : Int = 0
+pub let svgfe_morphology_element_svg_morphology_operator_unknown : Int = 0
 
 // SVGFEMorphologyElement.SVG_MORPHOLOGY_OPERATOR_ERODE
 
 ///|
-pub let s_v_g_f_e_morphology_element_svg_morphology_operator_erode : Int = 1
+pub let svgfe_morphology_element_svg_morphology_operator_erode : Int = 1
 
 // SVGFEMorphologyElement.SVG_MORPHOLOGY_OPERATOR_DILATE
 
 ///|
-pub let s_v_g_f_e_morphology_element_svg_morphology_operator_dilate : Int = 2
+pub let svgfe_morphology_element_svg_morphology_operator_dilate : Int = 2
 
 ///|
 pub extern "js" fn SVGFEMorphologyElement::get_in1(
@@ -1671,6 +2609,58 @@ pub extern "js" fn SVGFEOffsetElement::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SVGFEOffsetElement (unchecked)
+pub extern "js" fn SVGFEOffsetElement::from_js_value(
+  v : JsValue,
+) -> SVGFEOffsetElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFEOffsetElement (checked with instanceof)
+pub extern "js" fn SVGFEOffsetElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFEOffsetElement? =
+  #| (v) => (v instanceof SVGFEOffsetElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFEOffsetElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_offset_element(
+  self : JsValue,
+) -> SVGFEOffsetElement? =
+  #| (self) => (self instanceof SVGFEOffsetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFEOffsetElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_offset_element(
+  self : JsValue,
+) -> SVGFEOffsetElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEOffsetElement::to_svg_element(
+  self : SVGFEOffsetElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEOffsetElement::to_element(
+  self : SVGFEOffsetElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEOffsetElement::to_node(
+  self : SVGFEOffsetElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFEOffsetElement::to_event_target(
+  self : SVGFEOffsetElement,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn SVGFEOffsetElement::get_in1(
   self : SVGFEOffsetElement,
 ) -> SVGAnimatedString =
@@ -1726,6 +2716,58 @@ pub type SVGFESpecularLightingElement
 pub extern "js" fn SVGFESpecularLightingElement::to_js_value(
   self : SVGFESpecularLightingElement,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SVGFESpecularLightingElement (unchecked)
+pub extern "js" fn SVGFESpecularLightingElement::from_js_value(
+  v : JsValue,
+) -> SVGFESpecularLightingElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFESpecularLightingElement (checked with instanceof)
+pub extern "js" fn SVGFESpecularLightingElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFESpecularLightingElement? =
+  #| (v) => (v instanceof SVGFESpecularLightingElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFESpecularLightingElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_specular_lighting_element(
+  self : JsValue,
+) -> SVGFESpecularLightingElement? =
+  #| (self) => (self instanceof SVGFESpecularLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFESpecularLightingElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_specular_lighting_element(
+  self : JsValue,
+) -> SVGFESpecularLightingElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFESpecularLightingElement::to_svg_element(
+  self : SVGFESpecularLightingElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFESpecularLightingElement::to_element(
+  self : SVGFESpecularLightingElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFESpecularLightingElement::to_node(
+  self : SVGFESpecularLightingElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFESpecularLightingElement::to_event_target(
+  self : SVGFESpecularLightingElement,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -1805,6 +2847,56 @@ pub extern "js" fn SVGFETileElement::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SVGFETileElement (unchecked)
+pub extern "js" fn SVGFETileElement::from_js_value(
+  v : JsValue,
+) -> SVGFETileElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFETileElement (checked with instanceof)
+pub extern "js" fn SVGFETileElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFETileElement? =
+  #| (v) => (v instanceof SVGFETileElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFETileElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_tile_element(
+  self : JsValue,
+) -> SVGFETileElement? =
+  #| (self) => (self instanceof SVGFETileElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFETileElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_tile_element(
+  self : JsValue,
+) -> SVGFETileElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFETileElement::to_svg_element(
+  self : SVGFETileElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFETileElement::to_element(
+  self : SVGFETileElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFETileElement::to_node(self : SVGFETileElement) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFETileElement::to_event_target(
+  self : SVGFETileElement,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn SVGFETileElement::get_in1(
   self : SVGFETileElement,
 ) -> SVGAnimatedString =
@@ -1850,35 +2942,87 @@ pub extern "js" fn SVGFETurbulenceElement::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
+///|
+/// Cast JsValue to SVGFETurbulenceElement (unchecked)
+pub extern "js" fn SVGFETurbulenceElement::from_js_value(
+  v : JsValue,
+) -> SVGFETurbulenceElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGFETurbulenceElement (checked with instanceof)
+pub extern "js" fn SVGFETurbulenceElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGFETurbulenceElement? =
+  #| (v) => (v instanceof SVGFETurbulenceElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGFETurbulenceElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svgfe_turbulence_element(
+  self : JsValue,
+) -> SVGFETurbulenceElement? =
+  #| (self) => (self instanceof SVGFETurbulenceElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGFETurbulenceElement (unchecked)
+pub extern "js" fn JsValue::to_svgfe_turbulence_element(
+  self : JsValue,
+) -> SVGFETurbulenceElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFETurbulenceElement::to_svg_element(
+  self : SVGFETurbulenceElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFETurbulenceElement::to_element(
+  self : SVGFETurbulenceElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFETurbulenceElement::to_node(
+  self : SVGFETurbulenceElement,
+) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGFETurbulenceElement::to_event_target(
+  self : SVGFETurbulenceElement,
+) -> EventTarget =
+  #| (self) => self
+
 // SVGFETurbulenceElement.SVG_TURBULENCE_TYPE_UNKNOWN
 
 ///|
-pub let s_v_g_f_e_turbulence_element_svg_turbulence_type_unknown : Int = 0
+pub let svgfe_turbulence_element_svg_turbulence_type_unknown : Int = 0
 
 // SVGFETurbulenceElement.SVG_TURBULENCE_TYPE_FRACTALNOISE
 
 ///|
-pub let s_v_g_f_e_turbulence_element_svg_turbulence_type_fractalnoise : Int = 1
+pub let svgfe_turbulence_element_svg_turbulence_type_fractalnoise : Int = 1
 
 // SVGFETurbulenceElement.SVG_TURBULENCE_TYPE_TURBULENCE
 
 ///|
-pub let s_v_g_f_e_turbulence_element_svg_turbulence_type_turbulence : Int = 2
+pub let svgfe_turbulence_element_svg_turbulence_type_turbulence : Int = 2
 
 // SVGFETurbulenceElement.SVG_STITCHTYPE_UNKNOWN
 
 ///|
-pub let s_v_g_f_e_turbulence_element_svg_stitchtype_unknown : Int = 0
+pub let svgfe_turbulence_element_svg_stitchtype_unknown : Int = 0
 
 // SVGFETurbulenceElement.SVG_STITCHTYPE_STITCH
 
 ///|
-pub let s_v_g_f_e_turbulence_element_svg_stitchtype_stitch : Int = 1
+pub let svgfe_turbulence_element_svg_stitchtype_stitch : Int = 1
 
 // SVGFETurbulenceElement.SVG_STITCHTYPE_NOSTITCH
 
 ///|
-pub let s_v_g_f_e_turbulence_element_svg_stitchtype_nostitch : Int = 2
+pub let svgfe_turbulence_element_svg_stitchtype_nostitch : Int = 2
 
 ///|
 pub extern "js" fn SVGFETurbulenceElement::get_base_frequency_x(

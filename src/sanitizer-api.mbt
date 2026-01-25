@@ -181,7 +181,7 @@ pub fn SanitizerPresets::from_string(s : String) -> SanitizerPresets? {
 ///|
 /// SetHTMLOptions dictionary
 pub struct SetHTMLOptions {
-  sanitizer : JsValue?
+  sanitizer : SanitizerOrSanitizerConfigOrSanitizerPresets?
 }
 
 ///|
@@ -200,7 +200,7 @@ pub extern "js" fn SetHTMLOptions::to_js(self : SetHTMLOptions) -> JsValue =
 ///|
 /// SetHTMLUnsafeOptions dictionary
 pub struct SetHTMLUnsafeOptions {
-  sanitizer : JsValue?
+  sanitizer : SanitizerOrSanitizerConfigOrSanitizerPresets?
 }
 
 ///|
@@ -341,6 +341,26 @@ pub type Sanitizer
 
 ///|
 pub extern "js" fn Sanitizer::to_js_value(self : Sanitizer) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to Sanitizer (unchecked)
+pub extern "js" fn Sanitizer::from_js_value(v : JsValue) -> Sanitizer =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Sanitizer (checked with instanceof)
+pub extern "js" fn Sanitizer::from_js_value_opt(v : JsValue) -> Sanitizer? =
+  #| (v) => (v instanceof Sanitizer) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Sanitizer (checked with instanceof)
+pub extern "js" fn JsValue::as_sanitizer(self : JsValue) -> Sanitizer? =
+  #| (self) => (self instanceof Sanitizer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Sanitizer (unchecked)
+pub extern "js" fn JsValue::to_sanitizer(self : JsValue) -> Sanitizer =
   #| (self) => self
 
 ///|

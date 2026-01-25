@@ -71,6 +71,46 @@ pub extern "js" fn PerformanceNavigationTiming::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PerformanceNavigationTiming (unchecked)
+pub extern "js" fn PerformanceNavigationTiming::from_js_value(
+  v : JsValue,
+) -> PerformanceNavigationTiming =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PerformanceNavigationTiming (checked with instanceof)
+pub extern "js" fn PerformanceNavigationTiming::from_js_value_opt(
+  v : JsValue,
+) -> PerformanceNavigationTiming? =
+  #| (v) => (v instanceof PerformanceNavigationTiming) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PerformanceNavigationTiming (checked with instanceof)
+pub extern "js" fn JsValue::as_performance_navigation_timing(
+  self : JsValue,
+) -> PerformanceNavigationTiming? =
+  #| (self) => (self instanceof PerformanceNavigationTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PerformanceNavigationTiming (unchecked)
+pub extern "js" fn JsValue::to_performance_navigation_timing(
+  self : JsValue,
+) -> PerformanceNavigationTiming =
+  #| (self) => self
+
+///|
+pub extern "js" fn PerformanceNavigationTiming::to_performance_resource_timing(
+  self : PerformanceNavigationTiming,
+) -> PerformanceResourceTiming =
+  #| (self) => self
+
+///|
+pub extern "js" fn PerformanceNavigationTiming::to_performance_entry(
+  self : PerformanceNavigationTiming,
+) -> PerformanceEntry =
+  #| (self) => self
+
+///|
 pub extern "js" fn PerformanceNavigationTiming::get_unload_event_start(
   self : PerformanceNavigationTiming,
 ) -> DOMHighResTimeStamp =
@@ -131,7 +171,7 @@ pub extern "js" fn PerformanceNavigationTiming::get_redirect_count(
   #| (self) => self.redirectCount
 
 ///|
-pub extern "js" fn PerformanceNavigationTiming::get_critical_c_h_restart(
+pub extern "js" fn PerformanceNavigationTiming::get_critical_ch_restart(
   self : PerformanceNavigationTiming,
 ) -> DOMHighResTimeStamp =
   #| (self) => self.criticalCHRestart
@@ -140,7 +180,7 @@ pub extern "js" fn PerformanceNavigationTiming::get_critical_c_h_restart(
 pub extern "js" fn PerformanceNavigationTiming::get_not_restored_reasons(
   self : PerformanceNavigationTiming,
 ) -> NotRestoredReasons? =
-  #| (self) => self.notRestoredReasons
+  #| (self) => { const v = self.notRestoredReasons; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PerformanceNavigationTiming::get_confidence(
@@ -149,7 +189,7 @@ pub extern "js" fn PerformanceNavigationTiming::get_confidence(
   #| (self) => self.confidence
 
 ///|
-pub extern "js" fn PerformanceNavigationTiming::to_j_s_o_n(
+pub extern "js" fn PerformanceNavigationTiming::to_json(
   self : PerformanceNavigationTiming,
 ) -> JsValue =
   #| (self) => self.toJSON()
@@ -171,6 +211,34 @@ pub extern "js" fn PerformanceTimingConfidence::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PerformanceTimingConfidence (unchecked)
+pub extern "js" fn PerformanceTimingConfidence::from_js_value(
+  v : JsValue,
+) -> PerformanceTimingConfidence =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PerformanceTimingConfidence (checked with instanceof)
+pub extern "js" fn PerformanceTimingConfidence::from_js_value_opt(
+  v : JsValue,
+) -> PerformanceTimingConfidence? =
+  #| (v) => (v instanceof PerformanceTimingConfidence) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PerformanceTimingConfidence (checked with instanceof)
+pub extern "js" fn JsValue::as_performance_timing_confidence(
+  self : JsValue,
+) -> PerformanceTimingConfidence? =
+  #| (self) => (self instanceof PerformanceTimingConfidence) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PerformanceTimingConfidence (unchecked)
+pub extern "js" fn JsValue::to_performance_timing_confidence(
+  self : JsValue,
+) -> PerformanceTimingConfidence =
+  #| (self) => self
+
+///|
 pub extern "js" fn PerformanceTimingConfidence::get_randomized_trigger_rate(
   self : PerformanceTimingConfidence,
 ) -> Double =
@@ -183,7 +251,7 @@ pub extern "js" fn PerformanceTimingConfidence::get_value(
   #| (self) => self.value
 
 ///|
-pub extern "js" fn PerformanceTimingConfidence::to_j_s_o_n(
+pub extern "js" fn PerformanceTimingConfidence::to_json(
   self : PerformanceTimingConfidence,
 ) -> JsValue =
   #| (self) => self.toJSON()
@@ -196,6 +264,34 @@ pub type PerformanceTiming
 pub extern "js" fn PerformanceTiming::to_js_value(
   self : PerformanceTiming,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to PerformanceTiming (unchecked)
+pub extern "js" fn PerformanceTiming::from_js_value(
+  v : JsValue,
+) -> PerformanceTiming =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PerformanceTiming (checked with instanceof)
+pub extern "js" fn PerformanceTiming::from_js_value_opt(
+  v : JsValue,
+) -> PerformanceTiming? =
+  #| (v) => (v instanceof PerformanceTiming) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PerformanceTiming (checked with instanceof)
+pub extern "js" fn JsValue::as_performance_timing(
+  self : JsValue,
+) -> PerformanceTiming? =
+  #| (self) => (self instanceof PerformanceTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PerformanceTiming (unchecked)
+pub extern "js" fn JsValue::to_performance_timing(
+  self : JsValue,
+) -> PerformanceTiming =
   #| (self) => self
 
 ///|
@@ -325,7 +421,7 @@ pub extern "js" fn PerformanceTiming::get_load_event_end(
   #| (self) => self.loadEventEnd
 
 ///|
-pub extern "js" fn PerformanceTiming::to_j_s_o_n(
+pub extern "js" fn PerformanceTiming::to_json(
   self : PerformanceTiming,
 ) -> JsValue =
   #| (self) => self.toJSON()
@@ -338,6 +434,34 @@ pub type PerformanceNavigation
 pub extern "js" fn PerformanceNavigation::to_js_value(
   self : PerformanceNavigation,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to PerformanceNavigation (unchecked)
+pub extern "js" fn PerformanceNavigation::from_js_value(
+  v : JsValue,
+) -> PerformanceNavigation =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PerformanceNavigation (checked with instanceof)
+pub extern "js" fn PerformanceNavigation::from_js_value_opt(
+  v : JsValue,
+) -> PerformanceNavigation? =
+  #| (v) => (v instanceof PerformanceNavigation) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PerformanceNavigation (checked with instanceof)
+pub extern "js" fn JsValue::as_performance_navigation(
+  self : JsValue,
+) -> PerformanceNavigation? =
+  #| (self) => (self instanceof PerformanceNavigation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PerformanceNavigation (unchecked)
+pub extern "js" fn JsValue::to_performance_navigation(
+  self : JsValue,
+) -> PerformanceNavigation =
   #| (self) => self
 
 // PerformanceNavigation.TYPE_NAVIGATE
@@ -373,7 +497,7 @@ pub extern "js" fn PerformanceNavigation::get_redirect_count(
   #| (self) => self.redirectCount
 
 ///|
-pub extern "js" fn PerformanceNavigation::to_j_s_o_n(
+pub extern "js" fn PerformanceNavigation::to_json(
   self : PerformanceNavigation,
 ) -> JsValue =
   #| (self) => self.toJSON()

@@ -65,6 +65,40 @@ pub extern "js" fn DocumentPictureInPicture::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to DocumentPictureInPicture (unchecked)
+pub extern "js" fn DocumentPictureInPicture::from_js_value(
+  v : JsValue,
+) -> DocumentPictureInPicture =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to DocumentPictureInPicture (checked with instanceof)
+pub extern "js" fn DocumentPictureInPicture::from_js_value_opt(
+  v : JsValue,
+) -> DocumentPictureInPicture? =
+  #| (v) => (v instanceof DocumentPictureInPicture) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to DocumentPictureInPicture (checked with instanceof)
+pub extern "js" fn JsValue::as_document_picture_in_picture(
+  self : JsValue,
+) -> DocumentPictureInPicture? =
+  #| (self) => (self instanceof DocumentPictureInPicture) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to DocumentPictureInPicture (unchecked)
+pub extern "js" fn JsValue::to_document_picture_in_picture(
+  self : JsValue,
+) -> DocumentPictureInPicture =
+  #| (self) => self
+
+///|
+pub extern "js" fn DocumentPictureInPicture::to_event_target(
+  self : DocumentPictureInPicture,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn DocumentPictureInPicture::request_window(
   self : DocumentPictureInPicture,
 ) -> Promise[Window] =
@@ -104,6 +138,40 @@ pub type DocumentPictureInPictureEvent
 pub extern "js" fn DocumentPictureInPictureEvent::to_js_value(
   self : DocumentPictureInPictureEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to DocumentPictureInPictureEvent (unchecked)
+pub extern "js" fn DocumentPictureInPictureEvent::from_js_value(
+  v : JsValue,
+) -> DocumentPictureInPictureEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to DocumentPictureInPictureEvent (checked with instanceof)
+pub extern "js" fn DocumentPictureInPictureEvent::from_js_value_opt(
+  v : JsValue,
+) -> DocumentPictureInPictureEvent? =
+  #| (v) => (v instanceof DocumentPictureInPictureEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to DocumentPictureInPictureEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_document_picture_in_picture_event(
+  self : JsValue,
+) -> DocumentPictureInPictureEvent? =
+  #| (self) => (self instanceof DocumentPictureInPictureEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to DocumentPictureInPictureEvent (unchecked)
+pub extern "js" fn JsValue::to_document_picture_in_picture_event(
+  self : JsValue,
+) -> DocumentPictureInPictureEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn DocumentPictureInPictureEvent::to_event(
+  self : DocumentPictureInPictureEvent,
+) -> Event =
   #| (self) => self
 
 ///|

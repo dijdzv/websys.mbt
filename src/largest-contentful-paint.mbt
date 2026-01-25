@@ -12,6 +12,40 @@ pub extern "js" fn LargestContentfulPaint::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to LargestContentfulPaint (unchecked)
+pub extern "js" fn LargestContentfulPaint::from_js_value(
+  v : JsValue,
+) -> LargestContentfulPaint =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to LargestContentfulPaint (checked with instanceof)
+pub extern "js" fn LargestContentfulPaint::from_js_value_opt(
+  v : JsValue,
+) -> LargestContentfulPaint? =
+  #| (v) => (v instanceof LargestContentfulPaint) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to LargestContentfulPaint (checked with instanceof)
+pub extern "js" fn JsValue::as_largest_contentful_paint(
+  self : JsValue,
+) -> LargestContentfulPaint? =
+  #| (self) => (self instanceof LargestContentfulPaint) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to LargestContentfulPaint (unchecked)
+pub extern "js" fn JsValue::to_largest_contentful_paint(
+  self : JsValue,
+) -> LargestContentfulPaint =
+  #| (self) => self
+
+///|
+pub extern "js" fn LargestContentfulPaint::to_performance_entry(
+  self : LargestContentfulPaint,
+) -> PerformanceEntry =
+  #| (self) => self
+
+///|
 pub extern "js" fn LargestContentfulPaint::get_load_time(
   self : LargestContentfulPaint,
 ) -> DOMHighResTimeStamp =
@@ -45,10 +79,10 @@ pub extern "js" fn LargestContentfulPaint::get_url(
 pub extern "js" fn LargestContentfulPaint::get_element(
   self : LargestContentfulPaint,
 ) -> Element? =
-  #| (self) => self.element
+  #| (self) => { const v = self.element; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
-pub extern "js" fn LargestContentfulPaint::to_j_s_o_n(
+pub extern "js" fn LargestContentfulPaint::to_json(
   self : LargestContentfulPaint,
 ) -> JsValue =
   #| (self) => self.toJSON()
@@ -63,4 +97,4 @@ pub extern "js" fn LargestContentfulPaint::get_paint_time(
 pub extern "js" fn LargestContentfulPaint::get_presentation_time(
   self : LargestContentfulPaint,
 ) -> DOMHighResTimeStamp? =
-  #| (self) => self.presentationTime
+  #| (self) => { const v = self.presentationTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }

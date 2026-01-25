@@ -73,6 +73,42 @@ pub extern "js" fn PointerEvent::to_js_value(self : PointerEvent) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to PointerEvent (unchecked)
+pub extern "js" fn PointerEvent::from_js_value(v : JsValue) -> PointerEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PointerEvent (checked with instanceof)
+pub extern "js" fn PointerEvent::from_js_value_opt(
+  v : JsValue,
+) -> PointerEvent? =
+  #| (v) => (v instanceof PointerEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PointerEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_pointer_event(self : JsValue) -> PointerEvent? =
+  #| (self) => (self instanceof PointerEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PointerEvent (unchecked)
+pub extern "js" fn JsValue::to_pointer_event(self : JsValue) -> PointerEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn PointerEvent::to_mouse_event(
+  self : PointerEvent,
+) -> MouseEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn PointerEvent::to_ui_event(self : PointerEvent) -> UIEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn PointerEvent::to_event(self : PointerEvent) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn PointerEvent::new(
   type_ : String,
   event_init_dict : PointerEventInit,

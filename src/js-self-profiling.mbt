@@ -129,6 +129,30 @@ pub extern "js" fn Profiler::to_js_value(self : Profiler) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Profiler (unchecked)
+pub extern "js" fn Profiler::from_js_value(v : JsValue) -> Profiler =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Profiler (checked with instanceof)
+pub extern "js" fn Profiler::from_js_value_opt(v : JsValue) -> Profiler? =
+  #| (v) => (v instanceof Profiler) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Profiler (checked with instanceof)
+pub extern "js" fn JsValue::as_profiler(self : JsValue) -> Profiler? =
+  #| (self) => (self instanceof Profiler) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Profiler (unchecked)
+pub extern "js" fn JsValue::to_profiler(self : JsValue) -> Profiler =
+  #| (self) => self
+
+///|
+pub extern "js" fn Profiler::to_event_target(self : Profiler) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn Profiler::get_sample_interval(
   self : Profiler,
 ) -> DOMHighResTimeStamp =

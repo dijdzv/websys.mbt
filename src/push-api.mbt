@@ -104,7 +104,7 @@ pub extern "js" fn PushPermissionDescriptor::to_js(
 /// PushSubscriptionOptionsInit dictionary
 pub struct PushSubscriptionOptionsInit {
   userVisibleOnly : Bool?
-  applicationServerKey : JsValue?
+  applicationServerKey : BufferSourceOrString?
 }
 
 ///|
@@ -214,6 +214,26 @@ pub extern "js" fn PushManager::to_js_value(self : PushManager) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to PushManager (unchecked)
+pub extern "js" fn PushManager::from_js_value(v : JsValue) -> PushManager =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PushManager (checked with instanceof)
+pub extern "js" fn PushManager::from_js_value_opt(v : JsValue) -> PushManager? =
+  #| (v) => (v instanceof PushManager) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PushManager (checked with instanceof)
+pub extern "js" fn JsValue::as_push_manager(self : JsValue) -> PushManager? =
+  #| (self) => (self instanceof PushManager) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PushManager (unchecked)
+pub extern "js" fn JsValue::to_push_manager(self : JsValue) -> PushManager =
+  #| (self) => self
+
+///|
 pub extern "js" fn PushManager::get_supported_content_encodings(
   self : PushManager,
 ) -> JsValue =
@@ -236,7 +256,7 @@ pub extern "js" fn PushManager::subscribe_with_options(
 pub extern "js" fn PushManager::get_subscription(
   self : PushManager,
 ) -> Promise[PushSubscription?] =
-  #| (self) => self.getSubscription()
+  #| (self) => self.getSubscription().then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
 
 ///|
 pub extern "js" fn PushManager::permission_state(
@@ -262,6 +282,34 @@ pub extern "js" fn PushSubscriptionOptions::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PushSubscriptionOptions (unchecked)
+pub extern "js" fn PushSubscriptionOptions::from_js_value(
+  v : JsValue,
+) -> PushSubscriptionOptions =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PushSubscriptionOptions (checked with instanceof)
+pub extern "js" fn PushSubscriptionOptions::from_js_value_opt(
+  v : JsValue,
+) -> PushSubscriptionOptions? =
+  #| (v) => (v instanceof PushSubscriptionOptions) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PushSubscriptionOptions (checked with instanceof)
+pub extern "js" fn JsValue::as_push_subscription_options(
+  self : JsValue,
+) -> PushSubscriptionOptions? =
+  #| (self) => (self instanceof PushSubscriptionOptions) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PushSubscriptionOptions (unchecked)
+pub extern "js" fn JsValue::to_push_subscription_options(
+  self : JsValue,
+) -> PushSubscriptionOptions =
+  #| (self) => self
+
+///|
 pub extern "js" fn PushSubscriptionOptions::get_user_visible_only(
   self : PushSubscriptionOptions,
 ) -> Bool =
@@ -271,7 +319,7 @@ pub extern "js" fn PushSubscriptionOptions::get_user_visible_only(
 pub extern "js" fn PushSubscriptionOptions::get_application_server_key(
   self : PushSubscriptionOptions,
 ) -> ArrayBuffer? =
-  #| (self) => self.applicationServerKey
+  #| (self) => { const v = self.applicationServerKey; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// PushSubscription interface
@@ -284,6 +332,34 @@ pub extern "js" fn PushSubscription::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PushSubscription (unchecked)
+pub extern "js" fn PushSubscription::from_js_value(
+  v : JsValue,
+) -> PushSubscription =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PushSubscription (checked with instanceof)
+pub extern "js" fn PushSubscription::from_js_value_opt(
+  v : JsValue,
+) -> PushSubscription? =
+  #| (v) => (v instanceof PushSubscription) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PushSubscription (checked with instanceof)
+pub extern "js" fn JsValue::as_push_subscription(
+  self : JsValue,
+) -> PushSubscription? =
+  #| (self) => (self instanceof PushSubscription) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PushSubscription (unchecked)
+pub extern "js" fn JsValue::to_push_subscription(
+  self : JsValue,
+) -> PushSubscription =
+  #| (self) => self
+
+///|
 pub extern "js" fn PushSubscription::get_endpoint(
   self : PushSubscription,
 ) -> String =
@@ -293,7 +369,7 @@ pub extern "js" fn PushSubscription::get_endpoint(
 pub extern "js" fn PushSubscription::get_expiration_time(
   self : PushSubscription,
 ) -> EpochTimeStamp? =
-  #| (self) => self.expirationTime
+  #| (self) => { const v = self.expirationTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PushSubscription::get_options(
@@ -306,7 +382,7 @@ pub extern "js" fn PushSubscription::get_key(
   self : PushSubscription,
   name : PushEncryptionKeyName,
 ) -> ArrayBuffer? =
-  #| (self, name) => self.getKey(['p256dh', 'auth'][name])
+  #| (self, name) => { const v = self.getKey(['p256dh', 'auth'][name]); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PushSubscription::unsubscribe(
@@ -315,7 +391,7 @@ pub extern "js" fn PushSubscription::unsubscribe(
   #| (self) => self.unsubscribe()
 
 ///|
-pub extern "js" fn PushSubscription::to_j_s_o_n(
+pub extern "js" fn PushSubscription::to_json(
   self : PushSubscription,
 ) -> PushSubscriptionJSON =
   #| (self) => self.toJSON()
@@ -328,6 +404,34 @@ pub type PushMessageData
 pub extern "js" fn PushMessageData::to_js_value(
   self : PushMessageData,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to PushMessageData (unchecked)
+pub extern "js" fn PushMessageData::from_js_value(
+  v : JsValue,
+) -> PushMessageData =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PushMessageData (checked with instanceof)
+pub extern "js" fn PushMessageData::from_js_value_opt(
+  v : JsValue,
+) -> PushMessageData? =
+  #| (v) => (v instanceof PushMessageData) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PushMessageData (checked with instanceof)
+pub extern "js" fn JsValue::as_push_message_data(
+  self : JsValue,
+) -> PushMessageData? =
+  #| (self) => (self instanceof PushMessageData) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PushMessageData (unchecked)
+pub extern "js" fn JsValue::to_push_message_data(
+  self : JsValue,
+) -> PushMessageData =
   #| (self) => self
 
 ///|
@@ -361,6 +465,36 @@ pub extern "js" fn PushEvent::to_js_value(self : PushEvent) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to PushEvent (unchecked)
+pub extern "js" fn PushEvent::from_js_value(v : JsValue) -> PushEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PushEvent (checked with instanceof)
+pub extern "js" fn PushEvent::from_js_value_opt(v : JsValue) -> PushEvent? =
+  #| (v) => (v instanceof PushEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PushEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_push_event(self : JsValue) -> PushEvent? =
+  #| (self) => (self instanceof PushEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PushEvent (unchecked)
+pub extern "js" fn JsValue::to_push_event(self : JsValue) -> PushEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn PushEvent::to_extendable_event(
+  self : PushEvent,
+) -> ExtendableEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn PushEvent::to_event(self : PushEvent) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn PushEvent::new(
   type_ : String,
   event_init_dict : PushEventInit,
@@ -369,13 +503,13 @@ pub extern "js" fn PushEvent::new(
 
 ///|
 pub extern "js" fn PushEvent::get_data(self : PushEvent) -> PushMessageData? =
-  #| (self) => self.data
+  #| (self) => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PushEvent::get_notification(
   self : PushEvent,
 ) -> Notification? =
-  #| (self) => self.notification
+  #| (self) => { const v = self.notification; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// PushSubscriptionChangeEvent interface
@@ -385,6 +519,46 @@ pub type PushSubscriptionChangeEvent
 pub extern "js" fn PushSubscriptionChangeEvent::to_js_value(
   self : PushSubscriptionChangeEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to PushSubscriptionChangeEvent (unchecked)
+pub extern "js" fn PushSubscriptionChangeEvent::from_js_value(
+  v : JsValue,
+) -> PushSubscriptionChangeEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PushSubscriptionChangeEvent (checked with instanceof)
+pub extern "js" fn PushSubscriptionChangeEvent::from_js_value_opt(
+  v : JsValue,
+) -> PushSubscriptionChangeEvent? =
+  #| (v) => (v instanceof PushSubscriptionChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PushSubscriptionChangeEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_push_subscription_change_event(
+  self : JsValue,
+) -> PushSubscriptionChangeEvent? =
+  #| (self) => (self instanceof PushSubscriptionChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PushSubscriptionChangeEvent (unchecked)
+pub extern "js" fn JsValue::to_push_subscription_change_event(
+  self : JsValue,
+) -> PushSubscriptionChangeEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn PushSubscriptionChangeEvent::to_extendable_event(
+  self : PushSubscriptionChangeEvent,
+) -> ExtendableEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn PushSubscriptionChangeEvent::to_event(
+  self : PushSubscriptionChangeEvent,
+) -> Event =
   #| (self) => self
 
 ///|
@@ -398,10 +572,10 @@ pub extern "js" fn PushSubscriptionChangeEvent::new(
 pub extern "js" fn PushSubscriptionChangeEvent::get_new_subscription(
   self : PushSubscriptionChangeEvent,
 ) -> PushSubscription? =
-  #| (self) => self.newSubscription
+  #| (self) => { const v = self.newSubscription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PushSubscriptionChangeEvent::get_old_subscription(
   self : PushSubscriptionChangeEvent,
 ) -> PushSubscription? =
-  #| (self) => self.oldSubscription
+  #| (self) => { const v = self.oldSubscription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }

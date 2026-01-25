@@ -68,6 +68,34 @@ pub extern "js" fn InputDeviceCapabilities::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to InputDeviceCapabilities (unchecked)
+pub extern "js" fn InputDeviceCapabilities::from_js_value(
+  v : JsValue,
+) -> InputDeviceCapabilities =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to InputDeviceCapabilities (checked with instanceof)
+pub extern "js" fn InputDeviceCapabilities::from_js_value_opt(
+  v : JsValue,
+) -> InputDeviceCapabilities? =
+  #| (v) => (v instanceof InputDeviceCapabilities) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to InputDeviceCapabilities (checked with instanceof)
+pub extern "js" fn JsValue::as_input_device_capabilities(
+  self : JsValue,
+) -> InputDeviceCapabilities? =
+  #| (self) => (self instanceof InputDeviceCapabilities) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to InputDeviceCapabilities (unchecked)
+pub extern "js" fn JsValue::to_input_device_capabilities(
+  self : JsValue,
+) -> InputDeviceCapabilities =
+  #| (self) => self
+
+///|
 pub extern "js" fn InputDeviceCapabilities::new(
   device_init_dict : InputDeviceCapabilitiesInit,
 ) -> InputDeviceCapabilities =

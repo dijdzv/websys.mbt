@@ -456,7 +456,7 @@ pub struct ExtendableMessageEventInit {
   data : JsValue?
   origin : String?
   lastEventId : String?
-  source : JsValue?
+  source : ClientOrServiceWorkerOrMessagePort?
   ports : Array[MessagePort]?
 }
 
@@ -555,7 +555,35 @@ pub extern "js" fn ServiceWorker::to_js_value(self : ServiceWorker) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn ServiceWorker::get_script_u_r_l(
+/// Cast JsValue to ServiceWorker (unchecked)
+pub extern "js" fn ServiceWorker::from_js_value(v : JsValue) -> ServiceWorker =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ServiceWorker (checked with instanceof)
+pub extern "js" fn ServiceWorker::from_js_value_opt(
+  v : JsValue,
+) -> ServiceWorker? =
+  #| (v) => (v instanceof ServiceWorker) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ServiceWorker (checked with instanceof)
+pub extern "js" fn JsValue::as_service_worker(self : JsValue) -> ServiceWorker? =
+  #| (self) => (self instanceof ServiceWorker) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ServiceWorker (unchecked)
+pub extern "js" fn JsValue::to_service_worker(self : JsValue) -> ServiceWorker =
+  #| (self) => self
+
+///|
+pub extern "js" fn ServiceWorker::to_event_target(
+  self : ServiceWorker,
+) -> EventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn ServiceWorker::get_script_url(
   self : ServiceWorker,
 ) -> String =
   #| (self) => self.scriptURL
@@ -626,22 +654,56 @@ pub extern "js" fn ServiceWorkerRegistration::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ServiceWorkerRegistration (unchecked)
+pub extern "js" fn ServiceWorkerRegistration::from_js_value(
+  v : JsValue,
+) -> ServiceWorkerRegistration =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ServiceWorkerRegistration (checked with instanceof)
+pub extern "js" fn ServiceWorkerRegistration::from_js_value_opt(
+  v : JsValue,
+) -> ServiceWorkerRegistration? =
+  #| (v) => (v instanceof ServiceWorkerRegistration) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ServiceWorkerRegistration (checked with instanceof)
+pub extern "js" fn JsValue::as_service_worker_registration(
+  self : JsValue,
+) -> ServiceWorkerRegistration? =
+  #| (self) => (self instanceof ServiceWorkerRegistration) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ServiceWorkerRegistration (unchecked)
+pub extern "js" fn JsValue::to_service_worker_registration(
+  self : JsValue,
+) -> ServiceWorkerRegistration =
+  #| (self) => self
+
+///|
+pub extern "js" fn ServiceWorkerRegistration::to_event_target(
+  self : ServiceWorkerRegistration,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn ServiceWorkerRegistration::get_installing(
   self : ServiceWorkerRegistration,
 ) -> ServiceWorker? =
-  #| (self) => self.installing
+  #| (self) => { const v = self.installing; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_waiting(
   self : ServiceWorkerRegistration,
 ) -> ServiceWorker? =
-  #| (self) => self.waiting
+  #| (self) => { const v = self.waiting; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_active(
   self : ServiceWorkerRegistration,
 ) -> ServiceWorker? =
-  #| (self) => self.active
+  #| (self) => { const v = self.active; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_navigation_preload(
@@ -687,30 +749,6 @@ pub extern "js" fn ServiceWorkerRegistration::set_onupdatefound(
   #| (self, value) => { self.onupdatefound = value }
 
 ///|
-pub extern "js" fn ServiceWorkerRegistration::get_background_fetch(
-  self : ServiceWorkerRegistration,
-) -> BackgroundFetchManager =
-  #| (self) => self.backgroundFetch
-
-///|
-pub extern "js" fn ServiceWorkerRegistration::get_sync(
-  self : ServiceWorkerRegistration,
-) -> SyncManager =
-  #| (self) => self.sync
-
-///|
-pub extern "js" fn ServiceWorkerRegistration::get_index(
-  self : ServiceWorkerRegistration,
-) -> ContentIndex =
-  #| (self) => self.index
-
-///|
-pub extern "js" fn ServiceWorkerRegistration::get_cookies(
-  self : ServiceWorkerRegistration,
-) -> CookieStoreManager =
-  #| (self) => self.cookies
-
-///|
 pub extern "js" fn ServiceWorkerRegistration::show_notification(
   self : ServiceWorkerRegistration,
   title : String,
@@ -728,14 +766,14 @@ pub extern "js" fn ServiceWorkerRegistration::show_notification_with_options(
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_notifications(
   self : ServiceWorkerRegistration,
-) -> Promise[Unit] =
+) -> Promise[Array[Notification]] =
   #| (self) => self.getNotifications()
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_notifications_with_filter(
   self : ServiceWorkerRegistration,
   filter : GetNotificationOptions,
-) -> Promise[Unit] =
+) -> Promise[Array[Notification]] =
   #| (self, filter) => self.getNotifications(filter)
 
 ///|
@@ -745,10 +783,34 @@ pub extern "js" fn ServiceWorkerRegistration::get_payment_manager(
   #| (self) => self.paymentManager
 
 ///|
+pub extern "js" fn ServiceWorkerRegistration::get_sync(
+  self : ServiceWorkerRegistration,
+) -> SyncManager =
+  #| (self) => self.sync
+
+///|
+pub extern "js" fn ServiceWorkerRegistration::get_cookies(
+  self : ServiceWorkerRegistration,
+) -> CookieStoreManager =
+  #| (self) => self.cookies
+
+///|
 pub extern "js" fn ServiceWorkerRegistration::get_periodic_sync(
   self : ServiceWorkerRegistration,
 ) -> PeriodicSyncManager =
   #| (self) => self.periodicSync
+
+///|
+pub extern "js" fn ServiceWorkerRegistration::get_index(
+  self : ServiceWorkerRegistration,
+) -> ContentIndex =
+  #| (self) => self.index
+
+///|
+pub extern "js" fn ServiceWorkerRegistration::get_background_fetch(
+  self : ServiceWorkerRegistration,
+) -> BackgroundFetchManager =
+  #| (self) => self.backgroundFetch
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_push_manager(
@@ -767,10 +829,44 @@ pub extern "js" fn ServiceWorkerContainer::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ServiceWorkerContainer (unchecked)
+pub extern "js" fn ServiceWorkerContainer::from_js_value(
+  v : JsValue,
+) -> ServiceWorkerContainer =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ServiceWorkerContainer (checked with instanceof)
+pub extern "js" fn ServiceWorkerContainer::from_js_value_opt(
+  v : JsValue,
+) -> ServiceWorkerContainer? =
+  #| (v) => (v instanceof ServiceWorkerContainer) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ServiceWorkerContainer (checked with instanceof)
+pub extern "js" fn JsValue::as_service_worker_container(
+  self : JsValue,
+) -> ServiceWorkerContainer? =
+  #| (self) => (self instanceof ServiceWorkerContainer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ServiceWorkerContainer (unchecked)
+pub extern "js" fn JsValue::to_service_worker_container(
+  self : JsValue,
+) -> ServiceWorkerContainer =
+  #| (self) => self
+
+///|
+pub extern "js" fn ServiceWorkerContainer::to_event_target(
+  self : ServiceWorkerContainer,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn ServiceWorkerContainer::get_controller(
   self : ServiceWorkerContainer,
 ) -> ServiceWorker? =
-  #| (self) => self.controller
+  #| (self) => { const v = self.controller; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn ServiceWorkerContainer::get_ready(
@@ -781,35 +877,35 @@ pub extern "js" fn ServiceWorkerContainer::get_ready(
 ///|
 pub extern "js" fn ServiceWorkerContainer::register(
   self : ServiceWorkerContainer,
-  script_u_r_l : TrustedScriptURLOrString,
+  script_url : TrustedScriptURLOrString,
 ) -> Promise[ServiceWorkerRegistration] =
-  #| (self, script_u_r_l) => self.register(script_u_r_l)
+  #| (self, script_url) => self.register(script_url)
 
 ///|
 pub extern "js" fn ServiceWorkerContainer::register_with_options(
   self : ServiceWorkerContainer,
-  script_u_r_l : TrustedScriptURLOrString,
+  script_url : TrustedScriptURLOrString,
   options : RegistrationOptions,
 ) -> Promise[ServiceWorkerRegistration] =
-  #| (self, script_u_r_l, options) => self.register(script_u_r_l, options)
+  #| (self, script_url, options) => self.register(script_url, options)
 
 ///|
 pub extern "js" fn ServiceWorkerContainer::get_registration(
   self : ServiceWorkerContainer,
-) -> Promise[Unit] =
+) -> Promise[ServiceWorkerRegistrationOrVoid] =
   #| (self) => self.getRegistration()
 
 ///|
-pub extern "js" fn ServiceWorkerContainer::get_registration_with_client_u_r_l(
+pub extern "js" fn ServiceWorkerContainer::get_registration_with_client_url(
   self : ServiceWorkerContainer,
-  client_u_r_l : String,
-) -> Promise[Unit] =
-  #| (self, client_u_r_l) => self.getRegistration(client_u_r_l)
+  client_url : String,
+) -> Promise[ServiceWorkerRegistrationOrVoid] =
+  #| (self, client_url) => self.getRegistration(client_url)
 
 ///|
 pub extern "js" fn ServiceWorkerContainer::get_registrations(
   self : ServiceWorkerContainer,
-) -> Promise[Unit] =
+) -> Promise[JsValue] =
   #| (self) => self.getRegistrations()
 
 ///|
@@ -868,6 +964,34 @@ pub extern "js" fn NavigationPreloadManager::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to NavigationPreloadManager (unchecked)
+pub extern "js" fn NavigationPreloadManager::from_js_value(
+  v : JsValue,
+) -> NavigationPreloadManager =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to NavigationPreloadManager (checked with instanceof)
+pub extern "js" fn NavigationPreloadManager::from_js_value_opt(
+  v : JsValue,
+) -> NavigationPreloadManager? =
+  #| (v) => (v instanceof NavigationPreloadManager) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to NavigationPreloadManager (checked with instanceof)
+pub extern "js" fn JsValue::as_navigation_preload_manager(
+  self : JsValue,
+) -> NavigationPreloadManager? =
+  #| (self) => (self instanceof NavigationPreloadManager) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to NavigationPreloadManager (unchecked)
+pub extern "js" fn JsValue::to_navigation_preload_manager(
+  self : JsValue,
+) -> NavigationPreloadManager =
+  #| (self) => self
+
+///|
 pub extern "js" fn NavigationPreloadManager::enable(
   self : NavigationPreloadManager,
 ) -> Promise[Unit] =
@@ -900,6 +1024,46 @@ pub type ServiceWorkerGlobalScope
 pub extern "js" fn ServiceWorkerGlobalScope::to_js_value(
   self : ServiceWorkerGlobalScope,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to ServiceWorkerGlobalScope (unchecked)
+pub extern "js" fn ServiceWorkerGlobalScope::from_js_value(
+  v : JsValue,
+) -> ServiceWorkerGlobalScope =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ServiceWorkerGlobalScope (checked with instanceof)
+pub extern "js" fn ServiceWorkerGlobalScope::from_js_value_opt(
+  v : JsValue,
+) -> ServiceWorkerGlobalScope? =
+  #| (v) => (v instanceof ServiceWorkerGlobalScope) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ServiceWorkerGlobalScope (checked with instanceof)
+pub extern "js" fn JsValue::as_service_worker_global_scope(
+  self : JsValue,
+) -> ServiceWorkerGlobalScope? =
+  #| (self) => (self instanceof ServiceWorkerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ServiceWorkerGlobalScope (unchecked)
+pub extern "js" fn JsValue::to_service_worker_global_scope(
+  self : JsValue,
+) -> ServiceWorkerGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::to_worker_global_scope(
+  self : ServiceWorkerGlobalScope,
+) -> WorkerGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::to_event_target(
+  self : ServiceWorkerGlobalScope,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -992,101 +1156,30 @@ pub extern "js" fn ServiceWorkerGlobalScope::set_onmessageerror(
   #| (self, value) => { self.onmessageerror = value }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::get_onbackgroundfetchsuccess(
+pub extern "js" fn ServiceWorkerGlobalScope::get_onpush(
   self : ServiceWorkerGlobalScope,
 ) -> EventHandler =
-  #| (self) => self.onbackgroundfetchsuccess
+  #| (self) => self.onpush
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchsuccess(
+pub extern "js" fn ServiceWorkerGlobalScope::set_onpush(
   self : ServiceWorkerGlobalScope,
   value : EventHandler,
 ) -> Unit =
-  #| (self, value) => { self.onbackgroundfetchsuccess = value }
+  #| (self, value) => { self.onpush = value }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::get_onbackgroundfetchfail(
+pub extern "js" fn ServiceWorkerGlobalScope::get_onpushsubscriptionchange(
   self : ServiceWorkerGlobalScope,
 ) -> EventHandler =
-  #| (self) => self.onbackgroundfetchfail
+  #| (self) => self.onpushsubscriptionchange
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchfail(
+pub extern "js" fn ServiceWorkerGlobalScope::set_onpushsubscriptionchange(
   self : ServiceWorkerGlobalScope,
   value : EventHandler,
 ) -> Unit =
-  #| (self, value) => { self.onbackgroundfetchfail = value }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::get_onbackgroundfetchabort(
-  self : ServiceWorkerGlobalScope,
-) -> EventHandler =
-  #| (self) => self.onbackgroundfetchabort
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchabort(
-  self : ServiceWorkerGlobalScope,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onbackgroundfetchabort = value }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::get_onbackgroundfetchclick(
-  self : ServiceWorkerGlobalScope,
-) -> EventHandler =
-  #| (self) => self.onbackgroundfetchclick
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchclick(
-  self : ServiceWorkerGlobalScope,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onbackgroundfetchclick = value }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::get_onsync(
-  self : ServiceWorkerGlobalScope,
-) -> EventHandler =
-  #| (self) => self.onsync
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onsync(
-  self : ServiceWorkerGlobalScope,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onsync = value }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::get_oncontentdelete(
-  self : ServiceWorkerGlobalScope,
-) -> EventHandler =
-  #| (self) => self.oncontentdelete
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_oncontentdelete(
-  self : ServiceWorkerGlobalScope,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.oncontentdelete = value }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::get_cookie_store(
-  self : ServiceWorkerGlobalScope,
-) -> CookieStore =
-  #| (self) => self.cookieStore
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::get_oncookiechange(
-  self : ServiceWorkerGlobalScope,
-) -> EventHandler =
-  #| (self) => self.oncookiechange
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_oncookiechange(
-  self : ServiceWorkerGlobalScope,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.oncookiechange = value }
+  #| (self, value) => { self.onpushsubscriptionchange = value }
 
 ///|
 pub extern "js" fn ServiceWorkerGlobalScope::get_onnotificationclick(
@@ -1141,6 +1234,38 @@ pub extern "js" fn ServiceWorkerGlobalScope::set_onpaymentrequest(
   #| (self, value) => { self.onpaymentrequest = value }
 
 ///|
+pub extern "js" fn ServiceWorkerGlobalScope::get_onsync(
+  self : ServiceWorkerGlobalScope,
+) -> EventHandler =
+  #| (self) => self.onsync
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_onsync(
+  self : ServiceWorkerGlobalScope,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onsync = value }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::get_cookie_store(
+  self : ServiceWorkerGlobalScope,
+) -> CookieStore =
+  #| (self) => self.cookieStore
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::get_oncookiechange(
+  self : ServiceWorkerGlobalScope,
+) -> EventHandler =
+  #| (self) => self.oncookiechange
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_oncookiechange(
+  self : ServiceWorkerGlobalScope,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.oncookiechange = value }
+
+///|
 pub extern "js" fn ServiceWorkerGlobalScope::get_onperiodicsync(
   self : ServiceWorkerGlobalScope,
 ) -> EventHandler =
@@ -1154,30 +1279,69 @@ pub extern "js" fn ServiceWorkerGlobalScope::set_onperiodicsync(
   #| (self, value) => { self.onperiodicsync = value }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::get_onpush(
+pub extern "js" fn ServiceWorkerGlobalScope::get_oncontentdelete(
   self : ServiceWorkerGlobalScope,
 ) -> EventHandler =
-  #| (self) => self.onpush
+  #| (self) => self.oncontentdelete
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onpush(
+pub extern "js" fn ServiceWorkerGlobalScope::set_oncontentdelete(
   self : ServiceWorkerGlobalScope,
   value : EventHandler,
 ) -> Unit =
-  #| (self, value) => { self.onpush = value }
+  #| (self, value) => { self.oncontentdelete = value }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::get_onpushsubscriptionchange(
+pub extern "js" fn ServiceWorkerGlobalScope::get_onbackgroundfetchsuccess(
   self : ServiceWorkerGlobalScope,
 ) -> EventHandler =
-  #| (self) => self.onpushsubscriptionchange
+  #| (self) => self.onbackgroundfetchsuccess
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onpushsubscriptionchange(
+pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchsuccess(
   self : ServiceWorkerGlobalScope,
   value : EventHandler,
 ) -> Unit =
-  #| (self, value) => { self.onpushsubscriptionchange = value }
+  #| (self, value) => { self.onbackgroundfetchsuccess = value }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::get_onbackgroundfetchfail(
+  self : ServiceWorkerGlobalScope,
+) -> EventHandler =
+  #| (self) => self.onbackgroundfetchfail
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchfail(
+  self : ServiceWorkerGlobalScope,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onbackgroundfetchfail = value }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::get_onbackgroundfetchabort(
+  self : ServiceWorkerGlobalScope,
+) -> EventHandler =
+  #| (self) => self.onbackgroundfetchabort
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchabort(
+  self : ServiceWorkerGlobalScope,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onbackgroundfetchabort = value }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::get_onbackgroundfetchclick(
+  self : ServiceWorkerGlobalScope,
+) -> EventHandler =
+  #| (self) => self.onbackgroundfetchclick
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchclick(
+  self : ServiceWorkerGlobalScope,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onbackgroundfetchclick = value }
 
 ///|
 /// Client interface
@@ -1186,6 +1350,30 @@ pub type Client
 ///|
 pub extern "js" fn Client::to_js_value(self : Client) -> JsValue =
   #| (self) => self
+
+///|
+/// Cast JsValue to Client (unchecked)
+pub extern "js" fn Client::from_js_value(v : JsValue) -> Client =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Client (checked with instanceof)
+pub extern "js" fn Client::from_js_value_opt(v : JsValue) -> Client? =
+  #| (v) => (v instanceof Client) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Client (checked with instanceof)
+pub extern "js" fn JsValue::as_client(self : JsValue) -> Client? =
+  #| (self) => (self instanceof Client) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Client (unchecked)
+pub extern "js" fn JsValue::to_client(self : JsValue) -> Client =
+  #| (self) => self
+
+///|
+pub extern "js" fn Client::as_window_client(self : Client) -> WindowClient? =
+  #| (self) => (self instanceof WindowClient) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Client::get_url(self : Client) -> String =
@@ -1241,36 +1429,30 @@ pub extern "js" fn WindowClient::to_js_value(self : WindowClient) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn WindowClient::get_url(self : WindowClient) -> String =
-  #| (self) => self.url
+/// Cast JsValue to WindowClient (unchecked)
+pub extern "js" fn WindowClient::from_js_value(v : JsValue) -> WindowClient =
+  #| (v) => v
 
 ///|
-pub extern "js" fn WindowClient::get_frame_type(
-  self : WindowClient,
-) -> FrameType =
-  #| (self) => self.frameType
+/// Safely cast JsValue to WindowClient (checked with instanceof)
+pub extern "js" fn WindowClient::from_js_value_opt(
+  v : JsValue,
+) -> WindowClient? =
+  #| (v) => (v instanceof WindowClient) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn WindowClient::get_id(self : WindowClient) -> String =
-  #| (self) => self.id
+/// Safely cast JsValue to WindowClient (checked with instanceof)
+pub extern "js" fn JsValue::as_window_client(self : JsValue) -> WindowClient? =
+  #| (self) => (self instanceof WindowClient) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn WindowClient::get_type(self : WindowClient) -> ClientType =
-  #| (self) => self.type
+/// Cast JsValue to WindowClient (unchecked)
+pub extern "js" fn JsValue::to_window_client(self : JsValue) -> WindowClient =
+  #| (self) => self
 
 ///|
-pub extern "js" fn WindowClient::post_message(
-  self : WindowClient,
-  message : JsValue,
-  transfer : Array[JsValue],
-) -> Unit =
-  #| (self, message, transfer) => self.postMessage(message, transfer)
-
-///|
-pub extern "js" fn WindowClient::get_lifecycle_state(
-  self : WindowClient,
-) -> ClientLifecycleState =
-  #| (self) => self.lifecycleState
+pub extern "js" fn WindowClient::to_client(self : WindowClient) -> Client =
+  #| (self) => self
 
 ///|
 pub extern "js" fn WindowClient::get_visibility_state(
@@ -1299,7 +1481,7 @@ pub extern "js" fn WindowClient::navigate(
   self : WindowClient,
   url : String,
 ) -> Promise[WindowClient?] =
-  #| (self, url) => self.navigate(url)
+  #| (self, url) => self.navigate(url).then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
 
 ///|
 /// Clients interface
@@ -1310,18 +1492,41 @@ pub extern "js" fn Clients::to_js_value(self : Clients) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn Clients::get(self : Clients, id : String) -> Promise[Unit] =
+/// Cast JsValue to Clients (unchecked)
+pub extern "js" fn Clients::from_js_value(v : JsValue) -> Clients =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Clients (checked with instanceof)
+pub extern "js" fn Clients::from_js_value_opt(v : JsValue) -> Clients? =
+  #| (v) => (v instanceof Clients) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Clients (checked with instanceof)
+pub extern "js" fn JsValue::as_clients(self : JsValue) -> Clients? =
+  #| (self) => (self instanceof Clients) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Clients (unchecked)
+pub extern "js" fn JsValue::to_clients(self : JsValue) -> Clients =
+  #| (self) => self
+
+///|
+pub extern "js" fn Clients::get(
+  self : Clients,
+  id : String,
+) -> Promise[ClientOrVoid] =
   #| (self, id) => self.get(id)
 
 ///|
-pub extern "js" fn Clients::match_all(self : Clients) -> Promise[Unit] =
+pub extern "js" fn Clients::match_all(self : Clients) -> Promise[JsValue] =
   #| (self) => self.matchAll()
 
 ///|
 pub extern "js" fn Clients::match_all_with_options(
   self : Clients,
   options : ClientQueryOptions,
-) -> Promise[Unit] =
+) -> Promise[JsValue] =
   #| (self, options) => self.matchAll(options)
 
 ///|
@@ -1329,7 +1534,7 @@ pub extern "js" fn Clients::open_window(
   self : Clients,
   url : String,
 ) -> Promise[WindowClient?] =
-  #| (self, url) => self.openWindow(url)
+  #| (self, url) => self.openWindow(url).then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
 
 ///|
 pub extern "js" fn Clients::claim(self : Clients) -> Promise[Unit] =
@@ -1344,6 +1549,122 @@ pub extern "js" fn ExtendableEvent::to_js_value(
   self : ExtendableEvent,
 ) -> JsValue =
   #| (self) => self
+
+///|
+/// Cast JsValue to ExtendableEvent (unchecked)
+pub extern "js" fn ExtendableEvent::from_js_value(
+  v : JsValue,
+) -> ExtendableEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ExtendableEvent (checked with instanceof)
+pub extern "js" fn ExtendableEvent::from_js_value_opt(
+  v : JsValue,
+) -> ExtendableEvent? =
+  #| (v) => (v instanceof ExtendableEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ExtendableEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_extendable_event(
+  self : JsValue,
+) -> ExtendableEvent? =
+  #| (self) => (self instanceof ExtendableEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ExtendableEvent (unchecked)
+pub extern "js" fn JsValue::to_extendable_event(
+  self : JsValue,
+) -> ExtendableEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn ExtendableEvent::to_event(self : ExtendableEvent) -> Event =
+  #| (self) => self
+
+///|
+pub extern "js" fn ExtendableEvent::as_push_event(
+  self : ExtendableEvent,
+) -> PushEvent? =
+  #| (self) => (self instanceof PushEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_push_subscription_change_event(
+  self : ExtendableEvent,
+) -> PushSubscriptionChangeEvent? =
+  #| (self) => (self instanceof PushSubscriptionChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_notification_event(
+  self : ExtendableEvent,
+) -> NotificationEvent? =
+  #| (self) => (self instanceof NotificationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_can_make_payment_event(
+  self : ExtendableEvent,
+) -> CanMakePaymentEvent? =
+  #| (self) => (self instanceof CanMakePaymentEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_payment_request_event(
+  self : ExtendableEvent,
+) -> PaymentRequestEvent? =
+  #| (self) => (self instanceof PaymentRequestEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_sync_event(
+  self : ExtendableEvent,
+) -> SyncEvent? =
+  #| (self) => (self instanceof SyncEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_install_event(
+  self : ExtendableEvent,
+) -> InstallEvent? =
+  #| (self) => (self instanceof InstallEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_fetch_event(
+  self : ExtendableEvent,
+) -> FetchEvent? =
+  #| (self) => (self instanceof FetchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_extendable_message_event(
+  self : ExtendableEvent,
+) -> ExtendableMessageEvent? =
+  #| (self) => (self instanceof ExtendableMessageEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_extendable_cookie_change_event(
+  self : ExtendableEvent,
+) -> ExtendableCookieChangeEvent? =
+  #| (self) => (self instanceof ExtendableCookieChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_periodic_sync_event(
+  self : ExtendableEvent,
+) -> PeriodicSyncEvent? =
+  #| (self) => (self instanceof PeriodicSyncEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_content_index_event(
+  self : ExtendableEvent,
+) -> ContentIndexEvent? =
+  #| (self) => (self instanceof ContentIndexEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_background_fetch_event(
+  self : ExtendableEvent,
+) -> BackgroundFetchEvent? =
+  #| (self) => (self instanceof BackgroundFetchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_background_fetch_update_ui_event(
+  self : ExtendableEvent,
+) -> BackgroundFetchUpdateUIEvent? =
+  #| (self) => (self instanceof BackgroundFetchUpdateUIEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn ExtendableEvent::new(
@@ -1368,18 +1689,43 @@ pub extern "js" fn InstallEvent::to_js_value(self : InstallEvent) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to InstallEvent (unchecked)
+pub extern "js" fn InstallEvent::from_js_value(v : JsValue) -> InstallEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to InstallEvent (checked with instanceof)
+pub extern "js" fn InstallEvent::from_js_value_opt(
+  v : JsValue,
+) -> InstallEvent? =
+  #| (v) => (v instanceof InstallEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to InstallEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_install_event(self : JsValue) -> InstallEvent? =
+  #| (self) => (self instanceof InstallEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to InstallEvent (unchecked)
+pub extern "js" fn JsValue::to_install_event(self : JsValue) -> InstallEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn InstallEvent::to_extendable_event(
+  self : InstallEvent,
+) -> ExtendableEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn InstallEvent::to_event(self : InstallEvent) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn InstallEvent::new(
   type_ : String,
   event_init_dict : ExtendableEventInit,
 ) -> InstallEvent =
   #| (type_, event_init_dict) => new InstallEvent(type_, event_init_dict)
-
-///|
-pub extern "js" fn InstallEvent::wait_until(
-  self : InstallEvent,
-  f : Promise[JsValue],
-) -> Unit =
-  #| (self, f) => self.waitUntil(f)
 
 ///|
 pub extern "js" fn InstallEvent::add_routes(
@@ -1397,18 +1743,41 @@ pub extern "js" fn FetchEvent::to_js_value(self : FetchEvent) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn FetchEvent::new(
-  type_ : String,
-  event_init_dict : ExtendableEventInit,
-) -> FetchEvent =
-  #| (type_, event_init_dict) => new FetchEvent(type_, event_init_dict)
+/// Cast JsValue to FetchEvent (unchecked)
+pub extern "js" fn FetchEvent::from_js_value(v : JsValue) -> FetchEvent =
+  #| (v) => v
 
 ///|
-pub extern "js" fn FetchEvent::wait_until(
+/// Safely cast JsValue to FetchEvent (checked with instanceof)
+pub extern "js" fn FetchEvent::from_js_value_opt(v : JsValue) -> FetchEvent? =
+  #| (v) => (v instanceof FetchEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FetchEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_fetch_event(self : JsValue) -> FetchEvent? =
+  #| (self) => (self instanceof FetchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FetchEvent (unchecked)
+pub extern "js" fn JsValue::to_fetch_event(self : JsValue) -> FetchEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn FetchEvent::to_extendable_event(
   self : FetchEvent,
-  f : Promise[JsValue],
-) -> Unit =
-  #| (self, f) => self.waitUntil(f)
+) -> ExtendableEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn FetchEvent::to_event(self : FetchEvent) -> Event =
+  #| (self) => self
+
+///|
+pub extern "js" fn FetchEvent::new(
+  type_ : String,
+  event_init_dict : FetchEventInit,
+) -> FetchEvent =
+  #| (type_, event_init_dict) => new FetchEvent(type_, event_init_dict)
 
 ///|
 pub extern "js" fn FetchEvent::get_request(self : FetchEvent) -> Request =
@@ -1458,18 +1827,51 @@ pub extern "js" fn ExtendableMessageEvent::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn ExtendableMessageEvent::new(
-  type_ : String,
-  event_init_dict : ExtendableEventInit,
+/// Cast JsValue to ExtendableMessageEvent (unchecked)
+pub extern "js" fn ExtendableMessageEvent::from_js_value(
+  v : JsValue,
 ) -> ExtendableMessageEvent =
-  #| (type_, event_init_dict) => new ExtendableMessageEvent(type_, event_init_dict)
+  #| (v) => v
 
 ///|
-pub extern "js" fn ExtendableMessageEvent::wait_until(
+/// Safely cast JsValue to ExtendableMessageEvent (checked with instanceof)
+pub extern "js" fn ExtendableMessageEvent::from_js_value_opt(
+  v : JsValue,
+) -> ExtendableMessageEvent? =
+  #| (v) => (v instanceof ExtendableMessageEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ExtendableMessageEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_extendable_message_event(
+  self : JsValue,
+) -> ExtendableMessageEvent? =
+  #| (self) => (self instanceof ExtendableMessageEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ExtendableMessageEvent (unchecked)
+pub extern "js" fn JsValue::to_extendable_message_event(
+  self : JsValue,
+) -> ExtendableMessageEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn ExtendableMessageEvent::to_extendable_event(
   self : ExtendableMessageEvent,
-  f : Promise[JsValue],
-) -> Unit =
-  #| (self, f) => self.waitUntil(f)
+) -> ExtendableEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn ExtendableMessageEvent::to_event(
+  self : ExtendableMessageEvent,
+) -> Event =
+  #| (self) => self
+
+///|
+pub extern "js" fn ExtendableMessageEvent::new(
+  type_ : String,
+  event_init_dict : ExtendableMessageEventInit,
+) -> ExtendableMessageEvent =
+  #| (type_, event_init_dict) => new ExtendableMessageEvent(type_, event_init_dict)
 
 ///|
 pub extern "js" fn ExtendableMessageEvent::get_data(
@@ -1510,10 +1912,30 @@ pub extern "js" fn Cache::to_js_value(self : Cache) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Cache (unchecked)
+pub extern "js" fn Cache::from_js_value(v : JsValue) -> Cache =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Cache (checked with instanceof)
+pub extern "js" fn Cache::from_js_value_opt(v : JsValue) -> Cache? =
+  #| (v) => (v instanceof Cache) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Cache (checked with instanceof)
+pub extern "js" fn JsValue::as_cache(self : JsValue) -> Cache? =
+  #| (self) => (self instanceof Cache) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Cache (unchecked)
+pub extern "js" fn JsValue::to_cache(self : JsValue) -> Cache =
+  #| (self) => self
+
+///|
 pub extern "js" fn Cache::match_(
   self : Cache,
   request : RequestInfo,
-) -> Promise[Unit] =
+) -> Promise[ResponseOrVoid] =
   #| (self, request) => self.match(request)
 
 ///|
@@ -1521,11 +1943,11 @@ pub extern "js" fn Cache::match__with_options(
   self : Cache,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[Unit] =
+) -> Promise[ResponseOrVoid] =
   #| (self, request, options) => self.match(request, options)
 
 ///|
-pub extern "js" fn Cache::match_all(self : Cache) -> Promise[Unit] =
+pub extern "js" fn Cache::match_all(self : Cache) -> Promise[JsValue] =
   #| (self) => self.matchAll()
 
 ///|
@@ -1533,7 +1955,7 @@ pub extern "js" fn Cache::match_all_with_options(
   self : Cache,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[Unit] =
+) -> Promise[JsValue] =
   #| (self, request, options) => self.matchAll(request, options)
 
 ///|
@@ -1574,7 +1996,7 @@ pub extern "js" fn Cache::delete_with_options(
   #| (self, request, options) => self.delete(request, options)
 
 ///|
-pub extern "js" fn Cache::keys(self : Cache) -> Promise[Unit] =
+pub extern "js" fn Cache::keys(self : Cache) -> Promise[JsValue] =
   #| (self) => self.keys()
 
 ///|
@@ -1582,7 +2004,7 @@ pub extern "js" fn Cache::keys_with_options(
   self : Cache,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[Unit] =
+) -> Promise[JsValue] =
   #| (self, request, options) => self.keys(request, options)
 
 ///|
@@ -1594,10 +2016,32 @@ pub extern "js" fn CacheStorage::to_js_value(self : CacheStorage) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to CacheStorage (unchecked)
+pub extern "js" fn CacheStorage::from_js_value(v : JsValue) -> CacheStorage =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CacheStorage (checked with instanceof)
+pub extern "js" fn CacheStorage::from_js_value_opt(
+  v : JsValue,
+) -> CacheStorage? =
+  #| (v) => (v instanceof CacheStorage) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CacheStorage (checked with instanceof)
+pub extern "js" fn JsValue::as_cache_storage(self : JsValue) -> CacheStorage? =
+  #| (self) => (self instanceof CacheStorage) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CacheStorage (unchecked)
+pub extern "js" fn JsValue::to_cache_storage(self : JsValue) -> CacheStorage =
+  #| (self) => self
+
+///|
 pub extern "js" fn CacheStorage::match_(
   self : CacheStorage,
   request : RequestInfo,
-) -> Promise[Unit] =
+) -> Promise[ResponseOrVoid] =
   #| (self, request) => self.match(request)
 
 ///|
@@ -1605,7 +2049,7 @@ pub extern "js" fn CacheStorage::match__with_options(
   self : CacheStorage,
   request : RequestInfo,
   options : MultiCacheQueryOptions,
-) -> Promise[Unit] =
+) -> Promise[ResponseOrVoid] =
   #| (self, request, options) => self.match(request, options)
 
 ///|
@@ -1630,5 +2074,7 @@ pub extern "js" fn CacheStorage::delete(
   #| (self, cache_name) => self.delete(cache_name)
 
 ///|
-pub extern "js" fn CacheStorage::keys(self : CacheStorage) -> Promise[Unit] =
+pub extern "js" fn CacheStorage::keys(
+  self : CacheStorage,
+) -> Promise[Array[String]] =
   #| (self) => self.keys()

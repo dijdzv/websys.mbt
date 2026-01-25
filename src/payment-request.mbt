@@ -510,6 +510,38 @@ pub extern "js" fn PaymentRequest::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PaymentRequest (unchecked)
+pub extern "js" fn PaymentRequest::from_js_value(v : JsValue) -> PaymentRequest =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PaymentRequest (checked with instanceof)
+pub extern "js" fn PaymentRequest::from_js_value_opt(
+  v : JsValue,
+) -> PaymentRequest? =
+  #| (v) => (v instanceof PaymentRequest) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PaymentRequest (checked with instanceof)
+pub extern "js" fn JsValue::as_payment_request(
+  self : JsValue,
+) -> PaymentRequest? =
+  #| (self) => (self instanceof PaymentRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PaymentRequest (unchecked)
+pub extern "js" fn JsValue::to_payment_request(
+  self : JsValue,
+) -> PaymentRequest =
+  #| (self) => self
+
+///|
+pub extern "js" fn PaymentRequest::to_event_target(
+  self : PaymentRequest,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn PaymentRequest::new(
   method_data : Array[PaymentMethodData],
   details : PaymentDetailsInit,
@@ -550,19 +582,19 @@ pub extern "js" fn PaymentRequest::get_id(self : PaymentRequest) -> String =
 pub extern "js" fn PaymentRequest::get_shipping_address(
   self : PaymentRequest,
 ) -> ContactAddress? =
-  #| (self) => self.shippingAddress
+  #| (self) => { const v = self.shippingAddress; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PaymentRequest::get_shipping_option(
   self : PaymentRequest,
 ) -> String? =
-  #| (self) => self.shippingOption
+  #| (self) => { const v = self.shippingOption; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PaymentRequest::get_shipping_type(
   self : PaymentRequest,
 ) -> PaymentShippingType? =
-  #| (self) => self.shippingType
+  #| (self) => { const v = self.shippingType; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PaymentRequest::get_onshippingaddresschange(
@@ -620,9 +652,41 @@ pub extern "js" fn PaymentResponse::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn PaymentResponse::to_j_s_o_n(
+/// Cast JsValue to PaymentResponse (unchecked)
+pub extern "js" fn PaymentResponse::from_js_value(
+  v : JsValue,
+) -> PaymentResponse =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PaymentResponse (checked with instanceof)
+pub extern "js" fn PaymentResponse::from_js_value_opt(
+  v : JsValue,
+) -> PaymentResponse? =
+  #| (v) => (v instanceof PaymentResponse) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PaymentResponse (checked with instanceof)
+pub extern "js" fn JsValue::as_payment_response(
+  self : JsValue,
+) -> PaymentResponse? =
+  #| (self) => (self instanceof PaymentResponse) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PaymentResponse (unchecked)
+pub extern "js" fn JsValue::to_payment_response(
+  self : JsValue,
+) -> PaymentResponse =
+  #| (self) => self
+
+///|
+pub extern "js" fn PaymentResponse::to_event_target(
   self : PaymentResponse,
-) -> JsValue =
+) -> EventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn PaymentResponse::to_json(self : PaymentResponse) -> JsValue =
   #| (self) => self.toJSON()
 
 ///|
@@ -647,31 +711,31 @@ pub extern "js" fn PaymentResponse::get_details(
 pub extern "js" fn PaymentResponse::get_shipping_address(
   self : PaymentResponse,
 ) -> ContactAddress? =
-  #| (self) => self.shippingAddress
+  #| (self) => { const v = self.shippingAddress; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PaymentResponse::get_shipping_option(
   self : PaymentResponse,
 ) -> String? =
-  #| (self) => self.shippingOption
+  #| (self) => { const v = self.shippingOption; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PaymentResponse::get_payer_name(
   self : PaymentResponse,
 ) -> String? =
-  #| (self) => self.payerName
+  #| (self) => { const v = self.payerName; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PaymentResponse::get_payer_email(
   self : PaymentResponse,
 ) -> String? =
-  #| (self) => self.payerEmail
+  #| (self) => { const v = self.payerEmail; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PaymentResponse::get_payer_phone(
   self : PaymentResponse,
 ) -> String? =
-  #| (self) => self.payerPhone
+  #| (self) => { const v = self.payerPhone; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PaymentResponse::complete(
@@ -724,18 +788,51 @@ pub extern "js" fn PaymentMethodChangeEvent::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn PaymentMethodChangeEvent::new(
-  type_ : String,
-  event_init_dict : PaymentRequestUpdateEventInit,
+/// Cast JsValue to PaymentMethodChangeEvent (unchecked)
+pub extern "js" fn PaymentMethodChangeEvent::from_js_value(
+  v : JsValue,
 ) -> PaymentMethodChangeEvent =
-  #| (type_, event_init_dict) => new PaymentMethodChangeEvent(type_, event_init_dict)
+  #| (v) => v
 
 ///|
-pub extern "js" fn PaymentMethodChangeEvent::update_with(
+/// Safely cast JsValue to PaymentMethodChangeEvent (checked with instanceof)
+pub extern "js" fn PaymentMethodChangeEvent::from_js_value_opt(
+  v : JsValue,
+) -> PaymentMethodChangeEvent? =
+  #| (v) => (v instanceof PaymentMethodChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PaymentMethodChangeEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_payment_method_change_event(
+  self : JsValue,
+) -> PaymentMethodChangeEvent? =
+  #| (self) => (self instanceof PaymentMethodChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PaymentMethodChangeEvent (unchecked)
+pub extern "js" fn JsValue::to_payment_method_change_event(
+  self : JsValue,
+) -> PaymentMethodChangeEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn PaymentMethodChangeEvent::to_payment_request_update_event(
   self : PaymentMethodChangeEvent,
-  details_promise : Promise[PaymentDetailsUpdate],
-) -> Unit =
-  #| (self, details_promise) => self.updateWith(details_promise)
+) -> PaymentRequestUpdateEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn PaymentMethodChangeEvent::to_event(
+  self : PaymentMethodChangeEvent,
+) -> Event =
+  #| (self) => self
+
+///|
+pub extern "js" fn PaymentMethodChangeEvent::new(
+  type_ : String,
+  event_init_dict : PaymentMethodChangeEventInit,
+) -> PaymentMethodChangeEvent =
+  #| (type_, event_init_dict) => new PaymentMethodChangeEvent(type_, event_init_dict)
 
 ///|
 pub extern "js" fn PaymentMethodChangeEvent::get_method_name(
@@ -747,7 +844,7 @@ pub extern "js" fn PaymentMethodChangeEvent::get_method_name(
 pub extern "js" fn PaymentMethodChangeEvent::get_method_details(
   self : PaymentMethodChangeEvent,
 ) -> JsValue? =
-  #| (self) => self.methodDetails
+  #| (self) => { const v = self.methodDetails; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// PaymentRequestUpdateEvent interface
@@ -758,6 +855,46 @@ pub extern "js" fn PaymentRequestUpdateEvent::to_js_value(
   self : PaymentRequestUpdateEvent,
 ) -> JsValue =
   #| (self) => self
+
+///|
+/// Cast JsValue to PaymentRequestUpdateEvent (unchecked)
+pub extern "js" fn PaymentRequestUpdateEvent::from_js_value(
+  v : JsValue,
+) -> PaymentRequestUpdateEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PaymentRequestUpdateEvent (checked with instanceof)
+pub extern "js" fn PaymentRequestUpdateEvent::from_js_value_opt(
+  v : JsValue,
+) -> PaymentRequestUpdateEvent? =
+  #| (v) => (v instanceof PaymentRequestUpdateEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PaymentRequestUpdateEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_payment_request_update_event(
+  self : JsValue,
+) -> PaymentRequestUpdateEvent? =
+  #| (self) => (self instanceof PaymentRequestUpdateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PaymentRequestUpdateEvent (unchecked)
+pub extern "js" fn JsValue::to_payment_request_update_event(
+  self : JsValue,
+) -> PaymentRequestUpdateEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn PaymentRequestUpdateEvent::to_event(
+  self : PaymentRequestUpdateEvent,
+) -> Event =
+  #| (self) => self
+
+///|
+pub extern "js" fn PaymentRequestUpdateEvent::as_payment_method_change_event(
+  self : PaymentRequestUpdateEvent,
+) -> PaymentMethodChangeEvent? =
+  #| (self) => (self instanceof PaymentMethodChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn PaymentRequestUpdateEvent::new(

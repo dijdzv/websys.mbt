@@ -62,6 +62,32 @@ pub extern "js" fn WebGLQuery::to_js_value(self : WebGLQuery) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to WebGLQuery (unchecked)
+pub extern "js" fn WebGLQuery::from_js_value(v : JsValue) -> WebGLQuery =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WebGLQuery (checked with instanceof)
+pub extern "js" fn WebGLQuery::from_js_value_opt(v : JsValue) -> WebGLQuery? =
+  #| (v) => (v instanceof WebGLQuery) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WebGLQuery (checked with instanceof)
+pub extern "js" fn JsValue::as_web_gl_query(self : JsValue) -> WebGLQuery? =
+  #| (self) => (self instanceof WebGLQuery) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WebGLQuery (unchecked)
+pub extern "js" fn JsValue::to_web_gl_query(self : JsValue) -> WebGLQuery =
+  #| (self) => self
+
+///|
+pub extern "js" fn WebGLQuery::to_web_gl_object(
+  self : WebGLQuery,
+) -> WebGLObject =
+  #| (self) => self
+
+///|
 /// WebGLSampler interface
 pub type WebGLSampler
 
@@ -70,11 +96,63 @@ pub extern "js" fn WebGLSampler::to_js_value(self : WebGLSampler) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to WebGLSampler (unchecked)
+pub extern "js" fn WebGLSampler::from_js_value(v : JsValue) -> WebGLSampler =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WebGLSampler (checked with instanceof)
+pub extern "js" fn WebGLSampler::from_js_value_opt(
+  v : JsValue,
+) -> WebGLSampler? =
+  #| (v) => (v instanceof WebGLSampler) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WebGLSampler (checked with instanceof)
+pub extern "js" fn JsValue::as_web_gl_sampler(self : JsValue) -> WebGLSampler? =
+  #| (self) => (self instanceof WebGLSampler) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WebGLSampler (unchecked)
+pub extern "js" fn JsValue::to_web_gl_sampler(self : JsValue) -> WebGLSampler =
+  #| (self) => self
+
+///|
+pub extern "js" fn WebGLSampler::to_web_gl_object(
+  self : WebGLSampler,
+) -> WebGLObject =
+  #| (self) => self
+
+///|
 /// WebGLSync interface
 pub type WebGLSync
 
 ///|
 pub extern "js" fn WebGLSync::to_js_value(self : WebGLSync) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to WebGLSync (unchecked)
+pub extern "js" fn WebGLSync::from_js_value(v : JsValue) -> WebGLSync =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WebGLSync (checked with instanceof)
+pub extern "js" fn WebGLSync::from_js_value_opt(v : JsValue) -> WebGLSync? =
+  #| (v) => (v instanceof WebGLSync) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WebGLSync (checked with instanceof)
+pub extern "js" fn JsValue::as_web_gl_sync(self : JsValue) -> WebGLSync? =
+  #| (self) => (self instanceof WebGLSync) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WebGLSync (unchecked)
+pub extern "js" fn JsValue::to_web_gl_sync(self : JsValue) -> WebGLSync =
+  #| (self) => self
+
+///|
+pub extern "js" fn WebGLSync::to_web_gl_object(self : WebGLSync) -> WebGLObject =
   #| (self) => self
 
 ///|
@@ -88,6 +166,40 @@ pub extern "js" fn WebGLTransformFeedback::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to WebGLTransformFeedback (unchecked)
+pub extern "js" fn WebGLTransformFeedback::from_js_value(
+  v : JsValue,
+) -> WebGLTransformFeedback =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WebGLTransformFeedback (checked with instanceof)
+pub extern "js" fn WebGLTransformFeedback::from_js_value_opt(
+  v : JsValue,
+) -> WebGLTransformFeedback? =
+  #| (v) => (v instanceof WebGLTransformFeedback) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WebGLTransformFeedback (checked with instanceof)
+pub extern "js" fn JsValue::as_web_gl_transform_feedback(
+  self : JsValue,
+) -> WebGLTransformFeedback? =
+  #| (self) => (self instanceof WebGLTransformFeedback) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WebGLTransformFeedback (unchecked)
+pub extern "js" fn JsValue::to_web_gl_transform_feedback(
+  self : JsValue,
+) -> WebGLTransformFeedback =
+  #| (self) => self
+
+///|
+pub extern "js" fn WebGLTransformFeedback::to_web_gl_object(
+  self : WebGLTransformFeedback,
+) -> WebGLObject =
+  #| (self) => self
+
+///|
 /// WebGLVertexArrayObject interface
 pub type WebGLVertexArrayObject
 
@@ -95,6 +207,40 @@ pub type WebGLVertexArrayObject
 pub extern "js" fn WebGLVertexArrayObject::to_js_value(
   self : WebGLVertexArrayObject,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to WebGLVertexArrayObject (unchecked)
+pub extern "js" fn WebGLVertexArrayObject::from_js_value(
+  v : JsValue,
+) -> WebGLVertexArrayObject =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WebGLVertexArrayObject (checked with instanceof)
+pub extern "js" fn WebGLVertexArrayObject::from_js_value_opt(
+  v : JsValue,
+) -> WebGLVertexArrayObject? =
+  #| (v) => (v instanceof WebGLVertexArrayObject) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WebGLVertexArrayObject (checked with instanceof)
+pub extern "js" fn JsValue::as_web_gl_vertex_array_object(
+  self : JsValue,
+) -> WebGLVertexArrayObject? =
+  #| (self) => (self instanceof WebGLVertexArrayObject) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WebGLVertexArrayObject (unchecked)
+pub extern "js" fn JsValue::to_web_gl_vertex_array_object(
+  self : JsValue,
+) -> WebGLVertexArrayObject =
+  #| (self) => self
+
+///|
+pub extern "js" fn WebGLVertexArrayObject::to_web_gl_object(
+  self : WebGLVertexArrayObject,
+) -> WebGLObject =
   #| (self) => self
 
 ///|
@@ -107,1490 +253,1518 @@ pub extern "js" fn WebGL2RenderingContext::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
+///|
+/// Cast JsValue to WebGL2RenderingContext (unchecked)
+pub extern "js" fn WebGL2RenderingContext::from_js_value(
+  v : JsValue,
+) -> WebGL2RenderingContext =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WebGL2RenderingContext (checked with instanceof)
+pub extern "js" fn WebGL2RenderingContext::from_js_value_opt(
+  v : JsValue,
+) -> WebGL2RenderingContext? =
+  #| (v) => (v instanceof WebGL2RenderingContext) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WebGL2RenderingContext (checked with instanceof)
+pub extern "js" fn JsValue::as_web_gl2_rendering_context(
+  self : JsValue,
+) -> WebGL2RenderingContext? =
+  #| (self) => (self instanceof WebGL2RenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WebGL2RenderingContext (unchecked)
+pub extern "js" fn JsValue::to_web_gl2_rendering_context(
+  self : JsValue,
+) -> WebGL2RenderingContext =
+  #| (self) => self
+
 // WebGL2RenderingContext.DEPTH_BUFFER_BIT
 
 ///|
-pub let web_g_l2_rendering_context_depth_buffer_bit : Int = 0x00000100
+pub let web_gl2_rendering_context_depth_buffer_bit : Int = 0x00000100
 
 // WebGL2RenderingContext.STENCIL_BUFFER_BIT
 
 ///|
-pub let web_g_l2_rendering_context_stencil_buffer_bit : Int = 0x00000400
+pub let web_gl2_rendering_context_stencil_buffer_bit : Int = 0x00000400
 
 // WebGL2RenderingContext.COLOR_BUFFER_BIT
 
 ///|
-pub let web_g_l2_rendering_context_color_buffer_bit : Int = 0x00004000
+pub let web_gl2_rendering_context_color_buffer_bit : Int = 0x00004000
 
 // WebGL2RenderingContext.POINTS
 
 ///|
-pub let web_g_l2_rendering_context_points : Int = 0x0000
+pub let web_gl2_rendering_context_points : Int = 0x0000
 
 // WebGL2RenderingContext.LINES
 
 ///|
-pub let web_g_l2_rendering_context_lines : Int = 0x0001
+pub let web_gl2_rendering_context_lines : Int = 0x0001
 
 // WebGL2RenderingContext.LINE_LOOP
 
 ///|
-pub let web_g_l2_rendering_context_line_loop : Int = 0x0002
+pub let web_gl2_rendering_context_line_loop : Int = 0x0002
 
 // WebGL2RenderingContext.LINE_STRIP
 
 ///|
-pub let web_g_l2_rendering_context_line_strip : Int = 0x0003
+pub let web_gl2_rendering_context_line_strip : Int = 0x0003
 
 // WebGL2RenderingContext.TRIANGLES
 
 ///|
-pub let web_g_l2_rendering_context_triangles : Int = 0x0004
+pub let web_gl2_rendering_context_triangles : Int = 0x0004
 
 // WebGL2RenderingContext.TRIANGLE_STRIP
 
 ///|
-pub let web_g_l2_rendering_context_triangle_strip : Int = 0x0005
+pub let web_gl2_rendering_context_triangle_strip : Int = 0x0005
 
 // WebGL2RenderingContext.TRIANGLE_FAN
 
 ///|
-pub let web_g_l2_rendering_context_triangle_fan : Int = 0x0006
+pub let web_gl2_rendering_context_triangle_fan : Int = 0x0006
 
 // WebGL2RenderingContext.ZERO
 
 ///|
-pub let web_g_l2_rendering_context_zero : Int = 0
+pub let web_gl2_rendering_context_zero : Int = 0
 
 // WebGL2RenderingContext.ONE
 
 ///|
-pub let web_g_l2_rendering_context_one : Int = 1
+pub let web_gl2_rendering_context_one : Int = 1
 
 // WebGL2RenderingContext.SRC_COLOR
 
 ///|
-pub let web_g_l2_rendering_context_src_color : Int = 0x0300
+pub let web_gl2_rendering_context_src_color : Int = 0x0300
 
 // WebGL2RenderingContext.ONE_MINUS_SRC_COLOR
 
 ///|
-pub let web_g_l2_rendering_context_one_minus_src_color : Int = 0x0301
+pub let web_gl2_rendering_context_one_minus_src_color : Int = 0x0301
 
 // WebGL2RenderingContext.SRC_ALPHA
 
 ///|
-pub let web_g_l2_rendering_context_src_alpha : Int = 0x0302
+pub let web_gl2_rendering_context_src_alpha : Int = 0x0302
 
 // WebGL2RenderingContext.ONE_MINUS_SRC_ALPHA
 
 ///|
-pub let web_g_l2_rendering_context_one_minus_src_alpha : Int = 0x0303
+pub let web_gl2_rendering_context_one_minus_src_alpha : Int = 0x0303
 
 // WebGL2RenderingContext.DST_ALPHA
 
 ///|
-pub let web_g_l2_rendering_context_dst_alpha : Int = 0x0304
+pub let web_gl2_rendering_context_dst_alpha : Int = 0x0304
 
 // WebGL2RenderingContext.ONE_MINUS_DST_ALPHA
 
 ///|
-pub let web_g_l2_rendering_context_one_minus_dst_alpha : Int = 0x0305
+pub let web_gl2_rendering_context_one_minus_dst_alpha : Int = 0x0305
 
 // WebGL2RenderingContext.DST_COLOR
 
 ///|
-pub let web_g_l2_rendering_context_dst_color : Int = 0x0306
+pub let web_gl2_rendering_context_dst_color : Int = 0x0306
 
 // WebGL2RenderingContext.ONE_MINUS_DST_COLOR
 
 ///|
-pub let web_g_l2_rendering_context_one_minus_dst_color : Int = 0x0307
+pub let web_gl2_rendering_context_one_minus_dst_color : Int = 0x0307
 
 // WebGL2RenderingContext.SRC_ALPHA_SATURATE
 
 ///|
-pub let web_g_l2_rendering_context_src_alpha_saturate : Int = 0x0308
+pub let web_gl2_rendering_context_src_alpha_saturate : Int = 0x0308
 
 // WebGL2RenderingContext.FUNC_ADD
 
 ///|
-pub let web_g_l2_rendering_context_func_add : Int = 0x8006
+pub let web_gl2_rendering_context_func_add : Int = 0x8006
 
 // WebGL2RenderingContext.BLEND_EQUATION
 
 ///|
-pub let web_g_l2_rendering_context_blend_equation : Int = 0x8009
+pub let web_gl2_rendering_context_blend_equation : Int = 0x8009
 
 // WebGL2RenderingContext.BLEND_EQUATION_RGB
 
 ///|
-pub let web_g_l2_rendering_context_blend_equation_rgb : Int = 0x8009
+pub let web_gl2_rendering_context_blend_equation_rgb : Int = 0x8009
 
 // WebGL2RenderingContext.BLEND_EQUATION_ALPHA
 
 ///|
-pub let web_g_l2_rendering_context_blend_equation_alpha : Int = 0x883D
+pub let web_gl2_rendering_context_blend_equation_alpha : Int = 0x883D
 
 // WebGL2RenderingContext.FUNC_SUBTRACT
 
 ///|
-pub let web_g_l2_rendering_context_func_subtract : Int = 0x800A
+pub let web_gl2_rendering_context_func_subtract : Int = 0x800A
 
 // WebGL2RenderingContext.FUNC_REVERSE_SUBTRACT
 
 ///|
-pub let web_g_l2_rendering_context_func_reverse_subtract : Int = 0x800B
+pub let web_gl2_rendering_context_func_reverse_subtract : Int = 0x800B
 
 // WebGL2RenderingContext.BLEND_DST_RGB
 
 ///|
-pub let web_g_l2_rendering_context_blend_dst_rgb : Int = 0x80C8
+pub let web_gl2_rendering_context_blend_dst_rgb : Int = 0x80C8
 
 // WebGL2RenderingContext.BLEND_SRC_RGB
 
 ///|
-pub let web_g_l2_rendering_context_blend_src_rgb : Int = 0x80C9
+pub let web_gl2_rendering_context_blend_src_rgb : Int = 0x80C9
 
 // WebGL2RenderingContext.BLEND_DST_ALPHA
 
 ///|
-pub let web_g_l2_rendering_context_blend_dst_alpha : Int = 0x80CA
+pub let web_gl2_rendering_context_blend_dst_alpha : Int = 0x80CA
 
 // WebGL2RenderingContext.BLEND_SRC_ALPHA
 
 ///|
-pub let web_g_l2_rendering_context_blend_src_alpha : Int = 0x80CB
+pub let web_gl2_rendering_context_blend_src_alpha : Int = 0x80CB
 
 // WebGL2RenderingContext.CONSTANT_COLOR
 
 ///|
-pub let web_g_l2_rendering_context_constant_color : Int = 0x8001
+pub let web_gl2_rendering_context_constant_color : Int = 0x8001
 
 // WebGL2RenderingContext.ONE_MINUS_CONSTANT_COLOR
 
 ///|
-pub let web_g_l2_rendering_context_one_minus_constant_color : Int = 0x8002
+pub let web_gl2_rendering_context_one_minus_constant_color : Int = 0x8002
 
 // WebGL2RenderingContext.CONSTANT_ALPHA
 
 ///|
-pub let web_g_l2_rendering_context_constant_alpha : Int = 0x8003
+pub let web_gl2_rendering_context_constant_alpha : Int = 0x8003
 
 // WebGL2RenderingContext.ONE_MINUS_CONSTANT_ALPHA
 
 ///|
-pub let web_g_l2_rendering_context_one_minus_constant_alpha : Int = 0x8004
+pub let web_gl2_rendering_context_one_minus_constant_alpha : Int = 0x8004
 
 // WebGL2RenderingContext.BLEND_COLOR
 
 ///|
-pub let web_g_l2_rendering_context_blend_color : Int = 0x8005
+pub let web_gl2_rendering_context_blend_color : Int = 0x8005
 
 // WebGL2RenderingContext.ARRAY_BUFFER
 
 ///|
-pub let web_g_l2_rendering_context_array_buffer : Int = 0x8892
+pub let web_gl2_rendering_context_array_buffer : Int = 0x8892
 
 // WebGL2RenderingContext.ELEMENT_ARRAY_BUFFER
 
 ///|
-pub let web_g_l2_rendering_context_element_array_buffer : Int = 0x8893
+pub let web_gl2_rendering_context_element_array_buffer : Int = 0x8893
 
 // WebGL2RenderingContext.ARRAY_BUFFER_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_array_buffer_binding : Int = 0x8894
+pub let web_gl2_rendering_context_array_buffer_binding : Int = 0x8894
 
 // WebGL2RenderingContext.ELEMENT_ARRAY_BUFFER_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_element_array_buffer_binding : Int = 0x8895
+pub let web_gl2_rendering_context_element_array_buffer_binding : Int = 0x8895
 
 // WebGL2RenderingContext.STREAM_DRAW
 
 ///|
-pub let web_g_l2_rendering_context_stream_draw : Int = 0x88E0
+pub let web_gl2_rendering_context_stream_draw : Int = 0x88E0
 
 // WebGL2RenderingContext.STATIC_DRAW
 
 ///|
-pub let web_g_l2_rendering_context_static_draw : Int = 0x88E4
+pub let web_gl2_rendering_context_static_draw : Int = 0x88E4
 
 // WebGL2RenderingContext.DYNAMIC_DRAW
 
 ///|
-pub let web_g_l2_rendering_context_dynamic_draw : Int = 0x88E8
+pub let web_gl2_rendering_context_dynamic_draw : Int = 0x88E8
 
 // WebGL2RenderingContext.BUFFER_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_buffer_size : Int = 0x8764
+pub let web_gl2_rendering_context_buffer_size : Int = 0x8764
 
 // WebGL2RenderingContext.BUFFER_USAGE
 
 ///|
-pub let web_g_l2_rendering_context_buffer_usage : Int = 0x8765
+pub let web_gl2_rendering_context_buffer_usage : Int = 0x8765
 
 // WebGL2RenderingContext.CURRENT_VERTEX_ATTRIB
 
 ///|
-pub let web_g_l2_rendering_context_current_vertex_attrib : Int = 0x8626
+pub let web_gl2_rendering_context_current_vertex_attrib : Int = 0x8626
 
 // WebGL2RenderingContext.FRONT
 
 ///|
-pub let web_g_l2_rendering_context_front : Int = 0x0404
+pub let web_gl2_rendering_context_front : Int = 0x0404
 
 // WebGL2RenderingContext.BACK
 
 ///|
-pub let web_g_l2_rendering_context_back : Int = 0x0405
+pub let web_gl2_rendering_context_back : Int = 0x0405
 
 // WebGL2RenderingContext.FRONT_AND_BACK
 
 ///|
-pub let web_g_l2_rendering_context_front_and_back : Int = 0x0408
+pub let web_gl2_rendering_context_front_and_back : Int = 0x0408
 
 // WebGL2RenderingContext.CULL_FACE
 
 ///|
-pub let web_g_l2_rendering_context_cull_face : Int = 0x0B44
+pub let web_gl2_rendering_context_cull_face : Int = 0x0B44
 
 // WebGL2RenderingContext.BLEND
 
 ///|
-pub let web_g_l2_rendering_context_blend : Int = 0x0BE2
+pub let web_gl2_rendering_context_blend : Int = 0x0BE2
 
 // WebGL2RenderingContext.DITHER
 
 ///|
-pub let web_g_l2_rendering_context_dither : Int = 0x0BD0
+pub let web_gl2_rendering_context_dither : Int = 0x0BD0
 
 // WebGL2RenderingContext.STENCIL_TEST
 
 ///|
-pub let web_g_l2_rendering_context_stencil_test : Int = 0x0B90
+pub let web_gl2_rendering_context_stencil_test : Int = 0x0B90
 
 // WebGL2RenderingContext.DEPTH_TEST
 
 ///|
-pub let web_g_l2_rendering_context_depth_test : Int = 0x0B71
+pub let web_gl2_rendering_context_depth_test : Int = 0x0B71
 
 // WebGL2RenderingContext.SCISSOR_TEST
 
 ///|
-pub let web_g_l2_rendering_context_scissor_test : Int = 0x0C11
+pub let web_gl2_rendering_context_scissor_test : Int = 0x0C11
 
 // WebGL2RenderingContext.POLYGON_OFFSET_FILL
 
 ///|
-pub let web_g_l2_rendering_context_polygon_offset_fill : Int = 0x8037
+pub let web_gl2_rendering_context_polygon_offset_fill : Int = 0x8037
 
 // WebGL2RenderingContext.SAMPLE_ALPHA_TO_COVERAGE
 
 ///|
-pub let web_g_l2_rendering_context_sample_alpha_to_coverage : Int = 0x809E
+pub let web_gl2_rendering_context_sample_alpha_to_coverage : Int = 0x809E
 
 // WebGL2RenderingContext.SAMPLE_COVERAGE
 
 ///|
-pub let web_g_l2_rendering_context_sample_coverage : Int = 0x80A0
+pub let web_gl2_rendering_context_sample_coverage : Int = 0x80A0
 
 // WebGL2RenderingContext.NO_ERROR
 
 ///|
-pub let web_g_l2_rendering_context_no_error : Int = 0
+pub let web_gl2_rendering_context_no_error : Int = 0
 
 // WebGL2RenderingContext.INVALID_ENUM
 
 ///|
-pub let web_g_l2_rendering_context_invalid_enum : Int = 0x0500
+pub let web_gl2_rendering_context_invalid_enum : Int = 0x0500
 
 // WebGL2RenderingContext.INVALID_VALUE
 
 ///|
-pub let web_g_l2_rendering_context_invalid_value : Int = 0x0501
+pub let web_gl2_rendering_context_invalid_value : Int = 0x0501
 
 // WebGL2RenderingContext.INVALID_OPERATION
 
 ///|
-pub let web_g_l2_rendering_context_invalid_operation : Int = 0x0502
+pub let web_gl2_rendering_context_invalid_operation : Int = 0x0502
 
 // WebGL2RenderingContext.OUT_OF_MEMORY
 
 ///|
-pub let web_g_l2_rendering_context_out_of_memory : Int = 0x0505
+pub let web_gl2_rendering_context_out_of_memory : Int = 0x0505
 
 // WebGL2RenderingContext.CW
 
 ///|
-pub let web_g_l2_rendering_context_cw : Int = 0x0900
+pub let web_gl2_rendering_context_cw : Int = 0x0900
 
 // WebGL2RenderingContext.CCW
 
 ///|
-pub let web_g_l2_rendering_context_ccw : Int = 0x0901
+pub let web_gl2_rendering_context_ccw : Int = 0x0901
 
 // WebGL2RenderingContext.LINE_WIDTH
 
 ///|
-pub let web_g_l2_rendering_context_line_width : Int = 0x0B21
+pub let web_gl2_rendering_context_line_width : Int = 0x0B21
 
 // WebGL2RenderingContext.ALIASED_POINT_SIZE_RANGE
 
 ///|
-pub let web_g_l2_rendering_context_aliased_point_size_range : Int = 0x846D
+pub let web_gl2_rendering_context_aliased_point_size_range : Int = 0x846D
 
 // WebGL2RenderingContext.ALIASED_LINE_WIDTH_RANGE
 
 ///|
-pub let web_g_l2_rendering_context_aliased_line_width_range : Int = 0x846E
+pub let web_gl2_rendering_context_aliased_line_width_range : Int = 0x846E
 
 // WebGL2RenderingContext.CULL_FACE_MODE
 
 ///|
-pub let web_g_l2_rendering_context_cull_face_mode : Int = 0x0B45
+pub let web_gl2_rendering_context_cull_face_mode : Int = 0x0B45
 
 // WebGL2RenderingContext.FRONT_FACE
 
 ///|
-pub let web_g_l2_rendering_context_front_face : Int = 0x0B46
+pub let web_gl2_rendering_context_front_face : Int = 0x0B46
 
 // WebGL2RenderingContext.DEPTH_RANGE
 
 ///|
-pub let web_g_l2_rendering_context_depth_range : Int = 0x0B70
+pub let web_gl2_rendering_context_depth_range : Int = 0x0B70
 
 // WebGL2RenderingContext.DEPTH_WRITEMASK
 
 ///|
-pub let web_g_l2_rendering_context_depth_writemask : Int = 0x0B72
+pub let web_gl2_rendering_context_depth_writemask : Int = 0x0B72
 
 // WebGL2RenderingContext.DEPTH_CLEAR_VALUE
 
 ///|
-pub let web_g_l2_rendering_context_depth_clear_value : Int = 0x0B73
+pub let web_gl2_rendering_context_depth_clear_value : Int = 0x0B73
 
 // WebGL2RenderingContext.DEPTH_FUNC
 
 ///|
-pub let web_g_l2_rendering_context_depth_func : Int = 0x0B74
+pub let web_gl2_rendering_context_depth_func : Int = 0x0B74
 
 // WebGL2RenderingContext.STENCIL_CLEAR_VALUE
 
 ///|
-pub let web_g_l2_rendering_context_stencil_clear_value : Int = 0x0B91
+pub let web_gl2_rendering_context_stencil_clear_value : Int = 0x0B91
 
 // WebGL2RenderingContext.STENCIL_FUNC
 
 ///|
-pub let web_g_l2_rendering_context_stencil_func : Int = 0x0B92
+pub let web_gl2_rendering_context_stencil_func : Int = 0x0B92
 
 // WebGL2RenderingContext.STENCIL_FAIL
 
 ///|
-pub let web_g_l2_rendering_context_stencil_fail : Int = 0x0B94
+pub let web_gl2_rendering_context_stencil_fail : Int = 0x0B94
 
 // WebGL2RenderingContext.STENCIL_PASS_DEPTH_FAIL
 
 ///|
-pub let web_g_l2_rendering_context_stencil_pass_depth_fail : Int = 0x0B95
+pub let web_gl2_rendering_context_stencil_pass_depth_fail : Int = 0x0B95
 
 // WebGL2RenderingContext.STENCIL_PASS_DEPTH_PASS
 
 ///|
-pub let web_g_l2_rendering_context_stencil_pass_depth_pass : Int = 0x0B96
+pub let web_gl2_rendering_context_stencil_pass_depth_pass : Int = 0x0B96
 
 // WebGL2RenderingContext.STENCIL_REF
 
 ///|
-pub let web_g_l2_rendering_context_stencil_ref : Int = 0x0B97
+pub let web_gl2_rendering_context_stencil_ref : Int = 0x0B97
 
 // WebGL2RenderingContext.STENCIL_VALUE_MASK
 
 ///|
-pub let web_g_l2_rendering_context_stencil_value_mask : Int = 0x0B93
+pub let web_gl2_rendering_context_stencil_value_mask : Int = 0x0B93
 
 // WebGL2RenderingContext.STENCIL_WRITEMASK
 
 ///|
-pub let web_g_l2_rendering_context_stencil_writemask : Int = 0x0B98
+pub let web_gl2_rendering_context_stencil_writemask : Int = 0x0B98
 
 // WebGL2RenderingContext.STENCIL_BACK_FUNC
 
 ///|
-pub let web_g_l2_rendering_context_stencil_back_func : Int = 0x8800
+pub let web_gl2_rendering_context_stencil_back_func : Int = 0x8800
 
 // WebGL2RenderingContext.STENCIL_BACK_FAIL
 
 ///|
-pub let web_g_l2_rendering_context_stencil_back_fail : Int = 0x8801
+pub let web_gl2_rendering_context_stencil_back_fail : Int = 0x8801
 
 // WebGL2RenderingContext.STENCIL_BACK_PASS_DEPTH_FAIL
 
 ///|
-pub let web_g_l2_rendering_context_stencil_back_pass_depth_fail : Int = 0x8802
+pub let web_gl2_rendering_context_stencil_back_pass_depth_fail : Int = 0x8802
 
 // WebGL2RenderingContext.STENCIL_BACK_PASS_DEPTH_PASS
 
 ///|
-pub let web_g_l2_rendering_context_stencil_back_pass_depth_pass : Int = 0x8803
+pub let web_gl2_rendering_context_stencil_back_pass_depth_pass : Int = 0x8803
 
 // WebGL2RenderingContext.STENCIL_BACK_REF
 
 ///|
-pub let web_g_l2_rendering_context_stencil_back_ref : Int = 0x8CA3
+pub let web_gl2_rendering_context_stencil_back_ref : Int = 0x8CA3
 
 // WebGL2RenderingContext.STENCIL_BACK_VALUE_MASK
 
 ///|
-pub let web_g_l2_rendering_context_stencil_back_value_mask : Int = 0x8CA4
+pub let web_gl2_rendering_context_stencil_back_value_mask : Int = 0x8CA4
 
 // WebGL2RenderingContext.STENCIL_BACK_WRITEMASK
 
 ///|
-pub let web_g_l2_rendering_context_stencil_back_writemask : Int = 0x8CA5
+pub let web_gl2_rendering_context_stencil_back_writemask : Int = 0x8CA5
 
 // WebGL2RenderingContext.VIEWPORT
 
 ///|
-pub let web_g_l2_rendering_context_viewport : Int = 0x0BA2
+pub let web_gl2_rendering_context_viewport : Int = 0x0BA2
 
 // WebGL2RenderingContext.SCISSOR_BOX
 
 ///|
-pub let web_g_l2_rendering_context_scissor_box : Int = 0x0C10
+pub let web_gl2_rendering_context_scissor_box : Int = 0x0C10
 
 // WebGL2RenderingContext.COLOR_CLEAR_VALUE
 
 ///|
-pub let web_g_l2_rendering_context_color_clear_value : Int = 0x0C22
+pub let web_gl2_rendering_context_color_clear_value : Int = 0x0C22
 
 // WebGL2RenderingContext.COLOR_WRITEMASK
 
 ///|
-pub let web_g_l2_rendering_context_color_writemask : Int = 0x0C23
+pub let web_gl2_rendering_context_color_writemask : Int = 0x0C23
 
 // WebGL2RenderingContext.UNPACK_ALIGNMENT
 
 ///|
-pub let web_g_l2_rendering_context_unpack_alignment : Int = 0x0CF5
+pub let web_gl2_rendering_context_unpack_alignment : Int = 0x0CF5
 
 // WebGL2RenderingContext.PACK_ALIGNMENT
 
 ///|
-pub let web_g_l2_rendering_context_pack_alignment : Int = 0x0D05
+pub let web_gl2_rendering_context_pack_alignment : Int = 0x0D05
 
 // WebGL2RenderingContext.MAX_TEXTURE_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_max_texture_size : Int = 0x0D33
+pub let web_gl2_rendering_context_max_texture_size : Int = 0x0D33
 
 // WebGL2RenderingContext.MAX_VIEWPORT_DIMS
 
 ///|
-pub let web_g_l2_rendering_context_max_viewport_dims : Int = 0x0D3A
+pub let web_gl2_rendering_context_max_viewport_dims : Int = 0x0D3A
 
 // WebGL2RenderingContext.SUBPIXEL_BITS
 
 ///|
-pub let web_g_l2_rendering_context_subpixel_bits : Int = 0x0D50
+pub let web_gl2_rendering_context_subpixel_bits : Int = 0x0D50
 
 // WebGL2RenderingContext.RED_BITS
 
 ///|
-pub let web_g_l2_rendering_context_red_bits : Int = 0x0D52
+pub let web_gl2_rendering_context_red_bits : Int = 0x0D52
 
 // WebGL2RenderingContext.GREEN_BITS
 
 ///|
-pub let web_g_l2_rendering_context_green_bits : Int = 0x0D53
+pub let web_gl2_rendering_context_green_bits : Int = 0x0D53
 
 // WebGL2RenderingContext.BLUE_BITS
 
 ///|
-pub let web_g_l2_rendering_context_blue_bits : Int = 0x0D54
+pub let web_gl2_rendering_context_blue_bits : Int = 0x0D54
 
 // WebGL2RenderingContext.ALPHA_BITS
 
 ///|
-pub let web_g_l2_rendering_context_alpha_bits : Int = 0x0D55
+pub let web_gl2_rendering_context_alpha_bits : Int = 0x0D55
 
 // WebGL2RenderingContext.DEPTH_BITS
 
 ///|
-pub let web_g_l2_rendering_context_depth_bits : Int = 0x0D56
+pub let web_gl2_rendering_context_depth_bits : Int = 0x0D56
 
 // WebGL2RenderingContext.STENCIL_BITS
 
 ///|
-pub let web_g_l2_rendering_context_stencil_bits : Int = 0x0D57
+pub let web_gl2_rendering_context_stencil_bits : Int = 0x0D57
 
 // WebGL2RenderingContext.POLYGON_OFFSET_UNITS
 
 ///|
-pub let web_g_l2_rendering_context_polygon_offset_units : Int = 0x2A00
+pub let web_gl2_rendering_context_polygon_offset_units : Int = 0x2A00
 
 // WebGL2RenderingContext.POLYGON_OFFSET_FACTOR
 
 ///|
-pub let web_g_l2_rendering_context_polygon_offset_factor : Int = 0x8038
+pub let web_gl2_rendering_context_polygon_offset_factor : Int = 0x8038
 
 // WebGL2RenderingContext.TEXTURE_BINDING_2D
 
 ///|
-pub let web_g_l2_rendering_context_texture_binding_2d : Int = 0x8069
+pub let web_gl2_rendering_context_texture_binding_2d : Int = 0x8069
 
 // WebGL2RenderingContext.SAMPLE_BUFFERS
 
 ///|
-pub let web_g_l2_rendering_context_sample_buffers : Int = 0x80A8
+pub let web_gl2_rendering_context_sample_buffers : Int = 0x80A8
 
 // WebGL2RenderingContext.SAMPLES
 
 ///|
-pub let web_g_l2_rendering_context_samples : Int = 0x80A9
+pub let web_gl2_rendering_context_samples : Int = 0x80A9
 
 // WebGL2RenderingContext.SAMPLE_COVERAGE_VALUE
 
 ///|
-pub let web_g_l2_rendering_context_sample_coverage_value : Int = 0x80AA
+pub let web_gl2_rendering_context_sample_coverage_value : Int = 0x80AA
 
 // WebGL2RenderingContext.SAMPLE_COVERAGE_INVERT
 
 ///|
-pub let web_g_l2_rendering_context_sample_coverage_invert : Int = 0x80AB
+pub let web_gl2_rendering_context_sample_coverage_invert : Int = 0x80AB
 
 // WebGL2RenderingContext.COMPRESSED_TEXTURE_FORMATS
 
 ///|
-pub let web_g_l2_rendering_context_compressed_texture_formats : Int = 0x86A3
+pub let web_gl2_rendering_context_compressed_texture_formats : Int = 0x86A3
 
 // WebGL2RenderingContext.DONT_CARE
 
 ///|
-pub let web_g_l2_rendering_context_dont_care : Int = 0x1100
+pub let web_gl2_rendering_context_dont_care : Int = 0x1100
 
 // WebGL2RenderingContext.FASTEST
 
 ///|
-pub let web_g_l2_rendering_context_fastest : Int = 0x1101
+pub let web_gl2_rendering_context_fastest : Int = 0x1101
 
 // WebGL2RenderingContext.NICEST
 
 ///|
-pub let web_g_l2_rendering_context_nicest : Int = 0x1102
+pub let web_gl2_rendering_context_nicest : Int = 0x1102
 
 // WebGL2RenderingContext.GENERATE_MIPMAP_HINT
 
 ///|
-pub let web_g_l2_rendering_context_generate_mipmap_hint : Int = 0x8192
+pub let web_gl2_rendering_context_generate_mipmap_hint : Int = 0x8192
 
 // WebGL2RenderingContext.BYTE
 
 ///|
-pub let web_g_l2_rendering_context_byte : Int = 0x1400
+pub let web_gl2_rendering_context_byte : Int = 0x1400
 
 // WebGL2RenderingContext.UNSIGNED_BYTE
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_byte : Int = 0x1401
+pub let web_gl2_rendering_context_unsigned_byte : Int = 0x1401
 
 // WebGL2RenderingContext.SHORT
 
 ///|
-pub let web_g_l2_rendering_context_short : Int = 0x1402
+pub let web_gl2_rendering_context_short : Int = 0x1402
 
 // WebGL2RenderingContext.UNSIGNED_SHORT
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_short : Int = 0x1403
+pub let web_gl2_rendering_context_unsigned_short : Int = 0x1403
 
 // WebGL2RenderingContext.INT
 
 ///|
-pub let web_g_l2_rendering_context_int : Int = 0x1404
+pub let web_gl2_rendering_context_int : Int = 0x1404
 
 // WebGL2RenderingContext.UNSIGNED_INT
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_int : Int = 0x1405
+pub let web_gl2_rendering_context_unsigned_int : Int = 0x1405
 
 // WebGL2RenderingContext.FLOAT
 
 ///|
-pub let web_g_l2_rendering_context_float : Int = 0x1406
+pub let web_gl2_rendering_context_float : Int = 0x1406
 
 // WebGL2RenderingContext.DEPTH_COMPONENT
 
 ///|
-pub let web_g_l2_rendering_context_depth_component : Int = 0x1902
+pub let web_gl2_rendering_context_depth_component : Int = 0x1902
 
 // WebGL2RenderingContext.ALPHA
 
 ///|
-pub let web_g_l2_rendering_context_alpha : Int = 0x1906
+pub let web_gl2_rendering_context_alpha : Int = 0x1906
 
 // WebGL2RenderingContext.RGB
 
 ///|
-pub let web_g_l2_rendering_context_rgb : Int = 0x1907
+pub let web_gl2_rendering_context_rgb : Int = 0x1907
 
 // WebGL2RenderingContext.RGBA
 
 ///|
-pub let web_g_l2_rendering_context_rgba : Int = 0x1908
+pub let web_gl2_rendering_context_rgba : Int = 0x1908
 
 // WebGL2RenderingContext.LUMINANCE
 
 ///|
-pub let web_g_l2_rendering_context_luminance : Int = 0x1909
+pub let web_gl2_rendering_context_luminance : Int = 0x1909
 
 // WebGL2RenderingContext.LUMINANCE_ALPHA
 
 ///|
-pub let web_g_l2_rendering_context_luminance_alpha : Int = 0x190A
+pub let web_gl2_rendering_context_luminance_alpha : Int = 0x190A
 
 // WebGL2RenderingContext.UNSIGNED_SHORT_4_4_4_4
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_short_4_4_4_4 : Int = 0x8033
+pub let web_gl2_rendering_context_unsigned_short_4_4_4_4 : Int = 0x8033
 
 // WebGL2RenderingContext.UNSIGNED_SHORT_5_5_5_1
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_short_5_5_5_1 : Int = 0x8034
+pub let web_gl2_rendering_context_unsigned_short_5_5_5_1 : Int = 0x8034
 
 // WebGL2RenderingContext.UNSIGNED_SHORT_5_6_5
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_short_5_6_5 : Int = 0x8363
+pub let web_gl2_rendering_context_unsigned_short_5_6_5 : Int = 0x8363
 
 // WebGL2RenderingContext.FRAGMENT_SHADER
 
 ///|
-pub let web_g_l2_rendering_context_fragment_shader : Int = 0x8B30
+pub let web_gl2_rendering_context_fragment_shader : Int = 0x8B30
 
 // WebGL2RenderingContext.VERTEX_SHADER
 
 ///|
-pub let web_g_l2_rendering_context_vertex_shader : Int = 0x8B31
+pub let web_gl2_rendering_context_vertex_shader : Int = 0x8B31
 
 // WebGL2RenderingContext.MAX_VERTEX_ATTRIBS
 
 ///|
-pub let web_g_l2_rendering_context_max_vertex_attribs : Int = 0x8869
+pub let web_gl2_rendering_context_max_vertex_attribs : Int = 0x8869
 
 // WebGL2RenderingContext.MAX_VERTEX_UNIFORM_VECTORS
 
 ///|
-pub let web_g_l2_rendering_context_max_vertex_uniform_vectors : Int = 0x8DFB
+pub let web_gl2_rendering_context_max_vertex_uniform_vectors : Int = 0x8DFB
 
 // WebGL2RenderingContext.MAX_VARYING_VECTORS
 
 ///|
-pub let web_g_l2_rendering_context_max_varying_vectors : Int = 0x8DFC
+pub let web_gl2_rendering_context_max_varying_vectors : Int = 0x8DFC
 
 // WebGL2RenderingContext.MAX_COMBINED_TEXTURE_IMAGE_UNITS
 
 ///|
-pub let web_g_l2_rendering_context_max_combined_texture_image_units : Int = 0x8B4D
+pub let web_gl2_rendering_context_max_combined_texture_image_units : Int = 0x8B4D
 
 // WebGL2RenderingContext.MAX_VERTEX_TEXTURE_IMAGE_UNITS
 
 ///|
-pub let web_g_l2_rendering_context_max_vertex_texture_image_units : Int = 0x8B4C
+pub let web_gl2_rendering_context_max_vertex_texture_image_units : Int = 0x8B4C
 
 // WebGL2RenderingContext.MAX_TEXTURE_IMAGE_UNITS
 
 ///|
-pub let web_g_l2_rendering_context_max_texture_image_units : Int = 0x8872
+pub let web_gl2_rendering_context_max_texture_image_units : Int = 0x8872
 
 // WebGL2RenderingContext.MAX_FRAGMENT_UNIFORM_VECTORS
 
 ///|
-pub let web_g_l2_rendering_context_max_fragment_uniform_vectors : Int = 0x8DFD
+pub let web_gl2_rendering_context_max_fragment_uniform_vectors : Int = 0x8DFD
 
 // WebGL2RenderingContext.SHADER_TYPE
 
 ///|
-pub let web_g_l2_rendering_context_shader_type : Int = 0x8B4F
+pub let web_gl2_rendering_context_shader_type : Int = 0x8B4F
 
 // WebGL2RenderingContext.DELETE_STATUS
 
 ///|
-pub let web_g_l2_rendering_context_delete_status : Int = 0x8B80
+pub let web_gl2_rendering_context_delete_status : Int = 0x8B80
 
 // WebGL2RenderingContext.LINK_STATUS
 
 ///|
-pub let web_g_l2_rendering_context_link_status : Int = 0x8B82
+pub let web_gl2_rendering_context_link_status : Int = 0x8B82
 
 // WebGL2RenderingContext.VALIDATE_STATUS
 
 ///|
-pub let web_g_l2_rendering_context_validate_status : Int = 0x8B83
+pub let web_gl2_rendering_context_validate_status : Int = 0x8B83
 
 // WebGL2RenderingContext.ATTACHED_SHADERS
 
 ///|
-pub let web_g_l2_rendering_context_attached_shaders : Int = 0x8B85
+pub let web_gl2_rendering_context_attached_shaders : Int = 0x8B85
 
 // WebGL2RenderingContext.ACTIVE_UNIFORMS
 
 ///|
-pub let web_g_l2_rendering_context_active_uniforms : Int = 0x8B86
+pub let web_gl2_rendering_context_active_uniforms : Int = 0x8B86
 
 // WebGL2RenderingContext.ACTIVE_ATTRIBUTES
 
 ///|
-pub let web_g_l2_rendering_context_active_attributes : Int = 0x8B89
+pub let web_gl2_rendering_context_active_attributes : Int = 0x8B89
 
 // WebGL2RenderingContext.SHADING_LANGUAGE_VERSION
 
 ///|
-pub let web_g_l2_rendering_context_shading_language_version : Int = 0x8B8C
+pub let web_gl2_rendering_context_shading_language_version : Int = 0x8B8C
 
 // WebGL2RenderingContext.CURRENT_PROGRAM
 
 ///|
-pub let web_g_l2_rendering_context_current_program : Int = 0x8B8D
+pub let web_gl2_rendering_context_current_program : Int = 0x8B8D
 
 // WebGL2RenderingContext.NEVER
 
 ///|
-pub let web_g_l2_rendering_context_never : Int = 0x0200
+pub let web_gl2_rendering_context_never : Int = 0x0200
 
 // WebGL2RenderingContext.LESS
 
 ///|
-pub let web_g_l2_rendering_context_less : Int = 0x0201
+pub let web_gl2_rendering_context_less : Int = 0x0201
 
 // WebGL2RenderingContext.EQUAL
 
 ///|
-pub let web_g_l2_rendering_context_equal : Int = 0x0202
+pub let web_gl2_rendering_context_equal : Int = 0x0202
 
 // WebGL2RenderingContext.LEQUAL
 
 ///|
-pub let web_g_l2_rendering_context_lequal : Int = 0x0203
+pub let web_gl2_rendering_context_lequal : Int = 0x0203
 
 // WebGL2RenderingContext.GREATER
 
 ///|
-pub let web_g_l2_rendering_context_greater : Int = 0x0204
+pub let web_gl2_rendering_context_greater : Int = 0x0204
 
 // WebGL2RenderingContext.NOTEQUAL
 
 ///|
-pub let web_g_l2_rendering_context_notequal : Int = 0x0205
+pub let web_gl2_rendering_context_notequal : Int = 0x0205
 
 // WebGL2RenderingContext.GEQUAL
 
 ///|
-pub let web_g_l2_rendering_context_gequal : Int = 0x0206
+pub let web_gl2_rendering_context_gequal : Int = 0x0206
 
 // WebGL2RenderingContext.ALWAYS
 
 ///|
-pub let web_g_l2_rendering_context_always : Int = 0x0207
+pub let web_gl2_rendering_context_always : Int = 0x0207
 
 // WebGL2RenderingContext.KEEP
 
 ///|
-pub let web_g_l2_rendering_context_keep : Int = 0x1E00
+pub let web_gl2_rendering_context_keep : Int = 0x1E00
 
 // WebGL2RenderingContext.REPLACE
 
 ///|
-pub let web_g_l2_rendering_context_replace : Int = 0x1E01
+pub let web_gl2_rendering_context_replace : Int = 0x1E01
 
 // WebGL2RenderingContext.INCR
 
 ///|
-pub let web_g_l2_rendering_context_incr : Int = 0x1E02
+pub let web_gl2_rendering_context_incr : Int = 0x1E02
 
 // WebGL2RenderingContext.DECR
 
 ///|
-pub let web_g_l2_rendering_context_decr : Int = 0x1E03
+pub let web_gl2_rendering_context_decr : Int = 0x1E03
 
 // WebGL2RenderingContext.INVERT
 
 ///|
-pub let web_g_l2_rendering_context_invert : Int = 0x150A
+pub let web_gl2_rendering_context_invert : Int = 0x150A
 
 // WebGL2RenderingContext.INCR_WRAP
 
 ///|
-pub let web_g_l2_rendering_context_incr_wrap : Int = 0x8507
+pub let web_gl2_rendering_context_incr_wrap : Int = 0x8507
 
 // WebGL2RenderingContext.DECR_WRAP
 
 ///|
-pub let web_g_l2_rendering_context_decr_wrap : Int = 0x8508
+pub let web_gl2_rendering_context_decr_wrap : Int = 0x8508
 
 // WebGL2RenderingContext.VENDOR
 
 ///|
-pub let web_g_l2_rendering_context_vendor : Int = 0x1F00
+pub let web_gl2_rendering_context_vendor : Int = 0x1F00
 
 // WebGL2RenderingContext.RENDERER
 
 ///|
-pub let web_g_l2_rendering_context_renderer : Int = 0x1F01
+pub let web_gl2_rendering_context_renderer : Int = 0x1F01
 
 // WebGL2RenderingContext.VERSION
 
 ///|
-pub let web_g_l2_rendering_context_version : Int = 0x1F02
+pub let web_gl2_rendering_context_version : Int = 0x1F02
 
 // WebGL2RenderingContext.NEAREST
 
 ///|
-pub let web_g_l2_rendering_context_nearest : Int = 0x2600
+pub let web_gl2_rendering_context_nearest : Int = 0x2600
 
 // WebGL2RenderingContext.LINEAR
 
 ///|
-pub let web_g_l2_rendering_context_linear : Int = 0x2601
+pub let web_gl2_rendering_context_linear : Int = 0x2601
 
 // WebGL2RenderingContext.NEAREST_MIPMAP_NEAREST
 
 ///|
-pub let web_g_l2_rendering_context_nearest_mipmap_nearest : Int = 0x2700
+pub let web_gl2_rendering_context_nearest_mipmap_nearest : Int = 0x2700
 
 // WebGL2RenderingContext.LINEAR_MIPMAP_NEAREST
 
 ///|
-pub let web_g_l2_rendering_context_linear_mipmap_nearest : Int = 0x2701
+pub let web_gl2_rendering_context_linear_mipmap_nearest : Int = 0x2701
 
 // WebGL2RenderingContext.NEAREST_MIPMAP_LINEAR
 
 ///|
-pub let web_g_l2_rendering_context_nearest_mipmap_linear : Int = 0x2702
+pub let web_gl2_rendering_context_nearest_mipmap_linear : Int = 0x2702
 
 // WebGL2RenderingContext.LINEAR_MIPMAP_LINEAR
 
 ///|
-pub let web_g_l2_rendering_context_linear_mipmap_linear : Int = 0x2703
+pub let web_gl2_rendering_context_linear_mipmap_linear : Int = 0x2703
 
 // WebGL2RenderingContext.TEXTURE_MAG_FILTER
 
 ///|
-pub let web_g_l2_rendering_context_texture_mag_filter : Int = 0x2800
+pub let web_gl2_rendering_context_texture_mag_filter : Int = 0x2800
 
 // WebGL2RenderingContext.TEXTURE_MIN_FILTER
 
 ///|
-pub let web_g_l2_rendering_context_texture_min_filter : Int = 0x2801
+pub let web_gl2_rendering_context_texture_min_filter : Int = 0x2801
 
 // WebGL2RenderingContext.TEXTURE_WRAP_S
 
 ///|
-pub let web_g_l2_rendering_context_texture_wrap_s : Int = 0x2802
+pub let web_gl2_rendering_context_texture_wrap_s : Int = 0x2802
 
 // WebGL2RenderingContext.TEXTURE_WRAP_T
 
 ///|
-pub let web_g_l2_rendering_context_texture_wrap_t : Int = 0x2803
+pub let web_gl2_rendering_context_texture_wrap_t : Int = 0x2803
 
 // WebGL2RenderingContext.TEXTURE_2D
 
 ///|
-pub let web_g_l2_rendering_context_texture_2d : Int = 0x0DE1
+pub let web_gl2_rendering_context_texture_2d : Int = 0x0DE1
 
 // WebGL2RenderingContext.TEXTURE
 
 ///|
-pub let web_g_l2_rendering_context_texture : Int = 0x1702
+pub let web_gl2_rendering_context_texture : Int = 0x1702
 
 // WebGL2RenderingContext.TEXTURE_CUBE_MAP
 
 ///|
-pub let web_g_l2_rendering_context_texture_cube_map : Int = 0x8513
+pub let web_gl2_rendering_context_texture_cube_map : Int = 0x8513
 
 // WebGL2RenderingContext.TEXTURE_BINDING_CUBE_MAP
 
 ///|
-pub let web_g_l2_rendering_context_texture_binding_cube_map : Int = 0x8514
+pub let web_gl2_rendering_context_texture_binding_cube_map : Int = 0x8514
 
 // WebGL2RenderingContext.TEXTURE_CUBE_MAP_POSITIVE_X
 
 ///|
-pub let web_g_l2_rendering_context_texture_cube_map_positive_x : Int = 0x8515
+pub let web_gl2_rendering_context_texture_cube_map_positive_x : Int = 0x8515
 
 // WebGL2RenderingContext.TEXTURE_CUBE_MAP_NEGATIVE_X
 
 ///|
-pub let web_g_l2_rendering_context_texture_cube_map_negative_x : Int = 0x8516
+pub let web_gl2_rendering_context_texture_cube_map_negative_x : Int = 0x8516
 
 // WebGL2RenderingContext.TEXTURE_CUBE_MAP_POSITIVE_Y
 
 ///|
-pub let web_g_l2_rendering_context_texture_cube_map_positive_y : Int = 0x8517
+pub let web_gl2_rendering_context_texture_cube_map_positive_y : Int = 0x8517
 
 // WebGL2RenderingContext.TEXTURE_CUBE_MAP_NEGATIVE_Y
 
 ///|
-pub let web_g_l2_rendering_context_texture_cube_map_negative_y : Int = 0x8518
+pub let web_gl2_rendering_context_texture_cube_map_negative_y : Int = 0x8518
 
 // WebGL2RenderingContext.TEXTURE_CUBE_MAP_POSITIVE_Z
 
 ///|
-pub let web_g_l2_rendering_context_texture_cube_map_positive_z : Int = 0x8519
+pub let web_gl2_rendering_context_texture_cube_map_positive_z : Int = 0x8519
 
 // WebGL2RenderingContext.TEXTURE_CUBE_MAP_NEGATIVE_Z
 
 ///|
-pub let web_g_l2_rendering_context_texture_cube_map_negative_z : Int = 0x851A
+pub let web_gl2_rendering_context_texture_cube_map_negative_z : Int = 0x851A
 
 // WebGL2RenderingContext.MAX_CUBE_MAP_TEXTURE_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_max_cube_map_texture_size : Int = 0x851C
+pub let web_gl2_rendering_context_max_cube_map_texture_size : Int = 0x851C
 
 // WebGL2RenderingContext.TEXTURE0
 
 ///|
-pub let web_g_l2_rendering_context_texture0 : Int = 0x84C0
+pub let web_gl2_rendering_context_texture0 : Int = 0x84C0
 
 // WebGL2RenderingContext.TEXTURE1
 
 ///|
-pub let web_g_l2_rendering_context_texture1 : Int = 0x84C1
+pub let web_gl2_rendering_context_texture1 : Int = 0x84C1
 
 // WebGL2RenderingContext.TEXTURE2
 
 ///|
-pub let web_g_l2_rendering_context_texture2 : Int = 0x84C2
+pub let web_gl2_rendering_context_texture2 : Int = 0x84C2
 
 // WebGL2RenderingContext.TEXTURE3
 
 ///|
-pub let web_g_l2_rendering_context_texture3 : Int = 0x84C3
+pub let web_gl2_rendering_context_texture3 : Int = 0x84C3
 
 // WebGL2RenderingContext.TEXTURE4
 
 ///|
-pub let web_g_l2_rendering_context_texture4 : Int = 0x84C4
+pub let web_gl2_rendering_context_texture4 : Int = 0x84C4
 
 // WebGL2RenderingContext.TEXTURE5
 
 ///|
-pub let web_g_l2_rendering_context_texture5 : Int = 0x84C5
+pub let web_gl2_rendering_context_texture5 : Int = 0x84C5
 
 // WebGL2RenderingContext.TEXTURE6
 
 ///|
-pub let web_g_l2_rendering_context_texture6 : Int = 0x84C6
+pub let web_gl2_rendering_context_texture6 : Int = 0x84C6
 
 // WebGL2RenderingContext.TEXTURE7
 
 ///|
-pub let web_g_l2_rendering_context_texture7 : Int = 0x84C7
+pub let web_gl2_rendering_context_texture7 : Int = 0x84C7
 
 // WebGL2RenderingContext.TEXTURE8
 
 ///|
-pub let web_g_l2_rendering_context_texture8 : Int = 0x84C8
+pub let web_gl2_rendering_context_texture8 : Int = 0x84C8
 
 // WebGL2RenderingContext.TEXTURE9
 
 ///|
-pub let web_g_l2_rendering_context_texture9 : Int = 0x84C9
+pub let web_gl2_rendering_context_texture9 : Int = 0x84C9
 
 // WebGL2RenderingContext.TEXTURE10
 
 ///|
-pub let web_g_l2_rendering_context_texture10 : Int = 0x84CA
+pub let web_gl2_rendering_context_texture10 : Int = 0x84CA
 
 // WebGL2RenderingContext.TEXTURE11
 
 ///|
-pub let web_g_l2_rendering_context_texture11 : Int = 0x84CB
+pub let web_gl2_rendering_context_texture11 : Int = 0x84CB
 
 // WebGL2RenderingContext.TEXTURE12
 
 ///|
-pub let web_g_l2_rendering_context_texture12 : Int = 0x84CC
+pub let web_gl2_rendering_context_texture12 : Int = 0x84CC
 
 // WebGL2RenderingContext.TEXTURE13
 
 ///|
-pub let web_g_l2_rendering_context_texture13 : Int = 0x84CD
+pub let web_gl2_rendering_context_texture13 : Int = 0x84CD
 
 // WebGL2RenderingContext.TEXTURE14
 
 ///|
-pub let web_g_l2_rendering_context_texture14 : Int = 0x84CE
+pub let web_gl2_rendering_context_texture14 : Int = 0x84CE
 
 // WebGL2RenderingContext.TEXTURE15
 
 ///|
-pub let web_g_l2_rendering_context_texture15 : Int = 0x84CF
+pub let web_gl2_rendering_context_texture15 : Int = 0x84CF
 
 // WebGL2RenderingContext.TEXTURE16
 
 ///|
-pub let web_g_l2_rendering_context_texture16 : Int = 0x84D0
+pub let web_gl2_rendering_context_texture16 : Int = 0x84D0
 
 // WebGL2RenderingContext.TEXTURE17
 
 ///|
-pub let web_g_l2_rendering_context_texture17 : Int = 0x84D1
+pub let web_gl2_rendering_context_texture17 : Int = 0x84D1
 
 // WebGL2RenderingContext.TEXTURE18
 
 ///|
-pub let web_g_l2_rendering_context_texture18 : Int = 0x84D2
+pub let web_gl2_rendering_context_texture18 : Int = 0x84D2
 
 // WebGL2RenderingContext.TEXTURE19
 
 ///|
-pub let web_g_l2_rendering_context_texture19 : Int = 0x84D3
+pub let web_gl2_rendering_context_texture19 : Int = 0x84D3
 
 // WebGL2RenderingContext.TEXTURE20
 
 ///|
-pub let web_g_l2_rendering_context_texture20 : Int = 0x84D4
+pub let web_gl2_rendering_context_texture20 : Int = 0x84D4
 
 // WebGL2RenderingContext.TEXTURE21
 
 ///|
-pub let web_g_l2_rendering_context_texture21 : Int = 0x84D5
+pub let web_gl2_rendering_context_texture21 : Int = 0x84D5
 
 // WebGL2RenderingContext.TEXTURE22
 
 ///|
-pub let web_g_l2_rendering_context_texture22 : Int = 0x84D6
+pub let web_gl2_rendering_context_texture22 : Int = 0x84D6
 
 // WebGL2RenderingContext.TEXTURE23
 
 ///|
-pub let web_g_l2_rendering_context_texture23 : Int = 0x84D7
+pub let web_gl2_rendering_context_texture23 : Int = 0x84D7
 
 // WebGL2RenderingContext.TEXTURE24
 
 ///|
-pub let web_g_l2_rendering_context_texture24 : Int = 0x84D8
+pub let web_gl2_rendering_context_texture24 : Int = 0x84D8
 
 // WebGL2RenderingContext.TEXTURE25
 
 ///|
-pub let web_g_l2_rendering_context_texture25 : Int = 0x84D9
+pub let web_gl2_rendering_context_texture25 : Int = 0x84D9
 
 // WebGL2RenderingContext.TEXTURE26
 
 ///|
-pub let web_g_l2_rendering_context_texture26 : Int = 0x84DA
+pub let web_gl2_rendering_context_texture26 : Int = 0x84DA
 
 // WebGL2RenderingContext.TEXTURE27
 
 ///|
-pub let web_g_l2_rendering_context_texture27 : Int = 0x84DB
+pub let web_gl2_rendering_context_texture27 : Int = 0x84DB
 
 // WebGL2RenderingContext.TEXTURE28
 
 ///|
-pub let web_g_l2_rendering_context_texture28 : Int = 0x84DC
+pub let web_gl2_rendering_context_texture28 : Int = 0x84DC
 
 // WebGL2RenderingContext.TEXTURE29
 
 ///|
-pub let web_g_l2_rendering_context_texture29 : Int = 0x84DD
+pub let web_gl2_rendering_context_texture29 : Int = 0x84DD
 
 // WebGL2RenderingContext.TEXTURE30
 
 ///|
-pub let web_g_l2_rendering_context_texture30 : Int = 0x84DE
+pub let web_gl2_rendering_context_texture30 : Int = 0x84DE
 
 // WebGL2RenderingContext.TEXTURE31
 
 ///|
-pub let web_g_l2_rendering_context_texture31 : Int = 0x84DF
+pub let web_gl2_rendering_context_texture31 : Int = 0x84DF
 
 // WebGL2RenderingContext.ACTIVE_TEXTURE
 
 ///|
-pub let web_g_l2_rendering_context_active_texture : Int = 0x84E0
+pub let web_gl2_rendering_context_active_texture : Int = 0x84E0
 
 // WebGL2RenderingContext.REPEAT
 
 ///|
-pub let web_g_l2_rendering_context_repeat : Int = 0x2901
+pub let web_gl2_rendering_context_repeat : Int = 0x2901
 
 // WebGL2RenderingContext.CLAMP_TO_EDGE
 
 ///|
-pub let web_g_l2_rendering_context_clamp_to_edge : Int = 0x812F
+pub let web_gl2_rendering_context_clamp_to_edge : Int = 0x812F
 
 // WebGL2RenderingContext.MIRRORED_REPEAT
 
 ///|
-pub let web_g_l2_rendering_context_mirrored_repeat : Int = 0x8370
+pub let web_gl2_rendering_context_mirrored_repeat : Int = 0x8370
 
 // WebGL2RenderingContext.FLOAT_VEC2
 
 ///|
-pub let web_g_l2_rendering_context_float_vec2 : Int = 0x8B50
+pub let web_gl2_rendering_context_float_vec2 : Int = 0x8B50
 
 // WebGL2RenderingContext.FLOAT_VEC3
 
 ///|
-pub let web_g_l2_rendering_context_float_vec3 : Int = 0x8B51
+pub let web_gl2_rendering_context_float_vec3 : Int = 0x8B51
 
 // WebGL2RenderingContext.FLOAT_VEC4
 
 ///|
-pub let web_g_l2_rendering_context_float_vec4 : Int = 0x8B52
+pub let web_gl2_rendering_context_float_vec4 : Int = 0x8B52
 
 // WebGL2RenderingContext.INT_VEC2
 
 ///|
-pub let web_g_l2_rendering_context_int_vec2 : Int = 0x8B53
+pub let web_gl2_rendering_context_int_vec2 : Int = 0x8B53
 
 // WebGL2RenderingContext.INT_VEC3
 
 ///|
-pub let web_g_l2_rendering_context_int_vec3 : Int = 0x8B54
+pub let web_gl2_rendering_context_int_vec3 : Int = 0x8B54
 
 // WebGL2RenderingContext.INT_VEC4
 
 ///|
-pub let web_g_l2_rendering_context_int_vec4 : Int = 0x8B55
+pub let web_gl2_rendering_context_int_vec4 : Int = 0x8B55
 
 // WebGL2RenderingContext.BOOL
 
 ///|
-pub let web_g_l2_rendering_context_bool : Int = 0x8B56
+pub let web_gl2_rendering_context_bool : Int = 0x8B56
 
 // WebGL2RenderingContext.BOOL_VEC2
 
 ///|
-pub let web_g_l2_rendering_context_bool_vec2 : Int = 0x8B57
+pub let web_gl2_rendering_context_bool_vec2 : Int = 0x8B57
 
 // WebGL2RenderingContext.BOOL_VEC3
 
 ///|
-pub let web_g_l2_rendering_context_bool_vec3 : Int = 0x8B58
+pub let web_gl2_rendering_context_bool_vec3 : Int = 0x8B58
 
 // WebGL2RenderingContext.BOOL_VEC4
 
 ///|
-pub let web_g_l2_rendering_context_bool_vec4 : Int = 0x8B59
+pub let web_gl2_rendering_context_bool_vec4 : Int = 0x8B59
 
 // WebGL2RenderingContext.FLOAT_MAT2
 
 ///|
-pub let web_g_l2_rendering_context_float_mat2 : Int = 0x8B5A
+pub let web_gl2_rendering_context_float_mat2 : Int = 0x8B5A
 
 // WebGL2RenderingContext.FLOAT_MAT3
 
 ///|
-pub let web_g_l2_rendering_context_float_mat3 : Int = 0x8B5B
+pub let web_gl2_rendering_context_float_mat3 : Int = 0x8B5B
 
 // WebGL2RenderingContext.FLOAT_MAT4
 
 ///|
-pub let web_g_l2_rendering_context_float_mat4 : Int = 0x8B5C
+pub let web_gl2_rendering_context_float_mat4 : Int = 0x8B5C
 
 // WebGL2RenderingContext.SAMPLER_2D
 
 ///|
-pub let web_g_l2_rendering_context_sampler_2d : Int = 0x8B5E
+pub let web_gl2_rendering_context_sampler_2d : Int = 0x8B5E
 
 // WebGL2RenderingContext.SAMPLER_CUBE
 
 ///|
-pub let web_g_l2_rendering_context_sampler_cube : Int = 0x8B60
+pub let web_gl2_rendering_context_sampler_cube : Int = 0x8B60
 
 // WebGL2RenderingContext.VERTEX_ATTRIB_ARRAY_ENABLED
 
 ///|
-pub let web_g_l2_rendering_context_vertex_attrib_array_enabled : Int = 0x8622
+pub let web_gl2_rendering_context_vertex_attrib_array_enabled : Int = 0x8622
 
 // WebGL2RenderingContext.VERTEX_ATTRIB_ARRAY_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_vertex_attrib_array_size : Int = 0x8623
+pub let web_gl2_rendering_context_vertex_attrib_array_size : Int = 0x8623
 
 // WebGL2RenderingContext.VERTEX_ATTRIB_ARRAY_STRIDE
 
 ///|
-pub let web_g_l2_rendering_context_vertex_attrib_array_stride : Int = 0x8624
+pub let web_gl2_rendering_context_vertex_attrib_array_stride : Int = 0x8624
 
 // WebGL2RenderingContext.VERTEX_ATTRIB_ARRAY_TYPE
 
 ///|
-pub let web_g_l2_rendering_context_vertex_attrib_array_type : Int = 0x8625
+pub let web_gl2_rendering_context_vertex_attrib_array_type : Int = 0x8625
 
 // WebGL2RenderingContext.VERTEX_ATTRIB_ARRAY_NORMALIZED
 
 ///|
-pub let web_g_l2_rendering_context_vertex_attrib_array_normalized : Int = 0x886A
+pub let web_gl2_rendering_context_vertex_attrib_array_normalized : Int = 0x886A
 
 // WebGL2RenderingContext.VERTEX_ATTRIB_ARRAY_POINTER
 
 ///|
-pub let web_g_l2_rendering_context_vertex_attrib_array_pointer : Int = 0x8645
+pub let web_gl2_rendering_context_vertex_attrib_array_pointer : Int = 0x8645
 
 // WebGL2RenderingContext.VERTEX_ATTRIB_ARRAY_BUFFER_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_vertex_attrib_array_buffer_binding : Int = 0x889F
+pub let web_gl2_rendering_context_vertex_attrib_array_buffer_binding : Int = 0x889F
 
 // WebGL2RenderingContext.IMPLEMENTATION_COLOR_READ_TYPE
 
 ///|
-pub let web_g_l2_rendering_context_implementation_color_read_type : Int = 0x8B9A
+pub let web_gl2_rendering_context_implementation_color_read_type : Int = 0x8B9A
 
 // WebGL2RenderingContext.IMPLEMENTATION_COLOR_READ_FORMAT
 
 ///|
-pub let web_g_l2_rendering_context_implementation_color_read_format : Int = 0x8B9B
+pub let web_gl2_rendering_context_implementation_color_read_format : Int = 0x8B9B
 
 // WebGL2RenderingContext.COMPILE_STATUS
 
 ///|
-pub let web_g_l2_rendering_context_compile_status : Int = 0x8B81
+pub let web_gl2_rendering_context_compile_status : Int = 0x8B81
 
 // WebGL2RenderingContext.LOW_FLOAT
 
 ///|
-pub let web_g_l2_rendering_context_low_float : Int = 0x8DF0
+pub let web_gl2_rendering_context_low_float : Int = 0x8DF0
 
 // WebGL2RenderingContext.MEDIUM_FLOAT
 
 ///|
-pub let web_g_l2_rendering_context_medium_float : Int = 0x8DF1
+pub let web_gl2_rendering_context_medium_float : Int = 0x8DF1
 
 // WebGL2RenderingContext.HIGH_FLOAT
 
 ///|
-pub let web_g_l2_rendering_context_high_float : Int = 0x8DF2
+pub let web_gl2_rendering_context_high_float : Int = 0x8DF2
 
 // WebGL2RenderingContext.LOW_INT
 
 ///|
-pub let web_g_l2_rendering_context_low_int : Int = 0x8DF3
+pub let web_gl2_rendering_context_low_int : Int = 0x8DF3
 
 // WebGL2RenderingContext.MEDIUM_INT
 
 ///|
-pub let web_g_l2_rendering_context_medium_int : Int = 0x8DF4
+pub let web_gl2_rendering_context_medium_int : Int = 0x8DF4
 
 // WebGL2RenderingContext.HIGH_INT
 
 ///|
-pub let web_g_l2_rendering_context_high_int : Int = 0x8DF5
+pub let web_gl2_rendering_context_high_int : Int = 0x8DF5
 
 // WebGL2RenderingContext.FRAMEBUFFER
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer : Int = 0x8D40
+pub let web_gl2_rendering_context_framebuffer : Int = 0x8D40
 
 // WebGL2RenderingContext.RENDERBUFFER
 
 ///|
-pub let web_g_l2_rendering_context_renderbuffer : Int = 0x8D41
+pub let web_gl2_rendering_context_renderbuffer : Int = 0x8D41
 
 // WebGL2RenderingContext.RGBA4
 
 ///|
-pub let web_g_l2_rendering_context_rgba4 : Int = 0x8056
+pub let web_gl2_rendering_context_rgba4 : Int = 0x8056
 
 // WebGL2RenderingContext.RGB5_A1
 
 ///|
-pub let web_g_l2_rendering_context_rgb5_a1 : Int = 0x8057
+pub let web_gl2_rendering_context_rgb5_a1 : Int = 0x8057
 
 // WebGL2RenderingContext.RGBA8
 
 ///|
-pub let web_g_l2_rendering_context_rgba8 : Int = 0x8058
+pub let web_gl2_rendering_context_rgba8 : Int = 0x8058
 
 // WebGL2RenderingContext.RGB565
 
 ///|
-pub let web_g_l2_rendering_context_rgb565 : Int = 0x8D62
+pub let web_gl2_rendering_context_rgb565 : Int = 0x8D62
 
 // WebGL2RenderingContext.DEPTH_COMPONENT16
 
 ///|
-pub let web_g_l2_rendering_context_depth_component16 : Int = 0x81A5
+pub let web_gl2_rendering_context_depth_component16 : Int = 0x81A5
 
 // WebGL2RenderingContext.STENCIL_INDEX8
 
 ///|
-pub let web_g_l2_rendering_context_stencil_index8 : Int = 0x8D48
+pub let web_gl2_rendering_context_stencil_index8 : Int = 0x8D48
 
 // WebGL2RenderingContext.DEPTH_STENCIL
 
 ///|
-pub let web_g_l2_rendering_context_depth_stencil : Int = 0x84F9
+pub let web_gl2_rendering_context_depth_stencil : Int = 0x84F9
 
 // WebGL2RenderingContext.RENDERBUFFER_WIDTH
 
 ///|
-pub let web_g_l2_rendering_context_renderbuffer_width : Int = 0x8D42
+pub let web_gl2_rendering_context_renderbuffer_width : Int = 0x8D42
 
 // WebGL2RenderingContext.RENDERBUFFER_HEIGHT
 
 ///|
-pub let web_g_l2_rendering_context_renderbuffer_height : Int = 0x8D43
+pub let web_gl2_rendering_context_renderbuffer_height : Int = 0x8D43
 
 // WebGL2RenderingContext.RENDERBUFFER_INTERNAL_FORMAT
 
 ///|
-pub let web_g_l2_rendering_context_renderbuffer_internal_format : Int = 0x8D44
+pub let web_gl2_rendering_context_renderbuffer_internal_format : Int = 0x8D44
 
 // WebGL2RenderingContext.RENDERBUFFER_RED_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_renderbuffer_red_size : Int = 0x8D50
+pub let web_gl2_rendering_context_renderbuffer_red_size : Int = 0x8D50
 
 // WebGL2RenderingContext.RENDERBUFFER_GREEN_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_renderbuffer_green_size : Int = 0x8D51
+pub let web_gl2_rendering_context_renderbuffer_green_size : Int = 0x8D51
 
 // WebGL2RenderingContext.RENDERBUFFER_BLUE_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_renderbuffer_blue_size : Int = 0x8D52
+pub let web_gl2_rendering_context_renderbuffer_blue_size : Int = 0x8D52
 
 // WebGL2RenderingContext.RENDERBUFFER_ALPHA_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_renderbuffer_alpha_size : Int = 0x8D53
+pub let web_gl2_rendering_context_renderbuffer_alpha_size : Int = 0x8D53
 
 // WebGL2RenderingContext.RENDERBUFFER_DEPTH_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_renderbuffer_depth_size : Int = 0x8D54
+pub let web_gl2_rendering_context_renderbuffer_depth_size : Int = 0x8D54
 
 // WebGL2RenderingContext.RENDERBUFFER_STENCIL_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_renderbuffer_stencil_size : Int = 0x8D55
+pub let web_gl2_rendering_context_renderbuffer_stencil_size : Int = 0x8D55
 
 // WebGL2RenderingContext.FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_attachment_object_type : Int = 0x8CD0
+pub let web_gl2_rendering_context_framebuffer_attachment_object_type : Int = 0x8CD0
 
 // WebGL2RenderingContext.FRAMEBUFFER_ATTACHMENT_OBJECT_NAME
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_attachment_object_name : Int = 0x8CD1
+pub let web_gl2_rendering_context_framebuffer_attachment_object_name : Int = 0x8CD1
 
 // WebGL2RenderingContext.FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_attachment_texture_level : Int = 0x8CD2
+pub let web_gl2_rendering_context_framebuffer_attachment_texture_level : Int = 0x8CD2
 
 // WebGL2RenderingContext.FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_attachment_texture_cube_map_face : Int = 0x8CD3
+pub let web_gl2_rendering_context_framebuffer_attachment_texture_cube_map_face : Int = 0x8CD3
 
 // WebGL2RenderingContext.COLOR_ATTACHMENT0
 
 ///|
-pub let web_g_l2_rendering_context_color_attachment0 : Int = 0x8CE0
+pub let web_gl2_rendering_context_color_attachment0 : Int = 0x8CE0
 
 // WebGL2RenderingContext.DEPTH_ATTACHMENT
 
 ///|
-pub let web_g_l2_rendering_context_depth_attachment : Int = 0x8D00
+pub let web_gl2_rendering_context_depth_attachment : Int = 0x8D00
 
 // WebGL2RenderingContext.STENCIL_ATTACHMENT
 
 ///|
-pub let web_g_l2_rendering_context_stencil_attachment : Int = 0x8D20
+pub let web_gl2_rendering_context_stencil_attachment : Int = 0x8D20
 
 // WebGL2RenderingContext.DEPTH_STENCIL_ATTACHMENT
 
 ///|
-pub let web_g_l2_rendering_context_depth_stencil_attachment : Int = 0x821A
+pub let web_gl2_rendering_context_depth_stencil_attachment : Int = 0x821A
 
 // WebGL2RenderingContext.NONE
 
 ///|
-pub let web_g_l2_rendering_context_none : Int = 0
+pub let web_gl2_rendering_context_none : Int = 0
 
 // WebGL2RenderingContext.FRAMEBUFFER_COMPLETE
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_complete : Int = 0x8CD5
+pub let web_gl2_rendering_context_framebuffer_complete : Int = 0x8CD5
 
 // WebGL2RenderingContext.FRAMEBUFFER_INCOMPLETE_ATTACHMENT
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_incomplete_attachment : Int = 0x8CD6
+pub let web_gl2_rendering_context_framebuffer_incomplete_attachment : Int = 0x8CD6
 
 // WebGL2RenderingContext.FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_incomplete_missing_attachment : Int = 0x8CD7
+pub let web_gl2_rendering_context_framebuffer_incomplete_missing_attachment : Int = 0x8CD7
 
 // WebGL2RenderingContext.FRAMEBUFFER_INCOMPLETE_DIMENSIONS
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_incomplete_dimensions : Int = 0x8CD9
+pub let web_gl2_rendering_context_framebuffer_incomplete_dimensions : Int = 0x8CD9
 
 // WebGL2RenderingContext.FRAMEBUFFER_UNSUPPORTED
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_unsupported : Int = 0x8CDD
+pub let web_gl2_rendering_context_framebuffer_unsupported : Int = 0x8CDD
 
 // WebGL2RenderingContext.FRAMEBUFFER_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_binding : Int = 0x8CA6
+pub let web_gl2_rendering_context_framebuffer_binding : Int = 0x8CA6
 
 // WebGL2RenderingContext.RENDERBUFFER_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_renderbuffer_binding : Int = 0x8CA7
+pub let web_gl2_rendering_context_renderbuffer_binding : Int = 0x8CA7
 
 // WebGL2RenderingContext.MAX_RENDERBUFFER_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_max_renderbuffer_size : Int = 0x84E8
+pub let web_gl2_rendering_context_max_renderbuffer_size : Int = 0x84E8
 
 // WebGL2RenderingContext.INVALID_FRAMEBUFFER_OPERATION
 
 ///|
-pub let web_g_l2_rendering_context_invalid_framebuffer_operation : Int = 0x0506
+pub let web_gl2_rendering_context_invalid_framebuffer_operation : Int = 0x0506
 
 // WebGL2RenderingContext.UNPACK_FLIP_Y_WEBGL
 
 ///|
-pub let web_g_l2_rendering_context_unpack_flip_y_webgl : Int = 0x9240
+pub let web_gl2_rendering_context_unpack_flip_y_webgl : Int = 0x9240
 
 // WebGL2RenderingContext.UNPACK_PREMULTIPLY_ALPHA_WEBGL
 
 ///|
-pub let web_g_l2_rendering_context_unpack_premultiply_alpha_webgl : Int = 0x9241
+pub let web_gl2_rendering_context_unpack_premultiply_alpha_webgl : Int = 0x9241
 
 // WebGL2RenderingContext.CONTEXT_LOST_WEBGL
 
 ///|
-pub let web_g_l2_rendering_context_context_lost_webgl : Int = 0x9242
+pub let web_gl2_rendering_context_context_lost_webgl : Int = 0x9242
 
 // WebGL2RenderingContext.UNPACK_COLORSPACE_CONVERSION_WEBGL
 
 ///|
-pub let web_g_l2_rendering_context_unpack_colorspace_conversion_webgl : Int = 0x9243
+pub let web_gl2_rendering_context_unpack_colorspace_conversion_webgl : Int = 0x9243
 
 // WebGL2RenderingContext.BROWSER_DEFAULT_WEBGL
 
 ///|
-pub let web_g_l2_rendering_context_browser_default_webgl : Int = 0x9244
+pub let web_gl2_rendering_context_browser_default_webgl : Int = 0x9244
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_canvas(
@@ -1646,7 +1820,7 @@ pub extern "js" fn WebGL2RenderingContext::set_unpack_color_space(
 pub extern "js" fn WebGL2RenderingContext::get_context_attributes(
   self : WebGL2RenderingContext,
 ) -> WebGLContextAttributes? =
-  #| (self) => self.getContextAttributes()
+  #| (self) => { const v = self.getContextAttributes(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::is_context_lost(
@@ -1665,7 +1839,7 @@ pub extern "js" fn WebGL2RenderingContext::get_extension(
   self : WebGL2RenderingContext,
   name : String,
 ) -> JsValue? =
-  #| (self, name) => self.getExtension(name)
+  #| (self, name) => { const v = self.getExtension(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::drawing_buffer_storage(
@@ -1752,10 +1926,10 @@ pub extern "js" fn WebGL2RenderingContext::blend_equation(
 ///|
 pub extern "js" fn WebGL2RenderingContext::blend_equation_separate(
   self : WebGL2RenderingContext,
-  mode_r_g_b : GLenum,
+  mode_rgb : GLenum,
   mode_alpha : GLenum,
 ) -> Unit =
-  #| (self, mode_r_g_b, mode_alpha) => self.blendEquationSeparate(mode_r_g_b, mode_alpha)
+  #| (self, mode_rgb, mode_alpha) => self.blendEquationSeparate(mode_rgb, mode_alpha)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::blend_func(
@@ -1768,12 +1942,12 @@ pub extern "js" fn WebGL2RenderingContext::blend_func(
 ///|
 pub extern "js" fn WebGL2RenderingContext::blend_func_separate(
   self : WebGL2RenderingContext,
-  src_r_g_b : GLenum,
-  dst_r_g_b : GLenum,
+  src_rgb : GLenum,
+  dst_rgb : GLenum,
   src_alpha : GLenum,
   dst_alpha : GLenum,
 ) -> Unit =
-  #| (self, src_r_g_b, dst_r_g_b, src_alpha, dst_alpha) => self.blendFuncSeparate(src_r_g_b, dst_r_g_b, src_alpha, dst_alpha)
+  #| (self, src_rgb, dst_rgb, src_alpha, dst_alpha) => self.blendFuncSeparate(src_rgb, dst_rgb, src_alpha, dst_alpha)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::check_framebuffer_status(
@@ -1887,7 +2061,7 @@ pub extern "js" fn WebGL2RenderingContext::create_shader(
   self : WebGL2RenderingContext,
   type_ : GLenum,
 ) -> WebGLShader? =
-  #| (self, type_) => self.createShader(type_)
+  #| (self, type_) => { const v = self.createShader(type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::create_texture(
@@ -2074,7 +2248,7 @@ pub extern "js" fn WebGL2RenderingContext::get_active_attrib(
   program : WebGLProgram,
   index : GLuint,
 ) -> WebGLActiveInfo? =
-  #| (self, program, index) => self.getActiveAttrib(program, index)
+  #| (self, program, index) => { const v = self.getActiveAttrib(program, index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_active_uniform(
@@ -2082,7 +2256,7 @@ pub extern "js" fn WebGL2RenderingContext::get_active_uniform(
   program : WebGLProgram,
   index : GLuint,
 ) -> WebGLActiveInfo? =
-  #| (self, program, index) => self.getActiveUniform(program, index)
+  #| (self, program, index) => { const v = self.getActiveUniform(program, index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_attached_shaders(
@@ -2142,7 +2316,7 @@ pub extern "js" fn WebGL2RenderingContext::get_program_info_log(
   self : WebGL2RenderingContext,
   program : WebGLProgram,
 ) -> String? =
-  #| (self, program) => self.getProgramInfoLog(program)
+  #| (self, program) => { const v = self.getProgramInfoLog(program); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_renderbuffer_parameter(
@@ -2166,21 +2340,21 @@ pub extern "js" fn WebGL2RenderingContext::get_shader_precision_format(
   shadertype : GLenum,
   precisiontype : GLenum,
 ) -> WebGLShaderPrecisionFormat? =
-  #| (self, shadertype, precisiontype) => self.getShaderPrecisionFormat(shadertype, precisiontype)
+  #| (self, shadertype, precisiontype) => { const v = self.getShaderPrecisionFormat(shadertype, precisiontype); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_shader_info_log(
   self : WebGL2RenderingContext,
   shader : WebGLShader,
 ) -> String? =
-  #| (self, shader) => self.getShaderInfoLog(shader)
+  #| (self, shader) => { const v = self.getShaderInfoLog(shader); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_shader_source(
   self : WebGL2RenderingContext,
   shader : WebGLShader,
 ) -> String? =
-  #| (self, shader) => self.getShaderSource(shader)
+  #| (self, shader) => { const v = self.getShaderSource(shader); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_tex_parameter(
@@ -2204,7 +2378,7 @@ pub extern "js" fn WebGL2RenderingContext::get_uniform_location(
   program : WebGLProgram,
   name : String,
 ) -> WebGLUniformLocation? =
-  #| (self, program, name) => self.getUniformLocation(program, name)
+  #| (self, program, name) => { const v = self.getUniformLocation(program, name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_vertex_attrib(
@@ -2599,7 +2773,7 @@ pub extern "js" fn WebGL2RenderingContext::viewport(
   #| (self, x, y, width, height) => self.viewport(x, y, width, height)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::make_x_r_compatible(
+pub extern "js" fn WebGL2RenderingContext::make_xr_compatible(
   self : WebGL2RenderingContext,
 ) -> Promise[Unit] =
   #| (self) => self.makeXRCompatible()
@@ -2607,1312 +2781,1312 @@ pub extern "js" fn WebGL2RenderingContext::make_x_r_compatible(
 // WebGL2RenderingContext.READ_BUFFER
 
 ///|
-pub let web_g_l2_rendering_context_read_buffer : Int = 0x0C02
+pub let web_gl2_rendering_context_read_buffer : Int = 0x0C02
 
 // WebGL2RenderingContext.UNPACK_ROW_LENGTH
 
 ///|
-pub let web_g_l2_rendering_context_unpack_row_length : Int = 0x0CF2
+pub let web_gl2_rendering_context_unpack_row_length : Int = 0x0CF2
 
 // WebGL2RenderingContext.UNPACK_SKIP_ROWS
 
 ///|
-pub let web_g_l2_rendering_context_unpack_skip_rows : Int = 0x0CF3
+pub let web_gl2_rendering_context_unpack_skip_rows : Int = 0x0CF3
 
 // WebGL2RenderingContext.UNPACK_SKIP_PIXELS
 
 ///|
-pub let web_g_l2_rendering_context_unpack_skip_pixels : Int = 0x0CF4
+pub let web_gl2_rendering_context_unpack_skip_pixels : Int = 0x0CF4
 
 // WebGL2RenderingContext.PACK_ROW_LENGTH
 
 ///|
-pub let web_g_l2_rendering_context_pack_row_length : Int = 0x0D02
+pub let web_gl2_rendering_context_pack_row_length : Int = 0x0D02
 
 // WebGL2RenderingContext.PACK_SKIP_ROWS
 
 ///|
-pub let web_g_l2_rendering_context_pack_skip_rows : Int = 0x0D03
+pub let web_gl2_rendering_context_pack_skip_rows : Int = 0x0D03
 
 // WebGL2RenderingContext.PACK_SKIP_PIXELS
 
 ///|
-pub let web_g_l2_rendering_context_pack_skip_pixels : Int = 0x0D04
+pub let web_gl2_rendering_context_pack_skip_pixels : Int = 0x0D04
 
 // WebGL2RenderingContext.COLOR
 
 ///|
-pub let web_g_l2_rendering_context_color : Int = 0x1800
+pub let web_gl2_rendering_context_color : Int = 0x1800
 
 // WebGL2RenderingContext.DEPTH
 
 ///|
-pub let web_g_l2_rendering_context_depth : Int = 0x1801
+pub let web_gl2_rendering_context_depth : Int = 0x1801
 
 // WebGL2RenderingContext.STENCIL
 
 ///|
-pub let web_g_l2_rendering_context_stencil : Int = 0x1802
+pub let web_gl2_rendering_context_stencil : Int = 0x1802
 
 // WebGL2RenderingContext.RED
 
 ///|
-pub let web_g_l2_rendering_context_red : Int = 0x1903
+pub let web_gl2_rendering_context_red : Int = 0x1903
 
 // WebGL2RenderingContext.RGB8
 
 ///|
-pub let web_g_l2_rendering_context_rgb8 : Int = 0x8051
+pub let web_gl2_rendering_context_rgb8 : Int = 0x8051
 
 // WebGL2RenderingContext.RGB10_A2
 
 ///|
-pub let web_g_l2_rendering_context_rgb10_a2 : Int = 0x8059
+pub let web_gl2_rendering_context_rgb10_a2 : Int = 0x8059
 
 // WebGL2RenderingContext.TEXTURE_BINDING_3D
 
 ///|
-pub let web_g_l2_rendering_context_texture_binding_3d : Int = 0x806A
+pub let web_gl2_rendering_context_texture_binding_3d : Int = 0x806A
 
 // WebGL2RenderingContext.UNPACK_SKIP_IMAGES
 
 ///|
-pub let web_g_l2_rendering_context_unpack_skip_images : Int = 0x806D
+pub let web_gl2_rendering_context_unpack_skip_images : Int = 0x806D
 
 // WebGL2RenderingContext.UNPACK_IMAGE_HEIGHT
 
 ///|
-pub let web_g_l2_rendering_context_unpack_image_height : Int = 0x806E
+pub let web_gl2_rendering_context_unpack_image_height : Int = 0x806E
 
 // WebGL2RenderingContext.TEXTURE_3D
 
 ///|
-pub let web_g_l2_rendering_context_texture_3d : Int = 0x806F
+pub let web_gl2_rendering_context_texture_3d : Int = 0x806F
 
 // WebGL2RenderingContext.TEXTURE_WRAP_R
 
 ///|
-pub let web_g_l2_rendering_context_texture_wrap_r : Int = 0x8072
+pub let web_gl2_rendering_context_texture_wrap_r : Int = 0x8072
 
 // WebGL2RenderingContext.MAX_3D_TEXTURE_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_max_3d_texture_size : Int = 0x8073
+pub let web_gl2_rendering_context_max_3d_texture_size : Int = 0x8073
 
 // WebGL2RenderingContext.UNSIGNED_INT_2_10_10_10_REV
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_int_2_10_10_10_rev : Int = 0x8368
+pub let web_gl2_rendering_context_unsigned_int_2_10_10_10_rev : Int = 0x8368
 
 // WebGL2RenderingContext.MAX_ELEMENTS_VERTICES
 
 ///|
-pub let web_g_l2_rendering_context_max_elements_vertices : Int = 0x80E8
+pub let web_gl2_rendering_context_max_elements_vertices : Int = 0x80E8
 
 // WebGL2RenderingContext.MAX_ELEMENTS_INDICES
 
 ///|
-pub let web_g_l2_rendering_context_max_elements_indices : Int = 0x80E9
+pub let web_gl2_rendering_context_max_elements_indices : Int = 0x80E9
 
 // WebGL2RenderingContext.TEXTURE_MIN_LOD
 
 ///|
-pub let web_g_l2_rendering_context_texture_min_lod : Int = 0x813A
+pub let web_gl2_rendering_context_texture_min_lod : Int = 0x813A
 
 // WebGL2RenderingContext.TEXTURE_MAX_LOD
 
 ///|
-pub let web_g_l2_rendering_context_texture_max_lod : Int = 0x813B
+pub let web_gl2_rendering_context_texture_max_lod : Int = 0x813B
 
 // WebGL2RenderingContext.TEXTURE_BASE_LEVEL
 
 ///|
-pub let web_g_l2_rendering_context_texture_base_level : Int = 0x813C
+pub let web_gl2_rendering_context_texture_base_level : Int = 0x813C
 
 // WebGL2RenderingContext.TEXTURE_MAX_LEVEL
 
 ///|
-pub let web_g_l2_rendering_context_texture_max_level : Int = 0x813D
+pub let web_gl2_rendering_context_texture_max_level : Int = 0x813D
 
 // WebGL2RenderingContext.MIN
 
 ///|
-pub let web_g_l2_rendering_context_min : Int = 0x8007
+pub let web_gl2_rendering_context_min : Int = 0x8007
 
 // WebGL2RenderingContext.MAX
 
 ///|
-pub let web_g_l2_rendering_context_max : Int = 0x8008
+pub let web_gl2_rendering_context_max : Int = 0x8008
 
 // WebGL2RenderingContext.DEPTH_COMPONENT24
 
 ///|
-pub let web_g_l2_rendering_context_depth_component24 : Int = 0x81A6
+pub let web_gl2_rendering_context_depth_component24 : Int = 0x81A6
 
 // WebGL2RenderingContext.MAX_TEXTURE_LOD_BIAS
 
 ///|
-pub let web_g_l2_rendering_context_max_texture_lod_bias : Int = 0x84FD
+pub let web_gl2_rendering_context_max_texture_lod_bias : Int = 0x84FD
 
 // WebGL2RenderingContext.TEXTURE_COMPARE_MODE
 
 ///|
-pub let web_g_l2_rendering_context_texture_compare_mode : Int = 0x884C
+pub let web_gl2_rendering_context_texture_compare_mode : Int = 0x884C
 
 // WebGL2RenderingContext.TEXTURE_COMPARE_FUNC
 
 ///|
-pub let web_g_l2_rendering_context_texture_compare_func : Int = 0x884D
+pub let web_gl2_rendering_context_texture_compare_func : Int = 0x884D
 
 // WebGL2RenderingContext.CURRENT_QUERY
 
 ///|
-pub let web_g_l2_rendering_context_current_query : Int = 0x8865
+pub let web_gl2_rendering_context_current_query : Int = 0x8865
 
 // WebGL2RenderingContext.QUERY_RESULT
 
 ///|
-pub let web_g_l2_rendering_context_query_result : Int = 0x8866
+pub let web_gl2_rendering_context_query_result : Int = 0x8866
 
 // WebGL2RenderingContext.QUERY_RESULT_AVAILABLE
 
 ///|
-pub let web_g_l2_rendering_context_query_result_available : Int = 0x8867
+pub let web_gl2_rendering_context_query_result_available : Int = 0x8867
 
 // WebGL2RenderingContext.STREAM_READ
 
 ///|
-pub let web_g_l2_rendering_context_stream_read : Int = 0x88E1
+pub let web_gl2_rendering_context_stream_read : Int = 0x88E1
 
 // WebGL2RenderingContext.STREAM_COPY
 
 ///|
-pub let web_g_l2_rendering_context_stream_copy : Int = 0x88E2
+pub let web_gl2_rendering_context_stream_copy : Int = 0x88E2
 
 // WebGL2RenderingContext.STATIC_READ
 
 ///|
-pub let web_g_l2_rendering_context_static_read : Int = 0x88E5
+pub let web_gl2_rendering_context_static_read : Int = 0x88E5
 
 // WebGL2RenderingContext.STATIC_COPY
 
 ///|
-pub let web_g_l2_rendering_context_static_copy : Int = 0x88E6
+pub let web_gl2_rendering_context_static_copy : Int = 0x88E6
 
 // WebGL2RenderingContext.DYNAMIC_READ
 
 ///|
-pub let web_g_l2_rendering_context_dynamic_read : Int = 0x88E9
+pub let web_gl2_rendering_context_dynamic_read : Int = 0x88E9
 
 // WebGL2RenderingContext.DYNAMIC_COPY
 
 ///|
-pub let web_g_l2_rendering_context_dynamic_copy : Int = 0x88EA
+pub let web_gl2_rendering_context_dynamic_copy : Int = 0x88EA
 
 // WebGL2RenderingContext.MAX_DRAW_BUFFERS
 
 ///|
-pub let web_g_l2_rendering_context_max_draw_buffers : Int = 0x8824
+pub let web_gl2_rendering_context_max_draw_buffers : Int = 0x8824
 
 // WebGL2RenderingContext.DRAW_BUFFER0
 
 ///|
-pub let web_g_l2_rendering_context_draw_buffer0 : Int = 0x8825
+pub let web_gl2_rendering_context_draw_buffer0 : Int = 0x8825
 
 // WebGL2RenderingContext.DRAW_BUFFER1
 
 ///|
-pub let web_g_l2_rendering_context_draw_buffer1 : Int = 0x8826
+pub let web_gl2_rendering_context_draw_buffer1 : Int = 0x8826
 
 // WebGL2RenderingContext.DRAW_BUFFER2
 
 ///|
-pub let web_g_l2_rendering_context_draw_buffer2 : Int = 0x8827
+pub let web_gl2_rendering_context_draw_buffer2 : Int = 0x8827
 
 // WebGL2RenderingContext.DRAW_BUFFER3
 
 ///|
-pub let web_g_l2_rendering_context_draw_buffer3 : Int = 0x8828
+pub let web_gl2_rendering_context_draw_buffer3 : Int = 0x8828
 
 // WebGL2RenderingContext.DRAW_BUFFER4
 
 ///|
-pub let web_g_l2_rendering_context_draw_buffer4 : Int = 0x8829
+pub let web_gl2_rendering_context_draw_buffer4 : Int = 0x8829
 
 // WebGL2RenderingContext.DRAW_BUFFER5
 
 ///|
-pub let web_g_l2_rendering_context_draw_buffer5 : Int = 0x882A
+pub let web_gl2_rendering_context_draw_buffer5 : Int = 0x882A
 
 // WebGL2RenderingContext.DRAW_BUFFER6
 
 ///|
-pub let web_g_l2_rendering_context_draw_buffer6 : Int = 0x882B
+pub let web_gl2_rendering_context_draw_buffer6 : Int = 0x882B
 
 // WebGL2RenderingContext.DRAW_BUFFER7
 
 ///|
-pub let web_g_l2_rendering_context_draw_buffer7 : Int = 0x882C
+pub let web_gl2_rendering_context_draw_buffer7 : Int = 0x882C
 
 // WebGL2RenderingContext.DRAW_BUFFER8
 
 ///|
-pub let web_g_l2_rendering_context_draw_buffer8 : Int = 0x882D
+pub let web_gl2_rendering_context_draw_buffer8 : Int = 0x882D
 
 // WebGL2RenderingContext.DRAW_BUFFER9
 
 ///|
-pub let web_g_l2_rendering_context_draw_buffer9 : Int = 0x882E
+pub let web_gl2_rendering_context_draw_buffer9 : Int = 0x882E
 
 // WebGL2RenderingContext.DRAW_BUFFER10
 
 ///|
-pub let web_g_l2_rendering_context_draw_buffer10 : Int = 0x882F
+pub let web_gl2_rendering_context_draw_buffer10 : Int = 0x882F
 
 // WebGL2RenderingContext.DRAW_BUFFER11
 
 ///|
-pub let web_g_l2_rendering_context_draw_buffer11 : Int = 0x8830
+pub let web_gl2_rendering_context_draw_buffer11 : Int = 0x8830
 
 // WebGL2RenderingContext.DRAW_BUFFER12
 
 ///|
-pub let web_g_l2_rendering_context_draw_buffer12 : Int = 0x8831
+pub let web_gl2_rendering_context_draw_buffer12 : Int = 0x8831
 
 // WebGL2RenderingContext.DRAW_BUFFER13
 
 ///|
-pub let web_g_l2_rendering_context_draw_buffer13 : Int = 0x8832
+pub let web_gl2_rendering_context_draw_buffer13 : Int = 0x8832
 
 // WebGL2RenderingContext.DRAW_BUFFER14
 
 ///|
-pub let web_g_l2_rendering_context_draw_buffer14 : Int = 0x8833
+pub let web_gl2_rendering_context_draw_buffer14 : Int = 0x8833
 
 // WebGL2RenderingContext.DRAW_BUFFER15
 
 ///|
-pub let web_g_l2_rendering_context_draw_buffer15 : Int = 0x8834
+pub let web_gl2_rendering_context_draw_buffer15 : Int = 0x8834
 
 // WebGL2RenderingContext.MAX_FRAGMENT_UNIFORM_COMPONENTS
 
 ///|
-pub let web_g_l2_rendering_context_max_fragment_uniform_components : Int = 0x8B49
+pub let web_gl2_rendering_context_max_fragment_uniform_components : Int = 0x8B49
 
 // WebGL2RenderingContext.MAX_VERTEX_UNIFORM_COMPONENTS
 
 ///|
-pub let web_g_l2_rendering_context_max_vertex_uniform_components : Int = 0x8B4A
+pub let web_gl2_rendering_context_max_vertex_uniform_components : Int = 0x8B4A
 
 // WebGL2RenderingContext.SAMPLER_3D
 
 ///|
-pub let web_g_l2_rendering_context_sampler_3d : Int = 0x8B5F
+pub let web_gl2_rendering_context_sampler_3d : Int = 0x8B5F
 
 // WebGL2RenderingContext.SAMPLER_2D_SHADOW
 
 ///|
-pub let web_g_l2_rendering_context_sampler_2d_shadow : Int = 0x8B62
+pub let web_gl2_rendering_context_sampler_2d_shadow : Int = 0x8B62
 
 // WebGL2RenderingContext.FRAGMENT_SHADER_DERIVATIVE_HINT
 
 ///|
-pub let web_g_l2_rendering_context_fragment_shader_derivative_hint : Int = 0x8B8B
+pub let web_gl2_rendering_context_fragment_shader_derivative_hint : Int = 0x8B8B
 
 // WebGL2RenderingContext.PIXEL_PACK_BUFFER
 
 ///|
-pub let web_g_l2_rendering_context_pixel_pack_buffer : Int = 0x88EB
+pub let web_gl2_rendering_context_pixel_pack_buffer : Int = 0x88EB
 
 // WebGL2RenderingContext.PIXEL_UNPACK_BUFFER
 
 ///|
-pub let web_g_l2_rendering_context_pixel_unpack_buffer : Int = 0x88EC
+pub let web_gl2_rendering_context_pixel_unpack_buffer : Int = 0x88EC
 
 // WebGL2RenderingContext.PIXEL_PACK_BUFFER_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_pixel_pack_buffer_binding : Int = 0x88ED
+pub let web_gl2_rendering_context_pixel_pack_buffer_binding : Int = 0x88ED
 
 // WebGL2RenderingContext.PIXEL_UNPACK_BUFFER_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_pixel_unpack_buffer_binding : Int = 0x88EF
+pub let web_gl2_rendering_context_pixel_unpack_buffer_binding : Int = 0x88EF
 
 // WebGL2RenderingContext.FLOAT_MAT2x3
 
 ///|
-pub let web_g_l2_rendering_context_float_mat2x3 : Int = 0x8B65
+pub let web_gl2_rendering_context_float_mat2x3 : Int = 0x8B65
 
 // WebGL2RenderingContext.FLOAT_MAT2x4
 
 ///|
-pub let web_g_l2_rendering_context_float_mat2x4 : Int = 0x8B66
+pub let web_gl2_rendering_context_float_mat2x4 : Int = 0x8B66
 
 // WebGL2RenderingContext.FLOAT_MAT3x2
 
 ///|
-pub let web_g_l2_rendering_context_float_mat3x2 : Int = 0x8B67
+pub let web_gl2_rendering_context_float_mat3x2 : Int = 0x8B67
 
 // WebGL2RenderingContext.FLOAT_MAT3x4
 
 ///|
-pub let web_g_l2_rendering_context_float_mat3x4 : Int = 0x8B68
+pub let web_gl2_rendering_context_float_mat3x4 : Int = 0x8B68
 
 // WebGL2RenderingContext.FLOAT_MAT4x2
 
 ///|
-pub let web_g_l2_rendering_context_float_mat4x2 : Int = 0x8B69
+pub let web_gl2_rendering_context_float_mat4x2 : Int = 0x8B69
 
 // WebGL2RenderingContext.FLOAT_MAT4x3
 
 ///|
-pub let web_g_l2_rendering_context_float_mat4x3 : Int = 0x8B6A
+pub let web_gl2_rendering_context_float_mat4x3 : Int = 0x8B6A
 
 // WebGL2RenderingContext.SRGB
 
 ///|
-pub let web_g_l2_rendering_context_srgb : Int = 0x8C40
+pub let web_gl2_rendering_context_srgb : Int = 0x8C40
 
 // WebGL2RenderingContext.SRGB8
 
 ///|
-pub let web_g_l2_rendering_context_srgb8 : Int = 0x8C41
+pub let web_gl2_rendering_context_srgb8 : Int = 0x8C41
 
 // WebGL2RenderingContext.SRGB8_ALPHA8
 
 ///|
-pub let web_g_l2_rendering_context_srgb8_alpha8 : Int = 0x8C43
+pub let web_gl2_rendering_context_srgb8_alpha8 : Int = 0x8C43
 
 // WebGL2RenderingContext.COMPARE_REF_TO_TEXTURE
 
 ///|
-pub let web_g_l2_rendering_context_compare_ref_to_texture : Int = 0x884E
+pub let web_gl2_rendering_context_compare_ref_to_texture : Int = 0x884E
 
 // WebGL2RenderingContext.RGBA32F
 
 ///|
-pub let web_g_l2_rendering_context_rgba32f : Int = 0x8814
+pub let web_gl2_rendering_context_rgba32f : Int = 0x8814
 
 // WebGL2RenderingContext.RGB32F
 
 ///|
-pub let web_g_l2_rendering_context_rgb32f : Int = 0x8815
+pub let web_gl2_rendering_context_rgb32f : Int = 0x8815
 
 // WebGL2RenderingContext.RGBA16F
 
 ///|
-pub let web_g_l2_rendering_context_rgba16f : Int = 0x881A
+pub let web_gl2_rendering_context_rgba16f : Int = 0x881A
 
 // WebGL2RenderingContext.RGB16F
 
 ///|
-pub let web_g_l2_rendering_context_rgb16f : Int = 0x881B
+pub let web_gl2_rendering_context_rgb16f : Int = 0x881B
 
 // WebGL2RenderingContext.VERTEX_ATTRIB_ARRAY_INTEGER
 
 ///|
-pub let web_g_l2_rendering_context_vertex_attrib_array_integer : Int = 0x88FD
+pub let web_gl2_rendering_context_vertex_attrib_array_integer : Int = 0x88FD
 
 // WebGL2RenderingContext.MAX_ARRAY_TEXTURE_LAYERS
 
 ///|
-pub let web_g_l2_rendering_context_max_array_texture_layers : Int = 0x88FF
+pub let web_gl2_rendering_context_max_array_texture_layers : Int = 0x88FF
 
 // WebGL2RenderingContext.MIN_PROGRAM_TEXEL_OFFSET
 
 ///|
-pub let web_g_l2_rendering_context_min_program_texel_offset : Int = 0x8904
+pub let web_gl2_rendering_context_min_program_texel_offset : Int = 0x8904
 
 // WebGL2RenderingContext.MAX_PROGRAM_TEXEL_OFFSET
 
 ///|
-pub let web_g_l2_rendering_context_max_program_texel_offset : Int = 0x8905
+pub let web_gl2_rendering_context_max_program_texel_offset : Int = 0x8905
 
 // WebGL2RenderingContext.MAX_VARYING_COMPONENTS
 
 ///|
-pub let web_g_l2_rendering_context_max_varying_components : Int = 0x8B4B
+pub let web_gl2_rendering_context_max_varying_components : Int = 0x8B4B
 
 // WebGL2RenderingContext.TEXTURE_2D_ARRAY
 
 ///|
-pub let web_g_l2_rendering_context_texture_2d_array : Int = 0x8C1A
+pub let web_gl2_rendering_context_texture_2d_array : Int = 0x8C1A
 
 // WebGL2RenderingContext.TEXTURE_BINDING_2D_ARRAY
 
 ///|
-pub let web_g_l2_rendering_context_texture_binding_2d_array : Int = 0x8C1D
+pub let web_gl2_rendering_context_texture_binding_2d_array : Int = 0x8C1D
 
 // WebGL2RenderingContext.R11F_G11F_B10F
 
 ///|
-pub let web_g_l2_rendering_context_r11f_g11f_b10f : Int = 0x8C3A
+pub let web_gl2_rendering_context_r11f_g11f_b10f : Int = 0x8C3A
 
 // WebGL2RenderingContext.UNSIGNED_INT_10F_11F_11F_REV
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_int_10f_11f_11f_rev : Int = 0x8C3B
+pub let web_gl2_rendering_context_unsigned_int_10f_11f_11f_rev : Int = 0x8C3B
 
 // WebGL2RenderingContext.RGB9_E5
 
 ///|
-pub let web_g_l2_rendering_context_rgb9_e5 : Int = 0x8C3D
+pub let web_gl2_rendering_context_rgb9_e5 : Int = 0x8C3D
 
 // WebGL2RenderingContext.UNSIGNED_INT_5_9_9_9_REV
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_int_5_9_9_9_rev : Int = 0x8C3E
+pub let web_gl2_rendering_context_unsigned_int_5_9_9_9_rev : Int = 0x8C3E
 
 // WebGL2RenderingContext.TRANSFORM_FEEDBACK_BUFFER_MODE
 
 ///|
-pub let web_g_l2_rendering_context_transform_feedback_buffer_mode : Int = 0x8C7F
+pub let web_gl2_rendering_context_transform_feedback_buffer_mode : Int = 0x8C7F
 
 // WebGL2RenderingContext.MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS
 
 ///|
-pub let web_g_l2_rendering_context_max_transform_feedback_separate_components : Int = 0x8C80
+pub let web_gl2_rendering_context_max_transform_feedback_separate_components : Int = 0x8C80
 
 // WebGL2RenderingContext.TRANSFORM_FEEDBACK_VARYINGS
 
 ///|
-pub let web_g_l2_rendering_context_transform_feedback_varyings : Int = 0x8C83
+pub let web_gl2_rendering_context_transform_feedback_varyings : Int = 0x8C83
 
 // WebGL2RenderingContext.TRANSFORM_FEEDBACK_BUFFER_START
 
 ///|
-pub let web_g_l2_rendering_context_transform_feedback_buffer_start : Int = 0x8C84
+pub let web_gl2_rendering_context_transform_feedback_buffer_start : Int = 0x8C84
 
 // WebGL2RenderingContext.TRANSFORM_FEEDBACK_BUFFER_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_transform_feedback_buffer_size : Int = 0x8C85
+pub let web_gl2_rendering_context_transform_feedback_buffer_size : Int = 0x8C85
 
 // WebGL2RenderingContext.TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN
 
 ///|
-pub let web_g_l2_rendering_context_transform_feedback_primitives_written : Int = 0x8C88
+pub let web_gl2_rendering_context_transform_feedback_primitives_written : Int = 0x8C88
 
 // WebGL2RenderingContext.RASTERIZER_DISCARD
 
 ///|
-pub let web_g_l2_rendering_context_rasterizer_discard : Int = 0x8C89
+pub let web_gl2_rendering_context_rasterizer_discard : Int = 0x8C89
 
 // WebGL2RenderingContext.MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS
 
 ///|
-pub let web_g_l2_rendering_context_max_transform_feedback_interleaved_components : Int = 0x8C8A
+pub let web_gl2_rendering_context_max_transform_feedback_interleaved_components : Int = 0x8C8A
 
 // WebGL2RenderingContext.MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS
 
 ///|
-pub let web_g_l2_rendering_context_max_transform_feedback_separate_attribs : Int = 0x8C8B
+pub let web_gl2_rendering_context_max_transform_feedback_separate_attribs : Int = 0x8C8B
 
 // WebGL2RenderingContext.INTERLEAVED_ATTRIBS
 
 ///|
-pub let web_g_l2_rendering_context_interleaved_attribs : Int = 0x8C8C
+pub let web_gl2_rendering_context_interleaved_attribs : Int = 0x8C8C
 
 // WebGL2RenderingContext.SEPARATE_ATTRIBS
 
 ///|
-pub let web_g_l2_rendering_context_separate_attribs : Int = 0x8C8D
+pub let web_gl2_rendering_context_separate_attribs : Int = 0x8C8D
 
 // WebGL2RenderingContext.TRANSFORM_FEEDBACK_BUFFER
 
 ///|
-pub let web_g_l2_rendering_context_transform_feedback_buffer : Int = 0x8C8E
+pub let web_gl2_rendering_context_transform_feedback_buffer : Int = 0x8C8E
 
 // WebGL2RenderingContext.TRANSFORM_FEEDBACK_BUFFER_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_transform_feedback_buffer_binding : Int = 0x8C8F
+pub let web_gl2_rendering_context_transform_feedback_buffer_binding : Int = 0x8C8F
 
 // WebGL2RenderingContext.RGBA32UI
 
 ///|
-pub let web_g_l2_rendering_context_rgba32ui : Int = 0x8D70
+pub let web_gl2_rendering_context_rgba32ui : Int = 0x8D70
 
 // WebGL2RenderingContext.RGB32UI
 
 ///|
-pub let web_g_l2_rendering_context_rgb32ui : Int = 0x8D71
+pub let web_gl2_rendering_context_rgb32ui : Int = 0x8D71
 
 // WebGL2RenderingContext.RGBA16UI
 
 ///|
-pub let web_g_l2_rendering_context_rgba16ui : Int = 0x8D76
+pub let web_gl2_rendering_context_rgba16ui : Int = 0x8D76
 
 // WebGL2RenderingContext.RGB16UI
 
 ///|
-pub let web_g_l2_rendering_context_rgb16ui : Int = 0x8D77
+pub let web_gl2_rendering_context_rgb16ui : Int = 0x8D77
 
 // WebGL2RenderingContext.RGBA8UI
 
 ///|
-pub let web_g_l2_rendering_context_rgba8ui : Int = 0x8D7C
+pub let web_gl2_rendering_context_rgba8ui : Int = 0x8D7C
 
 // WebGL2RenderingContext.RGB8UI
 
 ///|
-pub let web_g_l2_rendering_context_rgb8ui : Int = 0x8D7D
+pub let web_gl2_rendering_context_rgb8ui : Int = 0x8D7D
 
 // WebGL2RenderingContext.RGBA32I
 
 ///|
-pub let web_g_l2_rendering_context_rgba32i : Int = 0x8D82
+pub let web_gl2_rendering_context_rgba32i : Int = 0x8D82
 
 // WebGL2RenderingContext.RGB32I
 
 ///|
-pub let web_g_l2_rendering_context_rgb32i : Int = 0x8D83
+pub let web_gl2_rendering_context_rgb32i : Int = 0x8D83
 
 // WebGL2RenderingContext.RGBA16I
 
 ///|
-pub let web_g_l2_rendering_context_rgba16i : Int = 0x8D88
+pub let web_gl2_rendering_context_rgba16i : Int = 0x8D88
 
 // WebGL2RenderingContext.RGB16I
 
 ///|
-pub let web_g_l2_rendering_context_rgb16i : Int = 0x8D89
+pub let web_gl2_rendering_context_rgb16i : Int = 0x8D89
 
 // WebGL2RenderingContext.RGBA8I
 
 ///|
-pub let web_g_l2_rendering_context_rgba8i : Int = 0x8D8E
+pub let web_gl2_rendering_context_rgba8i : Int = 0x8D8E
 
 // WebGL2RenderingContext.RGB8I
 
 ///|
-pub let web_g_l2_rendering_context_rgb8i : Int = 0x8D8F
+pub let web_gl2_rendering_context_rgb8i : Int = 0x8D8F
 
 // WebGL2RenderingContext.RED_INTEGER
 
 ///|
-pub let web_g_l2_rendering_context_red_integer : Int = 0x8D94
+pub let web_gl2_rendering_context_red_integer : Int = 0x8D94
 
 // WebGL2RenderingContext.RGB_INTEGER
 
 ///|
-pub let web_g_l2_rendering_context_rgb_integer : Int = 0x8D98
+pub let web_gl2_rendering_context_rgb_integer : Int = 0x8D98
 
 // WebGL2RenderingContext.RGBA_INTEGER
 
 ///|
-pub let web_g_l2_rendering_context_rgba_integer : Int = 0x8D99
+pub let web_gl2_rendering_context_rgba_integer : Int = 0x8D99
 
 // WebGL2RenderingContext.SAMPLER_2D_ARRAY
 
 ///|
-pub let web_g_l2_rendering_context_sampler_2d_array : Int = 0x8DC1
+pub let web_gl2_rendering_context_sampler_2d_array : Int = 0x8DC1
 
 // WebGL2RenderingContext.SAMPLER_2D_ARRAY_SHADOW
 
 ///|
-pub let web_g_l2_rendering_context_sampler_2d_array_shadow : Int = 0x8DC4
+pub let web_gl2_rendering_context_sampler_2d_array_shadow : Int = 0x8DC4
 
 // WebGL2RenderingContext.SAMPLER_CUBE_SHADOW
 
 ///|
-pub let web_g_l2_rendering_context_sampler_cube_shadow : Int = 0x8DC5
+pub let web_gl2_rendering_context_sampler_cube_shadow : Int = 0x8DC5
 
 // WebGL2RenderingContext.UNSIGNED_INT_VEC2
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_int_vec2 : Int = 0x8DC6
+pub let web_gl2_rendering_context_unsigned_int_vec2 : Int = 0x8DC6
 
 // WebGL2RenderingContext.UNSIGNED_INT_VEC3
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_int_vec3 : Int = 0x8DC7
+pub let web_gl2_rendering_context_unsigned_int_vec3 : Int = 0x8DC7
 
 // WebGL2RenderingContext.UNSIGNED_INT_VEC4
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_int_vec4 : Int = 0x8DC8
+pub let web_gl2_rendering_context_unsigned_int_vec4 : Int = 0x8DC8
 
 // WebGL2RenderingContext.INT_SAMPLER_2D
 
 ///|
-pub let web_g_l2_rendering_context_int_sampler_2d : Int = 0x8DCA
+pub let web_gl2_rendering_context_int_sampler_2d : Int = 0x8DCA
 
 // WebGL2RenderingContext.INT_SAMPLER_3D
 
 ///|
-pub let web_g_l2_rendering_context_int_sampler_3d : Int = 0x8DCB
+pub let web_gl2_rendering_context_int_sampler_3d : Int = 0x8DCB
 
 // WebGL2RenderingContext.INT_SAMPLER_CUBE
 
 ///|
-pub let web_g_l2_rendering_context_int_sampler_cube : Int = 0x8DCC
+pub let web_gl2_rendering_context_int_sampler_cube : Int = 0x8DCC
 
 // WebGL2RenderingContext.INT_SAMPLER_2D_ARRAY
 
 ///|
-pub let web_g_l2_rendering_context_int_sampler_2d_array : Int = 0x8DCF
+pub let web_gl2_rendering_context_int_sampler_2d_array : Int = 0x8DCF
 
 // WebGL2RenderingContext.UNSIGNED_INT_SAMPLER_2D
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_int_sampler_2d : Int = 0x8DD2
+pub let web_gl2_rendering_context_unsigned_int_sampler_2d : Int = 0x8DD2
 
 // WebGL2RenderingContext.UNSIGNED_INT_SAMPLER_3D
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_int_sampler_3d : Int = 0x8DD3
+pub let web_gl2_rendering_context_unsigned_int_sampler_3d : Int = 0x8DD3
 
 // WebGL2RenderingContext.UNSIGNED_INT_SAMPLER_CUBE
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_int_sampler_cube : Int = 0x8DD4
+pub let web_gl2_rendering_context_unsigned_int_sampler_cube : Int = 0x8DD4
 
 // WebGL2RenderingContext.UNSIGNED_INT_SAMPLER_2D_ARRAY
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_int_sampler_2d_array : Int = 0x8DD7
+pub let web_gl2_rendering_context_unsigned_int_sampler_2d_array : Int = 0x8DD7
 
 // WebGL2RenderingContext.DEPTH_COMPONENT32F
 
 ///|
-pub let web_g_l2_rendering_context_depth_component32f : Int = 0x8CAC
+pub let web_gl2_rendering_context_depth_component32f : Int = 0x8CAC
 
 // WebGL2RenderingContext.DEPTH32F_STENCIL8
 
 ///|
-pub let web_g_l2_rendering_context_depth32f_stencil8 : Int = 0x8CAD
+pub let web_gl2_rendering_context_depth32f_stencil8 : Int = 0x8CAD
 
 // WebGL2RenderingContext.FLOAT_32_UNSIGNED_INT_24_8_REV
 
 ///|
-pub let web_g_l2_rendering_context_float_32_unsigned_int_24_8_rev : Int = 0x8DAD
+pub let web_gl2_rendering_context_float_32_unsigned_int_24_8_rev : Int = 0x8DAD
 
 // WebGL2RenderingContext.FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_attachment_color_encoding : Int = 0x8210
+pub let web_gl2_rendering_context_framebuffer_attachment_color_encoding : Int = 0x8210
 
 // WebGL2RenderingContext.FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_attachment_component_type : Int = 0x8211
+pub let web_gl2_rendering_context_framebuffer_attachment_component_type : Int = 0x8211
 
 // WebGL2RenderingContext.FRAMEBUFFER_ATTACHMENT_RED_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_attachment_red_size : Int = 0x8212
+pub let web_gl2_rendering_context_framebuffer_attachment_red_size : Int = 0x8212
 
 // WebGL2RenderingContext.FRAMEBUFFER_ATTACHMENT_GREEN_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_attachment_green_size : Int = 0x8213
+pub let web_gl2_rendering_context_framebuffer_attachment_green_size : Int = 0x8213
 
 // WebGL2RenderingContext.FRAMEBUFFER_ATTACHMENT_BLUE_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_attachment_blue_size : Int = 0x8214
+pub let web_gl2_rendering_context_framebuffer_attachment_blue_size : Int = 0x8214
 
 // WebGL2RenderingContext.FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_attachment_alpha_size : Int = 0x8215
+pub let web_gl2_rendering_context_framebuffer_attachment_alpha_size : Int = 0x8215
 
 // WebGL2RenderingContext.FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_attachment_depth_size : Int = 0x8216
+pub let web_gl2_rendering_context_framebuffer_attachment_depth_size : Int = 0x8216
 
 // WebGL2RenderingContext.FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_attachment_stencil_size : Int = 0x8217
+pub let web_gl2_rendering_context_framebuffer_attachment_stencil_size : Int = 0x8217
 
 // WebGL2RenderingContext.FRAMEBUFFER_DEFAULT
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_default : Int = 0x8218
+pub let web_gl2_rendering_context_framebuffer_default : Int = 0x8218
 
 // WebGL2RenderingContext.UNSIGNED_INT_24_8
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_int_24_8 : Int = 0x84FA
+pub let web_gl2_rendering_context_unsigned_int_24_8 : Int = 0x84FA
 
 // WebGL2RenderingContext.DEPTH24_STENCIL8
 
 ///|
-pub let web_g_l2_rendering_context_depth24_stencil8 : Int = 0x88F0
+pub let web_gl2_rendering_context_depth24_stencil8 : Int = 0x88F0
 
 // WebGL2RenderingContext.UNSIGNED_NORMALIZED
 
 ///|
-pub let web_g_l2_rendering_context_unsigned_normalized : Int = 0x8C17
+pub let web_gl2_rendering_context_unsigned_normalized : Int = 0x8C17
 
 // WebGL2RenderingContext.DRAW_FRAMEBUFFER_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_draw_framebuffer_binding : Int = 0x8CA6
+pub let web_gl2_rendering_context_draw_framebuffer_binding : Int = 0x8CA6
 
 // WebGL2RenderingContext.READ_FRAMEBUFFER
 
 ///|
-pub let web_g_l2_rendering_context_read_framebuffer : Int = 0x8CA8
+pub let web_gl2_rendering_context_read_framebuffer : Int = 0x8CA8
 
 // WebGL2RenderingContext.DRAW_FRAMEBUFFER
 
 ///|
-pub let web_g_l2_rendering_context_draw_framebuffer : Int = 0x8CA9
+pub let web_gl2_rendering_context_draw_framebuffer : Int = 0x8CA9
 
 // WebGL2RenderingContext.READ_FRAMEBUFFER_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_read_framebuffer_binding : Int = 0x8CAA
+pub let web_gl2_rendering_context_read_framebuffer_binding : Int = 0x8CAA
 
 // WebGL2RenderingContext.RENDERBUFFER_SAMPLES
 
 ///|
-pub let web_g_l2_rendering_context_renderbuffer_samples : Int = 0x8CAB
+pub let web_gl2_rendering_context_renderbuffer_samples : Int = 0x8CAB
 
 // WebGL2RenderingContext.FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_attachment_texture_layer : Int = 0x8CD4
+pub let web_gl2_rendering_context_framebuffer_attachment_texture_layer : Int = 0x8CD4
 
 // WebGL2RenderingContext.MAX_COLOR_ATTACHMENTS
 
 ///|
-pub let web_g_l2_rendering_context_max_color_attachments : Int = 0x8CDF
+pub let web_gl2_rendering_context_max_color_attachments : Int = 0x8CDF
 
 // WebGL2RenderingContext.COLOR_ATTACHMENT1
 
 ///|
-pub let web_g_l2_rendering_context_color_attachment1 : Int = 0x8CE1
+pub let web_gl2_rendering_context_color_attachment1 : Int = 0x8CE1
 
 // WebGL2RenderingContext.COLOR_ATTACHMENT2
 
 ///|
-pub let web_g_l2_rendering_context_color_attachment2 : Int = 0x8CE2
+pub let web_gl2_rendering_context_color_attachment2 : Int = 0x8CE2
 
 // WebGL2RenderingContext.COLOR_ATTACHMENT3
 
 ///|
-pub let web_g_l2_rendering_context_color_attachment3 : Int = 0x8CE3
+pub let web_gl2_rendering_context_color_attachment3 : Int = 0x8CE3
 
 // WebGL2RenderingContext.COLOR_ATTACHMENT4
 
 ///|
-pub let web_g_l2_rendering_context_color_attachment4 : Int = 0x8CE4
+pub let web_gl2_rendering_context_color_attachment4 : Int = 0x8CE4
 
 // WebGL2RenderingContext.COLOR_ATTACHMENT5
 
 ///|
-pub let web_g_l2_rendering_context_color_attachment5 : Int = 0x8CE5
+pub let web_gl2_rendering_context_color_attachment5 : Int = 0x8CE5
 
 // WebGL2RenderingContext.COLOR_ATTACHMENT6
 
 ///|
-pub let web_g_l2_rendering_context_color_attachment6 : Int = 0x8CE6
+pub let web_gl2_rendering_context_color_attachment6 : Int = 0x8CE6
 
 // WebGL2RenderingContext.COLOR_ATTACHMENT7
 
 ///|
-pub let web_g_l2_rendering_context_color_attachment7 : Int = 0x8CE7
+pub let web_gl2_rendering_context_color_attachment7 : Int = 0x8CE7
 
 // WebGL2RenderingContext.COLOR_ATTACHMENT8
 
 ///|
-pub let web_g_l2_rendering_context_color_attachment8 : Int = 0x8CE8
+pub let web_gl2_rendering_context_color_attachment8 : Int = 0x8CE8
 
 // WebGL2RenderingContext.COLOR_ATTACHMENT9
 
 ///|
-pub let web_g_l2_rendering_context_color_attachment9 : Int = 0x8CE9
+pub let web_gl2_rendering_context_color_attachment9 : Int = 0x8CE9
 
 // WebGL2RenderingContext.COLOR_ATTACHMENT10
 
 ///|
-pub let web_g_l2_rendering_context_color_attachment10 : Int = 0x8CEA
+pub let web_gl2_rendering_context_color_attachment10 : Int = 0x8CEA
 
 // WebGL2RenderingContext.COLOR_ATTACHMENT11
 
 ///|
-pub let web_g_l2_rendering_context_color_attachment11 : Int = 0x8CEB
+pub let web_gl2_rendering_context_color_attachment11 : Int = 0x8CEB
 
 // WebGL2RenderingContext.COLOR_ATTACHMENT12
 
 ///|
-pub let web_g_l2_rendering_context_color_attachment12 : Int = 0x8CEC
+pub let web_gl2_rendering_context_color_attachment12 : Int = 0x8CEC
 
 // WebGL2RenderingContext.COLOR_ATTACHMENT13
 
 ///|
-pub let web_g_l2_rendering_context_color_attachment13 : Int = 0x8CED
+pub let web_gl2_rendering_context_color_attachment13 : Int = 0x8CED
 
 // WebGL2RenderingContext.COLOR_ATTACHMENT14
 
 ///|
-pub let web_g_l2_rendering_context_color_attachment14 : Int = 0x8CEE
+pub let web_gl2_rendering_context_color_attachment14 : Int = 0x8CEE
 
 // WebGL2RenderingContext.COLOR_ATTACHMENT15
 
 ///|
-pub let web_g_l2_rendering_context_color_attachment15 : Int = 0x8CEF
+pub let web_gl2_rendering_context_color_attachment15 : Int = 0x8CEF
 
 // WebGL2RenderingContext.FRAMEBUFFER_INCOMPLETE_MULTISAMPLE
 
 ///|
-pub let web_g_l2_rendering_context_framebuffer_incomplete_multisample : Int = 0x8D56
+pub let web_gl2_rendering_context_framebuffer_incomplete_multisample : Int = 0x8D56
 
 // WebGL2RenderingContext.MAX_SAMPLES
 
 ///|
-pub let web_g_l2_rendering_context_max_samples : Int = 0x8D57
+pub let web_gl2_rendering_context_max_samples : Int = 0x8D57
 
 // WebGL2RenderingContext.HALF_FLOAT
 
 ///|
-pub let web_g_l2_rendering_context_half_float : Int = 0x140B
+pub let web_gl2_rendering_context_half_float : Int = 0x140B
 
 // WebGL2RenderingContext.RG
 
 ///|
-pub let web_g_l2_rendering_context_rg : Int = 0x8227
+pub let web_gl2_rendering_context_rg : Int = 0x8227
 
 // WebGL2RenderingContext.RG_INTEGER
 
 ///|
-pub let web_g_l2_rendering_context_rg_integer : Int = 0x8228
+pub let web_gl2_rendering_context_rg_integer : Int = 0x8228
 
 // WebGL2RenderingContext.R8
 
 ///|
-pub let web_g_l2_rendering_context_r8 : Int = 0x8229
+pub let web_gl2_rendering_context_r8 : Int = 0x8229
 
 // WebGL2RenderingContext.RG8
 
 ///|
-pub let web_g_l2_rendering_context_rg8 : Int = 0x822B
+pub let web_gl2_rendering_context_rg8 : Int = 0x822B
 
 // WebGL2RenderingContext.R16F
 
 ///|
-pub let web_g_l2_rendering_context_r16f : Int = 0x822D
+pub let web_gl2_rendering_context_r16f : Int = 0x822D
 
 // WebGL2RenderingContext.R32F
 
 ///|
-pub let web_g_l2_rendering_context_r32f : Int = 0x822E
+pub let web_gl2_rendering_context_r32f : Int = 0x822E
 
 // WebGL2RenderingContext.RG16F
 
 ///|
-pub let web_g_l2_rendering_context_rg16f : Int = 0x822F
+pub let web_gl2_rendering_context_rg16f : Int = 0x822F
 
 // WebGL2RenderingContext.RG32F
 
 ///|
-pub let web_g_l2_rendering_context_rg32f : Int = 0x8230
+pub let web_gl2_rendering_context_rg32f : Int = 0x8230
 
 // WebGL2RenderingContext.R8I
 
 ///|
-pub let web_g_l2_rendering_context_r8i : Int = 0x8231
+pub let web_gl2_rendering_context_r8i : Int = 0x8231
 
 // WebGL2RenderingContext.R8UI
 
 ///|
-pub let web_g_l2_rendering_context_r8ui : Int = 0x8232
+pub let web_gl2_rendering_context_r8ui : Int = 0x8232
 
 // WebGL2RenderingContext.R16I
 
 ///|
-pub let web_g_l2_rendering_context_r16i : Int = 0x8233
+pub let web_gl2_rendering_context_r16i : Int = 0x8233
 
 // WebGL2RenderingContext.R16UI
 
 ///|
-pub let web_g_l2_rendering_context_r16ui : Int = 0x8234
+pub let web_gl2_rendering_context_r16ui : Int = 0x8234
 
 // WebGL2RenderingContext.R32I
 
 ///|
-pub let web_g_l2_rendering_context_r32i : Int = 0x8235
+pub let web_gl2_rendering_context_r32i : Int = 0x8235
 
 // WebGL2RenderingContext.R32UI
 
 ///|
-pub let web_g_l2_rendering_context_r32ui : Int = 0x8236
+pub let web_gl2_rendering_context_r32ui : Int = 0x8236
 
 // WebGL2RenderingContext.RG8I
 
 ///|
-pub let web_g_l2_rendering_context_rg8i : Int = 0x8237
+pub let web_gl2_rendering_context_rg8i : Int = 0x8237
 
 // WebGL2RenderingContext.RG8UI
 
 ///|
-pub let web_g_l2_rendering_context_rg8ui : Int = 0x8238
+pub let web_gl2_rendering_context_rg8ui : Int = 0x8238
 
 // WebGL2RenderingContext.RG16I
 
 ///|
-pub let web_g_l2_rendering_context_rg16i : Int = 0x8239
+pub let web_gl2_rendering_context_rg16i : Int = 0x8239
 
 // WebGL2RenderingContext.RG16UI
 
 ///|
-pub let web_g_l2_rendering_context_rg16ui : Int = 0x823A
+pub let web_gl2_rendering_context_rg16ui : Int = 0x823A
 
 // WebGL2RenderingContext.RG32I
 
 ///|
-pub let web_g_l2_rendering_context_rg32i : Int = 0x823B
+pub let web_gl2_rendering_context_rg32i : Int = 0x823B
 
 // WebGL2RenderingContext.RG32UI
 
 ///|
-pub let web_g_l2_rendering_context_rg32ui : Int = 0x823C
+pub let web_gl2_rendering_context_rg32ui : Int = 0x823C
 
 // WebGL2RenderingContext.VERTEX_ARRAY_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_vertex_array_binding : Int = 0x85B5
+pub let web_gl2_rendering_context_vertex_array_binding : Int = 0x85B5
 
 // WebGL2RenderingContext.R8_SNORM
 
 ///|
-pub let web_g_l2_rendering_context_r8_snorm : Int = 0x8F94
+pub let web_gl2_rendering_context_r8_snorm : Int = 0x8F94
 
 // WebGL2RenderingContext.RG8_SNORM
 
 ///|
-pub let web_g_l2_rendering_context_rg8_snorm : Int = 0x8F95
+pub let web_gl2_rendering_context_rg8_snorm : Int = 0x8F95
 
 // WebGL2RenderingContext.RGB8_SNORM
 
 ///|
-pub let web_g_l2_rendering_context_rgb8_snorm : Int = 0x8F96
+pub let web_gl2_rendering_context_rgb8_snorm : Int = 0x8F96
 
 // WebGL2RenderingContext.RGBA8_SNORM
 
 ///|
-pub let web_g_l2_rendering_context_rgba8_snorm : Int = 0x8F97
+pub let web_gl2_rendering_context_rgba8_snorm : Int = 0x8F97
 
 // WebGL2RenderingContext.SIGNED_NORMALIZED
 
 ///|
-pub let web_g_l2_rendering_context_signed_normalized : Int = 0x8F9C
+pub let web_gl2_rendering_context_signed_normalized : Int = 0x8F9C
 
 // WebGL2RenderingContext.COPY_READ_BUFFER
 
 ///|
-pub let web_g_l2_rendering_context_copy_read_buffer : Int = 0x8F36
+pub let web_gl2_rendering_context_copy_read_buffer : Int = 0x8F36
 
 // WebGL2RenderingContext.COPY_WRITE_BUFFER
 
 ///|
-pub let web_g_l2_rendering_context_copy_write_buffer : Int = 0x8F37
+pub let web_gl2_rendering_context_copy_write_buffer : Int = 0x8F37
 
 // WebGL2RenderingContext.COPY_READ_BUFFER_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_copy_read_buffer_binding : Int = 0x8F36
+pub let web_gl2_rendering_context_copy_read_buffer_binding : Int = 0x8F36
 
 // WebGL2RenderingContext.COPY_WRITE_BUFFER_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_copy_write_buffer_binding : Int = 0x8F37
+pub let web_gl2_rendering_context_copy_write_buffer_binding : Int = 0x8F37
 
 // WebGL2RenderingContext.UNIFORM_BUFFER
 
 ///|
-pub let web_g_l2_rendering_context_uniform_buffer : Int = 0x8A11
+pub let web_gl2_rendering_context_uniform_buffer : Int = 0x8A11
 
 // WebGL2RenderingContext.UNIFORM_BUFFER_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_uniform_buffer_binding : Int = 0x8A28
+pub let web_gl2_rendering_context_uniform_buffer_binding : Int = 0x8A28
 
 // WebGL2RenderingContext.UNIFORM_BUFFER_START
 
 ///|
-pub let web_g_l2_rendering_context_uniform_buffer_start : Int = 0x8A29
+pub let web_gl2_rendering_context_uniform_buffer_start : Int = 0x8A29
 
 // WebGL2RenderingContext.UNIFORM_BUFFER_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_uniform_buffer_size : Int = 0x8A2A
+pub let web_gl2_rendering_context_uniform_buffer_size : Int = 0x8A2A
 
 // WebGL2RenderingContext.MAX_VERTEX_UNIFORM_BLOCKS
 
 ///|
-pub let web_g_l2_rendering_context_max_vertex_uniform_blocks : Int = 0x8A2B
+pub let web_gl2_rendering_context_max_vertex_uniform_blocks : Int = 0x8A2B
 
 // WebGL2RenderingContext.MAX_FRAGMENT_UNIFORM_BLOCKS
 
 ///|
-pub let web_g_l2_rendering_context_max_fragment_uniform_blocks : Int = 0x8A2D
+pub let web_gl2_rendering_context_max_fragment_uniform_blocks : Int = 0x8A2D
 
 // WebGL2RenderingContext.MAX_COMBINED_UNIFORM_BLOCKS
 
 ///|
-pub let web_g_l2_rendering_context_max_combined_uniform_blocks : Int = 0x8A2E
+pub let web_gl2_rendering_context_max_combined_uniform_blocks : Int = 0x8A2E
 
 // WebGL2RenderingContext.MAX_UNIFORM_BUFFER_BINDINGS
 
 ///|
-pub let web_g_l2_rendering_context_max_uniform_buffer_bindings : Int = 0x8A2F
+pub let web_gl2_rendering_context_max_uniform_buffer_bindings : Int = 0x8A2F
 
 // WebGL2RenderingContext.MAX_UNIFORM_BLOCK_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_max_uniform_block_size : Int = 0x8A30
+pub let web_gl2_rendering_context_max_uniform_block_size : Int = 0x8A30
 
 // WebGL2RenderingContext.MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS
 
 ///|
-pub let web_g_l2_rendering_context_max_combined_vertex_uniform_components : Int = 0x8A31
+pub let web_gl2_rendering_context_max_combined_vertex_uniform_components : Int = 0x8A31
 
 // WebGL2RenderingContext.MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS
 
 ///|
-pub let web_g_l2_rendering_context_max_combined_fragment_uniform_components : Int = 0x8A33
+pub let web_gl2_rendering_context_max_combined_fragment_uniform_components : Int = 0x8A33
 
 // WebGL2RenderingContext.UNIFORM_BUFFER_OFFSET_ALIGNMENT
 
 ///|
-pub let web_g_l2_rendering_context_uniform_buffer_offset_alignment : Int = 0x8A34
+pub let web_gl2_rendering_context_uniform_buffer_offset_alignment : Int = 0x8A34
 
 // WebGL2RenderingContext.ACTIVE_UNIFORM_BLOCKS
 
 ///|
-pub let web_g_l2_rendering_context_active_uniform_blocks : Int = 0x8A36
+pub let web_gl2_rendering_context_active_uniform_blocks : Int = 0x8A36
 
 // WebGL2RenderingContext.UNIFORM_TYPE
 
 ///|
-pub let web_g_l2_rendering_context_uniform_type : Int = 0x8A37
+pub let web_gl2_rendering_context_uniform_type : Int = 0x8A37
 
 // WebGL2RenderingContext.UNIFORM_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_uniform_size : Int = 0x8A38
+pub let web_gl2_rendering_context_uniform_size : Int = 0x8A38
 
 // WebGL2RenderingContext.UNIFORM_BLOCK_INDEX
 
 ///|
-pub let web_g_l2_rendering_context_uniform_block_index : Int = 0x8A3A
+pub let web_gl2_rendering_context_uniform_block_index : Int = 0x8A3A
 
 // WebGL2RenderingContext.UNIFORM_OFFSET
 
 ///|
-pub let web_g_l2_rendering_context_uniform_offset : Int = 0x8A3B
+pub let web_gl2_rendering_context_uniform_offset : Int = 0x8A3B
 
 // WebGL2RenderingContext.UNIFORM_ARRAY_STRIDE
 
 ///|
-pub let web_g_l2_rendering_context_uniform_array_stride : Int = 0x8A3C
+pub let web_gl2_rendering_context_uniform_array_stride : Int = 0x8A3C
 
 // WebGL2RenderingContext.UNIFORM_MATRIX_STRIDE
 
 ///|
-pub let web_g_l2_rendering_context_uniform_matrix_stride : Int = 0x8A3D
+pub let web_gl2_rendering_context_uniform_matrix_stride : Int = 0x8A3D
 
 // WebGL2RenderingContext.UNIFORM_IS_ROW_MAJOR
 
 ///|
-pub let web_g_l2_rendering_context_uniform_is_row_major : Int = 0x8A3E
+pub let web_gl2_rendering_context_uniform_is_row_major : Int = 0x8A3E
 
 // WebGL2RenderingContext.UNIFORM_BLOCK_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_uniform_block_binding : Int = 0x8A3F
+pub let web_gl2_rendering_context_uniform_block_binding : Int = 0x8A3F
 
 // WebGL2RenderingContext.UNIFORM_BLOCK_DATA_SIZE
 
 ///|
-pub let web_g_l2_rendering_context_uniform_block_data_size : Int = 0x8A40
+pub let web_gl2_rendering_context_uniform_block_data_size : Int = 0x8A40
 
 // WebGL2RenderingContext.UNIFORM_BLOCK_ACTIVE_UNIFORMS
 
 ///|
-pub let web_g_l2_rendering_context_uniform_block_active_uniforms : Int = 0x8A42
+pub let web_gl2_rendering_context_uniform_block_active_uniforms : Int = 0x8A42
 
 // WebGL2RenderingContext.UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES
 
 ///|
-pub let web_g_l2_rendering_context_uniform_block_active_uniform_indices : Int = 0x8A43
+pub let web_gl2_rendering_context_uniform_block_active_uniform_indices : Int = 0x8A43
 
 // WebGL2RenderingContext.UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER
 
 ///|
-pub let web_g_l2_rendering_context_uniform_block_referenced_by_vertex_shader : Int = 0x8A44
+pub let web_gl2_rendering_context_uniform_block_referenced_by_vertex_shader : Int = 0x8A44
 
 // WebGL2RenderingContext.UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER
 
 ///|
-pub let web_g_l2_rendering_context_uniform_block_referenced_by_fragment_shader : Int = 0x8A46
+pub let web_gl2_rendering_context_uniform_block_referenced_by_fragment_shader : Int = 0x8A46
 
 // WebGL2RenderingContext.INVALID_INDEX
 
 ///|
-pub let web_g_l2_rendering_context_invalid_index : Int = 0xFFFFFFFF
+pub let web_gl2_rendering_context_invalid_index : Int = 0xFFFFFFFF
 
 // WebGL2RenderingContext.MAX_VERTEX_OUTPUT_COMPONENTS
 
 ///|
-pub let web_g_l2_rendering_context_max_vertex_output_components : Int = 0x9122
+pub let web_gl2_rendering_context_max_vertex_output_components : Int = 0x9122
 
 // WebGL2RenderingContext.MAX_FRAGMENT_INPUT_COMPONENTS
 
 ///|
-pub let web_g_l2_rendering_context_max_fragment_input_components : Int = 0x9125
+pub let web_gl2_rendering_context_max_fragment_input_components : Int = 0x9125
 
 // WebGL2RenderingContext.MAX_SERVER_WAIT_TIMEOUT
 
 ///|
-pub let web_g_l2_rendering_context_max_server_wait_timeout : Int = 0x9111
+pub let web_gl2_rendering_context_max_server_wait_timeout : Int = 0x9111
 
 // WebGL2RenderingContext.OBJECT_TYPE
 
 ///|
-pub let web_g_l2_rendering_context_object_type : Int = 0x9112
+pub let web_gl2_rendering_context_object_type : Int = 0x9112
 
 // WebGL2RenderingContext.SYNC_CONDITION
 
 ///|
-pub let web_g_l2_rendering_context_sync_condition : Int = 0x9113
+pub let web_gl2_rendering_context_sync_condition : Int = 0x9113
 
 // WebGL2RenderingContext.SYNC_STATUS
 
 ///|
-pub let web_g_l2_rendering_context_sync_status : Int = 0x9114
+pub let web_gl2_rendering_context_sync_status : Int = 0x9114
 
 // WebGL2RenderingContext.SYNC_FLAGS
 
 ///|
-pub let web_g_l2_rendering_context_sync_flags : Int = 0x9115
+pub let web_gl2_rendering_context_sync_flags : Int = 0x9115
 
 // WebGL2RenderingContext.SYNC_FENCE
 
 ///|
-pub let web_g_l2_rendering_context_sync_fence : Int = 0x9116
+pub let web_gl2_rendering_context_sync_fence : Int = 0x9116
 
 // WebGL2RenderingContext.SYNC_GPU_COMMANDS_COMPLETE
 
 ///|
-pub let web_g_l2_rendering_context_sync_gpu_commands_complete : Int = 0x9117
+pub let web_gl2_rendering_context_sync_gpu_commands_complete : Int = 0x9117
 
 // WebGL2RenderingContext.UNSIGNALED
 
 ///|
-pub let web_g_l2_rendering_context_unsignaled : Int = 0x9118
+pub let web_gl2_rendering_context_unsignaled : Int = 0x9118
 
 // WebGL2RenderingContext.SIGNALED
 
 ///|
-pub let web_g_l2_rendering_context_signaled : Int = 0x9119
+pub let web_gl2_rendering_context_signaled : Int = 0x9119
 
 // WebGL2RenderingContext.ALREADY_SIGNALED
 
 ///|
-pub let web_g_l2_rendering_context_already_signaled : Int = 0x911A
+pub let web_gl2_rendering_context_already_signaled : Int = 0x911A
 
 // WebGL2RenderingContext.TIMEOUT_EXPIRED
 
 ///|
-pub let web_g_l2_rendering_context_timeout_expired : Int = 0x911B
+pub let web_gl2_rendering_context_timeout_expired : Int = 0x911B
 
 // WebGL2RenderingContext.CONDITION_SATISFIED
 
 ///|
-pub let web_g_l2_rendering_context_condition_satisfied : Int = 0x911C
+pub let web_gl2_rendering_context_condition_satisfied : Int = 0x911C
 
 // WebGL2RenderingContext.WAIT_FAILED
 
 ///|
-pub let web_g_l2_rendering_context_wait_failed : Int = 0x911D
+pub let web_gl2_rendering_context_wait_failed : Int = 0x911D
 
 // WebGL2RenderingContext.SYNC_FLUSH_COMMANDS_BIT
 
 ///|
-pub let web_g_l2_rendering_context_sync_flush_commands_bit : Int = 0x00000001
+pub let web_gl2_rendering_context_sync_flush_commands_bit : Int = 0x00000001
 
 // WebGL2RenderingContext.VERTEX_ATTRIB_ARRAY_DIVISOR
 
 ///|
-pub let web_g_l2_rendering_context_vertex_attrib_array_divisor : Int = 0x88FE
+pub let web_gl2_rendering_context_vertex_attrib_array_divisor : Int = 0x88FE
 
 // WebGL2RenderingContext.ANY_SAMPLES_PASSED
 
 ///|
-pub let web_g_l2_rendering_context_any_samples_passed : Int = 0x8C2F
+pub let web_gl2_rendering_context_any_samples_passed : Int = 0x8C2F
 
 // WebGL2RenderingContext.ANY_SAMPLES_PASSED_CONSERVATIVE
 
 ///|
-pub let web_g_l2_rendering_context_any_samples_passed_conservative : Int = 0x8D6A
+pub let web_gl2_rendering_context_any_samples_passed_conservative : Int = 0x8D6A
 
 // WebGL2RenderingContext.SAMPLER_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_sampler_binding : Int = 0x8919
+pub let web_gl2_rendering_context_sampler_binding : Int = 0x8919
 
 // WebGL2RenderingContext.RGB10_A2UI
 
 ///|
-pub let web_g_l2_rendering_context_rgb10_a2ui : Int = 0x906F
+pub let web_gl2_rendering_context_rgb10_a2ui : Int = 0x906F
 
 // WebGL2RenderingContext.INT_2_10_10_10_REV
 
 ///|
-pub let web_g_l2_rendering_context_int_2_10_10_10_rev : Int = 0x8D9F
+pub let web_gl2_rendering_context_int_2_10_10_10_rev : Int = 0x8D9F
 
 // WebGL2RenderingContext.TRANSFORM_FEEDBACK
 
 ///|
-pub let web_g_l2_rendering_context_transform_feedback : Int = 0x8E22
+pub let web_gl2_rendering_context_transform_feedback : Int = 0x8E22
 
 // WebGL2RenderingContext.TRANSFORM_FEEDBACK_PAUSED
 
 ///|
-pub let web_g_l2_rendering_context_transform_feedback_paused : Int = 0x8E23
+pub let web_gl2_rendering_context_transform_feedback_paused : Int = 0x8E23
 
 // WebGL2RenderingContext.TRANSFORM_FEEDBACK_ACTIVE
 
 ///|
-pub let web_g_l2_rendering_context_transform_feedback_active : Int = 0x8E24
+pub let web_gl2_rendering_context_transform_feedback_active : Int = 0x8E24
 
 // WebGL2RenderingContext.TRANSFORM_FEEDBACK_BINDING
 
 ///|
-pub let web_g_l2_rendering_context_transform_feedback_binding : Int = 0x8E25
+pub let web_gl2_rendering_context_transform_feedback_binding : Int = 0x8E25
 
 // WebGL2RenderingContext.TEXTURE_IMMUTABLE_FORMAT
 
 ///|
-pub let web_g_l2_rendering_context_texture_immutable_format : Int = 0x912F
+pub let web_gl2_rendering_context_texture_immutable_format : Int = 0x912F
 
 // WebGL2RenderingContext.MAX_ELEMENT_INDEX
 
 ///|
-pub let web_g_l2_rendering_context_max_element_index : Int = 0x8D6B
+pub let web_gl2_rendering_context_max_element_index : Int = 0x8D6B
 
 // WebGL2RenderingContext.TEXTURE_IMMUTABLE_LEVELS
 
 ///|
-pub let web_g_l2_rendering_context_texture_immutable_levels : Int = 0x82DF
+pub let web_gl2_rendering_context_texture_immutable_levels : Int = 0x82DF
 
 // WebGL2RenderingContext.TIMEOUT_IGNORED
 
 ///|
-pub let web_g_l2_rendering_context_timeout_ignored : Int = -1
+pub let web_gl2_rendering_context_timeout_ignored : Int = -1
 
 // WebGL2RenderingContext.MAX_CLIENT_WAIT_TIMEOUT_WEBGL
 
 ///|
-pub let web_g_l2_rendering_context_max_client_wait_timeout_webgl : Int = 0x9247
+pub let web_gl2_rendering_context_max_client_wait_timeout_webgl : Int = 0x9247
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::copy_buffer_sub_data(
@@ -4730,7 +4904,7 @@ pub extern "js" fn WebGL2RenderingContext::get_query(
   target : GLenum,
   pname : GLenum,
 ) -> WebGLQuery? =
-  #| (self, target, pname) => self.getQuery(target, pname)
+  #| (self, target, pname) => { const v = self.getQuery(target, pname); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_query_parameter(
@@ -4800,7 +4974,7 @@ pub extern "js" fn WebGL2RenderingContext::fence_sync(
   condition : GLenum,
   flags : GLbitfield,
 ) -> WebGLSync? =
-  #| (self, condition, flags) => self.fenceSync(condition, flags)
+  #| (self, condition, flags) => { const v = self.fenceSync(condition, flags); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::is_sync(
@@ -4898,7 +5072,7 @@ pub extern "js" fn WebGL2RenderingContext::get_transform_feedback_varying(
   program : WebGLProgram,
   index : GLuint,
 ) -> WebGLActiveInfo? =
-  #| (self, program, index) => self.getTransformFeedbackVarying(program, index)
+  #| (self, program, index) => { const v = self.getTransformFeedbackVarying(program, index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::pause_transform_feedback(
@@ -4980,7 +5154,7 @@ pub extern "js" fn WebGL2RenderingContext::get_active_uniform_block_name(
   program : WebGLProgram,
   uniform_block_index : GLuint,
 ) -> String? =
-  #| (self, program, uniform_block_index) => self.getActiveUniformBlockName(program, uniform_block_index)
+  #| (self, program, uniform_block_index) => { const v = self.getActiveUniformBlockName(program, uniform_block_index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_block_binding(

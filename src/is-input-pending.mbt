@@ -31,6 +31,26 @@ pub extern "js" fn Scheduling::to_js_value(self : Scheduling) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Scheduling (unchecked)
+pub extern "js" fn Scheduling::from_js_value(v : JsValue) -> Scheduling =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Scheduling (checked with instanceof)
+pub extern "js" fn Scheduling::from_js_value_opt(v : JsValue) -> Scheduling? =
+  #| (v) => (v instanceof Scheduling) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Scheduling (checked with instanceof)
+pub extern "js" fn JsValue::as_scheduling(self : JsValue) -> Scheduling? =
+  #| (self) => (self instanceof Scheduling) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Scheduling (unchecked)
+pub extern "js" fn JsValue::to_scheduling(self : JsValue) -> Scheduling =
+  #| (self) => self
+
+///|
 pub extern "js" fn Scheduling::is_input_pending(self : Scheduling) -> Bool =
   #| (self) => self.isInputPending()
 

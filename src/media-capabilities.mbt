@@ -485,6 +485,34 @@ pub extern "js" fn MediaCapabilities::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to MediaCapabilities (unchecked)
+pub extern "js" fn MediaCapabilities::from_js_value(
+  v : JsValue,
+) -> MediaCapabilities =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaCapabilities (checked with instanceof)
+pub extern "js" fn MediaCapabilities::from_js_value_opt(
+  v : JsValue,
+) -> MediaCapabilities? =
+  #| (v) => (v instanceof MediaCapabilities) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaCapabilities (checked with instanceof)
+pub extern "js" fn JsValue::as_media_capabilities(
+  self : JsValue,
+) -> MediaCapabilities? =
+  #| (self) => (self instanceof MediaCapabilities) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaCapabilities (unchecked)
+pub extern "js" fn JsValue::to_media_capabilities(
+  self : JsValue,
+) -> MediaCapabilities =
+  #| (self) => self
+
+///|
 pub extern "js" fn MediaCapabilities::decoding_info(
   self : MediaCapabilities,
   configuration : MediaDecodingConfiguration,

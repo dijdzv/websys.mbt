@@ -10,6 +10,26 @@ pub extern "js" fn CropTarget::to_js_value(self : CropTarget) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to CropTarget (unchecked)
+pub extern "js" fn CropTarget::from_js_value(v : JsValue) -> CropTarget =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CropTarget (checked with instanceof)
+pub extern "js" fn CropTarget::from_js_value_opt(v : JsValue) -> CropTarget? =
+  #| (v) => (v instanceof CropTarget) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CropTarget (checked with instanceof)
+pub extern "js" fn JsValue::as_crop_target(self : JsValue) -> CropTarget? =
+  #| (self) => (self instanceof CropTarget) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CropTarget (unchecked)
+pub extern "js" fn JsValue::to_crop_target(self : JsValue) -> CropTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn CropTarget::from_element(
   element : Element,
 ) -> Promise[CropTarget] =
@@ -23,6 +43,46 @@ pub type BrowserCaptureMediaStreamTrack
 pub extern "js" fn BrowserCaptureMediaStreamTrack::to_js_value(
   self : BrowserCaptureMediaStreamTrack,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to BrowserCaptureMediaStreamTrack (unchecked)
+pub extern "js" fn BrowserCaptureMediaStreamTrack::from_js_value(
+  v : JsValue,
+) -> BrowserCaptureMediaStreamTrack =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BrowserCaptureMediaStreamTrack (checked with instanceof)
+pub extern "js" fn BrowserCaptureMediaStreamTrack::from_js_value_opt(
+  v : JsValue,
+) -> BrowserCaptureMediaStreamTrack? =
+  #| (v) => (v instanceof BrowserCaptureMediaStreamTrack) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BrowserCaptureMediaStreamTrack (checked with instanceof)
+pub extern "js" fn JsValue::as_browser_capture_media_stream_track(
+  self : JsValue,
+) -> BrowserCaptureMediaStreamTrack? =
+  #| (self) => (self instanceof BrowserCaptureMediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BrowserCaptureMediaStreamTrack (unchecked)
+pub extern "js" fn JsValue::to_browser_capture_media_stream_track(
+  self : JsValue,
+) -> BrowserCaptureMediaStreamTrack =
+  #| (self) => self
+
+///|
+pub extern "js" fn BrowserCaptureMediaStreamTrack::to_media_stream_track(
+  self : BrowserCaptureMediaStreamTrack,
+) -> MediaStreamTrack =
+  #| (self) => self
+
+///|
+pub extern "js" fn BrowserCaptureMediaStreamTrack::to_event_target(
+  self : BrowserCaptureMediaStreamTrack,
+) -> EventTarget =
   #| (self) => self
 
 ///|

@@ -33,6 +33,32 @@ pub extern "js" fn SVGPathSegment::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SVGPathSegment (unchecked)
+pub extern "js" fn SVGPathSegment::from_js_value(v : JsValue) -> SVGPathSegment =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGPathSegment (checked with instanceof)
+pub extern "js" fn SVGPathSegment::from_js_value_opt(
+  v : JsValue,
+) -> SVGPathSegment? =
+  #| (v) => (v instanceof SVGPathSegment) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGPathSegment (checked with instanceof)
+pub extern "js" fn JsValue::as_svg_path_segment(
+  self : JsValue,
+) -> SVGPathSegment? =
+  #| (self) => (self instanceof SVGPathSegment) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGPathSegment (unchecked)
+pub extern "js" fn JsValue::to_svg_path_segment(
+  self : JsValue,
+) -> SVGPathSegment =
+  #| (self) => self
+
+///|
 pub extern "js" fn SVGPathSegment::get_type(self : SVGPathSegment) -> String =
   #| (self) => self.type
 
@@ -65,6 +91,64 @@ pub extern "js" fn SVGPathElement::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SVGPathElement (unchecked)
+pub extern "js" fn SVGPathElement::from_js_value(v : JsValue) -> SVGPathElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SVGPathElement (checked with instanceof)
+pub extern "js" fn SVGPathElement::from_js_value_opt(
+  v : JsValue,
+) -> SVGPathElement? =
+  #| (v) => (v instanceof SVGPathElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SVGPathElement (checked with instanceof)
+pub extern "js" fn JsValue::as_svg_path_element(
+  self : JsValue,
+) -> SVGPathElement? =
+  #| (self) => (self instanceof SVGPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SVGPathElement (unchecked)
+pub extern "js" fn JsValue::to_svg_path_element(
+  self : JsValue,
+) -> SVGPathElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGPathElement::to_svg_geometry_element(
+  self : SVGPathElement,
+) -> SVGGeometryElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGPathElement::to_svg_graphics_element(
+  self : SVGPathElement,
+) -> SVGGraphicsElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGPathElement::to_svg_element(
+  self : SVGPathElement,
+) -> SVGElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGPathElement::to_element(self : SVGPathElement) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGPathElement::to_node(self : SVGPathElement) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn SVGPathElement::to_event_target(
+  self : SVGPathElement,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn SVGPathElement::get_path_length(
   self : SVGPathElement,
 ) -> SVGAnimatedNumber =
@@ -88,7 +172,7 @@ pub extern "js" fn SVGPathElement::get_path_segment_at_length(
   self : SVGPathElement,
   distance : Double,
 ) -> SVGPathSegment? =
-  #| (self, distance) => self.getPathSegmentAtLength(distance)
+  #| (self, distance) => { const v = self.getPathSegmentAtLength(distance); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn SVGPathElement::get_path_data(

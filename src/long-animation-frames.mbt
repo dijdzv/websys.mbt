@@ -89,6 +89,40 @@ pub extern "js" fn PerformanceLongAnimationFrameTiming::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PerformanceLongAnimationFrameTiming (unchecked)
+pub extern "js" fn PerformanceLongAnimationFrameTiming::from_js_value(
+  v : JsValue,
+) -> PerformanceLongAnimationFrameTiming =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PerformanceLongAnimationFrameTiming (checked with instanceof)
+pub extern "js" fn PerformanceLongAnimationFrameTiming::from_js_value_opt(
+  v : JsValue,
+) -> PerformanceLongAnimationFrameTiming? =
+  #| (v) => (v instanceof PerformanceLongAnimationFrameTiming) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PerformanceLongAnimationFrameTiming (checked with instanceof)
+pub extern "js" fn JsValue::as_performance_long_animation_frame_timing(
+  self : JsValue,
+) -> PerformanceLongAnimationFrameTiming? =
+  #| (self) => (self instanceof PerformanceLongAnimationFrameTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PerformanceLongAnimationFrameTiming (unchecked)
+pub extern "js" fn JsValue::to_performance_long_animation_frame_timing(
+  self : JsValue,
+) -> PerformanceLongAnimationFrameTiming =
+  #| (self) => self
+
+///|
+pub extern "js" fn PerformanceLongAnimationFrameTiming::to_performance_entry(
+  self : PerformanceLongAnimationFrameTiming,
+) -> PerformanceEntry =
+  #| (self) => self
+
+///|
 pub extern "js" fn PerformanceLongAnimationFrameTiming::get_start_time(
   self : PerformanceLongAnimationFrameTiming,
 ) -> DOMHighResTimeStamp =
@@ -131,7 +165,7 @@ pub extern "js" fn PerformanceLongAnimationFrameTiming::get_blocking_duration(
   #| (self) => self.blockingDuration
 
 ///|
-pub extern "js" fn PerformanceLongAnimationFrameTiming::get_first_u_i_event_timestamp(
+pub extern "js" fn PerformanceLongAnimationFrameTiming::get_first_ui_event_timestamp(
   self : PerformanceLongAnimationFrameTiming,
 ) -> DOMHighResTimeStamp =
   #| (self) => self.firstUIEventTimestamp
@@ -143,7 +177,7 @@ pub extern "js" fn PerformanceLongAnimationFrameTiming::get_scripts(
   #| (self) => self.scripts
 
 ///|
-pub extern "js" fn PerformanceLongAnimationFrameTiming::to_j_s_o_n(
+pub extern "js" fn PerformanceLongAnimationFrameTiming::to_json(
   self : PerformanceLongAnimationFrameTiming,
 ) -> JsValue =
   #| (self) => self.toJSON()
@@ -158,7 +192,7 @@ pub extern "js" fn PerformanceLongAnimationFrameTiming::get_paint_time(
 pub extern "js" fn PerformanceLongAnimationFrameTiming::get_presentation_time(
   self : PerformanceLongAnimationFrameTiming,
 ) -> DOMHighResTimeStamp? =
-  #| (self) => self.presentationTime
+  #| (self) => { const v = self.presentationTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// PerformanceScriptTiming interface
@@ -168,6 +202,40 @@ pub type PerformanceScriptTiming
 pub extern "js" fn PerformanceScriptTiming::to_js_value(
   self : PerformanceScriptTiming,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to PerformanceScriptTiming (unchecked)
+pub extern "js" fn PerformanceScriptTiming::from_js_value(
+  v : JsValue,
+) -> PerformanceScriptTiming =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PerformanceScriptTiming (checked with instanceof)
+pub extern "js" fn PerformanceScriptTiming::from_js_value_opt(
+  v : JsValue,
+) -> PerformanceScriptTiming? =
+  #| (v) => (v instanceof PerformanceScriptTiming) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PerformanceScriptTiming (checked with instanceof)
+pub extern "js" fn JsValue::as_performance_script_timing(
+  self : JsValue,
+) -> PerformanceScriptTiming? =
+  #| (self) => (self instanceof PerformanceScriptTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PerformanceScriptTiming (unchecked)
+pub extern "js" fn JsValue::to_performance_script_timing(
+  self : JsValue,
+) -> PerformanceScriptTiming =
+  #| (self) => self
+
+///|
+pub extern "js" fn PerformanceScriptTiming::to_performance_entry(
+  self : PerformanceScriptTiming,
+) -> PerformanceEntry =
   #| (self) => self
 
 ///|
@@ -213,7 +281,7 @@ pub extern "js" fn PerformanceScriptTiming::get_execution_start(
   #| (self) => self.executionStart
 
 ///|
-pub extern "js" fn PerformanceScriptTiming::get_source_u_r_l(
+pub extern "js" fn PerformanceScriptTiming::get_source_url(
   self : PerformanceScriptTiming,
 ) -> String =
   #| (self) => self.sourceURL
@@ -246,7 +314,7 @@ pub extern "js" fn PerformanceScriptTiming::get_forced_style_and_layout_duration
 pub extern "js" fn PerformanceScriptTiming::get_window(
   self : PerformanceScriptTiming,
 ) -> Window? =
-  #| (self) => self.window
+  #| (self) => { const v = self.window; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PerformanceScriptTiming::get_window_attribution(
@@ -255,7 +323,7 @@ pub extern "js" fn PerformanceScriptTiming::get_window_attribution(
   #| (self) => self.windowAttribution
 
 ///|
-pub extern "js" fn PerformanceScriptTiming::to_j_s_o_n(
+pub extern "js" fn PerformanceScriptTiming::to_json(
   self : PerformanceScriptTiming,
 ) -> JsValue =
   #| (self) => self.toJSON()

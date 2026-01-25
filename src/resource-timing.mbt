@@ -42,6 +42,46 @@ pub extern "js" fn PerformanceResourceTiming::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PerformanceResourceTiming (unchecked)
+pub extern "js" fn PerformanceResourceTiming::from_js_value(
+  v : JsValue,
+) -> PerformanceResourceTiming =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PerformanceResourceTiming (checked with instanceof)
+pub extern "js" fn PerformanceResourceTiming::from_js_value_opt(
+  v : JsValue,
+) -> PerformanceResourceTiming? =
+  #| (v) => (v instanceof PerformanceResourceTiming) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PerformanceResourceTiming (checked with instanceof)
+pub extern "js" fn JsValue::as_performance_resource_timing(
+  self : JsValue,
+) -> PerformanceResourceTiming? =
+  #| (self) => (self instanceof PerformanceResourceTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PerformanceResourceTiming (unchecked)
+pub extern "js" fn JsValue::to_performance_resource_timing(
+  self : JsValue,
+) -> PerformanceResourceTiming =
+  #| (self) => self
+
+///|
+pub extern "js" fn PerformanceResourceTiming::to_performance_entry(
+  self : PerformanceResourceTiming,
+) -> PerformanceEntry =
+  #| (self) => self
+
+///|
+pub extern "js" fn PerformanceResourceTiming::as_performance_navigation_timing(
+  self : PerformanceResourceTiming,
+) -> PerformanceNavigationTiming? =
+  #| (self) => (self instanceof PerformanceNavigationTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn PerformanceResourceTiming::get_initiator_type(
   self : PerformanceResourceTiming,
 ) -> String =
@@ -210,7 +250,7 @@ pub extern "js" fn PerformanceResourceTiming::get_content_encoding(
   #| (self) => self.contentEncoding
 
 ///|
-pub extern "js" fn PerformanceResourceTiming::to_j_s_o_n(
+pub extern "js" fn PerformanceResourceTiming::to_json(
   self : PerformanceResourceTiming,
 ) -> JsValue =
   #| (self) => self.toJSON()

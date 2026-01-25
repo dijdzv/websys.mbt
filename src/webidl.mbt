@@ -454,166 +454,57 @@ pub extern "js" fn QuotaExceededError::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to QuotaExceededError (unchecked)
+pub extern "js" fn QuotaExceededError::from_js_value(
+  v : JsValue,
+) -> QuotaExceededError =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to QuotaExceededError (checked with instanceof)
+pub extern "js" fn QuotaExceededError::from_js_value_opt(
+  v : JsValue,
+) -> QuotaExceededError? =
+  #| (v) => (v instanceof QuotaExceededError) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to QuotaExceededError (checked with instanceof)
+pub extern "js" fn JsValue::as_quota_exceeded_error(
+  self : JsValue,
+) -> QuotaExceededError? =
+  #| (self) => (self instanceof QuotaExceededError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to QuotaExceededError (unchecked)
+pub extern "js" fn JsValue::to_quota_exceeded_error(
+  self : JsValue,
+) -> QuotaExceededError =
+  #| (self) => self
+
+///|
+pub extern "js" fn QuotaExceededError::to_dom_exception(
+  self : QuotaExceededError,
+) -> DOMException =
+  #| (self) => self
+
+///|
 pub extern "js" fn QuotaExceededError::new(
   message : String,
-  name : String,
+  options : QuotaExceededErrorOptions,
 ) -> QuotaExceededError =
-  #| (message, name) => new QuotaExceededError(message, name)
-
-///|
-pub extern "js" fn QuotaExceededError::get_name(
-  self : QuotaExceededError,
-) -> String =
-  #| (self) => self.name
-
-///|
-pub extern "js" fn QuotaExceededError::get_message(
-  self : QuotaExceededError,
-) -> String =
-  #| (self) => self.message
-
-///|
-pub extern "js" fn QuotaExceededError::get_code(
-  self : QuotaExceededError,
-) -> Int =
-  #| (self) => self.code
-
-// QuotaExceededError.INDEX_SIZE_ERR
-
-///|
-pub let quota_exceeded_error_index_size_err : Int = 1
-
-// QuotaExceededError.DOMSTRING_SIZE_ERR
-
-///|
-pub let quota_exceeded_error_domstring_size_err : Int = 2
-
-// QuotaExceededError.HIERARCHY_REQUEST_ERR
-
-///|
-pub let quota_exceeded_error_hierarchy_request_err : Int = 3
-
-// QuotaExceededError.WRONG_DOCUMENT_ERR
-
-///|
-pub let quota_exceeded_error_wrong_document_err : Int = 4
-
-// QuotaExceededError.INVALID_CHARACTER_ERR
-
-///|
-pub let quota_exceeded_error_invalid_character_err : Int = 5
-
-// QuotaExceededError.NO_DATA_ALLOWED_ERR
-
-///|
-pub let quota_exceeded_error_no_data_allowed_err : Int = 6
-
-// QuotaExceededError.NO_MODIFICATION_ALLOWED_ERR
-
-///|
-pub let quota_exceeded_error_no_modification_allowed_err : Int = 7
-
-// QuotaExceededError.NOT_FOUND_ERR
-
-///|
-pub let quota_exceeded_error_not_found_err : Int = 8
-
-// QuotaExceededError.NOT_SUPPORTED_ERR
-
-///|
-pub let quota_exceeded_error_not_supported_err : Int = 9
-
-// QuotaExceededError.INUSE_ATTRIBUTE_ERR
-
-///|
-pub let quota_exceeded_error_inuse_attribute_err : Int = 10
-
-// QuotaExceededError.INVALID_STATE_ERR
-
-///|
-pub let quota_exceeded_error_invalid_state_err : Int = 11
-
-// QuotaExceededError.SYNTAX_ERR
-
-///|
-pub let quota_exceeded_error_syntax_err : Int = 12
-
-// QuotaExceededError.INVALID_MODIFICATION_ERR
-
-///|
-pub let quota_exceeded_error_invalid_modification_err : Int = 13
-
-// QuotaExceededError.NAMESPACE_ERR
-
-///|
-pub let quota_exceeded_error_namespace_err : Int = 14
-
-// QuotaExceededError.INVALID_ACCESS_ERR
-
-///|
-pub let quota_exceeded_error_invalid_access_err : Int = 15
-
-// QuotaExceededError.VALIDATION_ERR
-
-///|
-pub let quota_exceeded_error_validation_err : Int = 16
-
-// QuotaExceededError.TYPE_MISMATCH_ERR
-
-///|
-pub let quota_exceeded_error_type_mismatch_err : Int = 17
-
-// QuotaExceededError.SECURITY_ERR
-
-///|
-pub let quota_exceeded_error_security_err : Int = 18
-
-// QuotaExceededError.NETWORK_ERR
-
-///|
-pub let quota_exceeded_error_network_err : Int = 19
-
-// QuotaExceededError.ABORT_ERR
-
-///|
-pub let quota_exceeded_error_abort_err : Int = 20
-
-// QuotaExceededError.URL_MISMATCH_ERR
-
-///|
-pub let quota_exceeded_error_url_mismatch_err : Int = 21
-
-// QuotaExceededError.QUOTA_EXCEEDED_ERR
-
-///|
-pub let quota_exceeded_error_quota_exceeded_err : Int = 22
-
-// QuotaExceededError.TIMEOUT_ERR
-
-///|
-pub let quota_exceeded_error_timeout_err : Int = 23
-
-// QuotaExceededError.INVALID_NODE_TYPE_ERR
-
-///|
-pub let quota_exceeded_error_invalid_node_type_err : Int = 24
-
-// QuotaExceededError.DATA_CLONE_ERR
-
-///|
-pub let quota_exceeded_error_data_clone_err : Int = 25
+  #| (message, options) => new QuotaExceededError(message, options)
 
 ///|
 pub extern "js" fn QuotaExceededError::get_quota(
   self : QuotaExceededError,
 ) -> Double? =
-  #| (self) => self.quota
+  #| (self) => { const v = self.quota; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn QuotaExceededError::get_requested(
   self : QuotaExceededError,
 ) -> Double? =
-  #| (self) => self.requested
+  #| (self) => { const v = self.requested; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// DOMException interface
@@ -622,6 +513,62 @@ pub type DOMException
 ///|
 pub extern "js" fn DOMException::to_js_value(self : DOMException) -> JsValue =
   #| (self) => self
+
+///|
+/// Cast JsValue to DOMException (unchecked)
+pub extern "js" fn DOMException::from_js_value(v : JsValue) -> DOMException =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to DOMException (checked with instanceof)
+pub extern "js" fn DOMException::from_js_value_opt(
+  v : JsValue,
+) -> DOMException? =
+  #| (v) => (v instanceof DOMException) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to DOMException (checked with instanceof)
+pub extern "js" fn JsValue::as_dom_exception(self : JsValue) -> DOMException? =
+  #| (self) => (self instanceof DOMException) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to DOMException (unchecked)
+pub extern "js" fn JsValue::to_dom_exception(self : JsValue) -> DOMException =
+  #| (self) => self
+
+///|
+pub extern "js" fn DOMException::as_identity_credential_error(
+  self : DOMException,
+) -> IdentityCredentialError? =
+  #| (self) => (self instanceof IdentityCredentialError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn DOMException::as_overconstrained_error(
+  self : DOMException,
+) -> OverconstrainedError? =
+  #| (self) => (self instanceof OverconstrainedError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn DOMException::as_quota_exceeded_error(
+  self : DOMException,
+) -> QuotaExceededError? =
+  #| (self) => (self instanceof QuotaExceededError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn DOMException::as_web_transport_error(
+  self : DOMException,
+) -> WebTransportError? =
+  #| (self) => (self instanceof WebTransportError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn DOMException::as_rtc_error(self : DOMException) -> RTCError? =
+  #| (self) => (self instanceof RTCError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn DOMException::as_gpu_pipeline_error(
+  self : DOMException,
+) -> GPUPipelineError? =
+  #| (self) => (self instanceof GPUPipelineError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn DOMException::new(
@@ -645,124 +592,124 @@ pub extern "js" fn DOMException::get_code(self : DOMException) -> Int =
 // DOMException.INDEX_SIZE_ERR
 
 ///|
-pub let d_o_m_exception_index_size_err : Int = 1
+pub let dom_exception_index_size_err : Int = 1
 
 // DOMException.DOMSTRING_SIZE_ERR
 
 ///|
-pub let d_o_m_exception_domstring_size_err : Int = 2
+pub let dom_exception_domstring_size_err : Int = 2
 
 // DOMException.HIERARCHY_REQUEST_ERR
 
 ///|
-pub let d_o_m_exception_hierarchy_request_err : Int = 3
+pub let dom_exception_hierarchy_request_err : Int = 3
 
 // DOMException.WRONG_DOCUMENT_ERR
 
 ///|
-pub let d_o_m_exception_wrong_document_err : Int = 4
+pub let dom_exception_wrong_document_err : Int = 4
 
 // DOMException.INVALID_CHARACTER_ERR
 
 ///|
-pub let d_o_m_exception_invalid_character_err : Int = 5
+pub let dom_exception_invalid_character_err : Int = 5
 
 // DOMException.NO_DATA_ALLOWED_ERR
 
 ///|
-pub let d_o_m_exception_no_data_allowed_err : Int = 6
+pub let dom_exception_no_data_allowed_err : Int = 6
 
 // DOMException.NO_MODIFICATION_ALLOWED_ERR
 
 ///|
-pub let d_o_m_exception_no_modification_allowed_err : Int = 7
+pub let dom_exception_no_modification_allowed_err : Int = 7
 
 // DOMException.NOT_FOUND_ERR
 
 ///|
-pub let d_o_m_exception_not_found_err : Int = 8
+pub let dom_exception_not_found_err : Int = 8
 
 // DOMException.NOT_SUPPORTED_ERR
 
 ///|
-pub let d_o_m_exception_not_supported_err : Int = 9
+pub let dom_exception_not_supported_err : Int = 9
 
 // DOMException.INUSE_ATTRIBUTE_ERR
 
 ///|
-pub let d_o_m_exception_inuse_attribute_err : Int = 10
+pub let dom_exception_inuse_attribute_err : Int = 10
 
 // DOMException.INVALID_STATE_ERR
 
 ///|
-pub let d_o_m_exception_invalid_state_err : Int = 11
+pub let dom_exception_invalid_state_err : Int = 11
 
 // DOMException.SYNTAX_ERR
 
 ///|
-pub let d_o_m_exception_syntax_err : Int = 12
+pub let dom_exception_syntax_err : Int = 12
 
 // DOMException.INVALID_MODIFICATION_ERR
 
 ///|
-pub let d_o_m_exception_invalid_modification_err : Int = 13
+pub let dom_exception_invalid_modification_err : Int = 13
 
 // DOMException.NAMESPACE_ERR
 
 ///|
-pub let d_o_m_exception_namespace_err : Int = 14
+pub let dom_exception_namespace_err : Int = 14
 
 // DOMException.INVALID_ACCESS_ERR
 
 ///|
-pub let d_o_m_exception_invalid_access_err : Int = 15
+pub let dom_exception_invalid_access_err : Int = 15
 
 // DOMException.VALIDATION_ERR
 
 ///|
-pub let d_o_m_exception_validation_err : Int = 16
+pub let dom_exception_validation_err : Int = 16
 
 // DOMException.TYPE_MISMATCH_ERR
 
 ///|
-pub let d_o_m_exception_type_mismatch_err : Int = 17
+pub let dom_exception_type_mismatch_err : Int = 17
 
 // DOMException.SECURITY_ERR
 
 ///|
-pub let d_o_m_exception_security_err : Int = 18
+pub let dom_exception_security_err : Int = 18
 
 // DOMException.NETWORK_ERR
 
 ///|
-pub let d_o_m_exception_network_err : Int = 19
+pub let dom_exception_network_err : Int = 19
 
 // DOMException.ABORT_ERR
 
 ///|
-pub let d_o_m_exception_abort_err : Int = 20
+pub let dom_exception_abort_err : Int = 20
 
 // DOMException.URL_MISMATCH_ERR
 
 ///|
-pub let d_o_m_exception_url_mismatch_err : Int = 21
+pub let dom_exception_url_mismatch_err : Int = 21
 
 // DOMException.QUOTA_EXCEEDED_ERR
 
 ///|
-pub let d_o_m_exception_quota_exceeded_err : Int = 22
+pub let dom_exception_quota_exceeded_err : Int = 22
 
 // DOMException.TIMEOUT_ERR
 
 ///|
-pub let d_o_m_exception_timeout_err : Int = 23
+pub let dom_exception_timeout_err : Int = 23
 
 // DOMException.INVALID_NODE_TYPE_ERR
 
 ///|
-pub let d_o_m_exception_invalid_node_type_err : Int = 24
+pub let dom_exception_invalid_node_type_err : Int = 24
 
 // DOMException.DATA_CLONE_ERR
 
 ///|
-pub let d_o_m_exception_data_clone_err : Int = 25
+pub let dom_exception_data_clone_err : Int = 25

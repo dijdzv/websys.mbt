@@ -138,6 +138,48 @@ pub extern "js" fn CSSParserRule::to_js_value(self : CSSParserRule) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSParserRule (unchecked)
+pub extern "js" fn CSSParserRule::from_js_value(v : JsValue) -> CSSParserRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSParserRule (checked with instanceof)
+pub extern "js" fn CSSParserRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSParserRule? =
+  #| (v) => (v instanceof CSSParserRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSParserRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_parser_rule(
+  self : JsValue,
+) -> CSSParserRule? =
+  #| (self) => (self instanceof CSSParserRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSParserRule (unchecked)
+pub extern "js" fn JsValue::to_css_parser_rule(self : JsValue) -> CSSParserRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSParserRule::as_css_parser_at_rule(
+  self : CSSParserRule,
+) -> CSSParserAtRule? =
+  #| (self) => (self instanceof CSSParserAtRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSParserRule::as_css_parser_qualified_rule(
+  self : CSSParserRule,
+) -> CSSParserQualifiedRule? =
+  #| (self) => (self instanceof CSSParserQualifiedRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSParserRule::as_css_parser_declaration(
+  self : CSSParserRule,
+) -> CSSParserDeclaration? =
+  #| (self) => (self instanceof CSSParserDeclaration) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// CSSParserAtRule interface
 pub type CSSParserAtRule
 
@@ -145,6 +187,40 @@ pub type CSSParserAtRule
 pub extern "js" fn CSSParserAtRule::to_js_value(
   self : CSSParserAtRule,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CSSParserAtRule (unchecked)
+pub extern "js" fn CSSParserAtRule::from_js_value(
+  v : JsValue,
+) -> CSSParserAtRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSParserAtRule (checked with instanceof)
+pub extern "js" fn CSSParserAtRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSParserAtRule? =
+  #| (v) => (v instanceof CSSParserAtRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSParserAtRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_parser_at_rule(
+  self : JsValue,
+) -> CSSParserAtRule? =
+  #| (self) => (self instanceof CSSParserAtRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSParserAtRule (unchecked)
+pub extern "js" fn JsValue::to_css_parser_at_rule(
+  self : JsValue,
+) -> CSSParserAtRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSParserAtRule::to_css_parser_rule(
+  self : CSSParserAtRule,
+) -> CSSParserRule =
   #| (self) => self
 
 ///|
@@ -169,7 +245,7 @@ pub extern "js" fn CSSParserAtRule::get_prelude(
 pub extern "js" fn CSSParserAtRule::get_body(
   self : CSSParserAtRule,
 ) -> JsValue? =
-  #| (self) => self.body
+  #| (self) => { const v = self.body; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// CSSParserQualifiedRule interface
@@ -179,6 +255,40 @@ pub type CSSParserQualifiedRule
 pub extern "js" fn CSSParserQualifiedRule::to_js_value(
   self : CSSParserQualifiedRule,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CSSParserQualifiedRule (unchecked)
+pub extern "js" fn CSSParserQualifiedRule::from_js_value(
+  v : JsValue,
+) -> CSSParserQualifiedRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSParserQualifiedRule (checked with instanceof)
+pub extern "js" fn CSSParserQualifiedRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSParserQualifiedRule? =
+  #| (v) => (v instanceof CSSParserQualifiedRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSParserQualifiedRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_parser_qualified_rule(
+  self : JsValue,
+) -> CSSParserQualifiedRule? =
+  #| (self) => (self instanceof CSSParserQualifiedRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSParserQualifiedRule (unchecked)
+pub extern "js" fn JsValue::to_css_parser_qualified_rule(
+  self : JsValue,
+) -> CSSParserQualifiedRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSParserQualifiedRule::to_css_parser_rule(
+  self : CSSParserQualifiedRule,
+) -> CSSParserRule =
   #| (self) => self
 
 ///|
@@ -211,6 +321,40 @@ pub extern "js" fn CSSParserDeclaration::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSParserDeclaration (unchecked)
+pub extern "js" fn CSSParserDeclaration::from_js_value(
+  v : JsValue,
+) -> CSSParserDeclaration =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSParserDeclaration (checked with instanceof)
+pub extern "js" fn CSSParserDeclaration::from_js_value_opt(
+  v : JsValue,
+) -> CSSParserDeclaration? =
+  #| (v) => (v instanceof CSSParserDeclaration) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSParserDeclaration (checked with instanceof)
+pub extern "js" fn JsValue::as_css_parser_declaration(
+  self : JsValue,
+) -> CSSParserDeclaration? =
+  #| (self) => (self instanceof CSSParserDeclaration) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSParserDeclaration (unchecked)
+pub extern "js" fn JsValue::to_css_parser_declaration(
+  self : JsValue,
+) -> CSSParserDeclaration =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSParserDeclaration::to_css_parser_rule(
+  self : CSSParserDeclaration,
+) -> CSSParserRule =
+  #| (self) => self
+
+///|
 pub extern "js" fn CSSParserDeclaration::new(
   name : String,
   body : Array[CSSParserRule],
@@ -240,6 +384,44 @@ pub extern "js" fn CSSParserValue::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSParserValue (unchecked)
+pub extern "js" fn CSSParserValue::from_js_value(v : JsValue) -> CSSParserValue =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSParserValue (checked with instanceof)
+pub extern "js" fn CSSParserValue::from_js_value_opt(
+  v : JsValue,
+) -> CSSParserValue? =
+  #| (v) => (v instanceof CSSParserValue) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSParserValue (checked with instanceof)
+pub extern "js" fn JsValue::as_css_parser_value(
+  self : JsValue,
+) -> CSSParserValue? =
+  #| (self) => (self instanceof CSSParserValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSParserValue (unchecked)
+pub extern "js" fn JsValue::to_css_parser_value(
+  self : JsValue,
+) -> CSSParserValue =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSParserValue::as_css_parser_block(
+  self : CSSParserValue,
+) -> CSSParserBlock? =
+  #| (self) => (self instanceof CSSParserBlock) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSParserValue::as_css_parser_function(
+  self : CSSParserValue,
+) -> CSSParserFunction? =
+  #| (self) => (self instanceof CSSParserFunction) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// CSSParserBlock interface
 pub type CSSParserBlock
 
@@ -247,6 +429,38 @@ pub type CSSParserBlock
 pub extern "js" fn CSSParserBlock::to_js_value(
   self : CSSParserBlock,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CSSParserBlock (unchecked)
+pub extern "js" fn CSSParserBlock::from_js_value(v : JsValue) -> CSSParserBlock =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSParserBlock (checked with instanceof)
+pub extern "js" fn CSSParserBlock::from_js_value_opt(
+  v : JsValue,
+) -> CSSParserBlock? =
+  #| (v) => (v instanceof CSSParserBlock) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSParserBlock (checked with instanceof)
+pub extern "js" fn JsValue::as_css_parser_block(
+  self : JsValue,
+) -> CSSParserBlock? =
+  #| (self) => (self instanceof CSSParserBlock) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSParserBlock (unchecked)
+pub extern "js" fn JsValue::to_css_parser_block(
+  self : JsValue,
+) -> CSSParserBlock =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSParserBlock::to_css_parser_value(
+  self : CSSParserBlock,
+) -> CSSParserValue =
   #| (self) => self
 
 ///|
@@ -272,6 +486,40 @@ pub type CSSParserFunction
 pub extern "js" fn CSSParserFunction::to_js_value(
   self : CSSParserFunction,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CSSParserFunction (unchecked)
+pub extern "js" fn CSSParserFunction::from_js_value(
+  v : JsValue,
+) -> CSSParserFunction =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSParserFunction (checked with instanceof)
+pub extern "js" fn CSSParserFunction::from_js_value_opt(
+  v : JsValue,
+) -> CSSParserFunction? =
+  #| (v) => (v instanceof CSSParserFunction) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSParserFunction (checked with instanceof)
+pub extern "js" fn JsValue::as_css_parser_function(
+  self : JsValue,
+) -> CSSParserFunction? =
+  #| (self) => (self instanceof CSSParserFunction) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSParserFunction (unchecked)
+pub extern "js" fn JsValue::to_css_parser_function(
+  self : JsValue,
+) -> CSSParserFunction =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSParserFunction::to_css_parser_value(
+  self : CSSParserFunction,
+) -> CSSParserValue =
   #| (self) => self
 
 ///|

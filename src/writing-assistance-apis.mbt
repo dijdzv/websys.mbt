@@ -635,6 +635,26 @@ pub extern "js" fn Summarizer::to_js_value(self : Summarizer) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Summarizer (unchecked)
+pub extern "js" fn Summarizer::from_js_value(v : JsValue) -> Summarizer =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Summarizer (checked with instanceof)
+pub extern "js" fn Summarizer::from_js_value_opt(v : JsValue) -> Summarizer? =
+  #| (v) => (v instanceof Summarizer) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Summarizer (checked with instanceof)
+pub extern "js" fn JsValue::as_summarizer(self : JsValue) -> Summarizer? =
+  #| (self) => (self instanceof Summarizer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Summarizer (unchecked)
+pub extern "js" fn JsValue::to_summarizer(self : JsValue) -> Summarizer =
+  #| (self) => self
+
+///|
 pub extern "js" fn Summarizer::create(
   options : SummarizerCreateOptions,
 ) -> Promise[Summarizer] =
@@ -700,19 +720,19 @@ pub extern "js" fn Summarizer::get_length(
 pub extern "js" fn Summarizer::get_expected_input_languages(
   self : Summarizer,
 ) -> JsValue? =
-  #| (self) => self.expectedInputLanguages
+  #| (self) => { const v = self.expectedInputLanguages; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Summarizer::get_expected_context_languages(
   self : Summarizer,
 ) -> JsValue? =
-  #| (self) => self.expectedContextLanguages
+  #| (self) => { const v = self.expectedContextLanguages; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Summarizer::get_output_language(
   self : Summarizer,
 ) -> String? =
-  #| (self) => self.outputLanguage
+  #| (self) => { const v = self.outputLanguage; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Summarizer::measure_input_usage(
@@ -743,6 +763,26 @@ pub type Writer
 
 ///|
 pub extern "js" fn Writer::to_js_value(self : Writer) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to Writer (unchecked)
+pub extern "js" fn Writer::from_js_value(v : JsValue) -> Writer =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Writer (checked with instanceof)
+pub extern "js" fn Writer::from_js_value_opt(v : JsValue) -> Writer? =
+  #| (v) => (v instanceof Writer) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Writer (checked with instanceof)
+pub extern "js" fn JsValue::as_writer(self : JsValue) -> Writer? =
+  #| (self) => (self instanceof Writer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Writer (unchecked)
+pub extern "js" fn JsValue::to_writer(self : JsValue) -> Writer =
   #| (self) => self
 
 ///|
@@ -807,17 +847,17 @@ pub extern "js" fn Writer::get_length(self : Writer) -> WriterLength =
 pub extern "js" fn Writer::get_expected_input_languages(
   self : Writer,
 ) -> JsValue? =
-  #| (self) => self.expectedInputLanguages
+  #| (self) => { const v = self.expectedInputLanguages; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Writer::get_expected_context_languages(
   self : Writer,
 ) -> JsValue? =
-  #| (self) => self.expectedContextLanguages
+  #| (self) => { const v = self.expectedContextLanguages; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Writer::get_output_language(self : Writer) -> String? =
-  #| (self) => self.outputLanguage
+  #| (self) => { const v = self.outputLanguage; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Writer::measure_input_usage(
@@ -848,6 +888,26 @@ pub type Rewriter
 
 ///|
 pub extern "js" fn Rewriter::to_js_value(self : Rewriter) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to Rewriter (unchecked)
+pub extern "js" fn Rewriter::from_js_value(v : JsValue) -> Rewriter =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Rewriter (checked with instanceof)
+pub extern "js" fn Rewriter::from_js_value_opt(v : JsValue) -> Rewriter? =
+  #| (v) => (v instanceof Rewriter) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Rewriter (checked with instanceof)
+pub extern "js" fn JsValue::as_rewriter(self : JsValue) -> Rewriter? =
+  #| (self) => (self instanceof Rewriter) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Rewriter (unchecked)
+pub extern "js" fn JsValue::to_rewriter(self : JsValue) -> Rewriter =
   #| (self) => self
 
 ///|
@@ -912,17 +972,17 @@ pub extern "js" fn Rewriter::get_length(self : Rewriter) -> RewriterLength =
 pub extern "js" fn Rewriter::get_expected_input_languages(
   self : Rewriter,
 ) -> JsValue? =
-  #| (self) => self.expectedInputLanguages
+  #| (self) => { const v = self.expectedInputLanguages; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Rewriter::get_expected_context_languages(
   self : Rewriter,
 ) -> JsValue? =
-  #| (self) => self.expectedContextLanguages
+  #| (self) => { const v = self.expectedContextLanguages; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Rewriter::get_output_language(self : Rewriter) -> String? =
-  #| (self) => self.outputLanguage
+  #| (self) => { const v = self.outputLanguage; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Rewriter::measure_input_usage(
@@ -953,6 +1013,34 @@ pub type CreateMonitor
 
 ///|
 pub extern "js" fn CreateMonitor::to_js_value(self : CreateMonitor) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CreateMonitor (unchecked)
+pub extern "js" fn CreateMonitor::from_js_value(v : JsValue) -> CreateMonitor =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CreateMonitor (checked with instanceof)
+pub extern "js" fn CreateMonitor::from_js_value_opt(
+  v : JsValue,
+) -> CreateMonitor? =
+  #| (v) => (v instanceof CreateMonitor) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CreateMonitor (checked with instanceof)
+pub extern "js" fn JsValue::as_create_monitor(self : JsValue) -> CreateMonitor? =
+  #| (self) => (self instanceof CreateMonitor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CreateMonitor (unchecked)
+pub extern "js" fn JsValue::to_create_monitor(self : JsValue) -> CreateMonitor =
+  #| (self) => self
+
+///|
+pub extern "js" fn CreateMonitor::to_event_target(
+  self : CreateMonitor,
+) -> EventTarget =
   #| (self) => self
 
 ///|

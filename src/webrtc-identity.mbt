@@ -279,6 +279,46 @@ pub extern "js" fn RTCIdentityProviderGlobalScope::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RTCIdentityProviderGlobalScope (unchecked)
+pub extern "js" fn RTCIdentityProviderGlobalScope::from_js_value(
+  v : JsValue,
+) -> RTCIdentityProviderGlobalScope =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCIdentityProviderGlobalScope (checked with instanceof)
+pub extern "js" fn RTCIdentityProviderGlobalScope::from_js_value_opt(
+  v : JsValue,
+) -> RTCIdentityProviderGlobalScope? =
+  #| (v) => (v instanceof RTCIdentityProviderGlobalScope) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCIdentityProviderGlobalScope (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_identity_provider_global_scope(
+  self : JsValue,
+) -> RTCIdentityProviderGlobalScope? =
+  #| (self) => (self instanceof RTCIdentityProviderGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCIdentityProviderGlobalScope (unchecked)
+pub extern "js" fn JsValue::to_rtc_identity_provider_global_scope(
+  self : JsValue,
+) -> RTCIdentityProviderGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCIdentityProviderGlobalScope::to_worker_global_scope(
+  self : RTCIdentityProviderGlobalScope,
+) -> WorkerGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn RTCIdentityProviderGlobalScope::to_event_target(
+  self : RTCIdentityProviderGlobalScope,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn RTCIdentityProviderGlobalScope::get_rtc_identity_provider(
   self : RTCIdentityProviderGlobalScope,
 ) -> RTCIdentityProviderRegistrar =
@@ -292,6 +332,34 @@ pub type RTCIdentityProviderRegistrar
 pub extern "js" fn RTCIdentityProviderRegistrar::to_js_value(
   self : RTCIdentityProviderRegistrar,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to RTCIdentityProviderRegistrar (unchecked)
+pub extern "js" fn RTCIdentityProviderRegistrar::from_js_value(
+  v : JsValue,
+) -> RTCIdentityProviderRegistrar =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCIdentityProviderRegistrar (checked with instanceof)
+pub extern "js" fn RTCIdentityProviderRegistrar::from_js_value_opt(
+  v : JsValue,
+) -> RTCIdentityProviderRegistrar? =
+  #| (v) => (v instanceof RTCIdentityProviderRegistrar) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCIdentityProviderRegistrar (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_identity_provider_registrar(
+  self : JsValue,
+) -> RTCIdentityProviderRegistrar? =
+  #| (self) => (self instanceof RTCIdentityProviderRegistrar) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCIdentityProviderRegistrar (unchecked)
+pub extern "js" fn JsValue::to_rtc_identity_provider_registrar(
+  self : JsValue,
+) -> RTCIdentityProviderRegistrar =
   #| (self) => self
 
 ///|
@@ -309,6 +377,34 @@ pub type RTCIdentityAssertion
 pub extern "js" fn RTCIdentityAssertion::to_js_value(
   self : RTCIdentityAssertion,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to RTCIdentityAssertion (unchecked)
+pub extern "js" fn RTCIdentityAssertion::from_js_value(
+  v : JsValue,
+) -> RTCIdentityAssertion =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RTCIdentityAssertion (checked with instanceof)
+pub extern "js" fn RTCIdentityAssertion::from_js_value_opt(
+  v : JsValue,
+) -> RTCIdentityAssertion? =
+  #| (v) => (v instanceof RTCIdentityAssertion) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RTCIdentityAssertion (checked with instanceof)
+pub extern "js" fn JsValue::as_rtc_identity_assertion(
+  self : JsValue,
+) -> RTCIdentityAssertion? =
+  #| (self) => (self instanceof RTCIdentityAssertion) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RTCIdentityAssertion (unchecked)
+pub extern "js" fn JsValue::to_rtc_identity_assertion(
+  self : JsValue,
+) -> RTCIdentityAssertion =
   #| (self) => self
 
 ///|

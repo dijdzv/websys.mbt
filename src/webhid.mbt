@@ -314,6 +314,30 @@ pub extern "js" fn HID::to_js_value(self : HID) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to HID (unchecked)
+pub extern "js" fn HID::from_js_value(v : JsValue) -> HID =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to HID (checked with instanceof)
+pub extern "js" fn HID::from_js_value_opt(v : JsValue) -> HID? =
+  #| (v) => (v instanceof HID) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to HID (checked with instanceof)
+pub extern "js" fn JsValue::as_hid(self : JsValue) -> HID? =
+  #| (self) => (self instanceof HID) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to HID (unchecked)
+pub extern "js" fn JsValue::to_hid(self : JsValue) -> HID =
+  #| (self) => self
+
+///|
+pub extern "js" fn HID::to_event_target(self : HID) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn HID::get_onconnect(self : HID) -> EventHandler =
   #| (self) => self.onconnect
 
@@ -333,14 +357,14 @@ pub extern "js" fn HID::set_ondisconnect(
   #| (self, value) => { self.ondisconnect = value }
 
 ///|
-pub extern "js" fn HID::get_devices(self : HID) -> Promise[Unit] =
+pub extern "js" fn HID::get_devices(self : HID) -> Promise[Array[HIDDevice]] =
   #| (self) => self.getDevices()
 
 ///|
 pub extern "js" fn HID::request_device(
   self : HID,
   options : HIDDeviceRequestOptions,
-) -> Promise[Unit] =
+) -> Promise[Array[HIDDevice]] =
   #| (self, options) => self.requestDevice(options)
 
 ///|
@@ -349,6 +373,30 @@ pub type HIDDevice
 
 ///|
 pub extern "js" fn HIDDevice::to_js_value(self : HIDDevice) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to HIDDevice (unchecked)
+pub extern "js" fn HIDDevice::from_js_value(v : JsValue) -> HIDDevice =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to HIDDevice (checked with instanceof)
+pub extern "js" fn HIDDevice::from_js_value_opt(v : JsValue) -> HIDDevice? =
+  #| (v) => (v instanceof HIDDevice) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to HIDDevice (checked with instanceof)
+pub extern "js" fn JsValue::as_hid_device(self : JsValue) -> HIDDevice? =
+  #| (self) => (self instanceof HIDDevice) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to HIDDevice (unchecked)
+pub extern "js" fn JsValue::to_hid_device(self : JsValue) -> HIDDevice =
+  #| (self) => self
+
+///|
+pub extern "js" fn HIDDevice::to_event_target(self : HIDDevice) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -430,6 +478,40 @@ pub extern "js" fn HIDConnectionEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to HIDConnectionEvent (unchecked)
+pub extern "js" fn HIDConnectionEvent::from_js_value(
+  v : JsValue,
+) -> HIDConnectionEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to HIDConnectionEvent (checked with instanceof)
+pub extern "js" fn HIDConnectionEvent::from_js_value_opt(
+  v : JsValue,
+) -> HIDConnectionEvent? =
+  #| (v) => (v instanceof HIDConnectionEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to HIDConnectionEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_hid_connection_event(
+  self : JsValue,
+) -> HIDConnectionEvent? =
+  #| (self) => (self instanceof HIDConnectionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to HIDConnectionEvent (unchecked)
+pub extern "js" fn JsValue::to_hid_connection_event(
+  self : JsValue,
+) -> HIDConnectionEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn HIDConnectionEvent::to_event(
+  self : HIDConnectionEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn HIDConnectionEvent::new(
   type_ : String,
   event_init_dict : HIDConnectionEventInit,
@@ -450,6 +532,40 @@ pub type HIDInputReportEvent
 pub extern "js" fn HIDInputReportEvent::to_js_value(
   self : HIDInputReportEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to HIDInputReportEvent (unchecked)
+pub extern "js" fn HIDInputReportEvent::from_js_value(
+  v : JsValue,
+) -> HIDInputReportEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to HIDInputReportEvent (checked with instanceof)
+pub extern "js" fn HIDInputReportEvent::from_js_value_opt(
+  v : JsValue,
+) -> HIDInputReportEvent? =
+  #| (v) => (v instanceof HIDInputReportEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to HIDInputReportEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_hid_input_report_event(
+  self : JsValue,
+) -> HIDInputReportEvent? =
+  #| (self) => (self instanceof HIDInputReportEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to HIDInputReportEvent (unchecked)
+pub extern "js" fn JsValue::to_hid_input_report_event(
+  self : JsValue,
+) -> HIDInputReportEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn HIDInputReportEvent::to_event(
+  self : HIDInputReportEvent,
+) -> Event =
   #| (self) => self
 
 ///|

@@ -133,6 +133,30 @@ pub extern "js" fn Blob::to_js_value(self : Blob) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Blob (unchecked)
+pub extern "js" fn Blob::from_js_value(v : JsValue) -> Blob =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Blob (checked with instanceof)
+pub extern "js" fn Blob::from_js_value_opt(v : JsValue) -> Blob? =
+  #| (v) => (v instanceof Blob) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Blob (checked with instanceof)
+pub extern "js" fn JsValue::as_blob(self : JsValue) -> Blob? =
+  #| (self) => (self instanceof Blob) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Blob (unchecked)
+pub extern "js" fn JsValue::to_blob(self : JsValue) -> Blob =
+  #| (self) => self
+
+///|
+pub extern "js" fn Blob::as_file(self : Blob) -> File? =
+  #| (self) => (self instanceof File) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn Blob::new(
   blob_parts : Array[BlobPart],
   options : BlobPropertyBag,
@@ -185,48 +209,36 @@ pub extern "js" fn File::to_js_value(self : File) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to File (unchecked)
+pub extern "js" fn File::from_js_value(v : JsValue) -> File =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to File (checked with instanceof)
+pub extern "js" fn File::from_js_value_opt(v : JsValue) -> File? =
+  #| (v) => (v instanceof File) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to File (checked with instanceof)
+pub extern "js" fn JsValue::as_file(self : JsValue) -> File? =
+  #| (self) => (self instanceof File) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to File (unchecked)
+pub extern "js" fn JsValue::to_file(self : JsValue) -> File =
+  #| (self) => self
+
+///|
+pub extern "js" fn File::to_blob(self : File) -> Blob =
+  #| (self) => self
+
+///|
 pub extern "js" fn File::new(
-  blob_parts : Array[BlobPart],
-  options : BlobPropertyBag,
+  file_bits : Array[BlobPart],
+  file_name : String,
+  options : FilePropertyBag,
 ) -> File =
-  #| (blob_parts, options) => new File(blob_parts, options)
-
-///|
-pub extern "js" fn File::get_size(self : File) -> Int64 =
-  #| (self) => self.size
-
-///|
-pub extern "js" fn File::get_type(self : File) -> String =
-  #| (self) => self.type
-
-///|
-pub extern "js" fn File::slice(self : File) -> Blob =
-  #| (self) => self.slice()
-
-///|
-pub extern "js" fn File::slice_with_content_type(
-  self : File,
-  start : Int64,
-  end : Int64,
-  content_type : String,
-) -> Blob =
-  #| (self, start, end, content_type) => self.slice(start, end, content_type)
-
-///|
-pub extern "js" fn File::stream(self : File) -> ReadableStream =
-  #| (self) => self.stream()
-
-///|
-pub extern "js" fn File::text(self : File) -> Promise[String] =
-  #| (self) => self.text()
-
-///|
-pub extern "js" fn File::array_buffer(self : File) -> Promise[ArrayBuffer] =
-  #| (self) => self.arrayBuffer()
-
-///|
-pub extern "js" fn File::bytes(self : File) -> Promise[Uint8Array] =
-  #| (self) => self.bytes()
+  #| (file_bits, file_name, options) => new File(file_bits, file_name, options)
 
 ///|
 pub extern "js" fn File::get_name(self : File) -> String =
@@ -249,12 +261,32 @@ pub extern "js" fn FileList::to_js_value(self : FileList) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to FileList (unchecked)
+pub extern "js" fn FileList::from_js_value(v : JsValue) -> FileList =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FileList (checked with instanceof)
+pub extern "js" fn FileList::from_js_value_opt(v : JsValue) -> FileList? =
+  #| (v) => (v instanceof FileList) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FileList (checked with instanceof)
+pub extern "js" fn JsValue::as_file_list(self : JsValue) -> FileList? =
+  #| (self) => (self instanceof FileList) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FileList (unchecked)
+pub extern "js" fn JsValue::to_file_list(self : JsValue) -> FileList =
+  #| (self) => self
+
+///|
 pub extern "js" fn FileList::item(self : FileList, index : Int) -> File? =
-  #| (self, index) => self.item(index)
+  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn FileList::get(self : FileList, index : Int) -> File? =
-  #| (self, index) => self[index]
+  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn FileList::get_length(self : FileList) -> Int =
@@ -266,6 +298,32 @@ pub type FileReader
 
 ///|
 pub extern "js" fn FileReader::to_js_value(self : FileReader) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to FileReader (unchecked)
+pub extern "js" fn FileReader::from_js_value(v : JsValue) -> FileReader =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FileReader (checked with instanceof)
+pub extern "js" fn FileReader::from_js_value_opt(v : JsValue) -> FileReader? =
+  #| (v) => (v instanceof FileReader) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FileReader (checked with instanceof)
+pub extern "js" fn JsValue::as_file_reader(self : JsValue) -> FileReader? =
+  #| (self) => (self instanceof FileReader) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FileReader (unchecked)
+pub extern "js" fn JsValue::to_file_reader(self : JsValue) -> FileReader =
+  #| (self) => self
+
+///|
+pub extern "js" fn FileReader::to_event_target(
+  self : FileReader,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -302,7 +360,7 @@ pub extern "js" fn FileReader::read_as_text_with_encoding(
   #| (self, blob, encoding) => self.readAsText(blob, encoding)
 
 ///|
-pub extern "js" fn FileReader::read_as_data_u_r_l(
+pub extern "js" fn FileReader::read_as_data_url(
   self : FileReader,
   blob : Blob,
 ) -> Unit =
@@ -339,7 +397,7 @@ pub extern "js" fn FileReader::get_result(
 
 ///|
 pub extern "js" fn FileReader::get_error(self : FileReader) -> DOMException? =
-  #| (self) => self.error
+  #| (self) => { const v = self.error; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn FileReader::get_onloadstart(
@@ -422,6 +480,32 @@ pub extern "js" fn FileReaderSync::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to FileReaderSync (unchecked)
+pub extern "js" fn FileReaderSync::from_js_value(v : JsValue) -> FileReaderSync =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FileReaderSync (checked with instanceof)
+pub extern "js" fn FileReaderSync::from_js_value_opt(
+  v : JsValue,
+) -> FileReaderSync? =
+  #| (v) => (v instanceof FileReaderSync) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FileReaderSync (checked with instanceof)
+pub extern "js" fn JsValue::as_file_reader_sync(
+  self : JsValue,
+) -> FileReaderSync? =
+  #| (self) => (self instanceof FileReaderSync) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FileReaderSync (unchecked)
+pub extern "js" fn JsValue::to_file_reader_sync(
+  self : JsValue,
+) -> FileReaderSync =
+  #| (self) => self
+
+///|
 pub extern "js" fn FileReaderSync::new() -> FileReaderSync =
   #| () => new FileReaderSync()
 
@@ -455,7 +539,7 @@ pub extern "js" fn FileReaderSync::read_as_text_with_encoding(
   #| (self, blob, encoding) => self.readAsText(blob, encoding)
 
 ///|
-pub extern "js" fn FileReaderSync::read_as_data_u_r_l(
+pub extern "js" fn FileReaderSync::read_as_data_url(
   self : FileReaderSync,
   blob : Blob,
 ) -> String =

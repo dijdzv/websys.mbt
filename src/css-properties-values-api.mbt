@@ -44,6 +44,40 @@ pub extern "js" fn CSSPropertyRule::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSPropertyRule (unchecked)
+pub extern "js" fn CSSPropertyRule::from_js_value(
+  v : JsValue,
+) -> CSSPropertyRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSPropertyRule (checked with instanceof)
+pub extern "js" fn CSSPropertyRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSPropertyRule? =
+  #| (v) => (v instanceof CSSPropertyRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSPropertyRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_property_rule(
+  self : JsValue,
+) -> CSSPropertyRule? =
+  #| (self) => (self instanceof CSSPropertyRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSPropertyRule (unchecked)
+pub extern "js" fn JsValue::to_css_property_rule(
+  self : JsValue,
+) -> CSSPropertyRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSPropertyRule::to_css_rule(
+  self : CSSPropertyRule,
+) -> CSSRule =
+  #| (self) => self
+
+///|
 pub extern "js" fn CSSPropertyRule::get_name(
   self : CSSPropertyRule,
 ) -> CSSOMString =
@@ -65,4 +99,4 @@ pub extern "js" fn CSSPropertyRule::get_inherits(
 pub extern "js" fn CSSPropertyRule::get_initial_value(
   self : CSSPropertyRule,
 ) -> CSSOMString? =
-  #| (self) => self.initialValue
+  #| (self) => { const v = self.initialValue; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }

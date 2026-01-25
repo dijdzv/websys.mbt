@@ -259,8 +259,8 @@ pub fn CursorCaptureConstraint::from_string(
 ///|
 /// DisplayMediaStreamOptions dictionary
 pub struct DisplayMediaStreamOptions {
-  video : JsValue?
-  audio : JsValue?
+  video : BoolOrMediaTrackConstraints?
+  audio : BoolOrMediaTrackConstraints?
   controller : CaptureController?
   selfBrowserSurface : SelfCapturePreferenceEnum?
   systemAudio : SystemAudioPreferenceEnum?
@@ -311,6 +311,40 @@ pub extern "js" fn CaptureController::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CaptureController (unchecked)
+pub extern "js" fn CaptureController::from_js_value(
+  v : JsValue,
+) -> CaptureController =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CaptureController (checked with instanceof)
+pub extern "js" fn CaptureController::from_js_value_opt(
+  v : JsValue,
+) -> CaptureController? =
+  #| (v) => (v instanceof CaptureController) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CaptureController (checked with instanceof)
+pub extern "js" fn JsValue::as_capture_controller(
+  self : JsValue,
+) -> CaptureController? =
+  #| (self) => (self instanceof CaptureController) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CaptureController (unchecked)
+pub extern "js" fn JsValue::to_capture_controller(
+  self : JsValue,
+) -> CaptureController =
+  #| (self) => self
+
+///|
+pub extern "js" fn CaptureController::to_event_target(
+  self : CaptureController,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn CaptureController::new() -> CaptureController =
   #| () => new CaptureController()
 
@@ -322,19 +356,6 @@ pub extern "js" fn CaptureController::set_focus_behavior(
   #| (self, focus_behavior) => self.setFocusBehavior(['focus-capturing-application', 'focus-captured-surface', 'no-focus-change'][focus_behavior])
 
 ///|
-pub extern "js" fn CaptureController::get_oncapturedmousechange(
-  self : CaptureController,
-) -> EventHandler =
-  #| (self) => self.oncapturedmousechange
-
-///|
-pub extern "js" fn CaptureController::set_oncapturedmousechange(
-  self : CaptureController,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.oncapturedmousechange = value }
-
-///|
 pub extern "js" fn CaptureController::get_supported_zoom_levels(
   self : CaptureController,
 ) -> Array[Int] =
@@ -344,7 +365,7 @@ pub extern "js" fn CaptureController::get_supported_zoom_levels(
 pub extern "js" fn CaptureController::get_zoom_level(
   self : CaptureController,
 ) -> Int? =
-  #| (self) => self.zoomLevel
+  #| (self) => { const v = self.zoomLevel; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn CaptureController::increase_zoom_level(
@@ -383,3 +404,16 @@ pub extern "js" fn CaptureController::forward_wheel(
   element : HTMLElement?,
 ) -> Promise[Unit] =
   #| (self, element) => self.forwardWheel(element)
+
+///|
+pub extern "js" fn CaptureController::get_oncapturedmousechange(
+  self : CaptureController,
+) -> EventHandler =
+  #| (self) => self.oncapturedmousechange
+
+///|
+pub extern "js" fn CaptureController::set_oncapturedmousechange(
+  self : CaptureController,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.oncapturedmousechange = value }

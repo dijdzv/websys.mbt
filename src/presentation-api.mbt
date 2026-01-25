@@ -123,10 +123,32 @@ pub extern "js" fn Presentation::to_js_value(self : Presentation) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Presentation (unchecked)
+pub extern "js" fn Presentation::from_js_value(v : JsValue) -> Presentation =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Presentation (checked with instanceof)
+pub extern "js" fn Presentation::from_js_value_opt(
+  v : JsValue,
+) -> Presentation? =
+  #| (v) => (v instanceof Presentation) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Presentation (checked with instanceof)
+pub extern "js" fn JsValue::as_presentation(self : JsValue) -> Presentation? =
+  #| (self) => (self instanceof Presentation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Presentation (unchecked)
+pub extern "js" fn JsValue::to_presentation(self : JsValue) -> Presentation =
+  #| (self) => self
+
+///|
 pub extern "js" fn Presentation::get_default_request(
   self : Presentation,
 ) -> PresentationRequest? =
-  #| (self) => self.defaultRequest
+  #| (self) => { const v = self.defaultRequest; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Presentation::set_default_request(
@@ -139,7 +161,7 @@ pub extern "js" fn Presentation::set_default_request(
 pub extern "js" fn Presentation::get_receiver(
   self : Presentation,
 ) -> PresentationReceiver? =
-  #| (self) => self.receiver
+  #| (self) => { const v = self.receiver; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// PresentationRequest interface
@@ -149,6 +171,40 @@ pub type PresentationRequest
 pub extern "js" fn PresentationRequest::to_js_value(
   self : PresentationRequest,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to PresentationRequest (unchecked)
+pub extern "js" fn PresentationRequest::from_js_value(
+  v : JsValue,
+) -> PresentationRequest =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PresentationRequest (checked with instanceof)
+pub extern "js" fn PresentationRequest::from_js_value_opt(
+  v : JsValue,
+) -> PresentationRequest? =
+  #| (v) => (v instanceof PresentationRequest) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PresentationRequest (checked with instanceof)
+pub extern "js" fn JsValue::as_presentation_request(
+  self : JsValue,
+) -> PresentationRequest? =
+  #| (self) => (self instanceof PresentationRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PresentationRequest (unchecked)
+pub extern "js" fn JsValue::to_presentation_request(
+  self : JsValue,
+) -> PresentationRequest =
+  #| (self) => self
+
+///|
+pub extern "js" fn PresentationRequest::to_event_target(
+  self : PresentationRequest,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -200,6 +256,40 @@ pub extern "js" fn PresentationAvailability::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PresentationAvailability (unchecked)
+pub extern "js" fn PresentationAvailability::from_js_value(
+  v : JsValue,
+) -> PresentationAvailability =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PresentationAvailability (checked with instanceof)
+pub extern "js" fn PresentationAvailability::from_js_value_opt(
+  v : JsValue,
+) -> PresentationAvailability? =
+  #| (v) => (v instanceof PresentationAvailability) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PresentationAvailability (checked with instanceof)
+pub extern "js" fn JsValue::as_presentation_availability(
+  self : JsValue,
+) -> PresentationAvailability? =
+  #| (self) => (self instanceof PresentationAvailability) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PresentationAvailability (unchecked)
+pub extern "js" fn JsValue::to_presentation_availability(
+  self : JsValue,
+) -> PresentationAvailability =
+  #| (self) => self
+
+///|
+pub extern "js" fn PresentationAvailability::to_event_target(
+  self : PresentationAvailability,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn PresentationAvailability::get_value(
   self : PresentationAvailability,
 ) -> Bool =
@@ -229,6 +319,40 @@ pub extern "js" fn PresentationConnectionAvailableEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PresentationConnectionAvailableEvent (unchecked)
+pub extern "js" fn PresentationConnectionAvailableEvent::from_js_value(
+  v : JsValue,
+) -> PresentationConnectionAvailableEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PresentationConnectionAvailableEvent (checked with instanceof)
+pub extern "js" fn PresentationConnectionAvailableEvent::from_js_value_opt(
+  v : JsValue,
+) -> PresentationConnectionAvailableEvent? =
+  #| (v) => (v instanceof PresentationConnectionAvailableEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PresentationConnectionAvailableEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_presentation_connection_available_event(
+  self : JsValue,
+) -> PresentationConnectionAvailableEvent? =
+  #| (self) => (self instanceof PresentationConnectionAvailableEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PresentationConnectionAvailableEvent (unchecked)
+pub extern "js" fn JsValue::to_presentation_connection_available_event(
+  self : JsValue,
+) -> PresentationConnectionAvailableEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn PresentationConnectionAvailableEvent::to_event(
+  self : PresentationConnectionAvailableEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn PresentationConnectionAvailableEvent::new(
   type_ : String,
   event_init_dict : PresentationConnectionAvailableEventInit,
@@ -249,6 +373,40 @@ pub type PresentationConnection
 pub extern "js" fn PresentationConnection::to_js_value(
   self : PresentationConnection,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to PresentationConnection (unchecked)
+pub extern "js" fn PresentationConnection::from_js_value(
+  v : JsValue,
+) -> PresentationConnection =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PresentationConnection (checked with instanceof)
+pub extern "js" fn PresentationConnection::from_js_value_opt(
+  v : JsValue,
+) -> PresentationConnection? =
+  #| (v) => (v instanceof PresentationConnection) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PresentationConnection (checked with instanceof)
+pub extern "js" fn JsValue::as_presentation_connection(
+  self : JsValue,
+) -> PresentationConnection? =
+  #| (self) => (self instanceof PresentationConnection) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PresentationConnection (unchecked)
+pub extern "js" fn JsValue::to_presentation_connection(
+  self : JsValue,
+) -> PresentationConnection =
+  #| (self) => self
+
+///|
+pub extern "js" fn PresentationConnection::to_event_target(
+  self : PresentationConnection,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -385,6 +543,40 @@ pub extern "js" fn PresentationConnectionCloseEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PresentationConnectionCloseEvent (unchecked)
+pub extern "js" fn PresentationConnectionCloseEvent::from_js_value(
+  v : JsValue,
+) -> PresentationConnectionCloseEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PresentationConnectionCloseEvent (checked with instanceof)
+pub extern "js" fn PresentationConnectionCloseEvent::from_js_value_opt(
+  v : JsValue,
+) -> PresentationConnectionCloseEvent? =
+  #| (v) => (v instanceof PresentationConnectionCloseEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PresentationConnectionCloseEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_presentation_connection_close_event(
+  self : JsValue,
+) -> PresentationConnectionCloseEvent? =
+  #| (self) => (self instanceof PresentationConnectionCloseEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PresentationConnectionCloseEvent (unchecked)
+pub extern "js" fn JsValue::to_presentation_connection_close_event(
+  self : JsValue,
+) -> PresentationConnectionCloseEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn PresentationConnectionCloseEvent::to_event(
+  self : PresentationConnectionCloseEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn PresentationConnectionCloseEvent::new(
   type_ : String,
   event_init_dict : PresentationConnectionCloseEventInit,
@@ -414,6 +606,34 @@ pub extern "js" fn PresentationReceiver::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PresentationReceiver (unchecked)
+pub extern "js" fn PresentationReceiver::from_js_value(
+  v : JsValue,
+) -> PresentationReceiver =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PresentationReceiver (checked with instanceof)
+pub extern "js" fn PresentationReceiver::from_js_value_opt(
+  v : JsValue,
+) -> PresentationReceiver? =
+  #| (v) => (v instanceof PresentationReceiver) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PresentationReceiver (checked with instanceof)
+pub extern "js" fn JsValue::as_presentation_receiver(
+  self : JsValue,
+) -> PresentationReceiver? =
+  #| (self) => (self instanceof PresentationReceiver) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PresentationReceiver (unchecked)
+pub extern "js" fn JsValue::to_presentation_receiver(
+  self : JsValue,
+) -> PresentationReceiver =
+  #| (self) => self
+
+///|
 pub extern "js" fn PresentationReceiver::get_connection_list(
   self : PresentationReceiver,
 ) -> Promise[PresentationConnectionList] =
@@ -427,6 +647,40 @@ pub type PresentationConnectionList
 pub extern "js" fn PresentationConnectionList::to_js_value(
   self : PresentationConnectionList,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to PresentationConnectionList (unchecked)
+pub extern "js" fn PresentationConnectionList::from_js_value(
+  v : JsValue,
+) -> PresentationConnectionList =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PresentationConnectionList (checked with instanceof)
+pub extern "js" fn PresentationConnectionList::from_js_value_opt(
+  v : JsValue,
+) -> PresentationConnectionList? =
+  #| (v) => (v instanceof PresentationConnectionList) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PresentationConnectionList (checked with instanceof)
+pub extern "js" fn JsValue::as_presentation_connection_list(
+  self : JsValue,
+) -> PresentationConnectionList? =
+  #| (self) => (self instanceof PresentationConnectionList) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PresentationConnectionList (unchecked)
+pub extern "js" fn JsValue::to_presentation_connection_list(
+  self : JsValue,
+) -> PresentationConnectionList =
+  #| (self) => self
+
+///|
+pub extern "js" fn PresentationConnectionList::to_event_target(
+  self : PresentationConnectionList,
+) -> EventTarget =
   #| (self) => self
 
 ///|

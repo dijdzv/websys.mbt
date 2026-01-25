@@ -1,5 +1,5 @@
 // Generated from WebIDL - DO NOT EDIT
-// Source: @webref/idl/privacy-preserving-attribution
+// Source: @webref/idl/attribution
 
 ///|
 /// AttributionAggregationProtocol enum
@@ -187,11 +187,39 @@ pub extern "js" fn AttributionAggregationServices::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to AttributionAggregationServices (unchecked)
+pub extern "js" fn AttributionAggregationServices::from_js_value(
+  v : JsValue,
+) -> AttributionAggregationServices =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AttributionAggregationServices (checked with instanceof)
+pub extern "js" fn AttributionAggregationServices::from_js_value_opt(
+  v : JsValue,
+) -> AttributionAggregationServices? =
+  #| (v) => (v instanceof AttributionAggregationServices) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AttributionAggregationServices (checked with instanceof)
+pub extern "js" fn JsValue::as_attribution_aggregation_services(
+  self : JsValue,
+) -> AttributionAggregationServices? =
+  #| (self) => (self instanceof AttributionAggregationServices) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AttributionAggregationServices (unchecked)
+pub extern "js" fn JsValue::to_attribution_aggregation_services(
+  self : JsValue,
+) -> AttributionAggregationServices =
+  #| (self) => self
+
+///|
 pub extern "js" fn AttributionAggregationServices::get(
   self : AttributionAggregationServices,
   key : String,
 ) -> AttributionAggregationService? =
-  #| (self, key) => self.get(key)
+  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn AttributionAggregationServices::has(
@@ -206,6 +234,26 @@ pub type Attribution
 
 ///|
 pub extern "js" fn Attribution::to_js_value(self : Attribution) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to Attribution (unchecked)
+pub extern "js" fn Attribution::from_js_value(v : JsValue) -> Attribution =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Attribution (checked with instanceof)
+pub extern "js" fn Attribution::from_js_value_opt(v : JsValue) -> Attribution? =
+  #| (v) => (v instanceof Attribution) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Attribution (checked with instanceof)
+pub extern "js" fn JsValue::as_attribution(self : JsValue) -> Attribution? =
+  #| (self) => (self instanceof Attribution) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Attribution (unchecked)
+pub extern "js" fn JsValue::to_attribution(self : JsValue) -> Attribution =
   #| (self) => self
 
 ///|

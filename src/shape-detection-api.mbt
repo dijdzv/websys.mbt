@@ -217,6 +217,28 @@ pub extern "js" fn FaceDetector::to_js_value(self : FaceDetector) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to FaceDetector (unchecked)
+pub extern "js" fn FaceDetector::from_js_value(v : JsValue) -> FaceDetector =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FaceDetector (checked with instanceof)
+pub extern "js" fn FaceDetector::from_js_value_opt(
+  v : JsValue,
+) -> FaceDetector? =
+  #| (v) => (v instanceof FaceDetector) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FaceDetector (checked with instanceof)
+pub extern "js" fn JsValue::as_face_detector(self : JsValue) -> FaceDetector? =
+  #| (self) => (self instanceof FaceDetector) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FaceDetector (unchecked)
+pub extern "js" fn JsValue::to_face_detector(self : JsValue) -> FaceDetector =
+  #| (self) => self
+
+///|
 pub extern "js" fn FaceDetector::new(
   face_detector_options : FaceDetectorOptions,
 ) -> FaceDetector =
@@ -226,7 +248,7 @@ pub extern "js" fn FaceDetector::new(
 pub extern "js" fn FaceDetector::detect(
   self : FaceDetector,
   image : ImageBitmapSource,
-) -> Promise[Unit] =
+) -> Promise[Array[DetectedFace]] =
   #| (self, image) => self.detect(image)
 
 ///|
@@ -240,18 +262,48 @@ pub extern "js" fn BarcodeDetector::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BarcodeDetector (unchecked)
+pub extern "js" fn BarcodeDetector::from_js_value(
+  v : JsValue,
+) -> BarcodeDetector =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BarcodeDetector (checked with instanceof)
+pub extern "js" fn BarcodeDetector::from_js_value_opt(
+  v : JsValue,
+) -> BarcodeDetector? =
+  #| (v) => (v instanceof BarcodeDetector) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BarcodeDetector (checked with instanceof)
+pub extern "js" fn JsValue::as_barcode_detector(
+  self : JsValue,
+) -> BarcodeDetector? =
+  #| (self) => (self instanceof BarcodeDetector) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BarcodeDetector (unchecked)
+pub extern "js" fn JsValue::to_barcode_detector(
+  self : JsValue,
+) -> BarcodeDetector =
+  #| (self) => self
+
+///|
 pub extern "js" fn BarcodeDetector::new(
   barcode_detector_options : BarcodeDetectorOptions,
 ) -> BarcodeDetector =
   #| (barcode_detector_options) => new BarcodeDetector(barcode_detector_options)
 
 ///|
-pub extern "js" fn BarcodeDetector::get_supported_formats() -> Promise[Unit] =
+pub extern "js" fn BarcodeDetector::get_supported_formats() -> Promise[
+  Array[BarcodeFormat],
+] =
   #| () => BarcodeDetector.getSupportedFormats()
 
 ///|
 pub extern "js" fn BarcodeDetector::detect(
   self : BarcodeDetector,
   image : ImageBitmapSource,
-) -> Promise[Unit] =
+) -> Promise[Array[DetectedBarcode]] =
   #| (self, image) => self.detect(image)

@@ -33,6 +33,26 @@ pub extern "js" fn WakeLock::to_js_value(self : WakeLock) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to WakeLock (unchecked)
+pub extern "js" fn WakeLock::from_js_value(v : JsValue) -> WakeLock =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WakeLock (checked with instanceof)
+pub extern "js" fn WakeLock::from_js_value_opt(v : JsValue) -> WakeLock? =
+  #| (v) => (v instanceof WakeLock) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WakeLock (checked with instanceof)
+pub extern "js" fn JsValue::as_wake_lock(self : JsValue) -> WakeLock? =
+  #| (self) => (self instanceof WakeLock) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WakeLock (unchecked)
+pub extern "js" fn JsValue::to_wake_lock(self : JsValue) -> WakeLock =
+  #| (self) => self
+
+///|
 pub extern "js" fn WakeLock::request(
   self : WakeLock,
 ) -> Promise[WakeLockSentinel] =
@@ -53,6 +73,40 @@ pub type WakeLockSentinel
 pub extern "js" fn WakeLockSentinel::to_js_value(
   self : WakeLockSentinel,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to WakeLockSentinel (unchecked)
+pub extern "js" fn WakeLockSentinel::from_js_value(
+  v : JsValue,
+) -> WakeLockSentinel =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WakeLockSentinel (checked with instanceof)
+pub extern "js" fn WakeLockSentinel::from_js_value_opt(
+  v : JsValue,
+) -> WakeLockSentinel? =
+  #| (v) => (v instanceof WakeLockSentinel) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WakeLockSentinel (checked with instanceof)
+pub extern "js" fn JsValue::as_wake_lock_sentinel(
+  self : JsValue,
+) -> WakeLockSentinel? =
+  #| (self) => (self instanceof WakeLockSentinel) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WakeLockSentinel (unchecked)
+pub extern "js" fn JsValue::to_wake_lock_sentinel(
+  self : JsValue,
+) -> WakeLockSentinel =
+  #| (self) => self
+
+///|
+pub extern "js" fn WakeLockSentinel::to_event_target(
+  self : WakeLockSentinel,
+) -> EventTarget =
   #| (self) => self
 
 ///|

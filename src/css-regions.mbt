@@ -10,11 +10,33 @@ pub extern "js" fn NamedFlowMap::to_js_value(self : NamedFlowMap) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to NamedFlowMap (unchecked)
+pub extern "js" fn NamedFlowMap::from_js_value(v : JsValue) -> NamedFlowMap =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to NamedFlowMap (checked with instanceof)
+pub extern "js" fn NamedFlowMap::from_js_value_opt(
+  v : JsValue,
+) -> NamedFlowMap? =
+  #| (v) => (v instanceof NamedFlowMap) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to NamedFlowMap (checked with instanceof)
+pub extern "js" fn JsValue::as_named_flow_map(self : JsValue) -> NamedFlowMap? =
+  #| (self) => (self instanceof NamedFlowMap) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to NamedFlowMap (unchecked)
+pub extern "js" fn JsValue::to_named_flow_map(self : JsValue) -> NamedFlowMap =
+  #| (self) => self
+
+///|
 pub extern "js" fn NamedFlowMap::get(
   self : NamedFlowMap,
   key : CSSOMString,
 ) -> NamedFlow? =
-  #| (self, key) => self.get(key)
+  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn NamedFlowMap::has(
@@ -48,6 +70,30 @@ pub type NamedFlow
 
 ///|
 pub extern "js" fn NamedFlow::to_js_value(self : NamedFlow) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to NamedFlow (unchecked)
+pub extern "js" fn NamedFlow::from_js_value(v : JsValue) -> NamedFlow =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to NamedFlow (checked with instanceof)
+pub extern "js" fn NamedFlow::from_js_value_opt(v : JsValue) -> NamedFlow? =
+  #| (v) => (v instanceof NamedFlow) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to NamedFlow (checked with instanceof)
+pub extern "js" fn JsValue::as_named_flow(self : JsValue) -> NamedFlow? =
+  #| (self) => (self instanceof NamedFlow) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to NamedFlow (unchecked)
+pub extern "js" fn JsValue::to_named_flow(self : JsValue) -> NamedFlow =
+  #| (self) => self
+
+///|
+pub extern "js" fn NamedFlow::to_event_target(self : NamedFlow) -> EventTarget =
   #| (self) => self
 
 ///|

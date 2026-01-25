@@ -12,6 +12,40 @@ pub extern "js" fn PerformanceLongTaskTiming::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PerformanceLongTaskTiming (unchecked)
+pub extern "js" fn PerformanceLongTaskTiming::from_js_value(
+  v : JsValue,
+) -> PerformanceLongTaskTiming =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PerformanceLongTaskTiming (checked with instanceof)
+pub extern "js" fn PerformanceLongTaskTiming::from_js_value_opt(
+  v : JsValue,
+) -> PerformanceLongTaskTiming? =
+  #| (v) => (v instanceof PerformanceLongTaskTiming) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PerformanceLongTaskTiming (checked with instanceof)
+pub extern "js" fn JsValue::as_performance_long_task_timing(
+  self : JsValue,
+) -> PerformanceLongTaskTiming? =
+  #| (self) => (self instanceof PerformanceLongTaskTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PerformanceLongTaskTiming (unchecked)
+pub extern "js" fn JsValue::to_performance_long_task_timing(
+  self : JsValue,
+) -> PerformanceLongTaskTiming =
+  #| (self) => self
+
+///|
+pub extern "js" fn PerformanceLongTaskTiming::to_performance_entry(
+  self : PerformanceLongTaskTiming,
+) -> PerformanceEntry =
+  #| (self) => self
+
+///|
 pub extern "js" fn PerformanceLongTaskTiming::get_start_time(
   self : PerformanceLongTaskTiming,
 ) -> DOMHighResTimeStamp =
@@ -42,7 +76,7 @@ pub extern "js" fn PerformanceLongTaskTiming::get_attribution(
   #| (self) => self.attribution
 
 ///|
-pub extern "js" fn PerformanceLongTaskTiming::to_j_s_o_n(
+pub extern "js" fn PerformanceLongTaskTiming::to_json(
   self : PerformanceLongTaskTiming,
 ) -> JsValue =
   #| (self) => self.toJSON()
@@ -55,6 +89,40 @@ pub type TaskAttributionTiming
 pub extern "js" fn TaskAttributionTiming::to_js_value(
   self : TaskAttributionTiming,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to TaskAttributionTiming (unchecked)
+pub extern "js" fn TaskAttributionTiming::from_js_value(
+  v : JsValue,
+) -> TaskAttributionTiming =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to TaskAttributionTiming (checked with instanceof)
+pub extern "js" fn TaskAttributionTiming::from_js_value_opt(
+  v : JsValue,
+) -> TaskAttributionTiming? =
+  #| (v) => (v instanceof TaskAttributionTiming) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to TaskAttributionTiming (checked with instanceof)
+pub extern "js" fn JsValue::as_task_attribution_timing(
+  self : JsValue,
+) -> TaskAttributionTiming? =
+  #| (self) => (self instanceof TaskAttributionTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to TaskAttributionTiming (unchecked)
+pub extern "js" fn JsValue::to_task_attribution_timing(
+  self : JsValue,
+) -> TaskAttributionTiming =
+  #| (self) => self
+
+///|
+pub extern "js" fn TaskAttributionTiming::to_performance_entry(
+  self : TaskAttributionTiming,
+) -> PerformanceEntry =
   #| (self) => self
 
 ///|
@@ -106,7 +174,7 @@ pub extern "js" fn TaskAttributionTiming::get_container_name(
   #| (self) => self.containerName
 
 ///|
-pub extern "js" fn TaskAttributionTiming::to_j_s_o_n(
+pub extern "js" fn TaskAttributionTiming::to_json(
   self : TaskAttributionTiming,
 ) -> JsValue =
   #| (self) => self.toJSON()

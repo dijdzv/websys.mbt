@@ -585,6 +585,76 @@ pub extern "js" fn XRCompositionLayer::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to XRCompositionLayer (unchecked)
+pub extern "js" fn XRCompositionLayer::from_js_value(
+  v : JsValue,
+) -> XRCompositionLayer =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRCompositionLayer (checked with instanceof)
+pub extern "js" fn XRCompositionLayer::from_js_value_opt(
+  v : JsValue,
+) -> XRCompositionLayer? =
+  #| (v) => (v instanceof XRCompositionLayer) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRCompositionLayer (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_composition_layer(
+  self : JsValue,
+) -> XRCompositionLayer? =
+  #| (self) => (self instanceof XRCompositionLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRCompositionLayer (unchecked)
+pub extern "js" fn JsValue::to_xr_composition_layer(
+  self : JsValue,
+) -> XRCompositionLayer =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRCompositionLayer::to_xr_layer(
+  self : XRCompositionLayer,
+) -> XRLayer =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRCompositionLayer::to_event_target(
+  self : XRCompositionLayer,
+) -> EventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRCompositionLayer::as_xr_projection_layer(
+  self : XRCompositionLayer,
+) -> XRProjectionLayer? =
+  #| (self) => (self instanceof XRProjectionLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn XRCompositionLayer::as_xr_quad_layer(
+  self : XRCompositionLayer,
+) -> XRQuadLayer? =
+  #| (self) => (self instanceof XRQuadLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn XRCompositionLayer::as_xr_cylinder_layer(
+  self : XRCompositionLayer,
+) -> XRCylinderLayer? =
+  #| (self) => (self instanceof XRCylinderLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn XRCompositionLayer::as_xr_equirect_layer(
+  self : XRCompositionLayer,
+) -> XREquirectLayer? =
+  #| (self) => (self instanceof XREquirectLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn XRCompositionLayer::as_xr_cube_layer(
+  self : XRCompositionLayer,
+) -> XRCubeLayer? =
+  #| (self) => (self instanceof XRCubeLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn XRCompositionLayer::get_layout(
   self : XRCompositionLayer,
 ) -> XRLayerLayout =
@@ -671,78 +741,50 @@ pub extern "js" fn XRProjectionLayer::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn XRProjectionLayer::get_layout(
-  self : XRProjectionLayer,
-) -> XRLayerLayout =
-  #| (self) => self.layout
+/// Cast JsValue to XRProjectionLayer (unchecked)
+pub extern "js" fn XRProjectionLayer::from_js_value(
+  v : JsValue,
+) -> XRProjectionLayer =
+  #| (v) => v
 
 ///|
-pub extern "js" fn XRProjectionLayer::get_blend_texture_source_alpha(
-  self : XRProjectionLayer,
-) -> Bool =
-  #| (self) => self.blendTextureSourceAlpha
+/// Safely cast JsValue to XRProjectionLayer (checked with instanceof)
+pub extern "js" fn XRProjectionLayer::from_js_value_opt(
+  v : JsValue,
+) -> XRProjectionLayer? =
+  #| (v) => (v instanceof XRProjectionLayer) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn XRProjectionLayer::set_blend_texture_source_alpha(
-  self : XRProjectionLayer,
-  value : Bool,
-) -> Unit =
-  #| (self, value) => { self.blendTextureSourceAlpha = value }
+/// Safely cast JsValue to XRProjectionLayer (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_projection_layer(
+  self : JsValue,
+) -> XRProjectionLayer? =
+  #| (self) => (self instanceof XRProjectionLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn XRProjectionLayer::get_force_mono_presentation(
-  self : XRProjectionLayer,
-) -> Bool =
-  #| (self) => self.forceMonoPresentation
+/// Cast JsValue to XRProjectionLayer (unchecked)
+pub extern "js" fn JsValue::to_xr_projection_layer(
+  self : JsValue,
+) -> XRProjectionLayer =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XRProjectionLayer::set_force_mono_presentation(
+pub extern "js" fn XRProjectionLayer::to_xr_composition_layer(
   self : XRProjectionLayer,
-  value : Bool,
-) -> Unit =
-  #| (self, value) => { self.forceMonoPresentation = value }
+) -> XRCompositionLayer =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XRProjectionLayer::get_opacity(
+pub extern "js" fn XRProjectionLayer::to_xr_layer(
   self : XRProjectionLayer,
-) -> Double =
-  #| (self) => self.opacity
+) -> XRLayer =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XRProjectionLayer::set_opacity(
+pub extern "js" fn XRProjectionLayer::to_event_target(
   self : XRProjectionLayer,
-  value : Double,
-) -> Unit =
-  #| (self, value) => { self.opacity = value }
-
-///|
-pub extern "js" fn XRProjectionLayer::get_mip_levels(
-  self : XRProjectionLayer,
-) -> Int =
-  #| (self) => self.mipLevels
-
-///|
-pub extern "js" fn XRProjectionLayer::get_quality(
-  self : XRProjectionLayer,
-) -> XRLayerQuality =
-  #| (self) => self.quality
-
-///|
-pub extern "js" fn XRProjectionLayer::set_quality(
-  self : XRProjectionLayer,
-  value : XRLayerQuality,
-) -> Unit =
-  #| (self, value) => { self.quality = value }
-
-///|
-pub extern "js" fn XRProjectionLayer::get_needs_redraw(
-  self : XRProjectionLayer,
-) -> Bool =
-  #| (self) => self.needsRedraw
-
-///|
-pub extern "js" fn XRProjectionLayer::destroy(self : XRProjectionLayer) -> Unit =
-  #| (self) => self.destroy()
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn XRProjectionLayer::get_texture_width(
@@ -772,7 +814,7 @@ pub extern "js" fn XRProjectionLayer::get_ignore_depth_values(
 pub extern "js" fn XRProjectionLayer::get_fixed_foveation(
   self : XRProjectionLayer,
 ) -> Double? =
-  #| (self) => self.fixedFoveation
+  #| (self) => { const v = self.fixedFoveation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn XRProjectionLayer::set_fixed_foveation(
@@ -785,7 +827,7 @@ pub extern "js" fn XRProjectionLayer::set_fixed_foveation(
 pub extern "js" fn XRProjectionLayer::get_delta_pose(
   self : XRProjectionLayer,
 ) -> XRRigidTransform? =
-  #| (self) => self.deltaPose
+  #| (self) => { const v = self.deltaPose; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn XRProjectionLayer::set_delta_pose(
@@ -803,70 +845,40 @@ pub extern "js" fn XRQuadLayer::to_js_value(self : XRQuadLayer) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn XRQuadLayer::get_layout(self : XRQuadLayer) -> XRLayerLayout =
-  #| (self) => self.layout
+/// Cast JsValue to XRQuadLayer (unchecked)
+pub extern "js" fn XRQuadLayer::from_js_value(v : JsValue) -> XRQuadLayer =
+  #| (v) => v
 
 ///|
-pub extern "js" fn XRQuadLayer::get_blend_texture_source_alpha(
+/// Safely cast JsValue to XRQuadLayer (checked with instanceof)
+pub extern "js" fn XRQuadLayer::from_js_value_opt(v : JsValue) -> XRQuadLayer? =
+  #| (v) => (v instanceof XRQuadLayer) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRQuadLayer (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_quad_layer(self : JsValue) -> XRQuadLayer? =
+  #| (self) => (self instanceof XRQuadLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRQuadLayer (unchecked)
+pub extern "js" fn JsValue::to_xr_quad_layer(self : JsValue) -> XRQuadLayer =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRQuadLayer::to_xr_composition_layer(
   self : XRQuadLayer,
-) -> Bool =
-  #| (self) => self.blendTextureSourceAlpha
+) -> XRCompositionLayer =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XRQuadLayer::set_blend_texture_source_alpha(
+pub extern "js" fn XRQuadLayer::to_xr_layer(self : XRQuadLayer) -> XRLayer =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRQuadLayer::to_event_target(
   self : XRQuadLayer,
-  value : Bool,
-) -> Unit =
-  #| (self, value) => { self.blendTextureSourceAlpha = value }
-
-///|
-pub extern "js" fn XRQuadLayer::get_force_mono_presentation(
-  self : XRQuadLayer,
-) -> Bool =
-  #| (self) => self.forceMonoPresentation
-
-///|
-pub extern "js" fn XRQuadLayer::set_force_mono_presentation(
-  self : XRQuadLayer,
-  value : Bool,
-) -> Unit =
-  #| (self, value) => { self.forceMonoPresentation = value }
-
-///|
-pub extern "js" fn XRQuadLayer::get_opacity(self : XRQuadLayer) -> Double =
-  #| (self) => self.opacity
-
-///|
-pub extern "js" fn XRQuadLayer::set_opacity(
-  self : XRQuadLayer,
-  value : Double,
-) -> Unit =
-  #| (self, value) => { self.opacity = value }
-
-///|
-pub extern "js" fn XRQuadLayer::get_mip_levels(self : XRQuadLayer) -> Int =
-  #| (self) => self.mipLevels
-
-///|
-pub extern "js" fn XRQuadLayer::get_quality(
-  self : XRQuadLayer,
-) -> XRLayerQuality =
-  #| (self) => self.quality
-
-///|
-pub extern "js" fn XRQuadLayer::set_quality(
-  self : XRQuadLayer,
-  value : XRLayerQuality,
-) -> Unit =
-  #| (self, value) => { self.quality = value }
-
-///|
-pub extern "js" fn XRQuadLayer::get_needs_redraw(self : XRQuadLayer) -> Bool =
-  #| (self) => self.needsRedraw
-
-///|
-pub extern "js" fn XRQuadLayer::destroy(self : XRQuadLayer) -> Unit =
-  #| (self) => self.destroy()
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn XRQuadLayer::get_space(self : XRQuadLayer) -> XRSpace =
@@ -938,78 +950,50 @@ pub extern "js" fn XRCylinderLayer::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn XRCylinderLayer::get_layout(
-  self : XRCylinderLayer,
-) -> XRLayerLayout =
-  #| (self) => self.layout
+/// Cast JsValue to XRCylinderLayer (unchecked)
+pub extern "js" fn XRCylinderLayer::from_js_value(
+  v : JsValue,
+) -> XRCylinderLayer =
+  #| (v) => v
 
 ///|
-pub extern "js" fn XRCylinderLayer::get_blend_texture_source_alpha(
-  self : XRCylinderLayer,
-) -> Bool =
-  #| (self) => self.blendTextureSourceAlpha
+/// Safely cast JsValue to XRCylinderLayer (checked with instanceof)
+pub extern "js" fn XRCylinderLayer::from_js_value_opt(
+  v : JsValue,
+) -> XRCylinderLayer? =
+  #| (v) => (v instanceof XRCylinderLayer) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn XRCylinderLayer::set_blend_texture_source_alpha(
-  self : XRCylinderLayer,
-  value : Bool,
-) -> Unit =
-  #| (self, value) => { self.blendTextureSourceAlpha = value }
+/// Safely cast JsValue to XRCylinderLayer (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_cylinder_layer(
+  self : JsValue,
+) -> XRCylinderLayer? =
+  #| (self) => (self instanceof XRCylinderLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn XRCylinderLayer::get_force_mono_presentation(
-  self : XRCylinderLayer,
-) -> Bool =
-  #| (self) => self.forceMonoPresentation
+/// Cast JsValue to XRCylinderLayer (unchecked)
+pub extern "js" fn JsValue::to_xr_cylinder_layer(
+  self : JsValue,
+) -> XRCylinderLayer =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XRCylinderLayer::set_force_mono_presentation(
+pub extern "js" fn XRCylinderLayer::to_xr_composition_layer(
   self : XRCylinderLayer,
-  value : Bool,
-) -> Unit =
-  #| (self, value) => { self.forceMonoPresentation = value }
+) -> XRCompositionLayer =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XRCylinderLayer::get_opacity(
+pub extern "js" fn XRCylinderLayer::to_xr_layer(
   self : XRCylinderLayer,
-) -> Double =
-  #| (self) => self.opacity
+) -> XRLayer =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XRCylinderLayer::set_opacity(
+pub extern "js" fn XRCylinderLayer::to_event_target(
   self : XRCylinderLayer,
-  value : Double,
-) -> Unit =
-  #| (self, value) => { self.opacity = value }
-
-///|
-pub extern "js" fn XRCylinderLayer::get_mip_levels(
-  self : XRCylinderLayer,
-) -> Int =
-  #| (self) => self.mipLevels
-
-///|
-pub extern "js" fn XRCylinderLayer::get_quality(
-  self : XRCylinderLayer,
-) -> XRLayerQuality =
-  #| (self) => self.quality
-
-///|
-pub extern "js" fn XRCylinderLayer::set_quality(
-  self : XRCylinderLayer,
-  value : XRLayerQuality,
-) -> Unit =
-  #| (self, value) => { self.quality = value }
-
-///|
-pub extern "js" fn XRCylinderLayer::get_needs_redraw(
-  self : XRCylinderLayer,
-) -> Bool =
-  #| (self) => self.needsRedraw
-
-///|
-pub extern "js" fn XRCylinderLayer::destroy(self : XRCylinderLayer) -> Unit =
-  #| (self) => self.destroy()
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn XRCylinderLayer::get_space(
@@ -1100,78 +1084,50 @@ pub extern "js" fn XREquirectLayer::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn XREquirectLayer::get_layout(
-  self : XREquirectLayer,
-) -> XRLayerLayout =
-  #| (self) => self.layout
+/// Cast JsValue to XREquirectLayer (unchecked)
+pub extern "js" fn XREquirectLayer::from_js_value(
+  v : JsValue,
+) -> XREquirectLayer =
+  #| (v) => v
 
 ///|
-pub extern "js" fn XREquirectLayer::get_blend_texture_source_alpha(
-  self : XREquirectLayer,
-) -> Bool =
-  #| (self) => self.blendTextureSourceAlpha
+/// Safely cast JsValue to XREquirectLayer (checked with instanceof)
+pub extern "js" fn XREquirectLayer::from_js_value_opt(
+  v : JsValue,
+) -> XREquirectLayer? =
+  #| (v) => (v instanceof XREquirectLayer) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn XREquirectLayer::set_blend_texture_source_alpha(
-  self : XREquirectLayer,
-  value : Bool,
-) -> Unit =
-  #| (self, value) => { self.blendTextureSourceAlpha = value }
+/// Safely cast JsValue to XREquirectLayer (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_equirect_layer(
+  self : JsValue,
+) -> XREquirectLayer? =
+  #| (self) => (self instanceof XREquirectLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn XREquirectLayer::get_force_mono_presentation(
-  self : XREquirectLayer,
-) -> Bool =
-  #| (self) => self.forceMonoPresentation
+/// Cast JsValue to XREquirectLayer (unchecked)
+pub extern "js" fn JsValue::to_xr_equirect_layer(
+  self : JsValue,
+) -> XREquirectLayer =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XREquirectLayer::set_force_mono_presentation(
+pub extern "js" fn XREquirectLayer::to_xr_composition_layer(
   self : XREquirectLayer,
-  value : Bool,
-) -> Unit =
-  #| (self, value) => { self.forceMonoPresentation = value }
+) -> XRCompositionLayer =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XREquirectLayer::get_opacity(
+pub extern "js" fn XREquirectLayer::to_xr_layer(
   self : XREquirectLayer,
-) -> Double =
-  #| (self) => self.opacity
+) -> XRLayer =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XREquirectLayer::set_opacity(
+pub extern "js" fn XREquirectLayer::to_event_target(
   self : XREquirectLayer,
-  value : Double,
-) -> Unit =
-  #| (self, value) => { self.opacity = value }
-
-///|
-pub extern "js" fn XREquirectLayer::get_mip_levels(
-  self : XREquirectLayer,
-) -> Int =
-  #| (self) => self.mipLevels
-
-///|
-pub extern "js" fn XREquirectLayer::get_quality(
-  self : XREquirectLayer,
-) -> XRLayerQuality =
-  #| (self) => self.quality
-
-///|
-pub extern "js" fn XREquirectLayer::set_quality(
-  self : XREquirectLayer,
-  value : XRLayerQuality,
-) -> Unit =
-  #| (self, value) => { self.quality = value }
-
-///|
-pub extern "js" fn XREquirectLayer::get_needs_redraw(
-  self : XREquirectLayer,
-) -> Bool =
-  #| (self) => self.needsRedraw
-
-///|
-pub extern "js" fn XREquirectLayer::destroy(self : XREquirectLayer) -> Unit =
-  #| (self) => self.destroy()
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn XREquirectLayer::get_space(
@@ -1273,70 +1229,40 @@ pub extern "js" fn XRCubeLayer::to_js_value(self : XRCubeLayer) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn XRCubeLayer::get_layout(self : XRCubeLayer) -> XRLayerLayout =
-  #| (self) => self.layout
+/// Cast JsValue to XRCubeLayer (unchecked)
+pub extern "js" fn XRCubeLayer::from_js_value(v : JsValue) -> XRCubeLayer =
+  #| (v) => v
 
 ///|
-pub extern "js" fn XRCubeLayer::get_blend_texture_source_alpha(
+/// Safely cast JsValue to XRCubeLayer (checked with instanceof)
+pub extern "js" fn XRCubeLayer::from_js_value_opt(v : JsValue) -> XRCubeLayer? =
+  #| (v) => (v instanceof XRCubeLayer) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRCubeLayer (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_cube_layer(self : JsValue) -> XRCubeLayer? =
+  #| (self) => (self instanceof XRCubeLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRCubeLayer (unchecked)
+pub extern "js" fn JsValue::to_xr_cube_layer(self : JsValue) -> XRCubeLayer =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRCubeLayer::to_xr_composition_layer(
   self : XRCubeLayer,
-) -> Bool =
-  #| (self) => self.blendTextureSourceAlpha
+) -> XRCompositionLayer =
+  #| (self) => self
 
 ///|
-pub extern "js" fn XRCubeLayer::set_blend_texture_source_alpha(
+pub extern "js" fn XRCubeLayer::to_xr_layer(self : XRCubeLayer) -> XRLayer =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRCubeLayer::to_event_target(
   self : XRCubeLayer,
-  value : Bool,
-) -> Unit =
-  #| (self, value) => { self.blendTextureSourceAlpha = value }
-
-///|
-pub extern "js" fn XRCubeLayer::get_force_mono_presentation(
-  self : XRCubeLayer,
-) -> Bool =
-  #| (self) => self.forceMonoPresentation
-
-///|
-pub extern "js" fn XRCubeLayer::set_force_mono_presentation(
-  self : XRCubeLayer,
-  value : Bool,
-) -> Unit =
-  #| (self, value) => { self.forceMonoPresentation = value }
-
-///|
-pub extern "js" fn XRCubeLayer::get_opacity(self : XRCubeLayer) -> Double =
-  #| (self) => self.opacity
-
-///|
-pub extern "js" fn XRCubeLayer::set_opacity(
-  self : XRCubeLayer,
-  value : Double,
-) -> Unit =
-  #| (self, value) => { self.opacity = value }
-
-///|
-pub extern "js" fn XRCubeLayer::get_mip_levels(self : XRCubeLayer) -> Int =
-  #| (self) => self.mipLevels
-
-///|
-pub extern "js" fn XRCubeLayer::get_quality(
-  self : XRCubeLayer,
-) -> XRLayerQuality =
-  #| (self) => self.quality
-
-///|
-pub extern "js" fn XRCubeLayer::set_quality(
-  self : XRCubeLayer,
-  value : XRLayerQuality,
-) -> Unit =
-  #| (self, value) => { self.quality = value }
-
-///|
-pub extern "js" fn XRCubeLayer::get_needs_redraw(self : XRCubeLayer) -> Bool =
-  #| (self) => self.needsRedraw
-
-///|
-pub extern "js" fn XRCubeLayer::destroy(self : XRCubeLayer) -> Unit =
-  #| (self) => self.destroy()
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn XRCubeLayer::get_space(self : XRCubeLayer) -> XRSpace =
@@ -1384,6 +1310,32 @@ pub extern "js" fn XRSubImage::to_js_value(self : XRSubImage) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to XRSubImage (unchecked)
+pub extern "js" fn XRSubImage::from_js_value(v : JsValue) -> XRSubImage =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRSubImage (checked with instanceof)
+pub extern "js" fn XRSubImage::from_js_value_opt(v : JsValue) -> XRSubImage? =
+  #| (v) => (v instanceof XRSubImage) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRSubImage (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_sub_image(self : JsValue) -> XRSubImage? =
+  #| (self) => (self instanceof XRSubImage) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRSubImage (unchecked)
+pub extern "js" fn JsValue::to_xr_sub_image(self : JsValue) -> XRSubImage =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRSubImage::as_xr_web_gl_sub_image(
+  self : XRSubImage,
+) -> XRWebGLSubImage? =
+  #| (self) => (self instanceof XRWebGLSubImage) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn XRSubImage::get_viewport(self : XRSubImage) -> XRViewport =
   #| (self) => self.viewport
 
@@ -1398,10 +1350,38 @@ pub extern "js" fn XRWebGLSubImage::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn XRWebGLSubImage::get_viewport(
+/// Cast JsValue to XRWebGLSubImage (unchecked)
+pub extern "js" fn XRWebGLSubImage::from_js_value(
+  v : JsValue,
+) -> XRWebGLSubImage =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRWebGLSubImage (checked with instanceof)
+pub extern "js" fn XRWebGLSubImage::from_js_value_opt(
+  v : JsValue,
+) -> XRWebGLSubImage? =
+  #| (v) => (v instanceof XRWebGLSubImage) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRWebGLSubImage (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_web_gl_sub_image(
+  self : JsValue,
+) -> XRWebGLSubImage? =
+  #| (self) => (self instanceof XRWebGLSubImage) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRWebGLSubImage (unchecked)
+pub extern "js" fn JsValue::to_xr_web_gl_sub_image(
+  self : JsValue,
+) -> XRWebGLSubImage =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRWebGLSubImage::to_xr_sub_image(
   self : XRWebGLSubImage,
-) -> XRViewport =
-  #| (self) => self.viewport
+) -> XRSubImage =
+  #| (self) => self
 
 ///|
 pub extern "js" fn XRWebGLSubImage::get_color_texture(
@@ -1413,19 +1393,19 @@ pub extern "js" fn XRWebGLSubImage::get_color_texture(
 pub extern "js" fn XRWebGLSubImage::get_depth_stencil_texture(
   self : XRWebGLSubImage,
 ) -> WebGLTexture? =
-  #| (self) => self.depthStencilTexture
+  #| (self) => { const v = self.depthStencilTexture; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn XRWebGLSubImage::get_motion_vector_texture(
   self : XRWebGLSubImage,
 ) -> WebGLTexture? =
-  #| (self) => self.motionVectorTexture
+  #| (self) => { const v = self.motionVectorTexture; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn XRWebGLSubImage::get_image_index(
   self : XRWebGLSubImage,
 ) -> Int? =
-  #| (self) => self.imageIndex
+  #| (self) => { const v = self.imageIndex; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn XRWebGLSubImage::get_color_texture_width(
@@ -1443,25 +1423,25 @@ pub extern "js" fn XRWebGLSubImage::get_color_texture_height(
 pub extern "js" fn XRWebGLSubImage::get_depth_stencil_texture_width(
   self : XRWebGLSubImage,
 ) -> Int? =
-  #| (self) => self.depthStencilTextureWidth
+  #| (self) => { const v = self.depthStencilTextureWidth; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn XRWebGLSubImage::get_depth_stencil_texture_height(
   self : XRWebGLSubImage,
 ) -> Int? =
-  #| (self) => self.depthStencilTextureHeight
+  #| (self) => { const v = self.depthStencilTextureHeight; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn XRWebGLSubImage::get_motion_vector_texture_width(
   self : XRWebGLSubImage,
 ) -> Int? =
-  #| (self) => self.motionVectorTextureWidth
+  #| (self) => { const v = self.motionVectorTextureWidth; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn XRWebGLSubImage::get_motion_vector_texture_height(
   self : XRWebGLSubImage,
 ) -> Int? =
-  #| (self) => self.motionVectorTextureHeight
+  #| (self) => { const v = self.motionVectorTextureHeight; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// XRWebGLBinding interface
@@ -1471,6 +1451,32 @@ pub type XRWebGLBinding
 pub extern "js" fn XRWebGLBinding::to_js_value(
   self : XRWebGLBinding,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to XRWebGLBinding (unchecked)
+pub extern "js" fn XRWebGLBinding::from_js_value(v : JsValue) -> XRWebGLBinding =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRWebGLBinding (checked with instanceof)
+pub extern "js" fn XRWebGLBinding::from_js_value_opt(
+  v : JsValue,
+) -> XRWebGLBinding? =
+  #| (v) => (v instanceof XRWebGLBinding) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRWebGLBinding (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_web_gl_binding(
+  self : JsValue,
+) -> XRWebGLBinding? =
+  #| (self) => (self instanceof XRWebGLBinding) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRWebGLBinding (unchecked)
+pub extern "js" fn JsValue::to_xr_web_gl_binding(
+  self : JsValue,
+) -> XRWebGLBinding =
   #| (self) => self
 
 ///|
@@ -1591,25 +1597,25 @@ pub extern "js" fn XRWebGLBinding::foveate_bound_texture(
   #| (self, target, fixed_foveation) => self.foveateBoundTexture(target, fixed_foveation)
 
 ///|
-pub extern "js" fn XRWebGLBinding::get_camera_image(
+pub extern "js" fn XRWebGLBinding::get_reflection_cube_map(
   self : XRWebGLBinding,
-  camera : XRCamera,
+  light_probe : XRLightProbe,
 ) -> WebGLTexture? =
-  #| (self, camera) => self.getCameraImage(camera)
+  #| (self, light_probe) => { const v = self.getReflectionCubeMap(light_probe); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn XRWebGLBinding::get_depth_information(
   self : XRWebGLBinding,
   view : XRView,
 ) -> XRWebGLDepthInformation? =
-  #| (self, view) => self.getDepthInformation(view)
+  #| (self, view) => { const v = self.getDepthInformation(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
-pub extern "js" fn XRWebGLBinding::get_reflection_cube_map(
+pub extern "js" fn XRWebGLBinding::get_camera_image(
   self : XRWebGLBinding,
-  light_probe : XRLightProbe,
+  camera : XRCamera,
 ) -> WebGLTexture? =
-  #| (self, light_probe) => self.getReflectionCubeMap(light_probe)
+  #| (self, camera) => { const v = self.getCameraImage(camera); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// XRMediaBinding interface
@@ -1619,6 +1625,32 @@ pub type XRMediaBinding
 pub extern "js" fn XRMediaBinding::to_js_value(
   self : XRMediaBinding,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to XRMediaBinding (unchecked)
+pub extern "js" fn XRMediaBinding::from_js_value(v : JsValue) -> XRMediaBinding =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRMediaBinding (checked with instanceof)
+pub extern "js" fn XRMediaBinding::from_js_value_opt(
+  v : JsValue,
+) -> XRMediaBinding? =
+  #| (v) => (v instanceof XRMediaBinding) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRMediaBinding (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_media_binding(
+  self : JsValue,
+) -> XRMediaBinding? =
+  #| (self) => (self instanceof XRMediaBinding) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRMediaBinding (unchecked)
+pub extern "js" fn JsValue::to_xr_media_binding(
+  self : JsValue,
+) -> XRMediaBinding =
   #| (self) => self
 
 ///|
@@ -1676,6 +1708,32 @@ pub type XRLayerEvent
 
 ///|
 pub extern "js" fn XRLayerEvent::to_js_value(self : XRLayerEvent) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to XRLayerEvent (unchecked)
+pub extern "js" fn XRLayerEvent::from_js_value(v : JsValue) -> XRLayerEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRLayerEvent (checked with instanceof)
+pub extern "js" fn XRLayerEvent::from_js_value_opt(
+  v : JsValue,
+) -> XRLayerEvent? =
+  #| (v) => (v instanceof XRLayerEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRLayerEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_layer_event(self : JsValue) -> XRLayerEvent? =
+  #| (self) => (self instanceof XRLayerEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRLayerEvent (unchecked)
+pub extern "js" fn JsValue::to_xr_layer_event(self : JsValue) -> XRLayerEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRLayerEvent::to_event(self : XRLayerEvent) -> Event =
   #| (self) => self
 
 ///|

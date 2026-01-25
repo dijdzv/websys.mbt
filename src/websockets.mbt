@@ -59,6 +59,30 @@ pub extern "js" fn WebSocket::to_js_value(self : WebSocket) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to WebSocket (unchecked)
+pub extern "js" fn WebSocket::from_js_value(v : JsValue) -> WebSocket =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WebSocket (checked with instanceof)
+pub extern "js" fn WebSocket::from_js_value_opt(v : JsValue) -> WebSocket? =
+  #| (v) => (v instanceof WebSocket) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WebSocket (checked with instanceof)
+pub extern "js" fn JsValue::as_web_socket(self : JsValue) -> WebSocket? =
+  #| (self) => (self instanceof WebSocket) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WebSocket (unchecked)
+pub extern "js" fn JsValue::to_web_socket(self : JsValue) -> WebSocket =
+  #| (self) => self
+
+///|
+pub extern "js" fn WebSocket::to_event_target(self : WebSocket) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn WebSocket::new(
   url : String,
   protocols : StringOrArrayOfString,
@@ -185,6 +209,30 @@ pub type CloseEvent
 
 ///|
 pub extern "js" fn CloseEvent::to_js_value(self : CloseEvent) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CloseEvent (unchecked)
+pub extern "js" fn CloseEvent::from_js_value(v : JsValue) -> CloseEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CloseEvent (checked with instanceof)
+pub extern "js" fn CloseEvent::from_js_value_opt(v : JsValue) -> CloseEvent? =
+  #| (v) => (v instanceof CloseEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CloseEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_close_event(self : JsValue) -> CloseEvent? =
+  #| (self) => (self instanceof CloseEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CloseEvent (unchecked)
+pub extern "js" fn JsValue::to_close_event(self : JsValue) -> CloseEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn CloseEvent::to_event(self : CloseEvent) -> Event =
   #| (self) => self
 
 ///|

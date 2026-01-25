@@ -23,6 +23,40 @@ pub extern "js" fn AnimationWorkletGlobalScope::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to AnimationWorkletGlobalScope (unchecked)
+pub extern "js" fn AnimationWorkletGlobalScope::from_js_value(
+  v : JsValue,
+) -> AnimationWorkletGlobalScope =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AnimationWorkletGlobalScope (checked with instanceof)
+pub extern "js" fn AnimationWorkletGlobalScope::from_js_value_opt(
+  v : JsValue,
+) -> AnimationWorkletGlobalScope? =
+  #| (v) => (v instanceof AnimationWorkletGlobalScope) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AnimationWorkletGlobalScope (checked with instanceof)
+pub extern "js" fn JsValue::as_animation_worklet_global_scope(
+  self : JsValue,
+) -> AnimationWorkletGlobalScope? =
+  #| (self) => (self instanceof AnimationWorkletGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AnimationWorkletGlobalScope (unchecked)
+pub extern "js" fn JsValue::to_animation_worklet_global_scope(
+  self : JsValue,
+) -> AnimationWorkletGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn AnimationWorkletGlobalScope::to_worklet_global_scope(
+  self : AnimationWorkletGlobalScope,
+) -> WorkletGlobalScope =
+  #| (self) => self
+
+///|
 pub extern "js" fn AnimationWorkletGlobalScope::register_animator(
   self : AnimationWorkletGlobalScope,
   name : String,
@@ -41,6 +75,34 @@ pub extern "js" fn WorkletAnimationEffect::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to WorkletAnimationEffect (unchecked)
+pub extern "js" fn WorkletAnimationEffect::from_js_value(
+  v : JsValue,
+) -> WorkletAnimationEffect =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WorkletAnimationEffect (checked with instanceof)
+pub extern "js" fn WorkletAnimationEffect::from_js_value_opt(
+  v : JsValue,
+) -> WorkletAnimationEffect? =
+  #| (v) => (v instanceof WorkletAnimationEffect) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WorkletAnimationEffect (checked with instanceof)
+pub extern "js" fn JsValue::as_worklet_animation_effect(
+  self : JsValue,
+) -> WorkletAnimationEffect? =
+  #| (self) => (self instanceof WorkletAnimationEffect) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WorkletAnimationEffect (unchecked)
+pub extern "js" fn JsValue::to_worklet_animation_effect(
+  self : JsValue,
+) -> WorkletAnimationEffect =
+  #| (self) => self
+
+///|
 pub extern "js" fn WorkletAnimationEffect::get_timing(
   self : WorkletAnimationEffect,
 ) -> EffectTiming =
@@ -56,7 +118,7 @@ pub extern "js" fn WorkletAnimationEffect::get_computed_timing(
 pub extern "js" fn WorkletAnimationEffect::get_local_time(
   self : WorkletAnimationEffect,
 ) -> Double? =
-  #| (self) => self.localTime
+  #| (self) => { const v = self.localTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WorkletAnimationEffect::set_local_time(
@@ -73,6 +135,46 @@ pub type WorkletAnimation
 pub extern "js" fn WorkletAnimation::to_js_value(
   self : WorkletAnimation,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to WorkletAnimation (unchecked)
+pub extern "js" fn WorkletAnimation::from_js_value(
+  v : JsValue,
+) -> WorkletAnimation =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WorkletAnimation (checked with instanceof)
+pub extern "js" fn WorkletAnimation::from_js_value_opt(
+  v : JsValue,
+) -> WorkletAnimation? =
+  #| (v) => (v instanceof WorkletAnimation) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WorkletAnimation (checked with instanceof)
+pub extern "js" fn JsValue::as_worklet_animation(
+  self : JsValue,
+) -> WorkletAnimation? =
+  #| (self) => (self instanceof WorkletAnimation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WorkletAnimation (unchecked)
+pub extern "js" fn JsValue::to_worklet_animation(
+  self : JsValue,
+) -> WorkletAnimation =
+  #| (self) => self
+
+///|
+pub extern "js" fn WorkletAnimation::to_animation(
+  self : WorkletAnimation,
+) -> Animation =
+  #| (self) => self
+
+///|
+pub extern "js" fn WorkletAnimation::to_event_target(
+  self : WorkletAnimation,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -98,6 +200,34 @@ pub type WorkletGroupEffect
 pub extern "js" fn WorkletGroupEffect::to_js_value(
   self : WorkletGroupEffect,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to WorkletGroupEffect (unchecked)
+pub extern "js" fn WorkletGroupEffect::from_js_value(
+  v : JsValue,
+) -> WorkletGroupEffect =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WorkletGroupEffect (checked with instanceof)
+pub extern "js" fn WorkletGroupEffect::from_js_value_opt(
+  v : JsValue,
+) -> WorkletGroupEffect? =
+  #| (v) => (v instanceof WorkletGroupEffect) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WorkletGroupEffect (checked with instanceof)
+pub extern "js" fn JsValue::as_worklet_group_effect(
+  self : JsValue,
+) -> WorkletGroupEffect? =
+  #| (self) => (self instanceof WorkletGroupEffect) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WorkletGroupEffect (unchecked)
+pub extern "js" fn JsValue::to_worklet_group_effect(
+  self : JsValue,
+) -> WorkletGroupEffect =
   #| (self) => self
 
 ///|

@@ -77,6 +77,26 @@ pub extern "js" fn TextDecoder::to_js_value(self : TextDecoder) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to TextDecoder (unchecked)
+pub extern "js" fn TextDecoder::from_js_value(v : JsValue) -> TextDecoder =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to TextDecoder (checked with instanceof)
+pub extern "js" fn TextDecoder::from_js_value_opt(v : JsValue) -> TextDecoder? =
+  #| (v) => (v instanceof TextDecoder) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to TextDecoder (checked with instanceof)
+pub extern "js" fn JsValue::as_text_decoder(self : JsValue) -> TextDecoder? =
+  #| (self) => (self instanceof TextDecoder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to TextDecoder (unchecked)
+pub extern "js" fn JsValue::to_text_decoder(self : JsValue) -> TextDecoder =
+  #| (self) => self
+
+///|
 pub extern "js" fn TextDecoder::new(
   label : String,
   options : TextDecoderOptions,
@@ -104,7 +124,7 @@ pub extern "js" fn TextDecoder::get_fatal(self : TextDecoder) -> Bool =
   #| (self) => self.fatal
 
 ///|
-pub extern "js" fn TextDecoder::get_ignore_b_o_m(self : TextDecoder) -> Bool =
+pub extern "js" fn TextDecoder::get_ignore_bom(self : TextDecoder) -> Bool =
   #| (self) => self.ignoreBOM
 
 ///|
@@ -113,6 +133,26 @@ pub type TextEncoder
 
 ///|
 pub extern "js" fn TextEncoder::to_js_value(self : TextEncoder) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to TextEncoder (unchecked)
+pub extern "js" fn TextEncoder::from_js_value(v : JsValue) -> TextEncoder =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to TextEncoder (checked with instanceof)
+pub extern "js" fn TextEncoder::from_js_value_opt(v : JsValue) -> TextEncoder? =
+  #| (v) => (v instanceof TextEncoder) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to TextEncoder (checked with instanceof)
+pub extern "js" fn JsValue::as_text_encoder(self : JsValue) -> TextEncoder? =
+  #| (self) => (self instanceof TextEncoder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to TextEncoder (unchecked)
+pub extern "js" fn JsValue::to_text_encoder(self : JsValue) -> TextEncoder =
   #| (self) => self
 
 ///|
@@ -153,6 +193,34 @@ pub extern "js" fn TextDecoderStream::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to TextDecoderStream (unchecked)
+pub extern "js" fn TextDecoderStream::from_js_value(
+  v : JsValue,
+) -> TextDecoderStream =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to TextDecoderStream (checked with instanceof)
+pub extern "js" fn TextDecoderStream::from_js_value_opt(
+  v : JsValue,
+) -> TextDecoderStream? =
+  #| (v) => (v instanceof TextDecoderStream) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to TextDecoderStream (checked with instanceof)
+pub extern "js" fn JsValue::as_text_decoder_stream(
+  self : JsValue,
+) -> TextDecoderStream? =
+  #| (self) => (self instanceof TextDecoderStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to TextDecoderStream (unchecked)
+pub extern "js" fn JsValue::to_text_decoder_stream(
+  self : JsValue,
+) -> TextDecoderStream =
+  #| (self) => self
+
+///|
 pub extern "js" fn TextDecoderStream::new(
   label : String,
   options : TextDecoderOptions,
@@ -172,7 +240,7 @@ pub extern "js" fn TextDecoderStream::get_fatal(
   #| (self) => self.fatal
 
 ///|
-pub extern "js" fn TextDecoderStream::get_ignore_b_o_m(
+pub extern "js" fn TextDecoderStream::get_ignore_bom(
   self : TextDecoderStream,
 ) -> Bool =
   #| (self) => self.ignoreBOM
@@ -197,6 +265,34 @@ pub type TextEncoderStream
 pub extern "js" fn TextEncoderStream::to_js_value(
   self : TextEncoderStream,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to TextEncoderStream (unchecked)
+pub extern "js" fn TextEncoderStream::from_js_value(
+  v : JsValue,
+) -> TextEncoderStream =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to TextEncoderStream (checked with instanceof)
+pub extern "js" fn TextEncoderStream::from_js_value_opt(
+  v : JsValue,
+) -> TextEncoderStream? =
+  #| (v) => (v instanceof TextEncoderStream) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to TextEncoderStream (checked with instanceof)
+pub extern "js" fn JsValue::as_text_encoder_stream(
+  self : JsValue,
+) -> TextEncoderStream? =
+  #| (self) => (self instanceof TextEncoderStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to TextEncoderStream (unchecked)
+pub extern "js" fn JsValue::to_text_encoder_stream(
+  self : JsValue,
+) -> TextEncoderStream =
   #| (self) => self
 
 ///|

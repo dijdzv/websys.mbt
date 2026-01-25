@@ -36,8 +36,8 @@ pub extern "js" fn JsValue::from_bool(b : Bool) -> JsValue =
   #| (b) => b
 
 ///|
-/// JavaScript Promise type
-pub type Promise[T]
+/// JavaScript Promise type (aliased to @js_async.Promise)
+pub type Promise[T] = @js_async.Promise[T]
 
 ///|
 /// Nullable type for distinguishing null from undefined
@@ -53,37 +53,34 @@ pub enum Nullable[T] {
 // External types (referenced but not defined in WebIDL specs)
 
 ///|
-pub type ArrayBuffer
-
-///|
-pub type Uint8Array
-
-///|
-pub type Int32Array
-
-///|
-pub type Uint32Array
+pub type WindowProxy
 
 ///|
 pub type CSSOMString
 
 ///|
+pub type Int32Array
+
+///|
+pub type ArrayBuffer
+
+///|
+pub type Uint32Array
+
+///|
+pub type DataView
+
+///|
 pub type Float32Array
 
 ///|
-pub type Float64Array
-
-///|
-pub type WindowProxy
+pub type Uint8Array
 
 ///|
 pub type Uint8ClampedArray
 
 ///|
 pub type Float16Array
-
-///|
-pub type DataView
 
 ///|
 pub type Int8Array
@@ -101,390 +98,64 @@ pub type BigInt64Array
 pub type BigUint64Array
 
 ///|
+pub type Float64Array
+
+///|
 pub type SharedArrayBuffer
 
 // Inline Union types
 
 ///|
-/// StringOrArrayBuffer typedef
-pub type StringOrArrayBuffer
+/// AnimationEffectOrArrayOfAnimationEffect typedef
+pub type AnimationEffectOrArrayOfAnimationEffect
 
 ///|
-pub extern "js" fn StringOrArrayBuffer::to_js_value(
-  self : StringOrArrayBuffer,
+pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::to_js_value(
+  self : AnimationEffectOrArrayOfAnimationEffect,
 ) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create StringOrArrayBuffer from String
-pub extern "js" fn StringOrArrayBuffer::from_string(
-  v : String,
-) -> StringOrArrayBuffer =
+/// Create AnimationEffectOrArrayOfAnimationEffect from AnimationEffect
+pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::from_animation_effect(
+  v : AnimationEffect,
+) -> AnimationEffectOrArrayOfAnimationEffect =
   #| (v) => v
 
 ///|
-/// Create StringOrArrayBuffer from ArrayBuffer
-pub extern "js" fn StringOrArrayBuffer::from_array_buffer(
-  v : ArrayBuffer,
-) -> StringOrArrayBuffer =
+/// Create AnimationEffectOrArrayOfAnimationEffect from Array[AnimationEffect]
+pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::from_array_of_animation_effect(
+  v : Array[AnimationEffect],
+) -> AnimationEffectOrArrayOfAnimationEffect =
   #| (v) => v
 
 ///|
-/// Check if this StringOrArrayBuffer is String
-pub extern "js" fn StringOrArrayBuffer::is_string(
-  self : StringOrArrayBuffer,
+/// Check if this AnimationEffectOrArrayOfAnimationEffect is AnimationEffect
+pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::is_animation_effect(
+  self : AnimationEffectOrArrayOfAnimationEffect,
 ) -> Bool =
-  #| (self) => typeof self === 'string'
+  #| (self) => self instanceof AnimationEffect
 
 ///|
-/// Check if this StringOrArrayBuffer is ArrayBuffer
-pub extern "js" fn StringOrArrayBuffer::is_array_buffer(
-  self : StringOrArrayBuffer,
-) -> Bool =
-  #| (self) => self instanceof ArrayBuffer
-
-///|
-/// Try to get StringOrArrayBuffer as String
-pub extern "js" fn StringOrArrayBuffer::as_string(
-  self : StringOrArrayBuffer,
-) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get StringOrArrayBuffer as ArrayBuffer
-pub extern "js" fn StringOrArrayBuffer::as_array_buffer(
-  self : StringOrArrayBuffer,
-) -> ArrayBuffer? =
-  #| (self) => (self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// BlobOrMediaSource typedef
-pub type BlobOrMediaSource
-
-///|
-pub extern "js" fn BlobOrMediaSource::to_js_value(
-  self : BlobOrMediaSource,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create BlobOrMediaSource from Blob
-pub extern "js" fn BlobOrMediaSource::from_blob(v : Blob) -> BlobOrMediaSource =
-  #| (v) => v
-
-///|
-/// Create BlobOrMediaSource from MediaSource
-pub extern "js" fn BlobOrMediaSource::from_media_source(
-  v : MediaSource,
-) -> BlobOrMediaSource =
-  #| (v) => v
-
-///|
-/// Check if this BlobOrMediaSource is Blob
-pub extern "js" fn BlobOrMediaSource::is_blob(self : BlobOrMediaSource) -> Bool =
-  #| (self) => self instanceof Blob
-
-///|
-/// Check if this BlobOrMediaSource is MediaSource
-pub extern "js" fn BlobOrMediaSource::is_media_source(
-  self : BlobOrMediaSource,
-) -> Bool =
-  #| (self) => self instanceof MediaSource
-
-///|
-/// Try to get BlobOrMediaSource as Blob
-pub extern "js" fn BlobOrMediaSource::as_blob(
-  self : BlobOrMediaSource,
-) -> Blob? =
-  #| (self) => (self instanceof Blob) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get BlobOrMediaSource as MediaSource
-pub extern "js" fn BlobOrMediaSource::as_media_source(
-  self : BlobOrMediaSource,
-) -> MediaSource? =
-  #| (self) => (self instanceof MediaSource) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// IDBObjectStoreOrIDBIndexOrIDBCursor typedef
-pub type IDBObjectStoreOrIDBIndexOrIDBCursor
-
-///|
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::to_js_value(
-  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create IDBObjectStoreOrIDBIndexOrIDBCursor from IDBObjectStore
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::from_i_d_b_object_store(
-  v : IDBObjectStore,
-) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
-  #| (v) => v
-
-///|
-/// Create IDBObjectStoreOrIDBIndexOrIDBCursor from IDBIndex
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::from_i_d_b_index(
-  v : IDBIndex,
-) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
-  #| (v) => v
-
-///|
-/// Create IDBObjectStoreOrIDBIndexOrIDBCursor from IDBCursor
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::from_i_d_b_cursor(
-  v : IDBCursor,
-) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
-  #| (v) => v
-
-///|
-/// Check if this IDBObjectStoreOrIDBIndexOrIDBCursor is IDBObjectStore
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::is_i_d_b_object_store(
-  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
-) -> Bool =
-  #| (self) => self instanceof IDBObjectStore
-
-///|
-/// Check if this IDBObjectStoreOrIDBIndexOrIDBCursor is IDBIndex
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::is_i_d_b_index(
-  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
-) -> Bool =
-  #| (self) => self instanceof IDBIndex
-
-///|
-/// Check if this IDBObjectStoreOrIDBIndexOrIDBCursor is IDBCursor
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::is_i_d_b_cursor(
-  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
-) -> Bool =
-  #| (self) => self instanceof IDBCursor
-
-///|
-/// Try to get IDBObjectStoreOrIDBIndexOrIDBCursor as IDBObjectStore
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::as_i_d_b_object_store(
-  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
-) -> IDBObjectStore? =
-  #| (self) => (self instanceof IDBObjectStore) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get IDBObjectStoreOrIDBIndexOrIDBCursor as IDBIndex
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::as_i_d_b_index(
-  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
-) -> IDBIndex? =
-  #| (self) => (self instanceof IDBIndex) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get IDBObjectStoreOrIDBIndexOrIDBCursor as IDBCursor
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::as_i_d_b_cursor(
-  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
-) -> IDBCursor? =
-  #| (self) => (self instanceof IDBCursor) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// StringOrArrayOfString typedef
-pub type StringOrArrayOfString
-
-///|
-pub extern "js" fn StringOrArrayOfString::to_js_value(
-  self : StringOrArrayOfString,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create StringOrArrayOfString from String
-pub extern "js" fn StringOrArrayOfString::from_string(
-  v : String,
-) -> StringOrArrayOfString =
-  #| (v) => v
-
-///|
-/// Create StringOrArrayOfString from Array[String]
-pub extern "js" fn StringOrArrayOfString::from_array_of_string(
-  v : Array[String],
-) -> StringOrArrayOfString =
-  #| (v) => v
-
-///|
-/// Check if this StringOrArrayOfString is String
-pub extern "js" fn StringOrArrayOfString::is_string(
-  self : StringOrArrayOfString,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Check if this StringOrArrayOfString is Array[String]
-pub extern "js" fn StringOrArrayOfString::is_array_of_string(
-  self : StringOrArrayOfString,
+/// Check if this AnimationEffectOrArrayOfAnimationEffect is Array[AnimationEffect]
+pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::is_array_of_animation_effect(
+  self : AnimationEffectOrArrayOfAnimationEffect,
 ) -> Bool =
   #| (self) => Array.isArray(self)
 
 ///|
-/// Try to get StringOrArrayOfString as String
-pub extern "js" fn StringOrArrayOfString::as_string(
-  self : StringOrArrayOfString,
-) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+/// Try to get AnimationEffectOrArrayOfAnimationEffect as AnimationEffect
+pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::as_animation_effect(
+  self : AnimationEffectOrArrayOfAnimationEffect,
+) -> AnimationEffect? =
+  #| (self) => (self instanceof AnimationEffect) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get StringOrArrayOfString as Array[String]
-pub extern "js" fn StringOrArrayOfString::as_array_of_string(
-  self : StringOrArrayOfString,
-) -> Array[String]? =
+/// Try to get AnimationEffectOrArrayOfAnimationEffect as Array[AnimationEffect]
+pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::as_array_of_animation_effect(
+  self : AnimationEffectOrArrayOfAnimationEffect,
+) -> Array[AnimationEffect]? =
   #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// IDBObjectStoreOrIDBIndex typedef
-pub type IDBObjectStoreOrIDBIndex
-
-///|
-pub extern "js" fn IDBObjectStoreOrIDBIndex::to_js_value(
-  self : IDBObjectStoreOrIDBIndex,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create IDBObjectStoreOrIDBIndex from IDBObjectStore
-pub extern "js" fn IDBObjectStoreOrIDBIndex::from_i_d_b_object_store(
-  v : IDBObjectStore,
-) -> IDBObjectStoreOrIDBIndex =
-  #| (v) => v
-
-///|
-/// Create IDBObjectStoreOrIDBIndex from IDBIndex
-pub extern "js" fn IDBObjectStoreOrIDBIndex::from_i_d_b_index(
-  v : IDBIndex,
-) -> IDBObjectStoreOrIDBIndex =
-  #| (v) => v
-
-///|
-/// Check if this IDBObjectStoreOrIDBIndex is IDBObjectStore
-pub extern "js" fn IDBObjectStoreOrIDBIndex::is_i_d_b_object_store(
-  self : IDBObjectStoreOrIDBIndex,
-) -> Bool =
-  #| (self) => self instanceof IDBObjectStore
-
-///|
-/// Check if this IDBObjectStoreOrIDBIndex is IDBIndex
-pub extern "js" fn IDBObjectStoreOrIDBIndex::is_i_d_b_index(
-  self : IDBObjectStoreOrIDBIndex,
-) -> Bool =
-  #| (self) => self instanceof IDBIndex
-
-///|
-/// Try to get IDBObjectStoreOrIDBIndex as IDBObjectStore
-pub extern "js" fn IDBObjectStoreOrIDBIndex::as_i_d_b_object_store(
-  self : IDBObjectStoreOrIDBIndex,
-) -> IDBObjectStore? =
-  #| (self) => (self instanceof IDBObjectStore) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get IDBObjectStoreOrIDBIndex as IDBIndex
-pub extern "js" fn IDBObjectStoreOrIDBIndex::as_i_d_b_index(
-  self : IDBObjectStoreOrIDBIndex,
-) -> IDBIndex? =
-  #| (self) => (self instanceof IDBIndex) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// StringOrTrustedScriptURL typedef
-pub type StringOrTrustedScriptURL
-
-///|
-pub extern "js" fn StringOrTrustedScriptURL::to_js_value(
-  self : StringOrTrustedScriptURL,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create StringOrTrustedScriptURL from String
-pub extern "js" fn StringOrTrustedScriptURL::from_string(
-  v : String,
-) -> StringOrTrustedScriptURL =
-  #| (v) => v
-
-///|
-/// Create StringOrTrustedScriptURL from TrustedScriptURL
-pub extern "js" fn StringOrTrustedScriptURL::from_trusted_script_u_r_l(
-  v : TrustedScriptURL,
-) -> StringOrTrustedScriptURL =
-  #| (v) => v
-
-///|
-/// Check if this StringOrTrustedScriptURL is String
-pub extern "js" fn StringOrTrustedScriptURL::is_string(
-  self : StringOrTrustedScriptURL,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Check if this StringOrTrustedScriptURL is TrustedScriptURL
-pub extern "js" fn StringOrTrustedScriptURL::is_trusted_script_u_r_l(
-  self : StringOrTrustedScriptURL,
-) -> Bool =
-  #| (self) => self instanceof TrustedScriptURL
-
-///|
-/// Try to get StringOrTrustedScriptURL as String
-pub extern "js" fn StringOrTrustedScriptURL::as_string(
-  self : StringOrTrustedScriptURL,
-) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get StringOrTrustedScriptURL as TrustedScriptURL
-pub extern "js" fn StringOrTrustedScriptURL::as_trusted_script_u_r_l(
-  self : StringOrTrustedScriptURL,
-) -> TrustedScriptURL? =
-  #| (self) => (self instanceof TrustedScriptURL) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// ElementOrCSSPseudoElement typedef
-pub type ElementOrCSSPseudoElement
-
-///|
-pub extern "js" fn ElementOrCSSPseudoElement::to_js_value(
-  self : ElementOrCSSPseudoElement,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create ElementOrCSSPseudoElement from Element
-pub extern "js" fn ElementOrCSSPseudoElement::from_element(
-  v : Element,
-) -> ElementOrCSSPseudoElement =
-  #| (v) => v
-
-///|
-/// Create ElementOrCSSPseudoElement from CSSPseudoElement
-pub extern "js" fn ElementOrCSSPseudoElement::from_c_s_s_pseudo_element(
-  v : CSSPseudoElement,
-) -> ElementOrCSSPseudoElement =
-  #| (v) => v
-
-///|
-/// Check if this ElementOrCSSPseudoElement is Element
-pub extern "js" fn ElementOrCSSPseudoElement::is_element(
-  self : ElementOrCSSPseudoElement,
-) -> Bool =
-  #| (self) => self instanceof Element
-
-///|
-/// Check if this ElementOrCSSPseudoElement is CSSPseudoElement
-pub extern "js" fn ElementOrCSSPseudoElement::is_c_s_s_pseudo_element(
-  self : ElementOrCSSPseudoElement,
-) -> Bool =
-  #| (self) => self instanceof CSSPseudoElement
-
-///|
-/// Try to get ElementOrCSSPseudoElement as Element
-pub extern "js" fn ElementOrCSSPseudoElement::as_element(
-  self : ElementOrCSSPseudoElement,
-) -> Element? =
-  #| (self) => (self instanceof Element) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get ElementOrCSSPseudoElement as CSSPseudoElement
-pub extern "js" fn ElementOrCSSPseudoElement::as_c_s_s_pseudo_element(
-  self : ElementOrCSSPseudoElement,
-) -> CSSPseudoElement? =
-  #| (self) => (self instanceof CSSPseudoElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Int32ArrayOrArrayOfGLint typedef
@@ -591,6 +262,131 @@ pub extern "js" fn Int32ArrayOrArrayOfGLsizei::as_array_of_g_lsizei(
   #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// SanitizerOrSanitizerConfigOrSanitizerPresets typedef
+pub type SanitizerOrSanitizerConfigOrSanitizerPresets
+
+///|
+pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::to_js_value(
+  self : SanitizerOrSanitizerConfigOrSanitizerPresets,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create SanitizerOrSanitizerConfigOrSanitizerPresets from Sanitizer
+pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::from_sanitizer(
+  v : Sanitizer,
+) -> SanitizerOrSanitizerConfigOrSanitizerPresets =
+  #| (v) => v
+
+///|
+/// Create SanitizerOrSanitizerConfigOrSanitizerPresets from SanitizerConfig
+pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::from_sanitizer_config(
+  v : SanitizerConfig,
+) -> SanitizerOrSanitizerConfigOrSanitizerPresets =
+  #| (v) => v
+
+///|
+/// Create SanitizerOrSanitizerConfigOrSanitizerPresets from SanitizerPresets
+pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::from_sanitizer_presets(
+  v : SanitizerPresets,
+) -> SanitizerOrSanitizerConfigOrSanitizerPresets =
+  #| (v) => v
+
+///|
+/// Check if this SanitizerOrSanitizerConfigOrSanitizerPresets is Sanitizer
+pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::is_sanitizer(
+  self : SanitizerOrSanitizerConfigOrSanitizerPresets,
+) -> Bool =
+  #| (self) => self instanceof Sanitizer
+
+///|
+/// Check if this SanitizerOrSanitizerConfigOrSanitizerPresets is SanitizerConfig
+pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::is_sanitizer_config(
+  self : SanitizerOrSanitizerConfigOrSanitizerPresets,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Check if this SanitizerOrSanitizerConfigOrSanitizerPresets is SanitizerPresets
+pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::is_sanitizer_presets(
+  self : SanitizerOrSanitizerConfigOrSanitizerPresets,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get SanitizerOrSanitizerConfigOrSanitizerPresets as Sanitizer
+pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::as_sanitizer(
+  self : SanitizerOrSanitizerConfigOrSanitizerPresets,
+) -> Sanitizer? =
+  #| (self) => (self instanceof Sanitizer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get SanitizerOrSanitizerConfigOrSanitizerPresets as SanitizerConfig
+pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::as_sanitizer_config(
+  self : SanitizerOrSanitizerConfigOrSanitizerPresets,
+) -> SanitizerConfig? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get SanitizerOrSanitizerConfigOrSanitizerPresets as SanitizerPresets
+pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::as_sanitizer_presets(
+  self : SanitizerOrSanitizerConfigOrSanitizerPresets,
+) -> SanitizerPresets? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// SanitizerConfigOrSanitizerPresets typedef
+pub type SanitizerConfigOrSanitizerPresets
+
+///|
+pub extern "js" fn SanitizerConfigOrSanitizerPresets::to_js_value(
+  self : SanitizerConfigOrSanitizerPresets,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create SanitizerConfigOrSanitizerPresets from SanitizerConfig
+pub extern "js" fn SanitizerConfigOrSanitizerPresets::from_sanitizer_config(
+  v : SanitizerConfig,
+) -> SanitizerConfigOrSanitizerPresets =
+  #| (v) => v
+
+///|
+/// Create SanitizerConfigOrSanitizerPresets from SanitizerPresets
+pub extern "js" fn SanitizerConfigOrSanitizerPresets::from_sanitizer_presets(
+  v : SanitizerPresets,
+) -> SanitizerConfigOrSanitizerPresets =
+  #| (v) => v
+
+///|
+/// Check if this SanitizerConfigOrSanitizerPresets is SanitizerConfig
+pub extern "js" fn SanitizerConfigOrSanitizerPresets::is_sanitizer_config(
+  self : SanitizerConfigOrSanitizerPresets,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Check if this SanitizerConfigOrSanitizerPresets is SanitizerPresets
+pub extern "js" fn SanitizerConfigOrSanitizerPresets::is_sanitizer_presets(
+  self : SanitizerConfigOrSanitizerPresets,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get SanitizerConfigOrSanitizerPresets as SanitizerConfig
+pub extern "js" fn SanitizerConfigOrSanitizerPresets::as_sanitizer_config(
+  self : SanitizerConfigOrSanitizerPresets,
+) -> SanitizerConfig? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get SanitizerConfigOrSanitizerPresets as SanitizerPresets
+pub extern "js" fn SanitizerConfigOrSanitizerPresets::as_sanitizer_presets(
+  self : SanitizerConfigOrSanitizerPresets,
+) -> SanitizerPresets? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// Uint32ArrayOrArrayOfGLuint typedef
 pub type Uint32ArrayOrArrayOfGLuint
 
@@ -643,901 +439,510 @@ pub extern "js" fn Uint32ArrayOrArrayOfGLuint::as_array_of_g_luint(
   #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// RequestInfoOrArrayOfRequestInfo typedef
-pub type RequestInfoOrArrayOfRequestInfo
+/// StringOrDOMHighResTimeStamp typedef
+pub type StringOrDOMHighResTimeStamp
 
 ///|
-pub extern "js" fn RequestInfoOrArrayOfRequestInfo::to_js_value(
-  self : RequestInfoOrArrayOfRequestInfo,
+pub extern "js" fn StringOrDOMHighResTimeStamp::to_js_value(
+  self : StringOrDOMHighResTimeStamp,
 ) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create RequestInfoOrArrayOfRequestInfo from RequestInfo
-pub extern "js" fn RequestInfoOrArrayOfRequestInfo::from_request_info(
-  v : RequestInfo,
-) -> RequestInfoOrArrayOfRequestInfo =
+/// Create StringOrDOMHighResTimeStamp from String
+pub extern "js" fn StringOrDOMHighResTimeStamp::from_string(
+  v : String,
+) -> StringOrDOMHighResTimeStamp =
   #| (v) => v
 
 ///|
-/// Create RequestInfoOrArrayOfRequestInfo from Array[RequestInfo]
-pub extern "js" fn RequestInfoOrArrayOfRequestInfo::from_array_of_request_info(
-  v : Array[RequestInfo],
-) -> RequestInfoOrArrayOfRequestInfo =
+/// Create StringOrDOMHighResTimeStamp from DOMHighResTimeStamp
+pub extern "js" fn StringOrDOMHighResTimeStamp::from_d_o_m_high_res_time_stamp(
+  v : DOMHighResTimeStamp,
+) -> StringOrDOMHighResTimeStamp =
   #| (v) => v
 
 ///|
-/// Check if this RequestInfoOrArrayOfRequestInfo is RequestInfo
-pub extern "js" fn RequestInfoOrArrayOfRequestInfo::is_request_info(
-  self : RequestInfoOrArrayOfRequestInfo,
-) -> Bool =
-  #| (self) => self instanceof Request || typeof self === 'string'
-
-///|
-/// Check if this RequestInfoOrArrayOfRequestInfo is Array[RequestInfo]
-pub extern "js" fn RequestInfoOrArrayOfRequestInfo::is_array_of_request_info(
-  self : RequestInfoOrArrayOfRequestInfo,
-) -> Bool =
-  #| (self) => Array.isArray(self)
-
-///|
-/// Try to get RequestInfoOrArrayOfRequestInfo as RequestInfo
-pub extern "js" fn RequestInfoOrArrayOfRequestInfo::as_request_info(
-  self : RequestInfoOrArrayOfRequestInfo,
-) -> RequestInfo? =
-  #| (self) => (self instanceof Request || typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get RequestInfoOrArrayOfRequestInfo as Array[RequestInfo]
-pub extern "js" fn RequestInfoOrArrayOfRequestInfo::as_array_of_request_info(
-  self : RequestInfoOrArrayOfRequestInfo,
-) -> Array[RequestInfo]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// AnimationEffectOrArrayOfAnimationEffect typedef
-pub type AnimationEffectOrArrayOfAnimationEffect
-
-///|
-pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::to_js_value(
-  self : AnimationEffectOrArrayOfAnimationEffect,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create AnimationEffectOrArrayOfAnimationEffect from AnimationEffect
-pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::from_animation_effect(
-  v : AnimationEffect,
-) -> AnimationEffectOrArrayOfAnimationEffect =
-  #| (v) => v
-
-///|
-/// Create AnimationEffectOrArrayOfAnimationEffect from Array[AnimationEffect]
-pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::from_array_of_animation_effect(
-  v : Array[AnimationEffect],
-) -> AnimationEffectOrArrayOfAnimationEffect =
-  #| (v) => v
-
-///|
-/// Check if this AnimationEffectOrArrayOfAnimationEffect is AnimationEffect
-pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::is_animation_effect(
-  self : AnimationEffectOrArrayOfAnimationEffect,
-) -> Bool =
-  #| (self) => self instanceof AnimationEffect
-
-///|
-/// Check if this AnimationEffectOrArrayOfAnimationEffect is Array[AnimationEffect]
-pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::is_array_of_animation_effect(
-  self : AnimationEffectOrArrayOfAnimationEffect,
-) -> Bool =
-  #| (self) => Array.isArray(self)
-
-///|
-/// Try to get AnimationEffectOrArrayOfAnimationEffect as AnimationEffect
-pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::as_animation_effect(
-  self : AnimationEffectOrArrayOfAnimationEffect,
-) -> AnimationEffect? =
-  #| (self) => (self instanceof AnimationEffect) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get AnimationEffectOrArrayOfAnimationEffect as Array[AnimationEffect]
-pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::as_array_of_animation_effect(
-  self : AnimationEffectOrArrayOfAnimationEffect,
-) -> Array[AnimationEffect]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// CSSOMStringOrBufferSource typedef
-pub type CSSOMStringOrBufferSource
-
-///|
-pub extern "js" fn CSSOMStringOrBufferSource::to_js_value(
-  self : CSSOMStringOrBufferSource,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create CSSOMStringOrBufferSource from CSSOMString
-pub extern "js" fn CSSOMStringOrBufferSource::from_c_s_s_o_m_string(
-  v : CSSOMString,
-) -> CSSOMStringOrBufferSource =
-  #| (v) => v
-
-///|
-/// Create CSSOMStringOrBufferSource from BufferSource
-pub extern "js" fn CSSOMStringOrBufferSource::from_buffer_source(
-  v : BufferSource,
-) -> CSSOMStringOrBufferSource =
-  #| (v) => v
-
-///|
-/// Check if this CSSOMStringOrBufferSource is CSSOMString
-pub extern "js" fn CSSOMStringOrBufferSource::is_c_s_s_o_m_string(
-  self : CSSOMStringOrBufferSource,
+/// Check if this StringOrDOMHighResTimeStamp is String
+pub extern "js" fn StringOrDOMHighResTimeStamp::is_string(
+  self : StringOrDOMHighResTimeStamp,
 ) -> Bool =
   #| (self) => typeof self === 'string'
 
 ///|
-/// Check if this CSSOMStringOrBufferSource is BufferSource
-pub extern "js" fn CSSOMStringOrBufferSource::is_buffer_source(
-  self : CSSOMStringOrBufferSource,
+/// Check if this StringOrDOMHighResTimeStamp is DOMHighResTimeStamp
+pub extern "js" fn StringOrDOMHighResTimeStamp::is_d_o_m_high_res_time_stamp(
+  self : StringOrDOMHighResTimeStamp,
 ) -> Bool =
-  #| (self) => self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer
-
-///|
-/// Try to get CSSOMStringOrBufferSource as CSSOMString
-pub extern "js" fn CSSOMStringOrBufferSource::as_c_s_s_o_m_string(
-  self : CSSOMStringOrBufferSource,
-) -> CSSOMString? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get CSSOMStringOrBufferSource as BufferSource
-pub extern "js" fn CSSOMStringOrBufferSource::as_buffer_source(
-  self : CSSOMStringOrBufferSource,
-) -> BufferSource? =
-  #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// IntOrArrayOfInt typedef
-pub type IntOrArrayOfInt
-
-///|
-pub extern "js" fn IntOrArrayOfInt::to_js_value(
-  self : IntOrArrayOfInt,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create IntOrArrayOfInt from Int
-pub extern "js" fn IntOrArrayOfInt::from_int(v : Int) -> IntOrArrayOfInt =
-  #| (v) => v
-
-///|
-/// Create IntOrArrayOfInt from Array[Int]
-pub extern "js" fn IntOrArrayOfInt::from_array_of_int(
-  v : Array[Int],
-) -> IntOrArrayOfInt =
-  #| (v) => v
-
-///|
-/// Check if this IntOrArrayOfInt is Int
-pub extern "js" fn IntOrArrayOfInt::is_int(self : IntOrArrayOfInt) -> Bool =
   #| (self) => typeof self === 'number'
 
 ///|
-/// Check if this IntOrArrayOfInt is Array[Int]
-pub extern "js" fn IntOrArrayOfInt::is_array_of_int(
-  self : IntOrArrayOfInt,
-) -> Bool =
-  #| (self) => Array.isArray(self)
-
-///|
-/// Try to get IntOrArrayOfInt as Int
-pub extern "js" fn IntOrArrayOfInt::as_int(self : IntOrArrayOfInt) -> Int? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get IntOrArrayOfInt as Array[Int]
-pub extern "js" fn IntOrArrayOfInt::as_array_of_int(
-  self : IntOrArrayOfInt,
-) -> Array[Int]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// VoidOrCSSStyleValue typedef
-pub type VoidOrCSSStyleValue
-
-///|
-pub extern "js" fn VoidOrCSSStyleValue::to_js_value(
-  self : VoidOrCSSStyleValue,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create VoidOrCSSStyleValue from CSSStyleValue
-pub extern "js" fn VoidOrCSSStyleValue::from_c_s_s_style_value(
-  v : CSSStyleValue,
-) -> VoidOrCSSStyleValue =
-  #| (v) => v
-
-///|
-/// Check if this VoidOrCSSStyleValue is CSSStyleValue
-pub extern "js" fn VoidOrCSSStyleValue::is_c_s_s_style_value(
-  self : VoidOrCSSStyleValue,
-) -> Bool =
-  #| (self) => self instanceof CSSStyleValue
-
-///|
-/// Try to get VoidOrCSSStyleValue as CSSStyleValue
-pub extern "js" fn VoidOrCSSStyleValue::as_c_s_s_style_value(
-  self : VoidOrCSSStyleValue,
-) -> CSSStyleValue? =
-  #| (self) => (self instanceof CSSStyleValue) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// CSSStyleValueOrString typedef
-pub type CSSStyleValueOrString
-
-///|
-pub extern "js" fn CSSStyleValueOrString::to_js_value(
-  self : CSSStyleValueOrString,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create CSSStyleValueOrString from CSSStyleValue
-pub extern "js" fn CSSStyleValueOrString::from_c_s_s_style_value(
-  v : CSSStyleValue,
-) -> CSSStyleValueOrString =
-  #| (v) => v
-
-///|
-/// Create CSSStyleValueOrString from String
-pub extern "js" fn CSSStyleValueOrString::from_string(
-  v : String,
-) -> CSSStyleValueOrString =
-  #| (v) => v
-
-///|
-/// Check if this CSSStyleValueOrString is CSSStyleValue
-pub extern "js" fn CSSStyleValueOrString::is_c_s_s_style_value(
-  self : CSSStyleValueOrString,
-) -> Bool =
-  #| (self) => self instanceof CSSStyleValue
-
-///|
-/// Check if this CSSStyleValueOrString is String
-pub extern "js" fn CSSStyleValueOrString::is_string(
-  self : CSSStyleValueOrString,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Try to get CSSStyleValueOrString as CSSStyleValue
-pub extern "js" fn CSSStyleValueOrString::as_c_s_s_style_value(
-  self : CSSStyleValueOrString,
-) -> CSSStyleValue? =
-  #| (self) => (self instanceof CSSStyleValue) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get CSSStyleValueOrString as String
-pub extern "js" fn CSSStyleValueOrString::as_string(
-  self : CSSStyleValueOrString,
+/// Try to get StringOrDOMHighResTimeStamp as String
+pub extern "js" fn StringOrDOMHighResTimeStamp::as_string(
+  self : StringOrDOMHighResTimeStamp,
 ) -> String? =
   #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// CSSColorValueOrCSSStyleValue typedef
-pub type CSSColorValueOrCSSStyleValue
+/// Try to get StringOrDOMHighResTimeStamp as DOMHighResTimeStamp
+pub extern "js" fn StringOrDOMHighResTimeStamp::as_d_o_m_high_res_time_stamp(
+  self : StringOrDOMHighResTimeStamp,
+) -> DOMHighResTimeStamp? =
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSColorValueOrCSSStyleValue::to_js_value(
-  self : CSSColorValueOrCSSStyleValue,
+/// StringOrPerformanceMeasureOptions typedef
+pub type StringOrPerformanceMeasureOptions
+
+///|
+pub extern "js" fn StringOrPerformanceMeasureOptions::to_js_value(
+  self : StringOrPerformanceMeasureOptions,
 ) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create CSSColorValueOrCSSStyleValue from CSSColorValue
-pub extern "js" fn CSSColorValueOrCSSStyleValue::from_c_s_s_color_value(
-  v : CSSColorValue,
-) -> CSSColorValueOrCSSStyleValue =
+/// Create StringOrPerformanceMeasureOptions from String
+pub extern "js" fn StringOrPerformanceMeasureOptions::from_string(
+  v : String,
+) -> StringOrPerformanceMeasureOptions =
   #| (v) => v
 
 ///|
-/// Create CSSColorValueOrCSSStyleValue from CSSStyleValue
-pub extern "js" fn CSSColorValueOrCSSStyleValue::from_c_s_s_style_value(
-  v : CSSStyleValue,
-) -> CSSColorValueOrCSSStyleValue =
+/// Create StringOrPerformanceMeasureOptions from PerformanceMeasureOptions
+pub extern "js" fn StringOrPerformanceMeasureOptions::from_performance_measure_options(
+  v : PerformanceMeasureOptions,
+) -> StringOrPerformanceMeasureOptions =
   #| (v) => v
 
 ///|
-/// Check if this CSSColorValueOrCSSStyleValue is CSSColorValue
-pub extern "js" fn CSSColorValueOrCSSStyleValue::is_c_s_s_color_value(
-  self : CSSColorValueOrCSSStyleValue,
+/// Check if this StringOrPerformanceMeasureOptions is String
+pub extern "js" fn StringOrPerformanceMeasureOptions::is_string(
+  self : StringOrPerformanceMeasureOptions,
 ) -> Bool =
-  #| (self) => self instanceof CSSColorValue
+  #| (self) => typeof self === 'string'
 
 ///|
-/// Check if this CSSColorValueOrCSSStyleValue is CSSStyleValue
-pub extern "js" fn CSSColorValueOrCSSStyleValue::is_c_s_s_style_value(
-  self : CSSColorValueOrCSSStyleValue,
-) -> Bool =
-  #| (self) => self instanceof CSSStyleValue
-
-///|
-/// Try to get CSSColorValueOrCSSStyleValue as CSSColorValue
-pub extern "js" fn CSSColorValueOrCSSStyleValue::as_c_s_s_color_value(
-  self : CSSColorValueOrCSSStyleValue,
-) -> CSSColorValue? =
-  #| (self) => (self instanceof CSSColorValue) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get CSSColorValueOrCSSStyleValue as CSSStyleValue
-pub extern "js" fn CSSColorValueOrCSSStyleValue::as_c_s_s_style_value(
-  self : CSSColorValueOrCSSStyleValue,
-) -> CSSStyleValue? =
-  #| (self) => (self instanceof CSSStyleValue) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// ViewTransitionUpdateCallbackOrStartViewTransitionOptions typedef
-pub type ViewTransitionUpdateCallbackOrStartViewTransitionOptions
-
-///|
-pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::to_js_value(
-  self : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create ViewTransitionUpdateCallbackOrStartViewTransitionOptions from ViewTransitionUpdateCallback
-pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::from_view_transition_update_callback(
-  v : ViewTransitionUpdateCallback,
-) -> ViewTransitionUpdateCallbackOrStartViewTransitionOptions =
-  #| (v) => v
-
-///|
-/// Create ViewTransitionUpdateCallbackOrStartViewTransitionOptions from StartViewTransitionOptions
-pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::from_start_view_transition_options(
-  v : StartViewTransitionOptions,
-) -> ViewTransitionUpdateCallbackOrStartViewTransitionOptions =
-  #| (v) => v
-
-///|
-/// Check if this ViewTransitionUpdateCallbackOrStartViewTransitionOptions is ViewTransitionUpdateCallback
-pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::is_view_transition_update_callback(
-  self : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
-) -> Bool =
-  #| (self) => typeof self === 'function'
-
-///|
-/// Check if this ViewTransitionUpdateCallbackOrStartViewTransitionOptions is StartViewTransitionOptions
-pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::is_start_view_transition_options(
-  self : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
+/// Check if this StringOrPerformanceMeasureOptions is PerformanceMeasureOptions
+pub extern "js" fn StringOrPerformanceMeasureOptions::is_performance_measure_options(
+  self : StringOrPerformanceMeasureOptions,
 ) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
-/// Try to get ViewTransitionUpdateCallbackOrStartViewTransitionOptions as ViewTransitionUpdateCallback
-pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::as_view_transition_update_callback(
-  self : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
-) -> ViewTransitionUpdateCallback? =
-  #| (self) => (typeof self === 'function') ? { $tag: 1, _0: self } : { $tag: 0 }
+/// Try to get StringOrPerformanceMeasureOptions as String
+pub extern "js" fn StringOrPerformanceMeasureOptions::as_string(
+  self : StringOrPerformanceMeasureOptions,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get ViewTransitionUpdateCallbackOrStartViewTransitionOptions as StartViewTransitionOptions
-pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::as_start_view_transition_options(
-  self : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
-) -> StartViewTransitionOptions? =
+/// Try to get StringOrPerformanceMeasureOptions as PerformanceMeasureOptions
+pub extern "js" fn StringOrPerformanceMeasureOptions::as_performance_measure_options(
+  self : StringOrPerformanceMeasureOptions,
+) -> PerformanceMeasureOptions? =
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// BoolOrScrollIntoViewOptions typedef
-pub type BoolOrScrollIntoViewOptions
+/// StringOrArrayOfCSSNumericValueOrCSSKeywordValue typedef
+pub type StringOrArrayOfCSSNumericValueOrCSSKeywordValue
 
 ///|
-pub extern "js" fn BoolOrScrollIntoViewOptions::to_js_value(
-  self : BoolOrScrollIntoViewOptions,
+pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::to_js_value(
+  self : StringOrArrayOfCSSNumericValueOrCSSKeywordValue,
 ) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create BoolOrScrollIntoViewOptions from Bool
-pub extern "js" fn BoolOrScrollIntoViewOptions::from_bool(
-  v : Bool,
-) -> BoolOrScrollIntoViewOptions =
+/// Create StringOrArrayOfCSSNumericValueOrCSSKeywordValue from String
+pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::from_string(
+  v : String,
+) -> StringOrArrayOfCSSNumericValueOrCSSKeywordValue =
   #| (v) => v
 
 ///|
-/// Create BoolOrScrollIntoViewOptions from ScrollIntoViewOptions
-pub extern "js" fn BoolOrScrollIntoViewOptions::from_scroll_into_view_options(
-  v : ScrollIntoViewOptions,
-) -> BoolOrScrollIntoViewOptions =
+/// Create StringOrArrayOfCSSNumericValueOrCSSKeywordValue from Array[CSSNumericValueOrCSSKeywordValue]
+pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::from_array(
+  v : Array[CSSNumericValueOrCSSKeywordValue],
+) -> StringOrArrayOfCSSNumericValueOrCSSKeywordValue =
   #| (v) => v
 
 ///|
-/// Check if this BoolOrScrollIntoViewOptions is Bool
-pub extern "js" fn BoolOrScrollIntoViewOptions::is_bool(
-  self : BoolOrScrollIntoViewOptions,
+/// Check if this StringOrArrayOfCSSNumericValueOrCSSKeywordValue is String
+pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::is_string(
+  self : StringOrArrayOfCSSNumericValueOrCSSKeywordValue,
 ) -> Bool =
-  #| (self) => typeof self === 'boolean'
+  #| (self) => typeof self === 'string'
 
 ///|
-/// Check if this BoolOrScrollIntoViewOptions is ScrollIntoViewOptions
-pub extern "js" fn BoolOrScrollIntoViewOptions::is_scroll_into_view_options(
-  self : BoolOrScrollIntoViewOptions,
+/// Check if this StringOrArrayOfCSSNumericValueOrCSSKeywordValue is Array[CSSNumericValueOrCSSKeywordValue]
+pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::is_array(
+  self : StringOrArrayOfCSSNumericValueOrCSSKeywordValue,
 ) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
+  #| (self) => Array.isArray(self)
 
 ///|
-/// Try to get BoolOrScrollIntoViewOptions as Bool
-pub extern "js" fn BoolOrScrollIntoViewOptions::as_bool(
-  self : BoolOrScrollIntoViewOptions,
-) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+/// Try to get StringOrArrayOfCSSNumericValueOrCSSKeywordValue as String
+pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::as_string(
+  self : StringOrArrayOfCSSNumericValueOrCSSKeywordValue,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get BoolOrScrollIntoViewOptions as ScrollIntoViewOptions
-pub extern "js" fn BoolOrScrollIntoViewOptions::as_scroll_into_view_options(
-  self : BoolOrScrollIntoViewOptions,
-) -> ScrollIntoViewOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+/// Try to get StringOrArrayOfCSSNumericValueOrCSSKeywordValue as Array[CSSNumericValueOrCSSKeywordValue]
+pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::as_array(
+  self : StringOrArrayOfCSSNumericValueOrCSSKeywordValue,
+) -> Array[CSSNumericValueOrCSSKeywordValue]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// ElementOrProcessingInstruction typedef
-pub type ElementOrProcessingInstruction
+/// CSSNumericValueOrCSSKeywordValue typedef
+pub type CSSNumericValueOrCSSKeywordValue
 
 ///|
-pub extern "js" fn ElementOrProcessingInstruction::to_js_value(
-  self : ElementOrProcessingInstruction,
+pub extern "js" fn CSSNumericValueOrCSSKeywordValue::to_js_value(
+  self : CSSNumericValueOrCSSKeywordValue,
 ) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create ElementOrProcessingInstruction from Element
-pub extern "js" fn ElementOrProcessingInstruction::from_element(
+/// Create CSSNumericValueOrCSSKeywordValue from CSSNumericValue
+pub extern "js" fn CSSNumericValueOrCSSKeywordValue::from_c_s_s_numeric_value(
+  v : CSSNumericValue,
+) -> CSSNumericValueOrCSSKeywordValue =
+  #| (v) => v
+
+///|
+/// Create CSSNumericValueOrCSSKeywordValue from CSSKeywordValue
+pub extern "js" fn CSSNumericValueOrCSSKeywordValue::from_c_s_s_keyword_value(
+  v : CSSKeywordValue,
+) -> CSSNumericValueOrCSSKeywordValue =
+  #| (v) => v
+
+///|
+/// Check if this CSSNumericValueOrCSSKeywordValue is CSSNumericValue
+pub extern "js" fn CSSNumericValueOrCSSKeywordValue::is_c_s_s_numeric_value(
+  self : CSSNumericValueOrCSSKeywordValue,
+) -> Bool =
+  #| (self) => self instanceof CSSNumericValue
+
+///|
+/// Check if this CSSNumericValueOrCSSKeywordValue is CSSKeywordValue
+pub extern "js" fn CSSNumericValueOrCSSKeywordValue::is_c_s_s_keyword_value(
+  self : CSSNumericValueOrCSSKeywordValue,
+) -> Bool =
+  #| (self) => self instanceof CSSKeywordValue
+
+///|
+/// Try to get CSSNumericValueOrCSSKeywordValue as CSSNumericValue
+pub extern "js" fn CSSNumericValueOrCSSKeywordValue::as_c_s_s_numeric_value(
+  self : CSSNumericValueOrCSSKeywordValue,
+) -> CSSNumericValue? =
+  #| (self) => (self instanceof CSSNumericValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CSSNumericValueOrCSSKeywordValue as CSSKeywordValue
+pub extern "js" fn CSSNumericValueOrCSSKeywordValue::as_c_s_s_keyword_value(
+  self : CSSNumericValueOrCSSKeywordValue,
+) -> CSSKeywordValue? =
+  #| (self) => (self instanceof CSSKeywordValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// StringOrArrayOfUUID typedef
+pub type StringOrArrayOfUUID
+
+///|
+pub extern "js" fn StringOrArrayOfUUID::to_js_value(
+  self : StringOrArrayOfUUID,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create StringOrArrayOfUUID from String
+pub extern "js" fn StringOrArrayOfUUID::from_string(
+  v : String,
+) -> StringOrArrayOfUUID =
+  #| (v) => v
+
+///|
+/// Create StringOrArrayOfUUID from Array[UUID]
+pub extern "js" fn StringOrArrayOfUUID::from_array_of_u_u_i_d(
+  v : Array[UUID],
+) -> StringOrArrayOfUUID =
+  #| (v) => v
+
+///|
+/// Check if this StringOrArrayOfUUID is String
+pub extern "js" fn StringOrArrayOfUUID::is_string(
+  self : StringOrArrayOfUUID,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this StringOrArrayOfUUID is Array[UUID]
+pub extern "js" fn StringOrArrayOfUUID::is_array_of_u_u_i_d(
+  self : StringOrArrayOfUUID,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Try to get StringOrArrayOfUUID as String
+pub extern "js" fn StringOrArrayOfUUID::as_string(
+  self : StringOrArrayOfUUID,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get StringOrArrayOfUUID as Array[UUID]
+pub extern "js" fn StringOrArrayOfUUID::as_array_of_u_u_i_d(
+  self : StringOrArrayOfUUID,
+) -> Array[UUID]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// StringOrInt typedef
+pub type StringOrInt
+
+///|
+pub extern "js" fn StringOrInt::to_js_value(self : StringOrInt) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create StringOrInt from String
+pub extern "js" fn StringOrInt::from_string(v : String) -> StringOrInt =
+  #| (v) => v
+
+///|
+/// Create StringOrInt from Int
+pub extern "js" fn StringOrInt::from_int(v : Int) -> StringOrInt =
+  #| (v) => v
+
+///|
+/// Check if this StringOrInt is String
+pub extern "js" fn StringOrInt::is_string(self : StringOrInt) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this StringOrInt is Int
+pub extern "js" fn StringOrInt::is_int(self : StringOrInt) -> Bool =
+  #| (self) => typeof self === 'number'
+
+///|
+/// Try to get StringOrInt as String
+pub extern "js" fn StringOrInt::as_string(self : StringOrInt) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get StringOrInt as Int
+pub extern "js" fn StringOrInt::as_int(self : StringOrInt) -> Int? =
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// TaskPriorityOrTaskSignal typedef
+pub type TaskPriorityOrTaskSignal
+
+///|
+pub extern "js" fn TaskPriorityOrTaskSignal::to_js_value(
+  self : TaskPriorityOrTaskSignal,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create TaskPriorityOrTaskSignal from TaskPriority
+pub extern "js" fn TaskPriorityOrTaskSignal::from_task_priority(
+  v : TaskPriority,
+) -> TaskPriorityOrTaskSignal =
+  #| (v) => v
+
+///|
+/// Create TaskPriorityOrTaskSignal from TaskSignal
+pub extern "js" fn TaskPriorityOrTaskSignal::from_task_signal(
+  v : TaskSignal,
+) -> TaskPriorityOrTaskSignal =
+  #| (v) => v
+
+///|
+/// Check if this TaskPriorityOrTaskSignal is TaskPriority
+pub extern "js" fn TaskPriorityOrTaskSignal::is_task_priority(
+  self : TaskPriorityOrTaskSignal,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this TaskPriorityOrTaskSignal is TaskSignal
+pub extern "js" fn TaskPriorityOrTaskSignal::is_task_signal(
+  self : TaskPriorityOrTaskSignal,
+) -> Bool =
+  #| (self) => self instanceof TaskSignal
+
+///|
+/// Try to get TaskPriorityOrTaskSignal as TaskPriority
+pub extern "js" fn TaskPriorityOrTaskSignal::as_task_priority(
+  self : TaskPriorityOrTaskSignal,
+) -> TaskPriority? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get TaskPriorityOrTaskSignal as TaskSignal
+pub extern "js" fn TaskPriorityOrTaskSignal::as_task_signal(
+  self : TaskPriorityOrTaskSignal,
+) -> TaskSignal? =
+  #| (self) => (self instanceof TaskSignal) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// StringOrTrustedScriptURL typedef
+pub type StringOrTrustedScriptURL
+
+///|
+pub extern "js" fn StringOrTrustedScriptURL::to_js_value(
+  self : StringOrTrustedScriptURL,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create StringOrTrustedScriptURL from String
+pub extern "js" fn StringOrTrustedScriptURL::from_string(
+  v : String,
+) -> StringOrTrustedScriptURL =
+  #| (v) => v
+
+///|
+/// Create StringOrTrustedScriptURL from TrustedScriptURL
+pub extern "js" fn StringOrTrustedScriptURL::from_trusted_script_u_r_l(
+  v : TrustedScriptURL,
+) -> StringOrTrustedScriptURL =
+  #| (v) => v
+
+///|
+/// Check if this StringOrTrustedScriptURL is String
+pub extern "js" fn StringOrTrustedScriptURL::is_string(
+  self : StringOrTrustedScriptURL,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this StringOrTrustedScriptURL is TrustedScriptURL
+pub extern "js" fn StringOrTrustedScriptURL::is_trusted_script_u_r_l(
+  self : StringOrTrustedScriptURL,
+) -> Bool =
+  #| (self) => self instanceof TrustedScriptURL
+
+///|
+/// Try to get StringOrTrustedScriptURL as String
+pub extern "js" fn StringOrTrustedScriptURL::as_string(
+  self : StringOrTrustedScriptURL,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get StringOrTrustedScriptURL as TrustedScriptURL
+pub extern "js" fn StringOrTrustedScriptURL::as_trusted_script_u_r_l(
+  self : StringOrTrustedScriptURL,
+) -> TrustedScriptURL? =
+  #| (self) => (self instanceof TrustedScriptURL) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// ElementOrCSSPseudoElement typedef
+pub type ElementOrCSSPseudoElement
+
+///|
+pub extern "js" fn ElementOrCSSPseudoElement::to_js_value(
+  self : ElementOrCSSPseudoElement,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create ElementOrCSSPseudoElement from Element
+pub extern "js" fn ElementOrCSSPseudoElement::from_element(
   v : Element,
-) -> ElementOrProcessingInstruction =
+) -> ElementOrCSSPseudoElement =
   #| (v) => v
 
 ///|
-/// Create ElementOrProcessingInstruction from ProcessingInstruction
-pub extern "js" fn ElementOrProcessingInstruction::from_processing_instruction(
-  v : ProcessingInstruction,
-) -> ElementOrProcessingInstruction =
+/// Create ElementOrCSSPseudoElement from CSSPseudoElement
+pub extern "js" fn ElementOrCSSPseudoElement::from_c_s_s_pseudo_element(
+  v : CSSPseudoElement,
+) -> ElementOrCSSPseudoElement =
   #| (v) => v
 
 ///|
-/// Check if this ElementOrProcessingInstruction is Element
-pub extern "js" fn ElementOrProcessingInstruction::is_element(
-  self : ElementOrProcessingInstruction,
+/// Check if this ElementOrCSSPseudoElement is Element
+pub extern "js" fn ElementOrCSSPseudoElement::is_element(
+  self : ElementOrCSSPseudoElement,
 ) -> Bool =
   #| (self) => self instanceof Element
 
 ///|
-/// Check if this ElementOrProcessingInstruction is ProcessingInstruction
-pub extern "js" fn ElementOrProcessingInstruction::is_processing_instruction(
-  self : ElementOrProcessingInstruction,
+/// Check if this ElementOrCSSPseudoElement is CSSPseudoElement
+pub extern "js" fn ElementOrCSSPseudoElement::is_c_s_s_pseudo_element(
+  self : ElementOrCSSPseudoElement,
 ) -> Bool =
-  #| (self) => self instanceof ProcessingInstruction
+  #| (self) => self instanceof CSSPseudoElement
 
 ///|
-/// Try to get ElementOrProcessingInstruction as Element
-pub extern "js" fn ElementOrProcessingInstruction::as_element(
-  self : ElementOrProcessingInstruction,
+/// Try to get ElementOrCSSPseudoElement as Element
+pub extern "js" fn ElementOrCSSPseudoElement::as_element(
+  self : ElementOrCSSPseudoElement,
 ) -> Element? =
   #| (self) => (self instanceof Element) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get ElementOrProcessingInstruction as ProcessingInstruction
-pub extern "js" fn ElementOrProcessingInstruction::as_processing_instruction(
-  self : ElementOrProcessingInstruction,
-) -> ProcessingInstruction? =
-  #| (self) => (self instanceof ProcessingInstruction) ? { $tag: 1, _0: self } : { $tag: 0 }
+/// Try to get ElementOrCSSPseudoElement as CSSPseudoElement
+pub extern "js" fn ElementOrCSSPseudoElement::as_c_s_s_pseudo_element(
+  self : ElementOrCSSPseudoElement,
+) -> CSSPseudoElement? =
+  #| (self) => (self instanceof CSSPseudoElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// MediaListOrString typedef
-pub type MediaListOrString
+/// StringOrArrayOfString typedef
+pub type StringOrArrayOfString
 
 ///|
-pub extern "js" fn MediaListOrString::to_js_value(
-  self : MediaListOrString,
+pub extern "js" fn StringOrArrayOfString::to_js_value(
+  self : StringOrArrayOfString,
 ) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create MediaListOrString from MediaList
-pub extern "js" fn MediaListOrString::from_media_list(
-  v : MediaList,
-) -> MediaListOrString =
-  #| (v) => v
-
-///|
-/// Create MediaListOrString from String
-pub extern "js" fn MediaListOrString::from_string(
+/// Create StringOrArrayOfString from String
+pub extern "js" fn StringOrArrayOfString::from_string(
   v : String,
-) -> MediaListOrString =
+) -> StringOrArrayOfString =
   #| (v) => v
 
 ///|
-/// Check if this MediaListOrString is MediaList
-pub extern "js" fn MediaListOrString::is_media_list(
-  self : MediaListOrString,
-) -> Bool =
-  #| (self) => self instanceof MediaList
+/// Create StringOrArrayOfString from Array[String]
+pub extern "js" fn StringOrArrayOfString::from_array_of_string(
+  v : Array[String],
+) -> StringOrArrayOfString =
+  #| (v) => v
 
 ///|
-/// Check if this MediaListOrString is String
-pub extern "js" fn MediaListOrString::is_string(
-  self : MediaListOrString,
+/// Check if this StringOrArrayOfString is String
+pub extern "js" fn StringOrArrayOfString::is_string(
+  self : StringOrArrayOfString,
 ) -> Bool =
   #| (self) => typeof self === 'string'
 
 ///|
-/// Try to get MediaListOrString as MediaList
-pub extern "js" fn MediaListOrString::as_media_list(
-  self : MediaListOrString,
-) -> MediaList? =
-  #| (self) => (self instanceof MediaList) ? { $tag: 1, _0: self } : { $tag: 0 }
+/// Check if this StringOrArrayOfString is Array[String]
+pub extern "js" fn StringOrArrayOfString::is_array_of_string(
+  self : StringOrArrayOfString,
+) -> Bool =
+  #| (self) => Array.isArray(self)
 
 ///|
-/// Try to get MediaListOrString as String
-pub extern "js" fn MediaListOrString::as_string(
-  self : MediaListOrString,
+/// Try to get StringOrArrayOfString as String
+pub extern "js" fn StringOrArrayOfString::as_string(
+  self : StringOrArrayOfString,
 ) -> String? =
   #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// EventOrVoid typedef
-pub type EventOrVoid
-
-///|
-pub extern "js" fn EventOrVoid::to_js_value(self : EventOrVoid) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create EventOrVoid from Event
-pub extern "js" fn EventOrVoid::from_event(v : Event) -> EventOrVoid =
-  #| (v) => v
-
-///|
-/// Check if this EventOrVoid is Event
-pub extern "js" fn EventOrVoid::is_event(self : EventOrVoid) -> Bool =
-  #| (self) => self instanceof Event
-
-///|
-/// Try to get EventOrVoid as Event
-pub extern "js" fn EventOrVoid::as_event(self : EventOrVoid) -> Event? =
-  #| (self) => (self instanceof Event) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// AddEventListenerOptionsOrBool typedef
-pub type AddEventListenerOptionsOrBool
-
-///|
-pub extern "js" fn AddEventListenerOptionsOrBool::to_js_value(
-  self : AddEventListenerOptionsOrBool,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create AddEventListenerOptionsOrBool from AddEventListenerOptions
-pub extern "js" fn AddEventListenerOptionsOrBool::from_add_event_listener_options(
-  v : AddEventListenerOptions,
-) -> AddEventListenerOptionsOrBool =
-  #| (v) => v
-
-///|
-/// Create AddEventListenerOptionsOrBool from Bool
-pub extern "js" fn AddEventListenerOptionsOrBool::from_bool(
-  v : Bool,
-) -> AddEventListenerOptionsOrBool =
-  #| (v) => v
-
-///|
-/// Check if this AddEventListenerOptionsOrBool is AddEventListenerOptions
-pub extern "js" fn AddEventListenerOptionsOrBool::is_add_event_listener_options(
-  self : AddEventListenerOptionsOrBool,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Check if this AddEventListenerOptionsOrBool is Bool
-pub extern "js" fn AddEventListenerOptionsOrBool::is_bool(
-  self : AddEventListenerOptionsOrBool,
-) -> Bool =
-  #| (self) => typeof self === 'boolean'
-
-///|
-/// Try to get AddEventListenerOptionsOrBool as AddEventListenerOptions
-pub extern "js" fn AddEventListenerOptionsOrBool::as_add_event_listener_options(
-  self : AddEventListenerOptionsOrBool,
-) -> AddEventListenerOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get AddEventListenerOptionsOrBool as Bool
-pub extern "js" fn AddEventListenerOptionsOrBool::as_bool(
-  self : AddEventListenerOptionsOrBool,
-) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// EventListenerOptionsOrBool typedef
-pub type EventListenerOptionsOrBool
-
-///|
-pub extern "js" fn EventListenerOptionsOrBool::to_js_value(
-  self : EventListenerOptionsOrBool,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create EventListenerOptionsOrBool from EventListenerOptions
-pub extern "js" fn EventListenerOptionsOrBool::from_event_listener_options(
-  v : EventListenerOptions,
-) -> EventListenerOptionsOrBool =
-  #| (v) => v
-
-///|
-/// Create EventListenerOptionsOrBool from Bool
-pub extern "js" fn EventListenerOptionsOrBool::from_bool(
-  v : Bool,
-) -> EventListenerOptionsOrBool =
-  #| (v) => v
-
-///|
-/// Check if this EventListenerOptionsOrBool is EventListenerOptions
-pub extern "js" fn EventListenerOptionsOrBool::is_event_listener_options(
-  self : EventListenerOptionsOrBool,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Check if this EventListenerOptionsOrBool is Bool
-pub extern "js" fn EventListenerOptionsOrBool::is_bool(
-  self : EventListenerOptionsOrBool,
-) -> Bool =
-  #| (self) => typeof self === 'boolean'
-
-///|
-/// Try to get EventListenerOptionsOrBool as EventListenerOptions
-pub extern "js" fn EventListenerOptionsOrBool::as_event_listener_options(
-  self : EventListenerOptionsOrBool,
-) -> EventListenerOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get EventListenerOptionsOrBool as Bool
-pub extern "js" fn EventListenerOptionsOrBool::as_bool(
-  self : EventListenerOptionsOrBool,
-) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// NodeOrString typedef
-pub type NodeOrString
-
-///|
-pub extern "js" fn NodeOrString::to_js_value(self : NodeOrString) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create NodeOrString from Node
-pub extern "js" fn NodeOrString::from_node(v : Node) -> NodeOrString =
-  #| (v) => v
-
-///|
-/// Create NodeOrString from String
-pub extern "js" fn NodeOrString::from_string(v : String) -> NodeOrString =
-  #| (v) => v
-
-///|
-/// Check if this NodeOrString is Node
-pub extern "js" fn NodeOrString::is_node(self : NodeOrString) -> Bool =
-  #| (self) => self instanceof Node
-
-///|
-/// Check if this NodeOrString is String
-pub extern "js" fn NodeOrString::is_string(self : NodeOrString) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Try to get NodeOrString as Node
-pub extern "js" fn NodeOrString::as_node(self : NodeOrString) -> Node? =
-  #| (self) => (self instanceof Node) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get NodeOrString as String
-pub extern "js" fn NodeOrString::as_string(self : NodeOrString) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// StringOrElementCreationOptions typedef
-pub type StringOrElementCreationOptions
-
-///|
-pub extern "js" fn StringOrElementCreationOptions::to_js_value(
-  self : StringOrElementCreationOptions,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create StringOrElementCreationOptions from String
-pub extern "js" fn StringOrElementCreationOptions::from_string(
-  v : String,
-) -> StringOrElementCreationOptions =
-  #| (v) => v
-
-///|
-/// Create StringOrElementCreationOptions from ElementCreationOptions
-pub extern "js" fn StringOrElementCreationOptions::from_element_creation_options(
-  v : ElementCreationOptions,
-) -> StringOrElementCreationOptions =
-  #| (v) => v
-
-///|
-/// Check if this StringOrElementCreationOptions is String
-pub extern "js" fn StringOrElementCreationOptions::is_string(
-  self : StringOrElementCreationOptions,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Check if this StringOrElementCreationOptions is ElementCreationOptions
-pub extern "js" fn StringOrElementCreationOptions::is_element_creation_options(
-  self : StringOrElementCreationOptions,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Try to get StringOrElementCreationOptions as String
-pub extern "js" fn StringOrElementCreationOptions::as_string(
-  self : StringOrElementCreationOptions,
-) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get StringOrElementCreationOptions as ElementCreationOptions
-pub extern "js" fn StringOrElementCreationOptions::as_element_creation_options(
-  self : StringOrElementCreationOptions,
-) -> ElementCreationOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// BoolOrImportNodeOptions typedef
-pub type BoolOrImportNodeOptions
-
-///|
-pub extern "js" fn BoolOrImportNodeOptions::to_js_value(
-  self : BoolOrImportNodeOptions,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create BoolOrImportNodeOptions from Bool
-pub extern "js" fn BoolOrImportNodeOptions::from_bool(
-  v : Bool,
-) -> BoolOrImportNodeOptions =
-  #| (v) => v
-
-///|
-/// Create BoolOrImportNodeOptions from ImportNodeOptions
-pub extern "js" fn BoolOrImportNodeOptions::from_import_node_options(
-  v : ImportNodeOptions,
-) -> BoolOrImportNodeOptions =
-  #| (v) => v
-
-///|
-/// Check if this BoolOrImportNodeOptions is Bool
-pub extern "js" fn BoolOrImportNodeOptions::is_bool(
-  self : BoolOrImportNodeOptions,
-) -> Bool =
-  #| (self) => typeof self === 'boolean'
-
-///|
-/// Check if this BoolOrImportNodeOptions is ImportNodeOptions
-pub extern "js" fn BoolOrImportNodeOptions::is_import_node_options(
-  self : BoolOrImportNodeOptions,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Try to get BoolOrImportNodeOptions as Bool
-pub extern "js" fn BoolOrImportNodeOptions::as_bool(
-  self : BoolOrImportNodeOptions,
-) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get BoolOrImportNodeOptions as ImportNodeOptions
-pub extern "js" fn BoolOrImportNodeOptions::as_import_node_options(
-  self : BoolOrImportNodeOptions,
-) -> ImportNodeOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// TrustedTypeOrString typedef
-pub type TrustedTypeOrString
-
-///|
-pub extern "js" fn TrustedTypeOrString::to_js_value(
-  self : TrustedTypeOrString,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create TrustedTypeOrString from TrustedType
-pub extern "js" fn TrustedTypeOrString::from_trusted_type(
-  v : TrustedType,
-) -> TrustedTypeOrString =
-  #| (v) => v
-
-///|
-/// Create TrustedTypeOrString from String
-pub extern "js" fn TrustedTypeOrString::from_string(
-  v : String,
-) -> TrustedTypeOrString =
-  #| (v) => v
-
-///|
-/// Check if this TrustedTypeOrString is TrustedType
-pub extern "js" fn TrustedTypeOrString::is_trusted_type(
-  self : TrustedTypeOrString,
-) -> Bool =
-  #| (self) => self instanceof TrustedHTML || self instanceof TrustedScript || self instanceof TrustedScriptURL
-
-///|
-/// Check if this TrustedTypeOrString is String
-pub extern "js" fn TrustedTypeOrString::is_string(
-  self : TrustedTypeOrString,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Try to get TrustedTypeOrString as TrustedType
-pub extern "js" fn TrustedTypeOrString::as_trusted_type(
-  self : TrustedTypeOrString,
-) -> TrustedType? =
-  #| (self) => (self instanceof TrustedHTML || self instanceof TrustedScript || self instanceof TrustedScriptURL) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get TrustedTypeOrString as String
-pub extern "js" fn TrustedTypeOrString::as_string(
-  self : TrustedTypeOrString,
-) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// MediaKeyStatusOrVoid typedef
-pub type MediaKeyStatusOrVoid
-
-///|
-pub extern "js" fn MediaKeyStatusOrVoid::to_js_value(
-  self : MediaKeyStatusOrVoid,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create MediaKeyStatusOrVoid from MediaKeyStatus
-pub extern "js" fn MediaKeyStatusOrVoid::from_media_key_status(
-  v : MediaKeyStatus,
-) -> MediaKeyStatusOrVoid =
-  #| (v) => v
-
-///|
-/// Check if this MediaKeyStatusOrVoid is MediaKeyStatus
-pub extern "js" fn MediaKeyStatusOrVoid::is_media_key_status(
-  self : MediaKeyStatusOrVoid,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Try to get MediaKeyStatusOrVoid as MediaKeyStatus
-pub extern "js" fn MediaKeyStatusOrVoid::as_media_key_status(
-  self : MediaKeyStatusOrVoid,
-) -> MediaKeyStatus? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+/// Try to get StringOrArrayOfString as Array[String]
+pub extern "js" fn StringOrArrayOfString::as_array_of_string(
+  self : StringOrArrayOfString,
+) -> Array[String]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// BufferSourceOrBlobOrString typedef
@@ -1613,56 +1018,298 @@ pub extern "js" fn BufferSourceOrBlobOrString::as_string(
   #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// StringOrArrayOfDouble typedef
-pub type StringOrArrayOfDouble
+/// BoolOrScrollIntoViewOptions typedef
+pub type BoolOrScrollIntoViewOptions
 
 ///|
-pub extern "js" fn StringOrArrayOfDouble::to_js_value(
-  self : StringOrArrayOfDouble,
+pub extern "js" fn BoolOrScrollIntoViewOptions::to_js_value(
+  self : BoolOrScrollIntoViewOptions,
 ) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create StringOrArrayOfDouble from String
-pub extern "js" fn StringOrArrayOfDouble::from_string(
+/// Create BoolOrScrollIntoViewOptions from Bool
+pub extern "js" fn BoolOrScrollIntoViewOptions::from_bool(
+  v : Bool,
+) -> BoolOrScrollIntoViewOptions =
+  #| (v) => v
+
+///|
+/// Create BoolOrScrollIntoViewOptions from ScrollIntoViewOptions
+pub extern "js" fn BoolOrScrollIntoViewOptions::from_scroll_into_view_options(
+  v : ScrollIntoViewOptions,
+) -> BoolOrScrollIntoViewOptions =
+  #| (v) => v
+
+///|
+/// Check if this BoolOrScrollIntoViewOptions is Bool
+pub extern "js" fn BoolOrScrollIntoViewOptions::is_bool(
+  self : BoolOrScrollIntoViewOptions,
+) -> Bool =
+  #| (self) => typeof self === 'boolean'
+
+///|
+/// Check if this BoolOrScrollIntoViewOptions is ScrollIntoViewOptions
+pub extern "js" fn BoolOrScrollIntoViewOptions::is_scroll_into_view_options(
+  self : BoolOrScrollIntoViewOptions,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get BoolOrScrollIntoViewOptions as Bool
+pub extern "js" fn BoolOrScrollIntoViewOptions::as_bool(
+  self : BoolOrScrollIntoViewOptions,
+) -> Bool? =
+  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get BoolOrScrollIntoViewOptions as ScrollIntoViewOptions
+pub extern "js" fn BoolOrScrollIntoViewOptions::as_scroll_into_view_options(
+  self : BoolOrScrollIntoViewOptions,
+) -> ScrollIntoViewOptions? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// BufferSourceOrString typedef
+pub type BufferSourceOrString
+
+///|
+pub extern "js" fn BufferSourceOrString::to_js_value(
+  self : BufferSourceOrString,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create BufferSourceOrString from BufferSource
+pub extern "js" fn BufferSourceOrString::from_buffer_source(
+  v : BufferSource,
+) -> BufferSourceOrString =
+  #| (v) => v
+
+///|
+/// Create BufferSourceOrString from String
+pub extern "js" fn BufferSourceOrString::from_string(
   v : String,
-) -> StringOrArrayOfDouble =
+) -> BufferSourceOrString =
   #| (v) => v
 
 ///|
-/// Create StringOrArrayOfDouble from Array[Double]
-pub extern "js" fn StringOrArrayOfDouble::from_array_of_double(
-  v : Array[Double],
-) -> StringOrArrayOfDouble =
-  #| (v) => v
+/// Check if this BufferSourceOrString is BufferSource
+pub extern "js" fn BufferSourceOrString::is_buffer_source(
+  self : BufferSourceOrString,
+) -> Bool =
+  #| (self) => self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer
 
 ///|
-/// Check if this StringOrArrayOfDouble is String
-pub extern "js" fn StringOrArrayOfDouble::is_string(
-  self : StringOrArrayOfDouble,
+/// Check if this BufferSourceOrString is String
+pub extern "js" fn BufferSourceOrString::is_string(
+  self : BufferSourceOrString,
 ) -> Bool =
   #| (self) => typeof self === 'string'
 
 ///|
-/// Check if this StringOrArrayOfDouble is Array[Double]
-pub extern "js" fn StringOrArrayOfDouble::is_array_of_double(
-  self : StringOrArrayOfDouble,
-) -> Bool =
-  #| (self) => Array.isArray(self)
+/// Try to get BufferSourceOrString as BufferSource
+pub extern "js" fn BufferSourceOrString::as_buffer_source(
+  self : BufferSourceOrString,
+) -> BufferSource? =
+  #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get StringOrArrayOfDouble as String
-pub extern "js" fn StringOrArrayOfDouble::as_string(
-  self : StringOrArrayOfDouble,
+/// Try to get BufferSourceOrString as String
+pub extern "js" fn BufferSourceOrString::as_string(
+  self : BufferSourceOrString,
 ) -> String? =
   #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get StringOrArrayOfDouble as Array[Double]
-pub extern "js" fn StringOrArrayOfDouble::as_array_of_double(
-  self : StringOrArrayOfDouble,
-) -> Array[Double]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+/// StringOrArrayBuffer typedef
+pub type StringOrArrayBuffer
+
+///|
+pub extern "js" fn StringOrArrayBuffer::to_js_value(
+  self : StringOrArrayBuffer,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create StringOrArrayBuffer from String
+pub extern "js" fn StringOrArrayBuffer::from_string(
+  v : String,
+) -> StringOrArrayBuffer =
+  #| (v) => v
+
+///|
+/// Create StringOrArrayBuffer from ArrayBuffer
+pub extern "js" fn StringOrArrayBuffer::from_array_buffer(
+  v : ArrayBuffer,
+) -> StringOrArrayBuffer =
+  #| (v) => v
+
+///|
+/// Check if this StringOrArrayBuffer is String
+pub extern "js" fn StringOrArrayBuffer::is_string(
+  self : StringOrArrayBuffer,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this StringOrArrayBuffer is ArrayBuffer
+pub extern "js" fn StringOrArrayBuffer::is_array_buffer(
+  self : StringOrArrayBuffer,
+) -> Bool =
+  #| (self) => self instanceof ArrayBuffer
+
+///|
+/// Try to get StringOrArrayBuffer as String
+pub extern "js" fn StringOrArrayBuffer::as_string(
+  self : StringOrArrayBuffer,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get StringOrArrayBuffer as ArrayBuffer
+pub extern "js" fn StringOrArrayBuffer::as_array_buffer(
+  self : StringOrArrayBuffer,
+) -> ArrayBuffer? =
+  #| (self) => (self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// BlobOrMediaSource typedef
+pub type BlobOrMediaSource
+
+///|
+pub extern "js" fn BlobOrMediaSource::to_js_value(
+  self : BlobOrMediaSource,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create BlobOrMediaSource from Blob
+pub extern "js" fn BlobOrMediaSource::from_blob(v : Blob) -> BlobOrMediaSource =
+  #| (v) => v
+
+///|
+/// Create BlobOrMediaSource from MediaSource
+pub extern "js" fn BlobOrMediaSource::from_media_source(
+  v : MediaSource,
+) -> BlobOrMediaSource =
+  #| (v) => v
+
+///|
+/// Check if this BlobOrMediaSource is Blob
+pub extern "js" fn BlobOrMediaSource::is_blob(self : BlobOrMediaSource) -> Bool =
+  #| (self) => self instanceof Blob
+
+///|
+/// Check if this BlobOrMediaSource is MediaSource
+pub extern "js" fn BlobOrMediaSource::is_media_source(
+  self : BlobOrMediaSource,
+) -> Bool =
+  #| (self) => self instanceof MediaSource
+
+///|
+/// Try to get BlobOrMediaSource as Blob
+pub extern "js" fn BlobOrMediaSource::as_blob(
+  self : BlobOrMediaSource,
+) -> Blob? =
+  #| (self) => (self instanceof Blob) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get BlobOrMediaSource as MediaSource
+pub extern "js" fn BlobOrMediaSource::as_media_source(
+  self : BlobOrMediaSource,
+) -> MediaSource? =
+  #| (self) => (self instanceof MediaSource) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// BoolOrString typedef
+pub type BoolOrString
+
+///|
+pub extern "js" fn BoolOrString::to_js_value(self : BoolOrString) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create BoolOrString from Bool
+pub extern "js" fn BoolOrString::from_bool(v : Bool) -> BoolOrString =
+  #| (v) => v
+
+///|
+/// Create BoolOrString from String
+pub extern "js" fn BoolOrString::from_string(v : String) -> BoolOrString =
+  #| (v) => v
+
+///|
+/// Check if this BoolOrString is Bool
+pub extern "js" fn BoolOrString::is_bool(self : BoolOrString) -> Bool =
+  #| (self) => typeof self === 'boolean'
+
+///|
+/// Check if this BoolOrString is String
+pub extern "js" fn BoolOrString::is_string(self : BoolOrString) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get BoolOrString as Bool
+pub extern "js" fn BoolOrString::as_bool(self : BoolOrString) -> Bool? =
+  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get BoolOrString as String
+pub extern "js" fn BoolOrString::as_string(self : BoolOrString) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// BoolOrMediaTrackConstraints typedef
+pub type BoolOrMediaTrackConstraints
+
+///|
+pub extern "js" fn BoolOrMediaTrackConstraints::to_js_value(
+  self : BoolOrMediaTrackConstraints,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create BoolOrMediaTrackConstraints from Bool
+pub extern "js" fn BoolOrMediaTrackConstraints::from_bool(
+  v : Bool,
+) -> BoolOrMediaTrackConstraints =
+  #| (v) => v
+
+///|
+/// Create BoolOrMediaTrackConstraints from MediaTrackConstraints
+pub extern "js" fn BoolOrMediaTrackConstraints::from_media_track_constraints(
+  v : MediaTrackConstraints,
+) -> BoolOrMediaTrackConstraints =
+  #| (v) => v
+
+///|
+/// Check if this BoolOrMediaTrackConstraints is Bool
+pub extern "js" fn BoolOrMediaTrackConstraints::is_bool(
+  self : BoolOrMediaTrackConstraints,
+) -> Bool =
+  #| (self) => typeof self === 'boolean'
+
+///|
+/// Check if this BoolOrMediaTrackConstraints is MediaTrackConstraints
+pub extern "js" fn BoolOrMediaTrackConstraints::is_media_track_constraints(
+  self : BoolOrMediaTrackConstraints,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get BoolOrMediaTrackConstraints as Bool
+pub extern "js" fn BoolOrMediaTrackConstraints::as_bool(
+  self : BoolOrMediaTrackConstraints,
+) -> Bool? =
+  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get BoolOrMediaTrackConstraints as MediaTrackConstraints
+pub extern "js" fn BoolOrMediaTrackConstraints::as_media_track_constraints(
+  self : BoolOrMediaTrackConstraints,
+) -> MediaTrackConstraints? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// HTMLCollectionOrElement typedef
@@ -2252,9 +1899,9 @@ pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::from_d_o_m
   #| (v) => v
 
 ///|
-/// Create DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit from Array[JsValue]
+/// Create DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit from Array[DoubleOrDOMPointInit]
 pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::from_array(
-  v : Array[JsValue],
+  v : Array[DoubleOrDOMPointInit],
 ) -> DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit =
   #| (v) => v
 
@@ -2273,7 +1920,7 @@ pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::is_d_o_m_p
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
-/// Check if this DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit is Array[JsValue]
+/// Check if this DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit is Array[DoubleOrDOMPointInit]
 pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::is_array(
   self : DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit,
 ) -> Bool =
@@ -2294,10 +1941,10 @@ pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::as_d_o_m_p
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit as Array[JsValue]
+/// Try to get DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit as Array[DoubleOrDOMPointInit]
 pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::as_array(
   self : DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit,
-) -> Array[JsValue]? =
+) -> Array[DoubleOrDOMPointInit]? =
   #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
@@ -2691,1199 +2338,6 @@ pub extern "js" fn StringOrWorkerOptions::as_worker_options(
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// BoolOrConstrainDouble typedef
-pub type BoolOrConstrainDouble
-
-///|
-pub extern "js" fn BoolOrConstrainDouble::to_js_value(
-  self : BoolOrConstrainDouble,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create BoolOrConstrainDouble from Bool
-pub extern "js" fn BoolOrConstrainDouble::from_bool(
-  v : Bool,
-) -> BoolOrConstrainDouble =
-  #| (v) => v
-
-///|
-/// Create BoolOrConstrainDouble from ConstrainDouble
-pub extern "js" fn BoolOrConstrainDouble::from_constrain_double(
-  v : ConstrainDouble,
-) -> BoolOrConstrainDouble =
-  #| (v) => v
-
-///|
-/// Check if this BoolOrConstrainDouble is Bool
-pub extern "js" fn BoolOrConstrainDouble::is_bool(
-  self : BoolOrConstrainDouble,
-) -> Bool =
-  #| (self) => typeof self === 'boolean'
-
-///|
-/// Check if this BoolOrConstrainDouble is ConstrainDouble
-pub extern "js" fn BoolOrConstrainDouble::is_constrain_double(
-  self : BoolOrConstrainDouble,
-) -> Bool =
-  #| (self) => typeof self === 'number' || typeof self === 'object' && self !== null
-
-///|
-/// Try to get BoolOrConstrainDouble as Bool
-pub extern "js" fn BoolOrConstrainDouble::as_bool(
-  self : BoolOrConstrainDouble,
-) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get BoolOrConstrainDouble as ConstrainDouble
-pub extern "js" fn BoolOrConstrainDouble::as_constrain_double(
-  self : BoolOrConstrainDouble,
-) -> ConstrainDouble? =
-  #| (self) => (typeof self === 'number' || typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// ElementOrDocument typedef
-pub type ElementOrDocument
-
-///|
-pub extern "js" fn ElementOrDocument::to_js_value(
-  self : ElementOrDocument,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create ElementOrDocument from Element
-pub extern "js" fn ElementOrDocument::from_element(
-  v : Element,
-) -> ElementOrDocument =
-  #| (v) => v
-
-///|
-/// Create ElementOrDocument from Document
-pub extern "js" fn ElementOrDocument::from_document(
-  v : Document,
-) -> ElementOrDocument =
-  #| (v) => v
-
-///|
-/// Check if this ElementOrDocument is Element
-pub extern "js" fn ElementOrDocument::is_element(
-  self : ElementOrDocument,
-) -> Bool =
-  #| (self) => self instanceof Element
-
-///|
-/// Check if this ElementOrDocument is Document
-pub extern "js" fn ElementOrDocument::is_document(
-  self : ElementOrDocument,
-) -> Bool =
-  #| (self) => self instanceof Document
-
-///|
-/// Try to get ElementOrDocument as Element
-pub extern "js" fn ElementOrDocument::as_element(
-  self : ElementOrDocument,
-) -> Element? =
-  #| (self) => (self instanceof Element) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get ElementOrDocument as Document
-pub extern "js" fn ElementOrDocument::as_document(
-  self : ElementOrDocument,
-) -> Document? =
-  #| (self) => (self instanceof Document) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// DoubleOrArrayOfDouble typedef
-pub type DoubleOrArrayOfDouble
-
-///|
-pub extern "js" fn DoubleOrArrayOfDouble::to_js_value(
-  self : DoubleOrArrayOfDouble,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create DoubleOrArrayOfDouble from Double
-pub extern "js" fn DoubleOrArrayOfDouble::from_double(
-  v : Double,
-) -> DoubleOrArrayOfDouble =
-  #| (v) => v
-
-///|
-/// Create DoubleOrArrayOfDouble from Array[Double]
-pub extern "js" fn DoubleOrArrayOfDouble::from_array_of_double(
-  v : Array[Double],
-) -> DoubleOrArrayOfDouble =
-  #| (v) => v
-
-///|
-/// Check if this DoubleOrArrayOfDouble is Double
-pub extern "js" fn DoubleOrArrayOfDouble::is_double(
-  self : DoubleOrArrayOfDouble,
-) -> Bool =
-  #| (self) => typeof self === 'number'
-
-///|
-/// Check if this DoubleOrArrayOfDouble is Array[Double]
-pub extern "js" fn DoubleOrArrayOfDouble::is_array_of_double(
-  self : DoubleOrArrayOfDouble,
-) -> Bool =
-  #| (self) => Array.isArray(self)
-
-///|
-/// Try to get DoubleOrArrayOfDouble as Double
-pub extern "js" fn DoubleOrArrayOfDouble::as_double(
-  self : DoubleOrArrayOfDouble,
-) -> Double? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get DoubleOrArrayOfDouble as Array[Double]
-pub extern "js" fn DoubleOrArrayOfDouble::as_array_of_double(
-  self : DoubleOrArrayOfDouble,
-) -> Array[Double]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// BoolOrString typedef
-pub type BoolOrString
-
-///|
-pub extern "js" fn BoolOrString::to_js_value(self : BoolOrString) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create BoolOrString from Bool
-pub extern "js" fn BoolOrString::from_bool(v : Bool) -> BoolOrString =
-  #| (v) => v
-
-///|
-/// Create BoolOrString from String
-pub extern "js" fn BoolOrString::from_string(v : String) -> BoolOrString =
-  #| (v) => v
-
-///|
-/// Check if this BoolOrString is Bool
-pub extern "js" fn BoolOrString::is_bool(self : BoolOrString) -> Bool =
-  #| (self) => typeof self === 'boolean'
-
-///|
-/// Check if this BoolOrString is String
-pub extern "js" fn BoolOrString::is_string(self : BoolOrString) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Try to get BoolOrString as Bool
-pub extern "js" fn BoolOrString::as_bool(self : BoolOrString) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get BoolOrString as String
-pub extern "js" fn BoolOrString::as_string(self : BoolOrString) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// BoolOrMediaTrackConstraints typedef
-pub type BoolOrMediaTrackConstraints
-
-///|
-pub extern "js" fn BoolOrMediaTrackConstraints::to_js_value(
-  self : BoolOrMediaTrackConstraints,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create BoolOrMediaTrackConstraints from Bool
-pub extern "js" fn BoolOrMediaTrackConstraints::from_bool(
-  v : Bool,
-) -> BoolOrMediaTrackConstraints =
-  #| (v) => v
-
-///|
-/// Create BoolOrMediaTrackConstraints from MediaTrackConstraints
-pub extern "js" fn BoolOrMediaTrackConstraints::from_media_track_constraints(
-  v : MediaTrackConstraints,
-) -> BoolOrMediaTrackConstraints =
-  #| (v) => v
-
-///|
-/// Check if this BoolOrMediaTrackConstraints is Bool
-pub extern "js" fn BoolOrMediaTrackConstraints::is_bool(
-  self : BoolOrMediaTrackConstraints,
-) -> Bool =
-  #| (self) => typeof self === 'boolean'
-
-///|
-/// Check if this BoolOrMediaTrackConstraints is MediaTrackConstraints
-pub extern "js" fn BoolOrMediaTrackConstraints::is_media_track_constraints(
-  self : BoolOrMediaTrackConstraints,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Try to get BoolOrMediaTrackConstraints as Bool
-pub extern "js" fn BoolOrMediaTrackConstraints::as_bool(
-  self : BoolOrMediaTrackConstraints,
-) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get BoolOrMediaTrackConstraints as MediaTrackConstraints
-pub extern "js" fn BoolOrMediaTrackConstraints::as_media_track_constraints(
-  self : BoolOrMediaTrackConstraints,
-) -> MediaTrackConstraints? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// BufferSourceOrString typedef
-pub type BufferSourceOrString
-
-///|
-pub extern "js" fn BufferSourceOrString::to_js_value(
-  self : BufferSourceOrString,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create BufferSourceOrString from BufferSource
-pub extern "js" fn BufferSourceOrString::from_buffer_source(
-  v : BufferSource,
-) -> BufferSourceOrString =
-  #| (v) => v
-
-///|
-/// Create BufferSourceOrString from String
-pub extern "js" fn BufferSourceOrString::from_string(
-  v : String,
-) -> BufferSourceOrString =
-  #| (v) => v
-
-///|
-/// Check if this BufferSourceOrString is BufferSource
-pub extern "js" fn BufferSourceOrString::is_buffer_source(
-  self : BufferSourceOrString,
-) -> Bool =
-  #| (self) => self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer
-
-///|
-/// Check if this BufferSourceOrString is String
-pub extern "js" fn BufferSourceOrString::is_string(
-  self : BufferSourceOrString,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Try to get BufferSourceOrString as BufferSource
-pub extern "js" fn BufferSourceOrString::as_buffer_source(
-  self : BufferSourceOrString,
-) -> BufferSource? =
-  #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get BufferSourceOrString as String
-pub extern "js" fn BufferSourceOrString::as_string(
-  self : BufferSourceOrString,
-) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// StringOrSharedWorkerOptions typedef
-pub type StringOrSharedWorkerOptions
-
-///|
-pub extern "js" fn StringOrSharedWorkerOptions::to_js_value(
-  self : StringOrSharedWorkerOptions,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create StringOrSharedWorkerOptions from String
-pub extern "js" fn StringOrSharedWorkerOptions::from_string(
-  v : String,
-) -> StringOrSharedWorkerOptions =
-  #| (v) => v
-
-///|
-/// Create StringOrSharedWorkerOptions from SharedWorkerOptions
-pub extern "js" fn StringOrSharedWorkerOptions::from_shared_worker_options(
-  v : SharedWorkerOptions,
-) -> StringOrSharedWorkerOptions =
-  #| (v) => v
-
-///|
-/// Check if this StringOrSharedWorkerOptions is String
-pub extern "js" fn StringOrSharedWorkerOptions::is_string(
-  self : StringOrSharedWorkerOptions,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Check if this StringOrSharedWorkerOptions is SharedWorkerOptions
-pub extern "js" fn StringOrSharedWorkerOptions::is_shared_worker_options(
-  self : StringOrSharedWorkerOptions,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Try to get StringOrSharedWorkerOptions as String
-pub extern "js" fn StringOrSharedWorkerOptions::as_string(
-  self : StringOrSharedWorkerOptions,
-) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get StringOrSharedWorkerOptions as SharedWorkerOptions
-pub extern "js" fn StringOrSharedWorkerOptions::as_shared_worker_options(
-  self : StringOrSharedWorkerOptions,
-) -> SharedWorkerOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// SanitizerOrSanitizerConfigOrSanitizerPresets typedef
-pub type SanitizerOrSanitizerConfigOrSanitizerPresets
-
-///|
-pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::to_js_value(
-  self : SanitizerOrSanitizerConfigOrSanitizerPresets,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create SanitizerOrSanitizerConfigOrSanitizerPresets from Sanitizer
-pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::from_sanitizer(
-  v : Sanitizer,
-) -> SanitizerOrSanitizerConfigOrSanitizerPresets =
-  #| (v) => v
-
-///|
-/// Create SanitizerOrSanitizerConfigOrSanitizerPresets from SanitizerConfig
-pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::from_sanitizer_config(
-  v : SanitizerConfig,
-) -> SanitizerOrSanitizerConfigOrSanitizerPresets =
-  #| (v) => v
-
-///|
-/// Create SanitizerOrSanitizerConfigOrSanitizerPresets from SanitizerPresets
-pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::from_sanitizer_presets(
-  v : SanitizerPresets,
-) -> SanitizerOrSanitizerConfigOrSanitizerPresets =
-  #| (v) => v
-
-///|
-/// Check if this SanitizerOrSanitizerConfigOrSanitizerPresets is Sanitizer
-pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::is_sanitizer(
-  self : SanitizerOrSanitizerConfigOrSanitizerPresets,
-) -> Bool =
-  #| (self) => self instanceof Sanitizer
-
-///|
-/// Check if this SanitizerOrSanitizerConfigOrSanitizerPresets is SanitizerConfig
-pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::is_sanitizer_config(
-  self : SanitizerOrSanitizerConfigOrSanitizerPresets,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Check if this SanitizerOrSanitizerConfigOrSanitizerPresets is SanitizerPresets
-pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::is_sanitizer_presets(
-  self : SanitizerOrSanitizerConfigOrSanitizerPresets,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Try to get SanitizerOrSanitizerConfigOrSanitizerPresets as Sanitizer
-pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::as_sanitizer(
-  self : SanitizerOrSanitizerConfigOrSanitizerPresets,
-) -> Sanitizer? =
-  #| (self) => (self instanceof Sanitizer) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get SanitizerOrSanitizerConfigOrSanitizerPresets as SanitizerConfig
-pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::as_sanitizer_config(
-  self : SanitizerOrSanitizerConfigOrSanitizerPresets,
-) -> SanitizerConfig? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get SanitizerOrSanitizerConfigOrSanitizerPresets as SanitizerPresets
-pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::as_sanitizer_presets(
-  self : SanitizerOrSanitizerConfigOrSanitizerPresets,
-) -> SanitizerPresets? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// SanitizerConfigOrSanitizerPresets typedef
-pub type SanitizerConfigOrSanitizerPresets
-
-///|
-pub extern "js" fn SanitizerConfigOrSanitizerPresets::to_js_value(
-  self : SanitizerConfigOrSanitizerPresets,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create SanitizerConfigOrSanitizerPresets from SanitizerConfig
-pub extern "js" fn SanitizerConfigOrSanitizerPresets::from_sanitizer_config(
-  v : SanitizerConfig,
-) -> SanitizerConfigOrSanitizerPresets =
-  #| (v) => v
-
-///|
-/// Create SanitizerConfigOrSanitizerPresets from SanitizerPresets
-pub extern "js" fn SanitizerConfigOrSanitizerPresets::from_sanitizer_presets(
-  v : SanitizerPresets,
-) -> SanitizerConfigOrSanitizerPresets =
-  #| (v) => v
-
-///|
-/// Check if this SanitizerConfigOrSanitizerPresets is SanitizerConfig
-pub extern "js" fn SanitizerConfigOrSanitizerPresets::is_sanitizer_config(
-  self : SanitizerConfigOrSanitizerPresets,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Check if this SanitizerConfigOrSanitizerPresets is SanitizerPresets
-pub extern "js" fn SanitizerConfigOrSanitizerPresets::is_sanitizer_presets(
-  self : SanitizerConfigOrSanitizerPresets,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Try to get SanitizerConfigOrSanitizerPresets as SanitizerConfig
-pub extern "js" fn SanitizerConfigOrSanitizerPresets::as_sanitizer_config(
-  self : SanitizerConfigOrSanitizerPresets,
-) -> SanitizerConfig? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get SanitizerConfigOrSanitizerPresets as SanitizerPresets
-pub extern "js" fn SanitizerConfigOrSanitizerPresets::as_sanitizer_presets(
-  self : SanitizerConfigOrSanitizerPresets,
-) -> SanitizerPresets? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// TaskPriorityOrTaskSignal typedef
-pub type TaskPriorityOrTaskSignal
-
-///|
-pub extern "js" fn TaskPriorityOrTaskSignal::to_js_value(
-  self : TaskPriorityOrTaskSignal,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create TaskPriorityOrTaskSignal from TaskPriority
-pub extern "js" fn TaskPriorityOrTaskSignal::from_task_priority(
-  v : TaskPriority,
-) -> TaskPriorityOrTaskSignal =
-  #| (v) => v
-
-///|
-/// Create TaskPriorityOrTaskSignal from TaskSignal
-pub extern "js" fn TaskPriorityOrTaskSignal::from_task_signal(
-  v : TaskSignal,
-) -> TaskPriorityOrTaskSignal =
-  #| (v) => v
-
-///|
-/// Check if this TaskPriorityOrTaskSignal is TaskPriority
-pub extern "js" fn TaskPriorityOrTaskSignal::is_task_priority(
-  self : TaskPriorityOrTaskSignal,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Check if this TaskPriorityOrTaskSignal is TaskSignal
-pub extern "js" fn TaskPriorityOrTaskSignal::is_task_signal(
-  self : TaskPriorityOrTaskSignal,
-) -> Bool =
-  #| (self) => self instanceof TaskSignal
-
-///|
-/// Try to get TaskPriorityOrTaskSignal as TaskPriority
-pub extern "js" fn TaskPriorityOrTaskSignal::as_task_priority(
-  self : TaskPriorityOrTaskSignal,
-) -> TaskPriority? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get TaskPriorityOrTaskSignal as TaskSignal
-pub extern "js" fn TaskPriorityOrTaskSignal::as_task_signal(
-  self : TaskPriorityOrTaskSignal,
-) -> TaskSignal? =
-  #| (self) => (self instanceof TaskSignal) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// StringOrArrayOfCSSNumericValueOrCSSKeywordValue typedef
-pub type StringOrArrayOfCSSNumericValueOrCSSKeywordValue
-
-///|
-pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::to_js_value(
-  self : StringOrArrayOfCSSNumericValueOrCSSKeywordValue,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create StringOrArrayOfCSSNumericValueOrCSSKeywordValue from String
-pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::from_string(
-  v : String,
-) -> StringOrArrayOfCSSNumericValueOrCSSKeywordValue =
-  #| (v) => v
-
-///|
-/// Create StringOrArrayOfCSSNumericValueOrCSSKeywordValue from Array[JsValue]
-pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::from_array(
-  v : Array[JsValue],
-) -> StringOrArrayOfCSSNumericValueOrCSSKeywordValue =
-  #| (v) => v
-
-///|
-/// Check if this StringOrArrayOfCSSNumericValueOrCSSKeywordValue is String
-pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::is_string(
-  self : StringOrArrayOfCSSNumericValueOrCSSKeywordValue,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Check if this StringOrArrayOfCSSNumericValueOrCSSKeywordValue is Array[JsValue]
-pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::is_array(
-  self : StringOrArrayOfCSSNumericValueOrCSSKeywordValue,
-) -> Bool =
-  #| (self) => Array.isArray(self)
-
-///|
-/// Try to get StringOrArrayOfCSSNumericValueOrCSSKeywordValue as String
-pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::as_string(
-  self : StringOrArrayOfCSSNumericValueOrCSSKeywordValue,
-) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get StringOrArrayOfCSSNumericValueOrCSSKeywordValue as Array[JsValue]
-pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::as_array(
-  self : StringOrArrayOfCSSNumericValueOrCSSKeywordValue,
-) -> Array[JsValue]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// CSSNumericValueOrCSSKeywordValue typedef
-pub type CSSNumericValueOrCSSKeywordValue
-
-///|
-pub extern "js" fn CSSNumericValueOrCSSKeywordValue::to_js_value(
-  self : CSSNumericValueOrCSSKeywordValue,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create CSSNumericValueOrCSSKeywordValue from CSSNumericValue
-pub extern "js" fn CSSNumericValueOrCSSKeywordValue::from_c_s_s_numeric_value(
-  v : CSSNumericValue,
-) -> CSSNumericValueOrCSSKeywordValue =
-  #| (v) => v
-
-///|
-/// Create CSSNumericValueOrCSSKeywordValue from CSSKeywordValue
-pub extern "js" fn CSSNumericValueOrCSSKeywordValue::from_c_s_s_keyword_value(
-  v : CSSKeywordValue,
-) -> CSSNumericValueOrCSSKeywordValue =
-  #| (v) => v
-
-///|
-/// Check if this CSSNumericValueOrCSSKeywordValue is CSSNumericValue
-pub extern "js" fn CSSNumericValueOrCSSKeywordValue::is_c_s_s_numeric_value(
-  self : CSSNumericValueOrCSSKeywordValue,
-) -> Bool =
-  #| (self) => self instanceof CSSNumericValue
-
-///|
-/// Check if this CSSNumericValueOrCSSKeywordValue is CSSKeywordValue
-pub extern "js" fn CSSNumericValueOrCSSKeywordValue::is_c_s_s_keyword_value(
-  self : CSSNumericValueOrCSSKeywordValue,
-) -> Bool =
-  #| (self) => self instanceof CSSKeywordValue
-
-///|
-/// Try to get CSSNumericValueOrCSSKeywordValue as CSSNumericValue
-pub extern "js" fn CSSNumericValueOrCSSKeywordValue::as_c_s_s_numeric_value(
-  self : CSSNumericValueOrCSSKeywordValue,
-) -> CSSNumericValue? =
-  #| (self) => (self instanceof CSSNumericValue) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get CSSNumericValueOrCSSKeywordValue as CSSKeywordValue
-pub extern "js" fn CSSNumericValueOrCSSKeywordValue::as_c_s_s_keyword_value(
-  self : CSSNumericValueOrCSSKeywordValue,
-) -> CSSKeywordValue? =
-  #| (self) => (self instanceof CSSKeywordValue) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData typedef
-pub type CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData
-
-///|
-pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::to_js_value(
-  self : CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData from CollectedClientAdditionalPaymentData
-pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::from_collected_client_additional_payment_data(
-  v : CollectedClientAdditionalPaymentData,
-) -> CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData =
-  #| (v) => v
-
-///|
-/// Create CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData from CollectedClientAdditionalPaymentRegistrationData
-pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::from_collected_client_additional_payment_registration_data(
-  v : CollectedClientAdditionalPaymentRegistrationData,
-) -> CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData =
-  #| (v) => v
-
-///|
-/// Check if this CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData is CollectedClientAdditionalPaymentData
-pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::is_collected_client_additional_payment_data(
-  self : CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Check if this CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData is CollectedClientAdditionalPaymentRegistrationData
-pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::is_collected_client_additional_payment_registration_data(
-  self : CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Try to get CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData as CollectedClientAdditionalPaymentData
-pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::as_collected_client_additional_payment_data(
-  self : CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData,
-) -> CollectedClientAdditionalPaymentData? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData as CollectedClientAdditionalPaymentRegistrationData
-pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::as_collected_client_additional_payment_registration_data(
-  self : CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData,
-) -> CollectedClientAdditionalPaymentRegistrationData? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// RouterRuleOrArrayOfRouterRule typedef
-pub type RouterRuleOrArrayOfRouterRule
-
-///|
-pub extern "js" fn RouterRuleOrArrayOfRouterRule::to_js_value(
-  self : RouterRuleOrArrayOfRouterRule,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create RouterRuleOrArrayOfRouterRule from RouterRule
-pub extern "js" fn RouterRuleOrArrayOfRouterRule::from_router_rule(
-  v : RouterRule,
-) -> RouterRuleOrArrayOfRouterRule =
-  #| (v) => v
-
-///|
-/// Create RouterRuleOrArrayOfRouterRule from Array[RouterRule]
-pub extern "js" fn RouterRuleOrArrayOfRouterRule::from_array_of_router_rule(
-  v : Array[RouterRule],
-) -> RouterRuleOrArrayOfRouterRule =
-  #| (v) => v
-
-///|
-/// Check if this RouterRuleOrArrayOfRouterRule is RouterRule
-pub extern "js" fn RouterRuleOrArrayOfRouterRule::is_router_rule(
-  self : RouterRuleOrArrayOfRouterRule,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Check if this RouterRuleOrArrayOfRouterRule is Array[RouterRule]
-pub extern "js" fn RouterRuleOrArrayOfRouterRule::is_array_of_router_rule(
-  self : RouterRuleOrArrayOfRouterRule,
-) -> Bool =
-  #| (self) => Array.isArray(self)
-
-///|
-/// Try to get RouterRuleOrArrayOfRouterRule as RouterRule
-pub extern "js" fn RouterRuleOrArrayOfRouterRule::as_router_rule(
-  self : RouterRuleOrArrayOfRouterRule,
-) -> RouterRule? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get RouterRuleOrArrayOfRouterRule as Array[RouterRule]
-pub extern "js" fn RouterRuleOrArrayOfRouterRule::as_array_of_router_rule(
-  self : RouterRuleOrArrayOfRouterRule,
-) -> Array[RouterRule]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// ClientOrServiceWorkerOrMessagePort typedef
-pub type ClientOrServiceWorkerOrMessagePort
-
-///|
-pub extern "js" fn ClientOrServiceWorkerOrMessagePort::to_js_value(
-  self : ClientOrServiceWorkerOrMessagePort,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create ClientOrServiceWorkerOrMessagePort from Client
-pub extern "js" fn ClientOrServiceWorkerOrMessagePort::from_client(
-  v : Client,
-) -> ClientOrServiceWorkerOrMessagePort =
-  #| (v) => v
-
-///|
-/// Create ClientOrServiceWorkerOrMessagePort from ServiceWorker
-pub extern "js" fn ClientOrServiceWorkerOrMessagePort::from_service_worker(
-  v : ServiceWorker,
-) -> ClientOrServiceWorkerOrMessagePort =
-  #| (v) => v
-
-///|
-/// Create ClientOrServiceWorkerOrMessagePort from MessagePort
-pub extern "js" fn ClientOrServiceWorkerOrMessagePort::from_message_port(
-  v : MessagePort,
-) -> ClientOrServiceWorkerOrMessagePort =
-  #| (v) => v
-
-///|
-/// Check if this ClientOrServiceWorkerOrMessagePort is Client
-pub extern "js" fn ClientOrServiceWorkerOrMessagePort::is_client(
-  self : ClientOrServiceWorkerOrMessagePort,
-) -> Bool =
-  #| (self) => self instanceof Client
-
-///|
-/// Check if this ClientOrServiceWorkerOrMessagePort is ServiceWorker
-pub extern "js" fn ClientOrServiceWorkerOrMessagePort::is_service_worker(
-  self : ClientOrServiceWorkerOrMessagePort,
-) -> Bool =
-  #| (self) => self instanceof ServiceWorker
-
-///|
-/// Check if this ClientOrServiceWorkerOrMessagePort is MessagePort
-pub extern "js" fn ClientOrServiceWorkerOrMessagePort::is_message_port(
-  self : ClientOrServiceWorkerOrMessagePort,
-) -> Bool =
-  #| (self) => self instanceof MessagePort
-
-///|
-/// Try to get ClientOrServiceWorkerOrMessagePort as Client
-pub extern "js" fn ClientOrServiceWorkerOrMessagePort::as_client(
-  self : ClientOrServiceWorkerOrMessagePort,
-) -> Client? =
-  #| (self) => (self instanceof Client) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get ClientOrServiceWorkerOrMessagePort as ServiceWorker
-pub extern "js" fn ClientOrServiceWorkerOrMessagePort::as_service_worker(
-  self : ClientOrServiceWorkerOrMessagePort,
-) -> ServiceWorker? =
-  #| (self) => (self instanceof ServiceWorker) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get ClientOrServiceWorkerOrMessagePort as MessagePort
-pub extern "js" fn ClientOrServiceWorkerOrMessagePort::as_message_port(
-  self : ClientOrServiceWorkerOrMessagePort,
-) -> MessagePort? =
-  #| (self) => (self instanceof MessagePort) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// BigintOrInt typedef
-pub type BigintOrInt
-
-///|
-pub extern "js" fn BigintOrInt::to_js_value(self : BigintOrInt) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create BigintOrInt from Int
-pub extern "js" fn BigintOrInt::from_int(v : Int) -> BigintOrInt =
-  #| (v) => v
-
-///|
-/// Check if this BigintOrInt is Int
-pub extern "js" fn BigintOrInt::is_int(self : BigintOrInt) -> Bool =
-  #| (self) => typeof self === 'number'
-
-///|
-/// Try to get BigintOrInt as Int
-pub extern "js" fn BigintOrInt::as_int(self : BigintOrInt) -> Int? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// PASignalValueOrBigint typedef
-pub type PASignalValueOrBigint
-
-///|
-pub extern "js" fn PASignalValueOrBigint::to_js_value(
-  self : PASignalValueOrBigint,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create PASignalValueOrBigint from PASignalValue
-pub extern "js" fn PASignalValueOrBigint::from_p_a_signal_value(
-  v : PASignalValue,
-) -> PASignalValueOrBigint =
-  #| (v) => v
-
-///|
-/// Check if this PASignalValueOrBigint is PASignalValue
-pub extern "js" fn PASignalValueOrBigint::is_p_a_signal_value(
-  self : PASignalValueOrBigint,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Try to get PASignalValueOrBigint as PASignalValue
-pub extern "js" fn PASignalValueOrBigint::as_p_a_signal_value(
-  self : PASignalValueOrBigint,
-) -> PASignalValue? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// PASignalValueOrInt typedef
-pub type PASignalValueOrInt
-
-///|
-pub extern "js" fn PASignalValueOrInt::to_js_value(
-  self : PASignalValueOrInt,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create PASignalValueOrInt from PASignalValue
-pub extern "js" fn PASignalValueOrInt::from_p_a_signal_value(
-  v : PASignalValue,
-) -> PASignalValueOrInt =
-  #| (v) => v
-
-///|
-/// Create PASignalValueOrInt from Int
-pub extern "js" fn PASignalValueOrInt::from_int(v : Int) -> PASignalValueOrInt =
-  #| (v) => v
-
-///|
-/// Check if this PASignalValueOrInt is PASignalValue
-pub extern "js" fn PASignalValueOrInt::is_p_a_signal_value(
-  self : PASignalValueOrInt,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Check if this PASignalValueOrInt is Int
-pub extern "js" fn PASignalValueOrInt::is_int(
-  self : PASignalValueOrInt,
-) -> Bool =
-  #| (self) => typeof self === 'number'
-
-///|
-/// Try to get PASignalValueOrInt as PASignalValue
-pub extern "js" fn PASignalValueOrInt::as_p_a_signal_value(
-  self : PASignalValueOrInt,
-) -> PASignalValue? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get PASignalValueOrInt as Int
-pub extern "js" fn PASignalValueOrInt::as_int(
-  self : PASignalValueOrInt,
-) -> Int? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// GenerateBidOutputOrArrayOfGenerateBidOutput typedef
-pub type GenerateBidOutputOrArrayOfGenerateBidOutput
-
-///|
-pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::to_js_value(
-  self : GenerateBidOutputOrArrayOfGenerateBidOutput,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create GenerateBidOutputOrArrayOfGenerateBidOutput from GenerateBidOutput
-pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::from_generate_bid_output(
-  v : GenerateBidOutput,
-) -> GenerateBidOutputOrArrayOfGenerateBidOutput =
-  #| (v) => v
-
-///|
-/// Create GenerateBidOutputOrArrayOfGenerateBidOutput from Array[GenerateBidOutput]
-pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::from_array_of_generate_bid_output(
-  v : Array[GenerateBidOutput],
-) -> GenerateBidOutputOrArrayOfGenerateBidOutput =
-  #| (v) => v
-
-///|
-/// Check if this GenerateBidOutputOrArrayOfGenerateBidOutput is GenerateBidOutput
-pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::is_generate_bid_output(
-  self : GenerateBidOutputOrArrayOfGenerateBidOutput,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Check if this GenerateBidOutputOrArrayOfGenerateBidOutput is Array[GenerateBidOutput]
-pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::is_array_of_generate_bid_output(
-  self : GenerateBidOutputOrArrayOfGenerateBidOutput,
-) -> Bool =
-  #| (self) => Array.isArray(self)
-
-///|
-/// Try to get GenerateBidOutputOrArrayOfGenerateBidOutput as GenerateBidOutput
-pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::as_generate_bid_output(
-  self : GenerateBidOutputOrArrayOfGenerateBidOutput,
-) -> GenerateBidOutput? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get GenerateBidOutputOrArrayOfGenerateBidOutput as Array[GenerateBidOutput]
-pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::as_array_of_generate_bid_output(
-  self : GenerateBidOutputOrArrayOfGenerateBidOutput,
-) -> Array[GenerateBidOutput]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// StringOrAdRender typedef
-pub type StringOrAdRender
-
-///|
-pub extern "js" fn StringOrAdRender::to_js_value(
-  self : StringOrAdRender,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create StringOrAdRender from String
-pub extern "js" fn StringOrAdRender::from_string(
-  v : String,
-) -> StringOrAdRender =
-  #| (v) => v
-
-///|
-/// Create StringOrAdRender from AdRender
-pub extern "js" fn StringOrAdRender::from_ad_render(
-  v : AdRender,
-) -> StringOrAdRender =
-  #| (v) => v
-
-///|
-/// Check if this StringOrAdRender is String
-pub extern "js" fn StringOrAdRender::is_string(self : StringOrAdRender) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Check if this StringOrAdRender is AdRender
-pub extern "js" fn StringOrAdRender::is_ad_render(
-  self : StringOrAdRender,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Try to get StringOrAdRender as String
-pub extern "js" fn StringOrAdRender::as_string(
-  self : StringOrAdRender,
-) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get StringOrAdRender as AdRender
-pub extern "js" fn StringOrAdRender::as_ad_render(
-  self : StringOrAdRender,
-) -> AdRender? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// ArrayOfArrayOfStringOrAnyOrString typedef
-pub type ArrayOfArrayOfStringOrAnyOrString
-
-///|
-pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::to_js_value(
-  self : ArrayOfArrayOfStringOrAnyOrString,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create ArrayOfArrayOfStringOrAnyOrString from Array[Array[String]]
-pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::from_array_of_array_of_string(
-  v : Array[Array[String]],
-) -> ArrayOfArrayOfStringOrAnyOrString =
-  #| (v) => v
-
-///|
-/// Create ArrayOfArrayOfStringOrAnyOrString from String
-pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::from_string(
-  v : String,
-) -> ArrayOfArrayOfStringOrAnyOrString =
-  #| (v) => v
-
-///|
-/// Check if this ArrayOfArrayOfStringOrAnyOrString is Array[Array[String]]
-pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::is_array_of_array_of_string(
-  self : ArrayOfArrayOfStringOrAnyOrString,
-) -> Bool =
-  #| (self) => Array.isArray(self)
-
-///|
-/// Check if this ArrayOfArrayOfStringOrAnyOrString is String
-pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::is_string(
-  self : ArrayOfArrayOfStringOrAnyOrString,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Try to get ArrayOfArrayOfStringOrAnyOrString as Array[Array[String]]
-pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::as_array_of_array_of_string(
-  self : ArrayOfArrayOfStringOrAnyOrString,
-) -> Array[Array[String]]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get ArrayOfArrayOfStringOrAnyOrString as String
-pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::as_string(
-  self : ArrayOfArrayOfStringOrAnyOrString,
-) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// StringOrDOMHighResTimeStamp typedef
-pub type StringOrDOMHighResTimeStamp
-
-///|
-pub extern "js" fn StringOrDOMHighResTimeStamp::to_js_value(
-  self : StringOrDOMHighResTimeStamp,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create StringOrDOMHighResTimeStamp from String
-pub extern "js" fn StringOrDOMHighResTimeStamp::from_string(
-  v : String,
-) -> StringOrDOMHighResTimeStamp =
-  #| (v) => v
-
-///|
-/// Create StringOrDOMHighResTimeStamp from DOMHighResTimeStamp
-pub extern "js" fn StringOrDOMHighResTimeStamp::from_d_o_m_high_res_time_stamp(
-  v : DOMHighResTimeStamp,
-) -> StringOrDOMHighResTimeStamp =
-  #| (v) => v
-
-///|
-/// Check if this StringOrDOMHighResTimeStamp is String
-pub extern "js" fn StringOrDOMHighResTimeStamp::is_string(
-  self : StringOrDOMHighResTimeStamp,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Check if this StringOrDOMHighResTimeStamp is DOMHighResTimeStamp
-pub extern "js" fn StringOrDOMHighResTimeStamp::is_d_o_m_high_res_time_stamp(
-  self : StringOrDOMHighResTimeStamp,
-) -> Bool =
-  #| (self) => typeof self === 'number'
-
-///|
-/// Try to get StringOrDOMHighResTimeStamp as String
-pub extern "js" fn StringOrDOMHighResTimeStamp::as_string(
-  self : StringOrDOMHighResTimeStamp,
-) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get StringOrDOMHighResTimeStamp as DOMHighResTimeStamp
-pub extern "js" fn StringOrDOMHighResTimeStamp::as_d_o_m_high_res_time_stamp(
-  self : StringOrDOMHighResTimeStamp,
-) -> DOMHighResTimeStamp? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// StringOrPerformanceMeasureOptions typedef
-pub type StringOrPerformanceMeasureOptions
-
-///|
-pub extern "js" fn StringOrPerformanceMeasureOptions::to_js_value(
-  self : StringOrPerformanceMeasureOptions,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create StringOrPerformanceMeasureOptions from String
-pub extern "js" fn StringOrPerformanceMeasureOptions::from_string(
-  v : String,
-) -> StringOrPerformanceMeasureOptions =
-  #| (v) => v
-
-///|
-/// Create StringOrPerformanceMeasureOptions from PerformanceMeasureOptions
-pub extern "js" fn StringOrPerformanceMeasureOptions::from_performance_measure_options(
-  v : PerformanceMeasureOptions,
-) -> StringOrPerformanceMeasureOptions =
-  #| (v) => v
-
-///|
-/// Check if this StringOrPerformanceMeasureOptions is String
-pub extern "js" fn StringOrPerformanceMeasureOptions::is_string(
-  self : StringOrPerformanceMeasureOptions,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Check if this StringOrPerformanceMeasureOptions is PerformanceMeasureOptions
-pub extern "js" fn StringOrPerformanceMeasureOptions::is_performance_measure_options(
-  self : StringOrPerformanceMeasureOptions,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Try to get StringOrPerformanceMeasureOptions as String
-pub extern "js" fn StringOrPerformanceMeasureOptions::as_string(
-  self : StringOrPerformanceMeasureOptions,
-) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get StringOrPerformanceMeasureOptions as PerformanceMeasureOptions
-pub extern "js" fn StringOrPerformanceMeasureOptions::as_performance_measure_options(
-  self : StringOrPerformanceMeasureOptions,
-) -> PerformanceMeasureOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// StringOrVoid typedef
-pub type StringOrVoid
-
-///|
-pub extern "js" fn StringOrVoid::to_js_value(self : StringOrVoid) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create StringOrVoid from String
-pub extern "js" fn StringOrVoid::from_string(v : String) -> StringOrVoid =
-  #| (v) => v
-
-///|
-/// Check if this StringOrVoid is String
-pub extern "js" fn StringOrVoid::is_string(self : StringOrVoid) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Try to get StringOrVoid as String
-pub extern "js" fn StringOrVoid::as_string(self : StringOrVoid) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 /// DoubleOrCSSNumericValueOrString typedef
 pub type DoubleOrCSSNumericValueOrString
 
@@ -4103,342 +2557,1122 @@ pub extern "js" fn TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString
   #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// DoubleOrString typedef
-pub type DoubleOrString
+/// StringOrVoid typedef
+pub type StringOrVoid
 
 ///|
-pub extern "js" fn DoubleOrString::to_js_value(
-  self : DoubleOrString,
-) -> JsValue =
+pub extern "js" fn StringOrVoid::to_js_value(self : StringOrVoid) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create DoubleOrString from Double
-pub extern "js" fn DoubleOrString::from_double(v : Double) -> DoubleOrString =
+/// Create StringOrVoid from String
+pub extern "js" fn StringOrVoid::from_string(v : String) -> StringOrVoid =
   #| (v) => v
 
 ///|
-/// Create DoubleOrString from String
-pub extern "js" fn DoubleOrString::from_string(v : String) -> DoubleOrString =
-  #| (v) => v
-
-///|
-/// Check if this DoubleOrString is Double
-pub extern "js" fn DoubleOrString::is_double(self : DoubleOrString) -> Bool =
-  #| (self) => typeof self === 'number'
-
-///|
-/// Check if this DoubleOrString is String
-pub extern "js" fn DoubleOrString::is_string(self : DoubleOrString) -> Bool =
+/// Check if this StringOrVoid is String
+pub extern "js" fn StringOrVoid::is_string(self : StringOrVoid) -> Bool =
   #| (self) => typeof self === 'string'
 
 ///|
-/// Try to get DoubleOrString as Double
-pub extern "js" fn DoubleOrString::as_double(self : DoubleOrString) -> Double? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get DoubleOrString as String
-pub extern "js" fn DoubleOrString::as_string(self : DoubleOrString) -> String? =
+/// Try to get StringOrVoid as String
+pub extern "js" fn StringOrVoid::as_string(self : StringOrVoid) -> String? =
   #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// DoubleOrKeyframeEffectOptions typedef
-pub type DoubleOrKeyframeEffectOptions
+/// MediaKeyStatusOrVoid typedef
+pub type MediaKeyStatusOrVoid
 
 ///|
-pub extern "js" fn DoubleOrKeyframeEffectOptions::to_js_value(
-  self : DoubleOrKeyframeEffectOptions,
+pub extern "js" fn MediaKeyStatusOrVoid::to_js_value(
+  self : MediaKeyStatusOrVoid,
 ) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create DoubleOrKeyframeEffectOptions from Double
-pub extern "js" fn DoubleOrKeyframeEffectOptions::from_double(
-  v : Double,
-) -> DoubleOrKeyframeEffectOptions =
+/// Create MediaKeyStatusOrVoid from MediaKeyStatus
+pub extern "js" fn MediaKeyStatusOrVoid::from_media_key_status(
+  v : MediaKeyStatus,
+) -> MediaKeyStatusOrVoid =
   #| (v) => v
 
 ///|
-/// Create DoubleOrKeyframeEffectOptions from KeyframeEffectOptions
-pub extern "js" fn DoubleOrKeyframeEffectOptions::from_keyframe_effect_options(
-  v : KeyframeEffectOptions,
-) -> DoubleOrKeyframeEffectOptions =
-  #| (v) => v
-
-///|
-/// Check if this DoubleOrKeyframeEffectOptions is Double
-pub extern "js" fn DoubleOrKeyframeEffectOptions::is_double(
-  self : DoubleOrKeyframeEffectOptions,
-) -> Bool =
-  #| (self) => typeof self === 'number'
-
-///|
-/// Check if this DoubleOrKeyframeEffectOptions is KeyframeEffectOptions
-pub extern "js" fn DoubleOrKeyframeEffectOptions::is_keyframe_effect_options(
-  self : DoubleOrKeyframeEffectOptions,
-) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
-
-///|
-/// Try to get DoubleOrKeyframeEffectOptions as Double
-pub extern "js" fn DoubleOrKeyframeEffectOptions::as_double(
-  self : DoubleOrKeyframeEffectOptions,
-) -> Double? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get DoubleOrKeyframeEffectOptions as KeyframeEffectOptions
-pub extern "js" fn DoubleOrKeyframeEffectOptions::as_keyframe_effect_options(
-  self : DoubleOrKeyframeEffectOptions,
-) -> KeyframeEffectOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// NullableDoubleOrArrayOfNullableDouble typedef
-pub type NullableDoubleOrArrayOfNullableDouble
-
-///|
-pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::to_js_value(
-  self : NullableDoubleOrArrayOfNullableDouble,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create NullableDoubleOrArrayOfNullableDouble from Double?
-pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::from_nullable_double(
-  v : Double?,
-) -> NullableDoubleOrArrayOfNullableDouble =
-  #| (v) => v
-
-///|
-/// Create NullableDoubleOrArrayOfNullableDouble from Array[Double?]
-pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::from_array_of_nullable_double(
-  v : Array[Double?],
-) -> NullableDoubleOrArrayOfNullableDouble =
-  #| (v) => v
-
-///|
-/// Check if this NullableDoubleOrArrayOfNullableDouble is Double?
-pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::is_nullable_double(
-  self : NullableDoubleOrArrayOfNullableDouble,
-) -> Bool =
-  #| (self) => self === null || (typeof self === 'number')
-
-///|
-/// Check if this NullableDoubleOrArrayOfNullableDouble is Array[Double?]
-pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::is_array_of_nullable_double(
-  self : NullableDoubleOrArrayOfNullableDouble,
-) -> Bool =
-  #| (self) => Array.isArray(self)
-
-///|
-/// Try to get NullableDoubleOrArrayOfNullableDouble as Double?
-pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::as_nullable_double(
-  self : NullableDoubleOrArrayOfNullableDouble,
-) -> Double?? =
-  #| (self) => (self === null || (typeof self === 'number')) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get NullableDoubleOrArrayOfNullableDouble as Array[Double?]
-pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::as_array_of_nullable_double(
-  self : NullableDoubleOrArrayOfNullableDouble,
-) -> Array[Double?]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto typedef
-pub type CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto
-
-///|
-pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::to_js_value(
-  self : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto from CompositeOperationOrAuto
-pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::from_composite_operation_or_auto(
-  v : CompositeOperationOrAuto,
-) -> CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto =
-  #| (v) => v
-
-///|
-/// Create CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto from Array[CompositeOperationOrAuto]
-pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::from_array_of_composite_operation_or_auto(
-  v : Array[CompositeOperationOrAuto],
-) -> CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto =
-  #| (v) => v
-
-///|
-/// Check if this CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto is CompositeOperationOrAuto
-pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::is_composite_operation_or_auto(
-  self : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto,
+/// Check if this MediaKeyStatusOrVoid is MediaKeyStatus
+pub extern "js" fn MediaKeyStatusOrVoid::is_media_key_status(
+  self : MediaKeyStatusOrVoid,
 ) -> Bool =
   #| (self) => typeof self === 'string'
 
 ///|
-/// Check if this CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto is Array[CompositeOperationOrAuto]
-pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::is_array_of_composite_operation_or_auto(
-  self : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto,
-) -> Bool =
-  #| (self) => Array.isArray(self)
-
-///|
-/// Try to get CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto as CompositeOperationOrAuto
-pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::as_composite_operation_or_auto(
-  self : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto,
-) -> CompositeOperationOrAuto? =
+/// Try to get MediaKeyStatusOrVoid as MediaKeyStatus
+pub extern "js" fn MediaKeyStatusOrVoid::as_media_key_status(
+  self : MediaKeyStatusOrVoid,
+) -> MediaKeyStatus? =
   #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto as Array[CompositeOperationOrAuto]
-pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::as_array_of_composite_operation_or_auto(
-  self : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto,
-) -> Array[CompositeOperationOrAuto]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+/// ElementOrDocument typedef
+pub type ElementOrDocument
 
 ///|
-/// DoubleOrKeyframeAnimationOptions typedef
-pub type DoubleOrKeyframeAnimationOptions
-
-///|
-pub extern "js" fn DoubleOrKeyframeAnimationOptions::to_js_value(
-  self : DoubleOrKeyframeAnimationOptions,
+pub extern "js" fn ElementOrDocument::to_js_value(
+  self : ElementOrDocument,
 ) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create DoubleOrKeyframeAnimationOptions from Double
-pub extern "js" fn DoubleOrKeyframeAnimationOptions::from_double(
+/// Create ElementOrDocument from Element
+pub extern "js" fn ElementOrDocument::from_element(
+  v : Element,
+) -> ElementOrDocument =
+  #| (v) => v
+
+///|
+/// Create ElementOrDocument from Document
+pub extern "js" fn ElementOrDocument::from_document(
+  v : Document,
+) -> ElementOrDocument =
+  #| (v) => v
+
+///|
+/// Check if this ElementOrDocument is Element
+pub extern "js" fn ElementOrDocument::is_element(
+  self : ElementOrDocument,
+) -> Bool =
+  #| (self) => self instanceof Element
+
+///|
+/// Check if this ElementOrDocument is Document
+pub extern "js" fn ElementOrDocument::is_document(
+  self : ElementOrDocument,
+) -> Bool =
+  #| (self) => self instanceof Document
+
+///|
+/// Try to get ElementOrDocument as Element
+pub extern "js" fn ElementOrDocument::as_element(
+  self : ElementOrDocument,
+) -> Element? =
+  #| (self) => (self instanceof Element) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ElementOrDocument as Document
+pub extern "js" fn ElementOrDocument::as_document(
+  self : ElementOrDocument,
+) -> Document? =
+  #| (self) => (self instanceof Document) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// DoubleOrArrayOfDouble typedef
+pub type DoubleOrArrayOfDouble
+
+///|
+pub extern "js" fn DoubleOrArrayOfDouble::to_js_value(
+  self : DoubleOrArrayOfDouble,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create DoubleOrArrayOfDouble from Double
+pub extern "js" fn DoubleOrArrayOfDouble::from_double(
   v : Double,
-) -> DoubleOrKeyframeAnimationOptions =
+) -> DoubleOrArrayOfDouble =
   #| (v) => v
 
 ///|
-/// Create DoubleOrKeyframeAnimationOptions from KeyframeAnimationOptions
-pub extern "js" fn DoubleOrKeyframeAnimationOptions::from_keyframe_animation_options(
-  v : KeyframeAnimationOptions,
-) -> DoubleOrKeyframeAnimationOptions =
+/// Create DoubleOrArrayOfDouble from Array[Double]
+pub extern "js" fn DoubleOrArrayOfDouble::from_array_of_double(
+  v : Array[Double],
+) -> DoubleOrArrayOfDouble =
   #| (v) => v
 
 ///|
-/// Check if this DoubleOrKeyframeAnimationOptions is Double
-pub extern "js" fn DoubleOrKeyframeAnimationOptions::is_double(
-  self : DoubleOrKeyframeAnimationOptions,
+/// Check if this DoubleOrArrayOfDouble is Double
+pub extern "js" fn DoubleOrArrayOfDouble::is_double(
+  self : DoubleOrArrayOfDouble,
 ) -> Bool =
   #| (self) => typeof self === 'number'
 
 ///|
-/// Check if this DoubleOrKeyframeAnimationOptions is KeyframeAnimationOptions
-pub extern "js" fn DoubleOrKeyframeAnimationOptions::is_keyframe_animation_options(
-  self : DoubleOrKeyframeAnimationOptions,
+/// Check if this DoubleOrArrayOfDouble is Array[Double]
+pub extern "js" fn DoubleOrArrayOfDouble::is_array_of_double(
+  self : DoubleOrArrayOfDouble,
 ) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null
+  #| (self) => Array.isArray(self)
 
 ///|
-/// Try to get DoubleOrKeyframeAnimationOptions as Double
-pub extern "js" fn DoubleOrKeyframeAnimationOptions::as_double(
-  self : DoubleOrKeyframeAnimationOptions,
+/// Try to get DoubleOrArrayOfDouble as Double
+pub extern "js" fn DoubleOrArrayOfDouble::as_double(
+  self : DoubleOrArrayOfDouble,
 ) -> Double? =
   #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get DoubleOrKeyframeAnimationOptions as KeyframeAnimationOptions
-pub extern "js" fn DoubleOrKeyframeAnimationOptions::as_keyframe_animation_options(
-  self : DoubleOrKeyframeAnimationOptions,
-) -> KeyframeAnimationOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+/// Try to get DoubleOrArrayOfDouble as Array[Double]
+pub extern "js" fn DoubleOrArrayOfDouble::as_array_of_double(
+  self : DoubleOrArrayOfDouble,
+) -> Array[Double]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// StringOrArrayOfUUID typedef
-pub type StringOrArrayOfUUID
+/// ArrayOfArrayOfStringOrAnyOrString typedef
+pub type ArrayOfArrayOfStringOrAnyOrString
 
 ///|
-pub extern "js" fn StringOrArrayOfUUID::to_js_value(
-  self : StringOrArrayOfUUID,
+pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::to_js_value(
+  self : ArrayOfArrayOfStringOrAnyOrString,
 ) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create StringOrArrayOfUUID from String
-pub extern "js" fn StringOrArrayOfUUID::from_string(
+/// Create ArrayOfArrayOfStringOrAnyOrString from Array[Array[String]]
+pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::from_array_of_array_of_string(
+  v : Array[Array[String]],
+) -> ArrayOfArrayOfStringOrAnyOrString =
+  #| (v) => v
+
+///|
+/// Create ArrayOfArrayOfStringOrAnyOrString from String
+pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::from_string(
   v : String,
-) -> StringOrArrayOfUUID =
+) -> ArrayOfArrayOfStringOrAnyOrString =
   #| (v) => v
 
 ///|
-/// Create StringOrArrayOfUUID from Array[UUID]
-pub extern "js" fn StringOrArrayOfUUID::from_array_of_u_u_i_d(
-  v : Array[UUID],
-) -> StringOrArrayOfUUID =
-  #| (v) => v
-
-///|
-/// Check if this StringOrArrayOfUUID is String
-pub extern "js" fn StringOrArrayOfUUID::is_string(
-  self : StringOrArrayOfUUID,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Check if this StringOrArrayOfUUID is Array[UUID]
-pub extern "js" fn StringOrArrayOfUUID::is_array_of_u_u_i_d(
-  self : StringOrArrayOfUUID,
+/// Check if this ArrayOfArrayOfStringOrAnyOrString is Array[Array[String]]
+pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::is_array_of_array_of_string(
+  self : ArrayOfArrayOfStringOrAnyOrString,
 ) -> Bool =
   #| (self) => Array.isArray(self)
 
 ///|
-/// Try to get StringOrArrayOfUUID as String
-pub extern "js" fn StringOrArrayOfUUID::as_string(
-  self : StringOrArrayOfUUID,
+/// Check if this ArrayOfArrayOfStringOrAnyOrString is String
+pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::is_string(
+  self : ArrayOfArrayOfStringOrAnyOrString,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get ArrayOfArrayOfStringOrAnyOrString as Array[Array[String]]
+pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::as_array_of_array_of_string(
+  self : ArrayOfArrayOfStringOrAnyOrString,
+) -> Array[Array[String]]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ArrayOfArrayOfStringOrAnyOrString as String
+pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::as_string(
+  self : ArrayOfArrayOfStringOrAnyOrString,
 ) -> String? =
   #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get StringOrArrayOfUUID as Array[UUID]
-pub extern "js" fn StringOrArrayOfUUID::as_array_of_u_u_i_d(
-  self : StringOrArrayOfUUID,
-) -> Array[UUID]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+/// StringOrArrayOfDouble typedef
+pub type StringOrArrayOfDouble
 
 ///|
-/// StringOrInt typedef
-pub type StringOrInt
-
-///|
-pub extern "js" fn StringOrInt::to_js_value(self : StringOrInt) -> JsValue =
+pub extern "js" fn StringOrArrayOfDouble::to_js_value(
+  self : StringOrArrayOfDouble,
+) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create StringOrInt from String
-pub extern "js" fn StringOrInt::from_string(v : String) -> StringOrInt =
+/// Create StringOrArrayOfDouble from String
+pub extern "js" fn StringOrArrayOfDouble::from_string(
+  v : String,
+) -> StringOrArrayOfDouble =
   #| (v) => v
 
 ///|
-/// Create StringOrInt from Int
-pub extern "js" fn StringOrInt::from_int(v : Int) -> StringOrInt =
+/// Create StringOrArrayOfDouble from Array[Double]
+pub extern "js" fn StringOrArrayOfDouble::from_array_of_double(
+  v : Array[Double],
+) -> StringOrArrayOfDouble =
   #| (v) => v
 
 ///|
-/// Check if this StringOrInt is String
-pub extern "js" fn StringOrInt::is_string(self : StringOrInt) -> Bool =
+/// Check if this StringOrArrayOfDouble is String
+pub extern "js" fn StringOrArrayOfDouble::is_string(
+  self : StringOrArrayOfDouble,
+) -> Bool =
   #| (self) => typeof self === 'string'
 
 ///|
-/// Check if this StringOrInt is Int
-pub extern "js" fn StringOrInt::is_int(self : StringOrInt) -> Bool =
-  #| (self) => typeof self === 'number'
+/// Check if this StringOrArrayOfDouble is Array[Double]
+pub extern "js" fn StringOrArrayOfDouble::is_array_of_double(
+  self : StringOrArrayOfDouble,
+) -> Bool =
+  #| (self) => Array.isArray(self)
 
 ///|
-/// Try to get StringOrInt as String
-pub extern "js" fn StringOrInt::as_string(self : StringOrInt) -> String? =
+/// Try to get StringOrArrayOfDouble as String
+pub extern "js" fn StringOrArrayOfDouble::as_string(
+  self : StringOrArrayOfDouble,
+) -> String? =
   #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get StringOrInt as Int
-pub extern "js" fn StringOrInt::as_int(self : StringOrInt) -> Int? =
+/// Try to get StringOrArrayOfDouble as Array[Double]
+pub extern "js" fn StringOrArrayOfDouble::as_array_of_double(
+  self : StringOrArrayOfDouble,
+) -> Array[Double]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// DocumentOrXMLHttpRequestBodyInit typedef
+pub type DocumentOrXMLHttpRequestBodyInit
+
+///|
+pub extern "js" fn DocumentOrXMLHttpRequestBodyInit::to_js_value(
+  self : DocumentOrXMLHttpRequestBodyInit,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create DocumentOrXMLHttpRequestBodyInit from Document
+pub extern "js" fn DocumentOrXMLHttpRequestBodyInit::from_document(
+  v : Document,
+) -> DocumentOrXMLHttpRequestBodyInit =
+  #| (v) => v
+
+///|
+/// Create DocumentOrXMLHttpRequestBodyInit from XMLHttpRequestBodyInit
+pub extern "js" fn DocumentOrXMLHttpRequestBodyInit::from_x_m_l_http_request_body_init(
+  v : XMLHttpRequestBodyInit,
+) -> DocumentOrXMLHttpRequestBodyInit =
+  #| (v) => v
+
+///|
+/// Check if this DocumentOrXMLHttpRequestBodyInit is Document
+pub extern "js" fn DocumentOrXMLHttpRequestBodyInit::is_document(
+  self : DocumentOrXMLHttpRequestBodyInit,
+) -> Bool =
+  #| (self) => self instanceof Document
+
+///|
+/// Check if this DocumentOrXMLHttpRequestBodyInit is XMLHttpRequestBodyInit
+pub extern "js" fn DocumentOrXMLHttpRequestBodyInit::is_x_m_l_http_request_body_init(
+  self : DocumentOrXMLHttpRequestBodyInit,
+) -> Bool =
+  #| (self) => self instanceof Blob || self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer || self instanceof FormData || self instanceof URLSearchParams || typeof self === 'string'
+
+///|
+/// Try to get DocumentOrXMLHttpRequestBodyInit as Document
+pub extern "js" fn DocumentOrXMLHttpRequestBodyInit::as_document(
+  self : DocumentOrXMLHttpRequestBodyInit,
+) -> Document? =
+  #| (self) => (self instanceof Document) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get DocumentOrXMLHttpRequestBodyInit as XMLHttpRequestBodyInit
+pub extern "js" fn DocumentOrXMLHttpRequestBodyInit::as_x_m_l_http_request_body_init(
+  self : DocumentOrXMLHttpRequestBodyInit,
+) -> XMLHttpRequestBodyInit? =
+  #| (self) => (self instanceof Blob || self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer || self instanceof FormData || self instanceof URLSearchParams || typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// EventOrVoid typedef
+pub type EventOrVoid
+
+///|
+pub extern "js" fn EventOrVoid::to_js_value(self : EventOrVoid) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create EventOrVoid from Event
+pub extern "js" fn EventOrVoid::from_event(v : Event) -> EventOrVoid =
+  #| (v) => v
+
+///|
+/// Check if this EventOrVoid is Event
+pub extern "js" fn EventOrVoid::is_event(self : EventOrVoid) -> Bool =
+  #| (self) => self instanceof Event
+
+///|
+/// Try to get EventOrVoid as Event
+pub extern "js" fn EventOrVoid::as_event(self : EventOrVoid) -> Event? =
+  #| (self) => (self instanceof Event) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// AddEventListenerOptionsOrBool typedef
+pub type AddEventListenerOptionsOrBool
+
+///|
+pub extern "js" fn AddEventListenerOptionsOrBool::to_js_value(
+  self : AddEventListenerOptionsOrBool,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create AddEventListenerOptionsOrBool from AddEventListenerOptions
+pub extern "js" fn AddEventListenerOptionsOrBool::from_add_event_listener_options(
+  v : AddEventListenerOptions,
+) -> AddEventListenerOptionsOrBool =
+  #| (v) => v
+
+///|
+/// Create AddEventListenerOptionsOrBool from Bool
+pub extern "js" fn AddEventListenerOptionsOrBool::from_bool(
+  v : Bool,
+) -> AddEventListenerOptionsOrBool =
+  #| (v) => v
+
+///|
+/// Check if this AddEventListenerOptionsOrBool is AddEventListenerOptions
+pub extern "js" fn AddEventListenerOptionsOrBool::is_add_event_listener_options(
+  self : AddEventListenerOptionsOrBool,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Check if this AddEventListenerOptionsOrBool is Bool
+pub extern "js" fn AddEventListenerOptionsOrBool::is_bool(
+  self : AddEventListenerOptionsOrBool,
+) -> Bool =
+  #| (self) => typeof self === 'boolean'
+
+///|
+/// Try to get AddEventListenerOptionsOrBool as AddEventListenerOptions
+pub extern "js" fn AddEventListenerOptionsOrBool::as_add_event_listener_options(
+  self : AddEventListenerOptionsOrBool,
+) -> AddEventListenerOptions? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get AddEventListenerOptionsOrBool as Bool
+pub extern "js" fn AddEventListenerOptionsOrBool::as_bool(
+  self : AddEventListenerOptionsOrBool,
+) -> Bool? =
+  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// EventListenerOptionsOrBool typedef
+pub type EventListenerOptionsOrBool
+
+///|
+pub extern "js" fn EventListenerOptionsOrBool::to_js_value(
+  self : EventListenerOptionsOrBool,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create EventListenerOptionsOrBool from EventListenerOptions
+pub extern "js" fn EventListenerOptionsOrBool::from_event_listener_options(
+  v : EventListenerOptions,
+) -> EventListenerOptionsOrBool =
+  #| (v) => v
+
+///|
+/// Create EventListenerOptionsOrBool from Bool
+pub extern "js" fn EventListenerOptionsOrBool::from_bool(
+  v : Bool,
+) -> EventListenerOptionsOrBool =
+  #| (v) => v
+
+///|
+/// Check if this EventListenerOptionsOrBool is EventListenerOptions
+pub extern "js" fn EventListenerOptionsOrBool::is_event_listener_options(
+  self : EventListenerOptionsOrBool,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Check if this EventListenerOptionsOrBool is Bool
+pub extern "js" fn EventListenerOptionsOrBool::is_bool(
+  self : EventListenerOptionsOrBool,
+) -> Bool =
+  #| (self) => typeof self === 'boolean'
+
+///|
+/// Try to get EventListenerOptionsOrBool as EventListenerOptions
+pub extern "js" fn EventListenerOptionsOrBool::as_event_listener_options(
+  self : EventListenerOptionsOrBool,
+) -> EventListenerOptions? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get EventListenerOptionsOrBool as Bool
+pub extern "js" fn EventListenerOptionsOrBool::as_bool(
+  self : EventListenerOptionsOrBool,
+) -> Bool? =
+  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// NodeOrString typedef
+pub type NodeOrString
+
+///|
+pub extern "js" fn NodeOrString::to_js_value(self : NodeOrString) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create NodeOrString from Node
+pub extern "js" fn NodeOrString::from_node(v : Node) -> NodeOrString =
+  #| (v) => v
+
+///|
+/// Create NodeOrString from String
+pub extern "js" fn NodeOrString::from_string(v : String) -> NodeOrString =
+  #| (v) => v
+
+///|
+/// Check if this NodeOrString is Node
+pub extern "js" fn NodeOrString::is_node(self : NodeOrString) -> Bool =
+  #| (self) => self instanceof Node
+
+///|
+/// Check if this NodeOrString is String
+pub extern "js" fn NodeOrString::is_string(self : NodeOrString) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get NodeOrString as Node
+pub extern "js" fn NodeOrString::as_node(self : NodeOrString) -> Node? =
+  #| (self) => (self instanceof Node) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get NodeOrString as String
+pub extern "js" fn NodeOrString::as_string(self : NodeOrString) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// StringOrElementCreationOptions typedef
+pub type StringOrElementCreationOptions
+
+///|
+pub extern "js" fn StringOrElementCreationOptions::to_js_value(
+  self : StringOrElementCreationOptions,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create StringOrElementCreationOptions from String
+pub extern "js" fn StringOrElementCreationOptions::from_string(
+  v : String,
+) -> StringOrElementCreationOptions =
+  #| (v) => v
+
+///|
+/// Create StringOrElementCreationOptions from ElementCreationOptions
+pub extern "js" fn StringOrElementCreationOptions::from_element_creation_options(
+  v : ElementCreationOptions,
+) -> StringOrElementCreationOptions =
+  #| (v) => v
+
+///|
+/// Check if this StringOrElementCreationOptions is String
+pub extern "js" fn StringOrElementCreationOptions::is_string(
+  self : StringOrElementCreationOptions,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this StringOrElementCreationOptions is ElementCreationOptions
+pub extern "js" fn StringOrElementCreationOptions::is_element_creation_options(
+  self : StringOrElementCreationOptions,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get StringOrElementCreationOptions as String
+pub extern "js" fn StringOrElementCreationOptions::as_string(
+  self : StringOrElementCreationOptions,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get StringOrElementCreationOptions as ElementCreationOptions
+pub extern "js" fn StringOrElementCreationOptions::as_element_creation_options(
+  self : StringOrElementCreationOptions,
+) -> ElementCreationOptions? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// BoolOrImportNodeOptions typedef
+pub type BoolOrImportNodeOptions
+
+///|
+pub extern "js" fn BoolOrImportNodeOptions::to_js_value(
+  self : BoolOrImportNodeOptions,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create BoolOrImportNodeOptions from Bool
+pub extern "js" fn BoolOrImportNodeOptions::from_bool(
+  v : Bool,
+) -> BoolOrImportNodeOptions =
+  #| (v) => v
+
+///|
+/// Create BoolOrImportNodeOptions from ImportNodeOptions
+pub extern "js" fn BoolOrImportNodeOptions::from_import_node_options(
+  v : ImportNodeOptions,
+) -> BoolOrImportNodeOptions =
+  #| (v) => v
+
+///|
+/// Check if this BoolOrImportNodeOptions is Bool
+pub extern "js" fn BoolOrImportNodeOptions::is_bool(
+  self : BoolOrImportNodeOptions,
+) -> Bool =
+  #| (self) => typeof self === 'boolean'
+
+///|
+/// Check if this BoolOrImportNodeOptions is ImportNodeOptions
+pub extern "js" fn BoolOrImportNodeOptions::is_import_node_options(
+  self : BoolOrImportNodeOptions,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get BoolOrImportNodeOptions as Bool
+pub extern "js" fn BoolOrImportNodeOptions::as_bool(
+  self : BoolOrImportNodeOptions,
+) -> Bool? =
+  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get BoolOrImportNodeOptions as ImportNodeOptions
+pub extern "js" fn BoolOrImportNodeOptions::as_import_node_options(
+  self : BoolOrImportNodeOptions,
+) -> ImportNodeOptions? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// TrustedTypeOrString typedef
+pub type TrustedTypeOrString
+
+///|
+pub extern "js" fn TrustedTypeOrString::to_js_value(
+  self : TrustedTypeOrString,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create TrustedTypeOrString from TrustedType
+pub extern "js" fn TrustedTypeOrString::from_trusted_type(
+  v : TrustedType,
+) -> TrustedTypeOrString =
+  #| (v) => v
+
+///|
+/// Create TrustedTypeOrString from String
+pub extern "js" fn TrustedTypeOrString::from_string(
+  v : String,
+) -> TrustedTypeOrString =
+  #| (v) => v
+
+///|
+/// Check if this TrustedTypeOrString is TrustedType
+pub extern "js" fn TrustedTypeOrString::is_trusted_type(
+  self : TrustedTypeOrString,
+) -> Bool =
+  #| (self) => self instanceof TrustedHTML || self instanceof TrustedScript || self instanceof TrustedScriptURL
+
+///|
+/// Check if this TrustedTypeOrString is String
+pub extern "js" fn TrustedTypeOrString::is_string(
+  self : TrustedTypeOrString,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get TrustedTypeOrString as TrustedType
+pub extern "js" fn TrustedTypeOrString::as_trusted_type(
+  self : TrustedTypeOrString,
+) -> TrustedType? =
+  #| (self) => (self instanceof TrustedHTML || self instanceof TrustedScript || self instanceof TrustedScriptURL) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get TrustedTypeOrString as String
+pub extern "js" fn TrustedTypeOrString::as_string(
+  self : TrustedTypeOrString,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// IntOrArrayOfInt typedef
+pub type IntOrArrayOfInt
+
+///|
+pub extern "js" fn IntOrArrayOfInt::to_js_value(
+  self : IntOrArrayOfInt,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create IntOrArrayOfInt from Int
+pub extern "js" fn IntOrArrayOfInt::from_int(v : Int) -> IntOrArrayOfInt =
+  #| (v) => v
+
+///|
+/// Create IntOrArrayOfInt from Array[Int]
+pub extern "js" fn IntOrArrayOfInt::from_array_of_int(
+  v : Array[Int],
+) -> IntOrArrayOfInt =
+  #| (v) => v
+
+///|
+/// Check if this IntOrArrayOfInt is Int
+pub extern "js" fn IntOrArrayOfInt::is_int(self : IntOrArrayOfInt) -> Bool =
+  #| (self) => typeof self === 'number'
+
+///|
+/// Check if this IntOrArrayOfInt is Array[Int]
+pub extern "js" fn IntOrArrayOfInt::is_array_of_int(
+  self : IntOrArrayOfInt,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Try to get IntOrArrayOfInt as Int
+pub extern "js" fn IntOrArrayOfInt::as_int(self : IntOrArrayOfInt) -> Int? =
   #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get IntOrArrayOfInt as Array[Int]
+pub extern "js" fn IntOrArrayOfInt::as_array_of_int(
+  self : IntOrArrayOfInt,
+) -> Array[Int]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// IDBObjectStoreOrIDBIndexOrIDBCursor typedef
+pub type IDBObjectStoreOrIDBIndexOrIDBCursor
+
+///|
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::to_js_value(
+  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create IDBObjectStoreOrIDBIndexOrIDBCursor from IDBObjectStore
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::from_i_d_b_object_store(
+  v : IDBObjectStore,
+) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
+  #| (v) => v
+
+///|
+/// Create IDBObjectStoreOrIDBIndexOrIDBCursor from IDBIndex
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::from_i_d_b_index(
+  v : IDBIndex,
+) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
+  #| (v) => v
+
+///|
+/// Create IDBObjectStoreOrIDBIndexOrIDBCursor from IDBCursor
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::from_i_d_b_cursor(
+  v : IDBCursor,
+) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
+  #| (v) => v
+
+///|
+/// Check if this IDBObjectStoreOrIDBIndexOrIDBCursor is IDBObjectStore
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::is_i_d_b_object_store(
+  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
+) -> Bool =
+  #| (self) => self instanceof IDBObjectStore
+
+///|
+/// Check if this IDBObjectStoreOrIDBIndexOrIDBCursor is IDBIndex
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::is_i_d_b_index(
+  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
+) -> Bool =
+  #| (self) => self instanceof IDBIndex
+
+///|
+/// Check if this IDBObjectStoreOrIDBIndexOrIDBCursor is IDBCursor
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::is_i_d_b_cursor(
+  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
+) -> Bool =
+  #| (self) => self instanceof IDBCursor
+
+///|
+/// Try to get IDBObjectStoreOrIDBIndexOrIDBCursor as IDBObjectStore
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::as_i_d_b_object_store(
+  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
+) -> IDBObjectStore? =
+  #| (self) => (self instanceof IDBObjectStore) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get IDBObjectStoreOrIDBIndexOrIDBCursor as IDBIndex
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::as_i_d_b_index(
+  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
+) -> IDBIndex? =
+  #| (self) => (self instanceof IDBIndex) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get IDBObjectStoreOrIDBIndexOrIDBCursor as IDBCursor
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::as_i_d_b_cursor(
+  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
+) -> IDBCursor? =
+  #| (self) => (self instanceof IDBCursor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// IDBObjectStoreOrIDBIndex typedef
+pub type IDBObjectStoreOrIDBIndex
+
+///|
+pub extern "js" fn IDBObjectStoreOrIDBIndex::to_js_value(
+  self : IDBObjectStoreOrIDBIndex,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create IDBObjectStoreOrIDBIndex from IDBObjectStore
+pub extern "js" fn IDBObjectStoreOrIDBIndex::from_i_d_b_object_store(
+  v : IDBObjectStore,
+) -> IDBObjectStoreOrIDBIndex =
+  #| (v) => v
+
+///|
+/// Create IDBObjectStoreOrIDBIndex from IDBIndex
+pub extern "js" fn IDBObjectStoreOrIDBIndex::from_i_d_b_index(
+  v : IDBIndex,
+) -> IDBObjectStoreOrIDBIndex =
+  #| (v) => v
+
+///|
+/// Check if this IDBObjectStoreOrIDBIndex is IDBObjectStore
+pub extern "js" fn IDBObjectStoreOrIDBIndex::is_i_d_b_object_store(
+  self : IDBObjectStoreOrIDBIndex,
+) -> Bool =
+  #| (self) => self instanceof IDBObjectStore
+
+///|
+/// Check if this IDBObjectStoreOrIDBIndex is IDBIndex
+pub extern "js" fn IDBObjectStoreOrIDBIndex::is_i_d_b_index(
+  self : IDBObjectStoreOrIDBIndex,
+) -> Bool =
+  #| (self) => self instanceof IDBIndex
+
+///|
+/// Try to get IDBObjectStoreOrIDBIndex as IDBObjectStore
+pub extern "js" fn IDBObjectStoreOrIDBIndex::as_i_d_b_object_store(
+  self : IDBObjectStoreOrIDBIndex,
+) -> IDBObjectStore? =
+  #| (self) => (self instanceof IDBObjectStore) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get IDBObjectStoreOrIDBIndex as IDBIndex
+pub extern "js" fn IDBObjectStoreOrIDBIndex::as_i_d_b_index(
+  self : IDBObjectStoreOrIDBIndex,
+) -> IDBIndex? =
+  #| (self) => (self instanceof IDBIndex) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// ElementOrProcessingInstruction typedef
+pub type ElementOrProcessingInstruction
+
+///|
+pub extern "js" fn ElementOrProcessingInstruction::to_js_value(
+  self : ElementOrProcessingInstruction,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create ElementOrProcessingInstruction from Element
+pub extern "js" fn ElementOrProcessingInstruction::from_element(
+  v : Element,
+) -> ElementOrProcessingInstruction =
+  #| (v) => v
+
+///|
+/// Create ElementOrProcessingInstruction from ProcessingInstruction
+pub extern "js" fn ElementOrProcessingInstruction::from_processing_instruction(
+  v : ProcessingInstruction,
+) -> ElementOrProcessingInstruction =
+  #| (v) => v
+
+///|
+/// Check if this ElementOrProcessingInstruction is Element
+pub extern "js" fn ElementOrProcessingInstruction::is_element(
+  self : ElementOrProcessingInstruction,
+) -> Bool =
+  #| (self) => self instanceof Element
+
+///|
+/// Check if this ElementOrProcessingInstruction is ProcessingInstruction
+pub extern "js" fn ElementOrProcessingInstruction::is_processing_instruction(
+  self : ElementOrProcessingInstruction,
+) -> Bool =
+  #| (self) => self instanceof ProcessingInstruction
+
+///|
+/// Try to get ElementOrProcessingInstruction as Element
+pub extern "js" fn ElementOrProcessingInstruction::as_element(
+  self : ElementOrProcessingInstruction,
+) -> Element? =
+  #| (self) => (self instanceof Element) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ElementOrProcessingInstruction as ProcessingInstruction
+pub extern "js" fn ElementOrProcessingInstruction::as_processing_instruction(
+  self : ElementOrProcessingInstruction,
+) -> ProcessingInstruction? =
+  #| (self) => (self instanceof ProcessingInstruction) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// MediaListOrString typedef
+pub type MediaListOrString
+
+///|
+pub extern "js" fn MediaListOrString::to_js_value(
+  self : MediaListOrString,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create MediaListOrString from MediaList
+pub extern "js" fn MediaListOrString::from_media_list(
+  v : MediaList,
+) -> MediaListOrString =
+  #| (v) => v
+
+///|
+/// Create MediaListOrString from String
+pub extern "js" fn MediaListOrString::from_string(
+  v : String,
+) -> MediaListOrString =
+  #| (v) => v
+
+///|
+/// Check if this MediaListOrString is MediaList
+pub extern "js" fn MediaListOrString::is_media_list(
+  self : MediaListOrString,
+) -> Bool =
+  #| (self) => self instanceof MediaList
+
+///|
+/// Check if this MediaListOrString is String
+pub extern "js" fn MediaListOrString::is_string(
+  self : MediaListOrString,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get MediaListOrString as MediaList
+pub extern "js" fn MediaListOrString::as_media_list(
+  self : MediaListOrString,
+) -> MediaList? =
+  #| (self) => (self instanceof MediaList) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get MediaListOrString as String
+pub extern "js" fn MediaListOrString::as_string(
+  self : MediaListOrString,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// CryptoKeyOrCryptoKeyPair typedef
+pub type CryptoKeyOrCryptoKeyPair
+
+///|
+pub extern "js" fn CryptoKeyOrCryptoKeyPair::to_js_value(
+  self : CryptoKeyOrCryptoKeyPair,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create CryptoKeyOrCryptoKeyPair from CryptoKey
+pub extern "js" fn CryptoKeyOrCryptoKeyPair::from_crypto_key(
+  v : CryptoKey,
+) -> CryptoKeyOrCryptoKeyPair =
+  #| (v) => v
+
+///|
+/// Create CryptoKeyOrCryptoKeyPair from CryptoKeyPair
+pub extern "js" fn CryptoKeyOrCryptoKeyPair::from_crypto_key_pair(
+  v : CryptoKeyPair,
+) -> CryptoKeyOrCryptoKeyPair =
+  #| (v) => v
+
+///|
+/// Check if this CryptoKeyOrCryptoKeyPair is CryptoKey
+pub extern "js" fn CryptoKeyOrCryptoKeyPair::is_crypto_key(
+  self : CryptoKeyOrCryptoKeyPair,
+) -> Bool =
+  #| (self) => self instanceof CryptoKey
+
+///|
+/// Check if this CryptoKeyOrCryptoKeyPair is CryptoKeyPair
+pub extern "js" fn CryptoKeyOrCryptoKeyPair::is_crypto_key_pair(
+  self : CryptoKeyOrCryptoKeyPair,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get CryptoKeyOrCryptoKeyPair as CryptoKey
+pub extern "js" fn CryptoKeyOrCryptoKeyPair::as_crypto_key(
+  self : CryptoKeyOrCryptoKeyPair,
+) -> CryptoKey? =
+  #| (self) => (self instanceof CryptoKey) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CryptoKeyOrCryptoKeyPair as CryptoKeyPair
+pub extern "js" fn CryptoKeyOrCryptoKeyPair::as_crypto_key_pair(
+  self : CryptoKeyOrCryptoKeyPair,
+) -> CryptoKeyPair? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// BufferSourceOrJsonWebKey typedef
+pub type BufferSourceOrJsonWebKey
+
+///|
+pub extern "js" fn BufferSourceOrJsonWebKey::to_js_value(
+  self : BufferSourceOrJsonWebKey,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create BufferSourceOrJsonWebKey from BufferSource
+pub extern "js" fn BufferSourceOrJsonWebKey::from_buffer_source(
+  v : BufferSource,
+) -> BufferSourceOrJsonWebKey =
+  #| (v) => v
+
+///|
+/// Create BufferSourceOrJsonWebKey from JsonWebKey
+pub extern "js" fn BufferSourceOrJsonWebKey::from_json_web_key(
+  v : JsonWebKey,
+) -> BufferSourceOrJsonWebKey =
+  #| (v) => v
+
+///|
+/// Check if this BufferSourceOrJsonWebKey is BufferSource
+pub extern "js" fn BufferSourceOrJsonWebKey::is_buffer_source(
+  self : BufferSourceOrJsonWebKey,
+) -> Bool =
+  #| (self) => self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer
+
+///|
+/// Check if this BufferSourceOrJsonWebKey is JsonWebKey
+pub extern "js" fn BufferSourceOrJsonWebKey::is_json_web_key(
+  self : BufferSourceOrJsonWebKey,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get BufferSourceOrJsonWebKey as BufferSource
+pub extern "js" fn BufferSourceOrJsonWebKey::as_buffer_source(
+  self : BufferSourceOrJsonWebKey,
+) -> BufferSource? =
+  #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get BufferSourceOrJsonWebKey as JsonWebKey
+pub extern "js" fn BufferSourceOrJsonWebKey::as_json_web_key(
+  self : BufferSourceOrJsonWebKey,
+) -> JsonWebKey? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// ArrayBufferOrJsonWebKey typedef
+pub type ArrayBufferOrJsonWebKey
+
+///|
+pub extern "js" fn ArrayBufferOrJsonWebKey::to_js_value(
+  self : ArrayBufferOrJsonWebKey,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create ArrayBufferOrJsonWebKey from ArrayBuffer
+pub extern "js" fn ArrayBufferOrJsonWebKey::from_array_buffer(
+  v : ArrayBuffer,
+) -> ArrayBufferOrJsonWebKey =
+  #| (v) => v
+
+///|
+/// Create ArrayBufferOrJsonWebKey from JsonWebKey
+pub extern "js" fn ArrayBufferOrJsonWebKey::from_json_web_key(
+  v : JsonWebKey,
+) -> ArrayBufferOrJsonWebKey =
+  #| (v) => v
+
+///|
+/// Check if this ArrayBufferOrJsonWebKey is ArrayBuffer
+pub extern "js" fn ArrayBufferOrJsonWebKey::is_array_buffer(
+  self : ArrayBufferOrJsonWebKey,
+) -> Bool =
+  #| (self) => self instanceof ArrayBuffer
+
+///|
+/// Check if this ArrayBufferOrJsonWebKey is JsonWebKey
+pub extern "js" fn ArrayBufferOrJsonWebKey::is_json_web_key(
+  self : ArrayBufferOrJsonWebKey,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get ArrayBufferOrJsonWebKey as ArrayBuffer
+pub extern "js" fn ArrayBufferOrJsonWebKey::as_array_buffer(
+  self : ArrayBufferOrJsonWebKey,
+) -> ArrayBuffer? =
+  #| (self) => (self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ArrayBufferOrJsonWebKey as JsonWebKey
+pub extern "js" fn ArrayBufferOrJsonWebKey::as_json_web_key(
+  self : ArrayBufferOrJsonWebKey,
+) -> JsonWebKey? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// CSSOMStringOrBufferSource typedef
+pub type CSSOMStringOrBufferSource
+
+///|
+pub extern "js" fn CSSOMStringOrBufferSource::to_js_value(
+  self : CSSOMStringOrBufferSource,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create CSSOMStringOrBufferSource from CSSOMString
+pub extern "js" fn CSSOMStringOrBufferSource::from_c_s_s_o_m_string(
+  v : CSSOMString,
+) -> CSSOMStringOrBufferSource =
+  #| (v) => v
+
+///|
+/// Create CSSOMStringOrBufferSource from BufferSource
+pub extern "js" fn CSSOMStringOrBufferSource::from_buffer_source(
+  v : BufferSource,
+) -> CSSOMStringOrBufferSource =
+  #| (v) => v
+
+///|
+/// Check if this CSSOMStringOrBufferSource is CSSOMString
+pub extern "js" fn CSSOMStringOrBufferSource::is_c_s_s_o_m_string(
+  self : CSSOMStringOrBufferSource,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this CSSOMStringOrBufferSource is BufferSource
+pub extern "js" fn CSSOMStringOrBufferSource::is_buffer_source(
+  self : CSSOMStringOrBufferSource,
+) -> Bool =
+  #| (self) => self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer
+
+///|
+/// Try to get CSSOMStringOrBufferSource as CSSOMString
+pub extern "js" fn CSSOMStringOrBufferSource::as_c_s_s_o_m_string(
+  self : CSSOMStringOrBufferSource,
+) -> CSSOMString? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CSSOMStringOrBufferSource as BufferSource
+pub extern "js" fn CSSOMStringOrBufferSource::as_buffer_source(
+  self : CSSOMStringOrBufferSource,
+) -> BufferSource? =
+  #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// StringOrAudioSinkInfo typedef
@@ -4649,55 +3883,977 @@ pub extern "js" fn AudioContextRenderSizeCategoryOrInt::as_int(
   #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// BufferSourceOrJsonWebKey typedef
-pub type BufferSourceOrJsonWebKey
+/// CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData typedef
+pub type CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData
 
 ///|
-pub extern "js" fn BufferSourceOrJsonWebKey::to_js_value(
-  self : BufferSourceOrJsonWebKey,
+pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::to_js_value(
+  self : CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData,
 ) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create BufferSourceOrJsonWebKey from BufferSource
-pub extern "js" fn BufferSourceOrJsonWebKey::from_buffer_source(
-  v : BufferSource,
-) -> BufferSourceOrJsonWebKey =
+/// Create CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData from CollectedClientAdditionalPaymentData
+pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::from_collected_client_additional_payment_data(
+  v : CollectedClientAdditionalPaymentData,
+) -> CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData =
   #| (v) => v
 
 ///|
-/// Create BufferSourceOrJsonWebKey from JsonWebKey
-pub extern "js" fn BufferSourceOrJsonWebKey::from_json_web_key(
-  v : JsonWebKey,
-) -> BufferSourceOrJsonWebKey =
+/// Create CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData from CollectedClientAdditionalPaymentRegistrationData
+pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::from_collected_client_additional_payment_registration_data(
+  v : CollectedClientAdditionalPaymentRegistrationData,
+) -> CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData =
   #| (v) => v
 
 ///|
-/// Check if this BufferSourceOrJsonWebKey is BufferSource
-pub extern "js" fn BufferSourceOrJsonWebKey::is_buffer_source(
-  self : BufferSourceOrJsonWebKey,
-) -> Bool =
-  #| (self) => self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer
-
-///|
-/// Check if this BufferSourceOrJsonWebKey is JsonWebKey
-pub extern "js" fn BufferSourceOrJsonWebKey::is_json_web_key(
-  self : BufferSourceOrJsonWebKey,
+/// Check if this CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData is CollectedClientAdditionalPaymentData
+pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::is_collected_client_additional_payment_data(
+  self : CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData,
 ) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
-/// Try to get BufferSourceOrJsonWebKey as BufferSource
-pub extern "js" fn BufferSourceOrJsonWebKey::as_buffer_source(
-  self : BufferSourceOrJsonWebKey,
-) -> BufferSource? =
-  #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+/// Check if this CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData is CollectedClientAdditionalPaymentRegistrationData
+pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::is_collected_client_additional_payment_registration_data(
+  self : CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
 
 ///|
-/// Try to get BufferSourceOrJsonWebKey as JsonWebKey
-pub extern "js" fn BufferSourceOrJsonWebKey::as_json_web_key(
-  self : BufferSourceOrJsonWebKey,
-) -> JsonWebKey? =
+/// Try to get CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData as CollectedClientAdditionalPaymentData
+pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::as_collected_client_additional_payment_data(
+  self : CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData,
+) -> CollectedClientAdditionalPaymentData? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData as CollectedClientAdditionalPaymentRegistrationData
+pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::as_collected_client_additional_payment_registration_data(
+  self : CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData,
+) -> CollectedClientAdditionalPaymentRegistrationData? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// DoubleOrString typedef
+pub type DoubleOrString
+
+///|
+pub extern "js" fn DoubleOrString::to_js_value(
+  self : DoubleOrString,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create DoubleOrString from Double
+pub extern "js" fn DoubleOrString::from_double(v : Double) -> DoubleOrString =
+  #| (v) => v
+
+///|
+/// Create DoubleOrString from String
+pub extern "js" fn DoubleOrString::from_string(v : String) -> DoubleOrString =
+  #| (v) => v
+
+///|
+/// Check if this DoubleOrString is Double
+pub extern "js" fn DoubleOrString::is_double(self : DoubleOrString) -> Bool =
+  #| (self) => typeof self === 'number'
+
+///|
+/// Check if this DoubleOrString is String
+pub extern "js" fn DoubleOrString::is_string(self : DoubleOrString) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get DoubleOrString as Double
+pub extern "js" fn DoubleOrString::as_double(self : DoubleOrString) -> Double? =
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get DoubleOrString as String
+pub extern "js" fn DoubleOrString::as_string(self : DoubleOrString) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// DoubleOrKeyframeEffectOptions typedef
+pub type DoubleOrKeyframeEffectOptions
+
+///|
+pub extern "js" fn DoubleOrKeyframeEffectOptions::to_js_value(
+  self : DoubleOrKeyframeEffectOptions,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create DoubleOrKeyframeEffectOptions from Double
+pub extern "js" fn DoubleOrKeyframeEffectOptions::from_double(
+  v : Double,
+) -> DoubleOrKeyframeEffectOptions =
+  #| (v) => v
+
+///|
+/// Create DoubleOrKeyframeEffectOptions from KeyframeEffectOptions
+pub extern "js" fn DoubleOrKeyframeEffectOptions::from_keyframe_effect_options(
+  v : KeyframeEffectOptions,
+) -> DoubleOrKeyframeEffectOptions =
+  #| (v) => v
+
+///|
+/// Check if this DoubleOrKeyframeEffectOptions is Double
+pub extern "js" fn DoubleOrKeyframeEffectOptions::is_double(
+  self : DoubleOrKeyframeEffectOptions,
+) -> Bool =
+  #| (self) => typeof self === 'number'
+
+///|
+/// Check if this DoubleOrKeyframeEffectOptions is KeyframeEffectOptions
+pub extern "js" fn DoubleOrKeyframeEffectOptions::is_keyframe_effect_options(
+  self : DoubleOrKeyframeEffectOptions,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get DoubleOrKeyframeEffectOptions as Double
+pub extern "js" fn DoubleOrKeyframeEffectOptions::as_double(
+  self : DoubleOrKeyframeEffectOptions,
+) -> Double? =
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get DoubleOrKeyframeEffectOptions as KeyframeEffectOptions
+pub extern "js" fn DoubleOrKeyframeEffectOptions::as_keyframe_effect_options(
+  self : DoubleOrKeyframeEffectOptions,
+) -> KeyframeEffectOptions? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// NullableDoubleOrArrayOfNullableDouble typedef
+pub type NullableDoubleOrArrayOfNullableDouble
+
+///|
+pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::to_js_value(
+  self : NullableDoubleOrArrayOfNullableDouble,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create NullableDoubleOrArrayOfNullableDouble from Double?
+pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::from_nullable_double(
+  v : Double?,
+) -> NullableDoubleOrArrayOfNullableDouble =
+  #| (v) => v
+
+///|
+/// Create NullableDoubleOrArrayOfNullableDouble from Array[JsValue]
+pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::from_array_of_nullable_double(
+  v : Array[JsValue],
+) -> NullableDoubleOrArrayOfNullableDouble =
+  #| (v) => v
+
+///|
+/// Check if this NullableDoubleOrArrayOfNullableDouble is Double?
+pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::is_nullable_double(
+  self : NullableDoubleOrArrayOfNullableDouble,
+) -> Bool =
+  #| (self) => self === null || (typeof self === 'number')
+
+///|
+/// Check if this NullableDoubleOrArrayOfNullableDouble is Array[JsValue]
+pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::is_array_of_nullable_double(
+  self : NullableDoubleOrArrayOfNullableDouble,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Try to get NullableDoubleOrArrayOfNullableDouble as Double?
+pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::as_nullable_double(
+  self : NullableDoubleOrArrayOfNullableDouble,
+) -> Double?? =
+  #| (self) => (self === null || (typeof self === 'number')) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get NullableDoubleOrArrayOfNullableDouble as Array[JsValue]
+pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::as_array_of_nullable_double(
+  self : NullableDoubleOrArrayOfNullableDouble,
+) -> Array[JsValue]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto typedef
+pub type CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto
+
+///|
+pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::to_js_value(
+  self : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto from CompositeOperationOrAuto
+pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::from_composite_operation_or_auto(
+  v : CompositeOperationOrAuto,
+) -> CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto =
+  #| (v) => v
+
+///|
+/// Create CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto from Array[CompositeOperationOrAuto]
+pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::from_array_of_composite_operation_or_auto(
+  v : Array[CompositeOperationOrAuto],
+) -> CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto =
+  #| (v) => v
+
+///|
+/// Check if this CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto is CompositeOperationOrAuto
+pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::is_composite_operation_or_auto(
+  self : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto is Array[CompositeOperationOrAuto]
+pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::is_array_of_composite_operation_or_auto(
+  self : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Try to get CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto as CompositeOperationOrAuto
+pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::as_composite_operation_or_auto(
+  self : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto,
+) -> CompositeOperationOrAuto? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto as Array[CompositeOperationOrAuto]
+pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::as_array_of_composite_operation_or_auto(
+  self : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto,
+) -> Array[CompositeOperationOrAuto]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// DoubleOrKeyframeAnimationOptions typedef
+pub type DoubleOrKeyframeAnimationOptions
+
+///|
+pub extern "js" fn DoubleOrKeyframeAnimationOptions::to_js_value(
+  self : DoubleOrKeyframeAnimationOptions,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create DoubleOrKeyframeAnimationOptions from Double
+pub extern "js" fn DoubleOrKeyframeAnimationOptions::from_double(
+  v : Double,
+) -> DoubleOrKeyframeAnimationOptions =
+  #| (v) => v
+
+///|
+/// Create DoubleOrKeyframeAnimationOptions from KeyframeAnimationOptions
+pub extern "js" fn DoubleOrKeyframeAnimationOptions::from_keyframe_animation_options(
+  v : KeyframeAnimationOptions,
+) -> DoubleOrKeyframeAnimationOptions =
+  #| (v) => v
+
+///|
+/// Check if this DoubleOrKeyframeAnimationOptions is Double
+pub extern "js" fn DoubleOrKeyframeAnimationOptions::is_double(
+  self : DoubleOrKeyframeAnimationOptions,
+) -> Bool =
+  #| (self) => typeof self === 'number'
+
+///|
+/// Check if this DoubleOrKeyframeAnimationOptions is KeyframeAnimationOptions
+pub extern "js" fn DoubleOrKeyframeAnimationOptions::is_keyframe_animation_options(
+  self : DoubleOrKeyframeAnimationOptions,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get DoubleOrKeyframeAnimationOptions as Double
+pub extern "js" fn DoubleOrKeyframeAnimationOptions::as_double(
+  self : DoubleOrKeyframeAnimationOptions,
+) -> Double? =
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get DoubleOrKeyframeAnimationOptions as KeyframeAnimationOptions
+pub extern "js" fn DoubleOrKeyframeAnimationOptions::as_keyframe_animation_options(
+  self : DoubleOrKeyframeAnimationOptions,
+) -> KeyframeAnimationOptions? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// ViewTransitionUpdateCallbackOrStartViewTransitionOptions typedef
+pub type ViewTransitionUpdateCallbackOrStartViewTransitionOptions
+
+///|
+pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::to_js_value(
+  self : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create ViewTransitionUpdateCallbackOrStartViewTransitionOptions from ViewTransitionUpdateCallback
+pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::from_view_transition_update_callback(
+  v : ViewTransitionUpdateCallback,
+) -> ViewTransitionUpdateCallbackOrStartViewTransitionOptions =
+  #| (v) => v
+
+///|
+/// Create ViewTransitionUpdateCallbackOrStartViewTransitionOptions from StartViewTransitionOptions
+pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::from_start_view_transition_options(
+  v : StartViewTransitionOptions,
+) -> ViewTransitionUpdateCallbackOrStartViewTransitionOptions =
+  #| (v) => v
+
+///|
+/// Check if this ViewTransitionUpdateCallbackOrStartViewTransitionOptions is ViewTransitionUpdateCallback
+pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::is_view_transition_update_callback(
+  self : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
+) -> Bool =
+  #| (self) => typeof self === 'function'
+
+///|
+/// Check if this ViewTransitionUpdateCallbackOrStartViewTransitionOptions is StartViewTransitionOptions
+pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::is_start_view_transition_options(
+  self : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get ViewTransitionUpdateCallbackOrStartViewTransitionOptions as ViewTransitionUpdateCallback
+pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::as_view_transition_update_callback(
+  self : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
+) -> ViewTransitionUpdateCallback? =
+  #| (self) => (typeof self === 'function') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ViewTransitionUpdateCallbackOrStartViewTransitionOptions as StartViewTransitionOptions
+pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::as_start_view_transition_options(
+  self : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
+) -> StartViewTransitionOptions? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// MediaStreamTrackOrString typedef
+pub type MediaStreamTrackOrString
+
+///|
+pub extern "js" fn MediaStreamTrackOrString::to_js_value(
+  self : MediaStreamTrackOrString,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create MediaStreamTrackOrString from MediaStreamTrack
+pub extern "js" fn MediaStreamTrackOrString::from_media_stream_track(
+  v : MediaStreamTrack,
+) -> MediaStreamTrackOrString =
+  #| (v) => v
+
+///|
+/// Create MediaStreamTrackOrString from String
+pub extern "js" fn MediaStreamTrackOrString::from_string(
+  v : String,
+) -> MediaStreamTrackOrString =
+  #| (v) => v
+
+///|
+/// Check if this MediaStreamTrackOrString is MediaStreamTrack
+pub extern "js" fn MediaStreamTrackOrString::is_media_stream_track(
+  self : MediaStreamTrackOrString,
+) -> Bool =
+  #| (self) => self instanceof MediaStreamTrack
+
+///|
+/// Check if this MediaStreamTrackOrString is String
+pub extern "js" fn MediaStreamTrackOrString::is_string(
+  self : MediaStreamTrackOrString,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Try to get MediaStreamTrackOrString as MediaStreamTrack
+pub extern "js" fn MediaStreamTrackOrString::as_media_stream_track(
+  self : MediaStreamTrackOrString,
+) -> MediaStreamTrack? =
+  #| (self) => (self instanceof MediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get MediaStreamTrackOrString as String
+pub extern "js" fn MediaStreamTrackOrString::as_string(
+  self : MediaStreamTrackOrString,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// StringOrFencedFrameConfig typedef
+pub type StringOrFencedFrameConfig
+
+///|
+pub extern "js" fn StringOrFencedFrameConfig::to_js_value(
+  self : StringOrFencedFrameConfig,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create StringOrFencedFrameConfig from String
+pub extern "js" fn StringOrFencedFrameConfig::from_string(
+  v : String,
+) -> StringOrFencedFrameConfig =
+  #| (v) => v
+
+///|
+/// Create StringOrFencedFrameConfig from FencedFrameConfig
+pub extern "js" fn StringOrFencedFrameConfig::from_fenced_frame_config(
+  v : FencedFrameConfig,
+) -> StringOrFencedFrameConfig =
+  #| (v) => v
+
+///|
+/// Check if this StringOrFencedFrameConfig is String
+pub extern "js" fn StringOrFencedFrameConfig::is_string(
+  self : StringOrFencedFrameConfig,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this StringOrFencedFrameConfig is FencedFrameConfig
+pub extern "js" fn StringOrFencedFrameConfig::is_fenced_frame_config(
+  self : StringOrFencedFrameConfig,
+) -> Bool =
+  #| (self) => self instanceof FencedFrameConfig
+
+///|
+/// Try to get StringOrFencedFrameConfig as String
+pub extern "js" fn StringOrFencedFrameConfig::as_string(
+  self : StringOrFencedFrameConfig,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get StringOrFencedFrameConfig as FencedFrameConfig
+pub extern "js" fn StringOrFencedFrameConfig::as_fenced_frame_config(
+  self : StringOrFencedFrameConfig,
+) -> FencedFrameConfig? =
+  #| (self) => (self instanceof FencedFrameConfig) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// BigintOrInt typedef
+pub type BigintOrInt
+
+///|
+pub extern "js" fn BigintOrInt::to_js_value(self : BigintOrInt) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create BigintOrInt from Int
+pub extern "js" fn BigintOrInt::from_int(v : Int) -> BigintOrInt =
+  #| (v) => v
+
+///|
+/// Check if this BigintOrInt is Int
+pub extern "js" fn BigintOrInt::is_int(self : BigintOrInt) -> Bool =
+  #| (self) => typeof self === 'number'
+
+///|
+/// Try to get BigintOrInt as Int
+pub extern "js" fn BigintOrInt::as_int(self : BigintOrInt) -> Int? =
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// PASignalValueOrBigint typedef
+pub type PASignalValueOrBigint
+
+///|
+pub extern "js" fn PASignalValueOrBigint::to_js_value(
+  self : PASignalValueOrBigint,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create PASignalValueOrBigint from PASignalValue
+pub extern "js" fn PASignalValueOrBigint::from_p_a_signal_value(
+  v : PASignalValue,
+) -> PASignalValueOrBigint =
+  #| (v) => v
+
+///|
+/// Check if this PASignalValueOrBigint is PASignalValue
+pub extern "js" fn PASignalValueOrBigint::is_p_a_signal_value(
+  self : PASignalValueOrBigint,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get PASignalValueOrBigint as PASignalValue
+pub extern "js" fn PASignalValueOrBigint::as_p_a_signal_value(
+  self : PASignalValueOrBigint,
+) -> PASignalValue? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// PASignalValueOrInt typedef
+pub type PASignalValueOrInt
+
+///|
+pub extern "js" fn PASignalValueOrInt::to_js_value(
+  self : PASignalValueOrInt,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create PASignalValueOrInt from PASignalValue
+pub extern "js" fn PASignalValueOrInt::from_p_a_signal_value(
+  v : PASignalValue,
+) -> PASignalValueOrInt =
+  #| (v) => v
+
+///|
+/// Create PASignalValueOrInt from Int
+pub extern "js" fn PASignalValueOrInt::from_int(v : Int) -> PASignalValueOrInt =
+  #| (v) => v
+
+///|
+/// Check if this PASignalValueOrInt is PASignalValue
+pub extern "js" fn PASignalValueOrInt::is_p_a_signal_value(
+  self : PASignalValueOrInt,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Check if this PASignalValueOrInt is Int
+pub extern "js" fn PASignalValueOrInt::is_int(
+  self : PASignalValueOrInt,
+) -> Bool =
+  #| (self) => typeof self === 'number'
+
+///|
+/// Try to get PASignalValueOrInt as PASignalValue
+pub extern "js" fn PASignalValueOrInt::as_p_a_signal_value(
+  self : PASignalValueOrInt,
+) -> PASignalValue? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get PASignalValueOrInt as Int
+pub extern "js" fn PASignalValueOrInt::as_int(
+  self : PASignalValueOrInt,
+) -> Int? =
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// GenerateBidOutputOrArrayOfGenerateBidOutput typedef
+pub type GenerateBidOutputOrArrayOfGenerateBidOutput
+
+///|
+pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::to_js_value(
+  self : GenerateBidOutputOrArrayOfGenerateBidOutput,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create GenerateBidOutputOrArrayOfGenerateBidOutput from GenerateBidOutput
+pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::from_generate_bid_output(
+  v : GenerateBidOutput,
+) -> GenerateBidOutputOrArrayOfGenerateBidOutput =
+  #| (v) => v
+
+///|
+/// Create GenerateBidOutputOrArrayOfGenerateBidOutput from Array[GenerateBidOutput]
+pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::from_array_of_generate_bid_output(
+  v : Array[GenerateBidOutput],
+) -> GenerateBidOutputOrArrayOfGenerateBidOutput =
+  #| (v) => v
+
+///|
+/// Check if this GenerateBidOutputOrArrayOfGenerateBidOutput is GenerateBidOutput
+pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::is_generate_bid_output(
+  self : GenerateBidOutputOrArrayOfGenerateBidOutput,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Check if this GenerateBidOutputOrArrayOfGenerateBidOutput is Array[GenerateBidOutput]
+pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::is_array_of_generate_bid_output(
+  self : GenerateBidOutputOrArrayOfGenerateBidOutput,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Try to get GenerateBidOutputOrArrayOfGenerateBidOutput as GenerateBidOutput
+pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::as_generate_bid_output(
+  self : GenerateBidOutputOrArrayOfGenerateBidOutput,
+) -> GenerateBidOutput? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get GenerateBidOutputOrArrayOfGenerateBidOutput as Array[GenerateBidOutput]
+pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::as_array_of_generate_bid_output(
+  self : GenerateBidOutputOrArrayOfGenerateBidOutput,
+) -> Array[GenerateBidOutput]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// StringOrAdRender typedef
+pub type StringOrAdRender
+
+///|
+pub extern "js" fn StringOrAdRender::to_js_value(
+  self : StringOrAdRender,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create StringOrAdRender from String
+pub extern "js" fn StringOrAdRender::from_string(
+  v : String,
+) -> StringOrAdRender =
+  #| (v) => v
+
+///|
+/// Create StringOrAdRender from AdRender
+pub extern "js" fn StringOrAdRender::from_ad_render(
+  v : AdRender,
+) -> StringOrAdRender =
+  #| (v) => v
+
+///|
+/// Check if this StringOrAdRender is String
+pub extern "js" fn StringOrAdRender::is_string(self : StringOrAdRender) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this StringOrAdRender is AdRender
+pub extern "js" fn StringOrAdRender::is_ad_render(
+  self : StringOrAdRender,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get StringOrAdRender as String
+pub extern "js" fn StringOrAdRender::as_string(
+  self : StringOrAdRender,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get StringOrAdRender as AdRender
+pub extern "js" fn StringOrAdRender::as_ad_render(
+  self : StringOrAdRender,
+) -> AdRender? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// ServiceWorkerRegistrationOrVoid typedef
+pub type ServiceWorkerRegistrationOrVoid
+
+///|
+pub extern "js" fn ServiceWorkerRegistrationOrVoid::to_js_value(
+  self : ServiceWorkerRegistrationOrVoid,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create ServiceWorkerRegistrationOrVoid from ServiceWorkerRegistration
+pub extern "js" fn ServiceWorkerRegistrationOrVoid::from_service_worker_registration(
+  v : ServiceWorkerRegistration,
+) -> ServiceWorkerRegistrationOrVoid =
+  #| (v) => v
+
+///|
+/// Check if this ServiceWorkerRegistrationOrVoid is ServiceWorkerRegistration
+pub extern "js" fn ServiceWorkerRegistrationOrVoid::is_service_worker_registration(
+  self : ServiceWorkerRegistrationOrVoid,
+) -> Bool =
+  #| (self) => self instanceof ServiceWorkerRegistration
+
+///|
+/// Try to get ServiceWorkerRegistrationOrVoid as ServiceWorkerRegistration
+pub extern "js" fn ServiceWorkerRegistrationOrVoid::as_service_worker_registration(
+  self : ServiceWorkerRegistrationOrVoid,
+) -> ServiceWorkerRegistration? =
+  #| (self) => (self instanceof ServiceWorkerRegistration) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// ClientOrVoid typedef
+pub type ClientOrVoid
+
+///|
+pub extern "js" fn ClientOrVoid::to_js_value(self : ClientOrVoid) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create ClientOrVoid from Client
+pub extern "js" fn ClientOrVoid::from_client(v : Client) -> ClientOrVoid =
+  #| (v) => v
+
+///|
+/// Check if this ClientOrVoid is Client
+pub extern "js" fn ClientOrVoid::is_client(self : ClientOrVoid) -> Bool =
+  #| (self) => self instanceof Client
+
+///|
+/// Try to get ClientOrVoid as Client
+pub extern "js" fn ClientOrVoid::as_client(self : ClientOrVoid) -> Client? =
+  #| (self) => (self instanceof Client) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// RouterRuleOrArrayOfRouterRule typedef
+pub type RouterRuleOrArrayOfRouterRule
+
+///|
+pub extern "js" fn RouterRuleOrArrayOfRouterRule::to_js_value(
+  self : RouterRuleOrArrayOfRouterRule,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create RouterRuleOrArrayOfRouterRule from RouterRule
+pub extern "js" fn RouterRuleOrArrayOfRouterRule::from_router_rule(
+  v : RouterRule,
+) -> RouterRuleOrArrayOfRouterRule =
+  #| (v) => v
+
+///|
+/// Create RouterRuleOrArrayOfRouterRule from Array[RouterRule]
+pub extern "js" fn RouterRuleOrArrayOfRouterRule::from_array_of_router_rule(
+  v : Array[RouterRule],
+) -> RouterRuleOrArrayOfRouterRule =
+  #| (v) => v
+
+///|
+/// Check if this RouterRuleOrArrayOfRouterRule is RouterRule
+pub extern "js" fn RouterRuleOrArrayOfRouterRule::is_router_rule(
+  self : RouterRuleOrArrayOfRouterRule,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Check if this RouterRuleOrArrayOfRouterRule is Array[RouterRule]
+pub extern "js" fn RouterRuleOrArrayOfRouterRule::is_array_of_router_rule(
+  self : RouterRuleOrArrayOfRouterRule,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Try to get RouterRuleOrArrayOfRouterRule as RouterRule
+pub extern "js" fn RouterRuleOrArrayOfRouterRule::as_router_rule(
+  self : RouterRuleOrArrayOfRouterRule,
+) -> RouterRule? =
+  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get RouterRuleOrArrayOfRouterRule as Array[RouterRule]
+pub extern "js" fn RouterRuleOrArrayOfRouterRule::as_array_of_router_rule(
+  self : RouterRuleOrArrayOfRouterRule,
+) -> Array[RouterRule]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// ClientOrServiceWorkerOrMessagePort typedef
+pub type ClientOrServiceWorkerOrMessagePort
+
+///|
+pub extern "js" fn ClientOrServiceWorkerOrMessagePort::to_js_value(
+  self : ClientOrServiceWorkerOrMessagePort,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create ClientOrServiceWorkerOrMessagePort from Client
+pub extern "js" fn ClientOrServiceWorkerOrMessagePort::from_client(
+  v : Client,
+) -> ClientOrServiceWorkerOrMessagePort =
+  #| (v) => v
+
+///|
+/// Create ClientOrServiceWorkerOrMessagePort from ServiceWorker
+pub extern "js" fn ClientOrServiceWorkerOrMessagePort::from_service_worker(
+  v : ServiceWorker,
+) -> ClientOrServiceWorkerOrMessagePort =
+  #| (v) => v
+
+///|
+/// Create ClientOrServiceWorkerOrMessagePort from MessagePort
+pub extern "js" fn ClientOrServiceWorkerOrMessagePort::from_message_port(
+  v : MessagePort,
+) -> ClientOrServiceWorkerOrMessagePort =
+  #| (v) => v
+
+///|
+/// Check if this ClientOrServiceWorkerOrMessagePort is Client
+pub extern "js" fn ClientOrServiceWorkerOrMessagePort::is_client(
+  self : ClientOrServiceWorkerOrMessagePort,
+) -> Bool =
+  #| (self) => self instanceof Client
+
+///|
+/// Check if this ClientOrServiceWorkerOrMessagePort is ServiceWorker
+pub extern "js" fn ClientOrServiceWorkerOrMessagePort::is_service_worker(
+  self : ClientOrServiceWorkerOrMessagePort,
+) -> Bool =
+  #| (self) => self instanceof ServiceWorker
+
+///|
+/// Check if this ClientOrServiceWorkerOrMessagePort is MessagePort
+pub extern "js" fn ClientOrServiceWorkerOrMessagePort::is_message_port(
+  self : ClientOrServiceWorkerOrMessagePort,
+) -> Bool =
+  #| (self) => self instanceof MessagePort
+
+///|
+/// Try to get ClientOrServiceWorkerOrMessagePort as Client
+pub extern "js" fn ClientOrServiceWorkerOrMessagePort::as_client(
+  self : ClientOrServiceWorkerOrMessagePort,
+) -> Client? =
+  #| (self) => (self instanceof Client) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ClientOrServiceWorkerOrMessagePort as ServiceWorker
+pub extern "js" fn ClientOrServiceWorkerOrMessagePort::as_service_worker(
+  self : ClientOrServiceWorkerOrMessagePort,
+) -> ServiceWorker? =
+  #| (self) => (self instanceof ServiceWorker) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ClientOrServiceWorkerOrMessagePort as MessagePort
+pub extern "js" fn ClientOrServiceWorkerOrMessagePort::as_message_port(
+  self : ClientOrServiceWorkerOrMessagePort,
+) -> MessagePort? =
+  #| (self) => (self instanceof MessagePort) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// ResponseOrVoid typedef
+pub type ResponseOrVoid
+
+///|
+pub extern "js" fn ResponseOrVoid::to_js_value(
+  self : ResponseOrVoid,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create ResponseOrVoid from Response
+pub extern "js" fn ResponseOrVoid::from_response(
+  v : Response,
+) -> ResponseOrVoid =
+  #| (v) => v
+
+///|
+/// Check if this ResponseOrVoid is Response
+pub extern "js" fn ResponseOrVoid::is_response(self : ResponseOrVoid) -> Bool =
+  #| (self) => self instanceof Response
+
+///|
+/// Try to get ResponseOrVoid as Response
+pub extern "js" fn ResponseOrVoid::as_response(
+  self : ResponseOrVoid,
+) -> Response? =
+  #| (self) => (self instanceof Response) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// BoolOrConstrainDouble typedef
+pub type BoolOrConstrainDouble
+
+///|
+pub extern "js" fn BoolOrConstrainDouble::to_js_value(
+  self : BoolOrConstrainDouble,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create BoolOrConstrainDouble from Bool
+pub extern "js" fn BoolOrConstrainDouble::from_bool(
+  v : Bool,
+) -> BoolOrConstrainDouble =
+  #| (v) => v
+
+///|
+/// Create BoolOrConstrainDouble from ConstrainDouble
+pub extern "js" fn BoolOrConstrainDouble::from_constrain_double(
+  v : ConstrainDouble,
+) -> BoolOrConstrainDouble =
+  #| (v) => v
+
+///|
+/// Check if this BoolOrConstrainDouble is Bool
+pub extern "js" fn BoolOrConstrainDouble::is_bool(
+  self : BoolOrConstrainDouble,
+) -> Bool =
+  #| (self) => typeof self === 'boolean'
+
+///|
+/// Check if this BoolOrConstrainDouble is ConstrainDouble
+pub extern "js" fn BoolOrConstrainDouble::is_constrain_double(
+  self : BoolOrConstrainDouble,
+) -> Bool =
+  #| (self) => typeof self === 'number' || typeof self === 'object' && self !== null
+
+///|
+/// Try to get BoolOrConstrainDouble as Bool
+pub extern "js" fn BoolOrConstrainDouble::as_bool(
+  self : BoolOrConstrainDouble,
+) -> Bool? =
+  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get BoolOrConstrainDouble as ConstrainDouble
+pub extern "js" fn BoolOrConstrainDouble::as_constrain_double(
+  self : BoolOrConstrainDouble,
+) -> ConstrainDouble? =
+  #| (self) => (typeof self === 'number' || typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// StringOrSharedWorkerOptions typedef
+pub type StringOrSharedWorkerOptions
+
+///|
+pub extern "js" fn StringOrSharedWorkerOptions::to_js_value(
+  self : StringOrSharedWorkerOptions,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create StringOrSharedWorkerOptions from String
+pub extern "js" fn StringOrSharedWorkerOptions::from_string(
+  v : String,
+) -> StringOrSharedWorkerOptions =
+  #| (v) => v
+
+///|
+/// Create StringOrSharedWorkerOptions from SharedWorkerOptions
+pub extern "js" fn StringOrSharedWorkerOptions::from_shared_worker_options(
+  v : SharedWorkerOptions,
+) -> StringOrSharedWorkerOptions =
+  #| (v) => v
+
+///|
+/// Check if this StringOrSharedWorkerOptions is String
+pub extern "js" fn StringOrSharedWorkerOptions::is_string(
+  self : StringOrSharedWorkerOptions,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this StringOrSharedWorkerOptions is SharedWorkerOptions
+pub extern "js" fn StringOrSharedWorkerOptions::is_shared_worker_options(
+  self : StringOrSharedWorkerOptions,
+) -> Bool =
+  #| (self) => typeof self === 'object' && self !== null
+
+///|
+/// Try to get StringOrSharedWorkerOptions as String
+pub extern "js" fn StringOrSharedWorkerOptions::as_string(
+  self : StringOrSharedWorkerOptions,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get StringOrSharedWorkerOptions as SharedWorkerOptions
+pub extern "js" fn StringOrSharedWorkerOptions::as_shared_worker_options(
+  self : StringOrSharedWorkerOptions,
+) -> SharedWorkerOptions? =
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
@@ -4888,105 +5044,252 @@ pub extern "js" fn GPUTextureOrGPUTextureView::as_g_p_u_texture_view(
   #| (self) => (self instanceof GPUTextureView) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// MediaStreamTrackOrString typedef
-pub type MediaStreamTrackOrString
+/// VoidOrCSSStyleValue typedef
+pub type VoidOrCSSStyleValue
 
 ///|
-pub extern "js" fn MediaStreamTrackOrString::to_js_value(
-  self : MediaStreamTrackOrString,
+pub extern "js" fn VoidOrCSSStyleValue::to_js_value(
+  self : VoidOrCSSStyleValue,
 ) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create MediaStreamTrackOrString from MediaStreamTrack
-pub extern "js" fn MediaStreamTrackOrString::from_media_stream_track(
-  v : MediaStreamTrack,
-) -> MediaStreamTrackOrString =
+/// Create VoidOrCSSStyleValue from CSSStyleValue
+pub extern "js" fn VoidOrCSSStyleValue::from_c_s_s_style_value(
+  v : CSSStyleValue,
+) -> VoidOrCSSStyleValue =
   #| (v) => v
 
 ///|
-/// Create MediaStreamTrackOrString from String
-pub extern "js" fn MediaStreamTrackOrString::from_string(
-  v : String,
-) -> MediaStreamTrackOrString =
-  #| (v) => v
-
-///|
-/// Check if this MediaStreamTrackOrString is MediaStreamTrack
-pub extern "js" fn MediaStreamTrackOrString::is_media_stream_track(
-  self : MediaStreamTrackOrString,
+/// Check if this VoidOrCSSStyleValue is CSSStyleValue
+pub extern "js" fn VoidOrCSSStyleValue::is_c_s_s_style_value(
+  self : VoidOrCSSStyleValue,
 ) -> Bool =
-  #| (self) => self instanceof MediaStreamTrack
+  #| (self) => self instanceof CSSStyleValue
 
 ///|
-/// Check if this MediaStreamTrackOrString is String
-pub extern "js" fn MediaStreamTrackOrString::is_string(
-  self : MediaStreamTrackOrString,
+/// Try to get VoidOrCSSStyleValue as CSSStyleValue
+pub extern "js" fn VoidOrCSSStyleValue::as_c_s_s_style_value(
+  self : VoidOrCSSStyleValue,
+) -> CSSStyleValue? =
+  #| (self) => (self instanceof CSSStyleValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// CSSStyleValueOrString typedef
+pub type CSSStyleValueOrString
+
+///|
+pub extern "js" fn CSSStyleValueOrString::to_js_value(
+  self : CSSStyleValueOrString,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create CSSStyleValueOrString from CSSStyleValue
+pub extern "js" fn CSSStyleValueOrString::from_c_s_s_style_value(
+  v : CSSStyleValue,
+) -> CSSStyleValueOrString =
+  #| (v) => v
+
+///|
+/// Create CSSStyleValueOrString from String
+pub extern "js" fn CSSStyleValueOrString::from_string(
+  v : String,
+) -> CSSStyleValueOrString =
+  #| (v) => v
+
+///|
+/// Check if this CSSStyleValueOrString is CSSStyleValue
+pub extern "js" fn CSSStyleValueOrString::is_c_s_s_style_value(
+  self : CSSStyleValueOrString,
+) -> Bool =
+  #| (self) => self instanceof CSSStyleValue
+
+///|
+/// Check if this CSSStyleValueOrString is String
+pub extern "js" fn CSSStyleValueOrString::is_string(
+  self : CSSStyleValueOrString,
 ) -> Bool =
   #| (self) => typeof self === 'string'
 
 ///|
-/// Try to get MediaStreamTrackOrString as MediaStreamTrack
-pub extern "js" fn MediaStreamTrackOrString::as_media_stream_track(
-  self : MediaStreamTrackOrString,
-) -> MediaStreamTrack? =
-  #| (self) => (self instanceof MediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
+/// Try to get CSSStyleValueOrString as CSSStyleValue
+pub extern "js" fn CSSStyleValueOrString::as_c_s_s_style_value(
+  self : CSSStyleValueOrString,
+) -> CSSStyleValue? =
+  #| (self) => (self instanceof CSSStyleValue) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get MediaStreamTrackOrString as String
-pub extern "js" fn MediaStreamTrackOrString::as_string(
-  self : MediaStreamTrackOrString,
+/// Try to get CSSStyleValueOrString as String
+pub extern "js" fn CSSStyleValueOrString::as_string(
+  self : CSSStyleValueOrString,
 ) -> String? =
   #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// DocumentOrXMLHttpRequestBodyInit typedef
-pub type DocumentOrXMLHttpRequestBodyInit
+/// CSSColorValueOrCSSStyleValue typedef
+pub type CSSColorValueOrCSSStyleValue
 
 ///|
-pub extern "js" fn DocumentOrXMLHttpRequestBodyInit::to_js_value(
-  self : DocumentOrXMLHttpRequestBodyInit,
+pub extern "js" fn CSSColorValueOrCSSStyleValue::to_js_value(
+  self : CSSColorValueOrCSSStyleValue,
 ) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create DocumentOrXMLHttpRequestBodyInit from Document
-pub extern "js" fn DocumentOrXMLHttpRequestBodyInit::from_document(
-  v : Document,
-) -> DocumentOrXMLHttpRequestBodyInit =
+/// Create CSSColorValueOrCSSStyleValue from CSSColorValue
+pub extern "js" fn CSSColorValueOrCSSStyleValue::from_c_s_s_color_value(
+  v : CSSColorValue,
+) -> CSSColorValueOrCSSStyleValue =
   #| (v) => v
 
 ///|
-/// Create DocumentOrXMLHttpRequestBodyInit from XMLHttpRequestBodyInit
-pub extern "js" fn DocumentOrXMLHttpRequestBodyInit::from_x_m_l_http_request_body_init(
-  v : XMLHttpRequestBodyInit,
-) -> DocumentOrXMLHttpRequestBodyInit =
+/// Create CSSColorValueOrCSSStyleValue from CSSStyleValue
+pub extern "js" fn CSSColorValueOrCSSStyleValue::from_c_s_s_style_value(
+  v : CSSStyleValue,
+) -> CSSColorValueOrCSSStyleValue =
   #| (v) => v
 
 ///|
-/// Check if this DocumentOrXMLHttpRequestBodyInit is Document
-pub extern "js" fn DocumentOrXMLHttpRequestBodyInit::is_document(
-  self : DocumentOrXMLHttpRequestBodyInit,
+/// Check if this CSSColorValueOrCSSStyleValue is CSSColorValue
+pub extern "js" fn CSSColorValueOrCSSStyleValue::is_c_s_s_color_value(
+  self : CSSColorValueOrCSSStyleValue,
 ) -> Bool =
-  #| (self) => self instanceof Document
+  #| (self) => self instanceof CSSColorValue
 
 ///|
-/// Check if this DocumentOrXMLHttpRequestBodyInit is XMLHttpRequestBodyInit
-pub extern "js" fn DocumentOrXMLHttpRequestBodyInit::is_x_m_l_http_request_body_init(
-  self : DocumentOrXMLHttpRequestBodyInit,
+/// Check if this CSSColorValueOrCSSStyleValue is CSSStyleValue
+pub extern "js" fn CSSColorValueOrCSSStyleValue::is_c_s_s_style_value(
+  self : CSSColorValueOrCSSStyleValue,
 ) -> Bool =
-  #| (self) => self instanceof Blob || self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer || self instanceof FormData || self instanceof URLSearchParams || typeof self === 'string'
+  #| (self) => self instanceof CSSStyleValue
 
 ///|
-/// Try to get DocumentOrXMLHttpRequestBodyInit as Document
-pub extern "js" fn DocumentOrXMLHttpRequestBodyInit::as_document(
-  self : DocumentOrXMLHttpRequestBodyInit,
-) -> Document? =
-  #| (self) => (self instanceof Document) ? { $tag: 1, _0: self } : { $tag: 0 }
+/// Try to get CSSColorValueOrCSSStyleValue as CSSColorValue
+pub extern "js" fn CSSColorValueOrCSSStyleValue::as_c_s_s_color_value(
+  self : CSSColorValueOrCSSStyleValue,
+) -> CSSColorValue? =
+  #| (self) => (self instanceof CSSColorValue) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get DocumentOrXMLHttpRequestBodyInit as XMLHttpRequestBodyInit
-pub extern "js" fn DocumentOrXMLHttpRequestBodyInit::as_x_m_l_http_request_body_init(
-  self : DocumentOrXMLHttpRequestBodyInit,
-) -> XMLHttpRequestBodyInit? =
-  #| (self) => (self instanceof Blob || self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer || self instanceof FormData || self instanceof URLSearchParams || typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+/// Try to get CSSColorValueOrCSSStyleValue as CSSStyleValue
+pub extern "js" fn CSSColorValueOrCSSStyleValue::as_c_s_s_style_value(
+  self : CSSColorValueOrCSSStyleValue,
+) -> CSSStyleValue? =
+  #| (self) => (self instanceof CSSStyleValue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// RequestInfoOrArrayOfRequestInfo typedef
+pub type RequestInfoOrArrayOfRequestInfo
+
+///|
+pub extern "js" fn RequestInfoOrArrayOfRequestInfo::to_js_value(
+  self : RequestInfoOrArrayOfRequestInfo,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create RequestInfoOrArrayOfRequestInfo from RequestInfo
+pub extern "js" fn RequestInfoOrArrayOfRequestInfo::from_request_info(
+  v : RequestInfo,
+) -> RequestInfoOrArrayOfRequestInfo =
+  #| (v) => v
+
+///|
+/// Create RequestInfoOrArrayOfRequestInfo from Array[RequestInfo]
+pub extern "js" fn RequestInfoOrArrayOfRequestInfo::from_array_of_request_info(
+  v : Array[RequestInfo],
+) -> RequestInfoOrArrayOfRequestInfo =
+  #| (v) => v
+
+///|
+/// Check if this RequestInfoOrArrayOfRequestInfo is RequestInfo
+pub extern "js" fn RequestInfoOrArrayOfRequestInfo::is_request_info(
+  self : RequestInfoOrArrayOfRequestInfo,
+) -> Bool =
+  #| (self) => self instanceof Request || typeof self === 'string'
+
+///|
+/// Check if this RequestInfoOrArrayOfRequestInfo is Array[RequestInfo]
+pub extern "js" fn RequestInfoOrArrayOfRequestInfo::is_array_of_request_info(
+  self : RequestInfoOrArrayOfRequestInfo,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Try to get RequestInfoOrArrayOfRequestInfo as RequestInfo
+pub extern "js" fn RequestInfoOrArrayOfRequestInfo::as_request_info(
+  self : RequestInfoOrArrayOfRequestInfo,
+) -> RequestInfo? =
+  #| (self) => (self instanceof Request || typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get RequestInfoOrArrayOfRequestInfo as Array[RequestInfo]
+pub extern "js" fn RequestInfoOrArrayOfRequestInfo::as_array_of_request_info(
+  self : RequestInfoOrArrayOfRequestInfo,
+) -> Array[RequestInfo]? =
+  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+// JsValue type checks
+
+///|
+/// Check if value is null
+pub extern "js" fn JsValue::is_null(self : JsValue) -> Bool =
+  #| (self) => self === null
+
+///|
+/// Check if value is undefined
+pub extern "js" fn JsValue::is_undefined(self : JsValue) -> Bool =
+  #| (self) => self === undefined
+
+///|
+/// Check if value is null or undefined
+pub extern "js" fn JsValue::is_null_or_undefined(self : JsValue) -> Bool =
+  #| (self) => self == null
+
+// TypedArray index access
+
+///|
+pub extern "js" fn Uint8ClampedArray::op_get(
+  self : Uint8ClampedArray,
+  index : Int,
+) -> Int =
+  #| (self, index) => self[index]
+
+///|
+pub extern "js" fn Uint8ClampedArray::op_set(
+  self : Uint8ClampedArray,
+  index : Int,
+  value : Int,
+) -> Unit =
+  #| (self, index, value) => { self[index] = value }
+
+///|
+pub extern "js" fn Uint8ClampedArray::length(self : Uint8ClampedArray) -> Int =
+  #| (self) => self.length
+
+///|
+pub extern "js" fn Float64Array::op_get(
+  self : Float64Array,
+  index : Int,
+) -> Double =
+  #| (self, index) => self[index]
+
+///|
+pub extern "js" fn Float64Array::op_set(
+  self : Float64Array,
+  index : Int,
+  value : Double,
+) -> Unit =
+  #| (self, index, value) => { self[index] = value }
+
+///|
+pub extern "js" fn Float64Array::length(self : Float64Array) -> Int =
+  #| (self) => self.length
+
+// Global accessors
+
+///|
+/// Get the global window object
+pub extern "js" fn window() -> Window? =
+  #| () => (typeof window !== 'undefined') ? { $tag: 1, _0: window } : { $tag: 0 }

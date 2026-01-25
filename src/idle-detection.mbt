@@ -83,6 +83,34 @@ pub extern "js" fn IdleDetector::to_js_value(self : IdleDetector) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to IdleDetector (unchecked)
+pub extern "js" fn IdleDetector::from_js_value(v : JsValue) -> IdleDetector =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IdleDetector (checked with instanceof)
+pub extern "js" fn IdleDetector::from_js_value_opt(
+  v : JsValue,
+) -> IdleDetector? =
+  #| (v) => (v instanceof IdleDetector) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IdleDetector (checked with instanceof)
+pub extern "js" fn JsValue::as_idle_detector(self : JsValue) -> IdleDetector? =
+  #| (self) => (self instanceof IdleDetector) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IdleDetector (unchecked)
+pub extern "js" fn JsValue::to_idle_detector(self : JsValue) -> IdleDetector =
+  #| (self) => self
+
+///|
+pub extern "js" fn IdleDetector::to_event_target(
+  self : IdleDetector,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn IdleDetector::new() -> IdleDetector =
   #| () => new IdleDetector()
 
@@ -90,13 +118,13 @@ pub extern "js" fn IdleDetector::new() -> IdleDetector =
 pub extern "js" fn IdleDetector::get_user_state(
   self : IdleDetector,
 ) -> UserIdleState? =
-  #| (self) => self.userState
+  #| (self) => { const v = self.userState; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn IdleDetector::get_screen_state(
   self : IdleDetector,
 ) -> ScreenIdleState? =
-  #| (self) => self.screenState
+  #| (self) => { const v = self.screenState; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn IdleDetector::get_onchange(

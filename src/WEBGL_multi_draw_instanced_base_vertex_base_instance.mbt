@@ -12,7 +12,35 @@ pub extern "js" fn WEBGL_multi_draw_instanced_base_vertex_base_instance::to_js_v
   #| (self) => self
 
 ///|
-pub extern "js" fn WEBGL_multi_draw_instanced_base_vertex_base_instance::multi_draw_arrays_instanced_base_instance_w_e_b_g_l(
+/// Cast JsValue to WEBGL_multi_draw_instanced_base_vertex_base_instance (unchecked)
+pub extern "js" fn WEBGL_multi_draw_instanced_base_vertex_base_instance::from_js_value(
+  v : JsValue,
+) -> WEBGL_multi_draw_instanced_base_vertex_base_instance =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WEBGL_multi_draw_instanced_base_vertex_base_instance (checked with instanceof)
+pub extern "js" fn WEBGL_multi_draw_instanced_base_vertex_base_instance::from_js_value_opt(
+  v : JsValue,
+) -> WEBGL_multi_draw_instanced_base_vertex_base_instance? =
+  #| (v) => (v instanceof WEBGL_multi_draw_instanced_base_vertex_base_instance) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WEBGL_multi_draw_instanced_base_vertex_base_instance (checked with instanceof)
+pub extern "js" fn JsValue::as_webgl_multi_draw_instanced_base_vertex_base_instance(
+  self : JsValue,
+) -> WEBGL_multi_draw_instanced_base_vertex_base_instance? =
+  #| (self) => (self instanceof WEBGL_multi_draw_instanced_base_vertex_base_instance) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WEBGL_multi_draw_instanced_base_vertex_base_instance (unchecked)
+pub extern "js" fn JsValue::to_webgl_multi_draw_instanced_base_vertex_base_instance(
+  self : JsValue,
+) -> WEBGL_multi_draw_instanced_base_vertex_base_instance =
+  #| (self) => self
+
+///|
+pub extern "js" fn WEBGL_multi_draw_instanced_base_vertex_base_instance::multi_draw_arrays_instanced_base_instance_webgl(
   self : WEBGL_multi_draw_instanced_base_vertex_base_instance,
   mode : GLenum,
   firsts_list : Int32ArrayOrArrayOfGLint,
@@ -28,7 +56,7 @@ pub extern "js" fn WEBGL_multi_draw_instanced_base_vertex_base_instance::multi_d
   #| (self, mode, firsts_list, firsts_offset, counts_list, counts_offset, instance_counts_list, instance_counts_offset, base_instances_list, base_instances_offset, drawcount) => self.multiDrawArraysInstancedBaseInstanceWEBGL(mode, firsts_list, firsts_offset, counts_list, counts_offset, instance_counts_list, instance_counts_offset, base_instances_list, base_instances_offset, drawcount)
 
 ///|
-pub extern "js" fn WEBGL_multi_draw_instanced_base_vertex_base_instance::multi_draw_elements_instanced_base_vertex_base_instance_w_e_b_g_l(
+pub extern "js" fn WEBGL_multi_draw_instanced_base_vertex_base_instance::multi_draw_elements_instanced_base_vertex_base_instance_webgl(
   self : WEBGL_multi_draw_instanced_base_vertex_base_instance,
   mode : GLenum,
   counts_list : Int32ArrayOrArrayOfGLsizei,

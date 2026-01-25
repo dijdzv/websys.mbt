@@ -95,7 +95,33 @@ pub extern "js" fn ContactAddress::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn ContactAddress::to_j_s_o_n(self : ContactAddress) -> JsValue =
+/// Cast JsValue to ContactAddress (unchecked)
+pub extern "js" fn ContactAddress::from_js_value(v : JsValue) -> ContactAddress =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ContactAddress (checked with instanceof)
+pub extern "js" fn ContactAddress::from_js_value_opt(
+  v : JsValue,
+) -> ContactAddress? =
+  #| (v) => (v instanceof ContactAddress) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ContactAddress (checked with instanceof)
+pub extern "js" fn JsValue::as_contact_address(
+  self : JsValue,
+) -> ContactAddress? =
+  #| (self) => (self instanceof ContactAddress) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ContactAddress (unchecked)
+pub extern "js" fn JsValue::to_contact_address(
+  self : JsValue,
+) -> ContactAddress =
+  #| (self) => self
+
+///|
+pub extern "js" fn ContactAddress::to_json(self : ContactAddress) -> JsValue =
   #| (self) => self.toJSON()
 
 ///|
@@ -161,16 +187,44 @@ pub extern "js" fn ContactsManager::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ContactsManager (unchecked)
+pub extern "js" fn ContactsManager::from_js_value(
+  v : JsValue,
+) -> ContactsManager =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ContactsManager (checked with instanceof)
+pub extern "js" fn ContactsManager::from_js_value_opt(
+  v : JsValue,
+) -> ContactsManager? =
+  #| (v) => (v instanceof ContactsManager) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ContactsManager (checked with instanceof)
+pub extern "js" fn JsValue::as_contacts_manager(
+  self : JsValue,
+) -> ContactsManager? =
+  #| (self) => (self instanceof ContactsManager) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ContactsManager (unchecked)
+pub extern "js" fn JsValue::to_contacts_manager(
+  self : JsValue,
+) -> ContactsManager =
+  #| (self) => self
+
+///|
 pub extern "js" fn ContactsManager::get_properties(
   self : ContactsManager,
-) -> Promise[Unit] =
+) -> Promise[Array[ContactProperty]] =
   #| (self) => self.getProperties()
 
 ///|
 pub extern "js" fn ContactsManager::select(
   self : ContactsManager,
   properties : Array[ContactProperty],
-) -> Promise[Unit] =
+) -> Promise[Array[ContactInfo]] =
   #| (self, properties) => self.select(properties)
 
 ///|
@@ -178,5 +232,5 @@ pub extern "js" fn ContactsManager::select_with_options(
   self : ContactsManager,
   properties : Array[ContactProperty],
   options : ContactsSelectOptions,
-) -> Promise[Unit] =
+) -> Promise[Array[ContactInfo]] =
   #| (self, properties, options) => self.select(properties, options)

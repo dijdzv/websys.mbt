@@ -110,22 +110,50 @@ pub extern "js" fn DigitalGoodsService::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to DigitalGoodsService (unchecked)
+pub extern "js" fn DigitalGoodsService::from_js_value(
+  v : JsValue,
+) -> DigitalGoodsService =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to DigitalGoodsService (checked with instanceof)
+pub extern "js" fn DigitalGoodsService::from_js_value_opt(
+  v : JsValue,
+) -> DigitalGoodsService? =
+  #| (v) => (v instanceof DigitalGoodsService) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to DigitalGoodsService (checked with instanceof)
+pub extern "js" fn JsValue::as_digital_goods_service(
+  self : JsValue,
+) -> DigitalGoodsService? =
+  #| (self) => (self instanceof DigitalGoodsService) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to DigitalGoodsService (unchecked)
+pub extern "js" fn JsValue::to_digital_goods_service(
+  self : JsValue,
+) -> DigitalGoodsService =
+  #| (self) => self
+
+///|
 pub extern "js" fn DigitalGoodsService::get_details(
   self : DigitalGoodsService,
   item_ids : Array[String],
-) -> Promise[Unit] =
+) -> Promise[Array[ItemDetails]] =
   #| (self, item_ids) => self.getDetails(item_ids)
 
 ///|
 pub extern "js" fn DigitalGoodsService::list_purchases(
   self : DigitalGoodsService,
-) -> Promise[Unit] =
+) -> Promise[Array[PurchaseDetails]] =
   #| (self) => self.listPurchases()
 
 ///|
 pub extern "js" fn DigitalGoodsService::list_purchase_history(
   self : DigitalGoodsService,
-) -> Promise[Unit] =
+) -> Promise[Array[PurchaseDetails]] =
   #| (self) => self.listPurchaseHistory()
 
 ///|

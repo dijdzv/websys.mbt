@@ -11,57 +11,85 @@ pub extern "js" fn WEBGL_clip_cull_distance::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
+///|
+/// Cast JsValue to WEBGL_clip_cull_distance (unchecked)
+pub extern "js" fn WEBGL_clip_cull_distance::from_js_value(
+  v : JsValue,
+) -> WEBGL_clip_cull_distance =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WEBGL_clip_cull_distance (checked with instanceof)
+pub extern "js" fn WEBGL_clip_cull_distance::from_js_value_opt(
+  v : JsValue,
+) -> WEBGL_clip_cull_distance? =
+  #| (v) => (v instanceof WEBGL_clip_cull_distance) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WEBGL_clip_cull_distance (checked with instanceof)
+pub extern "js" fn JsValue::as_webgl_clip_cull_distance(
+  self : JsValue,
+) -> WEBGL_clip_cull_distance? =
+  #| (self) => (self instanceof WEBGL_clip_cull_distance) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WEBGL_clip_cull_distance (unchecked)
+pub extern "js" fn JsValue::to_webgl_clip_cull_distance(
+  self : JsValue,
+) -> WEBGL_clip_cull_distance =
+  #| (self) => self
+
 // WEBGL_clip_cull_distance.MAX_CLIP_DISTANCES_WEBGL
 
 ///|
-pub let w_e_b_g_l_clip_cull_distance_max_clip_distances_webgl : Int = 0x0D32
+pub let webgl_clip_cull_distance_max_clip_distances_webgl : Int = 0x0D32
 
 // WEBGL_clip_cull_distance.MAX_CULL_DISTANCES_WEBGL
 
 ///|
-pub let w_e_b_g_l_clip_cull_distance_max_cull_distances_webgl : Int = 0x82F9
+pub let webgl_clip_cull_distance_max_cull_distances_webgl : Int = 0x82F9
 
 // WEBGL_clip_cull_distance.MAX_COMBINED_CLIP_AND_CULL_DISTANCES_WEBGL
 
 ///|
-pub let w_e_b_g_l_clip_cull_distance_max_combined_clip_and_cull_distances_webgl : Int = 0x82FA
+pub let webgl_clip_cull_distance_max_combined_clip_and_cull_distances_webgl : Int = 0x82FA
 
 // WEBGL_clip_cull_distance.CLIP_DISTANCE0_WEBGL
 
 ///|
-pub let w_e_b_g_l_clip_cull_distance_clip_distance0_webgl : Int = 0x3000
+pub let webgl_clip_cull_distance_clip_distance0_webgl : Int = 0x3000
 
 // WEBGL_clip_cull_distance.CLIP_DISTANCE1_WEBGL
 
 ///|
-pub let w_e_b_g_l_clip_cull_distance_clip_distance1_webgl : Int = 0x3001
+pub let webgl_clip_cull_distance_clip_distance1_webgl : Int = 0x3001
 
 // WEBGL_clip_cull_distance.CLIP_DISTANCE2_WEBGL
 
 ///|
-pub let w_e_b_g_l_clip_cull_distance_clip_distance2_webgl : Int = 0x3002
+pub let webgl_clip_cull_distance_clip_distance2_webgl : Int = 0x3002
 
 // WEBGL_clip_cull_distance.CLIP_DISTANCE3_WEBGL
 
 ///|
-pub let w_e_b_g_l_clip_cull_distance_clip_distance3_webgl : Int = 0x3003
+pub let webgl_clip_cull_distance_clip_distance3_webgl : Int = 0x3003
 
 // WEBGL_clip_cull_distance.CLIP_DISTANCE4_WEBGL
 
 ///|
-pub let w_e_b_g_l_clip_cull_distance_clip_distance4_webgl : Int = 0x3004
+pub let webgl_clip_cull_distance_clip_distance4_webgl : Int = 0x3004
 
 // WEBGL_clip_cull_distance.CLIP_DISTANCE5_WEBGL
 
 ///|
-pub let w_e_b_g_l_clip_cull_distance_clip_distance5_webgl : Int = 0x3005
+pub let webgl_clip_cull_distance_clip_distance5_webgl : Int = 0x3005
 
 // WEBGL_clip_cull_distance.CLIP_DISTANCE6_WEBGL
 
 ///|
-pub let w_e_b_g_l_clip_cull_distance_clip_distance6_webgl : Int = 0x3006
+pub let webgl_clip_cull_distance_clip_distance6_webgl : Int = 0x3006
 
 // WEBGL_clip_cull_distance.CLIP_DISTANCE7_WEBGL
 
 ///|
-pub let w_e_b_g_l_clip_cull_distance_clip_distance7_webgl : Int = 0x3007
+pub let webgl_clip_cull_distance_clip_distance7_webgl : Int = 0x3007

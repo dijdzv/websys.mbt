@@ -11,12 +11,12 @@ pub struct AuthenticationExtensionsClientInputs {
   minPinLength : Bool?
   hmacCreateSecret : Bool?
   hmacGetSecret : HMACGetSecretInput?
-  payment : AuthenticationExtensionsPaymentInputs?
   appid : String?
   appidExclude : String?
   credProps : Bool?
   prf : AuthenticationExtensionsPRFInputs?
   largeBlob : AuthenticationExtensionsLargeBlobInputs?
+  payment : AuthenticationExtensionsPaymentInputs?
 }
 
 ///|
@@ -30,12 +30,12 @@ pub fn AuthenticationExtensionsClientInputs::default() -> AuthenticationExtensio
     minPinLength: None,
     hmacCreateSecret: None,
     hmacGetSecret: None,
-    payment: None,
     appid: None,
     appidExclude: None,
     credProps: None,
     prf: None,
     largeBlob: None,
+    payment: None,
   }
 }
 
@@ -52,12 +52,12 @@ pub extern "js" fn AuthenticationExtensionsClientInputs::to_js(
   #|   minPinLength: self.minPinLength,
   #|   hmacCreateSecret: self.hmacCreateSecret,
   #|   hmacGetSecret: self.hmacGetSecret,
-  #|   payment: self.payment,
   #|   appid: self.appid,
   #|   appidExclude: self.appidExclude,
   #|   credProps: self.credProps,
   #|   prf: self.prf,
-  #|   largeBlob: self.largeBlob
+  #|   largeBlob: self.largeBlob,
+  #|   payment: self.payment
   #| })
 
 ///|
@@ -88,12 +88,12 @@ pub extern "js" fn HMACGetSecretInput::to_js(
 pub struct AuthenticationExtensionsClientOutputs {
   hmacCreateSecret : Bool?
   hmacGetSecret : HMACGetSecretOutput?
-  payment : AuthenticationExtensionsPaymentOutputs?
   appid : Bool?
   appidExclude : Bool?
   credProps : CredentialPropertiesOutput?
   prf : AuthenticationExtensionsPRFOutputs?
   largeBlob : AuthenticationExtensionsLargeBlobOutputs?
+  payment : AuthenticationExtensionsPaymentOutputs?
 }
 
 ///|
@@ -102,12 +102,12 @@ pub fn AuthenticationExtensionsClientOutputs::default() -> AuthenticationExtensi
   AuthenticationExtensionsClientOutputs::{
     hmacCreateSecret: None,
     hmacGetSecret: None,
-    payment: None,
     appid: None,
     appidExclude: None,
     credProps: None,
     prf: None,
     largeBlob: None,
+    payment: None,
   }
 }
 
@@ -119,12 +119,12 @@ pub extern "js" fn AuthenticationExtensionsClientOutputs::to_js(
   #| (self) => ({
   #|   hmacCreateSecret: self.hmacCreateSecret,
   #|   hmacGetSecret: self.hmacGetSecret,
-  #|   payment: self.payment,
   #|   appid: self.appid,
   #|   appidExclude: self.appidExclude,
   #|   credProps: self.credProps,
   #|   prf: self.prf,
-  #|   largeBlob: self.largeBlob
+  #|   largeBlob: self.largeBlob,
+  #|   payment: self.payment
   #| })
 
 ///|

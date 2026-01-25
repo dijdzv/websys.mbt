@@ -12,10 +12,44 @@ pub extern "js" fn NavigatorManagedData::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to NavigatorManagedData (unchecked)
+pub extern "js" fn NavigatorManagedData::from_js_value(
+  v : JsValue,
+) -> NavigatorManagedData =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to NavigatorManagedData (checked with instanceof)
+pub extern "js" fn NavigatorManagedData::from_js_value_opt(
+  v : JsValue,
+) -> NavigatorManagedData? =
+  #| (v) => (v instanceof NavigatorManagedData) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to NavigatorManagedData (checked with instanceof)
+pub extern "js" fn JsValue::as_navigator_managed_data(
+  self : JsValue,
+) -> NavigatorManagedData? =
+  #| (self) => (self instanceof NavigatorManagedData) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to NavigatorManagedData (unchecked)
+pub extern "js" fn JsValue::to_navigator_managed_data(
+  self : JsValue,
+) -> NavigatorManagedData =
+  #| (self) => self
+
+///|
+pub extern "js" fn NavigatorManagedData::to_event_target(
+  self : NavigatorManagedData,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn NavigatorManagedData::get_managed_configuration(
   self : NavigatorManagedData,
   keys : Array[String],
-) -> Promise[Unit] =
+) -> Promise[JsValue] =
   #| (self, keys) => self.getManagedConfiguration(keys)
 
 ///|

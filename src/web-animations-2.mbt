@@ -84,7 +84,7 @@ pub struct EffectTiming {
   delay : Double?
   endDelay : Double?
   playbackRate : Double?
-  duration : JsValue?
+  duration : DoubleOrCSSNumericValueOrString?
   fill : FillMode?
   iterationStart : Double?
   iterations : Double?
@@ -132,7 +132,7 @@ pub struct OptionalEffectTiming {
   fill : FillMode?
   iterationStart : Double?
   iterations : Double?
-  duration : JsValue?
+  duration : DoubleOrString?
   direction : PlaybackDirection?
   easing : String?
 }
@@ -176,7 +176,7 @@ pub struct ComputedEffectTiming {
   delay : Double?
   endDelay : Double?
   playbackRate : Double?
-  duration : JsValue?
+  duration : DoubleOrCSSNumericValueOrString?
   fill : FillMode?
   iterationStart : Double?
   iterations : Double?
@@ -241,7 +241,7 @@ pub struct KeyframeEffectOptions {
   delay : Double?
   endDelay : Double?
   playbackRate : Double?
-  duration : JsValue?
+  duration : DoubleOrCSSNumericValueOrString?
   fill : FillMode?
   iterationStart : Double?
   iterations : Double?
@@ -320,7 +320,7 @@ pub struct KeyframeAnimationOptions {
   delay : Double?
   endDelay : Double?
   playbackRate : Double?
-  duration : JsValue?
+  duration : DoubleOrCSSNumericValueOrString?
   fill : FillMode?
   iterationStart : Double?
   iterations : Double?
@@ -329,8 +329,8 @@ pub struct KeyframeAnimationOptions {
   iterationComposite : IterationCompositeOperation?
   composite : CompositeOperation?
   pseudoElement : Nullable[CSSOMString]
-  rangeStart : JsValue?
-  rangeEnd : JsValue?
+  rangeStart : TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString?
+  rangeEnd : TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString?
   trigger : Nullable[AnimationTrigger]
   id : String?
   timeline : Nullable[AnimationTimeline]
@@ -416,10 +416,10 @@ pub extern "js" fn AnimationPlaybackEventInit::to_js(
 pub struct AnimationTriggerOptions {
   timeline : Nullable[AnimationTimeline]
   behavior : Nullable[AnimationTriggerBehavior]
-  rangeStart : JsValue?
-  rangeEnd : JsValue?
-  exitRangeStart : JsValue?
-  exitRangeEnd : JsValue?
+  rangeStart : TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString?
+  rangeEnd : TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString?
+  exitRangeStart : TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString?
+  exitRangeEnd : TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString?
 }
 
 ///|
@@ -458,6 +458,32 @@ pub extern "js" fn GroupEffect::to_js_value(self : GroupEffect) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to GroupEffect (unchecked)
+pub extern "js" fn GroupEffect::from_js_value(v : JsValue) -> GroupEffect =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GroupEffect (checked with instanceof)
+pub extern "js" fn GroupEffect::from_js_value_opt(v : JsValue) -> GroupEffect? =
+  #| (v) => (v instanceof GroupEffect) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GroupEffect (checked with instanceof)
+pub extern "js" fn JsValue::as_group_effect(self : JsValue) -> GroupEffect? =
+  #| (self) => (self instanceof GroupEffect) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GroupEffect (unchecked)
+pub extern "js" fn JsValue::to_group_effect(self : JsValue) -> GroupEffect =
+  #| (self) => self
+
+///|
+pub extern "js" fn GroupEffect::as_sequence_effect(
+  self : GroupEffect,
+) -> SequenceEffect? =
+  #| (self) => (self instanceof SequenceEffect) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn GroupEffect::new(
   children : Array[AnimationEffect],
   timing : DoubleOrEffectTiming,
@@ -474,13 +500,13 @@ pub extern "js" fn GroupEffect::get_children(
 pub extern "js" fn GroupEffect::get_first_child(
   self : GroupEffect,
 ) -> AnimationEffect? =
-  #| (self) => self.firstChild
+  #| (self) => { const v = self.firstChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn GroupEffect::get_last_child(
   self : GroupEffect,
 ) -> AnimationEffect? =
-  #| (self) => self.lastChild
+  #| (self) => { const v = self.lastChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn GroupEffect::clone(self : GroupEffect) -> GroupEffect =
@@ -511,6 +537,34 @@ pub extern "js" fn AnimationNodeList::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to AnimationNodeList (unchecked)
+pub extern "js" fn AnimationNodeList::from_js_value(
+  v : JsValue,
+) -> AnimationNodeList =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AnimationNodeList (checked with instanceof)
+pub extern "js" fn AnimationNodeList::from_js_value_opt(
+  v : JsValue,
+) -> AnimationNodeList? =
+  #| (v) => (v instanceof AnimationNodeList) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AnimationNodeList (checked with instanceof)
+pub extern "js" fn JsValue::as_animation_node_list(
+  self : JsValue,
+) -> AnimationNodeList? =
+  #| (self) => (self instanceof AnimationNodeList) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AnimationNodeList (unchecked)
+pub extern "js" fn JsValue::to_animation_node_list(
+  self : JsValue,
+) -> AnimationNodeList =
+  #| (self) => self
+
+///|
 pub extern "js" fn AnimationNodeList::get_length(
   self : AnimationNodeList,
 ) -> Int =
@@ -521,14 +575,14 @@ pub extern "js" fn AnimationNodeList::item(
   self : AnimationNodeList,
   index : Int,
 ) -> AnimationEffect? =
-  #| (self, index) => self.item(index)
+  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn AnimationNodeList::get(
   self : AnimationNodeList,
   index : Int,
 ) -> AnimationEffect? =
-  #| (self, index) => self[index]
+  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// SequenceEffect interface
@@ -541,6 +595,38 @@ pub extern "js" fn SequenceEffect::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SequenceEffect (unchecked)
+pub extern "js" fn SequenceEffect::from_js_value(v : JsValue) -> SequenceEffect =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SequenceEffect (checked with instanceof)
+pub extern "js" fn SequenceEffect::from_js_value_opt(
+  v : JsValue,
+) -> SequenceEffect? =
+  #| (v) => (v instanceof SequenceEffect) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SequenceEffect (checked with instanceof)
+pub extern "js" fn JsValue::as_sequence_effect(
+  self : JsValue,
+) -> SequenceEffect? =
+  #| (self) => (self instanceof SequenceEffect) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SequenceEffect (unchecked)
+pub extern "js" fn JsValue::to_sequence_effect(
+  self : JsValue,
+) -> SequenceEffect =
+  #| (self) => self
+
+///|
+pub extern "js" fn SequenceEffect::to_group_effect(
+  self : SequenceEffect,
+) -> GroupEffect =
+  #| (self) => self
+
+///|
 pub extern "js" fn SequenceEffect::new(
   children : Array[AnimationEffect],
   timing : DoubleOrEffectTiming,
@@ -548,40 +634,10 @@ pub extern "js" fn SequenceEffect::new(
   #| (children, timing) => new SequenceEffect(children, timing)
 
 ///|
-pub extern "js" fn SequenceEffect::get_children(
+pub extern "js" fn SequenceEffect::clone(
   self : SequenceEffect,
-) -> AnimationNodeList =
-  #| (self) => self.children
-
-///|
-pub extern "js" fn SequenceEffect::get_first_child(
-  self : SequenceEffect,
-) -> AnimationEffect? =
-  #| (self) => self.firstChild
-
-///|
-pub extern "js" fn SequenceEffect::get_last_child(
-  self : SequenceEffect,
-) -> AnimationEffect? =
-  #| (self) => self.lastChild
-
-///|
-pub extern "js" fn SequenceEffect::clone(self : SequenceEffect) -> GroupEffect =
+) -> SequenceEffect =
   #| (self) => self.clone()
-
-///|
-pub extern "js" fn SequenceEffect::prepend(
-  self : SequenceEffect,
-  effects : AnimationEffect,
-) -> Unit =
-  #| (self, effects) => self.prepend(effects)
-
-///|
-pub extern "js" fn SequenceEffect::append(
-  self : SequenceEffect,
-  effects : AnimationEffect,
-) -> Unit =
-  #| (self, effects) => self.append(effects)
 
 ///|
 /// AnimationPlaybackEvent interface
@@ -591,6 +647,40 @@ pub type AnimationPlaybackEvent
 pub extern "js" fn AnimationPlaybackEvent::to_js_value(
   self : AnimationPlaybackEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to AnimationPlaybackEvent (unchecked)
+pub extern "js" fn AnimationPlaybackEvent::from_js_value(
+  v : JsValue,
+) -> AnimationPlaybackEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AnimationPlaybackEvent (checked with instanceof)
+pub extern "js" fn AnimationPlaybackEvent::from_js_value_opt(
+  v : JsValue,
+) -> AnimationPlaybackEvent? =
+  #| (v) => (v instanceof AnimationPlaybackEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AnimationPlaybackEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_animation_playback_event(
+  self : JsValue,
+) -> AnimationPlaybackEvent? =
+  #| (self) => (self instanceof AnimationPlaybackEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AnimationPlaybackEvent (unchecked)
+pub extern "js" fn JsValue::to_animation_playback_event(
+  self : JsValue,
+) -> AnimationPlaybackEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn AnimationPlaybackEvent::to_event(
+  self : AnimationPlaybackEvent,
+) -> Event =
   #| (self) => self
 
 ///|
@@ -604,13 +694,13 @@ pub extern "js" fn AnimationPlaybackEvent::new(
 pub extern "js" fn AnimationPlaybackEvent::get_current_time(
   self : AnimationPlaybackEvent,
 ) -> CSSNumberish? =
-  #| (self) => self.currentTime
+  #| (self) => { const v = self.currentTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn AnimationPlaybackEvent::get_timeline_time(
   self : AnimationPlaybackEvent,
 ) -> CSSNumberish? =
-  #| (self) => self.timelineTime
+  #| (self) => { const v = self.timelineTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// AnimationTrigger interface
@@ -620,6 +710,34 @@ pub type AnimationTrigger
 pub extern "js" fn AnimationTrigger::to_js_value(
   self : AnimationTrigger,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to AnimationTrigger (unchecked)
+pub extern "js" fn AnimationTrigger::from_js_value(
+  v : JsValue,
+) -> AnimationTrigger =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AnimationTrigger (checked with instanceof)
+pub extern "js" fn AnimationTrigger::from_js_value_opt(
+  v : JsValue,
+) -> AnimationTrigger? =
+  #| (v) => (v instanceof AnimationTrigger) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AnimationTrigger (checked with instanceof)
+pub extern "js" fn JsValue::as_animation_trigger(
+  self : JsValue,
+) -> AnimationTrigger? =
+  #| (self) => (self instanceof AnimationTrigger) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AnimationTrigger (unchecked)
+pub extern "js" fn JsValue::to_animation_trigger(
+  self : JsValue,
+) -> AnimationTrigger =
   #| (self) => self
 
 ///|

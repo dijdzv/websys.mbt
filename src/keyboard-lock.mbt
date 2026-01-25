@@ -10,6 +10,30 @@ pub extern "js" fn Keyboard::to_js_value(self : Keyboard) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Keyboard (unchecked)
+pub extern "js" fn Keyboard::from_js_value(v : JsValue) -> Keyboard =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Keyboard (checked with instanceof)
+pub extern "js" fn Keyboard::from_js_value_opt(v : JsValue) -> Keyboard? =
+  #| (v) => (v instanceof Keyboard) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Keyboard (checked with instanceof)
+pub extern "js" fn JsValue::as_keyboard(self : JsValue) -> Keyboard? =
+  #| (self) => (self instanceof Keyboard) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Keyboard (unchecked)
+pub extern "js" fn JsValue::to_keyboard(self : JsValue) -> Keyboard =
+  #| (self) => self
+
+///|
+pub extern "js" fn Keyboard::to_event_target(self : Keyboard) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn Keyboard::lock(self : Keyboard) -> Promise[Unit] =
   #| (self) => self.lock()
 

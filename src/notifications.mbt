@@ -219,6 +219,34 @@ pub extern "js" fn Notification::to_js_value(self : Notification) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Notification (unchecked)
+pub extern "js" fn Notification::from_js_value(v : JsValue) -> Notification =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Notification (checked with instanceof)
+pub extern "js" fn Notification::from_js_value_opt(
+  v : JsValue,
+) -> Notification? =
+  #| (v) => (v instanceof Notification) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Notification (checked with instanceof)
+pub extern "js" fn JsValue::as_notification(self : JsValue) -> Notification? =
+  #| (self) => (self instanceof Notification) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Notification (unchecked)
+pub extern "js" fn JsValue::to_notification(self : JsValue) -> Notification =
+  #| (self) => self
+
+///|
+pub extern "js" fn Notification::to_event_target(
+  self : Notification,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn Notification::new(
   title : String,
   options : NotificationOptions,
@@ -347,7 +375,7 @@ pub extern "js" fn Notification::get_renotify(self : Notification) -> Bool =
 
 ///|
 pub extern "js" fn Notification::get_silent(self : Notification) -> Bool? =
-  #| (self) => self.silent
+  #| (self) => { const v = self.silent; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Notification::get_require_interaction(
@@ -375,6 +403,46 @@ pub type NotificationEvent
 pub extern "js" fn NotificationEvent::to_js_value(
   self : NotificationEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to NotificationEvent (unchecked)
+pub extern "js" fn NotificationEvent::from_js_value(
+  v : JsValue,
+) -> NotificationEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to NotificationEvent (checked with instanceof)
+pub extern "js" fn NotificationEvent::from_js_value_opt(
+  v : JsValue,
+) -> NotificationEvent? =
+  #| (v) => (v instanceof NotificationEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to NotificationEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_notification_event(
+  self : JsValue,
+) -> NotificationEvent? =
+  #| (self) => (self instanceof NotificationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to NotificationEvent (unchecked)
+pub extern "js" fn JsValue::to_notification_event(
+  self : JsValue,
+) -> NotificationEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn NotificationEvent::to_extendable_event(
+  self : NotificationEvent,
+) -> ExtendableEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn NotificationEvent::to_event(
+  self : NotificationEvent,
+) -> Event =
   #| (self) => self
 
 ///|

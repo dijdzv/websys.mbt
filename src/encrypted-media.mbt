@@ -322,6 +322,34 @@ pub extern "js" fn MediaKeySystemAccess::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to MediaKeySystemAccess (unchecked)
+pub extern "js" fn MediaKeySystemAccess::from_js_value(
+  v : JsValue,
+) -> MediaKeySystemAccess =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaKeySystemAccess (checked with instanceof)
+pub extern "js" fn MediaKeySystemAccess::from_js_value_opt(
+  v : JsValue,
+) -> MediaKeySystemAccess? =
+  #| (v) => (v instanceof MediaKeySystemAccess) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaKeySystemAccess (checked with instanceof)
+pub extern "js" fn JsValue::as_media_key_system_access(
+  self : JsValue,
+) -> MediaKeySystemAccess? =
+  #| (self) => (self instanceof MediaKeySystemAccess) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaKeySystemAccess (unchecked)
+pub extern "js" fn JsValue::to_media_key_system_access(
+  self : JsValue,
+) -> MediaKeySystemAccess =
+  #| (self) => self
+
+///|
 pub extern "js" fn MediaKeySystemAccess::get_key_system(
   self : MediaKeySystemAccess,
 ) -> String =
@@ -345,6 +373,26 @@ pub type MediaKeys
 
 ///|
 pub extern "js" fn MediaKeys::to_js_value(self : MediaKeys) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to MediaKeys (unchecked)
+pub extern "js" fn MediaKeys::from_js_value(v : JsValue) -> MediaKeys =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaKeys (checked with instanceof)
+pub extern "js" fn MediaKeys::from_js_value_opt(v : JsValue) -> MediaKeys? =
+  #| (v) => (v instanceof MediaKeys) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaKeys (checked with instanceof)
+pub extern "js" fn JsValue::as_media_keys(self : JsValue) -> MediaKeys? =
+  #| (self) => (self instanceof MediaKeys) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaKeys (unchecked)
+pub extern "js" fn JsValue::to_media_keys(self : JsValue) -> MediaKeys =
   #| (self) => self
 
 ///|
@@ -388,6 +436,40 @@ pub type MediaKeySession
 pub extern "js" fn MediaKeySession::to_js_value(
   self : MediaKeySession,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to MediaKeySession (unchecked)
+pub extern "js" fn MediaKeySession::from_js_value(
+  v : JsValue,
+) -> MediaKeySession =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaKeySession (checked with instanceof)
+pub extern "js" fn MediaKeySession::from_js_value_opt(
+  v : JsValue,
+) -> MediaKeySession? =
+  #| (v) => (v instanceof MediaKeySession) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaKeySession (checked with instanceof)
+pub extern "js" fn JsValue::as_media_key_session(
+  self : JsValue,
+) -> MediaKeySession? =
+  #| (self) => (self instanceof MediaKeySession) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaKeySession (unchecked)
+pub extern "js" fn JsValue::to_media_key_session(
+  self : JsValue,
+) -> MediaKeySession =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaKeySession::to_event_target(
+  self : MediaKeySession,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -485,6 +567,34 @@ pub extern "js" fn MediaKeyStatusMap::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to MediaKeyStatusMap (unchecked)
+pub extern "js" fn MediaKeyStatusMap::from_js_value(
+  v : JsValue,
+) -> MediaKeyStatusMap =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaKeyStatusMap (checked with instanceof)
+pub extern "js" fn MediaKeyStatusMap::from_js_value_opt(
+  v : JsValue,
+) -> MediaKeyStatusMap? =
+  #| (v) => (v instanceof MediaKeyStatusMap) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaKeyStatusMap (checked with instanceof)
+pub extern "js" fn JsValue::as_media_key_status_map(
+  self : JsValue,
+) -> MediaKeyStatusMap? =
+  #| (self) => (self instanceof MediaKeyStatusMap) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaKeyStatusMap (unchecked)
+pub extern "js" fn JsValue::to_media_key_status_map(
+  self : JsValue,
+) -> MediaKeyStatusMap =
+  #| (self) => self
+
+///|
 pub extern "js" fn MediaKeyStatusMap::_unknown_(
   self : MediaKeyStatusMap,
 ) -> Unit =
@@ -519,6 +629,40 @@ pub extern "js" fn MediaKeyMessageEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to MediaKeyMessageEvent (unchecked)
+pub extern "js" fn MediaKeyMessageEvent::from_js_value(
+  v : JsValue,
+) -> MediaKeyMessageEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaKeyMessageEvent (checked with instanceof)
+pub extern "js" fn MediaKeyMessageEvent::from_js_value_opt(
+  v : JsValue,
+) -> MediaKeyMessageEvent? =
+  #| (v) => (v instanceof MediaKeyMessageEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaKeyMessageEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_media_key_message_event(
+  self : JsValue,
+) -> MediaKeyMessageEvent? =
+  #| (self) => (self instanceof MediaKeyMessageEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaKeyMessageEvent (unchecked)
+pub extern "js" fn JsValue::to_media_key_message_event(
+  self : JsValue,
+) -> MediaKeyMessageEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaKeyMessageEvent::to_event(
+  self : MediaKeyMessageEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn MediaKeyMessageEvent::new(
   type_ : String,
   event_init_dict : MediaKeyMessageEventInit,
@@ -548,6 +692,40 @@ pub extern "js" fn MediaEncryptedEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to MediaEncryptedEvent (unchecked)
+pub extern "js" fn MediaEncryptedEvent::from_js_value(
+  v : JsValue,
+) -> MediaEncryptedEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaEncryptedEvent (checked with instanceof)
+pub extern "js" fn MediaEncryptedEvent::from_js_value_opt(
+  v : JsValue,
+) -> MediaEncryptedEvent? =
+  #| (v) => (v instanceof MediaEncryptedEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaEncryptedEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_media_encrypted_event(
+  self : JsValue,
+) -> MediaEncryptedEvent? =
+  #| (self) => (self instanceof MediaEncryptedEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaEncryptedEvent (unchecked)
+pub extern "js" fn JsValue::to_media_encrypted_event(
+  self : JsValue,
+) -> MediaEncryptedEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaEncryptedEvent::to_event(
+  self : MediaEncryptedEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn MediaEncryptedEvent::new(
   type_ : String,
   event_init_dict : MediaEncryptedEventInit,
@@ -564,4 +742,4 @@ pub extern "js" fn MediaEncryptedEvent::get_init_data_type(
 pub extern "js" fn MediaEncryptedEvent::get_init_data(
   self : MediaEncryptedEvent,
 ) -> ArrayBuffer? =
-  #| (self) => self.initData
+  #| (self) => { const v = self.initData; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }

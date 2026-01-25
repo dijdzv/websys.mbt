@@ -154,6 +154,34 @@ pub extern "js" fn BackgroundFetchManager::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BackgroundFetchManager (unchecked)
+pub extern "js" fn BackgroundFetchManager::from_js_value(
+  v : JsValue,
+) -> BackgroundFetchManager =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BackgroundFetchManager (checked with instanceof)
+pub extern "js" fn BackgroundFetchManager::from_js_value_opt(
+  v : JsValue,
+) -> BackgroundFetchManager? =
+  #| (v) => (v instanceof BackgroundFetchManager) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BackgroundFetchManager (checked with instanceof)
+pub extern "js" fn JsValue::as_background_fetch_manager(
+  self : JsValue,
+) -> BackgroundFetchManager? =
+  #| (self) => (self instanceof BackgroundFetchManager) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BackgroundFetchManager (unchecked)
+pub extern "js" fn JsValue::to_background_fetch_manager(
+  self : JsValue,
+) -> BackgroundFetchManager =
+  #| (self) => self
+
+///|
 pub extern "js" fn BackgroundFetchManager::fetch(
   self : BackgroundFetchManager,
   id : String,
@@ -175,12 +203,12 @@ pub extern "js" fn BackgroundFetchManager::get(
   self : BackgroundFetchManager,
   id : String,
 ) -> Promise[BackgroundFetchRegistration?] =
-  #| (self, id) => self.get(id)
+  #| (self, id) => self.get(id).then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
 
 ///|
 pub extern "js" fn BackgroundFetchManager::get_ids(
   self : BackgroundFetchManager,
-) -> Promise[Unit] =
+) -> Promise[Array[String]] =
   #| (self) => self.getIds()
 
 ///|
@@ -191,6 +219,40 @@ pub type BackgroundFetchRegistration
 pub extern "js" fn BackgroundFetchRegistration::to_js_value(
   self : BackgroundFetchRegistration,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to BackgroundFetchRegistration (unchecked)
+pub extern "js" fn BackgroundFetchRegistration::from_js_value(
+  v : JsValue,
+) -> BackgroundFetchRegistration =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BackgroundFetchRegistration (checked with instanceof)
+pub extern "js" fn BackgroundFetchRegistration::from_js_value_opt(
+  v : JsValue,
+) -> BackgroundFetchRegistration? =
+  #| (v) => (v instanceof BackgroundFetchRegistration) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BackgroundFetchRegistration (checked with instanceof)
+pub extern "js" fn JsValue::as_background_fetch_registration(
+  self : JsValue,
+) -> BackgroundFetchRegistration? =
+  #| (self) => (self instanceof BackgroundFetchRegistration) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BackgroundFetchRegistration (unchecked)
+pub extern "js" fn JsValue::to_background_fetch_registration(
+  self : JsValue,
+) -> BackgroundFetchRegistration =
+  #| (self) => self
+
+///|
+pub extern "js" fn BackgroundFetchRegistration::to_event_target(
+  self : BackgroundFetchRegistration,
+) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -278,7 +340,7 @@ pub extern "js" fn BackgroundFetchRegistration::match__with_options(
 ///|
 pub extern "js" fn BackgroundFetchRegistration::match_all(
   self : BackgroundFetchRegistration,
-) -> Promise[Unit] =
+) -> Promise[Array[BackgroundFetchRecord]] =
   #| (self) => self.matchAll()
 
 ///|
@@ -286,7 +348,7 @@ pub extern "js" fn BackgroundFetchRegistration::match_all_with_options(
   self : BackgroundFetchRegistration,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[Unit] =
+) -> Promise[Array[BackgroundFetchRecord]] =
   #| (self, request, options) => self.matchAll(request, options)
 
 ///|
@@ -297,6 +359,34 @@ pub type BackgroundFetchRecord
 pub extern "js" fn BackgroundFetchRecord::to_js_value(
   self : BackgroundFetchRecord,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to BackgroundFetchRecord (unchecked)
+pub extern "js" fn BackgroundFetchRecord::from_js_value(
+  v : JsValue,
+) -> BackgroundFetchRecord =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BackgroundFetchRecord (checked with instanceof)
+pub extern "js" fn BackgroundFetchRecord::from_js_value_opt(
+  v : JsValue,
+) -> BackgroundFetchRecord? =
+  #| (v) => (v instanceof BackgroundFetchRecord) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BackgroundFetchRecord (checked with instanceof)
+pub extern "js" fn JsValue::as_background_fetch_record(
+  self : JsValue,
+) -> BackgroundFetchRecord? =
+  #| (self) => (self instanceof BackgroundFetchRecord) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BackgroundFetchRecord (unchecked)
+pub extern "js" fn JsValue::to_background_fetch_record(
+  self : JsValue,
+) -> BackgroundFetchRecord =
   #| (self) => self
 
 ///|
@@ -322,6 +412,52 @@ pub extern "js" fn BackgroundFetchEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BackgroundFetchEvent (unchecked)
+pub extern "js" fn BackgroundFetchEvent::from_js_value(
+  v : JsValue,
+) -> BackgroundFetchEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BackgroundFetchEvent (checked with instanceof)
+pub extern "js" fn BackgroundFetchEvent::from_js_value_opt(
+  v : JsValue,
+) -> BackgroundFetchEvent? =
+  #| (v) => (v instanceof BackgroundFetchEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BackgroundFetchEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_background_fetch_event(
+  self : JsValue,
+) -> BackgroundFetchEvent? =
+  #| (self) => (self instanceof BackgroundFetchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BackgroundFetchEvent (unchecked)
+pub extern "js" fn JsValue::to_background_fetch_event(
+  self : JsValue,
+) -> BackgroundFetchEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn BackgroundFetchEvent::to_extendable_event(
+  self : BackgroundFetchEvent,
+) -> ExtendableEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn BackgroundFetchEvent::to_event(
+  self : BackgroundFetchEvent,
+) -> Event =
+  #| (self) => self
+
+///|
+pub extern "js" fn BackgroundFetchEvent::as_background_fetch_update_ui_event(
+  self : BackgroundFetchEvent,
+) -> BackgroundFetchUpdateUIEvent? =
+  #| (self) => (self instanceof BackgroundFetchUpdateUIEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn BackgroundFetchEvent::new(
   type_ : String,
   init_ : BackgroundFetchEventInit,
@@ -345,6 +481,52 @@ pub extern "js" fn BackgroundFetchUpdateUIEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BackgroundFetchUpdateUIEvent (unchecked)
+pub extern "js" fn BackgroundFetchUpdateUIEvent::from_js_value(
+  v : JsValue,
+) -> BackgroundFetchUpdateUIEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BackgroundFetchUpdateUIEvent (checked with instanceof)
+pub extern "js" fn BackgroundFetchUpdateUIEvent::from_js_value_opt(
+  v : JsValue,
+) -> BackgroundFetchUpdateUIEvent? =
+  #| (v) => (v instanceof BackgroundFetchUpdateUIEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BackgroundFetchUpdateUIEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_background_fetch_update_ui_event(
+  self : JsValue,
+) -> BackgroundFetchUpdateUIEvent? =
+  #| (self) => (self instanceof BackgroundFetchUpdateUIEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BackgroundFetchUpdateUIEvent (unchecked)
+pub extern "js" fn JsValue::to_background_fetch_update_ui_event(
+  self : JsValue,
+) -> BackgroundFetchUpdateUIEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn BackgroundFetchUpdateUIEvent::to_background_fetch_event(
+  self : BackgroundFetchUpdateUIEvent,
+) -> BackgroundFetchEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn BackgroundFetchUpdateUIEvent::to_extendable_event(
+  self : BackgroundFetchUpdateUIEvent,
+) -> ExtendableEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn BackgroundFetchUpdateUIEvent::to_event(
+  self : BackgroundFetchUpdateUIEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn BackgroundFetchUpdateUIEvent::new(
   type_ : String,
   init_ : BackgroundFetchEventInit,
@@ -352,19 +534,13 @@ pub extern "js" fn BackgroundFetchUpdateUIEvent::new(
   #| (type_, init_) => new BackgroundFetchUpdateUIEvent(type_, init_)
 
 ///|
-pub extern "js" fn BackgroundFetchUpdateUIEvent::get_registration(
-  self : BackgroundFetchUpdateUIEvent,
-) -> BackgroundFetchRegistration =
-  #| (self) => self.registration
-
-///|
-pub extern "js" fn BackgroundFetchUpdateUIEvent::update_u_i(
+pub extern "js" fn BackgroundFetchUpdateUIEvent::update_ui(
   self : BackgroundFetchUpdateUIEvent,
 ) -> Promise[Unit] =
   #| (self) => self.updateUI()
 
 ///|
-pub extern "js" fn BackgroundFetchUpdateUIEvent::update_u_i_with_options(
+pub extern "js" fn BackgroundFetchUpdateUIEvent::update_ui_with_options(
   self : BackgroundFetchUpdateUIEvent,
   options : BackgroundFetchUIOptions,
 ) -> Promise[Unit] =

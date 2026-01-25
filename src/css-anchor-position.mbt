@@ -12,6 +12,40 @@ pub extern "js" fn CSSPositionTryRule::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSPositionTryRule (unchecked)
+pub extern "js" fn CSSPositionTryRule::from_js_value(
+  v : JsValue,
+) -> CSSPositionTryRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSPositionTryRule (checked with instanceof)
+pub extern "js" fn CSSPositionTryRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSPositionTryRule? =
+  #| (v) => (v instanceof CSSPositionTryRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSPositionTryRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_position_try_rule(
+  self : JsValue,
+) -> CSSPositionTryRule? =
+  #| (self) => (self instanceof CSSPositionTryRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSPositionTryRule (unchecked)
+pub extern "js" fn JsValue::to_css_position_try_rule(
+  self : JsValue,
+) -> CSSPositionTryRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSPositionTryRule::to_css_rule(
+  self : CSSPositionTryRule,
+) -> CSSRule =
+  #| (self) => self
+
+///|
 pub extern "js" fn CSSPositionTryRule::get_name(
   self : CSSPositionTryRule,
 ) -> CSSOMString =
@@ -31,6 +65,40 @@ pub type CSSPositionTryDescriptors
 pub extern "js" fn CSSPositionTryDescriptors::to_js_value(
   self : CSSPositionTryDescriptors,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CSSPositionTryDescriptors (unchecked)
+pub extern "js" fn CSSPositionTryDescriptors::from_js_value(
+  v : JsValue,
+) -> CSSPositionTryDescriptors =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSPositionTryDescriptors (checked with instanceof)
+pub extern "js" fn CSSPositionTryDescriptors::from_js_value_opt(
+  v : JsValue,
+) -> CSSPositionTryDescriptors? =
+  #| (v) => (v instanceof CSSPositionTryDescriptors) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSPositionTryDescriptors (checked with instanceof)
+pub extern "js" fn JsValue::as_css_position_try_descriptors(
+  self : JsValue,
+) -> CSSPositionTryDescriptors? =
+  #| (self) => (self instanceof CSSPositionTryDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSPositionTryDescriptors (unchecked)
+pub extern "js" fn JsValue::to_css_position_try_descriptors(
+  self : JsValue,
+) -> CSSPositionTryDescriptors =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSPositionTryDescriptors::to_css_style_declaration(
+  self : CSSPositionTryDescriptors,
+) -> CSSStyleDeclaration =
   #| (self) => self
 
 ///|

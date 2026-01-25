@@ -421,10 +421,44 @@ pub extern "js" fn WebTransportDatagramsWritable::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to WebTransportDatagramsWritable (unchecked)
+pub extern "js" fn WebTransportDatagramsWritable::from_js_value(
+  v : JsValue,
+) -> WebTransportDatagramsWritable =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WebTransportDatagramsWritable (checked with instanceof)
+pub extern "js" fn WebTransportDatagramsWritable::from_js_value_opt(
+  v : JsValue,
+) -> WebTransportDatagramsWritable? =
+  #| (v) => (v instanceof WebTransportDatagramsWritable) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WebTransportDatagramsWritable (checked with instanceof)
+pub extern "js" fn JsValue::as_web_transport_datagrams_writable(
+  self : JsValue,
+) -> WebTransportDatagramsWritable? =
+  #| (self) => (self instanceof WebTransportDatagramsWritable) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WebTransportDatagramsWritable (unchecked)
+pub extern "js" fn JsValue::to_web_transport_datagrams_writable(
+  self : JsValue,
+) -> WebTransportDatagramsWritable =
+  #| (self) => self
+
+///|
+pub extern "js" fn WebTransportDatagramsWritable::to_writable_stream(
+  self : WebTransportDatagramsWritable,
+) -> WritableStream =
+  #| (self) => self
+
+///|
 pub extern "js" fn WebTransportDatagramsWritable::get_send_group(
   self : WebTransportDatagramsWritable,
 ) -> WebTransportSendGroup? =
-  #| (self) => self.sendGroup
+  #| (self) => { const v = self.sendGroup; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebTransportDatagramsWritable::set_send_group(
@@ -457,6 +491,34 @@ pub extern "js" fn WebTransportDatagramDuplexStream::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to WebTransportDatagramDuplexStream (unchecked)
+pub extern "js" fn WebTransportDatagramDuplexStream::from_js_value(
+  v : JsValue,
+) -> WebTransportDatagramDuplexStream =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WebTransportDatagramDuplexStream (checked with instanceof)
+pub extern "js" fn WebTransportDatagramDuplexStream::from_js_value_opt(
+  v : JsValue,
+) -> WebTransportDatagramDuplexStream? =
+  #| (v) => (v instanceof WebTransportDatagramDuplexStream) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WebTransportDatagramDuplexStream (checked with instanceof)
+pub extern "js" fn JsValue::as_web_transport_datagram_duplex_stream(
+  self : JsValue,
+) -> WebTransportDatagramDuplexStream? =
+  #| (self) => (self instanceof WebTransportDatagramDuplexStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WebTransportDatagramDuplexStream (unchecked)
+pub extern "js" fn JsValue::to_web_transport_datagram_duplex_stream(
+  self : JsValue,
+) -> WebTransportDatagramDuplexStream =
+  #| (self) => self
+
+///|
 pub extern "js" fn WebTransportDatagramDuplexStream::create_writable(
   self : WebTransportDatagramDuplexStream,
 ) -> WebTransportDatagramsWritable =
@@ -485,7 +547,7 @@ pub extern "js" fn WebTransportDatagramDuplexStream::get_max_datagram_size(
 pub extern "js" fn WebTransportDatagramDuplexStream::get_incoming_max_age(
   self : WebTransportDatagramDuplexStream,
 ) -> Double? =
-  #| (self) => self.incomingMaxAge
+  #| (self) => { const v = self.incomingMaxAge; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebTransportDatagramDuplexStream::set_incoming_max_age(
@@ -498,7 +560,7 @@ pub extern "js" fn WebTransportDatagramDuplexStream::set_incoming_max_age(
 pub extern "js" fn WebTransportDatagramDuplexStream::get_outgoing_max_age(
   self : WebTransportDatagramDuplexStream,
 ) -> Double? =
-  #| (self) => self.outgoingMaxAge
+  #| (self) => { const v = self.outgoingMaxAge; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebTransportDatagramDuplexStream::set_outgoing_max_age(
@@ -539,6 +601,28 @@ pub type WebTransport
 
 ///|
 pub extern "js" fn WebTransport::to_js_value(self : WebTransport) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to WebTransport (unchecked)
+pub extern "js" fn WebTransport::from_js_value(v : JsValue) -> WebTransport =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WebTransport (checked with instanceof)
+pub extern "js" fn WebTransport::from_js_value_opt(
+  v : JsValue,
+) -> WebTransport? =
+  #| (v) => (v instanceof WebTransport) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WebTransport (checked with instanceof)
+pub extern "js" fn JsValue::as_web_transport(self : JsValue) -> WebTransport? =
+  #| (self) => (self instanceof WebTransport) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WebTransport (unchecked)
+pub extern "js" fn JsValue::to_web_transport(self : JsValue) -> WebTransport =
   #| (self) => self
 
 ///|
@@ -591,7 +675,7 @@ pub extern "js" fn WebTransport::get_congestion_control(
 pub extern "js" fn WebTransport::get_anticipated_concurrent_incoming_unidirectional_streams(
   self : WebTransport,
 ) -> Int? =
-  #| (self) => self.anticipatedConcurrentIncomingUnidirectionalStreams
+  #| (self) => { const v = self.anticipatedConcurrentIncomingUnidirectionalStreams; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebTransport::set_anticipated_concurrent_incoming_unidirectional_streams(
@@ -604,7 +688,7 @@ pub extern "js" fn WebTransport::set_anticipated_concurrent_incoming_unidirectio
 pub extern "js" fn WebTransport::get_anticipated_concurrent_incoming_bidirectional_streams(
   self : WebTransport,
 ) -> Int? =
-  #| (self) => self.anticipatedConcurrentIncomingBidirectionalStreams
+  #| (self) => { const v = self.anticipatedConcurrentIncomingBidirectionalStreams; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebTransport::set_anticipated_concurrent_incoming_bidirectional_streams(
@@ -707,10 +791,44 @@ pub extern "js" fn WebTransportSendStream::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to WebTransportSendStream (unchecked)
+pub extern "js" fn WebTransportSendStream::from_js_value(
+  v : JsValue,
+) -> WebTransportSendStream =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WebTransportSendStream (checked with instanceof)
+pub extern "js" fn WebTransportSendStream::from_js_value_opt(
+  v : JsValue,
+) -> WebTransportSendStream? =
+  #| (v) => (v instanceof WebTransportSendStream) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WebTransportSendStream (checked with instanceof)
+pub extern "js" fn JsValue::as_web_transport_send_stream(
+  self : JsValue,
+) -> WebTransportSendStream? =
+  #| (self) => (self instanceof WebTransportSendStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WebTransportSendStream (unchecked)
+pub extern "js" fn JsValue::to_web_transport_send_stream(
+  self : JsValue,
+) -> WebTransportSendStream =
+  #| (self) => self
+
+///|
+pub extern "js" fn WebTransportSendStream::to_writable_stream(
+  self : WebTransportSendStream,
+) -> WritableStream =
+  #| (self) => self
+
+///|
 pub extern "js" fn WebTransportSendStream::get_send_group(
   self : WebTransportSendStream,
 ) -> WebTransportSendGroup? =
-  #| (self) => self.sendGroup
+  #| (self) => { const v = self.sendGroup; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WebTransportSendStream::set_send_group(
@@ -755,6 +873,34 @@ pub extern "js" fn WebTransportSendGroup::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to WebTransportSendGroup (unchecked)
+pub extern "js" fn WebTransportSendGroup::from_js_value(
+  v : JsValue,
+) -> WebTransportSendGroup =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WebTransportSendGroup (checked with instanceof)
+pub extern "js" fn WebTransportSendGroup::from_js_value_opt(
+  v : JsValue,
+) -> WebTransportSendGroup? =
+  #| (v) => (v instanceof WebTransportSendGroup) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WebTransportSendGroup (checked with instanceof)
+pub extern "js" fn JsValue::as_web_transport_send_group(
+  self : JsValue,
+) -> WebTransportSendGroup? =
+  #| (self) => (self instanceof WebTransportSendGroup) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WebTransportSendGroup (unchecked)
+pub extern "js" fn JsValue::to_web_transport_send_group(
+  self : JsValue,
+) -> WebTransportSendGroup =
+  #| (self) => self
+
+///|
 pub extern "js" fn WebTransportSendGroup::get_stats(
   self : WebTransportSendGroup,
 ) -> Promise[WebTransportSendStreamStats] =
@@ -771,6 +917,40 @@ pub extern "js" fn WebTransportReceiveStream::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to WebTransportReceiveStream (unchecked)
+pub extern "js" fn WebTransportReceiveStream::from_js_value(
+  v : JsValue,
+) -> WebTransportReceiveStream =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WebTransportReceiveStream (checked with instanceof)
+pub extern "js" fn WebTransportReceiveStream::from_js_value_opt(
+  v : JsValue,
+) -> WebTransportReceiveStream? =
+  #| (v) => (v instanceof WebTransportReceiveStream) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WebTransportReceiveStream (checked with instanceof)
+pub extern "js" fn JsValue::as_web_transport_receive_stream(
+  self : JsValue,
+) -> WebTransportReceiveStream? =
+  #| (self) => (self instanceof WebTransportReceiveStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WebTransportReceiveStream (unchecked)
+pub extern "js" fn JsValue::to_web_transport_receive_stream(
+  self : JsValue,
+) -> WebTransportReceiveStream =
+  #| (self) => self
+
+///|
+pub extern "js" fn WebTransportReceiveStream::to_readable_stream(
+  self : WebTransportReceiveStream,
+) -> ReadableStream =
+  #| (self) => self
+
+///|
 pub extern "js" fn WebTransportReceiveStream::get_stats(
   self : WebTransportReceiveStream,
 ) -> Promise[WebTransportReceiveStreamStats] =
@@ -784,6 +964,34 @@ pub type WebTransportBidirectionalStream
 pub extern "js" fn WebTransportBidirectionalStream::to_js_value(
   self : WebTransportBidirectionalStream,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to WebTransportBidirectionalStream (unchecked)
+pub extern "js" fn WebTransportBidirectionalStream::from_js_value(
+  v : JsValue,
+) -> WebTransportBidirectionalStream =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WebTransportBidirectionalStream (checked with instanceof)
+pub extern "js" fn WebTransportBidirectionalStream::from_js_value_opt(
+  v : JsValue,
+) -> WebTransportBidirectionalStream? =
+  #| (v) => (v instanceof WebTransportBidirectionalStream) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WebTransportBidirectionalStream (checked with instanceof)
+pub extern "js" fn JsValue::as_web_transport_bidirectional_stream(
+  self : JsValue,
+) -> WebTransportBidirectionalStream? =
+  #| (self) => (self instanceof WebTransportBidirectionalStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WebTransportBidirectionalStream (unchecked)
+pub extern "js" fn JsValue::to_web_transport_bidirectional_stream(
+  self : JsValue,
+) -> WebTransportBidirectionalStream =
   #| (self) => self
 
 ///|
@@ -806,6 +1014,40 @@ pub type WebTransportWriter
 pub extern "js" fn WebTransportWriter::to_js_value(
   self : WebTransportWriter,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to WebTransportWriter (unchecked)
+pub extern "js" fn WebTransportWriter::from_js_value(
+  v : JsValue,
+) -> WebTransportWriter =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WebTransportWriter (checked with instanceof)
+pub extern "js" fn WebTransportWriter::from_js_value_opt(
+  v : JsValue,
+) -> WebTransportWriter? =
+  #| (v) => (v instanceof WebTransportWriter) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WebTransportWriter (checked with instanceof)
+pub extern "js" fn JsValue::as_web_transport_writer(
+  self : JsValue,
+) -> WebTransportWriter? =
+  #| (self) => (self instanceof WebTransportWriter) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WebTransportWriter (unchecked)
+pub extern "js" fn JsValue::to_web_transport_writer(
+  self : JsValue,
+) -> WebTransportWriter =
+  #| (self) => self
+
+///|
+pub extern "js" fn WebTransportWriter::to_writable_stream_default_writer(
+  self : WebTransportWriter,
+) -> WritableStreamDefaultWriter =
   #| (self) => self
 
 ///|
@@ -838,6 +1080,40 @@ pub extern "js" fn WebTransportError::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to WebTransportError (unchecked)
+pub extern "js" fn WebTransportError::from_js_value(
+  v : JsValue,
+) -> WebTransportError =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WebTransportError (checked with instanceof)
+pub extern "js" fn WebTransportError::from_js_value_opt(
+  v : JsValue,
+) -> WebTransportError? =
+  #| (v) => (v instanceof WebTransportError) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WebTransportError (checked with instanceof)
+pub extern "js" fn JsValue::as_web_transport_error(
+  self : JsValue,
+) -> WebTransportError? =
+  #| (self) => (self instanceof WebTransportError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WebTransportError (unchecked)
+pub extern "js" fn JsValue::to_web_transport_error(
+  self : JsValue,
+) -> WebTransportError =
+  #| (self) => self
+
+///|
+pub extern "js" fn WebTransportError::to_dom_exception(
+  self : WebTransportError,
+) -> DOMException =
+  #| (self) => self
+
+///|
 pub extern "js" fn WebTransportError::new(
   message : String,
   options : WebTransportErrorOptions,
@@ -854,4 +1130,4 @@ pub extern "js" fn WebTransportError::get_source(
 pub extern "js" fn WebTransportError::get_stream_error_code(
   self : WebTransportError,
 ) -> Int? =
-  #| (self) => self.streamErrorCode
+  #| (self) => { const v = self.streamErrorCode; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }

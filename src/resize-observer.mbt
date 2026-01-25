@@ -79,6 +79,32 @@ pub extern "js" fn ResizeObserver::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ResizeObserver (unchecked)
+pub extern "js" fn ResizeObserver::from_js_value(v : JsValue) -> ResizeObserver =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ResizeObserver (checked with instanceof)
+pub extern "js" fn ResizeObserver::from_js_value_opt(
+  v : JsValue,
+) -> ResizeObserver? =
+  #| (v) => (v instanceof ResizeObserver) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ResizeObserver (checked with instanceof)
+pub extern "js" fn JsValue::as_resize_observer(
+  self : JsValue,
+) -> ResizeObserver? =
+  #| (self) => (self instanceof ResizeObserver) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ResizeObserver (unchecked)
+pub extern "js" fn JsValue::to_resize_observer(
+  self : JsValue,
+) -> ResizeObserver =
+  #| (self) => self
+
+///|
 pub extern "js" fn ResizeObserver::new(
   callback : ResizeObserverCallback,
 ) -> ResizeObserver =
@@ -121,6 +147,34 @@ pub extern "js" fn ResizeObserverEntry::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ResizeObserverEntry (unchecked)
+pub extern "js" fn ResizeObserverEntry::from_js_value(
+  v : JsValue,
+) -> ResizeObserverEntry =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ResizeObserverEntry (checked with instanceof)
+pub extern "js" fn ResizeObserverEntry::from_js_value_opt(
+  v : JsValue,
+) -> ResizeObserverEntry? =
+  #| (v) => (v instanceof ResizeObserverEntry) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ResizeObserverEntry (checked with instanceof)
+pub extern "js" fn JsValue::as_resize_observer_entry(
+  self : JsValue,
+) -> ResizeObserverEntry? =
+  #| (self) => (self instanceof ResizeObserverEntry) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ResizeObserverEntry (unchecked)
+pub extern "js" fn JsValue::to_resize_observer_entry(
+  self : JsValue,
+) -> ResizeObserverEntry =
+  #| (self) => self
+
+///|
 pub extern "js" fn ResizeObserverEntry::get_target(
   self : ResizeObserverEntry,
 ) -> Element =
@@ -158,6 +212,34 @@ pub type ResizeObserverSize
 pub extern "js" fn ResizeObserverSize::to_js_value(
   self : ResizeObserverSize,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to ResizeObserverSize (unchecked)
+pub extern "js" fn ResizeObserverSize::from_js_value(
+  v : JsValue,
+) -> ResizeObserverSize =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ResizeObserverSize (checked with instanceof)
+pub extern "js" fn ResizeObserverSize::from_js_value_opt(
+  v : JsValue,
+) -> ResizeObserverSize? =
+  #| (v) => (v instanceof ResizeObserverSize) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ResizeObserverSize (checked with instanceof)
+pub extern "js" fn JsValue::as_resize_observer_size(
+  self : JsValue,
+) -> ResizeObserverSize? =
+  #| (self) => (self instanceof ResizeObserverSize) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ResizeObserverSize (unchecked)
+pub extern "js" fn JsValue::to_resize_observer_size(
+  self : JsValue,
+) -> ResizeObserverSize =
   #| (self) => self
 
 ///|

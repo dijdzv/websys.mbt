@@ -306,10 +306,32 @@ pub extern "js" fn MediaSession::to_js_value(self : MediaSession) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to MediaSession (unchecked)
+pub extern "js" fn MediaSession::from_js_value(v : JsValue) -> MediaSession =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaSession (checked with instanceof)
+pub extern "js" fn MediaSession::from_js_value_opt(
+  v : JsValue,
+) -> MediaSession? =
+  #| (v) => (v instanceof MediaSession) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaSession (checked with instanceof)
+pub extern "js" fn JsValue::as_media_session(self : JsValue) -> MediaSession? =
+  #| (self) => (self instanceof MediaSession) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaSession (unchecked)
+pub extern "js" fn JsValue::to_media_session(self : JsValue) -> MediaSession =
+  #| (self) => self
+
+///|
 pub extern "js" fn MediaSession::get_metadata(
   self : MediaSession,
 ) -> MediaMetadata? =
-  #| (self) => self.metadata
+  #| (self) => { const v = self.metadata; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn MediaSession::set_metadata(
@@ -382,6 +404,28 @@ pub extern "js" fn MediaMetadata::to_js_value(self : MediaMetadata) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to MediaMetadata (unchecked)
+pub extern "js" fn MediaMetadata::from_js_value(v : JsValue) -> MediaMetadata =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaMetadata (checked with instanceof)
+pub extern "js" fn MediaMetadata::from_js_value_opt(
+  v : JsValue,
+) -> MediaMetadata? =
+  #| (v) => (v instanceof MediaMetadata) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaMetadata (checked with instanceof)
+pub extern "js" fn JsValue::as_media_metadata(self : JsValue) -> MediaMetadata? =
+  #| (self) => (self instanceof MediaMetadata) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaMetadata (unchecked)
+pub extern "js" fn JsValue::to_media_metadata(self : JsValue) -> MediaMetadata =
+  #| (self) => self
+
+///|
 pub extern "js" fn MediaMetadata::new(
   init_ : MediaMetadataInit,
 ) -> MediaMetadata =
@@ -445,6 +489,34 @@ pub type ChapterInformation
 pub extern "js" fn ChapterInformation::to_js_value(
   self : ChapterInformation,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to ChapterInformation (unchecked)
+pub extern "js" fn ChapterInformation::from_js_value(
+  v : JsValue,
+) -> ChapterInformation =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ChapterInformation (checked with instanceof)
+pub extern "js" fn ChapterInformation::from_js_value_opt(
+  v : JsValue,
+) -> ChapterInformation? =
+  #| (v) => (v instanceof ChapterInformation) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ChapterInformation (checked with instanceof)
+pub extern "js" fn JsValue::as_chapter_information(
+  self : JsValue,
+) -> ChapterInformation? =
+  #| (self) => (self instanceof ChapterInformation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ChapterInformation (unchecked)
+pub extern "js" fn JsValue::to_chapter_information(
+  self : JsValue,
+) -> ChapterInformation =
   #| (self) => self
 
 ///|

@@ -6,6 +6,6 @@
         "generate": "rm -f ./src/*.mbt && webidl-bindgen.mbt --all --per-spec -o ./src/ && moon fmt"
     },
     "devDependencies": {
-        "webidl-bindgen.mbt": "^0.3.3"
+        "webidl-bindgen.mbt": "^0.3.4"
     }
 }

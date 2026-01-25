@@ -54,6 +54,34 @@ pub extern "js" fn PeriodicSyncManager::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PeriodicSyncManager (unchecked)
+pub extern "js" fn PeriodicSyncManager::from_js_value(
+  v : JsValue,
+) -> PeriodicSyncManager =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PeriodicSyncManager (checked with instanceof)
+pub extern "js" fn PeriodicSyncManager::from_js_value_opt(
+  v : JsValue,
+) -> PeriodicSyncManager? =
+  #| (v) => (v instanceof PeriodicSyncManager) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PeriodicSyncManager (checked with instanceof)
+pub extern "js" fn JsValue::as_periodic_sync_manager(
+  self : JsValue,
+) -> PeriodicSyncManager? =
+  #| (self) => (self instanceof PeriodicSyncManager) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PeriodicSyncManager (unchecked)
+pub extern "js" fn JsValue::to_periodic_sync_manager(
+  self : JsValue,
+) -> PeriodicSyncManager =
+  #| (self) => self
+
+///|
 pub extern "js" fn PeriodicSyncManager::register(
   self : PeriodicSyncManager,
   tag : String,
@@ -71,7 +99,7 @@ pub extern "js" fn PeriodicSyncManager::register_with_options(
 ///|
 pub extern "js" fn PeriodicSyncManager::get_tags(
   self : PeriodicSyncManager,
-) -> Promise[Unit] =
+) -> Promise[Array[String]] =
   #| (self) => self.getTags()
 
 ///|
@@ -89,6 +117,46 @@ pub type PeriodicSyncEvent
 pub extern "js" fn PeriodicSyncEvent::to_js_value(
   self : PeriodicSyncEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to PeriodicSyncEvent (unchecked)
+pub extern "js" fn PeriodicSyncEvent::from_js_value(
+  v : JsValue,
+) -> PeriodicSyncEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PeriodicSyncEvent (checked with instanceof)
+pub extern "js" fn PeriodicSyncEvent::from_js_value_opt(
+  v : JsValue,
+) -> PeriodicSyncEvent? =
+  #| (v) => (v instanceof PeriodicSyncEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PeriodicSyncEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_periodic_sync_event(
+  self : JsValue,
+) -> PeriodicSyncEvent? =
+  #| (self) => (self instanceof PeriodicSyncEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PeriodicSyncEvent (unchecked)
+pub extern "js" fn JsValue::to_periodic_sync_event(
+  self : JsValue,
+) -> PeriodicSyncEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn PeriodicSyncEvent::to_extendable_event(
+  self : PeriodicSyncEvent,
+) -> ExtendableEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn PeriodicSyncEvent::to_event(
+  self : PeriodicSyncEvent,
+) -> Event =
   #| (self) => self
 
 ///|

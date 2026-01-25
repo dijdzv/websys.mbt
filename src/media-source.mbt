@@ -114,6 +114,38 @@ pub extern "js" fn MediaSource::to_js_value(self : MediaSource) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to MediaSource (unchecked)
+pub extern "js" fn MediaSource::from_js_value(v : JsValue) -> MediaSource =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaSource (checked with instanceof)
+pub extern "js" fn MediaSource::from_js_value_opt(v : JsValue) -> MediaSource? =
+  #| (v) => (v instanceof MediaSource) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaSource (checked with instanceof)
+pub extern "js" fn JsValue::as_media_source(self : JsValue) -> MediaSource? =
+  #| (self) => (self instanceof MediaSource) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaSource (unchecked)
+pub extern "js" fn JsValue::to_media_source(self : JsValue) -> MediaSource =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaSource::to_event_target(
+  self : MediaSource,
+) -> EventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaSource::as_managed_media_source(
+  self : MediaSource,
+) -> ManagedMediaSource? =
+  #| (self) => (self instanceof ManagedMediaSource) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn MediaSource::new() -> MediaSource =
   #| () => new MediaSource()
 
@@ -251,12 +283,74 @@ pub extern "js" fn MediaSourceHandle::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to MediaSourceHandle (unchecked)
+pub extern "js" fn MediaSourceHandle::from_js_value(
+  v : JsValue,
+) -> MediaSourceHandle =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaSourceHandle (checked with instanceof)
+pub extern "js" fn MediaSourceHandle::from_js_value_opt(
+  v : JsValue,
+) -> MediaSourceHandle? =
+  #| (v) => (v instanceof MediaSourceHandle) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaSourceHandle (checked with instanceof)
+pub extern "js" fn JsValue::as_media_source_handle(
+  self : JsValue,
+) -> MediaSourceHandle? =
+  #| (self) => (self instanceof MediaSourceHandle) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaSourceHandle (unchecked)
+pub extern "js" fn JsValue::to_media_source_handle(
+  self : JsValue,
+) -> MediaSourceHandle =
+  #| (self) => self
+
+///|
 /// SourceBuffer interface
 pub type SourceBuffer
 
 ///|
 pub extern "js" fn SourceBuffer::to_js_value(self : SourceBuffer) -> JsValue =
   #| (self) => self
+
+///|
+/// Cast JsValue to SourceBuffer (unchecked)
+pub extern "js" fn SourceBuffer::from_js_value(v : JsValue) -> SourceBuffer =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SourceBuffer (checked with instanceof)
+pub extern "js" fn SourceBuffer::from_js_value_opt(
+  v : JsValue,
+) -> SourceBuffer? =
+  #| (v) => (v instanceof SourceBuffer) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SourceBuffer (checked with instanceof)
+pub extern "js" fn JsValue::as_source_buffer(self : JsValue) -> SourceBuffer? =
+  #| (self) => (self instanceof SourceBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SourceBuffer (unchecked)
+pub extern "js" fn JsValue::to_source_buffer(self : JsValue) -> SourceBuffer =
+  #| (self) => self
+
+///|
+pub extern "js" fn SourceBuffer::to_event_target(
+  self : SourceBuffer,
+) -> EventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn SourceBuffer::as_managed_source_buffer(
+  self : SourceBuffer,
+) -> ManagedSourceBuffer? =
+  #| (self) => (self instanceof ManagedSourceBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn SourceBuffer::get_mode(self : SourceBuffer) -> AppendMode =
@@ -438,6 +532,40 @@ pub extern "js" fn SourceBufferList::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to SourceBufferList (unchecked)
+pub extern "js" fn SourceBufferList::from_js_value(
+  v : JsValue,
+) -> SourceBufferList =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SourceBufferList (checked with instanceof)
+pub extern "js" fn SourceBufferList::from_js_value_opt(
+  v : JsValue,
+) -> SourceBufferList? =
+  #| (v) => (v instanceof SourceBufferList) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SourceBufferList (checked with instanceof)
+pub extern "js" fn JsValue::as_source_buffer_list(
+  self : JsValue,
+) -> SourceBufferList? =
+  #| (self) => (self instanceof SourceBufferList) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SourceBufferList (unchecked)
+pub extern "js" fn JsValue::to_source_buffer_list(
+  self : JsValue,
+) -> SourceBufferList =
+  #| (self) => self
+
+///|
+pub extern "js" fn SourceBufferList::to_event_target(
+  self : SourceBufferList,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn SourceBufferList::get_length(self : SourceBufferList) -> Int =
   #| (self) => self.length
 
@@ -485,137 +613,48 @@ pub extern "js" fn ManagedMediaSource::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ManagedMediaSource (unchecked)
+pub extern "js" fn ManagedMediaSource::from_js_value(
+  v : JsValue,
+) -> ManagedMediaSource =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ManagedMediaSource (checked with instanceof)
+pub extern "js" fn ManagedMediaSource::from_js_value_opt(
+  v : JsValue,
+) -> ManagedMediaSource? =
+  #| (v) => (v instanceof ManagedMediaSource) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ManagedMediaSource (checked with instanceof)
+pub extern "js" fn JsValue::as_managed_media_source(
+  self : JsValue,
+) -> ManagedMediaSource? =
+  #| (self) => (self instanceof ManagedMediaSource) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ManagedMediaSource (unchecked)
+pub extern "js" fn JsValue::to_managed_media_source(
+  self : JsValue,
+) -> ManagedMediaSource =
+  #| (self) => self
+
+///|
+pub extern "js" fn ManagedMediaSource::to_media_source(
+  self : ManagedMediaSource,
+) -> MediaSource =
+  #| (self) => self
+
+///|
+pub extern "js" fn ManagedMediaSource::to_event_target(
+  self : ManagedMediaSource,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn ManagedMediaSource::new() -> ManagedMediaSource =
   #| () => new ManagedMediaSource()
-
-///|
-pub extern "js" fn ManagedMediaSource::get_handle(
-  self : ManagedMediaSource,
-) -> MediaSourceHandle =
-  #| (self) => self.handle
-
-///|
-pub extern "js" fn ManagedMediaSource::get_source_buffers(
-  self : ManagedMediaSource,
-) -> SourceBufferList =
-  #| (self) => self.sourceBuffers
-
-///|
-pub extern "js" fn ManagedMediaSource::get_active_source_buffers(
-  self : ManagedMediaSource,
-) -> SourceBufferList =
-  #| (self) => self.activeSourceBuffers
-
-///|
-pub extern "js" fn ManagedMediaSource::get_ready_state(
-  self : ManagedMediaSource,
-) -> ReadyState =
-  #| (self) => self.readyState
-
-///|
-pub extern "js" fn ManagedMediaSource::get_duration(
-  self : ManagedMediaSource,
-) -> Double =
-  #| (self) => self.duration
-
-///|
-pub extern "js" fn ManagedMediaSource::set_duration(
-  self : ManagedMediaSource,
-  value : Double,
-) -> Unit =
-  #| (self, value) => { self.duration = value }
-
-///|
-pub extern "js" fn ManagedMediaSource::get_onsourceopen(
-  self : ManagedMediaSource,
-) -> EventHandler =
-  #| (self) => self.onsourceopen
-
-///|
-pub extern "js" fn ManagedMediaSource::set_onsourceopen(
-  self : ManagedMediaSource,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onsourceopen = value }
-
-///|
-pub extern "js" fn ManagedMediaSource::get_onsourceended(
-  self : ManagedMediaSource,
-) -> EventHandler =
-  #| (self) => self.onsourceended
-
-///|
-pub extern "js" fn ManagedMediaSource::set_onsourceended(
-  self : ManagedMediaSource,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onsourceended = value }
-
-///|
-pub extern "js" fn ManagedMediaSource::get_onsourceclose(
-  self : ManagedMediaSource,
-) -> EventHandler =
-  #| (self) => self.onsourceclose
-
-///|
-pub extern "js" fn ManagedMediaSource::set_onsourceclose(
-  self : ManagedMediaSource,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onsourceclose = value }
-
-///|
-pub extern "js" fn ManagedMediaSource::get_can_construct_in_dedicated_worker(
-  self : ManagedMediaSource,
-) -> Bool =
-  #| (self) => self.canConstructInDedicatedWorker
-
-///|
-pub extern "js" fn ManagedMediaSource::add_source_buffer(
-  self : ManagedMediaSource,
-  type_ : String,
-) -> SourceBuffer =
-  #| (self, type_) => self.addSourceBuffer(type_)
-
-///|
-pub extern "js" fn ManagedMediaSource::remove_source_buffer(
-  self : ManagedMediaSource,
-  source_buffer : SourceBuffer,
-) -> Unit =
-  #| (self, source_buffer) => self.removeSourceBuffer(source_buffer)
-
-///|
-pub extern "js" fn ManagedMediaSource::end_of_stream(
-  self : ManagedMediaSource,
-) -> Unit =
-  #| (self) => self.endOfStream()
-
-///|
-pub extern "js" fn ManagedMediaSource::end_of_stream_with_error(
-  self : ManagedMediaSource,
-  error : EndOfStreamError,
-) -> Unit =
-  #| (self, error) => self.endOfStream(['network', 'decode'][error])
-
-///|
-pub extern "js" fn ManagedMediaSource::set_live_seekable_range(
-  self : ManagedMediaSource,
-  start : Double,
-  end : Double,
-) -> Unit =
-  #| (self, start, end) => self.setLiveSeekableRange(start, end)
-
-///|
-pub extern "js" fn ManagedMediaSource::clear_live_seekable_range(
-  self : ManagedMediaSource,
-) -> Unit =
-  #| (self) => self.clearLiveSeekableRange()
-
-///|
-pub extern "js" fn ManagedMediaSource::is_type_supported(
-  type_ : String,
-) -> Bool =
-  #| (type_) => ManagedMediaSource.isTypeSupported(type_)
 
 ///|
 pub extern "js" fn ManagedMediaSource::get_streaming(
@@ -660,6 +699,40 @@ pub extern "js" fn BufferedChangeEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to BufferedChangeEvent (unchecked)
+pub extern "js" fn BufferedChangeEvent::from_js_value(
+  v : JsValue,
+) -> BufferedChangeEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BufferedChangeEvent (checked with instanceof)
+pub extern "js" fn BufferedChangeEvent::from_js_value_opt(
+  v : JsValue,
+) -> BufferedChangeEvent? =
+  #| (v) => (v instanceof BufferedChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BufferedChangeEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_buffered_change_event(
+  self : JsValue,
+) -> BufferedChangeEvent? =
+  #| (self) => (self instanceof BufferedChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BufferedChangeEvent (unchecked)
+pub extern "js" fn JsValue::to_buffered_change_event(
+  self : JsValue,
+) -> BufferedChangeEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn BufferedChangeEvent::to_event(
+  self : BufferedChangeEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn BufferedChangeEvent::new(
   type_ : String,
   event_init_dict : BufferedChangeEventInit,
@@ -689,179 +762,44 @@ pub extern "js" fn ManagedSourceBuffer::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn ManagedSourceBuffer::get_mode(
-  self : ManagedSourceBuffer,
-) -> AppendMode =
-  #| (self) => self.mode
+/// Cast JsValue to ManagedSourceBuffer (unchecked)
+pub extern "js" fn ManagedSourceBuffer::from_js_value(
+  v : JsValue,
+) -> ManagedSourceBuffer =
+  #| (v) => v
 
 ///|
-pub extern "js" fn ManagedSourceBuffer::set_mode(
-  self : ManagedSourceBuffer,
-  value : AppendMode,
-) -> Unit =
-  #| (self, value) => { self.mode = value }
+/// Safely cast JsValue to ManagedSourceBuffer (checked with instanceof)
+pub extern "js" fn ManagedSourceBuffer::from_js_value_opt(
+  v : JsValue,
+) -> ManagedSourceBuffer? =
+  #| (v) => (v instanceof ManagedSourceBuffer) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn ManagedSourceBuffer::get_updating(
-  self : ManagedSourceBuffer,
-) -> Bool =
-  #| (self) => self.updating
+/// Safely cast JsValue to ManagedSourceBuffer (checked with instanceof)
+pub extern "js" fn JsValue::as_managed_source_buffer(
+  self : JsValue,
+) -> ManagedSourceBuffer? =
+  #| (self) => (self instanceof ManagedSourceBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn ManagedSourceBuffer::get_buffered(
-  self : ManagedSourceBuffer,
-) -> TimeRanges =
-  #| (self) => self.buffered
+/// Cast JsValue to ManagedSourceBuffer (unchecked)
+pub extern "js" fn JsValue::to_managed_source_buffer(
+  self : JsValue,
+) -> ManagedSourceBuffer =
+  #| (self) => self
 
 ///|
-pub extern "js" fn ManagedSourceBuffer::get_timestamp_offset(
+pub extern "js" fn ManagedSourceBuffer::to_source_buffer(
   self : ManagedSourceBuffer,
-) -> Double =
-  #| (self) => self.timestampOffset
+) -> SourceBuffer =
+  #| (self) => self
 
 ///|
-pub extern "js" fn ManagedSourceBuffer::set_timestamp_offset(
+pub extern "js" fn ManagedSourceBuffer::to_event_target(
   self : ManagedSourceBuffer,
-  value : Double,
-) -> Unit =
-  #| (self, value) => { self.timestampOffset = value }
-
-///|
-pub extern "js" fn ManagedSourceBuffer::get_audio_tracks(
-  self : ManagedSourceBuffer,
-) -> AudioTrackList =
-  #| (self) => self.audioTracks
-
-///|
-pub extern "js" fn ManagedSourceBuffer::get_video_tracks(
-  self : ManagedSourceBuffer,
-) -> VideoTrackList =
-  #| (self) => self.videoTracks
-
-///|
-pub extern "js" fn ManagedSourceBuffer::get_text_tracks(
-  self : ManagedSourceBuffer,
-) -> TextTrackList =
-  #| (self) => self.textTracks
-
-///|
-pub extern "js" fn ManagedSourceBuffer::get_append_window_start(
-  self : ManagedSourceBuffer,
-) -> Double =
-  #| (self) => self.appendWindowStart
-
-///|
-pub extern "js" fn ManagedSourceBuffer::set_append_window_start(
-  self : ManagedSourceBuffer,
-  value : Double,
-) -> Unit =
-  #| (self, value) => { self.appendWindowStart = value }
-
-///|
-pub extern "js" fn ManagedSourceBuffer::get_append_window_end(
-  self : ManagedSourceBuffer,
-) -> Double =
-  #| (self) => self.appendWindowEnd
-
-///|
-pub extern "js" fn ManagedSourceBuffer::set_append_window_end(
-  self : ManagedSourceBuffer,
-  value : Double,
-) -> Unit =
-  #| (self, value) => { self.appendWindowEnd = value }
-
-///|
-pub extern "js" fn ManagedSourceBuffer::get_onupdatestart(
-  self : ManagedSourceBuffer,
-) -> EventHandler =
-  #| (self) => self.onupdatestart
-
-///|
-pub extern "js" fn ManagedSourceBuffer::set_onupdatestart(
-  self : ManagedSourceBuffer,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onupdatestart = value }
-
-///|
-pub extern "js" fn ManagedSourceBuffer::get_onupdate(
-  self : ManagedSourceBuffer,
-) -> EventHandler =
-  #| (self) => self.onupdate
-
-///|
-pub extern "js" fn ManagedSourceBuffer::set_onupdate(
-  self : ManagedSourceBuffer,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onupdate = value }
-
-///|
-pub extern "js" fn ManagedSourceBuffer::get_onupdateend(
-  self : ManagedSourceBuffer,
-) -> EventHandler =
-  #| (self) => self.onupdateend
-
-///|
-pub extern "js" fn ManagedSourceBuffer::set_onupdateend(
-  self : ManagedSourceBuffer,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onupdateend = value }
-
-///|
-pub extern "js" fn ManagedSourceBuffer::get_onerror(
-  self : ManagedSourceBuffer,
-) -> EventHandler =
-  #| (self) => self.onerror
-
-///|
-pub extern "js" fn ManagedSourceBuffer::set_onerror(
-  self : ManagedSourceBuffer,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onerror = value }
-
-///|
-pub extern "js" fn ManagedSourceBuffer::get_onabort(
-  self : ManagedSourceBuffer,
-) -> EventHandler =
-  #| (self) => self.onabort
-
-///|
-pub extern "js" fn ManagedSourceBuffer::set_onabort(
-  self : ManagedSourceBuffer,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onabort = value }
-
-///|
-pub extern "js" fn ManagedSourceBuffer::append_buffer(
-  self : ManagedSourceBuffer,
-  data : BufferSource,
-) -> Unit =
-  #| (self, data) => self.appendBuffer(data)
-
-///|
-pub extern "js" fn ManagedSourceBuffer::abort(
-  self : ManagedSourceBuffer,
-) -> Unit =
-  #| (self) => self.abort()
-
-///|
-pub extern "js" fn ManagedSourceBuffer::change_type(
-  self : ManagedSourceBuffer,
-  type_ : String,
-) -> Unit =
-  #| (self, type_) => self.changeType(type_)
-
-///|
-pub extern "js" fn ManagedSourceBuffer::remove(
-  self : ManagedSourceBuffer,
-  start : Double,
-  end : Double,
-) -> Unit =
-  #| (self, start, end) => self.remove(start, end)
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn ManagedSourceBuffer::get_onbufferedchange(

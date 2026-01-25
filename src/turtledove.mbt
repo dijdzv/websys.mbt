@@ -455,15 +455,15 @@ pub struct AuctionAdConfig {
   auctionSignals : Promise[JsValue]?
   sellerSignals : Promise[JsValue]?
   directFromSellerSignalsHeaderAdSlot : Promise[String?]?
-  deprecatedRenderURLReplacements : Promise[Unit]?
+  deprecatedRenderURLReplacements : Promise[JsValue]?
   sellerTimeout : Int64?
   sellerExperimentGroupId : Int?
-  perBuyerSignals : Promise[Unit]?
-  perBuyerTimeouts : Promise[Unit]?
-  perBuyerCumulativeTimeouts : Promise[Unit]?
+  perBuyerSignals : Promise[JsValue]?
+  perBuyerTimeouts : Promise[JsValue]?
+  perBuyerCumulativeTimeouts : Promise[JsValue]?
   reportingTimeout : Int64?
   sellerCurrency : String?
-  perBuyerCurrencies : Promise[Unit]?
+  perBuyerCurrencies : Promise[JsValue]?
   perBuyerMultiBidLimits : JsValue?
   perBuyerGroupLimits : JsValue?
   perBuyerExperimentGroupIds : JsValue?
@@ -828,7 +828,7 @@ pub extern "js" fn StorageInterestGroup::to_js(
 pub struct PASignalValue {
   baseValue : String
   scale : Double?
-  offset : JsValue?
+  offset : BigintOrInt?
 }
 
 ///|
@@ -849,8 +849,8 @@ pub extern "js" fn PASignalValue::to_js(self : PASignalValue) -> JsValue =
 ///|
 /// PAExtendedHistogramContribution dictionary
 pub struct PAExtendedHistogramContribution {
-  bucket : JsValue
-  value : JsValue
+  bucket : PASignalValueOrBigint
+  value : PASignalValueOrInt
   filteringId : JsValue?
 }
 
@@ -928,10 +928,10 @@ pub extern "js" fn AdRender::to_js(self : AdRender) -> JsValue =
 pub struct GenerateBidOutput {
   bid : Double?
   bidCurrency : String?
-  render : JsValue?
+  render : StringOrAdRender?
   ad : JsValue?
   selectedBuyerAndSellerReportingId : String?
-  adComponents : Array[JsValue]?
+  adComponents : Array[StringOrAdRender]?
   adCost : Double?
   modelingSignals : Double?
   allowComponentAuction : Bool?
@@ -1052,7 +1052,7 @@ pub struct ScoringBrowserSignals {
   adComponents : Array[String]?
   forDebuggingOnlyInCooldownOrLockout : Bool?
   creativeScanningMetadata : String?
-  adComponentsCreativeScanningMetadata : Array[String?]?
+  adComponentsCreativeScanningMetadata : Array[JsValue]?
 }
 
 ///|
@@ -1385,10 +1385,62 @@ pub extern "js" fn InterestGroupScriptRunnerGlobalScope::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to InterestGroupScriptRunnerGlobalScope (unchecked)
+pub extern "js" fn InterestGroupScriptRunnerGlobalScope::from_js_value(
+  v : JsValue,
+) -> InterestGroupScriptRunnerGlobalScope =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to InterestGroupScriptRunnerGlobalScope (checked with instanceof)
+pub extern "js" fn InterestGroupScriptRunnerGlobalScope::from_js_value_opt(
+  v : JsValue,
+) -> InterestGroupScriptRunnerGlobalScope? =
+  #| (v) => (v instanceof InterestGroupScriptRunnerGlobalScope) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to InterestGroupScriptRunnerGlobalScope (checked with instanceof)
+pub extern "js" fn JsValue::as_interest_group_script_runner_global_scope(
+  self : JsValue,
+) -> InterestGroupScriptRunnerGlobalScope? =
+  #| (self) => (self instanceof InterestGroupScriptRunnerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to InterestGroupScriptRunnerGlobalScope (unchecked)
+pub extern "js" fn JsValue::to_interest_group_script_runner_global_scope(
+  self : JsValue,
+) -> InterestGroupScriptRunnerGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn InterestGroupScriptRunnerGlobalScope::as_interest_group_bidding_and_scoring_script_runner_global_scope(
+  self : InterestGroupScriptRunnerGlobalScope,
+) -> InterestGroupBiddingAndScoringScriptRunnerGlobalScope? =
+  #| (self) => (self instanceof InterestGroupBiddingAndScoringScriptRunnerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn InterestGroupScriptRunnerGlobalScope::as_interest_group_bidding_script_runner_global_scope(
+  self : InterestGroupScriptRunnerGlobalScope,
+) -> InterestGroupBiddingScriptRunnerGlobalScope? =
+  #| (self) => (self instanceof InterestGroupBiddingScriptRunnerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn InterestGroupScriptRunnerGlobalScope::as_interest_group_scoring_script_runner_global_scope(
+  self : InterestGroupScriptRunnerGlobalScope,
+) -> InterestGroupScoringScriptRunnerGlobalScope? =
+  #| (self) => (self instanceof InterestGroupScoringScriptRunnerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn InterestGroupScriptRunnerGlobalScope::as_interest_group_reporting_script_runner_global_scope(
+  self : InterestGroupScriptRunnerGlobalScope,
+) -> InterestGroupReportingScriptRunnerGlobalScope? =
+  #| (self) => (self instanceof InterestGroupReportingScriptRunnerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn InterestGroupScriptRunnerGlobalScope::get_private_aggregation(
   self : InterestGroupScriptRunnerGlobalScope,
 ) -> PrivateAggregation? =
-  #| (self) => self.privateAggregation
+  #| (self) => { const v = self.privateAggregation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn InterestGroupScriptRunnerGlobalScope::get_protected_audience(
@@ -1404,6 +1456,34 @@ pub type ProtectedAudienceUtilities
 pub extern "js" fn ProtectedAudienceUtilities::to_js_value(
   self : ProtectedAudienceUtilities,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to ProtectedAudienceUtilities (unchecked)
+pub extern "js" fn ProtectedAudienceUtilities::from_js_value(
+  v : JsValue,
+) -> ProtectedAudienceUtilities =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ProtectedAudienceUtilities (checked with instanceof)
+pub extern "js" fn ProtectedAudienceUtilities::from_js_value_opt(
+  v : JsValue,
+) -> ProtectedAudienceUtilities? =
+  #| (v) => (v instanceof ProtectedAudienceUtilities) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ProtectedAudienceUtilities (checked with instanceof)
+pub extern "js" fn JsValue::as_protected_audience_utilities(
+  self : JsValue,
+) -> ProtectedAudienceUtilities? =
+  #| (self) => (self instanceof ProtectedAudienceUtilities) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ProtectedAudienceUtilities (unchecked)
+pub extern "js" fn JsValue::to_protected_audience_utilities(
+  self : JsValue,
+) -> ProtectedAudienceUtilities =
   #| (self) => self
 
 ///|
@@ -1431,6 +1511,34 @@ pub extern "js" fn ForDebuggingOnly::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ForDebuggingOnly (unchecked)
+pub extern "js" fn ForDebuggingOnly::from_js_value(
+  v : JsValue,
+) -> ForDebuggingOnly =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ForDebuggingOnly (checked with instanceof)
+pub extern "js" fn ForDebuggingOnly::from_js_value_opt(
+  v : JsValue,
+) -> ForDebuggingOnly? =
+  #| (v) => (v instanceof ForDebuggingOnly) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ForDebuggingOnly (checked with instanceof)
+pub extern "js" fn JsValue::as_for_debugging_only(
+  self : JsValue,
+) -> ForDebuggingOnly? =
+  #| (self) => (self instanceof ForDebuggingOnly) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ForDebuggingOnly (unchecked)
+pub extern "js" fn JsValue::to_for_debugging_only(
+  self : JsValue,
+) -> ForDebuggingOnly =
+  #| (self) => self
+
+///|
 pub extern "js" fn ForDebuggingOnly::report_ad_auction_win(
   self : ForDebuggingOnly,
   url : String,
@@ -1455,6 +1563,34 @@ pub extern "js" fn RealTimeReporting::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RealTimeReporting (unchecked)
+pub extern "js" fn RealTimeReporting::from_js_value(
+  v : JsValue,
+) -> RealTimeReporting =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RealTimeReporting (checked with instanceof)
+pub extern "js" fn RealTimeReporting::from_js_value_opt(
+  v : JsValue,
+) -> RealTimeReporting? =
+  #| (v) => (v instanceof RealTimeReporting) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RealTimeReporting (checked with instanceof)
+pub extern "js" fn JsValue::as_real_time_reporting(
+  self : JsValue,
+) -> RealTimeReporting? =
+  #| (self) => (self instanceof RealTimeReporting) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RealTimeReporting (unchecked)
+pub extern "js" fn JsValue::to_real_time_reporting(
+  self : JsValue,
+) -> RealTimeReporting =
+  #| (self) => self
+
+///|
 pub extern "js" fn RealTimeReporting::contribute_to_histogram(
   self : RealTimeReporting,
   contribution : RealTimeContribution,
@@ -1472,16 +1608,50 @@ pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::to_js_
   #| (self) => self
 
 ///|
-pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::get_private_aggregation(
-  self : InterestGroupBiddingAndScoringScriptRunnerGlobalScope,
-) -> PrivateAggregation? =
-  #| (self) => self.privateAggregation
+/// Cast JsValue to InterestGroupBiddingAndScoringScriptRunnerGlobalScope (unchecked)
+pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::from_js_value(
+  v : JsValue,
+) -> InterestGroupBiddingAndScoringScriptRunnerGlobalScope =
+  #| (v) => v
 
 ///|
-pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::get_protected_audience(
+/// Safely cast JsValue to InterestGroupBiddingAndScoringScriptRunnerGlobalScope (checked with instanceof)
+pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::from_js_value_opt(
+  v : JsValue,
+) -> InterestGroupBiddingAndScoringScriptRunnerGlobalScope? =
+  #| (v) => (v instanceof InterestGroupBiddingAndScoringScriptRunnerGlobalScope) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to InterestGroupBiddingAndScoringScriptRunnerGlobalScope (checked with instanceof)
+pub extern "js" fn JsValue::as_interest_group_bidding_and_scoring_script_runner_global_scope(
+  self : JsValue,
+) -> InterestGroupBiddingAndScoringScriptRunnerGlobalScope? =
+  #| (self) => (self instanceof InterestGroupBiddingAndScoringScriptRunnerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to InterestGroupBiddingAndScoringScriptRunnerGlobalScope (unchecked)
+pub extern "js" fn JsValue::to_interest_group_bidding_and_scoring_script_runner_global_scope(
+  self : JsValue,
+) -> InterestGroupBiddingAndScoringScriptRunnerGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::to_interest_group_script_runner_global_scope(
   self : InterestGroupBiddingAndScoringScriptRunnerGlobalScope,
-) -> ProtectedAudienceUtilities =
-  #| (self) => self.protectedAudience
+) -> InterestGroupScriptRunnerGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::as_interest_group_bidding_script_runner_global_scope(
+  self : InterestGroupBiddingAndScoringScriptRunnerGlobalScope,
+) -> InterestGroupBiddingScriptRunnerGlobalScope? =
+  #| (self) => (self instanceof InterestGroupBiddingScriptRunnerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::as_interest_group_scoring_script_runner_global_scope(
+  self : InterestGroupBiddingAndScoringScriptRunnerGlobalScope,
+) -> InterestGroupScoringScriptRunnerGlobalScope? =
+  #| (self) => (self instanceof InterestGroupScoringScriptRunnerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn InterestGroupBiddingAndScoringScriptRunnerGlobalScope::get_for_debugging_only(
@@ -1506,28 +1676,44 @@ pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::get_private_aggregation(
-  self : InterestGroupBiddingScriptRunnerGlobalScope,
-) -> PrivateAggregation? =
-  #| (self) => self.privateAggregation
+/// Cast JsValue to InterestGroupBiddingScriptRunnerGlobalScope (unchecked)
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::from_js_value(
+  v : JsValue,
+) -> InterestGroupBiddingScriptRunnerGlobalScope =
+  #| (v) => v
 
 ///|
-pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::get_protected_audience(
-  self : InterestGroupBiddingScriptRunnerGlobalScope,
-) -> ProtectedAudienceUtilities =
-  #| (self) => self.protectedAudience
+/// Safely cast JsValue to InterestGroupBiddingScriptRunnerGlobalScope (checked with instanceof)
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::from_js_value_opt(
+  v : JsValue,
+) -> InterestGroupBiddingScriptRunnerGlobalScope? =
+  #| (v) => (v instanceof InterestGroupBiddingScriptRunnerGlobalScope) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::get_for_debugging_only(
-  self : InterestGroupBiddingScriptRunnerGlobalScope,
-) -> ForDebuggingOnly =
-  #| (self) => self.forDebuggingOnly
+/// Safely cast JsValue to InterestGroupBiddingScriptRunnerGlobalScope (checked with instanceof)
+pub extern "js" fn JsValue::as_interest_group_bidding_script_runner_global_scope(
+  self : JsValue,
+) -> InterestGroupBiddingScriptRunnerGlobalScope? =
+  #| (self) => (self instanceof InterestGroupBiddingScriptRunnerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::get_real_time_reporting(
+/// Cast JsValue to InterestGroupBiddingScriptRunnerGlobalScope (unchecked)
+pub extern "js" fn JsValue::to_interest_group_bidding_script_runner_global_scope(
+  self : JsValue,
+) -> InterestGroupBiddingScriptRunnerGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::to_interest_group_bidding_and_scoring_script_runner_global_scope(
   self : InterestGroupBiddingScriptRunnerGlobalScope,
-) -> RealTimeReporting =
-  #| (self) => self.realTimeReporting
+) -> InterestGroupBiddingAndScoringScriptRunnerGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::to_interest_group_script_runner_global_scope(
+  self : InterestGroupBiddingScriptRunnerGlobalScope,
+) -> InterestGroupScriptRunnerGlobalScope =
+  #| (self) => self
 
 ///|
 pub extern "js" fn InterestGroupBiddingScriptRunnerGlobalScope::set_bid(
@@ -1575,28 +1761,44 @@ pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::get_private_aggregation(
-  self : InterestGroupScoringScriptRunnerGlobalScope,
-) -> PrivateAggregation? =
-  #| (self) => self.privateAggregation
+/// Cast JsValue to InterestGroupScoringScriptRunnerGlobalScope (unchecked)
+pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::from_js_value(
+  v : JsValue,
+) -> InterestGroupScoringScriptRunnerGlobalScope =
+  #| (v) => v
 
 ///|
-pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::get_protected_audience(
-  self : InterestGroupScoringScriptRunnerGlobalScope,
-) -> ProtectedAudienceUtilities =
-  #| (self) => self.protectedAudience
+/// Safely cast JsValue to InterestGroupScoringScriptRunnerGlobalScope (checked with instanceof)
+pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::from_js_value_opt(
+  v : JsValue,
+) -> InterestGroupScoringScriptRunnerGlobalScope? =
+  #| (v) => (v instanceof InterestGroupScoringScriptRunnerGlobalScope) ? { $tag: 1, _0: v } : { $tag: 0 }
 
 ///|
-pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::get_for_debugging_only(
-  self : InterestGroupScoringScriptRunnerGlobalScope,
-) -> ForDebuggingOnly =
-  #| (self) => self.forDebuggingOnly
+/// Safely cast JsValue to InterestGroupScoringScriptRunnerGlobalScope (checked with instanceof)
+pub extern "js" fn JsValue::as_interest_group_scoring_script_runner_global_scope(
+  self : JsValue,
+) -> InterestGroupScoringScriptRunnerGlobalScope? =
+  #| (self) => (self instanceof InterestGroupScoringScriptRunnerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::get_real_time_reporting(
+/// Cast JsValue to InterestGroupScoringScriptRunnerGlobalScope (unchecked)
+pub extern "js" fn JsValue::to_interest_group_scoring_script_runner_global_scope(
+  self : JsValue,
+) -> InterestGroupScoringScriptRunnerGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::to_interest_group_bidding_and_scoring_script_runner_global_scope(
   self : InterestGroupScoringScriptRunnerGlobalScope,
-) -> RealTimeReporting =
-  #| (self) => self.realTimeReporting
+) -> InterestGroupBiddingAndScoringScriptRunnerGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn InterestGroupScoringScriptRunnerGlobalScope::to_interest_group_script_runner_global_scope(
+  self : InterestGroupScoringScriptRunnerGlobalScope,
+) -> InterestGroupScriptRunnerGlobalScope =
+  #| (self) => self
 
 ///|
 /// InterestGroupReportingScriptRunnerGlobalScope interface
@@ -1609,16 +1811,38 @@ pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::to_js_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::get_private_aggregation(
-  self : InterestGroupReportingScriptRunnerGlobalScope,
-) -> PrivateAggregation? =
-  #| (self) => self.privateAggregation
+/// Cast JsValue to InterestGroupReportingScriptRunnerGlobalScope (unchecked)
+pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::from_js_value(
+  v : JsValue,
+) -> InterestGroupReportingScriptRunnerGlobalScope =
+  #| (v) => v
 
 ///|
-pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::get_protected_audience(
+/// Safely cast JsValue to InterestGroupReportingScriptRunnerGlobalScope (checked with instanceof)
+pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::from_js_value_opt(
+  v : JsValue,
+) -> InterestGroupReportingScriptRunnerGlobalScope? =
+  #| (v) => (v instanceof InterestGroupReportingScriptRunnerGlobalScope) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to InterestGroupReportingScriptRunnerGlobalScope (checked with instanceof)
+pub extern "js" fn JsValue::as_interest_group_reporting_script_runner_global_scope(
+  self : JsValue,
+) -> InterestGroupReportingScriptRunnerGlobalScope? =
+  #| (self) => (self instanceof InterestGroupReportingScriptRunnerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to InterestGroupReportingScriptRunnerGlobalScope (unchecked)
+pub extern "js" fn JsValue::to_interest_group_reporting_script_runner_global_scope(
+  self : JsValue,
+) -> InterestGroupReportingScriptRunnerGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::to_interest_group_script_runner_global_scope(
   self : InterestGroupReportingScriptRunnerGlobalScope,
-) -> ProtectedAudienceUtilities =
-  #| (self) => self.protectedAudience
+) -> InterestGroupScriptRunnerGlobalScope =
+  #| (self) => self
 
 ///|
 pub extern "js" fn InterestGroupReportingScriptRunnerGlobalScope::send_report_to(
@@ -1650,6 +1874,34 @@ pub type ProtectedAudience
 pub extern "js" fn ProtectedAudience::to_js_value(
   self : ProtectedAudience,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to ProtectedAudience (unchecked)
+pub extern "js" fn ProtectedAudience::from_js_value(
+  v : JsValue,
+) -> ProtectedAudience =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ProtectedAudience (checked with instanceof)
+pub extern "js" fn ProtectedAudience::from_js_value_opt(
+  v : JsValue,
+) -> ProtectedAudience? =
+  #| (v) => (v instanceof ProtectedAudience) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ProtectedAudience (checked with instanceof)
+pub extern "js" fn JsValue::as_protected_audience(
+  self : JsValue,
+) -> ProtectedAudience? =
+  #| (self) => (self instanceof ProtectedAudience) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ProtectedAudience (unchecked)
+pub extern "js" fn JsValue::to_protected_audience(
+  self : JsValue,
+) -> ProtectedAudience =
   #| (self) => self
 
 ///|

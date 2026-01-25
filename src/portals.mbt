@@ -54,6 +54,56 @@ pub extern "js" fn HTMLPortalElement::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to HTMLPortalElement (unchecked)
+pub extern "js" fn HTMLPortalElement::from_js_value(
+  v : JsValue,
+) -> HTMLPortalElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to HTMLPortalElement (checked with instanceof)
+pub extern "js" fn HTMLPortalElement::from_js_value_opt(
+  v : JsValue,
+) -> HTMLPortalElement? =
+  #| (v) => (v instanceof HTMLPortalElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to HTMLPortalElement (checked with instanceof)
+pub extern "js" fn JsValue::as_html_portal_element(
+  self : JsValue,
+) -> HTMLPortalElement? =
+  #| (self) => (self instanceof HTMLPortalElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to HTMLPortalElement (unchecked)
+pub extern "js" fn JsValue::to_html_portal_element(
+  self : JsValue,
+) -> HTMLPortalElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn HTMLPortalElement::to_html_element(
+  self : HTMLPortalElement,
+) -> HTMLElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn HTMLPortalElement::to_element(
+  self : HTMLPortalElement,
+) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn HTMLPortalElement::to_node(self : HTMLPortalElement) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn HTMLPortalElement::to_event_target(
+  self : HTMLPortalElement,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn HTMLPortalElement::new() -> HTMLPortalElement =
   #| () => new HTMLPortalElement()
 
@@ -146,6 +196,32 @@ pub extern "js" fn PortalHost::to_js_value(self : PortalHost) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to PortalHost (unchecked)
+pub extern "js" fn PortalHost::from_js_value(v : JsValue) -> PortalHost =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PortalHost (checked with instanceof)
+pub extern "js" fn PortalHost::from_js_value_opt(v : JsValue) -> PortalHost? =
+  #| (v) => (v instanceof PortalHost) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PortalHost (checked with instanceof)
+pub extern "js" fn JsValue::as_portal_host(self : JsValue) -> PortalHost? =
+  #| (self) => (self instanceof PortalHost) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PortalHost (unchecked)
+pub extern "js" fn JsValue::to_portal_host(self : JsValue) -> PortalHost =
+  #| (self) => self
+
+///|
+pub extern "js" fn PortalHost::to_event_target(
+  self : PortalHost,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn PortalHost::post_message(
   self : PortalHost,
   message : JsValue,
@@ -192,6 +268,40 @@ pub type PortalActivateEvent
 pub extern "js" fn PortalActivateEvent::to_js_value(
   self : PortalActivateEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to PortalActivateEvent (unchecked)
+pub extern "js" fn PortalActivateEvent::from_js_value(
+  v : JsValue,
+) -> PortalActivateEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PortalActivateEvent (checked with instanceof)
+pub extern "js" fn PortalActivateEvent::from_js_value_opt(
+  v : JsValue,
+) -> PortalActivateEvent? =
+  #| (v) => (v instanceof PortalActivateEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PortalActivateEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_portal_activate_event(
+  self : JsValue,
+) -> PortalActivateEvent? =
+  #| (self) => (self instanceof PortalActivateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PortalActivateEvent (unchecked)
+pub extern "js" fn JsValue::to_portal_activate_event(
+  self : JsValue,
+) -> PortalActivateEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn PortalActivateEvent::to_event(
+  self : PortalActivateEvent,
+) -> Event =
   #| (self) => self
 
 ///|

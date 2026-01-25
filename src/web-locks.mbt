@@ -118,6 +118,26 @@ pub extern "js" fn LockManager::to_js_value(self : LockManager) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to LockManager (unchecked)
+pub extern "js" fn LockManager::from_js_value(v : JsValue) -> LockManager =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to LockManager (checked with instanceof)
+pub extern "js" fn LockManager::from_js_value_opt(v : JsValue) -> LockManager? =
+  #| (v) => (v instanceof LockManager) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to LockManager (checked with instanceof)
+pub extern "js" fn JsValue::as_lock_manager(self : JsValue) -> LockManager? =
+  #| (self) => (self instanceof LockManager) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to LockManager (unchecked)
+pub extern "js" fn JsValue::to_lock_manager(self : JsValue) -> LockManager =
+  #| (self) => self
+
+///|
 pub extern "js" fn LockManager::request(
   self : LockManager,
   name : String,
@@ -146,6 +166,26 @@ pub type Lock
 
 ///|
 pub extern "js" fn Lock::to_js_value(self : Lock) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to Lock (unchecked)
+pub extern "js" fn Lock::from_js_value(v : JsValue) -> Lock =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Lock (checked with instanceof)
+pub extern "js" fn Lock::from_js_value_opt(v : JsValue) -> Lock? =
+  #| (v) => (v instanceof Lock) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Lock (checked with instanceof)
+pub extern "js" fn JsValue::as_lock(self : JsValue) -> Lock? =
+  #| (self) => (self instanceof Lock) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Lock (unchecked)
+pub extern "js" fn JsValue::to_lock(self : JsValue) -> Lock =
   #| (self) => self
 
 ///|

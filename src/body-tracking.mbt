@@ -335,6 +335,26 @@ pub extern "js" fn XRBody::to_js_value(self : XRBody) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to XRBody (unchecked)
+pub extern "js" fn XRBody::from_js_value(v : JsValue) -> XRBody =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRBody (checked with instanceof)
+pub extern "js" fn XRBody::from_js_value_opt(v : JsValue) -> XRBody? =
+  #| (v) => (v instanceof XRBody) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRBody (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_body(self : JsValue) -> XRBody? =
+  #| (self) => (self instanceof XRBody) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRBody (unchecked)
+pub extern "js" fn JsValue::to_xr_body(self : JsValue) -> XRBody =
+  #| (self) => self
+
+///|
 pub extern "js" fn XRBody::_unknown_(self : XRBody) -> Unit =
   #| (self) => self._unknown_()
 
@@ -352,6 +372,36 @@ pub type XRBodySpace
 
 ///|
 pub extern "js" fn XRBodySpace::to_js_value(self : XRBodySpace) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to XRBodySpace (unchecked)
+pub extern "js" fn XRBodySpace::from_js_value(v : JsValue) -> XRBodySpace =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRBodySpace (checked with instanceof)
+pub extern "js" fn XRBodySpace::from_js_value_opt(v : JsValue) -> XRBodySpace? =
+  #| (v) => (v instanceof XRBodySpace) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRBodySpace (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_body_space(self : JsValue) -> XRBodySpace? =
+  #| (self) => (self instanceof XRBodySpace) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRBodySpace (unchecked)
+pub extern "js" fn JsValue::to_xr_body_space(self : JsValue) -> XRBodySpace =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRBodySpace::to_xr_space(self : XRBodySpace) -> XRSpace =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRBodySpace::to_event_target(
+  self : XRBodySpace,
+) -> EventTarget =
   #| (self) => self
 
 ///|

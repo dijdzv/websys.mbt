@@ -52,6 +52,38 @@ pub extern "js" fn RemotePlayback::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to RemotePlayback (unchecked)
+pub extern "js" fn RemotePlayback::from_js_value(v : JsValue) -> RemotePlayback =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to RemotePlayback (checked with instanceof)
+pub extern "js" fn RemotePlayback::from_js_value_opt(
+  v : JsValue,
+) -> RemotePlayback? =
+  #| (v) => (v instanceof RemotePlayback) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to RemotePlayback (checked with instanceof)
+pub extern "js" fn JsValue::as_remote_playback(
+  self : JsValue,
+) -> RemotePlayback? =
+  #| (self) => (self instanceof RemotePlayback) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to RemotePlayback (unchecked)
+pub extern "js" fn JsValue::to_remote_playback(
+  self : JsValue,
+) -> RemotePlayback =
+  #| (self) => self
+
+///|
+pub extern "js" fn RemotePlayback::to_event_target(
+  self : RemotePlayback,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn RemotePlayback::watch_availability(
   self : RemotePlayback,
   callback : RemotePlaybackAvailabilityCallback,

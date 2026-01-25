@@ -12,6 +12,40 @@ pub extern "js" fn CSSFontFaceDescriptors::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSFontFaceDescriptors (unchecked)
+pub extern "js" fn CSSFontFaceDescriptors::from_js_value(
+  v : JsValue,
+) -> CSSFontFaceDescriptors =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSFontFaceDescriptors (checked with instanceof)
+pub extern "js" fn CSSFontFaceDescriptors::from_js_value_opt(
+  v : JsValue,
+) -> CSSFontFaceDescriptors? =
+  #| (v) => (v instanceof CSSFontFaceDescriptors) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSFontFaceDescriptors (checked with instanceof)
+pub extern "js" fn JsValue::as_css_font_face_descriptors(
+  self : JsValue,
+) -> CSSFontFaceDescriptors? =
+  #| (self) => (self instanceof CSSFontFaceDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSFontFaceDescriptors (unchecked)
+pub extern "js" fn JsValue::to_css_font_face_descriptors(
+  self : JsValue,
+) -> CSSFontFaceDescriptors =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSFontFaceDescriptors::to_css_style_declaration(
+  self : CSSFontFaceDescriptors,
+) -> CSSStyleDeclaration =
+  #| (self) => self
+
+///|
 pub extern "js" fn CSSFontFaceDescriptors::get_src(
   self : CSSFontFaceDescriptors,
 ) -> CSSOMString =
@@ -292,6 +326,40 @@ pub type CSSFontFaceRule
 pub extern "js" fn CSSFontFaceRule::to_js_value(
   self : CSSFontFaceRule,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CSSFontFaceRule (unchecked)
+pub extern "js" fn CSSFontFaceRule::from_js_value(
+  v : JsValue,
+) -> CSSFontFaceRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSFontFaceRule (checked with instanceof)
+pub extern "js" fn CSSFontFaceRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSFontFaceRule? =
+  #| (v) => (v instanceof CSSFontFaceRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSFontFaceRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_font_face_rule(
+  self : JsValue,
+) -> CSSFontFaceRule? =
+  #| (self) => (self instanceof CSSFontFaceRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSFontFaceRule (unchecked)
+pub extern "js" fn JsValue::to_css_font_face_rule(
+  self : JsValue,
+) -> CSSFontFaceRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSFontFaceRule::to_css_rule(
+  self : CSSFontFaceRule,
+) -> CSSRule =
   #| (self) => self
 
 ///|

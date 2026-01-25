@@ -148,6 +148,44 @@ pub extern "js" fn NavigationEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to NavigationEvent (unchecked)
+pub extern "js" fn NavigationEvent::from_js_value(
+  v : JsValue,
+) -> NavigationEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to NavigationEvent (checked with instanceof)
+pub extern "js" fn NavigationEvent::from_js_value_opt(
+  v : JsValue,
+) -> NavigationEvent? =
+  #| (v) => (v instanceof NavigationEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to NavigationEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_navigation_event(
+  self : JsValue,
+) -> NavigationEvent? =
+  #| (self) => (self instanceof NavigationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to NavigationEvent (unchecked)
+pub extern "js" fn JsValue::to_navigation_event(
+  self : JsValue,
+) -> NavigationEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn NavigationEvent::to_ui_event(
+  self : NavigationEvent,
+) -> UIEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn NavigationEvent::to_event(self : NavigationEvent) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn NavigationEvent::new(
   type_ : String,
   event_init_dict : NavigationEventInit,
@@ -164,4 +202,4 @@ pub extern "js" fn NavigationEvent::get_dir(
 pub extern "js" fn NavigationEvent::get_related_target(
   self : NavigationEvent,
 ) -> EventTarget? =
-  #| (self) => self.relatedTarget
+  #| (self) => { const v = self.relatedTarget; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }

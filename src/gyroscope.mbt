@@ -61,6 +61,34 @@ pub extern "js" fn Gyroscope::to_js_value(self : Gyroscope) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Gyroscope (unchecked)
+pub extern "js" fn Gyroscope::from_js_value(v : JsValue) -> Gyroscope =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Gyroscope (checked with instanceof)
+pub extern "js" fn Gyroscope::from_js_value_opt(v : JsValue) -> Gyroscope? =
+  #| (v) => (v instanceof Gyroscope) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Gyroscope (checked with instanceof)
+pub extern "js" fn JsValue::as_gyroscope(self : JsValue) -> Gyroscope? =
+  #| (self) => (self instanceof Gyroscope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Gyroscope (unchecked)
+pub extern "js" fn JsValue::to_gyroscope(self : JsValue) -> Gyroscope =
+  #| (self) => self
+
+///|
+pub extern "js" fn Gyroscope::to_sensor(self : Gyroscope) -> Sensor =
+  #| (self) => self
+
+///|
+pub extern "js" fn Gyroscope::to_event_target(self : Gyroscope) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn Gyroscope::new(
   sensor_options : GyroscopeSensorOptions,
 ) -> Gyroscope =
@@ -68,12 +96,12 @@ pub extern "js" fn Gyroscope::new(
 
 ///|
 pub extern "js" fn Gyroscope::get_x(self : Gyroscope) -> Double? =
-  #| (self) => self.x
+  #| (self) => { const v = self.x; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Gyroscope::get_y(self : Gyroscope) -> Double? =
-  #| (self) => self.y
+  #| (self) => { const v = self.y; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Gyroscope::get_z(self : Gyroscope) -> Double? =
-  #| (self) => self.z
+  #| (self) => { const v = self.z; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }

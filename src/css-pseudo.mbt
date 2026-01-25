@@ -12,6 +12,40 @@ pub extern "js" fn CSSPseudoElement::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSPseudoElement (unchecked)
+pub extern "js" fn CSSPseudoElement::from_js_value(
+  v : JsValue,
+) -> CSSPseudoElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSPseudoElement (checked with instanceof)
+pub extern "js" fn CSSPseudoElement::from_js_value_opt(
+  v : JsValue,
+) -> CSSPseudoElement? =
+  #| (v) => (v instanceof CSSPseudoElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSPseudoElement (checked with instanceof)
+pub extern "js" fn JsValue::as_css_pseudo_element(
+  self : JsValue,
+) -> CSSPseudoElement? =
+  #| (self) => (self instanceof CSSPseudoElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSPseudoElement (unchecked)
+pub extern "js" fn JsValue::to_css_pseudo_element(
+  self : JsValue,
+) -> CSSPseudoElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSPseudoElement::to_event_target(
+  self : CSSPseudoElement,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn CSSPseudoElement::get_type(
   self : CSSPseudoElement,
 ) -> CSSOMString =
@@ -34,7 +68,7 @@ pub extern "js" fn CSSPseudoElement::pseudo(
   self : CSSPseudoElement,
   type_ : CSSOMString,
 ) -> CSSPseudoElement? =
-  #| (self, type_) => self.pseudo(type_)
+  #| (self, type_) => { const v = self.pseudo(type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn CSSPseudoElement::get_box_quads(

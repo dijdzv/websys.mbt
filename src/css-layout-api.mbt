@@ -287,6 +287,40 @@ pub extern "js" fn LayoutWorkletGlobalScope::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to LayoutWorkletGlobalScope (unchecked)
+pub extern "js" fn LayoutWorkletGlobalScope::from_js_value(
+  v : JsValue,
+) -> LayoutWorkletGlobalScope =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to LayoutWorkletGlobalScope (checked with instanceof)
+pub extern "js" fn LayoutWorkletGlobalScope::from_js_value_opt(
+  v : JsValue,
+) -> LayoutWorkletGlobalScope? =
+  #| (v) => (v instanceof LayoutWorkletGlobalScope) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to LayoutWorkletGlobalScope (checked with instanceof)
+pub extern "js" fn JsValue::as_layout_worklet_global_scope(
+  self : JsValue,
+) -> LayoutWorkletGlobalScope? =
+  #| (self) => (self instanceof LayoutWorkletGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to LayoutWorkletGlobalScope (unchecked)
+pub extern "js" fn JsValue::to_layout_worklet_global_scope(
+  self : JsValue,
+) -> LayoutWorkletGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn LayoutWorkletGlobalScope::to_worklet_global_scope(
+  self : LayoutWorkletGlobalScope,
+) -> WorkletGlobalScope =
+  #| (self) => self
+
+///|
 pub extern "js" fn LayoutWorkletGlobalScope::register_layout(
   self : LayoutWorkletGlobalScope,
   name : String,
@@ -300,6 +334,26 @@ pub type LayoutChild
 
 ///|
 pub extern "js" fn LayoutChild::to_js_value(self : LayoutChild) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to LayoutChild (unchecked)
+pub extern "js" fn LayoutChild::from_js_value(v : JsValue) -> LayoutChild =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to LayoutChild (checked with instanceof)
+pub extern "js" fn LayoutChild::from_js_value_opt(v : JsValue) -> LayoutChild? =
+  #| (v) => (v instanceof LayoutChild) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to LayoutChild (checked with instanceof)
+pub extern "js" fn JsValue::as_layout_child(self : JsValue) -> LayoutChild? =
+  #| (self) => (self instanceof LayoutChild) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to LayoutChild (unchecked)
+pub extern "js" fn JsValue::to_layout_child(self : JsValue) -> LayoutChild =
   #| (self) => self
 
 ///|
@@ -330,6 +384,32 @@ pub type LayoutFragment
 pub extern "js" fn LayoutFragment::to_js_value(
   self : LayoutFragment,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to LayoutFragment (unchecked)
+pub extern "js" fn LayoutFragment::from_js_value(v : JsValue) -> LayoutFragment =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to LayoutFragment (checked with instanceof)
+pub extern "js" fn LayoutFragment::from_js_value_opt(
+  v : JsValue,
+) -> LayoutFragment? =
+  #| (v) => (v instanceof LayoutFragment) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to LayoutFragment (checked with instanceof)
+pub extern "js" fn JsValue::as_layout_fragment(
+  self : JsValue,
+) -> LayoutFragment? =
+  #| (self) => (self instanceof LayoutFragment) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to LayoutFragment (unchecked)
+pub extern "js" fn JsValue::to_layout_fragment(
+  self : JsValue,
+) -> LayoutFragment =
   #| (self) => self
 
 ///|
@@ -378,7 +458,7 @@ pub extern "js" fn LayoutFragment::get_data(self : LayoutFragment) -> JsValue =
 pub extern "js" fn LayoutFragment::get_break_token(
   self : LayoutFragment,
 ) -> ChildBreakToken? =
-  #| (self) => self.breakToken
+  #| (self) => { const v = self.breakToken; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// IntrinsicSizes interface
@@ -388,6 +468,32 @@ pub type IntrinsicSizes
 pub extern "js" fn IntrinsicSizes::to_js_value(
   self : IntrinsicSizes,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to IntrinsicSizes (unchecked)
+pub extern "js" fn IntrinsicSizes::from_js_value(v : JsValue) -> IntrinsicSizes =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to IntrinsicSizes (checked with instanceof)
+pub extern "js" fn IntrinsicSizes::from_js_value_opt(
+  v : JsValue,
+) -> IntrinsicSizes? =
+  #| (v) => (v instanceof IntrinsicSizes) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to IntrinsicSizes (checked with instanceof)
+pub extern "js" fn JsValue::as_intrinsic_sizes(
+  self : JsValue,
+) -> IntrinsicSizes? =
+  #| (self) => (self instanceof IntrinsicSizes) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to IntrinsicSizes (unchecked)
+pub extern "js" fn JsValue::to_intrinsic_sizes(
+  self : JsValue,
+) -> IntrinsicSizes =
   #| (self) => self
 
 ///|
@@ -413,6 +519,34 @@ pub extern "js" fn LayoutConstraints::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to LayoutConstraints (unchecked)
+pub extern "js" fn LayoutConstraints::from_js_value(
+  v : JsValue,
+) -> LayoutConstraints =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to LayoutConstraints (checked with instanceof)
+pub extern "js" fn LayoutConstraints::from_js_value_opt(
+  v : JsValue,
+) -> LayoutConstraints? =
+  #| (v) => (v instanceof LayoutConstraints) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to LayoutConstraints (checked with instanceof)
+pub extern "js" fn JsValue::as_layout_constraints(
+  self : JsValue,
+) -> LayoutConstraints? =
+  #| (self) => (self instanceof LayoutConstraints) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to LayoutConstraints (unchecked)
+pub extern "js" fn JsValue::to_layout_constraints(
+  self : JsValue,
+) -> LayoutConstraints =
+  #| (self) => self
+
+///|
 pub extern "js" fn LayoutConstraints::get_available_inline_size(
   self : LayoutConstraints,
 ) -> Double =
@@ -428,13 +562,13 @@ pub extern "js" fn LayoutConstraints::get_available_block_size(
 pub extern "js" fn LayoutConstraints::get_fixed_inline_size(
   self : LayoutConstraints,
 ) -> Double? =
-  #| (self) => self.fixedInlineSize
+  #| (self) => { const v = self.fixedInlineSize; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn LayoutConstraints::get_fixed_block_size(
   self : LayoutConstraints,
 ) -> Double? =
-  #| (self) => self.fixedBlockSize
+  #| (self) => { const v = self.fixedBlockSize; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn LayoutConstraints::get_percentage_inline_size(
@@ -452,7 +586,7 @@ pub extern "js" fn LayoutConstraints::get_percentage_block_size(
 pub extern "js" fn LayoutConstraints::get_block_fragmentation_offset(
   self : LayoutConstraints,
 ) -> Double? =
-  #| (self) => self.blockFragmentationOffset
+  #| (self) => { const v = self.blockFragmentationOffset; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn LayoutConstraints::get_block_fragmentation_type(
@@ -477,6 +611,34 @@ pub extern "js" fn ChildBreakToken::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ChildBreakToken (unchecked)
+pub extern "js" fn ChildBreakToken::from_js_value(
+  v : JsValue,
+) -> ChildBreakToken =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ChildBreakToken (checked with instanceof)
+pub extern "js" fn ChildBreakToken::from_js_value_opt(
+  v : JsValue,
+) -> ChildBreakToken? =
+  #| (v) => (v instanceof ChildBreakToken) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ChildBreakToken (checked with instanceof)
+pub extern "js" fn JsValue::as_child_break_token(
+  self : JsValue,
+) -> ChildBreakToken? =
+  #| (self) => (self instanceof ChildBreakToken) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ChildBreakToken (unchecked)
+pub extern "js" fn JsValue::to_child_break_token(
+  self : JsValue,
+) -> ChildBreakToken =
+  #| (self) => self
+
+///|
 pub extern "js" fn ChildBreakToken::get_break_type(
   self : ChildBreakToken,
 ) -> BreakType =
@@ -497,6 +659,26 @@ pub extern "js" fn BreakToken::to_js_value(self : BreakToken) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to BreakToken (unchecked)
+pub extern "js" fn BreakToken::from_js_value(v : JsValue) -> BreakToken =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to BreakToken (checked with instanceof)
+pub extern "js" fn BreakToken::from_js_value_opt(v : JsValue) -> BreakToken? =
+  #| (v) => (v instanceof BreakToken) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to BreakToken (checked with instanceof)
+pub extern "js" fn JsValue::as_break_token(self : JsValue) -> BreakToken? =
+  #| (self) => (self instanceof BreakToken) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to BreakToken (unchecked)
+pub extern "js" fn JsValue::to_break_token(self : JsValue) -> BreakToken =
+  #| (self) => self
+
+///|
 pub extern "js" fn BreakToken::get_child_break_tokens(
   self : BreakToken,
 ) -> JsValue =
@@ -512,6 +694,26 @@ pub type LayoutEdges
 
 ///|
 pub extern "js" fn LayoutEdges::to_js_value(self : LayoutEdges) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to LayoutEdges (unchecked)
+pub extern "js" fn LayoutEdges::from_js_value(v : JsValue) -> LayoutEdges =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to LayoutEdges (checked with instanceof)
+pub extern "js" fn LayoutEdges::from_js_value_opt(v : JsValue) -> LayoutEdges? =
+  #| (v) => (v instanceof LayoutEdges) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to LayoutEdges (checked with instanceof)
+pub extern "js" fn JsValue::as_layout_edges(self : JsValue) -> LayoutEdges? =
+  #| (self) => (self instanceof LayoutEdges) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to LayoutEdges (unchecked)
+pub extern "js" fn JsValue::to_layout_edges(self : JsValue) -> LayoutEdges =
   #| (self) => self
 
 ///|
@@ -546,6 +748,32 @@ pub type FragmentResult
 pub extern "js" fn FragmentResult::to_js_value(
   self : FragmentResult,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to FragmentResult (unchecked)
+pub extern "js" fn FragmentResult::from_js_value(v : JsValue) -> FragmentResult =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FragmentResult (checked with instanceof)
+pub extern "js" fn FragmentResult::from_js_value_opt(
+  v : JsValue,
+) -> FragmentResult? =
+  #| (v) => (v instanceof FragmentResult) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FragmentResult (checked with instanceof)
+pub extern "js" fn JsValue::as_fragment_result(
+  self : JsValue,
+) -> FragmentResult? =
+  #| (self) => (self instanceof FragmentResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FragmentResult (unchecked)
+pub extern "js" fn JsValue::to_fragment_result(
+  self : JsValue,
+) -> FragmentResult =
   #| (self) => self
 
 ///|

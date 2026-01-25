@@ -12,6 +12,40 @@ pub extern "js" fn CSSFontFeatureValuesRule::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSFontFeatureValuesRule (unchecked)
+pub extern "js" fn CSSFontFeatureValuesRule::from_js_value(
+  v : JsValue,
+) -> CSSFontFeatureValuesRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSFontFeatureValuesRule (checked with instanceof)
+pub extern "js" fn CSSFontFeatureValuesRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSFontFeatureValuesRule? =
+  #| (v) => (v instanceof CSSFontFeatureValuesRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSFontFeatureValuesRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_font_feature_values_rule(
+  self : JsValue,
+) -> CSSFontFeatureValuesRule? =
+  #| (self) => (self instanceof CSSFontFeatureValuesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSFontFeatureValuesRule (unchecked)
+pub extern "js" fn JsValue::to_css_font_feature_values_rule(
+  self : JsValue,
+) -> CSSFontFeatureValuesRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSFontFeatureValuesRule::to_css_rule(
+  self : CSSFontFeatureValuesRule,
+) -> CSSRule =
+  #| (self) => self
+
+///|
 pub extern "js" fn CSSFontFeatureValuesRule::get_font_family(
   self : CSSFontFeatureValuesRule,
 ) -> CSSOMString =
@@ -77,11 +111,39 @@ pub extern "js" fn CSSFontFeatureValuesMap::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSFontFeatureValuesMap (unchecked)
+pub extern "js" fn CSSFontFeatureValuesMap::from_js_value(
+  v : JsValue,
+) -> CSSFontFeatureValuesMap =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSFontFeatureValuesMap (checked with instanceof)
+pub extern "js" fn CSSFontFeatureValuesMap::from_js_value_opt(
+  v : JsValue,
+) -> CSSFontFeatureValuesMap? =
+  #| (v) => (v instanceof CSSFontFeatureValuesMap) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSFontFeatureValuesMap (checked with instanceof)
+pub extern "js" fn JsValue::as_css_font_feature_values_map(
+  self : JsValue,
+) -> CSSFontFeatureValuesMap? =
+  #| (self) => (self instanceof CSSFontFeatureValuesMap) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSFontFeatureValuesMap (unchecked)
+pub extern "js" fn JsValue::to_css_font_feature_values_map(
+  self : JsValue,
+) -> CSSFontFeatureValuesMap =
+  #| (self) => self
+
+///|
 pub extern "js" fn CSSFontFeatureValuesMap::get(
   self : CSSFontFeatureValuesMap,
   key : CSSOMString,
 ) -> Array[Int]? =
-  #| (self, key) => self.get(key)
+  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn CSSFontFeatureValuesMap::has(
@@ -119,6 +181,40 @@ pub type CSSFontPaletteValuesRule
 pub extern "js" fn CSSFontPaletteValuesRule::to_js_value(
   self : CSSFontPaletteValuesRule,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CSSFontPaletteValuesRule (unchecked)
+pub extern "js" fn CSSFontPaletteValuesRule::from_js_value(
+  v : JsValue,
+) -> CSSFontPaletteValuesRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSFontPaletteValuesRule (checked with instanceof)
+pub extern "js" fn CSSFontPaletteValuesRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSFontPaletteValuesRule? =
+  #| (v) => (v instanceof CSSFontPaletteValuesRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSFontPaletteValuesRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_font_palette_values_rule(
+  self : JsValue,
+) -> CSSFontPaletteValuesRule? =
+  #| (self) => (self instanceof CSSFontPaletteValuesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSFontPaletteValuesRule (unchecked)
+pub extern "js" fn JsValue::to_css_font_palette_values_rule(
+  self : JsValue,
+) -> CSSFontPaletteValuesRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSFontPaletteValuesRule::to_css_rule(
+  self : CSSFontPaletteValuesRule,
+) -> CSSRule =
   #| (self) => self
 
 ///|

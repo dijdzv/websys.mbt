@@ -2,8 +2,46 @@
 // Source: @webref/idl/clipboard-apis
 
 ///|
+/// StringOrBlob typedef
+pub type StringOrBlob
+
+///|
+pub extern "js" fn StringOrBlob::to_js_value(self : StringOrBlob) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create StringOrBlob from String
+pub extern "js" fn StringOrBlob::from_string(v : String) -> StringOrBlob =
+  #| (v) => v
+
+///|
+/// Create StringOrBlob from Blob
+pub extern "js" fn StringOrBlob::from_blob(v : Blob) -> StringOrBlob =
+  #| (v) => v
+
+///|
+/// Check if this StringOrBlob is String
+pub extern "js" fn StringOrBlob::is_string(self : StringOrBlob) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this StringOrBlob is Blob
+pub extern "js" fn StringOrBlob::is_blob(self : StringOrBlob) -> Bool =
+  #| (self) => self instanceof Blob
+
+///|
+/// Try to get StringOrBlob as String
+pub extern "js" fn StringOrBlob::as_string(self : StringOrBlob) -> String? =
+  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get StringOrBlob as Blob
+pub extern "js" fn StringOrBlob::as_blob(self : StringOrBlob) -> Blob? =
+  #| (self) => (self instanceof Blob) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// ClipboardItemData typedef
-pub type ClipboardItemData = Promise[Unit]
+pub type ClipboardItemData = Promise[StringOrBlob]
 
 ///|
 /// ClipboardItems typedef
@@ -156,6 +194,36 @@ pub extern "js" fn ClipboardEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ClipboardEvent (unchecked)
+pub extern "js" fn ClipboardEvent::from_js_value(v : JsValue) -> ClipboardEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ClipboardEvent (checked with instanceof)
+pub extern "js" fn ClipboardEvent::from_js_value_opt(
+  v : JsValue,
+) -> ClipboardEvent? =
+  #| (v) => (v instanceof ClipboardEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ClipboardEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_clipboard_event(
+  self : JsValue,
+) -> ClipboardEvent? =
+  #| (self) => (self instanceof ClipboardEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ClipboardEvent (unchecked)
+pub extern "js" fn JsValue::to_clipboard_event(
+  self : JsValue,
+) -> ClipboardEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn ClipboardEvent::to_event(self : ClipboardEvent) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn ClipboardEvent::new(
   type_ : String,
   event_init_dict : ClipboardEventInit,
@@ -166,7 +234,7 @@ pub extern "js" fn ClipboardEvent::new(
 pub extern "js" fn ClipboardEvent::get_clipboard_data(
   self : ClipboardEvent,
 ) -> DataTransfer? =
-  #| (self) => self.clipboardData
+  #| (self) => { const v = self.clipboardData; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// ClipboardChangeEvent interface
@@ -176,6 +244,40 @@ pub type ClipboardChangeEvent
 pub extern "js" fn ClipboardChangeEvent::to_js_value(
   self : ClipboardChangeEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to ClipboardChangeEvent (unchecked)
+pub extern "js" fn ClipboardChangeEvent::from_js_value(
+  v : JsValue,
+) -> ClipboardChangeEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ClipboardChangeEvent (checked with instanceof)
+pub extern "js" fn ClipboardChangeEvent::from_js_value_opt(
+  v : JsValue,
+) -> ClipboardChangeEvent? =
+  #| (v) => (v instanceof ClipboardChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ClipboardChangeEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_clipboard_change_event(
+  self : JsValue,
+) -> ClipboardChangeEvent? =
+  #| (self) => (self instanceof ClipboardChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ClipboardChangeEvent (unchecked)
+pub extern "js" fn JsValue::to_clipboard_change_event(
+  self : JsValue,
+) -> ClipboardChangeEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn ClipboardChangeEvent::to_event(
+  self : ClipboardChangeEvent,
+) -> Event =
   #| (self) => self
 
 ///|
@@ -203,6 +305,28 @@ pub type ClipboardItem
 
 ///|
 pub extern "js" fn ClipboardItem::to_js_value(self : ClipboardItem) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to ClipboardItem (unchecked)
+pub extern "js" fn ClipboardItem::from_js_value(v : JsValue) -> ClipboardItem =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ClipboardItem (checked with instanceof)
+pub extern "js" fn ClipboardItem::from_js_value_opt(
+  v : JsValue,
+) -> ClipboardItem? =
+  #| (v) => (v instanceof ClipboardItem) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ClipboardItem (checked with instanceof)
+pub extern "js" fn JsValue::as_clipboard_item(self : JsValue) -> ClipboardItem? =
+  #| (self) => (self instanceof ClipboardItem) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ClipboardItem (unchecked)
+pub extern "js" fn JsValue::to_clipboard_item(self : JsValue) -> ClipboardItem =
   #| (self) => self
 
 ///|
@@ -239,6 +363,30 @@ pub type Clipboard
 
 ///|
 pub extern "js" fn Clipboard::to_js_value(self : Clipboard) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to Clipboard (unchecked)
+pub extern "js" fn Clipboard::from_js_value(v : JsValue) -> Clipboard =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Clipboard (checked with instanceof)
+pub extern "js" fn Clipboard::from_js_value_opt(v : JsValue) -> Clipboard? =
+  #| (v) => (v instanceof Clipboard) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Clipboard (checked with instanceof)
+pub extern "js" fn JsValue::as_clipboard(self : JsValue) -> Clipboard? =
+  #| (self) => (self instanceof Clipboard) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Clipboard (unchecked)
+pub extern "js" fn JsValue::to_clipboard(self : JsValue) -> Clipboard =
+  #| (self) => self
+
+///|
+pub extern "js" fn Clipboard::to_event_target(self : Clipboard) -> EventTarget =
   #| (self) => self
 
 ///|

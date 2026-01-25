@@ -28,9 +28,9 @@ pub extern "js" fn PerformanceMarkOptions::to_js(
 /// PerformanceMeasureOptions dictionary
 pub struct PerformanceMeasureOptions {
   detail : JsValue?
-  start : JsValue?
+  start : StringOrDOMHighResTimeStamp?
   duration : DOMHighResTimeStamp?
-  end : JsValue?
+  end : StringOrDOMHighResTimeStamp?
 }
 
 ///|
@@ -67,6 +67,40 @@ pub extern "js" fn PerformanceMark::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PerformanceMark (unchecked)
+pub extern "js" fn PerformanceMark::from_js_value(
+  v : JsValue,
+) -> PerformanceMark =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PerformanceMark (checked with instanceof)
+pub extern "js" fn PerformanceMark::from_js_value_opt(
+  v : JsValue,
+) -> PerformanceMark? =
+  #| (v) => (v instanceof PerformanceMark) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PerformanceMark (checked with instanceof)
+pub extern "js" fn JsValue::as_performance_mark(
+  self : JsValue,
+) -> PerformanceMark? =
+  #| (self) => (self instanceof PerformanceMark) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PerformanceMark (unchecked)
+pub extern "js" fn JsValue::to_performance_mark(
+  self : JsValue,
+) -> PerformanceMark =
+  #| (self) => self
+
+///|
+pub extern "js" fn PerformanceMark::to_performance_entry(
+  self : PerformanceMark,
+) -> PerformanceEntry =
+  #| (self) => self
+
+///|
 pub extern "js" fn PerformanceMark::new(
   mark_name : String,
   mark_options : PerformanceMarkOptions,
@@ -87,6 +121,40 @@ pub type PerformanceMeasure
 pub extern "js" fn PerformanceMeasure::to_js_value(
   self : PerformanceMeasure,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to PerformanceMeasure (unchecked)
+pub extern "js" fn PerformanceMeasure::from_js_value(
+  v : JsValue,
+) -> PerformanceMeasure =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PerformanceMeasure (checked with instanceof)
+pub extern "js" fn PerformanceMeasure::from_js_value_opt(
+  v : JsValue,
+) -> PerformanceMeasure? =
+  #| (v) => (v instanceof PerformanceMeasure) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PerformanceMeasure (checked with instanceof)
+pub extern "js" fn JsValue::as_performance_measure(
+  self : JsValue,
+) -> PerformanceMeasure? =
+  #| (self) => (self instanceof PerformanceMeasure) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PerformanceMeasure (unchecked)
+pub extern "js" fn JsValue::to_performance_measure(
+  self : JsValue,
+) -> PerformanceMeasure =
+  #| (self) => self
+
+///|
+pub extern "js" fn PerformanceMeasure::to_performance_entry(
+  self : PerformanceMeasure,
+) -> PerformanceEntry =
   #| (self) => self
 
 ///|

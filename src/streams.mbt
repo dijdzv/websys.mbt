@@ -576,6 +576,38 @@ pub extern "js" fn ReadableStream::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ReadableStream (unchecked)
+pub extern "js" fn ReadableStream::from_js_value(v : JsValue) -> ReadableStream =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ReadableStream (checked with instanceof)
+pub extern "js" fn ReadableStream::from_js_value_opt(
+  v : JsValue,
+) -> ReadableStream? =
+  #| (v) => (v instanceof ReadableStream) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ReadableStream (checked with instanceof)
+pub extern "js" fn JsValue::as_readable_stream(
+  self : JsValue,
+) -> ReadableStream? =
+  #| (self) => (self instanceof ReadableStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ReadableStream (unchecked)
+pub extern "js" fn JsValue::to_readable_stream(
+  self : JsValue,
+) -> ReadableStream =
+  #| (self) => self
+
+///|
+pub extern "js" fn ReadableStream::as_web_transport_receive_stream(
+  self : ReadableStream,
+) -> WebTransportReceiveStream? =
+  #| (self) => (self instanceof WebTransportReceiveStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn ReadableStream::new(
   underlying_source : JsValue,
   strategy : QueuingStrategy,
@@ -669,6 +701,34 @@ pub extern "js" fn ReadableStreamDefaultReader::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ReadableStreamDefaultReader (unchecked)
+pub extern "js" fn ReadableStreamDefaultReader::from_js_value(
+  v : JsValue,
+) -> ReadableStreamDefaultReader =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ReadableStreamDefaultReader (checked with instanceof)
+pub extern "js" fn ReadableStreamDefaultReader::from_js_value_opt(
+  v : JsValue,
+) -> ReadableStreamDefaultReader? =
+  #| (v) => (v instanceof ReadableStreamDefaultReader) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ReadableStreamDefaultReader (checked with instanceof)
+pub extern "js" fn JsValue::as_readable_stream_default_reader(
+  self : JsValue,
+) -> ReadableStreamDefaultReader? =
+  #| (self) => (self instanceof ReadableStreamDefaultReader) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ReadableStreamDefaultReader (unchecked)
+pub extern "js" fn JsValue::to_readable_stream_default_reader(
+  self : JsValue,
+) -> ReadableStreamDefaultReader =
+  #| (self) => self
+
+///|
 pub extern "js" fn ReadableStreamDefaultReader::new(
   stream : ReadableStream,
 ) -> ReadableStreamDefaultReader =
@@ -713,6 +773,34 @@ pub type ReadableStreamBYOBReader
 pub extern "js" fn ReadableStreamBYOBReader::to_js_value(
   self : ReadableStreamBYOBReader,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to ReadableStreamBYOBReader (unchecked)
+pub extern "js" fn ReadableStreamBYOBReader::from_js_value(
+  v : JsValue,
+) -> ReadableStreamBYOBReader =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ReadableStreamBYOBReader (checked with instanceof)
+pub extern "js" fn ReadableStreamBYOBReader::from_js_value_opt(
+  v : JsValue,
+) -> ReadableStreamBYOBReader? =
+  #| (v) => (v instanceof ReadableStreamBYOBReader) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ReadableStreamBYOBReader (checked with instanceof)
+pub extern "js" fn JsValue::as_readable_stream_byob_reader(
+  self : JsValue,
+) -> ReadableStreamBYOBReader? =
+  #| (self) => (self instanceof ReadableStreamBYOBReader) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ReadableStreamBYOBReader (unchecked)
+pub extern "js" fn JsValue::to_readable_stream_byob_reader(
+  self : JsValue,
+) -> ReadableStreamBYOBReader =
   #| (self) => self
 
 ///|
@@ -772,10 +860,38 @@ pub extern "js" fn ReadableStreamDefaultController::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ReadableStreamDefaultController (unchecked)
+pub extern "js" fn ReadableStreamDefaultController::from_js_value(
+  v : JsValue,
+) -> ReadableStreamDefaultController =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ReadableStreamDefaultController (checked with instanceof)
+pub extern "js" fn ReadableStreamDefaultController::from_js_value_opt(
+  v : JsValue,
+) -> ReadableStreamDefaultController? =
+  #| (v) => (v instanceof ReadableStreamDefaultController) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ReadableStreamDefaultController (checked with instanceof)
+pub extern "js" fn JsValue::as_readable_stream_default_controller(
+  self : JsValue,
+) -> ReadableStreamDefaultController? =
+  #| (self) => (self instanceof ReadableStreamDefaultController) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ReadableStreamDefaultController (unchecked)
+pub extern "js" fn JsValue::to_readable_stream_default_controller(
+  self : JsValue,
+) -> ReadableStreamDefaultController =
+  #| (self) => self
+
+///|
 pub extern "js" fn ReadableStreamDefaultController::get_desired_size(
   self : ReadableStreamDefaultController,
 ) -> Double? =
-  #| (self) => self.desiredSize
+  #| (self) => { const v = self.desiredSize; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn ReadableStreamDefaultController::close(
@@ -820,16 +936,44 @@ pub extern "js" fn ReadableByteStreamController::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ReadableByteStreamController (unchecked)
+pub extern "js" fn ReadableByteStreamController::from_js_value(
+  v : JsValue,
+) -> ReadableByteStreamController =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ReadableByteStreamController (checked with instanceof)
+pub extern "js" fn ReadableByteStreamController::from_js_value_opt(
+  v : JsValue,
+) -> ReadableByteStreamController? =
+  #| (v) => (v instanceof ReadableByteStreamController) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ReadableByteStreamController (checked with instanceof)
+pub extern "js" fn JsValue::as_readable_byte_stream_controller(
+  self : JsValue,
+) -> ReadableByteStreamController? =
+  #| (self) => (self instanceof ReadableByteStreamController) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ReadableByteStreamController (unchecked)
+pub extern "js" fn JsValue::to_readable_byte_stream_controller(
+  self : JsValue,
+) -> ReadableByteStreamController =
+  #| (self) => self
+
+///|
 pub extern "js" fn ReadableByteStreamController::get_byob_request(
   self : ReadableByteStreamController,
 ) -> ReadableStreamBYOBRequest? =
-  #| (self) => self.byobRequest
+  #| (self) => { const v = self.byobRequest; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn ReadableByteStreamController::get_desired_size(
   self : ReadableByteStreamController,
 ) -> Double? =
-  #| (self) => self.desiredSize
+  #| (self) => { const v = self.desiredSize; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn ReadableByteStreamController::close(
@@ -868,10 +1012,38 @@ pub extern "js" fn ReadableStreamBYOBRequest::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ReadableStreamBYOBRequest (unchecked)
+pub extern "js" fn ReadableStreamBYOBRequest::from_js_value(
+  v : JsValue,
+) -> ReadableStreamBYOBRequest =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ReadableStreamBYOBRequest (checked with instanceof)
+pub extern "js" fn ReadableStreamBYOBRequest::from_js_value_opt(
+  v : JsValue,
+) -> ReadableStreamBYOBRequest? =
+  #| (v) => (v instanceof ReadableStreamBYOBRequest) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ReadableStreamBYOBRequest (checked with instanceof)
+pub extern "js" fn JsValue::as_readable_stream_byob_request(
+  self : JsValue,
+) -> ReadableStreamBYOBRequest? =
+  #| (self) => (self instanceof ReadableStreamBYOBRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ReadableStreamBYOBRequest (unchecked)
+pub extern "js" fn JsValue::to_readable_stream_byob_request(
+  self : JsValue,
+) -> ReadableStreamBYOBRequest =
+  #| (self) => self
+
+///|
 pub extern "js" fn ReadableStreamBYOBRequest::get_view(
   self : ReadableStreamBYOBRequest,
 ) -> ArrayBufferView? =
-  #| (self) => self.view
+  #| (self) => { const v = self.view; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::respond(
@@ -896,6 +1068,50 @@ pub extern "js" fn WritableStream::to_js_value(
   self : WritableStream,
 ) -> JsValue =
   #| (self) => self
+
+///|
+/// Cast JsValue to WritableStream (unchecked)
+pub extern "js" fn WritableStream::from_js_value(v : JsValue) -> WritableStream =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WritableStream (checked with instanceof)
+pub extern "js" fn WritableStream::from_js_value_opt(
+  v : JsValue,
+) -> WritableStream? =
+  #| (v) => (v instanceof WritableStream) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WritableStream (checked with instanceof)
+pub extern "js" fn JsValue::as_writable_stream(
+  self : JsValue,
+) -> WritableStream? =
+  #| (self) => (self instanceof WritableStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WritableStream (unchecked)
+pub extern "js" fn JsValue::to_writable_stream(
+  self : JsValue,
+) -> WritableStream =
+  #| (self) => self
+
+///|
+pub extern "js" fn WritableStream::as_web_transport_datagrams_writable(
+  self : WritableStream,
+) -> WebTransportDatagramsWritable? =
+  #| (self) => (self instanceof WebTransportDatagramsWritable) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn WritableStream::as_web_transport_send_stream(
+  self : WritableStream,
+) -> WebTransportSendStream? =
+  #| (self) => (self instanceof WebTransportSendStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn WritableStream::as_file_system_writable_file_stream(
+  self : WritableStream,
+) -> FileSystemWritableFileStream? =
+  #| (self) => (self instanceof FileSystemWritableFileStream) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn WritableStream::new(
@@ -944,6 +1160,40 @@ pub extern "js" fn WritableStreamDefaultWriter::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to WritableStreamDefaultWriter (unchecked)
+pub extern "js" fn WritableStreamDefaultWriter::from_js_value(
+  v : JsValue,
+) -> WritableStreamDefaultWriter =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WritableStreamDefaultWriter (checked with instanceof)
+pub extern "js" fn WritableStreamDefaultWriter::from_js_value_opt(
+  v : JsValue,
+) -> WritableStreamDefaultWriter? =
+  #| (v) => (v instanceof WritableStreamDefaultWriter) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WritableStreamDefaultWriter (checked with instanceof)
+pub extern "js" fn JsValue::as_writable_stream_default_writer(
+  self : JsValue,
+) -> WritableStreamDefaultWriter? =
+  #| (self) => (self instanceof WritableStreamDefaultWriter) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WritableStreamDefaultWriter (unchecked)
+pub extern "js" fn JsValue::to_writable_stream_default_writer(
+  self : JsValue,
+) -> WritableStreamDefaultWriter =
+  #| (self) => self
+
+///|
+pub extern "js" fn WritableStreamDefaultWriter::as_web_transport_writer(
+  self : WritableStreamDefaultWriter,
+) -> WebTransportWriter? =
+  #| (self) => (self instanceof WebTransportWriter) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn WritableStreamDefaultWriter::new(
   stream : WritableStream,
 ) -> WritableStreamDefaultWriter =
@@ -959,7 +1209,7 @@ pub extern "js" fn WritableStreamDefaultWriter::get_closed(
 pub extern "js" fn WritableStreamDefaultWriter::get_desired_size(
   self : WritableStreamDefaultWriter,
 ) -> Double? =
-  #| (self) => self.desiredSize
+  #| (self) => { const v = self.desiredSize; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn WritableStreamDefaultWriter::get_ready(
@@ -1016,6 +1266,34 @@ pub extern "js" fn WritableStreamDefaultController::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to WritableStreamDefaultController (unchecked)
+pub extern "js" fn WritableStreamDefaultController::from_js_value(
+  v : JsValue,
+) -> WritableStreamDefaultController =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WritableStreamDefaultController (checked with instanceof)
+pub extern "js" fn WritableStreamDefaultController::from_js_value_opt(
+  v : JsValue,
+) -> WritableStreamDefaultController? =
+  #| (v) => (v instanceof WritableStreamDefaultController) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WritableStreamDefaultController (checked with instanceof)
+pub extern "js" fn JsValue::as_writable_stream_default_controller(
+  self : JsValue,
+) -> WritableStreamDefaultController? =
+  #| (self) => (self instanceof WritableStreamDefaultController) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WritableStreamDefaultController (unchecked)
+pub extern "js" fn JsValue::to_writable_stream_default_controller(
+  self : JsValue,
+) -> WritableStreamDefaultController =
+  #| (self) => self
+
+///|
 pub extern "js" fn WritableStreamDefaultController::get_signal(
   self : WritableStreamDefaultController,
 ) -> AbortSignal =
@@ -1042,6 +1320,34 @@ pub type TransformStream
 pub extern "js" fn TransformStream::to_js_value(
   self : TransformStream,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to TransformStream (unchecked)
+pub extern "js" fn TransformStream::from_js_value(
+  v : JsValue,
+) -> TransformStream =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to TransformStream (checked with instanceof)
+pub extern "js" fn TransformStream::from_js_value_opt(
+  v : JsValue,
+) -> TransformStream? =
+  #| (v) => (v instanceof TransformStream) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to TransformStream (checked with instanceof)
+pub extern "js" fn JsValue::as_transform_stream(
+  self : JsValue,
+) -> TransformStream? =
+  #| (self) => (self instanceof TransformStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to TransformStream (unchecked)
+pub extern "js" fn JsValue::to_transform_stream(
+  self : JsValue,
+) -> TransformStream =
   #| (self) => self
 
 ///|
@@ -1075,10 +1381,38 @@ pub extern "js" fn TransformStreamDefaultController::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to TransformStreamDefaultController (unchecked)
+pub extern "js" fn TransformStreamDefaultController::from_js_value(
+  v : JsValue,
+) -> TransformStreamDefaultController =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to TransformStreamDefaultController (checked with instanceof)
+pub extern "js" fn TransformStreamDefaultController::from_js_value_opt(
+  v : JsValue,
+) -> TransformStreamDefaultController? =
+  #| (v) => (v instanceof TransformStreamDefaultController) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to TransformStreamDefaultController (checked with instanceof)
+pub extern "js" fn JsValue::as_transform_stream_default_controller(
+  self : JsValue,
+) -> TransformStreamDefaultController? =
+  #| (self) => (self instanceof TransformStreamDefaultController) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to TransformStreamDefaultController (unchecked)
+pub extern "js" fn JsValue::to_transform_stream_default_controller(
+  self : JsValue,
+) -> TransformStreamDefaultController =
+  #| (self) => self
+
+///|
 pub extern "js" fn TransformStreamDefaultController::get_desired_size(
   self : TransformStreamDefaultController,
 ) -> Double? =
-  #| (self) => self.desiredSize
+  #| (self) => { const v = self.desiredSize; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn TransformStreamDefaultController::enqueue(
@@ -1123,6 +1457,34 @@ pub extern "js" fn ByteLengthQueuingStrategy::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ByteLengthQueuingStrategy (unchecked)
+pub extern "js" fn ByteLengthQueuingStrategy::from_js_value(
+  v : JsValue,
+) -> ByteLengthQueuingStrategy =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ByteLengthQueuingStrategy (checked with instanceof)
+pub extern "js" fn ByteLengthQueuingStrategy::from_js_value_opt(
+  v : JsValue,
+) -> ByteLengthQueuingStrategy? =
+  #| (v) => (v instanceof ByteLengthQueuingStrategy) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ByteLengthQueuingStrategy (checked with instanceof)
+pub extern "js" fn JsValue::as_byte_length_queuing_strategy(
+  self : JsValue,
+) -> ByteLengthQueuingStrategy? =
+  #| (self) => (self instanceof ByteLengthQueuingStrategy) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ByteLengthQueuingStrategy (unchecked)
+pub extern "js" fn JsValue::to_byte_length_queuing_strategy(
+  self : JsValue,
+) -> ByteLengthQueuingStrategy =
+  #| (self) => self
+
+///|
 pub extern "js" fn ByteLengthQueuingStrategy::new(
   init_ : QueuingStrategyInit,
 ) -> ByteLengthQueuingStrategy =
@@ -1148,6 +1510,34 @@ pub type CountQueuingStrategy
 pub extern "js" fn CountQueuingStrategy::to_js_value(
   self : CountQueuingStrategy,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CountQueuingStrategy (unchecked)
+pub extern "js" fn CountQueuingStrategy::from_js_value(
+  v : JsValue,
+) -> CountQueuingStrategy =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CountQueuingStrategy (checked with instanceof)
+pub extern "js" fn CountQueuingStrategy::from_js_value_opt(
+  v : JsValue,
+) -> CountQueuingStrategy? =
+  #| (v) => (v instanceof CountQueuingStrategy) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CountQueuingStrategy (checked with instanceof)
+pub extern "js" fn JsValue::as_count_queuing_strategy(
+  self : JsValue,
+) -> CountQueuingStrategy? =
+  #| (self) => (self instanceof CountQueuingStrategy) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CountQueuingStrategy (unchecked)
+pub extern "js" fn JsValue::to_count_queuing_strategy(
+  self : JsValue,
+) -> CountQueuingStrategy =
   #| (self) => self
 
 ///|

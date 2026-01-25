@@ -58,6 +58,40 @@ pub extern "js" fn CSSCustomMediaRule::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSCustomMediaRule (unchecked)
+pub extern "js" fn CSSCustomMediaRule::from_js_value(
+  v : JsValue,
+) -> CSSCustomMediaRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSCustomMediaRule (checked with instanceof)
+pub extern "js" fn CSSCustomMediaRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSCustomMediaRule? =
+  #| (v) => (v instanceof CSSCustomMediaRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSCustomMediaRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_custom_media_rule(
+  self : JsValue,
+) -> CSSCustomMediaRule? =
+  #| (self) => (self instanceof CSSCustomMediaRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSCustomMediaRule (unchecked)
+pub extern "js" fn JsValue::to_css_custom_media_rule(
+  self : JsValue,
+) -> CSSCustomMediaRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSCustomMediaRule::to_css_rule(
+  self : CSSCustomMediaRule,
+) -> CSSRule =
+  #| (self) => self
+
+///|
 pub extern "js" fn CSSCustomMediaRule::get_name(
   self : CSSCustomMediaRule,
 ) -> CSSOMString =
@@ -77,6 +111,34 @@ pub type PreferenceManager
 pub extern "js" fn PreferenceManager::to_js_value(
   self : PreferenceManager,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to PreferenceManager (unchecked)
+pub extern "js" fn PreferenceManager::from_js_value(
+  v : JsValue,
+) -> PreferenceManager =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PreferenceManager (checked with instanceof)
+pub extern "js" fn PreferenceManager::from_js_value_opt(
+  v : JsValue,
+) -> PreferenceManager? =
+  #| (v) => (v instanceof PreferenceManager) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PreferenceManager (checked with instanceof)
+pub extern "js" fn JsValue::as_preference_manager(
+  self : JsValue,
+) -> PreferenceManager? =
+  #| (self) => (self instanceof PreferenceManager) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PreferenceManager (unchecked)
+pub extern "js" fn JsValue::to_preference_manager(
+  self : JsValue,
+) -> PreferenceManager =
   #| (self) => self
 
 ///|
@@ -120,10 +182,44 @@ pub extern "js" fn PreferenceObject::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PreferenceObject (unchecked)
+pub extern "js" fn PreferenceObject::from_js_value(
+  v : JsValue,
+) -> PreferenceObject =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PreferenceObject (checked with instanceof)
+pub extern "js" fn PreferenceObject::from_js_value_opt(
+  v : JsValue,
+) -> PreferenceObject? =
+  #| (v) => (v instanceof PreferenceObject) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PreferenceObject (checked with instanceof)
+pub extern "js" fn JsValue::as_preference_object(
+  self : JsValue,
+) -> PreferenceObject? =
+  #| (self) => (self instanceof PreferenceObject) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PreferenceObject (unchecked)
+pub extern "js" fn JsValue::to_preference_object(
+  self : JsValue,
+) -> PreferenceObject =
+  #| (self) => self
+
+///|
+pub extern "js" fn PreferenceObject::to_event_target(
+  self : PreferenceObject,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn PreferenceObject::get_override(
   self : PreferenceObject,
 ) -> String? =
-  #| (self) => self.override
+  #| (self) => { const v = self.override; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PreferenceObject::get_value(

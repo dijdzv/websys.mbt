@@ -10,10 +10,42 @@ pub extern "js" fn MathMLElement::to_js_value(self : MathMLElement) -> JsValue =
   #| (self) => self
 
 ///|
-pub extern "js" fn MathMLElement::get_attribute_style_map(
+/// Cast JsValue to MathMLElement (unchecked)
+pub extern "js" fn MathMLElement::from_js_value(v : JsValue) -> MathMLElement =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MathMLElement (checked with instanceof)
+pub extern "js" fn MathMLElement::from_js_value_opt(
+  v : JsValue,
+) -> MathMLElement? =
+  #| (v) => (v instanceof MathMLElement) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MathMLElement (checked with instanceof)
+pub extern "js" fn JsValue::as_math_ml_element(
+  self : JsValue,
+) -> MathMLElement? =
+  #| (self) => (self instanceof MathMLElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MathMLElement (unchecked)
+pub extern "js" fn JsValue::to_math_ml_element(self : JsValue) -> MathMLElement =
+  #| (self) => self
+
+///|
+pub extern "js" fn MathMLElement::to_element(self : MathMLElement) -> Element =
+  #| (self) => self
+
+///|
+pub extern "js" fn MathMLElement::to_node(self : MathMLElement) -> Node =
+  #| (self) => self
+
+///|
+pub extern "js" fn MathMLElement::to_event_target(
   self : MathMLElement,
-) -> StylePropertyMap =
-  #| (self) => self.attributeStyleMap
+) -> EventTarget =
+  #| (self) => self
 
 ///|
 pub extern "js" fn MathMLElement::get_style(
@@ -22,147 +54,10 @@ pub extern "js" fn MathMLElement::get_style(
   #| (self) => self.style
 
 ///|
-pub extern "js" fn MathMLElement::get_onanimationstart(
+pub extern "js" fn MathMLElement::get_attribute_style_map(
   self : MathMLElement,
-) -> EventHandler =
-  #| (self) => self.onanimationstart
-
-///|
-pub extern "js" fn MathMLElement::set_onanimationstart(
-  self : MathMLElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onanimationstart = value }
-
-///|
-pub extern "js" fn MathMLElement::get_onanimationiteration(
-  self : MathMLElement,
-) -> EventHandler =
-  #| (self) => self.onanimationiteration
-
-///|
-pub extern "js" fn MathMLElement::set_onanimationiteration(
-  self : MathMLElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onanimationiteration = value }
-
-///|
-pub extern "js" fn MathMLElement::get_onanimationend(
-  self : MathMLElement,
-) -> EventHandler =
-  #| (self) => self.onanimationend
-
-///|
-pub extern "js" fn MathMLElement::set_onanimationend(
-  self : MathMLElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onanimationend = value }
-
-///|
-pub extern "js" fn MathMLElement::get_onanimationcancel(
-  self : MathMLElement,
-) -> EventHandler =
-  #| (self) => self.onanimationcancel
-
-///|
-pub extern "js" fn MathMLElement::set_onanimationcancel(
-  self : MathMLElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onanimationcancel = value }
-
-///|
-pub extern "js" fn MathMLElement::get_onsnapchanged(
-  self : MathMLElement,
-) -> EventHandler =
-  #| (self) => self.onsnapchanged
-
-///|
-pub extern "js" fn MathMLElement::set_onsnapchanged(
-  self : MathMLElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onsnapchanged = value }
-
-///|
-pub extern "js" fn MathMLElement::get_onsnapchanging(
-  self : MathMLElement,
-) -> EventHandler =
-  #| (self) => self.onsnapchanging
-
-///|
-pub extern "js" fn MathMLElement::set_onsnapchanging(
-  self : MathMLElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onsnapchanging = value }
-
-///|
-pub extern "js" fn MathMLElement::get_ontransitionrun(
-  self : MathMLElement,
-) -> EventHandler =
-  #| (self) => self.ontransitionrun
-
-///|
-pub extern "js" fn MathMLElement::set_ontransitionrun(
-  self : MathMLElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.ontransitionrun = value }
-
-///|
-pub extern "js" fn MathMLElement::get_ontransitionstart(
-  self : MathMLElement,
-) -> EventHandler =
-  #| (self) => self.ontransitionstart
-
-///|
-pub extern "js" fn MathMLElement::set_ontransitionstart(
-  self : MathMLElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.ontransitionstart = value }
-
-///|
-pub extern "js" fn MathMLElement::get_ontransitionend(
-  self : MathMLElement,
-) -> EventHandler =
-  #| (self) => self.ontransitionend
-
-///|
-pub extern "js" fn MathMLElement::set_ontransitionend(
-  self : MathMLElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.ontransitionend = value }
-
-///|
-pub extern "js" fn MathMLElement::get_ontransitioncancel(
-  self : MathMLElement,
-) -> EventHandler =
-  #| (self) => self.ontransitioncancel
-
-///|
-pub extern "js" fn MathMLElement::set_ontransitioncancel(
-  self : MathMLElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.ontransitioncancel = value }
-
-///|
-pub extern "js" fn MathMLElement::get_onfencedtreeclick(
-  self : MathMLElement,
-) -> EventHandler =
-  #| (self) => self.onfencedtreeclick
-
-///|
-pub extern "js" fn MathMLElement::set_onfencedtreeclick(
-  self : MathMLElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onfencedtreeclick = value }
+) -> StylePropertyMap =
+  #| (self) => self.attributeStyleMap
 
 ///|
 pub extern "js" fn MathMLElement::get_onabort(
@@ -1153,6 +1048,201 @@ pub extern "js" fn MathMLElement::set_onwheel(
   #| (self, value) => { self.onwheel = value }
 
 ///|
+pub extern "js" fn MathMLElement::get_ontouchstart(
+  self : MathMLElement,
+) -> EventHandler =
+  #| (self) => self.ontouchstart
+
+///|
+pub extern "js" fn MathMLElement::set_ontouchstart(
+  self : MathMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontouchstart = value }
+
+///|
+pub extern "js" fn MathMLElement::get_ontouchend(
+  self : MathMLElement,
+) -> EventHandler =
+  #| (self) => self.ontouchend
+
+///|
+pub extern "js" fn MathMLElement::set_ontouchend(
+  self : MathMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontouchend = value }
+
+///|
+pub extern "js" fn MathMLElement::get_ontouchmove(
+  self : MathMLElement,
+) -> EventHandler =
+  #| (self) => self.ontouchmove
+
+///|
+pub extern "js" fn MathMLElement::set_ontouchmove(
+  self : MathMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontouchmove = value }
+
+///|
+pub extern "js" fn MathMLElement::get_ontouchcancel(
+  self : MathMLElement,
+) -> EventHandler =
+  #| (self) => self.ontouchcancel
+
+///|
+pub extern "js" fn MathMLElement::set_ontouchcancel(
+  self : MathMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontouchcancel = value }
+
+///|
+pub extern "js" fn MathMLElement::get_ontransitionrun(
+  self : MathMLElement,
+) -> EventHandler =
+  #| (self) => self.ontransitionrun
+
+///|
+pub extern "js" fn MathMLElement::set_ontransitionrun(
+  self : MathMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontransitionrun = value }
+
+///|
+pub extern "js" fn MathMLElement::get_ontransitionstart(
+  self : MathMLElement,
+) -> EventHandler =
+  #| (self) => self.ontransitionstart
+
+///|
+pub extern "js" fn MathMLElement::set_ontransitionstart(
+  self : MathMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontransitionstart = value }
+
+///|
+pub extern "js" fn MathMLElement::get_ontransitionend(
+  self : MathMLElement,
+) -> EventHandler =
+  #| (self) => self.ontransitionend
+
+///|
+pub extern "js" fn MathMLElement::set_ontransitionend(
+  self : MathMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontransitionend = value }
+
+///|
+pub extern "js" fn MathMLElement::get_ontransitioncancel(
+  self : MathMLElement,
+) -> EventHandler =
+  #| (self) => self.ontransitioncancel
+
+///|
+pub extern "js" fn MathMLElement::set_ontransitioncancel(
+  self : MathMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontransitioncancel = value }
+
+///|
+pub extern "js" fn MathMLElement::get_onsnapchanged(
+  self : MathMLElement,
+) -> EventHandler =
+  #| (self) => self.onsnapchanged
+
+///|
+pub extern "js" fn MathMLElement::set_onsnapchanged(
+  self : MathMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onsnapchanged = value }
+
+///|
+pub extern "js" fn MathMLElement::get_onsnapchanging(
+  self : MathMLElement,
+) -> EventHandler =
+  #| (self) => self.onsnapchanging
+
+///|
+pub extern "js" fn MathMLElement::set_onsnapchanging(
+  self : MathMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onsnapchanging = value }
+
+///|
+pub extern "js" fn MathMLElement::get_onanimationstart(
+  self : MathMLElement,
+) -> EventHandler =
+  #| (self) => self.onanimationstart
+
+///|
+pub extern "js" fn MathMLElement::set_onanimationstart(
+  self : MathMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onanimationstart = value }
+
+///|
+pub extern "js" fn MathMLElement::get_onanimationiteration(
+  self : MathMLElement,
+) -> EventHandler =
+  #| (self) => self.onanimationiteration
+
+///|
+pub extern "js" fn MathMLElement::set_onanimationiteration(
+  self : MathMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onanimationiteration = value }
+
+///|
+pub extern "js" fn MathMLElement::get_onanimationend(
+  self : MathMLElement,
+) -> EventHandler =
+  #| (self) => self.onanimationend
+
+///|
+pub extern "js" fn MathMLElement::set_onanimationend(
+  self : MathMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onanimationend = value }
+
+///|
+pub extern "js" fn MathMLElement::get_onanimationcancel(
+  self : MathMLElement,
+) -> EventHandler =
+  #| (self) => self.onanimationcancel
+
+///|
+pub extern "js" fn MathMLElement::set_onanimationcancel(
+  self : MathMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onanimationcancel = value }
+
+///|
+pub extern "js" fn MathMLElement::get_onfencedtreeclick(
+  self : MathMLElement,
+) -> EventHandler =
+  #| (self) => self.onfencedtreeclick
+
+///|
+pub extern "js" fn MathMLElement::set_onfencedtreeclick(
+  self : MathMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onfencedtreeclick = value }
+
+///|
 pub extern "js" fn MathMLElement::get_onpointerover(
   self : MathMLElement,
 ) -> EventHandler =
@@ -1296,6 +1386,19 @@ pub extern "js" fn MathMLElement::set_onlostpointercapture(
   #| (self, value) => { self.onlostpointercapture = value }
 
 ///|
+pub extern "js" fn MathMLElement::get_onbeforexrselect(
+  self : MathMLElement,
+) -> EventHandler =
+  #| (self) => self.onbeforexrselect
+
+///|
+pub extern "js" fn MathMLElement::set_onbeforexrselect(
+  self : MathMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onbeforexrselect = value }
+
+///|
 pub extern "js" fn MathMLElement::get_onselectstart(
   self : MathMLElement,
 ) -> EventHandler =
@@ -1320,71 +1423,6 @@ pub extern "js" fn MathMLElement::set_onselectionchange(
   value : EventHandler,
 ) -> Unit =
   #| (self, value) => { self.onselectionchange = value }
-
-///|
-pub extern "js" fn MathMLElement::get_ontouchstart(
-  self : MathMLElement,
-) -> EventHandler =
-  #| (self) => self.ontouchstart
-
-///|
-pub extern "js" fn MathMLElement::set_ontouchstart(
-  self : MathMLElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.ontouchstart = value }
-
-///|
-pub extern "js" fn MathMLElement::get_ontouchend(
-  self : MathMLElement,
-) -> EventHandler =
-  #| (self) => self.ontouchend
-
-///|
-pub extern "js" fn MathMLElement::set_ontouchend(
-  self : MathMLElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.ontouchend = value }
-
-///|
-pub extern "js" fn MathMLElement::get_ontouchmove(
-  self : MathMLElement,
-) -> EventHandler =
-  #| (self) => self.ontouchmove
-
-///|
-pub extern "js" fn MathMLElement::set_ontouchmove(
-  self : MathMLElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.ontouchmove = value }
-
-///|
-pub extern "js" fn MathMLElement::get_ontouchcancel(
-  self : MathMLElement,
-) -> EventHandler =
-  #| (self) => self.ontouchcancel
-
-///|
-pub extern "js" fn MathMLElement::set_ontouchcancel(
-  self : MathMLElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.ontouchcancel = value }
-
-///|
-pub extern "js" fn MathMLElement::get_onbeforexrselect(
-  self : MathMLElement,
-) -> EventHandler =
-  #| (self) => self.onbeforexrselect
-
-///|
-pub extern "js" fn MathMLElement::set_onbeforexrselect(
-  self : MathMLElement,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onbeforexrselect = value }
 
 ///|
 pub extern "js" fn MathMLElement::get_dataset(

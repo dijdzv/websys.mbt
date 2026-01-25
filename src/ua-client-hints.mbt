@@ -109,6 +109,34 @@ pub extern "js" fn NavigatorUAData::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to NavigatorUAData (unchecked)
+pub extern "js" fn NavigatorUAData::from_js_value(
+  v : JsValue,
+) -> NavigatorUAData =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to NavigatorUAData (checked with instanceof)
+pub extern "js" fn NavigatorUAData::from_js_value_opt(
+  v : JsValue,
+) -> NavigatorUAData? =
+  #| (v) => (v instanceof NavigatorUAData) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to NavigatorUAData (checked with instanceof)
+pub extern "js" fn JsValue::as_navigator_ua_data(
+  self : JsValue,
+) -> NavigatorUAData? =
+  #| (self) => (self instanceof NavigatorUAData) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to NavigatorUAData (unchecked)
+pub extern "js" fn JsValue::to_navigator_ua_data(
+  self : JsValue,
+) -> NavigatorUAData =
+  #| (self) => self
+
+///|
 pub extern "js" fn NavigatorUAData::get_brands(
   self : NavigatorUAData,
 ) -> JsValue =
@@ -132,7 +160,7 @@ pub extern "js" fn NavigatorUAData::get_high_entropy_values(
   #| (self, hints) => self.getHighEntropyValues(hints)
 
 ///|
-pub extern "js" fn NavigatorUAData::to_j_s_o_n(
+pub extern "js" fn NavigatorUAData::to_json(
   self : NavigatorUAData,
 ) -> UALowEntropyJSON =
   #| (self) => self.toJSON()

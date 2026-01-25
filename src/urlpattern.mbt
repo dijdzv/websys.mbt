@@ -265,36 +265,56 @@ pub extern "js" fn URLPattern::to_js_value(self : URLPattern) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to URLPattern (unchecked)
+pub extern "js" fn URLPattern::from_js_value(v : JsValue) -> URLPattern =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to URLPattern (checked with instanceof)
+pub extern "js" fn URLPattern::from_js_value_opt(v : JsValue) -> URLPattern? =
+  #| (v) => (v instanceof URLPattern) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to URLPattern (checked with instanceof)
+pub extern "js" fn JsValue::as_url_pattern(self : JsValue) -> URLPattern? =
+  #| (self) => (self instanceof URLPattern) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to URLPattern (unchecked)
+pub extern "js" fn JsValue::to_url_pattern(self : JsValue) -> URLPattern =
+  #| (self) => self
+
+///|
 pub extern "js" fn URLPattern::new(
   input : URLPatternInput,
-  base_u_r_l : String,
+  base_url : String,
   options : URLPatternOptions,
 ) -> URLPattern =
-  #| (input, base_u_r_l, options) => new URLPattern(input, base_u_r_l, options)
+  #| (input, base_url, options) => new URLPattern(input, base_url, options)
 
 ///|
 pub extern "js" fn URLPattern::test_(self : URLPattern) -> Bool =
   #| (self) => self.test()
 
 ///|
-pub extern "js" fn URLPattern::test__with_base_u_r_l(
+pub extern "js" fn URLPattern::test__with_base_url(
   self : URLPattern,
   input : URLPatternInput,
-  base_u_r_l : String,
+  base_url : String,
 ) -> Bool =
-  #| (self, input, base_u_r_l) => self.test(input, base_u_r_l)
+  #| (self, input, base_url) => self.test(input, base_url)
 
 ///|
 pub extern "js" fn URLPattern::exec(self : URLPattern) -> URLPatternResult? =
-  #| (self) => self.exec()
+  #| (self) => { const v = self.exec(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
-pub extern "js" fn URLPattern::exec_with_base_u_r_l(
+pub extern "js" fn URLPattern::exec_with_base_url(
   self : URLPattern,
   input : URLPatternInput,
-  base_u_r_l : String,
+  base_url : String,
 ) -> URLPatternResult? =
-  #| (self, input, base_u_r_l) => self.exec(input, base_u_r_l)
+  #| (self, input, base_url) => { const v = self.exec(input, base_url); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn URLPattern::get_protocol(self : URLPattern) -> String =

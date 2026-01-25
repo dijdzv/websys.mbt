@@ -242,6 +242,30 @@ pub extern "js" fn Serial::to_js_value(self : Serial) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Serial (unchecked)
+pub extern "js" fn Serial::from_js_value(v : JsValue) -> Serial =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Serial (checked with instanceof)
+pub extern "js" fn Serial::from_js_value_opt(v : JsValue) -> Serial? =
+  #| (v) => (v instanceof Serial) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Serial (checked with instanceof)
+pub extern "js" fn JsValue::as_serial(self : JsValue) -> Serial? =
+  #| (self) => (self instanceof Serial) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Serial (unchecked)
+pub extern "js" fn JsValue::to_serial(self : JsValue) -> Serial =
+  #| (self) => self
+
+///|
+pub extern "js" fn Serial::to_event_target(self : Serial) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn Serial::get_onconnect(self : Serial) -> EventHandler =
   #| (self) => self.onconnect
 
@@ -264,7 +288,9 @@ pub extern "js" fn Serial::set_ondisconnect(
   #| (self, value) => { self.ondisconnect = value }
 
 ///|
-pub extern "js" fn Serial::get_ports(self : Serial) -> Promise[Unit] =
+pub extern "js" fn Serial::get_ports(
+  self : Serial,
+) -> Promise[Array[SerialPort]] =
   #| (self) => self.getPorts()
 
 ///|
@@ -284,6 +310,32 @@ pub type SerialPort
 
 ///|
 pub extern "js" fn SerialPort::to_js_value(self : SerialPort) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SerialPort (unchecked)
+pub extern "js" fn SerialPort::from_js_value(v : JsValue) -> SerialPort =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SerialPort (checked with instanceof)
+pub extern "js" fn SerialPort::from_js_value_opt(v : JsValue) -> SerialPort? =
+  #| (v) => (v instanceof SerialPort) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SerialPort (checked with instanceof)
+pub extern "js" fn JsValue::as_serial_port(self : JsValue) -> SerialPort? =
+  #| (self) => (self instanceof SerialPort) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SerialPort (unchecked)
+pub extern "js" fn JsValue::to_serial_port(self : JsValue) -> SerialPort =
+  #| (self) => self
+
+///|
+pub extern "js" fn SerialPort::to_event_target(
+  self : SerialPort,
+) -> EventTarget =
   #| (self) => self
 
 ///|

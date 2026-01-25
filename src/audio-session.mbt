@@ -77,6 +77,34 @@ pub extern "js" fn AudioSession::to_js_value(self : AudioSession) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to AudioSession (unchecked)
+pub extern "js" fn AudioSession::from_js_value(v : JsValue) -> AudioSession =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AudioSession (checked with instanceof)
+pub extern "js" fn AudioSession::from_js_value_opt(
+  v : JsValue,
+) -> AudioSession? =
+  #| (v) => (v instanceof AudioSession) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AudioSession (checked with instanceof)
+pub extern "js" fn JsValue::as_audio_session(self : JsValue) -> AudioSession? =
+  #| (self) => (self instanceof AudioSession) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AudioSession (unchecked)
+pub extern "js" fn JsValue::to_audio_session(self : JsValue) -> AudioSession =
+  #| (self) => self
+
+///|
+pub extern "js" fn AudioSession::to_event_target(
+  self : AudioSession,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn AudioSession::get_type(
   self : AudioSession,
 ) -> AudioSessionType =

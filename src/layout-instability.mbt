@@ -10,6 +10,32 @@ pub extern "js" fn LayoutShift::to_js_value(self : LayoutShift) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to LayoutShift (unchecked)
+pub extern "js" fn LayoutShift::from_js_value(v : JsValue) -> LayoutShift =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to LayoutShift (checked with instanceof)
+pub extern "js" fn LayoutShift::from_js_value_opt(v : JsValue) -> LayoutShift? =
+  #| (v) => (v instanceof LayoutShift) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to LayoutShift (checked with instanceof)
+pub extern "js" fn JsValue::as_layout_shift(self : JsValue) -> LayoutShift? =
+  #| (self) => (self instanceof LayoutShift) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to LayoutShift (unchecked)
+pub extern "js" fn JsValue::to_layout_shift(self : JsValue) -> LayoutShift =
+  #| (self) => self
+
+///|
+pub extern "js" fn LayoutShift::to_performance_entry(
+  self : LayoutShift,
+) -> PerformanceEntry =
+  #| (self) => self
+
+///|
 pub extern "js" fn LayoutShift::get_value(self : LayoutShift) -> Double =
   #| (self) => self.value
 
@@ -30,7 +56,7 @@ pub extern "js" fn LayoutShift::get_sources(self : LayoutShift) -> JsValue =
   #| (self) => self.sources
 
 ///|
-pub extern "js" fn LayoutShift::to_j_s_o_n(self : LayoutShift) -> JsValue =
+pub extern "js" fn LayoutShift::to_json(self : LayoutShift) -> JsValue =
   #| (self) => self.toJSON()
 
 ///|
@@ -44,10 +70,38 @@ pub extern "js" fn LayoutShiftAttribution::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to LayoutShiftAttribution (unchecked)
+pub extern "js" fn LayoutShiftAttribution::from_js_value(
+  v : JsValue,
+) -> LayoutShiftAttribution =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to LayoutShiftAttribution (checked with instanceof)
+pub extern "js" fn LayoutShiftAttribution::from_js_value_opt(
+  v : JsValue,
+) -> LayoutShiftAttribution? =
+  #| (v) => (v instanceof LayoutShiftAttribution) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to LayoutShiftAttribution (checked with instanceof)
+pub extern "js" fn JsValue::as_layout_shift_attribution(
+  self : JsValue,
+) -> LayoutShiftAttribution? =
+  #| (self) => (self instanceof LayoutShiftAttribution) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to LayoutShiftAttribution (unchecked)
+pub extern "js" fn JsValue::to_layout_shift_attribution(
+  self : JsValue,
+) -> LayoutShiftAttribution =
+  #| (self) => self
+
+///|
 pub extern "js" fn LayoutShiftAttribution::get_node(
   self : LayoutShiftAttribution,
 ) -> Node? =
-  #| (self) => self.node
+  #| (self) => { const v = self.node; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn LayoutShiftAttribution::get_previous_rect(

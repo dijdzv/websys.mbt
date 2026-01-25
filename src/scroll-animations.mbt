@@ -61,7 +61,7 @@ pub extern "js" fn ScrollTimelineOptions::to_js(
 pub struct ViewTimelineOptions {
   subject : Element?
   axis : ScrollAxis?
-  inset : JsValue?
+  inset : StringOrArrayOfCSSNumericValueOrCSSKeywordValue?
 }
 
 ///|
@@ -92,6 +92,44 @@ pub extern "js" fn ScrollTimeline::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ScrollTimeline (unchecked)
+pub extern "js" fn ScrollTimeline::from_js_value(v : JsValue) -> ScrollTimeline =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ScrollTimeline (checked with instanceof)
+pub extern "js" fn ScrollTimeline::from_js_value_opt(
+  v : JsValue,
+) -> ScrollTimeline? =
+  #| (v) => (v instanceof ScrollTimeline) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ScrollTimeline (checked with instanceof)
+pub extern "js" fn JsValue::as_scroll_timeline(
+  self : JsValue,
+) -> ScrollTimeline? =
+  #| (self) => (self instanceof ScrollTimeline) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ScrollTimeline (unchecked)
+pub extern "js" fn JsValue::to_scroll_timeline(
+  self : JsValue,
+) -> ScrollTimeline =
+  #| (self) => self
+
+///|
+pub extern "js" fn ScrollTimeline::to_animation_timeline(
+  self : ScrollTimeline,
+) -> AnimationTimeline =
+  #| (self) => self
+
+///|
+pub extern "js" fn ScrollTimeline::as_view_timeline(
+  self : ScrollTimeline,
+) -> ViewTimeline? =
+  #| (self) => (self instanceof ViewTimeline) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn ScrollTimeline::new(
   options : ScrollTimelineOptions,
 ) -> ScrollTimeline =
@@ -101,7 +139,7 @@ pub extern "js" fn ScrollTimeline::new(
 pub extern "js" fn ScrollTimeline::get_source(
   self : ScrollTimeline,
 ) -> Element? =
-  #| (self) => self.source
+  #| (self) => { const v = self.source; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn ScrollTimeline::get_axis(
@@ -118,18 +156,44 @@ pub extern "js" fn ViewTimeline::to_js_value(self : ViewTimeline) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to ViewTimeline (unchecked)
+pub extern "js" fn ViewTimeline::from_js_value(v : JsValue) -> ViewTimeline =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ViewTimeline (checked with instanceof)
+pub extern "js" fn ViewTimeline::from_js_value_opt(
+  v : JsValue,
+) -> ViewTimeline? =
+  #| (v) => (v instanceof ViewTimeline) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ViewTimeline (checked with instanceof)
+pub extern "js" fn JsValue::as_view_timeline(self : JsValue) -> ViewTimeline? =
+  #| (self) => (self instanceof ViewTimeline) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ViewTimeline (unchecked)
+pub extern "js" fn JsValue::to_view_timeline(self : JsValue) -> ViewTimeline =
+  #| (self) => self
+
+///|
+pub extern "js" fn ViewTimeline::to_scroll_timeline(
+  self : ViewTimeline,
+) -> ScrollTimeline =
+  #| (self) => self
+
+///|
+pub extern "js" fn ViewTimeline::to_animation_timeline(
+  self : ViewTimeline,
+) -> AnimationTimeline =
+  #| (self) => self
+
+///|
 pub extern "js" fn ViewTimeline::new(
-  options : ScrollTimelineOptions,
+  options : ViewTimelineOptions,
 ) -> ViewTimeline =
   #| (options) => new ViewTimeline(options)
-
-///|
-pub extern "js" fn ViewTimeline::get_source(self : ViewTimeline) -> Element? =
-  #| (self) => self.source
-
-///|
-pub extern "js" fn ViewTimeline::get_axis(self : ViewTimeline) -> ScrollAxis =
-  #| (self) => self.axis
 
 ///|
 pub extern "js" fn ViewTimeline::get_subject(self : ViewTimeline) -> Element =

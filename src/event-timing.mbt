@@ -2,38 +2,6 @@
 // Source: @webref/idl/event-timing
 
 ///|
-/// PerformanceObserverInit dictionary
-pub struct PerformanceObserverInit {
-  durationThreshold : DOMHighResTimeStamp?
-  entryTypes : Array[String]?
-  type_ : String?
-  buffered : Bool?
-}
-
-///|
-/// Create a new PerformanceObserverInit with default values
-pub fn PerformanceObserverInit::default() -> PerformanceObserverInit {
-  PerformanceObserverInit::{
-    durationThreshold: None,
-    entryTypes: None,
-    type_: None,
-    buffered: None,
-  }
-}
-
-///|
-/// Convert to JsValue
-pub extern "js" fn PerformanceObserverInit::to_js(
-  self : PerformanceObserverInit,
-) -> JsValue =
-  #| (self) => ({
-  #|   durationThreshold: self.durationThreshold,
-  #|   entryTypes: self.entryTypes,
-  #|   type: self.type_,
-  #|   buffered: self.buffered
-  #| })
-
-///|
 /// PerformanceEventTiming interface
 pub type PerformanceEventTiming
 
@@ -41,6 +9,40 @@ pub type PerformanceEventTiming
 pub extern "js" fn PerformanceEventTiming::to_js_value(
   self : PerformanceEventTiming,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to PerformanceEventTiming (unchecked)
+pub extern "js" fn PerformanceEventTiming::from_js_value(
+  v : JsValue,
+) -> PerformanceEventTiming =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PerformanceEventTiming (checked with instanceof)
+pub extern "js" fn PerformanceEventTiming::from_js_value_opt(
+  v : JsValue,
+) -> PerformanceEventTiming? =
+  #| (v) => (v instanceof PerformanceEventTiming) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PerformanceEventTiming (checked with instanceof)
+pub extern "js" fn JsValue::as_performance_event_timing(
+  self : JsValue,
+) -> PerformanceEventTiming? =
+  #| (self) => (self instanceof PerformanceEventTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PerformanceEventTiming (unchecked)
+pub extern "js" fn JsValue::to_performance_event_timing(
+  self : JsValue,
+) -> PerformanceEventTiming =
+  #| (self) => self
+
+///|
+pub extern "js" fn PerformanceEventTiming::to_performance_entry(
+  self : PerformanceEventTiming,
+) -> PerformanceEntry =
   #| (self) => self
 
 ///|
@@ -65,7 +67,7 @@ pub extern "js" fn PerformanceEventTiming::get_cancelable(
 pub extern "js" fn PerformanceEventTiming::get_target(
   self : PerformanceEventTiming,
 ) -> Node? =
-  #| (self) => self.target
+  #| (self) => { const v = self.target; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PerformanceEventTiming::get_target_selector(
@@ -80,7 +82,7 @@ pub extern "js" fn PerformanceEventTiming::get_interaction_id(
   #| (self) => self.interactionId
 
 ///|
-pub extern "js" fn PerformanceEventTiming::to_j_s_o_n(
+pub extern "js" fn PerformanceEventTiming::to_json(
   self : PerformanceEventTiming,
 ) -> JsValue =
   #| (self) => self.toJSON()
@@ -94,8 +96,28 @@ pub extern "js" fn EventCounts::to_js_value(self : EventCounts) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to EventCounts (unchecked)
+pub extern "js" fn EventCounts::from_js_value(v : JsValue) -> EventCounts =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to EventCounts (checked with instanceof)
+pub extern "js" fn EventCounts::from_js_value_opt(v : JsValue) -> EventCounts? =
+  #| (v) => (v instanceof EventCounts) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to EventCounts (checked with instanceof)
+pub extern "js" fn JsValue::as_event_counts(self : JsValue) -> EventCounts? =
+  #| (self) => (self instanceof EventCounts) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to EventCounts (unchecked)
+pub extern "js" fn JsValue::to_event_counts(self : JsValue) -> EventCounts =
+  #| (self) => self
+
+///|
 pub extern "js" fn EventCounts::get(self : EventCounts, key : String) -> Int64? =
-  #| (self, key) => self.get(key)
+  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn EventCounts::has(self : EventCounts, key : String) -> Bool =

@@ -198,7 +198,7 @@ pub extern "js" fn BrowserBoundSignature::to_js(
 ///|
 /// CollectedClientPaymentData dictionary
 pub struct CollectedClientPaymentData {
-  payment : JsValue
+  payment : CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData
 }
 
 ///|

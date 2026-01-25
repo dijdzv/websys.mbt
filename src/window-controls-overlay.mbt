@@ -38,6 +38,40 @@ pub extern "js" fn WindowControlsOverlay::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to WindowControlsOverlay (unchecked)
+pub extern "js" fn WindowControlsOverlay::from_js_value(
+  v : JsValue,
+) -> WindowControlsOverlay =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WindowControlsOverlay (checked with instanceof)
+pub extern "js" fn WindowControlsOverlay::from_js_value_opt(
+  v : JsValue,
+) -> WindowControlsOverlay? =
+  #| (v) => (v instanceof WindowControlsOverlay) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WindowControlsOverlay (checked with instanceof)
+pub extern "js" fn JsValue::as_window_controls_overlay(
+  self : JsValue,
+) -> WindowControlsOverlay? =
+  #| (self) => (self instanceof WindowControlsOverlay) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WindowControlsOverlay (unchecked)
+pub extern "js" fn JsValue::to_window_controls_overlay(
+  self : JsValue,
+) -> WindowControlsOverlay =
+  #| (self) => self
+
+///|
+pub extern "js" fn WindowControlsOverlay::to_event_target(
+  self : WindowControlsOverlay,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn WindowControlsOverlay::get_visible(
   self : WindowControlsOverlay,
 ) -> Bool =
@@ -70,6 +104,40 @@ pub type WindowControlsOverlayGeometryChangeEvent
 pub extern "js" fn WindowControlsOverlayGeometryChangeEvent::to_js_value(
   self : WindowControlsOverlayGeometryChangeEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to WindowControlsOverlayGeometryChangeEvent (unchecked)
+pub extern "js" fn WindowControlsOverlayGeometryChangeEvent::from_js_value(
+  v : JsValue,
+) -> WindowControlsOverlayGeometryChangeEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to WindowControlsOverlayGeometryChangeEvent (checked with instanceof)
+pub extern "js" fn WindowControlsOverlayGeometryChangeEvent::from_js_value_opt(
+  v : JsValue,
+) -> WindowControlsOverlayGeometryChangeEvent? =
+  #| (v) => (v instanceof WindowControlsOverlayGeometryChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to WindowControlsOverlayGeometryChangeEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_window_controls_overlay_geometry_change_event(
+  self : JsValue,
+) -> WindowControlsOverlayGeometryChangeEvent? =
+  #| (self) => (self instanceof WindowControlsOverlayGeometryChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to WindowControlsOverlayGeometryChangeEvent (unchecked)
+pub extern "js" fn JsValue::to_window_controls_overlay_geometry_change_event(
+  self : JsValue,
+) -> WindowControlsOverlayGeometryChangeEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn WindowControlsOverlayGeometryChangeEvent::to_event(
+  self : WindowControlsOverlayGeometryChangeEvent,
+) -> Event =
   #| (self) => self
 
 ///|

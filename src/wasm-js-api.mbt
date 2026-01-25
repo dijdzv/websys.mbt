@@ -351,6 +351,26 @@ pub extern "js" fn Module::to_js_value(self : Module) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Module (unchecked)
+pub extern "js" fn Module::from_js_value(v : JsValue) -> Module =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Module (checked with instanceof)
+pub extern "js" fn Module::from_js_value_opt(v : JsValue) -> Module? =
+  #| (v) => (v instanceof Module) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Module (checked with instanceof)
+pub extern "js" fn JsValue::as_module(self : JsValue) -> Module? =
+  #| (self) => (self instanceof Module) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Module (unchecked)
+pub extern "js" fn JsValue::to_module(self : JsValue) -> Module =
+  #| (self) => self
+
+///|
 pub extern "js" fn Module::new(
   bytes : BufferSource,
   options : WebAssemblyCompileOptions,
@@ -385,6 +405,26 @@ pub extern "js" fn Instance::to_js_value(self : Instance) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Instance (unchecked)
+pub extern "js" fn Instance::from_js_value(v : JsValue) -> Instance =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Instance (checked with instanceof)
+pub extern "js" fn Instance::from_js_value_opt(v : JsValue) -> Instance? =
+  #| (v) => (v instanceof Instance) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Instance (checked with instanceof)
+pub extern "js" fn JsValue::as_instance(self : JsValue) -> Instance? =
+  #| (self) => (self instanceof Instance) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Instance (unchecked)
+pub extern "js" fn JsValue::to_instance(self : JsValue) -> Instance =
+  #| (self) => self
+
+///|
 pub extern "js" fn Instance::new(
   module_ : Module,
   import_object : JsValue,
@@ -401,6 +441,26 @@ pub type Memory
 
 ///|
 pub extern "js" fn Memory::to_js_value(self : Memory) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to Memory (unchecked)
+pub extern "js" fn Memory::from_js_value(v : JsValue) -> Memory =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Memory (checked with instanceof)
+pub extern "js" fn Memory::from_js_value_opt(v : JsValue) -> Memory? =
+  #| (v) => (v instanceof Memory) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Memory (checked with instanceof)
+pub extern "js" fn JsValue::as_memory(self : JsValue) -> Memory? =
+  #| (self) => (self instanceof Memory) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Memory (unchecked)
+pub extern "js" fn JsValue::to_memory(self : JsValue) -> Memory =
   #| (self) => self
 
 ///|
@@ -432,6 +492,26 @@ pub type Table
 
 ///|
 pub extern "js" fn Table::to_js_value(self : Table) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to Table (unchecked)
+pub extern "js" fn Table::from_js_value(v : JsValue) -> Table =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Table (checked with instanceof)
+pub extern "js" fn Table::from_js_value_opt(v : JsValue) -> Table? =
+  #| (v) => (v instanceof Table) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Table (checked with instanceof)
+pub extern "js" fn JsValue::as_table(self : JsValue) -> Table? =
+  #| (self) => (self instanceof Table) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Table (unchecked)
+pub extern "js" fn JsValue::to_table(self : JsValue) -> Table =
   #| (self) => self
 
 ///|
@@ -485,6 +565,26 @@ pub extern "js" fn Global::to_js_value(self : Global) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Global (unchecked)
+pub extern "js" fn Global::from_js_value(v : JsValue) -> Global =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Global (checked with instanceof)
+pub extern "js" fn Global::from_js_value_opt(v : JsValue) -> Global? =
+  #| (v) => (v instanceof Global) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Global (checked with instanceof)
+pub extern "js" fn JsValue::as_global(self : JsValue) -> Global? =
+  #| (self) => (self instanceof Global) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Global (unchecked)
+pub extern "js" fn JsValue::to_global(self : JsValue) -> Global =
+  #| (self) => self
+
+///|
 pub extern "js" fn Global::new(
   descriptor : GlobalDescriptor,
   v : JsValue,
@@ -512,6 +612,26 @@ pub extern "js" fn Tag::to_js_value(self : Tag) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Tag (unchecked)
+pub extern "js" fn Tag::from_js_value(v : JsValue) -> Tag =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Tag (checked with instanceof)
+pub extern "js" fn Tag::from_js_value_opt(v : JsValue) -> Tag? =
+  #| (v) => (v instanceof Tag) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Tag (checked with instanceof)
+pub extern "js" fn JsValue::as_tag(self : JsValue) -> Tag? =
+  #| (self) => (self instanceof Tag) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Tag (unchecked)
+pub extern "js" fn JsValue::to_tag(self : JsValue) -> Tag =
+  #| (self) => self
+
+///|
 pub extern "js" fn Tag::new(type_ : TagType) -> Tag =
   #| (type_) => new Tag(type_)
 
@@ -521,6 +641,26 @@ pub type Exception
 
 ///|
 pub extern "js" fn Exception::to_js_value(self : Exception) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to Exception (unchecked)
+pub extern "js" fn Exception::from_js_value(v : JsValue) -> Exception =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Exception (checked with instanceof)
+pub extern "js" fn Exception::from_js_value_opt(v : JsValue) -> Exception? =
+  #| (v) => (v instanceof Exception) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Exception (checked with instanceof)
+pub extern "js" fn JsValue::as_exception(self : JsValue) -> Exception? =
+  #| (self) => (self instanceof Exception) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Exception (unchecked)
+pub extern "js" fn JsValue::to_exception(self : JsValue) -> Exception =
   #| (self) => self
 
 ///|

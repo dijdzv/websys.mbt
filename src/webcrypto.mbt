@@ -703,6 +703,26 @@ pub extern "js" fn Crypto::to_js_value(self : Crypto) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Crypto (unchecked)
+pub extern "js" fn Crypto::from_js_value(v : JsValue) -> Crypto =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Crypto (checked with instanceof)
+pub extern "js" fn Crypto::from_js_value_opt(v : JsValue) -> Crypto? =
+  #| (v) => (v instanceof Crypto) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Crypto (checked with instanceof)
+pub extern "js" fn JsValue::as_crypto(self : JsValue) -> Crypto? =
+  #| (self) => (self instanceof Crypto) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Crypto (unchecked)
+pub extern "js" fn JsValue::to_crypto(self : JsValue) -> Crypto =
+  #| (self) => self
+
+///|
 pub extern "js" fn Crypto::get_subtle(self : Crypto) -> SubtleCrypto =
   #| (self) => self.subtle
 
@@ -714,7 +734,7 @@ pub extern "js" fn Crypto::get_random_values(
   #| (self, array) => self.getRandomValues(array)
 
 ///|
-pub extern "js" fn Crypto::random_u_u_i_d(self : Crypto) -> String =
+pub extern "js" fn Crypto::random_uuid(self : Crypto) -> String =
   #| (self) => self.randomUUID()
 
 ///|
@@ -723,6 +743,26 @@ pub type CryptoKey
 
 ///|
 pub extern "js" fn CryptoKey::to_js_value(self : CryptoKey) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CryptoKey (unchecked)
+pub extern "js" fn CryptoKey::from_js_value(v : JsValue) -> CryptoKey =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CryptoKey (checked with instanceof)
+pub extern "js" fn CryptoKey::from_js_value_opt(v : JsValue) -> CryptoKey? =
+  #| (v) => (v instanceof CryptoKey) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CryptoKey (checked with instanceof)
+pub extern "js" fn JsValue::as_crypto_key(self : JsValue) -> CryptoKey? =
+  #| (self) => (self instanceof CryptoKey) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CryptoKey (unchecked)
+pub extern "js" fn JsValue::to_crypto_key(self : JsValue) -> CryptoKey =
   #| (self) => self
 
 ///|
@@ -747,6 +787,28 @@ pub type SubtleCrypto
 
 ///|
 pub extern "js" fn SubtleCrypto::to_js_value(self : SubtleCrypto) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to SubtleCrypto (unchecked)
+pub extern "js" fn SubtleCrypto::from_js_value(v : JsValue) -> SubtleCrypto =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to SubtleCrypto (checked with instanceof)
+pub extern "js" fn SubtleCrypto::from_js_value_opt(
+  v : JsValue,
+) -> SubtleCrypto? =
+  #| (v) => (v instanceof SubtleCrypto) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to SubtleCrypto (checked with instanceof)
+pub extern "js" fn JsValue::as_subtle_crypto(self : JsValue) -> SubtleCrypto? =
+  #| (self) => (self instanceof SubtleCrypto) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to SubtleCrypto (unchecked)
+pub extern "js" fn JsValue::to_subtle_crypto(self : JsValue) -> SubtleCrypto =
   #| (self) => self
 
 ///|
@@ -800,7 +862,7 @@ pub extern "js" fn SubtleCrypto::generate_key(
   algorithm : AlgorithmIdentifier,
   extractable : Bool,
   key_usages : Array[KeyUsage],
-) -> Promise[Unit] =
+) -> Promise[CryptoKeyOrCryptoKeyPair] =
   #| (self, algorithm, extractable, key_usages) => self.generateKey(algorithm, extractable, key_usages)
 
 ///|
@@ -847,7 +909,7 @@ pub extern "js" fn SubtleCrypto::export_key(
   self : SubtleCrypto,
   format : KeyFormat,
   key : CryptoKey,
-) -> Promise[Unit] =
+) -> Promise[ArrayBufferOrJsonWebKey] =
   #| (self, format, key) => self.exportKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key)
 
 ///|

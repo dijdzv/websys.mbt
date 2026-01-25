@@ -103,6 +103,40 @@ pub extern "js" fn NetworkInformation::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to NetworkInformation (unchecked)
+pub extern "js" fn NetworkInformation::from_js_value(
+  v : JsValue,
+) -> NetworkInformation =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to NetworkInformation (checked with instanceof)
+pub extern "js" fn NetworkInformation::from_js_value_opt(
+  v : JsValue,
+) -> NetworkInformation? =
+  #| (v) => (v instanceof NetworkInformation) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to NetworkInformation (checked with instanceof)
+pub extern "js" fn JsValue::as_network_information(
+  self : JsValue,
+) -> NetworkInformation? =
+  #| (self) => (self instanceof NetworkInformation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to NetworkInformation (unchecked)
+pub extern "js" fn JsValue::to_network_information(
+  self : JsValue,
+) -> NetworkInformation =
+  #| (self) => self
+
+///|
+pub extern "js" fn NetworkInformation::to_event_target(
+  self : NetworkInformation,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn NetworkInformation::get_type(
   self : NetworkInformation,
 ) -> ConnectionType =

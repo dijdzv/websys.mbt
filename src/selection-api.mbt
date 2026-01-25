@@ -31,8 +31,28 @@ pub extern "js" fn Selection::to_js_value(self : Selection) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Selection (unchecked)
+pub extern "js" fn Selection::from_js_value(v : JsValue) -> Selection =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Selection (checked with instanceof)
+pub extern "js" fn Selection::from_js_value_opt(v : JsValue) -> Selection? =
+  #| (v) => (v instanceof Selection) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Selection (checked with instanceof)
+pub extern "js" fn JsValue::as_selection(self : JsValue) -> Selection? =
+  #| (self) => (self instanceof Selection) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Selection (unchecked)
+pub extern "js" fn JsValue::to_selection(self : JsValue) -> Selection =
+  #| (self) => self
+
+///|
 pub extern "js" fn Selection::get_anchor_node(self : Selection) -> Node? =
-  #| (self) => self.anchorNode
+  #| (self) => { const v = self.anchorNode; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Selection::get_anchor_offset(self : Selection) -> Int =
@@ -40,7 +60,7 @@ pub extern "js" fn Selection::get_anchor_offset(self : Selection) -> Int =
 
 ///|
 pub extern "js" fn Selection::get_focus_node(self : Selection) -> Node? =
-  #| (self) => self.focusNode
+  #| (self) => { const v = self.focusNode; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Selection::get_focus_offset(self : Selection) -> Int =

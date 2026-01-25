@@ -182,6 +182,26 @@ pub extern "js" fn Gamepad::to_js_value(self : Gamepad) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Gamepad (unchecked)
+pub extern "js" fn Gamepad::from_js_value(v : JsValue) -> Gamepad =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Gamepad (checked with instanceof)
+pub extern "js" fn Gamepad::from_js_value_opt(v : JsValue) -> Gamepad? =
+  #| (v) => (v instanceof Gamepad) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Gamepad (checked with instanceof)
+pub extern "js" fn JsValue::as_gamepad(self : JsValue) -> Gamepad? =
+  #| (self) => (self instanceof Gamepad) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Gamepad (unchecked)
+pub extern "js" fn JsValue::to_gamepad(self : JsValue) -> Gamepad =
+  #| (self) => self
+
+///|
 pub extern "js" fn Gamepad::get_id(self : Gamepad) -> String =
   #| (self) => self.id
 
@@ -231,7 +251,7 @@ pub extern "js" fn Gamepad::get_haptic_actuators(self : Gamepad) -> JsValue =
 
 ///|
 pub extern "js" fn Gamepad::get_pose(self : Gamepad) -> GamepadPose? =
-  #| (self) => self.pose
+  #| (self) => { const v = self.pose; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// GamepadButton interface
@@ -239,6 +259,28 @@ pub type GamepadButton
 
 ///|
 pub extern "js" fn GamepadButton::to_js_value(self : GamepadButton) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GamepadButton (unchecked)
+pub extern "js" fn GamepadButton::from_js_value(v : JsValue) -> GamepadButton =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GamepadButton (checked with instanceof)
+pub extern "js" fn GamepadButton::from_js_value_opt(
+  v : JsValue,
+) -> GamepadButton? =
+  #| (v) => (v instanceof GamepadButton) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GamepadButton (checked with instanceof)
+pub extern "js" fn JsValue::as_gamepad_button(self : JsValue) -> GamepadButton? =
+  #| (self) => (self instanceof GamepadButton) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GamepadButton (unchecked)
+pub extern "js" fn JsValue::to_gamepad_button(self : JsValue) -> GamepadButton =
   #| (self) => self
 
 ///|
@@ -261,6 +303,34 @@ pub type GamepadHapticActuator
 pub extern "js" fn GamepadHapticActuator::to_js_value(
   self : GamepadHapticActuator,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GamepadHapticActuator (unchecked)
+pub extern "js" fn GamepadHapticActuator::from_js_value(
+  v : JsValue,
+) -> GamepadHapticActuator =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GamepadHapticActuator (checked with instanceof)
+pub extern "js" fn GamepadHapticActuator::from_js_value_opt(
+  v : JsValue,
+) -> GamepadHapticActuator? =
+  #| (v) => (v instanceof GamepadHapticActuator) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GamepadHapticActuator (checked with instanceof)
+pub extern "js" fn JsValue::as_gamepad_haptic_actuator(
+  self : JsValue,
+) -> GamepadHapticActuator? =
+  #| (self) => (self instanceof GamepadHapticActuator) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GamepadHapticActuator (unchecked)
+pub extern "js" fn JsValue::to_gamepad_haptic_actuator(
+  self : JsValue,
+) -> GamepadHapticActuator =
   #| (self) => self
 
 ///|
@@ -304,6 +374,32 @@ pub type GamepadEvent
 
 ///|
 pub extern "js" fn GamepadEvent::to_js_value(self : GamepadEvent) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to GamepadEvent (unchecked)
+pub extern "js" fn GamepadEvent::from_js_value(v : JsValue) -> GamepadEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to GamepadEvent (checked with instanceof)
+pub extern "js" fn GamepadEvent::from_js_value_opt(
+  v : JsValue,
+) -> GamepadEvent? =
+  #| (v) => (v instanceof GamepadEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to GamepadEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_gamepad_event(self : JsValue) -> GamepadEvent? =
+  #| (self) => (self instanceof GamepadEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to GamepadEvent (unchecked)
+pub extern "js" fn JsValue::to_gamepad_event(self : JsValue) -> GamepadEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn GamepadEvent::to_event(self : GamepadEvent) -> Event =
   #| (self) => self
 
 ///|

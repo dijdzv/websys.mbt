@@ -118,6 +118,26 @@ pub extern "js" fn XRHand::to_js_value(self : XRHand) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to XRHand (unchecked)
+pub extern "js" fn XRHand::from_js_value(v : JsValue) -> XRHand =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRHand (checked with instanceof)
+pub extern "js" fn XRHand::from_js_value_opt(v : JsValue) -> XRHand? =
+  #| (v) => (v instanceof XRHand) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRHand (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_hand(self : JsValue) -> XRHand? =
+  #| (self) => (self instanceof XRHand) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRHand (unchecked)
+pub extern "js" fn JsValue::to_xr_hand(self : JsValue) -> XRHand =
+  #| (self) => self
+
+///|
 pub extern "js" fn XRHand::_unknown_(self : XRHand) -> Unit =
   #| (self) => self._unknown_()
 
@@ -141,6 +161,38 @@ pub extern "js" fn XRJointSpace::to_js_value(self : XRJointSpace) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to XRJointSpace (unchecked)
+pub extern "js" fn XRJointSpace::from_js_value(v : JsValue) -> XRJointSpace =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRJointSpace (checked with instanceof)
+pub extern "js" fn XRJointSpace::from_js_value_opt(
+  v : JsValue,
+) -> XRJointSpace? =
+  #| (v) => (v instanceof XRJointSpace) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRJointSpace (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_joint_space(self : JsValue) -> XRJointSpace? =
+  #| (self) => (self instanceof XRJointSpace) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRJointSpace (unchecked)
+pub extern "js" fn JsValue::to_xr_joint_space(self : JsValue) -> XRJointSpace =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRJointSpace::to_xr_space(self : XRJointSpace) -> XRSpace =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRJointSpace::to_event_target(
+  self : XRJointSpace,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn XRJointSpace::get_joint_name(
   self : XRJointSpace,
 ) -> XRHandJoint =
@@ -152,6 +204,30 @@ pub type XRJointPose
 
 ///|
 pub extern "js" fn XRJointPose::to_js_value(self : XRJointPose) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to XRJointPose (unchecked)
+pub extern "js" fn XRJointPose::from_js_value(v : JsValue) -> XRJointPose =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRJointPose (checked with instanceof)
+pub extern "js" fn XRJointPose::from_js_value_opt(v : JsValue) -> XRJointPose? =
+  #| (v) => (v instanceof XRJointPose) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRJointPose (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_joint_pose(self : JsValue) -> XRJointPose? =
+  #| (self) => (self instanceof XRJointPose) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRJointPose (unchecked)
+pub extern "js" fn JsValue::to_xr_joint_pose(self : JsValue) -> XRJointPose =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRJointPose::to_xr_pose(self : XRJointPose) -> XRPose =
   #| (self) => self
 
 ///|

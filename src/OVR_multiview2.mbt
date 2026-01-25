@@ -11,28 +11,52 @@ pub extern "js" fn OVR_multiview2::to_js_value(
 ) -> JsValue =
   #| (self) => self
 
+///|
+/// Cast JsValue to OVR_multiview2 (unchecked)
+pub extern "js" fn OVR_multiview2::from_js_value(v : JsValue) -> OVR_multiview2 =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to OVR_multiview2 (checked with instanceof)
+pub extern "js" fn OVR_multiview2::from_js_value_opt(
+  v : JsValue,
+) -> OVR_multiview2? =
+  #| (v) => (v instanceof OVR_multiview2) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to OVR_multiview2 (checked with instanceof)
+pub extern "js" fn JsValue::as_ovr_multiview2(
+  self : JsValue,
+) -> OVR_multiview2? =
+  #| (self) => (self instanceof OVR_multiview2) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to OVR_multiview2 (unchecked)
+pub extern "js" fn JsValue::to_ovr_multiview2(self : JsValue) -> OVR_multiview2 =
+  #| (self) => self
+
 // OVR_multiview2.FRAMEBUFFER_ATTACHMENT_TEXTURE_NUM_VIEWS_OVR
 
 ///|
-pub let o_v_r_multiview2_framebuffer_attachment_texture_num_views_ovr : Int = 0x9630
+pub let ovr_multiview2_framebuffer_attachment_texture_num_views_ovr : Int = 0x9630
 
 // OVR_multiview2.FRAMEBUFFER_ATTACHMENT_TEXTURE_BASE_VIEW_INDEX_OVR
 
 ///|
-pub let o_v_r_multiview2_framebuffer_attachment_texture_base_view_index_ovr : Int = 0x9632
+pub let ovr_multiview2_framebuffer_attachment_texture_base_view_index_ovr : Int = 0x9632
 
 // OVR_multiview2.MAX_VIEWS_OVR
 
 ///|
-pub let o_v_r_multiview2_max_views_ovr : Int = 0x9631
+pub let ovr_multiview2_max_views_ovr : Int = 0x9631
 
 // OVR_multiview2.FRAMEBUFFER_INCOMPLETE_VIEW_TARGETS_OVR
 
 ///|
-pub let o_v_r_multiview2_framebuffer_incomplete_view_targets_ovr : Int = 0x9633
+pub let ovr_multiview2_framebuffer_incomplete_view_targets_ovr : Int = 0x9633
 
 ///|
-pub extern "js" fn OVR_multiview2::framebuffer_texture_multiview_o_v_r(
+pub extern "js" fn OVR_multiview2::framebuffer_texture_multiview_ovr(
   self : OVR_multiview2,
   target : GLenum,
   attachment : GLenum,

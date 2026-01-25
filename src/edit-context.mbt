@@ -212,6 +212,32 @@ pub extern "js" fn EditContext::to_js_value(self : EditContext) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to EditContext (unchecked)
+pub extern "js" fn EditContext::from_js_value(v : JsValue) -> EditContext =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to EditContext (checked with instanceof)
+pub extern "js" fn EditContext::from_js_value_opt(v : JsValue) -> EditContext? =
+  #| (v) => (v instanceof EditContext) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to EditContext (checked with instanceof)
+pub extern "js" fn JsValue::as_edit_context(self : JsValue) -> EditContext? =
+  #| (self) => (self instanceof EditContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to EditContext (unchecked)
+pub extern "js" fn JsValue::to_edit_context(self : JsValue) -> EditContext =
+  #| (self) => self
+
+///|
+pub extern "js" fn EditContext::to_event_target(
+  self : EditContext,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn EditContext::new(options : EditContextInit) -> EditContext =
   #| (options) => new EditContext(options)
 
@@ -360,6 +386,38 @@ pub extern "js" fn TextUpdateEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to TextUpdateEvent (unchecked)
+pub extern "js" fn TextUpdateEvent::from_js_value(
+  v : JsValue,
+) -> TextUpdateEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to TextUpdateEvent (checked with instanceof)
+pub extern "js" fn TextUpdateEvent::from_js_value_opt(
+  v : JsValue,
+) -> TextUpdateEvent? =
+  #| (v) => (v instanceof TextUpdateEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to TextUpdateEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_text_update_event(
+  self : JsValue,
+) -> TextUpdateEvent? =
+  #| (self) => (self instanceof TextUpdateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to TextUpdateEvent (unchecked)
+pub extern "js" fn JsValue::to_text_update_event(
+  self : JsValue,
+) -> TextUpdateEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn TextUpdateEvent::to_event(self : TextUpdateEvent) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn TextUpdateEvent::new(
   type_ : String,
   options : TextUpdateEventInit,
@@ -403,6 +461,26 @@ pub extern "js" fn TextFormat::to_js_value(self : TextFormat) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to TextFormat (unchecked)
+pub extern "js" fn TextFormat::from_js_value(v : JsValue) -> TextFormat =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to TextFormat (checked with instanceof)
+pub extern "js" fn TextFormat::from_js_value_opt(v : JsValue) -> TextFormat? =
+  #| (v) => (v instanceof TextFormat) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to TextFormat (checked with instanceof)
+pub extern "js" fn JsValue::as_text_format(self : JsValue) -> TextFormat? =
+  #| (self) => (self instanceof TextFormat) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to TextFormat (unchecked)
+pub extern "js" fn JsValue::to_text_format(self : JsValue) -> TextFormat =
+  #| (self) => self
+
+///|
 pub extern "js" fn TextFormat::new(options : TextFormatInit) -> TextFormat =
   #| (options) => new TextFormat(options)
 
@@ -437,6 +515,40 @@ pub extern "js" fn TextFormatUpdateEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to TextFormatUpdateEvent (unchecked)
+pub extern "js" fn TextFormatUpdateEvent::from_js_value(
+  v : JsValue,
+) -> TextFormatUpdateEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to TextFormatUpdateEvent (checked with instanceof)
+pub extern "js" fn TextFormatUpdateEvent::from_js_value_opt(
+  v : JsValue,
+) -> TextFormatUpdateEvent? =
+  #| (v) => (v instanceof TextFormatUpdateEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to TextFormatUpdateEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_text_format_update_event(
+  self : JsValue,
+) -> TextFormatUpdateEvent? =
+  #| (self) => (self instanceof TextFormatUpdateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to TextFormatUpdateEvent (unchecked)
+pub extern "js" fn JsValue::to_text_format_update_event(
+  self : JsValue,
+) -> TextFormatUpdateEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn TextFormatUpdateEvent::to_event(
+  self : TextFormatUpdateEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn TextFormatUpdateEvent::new(
   type_ : String,
   options : TextFormatUpdateEventInit,
@@ -457,6 +569,40 @@ pub type CharacterBoundsUpdateEvent
 pub extern "js" fn CharacterBoundsUpdateEvent::to_js_value(
   self : CharacterBoundsUpdateEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CharacterBoundsUpdateEvent (unchecked)
+pub extern "js" fn CharacterBoundsUpdateEvent::from_js_value(
+  v : JsValue,
+) -> CharacterBoundsUpdateEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CharacterBoundsUpdateEvent (checked with instanceof)
+pub extern "js" fn CharacterBoundsUpdateEvent::from_js_value_opt(
+  v : JsValue,
+) -> CharacterBoundsUpdateEvent? =
+  #| (v) => (v instanceof CharacterBoundsUpdateEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CharacterBoundsUpdateEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_character_bounds_update_event(
+  self : JsValue,
+) -> CharacterBoundsUpdateEvent? =
+  #| (self) => (self instanceof CharacterBoundsUpdateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CharacterBoundsUpdateEvent (unchecked)
+pub extern "js" fn JsValue::to_character_bounds_update_event(
+  self : JsValue,
+) -> CharacterBoundsUpdateEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn CharacterBoundsUpdateEvent::to_event(
+  self : CharacterBoundsUpdateEvent,
+) -> Event =
   #| (self) => self
 
 ///|

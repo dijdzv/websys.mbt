@@ -362,6 +362,30 @@ pub extern "js" fn USB::to_js_value(self : USB) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to USB (unchecked)
+pub extern "js" fn USB::from_js_value(v : JsValue) -> USB =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to USB (checked with instanceof)
+pub extern "js" fn USB::from_js_value_opt(v : JsValue) -> USB? =
+  #| (v) => (v instanceof USB) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to USB (checked with instanceof)
+pub extern "js" fn JsValue::as_usb(self : JsValue) -> USB? =
+  #| (self) => (self instanceof USB) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to USB (unchecked)
+pub extern "js" fn JsValue::to_usb(self : JsValue) -> USB =
+  #| (self) => self
+
+///|
+pub extern "js" fn USB::to_event_target(self : USB) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn USB::get_onconnect(self : USB) -> EventHandler =
   #| (self) => self.onconnect
 
@@ -381,7 +405,7 @@ pub extern "js" fn USB::set_ondisconnect(
   #| (self, value) => { self.ondisconnect = value }
 
 ///|
-pub extern "js" fn USB::get_devices(self : USB) -> Promise[Unit] =
+pub extern "js" fn USB::get_devices(self : USB) -> Promise[Array[USBDevice]] =
   #| (self) => self.getDevices()
 
 ///|
@@ -399,6 +423,40 @@ pub type USBConnectionEvent
 pub extern "js" fn USBConnectionEvent::to_js_value(
   self : USBConnectionEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to USBConnectionEvent (unchecked)
+pub extern "js" fn USBConnectionEvent::from_js_value(
+  v : JsValue,
+) -> USBConnectionEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to USBConnectionEvent (checked with instanceof)
+pub extern "js" fn USBConnectionEvent::from_js_value_opt(
+  v : JsValue,
+) -> USBConnectionEvent? =
+  #| (v) => (v instanceof USBConnectionEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to USBConnectionEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_usb_connection_event(
+  self : JsValue,
+) -> USBConnectionEvent? =
+  #| (self) => (self instanceof USBConnectionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to USBConnectionEvent (unchecked)
+pub extern "js" fn JsValue::to_usb_connection_event(
+  self : JsValue,
+) -> USBConnectionEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn USBConnectionEvent::to_event(
+  self : USBConnectionEvent,
+) -> Event =
   #| (self) => self
 
 ///|
@@ -425,6 +483,34 @@ pub extern "js" fn USBInTransferResult::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to USBInTransferResult (unchecked)
+pub extern "js" fn USBInTransferResult::from_js_value(
+  v : JsValue,
+) -> USBInTransferResult =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to USBInTransferResult (checked with instanceof)
+pub extern "js" fn USBInTransferResult::from_js_value_opt(
+  v : JsValue,
+) -> USBInTransferResult? =
+  #| (v) => (v instanceof USBInTransferResult) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to USBInTransferResult (checked with instanceof)
+pub extern "js" fn JsValue::as_usb_in_transfer_result(
+  self : JsValue,
+) -> USBInTransferResult? =
+  #| (self) => (self instanceof USBInTransferResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to USBInTransferResult (unchecked)
+pub extern "js" fn JsValue::to_usb_in_transfer_result(
+  self : JsValue,
+) -> USBInTransferResult =
+  #| (self) => self
+
+///|
 pub extern "js" fn USBInTransferResult::new(
   status : USBTransferStatus,
   data : DataView?,
@@ -435,7 +521,7 @@ pub extern "js" fn USBInTransferResult::new(
 pub extern "js" fn USBInTransferResult::get_data(
   self : USBInTransferResult,
 ) -> DataView? =
-  #| (self) => self.data
+  #| (self) => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn USBInTransferResult::get_status(
@@ -451,6 +537,34 @@ pub type USBOutTransferResult
 pub extern "js" fn USBOutTransferResult::to_js_value(
   self : USBOutTransferResult,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to USBOutTransferResult (unchecked)
+pub extern "js" fn USBOutTransferResult::from_js_value(
+  v : JsValue,
+) -> USBOutTransferResult =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to USBOutTransferResult (checked with instanceof)
+pub extern "js" fn USBOutTransferResult::from_js_value_opt(
+  v : JsValue,
+) -> USBOutTransferResult? =
+  #| (v) => (v instanceof USBOutTransferResult) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to USBOutTransferResult (checked with instanceof)
+pub extern "js" fn JsValue::as_usb_out_transfer_result(
+  self : JsValue,
+) -> USBOutTransferResult? =
+  #| (self) => (self instanceof USBOutTransferResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to USBOutTransferResult (unchecked)
+pub extern "js" fn JsValue::to_usb_out_transfer_result(
+  self : JsValue,
+) -> USBOutTransferResult =
   #| (self) => self
 
 ///|
@@ -483,6 +597,34 @@ pub extern "js" fn USBIsochronousInTransferPacket::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to USBIsochronousInTransferPacket (unchecked)
+pub extern "js" fn USBIsochronousInTransferPacket::from_js_value(
+  v : JsValue,
+) -> USBIsochronousInTransferPacket =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to USBIsochronousInTransferPacket (checked with instanceof)
+pub extern "js" fn USBIsochronousInTransferPacket::from_js_value_opt(
+  v : JsValue,
+) -> USBIsochronousInTransferPacket? =
+  #| (v) => (v instanceof USBIsochronousInTransferPacket) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to USBIsochronousInTransferPacket (checked with instanceof)
+pub extern "js" fn JsValue::as_usb_isochronous_in_transfer_packet(
+  self : JsValue,
+) -> USBIsochronousInTransferPacket? =
+  #| (self) => (self instanceof USBIsochronousInTransferPacket) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to USBIsochronousInTransferPacket (unchecked)
+pub extern "js" fn JsValue::to_usb_isochronous_in_transfer_packet(
+  self : JsValue,
+) -> USBIsochronousInTransferPacket =
+  #| (self) => self
+
+///|
 pub extern "js" fn USBIsochronousInTransferPacket::new(
   status : USBTransferStatus,
   data : DataView?,
@@ -493,7 +635,7 @@ pub extern "js" fn USBIsochronousInTransferPacket::new(
 pub extern "js" fn USBIsochronousInTransferPacket::get_data(
   self : USBIsochronousInTransferPacket,
 ) -> DataView? =
-  #| (self) => self.data
+  #| (self) => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn USBIsochronousInTransferPacket::get_status(
@@ -512,6 +654,34 @@ pub extern "js" fn USBIsochronousInTransferResult::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to USBIsochronousInTransferResult (unchecked)
+pub extern "js" fn USBIsochronousInTransferResult::from_js_value(
+  v : JsValue,
+) -> USBIsochronousInTransferResult =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to USBIsochronousInTransferResult (checked with instanceof)
+pub extern "js" fn USBIsochronousInTransferResult::from_js_value_opt(
+  v : JsValue,
+) -> USBIsochronousInTransferResult? =
+  #| (v) => (v instanceof USBIsochronousInTransferResult) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to USBIsochronousInTransferResult (checked with instanceof)
+pub extern "js" fn JsValue::as_usb_isochronous_in_transfer_result(
+  self : JsValue,
+) -> USBIsochronousInTransferResult? =
+  #| (self) => (self instanceof USBIsochronousInTransferResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to USBIsochronousInTransferResult (unchecked)
+pub extern "js" fn JsValue::to_usb_isochronous_in_transfer_result(
+  self : JsValue,
+) -> USBIsochronousInTransferResult =
+  #| (self) => self
+
+///|
 pub extern "js" fn USBIsochronousInTransferResult::new(
   packets : Array[USBIsochronousInTransferPacket],
   data : DataView?,
@@ -522,7 +692,7 @@ pub extern "js" fn USBIsochronousInTransferResult::new(
 pub extern "js" fn USBIsochronousInTransferResult::get_data(
   self : USBIsochronousInTransferResult,
 ) -> DataView? =
-  #| (self) => self.data
+  #| (self) => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn USBIsochronousInTransferResult::get_packets(
@@ -538,6 +708,34 @@ pub type USBIsochronousOutTransferPacket
 pub extern "js" fn USBIsochronousOutTransferPacket::to_js_value(
   self : USBIsochronousOutTransferPacket,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to USBIsochronousOutTransferPacket (unchecked)
+pub extern "js" fn USBIsochronousOutTransferPacket::from_js_value(
+  v : JsValue,
+) -> USBIsochronousOutTransferPacket =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to USBIsochronousOutTransferPacket (checked with instanceof)
+pub extern "js" fn USBIsochronousOutTransferPacket::from_js_value_opt(
+  v : JsValue,
+) -> USBIsochronousOutTransferPacket? =
+  #| (v) => (v instanceof USBIsochronousOutTransferPacket) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to USBIsochronousOutTransferPacket (checked with instanceof)
+pub extern "js" fn JsValue::as_usb_isochronous_out_transfer_packet(
+  self : JsValue,
+) -> USBIsochronousOutTransferPacket? =
+  #| (self) => (self instanceof USBIsochronousOutTransferPacket) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to USBIsochronousOutTransferPacket (unchecked)
+pub extern "js" fn JsValue::to_usb_isochronous_out_transfer_packet(
+  self : JsValue,
+) -> USBIsochronousOutTransferPacket =
   #| (self) => self
 
 ///|
@@ -570,6 +768,34 @@ pub extern "js" fn USBIsochronousOutTransferResult::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to USBIsochronousOutTransferResult (unchecked)
+pub extern "js" fn USBIsochronousOutTransferResult::from_js_value(
+  v : JsValue,
+) -> USBIsochronousOutTransferResult =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to USBIsochronousOutTransferResult (checked with instanceof)
+pub extern "js" fn USBIsochronousOutTransferResult::from_js_value_opt(
+  v : JsValue,
+) -> USBIsochronousOutTransferResult? =
+  #| (v) => (v instanceof USBIsochronousOutTransferResult) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to USBIsochronousOutTransferResult (checked with instanceof)
+pub extern "js" fn JsValue::as_usb_isochronous_out_transfer_result(
+  self : JsValue,
+) -> USBIsochronousOutTransferResult? =
+  #| (self) => (self instanceof USBIsochronousOutTransferResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to USBIsochronousOutTransferResult (unchecked)
+pub extern "js" fn JsValue::to_usb_isochronous_out_transfer_result(
+  self : JsValue,
+) -> USBIsochronousOutTransferResult =
+  #| (self) => self
+
+///|
 pub extern "js" fn USBIsochronousOutTransferResult::new(
   packets : Array[USBIsochronousOutTransferPacket],
 ) -> USBIsochronousOutTransferResult =
@@ -587,6 +813,26 @@ pub type USBDevice
 
 ///|
 pub extern "js" fn USBDevice::to_js_value(self : USBDevice) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to USBDevice (unchecked)
+pub extern "js" fn USBDevice::from_js_value(v : JsValue) -> USBDevice =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to USBDevice (checked with instanceof)
+pub extern "js" fn USBDevice::from_js_value_opt(v : JsValue) -> USBDevice? =
+  #| (v) => (v instanceof USBDevice) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to USBDevice (checked with instanceof)
+pub extern "js" fn JsValue::as_usb_device(self : JsValue) -> USBDevice? =
+  #| (self) => (self instanceof USBDevice) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to USBDevice (unchecked)
+pub extern "js" fn JsValue::to_usb_device(self : JsValue) -> USBDevice =
   #| (self) => self
 
 ///|
@@ -639,21 +885,21 @@ pub extern "js" fn USBDevice::get_device_version_subminor(
 pub extern "js" fn USBDevice::get_manufacturer_name(
   self : USBDevice,
 ) -> String? =
-  #| (self) => self.manufacturerName
+  #| (self) => { const v = self.manufacturerName; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn USBDevice::get_product_name(self : USBDevice) -> String? =
-  #| (self) => self.productName
+  #| (self) => { const v = self.productName; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn USBDevice::get_serial_number(self : USBDevice) -> String? =
-  #| (self) => self.serialNumber
+  #| (self) => { const v = self.serialNumber; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn USBDevice::get_configuration(
   self : USBDevice,
 ) -> USBConfiguration? =
-  #| (self) => self.configuration
+  #| (self) => { const v = self.configuration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn USBDevice::get_configurations(self : USBDevice) -> JsValue =
@@ -783,6 +1029,34 @@ pub extern "js" fn USBConfiguration::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to USBConfiguration (unchecked)
+pub extern "js" fn USBConfiguration::from_js_value(
+  v : JsValue,
+) -> USBConfiguration =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to USBConfiguration (checked with instanceof)
+pub extern "js" fn USBConfiguration::from_js_value_opt(
+  v : JsValue,
+) -> USBConfiguration? =
+  #| (v) => (v instanceof USBConfiguration) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to USBConfiguration (checked with instanceof)
+pub extern "js" fn JsValue::as_usb_configuration(
+  self : JsValue,
+) -> USBConfiguration? =
+  #| (self) => (self instanceof USBConfiguration) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to USBConfiguration (unchecked)
+pub extern "js" fn JsValue::to_usb_configuration(
+  self : JsValue,
+) -> USBConfiguration =
+  #| (self) => self
+
+///|
 pub extern "js" fn USBConfiguration::new(
   device : USBDevice,
   configuration_value : Int,
@@ -799,7 +1073,7 @@ pub extern "js" fn USBConfiguration::get_configuration_value(
 pub extern "js" fn USBConfiguration::get_configuration_name(
   self : USBConfiguration,
 ) -> String? =
-  #| (self) => self.configurationName
+  #| (self) => { const v = self.configurationName; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn USBConfiguration::get_interfaces(
@@ -813,6 +1087,28 @@ pub type USBInterface
 
 ///|
 pub extern "js" fn USBInterface::to_js_value(self : USBInterface) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to USBInterface (unchecked)
+pub extern "js" fn USBInterface::from_js_value(v : JsValue) -> USBInterface =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to USBInterface (checked with instanceof)
+pub extern "js" fn USBInterface::from_js_value_opt(
+  v : JsValue,
+) -> USBInterface? =
+  #| (v) => (v instanceof USBInterface) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to USBInterface (checked with instanceof)
+pub extern "js" fn JsValue::as_usb_interface(self : JsValue) -> USBInterface? =
+  #| (self) => (self instanceof USBInterface) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to USBInterface (unchecked)
+pub extern "js" fn JsValue::to_usb_interface(self : JsValue) -> USBInterface =
   #| (self) => self
 
 ///|
@@ -853,6 +1149,34 @@ pub extern "js" fn USBAlternateInterface::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to USBAlternateInterface (unchecked)
+pub extern "js" fn USBAlternateInterface::from_js_value(
+  v : JsValue,
+) -> USBAlternateInterface =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to USBAlternateInterface (checked with instanceof)
+pub extern "js" fn USBAlternateInterface::from_js_value_opt(
+  v : JsValue,
+) -> USBAlternateInterface? =
+  #| (v) => (v instanceof USBAlternateInterface) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to USBAlternateInterface (checked with instanceof)
+pub extern "js" fn JsValue::as_usb_alternate_interface(
+  self : JsValue,
+) -> USBAlternateInterface? =
+  #| (self) => (self instanceof USBAlternateInterface) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to USBAlternateInterface (unchecked)
+pub extern "js" fn JsValue::to_usb_alternate_interface(
+  self : JsValue,
+) -> USBAlternateInterface =
+  #| (self) => self
+
+///|
 pub extern "js" fn USBAlternateInterface::new(
   device_interface : USBInterface,
   alternate_setting : Int,
@@ -887,7 +1211,7 @@ pub extern "js" fn USBAlternateInterface::get_interface_protocol(
 pub extern "js" fn USBAlternateInterface::get_interface_name(
   self : USBAlternateInterface,
 ) -> String? =
-  #| (self) => self.interfaceName
+  #| (self) => { const v = self.interfaceName; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn USBAlternateInterface::get_endpoints(
@@ -901,6 +1225,26 @@ pub type USBEndpoint
 
 ///|
 pub extern "js" fn USBEndpoint::to_js_value(self : USBEndpoint) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to USBEndpoint (unchecked)
+pub extern "js" fn USBEndpoint::from_js_value(v : JsValue) -> USBEndpoint =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to USBEndpoint (checked with instanceof)
+pub extern "js" fn USBEndpoint::from_js_value_opt(v : JsValue) -> USBEndpoint? =
+  #| (v) => (v instanceof USBEndpoint) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to USBEndpoint (checked with instanceof)
+pub extern "js" fn JsValue::as_usb_endpoint(self : JsValue) -> USBEndpoint? =
+  #| (self) => (self instanceof USBEndpoint) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to USBEndpoint (unchecked)
+pub extern "js" fn JsValue::to_usb_endpoint(self : JsValue) -> USBEndpoint =
   #| (self) => self
 
 ///|
@@ -937,6 +1281,46 @@ pub type USBPermissionResult
 pub extern "js" fn USBPermissionResult::to_js_value(
   self : USBPermissionResult,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to USBPermissionResult (unchecked)
+pub extern "js" fn USBPermissionResult::from_js_value(
+  v : JsValue,
+) -> USBPermissionResult =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to USBPermissionResult (checked with instanceof)
+pub extern "js" fn USBPermissionResult::from_js_value_opt(
+  v : JsValue,
+) -> USBPermissionResult? =
+  #| (v) => (v instanceof USBPermissionResult) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to USBPermissionResult (checked with instanceof)
+pub extern "js" fn JsValue::as_usb_permission_result(
+  self : JsValue,
+) -> USBPermissionResult? =
+  #| (self) => (self instanceof USBPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to USBPermissionResult (unchecked)
+pub extern "js" fn JsValue::to_usb_permission_result(
+  self : JsValue,
+) -> USBPermissionResult =
+  #| (self) => self
+
+///|
+pub extern "js" fn USBPermissionResult::to_permission_status(
+  self : USBPermissionResult,
+) -> PermissionStatus =
+  #| (self) => self
+
+///|
+pub extern "js" fn USBPermissionResult::to_event_target(
+  self : USBPermissionResult,
+) -> EventTarget =
   #| (self) => self
 
 ///|

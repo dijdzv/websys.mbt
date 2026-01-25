@@ -38,12 +38,12 @@ pub fn RTCPriorityType::from_string(s : String) -> RTCPriorityType? {
 pub struct RTCRtpEncodingParameters {
   priority : RTCPriorityType?
   networkPriority : RTCPriorityType?
-  scalabilityMode : String?
   active : Bool?
   codec : RTCRtpCodec?
   maxBitrate : Int?
   maxFramerate : Double?
   scaleResolutionDownBy : Double?
+  scalabilityMode : String?
 }
 
 ///|
@@ -52,12 +52,12 @@ pub fn RTCRtpEncodingParameters::default() -> RTCRtpEncodingParameters {
   RTCRtpEncodingParameters::{
     priority: None,
     networkPriority: None,
-    scalabilityMode: None,
     active: None,
     codec: None,
     maxBitrate: None,
     maxFramerate: None,
     scaleResolutionDownBy: None,
+    scalabilityMode: None,
   }
 }
 
@@ -69,12 +69,12 @@ pub extern "js" fn RTCRtpEncodingParameters::to_js(
   #| (self) => ({
   #|   priority: ['very-low', 'low', 'medium', 'high'][self.priority],
   #|   networkPriority: ['very-low', 'low', 'medium', 'high'][self.networkPriority],
-  #|   scalabilityMode: self.scalabilityMode,
   #|   active: self.active,
   #|   codec: self.codec,
   #|   maxBitrate: self.maxBitrate,
   #|   maxFramerate: self.maxFramerate,
-  #|   scaleResolutionDownBy: self.scaleResolutionDownBy
+  #|   scaleResolutionDownBy: self.scaleResolutionDownBy,
+  #|   scalabilityMode: self.scalabilityMode
   #| })
 
 ///|

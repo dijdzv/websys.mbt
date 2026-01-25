@@ -236,6 +236,34 @@ pub extern "js" fn VTTCue::to_js_value(self : VTTCue) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to VTTCue (unchecked)
+pub extern "js" fn VTTCue::from_js_value(v : JsValue) -> VTTCue =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to VTTCue (checked with instanceof)
+pub extern "js" fn VTTCue::from_js_value_opt(v : JsValue) -> VTTCue? =
+  #| (v) => (v instanceof VTTCue) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to VTTCue (checked with instanceof)
+pub extern "js" fn JsValue::as_vtt_cue(self : JsValue) -> VTTCue? =
+  #| (self) => (self instanceof VTTCue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to VTTCue (unchecked)
+pub extern "js" fn JsValue::to_vtt_cue(self : JsValue) -> VTTCue =
+  #| (self) => self
+
+///|
+pub extern "js" fn VTTCue::to_text_track_cue(self : VTTCue) -> TextTrackCue =
+  #| (self) => self
+
+///|
+pub extern "js" fn VTTCue::to_event_target(self : VTTCue) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn VTTCue::new(
   start_time : Double,
   end_time : Double,
@@ -245,7 +273,7 @@ pub extern "js" fn VTTCue::new(
 
 ///|
 pub extern "js" fn VTTCue::get_region(self : VTTCue) -> VTTRegion? =
-  #| (self) => self.region
+  #| (self) => { const v = self.region; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn VTTCue::set_region(
@@ -352,9 +380,7 @@ pub extern "js" fn VTTCue::set_text(self : VTTCue, value : String) -> Unit =
   #| (self, value) => { self.text = value }
 
 ///|
-pub extern "js" fn VTTCue::get_cue_as_h_t_m_l(
-  self : VTTCue,
-) -> DocumentFragment =
+pub extern "js" fn VTTCue::get_cue_as_html(self : VTTCue) -> DocumentFragment =
   #| (self) => self.getCueAsHTML()
 
 ///|
@@ -363,6 +389,26 @@ pub type VTTRegion
 
 ///|
 pub extern "js" fn VTTRegion::to_js_value(self : VTTRegion) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to VTTRegion (unchecked)
+pub extern "js" fn VTTRegion::from_js_value(v : JsValue) -> VTTRegion =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to VTTRegion (checked with instanceof)
+pub extern "js" fn VTTRegion::from_js_value_opt(v : JsValue) -> VTTRegion? =
+  #| (v) => (v instanceof VTTRegion) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to VTTRegion (checked with instanceof)
+pub extern "js" fn JsValue::as_vtt_region(self : JsValue) -> VTTRegion? =
+  #| (self) => (self instanceof VTTRegion) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to VTTRegion (unchecked)
+pub extern "js" fn JsValue::to_vtt_region(self : JsValue) -> VTTRegion =
   #| (self) => self
 
 ///|

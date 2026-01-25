@@ -33,6 +33,40 @@ pub extern "js" fn ContentVisibilityAutoStateChangeEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to ContentVisibilityAutoStateChangeEvent (unchecked)
+pub extern "js" fn ContentVisibilityAutoStateChangeEvent::from_js_value(
+  v : JsValue,
+) -> ContentVisibilityAutoStateChangeEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ContentVisibilityAutoStateChangeEvent (checked with instanceof)
+pub extern "js" fn ContentVisibilityAutoStateChangeEvent::from_js_value_opt(
+  v : JsValue,
+) -> ContentVisibilityAutoStateChangeEvent? =
+  #| (v) => (v instanceof ContentVisibilityAutoStateChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ContentVisibilityAutoStateChangeEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_content_visibility_auto_state_change_event(
+  self : JsValue,
+) -> ContentVisibilityAutoStateChangeEvent? =
+  #| (self) => (self instanceof ContentVisibilityAutoStateChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ContentVisibilityAutoStateChangeEvent (unchecked)
+pub extern "js" fn JsValue::to_content_visibility_auto_state_change_event(
+  self : JsValue,
+) -> ContentVisibilityAutoStateChangeEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn ContentVisibilityAutoStateChangeEvent::to_event(
+  self : ContentVisibilityAutoStateChangeEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn ContentVisibilityAutoStateChangeEvent::new(
   type_ : String,
   event_init_dict : ContentVisibilityAutoStateChangeEventInit,

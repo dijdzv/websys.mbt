@@ -41,6 +41,46 @@ pub extern "js" fn CSSFunctionRule::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSFunctionRule (unchecked)
+pub extern "js" fn CSSFunctionRule::from_js_value(
+  v : JsValue,
+) -> CSSFunctionRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSFunctionRule (checked with instanceof)
+pub extern "js" fn CSSFunctionRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSFunctionRule? =
+  #| (v) => (v instanceof CSSFunctionRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSFunctionRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_function_rule(
+  self : JsValue,
+) -> CSSFunctionRule? =
+  #| (self) => (self instanceof CSSFunctionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSFunctionRule (unchecked)
+pub extern "js" fn JsValue::to_css_function_rule(
+  self : JsValue,
+) -> CSSFunctionRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSFunctionRule::to_css_grouping_rule(
+  self : CSSFunctionRule,
+) -> CSSGroupingRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSFunctionRule::to_css_rule(
+  self : CSSFunctionRule,
+) -> CSSRule =
+  #| (self) => self
+
+///|
 pub extern "js" fn CSSFunctionRule::get_name(
   self : CSSFunctionRule,
 ) -> CSSOMString =
@@ -69,6 +109,40 @@ pub extern "js" fn CSSFunctionDescriptors::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSFunctionDescriptors (unchecked)
+pub extern "js" fn CSSFunctionDescriptors::from_js_value(
+  v : JsValue,
+) -> CSSFunctionDescriptors =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSFunctionDescriptors (checked with instanceof)
+pub extern "js" fn CSSFunctionDescriptors::from_js_value_opt(
+  v : JsValue,
+) -> CSSFunctionDescriptors? =
+  #| (v) => (v instanceof CSSFunctionDescriptors) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSFunctionDescriptors (checked with instanceof)
+pub extern "js" fn JsValue::as_css_function_descriptors(
+  self : JsValue,
+) -> CSSFunctionDescriptors? =
+  #| (self) => (self instanceof CSSFunctionDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSFunctionDescriptors (unchecked)
+pub extern "js" fn JsValue::to_css_function_descriptors(
+  self : JsValue,
+) -> CSSFunctionDescriptors =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSFunctionDescriptors::to_css_style_declaration(
+  self : CSSFunctionDescriptors,
+) -> CSSStyleDeclaration =
+  #| (self) => self
+
+///|
 pub extern "js" fn CSSFunctionDescriptors::get_result(
   self : CSSFunctionDescriptors,
 ) -> CSSOMString =
@@ -89,6 +163,40 @@ pub type CSSFunctionDeclarations
 pub extern "js" fn CSSFunctionDeclarations::to_js_value(
   self : CSSFunctionDeclarations,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CSSFunctionDeclarations (unchecked)
+pub extern "js" fn CSSFunctionDeclarations::from_js_value(
+  v : JsValue,
+) -> CSSFunctionDeclarations =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSFunctionDeclarations (checked with instanceof)
+pub extern "js" fn CSSFunctionDeclarations::from_js_value_opt(
+  v : JsValue,
+) -> CSSFunctionDeclarations? =
+  #| (v) => (v instanceof CSSFunctionDeclarations) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSFunctionDeclarations (checked with instanceof)
+pub extern "js" fn JsValue::as_css_function_declarations(
+  self : JsValue,
+) -> CSSFunctionDeclarations? =
+  #| (self) => (self instanceof CSSFunctionDeclarations) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSFunctionDeclarations (unchecked)
+pub extern "js" fn JsValue::to_css_function_declarations(
+  self : JsValue,
+) -> CSSFunctionDeclarations =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSFunctionDeclarations::to_css_rule(
+  self : CSSFunctionDeclarations,
+) -> CSSRule =
   #| (self) => self
 
 ///|

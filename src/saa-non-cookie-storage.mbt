@@ -118,6 +118,34 @@ pub extern "js" fn StorageAccessHandle::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to StorageAccessHandle (unchecked)
+pub extern "js" fn StorageAccessHandle::from_js_value(
+  v : JsValue,
+) -> StorageAccessHandle =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to StorageAccessHandle (checked with instanceof)
+pub extern "js" fn StorageAccessHandle::from_js_value_opt(
+  v : JsValue,
+) -> StorageAccessHandle? =
+  #| (v) => (v instanceof StorageAccessHandle) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to StorageAccessHandle (checked with instanceof)
+pub extern "js" fn JsValue::as_storage_access_handle(
+  self : JsValue,
+) -> StorageAccessHandle? =
+  #| (self) => (self instanceof StorageAccessHandle) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to StorageAccessHandle (unchecked)
+pub extern "js" fn JsValue::to_storage_access_handle(
+  self : JsValue,
+) -> StorageAccessHandle =
+  #| (self) => self
+
+///|
 pub extern "js" fn StorageAccessHandle::get_session_storage(
   self : StorageAccessHandle,
 ) -> Storage =
@@ -130,7 +158,7 @@ pub extern "js" fn StorageAccessHandle::get_local_storage(
   #| (self) => self.localStorage
 
 ///|
-pub extern "js" fn StorageAccessHandle::get_indexed_d_b(
+pub extern "js" fn StorageAccessHandle::get_indexed_db(
   self : StorageAccessHandle,
 ) -> IDBFactory =
   #| (self) => self.indexedDB
@@ -160,14 +188,14 @@ pub extern "js" fn StorageAccessHandle::estimate(
   #| (self) => self.estimate()
 
 ///|
-pub extern "js" fn StorageAccessHandle::create_object_u_r_l(
+pub extern "js" fn StorageAccessHandle::create_object_url(
   self : StorageAccessHandle,
   obj : BlobOrMediaSource,
 ) -> String =
   #| (self, obj) => self.createObjectURL(obj)
 
 ///|
-pub extern "js" fn StorageAccessHandle::revoke_object_u_r_l(
+pub extern "js" fn StorageAccessHandle::revoke_object_url(
   self : StorageAccessHandle,
   url : String,
 ) -> Unit =
@@ -183,14 +211,14 @@ pub extern "js" fn StorageAccessHandle::broadcast_channel(
 ///|
 pub extern "js" fn StorageAccessHandle::shared_worker(
   self : StorageAccessHandle,
-  script_u_r_l : String,
+  script_url : String,
 ) -> SharedWorker =
-  #| (self, script_u_r_l) => self.SharedWorker(script_u_r_l)
+  #| (self, script_url) => self.SharedWorker(script_url)
 
 ///|
 pub extern "js" fn StorageAccessHandle::shared_worker_with_options(
   self : StorageAccessHandle,
-  script_u_r_l : String,
+  script_url : String,
   options : StringOrSharedWorkerOptions,
 ) -> SharedWorker =
-  #| (self, script_u_r_l, options) => self.SharedWorker(script_u_r_l, options)
+  #| (self, script_url, options) => self.SharedWorker(script_url, options)

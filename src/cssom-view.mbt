@@ -406,6 +406,38 @@ pub extern "js" fn MediaQueryList::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to MediaQueryList (unchecked)
+pub extern "js" fn MediaQueryList::from_js_value(v : JsValue) -> MediaQueryList =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaQueryList (checked with instanceof)
+pub extern "js" fn MediaQueryList::from_js_value_opt(
+  v : JsValue,
+) -> MediaQueryList? =
+  #| (v) => (v instanceof MediaQueryList) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaQueryList (checked with instanceof)
+pub extern "js" fn JsValue::as_media_query_list(
+  self : JsValue,
+) -> MediaQueryList? =
+  #| (self) => (self instanceof MediaQueryList) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaQueryList (unchecked)
+pub extern "js" fn JsValue::to_media_query_list(
+  self : JsValue,
+) -> MediaQueryList =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaQueryList::to_event_target(
+  self : MediaQueryList,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn MediaQueryList::get_media(
   self : MediaQueryList,
 ) -> CSSOMString =
@@ -453,6 +485,40 @@ pub extern "js" fn MediaQueryListEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to MediaQueryListEvent (unchecked)
+pub extern "js" fn MediaQueryListEvent::from_js_value(
+  v : JsValue,
+) -> MediaQueryListEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to MediaQueryListEvent (checked with instanceof)
+pub extern "js" fn MediaQueryListEvent::from_js_value_opt(
+  v : JsValue,
+) -> MediaQueryListEvent? =
+  #| (v) => (v instanceof MediaQueryListEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to MediaQueryListEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_media_query_list_event(
+  self : JsValue,
+) -> MediaQueryListEvent? =
+  #| (self) => (self instanceof MediaQueryListEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to MediaQueryListEvent (unchecked)
+pub extern "js" fn JsValue::to_media_query_list_event(
+  self : JsValue,
+) -> MediaQueryListEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn MediaQueryListEvent::to_event(
+  self : MediaQueryListEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn MediaQueryListEvent::new(
   type_ : CSSOMString,
   event_init_dict : MediaQueryListEventInit,
@@ -478,6 +544,30 @@ pub type Screen
 ///|
 pub extern "js" fn Screen::to_js_value(self : Screen) -> JsValue =
   #| (self) => self
+
+///|
+/// Cast JsValue to Screen (unchecked)
+pub extern "js" fn Screen::from_js_value(v : JsValue) -> Screen =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Screen (checked with instanceof)
+pub extern "js" fn Screen::from_js_value_opt(v : JsValue) -> Screen? =
+  #| (v) => (v instanceof Screen) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Screen (checked with instanceof)
+pub extern "js" fn JsValue::as_screen(self : JsValue) -> Screen? =
+  #| (self) => (self instanceof Screen) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Screen (unchecked)
+pub extern "js" fn JsValue::to_screen(self : JsValue) -> Screen =
+  #| (self) => self
+
+///|
+pub extern "js" fn Screen::as_screen_detailed(self : Screen) -> ScreenDetailed? =
+  #| (self) => (self instanceof ScreenDetailed) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Screen::get_avail_width(self : Screen) -> Int =
@@ -531,6 +621,28 @@ pub extern "js" fn CaretPosition::to_js_value(self : CaretPosition) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to CaretPosition (unchecked)
+pub extern "js" fn CaretPosition::from_js_value(v : JsValue) -> CaretPosition =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CaretPosition (checked with instanceof)
+pub extern "js" fn CaretPosition::from_js_value_opt(
+  v : JsValue,
+) -> CaretPosition? =
+  #| (v) => (v instanceof CaretPosition) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CaretPosition (checked with instanceof)
+pub extern "js" fn JsValue::as_caret_position(self : JsValue) -> CaretPosition? =
+  #| (self) => (self instanceof CaretPosition) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CaretPosition (unchecked)
+pub extern "js" fn JsValue::to_caret_position(self : JsValue) -> CaretPosition =
+  #| (self) => self
+
+///|
 pub extern "js" fn CaretPosition::get_offset_node(self : CaretPosition) -> Node =
   #| (self) => self.offsetNode
 
@@ -542,7 +654,7 @@ pub extern "js" fn CaretPosition::get_offset(self : CaretPosition) -> Int =
 pub extern "js" fn CaretPosition::get_client_rect(
   self : CaretPosition,
 ) -> DOMRect? =
-  #| (self) => self.getClientRect()
+  #| (self) => { const v = self.getClientRect(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// VisualViewport interface
@@ -552,6 +664,38 @@ pub type VisualViewport
 pub extern "js" fn VisualViewport::to_js_value(
   self : VisualViewport,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to VisualViewport (unchecked)
+pub extern "js" fn VisualViewport::from_js_value(v : JsValue) -> VisualViewport =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to VisualViewport (checked with instanceof)
+pub extern "js" fn VisualViewport::from_js_value_opt(
+  v : JsValue,
+) -> VisualViewport? =
+  #| (v) => (v instanceof VisualViewport) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to VisualViewport (checked with instanceof)
+pub extern "js" fn JsValue::as_visual_viewport(
+  self : JsValue,
+) -> VisualViewport? =
+  #| (self) => (self instanceof VisualViewport) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to VisualViewport (unchecked)
+pub extern "js" fn JsValue::to_visual_viewport(
+  self : JsValue,
+) -> VisualViewport =
+  #| (self) => self
+
+///|
+pub extern "js" fn VisualViewport::to_event_target(
+  self : VisualViewport,
+) -> EventTarget =
   #| (self) => self
 
 ///|

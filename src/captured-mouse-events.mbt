@@ -35,6 +35,40 @@ pub extern "js" fn CapturedMouseEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CapturedMouseEvent (unchecked)
+pub extern "js" fn CapturedMouseEvent::from_js_value(
+  v : JsValue,
+) -> CapturedMouseEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CapturedMouseEvent (checked with instanceof)
+pub extern "js" fn CapturedMouseEvent::from_js_value_opt(
+  v : JsValue,
+) -> CapturedMouseEvent? =
+  #| (v) => (v instanceof CapturedMouseEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CapturedMouseEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_captured_mouse_event(
+  self : JsValue,
+) -> CapturedMouseEvent? =
+  #| (self) => (self instanceof CapturedMouseEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CapturedMouseEvent (unchecked)
+pub extern "js" fn JsValue::to_captured_mouse_event(
+  self : JsValue,
+) -> CapturedMouseEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn CapturedMouseEvent::to_event(
+  self : CapturedMouseEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn CapturedMouseEvent::new(
   type_ : String,
   event_init_dict : CapturedMouseEventInit,

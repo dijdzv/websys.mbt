@@ -134,6 +134,40 @@ pub extern "js" fn DeviceOrientationEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to DeviceOrientationEvent (unchecked)
+pub extern "js" fn DeviceOrientationEvent::from_js_value(
+  v : JsValue,
+) -> DeviceOrientationEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to DeviceOrientationEvent (checked with instanceof)
+pub extern "js" fn DeviceOrientationEvent::from_js_value_opt(
+  v : JsValue,
+) -> DeviceOrientationEvent? =
+  #| (v) => (v instanceof DeviceOrientationEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to DeviceOrientationEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_device_orientation_event(
+  self : JsValue,
+) -> DeviceOrientationEvent? =
+  #| (self) => (self instanceof DeviceOrientationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to DeviceOrientationEvent (unchecked)
+pub extern "js" fn JsValue::to_device_orientation_event(
+  self : JsValue,
+) -> DeviceOrientationEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn DeviceOrientationEvent::to_event(
+  self : DeviceOrientationEvent,
+) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn DeviceOrientationEvent::new(
   type_ : String,
   event_init_dict : DeviceOrientationEventInit,
@@ -144,19 +178,19 @@ pub extern "js" fn DeviceOrientationEvent::new(
 pub extern "js" fn DeviceOrientationEvent::get_alpha(
   self : DeviceOrientationEvent,
 ) -> Double? =
-  #| (self) => self.alpha
+  #| (self) => { const v = self.alpha; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn DeviceOrientationEvent::get_beta(
   self : DeviceOrientationEvent,
 ) -> Double? =
-  #| (self) => self.beta
+  #| (self) => { const v = self.beta; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn DeviceOrientationEvent::get_gamma(
   self : DeviceOrientationEvent,
 ) -> Double? =
-  #| (self) => self.gamma
+  #| (self) => { const v = self.gamma; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn DeviceOrientationEvent::get_absolute(
@@ -181,22 +215,50 @@ pub extern "js" fn DeviceMotionEventAcceleration::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to DeviceMotionEventAcceleration (unchecked)
+pub extern "js" fn DeviceMotionEventAcceleration::from_js_value(
+  v : JsValue,
+) -> DeviceMotionEventAcceleration =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to DeviceMotionEventAcceleration (checked with instanceof)
+pub extern "js" fn DeviceMotionEventAcceleration::from_js_value_opt(
+  v : JsValue,
+) -> DeviceMotionEventAcceleration? =
+  #| (v) => (v instanceof DeviceMotionEventAcceleration) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to DeviceMotionEventAcceleration (checked with instanceof)
+pub extern "js" fn JsValue::as_device_motion_event_acceleration(
+  self : JsValue,
+) -> DeviceMotionEventAcceleration? =
+  #| (self) => (self instanceof DeviceMotionEventAcceleration) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to DeviceMotionEventAcceleration (unchecked)
+pub extern "js" fn JsValue::to_device_motion_event_acceleration(
+  self : JsValue,
+) -> DeviceMotionEventAcceleration =
+  #| (self) => self
+
+///|
 pub extern "js" fn DeviceMotionEventAcceleration::get_x(
   self : DeviceMotionEventAcceleration,
 ) -> Double? =
-  #| (self) => self.x
+  #| (self) => { const v = self.x; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn DeviceMotionEventAcceleration::get_y(
   self : DeviceMotionEventAcceleration,
 ) -> Double? =
-  #| (self) => self.y
+  #| (self) => { const v = self.y; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn DeviceMotionEventAcceleration::get_z(
   self : DeviceMotionEventAcceleration,
 ) -> Double? =
-  #| (self) => self.z
+  #| (self) => { const v = self.z; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// DeviceMotionEventRotationRate interface
@@ -209,22 +271,50 @@ pub extern "js" fn DeviceMotionEventRotationRate::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to DeviceMotionEventRotationRate (unchecked)
+pub extern "js" fn DeviceMotionEventRotationRate::from_js_value(
+  v : JsValue,
+) -> DeviceMotionEventRotationRate =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to DeviceMotionEventRotationRate (checked with instanceof)
+pub extern "js" fn DeviceMotionEventRotationRate::from_js_value_opt(
+  v : JsValue,
+) -> DeviceMotionEventRotationRate? =
+  #| (v) => (v instanceof DeviceMotionEventRotationRate) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to DeviceMotionEventRotationRate (checked with instanceof)
+pub extern "js" fn JsValue::as_device_motion_event_rotation_rate(
+  self : JsValue,
+) -> DeviceMotionEventRotationRate? =
+  #| (self) => (self instanceof DeviceMotionEventRotationRate) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to DeviceMotionEventRotationRate (unchecked)
+pub extern "js" fn JsValue::to_device_motion_event_rotation_rate(
+  self : JsValue,
+) -> DeviceMotionEventRotationRate =
+  #| (self) => self
+
+///|
 pub extern "js" fn DeviceMotionEventRotationRate::get_alpha(
   self : DeviceMotionEventRotationRate,
 ) -> Double? =
-  #| (self) => self.alpha
+  #| (self) => { const v = self.alpha; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn DeviceMotionEventRotationRate::get_beta(
   self : DeviceMotionEventRotationRate,
 ) -> Double? =
-  #| (self) => self.beta
+  #| (self) => { const v = self.beta; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn DeviceMotionEventRotationRate::get_gamma(
   self : DeviceMotionEventRotationRate,
 ) -> Double? =
-  #| (self) => self.gamma
+  #| (self) => { const v = self.gamma; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// DeviceMotionEvent interface
@@ -234,6 +324,40 @@ pub type DeviceMotionEvent
 pub extern "js" fn DeviceMotionEvent::to_js_value(
   self : DeviceMotionEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to DeviceMotionEvent (unchecked)
+pub extern "js" fn DeviceMotionEvent::from_js_value(
+  v : JsValue,
+) -> DeviceMotionEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to DeviceMotionEvent (checked with instanceof)
+pub extern "js" fn DeviceMotionEvent::from_js_value_opt(
+  v : JsValue,
+) -> DeviceMotionEvent? =
+  #| (v) => (v instanceof DeviceMotionEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to DeviceMotionEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_device_motion_event(
+  self : JsValue,
+) -> DeviceMotionEvent? =
+  #| (self) => (self instanceof DeviceMotionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to DeviceMotionEvent (unchecked)
+pub extern "js" fn JsValue::to_device_motion_event(
+  self : JsValue,
+) -> DeviceMotionEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn DeviceMotionEvent::to_event(
+  self : DeviceMotionEvent,
+) -> Event =
   #| (self) => self
 
 ///|
@@ -247,19 +371,19 @@ pub extern "js" fn DeviceMotionEvent::new(
 pub extern "js" fn DeviceMotionEvent::get_acceleration(
   self : DeviceMotionEvent,
 ) -> DeviceMotionEventAcceleration? =
-  #| (self) => self.acceleration
+  #| (self) => { const v = self.acceleration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn DeviceMotionEvent::get_acceleration_including_gravity(
   self : DeviceMotionEvent,
 ) -> DeviceMotionEventAcceleration? =
-  #| (self) => self.accelerationIncludingGravity
+  #| (self) => { const v = self.accelerationIncludingGravity; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn DeviceMotionEvent::get_rotation_rate(
   self : DeviceMotionEvent,
 ) -> DeviceMotionEventRotationRate? =
-  #| (self) => self.rotationRate
+  #| (self) => { const v = self.rotationRate; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn DeviceMotionEvent::get_interval(

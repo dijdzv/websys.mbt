@@ -36,6 +36,26 @@ pub extern "js" fn XRPlane::to_js_value(self : XRPlane) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to XRPlane (unchecked)
+pub extern "js" fn XRPlane::from_js_value(v : JsValue) -> XRPlane =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRPlane (checked with instanceof)
+pub extern "js" fn XRPlane::from_js_value_opt(v : JsValue) -> XRPlane? =
+  #| (v) => (v instanceof XRPlane) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRPlane (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_plane(self : JsValue) -> XRPlane? =
+  #| (self) => (self instanceof XRPlane) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRPlane (unchecked)
+pub extern "js" fn JsValue::to_xr_plane(self : JsValue) -> XRPlane =
+  #| (self) => self
+
+///|
 pub extern "js" fn XRPlane::get_plane_space(self : XRPlane) -> XRSpace =
   #| (self) => self.planeSpace
 
@@ -47,7 +67,7 @@ pub extern "js" fn XRPlane::get_polygon(self : XRPlane) -> JsValue =
 pub extern "js" fn XRPlane::get_orientation(
   self : XRPlane,
 ) -> XRPlaneOrientation? =
-  #| (self) => self.orientation
+  #| (self) => { const v = self.orientation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn XRPlane::get_last_changed_time(
@@ -57,7 +77,7 @@ pub extern "js" fn XRPlane::get_last_changed_time(
 
 ///|
 pub extern "js" fn XRPlane::get_semantic_label(self : XRPlane) -> String? =
-  #| (self) => self.semanticLabel
+  #| (self) => { const v = self.semanticLabel; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 /// XRPlaneSet interface
@@ -65,6 +85,26 @@ pub type XRPlaneSet
 
 ///|
 pub extern "js" fn XRPlaneSet::to_js_value(self : XRPlaneSet) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to XRPlaneSet (unchecked)
+pub extern "js" fn XRPlaneSet::from_js_value(v : JsValue) -> XRPlaneSet =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRPlaneSet (checked with instanceof)
+pub extern "js" fn XRPlaneSet::from_js_value_opt(v : JsValue) -> XRPlaneSet? =
+  #| (v) => (v instanceof XRPlaneSet) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRPlaneSet (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_plane_set(self : JsValue) -> XRPlaneSet? =
+  #| (self) => (self instanceof XRPlaneSet) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRPlaneSet (unchecked)
+pub extern "js" fn JsValue::to_xr_plane_set(self : JsValue) -> XRPlaneSet =
   #| (self) => self
 
 ///|

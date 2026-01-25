@@ -52,6 +52,26 @@ pub extern "js" fn EyeDropper::to_js_value(self : EyeDropper) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to EyeDropper (unchecked)
+pub extern "js" fn EyeDropper::from_js_value(v : JsValue) -> EyeDropper =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to EyeDropper (checked with instanceof)
+pub extern "js" fn EyeDropper::from_js_value_opt(v : JsValue) -> EyeDropper? =
+  #| (v) => (v instanceof EyeDropper) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to EyeDropper (checked with instanceof)
+pub extern "js" fn JsValue::as_eye_dropper(self : JsValue) -> EyeDropper? =
+  #| (self) => (self instanceof EyeDropper) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to EyeDropper (unchecked)
+pub extern "js" fn JsValue::to_eye_dropper(self : JsValue) -> EyeDropper =
+  #| (self) => self
+
+///|
 pub extern "js" fn EyeDropper::new() -> EyeDropper =
   #| () => new EyeDropper()
 

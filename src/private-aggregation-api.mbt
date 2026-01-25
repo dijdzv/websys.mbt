@@ -58,6 +58,34 @@ pub extern "js" fn PrivateAggregation::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PrivateAggregation (unchecked)
+pub extern "js" fn PrivateAggregation::from_js_value(
+  v : JsValue,
+) -> PrivateAggregation =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PrivateAggregation (checked with instanceof)
+pub extern "js" fn PrivateAggregation::from_js_value_opt(
+  v : JsValue,
+) -> PrivateAggregation? =
+  #| (v) => (v instanceof PrivateAggregation) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PrivateAggregation (checked with instanceof)
+pub extern "js" fn JsValue::as_private_aggregation(
+  self : JsValue,
+) -> PrivateAggregation? =
+  #| (self) => (self instanceof PrivateAggregation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PrivateAggregation (unchecked)
+pub extern "js" fn JsValue::to_private_aggregation(
+  self : JsValue,
+) -> PrivateAggregation =
+  #| (self) => self
+
+///|
 pub extern "js" fn PrivateAggregation::contribute_to_histogram(
   self : PrivateAggregation,
   contribution : PAHistogramContribution,

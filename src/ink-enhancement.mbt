@@ -52,6 +52,26 @@ pub extern "js" fn Ink::to_js_value(self : Ink) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Ink (unchecked)
+pub extern "js" fn Ink::from_js_value(v : JsValue) -> Ink =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Ink (checked with instanceof)
+pub extern "js" fn Ink::from_js_value_opt(v : JsValue) -> Ink? =
+  #| (v) => (v instanceof Ink) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Ink (checked with instanceof)
+pub extern "js" fn JsValue::as_ink(self : JsValue) -> Ink? =
+  #| (self) => (self instanceof Ink) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Ink (unchecked)
+pub extern "js" fn JsValue::to_ink(self : JsValue) -> Ink =
+  #| (self) => self
+
+///|
 pub extern "js" fn Ink::request_presenter(
   self : Ink,
 ) -> Promise[DelegatedInkTrailPresenter] =
@@ -75,10 +95,38 @@ pub extern "js" fn DelegatedInkTrailPresenter::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to DelegatedInkTrailPresenter (unchecked)
+pub extern "js" fn DelegatedInkTrailPresenter::from_js_value(
+  v : JsValue,
+) -> DelegatedInkTrailPresenter =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to DelegatedInkTrailPresenter (checked with instanceof)
+pub extern "js" fn DelegatedInkTrailPresenter::from_js_value_opt(
+  v : JsValue,
+) -> DelegatedInkTrailPresenter? =
+  #| (v) => (v instanceof DelegatedInkTrailPresenter) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to DelegatedInkTrailPresenter (checked with instanceof)
+pub extern "js" fn JsValue::as_delegated_ink_trail_presenter(
+  self : JsValue,
+) -> DelegatedInkTrailPresenter? =
+  #| (self) => (self instanceof DelegatedInkTrailPresenter) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to DelegatedInkTrailPresenter (unchecked)
+pub extern "js" fn JsValue::to_delegated_ink_trail_presenter(
+  self : JsValue,
+) -> DelegatedInkTrailPresenter =
+  #| (self) => self
+
+///|
 pub extern "js" fn DelegatedInkTrailPresenter::get_presentation_area(
   self : DelegatedInkTrailPresenter,
 ) -> Element? =
-  #| (self) => self.presentationArea
+  #| (self) => { const v = self.presentationArea; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn DelegatedInkTrailPresenter::update_ink_trail_start_point(

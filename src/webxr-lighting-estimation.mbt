@@ -55,6 +55,34 @@ pub extern "js" fn XRLightProbe::to_js_value(self : XRLightProbe) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to XRLightProbe (unchecked)
+pub extern "js" fn XRLightProbe::from_js_value(v : JsValue) -> XRLightProbe =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRLightProbe (checked with instanceof)
+pub extern "js" fn XRLightProbe::from_js_value_opt(
+  v : JsValue,
+) -> XRLightProbe? =
+  #| (v) => (v instanceof XRLightProbe) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRLightProbe (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_light_probe(self : JsValue) -> XRLightProbe? =
+  #| (self) => (self instanceof XRLightProbe) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRLightProbe (unchecked)
+pub extern "js" fn JsValue::to_xr_light_probe(self : JsValue) -> XRLightProbe =
+  #| (self) => self
+
+///|
+pub extern "js" fn XRLightProbe::to_event_target(
+  self : XRLightProbe,
+) -> EventTarget =
+  #| (self) => self
+
+///|
 pub extern "js" fn XRLightProbe::get_probe_space(
   self : XRLightProbe,
 ) -> XRSpace =
@@ -81,6 +109,34 @@ pub type XRLightEstimate
 pub extern "js" fn XRLightEstimate::to_js_value(
   self : XRLightEstimate,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to XRLightEstimate (unchecked)
+pub extern "js" fn XRLightEstimate::from_js_value(
+  v : JsValue,
+) -> XRLightEstimate =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to XRLightEstimate (checked with instanceof)
+pub extern "js" fn XRLightEstimate::from_js_value_opt(
+  v : JsValue,
+) -> XRLightEstimate? =
+  #| (v) => (v instanceof XRLightEstimate) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to XRLightEstimate (checked with instanceof)
+pub extern "js" fn JsValue::as_xr_light_estimate(
+  self : JsValue,
+) -> XRLightEstimate? =
+  #| (self) => (self instanceof XRLightEstimate) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to XRLightEstimate (unchecked)
+pub extern "js" fn JsValue::to_xr_light_estimate(
+  self : JsValue,
+) -> XRLightEstimate =
   #| (self) => self
 
 ///|

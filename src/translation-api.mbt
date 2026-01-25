@@ -180,6 +180,26 @@ pub extern "js" fn Translator::to_js_value(self : Translator) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Translator (unchecked)
+pub extern "js" fn Translator::from_js_value(v : JsValue) -> Translator =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Translator (checked with instanceof)
+pub extern "js" fn Translator::from_js_value_opt(v : JsValue) -> Translator? =
+  #| (v) => (v instanceof Translator) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Translator (checked with instanceof)
+pub extern "js" fn JsValue::as_translator(self : JsValue) -> Translator? =
+  #| (self) => (self instanceof Translator) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Translator (unchecked)
+pub extern "js" fn JsValue::to_translator(self : JsValue) -> Translator =
+  #| (self) => self
+
+///|
 pub extern "js" fn Translator::create(
   options : TranslatorCreateOptions,
 ) -> Promise[Translator] =
@@ -263,6 +283,34 @@ pub extern "js" fn LanguageDetector::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to LanguageDetector (unchecked)
+pub extern "js" fn LanguageDetector::from_js_value(
+  v : JsValue,
+) -> LanguageDetector =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to LanguageDetector (checked with instanceof)
+pub extern "js" fn LanguageDetector::from_js_value_opt(
+  v : JsValue,
+) -> LanguageDetector? =
+  #| (v) => (v instanceof LanguageDetector) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to LanguageDetector (checked with instanceof)
+pub extern "js" fn JsValue::as_language_detector(
+  self : JsValue,
+) -> LanguageDetector? =
+  #| (self) => (self instanceof LanguageDetector) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to LanguageDetector (unchecked)
+pub extern "js" fn JsValue::to_language_detector(
+  self : JsValue,
+) -> LanguageDetector =
+  #| (self) => self
+
+///|
 pub extern "js" fn LanguageDetector::create(
   options : LanguageDetectorCreateOptions,
 ) -> Promise[LanguageDetector] =
@@ -278,7 +326,7 @@ pub extern "js" fn LanguageDetector::availability(
 pub extern "js" fn LanguageDetector::detect(
   self : LanguageDetector,
   input : String,
-) -> Promise[Unit] =
+) -> Promise[Array[LanguageDetectionResult]] =
   #| (self, input) => self.detect(input)
 
 ///|
@@ -286,14 +334,14 @@ pub extern "js" fn LanguageDetector::detect_with_options(
   self : LanguageDetector,
   input : String,
   options : LanguageDetectorDetectOptions,
-) -> Promise[Unit] =
+) -> Promise[Array[LanguageDetectionResult]] =
   #| (self, input, options) => self.detect(input, options)
 
 ///|
 pub extern "js" fn LanguageDetector::get_expected_input_languages(
   self : LanguageDetector,
 ) -> JsValue? =
-  #| (self) => self.expectedInputLanguages
+  #| (self) => { const v = self.expectedInputLanguages; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn LanguageDetector::measure_input_usage(

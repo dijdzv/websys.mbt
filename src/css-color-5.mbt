@@ -12,6 +12,40 @@ pub extern "js" fn CSSColorProfileRule::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSColorProfileRule (unchecked)
+pub extern "js" fn CSSColorProfileRule::from_js_value(
+  v : JsValue,
+) -> CSSColorProfileRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSColorProfileRule (checked with instanceof)
+pub extern "js" fn CSSColorProfileRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSColorProfileRule? =
+  #| (v) => (v instanceof CSSColorProfileRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSColorProfileRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_color_profile_rule(
+  self : JsValue,
+) -> CSSColorProfileRule? =
+  #| (self) => (self instanceof CSSColorProfileRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSColorProfileRule (unchecked)
+pub extern "js" fn JsValue::to_css_color_profile_rule(
+  self : JsValue,
+) -> CSSColorProfileRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSColorProfileRule::to_css_rule(
+  self : CSSColorProfileRule,
+) -> CSSRule =
+  #| (self) => self
+
+///|
 pub extern "js" fn CSSColorProfileRule::get_name(
   self : CSSColorProfileRule,
 ) -> CSSOMString =

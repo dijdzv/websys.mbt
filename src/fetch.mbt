@@ -585,6 +585,26 @@ pub extern "js" fn Headers::to_js_value(self : Headers) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Headers (unchecked)
+pub extern "js" fn Headers::from_js_value(v : JsValue) -> Headers =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Headers (checked with instanceof)
+pub extern "js" fn Headers::from_js_value_opt(v : JsValue) -> Headers? =
+  #| (v) => (v instanceof Headers) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Headers (checked with instanceof)
+pub extern "js" fn JsValue::as_headers(self : JsValue) -> Headers? =
+  #| (self) => (self instanceof Headers) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Headers (unchecked)
+pub extern "js" fn JsValue::to_headers(self : JsValue) -> Headers =
+  #| (self) => self
+
+///|
 pub extern "js" fn Headers::new(init_ : HeadersInit) -> Headers =
   #| (init_) => new Headers(init_)
 
@@ -602,7 +622,7 @@ pub extern "js" fn Headers::delete(self : Headers, name : String) -> Unit =
 
 ///|
 pub extern "js" fn Headers::get(self : Headers, name : String) -> String? =
-  #| (self, name) => self.get(name)
+  #| (self, name) => { const v = self.get(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Headers::get_set_cookie(self : Headers) -> Array[String] =
@@ -630,6 +650,26 @@ pub type Request
 
 ///|
 pub extern "js" fn Request::to_js_value(self : Request) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to Request (unchecked)
+pub extern "js" fn Request::from_js_value(v : JsValue) -> Request =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Request (checked with instanceof)
+pub extern "js" fn Request::from_js_value_opt(v : JsValue) -> Request? =
+  #| (v) => (v instanceof Request) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Request (checked with instanceof)
+pub extern "js" fn JsValue::as_request(self : JsValue) -> Request? =
+  #| (self) => (self instanceof Request) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Request (unchecked)
+pub extern "js" fn JsValue::to_request(self : JsValue) -> Request =
   #| (self) => self
 
 ///|
@@ -721,7 +761,7 @@ pub extern "js" fn Request::get_target_address_space(
 
 ///|
 pub extern "js" fn Request::get_body(self : Request) -> ReadableStream? =
-  #| (self) => self.body
+  #| (self) => { const v = self.body; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Request::get_body_used(self : Request) -> Bool =
@@ -759,6 +799,26 @@ pub type Response
 
 ///|
 pub extern "js" fn Response::to_js_value(self : Response) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to Response (unchecked)
+pub extern "js" fn Response::from_js_value(v : JsValue) -> Response =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Response (checked with instanceof)
+pub extern "js" fn Response::from_js_value_opt(v : JsValue) -> Response? =
+  #| (v) => (v instanceof Response) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Response (checked with instanceof)
+pub extern "js" fn JsValue::as_response(self : JsValue) -> Response? =
+  #| (self) => (self instanceof Response) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Response (unchecked)
+pub extern "js" fn JsValue::to_response(self : JsValue) -> Response =
   #| (self) => self
 
 ///|
@@ -817,7 +877,7 @@ pub extern "js" fn Response::clone(self : Response) -> Response =
 
 ///|
 pub extern "js" fn Response::get_body(self : Response) -> ReadableStream? =
-  #| (self) => self.body
+  #| (self) => { const v = self.body; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn Response::get_body_used(self : Response) -> Bool =
@@ -853,6 +913,34 @@ pub type FetchLaterResult
 pub extern "js" fn FetchLaterResult::to_js_value(
   self : FetchLaterResult,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to FetchLaterResult (unchecked)
+pub extern "js" fn FetchLaterResult::from_js_value(
+  v : JsValue,
+) -> FetchLaterResult =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to FetchLaterResult (checked with instanceof)
+pub extern "js" fn FetchLaterResult::from_js_value_opt(
+  v : JsValue,
+) -> FetchLaterResult? =
+  #| (v) => (v instanceof FetchLaterResult) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to FetchLaterResult (checked with instanceof)
+pub extern "js" fn JsValue::as_fetch_later_result(
+  self : JsValue,
+) -> FetchLaterResult? =
+  #| (self) => (self instanceof FetchLaterResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to FetchLaterResult (unchecked)
+pub extern "js" fn JsValue::to_fetch_later_result(
+  self : JsValue,
+) -> FetchLaterResult =
   #| (self) => self
 
 ///|

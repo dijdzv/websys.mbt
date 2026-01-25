@@ -33,6 +33,40 @@ pub extern "js" fn PaintWorkletGlobalScope::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to PaintWorkletGlobalScope (unchecked)
+pub extern "js" fn PaintWorkletGlobalScope::from_js_value(
+  v : JsValue,
+) -> PaintWorkletGlobalScope =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PaintWorkletGlobalScope (checked with instanceof)
+pub extern "js" fn PaintWorkletGlobalScope::from_js_value_opt(
+  v : JsValue,
+) -> PaintWorkletGlobalScope? =
+  #| (v) => (v instanceof PaintWorkletGlobalScope) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PaintWorkletGlobalScope (checked with instanceof)
+pub extern "js" fn JsValue::as_paint_worklet_global_scope(
+  self : JsValue,
+) -> PaintWorkletGlobalScope? =
+  #| (self) => (self instanceof PaintWorkletGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PaintWorkletGlobalScope (unchecked)
+pub extern "js" fn JsValue::to_paint_worklet_global_scope(
+  self : JsValue,
+) -> PaintWorkletGlobalScope =
+  #| (self) => self
+
+///|
+pub extern "js" fn PaintWorkletGlobalScope::to_worklet_global_scope(
+  self : PaintWorkletGlobalScope,
+) -> WorkletGlobalScope =
+  #| (self) => self
+
+///|
 pub extern "js" fn PaintWorkletGlobalScope::register_paint(
   self : PaintWorkletGlobalScope,
   name : String,
@@ -54,6 +88,34 @@ pub type PaintRenderingContext2D
 pub extern "js" fn PaintRenderingContext2D::to_js_value(
   self : PaintRenderingContext2D,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to PaintRenderingContext2D (unchecked)
+pub extern "js" fn PaintRenderingContext2D::from_js_value(
+  v : JsValue,
+) -> PaintRenderingContext2D =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PaintRenderingContext2D (checked with instanceof)
+pub extern "js" fn PaintRenderingContext2D::from_js_value_opt(
+  v : JsValue,
+) -> PaintRenderingContext2D? =
+  #| (v) => (v instanceof PaintRenderingContext2D) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PaintRenderingContext2D (checked with instanceof)
+pub extern "js" fn JsValue::as_paint_rendering_context2_d(
+  self : JsValue,
+) -> PaintRenderingContext2D? =
+  #| (self) => (self instanceof PaintRenderingContext2D) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PaintRenderingContext2D (unchecked)
+pub extern "js" fn JsValue::to_paint_rendering_context2_d(
+  self : JsValue,
+) -> PaintRenderingContext2D =
   #| (self) => self
 
 ///|
@@ -267,7 +329,7 @@ pub extern "js" fn PaintRenderingContext2D::create_pattern(
   image : CanvasImageSource,
   repetition : String,
 ) -> CanvasPattern? =
-  #| (self, image, repetition) => self.createPattern(image, repetition)
+  #| (self, image, repetition) => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::get_shadow_offset_x(
@@ -734,6 +796,26 @@ pub type PaintSize
 
 ///|
 pub extern "js" fn PaintSize::to_js_value(self : PaintSize) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to PaintSize (unchecked)
+pub extern "js" fn PaintSize::from_js_value(v : JsValue) -> PaintSize =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PaintSize (checked with instanceof)
+pub extern "js" fn PaintSize::from_js_value_opt(v : JsValue) -> PaintSize? =
+  #| (v) => (v instanceof PaintSize) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PaintSize (checked with instanceof)
+pub extern "js" fn JsValue::as_paint_size(self : JsValue) -> PaintSize? =
+  #| (self) => (self instanceof PaintSize) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PaintSize (unchecked)
+pub extern "js" fn JsValue::to_paint_size(self : JsValue) -> PaintSize =
   #| (self) => self
 
 ///|

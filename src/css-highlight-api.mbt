@@ -83,6 +83,26 @@ pub extern "js" fn Highlight::to_js_value(self : Highlight) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Highlight (unchecked)
+pub extern "js" fn Highlight::from_js_value(v : JsValue) -> Highlight =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Highlight (checked with instanceof)
+pub extern "js" fn Highlight::from_js_value_opt(v : JsValue) -> Highlight? =
+  #| (v) => (v instanceof Highlight) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Highlight (checked with instanceof)
+pub extern "js" fn JsValue::as_highlight(self : JsValue) -> Highlight? =
+  #| (self) => (self instanceof Highlight) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Highlight (unchecked)
+pub extern "js" fn JsValue::to_highlight(self : JsValue) -> Highlight =
+  #| (self) => self
+
+///|
 pub extern "js" fn Highlight::new(initial_ranges : AbstractRange) -> Highlight =
   #| (initial_ranges) => new Highlight(initial_ranges)
 
@@ -144,11 +164,39 @@ pub extern "js" fn HighlightRegistry::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to HighlightRegistry (unchecked)
+pub extern "js" fn HighlightRegistry::from_js_value(
+  v : JsValue,
+) -> HighlightRegistry =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to HighlightRegistry (checked with instanceof)
+pub extern "js" fn HighlightRegistry::from_js_value_opt(
+  v : JsValue,
+) -> HighlightRegistry? =
+  #| (v) => (v instanceof HighlightRegistry) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to HighlightRegistry (checked with instanceof)
+pub extern "js" fn JsValue::as_highlight_registry(
+  self : JsValue,
+) -> HighlightRegistry? =
+  #| (self) => (self instanceof HighlightRegistry) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to HighlightRegistry (unchecked)
+pub extern "js" fn JsValue::to_highlight_registry(
+  self : JsValue,
+) -> HighlightRegistry =
+  #| (self) => self
+
+///|
 pub extern "js" fn HighlightRegistry::get(
   self : HighlightRegistry,
   key : String,
 ) -> Highlight? =
-  #| (self, key) => self.get(key)
+  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
 
 ///|
 pub extern "js" fn HighlightRegistry::has(

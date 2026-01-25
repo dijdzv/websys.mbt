@@ -104,6 +104,28 @@ pub extern "js" fn ContentIndex::to_js_value(self : ContentIndex) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to ContentIndex (unchecked)
+pub extern "js" fn ContentIndex::from_js_value(v : JsValue) -> ContentIndex =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ContentIndex (checked with instanceof)
+pub extern "js" fn ContentIndex::from_js_value_opt(
+  v : JsValue,
+) -> ContentIndex? =
+  #| (v) => (v instanceof ContentIndex) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ContentIndex (checked with instanceof)
+pub extern "js" fn JsValue::as_content_index(self : JsValue) -> ContentIndex? =
+  #| (self) => (self instanceof ContentIndex) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ContentIndex (unchecked)
+pub extern "js" fn JsValue::to_content_index(self : JsValue) -> ContentIndex =
+  #| (self) => self
+
+///|
 pub extern "js" fn ContentIndex::add(
   self : ContentIndex,
   description : ContentDescription,
@@ -118,7 +140,9 @@ pub extern "js" fn ContentIndex::delete(
   #| (self, id) => self.delete(id)
 
 ///|
-pub extern "js" fn ContentIndex::get_all(self : ContentIndex) -> Promise[Unit] =
+pub extern "js" fn ContentIndex::get_all(
+  self : ContentIndex,
+) -> Promise[Array[ContentDescription]] =
   #| (self) => self.getAll()
 
 ///|
@@ -129,6 +153,46 @@ pub type ContentIndexEvent
 pub extern "js" fn ContentIndexEvent::to_js_value(
   self : ContentIndexEvent,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to ContentIndexEvent (unchecked)
+pub extern "js" fn ContentIndexEvent::from_js_value(
+  v : JsValue,
+) -> ContentIndexEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to ContentIndexEvent (checked with instanceof)
+pub extern "js" fn ContentIndexEvent::from_js_value_opt(
+  v : JsValue,
+) -> ContentIndexEvent? =
+  #| (v) => (v instanceof ContentIndexEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to ContentIndexEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_content_index_event(
+  self : JsValue,
+) -> ContentIndexEvent? =
+  #| (self) => (self instanceof ContentIndexEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to ContentIndexEvent (unchecked)
+pub extern "js" fn JsValue::to_content_index_event(
+  self : JsValue,
+) -> ContentIndexEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn ContentIndexEvent::to_extendable_event(
+  self : ContentIndexEvent,
+) -> ExtendableEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn ContentIndexEvent::to_event(
+  self : ContentIndexEvent,
+) -> Event =
   #| (self) => self
 
 ///|

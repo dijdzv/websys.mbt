@@ -41,6 +41,36 @@ pub extern "js" fn AnimationEvent::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to AnimationEvent (unchecked)
+pub extern "js" fn AnimationEvent::from_js_value(v : JsValue) -> AnimationEvent =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to AnimationEvent (checked with instanceof)
+pub extern "js" fn AnimationEvent::from_js_value_opt(
+  v : JsValue,
+) -> AnimationEvent? =
+  #| (v) => (v instanceof AnimationEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to AnimationEvent (checked with instanceof)
+pub extern "js" fn JsValue::as_animation_event(
+  self : JsValue,
+) -> AnimationEvent? =
+  #| (self) => (self instanceof AnimationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to AnimationEvent (unchecked)
+pub extern "js" fn JsValue::to_animation_event(
+  self : JsValue,
+) -> AnimationEvent =
+  #| (self) => self
+
+///|
+pub extern "js" fn AnimationEvent::to_event(self : AnimationEvent) -> Event =
+  #| (self) => self
+
+///|
 pub extern "js" fn AnimationEvent::new(
   type_ : CSSOMString,
   animation_event_init_dict : AnimationEventInit,
@@ -76,6 +106,40 @@ pub extern "js" fn CSSKeyframeRule::to_js_value(
   #| (self) => self
 
 ///|
+/// Cast JsValue to CSSKeyframeRule (unchecked)
+pub extern "js" fn CSSKeyframeRule::from_js_value(
+  v : JsValue,
+) -> CSSKeyframeRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSKeyframeRule (checked with instanceof)
+pub extern "js" fn CSSKeyframeRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSKeyframeRule? =
+  #| (v) => (v instanceof CSSKeyframeRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSKeyframeRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_keyframe_rule(
+  self : JsValue,
+) -> CSSKeyframeRule? =
+  #| (self) => (self instanceof CSSKeyframeRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSKeyframeRule (unchecked)
+pub extern "js" fn JsValue::to_css_keyframe_rule(
+  self : JsValue,
+) -> CSSKeyframeRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSKeyframeRule::to_css_rule(
+  self : CSSKeyframeRule,
+) -> CSSRule =
+  #| (self) => self
+
+///|
 pub extern "js" fn CSSKeyframeRule::get_key_text(
   self : CSSKeyframeRule,
 ) -> CSSOMString =
@@ -102,6 +166,40 @@ pub type CSSKeyframesRule
 pub extern "js" fn CSSKeyframesRule::to_js_value(
   self : CSSKeyframesRule,
 ) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CSSKeyframesRule (unchecked)
+pub extern "js" fn CSSKeyframesRule::from_js_value(
+  v : JsValue,
+) -> CSSKeyframesRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSKeyframesRule (checked with instanceof)
+pub extern "js" fn CSSKeyframesRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSKeyframesRule? =
+  #| (v) => (v instanceof CSSKeyframesRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSKeyframesRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_keyframes_rule(
+  self : JsValue,
+) -> CSSKeyframesRule? =
+  #| (self) => (self instanceof CSSKeyframesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSKeyframesRule (unchecked)
+pub extern "js" fn JsValue::to_css_keyframes_rule(
+  self : JsValue,
+) -> CSSKeyframesRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSKeyframesRule::to_css_rule(
+  self : CSSKeyframesRule,
+) -> CSSRule =
   #| (self) => self
 
 ///|
@@ -153,4 +251,4 @@ pub extern "js" fn CSSKeyframesRule::find_rule(
   self : CSSKeyframesRule,
   select : CSSOMString,
 ) -> CSSKeyframeRule? =
-  #| (self, select) => self.findRule(select)
+  #| (self, select) => { const v = self.findRule(select); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }

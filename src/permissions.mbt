@@ -83,6 +83,26 @@ pub extern "js" fn Permissions::to_js_value(self : Permissions) -> JsValue =
   #| (self) => self
 
 ///|
+/// Cast JsValue to Permissions (unchecked)
+pub extern "js" fn Permissions::from_js_value(v : JsValue) -> Permissions =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to Permissions (checked with instanceof)
+pub extern "js" fn Permissions::from_js_value_opt(v : JsValue) -> Permissions? =
+  #| (v) => (v instanceof Permissions) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to Permissions (checked with instanceof)
+pub extern "js" fn JsValue::as_permissions(self : JsValue) -> Permissions? =
+  #| (self) => (self instanceof Permissions) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to Permissions (unchecked)
+pub extern "js" fn JsValue::to_permissions(self : JsValue) -> Permissions =
+  #| (self) => self
+
+///|
 pub extern "js" fn Permissions::query(
   self : Permissions,
   permission_desc : JsValue,
@@ -112,6 +132,64 @@ pub extern "js" fn PermissionStatus::to_js_value(
   self : PermissionStatus,
 ) -> JsValue =
   #| (self) => self
+
+///|
+/// Cast JsValue to PermissionStatus (unchecked)
+pub extern "js" fn PermissionStatus::from_js_value(
+  v : JsValue,
+) -> PermissionStatus =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to PermissionStatus (checked with instanceof)
+pub extern "js" fn PermissionStatus::from_js_value_opt(
+  v : JsValue,
+) -> PermissionStatus? =
+  #| (v) => (v instanceof PermissionStatus) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to PermissionStatus (checked with instanceof)
+pub extern "js" fn JsValue::as_permission_status(
+  self : JsValue,
+) -> PermissionStatus? =
+  #| (self) => (self instanceof PermissionStatus) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to PermissionStatus (unchecked)
+pub extern "js" fn JsValue::to_permission_status(
+  self : JsValue,
+) -> PermissionStatus =
+  #| (self) => self
+
+///|
+pub extern "js" fn PermissionStatus::to_event_target(
+  self : PermissionStatus,
+) -> EventTarget =
+  #| (self) => self
+
+///|
+pub extern "js" fn PermissionStatus::as_bluetooth_permission_result(
+  self : PermissionStatus,
+) -> BluetoothPermissionResult? =
+  #| (self) => (self instanceof BluetoothPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn PermissionStatus::as_bluetooth_le_scan_permission_result(
+  self : PermissionStatus,
+) -> BluetoothLEScanPermissionResult? =
+  #| (self) => (self instanceof BluetoothLEScanPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn PermissionStatus::as_usb_permission_result(
+  self : PermissionStatus,
+) -> USBPermissionResult? =
+  #| (self) => (self instanceof USBPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn PermissionStatus::as_xr_permission_status(
+  self : PermissionStatus,
+) -> XRPermissionStatus? =
+  #| (self) => (self instanceof XRPermissionStatus) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn PermissionStatus::get_state(

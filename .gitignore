@@ -1,7 +1,17 @@
-# Node.js
-node_modules/
-
 # MoonBit
 .mooncakes/
 _build/
 target
+
+# Node.js
+node_modules/
+
+# Nix/devenv
+.devenv/
+.devenv.flake.nix
+.direnv/
+devenv.lock
+result
+
+# OS
+.DS_Store

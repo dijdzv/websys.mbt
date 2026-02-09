@@ -3,7 +3,7 @@
 
 ///|
 /// InkPresenterParam dictionary
-pub struct InkPresenterParam {
+pub(all) struct InkPresenterParam {
   presentationArea : Nullable[Element]
 }
 
@@ -14,8 +14,7 @@ pub fn InkPresenterParam::default() -> InkPresenterParam {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn InkPresenterParam::to_js(
+extern "js" fn InkPresenterParam::to_js_ffi(
   self : InkPresenterParam,
 ) -> JsValue =
   #| (self) => ({
@@ -23,8 +22,14 @@ pub extern "js" fn InkPresenterParam::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn InkPresenterParam::to_js(self : InkPresenterParam) -> JsValue {
+  InkPresenterParam::to_js_ffi(self)
+}
+
+///|
 /// InkTrailStyle dictionary
-pub struct InkTrailStyle {
+pub(all) struct InkTrailStyle {
   color : String
   diameter : Double
 }
@@ -36,12 +41,17 @@ pub fn InkTrailStyle::default() -> InkTrailStyle {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn InkTrailStyle::to_js(self : InkTrailStyle) -> JsValue =
+extern "js" fn InkTrailStyle::to_js_ffi(self : InkTrailStyle) -> JsValue =
   #| (self) => ({
   #|   color: self.color,
   #|   diameter: self.diameter
   #| })
+
+///|
+/// Convert to JsValue
+pub fn InkTrailStyle::to_js(self : InkTrailStyle) -> JsValue {
+  InkTrailStyle::to_js_ffi(self)
+}
 
 ///|
 /// Ink interface
@@ -78,11 +88,19 @@ pub extern "js" fn Ink::request_presenter(
   #| (self) => self.requestPresenter()
 
 ///|
-pub extern "js" fn Ink::request_presenter_with_param(
+extern "js" fn Ink::request_presenter_with_param_ffi(
   self : Ink,
-  param : InkPresenterParam,
+  param : JsValue,
 ) -> Promise[DelegatedInkTrailPresenter] =
   #| (self, param) => self.requestPresenter(param)
+
+///|
+pub fn Ink::request_presenter_with_param(
+  self : Ink,
+  param : InkPresenterParam,
+) -> Promise[DelegatedInkTrailPresenter] {
+  Ink::request_presenter_with_param_ffi(self, param.to_js())
+}
 
 ///|
 /// DelegatedInkTrailPresenter interface
@@ -126,12 +144,25 @@ pub extern "js" fn JsValue::to_delegated_ink_trail_presenter(
 pub extern "js" fn DelegatedInkTrailPresenter::get_presentation_area(
   self : DelegatedInkTrailPresenter,
 ) -> Element? =
-  #| (self) => { const v = self.presentationArea; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.presentationArea; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn DelegatedInkTrailPresenter::update_ink_trail_start_point(
+extern "js" fn DelegatedInkTrailPresenter::update_ink_trail_start_point_ffi(
+  self : DelegatedInkTrailPresenter,
+  event : PointerEvent,
+  style : JsValue,
+) -> Unit =
+  #| (self, event, style) => self.updateInkTrailStartPoint(event, style)
+
+///|
+pub fn DelegatedInkTrailPresenter::update_ink_trail_start_point(
   self : DelegatedInkTrailPresenter,
   event : PointerEvent,
   style : InkTrailStyle,
-) -> Unit =
-  #| (self, event, style) => self.updateInkTrailStartPoint(event, style)
+) -> Unit {
+  DelegatedInkTrailPresenter::update_ink_trail_start_point_ffi(
+    self,
+    event,
+    style.to_js(),
+  )
+}

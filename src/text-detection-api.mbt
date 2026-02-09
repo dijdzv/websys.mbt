@@ -3,26 +3,31 @@
 
 ///|
 /// DetectedText dictionary
-pub struct DetectedText {
+pub(all) struct DetectedText {
   boundingBox : DOMRectReadOnly
   rawValue : String
   cornerPoints : Array[Point2D]
 }
 
 ///|
-/// Create a new DetectedText with default values
-pub fn DetectedText::default() -> DetectedText {
-  DetectedText::{ boundingBox: panic(), rawValue: "", cornerPoints: [] }
+/// Create a new DetectedText
+pub fn DetectedText::new(boundingBox~ : DOMRectReadOnly) -> DetectedText {
+  DetectedText::{ boundingBox, rawValue: "", cornerPoints: [] }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DetectedText::to_js(self : DetectedText) -> JsValue =
+extern "js" fn DetectedText::to_js_ffi(self : DetectedText) -> JsValue =
   #| (self) => ({
   #|   boundingBox: self.boundingBox,
   #|   rawValue: self.rawValue,
   #|   cornerPoints: self.cornerPoints
   #| })
+
+///|
+/// Convert to JsValue
+pub fn DetectedText::to_js(self : DetectedText) -> JsValue {
+  DetectedText::to_js_ffi(self)
+}
 
 ///|
 /// TextDetector interface
@@ -62,5 +67,26 @@ pub extern "js" fn TextDetector::new() -> TextDetector =
 pub extern "js" fn TextDetector::detect(
   self : TextDetector,
   image : ImageBitmapSource,
+) -> Promise[Array[DetectedText]] =
+  #| (self, image) => self.detect(image)
+
+///|
+pub extern "js" fn TextDetector::detect_with_canvas_image_source(
+  self : TextDetector,
+  image : CanvasImageSource,
+) -> Promise[Array[DetectedText]] =
+  #| (self, image) => self.detect(image)
+
+///|
+pub extern "js" fn TextDetector::detect_with_blob(
+  self : TextDetector,
+  image : Blob,
+) -> Promise[Array[DetectedText]] =
+  #| (self, image) => self.detect(image)
+
+///|
+pub extern "js" fn TextDetector::detect_with_image_data(
+  self : TextDetector,
+  image : ImageData,
 ) -> Promise[Array[DetectedText]] =
   #| (self, image) => self.detect(image)

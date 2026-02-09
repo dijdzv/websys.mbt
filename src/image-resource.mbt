@@ -3,7 +3,7 @@
 
 ///|
 /// ImageResource dictionary
-pub struct ImageResource {
+pub(all) struct ImageResource {
   src : String
   sizes : String?
   type_ : String?
@@ -17,11 +17,16 @@ pub fn ImageResource::default() -> ImageResource {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ImageResource::to_js(self : ImageResource) -> JsValue =
+extern "js" fn ImageResource::to_js_ffi(self : ImageResource) -> JsValue =
   #| (self) => ({
   #|   src: self.src,
   #|   sizes: self.sizes,
   #|   type: self.type_,
   #|   label: self.label
   #| })
+
+///|
+/// Convert to JsValue
+pub fn ImageResource::to_js(self : ImageResource) -> JsValue {
+  ImageResource::to_js_ffi(self)
+}

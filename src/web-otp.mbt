@@ -30,7 +30,7 @@ pub fn OTPCredentialTransportType::from_string(
 
 ///|
 /// OTPCredentialRequestOptions dictionary
-pub struct OTPCredentialRequestOptions {
+pub(all) struct OTPCredentialRequestOptions {
   transport : Array[OTPCredentialTransportType]?
 }
 
@@ -41,13 +41,20 @@ pub fn OTPCredentialRequestOptions::default() -> OTPCredentialRequestOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn OTPCredentialRequestOptions::to_js(
+extern "js" fn OTPCredentialRequestOptions::to_js_ffi(
   self : OTPCredentialRequestOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   transport: self.transport
+  #|   transport: ((() => { const v = self.transport; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn OTPCredentialRequestOptions::to_js(
+  self : OTPCredentialRequestOptions,
+) -> JsValue {
+  OTPCredentialRequestOptions::to_js_ffi(self)
+}
 
 ///|
 /// OTPCredential interface

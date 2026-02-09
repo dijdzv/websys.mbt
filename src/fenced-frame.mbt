@@ -36,7 +36,7 @@ pub extern "js" fn UrnOrConfig::is_fenced_frame_config(
 ///|
 /// Try to get UrnOrConfig as String
 pub extern "js" fn UrnOrConfig::as_string(self : UrnOrConfig) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get UrnOrConfig as FencedFrameConfig
@@ -91,7 +91,7 @@ pub extern "js" fn ReportEventType::as_fence_event(
 pub extern "js" fn ReportEventType::as_string(
   self : ReportEventType,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// OpaqueProperty enum
@@ -159,7 +159,7 @@ pub fn FenceReportingDestination::from_string(
 
 ///|
 /// FenceEvent dictionary
-pub struct FenceEvent {
+pub(all) struct FenceEvent {
   eventType : String?
   eventData : String?
   destination : Array[FenceReportingDestination]?
@@ -182,16 +182,21 @@ pub fn FenceEvent::default() -> FenceEvent {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FenceEvent::to_js(self : FenceEvent) -> JsValue =
+extern "js" fn FenceEvent::to_js_ffi(self : FenceEvent) -> JsValue =
   #| (self) => ({
   #|   eventType: self.eventType,
   #|   eventData: self.eventData,
-  #|   destination: self.destination,
-  #|   crossOriginExposed: self.crossOriginExposed,
-  #|   once: self.once,
+  #|   destination: ((() => { const v = self.destination; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   crossOriginExposed: (self.crossOriginExposed === -1 ? undefined : self.crossOriginExposed),
+  #|   once: (self.once === -1 ? undefined : self.once),
   #|   destinationURL: self.destinationURL
   #| })
+
+///|
+/// Convert to JsValue
+pub fn FenceEvent::to_js(self : FenceEvent) -> JsValue {
+  FenceEvent::to_js_ffi(self)
+}
 
 ///|
 /// HTMLFencedFrameElement interface
@@ -263,14 +268,14 @@ pub extern "js" fn HTMLFencedFrameElement::new() -> HTMLFencedFrameElement =
 pub extern "js" fn HTMLFencedFrameElement::get_config(
   self : HTMLFencedFrameElement,
 ) -> FencedFrameConfig? =
-  #| (self) => { const v = self.config; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.config; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLFencedFrameElement::set_config(
   self : HTMLFencedFrameElement,
   value : FencedFrameConfig?,
 ) -> Unit =
-  #| (self, value) => { self.config = value }
+  #| (self, value) => { self.config = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn HTMLFencedFrameElement::get_width(
@@ -412,11 +417,22 @@ pub extern "js" fn Fence::set_report_event_data_for_automatic_beacons(
   #| (self) => self.setReportEventDataForAutomaticBeacons()
 
 ///|
-pub extern "js" fn Fence::set_report_event_data_for_automatic_beacons_with_event(
+extern "js" fn Fence::set_report_event_data_for_automatic_beacons_with_event_ffi(
   self : Fence,
-  event : FenceEvent,
+  event : JsValue,
 ) -> Unit =
   #| (self, event) => self.setReportEventDataForAutomaticBeacons(event)
+
+///|
+pub fn Fence::set_report_event_data_for_automatic_beacons_with_event(
+  self : Fence,
+  event : FenceEvent,
+) -> Unit {
+  Fence::set_report_event_data_for_automatic_beacons_with_event_ffi(
+    self,
+    event.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Fence::get_nested_configs(
@@ -433,3 +449,17 @@ pub extern "js" fn Fence::disable_untrusted_network(
 ///|
 pub extern "js" fn Fence::notify_event(self : Fence, event : Event) -> Unit =
   #| (self, event) => self.notifyEvent(event)
+
+///|
+pub extern "js" fn Fence::report_event_with_fence_event(
+  self : Fence,
+  event : FenceEvent,
+) -> Unit =
+  #| (self, event) => self.reportEvent(event)
+
+///|
+pub extern "js" fn Fence::report_event_with_string(
+  self : Fence,
+  event : String,
+) -> Unit =
+  #| (self, event) => self.reportEvent(event)

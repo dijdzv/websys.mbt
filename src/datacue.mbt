@@ -42,6 +42,14 @@ pub extern "js" fn DataCue::new(
   start_time : Double,
   end_time : Double,
   value : JsValue,
+) -> DataCue =
+  #| (start_time, end_time, value) => new DataCue(start_time, end_time, value)
+
+///|
+pub extern "js" fn DataCue::new_with_type(
+  start_time : Double,
+  end_time : Double,
+  value : JsValue,
   type_ : String,
 ) -> DataCue =
   #| (start_time, end_time, value, type_) => new DataCue(start_time, end_time, value, type_)

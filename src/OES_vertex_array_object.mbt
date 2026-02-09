@@ -99,18 +99,18 @@ pub extern "js" fn OES_vertex_array_object::delete_vertex_array_oes(
   self : OES_vertex_array_object,
   array_object : WebGLVertexArrayObjectOES?,
 ) -> Unit =
-  #| (self, array_object) => self.deleteVertexArrayOES(array_object)
+  #| (self, array_object) => self.deleteVertexArrayOES((array_object.$tag === 1 ? array_object._0 : null))
 
 ///|
 pub extern "js" fn OES_vertex_array_object::is_vertex_array_oes(
   self : OES_vertex_array_object,
   array_object : WebGLVertexArrayObjectOES?,
 ) -> GLboolean =
-  #| (self, array_object) => self.isVertexArrayOES(array_object)
+  #| (self, array_object) => self.isVertexArrayOES((array_object.$tag === 1 ? array_object._0 : null))
 
 ///|
 pub extern "js" fn OES_vertex_array_object::bind_vertex_array_oes(
   self : OES_vertex_array_object,
   array_object : WebGLVertexArrayObjectOES?,
 ) -> Unit =
-  #| (self, array_object) => self.bindVertexArrayOES(array_object)
+  #| (self, array_object) => self.bindVertexArrayOES((array_object.$tag === 1 ? array_object._0 : null))

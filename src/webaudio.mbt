@@ -372,7 +372,7 @@ pub type DecodeErrorCallback
 pub extern "js" fn DecodeErrorCallback::from_fn(
   handler : (DOMException) -> Unit,
 ) -> DecodeErrorCallback =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// DecodeSuccessCallback callback interface
@@ -383,7 +383,7 @@ pub type DecodeSuccessCallback
 pub extern "js" fn DecodeSuccessCallback::from_fn(
   handler : (AudioBuffer) -> Unit,
 ) -> DecodeSuccessCallback =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// AudioWorkletProcessorConstructor callback interface
@@ -394,7 +394,7 @@ pub type AudioWorkletProcessorConstructor
 pub extern "js" fn AudioWorkletProcessorConstructor::from_fn(
   handler : (JsValue) -> AudioWorkletProcessor,
 ) -> AudioWorkletProcessorConstructor =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// AudioWorkletProcessCallback callback interface
@@ -405,11 +405,11 @@ pub type AudioWorkletProcessCallback
 pub extern "js" fn AudioWorkletProcessCallback::from_fn(
   handler : (JsValue, JsValue, JsValue) -> Bool,
 ) -> AudioWorkletProcessCallback =
-  #| (handler) => handler
+  #| (handler) => (a0, a1, a2) => handler(a0, a1, a2)
 
 ///|
 /// AudioContextOptions dictionary
-pub struct AudioContextOptions {
+pub(all) struct AudioContextOptions {
   latencyHint : AudioContextLatencyCategoryOrDouble?
   sampleRate : Double?
   sinkId : StringOrAudioSinkOptions?
@@ -428,39 +428,49 @@ pub fn AudioContextOptions::default() -> AudioContextOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AudioContextOptions::to_js(
+extern "js" fn AudioContextOptions::to_js_ffi(
   self : AudioContextOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   latencyHint: self.latencyHint,
+  #|   latencyHint: ((() => { const v = self.latencyHint; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   sampleRate: self.sampleRate,
-  #|   sinkId: self.sinkId,
-  #|   renderSizeHint: self.renderSizeHint
+  #|   sinkId: ((() => { const v = self.sinkId; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   renderSizeHint: ((() => { const v = self.renderSizeHint; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AudioContextOptions::to_js(self : AudioContextOptions) -> JsValue {
+  AudioContextOptions::to_js_ffi(self)
+}
+
+///|
 /// AudioSinkOptions dictionary
-pub struct AudioSinkOptions {
+pub(all) struct AudioSinkOptions {
   type_ : AudioSinkType
 }
 
 ///|
-/// Create a new AudioSinkOptions with default values
-pub fn AudioSinkOptions::default() -> AudioSinkOptions {
-  AudioSinkOptions::{ type_: panic() }
+/// Create a new AudioSinkOptions
+pub fn AudioSinkOptions::new(type_~ : AudioSinkType) -> AudioSinkOptions {
+  AudioSinkOptions::{ type_, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AudioSinkOptions::to_js(self : AudioSinkOptions) -> JsValue =
+extern "js" fn AudioSinkOptions::to_js_ffi(self : AudioSinkOptions) -> JsValue =
   #| (self) => ({
   #|   type: ['none'][self.type_]
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AudioSinkOptions::to_js(self : AudioSinkOptions) -> JsValue {
+  AudioSinkOptions::to_js_ffi(self)
+}
+
+///|
 /// AudioTimestamp dictionary
-pub struct AudioTimestamp {
+pub(all) struct AudioTimestamp {
   contextTime : Double?
   performanceTime : DOMHighResTimeStamp?
 }
@@ -472,16 +482,21 @@ pub fn AudioTimestamp::default() -> AudioTimestamp {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AudioTimestamp::to_js(self : AudioTimestamp) -> JsValue =
+extern "js" fn AudioTimestamp::to_js_ffi(self : AudioTimestamp) -> JsValue =
   #| (self) => ({
   #|   contextTime: self.contextTime,
-  #|   performanceTime: self.performanceTime
+  #|   performanceTime: ((() => { const v = self.performanceTime; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AudioTimestamp::to_js(self : AudioTimestamp) -> JsValue {
+  AudioTimestamp::to_js_ffi(self)
+}
+
+///|
 /// OfflineAudioContextOptions dictionary
-pub struct OfflineAudioContextOptions {
+pub(all) struct OfflineAudioContextOptions {
   numberOfChannels : Int?
   length : Int
   sampleRate : Double
@@ -500,32 +515,40 @@ pub fn OfflineAudioContextOptions::default() -> OfflineAudioContextOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn OfflineAudioContextOptions::to_js(
+extern "js" fn OfflineAudioContextOptions::to_js_ffi(
   self : OfflineAudioContextOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   numberOfChannels: self.numberOfChannels,
   #|   length: self.length,
   #|   sampleRate: self.sampleRate,
-  #|   renderSizeHint: self.renderSizeHint
+  #|   renderSizeHint: ((() => { const v = self.renderSizeHint; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn OfflineAudioContextOptions::to_js(
+  self : OfflineAudioContextOptions,
+) -> JsValue {
+  OfflineAudioContextOptions::to_js_ffi(self)
+}
+
+///|
 /// OfflineAudioCompletionEventInit dictionary
-pub struct OfflineAudioCompletionEventInit {
+pub(all) struct OfflineAudioCompletionEventInit {
   renderedBuffer : AudioBuffer
 }
 
 ///|
-/// Create a new OfflineAudioCompletionEventInit with default values
-pub fn OfflineAudioCompletionEventInit::default() -> OfflineAudioCompletionEventInit {
-  OfflineAudioCompletionEventInit::{ renderedBuffer: panic() }
+/// Create a new OfflineAudioCompletionEventInit
+pub fn OfflineAudioCompletionEventInit::new(
+  renderedBuffer~ : AudioBuffer,
+) -> OfflineAudioCompletionEventInit {
+  OfflineAudioCompletionEventInit::{ renderedBuffer, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn OfflineAudioCompletionEventInit::to_js(
+extern "js" fn OfflineAudioCompletionEventInit::to_js_ffi(
   self : OfflineAudioCompletionEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -533,8 +556,16 @@ pub extern "js" fn OfflineAudioCompletionEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn OfflineAudioCompletionEventInit::to_js(
+  self : OfflineAudioCompletionEventInit,
+) -> JsValue {
+  OfflineAudioCompletionEventInit::to_js_ffi(self)
+}
+
+///|
 /// AudioBufferOptions dictionary
-pub struct AudioBufferOptions {
+pub(all) struct AudioBufferOptions {
   numberOfChannels : Int?
   length : Int
   sampleRate : Double
@@ -547,8 +578,7 @@ pub fn AudioBufferOptions::default() -> AudioBufferOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AudioBufferOptions::to_js(
+extern "js" fn AudioBufferOptions::to_js_ffi(
   self : AudioBufferOptions,
 ) -> JsValue =
   #| (self) => ({
@@ -558,8 +588,14 @@ pub extern "js" fn AudioBufferOptions::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AudioBufferOptions::to_js(self : AudioBufferOptions) -> JsValue {
+  AudioBufferOptions::to_js_ffi(self)
+}
+
+///|
 /// AudioNodeOptions dictionary
-pub struct AudioNodeOptions {
+pub(all) struct AudioNodeOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
@@ -576,17 +612,22 @@ pub fn AudioNodeOptions::default() -> AudioNodeOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AudioNodeOptions::to_js(self : AudioNodeOptions) -> JsValue =
+extern "js" fn AudioNodeOptions::to_js_ffi(self : AudioNodeOptions) -> JsValue =
   #| (self) => ({
   #|   channelCount: self.channelCount,
-  #|   channelCountMode: ['max', 'clamped-max', 'explicit'][self.channelCountMode],
-  #|   channelInterpretation: ['speakers', 'discrete'][self.channelInterpretation]
+  #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
+  #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AudioNodeOptions::to_js(self : AudioNodeOptions) -> JsValue {
+  AudioNodeOptions::to_js_ffi(self)
+}
+
+///|
 /// AnalyserOptions dictionary
-pub struct AnalyserOptions {
+pub(all) struct AnalyserOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
@@ -611,12 +652,11 @@ pub fn AnalyserOptions::default() -> AnalyserOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AnalyserOptions::to_js(self : AnalyserOptions) -> JsValue =
+extern "js" fn AnalyserOptions::to_js_ffi(self : AnalyserOptions) -> JsValue =
   #| (self) => ({
   #|   channelCount: self.channelCount,
-  #|   channelCountMode: ['max', 'clamped-max', 'explicit'][self.channelCountMode],
-  #|   channelInterpretation: ['speakers', 'discrete'][self.channelInterpretation],
+  #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
+  #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   fftSize: self.fftSize,
   #|   maxDecibels: self.maxDecibels,
   #|   minDecibels: self.minDecibels,
@@ -624,8 +664,14 @@ pub extern "js" fn AnalyserOptions::to_js(self : AnalyserOptions) -> JsValue =
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AnalyserOptions::to_js(self : AnalyserOptions) -> JsValue {
+  AnalyserOptions::to_js_ffi(self)
+}
+
+///|
 /// AudioBufferSourceOptions dictionary
-pub struct AudioBufferSourceOptions {
+pub(all) struct AudioBufferSourceOptions {
   buffer : Nullable[AudioBuffer]
   detune : Double?
   loop_ : Bool?
@@ -648,40 +694,45 @@ pub fn AudioBufferSourceOptions::default() -> AudioBufferSourceOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AudioBufferSourceOptions::to_js(
+extern "js" fn AudioBufferSourceOptions::to_js_ffi(
   self : AudioBufferSourceOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   buffer: ((() => { const v = self.buffer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   detune: self.detune,
-  #|   loop: self.loop_,
+  #|   loop: (self.loop_ === -1 ? undefined : self.loop_),
   #|   loopEnd: self.loopEnd,
   #|   loopStart: self.loopStart,
   #|   playbackRate: self.playbackRate
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AudioBufferSourceOptions::to_js(
+  self : AudioBufferSourceOptions,
+) -> JsValue {
+  AudioBufferSourceOptions::to_js_ffi(self)
+}
+
+///|
 /// AudioProcessingEventInit dictionary
-pub struct AudioProcessingEventInit {
+pub(all) struct AudioProcessingEventInit {
   playbackTime : Double
   inputBuffer : AudioBuffer
   outputBuffer : AudioBuffer
 }
 
 ///|
-/// Create a new AudioProcessingEventInit with default values
-pub fn AudioProcessingEventInit::default() -> AudioProcessingEventInit {
-  AudioProcessingEventInit::{
-    playbackTime: 0,
-    inputBuffer: panic(),
-    outputBuffer: panic(),
-  }
+/// Create a new AudioProcessingEventInit
+pub fn AudioProcessingEventInit::new(
+  inputBuffer~ : AudioBuffer,
+  outputBuffer~ : AudioBuffer,
+) -> AudioProcessingEventInit {
+  AudioProcessingEventInit::{ playbackTime: 0, inputBuffer, outputBuffer }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AudioProcessingEventInit::to_js(
+extern "js" fn AudioProcessingEventInit::to_js_ffi(
   self : AudioProcessingEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -691,8 +742,16 @@ pub extern "js" fn AudioProcessingEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AudioProcessingEventInit::to_js(
+  self : AudioProcessingEventInit,
+) -> JsValue {
+  AudioProcessingEventInit::to_js_ffi(self)
+}
+
+///|
 /// BiquadFilterOptions dictionary
-pub struct BiquadFilterOptions {
+pub(all) struct BiquadFilterOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
@@ -719,15 +778,14 @@ pub fn BiquadFilterOptions::default() -> BiquadFilterOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BiquadFilterOptions::to_js(
+extern "js" fn BiquadFilterOptions::to_js_ffi(
   self : BiquadFilterOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   channelCount: self.channelCount,
-  #|   channelCountMode: ['max', 'clamped-max', 'explicit'][self.channelCountMode],
-  #|   channelInterpretation: ['speakers', 'discrete'][self.channelInterpretation],
-  #|   type: ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch', 'allpass'][self.type_],
+  #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
+  #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
+  #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch', 'allpass'][v]; })()),
   #|   Q: self.q,
   #|   detune: self.detune,
   #|   frequency: self.frequency,
@@ -735,8 +793,14 @@ pub extern "js" fn BiquadFilterOptions::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn BiquadFilterOptions::to_js(self : BiquadFilterOptions) -> JsValue {
+  BiquadFilterOptions::to_js_ffi(self)
+}
+
+///|
 /// ChannelMergerOptions dictionary
-pub struct ChannelMergerOptions {
+pub(all) struct ChannelMergerOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
@@ -755,20 +819,25 @@ pub fn ChannelMergerOptions::default() -> ChannelMergerOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ChannelMergerOptions::to_js(
+extern "js" fn ChannelMergerOptions::to_js_ffi(
   self : ChannelMergerOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   channelCount: self.channelCount,
-  #|   channelCountMode: ['max', 'clamped-max', 'explicit'][self.channelCountMode],
-  #|   channelInterpretation: ['speakers', 'discrete'][self.channelInterpretation],
+  #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
+  #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   numberOfInputs: self.numberOfInputs
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ChannelMergerOptions::to_js(self : ChannelMergerOptions) -> JsValue {
+  ChannelMergerOptions::to_js_ffi(self)
+}
+
+///|
 /// ChannelSplitterOptions dictionary
-pub struct ChannelSplitterOptions {
+pub(all) struct ChannelSplitterOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
@@ -787,20 +856,25 @@ pub fn ChannelSplitterOptions::default() -> ChannelSplitterOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ChannelSplitterOptions::to_js(
+extern "js" fn ChannelSplitterOptions::to_js_ffi(
   self : ChannelSplitterOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   channelCount: self.channelCount,
-  #|   channelCountMode: ['max', 'clamped-max', 'explicit'][self.channelCountMode],
-  #|   channelInterpretation: ['speakers', 'discrete'][self.channelInterpretation],
+  #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
+  #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   numberOfOutputs: self.numberOfOutputs
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ChannelSplitterOptions::to_js(self : ChannelSplitterOptions) -> JsValue {
+  ChannelSplitterOptions::to_js_ffi(self)
+}
+
+///|
 /// ConstantSourceOptions dictionary
-pub struct ConstantSourceOptions {
+pub(all) struct ConstantSourceOptions {
   offset : Double?
 }
 
@@ -811,8 +885,7 @@ pub fn ConstantSourceOptions::default() -> ConstantSourceOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ConstantSourceOptions::to_js(
+extern "js" fn ConstantSourceOptions::to_js_ffi(
   self : ConstantSourceOptions,
 ) -> JsValue =
   #| (self) => ({
@@ -820,8 +893,14 @@ pub extern "js" fn ConstantSourceOptions::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ConstantSourceOptions::to_js(self : ConstantSourceOptions) -> JsValue {
+  ConstantSourceOptions::to_js_ffi(self)
+}
+
+///|
 /// ConvolverOptions dictionary
-pub struct ConvolverOptions {
+pub(all) struct ConvolverOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
@@ -842,19 +921,24 @@ pub fn ConvolverOptions::default() -> ConvolverOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ConvolverOptions::to_js(self : ConvolverOptions) -> JsValue =
+extern "js" fn ConvolverOptions::to_js_ffi(self : ConvolverOptions) -> JsValue =
   #| (self) => ({
   #|   channelCount: self.channelCount,
-  #|   channelCountMode: ['max', 'clamped-max', 'explicit'][self.channelCountMode],
-  #|   channelInterpretation: ['speakers', 'discrete'][self.channelInterpretation],
+  #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
+  #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   buffer: ((() => { const v = self.buffer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   disableNormalization: self.disableNormalization
+  #|   disableNormalization: (self.disableNormalization === -1 ? undefined : self.disableNormalization)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ConvolverOptions::to_js(self : ConvolverOptions) -> JsValue {
+  ConvolverOptions::to_js_ffi(self)
+}
+
+///|
 /// DelayOptions dictionary
-pub struct DelayOptions {
+pub(all) struct DelayOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
@@ -875,19 +959,24 @@ pub fn DelayOptions::default() -> DelayOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DelayOptions::to_js(self : DelayOptions) -> JsValue =
+extern "js" fn DelayOptions::to_js_ffi(self : DelayOptions) -> JsValue =
   #| (self) => ({
   #|   channelCount: self.channelCount,
-  #|   channelCountMode: ['max', 'clamped-max', 'explicit'][self.channelCountMode],
-  #|   channelInterpretation: ['speakers', 'discrete'][self.channelInterpretation],
+  #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
+  #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   maxDelayTime: self.maxDelayTime,
   #|   delayTime: self.delayTime
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn DelayOptions::to_js(self : DelayOptions) -> JsValue {
+  DelayOptions::to_js_ffi(self)
+}
+
+///|
 /// DynamicsCompressorOptions dictionary
-pub struct DynamicsCompressorOptions {
+pub(all) struct DynamicsCompressorOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
@@ -914,14 +1003,13 @@ pub fn DynamicsCompressorOptions::default() -> DynamicsCompressorOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DynamicsCompressorOptions::to_js(
+extern "js" fn DynamicsCompressorOptions::to_js_ffi(
   self : DynamicsCompressorOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   channelCount: self.channelCount,
-  #|   channelCountMode: ['max', 'clamped-max', 'explicit'][self.channelCountMode],
-  #|   channelInterpretation: ['speakers', 'discrete'][self.channelInterpretation],
+  #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
+  #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   attack: self.attack,
   #|   knee: self.knee,
   #|   ratio: self.ratio,
@@ -930,8 +1018,16 @@ pub extern "js" fn DynamicsCompressorOptions::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn DynamicsCompressorOptions::to_js(
+  self : DynamicsCompressorOptions,
+) -> JsValue {
+  DynamicsCompressorOptions::to_js_ffi(self)
+}
+
+///|
 /// GainOptions dictionary
-pub struct GainOptions {
+pub(all) struct GainOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
@@ -950,18 +1046,23 @@ pub fn GainOptions::default() -> GainOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn GainOptions::to_js(self : GainOptions) -> JsValue =
+extern "js" fn GainOptions::to_js_ffi(self : GainOptions) -> JsValue =
   #| (self) => ({
   #|   channelCount: self.channelCount,
-  #|   channelCountMode: ['max', 'clamped-max', 'explicit'][self.channelCountMode],
-  #|   channelInterpretation: ['speakers', 'discrete'][self.channelInterpretation],
+  #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
+  #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   gain: self.gain
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn GainOptions::to_js(self : GainOptions) -> JsValue {
+  GainOptions::to_js_ffi(self)
+}
+
+///|
 /// IIRFilterOptions dictionary
-pub struct IIRFilterOptions {
+pub(all) struct IIRFilterOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
@@ -982,31 +1083,37 @@ pub fn IIRFilterOptions::default() -> IIRFilterOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn IIRFilterOptions::to_js(self : IIRFilterOptions) -> JsValue =
+extern "js" fn IIRFilterOptions::to_js_ffi(self : IIRFilterOptions) -> JsValue =
   #| (self) => ({
   #|   channelCount: self.channelCount,
-  #|   channelCountMode: ['max', 'clamped-max', 'explicit'][self.channelCountMode],
-  #|   channelInterpretation: ['speakers', 'discrete'][self.channelInterpretation],
+  #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
+  #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   feedforward: self.feedforward,
   #|   feedback: self.feedback
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn IIRFilterOptions::to_js(self : IIRFilterOptions) -> JsValue {
+  IIRFilterOptions::to_js_ffi(self)
+}
+
+///|
 /// MediaElementAudioSourceOptions dictionary
-pub struct MediaElementAudioSourceOptions {
+pub(all) struct MediaElementAudioSourceOptions {
   mediaElement : HTMLMediaElement
 }
 
 ///|
-/// Create a new MediaElementAudioSourceOptions with default values
-pub fn MediaElementAudioSourceOptions::default() -> MediaElementAudioSourceOptions {
-  MediaElementAudioSourceOptions::{ mediaElement: panic() }
+/// Create a new MediaElementAudioSourceOptions
+pub fn MediaElementAudioSourceOptions::new(
+  mediaElement~ : HTMLMediaElement,
+) -> MediaElementAudioSourceOptions {
+  MediaElementAudioSourceOptions::{ mediaElement, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MediaElementAudioSourceOptions::to_js(
+extern "js" fn MediaElementAudioSourceOptions::to_js_ffi(
   self : MediaElementAudioSourceOptions,
 ) -> JsValue =
   #| (self) => ({
@@ -1014,20 +1121,29 @@ pub extern "js" fn MediaElementAudioSourceOptions::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MediaElementAudioSourceOptions::to_js(
+  self : MediaElementAudioSourceOptions,
+) -> JsValue {
+  MediaElementAudioSourceOptions::to_js_ffi(self)
+}
+
+///|
 /// MediaStreamAudioSourceOptions dictionary
-pub struct MediaStreamAudioSourceOptions {
+pub(all) struct MediaStreamAudioSourceOptions {
   mediaStream : MediaStream
 }
 
 ///|
-/// Create a new MediaStreamAudioSourceOptions with default values
-pub fn MediaStreamAudioSourceOptions::default() -> MediaStreamAudioSourceOptions {
-  MediaStreamAudioSourceOptions::{ mediaStream: panic() }
+/// Create a new MediaStreamAudioSourceOptions
+pub fn MediaStreamAudioSourceOptions::new(
+  mediaStream~ : MediaStream,
+) -> MediaStreamAudioSourceOptions {
+  MediaStreamAudioSourceOptions::{ mediaStream, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MediaStreamAudioSourceOptions::to_js(
+extern "js" fn MediaStreamAudioSourceOptions::to_js_ffi(
   self : MediaStreamAudioSourceOptions,
 ) -> JsValue =
   #| (self) => ({
@@ -1035,20 +1151,29 @@ pub extern "js" fn MediaStreamAudioSourceOptions::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MediaStreamAudioSourceOptions::to_js(
+  self : MediaStreamAudioSourceOptions,
+) -> JsValue {
+  MediaStreamAudioSourceOptions::to_js_ffi(self)
+}
+
+///|
 /// MediaStreamTrackAudioSourceOptions dictionary
-pub struct MediaStreamTrackAudioSourceOptions {
+pub(all) struct MediaStreamTrackAudioSourceOptions {
   mediaStreamTrack : MediaStreamTrack
 }
 
 ///|
-/// Create a new MediaStreamTrackAudioSourceOptions with default values
-pub fn MediaStreamTrackAudioSourceOptions::default() -> MediaStreamTrackAudioSourceOptions {
-  MediaStreamTrackAudioSourceOptions::{ mediaStreamTrack: panic() }
+/// Create a new MediaStreamTrackAudioSourceOptions
+pub fn MediaStreamTrackAudioSourceOptions::new(
+  mediaStreamTrack~ : MediaStreamTrack,
+) -> MediaStreamTrackAudioSourceOptions {
+  MediaStreamTrackAudioSourceOptions::{ mediaStreamTrack, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MediaStreamTrackAudioSourceOptions::to_js(
+extern "js" fn MediaStreamTrackAudioSourceOptions::to_js_ffi(
   self : MediaStreamTrackAudioSourceOptions,
 ) -> JsValue =
   #| (self) => ({
@@ -1056,8 +1181,16 @@ pub extern "js" fn MediaStreamTrackAudioSourceOptions::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MediaStreamTrackAudioSourceOptions::to_js(
+  self : MediaStreamTrackAudioSourceOptions,
+) -> JsValue {
+  MediaStreamTrackAudioSourceOptions::to_js_ffi(self)
+}
+
+///|
 /// OscillatorOptions dictionary
-pub struct OscillatorOptions {
+pub(all) struct OscillatorOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
@@ -1082,23 +1215,28 @@ pub fn OscillatorOptions::default() -> OscillatorOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn OscillatorOptions::to_js(
+extern "js" fn OscillatorOptions::to_js_ffi(
   self : OscillatorOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   channelCount: self.channelCount,
-  #|   channelCountMode: ['max', 'clamped-max', 'explicit'][self.channelCountMode],
-  #|   channelInterpretation: ['speakers', 'discrete'][self.channelInterpretation],
-  #|   type: ['sine', 'square', 'sawtooth', 'triangle', 'custom'][self.type_],
+  #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
+  #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
+  #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['sine', 'square', 'sawtooth', 'triangle', 'custom'][v]; })()),
   #|   frequency: self.frequency,
   #|   detune: self.detune,
-  #|   periodicWave: self.periodicWave
+  #|   periodicWave: ((() => { const v = self.periodicWave; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn OscillatorOptions::to_js(self : OscillatorOptions) -> JsValue {
+  OscillatorOptions::to_js_ffi(self)
+}
+
+///|
 /// PannerOptions dictionary
-pub struct PannerOptions {
+pub(all) struct PannerOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
@@ -1143,14 +1281,13 @@ pub fn PannerOptions::default() -> PannerOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PannerOptions::to_js(self : PannerOptions) -> JsValue =
+extern "js" fn PannerOptions::to_js_ffi(self : PannerOptions) -> JsValue =
   #| (self) => ({
   #|   channelCount: self.channelCount,
-  #|   channelCountMode: ['max', 'clamped-max', 'explicit'][self.channelCountMode],
-  #|   channelInterpretation: ['speakers', 'discrete'][self.channelInterpretation],
-  #|   panningModel: ['equalpower', 'HRTF'][self.panningModel],
-  #|   distanceModel: ['linear', 'inverse', 'exponential'][self.distanceModel],
+  #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
+  #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
+  #|   panningModel: ((() => { const v = self.panningModel; if (v === undefined) return undefined; return ['equalpower', 'HRTF'][v]; })()),
+  #|   distanceModel: ((() => { const v = self.distanceModel; if (v === undefined) return undefined; return ['linear', 'inverse', 'exponential'][v]; })()),
   #|   positionX: self.positionX,
   #|   positionY: self.positionY,
   #|   positionZ: self.positionZ,
@@ -1166,8 +1303,14 @@ pub extern "js" fn PannerOptions::to_js(self : PannerOptions) -> JsValue =
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PannerOptions::to_js(self : PannerOptions) -> JsValue {
+  PannerOptions::to_js_ffi(self)
+}
+
+///|
 /// PeriodicWaveConstraints dictionary
-pub struct PeriodicWaveConstraints {
+pub(all) struct PeriodicWaveConstraints {
   disableNormalization : Bool?
 }
 
@@ -1178,17 +1321,24 @@ pub fn PeriodicWaveConstraints::default() -> PeriodicWaveConstraints {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PeriodicWaveConstraints::to_js(
+extern "js" fn PeriodicWaveConstraints::to_js_ffi(
   self : PeriodicWaveConstraints,
 ) -> JsValue =
   #| (self) => ({
-  #|   disableNormalization: self.disableNormalization
+  #|   disableNormalization: (self.disableNormalization === -1 ? undefined : self.disableNormalization)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PeriodicWaveConstraints::to_js(
+  self : PeriodicWaveConstraints,
+) -> JsValue {
+  PeriodicWaveConstraints::to_js_ffi(self)
+}
+
+///|
 /// PeriodicWaveOptions dictionary
-pub struct PeriodicWaveOptions {
+pub(all) struct PeriodicWaveOptions {
   disableNormalization : Bool?
   real : Array[Double]?
   imag : Array[Double]?
@@ -1201,19 +1351,24 @@ pub fn PeriodicWaveOptions::default() -> PeriodicWaveOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PeriodicWaveOptions::to_js(
+extern "js" fn PeriodicWaveOptions::to_js_ffi(
   self : PeriodicWaveOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   disableNormalization: self.disableNormalization,
-  #|   real: self.real,
-  #|   imag: self.imag
+  #|   disableNormalization: (self.disableNormalization === -1 ? undefined : self.disableNormalization),
+  #|   real: ((() => { const v = self.real; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   imag: ((() => { const v = self.imag; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PeriodicWaveOptions::to_js(self : PeriodicWaveOptions) -> JsValue {
+  PeriodicWaveOptions::to_js_ffi(self)
+}
+
+///|
 /// StereoPannerOptions dictionary
-pub struct StereoPannerOptions {
+pub(all) struct StereoPannerOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
@@ -1232,20 +1387,25 @@ pub fn StereoPannerOptions::default() -> StereoPannerOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn StereoPannerOptions::to_js(
+extern "js" fn StereoPannerOptions::to_js_ffi(
   self : StereoPannerOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   channelCount: self.channelCount,
-  #|   channelCountMode: ['max', 'clamped-max', 'explicit'][self.channelCountMode],
-  #|   channelInterpretation: ['speakers', 'discrete'][self.channelInterpretation],
+  #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
+  #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   pan: self.pan
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn StereoPannerOptions::to_js(self : StereoPannerOptions) -> JsValue {
+  StereoPannerOptions::to_js_ffi(self)
+}
+
+///|
 /// WaveShaperOptions dictionary
-pub struct WaveShaperOptions {
+pub(all) struct WaveShaperOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
@@ -1266,21 +1426,26 @@ pub fn WaveShaperOptions::default() -> WaveShaperOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WaveShaperOptions::to_js(
+extern "js" fn WaveShaperOptions::to_js_ffi(
   self : WaveShaperOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   channelCount: self.channelCount,
-  #|   channelCountMode: ['max', 'clamped-max', 'explicit'][self.channelCountMode],
-  #|   channelInterpretation: ['speakers', 'discrete'][self.channelInterpretation],
-  #|   curve: self.curve,
-  #|   oversample: ['none', '2x', '4x'][self.oversample]
+  #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
+  #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
+  #|   curve: ((() => { const v = self.curve; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   oversample: ((() => { const v = self.oversample; if (v === undefined) return undefined; return ['none', '2x', '4x'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WaveShaperOptions::to_js(self : WaveShaperOptions) -> JsValue {
+  WaveShaperOptions::to_js_ffi(self)
+}
+
+///|
 /// AudioWorkletNodeOptions dictionary
-pub struct AudioWorkletNodeOptions {
+pub(all) struct AudioWorkletNodeOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
@@ -1307,24 +1472,31 @@ pub fn AudioWorkletNodeOptions::default() -> AudioWorkletNodeOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AudioWorkletNodeOptions::to_js(
+extern "js" fn AudioWorkletNodeOptions::to_js_ffi(
   self : AudioWorkletNodeOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   channelCount: self.channelCount,
-  #|   channelCountMode: ['max', 'clamped-max', 'explicit'][self.channelCountMode],
-  #|   channelInterpretation: ['speakers', 'discrete'][self.channelInterpretation],
+  #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
+  #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   numberOfInputs: self.numberOfInputs,
   #|   numberOfOutputs: self.numberOfOutputs,
-  #|   outputChannelCount: self.outputChannelCount,
-  #|   parameterData: self.parameterData,
-  #|   processorOptions: self.processorOptions
+  #|   outputChannelCount: ((() => { const v = self.outputChannelCount; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   parameterData: ((() => { const v = self.parameterData; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   processorOptions: ((() => { const v = self.processorOptions; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AudioWorkletNodeOptions::to_js(
+  self : AudioWorkletNodeOptions,
+) -> JsValue {
+  AudioWorkletNodeOptions::to_js_ffi(self)
+}
+
+///|
 /// AudioParamDescriptor dictionary
-pub struct AudioParamDescriptor {
+pub(all) struct AudioParamDescriptor {
   name : String
   defaultValue : Double?
   minValue : Double?
@@ -1345,8 +1517,7 @@ pub fn AudioParamDescriptor::default() -> AudioParamDescriptor {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AudioParamDescriptor::to_js(
+extern "js" fn AudioParamDescriptor::to_js_ffi(
   self : AudioParamDescriptor,
 ) -> JsValue =
   #| (self) => ({
@@ -1354,8 +1525,14 @@ pub extern "js" fn AudioParamDescriptor::to_js(
   #|   defaultValue: self.defaultValue,
   #|   minValue: self.minValue,
   #|   maxValue: self.maxValue,
-  #|   automationRate: ['a-rate', 'k-rate'][self.automationRate]
+  #|   automationRate: ((() => { const v = self.automationRate; if (v === undefined) return undefined; return ['a-rate', 'k-rate'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn AudioParamDescriptor::to_js(self : AudioParamDescriptor) -> JsValue {
+  AudioParamDescriptor::to_js_ffi(self)
+}
 
 ///|
 /// BaseAudioContext interface
@@ -1441,7 +1618,7 @@ pub extern "js" fn BaseAudioContext::get_listener(
 pub extern "js" fn BaseAudioContext::get_state(
   self : BaseAudioContext,
 ) -> AudioContextState =
-  #| (self) => self.state
+  #| (self) => ['suspended', 'running', 'closed', 'interrupted'].indexOf(self.state)
 
 ///|
 pub extern "js" fn BaseAudioContext::get_render_quantum_size(
@@ -1587,13 +1764,28 @@ pub extern "js" fn BaseAudioContext::create_periodic_wave(
   #| (self, real, imag) => self.createPeriodicWave(real, imag)
 
 ///|
-pub extern "js" fn BaseAudioContext::create_periodic_wave_with_constraints(
+extern "js" fn BaseAudioContext::create_periodic_wave_with_constraints_ffi(
+  self : BaseAudioContext,
+  real : Array[Double],
+  imag : Array[Double],
+  constraints : JsValue,
+) -> PeriodicWave =
+  #| (self, real, imag, constraints) => self.createPeriodicWave(real, imag, constraints)
+
+///|
+pub fn BaseAudioContext::create_periodic_wave_with_constraints(
   self : BaseAudioContext,
   real : Array[Double],
   imag : Array[Double],
   constraints : PeriodicWaveConstraints,
-) -> PeriodicWave =
-  #| (self, real, imag, constraints) => self.createPeriodicWave(real, imag, constraints)
+) -> PeriodicWave {
+  BaseAudioContext::create_periodic_wave_with_constraints_ffi(
+    self,
+    real,
+    imag,
+    constraints.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn BaseAudioContext::create_script_processor(
@@ -1636,7 +1828,7 @@ pub extern "js" fn BaseAudioContext::decode_audio_data_with_error_callback(
   success_callback : DecodeSuccessCallback?,
   error_callback : DecodeErrorCallback?,
 ) -> Promise[AudioBuffer] =
-  #| (self, audio_data, success_callback, error_callback) => self.decodeAudioData(audio_data, success_callback, error_callback)
+  #| (self, audio_data, success_callback, error_callback) => self.decodeAudioData(audio_data, (success_callback.$tag === 1 ? success_callback._0 : null), (error_callback.$tag === 1 ? error_callback._0 : null))
 
 ///|
 /// AudioContext interface
@@ -1681,10 +1873,21 @@ pub extern "js" fn AudioContext::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn AudioContext::new(
-  context_options : AudioContextOptions,
+pub extern "js" fn AudioContext::new() -> AudioContext =
+  #| () => new AudioContext()
+
+///|
+extern "js" fn AudioContext::new_with_context_options_ffi(
+  context_options : JsValue,
 ) -> AudioContext =
   #| (context_options) => new AudioContext(context_options)
+
+///|
+pub fn AudioContext::new_with_context_options(
+  context_options : AudioContextOptions,
+) -> AudioContext {
+  AudioContext::new_with_context_options_ffi(context_options.to_js())
+}
 
 ///|
 pub extern "js" fn AudioContext::get_base_latency(
@@ -1824,7 +2027,7 @@ pub extern "js" fn JsValue::to_audio_sink_info(self : JsValue) -> AudioSinkInfo 
 pub extern "js" fn AudioSinkInfo::get_type(
   self : AudioSinkInfo,
 ) -> AudioSinkType =
-  #| (self) => self.type
+  #| (self) => ['none'].indexOf(self.type)
 
 ///|
 /// OfflineAudioContext interface
@@ -1877,10 +2080,25 @@ pub extern "js" fn OfflineAudioContext::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn OfflineAudioContext::new(
-  context_options : OfflineAudioContextOptions,
+extern "js" fn OfflineAudioContext::new_ffi(
+  context_options : JsValue,
 ) -> OfflineAudioContext =
   #| (context_options) => new OfflineAudioContext(context_options)
+
+///|
+pub fn OfflineAudioContext::new(
+  context_options : OfflineAudioContextOptions,
+) -> OfflineAudioContext {
+  OfflineAudioContext::new_ffi(context_options.to_js())
+}
+
+///|
+pub extern "js" fn OfflineAudioContext::new_with_length_and_sample_rate(
+  number_of_channels : Int,
+  length : Int,
+  sample_rate : Double,
+) -> OfflineAudioContext =
+  #| (number_of_channels, length, sample_rate) => new OfflineAudioContext(number_of_channels, length, sample_rate)
 
 ///|
 pub extern "js" fn OfflineAudioContext::start_rendering(
@@ -1965,11 +2183,19 @@ pub extern "js" fn OfflineAudioCompletionEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn OfflineAudioCompletionEvent::new(
+extern "js" fn OfflineAudioCompletionEvent::new_ffi(
   type_ : String,
-  event_init_dict : OfflineAudioCompletionEventInit,
+  event_init_dict : JsValue,
 ) -> OfflineAudioCompletionEvent =
   #| (type_, event_init_dict) => new OfflineAudioCompletionEvent(type_, event_init_dict)
+
+///|
+pub fn OfflineAudioCompletionEvent::new(
+  type_ : String,
+  event_init_dict : OfflineAudioCompletionEventInit,
+) -> OfflineAudioCompletionEvent {
+  OfflineAudioCompletionEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn OfflineAudioCompletionEvent::get_rendered_buffer(
@@ -2006,10 +2232,13 @@ pub extern "js" fn JsValue::to_audio_buffer(self : JsValue) -> AudioBuffer =
   #| (self) => self
 
 ///|
-pub extern "js" fn AudioBuffer::new(
-  options : AudioBufferOptions,
-) -> AudioBuffer =
+extern "js" fn AudioBuffer::new_ffi(options : JsValue) -> AudioBuffer =
   #| (options) => new AudioBuffer(options)
+
+///|
+pub fn AudioBuffer::new(options : AudioBufferOptions) -> AudioBuffer {
+  AudioBuffer::new_ffi(options.to_js())
+}
 
 ///|
 pub extern "js" fn AudioBuffer::get_sample_rate(self : AudioBuffer) -> Double =
@@ -2342,27 +2571,27 @@ pub extern "js" fn AudioNode::set_channel_count(
 pub extern "js" fn AudioNode::get_channel_count_mode(
   self : AudioNode,
 ) -> ChannelCountMode =
-  #| (self) => self.channelCountMode
+  #| (self) => ['max', 'clamped-max', 'explicit'].indexOf(self.channelCountMode)
 
 ///|
 pub extern "js" fn AudioNode::set_channel_count_mode(
   self : AudioNode,
   value : ChannelCountMode,
 ) -> Unit =
-  #| (self, value) => { self.channelCountMode = value }
+  #| (self, value) => { self.channelCountMode = ['max', 'clamped-max', 'explicit'][value] }
 
 ///|
 pub extern "js" fn AudioNode::get_channel_interpretation(
   self : AudioNode,
 ) -> ChannelInterpretation =
-  #| (self) => self.channelInterpretation
+  #| (self) => ['speakers', 'discrete'].indexOf(self.channelInterpretation)
 
 ///|
 pub extern "js" fn AudioNode::set_channel_interpretation(
   self : AudioNode,
   value : ChannelInterpretation,
 ) -> Unit =
-  #| (self, value) => { self.channelInterpretation = value }
+  #| (self, value) => { self.channelInterpretation = ['speakers', 'discrete'][value] }
 
 ///|
 /// AudioParam interface
@@ -2407,14 +2636,14 @@ pub extern "js" fn AudioParam::set_value(
 pub extern "js" fn AudioParam::get_automation_rate(
   self : AudioParam,
 ) -> AutomationRate =
-  #| (self) => self.automationRate
+  #| (self) => ['a-rate', 'k-rate'].indexOf(self.automationRate)
 
 ///|
 pub extern "js" fn AudioParam::set_automation_rate(
   self : AudioParam,
   value : AutomationRate,
 ) -> Unit =
-  #| (self, value) => { self.automationRate = value }
+  #| (self, value) => { self.automationRate = ['a-rate', 'k-rate'][value] }
 
 ///|
 pub extern "js" fn AudioParam::get_default_value(self : AudioParam) -> Double =
@@ -2636,9 +2865,23 @@ pub extern "js" fn AnalyserNode::to_event_target(
 ///|
 pub extern "js" fn AnalyserNode::new(
   context : BaseAudioContext,
-  options : AnalyserOptions,
+) -> AnalyserNode =
+  #| (context) => new AnalyserNode(context)
+
+///|
+extern "js" fn AnalyserNode::new_with_options_ffi(
+  context : BaseAudioContext,
+  options : JsValue,
 ) -> AnalyserNode =
   #| (context, options) => new AnalyserNode(context, options)
+
+///|
+pub fn AnalyserNode::new_with_options(
+  context : BaseAudioContext,
+  options : AnalyserOptions,
+) -> AnalyserNode {
+  AnalyserNode::new_with_options_ffi(context, options.to_js())
+}
 
 ///|
 pub extern "js" fn AnalyserNode::get_float_frequency_data(
@@ -2783,22 +3026,36 @@ pub extern "js" fn AudioBufferSourceNode::to_event_target(
 ///|
 pub extern "js" fn AudioBufferSourceNode::new(
   context : BaseAudioContext,
-  options : AudioBufferSourceOptions,
+) -> AudioBufferSourceNode =
+  #| (context) => new AudioBufferSourceNode(context)
+
+///|
+extern "js" fn AudioBufferSourceNode::new_with_options_ffi(
+  context : BaseAudioContext,
+  options : JsValue,
 ) -> AudioBufferSourceNode =
   #| (context, options) => new AudioBufferSourceNode(context, options)
+
+///|
+pub fn AudioBufferSourceNode::new_with_options(
+  context : BaseAudioContext,
+  options : AudioBufferSourceOptions,
+) -> AudioBufferSourceNode {
+  AudioBufferSourceNode::new_with_options_ffi(context, options.to_js())
+}
 
 ///|
 pub extern "js" fn AudioBufferSourceNode::get_buffer(
   self : AudioBufferSourceNode,
 ) -> AudioBuffer? =
-  #| (self) => { const v = self.buffer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.buffer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn AudioBufferSourceNode::set_buffer(
   self : AudioBufferSourceNode,
   value : AudioBuffer?,
 ) -> Unit =
-  #| (self, value) => { self.buffer = value }
+  #| (self, value) => { self.buffer = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn AudioBufferSourceNode::get_playback_rate(
@@ -3066,11 +3323,19 @@ pub extern "js" fn AudioProcessingEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn AudioProcessingEvent::new(
+extern "js" fn AudioProcessingEvent::new_ffi(
   type_ : String,
-  event_init_dict : AudioProcessingEventInit,
+  event_init_dict : JsValue,
 ) -> AudioProcessingEvent =
   #| (type_, event_init_dict) => new AudioProcessingEvent(type_, event_init_dict)
+
+///|
+pub fn AudioProcessingEvent::new(
+  type_ : String,
+  event_init_dict : AudioProcessingEventInit,
+) -> AudioProcessingEvent {
+  AudioProcessingEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn AudioProcessingEvent::get_playback_time(
@@ -3143,22 +3408,36 @@ pub extern "js" fn BiquadFilterNode::to_event_target(
 ///|
 pub extern "js" fn BiquadFilterNode::new(
   context : BaseAudioContext,
-  options : BiquadFilterOptions,
+) -> BiquadFilterNode =
+  #| (context) => new BiquadFilterNode(context)
+
+///|
+extern "js" fn BiquadFilterNode::new_with_options_ffi(
+  context : BaseAudioContext,
+  options : JsValue,
 ) -> BiquadFilterNode =
   #| (context, options) => new BiquadFilterNode(context, options)
+
+///|
+pub fn BiquadFilterNode::new_with_options(
+  context : BaseAudioContext,
+  options : BiquadFilterOptions,
+) -> BiquadFilterNode {
+  BiquadFilterNode::new_with_options_ffi(context, options.to_js())
+}
 
 ///|
 pub extern "js" fn BiquadFilterNode::get_type(
   self : BiquadFilterNode,
 ) -> BiquadFilterType =
-  #| (self) => self.type
+  #| (self) => ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch', 'allpass'].indexOf(self.type)
 
 ///|
 pub extern "js" fn BiquadFilterNode::set_type(
   self : BiquadFilterNode,
   value : BiquadFilterType,
 ) -> Unit =
-  #| (self, value) => { self.type = value }
+  #| (self, value) => { self.type = ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch', 'allpass'][value] }
 
 ///|
 pub extern "js" fn BiquadFilterNode::get_frequency(
@@ -3246,9 +3525,23 @@ pub extern "js" fn ChannelMergerNode::to_event_target(
 ///|
 pub extern "js" fn ChannelMergerNode::new(
   context : BaseAudioContext,
-  options : ChannelMergerOptions,
+) -> ChannelMergerNode =
+  #| (context) => new ChannelMergerNode(context)
+
+///|
+extern "js" fn ChannelMergerNode::new_with_options_ffi(
+  context : BaseAudioContext,
+  options : JsValue,
 ) -> ChannelMergerNode =
   #| (context, options) => new ChannelMergerNode(context, options)
+
+///|
+pub fn ChannelMergerNode::new_with_options(
+  context : BaseAudioContext,
+  options : ChannelMergerOptions,
+) -> ChannelMergerNode {
+  ChannelMergerNode::new_with_options_ffi(context, options.to_js())
+}
 
 ///|
 /// ChannelSplitterNode interface
@@ -3303,9 +3596,23 @@ pub extern "js" fn ChannelSplitterNode::to_event_target(
 ///|
 pub extern "js" fn ChannelSplitterNode::new(
   context : BaseAudioContext,
-  options : ChannelSplitterOptions,
+) -> ChannelSplitterNode =
+  #| (context) => new ChannelSplitterNode(context)
+
+///|
+extern "js" fn ChannelSplitterNode::new_with_options_ffi(
+  context : BaseAudioContext,
+  options : JsValue,
 ) -> ChannelSplitterNode =
   #| (context, options) => new ChannelSplitterNode(context, options)
+
+///|
+pub fn ChannelSplitterNode::new_with_options(
+  context : BaseAudioContext,
+  options : ChannelSplitterOptions,
+) -> ChannelSplitterNode {
+  ChannelSplitterNode::new_with_options_ffi(context, options.to_js())
+}
 
 ///|
 /// ConstantSourceNode interface
@@ -3366,9 +3673,23 @@ pub extern "js" fn ConstantSourceNode::to_event_target(
 ///|
 pub extern "js" fn ConstantSourceNode::new(
   context : BaseAudioContext,
-  options : ConstantSourceOptions,
+) -> ConstantSourceNode =
+  #| (context) => new ConstantSourceNode(context)
+
+///|
+extern "js" fn ConstantSourceNode::new_with_options_ffi(
+  context : BaseAudioContext,
+  options : JsValue,
 ) -> ConstantSourceNode =
   #| (context, options) => new ConstantSourceNode(context, options)
+
+///|
+pub fn ConstantSourceNode::new_with_options(
+  context : BaseAudioContext,
+  options : ConstantSourceOptions,
+) -> ConstantSourceNode {
+  ConstantSourceNode::new_with_options_ffi(context, options.to_js())
+}
 
 ///|
 pub extern "js" fn ConstantSourceNode::get_offset(
@@ -3421,22 +3742,36 @@ pub extern "js" fn ConvolverNode::to_event_target(
 ///|
 pub extern "js" fn ConvolverNode::new(
   context : BaseAudioContext,
-  options : ConvolverOptions,
+) -> ConvolverNode =
+  #| (context) => new ConvolverNode(context)
+
+///|
+extern "js" fn ConvolverNode::new_with_options_ffi(
+  context : BaseAudioContext,
+  options : JsValue,
 ) -> ConvolverNode =
   #| (context, options) => new ConvolverNode(context, options)
+
+///|
+pub fn ConvolverNode::new_with_options(
+  context : BaseAudioContext,
+  options : ConvolverOptions,
+) -> ConvolverNode {
+  ConvolverNode::new_with_options_ffi(context, options.to_js())
+}
 
 ///|
 pub extern "js" fn ConvolverNode::get_buffer(
   self : ConvolverNode,
 ) -> AudioBuffer? =
-  #| (self) => { const v = self.buffer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.buffer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ConvolverNode::set_buffer(
   self : ConvolverNode,
   value : AudioBuffer?,
 ) -> Unit =
-  #| (self, value) => { self.buffer = value }
+  #| (self, value) => { self.buffer = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn ConvolverNode::get_normalize(self : ConvolverNode) -> Bool =
@@ -3486,11 +3821,23 @@ pub extern "js" fn DelayNode::to_event_target(self : DelayNode) -> EventTarget =
   #| (self) => self
 
 ///|
-pub extern "js" fn DelayNode::new(
+pub extern "js" fn DelayNode::new(context : BaseAudioContext) -> DelayNode =
+  #| (context) => new DelayNode(context)
+
+///|
+extern "js" fn DelayNode::new_with_options_ffi(
   context : BaseAudioContext,
-  options : DelayOptions,
+  options : JsValue,
 ) -> DelayNode =
   #| (context, options) => new DelayNode(context, options)
+
+///|
+pub fn DelayNode::new_with_options(
+  context : BaseAudioContext,
+  options : DelayOptions,
+) -> DelayNode {
+  DelayNode::new_with_options_ffi(context, options.to_js())
+}
 
 ///|
 pub extern "js" fn DelayNode::get_delay_time(self : DelayNode) -> AudioParam =
@@ -3549,9 +3896,23 @@ pub extern "js" fn DynamicsCompressorNode::to_event_target(
 ///|
 pub extern "js" fn DynamicsCompressorNode::new(
   context : BaseAudioContext,
-  options : DynamicsCompressorOptions,
+) -> DynamicsCompressorNode =
+  #| (context) => new DynamicsCompressorNode(context)
+
+///|
+extern "js" fn DynamicsCompressorNode::new_with_options_ffi(
+  context : BaseAudioContext,
+  options : JsValue,
 ) -> DynamicsCompressorNode =
   #| (context, options) => new DynamicsCompressorNode(context, options)
+
+///|
+pub fn DynamicsCompressorNode::new_with_options(
+  context : BaseAudioContext,
+  options : DynamicsCompressorOptions,
+) -> DynamicsCompressorNode {
+  DynamicsCompressorNode::new_with_options_ffi(context, options.to_js())
+}
 
 ///|
 pub extern "js" fn DynamicsCompressorNode::get_threshold(
@@ -3626,11 +3987,23 @@ pub extern "js" fn GainNode::to_event_target(self : GainNode) -> EventTarget =
   #| (self) => self
 
 ///|
-pub extern "js" fn GainNode::new(
+pub extern "js" fn GainNode::new(context : BaseAudioContext) -> GainNode =
+  #| (context) => new GainNode(context)
+
+///|
+extern "js" fn GainNode::new_with_options_ffi(
   context : BaseAudioContext,
-  options : GainOptions,
+  options : JsValue,
 ) -> GainNode =
   #| (context, options) => new GainNode(context, options)
+
+///|
+pub fn GainNode::new_with_options(
+  context : BaseAudioContext,
+  options : GainOptions,
+) -> GainNode {
+  GainNode::new_with_options_ffi(context, options.to_js())
+}
 
 ///|
 pub extern "js" fn GainNode::get_gain(self : GainNode) -> AudioParam =
@@ -3681,11 +4054,19 @@ pub extern "js" fn IIRFilterNode::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn IIRFilterNode::new(
+extern "js" fn IIRFilterNode::new_ffi(
   context : BaseAudioContext,
-  options : IIRFilterOptions,
+  options : JsValue,
 ) -> IIRFilterNode =
   #| (context, options) => new IIRFilterNode(context, options)
+
+///|
+pub fn IIRFilterNode::new(
+  context : BaseAudioContext,
+  options : IIRFilterOptions,
+) -> IIRFilterNode {
+  IIRFilterNode::new_ffi(context, options.to_js())
+}
 
 ///|
 pub extern "js" fn IIRFilterNode::get_frequency_response(
@@ -3747,11 +4128,19 @@ pub extern "js" fn MediaElementAudioSourceNode::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaElementAudioSourceNode::new(
+extern "js" fn MediaElementAudioSourceNode::new_ffi(
   context : AudioContext,
-  options : MediaElementAudioSourceOptions,
+  options : JsValue,
 ) -> MediaElementAudioSourceNode =
   #| (context, options) => new MediaElementAudioSourceNode(context, options)
+
+///|
+pub fn MediaElementAudioSourceNode::new(
+  context : AudioContext,
+  options : MediaElementAudioSourceOptions,
+) -> MediaElementAudioSourceNode {
+  MediaElementAudioSourceNode::new_ffi(context, options.to_js())
+}
 
 ///|
 pub extern "js" fn MediaElementAudioSourceNode::get_media_element(
@@ -3812,9 +4201,26 @@ pub extern "js" fn MediaStreamAudioDestinationNode::to_event_target(
 ///|
 pub extern "js" fn MediaStreamAudioDestinationNode::new(
   context : AudioContext,
-  options : AudioNodeOptions,
+) -> MediaStreamAudioDestinationNode =
+  #| (context) => new MediaStreamAudioDestinationNode(context)
+
+///|
+extern "js" fn MediaStreamAudioDestinationNode::new_with_options_ffi(
+  context : AudioContext,
+  options : JsValue,
 ) -> MediaStreamAudioDestinationNode =
   #| (context, options) => new MediaStreamAudioDestinationNode(context, options)
+
+///|
+pub fn MediaStreamAudioDestinationNode::new_with_options(
+  context : AudioContext,
+  options : AudioNodeOptions,
+) -> MediaStreamAudioDestinationNode {
+  MediaStreamAudioDestinationNode::new_with_options_ffi(
+    context,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn MediaStreamAudioDestinationNode::get_stream(
@@ -3873,11 +4279,19 @@ pub extern "js" fn MediaStreamAudioSourceNode::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaStreamAudioSourceNode::new(
+extern "js" fn MediaStreamAudioSourceNode::new_ffi(
   context : AudioContext,
-  options : MediaStreamAudioSourceOptions,
+  options : JsValue,
 ) -> MediaStreamAudioSourceNode =
   #| (context, options) => new MediaStreamAudioSourceNode(context, options)
+
+///|
+pub fn MediaStreamAudioSourceNode::new(
+  context : AudioContext,
+  options : MediaStreamAudioSourceOptions,
+) -> MediaStreamAudioSourceNode {
+  MediaStreamAudioSourceNode::new_ffi(context, options.to_js())
+}
 
 ///|
 pub extern "js" fn MediaStreamAudioSourceNode::get_media_stream(
@@ -3936,11 +4350,19 @@ pub extern "js" fn MediaStreamTrackAudioSourceNode::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaStreamTrackAudioSourceNode::new(
+extern "js" fn MediaStreamTrackAudioSourceNode::new_ffi(
   context : AudioContext,
-  options : MediaStreamTrackAudioSourceOptions,
+  options : JsValue,
 ) -> MediaStreamTrackAudioSourceNode =
   #| (context, options) => new MediaStreamTrackAudioSourceNode(context, options)
+
+///|
+pub fn MediaStreamTrackAudioSourceNode::new(
+  context : AudioContext,
+  options : MediaStreamTrackAudioSourceOptions,
+) -> MediaStreamTrackAudioSourceNode {
+  MediaStreamTrackAudioSourceNode::new_ffi(context, options.to_js())
+}
 
 ///|
 /// OscillatorNode interface
@@ -3999,22 +4421,36 @@ pub extern "js" fn OscillatorNode::to_event_target(
 ///|
 pub extern "js" fn OscillatorNode::new(
   context : BaseAudioContext,
-  options : OscillatorOptions,
+) -> OscillatorNode =
+  #| (context) => new OscillatorNode(context)
+
+///|
+extern "js" fn OscillatorNode::new_with_options_ffi(
+  context : BaseAudioContext,
+  options : JsValue,
 ) -> OscillatorNode =
   #| (context, options) => new OscillatorNode(context, options)
+
+///|
+pub fn OscillatorNode::new_with_options(
+  context : BaseAudioContext,
+  options : OscillatorOptions,
+) -> OscillatorNode {
+  OscillatorNode::new_with_options_ffi(context, options.to_js())
+}
 
 ///|
 pub extern "js" fn OscillatorNode::get_type(
   self : OscillatorNode,
 ) -> OscillatorType =
-  #| (self) => self.type
+  #| (self) => ['sine', 'square', 'sawtooth', 'triangle', 'custom'].indexOf(self.type)
 
 ///|
 pub extern "js" fn OscillatorNode::set_type(
   self : OscillatorNode,
   value : OscillatorType,
 ) -> Unit =
-  #| (self, value) => { self.type = value }
+  #| (self, value) => { self.type = ['sine', 'square', 'sawtooth', 'triangle', 'custom'][value] }
 
 ///|
 pub extern "js" fn OscillatorNode::get_frequency(
@@ -4074,24 +4510,36 @@ pub extern "js" fn PannerNode::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn PannerNode::new(
+pub extern "js" fn PannerNode::new(context : BaseAudioContext) -> PannerNode =
+  #| (context) => new PannerNode(context)
+
+///|
+extern "js" fn PannerNode::new_with_options_ffi(
   context : BaseAudioContext,
-  options : PannerOptions,
+  options : JsValue,
 ) -> PannerNode =
   #| (context, options) => new PannerNode(context, options)
+
+///|
+pub fn PannerNode::new_with_options(
+  context : BaseAudioContext,
+  options : PannerOptions,
+) -> PannerNode {
+  PannerNode::new_with_options_ffi(context, options.to_js())
+}
 
 ///|
 pub extern "js" fn PannerNode::get_panning_model(
   self : PannerNode,
 ) -> PanningModelType =
-  #| (self) => self.panningModel
+  #| (self) => ['equalpower', 'HRTF'].indexOf(self.panningModel)
 
 ///|
 pub extern "js" fn PannerNode::set_panning_model(
   self : PannerNode,
   value : PanningModelType,
 ) -> Unit =
-  #| (self, value) => { self.panningModel = value }
+  #| (self, value) => { self.panningModel = ['equalpower', 'HRTF'][value] }
 
 ///|
 pub extern "js" fn PannerNode::get_position_x(self : PannerNode) -> AudioParam =
@@ -4127,14 +4575,14 @@ pub extern "js" fn PannerNode::get_orientation_z(
 pub extern "js" fn PannerNode::get_distance_model(
   self : PannerNode,
 ) -> DistanceModelType =
-  #| (self) => self.distanceModel
+  #| (self) => ['linear', 'inverse', 'exponential'].indexOf(self.distanceModel)
 
 ///|
 pub extern "js" fn PannerNode::set_distance_model(
   self : PannerNode,
   value : DistanceModelType,
 ) -> Unit =
-  #| (self, value) => { self.distanceModel = value }
+  #| (self, value) => { self.distanceModel = ['linear', 'inverse', 'exponential'][value] }
 
 ///|
 pub extern "js" fn PannerNode::get_ref_distance(self : PannerNode) -> Double =
@@ -4257,9 +4705,23 @@ pub extern "js" fn JsValue::to_periodic_wave(self : JsValue) -> PeriodicWave =
 ///|
 pub extern "js" fn PeriodicWave::new(
   context : BaseAudioContext,
-  options : PeriodicWaveOptions,
+) -> PeriodicWave =
+  #| (context) => new PeriodicWave(context)
+
+///|
+extern "js" fn PeriodicWave::new_with_options_ffi(
+  context : BaseAudioContext,
+  options : JsValue,
 ) -> PeriodicWave =
   #| (context, options) => new PeriodicWave(context, options)
+
+///|
+pub fn PeriodicWave::new_with_options(
+  context : BaseAudioContext,
+  options : PeriodicWaveOptions,
+) -> PeriodicWave {
+  PeriodicWave::new_with_options_ffi(context, options.to_js())
+}
 
 ///|
 /// ScriptProcessorNode interface
@@ -4383,9 +4845,23 @@ pub extern "js" fn StereoPannerNode::to_event_target(
 ///|
 pub extern "js" fn StereoPannerNode::new(
   context : BaseAudioContext,
-  options : StereoPannerOptions,
+) -> StereoPannerNode =
+  #| (context) => new StereoPannerNode(context)
+
+///|
+extern "js" fn StereoPannerNode::new_with_options_ffi(
+  context : BaseAudioContext,
+  options : JsValue,
 ) -> StereoPannerNode =
   #| (context, options) => new StereoPannerNode(context, options)
+
+///|
+pub fn StereoPannerNode::new_with_options(
+  context : BaseAudioContext,
+  options : StereoPannerOptions,
+) -> StereoPannerNode {
+  StereoPannerNode::new_with_options_ffi(context, options.to_js())
+}
 
 ///|
 pub extern "js" fn StereoPannerNode::get_pan(
@@ -4444,35 +4920,49 @@ pub extern "js" fn WaveShaperNode::to_event_target(
 ///|
 pub extern "js" fn WaveShaperNode::new(
   context : BaseAudioContext,
-  options : WaveShaperOptions,
+) -> WaveShaperNode =
+  #| (context) => new WaveShaperNode(context)
+
+///|
+extern "js" fn WaveShaperNode::new_with_options_ffi(
+  context : BaseAudioContext,
+  options : JsValue,
 ) -> WaveShaperNode =
   #| (context, options) => new WaveShaperNode(context, options)
+
+///|
+pub fn WaveShaperNode::new_with_options(
+  context : BaseAudioContext,
+  options : WaveShaperOptions,
+) -> WaveShaperNode {
+  WaveShaperNode::new_with_options_ffi(context, options.to_js())
+}
 
 ///|
 pub extern "js" fn WaveShaperNode::get_curve(
   self : WaveShaperNode,
 ) -> Float32Array? =
-  #| (self) => { const v = self.curve; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.curve; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WaveShaperNode::set_curve(
   self : WaveShaperNode,
   value : Float32Array?,
 ) -> Unit =
-  #| (self, value) => { self.curve = value }
+  #| (self, value) => { self.curve = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn WaveShaperNode::get_oversample(
   self : WaveShaperNode,
 ) -> OverSampleType =
-  #| (self) => self.oversample
+  #| (self) => ['none', '2x', '4x'].indexOf(self.oversample)
 
 ///|
 pub extern "js" fn WaveShaperNode::set_oversample(
   self : WaveShaperNode,
   value : OverSampleType,
 ) -> Unit =
-  #| (self, value) => { self.oversample = value }
+  #| (self, value) => { self.oversample = ['none', '2x', '4x'][value] }
 
 ///|
 /// AudioWorklet interface
@@ -4568,7 +5058,7 @@ pub extern "js" fn AudioWorkletGlobalScope::register_processor(
 pub extern "js" fn AudioWorkletGlobalScope::get_current_frame(
   self : AudioWorkletGlobalScope,
 ) -> Int64 =
-  #| (self) => self.currentFrame
+  #| (self) => (() => { const n = self.currentFrame; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn AudioWorkletGlobalScope::get_current_time(
@@ -4631,7 +5121,7 @@ pub extern "js" fn AudioParamMap::get(
   self : AudioParamMap,
   key : String,
 ) -> AudioParam? =
-  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, key) => self.get(key)
 
 ///|
 pub extern "js" fn AudioParamMap::has(
@@ -4694,9 +5184,25 @@ pub extern "js" fn AudioWorkletNode::to_event_target(
 pub extern "js" fn AudioWorkletNode::new(
   context : BaseAudioContext,
   name : String,
-  options : AudioWorkletNodeOptions,
+) -> AudioWorkletNode =
+  #| (context, name) => new AudioWorkletNode(context, name)
+
+///|
+extern "js" fn AudioWorkletNode::new_with_options_ffi(
+  context : BaseAudioContext,
+  name : String,
+  options : JsValue,
 ) -> AudioWorkletNode =
   #| (context, name, options) => new AudioWorkletNode(context, name, options)
+
+///|
+pub fn AudioWorkletNode::new_with_options(
+  context : BaseAudioContext,
+  name : String,
+  options : AudioWorkletNodeOptions,
+) -> AudioWorkletNode {
+  AudioWorkletNode::new_with_options_ffi(context, name, options.to_js())
+}
 
 ///|
 pub extern "js" fn AudioWorkletNode::get_parameters(

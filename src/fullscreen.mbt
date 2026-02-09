@@ -36,7 +36,7 @@ pub fn FullscreenNavigationUI::from_string(
 
 ///|
 /// FullscreenOptions dictionary
-pub struct FullscreenOptions {
+pub(all) struct FullscreenOptions {
   navigationUI : FullscreenNavigationUI?
   screen : ScreenDetailed?
 }
@@ -48,11 +48,16 @@ pub fn FullscreenOptions::default() -> FullscreenOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FullscreenOptions::to_js(
+extern "js" fn FullscreenOptions::to_js_ffi(
   self : FullscreenOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   navigationUI: ['auto', 'show', 'hide'][self.navigationUI],
-  #|   screen: self.screen
+  #|   navigationUI: ((() => { const v = self.navigationUI; if (v === undefined) return undefined; return ['auto', 'show', 'hide'][v]; })()),
+  #|   screen: ((() => { const v = self.screen; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn FullscreenOptions::to_js(self : FullscreenOptions) -> JsValue {
+  FullscreenOptions::to_js_ffi(self)
+}

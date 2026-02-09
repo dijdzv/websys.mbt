@@ -108,20 +108,20 @@ pub extern "js" fn AudioSession::to_event_target(
 pub extern "js" fn AudioSession::get_type(
   self : AudioSession,
 ) -> AudioSessionType =
-  #| (self) => self.type
+  #| (self) => ['auto', 'playback', 'transient', 'transient-solo', 'ambient', 'play-and-record'].indexOf(self.type)
 
 ///|
 pub extern "js" fn AudioSession::set_type(
   self : AudioSession,
   value : AudioSessionType,
 ) -> Unit =
-  #| (self, value) => { self.type = value }
+  #| (self, value) => { self.type = ['auto', 'playback', 'transient', 'transient-solo', 'ambient', 'play-and-record'][value] }
 
 ///|
 pub extern "js" fn AudioSession::get_state(
   self : AudioSession,
 ) -> AudioSessionState =
-  #| (self) => self.state
+  #| (self) => ['inactive', 'active', 'interrupted'].indexOf(self.state)
 
 ///|
 pub extern "js" fn AudioSession::get_onstatechange(

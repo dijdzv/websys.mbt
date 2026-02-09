@@ -3,7 +3,7 @@
 
 ///|
 /// InputDeviceCapabilitiesInit dictionary
-pub struct InputDeviceCapabilitiesInit {
+pub(all) struct InputDeviceCapabilitiesInit {
   firesTouchEvents : Bool?
   pointerMovementScrolls : Bool?
 }
@@ -18,18 +18,25 @@ pub fn InputDeviceCapabilitiesInit::default() -> InputDeviceCapabilitiesInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn InputDeviceCapabilitiesInit::to_js(
+extern "js" fn InputDeviceCapabilitiesInit::to_js_ffi(
   self : InputDeviceCapabilitiesInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   firesTouchEvents: self.firesTouchEvents,
-  #|   pointerMovementScrolls: self.pointerMovementScrolls
+  #|   firesTouchEvents: (self.firesTouchEvents === -1 ? undefined : self.firesTouchEvents),
+  #|   pointerMovementScrolls: (self.pointerMovementScrolls === -1 ? undefined : self.pointerMovementScrolls)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn InputDeviceCapabilitiesInit::to_js(
+  self : InputDeviceCapabilitiesInit,
+) -> JsValue {
+  InputDeviceCapabilitiesInit::to_js_ffi(self)
+}
+
+///|
 /// UIEventInit dictionary
-pub struct UIEventInit {
+pub(all) struct UIEventInit {
   sourceCapabilities : Nullable[InputDeviceCapabilities]
   view : Nullable[Window]
   detail : Int?
@@ -48,14 +55,19 @@ pub fn UIEventInit::default() -> UIEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn UIEventInit::to_js(self : UIEventInit) -> JsValue =
+extern "js" fn UIEventInit::to_js_ffi(self : UIEventInit) -> JsValue =
   #| (self) => ({
   #|   sourceCapabilities: ((() => { const v = self.sourceCapabilities; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   view: ((() => { const v = self.view; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   detail: self.detail,
   #|   which: self.which
   #| })
+
+///|
+/// Convert to JsValue
+pub fn UIEventInit::to_js(self : UIEventInit) -> JsValue {
+  UIEventInit::to_js_ffi(self)
+}
 
 ///|
 /// InputDeviceCapabilities interface
@@ -96,10 +108,23 @@ pub extern "js" fn JsValue::to_input_device_capabilities(
   #| (self) => self
 
 ///|
-pub extern "js" fn InputDeviceCapabilities::new(
-  device_init_dict : InputDeviceCapabilitiesInit,
+pub extern "js" fn InputDeviceCapabilities::new() -> InputDeviceCapabilities =
+  #| () => new InputDeviceCapabilities()
+
+///|
+extern "js" fn InputDeviceCapabilities::new_with_device_init_dict_ffi(
+  device_init_dict : JsValue,
 ) -> InputDeviceCapabilities =
   #| (device_init_dict) => new InputDeviceCapabilities(device_init_dict)
+
+///|
+pub fn InputDeviceCapabilities::new_with_device_init_dict(
+  device_init_dict : InputDeviceCapabilitiesInit,
+) -> InputDeviceCapabilities {
+  InputDeviceCapabilities::new_with_device_init_dict_ffi(
+    device_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn InputDeviceCapabilities::get_fires_touch_events(

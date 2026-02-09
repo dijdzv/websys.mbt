@@ -140,13 +140,13 @@ pub extern "js" fn NetworkInformation::to_event_target(
 pub extern "js" fn NetworkInformation::get_type(
   self : NetworkInformation,
 ) -> ConnectionType =
-  #| (self) => self.type
+  #| (self) => ['bluetooth', 'cellular', 'ethernet', 'mixed', 'none', 'other', 'unknown', 'wifi', 'wimax'].indexOf(self.type)
 
 ///|
 pub extern "js" fn NetworkInformation::get_effective_type(
   self : NetworkInformation,
 ) -> EffectiveConnectionType =
-  #| (self) => self.effectiveType
+  #| (self) => ['2g', '3g', '4g', 'slow-2g'].indexOf(self.effectiveType)
 
 ///|
 pub extern "js" fn NetworkInformation::get_downlink_max(

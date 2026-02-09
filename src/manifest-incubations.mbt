@@ -33,7 +33,7 @@ pub fn AppBannerPromptOutcome::from_string(
 
 ///|
 /// PromptResponseObject dictionary
-pub struct PromptResponseObject {
+pub(all) struct PromptResponseObject {
   userChoice : AppBannerPromptOutcome?
 }
 
@@ -44,13 +44,18 @@ pub fn PromptResponseObject::default() -> PromptResponseObject {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PromptResponseObject::to_js(
+extern "js" fn PromptResponseObject::to_js_ffi(
   self : PromptResponseObject,
 ) -> JsValue =
   #| (self) => ({
-  #|   userChoice: ['accepted', 'dismissed'][self.userChoice]
+  #|   userChoice: ((() => { const v = self.userChoice; if (v === undefined) return undefined; return ['accepted', 'dismissed'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PromptResponseObject::to_js(self : PromptResponseObject) -> JsValue {
+  PromptResponseObject::to_js_ffi(self)
+}
 
 ///|
 /// BeforeInstallPromptEvent interface
@@ -99,9 +104,26 @@ pub extern "js" fn BeforeInstallPromptEvent::to_event(
 ///|
 pub extern "js" fn BeforeInstallPromptEvent::new(
   type_ : String,
-  event_init_dict : EventInit,
+) -> BeforeInstallPromptEvent =
+  #| (type_) => new BeforeInstallPromptEvent(type_)
+
+///|
+extern "js" fn BeforeInstallPromptEvent::new_with_event_init_dict_ffi(
+  type_ : String,
+  event_init_dict : JsValue,
 ) -> BeforeInstallPromptEvent =
   #| (type_, event_init_dict) => new BeforeInstallPromptEvent(type_, event_init_dict)
+
+///|
+pub fn BeforeInstallPromptEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : EventInit,
+) -> BeforeInstallPromptEvent {
+  BeforeInstallPromptEvent::new_with_event_init_dict_ffi(
+    type_,
+    event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn BeforeInstallPromptEvent::prompt(

@@ -67,7 +67,7 @@ pub extern "js" fn XRPlane::get_polygon(self : XRPlane) -> JsValue =
 pub extern "js" fn XRPlane::get_orientation(
   self : XRPlane,
 ) -> XRPlaneOrientation? =
-  #| (self) => { const v = self.orientation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.orientation; return v == null ? undefined : ['horizontal', 'vertical'].indexOf(v); })()
 
 ///|
 pub extern "js" fn XRPlane::get_last_changed_time(
@@ -77,7 +77,7 @@ pub extern "js" fn XRPlane::get_last_changed_time(
 
 ///|
 pub extern "js" fn XRPlane::get_semantic_label(self : XRPlane) -> String? =
-  #| (self) => { const v = self.semanticLabel; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.semanticLabel) ?? undefined
 
 ///|
 /// XRPlaneSet interface

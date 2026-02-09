@@ -44,7 +44,7 @@ pub fn HIDUnitSystem::from_string(s : String) -> HIDUnitSystem? {
 
 ///|
 /// HIDDeviceRequestOptions dictionary
-pub struct HIDDeviceRequestOptions {
+pub(all) struct HIDDeviceRequestOptions {
   filters : Array[HIDDeviceFilter]
   exclusionFilters : Array[HIDDeviceFilter]?
 }
@@ -56,18 +56,25 @@ pub fn HIDDeviceRequestOptions::default() -> HIDDeviceRequestOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn HIDDeviceRequestOptions::to_js(
+extern "js" fn HIDDeviceRequestOptions::to_js_ffi(
   self : HIDDeviceRequestOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   filters: self.filters,
-  #|   exclusionFilters: self.exclusionFilters
+  #|   exclusionFilters: ((() => { const v = self.exclusionFilters; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn HIDDeviceRequestOptions::to_js(
+  self : HIDDeviceRequestOptions,
+) -> JsValue {
+  HIDDeviceRequestOptions::to_js_ffi(self)
+}
+
+///|
 /// HIDDeviceFilter dictionary
-pub struct HIDDeviceFilter {
+pub(all) struct HIDDeviceFilter {
   vendorId : Int?
   productId : Int?
   usagePage : Int?
@@ -86,8 +93,7 @@ pub fn HIDDeviceFilter::default() -> HIDDeviceFilter {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn HIDDeviceFilter::to_js(self : HIDDeviceFilter) -> JsValue =
+extern "js" fn HIDDeviceFilter::to_js_ffi(self : HIDDeviceFilter) -> JsValue =
   #| (self) => ({
   #|   vendorId: self.vendorId,
   #|   productId: self.productId,
@@ -96,20 +102,27 @@ pub extern "js" fn HIDDeviceFilter::to_js(self : HIDDeviceFilter) -> JsValue =
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn HIDDeviceFilter::to_js(self : HIDDeviceFilter) -> JsValue {
+  HIDDeviceFilter::to_js_ffi(self)
+}
+
+///|
 /// HIDConnectionEventInit dictionary
-pub struct HIDConnectionEventInit {
+pub(all) struct HIDConnectionEventInit {
   device : HIDDevice
 }
 
 ///|
-/// Create a new HIDConnectionEventInit with default values
-pub fn HIDConnectionEventInit::default() -> HIDConnectionEventInit {
-  HIDConnectionEventInit::{ device: panic() }
+/// Create a new HIDConnectionEventInit
+pub fn HIDConnectionEventInit::new(
+  device~ : HIDDevice,
+) -> HIDConnectionEventInit {
+  HIDConnectionEventInit::{ device, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn HIDConnectionEventInit::to_js(
+extern "js" fn HIDConnectionEventInit::to_js_ffi(
   self : HIDConnectionEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -117,22 +130,30 @@ pub extern "js" fn HIDConnectionEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn HIDConnectionEventInit::to_js(self : HIDConnectionEventInit) -> JsValue {
+  HIDConnectionEventInit::to_js_ffi(self)
+}
+
+///|
 /// HIDInputReportEventInit dictionary
-pub struct HIDInputReportEventInit {
+pub(all) struct HIDInputReportEventInit {
   device : HIDDevice
   reportId : Int
   data : DataView
 }
 
 ///|
-/// Create a new HIDInputReportEventInit with default values
-pub fn HIDInputReportEventInit::default() -> HIDInputReportEventInit {
-  HIDInputReportEventInit::{ device: panic(), reportId: 0, data: panic() }
+/// Create a new HIDInputReportEventInit
+pub fn HIDInputReportEventInit::new(
+  device~ : HIDDevice,
+  data~ : DataView,
+) -> HIDInputReportEventInit {
+  HIDInputReportEventInit::{ device, reportId: 0, data }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn HIDInputReportEventInit::to_js(
+extern "js" fn HIDInputReportEventInit::to_js_ffi(
   self : HIDInputReportEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -142,8 +163,16 @@ pub extern "js" fn HIDInputReportEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn HIDInputReportEventInit::to_js(
+  self : HIDInputReportEventInit,
+) -> JsValue {
+  HIDInputReportEventInit::to_js_ffi(self)
+}
+
+///|
 /// HIDCollectionInfo dictionary
-pub struct HIDCollectionInfo {
+pub(all) struct HIDCollectionInfo {
   usagePage : Int?
   usage : Int?
   type_ : Int?
@@ -168,23 +197,28 @@ pub fn HIDCollectionInfo::default() -> HIDCollectionInfo {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn HIDCollectionInfo::to_js(
+extern "js" fn HIDCollectionInfo::to_js_ffi(
   self : HIDCollectionInfo,
 ) -> JsValue =
   #| (self) => ({
   #|   usagePage: self.usagePage,
   #|   usage: self.usage,
   #|   type: self.type_,
-  #|   children: self.children,
-  #|   inputReports: self.inputReports,
-  #|   outputReports: self.outputReports,
-  #|   featureReports: self.featureReports
+  #|   children: ((() => { const v = self.children; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   inputReports: ((() => { const v = self.inputReports; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   outputReports: ((() => { const v = self.outputReports; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   featureReports: ((() => { const v = self.featureReports; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn HIDCollectionInfo::to_js(self : HIDCollectionInfo) -> JsValue {
+  HIDCollectionInfo::to_js_ffi(self)
+}
+
+///|
 /// HIDReportInfo dictionary
-pub struct HIDReportInfo {
+pub(all) struct HIDReportInfo {
   reportId : Int?
   items : Array[HIDReportItem]?
 }
@@ -196,16 +230,21 @@ pub fn HIDReportInfo::default() -> HIDReportInfo {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn HIDReportInfo::to_js(self : HIDReportInfo) -> JsValue =
+extern "js" fn HIDReportInfo::to_js_ffi(self : HIDReportInfo) -> JsValue =
   #| (self) => ({
   #|   reportId: self.reportId,
-  #|   items: self.items
+  #|   items: ((() => { const v = self.items; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn HIDReportInfo::to_js(self : HIDReportInfo) -> JsValue {
+  HIDReportInfo::to_js_ffi(self)
+}
+
+///|
 /// HIDReportItem dictionary
-pub struct HIDReportItem {
+pub(all) struct HIDReportItem {
   isAbsolute : Bool?
   isArray : Bool?
   isBufferedBytes : Bool?
@@ -272,26 +311,25 @@ pub fn HIDReportItem::default() -> HIDReportItem {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn HIDReportItem::to_js(self : HIDReportItem) -> JsValue =
+extern "js" fn HIDReportItem::to_js_ffi(self : HIDReportItem) -> JsValue =
   #| (self) => ({
-  #|   isAbsolute: self.isAbsolute,
-  #|   isArray: self.isArray,
-  #|   isBufferedBytes: self.isBufferedBytes,
-  #|   isConstant: self.isConstant,
-  #|   isLinear: self.isLinear,
-  #|   isRange: self.isRange,
-  #|   isVolatile: self.isVolatile,
-  #|   hasNull: self.hasNull,
-  #|   hasPreferredState: self.hasPreferredState,
-  #|   wrap: self.wrap,
-  #|   usages: self.usages,
+  #|   isAbsolute: (self.isAbsolute === -1 ? undefined : self.isAbsolute),
+  #|   isArray: (self.isArray === -1 ? undefined : self.isArray),
+  #|   isBufferedBytes: (self.isBufferedBytes === -1 ? undefined : self.isBufferedBytes),
+  #|   isConstant: (self.isConstant === -1 ? undefined : self.isConstant),
+  #|   isLinear: (self.isLinear === -1 ? undefined : self.isLinear),
+  #|   isRange: (self.isRange === -1 ? undefined : self.isRange),
+  #|   isVolatile: (self.isVolatile === -1 ? undefined : self.isVolatile),
+  #|   hasNull: (self.hasNull === -1 ? undefined : self.hasNull),
+  #|   hasPreferredState: (self.hasPreferredState === -1 ? undefined : self.hasPreferredState),
+  #|   wrap: (self.wrap === -1 ? undefined : self.wrap),
+  #|   usages: ((() => { const v = self.usages; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   usageMinimum: self.usageMinimum,
   #|   usageMaximum: self.usageMaximum,
   #|   reportSize: self.reportSize,
   #|   reportCount: self.reportCount,
   #|   unitExponent: self.unitExponent,
-  #|   unitSystem: ['none', 'si-linear', 'si-rotation', 'english-linear', 'english-rotation', 'vendor-defined', 'reserved'][self.unitSystem],
+  #|   unitSystem: ((() => { const v = self.unitSystem; if (v === undefined) return undefined; return ['none', 'si-linear', 'si-rotation', 'english-linear', 'english-rotation', 'vendor-defined', 'reserved'][v]; })()),
   #|   unitFactorLengthExponent: self.unitFactorLengthExponent,
   #|   unitFactorMassExponent: self.unitFactorMassExponent,
   #|   unitFactorTimeExponent: self.unitFactorTimeExponent,
@@ -302,8 +340,14 @@ pub extern "js" fn HIDReportItem::to_js(self : HIDReportItem) -> JsValue =
   #|   logicalMaximum: self.logicalMaximum,
   #|   physicalMinimum: self.physicalMinimum,
   #|   physicalMaximum: self.physicalMaximum,
-  #|   strings: self.strings
+  #|   strings: ((() => { const v = self.strings; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn HIDReportItem::to_js(self : HIDReportItem) -> JsValue {
+  HIDReportItem::to_js_ffi(self)
+}
 
 ///|
 /// HID interface
@@ -361,11 +405,19 @@ pub extern "js" fn HID::get_devices(self : HID) -> Promise[Array[HIDDevice]] =
   #| (self) => self.getDevices()
 
 ///|
-pub extern "js" fn HID::request_device(
+extern "js" fn HID::request_device_ffi(
   self : HID,
-  options : HIDDeviceRequestOptions,
+  options : JsValue,
 ) -> Promise[Array[HIDDevice]] =
   #| (self, options) => self.requestDevice(options)
+
+///|
+pub fn HID::request_device(
+  self : HID,
+  options : HIDDeviceRequestOptions,
+) -> Promise[Array[HIDDevice]] {
+  HID::request_device_ffi(self, options.to_js())
+}
 
 ///|
 /// HIDDevice interface
@@ -468,6 +520,38 @@ pub extern "js" fn HIDDevice::receive_feature_report(
   #| (self, report_id) => self.receiveFeatureReport(report_id)
 
 ///|
+pub extern "js" fn HIDDevice::send_report_with_array_buffer_view(
+  self : HIDDevice,
+  report_id : Int,
+  data : ArrayBufferView,
+) -> Promise[Unit] =
+  #| (self, report_id, data) => self.sendReport(report_id, data)
+
+///|
+pub extern "js" fn HIDDevice::send_report_with_array_buffer(
+  self : HIDDevice,
+  report_id : Int,
+  data : ArrayBuffer,
+) -> Promise[Unit] =
+  #| (self, report_id, data) => self.sendReport(report_id, data)
+
+///|
+pub extern "js" fn HIDDevice::send_feature_report_with_array_buffer_view(
+  self : HIDDevice,
+  report_id : Int,
+  data : ArrayBufferView,
+) -> Promise[Unit] =
+  #| (self, report_id, data) => self.sendFeatureReport(report_id, data)
+
+///|
+pub extern "js" fn HIDDevice::send_feature_report_with_array_buffer(
+  self : HIDDevice,
+  report_id : Int,
+  data : ArrayBuffer,
+) -> Promise[Unit] =
+  #| (self, report_id, data) => self.sendFeatureReport(report_id, data)
+
+///|
 /// HIDConnectionEvent interface
 pub type HIDConnectionEvent
 
@@ -512,11 +596,19 @@ pub extern "js" fn HIDConnectionEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn HIDConnectionEvent::new(
+extern "js" fn HIDConnectionEvent::new_ffi(
   type_ : String,
-  event_init_dict : HIDConnectionEventInit,
+  event_init_dict : JsValue,
 ) -> HIDConnectionEvent =
   #| (type_, event_init_dict) => new HIDConnectionEvent(type_, event_init_dict)
+
+///|
+pub fn HIDConnectionEvent::new(
+  type_ : String,
+  event_init_dict : HIDConnectionEventInit,
+) -> HIDConnectionEvent {
+  HIDConnectionEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn HIDConnectionEvent::get_device(
@@ -569,11 +661,19 @@ pub extern "js" fn HIDInputReportEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn HIDInputReportEvent::new(
+extern "js" fn HIDInputReportEvent::new_ffi(
   type_ : String,
-  event_init_dict : HIDInputReportEventInit,
+  event_init_dict : JsValue,
 ) -> HIDInputReportEvent =
   #| (type_, event_init_dict) => new HIDInputReportEvent(type_, event_init_dict)
+
+///|
+pub fn HIDInputReportEvent::new(
+  type_ : String,
+  event_init_dict : HIDInputReportEventInit,
+) -> HIDInputReportEvent {
+  HIDInputReportEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn HIDInputReportEvent::get_device(

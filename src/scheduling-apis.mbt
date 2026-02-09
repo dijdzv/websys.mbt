@@ -36,7 +36,7 @@ pub type SchedulerPostTaskCallback
 
 ///|
 /// SchedulerPostTaskOptions dictionary
-pub struct SchedulerPostTaskOptions {
+pub(all) struct SchedulerPostTaskOptions {
   signal : AbortSignal?
   priority : TaskPriority?
   delay : Int64?
@@ -49,31 +49,39 @@ pub fn SchedulerPostTaskOptions::default() -> SchedulerPostTaskOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SchedulerPostTaskOptions::to_js(
+extern "js" fn SchedulerPostTaskOptions::to_js_ffi(
   self : SchedulerPostTaskOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   signal: self.signal,
-  #|   priority: ['user-blocking', 'user-visible', 'background'][self.priority],
+  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   priority: ((() => { const v = self.priority; if (v === undefined) return undefined; return ['user-blocking', 'user-visible', 'background'][v]; })()),
   #|   delay: self.delay
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SchedulerPostTaskOptions::to_js(
+  self : SchedulerPostTaskOptions,
+) -> JsValue {
+  SchedulerPostTaskOptions::to_js_ffi(self)
+}
+
+///|
 /// TaskPriorityChangeEventInit dictionary
-pub struct TaskPriorityChangeEventInit {
+pub(all) struct TaskPriorityChangeEventInit {
   previousPriority : TaskPriority
 }
 
 ///|
-/// Create a new TaskPriorityChangeEventInit with default values
-pub fn TaskPriorityChangeEventInit::default() -> TaskPriorityChangeEventInit {
-  TaskPriorityChangeEventInit::{ previousPriority: panic() }
+/// Create a new TaskPriorityChangeEventInit
+pub fn TaskPriorityChangeEventInit::new(
+  previousPriority~ : TaskPriority,
+) -> TaskPriorityChangeEventInit {
+  TaskPriorityChangeEventInit::{ previousPriority, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TaskPriorityChangeEventInit::to_js(
+extern "js" fn TaskPriorityChangeEventInit::to_js_ffi(
   self : TaskPriorityChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -81,8 +89,16 @@ pub extern "js" fn TaskPriorityChangeEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn TaskPriorityChangeEventInit::to_js(
+  self : TaskPriorityChangeEventInit,
+) -> JsValue {
+  TaskPriorityChangeEventInit::to_js_ffi(self)
+}
+
+///|
 /// TaskControllerInit dictionary
-pub struct TaskControllerInit {
+pub(all) struct TaskControllerInit {
   priority : TaskPriority?
 }
 
@@ -93,17 +109,22 @@ pub fn TaskControllerInit::default() -> TaskControllerInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TaskControllerInit::to_js(
+extern "js" fn TaskControllerInit::to_js_ffi(
   self : TaskControllerInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   priority: ['user-blocking', 'user-visible', 'background'][self.priority]
+  #|   priority: ((() => { const v = self.priority; if (v === undefined) return undefined; return ['user-blocking', 'user-visible', 'background'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn TaskControllerInit::to_js(self : TaskControllerInit) -> JsValue {
+  TaskControllerInit::to_js_ffi(self)
+}
+
+///|
 /// TaskSignalAnyInit dictionary
-pub struct TaskSignalAnyInit {
+pub(all) struct TaskSignalAnyInit {
   priority : TaskPriorityOrTaskSignal?
 }
 
@@ -114,13 +135,18 @@ pub fn TaskSignalAnyInit::default() -> TaskSignalAnyInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TaskSignalAnyInit::to_js(
+extern "js" fn TaskSignalAnyInit::to_js_ffi(
   self : TaskSignalAnyInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   priority: self.priority
+  #|   priority: ((() => { const v = self.priority; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn TaskSignalAnyInit::to_js(self : TaskSignalAnyInit) -> JsValue {
+  TaskSignalAnyInit::to_js_ffi(self)
+}
 
 ///|
 /// Scheduler interface
@@ -158,12 +184,21 @@ pub extern "js" fn Scheduler::post_task(
   #| (self, callback) => self.postTask(callback)
 
 ///|
-pub extern "js" fn Scheduler::post_task_with_options(
+extern "js" fn Scheduler::post_task_with_options_ffi(
+  self : Scheduler,
+  callback : SchedulerPostTaskCallback,
+  options : JsValue,
+) -> Promise[JsValue] =
+  #| (self, callback, options) => self.postTask(callback, options)
+
+///|
+pub fn Scheduler::post_task_with_options(
   self : Scheduler,
   callback : SchedulerPostTaskCallback,
   options : SchedulerPostTaskOptions,
-) -> Promise[JsValue] =
-  #| (self, callback, options) => self.postTask(callback, options)
+) -> Promise[JsValue] {
+  Scheduler::post_task_with_options_ffi(self, callback, options.to_js())
+}
 
 ///|
 pub extern "js" fn Scheduler::yield_(self : Scheduler) -> Promise[Unit] =
@@ -214,17 +249,28 @@ pub extern "js" fn TaskPriorityChangeEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn TaskPriorityChangeEvent::new(
+extern "js" fn TaskPriorityChangeEvent::new_ffi(
   type_ : String,
-  priority_change_event_init_dict : TaskPriorityChangeEventInit,
+  priority_change_event_init_dict : JsValue,
 ) -> TaskPriorityChangeEvent =
   #| (type_, priority_change_event_init_dict) => new TaskPriorityChangeEvent(type_, priority_change_event_init_dict)
+
+///|
+pub fn TaskPriorityChangeEvent::new(
+  type_ : String,
+  priority_change_event_init_dict : TaskPriorityChangeEventInit,
+) -> TaskPriorityChangeEvent {
+  TaskPriorityChangeEvent::new_ffi(
+    type_,
+    priority_change_event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn TaskPriorityChangeEvent::get_previous_priority(
   self : TaskPriorityChangeEvent,
 ) -> TaskPriority =
-  #| (self) => self.previousPriority
+  #| (self) => ['user-blocking', 'user-visible', 'background'].indexOf(self.previousPriority)
 
 ///|
 /// TaskController interface
@@ -269,10 +315,21 @@ pub extern "js" fn TaskController::to_abort_controller(
   #| (self) => self
 
 ///|
-pub extern "js" fn TaskController::new(
-  init_ : TaskControllerInit,
+pub extern "js" fn TaskController::new() -> TaskController =
+  #| () => new TaskController()
+
+///|
+extern "js" fn TaskController::new_with_init_ffi(
+  init_ : JsValue,
 ) -> TaskController =
   #| (init_) => new TaskController(init_)
+
+///|
+pub fn TaskController::new_with_init(
+  init_ : TaskControllerInit,
+) -> TaskController {
+  TaskController::new_with_init_ffi(init_.to_js())
+}
 
 ///|
 pub extern "js" fn TaskController::set_priority(
@@ -322,15 +379,27 @@ pub extern "js" fn TaskSignal::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn TaskSignal::any(
+pub extern "js" fn TaskSignal::any(signals : Array[AbortSignal]) -> TaskSignal =
+  #| (signals) => TaskSignal.any(signals)
+
+///|
+extern "js" fn TaskSignal::any_with_init_ffi(
   signals : Array[AbortSignal],
-  init_ : TaskSignalAnyInit,
+  init_ : JsValue,
 ) -> TaskSignal =
   #| (signals, init_) => TaskSignal.any(signals, init_)
 
 ///|
+pub fn TaskSignal::any_with_init(
+  signals : Array[AbortSignal],
+  init_ : TaskSignalAnyInit,
+) -> TaskSignal {
+  TaskSignal::any_with_init_ffi(signals, init_.to_js())
+}
+
+///|
 pub extern "js" fn TaskSignal::get_priority(self : TaskSignal) -> TaskPriority =
-  #| (self) => self.priority
+  #| (self) => ['user-blocking', 'user-visible', 'background'].indexOf(self.priority)
 
 ///|
 pub extern "js" fn TaskSignal::get_onprioritychange(

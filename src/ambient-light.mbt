@@ -52,13 +52,24 @@ pub extern "js" fn AmbientLightSensor::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn AmbientLightSensor::new(
-  sensor_options : SensorOptions,
+pub extern "js" fn AmbientLightSensor::new() -> AmbientLightSensor =
+  #| () => new AmbientLightSensor()
+
+///|
+extern "js" fn AmbientLightSensor::new_with_sensor_options_ffi(
+  sensor_options : JsValue,
 ) -> AmbientLightSensor =
   #| (sensor_options) => new AmbientLightSensor(sensor_options)
+
+///|
+pub fn AmbientLightSensor::new_with_sensor_options(
+  sensor_options : SensorOptions,
+) -> AmbientLightSensor {
+  AmbientLightSensor::new_with_sensor_options_ffi(sensor_options.to_js())
+}
 
 ///|
 pub extern "js" fn AmbientLightSensor::get_illuminance(
   self : AmbientLightSensor,
 ) -> Double? =
-  #| (self) => { const v = self.illuminance; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.illuminance) ?? undefined

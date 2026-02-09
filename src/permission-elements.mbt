@@ -159,19 +159,19 @@ pub extern "js" fn HTMLPermissionElement::get_is_valid(
 pub extern "js" fn HTMLPermissionElement::get_invalid_reason(
   self : HTMLPermissionElement,
 ) -> InPagePermissionMixinBlockerReason =
-  #| (self) => self.invalidReason
+  #| (self) => ['', 'illegal_subframe', 'unsuccesful_registration', 'recently_attached', 'intersection_changed', 'intersection_out_of_viewport_or_clipped', 'intersection_occluded_or_distorted', 'style_invalid', 'type_invalid'].indexOf(self.invalidReason)
 
 ///|
 pub extern "js" fn HTMLPermissionElement::get_initial_permission_status(
   self : HTMLPermissionElement,
 ) -> PermissionState =
-  #| (self) => self.initialPermissionStatus
+  #| (self) => ['granted', 'denied', 'prompt'].indexOf(self.initialPermissionStatus)
 
 ///|
 pub extern "js" fn HTMLPermissionElement::get_permission_status(
   self : HTMLPermissionElement,
 ) -> PermissionState =
-  #| (self) => self.permissionStatus
+  #| (self) => ['granted', 'denied', 'prompt'].indexOf(self.permissionStatus)
 
 ///|
 pub extern "js" fn HTMLPermissionElement::get_onpromptaction(
@@ -282,13 +282,13 @@ pub extern "js" fn HTMLGeolocationElement::new() -> HTMLGeolocationElement =
 pub extern "js" fn HTMLGeolocationElement::get_position(
   self : HTMLGeolocationElement,
 ) -> GeolocationPosition? =
-  #| (self) => { const v = self.position; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.position; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLGeolocationElement::get_error(
   self : HTMLGeolocationElement,
 ) -> GeolocationPositionError? =
-  #| (self) => { const v = self.error; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.error; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLGeolocationElement::get_autolocate(
@@ -339,19 +339,19 @@ pub extern "js" fn HTMLGeolocationElement::get_is_valid(
 pub extern "js" fn HTMLGeolocationElement::get_invalid_reason(
   self : HTMLGeolocationElement,
 ) -> InPagePermissionMixinBlockerReason =
-  #| (self) => self.invalidReason
+  #| (self) => ['', 'illegal_subframe', 'unsuccesful_registration', 'recently_attached', 'intersection_changed', 'intersection_out_of_viewport_or_clipped', 'intersection_occluded_or_distorted', 'style_invalid', 'type_invalid'].indexOf(self.invalidReason)
 
 ///|
 pub extern "js" fn HTMLGeolocationElement::get_initial_permission_status(
   self : HTMLGeolocationElement,
 ) -> PermissionState =
-  #| (self) => self.initialPermissionStatus
+  #| (self) => ['granted', 'denied', 'prompt'].indexOf(self.initialPermissionStatus)
 
 ///|
 pub extern "js" fn HTMLGeolocationElement::get_permission_status(
   self : HTMLGeolocationElement,
 ) -> PermissionState =
-  #| (self) => self.permissionStatus
+  #| (self) => ['granted', 'denied', 'prompt'].indexOf(self.permissionStatus)
 
 ///|
 pub extern "js" fn HTMLGeolocationElement::get_onpromptaction(

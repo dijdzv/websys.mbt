@@ -3,7 +3,7 @@
 
 ///|
 /// CSSStyleSheetInit dictionary
-pub struct CSSStyleSheetInit {
+pub(all) struct CSSStyleSheetInit {
   baseURL : String?
   media : MediaListOrString?
   disabled : Bool?
@@ -16,15 +16,20 @@ pub fn CSSStyleSheetInit::default() -> CSSStyleSheetInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CSSStyleSheetInit::to_js(
+extern "js" fn CSSStyleSheetInit::to_js_ffi(
   self : CSSStyleSheetInit,
 ) -> JsValue =
   #| (self) => ({
   #|   baseURL: self.baseURL,
-  #|   media: self.media,
-  #|   disabled: self.disabled
+  #|   media: ((() => { const v = self.media; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   disabled: (self.disabled === -1 ? undefined : self.disabled)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn CSSStyleSheetInit::to_js(self : CSSStyleSheetInit) -> JsValue {
+  CSSStyleSheetInit::to_js_ffi(self)
+}
 
 ///|
 /// MediaList interface
@@ -74,14 +79,14 @@ pub extern "js" fn MediaList::item(
   self : MediaList,
   index : Int,
 ) -> CSSOMString? =
-  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn MediaList::get(
   self : MediaList,
   index : Int,
 ) -> CSSOMString? =
-  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn MediaList::append_medium(
@@ -137,7 +142,7 @@ pub extern "js" fn StyleSheet::get_type(self : StyleSheet) -> CSSOMString =
 
 ///|
 pub extern "js" fn StyleSheet::get_href(self : StyleSheet) -> String? =
-  #| (self) => { const v = self.href; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.href) ?? undefined
 
 ///|
 pub extern "js" fn StyleSheet::get_owner_node(
@@ -149,11 +154,11 @@ pub extern "js" fn StyleSheet::get_owner_node(
 pub extern "js" fn StyleSheet::get_parent_style_sheet(
   self : StyleSheet,
 ) -> CSSStyleSheet? =
-  #| (self) => { const v = self.parentStyleSheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.parentStyleSheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn StyleSheet::get_title(self : StyleSheet) -> String? =
-  #| (self) => { const v = self.title; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.title) ?? undefined
 
 ///|
 pub extern "js" fn StyleSheet::get_media(self : StyleSheet) -> MediaList =
@@ -209,16 +214,27 @@ pub extern "js" fn CSSStyleSheet::to_style_sheet(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSStyleSheet::new(
-  options : CSSStyleSheetInit,
+pub extern "js" fn CSSStyleSheet::new() -> CSSStyleSheet =
+  #| () => new CSSStyleSheet()
+
+///|
+extern "js" fn CSSStyleSheet::new_with_options_ffi(
+  options : JsValue,
 ) -> CSSStyleSheet =
   #| (options) => new CSSStyleSheet(options)
+
+///|
+pub fn CSSStyleSheet::new_with_options(
+  options : CSSStyleSheetInit,
+) -> CSSStyleSheet {
+  CSSStyleSheet::new_with_options_ffi(options.to_js())
+}
 
 ///|
 pub extern "js" fn CSSStyleSheet::get_owner_rule(
   self : CSSStyleSheet,
 ) -> CSSRule? =
-  #| (self) => { const v = self.ownerRule; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.ownerRule; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn CSSStyleSheet::get_css_rules(
@@ -333,14 +349,14 @@ pub extern "js" fn StyleSheetList::item(
   self : StyleSheetList,
   index : Int,
 ) -> CSSStyleSheet? =
-  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn StyleSheetList::get(
   self : StyleSheetList,
   index : Int,
 ) -> CSSStyleSheet? =
-  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn StyleSheetList::get_length(self : StyleSheetList) -> Int =
@@ -379,14 +395,14 @@ pub extern "js" fn CSSRuleList::item(
   self : CSSRuleList,
   index : Int,
 ) -> CSSRule? =
-  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn CSSRuleList::get(
   self : CSSRuleList,
   index : Int,
 ) -> CSSRule? =
-  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn CSSRuleList::get_length(self : CSSRuleList) -> Int =
@@ -599,13 +615,13 @@ pub extern "js" fn CSSRule::set_css_text(
 
 ///|
 pub extern "js" fn CSSRule::get_parent_rule(self : CSSRule) -> CSSRule? =
-  #| (self) => { const v = self.parentRule; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.parentRule; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn CSSRule::get_parent_style_sheet(
   self : CSSRule,
 ) -> CSSStyleSheet? =
-  #| (self) => { const v = self.parentStyleSheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.parentStyleSheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn CSSRule::get_type(self : CSSRule) -> Int =
@@ -789,19 +805,19 @@ pub extern "js" fn CSSImportRule::get_media(self : CSSImportRule) -> MediaList =
 pub extern "js" fn CSSImportRule::get_style_sheet(
   self : CSSImportRule,
 ) -> CSSStyleSheet? =
-  #| (self) => { const v = self.styleSheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.styleSheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn CSSImportRule::get_layer_name(
   self : CSSImportRule,
 ) -> CSSOMString? =
-  #| (self) => { const v = self.layerName; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.layerName; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn CSSImportRule::get_supports_text(
   self : CSSImportRule,
 ) -> CSSOMString? =
-  #| (self) => { const v = self.supportsText; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.supportsText; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// CSSGroupingRule interface
@@ -1404,7 +1420,7 @@ pub extern "js" fn CSSStyleDeclaration::remove_property(
 pub extern "js" fn CSSStyleDeclaration::get_parent_rule(
   self : CSSStyleDeclaration,
 ) -> CSSRule? =
-  #| (self) => { const v = self.parentRule; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.parentRule; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// CSSStyleProperties interface

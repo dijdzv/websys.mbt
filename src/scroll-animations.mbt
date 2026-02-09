@@ -35,7 +35,7 @@ pub fn ScrollAxis::from_string(s : String) -> ScrollAxis? {
 
 ///|
 /// ScrollTimelineOptions dictionary
-pub struct ScrollTimelineOptions {
+pub(all) struct ScrollTimelineOptions {
   source : Nullable[Element]
   axis : ScrollAxis?
 }
@@ -47,18 +47,23 @@ pub fn ScrollTimelineOptions::default() -> ScrollTimelineOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ScrollTimelineOptions::to_js(
+extern "js" fn ScrollTimelineOptions::to_js_ffi(
   self : ScrollTimelineOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   axis: ['block', 'inline', 'x', 'y'][self.axis]
+  #|   axis: ((() => { const v = self.axis; if (v === undefined) return undefined; return ['block', 'inline', 'x', 'y'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ScrollTimelineOptions::to_js(self : ScrollTimelineOptions) -> JsValue {
+  ScrollTimelineOptions::to_js_ffi(self)
+}
+
+///|
 /// ViewTimelineOptions dictionary
-pub struct ViewTimelineOptions {
+pub(all) struct ViewTimelineOptions {
   subject : Element?
   axis : ScrollAxis?
   inset : StringOrArrayOfCSSNumericValueOrCSSKeywordValue?
@@ -71,15 +76,20 @@ pub fn ViewTimelineOptions::default() -> ViewTimelineOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ViewTimelineOptions::to_js(
+extern "js" fn ViewTimelineOptions::to_js_ffi(
   self : ViewTimelineOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   subject: self.subject,
-  #|   axis: ['block', 'inline', 'x', 'y'][self.axis],
-  #|   inset: self.inset
+  #|   subject: ((() => { const v = self.subject; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   axis: ((() => { const v = self.axis; if (v === undefined) return undefined; return ['block', 'inline', 'x', 'y'][v]; })()),
+  #|   inset: ((() => { const v = self.inset; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn ViewTimelineOptions::to_js(self : ViewTimelineOptions) -> JsValue {
+  ViewTimelineOptions::to_js_ffi(self)
+}
 
 ///|
 /// ScrollTimeline interface
@@ -130,22 +140,33 @@ pub extern "js" fn ScrollTimeline::as_view_timeline(
   #| (self) => (self instanceof ViewTimeline) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn ScrollTimeline::new(
-  options : ScrollTimelineOptions,
+pub extern "js" fn ScrollTimeline::new() -> ScrollTimeline =
+  #| () => new ScrollTimeline()
+
+///|
+extern "js" fn ScrollTimeline::new_with_options_ffi(
+  options : JsValue,
 ) -> ScrollTimeline =
   #| (options) => new ScrollTimeline(options)
+
+///|
+pub fn ScrollTimeline::new_with_options(
+  options : ScrollTimelineOptions,
+) -> ScrollTimeline {
+  ScrollTimeline::new_with_options_ffi(options.to_js())
+}
 
 ///|
 pub extern "js" fn ScrollTimeline::get_source(
   self : ScrollTimeline,
 ) -> Element? =
-  #| (self) => { const v = self.source; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.source; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ScrollTimeline::get_axis(
   self : ScrollTimeline,
 ) -> ScrollAxis =
-  #| (self) => self.axis
+  #| (self) => ['block', 'inline', 'x', 'y'].indexOf(self.axis)
 
 ///|
 /// ViewTimeline interface
@@ -190,10 +211,21 @@ pub extern "js" fn ViewTimeline::to_animation_timeline(
   #| (self) => self
 
 ///|
-pub extern "js" fn ViewTimeline::new(
-  options : ViewTimelineOptions,
+pub extern "js" fn ViewTimeline::new() -> ViewTimeline =
+  #| () => new ViewTimeline()
+
+///|
+extern "js" fn ViewTimeline::new_with_options_ffi(
+  options : JsValue,
 ) -> ViewTimeline =
   #| (options) => new ViewTimeline(options)
+
+///|
+pub fn ViewTimeline::new_with_options(
+  options : ViewTimelineOptions,
+) -> ViewTimeline {
+  ViewTimeline::new_with_options_ffi(options.to_js())
+}
 
 ///|
 pub extern "js" fn ViewTimeline::get_subject(self : ViewTimeline) -> Element =

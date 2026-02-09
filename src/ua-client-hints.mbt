@@ -3,7 +3,7 @@
 
 ///|
 /// NavigatorUABrandVersion dictionary
-pub struct NavigatorUABrandVersion {
+pub(all) struct NavigatorUABrandVersion {
   brand : String?
   version : String?
 }
@@ -15,8 +15,7 @@ pub fn NavigatorUABrandVersion::default() -> NavigatorUABrandVersion {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn NavigatorUABrandVersion::to_js(
+extern "js" fn NavigatorUABrandVersion::to_js_ffi(
   self : NavigatorUABrandVersion,
 ) -> JsValue =
   #| (self) => ({
@@ -25,8 +24,16 @@ pub extern "js" fn NavigatorUABrandVersion::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn NavigatorUABrandVersion::to_js(
+  self : NavigatorUABrandVersion,
+) -> JsValue {
+  NavigatorUABrandVersion::to_js_ffi(self)
+}
+
+///|
 /// UADataValues dictionary
-pub struct UADataValues {
+pub(all) struct UADataValues {
   architecture : String?
   bitness : String?
   brands : Array[NavigatorUABrandVersion]?
@@ -59,25 +66,30 @@ pub fn UADataValues::default() -> UADataValues {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn UADataValues::to_js(self : UADataValues) -> JsValue =
+extern "js" fn UADataValues::to_js_ffi(self : UADataValues) -> JsValue =
   #| (self) => ({
   #|   architecture: self.architecture,
   #|   bitness: self.bitness,
-  #|   brands: self.brands,
-  #|   formFactors: self.formFactors,
-  #|   fullVersionList: self.fullVersionList,
+  #|   brands: ((() => { const v = self.brands; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   formFactors: ((() => { const v = self.formFactors; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   fullVersionList: ((() => { const v = self.fullVersionList; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   model: self.model,
-  #|   mobile: self.mobile,
+  #|   mobile: (self.mobile === -1 ? undefined : self.mobile),
   #|   platform: self.platform,
   #|   platformVersion: self.platformVersion,
   #|   uaFullVersion: self.uaFullVersion,
-  #|   wow64: self.wow64
+  #|   wow64: (self.wow64 === -1 ? undefined : self.wow64)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn UADataValues::to_js(self : UADataValues) -> JsValue {
+  UADataValues::to_js_ffi(self)
+}
+
+///|
 /// UALowEntropyJSON dictionary
-pub struct UALowEntropyJSON {
+pub(all) struct UALowEntropyJSON {
   brands : Array[NavigatorUABrandVersion]?
   mobile : Bool?
   platform : String?
@@ -90,13 +102,18 @@ pub fn UALowEntropyJSON::default() -> UALowEntropyJSON {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn UALowEntropyJSON::to_js(self : UALowEntropyJSON) -> JsValue =
+extern "js" fn UALowEntropyJSON::to_js_ffi(self : UALowEntropyJSON) -> JsValue =
   #| (self) => ({
-  #|   brands: self.brands,
-  #|   mobile: self.mobile,
+  #|   brands: ((() => { const v = self.brands; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   mobile: (self.mobile === -1 ? undefined : self.mobile),
   #|   platform: self.platform
   #| })
+
+///|
+/// Convert to JsValue
+pub fn UALowEntropyJSON::to_js(self : UALowEntropyJSON) -> JsValue {
+  UALowEntropyJSON::to_js_ffi(self)
+}
 
 ///|
 /// NavigatorUAData interface

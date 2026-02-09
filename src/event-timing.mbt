@@ -67,7 +67,7 @@ pub extern "js" fn PerformanceEventTiming::get_cancelable(
 pub extern "js" fn PerformanceEventTiming::get_target(
   self : PerformanceEventTiming,
 ) -> Node? =
-  #| (self) => { const v = self.target; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.target; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn PerformanceEventTiming::get_target_selector(
@@ -79,7 +79,7 @@ pub extern "js" fn PerformanceEventTiming::get_target_selector(
 pub extern "js" fn PerformanceEventTiming::get_interaction_id(
   self : PerformanceEventTiming,
 ) -> Int64 =
-  #| (self) => self.interactionId
+  #| (self) => (() => { const n = self.interactionId; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceEventTiming::to_json(
@@ -117,7 +117,7 @@ pub extern "js" fn JsValue::to_event_counts(self : JsValue) -> EventCounts =
 
 ///|
 pub extern "js" fn EventCounts::get(self : EventCounts, key : String) -> Int64? =
-  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, key) => self.get(key)
 
 ///|
 pub extern "js" fn EventCounts::has(self : EventCounts, key : String) -> Bool =

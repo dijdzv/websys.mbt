@@ -3,7 +3,7 @@
 
 ///|
 /// RTCIceGatherOptions dictionary
-pub struct RTCIceGatherOptions {
+pub(all) struct RTCIceGatherOptions {
   gatherPolicy : RTCIceTransportPolicy?
   iceServers : Array[RTCIceServer]?
 }
@@ -15,11 +15,16 @@ pub fn RTCIceGatherOptions::default() -> RTCIceGatherOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn RTCIceGatherOptions::to_js(
+extern "js" fn RTCIceGatherOptions::to_js_ffi(
   self : RTCIceGatherOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   gatherPolicy: ['relay', 'all'][self.gatherPolicy],
-  #|   iceServers: self.iceServers
+  #|   gatherPolicy: ((() => { const v = self.gatherPolicy; if (v === undefined) return undefined; return ['relay', 'all'][v]; })()),
+  #|   iceServers: ((() => { const v = self.iceServers; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn RTCIceGatherOptions::to_js(self : RTCIceGatherOptions) -> JsValue {
+  RTCIceGatherOptions::to_js_ffi(self)
+}

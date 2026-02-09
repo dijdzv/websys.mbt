@@ -67,7 +67,7 @@ pub fn UnderlineThickness::from_string(s : String) -> UnderlineThickness? {
 
 ///|
 /// EditContextInit dictionary
-pub struct EditContextInit {
+pub(all) struct EditContextInit {
   text : String?
   selectionStart : Int?
   selectionEnd : Int?
@@ -80,8 +80,7 @@ pub fn EditContextInit::default() -> EditContextInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn EditContextInit::to_js(self : EditContextInit) -> JsValue =
+extern "js" fn EditContextInit::to_js_ffi(self : EditContextInit) -> JsValue =
   #| (self) => ({
   #|   text: self.text,
   #|   selectionStart: self.selectionStart,
@@ -89,8 +88,14 @@ pub extern "js" fn EditContextInit::to_js(self : EditContextInit) -> JsValue =
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn EditContextInit::to_js(self : EditContextInit) -> JsValue {
+  EditContextInit::to_js_ffi(self)
+}
+
+///|
 /// TextUpdateEventInit dictionary
-pub struct TextUpdateEventInit {
+pub(all) struct TextUpdateEventInit {
   updateRangeStart : Int?
   updateRangeEnd : Int?
   text : String?
@@ -115,8 +120,7 @@ pub fn TextUpdateEventInit::default() -> TextUpdateEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TextUpdateEventInit::to_js(
+extern "js" fn TextUpdateEventInit::to_js_ffi(
   self : TextUpdateEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -130,8 +134,14 @@ pub extern "js" fn TextUpdateEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn TextUpdateEventInit::to_js(self : TextUpdateEventInit) -> JsValue {
+  TextUpdateEventInit::to_js_ffi(self)
+}
+
+///|
 /// TextFormatInit dictionary
-pub struct TextFormatInit {
+pub(all) struct TextFormatInit {
   rangeStart : Int?
   rangeEnd : Int?
   underlineStyle : UnderlineStyle?
@@ -150,18 +160,23 @@ pub fn TextFormatInit::default() -> TextFormatInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TextFormatInit::to_js(self : TextFormatInit) -> JsValue =
+extern "js" fn TextFormatInit::to_js_ffi(self : TextFormatInit) -> JsValue =
   #| (self) => ({
   #|   rangeStart: self.rangeStart,
   #|   rangeEnd: self.rangeEnd,
-  #|   underlineStyle: ['none', 'solid', 'dotted', 'dashed', 'wavy'][self.underlineStyle],
-  #|   underlineThickness: ['none', 'thin', 'thick'][self.underlineThickness]
+  #|   underlineStyle: ((() => { const v = self.underlineStyle; if (v === undefined) return undefined; return ['none', 'solid', 'dotted', 'dashed', 'wavy'][v]; })()),
+  #|   underlineThickness: ((() => { const v = self.underlineThickness; if (v === undefined) return undefined; return ['none', 'thin', 'thick'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn TextFormatInit::to_js(self : TextFormatInit) -> JsValue {
+  TextFormatInit::to_js_ffi(self)
+}
+
+///|
 /// TextFormatUpdateEventInit dictionary
-pub struct TextFormatUpdateEventInit {
+pub(all) struct TextFormatUpdateEventInit {
   textFormats : Array[TextFormat]?
 }
 
@@ -172,17 +187,24 @@ pub fn TextFormatUpdateEventInit::default() -> TextFormatUpdateEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TextFormatUpdateEventInit::to_js(
+extern "js" fn TextFormatUpdateEventInit::to_js_ffi(
   self : TextFormatUpdateEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   textFormats: self.textFormats
+  #|   textFormats: ((() => { const v = self.textFormats; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn TextFormatUpdateEventInit::to_js(
+  self : TextFormatUpdateEventInit,
+) -> JsValue {
+  TextFormatUpdateEventInit::to_js_ffi(self)
+}
+
+///|
 /// CharacterBoundsUpdateEventInit dictionary
-pub struct CharacterBoundsUpdateEventInit {
+pub(all) struct CharacterBoundsUpdateEventInit {
   rangeStart : Int?
   rangeEnd : Int?
 }
@@ -194,14 +216,21 @@ pub fn CharacterBoundsUpdateEventInit::default() -> CharacterBoundsUpdateEventIn
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CharacterBoundsUpdateEventInit::to_js(
+extern "js" fn CharacterBoundsUpdateEventInit::to_js_ffi(
   self : CharacterBoundsUpdateEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   rangeStart: self.rangeStart,
   #|   rangeEnd: self.rangeEnd
   #| })
+
+///|
+/// Convert to JsValue
+pub fn CharacterBoundsUpdateEventInit::to_js(
+  self : CharacterBoundsUpdateEventInit,
+) -> JsValue {
+  CharacterBoundsUpdateEventInit::to_js_ffi(self)
+}
 
 ///|
 /// EditContext interface
@@ -238,8 +267,19 @@ pub extern "js" fn EditContext::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn EditContext::new(options : EditContextInit) -> EditContext =
+pub extern "js" fn EditContext::new() -> EditContext =
+  #| () => new EditContext()
+
+///|
+extern "js" fn EditContext::new_with_options_ffi(
+  options : JsValue,
+) -> EditContext =
   #| (options) => new EditContext(options)
+
+///|
+pub fn EditContext::new_with_options(options : EditContextInit) -> EditContext {
+  EditContext::new_with_options_ffi(options.to_js())
+}
 
 ///|
 pub extern "js" fn EditContext::update_text(
@@ -418,11 +458,23 @@ pub extern "js" fn TextUpdateEvent::to_event(self : TextUpdateEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn TextUpdateEvent::new(
+pub extern "js" fn TextUpdateEvent::new(type_ : String) -> TextUpdateEvent =
+  #| (type_) => new TextUpdateEvent(type_)
+
+///|
+extern "js" fn TextUpdateEvent::new_with_options_ffi(
   type_ : String,
-  options : TextUpdateEventInit,
+  options : JsValue,
 ) -> TextUpdateEvent =
   #| (type_, options) => new TextUpdateEvent(type_, options)
+
+///|
+pub fn TextUpdateEvent::new_with_options(
+  type_ : String,
+  options : TextUpdateEventInit,
+) -> TextUpdateEvent {
+  TextUpdateEvent::new_with_options_ffi(type_, options.to_js())
+}
 
 ///|
 pub extern "js" fn TextUpdateEvent::get_update_range_start(
@@ -481,8 +533,19 @@ pub extern "js" fn JsValue::to_text_format(self : JsValue) -> TextFormat =
   #| (self) => self
 
 ///|
-pub extern "js" fn TextFormat::new(options : TextFormatInit) -> TextFormat =
+pub extern "js" fn TextFormat::new() -> TextFormat =
+  #| () => new TextFormat()
+
+///|
+extern "js" fn TextFormat::new_with_options_ffi(
+  options : JsValue,
+) -> TextFormat =
   #| (options) => new TextFormat(options)
+
+///|
+pub fn TextFormat::new_with_options(options : TextFormatInit) -> TextFormat {
+  TextFormat::new_with_options_ffi(options.to_js())
+}
 
 ///|
 pub extern "js" fn TextFormat::get_range_start(self : TextFormat) -> Int =
@@ -496,13 +559,13 @@ pub extern "js" fn TextFormat::get_range_end(self : TextFormat) -> Int =
 pub extern "js" fn TextFormat::get_underline_style(
   self : TextFormat,
 ) -> UnderlineStyle =
-  #| (self) => self.underlineStyle
+  #| (self) => ['none', 'solid', 'dotted', 'dashed', 'wavy'].indexOf(self.underlineStyle)
 
 ///|
 pub extern "js" fn TextFormat::get_underline_thickness(
   self : TextFormat,
 ) -> UnderlineThickness =
-  #| (self) => self.underlineThickness
+  #| (self) => ['none', 'thin', 'thick'].indexOf(self.underlineThickness)
 
 ///|
 /// TextFormatUpdateEvent interface
@@ -551,9 +614,23 @@ pub extern "js" fn TextFormatUpdateEvent::to_event(
 ///|
 pub extern "js" fn TextFormatUpdateEvent::new(
   type_ : String,
-  options : TextFormatUpdateEventInit,
+) -> TextFormatUpdateEvent =
+  #| (type_) => new TextFormatUpdateEvent(type_)
+
+///|
+extern "js" fn TextFormatUpdateEvent::new_with_options_ffi(
+  type_ : String,
+  options : JsValue,
 ) -> TextFormatUpdateEvent =
   #| (type_, options) => new TextFormatUpdateEvent(type_, options)
+
+///|
+pub fn TextFormatUpdateEvent::new_with_options(
+  type_ : String,
+  options : TextFormatUpdateEventInit,
+) -> TextFormatUpdateEvent {
+  TextFormatUpdateEvent::new_with_options_ffi(type_, options.to_js())
+}
 
 ///|
 pub extern "js" fn TextFormatUpdateEvent::get_text_formats(
@@ -608,9 +685,23 @@ pub extern "js" fn CharacterBoundsUpdateEvent::to_event(
 ///|
 pub extern "js" fn CharacterBoundsUpdateEvent::new(
   type_ : String,
-  options : CharacterBoundsUpdateEventInit,
+) -> CharacterBoundsUpdateEvent =
+  #| (type_) => new CharacterBoundsUpdateEvent(type_)
+
+///|
+extern "js" fn CharacterBoundsUpdateEvent::new_with_options_ffi(
+  type_ : String,
+  options : JsValue,
 ) -> CharacterBoundsUpdateEvent =
   #| (type_, options) => new CharacterBoundsUpdateEvent(type_, options)
+
+///|
+pub fn CharacterBoundsUpdateEvent::new_with_options(
+  type_ : String,
+  options : CharacterBoundsUpdateEventInit,
+) -> CharacterBoundsUpdateEvent {
+  CharacterBoundsUpdateEvent::new_with_options_ffi(type_, options.to_js())
+}
 
 ///|
 pub extern "js" fn CharacterBoundsUpdateEvent::get_range_start(

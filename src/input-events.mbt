@@ -3,7 +3,7 @@
 
 ///|
 /// InputEventInit dictionary
-pub struct InputEventInit {
+pub(all) struct InputEventInit {
   dataTransfer : Nullable[DataTransfer]
   targetRanges : Array[StaticRange]?
   data : Nullable[String]
@@ -24,12 +24,17 @@ pub fn InputEventInit::default() -> InputEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn InputEventInit::to_js(self : InputEventInit) -> JsValue =
+extern "js" fn InputEventInit::to_js_ffi(self : InputEventInit) -> JsValue =
   #| (self) => ({
   #|   dataTransfer: ((() => { const v = self.dataTransfer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   targetRanges: self.targetRanges,
+  #|   targetRanges: ((() => { const v = self.targetRanges; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   data: ((() => { const v = self.data; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   isComposing: self.isComposing,
+  #|   isComposing: (self.isComposing === -1 ? undefined : self.isComposing),
   #|   inputType: self.inputType
   #| })
+
+///|
+/// Convert to JsValue
+pub fn InputEventInit::to_js(self : InputEventInit) -> JsValue {
+  InputEventInit::to_js_ffi(self)
+}

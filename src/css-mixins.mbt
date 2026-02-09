@@ -3,25 +3,23 @@
 
 ///|
 /// FunctionParameter dictionary
-pub struct FunctionParameter {
+pub(all) struct FunctionParameter {
   name : CSSOMString
   type_ : CSSOMString
   defaultValue : Nullable[CSSOMString]
 }
 
 ///|
-/// Create a new FunctionParameter with default values
-pub fn FunctionParameter::default() -> FunctionParameter {
-  FunctionParameter::{
-    name: panic(),
-    type_: panic(),
-    defaultValue: Nullable::Undefined,
-  }
+/// Create a new FunctionParameter
+pub fn FunctionParameter::new(
+  name~ : CSSOMString,
+  type_~ : CSSOMString,
+) -> FunctionParameter {
+  FunctionParameter::{ name, type_, defaultValue: Nullable::Undefined }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FunctionParameter::to_js(
+extern "js" fn FunctionParameter::to_js_ffi(
   self : FunctionParameter,
 ) -> JsValue =
   #| (self) => ({
@@ -29,6 +27,12 @@ pub extern "js" fn FunctionParameter::to_js(
   #|   type: self.type_,
   #|   defaultValue: ((() => { const v = self.defaultValue; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn FunctionParameter::to_js(self : FunctionParameter) -> JsValue {
+  FunctionParameter::to_js_ffi(self)
+}
 
 ///|
 /// CSSFunctionRule interface

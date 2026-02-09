@@ -88,7 +88,7 @@ pub fn GamepadHapticEffectType::from_string(
 
 ///|
 /// GamepadTouch dictionary
-pub struct GamepadTouch {
+pub(all) struct GamepadTouch {
   touchId : Int?
   surfaceId : Int?
   position : DOMPointReadOnly?
@@ -107,18 +107,23 @@ pub fn GamepadTouch::default() -> GamepadTouch {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn GamepadTouch::to_js(self : GamepadTouch) -> JsValue =
+extern "js" fn GamepadTouch::to_js_ffi(self : GamepadTouch) -> JsValue =
   #| (self) => ({
   #|   touchId: self.touchId,
   #|   surfaceId: self.surfaceId,
-  #|   position: self.position,
+  #|   position: ((() => { const v = self.position; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   surfaceDimensions: ((() => { const v = self.surfaceDimensions; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn GamepadTouch::to_js(self : GamepadTouch) -> JsValue {
+  GamepadTouch::to_js_ffi(self)
+}
+
+///|
 /// GamepadEffectParameters dictionary
-pub struct GamepadEffectParameters {
+pub(all) struct GamepadEffectParameters {
   duration : Int64?
   startDelay : Int64?
   strongMagnitude : Double?
@@ -141,8 +146,7 @@ pub fn GamepadEffectParameters::default() -> GamepadEffectParameters {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn GamepadEffectParameters::to_js(
+extern "js" fn GamepadEffectParameters::to_js_ffi(
   self : GamepadEffectParameters,
 ) -> JsValue =
   #| (self) => ({
@@ -155,23 +159,36 @@ pub extern "js" fn GamepadEffectParameters::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn GamepadEffectParameters::to_js(
+  self : GamepadEffectParameters,
+) -> JsValue {
+  GamepadEffectParameters::to_js_ffi(self)
+}
+
+///|
 /// GamepadEventInit dictionary
-pub struct GamepadEventInit {
+pub(all) struct GamepadEventInit {
   gamepad : Gamepad
 }
 
 ///|
-/// Create a new GamepadEventInit with default values
-pub fn GamepadEventInit::default() -> GamepadEventInit {
-  GamepadEventInit::{ gamepad: panic() }
+/// Create a new GamepadEventInit
+pub fn GamepadEventInit::new(gamepad~ : Gamepad) -> GamepadEventInit {
+  GamepadEventInit::{ gamepad, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn GamepadEventInit::to_js(self : GamepadEventInit) -> JsValue =
+extern "js" fn GamepadEventInit::to_js_ffi(self : GamepadEventInit) -> JsValue =
   #| (self) => ({
   #|   gamepad: self.gamepad
   #| })
+
+///|
+/// Convert to JsValue
+pub fn GamepadEventInit::to_js(self : GamepadEventInit) -> JsValue {
+  GamepadEventInit::to_js_ffi(self)
+}
 
 ///|
 /// Gamepad interface
@@ -221,7 +238,7 @@ pub extern "js" fn Gamepad::get_timestamp(
 
 ///|
 pub extern "js" fn Gamepad::get_mapping(self : Gamepad) -> GamepadMappingType =
-  #| (self) => self.mapping
+  #| (self) => ['', 'standard', 'xr-standard'].indexOf(self.mapping)
 
 ///|
 pub extern "js" fn Gamepad::get_axes(self : Gamepad) -> JsValue =
@@ -243,7 +260,7 @@ pub extern "js" fn Gamepad::get_vibration_actuator(
 
 ///|
 pub extern "js" fn Gamepad::get_hand(self : Gamepad) -> GamepadHand =
-  #| (self) => self.hand
+  #| (self) => ['', 'left', 'right'].indexOf(self.hand)
 
 ///|
 pub extern "js" fn Gamepad::get_haptic_actuators(self : Gamepad) -> JsValue =
@@ -251,7 +268,7 @@ pub extern "js" fn Gamepad::get_haptic_actuators(self : Gamepad) -> JsValue =
 
 ///|
 pub extern "js" fn Gamepad::get_pose(self : Gamepad) -> GamepadPose? =
-  #| (self) => { const v = self.pose; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.pose; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// GamepadButton interface
@@ -347,12 +364,25 @@ pub extern "js" fn GamepadHapticActuator::play_effect(
   #| (self, type_) => self.playEffect(['dual-rumble', 'trigger-rumble'][type_])
 
 ///|
-pub extern "js" fn GamepadHapticActuator::play_effect_with_params(
+extern "js" fn GamepadHapticActuator::play_effect_with_params_ffi(
+  self : GamepadHapticActuator,
+  type_ : GamepadHapticEffectType,
+  params : JsValue,
+) -> Promise[GamepadHapticsResult] =
+  #| (self, type_, params) => self.playEffect(['dual-rumble', 'trigger-rumble'][type_], params)
+
+///|
+pub fn GamepadHapticActuator::play_effect_with_params(
   self : GamepadHapticActuator,
   type_ : GamepadHapticEffectType,
   params : GamepadEffectParameters,
-) -> Promise[GamepadHapticsResult] =
-  #| (self, type_, params) => self.playEffect(['dual-rumble', 'trigger-rumble'][type_], params)
+) -> Promise[GamepadHapticsResult] {
+  GamepadHapticActuator::play_effect_with_params_ffi(
+    self,
+    type_,
+    params.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn GamepadHapticActuator::reset(
@@ -403,11 +433,19 @@ pub extern "js" fn GamepadEvent::to_event(self : GamepadEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn GamepadEvent::new(
+extern "js" fn GamepadEvent::new_ffi(
   type_ : String,
-  event_init_dict : GamepadEventInit,
+  event_init_dict : JsValue,
 ) -> GamepadEvent =
   #| (type_, event_init_dict) => new GamepadEvent(type_, event_init_dict)
+
+///|
+pub fn GamepadEvent::new(
+  type_ : String,
+  event_init_dict : GamepadEventInit,
+) -> GamepadEvent {
+  GamepadEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn GamepadEvent::get_gamepad(self : GamepadEvent) -> Gamepad =

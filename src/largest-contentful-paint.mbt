@@ -79,7 +79,7 @@ pub extern "js" fn LargestContentfulPaint::get_url(
 pub extern "js" fn LargestContentfulPaint::get_element(
   self : LargestContentfulPaint,
 ) -> Element? =
-  #| (self) => { const v = self.element; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.element; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn LargestContentfulPaint::to_json(
@@ -97,4 +97,4 @@ pub extern "js" fn LargestContentfulPaint::get_paint_time(
 pub extern "js" fn LargestContentfulPaint::get_presentation_time(
   self : LargestContentfulPaint,
 ) -> DOMHighResTimeStamp? =
-  #| (self) => { const v = self.presentationTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.presentationTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

@@ -3,7 +3,7 @@
 
 ///|
 /// DigitalCredentialRequestOptions dictionary
-pub struct DigitalCredentialRequestOptions {
+pub(all) struct DigitalCredentialRequestOptions {
   requests : Array[DigitalCredentialGetRequest]
 }
 
@@ -14,8 +14,7 @@ pub fn DigitalCredentialRequestOptions::default() -> DigitalCredentialRequestOpt
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DigitalCredentialRequestOptions::to_js(
+extern "js" fn DigitalCredentialRequestOptions::to_js_ffi(
   self : DigitalCredentialRequestOptions,
 ) -> JsValue =
   #| (self) => ({
@@ -23,21 +22,30 @@ pub extern "js" fn DigitalCredentialRequestOptions::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn DigitalCredentialRequestOptions::to_js(
+  self : DigitalCredentialRequestOptions,
+) -> JsValue {
+  DigitalCredentialRequestOptions::to_js_ffi(self)
+}
+
+///|
 /// DigitalCredentialGetRequest dictionary
-pub struct DigitalCredentialGetRequest {
+pub(all) struct DigitalCredentialGetRequest {
   protocol : String
   data : JsValue
 }
 
 ///|
-/// Create a new DigitalCredentialGetRequest with default values
-pub fn DigitalCredentialGetRequest::default() -> DigitalCredentialGetRequest {
-  DigitalCredentialGetRequest::{ protocol: "", data: panic() }
+/// Create a new DigitalCredentialGetRequest
+pub fn DigitalCredentialGetRequest::new(
+  data~ : JsValue,
+) -> DigitalCredentialGetRequest {
+  DigitalCredentialGetRequest::{ protocol: "", data }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DigitalCredentialGetRequest::to_js(
+extern "js" fn DigitalCredentialGetRequest::to_js_ffi(
   self : DigitalCredentialGetRequest,
 ) -> JsValue =
   #| (self) => ({
@@ -46,8 +54,16 @@ pub extern "js" fn DigitalCredentialGetRequest::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn DigitalCredentialGetRequest::to_js(
+  self : DigitalCredentialGetRequest,
+) -> JsValue {
+  DigitalCredentialGetRequest::to_js_ffi(self)
+}
+
+///|
 /// CredentialCreationOptions dictionary
-pub struct CredentialCreationOptions {
+pub(all) struct CredentialCreationOptions {
   digital : DigitalCredentialCreationOptions?
   publicKey : PublicKeyCredentialCreationOptions?
   mediation : CredentialMediationRequirement?
@@ -70,22 +86,29 @@ pub fn CredentialCreationOptions::default() -> CredentialCreationOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CredentialCreationOptions::to_js(
+extern "js" fn CredentialCreationOptions::to_js_ffi(
   self : CredentialCreationOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   digital: self.digital,
-  #|   publicKey: self.publicKey,
-  #|   mediation: ['silent', 'optional', 'conditional', 'required'][self.mediation],
-  #|   signal: self.signal,
-  #|   password: self.password.to_js_value(),
-  #|   federated: self.federated
+  #|   digital: ((() => { const v = self.digital; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   publicKey: ((() => { const v = self.publicKey; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   mediation: ((() => { const v = self.mediation; if (v === undefined) return undefined; return ['silent', 'optional', 'conditional', 'required'][v]; })()),
+  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   password: ((() => { const v = self.password; if (v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   federated: ((() => { const v = self.federated; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn CredentialCreationOptions::to_js(
+  self : CredentialCreationOptions,
+) -> JsValue {
+  CredentialCreationOptions::to_js_ffi(self)
+}
+
+///|
 /// DigitalCredentialCreationOptions dictionary
-pub struct DigitalCredentialCreationOptions {
+pub(all) struct DigitalCredentialCreationOptions {
   requests : Array[DigitalCredentialCreateRequest]?
 }
 
@@ -96,36 +119,52 @@ pub fn DigitalCredentialCreationOptions::default() -> DigitalCredentialCreationO
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DigitalCredentialCreationOptions::to_js(
+extern "js" fn DigitalCredentialCreationOptions::to_js_ffi(
   self : DigitalCredentialCreationOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   requests: self.requests
+  #|   requests: ((() => { const v = self.requests; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn DigitalCredentialCreationOptions::to_js(
+  self : DigitalCredentialCreationOptions,
+) -> JsValue {
+  DigitalCredentialCreationOptions::to_js_ffi(self)
+}
+
+///|
 /// DigitalCredentialCreateRequest dictionary
-pub struct DigitalCredentialCreateRequest {
+pub(all) struct DigitalCredentialCreateRequest {
   protocol : String
   data : JsValue
 }
 
 ///|
-/// Create a new DigitalCredentialCreateRequest with default values
-pub fn DigitalCredentialCreateRequest::default() -> DigitalCredentialCreateRequest {
-  DigitalCredentialCreateRequest::{ protocol: "", data: panic() }
+/// Create a new DigitalCredentialCreateRequest
+pub fn DigitalCredentialCreateRequest::new(
+  data~ : JsValue,
+) -> DigitalCredentialCreateRequest {
+  DigitalCredentialCreateRequest::{ protocol: "", data }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DigitalCredentialCreateRequest::to_js(
+extern "js" fn DigitalCredentialCreateRequest::to_js_ffi(
   self : DigitalCredentialCreateRequest,
 ) -> JsValue =
   #| (self) => ({
   #|   protocol: self.protocol,
   #|   data: self.data
   #| })
+
+///|
+/// Convert to JsValue
+pub fn DigitalCredentialCreateRequest::to_js(
+  self : DigitalCredentialCreateRequest,
+) -> JsValue {
+  DigitalCredentialCreateRequest::to_js_ffi(self)
+}
 
 ///|
 /// DigitalCredential interface

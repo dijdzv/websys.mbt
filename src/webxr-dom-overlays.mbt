@@ -32,26 +32,31 @@ pub fn XRDOMOverlayType::from_string(s : String) -> XRDOMOverlayType? {
 
 ///|
 /// XRDOMOverlayInit dictionary
-pub struct XRDOMOverlayInit {
+pub(all) struct XRDOMOverlayInit {
   root : Element
 }
 
 ///|
-/// Create a new XRDOMOverlayInit with default values
-pub fn XRDOMOverlayInit::default() -> XRDOMOverlayInit {
-  XRDOMOverlayInit::{ root: panic() }
+/// Create a new XRDOMOverlayInit
+pub fn XRDOMOverlayInit::new(root~ : Element) -> XRDOMOverlayInit {
+  XRDOMOverlayInit::{ root, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRDOMOverlayInit::to_js(self : XRDOMOverlayInit) -> JsValue =
+extern "js" fn XRDOMOverlayInit::to_js_ffi(self : XRDOMOverlayInit) -> JsValue =
   #| (self) => ({
   #|   root: self.root
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRDOMOverlayInit::to_js(self : XRDOMOverlayInit) -> JsValue {
+  XRDOMOverlayInit::to_js_ffi(self)
+}
+
+///|
 /// XRDOMOverlayState dictionary
-pub struct XRDOMOverlayState {
+pub(all) struct XRDOMOverlayState {
   type_ : XRDOMOverlayType?
 }
 
@@ -62,10 +67,15 @@ pub fn XRDOMOverlayState::default() -> XRDOMOverlayState {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRDOMOverlayState::to_js(
+extern "js" fn XRDOMOverlayState::to_js_ffi(
   self : XRDOMOverlayState,
 ) -> JsValue =
   #| (self) => ({
-  #|   type: ['screen', 'floating', 'head-locked'][self.type_]
+  #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['screen', 'floating', 'head-locked'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn XRDOMOverlayState::to_js(self : XRDOMOverlayState) -> JsValue {
+  XRDOMOverlayState::to_js_ffi(self)
+}

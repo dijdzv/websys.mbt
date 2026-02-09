@@ -112,7 +112,7 @@ pub type SubscribeCallback
 pub extern "js" fn SubscribeCallback::from_fn(
   handler : (Subscriber) -> Unit,
 ) -> SubscribeCallback =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// ObservableSubscriptionCallback callback interface
@@ -123,7 +123,7 @@ pub type ObservableSubscriptionCallback
 pub extern "js" fn ObservableSubscriptionCallback::from_fn(
   handler : (JsValue) -> Unit,
 ) -> ObservableSubscriptionCallback =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// ObservableInspectorAbortHandler callback interface
@@ -134,7 +134,7 @@ pub type ObservableInspectorAbortHandler
 pub extern "js" fn ObservableInspectorAbortHandler::from_fn(
   handler : (JsValue) -> Unit,
 ) -> ObservableInspectorAbortHandler =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// Predicate callback interface
@@ -145,7 +145,7 @@ pub type Predicate
 pub extern "js" fn Predicate::from_fn(
   handler : (JsValue, Int64) -> Bool,
 ) -> Predicate =
-  #| (handler) => handler
+  #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
 /// Reducer callback interface
@@ -156,7 +156,7 @@ pub type Reducer
 pub extern "js" fn Reducer::from_fn(
   handler : (JsValue, JsValue, Int64) -> JsValue,
 ) -> Reducer =
-  #| (handler) => handler
+  #| (handler) => (a0, a1, a2) => handler(a0, a1, a2)
 
 ///|
 /// Mapper callback interface
@@ -167,7 +167,7 @@ pub type Mapper
 pub extern "js" fn Mapper::from_fn(
   handler : (JsValue, Int64) -> JsValue,
 ) -> Mapper =
-  #| (handler) => handler
+  #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
 /// Visitor callback interface
@@ -178,7 +178,7 @@ pub type Visitor
 pub extern "js" fn Visitor::from_fn(
   handler : (JsValue, Int64) -> Unit,
 ) -> Visitor =
-  #| (handler) => handler
+  #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
 /// CatchCallback callback interface
@@ -189,11 +189,11 @@ pub type CatchCallback
 pub extern "js" fn CatchCallback::from_fn(
   handler : (JsValue) -> JsValue,
 ) -> CatchCallback =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// SubscriptionObserver dictionary
-pub struct SubscriptionObserver {
+pub(all) struct SubscriptionObserver {
   next : ObservableSubscriptionCallback?
   error : ObservableSubscriptionCallback?
   complete : VoidFunction?
@@ -206,19 +206,24 @@ pub fn SubscriptionObserver::default() -> SubscriptionObserver {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SubscriptionObserver::to_js(
+extern "js" fn SubscriptionObserver::to_js_ffi(
   self : SubscriptionObserver,
 ) -> JsValue =
   #| (self) => ({
-  #|   next: self.next,
-  #|   error: self.error,
-  #|   complete: self.complete
+  #|   next: ((() => { const v = self.next; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   error: ((() => { const v = self.error; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   complete: ((() => { const v = self.complete; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SubscriptionObserver::to_js(self : SubscriptionObserver) -> JsValue {
+  SubscriptionObserver::to_js_ffi(self)
+}
+
+///|
 /// ObservableInspector dictionary
-pub struct ObservableInspector {
+pub(all) struct ObservableInspector {
   next : ObservableSubscriptionCallback?
   error : ObservableSubscriptionCallback?
   complete : VoidFunction?
@@ -239,21 +244,26 @@ pub fn ObservableInspector::default() -> ObservableInspector {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ObservableInspector::to_js(
+extern "js" fn ObservableInspector::to_js_ffi(
   self : ObservableInspector,
 ) -> JsValue =
   #| (self) => ({
-  #|   next: self.next,
-  #|   error: self.error,
-  #|   complete: self.complete,
-  #|   subscribe: self.subscribe,
-  #|   abort: self.abort
+  #|   next: ((() => { const v = self.next; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   error: ((() => { const v = self.error; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   complete: ((() => { const v = self.complete; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   subscribe: ((() => { const v = self.subscribe; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   abort: ((() => { const v = self.abort; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ObservableInspector::to_js(self : ObservableInspector) -> JsValue {
+  ObservableInspector::to_js_ffi(self)
+}
+
+///|
 /// SubscribeOptions dictionary
-pub struct SubscribeOptions {
+pub(all) struct SubscribeOptions {
   signal : AbortSignal?
 }
 
@@ -264,15 +274,20 @@ pub fn SubscribeOptions::default() -> SubscribeOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SubscribeOptions::to_js(self : SubscribeOptions) -> JsValue =
+extern "js" fn SubscribeOptions::to_js_ffi(self : SubscribeOptions) -> JsValue =
   #| (self) => ({
-  #|   signal: self.signal
+  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SubscribeOptions::to_js(self : SubscribeOptions) -> JsValue {
+  SubscribeOptions::to_js_ffi(self)
+}
+
+///|
 /// ObservableEventListenerOptions dictionary
-pub struct ObservableEventListenerOptions {
+pub(all) struct ObservableEventListenerOptions {
   capture : Bool?
   passive : Bool?
 }
@@ -284,14 +299,21 @@ pub fn ObservableEventListenerOptions::default() -> ObservableEventListenerOptio
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ObservableEventListenerOptions::to_js(
+extern "js" fn ObservableEventListenerOptions::to_js_ffi(
   self : ObservableEventListenerOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   capture: self.capture,
-  #|   passive: self.passive
+  #|   capture: (self.capture === -1 ? undefined : self.capture),
+  #|   passive: (self.passive === -1 ? undefined : self.passive)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn ObservableEventListenerOptions::to_js(
+  self : ObservableEventListenerOptions,
+) -> JsValue {
+  ObservableEventListenerOptions::to_js_ffi(self)
+}
 
 ///|
 /// Subscriber interface
@@ -388,12 +410,21 @@ pub extern "js" fn Observable::subscribe(self : Observable) -> Unit =
   #| (self) => self.subscribe()
 
 ///|
-pub extern "js" fn Observable::subscribe_with_options(
+extern "js" fn Observable::subscribe_with_options_ffi(
+  self : Observable,
+  observer : ObserverUnion,
+  options : JsValue,
+) -> Unit =
+  #| (self, observer, options) => self.subscribe(observer, options)
+
+///|
+pub fn Observable::subscribe_with_options(
   self : Observable,
   observer : ObserverUnion,
   options : SubscribeOptions,
-) -> Unit =
-  #| (self, observer, options) => self.subscribe(observer, options)
+) -> Unit {
+  Observable::subscribe_with_options_ffi(self, observer, options.to_js())
+}
 
 ///|
 pub extern "js" fn Observable::from(value : JsValue) -> Observable =
@@ -425,14 +456,14 @@ pub extern "js" fn Observable::take(
   self : Observable,
   amount : Int64,
 ) -> Observable =
-  #| (self, amount) => self.take(amount)
+  #| (self, amount) => self.take((amount.hi * 4294967296 + amount.lo))
 
 ///|
 pub extern "js" fn Observable::drop(
   self : Observable,
   amount : Int64,
 ) -> Observable =
-  #| (self, amount) => self.drop(amount)
+  #| (self, amount) => self.drop((amount.hi * 4294967296 + amount.lo))
 
 ///|
 pub extern "js" fn Observable::flat_map(
@@ -480,11 +511,19 @@ pub extern "js" fn Observable::to_array(
   #| (self) => self.toArray()
 
 ///|
-pub extern "js" fn Observable::to_array_with_options(
+extern "js" fn Observable::to_array_with_options_ffi(
   self : Observable,
-  options : SubscribeOptions,
+  options : JsValue,
 ) -> Promise[Array[JsValue]] =
   #| (self, options) => self.toArray(options)
+
+///|
+pub fn Observable::to_array_with_options(
+  self : Observable,
+  options : SubscribeOptions,
+) -> Promise[Array[JsValue]] {
+  Observable::to_array_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Observable::for_each(
@@ -494,12 +533,21 @@ pub extern "js" fn Observable::for_each(
   #| (self, callback) => self.forEach(callback)
 
 ///|
-pub extern "js" fn Observable::for_each_with_options(
+extern "js" fn Observable::for_each_with_options_ffi(
+  self : Observable,
+  callback : Visitor,
+  options : JsValue,
+) -> Promise[Unit] =
+  #| (self, callback, options) => self.forEach(callback, options)
+
+///|
+pub fn Observable::for_each_with_options(
   self : Observable,
   callback : Visitor,
   options : SubscribeOptions,
-) -> Promise[Unit] =
-  #| (self, callback, options) => self.forEach(callback, options)
+) -> Promise[Unit] {
+  Observable::for_each_with_options_ffi(self, callback, options.to_js())
+}
 
 ///|
 pub extern "js" fn Observable::every(
@@ -509,34 +557,59 @@ pub extern "js" fn Observable::every(
   #| (self, predicate) => self.every(predicate)
 
 ///|
-pub extern "js" fn Observable::every_with_options(
+extern "js" fn Observable::every_with_options_ffi(
+  self : Observable,
+  predicate : Predicate,
+  options : JsValue,
+) -> Promise[Bool] =
+  #| (self, predicate, options) => self.every(predicate, options)
+
+///|
+pub fn Observable::every_with_options(
   self : Observable,
   predicate : Predicate,
   options : SubscribeOptions,
-) -> Promise[Bool] =
-  #| (self, predicate, options) => self.every(predicate, options)
+) -> Promise[Bool] {
+  Observable::every_with_options_ffi(self, predicate, options.to_js())
+}
 
 ///|
 pub extern "js" fn Observable::first(self : Observable) -> Promise[JsValue] =
   #| (self) => self.first()
 
 ///|
-pub extern "js" fn Observable::first_with_options(
+extern "js" fn Observable::first_with_options_ffi(
   self : Observable,
-  options : SubscribeOptions,
+  options : JsValue,
 ) -> Promise[JsValue] =
   #| (self, options) => self.first(options)
+
+///|
+pub fn Observable::first_with_options(
+  self : Observable,
+  options : SubscribeOptions,
+) -> Promise[JsValue] {
+  Observable::first_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Observable::last(self : Observable) -> Promise[JsValue] =
   #| (self) => self.last()
 
 ///|
-pub extern "js" fn Observable::last_with_options(
+extern "js" fn Observable::last_with_options_ffi(
   self : Observable,
-  options : SubscribeOptions,
+  options : JsValue,
 ) -> Promise[JsValue] =
   #| (self, options) => self.last(options)
+
+///|
+pub fn Observable::last_with_options(
+  self : Observable,
+  options : SubscribeOptions,
+) -> Promise[JsValue] {
+  Observable::last_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Observable::find(
@@ -546,12 +619,21 @@ pub extern "js" fn Observable::find(
   #| (self, predicate) => self.find(predicate)
 
 ///|
-pub extern "js" fn Observable::find_with_options(
+extern "js" fn Observable::find_with_options_ffi(
+  self : Observable,
+  predicate : Predicate,
+  options : JsValue,
+) -> Promise[JsValue] =
+  #| (self, predicate, options) => self.find(predicate, options)
+
+///|
+pub fn Observable::find_with_options(
   self : Observable,
   predicate : Predicate,
   options : SubscribeOptions,
-) -> Promise[JsValue] =
-  #| (self, predicate, options) => self.find(predicate, options)
+) -> Promise[JsValue] {
+  Observable::find_with_options_ffi(self, predicate, options.to_js())
+}
 
 ///|
 pub extern "js" fn Observable::some(
@@ -561,12 +643,21 @@ pub extern "js" fn Observable::some(
   #| (self, predicate) => self.some(predicate)
 
 ///|
-pub extern "js" fn Observable::some_with_options(
+extern "js" fn Observable::some_with_options_ffi(
+  self : Observable,
+  predicate : Predicate,
+  options : JsValue,
+) -> Promise[Bool] =
+  #| (self, predicate, options) => self.some(predicate, options)
+
+///|
+pub fn Observable::some_with_options(
   self : Observable,
   predicate : Predicate,
   options : SubscribeOptions,
-) -> Promise[Bool] =
-  #| (self, predicate, options) => self.some(predicate, options)
+) -> Promise[Bool] {
+  Observable::some_with_options_ffi(self, predicate, options.to_js())
+}
 
 ///|
 pub extern "js" fn Observable::reduce(
@@ -576,10 +667,55 @@ pub extern "js" fn Observable::reduce(
   #| (self, reducer) => self.reduce(reducer)
 
 ///|
-pub extern "js" fn Observable::reduce_with_options(
+extern "js" fn Observable::reduce_with_options_ffi(
+  self : Observable,
+  reducer : Reducer,
+  initial_value : JsValue,
+  options : JsValue,
+) -> Promise[JsValue] =
+  #| (self, reducer, initial_value, options) => self.reduce(reducer, initial_value, options)
+
+///|
+pub fn Observable::reduce_with_options(
   self : Observable,
   reducer : Reducer,
   initial_value : JsValue,
   options : SubscribeOptions,
-) -> Promise[JsValue] =
-  #| (self, reducer, initial_value, options) => self.reduce(reducer, initial_value, options)
+) -> Promise[JsValue] {
+  Observable::reduce_with_options_ffi(
+    self,
+    reducer,
+    initial_value,
+    options.to_js(),
+  )
+}
+
+///|
+pub extern "js" fn Observable::subscribe_with_observable_subscription_callback(
+  self : Observable,
+  observer : ObservableSubscriptionCallback,
+  options : SubscribeOptions,
+) -> Unit =
+  #| (self, observer, options) => self.subscribe(observer, options)
+
+///|
+pub extern "js" fn Observable::subscribe_with_subscription_observer(
+  self : Observable,
+  observer : SubscriptionObserver,
+  options : SubscribeOptions,
+) -> Unit =
+  #| (self, observer, options) => self.subscribe(observer, options)
+
+///|
+pub extern "js" fn Observable::inspect_with_observable_subscription_callback(
+  self : Observable,
+  inspector_union : ObservableSubscriptionCallback,
+) -> Observable =
+  #| (self, inspector_union) => self.inspect(inspector_union)
+
+///|
+pub extern "js" fn Observable::inspect_with_observable_inspector(
+  self : Observable,
+  inspector_union : ObservableInspector,
+) -> Observable =
+  #| (self, inspector_union) => self.inspect(inspector_union)

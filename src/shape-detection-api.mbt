@@ -94,7 +94,7 @@ pub fn BarcodeFormat::from_string(s : String) -> BarcodeFormat? {
 
 ///|
 /// FaceDetectorOptions dictionary
-pub struct FaceDetectorOptions {
+pub(all) struct FaceDetectorOptions {
   maxDetectedFaces : Int?
   fastMode : Bool?
 }
@@ -106,39 +106,49 @@ pub fn FaceDetectorOptions::default() -> FaceDetectorOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FaceDetectorOptions::to_js(
+extern "js" fn FaceDetectorOptions::to_js_ffi(
   self : FaceDetectorOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   maxDetectedFaces: self.maxDetectedFaces,
-  #|   fastMode: self.fastMode
+  #|   fastMode: (self.fastMode === -1 ? undefined : self.fastMode)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn FaceDetectorOptions::to_js(self : FaceDetectorOptions) -> JsValue {
+  FaceDetectorOptions::to_js_ffi(self)
+}
+
+///|
 /// DetectedFace dictionary
-pub struct DetectedFace {
+pub(all) struct DetectedFace {
   boundingBox : DOMRectReadOnly
   landmarks : Array[Landmark]
 }
 
 ///|
-/// Create a new DetectedFace with default values
-pub fn DetectedFace::default() -> DetectedFace {
-  DetectedFace::{ boundingBox: panic(), landmarks: [] }
+/// Create a new DetectedFace
+pub fn DetectedFace::new(boundingBox~ : DOMRectReadOnly) -> DetectedFace {
+  DetectedFace::{ boundingBox, landmarks: [] }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DetectedFace::to_js(self : DetectedFace) -> JsValue =
+extern "js" fn DetectedFace::to_js_ffi(self : DetectedFace) -> JsValue =
   #| (self) => ({
   #|   boundingBox: self.boundingBox,
   #|   landmarks: self.landmarks
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn DetectedFace::to_js(self : DetectedFace) -> JsValue {
+  DetectedFace::to_js_ffi(self)
+}
+
+///|
 /// Landmark dictionary
-pub struct Landmark {
+pub(all) struct Landmark {
   locations : Array[Point2D]
   type_ : LandmarkType?
 }
@@ -150,16 +160,21 @@ pub fn Landmark::default() -> Landmark {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn Landmark::to_js(self : Landmark) -> JsValue =
+extern "js" fn Landmark::to_js_ffi(self : Landmark) -> JsValue =
   #| (self) => ({
   #|   locations: self.locations,
-  #|   type: ['mouth', 'eye', 'nose'][self.type_]
+  #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['mouth', 'eye', 'nose'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn Landmark::to_js(self : Landmark) -> JsValue {
+  Landmark::to_js_ffi(self)
+}
+
+///|
 /// BarcodeDetectorOptions dictionary
-pub struct BarcodeDetectorOptions {
+pub(all) struct BarcodeDetectorOptions {
   formats : Array[BarcodeFormat]?
 }
 
@@ -170,17 +185,22 @@ pub fn BarcodeDetectorOptions::default() -> BarcodeDetectorOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BarcodeDetectorOptions::to_js(
+extern "js" fn BarcodeDetectorOptions::to_js_ffi(
   self : BarcodeDetectorOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   formats: self.formats
+  #|   formats: ((() => { const v = self.formats; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn BarcodeDetectorOptions::to_js(self : BarcodeDetectorOptions) -> JsValue {
+  BarcodeDetectorOptions::to_js_ffi(self)
+}
+
+///|
 /// DetectedBarcode dictionary
-pub struct DetectedBarcode {
+pub(all) struct DetectedBarcode {
   boundingBox : DOMRectReadOnly
   rawValue : String
   format : BarcodeFormat
@@ -188,25 +208,28 @@ pub struct DetectedBarcode {
 }
 
 ///|
-/// Create a new DetectedBarcode with default values
-pub fn DetectedBarcode::default() -> DetectedBarcode {
-  DetectedBarcode::{
-    boundingBox: panic(),
-    rawValue: "",
-    format: panic(),
-    cornerPoints: [],
-  }
+/// Create a new DetectedBarcode
+pub fn DetectedBarcode::new(
+  boundingBox~ : DOMRectReadOnly,
+  format~ : BarcodeFormat,
+) -> DetectedBarcode {
+  DetectedBarcode::{ boundingBox, rawValue: "", format, cornerPoints: [] }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DetectedBarcode::to_js(self : DetectedBarcode) -> JsValue =
+extern "js" fn DetectedBarcode::to_js_ffi(self : DetectedBarcode) -> JsValue =
   #| (self) => ({
   #|   boundingBox: self.boundingBox,
   #|   rawValue: self.rawValue,
   #|   format: ['aztec', 'code_128', 'code_39', 'code_93', 'codabar', 'data_matrix', 'ean_13', 'ean_8', 'itf', 'pdf417', 'qr_code', 'unknown', 'upc_a', 'upc_e'][self.format],
   #|   cornerPoints: self.cornerPoints
   #| })
+
+///|
+/// Convert to JsValue
+pub fn DetectedBarcode::to_js(self : DetectedBarcode) -> JsValue {
+  DetectedBarcode::to_js_ffi(self)
+}
 
 ///|
 /// FaceDetector interface
@@ -239,15 +262,49 @@ pub extern "js" fn JsValue::to_face_detector(self : JsValue) -> FaceDetector =
   #| (self) => self
 
 ///|
-pub extern "js" fn FaceDetector::new(
-  face_detector_options : FaceDetectorOptions,
+pub extern "js" fn FaceDetector::new() -> FaceDetector =
+  #| () => new FaceDetector()
+
+///|
+extern "js" fn FaceDetector::new_with_face_detector_options_ffi(
+  face_detector_options : JsValue,
 ) -> FaceDetector =
   #| (face_detector_options) => new FaceDetector(face_detector_options)
+
+///|
+pub fn FaceDetector::new_with_face_detector_options(
+  face_detector_options : FaceDetectorOptions,
+) -> FaceDetector {
+  FaceDetector::new_with_face_detector_options_ffi(
+    face_detector_options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn FaceDetector::detect(
   self : FaceDetector,
   image : ImageBitmapSource,
+) -> Promise[Array[DetectedFace]] =
+  #| (self, image) => self.detect(image)
+
+///|
+pub extern "js" fn FaceDetector::detect_with_canvas_image_source(
+  self : FaceDetector,
+  image : CanvasImageSource,
+) -> Promise[Array[DetectedFace]] =
+  #| (self, image) => self.detect(image)
+
+///|
+pub extern "js" fn FaceDetector::detect_with_blob(
+  self : FaceDetector,
+  image : Blob,
+) -> Promise[Array[DetectedFace]] =
+  #| (self, image) => self.detect(image)
+
+///|
+pub extern "js" fn FaceDetector::detect_with_image_data(
+  self : FaceDetector,
+  image : ImageData,
 ) -> Promise[Array[DetectedFace]] =
   #| (self, image) => self.detect(image)
 
@@ -290,10 +347,23 @@ pub extern "js" fn JsValue::to_barcode_detector(
   #| (self) => self
 
 ///|
-pub extern "js" fn BarcodeDetector::new(
-  barcode_detector_options : BarcodeDetectorOptions,
+pub extern "js" fn BarcodeDetector::new() -> BarcodeDetector =
+  #| () => new BarcodeDetector()
+
+///|
+extern "js" fn BarcodeDetector::new_with_barcode_detector_options_ffi(
+  barcode_detector_options : JsValue,
 ) -> BarcodeDetector =
   #| (barcode_detector_options) => new BarcodeDetector(barcode_detector_options)
+
+///|
+pub fn BarcodeDetector::new_with_barcode_detector_options(
+  barcode_detector_options : BarcodeDetectorOptions,
+) -> BarcodeDetector {
+  BarcodeDetector::new_with_barcode_detector_options_ffi(
+    barcode_detector_options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn BarcodeDetector::get_supported_formats() -> Promise[
@@ -305,5 +375,26 @@ pub extern "js" fn BarcodeDetector::get_supported_formats() -> Promise[
 pub extern "js" fn BarcodeDetector::detect(
   self : BarcodeDetector,
   image : ImageBitmapSource,
+) -> Promise[Array[DetectedBarcode]] =
+  #| (self, image) => self.detect(image)
+
+///|
+pub extern "js" fn BarcodeDetector::detect_with_canvas_image_source(
+  self : BarcodeDetector,
+  image : CanvasImageSource,
+) -> Promise[Array[DetectedBarcode]] =
+  #| (self, image) => self.detect(image)
+
+///|
+pub extern "js" fn BarcodeDetector::detect_with_blob(
+  self : BarcodeDetector,
+  image : Blob,
+) -> Promise[Array[DetectedBarcode]] =
+  #| (self, image) => self.detect(image)
+
+///|
+pub extern "js" fn BarcodeDetector::detect_with_image_data(
+  self : BarcodeDetector,
+  image : ImageData,
 ) -> Promise[Array[DetectedBarcode]] =
   #| (self, image) => self.detect(image)

@@ -38,7 +38,7 @@ pub fn ContactProperty::from_string(s : String) -> ContactProperty? {
 
 ///|
 /// ContactInfo dictionary
-pub struct ContactInfo {
+pub(all) struct ContactInfo {
   address : Array[ContactAddress]?
   email : Array[String]?
   icon : Array[Blob]?
@@ -53,19 +53,24 @@ pub fn ContactInfo::default() -> ContactInfo {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ContactInfo::to_js(self : ContactInfo) -> JsValue =
+extern "js" fn ContactInfo::to_js_ffi(self : ContactInfo) -> JsValue =
   #| (self) => ({
-  #|   address: self.address,
-  #|   email: self.email,
-  #|   icon: self.icon,
-  #|   name: self.name,
-  #|   tel: self.tel
+  #|   address: ((() => { const v = self.address; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   email: ((() => { const v = self.email; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   icon: ((() => { const v = self.icon; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   name: ((() => { const v = self.name; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   tel: ((() => { const v = self.tel; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ContactInfo::to_js(self : ContactInfo) -> JsValue {
+  ContactInfo::to_js_ffi(self)
+}
+
+///|
 /// ContactsSelectOptions dictionary
-pub struct ContactsSelectOptions {
+pub(all) struct ContactsSelectOptions {
   multiple : Bool?
 }
 
@@ -76,13 +81,18 @@ pub fn ContactsSelectOptions::default() -> ContactsSelectOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ContactsSelectOptions::to_js(
+extern "js" fn ContactsSelectOptions::to_js_ffi(
   self : ContactsSelectOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   multiple: self.multiple
+  #|   multiple: (self.multiple === -1 ? undefined : self.multiple)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn ContactsSelectOptions::to_js(self : ContactsSelectOptions) -> JsValue {
+  ContactsSelectOptions::to_js_ffi(self)
+}
 
 ///|
 /// ContactAddress interface
@@ -228,9 +238,18 @@ pub extern "js" fn ContactsManager::select(
   #| (self, properties) => self.select(properties)
 
 ///|
-pub extern "js" fn ContactsManager::select_with_options(
+extern "js" fn ContactsManager::select_with_options_ffi(
+  self : ContactsManager,
+  properties : Array[ContactProperty],
+  options : JsValue,
+) -> Promise[Array[ContactInfo]] =
+  #| (self, properties, options) => self.select(properties, options)
+
+///|
+pub fn ContactsManager::select_with_options(
   self : ContactsManager,
   properties : Array[ContactProperty],
   options : ContactsSelectOptions,
-) -> Promise[Array[ContactInfo]] =
-  #| (self, properties, options) => self.select(properties, options)
+) -> Promise[Array[ContactInfo]] {
+  ContactsManager::select_with_options_ffi(self, properties, options.to_js())
+}

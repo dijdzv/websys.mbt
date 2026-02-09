@@ -3,7 +3,7 @@
 
 ///|
 /// TopLevelStorageAccessPermissionDescriptor dictionary
-pub struct TopLevelStorageAccessPermissionDescriptor {
+pub(all) struct TopLevelStorageAccessPermissionDescriptor {
   requestedOrigin : String?
 }
 
@@ -14,10 +14,17 @@ pub fn TopLevelStorageAccessPermissionDescriptor::default() -> TopLevelStorageAc
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TopLevelStorageAccessPermissionDescriptor::to_js(
+extern "js" fn TopLevelStorageAccessPermissionDescriptor::to_js_ffi(
   self : TopLevelStorageAccessPermissionDescriptor,
 ) -> JsValue =
   #| (self) => ({
   #|   requestedOrigin: self.requestedOrigin
   #| })
+
+///|
+/// Convert to JsValue
+pub fn TopLevelStorageAccessPermissionDescriptor::to_js(
+  self : TopLevelStorageAccessPermissionDescriptor,
+) -> JsValue {
+  TopLevelStorageAccessPermissionDescriptor::to_js_ffi(self)
+}

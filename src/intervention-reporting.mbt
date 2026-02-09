@@ -3,7 +3,7 @@
 
 ///|
 /// InterventionReportBody dictionary
-pub struct InterventionReportBody {
+pub(all) struct InterventionReportBody {
   id : String?
   message : String?
   sourceFile : Nullable[String]
@@ -24,8 +24,7 @@ pub fn InterventionReportBody::default() -> InterventionReportBody {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn InterventionReportBody::to_js(
+extern "js" fn InterventionReportBody::to_js_ffi(
   self : InterventionReportBody,
 ) -> JsValue =
   #| (self) => ({
@@ -35,3 +34,9 @@ pub extern "js" fn InterventionReportBody::to_js(
   #|   lineNumber: ((() => { const v = self.lineNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   columnNumber: ((() => { const v = self.columnNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn InterventionReportBody::to_js(self : InterventionReportBody) -> JsValue {
+  InterventionReportBody::to_js_ffi(self)
+}

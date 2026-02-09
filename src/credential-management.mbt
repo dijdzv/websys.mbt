@@ -91,7 +91,7 @@ pub fn CredentialMediationRequirement::from_string(
 
 ///|
 /// CredentialData dictionary
-pub struct CredentialData {
+pub(all) struct CredentialData {
   id : String
 }
 
@@ -102,15 +102,20 @@ pub fn CredentialData::default() -> CredentialData {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CredentialData::to_js(self : CredentialData) -> JsValue =
+extern "js" fn CredentialData::to_js_ffi(self : CredentialData) -> JsValue =
   #| (self) => ({
   #|   id: self.id
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn CredentialData::to_js(self : CredentialData) -> JsValue {
+  CredentialData::to_js_ffi(self)
+}
+
+///|
 /// PasswordCredentialData dictionary
-pub struct PasswordCredentialData {
+pub(all) struct PasswordCredentialData {
   id : String
   name : String?
   iconURL : String?
@@ -131,8 +136,7 @@ pub fn PasswordCredentialData::default() -> PasswordCredentialData {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PasswordCredentialData::to_js(
+extern "js" fn PasswordCredentialData::to_js_ffi(
   self : PasswordCredentialData,
 ) -> JsValue =
   #| (self) => ({
@@ -144,8 +148,14 @@ pub extern "js" fn PasswordCredentialData::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PasswordCredentialData::to_js(self : PasswordCredentialData) -> JsValue {
+  PasswordCredentialData::to_js_ffi(self)
+}
+
+///|
 /// FederatedCredentialRequestOptions dictionary
-pub struct FederatedCredentialRequestOptions {
+pub(all) struct FederatedCredentialRequestOptions {
   providers : Array[String]?
   protocols : Array[String]?
 }
@@ -157,18 +167,25 @@ pub fn FederatedCredentialRequestOptions::default() -> FederatedCredentialReques
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FederatedCredentialRequestOptions::to_js(
+extern "js" fn FederatedCredentialRequestOptions::to_js_ffi(
   self : FederatedCredentialRequestOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   providers: self.providers,
-  #|   protocols: self.protocols
+  #|   providers: ((() => { const v = self.providers; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   protocols: ((() => { const v = self.protocols; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn FederatedCredentialRequestOptions::to_js(
+  self : FederatedCredentialRequestOptions,
+) -> JsValue {
+  FederatedCredentialRequestOptions::to_js_ffi(self)
+}
+
+///|
 /// FederatedCredentialInit dictionary
-pub struct FederatedCredentialInit {
+pub(all) struct FederatedCredentialInit {
   id : String
   name : String?
   iconURL : String?
@@ -191,8 +208,7 @@ pub fn FederatedCredentialInit::default() -> FederatedCredentialInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FederatedCredentialInit::to_js(
+extern "js" fn FederatedCredentialInit::to_js_ffi(
   self : FederatedCredentialInit,
 ) -> JsValue =
   #| (self) => ({
@@ -203,6 +219,14 @@ pub extern "js" fn FederatedCredentialInit::to_js(
   #|   provider: self.provider,
   #|   protocol: self.protocol
   #| })
+
+///|
+/// Convert to JsValue
+pub fn FederatedCredentialInit::to_js(
+  self : FederatedCredentialInit,
+) -> JsValue {
+  FederatedCredentialInit::to_js_ffi(self)
+}
 
 ///|
 /// Credential interface
@@ -330,14 +354,22 @@ pub extern "js" fn JsValue::to_credentials_container(
 pub extern "js" fn CredentialsContainer::get(
   self : CredentialsContainer,
 ) -> Promise[Credential?] =
-  #| (self) => self.get().then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
+  #| (self) => self.get()
 
 ///|
-pub extern "js" fn CredentialsContainer::get_with_options(
+extern "js" fn CredentialsContainer::get_with_options_ffi(
+  self : CredentialsContainer,
+  options : JsValue,
+) -> Promise[Credential?] =
+  #| (self, options) => self.get(options)
+
+///|
+pub fn CredentialsContainer::get_with_options(
   self : CredentialsContainer,
   options : CredentialRequestOptions,
-) -> Promise[Credential?] =
-  #| (self, options) => self.get(options).then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
+) -> Promise[Credential?] {
+  CredentialsContainer::get_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn CredentialsContainer::store(
@@ -350,14 +382,22 @@ pub extern "js" fn CredentialsContainer::store(
 pub extern "js" fn CredentialsContainer::create(
   self : CredentialsContainer,
 ) -> Promise[Credential?] =
-  #| (self) => self.create().then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
+  #| (self) => self.create()
 
 ///|
-pub extern "js" fn CredentialsContainer::create_with_options(
+extern "js" fn CredentialsContainer::create_with_options_ffi(
+  self : CredentialsContainer,
+  options : JsValue,
+) -> Promise[Credential?] =
+  #| (self, options) => self.create(options)
+
+///|
+pub fn CredentialsContainer::create_with_options(
   self : CredentialsContainer,
   options : CredentialCreationOptions,
-) -> Promise[Credential?] =
-  #| (self, options) => self.create(options).then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
+) -> Promise[Credential?] {
+  CredentialsContainer::create_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn CredentialsContainer::prevent_silent_access(
@@ -410,10 +450,23 @@ pub extern "js" fn PasswordCredential::to_credential(
   #| (self) => self
 
 ///|
-pub extern "js" fn PasswordCredential::new(
+pub extern "js" fn PasswordCredential::new_with_html_form_element(
   form : HTMLFormElement,
 ) -> PasswordCredential =
   #| (form) => new PasswordCredential(form)
+
+///|
+extern "js" fn PasswordCredential::new_with_password_credential_data_ffi(
+  data : JsValue,
+) -> PasswordCredential =
+  #| (data) => new PasswordCredential(data)
+
+///|
+pub fn PasswordCredential::new_with_password_credential_data(
+  data : PasswordCredentialData,
+) -> PasswordCredential {
+  PasswordCredential::new_with_password_credential_data_ffi(data.to_js())
+}
 
 ///|
 pub extern "js" fn PasswordCredential::get_password(
@@ -478,10 +531,17 @@ pub extern "js" fn FederatedCredential::to_credential(
   #| (self) => self
 
 ///|
-pub extern "js" fn FederatedCredential::new(
-  data : FederatedCredentialInit,
+extern "js" fn FederatedCredential::new_ffi(
+  data : JsValue,
 ) -> FederatedCredential =
   #| (data) => new FederatedCredential(data)
+
+///|
+pub fn FederatedCredential::new(
+  data : FederatedCredentialInit,
+) -> FederatedCredential {
+  FederatedCredential::new_ffi(data.to_js())
+}
 
 ///|
 pub extern "js" fn FederatedCredential::get_provider(
@@ -493,7 +553,7 @@ pub extern "js" fn FederatedCredential::get_provider(
 pub extern "js" fn FederatedCredential::get_protocol(
   self : FederatedCredential,
 ) -> String? =
-  #| (self) => { const v = self.protocol; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.protocol) ?? undefined
 
 ///|
 pub extern "js" fn FederatedCredential::get_name(

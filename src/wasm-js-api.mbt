@@ -135,20 +135,22 @@ pub fn ValueType::from_string(s : String) -> ValueType? {
 
 ///|
 /// WebAssemblyInstantiatedSource dictionary
-pub struct WebAssemblyInstantiatedSource {
+pub(all) struct WebAssemblyInstantiatedSource {
   module_ : Module
   instance : Instance
 }
 
 ///|
-/// Create a new WebAssemblyInstantiatedSource with default values
-pub fn WebAssemblyInstantiatedSource::default() -> WebAssemblyInstantiatedSource {
-  WebAssemblyInstantiatedSource::{ module_: panic(), instance: panic() }
+/// Create a new WebAssemblyInstantiatedSource
+pub fn WebAssemblyInstantiatedSource::new(
+  module_~ : Module,
+  instance~ : Instance,
+) -> WebAssemblyInstantiatedSource {
+  WebAssemblyInstantiatedSource::{ module_, instance }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WebAssemblyInstantiatedSource::to_js(
+extern "js" fn WebAssemblyInstantiatedSource::to_js_ffi(
   self : WebAssemblyInstantiatedSource,
 ) -> JsValue =
   #| (self) => ({
@@ -157,8 +159,16 @@ pub extern "js" fn WebAssemblyInstantiatedSource::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WebAssemblyInstantiatedSource::to_js(
+  self : WebAssemblyInstantiatedSource,
+) -> JsValue {
+  WebAssemblyInstantiatedSource::to_js_ffi(self)
+}
+
+///|
 /// WebAssemblyCompileOptions dictionary
-pub struct WebAssemblyCompileOptions {
+pub(all) struct WebAssemblyCompileOptions {
   importedStringConstants : Nullable[String]
   builtins : Array[String]?
 }
@@ -173,31 +183,39 @@ pub fn WebAssemblyCompileOptions::default() -> WebAssemblyCompileOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WebAssemblyCompileOptions::to_js(
+extern "js" fn WebAssemblyCompileOptions::to_js_ffi(
   self : WebAssemblyCompileOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   importedStringConstants: ((() => { const v = self.importedStringConstants; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   builtins: self.builtins
+  #|   builtins: ((() => { const v = self.builtins; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WebAssemblyCompileOptions::to_js(
+  self : WebAssemblyCompileOptions,
+) -> JsValue {
+  WebAssemblyCompileOptions::to_js_ffi(self)
+}
+
+///|
 /// ModuleExportDescriptor dictionary
-pub struct ModuleExportDescriptor {
+pub(all) struct ModuleExportDescriptor {
   name : String
   kind : ImportExportKind
 }
 
 ///|
-/// Create a new ModuleExportDescriptor with default values
-pub fn ModuleExportDescriptor::default() -> ModuleExportDescriptor {
-  ModuleExportDescriptor::{ name: "", kind: panic() }
+/// Create a new ModuleExportDescriptor
+pub fn ModuleExportDescriptor::new(
+  kind~ : ImportExportKind,
+) -> ModuleExportDescriptor {
+  ModuleExportDescriptor::{ name: "", kind }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ModuleExportDescriptor::to_js(
+extern "js" fn ModuleExportDescriptor::to_js_ffi(
   self : ModuleExportDescriptor,
 ) -> JsValue =
   #| (self) => ({
@@ -206,22 +224,29 @@ pub extern "js" fn ModuleExportDescriptor::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ModuleExportDescriptor::to_js(self : ModuleExportDescriptor) -> JsValue {
+  ModuleExportDescriptor::to_js_ffi(self)
+}
+
+///|
 /// ModuleImportDescriptor dictionary
-pub struct ModuleImportDescriptor {
+pub(all) struct ModuleImportDescriptor {
   module_ : String
   name : String
   kind : ImportExportKind
 }
 
 ///|
-/// Create a new ModuleImportDescriptor with default values
-pub fn ModuleImportDescriptor::default() -> ModuleImportDescriptor {
-  ModuleImportDescriptor::{ module_: "", name: "", kind: panic() }
+/// Create a new ModuleImportDescriptor
+pub fn ModuleImportDescriptor::new(
+  kind~ : ImportExportKind,
+) -> ModuleImportDescriptor {
+  ModuleImportDescriptor::{ module_: "", name: "", kind }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ModuleImportDescriptor::to_js(
+extern "js" fn ModuleImportDescriptor::to_js_ffi(
   self : ModuleImportDescriptor,
 ) -> JsValue =
   #| (self) => ({
@@ -231,31 +256,42 @@ pub extern "js" fn ModuleImportDescriptor::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ModuleImportDescriptor::to_js(self : ModuleImportDescriptor) -> JsValue {
+  ModuleImportDescriptor::to_js_ffi(self)
+}
+
+///|
 /// MemoryDescriptor dictionary
-pub struct MemoryDescriptor {
+pub(all) struct MemoryDescriptor {
   initial : AddressValue
   maximum : AddressValue?
   address : AddressType?
 }
 
 ///|
-/// Create a new MemoryDescriptor with default values
-pub fn MemoryDescriptor::default() -> MemoryDescriptor {
-  MemoryDescriptor::{ initial: panic(), maximum: None, address: None }
+/// Create a new MemoryDescriptor
+pub fn MemoryDescriptor::new(initial~ : AddressValue) -> MemoryDescriptor {
+  MemoryDescriptor::{ initial, maximum: None, address: None }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MemoryDescriptor::to_js(self : MemoryDescriptor) -> JsValue =
+extern "js" fn MemoryDescriptor::to_js_ffi(self : MemoryDescriptor) -> JsValue =
   #| (self) => ({
   #|   initial: self.initial,
-  #|   maximum: self.maximum,
-  #|   address: ['i32', 'i64'][self.address]
+  #|   maximum: ((() => { const v = self.maximum; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   address: ((() => { const v = self.address; if (v === undefined) return undefined; return ['i32', 'i64'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MemoryDescriptor::to_js(self : MemoryDescriptor) -> JsValue {
+  MemoryDescriptor::to_js_ffi(self)
+}
+
+///|
 /// TableDescriptor dictionary
-pub struct TableDescriptor {
+pub(all) struct TableDescriptor {
   element : TableKind
   initial : AddressValue
   maximum : AddressValue?
@@ -263,50 +299,58 @@ pub struct TableDescriptor {
 }
 
 ///|
-/// Create a new TableDescriptor with default values
-pub fn TableDescriptor::default() -> TableDescriptor {
-  TableDescriptor::{
-    element: panic(),
-    initial: panic(),
-    maximum: None,
-    address: None,
-  }
+/// Create a new TableDescriptor
+pub fn TableDescriptor::new(
+  element~ : TableKind,
+  initial~ : AddressValue,
+) -> TableDescriptor {
+  TableDescriptor::{ element, initial, maximum: None, address: None }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TableDescriptor::to_js(self : TableDescriptor) -> JsValue =
+extern "js" fn TableDescriptor::to_js_ffi(self : TableDescriptor) -> JsValue =
   #| (self) => ({
   #|   element: ['externref', 'anyfunc'][self.element],
   #|   initial: self.initial,
-  #|   maximum: self.maximum,
-  #|   address: ['i32', 'i64'][self.address]
+  #|   maximum: ((() => { const v = self.maximum; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   address: ((() => { const v = self.address; if (v === undefined) return undefined; return ['i32', 'i64'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn TableDescriptor::to_js(self : TableDescriptor) -> JsValue {
+  TableDescriptor::to_js_ffi(self)
+}
+
+///|
 /// GlobalDescriptor dictionary
-pub struct GlobalDescriptor {
+pub(all) struct GlobalDescriptor {
   value : ValueType
   mutable : Bool?
 }
 
 ///|
-/// Create a new GlobalDescriptor with default values
-pub fn GlobalDescriptor::default() -> GlobalDescriptor {
-  GlobalDescriptor::{ value: panic(), mutable: None }
+/// Create a new GlobalDescriptor
+pub fn GlobalDescriptor::new(value~ : ValueType) -> GlobalDescriptor {
+  GlobalDescriptor::{ value, mutable: None }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn GlobalDescriptor::to_js(self : GlobalDescriptor) -> JsValue =
+extern "js" fn GlobalDescriptor::to_js_ffi(self : GlobalDescriptor) -> JsValue =
   #| (self) => ({
   #|   value: ['i32', 'i64', 'f32', 'f64', 'v128', 'externref', 'anyfunc'][self.value],
-  #|   mutable: self.mutable
+  #|   mutable: (self.mutable === -1 ? undefined : self.mutable)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn GlobalDescriptor::to_js(self : GlobalDescriptor) -> JsValue {
+  GlobalDescriptor::to_js_ffi(self)
+}
+
+///|
 /// TagType dictionary
-pub struct TagType {
+pub(all) struct TagType {
   parameters : Array[ValueType]
 }
 
@@ -317,15 +361,20 @@ pub fn TagType::default() -> TagType {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TagType::to_js(self : TagType) -> JsValue =
+extern "js" fn TagType::to_js_ffi(self : TagType) -> JsValue =
   #| (self) => ({
   #|   parameters: self.parameters
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn TagType::to_js(self : TagType) -> JsValue {
+  TagType::to_js_ffi(self)
+}
+
+///|
 /// ExceptionOptions dictionary
-pub struct ExceptionOptions {
+pub(all) struct ExceptionOptions {
   traceStack : Bool?
 }
 
@@ -336,11 +385,16 @@ pub fn ExceptionOptions::default() -> ExceptionOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ExceptionOptions::to_js(self : ExceptionOptions) -> JsValue =
+extern "js" fn ExceptionOptions::to_js_ffi(self : ExceptionOptions) -> JsValue =
   #| (self) => ({
-  #|   traceStack: self.traceStack
+  #|   traceStack: (self.traceStack === -1 ? undefined : self.traceStack)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn ExceptionOptions::to_js(self : ExceptionOptions) -> JsValue {
+  ExceptionOptions::to_js_ffi(self)
+}
 
 ///|
 /// Module interface
@@ -371,11 +425,23 @@ pub extern "js" fn JsValue::to_module(self : JsValue) -> Module =
   #| (self) => self
 
 ///|
-pub extern "js" fn Module::new(
+pub extern "js" fn Module::new(bytes : BufferSource) -> Module =
+  #| (bytes) => new Module(bytes)
+
+///|
+extern "js" fn Module::new_with_options_ffi(
   bytes : BufferSource,
-  options : WebAssemblyCompileOptions,
+  options : JsValue,
 ) -> Module =
   #| (bytes, options) => new Module(bytes, options)
+
+///|
+pub fn Module::new_with_options(
+  bytes : BufferSource,
+  options : WebAssemblyCompileOptions,
+) -> Module {
+  Module::new_with_options_ffi(bytes, options.to_js())
+}
 
 ///|
 pub extern "js" fn Module::exports(
@@ -395,6 +461,20 @@ pub extern "js" fn Module::custom_sections(
   section_name : String,
 ) -> Array[ArrayBuffer] =
   #| (module_object, section_name) => Module.customSections(module_object, section_name)
+
+///|
+pub extern "js" fn Module::new_with_array_buffer_view(
+  bytes : ArrayBufferView,
+  options : WebAssemblyCompileOptions,
+) -> Module =
+  #| (bytes, options) => new Module(bytes, options)
+
+///|
+pub extern "js" fn Module::new_with_array_buffer(
+  bytes : ArrayBuffer,
+  options : WebAssemblyCompileOptions,
+) -> Module =
+  #| (bytes, options) => new Module(bytes, options)
 
 ///|
 /// Instance interface
@@ -425,7 +505,11 @@ pub extern "js" fn JsValue::to_instance(self : JsValue) -> Instance =
   #| (self) => self
 
 ///|
-pub extern "js" fn Instance::new(
+pub extern "js" fn Instance::new(module_ : Module) -> Instance =
+  #| (module_) => new Instance(module_)
+
+///|
+pub extern "js" fn Instance::new_with_import_object(
   module_ : Module,
   import_object : JsValue,
 ) -> Instance =
@@ -464,8 +548,13 @@ pub extern "js" fn JsValue::to_memory(self : JsValue) -> Memory =
   #| (self) => self
 
 ///|
-pub extern "js" fn Memory::new(descriptor : MemoryDescriptor) -> Memory =
+extern "js" fn Memory::new_ffi(descriptor : JsValue) -> Memory =
   #| (descriptor) => new Memory(descriptor)
+
+///|
+pub fn Memory::new(descriptor : MemoryDescriptor) -> Memory {
+  Memory::new_ffi(descriptor.to_js())
+}
 
 ///|
 pub extern "js" fn Memory::grow(
@@ -515,11 +604,28 @@ pub extern "js" fn JsValue::to_table(self : JsValue) -> Table =
   #| (self) => self
 
 ///|
-pub extern "js" fn Table::new(
-  descriptor : TableDescriptor,
+extern "js" fn Table::new_ffi(descriptor : JsValue) -> Table =
+  #| (descriptor) => new Table(descriptor)
+
+///|
+pub fn Table::new(descriptor : TableDescriptor) -> Table {
+  Table::new_ffi(descriptor.to_js())
+}
+
+///|
+extern "js" fn Table::new_with_value_ffi(
+  descriptor : JsValue,
   value : JsValue,
 ) -> Table =
   #| (descriptor, value) => new Table(descriptor, value)
+
+///|
+pub fn Table::new_with_value(
+  descriptor : TableDescriptor,
+  value : JsValue,
+) -> Table {
+  Table::new_with_value_ffi(descriptor.to_js(), value)
+}
 
 ///|
 pub extern "js" fn Table::grow(
@@ -585,11 +691,25 @@ pub extern "js" fn JsValue::to_global(self : JsValue) -> Global =
   #| (self) => self
 
 ///|
-pub extern "js" fn Global::new(
-  descriptor : GlobalDescriptor,
+extern "js" fn Global::new_ffi(descriptor : JsValue) -> Global =
+  #| (descriptor) => new Global(descriptor)
+
+///|
+pub fn Global::new(descriptor : GlobalDescriptor) -> Global {
+  Global::new_ffi(descriptor.to_js())
+}
+
+///|
+extern "js" fn Global::new_with_v_ffi(
+  descriptor : JsValue,
   v : JsValue,
 ) -> Global =
   #| (descriptor, v) => new Global(descriptor, v)
+
+///|
+pub fn Global::new_with_v(descriptor : GlobalDescriptor, v : JsValue) -> Global {
+  Global::new_with_v_ffi(descriptor.to_js(), v)
+}
 
 ///|
 pub extern "js" fn Global::value_of(self : Global) -> JsValue =
@@ -632,8 +752,13 @@ pub extern "js" fn JsValue::to_tag(self : JsValue) -> Tag =
   #| (self) => self
 
 ///|
-pub extern "js" fn Tag::new(type_ : TagType) -> Tag =
+extern "js" fn Tag::new_ffi(type_ : JsValue) -> Tag =
   #| (type_) => new Tag(type_)
+
+///|
+pub fn Tag::new(type_ : TagType) -> Tag {
+  Tag::new_ffi(type_.to_js())
+}
 
 ///|
 /// Exception interface
@@ -667,9 +792,25 @@ pub extern "js" fn JsValue::to_exception(self : JsValue) -> Exception =
 pub extern "js" fn Exception::new(
   exception_tag : Tag,
   payload : Array[JsValue],
-  options : ExceptionOptions,
+) -> Exception =
+  #| (exception_tag, payload) => new Exception(exception_tag, payload)
+
+///|
+extern "js" fn Exception::new_with_options_ffi(
+  exception_tag : Tag,
+  payload : Array[JsValue],
+  options : JsValue,
 ) -> Exception =
   #| (exception_tag, payload, options) => new Exception(exception_tag, payload, options)
+
+///|
+pub fn Exception::new_with_options(
+  exception_tag : Tag,
+  payload : Array[JsValue],
+  options : ExceptionOptions,
+) -> Exception {
+  Exception::new_with_options_ffi(exception_tag, payload, options.to_js())
+}
 
 ///|
 pub extern "js" fn Exception::get_arg(self : Exception, index : Int) -> JsValue =
@@ -685,3 +826,124 @@ pub extern "js" fn Exception::is_(
 ///|
 pub extern "js" fn Exception::get_stack(self : Exception) -> StringOrVoid =
   #| (self) => self.stack
+
+///|
+/// WebAssembly namespace
+pub extern "js" fn web_assembly_validate(bytes : BufferSource) -> Bool =
+  #| (bytes) => WebAssembly.validate(bytes)
+
+///|
+extern "js" fn web_assembly_validate_with_options_ffi(
+  bytes : BufferSource,
+  options : JsValue,
+) -> Bool =
+  #| (bytes, options) => WebAssembly.validate(bytes, options)
+
+///|
+pub fn web_assembly_validate_with_options(
+  bytes : BufferSource,
+  options : WebAssemblyCompileOptions,
+) -> Bool {
+  web_assembly_validate_with_options_ffi(bytes, options.to_js())
+}
+
+///|
+pub extern "js" fn web_assembly_compile(
+  bytes : BufferSource,
+) -> Promise[Module] =
+  #| (bytes) => WebAssembly.compile(bytes)
+
+///|
+extern "js" fn web_assembly_compile_with_options_ffi(
+  bytes : BufferSource,
+  options : JsValue,
+) -> Promise[Module] =
+  #| (bytes, options) => WebAssembly.compile(bytes, options)
+
+///|
+pub fn web_assembly_compile_with_options(
+  bytes : BufferSource,
+  options : WebAssemblyCompileOptions,
+) -> Promise[Module] {
+  web_assembly_compile_with_options_ffi(bytes, options.to_js())
+}
+
+///|
+pub extern "js" fn web_assembly_instantiate(
+  bytes : BufferSource,
+) -> Promise[WebAssemblyInstantiatedSource] =
+  #| (bytes) => WebAssembly.instantiate(bytes)
+
+///|
+extern "js" fn web_assembly_instantiate_with_options_ffi(
+  bytes : BufferSource,
+  import_object : JsValue,
+  options : JsValue,
+) -> Promise[WebAssemblyInstantiatedSource] =
+  #| (bytes, import_object, options) => WebAssembly.instantiate(bytes, import_object, options)
+
+///|
+pub fn web_assembly_instantiate_with_options(
+  bytes : BufferSource,
+  import_object : JsValue,
+  options : WebAssemblyCompileOptions,
+) -> Promise[WebAssemblyInstantiatedSource] {
+  web_assembly_instantiate_with_options_ffi(
+    bytes,
+    import_object,
+    options.to_js(),
+  )
+}
+
+///|
+pub extern "js" fn web_assembly_get_js_tag() -> Tag =
+  #| () => WebAssembly.JSTag
+
+///|
+/// WebAssembly namespace
+pub extern "js" fn web_assembly_compile_streaming(
+  source : Promise[Response],
+) -> Promise[Module] =
+  #| (source) => WebAssembly.compileStreaming(source)
+
+///|
+extern "js" fn web_assembly_compile_streaming_with_options_ffi(
+  source : Promise[Response],
+  options : JsValue,
+) -> Promise[Module] =
+  #| (source, options) => WebAssembly.compileStreaming(source, options)
+
+///|
+pub fn web_assembly_compile_streaming_with_options(
+  source : Promise[Response],
+  options : WebAssemblyCompileOptions,
+) -> Promise[Module] {
+  web_assembly_compile_streaming_with_options_ffi(source, options.to_js())
+}
+
+///|
+pub extern "js" fn web_assembly_instantiate_streaming(
+  source : Promise[Response],
+) -> Promise[WebAssemblyInstantiatedSource] =
+  #| (source) => WebAssembly.instantiateStreaming(source)
+
+///|
+extern "js" fn web_assembly_instantiate_streaming_with_options_ffi(
+  source : Promise[Response],
+  import_object : JsValue,
+  options : JsValue,
+) -> Promise[WebAssemblyInstantiatedSource] =
+  #| (source, import_object, options) => WebAssembly.instantiateStreaming(source, import_object, options)
+
+///|
+pub fn web_assembly_instantiate_streaming_with_options(
+  source : Promise[Response],
+  import_object : JsValue,
+  options : WebAssemblyCompileOptions,
+) -> Promise[WebAssemblyInstantiatedSource] {
+  web_assembly_instantiate_streaming_with_options_ffi(
+    source,
+    import_object,
+    options.to_js(),
+  )
+}

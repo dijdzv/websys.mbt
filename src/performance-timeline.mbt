@@ -18,11 +18,11 @@ pub extern "js" fn PerformanceObserverCallback::from_fn(
     PerformanceObserverCallbackOptions,
   ) -> Unit,
 ) -> PerformanceObserverCallback =
-  #| (handler) => handler
+  #| (handler) => (a0, a1, a2) => handler(a0, a1, a2)
 
 ///|
 /// PerformanceObserverCallbackOptions dictionary
-pub struct PerformanceObserverCallbackOptions {
+pub(all) struct PerformanceObserverCallbackOptions {
   droppedEntriesCount : Int64?
 }
 
@@ -33,8 +33,7 @@ pub fn PerformanceObserverCallbackOptions::default() -> PerformanceObserverCallb
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PerformanceObserverCallbackOptions::to_js(
+extern "js" fn PerformanceObserverCallbackOptions::to_js_ffi(
   self : PerformanceObserverCallbackOptions,
 ) -> JsValue =
   #| (self) => ({
@@ -42,8 +41,16 @@ pub extern "js" fn PerformanceObserverCallbackOptions::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PerformanceObserverCallbackOptions::to_js(
+  self : PerformanceObserverCallbackOptions,
+) -> JsValue {
+  PerformanceObserverCallbackOptions::to_js_ffi(self)
+}
+
+///|
 /// PerformanceObserverInit dictionary
-pub struct PerformanceObserverInit {
+pub(all) struct PerformanceObserverInit {
   entryTypes : Array[String]?
   type_ : String?
   buffered : Bool?
@@ -62,16 +69,23 @@ pub fn PerformanceObserverInit::default() -> PerformanceObserverInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PerformanceObserverInit::to_js(
+extern "js" fn PerformanceObserverInit::to_js_ffi(
   self : PerformanceObserverInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   entryTypes: self.entryTypes,
+  #|   entryTypes: ((() => { const v = self.entryTypes; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   type: self.type_,
-  #|   buffered: self.buffered,
-  #|   durationThreshold: self.durationThreshold
+  #|   buffered: (self.buffered === -1 ? undefined : self.buffered),
+  #|   durationThreshold: ((() => { const v = self.durationThreshold; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PerformanceObserverInit::to_js(
+  self : PerformanceObserverInit,
+) -> JsValue {
+  PerformanceObserverInit::to_js_ffi(self)
+}
 
 ///|
 /// PerformanceEntry interface
@@ -197,7 +211,7 @@ pub extern "js" fn PerformanceEntry::as_performance_script_timing(
 
 ///|
 pub extern "js" fn PerformanceEntry::get_id(self : PerformanceEntry) -> Int64 =
-  #| (self) => self.id
+  #| (self) => (() => { const n = self.id; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceEntry::get_name(
@@ -227,7 +241,7 @@ pub extern "js" fn PerformanceEntry::get_duration(
 pub extern "js" fn PerformanceEntry::get_navigation_id(
   self : PerformanceEntry,
 ) -> Int64 =
-  #| (self) => self.navigationId
+  #| (self) => (() => { const n = self.navigationId; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceEntry::to_json(
@@ -286,11 +300,19 @@ pub extern "js" fn PerformanceObserver::observe(
   #| (self) => self.observe()
 
 ///|
-pub extern "js" fn PerformanceObserver::observe_with_options(
+extern "js" fn PerformanceObserver::observe_with_options_ffi(
   self : PerformanceObserver,
-  options : PerformanceObserverInit,
+  options : JsValue,
 ) -> Unit =
   #| (self, options) => self.observe(options)
+
+///|
+pub fn PerformanceObserver::observe_with_options(
+  self : PerformanceObserver,
+  options : PerformanceObserverInit,
+) -> Unit {
+  PerformanceObserver::observe_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn PerformanceObserver::disconnect(

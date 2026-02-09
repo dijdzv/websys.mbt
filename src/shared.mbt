@@ -481,7 +481,7 @@ pub extern "js" fn StringOrDOMHighResTimeStamp::is_d_o_m_high_res_time_stamp(
 pub extern "js" fn StringOrDOMHighResTimeStamp::as_string(
   self : StringOrDOMHighResTimeStamp,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrDOMHighResTimeStamp as DOMHighResTimeStamp
@@ -533,7 +533,7 @@ pub extern "js" fn StringOrPerformanceMeasureOptions::is_performance_measure_opt
 pub extern "js" fn StringOrPerformanceMeasureOptions::as_string(
   self : StringOrPerformanceMeasureOptions,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrPerformanceMeasureOptions as PerformanceMeasureOptions
@@ -585,7 +585,7 @@ pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::is_array(
 pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::as_string(
   self : StringOrArrayOfCSSNumericValueOrCSSKeywordValue,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrArrayOfCSSNumericValueOrCSSKeywordValue as Array[CSSNumericValueOrCSSKeywordValue]
@@ -689,7 +689,7 @@ pub extern "js" fn StringOrArrayOfUUID::is_array_of_u_u_i_d(
 pub extern "js" fn StringOrArrayOfUUID::as_string(
   self : StringOrArrayOfUUID,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrArrayOfUUID as Array[UUID]
@@ -729,12 +729,12 @@ pub extern "js" fn StringOrInt::is_int(self : StringOrInt) -> Bool =
 ///|
 /// Try to get StringOrInt as String
 pub extern "js" fn StringOrInt::as_string(self : StringOrInt) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrInt as Int
 pub extern "js" fn StringOrInt::as_int(self : StringOrInt) -> Int? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// TaskPriorityOrTaskSignal typedef
@@ -831,7 +831,7 @@ pub extern "js" fn StringOrTrustedScriptURL::is_trusted_script_u_r_l(
 pub extern "js" fn StringOrTrustedScriptURL::as_string(
   self : StringOrTrustedScriptURL,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrTrustedScriptURL as TrustedScriptURL
@@ -935,7 +935,7 @@ pub extern "js" fn StringOrArrayOfString::is_array_of_string(
 pub extern "js" fn StringOrArrayOfString::as_string(
   self : StringOrArrayOfString,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrArrayOfString as Array[String]
@@ -1015,7 +1015,7 @@ pub extern "js" fn BufferSourceOrBlobOrString::as_blob(
 pub extern "js" fn BufferSourceOrBlobOrString::as_string(
   self : BufferSourceOrBlobOrString,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// BoolOrScrollIntoViewOptions typedef
@@ -1060,7 +1060,7 @@ pub extern "js" fn BoolOrScrollIntoViewOptions::is_scroll_into_view_options(
 pub extern "js" fn BoolOrScrollIntoViewOptions::as_bool(
   self : BoolOrScrollIntoViewOptions,
 ) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'boolean') ? self : undefined
 
 ///|
 /// Try to get BoolOrScrollIntoViewOptions as ScrollIntoViewOptions
@@ -1119,7 +1119,7 @@ pub extern "js" fn BufferSourceOrString::as_buffer_source(
 pub extern "js" fn BufferSourceOrString::as_string(
   self : BufferSourceOrString,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// StringOrArrayBuffer typedef
@@ -1164,7 +1164,7 @@ pub extern "js" fn StringOrArrayBuffer::is_array_buffer(
 pub extern "js" fn StringOrArrayBuffer::as_string(
   self : StringOrArrayBuffer,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrArrayBuffer as ArrayBuffer
@@ -1252,12 +1252,12 @@ pub extern "js" fn BoolOrString::is_string(self : BoolOrString) -> Bool =
 ///|
 /// Try to get BoolOrString as Bool
 pub extern "js" fn BoolOrString::as_bool(self : BoolOrString) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'boolean') ? self : undefined
 
 ///|
 /// Try to get BoolOrString as String
 pub extern "js" fn BoolOrString::as_string(self : BoolOrString) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// BoolOrMediaTrackConstraints typedef
@@ -1302,7 +1302,7 @@ pub extern "js" fn BoolOrMediaTrackConstraints::is_media_track_constraints(
 pub extern "js" fn BoolOrMediaTrackConstraints::as_bool(
   self : BoolOrMediaTrackConstraints,
 ) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'boolean') ? self : undefined
 
 ///|
 /// Try to get BoolOrMediaTrackConstraints as MediaTrackConstraints
@@ -1511,7 +1511,7 @@ pub extern "js" fn HTMLElementOrInt::as_h_t_m_l_element(
 ///|
 /// Try to get HTMLElementOrInt as Int
 pub extern "js" fn HTMLElementOrInt::as_int(self : HTMLElementOrInt) -> Int? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// TrustedHTMLOrString typedef
@@ -1563,7 +1563,7 @@ pub extern "js" fn TrustedHTMLOrString::as_trusted_h_t_m_l(
 pub extern "js" fn TrustedHTMLOrString::as_string(
   self : TrustedHTMLOrString,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// BoolOrDoubleOrString typedef
@@ -1622,21 +1622,21 @@ pub extern "js" fn BoolOrDoubleOrString::is_string(
 pub extern "js" fn BoolOrDoubleOrString::as_bool(
   self : BoolOrDoubleOrString,
 ) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'boolean') ? self : undefined
 
 ///|
 /// Try to get BoolOrDoubleOrString as Double
 pub extern "js" fn BoolOrDoubleOrString::as_double(
   self : BoolOrDoubleOrString,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// Try to get BoolOrDoubleOrString as String
 pub extern "js" fn BoolOrDoubleOrString::as_string(
   self : BoolOrDoubleOrString,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// TogglePopoverOptionsOrBool typedef
@@ -1688,7 +1688,7 @@ pub extern "js" fn TogglePopoverOptionsOrBool::as_toggle_popover_options(
 pub extern "js" fn TogglePopoverOptionsOrBool::as_bool(
   self : TogglePopoverOptionsOrBool,
 ) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'boolean') ? self : undefined
 
 ///|
 /// VideoTrackOrAudioTrackOrTextTrack typedef
@@ -1858,7 +1858,7 @@ pub extern "js" fn StringOrCanvasGradientOrCanvasPattern::is_canvas_pattern(
 pub extern "js" fn StringOrCanvasGradientOrCanvasPattern::as_string(
   self : StringOrCanvasGradientOrCanvasPattern,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrCanvasGradientOrCanvasPattern as CanvasGradient
@@ -1931,7 +1931,7 @@ pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::is_array(
 pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::as_double(
   self : DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// Try to get DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit as DOMPointInit
@@ -1990,7 +1990,7 @@ pub extern "js" fn DoubleOrDOMPointInit::is_d_o_m_point_init(
 pub extern "js" fn DoubleOrDOMPointInit::as_double(
   self : DoubleOrDOMPointInit,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// Try to get DoubleOrDOMPointInit as DOMPointInit
@@ -2037,7 +2037,7 @@ pub extern "js" fn Path2DOrString::as_path2_d(self : Path2DOrString) -> Path2D? 
 ///|
 /// Try to get Path2DOrString as String
 pub extern "js" fn Path2DOrString::as_string(self : Path2DOrString) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// HTMLCanvasElementOrOffscreenCanvas typedef
@@ -2186,7 +2186,7 @@ pub extern "js" fn FileOrStringOrFormData::as_file(
 pub extern "js" fn FileOrStringOrFormData::as_string(
   self : FileOrStringOrFormData,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get FileOrStringOrFormData as FormData
@@ -2231,7 +2231,7 @@ pub extern "js" fn EventOrString::as_event(self : EventOrString) -> Event? =
 ///|
 /// Try to get EventOrString as String
 pub extern "js" fn EventOrString::as_string(self : EventOrString) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// TrustedScriptURLOrString typedef
@@ -2283,7 +2283,7 @@ pub extern "js" fn TrustedScriptURLOrString::as_trusted_script_u_r_l(
 pub extern "js" fn TrustedScriptURLOrString::as_string(
   self : TrustedScriptURLOrString,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// StringOrWorkerOptions typedef
@@ -2328,7 +2328,7 @@ pub extern "js" fn StringOrWorkerOptions::is_worker_options(
 pub extern "js" fn StringOrWorkerOptions::as_string(
   self : StringOrWorkerOptions,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrWorkerOptions as WorkerOptions
@@ -2394,7 +2394,7 @@ pub extern "js" fn DoubleOrCSSNumericValueOrString::is_string(
 pub extern "js" fn DoubleOrCSSNumericValueOrString::as_double(
   self : DoubleOrCSSNumericValueOrString,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// Try to get DoubleOrCSSNumericValueOrString as CSSNumericValue
@@ -2408,7 +2408,7 @@ pub extern "js" fn DoubleOrCSSNumericValueOrString::as_c_s_s_numeric_value(
 pub extern "js" fn DoubleOrCSSNumericValueOrString::as_string(
   self : DoubleOrCSSNumericValueOrString,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// DoubleOrEffectTiming typedef
@@ -2453,7 +2453,7 @@ pub extern "js" fn DoubleOrEffectTiming::is_effect_timing(
 pub extern "js" fn DoubleOrEffectTiming::as_double(
   self : DoubleOrEffectTiming,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// Try to get DoubleOrEffectTiming as EffectTiming
@@ -2554,7 +2554,7 @@ pub extern "js" fn TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString
 pub extern "js" fn TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString::as_string(
   self : TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// StringOrVoid typedef
@@ -2577,7 +2577,7 @@ pub extern "js" fn StringOrVoid::is_string(self : StringOrVoid) -> Bool =
 ///|
 /// Try to get StringOrVoid as String
 pub extern "js" fn StringOrVoid::as_string(self : StringOrVoid) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// MediaKeyStatusOrVoid typedef
@@ -2705,7 +2705,7 @@ pub extern "js" fn DoubleOrArrayOfDouble::is_array_of_double(
 pub extern "js" fn DoubleOrArrayOfDouble::as_double(
   self : DoubleOrArrayOfDouble,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// Try to get DoubleOrArrayOfDouble as Array[Double]
@@ -2764,7 +2764,7 @@ pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::as_array_of_array_of_strin
 pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::as_string(
   self : ArrayOfArrayOfStringOrAnyOrString,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// StringOrArrayOfDouble typedef
@@ -2809,7 +2809,7 @@ pub extern "js" fn StringOrArrayOfDouble::is_array_of_double(
 pub extern "js" fn StringOrArrayOfDouble::as_string(
   self : StringOrArrayOfDouble,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrArrayOfDouble as Array[Double]
@@ -2943,7 +2943,7 @@ pub extern "js" fn AddEventListenerOptionsOrBool::as_add_event_listener_options(
 pub extern "js" fn AddEventListenerOptionsOrBool::as_bool(
   self : AddEventListenerOptionsOrBool,
 ) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'boolean') ? self : undefined
 
 ///|
 /// EventListenerOptionsOrBool typedef
@@ -2995,7 +2995,7 @@ pub extern "js" fn EventListenerOptionsOrBool::as_event_listener_options(
 pub extern "js" fn EventListenerOptionsOrBool::as_bool(
   self : EventListenerOptionsOrBool,
 ) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'boolean') ? self : undefined
 
 ///|
 /// NodeOrString typedef
@@ -3033,7 +3033,7 @@ pub extern "js" fn NodeOrString::as_node(self : NodeOrString) -> Node? =
 ///|
 /// Try to get NodeOrString as String
 pub extern "js" fn NodeOrString::as_string(self : NodeOrString) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// StringOrElementCreationOptions typedef
@@ -3078,7 +3078,7 @@ pub extern "js" fn StringOrElementCreationOptions::is_element_creation_options(
 pub extern "js" fn StringOrElementCreationOptions::as_string(
   self : StringOrElementCreationOptions,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrElementCreationOptions as ElementCreationOptions
@@ -3130,7 +3130,7 @@ pub extern "js" fn BoolOrImportNodeOptions::is_import_node_options(
 pub extern "js" fn BoolOrImportNodeOptions::as_bool(
   self : BoolOrImportNodeOptions,
 ) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'boolean') ? self : undefined
 
 ///|
 /// Try to get BoolOrImportNodeOptions as ImportNodeOptions
@@ -3189,7 +3189,7 @@ pub extern "js" fn TrustedTypeOrString::as_trusted_type(
 pub extern "js" fn TrustedTypeOrString::as_string(
   self : TrustedTypeOrString,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// IntOrArrayOfInt typedef
@@ -3228,7 +3228,7 @@ pub extern "js" fn IntOrArrayOfInt::is_array_of_int(
 ///|
 /// Try to get IntOrArrayOfInt as Int
 pub extern "js" fn IntOrArrayOfInt::as_int(self : IntOrArrayOfInt) -> Int? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// Try to get IntOrArrayOfInt as Array[Int]
@@ -3464,7 +3464,7 @@ pub extern "js" fn MediaListOrString::as_media_list(
 pub extern "js" fn MediaListOrString::as_string(
   self : MediaListOrString,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// CryptoKeyOrCryptoKeyPair typedef
@@ -3717,7 +3717,7 @@ pub extern "js" fn StringOrAudioSinkInfo::is_audio_sink_info(
 pub extern "js" fn StringOrAudioSinkInfo::as_string(
   self : StringOrAudioSinkInfo,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrAudioSinkInfo as AudioSinkInfo
@@ -3769,7 +3769,7 @@ pub extern "js" fn StringOrAudioSinkOptions::is_audio_sink_options(
 pub extern "js" fn StringOrAudioSinkOptions::as_string(
   self : StringOrAudioSinkOptions,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrAudioSinkOptions as AudioSinkOptions
@@ -3828,7 +3828,7 @@ pub extern "js" fn AudioContextLatencyCategoryOrDouble::as_audio_context_latency
 pub extern "js" fn AudioContextLatencyCategoryOrDouble::as_double(
   self : AudioContextLatencyCategoryOrDouble,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// AudioContextRenderSizeCategoryOrInt typedef
@@ -3880,7 +3880,7 @@ pub extern "js" fn AudioContextRenderSizeCategoryOrInt::as_audio_context_render_
 pub extern "js" fn AudioContextRenderSizeCategoryOrInt::as_int(
   self : AudioContextRenderSizeCategoryOrInt,
 ) -> Int? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData typedef
@@ -3967,12 +3967,12 @@ pub extern "js" fn DoubleOrString::is_string(self : DoubleOrString) -> Bool =
 ///|
 /// Try to get DoubleOrString as Double
 pub extern "js" fn DoubleOrString::as_double(self : DoubleOrString) -> Double? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// Try to get DoubleOrString as String
 pub extern "js" fn DoubleOrString::as_string(self : DoubleOrString) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// DoubleOrKeyframeEffectOptions typedef
@@ -4017,7 +4017,7 @@ pub extern "js" fn DoubleOrKeyframeEffectOptions::is_keyframe_effect_options(
 pub extern "js" fn DoubleOrKeyframeEffectOptions::as_double(
   self : DoubleOrKeyframeEffectOptions,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// Try to get DoubleOrKeyframeEffectOptions as KeyframeEffectOptions
@@ -4173,7 +4173,7 @@ pub extern "js" fn DoubleOrKeyframeAnimationOptions::is_keyframe_animation_optio
 pub extern "js" fn DoubleOrKeyframeAnimationOptions::as_double(
   self : DoubleOrKeyframeAnimationOptions,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// Try to get DoubleOrKeyframeAnimationOptions as KeyframeAnimationOptions
@@ -4284,7 +4284,7 @@ pub extern "js" fn MediaStreamTrackOrString::as_media_stream_track(
 pub extern "js" fn MediaStreamTrackOrString::as_string(
   self : MediaStreamTrackOrString,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// StringOrFencedFrameConfig typedef
@@ -4329,7 +4329,7 @@ pub extern "js" fn StringOrFencedFrameConfig::is_fenced_frame_config(
 pub extern "js" fn StringOrFencedFrameConfig::as_string(
   self : StringOrFencedFrameConfig,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrFencedFrameConfig as FencedFrameConfig
@@ -4359,7 +4359,7 @@ pub extern "js" fn BigintOrInt::is_int(self : BigintOrInt) -> Bool =
 ///|
 /// Try to get BigintOrInt as Int
 pub extern "js" fn BigintOrInt::as_int(self : BigintOrInt) -> Int? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// PASignalValueOrBigint typedef
@@ -4440,7 +4440,7 @@ pub extern "js" fn PASignalValueOrInt::as_p_a_signal_value(
 pub extern "js" fn PASignalValueOrInt::as_int(
   self : PASignalValueOrInt,
 ) -> Int? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// GenerateBidOutputOrArrayOfGenerateBidOutput typedef
@@ -4535,7 +4535,7 @@ pub extern "js" fn StringOrAdRender::is_ad_render(
 pub extern "js" fn StringOrAdRender::as_string(
   self : StringOrAdRender,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrAdRender as AdRender
@@ -4795,7 +4795,7 @@ pub extern "js" fn BoolOrConstrainDouble::is_constrain_double(
 pub extern "js" fn BoolOrConstrainDouble::as_bool(
   self : BoolOrConstrainDouble,
 ) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'boolean') ? self : undefined
 
 ///|
 /// Try to get BoolOrConstrainDouble as ConstrainDouble
@@ -4847,7 +4847,7 @@ pub extern "js" fn StringOrSharedWorkerOptions::is_shared_worker_options(
 pub extern "js" fn StringOrSharedWorkerOptions::as_string(
   self : StringOrSharedWorkerOptions,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrSharedWorkerOptions as SharedWorkerOptions
@@ -5124,7 +5124,7 @@ pub extern "js" fn CSSStyleValueOrString::as_c_s_s_style_value(
 pub extern "js" fn CSSStyleValueOrString::as_string(
   self : CSSStyleValueOrString,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// CSSColorValueOrCSSStyleValue typedef

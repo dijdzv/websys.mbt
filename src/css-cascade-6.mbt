@@ -43,8 +43,8 @@ pub extern "js" fn CSSScopeRule::to_css_rule(self : CSSScopeRule) -> CSSRule =
 
 ///|
 pub extern "js" fn CSSScopeRule::get_start(self : CSSScopeRule) -> CSSOMString? =
-  #| (self) => { const v = self.start; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.start; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn CSSScopeRule::get_end(self : CSSScopeRule) -> CSSOMString? =
-  #| (self) => { const v = self.end; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.end; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

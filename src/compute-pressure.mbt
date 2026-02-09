@@ -65,11 +65,11 @@ pub type PressureUpdateCallback
 pub extern "js" fn PressureUpdateCallback::from_fn(
   handler : (Array[PressureRecord], PressureObserver) -> Unit,
 ) -> PressureUpdateCallback =
-  #| (handler) => handler
+  #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
 /// PressureObserverOptions dictionary
-pub struct PressureObserverOptions {
+pub(all) struct PressureObserverOptions {
   sampleInterval : Int?
 }
 
@@ -80,13 +80,20 @@ pub fn PressureObserverOptions::default() -> PressureObserverOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PressureObserverOptions::to_js(
+extern "js" fn PressureObserverOptions::to_js_ffi(
   self : PressureObserverOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   sampleInterval: self.sampleInterval
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PressureObserverOptions::to_js(
+  self : PressureObserverOptions,
+) -> JsValue {
+  PressureObserverOptions::to_js_ffi(self)
+}
 
 ///|
 /// PressureObserver interface
@@ -140,12 +147,21 @@ pub extern "js" fn PressureObserver::observe(
   #| (self, source) => self.observe(['cpu'][source])
 
 ///|
-pub extern "js" fn PressureObserver::observe_with_options(
+extern "js" fn PressureObserver::observe_with_options_ffi(
+  self : PressureObserver,
+  source : PressureSource,
+  options : JsValue,
+) -> Promise[Unit] =
+  #| (self, source, options) => self.observe(['cpu'][source], options)
+
+///|
+pub fn PressureObserver::observe_with_options(
   self : PressureObserver,
   source : PressureSource,
   options : PressureObserverOptions,
-) -> Promise[Unit] =
-  #| (self, source, options) => self.observe(['cpu'][source], options)
+) -> Promise[Unit] {
+  PressureObserver::observe_with_options_ffi(self, source, options.to_js())
+}
 
 ///|
 pub extern "js" fn PressureObserver::unobserve(
@@ -212,13 +228,13 @@ pub extern "js" fn JsValue::to_pressure_record(
 pub extern "js" fn PressureRecord::get_source(
   self : PressureRecord,
 ) -> PressureSource =
-  #| (self) => self.source
+  #| (self) => ['cpu'].indexOf(self.source)
 
 ///|
 pub extern "js" fn PressureRecord::get_state(
   self : PressureRecord,
 ) -> PressureState =
-  #| (self) => self.state
+  #| (self) => ['nominal', 'fair', 'serious', 'critical'].indexOf(self.state)
 
 ///|
 pub extern "js" fn PressureRecord::get_time(

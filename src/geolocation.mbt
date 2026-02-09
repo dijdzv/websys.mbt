@@ -10,7 +10,7 @@ pub type PositionCallback
 pub extern "js" fn PositionCallback::from_fn(
   handler : (GeolocationPosition) -> Unit,
 ) -> PositionCallback =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// PositionErrorCallback callback interface
@@ -21,11 +21,11 @@ pub type PositionErrorCallback
 pub extern "js" fn PositionErrorCallback::from_fn(
   handler : (GeolocationPositionError) -> Unit,
 ) -> PositionErrorCallback =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// PositionOptions dictionary
-pub struct PositionOptions {
+pub(all) struct PositionOptions {
   enableHighAccuracy : Bool?
   timeout : Int?
   maximumAge : Int?
@@ -38,13 +38,18 @@ pub fn PositionOptions::default() -> PositionOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PositionOptions::to_js(self : PositionOptions) -> JsValue =
+extern "js" fn PositionOptions::to_js_ffi(self : PositionOptions) -> JsValue =
   #| (self) => ({
-  #|   enableHighAccuracy: self.enableHighAccuracy,
+  #|   enableHighAccuracy: (self.enableHighAccuracy === -1 ? undefined : self.enableHighAccuracy),
   #|   timeout: self.timeout,
   #|   maximumAge: self.maximumAge
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PositionOptions::to_js(self : PositionOptions) -> JsValue {
+  PositionOptions::to_js_ffi(self)
+}
 
 ///|
 /// Geolocation interface
@@ -82,13 +87,28 @@ pub extern "js" fn Geolocation::get_current_position(
   #| (self, success_callback) => self.getCurrentPosition(success_callback)
 
 ///|
-pub extern "js" fn Geolocation::get_current_position_with_options(
+extern "js" fn Geolocation::get_current_position_with_options_ffi(
+  self : Geolocation,
+  success_callback : PositionCallback,
+  error_callback : PositionErrorCallback?,
+  options : JsValue,
+) -> Unit =
+  #| (self, success_callback, error_callback, options) => self.getCurrentPosition(success_callback, (error_callback.$tag === 1 ? error_callback._0 : null), options)
+
+///|
+pub fn Geolocation::get_current_position_with_options(
   self : Geolocation,
   success_callback : PositionCallback,
   error_callback : PositionErrorCallback?,
   options : PositionOptions,
-) -> Unit =
-  #| (self, success_callback, error_callback, options) => self.getCurrentPosition(success_callback, error_callback, options)
+) -> Unit {
+  Geolocation::get_current_position_with_options_ffi(
+    self,
+    success_callback,
+    error_callback,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Geolocation::watch_position(
@@ -98,13 +118,28 @@ pub extern "js" fn Geolocation::watch_position(
   #| (self, success_callback) => self.watchPosition(success_callback)
 
 ///|
-pub extern "js" fn Geolocation::watch_position_with_options(
+extern "js" fn Geolocation::watch_position_with_options_ffi(
+  self : Geolocation,
+  success_callback : PositionCallback,
+  error_callback : PositionErrorCallback?,
+  options : JsValue,
+) -> Int =
+  #| (self, success_callback, error_callback, options) => self.watchPosition(success_callback, (error_callback.$tag === 1 ? error_callback._0 : null), options)
+
+///|
+pub fn Geolocation::watch_position_with_options(
   self : Geolocation,
   success_callback : PositionCallback,
   error_callback : PositionErrorCallback?,
   options : PositionOptions,
-) -> Int =
-  #| (self, success_callback, error_callback, options) => self.watchPosition(success_callback, error_callback, options)
+) -> Int {
+  Geolocation::watch_position_with_options_ffi(
+    self,
+    success_callback,
+    error_callback,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Geolocation::clear_watch(
@@ -229,25 +264,25 @@ pub extern "js" fn GeolocationCoordinates::get_longitude(
 pub extern "js" fn GeolocationCoordinates::get_altitude(
   self : GeolocationCoordinates,
 ) -> Double? =
-  #| (self) => { const v = self.altitude; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.altitude) ?? undefined
 
 ///|
 pub extern "js" fn GeolocationCoordinates::get_altitude_accuracy(
   self : GeolocationCoordinates,
 ) -> Double? =
-  #| (self) => { const v = self.altitudeAccuracy; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.altitudeAccuracy) ?? undefined
 
 ///|
 pub extern "js" fn GeolocationCoordinates::get_heading(
   self : GeolocationCoordinates,
 ) -> Double? =
-  #| (self) => { const v = self.heading; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.heading) ?? undefined
 
 ///|
 pub extern "js" fn GeolocationCoordinates::get_speed(
   self : GeolocationCoordinates,
 ) -> Double? =
-  #| (self) => { const v = self.speed; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.speed) ?? undefined
 
 ///|
 pub extern "js" fn GeolocationCoordinates::to_json(

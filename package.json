@@ -3,7 +3,8 @@
     "private": true,
     "description": "MoonBit bindings for Web APIs",
     "scripts": {
-        "generate": "rm -f ./src/*.mbt && webidl-bindgen.mbt --all --per-spec -o ./src/ && moon fmt"
+        "generate": "rm -f ./src/*.mbt && webidl-bindgen.mbt --all --per-spec -o ./src/ && moon fmt",
+        "generate:local": "rm -f ./src/*.mbt && bun ../webidl-bindgen.mbt/_build/js/release/build/webidl-bindgen.js --all --per-spec -o ./src/ && moon fmt"
     },
     "devDependencies": {
         "webidl-bindgen.mbt": "^0.3.4"

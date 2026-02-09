@@ -3,7 +3,7 @@
 
 ///|
 /// Ed448Params dictionary
-pub struct Ed448Params {
+pub(all) struct Ed448Params {
   context : BufferSource?
 }
 
@@ -14,8 +14,13 @@ pub fn Ed448Params::default() -> Ed448Params {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn Ed448Params::to_js(self : Ed448Params) -> JsValue =
+extern "js" fn Ed448Params::to_js_ffi(self : Ed448Params) -> JsValue =
   #| (self) => ({
-  #|   context: self.context.to_js_value()
+  #|   context: ((() => { const v = self.context; if (v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn Ed448Params::to_js(self : Ed448Params) -> JsValue {
+  Ed448Params::to_js_ffi(self)
+}

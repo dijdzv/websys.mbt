@@ -72,19 +72,20 @@ pub fn PresentationConnectionCloseReason::from_string(
 
 ///|
 /// PresentationConnectionAvailableEventInit dictionary
-pub struct PresentationConnectionAvailableEventInit {
+pub(all) struct PresentationConnectionAvailableEventInit {
   connection : PresentationConnection
 }
 
 ///|
-/// Create a new PresentationConnectionAvailableEventInit with default values
-pub fn PresentationConnectionAvailableEventInit::default() -> PresentationConnectionAvailableEventInit {
-  PresentationConnectionAvailableEventInit::{ connection: panic() }
+/// Create a new PresentationConnectionAvailableEventInit
+pub fn PresentationConnectionAvailableEventInit::new(
+  connection~ : PresentationConnection,
+) -> PresentationConnectionAvailableEventInit {
+  PresentationConnectionAvailableEventInit::{ connection, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PresentationConnectionAvailableEventInit::to_js(
+extern "js" fn PresentationConnectionAvailableEventInit::to_js_ffi(
   self : PresentationConnectionAvailableEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -92,27 +93,44 @@ pub extern "js" fn PresentationConnectionAvailableEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PresentationConnectionAvailableEventInit::to_js(
+  self : PresentationConnectionAvailableEventInit,
+) -> JsValue {
+  PresentationConnectionAvailableEventInit::to_js_ffi(self)
+}
+
+///|
 /// PresentationConnectionCloseEventInit dictionary
-pub struct PresentationConnectionCloseEventInit {
+pub(all) struct PresentationConnectionCloseEventInit {
   reason : PresentationConnectionCloseReason
   message : String?
 }
 
 ///|
-/// Create a new PresentationConnectionCloseEventInit with default values
-pub fn PresentationConnectionCloseEventInit::default() -> PresentationConnectionCloseEventInit {
-  PresentationConnectionCloseEventInit::{ reason: panic(), message: None }
+/// Create a new PresentationConnectionCloseEventInit
+pub fn PresentationConnectionCloseEventInit::new(
+  reason~ : PresentationConnectionCloseReason,
+) -> PresentationConnectionCloseEventInit {
+  PresentationConnectionCloseEventInit::{ reason, message: None }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PresentationConnectionCloseEventInit::to_js(
+extern "js" fn PresentationConnectionCloseEventInit::to_js_ffi(
   self : PresentationConnectionCloseEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   reason: ['error', 'closed', 'wentaway'][self.reason],
   #|   message: self.message
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PresentationConnectionCloseEventInit::to_js(
+  self : PresentationConnectionCloseEventInit,
+) -> JsValue {
+  PresentationConnectionCloseEventInit::to_js_ffi(self)
+}
 
 ///|
 /// Presentation interface
@@ -148,20 +166,20 @@ pub extern "js" fn JsValue::to_presentation(self : JsValue) -> Presentation =
 pub extern "js" fn Presentation::get_default_request(
   self : Presentation,
 ) -> PresentationRequest? =
-  #| (self) => { const v = self.defaultRequest; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.defaultRequest; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Presentation::set_default_request(
   self : Presentation,
   value : PresentationRequest?,
 ) -> Unit =
-  #| (self, value) => { self.defaultRequest = value }
+  #| (self, value) => { self.defaultRequest = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn Presentation::get_receiver(
   self : Presentation,
 ) -> PresentationReceiver? =
-  #| (self) => { const v = self.receiver; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.receiver; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// PresentationRequest interface
@@ -208,10 +226,16 @@ pub extern "js" fn PresentationRequest::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn PresentationRequest::new(
+pub extern "js" fn PresentationRequest::new_with_string(
   url : String,
 ) -> PresentationRequest =
   #| (url) => new PresentationRequest(url)
+
+///|
+pub extern "js" fn PresentationRequest::new_with_array(
+  urls : Array[String],
+) -> PresentationRequest =
+  #| (urls) => new PresentationRequest(urls)
 
 ///|
 pub extern "js" fn PresentationRequest::start(
@@ -353,11 +377,19 @@ pub extern "js" fn PresentationConnectionAvailableEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn PresentationConnectionAvailableEvent::new(
+extern "js" fn PresentationConnectionAvailableEvent::new_ffi(
   type_ : String,
-  event_init_dict : PresentationConnectionAvailableEventInit,
+  event_init_dict : JsValue,
 ) -> PresentationConnectionAvailableEvent =
   #| (type_, event_init_dict) => new PresentationConnectionAvailableEvent(type_, event_init_dict)
+
+///|
+pub fn PresentationConnectionAvailableEvent::new(
+  type_ : String,
+  event_init_dict : PresentationConnectionAvailableEventInit,
+) -> PresentationConnectionAvailableEvent {
+  PresentationConnectionAvailableEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn PresentationConnectionAvailableEvent::get_connection(
@@ -425,7 +457,7 @@ pub extern "js" fn PresentationConnection::get_url(
 pub extern "js" fn PresentationConnection::get_state(
   self : PresentationConnection,
 ) -> PresentationConnectionState =
-  #| (self) => self.state
+  #| (self) => ['connecting', 'connected', 'closed', 'terminated'].indexOf(self.state)
 
 ///|
 pub extern "js" fn PresentationConnection::close(
@@ -482,14 +514,14 @@ pub extern "js" fn PresentationConnection::set_onterminate(
 pub extern "js" fn PresentationConnection::get_binary_type(
   self : PresentationConnection,
 ) -> BinaryType =
-  #| (self) => self.binaryType
+  #| (self) => ['blob', 'arraybuffer'].indexOf(self.binaryType)
 
 ///|
 pub extern "js" fn PresentationConnection::set_binary_type(
   self : PresentationConnection,
   value : BinaryType,
 ) -> Unit =
-  #| (self, value) => { self.binaryType = value }
+  #| (self, value) => { self.binaryType = ['blob', 'arraybuffer'][value] }
 
 ///|
 pub extern "js" fn PresentationConnection::get_onmessage(
@@ -529,6 +561,97 @@ pub extern "js" fn PresentationConnection::send_with_data_array_buffer(
 pub extern "js" fn PresentationConnection::send_with_data_array_buffer_view(
   self : PresentationConnection,
   data : ArrayBufferView,
+) -> Unit =
+  #| (self, data) => self.send(data)
+
+///|
+pub extern "js" fn PresentationConnection::send_with_int8_array(
+  self : PresentationConnection,
+  data : Int8Array,
+) -> Unit =
+  #| (self, data) => self.send(data)
+
+///|
+pub extern "js" fn PresentationConnection::send_with_int16_array(
+  self : PresentationConnection,
+  data : Int16Array,
+) -> Unit =
+  #| (self, data) => self.send(data)
+
+///|
+pub extern "js" fn PresentationConnection::send_with_int32_array(
+  self : PresentationConnection,
+  data : Int32Array,
+) -> Unit =
+  #| (self, data) => self.send(data)
+
+///|
+pub extern "js" fn PresentationConnection::send_with_uint8_array(
+  self : PresentationConnection,
+  data : Uint8Array,
+) -> Unit =
+  #| (self, data) => self.send(data)
+
+///|
+pub extern "js" fn PresentationConnection::send_with_uint16_array(
+  self : PresentationConnection,
+  data : Uint16Array,
+) -> Unit =
+  #| (self, data) => self.send(data)
+
+///|
+pub extern "js" fn PresentationConnection::send_with_uint32_array(
+  self : PresentationConnection,
+  data : Uint32Array,
+) -> Unit =
+  #| (self, data) => self.send(data)
+
+///|
+pub extern "js" fn PresentationConnection::send_with_uint8_clamped_array(
+  self : PresentationConnection,
+  data : Uint8ClampedArray,
+) -> Unit =
+  #| (self, data) => self.send(data)
+
+///|
+pub extern "js" fn PresentationConnection::send_with_big_int64_array(
+  self : PresentationConnection,
+  data : BigInt64Array,
+) -> Unit =
+  #| (self, data) => self.send(data)
+
+///|
+pub extern "js" fn PresentationConnection::send_with_big_uint64_array(
+  self : PresentationConnection,
+  data : BigUint64Array,
+) -> Unit =
+  #| (self, data) => self.send(data)
+
+///|
+pub extern "js" fn PresentationConnection::send_with_float16_array(
+  self : PresentationConnection,
+  data : Float16Array,
+) -> Unit =
+  #| (self, data) => self.send(data)
+
+///|
+pub extern "js" fn PresentationConnection::send_with_float32_array(
+  self : PresentationConnection,
+  data : Float32Array,
+) -> Unit =
+  #| (self, data) => self.send(data)
+
+///|
+pub extern "js" fn PresentationConnection::send_with_float64_array(
+  self : PresentationConnection,
+  data : Float64Array,
+) -> Unit =
+  #| (self, data) => self.send(data)
+
+///|
+pub extern "js" fn PresentationConnection::send_with_data_view(
+  self : PresentationConnection,
+  data : DataView,
 ) -> Unit =
   #| (self, data) => self.send(data)
 
@@ -577,17 +700,25 @@ pub extern "js" fn PresentationConnectionCloseEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn PresentationConnectionCloseEvent::new(
+extern "js" fn PresentationConnectionCloseEvent::new_ffi(
   type_ : String,
-  event_init_dict : PresentationConnectionCloseEventInit,
+  event_init_dict : JsValue,
 ) -> PresentationConnectionCloseEvent =
   #| (type_, event_init_dict) => new PresentationConnectionCloseEvent(type_, event_init_dict)
+
+///|
+pub fn PresentationConnectionCloseEvent::new(
+  type_ : String,
+  event_init_dict : PresentationConnectionCloseEventInit,
+) -> PresentationConnectionCloseEvent {
+  PresentationConnectionCloseEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn PresentationConnectionCloseEvent::get_reason(
   self : PresentationConnectionCloseEvent,
 ) -> PresentationConnectionCloseReason =
-  #| (self) => self.reason
+  #| (self) => ['error', 'closed', 'wentaway'].indexOf(self.reason)
 
 ///|
 pub extern "js" fn PresentationConnectionCloseEvent::get_message(

@@ -3,7 +3,7 @@
 
 ///|
 /// ShareData dictionary
-pub struct ShareData {
+pub(all) struct ShareData {
   files : Array[File]?
   title : String?
   text : String?
@@ -17,11 +17,16 @@ pub fn ShareData::default() -> ShareData {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ShareData::to_js(self : ShareData) -> JsValue =
+extern "js" fn ShareData::to_js_ffi(self : ShareData) -> JsValue =
   #| (self) => ({
-  #|   files: self.files,
+  #|   files: ((() => { const v = self.files; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   title: self.title,
   #|   text: self.text,
   #|   url: self.url
   #| })
+
+///|
+/// Convert to JsValue
+pub fn ShareData::to_js(self : ShareData) -> JsValue {
+  ShareData::to_js_ffi(self)
+}

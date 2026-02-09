@@ -29,7 +29,7 @@ pub fn SameSiteCookiesType::from_string(s : String) -> SameSiteCookiesType? {
 
 ///|
 /// StorageAccessTypes dictionary
-pub struct StorageAccessTypes {
+pub(all) struct StorageAccessTypes {
   all : Bool?
   cookies : Bool?
   sessionStorage : Bool?
@@ -66,29 +66,34 @@ pub fn StorageAccessTypes::default() -> StorageAccessTypes {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn StorageAccessTypes::to_js(
+extern "js" fn StorageAccessTypes::to_js_ffi(
   self : StorageAccessTypes,
 ) -> JsValue =
   #| (self) => ({
-  #|   all: self.all,
-  #|   cookies: self.cookies,
-  #|   sessionStorage: self.sessionStorage,
-  #|   localStorage: self.localStorage,
-  #|   indexedDB: self.indexedDB,
-  #|   locks: self.locks,
-  #|   caches: self.caches,
-  #|   getDirectory: self.getDirectory,
-  #|   estimate: self.estimate,
-  #|   createObjectURL: self.createObjectURL,
-  #|   revokeObjectURL: self.revokeObjectURL,
-  #|   BroadcastChannel: self.broadcastChannel,
-  #|   SharedWorker: self.sharedWorker
+  #|   all: (self.all === -1 ? undefined : self.all),
+  #|   cookies: (self.cookies === -1 ? undefined : self.cookies),
+  #|   sessionStorage: (self.sessionStorage === -1 ? undefined : self.sessionStorage),
+  #|   localStorage: (self.localStorage === -1 ? undefined : self.localStorage),
+  #|   indexedDB: (self.indexedDB === -1 ? undefined : self.indexedDB),
+  #|   locks: (self.locks === -1 ? undefined : self.locks),
+  #|   caches: (self.caches === -1 ? undefined : self.caches),
+  #|   getDirectory: (self.getDirectory === -1 ? undefined : self.getDirectory),
+  #|   estimate: (self.estimate === -1 ? undefined : self.estimate),
+  #|   createObjectURL: (self.createObjectURL === -1 ? undefined : self.createObjectURL),
+  #|   revokeObjectURL: (self.revokeObjectURL === -1 ? undefined : self.revokeObjectURL),
+  #|   BroadcastChannel: (self.broadcastChannel === -1 ? undefined : self.broadcastChannel),
+  #|   SharedWorker: (self.sharedWorker === -1 ? undefined : self.sharedWorker)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn StorageAccessTypes::to_js(self : StorageAccessTypes) -> JsValue {
+  StorageAccessTypes::to_js_ffi(self)
+}
+
+///|
 /// SharedWorkerOptions dictionary
-pub struct SharedWorkerOptions {
+pub(all) struct SharedWorkerOptions {
   sameSiteCookies : SameSiteCookiesType?
 }
 
@@ -99,13 +104,18 @@ pub fn SharedWorkerOptions::default() -> SharedWorkerOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SharedWorkerOptions::to_js(
+extern "js" fn SharedWorkerOptions::to_js_ffi(
   self : SharedWorkerOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   sameSiteCookies: ['all', 'none'][self.sameSiteCookies]
+  #|   sameSiteCookies: ((() => { const v = self.sameSiteCookies; if (v === undefined) return undefined; return ['all', 'none'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn SharedWorkerOptions::to_js(self : SharedWorkerOptions) -> JsValue {
+  SharedWorkerOptions::to_js_ffi(self)
+}
 
 ///|
 /// StorageAccessHandle interface

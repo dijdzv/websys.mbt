@@ -3,7 +3,7 @@
 
 ///|
 /// AnimationEventInit dictionary
-pub struct AnimationEventInit {
+pub(all) struct AnimationEventInit {
   animationName : CSSOMString?
   elapsedTime : Double?
   pseudoElement : CSSOMString?
@@ -20,15 +20,20 @@ pub fn AnimationEventInit::default() -> AnimationEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AnimationEventInit::to_js(
+extern "js" fn AnimationEventInit::to_js_ffi(
   self : AnimationEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   animationName: self.animationName,
+  #|   animationName: ((() => { const v = self.animationName; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   elapsedTime: self.elapsedTime,
-  #|   pseudoElement: self.pseudoElement
+  #|   pseudoElement: ((() => { const v = self.pseudoElement; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn AnimationEventInit::to_js(self : AnimationEventInit) -> JsValue {
+  AnimationEventInit::to_js_ffi(self)
+}
 
 ///|
 /// AnimationEvent interface
@@ -71,11 +76,26 @@ pub extern "js" fn AnimationEvent::to_event(self : AnimationEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn AnimationEvent::new(
+pub extern "js" fn AnimationEvent::new(type_ : CSSOMString) -> AnimationEvent =
+  #| (type_) => new AnimationEvent(type_)
+
+///|
+extern "js" fn AnimationEvent::new_with_animation_event_init_dict_ffi(
   type_ : CSSOMString,
-  animation_event_init_dict : AnimationEventInit,
+  animation_event_init_dict : JsValue,
 ) -> AnimationEvent =
   #| (type_, animation_event_init_dict) => new AnimationEvent(type_, animation_event_init_dict)
+
+///|
+pub fn AnimationEvent::new_with_animation_event_init_dict(
+  type_ : CSSOMString,
+  animation_event_init_dict : AnimationEventInit,
+) -> AnimationEvent {
+  AnimationEvent::new_with_animation_event_init_dict_ffi(
+    type_,
+    animation_event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn AnimationEvent::get_animation_name(
@@ -251,4 +271,4 @@ pub extern "js" fn CSSKeyframesRule::find_rule(
   self : CSSKeyframesRule,
   select : CSSOMString,
 ) -> CSSKeyframeRule? =
-  #| (self, select) => { const v = self.findRule(select); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, select) => (() => { const v = self.findRule(select); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

@@ -90,7 +90,7 @@ pub extern "js" fn BrowserCaptureMediaStreamTrack::crop_to(
   self : BrowserCaptureMediaStreamTrack,
   crop_target : CropTarget?,
 ) -> Promise[Unit] =
-  #| (self, crop_target) => self.cropTo(crop_target)
+  #| (self, crop_target) => self.cropTo((crop_target.$tag === 1 ? crop_target._0 : null))
 
 ///|
 pub extern "js" fn BrowserCaptureMediaStreamTrack::clone(
@@ -103,4 +103,4 @@ pub extern "js" fn BrowserCaptureMediaStreamTrack::restrict_to(
   self : BrowserCaptureMediaStreamTrack,
   restriction_target : RestrictionTarget?,
 ) -> Promise[Unit] =
-  #| (self, restriction_target) => self.restrictTo(restriction_target)
+  #| (self, restriction_target) => self.restrictTo((restriction_target.$tag === 1 ? restriction_target._0 : null))

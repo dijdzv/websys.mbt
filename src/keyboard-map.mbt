@@ -44,7 +44,7 @@ pub extern "js" fn KeyboardLayoutMap::get(
   self : KeyboardLayoutMap,
   key : String,
 ) -> String? =
-  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, key) => self.get(key)
 
 ///|
 pub extern "js" fn KeyboardLayoutMap::has(

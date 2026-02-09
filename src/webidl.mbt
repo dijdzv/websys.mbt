@@ -414,7 +414,7 @@ pub type Function
 pub extern "js" fn Function::from_fn(
   handler : (JsValue) -> JsValue,
 ) -> Function =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// VoidFunction callback interface
@@ -422,7 +422,7 @@ pub type VoidFunction
 
 ///|
 /// QuotaExceededErrorOptions dictionary
-pub struct QuotaExceededErrorOptions {
+pub(all) struct QuotaExceededErrorOptions {
   quota : Double?
   requested : Double?
 }
@@ -434,14 +434,21 @@ pub fn QuotaExceededErrorOptions::default() -> QuotaExceededErrorOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn QuotaExceededErrorOptions::to_js(
+extern "js" fn QuotaExceededErrorOptions::to_js_ffi(
   self : QuotaExceededErrorOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   quota: self.quota,
   #|   requested: self.requested
   #| })
+
+///|
+/// Convert to JsValue
+pub fn QuotaExceededErrorOptions::to_js(
+  self : QuotaExceededErrorOptions,
+) -> JsValue {
+  QuotaExceededErrorOptions::to_js_ffi(self)
+}
 
 ///|
 /// QuotaExceededError interface
@@ -488,23 +495,35 @@ pub extern "js" fn QuotaExceededError::to_dom_exception(
   #| (self) => self
 
 ///|
-pub extern "js" fn QuotaExceededError::new(
+pub extern "js" fn QuotaExceededError::new() -> QuotaExceededError =
+  #| () => new QuotaExceededError()
+
+///|
+extern "js" fn QuotaExceededError::new_with_options_ffi(
   message : String,
-  options : QuotaExceededErrorOptions,
+  options : JsValue,
 ) -> QuotaExceededError =
   #| (message, options) => new QuotaExceededError(message, options)
+
+///|
+pub fn QuotaExceededError::new_with_options(
+  message : String,
+  options : QuotaExceededErrorOptions,
+) -> QuotaExceededError {
+  QuotaExceededError::new_with_options_ffi(message, options.to_js())
+}
 
 ///|
 pub extern "js" fn QuotaExceededError::get_quota(
   self : QuotaExceededError,
 ) -> Double? =
-  #| (self) => { const v = self.quota; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.quota) ?? undefined
 
 ///|
 pub extern "js" fn QuotaExceededError::get_requested(
   self : QuotaExceededError,
 ) -> Double? =
-  #| (self) => { const v = self.requested; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.requested) ?? undefined
 
 ///|
 /// DOMException interface
@@ -571,7 +590,11 @@ pub extern "js" fn DOMException::as_gpu_pipeline_error(
   #| (self) => (self instanceof GPUPipelineError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn DOMException::new(
+pub extern "js" fn DOMException::new() -> DOMException =
+  #| () => new DOMException()
+
+///|
+pub extern "js" fn DOMException::new_with_name(
   message : String,
   name : String,
 ) -> DOMException =

@@ -258,7 +258,7 @@ pub fn CursorCaptureConstraint::from_string(
 
 ///|
 /// DisplayMediaStreamOptions dictionary
-pub struct DisplayMediaStreamOptions {
+pub(all) struct DisplayMediaStreamOptions {
   video : BoolOrMediaTrackConstraints?
   audio : BoolOrMediaTrackConstraints?
   controller : CaptureController?
@@ -285,20 +285,27 @@ pub fn DisplayMediaStreamOptions::default() -> DisplayMediaStreamOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DisplayMediaStreamOptions::to_js(
+extern "js" fn DisplayMediaStreamOptions::to_js_ffi(
   self : DisplayMediaStreamOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   video: self.video,
-  #|   audio: self.audio,
-  #|   controller: self.controller,
-  #|   selfBrowserSurface: ['include', 'exclude'][self.selfBrowserSurface],
-  #|   systemAudio: ['include', 'exclude'][self.systemAudio],
-  #|   windowAudio: ['system', 'window', 'exclude'][self.windowAudio],
-  #|   surfaceSwitching: ['include', 'exclude'][self.surfaceSwitching],
-  #|   monitorTypeSurfaces: ['include', 'exclude'][self.monitorTypeSurfaces]
+  #|   video: ((() => { const v = self.video; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   audio: ((() => { const v = self.audio; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   controller: ((() => { const v = self.controller; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   selfBrowserSurface: ((() => { const v = self.selfBrowserSurface; if (v === undefined) return undefined; return ['include', 'exclude'][v]; })()),
+  #|   systemAudio: ((() => { const v = self.systemAudio; if (v === undefined) return undefined; return ['include', 'exclude'][v]; })()),
+  #|   windowAudio: ((() => { const v = self.windowAudio; if (v === undefined) return undefined; return ['system', 'window', 'exclude'][v]; })()),
+  #|   surfaceSwitching: ((() => { const v = self.surfaceSwitching; if (v === undefined) return undefined; return ['include', 'exclude'][v]; })()),
+  #|   monitorTypeSurfaces: ((() => { const v = self.monitorTypeSurfaces; if (v === undefined) return undefined; return ['include', 'exclude'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn DisplayMediaStreamOptions::to_js(
+  self : DisplayMediaStreamOptions,
+) -> JsValue {
+  DisplayMediaStreamOptions::to_js_ffi(self)
+}
 
 ///|
 /// CaptureController interface
@@ -365,7 +372,7 @@ pub extern "js" fn CaptureController::get_supported_zoom_levels(
 pub extern "js" fn CaptureController::get_zoom_level(
   self : CaptureController,
 ) -> Int? =
-  #| (self) => { const v = self.zoomLevel; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.zoomLevel) ?? undefined
 
 ///|
 pub extern "js" fn CaptureController::increase_zoom_level(
@@ -403,7 +410,7 @@ pub extern "js" fn CaptureController::forward_wheel(
   self : CaptureController,
   element : HTMLElement?,
 ) -> Promise[Unit] =
-  #| (self, element) => self.forwardWheel(element)
+  #| (self, element) => self.forwardWheel((element.$tag === 1 ? element._0 : null))
 
 ///|
 pub extern "js" fn CaptureController::get_oncapturedmousechange(

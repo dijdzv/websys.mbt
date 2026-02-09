@@ -3,7 +3,7 @@
 
 ///|
 /// GetComposedRangesOptions dictionary
-pub struct GetComposedRangesOptions {
+pub(all) struct GetComposedRangesOptions {
   shadowRoots : Array[ShadowRoot]?
 }
 
@@ -14,13 +14,20 @@ pub fn GetComposedRangesOptions::default() -> GetComposedRangesOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn GetComposedRangesOptions::to_js(
+extern "js" fn GetComposedRangesOptions::to_js_ffi(
   self : GetComposedRangesOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   shadowRoots: self.shadowRoots
+  #|   shadowRoots: ((() => { const v = self.shadowRoots; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn GetComposedRangesOptions::to_js(
+  self : GetComposedRangesOptions,
+) -> JsValue {
+  GetComposedRangesOptions::to_js_ffi(self)
+}
 
 ///|
 /// Selection interface
@@ -52,7 +59,7 @@ pub extern "js" fn JsValue::to_selection(self : JsValue) -> Selection =
 
 ///|
 pub extern "js" fn Selection::get_anchor_node(self : Selection) -> Node? =
-  #| (self) => { const v = self.anchorNode; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.anchorNode; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Selection::get_anchor_offset(self : Selection) -> Int =
@@ -60,7 +67,7 @@ pub extern "js" fn Selection::get_anchor_offset(self : Selection) -> Int =
 
 ///|
 pub extern "js" fn Selection::get_focus_node(self : Selection) -> Node? =
-  #| (self) => { const v = self.focusNode; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.focusNode; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Selection::get_focus_offset(self : Selection) -> Int =
@@ -118,15 +125,23 @@ pub extern "js" fn Selection::get_composed_ranges(
   #| (self) => self.getComposedRanges()
 
 ///|
-pub extern "js" fn Selection::get_composed_ranges_with_options(
+extern "js" fn Selection::get_composed_ranges_with_options_ffi(
   self : Selection,
-  options : GetComposedRangesOptions,
+  options : JsValue,
 ) -> Array[StaticRange] =
   #| (self, options) => self.getComposedRanges(options)
 
 ///|
+pub fn Selection::get_composed_ranges_with_options(
+  self : Selection,
+  options : GetComposedRangesOptions,
+) -> Array[StaticRange] {
+  Selection::get_composed_ranges_with_options_ffi(self, options.to_js())
+}
+
+///|
 pub extern "js" fn Selection::collapse(self : Selection, node : Node?) -> Unit =
-  #| (self, node) => self.collapse(node)
+  #| (self, node) => self.collapse((node.$tag === 1 ? node._0 : null))
 
 ///|
 pub extern "js" fn Selection::collapse_with_offset(
@@ -134,14 +149,14 @@ pub extern "js" fn Selection::collapse_with_offset(
   node : Node?,
   offset : Int,
 ) -> Unit =
-  #| (self, node, offset) => self.collapse(node, offset)
+  #| (self, node, offset) => self.collapse((node.$tag === 1 ? node._0 : null), offset)
 
 ///|
 pub extern "js" fn Selection::set_position(
   self : Selection,
   node : Node?,
 ) -> Unit =
-  #| (self, node) => self.setPosition(node)
+  #| (self, node) => self.setPosition((node.$tag === 1 ? node._0 : null))
 
 ///|
 pub extern "js" fn Selection::set_position_with_offset(
@@ -149,7 +164,7 @@ pub extern "js" fn Selection::set_position_with_offset(
   node : Node?,
   offset : Int,
 ) -> Unit =
-  #| (self, node, offset) => self.setPosition(node, offset)
+  #| (self, node, offset) => self.setPosition((node.$tag === 1 ? node._0 : null), offset)
 
 ///|
 pub extern "js" fn Selection::collapse_to_start(self : Selection) -> Unit =

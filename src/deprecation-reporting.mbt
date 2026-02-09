@@ -3,7 +3,7 @@
 
 ///|
 /// DeprecationReportBody dictionary
-pub struct DeprecationReportBody {
+pub(all) struct DeprecationReportBody {
   id : String?
   anticipatedRemoval : Nullable[JsValue]
   message : String?
@@ -26,8 +26,7 @@ pub fn DeprecationReportBody::default() -> DeprecationReportBody {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DeprecationReportBody::to_js(
+extern "js" fn DeprecationReportBody::to_js_ffi(
   self : DeprecationReportBody,
 ) -> JsValue =
   #| (self) => ({
@@ -38,3 +37,9 @@ pub extern "js" fn DeprecationReportBody::to_js(
   #|   lineNumber: ((() => { const v = self.lineNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   columnNumber: ((() => { const v = self.columnNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn DeprecationReportBody::to_js(self : DeprecationReportBody) -> JsValue {
+  DeprecationReportBody::to_js_ffi(self)
+}

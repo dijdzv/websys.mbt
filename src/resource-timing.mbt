@@ -211,19 +211,19 @@ pub extern "js" fn PerformanceResourceTiming::get_worker_final_router_source(
 pub extern "js" fn PerformanceResourceTiming::get_transfer_size(
   self : PerformanceResourceTiming,
 ) -> Int64 =
-  #| (self) => self.transferSize
+  #| (self) => (() => { const n = self.transferSize; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceResourceTiming::get_encoded_body_size(
   self : PerformanceResourceTiming,
 ) -> Int64 =
-  #| (self) => self.encodedBodySize
+  #| (self) => (() => { const n = self.encodedBodySize; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceResourceTiming::get_decoded_body_size(
   self : PerformanceResourceTiming,
 ) -> Int64 =
-  #| (self) => self.decodedBodySize
+  #| (self) => (() => { const n = self.decodedBodySize; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceResourceTiming::get_response_status(
@@ -235,7 +235,7 @@ pub extern "js" fn PerformanceResourceTiming::get_response_status(
 pub extern "js" fn PerformanceResourceTiming::get_render_blocking_status(
   self : PerformanceResourceTiming,
 ) -> RenderBlockingStatusType =
-  #| (self) => self.renderBlockingStatus
+  #| (self) => ['blocking', 'non-blocking'].indexOf(self.renderBlockingStatus)
 
 ///|
 pub extern "js" fn PerformanceResourceTiming::get_content_type(

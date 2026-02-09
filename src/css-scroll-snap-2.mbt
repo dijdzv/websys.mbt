@@ -3,7 +3,7 @@
 
 ///|
 /// SnapEventInit dictionary
-pub struct SnapEventInit {
+pub(all) struct SnapEventInit {
   snapTargetBlock : Nullable[Node]
   snapTargetInline : Nullable[Node]
 }
@@ -18,12 +18,17 @@ pub fn SnapEventInit::default() -> SnapEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SnapEventInit::to_js(self : SnapEventInit) -> JsValue =
+extern "js" fn SnapEventInit::to_js_ffi(self : SnapEventInit) -> JsValue =
   #| (self) => ({
   #|   snapTargetBlock: ((() => { const v = self.snapTargetBlock; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   snapTargetInline: ((() => { const v = self.snapTargetInline; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn SnapEventInit::to_js(self : SnapEventInit) -> JsValue {
+  SnapEventInit::to_js_ffi(self)
+}
 
 ///|
 /// SnapEvent interface
@@ -58,16 +63,28 @@ pub extern "js" fn SnapEvent::to_event(self : SnapEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn SnapEvent::new(
+pub extern "js" fn SnapEvent::new(type_ : String) -> SnapEvent =
+  #| (type_) => new SnapEvent(type_)
+
+///|
+extern "js" fn SnapEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : SnapEventInit,
+  event_init_dict : JsValue,
 ) -> SnapEvent =
   #| (type_, event_init_dict) => new SnapEvent(type_, event_init_dict)
 
 ///|
+pub fn SnapEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : SnapEventInit,
+) -> SnapEvent {
+  SnapEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
+
+///|
 pub extern "js" fn SnapEvent::get_snap_target_block(self : SnapEvent) -> Node? =
-  #| (self) => { const v = self.snapTargetBlock; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.snapTargetBlock; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn SnapEvent::get_snap_target_inline(self : SnapEvent) -> Node? =
-  #| (self) => { const v = self.snapTargetInline; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.snapTargetInline; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

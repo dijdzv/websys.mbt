@@ -33,7 +33,7 @@ pub fn AccelerometerLocalCoordinateSystem::from_string(
 
 ///|
 /// AccelerometerSensorOptions dictionary
-pub struct AccelerometerSensorOptions {
+pub(all) struct AccelerometerSensorOptions {
   referenceFrame : AccelerometerLocalCoordinateSystem?
 }
 
@@ -44,13 +44,20 @@ pub fn AccelerometerSensorOptions::default() -> AccelerometerSensorOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AccelerometerSensorOptions::to_js(
+extern "js" fn AccelerometerSensorOptions::to_js_ffi(
   self : AccelerometerSensorOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   referenceFrame: ['device', 'screen'][self.referenceFrame]
+  #|   referenceFrame: ((() => { const v = self.referenceFrame; if (v === undefined) return undefined; return ['device', 'screen'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn AccelerometerSensorOptions::to_js(
+  self : AccelerometerSensorOptions,
+) -> JsValue {
+  AccelerometerSensorOptions::to_js_ffi(self)
+}
 
 ///|
 /// Accelerometer interface
@@ -105,22 +112,33 @@ pub extern "js" fn Accelerometer::as_gravity_sensor(
   #| (self) => (self instanceof GravitySensor) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Accelerometer::new(
-  options : AccelerometerSensorOptions,
+pub extern "js" fn Accelerometer::new() -> Accelerometer =
+  #| () => new Accelerometer()
+
+///|
+extern "js" fn Accelerometer::new_with_options_ffi(
+  options : JsValue,
 ) -> Accelerometer =
   #| (options) => new Accelerometer(options)
 
 ///|
+pub fn Accelerometer::new_with_options(
+  options : AccelerometerSensorOptions,
+) -> Accelerometer {
+  Accelerometer::new_with_options_ffi(options.to_js())
+}
+
+///|
 pub extern "js" fn Accelerometer::get_x(self : Accelerometer) -> Double? =
-  #| (self) => { const v = self.x; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.x) ?? undefined
 
 ///|
 pub extern "js" fn Accelerometer::get_y(self : Accelerometer) -> Double? =
-  #| (self) => { const v = self.y; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.y) ?? undefined
 
 ///|
 pub extern "js" fn Accelerometer::get_z(self : Accelerometer) -> Double? =
-  #| (self) => { const v = self.z; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.z) ?? undefined
 
 ///|
 /// LinearAccelerationSensor interface
@@ -179,10 +197,21 @@ pub extern "js" fn LinearAccelerationSensor::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn LinearAccelerationSensor::new(
-  options : AccelerometerSensorOptions,
+pub extern "js" fn LinearAccelerationSensor::new() -> LinearAccelerationSensor =
+  #| () => new LinearAccelerationSensor()
+
+///|
+extern "js" fn LinearAccelerationSensor::new_with_options_ffi(
+  options : JsValue,
 ) -> LinearAccelerationSensor =
   #| (options) => new LinearAccelerationSensor(options)
+
+///|
+pub fn LinearAccelerationSensor::new_with_options(
+  options : AccelerometerSensorOptions,
+) -> LinearAccelerationSensor {
+  LinearAccelerationSensor::new_with_options_ffi(options.to_js())
+}
 
 ///|
 /// GravitySensor interface
@@ -231,7 +260,18 @@ pub extern "js" fn GravitySensor::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn GravitySensor::new(
-  options : AccelerometerSensorOptions,
+pub extern "js" fn GravitySensor::new() -> GravitySensor =
+  #| () => new GravitySensor()
+
+///|
+extern "js" fn GravitySensor::new_with_options_ffi(
+  options : JsValue,
 ) -> GravitySensor =
   #| (options) => new GravitySensor(options)
+
+///|
+pub fn GravitySensor::new_with_options(
+  options : AccelerometerSensorOptions,
+) -> GravitySensor {
+  GravitySensor::new_with_options_ffi(options.to_js())
+}

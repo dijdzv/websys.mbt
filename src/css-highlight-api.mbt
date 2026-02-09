@@ -32,7 +32,7 @@ pub fn HighlightType::from_string(s : String) -> HighlightType? {
 
 ///|
 /// HighlightHitResult dictionary
-pub struct HighlightHitResult {
+pub(all) struct HighlightHitResult {
   highlight : Highlight?
   ranges : Array[AbstractRange]?
 }
@@ -44,18 +44,23 @@ pub fn HighlightHitResult::default() -> HighlightHitResult {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn HighlightHitResult::to_js(
+extern "js" fn HighlightHitResult::to_js_ffi(
   self : HighlightHitResult,
 ) -> JsValue =
   #| (self) => ({
-  #|   highlight: self.highlight,
-  #|   ranges: self.ranges
+  #|   highlight: ((() => { const v = self.highlight; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   ranges: ((() => { const v = self.ranges; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn HighlightHitResult::to_js(self : HighlightHitResult) -> JsValue {
+  HighlightHitResult::to_js_ffi(self)
+}
+
+///|
 /// HighlightsFromPointOptions dictionary
-pub struct HighlightsFromPointOptions {
+pub(all) struct HighlightsFromPointOptions {
   shadowRoots : Array[ShadowRoot]?
 }
 
@@ -66,13 +71,20 @@ pub fn HighlightsFromPointOptions::default() -> HighlightsFromPointOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn HighlightsFromPointOptions::to_js(
+extern "js" fn HighlightsFromPointOptions::to_js_ffi(
   self : HighlightsFromPointOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   shadowRoots: self.shadowRoots
+  #|   shadowRoots: ((() => { const v = self.shadowRoots; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn HighlightsFromPointOptions::to_js(
+  self : HighlightsFromPointOptions,
+) -> JsValue {
+  HighlightsFromPointOptions::to_js_ffi(self)
+}
 
 ///|
 /// Highlight interface
@@ -144,14 +156,14 @@ pub extern "js" fn Highlight::set_priority(
 
 ///|
 pub extern "js" fn Highlight::get_type(self : Highlight) -> HighlightType =
-  #| (self) => self.type
+  #| (self) => ['highlight', 'spelling-error', 'grammar-error'].indexOf(self.type)
 
 ///|
 pub extern "js" fn Highlight::set_type(
   self : Highlight,
   value : HighlightType,
 ) -> Unit =
-  #| (self, value) => { self.type = value }
+  #| (self, value) => { self.type = ['highlight', 'spelling-error', 'grammar-error'][value] }
 
 ///|
 /// HighlightRegistry interface
@@ -196,7 +208,7 @@ pub extern "js" fn HighlightRegistry::get(
   self : HighlightRegistry,
   key : String,
 ) -> Highlight? =
-  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, key) => self.get(key)
 
 ///|
 pub extern "js" fn HighlightRegistry::has(
@@ -233,10 +245,25 @@ pub extern "js" fn HighlightRegistry::highlights_from_point(
   #| (self, x, y) => self.highlightsFromPoint(x, y)
 
 ///|
-pub extern "js" fn HighlightRegistry::highlights_from_point_with_options(
+extern "js" fn HighlightRegistry::highlights_from_point_with_options_ffi(
+  self : HighlightRegistry,
+  x : Double,
+  y : Double,
+  options : JsValue,
+) -> Array[HighlightHitResult] =
+  #| (self, x, y, options) => self.highlightsFromPoint(x, y, options)
+
+///|
+pub fn HighlightRegistry::highlights_from_point_with_options(
   self : HighlightRegistry,
   x : Double,
   y : Double,
   options : HighlightsFromPointOptions,
-) -> Array[HighlightHitResult] =
-  #| (self, x, y, options) => self.highlightsFromPoint(x, y, options)
+) -> Array[HighlightHitResult] {
+  HighlightRegistry::highlights_from_point_with_options_ffi(
+    self,
+    x,
+    y,
+    options.to_js(),
+  )
+}

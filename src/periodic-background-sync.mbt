@@ -3,7 +3,7 @@
 
 ///|
 /// BackgroundSyncOptions dictionary
-pub struct BackgroundSyncOptions {
+pub(all) struct BackgroundSyncOptions {
   minInterval : Int64?
 }
 
@@ -14,8 +14,7 @@ pub fn BackgroundSyncOptions::default() -> BackgroundSyncOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BackgroundSyncOptions::to_js(
+extern "js" fn BackgroundSyncOptions::to_js_ffi(
   self : BackgroundSyncOptions,
 ) -> JsValue =
   #| (self) => ({
@@ -23,8 +22,14 @@ pub extern "js" fn BackgroundSyncOptions::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn BackgroundSyncOptions::to_js(self : BackgroundSyncOptions) -> JsValue {
+  BackgroundSyncOptions::to_js_ffi(self)
+}
+
+///|
 /// PeriodicSyncEventInit dictionary
-pub struct PeriodicSyncEventInit {
+pub(all) struct PeriodicSyncEventInit {
   tag : String
 }
 
@@ -35,13 +40,18 @@ pub fn PeriodicSyncEventInit::default() -> PeriodicSyncEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PeriodicSyncEventInit::to_js(
+extern "js" fn PeriodicSyncEventInit::to_js_ffi(
   self : PeriodicSyncEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   tag: self.tag
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PeriodicSyncEventInit::to_js(self : PeriodicSyncEventInit) -> JsValue {
+  PeriodicSyncEventInit::to_js_ffi(self)
+}
 
 ///|
 /// PeriodicSyncManager interface
@@ -89,12 +99,21 @@ pub extern "js" fn PeriodicSyncManager::register(
   #| (self, tag) => self.register(tag)
 
 ///|
-pub extern "js" fn PeriodicSyncManager::register_with_options(
+extern "js" fn PeriodicSyncManager::register_with_options_ffi(
+  self : PeriodicSyncManager,
+  tag : String,
+  options : JsValue,
+) -> Promise[Unit] =
+  #| (self, tag, options) => self.register(tag, options)
+
+///|
+pub fn PeriodicSyncManager::register_with_options(
   self : PeriodicSyncManager,
   tag : String,
   options : BackgroundSyncOptions,
-) -> Promise[Unit] =
-  #| (self, tag, options) => self.register(tag, options)
+) -> Promise[Unit] {
+  PeriodicSyncManager::register_with_options_ffi(self, tag, options.to_js())
+}
 
 ///|
 pub extern "js" fn PeriodicSyncManager::get_tags(
@@ -160,11 +179,19 @@ pub extern "js" fn PeriodicSyncEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn PeriodicSyncEvent::new(
+extern "js" fn PeriodicSyncEvent::new_ffi(
   type_ : String,
-  init_ : PeriodicSyncEventInit,
+  init_ : JsValue,
 ) -> PeriodicSyncEvent =
   #| (type_, init_) => new PeriodicSyncEvent(type_, init_)
+
+///|
+pub fn PeriodicSyncEvent::new(
+  type_ : String,
+  init_ : PeriodicSyncEventInit,
+) -> PeriodicSyncEvent {
+  PeriodicSyncEvent::new_ffi(type_, init_.to_js())
+}
 
 ///|
 pub extern "js" fn PeriodicSyncEvent::get_tag(

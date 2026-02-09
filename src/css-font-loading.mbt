@@ -61,7 +61,7 @@ pub fn FontFaceSetLoadStatus::from_string(s : String) -> FontFaceSetLoadStatus? 
 
 ///|
 /// FontFaceDescriptors dictionary
-pub struct FontFaceDescriptors {
+pub(all) struct FontFaceDescriptors {
   style : CSSOMString?
   weight : CSSOMString?
   stretch : CSSOMString?
@@ -92,26 +92,31 @@ pub fn FontFaceDescriptors::default() -> FontFaceDescriptors {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FontFaceDescriptors::to_js(
+extern "js" fn FontFaceDescriptors::to_js_ffi(
   self : FontFaceDescriptors,
 ) -> JsValue =
   #| (self) => ({
-  #|   style: self.style,
-  #|   weight: self.weight,
-  #|   stretch: self.stretch,
-  #|   unicodeRange: self.unicodeRange,
-  #|   featureSettings: self.featureSettings,
-  #|   variationSettings: self.variationSettings,
-  #|   display: self.display,
-  #|   ascentOverride: self.ascentOverride,
-  #|   descentOverride: self.descentOverride,
-  #|   lineGapOverride: self.lineGapOverride
+  #|   style: ((() => { const v = self.style; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   weight: ((() => { const v = self.weight; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   stretch: ((() => { const v = self.stretch; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   unicodeRange: ((() => { const v = self.unicodeRange; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   featureSettings: ((() => { const v = self.featureSettings; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   variationSettings: ((() => { const v = self.variationSettings; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   display: ((() => { const v = self.display; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   ascentOverride: ((() => { const v = self.ascentOverride; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   descentOverride: ((() => { const v = self.descentOverride; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   lineGapOverride: ((() => { const v = self.lineGapOverride; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn FontFaceDescriptors::to_js(self : FontFaceDescriptors) -> JsValue {
+  FontFaceDescriptors::to_js_ffi(self)
+}
+
+///|
 /// FontFaceSetLoadEventInit dictionary
-pub struct FontFaceSetLoadEventInit {
+pub(all) struct FontFaceSetLoadEventInit {
   fontfaces : Array[FontFace]?
 }
 
@@ -122,13 +127,20 @@ pub fn FontFaceSetLoadEventInit::default() -> FontFaceSetLoadEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FontFaceSetLoadEventInit::to_js(
+extern "js" fn FontFaceSetLoadEventInit::to_js_ffi(
   self : FontFaceSetLoadEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   fontfaces: self.fontfaces
+  #|   fontfaces: ((() => { const v = self.fontfaces; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn FontFaceSetLoadEventInit::to_js(
+  self : FontFaceSetLoadEventInit,
+) -> JsValue {
+  FontFaceSetLoadEventInit::to_js_ffi(self)
+}
 
 ///|
 /// FontFace interface
@@ -162,9 +174,25 @@ pub extern "js" fn JsValue::to_font_face(self : JsValue) -> FontFace =
 pub extern "js" fn FontFace::new(
   family : CSSOMString,
   source : CSSOMStringOrBufferSource,
-  descriptors : FontFaceDescriptors,
+) -> FontFace =
+  #| (family, source) => new FontFace(family, source)
+
+///|
+extern "js" fn FontFace::new_with_descriptors_ffi(
+  family : CSSOMString,
+  source : CSSOMStringOrBufferSource,
+  descriptors : JsValue,
 ) -> FontFace =
   #| (family, source, descriptors) => new FontFace(family, source, descriptors)
+
+///|
+pub fn FontFace::new_with_descriptors(
+  family : CSSOMString,
+  source : CSSOMStringOrBufferSource,
+  descriptors : FontFaceDescriptors,
+) -> FontFace {
+  FontFace::new_with_descriptors_ffi(family, source, descriptors.to_js())
+}
 
 ///|
 pub extern "js" fn FontFace::get_family(self : FontFace) -> CSSOMString =
@@ -299,7 +327,7 @@ pub extern "js" fn FontFace::set_line_gap_override(
 
 ///|
 pub extern "js" fn FontFace::get_status(self : FontFace) -> FontFaceLoadStatus =
-  #| (self) => self.status
+  #| (self) => ['unloaded', 'loading', 'loaded', 'error'].indexOf(self.status)
 
 ///|
 pub extern "js" fn FontFace::load(self : FontFace) -> Promise[FontFace] =
@@ -513,8 +541,23 @@ pub extern "js" fn JsValue::to_font_face_palette(
   #| (self) => self
 
 ///|
-pub extern "js" fn FontFacePalette::_unknown_(self : FontFacePalette) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn FontFacePalette::keys(self : FontFacePalette) -> JsValue =
+  #| (self) => self.keys()
+
+///|
+pub extern "js" fn FontFacePalette::values(self : FontFacePalette) -> JsValue =
+  #| (self) => self.values()
+
+///|
+pub extern "js" fn FontFacePalette::entries(self : FontFacePalette) -> JsValue =
+  #| (self) => self.entries()
+
+///|
+pub extern "js" fn FontFacePalette::for_each(
+  self : FontFacePalette,
+  callback : JsValue,
+) -> Unit =
+  #| (self, callback) => { self.forEach(callback) }
 
 ///|
 pub extern "js" fn FontFacePalette::get_length(self : FontFacePalette) -> Int =
@@ -578,8 +621,25 @@ pub extern "js" fn JsValue::to_font_face_palettes(
   #| (self) => self
 
 ///|
-pub extern "js" fn FontFacePalettes::_unknown_(self : FontFacePalettes) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn FontFacePalettes::keys(self : FontFacePalettes) -> JsValue =
+  #| (self) => self.keys()
+
+///|
+pub extern "js" fn FontFacePalettes::values(self : FontFacePalettes) -> JsValue =
+  #| (self) => self.values()
+
+///|
+pub extern "js" fn FontFacePalettes::entries(
+  self : FontFacePalettes,
+) -> JsValue =
+  #| (self) => self.entries()
+
+///|
+pub extern "js" fn FontFacePalettes::for_each(
+  self : FontFacePalettes,
+  callback : JsValue,
+) -> Unit =
+  #| (self, callback) => { self.forEach(callback) }
 
 ///|
 pub extern "js" fn FontFacePalettes::get_length(self : FontFacePalettes) -> Int =
@@ -639,9 +699,26 @@ pub extern "js" fn FontFaceSetLoadEvent::to_event(
 ///|
 pub extern "js" fn FontFaceSetLoadEvent::new(
   type_ : CSSOMString,
-  event_init_dict : FontFaceSetLoadEventInit,
+) -> FontFaceSetLoadEvent =
+  #| (type_) => new FontFaceSetLoadEvent(type_)
+
+///|
+extern "js" fn FontFaceSetLoadEvent::new_with_event_init_dict_ffi(
+  type_ : CSSOMString,
+  event_init_dict : JsValue,
 ) -> FontFaceSetLoadEvent =
   #| (type_, event_init_dict) => new FontFaceSetLoadEvent(type_, event_init_dict)
+
+///|
+pub fn FontFaceSetLoadEvent::new_with_event_init_dict(
+  type_ : CSSOMString,
+  event_init_dict : FontFaceSetLoadEventInit,
+) -> FontFaceSetLoadEvent {
+  FontFaceSetLoadEvent::new_with_event_init_dict_ffi(
+    type_,
+    event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn FontFaceSetLoadEvent::get_fontfaces(
@@ -787,4 +864,4 @@ pub extern "js" fn FontFaceSet::get_ready(
 pub extern "js" fn FontFaceSet::get_status(
   self : FontFaceSet,
 ) -> FontFaceSetLoadStatus =
-  #| (self) => self.status
+  #| (self) => ['loading', 'loaded'].indexOf(self.status)

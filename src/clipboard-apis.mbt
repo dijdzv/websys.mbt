@@ -32,7 +32,7 @@ pub extern "js" fn StringOrBlob::is_blob(self : StringOrBlob) -> Bool =
 ///|
 /// Try to get StringOrBlob as String
 pub extern "js" fn StringOrBlob::as_string(self : StringOrBlob) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get StringOrBlob as Blob
@@ -78,7 +78,7 @@ pub fn PresentationStyle::from_string(s : String) -> PresentationStyle? {
 
 ///|
 /// ClipboardEventInit dictionary
-pub struct ClipboardEventInit {
+pub(all) struct ClipboardEventInit {
   clipboardData : Nullable[DataTransfer]
 }
 
@@ -89,8 +89,7 @@ pub fn ClipboardEventInit::default() -> ClipboardEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ClipboardEventInit::to_js(
+extern "js" fn ClipboardEventInit::to_js_ffi(
   self : ClipboardEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -98,8 +97,14 @@ pub extern "js" fn ClipboardEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ClipboardEventInit::to_js(self : ClipboardEventInit) -> JsValue {
+  ClipboardEventInit::to_js_ffi(self)
+}
+
+///|
 /// ClipboardChangeEventInit dictionary
-pub struct ClipboardChangeEventInit {
+pub(all) struct ClipboardChangeEventInit {
   types : Array[String]?
   changeId : JsValue?
 }
@@ -111,18 +116,25 @@ pub fn ClipboardChangeEventInit::default() -> ClipboardChangeEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ClipboardChangeEventInit::to_js(
+extern "js" fn ClipboardChangeEventInit::to_js_ffi(
   self : ClipboardChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   types: self.types,
-  #|   changeId: self.changeId
+  #|   types: ((() => { const v = self.types; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   changeId: ((() => { const v = self.changeId; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ClipboardChangeEventInit::to_js(
+  self : ClipboardChangeEventInit,
+) -> JsValue {
+  ClipboardChangeEventInit::to_js_ffi(self)
+}
+
+///|
 /// ClipboardItemOptions dictionary
-pub struct ClipboardItemOptions {
+pub(all) struct ClipboardItemOptions {
   presentationStyle : PresentationStyle?
 }
 
@@ -133,17 +145,22 @@ pub fn ClipboardItemOptions::default() -> ClipboardItemOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ClipboardItemOptions::to_js(
+extern "js" fn ClipboardItemOptions::to_js_ffi(
   self : ClipboardItemOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   presentationStyle: ['unspecified', 'inline', 'attachment'][self.presentationStyle]
+  #|   presentationStyle: ((() => { const v = self.presentationStyle; if (v === undefined) return undefined; return ['unspecified', 'inline', 'attachment'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ClipboardItemOptions::to_js(self : ClipboardItemOptions) -> JsValue {
+  ClipboardItemOptions::to_js_ffi(self)
+}
+
+///|
 /// ClipboardUnsanitizedFormats dictionary
-pub struct ClipboardUnsanitizedFormats {
+pub(all) struct ClipboardUnsanitizedFormats {
   unsanitized : Array[String]?
 }
 
@@ -154,17 +171,24 @@ pub fn ClipboardUnsanitizedFormats::default() -> ClipboardUnsanitizedFormats {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ClipboardUnsanitizedFormats::to_js(
+extern "js" fn ClipboardUnsanitizedFormats::to_js_ffi(
   self : ClipboardUnsanitizedFormats,
 ) -> JsValue =
   #| (self) => ({
-  #|   unsanitized: self.unsanitized
+  #|   unsanitized: ((() => { const v = self.unsanitized; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ClipboardUnsanitizedFormats::to_js(
+  self : ClipboardUnsanitizedFormats,
+) -> JsValue {
+  ClipboardUnsanitizedFormats::to_js_ffi(self)
+}
+
+///|
 /// ClipboardPermissionDescriptor dictionary
-pub struct ClipboardPermissionDescriptor {
+pub(all) struct ClipboardPermissionDescriptor {
   allowWithoutGesture : Bool?
 }
 
@@ -175,13 +199,20 @@ pub fn ClipboardPermissionDescriptor::default() -> ClipboardPermissionDescriptor
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ClipboardPermissionDescriptor::to_js(
+extern "js" fn ClipboardPermissionDescriptor::to_js_ffi(
   self : ClipboardPermissionDescriptor,
 ) -> JsValue =
   #| (self) => ({
-  #|   allowWithoutGesture: self.allowWithoutGesture
+  #|   allowWithoutGesture: (self.allowWithoutGesture === -1 ? undefined : self.allowWithoutGesture)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn ClipboardPermissionDescriptor::to_js(
+  self : ClipboardPermissionDescriptor,
+) -> JsValue {
+  ClipboardPermissionDescriptor::to_js_ffi(self)
+}
 
 ///|
 /// ClipboardEvent interface
@@ -224,17 +255,29 @@ pub extern "js" fn ClipboardEvent::to_event(self : ClipboardEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn ClipboardEvent::new(
+pub extern "js" fn ClipboardEvent::new(type_ : String) -> ClipboardEvent =
+  #| (type_) => new ClipboardEvent(type_)
+
+///|
+extern "js" fn ClipboardEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : ClipboardEventInit,
+  event_init_dict : JsValue,
 ) -> ClipboardEvent =
   #| (type_, event_init_dict) => new ClipboardEvent(type_, event_init_dict)
+
+///|
+pub fn ClipboardEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : ClipboardEventInit,
+) -> ClipboardEvent {
+  ClipboardEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn ClipboardEvent::get_clipboard_data(
   self : ClipboardEvent,
 ) -> DataTransfer? =
-  #| (self) => { const v = self.clipboardData; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.clipboardData; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// ClipboardChangeEvent interface
@@ -283,9 +326,26 @@ pub extern "js" fn ClipboardChangeEvent::to_event(
 ///|
 pub extern "js" fn ClipboardChangeEvent::new(
   type_ : String,
-  event_init_dict : ClipboardChangeEventInit,
+) -> ClipboardChangeEvent =
+  #| (type_) => new ClipboardChangeEvent(type_)
+
+///|
+extern "js" fn ClipboardChangeEvent::new_with_event_init_dict_ffi(
+  type_ : String,
+  event_init_dict : JsValue,
 ) -> ClipboardChangeEvent =
   #| (type_, event_init_dict) => new ClipboardChangeEvent(type_, event_init_dict)
+
+///|
+pub fn ClipboardChangeEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : ClipboardChangeEventInit,
+) -> ClipboardChangeEvent {
+  ClipboardChangeEvent::new_with_event_init_dict_ffi(
+    type_,
+    event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn ClipboardChangeEvent::get_types(
@@ -330,17 +390,29 @@ pub extern "js" fn JsValue::to_clipboard_item(self : JsValue) -> ClipboardItem =
   #| (self) => self
 
 ///|
-pub extern "js" fn ClipboardItem::new(
+pub extern "js" fn ClipboardItem::new(items : JsValue) -> ClipboardItem =
+  #| (items) => new ClipboardItem(items)
+
+///|
+extern "js" fn ClipboardItem::new_with_options_ffi(
   items : JsValue,
-  options : ClipboardItemOptions,
+  options : JsValue,
 ) -> ClipboardItem =
   #| (items, options) => new ClipboardItem(items, options)
+
+///|
+pub fn ClipboardItem::new_with_options(
+  items : JsValue,
+  options : ClipboardItemOptions,
+) -> ClipboardItem {
+  ClipboardItem::new_with_options_ffi(items, options.to_js())
+}
 
 ///|
 pub extern "js" fn ClipboardItem::get_presentation_style(
   self : ClipboardItem,
 ) -> PresentationStyle =
-  #| (self) => self.presentationStyle
+  #| (self) => ['unspecified', 'inline', 'attachment'].indexOf(self.presentationStyle)
 
 ///|
 pub extern "js" fn ClipboardItem::get_types(self : ClipboardItem) -> JsValue =
@@ -394,11 +466,19 @@ pub extern "js" fn Clipboard::read(self : Clipboard) -> Promise[ClipboardItems] 
   #| (self) => self.read()
 
 ///|
-pub extern "js" fn Clipboard::read_with_formats(
+extern "js" fn Clipboard::read_with_formats_ffi(
   self : Clipboard,
-  formats : ClipboardUnsanitizedFormats,
+  formats : JsValue,
 ) -> Promise[ClipboardItems] =
   #| (self, formats) => self.read(formats)
+
+///|
+pub fn Clipboard::read_with_formats(
+  self : Clipboard,
+  formats : ClipboardUnsanitizedFormats,
+) -> Promise[ClipboardItems] {
+  Clipboard::read_with_formats_ffi(self, formats.to_js())
+}
 
 ///|
 pub extern "js" fn Clipboard::read_text(self : Clipboard) -> Promise[String] =

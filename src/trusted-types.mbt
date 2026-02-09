@@ -77,7 +77,7 @@ pub type CreateHTMLCallback
 pub extern "js" fn CreateHTMLCallback::from_fn(
   handler : (String, JsValue) -> String?,
 ) -> CreateHTMLCallback =
-  #| (handler) => handler
+  #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
 /// CreateScriptCallback callback interface
@@ -88,7 +88,7 @@ pub type CreateScriptCallback
 pub extern "js" fn CreateScriptCallback::from_fn(
   handler : (String, JsValue) -> String?,
 ) -> CreateScriptCallback =
-  #| (handler) => handler
+  #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
 /// CreateScriptURLCallback callback interface
@@ -99,11 +99,11 @@ pub type CreateScriptURLCallback
 pub extern "js" fn CreateScriptURLCallback::from_fn(
   handler : (String, JsValue) -> String?,
 ) -> CreateScriptURLCallback =
-  #| (handler) => handler
+  #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
 /// TrustedTypePolicyOptions dictionary
-pub struct TrustedTypePolicyOptions {
+pub(all) struct TrustedTypePolicyOptions {
   createHTML : CreateHTMLCallback?
   createScript : CreateScriptCallback?
   createScriptURL : CreateScriptURLCallback?
@@ -120,15 +120,22 @@ pub fn TrustedTypePolicyOptions::default() -> TrustedTypePolicyOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TrustedTypePolicyOptions::to_js(
+extern "js" fn TrustedTypePolicyOptions::to_js_ffi(
   self : TrustedTypePolicyOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   createHTML: self.createHTML,
-  #|   createScript: self.createScript,
-  #|   createScriptURL: self.createScriptURL
+  #|   createHTML: ((() => { const v = self.createHTML; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   createScript: ((() => { const v = self.createScript; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   createScriptURL: ((() => { const v = self.createScriptURL; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn TrustedTypePolicyOptions::to_js(
+  self : TrustedTypePolicyOptions,
+) -> JsValue {
+  TrustedTypePolicyOptions::to_js_ffi(self)
+}
 
 ///|
 /// TrustedHTML interface
@@ -284,12 +291,25 @@ pub extern "js" fn TrustedTypePolicyFactory::create_policy(
   #| (self, policy_name) => self.createPolicy(policy_name)
 
 ///|
-pub extern "js" fn TrustedTypePolicyFactory::create_policy_with_policy_options(
+extern "js" fn TrustedTypePolicyFactory::create_policy_with_policy_options_ffi(
+  self : TrustedTypePolicyFactory,
+  policy_name : String,
+  policy_options : JsValue,
+) -> TrustedTypePolicy =
+  #| (self, policy_name, policy_options) => self.createPolicy(policy_name, policy_options)
+
+///|
+pub fn TrustedTypePolicyFactory::create_policy_with_policy_options(
   self : TrustedTypePolicyFactory,
   policy_name : String,
   policy_options : TrustedTypePolicyOptions,
-) -> TrustedTypePolicy =
-  #| (self, policy_name, policy_options) => self.createPolicy(policy_name, policy_options)
+) -> TrustedTypePolicy {
+  TrustedTypePolicyFactory::create_policy_with_policy_options_ffi(
+    self,
+    policy_name,
+    policy_options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn TrustedTypePolicyFactory::is_html(
@@ -330,7 +350,7 @@ pub extern "js" fn TrustedTypePolicyFactory::get_attribute_type(
   tag_name : String,
   attribute : String,
 ) -> String? =
-  #| (self, tag_name, attribute) => { const v = self.getAttributeType(tag_name, attribute); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, tag_name, attribute) => (self.getAttributeType(tag_name, attribute)) ?? undefined
 
 ///|
 pub extern "js" fn TrustedTypePolicyFactory::get_attribute_type_with_attr_ns(
@@ -340,7 +360,7 @@ pub extern "js" fn TrustedTypePolicyFactory::get_attribute_type_with_attr_ns(
   element_ns : String?,
   attr_ns : String?,
 ) -> String? =
-  #| (self, tag_name, attribute, element_ns, attr_ns) => { const v = self.getAttributeType(tag_name, attribute, element_ns, attr_ns); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, tag_name, attribute, element_ns, attr_ns) => (self.getAttributeType(tag_name, attribute, element_ns, attr_ns)) ?? undefined
 
 ///|
 pub extern "js" fn TrustedTypePolicyFactory::get_property_type(
@@ -348,7 +368,7 @@ pub extern "js" fn TrustedTypePolicyFactory::get_property_type(
   tag_name : String,
   property : String,
 ) -> String? =
-  #| (self, tag_name, property) => { const v = self.getPropertyType(tag_name, property); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, tag_name, property) => (self.getPropertyType(tag_name, property)) ?? undefined
 
 ///|
 pub extern "js" fn TrustedTypePolicyFactory::get_property_type_with_element_ns(
@@ -357,13 +377,13 @@ pub extern "js" fn TrustedTypePolicyFactory::get_property_type_with_element_ns(
   property : String,
   element_ns : String?,
 ) -> String? =
-  #| (self, tag_name, property, element_ns) => { const v = self.getPropertyType(tag_name, property, element_ns); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, tag_name, property, element_ns) => (self.getPropertyType(tag_name, property, element_ns)) ?? undefined
 
 ///|
 pub extern "js" fn TrustedTypePolicyFactory::get_default_policy(
   self : TrustedTypePolicyFactory,
 ) -> TrustedTypePolicy? =
-  #| (self) => { const v = self.defaultPolicy; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.defaultPolicy; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// TrustedTypePolicy interface

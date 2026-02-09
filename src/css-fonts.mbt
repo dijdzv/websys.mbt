@@ -143,7 +143,7 @@ pub extern "js" fn CSSFontFeatureValuesMap::get(
   self : CSSFontFeatureValuesMap,
   key : CSSOMString,
 ) -> Array[Int]? =
-  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, key) => self.get(key)
 
 ///|
 pub extern "js" fn CSSFontFeatureValuesMap::has(

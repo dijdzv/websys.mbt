@@ -31,4 +31,4 @@ pub extern "js" fn JsValue::to_viewport(self : JsValue) -> Viewport =
 
 ///|
 pub extern "js" fn Viewport::get_segments(self : Viewport) -> JsValue? =
-  #| (self) => { const v = self.segments; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.segments; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

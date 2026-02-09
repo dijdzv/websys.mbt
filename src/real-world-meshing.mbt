@@ -49,7 +49,7 @@ pub extern "js" fn XRMesh::get_last_changed_time(
 
 ///|
 pub extern "js" fn XRMesh::get_semantic_label(self : XRMesh) -> String? =
-  #| (self) => { const v = self.semanticLabel; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.semanticLabel) ?? undefined
 
 ///|
 /// XRMeshSet interface

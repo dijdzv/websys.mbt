@@ -3,7 +3,7 @@
 
 ///|
 /// AudioOutputOptions dictionary
-pub struct AudioOutputOptions {
+pub(all) struct AudioOutputOptions {
   deviceId : String?
 }
 
@@ -14,10 +14,15 @@ pub fn AudioOutputOptions::default() -> AudioOutputOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AudioOutputOptions::to_js(
+extern "js" fn AudioOutputOptions::to_js_ffi(
   self : AudioOutputOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   deviceId: self.deviceId
   #| })
+
+///|
+/// Convert to JsValue
+pub fn AudioOutputOptions::to_js(self : AudioOutputOptions) -> JsValue {
+  AudioOutputOptions::to_js_ffi(self)
+}

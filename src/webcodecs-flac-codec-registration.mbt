@@ -3,7 +3,7 @@
 
 ///|
 /// AudioEncoderConfig dictionary
-pub struct AudioEncoderConfig {
+pub(all) struct AudioEncoderConfig {
   flac : FlacEncoderConfig?
   opus : OpusEncoderConfig?
   aac : AacEncoderConfig?
@@ -30,24 +30,29 @@ pub fn AudioEncoderConfig::default() -> AudioEncoderConfig {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AudioEncoderConfig::to_js(
+extern "js" fn AudioEncoderConfig::to_js_ffi(
   self : AudioEncoderConfig,
 ) -> JsValue =
   #| (self) => ({
-  #|   flac: self.flac,
-  #|   opus: self.opus,
-  #|   aac: self.aac,
+  #|   flac: ((() => { const v = self.flac; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   opus: ((() => { const v = self.opus; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   aac: ((() => { const v = self.aac; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   codec: self.codec,
   #|   sampleRate: self.sampleRate,
   #|   numberOfChannels: self.numberOfChannels,
   #|   bitrate: self.bitrate,
-  #|   bitrateMode: ['constant', 'variable'][self.bitrateMode]
+  #|   bitrateMode: ((() => { const v = self.bitrateMode; if (v === undefined) return undefined; return ['constant', 'variable'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AudioEncoderConfig::to_js(self : AudioEncoderConfig) -> JsValue {
+  AudioEncoderConfig::to_js_ffi(self)
+}
+
+///|
 /// FlacEncoderConfig dictionary
-pub struct FlacEncoderConfig {
+pub(all) struct FlacEncoderConfig {
   blockSize : Int?
   compressLevel : Int?
 }
@@ -59,11 +64,16 @@ pub fn FlacEncoderConfig::default() -> FlacEncoderConfig {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FlacEncoderConfig::to_js(
+extern "js" fn FlacEncoderConfig::to_js_ffi(
   self : FlacEncoderConfig,
 ) -> JsValue =
   #| (self) => ({
   #|   blockSize: self.blockSize,
   #|   compressLevel: self.compressLevel
   #| })
+
+///|
+/// Convert to JsValue
+pub fn FlacEncoderConfig::to_js(self : FlacEncoderConfig) -> JsValue {
+  FlacEncoderConfig::to_js_ffi(self)
+}

@@ -42,7 +42,7 @@ pub extern "js" fn SanitizerElement::is_sanitizer_element_namespace(
 pub extern "js" fn SanitizerElement::as_string(
   self : SanitizerElement,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get SanitizerElement as SanitizerElementNamespace
@@ -94,7 +94,7 @@ pub extern "js" fn SanitizerElementWithAttributes::is_sanitizer_element_namespac
 pub extern "js" fn SanitizerElementWithAttributes::as_string(
   self : SanitizerElementWithAttributes,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get SanitizerElementWithAttributes as SanitizerElementNamespaceWithAttributes
@@ -146,7 +146,7 @@ pub extern "js" fn SanitizerAttribute::is_sanitizer_attribute_namespace(
 pub extern "js" fn SanitizerAttribute::as_string(
   self : SanitizerAttribute,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get SanitizerAttribute as SanitizerAttributeNamespace
@@ -180,7 +180,7 @@ pub fn SanitizerPresets::from_string(s : String) -> SanitizerPresets? {
 
 ///|
 /// SetHTMLOptions dictionary
-pub struct SetHTMLOptions {
+pub(all) struct SetHTMLOptions {
   sanitizer : SanitizerOrSanitizerConfigOrSanitizerPresets?
 }
 
@@ -191,15 +191,20 @@ pub fn SetHTMLOptions::default() -> SetHTMLOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SetHTMLOptions::to_js(self : SetHTMLOptions) -> JsValue =
+extern "js" fn SetHTMLOptions::to_js_ffi(self : SetHTMLOptions) -> JsValue =
   #| (self) => ({
-  #|   sanitizer: self.sanitizer
+  #|   sanitizer: ((() => { const v = self.sanitizer; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SetHTMLOptions::to_js(self : SetHTMLOptions) -> JsValue {
+  SetHTMLOptions::to_js_ffi(self)
+}
+
+///|
 /// SetHTMLUnsafeOptions dictionary
-pub struct SetHTMLUnsafeOptions {
+pub(all) struct SetHTMLUnsafeOptions {
   sanitizer : SanitizerOrSanitizerConfigOrSanitizerPresets?
 }
 
@@ -210,17 +215,22 @@ pub fn SetHTMLUnsafeOptions::default() -> SetHTMLUnsafeOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SetHTMLUnsafeOptions::to_js(
+extern "js" fn SetHTMLUnsafeOptions::to_js_ffi(
   self : SetHTMLUnsafeOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   sanitizer: self.sanitizer
+  #|   sanitizer: ((() => { const v = self.sanitizer; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SetHTMLUnsafeOptions::to_js(self : SetHTMLUnsafeOptions) -> JsValue {
+  SetHTMLUnsafeOptions::to_js_ffi(self)
+}
+
+///|
 /// SanitizerElementNamespace dictionary
-pub struct SanitizerElementNamespace {
+pub(all) struct SanitizerElementNamespace {
   name : String
   namespace_ : Nullable[String]
 }
@@ -232,8 +242,7 @@ pub fn SanitizerElementNamespace::default() -> SanitizerElementNamespace {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SanitizerElementNamespace::to_js(
+extern "js" fn SanitizerElementNamespace::to_js_ffi(
   self : SanitizerElementNamespace,
 ) -> JsValue =
   #| (self) => ({
@@ -242,8 +251,16 @@ pub extern "js" fn SanitizerElementNamespace::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SanitizerElementNamespace::to_js(
+  self : SanitizerElementNamespace,
+) -> JsValue {
+  SanitizerElementNamespace::to_js_ffi(self)
+}
+
+///|
 /// SanitizerElementNamespaceWithAttributes dictionary
-pub struct SanitizerElementNamespaceWithAttributes {
+pub(all) struct SanitizerElementNamespaceWithAttributes {
   name : String
   namespace_ : Nullable[String]
   attributes : Array[SanitizerAttribute]?
@@ -262,20 +279,27 @@ pub fn SanitizerElementNamespaceWithAttributes::default() -> SanitizerElementNam
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SanitizerElementNamespaceWithAttributes::to_js(
+extern "js" fn SanitizerElementNamespaceWithAttributes::to_js_ffi(
   self : SanitizerElementNamespaceWithAttributes,
 ) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   namespace: ((() => { const v = self.namespace_; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   attributes: self.attributes,
-  #|   removeAttributes: self.removeAttributes
+  #|   attributes: ((() => { const v = self.attributes; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   removeAttributes: ((() => { const v = self.removeAttributes; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SanitizerElementNamespaceWithAttributes::to_js(
+  self : SanitizerElementNamespaceWithAttributes,
+) -> JsValue {
+  SanitizerElementNamespaceWithAttributes::to_js_ffi(self)
+}
+
+///|
 /// SanitizerAttributeNamespace dictionary
-pub struct SanitizerAttributeNamespace {
+pub(all) struct SanitizerAttributeNamespace {
   name : String
   namespace_ : Nullable[String]
 }
@@ -287,8 +311,7 @@ pub fn SanitizerAttributeNamespace::default() -> SanitizerAttributeNamespace {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SanitizerAttributeNamespace::to_js(
+extern "js" fn SanitizerAttributeNamespace::to_js_ffi(
   self : SanitizerAttributeNamespace,
 ) -> JsValue =
   #| (self) => ({
@@ -297,8 +320,16 @@ pub extern "js" fn SanitizerAttributeNamespace::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SanitizerAttributeNamespace::to_js(
+  self : SanitizerAttributeNamespace,
+) -> JsValue {
+  SanitizerAttributeNamespace::to_js_ffi(self)
+}
+
+///|
 /// SanitizerConfig dictionary
-pub struct SanitizerConfig {
+pub(all) struct SanitizerConfig {
   elements : Array[SanitizerElementWithAttributes]?
   removeElements : Array[SanitizerElement]?
   replaceWithChildrenElements : Array[SanitizerElement]?
@@ -323,17 +354,22 @@ pub fn SanitizerConfig::default() -> SanitizerConfig {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SanitizerConfig::to_js(self : SanitizerConfig) -> JsValue =
+extern "js" fn SanitizerConfig::to_js_ffi(self : SanitizerConfig) -> JsValue =
   #| (self) => ({
-  #|   elements: self.elements,
-  #|   removeElements: self.removeElements,
-  #|   replaceWithChildrenElements: self.replaceWithChildrenElements,
-  #|   attributes: self.attributes,
-  #|   removeAttributes: self.removeAttributes,
-  #|   comments: self.comments,
-  #|   dataAttributes: self.dataAttributes
+  #|   elements: ((() => { const v = self.elements; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   removeElements: ((() => { const v = self.removeElements; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   replaceWithChildrenElements: ((() => { const v = self.replaceWithChildrenElements; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   attributes: ((() => { const v = self.attributes; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   removeAttributes: ((() => { const v = self.removeAttributes; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   comments: (self.comments === -1 ? undefined : self.comments),
+  #|   dataAttributes: (self.dataAttributes === -1 ? undefined : self.dataAttributes)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn SanitizerConfig::to_js(self : SanitizerConfig) -> JsValue {
+  SanitizerConfig::to_js_ffi(self)
+}
 
 ///|
 /// Sanitizer interface
@@ -364,7 +400,11 @@ pub extern "js" fn JsValue::to_sanitizer(self : JsValue) -> Sanitizer =
   #| (self) => self
 
 ///|
-pub extern "js" fn Sanitizer::new(
+pub extern "js" fn Sanitizer::new() -> Sanitizer =
+  #| () => new Sanitizer()
+
+///|
+pub extern "js" fn Sanitizer::new_with_configuration(
   configuration : SanitizerConfigOrSanitizerPresets,
 ) -> Sanitizer =
   #| (configuration) => new Sanitizer(configuration)
@@ -425,3 +465,73 @@ pub extern "js" fn Sanitizer::set_data_attributes(
 ///|
 pub extern "js" fn Sanitizer::remove_unsafe(self : Sanitizer) -> Bool =
   #| (self) => self.removeUnsafe()
+
+///|
+pub extern "js" fn Sanitizer::allow_element_with_string(
+  self : Sanitizer,
+  element : String,
+) -> Bool =
+  #| (self, element) => self.allowElement(element)
+
+///|
+pub extern "js" fn Sanitizer::allow_element_with_sanitizer_element_namespace_with_attributes(
+  self : Sanitizer,
+  element : SanitizerElementNamespaceWithAttributes,
+) -> Bool =
+  #| (self, element) => self.allowElement(element)
+
+///|
+pub extern "js" fn Sanitizer::remove_element_with_string(
+  self : Sanitizer,
+  element : String,
+) -> Bool =
+  #| (self, element) => self.removeElement(element)
+
+///|
+pub extern "js" fn Sanitizer::remove_element_with_sanitizer_element_namespace(
+  self : Sanitizer,
+  element : SanitizerElementNamespace,
+) -> Bool =
+  #| (self, element) => self.removeElement(element)
+
+///|
+pub extern "js" fn Sanitizer::replace_element_with_children_with_string(
+  self : Sanitizer,
+  element : String,
+) -> Bool =
+  #| (self, element) => self.replaceElementWithChildren(element)
+
+///|
+pub extern "js" fn Sanitizer::replace_element_with_children_with_sanitizer_element_namespace(
+  self : Sanitizer,
+  element : SanitizerElementNamespace,
+) -> Bool =
+  #| (self, element) => self.replaceElementWithChildren(element)
+
+///|
+pub extern "js" fn Sanitizer::allow_attribute_with_string(
+  self : Sanitizer,
+  attribute : String,
+) -> Bool =
+  #| (self, attribute) => self.allowAttribute(attribute)
+
+///|
+pub extern "js" fn Sanitizer::allow_attribute_with_sanitizer_attribute_namespace(
+  self : Sanitizer,
+  attribute : SanitizerAttributeNamespace,
+) -> Bool =
+  #| (self, attribute) => self.allowAttribute(attribute)
+
+///|
+pub extern "js" fn Sanitizer::remove_attribute_with_string(
+  self : Sanitizer,
+  attribute : String,
+) -> Bool =
+  #| (self, attribute) => self.removeAttribute(attribute)
+
+///|
+pub extern "js" fn Sanitizer::remove_attribute_with_sanitizer_attribute_namespace(
+  self : Sanitizer,
+  attribute : SanitizerAttributeNamespace,
+) -> Bool =
+  #| (self, attribute) => self.removeAttribute(attribute)

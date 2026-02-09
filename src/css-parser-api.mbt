@@ -40,7 +40,7 @@ pub extern "js" fn CSSStringSource::is_readable_stream(
 pub extern "js" fn CSSStringSource::as_string(
   self : CSSStringSource,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get CSSStringSource as ReadableStream
@@ -94,7 +94,7 @@ pub extern "js" fn CSSToken::is_c_s_s_parser_value(self : CSSToken) -> Bool =
 ///|
 /// Try to get CSSToken as String
 pub extern "js" fn CSSToken::as_string(self : CSSToken) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get CSSToken as CSSStyleValue
@@ -112,7 +112,7 @@ pub extern "js" fn CSSToken::as_c_s_s_parser_value(
 
 ///|
 /// CSSParserOptions dictionary
-pub struct CSSParserOptions {
+pub(all) struct CSSParserOptions {
   atRules : JsValue?
 }
 
@@ -123,11 +123,16 @@ pub fn CSSParserOptions::default() -> CSSParserOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CSSParserOptions::to_js(self : CSSParserOptions) -> JsValue =
+extern "js" fn CSSParserOptions::to_js_ffi(self : CSSParserOptions) -> JsValue =
   #| (self) => ({
-  #|   atRules: self.atRules
+  #|   atRules: ((() => { const v = self.atRules; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn CSSParserOptions::to_js(self : CSSParserOptions) -> JsValue {
+  CSSParserOptions::to_js_ffi(self)
+}
 
 ///|
 /// CSSParserRule interface
@@ -227,6 +232,13 @@ pub extern "js" fn CSSParserAtRule::to_css_parser_rule(
 pub extern "js" fn CSSParserAtRule::new(
   name : String,
   prelude : Array[CSSToken],
+) -> CSSParserAtRule =
+  #| (name, prelude) => new CSSParserAtRule(name, prelude)
+
+///|
+pub extern "js" fn CSSParserAtRule::new_with_body(
+  name : String,
+  prelude : Array[CSSToken],
   body : Array[CSSParserRule],
 ) -> CSSParserAtRule =
   #| (name, prelude, body) => new CSSParserAtRule(name, prelude, body)
@@ -245,7 +257,7 @@ pub extern "js" fn CSSParserAtRule::get_prelude(
 pub extern "js" fn CSSParserAtRule::get_body(
   self : CSSParserAtRule,
 ) -> JsValue? =
-  #| (self) => { const v = self.body; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.body; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// CSSParserQualifiedRule interface
@@ -293,6 +305,12 @@ pub extern "js" fn CSSParserQualifiedRule::to_css_parser_rule(
 
 ///|
 pub extern "js" fn CSSParserQualifiedRule::new(
+  prelude : Array[CSSToken],
+) -> CSSParserQualifiedRule =
+  #| (prelude) => new CSSParserQualifiedRule(prelude)
+
+///|
+pub extern "js" fn CSSParserQualifiedRule::new_with_body(
   prelude : Array[CSSToken],
   body : Array[CSSParserRule],
 ) -> CSSParserQualifiedRule =
@@ -356,6 +374,12 @@ pub extern "js" fn CSSParserDeclaration::to_css_parser_rule(
 
 ///|
 pub extern "js" fn CSSParserDeclaration::new(
+  name : String,
+) -> CSSParserDeclaration =
+  #| (name) => new CSSParserDeclaration(name)
+
+///|
+pub extern "js" fn CSSParserDeclaration::new_with_body(
   name : String,
   body : Array[CSSParserRule],
 ) -> CSSParserDeclaration =

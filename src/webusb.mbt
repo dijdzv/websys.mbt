@@ -148,7 +148,7 @@ pub fn USBEndpointType::from_string(s : String) -> USBEndpointType? {
 
 ///|
 /// USBDeviceFilter dictionary
-pub struct USBDeviceFilter {
+pub(all) struct USBDeviceFilter {
   vendorId : Int?
   productId : Int?
   classCode : Int?
@@ -171,8 +171,7 @@ pub fn USBDeviceFilter::default() -> USBDeviceFilter {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn USBDeviceFilter::to_js(self : USBDeviceFilter) -> JsValue =
+extern "js" fn USBDeviceFilter::to_js_ffi(self : USBDeviceFilter) -> JsValue =
   #| (self) => ({
   #|   vendorId: self.vendorId,
   #|   productId: self.productId,
@@ -183,8 +182,14 @@ pub extern "js" fn USBDeviceFilter::to_js(self : USBDeviceFilter) -> JsValue =
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn USBDeviceFilter::to_js(self : USBDeviceFilter) -> JsValue {
+  USBDeviceFilter::to_js_ffi(self)
+}
+
+///|
 /// USBDeviceRequestOptions dictionary
-pub struct USBDeviceRequestOptions {
+pub(all) struct USBDeviceRequestOptions {
   filters : Array[USBDeviceFilter]
   exclusionFilters : Array[USBDeviceFilter]?
 }
@@ -196,30 +201,38 @@ pub fn USBDeviceRequestOptions::default() -> USBDeviceRequestOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn USBDeviceRequestOptions::to_js(
+extern "js" fn USBDeviceRequestOptions::to_js_ffi(
   self : USBDeviceRequestOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   filters: self.filters,
-  #|   exclusionFilters: self.exclusionFilters
+  #|   exclusionFilters: ((() => { const v = self.exclusionFilters; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn USBDeviceRequestOptions::to_js(
+  self : USBDeviceRequestOptions,
+) -> JsValue {
+  USBDeviceRequestOptions::to_js_ffi(self)
+}
+
+///|
 /// USBConnectionEventInit dictionary
-pub struct USBConnectionEventInit {
+pub(all) struct USBConnectionEventInit {
   device : USBDevice
 }
 
 ///|
-/// Create a new USBConnectionEventInit with default values
-pub fn USBConnectionEventInit::default() -> USBConnectionEventInit {
-  USBConnectionEventInit::{ device: panic() }
+/// Create a new USBConnectionEventInit
+pub fn USBConnectionEventInit::new(
+  device~ : USBDevice,
+) -> USBConnectionEventInit {
+  USBConnectionEventInit::{ device, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn USBConnectionEventInit::to_js(
+extern "js" fn USBConnectionEventInit::to_js_ffi(
   self : USBConnectionEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -227,8 +240,14 @@ pub extern "js" fn USBConnectionEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn USBConnectionEventInit::to_js(self : USBConnectionEventInit) -> JsValue {
+  USBConnectionEventInit::to_js_ffi(self)
+}
+
+///|
 /// USBControlTransferParameters dictionary
-pub struct USBControlTransferParameters {
+pub(all) struct USBControlTransferParameters {
   requestType : USBRequestType
   recipient : USBRecipient
   request : Int
@@ -237,11 +256,14 @@ pub struct USBControlTransferParameters {
 }
 
 ///|
-/// Create a new USBControlTransferParameters with default values
-pub fn USBControlTransferParameters::default() -> USBControlTransferParameters {
+/// Create a new USBControlTransferParameters
+pub fn USBControlTransferParameters::new(
+  requestType~ : USBRequestType,
+  recipient~ : USBRecipient,
+) -> USBControlTransferParameters {
   USBControlTransferParameters::{
-    requestType: panic(),
-    recipient: panic(),
+    requestType,
+    recipient,
     request: 0,
     value: 0,
     index: 0,
@@ -249,8 +271,7 @@ pub fn USBControlTransferParameters::default() -> USBControlTransferParameters {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn USBControlTransferParameters::to_js(
+extern "js" fn USBControlTransferParameters::to_js_ffi(
   self : USBControlTransferParameters,
 ) -> JsValue =
   #| (self) => ({
@@ -262,8 +283,16 @@ pub extern "js" fn USBControlTransferParameters::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn USBControlTransferParameters::to_js(
+  self : USBControlTransferParameters,
+) -> JsValue {
+  USBControlTransferParameters::to_js_ffi(self)
+}
+
+///|
 /// USBBlocklistEntry dictionary
-pub struct USBBlocklistEntry {
+pub(all) struct USBBlocklistEntry {
   idVendor : Int
   idProduct : Int
   bcdDevice : Int
@@ -276,8 +305,7 @@ pub fn USBBlocklistEntry::default() -> USBBlocklistEntry {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn USBBlocklistEntry::to_js(
+extern "js" fn USBBlocklistEntry::to_js_ffi(
   self : USBBlocklistEntry,
 ) -> JsValue =
   #| (self) => ({
@@ -287,8 +315,14 @@ pub extern "js" fn USBBlocklistEntry::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn USBBlocklistEntry::to_js(self : USBBlocklistEntry) -> JsValue {
+  USBBlocklistEntry::to_js_ffi(self)
+}
+
+///|
 /// USBPermissionDescriptor dictionary
-pub struct USBPermissionDescriptor {
+pub(all) struct USBPermissionDescriptor {
   filters : Array[USBDeviceFilter]?
   exclusionFilters : Array[USBDeviceFilter]?
 }
@@ -300,18 +334,25 @@ pub fn USBPermissionDescriptor::default() -> USBPermissionDescriptor {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn USBPermissionDescriptor::to_js(
+extern "js" fn USBPermissionDescriptor::to_js_ffi(
   self : USBPermissionDescriptor,
 ) -> JsValue =
   #| (self) => ({
-  #|   filters: self.filters,
-  #|   exclusionFilters: self.exclusionFilters
+  #|   filters: ((() => { const v = self.filters; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   exclusionFilters: ((() => { const v = self.exclusionFilters; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn USBPermissionDescriptor::to_js(
+  self : USBPermissionDescriptor,
+) -> JsValue {
+  USBPermissionDescriptor::to_js_ffi(self)
+}
+
+///|
 /// AllowedUSBDevice dictionary
-pub struct AllowedUSBDevice {
+pub(all) struct AllowedUSBDevice {
   vendorId : Int
   productId : Int
   serialNumber : String?
@@ -324,8 +365,7 @@ pub fn AllowedUSBDevice::default() -> AllowedUSBDevice {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AllowedUSBDevice::to_js(self : AllowedUSBDevice) -> JsValue =
+extern "js" fn AllowedUSBDevice::to_js_ffi(self : AllowedUSBDevice) -> JsValue =
   #| (self) => ({
   #|   vendorId: self.vendorId,
   #|   productId: self.productId,
@@ -333,8 +373,14 @@ pub extern "js" fn AllowedUSBDevice::to_js(self : AllowedUSBDevice) -> JsValue =
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AllowedUSBDevice::to_js(self : AllowedUSBDevice) -> JsValue {
+  AllowedUSBDevice::to_js_ffi(self)
+}
+
+///|
 /// USBPermissionStorage dictionary
-pub struct USBPermissionStorage {
+pub(all) struct USBPermissionStorage {
   allowedDevices : Array[AllowedUSBDevice]?
 }
 
@@ -345,13 +391,18 @@ pub fn USBPermissionStorage::default() -> USBPermissionStorage {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn USBPermissionStorage::to_js(
+extern "js" fn USBPermissionStorage::to_js_ffi(
   self : USBPermissionStorage,
 ) -> JsValue =
   #| (self) => ({
-  #|   allowedDevices: self.allowedDevices
+  #|   allowedDevices: ((() => { const v = self.allowedDevices; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn USBPermissionStorage::to_js(self : USBPermissionStorage) -> JsValue {
+  USBPermissionStorage::to_js_ffi(self)
+}
 
 ///|
 /// USB interface
@@ -409,11 +460,19 @@ pub extern "js" fn USB::get_devices(self : USB) -> Promise[Array[USBDevice]] =
   #| (self) => self.getDevices()
 
 ///|
-pub extern "js" fn USB::request_device(
+extern "js" fn USB::request_device_ffi(
   self : USB,
-  options : USBDeviceRequestOptions,
+  options : JsValue,
 ) -> Promise[USBDevice] =
   #| (self, options) => self.requestDevice(options)
+
+///|
+pub fn USB::request_device(
+  self : USB,
+  options : USBDeviceRequestOptions,
+) -> Promise[USBDevice] {
+  USB::request_device_ffi(self, options.to_js())
+}
 
 ///|
 /// USBConnectionEvent interface
@@ -460,11 +519,19 @@ pub extern "js" fn USBConnectionEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn USBConnectionEvent::new(
+extern "js" fn USBConnectionEvent::new_ffi(
   type_ : String,
-  event_init_dict : USBConnectionEventInit,
+  event_init_dict : JsValue,
 ) -> USBConnectionEvent =
   #| (type_, event_init_dict) => new USBConnectionEvent(type_, event_init_dict)
+
+///|
+pub fn USBConnectionEvent::new(
+  type_ : String,
+  event_init_dict : USBConnectionEventInit,
+) -> USBConnectionEvent {
+  USBConnectionEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn USBConnectionEvent::get_device(
@@ -513,21 +580,27 @@ pub extern "js" fn JsValue::to_usb_in_transfer_result(
 ///|
 pub extern "js" fn USBInTransferResult::new(
   status : USBTransferStatus,
+) -> USBInTransferResult =
+  #| (status) => new USBInTransferResult(['ok', 'stall', 'babble'][status])
+
+///|
+pub extern "js" fn USBInTransferResult::new_with_data(
+  status : USBTransferStatus,
   data : DataView?,
 ) -> USBInTransferResult =
-  #| (status, data) => new USBInTransferResult(['ok', 'stall', 'babble'][status], data)
+  #| (status, data) => new USBInTransferResult(['ok', 'stall', 'babble'][status], (data.$tag === 1 ? data._0 : null))
 
 ///|
 pub extern "js" fn USBInTransferResult::get_data(
   self : USBInTransferResult,
 ) -> DataView? =
-  #| (self) => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn USBInTransferResult::get_status(
   self : USBInTransferResult,
 ) -> USBTransferStatus =
-  #| (self) => self.status
+  #| (self) => ['ok', 'stall', 'babble'].indexOf(self.status)
 
 ///|
 /// USBOutTransferResult interface
@@ -570,6 +643,12 @@ pub extern "js" fn JsValue::to_usb_out_transfer_result(
 ///|
 pub extern "js" fn USBOutTransferResult::new(
   status : USBTransferStatus,
+) -> USBOutTransferResult =
+  #| (status) => new USBOutTransferResult(['ok', 'stall', 'babble'][status])
+
+///|
+pub extern "js" fn USBOutTransferResult::new_with_bytes_written(
+  status : USBTransferStatus,
   bytes_written : Int,
 ) -> USBOutTransferResult =
   #| (status, bytes_written) => new USBOutTransferResult(['ok', 'stall', 'babble'][status], bytes_written)
@@ -584,7 +663,7 @@ pub extern "js" fn USBOutTransferResult::get_bytes_written(
 pub extern "js" fn USBOutTransferResult::get_status(
   self : USBOutTransferResult,
 ) -> USBTransferStatus =
-  #| (self) => self.status
+  #| (self) => ['ok', 'stall', 'babble'].indexOf(self.status)
 
 ///|
 /// USBIsochronousInTransferPacket interface
@@ -627,21 +706,27 @@ pub extern "js" fn JsValue::to_usb_isochronous_in_transfer_packet(
 ///|
 pub extern "js" fn USBIsochronousInTransferPacket::new(
   status : USBTransferStatus,
+) -> USBIsochronousInTransferPacket =
+  #| (status) => new USBIsochronousInTransferPacket(['ok', 'stall', 'babble'][status])
+
+///|
+pub extern "js" fn USBIsochronousInTransferPacket::new_with_data(
+  status : USBTransferStatus,
   data : DataView?,
 ) -> USBIsochronousInTransferPacket =
-  #| (status, data) => new USBIsochronousInTransferPacket(['ok', 'stall', 'babble'][status], data)
+  #| (status, data) => new USBIsochronousInTransferPacket(['ok', 'stall', 'babble'][status], (data.$tag === 1 ? data._0 : null))
 
 ///|
 pub extern "js" fn USBIsochronousInTransferPacket::get_data(
   self : USBIsochronousInTransferPacket,
 ) -> DataView? =
-  #| (self) => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn USBIsochronousInTransferPacket::get_status(
   self : USBIsochronousInTransferPacket,
 ) -> USBTransferStatus =
-  #| (self) => self.status
+  #| (self) => ['ok', 'stall', 'babble'].indexOf(self.status)
 
 ///|
 /// USBIsochronousInTransferResult interface
@@ -684,15 +769,21 @@ pub extern "js" fn JsValue::to_usb_isochronous_in_transfer_result(
 ///|
 pub extern "js" fn USBIsochronousInTransferResult::new(
   packets : Array[USBIsochronousInTransferPacket],
+) -> USBIsochronousInTransferResult =
+  #| (packets) => new USBIsochronousInTransferResult(packets)
+
+///|
+pub extern "js" fn USBIsochronousInTransferResult::new_with_data(
+  packets : Array[USBIsochronousInTransferPacket],
   data : DataView?,
 ) -> USBIsochronousInTransferResult =
-  #| (packets, data) => new USBIsochronousInTransferResult(packets, data)
+  #| (packets, data) => new USBIsochronousInTransferResult(packets, (data.$tag === 1 ? data._0 : null))
 
 ///|
 pub extern "js" fn USBIsochronousInTransferResult::get_data(
   self : USBIsochronousInTransferResult,
 ) -> DataView? =
-  #| (self) => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn USBIsochronousInTransferResult::get_packets(
@@ -741,6 +832,12 @@ pub extern "js" fn JsValue::to_usb_isochronous_out_transfer_packet(
 ///|
 pub extern "js" fn USBIsochronousOutTransferPacket::new(
   status : USBTransferStatus,
+) -> USBIsochronousOutTransferPacket =
+  #| (status) => new USBIsochronousOutTransferPacket(['ok', 'stall', 'babble'][status])
+
+///|
+pub extern "js" fn USBIsochronousOutTransferPacket::new_with_bytes_written(
+  status : USBTransferStatus,
   bytes_written : Int,
 ) -> USBIsochronousOutTransferPacket =
   #| (status, bytes_written) => new USBIsochronousOutTransferPacket(['ok', 'stall', 'babble'][status], bytes_written)
@@ -755,7 +852,7 @@ pub extern "js" fn USBIsochronousOutTransferPacket::get_bytes_written(
 pub extern "js" fn USBIsochronousOutTransferPacket::get_status(
   self : USBIsochronousOutTransferPacket,
 ) -> USBTransferStatus =
-  #| (self) => self.status
+  #| (self) => ['ok', 'stall', 'babble'].indexOf(self.status)
 
 ///|
 /// USBIsochronousOutTransferResult interface
@@ -885,21 +982,21 @@ pub extern "js" fn USBDevice::get_device_version_subminor(
 pub extern "js" fn USBDevice::get_manufacturer_name(
   self : USBDevice,
 ) -> String? =
-  #| (self) => { const v = self.manufacturerName; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.manufacturerName) ?? undefined
 
 ///|
 pub extern "js" fn USBDevice::get_product_name(self : USBDevice) -> String? =
-  #| (self) => { const v = self.productName; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.productName) ?? undefined
 
 ///|
 pub extern "js" fn USBDevice::get_serial_number(self : USBDevice) -> String? =
-  #| (self) => { const v = self.serialNumber; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.serialNumber) ?? undefined
 
 ///|
 pub extern "js" fn USBDevice::get_configuration(
   self : USBDevice,
 ) -> USBConfiguration? =
-  #| (self) => { const v = self.configuration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.configuration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn USBDevice::get_configurations(self : USBDevice) -> JsValue =
@@ -951,27 +1048,53 @@ pub extern "js" fn USBDevice::select_alternate_interface(
   #| (self, interface_number, alternate_setting) => self.selectAlternateInterface(interface_number, alternate_setting)
 
 ///|
-pub extern "js" fn USBDevice::control_transfer_in(
+extern "js" fn USBDevice::control_transfer_in_ffi(
   self : USBDevice,
-  setup : USBControlTransferParameters,
+  setup : JsValue,
   length : Int,
 ) -> Promise[USBInTransferResult] =
   #| (self, setup, length) => self.controlTransferIn(setup, length)
 
 ///|
-pub extern "js" fn USBDevice::control_transfer_out(
+pub fn USBDevice::control_transfer_in(
   self : USBDevice,
   setup : USBControlTransferParameters,
+  length : Int,
+) -> Promise[USBInTransferResult] {
+  USBDevice::control_transfer_in_ffi(self, setup.to_js(), length)
+}
+
+///|
+extern "js" fn USBDevice::control_transfer_out_ffi(
+  self : USBDevice,
+  setup : JsValue,
 ) -> Promise[USBOutTransferResult] =
   #| (self, setup) => self.controlTransferOut(setup)
 
 ///|
-pub extern "js" fn USBDevice::control_transfer_out_with_data(
+pub fn USBDevice::control_transfer_out(
   self : USBDevice,
   setup : USBControlTransferParameters,
+) -> Promise[USBOutTransferResult] {
+  USBDevice::control_transfer_out_ffi(self, setup.to_js())
+}
+
+///|
+extern "js" fn USBDevice::control_transfer_out_with_data_ffi(
+  self : USBDevice,
+  setup : JsValue,
   data : BufferSource,
 ) -> Promise[USBOutTransferResult] =
   #| (self, setup, data) => self.controlTransferOut(setup, data)
+
+///|
+pub fn USBDevice::control_transfer_out_with_data(
+  self : USBDevice,
+  setup : USBControlTransferParameters,
+  data : BufferSource,
+) -> Promise[USBOutTransferResult] {
+  USBDevice::control_transfer_out_with_data_ffi(self, setup.to_js(), data)
+}
 
 ///|
 pub extern "js" fn USBDevice::clear_halt(
@@ -1017,6 +1140,56 @@ pub extern "js" fn USBDevice::isochronous_transfer_out(
 ///|
 pub extern "js" fn USBDevice::reset(self : USBDevice) -> Promise[Unit] =
   #| (self) => self.reset()
+
+///|
+pub extern "js" fn USBDevice::control_transfer_out_with_array_buffer_view(
+  self : USBDevice,
+  setup : USBControlTransferParameters,
+  data : ArrayBufferView,
+) -> Promise[USBOutTransferResult] =
+  #| (self, setup, data) => self.controlTransferOut(setup, data)
+
+///|
+pub extern "js" fn USBDevice::control_transfer_out_with_array_buffer(
+  self : USBDevice,
+  setup : USBControlTransferParameters,
+  data : ArrayBuffer,
+) -> Promise[USBOutTransferResult] =
+  #| (self, setup, data) => self.controlTransferOut(setup, data)
+
+///|
+pub extern "js" fn USBDevice::transfer_out_with_array_buffer_view(
+  self : USBDevice,
+  endpoint_number : Int,
+  data : ArrayBufferView,
+) -> Promise[USBOutTransferResult] =
+  #| (self, endpoint_number, data) => self.transferOut(endpoint_number, data)
+
+///|
+pub extern "js" fn USBDevice::transfer_out_with_array_buffer(
+  self : USBDevice,
+  endpoint_number : Int,
+  data : ArrayBuffer,
+) -> Promise[USBOutTransferResult] =
+  #| (self, endpoint_number, data) => self.transferOut(endpoint_number, data)
+
+///|
+pub extern "js" fn USBDevice::isochronous_transfer_out_with_array_buffer_view(
+  self : USBDevice,
+  endpoint_number : Int,
+  data : ArrayBufferView,
+  packet_lengths : Array[Int],
+) -> Promise[USBIsochronousOutTransferResult] =
+  #| (self, endpoint_number, data, packet_lengths) => self.isochronousTransferOut(endpoint_number, data, packet_lengths)
+
+///|
+pub extern "js" fn USBDevice::isochronous_transfer_out_with_array_buffer(
+  self : USBDevice,
+  endpoint_number : Int,
+  data : ArrayBuffer,
+  packet_lengths : Array[Int],
+) -> Promise[USBIsochronousOutTransferResult] =
+  #| (self, endpoint_number, data, packet_lengths) => self.isochronousTransferOut(endpoint_number, data, packet_lengths)
 
 ///|
 /// USBConfiguration interface
@@ -1073,7 +1246,7 @@ pub extern "js" fn USBConfiguration::get_configuration_value(
 pub extern "js" fn USBConfiguration::get_configuration_name(
   self : USBConfiguration,
 ) -> String? =
-  #| (self) => { const v = self.configurationName; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.configurationName) ?? undefined
 
 ///|
 pub extern "js" fn USBConfiguration::get_interfaces(
@@ -1211,7 +1384,7 @@ pub extern "js" fn USBAlternateInterface::get_interface_protocol(
 pub extern "js" fn USBAlternateInterface::get_interface_name(
   self : USBAlternateInterface,
 ) -> String? =
-  #| (self) => { const v = self.interfaceName; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.interfaceName) ?? undefined
 
 ///|
 pub extern "js" fn USBAlternateInterface::get_endpoints(
@@ -1263,11 +1436,11 @@ pub extern "js" fn USBEndpoint::get_endpoint_number(self : USBEndpoint) -> Int =
 pub extern "js" fn USBEndpoint::get_direction(
   self : USBEndpoint,
 ) -> USBDirection =
-  #| (self) => self.direction
+  #| (self) => ['in', 'out'].indexOf(self.direction)
 
 ///|
 pub extern "js" fn USBEndpoint::get_type(self : USBEndpoint) -> USBEndpointType =
-  #| (self) => self.type
+  #| (self) => ['bulk', 'interrupt', 'isochronous'].indexOf(self.type)
 
 ///|
 pub extern "js" fn USBEndpoint::get_packet_size(self : USBEndpoint) -> Int =

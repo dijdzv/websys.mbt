@@ -3,7 +3,7 @@
 
 ///|
 /// StorageBucketOptions dictionary
-pub struct StorageBucketOptions {
+pub(all) struct StorageBucketOptions {
   persisted : Bool?
   quota : Int64?
   expires : DOMHighResTimeStamp?
@@ -16,15 +16,20 @@ pub fn StorageBucketOptions::default() -> StorageBucketOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn StorageBucketOptions::to_js(
+extern "js" fn StorageBucketOptions::to_js_ffi(
   self : StorageBucketOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   persisted: self.persisted,
+  #|   persisted: (self.persisted === -1 ? undefined : self.persisted),
   #|   quota: self.quota,
-  #|   expires: self.expires
+  #|   expires: ((() => { const v = self.expires; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn StorageBucketOptions::to_js(self : StorageBucketOptions) -> JsValue {
+  StorageBucketOptions::to_js_ffi(self)
+}
 
 ///|
 /// StorageBucketManager interface
@@ -72,12 +77,21 @@ pub extern "js" fn StorageBucketManager::open(
   #| (self, name) => self.open(name)
 
 ///|
-pub extern "js" fn StorageBucketManager::open_with_options(
+extern "js" fn StorageBucketManager::open_with_options_ffi(
+  self : StorageBucketManager,
+  name : String,
+  options : JsValue,
+) -> Promise[StorageBucket] =
+  #| (self, name, options) => self.open(name, options)
+
+///|
+pub fn StorageBucketManager::open_with_options(
   self : StorageBucketManager,
   name : String,
   options : StorageBucketOptions,
-) -> Promise[StorageBucket] =
-  #| (self, name, options) => self.open(name, options)
+) -> Promise[StorageBucket] {
+  StorageBucketManager::open_with_options_ffi(self, name, options.to_js())
+}
 
 ///|
 pub extern "js" fn StorageBucketManager::keys(
@@ -155,7 +169,7 @@ pub extern "js" fn StorageBucket::set_expires(
 pub extern "js" fn StorageBucket::expires(
   self : StorageBucket,
 ) -> Promise[DOMHighResTimeStamp?] =
-  #| (self) => self.expires().then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
+  #| (self) => self.expires()
 
 ///|
 pub extern "js" fn StorageBucket::get_indexed_db(

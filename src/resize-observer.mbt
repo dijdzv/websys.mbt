@@ -45,11 +45,11 @@ pub type ResizeObserverCallback
 pub extern "js" fn ResizeObserverCallback::from_fn(
   handler : (Array[ResizeObserverEntry], ResizeObserver) -> Unit,
 ) -> ResizeObserverCallback =
-  #| (handler) => handler
+  #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
 /// ResizeObserverOptions dictionary
-pub struct ResizeObserverOptions {
+pub(all) struct ResizeObserverOptions {
   box : ResizeObserverBoxOptions?
 }
 
@@ -60,13 +60,18 @@ pub fn ResizeObserverOptions::default() -> ResizeObserverOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ResizeObserverOptions::to_js(
+extern "js" fn ResizeObserverOptions::to_js_ffi(
   self : ResizeObserverOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   box: ['border-box', 'content-box', 'device-pixel-content-box'][self.box]
+  #|   box: ((() => { const v = self.box; if (v === undefined) return undefined; return ['border-box', 'content-box', 'device-pixel-content-box'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn ResizeObserverOptions::to_js(self : ResizeObserverOptions) -> JsValue {
+  ResizeObserverOptions::to_js_ffi(self)
+}
 
 ///|
 /// ResizeObserver interface
@@ -118,12 +123,21 @@ pub extern "js" fn ResizeObserver::observe(
   #| (self, target) => self.observe(target)
 
 ///|
-pub extern "js" fn ResizeObserver::observe_with_options(
+extern "js" fn ResizeObserver::observe_with_options_ffi(
+  self : ResizeObserver,
+  target : Element,
+  options : JsValue,
+) -> Unit =
+  #| (self, target, options) => self.observe(target, options)
+
+///|
+pub fn ResizeObserver::observe_with_options(
   self : ResizeObserver,
   target : Element,
   options : ResizeObserverOptions,
-) -> Unit =
-  #| (self, target, options) => self.observe(target, options)
+) -> Unit {
+  ResizeObserver::observe_with_options_ffi(self, target, options.to_js())
+}
 
 ///|
 pub extern "js" fn ResizeObserver::unobserve(

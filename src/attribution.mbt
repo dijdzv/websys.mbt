@@ -30,19 +30,20 @@ pub fn AttributionAggregationProtocol::from_string(
 
 ///|
 /// AttributionAggregationService dictionary
-pub struct AttributionAggregationService {
+pub(all) struct AttributionAggregationService {
   protocol : AttributionAggregationProtocol
 }
 
 ///|
-/// Create a new AttributionAggregationService with default values
-pub fn AttributionAggregationService::default() -> AttributionAggregationService {
-  AttributionAggregationService::{ protocol: panic() }
+/// Create a new AttributionAggregationService
+pub fn AttributionAggregationService::new(
+  protocol~ : AttributionAggregationProtocol,
+) -> AttributionAggregationService {
+  AttributionAggregationService::{ protocol, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AttributionAggregationService::to_js(
+extern "js" fn AttributionAggregationService::to_js_ffi(
   self : AttributionAggregationService,
 ) -> JsValue =
   #| (self) => ({
@@ -50,8 +51,16 @@ pub extern "js" fn AttributionAggregationService::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AttributionAggregationService::to_js(
+  self : AttributionAggregationService,
+) -> JsValue {
+  AttributionAggregationService::to_js_ffi(self)
+}
+
+///|
 /// AttributionImpressionOptions dictionary
-pub struct AttributionImpressionOptions {
+pub(all) struct AttributionImpressionOptions {
   histogramIndex : Int
   matchValue : Int?
   conversionSites : Array[String]?
@@ -74,22 +83,29 @@ pub fn AttributionImpressionOptions::default() -> AttributionImpressionOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AttributionImpressionOptions::to_js(
+extern "js" fn AttributionImpressionOptions::to_js_ffi(
   self : AttributionImpressionOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   histogramIndex: self.histogramIndex,
   #|   matchValue: self.matchValue,
-  #|   conversionSites: self.conversionSites,
-  #|   conversionCallers: self.conversionCallers,
+  #|   conversionSites: ((() => { const v = self.conversionSites; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   conversionCallers: ((() => { const v = self.conversionCallers; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   lifetimeDays: self.lifetimeDays,
   #|   priority: self.priority
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AttributionImpressionOptions::to_js(
+  self : AttributionImpressionOptions,
+) -> JsValue {
+  AttributionImpressionOptions::to_js_ffi(self)
+}
+
+///|
 /// AttributionImpressionResult dictionary
-pub struct AttributionImpressionResult {}
+pub(all) struct AttributionImpressionResult {}
 
 ///|
 /// Create a new AttributionImpressionResult with default values
@@ -98,16 +114,23 @@ pub fn AttributionImpressionResult::default() -> AttributionImpressionResult {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AttributionImpressionResult::to_js(
+extern "js" fn AttributionImpressionResult::to_js_ffi(
   self : AttributionImpressionResult,
 ) -> JsValue =
   #| (self) => ({
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AttributionImpressionResult::to_js(
+  self : AttributionImpressionResult,
+) -> JsValue {
+  AttributionImpressionResult::to_js_ffi(self)
+}
+
+///|
 /// AttributionConversionOptions dictionary
-pub struct AttributionConversionOptions {
+pub(all) struct AttributionConversionOptions {
   aggregationService : String
   epsilon : Double?
   histogramSize : Int
@@ -138,8 +161,7 @@ pub fn AttributionConversionOptions::default() -> AttributionConversionOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AttributionConversionOptions::to_js(
+extern "js" fn AttributionConversionOptions::to_js_ffi(
   self : AttributionConversionOptions,
 ) -> JsValue =
   #| (self) => ({
@@ -147,34 +169,51 @@ pub extern "js" fn AttributionConversionOptions::to_js(
   #|   epsilon: self.epsilon,
   #|   histogramSize: self.histogramSize,
   #|   lookbackDays: self.lookbackDays,
-  #|   matchValues: self.matchValues,
-  #|   impressionSites: self.impressionSites,
-  #|   impressionCallers: self.impressionCallers,
-  #|   credit: self.credit,
+  #|   matchValues: ((() => { const v = self.matchValues; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   impressionSites: ((() => { const v = self.impressionSites; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   impressionCallers: ((() => { const v = self.impressionCallers; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   credit: ((() => { const v = self.credit; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   value: self.value,
   #|   maxValue: self.maxValue
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AttributionConversionOptions::to_js(
+  self : AttributionConversionOptions,
+) -> JsValue {
+  AttributionConversionOptions::to_js_ffi(self)
+}
+
+///|
 /// AttributionConversionResult dictionary
-pub struct AttributionConversionResult {
+pub(all) struct AttributionConversionResult {
   report : Uint8Array
 }
 
 ///|
-/// Create a new AttributionConversionResult with default values
-pub fn AttributionConversionResult::default() -> AttributionConversionResult {
-  AttributionConversionResult::{ report: panic() }
+/// Create a new AttributionConversionResult
+pub fn AttributionConversionResult::new(
+  report~ : Uint8Array,
+) -> AttributionConversionResult {
+  AttributionConversionResult::{ report, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AttributionConversionResult::to_js(
+extern "js" fn AttributionConversionResult::to_js_ffi(
   self : AttributionConversionResult,
 ) -> JsValue =
   #| (self) => ({
   #|   report: self.report
   #| })
+
+///|
+/// Convert to JsValue
+pub fn AttributionConversionResult::to_js(
+  self : AttributionConversionResult,
+) -> JsValue {
+  AttributionConversionResult::to_js_ffi(self)
+}
 
 ///|
 /// AttributionAggregationServices interface
@@ -219,7 +258,7 @@ pub extern "js" fn AttributionAggregationServices::get(
   self : AttributionAggregationServices,
   key : String,
 ) -> AttributionAggregationService? =
-  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, key) => self.get(key)
 
 ///|
 pub extern "js" fn AttributionAggregationServices::has(
@@ -263,15 +302,31 @@ pub extern "js" fn Attribution::get_aggregation_services(
   #| (self) => self.aggregationServices
 
 ///|
-pub extern "js" fn Attribution::save_impression(
+extern "js" fn Attribution::save_impression_ffi(
   self : Attribution,
-  options : AttributionImpressionOptions,
+  options : JsValue,
 ) -> Promise[AttributionImpressionResult] =
   #| (self, options) => self.saveImpression(options)
 
 ///|
-pub extern "js" fn Attribution::measure_conversion(
+pub fn Attribution::save_impression(
   self : Attribution,
-  options : AttributionConversionOptions,
+  options : AttributionImpressionOptions,
+) -> Promise[AttributionImpressionResult] {
+  Attribution::save_impression_ffi(self, options.to_js())
+}
+
+///|
+extern "js" fn Attribution::measure_conversion_ffi(
+  self : Attribution,
+  options : JsValue,
 ) -> Promise[AttributionConversionResult] =
   #| (self, options) => self.measureConversion(options)
+
+///|
+pub fn Attribution::measure_conversion(
+  self : Attribution,
+  options : AttributionConversionOptions,
+) -> Promise[AttributionConversionResult] {
+  Attribution::measure_conversion_ffi(self, options.to_js())
+}

@@ -7,7 +7,7 @@ pub type ViewTransitionUpdateCallback
 
 ///|
 /// StartViewTransitionOptions dictionary
-pub struct StartViewTransitionOptions {
+pub(all) struct StartViewTransitionOptions {
   update : Nullable[ViewTransitionUpdateCallback]
   types : Array[String]?
 }
@@ -19,14 +19,21 @@ pub fn StartViewTransitionOptions::default() -> StartViewTransitionOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn StartViewTransitionOptions::to_js(
+extern "js" fn StartViewTransitionOptions::to_js_ffi(
   self : StartViewTransitionOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   update: ((() => { const v = self.update; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   types: self.types
+  #|   types: ((() => { const v = self.types; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn StartViewTransitionOptions::to_js(
+  self : StartViewTransitionOptions,
+) -> JsValue {
+  StartViewTransitionOptions::to_js_ffi(self)
+}
 
 ///|
 /// ViewTransition interface

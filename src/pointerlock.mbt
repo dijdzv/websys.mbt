@@ -3,7 +3,7 @@
 
 ///|
 /// PointerLockOptions dictionary
-pub struct PointerLockOptions {
+pub(all) struct PointerLockOptions {
   unadjustedMovement : Bool?
 }
 
@@ -14,10 +14,15 @@ pub fn PointerLockOptions::default() -> PointerLockOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PointerLockOptions::to_js(
+extern "js" fn PointerLockOptions::to_js_ffi(
   self : PointerLockOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   unadjustedMovement: self.unadjustedMovement
+  #|   unadjustedMovement: (self.unadjustedMovement === -1 ? undefined : self.unadjustedMovement)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PointerLockOptions::to_js(self : PointerLockOptions) -> JsValue {
+  PointerLockOptions::to_js_ffi(self)
+}

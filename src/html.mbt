@@ -587,7 +587,7 @@ pub extern "js" fn TimerHandler::is_trusted_script(self : TimerHandler) -> Bool 
 ///|
 /// Try to get TimerHandler as String
 pub extern "js" fn TimerHandler::as_string(self : TimerHandler) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get TimerHandler as Function
@@ -1800,7 +1800,7 @@ pub type BlobCallback
 pub extern "js" fn BlobCallback::from_fn(
   handler : (Blob?) -> Unit,
 ) -> BlobCallback =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// CustomElementConstructor callback interface
@@ -1815,7 +1815,7 @@ pub type FunctionStringCallback
 pub extern "js" fn FunctionStringCallback::from_fn(
   handler : (String) -> Unit,
 ) -> FunctionStringCallback =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// NavigationInterceptHandler callback interface
@@ -1830,7 +1830,7 @@ pub type NavigationPrecommitHandler
 pub extern "js" fn NavigationPrecommitHandler::from_fn(
   handler : (NavigationPrecommitController) -> Promise[Unit],
 ) -> NavigationPrecommitHandler =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// EventHandlerNonNull callback interface
@@ -1841,7 +1841,7 @@ pub type EventHandlerNonNull
 pub extern "js" fn EventHandlerNonNull::from_fn(
   handler : (Event) -> JsValue,
 ) -> EventHandlerNonNull =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// OnErrorEventHandlerNonNull callback interface
@@ -1852,7 +1852,7 @@ pub type OnErrorEventHandlerNonNull
 pub extern "js" fn OnErrorEventHandlerNonNull::from_fn(
   handler : (EventOrString, String, Int, Int, JsValue) -> JsValue,
 ) -> OnErrorEventHandlerNonNull =
-  #| (handler) => handler
+  #| (handler) => (a0, a1, a2, a3, a4) => handler(a0, a1, a2, a3, a4)
 
 ///|
 /// OnBeforeUnloadEventHandlerNonNull callback interface
@@ -1863,7 +1863,7 @@ pub type OnBeforeUnloadEventHandlerNonNull
 pub extern "js" fn OnBeforeUnloadEventHandlerNonNull::from_fn(
   handler : (Event) -> String?,
 ) -> OnBeforeUnloadEventHandlerNonNull =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// FrameRequestCallback callback interface
@@ -1874,11 +1874,11 @@ pub type FrameRequestCallback
 pub extern "js" fn FrameRequestCallback::from_fn(
   handler : (DOMHighResTimeStamp) -> Unit,
 ) -> FrameRequestCallback =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// ShowPopoverOptions dictionary
-pub struct ShowPopoverOptions {
+pub(all) struct ShowPopoverOptions {
   source : HTMLElement?
 }
 
@@ -1889,17 +1889,22 @@ pub fn ShowPopoverOptions::default() -> ShowPopoverOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ShowPopoverOptions::to_js(
+extern "js" fn ShowPopoverOptions::to_js_ffi(
   self : ShowPopoverOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   source: self.source
+  #|   source: ((() => { const v = self.source; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ShowPopoverOptions::to_js(self : ShowPopoverOptions) -> JsValue {
+  ShowPopoverOptions::to_js_ffi(self)
+}
+
+///|
 /// TogglePopoverOptions dictionary
-pub struct TogglePopoverOptions {
+pub(all) struct TogglePopoverOptions {
   source : HTMLElement?
   force : Bool?
 }
@@ -1911,18 +1916,23 @@ pub fn TogglePopoverOptions::default() -> TogglePopoverOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TogglePopoverOptions::to_js(
+extern "js" fn TogglePopoverOptions::to_js_ffi(
   self : TogglePopoverOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   source: self.source,
-  #|   force: self.force
+  #|   source: ((() => { const v = self.source; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   force: (self.force === -1 ? undefined : self.force)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn TogglePopoverOptions::to_js(self : TogglePopoverOptions) -> JsValue {
+  TogglePopoverOptions::to_js_ffi(self)
+}
+
+///|
 /// TrackEventInit dictionary
-pub struct TrackEventInit {
+pub(all) struct TrackEventInit {
   track : VideoTrackOrAudioTrackOrTextTrack?
 }
 
@@ -1933,15 +1943,20 @@ pub fn TrackEventInit::default() -> TrackEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TrackEventInit::to_js(self : TrackEventInit) -> JsValue =
+extern "js" fn TrackEventInit::to_js_ffi(self : TrackEventInit) -> JsValue =
   #| (self) => ({
-  #|   track: self.track
+  #|   track: ((() => { const v = self.track; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn TrackEventInit::to_js(self : TrackEventInit) -> JsValue {
+  TrackEventInit::to_js_ffi(self)
+}
+
+///|
 /// SubmitEventInit dictionary
-pub struct SubmitEventInit {
+pub(all) struct SubmitEventInit {
   submitter : Nullable[HTMLElement]
 }
 
@@ -1952,27 +1967,31 @@ pub fn SubmitEventInit::default() -> SubmitEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SubmitEventInit::to_js(self : SubmitEventInit) -> JsValue =
+extern "js" fn SubmitEventInit::to_js_ffi(self : SubmitEventInit) -> JsValue =
   #| (self) => ({
   #|   submitter: ((() => { const v = self.submitter; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SubmitEventInit::to_js(self : SubmitEventInit) -> JsValue {
+  SubmitEventInit::to_js_ffi(self)
+}
+
+///|
 /// FormDataEventInit dictionary
-pub struct FormDataEventInit {
+pub(all) struct FormDataEventInit {
   formData : FormData
 }
 
 ///|
-/// Create a new FormDataEventInit with default values
-pub fn FormDataEventInit::default() -> FormDataEventInit {
-  FormDataEventInit::{ formData: panic() }
+/// Create a new FormDataEventInit
+pub fn FormDataEventInit::new(formData~ : FormData) -> FormDataEventInit {
+  FormDataEventInit::{ formData, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FormDataEventInit::to_js(
+extern "js" fn FormDataEventInit::to_js_ffi(
   self : FormDataEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -1980,8 +1999,14 @@ pub extern "js" fn FormDataEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn FormDataEventInit::to_js(self : FormDataEventInit) -> JsValue {
+  FormDataEventInit::to_js_ffi(self)
+}
+
+///|
 /// AssignedNodesOptions dictionary
-pub struct AssignedNodesOptions {
+pub(all) struct AssignedNodesOptions {
   flatten : Bool?
 }
 
@@ -1992,17 +2017,22 @@ pub fn AssignedNodesOptions::default() -> AssignedNodesOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AssignedNodesOptions::to_js(
+extern "js" fn AssignedNodesOptions::to_js_ffi(
   self : AssignedNodesOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   flatten: self.flatten
+  #|   flatten: (self.flatten === -1 ? undefined : self.flatten)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AssignedNodesOptions::to_js(self : AssignedNodesOptions) -> JsValue {
+  AssignedNodesOptions::to_js_ffi(self)
+}
+
+///|
 /// CanvasRenderingContext2DSettings dictionary
-pub struct CanvasRenderingContext2DSettings {
+pub(all) struct CanvasRenderingContext2DSettings {
   alpha : Bool?
   desynchronized : Bool?
   colorSpace : PredefinedColorSpace?
@@ -2023,21 +2053,28 @@ pub fn CanvasRenderingContext2DSettings::default() -> CanvasRenderingContext2DSe
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CanvasRenderingContext2DSettings::to_js(
+extern "js" fn CanvasRenderingContext2DSettings::to_js_ffi(
   self : CanvasRenderingContext2DSettings,
 ) -> JsValue =
   #| (self) => ({
-  #|   alpha: self.alpha,
-  #|   desynchronized: self.desynchronized,
-  #|   colorSpace: ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][self.colorSpace],
-  #|   colorType: ['unorm8', 'float16'][self.colorType],
-  #|   willReadFrequently: self.willReadFrequently
+  #|   alpha: (self.alpha === -1 ? undefined : self.alpha),
+  #|   desynchronized: (self.desynchronized === -1 ? undefined : self.desynchronized),
+  #|   colorSpace: ((() => { const v = self.colorSpace; if (v === undefined) return undefined; return ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][v]; })()),
+  #|   colorType: ((() => { const v = self.colorType; if (v === undefined) return undefined; return ['unorm8', 'float16'][v]; })()),
+  #|   willReadFrequently: (self.willReadFrequently === -1 ? undefined : self.willReadFrequently)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn CanvasRenderingContext2DSettings::to_js(
+  self : CanvasRenderingContext2DSettings,
+) -> JsValue {
+  CanvasRenderingContext2DSettings::to_js_ffi(self)
+}
+
+///|
 /// ImageBitmapRenderingContextSettings dictionary
-pub struct ImageBitmapRenderingContextSettings {
+pub(all) struct ImageBitmapRenderingContextSettings {
   alpha : Bool?
 }
 
@@ -2048,17 +2085,24 @@ pub fn ImageBitmapRenderingContextSettings::default() -> ImageBitmapRenderingCon
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ImageBitmapRenderingContextSettings::to_js(
+extern "js" fn ImageBitmapRenderingContextSettings::to_js_ffi(
   self : ImageBitmapRenderingContextSettings,
 ) -> JsValue =
   #| (self) => ({
-  #|   alpha: self.alpha
+  #|   alpha: (self.alpha === -1 ? undefined : self.alpha)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ImageBitmapRenderingContextSettings::to_js(
+  self : ImageBitmapRenderingContextSettings,
+) -> JsValue {
+  ImageBitmapRenderingContextSettings::to_js_ffi(self)
+}
+
+///|
 /// ImageEncodeOptions dictionary
-pub struct ImageEncodeOptions {
+pub(all) struct ImageEncodeOptions {
   type_ : String?
   quality : Double?
 }
@@ -2070,8 +2114,7 @@ pub fn ImageEncodeOptions::default() -> ImageEncodeOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ImageEncodeOptions::to_js(
+extern "js" fn ImageEncodeOptions::to_js_ffi(
   self : ImageEncodeOptions,
 ) -> JsValue =
   #| (self) => ({
@@ -2080,8 +2123,14 @@ pub extern "js" fn ImageEncodeOptions::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ImageEncodeOptions::to_js(self : ImageEncodeOptions) -> JsValue {
+  ImageEncodeOptions::to_js_ffi(self)
+}
+
+///|
 /// ElementDefinitionOptions dictionary
-pub struct ElementDefinitionOptions {
+pub(all) struct ElementDefinitionOptions {
   extends : String?
 }
 
@@ -2092,8 +2141,7 @@ pub fn ElementDefinitionOptions::default() -> ElementDefinitionOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ElementDefinitionOptions::to_js(
+extern "js" fn ElementDefinitionOptions::to_js_ffi(
   self : ElementDefinitionOptions,
 ) -> JsValue =
   #| (self) => ({
@@ -2101,8 +2149,16 @@ pub extern "js" fn ElementDefinitionOptions::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ElementDefinitionOptions::to_js(
+  self : ElementDefinitionOptions,
+) -> JsValue {
+  ElementDefinitionOptions::to_js_ffi(self)
+}
+
+///|
 /// ValidityStateFlags dictionary
-pub struct ValidityStateFlags {
+pub(all) struct ValidityStateFlags {
   valueMissing : Bool?
   typeMismatch : Bool?
   patternMismatch : Bool?
@@ -2133,26 +2189,31 @@ pub fn ValidityStateFlags::default() -> ValidityStateFlags {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ValidityStateFlags::to_js(
+extern "js" fn ValidityStateFlags::to_js_ffi(
   self : ValidityStateFlags,
 ) -> JsValue =
   #| (self) => ({
-  #|   valueMissing: self.valueMissing,
-  #|   typeMismatch: self.typeMismatch,
-  #|   patternMismatch: self.patternMismatch,
-  #|   tooLong: self.tooLong,
-  #|   tooShort: self.tooShort,
-  #|   rangeUnderflow: self.rangeUnderflow,
-  #|   rangeOverflow: self.rangeOverflow,
-  #|   stepMismatch: self.stepMismatch,
-  #|   badInput: self.badInput,
-  #|   customError: self.customError
+  #|   valueMissing: (self.valueMissing === -1 ? undefined : self.valueMissing),
+  #|   typeMismatch: (self.typeMismatch === -1 ? undefined : self.typeMismatch),
+  #|   patternMismatch: (self.patternMismatch === -1 ? undefined : self.patternMismatch),
+  #|   tooLong: (self.tooLong === -1 ? undefined : self.tooLong),
+  #|   tooShort: (self.tooShort === -1 ? undefined : self.tooShort),
+  #|   rangeUnderflow: (self.rangeUnderflow === -1 ? undefined : self.rangeUnderflow),
+  #|   rangeOverflow: (self.rangeOverflow === -1 ? undefined : self.rangeOverflow),
+  #|   stepMismatch: (self.stepMismatch === -1 ? undefined : self.stepMismatch),
+  #|   badInput: (self.badInput === -1 ? undefined : self.badInput),
+  #|   customError: (self.customError === -1 ? undefined : self.customError)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ValidityStateFlags::to_js(self : ValidityStateFlags) -> JsValue {
+  ValidityStateFlags::to_js_ffi(self)
+}
+
+///|
 /// ToggleEventInit dictionary
-pub struct ToggleEventInit {
+pub(all) struct ToggleEventInit {
   oldState : String?
   newState : String?
   source : Nullable[Element]
@@ -2169,8 +2230,7 @@ pub fn ToggleEventInit::default() -> ToggleEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ToggleEventInit::to_js(self : ToggleEventInit) -> JsValue =
+extern "js" fn ToggleEventInit::to_js_ffi(self : ToggleEventInit) -> JsValue =
   #| (self) => ({
   #|   oldState: self.oldState,
   #|   newState: self.newState,
@@ -2178,8 +2238,14 @@ pub extern "js" fn ToggleEventInit::to_js(self : ToggleEventInit) -> JsValue =
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ToggleEventInit::to_js(self : ToggleEventInit) -> JsValue {
+  ToggleEventInit::to_js_ffi(self)
+}
+
+///|
 /// CommandEventInit dictionary
-pub struct CommandEventInit {
+pub(all) struct CommandEventInit {
   source : Nullable[Element]
   command : String?
 }
@@ -2191,16 +2257,21 @@ pub fn CommandEventInit::default() -> CommandEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CommandEventInit::to_js(self : CommandEventInit) -> JsValue =
+extern "js" fn CommandEventInit::to_js_ffi(self : CommandEventInit) -> JsValue =
   #| (self) => ({
   #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   command: self.command
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn CommandEventInit::to_js(self : CommandEventInit) -> JsValue {
+  CommandEventInit::to_js_ffi(self)
+}
+
+///|
 /// FocusOptions dictionary
-pub struct FocusOptions {
+pub(all) struct FocusOptions {
   preventScroll : Bool?
   focusVisible : Bool?
 }
@@ -2212,16 +2283,21 @@ pub fn FocusOptions::default() -> FocusOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FocusOptions::to_js(self : FocusOptions) -> JsValue =
+extern "js" fn FocusOptions::to_js_ffi(self : FocusOptions) -> JsValue =
   #| (self) => ({
-  #|   preventScroll: self.preventScroll,
-  #|   focusVisible: self.focusVisible
+  #|   preventScroll: (self.preventScroll === -1 ? undefined : self.preventScroll),
+  #|   focusVisible: (self.focusVisible === -1 ? undefined : self.focusVisible)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn FocusOptions::to_js(self : FocusOptions) -> JsValue {
+  FocusOptions::to_js_ffi(self)
+}
+
+///|
 /// CloseWatcherOptions dictionary
-pub struct CloseWatcherOptions {
+pub(all) struct CloseWatcherOptions {
   signal : AbortSignal?
 }
 
@@ -2232,17 +2308,22 @@ pub fn CloseWatcherOptions::default() -> CloseWatcherOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CloseWatcherOptions::to_js(
+extern "js" fn CloseWatcherOptions::to_js_ffi(
   self : CloseWatcherOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   signal: self.signal
+  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn CloseWatcherOptions::to_js(self : CloseWatcherOptions) -> JsValue {
+  CloseWatcherOptions::to_js_ffi(self)
+}
+
+///|
 /// DragEventInit dictionary
-pub struct DragEventInit {
+pub(all) struct DragEventInit {
   dataTransfer : Nullable[DataTransfer]
 }
 
@@ -2253,15 +2334,20 @@ pub fn DragEventInit::default() -> DragEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DragEventInit::to_js(self : DragEventInit) -> JsValue =
+extern "js" fn DragEventInit::to_js_ffi(self : DragEventInit) -> JsValue =
   #| (self) => ({
   #|   dataTransfer: ((() => { const v = self.dataTransfer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn DragEventInit::to_js(self : DragEventInit) -> JsValue {
+  DragEventInit::to_js_ffi(self)
+}
+
+///|
 /// WindowPostMessageOptions dictionary
-pub struct WindowPostMessageOptions {
+pub(all) struct WindowPostMessageOptions {
   transfer : Array[JsValue]?
   targetOrigin : String?
 }
@@ -2273,30 +2359,38 @@ pub fn WindowPostMessageOptions::default() -> WindowPostMessageOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WindowPostMessageOptions::to_js(
+extern "js" fn WindowPostMessageOptions::to_js_ffi(
   self : WindowPostMessageOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   transfer: self.transfer,
+  #|   transfer: ((() => { const v = self.transfer; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   targetOrigin: self.targetOrigin
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WindowPostMessageOptions::to_js(
+  self : WindowPostMessageOptions,
+) -> JsValue {
+  WindowPostMessageOptions::to_js_ffi(self)
+}
+
+///|
 /// NavigationUpdateCurrentEntryOptions dictionary
-pub struct NavigationUpdateCurrentEntryOptions {
+pub(all) struct NavigationUpdateCurrentEntryOptions {
   state : JsValue
 }
 
 ///|
-/// Create a new NavigationUpdateCurrentEntryOptions with default values
-pub fn NavigationUpdateCurrentEntryOptions::default() -> NavigationUpdateCurrentEntryOptions {
-  NavigationUpdateCurrentEntryOptions::{ state: panic() }
+/// Create a new NavigationUpdateCurrentEntryOptions
+pub fn NavigationUpdateCurrentEntryOptions::new(
+  state~ : JsValue,
+) -> NavigationUpdateCurrentEntryOptions {
+  NavigationUpdateCurrentEntryOptions::{ state, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn NavigationUpdateCurrentEntryOptions::to_js(
+extern "js" fn NavigationUpdateCurrentEntryOptions::to_js_ffi(
   self : NavigationUpdateCurrentEntryOptions,
 ) -> JsValue =
   #| (self) => ({
@@ -2304,8 +2398,16 @@ pub extern "js" fn NavigationUpdateCurrentEntryOptions::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn NavigationUpdateCurrentEntryOptions::to_js(
+  self : NavigationUpdateCurrentEntryOptions,
+) -> JsValue {
+  NavigationUpdateCurrentEntryOptions::to_js_ffi(self)
+}
+
+///|
 /// NavigationOptions dictionary
-pub struct NavigationOptions {
+pub(all) struct NavigationOptions {
   info : JsValue?
 }
 
@@ -2316,17 +2418,22 @@ pub fn NavigationOptions::default() -> NavigationOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn NavigationOptions::to_js(
+extern "js" fn NavigationOptions::to_js_ffi(
   self : NavigationOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   info: self.info
+  #|   info: ((() => { const v = self.info; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn NavigationOptions::to_js(self : NavigationOptions) -> JsValue {
+  NavigationOptions::to_js_ffi(self)
+}
+
+///|
 /// NavigationNavigateOptions dictionary
-pub struct NavigationNavigateOptions {
+pub(all) struct NavigationNavigateOptions {
   info : JsValue?
   state : JsValue?
   history : NavigationHistoryBehavior?
@@ -2339,19 +2446,26 @@ pub fn NavigationNavigateOptions::default() -> NavigationNavigateOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn NavigationNavigateOptions::to_js(
+extern "js" fn NavigationNavigateOptions::to_js_ffi(
   self : NavigationNavigateOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   info: self.info,
-  #|   state: self.state,
-  #|   history: ['auto', 'push', 'replace'][self.history]
+  #|   info: ((() => { const v = self.info; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   state: ((() => { const v = self.state; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   history: ((() => { const v = self.history; if (v === undefined) return undefined; return ['auto', 'push', 'replace'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn NavigationNavigateOptions::to_js(
+  self : NavigationNavigateOptions,
+) -> JsValue {
+  NavigationNavigateOptions::to_js_ffi(self)
+}
+
+///|
 /// NavigationReloadOptions dictionary
-pub struct NavigationReloadOptions {
+pub(all) struct NavigationReloadOptions {
   info : JsValue?
   state : JsValue?
 }
@@ -2363,18 +2477,25 @@ pub fn NavigationReloadOptions::default() -> NavigationReloadOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn NavigationReloadOptions::to_js(
+extern "js" fn NavigationReloadOptions::to_js_ffi(
   self : NavigationReloadOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   info: self.info,
-  #|   state: self.state
+  #|   info: ((() => { const v = self.info; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   state: ((() => { const v = self.state; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn NavigationReloadOptions::to_js(
+  self : NavigationReloadOptions,
+) -> JsValue {
+  NavigationReloadOptions::to_js_ffi(self)
+}
+
+///|
 /// NavigationResult dictionary
-pub struct NavigationResult {
+pub(all) struct NavigationResult {
   committed : Promise[NavigationHistoryEntry]?
   finished : Promise[NavigationHistoryEntry]?
 }
@@ -2386,16 +2507,21 @@ pub fn NavigationResult::default() -> NavigationResult {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn NavigationResult::to_js(self : NavigationResult) -> JsValue =
+extern "js" fn NavigationResult::to_js_ffi(self : NavigationResult) -> JsValue =
   #| (self) => ({
-  #|   committed: self.committed,
-  #|   finished: self.finished
+  #|   committed: ((() => { const v = self.committed; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   finished: ((() => { const v = self.finished; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn NavigationResult::to_js(self : NavigationResult) -> JsValue {
+  NavigationResult::to_js_ffi(self)
+}
+
+///|
 /// NavigateEventInit dictionary
-pub struct NavigateEventInit {
+pub(all) struct NavigateEventInit {
   navigationType : NavigationType?
   destination : NavigationDestination
   canIntercept : Bool?
@@ -2410,15 +2536,18 @@ pub struct NavigateEventInit {
 }
 
 ///|
-/// Create a new NavigateEventInit with default values
-pub fn NavigateEventInit::default() -> NavigateEventInit {
+/// Create a new NavigateEventInit
+pub fn NavigateEventInit::new(
+  destination~ : NavigationDestination,
+  signal~ : AbortSignal,
+) -> NavigateEventInit {
   NavigateEventInit::{
     navigationType: None,
-    destination: panic(),
+    destination,
     canIntercept: None,
     userInitiated: None,
     hashChange: None,
-    signal: panic(),
+    signal,
     formData: Nullable::Undefined,
     downloadRequest: Nullable::Undefined,
     info: None,
@@ -2428,27 +2557,32 @@ pub fn NavigateEventInit::default() -> NavigateEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn NavigateEventInit::to_js(
+extern "js" fn NavigateEventInit::to_js_ffi(
   self : NavigateEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   navigationType: ['push', 'replace', 'reload', 'traverse'][self.navigationType],
+  #|   navigationType: ((() => { const v = self.navigationType; if (v === undefined) return undefined; return ['push', 'replace', 'reload', 'traverse'][v]; })()),
   #|   destination: self.destination,
-  #|   canIntercept: self.canIntercept,
-  #|   userInitiated: self.userInitiated,
-  #|   hashChange: self.hashChange,
+  #|   canIntercept: (self.canIntercept === -1 ? undefined : self.canIntercept),
+  #|   userInitiated: (self.userInitiated === -1 ? undefined : self.userInitiated),
+  #|   hashChange: (self.hashChange === -1 ? undefined : self.hashChange),
   #|   signal: self.signal,
   #|   formData: ((() => { const v = self.formData; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   downloadRequest: ((() => { const v = self.downloadRequest; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   info: self.info,
-  #|   hasUAVisualTransition: self.hasUAVisualTransition,
+  #|   info: ((() => { const v = self.info; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   hasUAVisualTransition: (self.hasUAVisualTransition === -1 ? undefined : self.hasUAVisualTransition),
   #|   sourceElement: ((() => { const v = self.sourceElement; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn NavigateEventInit::to_js(self : NavigateEventInit) -> JsValue {
+  NavigateEventInit::to_js_ffi(self)
+}
+
+///|
 /// NavigationInterceptOptions dictionary
-pub struct NavigationInterceptOptions {
+pub(all) struct NavigationInterceptOptions {
   precommitHandler : NavigationPrecommitHandler?
   handler : NavigationInterceptHandler?
   focusReset : NavigationFocusReset?
@@ -2467,36 +2601,44 @@ pub fn NavigationInterceptOptions::default() -> NavigationInterceptOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn NavigationInterceptOptions::to_js(
+extern "js" fn NavigationInterceptOptions::to_js_ffi(
   self : NavigationInterceptOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   precommitHandler: self.precommitHandler,
-  #|   handler: self.handler,
-  #|   focusReset: ['after-transition', 'manual'][self.focusReset],
-  #|   scroll: ['after-transition', 'manual'][self.scroll]
+  #|   precommitHandler: ((() => { const v = self.precommitHandler; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   handler: ((() => { const v = self.handler; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   focusReset: ((() => { const v = self.focusReset; if (v === undefined) return undefined; return ['after-transition', 'manual'][v]; })()),
+  #|   scroll: ((() => { const v = self.scroll; if (v === undefined) return undefined; return ['after-transition', 'manual'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn NavigationInterceptOptions::to_js(
+  self : NavigationInterceptOptions,
+) -> JsValue {
+  NavigationInterceptOptions::to_js_ffi(self)
+}
+
+///|
 /// NavigationCurrentEntryChangeEventInit dictionary
-pub struct NavigationCurrentEntryChangeEventInit {
+pub(all) struct NavigationCurrentEntryChangeEventInit {
   navigationType : Nullable[NavigationType]
   from : NavigationHistoryEntry
 }
 
 ///|
-/// Create a new NavigationCurrentEntryChangeEventInit with default values
-pub fn NavigationCurrentEntryChangeEventInit::default() -> NavigationCurrentEntryChangeEventInit {
+/// Create a new NavigationCurrentEntryChangeEventInit
+pub fn NavigationCurrentEntryChangeEventInit::new(
+  from~ : NavigationHistoryEntry,
+) -> NavigationCurrentEntryChangeEventInit {
   NavigationCurrentEntryChangeEventInit::{
     navigationType: Nullable::Undefined,
-    from: panic(),
+    from,
   }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn NavigationCurrentEntryChangeEventInit::to_js(
+extern "js" fn NavigationCurrentEntryChangeEventInit::to_js_ffi(
   self : NavigationCurrentEntryChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -2505,8 +2647,16 @@ pub extern "js" fn NavigationCurrentEntryChangeEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn NavigationCurrentEntryChangeEventInit::to_js(
+  self : NavigationCurrentEntryChangeEventInit,
+) -> JsValue {
+  NavigationCurrentEntryChangeEventInit::to_js_ffi(self)
+}
+
+///|
 /// PopStateEventInit dictionary
-pub struct PopStateEventInit {
+pub(all) struct PopStateEventInit {
   state : JsValue?
   hasUAVisualTransition : Bool?
 }
@@ -2518,18 +2668,23 @@ pub fn PopStateEventInit::default() -> PopStateEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PopStateEventInit::to_js(
+extern "js" fn PopStateEventInit::to_js_ffi(
   self : PopStateEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   state: self.state,
-  #|   hasUAVisualTransition: self.hasUAVisualTransition
+  #|   state: ((() => { const v = self.state; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   hasUAVisualTransition: (self.hasUAVisualTransition === -1 ? undefined : self.hasUAVisualTransition)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PopStateEventInit::to_js(self : PopStateEventInit) -> JsValue {
+  PopStateEventInit::to_js_ffi(self)
+}
+
+///|
 /// HashChangeEventInit dictionary
-pub struct HashChangeEventInit {
+pub(all) struct HashChangeEventInit {
   oldURL : String?
   newURL : String?
 }
@@ -2541,8 +2696,7 @@ pub fn HashChangeEventInit::default() -> HashChangeEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn HashChangeEventInit::to_js(
+extern "js" fn HashChangeEventInit::to_js_ffi(
   self : HashChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -2551,8 +2705,14 @@ pub extern "js" fn HashChangeEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn HashChangeEventInit::to_js(self : HashChangeEventInit) -> JsValue {
+  HashChangeEventInit::to_js_ffi(self)
+}
+
+///|
 /// PageSwapEventInit dictionary
-pub struct PageSwapEventInit {
+pub(all) struct PageSwapEventInit {
   activation : Nullable[NavigationActivation]
   viewTransition : Nullable[ViewTransition]
 }
@@ -2567,8 +2727,7 @@ pub fn PageSwapEventInit::default() -> PageSwapEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PageSwapEventInit::to_js(
+extern "js" fn PageSwapEventInit::to_js_ffi(
   self : PageSwapEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -2577,8 +2736,14 @@ pub extern "js" fn PageSwapEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PageSwapEventInit::to_js(self : PageSwapEventInit) -> JsValue {
+  PageSwapEventInit::to_js_ffi(self)
+}
+
+///|
 /// PageRevealEventInit dictionary
-pub struct PageRevealEventInit {
+pub(all) struct PageRevealEventInit {
   viewTransition : Nullable[ViewTransition]
 }
 
@@ -2589,8 +2754,7 @@ pub fn PageRevealEventInit::default() -> PageRevealEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PageRevealEventInit::to_js(
+extern "js" fn PageRevealEventInit::to_js_ffi(
   self : PageRevealEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -2598,8 +2762,14 @@ pub extern "js" fn PageRevealEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PageRevealEventInit::to_js(self : PageRevealEventInit) -> JsValue {
+  PageRevealEventInit::to_js_ffi(self)
+}
+
+///|
 /// PageTransitionEventInit dictionary
-pub struct PageTransitionEventInit {
+pub(all) struct PageTransitionEventInit {
   persisted : Bool?
 }
 
@@ -2610,17 +2780,24 @@ pub fn PageTransitionEventInit::default() -> PageTransitionEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PageTransitionEventInit::to_js(
+extern "js" fn PageTransitionEventInit::to_js_ffi(
   self : PageTransitionEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   persisted: self.persisted
+  #|   persisted: (self.persisted === -1 ? undefined : self.persisted)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PageTransitionEventInit::to_js(
+  self : PageTransitionEventInit,
+) -> JsValue {
+  PageTransitionEventInit::to_js_ffi(self)
+}
+
+///|
 /// ErrorEventInit dictionary
-pub struct ErrorEventInit {
+pub(all) struct ErrorEventInit {
   message : String?
   filename : String?
   lineno : Int?
@@ -2641,42 +2818,56 @@ pub fn ErrorEventInit::default() -> ErrorEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ErrorEventInit::to_js(self : ErrorEventInit) -> JsValue =
+extern "js" fn ErrorEventInit::to_js_ffi(self : ErrorEventInit) -> JsValue =
   #| (self) => ({
   #|   message: self.message,
   #|   filename: self.filename,
   #|   lineno: self.lineno,
   #|   colno: self.colno,
-  #|   error: self.error
+  #|   error: ((() => { const v = self.error; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ErrorEventInit::to_js(self : ErrorEventInit) -> JsValue {
+  ErrorEventInit::to_js_ffi(self)
+}
+
+///|
 /// PromiseRejectionEventInit dictionary
-pub struct PromiseRejectionEventInit {
+pub(all) struct PromiseRejectionEventInit {
   promise : JsValue
   reason : JsValue?
 }
 
 ///|
-/// Create a new PromiseRejectionEventInit with default values
-pub fn PromiseRejectionEventInit::default() -> PromiseRejectionEventInit {
-  PromiseRejectionEventInit::{ promise: panic(), reason: None }
+/// Create a new PromiseRejectionEventInit
+pub fn PromiseRejectionEventInit::new(
+  promise~ : JsValue,
+) -> PromiseRejectionEventInit {
+  PromiseRejectionEventInit::{ promise, reason: None }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PromiseRejectionEventInit::to_js(
+extern "js" fn PromiseRejectionEventInit::to_js_ffi(
   self : PromiseRejectionEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   promise: self.promise,
-  #|   reason: self.reason
+  #|   reason: ((() => { const v = self.reason; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PromiseRejectionEventInit::to_js(
+  self : PromiseRejectionEventInit,
+) -> JsValue {
+  PromiseRejectionEventInit::to_js_ffi(self)
+}
+
+///|
 /// GetHTMLOptions dictionary
-pub struct GetHTMLOptions {
+pub(all) struct GetHTMLOptions {
   serializableShadowRoots : Bool?
   shadowRoots : Array[ShadowRoot]?
 }
@@ -2688,16 +2879,21 @@ pub fn GetHTMLOptions::default() -> GetHTMLOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn GetHTMLOptions::to_js(self : GetHTMLOptions) -> JsValue =
+extern "js" fn GetHTMLOptions::to_js_ffi(self : GetHTMLOptions) -> JsValue =
   #| (self) => ({
-  #|   serializableShadowRoots: self.serializableShadowRoots,
-  #|   shadowRoots: self.shadowRoots
+  #|   serializableShadowRoots: (self.serializableShadowRoots === -1 ? undefined : self.serializableShadowRoots),
+  #|   shadowRoots: ((() => { const v = self.shadowRoots; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn GetHTMLOptions::to_js(self : GetHTMLOptions) -> JsValue {
+  GetHTMLOptions::to_js_ffi(self)
+}
+
+///|
 /// ImageDataSettings dictionary
-pub struct ImageDataSettings {
+pub(all) struct ImageDataSettings {
   colorSpace : PredefinedColorSpace?
   pixelFormat : ImageDataPixelFormat?
 }
@@ -2709,18 +2905,23 @@ pub fn ImageDataSettings::default() -> ImageDataSettings {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ImageDataSettings::to_js(
+extern "js" fn ImageDataSettings::to_js_ffi(
   self : ImageDataSettings,
 ) -> JsValue =
   #| (self) => ({
-  #|   colorSpace: ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][self.colorSpace],
-  #|   pixelFormat: ['rgba-unorm8', 'rgba-float16'][self.pixelFormat]
+  #|   colorSpace: ((() => { const v = self.colorSpace; if (v === undefined) return undefined; return ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][v]; })()),
+  #|   pixelFormat: ((() => { const v = self.pixelFormat; if (v === undefined) return undefined; return ['rgba-unorm8', 'rgba-float16'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ImageDataSettings::to_js(self : ImageDataSettings) -> JsValue {
+  ImageDataSettings::to_js_ffi(self)
+}
+
+///|
 /// ImageBitmapOptions dictionary
-pub struct ImageBitmapOptions {
+pub(all) struct ImageBitmapOptions {
   imageOrientation : ImageOrientation?
   premultiplyAlpha : PremultiplyAlpha?
   colorSpaceConversion : ColorSpaceConversion?
@@ -2743,22 +2944,27 @@ pub fn ImageBitmapOptions::default() -> ImageBitmapOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ImageBitmapOptions::to_js(
+extern "js" fn ImageBitmapOptions::to_js_ffi(
   self : ImageBitmapOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   imageOrientation: ['from-image', 'flipY'][self.imageOrientation],
-  #|   premultiplyAlpha: ['none', 'premultiply', 'default'][self.premultiplyAlpha],
-  #|   colorSpaceConversion: ['none', 'default'][self.colorSpaceConversion],
+  #|   imageOrientation: ((() => { const v = self.imageOrientation; if (v === undefined) return undefined; return ['from-image', 'flipY'][v]; })()),
+  #|   premultiplyAlpha: ((() => { const v = self.premultiplyAlpha; if (v === undefined) return undefined; return ['none', 'premultiply', 'default'][v]; })()),
+  #|   colorSpaceConversion: ((() => { const v = self.colorSpaceConversion; if (v === undefined) return undefined; return ['none', 'default'][v]; })()),
   #|   resizeWidth: self.resizeWidth,
   #|   resizeHeight: self.resizeHeight,
-  #|   resizeQuality: ['pixelated', 'low', 'medium', 'high'][self.resizeQuality]
+  #|   resizeQuality: ((() => { const v = self.resizeQuality; if (v === undefined) return undefined; return ['pixelated', 'low', 'medium', 'high'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ImageBitmapOptions::to_js(self : ImageBitmapOptions) -> JsValue {
+  ImageBitmapOptions::to_js_ffi(self)
+}
+
+///|
 /// MessageEventInit dictionary
-pub struct MessageEventInit {
+pub(all) struct MessageEventInit {
   data : JsValue?
   origin : String?
   lastEventId : String?
@@ -2779,19 +2985,24 @@ pub fn MessageEventInit::default() -> MessageEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MessageEventInit::to_js(self : MessageEventInit) -> JsValue =
+extern "js" fn MessageEventInit::to_js_ffi(self : MessageEventInit) -> JsValue =
   #| (self) => ({
-  #|   data: self.data,
+  #|   data: ((() => { const v = self.data; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   origin: self.origin,
   #|   lastEventId: self.lastEventId,
   #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0.to_js_value(); })()),
-  #|   ports: self.ports
+  #|   ports: ((() => { const v = self.ports; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MessageEventInit::to_js(self : MessageEventInit) -> JsValue {
+  MessageEventInit::to_js_ffi(self)
+}
+
+///|
 /// EventSourceInit dictionary
-pub struct EventSourceInit {
+pub(all) struct EventSourceInit {
   withCredentials : Bool?
 }
 
@@ -2802,15 +3013,20 @@ pub fn EventSourceInit::default() -> EventSourceInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn EventSourceInit::to_js(self : EventSourceInit) -> JsValue =
+extern "js" fn EventSourceInit::to_js_ffi(self : EventSourceInit) -> JsValue =
   #| (self) => ({
-  #|   withCredentials: self.withCredentials
+  #|   withCredentials: (self.withCredentials === -1 ? undefined : self.withCredentials)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn EventSourceInit::to_js(self : EventSourceInit) -> JsValue {
+  EventSourceInit::to_js_ffi(self)
+}
+
+///|
 /// StructuredSerializeOptions dictionary
-pub struct StructuredSerializeOptions {
+pub(all) struct StructuredSerializeOptions {
   transfer : Array[JsValue]?
 }
 
@@ -2821,17 +3037,24 @@ pub fn StructuredSerializeOptions::default() -> StructuredSerializeOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn StructuredSerializeOptions::to_js(
+extern "js" fn StructuredSerializeOptions::to_js_ffi(
   self : StructuredSerializeOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   transfer: self.transfer
+  #|   transfer: ((() => { const v = self.transfer; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn StructuredSerializeOptions::to_js(
+  self : StructuredSerializeOptions,
+) -> JsValue {
+  StructuredSerializeOptions::to_js_ffi(self)
+}
+
+///|
 /// WorkerOptions dictionary
-pub struct WorkerOptions {
+pub(all) struct WorkerOptions {
   name : String?
   type_ : WorkerType?
   credentials : RequestCredentials?
@@ -2844,17 +3067,22 @@ pub fn WorkerOptions::default() -> WorkerOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WorkerOptions::to_js(self : WorkerOptions) -> JsValue =
+extern "js" fn WorkerOptions::to_js_ffi(self : WorkerOptions) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   type: ['classic', 'module'][self.type_],
-  #|   credentials: ['omit', 'same-origin', 'include'][self.credentials]
+  #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['classic', 'module'][v]; })()),
+  #|   credentials: ((() => { const v = self.credentials; if (v === undefined) return undefined; return ['omit', 'same-origin', 'include'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WorkerOptions::to_js(self : WorkerOptions) -> JsValue {
+  WorkerOptions::to_js_ffi(self)
+}
+
+///|
 /// WorkletOptions dictionary
-pub struct WorkletOptions {
+pub(all) struct WorkletOptions {
   credentials : RequestCredentials?
 }
 
@@ -2865,15 +3093,20 @@ pub fn WorkletOptions::default() -> WorkletOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WorkletOptions::to_js(self : WorkletOptions) -> JsValue =
+extern "js" fn WorkletOptions::to_js_ffi(self : WorkletOptions) -> JsValue =
   #| (self) => ({
-  #|   credentials: ['omit', 'same-origin', 'include'][self.credentials]
+  #|   credentials: ((() => { const v = self.credentials; if (v === undefined) return undefined; return ['omit', 'same-origin', 'include'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WorkletOptions::to_js(self : WorkletOptions) -> JsValue {
+  WorkletOptions::to_js_ffi(self)
+}
+
+///|
 /// StorageEventInit dictionary
-pub struct StorageEventInit {
+pub(all) struct StorageEventInit {
   key : Nullable[String]
   oldValue : Nullable[String]
   newValue : Nullable[String]
@@ -2894,8 +3127,7 @@ pub fn StorageEventInit::default() -> StorageEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn StorageEventInit::to_js(self : StorageEventInit) -> JsValue =
+extern "js" fn StorageEventInit::to_js_ffi(self : StorageEventInit) -> JsValue =
   #| (self) => ({
   #|   key: ((() => { const v = self.key; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   oldValue: ((() => { const v = self.oldValue; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
@@ -2903,6 +3135,12 @@ pub extern "js" fn StorageEventInit::to_js(self : StorageEventInit) -> JsValue =
   #|   url: self.url,
   #|   storageArea: ((() => { const v = self.storageArea; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn StorageEventInit::to_js(self : StorageEventInit) -> JsValue {
+  StorageEventInit::to_js_ffi(self)
+}
 
 ///|
 /// HTMLAllCollection interface
@@ -3230,14 +3468,14 @@ pub extern "js" fn DOMStringList::item(
   self : DOMStringList,
   index : Int,
 ) -> String? =
-  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (self.item(index)) ?? undefined
 
 ///|
 pub extern "js" fn DOMStringList::get(
   self : DOMStringList,
   index : Int,
 ) -> String? =
-  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (self[index]) ?? undefined
 
 ///|
 pub extern "js" fn DOMStringList::contains(
@@ -3929,11 +4167,19 @@ pub extern "js" fn HTMLElement::show_popover(self : HTMLElement) -> Unit =
   #| (self) => self.showPopover()
 
 ///|
-pub extern "js" fn HTMLElement::show_popover_with_options(
+extern "js" fn HTMLElement::show_popover_with_options_ffi(
   self : HTMLElement,
-  options : ShowPopoverOptions,
+  options : JsValue,
 ) -> Unit =
   #| (self, options) => self.showPopover(options)
+
+///|
+pub fn HTMLElement::show_popover_with_options(
+  self : HTMLElement,
+  options : ShowPopoverOptions,
+) -> Unit {
+  HTMLElement::show_popover_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn HTMLElement::hide_popover(self : HTMLElement) -> Unit =
@@ -3952,7 +4198,7 @@ pub extern "js" fn HTMLElement::toggle_popover_with_options(
 
 ///|
 pub extern "js" fn HTMLElement::get_popover(self : HTMLElement) -> String? =
-  #| (self) => { const v = self.popover; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.popover) ?? undefined
 
 ///|
 pub extern "js" fn HTMLElement::set_popover(
@@ -3987,13 +4233,13 @@ pub extern "js" fn HTMLElement::set_heading_reset(
 pub extern "js" fn HTMLElement::get_scroll_parent(
   self : HTMLElement,
 ) -> Element? =
-  #| (self) => { const v = self.scrollParent; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.scrollParent; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLElement::get_offset_parent(
   self : HTMLElement,
 ) -> Element? =
-  #| (self) => { const v = self.offsetParent; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.offsetParent; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLElement::get_offset_top(self : HTMLElement) -> Int =
@@ -4015,14 +4261,14 @@ pub extern "js" fn HTMLElement::get_offset_height(self : HTMLElement) -> Int =
 pub extern "js" fn HTMLElement::get_edit_context(
   self : HTMLElement,
 ) -> EditContext? =
-  #| (self) => { const v = self.editContext; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.editContext; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLElement::set_edit_context(
   self : HTMLElement,
   value : EditContext?,
 ) -> Unit =
-  #| (self, value) => { self.editContext = value }
+  #| (self, value) => { self.editContext = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn HTMLElement::get_onabort(self : HTMLElement) -> EventHandler =
@@ -5451,11 +5697,19 @@ pub extern "js" fn HTMLElement::focus(self : HTMLElement) -> Unit =
   #| (self) => self.focus()
 
 ///|
-pub extern "js" fn HTMLElement::focus_with_options(
+extern "js" fn HTMLElement::focus_with_options_ffi(
   self : HTMLElement,
-  options : FocusOptions,
+  options : JsValue,
 ) -> Unit =
   #| (self, options) => self.focus(options)
+
+///|
+pub fn HTMLElement::focus_with_options(
+  self : HTMLElement,
+  options : FocusOptions,
+) -> Unit {
+  HTMLElement::focus_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn HTMLElement::blur(self : HTMLElement) -> Unit =
@@ -5972,7 +6226,7 @@ pub extern "js" fn HTMLLinkElement::set_href(
 pub extern "js" fn HTMLLinkElement::get_cross_origin(
   self : HTMLLinkElement,
 ) -> String? =
-  #| (self) => { const v = self.crossOrigin; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.crossOrigin) ?? undefined
 
 ///|
 pub extern "js" fn HTMLLinkElement::set_cross_origin(
@@ -6175,7 +6429,7 @@ pub extern "js" fn HTMLLinkElement::set_target(
 pub extern "js" fn HTMLLinkElement::get_sheet(
   self : HTMLLinkElement,
 ) -> CSSStyleSheet? =
-  #| (self) => { const v = self.sheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.sheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// HTMLMetaElement interface
@@ -6415,7 +6669,7 @@ pub extern "js" fn HTMLStyleElement::set_type(
 pub extern "js" fn HTMLStyleElement::get_sheet(
   self : HTMLStyleElement,
 ) -> CSSStyleSheet? =
-  #| (self) => { const v = self.sheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.sheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// HTMLBodyElement interface
@@ -8862,7 +9116,7 @@ pub extern "js" fn HTMLImageElement::set_sizes(
 pub extern "js" fn HTMLImageElement::get_cross_origin(
   self : HTMLImageElement,
 ) -> String? =
-  #| (self) => { const v = self.crossOrigin; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.crossOrigin) ?? undefined
 
 ///|
 pub extern "js" fn HTMLImageElement::set_cross_origin(
@@ -9313,19 +9567,19 @@ pub extern "js" fn HTMLIFrameElement::set_loading(
 pub extern "js" fn HTMLIFrameElement::get_content_document(
   self : HTMLIFrameElement,
 ) -> Document? =
-  #| (self) => { const v = self.contentDocument; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.contentDocument; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLIFrameElement::get_content_window(
   self : HTMLIFrameElement,
 ) -> WindowProxy? =
-  #| (self) => { const v = self.contentWindow; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.contentWindow; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLIFrameElement::get_svg_document(
   self : HTMLIFrameElement,
 ) -> Document? =
-  #| (self) => { const v = self.getSVGDocument(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.getSVGDocument(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLIFrameElement::get_csp(
@@ -9594,7 +9848,7 @@ pub extern "js" fn HTMLEmbedElement::set_height(
 pub extern "js" fn HTMLEmbedElement::get_svg_document(
   self : HTMLEmbedElement,
 ) -> Document? =
-  #| (self) => { const v = self.getSVGDocument(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.getSVGDocument(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLEmbedElement::get_align(
@@ -9729,7 +9983,7 @@ pub extern "js" fn HTMLObjectElement::set_name(
 pub extern "js" fn HTMLObjectElement::get_form(
   self : HTMLObjectElement,
 ) -> HTMLFormElement? =
-  #| (self) => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLObjectElement::get_width(
@@ -9761,19 +10015,19 @@ pub extern "js" fn HTMLObjectElement::set_height(
 pub extern "js" fn HTMLObjectElement::get_content_document(
   self : HTMLObjectElement,
 ) -> Document? =
-  #| (self) => { const v = self.contentDocument; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.contentDocument; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLObjectElement::get_content_window(
   self : HTMLObjectElement,
 ) -> WindowProxy? =
-  #| (self) => { const v = self.contentWindow; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.contentWindow; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLObjectElement::get_svg_document(
   self : HTMLObjectElement,
 ) -> Document? =
-  #| (self) => { const v = self.getSVGDocument(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.getSVGDocument(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLObjectElement::get_will_validate(
@@ -10455,7 +10709,7 @@ pub extern "js" fn HTMLMediaElement::as_html_audio_element(
 pub extern "js" fn HTMLMediaElement::get_error(
   self : HTMLMediaElement,
 ) -> MediaError? =
-  #| (self) => { const v = self.error; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.error; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLMediaElement::get_src(self : HTMLMediaElement) -> String =
@@ -10472,14 +10726,14 @@ pub extern "js" fn HTMLMediaElement::set_src(
 pub extern "js" fn HTMLMediaElement::get_src_object(
   self : HTMLMediaElement,
 ) -> MediaProvider? =
-  #| (self) => { const v = self.srcObject; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.srcObject; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLMediaElement::set_src_object(
   self : HTMLMediaElement,
   value : MediaProvider?,
 ) -> Unit =
-  #| (self, value) => { self.srcObject = value }
+  #| (self, value) => { self.srcObject = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn HTMLMediaElement::get_current_src(
@@ -10491,7 +10745,7 @@ pub extern "js" fn HTMLMediaElement::get_current_src(
 pub extern "js" fn HTMLMediaElement::get_cross_origin(
   self : HTMLMediaElement,
 ) -> String? =
-  #| (self) => { const v = self.crossOrigin; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.crossOrigin) ?? undefined
 
 ///|
 pub extern "js" fn HTMLMediaElement::set_cross_origin(
@@ -10821,7 +11075,7 @@ pub extern "js" fn HTMLMediaElement::set_sink_id(
 pub extern "js" fn HTMLMediaElement::get_media_keys(
   self : HTMLMediaElement,
 ) -> MediaKeys? =
-  #| (self) => { const v = self.mediaKeys; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.mediaKeys; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLMediaElement::get_onencrypted(
@@ -10854,7 +11108,7 @@ pub extern "js" fn HTMLMediaElement::set_media_keys(
   self : HTMLMediaElement,
   media_keys : MediaKeys?,
 ) -> Promise[Unit] =
-  #| (self, media_keys) => self.setMediaKeys(media_keys)
+  #| (self, media_keys) => self.setMediaKeys((media_keys.$tag === 1 ? media_keys._0 : null))
 
 ///|
 pub extern "js" fn HTMLMediaElement::capture_stream(
@@ -10995,7 +11249,7 @@ pub extern "js" fn AudioTrackList::get_track_by_id(
   self : AudioTrackList,
   id : String,
 ) -> AudioTrack? =
-  #| (self, id) => { const v = self.getTrackById(id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, id) => (() => { const v = self.getTrackById(id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn AudioTrackList::get_onchange(
@@ -11095,7 +11349,7 @@ pub extern "js" fn AudioTrack::set_enabled(
 pub extern "js" fn AudioTrack::get_source_buffer(
   self : AudioTrack,
 ) -> SourceBuffer? =
-  #| (self) => { const v = self.sourceBuffer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.sourceBuffer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// VideoTrackList interface
@@ -11155,7 +11409,7 @@ pub extern "js" fn VideoTrackList::get_track_by_id(
   self : VideoTrackList,
   id : String,
 ) -> VideoTrack? =
-  #| (self, id) => { const v = self.getTrackById(id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, id) => (() => { const v = self.getTrackById(id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn VideoTrackList::get_selected_index(
@@ -11261,7 +11515,7 @@ pub extern "js" fn VideoTrack::set_selected(
 pub extern "js" fn VideoTrack::get_source_buffer(
   self : VideoTrack,
 ) -> SourceBuffer? =
-  #| (self) => { const v = self.sourceBuffer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.sourceBuffer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// TextTrackList interface
@@ -11317,7 +11571,7 @@ pub extern "js" fn TextTrackList::get_track_by_id(
   self : TextTrackList,
   id : String,
 ) -> TextTrack? =
-  #| (self, id) => { const v = self.getTrackById(id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, id) => (() => { const v = self.getTrackById(id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn TextTrackList::get_onchange(
@@ -11392,7 +11646,7 @@ pub extern "js" fn TextTrack::to_event_target(self : TextTrack) -> EventTarget =
 
 ///|
 pub extern "js" fn TextTrack::get_kind(self : TextTrack) -> TextTrackKind =
-  #| (self) => self.kind
+  #| (self) => ['subtitles', 'captions', 'descriptions', 'chapters', 'metadata'].indexOf(self.kind)
 
 ///|
 pub extern "js" fn TextTrack::get_label(self : TextTrack) -> String =
@@ -11414,24 +11668,24 @@ pub extern "js" fn TextTrack::get_in_band_metadata_track_dispatch_type(
 
 ///|
 pub extern "js" fn TextTrack::get_mode(self : TextTrack) -> TextTrackMode =
-  #| (self) => self.mode
+  #| (self) => ['disabled', 'hidden', 'showing'].indexOf(self.mode)
 
 ///|
 pub extern "js" fn TextTrack::set_mode(
   self : TextTrack,
   value : TextTrackMode,
 ) -> Unit =
-  #| (self, value) => { self.mode = value }
+  #| (self, value) => { self.mode = ['disabled', 'hidden', 'showing'][value] }
 
 ///|
 pub extern "js" fn TextTrack::get_cues(self : TextTrack) -> TextTrackCueList? =
-  #| (self) => { const v = self.cues; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.cues; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn TextTrack::get_active_cues(
   self : TextTrack,
 ) -> TextTrackCueList? =
-  #| (self) => { const v = self.activeCues; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.activeCues; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn TextTrack::add_cue(
@@ -11462,7 +11716,7 @@ pub extern "js" fn TextTrack::set_oncuechange(
 pub extern "js" fn TextTrack::get_source_buffer(
   self : TextTrack,
 ) -> SourceBuffer? =
-  #| (self) => { const v = self.sourceBuffer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.sourceBuffer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// TextTrackCueList interface
@@ -11518,7 +11772,7 @@ pub extern "js" fn TextTrackCueList::get_cue_by_id(
   self : TextTrackCueList,
   id : String,
 ) -> TextTrackCue? =
-  #| (self, id) => { const v = self.getCueById(id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, id) => (() => { const v = self.getCueById(id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// TextTrackCue interface
@@ -11566,7 +11820,7 @@ pub extern "js" fn TextTrackCue::as_data_cue(self : TextTrackCue) -> DataCue? =
 
 ///|
 pub extern "js" fn TextTrackCue::get_track(self : TextTrackCue) -> TextTrack? =
-  #| (self) => { const v = self.track; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.track; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn TextTrackCue::get_id(self : TextTrackCue) -> String =
@@ -11711,11 +11965,23 @@ pub extern "js" fn TrackEvent::to_event(self : TrackEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn TrackEvent::new(
+pub extern "js" fn TrackEvent::new(type_ : String) -> TrackEvent =
+  #| (type_) => new TrackEvent(type_)
+
+///|
+extern "js" fn TrackEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : TrackEventInit,
+  event_init_dict : JsValue,
 ) -> TrackEvent =
   #| (type_, event_init_dict) => new TrackEvent(type_, event_init_dict)
+
+///|
+pub fn TrackEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : TrackEventInit,
+) -> TrackEvent {
+  TrackEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn TrackEvent::get_track(
@@ -12186,14 +12452,14 @@ pub extern "js" fn HTMLTableElement::new() -> HTMLTableElement =
 pub extern "js" fn HTMLTableElement::get_caption(
   self : HTMLTableElement,
 ) -> HTMLTableCaptionElement? =
-  #| (self) => { const v = self.caption; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.caption; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLTableElement::set_caption(
   self : HTMLTableElement,
   value : HTMLTableCaptionElement?,
 ) -> Unit =
-  #| (self, value) => { self.caption = value }
+  #| (self, value) => { self.caption = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn HTMLTableElement::create_caption(
@@ -12211,14 +12477,14 @@ pub extern "js" fn HTMLTableElement::delete_caption(
 pub extern "js" fn HTMLTableElement::get_t_head(
   self : HTMLTableElement,
 ) -> HTMLTableSectionElement? =
-  #| (self) => { const v = self.tHead; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.tHead; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLTableElement::set_t_head(
   self : HTMLTableElement,
   value : HTMLTableSectionElement?,
 ) -> Unit =
-  #| (self, value) => { self.tHead = value }
+  #| (self, value) => { self.tHead = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn HTMLTableElement::create_t_head(
@@ -12236,14 +12502,14 @@ pub extern "js" fn HTMLTableElement::delete_t_head(
 pub extern "js" fn HTMLTableElement::get_t_foot(
   self : HTMLTableElement,
 ) -> HTMLTableSectionElement? =
-  #| (self) => { const v = self.tFoot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.tFoot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLTableElement::set_t_foot(
   self : HTMLTableElement,
   value : HTMLTableSectionElement?,
 ) -> Unit =
-  #| (self, value) => { self.tFoot = value }
+  #| (self, value) => { self.tFoot = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn HTMLTableElement::create_t_foot(
@@ -13437,7 +13703,7 @@ pub extern "js" fn HTMLFormElement::request_submit_with_submitter(
   self : HTMLFormElement,
   submitter : HTMLElement?,
 ) -> Unit =
-  #| (self, submitter) => self.requestSubmit(submitter)
+  #| (self, submitter) => self.requestSubmit((submitter.$tag === 1 ? submitter._0 : null))
 
 ///|
 pub extern "js" fn HTMLFormElement::reset(self : HTMLFormElement) -> Unit =
@@ -13523,7 +13789,7 @@ pub extern "js" fn HTMLLabelElement::new() -> HTMLLabelElement =
 pub extern "js" fn HTMLLabelElement::get_form(
   self : HTMLLabelElement,
 ) -> HTMLFormElement? =
-  #| (self) => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLLabelElement::get_html_for(
@@ -13542,7 +13808,7 @@ pub extern "js" fn HTMLLabelElement::set_html_for(
 pub extern "js" fn HTMLLabelElement::get_control(
   self : HTMLLabelElement,
 ) -> HTMLElement? =
-  #| (self) => { const v = self.control; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.control; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// HTMLInputElement interface
@@ -13725,20 +13991,20 @@ pub extern "js" fn HTMLInputElement::set_disabled(
 pub extern "js" fn HTMLInputElement::get_form(
   self : HTMLInputElement,
 ) -> HTMLFormElement? =
-  #| (self) => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLInputElement::get_files(
   self : HTMLInputElement,
 ) -> FileList? =
-  #| (self) => { const v = self.files; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.files; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLInputElement::set_files(
   self : HTMLInputElement,
   value : FileList?,
 ) -> Unit =
-  #| (self, value) => { self.files = value }
+  #| (self, value) => { self.files = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn HTMLInputElement::get_form_action(
@@ -13833,7 +14099,7 @@ pub extern "js" fn HTMLInputElement::set_indeterminate(
 pub extern "js" fn HTMLInputElement::get_list(
   self : HTMLInputElement,
 ) -> HTMLDataListElement? =
-  #| (self) => { const v = self.list; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.list; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLInputElement::get_max(self : HTMLInputElement) -> String =
@@ -14039,14 +14305,14 @@ pub extern "js" fn HTMLInputElement::set_value(
 pub extern "js" fn HTMLInputElement::get_value_as_date(
   self : HTMLInputElement,
 ) -> JsValue? =
-  #| (self) => { const v = self.valueAsDate; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.valueAsDate; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLInputElement::set_value_as_date(
   self : HTMLInputElement,
   value : JsValue?,
 ) -> Unit =
-  #| (self, value) => { self.valueAsDate = value }
+  #| (self, value) => { self.valueAsDate = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn HTMLInputElement::get_value_as_number(
@@ -14135,7 +14401,7 @@ pub extern "js" fn HTMLInputElement::set_custom_validity(
 pub extern "js" fn HTMLInputElement::get_labels(
   self : HTMLInputElement,
 ) -> NodeList? =
-  #| (self) => { const v = self.labels; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.labels; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLInputElement::select(self : HTMLInputElement) -> Unit =
@@ -14145,7 +14411,7 @@ pub extern "js" fn HTMLInputElement::select(self : HTMLInputElement) -> Unit =
 pub extern "js" fn HTMLInputElement::get_selection_start(
   self : HTMLInputElement,
 ) -> Int? =
-  #| (self) => { const v = self.selectionStart; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.selectionStart) ?? undefined
 
 ///|
 pub extern "js" fn HTMLInputElement::set_selection_start(
@@ -14158,7 +14424,7 @@ pub extern "js" fn HTMLInputElement::set_selection_start(
 pub extern "js" fn HTMLInputElement::get_selection_end(
   self : HTMLInputElement,
 ) -> Int? =
-  #| (self) => { const v = self.selectionEnd; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.selectionEnd) ?? undefined
 
 ///|
 pub extern "js" fn HTMLInputElement::set_selection_end(
@@ -14171,7 +14437,7 @@ pub extern "js" fn HTMLInputElement::set_selection_end(
 pub extern "js" fn HTMLInputElement::get_selection_direction(
   self : HTMLInputElement,
 ) -> String? =
-  #| (self) => { const v = self.selectionDirection; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.selectionDirection) ?? undefined
 
 ///|
 pub extern "js" fn HTMLInputElement::set_selection_direction(
@@ -14291,14 +14557,14 @@ pub extern "js" fn HTMLInputElement::set_capture(
 pub extern "js" fn HTMLInputElement::get_popover_target_element(
   self : HTMLInputElement,
 ) -> Element? =
-  #| (self) => { const v = self.popoverTargetElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.popoverTargetElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLInputElement::set_popover_target_element(
   self : HTMLInputElement,
   value : Element?,
 ) -> Unit =
-  #| (self, value) => { self.popoverTargetElement = value }
+  #| (self, value) => { self.popoverTargetElement = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn HTMLInputElement::get_popover_target_action(
@@ -14394,14 +14660,14 @@ pub extern "js" fn HTMLButtonElement::set_command(
 pub extern "js" fn HTMLButtonElement::get_command_for_element(
   self : HTMLButtonElement,
 ) -> Element? =
-  #| (self) => { const v = self.commandForElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.commandForElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLButtonElement::set_command_for_element(
   self : HTMLButtonElement,
   value : Element?,
 ) -> Unit =
-  #| (self, value) => { self.commandForElement = value }
+  #| (self, value) => { self.commandForElement = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn HTMLButtonElement::get_disabled(
@@ -14420,7 +14686,7 @@ pub extern "js" fn HTMLButtonElement::set_disabled(
 pub extern "js" fn HTMLButtonElement::get_form(
   self : HTMLButtonElement,
 ) -> HTMLFormElement? =
-  #| (self) => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLButtonElement::get_form_action(
@@ -14573,14 +14839,14 @@ pub extern "js" fn HTMLButtonElement::get_labels(
 pub extern "js" fn HTMLButtonElement::get_popover_target_element(
   self : HTMLButtonElement,
 ) -> Element? =
-  #| (self) => { const v = self.popoverTargetElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.popoverTargetElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLButtonElement::set_popover_target_element(
   self : HTMLButtonElement,
   value : Element?,
 ) -> Unit =
-  #| (self, value) => { self.popoverTargetElement = value }
+  #| (self, value) => { self.popoverTargetElement = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn HTMLButtonElement::get_popover_target_action(
@@ -14689,7 +14955,7 @@ pub extern "js" fn HTMLSelectElement::set_disabled(
 pub extern "js" fn HTMLSelectElement::get_form(
   self : HTMLSelectElement,
 ) -> HTMLFormElement? =
-  #| (self) => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLSelectElement::get_multiple(
@@ -14771,21 +15037,21 @@ pub extern "js" fn HTMLSelectElement::item(
   self : HTMLSelectElement,
   index : Int,
 ) -> HTMLOptionElement? =
-  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLSelectElement::get(
   self : HTMLSelectElement,
   index : Int,
 ) -> HTMLOptionElement? =
-  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLSelectElement::named_item(
   self : HTMLSelectElement,
   name : String,
 ) -> HTMLOptionElement? =
-  #| (self, name) => { const v = self.namedItem(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, name) => (() => { const v = self.namedItem(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLSelectElement::add(
@@ -15147,7 +15413,7 @@ pub extern "js" fn HTMLOptionElement::set_disabled(
 pub extern "js" fn HTMLOptionElement::get_form(
   self : HTMLOptionElement,
 ) -> HTMLFormElement? =
-  #| (self) => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLOptionElement::get_label(
@@ -15342,7 +15608,7 @@ pub extern "js" fn HTMLTextAreaElement::set_disabled(
 pub extern "js" fn HTMLTextAreaElement::get_form(
   self : HTMLTextAreaElement,
 ) -> HTMLFormElement? =
-  #| (self) => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLTextAreaElement::get_max_length(
@@ -15691,7 +15957,7 @@ pub extern "js" fn HTMLOutputElement::get_html_for(
 pub extern "js" fn HTMLOutputElement::get_form(
   self : HTMLOutputElement,
 ) -> HTMLFormElement? =
-  #| (self) => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLOutputElement::get_name(
@@ -16110,7 +16376,7 @@ pub extern "js" fn HTMLFieldSetElement::set_disabled(
 pub extern "js" fn HTMLFieldSetElement::get_form(
   self : HTMLFieldSetElement,
 ) -> HTMLFormElement? =
-  #| (self) => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLFieldSetElement::get_name(
@@ -16242,7 +16508,7 @@ pub extern "js" fn HTMLLegendElement::new() -> HTMLLegendElement =
 pub extern "js" fn HTMLLegendElement::get_form(
   self : HTMLLegendElement,
 ) -> HTMLFormElement? =
-  #| (self) => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLLegendElement::get_align(
@@ -16444,17 +16710,29 @@ pub extern "js" fn SubmitEvent::to_event(self : SubmitEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn SubmitEvent::new(
+pub extern "js" fn SubmitEvent::new(type_ : String) -> SubmitEvent =
+  #| (type_) => new SubmitEvent(type_)
+
+///|
+extern "js" fn SubmitEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : SubmitEventInit,
+  event_init_dict : JsValue,
 ) -> SubmitEvent =
   #| (type_, event_init_dict) => new SubmitEvent(type_, event_init_dict)
+
+///|
+pub fn SubmitEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : SubmitEventInit,
+) -> SubmitEvent {
+  SubmitEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn SubmitEvent::get_submitter(
   self : SubmitEvent,
 ) -> HTMLElement? =
-  #| (self) => { const v = self.submitter; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.submitter; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// FormDataEvent interface
@@ -16493,11 +16771,19 @@ pub extern "js" fn FormDataEvent::to_event(self : FormDataEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn FormDataEvent::new(
+extern "js" fn FormDataEvent::new_ffi(
   type_ : String,
-  event_init_dict : FormDataEventInit,
+  event_init_dict : JsValue,
 ) -> FormDataEvent =
   #| (type_, event_init_dict) => new FormDataEvent(type_, event_init_dict)
+
+///|
+pub fn FormDataEvent::new(
+  type_ : String,
+  event_init_dict : FormDataEventInit,
+) -> FormDataEvent {
+  FormDataEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn FormDataEvent::get_form_data(
@@ -16873,7 +17159,7 @@ pub extern "js" fn HTMLScriptElement::get_blocking(
 pub extern "js" fn HTMLScriptElement::get_cross_origin(
   self : HTMLScriptElement,
 ) -> String? =
-  #| (self) => { const v = self.crossOrigin; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.crossOrigin) ?? undefined
 
 ///|
 pub extern "js" fn HTMLScriptElement::set_cross_origin(
@@ -17209,11 +17495,19 @@ pub extern "js" fn HTMLSlotElement::assigned_nodes(
   #| (self) => self.assignedNodes()
 
 ///|
-pub extern "js" fn HTMLSlotElement::assigned_nodes_with_options(
+extern "js" fn HTMLSlotElement::assigned_nodes_with_options_ffi(
   self : HTMLSlotElement,
-  options : AssignedNodesOptions,
+  options : JsValue,
 ) -> Array[Node] =
   #| (self, options) => self.assignedNodes(options)
+
+///|
+pub fn HTMLSlotElement::assigned_nodes_with_options(
+  self : HTMLSlotElement,
+  options : AssignedNodesOptions,
+) -> Array[Node] {
+  HTMLSlotElement::assigned_nodes_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn HTMLSlotElement::assigned_elements(
@@ -17222,11 +17516,19 @@ pub extern "js" fn HTMLSlotElement::assigned_elements(
   #| (self) => self.assignedElements()
 
 ///|
-pub extern "js" fn HTMLSlotElement::assigned_elements_with_options(
+extern "js" fn HTMLSlotElement::assigned_elements_with_options_ffi(
   self : HTMLSlotElement,
-  options : AssignedNodesOptions,
+  options : JsValue,
 ) -> Array[Element] =
   #| (self, options) => self.assignedElements(options)
+
+///|
+pub fn HTMLSlotElement::assigned_elements_with_options(
+  self : HTMLSlotElement,
+  options : AssignedNodesOptions,
+) -> Array[Element] {
+  HTMLSlotElement::assigned_elements_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn HTMLSlotElement::assign(
@@ -17330,7 +17632,7 @@ pub extern "js" fn HTMLCanvasElement::get_context(
   self : HTMLCanvasElement,
   context_id : String,
 ) -> RenderingContext? =
-  #| (self, context_id) => { const v = self.getContext(context_id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, context_id) => (() => { const v = self.getContext(context_id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLCanvasElement::get_context_with_options(
@@ -17338,7 +17640,7 @@ pub extern "js" fn HTMLCanvasElement::get_context_with_options(
   context_id : String,
   options : JsValue,
 ) -> RenderingContext? =
-  #| (self, context_id, options) => { const v = self.getContext(context_id, options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, context_id, options) => (() => { const v = self.getContext(context_id, options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLCanvasElement::to_data_url(
@@ -17511,11 +17813,22 @@ pub extern "js" fn CanvasRenderingContext2D::set_transform(
   #| (self) => self.setTransform()
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::set_transform_with_transform(
+extern "js" fn CanvasRenderingContext2D::set_transform_with_transform_ffi(
   self : CanvasRenderingContext2D,
-  transform : DOMMatrix2DInit,
+  transform : JsValue,
 ) -> Unit =
   #| (self, transform) => self.setTransform(transform)
+
+///|
+pub fn CanvasRenderingContext2D::set_transform_with_transform(
+  self : CanvasRenderingContext2D,
+  transform : DOMMatrix2DInit,
+) -> Unit {
+  CanvasRenderingContext2D::set_transform_with_transform_ffi(
+    self,
+    transform.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::set_transform_with_a_and_b_and_c_and_d_and_e_and_f(
@@ -17578,14 +17891,14 @@ pub extern "js" fn CanvasRenderingContext2D::set_image_smoothing_enabled(
 pub extern "js" fn CanvasRenderingContext2D::get_image_smoothing_quality(
   self : CanvasRenderingContext2D,
 ) -> ImageSmoothingQuality =
-  #| (self) => self.imageSmoothingQuality
+  #| (self) => ['low', 'medium', 'high'].indexOf(self.imageSmoothingQuality)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::set_image_smoothing_quality(
   self : CanvasRenderingContext2D,
   value : ImageSmoothingQuality,
 ) -> Unit =
-  #| (self, value) => { self.imageSmoothingQuality = value }
+  #| (self, value) => { self.imageSmoothingQuality = ['low', 'medium', 'high'][value] }
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_stroke_style(
@@ -17650,7 +17963,7 @@ pub extern "js" fn CanvasRenderingContext2D::create_pattern(
   image : CanvasImageSource,
   repetition : String,
 ) -> CanvasPattern? =
-  #| (self, image, repetition) => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_shadow_offset_x(
@@ -17986,13 +18299,28 @@ pub extern "js" fn CanvasRenderingContext2D::create_image_data_with_sw_and_sh(
   #| (self, sw, sh) => self.createImageData(sw, sh)
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings(
+extern "js" fn CanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings_ffi(
+  self : CanvasRenderingContext2D,
+  sw : Int,
+  sh : Int,
+  settings : JsValue,
+) -> ImageData =
+  #| (self, sw, sh, settings) => self.createImageData(sw, sh, settings)
+
+///|
+pub fn CanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings(
   self : CanvasRenderingContext2D,
   sw : Int,
   sh : Int,
   settings : ImageDataSettings,
-) -> ImageData =
-  #| (self, sw, sh, settings) => self.createImageData(sw, sh, settings)
+) -> ImageData {
+  CanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings_ffi(
+    self,
+    sw,
+    sh,
+    settings.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_image_data(
@@ -18005,15 +18333,34 @@ pub extern "js" fn CanvasRenderingContext2D::get_image_data(
   #| (self, sx, sy, sw, sh) => self.getImageData(sx, sy, sw, sh)
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::get_image_data_with_settings(
+extern "js" fn CanvasRenderingContext2D::get_image_data_with_settings_ffi(
+  self : CanvasRenderingContext2D,
+  sx : Int,
+  sy : Int,
+  sw : Int,
+  sh : Int,
+  settings : JsValue,
+) -> ImageData =
+  #| (self, sx, sy, sw, sh, settings) => self.getImageData(sx, sy, sw, sh, settings)
+
+///|
+pub fn CanvasRenderingContext2D::get_image_data_with_settings(
   self : CanvasRenderingContext2D,
   sx : Int,
   sy : Int,
   sw : Int,
   sh : Int,
   settings : ImageDataSettings,
-) -> ImageData =
-  #| (self, sx, sy, sw, sh, settings) => self.getImageData(sx, sy, sw, sh, settings)
+) -> ImageData {
+  CanvasRenderingContext2D::get_image_data_with_settings_ffi(
+    self,
+    sx,
+    sy,
+    sw,
+    sh,
+    settings.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::put_image_data(
@@ -18054,27 +18401,27 @@ pub extern "js" fn CanvasRenderingContext2D::set_line_width(
 pub extern "js" fn CanvasRenderingContext2D::get_line_cap(
   self : CanvasRenderingContext2D,
 ) -> CanvasLineCap =
-  #| (self) => self.lineCap
+  #| (self) => ['butt', 'round', 'square'].indexOf(self.lineCap)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::set_line_cap(
   self : CanvasRenderingContext2D,
   value : CanvasLineCap,
 ) -> Unit =
-  #| (self, value) => { self.lineCap = value }
+  #| (self, value) => { self.lineCap = ['butt', 'round', 'square'][value] }
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_line_join(
   self : CanvasRenderingContext2D,
 ) -> CanvasLineJoin =
-  #| (self) => self.lineJoin
+  #| (self) => ['round', 'bevel', 'miter'].indexOf(self.lineJoin)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::set_line_join(
   self : CanvasRenderingContext2D,
   value : CanvasLineJoin,
 ) -> Unit =
-  #| (self, value) => { self.lineJoin = value }
+  #| (self, value) => { self.lineJoin = ['round', 'bevel', 'miter'][value] }
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_miter_limit(
@@ -18145,40 +18492,40 @@ pub extern "js" fn CanvasRenderingContext2D::set_font(
 pub extern "js" fn CanvasRenderingContext2D::get_text_align(
   self : CanvasRenderingContext2D,
 ) -> CanvasTextAlign =
-  #| (self) => self.textAlign
+  #| (self) => ['start', 'end', 'left', 'right', 'center'].indexOf(self.textAlign)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::set_text_align(
   self : CanvasRenderingContext2D,
   value : CanvasTextAlign,
 ) -> Unit =
-  #| (self, value) => { self.textAlign = value }
+  #| (self, value) => { self.textAlign = ['start', 'end', 'left', 'right', 'center'][value] }
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_text_baseline(
   self : CanvasRenderingContext2D,
 ) -> CanvasTextBaseline =
-  #| (self) => self.textBaseline
+  #| (self) => ['top', 'hanging', 'middle', 'alphabetic', 'ideographic', 'bottom'].indexOf(self.textBaseline)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::set_text_baseline(
   self : CanvasRenderingContext2D,
   value : CanvasTextBaseline,
 ) -> Unit =
-  #| (self, value) => { self.textBaseline = value }
+  #| (self, value) => { self.textBaseline = ['top', 'hanging', 'middle', 'alphabetic', 'ideographic', 'bottom'][value] }
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_direction(
   self : CanvasRenderingContext2D,
 ) -> CanvasDirection =
-  #| (self) => self.direction
+  #| (self) => ['ltr', 'rtl', 'inherit'].indexOf(self.direction)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::set_direction(
   self : CanvasRenderingContext2D,
   value : CanvasDirection,
 ) -> Unit =
-  #| (self, value) => { self.direction = value }
+  #| (self, value) => { self.direction = ['ltr', 'rtl', 'inherit'][value] }
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_letter_spacing(
@@ -18197,53 +18544,53 @@ pub extern "js" fn CanvasRenderingContext2D::set_letter_spacing(
 pub extern "js" fn CanvasRenderingContext2D::get_font_kerning(
   self : CanvasRenderingContext2D,
 ) -> CanvasFontKerning =
-  #| (self) => self.fontKerning
+  #| (self) => ['auto', 'normal', 'none'].indexOf(self.fontKerning)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::set_font_kerning(
   self : CanvasRenderingContext2D,
   value : CanvasFontKerning,
 ) -> Unit =
-  #| (self, value) => { self.fontKerning = value }
+  #| (self, value) => { self.fontKerning = ['auto', 'normal', 'none'][value] }
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_font_stretch(
   self : CanvasRenderingContext2D,
 ) -> CanvasFontStretch =
-  #| (self) => self.fontStretch
+  #| (self) => ['ultra-condensed', 'extra-condensed', 'condensed', 'semi-condensed', 'normal', 'semi-expanded', 'expanded', 'extra-expanded', 'ultra-expanded'].indexOf(self.fontStretch)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::set_font_stretch(
   self : CanvasRenderingContext2D,
   value : CanvasFontStretch,
 ) -> Unit =
-  #| (self, value) => { self.fontStretch = value }
+  #| (self, value) => { self.fontStretch = ['ultra-condensed', 'extra-condensed', 'condensed', 'semi-condensed', 'normal', 'semi-expanded', 'expanded', 'extra-expanded', 'ultra-expanded'][value] }
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_font_variant_caps(
   self : CanvasRenderingContext2D,
 ) -> CanvasFontVariantCaps =
-  #| (self) => self.fontVariantCaps
+  #| (self) => ['normal', 'small-caps', 'all-small-caps', 'petite-caps', 'all-petite-caps', 'unicase', 'titling-caps'].indexOf(self.fontVariantCaps)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::set_font_variant_caps(
   self : CanvasRenderingContext2D,
   value : CanvasFontVariantCaps,
 ) -> Unit =
-  #| (self, value) => { self.fontVariantCaps = value }
+  #| (self, value) => { self.fontVariantCaps = ['normal', 'small-caps', 'all-small-caps', 'petite-caps', 'all-petite-caps', 'unicase', 'titling-caps'][value] }
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_text_rendering(
   self : CanvasRenderingContext2D,
 ) -> CanvasTextRendering =
-  #| (self) => self.textRendering
+  #| (self) => ['auto', 'optimizeSpeed', 'optimizeLegibility', 'geometricPrecision'].indexOf(self.textRendering)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::set_text_rendering(
   self : CanvasRenderingContext2D,
   value : CanvasTextRendering,
 ) -> Unit =
-  #| (self, value) => { self.textRendering = value }
+  #| (self, value) => { self.textRendering = ['auto', 'optimizeSpeed', 'optimizeLegibility', 'geometricPrecision'][value] }
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_word_spacing(
@@ -18395,6 +18742,108 @@ pub extern "js" fn CanvasRenderingContext2D::ellipse_with_counterclockwise(
   #| (self, x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise) => self.ellipse(x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise)
 
 ///|
+pub extern "js" fn CanvasRenderingContext2D::create_pattern_with_h_t_m_l_or_s_v_g_image_element(
+  self : CanvasRenderingContext2D,
+  image : HTMLOrSVGImageElement,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn CanvasRenderingContext2D::create_pattern_with_h_t_m_l_video_element(
+  self : CanvasRenderingContext2D,
+  image : HTMLVideoElement,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn CanvasRenderingContext2D::create_pattern_with_h_t_m_l_canvas_element(
+  self : CanvasRenderingContext2D,
+  image : HTMLCanvasElement,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn CanvasRenderingContext2D::create_pattern_with_image_bitmap(
+  self : CanvasRenderingContext2D,
+  image : ImageBitmap,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn CanvasRenderingContext2D::create_pattern_with_offscreen_canvas(
+  self : CanvasRenderingContext2D,
+  image : OffscreenCanvas,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn CanvasRenderingContext2D::create_pattern_with_video_frame(
+  self : CanvasRenderingContext2D,
+  image : VideoFrame,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn CanvasRenderingContext2D::draw_image_with_h_t_m_l_or_s_v_g_image_element(
+  self : CanvasRenderingContext2D,
+  image : HTMLOrSVGImageElement,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
+pub extern "js" fn CanvasRenderingContext2D::draw_image_with_h_t_m_l_video_element(
+  self : CanvasRenderingContext2D,
+  image : HTMLVideoElement,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
+pub extern "js" fn CanvasRenderingContext2D::draw_image_with_h_t_m_l_canvas_element(
+  self : CanvasRenderingContext2D,
+  image : HTMLCanvasElement,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
+pub extern "js" fn CanvasRenderingContext2D::draw_image_with_image_bitmap(
+  self : CanvasRenderingContext2D,
+  image : ImageBitmap,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
+pub extern "js" fn CanvasRenderingContext2D::draw_image_with_offscreen_canvas(
+  self : CanvasRenderingContext2D,
+  image : OffscreenCanvas,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
+pub extern "js" fn CanvasRenderingContext2D::draw_image_with_video_frame(
+  self : CanvasRenderingContext2D,
+  image : VideoFrame,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
 /// CanvasGradient interface
 pub type CanvasGradient
 
@@ -18473,11 +18922,19 @@ pub extern "js" fn CanvasPattern::set_transform(self : CanvasPattern) -> Unit =
   #| (self) => self.setTransform()
 
 ///|
-pub extern "js" fn CanvasPattern::set_transform_with_transform(
+extern "js" fn CanvasPattern::set_transform_with_transform_ffi(
   self : CanvasPattern,
-  transform : DOMMatrix2DInit,
+  transform : JsValue,
 ) -> Unit =
   #| (self, transform) => self.setTransform(transform)
+
+///|
+pub fn CanvasPattern::set_transform_with_transform(
+  self : CanvasPattern,
+  transform : DOMMatrix2DInit,
+) -> Unit {
+  CanvasPattern::set_transform_with_transform_ffi(self, transform.to_js())
+}
 
 ///|
 /// TextMetrics interface
@@ -18606,7 +19063,11 @@ pub extern "js" fn JsValue::to_path2_d(self : JsValue) -> Path2D =
   #| (self) => self
 
 ///|
-pub extern "js" fn Path2D::new(path : Path2DOrString) -> Path2D =
+pub extern "js" fn Path2D::new() -> Path2D =
+  #| () => new Path2D()
+
+///|
+pub extern "js" fn Path2D::new_with_path(path : Path2DOrString) -> Path2D =
   #| (path) => new Path2D(path)
 
 ///|
@@ -18614,12 +19075,21 @@ pub extern "js" fn Path2D::add_path(self : Path2D, path : Path2D) -> Unit =
   #| (self, path) => self.addPath(path)
 
 ///|
-pub extern "js" fn Path2D::add_path_with_transform(
+extern "js" fn Path2D::add_path_with_transform_ffi(
+  self : Path2D,
+  path : Path2D,
+  transform : JsValue,
+) -> Unit =
+  #| (self, path, transform) => self.addPath(path, transform)
+
+///|
+pub fn Path2D::add_path_with_transform(
   self : Path2D,
   path : Path2D,
   transform : DOMMatrix2DInit,
-) -> Unit =
-  #| (self, path, transform) => self.addPath(path, transform)
+) -> Unit {
+  Path2D::add_path_with_transform_ffi(self, path, transform.to_js())
+}
 
 ///|
 pub extern "js" fn Path2D::close_path(self : Path2D) -> Unit =
@@ -18804,7 +19274,7 @@ pub extern "js" fn ImageBitmapRenderingContext::transfer_from_image_bitmap(
   self : ImageBitmapRenderingContext,
   bitmap : ImageBitmap?,
 ) -> Unit =
-  #| (self, bitmap) => self.transferFromImageBitmap(bitmap)
+  #| (self, bitmap) => self.transferFromImageBitmap((bitmap.$tag === 1 ? bitmap._0 : null))
 
 ///|
 /// OffscreenCanvas interface
@@ -18855,11 +19325,11 @@ pub extern "js" fn OffscreenCanvas::new(
   width : Int64,
   height : Int64,
 ) -> OffscreenCanvas =
-  #| (width, height) => new OffscreenCanvas(width, height)
+  #| (width, height) => new OffscreenCanvas((width.hi * 4294967296 + width.lo), (height.hi * 4294967296 + height.lo))
 
 ///|
 pub extern "js" fn OffscreenCanvas::get_width(self : OffscreenCanvas) -> Int64 =
-  #| (self) => self.width
+  #| (self) => (() => { const n = self.width; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn OffscreenCanvas::set_width(
@@ -18870,7 +19340,7 @@ pub extern "js" fn OffscreenCanvas::set_width(
 
 ///|
 pub extern "js" fn OffscreenCanvas::get_height(self : OffscreenCanvas) -> Int64 =
-  #| (self) => self.height
+  #| (self) => (() => { const n = self.height; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn OffscreenCanvas::set_height(
@@ -18884,7 +19354,7 @@ pub extern "js" fn OffscreenCanvas::get_context(
   self : OffscreenCanvas,
   context_id : OffscreenRenderingContextId,
 ) -> OffscreenRenderingContext? =
-  #| (self, context_id) => { const v = self.getContext(['2d', 'bitmaprenderer', 'webgl', 'webgl2', 'webgpu'][context_id]); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, context_id) => (() => { const v = self.getContext(['2d', 'bitmaprenderer', 'webgl', 'webgl2', 'webgpu'][context_id]); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn OffscreenCanvas::get_context_with_options(
@@ -18892,7 +19362,7 @@ pub extern "js" fn OffscreenCanvas::get_context_with_options(
   context_id : OffscreenRenderingContextId,
   options : JsValue,
 ) -> OffscreenRenderingContext? =
-  #| (self, context_id, options) => { const v = self.getContext(['2d', 'bitmaprenderer', 'webgl', 'webgl2', 'webgpu'][context_id], options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, context_id, options) => (() => { const v = self.getContext(['2d', 'bitmaprenderer', 'webgl', 'webgl2', 'webgpu'][context_id], options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn OffscreenCanvas::transfer_to_image_bitmap(
@@ -18907,11 +19377,19 @@ pub extern "js" fn OffscreenCanvas::convert_to_blob(
   #| (self) => self.convertToBlob()
 
 ///|
-pub extern "js" fn OffscreenCanvas::convert_to_blob_with_options(
+extern "js" fn OffscreenCanvas::convert_to_blob_with_options_ffi(
   self : OffscreenCanvas,
-  options : ImageEncodeOptions,
+  options : JsValue,
 ) -> Promise[Blob] =
   #| (self, options) => self.convertToBlob(options)
+
+///|
+pub fn OffscreenCanvas::convert_to_blob_with_options(
+  self : OffscreenCanvas,
+  options : ImageEncodeOptions,
+) -> Promise[Blob] {
+  OffscreenCanvas::convert_to_blob_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn OffscreenCanvas::get_oncontextlost(
@@ -19061,11 +19539,22 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::set_transform(
   #| (self) => self.setTransform()
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::set_transform_with_transform(
+extern "js" fn OffscreenCanvasRenderingContext2D::set_transform_with_transform_ffi(
   self : OffscreenCanvasRenderingContext2D,
-  transform : DOMMatrix2DInit,
+  transform : JsValue,
 ) -> Unit =
   #| (self, transform) => self.setTransform(transform)
+
+///|
+pub fn OffscreenCanvasRenderingContext2D::set_transform_with_transform(
+  self : OffscreenCanvasRenderingContext2D,
+  transform : DOMMatrix2DInit,
+) -> Unit {
+  OffscreenCanvasRenderingContext2D::set_transform_with_transform_ffi(
+    self,
+    transform.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::set_transform_with_a_and_b_and_c_and_d_and_e_and_f(
@@ -19128,14 +19617,14 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::set_image_smoothing_enable
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_image_smoothing_quality(
   self : OffscreenCanvasRenderingContext2D,
 ) -> ImageSmoothingQuality =
-  #| (self) => self.imageSmoothingQuality
+  #| (self) => ['low', 'medium', 'high'].indexOf(self.imageSmoothingQuality)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::set_image_smoothing_quality(
   self : OffscreenCanvasRenderingContext2D,
   value : ImageSmoothingQuality,
 ) -> Unit =
-  #| (self, value) => { self.imageSmoothingQuality = value }
+  #| (self, value) => { self.imageSmoothingQuality = ['low', 'medium', 'high'][value] }
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_stroke_style(
@@ -19200,7 +19689,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::create_pattern(
   image : CanvasImageSource,
   repetition : String,
 ) -> CanvasPattern? =
-  #| (self, image, repetition) => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_shadow_offset_x(
@@ -19521,13 +20010,28 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data_with_sw_
   #| (self, sw, sh) => self.createImageData(sw, sh)
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings(
+extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings_ffi(
+  self : OffscreenCanvasRenderingContext2D,
+  sw : Int,
+  sh : Int,
+  settings : JsValue,
+) -> ImageData =
+  #| (self, sw, sh, settings) => self.createImageData(sw, sh, settings)
+
+///|
+pub fn OffscreenCanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings(
   self : OffscreenCanvasRenderingContext2D,
   sw : Int,
   sh : Int,
   settings : ImageDataSettings,
-) -> ImageData =
-  #| (self, sw, sh, settings) => self.createImageData(sw, sh, settings)
+) -> ImageData {
+  OffscreenCanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings_ffi(
+    self,
+    sw,
+    sh,
+    settings.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_image_data(
@@ -19540,15 +20044,34 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::get_image_data(
   #| (self, sx, sy, sw, sh) => self.getImageData(sx, sy, sw, sh)
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::get_image_data_with_settings(
+extern "js" fn OffscreenCanvasRenderingContext2D::get_image_data_with_settings_ffi(
+  self : OffscreenCanvasRenderingContext2D,
+  sx : Int,
+  sy : Int,
+  sw : Int,
+  sh : Int,
+  settings : JsValue,
+) -> ImageData =
+  #| (self, sx, sy, sw, sh, settings) => self.getImageData(sx, sy, sw, sh, settings)
+
+///|
+pub fn OffscreenCanvasRenderingContext2D::get_image_data_with_settings(
   self : OffscreenCanvasRenderingContext2D,
   sx : Int,
   sy : Int,
   sw : Int,
   sh : Int,
   settings : ImageDataSettings,
-) -> ImageData =
-  #| (self, sx, sy, sw, sh, settings) => self.getImageData(sx, sy, sw, sh, settings)
+) -> ImageData {
+  OffscreenCanvasRenderingContext2D::get_image_data_with_settings_ffi(
+    self,
+    sx,
+    sy,
+    sw,
+    sh,
+    settings.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::put_image_data(
@@ -19589,27 +20112,27 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::set_line_width(
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_line_cap(
   self : OffscreenCanvasRenderingContext2D,
 ) -> CanvasLineCap =
-  #| (self) => self.lineCap
+  #| (self) => ['butt', 'round', 'square'].indexOf(self.lineCap)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::set_line_cap(
   self : OffscreenCanvasRenderingContext2D,
   value : CanvasLineCap,
 ) -> Unit =
-  #| (self, value) => { self.lineCap = value }
+  #| (self, value) => { self.lineCap = ['butt', 'round', 'square'][value] }
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_line_join(
   self : OffscreenCanvasRenderingContext2D,
 ) -> CanvasLineJoin =
-  #| (self) => self.lineJoin
+  #| (self) => ['round', 'bevel', 'miter'].indexOf(self.lineJoin)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::set_line_join(
   self : OffscreenCanvasRenderingContext2D,
   value : CanvasLineJoin,
 ) -> Unit =
-  #| (self, value) => { self.lineJoin = value }
+  #| (self, value) => { self.lineJoin = ['round', 'bevel', 'miter'][value] }
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_miter_limit(
@@ -19680,40 +20203,40 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::set_font(
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_text_align(
   self : OffscreenCanvasRenderingContext2D,
 ) -> CanvasTextAlign =
-  #| (self) => self.textAlign
+  #| (self) => ['start', 'end', 'left', 'right', 'center'].indexOf(self.textAlign)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::set_text_align(
   self : OffscreenCanvasRenderingContext2D,
   value : CanvasTextAlign,
 ) -> Unit =
-  #| (self, value) => { self.textAlign = value }
+  #| (self, value) => { self.textAlign = ['start', 'end', 'left', 'right', 'center'][value] }
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_text_baseline(
   self : OffscreenCanvasRenderingContext2D,
 ) -> CanvasTextBaseline =
-  #| (self) => self.textBaseline
+  #| (self) => ['top', 'hanging', 'middle', 'alphabetic', 'ideographic', 'bottom'].indexOf(self.textBaseline)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::set_text_baseline(
   self : OffscreenCanvasRenderingContext2D,
   value : CanvasTextBaseline,
 ) -> Unit =
-  #| (self, value) => { self.textBaseline = value }
+  #| (self, value) => { self.textBaseline = ['top', 'hanging', 'middle', 'alphabetic', 'ideographic', 'bottom'][value] }
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_direction(
   self : OffscreenCanvasRenderingContext2D,
 ) -> CanvasDirection =
-  #| (self) => self.direction
+  #| (self) => ['ltr', 'rtl', 'inherit'].indexOf(self.direction)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::set_direction(
   self : OffscreenCanvasRenderingContext2D,
   value : CanvasDirection,
 ) -> Unit =
-  #| (self, value) => { self.direction = value }
+  #| (self, value) => { self.direction = ['ltr', 'rtl', 'inherit'][value] }
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_letter_spacing(
@@ -19732,53 +20255,53 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::set_letter_spacing(
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_font_kerning(
   self : OffscreenCanvasRenderingContext2D,
 ) -> CanvasFontKerning =
-  #| (self) => self.fontKerning
+  #| (self) => ['auto', 'normal', 'none'].indexOf(self.fontKerning)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::set_font_kerning(
   self : OffscreenCanvasRenderingContext2D,
   value : CanvasFontKerning,
 ) -> Unit =
-  #| (self, value) => { self.fontKerning = value }
+  #| (self, value) => { self.fontKerning = ['auto', 'normal', 'none'][value] }
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_font_stretch(
   self : OffscreenCanvasRenderingContext2D,
 ) -> CanvasFontStretch =
-  #| (self) => self.fontStretch
+  #| (self) => ['ultra-condensed', 'extra-condensed', 'condensed', 'semi-condensed', 'normal', 'semi-expanded', 'expanded', 'extra-expanded', 'ultra-expanded'].indexOf(self.fontStretch)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::set_font_stretch(
   self : OffscreenCanvasRenderingContext2D,
   value : CanvasFontStretch,
 ) -> Unit =
-  #| (self, value) => { self.fontStretch = value }
+  #| (self, value) => { self.fontStretch = ['ultra-condensed', 'extra-condensed', 'condensed', 'semi-condensed', 'normal', 'semi-expanded', 'expanded', 'extra-expanded', 'ultra-expanded'][value] }
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_font_variant_caps(
   self : OffscreenCanvasRenderingContext2D,
 ) -> CanvasFontVariantCaps =
-  #| (self) => self.fontVariantCaps
+  #| (self) => ['normal', 'small-caps', 'all-small-caps', 'petite-caps', 'all-petite-caps', 'unicase', 'titling-caps'].indexOf(self.fontVariantCaps)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::set_font_variant_caps(
   self : OffscreenCanvasRenderingContext2D,
   value : CanvasFontVariantCaps,
 ) -> Unit =
-  #| (self, value) => { self.fontVariantCaps = value }
+  #| (self, value) => { self.fontVariantCaps = ['normal', 'small-caps', 'all-small-caps', 'petite-caps', 'all-petite-caps', 'unicase', 'titling-caps'][value] }
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_text_rendering(
   self : OffscreenCanvasRenderingContext2D,
 ) -> CanvasTextRendering =
-  #| (self) => self.textRendering
+  #| (self) => ['auto', 'optimizeSpeed', 'optimizeLegibility', 'geometricPrecision'].indexOf(self.textRendering)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::set_text_rendering(
   self : OffscreenCanvasRenderingContext2D,
   value : CanvasTextRendering,
 ) -> Unit =
-  #| (self, value) => { self.textRendering = value }
+  #| (self, value) => { self.textRendering = ['auto', 'optimizeSpeed', 'optimizeLegibility', 'geometricPrecision'][value] }
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_word_spacing(
@@ -19930,6 +20453,108 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::ellipse_with_counterclockw
   #| (self, x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise) => self.ellipse(x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise)
 
 ///|
+pub extern "js" fn OffscreenCanvasRenderingContext2D::create_pattern_with_h_t_m_l_or_s_v_g_image_element(
+  self : OffscreenCanvasRenderingContext2D,
+  image : HTMLOrSVGImageElement,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn OffscreenCanvasRenderingContext2D::create_pattern_with_h_t_m_l_video_element(
+  self : OffscreenCanvasRenderingContext2D,
+  image : HTMLVideoElement,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn OffscreenCanvasRenderingContext2D::create_pattern_with_h_t_m_l_canvas_element(
+  self : OffscreenCanvasRenderingContext2D,
+  image : HTMLCanvasElement,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn OffscreenCanvasRenderingContext2D::create_pattern_with_image_bitmap(
+  self : OffscreenCanvasRenderingContext2D,
+  image : ImageBitmap,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn OffscreenCanvasRenderingContext2D::create_pattern_with_offscreen_canvas(
+  self : OffscreenCanvasRenderingContext2D,
+  image : OffscreenCanvas,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn OffscreenCanvasRenderingContext2D::create_pattern_with_video_frame(
+  self : OffscreenCanvasRenderingContext2D,
+  image : VideoFrame,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_h_t_m_l_or_s_v_g_image_element(
+  self : OffscreenCanvasRenderingContext2D,
+  image : HTMLOrSVGImageElement,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
+pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_h_t_m_l_video_element(
+  self : OffscreenCanvasRenderingContext2D,
+  image : HTMLVideoElement,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
+pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_h_t_m_l_canvas_element(
+  self : OffscreenCanvasRenderingContext2D,
+  image : HTMLCanvasElement,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
+pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_image_bitmap(
+  self : OffscreenCanvasRenderingContext2D,
+  image : ImageBitmap,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
+pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_offscreen_canvas(
+  self : OffscreenCanvasRenderingContext2D,
+  image : OffscreenCanvas,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
+pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_video_frame(
+  self : OffscreenCanvasRenderingContext2D,
+  image : VideoFrame,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
 /// CustomElementRegistry interface
 pub type CustomElementRegistry
 
@@ -19980,13 +20605,28 @@ pub extern "js" fn CustomElementRegistry::define_(
   #| (self, name, constructor_) => self.define(name, constructor_)
 
 ///|
-pub extern "js" fn CustomElementRegistry::define__with_options(
+extern "js" fn CustomElementRegistry::define__with_options_ffi(
+  self : CustomElementRegistry,
+  name : String,
+  constructor_ : CustomElementConstructor,
+  options : JsValue,
+) -> Unit =
+  #| (self, name, constructor_, options) => self.define(name, constructor_, options)
+
+///|
+pub fn CustomElementRegistry::define__with_options(
   self : CustomElementRegistry,
   name : String,
   constructor_ : CustomElementConstructor,
   options : ElementDefinitionOptions,
-) -> Unit =
-  #| (self, name, constructor_, options) => self.define(name, constructor_, options)
+) -> Unit {
+  CustomElementRegistry::define__with_options_ffi(
+    self,
+    name,
+    constructor_,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn CustomElementRegistry::get(
@@ -20000,7 +20640,7 @@ pub extern "js" fn CustomElementRegistry::get_name(
   self : CustomElementRegistry,
   constructor_ : CustomElementConstructor,
 ) -> String? =
-  #| (self, constructor_) => { const v = self.getName(constructor_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, constructor_) => (self.getName(constructor_)) ?? undefined
 
 ///|
 pub extern "js" fn CustomElementRegistry::when_defined(
@@ -20065,7 +20705,7 @@ pub extern "js" fn JsValue::to_element_internals(
 pub extern "js" fn ElementInternals::get_shadow_root(
   self : ElementInternals,
 ) -> ShadowRoot? =
-  #| (self) => { const v = self.shadowRoot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.shadowRoot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ElementInternals::set_form_value(
@@ -20086,7 +20726,7 @@ pub extern "js" fn ElementInternals::set_form_value_with_state(
 pub extern "js" fn ElementInternals::get_form(
   self : ElementInternals,
 ) -> HTMLFormElement? =
-  #| (self) => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.form; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ElementInternals::set_validity(
@@ -20095,13 +20735,28 @@ pub extern "js" fn ElementInternals::set_validity(
   #| (self) => self.setValidity()
 
 ///|
-pub extern "js" fn ElementInternals::set_validity_with_anchor(
+extern "js" fn ElementInternals::set_validity_with_anchor_ffi(
   self : ElementInternals,
-  flags : ValidityStateFlags,
+  flags : JsValue,
   message : String,
   anchor : HTMLElement,
 ) -> Unit =
   #| (self, flags, message, anchor) => self.setValidity(flags, message, anchor)
+
+///|
+pub fn ElementInternals::set_validity_with_anchor(
+  self : ElementInternals,
+  flags : ValidityStateFlags,
+  message : String,
+  anchor : HTMLElement,
+) -> Unit {
+  ElementInternals::set_validity_with_anchor_ffi(
+    self,
+    flags.to_js(),
+    message,
+    anchor,
+  )
+}
 
 ///|
 pub extern "js" fn ElementInternals::get_will_validate(
@@ -20149,7 +20804,7 @@ pub extern "js" fn ElementInternals::get_states(
 pub extern "js" fn ElementInternals::get_role(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.role; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.role) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_role(
@@ -20162,20 +20817,20 @@ pub extern "js" fn ElementInternals::set_role(
 pub extern "js" fn ElementInternals::get_aria_active_descendant_element(
   self : ElementInternals,
 ) -> Element? =
-  #| (self) => { const v = self.ariaActiveDescendantElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.ariaActiveDescendantElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_active_descendant_element(
   self : ElementInternals,
   value : Element?,
 ) -> Unit =
-  #| (self, value) => { self.ariaActiveDescendantElement = value }
+  #| (self, value) => { self.ariaActiveDescendantElement = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn ElementInternals::get_aria_atomic(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaAtomic; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaAtomic) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_atomic(
@@ -20188,7 +20843,7 @@ pub extern "js" fn ElementInternals::set_aria_atomic(
 pub extern "js" fn ElementInternals::get_aria_auto_complete(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaAutoComplete; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaAutoComplete) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_auto_complete(
@@ -20201,7 +20856,7 @@ pub extern "js" fn ElementInternals::set_aria_auto_complete(
 pub extern "js" fn ElementInternals::get_aria_braille_label(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaBrailleLabel; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaBrailleLabel) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_braille_label(
@@ -20214,7 +20869,7 @@ pub extern "js" fn ElementInternals::set_aria_braille_label(
 pub extern "js" fn ElementInternals::get_aria_braille_role_description(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaBrailleRoleDescription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaBrailleRoleDescription) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_braille_role_description(
@@ -20227,7 +20882,7 @@ pub extern "js" fn ElementInternals::set_aria_braille_role_description(
 pub extern "js" fn ElementInternals::get_aria_busy(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaBusy; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaBusy) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_busy(
@@ -20240,7 +20895,7 @@ pub extern "js" fn ElementInternals::set_aria_busy(
 pub extern "js" fn ElementInternals::get_aria_checked(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaChecked; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaChecked) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_checked(
@@ -20253,7 +20908,7 @@ pub extern "js" fn ElementInternals::set_aria_checked(
 pub extern "js" fn ElementInternals::get_aria_col_count(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaColCount; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaColCount) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_col_count(
@@ -20266,7 +20921,7 @@ pub extern "js" fn ElementInternals::set_aria_col_count(
 pub extern "js" fn ElementInternals::get_aria_col_index(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaColIndex; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaColIndex) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_col_index(
@@ -20279,7 +20934,7 @@ pub extern "js" fn ElementInternals::set_aria_col_index(
 pub extern "js" fn ElementInternals::get_aria_col_index_text(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaColIndexText; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaColIndexText) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_col_index_text(
@@ -20292,7 +20947,7 @@ pub extern "js" fn ElementInternals::set_aria_col_index_text(
 pub extern "js" fn ElementInternals::get_aria_col_span(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaColSpan; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaColSpan) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_col_span(
@@ -20305,7 +20960,7 @@ pub extern "js" fn ElementInternals::set_aria_col_span(
 pub extern "js" fn ElementInternals::get_aria_controls_elements(
   self : ElementInternals,
 ) -> JsValue? =
-  #| (self) => { const v = self.ariaControlsElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.ariaControlsElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_controls_elements(
@@ -20318,7 +20973,7 @@ pub extern "js" fn ElementInternals::set_aria_controls_elements(
 pub extern "js" fn ElementInternals::get_aria_current(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaCurrent; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaCurrent) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_current(
@@ -20331,7 +20986,7 @@ pub extern "js" fn ElementInternals::set_aria_current(
 pub extern "js" fn ElementInternals::get_aria_described_by_elements(
   self : ElementInternals,
 ) -> JsValue? =
-  #| (self) => { const v = self.ariaDescribedByElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.ariaDescribedByElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_described_by_elements(
@@ -20344,7 +20999,7 @@ pub extern "js" fn ElementInternals::set_aria_described_by_elements(
 pub extern "js" fn ElementInternals::get_aria_description(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaDescription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaDescription) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_description(
@@ -20357,7 +21012,7 @@ pub extern "js" fn ElementInternals::set_aria_description(
 pub extern "js" fn ElementInternals::get_aria_details_elements(
   self : ElementInternals,
 ) -> JsValue? =
-  #| (self) => { const v = self.ariaDetailsElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.ariaDetailsElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_details_elements(
@@ -20370,7 +21025,7 @@ pub extern "js" fn ElementInternals::set_aria_details_elements(
 pub extern "js" fn ElementInternals::get_aria_disabled(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaDisabled; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaDisabled) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_disabled(
@@ -20383,7 +21038,7 @@ pub extern "js" fn ElementInternals::set_aria_disabled(
 pub extern "js" fn ElementInternals::get_aria_error_message_elements(
   self : ElementInternals,
 ) -> JsValue? =
-  #| (self) => { const v = self.ariaErrorMessageElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.ariaErrorMessageElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_error_message_elements(
@@ -20396,7 +21051,7 @@ pub extern "js" fn ElementInternals::set_aria_error_message_elements(
 pub extern "js" fn ElementInternals::get_aria_expanded(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaExpanded; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaExpanded) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_expanded(
@@ -20409,7 +21064,7 @@ pub extern "js" fn ElementInternals::set_aria_expanded(
 pub extern "js" fn ElementInternals::get_aria_flow_to_elements(
   self : ElementInternals,
 ) -> JsValue? =
-  #| (self) => { const v = self.ariaFlowToElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.ariaFlowToElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_flow_to_elements(
@@ -20422,7 +21077,7 @@ pub extern "js" fn ElementInternals::set_aria_flow_to_elements(
 pub extern "js" fn ElementInternals::get_aria_has_popup(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaHasPopup; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaHasPopup) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_has_popup(
@@ -20435,7 +21090,7 @@ pub extern "js" fn ElementInternals::set_aria_has_popup(
 pub extern "js" fn ElementInternals::get_aria_hidden(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaHidden; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaHidden) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_hidden(
@@ -20448,7 +21103,7 @@ pub extern "js" fn ElementInternals::set_aria_hidden(
 pub extern "js" fn ElementInternals::get_aria_invalid(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaInvalid; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaInvalid) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_invalid(
@@ -20461,7 +21116,7 @@ pub extern "js" fn ElementInternals::set_aria_invalid(
 pub extern "js" fn ElementInternals::get_aria_key_shortcuts(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaKeyShortcuts; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaKeyShortcuts) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_key_shortcuts(
@@ -20474,7 +21129,7 @@ pub extern "js" fn ElementInternals::set_aria_key_shortcuts(
 pub extern "js" fn ElementInternals::get_aria_label(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaLabel; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaLabel) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_label(
@@ -20487,7 +21142,7 @@ pub extern "js" fn ElementInternals::set_aria_label(
 pub extern "js" fn ElementInternals::get_aria_labelled_by_elements(
   self : ElementInternals,
 ) -> JsValue? =
-  #| (self) => { const v = self.ariaLabelledByElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.ariaLabelledByElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_labelled_by_elements(
@@ -20500,7 +21155,7 @@ pub extern "js" fn ElementInternals::set_aria_labelled_by_elements(
 pub extern "js" fn ElementInternals::get_aria_level(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaLevel; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaLevel) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_level(
@@ -20513,7 +21168,7 @@ pub extern "js" fn ElementInternals::set_aria_level(
 pub extern "js" fn ElementInternals::get_aria_live(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaLive; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaLive) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_live(
@@ -20526,7 +21181,7 @@ pub extern "js" fn ElementInternals::set_aria_live(
 pub extern "js" fn ElementInternals::get_aria_modal(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaModal; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaModal) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_modal(
@@ -20539,7 +21194,7 @@ pub extern "js" fn ElementInternals::set_aria_modal(
 pub extern "js" fn ElementInternals::get_aria_multi_line(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaMultiLine; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaMultiLine) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_multi_line(
@@ -20552,7 +21207,7 @@ pub extern "js" fn ElementInternals::set_aria_multi_line(
 pub extern "js" fn ElementInternals::get_aria_multi_selectable(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaMultiSelectable; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaMultiSelectable) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_multi_selectable(
@@ -20565,7 +21220,7 @@ pub extern "js" fn ElementInternals::set_aria_multi_selectable(
 pub extern "js" fn ElementInternals::get_aria_orientation(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaOrientation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaOrientation) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_orientation(
@@ -20578,7 +21233,7 @@ pub extern "js" fn ElementInternals::set_aria_orientation(
 pub extern "js" fn ElementInternals::get_aria_owns_elements(
   self : ElementInternals,
 ) -> JsValue? =
-  #| (self) => { const v = self.ariaOwnsElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.ariaOwnsElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_owns_elements(
@@ -20591,7 +21246,7 @@ pub extern "js" fn ElementInternals::set_aria_owns_elements(
 pub extern "js" fn ElementInternals::get_aria_placeholder(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaPlaceholder; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaPlaceholder) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_placeholder(
@@ -20604,7 +21259,7 @@ pub extern "js" fn ElementInternals::set_aria_placeholder(
 pub extern "js" fn ElementInternals::get_aria_pos_in_set(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaPosInSet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaPosInSet) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_pos_in_set(
@@ -20617,7 +21272,7 @@ pub extern "js" fn ElementInternals::set_aria_pos_in_set(
 pub extern "js" fn ElementInternals::get_aria_pressed(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaPressed; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaPressed) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_pressed(
@@ -20630,7 +21285,7 @@ pub extern "js" fn ElementInternals::set_aria_pressed(
 pub extern "js" fn ElementInternals::get_aria_read_only(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaReadOnly; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaReadOnly) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_read_only(
@@ -20643,7 +21298,7 @@ pub extern "js" fn ElementInternals::set_aria_read_only(
 pub extern "js" fn ElementInternals::get_aria_relevant(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaRelevant; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaRelevant) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_relevant(
@@ -20656,7 +21311,7 @@ pub extern "js" fn ElementInternals::set_aria_relevant(
 pub extern "js" fn ElementInternals::get_aria_required(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaRequired; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaRequired) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_required(
@@ -20669,7 +21324,7 @@ pub extern "js" fn ElementInternals::set_aria_required(
 pub extern "js" fn ElementInternals::get_aria_role_description(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaRoleDescription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaRoleDescription) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_role_description(
@@ -20682,7 +21337,7 @@ pub extern "js" fn ElementInternals::set_aria_role_description(
 pub extern "js" fn ElementInternals::get_aria_row_count(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaRowCount; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaRowCount) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_row_count(
@@ -20695,7 +21350,7 @@ pub extern "js" fn ElementInternals::set_aria_row_count(
 pub extern "js" fn ElementInternals::get_aria_row_index(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaRowIndex; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaRowIndex) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_row_index(
@@ -20708,7 +21363,7 @@ pub extern "js" fn ElementInternals::set_aria_row_index(
 pub extern "js" fn ElementInternals::get_aria_row_index_text(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaRowIndexText; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaRowIndexText) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_row_index_text(
@@ -20721,7 +21376,7 @@ pub extern "js" fn ElementInternals::set_aria_row_index_text(
 pub extern "js" fn ElementInternals::get_aria_row_span(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaRowSpan; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaRowSpan) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_row_span(
@@ -20734,7 +21389,7 @@ pub extern "js" fn ElementInternals::set_aria_row_span(
 pub extern "js" fn ElementInternals::get_aria_selected(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaSelected; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaSelected) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_selected(
@@ -20747,7 +21402,7 @@ pub extern "js" fn ElementInternals::set_aria_selected(
 pub extern "js" fn ElementInternals::get_aria_set_size(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaSetSize; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaSetSize) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_set_size(
@@ -20760,7 +21415,7 @@ pub extern "js" fn ElementInternals::set_aria_set_size(
 pub extern "js" fn ElementInternals::get_aria_sort(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaSort; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaSort) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_sort(
@@ -20773,7 +21428,7 @@ pub extern "js" fn ElementInternals::set_aria_sort(
 pub extern "js" fn ElementInternals::get_aria_value_max(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaValueMax; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaValueMax) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_value_max(
@@ -20786,7 +21441,7 @@ pub extern "js" fn ElementInternals::set_aria_value_max(
 pub extern "js" fn ElementInternals::get_aria_value_min(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaValueMin; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaValueMin) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_value_min(
@@ -20799,7 +21454,7 @@ pub extern "js" fn ElementInternals::set_aria_value_min(
 pub extern "js" fn ElementInternals::get_aria_value_now(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaValueNow; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaValueNow) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_value_now(
@@ -20812,7 +21467,7 @@ pub extern "js" fn ElementInternals::set_aria_value_now(
 pub extern "js" fn ElementInternals::get_aria_value_text(
   self : ElementInternals,
 ) -> String? =
-  #| (self) => { const v = self.ariaValueText; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaValueText) ?? undefined
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_value_text(
@@ -21029,11 +21684,23 @@ pub extern "js" fn ToggleEvent::to_event(self : ToggleEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn ToggleEvent::new(
+pub extern "js" fn ToggleEvent::new(type_ : String) -> ToggleEvent =
+  #| (type_) => new ToggleEvent(type_)
+
+///|
+extern "js" fn ToggleEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : ToggleEventInit,
+  event_init_dict : JsValue,
 ) -> ToggleEvent =
   #| (type_, event_init_dict) => new ToggleEvent(type_, event_init_dict)
+
+///|
+pub fn ToggleEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : ToggleEventInit,
+) -> ToggleEvent {
+  ToggleEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn ToggleEvent::get_old_state(self : ToggleEvent) -> String =
@@ -21045,7 +21712,7 @@ pub extern "js" fn ToggleEvent::get_new_state(self : ToggleEvent) -> String =
 
 ///|
 pub extern "js" fn ToggleEvent::get_source(self : ToggleEvent) -> Element? =
-  #| (self) => { const v = self.source; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.source; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// CommandEvent interface
@@ -21082,15 +21749,27 @@ pub extern "js" fn CommandEvent::to_event(self : CommandEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn CommandEvent::new(
+pub extern "js" fn CommandEvent::new(type_ : String) -> CommandEvent =
+  #| (type_) => new CommandEvent(type_)
+
+///|
+extern "js" fn CommandEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : CommandEventInit,
+  event_init_dict : JsValue,
 ) -> CommandEvent =
   #| (type_, event_init_dict) => new CommandEvent(type_, event_init_dict)
 
 ///|
+pub fn CommandEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : CommandEventInit,
+) -> CommandEvent {
+  CommandEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
+
+///|
 pub extern "js" fn CommandEvent::get_source(self : CommandEvent) -> Element? =
-  #| (self) => { const v = self.source; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.source; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn CommandEvent::get_command(self : CommandEvent) -> String =
@@ -21133,10 +21812,21 @@ pub extern "js" fn CloseWatcher::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn CloseWatcher::new(
-  options : CloseWatcherOptions,
+pub extern "js" fn CloseWatcher::new() -> CloseWatcher =
+  #| () => new CloseWatcher()
+
+///|
+extern "js" fn CloseWatcher::new_with_options_ffi(
+  options : JsValue,
 ) -> CloseWatcher =
   #| (options) => new CloseWatcher(options)
+
+///|
+pub fn CloseWatcher::new_with_options(
+  options : CloseWatcherOptions,
+) -> CloseWatcher {
+  CloseWatcher::new_with_options_ffi(options.to_js())
+}
 
 ///|
 pub extern "js" fn CloseWatcher::request_close(self : CloseWatcher) -> Unit =
@@ -21339,7 +22029,7 @@ pub extern "js" fn DataTransferItemList::add(
   self : DataTransferItemList,
   data : File,
 ) -> DataTransferItem? =
-  #| (self, data) => { const v = self.add(data); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, data) => (() => { const v = self.add(data); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn DataTransferItemList::add_with_data_and_type(
@@ -21347,7 +22037,7 @@ pub extern "js" fn DataTransferItemList::add_with_data_and_type(
   data : String,
   type_ : String,
 ) -> DataTransferItem? =
-  #| (self, data, type_) => { const v = self.add(data, type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, data, type_) => (() => { const v = self.add(data, type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn DataTransferItemList::remove(
@@ -21417,25 +22107,25 @@ pub extern "js" fn DataTransferItem::get_as_string(
   self : DataTransferItem,
   callback : FunctionStringCallback?,
 ) -> Unit =
-  #| (self, callback) => self.getAsString(callback)
+  #| (self, callback) => self.getAsString((callback.$tag === 1 ? callback._0 : null))
 
 ///|
 pub extern "js" fn DataTransferItem::get_as_file(
   self : DataTransferItem,
 ) -> File? =
-  #| (self) => { const v = self.getAsFile(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.getAsFile(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn DataTransferItem::get_as_file_system_handle(
   self : DataTransferItem,
 ) -> Promise[FileSystemHandle?] =
-  #| (self) => self.getAsFileSystemHandle().then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
+  #| (self) => self.getAsFileSystemHandle()
 
 ///|
 pub extern "js" fn DataTransferItem::webkit_get_as_entry(
   self : DataTransferItem,
 ) -> FileSystemEntry? =
-  #| (self) => { const v = self.webkitGetAsEntry(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.webkitGetAsEntry(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// DragEvent interface
@@ -21478,17 +22168,29 @@ pub extern "js" fn DragEvent::to_event(self : DragEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn DragEvent::new(
+pub extern "js" fn DragEvent::new(type_ : String) -> DragEvent =
+  #| (type_) => new DragEvent(type_)
+
+///|
+extern "js" fn DragEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : DragEventInit,
+  event_init_dict : JsValue,
 ) -> DragEvent =
   #| (type_, event_init_dict) => new DragEvent(type_, event_init_dict)
+
+///|
+pub fn DragEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : DragEventInit,
+) -> DragEvent {
+  DragEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn DragEvent::get_data_transfer(
   self : DragEvent,
 ) -> DataTransfer? =
-  #| (self) => { const v = self.dataTransfer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.dataTransfer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// Origin interface
@@ -21673,7 +22375,7 @@ pub extern "js" fn Window::get_length(self : Window) -> Int =
 
 ///|
 pub extern "js" fn Window::get_top(self : Window) -> WindowProxy? =
-  #| (self) => { const v = self.top; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.top; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Window::get_opener(self : Window) -> JsValue =
@@ -21685,15 +22387,15 @@ pub extern "js" fn Window::set_opener(self : Window, value : JsValue) -> Unit =
 
 ///|
 pub extern "js" fn Window::get_parent(self : Window) -> WindowProxy? =
-  #| (self) => { const v = self.parent; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.parent; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Window::get_frame_element(self : Window) -> Element? =
-  #| (self) => { const v = self.frameElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.frameElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Window::open(self : Window) -> WindowProxy? =
-  #| (self) => { const v = self.open(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.open(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Window::open_with_features(
@@ -21702,7 +22404,7 @@ pub extern "js" fn Window::open_with_features(
   target : String,
   features : String,
 ) -> WindowProxy? =
-  #| (self, url, target, features) => { const v = self.open(url, target, features); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, url, target, features) => (() => { const v = self.open(url, target, features); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Window::get_named(self : Window, name : String) -> JsValue =
@@ -21744,7 +22446,7 @@ pub extern "js" fn Window::confirm_with_message(
 
 ///|
 pub extern "js" fn Window::prompt(self : Window) -> String? =
-  #| (self) => { const v = self.prompt(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.prompt()) ?? undefined
 
 ///|
 pub extern "js" fn Window::prompt_with_default(
@@ -21752,7 +22454,7 @@ pub extern "js" fn Window::prompt_with_default(
   message : String,
   default : String,
 ) -> String? =
-  #| (self, message, default) => { const v = self.prompt(message, default); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, message, default) => (self.prompt(message, default)) ?? undefined
 
 ///|
 pub extern "js" fn Window::print(self : Window) -> Unit =
@@ -21766,12 +22468,21 @@ pub extern "js" fn Window::post_message(
   #| (self, message) => self.postMessage(message)
 
 ///|
-pub extern "js" fn Window::post_message_with_options(
+extern "js" fn Window::post_message_with_options_ffi(
+  self : Window,
+  message : JsValue,
+  options : JsValue,
+) -> Unit =
+  #| (self, message, options) => self.postMessage(message, options)
+
+///|
+pub fn Window::post_message_with_options(
   self : Window,
   message : JsValue,
   options : WindowPostMessageOptions,
-) -> Unit =
-  #| (self, message, options) => self.postMessage(message, options)
+) -> Unit {
+  Window::post_message_with_options_ffi(self, message, options.to_js())
+}
 
 ///|
 pub extern "js" fn Window::post_message_with_message_and_target_origin(
@@ -21797,11 +22508,19 @@ pub extern "js" fn Window::show_open_file_picker(
   #| (self) => self.showOpenFilePicker()
 
 ///|
-pub extern "js" fn Window::show_open_file_picker_with_options(
+extern "js" fn Window::show_open_file_picker_with_options_ffi(
   self : Window,
-  options : OpenFilePickerOptions,
+  options : JsValue,
 ) -> Promise[Array[FileSystemFileHandle]] =
   #| (self, options) => self.showOpenFilePicker(options)
+
+///|
+pub fn Window::show_open_file_picker_with_options(
+  self : Window,
+  options : OpenFilePickerOptions,
+) -> Promise[Array[FileSystemFileHandle]] {
+  Window::show_open_file_picker_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Window::show_save_file_picker(
@@ -21810,11 +22529,19 @@ pub extern "js" fn Window::show_save_file_picker(
   #| (self) => self.showSaveFilePicker()
 
 ///|
-pub extern "js" fn Window::show_save_file_picker_with_options(
+extern "js" fn Window::show_save_file_picker_with_options_ffi(
   self : Window,
-  options : SaveFilePickerOptions,
+  options : JsValue,
 ) -> Promise[FileSystemFileHandle] =
   #| (self, options) => self.showSaveFilePicker(options)
+
+///|
+pub fn Window::show_save_file_picker_with_options(
+  self : Window,
+  options : SaveFilePickerOptions,
+) -> Promise[FileSystemFileHandle] {
+  Window::show_save_file_picker_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Window::show_directory_picker(
@@ -21823,11 +22550,19 @@ pub extern "js" fn Window::show_directory_picker(
   #| (self) => self.showDirectoryPicker()
 
 ///|
-pub extern "js" fn Window::show_directory_picker_with_options(
+extern "js" fn Window::show_directory_picker_with_options_ffi(
   self : Window,
-  options : DirectoryPickerOptions,
+  options : JsValue,
 ) -> Promise[FileSystemDirectoryHandle] =
   #| (self, options) => self.showDirectoryPicker(options)
+
+///|
+pub fn Window::show_directory_picker_with_options(
+  self : Window,
+  options : DirectoryPickerOptions,
+) -> Promise[FileSystemDirectoryHandle] {
+  Window::show_directory_picker_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Window::match_media(
@@ -21844,7 +22579,7 @@ pub extern "js" fn Window::get_screen(self : Window) -> Screen =
 pub extern "js" fn Window::get_visual_viewport(
   self : Window,
 ) -> VisualViewport? =
-  #| (self) => { const v = self.visualViewport; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.visualViewport; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Window::move_to(self : Window, x : Int, y : Int) -> Unit =
@@ -21895,11 +22630,19 @@ pub extern "js" fn Window::scroll(self : Window) -> Promise[Unit] =
   #| (self) => self.scroll()
 
 ///|
-pub extern "js" fn Window::scroll_with_options(
+extern "js" fn Window::scroll_with_options_ffi(
   self : Window,
-  options : ScrollToOptions,
+  options : JsValue,
 ) -> Promise[Unit] =
   #| (self, options) => self.scroll(options)
+
+///|
+pub fn Window::scroll_with_options(
+  self : Window,
+  options : ScrollToOptions,
+) -> Promise[Unit] {
+  Window::scroll_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Window::scroll_with_x_and_y(
@@ -21914,11 +22657,19 @@ pub extern "js" fn Window::scroll_to(self : Window) -> Promise[Unit] =
   #| (self) => self.scrollTo()
 
 ///|
-pub extern "js" fn Window::scroll_to_with_options(
+extern "js" fn Window::scroll_to_with_options_ffi(
   self : Window,
-  options : ScrollToOptions,
+  options : JsValue,
 ) -> Promise[Unit] =
   #| (self, options) => self.scrollTo(options)
+
+///|
+pub fn Window::scroll_to_with_options(
+  self : Window,
+  options : ScrollToOptions,
+) -> Promise[Unit] {
+  Window::scroll_to_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Window::scroll_to_with_x_and_y(
@@ -21933,11 +22684,19 @@ pub extern "js" fn Window::scroll_by(self : Window) -> Promise[Unit] =
   #| (self) => self.scrollBy()
 
 ///|
-pub extern "js" fn Window::scroll_by_with_options(
+extern "js" fn Window::scroll_by_with_options_ffi(
   self : Window,
-  options : ScrollToOptions,
+  options : JsValue,
 ) -> Promise[Unit] =
   #| (self, options) => self.scrollBy(options)
+
+///|
+pub fn Window::scroll_by_with_options(
+  self : Window,
+  options : ScrollToOptions,
+) -> Promise[Unit] {
+  Window::scroll_by_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Window::scroll_by_with_x_and_y(
@@ -21989,7 +22748,7 @@ pub extern "js" fn Window::get_external(self : Window) -> External =
 
 ///|
 pub extern "js" fn Window::get_portal_host(self : Window) -> PortalHost? =
-  #| (self) => { const v = self.portalHost; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.portalHost; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Window::get_viewport(self : Window) -> Viewport =
@@ -22047,7 +22806,7 @@ pub extern "js" fn Window::get_computed_style_with_pseudo_elt(
   elt : Element,
   pseudo_elt : CSSOMString?,
 ) -> CSSStyleProperties =
-  #| (self, elt, pseudo_elt) => self.getComputedStyle(elt, pseudo_elt)
+  #| (self, elt, pseudo_elt) => self.getComputedStyle(elt, (pseudo_elt.$tag === 1 ? pseudo_elt._0 : null))
 
 ///|
 pub extern "js" fn Window::query_local_fonts(
@@ -22056,11 +22815,19 @@ pub extern "js" fn Window::query_local_fonts(
   #| (self) => self.queryLocalFonts()
 
 ///|
-pub extern "js" fn Window::query_local_fonts_with_options(
+extern "js" fn Window::query_local_fonts_with_options_ffi(
   self : Window,
-  options : QueryOptions,
+  options : JsValue,
 ) -> Promise[Array[FontData]] =
   #| (self, options) => self.queryLocalFonts(options)
+
+///|
+pub fn Window::query_local_fonts_with_options(
+  self : Window,
+  options : QueryOptions,
+) -> Promise[Array[FontData]] {
+  Window::query_local_fonts_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Window::get_speech_synthesis(
@@ -22077,7 +22844,7 @@ pub extern "js" fn Window::get_digital_goods_service(
 
 ///|
 pub extern "js" fn Window::get_shared_storage(self : Window) -> SharedStorage? =
-  #| (self) => { const v = self.sharedStorage; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.sharedStorage; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Window::get_screen_details(
@@ -22128,7 +22895,7 @@ pub extern "js" fn Window::set_ondevicemotion(
 
 ///|
 pub extern "js" fn Window::get_fence(self : Window) -> Fence? =
-  #| (self) => { const v = self.fence; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.fence; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Window::get_orientation(self : Window) -> Int =
@@ -22159,12 +22926,25 @@ pub extern "js" fn Window::request_idle_callback(
   #| (self, callback) => self.requestIdleCallback(callback)
 
 ///|
-pub extern "js" fn Window::request_idle_callback_with_options(
+extern "js" fn Window::request_idle_callback_with_options_ffi(
+  self : Window,
+  callback : IdleRequestCallback,
+  options : JsValue,
+) -> Int =
+  #| (self, callback, options) => self.requestIdleCallback(callback, options)
+
+///|
+pub fn Window::request_idle_callback_with_options(
   self : Window,
   callback : IdleRequestCallback,
   options : IdleRequestOptions,
-) -> Int =
-  #| (self, callback, options) => self.requestIdleCallback(callback, options)
+) -> Int {
+  Window::request_idle_callback_with_options_ffi(
+    self,
+    callback,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Window::cancel_idle_callback(
@@ -22175,7 +22955,7 @@ pub extern "js" fn Window::cancel_idle_callback(
 
 ///|
 pub extern "js" fn Window::get_selection(self : Window) -> Selection? =
-  #| (self) => { const v = self.getSelection(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.getSelection(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Window::get_document_picture_in_picture(
@@ -22191,12 +22971,21 @@ pub extern "js" fn Window::fetch_later(
   #| (self, input) => self.fetchLater(input)
 
 ///|
-pub extern "js" fn Window::fetch_later_with_init(
+extern "js" fn Window::fetch_later_with_init_ffi(
+  self : Window,
+  input : RequestInfo,
+  init_ : JsValue,
+) -> FetchLaterResult =
+  #| (self, input, init_) => self.fetchLater(input, init_)
+
+///|
+pub fn Window::fetch_later_with_init(
   self : Window,
   input : RequestInfo,
   init_ : DeferredRequestInit,
-) -> FetchLaterResult =
-  #| (self, input, init_) => self.fetchLater(input, init_)
+) -> FetchLaterResult {
+  Window::fetch_later_with_init_ffi(self, input, init_.to_js())
+}
 
 ///|
 pub extern "js" fn Window::get_push_manager(self : Window) -> PushManager =
@@ -23715,12 +24504,21 @@ pub extern "js" fn Window::create_image_bitmap(
   #| (self, image) => self.createImageBitmap(image)
 
 ///|
-pub extern "js" fn Window::create_image_bitmap_with_options(
+extern "js" fn Window::create_image_bitmap_with_options_ffi(
+  self : Window,
+  image : ImageBitmapSource,
+  options : JsValue,
+) -> Promise[ImageBitmap] =
+  #| (self, image, options) => self.createImageBitmap(image, options)
+
+///|
+pub fn Window::create_image_bitmap_with_options(
   self : Window,
   image : ImageBitmapSource,
   options : ImageBitmapOptions,
-) -> Promise[ImageBitmap] =
-  #| (self, image, options) => self.createImageBitmap(image, options)
+) -> Promise[ImageBitmap] {
+  Window::create_image_bitmap_with_options_ffi(self, image, options.to_js())
+}
 
 ///|
 pub extern "js" fn Window::create_image_bitmap_with_image_image_bitmap_source_and_sx_and_sy_and_sw_and_sh(
@@ -23734,7 +24532,19 @@ pub extern "js" fn Window::create_image_bitmap_with_image_image_bitmap_source_an
   #| (self, image, sx, sy, sw, sh) => self.createImageBitmap(image, sx, sy, sw, sh)
 
 ///|
-pub extern "js" fn Window::create_image_bitmap_with_image_image_bitmap_source_and_sx_and_sy_and_sw_and_sh_and_options_image_bitmap_options(
+extern "js" fn Window::create_image_bitmap_with_image_image_bitmap_source_and_sx_and_sy_and_sw_and_sh_and_options_image_bitmap_options_ffi(
+  self : Window,
+  image : ImageBitmapSource,
+  sx : Int,
+  sy : Int,
+  sw : Int,
+  sh : Int,
+  options : JsValue,
+) -> Promise[ImageBitmap] =
+  #| (self, image, sx, sy, sw, sh, options) => self.createImageBitmap(image, sx, sy, sw, sh, options)
+
+///|
+pub fn Window::create_image_bitmap_with_image_image_bitmap_source_and_sx_and_sy_and_sw_and_sh_and_options_image_bitmap_options(
   self : Window,
   image : ImageBitmapSource,
   sx : Int,
@@ -23742,8 +24552,17 @@ pub extern "js" fn Window::create_image_bitmap_with_image_image_bitmap_source_an
   sw : Int,
   sh : Int,
   options : ImageBitmapOptions,
-) -> Promise[ImageBitmap] =
-  #| (self, image, sx, sy, sw, sh, options) => self.createImageBitmap(image, sx, sy, sw, sh, options)
+) -> Promise[ImageBitmap] {
+  Window::create_image_bitmap_with_image_image_bitmap_source_and_sx_and_sy_and_sw_and_sh_and_options_image_bitmap_options_ffi(
+    self,
+    image,
+    sx,
+    sy,
+    sw,
+    sh,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Window::structured_clone(
@@ -23753,12 +24572,21 @@ pub extern "js" fn Window::structured_clone(
   #| (self, value) => self.structuredClone(value)
 
 ///|
-pub extern "js" fn Window::structured_clone_with_options(
+extern "js" fn Window::structured_clone_with_options_ffi(
+  self : Window,
+  value : JsValue,
+  options : JsValue,
+) -> JsValue =
+  #| (self, value, options) => self.structuredClone(value, options)
+
+///|
+pub fn Window::structured_clone_with_options(
   self : Window,
   value : JsValue,
   options : StructuredSerializeOptions,
-) -> JsValue =
-  #| (self, value, options) => self.structuredClone(value, options)
+) -> JsValue {
+  Window::structured_clone_with_options_ffi(self, value, options.to_js())
+}
 
 ///|
 pub extern "js" fn Window::get_trusted_types(
@@ -23790,12 +24618,21 @@ pub extern "js" fn Window::fetch(
   #| (self, input) => self.fetch(input)
 
 ///|
-pub extern "js" fn Window::fetch_with_init(
+extern "js" fn Window::fetch_with_init_ffi(
+  self : Window,
+  input : RequestInfo,
+  init_ : JsValue,
+) -> Promise[Response] =
+  #| (self, input, init_) => self.fetch(input, init_)
+
+///|
+pub fn Window::fetch_with_init(
   self : Window,
   input : RequestInfo,
   init_ : RequestInit,
-) -> Promise[Response] =
-  #| (self, input, init_) => self.fetch(input, init_)
+) -> Promise[Response] {
+  Window::fetch_with_init_ffi(self, input, init_.to_js())
+}
 
 ///|
 pub extern "js" fn Window::request_animation_frame(
@@ -23818,6 +24655,116 @@ pub extern "js" fn Window::get_session_storage(self : Window) -> Storage =
 ///|
 pub extern "js" fn Window::get_local_storage(self : Window) -> Storage =
   #| (self) => self.localStorage
+
+///|
+pub extern "js" fn Window::fetch_later_with_request(
+  self : Window,
+  input : Request,
+  init_ : DeferredRequestInit,
+) -> FetchLaterResult =
+  #| (self, input, init_) => self.fetchLater(input, init_)
+
+///|
+pub extern "js" fn Window::fetch_later_with_string(
+  self : Window,
+  input : String,
+  init_ : DeferredRequestInit,
+) -> FetchLaterResult =
+  #| (self, input, init_) => self.fetchLater(input, init_)
+
+///|
+pub extern "js" fn Window::set_timeout_with_string(
+  self : Window,
+  handler : String,
+  timeout : Int,
+  arguments : JsValue,
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
+
+///|
+pub extern "js" fn Window::set_timeout_with_function(
+  self : Window,
+  handler : Function,
+  timeout : Int,
+  arguments : JsValue,
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
+
+///|
+pub extern "js" fn Window::set_timeout_with_trusted_script(
+  self : Window,
+  handler : TrustedScript,
+  timeout : Int,
+  arguments : JsValue,
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
+
+///|
+pub extern "js" fn Window::set_interval_with_string(
+  self : Window,
+  handler : String,
+  timeout : Int,
+  arguments : JsValue,
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
+
+///|
+pub extern "js" fn Window::set_interval_with_function(
+  self : Window,
+  handler : Function,
+  timeout : Int,
+  arguments : JsValue,
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
+
+///|
+pub extern "js" fn Window::set_interval_with_trusted_script(
+  self : Window,
+  handler : TrustedScript,
+  timeout : Int,
+  arguments : JsValue,
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
+
+///|
+pub extern "js" fn Window::create_image_bitmap_with_canvas_image_source(
+  self : Window,
+  image : CanvasImageSource,
+  options : ImageBitmapOptions,
+) -> Promise[ImageBitmap] =
+  #| (self, image, options) => self.createImageBitmap(image, options)
+
+///|
+pub extern "js" fn Window::create_image_bitmap_with_blob(
+  self : Window,
+  image : Blob,
+  options : ImageBitmapOptions,
+) -> Promise[ImageBitmap] =
+  #| (self, image, options) => self.createImageBitmap(image, options)
+
+///|
+pub extern "js" fn Window::create_image_bitmap_with_image_data(
+  self : Window,
+  image : ImageData,
+  options : ImageBitmapOptions,
+) -> Promise[ImageBitmap] =
+  #| (self, image, options) => self.createImageBitmap(image, options)
+
+///|
+pub extern "js" fn Window::fetch_with_request(
+  self : Window,
+  input : Request,
+  init_ : RequestInit,
+) -> Promise[Response] =
+  #| (self, input, init_) => self.fetch(input, init_)
+
+///|
+pub extern "js" fn Window::fetch_with_string(
+  self : Window,
+  input : String,
+  init_ : RequestInit,
+) -> Promise[Response] =
+  #| (self, input, init_) => self.fetch(input, init_)
 
 ///|
 /// BarProp interface
@@ -24013,14 +24960,14 @@ pub extern "js" fn History::get_length(self : History) -> Int =
 pub extern "js" fn History::get_scroll_restoration(
   self : History,
 ) -> ScrollRestoration =
-  #| (self) => self.scrollRestoration
+  #| (self) => ['auto', 'manual'].indexOf(self.scrollRestoration)
 
 ///|
 pub extern "js" fn History::set_scroll_restoration(
   self : History,
   value : ScrollRestoration,
 ) -> Unit =
-  #| (self, value) => { self.scrollRestoration = value }
+  #| (self, value) => { self.scrollRestoration = ['auto', 'manual'][value] }
 
 ///|
 pub extern "js" fn History::get_state(self : History) -> JsValue =
@@ -24120,26 +25067,34 @@ pub extern "js" fn Navigation::entries(
 pub extern "js" fn Navigation::get_current_entry(
   self : Navigation,
 ) -> NavigationHistoryEntry? =
-  #| (self) => { const v = self.currentEntry; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.currentEntry; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn Navigation::update_current_entry(
+extern "js" fn Navigation::update_current_entry_ffi(
   self : Navigation,
-  options : NavigationUpdateCurrentEntryOptions,
+  options : JsValue,
 ) -> Unit =
   #| (self, options) => self.updateCurrentEntry(options)
+
+///|
+pub fn Navigation::update_current_entry(
+  self : Navigation,
+  options : NavigationUpdateCurrentEntryOptions,
+) -> Unit {
+  Navigation::update_current_entry_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Navigation::get_transition(
   self : Navigation,
 ) -> NavigationTransition? =
-  #| (self) => { const v = self.transition; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.transition; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Navigation::get_activation(
   self : Navigation,
 ) -> NavigationActivation? =
-  #| (self) => { const v = self.activation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.activation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Navigation::get_can_go_back(self : Navigation) -> Bool =
@@ -24157,23 +25112,40 @@ pub extern "js" fn Navigation::navigate(
   #| (self, url) => self.navigate(url)
 
 ///|
-pub extern "js" fn Navigation::navigate_with_options(
+extern "js" fn Navigation::navigate_with_options_ffi(
+  self : Navigation,
+  url : String,
+  options : JsValue,
+) -> NavigationResult =
+  #| (self, url, options) => self.navigate(url, options)
+
+///|
+pub fn Navigation::navigate_with_options(
   self : Navigation,
   url : String,
   options : NavigationNavigateOptions,
-) -> NavigationResult =
-  #| (self, url, options) => self.navigate(url, options)
+) -> NavigationResult {
+  Navigation::navigate_with_options_ffi(self, url, options.to_js())
+}
 
 ///|
 pub extern "js" fn Navigation::reload(self : Navigation) -> NavigationResult =
   #| (self) => self.reload()
 
 ///|
-pub extern "js" fn Navigation::reload_with_options(
+extern "js" fn Navigation::reload_with_options_ffi(
   self : Navigation,
-  options : NavigationReloadOptions,
+  options : JsValue,
 ) -> NavigationResult =
   #| (self, options) => self.reload(options)
+
+///|
+pub fn Navigation::reload_with_options(
+  self : Navigation,
+  options : NavigationReloadOptions,
+) -> NavigationResult {
+  Navigation::reload_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Navigation::traverse_to(
@@ -24183,34 +25155,59 @@ pub extern "js" fn Navigation::traverse_to(
   #| (self, key) => self.traverseTo(key)
 
 ///|
-pub extern "js" fn Navigation::traverse_to_with_options(
+extern "js" fn Navigation::traverse_to_with_options_ffi(
+  self : Navigation,
+  key : String,
+  options : JsValue,
+) -> NavigationResult =
+  #| (self, key, options) => self.traverseTo(key, options)
+
+///|
+pub fn Navigation::traverse_to_with_options(
   self : Navigation,
   key : String,
   options : NavigationOptions,
-) -> NavigationResult =
-  #| (self, key, options) => self.traverseTo(key, options)
+) -> NavigationResult {
+  Navigation::traverse_to_with_options_ffi(self, key, options.to_js())
+}
 
 ///|
 pub extern "js" fn Navigation::back(self : Navigation) -> NavigationResult =
   #| (self) => self.back()
 
 ///|
-pub extern "js" fn Navigation::back_with_options(
+extern "js" fn Navigation::back_with_options_ffi(
   self : Navigation,
-  options : NavigationOptions,
+  options : JsValue,
 ) -> NavigationResult =
   #| (self, options) => self.back(options)
+
+///|
+pub fn Navigation::back_with_options(
+  self : Navigation,
+  options : NavigationOptions,
+) -> NavigationResult {
+  Navigation::back_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Navigation::forward(self : Navigation) -> NavigationResult =
   #| (self) => self.forward()
 
 ///|
-pub extern "js" fn Navigation::forward_with_options(
+extern "js" fn Navigation::forward_with_options_ffi(
   self : Navigation,
-  options : NavigationOptions,
+  options : JsValue,
 ) -> NavigationResult =
   #| (self, options) => self.forward(options)
+
+///|
+pub fn Navigation::forward_with_options(
+  self : Navigation,
+  options : NavigationOptions,
+) -> NavigationResult {
+  Navigation::forward_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Navigation::get_onnavigate(
@@ -24312,7 +25309,7 @@ pub extern "js" fn NavigationHistoryEntry::to_event_target(
 pub extern "js" fn NavigationHistoryEntry::get_url(
   self : NavigationHistoryEntry,
 ) -> String? =
-  #| (self) => { const v = self.url; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.url) ?? undefined
 
 ///|
 pub extern "js" fn NavigationHistoryEntry::get_key(
@@ -24330,7 +25327,7 @@ pub extern "js" fn NavigationHistoryEntry::get_id(
 pub extern "js" fn NavigationHistoryEntry::get_index(
   self : NavigationHistoryEntry,
 ) -> Int64 =
-  #| (self) => self.index
+  #| (self) => (() => { const n = self.index; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn NavigationHistoryEntry::get_same_document(
@@ -24399,7 +25396,7 @@ pub extern "js" fn JsValue::to_navigation_transition(
 pub extern "js" fn NavigationTransition::get_navigation_type(
   self : NavigationTransition,
 ) -> NavigationType =
-  #| (self) => self.navigationType
+  #| (self) => ['push', 'replace', 'reload', 'traverse'].indexOf(self.navigationType)
 
 ///|
 pub extern "js" fn NavigationTransition::get_from(
@@ -24467,7 +25464,7 @@ pub extern "js" fn JsValue::to_navigation_activation(
 pub extern "js" fn NavigationActivation::get_from(
   self : NavigationActivation,
 ) -> NavigationHistoryEntry? =
-  #| (self) => { const v = self.from; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.from; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn NavigationActivation::get_entry(
@@ -24479,7 +25476,7 @@ pub extern "js" fn NavigationActivation::get_entry(
 pub extern "js" fn NavigationActivation::get_navigation_type(
   self : NavigationActivation,
 ) -> NavigationType =
-  #| (self) => self.navigationType
+  #| (self) => ['push', 'replace', 'reload', 'traverse'].indexOf(self.navigationType)
 
 ///|
 /// NavigateEvent interface
@@ -24516,17 +25513,25 @@ pub extern "js" fn NavigateEvent::to_event(self : NavigateEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn NavigateEvent::new(
+extern "js" fn NavigateEvent::new_ffi(
   type_ : String,
-  event_init_dict : NavigateEventInit,
+  event_init_dict : JsValue,
 ) -> NavigateEvent =
   #| (type_, event_init_dict) => new NavigateEvent(type_, event_init_dict)
+
+///|
+pub fn NavigateEvent::new(
+  type_ : String,
+  event_init_dict : NavigateEventInit,
+) -> NavigateEvent {
+  NavigateEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn NavigateEvent::get_navigation_type(
   self : NavigateEvent,
 ) -> NavigationType =
-  #| (self) => self.navigationType
+  #| (self) => ['push', 'replace', 'reload', 'traverse'].indexOf(self.navigationType)
 
 ///|
 pub extern "js" fn NavigateEvent::get_destination(
@@ -24560,13 +25565,13 @@ pub extern "js" fn NavigateEvent::get_signal(
 pub extern "js" fn NavigateEvent::get_form_data(
   self : NavigateEvent,
 ) -> FormData? =
-  #| (self) => { const v = self.formData; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.formData; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn NavigateEvent::get_download_request(
   self : NavigateEvent,
 ) -> String? =
-  #| (self) => { const v = self.downloadRequest; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.downloadRequest) ?? undefined
 
 ///|
 pub extern "js" fn NavigateEvent::get_info(self : NavigateEvent) -> JsValue =
@@ -24582,18 +25587,26 @@ pub extern "js" fn NavigateEvent::get_has_ua_visual_transition(
 pub extern "js" fn NavigateEvent::get_source_element(
   self : NavigateEvent,
 ) -> Element? =
-  #| (self) => { const v = self.sourceElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.sourceElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn NavigateEvent::intercept(self : NavigateEvent) -> Unit =
   #| (self) => self.intercept()
 
 ///|
-pub extern "js" fn NavigateEvent::intercept_with_options(
+extern "js" fn NavigateEvent::intercept_with_options_ffi(
   self : NavigateEvent,
-  options : NavigationInterceptOptions,
+  options : JsValue,
 ) -> Unit =
   #| (self, options) => self.intercept(options)
+
+///|
+pub fn NavigateEvent::intercept_with_options(
+  self : NavigateEvent,
+  options : NavigationInterceptOptions,
+) -> Unit {
+  NavigateEvent::intercept_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn NavigateEvent::scroll(self : NavigateEvent) -> Unit =
@@ -24645,12 +25658,25 @@ pub extern "js" fn NavigationPrecommitController::redirect(
   #| (self, url) => self.redirect(url)
 
 ///|
-pub extern "js" fn NavigationPrecommitController::redirect_with_options(
+extern "js" fn NavigationPrecommitController::redirect_with_options_ffi(
+  self : NavigationPrecommitController,
+  url : String,
+  options : JsValue,
+) -> Unit =
+  #| (self, url, options) => self.redirect(url, options)
+
+///|
+pub fn NavigationPrecommitController::redirect_with_options(
   self : NavigationPrecommitController,
   url : String,
   options : NavigationNavigateOptions,
-) -> Unit =
-  #| (self, url, options) => self.redirect(url, options)
+) -> Unit {
+  NavigationPrecommitController::redirect_with_options_ffi(
+    self,
+    url,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn NavigationPrecommitController::add_handler(
@@ -24719,7 +25745,7 @@ pub extern "js" fn NavigationDestination::get_id(
 pub extern "js" fn NavigationDestination::get_index(
   self : NavigationDestination,
 ) -> Int64 =
-  #| (self) => self.index
+  #| (self) => (() => { const n = self.index; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn NavigationDestination::get_same_document(
@@ -24778,17 +25804,25 @@ pub extern "js" fn NavigationCurrentEntryChangeEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn NavigationCurrentEntryChangeEvent::new(
+extern "js" fn NavigationCurrentEntryChangeEvent::new_ffi(
   type_ : String,
-  event_init_dict : NavigationCurrentEntryChangeEventInit,
+  event_init_dict : JsValue,
 ) -> NavigationCurrentEntryChangeEvent =
   #| (type_, event_init_dict) => new NavigationCurrentEntryChangeEvent(type_, event_init_dict)
+
+///|
+pub fn NavigationCurrentEntryChangeEvent::new(
+  type_ : String,
+  event_init_dict : NavigationCurrentEntryChangeEventInit,
+) -> NavigationCurrentEntryChangeEvent {
+  NavigationCurrentEntryChangeEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn NavigationCurrentEntryChangeEvent::get_navigation_type(
   self : NavigationCurrentEntryChangeEvent,
 ) -> NavigationType? =
-  #| (self) => { const v = self.navigationType; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.navigationType; return v == null ? undefined : ['push', 'replace', 'reload', 'traverse'].indexOf(v); })()
 
 ///|
 pub extern "js" fn NavigationCurrentEntryChangeEvent::get_from(
@@ -24833,11 +25867,23 @@ pub extern "js" fn PopStateEvent::to_event(self : PopStateEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn PopStateEvent::new(
+pub extern "js" fn PopStateEvent::new(type_ : String) -> PopStateEvent =
+  #| (type_) => new PopStateEvent(type_)
+
+///|
+extern "js" fn PopStateEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : PopStateEventInit,
+  event_init_dict : JsValue,
 ) -> PopStateEvent =
   #| (type_, event_init_dict) => new PopStateEvent(type_, event_init_dict)
+
+///|
+pub fn PopStateEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : PopStateEventInit,
+) -> PopStateEvent {
+  PopStateEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn PopStateEvent::get_state(self : PopStateEvent) -> JsValue =
@@ -24892,11 +25938,23 @@ pub extern "js" fn HashChangeEvent::to_event(self : HashChangeEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn HashChangeEvent::new(
+pub extern "js" fn HashChangeEvent::new(type_ : String) -> HashChangeEvent =
+  #| (type_) => new HashChangeEvent(type_)
+
+///|
+extern "js" fn HashChangeEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : HashChangeEventInit,
+  event_init_dict : JsValue,
 ) -> HashChangeEvent =
   #| (type_, event_init_dict) => new HashChangeEvent(type_, event_init_dict)
+
+///|
+pub fn HashChangeEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : HashChangeEventInit,
+) -> HashChangeEvent {
+  HashChangeEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn HashChangeEvent::get_old_url(
@@ -24947,23 +26005,35 @@ pub extern "js" fn PageSwapEvent::to_event(self : PageSwapEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn PageSwapEvent::new(
+pub extern "js" fn PageSwapEvent::new(type_ : String) -> PageSwapEvent =
+  #| (type_) => new PageSwapEvent(type_)
+
+///|
+extern "js" fn PageSwapEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : PageSwapEventInit,
+  event_init_dict : JsValue,
 ) -> PageSwapEvent =
   #| (type_, event_init_dict) => new PageSwapEvent(type_, event_init_dict)
+
+///|
+pub fn PageSwapEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : PageSwapEventInit,
+) -> PageSwapEvent {
+  PageSwapEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn PageSwapEvent::get_activation(
   self : PageSwapEvent,
 ) -> NavigationActivation? =
-  #| (self) => { const v = self.activation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.activation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn PageSwapEvent::get_view_transition(
   self : PageSwapEvent,
 ) -> ViewTransition? =
-  #| (self) => { const v = self.viewTransition; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.viewTransition; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// PageRevealEvent interface
@@ -25008,17 +26078,29 @@ pub extern "js" fn PageRevealEvent::to_event(self : PageRevealEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn PageRevealEvent::new(
+pub extern "js" fn PageRevealEvent::new(type_ : String) -> PageRevealEvent =
+  #| (type_) => new PageRevealEvent(type_)
+
+///|
+extern "js" fn PageRevealEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : PageRevealEventInit,
+  event_init_dict : JsValue,
 ) -> PageRevealEvent =
   #| (type_, event_init_dict) => new PageRevealEvent(type_, event_init_dict)
+
+///|
+pub fn PageRevealEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : PageRevealEventInit,
+) -> PageRevealEvent {
+  PageRevealEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn PageRevealEvent::get_view_transition(
   self : PageRevealEvent,
 ) -> ViewTransition? =
-  #| (self) => { const v = self.viewTransition; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.viewTransition; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// PageTransitionEvent interface
@@ -25067,9 +26149,26 @@ pub extern "js" fn PageTransitionEvent::to_event(
 ///|
 pub extern "js" fn PageTransitionEvent::new(
   type_ : String,
-  event_init_dict : PageTransitionEventInit,
+) -> PageTransitionEvent =
+  #| (type_) => new PageTransitionEvent(type_)
+
+///|
+extern "js" fn PageTransitionEvent::new_with_event_init_dict_ffi(
+  type_ : String,
+  event_init_dict : JsValue,
 ) -> PageTransitionEvent =
   #| (type_, event_init_dict) => new PageTransitionEvent(type_, event_init_dict)
+
+///|
+pub fn PageTransitionEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : PageTransitionEventInit,
+) -> PageTransitionEvent {
+  PageTransitionEvent::new_with_event_init_dict_ffi(
+    type_,
+    event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn PageTransitionEvent::get_persisted(
@@ -25226,37 +26325,37 @@ pub extern "js" fn JsValue::to_not_restored_reasons(
 pub extern "js" fn NotRestoredReasons::get_src(
   self : NotRestoredReasons,
 ) -> String? =
-  #| (self) => { const v = self.src; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.src) ?? undefined
 
 ///|
 pub extern "js" fn NotRestoredReasons::get_id(
   self : NotRestoredReasons,
 ) -> String? =
-  #| (self) => { const v = self.id; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.id) ?? undefined
 
 ///|
 pub extern "js" fn NotRestoredReasons::get_name(
   self : NotRestoredReasons,
 ) -> String? =
-  #| (self) => { const v = self.name; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.name) ?? undefined
 
 ///|
 pub extern "js" fn NotRestoredReasons::get_url(
   self : NotRestoredReasons,
 ) -> String? =
-  #| (self) => { const v = self.url; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.url) ?? undefined
 
 ///|
 pub extern "js" fn NotRestoredReasons::get_reasons(
   self : NotRestoredReasons,
 ) -> JsValue? =
-  #| (self) => { const v = self.reasons; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.reasons; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn NotRestoredReasons::get_children(
   self : NotRestoredReasons,
 ) -> JsValue? =
-  #| (self) => { const v = self.children; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.children; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn NotRestoredReasons::to_json(
@@ -25297,11 +26396,23 @@ pub extern "js" fn ErrorEvent::to_event(self : ErrorEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn ErrorEvent::new(
+pub extern "js" fn ErrorEvent::new(type_ : String) -> ErrorEvent =
+  #| (type_) => new ErrorEvent(type_)
+
+///|
+extern "js" fn ErrorEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : ErrorEventInit,
+  event_init_dict : JsValue,
 ) -> ErrorEvent =
   #| (type_, event_init_dict) => new ErrorEvent(type_, event_init_dict)
+
+///|
+pub fn ErrorEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : ErrorEventInit,
+) -> ErrorEvent {
+  ErrorEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn ErrorEvent::get_message(self : ErrorEvent) -> String =
@@ -25368,11 +26479,19 @@ pub extern "js" fn PromiseRejectionEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn PromiseRejectionEvent::new(
+extern "js" fn PromiseRejectionEvent::new_ffi(
   type_ : String,
-  event_init_dict : PromiseRejectionEventInit,
+  event_init_dict : JsValue,
 ) -> PromiseRejectionEvent =
   #| (type_, event_init_dict) => new PromiseRejectionEvent(type_, event_init_dict)
+
+///|
+pub fn PromiseRejectionEvent::new(
+  type_ : String,
+  event_init_dict : PromiseRejectionEventInit,
+) -> PromiseRejectionEvent {
+  PromiseRejectionEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn PromiseRejectionEvent::get_promise(
@@ -25528,11 +26647,19 @@ pub extern "js" fn Navigator::request_midi_access(
   #| (self) => self.requestMIDIAccess()
 
 ///|
-pub extern "js" fn Navigator::request_midi_access_with_options(
+extern "js" fn Navigator::request_midi_access_with_options_ffi(
   self : Navigator,
-  options : MIDIOptions,
+  options : JsValue,
 ) -> Promise[MIDIAccess] =
   #| (self, options) => self.requestMIDIAccess(options)
+
+///|
+pub fn Navigator::request_midi_access_with_options(
+  self : Navigator,
+  options : MIDIOptions,
+) -> Promise[MIDIAccess] {
+  Navigator::request_midi_access_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Navigator::vibrate(
@@ -25620,18 +26747,34 @@ pub extern "js" fn Navigator::get_hid(self : Navigator) -> HID =
   #| (self) => self.hid
 
 ///|
-pub extern "js" fn Navigator::query_handwriting_recognizer(
+extern "js" fn Navigator::query_handwriting_recognizer_ffi(
   self : Navigator,
-  constraint : HandwritingModelConstraint,
+  constraint : JsValue,
 ) -> Promise[HandwritingRecognizerQueryResult?] =
-  #| (self, constraint) => self.queryHandwritingRecognizer(constraint).then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
+  #| (self, constraint) => self.queryHandwritingRecognizer(constraint)
 
 ///|
-pub extern "js" fn Navigator::create_handwriting_recognizer(
+pub fn Navigator::query_handwriting_recognizer(
   self : Navigator,
   constraint : HandwritingModelConstraint,
+) -> Promise[HandwritingRecognizerQueryResult?] {
+  Navigator::query_handwriting_recognizer_ffi(self, constraint.to_js())
+}
+
+///|
+extern "js" fn Navigator::create_handwriting_recognizer_ffi(
+  self : Navigator,
+  constraint : JsValue,
 ) -> Promise[HandwritingRecognizer] =
   #| (self, constraint) => self.createHandwritingRecognizer(constraint)
+
+///|
+pub fn Navigator::create_handwriting_recognizer(
+  self : Navigator,
+  constraint : HandwritingModelConstraint,
+) -> Promise[HandwritingRecognizer] {
+  Navigator::create_handwriting_recognizer_ffi(self, constraint.to_js())
+}
 
 ///|
 pub extern "js" fn Navigator::get_installed_related_apps(
@@ -25646,11 +26789,19 @@ pub extern "js" fn Navigator::get_battery(
   #| (self) => self.getBattery()
 
 ///|
-pub extern "js" fn Navigator::join_ad_interest_group(
+extern "js" fn Navigator::join_ad_interest_group_ffi(
   self : Navigator,
-  group : AuctionAdInterestGroup,
+  group : JsValue,
 ) -> Promise[Unit] =
   #| (self, group) => self.joinAdInterestGroup(group)
+
+///|
+pub fn Navigator::join_ad_interest_group(
+  self : Navigator,
+  group : AuctionAdInterestGroup,
+) -> Promise[Unit] {
+  Navigator::join_ad_interest_group_ffi(self, group.to_js())
+}
 
 ///|
 pub extern "js" fn Navigator::leave_ad_interest_group(
@@ -25659,11 +26810,19 @@ pub extern "js" fn Navigator::leave_ad_interest_group(
   #| (self) => self.leaveAdInterestGroup()
 
 ///|
-pub extern "js" fn Navigator::leave_ad_interest_group_with_group(
+extern "js" fn Navigator::leave_ad_interest_group_with_group_ffi(
   self : Navigator,
-  group : AuctionAdInterestGroupKey,
+  group : JsValue,
 ) -> Promise[Unit] =
   #| (self, group) => self.leaveAdInterestGroup(group)
+
+///|
+pub fn Navigator::leave_ad_interest_group_with_group(
+  self : Navigator,
+  group : AuctionAdInterestGroupKey,
+) -> Promise[Unit] {
+  Navigator::leave_ad_interest_group_with_group_ffi(self, group.to_js())
+}
 
 ///|
 pub extern "js" fn Navigator::clear_origin_joined_ad_interest_groups(
@@ -25681,11 +26840,19 @@ pub extern "js" fn Navigator::clear_origin_joined_ad_interest_groups_with_intere
   #| (self, owner, interest_groups_to_keep) => self.clearOriginJoinedAdInterestGroups(owner, interest_groups_to_keep)
 
 ///|
-pub extern "js" fn Navigator::run_ad_auction(
+extern "js" fn Navigator::run_ad_auction_ffi(
   self : Navigator,
-  config : AuctionAdConfig,
+  config : JsValue,
 ) -> Promise[StringOrFencedFrameConfig] =
   #| (self, config) => self.runAdAuction(config)
+
+///|
+pub fn Navigator::run_ad_auction(
+  self : Navigator,
+  config : AuctionAdConfig,
+) -> Promise[StringOrFencedFrameConfig] {
+  Navigator::run_ad_auction_ffi(self, config.to_js())
+}
 
 ///|
 pub extern "js" fn Navigator::get_deprecated_run_ad_auction_enforces_k_anonymity(
@@ -25706,11 +26873,22 @@ pub extern "js" fn Navigator::get_interest_group_ad_auction_data(
   #| (self) => self.getInterestGroupAdAuctionData()
 
 ///|
-pub extern "js" fn Navigator::get_interest_group_ad_auction_data_with_config(
+extern "js" fn Navigator::get_interest_group_ad_auction_data_with_config_ffi(
   self : Navigator,
-  config : AdAuctionDataConfig,
+  config : JsValue,
 ) -> Promise[AdAuctionData] =
   #| (self, config) => self.getInterestGroupAdAuctionData(config)
+
+///|
+pub fn Navigator::get_interest_group_ad_auction_data_with_config(
+  self : Navigator,
+  config : AdAuctionDataConfig,
+) -> Promise[AdAuctionData] {
+  Navigator::get_interest_group_ad_auction_data_with_config_ffi(
+    self,
+    config.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Navigator::create_auction_nonce(
@@ -25803,7 +26981,7 @@ pub extern "js" fn Navigator::send_beacon_with_data(
   url : String,
   data : BodyInit?,
 ) -> Bool =
-  #| (self, url, data) => self.sendBeacon(url, data)
+  #| (self, url, data) => self.sendBeacon(url, (data.$tag === 1 ? data._0 : null))
 
 ///|
 pub extern "js" fn Navigator::get_max_touch_points(self : Navigator) -> Int =
@@ -25814,22 +26992,38 @@ pub extern "js" fn Navigator::share(self : Navigator) -> Promise[Unit] =
   #| (self) => self.share()
 
 ///|
-pub extern "js" fn Navigator::share_with_data(
+extern "js" fn Navigator::share_with_data_ffi(
   self : Navigator,
-  data : ShareData,
+  data : JsValue,
 ) -> Promise[Unit] =
   #| (self, data) => self.share(data)
+
+///|
+pub fn Navigator::share_with_data(
+  self : Navigator,
+  data : ShareData,
+) -> Promise[Unit] {
+  Navigator::share_with_data_ffi(self, data.to_js())
+}
 
 ///|
 pub extern "js" fn Navigator::can_share(self : Navigator) -> Bool =
   #| (self) => self.canShare()
 
 ///|
-pub extern "js" fn Navigator::can_share_with_data(
+extern "js" fn Navigator::can_share_with_data_ffi(
   self : Navigator,
-  data : ShareData,
+  data : JsValue,
 ) -> Bool =
   #| (self, data) => self.canShare(data)
+
+///|
+pub fn Navigator::can_share_with_data(
+  self : Navigator,
+  data : ShareData,
+) -> Bool {
+  Navigator::can_share_with_data_ffi(self, data.to_js())
+}
 
 ///|
 pub extern "js" fn Navigator::get_managed(
@@ -25881,7 +27075,7 @@ pub extern "js" fn Navigator::set_app_badge_with_contents(
   self : Navigator,
   contents : Int64,
 ) -> Promise[Unit] =
-  #| (self, contents) => self.setAppBadge(contents)
+  #| (self, contents) => self.setAppBadge((contents.hi * 4294967296 + contents.lo))
 
 ///|
 pub extern "js" fn Navigator::clear_app_badge(
@@ -25991,7 +27185,7 @@ pub extern "js" fn Navigator::get_pdf_viewer_enabled(self : Navigator) -> Bool =
 pub extern "js" fn Navigator::get_hardware_concurrency(
   self : Navigator,
 ) -> Int64 =
-  #| (self) => self.hardwareConcurrency
+  #| (self) => (() => { const n = self.hardwareConcurrency; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn Navigator::get_ml(self : Navigator) -> ML =
@@ -26030,6 +27224,52 @@ pub extern "js" fn Navigator::get_global_privacy_control(
   self : Navigator,
 ) -> Bool =
   #| (self) => self.globalPrivacyControl
+
+///|
+pub extern "js" fn Navigator::vibrate_with_int(
+  self : Navigator,
+  pattern : Int,
+) -> Bool =
+  #| (self, pattern) => self.vibrate(pattern)
+
+///|
+pub extern "js" fn Navigator::vibrate_with_array_of_int(
+  self : Navigator,
+  pattern : Array[Int],
+) -> Bool =
+  #| (self, pattern) => self.vibrate(pattern)
+
+///|
+pub extern "js" fn Navigator::deprecated_replace_in_urn_with_string(
+  self : Navigator,
+  urn_or_config : String,
+  replacements : JsValue,
+) -> Promise[Unit] =
+  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements)
+
+///|
+pub extern "js" fn Navigator::deprecated_replace_in_urn_with_fenced_frame_config(
+  self : Navigator,
+  urn_or_config : FencedFrameConfig,
+  replacements : JsValue,
+) -> Promise[Unit] =
+  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements)
+
+///|
+pub extern "js" fn Navigator::deprecated_ur_nto_url_with_string(
+  self : Navigator,
+  urn_or_config : String,
+  send_reports : Bool,
+) -> Promise[String] =
+  #| (self, urn_or_config, send_reports) => self.deprecatedURNtoURL(urn_or_config, send_reports)
+
+///|
+pub extern "js" fn Navigator::deprecated_ur_nto_url_with_fenced_frame_config(
+  self : Navigator,
+  urn_or_config : FencedFrameConfig,
+  send_reports : Bool,
+) -> Promise[String] =
+  #| (self, urn_or_config, send_reports) => self.deprecatedURNtoURL(urn_or_config, send_reports)
 
 ///|
 /// PluginArray interface
@@ -26072,25 +27312,25 @@ pub extern "js" fn PluginArray::item(
   self : PluginArray,
   index : Int,
 ) -> Plugin? =
-  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn PluginArray::get(self : PluginArray, index : Int) -> Plugin? =
-  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn PluginArray::named_item(
   self : PluginArray,
   name : String,
 ) -> Plugin? =
-  #| (self, name) => { const v = self.namedItem(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, name) => (() => { const v = self.namedItem(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn PluginArray::get_named(
   self : PluginArray,
   name : String,
 ) -> Plugin? =
-  #| (self, name) => { const v = self[name]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, name) => (() => { const v = self[name]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// MimeTypeArray interface
@@ -26133,28 +27373,28 @@ pub extern "js" fn MimeTypeArray::item(
   self : MimeTypeArray,
   index : Int,
 ) -> MimeType? =
-  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn MimeTypeArray::get(
   self : MimeTypeArray,
   index : Int,
 ) -> MimeType? =
-  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn MimeTypeArray::named_item(
   self : MimeTypeArray,
   name : String,
 ) -> MimeType? =
-  #| (self, name) => { const v = self.namedItem(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, name) => (() => { const v = self.namedItem(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn MimeTypeArray::get_named(
   self : MimeTypeArray,
   name : String,
 ) -> MimeType? =
-  #| (self, name) => { const v = self[name]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, name) => (() => { const v = self[name]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// Plugin interface
@@ -26202,22 +27442,22 @@ pub extern "js" fn Plugin::get_length(self : Plugin) -> Int =
 
 ///|
 pub extern "js" fn Plugin::item(self : Plugin, index : Int) -> MimeType? =
-  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Plugin::get(self : Plugin, index : Int) -> MimeType? =
-  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Plugin::named_item(
   self : Plugin,
   name : String,
 ) -> MimeType? =
-  #| (self, name) => { const v = self.namedItem(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, name) => (() => { const v = self.namedItem(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Plugin::get_named(self : Plugin, name : String) -> MimeType? =
-  #| (self, name) => { const v = self[name]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, name) => (() => { const v = self[name]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// MimeType interface
@@ -26292,12 +27532,56 @@ pub extern "js" fn JsValue::to_image_data(self : JsValue) -> ImageData =
   #| (self) => self
 
 ///|
-pub extern "js" fn ImageData::new(
+pub extern "js" fn ImageData::new(sw : Int, sh : Int) -> ImageData =
+  #| (sw, sh) => new ImageData(sw, sh)
+
+///|
+extern "js" fn ImageData::new_with_settings_ffi(
+  sw : Int,
+  sh : Int,
+  settings : JsValue,
+) -> ImageData =
+  #| (sw, sh, settings) => new ImageData(sw, sh, settings)
+
+///|
+pub fn ImageData::new_with_settings(
   sw : Int,
   sh : Int,
   settings : ImageDataSettings,
+) -> ImageData {
+  ImageData::new_with_settings_ffi(sw, sh, settings.to_js())
+}
+
+///|
+pub extern "js" fn ImageData::new_with_data_and_sw(
+  data : ImageDataArray,
+  sw : Int,
 ) -> ImageData =
-  #| (sw, sh, settings) => new ImageData(sw, sh, settings)
+  #| (data, sw) => new ImageData(data, sw)
+
+///|
+extern "js" fn ImageData::new_with_data_and_sw_with_settings_ffi(
+  data : ImageDataArray,
+  sw : Int,
+  sh : Int,
+  settings : JsValue,
+) -> ImageData =
+  #| (data, sw, sh, settings) => new ImageData(data, sw, sh, settings)
+
+///|
+pub fn ImageData::new_with_data_and_sw_with_settings(
+  data : ImageDataArray,
+  sw : Int,
+  sh : Int,
+  settings : ImageDataSettings,
+) -> ImageData {
+  ImageData::new_with_data_and_sw_with_settings_ffi(
+    data,
+    sw,
+    sh,
+    settings.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn ImageData::get_width(self : ImageData) -> Int =
@@ -26315,13 +27599,31 @@ pub extern "js" fn ImageData::get_data(self : ImageData) -> ImageDataArray =
 pub extern "js" fn ImageData::get_pixel_format(
   self : ImageData,
 ) -> ImageDataPixelFormat =
-  #| (self) => self.pixelFormat
+  #| (self) => ['rgba-unorm8', 'rgba-float16'].indexOf(self.pixelFormat)
 
 ///|
 pub extern "js" fn ImageData::get_color_space(
   self : ImageData,
 ) -> PredefinedColorSpace =
-  #| (self) => self.colorSpace
+  #| (self) => ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(self.colorSpace)
+
+///|
+pub extern "js" fn ImageData::new_with_uint8_clamped_array(
+  data : Uint8ClampedArray,
+  sw : Int,
+  sh : Int,
+  settings : ImageDataSettings,
+) -> ImageData =
+  #| (data, sw, sh, settings) => new ImageData(data, sw, sh, settings)
+
+///|
+pub extern "js" fn ImageData::new_with_float16_array(
+  data : Float16Array,
+  sw : Int,
+  sh : Int,
+  settings : ImageDataSettings,
+) -> ImageData =
+  #| (data, sw, sh, settings) => new ImageData(data, sw, sh, settings)
 
 ///|
 /// ImageBitmap interface
@@ -26398,11 +27700,23 @@ pub extern "js" fn MessageEvent::to_event(self : MessageEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn MessageEvent::new(
+pub extern "js" fn MessageEvent::new(type_ : String) -> MessageEvent =
+  #| (type_) => new MessageEvent(type_)
+
+///|
+extern "js" fn MessageEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : MessageEventInit,
+  event_init_dict : JsValue,
 ) -> MessageEvent =
   #| (type_, event_init_dict) => new MessageEvent(type_, event_init_dict)
+
+///|
+pub fn MessageEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : MessageEventInit,
+) -> MessageEvent {
+  MessageEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn MessageEvent::get_data(self : MessageEvent) -> JsValue =
@@ -26422,7 +27736,7 @@ pub extern "js" fn MessageEvent::get_last_event_id(
 pub extern "js" fn MessageEvent::get_source(
   self : MessageEvent,
 ) -> MessageEventSource? =
-  #| (self) => { const v = self.source; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.source; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn MessageEvent::get_ports(self : MessageEvent) -> JsValue =
@@ -26447,7 +27761,7 @@ pub extern "js" fn MessageEvent::init_message_event_with_ports(
   source : MessageEventSource?,
   ports : Array[MessagePort],
 ) -> Unit =
-  #| (self, type_, bubbles, cancelable, data, origin, last_event_id, source, ports) => self.initMessageEvent(type_, bubbles, cancelable, data, origin, last_event_id, source, ports)
+  #| (self, type_, bubbles, cancelable, data, origin, last_event_id, source, ports) => self.initMessageEvent(type_, bubbles, cancelable, data, origin, last_event_id, (source.$tag === 1 ? source._0 : null), ports)
 
 ///|
 /// EventSource interface
@@ -26484,11 +27798,26 @@ pub extern "js" fn EventSource::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn EventSource::new(
+pub extern "js" fn EventSource::new(url : String) -> EventSource =
+  #| (url) => new EventSource(url)
+
+///|
+extern "js" fn EventSource::new_with_event_source_init_dict_ffi(
   url : String,
-  event_source_init_dict : EventSourceInit,
+  event_source_init_dict : JsValue,
 ) -> EventSource =
   #| (url, event_source_init_dict) => new EventSource(url, event_source_init_dict)
+
+///|
+pub fn EventSource::new_with_event_source_init_dict(
+  url : String,
+  event_source_init_dict : EventSourceInit,
+) -> EventSource {
+  EventSource::new_with_event_source_init_dict_ffi(
+    url,
+    event_source_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn EventSource::get_url(self : EventSource) -> String =
@@ -26652,12 +27981,21 @@ pub extern "js" fn MessagePort::post_message(
   #| (self, message) => self.postMessage(message)
 
 ///|
-pub extern "js" fn MessagePort::post_message_with_options(
+extern "js" fn MessagePort::post_message_with_options_ffi(
+  self : MessagePort,
+  message : JsValue,
+  options : JsValue,
+) -> Unit =
+  #| (self, message, options) => self.postMessage(message, options)
+
+///|
+pub fn MessagePort::post_message_with_options(
   self : MessagePort,
   message : JsValue,
   options : StructuredSerializeOptions,
-) -> Unit =
-  #| (self, message, options) => self.postMessage(message, options)
+) -> Unit {
+  MessagePort::post_message_with_options_ffi(self, message, options.to_js())
+}
 
 ///|
 pub extern "js" fn MessagePort::post_message_with_message_and_transfer(
@@ -27092,12 +28430,25 @@ pub extern "js" fn WorkerGlobalScope::create_image_bitmap(
   #| (self, image) => self.createImageBitmap(image)
 
 ///|
-pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_options(
+extern "js" fn WorkerGlobalScope::create_image_bitmap_with_options_ffi(
+  self : WorkerGlobalScope,
+  image : ImageBitmapSource,
+  options : JsValue,
+) -> Promise[ImageBitmap] =
+  #| (self, image, options) => self.createImageBitmap(image, options)
+
+///|
+pub fn WorkerGlobalScope::create_image_bitmap_with_options(
   self : WorkerGlobalScope,
   image : ImageBitmapSource,
   options : ImageBitmapOptions,
-) -> Promise[ImageBitmap] =
-  #| (self, image, options) => self.createImageBitmap(image, options)
+) -> Promise[ImageBitmap] {
+  WorkerGlobalScope::create_image_bitmap_with_options_ffi(
+    self,
+    image,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_image_image_bitmap_source_and_sx_and_sy_and_sw_and_sh(
@@ -27111,7 +28462,19 @@ pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_image_image_bitma
   #| (self, image, sx, sy, sw, sh) => self.createImageBitmap(image, sx, sy, sw, sh)
 
 ///|
-pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_image_image_bitmap_source_and_sx_and_sy_and_sw_and_sh_and_options_image_bitmap_options(
+extern "js" fn WorkerGlobalScope::create_image_bitmap_with_image_image_bitmap_source_and_sx_and_sy_and_sw_and_sh_and_options_image_bitmap_options_ffi(
+  self : WorkerGlobalScope,
+  image : ImageBitmapSource,
+  sx : Int,
+  sy : Int,
+  sw : Int,
+  sh : Int,
+  options : JsValue,
+) -> Promise[ImageBitmap] =
+  #| (self, image, sx, sy, sw, sh, options) => self.createImageBitmap(image, sx, sy, sw, sh, options)
+
+///|
+pub fn WorkerGlobalScope::create_image_bitmap_with_image_image_bitmap_source_and_sx_and_sy_and_sw_and_sh_and_options_image_bitmap_options(
   self : WorkerGlobalScope,
   image : ImageBitmapSource,
   sx : Int,
@@ -27119,8 +28482,17 @@ pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_image_image_bitma
   sw : Int,
   sh : Int,
   options : ImageBitmapOptions,
-) -> Promise[ImageBitmap] =
-  #| (self, image, sx, sy, sw, sh, options) => self.createImageBitmap(image, sx, sy, sw, sh, options)
+) -> Promise[ImageBitmap] {
+  WorkerGlobalScope::create_image_bitmap_with_image_image_bitmap_source_and_sx_and_sy_and_sw_and_sh_and_options_image_bitmap_options_ffi(
+    self,
+    image,
+    sx,
+    sy,
+    sw,
+    sh,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn WorkerGlobalScope::structured_clone(
@@ -27130,12 +28502,25 @@ pub extern "js" fn WorkerGlobalScope::structured_clone(
   #| (self, value) => self.structuredClone(value)
 
 ///|
-pub extern "js" fn WorkerGlobalScope::structured_clone_with_options(
+extern "js" fn WorkerGlobalScope::structured_clone_with_options_ffi(
+  self : WorkerGlobalScope,
+  value : JsValue,
+  options : JsValue,
+) -> JsValue =
+  #| (self, value, options) => self.structuredClone(value, options)
+
+///|
+pub fn WorkerGlobalScope::structured_clone_with_options(
   self : WorkerGlobalScope,
   value : JsValue,
   options : StructuredSerializeOptions,
-) -> JsValue =
-  #| (self, value, options) => self.structuredClone(value, options)
+) -> JsValue {
+  WorkerGlobalScope::structured_clone_with_options_ffi(
+    self,
+    value,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn WorkerGlobalScope::get_trusted_types(
@@ -27175,18 +28560,121 @@ pub extern "js" fn WorkerGlobalScope::fetch(
   #| (self, input) => self.fetch(input)
 
 ///|
-pub extern "js" fn WorkerGlobalScope::fetch_with_init(
+extern "js" fn WorkerGlobalScope::fetch_with_init_ffi(
+  self : WorkerGlobalScope,
+  input : RequestInfo,
+  init_ : JsValue,
+) -> Promise[Response] =
+  #| (self, input, init_) => self.fetch(input, init_)
+
+///|
+pub fn WorkerGlobalScope::fetch_with_init(
   self : WorkerGlobalScope,
   input : RequestInfo,
   init_ : RequestInit,
-) -> Promise[Response] =
-  #| (self, input, init_) => self.fetch(input, init_)
+) -> Promise[Response] {
+  WorkerGlobalScope::fetch_with_init_ffi(self, input, init_.to_js())
+}
 
 ///|
 pub extern "js" fn WorkerGlobalScope::get_fonts(
   self : WorkerGlobalScope,
 ) -> FontFaceSet =
   #| (self) => self.fonts
+
+///|
+pub extern "js" fn WorkerGlobalScope::set_timeout_with_string(
+  self : WorkerGlobalScope,
+  handler : String,
+  timeout : Int,
+  arguments : JsValue,
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
+
+///|
+pub extern "js" fn WorkerGlobalScope::set_timeout_with_function(
+  self : WorkerGlobalScope,
+  handler : Function,
+  timeout : Int,
+  arguments : JsValue,
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
+
+///|
+pub extern "js" fn WorkerGlobalScope::set_timeout_with_trusted_script(
+  self : WorkerGlobalScope,
+  handler : TrustedScript,
+  timeout : Int,
+  arguments : JsValue,
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
+
+///|
+pub extern "js" fn WorkerGlobalScope::set_interval_with_string(
+  self : WorkerGlobalScope,
+  handler : String,
+  timeout : Int,
+  arguments : JsValue,
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
+
+///|
+pub extern "js" fn WorkerGlobalScope::set_interval_with_function(
+  self : WorkerGlobalScope,
+  handler : Function,
+  timeout : Int,
+  arguments : JsValue,
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
+
+///|
+pub extern "js" fn WorkerGlobalScope::set_interval_with_trusted_script(
+  self : WorkerGlobalScope,
+  handler : TrustedScript,
+  timeout : Int,
+  arguments : JsValue,
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
+
+///|
+pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_canvas_image_source(
+  self : WorkerGlobalScope,
+  image : CanvasImageSource,
+  options : ImageBitmapOptions,
+) -> Promise[ImageBitmap] =
+  #| (self, image, options) => self.createImageBitmap(image, options)
+
+///|
+pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_blob(
+  self : WorkerGlobalScope,
+  image : Blob,
+  options : ImageBitmapOptions,
+) -> Promise[ImageBitmap] =
+  #| (self, image, options) => self.createImageBitmap(image, options)
+
+///|
+pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_image_data(
+  self : WorkerGlobalScope,
+  image : ImageData,
+  options : ImageBitmapOptions,
+) -> Promise[ImageBitmap] =
+  #| (self, image, options) => self.createImageBitmap(image, options)
+
+///|
+pub extern "js" fn WorkerGlobalScope::fetch_with_request(
+  self : WorkerGlobalScope,
+  input : Request,
+  init_ : RequestInit,
+) -> Promise[Response] =
+  #| (self, input, init_) => self.fetch(input, init_)
+
+///|
+pub extern "js" fn WorkerGlobalScope::fetch_with_string(
+  self : WorkerGlobalScope,
+  input : String,
+  init_ : RequestInit,
+) -> Promise[Response] =
+  #| (self, input, init_) => self.fetch(input, init_)
 
 ///|
 /// DedicatedWorkerGlobalScope interface
@@ -27252,12 +28740,25 @@ pub extern "js" fn DedicatedWorkerGlobalScope::post_message(
   #| (self, message) => self.postMessage(message)
 
 ///|
-pub extern "js" fn DedicatedWorkerGlobalScope::post_message_with_options(
+extern "js" fn DedicatedWorkerGlobalScope::post_message_with_options_ffi(
+  self : DedicatedWorkerGlobalScope,
+  message : JsValue,
+  options : JsValue,
+) -> Unit =
+  #| (self, message, options) => self.postMessage(message, options)
+
+///|
+pub fn DedicatedWorkerGlobalScope::post_message_with_options(
   self : DedicatedWorkerGlobalScope,
   message : JsValue,
   options : StructuredSerializeOptions,
-) -> Unit =
-  #| (self, message, options) => self.postMessage(message, options)
+) -> Unit {
+  DedicatedWorkerGlobalScope::post_message_with_options_ffi(
+    self,
+    message,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn DedicatedWorkerGlobalScope::post_message_with_message_and_transfer(
@@ -27434,11 +28935,23 @@ pub extern "js" fn Worker::to_event_target(self : Worker) -> EventTarget =
   #| (self) => self
 
 ///|
-pub extern "js" fn Worker::new(
+pub extern "js" fn Worker::new(script_url : TrustedScriptURLOrString) -> Worker =
+  #| (script_url) => new Worker(script_url)
+
+///|
+extern "js" fn Worker::new_with_options_ffi(
   script_url : TrustedScriptURLOrString,
-  options : WorkerOptions,
+  options : JsValue,
 ) -> Worker =
   #| (script_url, options) => new Worker(script_url, options)
+
+///|
+pub fn Worker::new_with_options(
+  script_url : TrustedScriptURLOrString,
+  options : WorkerOptions,
+) -> Worker {
+  Worker::new_with_options_ffi(script_url, options.to_js())
+}
 
 ///|
 pub extern "js" fn Worker::terminate(self : Worker) -> Unit =
@@ -27452,12 +28965,21 @@ pub extern "js" fn Worker::post_message(
   #| (self, message) => self.postMessage(message)
 
 ///|
-pub extern "js" fn Worker::post_message_with_options(
+extern "js" fn Worker::post_message_with_options_ffi(
+  self : Worker,
+  message : JsValue,
+  options : JsValue,
+) -> Unit =
+  #| (self, message, options) => self.postMessage(message, options)
+
+///|
+pub fn Worker::post_message_with_options(
   self : Worker,
   message : JsValue,
   options : StructuredSerializeOptions,
-) -> Unit =
-  #| (self, message, options) => self.postMessage(message, options)
+) -> Unit {
+  Worker::post_message_with_options_ffi(self, message, options.to_js())
+}
 
 ///|
 pub extern "js" fn Worker::post_message_with_message_and_transfer(
@@ -27538,6 +29060,12 @@ pub extern "js" fn SharedWorker::to_event_target(
 
 ///|
 pub extern "js" fn SharedWorker::new(
+  script_url : TrustedScriptURLOrString,
+) -> SharedWorker =
+  #| (script_url) => new SharedWorker(script_url)
+
+///|
+pub extern "js" fn SharedWorker::new_with_options(
   script_url : TrustedScriptURLOrString,
   options : StringOrWorkerOptions,
 ) -> SharedWorker =
@@ -27647,7 +29175,7 @@ pub extern "js" fn WorkerNavigator::set_app_badge_with_contents(
   self : WorkerNavigator,
   contents : Int64,
 ) -> Promise[Unit] =
-  #| (self, contents) => self.setAppBadge(contents)
+  #| (self, contents) => self.setAppBadge((contents.hi * 4294967296 + contents.lo))
 
 ///|
 pub extern "js" fn WorkerNavigator::clear_app_badge(
@@ -27745,7 +29273,7 @@ pub extern "js" fn WorkerNavigator::get_on_line(self : WorkerNavigator) -> Bool 
 pub extern "js" fn WorkerNavigator::get_hardware_concurrency(
   self : WorkerNavigator,
 ) -> Int64 =
-  #| (self) => self.hardwareConcurrency
+  #| (self) => (() => { const n = self.hardwareConcurrency; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn WorkerNavigator::get_ml(self : WorkerNavigator) -> ML =
@@ -27977,12 +29505,21 @@ pub extern "js" fn Worklet::add_module(
   #| (self, module_url) => self.addModule(module_url)
 
 ///|
-pub extern "js" fn Worklet::add_module_with_options(
+extern "js" fn Worklet::add_module_with_options_ffi(
+  self : Worklet,
+  module_url : String,
+  options : JsValue,
+) -> Promise[Unit] =
+  #| (self, module_url, options) => self.addModule(module_url, options)
+
+///|
+pub fn Worklet::add_module_with_options(
   self : Worklet,
   module_url : String,
   options : WorkletOptions,
-) -> Promise[Unit] =
-  #| (self, module_url, options) => self.addModule(module_url, options)
+) -> Promise[Unit] {
+  Worklet::add_module_with_options_ffi(self, module_url, options.to_js())
+}
 
 ///|
 /// Storage interface
@@ -28018,15 +29555,15 @@ pub extern "js" fn Storage::get_length(self : Storage) -> Int =
 
 ///|
 pub extern "js" fn Storage::key(self : Storage, index : Int) -> String? =
-  #| (self, index) => { const v = self.key(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (self.key(index)) ?? undefined
 
 ///|
 pub extern "js" fn Storage::get_item(self : Storage, key : String) -> String? =
-  #| (self, key) => { const v = self.getItem(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, key) => (self.getItem(key)) ?? undefined
 
 ///|
 pub extern "js" fn Storage::get_named(self : Storage, key : String) -> String? =
-  #| (self, key) => { const v = self[key]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, key) => (self[key]) ?? undefined
 
 ///|
 pub extern "js" fn Storage::set_item(
@@ -28091,23 +29628,35 @@ pub extern "js" fn StorageEvent::to_event(self : StorageEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn StorageEvent::new(
+pub extern "js" fn StorageEvent::new(type_ : String) -> StorageEvent =
+  #| (type_) => new StorageEvent(type_)
+
+///|
+extern "js" fn StorageEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : StorageEventInit,
+  event_init_dict : JsValue,
 ) -> StorageEvent =
   #| (type_, event_init_dict) => new StorageEvent(type_, event_init_dict)
 
 ///|
+pub fn StorageEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : StorageEventInit,
+) -> StorageEvent {
+  StorageEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
+
+///|
 pub extern "js" fn StorageEvent::get_key(self : StorageEvent) -> String? =
-  #| (self) => { const v = self.key; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.key) ?? undefined
 
 ///|
 pub extern "js" fn StorageEvent::get_old_value(self : StorageEvent) -> String? =
-  #| (self) => { const v = self.oldValue; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.oldValue) ?? undefined
 
 ///|
 pub extern "js" fn StorageEvent::get_new_value(self : StorageEvent) -> String? =
-  #| (self) => { const v = self.newValue; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.newValue) ?? undefined
 
 ///|
 pub extern "js" fn StorageEvent::get_url(self : StorageEvent) -> String =
@@ -28117,7 +29666,7 @@ pub extern "js" fn StorageEvent::get_url(self : StorageEvent) -> String =
 pub extern "js" fn StorageEvent::get_storage_area(
   self : StorageEvent,
 ) -> Storage? =
-  #| (self) => { const v = self.storageArea; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.storageArea; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn StorageEvent::init_storage_event(
@@ -28138,7 +29687,7 @@ pub extern "js" fn StorageEvent::init_storage_event_with_storage_area(
   url : String,
   storage_area : Storage?,
 ) -> Unit =
-  #| (self, type_, bubbles, cancelable, key, old_value, new_value, url, storage_area) => self.initStorageEvent(type_, bubbles, cancelable, key, old_value, new_value, url, storage_area)
+  #| (self, type_, bubbles, cancelable, key, old_value, new_value, url, storage_area) => self.initStorageEvent(type_, bubbles, cancelable, key, old_value, new_value, url, (storage_area.$tag === 1 ? storage_area._0 : null))
 
 ///|
 /// HTMLMarqueeElement interface
@@ -28866,13 +30415,13 @@ pub extern "js" fn HTMLFrameElement::set_no_resize(
 pub extern "js" fn HTMLFrameElement::get_content_document(
   self : HTMLFrameElement,
 ) -> Document? =
-  #| (self) => { const v = self.contentDocument; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.contentDocument; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLFrameElement::get_content_window(
   self : HTMLFrameElement,
 ) -> WindowProxy? =
-  #| (self) => { const v = self.contentWindow; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.contentWindow; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLFrameElement::get_margin_height(

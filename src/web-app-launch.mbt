@@ -10,7 +10,7 @@ pub type LaunchConsumer
 pub extern "js" fn LaunchConsumer::from_fn(
   handler : (LaunchParams) -> JsValue,
 ) -> LaunchConsumer =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// LaunchParams interface
@@ -44,7 +44,7 @@ pub extern "js" fn JsValue::to_launch_params(self : JsValue) -> LaunchParams =
 
 ///|
 pub extern "js" fn LaunchParams::get_target_url(self : LaunchParams) -> String? =
-  #| (self) => { const v = self.targetURL; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.targetURL) ?? undefined
 
 ///|
 pub extern "js" fn LaunchParams::get_files(self : LaunchParams) -> JsValue =

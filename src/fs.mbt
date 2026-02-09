@@ -86,7 +86,7 @@ pub extern "js" fn FileSystemWriteChunkType::as_blob(
 pub extern "js" fn FileSystemWriteChunkType::as_string(
   self : FileSystemWriteChunkType,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get FileSystemWriteChunkType as WriteParams
@@ -152,7 +152,7 @@ pub fn WriteCommandType::from_string(s : String) -> WriteCommandType? {
 
 ///|
 /// FileSystemCreateWritableOptions dictionary
-pub struct FileSystemCreateWritableOptions {
+pub(all) struct FileSystemCreateWritableOptions {
   keepExistingData : Bool?
 }
 
@@ -163,17 +163,24 @@ pub fn FileSystemCreateWritableOptions::default() -> FileSystemCreateWritableOpt
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FileSystemCreateWritableOptions::to_js(
+extern "js" fn FileSystemCreateWritableOptions::to_js_ffi(
   self : FileSystemCreateWritableOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   keepExistingData: self.keepExistingData
+  #|   keepExistingData: (self.keepExistingData === -1 ? undefined : self.keepExistingData)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn FileSystemCreateWritableOptions::to_js(
+  self : FileSystemCreateWritableOptions,
+) -> JsValue {
+  FileSystemCreateWritableOptions::to_js_ffi(self)
+}
+
+///|
 /// FileSystemGetFileOptions dictionary
-pub struct FileSystemGetFileOptions {
+pub(all) struct FileSystemGetFileOptions {
   create : Bool?
 }
 
@@ -184,17 +191,24 @@ pub fn FileSystemGetFileOptions::default() -> FileSystemGetFileOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FileSystemGetFileOptions::to_js(
+extern "js" fn FileSystemGetFileOptions::to_js_ffi(
   self : FileSystemGetFileOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   create: self.create
+  #|   create: (self.create === -1 ? undefined : self.create)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn FileSystemGetFileOptions::to_js(
+  self : FileSystemGetFileOptions,
+) -> JsValue {
+  FileSystemGetFileOptions::to_js_ffi(self)
+}
+
+///|
 /// FileSystemGetDirectoryOptions dictionary
-pub struct FileSystemGetDirectoryOptions {
+pub(all) struct FileSystemGetDirectoryOptions {
   create : Bool?
 }
 
@@ -205,17 +219,24 @@ pub fn FileSystemGetDirectoryOptions::default() -> FileSystemGetDirectoryOptions
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FileSystemGetDirectoryOptions::to_js(
+extern "js" fn FileSystemGetDirectoryOptions::to_js_ffi(
   self : FileSystemGetDirectoryOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   create: self.create
+  #|   create: (self.create === -1 ? undefined : self.create)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn FileSystemGetDirectoryOptions::to_js(
+  self : FileSystemGetDirectoryOptions,
+) -> JsValue {
+  FileSystemGetDirectoryOptions::to_js_ffi(self)
+}
+
+///|
 /// FileSystemRemoveOptions dictionary
-pub struct FileSystemRemoveOptions {
+pub(all) struct FileSystemRemoveOptions {
   recursive : Bool?
 }
 
@@ -226,17 +247,24 @@ pub fn FileSystemRemoveOptions::default() -> FileSystemRemoveOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FileSystemRemoveOptions::to_js(
+extern "js" fn FileSystemRemoveOptions::to_js_ffi(
   self : FileSystemRemoveOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   recursive: self.recursive
+  #|   recursive: (self.recursive === -1 ? undefined : self.recursive)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn FileSystemRemoveOptions::to_js(
+  self : FileSystemRemoveOptions,
+) -> JsValue {
+  FileSystemRemoveOptions::to_js_ffi(self)
+}
+
+///|
 /// WriteParams dictionary
-pub struct WriteParams {
+pub(all) struct WriteParams {
   type_ : WriteCommandType
   size : Nullable[Int64]
   position : Nullable[Int64]
@@ -244,10 +272,10 @@ pub struct WriteParams {
 }
 
 ///|
-/// Create a new WriteParams with default values
-pub fn WriteParams::default() -> WriteParams {
+/// Create a new WriteParams
+pub fn WriteParams::new(type_~ : WriteCommandType) -> WriteParams {
   WriteParams::{
-    type_: panic(),
+    type_,
     size: Nullable::Undefined,
     position: Nullable::Undefined,
     data: None,
@@ -255,18 +283,23 @@ pub fn WriteParams::default() -> WriteParams {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WriteParams::to_js(self : WriteParams) -> JsValue =
+extern "js" fn WriteParams::to_js_ffi(self : WriteParams) -> JsValue =
   #| (self) => ({
   #|   type: ['write', 'seek', 'truncate'][self.type_],
   #|   size: ((() => { const v = self.size; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
   #|   position: ((() => { const v = self.position; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   data: self.data
+  #|   data: ((() => { const v = self.data; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WriteParams::to_js(self : WriteParams) -> JsValue {
+  WriteParams::to_js_ffi(self)
+}
+
+///|
 /// FileSystemReadWriteOptions dictionary
-pub struct FileSystemReadWriteOptions {
+pub(all) struct FileSystemReadWriteOptions {
   at : Int64?
 }
 
@@ -277,13 +310,20 @@ pub fn FileSystemReadWriteOptions::default() -> FileSystemReadWriteOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FileSystemReadWriteOptions::to_js(
+extern "js" fn FileSystemReadWriteOptions::to_js_ffi(
   self : FileSystemReadWriteOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   at: self.at
   #| })
+
+///|
+/// Convert to JsValue
+pub fn FileSystemReadWriteOptions::to_js(
+  self : FileSystemReadWriteOptions,
+) -> JsValue {
+  FileSystemReadWriteOptions::to_js_ffi(self)
+}
 
 ///|
 /// FileSystemHandle interface
@@ -339,7 +379,7 @@ pub extern "js" fn FileSystemHandle::as_file_system_directory_handle(
 pub extern "js" fn FileSystemHandle::get_kind(
   self : FileSystemHandle,
 ) -> FileSystemHandleKind =
-  #| (self) => self.kind
+  #| (self) => ['file', 'directory'].indexOf(self.kind)
 
 ///|
 pub extern "js" fn FileSystemHandle::get_name(
@@ -361,11 +401,22 @@ pub extern "js" fn FileSystemHandle::query_permission(
   #| (self) => self.queryPermission()
 
 ///|
-pub extern "js" fn FileSystemHandle::query_permission_with_descriptor(
+extern "js" fn FileSystemHandle::query_permission_with_descriptor_ffi(
   self : FileSystemHandle,
-  descriptor : FileSystemHandlePermissionDescriptor,
+  descriptor : JsValue,
 ) -> Promise[PermissionState] =
   #| (self, descriptor) => self.queryPermission(descriptor)
+
+///|
+pub fn FileSystemHandle::query_permission_with_descriptor(
+  self : FileSystemHandle,
+  descriptor : FileSystemHandlePermissionDescriptor,
+) -> Promise[PermissionState] {
+  FileSystemHandle::query_permission_with_descriptor_ffi(
+    self,
+    descriptor.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn FileSystemHandle::request_permission(
@@ -374,11 +425,22 @@ pub extern "js" fn FileSystemHandle::request_permission(
   #| (self) => self.requestPermission()
 
 ///|
-pub extern "js" fn FileSystemHandle::request_permission_with_descriptor(
+extern "js" fn FileSystemHandle::request_permission_with_descriptor_ffi(
   self : FileSystemHandle,
-  descriptor : FileSystemHandlePermissionDescriptor,
+  descriptor : JsValue,
 ) -> Promise[PermissionState] =
   #| (self, descriptor) => self.requestPermission(descriptor)
+
+///|
+pub fn FileSystemHandle::request_permission_with_descriptor(
+  self : FileSystemHandle,
+  descriptor : FileSystemHandlePermissionDescriptor,
+) -> Promise[PermissionState] {
+  FileSystemHandle::request_permission_with_descriptor_ffi(
+    self,
+    descriptor.to_js(),
+  )
+}
 
 ///|
 /// FileSystemFileHandle interface
@@ -437,11 +499,19 @@ pub extern "js" fn FileSystemFileHandle::create_writable(
   #| (self) => self.createWritable()
 
 ///|
-pub extern "js" fn FileSystemFileHandle::create_writable_with_options(
+extern "js" fn FileSystemFileHandle::create_writable_with_options_ffi(
   self : FileSystemFileHandle,
-  options : FileSystemCreateWritableOptions,
+  options : JsValue,
 ) -> Promise[FileSystemWritableFileStream] =
   #| (self, options) => self.createWritable(options)
+
+///|
+pub fn FileSystemFileHandle::create_writable_with_options(
+  self : FileSystemFileHandle,
+  options : FileSystemCreateWritableOptions,
+) -> Promise[FileSystemWritableFileStream] {
+  FileSystemFileHandle::create_writable_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn FileSystemFileHandle::create_sync_access_handle(
@@ -494,10 +564,22 @@ pub extern "js" fn FileSystemDirectoryHandle::to_file_system_handle(
   #| (self) => self
 
 ///|
-pub extern "js" fn FileSystemDirectoryHandle::_unknown_(
+pub extern "js" fn FileSystemDirectoryHandle::keys(
   self : FileSystemDirectoryHandle,
-) -> Unit =
-  #| (self) => self._unknown_()
+) -> JsValue =
+  #| (self) => self.keys()
+
+///|
+pub extern "js" fn FileSystemDirectoryHandle::values(
+  self : FileSystemDirectoryHandle,
+) -> JsValue =
+  #| (self) => self.values()
+
+///|
+pub extern "js" fn FileSystemDirectoryHandle::entries(
+  self : FileSystemDirectoryHandle,
+) -> JsValue =
+  #| (self) => self.entries()
 
 ///|
 pub extern "js" fn FileSystemDirectoryHandle::get_file_handle(
@@ -507,12 +589,25 @@ pub extern "js" fn FileSystemDirectoryHandle::get_file_handle(
   #| (self, name) => self.getFileHandle(name)
 
 ///|
-pub extern "js" fn FileSystemDirectoryHandle::get_file_handle_with_options(
+extern "js" fn FileSystemDirectoryHandle::get_file_handle_with_options_ffi(
+  self : FileSystemDirectoryHandle,
+  name : String,
+  options : JsValue,
+) -> Promise[FileSystemFileHandle] =
+  #| (self, name, options) => self.getFileHandle(name, options)
+
+///|
+pub fn FileSystemDirectoryHandle::get_file_handle_with_options(
   self : FileSystemDirectoryHandle,
   name : String,
   options : FileSystemGetFileOptions,
-) -> Promise[FileSystemFileHandle] =
-  #| (self, name, options) => self.getFileHandle(name, options)
+) -> Promise[FileSystemFileHandle] {
+  FileSystemDirectoryHandle::get_file_handle_with_options_ffi(
+    self,
+    name,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn FileSystemDirectoryHandle::get_directory_handle(
@@ -522,12 +617,25 @@ pub extern "js" fn FileSystemDirectoryHandle::get_directory_handle(
   #| (self, name) => self.getDirectoryHandle(name)
 
 ///|
-pub extern "js" fn FileSystemDirectoryHandle::get_directory_handle_with_options(
+extern "js" fn FileSystemDirectoryHandle::get_directory_handle_with_options_ffi(
+  self : FileSystemDirectoryHandle,
+  name : String,
+  options : JsValue,
+) -> Promise[FileSystemDirectoryHandle] =
+  #| (self, name, options) => self.getDirectoryHandle(name, options)
+
+///|
+pub fn FileSystemDirectoryHandle::get_directory_handle_with_options(
   self : FileSystemDirectoryHandle,
   name : String,
   options : FileSystemGetDirectoryOptions,
-) -> Promise[FileSystemDirectoryHandle] =
-  #| (self, name, options) => self.getDirectoryHandle(name, options)
+) -> Promise[FileSystemDirectoryHandle] {
+  FileSystemDirectoryHandle::get_directory_handle_with_options_ffi(
+    self,
+    name,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn FileSystemDirectoryHandle::remove_entry(
@@ -537,12 +645,25 @@ pub extern "js" fn FileSystemDirectoryHandle::remove_entry(
   #| (self, name) => self.removeEntry(name)
 
 ///|
-pub extern "js" fn FileSystemDirectoryHandle::remove_entry_with_options(
+extern "js" fn FileSystemDirectoryHandle::remove_entry_with_options_ffi(
+  self : FileSystemDirectoryHandle,
+  name : String,
+  options : JsValue,
+) -> Promise[Unit] =
+  #| (self, name, options) => self.removeEntry(name, options)
+
+///|
+pub fn FileSystemDirectoryHandle::remove_entry_with_options(
   self : FileSystemDirectoryHandle,
   name : String,
   options : FileSystemRemoveOptions,
-) -> Promise[Unit] =
-  #| (self, name, options) => self.removeEntry(name, options)
+) -> Promise[Unit] {
+  FileSystemDirectoryHandle::remove_entry_with_options_ffi(
+    self,
+    name,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn FileSystemDirectoryHandle::resolve(
@@ -607,14 +728,42 @@ pub extern "js" fn FileSystemWritableFileStream::seek(
   self : FileSystemWritableFileStream,
   position : Int64,
 ) -> Promise[Unit] =
-  #| (self, position) => self.seek(position)
+  #| (self, position) => self.seek((position.hi * 4294967296 + position.lo))
 
 ///|
 pub extern "js" fn FileSystemWritableFileStream::truncate(
   self : FileSystemWritableFileStream,
   size : Int64,
 ) -> Promise[Unit] =
-  #| (self, size) => self.truncate(size)
+  #| (self, size) => self.truncate((size.hi * 4294967296 + size.lo))
+
+///|
+pub extern "js" fn FileSystemWritableFileStream::write_with_buffer_source(
+  self : FileSystemWritableFileStream,
+  data : BufferSource,
+) -> Promise[Unit] =
+  #| (self, data) => self.write(data)
+
+///|
+pub extern "js" fn FileSystemWritableFileStream::write_with_blob(
+  self : FileSystemWritableFileStream,
+  data : Blob,
+) -> Promise[Unit] =
+  #| (self, data) => self.write(data)
+
+///|
+pub extern "js" fn FileSystemWritableFileStream::write_with_string(
+  self : FileSystemWritableFileStream,
+  data : String,
+) -> Promise[Unit] =
+  #| (self, data) => self.write(data)
+
+///|
+pub extern "js" fn FileSystemWritableFileStream::write_with_write_params(
+  self : FileSystemWritableFileStream,
+  data : WriteParams,
+) -> Promise[Unit] =
+  #| (self, data) => self.write(data)
 
 ///|
 /// FileSystemSyncAccessHandle interface
@@ -659,43 +808,69 @@ pub extern "js" fn FileSystemSyncAccessHandle::read(
   self : FileSystemSyncAccessHandle,
   buffer : AllowSharedBufferSource,
 ) -> Int64 =
-  #| (self, buffer) => self.read(buffer)
+  #| (self, buffer) => (() => { const n = self.read(buffer); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
-pub extern "js" fn FileSystemSyncAccessHandle::read_with_options(
+extern "js" fn FileSystemSyncAccessHandle::read_with_options_ffi(
+  self : FileSystemSyncAccessHandle,
+  buffer : AllowSharedBufferSource,
+  options : JsValue,
+) -> Int64 =
+  #| (self, buffer, options) => (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+
+///|
+pub fn FileSystemSyncAccessHandle::read_with_options(
   self : FileSystemSyncAccessHandle,
   buffer : AllowSharedBufferSource,
   options : FileSystemReadWriteOptions,
-) -> Int64 =
-  #| (self, buffer, options) => self.read(buffer, options)
+) -> Int64 {
+  FileSystemSyncAccessHandle::read_with_options_ffi(
+    self,
+    buffer,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::write(
   self : FileSystemSyncAccessHandle,
   buffer : AllowSharedBufferSource,
 ) -> Int64 =
-  #| (self, buffer) => self.write(buffer)
+  #| (self, buffer) => (() => { const n = self.write(buffer); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
-pub extern "js" fn FileSystemSyncAccessHandle::write_with_options(
+extern "js" fn FileSystemSyncAccessHandle::write_with_options_ffi(
+  self : FileSystemSyncAccessHandle,
+  buffer : AllowSharedBufferSource,
+  options : JsValue,
+) -> Int64 =
+  #| (self, buffer, options) => (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+
+///|
+pub fn FileSystemSyncAccessHandle::write_with_options(
   self : FileSystemSyncAccessHandle,
   buffer : AllowSharedBufferSource,
   options : FileSystemReadWriteOptions,
-) -> Int64 =
-  #| (self, buffer, options) => self.write(buffer, options)
+) -> Int64 {
+  FileSystemSyncAccessHandle::write_with_options_ffi(
+    self,
+    buffer,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::truncate(
   self : FileSystemSyncAccessHandle,
   new_size : Int64,
 ) -> Unit =
-  #| (self, new_size) => self.truncate(new_size)
+  #| (self, new_size) => self.truncate((new_size.hi * 4294967296 + new_size.lo))
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::get_size(
   self : FileSystemSyncAccessHandle,
 ) -> Int64 =
-  #| (self) => self.getSize()
+  #| (self) => (() => { const n = self.getSize(); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::flush(
@@ -708,3 +883,51 @@ pub extern "js" fn FileSystemSyncAccessHandle::close(
   self : FileSystemSyncAccessHandle,
 ) -> Unit =
   #| (self) => self.close()
+
+///|
+pub extern "js" fn FileSystemSyncAccessHandle::read_with_array_buffer(
+  self : FileSystemSyncAccessHandle,
+  buffer : ArrayBuffer,
+  options : FileSystemReadWriteOptions,
+) -> Int64 =
+  #| (self, buffer, options) => (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+
+///|
+pub extern "js" fn FileSystemSyncAccessHandle::read_with_shared_array_buffer(
+  self : FileSystemSyncAccessHandle,
+  buffer : SharedArrayBuffer,
+  options : FileSystemReadWriteOptions,
+) -> Int64 =
+  #| (self, buffer, options) => (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+
+///|
+pub extern "js" fn FileSystemSyncAccessHandle::read_with_array_buffer_view(
+  self : FileSystemSyncAccessHandle,
+  buffer : ArrayBufferView,
+  options : FileSystemReadWriteOptions,
+) -> Int64 =
+  #| (self, buffer, options) => (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+
+///|
+pub extern "js" fn FileSystemSyncAccessHandle::write_with_array_buffer(
+  self : FileSystemSyncAccessHandle,
+  buffer : ArrayBuffer,
+  options : FileSystemReadWriteOptions,
+) -> Int64 =
+  #| (self, buffer, options) => (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+
+///|
+pub extern "js" fn FileSystemSyncAccessHandle::write_with_shared_array_buffer(
+  self : FileSystemSyncAccessHandle,
+  buffer : SharedArrayBuffer,
+  options : FileSystemReadWriteOptions,
+) -> Int64 =
+  #| (self, buffer, options) => (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+
+///|
+pub extern "js" fn FileSystemSyncAccessHandle::write_with_array_buffer_view(
+  self : FileSystemSyncAccessHandle,
+  buffer : ArrayBufferView,
+  options : FileSystemReadWriteOptions,
+) -> Int64 =
+  #| (self, buffer, options) => (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()

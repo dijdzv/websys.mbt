@@ -52,7 +52,7 @@ pub extern "js" fn BlobPart::as_blob(self : BlobPart) -> Blob? =
 ///|
 /// Try to get BlobPart as String
 pub extern "js" fn BlobPart::as_string(self : BlobPart) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// EndingType enum
@@ -82,7 +82,7 @@ pub fn EndingType::from_string(s : String) -> EndingType? {
 
 ///|
 /// BlobPropertyBag dictionary
-pub struct BlobPropertyBag {
+pub(all) struct BlobPropertyBag {
   type_ : String?
   endings : EndingType?
 }
@@ -94,16 +94,21 @@ pub fn BlobPropertyBag::default() -> BlobPropertyBag {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BlobPropertyBag::to_js(self : BlobPropertyBag) -> JsValue =
+extern "js" fn BlobPropertyBag::to_js_ffi(self : BlobPropertyBag) -> JsValue =
   #| (self) => ({
   #|   type: self.type_,
-  #|   endings: ['transparent', 'native'][self.endings]
+  #|   endings: ((() => { const v = self.endings; if (v === undefined) return undefined; return ['transparent', 'native'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn BlobPropertyBag::to_js(self : BlobPropertyBag) -> JsValue {
+  BlobPropertyBag::to_js_ffi(self)
+}
+
+///|
 /// FilePropertyBag dictionary
-pub struct FilePropertyBag {
+pub(all) struct FilePropertyBag {
   type_ : String?
   endings : EndingType?
   lastModified : Int64?
@@ -116,13 +121,18 @@ pub fn FilePropertyBag::default() -> FilePropertyBag {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FilePropertyBag::to_js(self : FilePropertyBag) -> JsValue =
+extern "js" fn FilePropertyBag::to_js_ffi(self : FilePropertyBag) -> JsValue =
   #| (self) => ({
   #|   type: self.type_,
-  #|   endings: ['transparent', 'native'][self.endings],
+  #|   endings: ((() => { const v = self.endings; if (v === undefined) return undefined; return ['transparent', 'native'][v]; })()),
   #|   lastModified: self.lastModified
   #| })
+
+///|
+/// Convert to JsValue
+pub fn FilePropertyBag::to_js(self : FilePropertyBag) -> JsValue {
+  FilePropertyBag::to_js_ffi(self)
+}
 
 ///|
 /// Blob interface
@@ -157,15 +167,27 @@ pub extern "js" fn Blob::as_file(self : Blob) -> File? =
   #| (self) => (self instanceof File) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Blob::new(
+pub extern "js" fn Blob::new() -> Blob =
+  #| () => new Blob()
+
+///|
+extern "js" fn Blob::new_with_options_ffi(
   blob_parts : Array[BlobPart],
-  options : BlobPropertyBag,
+  options : JsValue,
 ) -> Blob =
   #| (blob_parts, options) => new Blob(blob_parts, options)
 
 ///|
+pub fn Blob::new_with_options(
+  blob_parts : Array[BlobPart],
+  options : BlobPropertyBag,
+) -> Blob {
+  Blob::new_with_options_ffi(blob_parts, options.to_js())
+}
+
+///|
 pub extern "js" fn Blob::get_size(self : Blob) -> Int64 =
-  #| (self) => self.size
+  #| (self) => (() => { const n = self.size; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn Blob::get_type(self : Blob) -> String =
@@ -182,7 +204,7 @@ pub extern "js" fn Blob::slice_with_content_type(
   end : Int64,
   content_type : String,
 ) -> Blob =
-  #| (self, start, end, content_type) => self.slice(start, end, content_type)
+  #| (self, start, end, content_type) => self.slice((start.hi * 4294967296 + start.lo), (end.hi * 4294967296 + end.lo), content_type)
 
 ///|
 pub extern "js" fn Blob::stream(self : Blob) -> ReadableStream =
@@ -236,9 +258,25 @@ pub extern "js" fn File::to_blob(self : File) -> Blob =
 pub extern "js" fn File::new(
   file_bits : Array[BlobPart],
   file_name : String,
-  options : FilePropertyBag,
+) -> File =
+  #| (file_bits, file_name) => new File(file_bits, file_name)
+
+///|
+extern "js" fn File::new_with_options_ffi(
+  file_bits : Array[BlobPart],
+  file_name : String,
+  options : JsValue,
 ) -> File =
   #| (file_bits, file_name, options) => new File(file_bits, file_name, options)
+
+///|
+pub fn File::new_with_options(
+  file_bits : Array[BlobPart],
+  file_name : String,
+  options : FilePropertyBag,
+) -> File {
+  File::new_with_options_ffi(file_bits, file_name, options.to_js())
+}
 
 ///|
 pub extern "js" fn File::get_name(self : File) -> String =
@@ -246,7 +284,7 @@ pub extern "js" fn File::get_name(self : File) -> String =
 
 ///|
 pub extern "js" fn File::get_last_modified(self : File) -> Int64 =
-  #| (self) => self.lastModified
+  #| (self) => (() => { const n = self.lastModified; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn File::get_webkit_relative_path(self : File) -> String =
@@ -282,11 +320,11 @@ pub extern "js" fn JsValue::to_file_list(self : JsValue) -> FileList =
 
 ///|
 pub extern "js" fn FileList::item(self : FileList, index : Int) -> File? =
-  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn FileList::get(self : FileList, index : Int) -> File? =
-  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn FileList::get_length(self : FileList) -> Int =
@@ -397,7 +435,7 @@ pub extern "js" fn FileReader::get_result(
 
 ///|
 pub extern "js" fn FileReader::get_error(self : FileReader) -> DOMException? =
-  #| (self) => { const v = self.error; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.error; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn FileReader::get_onloadstart(

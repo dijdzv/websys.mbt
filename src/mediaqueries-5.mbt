@@ -45,7 +45,7 @@ pub extern "js" fn CustomMediaQuery::as_media_list(
 ///|
 /// Try to get CustomMediaQuery as Bool
 pub extern "js" fn CustomMediaQuery::as_bool(self : CustomMediaQuery) -> Bool? =
-  #| (self) => (typeof self === 'boolean') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'boolean') ? self : undefined
 
 ///|
 /// CSSCustomMediaRule interface
@@ -219,7 +219,7 @@ pub extern "js" fn PreferenceObject::to_event_target(
 pub extern "js" fn PreferenceObject::get_override(
   self : PreferenceObject,
 ) -> String? =
-  #| (self) => { const v = self.override; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.override) ?? undefined
 
 ///|
 pub extern "js" fn PreferenceObject::get_value(

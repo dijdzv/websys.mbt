@@ -81,7 +81,7 @@ pub fn OperationType::from_string(s : String) -> OperationType? {
 
 ///|
 /// PrivateToken dictionary
-pub struct PrivateToken {
+pub(all) struct PrivateToken {
   version : TokenVersion
   operation : OperationType
   refreshPolicy : RefreshPolicy?
@@ -89,22 +89,25 @@ pub struct PrivateToken {
 }
 
 ///|
-/// Create a new PrivateToken with default values
-pub fn PrivateToken::default() -> PrivateToken {
-  PrivateToken::{
-    version: panic(),
-    operation: panic(),
-    refreshPolicy: None,
-    issuers: None,
-  }
+/// Create a new PrivateToken
+pub fn PrivateToken::new(
+  version~ : TokenVersion,
+  operation~ : OperationType,
+) -> PrivateToken {
+  PrivateToken::{ version, operation, refreshPolicy: None, issuers: None }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PrivateToken::to_js(self : PrivateToken) -> JsValue =
+extern "js" fn PrivateToken::to_js_ffi(self : PrivateToken) -> JsValue =
   #| (self) => ({
   #|   version: ['1'][self.version],
   #|   operation: ['token-request', 'send-redemption-record', 'token-redemption'][self.operation],
-  #|   refreshPolicy: ['none', 'refresh'][self.refreshPolicy],
-  #|   issuers: self.issuers
+  #|   refreshPolicy: ((() => { const v = self.refreshPolicy; if (v === undefined) return undefined; return ['none', 'refresh'][v]; })()),
+  #|   issuers: ((() => { const v = self.issuers; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PrivateToken::to_js(self : PrivateToken) -> JsValue {
+  PrivateToken::to_js_ffi(self)
+}

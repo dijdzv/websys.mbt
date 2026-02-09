@@ -3,7 +3,7 @@
 
 ///|
 /// FocusEventInit dictionary
-pub struct FocusEventInit {
+pub(all) struct FocusEventInit {
   relatedTarget : Nullable[EventTarget]
 }
 
@@ -14,15 +14,20 @@ pub fn FocusEventInit::default() -> FocusEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FocusEventInit::to_js(self : FocusEventInit) -> JsValue =
+extern "js" fn FocusEventInit::to_js_ffi(self : FocusEventInit) -> JsValue =
   #| (self) => ({
   #|   relatedTarget: ((() => { const v = self.relatedTarget; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn FocusEventInit::to_js(self : FocusEventInit) -> JsValue {
+  FocusEventInit::to_js_ffi(self)
+}
+
+///|
 /// MouseEventInit dictionary
-pub struct MouseEventInit {
+pub(all) struct MouseEventInit {
   ctrlKey : Bool?
   shiftKey : Bool?
   altKey : Bool?
@@ -79,23 +84,22 @@ pub fn MouseEventInit::default() -> MouseEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MouseEventInit::to_js(self : MouseEventInit) -> JsValue =
+extern "js" fn MouseEventInit::to_js_ffi(self : MouseEventInit) -> JsValue =
   #| (self) => ({
-  #|   ctrlKey: self.ctrlKey,
-  #|   shiftKey: self.shiftKey,
-  #|   altKey: self.altKey,
-  #|   metaKey: self.metaKey,
-  #|   modifierAltGraph: self.modifierAltGraph,
-  #|   modifierCapsLock: self.modifierCapsLock,
-  #|   modifierFn: self.modifierFn,
-  #|   modifierFnLock: self.modifierFnLock,
-  #|   modifierHyper: self.modifierHyper,
-  #|   modifierNumLock: self.modifierNumLock,
-  #|   modifierScrollLock: self.modifierScrollLock,
-  #|   modifierSuper: self.modifierSuper,
-  #|   modifierSymbol: self.modifierSymbol,
-  #|   modifierSymbolLock: self.modifierSymbolLock,
+  #|   ctrlKey: (self.ctrlKey === -1 ? undefined : self.ctrlKey),
+  #|   shiftKey: (self.shiftKey === -1 ? undefined : self.shiftKey),
+  #|   altKey: (self.altKey === -1 ? undefined : self.altKey),
+  #|   metaKey: (self.metaKey === -1 ? undefined : self.metaKey),
+  #|   modifierAltGraph: (self.modifierAltGraph === -1 ? undefined : self.modifierAltGraph),
+  #|   modifierCapsLock: (self.modifierCapsLock === -1 ? undefined : self.modifierCapsLock),
+  #|   modifierFn: (self.modifierFn === -1 ? undefined : self.modifierFn),
+  #|   modifierFnLock: (self.modifierFnLock === -1 ? undefined : self.modifierFnLock),
+  #|   modifierHyper: (self.modifierHyper === -1 ? undefined : self.modifierHyper),
+  #|   modifierNumLock: (self.modifierNumLock === -1 ? undefined : self.modifierNumLock),
+  #|   modifierScrollLock: (self.modifierScrollLock === -1 ? undefined : self.modifierScrollLock),
+  #|   modifierSuper: (self.modifierSuper === -1 ? undefined : self.modifierSuper),
+  #|   modifierSymbol: (self.modifierSymbol === -1 ? undefined : self.modifierSymbol),
+  #|   modifierSymbolLock: (self.modifierSymbolLock === -1 ? undefined : self.modifierSymbolLock),
   #|   screenX: self.screenX,
   #|   screenY: self.screenY,
   #|   clientX: self.clientX,
@@ -108,8 +112,14 @@ pub extern "js" fn MouseEventInit::to_js(self : MouseEventInit) -> JsValue =
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MouseEventInit::to_js(self : MouseEventInit) -> JsValue {
+  MouseEventInit::to_js_ffi(self)
+}
+
+///|
 /// EventModifierInit dictionary
-pub struct EventModifierInit {
+pub(all) struct EventModifierInit {
   ctrlKey : Bool?
   shiftKey : Bool?
   altKey : Bool?
@@ -148,30 +158,35 @@ pub fn EventModifierInit::default() -> EventModifierInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn EventModifierInit::to_js(
+extern "js" fn EventModifierInit::to_js_ffi(
   self : EventModifierInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   ctrlKey: self.ctrlKey,
-  #|   shiftKey: self.shiftKey,
-  #|   altKey: self.altKey,
-  #|   metaKey: self.metaKey,
-  #|   modifierAltGraph: self.modifierAltGraph,
-  #|   modifierCapsLock: self.modifierCapsLock,
-  #|   modifierFn: self.modifierFn,
-  #|   modifierFnLock: self.modifierFnLock,
-  #|   modifierHyper: self.modifierHyper,
-  #|   modifierNumLock: self.modifierNumLock,
-  #|   modifierScrollLock: self.modifierScrollLock,
-  #|   modifierSuper: self.modifierSuper,
-  #|   modifierSymbol: self.modifierSymbol,
-  #|   modifierSymbolLock: self.modifierSymbolLock
+  #|   ctrlKey: (self.ctrlKey === -1 ? undefined : self.ctrlKey),
+  #|   shiftKey: (self.shiftKey === -1 ? undefined : self.shiftKey),
+  #|   altKey: (self.altKey === -1 ? undefined : self.altKey),
+  #|   metaKey: (self.metaKey === -1 ? undefined : self.metaKey),
+  #|   modifierAltGraph: (self.modifierAltGraph === -1 ? undefined : self.modifierAltGraph),
+  #|   modifierCapsLock: (self.modifierCapsLock === -1 ? undefined : self.modifierCapsLock),
+  #|   modifierFn: (self.modifierFn === -1 ? undefined : self.modifierFn),
+  #|   modifierFnLock: (self.modifierFnLock === -1 ? undefined : self.modifierFnLock),
+  #|   modifierHyper: (self.modifierHyper === -1 ? undefined : self.modifierHyper),
+  #|   modifierNumLock: (self.modifierNumLock === -1 ? undefined : self.modifierNumLock),
+  #|   modifierScrollLock: (self.modifierScrollLock === -1 ? undefined : self.modifierScrollLock),
+  #|   modifierSuper: (self.modifierSuper === -1 ? undefined : self.modifierSuper),
+  #|   modifierSymbol: (self.modifierSymbol === -1 ? undefined : self.modifierSymbol),
+  #|   modifierSymbolLock: (self.modifierSymbolLock === -1 ? undefined : self.modifierSymbolLock)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn EventModifierInit::to_js(self : EventModifierInit) -> JsValue {
+  EventModifierInit::to_js_ffi(self)
+}
+
+///|
 /// WheelEventInit dictionary
-pub struct WheelEventInit {
+pub(all) struct WheelEventInit {
   ctrlKey : Bool?
   shiftKey : Bool?
   altKey : Bool?
@@ -236,23 +251,22 @@ pub fn WheelEventInit::default() -> WheelEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WheelEventInit::to_js(self : WheelEventInit) -> JsValue =
+extern "js" fn WheelEventInit::to_js_ffi(self : WheelEventInit) -> JsValue =
   #| (self) => ({
-  #|   ctrlKey: self.ctrlKey,
-  #|   shiftKey: self.shiftKey,
-  #|   altKey: self.altKey,
-  #|   metaKey: self.metaKey,
-  #|   modifierAltGraph: self.modifierAltGraph,
-  #|   modifierCapsLock: self.modifierCapsLock,
-  #|   modifierFn: self.modifierFn,
-  #|   modifierFnLock: self.modifierFnLock,
-  #|   modifierHyper: self.modifierHyper,
-  #|   modifierNumLock: self.modifierNumLock,
-  #|   modifierScrollLock: self.modifierScrollLock,
-  #|   modifierSuper: self.modifierSuper,
-  #|   modifierSymbol: self.modifierSymbol,
-  #|   modifierSymbolLock: self.modifierSymbolLock,
+  #|   ctrlKey: (self.ctrlKey === -1 ? undefined : self.ctrlKey),
+  #|   shiftKey: (self.shiftKey === -1 ? undefined : self.shiftKey),
+  #|   altKey: (self.altKey === -1 ? undefined : self.altKey),
+  #|   metaKey: (self.metaKey === -1 ? undefined : self.metaKey),
+  #|   modifierAltGraph: (self.modifierAltGraph === -1 ? undefined : self.modifierAltGraph),
+  #|   modifierCapsLock: (self.modifierCapsLock === -1 ? undefined : self.modifierCapsLock),
+  #|   modifierFn: (self.modifierFn === -1 ? undefined : self.modifierFn),
+  #|   modifierFnLock: (self.modifierFnLock === -1 ? undefined : self.modifierFnLock),
+  #|   modifierHyper: (self.modifierHyper === -1 ? undefined : self.modifierHyper),
+  #|   modifierNumLock: (self.modifierNumLock === -1 ? undefined : self.modifierNumLock),
+  #|   modifierScrollLock: (self.modifierScrollLock === -1 ? undefined : self.modifierScrollLock),
+  #|   modifierSuper: (self.modifierSuper === -1 ? undefined : self.modifierSuper),
+  #|   modifierSymbol: (self.modifierSymbol === -1 ? undefined : self.modifierSymbol),
+  #|   modifierSymbolLock: (self.modifierSymbolLock === -1 ? undefined : self.modifierSymbolLock),
   #|   screenX: self.screenX,
   #|   screenY: self.screenY,
   #|   clientX: self.clientX,
@@ -269,8 +283,14 @@ pub extern "js" fn WheelEventInit::to_js(self : WheelEventInit) -> JsValue =
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WheelEventInit::to_js(self : WheelEventInit) -> JsValue {
+  WheelEventInit::to_js_ffi(self)
+}
+
+///|
 /// KeyboardEventInit dictionary
-pub struct KeyboardEventInit {
+pub(all) struct KeyboardEventInit {
   ctrlKey : Bool?
   shiftKey : Bool?
   altKey : Bool?
@@ -323,37 +343,42 @@ pub fn KeyboardEventInit::default() -> KeyboardEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn KeyboardEventInit::to_js(
+extern "js" fn KeyboardEventInit::to_js_ffi(
   self : KeyboardEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   ctrlKey: self.ctrlKey,
-  #|   shiftKey: self.shiftKey,
-  #|   altKey: self.altKey,
-  #|   metaKey: self.metaKey,
-  #|   modifierAltGraph: self.modifierAltGraph,
-  #|   modifierCapsLock: self.modifierCapsLock,
-  #|   modifierFn: self.modifierFn,
-  #|   modifierFnLock: self.modifierFnLock,
-  #|   modifierHyper: self.modifierHyper,
-  #|   modifierNumLock: self.modifierNumLock,
-  #|   modifierScrollLock: self.modifierScrollLock,
-  #|   modifierSuper: self.modifierSuper,
-  #|   modifierSymbol: self.modifierSymbol,
-  #|   modifierSymbolLock: self.modifierSymbolLock,
+  #|   ctrlKey: (self.ctrlKey === -1 ? undefined : self.ctrlKey),
+  #|   shiftKey: (self.shiftKey === -1 ? undefined : self.shiftKey),
+  #|   altKey: (self.altKey === -1 ? undefined : self.altKey),
+  #|   metaKey: (self.metaKey === -1 ? undefined : self.metaKey),
+  #|   modifierAltGraph: (self.modifierAltGraph === -1 ? undefined : self.modifierAltGraph),
+  #|   modifierCapsLock: (self.modifierCapsLock === -1 ? undefined : self.modifierCapsLock),
+  #|   modifierFn: (self.modifierFn === -1 ? undefined : self.modifierFn),
+  #|   modifierFnLock: (self.modifierFnLock === -1 ? undefined : self.modifierFnLock),
+  #|   modifierHyper: (self.modifierHyper === -1 ? undefined : self.modifierHyper),
+  #|   modifierNumLock: (self.modifierNumLock === -1 ? undefined : self.modifierNumLock),
+  #|   modifierScrollLock: (self.modifierScrollLock === -1 ? undefined : self.modifierScrollLock),
+  #|   modifierSuper: (self.modifierSuper === -1 ? undefined : self.modifierSuper),
+  #|   modifierSymbol: (self.modifierSymbol === -1 ? undefined : self.modifierSymbol),
+  #|   modifierSymbolLock: (self.modifierSymbolLock === -1 ? undefined : self.modifierSymbolLock),
   #|   key: self.key,
   #|   code: self.code,
   #|   location: self.location,
-  #|   repeat: self.repeat,
-  #|   isComposing: self.isComposing,
+  #|   repeat: (self.repeat === -1 ? undefined : self.repeat),
+  #|   isComposing: (self.isComposing === -1 ? undefined : self.isComposing),
   #|   charCode: self.charCode,
   #|   keyCode: self.keyCode
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn KeyboardEventInit::to_js(self : KeyboardEventInit) -> JsValue {
+  KeyboardEventInit::to_js_ffi(self)
+}
+
+///|
 /// CompositionEventInit dictionary
-pub struct CompositionEventInit {
+pub(all) struct CompositionEventInit {
   data : String?
 }
 
@@ -364,13 +389,18 @@ pub fn CompositionEventInit::default() -> CompositionEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CompositionEventInit::to_js(
+extern "js" fn CompositionEventInit::to_js_ffi(
   self : CompositionEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   data: self.data
   #| })
+
+///|
+/// Convert to JsValue
+pub fn CompositionEventInit::to_js(self : CompositionEventInit) -> JsValue {
+  CompositionEventInit::to_js_ffi(self)
+}
 
 ///|
 /// UIEvent interface
@@ -453,15 +483,27 @@ pub extern "js" fn UIEvent::as_pointer_event(self : UIEvent) -> PointerEvent? =
   #| (self) => (self instanceof PointerEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn UIEvent::new(
+pub extern "js" fn UIEvent::new(type_ : String) -> UIEvent =
+  #| (type_) => new UIEvent(type_)
+
+///|
+extern "js" fn UIEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : UIEventInit,
+  event_init_dict : JsValue,
 ) -> UIEvent =
   #| (type_, event_init_dict) => new UIEvent(type_, event_init_dict)
 
 ///|
+pub fn UIEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : UIEventInit,
+) -> UIEvent {
+  UIEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
+
+///|
 pub extern "js" fn UIEvent::get_view(self : UIEvent) -> Window? =
-  #| (self) => { const v = self.view; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.view; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn UIEvent::get_detail(self : UIEvent) -> Int =
@@ -471,7 +513,7 @@ pub extern "js" fn UIEvent::get_detail(self : UIEvent) -> Int =
 pub extern "js" fn UIEvent::get_source_capabilities(
   self : UIEvent,
 ) -> InputDeviceCapabilities? =
-  #| (self) => { const v = self.sourceCapabilities; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.sourceCapabilities; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn UIEvent::init_ui_event(
@@ -489,7 +531,7 @@ pub extern "js" fn UIEvent::init_ui_event_with_detail_arg(
   view_arg : Window?,
   detail_arg : Int,
 ) -> Unit =
-  #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg) => self.initUIEvent(type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg)
+  #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg) => self.initUIEvent(type_arg, bubbles_arg, cancelable_arg, (view_arg.$tag === 1 ? view_arg._0 : null), detail_arg)
 
 ///|
 pub extern "js" fn UIEvent::get_which(self : UIEvent) -> Int =
@@ -532,17 +574,29 @@ pub extern "js" fn FocusEvent::to_event(self : FocusEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn FocusEvent::new(
+pub extern "js" fn FocusEvent::new(type_ : String) -> FocusEvent =
+  #| (type_) => new FocusEvent(type_)
+
+///|
+extern "js" fn FocusEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : FocusEventInit,
+  event_init_dict : JsValue,
 ) -> FocusEvent =
   #| (type_, event_init_dict) => new FocusEvent(type_, event_init_dict)
+
+///|
+pub fn FocusEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : FocusEventInit,
+) -> FocusEvent {
+  FocusEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn FocusEvent::get_related_target(
   self : FocusEvent,
 ) -> EventTarget? =
-  #| (self) => { const v = self.relatedTarget; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.relatedTarget; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// MouseEvent interface
@@ -595,11 +649,23 @@ pub extern "js" fn MouseEvent::as_pointer_event(
   #| (self) => (self instanceof PointerEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn MouseEvent::new(
+pub extern "js" fn MouseEvent::new(type_ : String) -> MouseEvent =
+  #| (type_) => new MouseEvent(type_)
+
+///|
+extern "js" fn MouseEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : MouseEventInit,
+  event_init_dict : JsValue,
 ) -> MouseEvent =
   #| (type_, event_init_dict) => new MouseEvent(type_, event_init_dict)
+
+///|
+pub fn MouseEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : MouseEventInit,
+) -> MouseEvent {
+  MouseEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn MouseEvent::get_screen_x(self : MouseEvent) -> Int =
@@ -653,7 +719,7 @@ pub extern "js" fn MouseEvent::get_buttons(self : MouseEvent) -> Int =
 pub extern "js" fn MouseEvent::get_related_target(
   self : MouseEvent,
 ) -> EventTarget? =
-  #| (self) => { const v = self.relatedTarget; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.relatedTarget; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn MouseEvent::get_modifier_state(
@@ -712,7 +778,7 @@ pub extern "js" fn MouseEvent::init_mouse_event_with_related_target_arg(
   button_arg : Int,
   related_target_arg : EventTarget?,
 ) -> Unit =
-  #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg, screen_x_arg, screen_y_arg, client_x_arg, client_y_arg, ctrl_key_arg, alt_key_arg, shift_key_arg, meta_key_arg, button_arg, related_target_arg) => self.initMouseEvent(type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg, screen_x_arg, screen_y_arg, client_x_arg, client_y_arg, ctrl_key_arg, alt_key_arg, shift_key_arg, meta_key_arg, button_arg, related_target_arg)
+  #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg, screen_x_arg, screen_y_arg, client_x_arg, client_y_arg, ctrl_key_arg, alt_key_arg, shift_key_arg, meta_key_arg, button_arg, related_target_arg) => self.initMouseEvent(type_arg, bubbles_arg, cancelable_arg, (view_arg.$tag === 1 ? view_arg._0 : null), detail_arg, screen_x_arg, screen_y_arg, client_x_arg, client_y_arg, ctrl_key_arg, alt_key_arg, shift_key_arg, meta_key_arg, button_arg, (related_target_arg.$tag === 1 ? related_target_arg._0 : null))
 
 ///|
 pub extern "js" fn MouseEvent::get_movement_x(self : MouseEvent) -> Double =
@@ -763,11 +829,23 @@ pub extern "js" fn WheelEvent::to_event(self : WheelEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn WheelEvent::new(
+pub extern "js" fn WheelEvent::new(type_ : String) -> WheelEvent =
+  #| (type_) => new WheelEvent(type_)
+
+///|
+extern "js" fn WheelEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : WheelEventInit,
+  event_init_dict : JsValue,
 ) -> WheelEvent =
   #| (type_, event_init_dict) => new WheelEvent(type_, event_init_dict)
+
+///|
+pub fn WheelEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : WheelEventInit,
+) -> WheelEvent {
+  WheelEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 // WheelEvent.DOM_DELTA_PIXEL
 
@@ -837,15 +915,27 @@ pub extern "js" fn InputEvent::to_event(self : InputEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn InputEvent::new(
+pub extern "js" fn InputEvent::new(type_ : String) -> InputEvent =
+  #| (type_) => new InputEvent(type_)
+
+///|
+extern "js" fn InputEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : InputEventInit,
+  event_init_dict : JsValue,
 ) -> InputEvent =
   #| (type_, event_init_dict) => new InputEvent(type_, event_init_dict)
 
 ///|
+pub fn InputEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : InputEventInit,
+) -> InputEvent {
+  InputEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
+
+///|
 pub extern "js" fn InputEvent::get_data(self : InputEvent) -> String? =
-  #| (self) => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.data) ?? undefined
 
 ///|
 pub extern "js" fn InputEvent::get_is_composing(self : InputEvent) -> Bool =
@@ -859,7 +949,7 @@ pub extern "js" fn InputEvent::get_input_type(self : InputEvent) -> String =
 pub extern "js" fn InputEvent::get_data_transfer(
   self : InputEvent,
 ) -> DataTransfer? =
-  #| (self) => { const v = self.dataTransfer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.dataTransfer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn InputEvent::get_target_ranges(
@@ -906,11 +996,23 @@ pub extern "js" fn KeyboardEvent::to_event(self : KeyboardEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn KeyboardEvent::new(
+pub extern "js" fn KeyboardEvent::new(type_ : String) -> KeyboardEvent =
+  #| (type_) => new KeyboardEvent(type_)
+
+///|
+extern "js" fn KeyboardEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : KeyboardEventInit,
+  event_init_dict : JsValue,
 ) -> KeyboardEvent =
   #| (type_, event_init_dict) => new KeyboardEvent(type_, event_init_dict)
+
+///|
+pub fn KeyboardEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : KeyboardEventInit,
+) -> KeyboardEvent {
+  KeyboardEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 // KeyboardEvent.DOM_KEY_LOCATION_STANDARD
 
@@ -998,7 +1100,7 @@ pub extern "js" fn KeyboardEvent::init_keyboard_event_with_meta_key(
   shift_key : Bool,
   meta_key : Bool,
 ) -> Unit =
-  #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, key_arg, location_arg, ctrl_key, alt_key, shift_key, meta_key) => self.initKeyboardEvent(type_arg, bubbles_arg, cancelable_arg, view_arg, key_arg, location_arg, ctrl_key, alt_key, shift_key, meta_key)
+  #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, key_arg, location_arg, ctrl_key, alt_key, shift_key, meta_key) => self.initKeyboardEvent(type_arg, bubbles_arg, cancelable_arg, (view_arg.$tag === 1 ? view_arg._0 : null), key_arg, location_arg, ctrl_key, alt_key, shift_key, meta_key)
 
 ///|
 pub extern "js" fn KeyboardEvent::get_char_code(self : KeyboardEvent) -> Int =
@@ -1057,11 +1159,23 @@ pub extern "js" fn CompositionEvent::to_event(self : CompositionEvent) -> Event 
   #| (self) => self
 
 ///|
-pub extern "js" fn CompositionEvent::new(
+pub extern "js" fn CompositionEvent::new(type_ : String) -> CompositionEvent =
+  #| (type_) => new CompositionEvent(type_)
+
+///|
+extern "js" fn CompositionEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : CompositionEventInit,
+  event_init_dict : JsValue,
 ) -> CompositionEvent =
   #| (type_, event_init_dict) => new CompositionEvent(type_, event_init_dict)
+
+///|
+pub fn CompositionEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : CompositionEventInit,
+) -> CompositionEvent {
+  CompositionEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn CompositionEvent::get_data(
@@ -1085,7 +1199,7 @@ pub extern "js" fn CompositionEvent::init_composition_event_with_data_arg(
   view_arg : WindowProxy?,
   data_arg : String,
 ) -> Unit =
-  #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, data_arg) => self.initCompositionEvent(type_arg, bubbles_arg, cancelable_arg, view_arg, data_arg)
+  #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, data_arg) => self.initCompositionEvent(type_arg, bubbles_arg, cancelable_arg, (view_arg.$tag === 1 ? view_arg._0 : null), data_arg)
 
 ///|
 /// TextEvent interface
@@ -1143,4 +1257,4 @@ pub extern "js" fn TextEvent::init_text_event_with_data(
   view : Window?,
   data : String,
 ) -> Unit =
-  #| (self, type_, bubbles, cancelable, view, data) => self.initTextEvent(type_, bubbles, cancelable, view, data)
+  #| (self, type_, bubbles, cancelable, view, data) => self.initTextEvent(type_, bubbles, cancelable, (view.$tag === 1 ? view._0 : null), data)

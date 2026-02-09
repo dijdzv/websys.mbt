@@ -39,7 +39,7 @@ pub type RemotePlaybackAvailabilityCallback
 pub extern "js" fn RemotePlaybackAvailabilityCallback::from_fn(
   handler : (Bool) -> Unit,
 ) -> RemotePlaybackAvailabilityCallback =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// RemotePlayback interface
@@ -107,7 +107,7 @@ pub extern "js" fn RemotePlayback::cancel_watch_availability_with_id(
 pub extern "js" fn RemotePlayback::get_state(
   self : RemotePlayback,
 ) -> RemotePlaybackState =
-  #| (self) => self.state
+  #| (self) => ['connecting', 'connected', 'disconnected'].indexOf(self.state)
 
 ///|
 pub extern "js" fn RemotePlayback::get_onconnecting(

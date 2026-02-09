@@ -58,7 +58,7 @@ pub fn RecordingState::from_string(s : String) -> RecordingState? {
 
 ///|
 /// MediaRecorderOptions dictionary
-pub struct MediaRecorderOptions {
+pub(all) struct MediaRecorderOptions {
   mimeType : String?
   audioBitsPerSecond : Int?
   videoBitsPerSecond : Int?
@@ -83,8 +83,7 @@ pub fn MediaRecorderOptions::default() -> MediaRecorderOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MediaRecorderOptions::to_js(
+extern "js" fn MediaRecorderOptions::to_js_ffi(
   self : MediaRecorderOptions,
 ) -> JsValue =
   #| (self) => ({
@@ -92,31 +91,42 @@ pub extern "js" fn MediaRecorderOptions::to_js(
   #|   audioBitsPerSecond: self.audioBitsPerSecond,
   #|   videoBitsPerSecond: self.videoBitsPerSecond,
   #|   bitsPerSecond: self.bitsPerSecond,
-  #|   audioBitrateMode: ['constant', 'variable'][self.audioBitrateMode],
-  #|   videoKeyFrameIntervalDuration: self.videoKeyFrameIntervalDuration,
+  #|   audioBitrateMode: ((() => { const v = self.audioBitrateMode; if (v === undefined) return undefined; return ['constant', 'variable'][v]; })()),
+  #|   videoKeyFrameIntervalDuration: ((() => { const v = self.videoKeyFrameIntervalDuration; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   videoKeyFrameIntervalCount: self.videoKeyFrameIntervalCount
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MediaRecorderOptions::to_js(self : MediaRecorderOptions) -> JsValue {
+  MediaRecorderOptions::to_js_ffi(self)
+}
+
+///|
 /// BlobEventInit dictionary
-pub struct BlobEventInit {
+pub(all) struct BlobEventInit {
   data : Blob
   timecode : DOMHighResTimeStamp?
 }
 
 ///|
-/// Create a new BlobEventInit with default values
-pub fn BlobEventInit::default() -> BlobEventInit {
-  BlobEventInit::{ data: panic(), timecode: None }
+/// Create a new BlobEventInit
+pub fn BlobEventInit::new(data~ : Blob) -> BlobEventInit {
+  BlobEventInit::{ data, timecode: None }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BlobEventInit::to_js(self : BlobEventInit) -> JsValue =
+extern "js" fn BlobEventInit::to_js_ffi(self : BlobEventInit) -> JsValue =
   #| (self) => ({
   #|   data: self.data,
-  #|   timecode: self.timecode
+  #|   timecode: ((() => { const v = self.timecode; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn BlobEventInit::to_js(self : BlobEventInit) -> JsValue {
+  BlobEventInit::to_js_ffi(self)
+}
 
 ///|
 /// MediaRecorder interface
@@ -155,11 +165,23 @@ pub extern "js" fn MediaRecorder::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaRecorder::new(
+pub extern "js" fn MediaRecorder::new(stream : MediaStream) -> MediaRecorder =
+  #| (stream) => new MediaRecorder(stream)
+
+///|
+extern "js" fn MediaRecorder::new_with_options_ffi(
   stream : MediaStream,
-  options : MediaRecorderOptions,
+  options : JsValue,
 ) -> MediaRecorder =
   #| (stream, options) => new MediaRecorder(stream, options)
+
+///|
+pub fn MediaRecorder::new_with_options(
+  stream : MediaStream,
+  options : MediaRecorderOptions,
+) -> MediaRecorder {
+  MediaRecorder::new_with_options_ffi(stream, options.to_js())
+}
 
 ///|
 pub extern "js" fn MediaRecorder::get_stream(
@@ -175,7 +197,7 @@ pub extern "js" fn MediaRecorder::get_mime_type(self : MediaRecorder) -> String 
 pub extern "js" fn MediaRecorder::get_state(
   self : MediaRecorder,
 ) -> RecordingState =
-  #| (self) => self.state
+  #| (self) => ['inactive', 'recording', 'paused'].indexOf(self.state)
 
 ///|
 pub extern "js" fn MediaRecorder::get_onstart(
@@ -271,7 +293,7 @@ pub extern "js" fn MediaRecorder::get_audio_bits_per_second(
 pub extern "js" fn MediaRecorder::get_audio_bitrate_mode(
   self : MediaRecorder,
 ) -> BitrateMode =
-  #| (self) => self.audioBitrateMode
+  #| (self) => ['constant', 'variable'].indexOf(self.audioBitrateMode)
 
 ///|
 pub extern "js" fn MediaRecorder::start(self : MediaRecorder) -> Unit =
@@ -337,11 +359,19 @@ pub extern "js" fn BlobEvent::to_event(self : BlobEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn BlobEvent::new(
+extern "js" fn BlobEvent::new_ffi(
   type_ : String,
-  event_init_dict : BlobEventInit,
+  event_init_dict : JsValue,
 ) -> BlobEvent =
   #| (type_, event_init_dict) => new BlobEvent(type_, event_init_dict)
+
+///|
+pub fn BlobEvent::new(
+  type_ : String,
+  event_init_dict : BlobEventInit,
+) -> BlobEvent {
+  BlobEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn BlobEvent::get_data(self : BlobEvent) -> Blob =

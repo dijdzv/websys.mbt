@@ -32,7 +32,7 @@ pub fn PermissionState::from_string(s : String) -> PermissionState? {
 
 ///|
 /// PermissionDescriptor dictionary
-pub struct PermissionDescriptor {
+pub(all) struct PermissionDescriptor {
   name : String
 }
 
@@ -43,8 +43,7 @@ pub fn PermissionDescriptor::default() -> PermissionDescriptor {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PermissionDescriptor::to_js(
+extern "js" fn PermissionDescriptor::to_js_ffi(
   self : PermissionDescriptor,
 ) -> JsValue =
   #| (self) => ({
@@ -52,27 +51,43 @@ pub extern "js" fn PermissionDescriptor::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PermissionDescriptor::to_js(self : PermissionDescriptor) -> JsValue {
+  PermissionDescriptor::to_js_ffi(self)
+}
+
+///|
 /// PermissionSetParameters dictionary
-pub struct PermissionSetParameters {
+pub(all) struct PermissionSetParameters {
   descriptor : JsValue
   state : PermissionState
 }
 
 ///|
-/// Create a new PermissionSetParameters with default values
-pub fn PermissionSetParameters::default() -> PermissionSetParameters {
-  PermissionSetParameters::{ descriptor: panic(), state: panic() }
+/// Create a new PermissionSetParameters
+pub fn PermissionSetParameters::new(
+  descriptor~ : JsValue,
+  state~ : PermissionState,
+) -> PermissionSetParameters {
+  PermissionSetParameters::{ descriptor, state }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PermissionSetParameters::to_js(
+extern "js" fn PermissionSetParameters::to_js_ffi(
   self : PermissionSetParameters,
 ) -> JsValue =
   #| (self) => ({
   #|   descriptor: self.descriptor,
   #|   state: ['granted', 'denied', 'prompt'][self.state]
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PermissionSetParameters::to_js(
+  self : PermissionSetParameters,
+) -> JsValue {
+  PermissionSetParameters::to_js_ffi(self)
+}
 
 ///|
 /// Permissions interface
@@ -195,7 +210,7 @@ pub extern "js" fn PermissionStatus::as_xr_permission_status(
 pub extern "js" fn PermissionStatus::get_state(
   self : PermissionStatus,
 ) -> PermissionState =
-  #| (self) => self.state
+  #| (self) => ['granted', 'denied', 'prompt'].indexOf(self.state)
 
 ///|
 pub extern "js" fn PermissionStatus::get_name(

@@ -33,7 +33,7 @@ pub fn MagnetometerLocalCoordinateSystem::from_string(
 
 ///|
 /// MagnetometerSensorOptions dictionary
-pub struct MagnetometerSensorOptions {
+pub(all) struct MagnetometerSensorOptions {
   referenceFrame : MagnetometerLocalCoordinateSystem?
 }
 
@@ -44,13 +44,20 @@ pub fn MagnetometerSensorOptions::default() -> MagnetometerSensorOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MagnetometerSensorOptions::to_js(
+extern "js" fn MagnetometerSensorOptions::to_js_ffi(
   self : MagnetometerSensorOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   referenceFrame: ['device', 'screen'][self.referenceFrame]
+  #|   referenceFrame: ((() => { const v = self.referenceFrame; if (v === undefined) return undefined; return ['device', 'screen'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn MagnetometerSensorOptions::to_js(
+  self : MagnetometerSensorOptions,
+) -> JsValue {
+  MagnetometerSensorOptions::to_js_ffi(self)
+}
 
 ///|
 /// Magnetometer interface
@@ -93,22 +100,33 @@ pub extern "js" fn Magnetometer::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn Magnetometer::new(
-  sensor_options : MagnetometerSensorOptions,
+pub extern "js" fn Magnetometer::new() -> Magnetometer =
+  #| () => new Magnetometer()
+
+///|
+extern "js" fn Magnetometer::new_with_sensor_options_ffi(
+  sensor_options : JsValue,
 ) -> Magnetometer =
   #| (sensor_options) => new Magnetometer(sensor_options)
 
 ///|
+pub fn Magnetometer::new_with_sensor_options(
+  sensor_options : MagnetometerSensorOptions,
+) -> Magnetometer {
+  Magnetometer::new_with_sensor_options_ffi(sensor_options.to_js())
+}
+
+///|
 pub extern "js" fn Magnetometer::get_x(self : Magnetometer) -> Double? =
-  #| (self) => { const v = self.x; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.x) ?? undefined
 
 ///|
 pub extern "js" fn Magnetometer::get_y(self : Magnetometer) -> Double? =
-  #| (self) => { const v = self.y; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.y) ?? undefined
 
 ///|
 pub extern "js" fn Magnetometer::get_z(self : Magnetometer) -> Double? =
-  #| (self) => { const v = self.z; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.z) ?? undefined
 
 ///|
 /// UncalibratedMagnetometer interface
@@ -161,43 +179,54 @@ pub extern "js" fn UncalibratedMagnetometer::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn UncalibratedMagnetometer::new(
-  sensor_options : MagnetometerSensorOptions,
+pub extern "js" fn UncalibratedMagnetometer::new() -> UncalibratedMagnetometer =
+  #| () => new UncalibratedMagnetometer()
+
+///|
+extern "js" fn UncalibratedMagnetometer::new_with_sensor_options_ffi(
+  sensor_options : JsValue,
 ) -> UncalibratedMagnetometer =
   #| (sensor_options) => new UncalibratedMagnetometer(sensor_options)
+
+///|
+pub fn UncalibratedMagnetometer::new_with_sensor_options(
+  sensor_options : MagnetometerSensorOptions,
+) -> UncalibratedMagnetometer {
+  UncalibratedMagnetometer::new_with_sensor_options_ffi(sensor_options.to_js())
+}
 
 ///|
 pub extern "js" fn UncalibratedMagnetometer::get_x(
   self : UncalibratedMagnetometer,
 ) -> Double? =
-  #| (self) => { const v = self.x; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.x) ?? undefined
 
 ///|
 pub extern "js" fn UncalibratedMagnetometer::get_y(
   self : UncalibratedMagnetometer,
 ) -> Double? =
-  #| (self) => { const v = self.y; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.y) ?? undefined
 
 ///|
 pub extern "js" fn UncalibratedMagnetometer::get_z(
   self : UncalibratedMagnetometer,
 ) -> Double? =
-  #| (self) => { const v = self.z; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.z) ?? undefined
 
 ///|
 pub extern "js" fn UncalibratedMagnetometer::get_x_bias(
   self : UncalibratedMagnetometer,
 ) -> Double? =
-  #| (self) => { const v = self.xBias; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.xBias) ?? undefined
 
 ///|
 pub extern "js" fn UncalibratedMagnetometer::get_y_bias(
   self : UncalibratedMagnetometer,
 ) -> Double? =
-  #| (self) => { const v = self.yBias; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.yBias) ?? undefined
 
 ///|
 pub extern "js" fn UncalibratedMagnetometer::get_z_bias(
   self : UncalibratedMagnetometer,
 ) -> Double? =
-  #| (self) => { const v = self.zBias; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.zBias) ?? undefined

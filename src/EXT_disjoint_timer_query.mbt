@@ -133,14 +133,14 @@ pub extern "js" fn EXT_disjoint_timer_query::delete_query_ext(
   self : EXT_disjoint_timer_query,
   query : WebGLTimerQueryEXT?,
 ) -> Unit =
-  #| (self, query) => self.deleteQueryEXT(query)
+  #| (self, query) => self.deleteQueryEXT((query.$tag === 1 ? query._0 : null))
 
 ///|
 pub extern "js" fn EXT_disjoint_timer_query::is_query_ext(
   self : EXT_disjoint_timer_query,
   query : WebGLTimerQueryEXT?,
 ) -> Bool =
-  #| (self, query) => self.isQueryEXT(query)
+  #| (self, query) => self.isQueryEXT((query.$tag === 1 ? query._0 : null))
 
 ///|
 pub extern "js" fn EXT_disjoint_timer_query::begin_query_ext(

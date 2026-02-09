@@ -3,7 +3,7 @@
 
 ///|
 /// CapturedMouseEventInit dictionary
-pub struct CapturedMouseEventInit {
+pub(all) struct CapturedMouseEventInit {
   surfaceX : Int?
   surfaceY : Int?
 }
@@ -15,14 +15,19 @@ pub fn CapturedMouseEventInit::default() -> CapturedMouseEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CapturedMouseEventInit::to_js(
+extern "js" fn CapturedMouseEventInit::to_js_ffi(
   self : CapturedMouseEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   surfaceX: self.surfaceX,
   #|   surfaceY: self.surfaceY
   #| })
+
+///|
+/// Convert to JsValue
+pub fn CapturedMouseEventInit::to_js(self : CapturedMouseEventInit) -> JsValue {
+  CapturedMouseEventInit::to_js_ffi(self)
+}
 
 ///|
 /// CapturedMouseEvent interface
@@ -71,9 +76,26 @@ pub extern "js" fn CapturedMouseEvent::to_event(
 ///|
 pub extern "js" fn CapturedMouseEvent::new(
   type_ : String,
-  event_init_dict : CapturedMouseEventInit,
+) -> CapturedMouseEvent =
+  #| (type_) => new CapturedMouseEvent(type_)
+
+///|
+extern "js" fn CapturedMouseEvent::new_with_event_init_dict_ffi(
+  type_ : String,
+  event_init_dict : JsValue,
 ) -> CapturedMouseEvent =
   #| (type_, event_init_dict) => new CapturedMouseEvent(type_, event_init_dict)
+
+///|
+pub fn CapturedMouseEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : CapturedMouseEventInit,
+) -> CapturedMouseEvent {
+  CapturedMouseEvent::new_with_event_init_dict_ffi(
+    type_,
+    event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn CapturedMouseEvent::get_surface_x(

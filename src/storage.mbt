@@ -3,7 +3,7 @@
 
 ///|
 /// StorageEstimate dictionary
-pub struct StorageEstimate {
+pub(all) struct StorageEstimate {
   usage : Int64?
   quota : Int64?
 }
@@ -15,12 +15,17 @@ pub fn StorageEstimate::default() -> StorageEstimate {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn StorageEstimate::to_js(self : StorageEstimate) -> JsValue =
+extern "js" fn StorageEstimate::to_js_ffi(self : StorageEstimate) -> JsValue =
   #| (self) => ({
   #|   usage: self.usage,
   #|   quota: self.quota
   #| })
+
+///|
+/// Convert to JsValue
+pub fn StorageEstimate::to_js(self : StorageEstimate) -> JsValue {
+  StorageEstimate::to_js_ffi(self)
+}
 
 ///|
 /// StorageManager interface

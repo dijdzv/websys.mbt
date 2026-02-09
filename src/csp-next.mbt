@@ -40,7 +40,7 @@ pub fn ScriptingPolicyViolationType::from_string(
 
 ///|
 /// ScriptingPolicyReportBody dictionary
-pub struct ScriptingPolicyReportBody {
+pub(all) struct ScriptingPolicyReportBody {
   violationType : String?
   violationURL : Nullable[String]
   violationSample : Nullable[String]
@@ -61,8 +61,7 @@ pub fn ScriptingPolicyReportBody::default() -> ScriptingPolicyReportBody {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ScriptingPolicyReportBody::to_js(
+extern "js" fn ScriptingPolicyReportBody::to_js_ffi(
   self : ScriptingPolicyReportBody,
 ) -> JsValue =
   #| (self) => ({
@@ -72,3 +71,11 @@ pub extern "js" fn ScriptingPolicyReportBody::to_js(
   #|   lineno: self.lineno,
   #|   colno: self.colno
   #| })
+
+///|
+/// Convert to JsValue
+pub fn ScriptingPolicyReportBody::to_js(
+  self : ScriptingPolicyReportBody,
+) -> JsValue {
+  ScriptingPolicyReportBody::to_js_ffi(self)
+}

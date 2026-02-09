@@ -35,7 +35,7 @@ pub fn RTCPriorityType::from_string(s : String) -> RTCPriorityType? {
 
 ///|
 /// RTCRtpEncodingParameters dictionary
-pub struct RTCRtpEncodingParameters {
+pub(all) struct RTCRtpEncodingParameters {
   priority : RTCPriorityType?
   networkPriority : RTCPriorityType?
   active : Bool?
@@ -62,15 +62,14 @@ pub fn RTCRtpEncodingParameters::default() -> RTCRtpEncodingParameters {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn RTCRtpEncodingParameters::to_js(
+extern "js" fn RTCRtpEncodingParameters::to_js_ffi(
   self : RTCRtpEncodingParameters,
 ) -> JsValue =
   #| (self) => ({
-  #|   priority: ['very-low', 'low', 'medium', 'high'][self.priority],
-  #|   networkPriority: ['very-low', 'low', 'medium', 'high'][self.networkPriority],
-  #|   active: self.active,
-  #|   codec: self.codec,
+  #|   priority: ((() => { const v = self.priority; if (v === undefined) return undefined; return ['very-low', 'low', 'medium', 'high'][v]; })()),
+  #|   networkPriority: ((() => { const v = self.networkPriority; if (v === undefined) return undefined; return ['very-low', 'low', 'medium', 'high'][v]; })()),
+  #|   active: (self.active === -1 ? undefined : self.active),
+  #|   codec: ((() => { const v = self.codec; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   maxBitrate: self.maxBitrate,
   #|   maxFramerate: self.maxFramerate,
   #|   scaleResolutionDownBy: self.scaleResolutionDownBy,
@@ -78,8 +77,16 @@ pub extern "js" fn RTCRtpEncodingParameters::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn RTCRtpEncodingParameters::to_js(
+  self : RTCRtpEncodingParameters,
+) -> JsValue {
+  RTCRtpEncodingParameters::to_js_ffi(self)
+}
+
+///|
 /// RTCDataChannelInit dictionary
-pub struct RTCDataChannelInit {
+pub(all) struct RTCDataChannelInit {
   priority : RTCPriorityType?
   ordered : Bool?
   maxPacketLifeTime : Int?
@@ -104,16 +111,21 @@ pub fn RTCDataChannelInit::default() -> RTCDataChannelInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn RTCDataChannelInit::to_js(
+extern "js" fn RTCDataChannelInit::to_js_ffi(
   self : RTCDataChannelInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   priority: ['very-low', 'low', 'medium', 'high'][self.priority],
-  #|   ordered: self.ordered,
+  #|   priority: ((() => { const v = self.priority; if (v === undefined) return undefined; return ['very-low', 'low', 'medium', 'high'][v]; })()),
+  #|   ordered: (self.ordered === -1 ? undefined : self.ordered),
   #|   maxPacketLifeTime: self.maxPacketLifeTime,
   #|   maxRetransmits: self.maxRetransmits,
   #|   protocol: self.protocol,
-  #|   negotiated: self.negotiated,
+  #|   negotiated: (self.negotiated === -1 ? undefined : self.negotiated),
   #|   id: self.id
   #| })
+
+///|
+/// Convert to JsValue
+pub fn RTCDataChannelInit::to_js(self : RTCDataChannelInit) -> JsValue {
+  RTCDataChannelInit::to_js_ffi(self)
+}

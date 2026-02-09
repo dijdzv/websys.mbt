@@ -88,7 +88,7 @@ pub fn MIDIPortConnectionState::from_string(
 
 ///|
 /// MidiPermissionDescriptor dictionary
-pub struct MidiPermissionDescriptor {
+pub(all) struct MidiPermissionDescriptor {
   sysex : Bool?
 }
 
@@ -99,17 +99,24 @@ pub fn MidiPermissionDescriptor::default() -> MidiPermissionDescriptor {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MidiPermissionDescriptor::to_js(
+extern "js" fn MidiPermissionDescriptor::to_js_ffi(
   self : MidiPermissionDescriptor,
 ) -> JsValue =
   #| (self) => ({
-  #|   sysex: self.sysex
+  #|   sysex: (self.sysex === -1 ? undefined : self.sysex)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MidiPermissionDescriptor::to_js(
+  self : MidiPermissionDescriptor,
+) -> JsValue {
+  MidiPermissionDescriptor::to_js_ffi(self)
+}
+
+///|
 /// MIDIOptions dictionary
-pub struct MIDIOptions {
+pub(all) struct MIDIOptions {
   sysex : Bool?
   software : Bool?
 }
@@ -121,16 +128,21 @@ pub fn MIDIOptions::default() -> MIDIOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MIDIOptions::to_js(self : MIDIOptions) -> JsValue =
+extern "js" fn MIDIOptions::to_js_ffi(self : MIDIOptions) -> JsValue =
   #| (self) => ({
-  #|   sysex: self.sysex,
-  #|   software: self.software
+  #|   sysex: (self.sysex === -1 ? undefined : self.sysex),
+  #|   software: (self.software === -1 ? undefined : self.software)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MIDIOptions::to_js(self : MIDIOptions) -> JsValue {
+  MIDIOptions::to_js_ffi(self)
+}
+
+///|
 /// MIDIMessageEventInit dictionary
-pub struct MIDIMessageEventInit {
+pub(all) struct MIDIMessageEventInit {
   data : Uint8Array?
 }
 
@@ -141,17 +153,22 @@ pub fn MIDIMessageEventInit::default() -> MIDIMessageEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MIDIMessageEventInit::to_js(
+extern "js" fn MIDIMessageEventInit::to_js_ffi(
   self : MIDIMessageEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   data: self.data
+  #|   data: ((() => { const v = self.data; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MIDIMessageEventInit::to_js(self : MIDIMessageEventInit) -> JsValue {
+  MIDIMessageEventInit::to_js_ffi(self)
+}
+
+///|
 /// MIDIConnectionEventInit dictionary
-pub struct MIDIConnectionEventInit {
+pub(all) struct MIDIConnectionEventInit {
   port : MIDIPort?
 }
 
@@ -162,13 +179,20 @@ pub fn MIDIConnectionEventInit::default() -> MIDIConnectionEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MIDIConnectionEventInit::to_js(
+extern "js" fn MIDIConnectionEventInit::to_js_ffi(
   self : MIDIConnectionEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   port: self.port
+  #|   port: ((() => { const v = self.port; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn MIDIConnectionEventInit::to_js(
+  self : MIDIConnectionEventInit,
+) -> JsValue {
+  MIDIConnectionEventInit::to_js_ffi(self)
+}
 
 ///|
 /// MIDIInputMap interface
@@ -205,7 +229,7 @@ pub extern "js" fn MIDIInputMap::get(
   self : MIDIInputMap,
   key : String,
 ) -> MIDIInput? =
-  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, key) => self.get(key)
 
 ///|
 pub extern "js" fn MIDIInputMap::has(self : MIDIInputMap, key : String) -> Bool =
@@ -248,7 +272,7 @@ pub extern "js" fn MIDIOutputMap::get(
   self : MIDIOutputMap,
   key : String,
 ) -> MIDIOutput? =
-  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, key) => self.get(key)
 
 ///|
 pub extern "js" fn MIDIOutputMap::has(
@@ -362,29 +386,29 @@ pub extern "js" fn MIDIPort::get_id(self : MIDIPort) -> String =
 
 ///|
 pub extern "js" fn MIDIPort::get_manufacturer(self : MIDIPort) -> String? =
-  #| (self) => { const v = self.manufacturer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.manufacturer) ?? undefined
 
 ///|
 pub extern "js" fn MIDIPort::get_name(self : MIDIPort) -> String? =
-  #| (self) => { const v = self.name; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.name) ?? undefined
 
 ///|
 pub extern "js" fn MIDIPort::get_type(self : MIDIPort) -> MIDIPortType =
-  #| (self) => self.type
+  #| (self) => ['input', 'output'].indexOf(self.type)
 
 ///|
 pub extern "js" fn MIDIPort::get_version(self : MIDIPort) -> String? =
-  #| (self) => { const v = self.version; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.version) ?? undefined
 
 ///|
 pub extern "js" fn MIDIPort::get_state(self : MIDIPort) -> MIDIPortDeviceState =
-  #| (self) => self.state
+  #| (self) => ['disconnected', 'connected'].indexOf(self.state)
 
 ///|
 pub extern "js" fn MIDIPort::get_connection(
   self : MIDIPort,
 ) -> MIDIPortConnectionState =
-  #| (self) => self.connection
+  #| (self) => ['open', 'closed', 'pending'].indexOf(self.connection)
 
 ///|
 pub extern "js" fn MIDIPort::get_onstatechange(self : MIDIPort) -> EventHandler =
@@ -554,17 +578,29 @@ pub extern "js" fn MIDIMessageEvent::to_event(self : MIDIMessageEvent) -> Event 
   #| (self) => self
 
 ///|
-pub extern "js" fn MIDIMessageEvent::new(
+pub extern "js" fn MIDIMessageEvent::new(type_ : String) -> MIDIMessageEvent =
+  #| (type_) => new MIDIMessageEvent(type_)
+
+///|
+extern "js" fn MIDIMessageEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : MIDIMessageEventInit,
+  event_init_dict : JsValue,
 ) -> MIDIMessageEvent =
   #| (type_, event_init_dict) => new MIDIMessageEvent(type_, event_init_dict)
+
+///|
+pub fn MIDIMessageEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : MIDIMessageEventInit,
+) -> MIDIMessageEvent {
+  MIDIMessageEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn MIDIMessageEvent::get_data(
   self : MIDIMessageEvent,
 ) -> Uint8Array? =
-  #| (self) => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// MIDIConnectionEvent interface
@@ -613,12 +649,29 @@ pub extern "js" fn MIDIConnectionEvent::to_event(
 ///|
 pub extern "js" fn MIDIConnectionEvent::new(
   type_ : String,
-  event_init_dict : MIDIConnectionEventInit,
+) -> MIDIConnectionEvent =
+  #| (type_) => new MIDIConnectionEvent(type_)
+
+///|
+extern "js" fn MIDIConnectionEvent::new_with_event_init_dict_ffi(
+  type_ : String,
+  event_init_dict : JsValue,
 ) -> MIDIConnectionEvent =
   #| (type_, event_init_dict) => new MIDIConnectionEvent(type_, event_init_dict)
+
+///|
+pub fn MIDIConnectionEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : MIDIConnectionEventInit,
+) -> MIDIConnectionEvent {
+  MIDIConnectionEvent::new_with_event_init_dict_ffi(
+    type_,
+    event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn MIDIConnectionEvent::get_port(
   self : MIDIConnectionEvent,
 ) -> MIDIPort? =
-  #| (self) => { const v = self.port; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.port; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

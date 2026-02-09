@@ -35,7 +35,7 @@ pub extern "js" fn TimeEvent::to_event(self : TimeEvent) -> Event =
 
 ///|
 pub extern "js" fn TimeEvent::get_view(self : TimeEvent) -> WindowProxy? =
-  #| (self) => { const v = self.view; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.view; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn TimeEvent::get_detail(self : TimeEvent) -> Int =
@@ -55,7 +55,7 @@ pub extern "js" fn TimeEvent::init_time_event_with_detail_arg(
   view_arg : Window?,
   detail_arg : Int,
 ) -> Unit =
-  #| (self, type_arg, view_arg, detail_arg) => self.initTimeEvent(type_arg, view_arg, detail_arg)
+  #| (self, type_arg, view_arg, detail_arg) => self.initTimeEvent(type_arg, (view_arg.$tag === 1 ? view_arg._0 : null), detail_arg)
 
 ///|
 /// SVGAnimationElement interface
@@ -147,7 +147,7 @@ pub extern "js" fn SVGAnimationElement::as_svg_animate_transform_element(
 pub extern "js" fn SVGAnimationElement::get_target_element(
   self : SVGAnimationElement,
 ) -> SVGElement? =
-  #| (self) => { const v = self.targetElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.targetElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn SVGAnimationElement::get_onbegin(

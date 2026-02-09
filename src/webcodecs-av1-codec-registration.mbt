@@ -3,7 +3,7 @@
 
 ///|
 /// VideoEncoderEncodeOptionsForAv1 dictionary
-pub struct VideoEncoderEncodeOptionsForAv1 {
+pub(all) struct VideoEncoderEncodeOptionsForAv1 {
   quantizer : Nullable[Int]
 }
 
@@ -14,10 +14,17 @@ pub fn VideoEncoderEncodeOptionsForAv1::default() -> VideoEncoderEncodeOptionsFo
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn VideoEncoderEncodeOptionsForAv1::to_js(
+extern "js" fn VideoEncoderEncodeOptionsForAv1::to_js_ffi(
   self : VideoEncoderEncodeOptionsForAv1,
 ) -> JsValue =
   #| (self) => ({
   #|   quantizer: ((() => { const v = self.quantizer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn VideoEncoderEncodeOptionsForAv1::to_js(
+  self : VideoEncoderEncodeOptionsForAv1,
+) -> JsValue {
+  VideoEncoderEncodeOptionsForAv1::to_js_ffi(self)
+}

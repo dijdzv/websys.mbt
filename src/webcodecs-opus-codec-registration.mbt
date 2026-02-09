@@ -87,7 +87,7 @@ pub fn OpusApplication::from_string(s : String) -> OpusApplication? {
 
 ///|
 /// OpusEncoderConfig dictionary
-pub struct OpusEncoderConfig {
+pub(all) struct OpusEncoderConfig {
   format : OpusBitstreamFormat?
   signal : OpusSignal?
   application : OpusApplication?
@@ -114,17 +114,22 @@ pub fn OpusEncoderConfig::default() -> OpusEncoderConfig {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn OpusEncoderConfig::to_js(
+extern "js" fn OpusEncoderConfig::to_js_ffi(
   self : OpusEncoderConfig,
 ) -> JsValue =
   #| (self) => ({
-  #|   format: ['opus', 'ogg'][self.format],
-  #|   signal: ['auto', 'music', 'voice'][self.signal],
-  #|   application: ['voip', 'audio', 'lowdelay'][self.application],
+  #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['opus', 'ogg'][v]; })()),
+  #|   signal: ((() => { const v = self.signal; if (v === undefined) return undefined; return ['auto', 'music', 'voice'][v]; })()),
+  #|   application: ((() => { const v = self.application; if (v === undefined) return undefined; return ['voip', 'audio', 'lowdelay'][v]; })()),
   #|   frameDuration: self.frameDuration,
   #|   complexity: self.complexity,
   #|   packetlossperc: self.packetlossperc,
-  #|   useinbandfec: self.useinbandfec,
-  #|   usedtx: self.usedtx
+  #|   useinbandfec: (self.useinbandfec === -1 ? undefined : self.useinbandfec),
+  #|   usedtx: (self.usedtx === -1 ? undefined : self.usedtx)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn OpusEncoderConfig::to_js(self : OpusEncoderConfig) -> JsValue {
+  OpusEncoderConfig::to_js_ffi(self)
+}

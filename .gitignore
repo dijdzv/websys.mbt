@@ -5,6 +5,7 @@ target
 
 # Node.js
 node_modules/
+bun.lock
 
 # Nix/devenv
 .devenv/

@@ -3,7 +3,7 @@
 
 ///|
 /// BluetoothLEScanOptions dictionary
-pub struct BluetoothLEScanOptions {
+pub(all) struct BluetoothLEScanOptions {
   filters : Array[BluetoothLEScanFilterInit]?
   keepRepeatedDevices : Bool?
   acceptAllAdvertisements : Bool?
@@ -20,19 +20,24 @@ pub fn BluetoothLEScanOptions::default() -> BluetoothLEScanOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BluetoothLEScanOptions::to_js(
+extern "js" fn BluetoothLEScanOptions::to_js_ffi(
   self : BluetoothLEScanOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   filters: self.filters,
-  #|   keepRepeatedDevices: self.keepRepeatedDevices,
-  #|   acceptAllAdvertisements: self.acceptAllAdvertisements
+  #|   filters: ((() => { const v = self.filters; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   keepRepeatedDevices: (self.keepRepeatedDevices === -1 ? undefined : self.keepRepeatedDevices),
+  #|   acceptAllAdvertisements: (self.acceptAllAdvertisements === -1 ? undefined : self.acceptAllAdvertisements)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn BluetoothLEScanOptions::to_js(self : BluetoothLEScanOptions) -> JsValue {
+  BluetoothLEScanOptions::to_js_ffi(self)
+}
+
+///|
 /// BluetoothLEScanPermissionDescriptor dictionary
-pub struct BluetoothLEScanPermissionDescriptor {
+pub(all) struct BluetoothLEScanPermissionDescriptor {
   filters : Array[BluetoothLEScanFilterInit]?
   keepRepeatedDevices : Bool?
   acceptAllAdvertisements : Bool?
@@ -49,15 +54,22 @@ pub fn BluetoothLEScanPermissionDescriptor::default() -> BluetoothLEScanPermissi
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BluetoothLEScanPermissionDescriptor::to_js(
+extern "js" fn BluetoothLEScanPermissionDescriptor::to_js_ffi(
   self : BluetoothLEScanPermissionDescriptor,
 ) -> JsValue =
   #| (self) => ({
-  #|   filters: self.filters,
-  #|   keepRepeatedDevices: self.keepRepeatedDevices,
-  #|   acceptAllAdvertisements: self.acceptAllAdvertisements
+  #|   filters: ((() => { const v = self.filters; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   keepRepeatedDevices: (self.keepRepeatedDevices === -1 ? undefined : self.keepRepeatedDevices),
+  #|   acceptAllAdvertisements: (self.acceptAllAdvertisements === -1 ? undefined : self.acceptAllAdvertisements)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn BluetoothLEScanPermissionDescriptor::to_js(
+  self : BluetoothLEScanPermissionDescriptor,
+) -> JsValue {
+  BluetoothLEScanPermissionDescriptor::to_js_ffi(self)
+}
 
 ///|
 /// BluetoothDataFilter interface
@@ -98,10 +110,21 @@ pub extern "js" fn JsValue::to_bluetooth_data_filter(
   #| (self) => self
 
 ///|
-pub extern "js" fn BluetoothDataFilter::new(
-  init_ : BluetoothDataFilterInit,
+pub extern "js" fn BluetoothDataFilter::new() -> BluetoothDataFilter =
+  #| () => new BluetoothDataFilter()
+
+///|
+extern "js" fn BluetoothDataFilter::new_with_init_ffi(
+  init_ : JsValue,
 ) -> BluetoothDataFilter =
   #| (init_) => new BluetoothDataFilter(init_)
+
+///|
+pub fn BluetoothDataFilter::new_with_init(
+  init_ : BluetoothDataFilterInit,
+) -> BluetoothDataFilter {
+  BluetoothDataFilter::new_with_init_ffi(init_.to_js())
+}
 
 ///|
 pub extern "js" fn BluetoothDataFilter::get_data_prefix(
@@ -154,7 +177,11 @@ pub extern "js" fn JsValue::to_bluetooth_manufacturer_data_filter(
   #| (self) => self
 
 ///|
-pub extern "js" fn BluetoothManufacturerDataFilter::new(
+pub extern "js" fn BluetoothManufacturerDataFilter::new() -> BluetoothManufacturerDataFilter =
+  #| () => new BluetoothManufacturerDataFilter()
+
+///|
+pub extern "js" fn BluetoothManufacturerDataFilter::new_with_init(
   init_ : JsValue,
 ) -> BluetoothManufacturerDataFilter =
   #| (init_) => new BluetoothManufacturerDataFilter(init_)
@@ -164,7 +191,7 @@ pub extern "js" fn BluetoothManufacturerDataFilter::get(
   self : BluetoothManufacturerDataFilter,
   key : Int,
 ) -> BluetoothDataFilter? =
-  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, key) => self.get(key)
 
 ///|
 pub extern "js" fn BluetoothManufacturerDataFilter::has(
@@ -212,7 +239,11 @@ pub extern "js" fn JsValue::to_bluetooth_service_data_filter(
   #| (self) => self
 
 ///|
-pub extern "js" fn BluetoothServiceDataFilter::new(
+pub extern "js" fn BluetoothServiceDataFilter::new() -> BluetoothServiceDataFilter =
+  #| () => new BluetoothServiceDataFilter()
+
+///|
+pub extern "js" fn BluetoothServiceDataFilter::new_with_init(
   init_ : JsValue,
 ) -> BluetoothServiceDataFilter =
   #| (init_) => new BluetoothServiceDataFilter(init_)
@@ -222,7 +253,7 @@ pub extern "js" fn BluetoothServiceDataFilter::get(
   self : BluetoothServiceDataFilter,
   key : UUID,
 ) -> BluetoothDataFilter? =
-  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, key) => self.get(key)
 
 ///|
 pub extern "js" fn BluetoothServiceDataFilter::has(
@@ -270,22 +301,33 @@ pub extern "js" fn JsValue::to_bluetooth_le_scan_filter(
   #| (self) => self
 
 ///|
-pub extern "js" fn BluetoothLEScanFilter::new(
-  init_ : BluetoothLEScanFilterInit,
+pub extern "js" fn BluetoothLEScanFilter::new() -> BluetoothLEScanFilter =
+  #| () => new BluetoothLEScanFilter()
+
+///|
+extern "js" fn BluetoothLEScanFilter::new_with_init_ffi(
+  init_ : JsValue,
 ) -> BluetoothLEScanFilter =
   #| (init_) => new BluetoothLEScanFilter(init_)
+
+///|
+pub fn BluetoothLEScanFilter::new_with_init(
+  init_ : BluetoothLEScanFilterInit,
+) -> BluetoothLEScanFilter {
+  BluetoothLEScanFilter::new_with_init_ffi(init_.to_js())
+}
 
 ///|
 pub extern "js" fn BluetoothLEScanFilter::get_name(
   self : BluetoothLEScanFilter,
 ) -> String? =
-  #| (self) => { const v = self.name; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.name) ?? undefined
 
 ///|
 pub extern "js" fn BluetoothLEScanFilter::get_name_prefix(
   self : BluetoothLEScanFilter,
 ) -> String? =
-  #| (self) => { const v = self.namePrefix; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.namePrefix) ?? undefined
 
 ///|
 pub extern "js" fn BluetoothLEScanFilter::get_services(

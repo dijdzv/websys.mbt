@@ -49,7 +49,7 @@ pub extern "js" fn WEBGL_multi_draw::multi_draw_arrays_webgl(
   counts_offset : Int64,
   drawcount : GLsizei,
 ) -> Unit =
-  #| (self, mode, firsts_list, firsts_offset, counts_list, counts_offset, drawcount) => self.multiDrawArraysWEBGL(mode, firsts_list, firsts_offset, counts_list, counts_offset, drawcount)
+  #| (self, mode, firsts_list, firsts_offset, counts_list, counts_offset, drawcount) => self.multiDrawArraysWEBGL(mode, firsts_list, (firsts_offset.hi * 4294967296 + firsts_offset.lo), counts_list, (counts_offset.hi * 4294967296 + counts_offset.lo), drawcount)
 
 ///|
 pub extern "js" fn WEBGL_multi_draw::multi_draw_elements_webgl(
@@ -62,7 +62,7 @@ pub extern "js" fn WEBGL_multi_draw::multi_draw_elements_webgl(
   offsets_offset : Int64,
   drawcount : GLsizei,
 ) -> Unit =
-  #| (self, mode, counts_list, counts_offset, type_, offsets_list, offsets_offset, drawcount) => self.multiDrawElementsWEBGL(mode, counts_list, counts_offset, type_, offsets_list, offsets_offset, drawcount)
+  #| (self, mode, counts_list, counts_offset, type_, offsets_list, offsets_offset, drawcount) => self.multiDrawElementsWEBGL(mode, counts_list, (counts_offset.hi * 4294967296 + counts_offset.lo), type_, offsets_list, (offsets_offset.hi * 4294967296 + offsets_offset.lo), drawcount)
 
 ///|
 pub extern "js" fn WEBGL_multi_draw::multi_draw_arrays_instanced_webgl(
@@ -76,7 +76,7 @@ pub extern "js" fn WEBGL_multi_draw::multi_draw_arrays_instanced_webgl(
   instance_counts_offset : Int64,
   drawcount : GLsizei,
 ) -> Unit =
-  #| (self, mode, firsts_list, firsts_offset, counts_list, counts_offset, instance_counts_list, instance_counts_offset, drawcount) => self.multiDrawArraysInstancedWEBGL(mode, firsts_list, firsts_offset, counts_list, counts_offset, instance_counts_list, instance_counts_offset, drawcount)
+  #| (self, mode, firsts_list, firsts_offset, counts_list, counts_offset, instance_counts_list, instance_counts_offset, drawcount) => self.multiDrawArraysInstancedWEBGL(mode, firsts_list, (firsts_offset.hi * 4294967296 + firsts_offset.lo), counts_list, (counts_offset.hi * 4294967296 + counts_offset.lo), instance_counts_list, (instance_counts_offset.hi * 4294967296 + instance_counts_offset.lo), drawcount)
 
 ///|
 pub extern "js" fn WEBGL_multi_draw::multi_draw_elements_instanced_webgl(
@@ -91,4 +91,4 @@ pub extern "js" fn WEBGL_multi_draw::multi_draw_elements_instanced_webgl(
   instance_counts_offset : Int64,
   drawcount : GLsizei,
 ) -> Unit =
-  #| (self, mode, counts_list, counts_offset, type_, offsets_list, offsets_offset, instance_counts_list, instance_counts_offset, drawcount) => self.multiDrawElementsInstancedWEBGL(mode, counts_list, counts_offset, type_, offsets_list, offsets_offset, instance_counts_list, instance_counts_offset, drawcount)
+  #| (self, mode, counts_list, counts_offset, type_, offsets_list, offsets_offset, instance_counts_list, instance_counts_offset, drawcount) => self.multiDrawElementsInstancedWEBGL(mode, counts_list, (counts_offset.hi * 4294967296 + counts_offset.lo), type_, offsets_list, (offsets_offset.hi * 4294967296 + offsets_offset.lo), instance_counts_list, (instance_counts_offset.hi * 4294967296 + instance_counts_offset.lo), drawcount)

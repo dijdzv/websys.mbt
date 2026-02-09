@@ -65,4 +65,4 @@ pub extern "js" fn OVR_multiview2::framebuffer_texture_multiview_ovr(
   base_view_index : GLint,
   num_views : GLsizei,
 ) -> Unit =
-  #| (self, target, attachment, texture, level, base_view_index, num_views) => self.framebufferTextureMultiviewOVR(target, attachment, texture, level, base_view_index, num_views)
+  #| (self, target, attachment, texture, level, base_view_index, num_views) => self.framebufferTextureMultiviewOVR(target, attachment, (texture.$tag === 1 ? texture._0 : null), level, base_view_index, num_views)

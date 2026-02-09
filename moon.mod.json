@@ -16,5 +16,6 @@
     ],
     "description": "MoonBit bindings for Web APIs (DOM, HTML, Canvas, WebGL, etc.)",
     "source": "src",
-    "preferred-target": "js"
+    "preferred-target": "js",
+    "exclude": ["test"]
 }

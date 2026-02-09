@@ -44,7 +44,7 @@ pub extern "js" fn LineAndPositionSetting::is_auto_keyword(
 pub extern "js" fn LineAndPositionSetting::as_double(
   self : LineAndPositionSetting,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// Try to get LineAndPositionSetting as AutoKeyword
@@ -273,25 +273,25 @@ pub extern "js" fn VTTCue::new(
 
 ///|
 pub extern "js" fn VTTCue::get_region(self : VTTCue) -> VTTRegion? =
-  #| (self) => { const v = self.region; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.region; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn VTTCue::set_region(
   self : VTTCue,
   value : VTTRegion?,
 ) -> Unit =
-  #| (self, value) => { self.region = value }
+  #| (self, value) => { self.region = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn VTTCue::get_vertical(self : VTTCue) -> DirectionSetting =
-  #| (self) => self.vertical
+  #| (self) => ['', 'rl', 'lr'].indexOf(self.vertical)
 
 ///|
 pub extern "js" fn VTTCue::set_vertical(
   self : VTTCue,
   value : DirectionSetting,
 ) -> Unit =
-  #| (self, value) => { self.vertical = value }
+  #| (self, value) => { self.vertical = ['', 'rl', 'lr'][value] }
 
 ///|
 pub extern "js" fn VTTCue::get_snap_to_lines(self : VTTCue) -> Bool =
@@ -317,14 +317,14 @@ pub extern "js" fn VTTCue::set_line(
 
 ///|
 pub extern "js" fn VTTCue::get_line_align(self : VTTCue) -> LineAlignSetting =
-  #| (self) => self.lineAlign
+  #| (self) => ['start', 'center', 'end'].indexOf(self.lineAlign)
 
 ///|
 pub extern "js" fn VTTCue::set_line_align(
   self : VTTCue,
   value : LineAlignSetting,
 ) -> Unit =
-  #| (self, value) => { self.lineAlign = value }
+  #| (self, value) => { self.lineAlign = ['start', 'center', 'end'][value] }
 
 ///|
 pub extern "js" fn VTTCue::get_position(
@@ -343,14 +343,14 @@ pub extern "js" fn VTTCue::set_position(
 pub extern "js" fn VTTCue::get_position_align(
   self : VTTCue,
 ) -> PositionAlignSetting =
-  #| (self) => self.positionAlign
+  #| (self) => ['line-left', 'center', 'line-right', 'auto'].indexOf(self.positionAlign)
 
 ///|
 pub extern "js" fn VTTCue::set_position_align(
   self : VTTCue,
   value : PositionAlignSetting,
 ) -> Unit =
-  #| (self, value) => { self.positionAlign = value }
+  #| (self, value) => { self.positionAlign = ['line-left', 'center', 'line-right', 'auto'][value] }
 
 ///|
 pub extern "js" fn VTTCue::get_size(self : VTTCue) -> Double =
@@ -362,14 +362,14 @@ pub extern "js" fn VTTCue::set_size(self : VTTCue, value : Double) -> Unit =
 
 ///|
 pub extern "js" fn VTTCue::get_align(self : VTTCue) -> AlignSetting =
-  #| (self) => self.align
+  #| (self) => ['start', 'center', 'end', 'left', 'right'].indexOf(self.align)
 
 ///|
 pub extern "js" fn VTTCue::set_align(
   self : VTTCue,
   value : AlignSetting,
 ) -> Unit =
-  #| (self, value) => { self.align = value }
+  #| (self, value) => { self.align = ['start', 'center', 'end', 'left', 'right'][value] }
 
 ///|
 pub extern "js" fn VTTCue::get_text(self : VTTCue) -> String =
@@ -488,11 +488,11 @@ pub extern "js" fn VTTRegion::set_viewport_anchor_y(
 
 ///|
 pub extern "js" fn VTTRegion::get_scroll(self : VTTRegion) -> ScrollSetting =
-  #| (self) => self.scroll
+  #| (self) => ['', 'up'].indexOf(self.scroll)
 
 ///|
 pub extern "js" fn VTTRegion::set_scroll(
   self : VTTRegion,
   value : ScrollSetting,
 ) -> Unit =
-  #| (self, value) => { self.scroll = value }
+  #| (self, value) => { self.scroll = ['', 'up'][value] }

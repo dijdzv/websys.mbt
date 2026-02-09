@@ -35,7 +35,7 @@ pub fn CaptureAction::from_string(s : String) -> CaptureAction? {
 
 ///|
 /// CaptureActionEventInit dictionary
-pub struct CaptureActionEventInit {
+pub(all) struct CaptureActionEventInit {
   action : String?
 }
 
@@ -46,13 +46,18 @@ pub fn CaptureActionEventInit::default() -> CaptureActionEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CaptureActionEventInit::to_js(
+extern "js" fn CaptureActionEventInit::to_js_ffi(
   self : CaptureActionEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   action: self.action
   #| })
+
+///|
+/// Convert to JsValue
+pub fn CaptureActionEventInit::to_js(self : CaptureActionEventInit) -> JsValue {
+  CaptureActionEventInit::to_js_ffi(self)
+}
 
 ///|
 /// CaptureActionEvent interface
@@ -99,13 +104,24 @@ pub extern "js" fn CaptureActionEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn CaptureActionEvent::new(
-  init_ : CaptureActionEventInit,
+pub extern "js" fn CaptureActionEvent::new() -> CaptureActionEvent =
+  #| () => new CaptureActionEvent()
+
+///|
+extern "js" fn CaptureActionEvent::new_with_init_ffi(
+  init_ : JsValue,
 ) -> CaptureActionEvent =
   #| (init_) => new CaptureActionEvent(init_)
+
+///|
+pub fn CaptureActionEvent::new_with_init(
+  init_ : CaptureActionEventInit,
+) -> CaptureActionEvent {
+  CaptureActionEvent::new_with_init_ffi(init_.to_js())
+}
 
 ///|
 pub extern "js" fn CaptureActionEvent::get_action(
   self : CaptureActionEvent,
 ) -> CaptureAction =
-  #| (self) => self.action
+  #| (self) => ['next', 'previous', 'first', 'last'].indexOf(self.action)

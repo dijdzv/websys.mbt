@@ -10,11 +10,11 @@ pub type IntersectionObserverCallback
 pub extern "js" fn IntersectionObserverCallback::from_fn(
   handler : (Array[IntersectionObserverEntry], IntersectionObserver) -> Unit,
 ) -> IntersectionObserverCallback =
-  #| (handler) => handler
+  #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
 /// IntersectionObserverEntryInit dictionary
-pub struct IntersectionObserverEntryInit {
+pub(all) struct IntersectionObserverEntryInit {
   time : DOMHighResTimeStamp
   rootBounds : DOMRectInit?
   boundingClientRect : DOMRectInit
@@ -26,23 +26,27 @@ pub struct IntersectionObserverEntryInit {
 }
 
 ///|
-/// Create a new IntersectionObserverEntryInit with default values
-pub fn IntersectionObserverEntryInit::default() -> IntersectionObserverEntryInit {
+/// Create a new IntersectionObserverEntryInit
+pub fn IntersectionObserverEntryInit::new(
+  time~ : DOMHighResTimeStamp,
+  boundingClientRect~ : DOMRectInit,
+  intersectionRect~ : DOMRectInit,
+  target~ : Element,
+) -> IntersectionObserverEntryInit {
   IntersectionObserverEntryInit::{
-    time: panic(),
+    time,
     rootBounds: None,
-    boundingClientRect: panic(),
-    intersectionRect: panic(),
+    boundingClientRect,
+    intersectionRect,
     isIntersecting: false,
     isVisible: false,
     intersectionRatio: 0,
-    target: panic(),
+    target,
   }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn IntersectionObserverEntryInit::to_js(
+extern "js" fn IntersectionObserverEntryInit::to_js_ffi(
   self : IntersectionObserverEntryInit,
 ) -> JsValue =
   #| (self) => ({
@@ -57,8 +61,16 @@ pub extern "js" fn IntersectionObserverEntryInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn IntersectionObserverEntryInit::to_js(
+  self : IntersectionObserverEntryInit,
+) -> JsValue {
+  IntersectionObserverEntryInit::to_js_ffi(self)
+}
+
+///|
 /// IntersectionObserverInit dictionary
-pub struct IntersectionObserverInit {
+pub(all) struct IntersectionObserverInit {
   root : ElementOrDocument?
   rootMargin : String?
   scrollMargin : String?
@@ -81,18 +93,25 @@ pub fn IntersectionObserverInit::default() -> IntersectionObserverInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn IntersectionObserverInit::to_js(
+extern "js" fn IntersectionObserverInit::to_js_ffi(
   self : IntersectionObserverInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   root: self.root,
+  #|   root: ((() => { const v = self.root; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   rootMargin: self.rootMargin,
   #|   scrollMargin: self.scrollMargin,
-  #|   threshold: self.threshold,
+  #|   threshold: ((() => { const v = self.threshold; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   delay: self.delay,
-  #|   trackVisibility: self.trackVisibility
+  #|   trackVisibility: (self.trackVisibility === -1 ? undefined : self.trackVisibility)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn IntersectionObserverInit::to_js(
+  self : IntersectionObserverInit,
+) -> JsValue {
+  IntersectionObserverInit::to_js_ffi(self)
+}
 
 ///|
 /// IntersectionObserver interface
@@ -135,9 +154,23 @@ pub extern "js" fn JsValue::to_intersection_observer(
 ///|
 pub extern "js" fn IntersectionObserver::new(
   callback : IntersectionObserverCallback,
-  options : IntersectionObserverInit,
+) -> IntersectionObserver =
+  #| (callback) => new IntersectionObserver(callback)
+
+///|
+extern "js" fn IntersectionObserver::new_with_options_ffi(
+  callback : IntersectionObserverCallback,
+  options : JsValue,
 ) -> IntersectionObserver =
   #| (callback, options) => new IntersectionObserver(callback, options)
+
+///|
+pub fn IntersectionObserver::new_with_options(
+  callback : IntersectionObserverCallback,
+  options : IntersectionObserverInit,
+) -> IntersectionObserver {
+  IntersectionObserver::new_with_options_ffi(callback, options.to_js())
+}
 
 ///|
 pub extern "js" fn IntersectionObserver::get_root(
@@ -240,10 +273,17 @@ pub extern "js" fn JsValue::to_intersection_observer_entry(
   #| (self) => self
 
 ///|
-pub extern "js" fn IntersectionObserverEntry::new(
-  intersection_observer_entry_init : IntersectionObserverEntryInit,
+extern "js" fn IntersectionObserverEntry::new_ffi(
+  intersection_observer_entry_init : JsValue,
 ) -> IntersectionObserverEntry =
   #| (intersection_observer_entry_init) => new IntersectionObserverEntry(intersection_observer_entry_init)
+
+///|
+pub fn IntersectionObserverEntry::new(
+  intersection_observer_entry_init : IntersectionObserverEntryInit,
+) -> IntersectionObserverEntry {
+  IntersectionObserverEntry::new_ffi(intersection_observer_entry_init.to_js())
+}
 
 ///|
 pub extern "js" fn IntersectionObserverEntry::get_time(
@@ -255,7 +295,7 @@ pub extern "js" fn IntersectionObserverEntry::get_time(
 pub extern "js" fn IntersectionObserverEntry::get_root_bounds(
   self : IntersectionObserverEntry,
 ) -> DOMRectReadOnly? =
-  #| (self) => { const v = self.rootBounds; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.rootBounds; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn IntersectionObserverEntry::get_bounding_client_rect(

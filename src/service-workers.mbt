@@ -248,7 +248,7 @@ pub fn RouterSourceEnum::from_string(s : String) -> RouterSourceEnum? {
 
 ///|
 /// RegistrationOptions dictionary
-pub struct RegistrationOptions {
+pub(all) struct RegistrationOptions {
   scope : String?
   type_ : WorkerType?
   updateViaCache : ServiceWorkerUpdateViaCache?
@@ -261,19 +261,24 @@ pub fn RegistrationOptions::default() -> RegistrationOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn RegistrationOptions::to_js(
+extern "js" fn RegistrationOptions::to_js_ffi(
   self : RegistrationOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   scope: self.scope,
-  #|   type: ['classic', 'module'][self.type_],
-  #|   updateViaCache: ['imports', 'all', 'none'][self.updateViaCache]
+  #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['classic', 'module'][v]; })()),
+  #|   updateViaCache: ((() => { const v = self.updateViaCache; if (v === undefined) return undefined; return ['imports', 'all', 'none'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn RegistrationOptions::to_js(self : RegistrationOptions) -> JsValue {
+  RegistrationOptions::to_js_ffi(self)
+}
+
+///|
 /// NavigationPreloadState dictionary
-pub struct NavigationPreloadState {
+pub(all) struct NavigationPreloadState {
   enabled : Bool?
   headerValue : String?
 }
@@ -285,18 +290,23 @@ pub fn NavigationPreloadState::default() -> NavigationPreloadState {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn NavigationPreloadState::to_js(
+extern "js" fn NavigationPreloadState::to_js_ffi(
   self : NavigationPreloadState,
 ) -> JsValue =
   #| (self) => ({
-  #|   enabled: self.enabled,
+  #|   enabled: (self.enabled === -1 ? undefined : self.enabled),
   #|   headerValue: self.headerValue
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn NavigationPreloadState::to_js(self : NavigationPreloadState) -> JsValue {
+  NavigationPreloadState::to_js_ffi(self)
+}
+
+///|
 /// ClientQueryOptions dictionary
-pub struct ClientQueryOptions {
+pub(all) struct ClientQueryOptions {
   includeUncontrolled : Bool?
   type_ : ClientType?
 }
@@ -308,18 +318,23 @@ pub fn ClientQueryOptions::default() -> ClientQueryOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ClientQueryOptions::to_js(
+extern "js" fn ClientQueryOptions::to_js_ffi(
   self : ClientQueryOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   includeUncontrolled: self.includeUncontrolled,
-  #|   type: ['window', 'worker', 'sharedworker', 'all'][self.type_]
+  #|   includeUncontrolled: (self.includeUncontrolled === -1 ? undefined : self.includeUncontrolled),
+  #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['window', 'worker', 'sharedworker', 'all'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ClientQueryOptions::to_js(self : ClientQueryOptions) -> JsValue {
+  ClientQueryOptions::to_js_ffi(self)
+}
+
+///|
 /// ExtendableEventInit dictionary
-pub struct ExtendableEventInit {}
+pub(all) struct ExtendableEventInit {}
 
 ///|
 /// Create a new ExtendableEventInit with default values
@@ -328,37 +343,50 @@ pub fn ExtendableEventInit::default() -> ExtendableEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ExtendableEventInit::to_js(
+extern "js" fn ExtendableEventInit::to_js_ffi(
   self : ExtendableEventInit,
 ) -> JsValue =
   #| (self) => ({
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ExtendableEventInit::to_js(self : ExtendableEventInit) -> JsValue {
+  ExtendableEventInit::to_js_ffi(self)
+}
+
+///|
 /// RouterRule dictionary
-pub struct RouterRule {
+pub(all) struct RouterRule {
   condition : RouterCondition
   source : RouterSource
 }
 
 ///|
-/// Create a new RouterRule with default values
-pub fn RouterRule::default() -> RouterRule {
-  RouterRule::{ condition: panic(), source: panic() }
+/// Create a new RouterRule
+pub fn RouterRule::new(
+  condition~ : RouterCondition,
+  source~ : RouterSource,
+) -> RouterRule {
+  RouterRule::{ condition, source }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn RouterRule::to_js(self : RouterRule) -> JsValue =
+extern "js" fn RouterRule::to_js_ffi(self : RouterRule) -> JsValue =
   #| (self) => ({
   #|   condition: self.condition,
   #|   source: self.source.to_js_value()
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn RouterRule::to_js(self : RouterRule) -> JsValue {
+  RouterRule::to_js_ffi(self)
+}
+
+///|
 /// RouterCondition dictionary
-pub struct RouterCondition {
+pub(all) struct RouterCondition {
   urlPattern : URLPatternCompatible?
   requestMethod : String?
   requestMode : RequestMode?
@@ -383,21 +411,26 @@ pub fn RouterCondition::default() -> RouterCondition {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn RouterCondition::to_js(self : RouterCondition) -> JsValue =
+extern "js" fn RouterCondition::to_js_ffi(self : RouterCondition) -> JsValue =
   #| (self) => ({
-  #|   urlPattern: self.urlPattern.to_js_value(),
+  #|   urlPattern: ((() => { const v = self.urlPattern; if (v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
   #|   requestMethod: self.requestMethod,
-  #|   requestMode: ['navigate', 'same-origin', 'no-cors', 'cors'][self.requestMode],
-  #|   requestDestination: ['', 'audio', 'audioworklet', 'document', 'embed', 'font', 'frame', 'iframe', 'image', 'json', 'manifest', 'object', 'paintworklet', 'report', 'script', 'sharedworker', 'style', 'track', 'video', 'worker', 'xslt'][self.requestDestination],
-  #|   runningStatus: ['running', 'not-running'][self.runningStatus],
-  #|   or: self.or,
-  #|   not: self.not
+  #|   requestMode: ((() => { const v = self.requestMode; if (v === undefined) return undefined; return ['navigate', 'same-origin', 'no-cors', 'cors'][v]; })()),
+  #|   requestDestination: ((() => { const v = self.requestDestination; if (v === undefined) return undefined; return ['', 'audio', 'audioworklet', 'document', 'embed', 'font', 'frame', 'iframe', 'image', 'json', 'manifest', 'object', 'paintworklet', 'report', 'script', 'sharedworker', 'style', 'track', 'video', 'worker', 'xslt'][v]; })()),
+  #|   runningStatus: ((() => { const v = self.runningStatus; if (v === undefined) return undefined; return ['running', 'not-running'][v]; })()),
+  #|   or: ((() => { const v = self.or; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   not: ((() => { const v = self.not; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn RouterCondition::to_js(self : RouterCondition) -> JsValue {
+  RouterCondition::to_js_ffi(self)
+}
+
+///|
 /// RouterSourceDict dictionary
-pub struct RouterSourceDict {
+pub(all) struct RouterSourceDict {
   cacheName : String?
 }
 
@@ -408,15 +441,20 @@ pub fn RouterSourceDict::default() -> RouterSourceDict {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn RouterSourceDict::to_js(self : RouterSourceDict) -> JsValue =
+extern "js" fn RouterSourceDict::to_js_ffi(self : RouterSourceDict) -> JsValue =
   #| (self) => ({
   #|   cacheName: self.cacheName
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn RouterSourceDict::to_js(self : RouterSourceDict) -> JsValue {
+  RouterSourceDict::to_js_ffi(self)
+}
+
+///|
 /// FetchEventInit dictionary
-pub struct FetchEventInit {
+pub(all) struct FetchEventInit {
   request : Request
   preloadResponse : Promise[JsValue]?
   clientId : String?
@@ -426,10 +464,10 @@ pub struct FetchEventInit {
 }
 
 ///|
-/// Create a new FetchEventInit with default values
-pub fn FetchEventInit::default() -> FetchEventInit {
+/// Create a new FetchEventInit
+pub fn FetchEventInit::new(request~ : Request) -> FetchEventInit {
   FetchEventInit::{
-    request: panic(),
+    request,
     preloadResponse: None,
     clientId: None,
     resultingClientId: None,
@@ -439,20 +477,25 @@ pub fn FetchEventInit::default() -> FetchEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FetchEventInit::to_js(self : FetchEventInit) -> JsValue =
+extern "js" fn FetchEventInit::to_js_ffi(self : FetchEventInit) -> JsValue =
   #| (self) => ({
   #|   request: self.request,
-  #|   preloadResponse: self.preloadResponse,
+  #|   preloadResponse: ((() => { const v = self.preloadResponse; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   clientId: self.clientId,
   #|   resultingClientId: self.resultingClientId,
   #|   replacesClientId: self.replacesClientId,
-  #|   handled: self.handled
+  #|   handled: ((() => { const v = self.handled; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn FetchEventInit::to_js(self : FetchEventInit) -> JsValue {
+  FetchEventInit::to_js_ffi(self)
+}
+
+///|
 /// ExtendableMessageEventInit dictionary
-pub struct ExtendableMessageEventInit {
+pub(all) struct ExtendableMessageEventInit {
   data : JsValue?
   origin : String?
   lastEventId : String?
@@ -473,21 +516,28 @@ pub fn ExtendableMessageEventInit::default() -> ExtendableMessageEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ExtendableMessageEventInit::to_js(
+extern "js" fn ExtendableMessageEventInit::to_js_ffi(
   self : ExtendableMessageEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   data: self.data,
+  #|   data: ((() => { const v = self.data; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   origin: self.origin,
   #|   lastEventId: self.lastEventId,
-  #|   source: self.source,
-  #|   ports: self.ports
+  #|   source: ((() => { const v = self.source; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   ports: ((() => { const v = self.ports; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ExtendableMessageEventInit::to_js(
+  self : ExtendableMessageEventInit,
+) -> JsValue {
+  ExtendableMessageEventInit::to_js_ffi(self)
+}
+
+///|
 /// CacheQueryOptions dictionary
-pub struct CacheQueryOptions {
+pub(all) struct CacheQueryOptions {
   ignoreSearch : Bool?
   ignoreMethod : Bool?
   ignoreVary : Bool?
@@ -504,19 +554,24 @@ pub fn CacheQueryOptions::default() -> CacheQueryOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CacheQueryOptions::to_js(
+extern "js" fn CacheQueryOptions::to_js_ffi(
   self : CacheQueryOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   ignoreSearch: self.ignoreSearch,
-  #|   ignoreMethod: self.ignoreMethod,
-  #|   ignoreVary: self.ignoreVary
+  #|   ignoreSearch: (self.ignoreSearch === -1 ? undefined : self.ignoreSearch),
+  #|   ignoreMethod: (self.ignoreMethod === -1 ? undefined : self.ignoreMethod),
+  #|   ignoreVary: (self.ignoreVary === -1 ? undefined : self.ignoreVary)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn CacheQueryOptions::to_js(self : CacheQueryOptions) -> JsValue {
+  CacheQueryOptions::to_js_ffi(self)
+}
+
+///|
 /// MultiCacheQueryOptions dictionary
-pub struct MultiCacheQueryOptions {
+pub(all) struct MultiCacheQueryOptions {
   ignoreSearch : Bool?
   ignoreMethod : Bool?
   ignoreVary : Bool?
@@ -535,16 +590,21 @@ pub fn MultiCacheQueryOptions::default() -> MultiCacheQueryOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MultiCacheQueryOptions::to_js(
+extern "js" fn MultiCacheQueryOptions::to_js_ffi(
   self : MultiCacheQueryOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   ignoreSearch: self.ignoreSearch,
-  #|   ignoreMethod: self.ignoreMethod,
-  #|   ignoreVary: self.ignoreVary,
+  #|   ignoreSearch: (self.ignoreSearch === -1 ? undefined : self.ignoreSearch),
+  #|   ignoreMethod: (self.ignoreMethod === -1 ? undefined : self.ignoreMethod),
+  #|   ignoreVary: (self.ignoreVary === -1 ? undefined : self.ignoreVary),
   #|   cacheName: self.cacheName
   #| })
+
+///|
+/// Convert to JsValue
+pub fn MultiCacheQueryOptions::to_js(self : MultiCacheQueryOptions) -> JsValue {
+  MultiCacheQueryOptions::to_js_ffi(self)
+}
 
 ///|
 /// ServiceWorker interface
@@ -592,7 +652,7 @@ pub extern "js" fn ServiceWorker::get_script_url(
 pub extern "js" fn ServiceWorker::get_state(
   self : ServiceWorker,
 ) -> ServiceWorkerState =
-  #| (self) => self.state
+  #| (self) => ['parsed', 'installing', 'installed', 'activating', 'activated', 'redundant'].indexOf(self.state)
 
 ///|
 pub extern "js" fn ServiceWorker::post_message(
@@ -602,12 +662,21 @@ pub extern "js" fn ServiceWorker::post_message(
   #| (self, message) => self.postMessage(message)
 
 ///|
-pub extern "js" fn ServiceWorker::post_message_with_options(
+extern "js" fn ServiceWorker::post_message_with_options_ffi(
+  self : ServiceWorker,
+  message : JsValue,
+  options : JsValue,
+) -> Unit =
+  #| (self, message, options) => self.postMessage(message, options)
+
+///|
+pub fn ServiceWorker::post_message_with_options(
   self : ServiceWorker,
   message : JsValue,
   options : StructuredSerializeOptions,
-) -> Unit =
-  #| (self, message, options) => self.postMessage(message, options)
+) -> Unit {
+  ServiceWorker::post_message_with_options_ffi(self, message, options.to_js())
+}
 
 ///|
 pub extern "js" fn ServiceWorker::post_message_with_message_and_transfer(
@@ -691,19 +760,19 @@ pub extern "js" fn ServiceWorkerRegistration::to_event_target(
 pub extern "js" fn ServiceWorkerRegistration::get_installing(
   self : ServiceWorkerRegistration,
 ) -> ServiceWorker? =
-  #| (self) => { const v = self.installing; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.installing; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_waiting(
   self : ServiceWorkerRegistration,
 ) -> ServiceWorker? =
-  #| (self) => { const v = self.waiting; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.waiting; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_active(
   self : ServiceWorkerRegistration,
 ) -> ServiceWorker? =
-  #| (self) => { const v = self.active; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.active; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_navigation_preload(
@@ -721,7 +790,7 @@ pub extern "js" fn ServiceWorkerRegistration::get_scope(
 pub extern "js" fn ServiceWorkerRegistration::get_update_via_cache(
   self : ServiceWorkerRegistration,
 ) -> ServiceWorkerUpdateViaCache =
-  #| (self) => self.updateViaCache
+  #| (self) => ['imports', 'all', 'none'].indexOf(self.updateViaCache)
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::update(
@@ -756,12 +825,25 @@ pub extern "js" fn ServiceWorkerRegistration::show_notification(
   #| (self, title) => self.showNotification(title)
 
 ///|
-pub extern "js" fn ServiceWorkerRegistration::show_notification_with_options(
+extern "js" fn ServiceWorkerRegistration::show_notification_with_options_ffi(
+  self : ServiceWorkerRegistration,
+  title : String,
+  options : JsValue,
+) -> Promise[Unit] =
+  #| (self, title, options) => self.showNotification(title, options)
+
+///|
+pub fn ServiceWorkerRegistration::show_notification_with_options(
   self : ServiceWorkerRegistration,
   title : String,
   options : NotificationOptions,
-) -> Promise[Unit] =
-  #| (self, title, options) => self.showNotification(title, options)
+) -> Promise[Unit] {
+  ServiceWorkerRegistration::show_notification_with_options_ffi(
+    self,
+    title,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_notifications(
@@ -770,11 +852,22 @@ pub extern "js" fn ServiceWorkerRegistration::get_notifications(
   #| (self) => self.getNotifications()
 
 ///|
-pub extern "js" fn ServiceWorkerRegistration::get_notifications_with_filter(
+extern "js" fn ServiceWorkerRegistration::get_notifications_with_filter_ffi(
   self : ServiceWorkerRegistration,
-  filter : GetNotificationOptions,
+  filter : JsValue,
 ) -> Promise[Array[Notification]] =
   #| (self, filter) => self.getNotifications(filter)
+
+///|
+pub fn ServiceWorkerRegistration::get_notifications_with_filter(
+  self : ServiceWorkerRegistration,
+  filter : GetNotificationOptions,
+) -> Promise[Array[Notification]] {
+  ServiceWorkerRegistration::get_notifications_with_filter_ffi(
+    self,
+    filter.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_payment_manager(
@@ -866,7 +959,7 @@ pub extern "js" fn ServiceWorkerContainer::to_event_target(
 pub extern "js" fn ServiceWorkerContainer::get_controller(
   self : ServiceWorkerContainer,
 ) -> ServiceWorker? =
-  #| (self) => { const v = self.controller; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.controller; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ServiceWorkerContainer::get_ready(
@@ -882,12 +975,25 @@ pub extern "js" fn ServiceWorkerContainer::register(
   #| (self, script_url) => self.register(script_url)
 
 ///|
-pub extern "js" fn ServiceWorkerContainer::register_with_options(
+extern "js" fn ServiceWorkerContainer::register_with_options_ffi(
+  self : ServiceWorkerContainer,
+  script_url : TrustedScriptURLOrString,
+  options : JsValue,
+) -> Promise[ServiceWorkerRegistration] =
+  #| (self, script_url, options) => self.register(script_url, options)
+
+///|
+pub fn ServiceWorkerContainer::register_with_options(
   self : ServiceWorkerContainer,
   script_url : TrustedScriptURLOrString,
   options : RegistrationOptions,
-) -> Promise[ServiceWorkerRegistration] =
-  #| (self, script_url, options) => self.register(script_url, options)
+) -> Promise[ServiceWorkerRegistration] {
+  ServiceWorkerContainer::register_with_options_ffi(
+    self,
+    script_url,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn ServiceWorkerContainer::get_registration(
@@ -1381,7 +1487,7 @@ pub extern "js" fn Client::get_url(self : Client) -> String =
 
 ///|
 pub extern "js" fn Client::get_frame_type(self : Client) -> FrameType =
-  #| (self) => self.frameType
+  #| (self) => ['auxiliary', 'top-level', 'nested', 'none'].indexOf(self.frameType)
 
 ///|
 pub extern "js" fn Client::get_id(self : Client) -> String =
@@ -1389,7 +1495,7 @@ pub extern "js" fn Client::get_id(self : Client) -> String =
 
 ///|
 pub extern "js" fn Client::get_type(self : Client) -> ClientType =
-  #| (self) => self.type
+  #| (self) => ['window', 'worker', 'sharedworker', 'all'].indexOf(self.type)
 
 ///|
 pub extern "js" fn Client::post_message(
@@ -1399,12 +1505,21 @@ pub extern "js" fn Client::post_message(
   #| (self, message) => self.postMessage(message)
 
 ///|
-pub extern "js" fn Client::post_message_with_options(
+extern "js" fn Client::post_message_with_options_ffi(
+  self : Client,
+  message : JsValue,
+  options : JsValue,
+) -> Unit =
+  #| (self, message, options) => self.postMessage(message, options)
+
+///|
+pub fn Client::post_message_with_options(
   self : Client,
   message : JsValue,
   options : StructuredSerializeOptions,
-) -> Unit =
-  #| (self, message, options) => self.postMessage(message, options)
+) -> Unit {
+  Client::post_message_with_options_ffi(self, message, options.to_js())
+}
 
 ///|
 pub extern "js" fn Client::post_message_with_message_and_transfer(
@@ -1418,7 +1533,7 @@ pub extern "js" fn Client::post_message_with_message_and_transfer(
 pub extern "js" fn Client::get_lifecycle_state(
   self : Client,
 ) -> ClientLifecycleState =
-  #| (self) => self.lifecycleState
+  #| (self) => ['active', 'frozen'].indexOf(self.lifecycleState)
 
 ///|
 /// WindowClient interface
@@ -1458,7 +1573,7 @@ pub extern "js" fn WindowClient::to_client(self : WindowClient) -> Client =
 pub extern "js" fn WindowClient::get_visibility_state(
   self : WindowClient,
 ) -> DocumentVisibilityState =
-  #| (self) => self.visibilityState
+  #| (self) => ['visible', 'hidden'].indexOf(self.visibilityState)
 
 ///|
 pub extern "js" fn WindowClient::get_focused(self : WindowClient) -> Bool =
@@ -1481,7 +1596,7 @@ pub extern "js" fn WindowClient::navigate(
   self : WindowClient,
   url : String,
 ) -> Promise[WindowClient?] =
-  #| (self, url) => self.navigate(url).then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
+  #| (self, url) => self.navigate(url)
 
 ///|
 /// Clients interface
@@ -1523,18 +1638,26 @@ pub extern "js" fn Clients::match_all(self : Clients) -> Promise[JsValue] =
   #| (self) => self.matchAll()
 
 ///|
-pub extern "js" fn Clients::match_all_with_options(
+extern "js" fn Clients::match_all_with_options_ffi(
   self : Clients,
-  options : ClientQueryOptions,
+  options : JsValue,
 ) -> Promise[JsValue] =
   #| (self, options) => self.matchAll(options)
+
+///|
+pub fn Clients::match_all_with_options(
+  self : Clients,
+  options : ClientQueryOptions,
+) -> Promise[JsValue] {
+  Clients::match_all_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Clients::open_window(
   self : Clients,
   url : String,
 ) -> Promise[WindowClient?] =
-  #| (self, url) => self.openWindow(url).then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
+  #| (self, url) => self.openWindow(url)
 
 ///|
 pub extern "js" fn Clients::claim(self : Clients) -> Promise[Unit] =
@@ -1667,11 +1790,23 @@ pub extern "js" fn ExtendableEvent::as_background_fetch_update_ui_event(
   #| (self) => (self instanceof BackgroundFetchUpdateUIEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn ExtendableEvent::new(
+pub extern "js" fn ExtendableEvent::new(type_ : String) -> ExtendableEvent =
+  #| (type_) => new ExtendableEvent(type_)
+
+///|
+extern "js" fn ExtendableEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : ExtendableEventInit,
+  event_init_dict : JsValue,
 ) -> ExtendableEvent =
   #| (type_, event_init_dict) => new ExtendableEvent(type_, event_init_dict)
+
+///|
+pub fn ExtendableEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : ExtendableEventInit,
+) -> ExtendableEvent {
+  ExtendableEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn ExtendableEvent::wait_until(
@@ -1721,11 +1856,23 @@ pub extern "js" fn InstallEvent::to_event(self : InstallEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn InstallEvent::new(
+pub extern "js" fn InstallEvent::new(type_ : String) -> InstallEvent =
+  #| (type_) => new InstallEvent(type_)
+
+///|
+extern "js" fn InstallEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : ExtendableEventInit,
+  event_init_dict : JsValue,
 ) -> InstallEvent =
   #| (type_, event_init_dict) => new InstallEvent(type_, event_init_dict)
+
+///|
+pub fn InstallEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : ExtendableEventInit,
+) -> InstallEvent {
+  InstallEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn InstallEvent::add_routes(
@@ -1773,11 +1920,19 @@ pub extern "js" fn FetchEvent::to_event(self : FetchEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn FetchEvent::new(
+extern "js" fn FetchEvent::new_ffi(
   type_ : String,
-  event_init_dict : FetchEventInit,
+  event_init_dict : JsValue,
 ) -> FetchEvent =
   #| (type_, event_init_dict) => new FetchEvent(type_, event_init_dict)
+
+///|
+pub fn FetchEvent::new(
+  type_ : String,
+  event_init_dict : FetchEventInit,
+) -> FetchEvent {
+  FetchEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn FetchEvent::get_request(self : FetchEvent) -> Request =
@@ -1869,9 +2024,26 @@ pub extern "js" fn ExtendableMessageEvent::to_event(
 ///|
 pub extern "js" fn ExtendableMessageEvent::new(
   type_ : String,
-  event_init_dict : ExtendableMessageEventInit,
+) -> ExtendableMessageEvent =
+  #| (type_) => new ExtendableMessageEvent(type_)
+
+///|
+extern "js" fn ExtendableMessageEvent::new_with_event_init_dict_ffi(
+  type_ : String,
+  event_init_dict : JsValue,
 ) -> ExtendableMessageEvent =
   #| (type_, event_init_dict) => new ExtendableMessageEvent(type_, event_init_dict)
+
+///|
+pub fn ExtendableMessageEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : ExtendableMessageEventInit,
+) -> ExtendableMessageEvent {
+  ExtendableMessageEvent::new_with_event_init_dict_ffi(
+    type_,
+    event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn ExtendableMessageEvent::get_data(
@@ -1939,24 +2111,42 @@ pub extern "js" fn Cache::match_(
   #| (self, request) => self.match(request)
 
 ///|
-pub extern "js" fn Cache::match__with_options(
+extern "js" fn Cache::match__with_options_ffi(
+  self : Cache,
+  request : RequestInfo,
+  options : JsValue,
+) -> Promise[ResponseOrVoid] =
+  #| (self, request, options) => self.match(request, options)
+
+///|
+pub fn Cache::match__with_options(
   self : Cache,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[ResponseOrVoid] =
-  #| (self, request, options) => self.match(request, options)
+) -> Promise[ResponseOrVoid] {
+  Cache::match__with_options_ffi(self, request, options.to_js())
+}
 
 ///|
 pub extern "js" fn Cache::match_all(self : Cache) -> Promise[JsValue] =
   #| (self) => self.matchAll()
 
 ///|
-pub extern "js" fn Cache::match_all_with_options(
+extern "js" fn Cache::match_all_with_options_ffi(
+  self : Cache,
+  request : RequestInfo,
+  options : JsValue,
+) -> Promise[JsValue] =
+  #| (self, request, options) => self.matchAll(request, options)
+
+///|
+pub fn Cache::match_all_with_options(
   self : Cache,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[JsValue] =
-  #| (self, request, options) => self.matchAll(request, options)
+) -> Promise[JsValue] {
+  Cache::match_all_with_options_ffi(self, request, options.to_js())
+}
 
 ///|
 pub extern "js" fn Cache::add(
@@ -1988,21 +2178,133 @@ pub extern "js" fn Cache::delete(
   #| (self, request) => self.delete(request)
 
 ///|
-pub extern "js" fn Cache::delete_with_options(
+extern "js" fn Cache::delete_with_options_ffi(
+  self : Cache,
+  request : RequestInfo,
+  options : JsValue,
+) -> Promise[Bool] =
+  #| (self, request, options) => self.delete(request, options)
+
+///|
+pub fn Cache::delete_with_options(
   self : Cache,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[Bool] =
-  #| (self, request, options) => self.delete(request, options)
+) -> Promise[Bool] {
+  Cache::delete_with_options_ffi(self, request, options.to_js())
+}
 
 ///|
 pub extern "js" fn Cache::keys(self : Cache) -> Promise[JsValue] =
   #| (self) => self.keys()
 
 ///|
-pub extern "js" fn Cache::keys_with_options(
+extern "js" fn Cache::keys_with_options_ffi(
   self : Cache,
   request : RequestInfo,
+  options : JsValue,
+) -> Promise[JsValue] =
+  #| (self, request, options) => self.keys(request, options)
+
+///|
+pub fn Cache::keys_with_options(
+  self : Cache,
+  request : RequestInfo,
+  options : CacheQueryOptions,
+) -> Promise[JsValue] {
+  Cache::keys_with_options_ffi(self, request, options.to_js())
+}
+
+///|
+pub extern "js" fn Cache::match__with_request(
+  self : Cache,
+  request : Request,
+  options : CacheQueryOptions,
+) -> Promise[ResponseOrVoid] =
+  #| (self, request, options) => self.match(request, options)
+
+///|
+pub extern "js" fn Cache::match__with_string(
+  self : Cache,
+  request : String,
+  options : CacheQueryOptions,
+) -> Promise[ResponseOrVoid] =
+  #| (self, request, options) => self.match(request, options)
+
+///|
+pub extern "js" fn Cache::match_all_with_request(
+  self : Cache,
+  request : Request,
+  options : CacheQueryOptions,
+) -> Promise[JsValue] =
+  #| (self, request, options) => self.matchAll(request, options)
+
+///|
+pub extern "js" fn Cache::match_all_with_string(
+  self : Cache,
+  request : String,
+  options : CacheQueryOptions,
+) -> Promise[JsValue] =
+  #| (self, request, options) => self.matchAll(request, options)
+
+///|
+pub extern "js" fn Cache::add_with_request(
+  self : Cache,
+  request : Request,
+) -> Promise[Unit] =
+  #| (self, request) => self.add(request)
+
+///|
+pub extern "js" fn Cache::add_with_string(
+  self : Cache,
+  request : String,
+) -> Promise[Unit] =
+  #| (self, request) => self.add(request)
+
+///|
+pub extern "js" fn Cache::put_with_request(
+  self : Cache,
+  request : Request,
+  response : Response,
+) -> Promise[Unit] =
+  #| (self, request, response) => self.put(request, response)
+
+///|
+pub extern "js" fn Cache::put_with_string(
+  self : Cache,
+  request : String,
+  response : Response,
+) -> Promise[Unit] =
+  #| (self, request, response) => self.put(request, response)
+
+///|
+pub extern "js" fn Cache::delete_with_request(
+  self : Cache,
+  request : Request,
+  options : CacheQueryOptions,
+) -> Promise[Bool] =
+  #| (self, request, options) => self.delete(request, options)
+
+///|
+pub extern "js" fn Cache::delete_with_string(
+  self : Cache,
+  request : String,
+  options : CacheQueryOptions,
+) -> Promise[Bool] =
+  #| (self, request, options) => self.delete(request, options)
+
+///|
+pub extern "js" fn Cache::keys_with_request(
+  self : Cache,
+  request : Request,
+  options : CacheQueryOptions,
+) -> Promise[JsValue] =
+  #| (self, request, options) => self.keys(request, options)
+
+///|
+pub extern "js" fn Cache::keys_with_string(
+  self : Cache,
+  request : String,
   options : CacheQueryOptions,
 ) -> Promise[JsValue] =
   #| (self, request, options) => self.keys(request, options)
@@ -2045,12 +2347,21 @@ pub extern "js" fn CacheStorage::match_(
   #| (self, request) => self.match(request)
 
 ///|
-pub extern "js" fn CacheStorage::match__with_options(
+extern "js" fn CacheStorage::match__with_options_ffi(
+  self : CacheStorage,
+  request : RequestInfo,
+  options : JsValue,
+) -> Promise[ResponseOrVoid] =
+  #| (self, request, options) => self.match(request, options)
+
+///|
+pub fn CacheStorage::match__with_options(
   self : CacheStorage,
   request : RequestInfo,
   options : MultiCacheQueryOptions,
-) -> Promise[ResponseOrVoid] =
-  #| (self, request, options) => self.match(request, options)
+) -> Promise[ResponseOrVoid] {
+  CacheStorage::match__with_options_ffi(self, request, options.to_js())
+}
 
 ///|
 pub extern "js" fn CacheStorage::has(
@@ -2078,3 +2389,19 @@ pub extern "js" fn CacheStorage::keys(
   self : CacheStorage,
 ) -> Promise[Array[String]] =
   #| (self) => self.keys()
+
+///|
+pub extern "js" fn CacheStorage::match__with_request(
+  self : CacheStorage,
+  request : Request,
+  options : MultiCacheQueryOptions,
+) -> Promise[ResponseOrVoid] =
+  #| (self, request, options) => self.match(request, options)
+
+///|
+pub extern "js" fn CacheStorage::match__with_string(
+  self : CacheStorage,
+  request : String,
+  options : MultiCacheQueryOptions,
+) -> Promise[ResponseOrVoid] =
+  #| (self, request, options) => self.match(request, options)

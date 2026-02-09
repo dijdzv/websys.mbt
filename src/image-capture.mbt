@@ -145,7 +145,7 @@ pub fn MeteringMode::from_string(s : String) -> MeteringMode? {
 
 ///|
 /// PhotoCapabilities dictionary
-pub struct PhotoCapabilities {
+pub(all) struct PhotoCapabilities {
   redEyeReduction : RedEyeReduction?
   imageHeight : MediaSettingsRange?
   imageWidth : MediaSettingsRange?
@@ -164,20 +164,25 @@ pub fn PhotoCapabilities::default() -> PhotoCapabilities {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PhotoCapabilities::to_js(
+extern "js" fn PhotoCapabilities::to_js_ffi(
   self : PhotoCapabilities,
 ) -> JsValue =
   #| (self) => ({
-  #|   redEyeReduction: ['never', 'always', 'controllable'][self.redEyeReduction],
-  #|   imageHeight: self.imageHeight,
-  #|   imageWidth: self.imageWidth,
-  #|   fillLightMode: self.fillLightMode
+  #|   redEyeReduction: ((() => { const v = self.redEyeReduction; if (v === undefined) return undefined; return ['never', 'always', 'controllable'][v]; })()),
+  #|   imageHeight: ((() => { const v = self.imageHeight; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   imageWidth: ((() => { const v = self.imageWidth; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   fillLightMode: ((() => { const v = self.fillLightMode; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PhotoCapabilities::to_js(self : PhotoCapabilities) -> JsValue {
+  PhotoCapabilities::to_js_ffi(self)
+}
+
+///|
 /// PhotoSettings dictionary
-pub struct PhotoSettings {
+pub(all) struct PhotoSettings {
   fillLightMode : FillLightMode?
   imageHeight : Double?
   imageWidth : Double?
@@ -196,18 +201,23 @@ pub fn PhotoSettings::default() -> PhotoSettings {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PhotoSettings::to_js(self : PhotoSettings) -> JsValue =
+extern "js" fn PhotoSettings::to_js_ffi(self : PhotoSettings) -> JsValue =
   #| (self) => ({
-  #|   fillLightMode: ['auto', 'off', 'flash'][self.fillLightMode],
+  #|   fillLightMode: ((() => { const v = self.fillLightMode; if (v === undefined) return undefined; return ['auto', 'off', 'flash'][v]; })()),
   #|   imageHeight: self.imageHeight,
   #|   imageWidth: self.imageWidth,
-  #|   redEyeReduction: self.redEyeReduction
+  #|   redEyeReduction: (self.redEyeReduction === -1 ? undefined : self.redEyeReduction)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PhotoSettings::to_js(self : PhotoSettings) -> JsValue {
+  PhotoSettings::to_js_ffi(self)
+}
+
+///|
 /// MediaSettingsRange dictionary
-pub struct MediaSettingsRange {
+pub(all) struct MediaSettingsRange {
   max : Double?
   min : Double?
   step : Double?
@@ -220,8 +230,7 @@ pub fn MediaSettingsRange::default() -> MediaSettingsRange {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MediaSettingsRange::to_js(
+extern "js" fn MediaSettingsRange::to_js_ffi(
   self : MediaSettingsRange,
 ) -> JsValue =
   #| (self) => ({
@@ -231,8 +240,14 @@ pub extern "js" fn MediaSettingsRange::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MediaSettingsRange::to_js(self : MediaSettingsRange) -> JsValue {
+  MediaSettingsRange::to_js_ffi(self)
+}
+
+///|
 /// ConstrainPoint2DParameters dictionary
-pub struct ConstrainPoint2DParameters {
+pub(all) struct ConstrainPoint2DParameters {
   exact : Array[Point2D]?
   ideal : Array[Point2D]?
 }
@@ -244,18 +259,25 @@ pub fn ConstrainPoint2DParameters::default() -> ConstrainPoint2DParameters {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ConstrainPoint2DParameters::to_js(
+extern "js" fn ConstrainPoint2DParameters::to_js_ffi(
   self : ConstrainPoint2DParameters,
 ) -> JsValue =
   #| (self) => ({
-  #|   exact: self.exact,
-  #|   ideal: self.ideal
+  #|   exact: ((() => { const v = self.exact; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   ideal: ((() => { const v = self.ideal; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ConstrainPoint2DParameters::to_js(
+  self : ConstrainPoint2DParameters,
+) -> JsValue {
+  ConstrainPoint2DParameters::to_js_ffi(self)
+}
+
+///|
 /// Point2D dictionary
-pub struct Point2D {
+pub(all) struct Point2D {
   x : Double?
   y : Double?
 }
@@ -267,12 +289,17 @@ pub fn Point2D::default() -> Point2D {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn Point2D::to_js(self : Point2D) -> JsValue =
+extern "js" fn Point2D::to_js_ffi(self : Point2D) -> JsValue =
   #| (self) => ({
   #|   x: self.x,
   #|   y: self.y
   #| })
+
+///|
+/// Convert to JsValue
+pub fn Point2D::to_js(self : Point2D) -> JsValue {
+  Point2D::to_js_ffi(self)
+}
 
 ///|
 /// ImageCapture interface
@@ -317,11 +344,19 @@ pub extern "js" fn ImageCapture::take_photo(
   #| (self) => self.takePhoto()
 
 ///|
-pub extern "js" fn ImageCapture::take_photo_with_photo_settings(
+extern "js" fn ImageCapture::take_photo_with_photo_settings_ffi(
   self : ImageCapture,
-  photo_settings : PhotoSettings,
+  photo_settings : JsValue,
 ) -> Promise[Blob] =
   #| (self, photo_settings) => self.takePhoto(photo_settings)
+
+///|
+pub fn ImageCapture::take_photo_with_photo_settings(
+  self : ImageCapture,
+  photo_settings : PhotoSettings,
+) -> Promise[Blob] {
+  ImageCapture::take_photo_with_photo_settings_ffi(self, photo_settings.to_js())
+}
 
 ///|
 pub extern "js" fn ImageCapture::get_photo_capabilities(

@@ -333,7 +333,7 @@ pub fn WebGLPowerPreference::from_string(s : String) -> WebGLPowerPreference? {
 
 ///|
 /// WebGLContextAttributes dictionary
-pub struct WebGLContextAttributes {
+pub(all) struct WebGLContextAttributes {
   alpha : Bool?
   depth : Bool?
   stencil : Bool?
@@ -364,26 +364,31 @@ pub fn WebGLContextAttributes::default() -> WebGLContextAttributes {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WebGLContextAttributes::to_js(
+extern "js" fn WebGLContextAttributes::to_js_ffi(
   self : WebGLContextAttributes,
 ) -> JsValue =
   #| (self) => ({
-  #|   alpha: self.alpha,
-  #|   depth: self.depth,
-  #|   stencil: self.stencil,
-  #|   antialias: self.antialias,
-  #|   premultipliedAlpha: self.premultipliedAlpha,
-  #|   preserveDrawingBuffer: self.preserveDrawingBuffer,
-  #|   powerPreference: ['default', 'low-power', 'high-performance'][self.powerPreference],
-  #|   failIfMajorPerformanceCaveat: self.failIfMajorPerformanceCaveat,
-  #|   desynchronized: self.desynchronized,
-  #|   xrCompatible: self.xrCompatible
+  #|   alpha: (self.alpha === -1 ? undefined : self.alpha),
+  #|   depth: (self.depth === -1 ? undefined : self.depth),
+  #|   stencil: (self.stencil === -1 ? undefined : self.stencil),
+  #|   antialias: (self.antialias === -1 ? undefined : self.antialias),
+  #|   premultipliedAlpha: (self.premultipliedAlpha === -1 ? undefined : self.premultipliedAlpha),
+  #|   preserveDrawingBuffer: (self.preserveDrawingBuffer === -1 ? undefined : self.preserveDrawingBuffer),
+  #|   powerPreference: ((() => { const v = self.powerPreference; if (v === undefined) return undefined; return ['default', 'low-power', 'high-performance'][v]; })()),
+  #|   failIfMajorPerformanceCaveat: (self.failIfMajorPerformanceCaveat === -1 ? undefined : self.failIfMajorPerformanceCaveat),
+  #|   desynchronized: (self.desynchronized === -1 ? undefined : self.desynchronized),
+  #|   xrCompatible: (self.xrCompatible === -1 ? undefined : self.xrCompatible)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WebGLContextAttributes::to_js(self : WebGLContextAttributes) -> JsValue {
+  WebGLContextAttributes::to_js_ffi(self)
+}
+
+///|
 /// WebGLContextEventInit dictionary
-pub struct WebGLContextEventInit {
+pub(all) struct WebGLContextEventInit {
   statusMessage : String?
 }
 
@@ -394,13 +399,18 @@ pub fn WebGLContextEventInit::default() -> WebGLContextEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WebGLContextEventInit::to_js(
+extern "js" fn WebGLContextEventInit::to_js_ffi(
   self : WebGLContextEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   statusMessage: self.statusMessage
   #| })
+
+///|
+/// Convert to JsValue
+pub fn WebGLContextEventInit::to_js(self : WebGLContextEventInit) -> JsValue {
+  WebGLContextEventInit::to_js_ffi(self)
+}
 
 ///|
 /// WebGLObject interface
@@ -2442,33 +2452,33 @@ pub extern "js" fn WebGLRenderingContext::get_drawing_buffer_format(
 pub extern "js" fn WebGLRenderingContext::get_drawing_buffer_color_space(
   self : WebGLRenderingContext,
 ) -> PredefinedColorSpace =
-  #| (self) => self.drawingBufferColorSpace
+  #| (self) => ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(self.drawingBufferColorSpace)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::set_drawing_buffer_color_space(
   self : WebGLRenderingContext,
   value : PredefinedColorSpace,
 ) -> Unit =
-  #| (self, value) => { self.drawingBufferColorSpace = value }
+  #| (self, value) => { self.drawingBufferColorSpace = ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][value] }
 
 ///|
 pub extern "js" fn WebGLRenderingContext::get_unpack_color_space(
   self : WebGLRenderingContext,
 ) -> PredefinedColorSpace =
-  #| (self) => self.unpackColorSpace
+  #| (self) => ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(self.unpackColorSpace)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::set_unpack_color_space(
   self : WebGLRenderingContext,
   value : PredefinedColorSpace,
 ) -> Unit =
-  #| (self, value) => { self.unpackColorSpace = value }
+  #| (self, value) => { self.unpackColorSpace = ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][value] }
 
 ///|
 pub extern "js" fn WebGLRenderingContext::get_context_attributes(
   self : WebGLRenderingContext,
 ) -> WebGLContextAttributes? =
-  #| (self) => { const v = self.getContextAttributes(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.getContextAttributes(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGLRenderingContext::is_context_lost(
@@ -2487,7 +2497,7 @@ pub extern "js" fn WebGLRenderingContext::get_extension(
   self : WebGLRenderingContext,
   name : String,
 ) -> JsValue? =
-  #| (self, name) => { const v = self.getExtension(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, name) => (() => { const v = self.getExtension(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGLRenderingContext::drawing_buffer_storage(
@@ -2528,7 +2538,7 @@ pub extern "js" fn WebGLRenderingContext::bind_buffer(
   target : GLenum,
   buffer : WebGLBuffer?,
 ) -> Unit =
-  #| (self, target, buffer) => self.bindBuffer(target, buffer)
+  #| (self, target, buffer) => self.bindBuffer(target, (buffer.$tag === 1 ? buffer._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::bind_framebuffer(
@@ -2536,7 +2546,7 @@ pub extern "js" fn WebGLRenderingContext::bind_framebuffer(
   target : GLenum,
   framebuffer : WebGLFramebuffer?,
 ) -> Unit =
-  #| (self, target, framebuffer) => self.bindFramebuffer(target, framebuffer)
+  #| (self, target, framebuffer) => self.bindFramebuffer(target, (framebuffer.$tag === 1 ? framebuffer._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::bind_renderbuffer(
@@ -2544,7 +2554,7 @@ pub extern "js" fn WebGLRenderingContext::bind_renderbuffer(
   target : GLenum,
   renderbuffer : WebGLRenderbuffer?,
 ) -> Unit =
-  #| (self, target, renderbuffer) => self.bindRenderbuffer(target, renderbuffer)
+  #| (self, target, renderbuffer) => self.bindRenderbuffer(target, (renderbuffer.$tag === 1 ? renderbuffer._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::bind_texture(
@@ -2552,7 +2562,7 @@ pub extern "js" fn WebGLRenderingContext::bind_texture(
   target : GLenum,
   texture : WebGLTexture?,
 ) -> Unit =
-  #| (self, target, texture) => self.bindTexture(target, texture)
+  #| (self, target, texture) => self.bindTexture(target, (texture.$tag === 1 ? texture._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::blend_color(
@@ -2709,7 +2719,7 @@ pub extern "js" fn WebGLRenderingContext::create_shader(
   self : WebGLRenderingContext,
   type_ : GLenum,
 ) -> WebGLShader? =
-  #| (self, type_) => { const v = self.createShader(type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, type_) => (() => { const v = self.createShader(type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGLRenderingContext::create_texture(
@@ -2729,42 +2739,42 @@ pub extern "js" fn WebGLRenderingContext::delete_buffer(
   self : WebGLRenderingContext,
   buffer : WebGLBuffer?,
 ) -> Unit =
-  #| (self, buffer) => self.deleteBuffer(buffer)
+  #| (self, buffer) => self.deleteBuffer((buffer.$tag === 1 ? buffer._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::delete_framebuffer(
   self : WebGLRenderingContext,
   framebuffer : WebGLFramebuffer?,
 ) -> Unit =
-  #| (self, framebuffer) => self.deleteFramebuffer(framebuffer)
+  #| (self, framebuffer) => self.deleteFramebuffer((framebuffer.$tag === 1 ? framebuffer._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::delete_program(
   self : WebGLRenderingContext,
   program : WebGLProgram?,
 ) -> Unit =
-  #| (self, program) => self.deleteProgram(program)
+  #| (self, program) => self.deleteProgram((program.$tag === 1 ? program._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::delete_renderbuffer(
   self : WebGLRenderingContext,
   renderbuffer : WebGLRenderbuffer?,
 ) -> Unit =
-  #| (self, renderbuffer) => self.deleteRenderbuffer(renderbuffer)
+  #| (self, renderbuffer) => self.deleteRenderbuffer((renderbuffer.$tag === 1 ? renderbuffer._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::delete_shader(
   self : WebGLRenderingContext,
   shader : WebGLShader?,
 ) -> Unit =
-  #| (self, shader) => self.deleteShader(shader)
+  #| (self, shader) => self.deleteShader((shader.$tag === 1 ? shader._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::delete_texture(
   self : WebGLRenderingContext,
   texture : WebGLTexture?,
 ) -> Unit =
-  #| (self, texture) => self.deleteTexture(texture)
+  #| (self, texture) => self.deleteTexture((texture.$tag === 1 ? texture._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::depth_func(
@@ -2863,7 +2873,7 @@ pub extern "js" fn WebGLRenderingContext::framebuffer_renderbuffer(
   renderbuffertarget : GLenum,
   renderbuffer : WebGLRenderbuffer?,
 ) -> Unit =
-  #| (self, target, attachment, renderbuffertarget, renderbuffer) => self.framebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer)
+  #| (self, target, attachment, renderbuffertarget, renderbuffer) => self.framebufferRenderbuffer(target, attachment, renderbuffertarget, (renderbuffer.$tag === 1 ? renderbuffer._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::framebuffer_texture2_d(
@@ -2874,7 +2884,7 @@ pub extern "js" fn WebGLRenderingContext::framebuffer_texture2_d(
   texture : WebGLTexture?,
   level : GLint,
 ) -> Unit =
-  #| (self, target, attachment, textarget, texture, level) => self.framebufferTexture2D(target, attachment, textarget, texture, level)
+  #| (self, target, attachment, textarget, texture, level) => self.framebufferTexture2D(target, attachment, textarget, (texture.$tag === 1 ? texture._0 : null), level)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::front_face(
@@ -2896,7 +2906,7 @@ pub extern "js" fn WebGLRenderingContext::get_active_attrib(
   program : WebGLProgram,
   index : GLuint,
 ) -> WebGLActiveInfo? =
-  #| (self, program, index) => { const v = self.getActiveAttrib(program, index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, program, index) => (() => { const v = self.getActiveAttrib(program, index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGLRenderingContext::get_active_uniform(
@@ -2904,7 +2914,7 @@ pub extern "js" fn WebGLRenderingContext::get_active_uniform(
   program : WebGLProgram,
   index : GLuint,
 ) -> WebGLActiveInfo? =
-  #| (self, program, index) => { const v = self.getActiveUniform(program, index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, program, index) => (() => { const v = self.getActiveUniform(program, index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGLRenderingContext::get_attached_shaders(
@@ -2964,7 +2974,7 @@ pub extern "js" fn WebGLRenderingContext::get_program_info_log(
   self : WebGLRenderingContext,
   program : WebGLProgram,
 ) -> String? =
-  #| (self, program) => { const v = self.getProgramInfoLog(program); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, program) => (self.getProgramInfoLog(program)) ?? undefined
 
 ///|
 pub extern "js" fn WebGLRenderingContext::get_renderbuffer_parameter(
@@ -2988,21 +2998,21 @@ pub extern "js" fn WebGLRenderingContext::get_shader_precision_format(
   shadertype : GLenum,
   precisiontype : GLenum,
 ) -> WebGLShaderPrecisionFormat? =
-  #| (self, shadertype, precisiontype) => { const v = self.getShaderPrecisionFormat(shadertype, precisiontype); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, shadertype, precisiontype) => (() => { const v = self.getShaderPrecisionFormat(shadertype, precisiontype); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGLRenderingContext::get_shader_info_log(
   self : WebGLRenderingContext,
   shader : WebGLShader,
 ) -> String? =
-  #| (self, shader) => { const v = self.getShaderInfoLog(shader); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, shader) => (self.getShaderInfoLog(shader)) ?? undefined
 
 ///|
 pub extern "js" fn WebGLRenderingContext::get_shader_source(
   self : WebGLRenderingContext,
   shader : WebGLShader,
 ) -> String? =
-  #| (self, shader) => { const v = self.getShaderSource(shader); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, shader) => (self.getShaderSource(shader)) ?? undefined
 
 ///|
 pub extern "js" fn WebGLRenderingContext::get_tex_parameter(
@@ -3026,7 +3036,7 @@ pub extern "js" fn WebGLRenderingContext::get_uniform_location(
   program : WebGLProgram,
   name : String,
 ) -> WebGLUniformLocation? =
-  #| (self, program, name) => { const v = self.getUniformLocation(program, name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, program, name) => (() => { const v = self.getUniformLocation(program, name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGLRenderingContext::get_vertex_attrib(
@@ -3057,7 +3067,7 @@ pub extern "js" fn WebGLRenderingContext::is_buffer(
   self : WebGLRenderingContext,
   buffer : WebGLBuffer?,
 ) -> GLboolean =
-  #| (self, buffer) => self.isBuffer(buffer)
+  #| (self, buffer) => self.isBuffer((buffer.$tag === 1 ? buffer._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::is_enabled(
@@ -3071,35 +3081,35 @@ pub extern "js" fn WebGLRenderingContext::is_framebuffer(
   self : WebGLRenderingContext,
   framebuffer : WebGLFramebuffer?,
 ) -> GLboolean =
-  #| (self, framebuffer) => self.isFramebuffer(framebuffer)
+  #| (self, framebuffer) => self.isFramebuffer((framebuffer.$tag === 1 ? framebuffer._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::is_program(
   self : WebGLRenderingContext,
   program : WebGLProgram?,
 ) -> GLboolean =
-  #| (self, program) => self.isProgram(program)
+  #| (self, program) => self.isProgram((program.$tag === 1 ? program._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::is_renderbuffer(
   self : WebGLRenderingContext,
   renderbuffer : WebGLRenderbuffer?,
 ) -> GLboolean =
-  #| (self, renderbuffer) => self.isRenderbuffer(renderbuffer)
+  #| (self, renderbuffer) => self.isRenderbuffer((renderbuffer.$tag === 1 ? renderbuffer._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::is_shader(
   self : WebGLRenderingContext,
   shader : WebGLShader?,
 ) -> GLboolean =
-  #| (self, shader) => self.isShader(shader)
+  #| (self, shader) => self.isShader((shader.$tag === 1 ? shader._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::is_texture(
   self : WebGLRenderingContext,
   texture : WebGLTexture?,
 ) -> GLboolean =
-  #| (self, texture) => self.isTexture(texture)
+  #| (self, texture) => self.isTexture((texture.$tag === 1 ? texture._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::line_width(
@@ -3244,7 +3254,7 @@ pub extern "js" fn WebGLRenderingContext::uniform1f(
   location : WebGLUniformLocation?,
   x : GLfloat,
 ) -> Unit =
-  #| (self, location, x) => self.uniform1f(location, x)
+  #| (self, location, x) => self.uniform1f((location.$tag === 1 ? location._0 : null), x)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform2f(
@@ -3253,7 +3263,7 @@ pub extern "js" fn WebGLRenderingContext::uniform2f(
   x : GLfloat,
   y : GLfloat,
 ) -> Unit =
-  #| (self, location, x, y) => self.uniform2f(location, x, y)
+  #| (self, location, x, y) => self.uniform2f((location.$tag === 1 ? location._0 : null), x, y)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform3f(
@@ -3263,7 +3273,7 @@ pub extern "js" fn WebGLRenderingContext::uniform3f(
   y : GLfloat,
   z : GLfloat,
 ) -> Unit =
-  #| (self, location, x, y, z) => self.uniform3f(location, x, y, z)
+  #| (self, location, x, y, z) => self.uniform3f((location.$tag === 1 ? location._0 : null), x, y, z)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform4f(
@@ -3274,7 +3284,7 @@ pub extern "js" fn WebGLRenderingContext::uniform4f(
   z : GLfloat,
   w : GLfloat,
 ) -> Unit =
-  #| (self, location, x, y, z, w) => self.uniform4f(location, x, y, z, w)
+  #| (self, location, x, y, z, w) => self.uniform4f((location.$tag === 1 ? location._0 : null), x, y, z, w)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform1i(
@@ -3282,7 +3292,7 @@ pub extern "js" fn WebGLRenderingContext::uniform1i(
   location : WebGLUniformLocation?,
   x : GLint,
 ) -> Unit =
-  #| (self, location, x) => self.uniform1i(location, x)
+  #| (self, location, x) => self.uniform1i((location.$tag === 1 ? location._0 : null), x)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform2i(
@@ -3291,7 +3301,7 @@ pub extern "js" fn WebGLRenderingContext::uniform2i(
   x : GLint,
   y : GLint,
 ) -> Unit =
-  #| (self, location, x, y) => self.uniform2i(location, x, y)
+  #| (self, location, x, y) => self.uniform2i((location.$tag === 1 ? location._0 : null), x, y)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform3i(
@@ -3301,7 +3311,7 @@ pub extern "js" fn WebGLRenderingContext::uniform3i(
   y : GLint,
   z : GLint,
 ) -> Unit =
-  #| (self, location, x, y, z) => self.uniform3i(location, x, y, z)
+  #| (self, location, x, y, z) => self.uniform3i((location.$tag === 1 ? location._0 : null), x, y, z)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform4i(
@@ -3312,14 +3322,14 @@ pub extern "js" fn WebGLRenderingContext::uniform4i(
   z : GLint,
   w : GLint,
 ) -> Unit =
-  #| (self, location, x, y, z, w) => self.uniform4i(location, x, y, z, w)
+  #| (self, location, x, y, z, w) => self.uniform4i((location.$tag === 1 ? location._0 : null), x, y, z, w)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::use_program(
   self : WebGLRenderingContext,
   program : WebGLProgram?,
 ) -> Unit =
-  #| (self, program) => self.useProgram(program)
+  #| (self, program) => self.useProgram((program.$tag === 1 ? program._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::validate_program(
@@ -3442,7 +3452,7 @@ pub extern "js" fn WebGLRenderingContext::buffer_data_with_target_g_lenum_and_da
   data : AllowSharedBufferSource?,
   usage : GLenum,
 ) -> Unit =
-  #| (self, target, data, usage) => self.bufferData(target, data, usage)
+  #| (self, target, data, usage) => self.bufferData(target, (data.$tag === 1 ? data._0 : null), usage)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::buffer_sub_data(
@@ -3491,7 +3501,7 @@ pub extern "js" fn WebGLRenderingContext::read_pixels(
   type_ : GLenum,
   pixels : ArrayBufferView?,
 ) -> Unit =
-  #| (self, x, y, width, height, format, type_, pixels) => self.readPixels(x, y, width, height, format, type_, pixels)
+  #| (self, x, y, width, height, format, type_, pixels) => self.readPixels(x, y, width, height, format, type_, (pixels.$tag === 1 ? pixels._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::tex_image2_d(
@@ -3518,7 +3528,7 @@ pub extern "js" fn WebGLRenderingContext::tex_image2_d_with_target_g_lenum_and_l
   type_ : GLenum,
   pixels : ArrayBufferView?,
 ) -> Unit =
-  #| (self, target, level, internalformat, width, height, border, format, type_, pixels) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, pixels)
+  #| (self, target, level, internalformat, width, height, border, format, type_, pixels) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, (pixels.$tag === 1 ? pixels._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::tex_sub_image2_d(
@@ -3546,7 +3556,7 @@ pub extern "js" fn WebGLRenderingContext::tex_sub_image2_d_with_target_g_lenum_a
   type_ : GLenum,
   pixels : ArrayBufferView?,
 ) -> Unit =
-  #| (self, target, level, xoffset, yoffset, width, height, format, type_, pixels) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, pixels)
+  #| (self, target, level, xoffset, yoffset, width, height, format, type_, pixels) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, (pixels.$tag === 1 ? pixels._0 : null))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform1fv(
@@ -3554,7 +3564,7 @@ pub extern "js" fn WebGLRenderingContext::uniform1fv(
   location : WebGLUniformLocation?,
   v : Float32List,
 ) -> Unit =
-  #| (self, location, v) => self.uniform1fv(location, v)
+  #| (self, location, v) => self.uniform1fv((location.$tag === 1 ? location._0 : null), v)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform2fv(
@@ -3562,7 +3572,7 @@ pub extern "js" fn WebGLRenderingContext::uniform2fv(
   location : WebGLUniformLocation?,
   v : Float32List,
 ) -> Unit =
-  #| (self, location, v) => self.uniform2fv(location, v)
+  #| (self, location, v) => self.uniform2fv((location.$tag === 1 ? location._0 : null), v)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform3fv(
@@ -3570,7 +3580,7 @@ pub extern "js" fn WebGLRenderingContext::uniform3fv(
   location : WebGLUniformLocation?,
   v : Float32List,
 ) -> Unit =
-  #| (self, location, v) => self.uniform3fv(location, v)
+  #| (self, location, v) => self.uniform3fv((location.$tag === 1 ? location._0 : null), v)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform4fv(
@@ -3578,7 +3588,7 @@ pub extern "js" fn WebGLRenderingContext::uniform4fv(
   location : WebGLUniformLocation?,
   v : Float32List,
 ) -> Unit =
-  #| (self, location, v) => self.uniform4fv(location, v)
+  #| (self, location, v) => self.uniform4fv((location.$tag === 1 ? location._0 : null), v)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform1iv(
@@ -3586,7 +3596,7 @@ pub extern "js" fn WebGLRenderingContext::uniform1iv(
   location : WebGLUniformLocation?,
   v : Int32List,
 ) -> Unit =
-  #| (self, location, v) => self.uniform1iv(location, v)
+  #| (self, location, v) => self.uniform1iv((location.$tag === 1 ? location._0 : null), v)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform2iv(
@@ -3594,7 +3604,7 @@ pub extern "js" fn WebGLRenderingContext::uniform2iv(
   location : WebGLUniformLocation?,
   v : Int32List,
 ) -> Unit =
-  #| (self, location, v) => self.uniform2iv(location, v)
+  #| (self, location, v) => self.uniform2iv((location.$tag === 1 ? location._0 : null), v)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform3iv(
@@ -3602,7 +3612,7 @@ pub extern "js" fn WebGLRenderingContext::uniform3iv(
   location : WebGLUniformLocation?,
   v : Int32List,
 ) -> Unit =
-  #| (self, location, v) => self.uniform3iv(location, v)
+  #| (self, location, v) => self.uniform3iv((location.$tag === 1 ? location._0 : null), v)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform4iv(
@@ -3610,7 +3620,7 @@ pub extern "js" fn WebGLRenderingContext::uniform4iv(
   location : WebGLUniformLocation?,
   v : Int32List,
 ) -> Unit =
-  #| (self, location, v) => self.uniform4iv(location, v)
+  #| (self, location, v) => self.uniform4iv((location.$tag === 1 ? location._0 : null), v)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform_matrix2fv(
@@ -3619,7 +3629,7 @@ pub extern "js" fn WebGLRenderingContext::uniform_matrix2fv(
   transpose : GLboolean,
   value : Float32List,
 ) -> Unit =
-  #| (self, location, transpose, value) => self.uniformMatrix2fv(location, transpose, value)
+  #| (self, location, transpose, value) => self.uniformMatrix2fv((location.$tag === 1 ? location._0 : null), transpose, value)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform_matrix3fv(
@@ -3628,7 +3638,7 @@ pub extern "js" fn WebGLRenderingContext::uniform_matrix3fv(
   transpose : GLboolean,
   value : Float32List,
 ) -> Unit =
-  #| (self, location, transpose, value) => self.uniformMatrix3fv(location, transpose, value)
+  #| (self, location, transpose, value) => self.uniformMatrix3fv((location.$tag === 1 ? location._0 : null), transpose, value)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::uniform_matrix4fv(
@@ -3637,7 +3647,806 @@ pub extern "js" fn WebGLRenderingContext::uniform_matrix4fv(
   transpose : GLboolean,
   value : Float32List,
 ) -> Unit =
-  #| (self, location, transpose, value) => self.uniformMatrix4fv(location, transpose, value)
+  #| (self, location, transpose, value) => self.uniformMatrix4fv((location.$tag === 1 ? location._0 : null), transpose, value)
+
+///|
+pub extern "js" fn WebGLRenderingContext::vertex_attrib1fv_with_float32_array(
+  self : WebGLRenderingContext,
+  index : GLuint,
+  values : Float32Array,
+) -> Unit =
+  #| (self, index, values) => self.vertexAttrib1fv(index, values)
+
+///|
+pub extern "js" fn WebGLRenderingContext::vertex_attrib1fv_with_array_of_g_lfloat(
+  self : WebGLRenderingContext,
+  index : GLuint,
+  values : Array[GLfloat],
+) -> Unit =
+  #| (self, index, values) => self.vertexAttrib1fv(index, values)
+
+///|
+pub extern "js" fn WebGLRenderingContext::vertex_attrib2fv_with_float32_array(
+  self : WebGLRenderingContext,
+  index : GLuint,
+  values : Float32Array,
+) -> Unit =
+  #| (self, index, values) => self.vertexAttrib2fv(index, values)
+
+///|
+pub extern "js" fn WebGLRenderingContext::vertex_attrib2fv_with_array_of_g_lfloat(
+  self : WebGLRenderingContext,
+  index : GLuint,
+  values : Array[GLfloat],
+) -> Unit =
+  #| (self, index, values) => self.vertexAttrib2fv(index, values)
+
+///|
+pub extern "js" fn WebGLRenderingContext::vertex_attrib3fv_with_float32_array(
+  self : WebGLRenderingContext,
+  index : GLuint,
+  values : Float32Array,
+) -> Unit =
+  #| (self, index, values) => self.vertexAttrib3fv(index, values)
+
+///|
+pub extern "js" fn WebGLRenderingContext::vertex_attrib3fv_with_array_of_g_lfloat(
+  self : WebGLRenderingContext,
+  index : GLuint,
+  values : Array[GLfloat],
+) -> Unit =
+  #| (self, index, values) => self.vertexAttrib3fv(index, values)
+
+///|
+pub extern "js" fn WebGLRenderingContext::vertex_attrib4fv_with_float32_array(
+  self : WebGLRenderingContext,
+  index : GLuint,
+  values : Float32Array,
+) -> Unit =
+  #| (self, index, values) => self.vertexAttrib4fv(index, values)
+
+///|
+pub extern "js" fn WebGLRenderingContext::vertex_attrib4fv_with_array_of_g_lfloat(
+  self : WebGLRenderingContext,
+  index : GLuint,
+  values : Array[GLfloat],
+) -> Unit =
+  #| (self, index, values) => self.vertexAttrib4fv(index, values)
+
+///|
+pub extern "js" fn WebGLRenderingContext::buffer_sub_data_with_array_buffer(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  offset : GLintptr,
+  data : ArrayBuffer,
+) -> Unit =
+  #| (self, target, offset, data) => self.bufferSubData(target, offset, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::buffer_sub_data_with_shared_array_buffer(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  offset : GLintptr,
+  data : SharedArrayBuffer,
+) -> Unit =
+  #| (self, target, offset, data) => self.bufferSubData(target, offset, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::buffer_sub_data_with_array_buffer_view(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  offset : GLintptr,
+  data : ArrayBufferView,
+) -> Unit =
+  #| (self, target, offset, data) => self.bufferSubData(target, offset, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_image2_d_with_int8_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  data : Int8Array,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, data) => self.compressedTexImage2D(target, level, internalformat, width, height, border, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_image2_d_with_int16_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  data : Int16Array,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, data) => self.compressedTexImage2D(target, level, internalformat, width, height, border, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_image2_d_with_int32_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  data : Int32Array,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, data) => self.compressedTexImage2D(target, level, internalformat, width, height, border, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_image2_d_with_uint8_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  data : Uint8Array,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, data) => self.compressedTexImage2D(target, level, internalformat, width, height, border, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_image2_d_with_uint16_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  data : Uint16Array,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, data) => self.compressedTexImage2D(target, level, internalformat, width, height, border, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_image2_d_with_uint32_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  data : Uint32Array,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, data) => self.compressedTexImage2D(target, level, internalformat, width, height, border, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_image2_d_with_uint8_clamped_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  data : Uint8ClampedArray,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, data) => self.compressedTexImage2D(target, level, internalformat, width, height, border, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_image2_d_with_big_int64_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  data : BigInt64Array,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, data) => self.compressedTexImage2D(target, level, internalformat, width, height, border, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_image2_d_with_big_uint64_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  data : BigUint64Array,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, data) => self.compressedTexImage2D(target, level, internalformat, width, height, border, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_image2_d_with_float16_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  data : Float16Array,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, data) => self.compressedTexImage2D(target, level, internalformat, width, height, border, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_image2_d_with_float32_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  data : Float32Array,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, data) => self.compressedTexImage2D(target, level, internalformat, width, height, border, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_image2_d_with_float64_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  data : Float64Array,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, data) => self.compressedTexImage2D(target, level, internalformat, width, height, border, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_image2_d_with_data_view(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  data : DataView,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, data) => self.compressedTexImage2D(target, level, internalformat, width, height, border, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_sub_image2_d_with_int8_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  data : Int8Array,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, data) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_sub_image2_d_with_int16_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  data : Int16Array,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, data) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_sub_image2_d_with_int32_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  data : Int32Array,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, data) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_sub_image2_d_with_uint8_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  data : Uint8Array,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, data) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_sub_image2_d_with_uint16_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  data : Uint16Array,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, data) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_sub_image2_d_with_uint32_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  data : Uint32Array,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, data) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_sub_image2_d_with_uint8_clamped_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  data : Uint8ClampedArray,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, data) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_sub_image2_d_with_big_int64_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  data : BigInt64Array,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, data) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_sub_image2_d_with_big_uint64_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  data : BigUint64Array,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, data) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_sub_image2_d_with_float16_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  data : Float16Array,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, data) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_sub_image2_d_with_float32_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  data : Float32Array,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, data) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_sub_image2_d_with_float64_array(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  data : Float64Array,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, data) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::compressed_tex_sub_image2_d_with_data_view(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  data : DataView,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, data) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, data)
+
+///|
+pub extern "js" fn WebGLRenderingContext::tex_image2_d_with_image_bitmap(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : ImageBitmap,
+) -> Unit =
+  #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
+
+///|
+pub extern "js" fn WebGLRenderingContext::tex_image2_d_with_image_data(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : ImageData,
+) -> Unit =
+  #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
+
+///|
+pub extern "js" fn WebGLRenderingContext::tex_image2_d_with_h_t_m_l_image_element(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLImageElement,
+) -> Unit =
+  #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
+
+///|
+pub extern "js" fn WebGLRenderingContext::tex_image2_d_with_h_t_m_l_canvas_element(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLCanvasElement,
+) -> Unit =
+  #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
+
+///|
+pub extern "js" fn WebGLRenderingContext::tex_image2_d_with_h_t_m_l_video_element(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLVideoElement,
+) -> Unit =
+  #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
+
+///|
+pub extern "js" fn WebGLRenderingContext::tex_image2_d_with_offscreen_canvas(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : OffscreenCanvas,
+) -> Unit =
+  #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
+
+///|
+pub extern "js" fn WebGLRenderingContext::tex_image2_d_with_video_frame(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : VideoFrame,
+) -> Unit =
+  #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
+
+///|
+pub extern "js" fn WebGLRenderingContext::tex_sub_image2_d_with_image_bitmap(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : ImageBitmap,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
+
+///|
+pub extern "js" fn WebGLRenderingContext::tex_sub_image2_d_with_image_data(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : ImageData,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
+
+///|
+pub extern "js" fn WebGLRenderingContext::tex_sub_image2_d_with_h_t_m_l_image_element(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLImageElement,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
+
+///|
+pub extern "js" fn WebGLRenderingContext::tex_sub_image2_d_with_h_t_m_l_canvas_element(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLCanvasElement,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
+
+///|
+pub extern "js" fn WebGLRenderingContext::tex_sub_image2_d_with_h_t_m_l_video_element(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLVideoElement,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
+
+///|
+pub extern "js" fn WebGLRenderingContext::tex_sub_image2_d_with_offscreen_canvas(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : OffscreenCanvas,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
+
+///|
+pub extern "js" fn WebGLRenderingContext::tex_sub_image2_d_with_video_frame(
+  self : WebGLRenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : VideoFrame,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform1fv_with_float32_array(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  v : Float32Array,
+) -> Unit =
+  #| (self, location, v) => self.uniform1fv((location.$tag === 1 ? location._0 : null), v)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform1fv_with_array_of_g_lfloat(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  v : Array[GLfloat],
+) -> Unit =
+  #| (self, location, v) => self.uniform1fv((location.$tag === 1 ? location._0 : null), v)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform2fv_with_float32_array(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  v : Float32Array,
+) -> Unit =
+  #| (self, location, v) => self.uniform2fv((location.$tag === 1 ? location._0 : null), v)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform2fv_with_array_of_g_lfloat(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  v : Array[GLfloat],
+) -> Unit =
+  #| (self, location, v) => self.uniform2fv((location.$tag === 1 ? location._0 : null), v)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform3fv_with_float32_array(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  v : Float32Array,
+) -> Unit =
+  #| (self, location, v) => self.uniform3fv((location.$tag === 1 ? location._0 : null), v)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform3fv_with_array_of_g_lfloat(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  v : Array[GLfloat],
+) -> Unit =
+  #| (self, location, v) => self.uniform3fv((location.$tag === 1 ? location._0 : null), v)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform4fv_with_float32_array(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  v : Float32Array,
+) -> Unit =
+  #| (self, location, v) => self.uniform4fv((location.$tag === 1 ? location._0 : null), v)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform4fv_with_array_of_g_lfloat(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  v : Array[GLfloat],
+) -> Unit =
+  #| (self, location, v) => self.uniform4fv((location.$tag === 1 ? location._0 : null), v)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform1iv_with_int32_array(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  v : Int32Array,
+) -> Unit =
+  #| (self, location, v) => self.uniform1iv((location.$tag === 1 ? location._0 : null), v)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform1iv_with_array_of_g_lint(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  v : Array[GLint],
+) -> Unit =
+  #| (self, location, v) => self.uniform1iv((location.$tag === 1 ? location._0 : null), v)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform2iv_with_int32_array(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  v : Int32Array,
+) -> Unit =
+  #| (self, location, v) => self.uniform2iv((location.$tag === 1 ? location._0 : null), v)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform2iv_with_array_of_g_lint(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  v : Array[GLint],
+) -> Unit =
+  #| (self, location, v) => self.uniform2iv((location.$tag === 1 ? location._0 : null), v)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform3iv_with_int32_array(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  v : Int32Array,
+) -> Unit =
+  #| (self, location, v) => self.uniform3iv((location.$tag === 1 ? location._0 : null), v)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform3iv_with_array_of_g_lint(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  v : Array[GLint],
+) -> Unit =
+  #| (self, location, v) => self.uniform3iv((location.$tag === 1 ? location._0 : null), v)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform4iv_with_int32_array(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  v : Int32Array,
+) -> Unit =
+  #| (self, location, v) => self.uniform4iv((location.$tag === 1 ? location._0 : null), v)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform4iv_with_array_of_g_lint(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  v : Array[GLint],
+) -> Unit =
+  #| (self, location, v) => self.uniform4iv((location.$tag === 1 ? location._0 : null), v)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform_matrix2fv_with_float32_array(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  value : Float32Array,
+) -> Unit =
+  #| (self, location, transpose, value) => self.uniformMatrix2fv((location.$tag === 1 ? location._0 : null), transpose, value)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform_matrix2fv_with_array_of_g_lfloat(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  value : Array[GLfloat],
+) -> Unit =
+  #| (self, location, transpose, value) => self.uniformMatrix2fv((location.$tag === 1 ? location._0 : null), transpose, value)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform_matrix3fv_with_float32_array(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  value : Float32Array,
+) -> Unit =
+  #| (self, location, transpose, value) => self.uniformMatrix3fv((location.$tag === 1 ? location._0 : null), transpose, value)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform_matrix3fv_with_array_of_g_lfloat(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  value : Array[GLfloat],
+) -> Unit =
+  #| (self, location, transpose, value) => self.uniformMatrix3fv((location.$tag === 1 ? location._0 : null), transpose, value)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform_matrix4fv_with_float32_array(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  value : Float32Array,
+) -> Unit =
+  #| (self, location, transpose, value) => self.uniformMatrix4fv((location.$tag === 1 ? location._0 : null), transpose, value)
+
+///|
+pub extern "js" fn WebGLRenderingContext::uniform_matrix4fv_with_array_of_g_lfloat(
+  self : WebGLRenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  value : Array[GLfloat],
+) -> Unit =
+  #| (self, location, transpose, value) => self.uniformMatrix4fv((location.$tag === 1 ? location._0 : null), transpose, value)
 
 ///|
 /// WebGLContextEvent interface
@@ -3684,11 +4493,23 @@ pub extern "js" fn WebGLContextEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn WebGLContextEvent::new(
+pub extern "js" fn WebGLContextEvent::new(type_ : String) -> WebGLContextEvent =
+  #| (type_) => new WebGLContextEvent(type_)
+
+///|
+extern "js" fn WebGLContextEvent::new_with_event_init_ffi(
   type_ : String,
-  event_init : WebGLContextEventInit,
+  event_init : JsValue,
 ) -> WebGLContextEvent =
   #| (type_, event_init) => new WebGLContextEvent(type_, event_init)
+
+///|
+pub fn WebGLContextEvent::new_with_event_init(
+  type_ : String,
+  event_init : WebGLContextEventInit,
+) -> WebGLContextEvent {
+  WebGLContextEvent::new_with_event_init_ffi(type_, event_init.to_js())
+}
 
 ///|
 pub extern "js" fn WebGLContextEvent::get_status_message(

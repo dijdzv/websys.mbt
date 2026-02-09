@@ -147,7 +147,7 @@ pub fn SpeechSynthesisErrorCode::from_string(
 
 ///|
 /// SpeechRecognitionOptions dictionary
-pub struct SpeechRecognitionOptions {
+pub(all) struct SpeechRecognitionOptions {
   langs : Array[String]
   processLocally : Bool?
 }
@@ -159,31 +159,39 @@ pub fn SpeechRecognitionOptions::default() -> SpeechRecognitionOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SpeechRecognitionOptions::to_js(
+extern "js" fn SpeechRecognitionOptions::to_js_ffi(
   self : SpeechRecognitionOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   langs: self.langs,
-  #|   processLocally: self.processLocally
+  #|   processLocally: (self.processLocally === -1 ? undefined : self.processLocally)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SpeechRecognitionOptions::to_js(
+  self : SpeechRecognitionOptions,
+) -> JsValue {
+  SpeechRecognitionOptions::to_js_ffi(self)
+}
+
+///|
 /// SpeechRecognitionErrorEventInit dictionary
-pub struct SpeechRecognitionErrorEventInit {
+pub(all) struct SpeechRecognitionErrorEventInit {
   error : SpeechRecognitionErrorCode
   message : String?
 }
 
 ///|
-/// Create a new SpeechRecognitionErrorEventInit with default values
-pub fn SpeechRecognitionErrorEventInit::default() -> SpeechRecognitionErrorEventInit {
-  SpeechRecognitionErrorEventInit::{ error: panic(), message: None }
+/// Create a new SpeechRecognitionErrorEventInit
+pub fn SpeechRecognitionErrorEventInit::new(
+  error~ : SpeechRecognitionErrorCode,
+) -> SpeechRecognitionErrorEventInit {
+  SpeechRecognitionErrorEventInit::{ error, message: None }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SpeechRecognitionErrorEventInit::to_js(
+extern "js" fn SpeechRecognitionErrorEventInit::to_js_ffi(
   self : SpeechRecognitionErrorEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -192,21 +200,30 @@ pub extern "js" fn SpeechRecognitionErrorEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SpeechRecognitionErrorEventInit::to_js(
+  self : SpeechRecognitionErrorEventInit,
+) -> JsValue {
+  SpeechRecognitionErrorEventInit::to_js_ffi(self)
+}
+
+///|
 /// SpeechRecognitionEventInit dictionary
-pub struct SpeechRecognitionEventInit {
+pub(all) struct SpeechRecognitionEventInit {
   resultIndex : Int?
   results : SpeechRecognitionResultList
 }
 
 ///|
-/// Create a new SpeechRecognitionEventInit with default values
-pub fn SpeechRecognitionEventInit::default() -> SpeechRecognitionEventInit {
-  SpeechRecognitionEventInit::{ resultIndex: None, results: panic() }
+/// Create a new SpeechRecognitionEventInit
+pub fn SpeechRecognitionEventInit::new(
+  results~ : SpeechRecognitionResultList,
+) -> SpeechRecognitionEventInit {
+  SpeechRecognitionEventInit::{ resultIndex: None, results }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SpeechRecognitionEventInit::to_js(
+extern "js" fn SpeechRecognitionEventInit::to_js_ffi(
   self : SpeechRecognitionEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -215,8 +232,16 @@ pub extern "js" fn SpeechRecognitionEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SpeechRecognitionEventInit::to_js(
+  self : SpeechRecognitionEventInit,
+) -> JsValue {
+  SpeechRecognitionEventInit::to_js_ffi(self)
+}
+
+///|
 /// SpeechSynthesisEventInit dictionary
-pub struct SpeechSynthesisEventInit {
+pub(all) struct SpeechSynthesisEventInit {
   utterance : SpeechSynthesisUtterance
   charIndex : Int?
   charLength : Int?
@@ -225,10 +250,12 @@ pub struct SpeechSynthesisEventInit {
 }
 
 ///|
-/// Create a new SpeechSynthesisEventInit with default values
-pub fn SpeechSynthesisEventInit::default() -> SpeechSynthesisEventInit {
+/// Create a new SpeechSynthesisEventInit
+pub fn SpeechSynthesisEventInit::new(
+  utterance~ : SpeechSynthesisUtterance,
+) -> SpeechSynthesisEventInit {
   SpeechSynthesisEventInit::{
-    utterance: panic(),
+    utterance,
     charIndex: None,
     charLength: None,
     elapsedTime: None,
@@ -237,8 +264,7 @@ pub fn SpeechSynthesisEventInit::default() -> SpeechSynthesisEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SpeechSynthesisEventInit::to_js(
+extern "js" fn SpeechSynthesisEventInit::to_js_ffi(
   self : SpeechSynthesisEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -250,8 +276,16 @@ pub extern "js" fn SpeechSynthesisEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SpeechSynthesisEventInit::to_js(
+  self : SpeechSynthesisEventInit,
+) -> JsValue {
+  SpeechSynthesisEventInit::to_js_ffi(self)
+}
+
+///|
 /// SpeechSynthesisErrorEventInit dictionary
-pub struct SpeechSynthesisErrorEventInit {
+pub(all) struct SpeechSynthesisErrorEventInit {
   utterance : SpeechSynthesisUtterance
   charIndex : Int?
   charLength : Int?
@@ -261,21 +295,23 @@ pub struct SpeechSynthesisErrorEventInit {
 }
 
 ///|
-/// Create a new SpeechSynthesisErrorEventInit with default values
-pub fn SpeechSynthesisErrorEventInit::default() -> SpeechSynthesisErrorEventInit {
+/// Create a new SpeechSynthesisErrorEventInit
+pub fn SpeechSynthesisErrorEventInit::new(
+  utterance~ : SpeechSynthesisUtterance,
+  error~ : SpeechSynthesisErrorCode,
+) -> SpeechSynthesisErrorEventInit {
   SpeechSynthesisErrorEventInit::{
-    utterance: panic(),
+    utterance,
     charIndex: None,
     charLength: None,
     elapsedTime: None,
     name: None,
-    error: panic(),
+    error,
   }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SpeechSynthesisErrorEventInit::to_js(
+extern "js" fn SpeechSynthesisErrorEventInit::to_js_ffi(
   self : SpeechSynthesisErrorEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -286,6 +322,14 @@ pub extern "js" fn SpeechSynthesisErrorEventInit::to_js(
   #|   name: self.name,
   #|   error: ['canceled', 'interrupted', 'audio-busy', 'audio-hardware', 'network', 'synthesis-unavailable', 'synthesis-failed', 'language-unavailable', 'voice-unavailable', 'text-too-long', 'invalid-argument', 'not-allowed'][self.error]
   #| })
+
+///|
+/// Convert to JsValue
+pub fn SpeechSynthesisErrorEventInit::to_js(
+  self : SpeechSynthesisErrorEventInit,
+) -> JsValue {
+  SpeechSynthesisErrorEventInit::to_js_ffi(self)
+}
 
 ///|
 /// SpeechRecognition interface
@@ -446,16 +490,30 @@ pub extern "js" fn SpeechRecognition::abort(self : SpeechRecognition) -> Unit =
   #| (self) => self.abort()
 
 ///|
-pub extern "js" fn SpeechRecognition::available(
-  options : SpeechRecognitionOptions,
+extern "js" fn SpeechRecognition::available_ffi(
+  options : JsValue,
 ) -> Promise[AvailabilityStatus] =
   #| (options) => SpeechRecognition.available(options)
 
 ///|
-pub extern "js" fn SpeechRecognition::install(
+pub fn SpeechRecognition::available(
   options : SpeechRecognitionOptions,
+) -> Promise[AvailabilityStatus] {
+  SpeechRecognition::available_ffi(options.to_js())
+}
+
+///|
+extern "js" fn SpeechRecognition::install_ffi(
+  options : JsValue,
 ) -> Promise[Bool] =
   #| (options) => SpeechRecognition.install(options)
+
+///|
+pub fn SpeechRecognition::install(
+  options : SpeechRecognitionOptions,
+) -> Promise[Bool] {
+  SpeechRecognition::install_ffi(options.to_js())
+}
 
 ///|
 pub extern "js" fn SpeechRecognition::get_onaudiostart(
@@ -645,17 +703,25 @@ pub extern "js" fn SpeechRecognitionErrorEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn SpeechRecognitionErrorEvent::new(
+extern "js" fn SpeechRecognitionErrorEvent::new_ffi(
   type_ : String,
-  event_init_dict : SpeechRecognitionErrorEventInit,
+  event_init_dict : JsValue,
 ) -> SpeechRecognitionErrorEvent =
   #| (type_, event_init_dict) => new SpeechRecognitionErrorEvent(type_, event_init_dict)
+
+///|
+pub fn SpeechRecognitionErrorEvent::new(
+  type_ : String,
+  event_init_dict : SpeechRecognitionErrorEventInit,
+) -> SpeechRecognitionErrorEvent {
+  SpeechRecognitionErrorEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn SpeechRecognitionErrorEvent::get_error(
   self : SpeechRecognitionErrorEvent,
 ) -> SpeechRecognitionErrorCode =
-  #| (self) => self.error
+  #| (self) => ['no-speech', 'aborted', 'audio-capture', 'network', 'not-allowed', 'service-not-allowed', 'language-not-supported', 'phrases-not-supported'].indexOf(self.error)
 
 ///|
 pub extern "js" fn SpeechRecognitionErrorEvent::get_message(
@@ -880,11 +946,19 @@ pub extern "js" fn SpeechRecognitionEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn SpeechRecognitionEvent::new(
+extern "js" fn SpeechRecognitionEvent::new_ffi(
   type_ : String,
-  event_init_dict : SpeechRecognitionEventInit,
+  event_init_dict : JsValue,
 ) -> SpeechRecognitionEvent =
   #| (type_, event_init_dict) => new SpeechRecognitionEvent(type_, event_init_dict)
+
+///|
+pub fn SpeechRecognitionEvent::new(
+  type_ : String,
+  event_init_dict : SpeechRecognitionEventInit,
+) -> SpeechRecognitionEvent {
+  SpeechRecognitionEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn SpeechRecognitionEvent::get_result_index(
@@ -1083,6 +1157,12 @@ pub extern "js" fn JsValue::to_speech_recognition_phrase(
 ///|
 pub extern "js" fn SpeechRecognitionPhrase::new(
   phrase : String,
+) -> SpeechRecognitionPhrase =
+  #| (phrase) => new SpeechRecognitionPhrase(phrase)
+
+///|
+pub extern "js" fn SpeechRecognitionPhrase::new_with_boost(
+  phrase : String,
   boost : Double,
 ) -> SpeechRecognitionPhrase =
   #| (phrase, boost) => new SpeechRecognitionPhrase(phrase, boost)
@@ -1240,7 +1320,11 @@ pub extern "js" fn SpeechSynthesisUtterance::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn SpeechSynthesisUtterance::new(
+pub extern "js" fn SpeechSynthesisUtterance::new() -> SpeechSynthesisUtterance =
+  #| () => new SpeechSynthesisUtterance()
+
+///|
+pub extern "js" fn SpeechSynthesisUtterance::new_with_text(
   text : String,
 ) -> SpeechSynthesisUtterance =
   #| (text) => new SpeechSynthesisUtterance(text)
@@ -1275,14 +1359,14 @@ pub extern "js" fn SpeechSynthesisUtterance::set_lang(
 pub extern "js" fn SpeechSynthesisUtterance::get_voice(
   self : SpeechSynthesisUtterance,
 ) -> SpeechSynthesisVoice? =
-  #| (self) => { const v = self.voice; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.voice; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn SpeechSynthesisUtterance::set_voice(
   self : SpeechSynthesisUtterance,
   value : SpeechSynthesisVoice?,
 ) -> Unit =
-  #| (self, value) => { self.voice = value }
+  #| (self, value) => { self.voice = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn SpeechSynthesisUtterance::get_volume(
@@ -1465,11 +1549,19 @@ pub extern "js" fn SpeechSynthesisEvent::as_speech_synthesis_error_event(
   #| (self) => (self instanceof SpeechSynthesisErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn SpeechSynthesisEvent::new(
+extern "js" fn SpeechSynthesisEvent::new_ffi(
   type_ : String,
-  event_init_dict : SpeechSynthesisEventInit,
+  event_init_dict : JsValue,
 ) -> SpeechSynthesisEvent =
   #| (type_, event_init_dict) => new SpeechSynthesisEvent(type_, event_init_dict)
+
+///|
+pub fn SpeechSynthesisEvent::new(
+  type_ : String,
+  event_init_dict : SpeechSynthesisEventInit,
+) -> SpeechSynthesisEvent {
+  SpeechSynthesisEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn SpeechSynthesisEvent::get_utterance(
@@ -1552,17 +1644,25 @@ pub extern "js" fn SpeechSynthesisErrorEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn SpeechSynthesisErrorEvent::new(
+extern "js" fn SpeechSynthesisErrorEvent::new_ffi(
   type_ : String,
-  event_init_dict : SpeechSynthesisErrorEventInit,
+  event_init_dict : JsValue,
 ) -> SpeechSynthesisErrorEvent =
   #| (type_, event_init_dict) => new SpeechSynthesisErrorEvent(type_, event_init_dict)
+
+///|
+pub fn SpeechSynthesisErrorEvent::new(
+  type_ : String,
+  event_init_dict : SpeechSynthesisErrorEventInit,
+) -> SpeechSynthesisErrorEvent {
+  SpeechSynthesisErrorEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn SpeechSynthesisErrorEvent::get_error(
   self : SpeechSynthesisErrorEvent,
 ) -> SpeechSynthesisErrorCode =
-  #| (self) => self.error
+  #| (self) => ['canceled', 'interrupted', 'audio-busy', 'audio-hardware', 'network', 'synthesis-unavailable', 'synthesis-failed', 'language-unavailable', 'voice-unavailable', 'text-too-long', 'invalid-argument', 'not-allowed'].indexOf(self.error)
 
 ///|
 /// SpeechSynthesisVoice interface

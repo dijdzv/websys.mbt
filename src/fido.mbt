@@ -3,7 +3,7 @@
 
 ///|
 /// AuthenticationExtensionsClientInputs dictionary
-pub struct AuthenticationExtensionsClientInputs {
+pub(all) struct AuthenticationExtensionsClientInputs {
   credentialProtectionPolicy : String?
   enforceCredentialProtectionPolicy : Bool?
   credBlob : ArrayBuffer?
@@ -40,52 +40,64 @@ pub fn AuthenticationExtensionsClientInputs::default() -> AuthenticationExtensio
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AuthenticationExtensionsClientInputs::to_js(
+extern "js" fn AuthenticationExtensionsClientInputs::to_js_ffi(
   self : AuthenticationExtensionsClientInputs,
 ) -> JsValue =
   #| (self) => ({
   #|   credentialProtectionPolicy: self.credentialProtectionPolicy,
-  #|   enforceCredentialProtectionPolicy: self.enforceCredentialProtectionPolicy,
-  #|   credBlob: self.credBlob,
-  #|   getCredBlob: self.getCredBlob,
-  #|   minPinLength: self.minPinLength,
-  #|   hmacCreateSecret: self.hmacCreateSecret,
-  #|   hmacGetSecret: self.hmacGetSecret,
+  #|   enforceCredentialProtectionPolicy: (self.enforceCredentialProtectionPolicy === -1 ? undefined : self.enforceCredentialProtectionPolicy),
+  #|   credBlob: ((() => { const v = self.credBlob; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   getCredBlob: (self.getCredBlob === -1 ? undefined : self.getCredBlob),
+  #|   minPinLength: (self.minPinLength === -1 ? undefined : self.minPinLength),
+  #|   hmacCreateSecret: (self.hmacCreateSecret === -1 ? undefined : self.hmacCreateSecret),
+  #|   hmacGetSecret: ((() => { const v = self.hmacGetSecret; if (v.$tag !== 1) return undefined; return v._0; })()),
   #|   appid: self.appid,
   #|   appidExclude: self.appidExclude,
-  #|   credProps: self.credProps,
-  #|   prf: self.prf,
-  #|   largeBlob: self.largeBlob,
-  #|   payment: self.payment
+  #|   credProps: (self.credProps === -1 ? undefined : self.credProps),
+  #|   prf: ((() => { const v = self.prf; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   largeBlob: ((() => { const v = self.largeBlob; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   payment: ((() => { const v = self.payment; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AuthenticationExtensionsClientInputs::to_js(
+  self : AuthenticationExtensionsClientInputs,
+) -> JsValue {
+  AuthenticationExtensionsClientInputs::to_js_ffi(self)
+}
+
+///|
 /// HMACGetSecretInput dictionary
-pub struct HMACGetSecretInput {
+pub(all) struct HMACGetSecretInput {
   salt1 : ArrayBuffer
   salt2 : ArrayBuffer?
 }
 
 ///|
-/// Create a new HMACGetSecretInput with default values
-pub fn HMACGetSecretInput::default() -> HMACGetSecretInput {
-  HMACGetSecretInput::{ salt1: panic(), salt2: None }
+/// Create a new HMACGetSecretInput
+pub fn HMACGetSecretInput::new(salt1~ : ArrayBuffer) -> HMACGetSecretInput {
+  HMACGetSecretInput::{ salt1, salt2: None }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn HMACGetSecretInput::to_js(
+extern "js" fn HMACGetSecretInput::to_js_ffi(
   self : HMACGetSecretInput,
 ) -> JsValue =
   #| (self) => ({
   #|   salt1: self.salt1,
-  #|   salt2: self.salt2
+  #|   salt2: ((() => { const v = self.salt2; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn HMACGetSecretInput::to_js(self : HMACGetSecretInput) -> JsValue {
+  HMACGetSecretInput::to_js_ffi(self)
+}
+
+///|
 /// AuthenticationExtensionsClientOutputs dictionary
-pub struct AuthenticationExtensionsClientOutputs {
+pub(all) struct AuthenticationExtensionsClientOutputs {
   hmacCreateSecret : Bool?
   hmacGetSecret : HMACGetSecretOutput?
   appid : Bool?
@@ -112,40 +124,52 @@ pub fn AuthenticationExtensionsClientOutputs::default() -> AuthenticationExtensi
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AuthenticationExtensionsClientOutputs::to_js(
+extern "js" fn AuthenticationExtensionsClientOutputs::to_js_ffi(
   self : AuthenticationExtensionsClientOutputs,
 ) -> JsValue =
   #| (self) => ({
-  #|   hmacCreateSecret: self.hmacCreateSecret,
-  #|   hmacGetSecret: self.hmacGetSecret,
-  #|   appid: self.appid,
-  #|   appidExclude: self.appidExclude,
-  #|   credProps: self.credProps,
-  #|   prf: self.prf,
-  #|   largeBlob: self.largeBlob,
-  #|   payment: self.payment
+  #|   hmacCreateSecret: (self.hmacCreateSecret === -1 ? undefined : self.hmacCreateSecret),
+  #|   hmacGetSecret: ((() => { const v = self.hmacGetSecret; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   appid: (self.appid === -1 ? undefined : self.appid),
+  #|   appidExclude: (self.appidExclude === -1 ? undefined : self.appidExclude),
+  #|   credProps: ((() => { const v = self.credProps; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   prf: ((() => { const v = self.prf; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   largeBlob: ((() => { const v = self.largeBlob; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   payment: ((() => { const v = self.payment; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AuthenticationExtensionsClientOutputs::to_js(
+  self : AuthenticationExtensionsClientOutputs,
+) -> JsValue {
+  AuthenticationExtensionsClientOutputs::to_js_ffi(self)
+}
+
+///|
 /// HMACGetSecretOutput dictionary
-pub struct HMACGetSecretOutput {
+pub(all) struct HMACGetSecretOutput {
   output1 : ArrayBuffer
   output2 : ArrayBuffer?
 }
 
 ///|
-/// Create a new HMACGetSecretOutput with default values
-pub fn HMACGetSecretOutput::default() -> HMACGetSecretOutput {
-  HMACGetSecretOutput::{ output1: panic(), output2: None }
+/// Create a new HMACGetSecretOutput
+pub fn HMACGetSecretOutput::new(output1~ : ArrayBuffer) -> HMACGetSecretOutput {
+  HMACGetSecretOutput::{ output1, output2: None }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn HMACGetSecretOutput::to_js(
+extern "js" fn HMACGetSecretOutput::to_js_ffi(
   self : HMACGetSecretOutput,
 ) -> JsValue =
   #| (self) => ({
   #|   output1: self.output1,
-  #|   output2: self.output2
+  #|   output2: ((() => { const v = self.output2; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn HMACGetSecretOutput::to_js(self : HMACGetSecretOutput) -> JsValue {
+  HMACGetSecretOutput::to_js_ffi(self)
+}

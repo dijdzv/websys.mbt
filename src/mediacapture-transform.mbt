@@ -55,26 +55,35 @@ pub extern "js" fn MediaStreamTrackOrHandle::as_media_stream_track_handle(
 
 ///|
 /// MediaStreamTrackProcessorInit dictionary
-pub struct MediaStreamTrackProcessorInit {
+pub(all) struct MediaStreamTrackProcessorInit {
   track : MediaStreamTrackOrHandle
   maxBufferSize : Int?
 }
 
 ///|
-/// Create a new MediaStreamTrackProcessorInit with default values
-pub fn MediaStreamTrackProcessorInit::default() -> MediaStreamTrackProcessorInit {
-  MediaStreamTrackProcessorInit::{ track: panic(), maxBufferSize: None }
+/// Create a new MediaStreamTrackProcessorInit
+pub fn MediaStreamTrackProcessorInit::new(
+  track~ : MediaStreamTrackOrHandle,
+) -> MediaStreamTrackProcessorInit {
+  MediaStreamTrackProcessorInit::{ track, maxBufferSize: None }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MediaStreamTrackProcessorInit::to_js(
+extern "js" fn MediaStreamTrackProcessorInit::to_js_ffi(
   self : MediaStreamTrackProcessorInit,
 ) -> JsValue =
   #| (self) => ({
   #|   track: self.track.to_js_value(),
   #|   maxBufferSize: self.maxBufferSize
   #| })
+
+///|
+/// Convert to JsValue
+pub fn MediaStreamTrackProcessorInit::to_js(
+  self : MediaStreamTrackProcessorInit,
+) -> JsValue {
+  MediaStreamTrackProcessorInit::to_js_ffi(self)
+}
 
 ///|
 /// MediaStreamTrackHandle interface
@@ -159,10 +168,17 @@ pub extern "js" fn JsValue::to_media_stream_track_processor(
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaStreamTrackProcessor::new(
-  init_ : MediaStreamTrackProcessorInit,
+extern "js" fn MediaStreamTrackProcessor::new_ffi(
+  init_ : JsValue,
 ) -> MediaStreamTrackProcessor =
   #| (init_) => new MediaStreamTrackProcessor(init_)
+
+///|
+pub fn MediaStreamTrackProcessor::new(
+  init_ : MediaStreamTrackProcessorInit,
+) -> MediaStreamTrackProcessor {
+  MediaStreamTrackProcessor::new_ffi(init_.to_js())
+}
 
 ///|
 pub extern "js" fn MediaStreamTrackProcessor::get_readable(

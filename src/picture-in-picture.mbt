@@ -3,24 +3,33 @@
 
 ///|
 /// PictureInPictureEventInit dictionary
-pub struct PictureInPictureEventInit {
+pub(all) struct PictureInPictureEventInit {
   pictureInPictureWindow : PictureInPictureWindow
 }
 
 ///|
-/// Create a new PictureInPictureEventInit with default values
-pub fn PictureInPictureEventInit::default() -> PictureInPictureEventInit {
-  PictureInPictureEventInit::{ pictureInPictureWindow: panic() }
+/// Create a new PictureInPictureEventInit
+pub fn PictureInPictureEventInit::new(
+  pictureInPictureWindow~ : PictureInPictureWindow,
+) -> PictureInPictureEventInit {
+  PictureInPictureEventInit::{ pictureInPictureWindow, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PictureInPictureEventInit::to_js(
+extern "js" fn PictureInPictureEventInit::to_js_ffi(
   self : PictureInPictureEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   pictureInPictureWindow: self.pictureInPictureWindow
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PictureInPictureEventInit::to_js(
+  self : PictureInPictureEventInit,
+) -> JsValue {
+  PictureInPictureEventInit::to_js_ffi(self)
+}
 
 ///|
 /// PictureInPictureWindow interface
@@ -136,11 +145,19 @@ pub extern "js" fn PictureInPictureEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn PictureInPictureEvent::new(
+extern "js" fn PictureInPictureEvent::new_ffi(
   type_ : String,
-  event_init_dict : PictureInPictureEventInit,
+  event_init_dict : JsValue,
 ) -> PictureInPictureEvent =
   #| (type_, event_init_dict) => new PictureInPictureEvent(type_, event_init_dict)
+
+///|
+pub fn PictureInPictureEvent::new(
+  type_ : String,
+  event_init_dict : PictureInPictureEventInit,
+) -> PictureInPictureEvent {
+  PictureInPictureEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn PictureInPictureEvent::get_picture_in_picture_window(

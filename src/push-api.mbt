@@ -51,7 +51,7 @@ pub extern "js" fn PushMessageDataInit::as_buffer_source(
 pub extern "js" fn PushMessageDataInit::as_string(
   self : PushMessageDataInit,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// PushEncryptionKeyName enum
@@ -81,7 +81,7 @@ pub fn PushEncryptionKeyName::from_string(s : String) -> PushEncryptionKeyName? 
 
 ///|
 /// PushPermissionDescriptor dictionary
-pub struct PushPermissionDescriptor {
+pub(all) struct PushPermissionDescriptor {
   userVisibleOnly : Bool?
 }
 
@@ -92,17 +92,24 @@ pub fn PushPermissionDescriptor::default() -> PushPermissionDescriptor {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PushPermissionDescriptor::to_js(
+extern "js" fn PushPermissionDescriptor::to_js_ffi(
   self : PushPermissionDescriptor,
 ) -> JsValue =
   #| (self) => ({
-  #|   userVisibleOnly: self.userVisibleOnly
+  #|   userVisibleOnly: (self.userVisibleOnly === -1 ? undefined : self.userVisibleOnly)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PushPermissionDescriptor::to_js(
+  self : PushPermissionDescriptor,
+) -> JsValue {
+  PushPermissionDescriptor::to_js_ffi(self)
+}
+
+///|
 /// PushSubscriptionOptionsInit dictionary
-pub struct PushSubscriptionOptionsInit {
+pub(all) struct PushSubscriptionOptionsInit {
   userVisibleOnly : Bool?
   applicationServerKey : BufferSourceOrString?
 }
@@ -117,18 +124,25 @@ pub fn PushSubscriptionOptionsInit::default() -> PushSubscriptionOptionsInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PushSubscriptionOptionsInit::to_js(
+extern "js" fn PushSubscriptionOptionsInit::to_js_ffi(
   self : PushSubscriptionOptionsInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   userVisibleOnly: self.userVisibleOnly,
-  #|   applicationServerKey: self.applicationServerKey
+  #|   userVisibleOnly: (self.userVisibleOnly === -1 ? undefined : self.userVisibleOnly),
+  #|   applicationServerKey: ((() => { const v = self.applicationServerKey; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PushSubscriptionOptionsInit::to_js(
+  self : PushSubscriptionOptionsInit,
+) -> JsValue {
+  PushSubscriptionOptionsInit::to_js_ffi(self)
+}
+
+///|
 /// PushSubscriptionJSON dictionary
-pub struct PushSubscriptionJSON {
+pub(all) struct PushSubscriptionJSON {
   endpoint : String?
   expirationTime : Nullable[EpochTimeStamp]
   keys : JsValue?
@@ -145,19 +159,24 @@ pub fn PushSubscriptionJSON::default() -> PushSubscriptionJSON {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PushSubscriptionJSON::to_js(
+extern "js" fn PushSubscriptionJSON::to_js_ffi(
   self : PushSubscriptionJSON,
 ) -> JsValue =
   #| (self) => ({
   #|   endpoint: self.endpoint,
   #|   expirationTime: ((() => { const v = self.expirationTime; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   keys: self.keys
+  #|   keys: ((() => { const v = self.keys; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PushSubscriptionJSON::to_js(self : PushSubscriptionJSON) -> JsValue {
+  PushSubscriptionJSON::to_js_ffi(self)
+}
+
+///|
 /// PushEventInit dictionary
-pub struct PushEventInit {
+pub(all) struct PushEventInit {
   data : Nullable[PushMessageDataInit]
   notification : Nullable[Notification]
 }
@@ -172,16 +191,21 @@ pub fn PushEventInit::default() -> PushEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PushEventInit::to_js(self : PushEventInit) -> JsValue =
+extern "js" fn PushEventInit::to_js_ffi(self : PushEventInit) -> JsValue =
   #| (self) => ({
   #|   data: ((() => { const v = self.data; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0.to_js_value(); })()),
   #|   notification: ((() => { const v = self.notification; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PushEventInit::to_js(self : PushEventInit) -> JsValue {
+  PushEventInit::to_js_ffi(self)
+}
+
+///|
 /// PushSubscriptionChangeEventInit dictionary
-pub struct PushSubscriptionChangeEventInit {
+pub(all) struct PushSubscriptionChangeEventInit {
   newSubscription : PushSubscription?
   oldSubscription : PushSubscription?
 }
@@ -196,14 +220,21 @@ pub fn PushSubscriptionChangeEventInit::default() -> PushSubscriptionChangeEvent
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PushSubscriptionChangeEventInit::to_js(
+extern "js" fn PushSubscriptionChangeEventInit::to_js_ffi(
   self : PushSubscriptionChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   newSubscription: self.newSubscription,
-  #|   oldSubscription: self.oldSubscription
+  #|   newSubscription: ((() => { const v = self.newSubscription; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   oldSubscription: ((() => { const v = self.oldSubscription; if (v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PushSubscriptionChangeEventInit::to_js(
+  self : PushSubscriptionChangeEventInit,
+) -> JsValue {
+  PushSubscriptionChangeEventInit::to_js_ffi(self)
+}
 
 ///|
 /// PushManager interface
@@ -246,17 +277,25 @@ pub extern "js" fn PushManager::subscribe(
   #| (self) => self.subscribe()
 
 ///|
-pub extern "js" fn PushManager::subscribe_with_options(
+extern "js" fn PushManager::subscribe_with_options_ffi(
   self : PushManager,
-  options : PushSubscriptionOptionsInit,
+  options : JsValue,
 ) -> Promise[PushSubscription] =
   #| (self, options) => self.subscribe(options)
+
+///|
+pub fn PushManager::subscribe_with_options(
+  self : PushManager,
+  options : PushSubscriptionOptionsInit,
+) -> Promise[PushSubscription] {
+  PushManager::subscribe_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn PushManager::get_subscription(
   self : PushManager,
 ) -> Promise[PushSubscription?] =
-  #| (self) => self.getSubscription().then(v => v == null ? { $tag: 0 } : { $tag: 1, _0: v })
+  #| (self) => self.getSubscription()
 
 ///|
 pub extern "js" fn PushManager::permission_state(
@@ -265,11 +304,19 @@ pub extern "js" fn PushManager::permission_state(
   #| (self) => self.permissionState()
 
 ///|
-pub extern "js" fn PushManager::permission_state_with_options(
+extern "js" fn PushManager::permission_state_with_options_ffi(
   self : PushManager,
-  options : PushSubscriptionOptionsInit,
+  options : JsValue,
 ) -> Promise[PermissionState] =
   #| (self, options) => self.permissionState(options)
+
+///|
+pub fn PushManager::permission_state_with_options(
+  self : PushManager,
+  options : PushSubscriptionOptionsInit,
+) -> Promise[PermissionState] {
+  PushManager::permission_state_with_options_ffi(self, options.to_js())
+}
 
 ///|
 /// PushSubscriptionOptions interface
@@ -319,7 +366,7 @@ pub extern "js" fn PushSubscriptionOptions::get_user_visible_only(
 pub extern "js" fn PushSubscriptionOptions::get_application_server_key(
   self : PushSubscriptionOptions,
 ) -> ArrayBuffer? =
-  #| (self) => { const v = self.applicationServerKey; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.applicationServerKey; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// PushSubscription interface
@@ -369,7 +416,7 @@ pub extern "js" fn PushSubscription::get_endpoint(
 pub extern "js" fn PushSubscription::get_expiration_time(
   self : PushSubscription,
 ) -> EpochTimeStamp? =
-  #| (self) => { const v = self.expirationTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.expirationTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn PushSubscription::get_options(
@@ -382,7 +429,7 @@ pub extern "js" fn PushSubscription::get_key(
   self : PushSubscription,
   name : PushEncryptionKeyName,
 ) -> ArrayBuffer? =
-  #| (self, name) => { const v = self.getKey(['p256dh', 'auth'][name]); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, name) => (() => { const v = self.getKey(['p256dh', 'auth'][name]); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn PushSubscription::unsubscribe(
@@ -495,21 +542,33 @@ pub extern "js" fn PushEvent::to_event(self : PushEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn PushEvent::new(
+pub extern "js" fn PushEvent::new(type_ : String) -> PushEvent =
+  #| (type_) => new PushEvent(type_)
+
+///|
+extern "js" fn PushEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : PushEventInit,
+  event_init_dict : JsValue,
 ) -> PushEvent =
   #| (type_, event_init_dict) => new PushEvent(type_, event_init_dict)
 
 ///|
+pub fn PushEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : PushEventInit,
+) -> PushEvent {
+  PushEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
+
+///|
 pub extern "js" fn PushEvent::get_data(self : PushEvent) -> PushMessageData? =
-  #| (self) => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.data; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn PushEvent::get_notification(
   self : PushEvent,
 ) -> Notification? =
-  #| (self) => { const v = self.notification; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.notification; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// PushSubscriptionChangeEvent interface
@@ -564,18 +623,35 @@ pub extern "js" fn PushSubscriptionChangeEvent::to_event(
 ///|
 pub extern "js" fn PushSubscriptionChangeEvent::new(
   type_ : String,
-  event_init_dict : PushSubscriptionChangeEventInit,
+) -> PushSubscriptionChangeEvent =
+  #| (type_) => new PushSubscriptionChangeEvent(type_)
+
+///|
+extern "js" fn PushSubscriptionChangeEvent::new_with_event_init_dict_ffi(
+  type_ : String,
+  event_init_dict : JsValue,
 ) -> PushSubscriptionChangeEvent =
   #| (type_, event_init_dict) => new PushSubscriptionChangeEvent(type_, event_init_dict)
+
+///|
+pub fn PushSubscriptionChangeEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : PushSubscriptionChangeEventInit,
+) -> PushSubscriptionChangeEvent {
+  PushSubscriptionChangeEvent::new_with_event_init_dict_ffi(
+    type_,
+    event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn PushSubscriptionChangeEvent::get_new_subscription(
   self : PushSubscriptionChangeEvent,
 ) -> PushSubscription? =
-  #| (self) => { const v = self.newSubscription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.newSubscription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn PushSubscriptionChangeEvent::get_old_subscription(
   self : PushSubscriptionChangeEvent,
 ) -> PushSubscription? =
-  #| (self) => { const v = self.oldSubscription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.oldSubscription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

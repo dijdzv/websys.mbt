@@ -38,7 +38,7 @@ pub extern "js" fn VibratePattern::is_array_of_int(
 ///|
 /// Try to get VibratePattern as Int
 pub extern "js" fn VibratePattern::as_int(self : VibratePattern) -> Int? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// Try to get VibratePattern as Array[Int]

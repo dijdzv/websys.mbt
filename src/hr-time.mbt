@@ -163,7 +163,10 @@ pub extern "js" fn Performance::get_entries_by_name_with_type(
 pub extern "js" fn Performance::measure_user_agent_specific_memory(
   self : Performance,
 ) -> Promise[MemoryMeasurement] =
-  #| (self) => self.measureUserAgentSpecificMemory()
+  #| (self) => self.measureUserAgentSpecificMemory().then(v => ({
+  #|   bytes: v.bytes,
+  #|   breakdown: (v.breakdown === undefined ? { $tag: 0 } : { $tag: 1, _0: v.breakdown })
+  #| }))
 
 ///|
 pub extern "js" fn Performance::clear_resource_timings(

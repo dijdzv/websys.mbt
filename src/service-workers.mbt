@@ -52,6 +52,28 @@ pub extern "js" fn RouterSource::as_router_source_enum(
   #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[RouterSource] to RouterSourceDict?
+pub fn RouterSource::bind_as_router_source_dict(
+  value : RouterSource?,
+) -> RouterSourceDict? {
+  match value {
+    Some(v) => v.as_router_source_dict()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[RouterSource] to RouterSourceEnum?
+pub fn RouterSource::bind_as_router_source_enum(
+  value : RouterSource?,
+) -> RouterSourceEnum? {
+  match value {
+    Some(v) => v.as_router_source_enum()
+    None => None
+  }
+}
+
+///|
 /// ServiceWorkerState enum
 pub(all) enum ServiceWorkerState {
   Parsed
@@ -60,7 +82,7 @@ pub(all) enum ServiceWorkerState {
   Activating
   Activated
   Redundant
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -95,7 +117,7 @@ pub(all) enum ServiceWorkerUpdateViaCache {
   Imports
   All
   None
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -129,7 +151,7 @@ pub(all) enum FrameType {
   TopLevel
   Nested
   None
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -161,7 +183,7 @@ pub(all) enum ClientType {
   Worker
   Sharedworker
   All
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -191,7 +213,7 @@ pub fn ClientType::from_string(s : String) -> ClientType? {
 pub(all) enum RunningStatus {
   Running
   NotRunning
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -219,7 +241,7 @@ pub(all) enum RouterSourceEnum {
   FetchEvent
   Network
   RaceNetworkAndFetchHandler
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -277,6 +299,22 @@ pub fn RegistrationOptions::to_js(self : RegistrationOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn RegistrationOptions::from_js_ffi(
+  value : JsValue,
+) -> RegistrationOptions =
+  #| (v) => ({
+  #|   scope: v.scope,
+  #|   type_: (v.type === undefined ? undefined : ['classic', 'module'].indexOf(v.type)),
+  #|   updateViaCache: (v.updateViaCache === undefined ? undefined : ['imports', 'all', 'none'].indexOf(v.updateViaCache))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RegistrationOptions::from_js(value : JsValue) -> RegistrationOptions {
+  RegistrationOptions::from_js_ffi(value)
+}
+
+///|
 /// NavigationPreloadState dictionary
 pub(all) struct NavigationPreloadState {
   enabled : Bool?
@@ -302,6 +340,23 @@ extern "js" fn NavigationPreloadState::to_js_ffi(
 /// Convert to JsValue
 pub fn NavigationPreloadState::to_js(self : NavigationPreloadState) -> JsValue {
   NavigationPreloadState::to_js_ffi(self)
+}
+
+///|
+extern "js" fn NavigationPreloadState::from_js_ffi(
+  value : JsValue,
+) -> NavigationPreloadState =
+  #| (v) => ({
+  #|   enabled: (v.enabled === undefined ? -1 : v.enabled),
+  #|   headerValue: v.headerValue
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NavigationPreloadState::from_js(
+  value : JsValue,
+) -> NavigationPreloadState {
+  NavigationPreloadState::from_js_ffi(value)
 }
 
 ///|
@@ -333,6 +388,21 @@ pub fn ClientQueryOptions::to_js(self : ClientQueryOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn ClientQueryOptions::from_js_ffi(
+  value : JsValue,
+) -> ClientQueryOptions =
+  #| (v) => ({
+  #|   includeUncontrolled: (v.includeUncontrolled === undefined ? -1 : v.includeUncontrolled),
+  #|   type_: (v.type === undefined ? undefined : ['window', 'worker', 'sharedworker', 'all'].indexOf(v.type))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ClientQueryOptions::from_js(value : JsValue) -> ClientQueryOptions {
+  ClientQueryOptions::from_js_ffi(value)
+}
+
+///|
 /// ExtendableEventInit dictionary
 pub(all) struct ExtendableEventInit {}
 
@@ -353,6 +423,19 @@ extern "js" fn ExtendableEventInit::to_js_ffi(
 /// Convert to JsValue
 pub fn ExtendableEventInit::to_js(self : ExtendableEventInit) -> JsValue {
   ExtendableEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ExtendableEventInit::from_js_ffi(
+  value : JsValue,
+) -> ExtendableEventInit =
+  #| (v) => ({
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ExtendableEventInit::from_js(value : JsValue) -> ExtendableEventInit {
+  ExtendableEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -385,6 +468,19 @@ pub fn RouterRule::to_js(self : RouterRule) -> JsValue {
 }
 
 ///|
+extern "js" fn RouterRule::from_js_ffi(value : JsValue) -> RouterRule =
+  #| (v) => ({
+  #|   condition: v.condition,
+  #|   source: v.source
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RouterRule::from_js(value : JsValue) -> RouterRule {
+  RouterRule::from_js_ffi(value)
+}
+
+///|
 /// RouterCondition dictionary
 pub(all) struct RouterCondition {
   urlPattern : URLPatternCompatible?
@@ -413,19 +509,37 @@ pub fn RouterCondition::default() -> RouterCondition {
 ///|
 extern "js" fn RouterCondition::to_js_ffi(self : RouterCondition) -> JsValue =
   #| (self) => ({
-  #|   urlPattern: ((() => { const v = self.urlPattern; if (v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   urlPattern: ((() => { const v = self.urlPattern; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
   #|   requestMethod: self.requestMethod,
   #|   requestMode: ((() => { const v = self.requestMode; if (v === undefined) return undefined; return ['navigate', 'same-origin', 'no-cors', 'cors'][v]; })()),
   #|   requestDestination: ((() => { const v = self.requestDestination; if (v === undefined) return undefined; return ['', 'audio', 'audioworklet', 'document', 'embed', 'font', 'frame', 'iframe', 'image', 'json', 'manifest', 'object', 'paintworklet', 'report', 'script', 'sharedworker', 'style', 'track', 'video', 'worker', 'xslt'][v]; })()),
   #|   runningStatus: ((() => { const v = self.runningStatus; if (v === undefined) return undefined; return ['running', 'not-running'][v]; })()),
-  #|   or: ((() => { const v = self.or; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   not: ((() => { const v = self.not; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   or: ((() => { const v = self.or; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   not: ((() => { const v = self.not; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn RouterCondition::to_js(self : RouterCondition) -> JsValue {
   RouterCondition::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RouterCondition::from_js_ffi(value : JsValue) -> RouterCondition =
+  #| (v) => ({
+  #|   urlPattern: (v.urlPattern === undefined ? { $tag: 0 } : { $tag: 1, _0: v.urlPattern }),
+  #|   requestMethod: v.requestMethod,
+  #|   requestMode: (v.requestMode === undefined ? undefined : ['navigate', 'same-origin', 'no-cors', 'cors'].indexOf(v.requestMode)),
+  #|   requestDestination: (v.requestDestination === undefined ? undefined : ['', 'audio', 'audioworklet', 'document', 'embed', 'font', 'frame', 'iframe', 'image', 'json', 'manifest', 'object', 'paintworklet', 'report', 'script', 'sharedworker', 'style', 'track', 'video', 'worker', 'xslt'].indexOf(v.requestDestination)),
+  #|   runningStatus: (v.runningStatus === undefined ? undefined : ['running', 'not-running'].indexOf(v.runningStatus)),
+  #|   or: (v.or === undefined ? { $tag: 0 } : { $tag: 1, _0: v.or }),
+  #|   not: (v.not === undefined ? { $tag: 0 } : { $tag: 1, _0: v.not })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RouterCondition::from_js(value : JsValue) -> RouterCondition {
+  RouterCondition::from_js_ffi(value)
 }
 
 ///|
@@ -450,6 +564,20 @@ extern "js" fn RouterSourceDict::to_js_ffi(self : RouterSourceDict) -> JsValue =
 /// Convert to JsValue
 pub fn RouterSourceDict::to_js(self : RouterSourceDict) -> JsValue {
   RouterSourceDict::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RouterSourceDict::from_js_ffi(
+  value : JsValue,
+) -> RouterSourceDict =
+  #| (v) => ({
+  #|   cacheName: v.cacheName
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RouterSourceDict::from_js(value : JsValue) -> RouterSourceDict {
+  RouterSourceDict::from_js_ffi(value)
 }
 
 ///|
@@ -480,17 +608,34 @@ pub fn FetchEventInit::new(request~ : Request) -> FetchEventInit {
 extern "js" fn FetchEventInit::to_js_ffi(self : FetchEventInit) -> JsValue =
   #| (self) => ({
   #|   request: self.request,
-  #|   preloadResponse: ((() => { const v = self.preloadResponse; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   preloadResponse: ((() => { const v = self.preloadResponse; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   clientId: self.clientId,
   #|   resultingClientId: self.resultingClientId,
   #|   replacesClientId: self.replacesClientId,
-  #|   handled: ((() => { const v = self.handled; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   handled: ((() => { const v = self.handled; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn FetchEventInit::to_js(self : FetchEventInit) -> JsValue {
   FetchEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn FetchEventInit::from_js_ffi(value : JsValue) -> FetchEventInit =
+  #| (v) => ({
+  #|   request: v.request,
+  #|   preloadResponse: (v.preloadResponse === undefined ? { $tag: 0 } : { $tag: 1, _0: v.preloadResponse }),
+  #|   clientId: v.clientId,
+  #|   resultingClientId: v.resultingClientId,
+  #|   replacesClientId: v.replacesClientId,
+  #|   handled: (v.handled === undefined ? { $tag: 0 } : { $tag: 1, _0: v.handled })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FetchEventInit::from_js(value : JsValue) -> FetchEventInit {
+  FetchEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -520,11 +665,11 @@ extern "js" fn ExtendableMessageEventInit::to_js_ffi(
   self : ExtendableMessageEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   data: ((() => { const v = self.data; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   origin: self.origin,
   #|   lastEventId: self.lastEventId,
-  #|   source: ((() => { const v = self.source; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   ports: ((() => { const v = self.ports; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   source: ((() => { const v = self.source; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   ports: ((() => { const v = self.ports; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -533,6 +678,26 @@ pub fn ExtendableMessageEventInit::to_js(
   self : ExtendableMessageEventInit,
 ) -> JsValue {
   ExtendableMessageEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ExtendableMessageEventInit::from_js_ffi(
+  value : JsValue,
+) -> ExtendableMessageEventInit =
+  #| (v) => ({
+  #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data }),
+  #|   origin: v.origin,
+  #|   lastEventId: v.lastEventId,
+  #|   source: (v.source === undefined ? { $tag: 0 } : { $tag: 1, _0: v.source }),
+  #|   ports: (v.ports === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ports })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ExtendableMessageEventInit::from_js(
+  value : JsValue,
+) -> ExtendableMessageEventInit {
+  ExtendableMessageEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -570,6 +735,22 @@ pub fn CacheQueryOptions::to_js(self : CacheQueryOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn CacheQueryOptions::from_js_ffi(
+  value : JsValue,
+) -> CacheQueryOptions =
+  #| (v) => ({
+  #|   ignoreSearch: (v.ignoreSearch === undefined ? -1 : v.ignoreSearch),
+  #|   ignoreMethod: (v.ignoreMethod === undefined ? -1 : v.ignoreMethod),
+  #|   ignoreVary: (v.ignoreVary === undefined ? -1 : v.ignoreVary)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CacheQueryOptions::from_js(value : JsValue) -> CacheQueryOptions {
+  CacheQueryOptions::from_js_ffi(value)
+}
+
+///|
 /// MultiCacheQueryOptions dictionary
 pub(all) struct MultiCacheQueryOptions {
   ignoreSearch : Bool?
@@ -604,6 +785,25 @@ extern "js" fn MultiCacheQueryOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn MultiCacheQueryOptions::to_js(self : MultiCacheQueryOptions) -> JsValue {
   MultiCacheQueryOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MultiCacheQueryOptions::from_js_ffi(
+  value : JsValue,
+) -> MultiCacheQueryOptions =
+  #| (v) => ({
+  #|   ignoreSearch: (v.ignoreSearch === undefined ? -1 : v.ignoreSearch),
+  #|   ignoreMethod: (v.ignoreMethod === undefined ? -1 : v.ignoreMethod),
+  #|   ignoreVary: (v.ignoreVary === undefined ? -1 : v.ignoreVary),
+  #|   cacheName: v.cacheName
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MultiCacheQueryOptions::from_js(
+  value : JsValue,
+) -> MultiCacheQueryOptions {
+  MultiCacheQueryOptions::from_js_ffi(value)
 }
 
 ///|
@@ -1120,7 +1320,10 @@ pub extern "js" fn NavigationPreloadManager::set_header_value(
 pub extern "js" fn NavigationPreloadManager::get_state(
   self : NavigationPreloadManager,
 ) -> Promise[NavigationPreloadState] =
-  #| (self) => self.getState()
+  #| (self) => self.getState().then(v => ({
+  #|   enabled: (v.enabled === undefined ? -1 : v.enabled),
+  #|   headerValue: v.headerValue
+  #| }))
 
 ///|
 /// ServiceWorkerGlobalScope interface

@@ -20,7 +20,7 @@ pub extern "js" fn PasswordCredentialInit::from_password_credential_data(
 
 ///|
 /// Create PasswordCredentialInit from HTMLFormElement
-pub extern "js" fn PasswordCredentialInit::from_h_t_m_l_form_element(
+pub extern "js" fn PasswordCredentialInit::from_html_form_element(
   v : HTMLFormElement,
 ) -> PasswordCredentialInit =
   #| (v) => v
@@ -34,7 +34,7 @@ pub extern "js" fn PasswordCredentialInit::is_password_credential_data(
 
 ///|
 /// Check if this PasswordCredentialInit is HTMLFormElement
-pub extern "js" fn PasswordCredentialInit::is_h_t_m_l_form_element(
+pub extern "js" fn PasswordCredentialInit::is_html_form_element(
   self : PasswordCredentialInit,
 ) -> Bool =
   #| (self) => self instanceof HTMLFormElement
@@ -48,10 +48,32 @@ pub extern "js" fn PasswordCredentialInit::as_password_credential_data(
 
 ///|
 /// Try to get PasswordCredentialInit as HTMLFormElement
-pub extern "js" fn PasswordCredentialInit::as_h_t_m_l_form_element(
+pub extern "js" fn PasswordCredentialInit::as_html_form_element(
   self : PasswordCredentialInit,
 ) -> HTMLFormElement? =
   #| (self) => (self instanceof HTMLFormElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[PasswordCredentialInit] to PasswordCredentialData?
+pub fn PasswordCredentialInit::bind_as_password_credential_data(
+  value : PasswordCredentialInit?,
+) -> PasswordCredentialData? {
+  match value {
+    Some(v) => v.as_password_credential_data()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[PasswordCredentialInit] to HTMLFormElement?
+pub fn PasswordCredentialInit::bind_as_html_form_element(
+  value : PasswordCredentialInit?,
+) -> HTMLFormElement? {
+  match value {
+    Some(v) => v.as_html_form_element()
+    None => None
+  }
+}
 
 ///|
 /// CredentialMediationRequirement enum
@@ -60,7 +82,7 @@ pub(all) enum CredentialMediationRequirement {
   Optional
   Conditional
   Required
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -114,6 +136,18 @@ pub fn CredentialData::to_js(self : CredentialData) -> JsValue {
 }
 
 ///|
+extern "js" fn CredentialData::from_js_ffi(value : JsValue) -> CredentialData =
+  #| (v) => ({
+  #|   id: v.id
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CredentialData::from_js(value : JsValue) -> CredentialData {
+  CredentialData::from_js_ffi(value)
+}
+
+///|
 /// PasswordCredentialData dictionary
 pub(all) struct PasswordCredentialData {
   id : String
@@ -154,6 +188,26 @@ pub fn PasswordCredentialData::to_js(self : PasswordCredentialData) -> JsValue {
 }
 
 ///|
+extern "js" fn PasswordCredentialData::from_js_ffi(
+  value : JsValue,
+) -> PasswordCredentialData =
+  #| (v) => ({
+  #|   id: v.id,
+  #|   name: v.name,
+  #|   iconURL: v.iconURL,
+  #|   origin: v.origin,
+  #|   password: v.password
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PasswordCredentialData::from_js(
+  value : JsValue,
+) -> PasswordCredentialData {
+  PasswordCredentialData::from_js_ffi(value)
+}
+
+///|
 /// FederatedCredentialRequestOptions dictionary
 pub(all) struct FederatedCredentialRequestOptions {
   providers : Array[String]?
@@ -171,8 +225,8 @@ extern "js" fn FederatedCredentialRequestOptions::to_js_ffi(
   self : FederatedCredentialRequestOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   providers: ((() => { const v = self.providers; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   protocols: ((() => { const v = self.protocols; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   providers: ((() => { const v = self.providers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   protocols: ((() => { const v = self.protocols; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -181,6 +235,23 @@ pub fn FederatedCredentialRequestOptions::to_js(
   self : FederatedCredentialRequestOptions,
 ) -> JsValue {
   FederatedCredentialRequestOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn FederatedCredentialRequestOptions::from_js_ffi(
+  value : JsValue,
+) -> FederatedCredentialRequestOptions =
+  #| (v) => ({
+  #|   providers: (v.providers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.providers }),
+  #|   protocols: (v.protocols === undefined ? { $tag: 0 } : { $tag: 1, _0: v.protocols })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FederatedCredentialRequestOptions::from_js(
+  value : JsValue,
+) -> FederatedCredentialRequestOptions {
+  FederatedCredentialRequestOptions::from_js_ffi(value)
 }
 
 ///|
@@ -226,6 +297,27 @@ pub fn FederatedCredentialInit::to_js(
   self : FederatedCredentialInit,
 ) -> JsValue {
   FederatedCredentialInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn FederatedCredentialInit::from_js_ffi(
+  value : JsValue,
+) -> FederatedCredentialInit =
+  #| (v) => ({
+  #|   id: v.id,
+  #|   name: v.name,
+  #|   iconURL: v.iconURL,
+  #|   origin: v.origin,
+  #|   provider: v.provider,
+  #|   protocol: v.protocol
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FederatedCredentialInit::from_js(
+  value : JsValue,
+) -> FederatedCredentialInit {
+  FederatedCredentialInit::from_js_ffi(value)
 }
 
 ///|

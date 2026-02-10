@@ -6,7 +6,7 @@
 pub(all) enum MockCapturePromptResult {
   Granted
   Denied
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -65,6 +65,23 @@ pub fn MockCapturePromptResultConfiguration::to_js(
 }
 
 ///|
+extern "js" fn MockCapturePromptResultConfiguration::from_js_ffi(
+  value : JsValue,
+) -> MockCapturePromptResultConfiguration =
+  #| (v) => ({
+  #|   getUserMedia: (v.getUserMedia === undefined ? undefined : ['granted', 'denied'].indexOf(v.getUserMedia)),
+  #|   getDisplayMedia: (v.getDisplayMedia === undefined ? undefined : ['granted', 'denied'].indexOf(v.getDisplayMedia))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MockCapturePromptResultConfiguration::from_js(
+  value : JsValue,
+) -> MockCapturePromptResultConfiguration {
+  MockCapturePromptResultConfiguration::from_js_ffi(value)
+}
+
+///|
 /// MockCaptureDeviceConfiguration dictionary
 pub(all) struct MockCaptureDeviceConfiguration {
   label : String?
@@ -94,6 +111,24 @@ pub fn MockCaptureDeviceConfiguration::to_js(
   self : MockCaptureDeviceConfiguration,
 ) -> JsValue {
   MockCaptureDeviceConfiguration::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MockCaptureDeviceConfiguration::from_js_ffi(
+  value : JsValue,
+) -> MockCaptureDeviceConfiguration =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   deviceId: v.deviceId,
+  #|   groupId: v.groupId
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MockCaptureDeviceConfiguration::from_js(
+  value : JsValue,
+) -> MockCaptureDeviceConfiguration {
+  MockCaptureDeviceConfiguration::from_js_ffi(value)
 }
 
 ///|
@@ -139,6 +174,26 @@ pub fn MockCameraConfiguration::to_js(
 }
 
 ///|
+extern "js" fn MockCameraConfiguration::from_js_ffi(
+  value : JsValue,
+) -> MockCameraConfiguration =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   deviceId: v.deviceId,
+  #|   groupId: v.groupId,
+  #|   defaultFrameRate: v.defaultFrameRate,
+  #|   facingMode: v.facingMode
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MockCameraConfiguration::from_js(
+  value : JsValue,
+) -> MockCameraConfiguration {
+  MockCameraConfiguration::from_js_ffi(value)
+}
+
+///|
 /// MockMicrophoneConfiguration dictionary
 pub(all) struct MockMicrophoneConfiguration {
   label : String?
@@ -175,4 +230,23 @@ pub fn MockMicrophoneConfiguration::to_js(
   self : MockMicrophoneConfiguration,
 ) -> JsValue {
   MockMicrophoneConfiguration::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MockMicrophoneConfiguration::from_js_ffi(
+  value : JsValue,
+) -> MockMicrophoneConfiguration =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   deviceId: v.deviceId,
+  #|   groupId: v.groupId,
+  #|   defaultSampleRate: v.defaultSampleRate
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MockMicrophoneConfiguration::from_js(
+  value : JsValue,
+) -> MockMicrophoneConfiguration {
+  MockMicrophoneConfiguration::from_js_ffi(value)
 }

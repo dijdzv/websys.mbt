@@ -6,7 +6,7 @@
 pub(all) enum MagnetometerLocalCoordinateSystem {
   Device
   Screen
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -57,6 +57,22 @@ pub fn MagnetometerSensorOptions::to_js(
   self : MagnetometerSensorOptions,
 ) -> JsValue {
   MagnetometerSensorOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MagnetometerSensorOptions::from_js_ffi(
+  value : JsValue,
+) -> MagnetometerSensorOptions =
+  #| (v) => ({
+  #|   referenceFrame: (v.referenceFrame === undefined ? undefined : ['device', 'screen'].indexOf(v.referenceFrame))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MagnetometerSensorOptions::from_js(
+  value : JsValue,
+) -> MagnetometerSensorOptions {
+  MagnetometerSensorOptions::from_js_ffi(value)
 }
 
 ///|

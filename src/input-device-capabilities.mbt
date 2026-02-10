@@ -35,6 +35,23 @@ pub fn InputDeviceCapabilitiesInit::to_js(
 }
 
 ///|
+extern "js" fn InputDeviceCapabilitiesInit::from_js_ffi(
+  value : JsValue,
+) -> InputDeviceCapabilitiesInit =
+  #| (v) => ({
+  #|   firesTouchEvents: (v.firesTouchEvents === undefined ? -1 : v.firesTouchEvents),
+  #|   pointerMovementScrolls: (v.pointerMovementScrolls === undefined ? -1 : v.pointerMovementScrolls)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn InputDeviceCapabilitiesInit::from_js(
+  value : JsValue,
+) -> InputDeviceCapabilitiesInit {
+  InputDeviceCapabilitiesInit::from_js_ffi(value)
+}
+
+///|
 /// UIEventInit dictionary
 pub(all) struct UIEventInit {
   sourceCapabilities : Nullable[InputDeviceCapabilities]
@@ -57,8 +74,8 @@ pub fn UIEventInit::default() -> UIEventInit {
 ///|
 extern "js" fn UIEventInit::to_js_ffi(self : UIEventInit) -> JsValue =
   #| (self) => ({
-  #|   sourceCapabilities: ((() => { const v = self.sourceCapabilities; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   view: ((() => { const v = self.view; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   sourceCapabilities: ((() => { const v = self.sourceCapabilities; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   view: ((() => { const v = self.view; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   detail: self.detail,
   #|   which: self.which
   #| })
@@ -67,6 +84,21 @@ extern "js" fn UIEventInit::to_js_ffi(self : UIEventInit) -> JsValue =
 /// Convert to JsValue
 pub fn UIEventInit::to_js(self : UIEventInit) -> JsValue {
   UIEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn UIEventInit::from_js_ffi(value : JsValue) -> UIEventInit =
+  #| (v) => ({
+  #|   sourceCapabilities: (v.sourceCapabilities === undefined ? { $tag: 0 } : v.sourceCapabilities === null ? { $tag: 1 } : { $tag: 2, _0: v.sourceCapabilities }),
+  #|   view: (v.view === undefined ? { $tag: 0 } : v.view === null ? { $tag: 1 } : { $tag: 2, _0: v.view }),
+  #|   detail: v.detail,
+  #|   which: v.which
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn UIEventInit::from_js(value : JsValue) -> UIEventInit {
+  UIEventInit::from_js_ffi(value)
 }
 
 ///|

@@ -6,7 +6,7 @@
 pub(all) enum AccelerometerLocalCoordinateSystem {
   Device
   Screen
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -57,6 +57,22 @@ pub fn AccelerometerSensorOptions::to_js(
   self : AccelerometerSensorOptions,
 ) -> JsValue {
   AccelerometerSensorOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AccelerometerSensorOptions::from_js_ffi(
+  value : JsValue,
+) -> AccelerometerSensorOptions =
+  #| (v) => ({
+  #|   referenceFrame: (v.referenceFrame === undefined ? undefined : ['device', 'screen'].indexOf(v.referenceFrame))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AccelerometerSensorOptions::from_js(
+  value : JsValue,
+) -> AccelerometerSensorOptions {
+  AccelerometerSensorOptions::from_js_ffi(value)
 }
 
 ///|

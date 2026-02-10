@@ -6,7 +6,7 @@
 pub(all) enum GyroscopeLocalCoordinateSystem {
   Device
   Screen
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -55,6 +55,22 @@ extern "js" fn GyroscopeSensorOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn GyroscopeSensorOptions::to_js(self : GyroscopeSensorOptions) -> JsValue {
   GyroscopeSensorOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GyroscopeSensorOptions::from_js_ffi(
+  value : JsValue,
+) -> GyroscopeSensorOptions =
+  #| (v) => ({
+  #|   referenceFrame: (v.referenceFrame === undefined ? undefined : ['device', 'screen'].indexOf(v.referenceFrame))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GyroscopeSensorOptions::from_js(
+  value : JsValue,
+) -> GyroscopeSensorOptions {
+  GyroscopeSensorOptions::from_js_ffi(value)
 }
 
 ///|

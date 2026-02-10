@@ -8,7 +8,7 @@ pub(all) enum ScrollAxis {
   Inline
   X
   Y
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -51,7 +51,7 @@ extern "js" fn ScrollTimelineOptions::to_js_ffi(
   self : ScrollTimelineOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   axis: ((() => { const v = self.axis; if (v === undefined) return undefined; return ['block', 'inline', 'x', 'y'][v]; })())
   #| })
 
@@ -59,6 +59,21 @@ extern "js" fn ScrollTimelineOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn ScrollTimelineOptions::to_js(self : ScrollTimelineOptions) -> JsValue {
   ScrollTimelineOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ScrollTimelineOptions::from_js_ffi(
+  value : JsValue,
+) -> ScrollTimelineOptions =
+  #| (v) => ({
+  #|   source: (v.source === undefined ? { $tag: 0 } : v.source === null ? { $tag: 1 } : { $tag: 2, _0: v.source }),
+  #|   axis: (v.axis === undefined ? undefined : ['block', 'inline', 'x', 'y'].indexOf(v.axis))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ScrollTimelineOptions::from_js(value : JsValue) -> ScrollTimelineOptions {
+  ScrollTimelineOptions::from_js_ffi(value)
 }
 
 ///|
@@ -80,15 +95,31 @@ extern "js" fn ViewTimelineOptions::to_js_ffi(
   self : ViewTimelineOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   subject: ((() => { const v = self.subject; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   subject: ((() => { const v = self.subject; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   axis: ((() => { const v = self.axis; if (v === undefined) return undefined; return ['block', 'inline', 'x', 'y'][v]; })()),
-  #|   inset: ((() => { const v = self.inset; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   inset: ((() => { const v = self.inset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn ViewTimelineOptions::to_js(self : ViewTimelineOptions) -> JsValue {
   ViewTimelineOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ViewTimelineOptions::from_js_ffi(
+  value : JsValue,
+) -> ViewTimelineOptions =
+  #| (v) => ({
+  #|   subject: (v.subject === undefined ? { $tag: 0 } : { $tag: 1, _0: v.subject }),
+  #|   axis: (v.axis === undefined ? undefined : ['block', 'inline', 'x', 'y'].indexOf(v.axis)),
+  #|   inset: (v.inset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.inset })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ViewTimelineOptions::from_js(value : JsValue) -> ViewTimelineOptions {
+  ViewTimelineOptions::from_js_ffi(value)
 }
 
 ///|

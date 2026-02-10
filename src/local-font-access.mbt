@@ -16,13 +16,25 @@ pub fn QueryOptions::default() -> QueryOptions {
 ///|
 extern "js" fn QueryOptions::to_js_ffi(self : QueryOptions) -> JsValue =
   #| (self) => ({
-  #|   postscriptNames: ((() => { const v = self.postscriptNames; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   postscriptNames: ((() => { const v = self.postscriptNames; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn QueryOptions::to_js(self : QueryOptions) -> JsValue {
   QueryOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn QueryOptions::from_js_ffi(value : JsValue) -> QueryOptions =
+  #| (v) => ({
+  #|   postscriptNames: (v.postscriptNames === undefined ? { $tag: 0 } : { $tag: 1, _0: v.postscriptNames })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn QueryOptions::from_js(value : JsValue) -> QueryOptions {
+  QueryOptions::from_js_ffi(value)
 }
 
 ///|

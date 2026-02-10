@@ -21,7 +21,7 @@ pub(all) enum ConnectionType {
   Unknown
   Wifi
   Wimax
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -63,7 +63,7 @@ pub(all) enum EffectiveConnectionType {
   N3g
   N4g
   Slow2g
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

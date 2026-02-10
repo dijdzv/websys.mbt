@@ -48,6 +48,26 @@ pub extern "js" fn CustomMediaQuery::as_bool(self : CustomMediaQuery) -> Bool? =
   #| (self) => (typeof self === 'boolean') ? self : undefined
 
 ///|
+/// Flatten Option[CustomMediaQuery] to MediaList?
+pub fn CustomMediaQuery::bind_as_media_list(
+  value : CustomMediaQuery?,
+) -> MediaList? {
+  match value {
+    Some(v) => v.as_media_list()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[CustomMediaQuery] to Bool?
+pub fn CustomMediaQuery::bind_as_bool(value : CustomMediaQuery?) -> Bool? {
+  match value {
+    Some(v) => v.as_bool()
+    None => None
+  }
+}
+
+///|
 /// CSSCustomMediaRule interface
 pub type CSSCustomMediaRule
 
@@ -94,7 +114,7 @@ pub extern "js" fn CSSCustomMediaRule::to_css_rule(
 ///|
 pub extern "js" fn CSSCustomMediaRule::get_name(
   self : CSSCustomMediaRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.name
 
 ///|

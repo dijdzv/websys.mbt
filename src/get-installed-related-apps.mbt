@@ -32,3 +32,20 @@ extern "js" fn RelatedApplication::to_js_ffi(
 pub fn RelatedApplication::to_js(self : RelatedApplication) -> JsValue {
   RelatedApplication::to_js_ffi(self)
 }
+
+///|
+extern "js" fn RelatedApplication::from_js_ffi(
+  value : JsValue,
+) -> RelatedApplication =
+  #| (v) => ({
+  #|   platform: v.platform,
+  #|   url: v.url,
+  #|   id: v.id,
+  #|   version: v.version
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RelatedApplication::from_js(value : JsValue) -> RelatedApplication {
+  RelatedApplication::from_js_ffi(value)
+}

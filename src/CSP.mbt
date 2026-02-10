@@ -6,7 +6,7 @@
 pub(all) enum SecurityPolicyViolationEventDisposition {
   Enforce
   Report
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -71,22 +71,48 @@ extern "js" fn CSPViolationReportBody::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   documentURL: self.documentURL,
-  #|   referrer: ((() => { const v = self.referrer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   blockedURL: ((() => { const v = self.blockedURL; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   referrer: ((() => { const v = self.referrer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   blockedURL: ((() => { const v = self.blockedURL; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   effectiveDirective: self.effectiveDirective,
   #|   originalPolicy: self.originalPolicy,
-  #|   sourceFile: ((() => { const v = self.sourceFile; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   sample: ((() => { const v = self.sample; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   sourceFile: ((() => { const v = self.sourceFile; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   sample: ((() => { const v = self.sample; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   disposition: ((() => { const v = self.disposition; if (v === undefined) return undefined; return ['enforce', 'report'][v]; })()),
   #|   statusCode: self.statusCode,
-  #|   lineNumber: ((() => { const v = self.lineNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   columnNumber: ((() => { const v = self.columnNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   lineNumber: ((() => { const v = self.lineNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   columnNumber: ((() => { const v = self.columnNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn CSPViolationReportBody::to_js(self : CSPViolationReportBody) -> JsValue {
   CSPViolationReportBody::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CSPViolationReportBody::from_js_ffi(
+  value : JsValue,
+) -> CSPViolationReportBody =
+  #| (v) => ({
+  #|   documentURL: v.documentURL,
+  #|   referrer: (v.referrer === undefined ? { $tag: 0 } : v.referrer === null ? { $tag: 1 } : { $tag: 2, _0: v.referrer }),
+  #|   blockedURL: (v.blockedURL === undefined ? { $tag: 0 } : v.blockedURL === null ? { $tag: 1 } : { $tag: 2, _0: v.blockedURL }),
+  #|   effectiveDirective: v.effectiveDirective,
+  #|   originalPolicy: v.originalPolicy,
+  #|   sourceFile: (v.sourceFile === undefined ? { $tag: 0 } : v.sourceFile === null ? { $tag: 1 } : { $tag: 2, _0: v.sourceFile }),
+  #|   sample: (v.sample === undefined ? { $tag: 0 } : v.sample === null ? { $tag: 1 } : { $tag: 2, _0: v.sample }),
+  #|   disposition: (v.disposition === undefined ? undefined : ['enforce', 'report'].indexOf(v.disposition)),
+  #|   statusCode: v.statusCode,
+  #|   lineNumber: (v.lineNumber === undefined ? { $tag: 0 } : v.lineNumber === null ? { $tag: 1 } : { $tag: 2, _0: v.lineNumber }),
+  #|   columnNumber: (v.columnNumber === undefined ? { $tag: 0 } : v.columnNumber === null ? { $tag: 1 } : { $tag: 2, _0: v.columnNumber })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CSPViolationReportBody::from_js(
+  value : JsValue,
+) -> CSPViolationReportBody {
+  CSPViolationReportBody::from_js_ffi(value)
 }
 
 ///|
@@ -150,6 +176,33 @@ pub fn SecurityPolicyViolationEventInit::to_js(
   self : SecurityPolicyViolationEventInit,
 ) -> JsValue {
   SecurityPolicyViolationEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SecurityPolicyViolationEventInit::from_js_ffi(
+  value : JsValue,
+) -> SecurityPolicyViolationEventInit =
+  #| (v) => ({
+  #|   documentURI: v.documentURI,
+  #|   referrer: v.referrer,
+  #|   blockedURI: v.blockedURI,
+  #|   violatedDirective: v.violatedDirective,
+  #|   effectiveDirective: v.effectiveDirective,
+  #|   originalPolicy: v.originalPolicy,
+  #|   sourceFile: v.sourceFile,
+  #|   sample: v.sample,
+  #|   disposition: (v.disposition === undefined ? undefined : ['enforce', 'report'].indexOf(v.disposition)),
+  #|   statusCode: v.statusCode,
+  #|   lineNumber: v.lineNumber,
+  #|   columnNumber: v.columnNumber
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SecurityPolicyViolationEventInit::from_js(
+  value : JsValue,
+) -> SecurityPolicyViolationEventInit {
+  SecurityPolicyViolationEventInit::from_js_ffi(value)
 }
 
 ///|

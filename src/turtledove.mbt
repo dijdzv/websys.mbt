@@ -54,6 +54,26 @@ pub extern "js" fn PreviousWinElement::as_auction_ad(
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[PreviousWinElement] to Int64?
+pub fn PreviousWinElement::bind_as_int64(value : PreviousWinElement?) -> Int64? {
+  match value {
+    Some(v) => v.as_int64()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[PreviousWinElement] to AuctionAd?
+pub fn PreviousWinElement::bind_as_auction_ad(
+  value : PreviousWinElement?,
+) -> AuctionAd? {
+  match value {
+    Some(v) => v.as_auction_ad()
+    None => None
+  }
+}
+
+///|
 /// PreviousWin typedef
 pub type PreviousWin = Array[PreviousWinElement]
 
@@ -64,7 +84,7 @@ pub(all) enum KAnonStatus {
   PassedNotEnforced
   BelowThreshold
   NotCalculated
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -124,11 +144,11 @@ extern "js" fn AuctionAd::to_js_ffi(self : AuctionAd) -> JsValue =
   #| (self) => ({
   #|   renderURL: self.renderURL,
   #|   sizeGroup: self.sizeGroup,
-  #|   metadata: ((() => { const v = self.metadata; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   metadata: ((() => { const v = self.metadata; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   buyerReportingId: self.buyerReportingId,
   #|   buyerAndSellerReportingId: self.buyerAndSellerReportingId,
-  #|   selectableBuyerAndSellerReportingIds: ((() => { const v = self.selectableBuyerAndSellerReportingIds; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   allowedReportingOrigins: ((() => { const v = self.allowedReportingOrigins; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   selectableBuyerAndSellerReportingIds: ((() => { const v = self.selectableBuyerAndSellerReportingIds; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   allowedReportingOrigins: ((() => { const v = self.allowedReportingOrigins; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   adRenderId: self.adRenderId,
   #|   creativeScanningMetadata: self.creativeScanningMetadata
   #| })
@@ -137,6 +157,26 @@ extern "js" fn AuctionAd::to_js_ffi(self : AuctionAd) -> JsValue =
 /// Convert to JsValue
 pub fn AuctionAd::to_js(self : AuctionAd) -> JsValue {
   AuctionAd::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AuctionAd::from_js_ffi(value : JsValue) -> AuctionAd =
+  #| (v) => ({
+  #|   renderURL: v.renderURL,
+  #|   sizeGroup: v.sizeGroup,
+  #|   metadata: (v.metadata === undefined ? { $tag: 0 } : { $tag: 1, _0: v.metadata }),
+  #|   buyerReportingId: v.buyerReportingId,
+  #|   buyerAndSellerReportingId: v.buyerAndSellerReportingId,
+  #|   selectableBuyerAndSellerReportingIds: (v.selectableBuyerAndSellerReportingIds === undefined ? { $tag: 0 } : { $tag: 1, _0: v.selectableBuyerAndSellerReportingIds }),
+  #|   allowedReportingOrigins: (v.allowedReportingOrigins === undefined ? { $tag: 0 } : { $tag: 1, _0: v.allowedReportingOrigins }),
+  #|   adRenderId: v.adRenderId,
+  #|   creativeScanningMetadata: v.creativeScanningMetadata
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AuctionAd::from_js(value : JsValue) -> AuctionAd {
+  AuctionAd::from_js_ffi(value)
 }
 
 ///|
@@ -167,6 +207,23 @@ pub fn AuctionAdInterestGroupSize::to_js(
   self : AuctionAdInterestGroupSize,
 ) -> JsValue {
   AuctionAdInterestGroupSize::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AuctionAdInterestGroupSize::from_js_ffi(
+  value : JsValue,
+) -> AuctionAdInterestGroupSize =
+  #| (v) => ({
+  #|   width: v.width,
+  #|   height: v.height
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AuctionAdInterestGroupSize::from_js(
+  value : JsValue,
+) -> AuctionAdInterestGroupSize {
+  AuctionAdInterestGroupSize::from_js_ffi(value)
 }
 
 ///|
@@ -227,22 +284,22 @@ extern "js" fn GenerateBidInterestGroup::to_js_ffi(
   #|   owner: self.owner,
   #|   name: self.name,
   #|   enableBiddingSignalsPrioritization: (self.enableBiddingSignalsPrioritization === -1 ? undefined : self.enableBiddingSignalsPrioritization),
-  #|   priorityVector: ((() => { const v = self.priorityVector; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sellerCapabilities: ((() => { const v = self.sellerCapabilities; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   priorityVector: ((() => { const v = self.priorityVector; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sellerCapabilities: ((() => { const v = self.sellerCapabilities; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   executionMode: self.executionMode,
   #|   biddingLogicURL: self.biddingLogicURL,
   #|   biddingWasmHelperURL: self.biddingWasmHelperURL,
   #|   updateURL: self.updateURL,
   #|   trustedBiddingSignalsURL: self.trustedBiddingSignalsURL,
-  #|   trustedBiddingSignalsKeys: ((() => { const v = self.trustedBiddingSignalsKeys; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   trustedBiddingSignalsKeys: ((() => { const v = self.trustedBiddingSignalsKeys; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   trustedBiddingSignalsSlotSizeMode: self.trustedBiddingSignalsSlotSizeMode,
   #|   maxTrustedBiddingSignalsURLLength: self.maxTrustedBiddingSignalsURLLength,
   #|   trustedBiddingSignalsCoordinator: self.trustedBiddingSignalsCoordinator,
-  #|   userBiddingSignals: ((() => { const v = self.userBiddingSignals; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   ads: ((() => { const v = self.ads; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   adComponents: ((() => { const v = self.adComponents; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   adSizes: ((() => { const v = self.adSizes; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sizeGroups: ((() => { const v = self.sizeGroups; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   userBiddingSignals: ((() => { const v = self.userBiddingSignals; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   ads: ((() => { const v = self.ads; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   adComponents: ((() => { const v = self.adComponents; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   adSizes: ((() => { const v = self.adSizes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sizeGroups: ((() => { const v = self.sizeGroups; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -251,6 +308,40 @@ pub fn GenerateBidInterestGroup::to_js(
   self : GenerateBidInterestGroup,
 ) -> JsValue {
   GenerateBidInterestGroup::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GenerateBidInterestGroup::from_js_ffi(
+  value : JsValue,
+) -> GenerateBidInterestGroup =
+  #| (v) => ({
+  #|   owner: v.owner,
+  #|   name: v.name,
+  #|   enableBiddingSignalsPrioritization: (v.enableBiddingSignalsPrioritization === undefined ? -1 : v.enableBiddingSignalsPrioritization),
+  #|   priorityVector: (v.priorityVector === undefined ? { $tag: 0 } : { $tag: 1, _0: v.priorityVector }),
+  #|   sellerCapabilities: (v.sellerCapabilities === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sellerCapabilities }),
+  #|   executionMode: v.executionMode,
+  #|   biddingLogicURL: v.biddingLogicURL,
+  #|   biddingWasmHelperURL: v.biddingWasmHelperURL,
+  #|   updateURL: v.updateURL,
+  #|   trustedBiddingSignalsURL: v.trustedBiddingSignalsURL,
+  #|   trustedBiddingSignalsKeys: (v.trustedBiddingSignalsKeys === undefined ? { $tag: 0 } : { $tag: 1, _0: v.trustedBiddingSignalsKeys }),
+  #|   trustedBiddingSignalsSlotSizeMode: v.trustedBiddingSignalsSlotSizeMode,
+  #|   maxTrustedBiddingSignalsURLLength: v.maxTrustedBiddingSignalsURLLength,
+  #|   trustedBiddingSignalsCoordinator: v.trustedBiddingSignalsCoordinator,
+  #|   userBiddingSignals: (v.userBiddingSignals === undefined ? { $tag: 0 } : { $tag: 1, _0: v.userBiddingSignals }),
+  #|   ads: (v.ads === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ads }),
+  #|   adComponents: (v.adComponents === undefined ? { $tag: 0 } : { $tag: 1, _0: v.adComponents }),
+  #|   adSizes: (v.adSizes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.adSizes }),
+  #|   sizeGroups: (v.sizeGroups === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sizeGroups })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GenerateBidInterestGroup::from_js(
+  value : JsValue,
+) -> GenerateBidInterestGroup {
+  GenerateBidInterestGroup::from_js_ffi(value)
 }
 
 ///|
@@ -281,6 +372,22 @@ pub fn ProtectedAudiencePrivateAggregationConfig::to_js(
   self : ProtectedAudiencePrivateAggregationConfig,
 ) -> JsValue {
   ProtectedAudiencePrivateAggregationConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ProtectedAudiencePrivateAggregationConfig::from_js_ffi(
+  value : JsValue,
+) -> ProtectedAudiencePrivateAggregationConfig =
+  #| (v) => ({
+  #|   aggregationCoordinatorOrigin: v.aggregationCoordinatorOrigin
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ProtectedAudiencePrivateAggregationConfig::from_js(
+  value : JsValue,
+) -> ProtectedAudiencePrivateAggregationConfig {
+  ProtectedAudiencePrivateAggregationConfig::from_js_ffi(value)
 }
 
 ///|
@@ -351,33 +458,72 @@ extern "js" fn AuctionAdInterestGroup::to_js_ffi(
   #|   owner: self.owner,
   #|   name: self.name,
   #|   enableBiddingSignalsPrioritization: (self.enableBiddingSignalsPrioritization === -1 ? undefined : self.enableBiddingSignalsPrioritization),
-  #|   priorityVector: ((() => { const v = self.priorityVector; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sellerCapabilities: ((() => { const v = self.sellerCapabilities; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   priorityVector: ((() => { const v = self.priorityVector; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sellerCapabilities: ((() => { const v = self.sellerCapabilities; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   executionMode: self.executionMode,
   #|   biddingLogicURL: self.biddingLogicURL,
   #|   biddingWasmHelperURL: self.biddingWasmHelperURL,
   #|   updateURL: self.updateURL,
   #|   trustedBiddingSignalsURL: self.trustedBiddingSignalsURL,
-  #|   trustedBiddingSignalsKeys: ((() => { const v = self.trustedBiddingSignalsKeys; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   trustedBiddingSignalsKeys: ((() => { const v = self.trustedBiddingSignalsKeys; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   trustedBiddingSignalsSlotSizeMode: self.trustedBiddingSignalsSlotSizeMode,
   #|   maxTrustedBiddingSignalsURLLength: self.maxTrustedBiddingSignalsURLLength,
   #|   trustedBiddingSignalsCoordinator: self.trustedBiddingSignalsCoordinator,
-  #|   userBiddingSignals: ((() => { const v = self.userBiddingSignals; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   ads: ((() => { const v = self.ads; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   adComponents: ((() => { const v = self.adComponents; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   adSizes: ((() => { const v = self.adSizes; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sizeGroups: ((() => { const v = self.sizeGroups; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   userBiddingSignals: ((() => { const v = self.userBiddingSignals; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   ads: ((() => { const v = self.ads; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   adComponents: ((() => { const v = self.adComponents; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   adSizes: ((() => { const v = self.adSizes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sizeGroups: ((() => { const v = self.sizeGroups; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   priority: self.priority,
-  #|   prioritySignalsOverrides: ((() => { const v = self.prioritySignalsOverrides; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   prioritySignalsOverrides: ((() => { const v = self.prioritySignalsOverrides; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   lifetimeMs: self.lifetimeMs,
   #|   additionalBidKey: self.additionalBidKey,
-  #|   privateAggregationConfig: ((() => { const v = self.privateAggregationConfig; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   privateAggregationConfig: ((() => { const v = self.privateAggregationConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn AuctionAdInterestGroup::to_js(self : AuctionAdInterestGroup) -> JsValue {
   AuctionAdInterestGroup::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AuctionAdInterestGroup::from_js_ffi(
+  value : JsValue,
+) -> AuctionAdInterestGroup =
+  #| (v) => ({
+  #|   owner: v.owner,
+  #|   name: v.name,
+  #|   enableBiddingSignalsPrioritization: (v.enableBiddingSignalsPrioritization === undefined ? -1 : v.enableBiddingSignalsPrioritization),
+  #|   priorityVector: (v.priorityVector === undefined ? { $tag: 0 } : { $tag: 1, _0: v.priorityVector }),
+  #|   sellerCapabilities: (v.sellerCapabilities === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sellerCapabilities }),
+  #|   executionMode: v.executionMode,
+  #|   biddingLogicURL: v.biddingLogicURL,
+  #|   biddingWasmHelperURL: v.biddingWasmHelperURL,
+  #|   updateURL: v.updateURL,
+  #|   trustedBiddingSignalsURL: v.trustedBiddingSignalsURL,
+  #|   trustedBiddingSignalsKeys: (v.trustedBiddingSignalsKeys === undefined ? { $tag: 0 } : { $tag: 1, _0: v.trustedBiddingSignalsKeys }),
+  #|   trustedBiddingSignalsSlotSizeMode: v.trustedBiddingSignalsSlotSizeMode,
+  #|   maxTrustedBiddingSignalsURLLength: v.maxTrustedBiddingSignalsURLLength,
+  #|   trustedBiddingSignalsCoordinator: v.trustedBiddingSignalsCoordinator,
+  #|   userBiddingSignals: (v.userBiddingSignals === undefined ? { $tag: 0 } : { $tag: 1, _0: v.userBiddingSignals }),
+  #|   ads: (v.ads === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ads }),
+  #|   adComponents: (v.adComponents === undefined ? { $tag: 0 } : { $tag: 1, _0: v.adComponents }),
+  #|   adSizes: (v.adSizes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.adSizes }),
+  #|   sizeGroups: (v.sizeGroups === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sizeGroups }),
+  #|   priority: v.priority,
+  #|   prioritySignalsOverrides: (v.prioritySignalsOverrides === undefined ? { $tag: 0 } : { $tag: 1, _0: v.prioritySignalsOverrides }),
+  #|   lifetimeMs: v.lifetimeMs,
+  #|   additionalBidKey: v.additionalBidKey,
+  #|   privateAggregationConfig: (v.privateAggregationConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.privateAggregationConfig })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AuctionAdInterestGroup::from_js(
+  value : JsValue,
+) -> AuctionAdInterestGroup {
+  AuctionAdInterestGroup::from_js_ffi(value)
 }
 
 ///|
@@ -408,6 +554,23 @@ pub fn AuctionAdInterestGroupKey::to_js(
   self : AuctionAdInterestGroupKey,
 ) -> JsValue {
   AuctionAdInterestGroupKey::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AuctionAdInterestGroupKey::from_js_ffi(
+  value : JsValue,
+) -> AuctionAdInterestGroupKey =
+  #| (v) => ({
+  #|   owner: v.owner,
+  #|   name: v.name
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AuctionAdInterestGroupKey::from_js(
+  value : JsValue,
+) -> AuctionAdInterestGroupKey {
+  AuctionAdInterestGroupKey::from_js_ffi(value)
 }
 
 ///|
@@ -443,6 +606,23 @@ pub fn AuctionReportBuyersConfig::to_js(
 }
 
 ///|
+extern "js" fn AuctionReportBuyersConfig::from_js_ffi(
+  value : JsValue,
+) -> AuctionReportBuyersConfig =
+  #| (v) => ({
+  #|   bucket: v.bucket,
+  #|   scale: v.scale
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AuctionReportBuyersConfig::from_js(
+  value : JsValue,
+) -> AuctionReportBuyersConfig {
+  AuctionReportBuyersConfig::from_js_ffi(value)
+}
+
+///|
 /// AuctionReportBuyerDebugModeConfig dictionary
 pub(all) struct AuctionReportBuyerDebugModeConfig {
   enabled : Bool?
@@ -464,7 +644,7 @@ extern "js" fn AuctionReportBuyerDebugModeConfig::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   enabled: (self.enabled === -1 ? undefined : self.enabled),
-  #|   debugKey: ((() => { const v = self.debugKey; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   debugKey: ((() => { const v = self.debugKey; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
@@ -473,6 +653,23 @@ pub fn AuctionReportBuyerDebugModeConfig::to_js(
   self : AuctionReportBuyerDebugModeConfig,
 ) -> JsValue {
   AuctionReportBuyerDebugModeConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AuctionReportBuyerDebugModeConfig::from_js_ffi(
+  value : JsValue,
+) -> AuctionReportBuyerDebugModeConfig =
+  #| (v) => ({
+  #|   enabled: (v.enabled === undefined ? -1 : v.enabled),
+  #|   debugKey: (v.debugKey === undefined ? { $tag: 0 } : v.debugKey === null ? { $tag: 1 } : { $tag: 2, _0: v.debugKey })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AuctionReportBuyerDebugModeConfig::from_js(
+  value : JsValue,
+) -> AuctionReportBuyerDebugModeConfig {
+  AuctionReportBuyerDebugModeConfig::from_js_ffi(value)
 }
 
 ///|
@@ -501,6 +698,22 @@ pub fn AuctionRealTimeReportingConfig::to_js(
   self : AuctionRealTimeReportingConfig,
 ) -> JsValue {
   AuctionRealTimeReportingConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AuctionRealTimeReportingConfig::from_js_ffi(
+  value : JsValue,
+) -> AuctionRealTimeReportingConfig =
+  #| (v) => ({
+  #|   type_: v.type
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AuctionRealTimeReportingConfig::from_js(
+  value : JsValue,
+) -> AuctionRealTimeReportingConfig {
+  AuctionRealTimeReportingConfig::from_js_ffi(value)
 }
 
 ///|
@@ -602,38 +815,38 @@ extern "js" fn AuctionAdConfig::to_js_ffi(self : AuctionAdConfig) -> JsValue =
   #|   maxTrustedScoringSignalsURLLength: self.maxTrustedScoringSignalsURLLength,
   #|   trustedScoringSignalsCoordinator: self.trustedScoringSignalsCoordinator,
   #|   sendCreativeScanningMetadata: (self.sendCreativeScanningMetadata === -1 ? undefined : self.sendCreativeScanningMetadata),
-  #|   interestGroupBuyers: ((() => { const v = self.interestGroupBuyers; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   auctionSignals: ((() => { const v = self.auctionSignals; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sellerSignals: ((() => { const v = self.sellerSignals; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   directFromSellerSignalsHeaderAdSlot: ((() => { const v = self.directFromSellerSignalsHeaderAdSlot; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   deprecatedRenderURLReplacements: ((() => { const v = self.deprecatedRenderURLReplacements; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   interestGroupBuyers: ((() => { const v = self.interestGroupBuyers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   auctionSignals: ((() => { const v = self.auctionSignals; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sellerSignals: ((() => { const v = self.sellerSignals; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   directFromSellerSignalsHeaderAdSlot: ((() => { const v = self.directFromSellerSignalsHeaderAdSlot; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   deprecatedRenderURLReplacements: ((() => { const v = self.deprecatedRenderURLReplacements; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   sellerTimeout: self.sellerTimeout,
   #|   sellerExperimentGroupId: self.sellerExperimentGroupId,
-  #|   perBuyerSignals: ((() => { const v = self.perBuyerSignals; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   perBuyerTimeouts: ((() => { const v = self.perBuyerTimeouts; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   perBuyerCumulativeTimeouts: ((() => { const v = self.perBuyerCumulativeTimeouts; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   perBuyerSignals: ((() => { const v = self.perBuyerSignals; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   perBuyerTimeouts: ((() => { const v = self.perBuyerTimeouts; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   perBuyerCumulativeTimeouts: ((() => { const v = self.perBuyerCumulativeTimeouts; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   reportingTimeout: self.reportingTimeout,
   #|   sellerCurrency: self.sellerCurrency,
-  #|   perBuyerCurrencies: ((() => { const v = self.perBuyerCurrencies; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   perBuyerMultiBidLimits: ((() => { const v = self.perBuyerMultiBidLimits; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   perBuyerGroupLimits: ((() => { const v = self.perBuyerGroupLimits; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   perBuyerExperimentGroupIds: ((() => { const v = self.perBuyerExperimentGroupIds; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   perBuyerPrioritySignals: ((() => { const v = self.perBuyerPrioritySignals; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   auctionReportBuyerKeys: ((() => { const v = self.auctionReportBuyerKeys; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   auctionReportBuyers: ((() => { const v = self.auctionReportBuyers; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   auctionReportBuyerDebugModeConfig: ((() => { const v = self.auctionReportBuyerDebugModeConfig; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   requiredSellerCapabilities: ((() => { const v = self.requiredSellerCapabilities; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   privateAggregationConfig: ((() => { const v = self.privateAggregationConfig; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   requestedSize: ((() => { const v = self.requestedSize; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   allSlotsRequestedSizes: ((() => { const v = self.allSlotsRequestedSizes; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   additionalBids: ((() => { const v = self.additionalBids; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   perBuyerCurrencies: ((() => { const v = self.perBuyerCurrencies; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   perBuyerMultiBidLimits: ((() => { const v = self.perBuyerMultiBidLimits; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   perBuyerGroupLimits: ((() => { const v = self.perBuyerGroupLimits; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   perBuyerExperimentGroupIds: ((() => { const v = self.perBuyerExperimentGroupIds; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   perBuyerPrioritySignals: ((() => { const v = self.perBuyerPrioritySignals; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   auctionReportBuyerKeys: ((() => { const v = self.auctionReportBuyerKeys; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   auctionReportBuyers: ((() => { const v = self.auctionReportBuyers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   auctionReportBuyerDebugModeConfig: ((() => { const v = self.auctionReportBuyerDebugModeConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   requiredSellerCapabilities: ((() => { const v = self.requiredSellerCapabilities; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   privateAggregationConfig: ((() => { const v = self.privateAggregationConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   requestedSize: ((() => { const v = self.requestedSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   allSlotsRequestedSizes: ((() => { const v = self.allSlotsRequestedSizes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   additionalBids: ((() => { const v = self.additionalBids; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   auctionNonce: self.auctionNonce,
-  #|   sellerRealTimeReportingConfig: ((() => { const v = self.sellerRealTimeReportingConfig; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   perBuyerRealTimeReportingConfig: ((() => { const v = self.perBuyerRealTimeReportingConfig; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   componentAuctions: ((() => { const v = self.componentAuctions; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   signal: ((() => { const v = self.signal; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   resolveToConfig: ((() => { const v = self.resolveToConfig; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   serverResponse: ((() => { const v = self.serverResponse; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sellerRealTimeReportingConfig: ((() => { const v = self.sellerRealTimeReportingConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   perBuyerRealTimeReportingConfig: ((() => { const v = self.perBuyerRealTimeReportingConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   componentAuctions: ((() => { const v = self.componentAuctions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   signal: ((() => { const v = self.signal; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   resolveToConfig: ((() => { const v = self.resolveToConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   serverResponse: ((() => { const v = self.serverResponse; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   requestId: self.requestId
   #| })
 
@@ -641,6 +854,56 @@ extern "js" fn AuctionAdConfig::to_js_ffi(self : AuctionAdConfig) -> JsValue =
 /// Convert to JsValue
 pub fn AuctionAdConfig::to_js(self : AuctionAdConfig) -> JsValue {
   AuctionAdConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AuctionAdConfig::from_js_ffi(value : JsValue) -> AuctionAdConfig =
+  #| (v) => ({
+  #|   seller: v.seller,
+  #|   decisionLogicURL: v.decisionLogicURL,
+  #|   trustedScoringSignalsURL: v.trustedScoringSignalsURL,
+  #|   maxTrustedScoringSignalsURLLength: v.maxTrustedScoringSignalsURLLength,
+  #|   trustedScoringSignalsCoordinator: v.trustedScoringSignalsCoordinator,
+  #|   sendCreativeScanningMetadata: (v.sendCreativeScanningMetadata === undefined ? -1 : v.sendCreativeScanningMetadata),
+  #|   interestGroupBuyers: (v.interestGroupBuyers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.interestGroupBuyers }),
+  #|   auctionSignals: (v.auctionSignals === undefined ? { $tag: 0 } : { $tag: 1, _0: v.auctionSignals }),
+  #|   sellerSignals: (v.sellerSignals === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sellerSignals }),
+  #|   directFromSellerSignalsHeaderAdSlot: (v.directFromSellerSignalsHeaderAdSlot === undefined ? { $tag: 0 } : { $tag: 1, _0: v.directFromSellerSignalsHeaderAdSlot }),
+  #|   deprecatedRenderURLReplacements: (v.deprecatedRenderURLReplacements === undefined ? { $tag: 0 } : { $tag: 1, _0: v.deprecatedRenderURLReplacements }),
+  #|   sellerTimeout: v.sellerTimeout,
+  #|   sellerExperimentGroupId: v.sellerExperimentGroupId,
+  #|   perBuyerSignals: (v.perBuyerSignals === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerSignals }),
+  #|   perBuyerTimeouts: (v.perBuyerTimeouts === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerTimeouts }),
+  #|   perBuyerCumulativeTimeouts: (v.perBuyerCumulativeTimeouts === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerCumulativeTimeouts }),
+  #|   reportingTimeout: v.reportingTimeout,
+  #|   sellerCurrency: v.sellerCurrency,
+  #|   perBuyerCurrencies: (v.perBuyerCurrencies === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerCurrencies }),
+  #|   perBuyerMultiBidLimits: (v.perBuyerMultiBidLimits === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerMultiBidLimits }),
+  #|   perBuyerGroupLimits: (v.perBuyerGroupLimits === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerGroupLimits }),
+  #|   perBuyerExperimentGroupIds: (v.perBuyerExperimentGroupIds === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerExperimentGroupIds }),
+  #|   perBuyerPrioritySignals: (v.perBuyerPrioritySignals === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerPrioritySignals }),
+  #|   auctionReportBuyerKeys: (v.auctionReportBuyerKeys === undefined ? { $tag: 0 } : { $tag: 1, _0: v.auctionReportBuyerKeys }),
+  #|   auctionReportBuyers: (v.auctionReportBuyers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.auctionReportBuyers }),
+  #|   auctionReportBuyerDebugModeConfig: (v.auctionReportBuyerDebugModeConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.auctionReportBuyerDebugModeConfig }),
+  #|   requiredSellerCapabilities: (v.requiredSellerCapabilities === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requiredSellerCapabilities }),
+  #|   privateAggregationConfig: (v.privateAggregationConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.privateAggregationConfig }),
+  #|   requestedSize: (v.requestedSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requestedSize }),
+  #|   allSlotsRequestedSizes: (v.allSlotsRequestedSizes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.allSlotsRequestedSizes }),
+  #|   additionalBids: (v.additionalBids === undefined ? { $tag: 0 } : { $tag: 1, _0: v.additionalBids }),
+  #|   auctionNonce: v.auctionNonce,
+  #|   sellerRealTimeReportingConfig: (v.sellerRealTimeReportingConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sellerRealTimeReportingConfig }),
+  #|   perBuyerRealTimeReportingConfig: (v.perBuyerRealTimeReportingConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerRealTimeReportingConfig }),
+  #|   componentAuctions: (v.componentAuctions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.componentAuctions }),
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : v.signal === null ? { $tag: 1 } : { $tag: 2, _0: v.signal }),
+  #|   resolveToConfig: (v.resolveToConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.resolveToConfig }),
+  #|   serverResponse: (v.serverResponse === undefined ? { $tag: 0 } : { $tag: 1, _0: v.serverResponse }),
+  #|   requestId: v.requestId
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AuctionAdConfig::from_js(value : JsValue) -> AuctionAdConfig {
+  AuctionAdConfig::from_js_ffi(value)
 }
 
 ///|
@@ -663,7 +926,7 @@ extern "js" fn AdAuctionPerSellerData::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   seller: self.seller,
-  #|   request: ((() => { const v = self.request; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   request: ((() => { const v = self.request; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   error: self.error
   #| })
 
@@ -671,6 +934,24 @@ extern "js" fn AdAuctionPerSellerData::to_js_ffi(
 /// Convert to JsValue
 pub fn AdAuctionPerSellerData::to_js(self : AdAuctionPerSellerData) -> JsValue {
   AdAuctionPerSellerData::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AdAuctionPerSellerData::from_js_ffi(
+  value : JsValue,
+) -> AdAuctionPerSellerData =
+  #| (v) => ({
+  #|   seller: v.seller,
+  #|   request: (v.request === undefined ? { $tag: 0 } : { $tag: 1, _0: v.request }),
+  #|   error: v.error
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AdAuctionPerSellerData::from_js(
+  value : JsValue,
+) -> AdAuctionPerSellerData {
+  AdAuctionPerSellerData::from_js_ffi(value)
 }
 
 ///|
@@ -691,14 +972,28 @@ pub fn AdAuctionData::default() -> AdAuctionData {
 extern "js" fn AdAuctionData::to_js_ffi(self : AdAuctionData) -> JsValue =
   #| (self) => ({
   #|   requestId: self.requestId,
-  #|   request: ((() => { const v = self.request; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   requests: ((() => { const v = self.requests; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   request: ((() => { const v = self.request; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   requests: ((() => { const v = self.requests; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn AdAuctionData::to_js(self : AdAuctionData) -> JsValue {
   AdAuctionData::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AdAuctionData::from_js_ffi(value : JsValue) -> AdAuctionData =
+  #| (v) => ({
+  #|   requestId: v.requestId,
+  #|   request: (v.request === undefined ? { $tag: 0 } : { $tag: 1, _0: v.request }),
+  #|   requests: (v.requests === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requests })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AdAuctionData::from_js(value : JsValue) -> AdAuctionData {
+  AdAuctionData::from_js_ffi(value)
 }
 
 ///|
@@ -730,6 +1025,21 @@ pub fn AdAuctionOneSeller::to_js(self : AdAuctionOneSeller) -> JsValue {
 }
 
 ///|
+extern "js" fn AdAuctionOneSeller::from_js_ffi(
+  value : JsValue,
+) -> AdAuctionOneSeller =
+  #| (v) => ({
+  #|   seller: v.seller,
+  #|   coordinatorOrigin: v.coordinatorOrigin
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AdAuctionOneSeller::from_js(value : JsValue) -> AdAuctionOneSeller {
+  AdAuctionOneSeller::from_js_ffi(value)
+}
+
+///|
 /// AdAuctionDataConfig dictionary
 pub(all) struct AdAuctionDataConfig {
   seller : String?
@@ -758,15 +1068,33 @@ extern "js" fn AdAuctionDataConfig::to_js_ffi(
   #| (self) => ({
   #|   seller: self.seller,
   #|   coordinatorOrigin: self.coordinatorOrigin,
-  #|   sellers: ((() => { const v = self.sellers; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sellers: ((() => { const v = self.sellers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   requestSize: self.requestSize,
-  #|   perBuyerConfig: ((() => { const v = self.perBuyerConfig; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   perBuyerConfig: ((() => { const v = self.perBuyerConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn AdAuctionDataConfig::to_js(self : AdAuctionDataConfig) -> JsValue {
   AdAuctionDataConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AdAuctionDataConfig::from_js_ffi(
+  value : JsValue,
+) -> AdAuctionDataConfig =
+  #| (v) => ({
+  #|   seller: v.seller,
+  #|   coordinatorOrigin: v.coordinatorOrigin,
+  #|   sellers: (v.sellers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sellers }),
+  #|   requestSize: v.requestSize,
+  #|   perBuyerConfig: (v.perBuyerConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerConfig })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AdAuctionDataConfig::from_js(value : JsValue) -> AdAuctionDataConfig {
+  AdAuctionDataConfig::from_js_ffi(value)
 }
 
 ///|
@@ -795,6 +1123,22 @@ pub fn AdAuctionDataBuyerConfig::to_js(
   self : AdAuctionDataBuyerConfig,
 ) -> JsValue {
   AdAuctionDataBuyerConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AdAuctionDataBuyerConfig::from_js_ffi(
+  value : JsValue,
+) -> AdAuctionDataBuyerConfig =
+  #| (v) => ({
+  #|   targetSize: v.targetSize
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AdAuctionDataBuyerConfig::from_js(
+  value : JsValue,
+) -> AdAuctionDataBuyerConfig {
+  AdAuctionDataBuyerConfig::from_js_ffi(value)
 }
 
 ///|
@@ -883,30 +1227,30 @@ extern "js" fn StorageInterestGroup::to_js_ffi(
   #|   owner: self.owner,
   #|   name: self.name,
   #|   enableBiddingSignalsPrioritization: (self.enableBiddingSignalsPrioritization === -1 ? undefined : self.enableBiddingSignalsPrioritization),
-  #|   priorityVector: ((() => { const v = self.priorityVector; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sellerCapabilities: ((() => { const v = self.sellerCapabilities; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   priorityVector: ((() => { const v = self.priorityVector; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sellerCapabilities: ((() => { const v = self.sellerCapabilities; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   executionMode: self.executionMode,
   #|   biddingLogicURL: self.biddingLogicURL,
   #|   biddingWasmHelperURL: self.biddingWasmHelperURL,
   #|   updateURL: self.updateURL,
   #|   trustedBiddingSignalsURL: self.trustedBiddingSignalsURL,
-  #|   trustedBiddingSignalsKeys: ((() => { const v = self.trustedBiddingSignalsKeys; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   trustedBiddingSignalsKeys: ((() => { const v = self.trustedBiddingSignalsKeys; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   trustedBiddingSignalsSlotSizeMode: self.trustedBiddingSignalsSlotSizeMode,
   #|   maxTrustedBiddingSignalsURLLength: self.maxTrustedBiddingSignalsURLLength,
   #|   trustedBiddingSignalsCoordinator: self.trustedBiddingSignalsCoordinator,
-  #|   userBiddingSignals: ((() => { const v = self.userBiddingSignals; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   ads: ((() => { const v = self.ads; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   adComponents: ((() => { const v = self.adComponents; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   adSizes: ((() => { const v = self.adSizes; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sizeGroups: ((() => { const v = self.sizeGroups; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   userBiddingSignals: ((() => { const v = self.userBiddingSignals; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   ads: ((() => { const v = self.ads; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   adComponents: ((() => { const v = self.adComponents; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   adSizes: ((() => { const v = self.adSizes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sizeGroups: ((() => { const v = self.sizeGroups; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   priority: self.priority,
-  #|   prioritySignalsOverrides: ((() => { const v = self.prioritySignalsOverrides; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   prioritySignalsOverrides: ((() => { const v = self.prioritySignalsOverrides; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   lifetimeMs: self.lifetimeMs,
   #|   additionalBidKey: self.additionalBidKey,
-  #|   privateAggregationConfig: ((() => { const v = self.privateAggregationConfig; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   privateAggregationConfig: ((() => { const v = self.privateAggregationConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   joinCount: self.joinCount,
   #|   bidCount: self.bidCount,
-  #|   prevWinsMs: ((() => { const v = self.prevWinsMs; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   prevWinsMs: ((() => { const v = self.prevWinsMs; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   joiningOrigin: self.joiningOrigin,
   #|   timeSinceGroupJoinedMs: self.timeSinceGroupJoinedMs,
   #|   lifetimeRemainingMs: self.lifetimeRemainingMs,
@@ -919,6 +1263,52 @@ extern "js" fn StorageInterestGroup::to_js_ffi(
 /// Convert to JsValue
 pub fn StorageInterestGroup::to_js(self : StorageInterestGroup) -> JsValue {
   StorageInterestGroup::to_js_ffi(self)
+}
+
+///|
+extern "js" fn StorageInterestGroup::from_js_ffi(
+  value : JsValue,
+) -> StorageInterestGroup =
+  #| (v) => ({
+  #|   owner: v.owner,
+  #|   name: v.name,
+  #|   enableBiddingSignalsPrioritization: (v.enableBiddingSignalsPrioritization === undefined ? -1 : v.enableBiddingSignalsPrioritization),
+  #|   priorityVector: (v.priorityVector === undefined ? { $tag: 0 } : { $tag: 1, _0: v.priorityVector }),
+  #|   sellerCapabilities: (v.sellerCapabilities === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sellerCapabilities }),
+  #|   executionMode: v.executionMode,
+  #|   biddingLogicURL: v.biddingLogicURL,
+  #|   biddingWasmHelperURL: v.biddingWasmHelperURL,
+  #|   updateURL: v.updateURL,
+  #|   trustedBiddingSignalsURL: v.trustedBiddingSignalsURL,
+  #|   trustedBiddingSignalsKeys: (v.trustedBiddingSignalsKeys === undefined ? { $tag: 0 } : { $tag: 1, _0: v.trustedBiddingSignalsKeys }),
+  #|   trustedBiddingSignalsSlotSizeMode: v.trustedBiddingSignalsSlotSizeMode,
+  #|   maxTrustedBiddingSignalsURLLength: v.maxTrustedBiddingSignalsURLLength,
+  #|   trustedBiddingSignalsCoordinator: v.trustedBiddingSignalsCoordinator,
+  #|   userBiddingSignals: (v.userBiddingSignals === undefined ? { $tag: 0 } : { $tag: 1, _0: v.userBiddingSignals }),
+  #|   ads: (v.ads === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ads }),
+  #|   adComponents: (v.adComponents === undefined ? { $tag: 0 } : { $tag: 1, _0: v.adComponents }),
+  #|   adSizes: (v.adSizes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.adSizes }),
+  #|   sizeGroups: (v.sizeGroups === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sizeGroups }),
+  #|   priority: v.priority,
+  #|   prioritySignalsOverrides: (v.prioritySignalsOverrides === undefined ? { $tag: 0 } : { $tag: 1, _0: v.prioritySignalsOverrides }),
+  #|   lifetimeMs: v.lifetimeMs,
+  #|   additionalBidKey: v.additionalBidKey,
+  #|   privateAggregationConfig: (v.privateAggregationConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.privateAggregationConfig }),
+  #|   joinCount: v.joinCount,
+  #|   bidCount: v.bidCount,
+  #|   prevWinsMs: (v.prevWinsMs === undefined ? { $tag: 0 } : { $tag: 1, _0: v.prevWinsMs }),
+  #|   joiningOrigin: v.joiningOrigin,
+  #|   timeSinceGroupJoinedMs: v.timeSinceGroupJoinedMs,
+  #|   lifetimeRemainingMs: v.lifetimeRemainingMs,
+  #|   timeSinceLastUpdateMs: v.timeSinceLastUpdateMs,
+  #|   timeUntilNextUpdateMs: v.timeUntilNextUpdateMs,
+  #|   estimatedSize: v.estimatedSize
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn StorageInterestGroup::from_js(value : JsValue) -> StorageInterestGroup {
+  StorageInterestGroup::from_js_ffi(value)
 }
 
 ///|
@@ -940,13 +1330,27 @@ extern "js" fn PASignalValue::to_js_ffi(self : PASignalValue) -> JsValue =
   #| (self) => ({
   #|   baseValue: self.baseValue,
   #|   scale: self.scale,
-  #|   offset: ((() => { const v = self.offset; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   offset: ((() => { const v = self.offset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn PASignalValue::to_js(self : PASignalValue) -> JsValue {
   PASignalValue::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PASignalValue::from_js_ffi(value : JsValue) -> PASignalValue =
+  #| (v) => ({
+  #|   baseValue: v.baseValue,
+  #|   scale: v.scale,
+  #|   offset: (v.offset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offset })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PASignalValue::from_js(value : JsValue) -> PASignalValue {
+  PASignalValue::from_js_ffi(value)
 }
 
 ///|
@@ -973,7 +1377,7 @@ extern "js" fn PAExtendedHistogramContribution::to_js_ffi(
   #| (self) => ({
   #|   bucket: self.bucket,
   #|   value: self.value,
-  #|   filteringId: ((() => { const v = self.filteringId; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   filteringId: ((() => { const v = self.filteringId; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -982,6 +1386,24 @@ pub fn PAExtendedHistogramContribution::to_js(
   self : PAExtendedHistogramContribution,
 ) -> JsValue {
   PAExtendedHistogramContribution::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PAExtendedHistogramContribution::from_js_ffi(
+  value : JsValue,
+) -> PAExtendedHistogramContribution =
+  #| (v) => ({
+  #|   bucket: v.bucket,
+  #|   value: v.value,
+  #|   filteringId: (v.filteringId === undefined ? { $tag: 0 } : { $tag: 1, _0: v.filteringId })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PAExtendedHistogramContribution::from_js(
+  value : JsValue,
+) -> PAExtendedHistogramContribution {
+  PAExtendedHistogramContribution::from_js_ffi(value)
 }
 
 ///|
@@ -1015,6 +1437,22 @@ pub fn RealTimeContribution::to_js(self : RealTimeContribution) -> JsValue {
 }
 
 ///|
+extern "js" fn RealTimeContribution::from_js_ffi(
+  value : JsValue,
+) -> RealTimeContribution =
+  #| (v) => ({
+  #|   bucket: v.bucket,
+  #|   priorityWeight: v.priorityWeight,
+  #|   latencyThreshold: v.latencyThreshold
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RealTimeContribution::from_js(value : JsValue) -> RealTimeContribution {
+  RealTimeContribution::from_js_ffi(value)
+}
+
+///|
 /// AdRender dictionary
 pub(all) struct AdRender {
   url : String
@@ -1040,6 +1478,20 @@ extern "js" fn AdRender::to_js_ffi(self : AdRender) -> JsValue =
 /// Convert to JsValue
 pub fn AdRender::to_js(self : AdRender) -> JsValue {
   AdRender::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AdRender::from_js_ffi(value : JsValue) -> AdRender =
+  #| (v) => ({
+  #|   url: v.url,
+  #|   width: v.width,
+  #|   height: v.height
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AdRender::from_js(value : JsValue) -> AdRender {
+  AdRender::from_js_ffi(value)
 }
 
 ///|
@@ -1083,10 +1535,10 @@ extern "js" fn GenerateBidOutput::to_js_ffi(
   #| (self) => ({
   #|   bid: self.bid,
   #|   bidCurrency: self.bidCurrency,
-  #|   render: ((() => { const v = self.render; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   ad: ((() => { const v = self.ad; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   render: ((() => { const v = self.render; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   ad: ((() => { const v = self.ad; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   selectedBuyerAndSellerReportingId: self.selectedBuyerAndSellerReportingId,
-  #|   adComponents: ((() => { const v = self.adComponents; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   adComponents: ((() => { const v = self.adComponents; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   adCost: self.adCost,
   #|   modelingSignals: self.modelingSignals,
   #|   allowComponentAuction: (self.allowComponentAuction === -1 ? undefined : self.allowComponentAuction),
@@ -1098,6 +1550,30 @@ extern "js" fn GenerateBidOutput::to_js_ffi(
 /// Convert to JsValue
 pub fn GenerateBidOutput::to_js(self : GenerateBidOutput) -> JsValue {
   GenerateBidOutput::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GenerateBidOutput::from_js_ffi(
+  value : JsValue,
+) -> GenerateBidOutput =
+  #| (v) => ({
+  #|   bid: v.bid,
+  #|   bidCurrency: v.bidCurrency,
+  #|   render: (v.render === undefined ? { $tag: 0 } : { $tag: 1, _0: v.render }),
+  #|   ad: (v.ad === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ad }),
+  #|   selectedBuyerAndSellerReportingId: v.selectedBuyerAndSellerReportingId,
+  #|   adComponents: (v.adComponents === undefined ? { $tag: 0 } : { $tag: 1, _0: v.adComponents }),
+  #|   adCost: v.adCost,
+  #|   modelingSignals: v.modelingSignals,
+  #|   allowComponentAuction: (v.allowComponentAuction === undefined ? -1 : v.allowComponentAuction),
+  #|   targetNumAdComponents: v.targetNumAdComponents,
+  #|   numMandatoryAdComponents: v.numMandatoryAdComponents
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GenerateBidOutput::from_js(value : JsValue) -> GenerateBidOutput {
+  GenerateBidOutput::from_js_ffi(value)
 }
 
 ///|
@@ -1152,10 +1628,10 @@ extern "js" fn BiddingBrowserSignals::to_js_ffi(
   #|   recency: self.recency,
   #|   adComponentsLimit: self.adComponentsLimit,
   #|   multiBidLimit: self.multiBidLimit,
-  #|   requestedSize: ((() => { const v = self.requestedSize; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   requestedSize: ((() => { const v = self.requestedSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   topLevelSeller: self.topLevelSeller,
-  #|   prevWinsMs: ((() => { const v = self.prevWinsMs; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   wasmHelper: ((() => { const v = self.wasmHelper; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   prevWinsMs: ((() => { const v = self.prevWinsMs; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   wasmHelper: ((() => { const v = self.wasmHelper; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   dataVersion: self.dataVersion,
   #|   crossOriginDataVersion: self.crossOriginDataVersion,
   #|   forDebuggingOnlyInCooldownOrLockout: (self.forDebuggingOnlyInCooldownOrLockout === -1 ? undefined : self.forDebuggingOnlyInCooldownOrLockout)
@@ -1165,6 +1641,33 @@ extern "js" fn BiddingBrowserSignals::to_js_ffi(
 /// Convert to JsValue
 pub fn BiddingBrowserSignals::to_js(self : BiddingBrowserSignals) -> JsValue {
   BiddingBrowserSignals::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BiddingBrowserSignals::from_js_ffi(
+  value : JsValue,
+) -> BiddingBrowserSignals =
+  #| (v) => ({
+  #|   topWindowHostname: v.topWindowHostname,
+  #|   seller: v.seller,
+  #|   joinCount: v.joinCount,
+  #|   bidCount: v.bidCount,
+  #|   recency: v.recency,
+  #|   adComponentsLimit: v.adComponentsLimit,
+  #|   multiBidLimit: v.multiBidLimit,
+  #|   requestedSize: (v.requestedSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requestedSize }),
+  #|   topLevelSeller: v.topLevelSeller,
+  #|   prevWinsMs: (v.prevWinsMs === undefined ? { $tag: 0 } : { $tag: 1, _0: v.prevWinsMs }),
+  #|   wasmHelper: (v.wasmHelper === undefined ? { $tag: 0 } : { $tag: 1, _0: v.wasmHelper }),
+  #|   dataVersion: v.dataVersion,
+  #|   crossOriginDataVersion: v.crossOriginDataVersion,
+  #|   forDebuggingOnlyInCooldownOrLockout: (v.forDebuggingOnlyInCooldownOrLockout === undefined ? -1 : v.forDebuggingOnlyInCooldownOrLockout)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BiddingBrowserSignals::from_js(value : JsValue) -> BiddingBrowserSignals {
+  BiddingBrowserSignals::from_js_ffi(value)
 }
 
 ///|
@@ -1213,19 +1716,44 @@ extern "js" fn ScoringBrowserSignals::to_js_ffi(
   #|   renderURL: self.renderURL,
   #|   biddingDurationMsec: self.biddingDurationMsec,
   #|   bidCurrency: self.bidCurrency,
-  #|   renderSize: ((() => { const v = self.renderSize; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   renderSize: ((() => { const v = self.renderSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   dataVersion: self.dataVersion,
   #|   crossOriginDataVersion: self.crossOriginDataVersion,
-  #|   adComponents: ((() => { const v = self.adComponents; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   adComponents: ((() => { const v = self.adComponents; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   forDebuggingOnlyInCooldownOrLockout: (self.forDebuggingOnlyInCooldownOrLockout === -1 ? undefined : self.forDebuggingOnlyInCooldownOrLockout),
   #|   creativeScanningMetadata: self.creativeScanningMetadata,
-  #|   adComponentsCreativeScanningMetadata: ((() => { const v = self.adComponentsCreativeScanningMetadata; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   adComponentsCreativeScanningMetadata: ((() => { const v = self.adComponentsCreativeScanningMetadata; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn ScoringBrowserSignals::to_js(self : ScoringBrowserSignals) -> JsValue {
   ScoringBrowserSignals::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ScoringBrowserSignals::from_js_ffi(
+  value : JsValue,
+) -> ScoringBrowserSignals =
+  #| (v) => ({
+  #|   topWindowHostname: v.topWindowHostname,
+  #|   interestGroupOwner: v.interestGroupOwner,
+  #|   renderURL: v.renderURL,
+  #|   biddingDurationMsec: v.biddingDurationMsec,
+  #|   bidCurrency: v.bidCurrency,
+  #|   renderSize: (v.renderSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.renderSize }),
+  #|   dataVersion: v.dataVersion,
+  #|   crossOriginDataVersion: v.crossOriginDataVersion,
+  #|   adComponents: (v.adComponents === undefined ? { $tag: 0 } : { $tag: 1, _0: v.adComponents }),
+  #|   forDebuggingOnlyInCooldownOrLockout: (v.forDebuggingOnlyInCooldownOrLockout === undefined ? -1 : v.forDebuggingOnlyInCooldownOrLockout),
+  #|   creativeScanningMetadata: v.creativeScanningMetadata,
+  #|   adComponentsCreativeScanningMetadata: (v.adComponentsCreativeScanningMetadata === undefined ? { $tag: 0 } : { $tag: 1, _0: v.adComponentsCreativeScanningMetadata })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ScoringBrowserSignals::from_js(value : JsValue) -> ScoringBrowserSignals {
+  ScoringBrowserSignals::from_js_ffi(value)
 }
 
 ///|
@@ -1286,6 +1814,32 @@ pub fn ReportingBrowserSignals::to_js(
   self : ReportingBrowserSignals,
 ) -> JsValue {
   ReportingBrowserSignals::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ReportingBrowserSignals::from_js_ffi(
+  value : JsValue,
+) -> ReportingBrowserSignals =
+  #| (v) => ({
+  #|   topWindowHostname: v.topWindowHostname,
+  #|   interestGroupOwner: v.interestGroupOwner,
+  #|   renderURL: v.renderURL,
+  #|   bid: v.bid,
+  #|   highestScoringOtherBid: v.highestScoringOtherBid,
+  #|   bidCurrency: v.bidCurrency,
+  #|   highestScoringOtherBidCurrency: v.highestScoringOtherBidCurrency,
+  #|   topLevelSeller: v.topLevelSeller,
+  #|   componentSeller: v.componentSeller,
+  #|   buyerAndSellerReportingId: v.buyerAndSellerReportingId,
+  #|   selectedBuyerAndSellerReportingId: v.selectedBuyerAndSellerReportingId
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ReportingBrowserSignals::from_js(
+  value : JsValue,
+) -> ReportingBrowserSignals {
+  ReportingBrowserSignals::from_js_ffi(value)
 }
 
 ///|
@@ -1358,6 +1912,36 @@ pub fn ReportResultBrowserSignals::to_js(
   self : ReportResultBrowserSignals,
 ) -> JsValue {
   ReportResultBrowserSignals::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ReportResultBrowserSignals::from_js_ffi(
+  value : JsValue,
+) -> ReportResultBrowserSignals =
+  #| (v) => ({
+  #|   topWindowHostname: v.topWindowHostname,
+  #|   interestGroupOwner: v.interestGroupOwner,
+  #|   renderURL: v.renderURL,
+  #|   bid: v.bid,
+  #|   highestScoringOtherBid: v.highestScoringOtherBid,
+  #|   bidCurrency: v.bidCurrency,
+  #|   highestScoringOtherBidCurrency: v.highestScoringOtherBidCurrency,
+  #|   topLevelSeller: v.topLevelSeller,
+  #|   componentSeller: v.componentSeller,
+  #|   buyerAndSellerReportingId: v.buyerAndSellerReportingId,
+  #|   selectedBuyerAndSellerReportingId: v.selectedBuyerAndSellerReportingId,
+  #|   desirability: v.desirability,
+  #|   topLevelSellerSignals: v.topLevelSellerSignals,
+  #|   modifiedBid: v.modifiedBid,
+  #|   dataVersion: v.dataVersion
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ReportResultBrowserSignals::from_js(
+  value : JsValue,
+) -> ReportResultBrowserSignals {
+  ReportResultBrowserSignals::from_js_ffi(value)
 }
 
 ///|
@@ -1445,6 +2029,40 @@ pub fn ReportWinBrowserSignals::to_js(
 }
 
 ///|
+extern "js" fn ReportWinBrowserSignals::from_js_ffi(
+  value : JsValue,
+) -> ReportWinBrowserSignals =
+  #| (v) => ({
+  #|   topWindowHostname: v.topWindowHostname,
+  #|   interestGroupOwner: v.interestGroupOwner,
+  #|   renderURL: v.renderURL,
+  #|   bid: v.bid,
+  #|   highestScoringOtherBid: v.highestScoringOtherBid,
+  #|   bidCurrency: v.bidCurrency,
+  #|   highestScoringOtherBidCurrency: v.highestScoringOtherBidCurrency,
+  #|   topLevelSeller: v.topLevelSeller,
+  #|   componentSeller: v.componentSeller,
+  #|   buyerAndSellerReportingId: v.buyerAndSellerReportingId,
+  #|   selectedBuyerAndSellerReportingId: v.selectedBuyerAndSellerReportingId,
+  #|   adCost: v.adCost,
+  #|   seller: v.seller,
+  #|   madeHighestScoringOtherBid: (v.madeHighestScoringOtherBid === undefined ? -1 : v.madeHighestScoringOtherBid),
+  #|   interestGroupName: v.interestGroupName,
+  #|   buyerReportingId: v.buyerReportingId,
+  #|   modelingSignals: v.modelingSignals,
+  #|   dataVersion: v.dataVersion,
+  #|   kAnonStatus: (v.kAnonStatus === undefined ? undefined : ['passedAndEnforced', 'passedNotEnforced', 'belowThreshold', 'notCalculated'].indexOf(v.kAnonStatus))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ReportWinBrowserSignals::from_js(
+  value : JsValue,
+) -> ReportWinBrowserSignals {
+  ReportWinBrowserSignals::from_js_ffi(value)
+}
+
+///|
 /// DirectFromSellerSignalsForBuyer dictionary
 pub(all) struct DirectFromSellerSignalsForBuyer {
   auctionSignals : JsValue?
@@ -1465,8 +2083,8 @@ extern "js" fn DirectFromSellerSignalsForBuyer::to_js_ffi(
   self : DirectFromSellerSignalsForBuyer,
 ) -> JsValue =
   #| (self) => ({
-  #|   auctionSignals: ((() => { const v = self.auctionSignals; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   perBuyerSignals: ((() => { const v = self.perBuyerSignals; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   auctionSignals: ((() => { const v = self.auctionSignals; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   perBuyerSignals: ((() => { const v = self.perBuyerSignals; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -1475,6 +2093,23 @@ pub fn DirectFromSellerSignalsForBuyer::to_js(
   self : DirectFromSellerSignalsForBuyer,
 ) -> JsValue {
   DirectFromSellerSignalsForBuyer::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DirectFromSellerSignalsForBuyer::from_js_ffi(
+  value : JsValue,
+) -> DirectFromSellerSignalsForBuyer =
+  #| (v) => ({
+  #|   auctionSignals: (v.auctionSignals === undefined ? { $tag: 0 } : { $tag: 1, _0: v.auctionSignals }),
+  #|   perBuyerSignals: (v.perBuyerSignals === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerSignals })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DirectFromSellerSignalsForBuyer::from_js(
+  value : JsValue,
+) -> DirectFromSellerSignalsForBuyer {
+  DirectFromSellerSignalsForBuyer::from_js_ffi(value)
 }
 
 ///|
@@ -1498,8 +2133,8 @@ extern "js" fn DirectFromSellerSignalsForSeller::to_js_ffi(
   self : DirectFromSellerSignalsForSeller,
 ) -> JsValue =
   #| (self) => ({
-  #|   auctionSignals: ((() => { const v = self.auctionSignals; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sellerSignals: ((() => { const v = self.sellerSignals; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   auctionSignals: ((() => { const v = self.auctionSignals; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sellerSignals: ((() => { const v = self.sellerSignals; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -1508,6 +2143,23 @@ pub fn DirectFromSellerSignalsForSeller::to_js(
   self : DirectFromSellerSignalsForSeller,
 ) -> JsValue {
   DirectFromSellerSignalsForSeller::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DirectFromSellerSignalsForSeller::from_js_ffi(
+  value : JsValue,
+) -> DirectFromSellerSignalsForSeller =
+  #| (v) => ({
+  #|   auctionSignals: (v.auctionSignals === undefined ? { $tag: 0 } : { $tag: 1, _0: v.auctionSignals }),
+  #|   sellerSignals: (v.sellerSignals === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sellerSignals })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DirectFromSellerSignalsForSeller::from_js(
+  value : JsValue,
+) -> DirectFromSellerSignalsForSeller {
+  DirectFromSellerSignalsForSeller::from_js_ffi(value)
 }
 
 ///|
@@ -1546,6 +2198,22 @@ extern "js" fn ScoreAdOutput::to_js_ffi(self : ScoreAdOutput) -> JsValue =
 /// Convert to JsValue
 pub fn ScoreAdOutput::to_js(self : ScoreAdOutput) -> JsValue {
   ScoreAdOutput::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ScoreAdOutput::from_js_ffi(value : JsValue) -> ScoreAdOutput =
+  #| (v) => ({
+  #|   desirability: v.desirability,
+  #|   bid: v.bid,
+  #|   bidCurrency: v.bidCurrency,
+  #|   incomingBidInSellerCurrency: v.incomingBidInSellerCurrency,
+  #|   allowComponentAuction: (v.allowComponentAuction === undefined ? -1 : v.allowComponentAuction)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ScoreAdOutput::from_js(value : JsValue) -> ScoreAdOutput {
+  ScoreAdOutput::from_js_ffi(value)
 }
 
 ///|

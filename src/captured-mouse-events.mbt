@@ -30,6 +30,23 @@ pub fn CapturedMouseEventInit::to_js(self : CapturedMouseEventInit) -> JsValue {
 }
 
 ///|
+extern "js" fn CapturedMouseEventInit::from_js_ffi(
+  value : JsValue,
+) -> CapturedMouseEventInit =
+  #| (v) => ({
+  #|   surfaceX: v.surfaceX,
+  #|   surfaceY: v.surfaceY
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CapturedMouseEventInit::from_js(
+  value : JsValue,
+) -> CapturedMouseEventInit {
+  CapturedMouseEventInit::from_js_ffi(value)
+}
+
+///|
 /// CapturedMouseEvent interface
 pub type CapturedMouseEvent
 

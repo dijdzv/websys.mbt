@@ -59,14 +59,42 @@ extern "js" fn PointerEventInit::to_js_ffi(self : PointerEventInit) -> JsValue =
   #|   pointerType: self.pointerType,
   #|   isPrimary: (self.isPrimary === -1 ? undefined : self.isPrimary),
   #|   persistentDeviceId: self.persistentDeviceId,
-  #|   coalescedEvents: ((() => { const v = self.coalescedEvents; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   predictedEvents: ((() => { const v = self.predictedEvents; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   coalescedEvents: ((() => { const v = self.coalescedEvents; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   predictedEvents: ((() => { const v = self.predictedEvents; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn PointerEventInit::to_js(self : PointerEventInit) -> JsValue {
   PointerEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PointerEventInit::from_js_ffi(
+  value : JsValue,
+) -> PointerEventInit =
+  #| (v) => ({
+  #|   pointerId: v.pointerId,
+  #|   width: v.width,
+  #|   height: v.height,
+  #|   pressure: v.pressure,
+  #|   tangentialPressure: v.tangentialPressure,
+  #|   tiltX: v.tiltX,
+  #|   tiltY: v.tiltY,
+  #|   twist: v.twist,
+  #|   altitudeAngle: v.altitudeAngle,
+  #|   azimuthAngle: v.azimuthAngle,
+  #|   pointerType: v.pointerType,
+  #|   isPrimary: (v.isPrimary === undefined ? -1 : v.isPrimary),
+  #|   persistentDeviceId: v.persistentDeviceId,
+  #|   coalescedEvents: (v.coalescedEvents === undefined ? { $tag: 0 } : { $tag: 1, _0: v.coalescedEvents }),
+  #|   predictedEvents: (v.predictedEvents === undefined ? { $tag: 0 } : { $tag: 1, _0: v.predictedEvents })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PointerEventInit::from_js(value : JsValue) -> PointerEventInit {
+  PointerEventInit::from_js_ffi(value)
 }
 
 ///|

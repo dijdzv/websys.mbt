@@ -7,7 +7,7 @@ pub(all) enum HighlightType {
   Highlight
   SpellingError
   GrammarError
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -48,14 +48,29 @@ extern "js" fn HighlightHitResult::to_js_ffi(
   self : HighlightHitResult,
 ) -> JsValue =
   #| (self) => ({
-  #|   highlight: ((() => { const v = self.highlight; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   ranges: ((() => { const v = self.ranges; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   highlight: ((() => { const v = self.highlight; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   ranges: ((() => { const v = self.ranges; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn HighlightHitResult::to_js(self : HighlightHitResult) -> JsValue {
   HighlightHitResult::to_js_ffi(self)
+}
+
+///|
+extern "js" fn HighlightHitResult::from_js_ffi(
+  value : JsValue,
+) -> HighlightHitResult =
+  #| (v) => ({
+  #|   highlight: (v.highlight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.highlight }),
+  #|   ranges: (v.ranges === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ranges })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn HighlightHitResult::from_js(value : JsValue) -> HighlightHitResult {
+  HighlightHitResult::from_js_ffi(value)
 }
 
 ///|
@@ -75,7 +90,7 @@ extern "js" fn HighlightsFromPointOptions::to_js_ffi(
   self : HighlightsFromPointOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   shadowRoots: ((() => { const v = self.shadowRoots; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   shadowRoots: ((() => { const v = self.shadowRoots; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -84,6 +99,22 @@ pub fn HighlightsFromPointOptions::to_js(
   self : HighlightsFromPointOptions,
 ) -> JsValue {
   HighlightsFromPointOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn HighlightsFromPointOptions::from_js_ffi(
+  value : JsValue,
+) -> HighlightsFromPointOptions =
+  #| (v) => ({
+  #|   shadowRoots: (v.shadowRoots === undefined ? { $tag: 0 } : { $tag: 1, _0: v.shadowRoots })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn HighlightsFromPointOptions::from_js(
+  value : JsValue,
+) -> HighlightsFromPointOptions {
+  HighlightsFromPointOptions::from_js_ffi(value)
 }
 
 ///|

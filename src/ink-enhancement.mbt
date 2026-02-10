@@ -18,13 +18,27 @@ extern "js" fn InkPresenterParam::to_js_ffi(
   self : InkPresenterParam,
 ) -> JsValue =
   #| (self) => ({
-  #|   presentationArea: ((() => { const v = self.presentationArea; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   presentationArea: ((() => { const v = self.presentationArea; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn InkPresenterParam::to_js(self : InkPresenterParam) -> JsValue {
   InkPresenterParam::to_js_ffi(self)
+}
+
+///|
+extern "js" fn InkPresenterParam::from_js_ffi(
+  value : JsValue,
+) -> InkPresenterParam =
+  #| (v) => ({
+  #|   presentationArea: (v.presentationArea === undefined ? { $tag: 0 } : v.presentationArea === null ? { $tag: 1 } : { $tag: 2, _0: v.presentationArea })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn InkPresenterParam::from_js(value : JsValue) -> InkPresenterParam {
+  InkPresenterParam::from_js_ffi(value)
 }
 
 ///|
@@ -51,6 +65,19 @@ extern "js" fn InkTrailStyle::to_js_ffi(self : InkTrailStyle) -> JsValue =
 /// Convert to JsValue
 pub fn InkTrailStyle::to_js(self : InkTrailStyle) -> JsValue {
   InkTrailStyle::to_js_ffi(self)
+}
+
+///|
+extern "js" fn InkTrailStyle::from_js_ffi(value : JsValue) -> InkTrailStyle =
+  #| (v) => ({
+  #|   color: v.color,
+  #|   diameter: v.diameter
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn InkTrailStyle::from_js(value : JsValue) -> InkTrailStyle {
+  InkTrailStyle::from_js_ffi(value)
 }
 
 ///|

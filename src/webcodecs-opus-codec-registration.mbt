@@ -6,7 +6,7 @@
 pub(all) enum OpusBitstreamFormat {
   Opus
   Ogg
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -33,7 +33,7 @@ pub(all) enum OpusSignal {
   Auto
   Music
   Voice
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -62,7 +62,7 @@ pub(all) enum OpusApplication {
   Voip
   Audio
   Lowdelay
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -132,4 +132,25 @@ extern "js" fn OpusEncoderConfig::to_js_ffi(
 /// Convert to JsValue
 pub fn OpusEncoderConfig::to_js(self : OpusEncoderConfig) -> JsValue {
   OpusEncoderConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn OpusEncoderConfig::from_js_ffi(
+  value : JsValue,
+) -> OpusEncoderConfig =
+  #| (v) => ({
+  #|   format: (v.format === undefined ? undefined : ['opus', 'ogg'].indexOf(v.format)),
+  #|   signal: (v.signal === undefined ? undefined : ['auto', 'music', 'voice'].indexOf(v.signal)),
+  #|   application: (v.application === undefined ? undefined : ['voip', 'audio', 'lowdelay'].indexOf(v.application)),
+  #|   frameDuration: v.frameDuration,
+  #|   complexity: v.complexity,
+  #|   packetlossperc: v.packetlossperc,
+  #|   useinbandfec: (v.useinbandfec === undefined ? -1 : v.useinbandfec),
+  #|   usedtx: (v.usedtx === undefined ? -1 : v.usedtx)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn OpusEncoderConfig::from_js(value : JsValue) -> OpusEncoderConfig {
+  OpusEncoderConfig::from_js_ffi(value)
 }

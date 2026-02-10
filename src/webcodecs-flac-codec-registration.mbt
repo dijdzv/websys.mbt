@@ -34,9 +34,9 @@ extern "js" fn AudioEncoderConfig::to_js_ffi(
   self : AudioEncoderConfig,
 ) -> JsValue =
   #| (self) => ({
-  #|   flac: ((() => { const v = self.flac; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   opus: ((() => { const v = self.opus; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   aac: ((() => { const v = self.aac; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   flac: ((() => { const v = self.flac; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   opus: ((() => { const v = self.opus; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   aac: ((() => { const v = self.aac; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   codec: self.codec,
   #|   sampleRate: self.sampleRate,
   #|   numberOfChannels: self.numberOfChannels,
@@ -48,6 +48,27 @@ extern "js" fn AudioEncoderConfig::to_js_ffi(
 /// Convert to JsValue
 pub fn AudioEncoderConfig::to_js(self : AudioEncoderConfig) -> JsValue {
   AudioEncoderConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AudioEncoderConfig::from_js_ffi(
+  value : JsValue,
+) -> AudioEncoderConfig =
+  #| (v) => ({
+  #|   flac: (v.flac === undefined ? { $tag: 0 } : { $tag: 1, _0: v.flac }),
+  #|   opus: (v.opus === undefined ? { $tag: 0 } : { $tag: 1, _0: v.opus }),
+  #|   aac: (v.aac === undefined ? { $tag: 0 } : { $tag: 1, _0: v.aac }),
+  #|   codec: v.codec,
+  #|   sampleRate: v.sampleRate,
+  #|   numberOfChannels: v.numberOfChannels,
+  #|   bitrate: v.bitrate,
+  #|   bitrateMode: (v.bitrateMode === undefined ? undefined : ['constant', 'variable'].indexOf(v.bitrateMode))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AudioEncoderConfig::from_js(value : JsValue) -> AudioEncoderConfig {
+  AudioEncoderConfig::from_js_ffi(value)
 }
 
 ///|
@@ -76,4 +97,19 @@ extern "js" fn FlacEncoderConfig::to_js_ffi(
 /// Convert to JsValue
 pub fn FlacEncoderConfig::to_js(self : FlacEncoderConfig) -> JsValue {
   FlacEncoderConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn FlacEncoderConfig::from_js_ffi(
+  value : JsValue,
+) -> FlacEncoderConfig =
+  #| (v) => ({
+  #|   blockSize: v.blockSize,
+  #|   compressLevel: v.compressLevel
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FlacEncoderConfig::from_js(value : JsValue) -> FlacEncoderConfig {
+  FlacEncoderConfig::from_js_ffi(value)
 }

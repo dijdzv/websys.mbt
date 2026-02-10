@@ -4,9 +4,9 @@
 ///|
 /// TransitionEventInit dictionary
 pub(all) struct TransitionEventInit {
-  propertyName : CSSOMString?
+  propertyName : String?
   elapsedTime : Double?
-  pseudoElement : CSSOMString?
+  pseudoElement : String?
 }
 
 ///|
@@ -24,15 +24,31 @@ extern "js" fn TransitionEventInit::to_js_ffi(
   self : TransitionEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   propertyName: ((() => { const v = self.propertyName; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   propertyName: self.propertyName,
   #|   elapsedTime: self.elapsedTime,
-  #|   pseudoElement: ((() => { const v = self.pseudoElement; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   pseudoElement: self.pseudoElement
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn TransitionEventInit::to_js(self : TransitionEventInit) -> JsValue {
   TransitionEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TransitionEventInit::from_js_ffi(
+  value : JsValue,
+) -> TransitionEventInit =
+  #| (v) => ({
+  #|   propertyName: v.propertyName,
+  #|   elapsedTime: v.elapsedTime,
+  #|   pseudoElement: v.pseudoElement
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TransitionEventInit::from_js(value : JsValue) -> TransitionEventInit {
+  TransitionEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -78,19 +94,19 @@ pub extern "js" fn TransitionEvent::to_event(self : TransitionEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn TransitionEvent::new(type_ : CSSOMString) -> TransitionEvent =
+pub extern "js" fn TransitionEvent::new(type_ : String) -> TransitionEvent =
   #| (type_) => new TransitionEvent(type_)
 
 ///|
 extern "js" fn TransitionEvent::new_with_transition_event_init_dict_ffi(
-  type_ : CSSOMString,
+  type_ : String,
   transition_event_init_dict : JsValue,
 ) -> TransitionEvent =
   #| (type_, transition_event_init_dict) => new TransitionEvent(type_, transition_event_init_dict)
 
 ///|
 pub fn TransitionEvent::new_with_transition_event_init_dict(
-  type_ : CSSOMString,
+  type_ : String,
   transition_event_init_dict : TransitionEventInit,
 ) -> TransitionEvent {
   TransitionEvent::new_with_transition_event_init_dict_ffi(
@@ -102,7 +118,7 @@ pub fn TransitionEvent::new_with_transition_event_init_dict(
 ///|
 pub extern "js" fn TransitionEvent::get_property_name(
   self : TransitionEvent,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.propertyName
 
 ///|
@@ -114,5 +130,5 @@ pub extern "js" fn TransitionEvent::get_elapsed_time(
 ///|
 pub extern "js" fn TransitionEvent::get_pseudo_element(
   self : TransitionEvent,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.pseudoElement

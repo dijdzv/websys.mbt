@@ -9,7 +9,7 @@ pub(all) enum UnderlineStyle {
   Dotted
   Dashed
   Wavy
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -42,7 +42,7 @@ pub(all) enum UnderlineThickness {
   None
   Thin
   Thick
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -94,6 +94,20 @@ pub fn EditContextInit::to_js(self : EditContextInit) -> JsValue {
 }
 
 ///|
+extern "js" fn EditContextInit::from_js_ffi(value : JsValue) -> EditContextInit =
+  #| (v) => ({
+  #|   text: v.text,
+  #|   selectionStart: v.selectionStart,
+  #|   selectionEnd: v.selectionEnd
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn EditContextInit::from_js(value : JsValue) -> EditContextInit {
+  EditContextInit::from_js_ffi(value)
+}
+
+///|
 /// TextUpdateEventInit dictionary
 pub(all) struct TextUpdateEventInit {
   updateRangeStart : Int?
@@ -140,6 +154,26 @@ pub fn TextUpdateEventInit::to_js(self : TextUpdateEventInit) -> JsValue {
 }
 
 ///|
+extern "js" fn TextUpdateEventInit::from_js_ffi(
+  value : JsValue,
+) -> TextUpdateEventInit =
+  #| (v) => ({
+  #|   updateRangeStart: v.updateRangeStart,
+  #|   updateRangeEnd: v.updateRangeEnd,
+  #|   text: v.text,
+  #|   selectionStart: v.selectionStart,
+  #|   selectionEnd: v.selectionEnd,
+  #|   compositionStart: v.compositionStart,
+  #|   compositionEnd: v.compositionEnd
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TextUpdateEventInit::from_js(value : JsValue) -> TextUpdateEventInit {
+  TextUpdateEventInit::from_js_ffi(value)
+}
+
+///|
 /// TextFormatInit dictionary
 pub(all) struct TextFormatInit {
   rangeStart : Int?
@@ -175,6 +209,21 @@ pub fn TextFormatInit::to_js(self : TextFormatInit) -> JsValue {
 }
 
 ///|
+extern "js" fn TextFormatInit::from_js_ffi(value : JsValue) -> TextFormatInit =
+  #| (v) => ({
+  #|   rangeStart: v.rangeStart,
+  #|   rangeEnd: v.rangeEnd,
+  #|   underlineStyle: (v.underlineStyle === undefined ? undefined : ['none', 'solid', 'dotted', 'dashed', 'wavy'].indexOf(v.underlineStyle)),
+  #|   underlineThickness: (v.underlineThickness === undefined ? undefined : ['none', 'thin', 'thick'].indexOf(v.underlineThickness))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TextFormatInit::from_js(value : JsValue) -> TextFormatInit {
+  TextFormatInit::from_js_ffi(value)
+}
+
+///|
 /// TextFormatUpdateEventInit dictionary
 pub(all) struct TextFormatUpdateEventInit {
   textFormats : Array[TextFormat]?
@@ -191,7 +240,7 @@ extern "js" fn TextFormatUpdateEventInit::to_js_ffi(
   self : TextFormatUpdateEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   textFormats: ((() => { const v = self.textFormats; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   textFormats: ((() => { const v = self.textFormats; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -200,6 +249,22 @@ pub fn TextFormatUpdateEventInit::to_js(
   self : TextFormatUpdateEventInit,
 ) -> JsValue {
   TextFormatUpdateEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TextFormatUpdateEventInit::from_js_ffi(
+  value : JsValue,
+) -> TextFormatUpdateEventInit =
+  #| (v) => ({
+  #|   textFormats: (v.textFormats === undefined ? { $tag: 0 } : { $tag: 1, _0: v.textFormats })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TextFormatUpdateEventInit::from_js(
+  value : JsValue,
+) -> TextFormatUpdateEventInit {
+  TextFormatUpdateEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -230,6 +295,23 @@ pub fn CharacterBoundsUpdateEventInit::to_js(
   self : CharacterBoundsUpdateEventInit,
 ) -> JsValue {
   CharacterBoundsUpdateEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CharacterBoundsUpdateEventInit::from_js_ffi(
+  value : JsValue,
+) -> CharacterBoundsUpdateEventInit =
+  #| (v) => ({
+  #|   rangeStart: v.rangeStart,
+  #|   rangeEnd: v.rangeEnd
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CharacterBoundsUpdateEventInit::from_js(
+  value : JsValue,
+) -> CharacterBoundsUpdateEventInit {
+  CharacterBoundsUpdateEventInit::from_js_ffi(value)
 }
 
 ///|

@@ -6,7 +6,7 @@
 pub(all) enum BitrateMode {
   Constant
   Variable
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -33,7 +33,7 @@ pub(all) enum RecordingState {
   Inactive
   Recording
   Paused
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -92,7 +92,7 @@ extern "js" fn MediaRecorderOptions::to_js_ffi(
   #|   videoBitsPerSecond: self.videoBitsPerSecond,
   #|   bitsPerSecond: self.bitsPerSecond,
   #|   audioBitrateMode: ((() => { const v = self.audioBitrateMode; if (v === undefined) return undefined; return ['constant', 'variable'][v]; })()),
-  #|   videoKeyFrameIntervalDuration: ((() => { const v = self.videoKeyFrameIntervalDuration; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   videoKeyFrameIntervalDuration: ((() => { const v = self.videoKeyFrameIntervalDuration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   videoKeyFrameIntervalCount: self.videoKeyFrameIntervalCount
   #| })
 
@@ -100,6 +100,26 @@ extern "js" fn MediaRecorderOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn MediaRecorderOptions::to_js(self : MediaRecorderOptions) -> JsValue {
   MediaRecorderOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MediaRecorderOptions::from_js_ffi(
+  value : JsValue,
+) -> MediaRecorderOptions =
+  #| (v) => ({
+  #|   mimeType: v.mimeType,
+  #|   audioBitsPerSecond: v.audioBitsPerSecond,
+  #|   videoBitsPerSecond: v.videoBitsPerSecond,
+  #|   bitsPerSecond: v.bitsPerSecond,
+  #|   audioBitrateMode: (v.audioBitrateMode === undefined ? undefined : ['constant', 'variable'].indexOf(v.audioBitrateMode)),
+  #|   videoKeyFrameIntervalDuration: (v.videoKeyFrameIntervalDuration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.videoKeyFrameIntervalDuration }),
+  #|   videoKeyFrameIntervalCount: v.videoKeyFrameIntervalCount
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaRecorderOptions::from_js(value : JsValue) -> MediaRecorderOptions {
+  MediaRecorderOptions::from_js_ffi(value)
 }
 
 ///|
@@ -119,13 +139,26 @@ pub fn BlobEventInit::new(data~ : Blob) -> BlobEventInit {
 extern "js" fn BlobEventInit::to_js_ffi(self : BlobEventInit) -> JsValue =
   #| (self) => ({
   #|   data: self.data,
-  #|   timecode: ((() => { const v = self.timecode; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   timecode: ((() => { const v = self.timecode; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn BlobEventInit::to_js(self : BlobEventInit) -> JsValue {
   BlobEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BlobEventInit::from_js_ffi(value : JsValue) -> BlobEventInit =
+  #| (v) => ({
+  #|   data: v.data,
+  #|   timecode: (v.timecode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.timecode })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BlobEventInit::from_js(value : JsValue) -> BlobEventInit {
+  BlobEventInit::from_js_ffi(value)
 }
 
 ///|

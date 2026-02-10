@@ -8,7 +8,7 @@ pub(all) enum CaptureAction {
   Previous
   First
   Last
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -57,6 +57,22 @@ extern "js" fn CaptureActionEventInit::to_js_ffi(
 /// Convert to JsValue
 pub fn CaptureActionEventInit::to_js(self : CaptureActionEventInit) -> JsValue {
   CaptureActionEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CaptureActionEventInit::from_js_ffi(
+  value : JsValue,
+) -> CaptureActionEventInit =
+  #| (v) => ({
+  #|   action: v.action
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CaptureActionEventInit::from_js(
+  value : JsValue,
+) -> CaptureActionEventInit {
+  CaptureActionEventInit::from_js_ffi(value)
 }
 
 ///|

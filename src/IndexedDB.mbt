@@ -6,7 +6,7 @@
 pub(all) enum IDBRequestReadyState {
   Pending
   Done
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -33,7 +33,7 @@ pub(all) enum IDBTransactionDurability {
   Default
   Strict
   Relaxed
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -67,7 +67,7 @@ pub(all) enum IDBCursorDirection {
   Nextunique
   Prev
   Prevunique
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -98,7 +98,7 @@ pub(all) enum IDBTransactionMode {
   Readonly
   Readwrite
   Versionchange
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -143,7 +143,7 @@ extern "js" fn IDBVersionChangeEventInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   oldVersion: self.oldVersion,
-  #|   newVersion: ((() => { const v = self.newVersion; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   newVersion: ((() => { const v = self.newVersion; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
@@ -152,6 +152,23 @@ pub fn IDBVersionChangeEventInit::to_js(
   self : IDBVersionChangeEventInit,
 ) -> JsValue {
   IDBVersionChangeEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IDBVersionChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> IDBVersionChangeEventInit =
+  #| (v) => ({
+  #|   oldVersion: v.oldVersion,
+  #|   newVersion: (v.newVersion === undefined ? { $tag: 0 } : v.newVersion === null ? { $tag: 1 } : { $tag: 2, _0: v.newVersion })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IDBVersionChangeEventInit::from_js(
+  value : JsValue,
+) -> IDBVersionChangeEventInit {
+  IDBVersionChangeEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -181,6 +198,19 @@ pub fn IDBDatabaseInfo::to_js(self : IDBDatabaseInfo) -> JsValue {
 }
 
 ///|
+extern "js" fn IDBDatabaseInfo::from_js_ffi(value : JsValue) -> IDBDatabaseInfo =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   version: v.version
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IDBDatabaseInfo::from_js(value : JsValue) -> IDBDatabaseInfo {
+  IDBDatabaseInfo::from_js_ffi(value)
+}
+
+///|
 /// IDBTransactionOptions dictionary
 pub(all) struct IDBTransactionOptions {
   durability : IDBTransactionDurability?
@@ -207,6 +237,20 @@ pub fn IDBTransactionOptions::to_js(self : IDBTransactionOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn IDBTransactionOptions::from_js_ffi(
+  value : JsValue,
+) -> IDBTransactionOptions =
+  #| (v) => ({
+  #|   durability: (v.durability === undefined ? undefined : ['default', 'strict', 'relaxed'].indexOf(v.durability))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IDBTransactionOptions::from_js(value : JsValue) -> IDBTransactionOptions {
+  IDBTransactionOptions::from_js_ffi(value)
+}
+
+///|
 /// IDBObjectStoreParameters dictionary
 pub(all) struct IDBObjectStoreParameters {
   keyPath : StringOrArrayOfString?
@@ -224,7 +268,7 @@ extern "js" fn IDBObjectStoreParameters::to_js_ffi(
   self : IDBObjectStoreParameters,
 ) -> JsValue =
   #| (self) => ({
-  #|   keyPath: ((() => { const v = self.keyPath; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   keyPath: ((() => { const v = self.keyPath; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   autoIncrement: (self.autoIncrement === -1 ? undefined : self.autoIncrement)
   #| })
 
@@ -234,6 +278,23 @@ pub fn IDBObjectStoreParameters::to_js(
   self : IDBObjectStoreParameters,
 ) -> JsValue {
   IDBObjectStoreParameters::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IDBObjectStoreParameters::from_js_ffi(
+  value : JsValue,
+) -> IDBObjectStoreParameters =
+  #| (v) => ({
+  #|   keyPath: (v.keyPath === undefined ? { $tag: 0 } : { $tag: 1, _0: v.keyPath }),
+  #|   autoIncrement: (v.autoIncrement === undefined ? -1 : v.autoIncrement)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IDBObjectStoreParameters::from_js(
+  value : JsValue,
+) -> IDBObjectStoreParameters {
+  IDBObjectStoreParameters::from_js_ffi(value)
 }
 
 ///|
@@ -265,6 +326,21 @@ pub fn IDBIndexParameters::to_js(self : IDBIndexParameters) -> JsValue {
 }
 
 ///|
+extern "js" fn IDBIndexParameters::from_js_ffi(
+  value : JsValue,
+) -> IDBIndexParameters =
+  #| (v) => ({
+  #|   unique: (v.unique === undefined ? -1 : v.unique),
+  #|   multiEntry: (v.multiEntry === undefined ? -1 : v.multiEntry)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IDBIndexParameters::from_js(value : JsValue) -> IDBIndexParameters {
+  IDBIndexParameters::from_js_ffi(value)
+}
+
+///|
 /// IDBGetAllOptions dictionary
 pub(all) struct IDBGetAllOptions {
   query : JsValue?
@@ -281,7 +357,7 @@ pub fn IDBGetAllOptions::default() -> IDBGetAllOptions {
 ///|
 extern "js" fn IDBGetAllOptions::to_js_ffi(self : IDBGetAllOptions) -> JsValue =
   #| (self) => ({
-  #|   query: ((() => { const v = self.query; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   query: ((() => { const v = self.query; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   count: self.count,
   #|   direction: ((() => { const v = self.direction; if (v === undefined) return undefined; return ['next', 'nextunique', 'prev', 'prevunique'][v]; })())
   #| })
@@ -290,6 +366,22 @@ extern "js" fn IDBGetAllOptions::to_js_ffi(self : IDBGetAllOptions) -> JsValue =
 /// Convert to JsValue
 pub fn IDBGetAllOptions::to_js(self : IDBGetAllOptions) -> JsValue {
   IDBGetAllOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IDBGetAllOptions::from_js_ffi(
+  value : JsValue,
+) -> IDBGetAllOptions =
+  #| (v) => ({
+  #|   query: (v.query === undefined ? { $tag: 0 } : { $tag: 1, _0: v.query }),
+  #|   count: v.count,
+  #|   direction: (v.direction === undefined ? undefined : ['next', 'nextunique', 'prev', 'prevunique'].indexOf(v.direction))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IDBGetAllOptions::from_js(value : JsValue) -> IDBGetAllOptions {
+  IDBGetAllOptions::from_js_ffi(value)
 }
 
 ///|

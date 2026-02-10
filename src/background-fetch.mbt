@@ -7,7 +7,7 @@ pub(all) enum BackgroundFetchResult {
   Empty
   Success
   Failure
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -39,7 +39,7 @@ pub(all) enum BackgroundFetchFailureReason {
   FetchError
   QuotaExceeded
   DownloadTotalExceeded
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -92,7 +92,7 @@ extern "js" fn BackgroundFetchUIOptions::to_js_ffi(
   self : BackgroundFetchUIOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   icons: ((() => { const v = self.icons; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   icons: ((() => { const v = self.icons; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   title: self.title
   #| })
 
@@ -102,6 +102,23 @@ pub fn BackgroundFetchUIOptions::to_js(
   self : BackgroundFetchUIOptions,
 ) -> JsValue {
   BackgroundFetchUIOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BackgroundFetchUIOptions::from_js_ffi(
+  value : JsValue,
+) -> BackgroundFetchUIOptions =
+  #| (v) => ({
+  #|   icons: (v.icons === undefined ? { $tag: 0 } : { $tag: 1, _0: v.icons }),
+  #|   title: v.title
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BackgroundFetchUIOptions::from_js(
+  value : JsValue,
+) -> BackgroundFetchUIOptions {
+  BackgroundFetchUIOptions::from_js_ffi(value)
 }
 
 ///|
@@ -123,7 +140,7 @@ extern "js" fn BackgroundFetchOptions::to_js_ffi(
   self : BackgroundFetchOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   icons: ((() => { const v = self.icons; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   icons: ((() => { const v = self.icons; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   title: self.title,
   #|   downloadTotal: self.downloadTotal
   #| })
@@ -132,6 +149,24 @@ extern "js" fn BackgroundFetchOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn BackgroundFetchOptions::to_js(self : BackgroundFetchOptions) -> JsValue {
   BackgroundFetchOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BackgroundFetchOptions::from_js_ffi(
+  value : JsValue,
+) -> BackgroundFetchOptions =
+  #| (v) => ({
+  #|   icons: (v.icons === undefined ? { $tag: 0 } : { $tag: 1, _0: v.icons }),
+  #|   title: v.title,
+  #|   downloadTotal: v.downloadTotal
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BackgroundFetchOptions::from_js(
+  value : JsValue,
+) -> BackgroundFetchOptions {
+  BackgroundFetchOptions::from_js_ffi(value)
 }
 
 ///|
@@ -162,6 +197,22 @@ pub fn BackgroundFetchEventInit::to_js(
   self : BackgroundFetchEventInit,
 ) -> JsValue {
   BackgroundFetchEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BackgroundFetchEventInit::from_js_ffi(
+  value : JsValue,
+) -> BackgroundFetchEventInit =
+  #| (v) => ({
+  #|   registration: v.registration
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BackgroundFetchEventInit::from_js(
+  value : JsValue,
+) -> BackgroundFetchEventInit {
+  BackgroundFetchEventInit::from_js_ffi(value)
 }
 
 ///|

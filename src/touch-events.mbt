@@ -6,7 +6,7 @@
 pub(all) enum TouchType {
   Direct
   Stylus
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -96,6 +96,32 @@ pub fn TouchInit::to_js(self : TouchInit) -> JsValue {
 }
 
 ///|
+extern "js" fn TouchInit::from_js_ffi(value : JsValue) -> TouchInit =
+  #| (v) => ({
+  #|   identifier: v.identifier,
+  #|   target: v.target,
+  #|   clientX: v.clientX,
+  #|   clientY: v.clientY,
+  #|   screenX: v.screenX,
+  #|   screenY: v.screenY,
+  #|   pageX: v.pageX,
+  #|   pageY: v.pageY,
+  #|   radiusX: v.radiusX,
+  #|   radiusY: v.radiusY,
+  #|   rotationAngle: v.rotationAngle,
+  #|   force: v.force,
+  #|   altitudeAngle: v.altitudeAngle,
+  #|   azimuthAngle: v.azimuthAngle,
+  #|   touchType: (v.touchType === undefined ? undefined : ['direct', 'stylus'].indexOf(v.touchType))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TouchInit::from_js(value : JsValue) -> TouchInit {
+  TouchInit::from_js_ffi(value)
+}
+
+///|
 /// TouchEventInit dictionary
 pub(all) struct TouchEventInit {
   touches : Array[Touch]?
@@ -112,15 +138,29 @@ pub fn TouchEventInit::default() -> TouchEventInit {
 ///|
 extern "js" fn TouchEventInit::to_js_ffi(self : TouchEventInit) -> JsValue =
   #| (self) => ({
-  #|   touches: ((() => { const v = self.touches; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   targetTouches: ((() => { const v = self.targetTouches; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   changedTouches: ((() => { const v = self.changedTouches; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   touches: ((() => { const v = self.touches; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   targetTouches: ((() => { const v = self.targetTouches; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   changedTouches: ((() => { const v = self.changedTouches; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn TouchEventInit::to_js(self : TouchEventInit) -> JsValue {
   TouchEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TouchEventInit::from_js_ffi(value : JsValue) -> TouchEventInit =
+  #| (v) => ({
+  #|   touches: (v.touches === undefined ? { $tag: 0 } : { $tag: 1, _0: v.touches }),
+  #|   targetTouches: (v.targetTouches === undefined ? { $tag: 0 } : { $tag: 1, _0: v.targetTouches }),
+  #|   changedTouches: (v.changedTouches === undefined ? { $tag: 0 } : { $tag: 1, _0: v.changedTouches })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TouchEventInit::from_js(value : JsValue) -> TouchEventInit {
+  TouchEventInit::from_js_ffi(value)
 }
 
 ///|

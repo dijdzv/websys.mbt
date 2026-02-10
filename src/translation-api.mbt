@@ -32,6 +32,23 @@ pub fn TranslatorCreateCoreOptions::to_js(
 }
 
 ///|
+extern "js" fn TranslatorCreateCoreOptions::from_js_ffi(
+  value : JsValue,
+) -> TranslatorCreateCoreOptions =
+  #| (v) => ({
+  #|   sourceLanguage: v.sourceLanguage,
+  #|   targetLanguage: v.targetLanguage
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TranslatorCreateCoreOptions::from_js(
+  value : JsValue,
+) -> TranslatorCreateCoreOptions {
+  TranslatorCreateCoreOptions::from_js_ffi(value)
+}
+
+///|
 /// TranslatorCreateOptions dictionary
 pub(all) struct TranslatorCreateOptions {
   sourceLanguage : String
@@ -58,8 +75,8 @@ extern "js" fn TranslatorCreateOptions::to_js_ffi(
   #| (self) => ({
   #|   sourceLanguage: self.sourceLanguage,
   #|   targetLanguage: self.targetLanguage,
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   monitor: ((() => { const v = self.monitor; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   monitor: ((() => { const v = self.monitor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -68,6 +85,25 @@ pub fn TranslatorCreateOptions::to_js(
   self : TranslatorCreateOptions,
 ) -> JsValue {
   TranslatorCreateOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TranslatorCreateOptions::from_js_ffi(
+  value : JsValue,
+) -> TranslatorCreateOptions =
+  #| (v) => ({
+  #|   sourceLanguage: v.sourceLanguage,
+  #|   targetLanguage: v.targetLanguage,
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
+  #|   monitor: (v.monitor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.monitor })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TranslatorCreateOptions::from_js(
+  value : JsValue,
+) -> TranslatorCreateOptions {
+  TranslatorCreateOptions::from_js_ffi(value)
 }
 
 ///|
@@ -87,7 +123,7 @@ extern "js" fn TranslatorTranslateOptions::to_js_ffi(
   self : TranslatorTranslateOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -96,6 +132,22 @@ pub fn TranslatorTranslateOptions::to_js(
   self : TranslatorTranslateOptions,
 ) -> JsValue {
   TranslatorTranslateOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TranslatorTranslateOptions::from_js_ffi(
+  value : JsValue,
+) -> TranslatorTranslateOptions =
+  #| (v) => ({
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TranslatorTranslateOptions::from_js(
+  value : JsValue,
+) -> TranslatorTranslateOptions {
+  TranslatorTranslateOptions::from_js_ffi(value)
 }
 
 ///|
@@ -115,7 +167,7 @@ extern "js" fn LanguageDetectorCreateCoreOptions::to_js_ffi(
   self : LanguageDetectorCreateCoreOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -124,6 +176,22 @@ pub fn LanguageDetectorCreateCoreOptions::to_js(
   self : LanguageDetectorCreateCoreOptions,
 ) -> JsValue {
   LanguageDetectorCreateCoreOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn LanguageDetectorCreateCoreOptions::from_js_ffi(
+  value : JsValue,
+) -> LanguageDetectorCreateCoreOptions =
+  #| (v) => ({
+  #|   expectedInputLanguages: (v.expectedInputLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedInputLanguages })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn LanguageDetectorCreateCoreOptions::from_js(
+  value : JsValue,
+) -> LanguageDetectorCreateCoreOptions {
+  LanguageDetectorCreateCoreOptions::from_js_ffi(value)
 }
 
 ///|
@@ -149,9 +217,9 @@ extern "js" fn LanguageDetectorCreateOptions::to_js_ffi(
   self : LanguageDetectorCreateOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   monitor: ((() => { const v = self.monitor; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   monitor: ((() => { const v = self.monitor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -160,6 +228,24 @@ pub fn LanguageDetectorCreateOptions::to_js(
   self : LanguageDetectorCreateOptions,
 ) -> JsValue {
   LanguageDetectorCreateOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn LanguageDetectorCreateOptions::from_js_ffi(
+  value : JsValue,
+) -> LanguageDetectorCreateOptions =
+  #| (v) => ({
+  #|   expectedInputLanguages: (v.expectedInputLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedInputLanguages }),
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
+  #|   monitor: (v.monitor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.monitor })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn LanguageDetectorCreateOptions::from_js(
+  value : JsValue,
+) -> LanguageDetectorCreateOptions {
+  LanguageDetectorCreateOptions::from_js_ffi(value)
 }
 
 ///|
@@ -179,7 +265,7 @@ extern "js" fn LanguageDetectorDetectOptions::to_js_ffi(
   self : LanguageDetectorDetectOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -188,6 +274,22 @@ pub fn LanguageDetectorDetectOptions::to_js(
   self : LanguageDetectorDetectOptions,
 ) -> JsValue {
   LanguageDetectorDetectOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn LanguageDetectorDetectOptions::from_js_ffi(
+  value : JsValue,
+) -> LanguageDetectorDetectOptions =
+  #| (v) => ({
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn LanguageDetectorDetectOptions::from_js(
+  value : JsValue,
+) -> LanguageDetectorDetectOptions {
+  LanguageDetectorDetectOptions::from_js_ffi(value)
 }
 
 ///|
@@ -218,6 +320,23 @@ pub fn LanguageDetectionResult::to_js(
   self : LanguageDetectionResult,
 ) -> JsValue {
   LanguageDetectionResult::to_js_ffi(self)
+}
+
+///|
+extern "js" fn LanguageDetectionResult::from_js_ffi(
+  value : JsValue,
+) -> LanguageDetectionResult =
+  #| (v) => ({
+  #|   detectedLanguage: v.detectedLanguage,
+  #|   confidence: v.confidence
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn LanguageDetectionResult::from_js(
+  value : JsValue,
+) -> LanguageDetectionResult {
+  LanguageDetectionResult::from_js_ffi(value)
 }
 
 ///|

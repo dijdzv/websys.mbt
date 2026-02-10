@@ -7,7 +7,7 @@ pub(all) enum MediaKeysRequirement {
   Required
   Optional
   NotAllowed
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -35,7 +35,7 @@ pub fn MediaKeysRequirement::from_string(s : String) -> MediaKeysRequirement? {
 pub(all) enum MediaKeySessionType {
   Temporary
   PersistentLicense
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -64,7 +64,7 @@ pub(all) enum MediaKeySessionClosedReason {
   ReleaseAcknowledged
   HardwareContextReset
   ResourceEvicted
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -110,7 +110,7 @@ pub(all) enum MediaKeyStatus {
   UsableInFuture
   StatusPending
   InternalError
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -150,7 +150,7 @@ pub(all) enum MediaKeyMessageType {
   LicenseRenewal
   LicenseRelease
   IndividualizationRequest
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -208,12 +208,12 @@ extern "js" fn MediaKeySystemConfiguration::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   initDataTypes: ((() => { const v = self.initDataTypes; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   audioCapabilities: ((() => { const v = self.audioCapabilities; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   videoCapabilities: ((() => { const v = self.videoCapabilities; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   initDataTypes: ((() => { const v = self.initDataTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   audioCapabilities: ((() => { const v = self.audioCapabilities; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   videoCapabilities: ((() => { const v = self.videoCapabilities; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   distinctiveIdentifier: ((() => { const v = self.distinctiveIdentifier; if (v === undefined) return undefined; return ['required', 'optional', 'not-allowed'][v]; })()),
   #|   persistentState: ((() => { const v = self.persistentState; if (v === undefined) return undefined; return ['required', 'optional', 'not-allowed'][v]; })()),
-  #|   sessionTypes: ((() => { const v = self.sessionTypes; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   sessionTypes: ((() => { const v = self.sessionTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -222,6 +222,28 @@ pub fn MediaKeySystemConfiguration::to_js(
   self : MediaKeySystemConfiguration,
 ) -> JsValue {
   MediaKeySystemConfiguration::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MediaKeySystemConfiguration::from_js_ffi(
+  value : JsValue,
+) -> MediaKeySystemConfiguration =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   initDataTypes: (v.initDataTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.initDataTypes }),
+  #|   audioCapabilities: (v.audioCapabilities === undefined ? { $tag: 0 } : { $tag: 1, _0: v.audioCapabilities }),
+  #|   videoCapabilities: (v.videoCapabilities === undefined ? { $tag: 0 } : { $tag: 1, _0: v.videoCapabilities }),
+  #|   distinctiveIdentifier: (v.distinctiveIdentifier === undefined ? undefined : ['required', 'optional', 'not-allowed'].indexOf(v.distinctiveIdentifier)),
+  #|   persistentState: (v.persistentState === undefined ? undefined : ['required', 'optional', 'not-allowed'].indexOf(v.persistentState)),
+  #|   sessionTypes: (v.sessionTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sessionTypes })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaKeySystemConfiguration::from_js(
+  value : JsValue,
+) -> MediaKeySystemConfiguration {
+  MediaKeySystemConfiguration::from_js_ffi(value)
 }
 
 ///|
@@ -248,7 +270,7 @@ extern "js" fn MediaKeySystemMediaCapability::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   contentType: self.contentType,
-  #|   encryptionScheme: ((() => { const v = self.encryptionScheme; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   encryptionScheme: ((() => { const v = self.encryptionScheme; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   robustness: self.robustness
   #| })
 
@@ -258,6 +280,24 @@ pub fn MediaKeySystemMediaCapability::to_js(
   self : MediaKeySystemMediaCapability,
 ) -> JsValue {
   MediaKeySystemMediaCapability::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MediaKeySystemMediaCapability::from_js_ffi(
+  value : JsValue,
+) -> MediaKeySystemMediaCapability =
+  #| (v) => ({
+  #|   contentType: v.contentType,
+  #|   encryptionScheme: (v.encryptionScheme === undefined ? { $tag: 0 } : v.encryptionScheme === null ? { $tag: 1 } : { $tag: 2, _0: v.encryptionScheme }),
+  #|   robustness: v.robustness
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaKeySystemMediaCapability::from_js(
+  value : JsValue,
+) -> MediaKeySystemMediaCapability {
+  MediaKeySystemMediaCapability::from_js_ffi(value)
 }
 
 ///|
@@ -282,6 +322,18 @@ extern "js" fn MediaKeysPolicy::to_js_ffi(self : MediaKeysPolicy) -> JsValue =
 /// Convert to JsValue
 pub fn MediaKeysPolicy::to_js(self : MediaKeysPolicy) -> JsValue {
   MediaKeysPolicy::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MediaKeysPolicy::from_js_ffi(value : JsValue) -> MediaKeysPolicy =
+  #| (v) => ({
+  #|   minHdcpVersion: v.minHdcpVersion
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaKeysPolicy::from_js(value : JsValue) -> MediaKeysPolicy {
+  MediaKeysPolicy::from_js_ffi(value)
 }
 
 ///|
@@ -318,6 +370,23 @@ pub fn MediaKeyMessageEventInit::to_js(
 }
 
 ///|
+extern "js" fn MediaKeyMessageEventInit::from_js_ffi(
+  value : JsValue,
+) -> MediaKeyMessageEventInit =
+  #| (v) => ({
+  #|   messageType: ['license-request', 'license-renewal', 'license-release', 'individualization-request'].indexOf(v.messageType),
+  #|   message: v.message
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaKeyMessageEventInit::from_js(
+  value : JsValue,
+) -> MediaKeyMessageEventInit {
+  MediaKeyMessageEventInit::from_js_ffi(value)
+}
+
+///|
 /// MediaEncryptedEventInit dictionary
 pub(all) struct MediaEncryptedEventInit {
   initDataType : String?
@@ -336,7 +405,7 @@ extern "js" fn MediaEncryptedEventInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   initDataType: self.initDataType,
-  #|   initData: ((() => { const v = self.initData; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   initData: ((() => { const v = self.initData; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
@@ -345,6 +414,23 @@ pub fn MediaEncryptedEventInit::to_js(
   self : MediaEncryptedEventInit,
 ) -> JsValue {
   MediaEncryptedEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MediaEncryptedEventInit::from_js_ffi(
+  value : JsValue,
+) -> MediaEncryptedEventInit =
+  #| (v) => ({
+  #|   initDataType: v.initDataType,
+  #|   initData: (v.initData === undefined ? { $tag: 0 } : v.initData === null ? { $tag: 1 } : { $tag: 2, _0: v.initData })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaEncryptedEventInit::from_js(
+  value : JsValue,
+) -> MediaEncryptedEventInit {
+  MediaEncryptedEventInit::from_js_ffi(value)
 }
 
 ///|

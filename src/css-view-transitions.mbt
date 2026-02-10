@@ -23,8 +23,8 @@ extern "js" fn StartViewTransitionOptions::to_js_ffi(
   self : StartViewTransitionOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   update: ((() => { const v = self.update; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   types: ((() => { const v = self.types; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   update: ((() => { const v = self.update; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   types: ((() => { const v = self.types; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -33,6 +33,23 @@ pub fn StartViewTransitionOptions::to_js(
   self : StartViewTransitionOptions,
 ) -> JsValue {
   StartViewTransitionOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn StartViewTransitionOptions::from_js_ffi(
+  value : JsValue,
+) -> StartViewTransitionOptions =
+  #| (v) => ({
+  #|   update: (v.update === undefined ? { $tag: 0 } : v.update === null ? { $tag: 1 } : { $tag: 2, _0: v.update }),
+  #|   types: (v.types === undefined ? { $tag: 0 } : { $tag: 1, _0: v.types })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn StartViewTransitionOptions::from_js(
+  value : JsValue,
+) -> StartViewTransitionOptions {
+  StartViewTransitionOptions::from_js_ffi(value)
 }
 
 ///|
@@ -233,7 +250,7 @@ pub extern "js" fn CSSViewTransitionRule::to_css_rule(
 ///|
 pub extern "js" fn CSSViewTransitionRule::get_navigation(
   self : CSSViewTransitionRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.navigation
 
 ///|

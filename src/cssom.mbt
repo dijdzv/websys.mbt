@@ -21,7 +21,7 @@ extern "js" fn CSSStyleSheetInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   baseURL: self.baseURL,
-  #|   media: ((() => { const v = self.media; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   media: ((() => { const v = self.media; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   disabled: (self.disabled === -1 ? undefined : self.disabled)
   #| })
 
@@ -29,6 +29,22 @@ extern "js" fn CSSStyleSheetInit::to_js_ffi(
 /// Convert to JsValue
 pub fn CSSStyleSheetInit::to_js(self : CSSStyleSheetInit) -> JsValue {
   CSSStyleSheetInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CSSStyleSheetInit::from_js_ffi(
+  value : JsValue,
+) -> CSSStyleSheetInit =
+  #| (v) => ({
+  #|   baseURL: v.baseURL,
+  #|   media: (v.media === undefined ? { $tag: 0 } : { $tag: 1, _0: v.media }),
+  #|   disabled: (v.disabled === undefined ? -1 : v.disabled)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CSSStyleSheetInit::from_js(value : JsValue) -> CSSStyleSheetInit {
+  CSSStyleSheetInit::from_js_ffi(value)
 }
 
 ///|
@@ -60,13 +76,13 @@ pub extern "js" fn JsValue::to_media_list(self : JsValue) -> MediaList =
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaList::get_media_text(self : MediaList) -> CSSOMString =
+pub extern "js" fn MediaList::get_media_text(self : MediaList) -> String =
   #| (self) => self.mediaText
 
 ///|
 pub extern "js" fn MediaList::set_media_text(
   self : MediaList,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.mediaText = value }
 
@@ -75,30 +91,24 @@ pub extern "js" fn MediaList::get_length(self : MediaList) -> Int =
   #| (self) => self.length
 
 ///|
-pub extern "js" fn MediaList::item(
-  self : MediaList,
-  index : Int,
-) -> CSSOMString? =
-  #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+pub extern "js" fn MediaList::item(self : MediaList, index : Int) -> String? =
+  #| (self, index) => (self.item(index)) ?? undefined
 
 ///|
-pub extern "js" fn MediaList::get(
-  self : MediaList,
-  index : Int,
-) -> CSSOMString? =
-  #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+pub extern "js" fn MediaList::get(self : MediaList, index : Int) -> String? =
+  #| (self, index) => (self[index]) ?? undefined
 
 ///|
 pub extern "js" fn MediaList::append_medium(
   self : MediaList,
-  medium : CSSOMString,
+  medium : String,
 ) -> Unit =
   #| (self, medium) => self.appendMedium(medium)
 
 ///|
 pub extern "js" fn MediaList::delete_medium(
   self : MediaList,
-  medium : CSSOMString,
+  medium : String,
 ) -> Unit =
   #| (self, medium) => self.deleteMedium(medium)
 
@@ -137,7 +147,7 @@ pub extern "js" fn StyleSheet::as_css_style_sheet(
   #| (self) => (self instanceof CSSStyleSheet) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn StyleSheet::get_type(self : StyleSheet) -> CSSOMString =
+pub extern "js" fn StyleSheet::get_type(self : StyleSheet) -> String =
   #| (self) => self.type
 
 ///|
@@ -245,14 +255,14 @@ pub extern "js" fn CSSStyleSheet::get_css_rules(
 ///|
 pub extern "js" fn CSSStyleSheet::insert_rule(
   self : CSSStyleSheet,
-  rule : CSSOMString,
+  rule : String,
 ) -> Int =
   #| (self, rule) => self.insertRule(rule)
 
 ///|
 pub extern "js" fn CSSStyleSheet::insert_rule_with_index(
   self : CSSStyleSheet,
-  rule : CSSOMString,
+  rule : String,
   index : Int,
 ) -> Int =
   #| (self, rule, index) => self.insertRule(rule, index)
@@ -603,13 +613,13 @@ pub extern "js" fn CSSRule::as_css_nested_declarations(
   #| (self) => (self instanceof CSSNestedDeclarations) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSRule::get_css_text(self : CSSRule) -> CSSOMString =
+pub extern "js" fn CSSRule::get_css_text(self : CSSRule) -> String =
   #| (self) => self.cssText
 
 ///|
 pub extern "js" fn CSSRule::set_css_text(
   self : CSSRule,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.cssText = value }
 
@@ -735,13 +745,13 @@ pub extern "js" fn CSSStyleRule::to_css_rule(self : CSSStyleRule) -> CSSRule =
 ///|
 pub extern "js" fn CSSStyleRule::get_selector_text(
   self : CSSStyleRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.selectorText
 
 ///|
 pub extern "js" fn CSSStyleRule::set_selector_text(
   self : CSSStyleRule,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.selectorText = value }
 
@@ -810,14 +820,14 @@ pub extern "js" fn CSSImportRule::get_style_sheet(
 ///|
 pub extern "js" fn CSSImportRule::get_layer_name(
   self : CSSImportRule,
-) -> CSSOMString? =
-  #| (self) => (() => { const v = self.layerName; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> String? =
+  #| (self) => (self.layerName) ?? undefined
 
 ///|
 pub extern "js" fn CSSImportRule::get_supports_text(
   self : CSSImportRule,
-) -> CSSOMString? =
-  #| (self) => (() => { const v = self.supportsText; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> String? =
+  #| (self) => (self.supportsText) ?? undefined
 
 ///|
 /// CSSGroupingRule interface
@@ -938,14 +948,14 @@ pub extern "js" fn CSSGroupingRule::get_css_rules(
 ///|
 pub extern "js" fn CSSGroupingRule::insert_rule(
   self : CSSGroupingRule,
-  rule : CSSOMString,
+  rule : String,
 ) -> Int =
   #| (self, rule) => self.insertRule(rule)
 
 ///|
 pub extern "js" fn CSSGroupingRule::insert_rule_with_index(
   self : CSSGroupingRule,
-  rule : CSSOMString,
+  rule : String,
   index : Int,
 ) -> Int =
   #| (self, rule, index) => self.insertRule(rule, index)
@@ -1004,117 +1014,117 @@ pub extern "js" fn CSSPageDescriptors::to_css_style_declaration(
 ///|
 pub extern "js" fn CSSPageDescriptors::get_margin(
   self : CSSPageDescriptors,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.margin
 
 ///|
 pub extern "js" fn CSSPageDescriptors::set_margin(
   self : CSSPageDescriptors,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.margin = value }
 
 ///|
 pub extern "js" fn CSSPageDescriptors::get_margin_top(
   self : CSSPageDescriptors,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.marginTop
 
 ///|
 pub extern "js" fn CSSPageDescriptors::set_margin_top(
   self : CSSPageDescriptors,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.marginTop = value }
 
 ///|
 pub extern "js" fn CSSPageDescriptors::get_margin_right(
   self : CSSPageDescriptors,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.marginRight
 
 ///|
 pub extern "js" fn CSSPageDescriptors::set_margin_right(
   self : CSSPageDescriptors,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.marginRight = value }
 
 ///|
 pub extern "js" fn CSSPageDescriptors::get_margin_bottom(
   self : CSSPageDescriptors,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.marginBottom
 
 ///|
 pub extern "js" fn CSSPageDescriptors::set_margin_bottom(
   self : CSSPageDescriptors,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.marginBottom = value }
 
 ///|
 pub extern "js" fn CSSPageDescriptors::get_margin_left(
   self : CSSPageDescriptors,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.marginLeft
 
 ///|
 pub extern "js" fn CSSPageDescriptors::set_margin_left(
   self : CSSPageDescriptors,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.marginLeft = value }
 
 ///|
 pub extern "js" fn CSSPageDescriptors::get_size(
   self : CSSPageDescriptors,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.size
 
 ///|
 pub extern "js" fn CSSPageDescriptors::set_size(
   self : CSSPageDescriptors,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.size = value }
 
 ///|
 pub extern "js" fn CSSPageDescriptors::get_page_orientation(
   self : CSSPageDescriptors,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.pageOrientation
 
 ///|
 pub extern "js" fn CSSPageDescriptors::set_page_orientation(
   self : CSSPageDescriptors,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.pageOrientation = value }
 
 ///|
 pub extern "js" fn CSSPageDescriptors::get_marks(
   self : CSSPageDescriptors,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.marks
 
 ///|
 pub extern "js" fn CSSPageDescriptors::set_marks(
   self : CSSPageDescriptors,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.marks = value }
 
 ///|
 pub extern "js" fn CSSPageDescriptors::get_bleed(
   self : CSSPageDescriptors,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.bleed
 
 ///|
 pub extern "js" fn CSSPageDescriptors::set_bleed(
   self : CSSPageDescriptors,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.bleed = value }
 
@@ -1157,15 +1167,13 @@ pub extern "js" fn CSSPageRule::to_css_rule(self : CSSPageRule) -> CSSRule =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSPageRule::get_selector_text(
-  self : CSSPageRule,
-) -> CSSOMString =
+pub extern "js" fn CSSPageRule::get_selector_text(self : CSSPageRule) -> String =
   #| (self) => self.selectorText
 
 ///|
 pub extern "js" fn CSSPageRule::set_selector_text(
   self : CSSPageRule,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.selectorText = value }
 
@@ -1212,7 +1220,7 @@ pub extern "js" fn CSSMarginRule::to_css_rule(self : CSSMarginRule) -> CSSRule =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSMarginRule::get_name(self : CSSMarginRule) -> CSSOMString =
+pub extern "js" fn CSSMarginRule::get_name(self : CSSMarginRule) -> String =
   #| (self) => self.name
 
 ///|
@@ -1268,13 +1276,13 @@ pub extern "js" fn CSSNamespaceRule::to_css_rule(
 ///|
 pub extern "js" fn CSSNamespaceRule::get_namespace_uri(
   self : CSSNamespaceRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.namespaceURI
 
 ///|
 pub extern "js" fn CSSNamespaceRule::get_prefix(
   self : CSSNamespaceRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.prefix
 
 ///|
@@ -1348,13 +1356,13 @@ pub extern "js" fn CSSStyleDeclaration::as_css_font_face_descriptors(
 ///|
 pub extern "js" fn CSSStyleDeclaration::get_css_text(
   self : CSSStyleDeclaration,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.cssText
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::set_css_text(
   self : CSSStyleDeclaration,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.cssText = value }
 
@@ -1368,52 +1376,52 @@ pub extern "js" fn CSSStyleDeclaration::get_length(
 pub extern "js" fn CSSStyleDeclaration::item(
   self : CSSStyleDeclaration,
   index : Int,
-) -> CSSOMString =
+) -> String =
   #| (self, index) => self.item(index)
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::get(
   self : CSSStyleDeclaration,
   index : Int,
-) -> CSSOMString =
+) -> String =
   #| (self, index) => self[index]
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::get_property_value(
   self : CSSStyleDeclaration,
-  property : CSSOMString,
-) -> CSSOMString =
+  property : String,
+) -> String =
   #| (self, property) => self.getPropertyValue(property)
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::get_property_priority(
   self : CSSStyleDeclaration,
-  property : CSSOMString,
-) -> CSSOMString =
+  property : String,
+) -> String =
   #| (self, property) => self.getPropertyPriority(property)
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::set_property(
   self : CSSStyleDeclaration,
-  property : CSSOMString,
-  value : CSSOMString,
+  property : String,
+  value : String,
 ) -> Unit =
   #| (self, property, value) => self.setProperty(property, value)
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::set_property_with_priority(
   self : CSSStyleDeclaration,
-  property : CSSOMString,
-  value : CSSOMString,
-  priority : CSSOMString,
+  property : String,
+  value : String,
+  priority : String,
 ) -> Unit =
   #| (self, property, value, priority) => self.setProperty(property, value, priority)
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::remove_property(
   self : CSSStyleDeclaration,
-  property : CSSOMString,
-) -> CSSOMString =
+  property : String,
+) -> String =
   #| (self, property) => self.removeProperty(property)
 
 ///|
@@ -1469,12 +1477,12 @@ pub extern "js" fn CSSStyleProperties::to_css_style_declaration(
 ///|
 pub extern "js" fn CSSStyleProperties::get_css_float(
   self : CSSStyleProperties,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.cssFloat
 
 ///|
 pub extern "js" fn CSSStyleProperties::set_css_float(
   self : CSSStyleProperties,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.cssFloat = value }

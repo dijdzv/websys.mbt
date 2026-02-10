@@ -4,23 +4,6 @@
 // Pattern: type casting (Element → HTMLElement), String/Bool/Int getter/setter
 
 ///|
-/// JS helper: set a style property on an element via JsValue.
-extern "js" fn js_set_style_prop(
-  el : @websys.JsValue,
-  prop : String,
-  value : String,
-) -> Unit =
-  #| (el, prop, value) => { el.style.setProperty(prop, value) }
-
-///|
-/// JS helper: get a style property from an element via JsValue.
-extern "js" fn js_get_style_prop(
-  el : @websys.JsValue,
-  prop : String,
-) -> String =
-  #| (el, prop) => el.style.getPropertyValue(prop)
-
-///|
 /// Helper: create an HTMLElement from a tag name via document.createElement.
 /// Uses unchecked cast since createElement always returns an HTMLElement subclass.
 fn create_html_element(tag : String) -> @websys.HTMLElement {
@@ -126,14 +109,14 @@ pub fn test_html_element_bool_props() -> Unit {
   assert_eq(dataset.get_named("foo"), "baz", label="dataset overwrite")
   dataset.delete("foo")
 
-  // style — via JS helpers (CSSOMString is opaque, so use JsValue workaround)
+  // style — via CSSStyleDeclaration API
   let el4 = create_html_element("div")
-  let jv = el4.to_js_value()
-  js_set_style_prop(jv, "color", "red")
-  assert_eq(js_get_style_prop(jv, "color"), "red", label="style color")
-  js_set_style_prop(jv, "font-size", "14px")
+  let style = el4.get_style().to_css_style_declaration()
+  style.set_property("color", "red")
+  assert_eq(style.get_property_value("color"), "red", label="style color")
+  style.set_property("font-size", "14px")
   assert_eq(
-    js_get_style_prop(jv, "font-size"),
+    style.get_property_value("font-size"),
     "14px",
     label="style font-size",
   )

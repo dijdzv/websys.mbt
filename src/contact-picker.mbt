@@ -9,7 +9,7 @@ pub(all) enum ContactProperty {
   Icon
   Name
   Tel
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -55,17 +55,33 @@ pub fn ContactInfo::default() -> ContactInfo {
 ///|
 extern "js" fn ContactInfo::to_js_ffi(self : ContactInfo) -> JsValue =
   #| (self) => ({
-  #|   address: ((() => { const v = self.address; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   email: ((() => { const v = self.email; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   icon: ((() => { const v = self.icon; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   name: ((() => { const v = self.name; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   tel: ((() => { const v = self.tel; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   address: ((() => { const v = self.address; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   email: ((() => { const v = self.email; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   icon: ((() => { const v = self.icon; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   name: ((() => { const v = self.name; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   tel: ((() => { const v = self.tel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn ContactInfo::to_js(self : ContactInfo) -> JsValue {
   ContactInfo::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ContactInfo::from_js_ffi(value : JsValue) -> ContactInfo =
+  #| (v) => ({
+  #|   address: (v.address === undefined ? { $tag: 0 } : { $tag: 1, _0: v.address }),
+  #|   email: (v.email === undefined ? { $tag: 0 } : { $tag: 1, _0: v.email }),
+  #|   icon: (v.icon === undefined ? { $tag: 0 } : { $tag: 1, _0: v.icon }),
+  #|   name: (v.name === undefined ? { $tag: 0 } : { $tag: 1, _0: v.name }),
+  #|   tel: (v.tel === undefined ? { $tag: 0 } : { $tag: 1, _0: v.tel })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ContactInfo::from_js(value : JsValue) -> ContactInfo {
+  ContactInfo::from_js_ffi(value)
 }
 
 ///|
@@ -92,6 +108,20 @@ extern "js" fn ContactsSelectOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn ContactsSelectOptions::to_js(self : ContactsSelectOptions) -> JsValue {
   ContactsSelectOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ContactsSelectOptions::from_js_ffi(
+  value : JsValue,
+) -> ContactsSelectOptions =
+  #| (v) => ({
+  #|   multiple: (v.multiple === undefined ? -1 : v.multiple)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ContactsSelectOptions::from_js(value : JsValue) -> ContactsSelectOptions {
+  ContactsSelectOptions::from_js_ffi(value)
 }
 
 ///|

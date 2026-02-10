@@ -11,7 +11,7 @@ pub(all) enum HIDUnitSystem {
   EnglishRotation
   VendorDefined
   Reserved
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -61,7 +61,7 @@ extern "js" fn HIDDeviceRequestOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   filters: self.filters,
-  #|   exclusionFilters: ((() => { const v = self.exclusionFilters; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   exclusionFilters: ((() => { const v = self.exclusionFilters; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -70,6 +70,23 @@ pub fn HIDDeviceRequestOptions::to_js(
   self : HIDDeviceRequestOptions,
 ) -> JsValue {
   HIDDeviceRequestOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn HIDDeviceRequestOptions::from_js_ffi(
+  value : JsValue,
+) -> HIDDeviceRequestOptions =
+  #| (v) => ({
+  #|   filters: v.filters,
+  #|   exclusionFilters: (v.exclusionFilters === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exclusionFilters })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn HIDDeviceRequestOptions::from_js(
+  value : JsValue,
+) -> HIDDeviceRequestOptions {
+  HIDDeviceRequestOptions::from_js_ffi(value)
 }
 
 ///|
@@ -108,6 +125,21 @@ pub fn HIDDeviceFilter::to_js(self : HIDDeviceFilter) -> JsValue {
 }
 
 ///|
+extern "js" fn HIDDeviceFilter::from_js_ffi(value : JsValue) -> HIDDeviceFilter =
+  #| (v) => ({
+  #|   vendorId: v.vendorId,
+  #|   productId: v.productId,
+  #|   usagePage: v.usagePage,
+  #|   usage: v.usage
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn HIDDeviceFilter::from_js(value : JsValue) -> HIDDeviceFilter {
+  HIDDeviceFilter::from_js_ffi(value)
+}
+
+///|
 /// HIDConnectionEventInit dictionary
 pub(all) struct HIDConnectionEventInit {
   device : HIDDevice
@@ -133,6 +165,22 @@ extern "js" fn HIDConnectionEventInit::to_js_ffi(
 /// Convert to JsValue
 pub fn HIDConnectionEventInit::to_js(self : HIDConnectionEventInit) -> JsValue {
   HIDConnectionEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn HIDConnectionEventInit::from_js_ffi(
+  value : JsValue,
+) -> HIDConnectionEventInit =
+  #| (v) => ({
+  #|   device: v.device
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn HIDConnectionEventInit::from_js(
+  value : JsValue,
+) -> HIDConnectionEventInit {
+  HIDConnectionEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -171,6 +219,24 @@ pub fn HIDInputReportEventInit::to_js(
 }
 
 ///|
+extern "js" fn HIDInputReportEventInit::from_js_ffi(
+  value : JsValue,
+) -> HIDInputReportEventInit =
+  #| (v) => ({
+  #|   device: v.device,
+  #|   reportId: v.reportId,
+  #|   data: v.data
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn HIDInputReportEventInit::from_js(
+  value : JsValue,
+) -> HIDInputReportEventInit {
+  HIDInputReportEventInit::from_js_ffi(value)
+}
+
+///|
 /// HIDCollectionInfo dictionary
 pub(all) struct HIDCollectionInfo {
   usagePage : Int?
@@ -204,16 +270,36 @@ extern "js" fn HIDCollectionInfo::to_js_ffi(
   #|   usagePage: self.usagePage,
   #|   usage: self.usage,
   #|   type: self.type_,
-  #|   children: ((() => { const v = self.children; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   inputReports: ((() => { const v = self.inputReports; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   outputReports: ((() => { const v = self.outputReports; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   featureReports: ((() => { const v = self.featureReports; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   children: ((() => { const v = self.children; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   inputReports: ((() => { const v = self.inputReports; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   outputReports: ((() => { const v = self.outputReports; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   featureReports: ((() => { const v = self.featureReports; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn HIDCollectionInfo::to_js(self : HIDCollectionInfo) -> JsValue {
   HIDCollectionInfo::to_js_ffi(self)
+}
+
+///|
+extern "js" fn HIDCollectionInfo::from_js_ffi(
+  value : JsValue,
+) -> HIDCollectionInfo =
+  #| (v) => ({
+  #|   usagePage: v.usagePage,
+  #|   usage: v.usage,
+  #|   type_: v.type,
+  #|   children: (v.children === undefined ? { $tag: 0 } : { $tag: 1, _0: v.children }),
+  #|   inputReports: (v.inputReports === undefined ? { $tag: 0 } : { $tag: 1, _0: v.inputReports }),
+  #|   outputReports: (v.outputReports === undefined ? { $tag: 0 } : { $tag: 1, _0: v.outputReports }),
+  #|   featureReports: (v.featureReports === undefined ? { $tag: 0 } : { $tag: 1, _0: v.featureReports })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn HIDCollectionInfo::from_js(value : JsValue) -> HIDCollectionInfo {
+  HIDCollectionInfo::from_js_ffi(value)
 }
 
 ///|
@@ -233,13 +319,26 @@ pub fn HIDReportInfo::default() -> HIDReportInfo {
 extern "js" fn HIDReportInfo::to_js_ffi(self : HIDReportInfo) -> JsValue =
   #| (self) => ({
   #|   reportId: self.reportId,
-  #|   items: ((() => { const v = self.items; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   items: ((() => { const v = self.items; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn HIDReportInfo::to_js(self : HIDReportInfo) -> JsValue {
   HIDReportInfo::to_js_ffi(self)
+}
+
+///|
+extern "js" fn HIDReportInfo::from_js_ffi(value : JsValue) -> HIDReportInfo =
+  #| (v) => ({
+  #|   reportId: v.reportId,
+  #|   items: (v.items === undefined ? { $tag: 0 } : { $tag: 1, _0: v.items })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn HIDReportInfo::from_js(value : JsValue) -> HIDReportInfo {
+  HIDReportInfo::from_js_ffi(value)
 }
 
 ///|
@@ -323,7 +422,7 @@ extern "js" fn HIDReportItem::to_js_ffi(self : HIDReportItem) -> JsValue =
   #|   hasNull: (self.hasNull === -1 ? undefined : self.hasNull),
   #|   hasPreferredState: (self.hasPreferredState === -1 ? undefined : self.hasPreferredState),
   #|   wrap: (self.wrap === -1 ? undefined : self.wrap),
-  #|   usages: ((() => { const v = self.usages; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   usages: ((() => { const v = self.usages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   usageMinimum: self.usageMinimum,
   #|   usageMaximum: self.usageMaximum,
   #|   reportSize: self.reportSize,
@@ -340,13 +439,52 @@ extern "js" fn HIDReportItem::to_js_ffi(self : HIDReportItem) -> JsValue =
   #|   logicalMaximum: self.logicalMaximum,
   #|   physicalMinimum: self.physicalMinimum,
   #|   physicalMaximum: self.physicalMaximum,
-  #|   strings: ((() => { const v = self.strings; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   strings: ((() => { const v = self.strings; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn HIDReportItem::to_js(self : HIDReportItem) -> JsValue {
   HIDReportItem::to_js_ffi(self)
+}
+
+///|
+extern "js" fn HIDReportItem::from_js_ffi(value : JsValue) -> HIDReportItem =
+  #| (v) => ({
+  #|   isAbsolute: (v.isAbsolute === undefined ? -1 : v.isAbsolute),
+  #|   isArray: (v.isArray === undefined ? -1 : v.isArray),
+  #|   isBufferedBytes: (v.isBufferedBytes === undefined ? -1 : v.isBufferedBytes),
+  #|   isConstant: (v.isConstant === undefined ? -1 : v.isConstant),
+  #|   isLinear: (v.isLinear === undefined ? -1 : v.isLinear),
+  #|   isRange: (v.isRange === undefined ? -1 : v.isRange),
+  #|   isVolatile: (v.isVolatile === undefined ? -1 : v.isVolatile),
+  #|   hasNull: (v.hasNull === undefined ? -1 : v.hasNull),
+  #|   hasPreferredState: (v.hasPreferredState === undefined ? -1 : v.hasPreferredState),
+  #|   wrap: (v.wrap === undefined ? -1 : v.wrap),
+  #|   usages: (v.usages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.usages }),
+  #|   usageMinimum: v.usageMinimum,
+  #|   usageMaximum: v.usageMaximum,
+  #|   reportSize: v.reportSize,
+  #|   reportCount: v.reportCount,
+  #|   unitExponent: v.unitExponent,
+  #|   unitSystem: (v.unitSystem === undefined ? undefined : ['none', 'si-linear', 'si-rotation', 'english-linear', 'english-rotation', 'vendor-defined', 'reserved'].indexOf(v.unitSystem)),
+  #|   unitFactorLengthExponent: v.unitFactorLengthExponent,
+  #|   unitFactorMassExponent: v.unitFactorMassExponent,
+  #|   unitFactorTimeExponent: v.unitFactorTimeExponent,
+  #|   unitFactorTemperatureExponent: v.unitFactorTemperatureExponent,
+  #|   unitFactorCurrentExponent: v.unitFactorCurrentExponent,
+  #|   unitFactorLuminousIntensityExponent: v.unitFactorLuminousIntensityExponent,
+  #|   logicalMinimum: v.logicalMinimum,
+  #|   logicalMaximum: v.logicalMaximum,
+  #|   physicalMinimum: v.physicalMinimum,
+  #|   physicalMaximum: v.physicalMaximum,
+  #|   strings: (v.strings === undefined ? { $tag: 0 } : { $tag: 1, _0: v.strings })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn HIDReportItem::from_js(value : JsValue) -> HIDReportItem {
+  HIDReportItem::from_js_ffi(value)
 }
 
 ///|

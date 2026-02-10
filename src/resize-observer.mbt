@@ -7,7 +7,7 @@ pub(all) enum ResizeObserverBoxOptions {
   BorderBox
   ContentBox
   DevicePixelContentBox
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -71,6 +71,20 @@ extern "js" fn ResizeObserverOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn ResizeObserverOptions::to_js(self : ResizeObserverOptions) -> JsValue {
   ResizeObserverOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ResizeObserverOptions::from_js_ffi(
+  value : JsValue,
+) -> ResizeObserverOptions =
+  #| (v) => ({
+  #|   box: (v.box === undefined ? undefined : ['border-box', 'content-box', 'device-pixel-content-box'].indexOf(v.box))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ResizeObserverOptions::from_js(value : JsValue) -> ResizeObserverOptions {
+  ResizeObserverOptions::from_js_ffi(value)
 }
 
 ///|

@@ -6,7 +6,7 @@
 pub(all) enum MIDIPortType {
   Input
   Output
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -32,7 +32,7 @@ pub fn MIDIPortType::from_string(s : String) -> MIDIPortType? {
 pub(all) enum MIDIPortDeviceState {
   Disconnected
   Connected
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -59,7 +59,7 @@ pub(all) enum MIDIPortConnectionState {
   Open
   Closed
   Pending
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -115,6 +115,22 @@ pub fn MidiPermissionDescriptor::to_js(
 }
 
 ///|
+extern "js" fn MidiPermissionDescriptor::from_js_ffi(
+  value : JsValue,
+) -> MidiPermissionDescriptor =
+  #| (v) => ({
+  #|   sysex: (v.sysex === undefined ? -1 : v.sysex)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MidiPermissionDescriptor::from_js(
+  value : JsValue,
+) -> MidiPermissionDescriptor {
+  MidiPermissionDescriptor::from_js_ffi(value)
+}
+
+///|
 /// MIDIOptions dictionary
 pub(all) struct MIDIOptions {
   sysex : Bool?
@@ -141,6 +157,19 @@ pub fn MIDIOptions::to_js(self : MIDIOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn MIDIOptions::from_js_ffi(value : JsValue) -> MIDIOptions =
+  #| (v) => ({
+  #|   sysex: (v.sysex === undefined ? -1 : v.sysex),
+  #|   software: (v.software === undefined ? -1 : v.software)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MIDIOptions::from_js(value : JsValue) -> MIDIOptions {
+  MIDIOptions::from_js_ffi(value)
+}
+
+///|
 /// MIDIMessageEventInit dictionary
 pub(all) struct MIDIMessageEventInit {
   data : Uint8Array?
@@ -157,13 +186,27 @@ extern "js" fn MIDIMessageEventInit::to_js_ffi(
   self : MIDIMessageEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   data: ((() => { const v = self.data; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MIDIMessageEventInit::to_js(self : MIDIMessageEventInit) -> JsValue {
   MIDIMessageEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MIDIMessageEventInit::from_js_ffi(
+  value : JsValue,
+) -> MIDIMessageEventInit =
+  #| (v) => ({
+  #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MIDIMessageEventInit::from_js(value : JsValue) -> MIDIMessageEventInit {
+  MIDIMessageEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -183,7 +226,7 @@ extern "js" fn MIDIConnectionEventInit::to_js_ffi(
   self : MIDIConnectionEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   port: ((() => { const v = self.port; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   port: ((() => { const v = self.port; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -192,6 +235,22 @@ pub fn MIDIConnectionEventInit::to_js(
   self : MIDIConnectionEventInit,
 ) -> JsValue {
   MIDIConnectionEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MIDIConnectionEventInit::from_js_ffi(
+  value : JsValue,
+) -> MIDIConnectionEventInit =
+  #| (v) => ({
+  #|   port: (v.port === undefined ? { $tag: 0 } : { $tag: 1, _0: v.port })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MIDIConnectionEventInit::from_js(
+  value : JsValue,
+) -> MIDIConnectionEventInit {
+  MIDIConnectionEventInit::from_js_ffi(value)
 }
 
 ///|

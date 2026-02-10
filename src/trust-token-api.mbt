@@ -6,7 +6,7 @@
 pub(all) enum RefreshPolicy {
   None
   Refresh
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -31,7 +31,7 @@ pub fn RefreshPolicy::from_string(s : String) -> RefreshPolicy? {
 /// TokenVersion enum
 pub(all) enum TokenVersion {
   N1
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -56,7 +56,7 @@ pub(all) enum OperationType {
   TokenRequest
   SendRedemptionRecord
   TokenRedemption
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -103,11 +103,26 @@ extern "js" fn PrivateToken::to_js_ffi(self : PrivateToken) -> JsValue =
   #|   version: ['1'][self.version],
   #|   operation: ['token-request', 'send-redemption-record', 'token-redemption'][self.operation],
   #|   refreshPolicy: ((() => { const v = self.refreshPolicy; if (v === undefined) return undefined; return ['none', 'refresh'][v]; })()),
-  #|   issuers: ((() => { const v = self.issuers; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   issuers: ((() => { const v = self.issuers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn PrivateToken::to_js(self : PrivateToken) -> JsValue {
   PrivateToken::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PrivateToken::from_js_ffi(value : JsValue) -> PrivateToken =
+  #| (v) => ({
+  #|   version: ['1'].indexOf(v.version),
+  #|   operation: ['token-request', 'send-redemption-record', 'token-redemption'].indexOf(v.operation),
+  #|   refreshPolicy: (v.refreshPolicy === undefined ? undefined : ['none', 'refresh'].indexOf(v.refreshPolicy)),
+  #|   issuers: (v.issuers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.issuers })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PrivateToken::from_js(value : JsValue) -> PrivateToken {
+  PrivateToken::from_js_ffi(value)
 }

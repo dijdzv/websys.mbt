@@ -30,6 +30,20 @@ pub fn DetectedText::to_js(self : DetectedText) -> JsValue {
 }
 
 ///|
+extern "js" fn DetectedText::from_js_ffi(value : JsValue) -> DetectedText =
+  #| (v) => ({
+  #|   boundingBox: v.boundingBox,
+  #|   rawValue: v.rawValue,
+  #|   cornerPoints: v.cornerPoints
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DetectedText::from_js(value : JsValue) -> DetectedText {
+  DetectedText::from_js_ffi(value)
+}
+
+///|
 /// TextDetector interface
 pub type TextDetector
 

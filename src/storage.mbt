@@ -28,6 +28,19 @@ pub fn StorageEstimate::to_js(self : StorageEstimate) -> JsValue {
 }
 
 ///|
+extern "js" fn StorageEstimate::from_js_ffi(value : JsValue) -> StorageEstimate =
+  #| (v) => ({
+  #|   usage: v.usage,
+  #|   quota: v.quota
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn StorageEstimate::from_js(value : JsValue) -> StorageEstimate {
+  StorageEstimate::from_js_ffi(value)
+}
+
+///|
 /// StorageManager interface
 pub type StorageManager
 
@@ -79,7 +92,10 @@ pub extern "js" fn StorageManager::persist(
 pub extern "js" fn StorageManager::estimate(
   self : StorageManager,
 ) -> Promise[StorageEstimate] =
-  #| (self) => self.estimate()
+  #| (self) => self.estimate().then(v => ({
+  #|   usage: v.usage,
+  #|   quota: v.quota
+  #| }))
 
 ///|
 pub extern "js" fn StorageManager::get_directory(

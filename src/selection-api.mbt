@@ -18,7 +18,7 @@ extern "js" fn GetComposedRangesOptions::to_js_ffi(
   self : GetComposedRangesOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   shadowRoots: ((() => { const v = self.shadowRoots; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   shadowRoots: ((() => { const v = self.shadowRoots; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -27,6 +27,22 @@ pub fn GetComposedRangesOptions::to_js(
   self : GetComposedRangesOptions,
 ) -> JsValue {
   GetComposedRangesOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GetComposedRangesOptions::from_js_ffi(
+  value : JsValue,
+) -> GetComposedRangesOptions =
+  #| (v) => ({
+  #|   shadowRoots: (v.shadowRoots === undefined ? { $tag: 0 } : { $tag: 1, _0: v.shadowRoots })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GetComposedRangesOptions::from_js(
+  value : JsValue,
+) -> GetComposedRangesOptions {
+  GetComposedRangesOptions::from_js_ffi(value)
 }
 
 ///|

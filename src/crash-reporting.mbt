@@ -35,3 +35,18 @@ extern "js" fn CrashReportBody::to_js_ffi(self : CrashReportBody) -> JsValue =
 pub fn CrashReportBody::to_js(self : CrashReportBody) -> JsValue {
   CrashReportBody::to_js_ffi(self)
 }
+
+///|
+extern "js" fn CrashReportBody::from_js_ffi(value : JsValue) -> CrashReportBody =
+  #| (v) => ({
+  #|   reason: v.reason,
+  #|   stack: v.stack,
+  #|   is_top_level: (v.is_top_level === undefined ? -1 : v.is_top_level),
+  #|   visibility_state: (v.visibility_state === undefined ? undefined : ['visible', 'hidden'].indexOf(v.visibility_state))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CrashReportBody::from_js(value : JsValue) -> CrashReportBody {
+  CrashReportBody::from_js_ffi(value)
+}

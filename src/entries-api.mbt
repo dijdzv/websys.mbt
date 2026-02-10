@@ -72,6 +72,19 @@ pub fn FileSystemFlags::to_js(self : FileSystemFlags) -> JsValue {
 }
 
 ///|
+extern "js" fn FileSystemFlags::from_js_ffi(value : JsValue) -> FileSystemFlags =
+  #| (v) => ({
+  #|   create: (v.create === undefined ? -1 : v.create),
+  #|   exclusive: (v.exclusive === undefined ? -1 : v.exclusive)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FileSystemFlags::from_js(value : JsValue) -> FileSystemFlags {
+  FileSystemFlags::from_js_ffi(value)
+}
+
+///|
 /// FileSystemEntry interface
 pub type FileSystemEntry
 

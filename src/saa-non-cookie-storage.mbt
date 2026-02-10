@@ -6,7 +6,7 @@
 pub(all) enum SameSiteCookiesType {
   All
   None
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -92,6 +92,32 @@ pub fn StorageAccessTypes::to_js(self : StorageAccessTypes) -> JsValue {
 }
 
 ///|
+extern "js" fn StorageAccessTypes::from_js_ffi(
+  value : JsValue,
+) -> StorageAccessTypes =
+  #| (v) => ({
+  #|   all: (v.all === undefined ? -1 : v.all),
+  #|   cookies: (v.cookies === undefined ? -1 : v.cookies),
+  #|   sessionStorage: (v.sessionStorage === undefined ? -1 : v.sessionStorage),
+  #|   localStorage: (v.localStorage === undefined ? -1 : v.localStorage),
+  #|   indexedDB: (v.indexedDB === undefined ? -1 : v.indexedDB),
+  #|   locks: (v.locks === undefined ? -1 : v.locks),
+  #|   caches: (v.caches === undefined ? -1 : v.caches),
+  #|   getDirectory: (v.getDirectory === undefined ? -1 : v.getDirectory),
+  #|   estimate: (v.estimate === undefined ? -1 : v.estimate),
+  #|   createObjectURL: (v.createObjectURL === undefined ? -1 : v.createObjectURL),
+  #|   revokeObjectURL: (v.revokeObjectURL === undefined ? -1 : v.revokeObjectURL),
+  #|   broadcastChannel: (v.BroadcastChannel === undefined ? -1 : v.BroadcastChannel),
+  #|   sharedWorker: (v.SharedWorker === undefined ? -1 : v.SharedWorker)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn StorageAccessTypes::from_js(value : JsValue) -> StorageAccessTypes {
+  StorageAccessTypes::from_js_ffi(value)
+}
+
+///|
 /// SharedWorkerOptions dictionary
 pub(all) struct SharedWorkerOptions {
   sameSiteCookies : SameSiteCookiesType?
@@ -115,6 +141,20 @@ extern "js" fn SharedWorkerOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn SharedWorkerOptions::to_js(self : SharedWorkerOptions) -> JsValue {
   SharedWorkerOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SharedWorkerOptions::from_js_ffi(
+  value : JsValue,
+) -> SharedWorkerOptions =
+  #| (v) => ({
+  #|   sameSiteCookies: (v.sameSiteCookies === undefined ? undefined : ['all', 'none'].indexOf(v.sameSiteCookies))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SharedWorkerOptions::from_js(value : JsValue) -> SharedWorkerOptions {
+  SharedWorkerOptions::from_js_ffi(value)
 }
 
 ///|
@@ -195,7 +235,10 @@ pub extern "js" fn StorageAccessHandle::get_directory(
 pub extern "js" fn StorageAccessHandle::estimate(
   self : StorageAccessHandle,
 ) -> Promise[StorageEstimate] =
-  #| (self) => self.estimate()
+  #| (self) => self.estimate().then(v => ({
+  #|   usage: v.usage,
+  #|   quota: v.quota
+  #| }))
 
 ///|
 pub extern "js" fn StorageAccessHandle::create_object_url(

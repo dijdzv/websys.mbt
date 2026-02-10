@@ -20,13 +20,28 @@ extern "js" fn MemoryMeasurement::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   bytes: self.bytes,
-  #|   breakdown: ((() => { const v = self.breakdown; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   breakdown: ((() => { const v = self.breakdown; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MemoryMeasurement::to_js(self : MemoryMeasurement) -> JsValue {
   MemoryMeasurement::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MemoryMeasurement::from_js_ffi(
+  value : JsValue,
+) -> MemoryMeasurement =
+  #| (v) => ({
+  #|   bytes: v.bytes,
+  #|   breakdown: (v.breakdown === undefined ? { $tag: 0 } : { $tag: 1, _0: v.breakdown })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MemoryMeasurement::from_js(value : JsValue) -> MemoryMeasurement {
+  MemoryMeasurement::from_js_ffi(value)
 }
 
 ///|
@@ -49,14 +64,30 @@ extern "js" fn MemoryBreakdownEntry::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   bytes: self.bytes,
-  #|   attribution: ((() => { const v = self.attribution; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   types: ((() => { const v = self.types; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   attribution: ((() => { const v = self.attribution; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   types: ((() => { const v = self.types; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MemoryBreakdownEntry::to_js(self : MemoryBreakdownEntry) -> JsValue {
   MemoryBreakdownEntry::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MemoryBreakdownEntry::from_js_ffi(
+  value : JsValue,
+) -> MemoryBreakdownEntry =
+  #| (v) => ({
+  #|   bytes: v.bytes,
+  #|   attribution: (v.attribution === undefined ? { $tag: 0 } : { $tag: 1, _0: v.attribution }),
+  #|   types: (v.types === undefined ? { $tag: 0 } : { $tag: 1, _0: v.types })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MemoryBreakdownEntry::from_js(value : JsValue) -> MemoryBreakdownEntry {
+  MemoryBreakdownEntry::from_js_ffi(value)
 }
 
 ///|
@@ -79,7 +110,7 @@ extern "js" fn MemoryAttribution::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   url: self.url,
-  #|   container: ((() => { const v = self.container; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   container: ((() => { const v = self.container; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   scope: self.scope
   #| })
 
@@ -87,6 +118,22 @@ extern "js" fn MemoryAttribution::to_js_ffi(
 /// Convert to JsValue
 pub fn MemoryAttribution::to_js(self : MemoryAttribution) -> JsValue {
   MemoryAttribution::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MemoryAttribution::from_js_ffi(
+  value : JsValue,
+) -> MemoryAttribution =
+  #| (v) => ({
+  #|   url: v.url,
+  #|   container: (v.container === undefined ? { $tag: 0 } : { $tag: 1, _0: v.container }),
+  #|   scope: v.scope
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MemoryAttribution::from_js(value : JsValue) -> MemoryAttribution {
+  MemoryAttribution::from_js_ffi(value)
 }
 
 ///|
@@ -117,4 +164,21 @@ pub fn MemoryAttributionContainer::to_js(
   self : MemoryAttributionContainer,
 ) -> JsValue {
   MemoryAttributionContainer::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MemoryAttributionContainer::from_js_ffi(
+  value : JsValue,
+) -> MemoryAttributionContainer =
+  #| (v) => ({
+  #|   id: v.id,
+  #|   src: v.src
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MemoryAttributionContainer::from_js(
+  value : JsValue,
+) -> MemoryAttributionContainer {
+  MemoryAttributionContainer::from_js_ffi(value)
 }

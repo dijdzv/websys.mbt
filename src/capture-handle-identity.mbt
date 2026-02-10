@@ -26,13 +26,29 @@ extern "js" fn CaptureHandleConfig::to_js_ffi(
   #| (self) => ({
   #|   exposeOrigin: (self.exposeOrigin === -1 ? undefined : self.exposeOrigin),
   #|   handle: self.handle,
-  #|   permittedOrigins: ((() => { const v = self.permittedOrigins; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   permittedOrigins: ((() => { const v = self.permittedOrigins; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn CaptureHandleConfig::to_js(self : CaptureHandleConfig) -> JsValue {
   CaptureHandleConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CaptureHandleConfig::from_js_ffi(
+  value : JsValue,
+) -> CaptureHandleConfig =
+  #| (v) => ({
+  #|   exposeOrigin: (v.exposeOrigin === undefined ? -1 : v.exposeOrigin),
+  #|   handle: v.handle,
+  #|   permittedOrigins: (v.permittedOrigins === undefined ? { $tag: 0 } : { $tag: 1, _0: v.permittedOrigins })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CaptureHandleConfig::from_js(value : JsValue) -> CaptureHandleConfig {
+  CaptureHandleConfig::from_js_ffi(value)
 }
 
 ///|
@@ -59,4 +75,17 @@ extern "js" fn CaptureHandle::to_js_ffi(self : CaptureHandle) -> JsValue =
 /// Convert to JsValue
 pub fn CaptureHandle::to_js(self : CaptureHandle) -> JsValue {
   CaptureHandle::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CaptureHandle::from_js_ffi(value : JsValue) -> CaptureHandle =
+  #| (v) => ({
+  #|   origin: v.origin,
+  #|   handle: v.handle
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CaptureHandle::from_js(value : JsValue) -> CaptureHandle {
+  CaptureHandle::from_js_ffi(value)
 }

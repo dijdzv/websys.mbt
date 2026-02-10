@@ -10,7 +10,7 @@ pub(all) enum AudioSessionType {
   TransientSolo
   Ambient
   PlayAndRecord
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -45,7 +45,7 @@ pub(all) enum AudioSessionState {
   Inactive
   Active
   Interrupted
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

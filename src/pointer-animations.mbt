@@ -8,7 +8,7 @@ pub(all) enum PointerAxis {
   Inline
   X
   Y
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -51,7 +51,7 @@ extern "js" fn PointerTimelineOptions::to_js_ffi(
   self : PointerTimelineOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   axis: ((() => { const v = self.axis; if (v === undefined) return undefined; return ['block', 'inline', 'x', 'y'][v]; })())
   #| })
 
@@ -59,6 +59,23 @@ extern "js" fn PointerTimelineOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn PointerTimelineOptions::to_js(self : PointerTimelineOptions) -> JsValue {
   PointerTimelineOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PointerTimelineOptions::from_js_ffi(
+  value : JsValue,
+) -> PointerTimelineOptions =
+  #| (v) => ({
+  #|   source: (v.source === undefined ? { $tag: 0 } : v.source === null ? { $tag: 1 } : { $tag: 2, _0: v.source }),
+  #|   axis: (v.axis === undefined ? undefined : ['block', 'inline', 'x', 'y'].indexOf(v.axis))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PointerTimelineOptions::from_js(
+  value : JsValue,
+) -> PointerTimelineOptions {
+  PointerTimelineOptions::from_js_ffi(value)
 }
 
 ///|

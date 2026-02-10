@@ -6,7 +6,7 @@
 pub(all) enum ShadowRootMode {
   Open
   Closed
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -32,7 +32,7 @@ pub fn ShadowRootMode::from_string(s : String) -> ShadowRootMode? {
 pub(all) enum SlotAssignmentMode {
   Manual
   Named
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -124,6 +124,20 @@ pub fn EventInit::to_js(self : EventInit) -> JsValue {
 }
 
 ///|
+extern "js" fn EventInit::from_js_ffi(value : JsValue) -> EventInit =
+  #| (v) => ({
+  #|   bubbles: (v.bubbles === undefined ? -1 : v.bubbles),
+  #|   cancelable: (v.cancelable === undefined ? -1 : v.cancelable),
+  #|   composed: (v.composed === undefined ? -1 : v.composed)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn EventInit::from_js(value : JsValue) -> EventInit {
+  EventInit::from_js_ffi(value)
+}
+
+///|
 /// CustomEventInit dictionary
 pub(all) struct CustomEventInit {
   bubbles : Bool?
@@ -149,13 +163,28 @@ extern "js" fn CustomEventInit::to_js_ffi(self : CustomEventInit) -> JsValue =
   #|   bubbles: (self.bubbles === -1 ? undefined : self.bubbles),
   #|   cancelable: (self.cancelable === -1 ? undefined : self.cancelable),
   #|   composed: (self.composed === -1 ? undefined : self.composed),
-  #|   detail: ((() => { const v = self.detail; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   detail: ((() => { const v = self.detail; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn CustomEventInit::to_js(self : CustomEventInit) -> JsValue {
   CustomEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CustomEventInit::from_js_ffi(value : JsValue) -> CustomEventInit =
+  #| (v) => ({
+  #|   bubbles: (v.bubbles === undefined ? -1 : v.bubbles),
+  #|   cancelable: (v.cancelable === undefined ? -1 : v.cancelable),
+  #|   composed: (v.composed === undefined ? -1 : v.composed),
+  #|   detail: (v.detail === undefined ? { $tag: 0 } : { $tag: 1, _0: v.detail })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CustomEventInit::from_js(value : JsValue) -> CustomEventInit {
+  CustomEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -182,6 +211,20 @@ extern "js" fn EventListenerOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn EventListenerOptions::to_js(self : EventListenerOptions) -> JsValue {
   EventListenerOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn EventListenerOptions::from_js_ffi(
+  value : JsValue,
+) -> EventListenerOptions =
+  #| (v) => ({
+  #|   capture: (v.capture === undefined ? -1 : v.capture)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn EventListenerOptions::from_js(value : JsValue) -> EventListenerOptions {
+  EventListenerOptions::from_js_ffi(value)
 }
 
 ///|
@@ -212,7 +255,7 @@ extern "js" fn AddEventListenerOptions::to_js_ffi(
   #|   capture: (self.capture === -1 ? undefined : self.capture),
   #|   passive: (self.passive === -1 ? undefined : self.passive),
   #|   once: (self.once === -1 ? undefined : self.once),
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -221,6 +264,25 @@ pub fn AddEventListenerOptions::to_js(
   self : AddEventListenerOptions,
 ) -> JsValue {
   AddEventListenerOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AddEventListenerOptions::from_js_ffi(
+  value : JsValue,
+) -> AddEventListenerOptions =
+  #| (v) => ({
+  #|   capture: (v.capture === undefined ? -1 : v.capture),
+  #|   passive: (v.passive === undefined ? -1 : v.passive),
+  #|   once: (v.once === undefined ? -1 : v.once),
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AddEventListenerOptions::from_js(
+  value : JsValue,
+) -> AddEventListenerOptions {
+  AddEventListenerOptions::from_js_ffi(value)
 }
 
 ///|
@@ -260,13 +322,33 @@ extern "js" fn MutationObserverInit::to_js_ffi(
   #|   subtree: (self.subtree === -1 ? undefined : self.subtree),
   #|   attributeOldValue: (self.attributeOldValue === -1 ? undefined : self.attributeOldValue),
   #|   characterDataOldValue: (self.characterDataOldValue === -1 ? undefined : self.characterDataOldValue),
-  #|   attributeFilter: ((() => { const v = self.attributeFilter; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   attributeFilter: ((() => { const v = self.attributeFilter; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MutationObserverInit::to_js(self : MutationObserverInit) -> JsValue {
   MutationObserverInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MutationObserverInit::from_js_ffi(
+  value : JsValue,
+) -> MutationObserverInit =
+  #| (v) => ({
+  #|   childList: (v.childList === undefined ? -1 : v.childList),
+  #|   attributes: (v.attributes === undefined ? -1 : v.attributes),
+  #|   characterData: (v.characterData === undefined ? -1 : v.characterData),
+  #|   subtree: (v.subtree === undefined ? -1 : v.subtree),
+  #|   attributeOldValue: (v.attributeOldValue === undefined ? -1 : v.attributeOldValue),
+  #|   characterDataOldValue: (v.characterDataOldValue === undefined ? -1 : v.characterDataOldValue),
+  #|   attributeFilter: (v.attributeFilter === undefined ? { $tag: 0 } : { $tag: 1, _0: v.attributeFilter })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MutationObserverInit::from_js(value : JsValue) -> MutationObserverInit {
+  MutationObserverInit::from_js_ffi(value)
 }
 
 ///|
@@ -296,6 +378,20 @@ pub fn GetRootNodeOptions::to_js(self : GetRootNodeOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn GetRootNodeOptions::from_js_ffi(
+  value : JsValue,
+) -> GetRootNodeOptions =
+  #| (v) => ({
+  #|   composed: (v.composed === undefined ? -1 : v.composed)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GetRootNodeOptions::from_js(value : JsValue) -> GetRootNodeOptions {
+  GetRootNodeOptions::from_js_ffi(value)
+}
+
+///|
 /// ElementCreationOptions dictionary
 pub(all) struct ElementCreationOptions {
   customElementRegistry : Nullable[CustomElementRegistry]
@@ -316,7 +412,7 @@ extern "js" fn ElementCreationOptions::to_js_ffi(
   self : ElementCreationOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   customElementRegistry: ((() => { const v = self.customElementRegistry; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   customElementRegistry: ((() => { const v = self.customElementRegistry; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   is: self.is_
   #| })
 
@@ -324,6 +420,23 @@ extern "js" fn ElementCreationOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn ElementCreationOptions::to_js(self : ElementCreationOptions) -> JsValue {
   ElementCreationOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ElementCreationOptions::from_js_ffi(
+  value : JsValue,
+) -> ElementCreationOptions =
+  #| (v) => ({
+  #|   customElementRegistry: (v.customElementRegistry === undefined ? { $tag: 0 } : v.customElementRegistry === null ? { $tag: 1 } : { $tag: 2, _0: v.customElementRegistry }),
+  #|   is_: v.is
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ElementCreationOptions::from_js(
+  value : JsValue,
+) -> ElementCreationOptions {
+  ElementCreationOptions::from_js_ffi(value)
 }
 
 ///|
@@ -344,7 +457,7 @@ extern "js" fn ImportNodeOptions::to_js_ffi(
   self : ImportNodeOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   customElementRegistry: ((() => { const v = self.customElementRegistry; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   customElementRegistry: ((() => { const v = self.customElementRegistry; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   selfOnly: (self.selfOnly === -1 ? undefined : self.selfOnly)
   #| })
 
@@ -352,6 +465,21 @@ extern "js" fn ImportNodeOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn ImportNodeOptions::to_js(self : ImportNodeOptions) -> JsValue {
   ImportNodeOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ImportNodeOptions::from_js_ffi(
+  value : JsValue,
+) -> ImportNodeOptions =
+  #| (v) => ({
+  #|   customElementRegistry: (v.customElementRegistry === undefined ? { $tag: 0 } : { $tag: 1, _0: v.customElementRegistry }),
+  #|   selfOnly: (v.selfOnly === undefined ? -1 : v.selfOnly)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ImportNodeOptions::from_js(value : JsValue) -> ImportNodeOptions {
+  ImportNodeOptions::from_js_ffi(value)
 }
 
 ///|
@@ -386,13 +514,30 @@ extern "js" fn ShadowRootInit::to_js_ffi(self : ShadowRootInit) -> JsValue =
   #|   slotAssignment: ((() => { const v = self.slotAssignment; if (v === undefined) return undefined; return ['manual', 'named'][v]; })()),
   #|   clonable: (self.clonable === -1 ? undefined : self.clonable),
   #|   serializable: (self.serializable === -1 ? undefined : self.serializable),
-  #|   customElementRegistry: ((() => { const v = self.customElementRegistry; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   customElementRegistry: ((() => { const v = self.customElementRegistry; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn ShadowRootInit::to_js(self : ShadowRootInit) -> JsValue {
   ShadowRootInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ShadowRootInit::from_js_ffi(value : JsValue) -> ShadowRootInit =
+  #| (v) => ({
+  #|   mode: ['open', 'closed'].indexOf(v.mode),
+  #|   delegatesFocus: (v.delegatesFocus === undefined ? -1 : v.delegatesFocus),
+  #|   slotAssignment: (v.slotAssignment === undefined ? undefined : ['manual', 'named'].indexOf(v.slotAssignment)),
+  #|   clonable: (v.clonable === undefined ? -1 : v.clonable),
+  #|   serializable: (v.serializable === undefined ? -1 : v.serializable),
+  #|   customElementRegistry: (v.customElementRegistry === undefined ? { $tag: 0 } : v.customElementRegistry === null ? { $tag: 1 } : { $tag: 2, _0: v.customElementRegistry })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ShadowRootInit::from_js(value : JsValue) -> ShadowRootInit {
+  ShadowRootInit::from_js_ffi(value)
 }
 
 ///|
@@ -431,6 +576,21 @@ extern "js" fn StaticRangeInit::to_js_ffi(self : StaticRangeInit) -> JsValue =
 /// Convert to JsValue
 pub fn StaticRangeInit::to_js(self : StaticRangeInit) -> JsValue {
   StaticRangeInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn StaticRangeInit::from_js_ffi(value : JsValue) -> StaticRangeInit =
+  #| (v) => ({
+  #|   startContainer: v.startContainer,
+  #|   startOffset: v.startOffset,
+  #|   endContainer: v.endContainer,
+  #|   endOffset: v.endOffset
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn StaticRangeInit::from_js(value : JsValue) -> StaticRangeInit {
+  StaticRangeInit::from_js_ffi(value)
 }
 
 ///|
@@ -5464,7 +5624,7 @@ pub extern "js" fn Document::open_with_url_and_name_and_features(
   url : String,
   name : String,
   features : String,
-) -> WindowProxy? =
+) -> Window? =
   #| (self, url, name, features) => (() => { const v = self.open(url, name, features); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
@@ -5486,7 +5646,7 @@ pub extern "js" fn Document::writeln(
   #| (self, text) => self.writeln(text)
 
 ///|
-pub extern "js" fn Document::get_default_view(self : Document) -> WindowProxy? =
+pub extern "js" fn Document::get_default_view(self : Document) -> Window? =
   #| (self) => (() => { const v = self.defaultView; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
@@ -7396,7 +7556,7 @@ pub extern "js" fn Document::convert_quad_from_node_with_element(
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
 ///|
-pub extern "js" fn Document::convert_quad_from_node_with_c_s_s_pseudo_element(
+pub extern "js" fn Document::convert_quad_from_node_with_css_pseudo_element(
   self : Document,
   quad : DOMQuadInit,
   from : CSSPseudoElement,
@@ -7432,7 +7592,7 @@ pub extern "js" fn Document::convert_rect_from_node_with_element(
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
 ///|
-pub extern "js" fn Document::convert_rect_from_node_with_c_s_s_pseudo_element(
+pub extern "js" fn Document::convert_rect_from_node_with_css_pseudo_element(
   self : Document,
   rect : DOMRectReadOnly,
   from : CSSPseudoElement,
@@ -7468,7 +7628,7 @@ pub extern "js" fn Document::convert_point_from_node_with_element(
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
-pub extern "js" fn Document::convert_point_from_node_with_c_s_s_pseudo_element(
+pub extern "js" fn Document::convert_point_from_node_with_css_pseudo_element(
   self : Document,
   point : DOMPointInit,
   from : CSSPseudoElement,
@@ -9413,7 +9573,7 @@ pub extern "js" fn Element::get_part(self : Element) -> DOMTokenList =
 ///|
 pub extern "js" fn Element::pseudo(
   self : Element,
-  type_ : CSSOMString,
+  type_ : String,
 ) -> CSSPseudoElement? =
   #| (self, type_) => (() => { const v = self.pseudo(type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
@@ -10449,7 +10609,7 @@ pub fn Element::get_animations_with_options(
 }
 
 ///|
-pub extern "js" fn Element::get_region_overset(self : Element) -> CSSOMString =
+pub extern "js" fn Element::get_region_overset(self : Element) -> String =
   #| (self) => self.regionOverset
 
 ///|
@@ -10477,7 +10637,7 @@ pub extern "js" fn Element::convert_quad_from_node_with_element(
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
 ///|
-pub extern "js" fn Element::convert_quad_from_node_with_c_s_s_pseudo_element(
+pub extern "js" fn Element::convert_quad_from_node_with_css_pseudo_element(
   self : Element,
   quad : DOMQuadInit,
   from : CSSPseudoElement,
@@ -10513,7 +10673,7 @@ pub extern "js" fn Element::convert_rect_from_node_with_element(
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
 ///|
-pub extern "js" fn Element::convert_rect_from_node_with_c_s_s_pseudo_element(
+pub extern "js" fn Element::convert_rect_from_node_with_css_pseudo_element(
   self : Element,
   rect : DOMRectReadOnly,
   from : CSSPseudoElement,
@@ -10549,7 +10709,7 @@ pub extern "js" fn Element::convert_point_from_node_with_element(
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
-pub extern "js" fn Element::convert_point_from_node_with_c_s_s_pseudo_element(
+pub extern "js" fn Element::convert_point_from_node_with_css_pseudo_element(
   self : Element,
   point : DOMPointInit,
   from : CSSPseudoElement,
@@ -11098,7 +11258,7 @@ pub extern "js" fn Text::convert_quad_from_node_with_element(
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
 ///|
-pub extern "js" fn Text::convert_quad_from_node_with_c_s_s_pseudo_element(
+pub extern "js" fn Text::convert_quad_from_node_with_css_pseudo_element(
   self : Text,
   quad : DOMQuadInit,
   from : CSSPseudoElement,
@@ -11134,7 +11294,7 @@ pub extern "js" fn Text::convert_rect_from_node_with_element(
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
 ///|
-pub extern "js" fn Text::convert_rect_from_node_with_c_s_s_pseudo_element(
+pub extern "js" fn Text::convert_rect_from_node_with_css_pseudo_element(
   self : Text,
   rect : DOMRectReadOnly,
   from : CSSPseudoElement,
@@ -11170,7 +11330,7 @@ pub extern "js" fn Text::convert_point_from_node_with_element(
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
-pub extern "js" fn Text::convert_point_from_node_with_c_s_s_pseudo_element(
+pub extern "js" fn Text::convert_point_from_node_with_css_pseudo_element(
   self : Text,
   point : DOMPointInit,
   from : CSSPseudoElement,

@@ -5,7 +5,7 @@
 /// AttributionAggregationProtocol enum
 pub(all) enum AttributionAggregationProtocol {
   Dap15Histogram
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -59,6 +59,22 @@ pub fn AttributionAggregationService::to_js(
 }
 
 ///|
+extern "js" fn AttributionAggregationService::from_js_ffi(
+  value : JsValue,
+) -> AttributionAggregationService =
+  #| (v) => ({
+  #|   protocol: ['dap-15-histogram'].indexOf(v.protocol)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AttributionAggregationService::from_js(
+  value : JsValue,
+) -> AttributionAggregationService {
+  AttributionAggregationService::from_js_ffi(value)
+}
+
+///|
 /// AttributionImpressionOptions dictionary
 pub(all) struct AttributionImpressionOptions {
   histogramIndex : Int
@@ -89,8 +105,8 @@ extern "js" fn AttributionImpressionOptions::to_js_ffi(
   #| (self) => ({
   #|   histogramIndex: self.histogramIndex,
   #|   matchValue: self.matchValue,
-  #|   conversionSites: ((() => { const v = self.conversionSites; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   conversionCallers: ((() => { const v = self.conversionCallers; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   conversionSites: ((() => { const v = self.conversionSites; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   conversionCallers: ((() => { const v = self.conversionCallers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   lifetimeDays: self.lifetimeDays,
   #|   priority: self.priority
   #| })
@@ -101,6 +117,27 @@ pub fn AttributionImpressionOptions::to_js(
   self : AttributionImpressionOptions,
 ) -> JsValue {
   AttributionImpressionOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AttributionImpressionOptions::from_js_ffi(
+  value : JsValue,
+) -> AttributionImpressionOptions =
+  #| (v) => ({
+  #|   histogramIndex: v.histogramIndex,
+  #|   matchValue: v.matchValue,
+  #|   conversionSites: (v.conversionSites === undefined ? { $tag: 0 } : { $tag: 1, _0: v.conversionSites }),
+  #|   conversionCallers: (v.conversionCallers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.conversionCallers }),
+  #|   lifetimeDays: v.lifetimeDays,
+  #|   priority: v.priority
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AttributionImpressionOptions::from_js(
+  value : JsValue,
+) -> AttributionImpressionOptions {
+  AttributionImpressionOptions::from_js_ffi(value)
 }
 
 ///|
@@ -126,6 +163,21 @@ pub fn AttributionImpressionResult::to_js(
   self : AttributionImpressionResult,
 ) -> JsValue {
   AttributionImpressionResult::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AttributionImpressionResult::from_js_ffi(
+  value : JsValue,
+) -> AttributionImpressionResult =
+  #| (v) => ({
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AttributionImpressionResult::from_js(
+  value : JsValue,
+) -> AttributionImpressionResult {
+  AttributionImpressionResult::from_js_ffi(value)
 }
 
 ///|
@@ -169,10 +221,10 @@ extern "js" fn AttributionConversionOptions::to_js_ffi(
   #|   epsilon: self.epsilon,
   #|   histogramSize: self.histogramSize,
   #|   lookbackDays: self.lookbackDays,
-  #|   matchValues: ((() => { const v = self.matchValues; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   impressionSites: ((() => { const v = self.impressionSites; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   impressionCallers: ((() => { const v = self.impressionCallers; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   credit: ((() => { const v = self.credit; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   matchValues: ((() => { const v = self.matchValues; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   impressionSites: ((() => { const v = self.impressionSites; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   impressionCallers: ((() => { const v = self.impressionCallers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   credit: ((() => { const v = self.credit; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   value: self.value,
   #|   maxValue: self.maxValue
   #| })
@@ -183,6 +235,31 @@ pub fn AttributionConversionOptions::to_js(
   self : AttributionConversionOptions,
 ) -> JsValue {
   AttributionConversionOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AttributionConversionOptions::from_js_ffi(
+  value : JsValue,
+) -> AttributionConversionOptions =
+  #| (v) => ({
+  #|   aggregationService: v.aggregationService,
+  #|   epsilon: v.epsilon,
+  #|   histogramSize: v.histogramSize,
+  #|   lookbackDays: v.lookbackDays,
+  #|   matchValues: (v.matchValues === undefined ? { $tag: 0 } : { $tag: 1, _0: v.matchValues }),
+  #|   impressionSites: (v.impressionSites === undefined ? { $tag: 0 } : { $tag: 1, _0: v.impressionSites }),
+  #|   impressionCallers: (v.impressionCallers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.impressionCallers }),
+  #|   credit: (v.credit === undefined ? { $tag: 0 } : { $tag: 1, _0: v.credit }),
+  #|   value: v.value,
+  #|   maxValue: v.maxValue
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AttributionConversionOptions::from_js(
+  value : JsValue,
+) -> AttributionConversionOptions {
+  AttributionConversionOptions::from_js_ffi(value)
 }
 
 ///|
@@ -213,6 +290,22 @@ pub fn AttributionConversionResult::to_js(
   self : AttributionConversionResult,
 ) -> JsValue {
   AttributionConversionResult::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AttributionConversionResult::from_js_ffi(
+  value : JsValue,
+) -> AttributionConversionResult =
+  #| (v) => ({
+  #|   report: v.report
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AttributionConversionResult::from_js(
+  value : JsValue,
+) -> AttributionConversionResult {
+  AttributionConversionResult::from_js_ffi(value)
 }
 
 ///|
@@ -306,7 +399,8 @@ extern "js" fn Attribution::save_impression_ffi(
   self : Attribution,
   options : JsValue,
 ) -> Promise[AttributionImpressionResult] =
-  #| (self, options) => self.saveImpression(options)
+  #| (self, options) => self.saveImpression(options).then(v => ({
+  #| }))
 
 ///|
 pub fn Attribution::save_impression(
@@ -321,7 +415,9 @@ extern "js" fn Attribution::measure_conversion_ffi(
   self : Attribution,
   options : JsValue,
 ) -> Promise[AttributionConversionResult] =
-  #| (self, options) => self.measureConversion(options)
+  #| (self, options) => self.measureConversion(options).then(v => ({
+  #|   report: v.report
+  #| }))
 
 ///|
 pub fn Attribution::measure_conversion(

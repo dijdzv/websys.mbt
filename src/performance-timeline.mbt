@@ -49,6 +49,22 @@ pub fn PerformanceObserverCallbackOptions::to_js(
 }
 
 ///|
+extern "js" fn PerformanceObserverCallbackOptions::from_js_ffi(
+  value : JsValue,
+) -> PerformanceObserverCallbackOptions =
+  #| (v) => ({
+  #|   droppedEntriesCount: v.droppedEntriesCount
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PerformanceObserverCallbackOptions::from_js(
+  value : JsValue,
+) -> PerformanceObserverCallbackOptions {
+  PerformanceObserverCallbackOptions::from_js_ffi(value)
+}
+
+///|
 /// PerformanceObserverInit dictionary
 pub(all) struct PerformanceObserverInit {
   entryTypes : Array[String]?
@@ -73,10 +89,10 @@ extern "js" fn PerformanceObserverInit::to_js_ffi(
   self : PerformanceObserverInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   entryTypes: ((() => { const v = self.entryTypes; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   entryTypes: ((() => { const v = self.entryTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   type: self.type_,
   #|   buffered: (self.buffered === -1 ? undefined : self.buffered),
-  #|   durationThreshold: ((() => { const v = self.durationThreshold; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   durationThreshold: ((() => { const v = self.durationThreshold; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -85,6 +101,25 @@ pub fn PerformanceObserverInit::to_js(
   self : PerformanceObserverInit,
 ) -> JsValue {
   PerformanceObserverInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PerformanceObserverInit::from_js_ffi(
+  value : JsValue,
+) -> PerformanceObserverInit =
+  #| (v) => ({
+  #|   entryTypes: (v.entryTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.entryTypes }),
+  #|   type_: v.type,
+  #|   buffered: (v.buffered === undefined ? -1 : v.buffered),
+  #|   durationThreshold: (v.durationThreshold === undefined ? { $tag: 0 } : { $tag: 1, _0: v.durationThreshold })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PerformanceObserverInit::from_js(
+  value : JsValue,
+) -> PerformanceObserverInit {
+  PerformanceObserverInit::from_js_ffi(value)
 }
 
 ///|

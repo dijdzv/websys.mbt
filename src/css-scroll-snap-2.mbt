@@ -20,14 +20,27 @@ pub fn SnapEventInit::default() -> SnapEventInit {
 ///|
 extern "js" fn SnapEventInit::to_js_ffi(self : SnapEventInit) -> JsValue =
   #| (self) => ({
-  #|   snapTargetBlock: ((() => { const v = self.snapTargetBlock; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   snapTargetInline: ((() => { const v = self.snapTargetInline; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   snapTargetBlock: ((() => { const v = self.snapTargetBlock; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   snapTargetInline: ((() => { const v = self.snapTargetInline; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn SnapEventInit::to_js(self : SnapEventInit) -> JsValue {
   SnapEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SnapEventInit::from_js_ffi(value : JsValue) -> SnapEventInit =
+  #| (v) => ({
+  #|   snapTargetBlock: (v.snapTargetBlock === undefined ? { $tag: 0 } : v.snapTargetBlock === null ? { $tag: 1 } : { $tag: 2, _0: v.snapTargetBlock }),
+  #|   snapTargetInline: (v.snapTargetInline === undefined ? { $tag: 0 } : v.snapTargetInline === null ? { $tag: 1 } : { $tag: 2, _0: v.snapTargetInline })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SnapEventInit::from_js(value : JsValue) -> SnapEventInit {
+  SnapEventInit::from_js_ffi(value)
 }
 
 ///|

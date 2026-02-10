@@ -27,7 +27,7 @@ pub extern "js" fn NDEFMessageSource::from_buffer_source(
 
 ///|
 /// Create NDEFMessageSource from NDEFMessageInit
-pub extern "js" fn NDEFMessageSource::from_n_d_e_f_message_init(
+pub extern "js" fn NDEFMessageSource::from_ndef_message_init(
   v : NDEFMessageInit,
 ) -> NDEFMessageSource =
   #| (v) => v
@@ -48,7 +48,7 @@ pub extern "js" fn NDEFMessageSource::is_buffer_source(
 
 ///|
 /// Check if this NDEFMessageSource is NDEFMessageInit
-pub extern "js" fn NDEFMessageSource::is_n_d_e_f_message_init(
+pub extern "js" fn NDEFMessageSource::is_ndef_message_init(
   self : NDEFMessageSource,
 ) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
@@ -69,10 +69,41 @@ pub extern "js" fn NDEFMessageSource::as_buffer_source(
 
 ///|
 /// Try to get NDEFMessageSource as NDEFMessageInit
-pub extern "js" fn NDEFMessageSource::as_n_d_e_f_message_init(
+pub extern "js" fn NDEFMessageSource::as_ndef_message_init(
   self : NDEFMessageSource,
 ) -> NDEFMessageInit? =
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[NDEFMessageSource] to String?
+pub fn NDEFMessageSource::bind_as_string(value : NDEFMessageSource?) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[NDEFMessageSource] to BufferSource?
+pub fn NDEFMessageSource::bind_as_buffer_source(
+  value : NDEFMessageSource?,
+) -> BufferSource? {
+  match value {
+    Some(v) => v.as_buffer_source()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[NDEFMessageSource] to NDEFMessageInit?
+pub fn NDEFMessageSource::bind_as_ndef_message_init(
+  value : NDEFMessageSource?,
+) -> NDEFMessageInit? {
+  match value {
+    Some(v) => v.as_ndef_message_init()
+    None => None
+  }
+}
 
 ///|
 /// NDEFMessageInit dictionary
@@ -96,6 +127,18 @@ extern "js" fn NDEFMessageInit::to_js_ffi(self : NDEFMessageInit) -> JsValue =
 /// Convert to JsValue
 pub fn NDEFMessageInit::to_js(self : NDEFMessageInit) -> JsValue {
   NDEFMessageInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn NDEFMessageInit::from_js_ffi(value : JsValue) -> NDEFMessageInit =
+  #| (v) => ({
+  #|   records: v.records
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NDEFMessageInit::from_js(value : JsValue) -> NDEFMessageInit {
+  NDEFMessageInit::from_js_ffi(value)
 }
 
 ///|
@@ -130,13 +173,30 @@ extern "js" fn NDEFRecordInit::to_js_ffi(self : NDEFRecordInit) -> JsValue =
   #|   id: self.id,
   #|   encoding: self.encoding,
   #|   lang: self.lang,
-  #|   data: ((() => { const v = self.data; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn NDEFRecordInit::to_js(self : NDEFRecordInit) -> JsValue {
   NDEFRecordInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn NDEFRecordInit::from_js_ffi(value : JsValue) -> NDEFRecordInit =
+  #| (v) => ({
+  #|   recordType: v.recordType,
+  #|   mediaType: v.mediaType,
+  #|   id: v.id,
+  #|   encoding: v.encoding,
+  #|   lang: v.lang,
+  #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NDEFRecordInit::from_js(value : JsValue) -> NDEFRecordInit {
+  NDEFRecordInit::from_js_ffi(value)
 }
 
 ///|
@@ -159,7 +219,7 @@ extern "js" fn NDEFReadingEventInit::to_js_ffi(
   self : NDEFReadingEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   serialNumber: ((() => { const v = self.serialNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   serialNumber: ((() => { const v = self.serialNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   message: self.message
   #| })
 
@@ -167,6 +227,21 @@ extern "js" fn NDEFReadingEventInit::to_js_ffi(
 /// Convert to JsValue
 pub fn NDEFReadingEventInit::to_js(self : NDEFReadingEventInit) -> JsValue {
   NDEFReadingEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn NDEFReadingEventInit::from_js_ffi(
+  value : JsValue,
+) -> NDEFReadingEventInit =
+  #| (v) => ({
+  #|   serialNumber: (v.serialNumber === undefined ? { $tag: 0 } : v.serialNumber === null ? { $tag: 1 } : { $tag: 2, _0: v.serialNumber }),
+  #|   message: v.message
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NDEFReadingEventInit::from_js(value : JsValue) -> NDEFReadingEventInit {
+  NDEFReadingEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -186,13 +261,28 @@ pub fn NDEFWriteOptions::default() -> NDEFWriteOptions {
 extern "js" fn NDEFWriteOptions::to_js_ffi(self : NDEFWriteOptions) -> JsValue =
   #| (self) => ({
   #|   overwrite: (self.overwrite === -1 ? undefined : self.overwrite),
-  #|   signal: ((() => { const v = self.signal; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   signal: ((() => { const v = self.signal; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn NDEFWriteOptions::to_js(self : NDEFWriteOptions) -> JsValue {
   NDEFWriteOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn NDEFWriteOptions::from_js_ffi(
+  value : JsValue,
+) -> NDEFWriteOptions =
+  #| (v) => ({
+  #|   overwrite: (v.overwrite === undefined ? -1 : v.overwrite),
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : v.signal === null ? { $tag: 1 } : { $tag: 2, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NDEFWriteOptions::from_js(value : JsValue) -> NDEFWriteOptions {
+  NDEFWriteOptions::from_js_ffi(value)
 }
 
 ///|
@@ -212,7 +302,7 @@ extern "js" fn NDEFMakeReadOnlyOptions::to_js_ffi(
   self : NDEFMakeReadOnlyOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   signal: ((() => { const v = self.signal; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   signal: ((() => { const v = self.signal; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
@@ -221,6 +311,22 @@ pub fn NDEFMakeReadOnlyOptions::to_js(
   self : NDEFMakeReadOnlyOptions,
 ) -> JsValue {
   NDEFMakeReadOnlyOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn NDEFMakeReadOnlyOptions::from_js_ffi(
+  value : JsValue,
+) -> NDEFMakeReadOnlyOptions =
+  #| (v) => ({
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : v.signal === null ? { $tag: 1 } : { $tag: 2, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NDEFMakeReadOnlyOptions::from_js(
+  value : JsValue,
+) -> NDEFMakeReadOnlyOptions {
+  NDEFMakeReadOnlyOptions::from_js_ffi(value)
 }
 
 ///|
@@ -238,13 +344,25 @@ pub fn NDEFScanOptions::default() -> NDEFScanOptions {
 ///|
 extern "js" fn NDEFScanOptions::to_js_ffi(self : NDEFScanOptions) -> JsValue =
   #| (self) => ({
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn NDEFScanOptions::to_js(self : NDEFScanOptions) -> JsValue {
   NDEFScanOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn NDEFScanOptions::from_js_ffi(value : JsValue) -> NDEFScanOptions =
+  #| (v) => ({
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NDEFScanOptions::from_js(value : JsValue) -> NDEFScanOptions {
+  NDEFScanOptions::from_js_ffi(value)
 }
 
 ///|
@@ -498,7 +616,7 @@ pub extern "js" fn NDEFReader::write_with_buffer_source(
   #| (self, message, options) => self.write(message, options)
 
 ///|
-pub extern "js" fn NDEFReader::write_with_n_d_e_f_message_init(
+pub extern "js" fn NDEFReader::write_with_ndef_message_init(
   self : NDEFReader,
   message : NDEFMessageInit,
   options : NDEFWriteOptions,

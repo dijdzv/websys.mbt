@@ -12,7 +12,7 @@ pub(all) enum SpeechRecognitionErrorCode {
   ServiceNotAllowed
   LanguageNotSupported
   PhrasesNotSupported
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -58,7 +58,7 @@ pub(all) enum AvailabilityStatus {
   Downloadable
   Downloading
   Available
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -98,7 +98,7 @@ pub(all) enum SpeechSynthesisErrorCode {
   TextTooLong
   InvalidArgument
   NotAllowed
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -176,6 +176,23 @@ pub fn SpeechRecognitionOptions::to_js(
 }
 
 ///|
+extern "js" fn SpeechRecognitionOptions::from_js_ffi(
+  value : JsValue,
+) -> SpeechRecognitionOptions =
+  #| (v) => ({
+  #|   langs: v.langs,
+  #|   processLocally: (v.processLocally === undefined ? -1 : v.processLocally)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SpeechRecognitionOptions::from_js(
+  value : JsValue,
+) -> SpeechRecognitionOptions {
+  SpeechRecognitionOptions::from_js_ffi(value)
+}
+
+///|
 /// SpeechRecognitionErrorEventInit dictionary
 pub(all) struct SpeechRecognitionErrorEventInit {
   error : SpeechRecognitionErrorCode
@@ -208,6 +225,23 @@ pub fn SpeechRecognitionErrorEventInit::to_js(
 }
 
 ///|
+extern "js" fn SpeechRecognitionErrorEventInit::from_js_ffi(
+  value : JsValue,
+) -> SpeechRecognitionErrorEventInit =
+  #| (v) => ({
+  #|   error: ['no-speech', 'aborted', 'audio-capture', 'network', 'not-allowed', 'service-not-allowed', 'language-not-supported', 'phrases-not-supported'].indexOf(v.error),
+  #|   message: v.message
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SpeechRecognitionErrorEventInit::from_js(
+  value : JsValue,
+) -> SpeechRecognitionErrorEventInit {
+  SpeechRecognitionErrorEventInit::from_js_ffi(value)
+}
+
+///|
 /// SpeechRecognitionEventInit dictionary
 pub(all) struct SpeechRecognitionEventInit {
   resultIndex : Int?
@@ -237,6 +271,23 @@ pub fn SpeechRecognitionEventInit::to_js(
   self : SpeechRecognitionEventInit,
 ) -> JsValue {
   SpeechRecognitionEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SpeechRecognitionEventInit::from_js_ffi(
+  value : JsValue,
+) -> SpeechRecognitionEventInit =
+  #| (v) => ({
+  #|   resultIndex: v.resultIndex,
+  #|   results: v.results
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SpeechRecognitionEventInit::from_js(
+  value : JsValue,
+) -> SpeechRecognitionEventInit {
+  SpeechRecognitionEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -281,6 +332,26 @@ pub fn SpeechSynthesisEventInit::to_js(
   self : SpeechSynthesisEventInit,
 ) -> JsValue {
   SpeechSynthesisEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SpeechSynthesisEventInit::from_js_ffi(
+  value : JsValue,
+) -> SpeechSynthesisEventInit =
+  #| (v) => ({
+  #|   utterance: v.utterance,
+  #|   charIndex: v.charIndex,
+  #|   charLength: v.charLength,
+  #|   elapsedTime: v.elapsedTime,
+  #|   name: v.name
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SpeechSynthesisEventInit::from_js(
+  value : JsValue,
+) -> SpeechSynthesisEventInit {
+  SpeechSynthesisEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -329,6 +400,27 @@ pub fn SpeechSynthesisErrorEventInit::to_js(
   self : SpeechSynthesisErrorEventInit,
 ) -> JsValue {
   SpeechSynthesisErrorEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SpeechSynthesisErrorEventInit::from_js_ffi(
+  value : JsValue,
+) -> SpeechSynthesisErrorEventInit =
+  #| (v) => ({
+  #|   utterance: v.utterance,
+  #|   charIndex: v.charIndex,
+  #|   charLength: v.charLength,
+  #|   elapsedTime: v.elapsedTime,
+  #|   name: v.name,
+  #|   error: ['canceled', 'interrupted', 'audio-busy', 'audio-hardware', 'network', 'synthesis-unavailable', 'synthesis-failed', 'language-unavailable', 'voice-unavailable', 'text-too-long', 'invalid-argument', 'not-allowed'].indexOf(v.error)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SpeechSynthesisErrorEventInit::from_js(
+  value : JsValue,
+) -> SpeechSynthesisErrorEventInit {
+  SpeechSynthesisErrorEventInit::from_js_ffi(value)
 }
 
 ///|

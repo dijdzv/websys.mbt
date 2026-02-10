@@ -7,7 +7,7 @@ pub(all) enum LandmarkType {
   Mouth
   Eye
   Nose
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -47,7 +47,7 @@ pub(all) enum BarcodeFormat {
   Unknown
   UpcA
   UpcE
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -121,6 +121,21 @@ pub fn FaceDetectorOptions::to_js(self : FaceDetectorOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn FaceDetectorOptions::from_js_ffi(
+  value : JsValue,
+) -> FaceDetectorOptions =
+  #| (v) => ({
+  #|   maxDetectedFaces: v.maxDetectedFaces,
+  #|   fastMode: (v.fastMode === undefined ? -1 : v.fastMode)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FaceDetectorOptions::from_js(value : JsValue) -> FaceDetectorOptions {
+  FaceDetectorOptions::from_js_ffi(value)
+}
+
+///|
 /// DetectedFace dictionary
 pub(all) struct DetectedFace {
   boundingBox : DOMRectReadOnly
@@ -144,6 +159,19 @@ extern "js" fn DetectedFace::to_js_ffi(self : DetectedFace) -> JsValue =
 /// Convert to JsValue
 pub fn DetectedFace::to_js(self : DetectedFace) -> JsValue {
   DetectedFace::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DetectedFace::from_js_ffi(value : JsValue) -> DetectedFace =
+  #| (v) => ({
+  #|   boundingBox: v.boundingBox,
+  #|   landmarks: v.landmarks
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DetectedFace::from_js(value : JsValue) -> DetectedFace {
+  DetectedFace::from_js_ffi(value)
 }
 
 ///|
@@ -173,6 +201,19 @@ pub fn Landmark::to_js(self : Landmark) -> JsValue {
 }
 
 ///|
+extern "js" fn Landmark::from_js_ffi(value : JsValue) -> Landmark =
+  #| (v) => ({
+  #|   locations: v.locations,
+  #|   type_: (v.type === undefined ? undefined : ['mouth', 'eye', 'nose'].indexOf(v.type))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn Landmark::from_js(value : JsValue) -> Landmark {
+  Landmark::from_js_ffi(value)
+}
+
+///|
 /// BarcodeDetectorOptions dictionary
 pub(all) struct BarcodeDetectorOptions {
   formats : Array[BarcodeFormat]?
@@ -189,13 +230,29 @@ extern "js" fn BarcodeDetectorOptions::to_js_ffi(
   self : BarcodeDetectorOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   formats: ((() => { const v = self.formats; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   formats: ((() => { const v = self.formats; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn BarcodeDetectorOptions::to_js(self : BarcodeDetectorOptions) -> JsValue {
   BarcodeDetectorOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BarcodeDetectorOptions::from_js_ffi(
+  value : JsValue,
+) -> BarcodeDetectorOptions =
+  #| (v) => ({
+  #|   formats: (v.formats === undefined ? { $tag: 0 } : { $tag: 1, _0: v.formats })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BarcodeDetectorOptions::from_js(
+  value : JsValue,
+) -> BarcodeDetectorOptions {
+  BarcodeDetectorOptions::from_js_ffi(value)
 }
 
 ///|
@@ -229,6 +286,21 @@ extern "js" fn DetectedBarcode::to_js_ffi(self : DetectedBarcode) -> JsValue =
 /// Convert to JsValue
 pub fn DetectedBarcode::to_js(self : DetectedBarcode) -> JsValue {
   DetectedBarcode::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DetectedBarcode::from_js_ffi(value : JsValue) -> DetectedBarcode =
+  #| (v) => ({
+  #|   boundingBox: v.boundingBox,
+  #|   rawValue: v.rawValue,
+  #|   format: ['aztec', 'code_128', 'code_39', 'code_93', 'codabar', 'data_matrix', 'ean_13', 'ean_8', 'itf', 'pdf417', 'qr_code', 'unknown', 'upc_a', 'upc_e'].indexOf(v.format),
+  #|   cornerPoints: v.cornerPoints
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DetectedBarcode::from_js(value : JsValue) -> DetectedBarcode {
+  DetectedBarcode::from_js_ffi(value)
 }
 
 ///|

@@ -69,6 +69,29 @@ pub fn IntersectionObserverEntryInit::to_js(
 }
 
 ///|
+extern "js" fn IntersectionObserverEntryInit::from_js_ffi(
+  value : JsValue,
+) -> IntersectionObserverEntryInit =
+  #| (v) => ({
+  #|   time: v.time,
+  #|   rootBounds: v.rootBounds,
+  #|   boundingClientRect: v.boundingClientRect,
+  #|   intersectionRect: v.intersectionRect,
+  #|   isIntersecting: v.isIntersecting,
+  #|   isVisible: v.isVisible,
+  #|   intersectionRatio: v.intersectionRatio,
+  #|   target: v.target
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IntersectionObserverEntryInit::from_js(
+  value : JsValue,
+) -> IntersectionObserverEntryInit {
+  IntersectionObserverEntryInit::from_js_ffi(value)
+}
+
+///|
 /// IntersectionObserverInit dictionary
 pub(all) struct IntersectionObserverInit {
   root : ElementOrDocument?
@@ -97,10 +120,10 @@ extern "js" fn IntersectionObserverInit::to_js_ffi(
   self : IntersectionObserverInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   root: ((() => { const v = self.root; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   root: ((() => { const v = self.root; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rootMargin: self.rootMargin,
   #|   scrollMargin: self.scrollMargin,
-  #|   threshold: ((() => { const v = self.threshold; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   threshold: ((() => { const v = self.threshold; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   delay: self.delay,
   #|   trackVisibility: (self.trackVisibility === -1 ? undefined : self.trackVisibility)
   #| })
@@ -111,6 +134,27 @@ pub fn IntersectionObserverInit::to_js(
   self : IntersectionObserverInit,
 ) -> JsValue {
   IntersectionObserverInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IntersectionObserverInit::from_js_ffi(
+  value : JsValue,
+) -> IntersectionObserverInit =
+  #| (v) => ({
+  #|   root: (v.root === undefined ? { $tag: 0 } : { $tag: 1, _0: v.root }),
+  #|   rootMargin: v.rootMargin,
+  #|   scrollMargin: v.scrollMargin,
+  #|   threshold: (v.threshold === undefined ? { $tag: 0 } : { $tag: 1, _0: v.threshold }),
+  #|   delay: v.delay,
+  #|   trackVisibility: (v.trackVisibility === undefined ? -1 : v.trackVisibility)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IntersectionObserverInit::from_js(
+  value : JsValue,
+) -> IntersectionObserverInit {
+  IntersectionObserverInit::from_js_ffi(value)
 }
 
 ///|

@@ -10,7 +10,7 @@ pub(all) enum ScriptInvokerType {
   UserCallback
   ResolvePromise
   RejectPromise
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -47,7 +47,7 @@ pub(all) enum ScriptWindowAttribution {
   Ancestor
   SamePage
   Other
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

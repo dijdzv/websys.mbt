@@ -30,6 +30,22 @@ pub fn PaintRenderingContext2DSettings::to_js(
 }
 
 ///|
+extern "js" fn PaintRenderingContext2DSettings::from_js_ffi(
+  value : JsValue,
+) -> PaintRenderingContext2DSettings =
+  #| (v) => ({
+  #|   alpha: (v.alpha === undefined ? -1 : v.alpha)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PaintRenderingContext2DSettings::from_js(
+  value : JsValue,
+) -> PaintRenderingContext2DSettings {
+  PaintRenderingContext2DSettings::from_js_ffi(value)
+}
+
+///|
 /// PaintWorkletGlobalScope interface
 pub type PaintWorkletGlobalScope
 
@@ -113,14 +129,14 @@ pub extern "js" fn PaintRenderingContext2D::from_js_value_opt(
 
 ///|
 /// Safely cast JsValue to PaintRenderingContext2D (checked with instanceof)
-pub extern "js" fn JsValue::as_paint_rendering_context2_d(
+pub extern "js" fn JsValue::as_paint_rendering_context_2d(
   self : JsValue,
 ) -> PaintRenderingContext2D? =
   #| (self) => (self instanceof PaintRenderingContext2D) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Cast JsValue to PaintRenderingContext2D (unchecked)
-pub extern "js" fn JsValue::to_paint_rendering_context2_d(
+pub extern "js" fn JsValue::to_paint_rendering_context_2d(
   self : JsValue,
 ) -> PaintRenderingContext2D =
   #| (self) => self
@@ -451,14 +467,14 @@ pub extern "js" fn PaintRenderingContext2D::fill_with_fill_rule(
   #| (self, fill_rule) => self.fill(['nonzero', 'evenodd'][fill_rule])
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::fill_with_path_path2_d(
+pub extern "js" fn PaintRenderingContext2D::fill_with_path_path_2d(
   self : PaintRenderingContext2D,
   path : Path2D,
 ) -> Unit =
   #| (self, path) => self.fill(path)
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::fill_with_path_path2_d_and_fill_rule_canvas_fill_rule(
+pub extern "js" fn PaintRenderingContext2D::fill_with_path_path_2d_and_fill_rule_canvas_fill_rule(
   self : PaintRenderingContext2D,
   path : Path2D,
   fill_rule : CanvasFillRule,
@@ -472,7 +488,7 @@ pub extern "js" fn PaintRenderingContext2D::stroke(
   #| (self) => self.stroke()
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::stroke_with_path_path2_d(
+pub extern "js" fn PaintRenderingContext2D::stroke_with_path_path_2d(
   self : PaintRenderingContext2D,
   path : Path2D,
 ) -> Unit =
@@ -492,14 +508,14 @@ pub extern "js" fn PaintRenderingContext2D::clip_with_fill_rule(
   #| (self, fill_rule) => self.clip(['nonzero', 'evenodd'][fill_rule])
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::clip_with_path_path2_d(
+pub extern "js" fn PaintRenderingContext2D::clip_with_path_path_2d(
   self : PaintRenderingContext2D,
   path : Path2D,
 ) -> Unit =
   #| (self, path) => self.clip(path)
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::clip_with_path_path2_d_and_fill_rule_canvas_fill_rule(
+pub extern "js" fn PaintRenderingContext2D::clip_with_path_path_2d_and_fill_rule_canvas_fill_rule(
   self : PaintRenderingContext2D,
   path : Path2D,
   fill_rule : CanvasFillRule,
@@ -524,7 +540,7 @@ pub extern "js" fn PaintRenderingContext2D::is_point_in_path_with_fill_rule(
   #| (self, x, y, fill_rule) => self.isPointInPath(x, y, ['nonzero', 'evenodd'][fill_rule])
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::is_point_in_path_with_path_path2_d_and_x_and_y(
+pub extern "js" fn PaintRenderingContext2D::is_point_in_path_with_path_path_2d_and_x_and_y(
   self : PaintRenderingContext2D,
   path : Path2D,
   x : Double,
@@ -533,7 +549,7 @@ pub extern "js" fn PaintRenderingContext2D::is_point_in_path_with_path_path2_d_a
   #| (self, path, x, y) => self.isPointInPath(path, x, y)
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::is_point_in_path_with_path_path2_d_and_x_and_y_and_fill_rule_canvas_fill_rule(
+pub extern "js" fn PaintRenderingContext2D::is_point_in_path_with_path_path_2d_and_x_and_y_and_fill_rule_canvas_fill_rule(
   self : PaintRenderingContext2D,
   path : Path2D,
   x : Double,
@@ -551,7 +567,7 @@ pub extern "js" fn PaintRenderingContext2D::is_point_in_stroke(
   #| (self, x, y) => self.isPointInStroke(x, y)
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::is_point_in_stroke_with_path_path2_d_and_x_and_y(
+pub extern "js" fn PaintRenderingContext2D::is_point_in_stroke_with_path_path_2d_and_x_and_y(
   self : PaintRenderingContext2D,
   path : Path2D,
   x : Double,
@@ -809,7 +825,7 @@ pub extern "js" fn PaintRenderingContext2D::ellipse_with_counterclockwise(
   #| (self, x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise) => self.ellipse(x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise)
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::create_pattern_with_h_t_m_l_or_s_v_g_image_element(
+pub extern "js" fn PaintRenderingContext2D::create_pattern_with_html_or_svg_image_element(
   self : PaintRenderingContext2D,
   image : HTMLOrSVGImageElement,
   repetition : String,
@@ -817,7 +833,7 @@ pub extern "js" fn PaintRenderingContext2D::create_pattern_with_h_t_m_l_or_s_v_g
   #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::create_pattern_with_h_t_m_l_video_element(
+pub extern "js" fn PaintRenderingContext2D::create_pattern_with_html_video_element(
   self : PaintRenderingContext2D,
   image : HTMLVideoElement,
   repetition : String,
@@ -825,7 +841,7 @@ pub extern "js" fn PaintRenderingContext2D::create_pattern_with_h_t_m_l_video_el
   #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::create_pattern_with_h_t_m_l_canvas_element(
+pub extern "js" fn PaintRenderingContext2D::create_pattern_with_html_canvas_element(
   self : PaintRenderingContext2D,
   image : HTMLCanvasElement,
   repetition : String,
@@ -857,7 +873,7 @@ pub extern "js" fn PaintRenderingContext2D::create_pattern_with_video_frame(
   #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::draw_image_with_h_t_m_l_or_s_v_g_image_element(
+pub extern "js" fn PaintRenderingContext2D::draw_image_with_html_or_svg_image_element(
   self : PaintRenderingContext2D,
   image : HTMLOrSVGImageElement,
   dx : Double,
@@ -866,7 +882,7 @@ pub extern "js" fn PaintRenderingContext2D::draw_image_with_h_t_m_l_or_s_v_g_ima
   #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::draw_image_with_h_t_m_l_video_element(
+pub extern "js" fn PaintRenderingContext2D::draw_image_with_html_video_element(
   self : PaintRenderingContext2D,
   image : HTMLVideoElement,
   dx : Double,
@@ -875,7 +891,7 @@ pub extern "js" fn PaintRenderingContext2D::draw_image_with_h_t_m_l_video_elemen
   #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::draw_image_with_h_t_m_l_canvas_element(
+pub extern "js" fn PaintRenderingContext2D::draw_image_with_html_canvas_element(
   self : PaintRenderingContext2D,
   image : HTMLCanvasElement,
   dx : Double,

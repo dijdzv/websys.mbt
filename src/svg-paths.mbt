@@ -28,6 +28,20 @@ pub fn SVGPathDataSettings::to_js(self : SVGPathDataSettings) -> JsValue {
 }
 
 ///|
+extern "js" fn SVGPathDataSettings::from_js_ffi(
+  value : JsValue,
+) -> SVGPathDataSettings =
+  #| (v) => ({
+  #|   normalize: (v.normalize === undefined ? -1 : v.normalize)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SVGPathDataSettings::from_js(value : JsValue) -> SVGPathDataSettings {
+  SVGPathDataSettings::from_js_ffi(value)
+}
+
+///|
 /// SVGPathSegment interface
 pub type SVGPathSegment
 

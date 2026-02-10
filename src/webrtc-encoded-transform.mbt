@@ -20,7 +20,7 @@ pub extern "js" fn RTCRtpSenderTransform::from_s_frame_sender_transform(
 
 ///|
 /// Create RTCRtpSenderTransform from RTCRtpScriptTransform
-pub extern "js" fn RTCRtpSenderTransform::from_r_t_c_rtp_script_transform(
+pub extern "js" fn RTCRtpSenderTransform::from_rtc_rtp_script_transform(
   v : RTCRtpScriptTransform,
 ) -> RTCRtpSenderTransform =
   #| (v) => v
@@ -34,7 +34,7 @@ pub extern "js" fn RTCRtpSenderTransform::is_s_frame_sender_transform(
 
 ///|
 /// Check if this RTCRtpSenderTransform is RTCRtpScriptTransform
-pub extern "js" fn RTCRtpSenderTransform::is_r_t_c_rtp_script_transform(
+pub extern "js" fn RTCRtpSenderTransform::is_rtc_rtp_script_transform(
   self : RTCRtpSenderTransform,
 ) -> Bool =
   #| (self) => self instanceof RTCRtpScriptTransform
@@ -48,10 +48,32 @@ pub extern "js" fn RTCRtpSenderTransform::as_s_frame_sender_transform(
 
 ///|
 /// Try to get RTCRtpSenderTransform as RTCRtpScriptTransform
-pub extern "js" fn RTCRtpSenderTransform::as_r_t_c_rtp_script_transform(
+pub extern "js" fn RTCRtpSenderTransform::as_rtc_rtp_script_transform(
   self : RTCRtpSenderTransform,
 ) -> RTCRtpScriptTransform? =
   #| (self) => (self instanceof RTCRtpScriptTransform) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[RTCRtpSenderTransform] to SFrameSenderTransform?
+pub fn RTCRtpSenderTransform::bind_as_s_frame_sender_transform(
+  value : RTCRtpSenderTransform?,
+) -> SFrameSenderTransform? {
+  match value {
+    Some(v) => v.as_s_frame_sender_transform()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[RTCRtpSenderTransform] to RTCRtpScriptTransform?
+pub fn RTCRtpSenderTransform::bind_as_rtc_rtp_script_transform(
+  value : RTCRtpSenderTransform?,
+) -> RTCRtpScriptTransform? {
+  match value {
+    Some(v) => v.as_rtc_rtp_script_transform()
+    None => None
+  }
+}
 
 ///|
 /// RTCRtpReceiverTransform typedef
@@ -72,7 +94,7 @@ pub extern "js" fn RTCRtpReceiverTransform::from_s_frame_receiver_transform(
 
 ///|
 /// Create RTCRtpReceiverTransform from RTCRtpScriptTransform
-pub extern "js" fn RTCRtpReceiverTransform::from_r_t_c_rtp_script_transform(
+pub extern "js" fn RTCRtpReceiverTransform::from_rtc_rtp_script_transform(
   v : RTCRtpScriptTransform,
 ) -> RTCRtpReceiverTransform =
   #| (v) => v
@@ -86,7 +108,7 @@ pub extern "js" fn RTCRtpReceiverTransform::is_s_frame_receiver_transform(
 
 ///|
 /// Check if this RTCRtpReceiverTransform is RTCRtpScriptTransform
-pub extern "js" fn RTCRtpReceiverTransform::is_r_t_c_rtp_script_transform(
+pub extern "js" fn RTCRtpReceiverTransform::is_rtc_rtp_script_transform(
   self : RTCRtpReceiverTransform,
 ) -> Bool =
   #| (self) => self instanceof RTCRtpScriptTransform
@@ -100,10 +122,32 @@ pub extern "js" fn RTCRtpReceiverTransform::as_s_frame_receiver_transform(
 
 ///|
 /// Try to get RTCRtpReceiverTransform as RTCRtpScriptTransform
-pub extern "js" fn RTCRtpReceiverTransform::as_r_t_c_rtp_script_transform(
+pub extern "js" fn RTCRtpReceiverTransform::as_rtc_rtp_script_transform(
   self : RTCRtpReceiverTransform,
 ) -> RTCRtpScriptTransform? =
   #| (self) => (self instanceof RTCRtpScriptTransform) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[RTCRtpReceiverTransform] to SFrameReceiverTransform?
+pub fn RTCRtpReceiverTransform::bind_as_s_frame_receiver_transform(
+  value : RTCRtpReceiverTransform?,
+) -> SFrameReceiverTransform? {
+  match value {
+    Some(v) => v.as_s_frame_receiver_transform()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[RTCRtpReceiverTransform] to RTCRtpScriptTransform?
+pub fn RTCRtpReceiverTransform::bind_as_rtc_rtp_script_transform(
+  value : RTCRtpReceiverTransform?,
+) -> RTCRtpScriptTransform? {
+  match value {
+    Some(v) => v.as_rtc_rtp_script_transform()
+    None => None
+  }
+}
 
 ///|
 /// SmallCryptoKeyID typedef
@@ -119,24 +163,35 @@ pub extern "js" fn CryptoKeyID::to_js_value(self : CryptoKeyID) -> JsValue =
 
 ///|
 /// Create CryptoKeyID from SmallCryptoKeyID
-pub extern "js" fn CryptoKeyID::from_small_crypto_key_i_d(
+pub extern "js" fn CryptoKeyID::from_small_crypto_key_id(
   v : SmallCryptoKeyID,
 ) -> CryptoKeyID =
   #| (v) => v
 
 ///|
 /// Check if this CryptoKeyID is SmallCryptoKeyID
-pub extern "js" fn CryptoKeyID::is_small_crypto_key_i_d(
+pub extern "js" fn CryptoKeyID::is_small_crypto_key_id(
   self : CryptoKeyID,
 ) -> Bool =
   #| (self) => typeof self === 'number'
 
 ///|
 /// Try to get CryptoKeyID as SmallCryptoKeyID
-pub extern "js" fn CryptoKeyID::as_small_crypto_key_i_d(
+pub extern "js" fn CryptoKeyID::as_small_crypto_key_id(
   self : CryptoKeyID,
 ) -> SmallCryptoKeyID? =
   #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[CryptoKeyID] to SmallCryptoKeyID?
+pub fn CryptoKeyID::bind_as_small_crypto_key_id(
+  value : CryptoKeyID?,
+) -> SmallCryptoKeyID? {
+  match value {
+    Some(v) => v.as_small_crypto_key_id()
+    None => None
+  }
+}
 
 ///|
 /// SFrameCipherSuite enum
@@ -146,7 +201,7 @@ pub(all) enum SFrameCipherSuite {
   AES128CTRHMACSHA25632
   AES128GCMSHA256128
   AES256GCMSHA512128
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -182,7 +237,7 @@ pub(all) enum SFrameTransformErrorEventType {
   Authentication
   KeyID
   Syntax
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -238,6 +293,22 @@ pub fn SFrameTransformOptions::to_js(self : SFrameTransformOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn SFrameTransformOptions::from_js_ffi(
+  value : JsValue,
+) -> SFrameTransformOptions =
+  #| (v) => ({
+  #|   cipherSuite: ['AES_128_CTR_HMAC_SHA256_80', 'AES_128_CTR_HMAC_SHA256_64', 'AES_128_CTR_HMAC_SHA256_32', 'AES_128_GCM_SHA256_128', 'AES_256_GCM_SHA512_128'].indexOf(v.cipherSuite)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SFrameTransformOptions::from_js(
+  value : JsValue,
+) -> SFrameTransformOptions {
+  SFrameTransformOptions::from_js_ffi(value)
+}
+
+///|
 /// SFrameTransformErrorEventInit dictionary
 pub(all) struct SFrameTransformErrorEventInit {
   errorType : SFrameTransformErrorEventType
@@ -265,7 +336,7 @@ extern "js" fn SFrameTransformErrorEventInit::to_js_ffi(
   #| (self) => ({
   #|   errorType: ['authentication', 'keyID', 'syntax'][self.errorType],
   #|   frame: self.frame,
-  #|   keyID: ((() => { const v = self.keyID; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0.to_js_value(); })())
+  #|   keyID: ((() => { const v = self.keyID; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0.to_js_value(); })())
   #| })
 
 ///|
@@ -274,6 +345,24 @@ pub fn SFrameTransformErrorEventInit::to_js(
   self : SFrameTransformErrorEventInit,
 ) -> JsValue {
   SFrameTransformErrorEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SFrameTransformErrorEventInit::from_js_ffi(
+  value : JsValue,
+) -> SFrameTransformErrorEventInit =
+  #| (v) => ({
+  #|   errorType: ['authentication', 'keyID', 'syntax'].indexOf(v.errorType),
+  #|   frame: v.frame,
+  #|   keyID: (v.keyID === undefined ? { $tag: 0 } : v.keyID === null ? { $tag: 1 } : { $tag: 2, _0: v.keyID })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SFrameTransformErrorEventInit::from_js(
+  value : JsValue,
+) -> SFrameTransformErrorEventInit {
+  SFrameTransformErrorEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -311,11 +400,11 @@ extern "js" fn RTCEncodedFrameMetadata::to_js_ffi(
   #| (self) => ({
   #|   synchronizationSource: self.synchronizationSource,
   #|   payloadType: self.payloadType,
-  #|   contributingSources: ((() => { const v = self.contributingSources; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   contributingSources: ((() => { const v = self.contributingSources; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rtpTimestamp: self.rtpTimestamp,
-  #|   receiveTime: ((() => { const v = self.receiveTime; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   captureTime: ((() => { const v = self.captureTime; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   senderCaptureTimeOffset: ((() => { const v = self.senderCaptureTimeOffset; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   receiveTime: ((() => { const v = self.receiveTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   captureTime: ((() => { const v = self.captureTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   senderCaptureTimeOffset: ((() => { const v = self.senderCaptureTimeOffset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   mimeType: self.mimeType
   #| })
 
@@ -325,6 +414,29 @@ pub fn RTCEncodedFrameMetadata::to_js(
   self : RTCEncodedFrameMetadata,
 ) -> JsValue {
   RTCEncodedFrameMetadata::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCEncodedFrameMetadata::from_js_ffi(
+  value : JsValue,
+) -> RTCEncodedFrameMetadata =
+  #| (v) => ({
+  #|   synchronizationSource: v.synchronizationSource,
+  #|   payloadType: v.payloadType,
+  #|   contributingSources: (v.contributingSources === undefined ? { $tag: 0 } : { $tag: 1, _0: v.contributingSources }),
+  #|   rtpTimestamp: v.rtpTimestamp,
+  #|   receiveTime: (v.receiveTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.receiveTime }),
+  #|   captureTime: (v.captureTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.captureTime }),
+  #|   senderCaptureTimeOffset: (v.senderCaptureTimeOffset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.senderCaptureTimeOffset }),
+  #|   mimeType: v.mimeType
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCEncodedFrameMetadata::from_js(
+  value : JsValue,
+) -> RTCEncodedFrameMetadata {
+  RTCEncodedFrameMetadata::from_js_ffi(value)
 }
 
 ///|
@@ -376,14 +488,14 @@ extern "js" fn RTCEncodedVideoFrameMetadata::to_js_ffi(
   #| (self) => ({
   #|   synchronizationSource: self.synchronizationSource,
   #|   payloadType: self.payloadType,
-  #|   contributingSources: ((() => { const v = self.contributingSources; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   contributingSources: ((() => { const v = self.contributingSources; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rtpTimestamp: self.rtpTimestamp,
-  #|   receiveTime: ((() => { const v = self.receiveTime; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   captureTime: ((() => { const v = self.captureTime; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   senderCaptureTimeOffset: ((() => { const v = self.senderCaptureTimeOffset; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   receiveTime: ((() => { const v = self.receiveTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   captureTime: ((() => { const v = self.captureTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   senderCaptureTimeOffset: ((() => { const v = self.senderCaptureTimeOffset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   mimeType: self.mimeType,
   #|   frameId: self.frameId,
-  #|   dependencies: ((() => { const v = self.dependencies; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   dependencies: ((() => { const v = self.dependencies; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   width: self.width,
   #|   height: self.height,
   #|   spatialIndex: self.spatialIndex,
@@ -397,6 +509,36 @@ pub fn RTCEncodedVideoFrameMetadata::to_js(
   self : RTCEncodedVideoFrameMetadata,
 ) -> JsValue {
   RTCEncodedVideoFrameMetadata::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCEncodedVideoFrameMetadata::from_js_ffi(
+  value : JsValue,
+) -> RTCEncodedVideoFrameMetadata =
+  #| (v) => ({
+  #|   synchronizationSource: v.synchronizationSource,
+  #|   payloadType: v.payloadType,
+  #|   contributingSources: (v.contributingSources === undefined ? { $tag: 0 } : { $tag: 1, _0: v.contributingSources }),
+  #|   rtpTimestamp: v.rtpTimestamp,
+  #|   receiveTime: (v.receiveTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.receiveTime }),
+  #|   captureTime: (v.captureTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.captureTime }),
+  #|   senderCaptureTimeOffset: (v.senderCaptureTimeOffset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.senderCaptureTimeOffset }),
+  #|   mimeType: v.mimeType,
+  #|   frameId: v.frameId,
+  #|   dependencies: (v.dependencies === undefined ? { $tag: 0 } : { $tag: 1, _0: v.dependencies }),
+  #|   width: v.width,
+  #|   height: v.height,
+  #|   spatialIndex: v.spatialIndex,
+  #|   temporalIndex: v.temporalIndex,
+  #|   timestamp: v.timestamp
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCEncodedVideoFrameMetadata::from_js(
+  value : JsValue,
+) -> RTCEncodedVideoFrameMetadata {
+  RTCEncodedVideoFrameMetadata::from_js_ffi(value)
 }
 
 ///|
@@ -416,7 +558,7 @@ extern "js" fn RTCEncodedVideoFrameOptions::to_js_ffi(
   self : RTCEncodedVideoFrameOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   metadata: ((() => { const v = self.metadata; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   metadata: ((() => { const v = self.metadata; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -425,6 +567,22 @@ pub fn RTCEncodedVideoFrameOptions::to_js(
   self : RTCEncodedVideoFrameOptions,
 ) -> JsValue {
   RTCEncodedVideoFrameOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCEncodedVideoFrameOptions::from_js_ffi(
+  value : JsValue,
+) -> RTCEncodedVideoFrameOptions =
+  #| (v) => ({
+  #|   metadata: (v.metadata === undefined ? { $tag: 0 } : { $tag: 1, _0: v.metadata })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCEncodedVideoFrameOptions::from_js(
+  value : JsValue,
+) -> RTCEncodedVideoFrameOptions {
+  RTCEncodedVideoFrameOptions::from_js_ffi(value)
 }
 
 ///|
@@ -466,11 +624,11 @@ extern "js" fn RTCEncodedAudioFrameMetadata::to_js_ffi(
   #| (self) => ({
   #|   synchronizationSource: self.synchronizationSource,
   #|   payloadType: self.payloadType,
-  #|   contributingSources: ((() => { const v = self.contributingSources; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   contributingSources: ((() => { const v = self.contributingSources; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rtpTimestamp: self.rtpTimestamp,
-  #|   receiveTime: ((() => { const v = self.receiveTime; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   captureTime: ((() => { const v = self.captureTime; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   senderCaptureTimeOffset: ((() => { const v = self.senderCaptureTimeOffset; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   receiveTime: ((() => { const v = self.receiveTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   captureTime: ((() => { const v = self.captureTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   senderCaptureTimeOffset: ((() => { const v = self.senderCaptureTimeOffset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   mimeType: self.mimeType,
   #|   sequenceNumber: self.sequenceNumber,
   #|   audioLevel: self.audioLevel
@@ -482,6 +640,31 @@ pub fn RTCEncodedAudioFrameMetadata::to_js(
   self : RTCEncodedAudioFrameMetadata,
 ) -> JsValue {
   RTCEncodedAudioFrameMetadata::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCEncodedAudioFrameMetadata::from_js_ffi(
+  value : JsValue,
+) -> RTCEncodedAudioFrameMetadata =
+  #| (v) => ({
+  #|   synchronizationSource: v.synchronizationSource,
+  #|   payloadType: v.payloadType,
+  #|   contributingSources: (v.contributingSources === undefined ? { $tag: 0 } : { $tag: 1, _0: v.contributingSources }),
+  #|   rtpTimestamp: v.rtpTimestamp,
+  #|   receiveTime: (v.receiveTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.receiveTime }),
+  #|   captureTime: (v.captureTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.captureTime }),
+  #|   senderCaptureTimeOffset: (v.senderCaptureTimeOffset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.senderCaptureTimeOffset }),
+  #|   mimeType: v.mimeType,
+  #|   sequenceNumber: v.sequenceNumber,
+  #|   audioLevel: v.audioLevel
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCEncodedAudioFrameMetadata::from_js(
+  value : JsValue,
+) -> RTCEncodedAudioFrameMetadata {
+  RTCEncodedAudioFrameMetadata::from_js_ffi(value)
 }
 
 ///|
@@ -501,7 +684,7 @@ extern "js" fn RTCEncodedAudioFrameOptions::to_js_ffi(
   self : RTCEncodedAudioFrameOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   metadata: ((() => { const v = self.metadata; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   metadata: ((() => { const v = self.metadata; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -510,6 +693,22 @@ pub fn RTCEncodedAudioFrameOptions::to_js(
   self : RTCEncodedAudioFrameOptions,
 ) -> JsValue {
   RTCEncodedAudioFrameOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCEncodedAudioFrameOptions::from_js_ffi(
+  value : JsValue,
+) -> RTCEncodedAudioFrameOptions =
+  #| (v) => ({
+  #|   metadata: (v.metadata === undefined ? { $tag: 0 } : { $tag: 1, _0: v.metadata })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCEncodedAudioFrameOptions::from_js(
+  value : JsValue,
+) -> RTCEncodedAudioFrameOptions {
+  RTCEncodedAudioFrameOptions::from_js_ffi(value)
 }
 
 ///|
@@ -589,7 +788,7 @@ pub extern "js" fn SFrameSenderTransform::set_onerror(
   #| (self, value) => { self.onerror = value }
 
 ///|
-pub extern "js" fn SFrameSenderTransform::set_encryption_key_with_small_crypto_key_i_d(
+pub extern "js" fn SFrameSenderTransform::set_encryption_key_with_small_crypto_key_id(
   self : SFrameSenderTransform,
   key : CryptoKey,
   key_id : SmallCryptoKeyID,
@@ -686,7 +885,7 @@ pub extern "js" fn SFrameReceiverTransform::set_onerror(
   #| (self, value) => { self.onerror = value }
 
 ///|
-pub extern "js" fn SFrameReceiverTransform::add_decryption_key_with_small_crypto_key_i_d(
+pub extern "js" fn SFrameReceiverTransform::add_decryption_key_with_small_crypto_key_id(
   self : SFrameReceiverTransform,
   key : CryptoKey,
   key_id : SmallCryptoKeyID,
@@ -694,7 +893,7 @@ pub extern "js" fn SFrameReceiverTransform::add_decryption_key_with_small_crypto
   #| (self, key, key_id) => self.addDecryptionKey(key, key_id)
 
 ///|
-pub extern "js" fn SFrameReceiverTransform::remove_decryption_key_with_small_crypto_key_i_d(
+pub extern "js" fn SFrameReceiverTransform::remove_decryption_key_with_small_crypto_key_id(
   self : SFrameReceiverTransform,
   key_id : SmallCryptoKeyID,
 ) -> Promise[Unit] =
@@ -795,7 +994,7 @@ pub extern "js" fn SFrameEncrypterStream::set_onerror(
   #| (self, value) => { self.onerror = value }
 
 ///|
-pub extern "js" fn SFrameEncrypterStream::set_encryption_key_with_small_crypto_key_i_d(
+pub extern "js" fn SFrameEncrypterStream::set_encryption_key_with_small_crypto_key_id(
   self : SFrameEncrypterStream,
   key : CryptoKey,
   key_id : SmallCryptoKeyID,
@@ -904,7 +1103,7 @@ pub extern "js" fn SFrameDecrypterStream::set_onerror(
   #| (self, value) => { self.onerror = value }
 
 ///|
-pub extern "js" fn SFrameDecrypterStream::add_decryption_key_with_small_crypto_key_i_d(
+pub extern "js" fn SFrameDecrypterStream::add_decryption_key_with_small_crypto_key_id(
   self : SFrameDecrypterStream,
   key : CryptoKey,
   key_id : SmallCryptoKeyID,
@@ -912,7 +1111,7 @@ pub extern "js" fn SFrameDecrypterStream::add_decryption_key_with_small_crypto_k
   #| (self, key, key_id) => self.addDecryptionKey(key, key_id)
 
 ///|
-pub extern "js" fn SFrameDecrypterStream::remove_decryption_key_with_small_crypto_key_i_d(
+pub extern "js" fn SFrameDecrypterStream::remove_decryption_key_with_small_crypto_key_id(
   self : SFrameDecrypterStream,
   key_id : SmallCryptoKeyID,
 ) -> Promise[Unit] =

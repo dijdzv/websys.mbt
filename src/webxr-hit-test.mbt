@@ -7,7 +7,7 @@ pub(all) enum XRHitTestTrackableType {
   Point
   Plane
   Mesh
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -54,14 +54,30 @@ extern "js" fn XRHitTestOptionsInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
-  #|   entityTypes: ((() => { const v = self.entityTypes; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   offsetRay: ((() => { const v = self.offsetRay; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   entityTypes: ((() => { const v = self.entityTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   offsetRay: ((() => { const v = self.offsetRay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn XRHitTestOptionsInit::to_js(self : XRHitTestOptionsInit) -> JsValue {
   XRHitTestOptionsInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRHitTestOptionsInit::from_js_ffi(
+  value : JsValue,
+) -> XRHitTestOptionsInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   entityTypes: (v.entityTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.entityTypes }),
+  #|   offsetRay: (v.offsetRay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offsetRay })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRHitTestOptionsInit::from_js(value : JsValue) -> XRHitTestOptionsInit {
+  XRHitTestOptionsInit::from_js_ffi(value)
 }
 
 ///|
@@ -88,8 +104,8 @@ extern "js" fn XRTransientInputHitTestOptionsInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   profile: self.profile,
-  #|   entityTypes: ((() => { const v = self.entityTypes; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   offsetRay: ((() => { const v = self.offsetRay; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   entityTypes: ((() => { const v = self.entityTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   offsetRay: ((() => { const v = self.offsetRay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -98,6 +114,24 @@ pub fn XRTransientInputHitTestOptionsInit::to_js(
   self : XRTransientInputHitTestOptionsInit,
 ) -> JsValue {
   XRTransientInputHitTestOptionsInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRTransientInputHitTestOptionsInit::from_js_ffi(
+  value : JsValue,
+) -> XRTransientInputHitTestOptionsInit =
+  #| (v) => ({
+  #|   profile: v.profile,
+  #|   entityTypes: (v.entityTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.entityTypes }),
+  #|   offsetRay: (v.offsetRay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offsetRay })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRTransientInputHitTestOptionsInit::from_js(
+  value : JsValue,
+) -> XRTransientInputHitTestOptionsInit {
+  XRTransientInputHitTestOptionsInit::from_js_ffi(value)
 }
 
 ///|
@@ -130,6 +164,23 @@ extern "js" fn XRRayDirectionInit::to_js_ffi(
 /// Convert to JsValue
 pub fn XRRayDirectionInit::to_js(self : XRRayDirectionInit) -> JsValue {
   XRRayDirectionInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRRayDirectionInit::from_js_ffi(
+  value : JsValue,
+) -> XRRayDirectionInit =
+  #| (v) => ({
+  #|   x: v.x,
+  #|   y: v.y,
+  #|   z: v.z,
+  #|   w: v.w
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRRayDirectionInit::from_js(value : JsValue) -> XRRayDirectionInit {
+  XRRayDirectionInit::from_js_ffi(value)
 }
 
 ///|

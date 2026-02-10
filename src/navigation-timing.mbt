@@ -7,7 +7,7 @@ pub(all) enum NavigationTimingType {
   Navigate
   Reload
   BackForward
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -35,7 +35,7 @@ pub fn NavigationTimingType::from_string(s : String) -> NavigationTimingType? {
 pub(all) enum PerformanceTimingConfidenceValue {
   High
   Low
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

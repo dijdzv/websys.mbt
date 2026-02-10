@@ -4,9 +4,9 @@
 ///|
 /// AnimationEventInit dictionary
 pub(all) struct AnimationEventInit {
-  animationName : CSSOMString?
+  animationName : String?
   elapsedTime : Double?
-  pseudoElement : CSSOMString?
+  pseudoElement : String?
 }
 
 ///|
@@ -24,15 +24,31 @@ extern "js" fn AnimationEventInit::to_js_ffi(
   self : AnimationEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   animationName: ((() => { const v = self.animationName; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   animationName: self.animationName,
   #|   elapsedTime: self.elapsedTime,
-  #|   pseudoElement: ((() => { const v = self.pseudoElement; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   pseudoElement: self.pseudoElement
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn AnimationEventInit::to_js(self : AnimationEventInit) -> JsValue {
   AnimationEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AnimationEventInit::from_js_ffi(
+  value : JsValue,
+) -> AnimationEventInit =
+  #| (v) => ({
+  #|   animationName: v.animationName,
+  #|   elapsedTime: v.elapsedTime,
+  #|   pseudoElement: v.pseudoElement
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AnimationEventInit::from_js(value : JsValue) -> AnimationEventInit {
+  AnimationEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -76,19 +92,19 @@ pub extern "js" fn AnimationEvent::to_event(self : AnimationEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn AnimationEvent::new(type_ : CSSOMString) -> AnimationEvent =
+pub extern "js" fn AnimationEvent::new(type_ : String) -> AnimationEvent =
   #| (type_) => new AnimationEvent(type_)
 
 ///|
 extern "js" fn AnimationEvent::new_with_animation_event_init_dict_ffi(
-  type_ : CSSOMString,
+  type_ : String,
   animation_event_init_dict : JsValue,
 ) -> AnimationEvent =
   #| (type_, animation_event_init_dict) => new AnimationEvent(type_, animation_event_init_dict)
 
 ///|
 pub fn AnimationEvent::new_with_animation_event_init_dict(
-  type_ : CSSOMString,
+  type_ : String,
   animation_event_init_dict : AnimationEventInit,
 ) -> AnimationEvent {
   AnimationEvent::new_with_animation_event_init_dict_ffi(
@@ -100,7 +116,7 @@ pub fn AnimationEvent::new_with_animation_event_init_dict(
 ///|
 pub extern "js" fn AnimationEvent::get_animation_name(
   self : AnimationEvent,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.animationName
 
 ///|
@@ -112,7 +128,7 @@ pub extern "js" fn AnimationEvent::get_elapsed_time(
 ///|
 pub extern "js" fn AnimationEvent::get_pseudo_element(
   self : AnimationEvent,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.pseudoElement
 
 ///|
@@ -162,13 +178,13 @@ pub extern "js" fn CSSKeyframeRule::to_css_rule(
 ///|
 pub extern "js" fn CSSKeyframeRule::get_key_text(
   self : CSSKeyframeRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.keyText
 
 ///|
 pub extern "js" fn CSSKeyframeRule::set_key_text(
   self : CSSKeyframeRule,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.keyText = value }
 
@@ -225,13 +241,13 @@ pub extern "js" fn CSSKeyframesRule::to_css_rule(
 ///|
 pub extern "js" fn CSSKeyframesRule::get_name(
   self : CSSKeyframesRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.name
 
 ///|
 pub extern "js" fn CSSKeyframesRule::set_name(
   self : CSSKeyframesRule,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.name = value }
 
@@ -255,20 +271,20 @@ pub extern "js" fn CSSKeyframesRule::get(
 ///|
 pub extern "js" fn CSSKeyframesRule::append_rule(
   self : CSSKeyframesRule,
-  rule : CSSOMString,
+  rule : String,
 ) -> Unit =
   #| (self, rule) => self.appendRule(rule)
 
 ///|
 pub extern "js" fn CSSKeyframesRule::delete_rule(
   self : CSSKeyframesRule,
-  select : CSSOMString,
+  select : String,
 ) -> Unit =
   #| (self, select) => self.deleteRule(select)
 
 ///|
 pub extern "js" fn CSSKeyframesRule::find_rule(
   self : CSSKeyframesRule,
-  select : CSSOMString,
+  select : String,
 ) -> CSSKeyframeRule? =
   #| (self, select) => (() => { const v = self.findRule(select); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

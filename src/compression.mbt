@@ -7,7 +7,7 @@ pub(all) enum CompressionFormat {
   Deflate
   DeflateRaw
   Gzip
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

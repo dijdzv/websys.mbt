@@ -32,6 +32,21 @@ pub fn DOMPointInit::to_js(self : DOMPointInit) -> JsValue {
 }
 
 ///|
+extern "js" fn DOMPointInit::from_js_ffi(value : JsValue) -> DOMPointInit =
+  #| (v) => ({
+  #|   x: v.x,
+  #|   y: v.y,
+  #|   z: v.z,
+  #|   w: v.w
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DOMPointInit::from_js(value : JsValue) -> DOMPointInit {
+  DOMPointInit::from_js_ffi(value)
+}
+
+///|
 /// DOMRectInit dictionary
 pub(all) struct DOMRectInit {
   x : Double?
@@ -62,6 +77,21 @@ pub fn DOMRectInit::to_js(self : DOMRectInit) -> JsValue {
 }
 
 ///|
+extern "js" fn DOMRectInit::from_js_ffi(value : JsValue) -> DOMRectInit =
+  #| (v) => ({
+  #|   x: v.x,
+  #|   y: v.y,
+  #|   width: v.width,
+  #|   height: v.height
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DOMRectInit::from_js(value : JsValue) -> DOMRectInit {
+  DOMRectInit::from_js_ffi(value)
+}
+
+///|
 /// DOMQuadInit dictionary
 pub(all) struct DOMQuadInit {
   p1 : DOMPointInit?
@@ -79,16 +109,31 @@ pub fn DOMQuadInit::default() -> DOMQuadInit {
 ///|
 extern "js" fn DOMQuadInit::to_js_ffi(self : DOMQuadInit) -> JsValue =
   #| (self) => ({
-  #|   p1: ((() => { const v = self.p1; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   p2: ((() => { const v = self.p2; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   p3: ((() => { const v = self.p3; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   p4: ((() => { const v = self.p4; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   p1: ((() => { const v = self.p1; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   p2: ((() => { const v = self.p2; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   p3: ((() => { const v = self.p3; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   p4: ((() => { const v = self.p4; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn DOMQuadInit::to_js(self : DOMQuadInit) -> JsValue {
   DOMQuadInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DOMQuadInit::from_js_ffi(value : JsValue) -> DOMQuadInit =
+  #| (v) => ({
+  #|   p1: (v.p1 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.p1 }),
+  #|   p2: (v.p2 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.p2 }),
+  #|   p3: (v.p3 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.p3 }),
+  #|   p4: (v.p4 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.p4 })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DOMQuadInit::from_js(value : JsValue) -> DOMQuadInit {
+  DOMQuadInit::from_js_ffi(value)
 }
 
 ///|
@@ -148,6 +193,29 @@ extern "js" fn DOMMatrix2DInit::to_js_ffi(self : DOMMatrix2DInit) -> JsValue =
 /// Convert to JsValue
 pub fn DOMMatrix2DInit::to_js(self : DOMMatrix2DInit) -> JsValue {
   DOMMatrix2DInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DOMMatrix2DInit::from_js_ffi(value : JsValue) -> DOMMatrix2DInit =
+  #| (v) => ({
+  #|   a: v.a,
+  #|   b: v.b,
+  #|   c: v.c,
+  #|   d: v.d,
+  #|   e: v.e,
+  #|   f: v.f,
+  #|   m11: v.m11,
+  #|   m12: v.m12,
+  #|   m21: v.m21,
+  #|   m22: v.m22,
+  #|   m41: v.m41,
+  #|   m42: v.m42
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DOMMatrix2DInit::from_js(value : JsValue) -> DOMMatrix2DInit {
+  DOMMatrix2DInit::from_js_ffi(value)
 }
 
 ///|
@@ -240,6 +308,40 @@ extern "js" fn DOMMatrixInit::to_js_ffi(self : DOMMatrixInit) -> JsValue =
 /// Convert to JsValue
 pub fn DOMMatrixInit::to_js(self : DOMMatrixInit) -> JsValue {
   DOMMatrixInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DOMMatrixInit::from_js_ffi(value : JsValue) -> DOMMatrixInit =
+  #| (v) => ({
+  #|   a: v.a,
+  #|   b: v.b,
+  #|   c: v.c,
+  #|   d: v.d,
+  #|   e: v.e,
+  #|   f: v.f,
+  #|   m11: v.m11,
+  #|   m12: v.m12,
+  #|   m21: v.m21,
+  #|   m22: v.m22,
+  #|   m41: v.m41,
+  #|   m42: v.m42,
+  #|   m13: v.m13,
+  #|   m14: v.m14,
+  #|   m23: v.m23,
+  #|   m24: v.m24,
+  #|   m31: v.m31,
+  #|   m32: v.m32,
+  #|   m33: v.m33,
+  #|   m34: v.m34,
+  #|   m43: v.m43,
+  #|   m44: v.m44,
+  #|   is2D: (v.is2D === undefined ? -1 : v.is2D)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DOMMatrixInit::from_js(value : JsValue) -> DOMMatrixInit {
+  DOMMatrixInit::from_js_ffi(value)
 }
 
 ///|
@@ -1008,7 +1110,7 @@ pub extern "js" fn DOMMatrixReadOnly::get_m44(
   #| (self) => self.m44
 
 ///|
-pub extern "js" fn DOMMatrixReadOnly::get_is2_d(
+pub extern "js" fn DOMMatrixReadOnly::get_is_2d(
   self : DOMMatrixReadOnly,
 ) -> Bool =
   #| (self) => self.is2D

@@ -8,7 +8,7 @@ pub(all) enum SummarizerType {
   Teaser
   KeyPoints
   Headline
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -38,7 +38,7 @@ pub fn SummarizerType::from_string(s : String) -> SummarizerType? {
 pub(all) enum SummarizerFormat {
   PlainText
   Markdown
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -65,7 +65,7 @@ pub(all) enum SummarizerLength {
   Short
   Medium
   Long
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -94,7 +94,7 @@ pub(all) enum WriterTone {
   Formal
   Neutral
   Casual
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -122,7 +122,7 @@ pub fn WriterTone::from_string(s : String) -> WriterTone? {
 pub(all) enum WriterFormat {
   PlainText
   Markdown
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -149,7 +149,7 @@ pub(all) enum WriterLength {
   Short
   Medium
   Long
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -178,7 +178,7 @@ pub(all) enum RewriterTone {
   AsIs
   MoreFormal
   MoreCasual
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -207,7 +207,7 @@ pub(all) enum RewriterFormat {
   AsIs
   PlainText
   Markdown
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -236,7 +236,7 @@ pub(all) enum RewriterLength {
   AsIs
   Shorter
   Longer
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -266,7 +266,7 @@ pub(all) enum Availability {
   Downloadable
   Downloading
   Available
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -334,8 +334,8 @@ extern "js" fn SummarizerCreateCoreOptions::to_js_ffi(
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['tldr', 'teaser', 'key-points', 'headline'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['plain-text', 'markdown'][v]; })()),
   #|   length: ((() => { const v = self.length; if (v === undefined) return undefined; return ['short', 'medium', 'long'][v]; })()),
-  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   outputLanguage: self.outputLanguage
   #| })
 
@@ -345,6 +345,27 @@ pub fn SummarizerCreateCoreOptions::to_js(
   self : SummarizerCreateCoreOptions,
 ) -> JsValue {
   SummarizerCreateCoreOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SummarizerCreateCoreOptions::from_js_ffi(
+  value : JsValue,
+) -> SummarizerCreateCoreOptions =
+  #| (v) => ({
+  #|   type_: (v.type === undefined ? undefined : ['tldr', 'teaser', 'key-points', 'headline'].indexOf(v.type)),
+  #|   format: (v.format === undefined ? undefined : ['plain-text', 'markdown'].indexOf(v.format)),
+  #|   length: (v.length === undefined ? undefined : ['short', 'medium', 'long'].indexOf(v.length)),
+  #|   expectedInputLanguages: (v.expectedInputLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedInputLanguages }),
+  #|   expectedContextLanguages: (v.expectedContextLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedContextLanguages }),
+  #|   outputLanguage: v.outputLanguage
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SummarizerCreateCoreOptions::from_js(
+  value : JsValue,
+) -> SummarizerCreateCoreOptions {
+  SummarizerCreateCoreOptions::from_js_ffi(value)
 }
 
 ///|
@@ -385,11 +406,11 @@ extern "js" fn SummarizerCreateOptions::to_js_ffi(
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['tldr', 'teaser', 'key-points', 'headline'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['plain-text', 'markdown'][v]; })()),
   #|   length: ((() => { const v = self.length; if (v === undefined) return undefined; return ['short', 'medium', 'long'][v]; })()),
-  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   outputLanguage: self.outputLanguage,
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   monitor: ((() => { const v = self.monitor; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   monitor: ((() => { const v = self.monitor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   sharedContext: self.sharedContext
   #| })
 
@@ -399,6 +420,30 @@ pub fn SummarizerCreateOptions::to_js(
   self : SummarizerCreateOptions,
 ) -> JsValue {
   SummarizerCreateOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SummarizerCreateOptions::from_js_ffi(
+  value : JsValue,
+) -> SummarizerCreateOptions =
+  #| (v) => ({
+  #|   type_: (v.type === undefined ? undefined : ['tldr', 'teaser', 'key-points', 'headline'].indexOf(v.type)),
+  #|   format: (v.format === undefined ? undefined : ['plain-text', 'markdown'].indexOf(v.format)),
+  #|   length: (v.length === undefined ? undefined : ['short', 'medium', 'long'].indexOf(v.length)),
+  #|   expectedInputLanguages: (v.expectedInputLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedInputLanguages }),
+  #|   expectedContextLanguages: (v.expectedContextLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedContextLanguages }),
+  #|   outputLanguage: v.outputLanguage,
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
+  #|   monitor: (v.monitor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.monitor }),
+  #|   sharedContext: v.sharedContext
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SummarizerCreateOptions::from_js(
+  value : JsValue,
+) -> SummarizerCreateOptions {
+  SummarizerCreateOptions::from_js_ffi(value)
 }
 
 ///|
@@ -419,7 +464,7 @@ extern "js" fn SummarizerSummarizeOptions::to_js_ffi(
   self : SummarizerSummarizeOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   context: self.context
   #| })
 
@@ -429,6 +474,23 @@ pub fn SummarizerSummarizeOptions::to_js(
   self : SummarizerSummarizeOptions,
 ) -> JsValue {
   SummarizerSummarizeOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SummarizerSummarizeOptions::from_js_ffi(
+  value : JsValue,
+) -> SummarizerSummarizeOptions =
+  #| (v) => ({
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
+  #|   context: v.context
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SummarizerSummarizeOptions::from_js(
+  value : JsValue,
+) -> SummarizerSummarizeOptions {
+  SummarizerSummarizeOptions::from_js_ffi(value)
 }
 
 ///|
@@ -463,8 +525,8 @@ extern "js" fn WriterCreateCoreOptions::to_js_ffi(
   #|   tone: ((() => { const v = self.tone; if (v === undefined) return undefined; return ['formal', 'neutral', 'casual'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['plain-text', 'markdown'][v]; })()),
   #|   length: ((() => { const v = self.length; if (v === undefined) return undefined; return ['short', 'medium', 'long'][v]; })()),
-  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   outputLanguage: self.outputLanguage
   #| })
 
@@ -474,6 +536,27 @@ pub fn WriterCreateCoreOptions::to_js(
   self : WriterCreateCoreOptions,
 ) -> JsValue {
   WriterCreateCoreOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WriterCreateCoreOptions::from_js_ffi(
+  value : JsValue,
+) -> WriterCreateCoreOptions =
+  #| (v) => ({
+  #|   tone: (v.tone === undefined ? undefined : ['formal', 'neutral', 'casual'].indexOf(v.tone)),
+  #|   format: (v.format === undefined ? undefined : ['plain-text', 'markdown'].indexOf(v.format)),
+  #|   length: (v.length === undefined ? undefined : ['short', 'medium', 'long'].indexOf(v.length)),
+  #|   expectedInputLanguages: (v.expectedInputLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedInputLanguages }),
+  #|   expectedContextLanguages: (v.expectedContextLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedContextLanguages }),
+  #|   outputLanguage: v.outputLanguage
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WriterCreateCoreOptions::from_js(
+  value : JsValue,
+) -> WriterCreateCoreOptions {
+  WriterCreateCoreOptions::from_js_ffi(value)
 }
 
 ///|
@@ -514,11 +597,11 @@ extern "js" fn WriterCreateOptions::to_js_ffi(
   #|   tone: ((() => { const v = self.tone; if (v === undefined) return undefined; return ['formal', 'neutral', 'casual'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['plain-text', 'markdown'][v]; })()),
   #|   length: ((() => { const v = self.length; if (v === undefined) return undefined; return ['short', 'medium', 'long'][v]; })()),
-  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   outputLanguage: self.outputLanguage,
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   monitor: ((() => { const v = self.monitor; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   monitor: ((() => { const v = self.monitor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   sharedContext: self.sharedContext
   #| })
 
@@ -526,6 +609,28 @@ extern "js" fn WriterCreateOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn WriterCreateOptions::to_js(self : WriterCreateOptions) -> JsValue {
   WriterCreateOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WriterCreateOptions::from_js_ffi(
+  value : JsValue,
+) -> WriterCreateOptions =
+  #| (v) => ({
+  #|   tone: (v.tone === undefined ? undefined : ['formal', 'neutral', 'casual'].indexOf(v.tone)),
+  #|   format: (v.format === undefined ? undefined : ['plain-text', 'markdown'].indexOf(v.format)),
+  #|   length: (v.length === undefined ? undefined : ['short', 'medium', 'long'].indexOf(v.length)),
+  #|   expectedInputLanguages: (v.expectedInputLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedInputLanguages }),
+  #|   expectedContextLanguages: (v.expectedContextLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedContextLanguages }),
+  #|   outputLanguage: v.outputLanguage,
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
+  #|   monitor: (v.monitor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.monitor }),
+  #|   sharedContext: v.sharedContext
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WriterCreateOptions::from_js(value : JsValue) -> WriterCreateOptions {
+  WriterCreateOptions::from_js_ffi(value)
 }
 
 ///|
@@ -547,13 +652,28 @@ extern "js" fn WriterWriteOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   context: self.context,
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn WriterWriteOptions::to_js(self : WriterWriteOptions) -> JsValue {
   WriterWriteOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WriterWriteOptions::from_js_ffi(
+  value : JsValue,
+) -> WriterWriteOptions =
+  #| (v) => ({
+  #|   context: v.context,
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WriterWriteOptions::from_js(value : JsValue) -> WriterWriteOptions {
+  WriterWriteOptions::from_js_ffi(value)
 }
 
 ///|
@@ -588,8 +708,8 @@ extern "js" fn RewriterCreateCoreOptions::to_js_ffi(
   #|   tone: ((() => { const v = self.tone; if (v === undefined) return undefined; return ['as-is', 'more-formal', 'more-casual'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['as-is', 'plain-text', 'markdown'][v]; })()),
   #|   length: ((() => { const v = self.length; if (v === undefined) return undefined; return ['as-is', 'shorter', 'longer'][v]; })()),
-  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   outputLanguage: self.outputLanguage
   #| })
 
@@ -599,6 +719,27 @@ pub fn RewriterCreateCoreOptions::to_js(
   self : RewriterCreateCoreOptions,
 ) -> JsValue {
   RewriterCreateCoreOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RewriterCreateCoreOptions::from_js_ffi(
+  value : JsValue,
+) -> RewriterCreateCoreOptions =
+  #| (v) => ({
+  #|   tone: (v.tone === undefined ? undefined : ['as-is', 'more-formal', 'more-casual'].indexOf(v.tone)),
+  #|   format: (v.format === undefined ? undefined : ['as-is', 'plain-text', 'markdown'].indexOf(v.format)),
+  #|   length: (v.length === undefined ? undefined : ['as-is', 'shorter', 'longer'].indexOf(v.length)),
+  #|   expectedInputLanguages: (v.expectedInputLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedInputLanguages }),
+  #|   expectedContextLanguages: (v.expectedContextLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedContextLanguages }),
+  #|   outputLanguage: v.outputLanguage
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RewriterCreateCoreOptions::from_js(
+  value : JsValue,
+) -> RewriterCreateCoreOptions {
+  RewriterCreateCoreOptions::from_js_ffi(value)
 }
 
 ///|
@@ -639,11 +780,11 @@ extern "js" fn RewriterCreateOptions::to_js_ffi(
   #|   tone: ((() => { const v = self.tone; if (v === undefined) return undefined; return ['as-is', 'more-formal', 'more-casual'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['as-is', 'plain-text', 'markdown'][v]; })()),
   #|   length: ((() => { const v = self.length; if (v === undefined) return undefined; return ['as-is', 'shorter', 'longer'][v]; })()),
-  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   outputLanguage: self.outputLanguage,
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   monitor: ((() => { const v = self.monitor; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   monitor: ((() => { const v = self.monitor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   sharedContext: self.sharedContext
   #| })
 
@@ -651,6 +792,28 @@ extern "js" fn RewriterCreateOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn RewriterCreateOptions::to_js(self : RewriterCreateOptions) -> JsValue {
   RewriterCreateOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RewriterCreateOptions::from_js_ffi(
+  value : JsValue,
+) -> RewriterCreateOptions =
+  #| (v) => ({
+  #|   tone: (v.tone === undefined ? undefined : ['as-is', 'more-formal', 'more-casual'].indexOf(v.tone)),
+  #|   format: (v.format === undefined ? undefined : ['as-is', 'plain-text', 'markdown'].indexOf(v.format)),
+  #|   length: (v.length === undefined ? undefined : ['as-is', 'shorter', 'longer'].indexOf(v.length)),
+  #|   expectedInputLanguages: (v.expectedInputLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedInputLanguages }),
+  #|   expectedContextLanguages: (v.expectedContextLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedContextLanguages }),
+  #|   outputLanguage: v.outputLanguage,
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
+  #|   monitor: (v.monitor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.monitor }),
+  #|   sharedContext: v.sharedContext
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RewriterCreateOptions::from_js(value : JsValue) -> RewriterCreateOptions {
+  RewriterCreateOptions::from_js_ffi(value)
 }
 
 ///|
@@ -672,13 +835,30 @@ extern "js" fn RewriterRewriteOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   context: self.context,
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn RewriterRewriteOptions::to_js(self : RewriterRewriteOptions) -> JsValue {
   RewriterRewriteOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RewriterRewriteOptions::from_js_ffi(
+  value : JsValue,
+) -> RewriterRewriteOptions =
+  #| (v) => ({
+  #|   context: v.context,
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RewriterRewriteOptions::from_js(
+  value : JsValue,
+) -> RewriterRewriteOptions {
+  RewriterRewriteOptions::from_js_ffi(value)
 }
 
 ///|

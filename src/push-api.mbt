@@ -54,11 +54,33 @@ pub extern "js" fn PushMessageDataInit::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
+/// Flatten Option[PushMessageDataInit] to BufferSource?
+pub fn PushMessageDataInit::bind_as_buffer_source(
+  value : PushMessageDataInit?,
+) -> BufferSource? {
+  match value {
+    Some(v) => v.as_buffer_source()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[PushMessageDataInit] to String?
+pub fn PushMessageDataInit::bind_as_string(
+  value : PushMessageDataInit?,
+) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
 /// PushEncryptionKeyName enum
 pub(all) enum PushEncryptionKeyName {
   P256dh
   Auth
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -108,6 +130,22 @@ pub fn PushPermissionDescriptor::to_js(
 }
 
 ///|
+extern "js" fn PushPermissionDescriptor::from_js_ffi(
+  value : JsValue,
+) -> PushPermissionDescriptor =
+  #| (v) => ({
+  #|   userVisibleOnly: (v.userVisibleOnly === undefined ? -1 : v.userVisibleOnly)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PushPermissionDescriptor::from_js(
+  value : JsValue,
+) -> PushPermissionDescriptor {
+  PushPermissionDescriptor::from_js_ffi(value)
+}
+
+///|
 /// PushSubscriptionOptionsInit dictionary
 pub(all) struct PushSubscriptionOptionsInit {
   userVisibleOnly : Bool?
@@ -129,7 +167,7 @@ extern "js" fn PushSubscriptionOptionsInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   userVisibleOnly: (self.userVisibleOnly === -1 ? undefined : self.userVisibleOnly),
-  #|   applicationServerKey: ((() => { const v = self.applicationServerKey; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   applicationServerKey: ((() => { const v = self.applicationServerKey; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -138,6 +176,23 @@ pub fn PushSubscriptionOptionsInit::to_js(
   self : PushSubscriptionOptionsInit,
 ) -> JsValue {
   PushSubscriptionOptionsInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PushSubscriptionOptionsInit::from_js_ffi(
+  value : JsValue,
+) -> PushSubscriptionOptionsInit =
+  #| (v) => ({
+  #|   userVisibleOnly: (v.userVisibleOnly === undefined ? -1 : v.userVisibleOnly),
+  #|   applicationServerKey: (v.applicationServerKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.applicationServerKey })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PushSubscriptionOptionsInit::from_js(
+  value : JsValue,
+) -> PushSubscriptionOptionsInit {
+  PushSubscriptionOptionsInit::from_js_ffi(value)
 }
 
 ///|
@@ -164,14 +219,30 @@ extern "js" fn PushSubscriptionJSON::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   endpoint: self.endpoint,
-  #|   expirationTime: ((() => { const v = self.expirationTime; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   keys: ((() => { const v = self.keys; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   expirationTime: ((() => { const v = self.expirationTime; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   keys: ((() => { const v = self.keys; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn PushSubscriptionJSON::to_js(self : PushSubscriptionJSON) -> JsValue {
   PushSubscriptionJSON::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PushSubscriptionJSON::from_js_ffi(
+  value : JsValue,
+) -> PushSubscriptionJSON =
+  #| (v) => ({
+  #|   endpoint: v.endpoint,
+  #|   expirationTime: (v.expirationTime === undefined ? { $tag: 0 } : v.expirationTime === null ? { $tag: 1 } : { $tag: 2, _0: v.expirationTime }),
+  #|   keys: (v.keys === undefined ? { $tag: 0 } : { $tag: 1, _0: v.keys })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PushSubscriptionJSON::from_js(value : JsValue) -> PushSubscriptionJSON {
+  PushSubscriptionJSON::from_js_ffi(value)
 }
 
 ///|
@@ -193,14 +264,27 @@ pub fn PushEventInit::default() -> PushEventInit {
 ///|
 extern "js" fn PushEventInit::to_js_ffi(self : PushEventInit) -> JsValue =
   #| (self) => ({
-  #|   data: ((() => { const v = self.data; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0.to_js_value(); })()),
-  #|   notification: ((() => { const v = self.notification; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   data: ((() => { const v = self.data; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0.to_js_value(); })()),
+  #|   notification: ((() => { const v = self.notification; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn PushEventInit::to_js(self : PushEventInit) -> JsValue {
   PushEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PushEventInit::from_js_ffi(value : JsValue) -> PushEventInit =
+  #| (v) => ({
+  #|   data: (v.data === undefined ? { $tag: 0 } : v.data === null ? { $tag: 1 } : { $tag: 2, _0: v.data }),
+  #|   notification: (v.notification === undefined ? { $tag: 0 } : v.notification === null ? { $tag: 1 } : { $tag: 2, _0: v.notification })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PushEventInit::from_js(value : JsValue) -> PushEventInit {
+  PushEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -224,8 +308,8 @@ extern "js" fn PushSubscriptionChangeEventInit::to_js_ffi(
   self : PushSubscriptionChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   newSubscription: ((() => { const v = self.newSubscription; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   oldSubscription: ((() => { const v = self.oldSubscription; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   newSubscription: ((() => { const v = self.newSubscription; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   oldSubscription: ((() => { const v = self.oldSubscription; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -234,6 +318,23 @@ pub fn PushSubscriptionChangeEventInit::to_js(
   self : PushSubscriptionChangeEventInit,
 ) -> JsValue {
   PushSubscriptionChangeEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PushSubscriptionChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> PushSubscriptionChangeEventInit =
+  #| (v) => ({
+  #|   newSubscription: (v.newSubscription === undefined ? { $tag: 0 } : { $tag: 1, _0: v.newSubscription }),
+  #|   oldSubscription: (v.oldSubscription === undefined ? { $tag: 0 } : { $tag: 1, _0: v.oldSubscription })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PushSubscriptionChangeEventInit::from_js(
+  value : JsValue,
+) -> PushSubscriptionChangeEventInit {
+  PushSubscriptionChangeEventInit::from_js_ffi(value)
 }
 
 ///|

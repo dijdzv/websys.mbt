@@ -28,6 +28,19 @@ pub fn SyncEventInit::to_js(self : SyncEventInit) -> JsValue {
 }
 
 ///|
+extern "js" fn SyncEventInit::from_js_ffi(value : JsValue) -> SyncEventInit =
+  #| (v) => ({
+  #|   tag: v.tag,
+  #|   lastChance: (v.lastChance === undefined ? -1 : v.lastChance)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SyncEventInit::from_js(value : JsValue) -> SyncEventInit {
+  SyncEventInit::from_js_ffi(value)
+}
+
+///|
 /// SyncManager interface
 pub type SyncManager
 

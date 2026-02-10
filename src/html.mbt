@@ -13,45 +13,67 @@ pub extern "js" fn HTMLOrSVGScriptElement::to_js_value(
 
 ///|
 /// Create HTMLOrSVGScriptElement from HTMLScriptElement
-pub extern "js" fn HTMLOrSVGScriptElement::from_h_t_m_l_script_element(
+pub extern "js" fn HTMLOrSVGScriptElement::from_html_script_element(
   v : HTMLScriptElement,
 ) -> HTMLOrSVGScriptElement =
   #| (v) => v
 
 ///|
 /// Create HTMLOrSVGScriptElement from SVGScriptElement
-pub extern "js" fn HTMLOrSVGScriptElement::from_s_v_g_script_element(
+pub extern "js" fn HTMLOrSVGScriptElement::from_svg_script_element(
   v : SVGScriptElement,
 ) -> HTMLOrSVGScriptElement =
   #| (v) => v
 
 ///|
 /// Check if this HTMLOrSVGScriptElement is HTMLScriptElement
-pub extern "js" fn HTMLOrSVGScriptElement::is_h_t_m_l_script_element(
+pub extern "js" fn HTMLOrSVGScriptElement::is_html_script_element(
   self : HTMLOrSVGScriptElement,
 ) -> Bool =
   #| (self) => self instanceof HTMLScriptElement
 
 ///|
 /// Check if this HTMLOrSVGScriptElement is SVGScriptElement
-pub extern "js" fn HTMLOrSVGScriptElement::is_s_v_g_script_element(
+pub extern "js" fn HTMLOrSVGScriptElement::is_svg_script_element(
   self : HTMLOrSVGScriptElement,
 ) -> Bool =
   #| (self) => self instanceof SVGScriptElement
 
 ///|
 /// Try to get HTMLOrSVGScriptElement as HTMLScriptElement
-pub extern "js" fn HTMLOrSVGScriptElement::as_h_t_m_l_script_element(
+pub extern "js" fn HTMLOrSVGScriptElement::as_html_script_element(
   self : HTMLOrSVGScriptElement,
 ) -> HTMLScriptElement? =
   #| (self) => (self instanceof HTMLScriptElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get HTMLOrSVGScriptElement as SVGScriptElement
-pub extern "js" fn HTMLOrSVGScriptElement::as_s_v_g_script_element(
+pub extern "js" fn HTMLOrSVGScriptElement::as_svg_script_element(
   self : HTMLOrSVGScriptElement,
 ) -> SVGScriptElement? =
   #| (self) => (self instanceof SVGScriptElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[HTMLOrSVGScriptElement] to HTMLScriptElement?
+pub fn HTMLOrSVGScriptElement::bind_as_html_script_element(
+  value : HTMLOrSVGScriptElement?,
+) -> HTMLScriptElement? {
+  match value {
+    Some(v) => v.as_html_script_element()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[HTMLOrSVGScriptElement] to SVGScriptElement?
+pub fn HTMLOrSVGScriptElement::bind_as_svg_script_element(
+  value : HTMLOrSVGScriptElement?,
+) -> SVGScriptElement? {
+  match value {
+    Some(v) => v.as_svg_script_element()
+    None => None
+  }
+}
 
 ///|
 /// MediaProvider typedef
@@ -115,6 +137,37 @@ pub extern "js" fn MediaProvider::as_blob(self : MediaProvider) -> Blob? =
   #| (self) => (self instanceof Blob) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[MediaProvider] to MediaStream?
+pub fn MediaProvider::bind_as_media_stream(
+  value : MediaProvider?,
+) -> MediaStream? {
+  match value {
+    Some(v) => v.as_media_stream()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[MediaProvider] to MediaSource?
+pub fn MediaProvider::bind_as_media_source(
+  value : MediaProvider?,
+) -> MediaSource? {
+  match value {
+    Some(v) => v.as_media_source()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[MediaProvider] to Blob?
+pub fn MediaProvider::bind_as_blob(value : MediaProvider?) -> Blob? {
+  match value {
+    Some(v) => v.as_blob()
+    None => None
+  }
+}
+
+///|
 /// RenderingContext typedef
 pub type RenderingContext
 
@@ -126,7 +179,7 @@ pub extern "js" fn RenderingContext::to_js_value(
 
 ///|
 /// Create RenderingContext from CanvasRenderingContext2D
-pub extern "js" fn RenderingContext::from_canvas_rendering_context2_d(
+pub extern "js" fn RenderingContext::from_canvas_rendering_context_2d(
   v : CanvasRenderingContext2D,
 ) -> RenderingContext =
   #| (v) => v
@@ -140,28 +193,28 @@ pub extern "js" fn RenderingContext::from_image_bitmap_rendering_context(
 
 ///|
 /// Create RenderingContext from WebGLRenderingContext
-pub extern "js" fn RenderingContext::from_web_g_l_rendering_context(
+pub extern "js" fn RenderingContext::from_web_gl_rendering_context(
   v : WebGLRenderingContext,
 ) -> RenderingContext =
   #| (v) => v
 
 ///|
 /// Create RenderingContext from WebGL2RenderingContext
-pub extern "js" fn RenderingContext::from_web_g_l2_rendering_context(
+pub extern "js" fn RenderingContext::from_web_gl2_rendering_context(
   v : WebGL2RenderingContext,
 ) -> RenderingContext =
   #| (v) => v
 
 ///|
 /// Create RenderingContext from GPUCanvasContext
-pub extern "js" fn RenderingContext::from_g_p_u_canvas_context(
+pub extern "js" fn RenderingContext::from_gpu_canvas_context(
   v : GPUCanvasContext,
 ) -> RenderingContext =
   #| (v) => v
 
 ///|
 /// Check if this RenderingContext is CanvasRenderingContext2D
-pub extern "js" fn RenderingContext::is_canvas_rendering_context2_d(
+pub extern "js" fn RenderingContext::is_canvas_rendering_context_2d(
   self : RenderingContext,
 ) -> Bool =
   #| (self) => self instanceof CanvasRenderingContext2D
@@ -175,28 +228,28 @@ pub extern "js" fn RenderingContext::is_image_bitmap_rendering_context(
 
 ///|
 /// Check if this RenderingContext is WebGLRenderingContext
-pub extern "js" fn RenderingContext::is_web_g_l_rendering_context(
+pub extern "js" fn RenderingContext::is_web_gl_rendering_context(
   self : RenderingContext,
 ) -> Bool =
   #| (self) => self instanceof WebGLRenderingContext
 
 ///|
 /// Check if this RenderingContext is WebGL2RenderingContext
-pub extern "js" fn RenderingContext::is_web_g_l2_rendering_context(
+pub extern "js" fn RenderingContext::is_web_gl2_rendering_context(
   self : RenderingContext,
 ) -> Bool =
   #| (self) => self instanceof WebGL2RenderingContext
 
 ///|
 /// Check if this RenderingContext is GPUCanvasContext
-pub extern "js" fn RenderingContext::is_g_p_u_canvas_context(
+pub extern "js" fn RenderingContext::is_gpu_canvas_context(
   self : RenderingContext,
 ) -> Bool =
   #| (self) => self instanceof GPUCanvasContext
 
 ///|
 /// Try to get RenderingContext as CanvasRenderingContext2D
-pub extern "js" fn RenderingContext::as_canvas_rendering_context2_d(
+pub extern "js" fn RenderingContext::as_canvas_rendering_context_2d(
   self : RenderingContext,
 ) -> CanvasRenderingContext2D? =
   #| (self) => (self instanceof CanvasRenderingContext2D) ? { $tag: 1, _0: self } : { $tag: 0 }
@@ -210,24 +263,79 @@ pub extern "js" fn RenderingContext::as_image_bitmap_rendering_context(
 
 ///|
 /// Try to get RenderingContext as WebGLRenderingContext
-pub extern "js" fn RenderingContext::as_web_g_l_rendering_context(
+pub extern "js" fn RenderingContext::as_web_gl_rendering_context(
   self : RenderingContext,
 ) -> WebGLRenderingContext? =
   #| (self) => (self instanceof WebGLRenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get RenderingContext as WebGL2RenderingContext
-pub extern "js" fn RenderingContext::as_web_g_l2_rendering_context(
+pub extern "js" fn RenderingContext::as_web_gl2_rendering_context(
   self : RenderingContext,
 ) -> WebGL2RenderingContext? =
   #| (self) => (self instanceof WebGL2RenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get RenderingContext as GPUCanvasContext
-pub extern "js" fn RenderingContext::as_g_p_u_canvas_context(
+pub extern "js" fn RenderingContext::as_gpu_canvas_context(
   self : RenderingContext,
 ) -> GPUCanvasContext? =
   #| (self) => (self instanceof GPUCanvasContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[RenderingContext] to CanvasRenderingContext2D?
+pub fn RenderingContext::bind_as_canvas_rendering_context_2d(
+  value : RenderingContext?,
+) -> CanvasRenderingContext2D? {
+  match value {
+    Some(v) => v.as_canvas_rendering_context_2d()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[RenderingContext] to ImageBitmapRenderingContext?
+pub fn RenderingContext::bind_as_image_bitmap_rendering_context(
+  value : RenderingContext?,
+) -> ImageBitmapRenderingContext? {
+  match value {
+    Some(v) => v.as_image_bitmap_rendering_context()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[RenderingContext] to WebGLRenderingContext?
+pub fn RenderingContext::bind_as_web_gl_rendering_context(
+  value : RenderingContext?,
+) -> WebGLRenderingContext? {
+  match value {
+    Some(v) => v.as_web_gl_rendering_context()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[RenderingContext] to WebGL2RenderingContext?
+pub fn RenderingContext::bind_as_web_gl2_rendering_context(
+  value : RenderingContext?,
+) -> WebGL2RenderingContext? {
+  match value {
+    Some(v) => v.as_web_gl2_rendering_context()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[RenderingContext] to GPUCanvasContext?
+pub fn RenderingContext::bind_as_gpu_canvas_context(
+  value : RenderingContext?,
+) -> GPUCanvasContext? {
+  match value {
+    Some(v) => v.as_gpu_canvas_context()
+    None => None
+  }
+}
 
 ///|
 /// HTMLOrSVGImageElement typedef
@@ -241,45 +349,67 @@ pub extern "js" fn HTMLOrSVGImageElement::to_js_value(
 
 ///|
 /// Create HTMLOrSVGImageElement from HTMLImageElement
-pub extern "js" fn HTMLOrSVGImageElement::from_h_t_m_l_image_element(
+pub extern "js" fn HTMLOrSVGImageElement::from_html_image_element(
   v : HTMLImageElement,
 ) -> HTMLOrSVGImageElement =
   #| (v) => v
 
 ///|
 /// Create HTMLOrSVGImageElement from SVGImageElement
-pub extern "js" fn HTMLOrSVGImageElement::from_s_v_g_image_element(
+pub extern "js" fn HTMLOrSVGImageElement::from_svg_image_element(
   v : SVGImageElement,
 ) -> HTMLOrSVGImageElement =
   #| (v) => v
 
 ///|
 /// Check if this HTMLOrSVGImageElement is HTMLImageElement
-pub extern "js" fn HTMLOrSVGImageElement::is_h_t_m_l_image_element(
+pub extern "js" fn HTMLOrSVGImageElement::is_html_image_element(
   self : HTMLOrSVGImageElement,
 ) -> Bool =
   #| (self) => self instanceof HTMLImageElement
 
 ///|
 /// Check if this HTMLOrSVGImageElement is SVGImageElement
-pub extern "js" fn HTMLOrSVGImageElement::is_s_v_g_image_element(
+pub extern "js" fn HTMLOrSVGImageElement::is_svg_image_element(
   self : HTMLOrSVGImageElement,
 ) -> Bool =
   #| (self) => self instanceof SVGImageElement
 
 ///|
 /// Try to get HTMLOrSVGImageElement as HTMLImageElement
-pub extern "js" fn HTMLOrSVGImageElement::as_h_t_m_l_image_element(
+pub extern "js" fn HTMLOrSVGImageElement::as_html_image_element(
   self : HTMLOrSVGImageElement,
 ) -> HTMLImageElement? =
   #| (self) => (self instanceof HTMLImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get HTMLOrSVGImageElement as SVGImageElement
-pub extern "js" fn HTMLOrSVGImageElement::as_s_v_g_image_element(
+pub extern "js" fn HTMLOrSVGImageElement::as_svg_image_element(
   self : HTMLOrSVGImageElement,
 ) -> SVGImageElement? =
   #| (self) => (self instanceof SVGImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[HTMLOrSVGImageElement] to HTMLImageElement?
+pub fn HTMLOrSVGImageElement::bind_as_html_image_element(
+  value : HTMLOrSVGImageElement?,
+) -> HTMLImageElement? {
+  match value {
+    Some(v) => v.as_html_image_element()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[HTMLOrSVGImageElement] to SVGImageElement?
+pub fn HTMLOrSVGImageElement::bind_as_svg_image_element(
+  value : HTMLOrSVGImageElement?,
+) -> SVGImageElement? {
+  match value {
+    Some(v) => v.as_svg_image_element()
+    None => None
+  }
+}
 
 ///|
 /// CanvasImageSource typedef
@@ -293,21 +423,21 @@ pub extern "js" fn CanvasImageSource::to_js_value(
 
 ///|
 /// Create CanvasImageSource from HTMLOrSVGImageElement
-pub extern "js" fn CanvasImageSource::from_h_t_m_l_or_s_v_g_image_element(
+pub extern "js" fn CanvasImageSource::from_html_or_svg_image_element(
   v : HTMLOrSVGImageElement,
 ) -> CanvasImageSource =
   #| (v) => v
 
 ///|
 /// Create CanvasImageSource from HTMLVideoElement
-pub extern "js" fn CanvasImageSource::from_h_t_m_l_video_element(
+pub extern "js" fn CanvasImageSource::from_html_video_element(
   v : HTMLVideoElement,
 ) -> CanvasImageSource =
   #| (v) => v
 
 ///|
 /// Create CanvasImageSource from HTMLCanvasElement
-pub extern "js" fn CanvasImageSource::from_h_t_m_l_canvas_element(
+pub extern "js" fn CanvasImageSource::from_html_canvas_element(
   v : HTMLCanvasElement,
 ) -> CanvasImageSource =
   #| (v) => v
@@ -335,21 +465,21 @@ pub extern "js" fn CanvasImageSource::from_video_frame(
 
 ///|
 /// Check if this CanvasImageSource is HTMLOrSVGImageElement
-pub extern "js" fn CanvasImageSource::is_h_t_m_l_or_s_v_g_image_element(
+pub extern "js" fn CanvasImageSource::is_html_or_svg_image_element(
   self : CanvasImageSource,
 ) -> Bool =
   #| (self) => self instanceof HTMLImageElement || self instanceof SVGImageElement
 
 ///|
 /// Check if this CanvasImageSource is HTMLVideoElement
-pub extern "js" fn CanvasImageSource::is_h_t_m_l_video_element(
+pub extern "js" fn CanvasImageSource::is_html_video_element(
   self : CanvasImageSource,
 ) -> Bool =
   #| (self) => self instanceof HTMLVideoElement
 
 ///|
 /// Check if this CanvasImageSource is HTMLCanvasElement
-pub extern "js" fn CanvasImageSource::is_h_t_m_l_canvas_element(
+pub extern "js" fn CanvasImageSource::is_html_canvas_element(
   self : CanvasImageSource,
 ) -> Bool =
   #| (self) => self instanceof HTMLCanvasElement
@@ -377,21 +507,21 @@ pub extern "js" fn CanvasImageSource::is_video_frame(
 
 ///|
 /// Try to get CanvasImageSource as HTMLOrSVGImageElement
-pub extern "js" fn CanvasImageSource::as_h_t_m_l_or_s_v_g_image_element(
+pub extern "js" fn CanvasImageSource::as_html_or_svg_image_element(
   self : CanvasImageSource,
 ) -> HTMLOrSVGImageElement? =
   #| (self) => (self instanceof HTMLImageElement || self instanceof SVGImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get CanvasImageSource as HTMLVideoElement
-pub extern "js" fn CanvasImageSource::as_h_t_m_l_video_element(
+pub extern "js" fn CanvasImageSource::as_html_video_element(
   self : CanvasImageSource,
 ) -> HTMLVideoElement? =
   #| (self) => (self instanceof HTMLVideoElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get CanvasImageSource as HTMLCanvasElement
-pub extern "js" fn CanvasImageSource::as_h_t_m_l_canvas_element(
+pub extern "js" fn CanvasImageSource::as_html_canvas_element(
   self : CanvasImageSource,
 ) -> HTMLCanvasElement? =
   #| (self) => (self instanceof HTMLCanvasElement) ? { $tag: 1, _0: self } : { $tag: 0 }
@@ -418,6 +548,72 @@ pub extern "js" fn CanvasImageSource::as_video_frame(
   #| (self) => (self instanceof VideoFrame) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[CanvasImageSource] to HTMLOrSVGImageElement?
+pub fn CanvasImageSource::bind_as_html_or_svg_image_element(
+  value : CanvasImageSource?,
+) -> HTMLOrSVGImageElement? {
+  match value {
+    Some(v) => v.as_html_or_svg_image_element()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[CanvasImageSource] to HTMLVideoElement?
+pub fn CanvasImageSource::bind_as_html_video_element(
+  value : CanvasImageSource?,
+) -> HTMLVideoElement? {
+  match value {
+    Some(v) => v.as_html_video_element()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[CanvasImageSource] to HTMLCanvasElement?
+pub fn CanvasImageSource::bind_as_html_canvas_element(
+  value : CanvasImageSource?,
+) -> HTMLCanvasElement? {
+  match value {
+    Some(v) => v.as_html_canvas_element()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[CanvasImageSource] to ImageBitmap?
+pub fn CanvasImageSource::bind_as_image_bitmap(
+  value : CanvasImageSource?,
+) -> ImageBitmap? {
+  match value {
+    Some(v) => v.as_image_bitmap()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[CanvasImageSource] to OffscreenCanvas?
+pub fn CanvasImageSource::bind_as_offscreen_canvas(
+  value : CanvasImageSource?,
+) -> OffscreenCanvas? {
+  match value {
+    Some(v) => v.as_offscreen_canvas()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[CanvasImageSource] to VideoFrame?
+pub fn CanvasImageSource::bind_as_video_frame(
+  value : CanvasImageSource?,
+) -> VideoFrame? {
+  match value {
+    Some(v) => v.as_video_frame()
+    None => None
+  }
+}
+
+///|
 /// OffscreenRenderingContext typedef
 pub type OffscreenRenderingContext
 
@@ -429,7 +625,7 @@ pub extern "js" fn OffscreenRenderingContext::to_js_value(
 
 ///|
 /// Create OffscreenRenderingContext from OffscreenCanvasRenderingContext2D
-pub extern "js" fn OffscreenRenderingContext::from_offscreen_canvas_rendering_context2_d(
+pub extern "js" fn OffscreenRenderingContext::from_offscreen_canvas_rendering_context_2d(
   v : OffscreenCanvasRenderingContext2D,
 ) -> OffscreenRenderingContext =
   #| (v) => v
@@ -443,28 +639,28 @@ pub extern "js" fn OffscreenRenderingContext::from_image_bitmap_rendering_contex
 
 ///|
 /// Create OffscreenRenderingContext from WebGLRenderingContext
-pub extern "js" fn OffscreenRenderingContext::from_web_g_l_rendering_context(
+pub extern "js" fn OffscreenRenderingContext::from_web_gl_rendering_context(
   v : WebGLRenderingContext,
 ) -> OffscreenRenderingContext =
   #| (v) => v
 
 ///|
 /// Create OffscreenRenderingContext from WebGL2RenderingContext
-pub extern "js" fn OffscreenRenderingContext::from_web_g_l2_rendering_context(
+pub extern "js" fn OffscreenRenderingContext::from_web_gl2_rendering_context(
   v : WebGL2RenderingContext,
 ) -> OffscreenRenderingContext =
   #| (v) => v
 
 ///|
 /// Create OffscreenRenderingContext from GPUCanvasContext
-pub extern "js" fn OffscreenRenderingContext::from_g_p_u_canvas_context(
+pub extern "js" fn OffscreenRenderingContext::from_gpu_canvas_context(
   v : GPUCanvasContext,
 ) -> OffscreenRenderingContext =
   #| (v) => v
 
 ///|
 /// Check if this OffscreenRenderingContext is OffscreenCanvasRenderingContext2D
-pub extern "js" fn OffscreenRenderingContext::is_offscreen_canvas_rendering_context2_d(
+pub extern "js" fn OffscreenRenderingContext::is_offscreen_canvas_rendering_context_2d(
   self : OffscreenRenderingContext,
 ) -> Bool =
   #| (self) => self instanceof OffscreenCanvasRenderingContext2D
@@ -478,28 +674,28 @@ pub extern "js" fn OffscreenRenderingContext::is_image_bitmap_rendering_context(
 
 ///|
 /// Check if this OffscreenRenderingContext is WebGLRenderingContext
-pub extern "js" fn OffscreenRenderingContext::is_web_g_l_rendering_context(
+pub extern "js" fn OffscreenRenderingContext::is_web_gl_rendering_context(
   self : OffscreenRenderingContext,
 ) -> Bool =
   #| (self) => self instanceof WebGLRenderingContext
 
 ///|
 /// Check if this OffscreenRenderingContext is WebGL2RenderingContext
-pub extern "js" fn OffscreenRenderingContext::is_web_g_l2_rendering_context(
+pub extern "js" fn OffscreenRenderingContext::is_web_gl2_rendering_context(
   self : OffscreenRenderingContext,
 ) -> Bool =
   #| (self) => self instanceof WebGL2RenderingContext
 
 ///|
 /// Check if this OffscreenRenderingContext is GPUCanvasContext
-pub extern "js" fn OffscreenRenderingContext::is_g_p_u_canvas_context(
+pub extern "js" fn OffscreenRenderingContext::is_gpu_canvas_context(
   self : OffscreenRenderingContext,
 ) -> Bool =
   #| (self) => self instanceof GPUCanvasContext
 
 ///|
 /// Try to get OffscreenRenderingContext as OffscreenCanvasRenderingContext2D
-pub extern "js" fn OffscreenRenderingContext::as_offscreen_canvas_rendering_context2_d(
+pub extern "js" fn OffscreenRenderingContext::as_offscreen_canvas_rendering_context_2d(
   self : OffscreenRenderingContext,
 ) -> OffscreenCanvasRenderingContext2D? =
   #| (self) => (self instanceof OffscreenCanvasRenderingContext2D) ? { $tag: 1, _0: self } : { $tag: 0 }
@@ -513,24 +709,79 @@ pub extern "js" fn OffscreenRenderingContext::as_image_bitmap_rendering_context(
 
 ///|
 /// Try to get OffscreenRenderingContext as WebGLRenderingContext
-pub extern "js" fn OffscreenRenderingContext::as_web_g_l_rendering_context(
+pub extern "js" fn OffscreenRenderingContext::as_web_gl_rendering_context(
   self : OffscreenRenderingContext,
 ) -> WebGLRenderingContext? =
   #| (self) => (self instanceof WebGLRenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get OffscreenRenderingContext as WebGL2RenderingContext
-pub extern "js" fn OffscreenRenderingContext::as_web_g_l2_rendering_context(
+pub extern "js" fn OffscreenRenderingContext::as_web_gl2_rendering_context(
   self : OffscreenRenderingContext,
 ) -> WebGL2RenderingContext? =
   #| (self) => (self instanceof WebGL2RenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get OffscreenRenderingContext as GPUCanvasContext
-pub extern "js" fn OffscreenRenderingContext::as_g_p_u_canvas_context(
+pub extern "js" fn OffscreenRenderingContext::as_gpu_canvas_context(
   self : OffscreenRenderingContext,
 ) -> GPUCanvasContext? =
   #| (self) => (self instanceof GPUCanvasContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[OffscreenRenderingContext] to OffscreenCanvasRenderingContext2D?
+pub fn OffscreenRenderingContext::bind_as_offscreen_canvas_rendering_context_2d(
+  value : OffscreenRenderingContext?,
+) -> OffscreenCanvasRenderingContext2D? {
+  match value {
+    Some(v) => v.as_offscreen_canvas_rendering_context_2d()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[OffscreenRenderingContext] to ImageBitmapRenderingContext?
+pub fn OffscreenRenderingContext::bind_as_image_bitmap_rendering_context(
+  value : OffscreenRenderingContext?,
+) -> ImageBitmapRenderingContext? {
+  match value {
+    Some(v) => v.as_image_bitmap_rendering_context()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[OffscreenRenderingContext] to WebGLRenderingContext?
+pub fn OffscreenRenderingContext::bind_as_web_gl_rendering_context(
+  value : OffscreenRenderingContext?,
+) -> WebGLRenderingContext? {
+  match value {
+    Some(v) => v.as_web_gl_rendering_context()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[OffscreenRenderingContext] to WebGL2RenderingContext?
+pub fn OffscreenRenderingContext::bind_as_web_gl2_rendering_context(
+  value : OffscreenRenderingContext?,
+) -> WebGL2RenderingContext? {
+  match value {
+    Some(v) => v.as_web_gl2_rendering_context()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[OffscreenRenderingContext] to GPUCanvasContext?
+pub fn OffscreenRenderingContext::bind_as_gpu_canvas_context(
+  value : OffscreenRenderingContext?,
+) -> GPUCanvasContext? {
+  match value {
+    Some(v) => v.as_gpu_canvas_context()
+    None => None
+  }
+}
 
 ///|
 /// EventHandler typedef
@@ -602,6 +853,35 @@ pub extern "js" fn TimerHandler::as_trusted_script(
   #| (self) => (self instanceof TrustedScript) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[TimerHandler] to String?
+pub fn TimerHandler::bind_as_string(value : TimerHandler?) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[TimerHandler] to Function?
+pub fn TimerHandler::bind_as_function(value : TimerHandler?) -> Function? {
+  match value {
+    Some(v) => v.as_function()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[TimerHandler] to TrustedScript?
+pub fn TimerHandler::bind_as_trusted_script(
+  value : TimerHandler?,
+) -> TrustedScript? {
+  match value {
+    Some(v) => v.as_trusted_script()
+    None => None
+  }
+}
+
+///|
 /// ImageDataArray typedef
 pub type ImageDataArray
 
@@ -652,6 +932,28 @@ pub extern "js" fn ImageDataArray::as_float16_array(
   self : ImageDataArray,
 ) -> Float16Array? =
   #| (self) => (self instanceof Float16Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[ImageDataArray] to Uint8ClampedArray?
+pub fn ImageDataArray::bind_as_uint8_clamped_array(
+  value : ImageDataArray?,
+) -> Uint8ClampedArray? {
+  match value {
+    Some(v) => v.as_uint8_clamped_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ImageDataArray] to Float16Array?
+pub fn ImageDataArray::bind_as_float16_array(
+  value : ImageDataArray?,
+) -> Float16Array? {
+  match value {
+    Some(v) => v.as_float16_array()
+    None => None
+  }
+}
 
 ///|
 /// ImageBitmapSource typedef
@@ -723,6 +1025,37 @@ pub extern "js" fn ImageBitmapSource::as_image_data(
   #| (self) => (self instanceof ImageData) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[ImageBitmapSource] to CanvasImageSource?
+pub fn ImageBitmapSource::bind_as_canvas_image_source(
+  value : ImageBitmapSource?,
+) -> CanvasImageSource? {
+  match value {
+    Some(v) => v.as_canvas_image_source()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ImageBitmapSource] to Blob?
+pub fn ImageBitmapSource::bind_as_blob(value : ImageBitmapSource?) -> Blob? {
+  match value {
+    Some(v) => v.as_blob()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ImageBitmapSource] to ImageData?
+pub fn ImageBitmapSource::bind_as_image_data(
+  value : ImageBitmapSource?,
+) -> ImageData? {
+  match value {
+    Some(v) => v.as_image_data()
+    None => None
+  }
+}
+
+///|
 /// MessageEventSource typedef
 pub type MessageEventSource
 
@@ -733,9 +1066,9 @@ pub extern "js" fn MessageEventSource::to_js_value(
   #| (self) => self
 
 ///|
-/// Create MessageEventSource from WindowProxy
-pub extern "js" fn MessageEventSource::from_window_proxy(
-  v : WindowProxy,
+/// Create MessageEventSource from Window
+pub extern "js" fn MessageEventSource::from_window(
+  v : Window,
 ) -> MessageEventSource =
   #| (v) => v
 
@@ -754,11 +1087,11 @@ pub extern "js" fn MessageEventSource::from_service_worker(
   #| (v) => v
 
 ///|
-/// Check if this MessageEventSource is WindowProxy
-pub extern "js" fn MessageEventSource::is_window_proxy(
+/// Check if this MessageEventSource is Window
+pub extern "js" fn MessageEventSource::is_window(
   self : MessageEventSource,
 ) -> Bool =
-  #| (self) => typeof self === 'object' && self !== null && self.window === self
+  #| (self) => self instanceof Window
 
 ///|
 /// Check if this MessageEventSource is MessagePort
@@ -775,11 +1108,11 @@ pub extern "js" fn MessageEventSource::is_service_worker(
   #| (self) => self instanceof ServiceWorker
 
 ///|
-/// Try to get MessageEventSource as WindowProxy
-pub extern "js" fn MessageEventSource::as_window_proxy(
+/// Try to get MessageEventSource as Window
+pub extern "js" fn MessageEventSource::as_window(
   self : MessageEventSource,
-) -> WindowProxy? =
-  #| (self) => (typeof self === 'object' && self !== null && self.window === self) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> Window? =
+  #| (self) => (self instanceof Window) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get MessageEventSource as MessagePort
@@ -796,12 +1129,45 @@ pub extern "js" fn MessageEventSource::as_service_worker(
   #| (self) => (self instanceof ServiceWorker) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[MessageEventSource] to Window?
+pub fn MessageEventSource::bind_as_window(
+  value : MessageEventSource?,
+) -> Window? {
+  match value {
+    Some(v) => v.as_window()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[MessageEventSource] to MessagePort?
+pub fn MessageEventSource::bind_as_message_port(
+  value : MessageEventSource?,
+) -> MessagePort? {
+  match value {
+    Some(v) => v.as_message_port()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[MessageEventSource] to ServiceWorker?
+pub fn MessageEventSource::bind_as_service_worker(
+  value : MessageEventSource?,
+) -> ServiceWorker? {
+  match value {
+    Some(v) => v.as_service_worker()
+    None => None
+  }
+}
+
+///|
 /// DocumentReadyState enum
 pub(all) enum DocumentReadyState {
   Loading
   Interactive
   Complete
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -829,7 +1195,7 @@ pub fn DocumentReadyState::from_string(s : String) -> DocumentReadyState? {
 pub(all) enum DocumentVisibilityState {
   Visible
   Hidden
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -860,7 +1226,7 @@ pub(all) enum CanPlayTypeResult {
   Empty
   Maybe
   Probably
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -889,7 +1255,7 @@ pub(all) enum TextTrackMode {
   Disabled
   Hidden
   Showing
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -920,7 +1286,7 @@ pub(all) enum TextTrackKind {
   Descriptions
   Chapters
   Metadata
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -954,7 +1320,7 @@ pub(all) enum SelectionMode {
   Start
   End
   Preserve
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -984,7 +1350,7 @@ pub fn SelectionMode::from_string(s : String) -> SelectionMode? {
 pub(all) enum CanvasColorType {
   Unorm8
   Float16
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1010,7 +1376,7 @@ pub fn CanvasColorType::from_string(s : String) -> CanvasColorType? {
 pub(all) enum CanvasFillRule {
   Nonzero
   Evenodd
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1037,7 +1403,7 @@ pub(all) enum ImageSmoothingQuality {
   Low
   Medium
   High
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1066,7 +1432,7 @@ pub(all) enum CanvasLineCap {
   Butt
   Round
   Square
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1095,7 +1461,7 @@ pub(all) enum CanvasLineJoin {
   Round
   Bevel
   Miter
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1126,7 +1492,7 @@ pub(all) enum CanvasTextAlign {
   Left
   Right
   Center
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1162,7 +1528,7 @@ pub(all) enum CanvasTextBaseline {
   Alphabetic
   Ideographic
   Bottom
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1197,7 +1563,7 @@ pub(all) enum CanvasDirection {
   Ltr
   Rtl
   Inherit
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1226,7 +1592,7 @@ pub(all) enum CanvasFontKerning {
   Auto
   Normal
   None
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1261,7 +1627,7 @@ pub(all) enum CanvasFontStretch {
   Expanded
   ExtraExpanded
   UltraExpanded
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1306,7 +1672,7 @@ pub(all) enum CanvasFontVariantCaps {
   AllPetiteCaps
   Unicase
   TitlingCaps
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1344,7 +1710,7 @@ pub(all) enum CanvasTextRendering {
   OptimizeSpeed
   OptimizeLegibility
   GeometricPrecision
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1377,7 +1743,7 @@ pub(all) enum OffscreenRenderingContextId {
   Webgl
   Webgl2
   Webgpu
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1415,7 +1781,7 @@ pub(all) enum PredefinedColorSpace {
   SrgbLinear
   DisplayP3
   DisplayP3Linear
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1445,7 +1811,7 @@ pub fn PredefinedColorSpace::from_string(s : String) -> PredefinedColorSpace? {
 pub(all) enum ScrollRestoration {
   Auto
   Manual
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1472,7 +1838,7 @@ pub(all) enum NavigationHistoryBehavior {
   Auto
   Push
   Replace
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1506,7 +1872,7 @@ pub(all) enum NavigationType {
   Replace
   Reload
   Traverse
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1536,7 +1902,7 @@ pub fn NavigationType::from_string(s : String) -> NavigationType? {
 pub(all) enum NavigationFocusReset {
   AfterTransition
   Manual
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1562,7 +1928,7 @@ pub fn NavigationFocusReset::from_string(s : String) -> NavigationFocusReset? {
 pub(all) enum NavigationScrollBehavior {
   AfterTransition
   Manual
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1595,7 +1961,7 @@ pub(all) enum DOMParserSupportedType {
   ApplicationXml
   ApplicationXhtmlXml
   ImageSvgXml
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1631,7 +1997,7 @@ pub fn DOMParserSupportedType::from_string(
 pub(all) enum ImageDataPixelFormat {
   RgbaUnorm8
   RgbaFloat16
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1657,7 +2023,7 @@ pub fn ImageDataPixelFormat::from_string(s : String) -> ImageDataPixelFormat? {
 pub(all) enum ImageOrientation {
   FromImage
   FlipY
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1684,7 +2050,7 @@ pub(all) enum PremultiplyAlpha {
   None
   Premultiply
   Default
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1712,7 +2078,7 @@ pub fn PremultiplyAlpha::from_string(s : String) -> PremultiplyAlpha? {
 pub(all) enum ColorSpaceConversion {
   None
   Default
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1740,7 +2106,7 @@ pub(all) enum ResizeQuality {
   Low
   Medium
   High
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1770,7 +2136,7 @@ pub fn ResizeQuality::from_string(s : String) -> ResizeQuality? {
 pub(all) enum WorkerType {
   Classic
   Module
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1893,13 +2259,27 @@ extern "js" fn ShowPopoverOptions::to_js_ffi(
   self : ShowPopoverOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   source: ((() => { const v = self.source; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   source: ((() => { const v = self.source; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn ShowPopoverOptions::to_js(self : ShowPopoverOptions) -> JsValue {
   ShowPopoverOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ShowPopoverOptions::from_js_ffi(
+  value : JsValue,
+) -> ShowPopoverOptions =
+  #| (v) => ({
+  #|   source: (v.source === undefined ? { $tag: 0 } : { $tag: 1, _0: v.source })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ShowPopoverOptions::from_js(value : JsValue) -> ShowPopoverOptions {
+  ShowPopoverOptions::from_js_ffi(value)
 }
 
 ///|
@@ -1920,7 +2300,7 @@ extern "js" fn TogglePopoverOptions::to_js_ffi(
   self : TogglePopoverOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   source: ((() => { const v = self.source; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   source: ((() => { const v = self.source; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   force: (self.force === -1 ? undefined : self.force)
   #| })
 
@@ -1928,6 +2308,21 @@ extern "js" fn TogglePopoverOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn TogglePopoverOptions::to_js(self : TogglePopoverOptions) -> JsValue {
   TogglePopoverOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TogglePopoverOptions::from_js_ffi(
+  value : JsValue,
+) -> TogglePopoverOptions =
+  #| (v) => ({
+  #|   source: (v.source === undefined ? { $tag: 0 } : { $tag: 1, _0: v.source }),
+  #|   force: (v.force === undefined ? -1 : v.force)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TogglePopoverOptions::from_js(value : JsValue) -> TogglePopoverOptions {
+  TogglePopoverOptions::from_js_ffi(value)
 }
 
 ///|
@@ -1945,13 +2340,25 @@ pub fn TrackEventInit::default() -> TrackEventInit {
 ///|
 extern "js" fn TrackEventInit::to_js_ffi(self : TrackEventInit) -> JsValue =
   #| (self) => ({
-  #|   track: ((() => { const v = self.track; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   track: ((() => { const v = self.track; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn TrackEventInit::to_js(self : TrackEventInit) -> JsValue {
   TrackEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TrackEventInit::from_js_ffi(value : JsValue) -> TrackEventInit =
+  #| (v) => ({
+  #|   track: (v.track === undefined ? { $tag: 0 } : { $tag: 1, _0: v.track })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TrackEventInit::from_js(value : JsValue) -> TrackEventInit {
+  TrackEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -1969,13 +2376,25 @@ pub fn SubmitEventInit::default() -> SubmitEventInit {
 ///|
 extern "js" fn SubmitEventInit::to_js_ffi(self : SubmitEventInit) -> JsValue =
   #| (self) => ({
-  #|   submitter: ((() => { const v = self.submitter; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   submitter: ((() => { const v = self.submitter; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn SubmitEventInit::to_js(self : SubmitEventInit) -> JsValue {
   SubmitEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SubmitEventInit::from_js_ffi(value : JsValue) -> SubmitEventInit =
+  #| (v) => ({
+  #|   submitter: (v.submitter === undefined ? { $tag: 0 } : v.submitter === null ? { $tag: 1 } : { $tag: 2, _0: v.submitter })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SubmitEventInit::from_js(value : JsValue) -> SubmitEventInit {
+  SubmitEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -2005,6 +2424,20 @@ pub fn FormDataEventInit::to_js(self : FormDataEventInit) -> JsValue {
 }
 
 ///|
+extern "js" fn FormDataEventInit::from_js_ffi(
+  value : JsValue,
+) -> FormDataEventInit =
+  #| (v) => ({
+  #|   formData: v.formData
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FormDataEventInit::from_js(value : JsValue) -> FormDataEventInit {
+  FormDataEventInit::from_js_ffi(value)
+}
+
+///|
 /// AssignedNodesOptions dictionary
 pub(all) struct AssignedNodesOptions {
   flatten : Bool?
@@ -2028,6 +2461,20 @@ extern "js" fn AssignedNodesOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn AssignedNodesOptions::to_js(self : AssignedNodesOptions) -> JsValue {
   AssignedNodesOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AssignedNodesOptions::from_js_ffi(
+  value : JsValue,
+) -> AssignedNodesOptions =
+  #| (v) => ({
+  #|   flatten: (v.flatten === undefined ? -1 : v.flatten)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AssignedNodesOptions::from_js(value : JsValue) -> AssignedNodesOptions {
+  AssignedNodesOptions::from_js_ffi(value)
 }
 
 ///|
@@ -2073,6 +2520,26 @@ pub fn CanvasRenderingContext2DSettings::to_js(
 }
 
 ///|
+extern "js" fn CanvasRenderingContext2DSettings::from_js_ffi(
+  value : JsValue,
+) -> CanvasRenderingContext2DSettings =
+  #| (v) => ({
+  #|   alpha: (v.alpha === undefined ? -1 : v.alpha),
+  #|   desynchronized: (v.desynchronized === undefined ? -1 : v.desynchronized),
+  #|   colorSpace: (v.colorSpace === undefined ? undefined : ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(v.colorSpace)),
+  #|   colorType: (v.colorType === undefined ? undefined : ['unorm8', 'float16'].indexOf(v.colorType)),
+  #|   willReadFrequently: (v.willReadFrequently === undefined ? -1 : v.willReadFrequently)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CanvasRenderingContext2DSettings::from_js(
+  value : JsValue,
+) -> CanvasRenderingContext2DSettings {
+  CanvasRenderingContext2DSettings::from_js_ffi(value)
+}
+
+///|
 /// ImageBitmapRenderingContextSettings dictionary
 pub(all) struct ImageBitmapRenderingContextSettings {
   alpha : Bool?
@@ -2098,6 +2565,22 @@ pub fn ImageBitmapRenderingContextSettings::to_js(
   self : ImageBitmapRenderingContextSettings,
 ) -> JsValue {
   ImageBitmapRenderingContextSettings::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ImageBitmapRenderingContextSettings::from_js_ffi(
+  value : JsValue,
+) -> ImageBitmapRenderingContextSettings =
+  #| (v) => ({
+  #|   alpha: (v.alpha === undefined ? -1 : v.alpha)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ImageBitmapRenderingContextSettings::from_js(
+  value : JsValue,
+) -> ImageBitmapRenderingContextSettings {
+  ImageBitmapRenderingContextSettings::from_js_ffi(value)
 }
 
 ///|
@@ -2129,6 +2612,21 @@ pub fn ImageEncodeOptions::to_js(self : ImageEncodeOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn ImageEncodeOptions::from_js_ffi(
+  value : JsValue,
+) -> ImageEncodeOptions =
+  #| (v) => ({
+  #|   type_: v.type,
+  #|   quality: v.quality
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ImageEncodeOptions::from_js(value : JsValue) -> ImageEncodeOptions {
+  ImageEncodeOptions::from_js_ffi(value)
+}
+
+///|
 /// ElementDefinitionOptions dictionary
 pub(all) struct ElementDefinitionOptions {
   extends : String?
@@ -2154,6 +2652,22 @@ pub fn ElementDefinitionOptions::to_js(
   self : ElementDefinitionOptions,
 ) -> JsValue {
   ElementDefinitionOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ElementDefinitionOptions::from_js_ffi(
+  value : JsValue,
+) -> ElementDefinitionOptions =
+  #| (v) => ({
+  #|   extends: v.extends
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ElementDefinitionOptions::from_js(
+  value : JsValue,
+) -> ElementDefinitionOptions {
+  ElementDefinitionOptions::from_js_ffi(value)
 }
 
 ///|
@@ -2212,6 +2726,29 @@ pub fn ValidityStateFlags::to_js(self : ValidityStateFlags) -> JsValue {
 }
 
 ///|
+extern "js" fn ValidityStateFlags::from_js_ffi(
+  value : JsValue,
+) -> ValidityStateFlags =
+  #| (v) => ({
+  #|   valueMissing: (v.valueMissing === undefined ? -1 : v.valueMissing),
+  #|   typeMismatch: (v.typeMismatch === undefined ? -1 : v.typeMismatch),
+  #|   patternMismatch: (v.patternMismatch === undefined ? -1 : v.patternMismatch),
+  #|   tooLong: (v.tooLong === undefined ? -1 : v.tooLong),
+  #|   tooShort: (v.tooShort === undefined ? -1 : v.tooShort),
+  #|   rangeUnderflow: (v.rangeUnderflow === undefined ? -1 : v.rangeUnderflow),
+  #|   rangeOverflow: (v.rangeOverflow === undefined ? -1 : v.rangeOverflow),
+  #|   stepMismatch: (v.stepMismatch === undefined ? -1 : v.stepMismatch),
+  #|   badInput: (v.badInput === undefined ? -1 : v.badInput),
+  #|   customError: (v.customError === undefined ? -1 : v.customError)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ValidityStateFlags::from_js(value : JsValue) -> ValidityStateFlags {
+  ValidityStateFlags::from_js_ffi(value)
+}
+
+///|
 /// ToggleEventInit dictionary
 pub(all) struct ToggleEventInit {
   oldState : String?
@@ -2234,13 +2771,27 @@ extern "js" fn ToggleEventInit::to_js_ffi(self : ToggleEventInit) -> JsValue =
   #| (self) => ({
   #|   oldState: self.oldState,
   #|   newState: self.newState,
-  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn ToggleEventInit::to_js(self : ToggleEventInit) -> JsValue {
   ToggleEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ToggleEventInit::from_js_ffi(value : JsValue) -> ToggleEventInit =
+  #| (v) => ({
+  #|   oldState: v.oldState,
+  #|   newState: v.newState,
+  #|   source: (v.source === undefined ? { $tag: 0 } : v.source === null ? { $tag: 1 } : { $tag: 2, _0: v.source })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ToggleEventInit::from_js(value : JsValue) -> ToggleEventInit {
+  ToggleEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -2259,7 +2810,7 @@ pub fn CommandEventInit::default() -> CommandEventInit {
 ///|
 extern "js" fn CommandEventInit::to_js_ffi(self : CommandEventInit) -> JsValue =
   #| (self) => ({
-  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   command: self.command
   #| })
 
@@ -2267,6 +2818,21 @@ extern "js" fn CommandEventInit::to_js_ffi(self : CommandEventInit) -> JsValue =
 /// Convert to JsValue
 pub fn CommandEventInit::to_js(self : CommandEventInit) -> JsValue {
   CommandEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CommandEventInit::from_js_ffi(
+  value : JsValue,
+) -> CommandEventInit =
+  #| (v) => ({
+  #|   source: (v.source === undefined ? { $tag: 0 } : v.source === null ? { $tag: 1 } : { $tag: 2, _0: v.source }),
+  #|   command: v.command
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CommandEventInit::from_js(value : JsValue) -> CommandEventInit {
+  CommandEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -2296,6 +2862,19 @@ pub fn FocusOptions::to_js(self : FocusOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn FocusOptions::from_js_ffi(value : JsValue) -> FocusOptions =
+  #| (v) => ({
+  #|   preventScroll: (v.preventScroll === undefined ? -1 : v.preventScroll),
+  #|   focusVisible: (v.focusVisible === undefined ? -1 : v.focusVisible)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FocusOptions::from_js(value : JsValue) -> FocusOptions {
+  FocusOptions::from_js_ffi(value)
+}
+
+///|
 /// CloseWatcherOptions dictionary
 pub(all) struct CloseWatcherOptions {
   signal : AbortSignal?
@@ -2312,13 +2891,27 @@ extern "js" fn CloseWatcherOptions::to_js_ffi(
   self : CloseWatcherOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn CloseWatcherOptions::to_js(self : CloseWatcherOptions) -> JsValue {
   CloseWatcherOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CloseWatcherOptions::from_js_ffi(
+  value : JsValue,
+) -> CloseWatcherOptions =
+  #| (v) => ({
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CloseWatcherOptions::from_js(value : JsValue) -> CloseWatcherOptions {
+  CloseWatcherOptions::from_js_ffi(value)
 }
 
 ///|
@@ -2336,13 +2929,25 @@ pub fn DragEventInit::default() -> DragEventInit {
 ///|
 extern "js" fn DragEventInit::to_js_ffi(self : DragEventInit) -> JsValue =
   #| (self) => ({
-  #|   dataTransfer: ((() => { const v = self.dataTransfer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   dataTransfer: ((() => { const v = self.dataTransfer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn DragEventInit::to_js(self : DragEventInit) -> JsValue {
   DragEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DragEventInit::from_js_ffi(value : JsValue) -> DragEventInit =
+  #| (v) => ({
+  #|   dataTransfer: (v.dataTransfer === undefined ? { $tag: 0 } : v.dataTransfer === null ? { $tag: 1 } : { $tag: 2, _0: v.dataTransfer })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DragEventInit::from_js(value : JsValue) -> DragEventInit {
+  DragEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -2363,7 +2968,7 @@ extern "js" fn WindowPostMessageOptions::to_js_ffi(
   self : WindowPostMessageOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   transfer: ((() => { const v = self.transfer; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   transfer: ((() => { const v = self.transfer; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   targetOrigin: self.targetOrigin
   #| })
 
@@ -2373,6 +2978,23 @@ pub fn WindowPostMessageOptions::to_js(
   self : WindowPostMessageOptions,
 ) -> JsValue {
   WindowPostMessageOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WindowPostMessageOptions::from_js_ffi(
+  value : JsValue,
+) -> WindowPostMessageOptions =
+  #| (v) => ({
+  #|   transfer: (v.transfer === undefined ? { $tag: 0 } : { $tag: 1, _0: v.transfer }),
+  #|   targetOrigin: v.targetOrigin
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WindowPostMessageOptions::from_js(
+  value : JsValue,
+) -> WindowPostMessageOptions {
+  WindowPostMessageOptions::from_js_ffi(value)
 }
 
 ///|
@@ -2406,6 +3028,22 @@ pub fn NavigationUpdateCurrentEntryOptions::to_js(
 }
 
 ///|
+extern "js" fn NavigationUpdateCurrentEntryOptions::from_js_ffi(
+  value : JsValue,
+) -> NavigationUpdateCurrentEntryOptions =
+  #| (v) => ({
+  #|   state: v.state
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NavigationUpdateCurrentEntryOptions::from_js(
+  value : JsValue,
+) -> NavigationUpdateCurrentEntryOptions {
+  NavigationUpdateCurrentEntryOptions::from_js_ffi(value)
+}
+
+///|
 /// NavigationOptions dictionary
 pub(all) struct NavigationOptions {
   info : JsValue?
@@ -2422,13 +3060,27 @@ extern "js" fn NavigationOptions::to_js_ffi(
   self : NavigationOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   info: ((() => { const v = self.info; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   info: ((() => { const v = self.info; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn NavigationOptions::to_js(self : NavigationOptions) -> JsValue {
   NavigationOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn NavigationOptions::from_js_ffi(
+  value : JsValue,
+) -> NavigationOptions =
+  #| (v) => ({
+  #|   info: (v.info === undefined ? { $tag: 0 } : { $tag: 1, _0: v.info })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NavigationOptions::from_js(value : JsValue) -> NavigationOptions {
+  NavigationOptions::from_js_ffi(value)
 }
 
 ///|
@@ -2450,8 +3102,8 @@ extern "js" fn NavigationNavigateOptions::to_js_ffi(
   self : NavigationNavigateOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   info: ((() => { const v = self.info; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   state: ((() => { const v = self.state; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   info: ((() => { const v = self.info; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   state: ((() => { const v = self.state; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   history: ((() => { const v = self.history; if (v === undefined) return undefined; return ['auto', 'push', 'replace'][v]; })())
   #| })
 
@@ -2461,6 +3113,24 @@ pub fn NavigationNavigateOptions::to_js(
   self : NavigationNavigateOptions,
 ) -> JsValue {
   NavigationNavigateOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn NavigationNavigateOptions::from_js_ffi(
+  value : JsValue,
+) -> NavigationNavigateOptions =
+  #| (v) => ({
+  #|   info: (v.info === undefined ? { $tag: 0 } : { $tag: 1, _0: v.info }),
+  #|   state: (v.state === undefined ? { $tag: 0 } : { $tag: 1, _0: v.state }),
+  #|   history: (v.history === undefined ? undefined : ['auto', 'push', 'replace'].indexOf(v.history))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NavigationNavigateOptions::from_js(
+  value : JsValue,
+) -> NavigationNavigateOptions {
+  NavigationNavigateOptions::from_js_ffi(value)
 }
 
 ///|
@@ -2481,8 +3151,8 @@ extern "js" fn NavigationReloadOptions::to_js_ffi(
   self : NavigationReloadOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   info: ((() => { const v = self.info; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   state: ((() => { const v = self.state; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   info: ((() => { const v = self.info; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   state: ((() => { const v = self.state; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -2491,6 +3161,23 @@ pub fn NavigationReloadOptions::to_js(
   self : NavigationReloadOptions,
 ) -> JsValue {
   NavigationReloadOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn NavigationReloadOptions::from_js_ffi(
+  value : JsValue,
+) -> NavigationReloadOptions =
+  #| (v) => ({
+  #|   info: (v.info === undefined ? { $tag: 0 } : { $tag: 1, _0: v.info }),
+  #|   state: (v.state === undefined ? { $tag: 0 } : { $tag: 1, _0: v.state })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NavigationReloadOptions::from_js(
+  value : JsValue,
+) -> NavigationReloadOptions {
+  NavigationReloadOptions::from_js_ffi(value)
 }
 
 ///|
@@ -2509,14 +3196,29 @@ pub fn NavigationResult::default() -> NavigationResult {
 ///|
 extern "js" fn NavigationResult::to_js_ffi(self : NavigationResult) -> JsValue =
   #| (self) => ({
-  #|   committed: ((() => { const v = self.committed; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   finished: ((() => { const v = self.finished; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   committed: ((() => { const v = self.committed; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   finished: ((() => { const v = self.finished; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn NavigationResult::to_js(self : NavigationResult) -> JsValue {
   NavigationResult::to_js_ffi(self)
+}
+
+///|
+extern "js" fn NavigationResult::from_js_ffi(
+  value : JsValue,
+) -> NavigationResult =
+  #| (v) => ({
+  #|   committed: (v.committed === undefined ? { $tag: 0 } : { $tag: 1, _0: v.committed }),
+  #|   finished: (v.finished === undefined ? { $tag: 0 } : { $tag: 1, _0: v.finished })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NavigationResult::from_js(value : JsValue) -> NavigationResult {
+  NavigationResult::from_js_ffi(value)
 }
 
 ///|
@@ -2567,17 +3269,41 @@ extern "js" fn NavigateEventInit::to_js_ffi(
   #|   userInitiated: (self.userInitiated === -1 ? undefined : self.userInitiated),
   #|   hashChange: (self.hashChange === -1 ? undefined : self.hashChange),
   #|   signal: self.signal,
-  #|   formData: ((() => { const v = self.formData; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   downloadRequest: ((() => { const v = self.downloadRequest; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   info: ((() => { const v = self.info; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   formData: ((() => { const v = self.formData; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   downloadRequest: ((() => { const v = self.downloadRequest; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   info: ((() => { const v = self.info; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   hasUAVisualTransition: (self.hasUAVisualTransition === -1 ? undefined : self.hasUAVisualTransition),
-  #|   sourceElement: ((() => { const v = self.sourceElement; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   sourceElement: ((() => { const v = self.sourceElement; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn NavigateEventInit::to_js(self : NavigateEventInit) -> JsValue {
   NavigateEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn NavigateEventInit::from_js_ffi(
+  value : JsValue,
+) -> NavigateEventInit =
+  #| (v) => ({
+  #|   navigationType: (v.navigationType === undefined ? undefined : ['push', 'replace', 'reload', 'traverse'].indexOf(v.navigationType)),
+  #|   destination: v.destination,
+  #|   canIntercept: (v.canIntercept === undefined ? -1 : v.canIntercept),
+  #|   userInitiated: (v.userInitiated === undefined ? -1 : v.userInitiated),
+  #|   hashChange: (v.hashChange === undefined ? -1 : v.hashChange),
+  #|   signal: v.signal,
+  #|   formData: (v.formData === undefined ? { $tag: 0 } : v.formData === null ? { $tag: 1 } : { $tag: 2, _0: v.formData }),
+  #|   downloadRequest: (v.downloadRequest === undefined ? { $tag: 0 } : v.downloadRequest === null ? { $tag: 1 } : { $tag: 2, _0: v.downloadRequest }),
+  #|   info: (v.info === undefined ? { $tag: 0 } : { $tag: 1, _0: v.info }),
+  #|   hasUAVisualTransition: (v.hasUAVisualTransition === undefined ? -1 : v.hasUAVisualTransition),
+  #|   sourceElement: (v.sourceElement === undefined ? { $tag: 0 } : v.sourceElement === null ? { $tag: 1 } : { $tag: 2, _0: v.sourceElement })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NavigateEventInit::from_js(value : JsValue) -> NavigateEventInit {
+  NavigateEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -2605,8 +3331,8 @@ extern "js" fn NavigationInterceptOptions::to_js_ffi(
   self : NavigationInterceptOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   precommitHandler: ((() => { const v = self.precommitHandler; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   handler: ((() => { const v = self.handler; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   precommitHandler: ((() => { const v = self.precommitHandler; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   handler: ((() => { const v = self.handler; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   focusReset: ((() => { const v = self.focusReset; if (v === undefined) return undefined; return ['after-transition', 'manual'][v]; })()),
   #|   scroll: ((() => { const v = self.scroll; if (v === undefined) return undefined; return ['after-transition', 'manual'][v]; })())
   #| })
@@ -2617,6 +3343,25 @@ pub fn NavigationInterceptOptions::to_js(
   self : NavigationInterceptOptions,
 ) -> JsValue {
   NavigationInterceptOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn NavigationInterceptOptions::from_js_ffi(
+  value : JsValue,
+) -> NavigationInterceptOptions =
+  #| (v) => ({
+  #|   precommitHandler: (v.precommitHandler === undefined ? { $tag: 0 } : { $tag: 1, _0: v.precommitHandler }),
+  #|   handler: (v.handler === undefined ? { $tag: 0 } : { $tag: 1, _0: v.handler }),
+  #|   focusReset: (v.focusReset === undefined ? undefined : ['after-transition', 'manual'].indexOf(v.focusReset)),
+  #|   scroll: (v.scroll === undefined ? undefined : ['after-transition', 'manual'].indexOf(v.scroll))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NavigationInterceptOptions::from_js(
+  value : JsValue,
+) -> NavigationInterceptOptions {
+  NavigationInterceptOptions::from_js_ffi(value)
 }
 
 ///|
@@ -2642,7 +3387,7 @@ extern "js" fn NavigationCurrentEntryChangeEventInit::to_js_ffi(
   self : NavigationCurrentEntryChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   navigationType: ((() => { const v = self.navigationType; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return ['push', 'replace', 'reload', 'traverse'][v.$0]; })()),
+  #|   navigationType: ((() => { const v = self.navigationType; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return ['push', 'replace', 'reload', 'traverse'][v._0]; })()),
   #|   from: self.from
   #| })
 
@@ -2652,6 +3397,23 @@ pub fn NavigationCurrentEntryChangeEventInit::to_js(
   self : NavigationCurrentEntryChangeEventInit,
 ) -> JsValue {
   NavigationCurrentEntryChangeEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn NavigationCurrentEntryChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> NavigationCurrentEntryChangeEventInit =
+  #| (v) => ({
+  #|   navigationType: (v.navigationType === undefined ? { $tag: 0 } : v.navigationType === null ? { $tag: 1 } : { $tag: 2, _0: ['push', 'replace', 'reload', 'traverse'].indexOf(v.navigationType) }),
+  #|   from: v.from
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NavigationCurrentEntryChangeEventInit::from_js(
+  value : JsValue,
+) -> NavigationCurrentEntryChangeEventInit {
+  NavigationCurrentEntryChangeEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -2672,7 +3434,7 @@ extern "js" fn PopStateEventInit::to_js_ffi(
   self : PopStateEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   state: ((() => { const v = self.state; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   state: ((() => { const v = self.state; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   hasUAVisualTransition: (self.hasUAVisualTransition === -1 ? undefined : self.hasUAVisualTransition)
   #| })
 
@@ -2680,6 +3442,21 @@ extern "js" fn PopStateEventInit::to_js_ffi(
 /// Convert to JsValue
 pub fn PopStateEventInit::to_js(self : PopStateEventInit) -> JsValue {
   PopStateEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PopStateEventInit::from_js_ffi(
+  value : JsValue,
+) -> PopStateEventInit =
+  #| (v) => ({
+  #|   state: (v.state === undefined ? { $tag: 0 } : { $tag: 1, _0: v.state }),
+  #|   hasUAVisualTransition: (v.hasUAVisualTransition === undefined ? -1 : v.hasUAVisualTransition)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PopStateEventInit::from_js(value : JsValue) -> PopStateEventInit {
+  PopStateEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -2711,6 +3488,21 @@ pub fn HashChangeEventInit::to_js(self : HashChangeEventInit) -> JsValue {
 }
 
 ///|
+extern "js" fn HashChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> HashChangeEventInit =
+  #| (v) => ({
+  #|   oldURL: v.oldURL,
+  #|   newURL: v.newURL
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn HashChangeEventInit::from_js(value : JsValue) -> HashChangeEventInit {
+  HashChangeEventInit::from_js_ffi(value)
+}
+
+///|
 /// PageSwapEventInit dictionary
 pub(all) struct PageSwapEventInit {
   activation : Nullable[NavigationActivation]
@@ -2731,14 +3523,29 @@ extern "js" fn PageSwapEventInit::to_js_ffi(
   self : PageSwapEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   activation: ((() => { const v = self.activation; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   viewTransition: ((() => { const v = self.viewTransition; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   activation: ((() => { const v = self.activation; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   viewTransition: ((() => { const v = self.viewTransition; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn PageSwapEventInit::to_js(self : PageSwapEventInit) -> JsValue {
   PageSwapEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PageSwapEventInit::from_js_ffi(
+  value : JsValue,
+) -> PageSwapEventInit =
+  #| (v) => ({
+  #|   activation: (v.activation === undefined ? { $tag: 0 } : v.activation === null ? { $tag: 1 } : { $tag: 2, _0: v.activation }),
+  #|   viewTransition: (v.viewTransition === undefined ? { $tag: 0 } : v.viewTransition === null ? { $tag: 1 } : { $tag: 2, _0: v.viewTransition })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PageSwapEventInit::from_js(value : JsValue) -> PageSwapEventInit {
+  PageSwapEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -2758,13 +3565,27 @@ extern "js" fn PageRevealEventInit::to_js_ffi(
   self : PageRevealEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   viewTransition: ((() => { const v = self.viewTransition; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   viewTransition: ((() => { const v = self.viewTransition; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn PageRevealEventInit::to_js(self : PageRevealEventInit) -> JsValue {
   PageRevealEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PageRevealEventInit::from_js_ffi(
+  value : JsValue,
+) -> PageRevealEventInit =
+  #| (v) => ({
+  #|   viewTransition: (v.viewTransition === undefined ? { $tag: 0 } : v.viewTransition === null ? { $tag: 1 } : { $tag: 2, _0: v.viewTransition })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PageRevealEventInit::from_js(value : JsValue) -> PageRevealEventInit {
+  PageRevealEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -2796,6 +3617,22 @@ pub fn PageTransitionEventInit::to_js(
 }
 
 ///|
+extern "js" fn PageTransitionEventInit::from_js_ffi(
+  value : JsValue,
+) -> PageTransitionEventInit =
+  #| (v) => ({
+  #|   persisted: (v.persisted === undefined ? -1 : v.persisted)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PageTransitionEventInit::from_js(
+  value : JsValue,
+) -> PageTransitionEventInit {
+  PageTransitionEventInit::from_js_ffi(value)
+}
+
+///|
 /// ErrorEventInit dictionary
 pub(all) struct ErrorEventInit {
   message : String?
@@ -2824,13 +3661,29 @@ extern "js" fn ErrorEventInit::to_js_ffi(self : ErrorEventInit) -> JsValue =
   #|   filename: self.filename,
   #|   lineno: self.lineno,
   #|   colno: self.colno,
-  #|   error: ((() => { const v = self.error; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   error: ((() => { const v = self.error; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn ErrorEventInit::to_js(self : ErrorEventInit) -> JsValue {
   ErrorEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ErrorEventInit::from_js_ffi(value : JsValue) -> ErrorEventInit =
+  #| (v) => ({
+  #|   message: v.message,
+  #|   filename: v.filename,
+  #|   lineno: v.lineno,
+  #|   colno: v.colno,
+  #|   error: (v.error === undefined ? { $tag: 0 } : { $tag: 1, _0: v.error })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ErrorEventInit::from_js(value : JsValue) -> ErrorEventInit {
+  ErrorEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -2854,7 +3707,7 @@ extern "js" fn PromiseRejectionEventInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   promise: self.promise,
-  #|   reason: ((() => { const v = self.reason; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   reason: ((() => { const v = self.reason; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -2863,6 +3716,23 @@ pub fn PromiseRejectionEventInit::to_js(
   self : PromiseRejectionEventInit,
 ) -> JsValue {
   PromiseRejectionEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PromiseRejectionEventInit::from_js_ffi(
+  value : JsValue,
+) -> PromiseRejectionEventInit =
+  #| (v) => ({
+  #|   promise: v.promise,
+  #|   reason: (v.reason === undefined ? { $tag: 0 } : { $tag: 1, _0: v.reason })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PromiseRejectionEventInit::from_js(
+  value : JsValue,
+) -> PromiseRejectionEventInit {
+  PromiseRejectionEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -2882,13 +3752,26 @@ pub fn GetHTMLOptions::default() -> GetHTMLOptions {
 extern "js" fn GetHTMLOptions::to_js_ffi(self : GetHTMLOptions) -> JsValue =
   #| (self) => ({
   #|   serializableShadowRoots: (self.serializableShadowRoots === -1 ? undefined : self.serializableShadowRoots),
-  #|   shadowRoots: ((() => { const v = self.shadowRoots; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   shadowRoots: ((() => { const v = self.shadowRoots; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn GetHTMLOptions::to_js(self : GetHTMLOptions) -> JsValue {
   GetHTMLOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GetHTMLOptions::from_js_ffi(value : JsValue) -> GetHTMLOptions =
+  #| (v) => ({
+  #|   serializableShadowRoots: (v.serializableShadowRoots === undefined ? -1 : v.serializableShadowRoots),
+  #|   shadowRoots: (v.shadowRoots === undefined ? { $tag: 0 } : { $tag: 1, _0: v.shadowRoots })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GetHTMLOptions::from_js(value : JsValue) -> GetHTMLOptions {
+  GetHTMLOptions::from_js_ffi(value)
 }
 
 ///|
@@ -2917,6 +3800,21 @@ extern "js" fn ImageDataSettings::to_js_ffi(
 /// Convert to JsValue
 pub fn ImageDataSettings::to_js(self : ImageDataSettings) -> JsValue {
   ImageDataSettings::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ImageDataSettings::from_js_ffi(
+  value : JsValue,
+) -> ImageDataSettings =
+  #| (v) => ({
+  #|   colorSpace: (v.colorSpace === undefined ? undefined : ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(v.colorSpace)),
+  #|   pixelFormat: (v.pixelFormat === undefined ? undefined : ['rgba-unorm8', 'rgba-float16'].indexOf(v.pixelFormat))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ImageDataSettings::from_js(value : JsValue) -> ImageDataSettings {
+  ImageDataSettings::from_js_ffi(value)
 }
 
 ///|
@@ -2963,6 +3861,25 @@ pub fn ImageBitmapOptions::to_js(self : ImageBitmapOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn ImageBitmapOptions::from_js_ffi(
+  value : JsValue,
+) -> ImageBitmapOptions =
+  #| (v) => ({
+  #|   imageOrientation: (v.imageOrientation === undefined ? undefined : ['from-image', 'flipY'].indexOf(v.imageOrientation)),
+  #|   premultiplyAlpha: (v.premultiplyAlpha === undefined ? undefined : ['none', 'premultiply', 'default'].indexOf(v.premultiplyAlpha)),
+  #|   colorSpaceConversion: (v.colorSpaceConversion === undefined ? undefined : ['none', 'default'].indexOf(v.colorSpaceConversion)),
+  #|   resizeWidth: v.resizeWidth,
+  #|   resizeHeight: v.resizeHeight,
+  #|   resizeQuality: (v.resizeQuality === undefined ? undefined : ['pixelated', 'low', 'medium', 'high'].indexOf(v.resizeQuality))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ImageBitmapOptions::from_js(value : JsValue) -> ImageBitmapOptions {
+  ImageBitmapOptions::from_js_ffi(value)
+}
+
+///|
 /// MessageEventInit dictionary
 pub(all) struct MessageEventInit {
   data : JsValue?
@@ -2987,17 +3904,35 @@ pub fn MessageEventInit::default() -> MessageEventInit {
 ///|
 extern "js" fn MessageEventInit::to_js_ffi(self : MessageEventInit) -> JsValue =
   #| (self) => ({
-  #|   data: ((() => { const v = self.data; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   origin: self.origin,
   #|   lastEventId: self.lastEventId,
-  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0.to_js_value(); })()),
-  #|   ports: ((() => { const v = self.ports; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0.to_js_value(); })()),
+  #|   ports: ((() => { const v = self.ports; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MessageEventInit::to_js(self : MessageEventInit) -> JsValue {
   MessageEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MessageEventInit::from_js_ffi(
+  value : JsValue,
+) -> MessageEventInit =
+  #| (v) => ({
+  #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data }),
+  #|   origin: v.origin,
+  #|   lastEventId: v.lastEventId,
+  #|   source: (v.source === undefined ? { $tag: 0 } : v.source === null ? { $tag: 1 } : { $tag: 2, _0: v.source }),
+  #|   ports: (v.ports === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ports })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MessageEventInit::from_js(value : JsValue) -> MessageEventInit {
+  MessageEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -3025,6 +3960,18 @@ pub fn EventSourceInit::to_js(self : EventSourceInit) -> JsValue {
 }
 
 ///|
+extern "js" fn EventSourceInit::from_js_ffi(value : JsValue) -> EventSourceInit =
+  #| (v) => ({
+  #|   withCredentials: (v.withCredentials === undefined ? -1 : v.withCredentials)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn EventSourceInit::from_js(value : JsValue) -> EventSourceInit {
+  EventSourceInit::from_js_ffi(value)
+}
+
+///|
 /// StructuredSerializeOptions dictionary
 pub(all) struct StructuredSerializeOptions {
   transfer : Array[JsValue]?
@@ -3041,7 +3988,7 @@ extern "js" fn StructuredSerializeOptions::to_js_ffi(
   self : StructuredSerializeOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   transfer: ((() => { const v = self.transfer; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   transfer: ((() => { const v = self.transfer; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -3050,6 +3997,22 @@ pub fn StructuredSerializeOptions::to_js(
   self : StructuredSerializeOptions,
 ) -> JsValue {
   StructuredSerializeOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn StructuredSerializeOptions::from_js_ffi(
+  value : JsValue,
+) -> StructuredSerializeOptions =
+  #| (v) => ({
+  #|   transfer: (v.transfer === undefined ? { $tag: 0 } : { $tag: 1, _0: v.transfer })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn StructuredSerializeOptions::from_js(
+  value : JsValue,
+) -> StructuredSerializeOptions {
+  StructuredSerializeOptions::from_js_ffi(value)
 }
 
 ///|
@@ -3081,6 +4044,20 @@ pub fn WorkerOptions::to_js(self : WorkerOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn WorkerOptions::from_js_ffi(value : JsValue) -> WorkerOptions =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   type_: (v.type === undefined ? undefined : ['classic', 'module'].indexOf(v.type)),
+  #|   credentials: (v.credentials === undefined ? undefined : ['omit', 'same-origin', 'include'].indexOf(v.credentials))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WorkerOptions::from_js(value : JsValue) -> WorkerOptions {
+  WorkerOptions::from_js_ffi(value)
+}
+
+///|
 /// WorkletOptions dictionary
 pub(all) struct WorkletOptions {
   credentials : RequestCredentials?
@@ -3102,6 +4079,18 @@ extern "js" fn WorkletOptions::to_js_ffi(self : WorkletOptions) -> JsValue =
 /// Convert to JsValue
 pub fn WorkletOptions::to_js(self : WorkletOptions) -> JsValue {
   WorkletOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WorkletOptions::from_js_ffi(value : JsValue) -> WorkletOptions =
+  #| (v) => ({
+  #|   credentials: (v.credentials === undefined ? undefined : ['omit', 'same-origin', 'include'].indexOf(v.credentials))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WorkletOptions::from_js(value : JsValue) -> WorkletOptions {
+  WorkletOptions::from_js_ffi(value)
 }
 
 ///|
@@ -3129,17 +4118,35 @@ pub fn StorageEventInit::default() -> StorageEventInit {
 ///|
 extern "js" fn StorageEventInit::to_js_ffi(self : StorageEventInit) -> JsValue =
   #| (self) => ({
-  #|   key: ((() => { const v = self.key; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   oldValue: ((() => { const v = self.oldValue; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   newValue: ((() => { const v = self.newValue; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   key: ((() => { const v = self.key; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   oldValue: ((() => { const v = self.oldValue; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   newValue: ((() => { const v = self.newValue; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   url: self.url,
-  #|   storageArea: ((() => { const v = self.storageArea; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   storageArea: ((() => { const v = self.storageArea; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn StorageEventInit::to_js(self : StorageEventInit) -> JsValue {
   StorageEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn StorageEventInit::from_js_ffi(
+  value : JsValue,
+) -> StorageEventInit =
+  #| (v) => ({
+  #|   key: (v.key === undefined ? { $tag: 0 } : v.key === null ? { $tag: 1 } : { $tag: 2, _0: v.key }),
+  #|   oldValue: (v.oldValue === undefined ? { $tag: 0 } : v.oldValue === null ? { $tag: 1 } : { $tag: 2, _0: v.oldValue }),
+  #|   newValue: (v.newValue === undefined ? { $tag: 0 } : v.newValue === null ? { $tag: 1 } : { $tag: 2, _0: v.newValue }),
+  #|   url: v.url,
+  #|   storageArea: (v.storageArea === undefined ? { $tag: 0 } : v.storageArea === null ? { $tag: 1 } : { $tag: 2, _0: v.storageArea })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn StorageEventInit::from_js(value : JsValue) -> StorageEventInit {
+  StorageEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -9572,7 +10579,7 @@ pub extern "js" fn HTMLIFrameElement::get_content_document(
 ///|
 pub extern "js" fn HTMLIFrameElement::get_content_window(
   self : HTMLIFrameElement,
-) -> WindowProxy? =
+) -> Window? =
   #| (self) => (() => { const v = self.contentWindow; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
@@ -10020,7 +11027,7 @@ pub extern "js" fn HTMLObjectElement::get_content_document(
 ///|
 pub extern "js" fn HTMLObjectElement::get_content_window(
   self : HTMLObjectElement,
-) -> WindowProxy? =
+) -> Window? =
   #| (self) => (() => { const v = self.contentWindow; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
@@ -17717,14 +18724,14 @@ pub extern "js" fn CanvasRenderingContext2D::from_js_value_opt(
 
 ///|
 /// Safely cast JsValue to CanvasRenderingContext2D (checked with instanceof)
-pub extern "js" fn JsValue::as_canvas_rendering_context2_d(
+pub extern "js" fn JsValue::as_canvas_rendering_context_2d(
   self : JsValue,
 ) -> CanvasRenderingContext2D? =
   #| (self) => (self instanceof CanvasRenderingContext2D) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Cast JsValue to CanvasRenderingContext2D (unchecked)
-pub extern "js" fn JsValue::to_canvas_rendering_context2_d(
+pub extern "js" fn JsValue::to_canvas_rendering_context_2d(
   self : JsValue,
 ) -> CanvasRenderingContext2D =
   #| (self) => self
@@ -18080,14 +19087,14 @@ pub extern "js" fn CanvasRenderingContext2D::fill_with_fill_rule(
   #| (self, fill_rule) => self.fill(['nonzero', 'evenodd'][fill_rule])
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::fill_with_path_path2_d(
+pub extern "js" fn CanvasRenderingContext2D::fill_with_path_path_2d(
   self : CanvasRenderingContext2D,
   path : Path2D,
 ) -> Unit =
   #| (self, path) => self.fill(path)
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::fill_with_path_path2_d_and_fill_rule_canvas_fill_rule(
+pub extern "js" fn CanvasRenderingContext2D::fill_with_path_path_2d_and_fill_rule_canvas_fill_rule(
   self : CanvasRenderingContext2D,
   path : Path2D,
   fill_rule : CanvasFillRule,
@@ -18101,7 +19108,7 @@ pub extern "js" fn CanvasRenderingContext2D::stroke(
   #| (self) => self.stroke()
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::stroke_with_path_path2_d(
+pub extern "js" fn CanvasRenderingContext2D::stroke_with_path_path_2d(
   self : CanvasRenderingContext2D,
   path : Path2D,
 ) -> Unit =
@@ -18121,14 +19128,14 @@ pub extern "js" fn CanvasRenderingContext2D::clip_with_fill_rule(
   #| (self, fill_rule) => self.clip(['nonzero', 'evenodd'][fill_rule])
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::clip_with_path_path2_d(
+pub extern "js" fn CanvasRenderingContext2D::clip_with_path_path_2d(
   self : CanvasRenderingContext2D,
   path : Path2D,
 ) -> Unit =
   #| (self, path) => self.clip(path)
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::clip_with_path_path2_d_and_fill_rule_canvas_fill_rule(
+pub extern "js" fn CanvasRenderingContext2D::clip_with_path_path_2d_and_fill_rule_canvas_fill_rule(
   self : CanvasRenderingContext2D,
   path : Path2D,
   fill_rule : CanvasFillRule,
@@ -18153,7 +19160,7 @@ pub extern "js" fn CanvasRenderingContext2D::is_point_in_path_with_fill_rule(
   #| (self, x, y, fill_rule) => self.isPointInPath(x, y, ['nonzero', 'evenodd'][fill_rule])
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::is_point_in_path_with_path_path2_d_and_x_and_y(
+pub extern "js" fn CanvasRenderingContext2D::is_point_in_path_with_path_path_2d_and_x_and_y(
   self : CanvasRenderingContext2D,
   path : Path2D,
   x : Double,
@@ -18162,7 +19169,7 @@ pub extern "js" fn CanvasRenderingContext2D::is_point_in_path_with_path_path2_d_
   #| (self, path, x, y) => self.isPointInPath(path, x, y)
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::is_point_in_path_with_path_path2_d_and_x_and_y_and_fill_rule_canvas_fill_rule(
+pub extern "js" fn CanvasRenderingContext2D::is_point_in_path_with_path_path_2d_and_x_and_y_and_fill_rule_canvas_fill_rule(
   self : CanvasRenderingContext2D,
   path : Path2D,
   x : Double,
@@ -18180,7 +19187,7 @@ pub extern "js" fn CanvasRenderingContext2D::is_point_in_stroke(
   #| (self, x, y) => self.isPointInStroke(x, y)
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::is_point_in_stroke_with_path_path2_d_and_x_and_y(
+pub extern "js" fn CanvasRenderingContext2D::is_point_in_stroke_with_path_path_2d_and_x_and_y(
   self : CanvasRenderingContext2D,
   path : Path2D,
   x : Double,
@@ -18196,7 +19203,7 @@ pub extern "js" fn CanvasRenderingContext2D::draw_focus_if_needed(
   #| (self, element) => self.drawFocusIfNeeded(element)
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::draw_focus_if_needed_with_path_path2_d_and_element_element(
+pub extern "js" fn CanvasRenderingContext2D::draw_focus_if_needed_with_path_path_2d_and_element_element(
   self : CanvasRenderingContext2D,
   path : Path2D,
   element : Element,
@@ -18742,7 +19749,7 @@ pub extern "js" fn CanvasRenderingContext2D::ellipse_with_counterclockwise(
   #| (self, x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise) => self.ellipse(x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise)
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::create_pattern_with_h_t_m_l_or_s_v_g_image_element(
+pub extern "js" fn CanvasRenderingContext2D::create_pattern_with_html_or_svg_image_element(
   self : CanvasRenderingContext2D,
   image : HTMLOrSVGImageElement,
   repetition : String,
@@ -18750,7 +19757,7 @@ pub extern "js" fn CanvasRenderingContext2D::create_pattern_with_h_t_m_l_or_s_v_
   #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::create_pattern_with_h_t_m_l_video_element(
+pub extern "js" fn CanvasRenderingContext2D::create_pattern_with_html_video_element(
   self : CanvasRenderingContext2D,
   image : HTMLVideoElement,
   repetition : String,
@@ -18758,7 +19765,7 @@ pub extern "js" fn CanvasRenderingContext2D::create_pattern_with_h_t_m_l_video_e
   #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::create_pattern_with_h_t_m_l_canvas_element(
+pub extern "js" fn CanvasRenderingContext2D::create_pattern_with_html_canvas_element(
   self : CanvasRenderingContext2D,
   image : HTMLCanvasElement,
   repetition : String,
@@ -18790,7 +19797,7 @@ pub extern "js" fn CanvasRenderingContext2D::create_pattern_with_video_frame(
   #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::draw_image_with_h_t_m_l_or_s_v_g_image_element(
+pub extern "js" fn CanvasRenderingContext2D::draw_image_with_html_or_svg_image_element(
   self : CanvasRenderingContext2D,
   image : HTMLOrSVGImageElement,
   dx : Double,
@@ -18799,7 +19806,7 @@ pub extern "js" fn CanvasRenderingContext2D::draw_image_with_h_t_m_l_or_s_v_g_im
   #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::draw_image_with_h_t_m_l_video_element(
+pub extern "js" fn CanvasRenderingContext2D::draw_image_with_html_video_element(
   self : CanvasRenderingContext2D,
   image : HTMLVideoElement,
   dx : Double,
@@ -18808,7 +19815,7 @@ pub extern "js" fn CanvasRenderingContext2D::draw_image_with_h_t_m_l_video_eleme
   #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
 
 ///|
-pub extern "js" fn CanvasRenderingContext2D::draw_image_with_h_t_m_l_canvas_element(
+pub extern "js" fn CanvasRenderingContext2D::draw_image_with_html_canvas_element(
   self : CanvasRenderingContext2D,
   image : HTMLCanvasElement,
   dx : Double,
@@ -19054,12 +20061,12 @@ pub extern "js" fn Path2D::from_js_value_opt(v : JsValue) -> Path2D? =
 
 ///|
 /// Safely cast JsValue to Path2D (checked with instanceof)
-pub extern "js" fn JsValue::as_path2_d(self : JsValue) -> Path2D? =
+pub extern "js" fn JsValue::as_path_2d(self : JsValue) -> Path2D? =
   #| (self) => (self instanceof Path2D) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Cast JsValue to Path2D (unchecked)
-pub extern "js" fn JsValue::to_path2_d(self : JsValue) -> Path2D =
+pub extern "js" fn JsValue::to_path_2d(self : JsValue) -> Path2D =
   #| (self) => self
 
 ///|
@@ -19443,14 +20450,14 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::from_js_value_opt(
 
 ///|
 /// Safely cast JsValue to OffscreenCanvasRenderingContext2D (checked with instanceof)
-pub extern "js" fn JsValue::as_offscreen_canvas_rendering_context2_d(
+pub extern "js" fn JsValue::as_offscreen_canvas_rendering_context_2d(
   self : JsValue,
 ) -> OffscreenCanvasRenderingContext2D? =
   #| (self) => (self instanceof OffscreenCanvasRenderingContext2D) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Cast JsValue to OffscreenCanvasRenderingContext2D (unchecked)
-pub extern "js" fn JsValue::to_offscreen_canvas_rendering_context2_d(
+pub extern "js" fn JsValue::to_offscreen_canvas_rendering_context_2d(
   self : JsValue,
 ) -> OffscreenCanvasRenderingContext2D =
   #| (self) => self
@@ -19806,14 +20813,14 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::fill_with_fill_rule(
   #| (self, fill_rule) => self.fill(['nonzero', 'evenodd'][fill_rule])
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::fill_with_path_path2_d(
+pub extern "js" fn OffscreenCanvasRenderingContext2D::fill_with_path_path_2d(
   self : OffscreenCanvasRenderingContext2D,
   path : Path2D,
 ) -> Unit =
   #| (self, path) => self.fill(path)
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::fill_with_path_path2_d_and_fill_rule_canvas_fill_rule(
+pub extern "js" fn OffscreenCanvasRenderingContext2D::fill_with_path_path_2d_and_fill_rule_canvas_fill_rule(
   self : OffscreenCanvasRenderingContext2D,
   path : Path2D,
   fill_rule : CanvasFillRule,
@@ -19827,7 +20834,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::stroke(
   #| (self) => self.stroke()
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::stroke_with_path_path2_d(
+pub extern "js" fn OffscreenCanvasRenderingContext2D::stroke_with_path_path_2d(
   self : OffscreenCanvasRenderingContext2D,
   path : Path2D,
 ) -> Unit =
@@ -19847,14 +20854,14 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::clip_with_fill_rule(
   #| (self, fill_rule) => self.clip(['nonzero', 'evenodd'][fill_rule])
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::clip_with_path_path2_d(
+pub extern "js" fn OffscreenCanvasRenderingContext2D::clip_with_path_path_2d(
   self : OffscreenCanvasRenderingContext2D,
   path : Path2D,
 ) -> Unit =
   #| (self, path) => self.clip(path)
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::clip_with_path_path2_d_and_fill_rule_canvas_fill_rule(
+pub extern "js" fn OffscreenCanvasRenderingContext2D::clip_with_path_path_2d_and_fill_rule_canvas_fill_rule(
   self : OffscreenCanvasRenderingContext2D,
   path : Path2D,
   fill_rule : CanvasFillRule,
@@ -19879,7 +20886,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_path_with_fill
   #| (self, x, y, fill_rule) => self.isPointInPath(x, y, ['nonzero', 'evenodd'][fill_rule])
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_path_with_path_path2_d_and_x_and_y(
+pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_path_with_path_path_2d_and_x_and_y(
   self : OffscreenCanvasRenderingContext2D,
   path : Path2D,
   x : Double,
@@ -19888,7 +20895,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_path_with_path
   #| (self, path, x, y) => self.isPointInPath(path, x, y)
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_path_with_path_path2_d_and_x_and_y_and_fill_rule_canvas_fill_rule(
+pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_path_with_path_path_2d_and_x_and_y_and_fill_rule_canvas_fill_rule(
   self : OffscreenCanvasRenderingContext2D,
   path : Path2D,
   x : Double,
@@ -19906,7 +20913,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_stroke(
   #| (self, x, y) => self.isPointInStroke(x, y)
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_stroke_with_path_path2_d_and_x_and_y(
+pub extern "js" fn OffscreenCanvasRenderingContext2D::is_point_in_stroke_with_path_path_2d_and_x_and_y(
   self : OffscreenCanvasRenderingContext2D,
   path : Path2D,
   x : Double,
@@ -20453,7 +21460,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::ellipse_with_counterclockw
   #| (self, x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise) => self.ellipse(x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise)
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::create_pattern_with_h_t_m_l_or_s_v_g_image_element(
+pub extern "js" fn OffscreenCanvasRenderingContext2D::create_pattern_with_html_or_svg_image_element(
   self : OffscreenCanvasRenderingContext2D,
   image : HTMLOrSVGImageElement,
   repetition : String,
@@ -20461,7 +21468,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::create_pattern_with_h_t_m_
   #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::create_pattern_with_h_t_m_l_video_element(
+pub extern "js" fn OffscreenCanvasRenderingContext2D::create_pattern_with_html_video_element(
   self : OffscreenCanvasRenderingContext2D,
   image : HTMLVideoElement,
   repetition : String,
@@ -20469,7 +21476,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::create_pattern_with_h_t_m_
   #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::create_pattern_with_h_t_m_l_canvas_element(
+pub extern "js" fn OffscreenCanvasRenderingContext2D::create_pattern_with_html_canvas_element(
   self : OffscreenCanvasRenderingContext2D,
   image : HTMLCanvasElement,
   repetition : String,
@@ -20501,7 +21508,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::create_pattern_with_video_
   #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_h_t_m_l_or_s_v_g_image_element(
+pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_html_or_svg_image_element(
   self : OffscreenCanvasRenderingContext2D,
   image : HTMLOrSVGImageElement,
   dx : Double,
@@ -20510,7 +21517,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_h_t_m_l_or
   #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_h_t_m_l_video_element(
+pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_html_video_element(
   self : OffscreenCanvasRenderingContext2D,
   image : HTMLVideoElement,
   dx : Double,
@@ -20519,7 +21526,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_h_t_m_l_vi
   #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
 
 ///|
-pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_h_t_m_l_canvas_element(
+pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_html_canvas_element(
   self : OffscreenCanvasRenderingContext2D,
   image : HTMLCanvasElement,
   dx : Double,
@@ -22276,11 +23283,11 @@ pub extern "js" fn Window::to_event_target(self : Window) -> EventTarget =
   #| (self) => self
 
 ///|
-pub extern "js" fn Window::get_window(self : Window) -> WindowProxy =
+pub extern "js" fn Window::get_window(self : Window) -> Window =
   #| (self) => self.window
 
 ///|
-pub extern "js" fn Window::get_self(self : Window) -> WindowProxy =
+pub extern "js" fn Window::get_self(self : Window) -> Window =
   #| (self) => self.self
 
 ///|
@@ -22366,7 +23373,7 @@ pub extern "js" fn Window::blur(self : Window) -> Unit =
   #| (self) => self.blur()
 
 ///|
-pub extern "js" fn Window::get_frames(self : Window) -> WindowProxy =
+pub extern "js" fn Window::get_frames(self : Window) -> Window =
   #| (self) => self.frames
 
 ///|
@@ -22374,7 +23381,7 @@ pub extern "js" fn Window::get_length(self : Window) -> Int =
   #| (self) => self.length
 
 ///|
-pub extern "js" fn Window::get_top(self : Window) -> WindowProxy? =
+pub extern "js" fn Window::get_top(self : Window) -> Window? =
   #| (self) => (() => { const v = self.top; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
@@ -22386,7 +23393,7 @@ pub extern "js" fn Window::set_opener(self : Window, value : JsValue) -> Unit =
   #| (self, value) => { self.opener = value }
 
 ///|
-pub extern "js" fn Window::get_parent(self : Window) -> WindowProxy? =
+pub extern "js" fn Window::get_parent(self : Window) -> Window? =
   #| (self) => (() => { const v = self.parent; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
@@ -22394,7 +23401,7 @@ pub extern "js" fn Window::get_frame_element(self : Window) -> Element? =
   #| (self) => (() => { const v = self.frameElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn Window::open(self : Window) -> WindowProxy? =
+pub extern "js" fn Window::open(self : Window) -> Window? =
   #| (self) => (() => { const v = self.open(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
@@ -22403,7 +23410,7 @@ pub extern "js" fn Window::open_with_features(
   url : String,
   target : String,
   features : String,
-) -> WindowProxy? =
+) -> Window? =
   #| (self, url, target, features) => (() => { const v = self.open(url, target, features); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
@@ -22567,7 +23574,7 @@ pub fn Window::show_directory_picker_with_options(
 ///|
 pub extern "js" fn Window::match_media(
   self : Window,
-  query : CSSOMString,
+  query : String,
 ) -> MediaQueryList =
   #| (self, query) => self.matchMedia(query)
 
@@ -22804,9 +23811,9 @@ pub extern "js" fn Window::get_computed_style(
 pub extern "js" fn Window::get_computed_style_with_pseudo_elt(
   self : Window,
   elt : Element,
-  pseudo_elt : CSSOMString?,
+  pseudo_elt : String?,
 ) -> CSSStyleProperties =
-  #| (self, elt, pseudo_elt) => self.getComputedStyle(elt, (pseudo_elt.$tag === 1 ? pseudo_elt._0 : null))
+  #| (self, elt, pseudo_elt) => self.getComputedStyle(elt, pseudo_elt)
 
 ///|
 pub extern "js" fn Window::query_local_fonts(
@@ -26870,14 +27877,22 @@ pub extern "js" fn Navigator::can_load_ad_auction_fenced_frame(
 pub extern "js" fn Navigator::get_interest_group_ad_auction_data(
   self : Navigator,
 ) -> Promise[AdAuctionData] =
-  #| (self) => self.getInterestGroupAdAuctionData()
+  #| (self) => self.getInterestGroupAdAuctionData().then(v => ({
+  #|   requestId: v.requestId,
+  #|   request: (v.request === undefined ? { $tag: 0 } : { $tag: 1, _0: v.request }),
+  #|   requests: (v.requests === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requests })
+  #| }))
 
 ///|
 extern "js" fn Navigator::get_interest_group_ad_auction_data_with_config_ffi(
   self : Navigator,
   config : JsValue,
 ) -> Promise[AdAuctionData] =
-  #| (self, config) => self.getInterestGroupAdAuctionData(config)
+  #| (self, config) => self.getInterestGroupAdAuctionData(config).then(v => ({
+  #|   requestId: v.requestId,
+  #|   request: (v.request === undefined ? { $tag: 0 } : { $tag: 1, _0: v.request }),
+  #|   requests: (v.requests === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requests })
+  #| }))
 
 ///|
 pub fn Navigator::get_interest_group_ad_auction_data_with_config(
@@ -30420,7 +31435,7 @@ pub extern "js" fn HTMLFrameElement::get_content_document(
 ///|
 pub extern "js" fn HTMLFrameElement::get_content_window(
   self : HTMLFrameElement,
-) -> WindowProxy? =
+) -> Window? =
   #| (self) => (() => { const v = self.contentWindow; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|

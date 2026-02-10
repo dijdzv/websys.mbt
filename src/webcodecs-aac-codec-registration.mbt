@@ -6,7 +6,7 @@
 pub(all) enum AacBitstreamFormat {
   Aac
   Adts
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -49,4 +49,18 @@ extern "js" fn AacEncoderConfig::to_js_ffi(self : AacEncoderConfig) -> JsValue =
 /// Convert to JsValue
 pub fn AacEncoderConfig::to_js(self : AacEncoderConfig) -> JsValue {
   AacEncoderConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AacEncoderConfig::from_js_ffi(
+  value : JsValue,
+) -> AacEncoderConfig =
+  #| (v) => ({
+  #|   format: (v.format === undefined ? undefined : ['aac', 'adts'].indexOf(v.format))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AacEncoderConfig::from_js(value : JsValue) -> AacEncoderConfig {
+  AacEncoderConfig::from_js_ffi(value)
 }

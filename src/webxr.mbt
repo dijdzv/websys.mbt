@@ -13,45 +13,67 @@ pub extern "js" fn XRWebGLRenderingContext::to_js_value(
 
 ///|
 /// Create XRWebGLRenderingContext from WebGLRenderingContext
-pub extern "js" fn XRWebGLRenderingContext::from_web_g_l_rendering_context(
+pub extern "js" fn XRWebGLRenderingContext::from_web_gl_rendering_context(
   v : WebGLRenderingContext,
 ) -> XRWebGLRenderingContext =
   #| (v) => v
 
 ///|
 /// Create XRWebGLRenderingContext from WebGL2RenderingContext
-pub extern "js" fn XRWebGLRenderingContext::from_web_g_l2_rendering_context(
+pub extern "js" fn XRWebGLRenderingContext::from_web_gl2_rendering_context(
   v : WebGL2RenderingContext,
 ) -> XRWebGLRenderingContext =
   #| (v) => v
 
 ///|
 /// Check if this XRWebGLRenderingContext is WebGLRenderingContext
-pub extern "js" fn XRWebGLRenderingContext::is_web_g_l_rendering_context(
+pub extern "js" fn XRWebGLRenderingContext::is_web_gl_rendering_context(
   self : XRWebGLRenderingContext,
 ) -> Bool =
   #| (self) => self instanceof WebGLRenderingContext
 
 ///|
 /// Check if this XRWebGLRenderingContext is WebGL2RenderingContext
-pub extern "js" fn XRWebGLRenderingContext::is_web_g_l2_rendering_context(
+pub extern "js" fn XRWebGLRenderingContext::is_web_gl2_rendering_context(
   self : XRWebGLRenderingContext,
 ) -> Bool =
   #| (self) => self instanceof WebGL2RenderingContext
 
 ///|
 /// Try to get XRWebGLRenderingContext as WebGLRenderingContext
-pub extern "js" fn XRWebGLRenderingContext::as_web_g_l_rendering_context(
+pub extern "js" fn XRWebGLRenderingContext::as_web_gl_rendering_context(
   self : XRWebGLRenderingContext,
 ) -> WebGLRenderingContext? =
   #| (self) => (self instanceof WebGLRenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get XRWebGLRenderingContext as WebGL2RenderingContext
-pub extern "js" fn XRWebGLRenderingContext::as_web_g_l2_rendering_context(
+pub extern "js" fn XRWebGLRenderingContext::as_web_gl2_rendering_context(
   self : XRWebGLRenderingContext,
 ) -> WebGL2RenderingContext? =
   #| (self) => (self instanceof WebGL2RenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[XRWebGLRenderingContext] to WebGLRenderingContext?
+pub fn XRWebGLRenderingContext::bind_as_web_gl_rendering_context(
+  value : XRWebGLRenderingContext?,
+) -> WebGLRenderingContext? {
+  match value {
+    Some(v) => v.as_web_gl_rendering_context()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[XRWebGLRenderingContext] to WebGL2RenderingContext?
+pub fn XRWebGLRenderingContext::bind_as_web_gl2_rendering_context(
+  value : XRWebGLRenderingContext?,
+) -> WebGL2RenderingContext? {
+  match value {
+    Some(v) => v.as_web_gl2_rendering_context()
+    None => None
+  }
+}
 
 ///|
 /// XRSessionMode enum
@@ -59,7 +81,7 @@ pub(all) enum XRSessionMode {
   Inline
   ImmersiveVr
   ImmersiveAr
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -88,7 +110,7 @@ pub(all) enum XRVisibilityState {
   Visible
   VisibleBlurred
   Hidden
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -119,7 +141,7 @@ pub(all) enum XRReferenceSpaceType {
   LocalFloor
   BoundedFloor
   Unbounded
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -152,7 +174,7 @@ pub(all) enum XREye {
   None
   Left
   Right
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -181,7 +203,7 @@ pub(all) enum XRHandedness {
   None
   Left
   Right
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -211,7 +233,7 @@ pub(all) enum XRTargetRayMode {
   TrackedPointer
   Screen
   TransientPointer
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -280,14 +302,33 @@ extern "js" fn XRRenderStateInit::to_js_ffi(
   #|   depthFar: self.depthFar,
   #|   passthroughFullyObscured: (self.passthroughFullyObscured === -1 ? undefined : self.passthroughFullyObscured),
   #|   inlineVerticalFieldOfView: self.inlineVerticalFieldOfView,
-  #|   baseLayer: ((() => { const v = self.baseLayer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   layers: ((() => { const v = self.layers; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   baseLayer: ((() => { const v = self.baseLayer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   layers: ((() => { const v = self.layers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn XRRenderStateInit::to_js(self : XRRenderStateInit) -> JsValue {
   XRRenderStateInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRRenderStateInit::from_js_ffi(
+  value : JsValue,
+) -> XRRenderStateInit =
+  #| (v) => ({
+  #|   depthNear: v.depthNear,
+  #|   depthFar: v.depthFar,
+  #|   passthroughFullyObscured: (v.passthroughFullyObscured === undefined ? -1 : v.passthroughFullyObscured),
+  #|   inlineVerticalFieldOfView: v.inlineVerticalFieldOfView,
+  #|   baseLayer: (v.baseLayer === undefined ? { $tag: 0 } : v.baseLayer === null ? { $tag: 1 } : { $tag: 2, _0: v.baseLayer }),
+  #|   layers: (v.layers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.layers })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRRenderStateInit::from_js(value : JsValue) -> XRRenderStateInit {
+  XRRenderStateInit::from_js_ffi(value)
 }
 
 ///|
@@ -332,6 +373,25 @@ pub fn XRWebGLLayerInit::to_js(self : XRWebGLLayerInit) -> JsValue {
 }
 
 ///|
+extern "js" fn XRWebGLLayerInit::from_js_ffi(
+  value : JsValue,
+) -> XRWebGLLayerInit =
+  #| (v) => ({
+  #|   antialias: (v.antialias === undefined ? -1 : v.antialias),
+  #|   depth: (v.depth === undefined ? -1 : v.depth),
+  #|   stencil: (v.stencil === undefined ? -1 : v.stencil),
+  #|   alpha: (v.alpha === undefined ? -1 : v.alpha),
+  #|   ignoreDepthValues: (v.ignoreDepthValues === undefined ? -1 : v.ignoreDepthValues),
+  #|   framebufferScaleFactor: v.framebufferScaleFactor
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRWebGLLayerInit::from_js(value : JsValue) -> XRWebGLLayerInit {
+  XRWebGLLayerInit::from_js_ffi(value)
+}
+
+///|
 /// XRSessionEventInit dictionary
 pub(all) struct XRSessionEventInit {
   session : XRSession
@@ -355,6 +415,20 @@ extern "js" fn XRSessionEventInit::to_js_ffi(
 /// Convert to JsValue
 pub fn XRSessionEventInit::to_js(self : XRSessionEventInit) -> JsValue {
   XRSessionEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRSessionEventInit::from_js_ffi(
+  value : JsValue,
+) -> XRSessionEventInit =
+  #| (v) => ({
+  #|   session: v.session
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRSessionEventInit::from_js(value : JsValue) -> XRSessionEventInit {
+  XRSessionEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -386,6 +460,23 @@ extern "js" fn XRInputSourceEventInit::to_js_ffi(
 /// Convert to JsValue
 pub fn XRInputSourceEventInit::to_js(self : XRInputSourceEventInit) -> JsValue {
   XRInputSourceEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRInputSourceEventInit::from_js_ffi(
+  value : JsValue,
+) -> XRInputSourceEventInit =
+  #| (v) => ({
+  #|   frame: v.frame,
+  #|   inputSource: v.inputSource
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRInputSourceEventInit::from_js(
+  value : JsValue,
+) -> XRInputSourceEventInit {
+  XRInputSourceEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -423,6 +514,24 @@ pub fn XRInputSourcesChangeEventInit::to_js(
 }
 
 ///|
+extern "js" fn XRInputSourcesChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> XRInputSourcesChangeEventInit =
+  #| (v) => ({
+  #|   session: v.session,
+  #|   added: v.added,
+  #|   removed: v.removed
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRInputSourcesChangeEventInit::from_js(
+  value : JsValue,
+) -> XRInputSourcesChangeEventInit {
+  XRInputSourcesChangeEventInit::from_js_ffi(value)
+}
+
+///|
 /// XRReferenceSpaceEventInit dictionary
 pub(all) struct XRReferenceSpaceEventInit {
   referenceSpace : XRReferenceSpace
@@ -443,7 +552,7 @@ extern "js" fn XRReferenceSpaceEventInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   referenceSpace: self.referenceSpace,
-  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
@@ -452,6 +561,23 @@ pub fn XRReferenceSpaceEventInit::to_js(
   self : XRReferenceSpaceEventInit,
 ) -> JsValue {
   XRReferenceSpaceEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRReferenceSpaceEventInit::from_js_ffi(
+  value : JsValue,
+) -> XRReferenceSpaceEventInit =
+  #| (v) => ({
+  #|   referenceSpace: v.referenceSpace,
+  #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRReferenceSpaceEventInit::from_js(
+  value : JsValue,
+) -> XRReferenceSpaceEventInit {
+  XRReferenceSpaceEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -496,6 +622,26 @@ pub fn XRVisibilityMaskChangeEventInit::to_js(
 }
 
 ///|
+extern "js" fn XRVisibilityMaskChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> XRVisibilityMaskChangeEventInit =
+  #| (v) => ({
+  #|   session: v.session,
+  #|   eye: ['none', 'left', 'right'].indexOf(v.eye),
+  #|   index: v.index,
+  #|   vertices: v.vertices,
+  #|   indices: v.indices
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRVisibilityMaskChangeEventInit::from_js(
+  value : JsValue,
+) -> XRVisibilityMaskChangeEventInit {
+  XRVisibilityMaskChangeEventInit::from_js_ffi(value)
+}
+
+///|
 /// XRSessionSupportedPermissionDescriptor dictionary
 pub(all) struct XRSessionSupportedPermissionDescriptor {
   mode : XRSessionMode?
@@ -524,6 +670,22 @@ pub fn XRSessionSupportedPermissionDescriptor::to_js(
 }
 
 ///|
+extern "js" fn XRSessionSupportedPermissionDescriptor::from_js_ffi(
+  value : JsValue,
+) -> XRSessionSupportedPermissionDescriptor =
+  #| (v) => ({
+  #|   mode: (v.mode === undefined ? undefined : ['inline', 'immersive-vr', 'immersive-ar'].indexOf(v.mode))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRSessionSupportedPermissionDescriptor::from_js(
+  value : JsValue,
+) -> XRSessionSupportedPermissionDescriptor {
+  XRSessionSupportedPermissionDescriptor::from_js_ffi(value)
+}
+
+///|
 /// XRPermissionDescriptor dictionary
 pub(all) struct XRPermissionDescriptor {
   mode : XRSessionMode?
@@ -547,14 +709,32 @@ extern "js" fn XRPermissionDescriptor::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   mode: ((() => { const v = self.mode; if (v === undefined) return undefined; return ['inline', 'immersive-vr', 'immersive-ar'][v]; })()),
-  #|   requiredFeatures: ((() => { const v = self.requiredFeatures; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   optionalFeatures: ((() => { const v = self.optionalFeatures; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   requiredFeatures: ((() => { const v = self.requiredFeatures; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   optionalFeatures: ((() => { const v = self.optionalFeatures; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn XRPermissionDescriptor::to_js(self : XRPermissionDescriptor) -> JsValue {
   XRPermissionDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRPermissionDescriptor::from_js_ffi(
+  value : JsValue,
+) -> XRPermissionDescriptor =
+  #| (v) => ({
+  #|   mode: (v.mode === undefined ? undefined : ['inline', 'immersive-vr', 'immersive-ar'].indexOf(v.mode)),
+  #|   requiredFeatures: (v.requiredFeatures === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requiredFeatures }),
+  #|   optionalFeatures: (v.optionalFeatures === undefined ? { $tag: 0 } : { $tag: 1, _0: v.optionalFeatures })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRPermissionDescriptor::from_js(
+  value : JsValue,
+) -> XRPermissionDescriptor {
+  XRPermissionDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -2024,7 +2204,7 @@ pub extern "js" fn XRWebGLLayer::get_native_framebuffer_scale_factor(
   #| (session) => XRWebGLLayer.getNativeFramebufferScaleFactor(session)
 
 ///|
-pub extern "js" fn XRWebGLLayer::new_with_web_g_l_rendering_context(
+pub extern "js" fn XRWebGLLayer::new_with_web_gl_rendering_context(
   session : XRSession,
   context : WebGLRenderingContext,
   layer_init : XRWebGLLayerInit,
@@ -2032,7 +2212,7 @@ pub extern "js" fn XRWebGLLayer::new_with_web_g_l_rendering_context(
   #| (session, context, layer_init) => new XRWebGLLayer(session, context, layer_init)
 
 ///|
-pub extern "js" fn XRWebGLLayer::new_with_web_g_l2_rendering_context(
+pub extern "js" fn XRWebGLLayer::new_with_web_gl2_rendering_context(
   session : XRSession,
   context : WebGL2RenderingContext,
   layer_init : XRWebGLLayerInit,

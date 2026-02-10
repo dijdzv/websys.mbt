@@ -30,3 +30,18 @@ extern "js" fn ImageResource::to_js_ffi(self : ImageResource) -> JsValue =
 pub fn ImageResource::to_js(self : ImageResource) -> JsValue {
   ImageResource::to_js_ffi(self)
 }
+
+///|
+extern "js" fn ImageResource::from_js_ffi(value : JsValue) -> ImageResource =
+  #| (v) => ({
+  #|   src: v.src,
+  #|   sizes: v.sizes,
+  #|   type_: v.type,
+  #|   label: v.label
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ImageResource::from_js(value : JsValue) -> ImageResource {
+  ImageResource::from_js_ffi(value)
+}

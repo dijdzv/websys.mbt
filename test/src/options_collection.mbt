@@ -18,7 +18,7 @@ fn test_options_collection() -> Unit {
     opt.set_value(foods[i])
     opt.set_text(foods[i])
     select.add(
-      @websys.HTMLOptionElementOrHTMLOptGroupElement::from_h_t_m_l_option_element(
+      @websys.HTMLOptionElementOrHTMLOptGroupElement::from_html_option_element(
         opt,
       ),
     )

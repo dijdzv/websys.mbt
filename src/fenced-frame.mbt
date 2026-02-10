@@ -46,6 +46,26 @@ pub extern "js" fn UrnOrConfig::as_fenced_frame_config(
   #| (self) => (self instanceof FencedFrameConfig) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[UrnOrConfig] to String?
+pub fn UrnOrConfig::bind_as_string(value : UrnOrConfig?) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[UrnOrConfig] to FencedFrameConfig?
+pub fn UrnOrConfig::bind_as_fenced_frame_config(
+  value : UrnOrConfig?,
+) -> FencedFrameConfig? {
+  match value {
+    Some(v) => v.as_fenced_frame_config()
+    None => None
+  }
+}
+
+///|
 /// ReportEventType typedef
 pub type ReportEventType
 
@@ -94,10 +114,30 @@ pub extern "js" fn ReportEventType::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
+/// Flatten Option[ReportEventType] to FenceEvent?
+pub fn ReportEventType::bind_as_fence_event(
+  value : ReportEventType?,
+) -> FenceEvent? {
+  match value {
+    Some(v) => v.as_fence_event()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ReportEventType] to String?
+pub fn ReportEventType::bind_as_string(value : ReportEventType?) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
 /// OpaqueProperty enum
 pub(all) enum OpaqueProperty {
   Opaque
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -124,7 +164,7 @@ pub(all) enum FenceReportingDestination {
   ComponentSeller
   DirectSeller
   SharedStorageSelectUrl
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -186,7 +226,7 @@ extern "js" fn FenceEvent::to_js_ffi(self : FenceEvent) -> JsValue =
   #| (self) => ({
   #|   eventType: self.eventType,
   #|   eventData: self.eventData,
-  #|   destination: ((() => { const v = self.destination; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   destination: ((() => { const v = self.destination; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   crossOriginExposed: (self.crossOriginExposed === -1 ? undefined : self.crossOriginExposed),
   #|   once: (self.once === -1 ? undefined : self.once),
   #|   destinationURL: self.destinationURL
@@ -196,6 +236,23 @@ extern "js" fn FenceEvent::to_js_ffi(self : FenceEvent) -> JsValue =
 /// Convert to JsValue
 pub fn FenceEvent::to_js(self : FenceEvent) -> JsValue {
   FenceEvent::to_js_ffi(self)
+}
+
+///|
+extern "js" fn FenceEvent::from_js_ffi(value : JsValue) -> FenceEvent =
+  #| (v) => ({
+  #|   eventType: v.eventType,
+  #|   eventData: v.eventData,
+  #|   destination: (v.destination === undefined ? { $tag: 0 } : { $tag: 1, _0: v.destination }),
+  #|   crossOriginExposed: (v.crossOriginExposed === undefined ? -1 : v.crossOriginExposed),
+  #|   once: (v.once === undefined ? -1 : v.once),
+  #|   destinationURL: v.destinationURL
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FenceEvent::from_js(value : JsValue) -> FenceEvent {
+  FenceEvent::from_js_ffi(value)
 }
 
 ///|

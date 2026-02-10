@@ -39,3 +39,22 @@ pub fn IntegrityViolationReportBody::to_js(
 ) -> JsValue {
   IntegrityViolationReportBody::to_js_ffi(self)
 }
+
+///|
+extern "js" fn IntegrityViolationReportBody::from_js_ffi(
+  value : JsValue,
+) -> IntegrityViolationReportBody =
+  #| (v) => ({
+  #|   documentURL: v.documentURL,
+  #|   blockedURL: v.blockedURL,
+  #|   destination: v.destination,
+  #|   reportOnly: (v.reportOnly === undefined ? -1 : v.reportOnly)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IntegrityViolationReportBody::from_js(
+  value : JsValue,
+) -> IntegrityViolationReportBody {
+  IntegrityViolationReportBody::from_js_ffi(value)
+}

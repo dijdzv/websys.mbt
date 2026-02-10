@@ -41,6 +41,25 @@ pub fn DocumentPictureInPictureOptions::to_js(
 }
 
 ///|
+extern "js" fn DocumentPictureInPictureOptions::from_js_ffi(
+  value : JsValue,
+) -> DocumentPictureInPictureOptions =
+  #| (v) => ({
+  #|   width: v.width,
+  #|   height: v.height,
+  #|   disallowReturnToOpener: (v.disallowReturnToOpener === undefined ? -1 : v.disallowReturnToOpener),
+  #|   preferInitialWindowPlacement: (v.preferInitialWindowPlacement === undefined ? -1 : v.preferInitialWindowPlacement)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DocumentPictureInPictureOptions::from_js(
+  value : JsValue,
+) -> DocumentPictureInPictureOptions {
+  DocumentPictureInPictureOptions::from_js_ffi(value)
+}
+
+///|
 /// DocumentPictureInPictureEventInit dictionary
 pub(all) struct DocumentPictureInPictureEventInit {
   window : Window
@@ -68,6 +87,22 @@ pub fn DocumentPictureInPictureEventInit::to_js(
   self : DocumentPictureInPictureEventInit,
 ) -> JsValue {
   DocumentPictureInPictureEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DocumentPictureInPictureEventInit::from_js_ffi(
+  value : JsValue,
+) -> DocumentPictureInPictureEventInit =
+  #| (v) => ({
+  #|   window: v.window
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DocumentPictureInPictureEventInit::from_js(
+  value : JsValue,
+) -> DocumentPictureInPictureEventInit {
+  DocumentPictureInPictureEventInit::from_js_ffi(value)
 }
 
 ///|

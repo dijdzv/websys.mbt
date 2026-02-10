@@ -6,7 +6,7 @@
 pub(all) enum AppBannerPromptOutcome {
   Accepted
   Dismissed
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -55,6 +55,20 @@ extern "js" fn PromptResponseObject::to_js_ffi(
 /// Convert to JsValue
 pub fn PromptResponseObject::to_js(self : PromptResponseObject) -> JsValue {
   PromptResponseObject::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PromptResponseObject::from_js_ffi(
+  value : JsValue,
+) -> PromptResponseObject =
+  #| (v) => ({
+  #|   userChoice: (v.userChoice === undefined ? undefined : ['accepted', 'dismissed'].indexOf(v.userChoice))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PromptResponseObject::from_js(value : JsValue) -> PromptResponseObject {
+  PromptResponseObject::from_js_ffi(value)
 }
 
 ///|
@@ -129,4 +143,6 @@ pub fn BeforeInstallPromptEvent::new_with_event_init_dict(
 pub extern "js" fn BeforeInstallPromptEvent::prompt(
   self : BeforeInstallPromptEvent,
 ) -> Promise[PromptResponseObject] =
-  #| (self) => self.prompt()
+  #| (self) => self.prompt().then(v => ({
+  #|   userChoice: (v.userChoice === undefined ? undefined : ['accepted', 'dismissed'].indexOf(v.userChoice))
+  #| }))

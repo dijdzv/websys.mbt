@@ -72,7 +72,7 @@ pub extern "js" fn CSSConditionRule::as_css_container_rule(
 ///|
 pub extern "js" fn CSSConditionRule::get_condition_text(
   self : CSSConditionRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.conditionText
 
 ///|

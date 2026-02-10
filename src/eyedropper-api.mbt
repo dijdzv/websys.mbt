@@ -28,6 +28,20 @@ pub fn ColorSelectionResult::to_js(self : ColorSelectionResult) -> JsValue {
 }
 
 ///|
+extern "js" fn ColorSelectionResult::from_js_ffi(
+  value : JsValue,
+) -> ColorSelectionResult =
+  #| (v) => ({
+  #|   sRGBHex: v.sRGBHex
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ColorSelectionResult::from_js(value : JsValue) -> ColorSelectionResult {
+  ColorSelectionResult::from_js_ffi(value)
+}
+
+///|
 /// ColorSelectionOptions dictionary
 pub(all) struct ColorSelectionOptions {
   signal : AbortSignal?
@@ -44,13 +58,27 @@ extern "js" fn ColorSelectionOptions::to_js_ffi(
   self : ColorSelectionOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn ColorSelectionOptions::to_js(self : ColorSelectionOptions) -> JsValue {
   ColorSelectionOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ColorSelectionOptions::from_js_ffi(
+  value : JsValue,
+) -> ColorSelectionOptions =
+  #| (v) => ({
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ColorSelectionOptions::from_js(value : JsValue) -> ColorSelectionOptions {
+  ColorSelectionOptions::from_js_ffi(value)
 }
 
 ///|
@@ -89,14 +117,18 @@ pub extern "js" fn EyeDropper::new() -> EyeDropper =
 pub extern "js" fn EyeDropper::open(
   self : EyeDropper,
 ) -> Promise[ColorSelectionResult] =
-  #| (self) => self.open()
+  #| (self) => self.open().then(v => ({
+  #|   sRGBHex: v.sRGBHex
+  #| }))
 
 ///|
 extern "js" fn EyeDropper::open_with_options_ffi(
   self : EyeDropper,
   options : JsValue,
 ) -> Promise[ColorSelectionResult] =
-  #| (self, options) => self.open(options)
+  #| (self, options) => self.open(options).then(v => ({
+  #|   sRGBHex: v.sRGBHex
+  #| }))
 
 ///|
 pub fn EyeDropper::open_with_options(

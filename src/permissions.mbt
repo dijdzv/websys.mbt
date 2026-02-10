@@ -7,7 +7,7 @@ pub(all) enum PermissionState {
   Granted
   Denied
   Prompt
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -57,6 +57,20 @@ pub fn PermissionDescriptor::to_js(self : PermissionDescriptor) -> JsValue {
 }
 
 ///|
+extern "js" fn PermissionDescriptor::from_js_ffi(
+  value : JsValue,
+) -> PermissionDescriptor =
+  #| (v) => ({
+  #|   name: v.name
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PermissionDescriptor::from_js(value : JsValue) -> PermissionDescriptor {
+  PermissionDescriptor::from_js_ffi(value)
+}
+
+///|
 /// PermissionSetParameters dictionary
 pub(all) struct PermissionSetParameters {
   descriptor : JsValue
@@ -87,6 +101,23 @@ pub fn PermissionSetParameters::to_js(
   self : PermissionSetParameters,
 ) -> JsValue {
   PermissionSetParameters::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PermissionSetParameters::from_js_ffi(
+  value : JsValue,
+) -> PermissionSetParameters =
+  #| (v) => ({
+  #|   descriptor: v.descriptor,
+  #|   state: ['granted', 'denied', 'prompt'].indexOf(v.state)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PermissionSetParameters::from_js(
+  value : JsValue,
+) -> PermissionSetParameters {
+  PermissionSetParameters::from_js_ffi(value)
 }
 
 ///|

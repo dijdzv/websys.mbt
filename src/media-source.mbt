@@ -7,7 +7,7 @@ pub(all) enum ReadyState {
   Closed
   Open
   Ended
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -35,7 +35,7 @@ pub fn ReadyState::from_string(s : String) -> ReadyState? {
 pub(all) enum EndOfStreamError {
   Network
   Decode
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -61,7 +61,7 @@ pub fn EndOfStreamError::from_string(s : String) -> EndOfStreamError? {
 pub(all) enum AppendMode {
   Segments
   Sequence
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -100,8 +100,8 @@ extern "js" fn BufferedChangeEventInit::to_js_ffi(
   self : BufferedChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   addedRanges: ((() => { const v = self.addedRanges; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   removedRanges: ((() => { const v = self.removedRanges; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   addedRanges: ((() => { const v = self.addedRanges; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   removedRanges: ((() => { const v = self.removedRanges; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -110,6 +110,23 @@ pub fn BufferedChangeEventInit::to_js(
   self : BufferedChangeEventInit,
 ) -> JsValue {
   BufferedChangeEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BufferedChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> BufferedChangeEventInit =
+  #| (v) => ({
+  #|   addedRanges: (v.addedRanges === undefined ? { $tag: 0 } : { $tag: 1, _0: v.addedRanges }),
+  #|   removedRanges: (v.removedRanges === undefined ? { $tag: 0 } : { $tag: 1, _0: v.removedRanges })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BufferedChangeEventInit::from_js(
+  value : JsValue,
+) -> BufferedChangeEventInit {
+  BufferedChangeEventInit::from_js_ffi(value)
 }
 
 ///|

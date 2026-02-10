@@ -7,7 +7,7 @@ pub(all) enum FullscreenNavigationUI {
   Auto
   Show
   Hide
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -53,11 +53,26 @@ extern "js" fn FullscreenOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   navigationUI: ((() => { const v = self.navigationUI; if (v === undefined) return undefined; return ['auto', 'show', 'hide'][v]; })()),
-  #|   screen: ((() => { const v = self.screen; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   screen: ((() => { const v = self.screen; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn FullscreenOptions::to_js(self : FullscreenOptions) -> JsValue {
   FullscreenOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn FullscreenOptions::from_js_ffi(
+  value : JsValue,
+) -> FullscreenOptions =
+  #| (v) => ({
+  #|   navigationUI: (v.navigationUI === undefined ? undefined : ['auto', 'show', 'hide'].indexOf(v.navigationUI)),
+  #|   screen: (v.screen === undefined ? { $tag: 0 } : { $tag: 1, _0: v.screen })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FullscreenOptions::from_js(value : JsValue) -> FullscreenOptions {
+  FullscreenOptions::from_js_ffi(value)
 }

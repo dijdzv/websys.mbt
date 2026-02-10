@@ -6,7 +6,7 @@
 pub(all) enum ItemType {
   Product
   Subscription
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -69,10 +69,10 @@ extern "js" fn ItemDetails::to_js_ffi(self : ItemDetails) -> JsValue =
   #|   price: self.price,
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['product', 'subscription'][v]; })()),
   #|   description: self.description,
-  #|   iconURLs: ((() => { const v = self.iconURLs; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   iconURLs: ((() => { const v = self.iconURLs; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   subscriptionPeriod: self.subscriptionPeriod,
   #|   freeTrialPeriod: self.freeTrialPeriod,
-  #|   introductoryPrice: ((() => { const v = self.introductoryPrice; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   introductoryPrice: ((() => { const v = self.introductoryPrice; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   introductoryPricePeriod: self.introductoryPricePeriod,
   #|   introductoryPriceCycles: self.introductoryPriceCycles
   #| })
@@ -81,6 +81,28 @@ extern "js" fn ItemDetails::to_js_ffi(self : ItemDetails) -> JsValue =
 /// Convert to JsValue
 pub fn ItemDetails::to_js(self : ItemDetails) -> JsValue {
   ItemDetails::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ItemDetails::from_js_ffi(value : JsValue) -> ItemDetails =
+  #| (v) => ({
+  #|   itemId: v.itemId,
+  #|   title: v.title,
+  #|   price: v.price,
+  #|   type_: (v.type === undefined ? undefined : ['product', 'subscription'].indexOf(v.type)),
+  #|   description: v.description,
+  #|   iconURLs: (v.iconURLs === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iconURLs }),
+  #|   subscriptionPeriod: v.subscriptionPeriod,
+  #|   freeTrialPeriod: v.freeTrialPeriod,
+  #|   introductoryPrice: (v.introductoryPrice === undefined ? { $tag: 0 } : { $tag: 1, _0: v.introductoryPrice }),
+  #|   introductoryPricePeriod: v.introductoryPricePeriod,
+  #|   introductoryPriceCycles: v.introductoryPriceCycles
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ItemDetails::from_js(value : JsValue) -> ItemDetails {
+  ItemDetails::from_js_ffi(value)
 }
 
 ///|
@@ -107,6 +129,19 @@ extern "js" fn PurchaseDetails::to_js_ffi(self : PurchaseDetails) -> JsValue =
 /// Convert to JsValue
 pub fn PurchaseDetails::to_js(self : PurchaseDetails) -> JsValue {
   PurchaseDetails::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PurchaseDetails::from_js_ffi(value : JsValue) -> PurchaseDetails =
+  #| (v) => ({
+  #|   itemId: v.itemId,
+  #|   purchaseToken: v.purchaseToken
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PurchaseDetails::from_js(value : JsValue) -> PurchaseDetails {
+  PurchaseDetails::from_js_ffi(value)
 }
 
 ///|

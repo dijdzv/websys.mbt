@@ -39,6 +39,23 @@ pub fn SVGBoundingBoxOptions::to_js(self : SVGBoundingBoxOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn SVGBoundingBoxOptions::from_js_ffi(
+  value : JsValue,
+) -> SVGBoundingBoxOptions =
+  #| (v) => ({
+  #|   fill: (v.fill === undefined ? -1 : v.fill),
+  #|   stroke: (v.stroke === undefined ? -1 : v.stroke),
+  #|   markers: (v.markers === undefined ? -1 : v.markers),
+  #|   clipped: (v.clipped === undefined ? -1 : v.clipped)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SVGBoundingBoxOptions::from_js(value : JsValue) -> SVGBoundingBoxOptions {
+  SVGBoundingBoxOptions::from_js_ffi(value)
+}
+
+///|
 /// SVGElement interface
 pub type SVGElement
 

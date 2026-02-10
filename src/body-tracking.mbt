@@ -87,7 +87,7 @@ pub(all) enum XRBodyJoint {
   RightFootSubtalar
   RightFootTransverse
   RightFootBall
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

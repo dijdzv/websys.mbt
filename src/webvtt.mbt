@@ -54,10 +54,32 @@ pub extern "js" fn LineAndPositionSetting::as_auto_keyword(
   #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[LineAndPositionSetting] to Double?
+pub fn LineAndPositionSetting::bind_as_double(
+  value : LineAndPositionSetting?,
+) -> Double? {
+  match value {
+    Some(v) => v.as_double()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[LineAndPositionSetting] to AutoKeyword?
+pub fn LineAndPositionSetting::bind_as_auto_keyword(
+  value : LineAndPositionSetting?,
+) -> AutoKeyword? {
+  match value {
+    Some(v) => v.as_auto_keyword()
+    None => None
+  }
+}
+
+///|
 /// AutoKeyword enum
 pub(all) enum AutoKeyword {
   Auto
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -82,7 +104,7 @@ pub(all) enum DirectionSetting {
   Empty
   Rl
   Lr
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -111,7 +133,7 @@ pub(all) enum LineAlignSetting {
   Start
   Center
   End
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -141,7 +163,7 @@ pub(all) enum PositionAlignSetting {
   Center
   LineRight
   Auto
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -174,7 +196,7 @@ pub(all) enum AlignSetting {
   End
   Left
   Right
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -206,7 +228,7 @@ pub fn AlignSetting::from_string(s : String) -> AlignSetting? {
 pub(all) enum ScrollSetting {
   Empty
   Up
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

@@ -6,7 +6,7 @@
 pub(all) enum UserIdleState {
   Active
   Idle
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -32,7 +32,7 @@ pub fn UserIdleState::from_string(s : String) -> UserIdleState? {
 pub(all) enum ScreenIdleState {
   Locked
   Unlocked
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -70,13 +70,26 @@ pub fn IdleOptions::default() -> IdleOptions {
 extern "js" fn IdleOptions::to_js_ffi(self : IdleOptions) -> JsValue =
   #| (self) => ({
   #|   threshold: self.threshold,
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn IdleOptions::to_js(self : IdleOptions) -> JsValue {
   IdleOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IdleOptions::from_js_ffi(value : JsValue) -> IdleOptions =
+  #| (v) => ({
+  #|   threshold: v.threshold,
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdleOptions::from_js(value : JsValue) -> IdleOptions {
+  IdleOptions::from_js_ffi(value)
 }
 
 ///|

@@ -37,6 +37,23 @@ pub fn WindowControlsOverlayGeometryChangeEventInit::to_js(
 }
 
 ///|
+extern "js" fn WindowControlsOverlayGeometryChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> WindowControlsOverlayGeometryChangeEventInit =
+  #| (v) => ({
+  #|   titlebarAreaRect: v.titlebarAreaRect,
+  #|   visible: (v.visible === undefined ? -1 : v.visible)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WindowControlsOverlayGeometryChangeEventInit::from_js(
+  value : JsValue,
+) -> WindowControlsOverlayGeometryChangeEventInit {
+  WindowControlsOverlayGeometryChangeEventInit::from_js_ffi(value)
+}
+
+///|
 /// WindowControlsOverlay interface
 pub type WindowControlsOverlay
 

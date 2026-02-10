@@ -6,7 +6,7 @@
 pub(all) enum XRPlaneOrientation {
   Horizontal
   Vertical
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

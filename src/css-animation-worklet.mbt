@@ -249,10 +249,7 @@ pub extern "js" fn css_get_animation_worklet() -> Worklet =
 
 ///|
 /// CSS namespace
-pub extern "js" fn css_supports(
-  property : CSSOMString,
-  value : CSSOMString,
-) -> Bool =
+pub extern "js" fn css_supports(property : String, value : String) -> Bool =
   #| (property, value) => CSS.supports(property, value)
 
 ///|
@@ -267,7 +264,7 @@ pub fn css_register_property(definition : PropertyDefinition) -> Unit {
 
 ///|
 /// CSS namespace
-pub extern "js" fn css_escape(ident : CSSOMString) -> CSSOMString =
+pub extern "js" fn css_escape(ident : String) -> String =
   #| (ident) => CSS.escape(ident)
 
 ///|

@@ -48,23 +48,23 @@ pub extern "js" fn CSSColorProfileRule::to_css_rule(
 ///|
 pub extern "js" fn CSSColorProfileRule::get_name(
   self : CSSColorProfileRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.name
 
 ///|
 pub extern "js" fn CSSColorProfileRule::get_src(
   self : CSSColorProfileRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.src
 
 ///|
 pub extern "js" fn CSSColorProfileRule::get_rendering_intent(
   self : CSSColorProfileRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.renderingIntent
 
 ///|
 pub extern "js" fn CSSColorProfileRule::get_components(
   self : CSSColorProfileRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.components

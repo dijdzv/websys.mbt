@@ -18,7 +18,7 @@ pub(all) enum RTCStatsType {
   LocalCandidate
   RemoteCandidate
   Certificate
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -70,7 +70,7 @@ pub(all) enum RTCQualityLimitationReason {
   Cpu
   Bandwidth
   Other
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -105,7 +105,7 @@ pub(all) enum RTCDtlsRole {
   Client
   Server
   Unknown
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -136,7 +136,7 @@ pub(all) enum RTCStatsIceCandidatePairState {
   InProgress
   Failed
   Succeeded
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -200,6 +200,23 @@ pub fn RTCRtpStreamStats::to_js(self : RTCRtpStreamStats) -> JsValue {
 }
 
 ///|
+extern "js" fn RTCRtpStreamStats::from_js_ffi(
+  value : JsValue,
+) -> RTCRtpStreamStats =
+  #| (v) => ({
+  #|   ssrc: v.ssrc,
+  #|   kind: v.kind,
+  #|   transportId: v.transportId,
+  #|   codecId: v.codecId
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRtpStreamStats::from_js(value : JsValue) -> RTCRtpStreamStats {
+  RTCRtpStreamStats::from_js_ffi(value)
+}
+
+///|
 /// RTCCodecStats dictionary
 pub(all) struct RTCCodecStats {
   payloadType : Int
@@ -238,6 +255,23 @@ extern "js" fn RTCCodecStats::to_js_ffi(self : RTCCodecStats) -> JsValue =
 /// Convert to JsValue
 pub fn RTCCodecStats::to_js(self : RTCCodecStats) -> JsValue {
   RTCCodecStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCCodecStats::from_js_ffi(value : JsValue) -> RTCCodecStats =
+  #| (v) => ({
+  #|   payloadType: v.payloadType,
+  #|   transportId: v.transportId,
+  #|   mimeType: v.mimeType,
+  #|   clockRate: v.clockRate,
+  #|   channels: v.channels,
+  #|   sdpFmtpLine: v.sdpFmtpLine
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCCodecStats::from_js(value : JsValue) -> RTCCodecStats {
+  RTCCodecStats::from_js_ffi(value)
 }
 
 ///|
@@ -298,6 +332,32 @@ pub fn RTCReceivedRtpStreamStats::to_js(
   self : RTCReceivedRtpStreamStats,
 ) -> JsValue {
   RTCReceivedRtpStreamStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCReceivedRtpStreamStats::from_js_ffi(
+  value : JsValue,
+) -> RTCReceivedRtpStreamStats =
+  #| (v) => ({
+  #|   ssrc: v.ssrc,
+  #|   kind: v.kind,
+  #|   transportId: v.transportId,
+  #|   codecId: v.codecId,
+  #|   packetsReceived: v.packetsReceived,
+  #|   packetsReceivedWithEct1: v.packetsReceivedWithEct1,
+  #|   packetsReceivedWithCe: v.packetsReceivedWithCe,
+  #|   packetsReportedAsLost: v.packetsReportedAsLost,
+  #|   packetsReportedAsLostButRecovered: v.packetsReportedAsLostButRecovered,
+  #|   packetsLost: v.packetsLost,
+  #|   jitter: v.jitter
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCReceivedRtpStreamStats::from_js(
+  value : JsValue,
+) -> RTCReceivedRtpStreamStats {
+  RTCReceivedRtpStreamStats::from_js_ffi(value)
 }
 
 ///|
@@ -480,7 +540,7 @@ extern "js" fn RTCInboundRtpStreamStats::to_js_ffi(
   #|   totalPausesDuration: self.totalPausesDuration,
   #|   freezeCount: self.freezeCount,
   #|   totalFreezesDuration: self.totalFreezesDuration,
-  #|   lastPacketReceivedTimestamp: ((() => { const v = self.lastPacketReceivedTimestamp; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   lastPacketReceivedTimestamp: ((() => { const v = self.lastPacketReceivedTimestamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   headerBytesReceived: self.headerBytesReceived,
   #|   packetsDiscarded: self.packetsDiscarded,
   #|   fecBytesReceived: self.fecBytesReceived,
@@ -491,7 +551,7 @@ extern "js" fn RTCInboundRtpStreamStats::to_js_ffi(
   #|   firCount: self.firCount,
   #|   pliCount: self.pliCount,
   #|   totalProcessingDelay: self.totalProcessingDelay,
-  #|   estimatedPlayoutTimestamp: ((() => { const v = self.estimatedPlayoutTimestamp; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   estimatedPlayoutTimestamp: ((() => { const v = self.estimatedPlayoutTimestamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   jitterBufferDelay: self.jitterBufferDelay,
   #|   jitterBufferTargetDelay: self.jitterBufferTargetDelay,
   #|   jitterBufferEmittedCount: self.jitterBufferEmittedCount,
@@ -526,6 +586,88 @@ pub fn RTCInboundRtpStreamStats::to_js(
   self : RTCInboundRtpStreamStats,
 ) -> JsValue {
   RTCInboundRtpStreamStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCInboundRtpStreamStats::from_js_ffi(
+  value : JsValue,
+) -> RTCInboundRtpStreamStats =
+  #| (v) => ({
+  #|   ssrc: v.ssrc,
+  #|   kind: v.kind,
+  #|   transportId: v.transportId,
+  #|   codecId: v.codecId,
+  #|   packetsReceived: v.packetsReceived,
+  #|   packetsReceivedWithEct1: v.packetsReceivedWithEct1,
+  #|   packetsReceivedWithCe: v.packetsReceivedWithCe,
+  #|   packetsReportedAsLost: v.packetsReportedAsLost,
+  #|   packetsReportedAsLostButRecovered: v.packetsReportedAsLostButRecovered,
+  #|   packetsLost: v.packetsLost,
+  #|   jitter: v.jitter,
+  #|   trackIdentifier: v.trackIdentifier,
+  #|   mid: v.mid,
+  #|   remoteId: v.remoteId,
+  #|   framesDecoded: v.framesDecoded,
+  #|   keyFramesDecoded: v.keyFramesDecoded,
+  #|   framesRendered: v.framesRendered,
+  #|   framesDropped: v.framesDropped,
+  #|   frameWidth: v.frameWidth,
+  #|   frameHeight: v.frameHeight,
+  #|   framesPerSecond: v.framesPerSecond,
+  #|   qpSum: v.qpSum,
+  #|   totalDecodeTime: v.totalDecodeTime,
+  #|   totalInterFrameDelay: v.totalInterFrameDelay,
+  #|   totalSquaredInterFrameDelay: v.totalSquaredInterFrameDelay,
+  #|   pauseCount: v.pauseCount,
+  #|   totalPausesDuration: v.totalPausesDuration,
+  #|   freezeCount: v.freezeCount,
+  #|   totalFreezesDuration: v.totalFreezesDuration,
+  #|   lastPacketReceivedTimestamp: (v.lastPacketReceivedTimestamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.lastPacketReceivedTimestamp }),
+  #|   headerBytesReceived: v.headerBytesReceived,
+  #|   packetsDiscarded: v.packetsDiscarded,
+  #|   fecBytesReceived: v.fecBytesReceived,
+  #|   fecPacketsReceived: v.fecPacketsReceived,
+  #|   fecPacketsDiscarded: v.fecPacketsDiscarded,
+  #|   bytesReceived: v.bytesReceived,
+  #|   nackCount: v.nackCount,
+  #|   firCount: v.firCount,
+  #|   pliCount: v.pliCount,
+  #|   totalProcessingDelay: v.totalProcessingDelay,
+  #|   estimatedPlayoutTimestamp: (v.estimatedPlayoutTimestamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.estimatedPlayoutTimestamp }),
+  #|   jitterBufferDelay: v.jitterBufferDelay,
+  #|   jitterBufferTargetDelay: v.jitterBufferTargetDelay,
+  #|   jitterBufferEmittedCount: v.jitterBufferEmittedCount,
+  #|   jitterBufferMinimumDelay: v.jitterBufferMinimumDelay,
+  #|   totalSamplesReceived: v.totalSamplesReceived,
+  #|   concealedSamples: v.concealedSamples,
+  #|   silentConcealedSamples: v.silentConcealedSamples,
+  #|   concealmentEvents: v.concealmentEvents,
+  #|   insertedSamplesForDeceleration: v.insertedSamplesForDeceleration,
+  #|   removedSamplesForAcceleration: v.removedSamplesForAcceleration,
+  #|   audioLevel: v.audioLevel,
+  #|   totalAudioEnergy: v.totalAudioEnergy,
+  #|   totalSamplesDuration: v.totalSamplesDuration,
+  #|   framesReceived: v.framesReceived,
+  #|   decoderImplementation: v.decoderImplementation,
+  #|   playoutId: v.playoutId,
+  #|   powerEfficientDecoder: (v.powerEfficientDecoder === undefined ? -1 : v.powerEfficientDecoder),
+  #|   framesAssembledFromMultiplePackets: v.framesAssembledFromMultiplePackets,
+  #|   totalAssemblyTime: v.totalAssemblyTime,
+  #|   retransmittedPacketsReceived: v.retransmittedPacketsReceived,
+  #|   retransmittedBytesReceived: v.retransmittedBytesReceived,
+  #|   rtxSsrc: v.rtxSsrc,
+  #|   fecSsrc: v.fecSsrc,
+  #|   totalCorruptionProbability: v.totalCorruptionProbability,
+  #|   totalSquaredCorruptionProbability: v.totalSquaredCorruptionProbability,
+  #|   corruptionMeasurements: v.corruptionMeasurements
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCInboundRtpStreamStats::from_js(
+  value : JsValue,
+) -> RTCInboundRtpStreamStats {
+  RTCInboundRtpStreamStats::from_js_ffi(value)
 }
 
 ///|
@@ -607,6 +749,38 @@ pub fn RTCRemoteInboundRtpStreamStats::to_js(
 }
 
 ///|
+extern "js" fn RTCRemoteInboundRtpStreamStats::from_js_ffi(
+  value : JsValue,
+) -> RTCRemoteInboundRtpStreamStats =
+  #| (v) => ({
+  #|   ssrc: v.ssrc,
+  #|   kind: v.kind,
+  #|   transportId: v.transportId,
+  #|   codecId: v.codecId,
+  #|   packetsReceived: v.packetsReceived,
+  #|   packetsReceivedWithEct1: v.packetsReceivedWithEct1,
+  #|   packetsReceivedWithCe: v.packetsReceivedWithCe,
+  #|   packetsReportedAsLost: v.packetsReportedAsLost,
+  #|   packetsReportedAsLostButRecovered: v.packetsReportedAsLostButRecovered,
+  #|   packetsLost: v.packetsLost,
+  #|   jitter: v.jitter,
+  #|   localId: v.localId,
+  #|   roundTripTime: v.roundTripTime,
+  #|   totalRoundTripTime: v.totalRoundTripTime,
+  #|   fractionLost: v.fractionLost,
+  #|   roundTripTimeMeasurements: v.roundTripTimeMeasurements,
+  #|   packetsWithBleachedEct1Marking: v.packetsWithBleachedEct1Marking
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRemoteInboundRtpStreamStats::from_js(
+  value : JsValue,
+) -> RTCRemoteInboundRtpStreamStats {
+  RTCRemoteInboundRtpStreamStats::from_js_ffi(value)
+}
+
+///|
 /// RTCSentRtpStreamStats dictionary
 pub(all) struct RTCSentRtpStreamStats {
   ssrc : Int
@@ -647,6 +821,25 @@ extern "js" fn RTCSentRtpStreamStats::to_js_ffi(
 /// Convert to JsValue
 pub fn RTCSentRtpStreamStats::to_js(self : RTCSentRtpStreamStats) -> JsValue {
   RTCSentRtpStreamStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCSentRtpStreamStats::from_js_ffi(
+  value : JsValue,
+) -> RTCSentRtpStreamStats =
+  #| (v) => ({
+  #|   ssrc: v.ssrc,
+  #|   kind: v.kind,
+  #|   transportId: v.transportId,
+  #|   codecId: v.codecId,
+  #|   packetsSent: v.packetsSent,
+  #|   bytesSent: v.bytesSent
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCSentRtpStreamStats::from_js(value : JsValue) -> RTCSentRtpStreamStats {
+  RTCSentRtpStreamStats::from_js_ffi(value)
 }
 
 ///|
@@ -771,12 +964,12 @@ extern "js" fn RTCOutboundRtpStreamStats::to_js_ffi(
   #|   framesEncoded: self.framesEncoded,
   #|   keyFramesEncoded: self.keyFramesEncoded,
   #|   qpSum: self.qpSum,
-  #|   psnrSum: ((() => { const v = self.psnrSum; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   psnrSum: ((() => { const v = self.psnrSum; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   psnrMeasurements: self.psnrMeasurements,
   #|   totalEncodeTime: self.totalEncodeTime,
   #|   totalPacketSendDelay: self.totalPacketSendDelay,
   #|   qualityLimitationReason: ((() => { const v = self.qualityLimitationReason; if (v === undefined) return undefined; return ['none', 'cpu', 'bandwidth', 'other'][v]; })()),
-  #|   qualityLimitationDurations: ((() => { const v = self.qualityLimitationDurations; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   qualityLimitationDurations: ((() => { const v = self.qualityLimitationDurations; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   qualityLimitationResolutionChanges: self.qualityLimitationResolutionChanges,
   #|   nackCount: self.nackCount,
   #|   firCount: self.firCount,
@@ -794,6 +987,61 @@ pub fn RTCOutboundRtpStreamStats::to_js(
   self : RTCOutboundRtpStreamStats,
 ) -> JsValue {
   RTCOutboundRtpStreamStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCOutboundRtpStreamStats::from_js_ffi(
+  value : JsValue,
+) -> RTCOutboundRtpStreamStats =
+  #| (v) => ({
+  #|   ssrc: v.ssrc,
+  #|   kind: v.kind,
+  #|   transportId: v.transportId,
+  #|   codecId: v.codecId,
+  #|   packetsSent: v.packetsSent,
+  #|   bytesSent: v.bytesSent,
+  #|   mid: v.mid,
+  #|   mediaSourceId: v.mediaSourceId,
+  #|   remoteId: v.remoteId,
+  #|   rid: v.rid,
+  #|   encodingIndex: v.encodingIndex,
+  #|   headerBytesSent: v.headerBytesSent,
+  #|   retransmittedPacketsSent: v.retransmittedPacketsSent,
+  #|   retransmittedBytesSent: v.retransmittedBytesSent,
+  #|   rtxSsrc: v.rtxSsrc,
+  #|   targetBitrate: v.targetBitrate,
+  #|   totalEncodedBytesTarget: v.totalEncodedBytesTarget,
+  #|   frameWidth: v.frameWidth,
+  #|   frameHeight: v.frameHeight,
+  #|   framesPerSecond: v.framesPerSecond,
+  #|   framesSent: v.framesSent,
+  #|   hugeFramesSent: v.hugeFramesSent,
+  #|   framesEncoded: v.framesEncoded,
+  #|   keyFramesEncoded: v.keyFramesEncoded,
+  #|   qpSum: v.qpSum,
+  #|   psnrSum: (v.psnrSum === undefined ? { $tag: 0 } : { $tag: 1, _0: v.psnrSum }),
+  #|   psnrMeasurements: v.psnrMeasurements,
+  #|   totalEncodeTime: v.totalEncodeTime,
+  #|   totalPacketSendDelay: v.totalPacketSendDelay,
+  #|   qualityLimitationReason: (v.qualityLimitationReason === undefined ? undefined : ['none', 'cpu', 'bandwidth', 'other'].indexOf(v.qualityLimitationReason)),
+  #|   qualityLimitationDurations: (v.qualityLimitationDurations === undefined ? { $tag: 0 } : { $tag: 1, _0: v.qualityLimitationDurations }),
+  #|   qualityLimitationResolutionChanges: v.qualityLimitationResolutionChanges,
+  #|   nackCount: v.nackCount,
+  #|   firCount: v.firCount,
+  #|   pliCount: v.pliCount,
+  #|   encoderImplementation: v.encoderImplementation,
+  #|   powerEfficientEncoder: (v.powerEfficientEncoder === undefined ? -1 : v.powerEfficientEncoder),
+  #|   active: (v.active === undefined ? -1 : v.active),
+  #|   scalabilityMode: v.scalabilityMode,
+  #|   packetsSentWithEct1: v.packetsSentWithEct1
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCOutboundRtpStreamStats::from_js(
+  value : JsValue,
+) -> RTCOutboundRtpStreamStats {
+  RTCOutboundRtpStreamStats::from_js_ffi(value)
 }
 
 ///|
@@ -844,7 +1092,7 @@ extern "js" fn RTCRemoteOutboundRtpStreamStats::to_js_ffi(
   #|   packetsSent: self.packetsSent,
   #|   bytesSent: self.bytesSent,
   #|   localId: self.localId,
-  #|   remoteTimestamp: ((() => { const v = self.remoteTimestamp; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   remoteTimestamp: ((() => { const v = self.remoteTimestamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   reportsSent: self.reportsSent,
   #|   roundTripTime: self.roundTripTime,
   #|   totalRoundTripTime: self.totalRoundTripTime,
@@ -857,6 +1105,33 @@ pub fn RTCRemoteOutboundRtpStreamStats::to_js(
   self : RTCRemoteOutboundRtpStreamStats,
 ) -> JsValue {
   RTCRemoteOutboundRtpStreamStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCRemoteOutboundRtpStreamStats::from_js_ffi(
+  value : JsValue,
+) -> RTCRemoteOutboundRtpStreamStats =
+  #| (v) => ({
+  #|   ssrc: v.ssrc,
+  #|   kind: v.kind,
+  #|   transportId: v.transportId,
+  #|   codecId: v.codecId,
+  #|   packetsSent: v.packetsSent,
+  #|   bytesSent: v.bytesSent,
+  #|   localId: v.localId,
+  #|   remoteTimestamp: (v.remoteTimestamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.remoteTimestamp }),
+  #|   reportsSent: v.reportsSent,
+  #|   roundTripTime: v.roundTripTime,
+  #|   totalRoundTripTime: v.totalRoundTripTime,
+  #|   roundTripTimeMeasurements: v.roundTripTimeMeasurements
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRemoteOutboundRtpStreamStats::from_js(
+  value : JsValue,
+) -> RTCRemoteOutboundRtpStreamStats {
+  RTCRemoteOutboundRtpStreamStats::from_js_ffi(value)
 }
 
 ///|
@@ -885,6 +1160,21 @@ extern "js" fn RTCMediaSourceStats::to_js_ffi(
 /// Convert to JsValue
 pub fn RTCMediaSourceStats::to_js(self : RTCMediaSourceStats) -> JsValue {
   RTCMediaSourceStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCMediaSourceStats::from_js_ffi(
+  value : JsValue,
+) -> RTCMediaSourceStats =
+  #| (v) => ({
+  #|   trackIdentifier: v.trackIdentifier,
+  #|   kind: v.kind
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCMediaSourceStats::from_js(value : JsValue) -> RTCMediaSourceStats {
+  RTCMediaSourceStats::from_js_ffi(value)
 }
 
 ///|
@@ -934,6 +1224,26 @@ pub fn RTCAudioSourceStats::to_js(self : RTCAudioSourceStats) -> JsValue {
 }
 
 ///|
+extern "js" fn RTCAudioSourceStats::from_js_ffi(
+  value : JsValue,
+) -> RTCAudioSourceStats =
+  #| (v) => ({
+  #|   trackIdentifier: v.trackIdentifier,
+  #|   kind: v.kind,
+  #|   audioLevel: v.audioLevel,
+  #|   totalAudioEnergy: v.totalAudioEnergy,
+  #|   totalSamplesDuration: v.totalSamplesDuration,
+  #|   echoReturnLoss: v.echoReturnLoss,
+  #|   echoReturnLossEnhancement: v.echoReturnLossEnhancement
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCAudioSourceStats::from_js(value : JsValue) -> RTCAudioSourceStats {
+  RTCAudioSourceStats::from_js_ffi(value)
+}
+
+///|
 /// RTCVideoSourceStats dictionary
 pub(all) struct RTCVideoSourceStats {
   trackIdentifier : String
@@ -974,6 +1284,25 @@ extern "js" fn RTCVideoSourceStats::to_js_ffi(
 /// Convert to JsValue
 pub fn RTCVideoSourceStats::to_js(self : RTCVideoSourceStats) -> JsValue {
   RTCVideoSourceStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCVideoSourceStats::from_js_ffi(
+  value : JsValue,
+) -> RTCVideoSourceStats =
+  #| (v) => ({
+  #|   trackIdentifier: v.trackIdentifier,
+  #|   kind: v.kind,
+  #|   width: v.width,
+  #|   height: v.height,
+  #|   frames: v.frames,
+  #|   framesPerSecond: v.framesPerSecond
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCVideoSourceStats::from_js(value : JsValue) -> RTCVideoSourceStats {
+  RTCVideoSourceStats::from_js_ffi(value)
 }
 
 ///|
@@ -1020,6 +1349,25 @@ pub fn RTCAudioPlayoutStats::to_js(self : RTCAudioPlayoutStats) -> JsValue {
 }
 
 ///|
+extern "js" fn RTCAudioPlayoutStats::from_js_ffi(
+  value : JsValue,
+) -> RTCAudioPlayoutStats =
+  #| (v) => ({
+  #|   kind: v.kind,
+  #|   synthesizedSamplesDuration: v.synthesizedSamplesDuration,
+  #|   synthesizedSamplesEvents: v.synthesizedSamplesEvents,
+  #|   totalSamplesDuration: v.totalSamplesDuration,
+  #|   totalPlayoutDelay: v.totalPlayoutDelay,
+  #|   totalSamplesCount: v.totalSamplesCount
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCAudioPlayoutStats::from_js(value : JsValue) -> RTCAudioPlayoutStats {
+  RTCAudioPlayoutStats::from_js_ffi(value)
+}
+
+///|
 /// RTCPeerConnectionStats dictionary
 pub(all) struct RTCPeerConnectionStats {
   dataChannelsOpened : Int?
@@ -1045,6 +1393,23 @@ extern "js" fn RTCPeerConnectionStats::to_js_ffi(
 /// Convert to JsValue
 pub fn RTCPeerConnectionStats::to_js(self : RTCPeerConnectionStats) -> JsValue {
   RTCPeerConnectionStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCPeerConnectionStats::from_js_ffi(
+  value : JsValue,
+) -> RTCPeerConnectionStats =
+  #| (v) => ({
+  #|   dataChannelsOpened: v.dataChannelsOpened,
+  #|   dataChannelsClosed: v.dataChannelsClosed
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCPeerConnectionStats::from_js(
+  value : JsValue,
+) -> RTCPeerConnectionStats {
+  RTCPeerConnectionStats::from_js_ffi(value)
 }
 
 ///|
@@ -1096,6 +1461,27 @@ extern "js" fn RTCDataChannelStats::to_js_ffi(
 /// Convert to JsValue
 pub fn RTCDataChannelStats::to_js(self : RTCDataChannelStats) -> JsValue {
   RTCDataChannelStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCDataChannelStats::from_js_ffi(
+  value : JsValue,
+) -> RTCDataChannelStats =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   protocol: v.protocol,
+  #|   dataChannelIdentifier: v.dataChannelIdentifier,
+  #|   state: ['connecting', 'open', 'closing', 'closed'].indexOf(v.state),
+  #|   messagesSent: v.messagesSent,
+  #|   bytesSent: v.bytesSent,
+  #|   messagesReceived: v.messagesReceived,
+  #|   bytesReceived: v.bytesReceived
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCDataChannelStats::from_js(value : JsValue) -> RTCDataChannelStats {
+  RTCDataChannelStats::from_js_ffi(value)
 }
 
 ///|
@@ -1180,6 +1566,37 @@ pub fn RTCTransportStats::to_js(self : RTCTransportStats) -> JsValue {
 }
 
 ///|
+extern "js" fn RTCTransportStats::from_js_ffi(
+  value : JsValue,
+) -> RTCTransportStats =
+  #| (v) => ({
+  #|   packetsSent: v.packetsSent,
+  #|   packetsReceived: v.packetsReceived,
+  #|   bytesSent: v.bytesSent,
+  #|   bytesReceived: v.bytesReceived,
+  #|   iceRole: (v.iceRole === undefined ? undefined : ['unknown', 'controlling', 'controlled'].indexOf(v.iceRole)),
+  #|   iceLocalUsernameFragment: v.iceLocalUsernameFragment,
+  #|   dtlsState: ['new', 'connecting', 'connected', 'closed', 'failed'].indexOf(v.dtlsState),
+  #|   iceState: (v.iceState === undefined ? undefined : ['closed', 'failed', 'disconnected', 'new', 'checking', 'completed', 'connected'].indexOf(v.iceState)),
+  #|   selectedCandidatePairId: v.selectedCandidatePairId,
+  #|   localCertificateId: v.localCertificateId,
+  #|   remoteCertificateId: v.remoteCertificateId,
+  #|   tlsVersion: v.tlsVersion,
+  #|   dtlsCipher: v.dtlsCipher,
+  #|   dtlsRole: (v.dtlsRole === undefined ? undefined : ['client', 'server', 'unknown'].indexOf(v.dtlsRole)),
+  #|   srtpCipher: v.srtpCipher,
+  #|   selectedCandidatePairChanges: v.selectedCandidatePairChanges,
+  #|   ccfbMessagesSent: v.ccfbMessagesSent,
+  #|   ccfbMessagesReceived: v.ccfbMessagesReceived
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCTransportStats::from_js(value : JsValue) -> RTCTransportStats {
+  RTCTransportStats::from_js_ffi(value)
+}
+
+///|
 /// RTCIceCandidateStats dictionary
 pub(all) struct RTCIceCandidateStats {
   transportId : String
@@ -1225,7 +1642,7 @@ extern "js" fn RTCIceCandidateStats::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   transportId: self.transportId,
-  #|   address: ((() => { const v = self.address; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   address: ((() => { const v = self.address; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   port: self.port,
   #|   protocol: self.protocol,
   #|   candidateType: ['host', 'srflx', 'prflx', 'relay'][self.candidateType],
@@ -1243,6 +1660,32 @@ extern "js" fn RTCIceCandidateStats::to_js_ffi(
 /// Convert to JsValue
 pub fn RTCIceCandidateStats::to_js(self : RTCIceCandidateStats) -> JsValue {
   RTCIceCandidateStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCIceCandidateStats::from_js_ffi(
+  value : JsValue,
+) -> RTCIceCandidateStats =
+  #| (v) => ({
+  #|   transportId: v.transportId,
+  #|   address: (v.address === undefined ? { $tag: 0 } : v.address === null ? { $tag: 1 } : { $tag: 2, _0: v.address }),
+  #|   port: v.port,
+  #|   protocol: v.protocol,
+  #|   candidateType: ['host', 'srflx', 'prflx', 'relay'].indexOf(v.candidateType),
+  #|   priority: v.priority,
+  #|   url: v.url,
+  #|   relayProtocol: (v.relayProtocol === undefined ? undefined : ['udp', 'tcp', 'tls'].indexOf(v.relayProtocol)),
+  #|   foundation: v.foundation,
+  #|   relatedAddress: v.relatedAddress,
+  #|   relatedPort: v.relatedPort,
+  #|   usernameFragment: v.usernameFragment,
+  #|   tcpType: (v.tcpType === undefined ? undefined : ['active', 'passive', 'so'].indexOf(v.tcpType))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCIceCandidateStats::from_js(value : JsValue) -> RTCIceCandidateStats {
+  RTCIceCandidateStats::from_js_ffi(value)
 }
 
 ///|
@@ -1317,8 +1760,8 @@ extern "js" fn RTCIceCandidatePairStats::to_js_ffi(
   #|   packetsReceived: self.packetsReceived,
   #|   bytesSent: self.bytesSent,
   #|   bytesReceived: self.bytesReceived,
-  #|   lastPacketSentTimestamp: ((() => { const v = self.lastPacketSentTimestamp; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   lastPacketReceivedTimestamp: ((() => { const v = self.lastPacketReceivedTimestamp; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   lastPacketSentTimestamp: ((() => { const v = self.lastPacketSentTimestamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   lastPacketReceivedTimestamp: ((() => { const v = self.lastPacketReceivedTimestamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   totalRoundTripTime: self.totalRoundTripTime,
   #|   currentRoundTripTime: self.currentRoundTripTime,
   #|   availableOutgoingBitrate: self.availableOutgoingBitrate,
@@ -1338,6 +1781,43 @@ pub fn RTCIceCandidatePairStats::to_js(
   self : RTCIceCandidatePairStats,
 ) -> JsValue {
   RTCIceCandidatePairStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCIceCandidatePairStats::from_js_ffi(
+  value : JsValue,
+) -> RTCIceCandidatePairStats =
+  #| (v) => ({
+  #|   transportId: v.transportId,
+  #|   localCandidateId: v.localCandidateId,
+  #|   remoteCandidateId: v.remoteCandidateId,
+  #|   state: ['frozen', 'waiting', 'in-progress', 'failed', 'succeeded'].indexOf(v.state),
+  #|   nominated: (v.nominated === undefined ? -1 : v.nominated),
+  #|   packetsSent: v.packetsSent,
+  #|   packetsReceived: v.packetsReceived,
+  #|   bytesSent: v.bytesSent,
+  #|   bytesReceived: v.bytesReceived,
+  #|   lastPacketSentTimestamp: (v.lastPacketSentTimestamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.lastPacketSentTimestamp }),
+  #|   lastPacketReceivedTimestamp: (v.lastPacketReceivedTimestamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.lastPacketReceivedTimestamp }),
+  #|   totalRoundTripTime: v.totalRoundTripTime,
+  #|   currentRoundTripTime: v.currentRoundTripTime,
+  #|   availableOutgoingBitrate: v.availableOutgoingBitrate,
+  #|   availableIncomingBitrate: v.availableIncomingBitrate,
+  #|   requestsReceived: v.requestsReceived,
+  #|   requestsSent: v.requestsSent,
+  #|   responsesReceived: v.responsesReceived,
+  #|   responsesSent: v.responsesSent,
+  #|   consentRequestsSent: v.consentRequestsSent,
+  #|   packetsDiscardedOnSend: v.packetsDiscardedOnSend,
+  #|   bytesDiscardedOnSend: v.bytesDiscardedOnSend
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCIceCandidatePairStats::from_js(
+  value : JsValue,
+) -> RTCIceCandidatePairStats {
+  RTCIceCandidatePairStats::from_js_ffi(value)
 }
 
 ///|
@@ -1375,4 +1855,21 @@ extern "js" fn RTCCertificateStats::to_js_ffi(
 /// Convert to JsValue
 pub fn RTCCertificateStats::to_js(self : RTCCertificateStats) -> JsValue {
   RTCCertificateStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCCertificateStats::from_js_ffi(
+  value : JsValue,
+) -> RTCCertificateStats =
+  #| (v) => ({
+  #|   fingerprint: v.fingerprint,
+  #|   fingerprintAlgorithm: v.fingerprintAlgorithm,
+  #|   base64Certificate: v.base64Certificate,
+  #|   issuerCertificateId: v.issuerCertificateId
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCCertificateStats::from_js(value : JsValue) -> RTCCertificateStats {
+  RTCCertificateStats::from_js_ffi(value)
 }

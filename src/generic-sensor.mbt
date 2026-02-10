@@ -26,6 +26,18 @@ pub fn SensorOptions::to_js(self : SensorOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn SensorOptions::from_js_ffi(value : JsValue) -> SensorOptions =
+  #| (v) => ({
+  #|   frequency: v.frequency
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SensorOptions::from_js(value : JsValue) -> SensorOptions {
+  SensorOptions::from_js_ffi(value)
+}
+
+///|
 /// SensorErrorEventInit dictionary
 pub(all) struct SensorErrorEventInit {
   error : DOMException
@@ -49,6 +61,20 @@ extern "js" fn SensorErrorEventInit::to_js_ffi(
 /// Convert to JsValue
 pub fn SensorErrorEventInit::to_js(self : SensorErrorEventInit) -> JsValue {
   SensorErrorEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SensorErrorEventInit::from_js_ffi(
+  value : JsValue,
+) -> SensorErrorEventInit =
+  #| (v) => ({
+  #|   error: v.error
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SensorErrorEventInit::from_js(value : JsValue) -> SensorErrorEventInit {
+  SensorErrorEventInit::from_js_ffi(value)
 }
 
 ///|

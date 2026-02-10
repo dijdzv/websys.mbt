@@ -29,129 +29,195 @@ pub extern "js" fn GPUBindingResource::to_js_value(
 
 ///|
 /// Create GPUBindingResource from GPUSampler
-pub extern "js" fn GPUBindingResource::from_g_p_u_sampler(
+pub extern "js" fn GPUBindingResource::from_gpu_sampler(
   v : GPUSampler,
 ) -> GPUBindingResource =
   #| (v) => v
 
 ///|
 /// Create GPUBindingResource from GPUTexture
-pub extern "js" fn GPUBindingResource::from_g_p_u_texture(
+pub extern "js" fn GPUBindingResource::from_gpu_texture(
   v : GPUTexture,
 ) -> GPUBindingResource =
   #| (v) => v
 
 ///|
 /// Create GPUBindingResource from GPUTextureView
-pub extern "js" fn GPUBindingResource::from_g_p_u_texture_view(
+pub extern "js" fn GPUBindingResource::from_gpu_texture_view(
   v : GPUTextureView,
 ) -> GPUBindingResource =
   #| (v) => v
 
 ///|
 /// Create GPUBindingResource from GPUBuffer
-pub extern "js" fn GPUBindingResource::from_g_p_u_buffer(
+pub extern "js" fn GPUBindingResource::from_gpu_buffer(
   v : GPUBuffer,
 ) -> GPUBindingResource =
   #| (v) => v
 
 ///|
 /// Create GPUBindingResource from GPUBufferBinding
-pub extern "js" fn GPUBindingResource::from_g_p_u_buffer_binding(
+pub extern "js" fn GPUBindingResource::from_gpu_buffer_binding(
   v : GPUBufferBinding,
 ) -> GPUBindingResource =
   #| (v) => v
 
 ///|
 /// Create GPUBindingResource from GPUExternalTexture
-pub extern "js" fn GPUBindingResource::from_g_p_u_external_texture(
+pub extern "js" fn GPUBindingResource::from_gpu_external_texture(
   v : GPUExternalTexture,
 ) -> GPUBindingResource =
   #| (v) => v
 
 ///|
 /// Check if this GPUBindingResource is GPUSampler
-pub extern "js" fn GPUBindingResource::is_g_p_u_sampler(
+pub extern "js" fn GPUBindingResource::is_gpu_sampler(
   self : GPUBindingResource,
 ) -> Bool =
   #| (self) => self instanceof GPUSampler
 
 ///|
 /// Check if this GPUBindingResource is GPUTexture
-pub extern "js" fn GPUBindingResource::is_g_p_u_texture(
+pub extern "js" fn GPUBindingResource::is_gpu_texture(
   self : GPUBindingResource,
 ) -> Bool =
   #| (self) => self instanceof GPUTexture
 
 ///|
 /// Check if this GPUBindingResource is GPUTextureView
-pub extern "js" fn GPUBindingResource::is_g_p_u_texture_view(
+pub extern "js" fn GPUBindingResource::is_gpu_texture_view(
   self : GPUBindingResource,
 ) -> Bool =
   #| (self) => self instanceof GPUTextureView
 
 ///|
 /// Check if this GPUBindingResource is GPUBuffer
-pub extern "js" fn GPUBindingResource::is_g_p_u_buffer(
+pub extern "js" fn GPUBindingResource::is_gpu_buffer(
   self : GPUBindingResource,
 ) -> Bool =
   #| (self) => self instanceof GPUBuffer
 
 ///|
 /// Check if this GPUBindingResource is GPUBufferBinding
-pub extern "js" fn GPUBindingResource::is_g_p_u_buffer_binding(
+pub extern "js" fn GPUBindingResource::is_gpu_buffer_binding(
   self : GPUBindingResource,
 ) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
 /// Check if this GPUBindingResource is GPUExternalTexture
-pub extern "js" fn GPUBindingResource::is_g_p_u_external_texture(
+pub extern "js" fn GPUBindingResource::is_gpu_external_texture(
   self : GPUBindingResource,
 ) -> Bool =
   #| (self) => self instanceof GPUExternalTexture
 
 ///|
 /// Try to get GPUBindingResource as GPUSampler
-pub extern "js" fn GPUBindingResource::as_g_p_u_sampler(
+pub extern "js" fn GPUBindingResource::as_gpu_sampler(
   self : GPUBindingResource,
 ) -> GPUSampler? =
   #| (self) => (self instanceof GPUSampler) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get GPUBindingResource as GPUTexture
-pub extern "js" fn GPUBindingResource::as_g_p_u_texture(
+pub extern "js" fn GPUBindingResource::as_gpu_texture(
   self : GPUBindingResource,
 ) -> GPUTexture? =
   #| (self) => (self instanceof GPUTexture) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get GPUBindingResource as GPUTextureView
-pub extern "js" fn GPUBindingResource::as_g_p_u_texture_view(
+pub extern "js" fn GPUBindingResource::as_gpu_texture_view(
   self : GPUBindingResource,
 ) -> GPUTextureView? =
   #| (self) => (self instanceof GPUTextureView) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get GPUBindingResource as GPUBuffer
-pub extern "js" fn GPUBindingResource::as_g_p_u_buffer(
+pub extern "js" fn GPUBindingResource::as_gpu_buffer(
   self : GPUBindingResource,
 ) -> GPUBuffer? =
   #| (self) => (self instanceof GPUBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get GPUBindingResource as GPUBufferBinding
-pub extern "js" fn GPUBindingResource::as_g_p_u_buffer_binding(
+pub extern "js" fn GPUBindingResource::as_gpu_buffer_binding(
   self : GPUBindingResource,
 ) -> GPUBufferBinding? =
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get GPUBindingResource as GPUExternalTexture
-pub extern "js" fn GPUBindingResource::as_g_p_u_external_texture(
+pub extern "js" fn GPUBindingResource::as_gpu_external_texture(
   self : GPUBindingResource,
 ) -> GPUExternalTexture? =
   #| (self) => (self instanceof GPUExternalTexture) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[GPUBindingResource] to GPUSampler?
+pub fn GPUBindingResource::bind_as_gpu_sampler(
+  value : GPUBindingResource?,
+) -> GPUSampler? {
+  match value {
+    Some(v) => v.as_gpu_sampler()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GPUBindingResource] to GPUTexture?
+pub fn GPUBindingResource::bind_as_gpu_texture(
+  value : GPUBindingResource?,
+) -> GPUTexture? {
+  match value {
+    Some(v) => v.as_gpu_texture()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GPUBindingResource] to GPUTextureView?
+pub fn GPUBindingResource::bind_as_gpu_texture_view(
+  value : GPUBindingResource?,
+) -> GPUTextureView? {
+  match value {
+    Some(v) => v.as_gpu_texture_view()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GPUBindingResource] to GPUBuffer?
+pub fn GPUBindingResource::bind_as_gpu_buffer(
+  value : GPUBindingResource?,
+) -> GPUBuffer? {
+  match value {
+    Some(v) => v.as_gpu_buffer()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GPUBindingResource] to GPUBufferBinding?
+pub fn GPUBindingResource::bind_as_gpu_buffer_binding(
+  value : GPUBindingResource?,
+) -> GPUBufferBinding? {
+  match value {
+    Some(v) => v.as_gpu_buffer_binding()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GPUBindingResource] to GPUExternalTexture?
+pub fn GPUBindingResource::bind_as_gpu_external_texture(
+  value : GPUBindingResource?,
+) -> GPUExternalTexture? {
+  match value {
+    Some(v) => v.as_gpu_external_texture()
+    None => None
+  }
+}
 
 ///|
 /// GPUPipelineConstantValue typedef
@@ -187,14 +253,14 @@ pub extern "js" fn GPUCopyExternalImageSource::from_image_data(
 
 ///|
 /// Create GPUCopyExternalImageSource from HTMLImageElement
-pub extern "js" fn GPUCopyExternalImageSource::from_h_t_m_l_image_element(
+pub extern "js" fn GPUCopyExternalImageSource::from_html_image_element(
   v : HTMLImageElement,
 ) -> GPUCopyExternalImageSource =
   #| (v) => v
 
 ///|
 /// Create GPUCopyExternalImageSource from HTMLVideoElement
-pub extern "js" fn GPUCopyExternalImageSource::from_h_t_m_l_video_element(
+pub extern "js" fn GPUCopyExternalImageSource::from_html_video_element(
   v : HTMLVideoElement,
 ) -> GPUCopyExternalImageSource =
   #| (v) => v
@@ -208,7 +274,7 @@ pub extern "js" fn GPUCopyExternalImageSource::from_video_frame(
 
 ///|
 /// Create GPUCopyExternalImageSource from HTMLCanvasElement
-pub extern "js" fn GPUCopyExternalImageSource::from_h_t_m_l_canvas_element(
+pub extern "js" fn GPUCopyExternalImageSource::from_html_canvas_element(
   v : HTMLCanvasElement,
 ) -> GPUCopyExternalImageSource =
   #| (v) => v
@@ -236,14 +302,14 @@ pub extern "js" fn GPUCopyExternalImageSource::is_image_data(
 
 ///|
 /// Check if this GPUCopyExternalImageSource is HTMLImageElement
-pub extern "js" fn GPUCopyExternalImageSource::is_h_t_m_l_image_element(
+pub extern "js" fn GPUCopyExternalImageSource::is_html_image_element(
   self : GPUCopyExternalImageSource,
 ) -> Bool =
   #| (self) => self instanceof HTMLImageElement
 
 ///|
 /// Check if this GPUCopyExternalImageSource is HTMLVideoElement
-pub extern "js" fn GPUCopyExternalImageSource::is_h_t_m_l_video_element(
+pub extern "js" fn GPUCopyExternalImageSource::is_html_video_element(
   self : GPUCopyExternalImageSource,
 ) -> Bool =
   #| (self) => self instanceof HTMLVideoElement
@@ -257,7 +323,7 @@ pub extern "js" fn GPUCopyExternalImageSource::is_video_frame(
 
 ///|
 /// Check if this GPUCopyExternalImageSource is HTMLCanvasElement
-pub extern "js" fn GPUCopyExternalImageSource::is_h_t_m_l_canvas_element(
+pub extern "js" fn GPUCopyExternalImageSource::is_html_canvas_element(
   self : GPUCopyExternalImageSource,
 ) -> Bool =
   #| (self) => self instanceof HTMLCanvasElement
@@ -285,14 +351,14 @@ pub extern "js" fn GPUCopyExternalImageSource::as_image_data(
 
 ///|
 /// Try to get GPUCopyExternalImageSource as HTMLImageElement
-pub extern "js" fn GPUCopyExternalImageSource::as_h_t_m_l_image_element(
+pub extern "js" fn GPUCopyExternalImageSource::as_html_image_element(
   self : GPUCopyExternalImageSource,
 ) -> HTMLImageElement? =
   #| (self) => (self instanceof HTMLImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get GPUCopyExternalImageSource as HTMLVideoElement
-pub extern "js" fn GPUCopyExternalImageSource::as_h_t_m_l_video_element(
+pub extern "js" fn GPUCopyExternalImageSource::as_html_video_element(
   self : GPUCopyExternalImageSource,
 ) -> HTMLVideoElement? =
   #| (self) => (self instanceof HTMLVideoElement) ? { $tag: 1, _0: self } : { $tag: 0 }
@@ -306,7 +372,7 @@ pub extern "js" fn GPUCopyExternalImageSource::as_video_frame(
 
 ///|
 /// Try to get GPUCopyExternalImageSource as HTMLCanvasElement
-pub extern "js" fn GPUCopyExternalImageSource::as_h_t_m_l_canvas_element(
+pub extern "js" fn GPUCopyExternalImageSource::as_html_canvas_element(
   self : GPUCopyExternalImageSource,
 ) -> HTMLCanvasElement? =
   #| (self) => (self instanceof HTMLCanvasElement) ? { $tag: 1, _0: self } : { $tag: 0 }
@@ -317,6 +383,83 @@ pub extern "js" fn GPUCopyExternalImageSource::as_offscreen_canvas(
   self : GPUCopyExternalImageSource,
 ) -> OffscreenCanvas? =
   #| (self) => (self instanceof OffscreenCanvas) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[GPUCopyExternalImageSource] to ImageBitmap?
+pub fn GPUCopyExternalImageSource::bind_as_image_bitmap(
+  value : GPUCopyExternalImageSource?,
+) -> ImageBitmap? {
+  match value {
+    Some(v) => v.as_image_bitmap()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GPUCopyExternalImageSource] to ImageData?
+pub fn GPUCopyExternalImageSource::bind_as_image_data(
+  value : GPUCopyExternalImageSource?,
+) -> ImageData? {
+  match value {
+    Some(v) => v.as_image_data()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GPUCopyExternalImageSource] to HTMLImageElement?
+pub fn GPUCopyExternalImageSource::bind_as_html_image_element(
+  value : GPUCopyExternalImageSource?,
+) -> HTMLImageElement? {
+  match value {
+    Some(v) => v.as_html_image_element()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GPUCopyExternalImageSource] to HTMLVideoElement?
+pub fn GPUCopyExternalImageSource::bind_as_html_video_element(
+  value : GPUCopyExternalImageSource?,
+) -> HTMLVideoElement? {
+  match value {
+    Some(v) => v.as_html_video_element()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GPUCopyExternalImageSource] to VideoFrame?
+pub fn GPUCopyExternalImageSource::bind_as_video_frame(
+  value : GPUCopyExternalImageSource?,
+) -> VideoFrame? {
+  match value {
+    Some(v) => v.as_video_frame()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GPUCopyExternalImageSource] to HTMLCanvasElement?
+pub fn GPUCopyExternalImageSource::bind_as_html_canvas_element(
+  value : GPUCopyExternalImageSource?,
+) -> HTMLCanvasElement? {
+  match value {
+    Some(v) => v.as_html_canvas_element()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GPUCopyExternalImageSource] to OffscreenCanvas?
+pub fn GPUCopyExternalImageSource::bind_as_offscreen_canvas(
+  value : GPUCopyExternalImageSource?,
+) -> OffscreenCanvas? {
+  match value {
+    Some(v) => v.as_offscreen_canvas()
+    None => None
+  }
+}
 
 ///|
 /// GPUBufferDynamicOffset typedef
@@ -387,9 +530,7 @@ pub extern "js" fn GPUColor::from_array_of_double(
 
 ///|
 /// Create GPUColor from GPUColorDict
-pub extern "js" fn GPUColor::from_g_p_u_color_dict(
-  v : GPUColorDict,
-) -> GPUColor =
+pub extern "js" fn GPUColor::from_gpu_color_dict(v : GPUColorDict) -> GPUColor =
   #| (v) => v
 
 ///|
@@ -399,7 +540,7 @@ pub extern "js" fn GPUColor::is_array_of_double(self : GPUColor) -> Bool =
 
 ///|
 /// Check if this GPUColor is GPUColorDict
-pub extern "js" fn GPUColor::is_g_p_u_color_dict(self : GPUColor) -> Bool =
+pub extern "js" fn GPUColor::is_gpu_color_dict(self : GPUColor) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
@@ -411,10 +552,28 @@ pub extern "js" fn GPUColor::as_array_of_double(
 
 ///|
 /// Try to get GPUColor as GPUColorDict
-pub extern "js" fn GPUColor::as_g_p_u_color_dict(
+pub extern "js" fn GPUColor::as_gpu_color_dict(
   self : GPUColor,
 ) -> GPUColorDict? =
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[GPUColor] to Array[Double]?
+pub fn GPUColor::bind_as_array_of_double(value : GPUColor?) -> Array[Double]? {
+  match value {
+    Some(v) => v.as_array_of_double()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GPUColor] to GPUColorDict?
+pub fn GPUColor::bind_as_gpu_color_dict(value : GPUColor?) -> GPUColorDict? {
+  match value {
+    Some(v) => v.as_gpu_color_dict()
+    None => None
+  }
+}
 
 ///|
 /// GPUOrigin2D typedef
@@ -426,45 +585,67 @@ pub extern "js" fn GPUOrigin2D::to_js_value(self : GPUOrigin2D) -> JsValue =
 
 ///|
 /// Create GPUOrigin2D from Array[GPUIntegerCoordinate]
-pub extern "js" fn GPUOrigin2D::from_array_of_g_p_u_integer_coordinate(
+pub extern "js" fn GPUOrigin2D::from_array_of_gpu_integer_coordinate(
   v : Array[GPUIntegerCoordinate],
 ) -> GPUOrigin2D =
   #| (v) => v
 
 ///|
 /// Create GPUOrigin2D from GPUOrigin2DDict
-pub extern "js" fn GPUOrigin2D::from_g_p_u_origin2_d_dict(
+pub extern "js" fn GPUOrigin2D::from_gpu_origin_2d_dict(
   v : GPUOrigin2DDict,
 ) -> GPUOrigin2D =
   #| (v) => v
 
 ///|
 /// Check if this GPUOrigin2D is Array[GPUIntegerCoordinate]
-pub extern "js" fn GPUOrigin2D::is_array_of_g_p_u_integer_coordinate(
+pub extern "js" fn GPUOrigin2D::is_array_of_gpu_integer_coordinate(
   self : GPUOrigin2D,
 ) -> Bool =
   #| (self) => Array.isArray(self)
 
 ///|
 /// Check if this GPUOrigin2D is GPUOrigin2DDict
-pub extern "js" fn GPUOrigin2D::is_g_p_u_origin2_d_dict(
+pub extern "js" fn GPUOrigin2D::is_gpu_origin_2d_dict(
   self : GPUOrigin2D,
 ) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
 /// Try to get GPUOrigin2D as Array[GPUIntegerCoordinate]
-pub extern "js" fn GPUOrigin2D::as_array_of_g_p_u_integer_coordinate(
+pub extern "js" fn GPUOrigin2D::as_array_of_gpu_integer_coordinate(
   self : GPUOrigin2D,
 ) -> Array[GPUIntegerCoordinate]? =
   #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get GPUOrigin2D as GPUOrigin2DDict
-pub extern "js" fn GPUOrigin2D::as_g_p_u_origin2_d_dict(
+pub extern "js" fn GPUOrigin2D::as_gpu_origin_2d_dict(
   self : GPUOrigin2D,
 ) -> GPUOrigin2DDict? =
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[GPUOrigin2D] to Array[GPUIntegerCoordinate]?
+pub fn GPUOrigin2D::bind_as_array_of_gpu_integer_coordinate(
+  value : GPUOrigin2D?,
+) -> Array[GPUIntegerCoordinate]? {
+  match value {
+    Some(v) => v.as_array_of_gpu_integer_coordinate()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GPUOrigin2D] to GPUOrigin2DDict?
+pub fn GPUOrigin2D::bind_as_gpu_origin_2d_dict(
+  value : GPUOrigin2D?,
+) -> GPUOrigin2DDict? {
+  match value {
+    Some(v) => v.as_gpu_origin_2d_dict()
+    None => None
+  }
+}
 
 ///|
 /// GPUOrigin3D typedef
@@ -476,45 +657,67 @@ pub extern "js" fn GPUOrigin3D::to_js_value(self : GPUOrigin3D) -> JsValue =
 
 ///|
 /// Create GPUOrigin3D from Array[GPUIntegerCoordinate]
-pub extern "js" fn GPUOrigin3D::from_array_of_g_p_u_integer_coordinate(
+pub extern "js" fn GPUOrigin3D::from_array_of_gpu_integer_coordinate(
   v : Array[GPUIntegerCoordinate],
 ) -> GPUOrigin3D =
   #| (v) => v
 
 ///|
 /// Create GPUOrigin3D from GPUOrigin3DDict
-pub extern "js" fn GPUOrigin3D::from_g_p_u_origin3_d_dict(
+pub extern "js" fn GPUOrigin3D::from_gpu_origin_3d_dict(
   v : GPUOrigin3DDict,
 ) -> GPUOrigin3D =
   #| (v) => v
 
 ///|
 /// Check if this GPUOrigin3D is Array[GPUIntegerCoordinate]
-pub extern "js" fn GPUOrigin3D::is_array_of_g_p_u_integer_coordinate(
+pub extern "js" fn GPUOrigin3D::is_array_of_gpu_integer_coordinate(
   self : GPUOrigin3D,
 ) -> Bool =
   #| (self) => Array.isArray(self)
 
 ///|
 /// Check if this GPUOrigin3D is GPUOrigin3DDict
-pub extern "js" fn GPUOrigin3D::is_g_p_u_origin3_d_dict(
+pub extern "js" fn GPUOrigin3D::is_gpu_origin_3d_dict(
   self : GPUOrigin3D,
 ) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
 /// Try to get GPUOrigin3D as Array[GPUIntegerCoordinate]
-pub extern "js" fn GPUOrigin3D::as_array_of_g_p_u_integer_coordinate(
+pub extern "js" fn GPUOrigin3D::as_array_of_gpu_integer_coordinate(
   self : GPUOrigin3D,
 ) -> Array[GPUIntegerCoordinate]? =
   #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get GPUOrigin3D as GPUOrigin3DDict
-pub extern "js" fn GPUOrigin3D::as_g_p_u_origin3_d_dict(
+pub extern "js" fn GPUOrigin3D::as_gpu_origin_3d_dict(
   self : GPUOrigin3D,
 ) -> GPUOrigin3DDict? =
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[GPUOrigin3D] to Array[GPUIntegerCoordinate]?
+pub fn GPUOrigin3D::bind_as_array_of_gpu_integer_coordinate(
+  value : GPUOrigin3D?,
+) -> Array[GPUIntegerCoordinate]? {
+  match value {
+    Some(v) => v.as_array_of_gpu_integer_coordinate()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GPUOrigin3D] to GPUOrigin3DDict?
+pub fn GPUOrigin3D::bind_as_gpu_origin_3d_dict(
+  value : GPUOrigin3D?,
+) -> GPUOrigin3DDict? {
+  match value {
+    Some(v) => v.as_gpu_origin_3d_dict()
+    None => None
+  }
+}
 
 ///|
 /// GPUExtent3D typedef
@@ -526,52 +729,74 @@ pub extern "js" fn GPUExtent3D::to_js_value(self : GPUExtent3D) -> JsValue =
 
 ///|
 /// Create GPUExtent3D from Array[GPUIntegerCoordinate]
-pub extern "js" fn GPUExtent3D::from_array_of_g_p_u_integer_coordinate(
+pub extern "js" fn GPUExtent3D::from_array_of_gpu_integer_coordinate(
   v : Array[GPUIntegerCoordinate],
 ) -> GPUExtent3D =
   #| (v) => v
 
 ///|
 /// Create GPUExtent3D from GPUExtent3DDict
-pub extern "js" fn GPUExtent3D::from_g_p_u_extent3_d_dict(
+pub extern "js" fn GPUExtent3D::from_gpu_extent_3d_dict(
   v : GPUExtent3DDict,
 ) -> GPUExtent3D =
   #| (v) => v
 
 ///|
 /// Check if this GPUExtent3D is Array[GPUIntegerCoordinate]
-pub extern "js" fn GPUExtent3D::is_array_of_g_p_u_integer_coordinate(
+pub extern "js" fn GPUExtent3D::is_array_of_gpu_integer_coordinate(
   self : GPUExtent3D,
 ) -> Bool =
   #| (self) => Array.isArray(self)
 
 ///|
 /// Check if this GPUExtent3D is GPUExtent3DDict
-pub extern "js" fn GPUExtent3D::is_g_p_u_extent3_d_dict(
+pub extern "js" fn GPUExtent3D::is_gpu_extent_3d_dict(
   self : GPUExtent3D,
 ) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
 /// Try to get GPUExtent3D as Array[GPUIntegerCoordinate]
-pub extern "js" fn GPUExtent3D::as_array_of_g_p_u_integer_coordinate(
+pub extern "js" fn GPUExtent3D::as_array_of_gpu_integer_coordinate(
   self : GPUExtent3D,
 ) -> Array[GPUIntegerCoordinate]? =
   #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get GPUExtent3D as GPUExtent3DDict
-pub extern "js" fn GPUExtent3D::as_g_p_u_extent3_d_dict(
+pub extern "js" fn GPUExtent3D::as_gpu_extent_3d_dict(
   self : GPUExtent3D,
 ) -> GPUExtent3DDict? =
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[GPUExtent3D] to Array[GPUIntegerCoordinate]?
+pub fn GPUExtent3D::bind_as_array_of_gpu_integer_coordinate(
+  value : GPUExtent3D?,
+) -> Array[GPUIntegerCoordinate]? {
+  match value {
+    Some(v) => v.as_array_of_gpu_integer_coordinate()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GPUExtent3D] to GPUExtent3DDict?
+pub fn GPUExtent3D::bind_as_gpu_extent_3d_dict(
+  value : GPUExtent3D?,
+) -> GPUExtent3DDict? {
+  match value {
+    Some(v) => v.as_gpu_extent_3d_dict()
+    None => None
+  }
+}
 
 ///|
 /// GPUPowerPreference enum
 pub(all) enum GPUPowerPreference {
   LowPower
   HighPerformance
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -617,7 +842,7 @@ pub(all) enum GPUFeatureName {
   TextureFormatsTier2
   PrimitiveIndex
   TextureComponentSwizzle
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -688,7 +913,7 @@ pub(all) enum GPUBufferMapState {
   Unmapped
   Pending
   Mapped
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -717,7 +942,7 @@ pub(all) enum GPUTextureDimension {
   N1d
   N2d
   N3d
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -749,7 +974,7 @@ pub(all) enum GPUTextureViewDimension {
   Cube
   CubeArray
   N3d
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -788,7 +1013,7 @@ pub(all) enum GPUTextureAspect {
   All
   StencilOnly
   DepthOnly
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -915,7 +1140,7 @@ pub(all) enum GPUTextureFormat {
   Astc12x10UnormSrgb
   Astc12x12Unorm
   Astc12x12UnormSrgb
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1140,7 +1365,7 @@ pub(all) enum GPUAddressMode {
   ClampToEdge
   Repeat
   MirrorRepeat
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1168,7 +1393,7 @@ pub fn GPUAddressMode::from_string(s : String) -> GPUAddressMode? {
 pub(all) enum GPUFilterMode {
   Nearest
   Linear
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1194,7 +1419,7 @@ pub fn GPUFilterMode::from_string(s : String) -> GPUFilterMode? {
 pub(all) enum GPUMipmapFilterMode {
   Nearest
   Linear
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1226,7 +1451,7 @@ pub(all) enum GPUCompareFunction {
   NotEqual
   GreaterEqual
   Always
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1265,7 +1490,7 @@ pub(all) enum GPUBufferBindingType {
   Uniform
   Storage
   ReadOnlyStorage
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1294,7 +1519,7 @@ pub(all) enum GPUSamplerBindingType {
   Filtering
   NonFiltering
   Comparison
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1325,7 +1550,7 @@ pub(all) enum GPUTextureSampleType {
   Depth
   Sint
   Uint
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1358,7 +1583,7 @@ pub(all) enum GPUStorageTextureAccess {
   WriteOnly
   ReadOnly
   ReadWrite
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1391,7 +1616,7 @@ pub(all) enum GPUCompilationMessageType {
   Error
   Warning
   Info
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1423,7 +1648,7 @@ pub fn GPUCompilationMessageType::from_string(
 pub(all) enum GPUPipelineErrorReason {
   Validation
   Internal
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1452,7 +1677,7 @@ pub fn GPUPipelineErrorReason::from_string(
 /// GPUAutoLayoutMode enum
 pub(all) enum GPUAutoLayoutMode {
   Auto
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1479,7 +1704,7 @@ pub(all) enum GPUPrimitiveTopology {
   LineStrip
   TriangleList
   TriangleStrip
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1511,7 +1736,7 @@ pub fn GPUPrimitiveTopology::from_string(s : String) -> GPUPrimitiveTopology? {
 pub(all) enum GPUFrontFace {
   Ccw
   Cw
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1538,7 +1763,7 @@ pub(all) enum GPUCullMode {
   None
   Front
   Back
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1581,7 +1806,7 @@ pub(all) enum GPUBlendFactor {
   OneMinusSrc1
   Src1Alpha
   OneMinusSrc1Alpha
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1640,7 +1865,7 @@ pub(all) enum GPUBlendOperation {
   ReverseSubtract
   Min
   Max
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1678,7 +1903,7 @@ pub(all) enum GPUStencilOperation {
   DecrementClamp
   IncrementWrap
   DecrementWrap
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1716,7 +1941,7 @@ pub fn GPUStencilOperation::from_string(s : String) -> GPUStencilOperation? {
 pub(all) enum GPUIndexFormat {
   Uint16
   Uint32
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1781,7 +2006,7 @@ pub(all) enum GPUVertexFormat {
   Sint32x4
   Unorm1010102
   Unorm8x4Bgra
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1885,7 +2110,7 @@ pub fn GPUVertexFormat::from_string(s : String) -> GPUVertexFormat? {
 pub(all) enum GPUVertexStepMode {
   Vertex
   Instance
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1911,7 +2136,7 @@ pub fn GPUVertexStepMode::from_string(s : String) -> GPUVertexStepMode? {
 pub(all) enum GPULoadOp {
   Load
   Clear
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1937,7 +2162,7 @@ pub fn GPULoadOp::from_string(s : String) -> GPULoadOp? {
 pub(all) enum GPUStoreOp {
   Store
   Discard
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1963,7 +2188,7 @@ pub fn GPUStoreOp::from_string(s : String) -> GPUStoreOp? {
 pub(all) enum GPUQueryType {
   Occlusion
   Timestamp
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -1989,7 +2214,7 @@ pub fn GPUQueryType::from_string(s : String) -> GPUQueryType? {
 pub(all) enum GPUCanvasAlphaMode {
   Opaque
   Premultiplied
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -2015,7 +2240,7 @@ pub fn GPUCanvasAlphaMode::from_string(s : String) -> GPUCanvasAlphaMode? {
 pub(all) enum GPUCanvasToneMappingMode {
   Standard
   Extended
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -2045,7 +2270,7 @@ pub fn GPUCanvasToneMappingMode::from_string(
 pub(all) enum GPUDeviceLostReason {
   Unknown
   Destroyed
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -2072,7 +2297,7 @@ pub(all) enum GPUErrorFilter {
   Validation
   OutOfMemory
   Internal
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -2124,6 +2349,22 @@ pub fn GPUObjectDescriptorBase::to_js(
 }
 
 ///|
+extern "js" fn GPUObjectDescriptorBase::from_js_ffi(
+  value : JsValue,
+) -> GPUObjectDescriptorBase =
+  #| (v) => ({
+  #|   label: v.label
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUObjectDescriptorBase::from_js(
+  value : JsValue,
+) -> GPUObjectDescriptorBase {
+  GPUObjectDescriptorBase::from_js_ffi(value)
+}
+
+///|
 /// GPURequestAdapterOptions dictionary
 pub(all) struct GPURequestAdapterOptions {
   featureLevel : String?
@@ -2163,6 +2404,25 @@ pub fn GPURequestAdapterOptions::to_js(
 }
 
 ///|
+extern "js" fn GPURequestAdapterOptions::from_js_ffi(
+  value : JsValue,
+) -> GPURequestAdapterOptions =
+  #| (v) => ({
+  #|   featureLevel: v.featureLevel,
+  #|   powerPreference: (v.powerPreference === undefined ? undefined : ['low-power', 'high-performance'].indexOf(v.powerPreference)),
+  #|   forceFallbackAdapter: (v.forceFallbackAdapter === undefined ? -1 : v.forceFallbackAdapter),
+  #|   xrCompatible: (v.xrCompatible === undefined ? -1 : v.xrCompatible)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPURequestAdapterOptions::from_js(
+  value : JsValue,
+) -> GPURequestAdapterOptions {
+  GPURequestAdapterOptions::from_js_ffi(value)
+}
+
+///|
 /// GPUDeviceDescriptor dictionary
 pub(all) struct GPUDeviceDescriptor {
   label : String?
@@ -2188,15 +2448,32 @@ extern "js" fn GPUDeviceDescriptor::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   requiredFeatures: ((() => { const v = self.requiredFeatures; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   requiredLimits: ((() => { const v = self.requiredLimits; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   defaultQueue: ((() => { const v = self.defaultQueue; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   requiredFeatures: ((() => { const v = self.requiredFeatures; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   requiredLimits: ((() => { const v = self.requiredLimits; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   defaultQueue: ((() => { const v = self.defaultQueue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn GPUDeviceDescriptor::to_js(self : GPUDeviceDescriptor) -> JsValue {
   GPUDeviceDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUDeviceDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPUDeviceDescriptor =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   requiredFeatures: (v.requiredFeatures === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requiredFeatures }),
+  #|   requiredLimits: (v.requiredLimits === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requiredLimits }),
+  #|   defaultQueue: (v.defaultQueue === undefined ? { $tag: 0 } : { $tag: 1, _0: v.defaultQueue })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUDeviceDescriptor::from_js(value : JsValue) -> GPUDeviceDescriptor {
+  GPUDeviceDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -2232,6 +2509,23 @@ extern "js" fn GPUBufferDescriptor::to_js_ffi(
 /// Convert to JsValue
 pub fn GPUBufferDescriptor::to_js(self : GPUBufferDescriptor) -> JsValue {
   GPUBufferDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUBufferDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPUBufferDescriptor =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   size: v.size,
+  #|   usage: v.usage,
+  #|   mappedAtCreation: (v.mappedAtCreation === undefined ? -1 : v.mappedAtCreation)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUBufferDescriptor::from_js(value : JsValue) -> GPUBufferDescriptor {
+  GPUBufferDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -2275,12 +2569,12 @@ extern "js" fn GPUTextureDescriptor::to_js_ffi(
   #| (self) => ({
   #|   label: self.label,
   #|   size: self.size.to_js_value(),
-  #|   mipLevelCount: ((() => { const v = self.mipLevelCount; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sampleCount: ((() => { const v = self.sampleCount; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   mipLevelCount: ((() => { const v = self.mipLevelCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sampleCount: ((() => { const v = self.sampleCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   dimension: ((() => { const v = self.dimension; if (v === undefined) return undefined; return ['1d', '2d', '3d'][v]; })()),
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][self.format],
   #|   usage: self.usage,
-  #|   viewFormats: ((() => { const v = self.viewFormats; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   viewFormats: ((() => { const v = self.viewFormats; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   textureBindingViewDimension: ((() => { const v = self.textureBindingViewDimension; if (v === undefined) return undefined; return ['1d', '2d', '2d-array', 'cube', 'cube-array', '3d'][v]; })())
   #| })
 
@@ -2288,6 +2582,28 @@ extern "js" fn GPUTextureDescriptor::to_js_ffi(
 /// Convert to JsValue
 pub fn GPUTextureDescriptor::to_js(self : GPUTextureDescriptor) -> JsValue {
   GPUTextureDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUTextureDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPUTextureDescriptor =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   size: v.size,
+  #|   mipLevelCount: (v.mipLevelCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.mipLevelCount }),
+  #|   sampleCount: (v.sampleCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleCount }),
+  #|   dimension: (v.dimension === undefined ? undefined : ['1d', '2d', '3d'].indexOf(v.dimension)),
+  #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format),
+  #|   usage: v.usage,
+  #|   viewFormats: (v.viewFormats === undefined ? { $tag: 0 } : { $tag: 1, _0: v.viewFormats }),
+  #|   textureBindingViewDimension: (v.textureBindingViewDimension === undefined ? undefined : ['1d', '2d', '2d-array', 'cube', 'cube-array', '3d'].indexOf(v.textureBindingViewDimension))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUTextureDescriptor::from_js(value : JsValue) -> GPUTextureDescriptor {
+  GPUTextureDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -2330,12 +2646,12 @@ extern "js" fn GPUTextureViewDescriptor::to_js_ffi(
   #|   label: self.label,
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][v]; })()),
   #|   dimension: ((() => { const v = self.dimension; if (v === undefined) return undefined; return ['1d', '2d', '2d-array', 'cube', 'cube-array', '3d'][v]; })()),
-  #|   usage: ((() => { const v = self.usage; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   usage: ((() => { const v = self.usage; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   aspect: ((() => { const v = self.aspect; if (v === undefined) return undefined; return ['all', 'stencil-only', 'depth-only'][v]; })()),
-  #|   baseMipLevel: ((() => { const v = self.baseMipLevel; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   mipLevelCount: ((() => { const v = self.mipLevelCount; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   baseArrayLayer: ((() => { const v = self.baseArrayLayer; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   arrayLayerCount: ((() => { const v = self.arrayLayerCount; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   baseMipLevel: ((() => { const v = self.baseMipLevel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   mipLevelCount: ((() => { const v = self.mipLevelCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   baseArrayLayer: ((() => { const v = self.baseArrayLayer; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   arrayLayerCount: ((() => { const v = self.arrayLayerCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   swizzle: self.swizzle
   #| })
 
@@ -2345,6 +2661,31 @@ pub fn GPUTextureViewDescriptor::to_js(
   self : GPUTextureViewDescriptor,
 ) -> JsValue {
   GPUTextureViewDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUTextureViewDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPUTextureViewDescriptor =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   format: (v.format === undefined ? undefined : ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format)),
+  #|   dimension: (v.dimension === undefined ? undefined : ['1d', '2d', '2d-array', 'cube', 'cube-array', '3d'].indexOf(v.dimension)),
+  #|   usage: (v.usage === undefined ? { $tag: 0 } : { $tag: 1, _0: v.usage }),
+  #|   aspect: (v.aspect === undefined ? undefined : ['all', 'stencil-only', 'depth-only'].indexOf(v.aspect)),
+  #|   baseMipLevel: (v.baseMipLevel === undefined ? { $tag: 0 } : { $tag: 1, _0: v.baseMipLevel }),
+  #|   mipLevelCount: (v.mipLevelCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.mipLevelCount }),
+  #|   baseArrayLayer: (v.baseArrayLayer === undefined ? { $tag: 0 } : { $tag: 1, _0: v.baseArrayLayer }),
+  #|   arrayLayerCount: (v.arrayLayerCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.arrayLayerCount }),
+  #|   swizzle: v.swizzle
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUTextureViewDescriptor::from_js(
+  value : JsValue,
+) -> GPUTextureViewDescriptor {
+  GPUTextureViewDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -2379,6 +2720,24 @@ pub fn GPUExternalTextureDescriptor::to_js(
   self : GPUExternalTextureDescriptor,
 ) -> JsValue {
   GPUExternalTextureDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUExternalTextureDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPUExternalTextureDescriptor =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   source: v.source,
+  #|   colorSpace: (v.colorSpace === undefined ? undefined : ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(v.colorSpace))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUExternalTextureDescriptor::from_js(
+  value : JsValue,
+) -> GPUExternalTextureDescriptor {
+  GPUExternalTextureDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -2440,6 +2799,30 @@ pub fn GPUSamplerDescriptor::to_js(self : GPUSamplerDescriptor) -> JsValue {
 }
 
 ///|
+extern "js" fn GPUSamplerDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPUSamplerDescriptor =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   addressModeU: (v.addressModeU === undefined ? undefined : ['clamp-to-edge', 'repeat', 'mirror-repeat'].indexOf(v.addressModeU)),
+  #|   addressModeV: (v.addressModeV === undefined ? undefined : ['clamp-to-edge', 'repeat', 'mirror-repeat'].indexOf(v.addressModeV)),
+  #|   addressModeW: (v.addressModeW === undefined ? undefined : ['clamp-to-edge', 'repeat', 'mirror-repeat'].indexOf(v.addressModeW)),
+  #|   magFilter: (v.magFilter === undefined ? undefined : ['nearest', 'linear'].indexOf(v.magFilter)),
+  #|   minFilter: (v.minFilter === undefined ? undefined : ['nearest', 'linear'].indexOf(v.minFilter)),
+  #|   mipmapFilter: (v.mipmapFilter === undefined ? undefined : ['nearest', 'linear'].indexOf(v.mipmapFilter)),
+  #|   lodMinClamp: v.lodMinClamp,
+  #|   lodMaxClamp: v.lodMaxClamp,
+  #|   compare: (v.compare === undefined ? undefined : ['never', 'less', 'equal', 'less-equal', 'greater', 'not-equal', 'greater-equal', 'always'].indexOf(v.compare)),
+  #|   maxAnisotropy: v.maxAnisotropy
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUSamplerDescriptor::from_js(value : JsValue) -> GPUSamplerDescriptor {
+  GPUSamplerDescriptor::from_js_ffi(value)
+}
+
+///|
 /// GPUBindGroupLayoutDescriptor dictionary
 pub(all) struct GPUBindGroupLayoutDescriptor {
   label : String?
@@ -2467,6 +2850,23 @@ pub fn GPUBindGroupLayoutDescriptor::to_js(
   self : GPUBindGroupLayoutDescriptor,
 ) -> JsValue {
   GPUBindGroupLayoutDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUBindGroupLayoutDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPUBindGroupLayoutDescriptor =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   entries: v.entries
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUBindGroupLayoutDescriptor::from_js(
+  value : JsValue,
+) -> GPUBindGroupLayoutDescriptor {
+  GPUBindGroupLayoutDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -2505,11 +2905,11 @@ extern "js" fn GPUBindGroupLayoutEntry::to_js_ffi(
   #| (self) => ({
   #|   binding: self.binding,
   #|   visibility: self.visibility,
-  #|   buffer: ((() => { const v = self.buffer; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sampler: ((() => { const v = self.sampler; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   texture: ((() => { const v = self.texture; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   storageTexture: ((() => { const v = self.storageTexture; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   externalTexture: ((() => { const v = self.externalTexture; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   buffer: ((() => { const v = self.buffer; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sampler: ((() => { const v = self.sampler; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   texture: ((() => { const v = self.texture; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   storageTexture: ((() => { const v = self.storageTexture; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   externalTexture: ((() => { const v = self.externalTexture; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -2518,6 +2918,28 @@ pub fn GPUBindGroupLayoutEntry::to_js(
   self : GPUBindGroupLayoutEntry,
 ) -> JsValue {
   GPUBindGroupLayoutEntry::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUBindGroupLayoutEntry::from_js_ffi(
+  value : JsValue,
+) -> GPUBindGroupLayoutEntry =
+  #| (v) => ({
+  #|   binding: v.binding,
+  #|   visibility: v.visibility,
+  #|   buffer: (v.buffer === undefined ? { $tag: 0 } : { $tag: 1, _0: v.buffer }),
+  #|   sampler: (v.sampler === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampler }),
+  #|   texture: (v.texture === undefined ? { $tag: 0 } : { $tag: 1, _0: v.texture }),
+  #|   storageTexture: (v.storageTexture === undefined ? { $tag: 0 } : { $tag: 1, _0: v.storageTexture }),
+  #|   externalTexture: (v.externalTexture === undefined ? { $tag: 0 } : { $tag: 1, _0: v.externalTexture })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUBindGroupLayoutEntry::from_js(
+  value : JsValue,
+) -> GPUBindGroupLayoutEntry {
+  GPUBindGroupLayoutEntry::from_js_ffi(value)
 }
 
 ///|
@@ -2545,13 +2967,31 @@ extern "js" fn GPUBufferBindingLayout::to_js_ffi(
   #| (self) => ({
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['uniform', 'storage', 'read-only-storage'][v]; })()),
   #|   hasDynamicOffset: (self.hasDynamicOffset === -1 ? undefined : self.hasDynamicOffset),
-  #|   minBindingSize: ((() => { const v = self.minBindingSize; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   minBindingSize: ((() => { const v = self.minBindingSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn GPUBufferBindingLayout::to_js(self : GPUBufferBindingLayout) -> JsValue {
   GPUBufferBindingLayout::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUBufferBindingLayout::from_js_ffi(
+  value : JsValue,
+) -> GPUBufferBindingLayout =
+  #| (v) => ({
+  #|   type_: (v.type === undefined ? undefined : ['uniform', 'storage', 'read-only-storage'].indexOf(v.type)),
+  #|   hasDynamicOffset: (v.hasDynamicOffset === undefined ? -1 : v.hasDynamicOffset),
+  #|   minBindingSize: (v.minBindingSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.minBindingSize })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUBufferBindingLayout::from_js(
+  value : JsValue,
+) -> GPUBufferBindingLayout {
+  GPUBufferBindingLayout::from_js_ffi(value)
 }
 
 ///|
@@ -2580,6 +3020,22 @@ pub fn GPUSamplerBindingLayout::to_js(
   self : GPUSamplerBindingLayout,
 ) -> JsValue {
   GPUSamplerBindingLayout::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUSamplerBindingLayout::from_js_ffi(
+  value : JsValue,
+) -> GPUSamplerBindingLayout =
+  #| (v) => ({
+  #|   type_: (v.type === undefined ? undefined : ['filtering', 'non-filtering', 'comparison'].indexOf(v.type))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUSamplerBindingLayout::from_js(
+  value : JsValue,
+) -> GPUSamplerBindingLayout {
+  GPUSamplerBindingLayout::from_js_ffi(value)
 }
 
 ///|
@@ -2619,6 +3075,24 @@ pub fn GPUTextureBindingLayout::to_js(
 }
 
 ///|
+extern "js" fn GPUTextureBindingLayout::from_js_ffi(
+  value : JsValue,
+) -> GPUTextureBindingLayout =
+  #| (v) => ({
+  #|   sampleType: (v.sampleType === undefined ? undefined : ['float', 'unfilterable-float', 'depth', 'sint', 'uint'].indexOf(v.sampleType)),
+  #|   viewDimension: (v.viewDimension === undefined ? undefined : ['1d', '2d', '2d-array', 'cube', 'cube-array', '3d'].indexOf(v.viewDimension)),
+  #|   multisampled: (v.multisampled === undefined ? -1 : v.multisampled)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUTextureBindingLayout::from_js(
+  value : JsValue,
+) -> GPUTextureBindingLayout {
+  GPUTextureBindingLayout::from_js_ffi(value)
+}
+
+///|
 /// GPUStorageTextureBindingLayout dictionary
 pub(all) struct GPUStorageTextureBindingLayout {
   access : GPUStorageTextureAccess?
@@ -2653,6 +3127,24 @@ pub fn GPUStorageTextureBindingLayout::to_js(
 }
 
 ///|
+extern "js" fn GPUStorageTextureBindingLayout::from_js_ffi(
+  value : JsValue,
+) -> GPUStorageTextureBindingLayout =
+  #| (v) => ({
+  #|   access: (v.access === undefined ? undefined : ['write-only', 'read-only', 'read-write'].indexOf(v.access)),
+  #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format),
+  #|   viewDimension: (v.viewDimension === undefined ? undefined : ['1d', '2d', '2d-array', 'cube', 'cube-array', '3d'].indexOf(v.viewDimension))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUStorageTextureBindingLayout::from_js(
+  value : JsValue,
+) -> GPUStorageTextureBindingLayout {
+  GPUStorageTextureBindingLayout::from_js_ffi(value)
+}
+
+///|
 /// GPUExternalTextureBindingLayout dictionary
 pub(all) struct GPUExternalTextureBindingLayout {}
 
@@ -2675,6 +3167,21 @@ pub fn GPUExternalTextureBindingLayout::to_js(
   self : GPUExternalTextureBindingLayout,
 ) -> JsValue {
   GPUExternalTextureBindingLayout::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUExternalTextureBindingLayout::from_js_ffi(
+  value : JsValue,
+) -> GPUExternalTextureBindingLayout =
+  #| (v) => ({
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUExternalTextureBindingLayout::from_js(
+  value : JsValue,
+) -> GPUExternalTextureBindingLayout {
+  GPUExternalTextureBindingLayout::from_js_ffi(value)
 }
 
 ///|
@@ -2710,6 +3217,24 @@ pub fn GPUBindGroupDescriptor::to_js(self : GPUBindGroupDescriptor) -> JsValue {
 }
 
 ///|
+extern "js" fn GPUBindGroupDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPUBindGroupDescriptor =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   layout: v.layout,
+  #|   entries: v.entries
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUBindGroupDescriptor::from_js(
+  value : JsValue,
+) -> GPUBindGroupDescriptor {
+  GPUBindGroupDescriptor::from_js_ffi(value)
+}
+
+///|
 /// GPUBindGroupEntry dictionary
 pub(all) struct GPUBindGroupEntry {
   binding : GPUIndex32
@@ -2741,6 +3266,21 @@ pub fn GPUBindGroupEntry::to_js(self : GPUBindGroupEntry) -> JsValue {
 }
 
 ///|
+extern "js" fn GPUBindGroupEntry::from_js_ffi(
+  value : JsValue,
+) -> GPUBindGroupEntry =
+  #| (v) => ({
+  #|   binding: v.binding,
+  #|   resource: v.resource
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUBindGroupEntry::from_js(value : JsValue) -> GPUBindGroupEntry {
+  GPUBindGroupEntry::from_js_ffi(value)
+}
+
+///|
 /// GPUBufferBinding dictionary
 pub(all) struct GPUBufferBinding {
   buffer : GPUBuffer
@@ -2758,14 +3298,30 @@ pub fn GPUBufferBinding::new(buffer~ : GPUBuffer) -> GPUBufferBinding {
 extern "js" fn GPUBufferBinding::to_js_ffi(self : GPUBufferBinding) -> JsValue =
   #| (self) => ({
   #|   buffer: self.buffer,
-  #|   offset: ((() => { const v = self.offset; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   size: ((() => { const v = self.size; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   offset: ((() => { const v = self.offset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   size: ((() => { const v = self.size; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn GPUBufferBinding::to_js(self : GPUBufferBinding) -> JsValue {
   GPUBufferBinding::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUBufferBinding::from_js_ffi(
+  value : JsValue,
+) -> GPUBufferBinding =
+  #| (v) => ({
+  #|   buffer: v.buffer,
+  #|   offset: (v.offset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offset }),
+  #|   size: (v.size === undefined ? { $tag: 0 } : { $tag: 1, _0: v.size })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUBufferBinding::from_js(value : JsValue) -> GPUBufferBinding {
+  GPUBufferBinding::from_js_ffi(value)
 }
 
 ///|
@@ -2799,6 +3355,23 @@ pub fn GPUPipelineLayoutDescriptor::to_js(
 }
 
 ///|
+extern "js" fn GPUPipelineLayoutDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPUPipelineLayoutDescriptor =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   bindGroupLayouts: v.bindGroupLayouts
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUPipelineLayoutDescriptor::from_js(
+  value : JsValue,
+) -> GPUPipelineLayoutDescriptor {
+  GPUPipelineLayoutDescriptor::from_js_ffi(value)
+}
+
+///|
 /// GPUShaderModuleDescriptor dictionary
 pub(all) struct GPUShaderModuleDescriptor {
   label : String?
@@ -2819,7 +3392,7 @@ extern "js" fn GPUShaderModuleDescriptor::to_js_ffi(
   #| (self) => ({
   #|   label: self.label,
   #|   code: self.code,
-  #|   compilationHints: ((() => { const v = self.compilationHints; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   compilationHints: ((() => { const v = self.compilationHints; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -2828,6 +3401,24 @@ pub fn GPUShaderModuleDescriptor::to_js(
   self : GPUShaderModuleDescriptor,
 ) -> JsValue {
   GPUShaderModuleDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUShaderModuleDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPUShaderModuleDescriptor =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   code: v.code,
+  #|   compilationHints: (v.compilationHints === undefined ? { $tag: 0 } : { $tag: 1, _0: v.compilationHints })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUShaderModuleDescriptor::from_js(
+  value : JsValue,
+) -> GPUShaderModuleDescriptor {
+  GPUShaderModuleDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -2849,7 +3440,7 @@ extern "js" fn GPUShaderModuleCompilationHint::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   entryPoint: self.entryPoint,
-  #|   layout: ((() => { const v = self.layout; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   layout: ((() => { const v = self.layout; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -2858,6 +3449,23 @@ pub fn GPUShaderModuleCompilationHint::to_js(
   self : GPUShaderModuleCompilationHint,
 ) -> JsValue {
   GPUShaderModuleCompilationHint::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUShaderModuleCompilationHint::from_js_ffi(
+  value : JsValue,
+) -> GPUShaderModuleCompilationHint =
+  #| (v) => ({
+  #|   entryPoint: v.entryPoint,
+  #|   layout: (v.layout === undefined ? { $tag: 0 } : { $tag: 1, _0: v.layout })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUShaderModuleCompilationHint::from_js(
+  value : JsValue,
+) -> GPUShaderModuleCompilationHint {
+  GPUShaderModuleCompilationHint::from_js_ffi(value)
 }
 
 ///|
@@ -2886,6 +3494,20 @@ extern "js" fn GPUPipelineErrorInit::to_js_ffi(
 /// Convert to JsValue
 pub fn GPUPipelineErrorInit::to_js(self : GPUPipelineErrorInit) -> JsValue {
   GPUPipelineErrorInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUPipelineErrorInit::from_js_ffi(
+  value : JsValue,
+) -> GPUPipelineErrorInit =
+  #| (v) => ({
+  #|   reason: ['validation', 'internal'].indexOf(v.reason)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUPipelineErrorInit::from_js(value : JsValue) -> GPUPipelineErrorInit {
+  GPUPipelineErrorInit::from_js_ffi(value)
 }
 
 ///|
@@ -2921,6 +3543,23 @@ pub fn GPUPipelineDescriptorBase::to_js(
 }
 
 ///|
+extern "js" fn GPUPipelineDescriptorBase::from_js_ffi(
+  value : JsValue,
+) -> GPUPipelineDescriptorBase =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   layout: v.layout
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUPipelineDescriptorBase::from_js(
+  value : JsValue,
+) -> GPUPipelineDescriptorBase {
+  GPUPipelineDescriptorBase::from_js_ffi(value)
+}
+
+///|
 /// GPUProgrammableStage dictionary
 pub(all) struct GPUProgrammableStage {
   module_ : GPUShaderModule
@@ -2943,13 +3582,29 @@ extern "js" fn GPUProgrammableStage::to_js_ffi(
   #| (self) => ({
   #|   module: self.module_,
   #|   entryPoint: self.entryPoint,
-  #|   constants: ((() => { const v = self.constants; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   constants: ((() => { const v = self.constants; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn GPUProgrammableStage::to_js(self : GPUProgrammableStage) -> JsValue {
   GPUProgrammableStage::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUProgrammableStage::from_js_ffi(
+  value : JsValue,
+) -> GPUProgrammableStage =
+  #| (v) => ({
+  #|   module_: v.module,
+  #|   entryPoint: v.entryPoint,
+  #|   constants: (v.constants === undefined ? { $tag: 0 } : { $tag: 1, _0: v.constants })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUProgrammableStage::from_js(value : JsValue) -> GPUProgrammableStage {
+  GPUProgrammableStage::from_js_ffi(value)
 }
 
 ///|
@@ -2985,6 +3640,24 @@ pub fn GPUComputePipelineDescriptor::to_js(
   self : GPUComputePipelineDescriptor,
 ) -> JsValue {
   GPUComputePipelineDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUComputePipelineDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPUComputePipelineDescriptor =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   layout: v.layout,
+  #|   compute: v.compute
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUComputePipelineDescriptor::from_js(
+  value : JsValue,
+) -> GPUComputePipelineDescriptor {
+  GPUComputePipelineDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -3024,10 +3697,10 @@ extern "js" fn GPURenderPipelineDescriptor::to_js_ffi(
   #|   label: self.label,
   #|   layout: self.layout,
   #|   vertex: self.vertex,
-  #|   primitive: ((() => { const v = self.primitive; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   depthStencil: ((() => { const v = self.depthStencil; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   multisample: ((() => { const v = self.multisample; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   fragment: ((() => { const v = self.fragment; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   primitive: ((() => { const v = self.primitive; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthStencil: ((() => { const v = self.depthStencil; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   multisample: ((() => { const v = self.multisample; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   fragment: ((() => { const v = self.fragment; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -3036,6 +3709,28 @@ pub fn GPURenderPipelineDescriptor::to_js(
   self : GPURenderPipelineDescriptor,
 ) -> JsValue {
   GPURenderPipelineDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPURenderPipelineDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPURenderPipelineDescriptor =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   layout: v.layout,
+  #|   vertex: v.vertex,
+  #|   primitive: (v.primitive === undefined ? { $tag: 0 } : { $tag: 1, _0: v.primitive }),
+  #|   depthStencil: (v.depthStencil === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthStencil }),
+  #|   multisample: (v.multisample === undefined ? { $tag: 0 } : { $tag: 1, _0: v.multisample }),
+  #|   fragment: (v.fragment === undefined ? { $tag: 0 } : { $tag: 1, _0: v.fragment })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPURenderPipelineDescriptor::from_js(
+  value : JsValue,
+) -> GPURenderPipelineDescriptor {
+  GPURenderPipelineDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -3079,6 +3774,24 @@ pub fn GPUPrimitiveState::to_js(self : GPUPrimitiveState) -> JsValue {
 }
 
 ///|
+extern "js" fn GPUPrimitiveState::from_js_ffi(
+  value : JsValue,
+) -> GPUPrimitiveState =
+  #| (v) => ({
+  #|   topology: (v.topology === undefined ? undefined : ['point-list', 'line-list', 'line-strip', 'triangle-list', 'triangle-strip'].indexOf(v.topology)),
+  #|   stripIndexFormat: (v.stripIndexFormat === undefined ? undefined : ['uint16', 'uint32'].indexOf(v.stripIndexFormat)),
+  #|   frontFace: (v.frontFace === undefined ? undefined : ['ccw', 'cw'].indexOf(v.frontFace)),
+  #|   cullMode: (v.cullMode === undefined ? undefined : ['none', 'front', 'back'].indexOf(v.cullMode)),
+  #|   unclippedDepth: (v.unclippedDepth === undefined ? -1 : v.unclippedDepth)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUPrimitiveState::from_js(value : JsValue) -> GPUPrimitiveState {
+  GPUPrimitiveState::from_js_ffi(value)
+}
+
+///|
 /// GPUMultisampleState dictionary
 pub(all) struct GPUMultisampleState {
   count : GPUSize32?
@@ -3097,8 +3810,8 @@ extern "js" fn GPUMultisampleState::to_js_ffi(
   self : GPUMultisampleState,
 ) -> JsValue =
   #| (self) => ({
-  #|   count: ((() => { const v = self.count; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   mask: ((() => { const v = self.mask; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   count: ((() => { const v = self.count; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   mask: ((() => { const v = self.mask; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   alphaToCoverageEnabled: (self.alphaToCoverageEnabled === -1 ? undefined : self.alphaToCoverageEnabled)
   #| })
 
@@ -3106,6 +3819,22 @@ extern "js" fn GPUMultisampleState::to_js_ffi(
 /// Convert to JsValue
 pub fn GPUMultisampleState::to_js(self : GPUMultisampleState) -> JsValue {
   GPUMultisampleState::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUMultisampleState::from_js_ffi(
+  value : JsValue,
+) -> GPUMultisampleState =
+  #| (v) => ({
+  #|   count: (v.count === undefined ? { $tag: 0 } : { $tag: 1, _0: v.count }),
+  #|   mask: (v.mask === undefined ? { $tag: 0 } : { $tag: 1, _0: v.mask }),
+  #|   alphaToCoverageEnabled: (v.alphaToCoverageEnabled === undefined ? -1 : v.alphaToCoverageEnabled)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUMultisampleState::from_js(value : JsValue) -> GPUMultisampleState {
+  GPUMultisampleState::from_js_ffi(value)
 }
 
 ///|
@@ -3128,7 +3857,7 @@ extern "js" fn GPUFragmentState::to_js_ffi(self : GPUFragmentState) -> JsValue =
   #| (self) => ({
   #|   module: self.module_,
   #|   entryPoint: self.entryPoint,
-  #|   constants: ((() => { const v = self.constants; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   constants: ((() => { const v = self.constants; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   targets: self.targets
   #| })
 
@@ -3136,6 +3865,23 @@ extern "js" fn GPUFragmentState::to_js_ffi(self : GPUFragmentState) -> JsValue =
 /// Convert to JsValue
 pub fn GPUFragmentState::to_js(self : GPUFragmentState) -> JsValue {
   GPUFragmentState::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUFragmentState::from_js_ffi(
+  value : JsValue,
+) -> GPUFragmentState =
+  #| (v) => ({
+  #|   module_: v.module,
+  #|   entryPoint: v.entryPoint,
+  #|   constants: (v.constants === undefined ? { $tag: 0 } : { $tag: 1, _0: v.constants }),
+  #|   targets: v.targets
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUFragmentState::from_js(value : JsValue) -> GPUFragmentState {
+  GPUFragmentState::from_js_ffi(value)
 }
 
 ///|
@@ -3160,14 +3906,30 @@ extern "js" fn GPUColorTargetState::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][self.format],
-  #|   blend: ((() => { const v = self.blend; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   writeMask: ((() => { const v = self.writeMask; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   blend: ((() => { const v = self.blend; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   writeMask: ((() => { const v = self.writeMask; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn GPUColorTargetState::to_js(self : GPUColorTargetState) -> JsValue {
   GPUColorTargetState::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUColorTargetState::from_js_ffi(
+  value : JsValue,
+) -> GPUColorTargetState =
+  #| (v) => ({
+  #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format),
+  #|   blend: (v.blend === undefined ? { $tag: 0 } : { $tag: 1, _0: v.blend }),
+  #|   writeMask: (v.writeMask === undefined ? { $tag: 0 } : { $tag: 1, _0: v.writeMask })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUColorTargetState::from_js(value : JsValue) -> GPUColorTargetState {
+  GPUColorTargetState::from_js_ffi(value)
 }
 
 ///|
@@ -3200,6 +3962,19 @@ pub fn GPUBlendState::to_js(self : GPUBlendState) -> JsValue {
 }
 
 ///|
+extern "js" fn GPUBlendState::from_js_ffi(value : JsValue) -> GPUBlendState =
+  #| (v) => ({
+  #|   color: v.color,
+  #|   alpha: v.alpha
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUBlendState::from_js(value : JsValue) -> GPUBlendState {
+  GPUBlendState::from_js_ffi(value)
+}
+
+///|
 /// GPUBlendComponent dictionary
 pub(all) struct GPUBlendComponent {
   operation : GPUBlendOperation?
@@ -3227,6 +4002,22 @@ extern "js" fn GPUBlendComponent::to_js_ffi(
 /// Convert to JsValue
 pub fn GPUBlendComponent::to_js(self : GPUBlendComponent) -> JsValue {
   GPUBlendComponent::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUBlendComponent::from_js_ffi(
+  value : JsValue,
+) -> GPUBlendComponent =
+  #| (v) => ({
+  #|   operation: (v.operation === undefined ? undefined : ['add', 'subtract', 'reverse-subtract', 'min', 'max'].indexOf(v.operation)),
+  #|   srcFactor: (v.srcFactor === undefined ? undefined : ['zero', 'one', 'src', 'one-minus-src', 'src-alpha', 'one-minus-src-alpha', 'dst', 'one-minus-dst', 'dst-alpha', 'one-minus-dst-alpha', 'src-alpha-saturated', 'constant', 'one-minus-constant', 'src1', 'one-minus-src1', 'src1-alpha', 'one-minus-src1-alpha'].indexOf(v.srcFactor)),
+  #|   dstFactor: (v.dstFactor === undefined ? undefined : ['zero', 'one', 'src', 'one-minus-src', 'src-alpha', 'one-minus-src-alpha', 'dst', 'one-minus-dst', 'dst-alpha', 'one-minus-dst-alpha', 'src-alpha-saturated', 'constant', 'one-minus-constant', 'src1', 'one-minus-src1', 'src1-alpha', 'one-minus-src1-alpha'].indexOf(v.dstFactor))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUBlendComponent::from_js(value : JsValue) -> GPUBlendComponent {
+  GPUBlendComponent::from_js_ffi(value)
 }
 
 ///|
@@ -3271,11 +4062,11 @@ extern "js" fn GPUDepthStencilState::to_js_ffi(
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][self.format],
   #|   depthWriteEnabled: (self.depthWriteEnabled === -1 ? undefined : self.depthWriteEnabled),
   #|   depthCompare: ((() => { const v = self.depthCompare; if (v === undefined) return undefined; return ['never', 'less', 'equal', 'less-equal', 'greater', 'not-equal', 'greater-equal', 'always'][v]; })()),
-  #|   stencilFront: ((() => { const v = self.stencilFront; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   stencilBack: ((() => { const v = self.stencilBack; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   stencilReadMask: ((() => { const v = self.stencilReadMask; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   stencilWriteMask: ((() => { const v = self.stencilWriteMask; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   depthBias: ((() => { const v = self.depthBias; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   stencilFront: ((() => { const v = self.stencilFront; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   stencilBack: ((() => { const v = self.stencilBack; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   stencilReadMask: ((() => { const v = self.stencilReadMask; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   stencilWriteMask: ((() => { const v = self.stencilWriteMask; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthBias: ((() => { const v = self.depthBias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   depthBiasSlopeScale: self.depthBiasSlopeScale,
   #|   depthBiasClamp: self.depthBiasClamp
   #| })
@@ -3284,6 +4075,29 @@ extern "js" fn GPUDepthStencilState::to_js_ffi(
 /// Convert to JsValue
 pub fn GPUDepthStencilState::to_js(self : GPUDepthStencilState) -> JsValue {
   GPUDepthStencilState::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUDepthStencilState::from_js_ffi(
+  value : JsValue,
+) -> GPUDepthStencilState =
+  #| (v) => ({
+  #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format),
+  #|   depthWriteEnabled: (v.depthWriteEnabled === undefined ? -1 : v.depthWriteEnabled),
+  #|   depthCompare: (v.depthCompare === undefined ? undefined : ['never', 'less', 'equal', 'less-equal', 'greater', 'not-equal', 'greater-equal', 'always'].indexOf(v.depthCompare)),
+  #|   stencilFront: (v.stencilFront === undefined ? { $tag: 0 } : { $tag: 1, _0: v.stencilFront }),
+  #|   stencilBack: (v.stencilBack === undefined ? { $tag: 0 } : { $tag: 1, _0: v.stencilBack }),
+  #|   stencilReadMask: (v.stencilReadMask === undefined ? { $tag: 0 } : { $tag: 1, _0: v.stencilReadMask }),
+  #|   stencilWriteMask: (v.stencilWriteMask === undefined ? { $tag: 0 } : { $tag: 1, _0: v.stencilWriteMask }),
+  #|   depthBias: (v.depthBias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthBias }),
+  #|   depthBiasSlopeScale: v.depthBiasSlopeScale,
+  #|   depthBiasClamp: v.depthBiasClamp
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUDepthStencilState::from_js(value : JsValue) -> GPUDepthStencilState {
+  GPUDepthStencilState::from_js_ffi(value)
 }
 
 ///|
@@ -3324,6 +4138,23 @@ pub fn GPUStencilFaceState::to_js(self : GPUStencilFaceState) -> JsValue {
 }
 
 ///|
+extern "js" fn GPUStencilFaceState::from_js_ffi(
+  value : JsValue,
+) -> GPUStencilFaceState =
+  #| (v) => ({
+  #|   compare: (v.compare === undefined ? undefined : ['never', 'less', 'equal', 'less-equal', 'greater', 'not-equal', 'greater-equal', 'always'].indexOf(v.compare)),
+  #|   failOp: (v.failOp === undefined ? undefined : ['keep', 'zero', 'replace', 'invert', 'increment-clamp', 'decrement-clamp', 'increment-wrap', 'decrement-wrap'].indexOf(v.failOp)),
+  #|   depthFailOp: (v.depthFailOp === undefined ? undefined : ['keep', 'zero', 'replace', 'invert', 'increment-clamp', 'decrement-clamp', 'increment-wrap', 'decrement-wrap'].indexOf(v.depthFailOp)),
+  #|   passOp: (v.passOp === undefined ? undefined : ['keep', 'zero', 'replace', 'invert', 'increment-clamp', 'decrement-clamp', 'increment-wrap', 'decrement-wrap'].indexOf(v.passOp))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUStencilFaceState::from_js(value : JsValue) -> GPUStencilFaceState {
+  GPUStencilFaceState::from_js_ffi(value)
+}
+
+///|
 /// GPUVertexState dictionary
 pub(all) struct GPUVertexState {
   module_ : GPUShaderModule
@@ -3343,14 +4174,29 @@ extern "js" fn GPUVertexState::to_js_ffi(self : GPUVertexState) -> JsValue =
   #| (self) => ({
   #|   module: self.module_,
   #|   entryPoint: self.entryPoint,
-  #|   constants: ((() => { const v = self.constants; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   buffers: ((() => { const v = self.buffers; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   constants: ((() => { const v = self.constants; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   buffers: ((() => { const v = self.buffers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn GPUVertexState::to_js(self : GPUVertexState) -> JsValue {
   GPUVertexState::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUVertexState::from_js_ffi(value : JsValue) -> GPUVertexState =
+  #| (v) => ({
+  #|   module_: v.module,
+  #|   entryPoint: v.entryPoint,
+  #|   constants: (v.constants === undefined ? { $tag: 0 } : { $tag: 1, _0: v.constants }),
+  #|   buffers: (v.buffers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.buffers })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUVertexState::from_js(value : JsValue) -> GPUVertexState {
+  GPUVertexState::from_js_ffi(value)
 }
 
 ///|
@@ -3383,6 +4229,22 @@ extern "js" fn GPUVertexBufferLayout::to_js_ffi(
 /// Convert to JsValue
 pub fn GPUVertexBufferLayout::to_js(self : GPUVertexBufferLayout) -> JsValue {
   GPUVertexBufferLayout::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUVertexBufferLayout::from_js_ffi(
+  value : JsValue,
+) -> GPUVertexBufferLayout =
+  #| (v) => ({
+  #|   arrayStride: v.arrayStride,
+  #|   stepMode: (v.stepMode === undefined ? undefined : ['vertex', 'instance'].indexOf(v.stepMode)),
+  #|   attributes: v.attributes
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUVertexBufferLayout::from_js(value : JsValue) -> GPUVertexBufferLayout {
+  GPUVertexBufferLayout::from_js_ffi(value)
 }
 
 ///|
@@ -3420,6 +4282,22 @@ pub fn GPUVertexAttribute::to_js(self : GPUVertexAttribute) -> JsValue {
 }
 
 ///|
+extern "js" fn GPUVertexAttribute::from_js_ffi(
+  value : JsValue,
+) -> GPUVertexAttribute =
+  #| (v) => ({
+  #|   format: ['uint8', 'uint8x2', 'uint8x4', 'sint8', 'sint8x2', 'sint8x4', 'unorm8', 'unorm8x2', 'unorm8x4', 'snorm8', 'snorm8x2', 'snorm8x4', 'uint16', 'uint16x2', 'uint16x4', 'sint16', 'sint16x2', 'sint16x4', 'unorm16', 'unorm16x2', 'unorm16x4', 'snorm16', 'snorm16x2', 'snorm16x4', 'float16', 'float16x2', 'float16x4', 'float32', 'float32x2', 'float32x3', 'float32x4', 'uint32', 'uint32x2', 'uint32x3', 'uint32x4', 'sint32', 'sint32x2', 'sint32x3', 'sint32x4', 'unorm10-10-10-2', 'unorm8x4-bgra'].indexOf(v.format),
+  #|   offset: v.offset,
+  #|   shaderLocation: v.shaderLocation
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUVertexAttribute::from_js(value : JsValue) -> GPUVertexAttribute {
+  GPUVertexAttribute::from_js_ffi(value)
+}
+
+///|
 /// GPUTexelCopyBufferLayout dictionary
 pub(all) struct GPUTexelCopyBufferLayout {
   offset : GPUSize64?
@@ -3442,9 +4320,9 @@ extern "js" fn GPUTexelCopyBufferLayout::to_js_ffi(
   self : GPUTexelCopyBufferLayout,
 ) -> JsValue =
   #| (self) => ({
-  #|   offset: ((() => { const v = self.offset; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   bytesPerRow: ((() => { const v = self.bytesPerRow; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   rowsPerImage: ((() => { const v = self.rowsPerImage; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   offset: ((() => { const v = self.offset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   bytesPerRow: ((() => { const v = self.bytesPerRow; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   rowsPerImage: ((() => { const v = self.rowsPerImage; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -3453,6 +4331,24 @@ pub fn GPUTexelCopyBufferLayout::to_js(
   self : GPUTexelCopyBufferLayout,
 ) -> JsValue {
   GPUTexelCopyBufferLayout::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUTexelCopyBufferLayout::from_js_ffi(
+  value : JsValue,
+) -> GPUTexelCopyBufferLayout =
+  #| (v) => ({
+  #|   offset: (v.offset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offset }),
+  #|   bytesPerRow: (v.bytesPerRow === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bytesPerRow }),
+  #|   rowsPerImage: (v.rowsPerImage === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rowsPerImage })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUTexelCopyBufferLayout::from_js(
+  value : JsValue,
+) -> GPUTexelCopyBufferLayout {
+  GPUTexelCopyBufferLayout::from_js_ffi(value)
 }
 
 ///|
@@ -3482,9 +4378,9 @@ extern "js" fn GPUTexelCopyBufferInfo::to_js_ffi(
   self : GPUTexelCopyBufferInfo,
 ) -> JsValue =
   #| (self) => ({
-  #|   offset: ((() => { const v = self.offset; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   bytesPerRow: ((() => { const v = self.bytesPerRow; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   rowsPerImage: ((() => { const v = self.rowsPerImage; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   offset: ((() => { const v = self.offset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   bytesPerRow: ((() => { const v = self.bytesPerRow; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   rowsPerImage: ((() => { const v = self.rowsPerImage; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   buffer: self.buffer
   #| })
 
@@ -3492,6 +4388,25 @@ extern "js" fn GPUTexelCopyBufferInfo::to_js_ffi(
 /// Convert to JsValue
 pub fn GPUTexelCopyBufferInfo::to_js(self : GPUTexelCopyBufferInfo) -> JsValue {
   GPUTexelCopyBufferInfo::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUTexelCopyBufferInfo::from_js_ffi(
+  value : JsValue,
+) -> GPUTexelCopyBufferInfo =
+  #| (v) => ({
+  #|   offset: (v.offset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offset }),
+  #|   bytesPerRow: (v.bytesPerRow === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bytesPerRow }),
+  #|   rowsPerImage: (v.rowsPerImage === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rowsPerImage }),
+  #|   buffer: v.buffer
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUTexelCopyBufferInfo::from_js(
+  value : JsValue,
+) -> GPUTexelCopyBufferInfo {
+  GPUTexelCopyBufferInfo::from_js_ffi(value)
 }
 
 ///|
@@ -3522,8 +4437,8 @@ extern "js" fn GPUTexelCopyTextureInfo::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   texture: self.texture,
-  #|   mipLevel: ((() => { const v = self.mipLevel; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   origin: ((() => { const v = self.origin; if (v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   mipLevel: ((() => { const v = self.mipLevel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   origin: ((() => { const v = self.origin; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
   #|   aspect: ((() => { const v = self.aspect; if (v === undefined) return undefined; return ['all', 'stencil-only', 'depth-only'][v]; })())
   #| })
 
@@ -3533,6 +4448,25 @@ pub fn GPUTexelCopyTextureInfo::to_js(
   self : GPUTexelCopyTextureInfo,
 ) -> JsValue {
   GPUTexelCopyTextureInfo::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUTexelCopyTextureInfo::from_js_ffi(
+  value : JsValue,
+) -> GPUTexelCopyTextureInfo =
+  #| (v) => ({
+  #|   texture: v.texture,
+  #|   mipLevel: (v.mipLevel === undefined ? { $tag: 0 } : { $tag: 1, _0: v.mipLevel }),
+  #|   origin: (v.origin === undefined ? { $tag: 0 } : { $tag: 1, _0: v.origin }),
+  #|   aspect: (v.aspect === undefined ? undefined : ['all', 'stencil-only', 'depth-only'].indexOf(v.aspect))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUTexelCopyTextureInfo::from_js(
+  value : JsValue,
+) -> GPUTexelCopyTextureInfo {
+  GPUTexelCopyTextureInfo::from_js_ffi(value)
 }
 
 ///|
@@ -3567,8 +4501,8 @@ extern "js" fn GPUCopyExternalImageDestInfo::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   texture: self.texture,
-  #|   mipLevel: ((() => { const v = self.mipLevel; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   origin: ((() => { const v = self.origin; if (v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   mipLevel: ((() => { const v = self.mipLevel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   origin: ((() => { const v = self.origin; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
   #|   aspect: ((() => { const v = self.aspect; if (v === undefined) return undefined; return ['all', 'stencil-only', 'depth-only'][v]; })()),
   #|   colorSpace: ((() => { const v = self.colorSpace; if (v === undefined) return undefined; return ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][v]; })()),
   #|   premultipliedAlpha: (self.premultipliedAlpha === -1 ? undefined : self.premultipliedAlpha)
@@ -3580,6 +4514,27 @@ pub fn GPUCopyExternalImageDestInfo::to_js(
   self : GPUCopyExternalImageDestInfo,
 ) -> JsValue {
   GPUCopyExternalImageDestInfo::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUCopyExternalImageDestInfo::from_js_ffi(
+  value : JsValue,
+) -> GPUCopyExternalImageDestInfo =
+  #| (v) => ({
+  #|   texture: v.texture,
+  #|   mipLevel: (v.mipLevel === undefined ? { $tag: 0 } : { $tag: 1, _0: v.mipLevel }),
+  #|   origin: (v.origin === undefined ? { $tag: 0 } : { $tag: 1, _0: v.origin }),
+  #|   aspect: (v.aspect === undefined ? undefined : ['all', 'stencil-only', 'depth-only'].indexOf(v.aspect)),
+  #|   colorSpace: (v.colorSpace === undefined ? undefined : ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(v.colorSpace)),
+  #|   premultipliedAlpha: (v.premultipliedAlpha === undefined ? -1 : v.premultipliedAlpha)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUCopyExternalImageDestInfo::from_js(
+  value : JsValue,
+) -> GPUCopyExternalImageDestInfo {
+  GPUCopyExternalImageDestInfo::from_js_ffi(value)
 }
 
 ///|
@@ -3604,7 +4559,7 @@ extern "js" fn GPUCopyExternalImageSourceInfo::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   source: self.source.to_js_value(),
-  #|   origin: ((() => { const v = self.origin; if (v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   origin: ((() => { const v = self.origin; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
   #|   flipY: (self.flipY === -1 ? undefined : self.flipY)
   #| })
 
@@ -3614,6 +4569,24 @@ pub fn GPUCopyExternalImageSourceInfo::to_js(
   self : GPUCopyExternalImageSourceInfo,
 ) -> JsValue {
   GPUCopyExternalImageSourceInfo::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUCopyExternalImageSourceInfo::from_js_ffi(
+  value : JsValue,
+) -> GPUCopyExternalImageSourceInfo =
+  #| (v) => ({
+  #|   source: v.source,
+  #|   origin: (v.origin === undefined ? { $tag: 0 } : { $tag: 1, _0: v.origin }),
+  #|   flipY: (v.flipY === undefined ? -1 : v.flipY)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUCopyExternalImageSourceInfo::from_js(
+  value : JsValue,
+) -> GPUCopyExternalImageSourceInfo {
+  GPUCopyExternalImageSourceInfo::from_js_ffi(value)
 }
 
 ///|
@@ -3645,6 +4618,22 @@ pub fn GPUCommandBufferDescriptor::to_js(
 }
 
 ///|
+extern "js" fn GPUCommandBufferDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPUCommandBufferDescriptor =
+  #| (v) => ({
+  #|   label: v.label
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUCommandBufferDescriptor::from_js(
+  value : JsValue,
+) -> GPUCommandBufferDescriptor {
+  GPUCommandBufferDescriptor::from_js_ffi(value)
+}
+
+///|
 /// GPUCommandEncoderDescriptor dictionary
 pub(all) struct GPUCommandEncoderDescriptor {
   label : String?
@@ -3673,6 +4662,22 @@ pub fn GPUCommandEncoderDescriptor::to_js(
 }
 
 ///|
+extern "js" fn GPUCommandEncoderDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPUCommandEncoderDescriptor =
+  #| (v) => ({
+  #|   label: v.label
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUCommandEncoderDescriptor::from_js(
+  value : JsValue,
+) -> GPUCommandEncoderDescriptor {
+  GPUCommandEncoderDescriptor::from_js_ffi(value)
+}
+
+///|
 /// GPUComputePassTimestampWrites dictionary
 pub(all) struct GPUComputePassTimestampWrites {
   querySet : GPUQuerySet
@@ -3698,8 +4703,8 @@ extern "js" fn GPUComputePassTimestampWrites::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   querySet: self.querySet,
-  #|   beginningOfPassWriteIndex: ((() => { const v = self.beginningOfPassWriteIndex; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   endOfPassWriteIndex: ((() => { const v = self.endOfPassWriteIndex; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   beginningOfPassWriteIndex: ((() => { const v = self.beginningOfPassWriteIndex; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   endOfPassWriteIndex: ((() => { const v = self.endOfPassWriteIndex; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -3708,6 +4713,24 @@ pub fn GPUComputePassTimestampWrites::to_js(
   self : GPUComputePassTimestampWrites,
 ) -> JsValue {
   GPUComputePassTimestampWrites::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUComputePassTimestampWrites::from_js_ffi(
+  value : JsValue,
+) -> GPUComputePassTimestampWrites =
+  #| (v) => ({
+  #|   querySet: v.querySet,
+  #|   beginningOfPassWriteIndex: (v.beginningOfPassWriteIndex === undefined ? { $tag: 0 } : { $tag: 1, _0: v.beginningOfPassWriteIndex }),
+  #|   endOfPassWriteIndex: (v.endOfPassWriteIndex === undefined ? { $tag: 0 } : { $tag: 1, _0: v.endOfPassWriteIndex })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUComputePassTimestampWrites::from_js(
+  value : JsValue,
+) -> GPUComputePassTimestampWrites {
+  GPUComputePassTimestampWrites::from_js_ffi(value)
 }
 
 ///|
@@ -3729,7 +4752,7 @@ extern "js" fn GPUComputePassDescriptor::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   timestampWrites: ((() => { const v = self.timestampWrites; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   timestampWrites: ((() => { const v = self.timestampWrites; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -3738,6 +4761,23 @@ pub fn GPUComputePassDescriptor::to_js(
   self : GPUComputePassDescriptor,
 ) -> JsValue {
   GPUComputePassDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUComputePassDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPUComputePassDescriptor =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   timestampWrites: (v.timestampWrites === undefined ? { $tag: 0 } : { $tag: 1, _0: v.timestampWrites })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUComputePassDescriptor::from_js(
+  value : JsValue,
+) -> GPUComputePassDescriptor {
+  GPUComputePassDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -3766,8 +4806,8 @@ extern "js" fn GPURenderPassTimestampWrites::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   querySet: self.querySet,
-  #|   beginningOfPassWriteIndex: ((() => { const v = self.beginningOfPassWriteIndex; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   endOfPassWriteIndex: ((() => { const v = self.endOfPassWriteIndex; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   beginningOfPassWriteIndex: ((() => { const v = self.beginningOfPassWriteIndex; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   endOfPassWriteIndex: ((() => { const v = self.endOfPassWriteIndex; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -3776,6 +4816,24 @@ pub fn GPURenderPassTimestampWrites::to_js(
   self : GPURenderPassTimestampWrites,
 ) -> JsValue {
   GPURenderPassTimestampWrites::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPURenderPassTimestampWrites::from_js_ffi(
+  value : JsValue,
+) -> GPURenderPassTimestampWrites =
+  #| (v) => ({
+  #|   querySet: v.querySet,
+  #|   beginningOfPassWriteIndex: (v.beginningOfPassWriteIndex === undefined ? { $tag: 0 } : { $tag: 1, _0: v.beginningOfPassWriteIndex }),
+  #|   endOfPassWriteIndex: (v.endOfPassWriteIndex === undefined ? { $tag: 0 } : { $tag: 1, _0: v.endOfPassWriteIndex })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPURenderPassTimestampWrites::from_js(
+  value : JsValue,
+) -> GPURenderPassTimestampWrites {
+  GPURenderPassTimestampWrites::from_js_ffi(value)
 }
 
 ///|
@@ -3809,10 +4867,10 @@ extern "js" fn GPURenderPassDescriptor::to_js_ffi(
   #| (self) => ({
   #|   label: self.label,
   #|   colorAttachments: self.colorAttachments,
-  #|   depthStencilAttachment: ((() => { const v = self.depthStencilAttachment; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   occlusionQuerySet: ((() => { const v = self.occlusionQuerySet; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   timestampWrites: ((() => { const v = self.timestampWrites; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   maxDrawCount: ((() => { const v = self.maxDrawCount; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   depthStencilAttachment: ((() => { const v = self.depthStencilAttachment; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   occlusionQuerySet: ((() => { const v = self.occlusionQuerySet; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   timestampWrites: ((() => { const v = self.timestampWrites; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   maxDrawCount: ((() => { const v = self.maxDrawCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -3821,6 +4879,27 @@ pub fn GPURenderPassDescriptor::to_js(
   self : GPURenderPassDescriptor,
 ) -> JsValue {
   GPURenderPassDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPURenderPassDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPURenderPassDescriptor =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   colorAttachments: v.colorAttachments,
+  #|   depthStencilAttachment: (v.depthStencilAttachment === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthStencilAttachment }),
+  #|   occlusionQuerySet: (v.occlusionQuerySet === undefined ? { $tag: 0 } : { $tag: 1, _0: v.occlusionQuerySet }),
+  #|   timestampWrites: (v.timestampWrites === undefined ? { $tag: 0 } : { $tag: 1, _0: v.timestampWrites }),
+  #|   maxDrawCount: (v.maxDrawCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maxDrawCount })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPURenderPassDescriptor::from_js(
+  value : JsValue,
+) -> GPURenderPassDescriptor {
+  GPURenderPassDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -3857,9 +4936,9 @@ extern "js" fn GPURenderPassColorAttachment::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   view: self.view,
-  #|   depthSlice: ((() => { const v = self.depthSlice; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   resolveTarget: ((() => { const v = self.resolveTarget; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   clearValue: ((() => { const v = self.clearValue; if (v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   depthSlice: ((() => { const v = self.depthSlice; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   resolveTarget: ((() => { const v = self.resolveTarget; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   clearValue: ((() => { const v = self.clearValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
   #|   loadOp: ['load', 'clear'][self.loadOp],
   #|   storeOp: ['store', 'discard'][self.storeOp]
   #| })
@@ -3870,6 +4949,27 @@ pub fn GPURenderPassColorAttachment::to_js(
   self : GPURenderPassColorAttachment,
 ) -> JsValue {
   GPURenderPassColorAttachment::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPURenderPassColorAttachment::from_js_ffi(
+  value : JsValue,
+) -> GPURenderPassColorAttachment =
+  #| (v) => ({
+  #|   view: v.view,
+  #|   depthSlice: (v.depthSlice === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthSlice }),
+  #|   resolveTarget: (v.resolveTarget === undefined ? { $tag: 0 } : { $tag: 1, _0: v.resolveTarget }),
+  #|   clearValue: (v.clearValue === undefined ? { $tag: 0 } : { $tag: 1, _0: v.clearValue }),
+  #|   loadOp: ['load', 'clear'].indexOf(v.loadOp),
+  #|   storeOp: ['store', 'discard'].indexOf(v.storeOp)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPURenderPassColorAttachment::from_js(
+  value : JsValue,
+) -> GPURenderPassColorAttachment {
+  GPURenderPassColorAttachment::from_js_ffi(value)
 }
 
 ///|
@@ -3914,7 +5014,7 @@ extern "js" fn GPURenderPassDepthStencilAttachment::to_js_ffi(
   #|   depthLoadOp: ((() => { const v = self.depthLoadOp; if (v === undefined) return undefined; return ['load', 'clear'][v]; })()),
   #|   depthStoreOp: ((() => { const v = self.depthStoreOp; if (v === undefined) return undefined; return ['store', 'discard'][v]; })()),
   #|   depthReadOnly: (self.depthReadOnly === -1 ? undefined : self.depthReadOnly),
-  #|   stencilClearValue: ((() => { const v = self.stencilClearValue; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   stencilClearValue: ((() => { const v = self.stencilClearValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   stencilLoadOp: ((() => { const v = self.stencilLoadOp; if (v === undefined) return undefined; return ['load', 'clear'][v]; })()),
   #|   stencilStoreOp: ((() => { const v = self.stencilStoreOp; if (v === undefined) return undefined; return ['store', 'discard'][v]; })()),
   #|   stencilReadOnly: (self.stencilReadOnly === -1 ? undefined : self.stencilReadOnly)
@@ -3926,6 +5026,30 @@ pub fn GPURenderPassDepthStencilAttachment::to_js(
   self : GPURenderPassDepthStencilAttachment,
 ) -> JsValue {
   GPURenderPassDepthStencilAttachment::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPURenderPassDepthStencilAttachment::from_js_ffi(
+  value : JsValue,
+) -> GPURenderPassDepthStencilAttachment =
+  #| (v) => ({
+  #|   view: v.view,
+  #|   depthClearValue: v.depthClearValue,
+  #|   depthLoadOp: (v.depthLoadOp === undefined ? undefined : ['load', 'clear'].indexOf(v.depthLoadOp)),
+  #|   depthStoreOp: (v.depthStoreOp === undefined ? undefined : ['store', 'discard'].indexOf(v.depthStoreOp)),
+  #|   depthReadOnly: (v.depthReadOnly === undefined ? -1 : v.depthReadOnly),
+  #|   stencilClearValue: (v.stencilClearValue === undefined ? { $tag: 0 } : { $tag: 1, _0: v.stencilClearValue }),
+  #|   stencilLoadOp: (v.stencilLoadOp === undefined ? undefined : ['load', 'clear'].indexOf(v.stencilLoadOp)),
+  #|   stencilStoreOp: (v.stencilStoreOp === undefined ? undefined : ['store', 'discard'].indexOf(v.stencilStoreOp)),
+  #|   stencilReadOnly: (v.stencilReadOnly === undefined ? -1 : v.stencilReadOnly)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPURenderPassDepthStencilAttachment::from_js(
+  value : JsValue,
+) -> GPURenderPassDepthStencilAttachment {
+  GPURenderPassDepthStencilAttachment::from_js_ffi(value)
 }
 
 ///|
@@ -3956,13 +5080,30 @@ extern "js" fn GPURenderPassLayout::to_js_ffi(
   #|   label: self.label,
   #|   colorFormats: self.colorFormats,
   #|   depthStencilFormat: ((() => { const v = self.depthStencilFormat; if (v === undefined) return undefined; return ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][v]; })()),
-  #|   sampleCount: ((() => { const v = self.sampleCount; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   sampleCount: ((() => { const v = self.sampleCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn GPURenderPassLayout::to_js(self : GPURenderPassLayout) -> JsValue {
   GPURenderPassLayout::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPURenderPassLayout::from_js_ffi(
+  value : JsValue,
+) -> GPURenderPassLayout =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   colorFormats: v.colorFormats,
+  #|   depthStencilFormat: (v.depthStencilFormat === undefined ? undefined : ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.depthStencilFormat)),
+  #|   sampleCount: (v.sampleCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleCount })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPURenderPassLayout::from_js(value : JsValue) -> GPURenderPassLayout {
+  GPURenderPassLayout::from_js_ffi(value)
 }
 
 ///|
@@ -3991,6 +5132,22 @@ pub fn GPURenderBundleDescriptor::to_js(
   self : GPURenderBundleDescriptor,
 ) -> JsValue {
   GPURenderBundleDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPURenderBundleDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPURenderBundleDescriptor =
+  #| (v) => ({
+  #|   label: v.label
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPURenderBundleDescriptor::from_js(
+  value : JsValue,
+) -> GPURenderBundleDescriptor {
+  GPURenderBundleDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -4025,7 +5182,7 @@ extern "js" fn GPURenderBundleEncoderDescriptor::to_js_ffi(
   #|   label: self.label,
   #|   colorFormats: self.colorFormats,
   #|   depthStencilFormat: ((() => { const v = self.depthStencilFormat; if (v === undefined) return undefined; return ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][v]; })()),
-  #|   sampleCount: ((() => { const v = self.sampleCount; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sampleCount: ((() => { const v = self.sampleCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   depthReadOnly: (self.depthReadOnly === -1 ? undefined : self.depthReadOnly),
   #|   stencilReadOnly: (self.stencilReadOnly === -1 ? undefined : self.stencilReadOnly)
   #| })
@@ -4036,6 +5193,27 @@ pub fn GPURenderBundleEncoderDescriptor::to_js(
   self : GPURenderBundleEncoderDescriptor,
 ) -> JsValue {
   GPURenderBundleEncoderDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPURenderBundleEncoderDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPURenderBundleEncoderDescriptor =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   colorFormats: v.colorFormats,
+  #|   depthStencilFormat: (v.depthStencilFormat === undefined ? undefined : ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.depthStencilFormat)),
+  #|   sampleCount: (v.sampleCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleCount }),
+  #|   depthReadOnly: (v.depthReadOnly === undefined ? -1 : v.depthReadOnly),
+  #|   stencilReadOnly: (v.stencilReadOnly === undefined ? -1 : v.stencilReadOnly)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPURenderBundleEncoderDescriptor::from_js(
+  value : JsValue,
+) -> GPURenderBundleEncoderDescriptor {
+  GPURenderBundleEncoderDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -4062,6 +5240,20 @@ extern "js" fn GPUQueueDescriptor::to_js_ffi(
 /// Convert to JsValue
 pub fn GPUQueueDescriptor::to_js(self : GPUQueueDescriptor) -> JsValue {
   GPUQueueDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUQueueDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPUQueueDescriptor =
+  #| (v) => ({
+  #|   label: v.label
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUQueueDescriptor::from_js(value : JsValue) -> GPUQueueDescriptor {
+  GPUQueueDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -4098,6 +5290,22 @@ pub fn GPUQuerySetDescriptor::to_js(self : GPUQuerySetDescriptor) -> JsValue {
 }
 
 ///|
+extern "js" fn GPUQuerySetDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GPUQuerySetDescriptor =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   type_: ['occlusion', 'timestamp'].indexOf(v.type),
+  #|   count: v.count
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUQuerySetDescriptor::from_js(value : JsValue) -> GPUQuerySetDescriptor {
+  GPUQuerySetDescriptor::from_js_ffi(value)
+}
+
+///|
 /// GPUCanvasToneMapping dictionary
 pub(all) struct GPUCanvasToneMapping {
   mode : GPUCanvasToneMappingMode?
@@ -4121,6 +5329,20 @@ extern "js" fn GPUCanvasToneMapping::to_js_ffi(
 /// Convert to JsValue
 pub fn GPUCanvasToneMapping::to_js(self : GPUCanvasToneMapping) -> JsValue {
   GPUCanvasToneMapping::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUCanvasToneMapping::from_js_ffi(
+  value : JsValue,
+) -> GPUCanvasToneMapping =
+  #| (v) => ({
+  #|   mode: (v.mode === undefined ? undefined : ['standard', 'extended'].indexOf(v.mode))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUCanvasToneMapping::from_js(value : JsValue) -> GPUCanvasToneMapping {
+  GPUCanvasToneMapping::from_js_ffi(value)
 }
 
 ///|
@@ -4159,10 +5381,10 @@ extern "js" fn GPUCanvasConfiguration::to_js_ffi(
   #| (self) => ({
   #|   device: self.device,
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][self.format],
-  #|   usage: ((() => { const v = self.usage; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   viewFormats: ((() => { const v = self.viewFormats; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   usage: ((() => { const v = self.usage; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   viewFormats: ((() => { const v = self.viewFormats; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   colorSpace: ((() => { const v = self.colorSpace; if (v === undefined) return undefined; return ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][v]; })()),
-  #|   toneMapping: ((() => { const v = self.toneMapping; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   toneMapping: ((() => { const v = self.toneMapping; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   alphaMode: ((() => { const v = self.alphaMode; if (v === undefined) return undefined; return ['opaque', 'premultiplied'][v]; })())
   #| })
 
@@ -4170,6 +5392,28 @@ extern "js" fn GPUCanvasConfiguration::to_js_ffi(
 /// Convert to JsValue
 pub fn GPUCanvasConfiguration::to_js(self : GPUCanvasConfiguration) -> JsValue {
   GPUCanvasConfiguration::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUCanvasConfiguration::from_js_ffi(
+  value : JsValue,
+) -> GPUCanvasConfiguration =
+  #| (v) => ({
+  #|   device: v.device,
+  #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format),
+  #|   usage: (v.usage === undefined ? { $tag: 0 } : { $tag: 1, _0: v.usage }),
+  #|   viewFormats: (v.viewFormats === undefined ? { $tag: 0 } : { $tag: 1, _0: v.viewFormats }),
+  #|   colorSpace: (v.colorSpace === undefined ? undefined : ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(v.colorSpace)),
+  #|   toneMapping: (v.toneMapping === undefined ? { $tag: 0 } : { $tag: 1, _0: v.toneMapping }),
+  #|   alphaMode: (v.alphaMode === undefined ? undefined : ['opaque', 'premultiplied'].indexOf(v.alphaMode))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUCanvasConfiguration::from_js(
+  value : JsValue,
+) -> GPUCanvasConfiguration {
+  GPUCanvasConfiguration::from_js_ffi(value)
 }
 
 ///|
@@ -4203,6 +5447,22 @@ pub fn GPUUncapturedErrorEventInit::to_js(
 }
 
 ///|
+extern "js" fn GPUUncapturedErrorEventInit::from_js_ffi(
+  value : JsValue,
+) -> GPUUncapturedErrorEventInit =
+  #| (v) => ({
+  #|   error: v.error
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUUncapturedErrorEventInit::from_js(
+  value : JsValue,
+) -> GPUUncapturedErrorEventInit {
+  GPUUncapturedErrorEventInit::from_js_ffi(value)
+}
+
+///|
 /// GPUColorDict dictionary
 pub(all) struct GPUColorDict {
   r : Double
@@ -4233,6 +5493,21 @@ pub fn GPUColorDict::to_js(self : GPUColorDict) -> JsValue {
 }
 
 ///|
+extern "js" fn GPUColorDict::from_js_ffi(value : JsValue) -> GPUColorDict =
+  #| (v) => ({
+  #|   r: v.r,
+  #|   g: v.g,
+  #|   b: v.b,
+  #|   a: v.a
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUColorDict::from_js(value : JsValue) -> GPUColorDict {
+  GPUColorDict::from_js_ffi(value)
+}
+
+///|
 /// GPUOrigin2DDict dictionary
 pub(all) struct GPUOrigin2DDict {
   x : GPUIntegerCoordinate?
@@ -4248,14 +5523,27 @@ pub fn GPUOrigin2DDict::default() -> GPUOrigin2DDict {
 ///|
 extern "js" fn GPUOrigin2DDict::to_js_ffi(self : GPUOrigin2DDict) -> JsValue =
   #| (self) => ({
-  #|   x: ((() => { const v = self.x; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   y: ((() => { const v = self.y; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   x: ((() => { const v = self.x; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   y: ((() => { const v = self.y; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn GPUOrigin2DDict::to_js(self : GPUOrigin2DDict) -> JsValue {
   GPUOrigin2DDict::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUOrigin2DDict::from_js_ffi(value : JsValue) -> GPUOrigin2DDict =
+  #| (v) => ({
+  #|   x: (v.x === undefined ? { $tag: 0 } : { $tag: 1, _0: v.x }),
+  #|   y: (v.y === undefined ? { $tag: 0 } : { $tag: 1, _0: v.y })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUOrigin2DDict::from_js(value : JsValue) -> GPUOrigin2DDict {
+  GPUOrigin2DDict::from_js_ffi(value)
 }
 
 ///|
@@ -4275,15 +5563,29 @@ pub fn GPUOrigin3DDict::default() -> GPUOrigin3DDict {
 ///|
 extern "js" fn GPUOrigin3DDict::to_js_ffi(self : GPUOrigin3DDict) -> JsValue =
   #| (self) => ({
-  #|   x: ((() => { const v = self.x; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   y: ((() => { const v = self.y; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   z: ((() => { const v = self.z; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   x: ((() => { const v = self.x; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   y: ((() => { const v = self.y; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   z: ((() => { const v = self.z; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn GPUOrigin3DDict::to_js(self : GPUOrigin3DDict) -> JsValue {
   GPUOrigin3DDict::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUOrigin3DDict::from_js_ffi(value : JsValue) -> GPUOrigin3DDict =
+  #| (v) => ({
+  #|   x: (v.x === undefined ? { $tag: 0 } : { $tag: 1, _0: v.x }),
+  #|   y: (v.y === undefined ? { $tag: 0 } : { $tag: 1, _0: v.y }),
+  #|   z: (v.z === undefined ? { $tag: 0 } : { $tag: 1, _0: v.z })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUOrigin3DDict::from_js(value : JsValue) -> GPUOrigin3DDict {
+  GPUOrigin3DDict::from_js_ffi(value)
 }
 
 ///|
@@ -4304,14 +5606,28 @@ pub fn GPUExtent3DDict::new(width~ : GPUIntegerCoordinate) -> GPUExtent3DDict {
 extern "js" fn GPUExtent3DDict::to_js_ffi(self : GPUExtent3DDict) -> JsValue =
   #| (self) => ({
   #|   width: self.width,
-  #|   height: ((() => { const v = self.height; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   depthOrArrayLayers: ((() => { const v = self.depthOrArrayLayers; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   height: ((() => { const v = self.height; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthOrArrayLayers: ((() => { const v = self.depthOrArrayLayers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn GPUExtent3DDict::to_js(self : GPUExtent3DDict) -> JsValue {
   GPUExtent3DDict::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GPUExtent3DDict::from_js_ffi(value : JsValue) -> GPUExtent3DDict =
+  #| (v) => ({
+  #|   width: v.width,
+  #|   height: (v.height === undefined ? { $tag: 0 } : { $tag: 1, _0: v.height }),
+  #|   depthOrArrayLayers: (v.depthOrArrayLayers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthOrArrayLayers })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GPUExtent3DDict::from_js(value : JsValue) -> GPUExtent3DDict {
+  GPUExtent3DDict::from_js_ffi(value)
 }
 
 ///|
@@ -4353,19 +5669,19 @@ pub extern "js" fn JsValue::to_gpu_supported_limits(
   #| (self) => self
 
 ///|
-pub extern "js" fn GPUSupportedLimits::get_max_texture_dimension1_d(
+pub extern "js" fn GPUSupportedLimits::get_max_texture_dimension_1d(
   self : GPUSupportedLimits,
 ) -> Int =
   #| (self) => self.maxTextureDimension1D
 
 ///|
-pub extern "js" fn GPUSupportedLimits::get_max_texture_dimension2_d(
+pub extern "js" fn GPUSupportedLimits::get_max_texture_dimension_2d(
   self : GPUSupportedLimits,
 ) -> Int =
   #| (self) => self.maxTextureDimension2D
 
 ///|
-pub extern "js" fn GPUSupportedLimits::get_max_texture_dimension3_d(
+pub extern "js" fn GPUSupportedLimits::get_max_texture_dimension_3d(
   self : GPUSupportedLimits,
 ) -> Int =
   #| (self) => self.maxTextureDimension3D
@@ -6350,7 +7666,7 @@ pub extern "js" fn GPUCommandEncoder::insert_debug_marker(
   #| (self, marker_label) => self.insertDebugMarker(marker_label)
 
 ///|
-pub extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_with_array_of_g_p_u_integer_coordinate(
+pub extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_with_array_of_gpu_integer_coordinate(
   self : GPUCommandEncoder,
   source : GPUTexelCopyBufferInfo,
   destination : GPUTexelCopyTextureInfo,
@@ -6359,7 +7675,7 @@ pub extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_with_array_of_g_p_u
   #| (self, source, destination, copy_size) => self.copyBufferToTexture(source, destination, copy_size)
 
 ///|
-pub extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_with_g_p_u_extent3_d_dict(
+pub extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_with_gpu_extent_3d_dict(
   self : GPUCommandEncoder,
   source : GPUTexelCopyBufferInfo,
   destination : GPUTexelCopyTextureInfo,
@@ -6368,7 +7684,7 @@ pub extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_with_g_p_u_extent3_
   #| (self, source, destination, copy_size) => self.copyBufferToTexture(source, destination, copy_size)
 
 ///|
-pub extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_with_array_of_g_p_u_integer_coordinate(
+pub extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_with_array_of_gpu_integer_coordinate(
   self : GPUCommandEncoder,
   source : GPUTexelCopyTextureInfo,
   destination : GPUTexelCopyBufferInfo,
@@ -6377,7 +7693,7 @@ pub extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_with_array_of_g_p_u
   #| (self, source, destination, copy_size) => self.copyTextureToBuffer(source, destination, copy_size)
 
 ///|
-pub extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_with_g_p_u_extent3_d_dict(
+pub extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_with_gpu_extent_3d_dict(
   self : GPUCommandEncoder,
   source : GPUTexelCopyTextureInfo,
   destination : GPUTexelCopyBufferInfo,
@@ -6386,7 +7702,7 @@ pub extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_with_g_p_u_extent3_
   #| (self, source, destination, copy_size) => self.copyTextureToBuffer(source, destination, copy_size)
 
 ///|
-pub extern "js" fn GPUCommandEncoder::copy_texture_to_texture_with_array_of_g_p_u_integer_coordinate(
+pub extern "js" fn GPUCommandEncoder::copy_texture_to_texture_with_array_of_gpu_integer_coordinate(
   self : GPUCommandEncoder,
   source : GPUTexelCopyTextureInfo,
   destination : GPUTexelCopyTextureInfo,
@@ -6395,7 +7711,7 @@ pub extern "js" fn GPUCommandEncoder::copy_texture_to_texture_with_array_of_g_p_
   #| (self, source, destination, copy_size) => self.copyTextureToTexture(source, destination, copy_size)
 
 ///|
-pub extern "js" fn GPUCommandEncoder::copy_texture_to_texture_with_g_p_u_extent3_d_dict(
+pub extern "js" fn GPUCommandEncoder::copy_texture_to_texture_with_gpu_extent_3d_dict(
   self : GPUCommandEncoder,
   source : GPUTexelCopyTextureInfo,
   destination : GPUTexelCopyTextureInfo,
@@ -6802,7 +8118,7 @@ pub extern "js" fn GPURenderPassEncoder::set_blend_constant_with_array_of_double
   #| (self, color) => self.setBlendConstant(color)
 
 ///|
-pub extern "js" fn GPURenderPassEncoder::set_blend_constant_with_g_p_u_color_dict(
+pub extern "js" fn GPURenderPassEncoder::set_blend_constant_with_gpu_color_dict(
   self : GPURenderPassEncoder,
   color : GPUColorDict,
 ) -> Unit =
@@ -7255,7 +8571,7 @@ pub extern "js" fn GPUQueue::write_texture_with_array_buffer_view(
   #| (self, destination, data, data_layout, size) => self.writeTexture(destination, data, data_layout, size)
 
 ///|
-pub extern "js" fn GPUQueue::copy_external_image_to_texture_with_array_of_g_p_u_integer_coordinate(
+pub extern "js" fn GPUQueue::copy_external_image_to_texture_with_array_of_gpu_integer_coordinate(
   self : GPUQueue,
   source : GPUCopyExternalImageSourceInfo,
   destination : GPUCopyExternalImageDestInfo,
@@ -7264,7 +8580,7 @@ pub extern "js" fn GPUQueue::copy_external_image_to_texture_with_array_of_g_p_u_
   #| (self, source, destination, copy_size) => self.copyExternalImageToTexture(source, destination, copy_size)
 
 ///|
-pub extern "js" fn GPUQueue::copy_external_image_to_texture_with_g_p_u_extent3_d_dict(
+pub extern "js" fn GPUQueue::copy_external_image_to_texture_with_gpu_extent_3d_dict(
   self : GPUQueue,
   source : GPUCopyExternalImageSourceInfo,
   destination : GPUCopyExternalImageDestInfo,

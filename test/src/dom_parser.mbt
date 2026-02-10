@@ -1,19 +1,14 @@
 // DOMParser test
 // Ref: https://developer.mozilla.org/en-US/docs/Web/API/DOMParser
-// Note: DOMParser.parseFromString takes TrustedHTMLOrString, so we use a JS helper.
-
-///|
-extern "js" fn js_parse_html(html : String) -> @websys.Document =
-  #| (html) => new DOMParser().parseFromString(html, 'text/html')
-
-///|
-extern "js" fn js_parse_xml(xml : String) -> @websys.Document =
-  #| (xml) => new DOMParser().parseFromString(xml, 'application/xml')
 
 ///|
 fn test_dom_parser_html() -> Unit {
-  let doc = js_parse_html(
-    "<html><head><title>Test</title></head><body><p id=\"hello\">Hello</p></body></html>",
+  let parser = @websys.DOMParser::new()
+  let doc = parser.parse_from_string(
+    @websys.TrustedHTMLOrString::from_string(
+      "<html><head><title>Test</title></head><body><p id=\"hello\">Hello</p></body></html>",
+    ),
+    @websys.DOMParserSupportedType::TextHtml,
   )
   // Verify the parsed document
   let title = doc.get_title()
@@ -33,8 +28,12 @@ fn test_dom_parser_html() -> Unit {
 
 ///|
 fn test_dom_parser_xml() -> Unit {
-  let doc = js_parse_xml(
-    "<root><item id=\"1\">First</item><item id=\"2\">Second</item></root>",
+  let parser = @websys.DOMParser::new()
+  let doc = parser.parse_from_string(
+    @websys.TrustedHTMLOrString::from_string(
+      "<root><item id=\"1\">First</item><item id=\"2\">Second</item></root>",
+    ),
+    @websys.DOMParserSupportedType::ApplicationXml,
   )
   // XML document doesn't have a title
   let root_el = doc.get_document_element()

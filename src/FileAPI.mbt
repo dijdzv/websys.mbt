@@ -55,11 +55,38 @@ pub extern "js" fn BlobPart::as_string(self : BlobPart) -> String? =
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
+/// Flatten Option[BlobPart] to BufferSource?
+pub fn BlobPart::bind_as_buffer_source(value : BlobPart?) -> BufferSource? {
+  match value {
+    Some(v) => v.as_buffer_source()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[BlobPart] to Blob?
+pub fn BlobPart::bind_as_blob(value : BlobPart?) -> Blob? {
+  match value {
+    Some(v) => v.as_blob()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[BlobPart] to String?
+pub fn BlobPart::bind_as_string(value : BlobPart?) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
 /// EndingType enum
 pub(all) enum EndingType {
   Transparent
   Native
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -107,6 +134,19 @@ pub fn BlobPropertyBag::to_js(self : BlobPropertyBag) -> JsValue {
 }
 
 ///|
+extern "js" fn BlobPropertyBag::from_js_ffi(value : JsValue) -> BlobPropertyBag =
+  #| (v) => ({
+  #|   type_: v.type,
+  #|   endings: (v.endings === undefined ? undefined : ['transparent', 'native'].indexOf(v.endings))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BlobPropertyBag::from_js(value : JsValue) -> BlobPropertyBag {
+  BlobPropertyBag::from_js_ffi(value)
+}
+
+///|
 /// FilePropertyBag dictionary
 pub(all) struct FilePropertyBag {
   type_ : String?
@@ -132,6 +172,20 @@ extern "js" fn FilePropertyBag::to_js_ffi(self : FilePropertyBag) -> JsValue =
 /// Convert to JsValue
 pub fn FilePropertyBag::to_js(self : FilePropertyBag) -> JsValue {
   FilePropertyBag::to_js_ffi(self)
+}
+
+///|
+extern "js" fn FilePropertyBag::from_js_ffi(value : JsValue) -> FilePropertyBag =
+  #| (v) => ({
+  #|   type_: v.type,
+  #|   endings: (v.endings === undefined ? undefined : ['transparent', 'native'].indexOf(v.endings)),
+  #|   lastModified: v.lastModified
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FilePropertyBag::from_js(value : JsValue) -> FilePropertyBag {
+  FilePropertyBag::from_js_ffi(value)
 }
 
 ///|

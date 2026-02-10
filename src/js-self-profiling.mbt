@@ -36,6 +36,21 @@ pub fn ProfilerTrace::to_js(self : ProfilerTrace) -> JsValue {
 }
 
 ///|
+extern "js" fn ProfilerTrace::from_js_ffi(value : JsValue) -> ProfilerTrace =
+  #| (v) => ({
+  #|   resources: v.resources,
+  #|   frames: v.frames,
+  #|   stacks: v.stacks,
+  #|   samples: v.samples
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ProfilerTrace::from_js(value : JsValue) -> ProfilerTrace {
+  ProfilerTrace::from_js_ffi(value)
+}
+
+///|
 /// ProfilerSample dictionary
 pub(all) struct ProfilerSample {
   timestamp : DOMHighResTimeStamp
@@ -62,6 +77,19 @@ pub fn ProfilerSample::to_js(self : ProfilerSample) -> JsValue {
 }
 
 ///|
+extern "js" fn ProfilerSample::from_js_ffi(value : JsValue) -> ProfilerSample =
+  #| (v) => ({
+  #|   timestamp: v.timestamp,
+  #|   stackId: v.stackId
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ProfilerSample::from_js(value : JsValue) -> ProfilerSample {
+  ProfilerSample::from_js_ffi(value)
+}
+
+///|
 /// ProfilerStack dictionary
 pub(all) struct ProfilerStack {
   parentId : Int64?
@@ -85,6 +113,19 @@ extern "js" fn ProfilerStack::to_js_ffi(self : ProfilerStack) -> JsValue =
 /// Convert to JsValue
 pub fn ProfilerStack::to_js(self : ProfilerStack) -> JsValue {
   ProfilerStack::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ProfilerStack::from_js_ffi(value : JsValue) -> ProfilerStack =
+  #| (v) => ({
+  #|   parentId: v.parentId,
+  #|   frameId: v.frameId
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ProfilerStack::from_js(value : JsValue) -> ProfilerStack {
+  ProfilerStack::from_js_ffi(value)
 }
 
 ///|
@@ -118,6 +159,21 @@ pub fn ProfilerFrame::to_js(self : ProfilerFrame) -> JsValue {
 }
 
 ///|
+extern "js" fn ProfilerFrame::from_js_ffi(value : JsValue) -> ProfilerFrame =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   resourceId: v.resourceId,
+  #|   line: v.line,
+  #|   column: v.column
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ProfilerFrame::from_js(value : JsValue) -> ProfilerFrame {
+  ProfilerFrame::from_js_ffi(value)
+}
+
+///|
 /// ProfilerInitOptions dictionary
 pub(all) struct ProfilerInitOptions {
   sampleInterval : DOMHighResTimeStamp
@@ -145,6 +201,21 @@ extern "js" fn ProfilerInitOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn ProfilerInitOptions::to_js(self : ProfilerInitOptions) -> JsValue {
   ProfilerInitOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ProfilerInitOptions::from_js_ffi(
+  value : JsValue,
+) -> ProfilerInitOptions =
+  #| (v) => ({
+  #|   sampleInterval: v.sampleInterval,
+  #|   maxBufferSize: v.maxBufferSize
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ProfilerInitOptions::from_js(value : JsValue) -> ProfilerInitOptions {
+  ProfilerInitOptions::from_js_ffi(value)
 }
 
 ///|
@@ -200,4 +271,9 @@ pub fn Profiler::new(options : ProfilerInitOptions) -> Profiler {
 
 ///|
 pub extern "js" fn Profiler::stop(self : Profiler) -> Promise[ProfilerTrace] =
-  #| (self) => self.stop()
+  #| (self) => self.stop().then(v => ({
+  #|   resources: v.resources,
+  #|   frames: v.frames,
+  #|   stacks: v.stacks,
+  #|   samples: v.samples
+  #| }))

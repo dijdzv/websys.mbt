@@ -13,7 +13,7 @@ pub(all) enum InPagePermissionMixinBlockerReason {
   IntersectionOccludedOrDistorted
   StyleInvalid
   TypeInvalid
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

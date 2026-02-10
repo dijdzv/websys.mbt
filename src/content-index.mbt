@@ -9,7 +9,7 @@ pub(all) enum ContentCategory {
   Article
   Video
   Audio
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -69,7 +69,7 @@ extern "js" fn ContentDescription::to_js_ffi(
   #|   title: self.title,
   #|   description: self.description,
   #|   category: ((() => { const v = self.category; if (v === undefined) return undefined; return ['', 'homepage', 'article', 'video', 'audio'][v]; })()),
-  #|   icons: ((() => { const v = self.icons; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   icons: ((() => { const v = self.icons; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   url: self.url
   #| })
 
@@ -77,6 +77,25 @@ extern "js" fn ContentDescription::to_js_ffi(
 /// Convert to JsValue
 pub fn ContentDescription::to_js(self : ContentDescription) -> JsValue {
   ContentDescription::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ContentDescription::from_js_ffi(
+  value : JsValue,
+) -> ContentDescription =
+  #| (v) => ({
+  #|   id: v.id,
+  #|   title: v.title,
+  #|   description: v.description,
+  #|   category: (v.category === undefined ? undefined : ['', 'homepage', 'article', 'video', 'audio'].indexOf(v.category)),
+  #|   icons: (v.icons === undefined ? { $tag: 0 } : { $tag: 1, _0: v.icons }),
+  #|   url: v.url
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ContentDescription::from_js(value : JsValue) -> ContentDescription {
+  ContentDescription::from_js_ffi(value)
 }
 
 ///|
@@ -103,6 +122,20 @@ extern "js" fn ContentIndexEventInit::to_js_ffi(
 /// Convert to JsValue
 pub fn ContentIndexEventInit::to_js(self : ContentIndexEventInit) -> JsValue {
   ContentIndexEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ContentIndexEventInit::from_js_ffi(
+  value : JsValue,
+) -> ContentIndexEventInit =
+  #| (v) => ({
+  #|   id: v.id
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ContentIndexEventInit::from_js(value : JsValue) -> ContentIndexEventInit {
+  ContentIndexEventInit::from_js_ffi(value)
 }
 
 ///|

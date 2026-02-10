@@ -1,49 +1,26 @@
-// CSSOMString is opaque without Eq/Show, so we use JS helpers for string-based CSS operations.
-// This documents that CSSOMString needs from_string/to_string or trait impls.
-
-///|
-extern "js" fn js_set_style(
-  el : @websys.JsValue,
-  prop : String,
-  value : String,
-) -> Unit =
-  #| (el, prop, value) => { el.style.setProperty(prop, value) }
-
-///|
-extern "js" fn js_get_style(el : @websys.JsValue, prop : String) -> String =
-  #| (el, prop) => el.style.getPropertyValue(prop)
-
-///|
-extern "js" fn js_get_style_length(el : @websys.JsValue) -> Int =
-  #| (el) => el.style.length
-
-///|
-extern "js" fn js_remove_style(el : @websys.JsValue, prop : String) -> String =
-  #| (el, prop) => el.style.removeProperty(prop)
-
-///|
-extern "js" fn js_get_css_text(el : @websys.JsValue) -> String =
-  #| (el) => el.style.cssText
+// CSSStyleDeclaration tests — setProperty, getPropertyValue, removeProperty, cssText
+// Ref: https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration
 
 ///|
 fn test_css_style() -> Unit {
   let doc = get_document()
   let div = doc.create_element("div")
-  let jv = div.to_js_value()
+  let html = @websys.HTMLElement::from_js_value(div.to_js_value())
+  let style = html.get_style().to_css_style_declaration()
   // Initially no styles
-  assert_eq(js_get_style_length(jv), 0, label="initially empty")
+  assert_eq(style.get_length(), 0, label="initially empty")
   // setProperty
-  js_set_style(jv, "color", "red")
-  assert_eq(js_get_style(jv, "color"), "red", label="color")
-  js_set_style(jv, "font-size", "16px")
-  assert_eq(js_get_style(jv, "font-size"), "16px", label="font-size")
-  assert_eq(js_get_style_length(jv), 2, label="length after set")
+  style.set_property("color", "red")
+  assert_eq(style.get_property_value("color"), "red", label="color")
+  style.set_property("font-size", "16px")
+  assert_eq(style.get_property_value("font-size"), "16px", label="font-size")
+  assert_eq(style.get_length(), 2, label="length after set")
   // removeProperty
-  let removed = js_remove_style(jv, "color")
+  let removed = style.remove_property("color")
   assert_eq(removed, "red", label="removed value")
-  assert_eq(js_get_style_length(jv), 1, label="length after remove")
+  assert_eq(style.get_length(), 1, label="length after remove")
   // cssText
-  let css_text = js_get_css_text(jv)
+  let css_text = style.get_css_text()
   assert_true(
     css_text.contains("font-size"),
     label="cssText contains font-size",
@@ -54,14 +31,12 @@ fn test_css_style() -> Unit {
 fn test_css_style_text() -> Unit {
   let doc = get_document()
   let div = doc.create_element("div")
-  let jv = div.to_js_value()
-  // Test that HTMLElement.get_style() returns a CSSStyleProperties object
-  let html = @websys.HTMLElement::from_js_value(jv)
-  let _style = html.get_style()
-  // Just verify it doesn't crash
-  js_set_style(jv, "background-color", "blue")
+  let html = @websys.HTMLElement::from_js_value(div.to_js_value())
+  let style = html.get_style().to_css_style_declaration()
+  // Test that HTMLElement.get_style() returns a usable style object
+  style.set_property("background-color", "blue")
   assert_eq(
-    js_get_style(jv, "background-color"),
+    style.get_property_value("background-color"),
     "blue",
     label="background-color",
   )

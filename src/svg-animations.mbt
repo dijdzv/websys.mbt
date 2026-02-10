@@ -34,7 +34,7 @@ pub extern "js" fn TimeEvent::to_event(self : TimeEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn TimeEvent::get_view(self : TimeEvent) -> WindowProxy? =
+pub extern "js" fn TimeEvent::get_view(self : TimeEvent) -> Window? =
   #| (self) => (() => { const v = self.view; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|

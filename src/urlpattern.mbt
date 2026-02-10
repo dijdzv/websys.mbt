@@ -18,7 +18,7 @@ pub extern "js" fn URLPatternInput::from_string(v : String) -> URLPatternInput =
 
 ///|
 /// Create URLPatternInput from URLPatternInit
-pub extern "js" fn URLPatternInput::from_u_r_l_pattern_init(
+pub extern "js" fn URLPatternInput::from_url_pattern_init(
   v : URLPatternInit,
 ) -> URLPatternInput =
   #| (v) => v
@@ -30,7 +30,7 @@ pub extern "js" fn URLPatternInput::is_string(self : URLPatternInput) -> Bool =
 
 ///|
 /// Check if this URLPatternInput is URLPatternInit
-pub extern "js" fn URLPatternInput::is_u_r_l_pattern_init(
+pub extern "js" fn URLPatternInput::is_url_pattern_init(
   self : URLPatternInput,
 ) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
@@ -44,10 +44,30 @@ pub extern "js" fn URLPatternInput::as_string(
 
 ///|
 /// Try to get URLPatternInput as URLPatternInit
-pub extern "js" fn URLPatternInput::as_u_r_l_pattern_init(
+pub extern "js" fn URLPatternInput::as_url_pattern_init(
   self : URLPatternInput,
 ) -> URLPatternInit? =
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[URLPatternInput] to String?
+pub fn URLPatternInput::bind_as_string(value : URLPatternInput?) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[URLPatternInput] to URLPatternInit?
+pub fn URLPatternInput::bind_as_url_pattern_init(
+  value : URLPatternInput?,
+) -> URLPatternInit? {
+  match value {
+    Some(v) => v.as_url_pattern_init()
+    None => None
+  }
+}
 
 ///|
 /// URLPatternCompatible typedef
@@ -68,14 +88,14 @@ pub extern "js" fn URLPatternCompatible::from_string(
 
 ///|
 /// Create URLPatternCompatible from URLPatternInit
-pub extern "js" fn URLPatternCompatible::from_u_r_l_pattern_init(
+pub extern "js" fn URLPatternCompatible::from_url_pattern_init(
   v : URLPatternInit,
 ) -> URLPatternCompatible =
   #| (v) => v
 
 ///|
 /// Create URLPatternCompatible from URLPattern
-pub extern "js" fn URLPatternCompatible::from_u_r_l_pattern(
+pub extern "js" fn URLPatternCompatible::from_url_pattern(
   v : URLPattern,
 ) -> URLPatternCompatible =
   #| (v) => v
@@ -89,14 +109,14 @@ pub extern "js" fn URLPatternCompatible::is_string(
 
 ///|
 /// Check if this URLPatternCompatible is URLPatternInit
-pub extern "js" fn URLPatternCompatible::is_u_r_l_pattern_init(
+pub extern "js" fn URLPatternCompatible::is_url_pattern_init(
   self : URLPatternCompatible,
 ) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
 /// Check if this URLPatternCompatible is URLPattern
-pub extern "js" fn URLPatternCompatible::is_u_r_l_pattern(
+pub extern "js" fn URLPatternCompatible::is_url_pattern(
   self : URLPatternCompatible,
 ) -> Bool =
   #| (self) => self instanceof URLPattern
@@ -110,17 +130,50 @@ pub extern "js" fn URLPatternCompatible::as_string(
 
 ///|
 /// Try to get URLPatternCompatible as URLPatternInit
-pub extern "js" fn URLPatternCompatible::as_u_r_l_pattern_init(
+pub extern "js" fn URLPatternCompatible::as_url_pattern_init(
   self : URLPatternCompatible,
 ) -> URLPatternInit? =
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get URLPatternCompatible as URLPattern
-pub extern "js" fn URLPatternCompatible::as_u_r_l_pattern(
+pub extern "js" fn URLPatternCompatible::as_url_pattern(
   self : URLPatternCompatible,
 ) -> URLPattern? =
   #| (self) => (self instanceof URLPattern) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[URLPatternCompatible] to String?
+pub fn URLPatternCompatible::bind_as_string(
+  value : URLPatternCompatible?,
+) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[URLPatternCompatible] to URLPatternInit?
+pub fn URLPatternCompatible::bind_as_url_pattern_init(
+  value : URLPatternCompatible?,
+) -> URLPatternInit? {
+  match value {
+    Some(v) => v.as_url_pattern_init()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[URLPatternCompatible] to URLPattern?
+pub fn URLPatternCompatible::bind_as_url_pattern(
+  value : URLPatternCompatible?,
+) -> URLPattern? {
+  match value {
+    Some(v) => v.as_url_pattern()
+    None => None
+  }
+}
 
 ///|
 /// URLPatternInit dictionary
@@ -173,6 +226,26 @@ pub fn URLPatternInit::to_js(self : URLPatternInit) -> JsValue {
 }
 
 ///|
+extern "js" fn URLPatternInit::from_js_ffi(value : JsValue) -> URLPatternInit =
+  #| (v) => ({
+  #|   protocol: v.protocol,
+  #|   username: v.username,
+  #|   password: v.password,
+  #|   hostname: v.hostname,
+  #|   port: v.port,
+  #|   pathname: v.pathname,
+  #|   search: v.search,
+  #|   hash: v.hash,
+  #|   baseURL: v.baseURL
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn URLPatternInit::from_js(value : JsValue) -> URLPatternInit {
+  URLPatternInit::from_js_ffi(value)
+}
+
+///|
 /// URLPatternOptions dictionary
 pub(all) struct URLPatternOptions {
   ignoreCase : Bool?
@@ -196,6 +269,20 @@ extern "js" fn URLPatternOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn URLPatternOptions::to_js(self : URLPatternOptions) -> JsValue {
   URLPatternOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn URLPatternOptions::from_js_ffi(
+  value : JsValue,
+) -> URLPatternOptions =
+  #| (v) => ({
+  #|   ignoreCase: (v.ignoreCase === undefined ? -1 : v.ignoreCase)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn URLPatternOptions::from_js(value : JsValue) -> URLPatternOptions {
+  URLPatternOptions::from_js_ffi(value)
 }
 
 ///|
@@ -231,21 +318,43 @@ pub fn URLPatternResult::default() -> URLPatternResult {
 ///|
 extern "js" fn URLPatternResult::to_js_ffi(self : URLPatternResult) -> JsValue =
   #| (self) => ({
-  #|   inputs: ((() => { const v = self.inputs; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   protocol: ((() => { const v = self.protocol; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   username: ((() => { const v = self.username; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   password: ((() => { const v = self.password; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   hostname: ((() => { const v = self.hostname; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   port: ((() => { const v = self.port; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   pathname: ((() => { const v = self.pathname; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   search: ((() => { const v = self.search; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   hash: ((() => { const v = self.hash; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   inputs: ((() => { const v = self.inputs; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   protocol: ((() => { const v = self.protocol; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   username: ((() => { const v = self.username; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   password: ((() => { const v = self.password; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   hostname: ((() => { const v = self.hostname; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   port: ((() => { const v = self.port; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   pathname: ((() => { const v = self.pathname; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   search: ((() => { const v = self.search; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   hash: ((() => { const v = self.hash; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn URLPatternResult::to_js(self : URLPatternResult) -> JsValue {
   URLPatternResult::to_js_ffi(self)
+}
+
+///|
+extern "js" fn URLPatternResult::from_js_ffi(
+  value : JsValue,
+) -> URLPatternResult =
+  #| (v) => ({
+  #|   inputs: (v.inputs === undefined ? { $tag: 0 } : { $tag: 1, _0: v.inputs }),
+  #|   protocol: (v.protocol === undefined ? { $tag: 0 } : { $tag: 1, _0: v.protocol }),
+  #|   username: (v.username === undefined ? { $tag: 0 } : { $tag: 1, _0: v.username }),
+  #|   password: (v.password === undefined ? { $tag: 0 } : { $tag: 1, _0: v.password }),
+  #|   hostname: (v.hostname === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hostname }),
+  #|   port: (v.port === undefined ? { $tag: 0 } : { $tag: 1, _0: v.port }),
+  #|   pathname: (v.pathname === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pathname }),
+  #|   search: (v.search === undefined ? { $tag: 0 } : { $tag: 1, _0: v.search }),
+  #|   hash: (v.hash === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hash })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn URLPatternResult::from_js(value : JsValue) -> URLPatternResult {
+  URLPatternResult::from_js_ffi(value)
 }
 
 ///|
@@ -267,7 +376,7 @@ extern "js" fn URLPatternComponentResult::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   input: self.input,
-  #|   groups: ((() => { const v = self.groups; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   groups: ((() => { const v = self.groups; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -276,6 +385,23 @@ pub fn URLPatternComponentResult::to_js(
   self : URLPatternComponentResult,
 ) -> JsValue {
   URLPatternComponentResult::to_js_ffi(self)
+}
+
+///|
+extern "js" fn URLPatternComponentResult::from_js_ffi(
+  value : JsValue,
+) -> URLPatternComponentResult =
+  #| (v) => ({
+  #|   input: v.input,
+  #|   groups: (v.groups === undefined ? { $tag: 0 } : { $tag: 1, _0: v.groups })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn URLPatternComponentResult::from_js(
+  value : JsValue,
+) -> URLPatternComponentResult {
+  URLPatternComponentResult::from_js_ffi(value)
 }
 
 ///|
@@ -424,7 +550,7 @@ pub extern "js" fn URLPattern::new_with_string(
   #| (input, base_url, options) => new URLPattern(input, base_url, options)
 
 ///|
-pub extern "js" fn URLPattern::new_with_u_r_l_pattern_init(
+pub extern "js" fn URLPattern::new_with_url_pattern_init(
   input : URLPatternInit,
   base_url : String,
   options : URLPatternOptions,
@@ -440,7 +566,7 @@ pub extern "js" fn URLPattern::test__with_string(
   #| (self, input, base_url) => self.test(input, base_url)
 
 ///|
-pub extern "js" fn URLPattern::test__with_u_r_l_pattern_init(
+pub extern "js" fn URLPattern::test__with_url_pattern_init(
   self : URLPattern,
   input : URLPatternInit,
   base_url : String,
@@ -456,7 +582,7 @@ pub extern "js" fn URLPattern::exec_with_string(
   #| (self, input, base_url) => (() => { const v = self.exec(input, base_url); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn URLPattern::exec_with_u_r_l_pattern_init(
+pub extern "js" fn URLPattern::exec_with_url_pattern_init(
   self : URLPattern,
   input : URLPatternInit,
   base_url : String,

@@ -28,6 +28,20 @@ pub fn BackgroundSyncOptions::to_js(self : BackgroundSyncOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn BackgroundSyncOptions::from_js_ffi(
+  value : JsValue,
+) -> BackgroundSyncOptions =
+  #| (v) => ({
+  #|   minInterval: v.minInterval
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BackgroundSyncOptions::from_js(value : JsValue) -> BackgroundSyncOptions {
+  BackgroundSyncOptions::from_js_ffi(value)
+}
+
+///|
 /// PeriodicSyncEventInit dictionary
 pub(all) struct PeriodicSyncEventInit {
   tag : String
@@ -51,6 +65,20 @@ extern "js" fn PeriodicSyncEventInit::to_js_ffi(
 /// Convert to JsValue
 pub fn PeriodicSyncEventInit::to_js(self : PeriodicSyncEventInit) -> JsValue {
   PeriodicSyncEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PeriodicSyncEventInit::from_js_ffi(
+  value : JsValue,
+) -> PeriodicSyncEventInit =
+  #| (v) => ({
+  #|   tag: v.tag
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PeriodicSyncEventInit::from_js(value : JsValue) -> PeriodicSyncEventInit {
+  PeriodicSyncEventInit::from_js_ffi(value)
 }
 
 ///|

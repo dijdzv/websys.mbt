@@ -52,6 +52,20 @@ pub fn PositionOptions::to_js(self : PositionOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn PositionOptions::from_js_ffi(value : JsValue) -> PositionOptions =
+  #| (v) => ({
+  #|   enableHighAccuracy: (v.enableHighAccuracy === undefined ? -1 : v.enableHighAccuracy),
+  #|   timeout: v.timeout,
+  #|   maximumAge: v.maximumAge
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PositionOptions::from_js(value : JsValue) -> PositionOptions {
+  PositionOptions::from_js_ffi(value)
+}
+
+///|
 /// Geolocation interface
 pub type Geolocation
 

@@ -18,13 +18,27 @@ extern "js" fn PortalActivateOptions::to_js_ffi(
   self : PortalActivateOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   data: ((() => { const v = self.data; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn PortalActivateOptions::to_js(self : PortalActivateOptions) -> JsValue {
   PortalActivateOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PortalActivateOptions::from_js_ffi(
+  value : JsValue,
+) -> PortalActivateOptions =
+  #| (v) => ({
+  #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PortalActivateOptions::from_js(value : JsValue) -> PortalActivateOptions {
+  PortalActivateOptions::from_js_ffi(value)
 }
 
 ///|
@@ -44,7 +58,7 @@ extern "js" fn PortalActivateEventInit::to_js_ffi(
   self : PortalActivateEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   data: ((() => { const v = self.data; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -53,6 +67,22 @@ pub fn PortalActivateEventInit::to_js(
   self : PortalActivateEventInit,
 ) -> JsValue {
   PortalActivateEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PortalActivateEventInit::from_js_ffi(
+  value : JsValue,
+) -> PortalActivateEventInit =
+  #| (v) => ({
+  #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PortalActivateEventInit::from_js(
+  value : JsValue,
+) -> PortalActivateEventInit {
+  PortalActivateEventInit::from_js_ffi(value)
 }
 
 ///|

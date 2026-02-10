@@ -24,7 +24,7 @@ extern "js" fn BluetoothLEScanOptions::to_js_ffi(
   self : BluetoothLEScanOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   filters: ((() => { const v = self.filters; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   filters: ((() => { const v = self.filters; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   keepRepeatedDevices: (self.keepRepeatedDevices === -1 ? undefined : self.keepRepeatedDevices),
   #|   acceptAllAdvertisements: (self.acceptAllAdvertisements === -1 ? undefined : self.acceptAllAdvertisements)
   #| })
@@ -33,6 +33,24 @@ extern "js" fn BluetoothLEScanOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn BluetoothLEScanOptions::to_js(self : BluetoothLEScanOptions) -> JsValue {
   BluetoothLEScanOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BluetoothLEScanOptions::from_js_ffi(
+  value : JsValue,
+) -> BluetoothLEScanOptions =
+  #| (v) => ({
+  #|   filters: (v.filters === undefined ? { $tag: 0 } : { $tag: 1, _0: v.filters }),
+  #|   keepRepeatedDevices: (v.keepRepeatedDevices === undefined ? -1 : v.keepRepeatedDevices),
+  #|   acceptAllAdvertisements: (v.acceptAllAdvertisements === undefined ? -1 : v.acceptAllAdvertisements)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BluetoothLEScanOptions::from_js(
+  value : JsValue,
+) -> BluetoothLEScanOptions {
+  BluetoothLEScanOptions::from_js_ffi(value)
 }
 
 ///|
@@ -58,7 +76,7 @@ extern "js" fn BluetoothLEScanPermissionDescriptor::to_js_ffi(
   self : BluetoothLEScanPermissionDescriptor,
 ) -> JsValue =
   #| (self) => ({
-  #|   filters: ((() => { const v = self.filters; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   filters: ((() => { const v = self.filters; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   keepRepeatedDevices: (self.keepRepeatedDevices === -1 ? undefined : self.keepRepeatedDevices),
   #|   acceptAllAdvertisements: (self.acceptAllAdvertisements === -1 ? undefined : self.acceptAllAdvertisements)
   #| })
@@ -69,6 +87,24 @@ pub fn BluetoothLEScanPermissionDescriptor::to_js(
   self : BluetoothLEScanPermissionDescriptor,
 ) -> JsValue {
   BluetoothLEScanPermissionDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BluetoothLEScanPermissionDescriptor::from_js_ffi(
+  value : JsValue,
+) -> BluetoothLEScanPermissionDescriptor =
+  #| (v) => ({
+  #|   filters: (v.filters === undefined ? { $tag: 0 } : { $tag: 1, _0: v.filters }),
+  #|   keepRepeatedDevices: (v.keepRepeatedDevices === undefined ? -1 : v.keepRepeatedDevices),
+  #|   acceptAllAdvertisements: (v.acceptAllAdvertisements === undefined ? -1 : v.acceptAllAdvertisements)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BluetoothLEScanPermissionDescriptor::from_js(
+  value : JsValue,
+) -> BluetoothLEScanPermissionDescriptor {
+  BluetoothLEScanPermissionDescriptor::from_js_ffi(value)
 }
 
 ///|

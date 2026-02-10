@@ -2,7 +2,7 @@
 
 Playwright + Chromium headless で実ブラウザ上でバインディングの動作を検証する統合テスト。
 
-**テスト結果: 139/139 passed**（同期 133 + 非同期 6）
+**テスト結果: 175/175 passed**（同期 169 + 非同期 6）
 
 ## セットアップ・実行
 
@@ -26,11 +26,10 @@ test/
 ├── src/
 │   ├── moon.pkg.json   # is-main: true, JS ターゲット
 │   ├── main.mbt        # テストランナー + assert ヘルパー
-│   └── *.mbt           # テストファイル（74 ファイル、139 テスト関数）
+│   └── *.mbt           # テストファイル（80 ファイル、175 テスト関数）
 ├── index.html          # テスト実行用 HTML
 ├── run.mjs             # Playwright テストランナー
 ├── package.json
-├── ISSUES.md           # codegen 課題トラッカー（現在すべて解決済み）
 └── README.md
 ```
 
@@ -38,7 +37,7 @@ test/
 
 `rustwasm/wasm-bindgen` の `crates/web-sys/tests/wasm/` に対応するテストの実装状況。
 
-**凡例**: FULL = Rust 側の全項目をカバー / GAP = 一部欠落あり / N/A = Rust 側にテストなし
+**凡例**: FULL = Rust 側の全項目をカバー / N/A = Rust 側にテストなし
 
 | Rust テスト | MoonBit テスト | 状態 | 備考 |
 |---|---|---|---|
@@ -97,35 +96,41 @@ test/
 
 Rust web-sys にない追加テスト:
 
-| テスト | 内容 |
-|---|---|
-| url, url_search_params | URL API |
-| encoding | TextEncoder / TextDecoder |
-| dom_create_element, dom_attributes, dom_tree | DOM Core |
-| class_list, class_list_toggle, class_list_value | DOMTokenList |
-| blob, blob_union_type, blob_dictionary, blob_enum, file | Blob / File API |
-| abort_controller, abort_signal | AbortController |
-| form_data | FormData |
-| dom_point, dom_rect | Geometry API |
-| image_element | HTMLImageElement |
-| body_element, title_element, meta_element, style_element, link_element | Document 構造 |
-| meter_element, output_element, fieldset_element, dialog_element | フォーム関連 |
-| canvas_element, template_element | その他 HTML |
-| text_node, comment_node, document_fragment, document_fragment_transfer | DOM ノード |
-| range, tree_walker | DOM 走査 |
-| dom_exception, dom_exception_with_name, dom_exception_codes | DOMException |
-| video_element, audio_element, source_element | メディア |
-| datalist_element, br_element, ins_element, del_element | その他要素 |
-| node_clone, node_compare, node_replace | Node 操作 |
-| element_dataset, element_scroll, element_closest | Element 属性 |
-| css_style, css_style_text | CSSStyleDeclaration |
-| media_query_list | MediaQueryList |
-| dom_token_list_iteration | DOMTokenList イテレーション |
-| node_list, html_collection | NodeList / HTMLCollection |
-| location, storage, navigator | ブラウザ API |
-| image_data, xpath_result | ImageData / XPath |
-| data_element, time_element, details_element | HTML5 要素 |
-| iframe_element, map_element, area_element | 埋め込み・マップ |
-| custom_event, custom_event_with_init | CustomEvent |
-| named_node_map, attr_mutation | NamedNodeMap / Attr |
-| dom_parser_html, dom_parser_xml | DOMParser |
+| カテゴリ | テスト | 内容 |
+|---|---|---|
+| URL API | url, url_search_params | URL / URLSearchParams |
+| Encoding | encoding | TextEncoder / TextDecoder |
+| DOM Core | dom_create_element, dom_attributes, dom_tree | Document / Element |
+| DOMTokenList | class_list, class_list_toggle, class_list_value | classList |
+| Blob/File | blob, blob_union_type, blob_dictionary, blob_enum, file | Blob / File API |
+| Abort | abort_controller, abort_signal | AbortController |
+| Fetch | form_data, request, request_with_init, request_enum_properties, response_static | FormData / Request / Response |
+| Geometry | dom_point, dom_rect | DOMPoint / DOMRect |
+| HTML 要素 | image_element, body_element, title_element, meta_element, style_element, link_element | Document 構造 |
+| フォーム | meter_element, output_element, fieldset_element, dialog_element | フォーム関連 |
+| その他 HTML | canvas_element, template_element, datalist_element, br_element, ins_element, del_element | |
+| DOM ノード | text_node, comment_node, document_fragment, document_fragment_transfer | |
+| DOM 走査 | range, tree_walker | Range / TreeWalker |
+| DOMException | dom_exception, dom_exception_with_name, dom_exception_codes | |
+| メディア | video_element, audio_element, source_element | HTMLMediaElement |
+| Node 操作 | node_clone, node_compare, node_replace | Node メソッド |
+| Element 属性 | element_dataset, element_scroll, element_closest | |
+| CSS | css_style, css_style_text | CSSStyleDeclaration |
+| CSSOM | css_style_sheet, css_rule, media_list | CSSStyleSheet / CSSRule / MediaList |
+| Observer | mutation_observer, mutation_observer_records, intersection_observer, resize_observer | MutationObserver / IntersectionObserver / ResizeObserver |
+| Canvas 2D | canvas2d_context, canvas2d_drawing, canvas2d_path, canvas2d_state, canvas2d_text, canvas2d_image_data | CanvasRenderingContext2D |
+| WebSocket | websocket, websocket_constants, close_event | WebSocket / CloseEvent |
+| Static | url_create_object_url, create_element_ns | URL.createObjectURL / createElementNS |
+| MediaQueryList | media_query_list | MediaQueryList |
+| DOMTokenList | dom_token_list_iteration | iteration |
+| Collection | node_list, html_collection | NodeList / HTMLCollection |
+| ブラウザ | location, storage, navigator | Location / Storage / Navigator |
+| ImageData | image_data, xpath_result | ImageData / XPath |
+| HTML5 | data_element, time_element, details_element | |
+| 埋め込み | iframe_element, map_element, area_element | IFrame / Map / Area |
+| CustomEvent | custom_event, custom_event_with_init | CustomEvent |
+| NamedNodeMap | named_node_map, attr_mutation | NamedNodeMap / Attr |
+| DOMParser | dom_parser_html, dom_parser_xml | DOMParser |
+| エラーケース | error_invalid_selector, error_null_returns, boundary_values, error_invalid_css, error_dom_exception | 例外・境界値 |
+| Streams | readable_stream, readable_stream_reader, writable_stream, transform_stream, stream_pipe_through | ReadableStream / WritableStream / TransformStream |
+| WebRTC 拡張 | rtc_data_channel, rtc_data_channel_with_init, rtc_ice_candidate, rtc_senders_receivers | RTCDataChannel / RTCIceCandidate |

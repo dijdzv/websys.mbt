@@ -7,7 +7,7 @@ pub(all) enum TaskPriority {
   UserBlocking
   UserVisible
   Background
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -53,7 +53,7 @@ extern "js" fn SchedulerPostTaskOptions::to_js_ffi(
   self : SchedulerPostTaskOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   priority: ((() => { const v = self.priority; if (v === undefined) return undefined; return ['user-blocking', 'user-visible', 'background'][v]; })()),
   #|   delay: self.delay
   #| })
@@ -64,6 +64,24 @@ pub fn SchedulerPostTaskOptions::to_js(
   self : SchedulerPostTaskOptions,
 ) -> JsValue {
   SchedulerPostTaskOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SchedulerPostTaskOptions::from_js_ffi(
+  value : JsValue,
+) -> SchedulerPostTaskOptions =
+  #| (v) => ({
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
+  #|   priority: (v.priority === undefined ? undefined : ['user-blocking', 'user-visible', 'background'].indexOf(v.priority)),
+  #|   delay: v.delay
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SchedulerPostTaskOptions::from_js(
+  value : JsValue,
+) -> SchedulerPostTaskOptions {
+  SchedulerPostTaskOptions::from_js_ffi(value)
 }
 
 ///|
@@ -97,6 +115,22 @@ pub fn TaskPriorityChangeEventInit::to_js(
 }
 
 ///|
+extern "js" fn TaskPriorityChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> TaskPriorityChangeEventInit =
+  #| (v) => ({
+  #|   previousPriority: ['user-blocking', 'user-visible', 'background'].indexOf(v.previousPriority)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TaskPriorityChangeEventInit::from_js(
+  value : JsValue,
+) -> TaskPriorityChangeEventInit {
+  TaskPriorityChangeEventInit::from_js_ffi(value)
+}
+
+///|
 /// TaskControllerInit dictionary
 pub(all) struct TaskControllerInit {
   priority : TaskPriority?
@@ -123,6 +157,20 @@ pub fn TaskControllerInit::to_js(self : TaskControllerInit) -> JsValue {
 }
 
 ///|
+extern "js" fn TaskControllerInit::from_js_ffi(
+  value : JsValue,
+) -> TaskControllerInit =
+  #| (v) => ({
+  #|   priority: (v.priority === undefined ? undefined : ['user-blocking', 'user-visible', 'background'].indexOf(v.priority))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TaskControllerInit::from_js(value : JsValue) -> TaskControllerInit {
+  TaskControllerInit::from_js_ffi(value)
+}
+
+///|
 /// TaskSignalAnyInit dictionary
 pub(all) struct TaskSignalAnyInit {
   priority : TaskPriorityOrTaskSignal?
@@ -139,13 +187,27 @@ extern "js" fn TaskSignalAnyInit::to_js_ffi(
   self : TaskSignalAnyInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   priority: ((() => { const v = self.priority; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   priority: ((() => { const v = self.priority; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn TaskSignalAnyInit::to_js(self : TaskSignalAnyInit) -> JsValue {
   TaskSignalAnyInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TaskSignalAnyInit::from_js_ffi(
+  value : JsValue,
+) -> TaskSignalAnyInit =
+  #| (v) => ({
+  #|   priority: (v.priority === undefined ? { $tag: 0 } : { $tag: 1, _0: v.priority })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TaskSignalAnyInit::from_js(value : JsValue) -> TaskSignalAnyInit {
+  TaskSignalAnyInit::from_js_ffi(value)
 }
 
 ///|

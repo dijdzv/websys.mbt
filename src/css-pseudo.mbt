@@ -48,7 +48,7 @@ pub extern "js" fn CSSPseudoElement::to_event_target(
 ///|
 pub extern "js" fn CSSPseudoElement::get_type(
   self : CSSPseudoElement,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.type
 
 ///|
@@ -66,7 +66,7 @@ pub extern "js" fn CSSPseudoElement::get_parent(
 ///|
 pub extern "js" fn CSSPseudoElement::pseudo(
   self : CSSPseudoElement,
-  type_ : CSSOMString,
+  type_ : String,
 ) -> CSSPseudoElement? =
   #| (self, type_) => (() => { const v = self.pseudo(type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
@@ -224,7 +224,7 @@ pub extern "js" fn CSSPseudoElement::convert_quad_from_node_with_element(
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
 ///|
-pub extern "js" fn CSSPseudoElement::convert_quad_from_node_with_c_s_s_pseudo_element(
+pub extern "js" fn CSSPseudoElement::convert_quad_from_node_with_css_pseudo_element(
   self : CSSPseudoElement,
   quad : DOMQuadInit,
   from : CSSPseudoElement,
@@ -260,7 +260,7 @@ pub extern "js" fn CSSPseudoElement::convert_rect_from_node_with_element(
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
 ///|
-pub extern "js" fn CSSPseudoElement::convert_rect_from_node_with_c_s_s_pseudo_element(
+pub extern "js" fn CSSPseudoElement::convert_rect_from_node_with_css_pseudo_element(
   self : CSSPseudoElement,
   rect : DOMRectReadOnly,
   from : CSSPseudoElement,
@@ -296,7 +296,7 @@ pub extern "js" fn CSSPseudoElement::convert_point_from_node_with_element(
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
-pub extern "js" fn CSSPseudoElement::convert_point_from_node_with_c_s_s_pseudo_element(
+pub extern "js" fn CSSPseudoElement::convert_point_from_node_with_css_pseudo_element(
   self : CSSPseudoElement,
   point : DOMPointInit,
   from : CSSPseudoElement,

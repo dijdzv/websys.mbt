@@ -20,7 +20,7 @@ pub extern "js" fn ReadableStreamReader::from_readable_stream_default_reader(
 
 ///|
 /// Create ReadableStreamReader from ReadableStreamBYOBReader
-pub extern "js" fn ReadableStreamReader::from_readable_stream_b_y_o_b_reader(
+pub extern "js" fn ReadableStreamReader::from_readable_stream_byob_reader(
   v : ReadableStreamBYOBReader,
 ) -> ReadableStreamReader =
   #| (v) => v
@@ -34,7 +34,7 @@ pub extern "js" fn ReadableStreamReader::is_readable_stream_default_reader(
 
 ///|
 /// Check if this ReadableStreamReader is ReadableStreamBYOBReader
-pub extern "js" fn ReadableStreamReader::is_readable_stream_b_y_o_b_reader(
+pub extern "js" fn ReadableStreamReader::is_readable_stream_byob_reader(
   self : ReadableStreamReader,
 ) -> Bool =
   #| (self) => self instanceof ReadableStreamBYOBReader
@@ -48,10 +48,32 @@ pub extern "js" fn ReadableStreamReader::as_readable_stream_default_reader(
 
 ///|
 /// Try to get ReadableStreamReader as ReadableStreamBYOBReader
-pub extern "js" fn ReadableStreamReader::as_readable_stream_b_y_o_b_reader(
+pub extern "js" fn ReadableStreamReader::as_readable_stream_byob_reader(
   self : ReadableStreamReader,
 ) -> ReadableStreamBYOBReader? =
   #| (self) => (self instanceof ReadableStreamBYOBReader) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[ReadableStreamReader] to ReadableStreamDefaultReader?
+pub fn ReadableStreamReader::bind_as_readable_stream_default_reader(
+  value : ReadableStreamReader?,
+) -> ReadableStreamDefaultReader? {
+  match value {
+    Some(v) => v.as_readable_stream_default_reader()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ReadableStreamReader] to ReadableStreamBYOBReader?
+pub fn ReadableStreamReader::bind_as_readable_stream_byob_reader(
+  value : ReadableStreamReader?,
+) -> ReadableStreamBYOBReader? {
+  match value {
+    Some(v) => v.as_readable_stream_byob_reader()
+    None => None
+  }
+}
 
 ///|
 /// ReadableStreamController typedef
@@ -106,10 +128,32 @@ pub extern "js" fn ReadableStreamController::as_readable_byte_stream_controller(
   #| (self) => (self instanceof ReadableByteStreamController) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[ReadableStreamController] to ReadableStreamDefaultController?
+pub fn ReadableStreamController::bind_as_readable_stream_default_controller(
+  value : ReadableStreamController?,
+) -> ReadableStreamDefaultController? {
+  match value {
+    Some(v) => v.as_readable_stream_default_controller()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ReadableStreamController] to ReadableByteStreamController?
+pub fn ReadableStreamController::bind_as_readable_byte_stream_controller(
+  value : ReadableStreamController?,
+) -> ReadableByteStreamController? {
+  match value {
+    Some(v) => v.as_readable_byte_stream_controller()
+    None => None
+  }
+}
+
+///|
 /// ReadableStreamReaderMode enum
 pub(all) enum ReadableStreamReaderMode {
   Byob
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -136,7 +180,7 @@ pub fn ReadableStreamReaderMode::from_string(
 /// ReadableStreamType enum
 pub(all) enum ReadableStreamType {
   Bytes
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -309,6 +353,22 @@ pub fn ReadableStreamGetReaderOptions::to_js(
 }
 
 ///|
+extern "js" fn ReadableStreamGetReaderOptions::from_js_ffi(
+  value : JsValue,
+) -> ReadableStreamGetReaderOptions =
+  #| (v) => ({
+  #|   mode: (v.mode === undefined ? undefined : ['byob'].indexOf(v.mode))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ReadableStreamGetReaderOptions::from_js(
+  value : JsValue,
+) -> ReadableStreamGetReaderOptions {
+  ReadableStreamGetReaderOptions::from_js_ffi(value)
+}
+
+///|
 /// ReadableStreamIteratorOptions dictionary
 pub(all) struct ReadableStreamIteratorOptions {
   preventCancel : Bool?
@@ -334,6 +394,22 @@ pub fn ReadableStreamIteratorOptions::to_js(
   self : ReadableStreamIteratorOptions,
 ) -> JsValue {
   ReadableStreamIteratorOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ReadableStreamIteratorOptions::from_js_ffi(
+  value : JsValue,
+) -> ReadableStreamIteratorOptions =
+  #| (v) => ({
+  #|   preventCancel: (v.preventCancel === undefined ? -1 : v.preventCancel)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ReadableStreamIteratorOptions::from_js(
+  value : JsValue,
+) -> ReadableStreamIteratorOptions {
+  ReadableStreamIteratorOptions::from_js_ffi(value)
 }
 
 ///|
@@ -368,6 +444,21 @@ pub fn ReadableWritablePair::to_js(self : ReadableWritablePair) -> JsValue {
 }
 
 ///|
+extern "js" fn ReadableWritablePair::from_js_ffi(
+  value : JsValue,
+) -> ReadableWritablePair =
+  #| (v) => ({
+  #|   readable: v.readable,
+  #|   writable: v.writable
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ReadableWritablePair::from_js(value : JsValue) -> ReadableWritablePair {
+  ReadableWritablePair::from_js_ffi(value)
+}
+
+///|
 /// StreamPipeOptions dictionary
 pub(all) struct StreamPipeOptions {
   preventClose : Bool?
@@ -395,13 +486,30 @@ extern "js" fn StreamPipeOptions::to_js_ffi(
   #|   preventClose: (self.preventClose === -1 ? undefined : self.preventClose),
   #|   preventAbort: (self.preventAbort === -1 ? undefined : self.preventAbort),
   #|   preventCancel: (self.preventCancel === -1 ? undefined : self.preventCancel),
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn StreamPipeOptions::to_js(self : StreamPipeOptions) -> JsValue {
   StreamPipeOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn StreamPipeOptions::from_js_ffi(
+  value : JsValue,
+) -> StreamPipeOptions =
+  #| (v) => ({
+  #|   preventClose: (v.preventClose === undefined ? -1 : v.preventClose),
+  #|   preventAbort: (v.preventAbort === undefined ? -1 : v.preventAbort),
+  #|   preventCancel: (v.preventCancel === undefined ? -1 : v.preventCancel),
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn StreamPipeOptions::from_js(value : JsValue) -> StreamPipeOptions {
+  StreamPipeOptions::from_js_ffi(value)
 }
 
 ///|
@@ -429,9 +537,9 @@ pub fn UnderlyingSource::default() -> UnderlyingSource {
 ///|
 extern "js" fn UnderlyingSource::to_js_ffi(self : UnderlyingSource) -> JsValue =
   #| (self) => ({
-  #|   start: ((() => { const v = self.start; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   pull: ((() => { const v = self.pull; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   cancel: ((() => { const v = self.cancel; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   start: ((() => { const v = self.start; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   pull: ((() => { const v = self.pull; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   cancel: ((() => { const v = self.cancel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['bytes'][v]; })()),
   #|   autoAllocateChunkSize: self.autoAllocateChunkSize
   #| })
@@ -440,6 +548,24 @@ extern "js" fn UnderlyingSource::to_js_ffi(self : UnderlyingSource) -> JsValue =
 /// Convert to JsValue
 pub fn UnderlyingSource::to_js(self : UnderlyingSource) -> JsValue {
   UnderlyingSource::to_js_ffi(self)
+}
+
+///|
+extern "js" fn UnderlyingSource::from_js_ffi(
+  value : JsValue,
+) -> UnderlyingSource =
+  #| (v) => ({
+  #|   start: (v.start === undefined ? { $tag: 0 } : { $tag: 1, _0: v.start }),
+  #|   pull: (v.pull === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pull }),
+  #|   cancel: (v.cancel === undefined ? { $tag: 0 } : { $tag: 1, _0: v.cancel }),
+  #|   type_: (v.type === undefined ? undefined : ['bytes'].indexOf(v.type)),
+  #|   autoAllocateChunkSize: v.autoAllocateChunkSize
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn UnderlyingSource::from_js(value : JsValue) -> UnderlyingSource {
+  UnderlyingSource::from_js_ffi(value)
 }
 
 ///|
@@ -460,7 +586,7 @@ extern "js" fn ReadableStreamReadResult::to_js_ffi(
   self : ReadableStreamReadResult,
 ) -> JsValue =
   #| (self) => ({
-  #|   value: ((() => { const v = self.value; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   value: ((() => { const v = self.value; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   done: (self.done === -1 ? undefined : self.done)
   #| })
 
@@ -470,6 +596,23 @@ pub fn ReadableStreamReadResult::to_js(
   self : ReadableStreamReadResult,
 ) -> JsValue {
   ReadableStreamReadResult::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ReadableStreamReadResult::from_js_ffi(
+  value : JsValue,
+) -> ReadableStreamReadResult =
+  #| (v) => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ReadableStreamReadResult::from_js(
+  value : JsValue,
+) -> ReadableStreamReadResult {
+  ReadableStreamReadResult::from_js_ffi(value)
 }
 
 ///|
@@ -501,6 +644,22 @@ pub fn ReadableStreamBYOBReaderReadOptions::to_js(
 }
 
 ///|
+extern "js" fn ReadableStreamBYOBReaderReadOptions::from_js_ffi(
+  value : JsValue,
+) -> ReadableStreamBYOBReaderReadOptions =
+  #| (v) => ({
+  #|   min: v.min
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ReadableStreamBYOBReaderReadOptions::from_js(
+  value : JsValue,
+) -> ReadableStreamBYOBReaderReadOptions {
+  ReadableStreamBYOBReaderReadOptions::from_js_ffi(value)
+}
+
+///|
 /// UnderlyingSink dictionary
 pub(all) struct UnderlyingSink {
   start : UnderlyingSinkStartCallback?
@@ -525,17 +684,33 @@ pub fn UnderlyingSink::default() -> UnderlyingSink {
 ///|
 extern "js" fn UnderlyingSink::to_js_ffi(self : UnderlyingSink) -> JsValue =
   #| (self) => ({
-  #|   start: ((() => { const v = self.start; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   write: ((() => { const v = self.write; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   close: ((() => { const v = self.close; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   abort: ((() => { const v = self.abort; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   type: ((() => { const v = self.type_; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   start: ((() => { const v = self.start; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   write: ((() => { const v = self.write; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   close: ((() => { const v = self.close; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   abort: ((() => { const v = self.abort; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   type: ((() => { const v = self.type_; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn UnderlyingSink::to_js(self : UnderlyingSink) -> JsValue {
   UnderlyingSink::to_js_ffi(self)
+}
+
+///|
+extern "js" fn UnderlyingSink::from_js_ffi(value : JsValue) -> UnderlyingSink =
+  #| (v) => ({
+  #|   start: (v.start === undefined ? { $tag: 0 } : { $tag: 1, _0: v.start }),
+  #|   write: (v.write === undefined ? { $tag: 0 } : { $tag: 1, _0: v.write }),
+  #|   close: (v.close === undefined ? { $tag: 0 } : { $tag: 1, _0: v.close }),
+  #|   abort: (v.abort === undefined ? { $tag: 0 } : { $tag: 1, _0: v.abort }),
+  #|   type_: (v.type === undefined ? { $tag: 0 } : { $tag: 1, _0: v.type })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn UnderlyingSink::from_js(value : JsValue) -> UnderlyingSink {
+  UnderlyingSink::from_js_ffi(value)
 }
 
 ///|
@@ -565,18 +740,35 @@ pub fn Transformer::default() -> Transformer {
 ///|
 extern "js" fn Transformer::to_js_ffi(self : Transformer) -> JsValue =
   #| (self) => ({
-  #|   start: ((() => { const v = self.start; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   transform: ((() => { const v = self.transform; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   flush: ((() => { const v = self.flush; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   cancel: ((() => { const v = self.cancel; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   readableType: ((() => { const v = self.readableType; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   writableType: ((() => { const v = self.writableType; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   start: ((() => { const v = self.start; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   transform: ((() => { const v = self.transform; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   flush: ((() => { const v = self.flush; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   cancel: ((() => { const v = self.cancel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   readableType: ((() => { const v = self.readableType; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   writableType: ((() => { const v = self.writableType; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn Transformer::to_js(self : Transformer) -> JsValue {
   Transformer::to_js_ffi(self)
+}
+
+///|
+extern "js" fn Transformer::from_js_ffi(value : JsValue) -> Transformer =
+  #| (v) => ({
+  #|   start: (v.start === undefined ? { $tag: 0 } : { $tag: 1, _0: v.start }),
+  #|   transform: (v.transform === undefined ? { $tag: 0 } : { $tag: 1, _0: v.transform }),
+  #|   flush: (v.flush === undefined ? { $tag: 0 } : { $tag: 1, _0: v.flush }),
+  #|   cancel: (v.cancel === undefined ? { $tag: 0 } : { $tag: 1, _0: v.cancel }),
+  #|   readableType: (v.readableType === undefined ? { $tag: 0 } : { $tag: 1, _0: v.readableType }),
+  #|   writableType: (v.writableType === undefined ? { $tag: 0 } : { $tag: 1, _0: v.writableType })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn Transformer::from_js(value : JsValue) -> Transformer {
+  Transformer::from_js_ffi(value)
 }
 
 ///|
@@ -596,13 +788,26 @@ pub fn QueuingStrategy::default() -> QueuingStrategy {
 extern "js" fn QueuingStrategy::to_js_ffi(self : QueuingStrategy) -> JsValue =
   #| (self) => ({
   #|   highWaterMark: self.highWaterMark,
-  #|   size: ((() => { const v = self.size; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   size: ((() => { const v = self.size; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn QueuingStrategy::to_js(self : QueuingStrategy) -> JsValue {
   QueuingStrategy::to_js_ffi(self)
+}
+
+///|
+extern "js" fn QueuingStrategy::from_js_ffi(value : JsValue) -> QueuingStrategy =
+  #| (v) => ({
+  #|   highWaterMark: v.highWaterMark,
+  #|   size: (v.size === undefined ? { $tag: 0 } : { $tag: 1, _0: v.size })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn QueuingStrategy::from_js(value : JsValue) -> QueuingStrategy {
+  QueuingStrategy::from_js_ffi(value)
 }
 
 ///|
@@ -629,6 +834,20 @@ extern "js" fn QueuingStrategyInit::to_js_ffi(
 /// Convert to JsValue
 pub fn QueuingStrategyInit::to_js(self : QueuingStrategyInit) -> JsValue {
   QueuingStrategyInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn QueuingStrategyInit::from_js_ffi(
+  value : JsValue,
+) -> QueuingStrategyInit =
+  #| (v) => ({
+  #|   highWaterMark: v.highWaterMark
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn QueuingStrategyInit::from_js(value : JsValue) -> QueuingStrategyInit {
+  QueuingStrategyInit::from_js_ffi(value)
 }
 
 ///|
@@ -862,7 +1081,10 @@ pub extern "js" fn ReadableStreamDefaultReader::new(
 pub extern "js" fn ReadableStreamDefaultReader::read(
   self : ReadableStreamDefaultReader,
 ) -> Promise[ReadableStreamReadResult] =
-  #| (self) => self.read()
+  #| (self) => self.read().then(v => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| }))
 
 ///|
 pub extern "js" fn ReadableStreamDefaultReader::release_lock(
@@ -938,7 +1160,10 @@ pub extern "js" fn ReadableStreamBYOBReader::read(
   self : ReadableStreamBYOBReader,
   view : ArrayBufferView,
 ) -> Promise[ReadableStreamReadResult] =
-  #| (self, view) => self.read(view)
+  #| (self, view) => self.read(view).then(v => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| }))
 
 ///|
 extern "js" fn ReadableStreamBYOBReader::read_with_options_ffi(
@@ -946,7 +1171,10 @@ extern "js" fn ReadableStreamBYOBReader::read_with_options_ffi(
   view : ArrayBufferView,
   options : JsValue,
 ) -> Promise[ReadableStreamReadResult] =
-  #| (self, view, options) => self.read(view, options)
+  #| (self, view, options) => self.read(view, options).then(v => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| }))
 
 ///|
 pub fn ReadableStreamBYOBReader::read_with_options(

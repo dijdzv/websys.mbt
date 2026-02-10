@@ -96,5 +96,5 @@ pub extern "js" fn CSSTransition::to_event_target(
 ///|
 pub extern "js" fn CSSTransition::get_transition_property(
   self : CSSTransition,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.transitionProperty

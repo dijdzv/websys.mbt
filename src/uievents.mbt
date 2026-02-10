@@ -16,13 +16,25 @@ pub fn FocusEventInit::default() -> FocusEventInit {
 ///|
 extern "js" fn FocusEventInit::to_js_ffi(self : FocusEventInit) -> JsValue =
   #| (self) => ({
-  #|   relatedTarget: ((() => { const v = self.relatedTarget; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   relatedTarget: ((() => { const v = self.relatedTarget; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn FocusEventInit::to_js(self : FocusEventInit) -> JsValue {
   FocusEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn FocusEventInit::from_js_ffi(value : JsValue) -> FocusEventInit =
+  #| (v) => ({
+  #|   relatedTarget: (v.relatedTarget === undefined ? { $tag: 0 } : v.relatedTarget === null ? { $tag: 1 } : { $tag: 2, _0: v.relatedTarget })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FocusEventInit::from_js(value : JsValue) -> FocusEventInit {
+  FocusEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -106,7 +118,7 @@ extern "js" fn MouseEventInit::to_js_ffi(self : MouseEventInit) -> JsValue =
   #|   clientY: self.clientY,
   #|   button: self.button,
   #|   buttons: self.buttons,
-  #|   relatedTarget: ((() => { const v = self.relatedTarget; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   relatedTarget: ((() => { const v = self.relatedTarget; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   movementX: self.movementX,
   #|   movementY: self.movementY
   #| })
@@ -115,6 +127,40 @@ extern "js" fn MouseEventInit::to_js_ffi(self : MouseEventInit) -> JsValue =
 /// Convert to JsValue
 pub fn MouseEventInit::to_js(self : MouseEventInit) -> JsValue {
   MouseEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MouseEventInit::from_js_ffi(value : JsValue) -> MouseEventInit =
+  #| (v) => ({
+  #|   ctrlKey: (v.ctrlKey === undefined ? -1 : v.ctrlKey),
+  #|   shiftKey: (v.shiftKey === undefined ? -1 : v.shiftKey),
+  #|   altKey: (v.altKey === undefined ? -1 : v.altKey),
+  #|   metaKey: (v.metaKey === undefined ? -1 : v.metaKey),
+  #|   modifierAltGraph: (v.modifierAltGraph === undefined ? -1 : v.modifierAltGraph),
+  #|   modifierCapsLock: (v.modifierCapsLock === undefined ? -1 : v.modifierCapsLock),
+  #|   modifierFn: (v.modifierFn === undefined ? -1 : v.modifierFn),
+  #|   modifierFnLock: (v.modifierFnLock === undefined ? -1 : v.modifierFnLock),
+  #|   modifierHyper: (v.modifierHyper === undefined ? -1 : v.modifierHyper),
+  #|   modifierNumLock: (v.modifierNumLock === undefined ? -1 : v.modifierNumLock),
+  #|   modifierScrollLock: (v.modifierScrollLock === undefined ? -1 : v.modifierScrollLock),
+  #|   modifierSuper: (v.modifierSuper === undefined ? -1 : v.modifierSuper),
+  #|   modifierSymbol: (v.modifierSymbol === undefined ? -1 : v.modifierSymbol),
+  #|   modifierSymbolLock: (v.modifierSymbolLock === undefined ? -1 : v.modifierSymbolLock),
+  #|   screenX: v.screenX,
+  #|   screenY: v.screenY,
+  #|   clientX: v.clientX,
+  #|   clientY: v.clientY,
+  #|   button: v.button,
+  #|   buttons: v.buttons,
+  #|   relatedTarget: (v.relatedTarget === undefined ? { $tag: 0 } : v.relatedTarget === null ? { $tag: 1 } : { $tag: 2, _0: v.relatedTarget }),
+  #|   movementX: v.movementX,
+  #|   movementY: v.movementY
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MouseEventInit::from_js(value : JsValue) -> MouseEventInit {
+  MouseEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -182,6 +228,33 @@ extern "js" fn EventModifierInit::to_js_ffi(
 /// Convert to JsValue
 pub fn EventModifierInit::to_js(self : EventModifierInit) -> JsValue {
   EventModifierInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn EventModifierInit::from_js_ffi(
+  value : JsValue,
+) -> EventModifierInit =
+  #| (v) => ({
+  #|   ctrlKey: (v.ctrlKey === undefined ? -1 : v.ctrlKey),
+  #|   shiftKey: (v.shiftKey === undefined ? -1 : v.shiftKey),
+  #|   altKey: (v.altKey === undefined ? -1 : v.altKey),
+  #|   metaKey: (v.metaKey === undefined ? -1 : v.metaKey),
+  #|   modifierAltGraph: (v.modifierAltGraph === undefined ? -1 : v.modifierAltGraph),
+  #|   modifierCapsLock: (v.modifierCapsLock === undefined ? -1 : v.modifierCapsLock),
+  #|   modifierFn: (v.modifierFn === undefined ? -1 : v.modifierFn),
+  #|   modifierFnLock: (v.modifierFnLock === undefined ? -1 : v.modifierFnLock),
+  #|   modifierHyper: (v.modifierHyper === undefined ? -1 : v.modifierHyper),
+  #|   modifierNumLock: (v.modifierNumLock === undefined ? -1 : v.modifierNumLock),
+  #|   modifierScrollLock: (v.modifierScrollLock === undefined ? -1 : v.modifierScrollLock),
+  #|   modifierSuper: (v.modifierSuper === undefined ? -1 : v.modifierSuper),
+  #|   modifierSymbol: (v.modifierSymbol === undefined ? -1 : v.modifierSymbol),
+  #|   modifierSymbolLock: (v.modifierSymbolLock === undefined ? -1 : v.modifierSymbolLock)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn EventModifierInit::from_js(value : JsValue) -> EventModifierInit {
+  EventModifierInit::from_js_ffi(value)
 }
 
 ///|
@@ -273,7 +346,7 @@ extern "js" fn WheelEventInit::to_js_ffi(self : WheelEventInit) -> JsValue =
   #|   clientY: self.clientY,
   #|   button: self.button,
   #|   buttons: self.buttons,
-  #|   relatedTarget: ((() => { const v = self.relatedTarget; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   relatedTarget: ((() => { const v = self.relatedTarget; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   movementX: self.movementX,
   #|   movementY: self.movementY,
   #|   deltaX: self.deltaX,
@@ -286,6 +359,44 @@ extern "js" fn WheelEventInit::to_js_ffi(self : WheelEventInit) -> JsValue =
 /// Convert to JsValue
 pub fn WheelEventInit::to_js(self : WheelEventInit) -> JsValue {
   WheelEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WheelEventInit::from_js_ffi(value : JsValue) -> WheelEventInit =
+  #| (v) => ({
+  #|   ctrlKey: (v.ctrlKey === undefined ? -1 : v.ctrlKey),
+  #|   shiftKey: (v.shiftKey === undefined ? -1 : v.shiftKey),
+  #|   altKey: (v.altKey === undefined ? -1 : v.altKey),
+  #|   metaKey: (v.metaKey === undefined ? -1 : v.metaKey),
+  #|   modifierAltGraph: (v.modifierAltGraph === undefined ? -1 : v.modifierAltGraph),
+  #|   modifierCapsLock: (v.modifierCapsLock === undefined ? -1 : v.modifierCapsLock),
+  #|   modifierFn: (v.modifierFn === undefined ? -1 : v.modifierFn),
+  #|   modifierFnLock: (v.modifierFnLock === undefined ? -1 : v.modifierFnLock),
+  #|   modifierHyper: (v.modifierHyper === undefined ? -1 : v.modifierHyper),
+  #|   modifierNumLock: (v.modifierNumLock === undefined ? -1 : v.modifierNumLock),
+  #|   modifierScrollLock: (v.modifierScrollLock === undefined ? -1 : v.modifierScrollLock),
+  #|   modifierSuper: (v.modifierSuper === undefined ? -1 : v.modifierSuper),
+  #|   modifierSymbol: (v.modifierSymbol === undefined ? -1 : v.modifierSymbol),
+  #|   modifierSymbolLock: (v.modifierSymbolLock === undefined ? -1 : v.modifierSymbolLock),
+  #|   screenX: v.screenX,
+  #|   screenY: v.screenY,
+  #|   clientX: v.clientX,
+  #|   clientY: v.clientY,
+  #|   button: v.button,
+  #|   buttons: v.buttons,
+  #|   relatedTarget: (v.relatedTarget === undefined ? { $tag: 0 } : v.relatedTarget === null ? { $tag: 1 } : { $tag: 2, _0: v.relatedTarget }),
+  #|   movementX: v.movementX,
+  #|   movementY: v.movementY,
+  #|   deltaX: v.deltaX,
+  #|   deltaY: v.deltaY,
+  #|   deltaZ: v.deltaZ,
+  #|   deltaMode: v.deltaMode
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WheelEventInit::from_js(value : JsValue) -> WheelEventInit {
+  WheelEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -377,6 +488,40 @@ pub fn KeyboardEventInit::to_js(self : KeyboardEventInit) -> JsValue {
 }
 
 ///|
+extern "js" fn KeyboardEventInit::from_js_ffi(
+  value : JsValue,
+) -> KeyboardEventInit =
+  #| (v) => ({
+  #|   ctrlKey: (v.ctrlKey === undefined ? -1 : v.ctrlKey),
+  #|   shiftKey: (v.shiftKey === undefined ? -1 : v.shiftKey),
+  #|   altKey: (v.altKey === undefined ? -1 : v.altKey),
+  #|   metaKey: (v.metaKey === undefined ? -1 : v.metaKey),
+  #|   modifierAltGraph: (v.modifierAltGraph === undefined ? -1 : v.modifierAltGraph),
+  #|   modifierCapsLock: (v.modifierCapsLock === undefined ? -1 : v.modifierCapsLock),
+  #|   modifierFn: (v.modifierFn === undefined ? -1 : v.modifierFn),
+  #|   modifierFnLock: (v.modifierFnLock === undefined ? -1 : v.modifierFnLock),
+  #|   modifierHyper: (v.modifierHyper === undefined ? -1 : v.modifierHyper),
+  #|   modifierNumLock: (v.modifierNumLock === undefined ? -1 : v.modifierNumLock),
+  #|   modifierScrollLock: (v.modifierScrollLock === undefined ? -1 : v.modifierScrollLock),
+  #|   modifierSuper: (v.modifierSuper === undefined ? -1 : v.modifierSuper),
+  #|   modifierSymbol: (v.modifierSymbol === undefined ? -1 : v.modifierSymbol),
+  #|   modifierSymbolLock: (v.modifierSymbolLock === undefined ? -1 : v.modifierSymbolLock),
+  #|   key: v.key,
+  #|   code: v.code,
+  #|   location: v.location,
+  #|   repeat: (v.repeat === undefined ? -1 : v.repeat),
+  #|   isComposing: (v.isComposing === undefined ? -1 : v.isComposing),
+  #|   charCode: v.charCode,
+  #|   keyCode: v.keyCode
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn KeyboardEventInit::from_js(value : JsValue) -> KeyboardEventInit {
+  KeyboardEventInit::from_js_ffi(value)
+}
+
+///|
 /// CompositionEventInit dictionary
 pub(all) struct CompositionEventInit {
   data : String?
@@ -400,6 +545,20 @@ extern "js" fn CompositionEventInit::to_js_ffi(
 /// Convert to JsValue
 pub fn CompositionEventInit::to_js(self : CompositionEventInit) -> JsValue {
   CompositionEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CompositionEventInit::from_js_ffi(
+  value : JsValue,
+) -> CompositionEventInit =
+  #| (v) => ({
+  #|   data: v.data
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CompositionEventInit::from_js(value : JsValue) -> CompositionEventInit {
+  CompositionEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -1196,7 +1355,7 @@ pub extern "js" fn CompositionEvent::init_composition_event_with_data_arg(
   type_arg : String,
   bubbles_arg : Bool,
   cancelable_arg : Bool,
-  view_arg : WindowProxy?,
+  view_arg : Window?,
   data_arg : String,
 ) -> Unit =
   #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, data_arg) => self.initCompositionEvent(type_arg, bubbles_arg, cancelable_arg, (view_arg.$tag === 1 ? view_arg._0 : null), data_arg)

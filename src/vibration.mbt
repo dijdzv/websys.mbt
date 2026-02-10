@@ -46,3 +46,23 @@ pub extern "js" fn VibratePattern::as_array_of_int(
   self : VibratePattern,
 ) -> Array[Int]? =
   #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[VibratePattern] to Int?
+pub fn VibratePattern::bind_as_int(value : VibratePattern?) -> Int? {
+  match value {
+    Some(v) => v.as_int()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[VibratePattern] to Array[Int]?
+pub fn VibratePattern::bind_as_array_of_int(
+  value : VibratePattern?,
+) -> Array[Int]? {
+  match value {
+    Some(v) => v.as_array_of_int()
+    None => None
+  }
+}

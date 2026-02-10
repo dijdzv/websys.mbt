@@ -22,13 +22,29 @@ extern "js" fn StorageBucketOptions::to_js_ffi(
   #| (self) => ({
   #|   persisted: (self.persisted === -1 ? undefined : self.persisted),
   #|   quota: self.quota,
-  #|   expires: ((() => { const v = self.expires; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   expires: ((() => { const v = self.expires; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn StorageBucketOptions::to_js(self : StorageBucketOptions) -> JsValue {
   StorageBucketOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn StorageBucketOptions::from_js_ffi(
+  value : JsValue,
+) -> StorageBucketOptions =
+  #| (v) => ({
+  #|   persisted: (v.persisted === undefined ? -1 : v.persisted),
+  #|   quota: v.quota,
+  #|   expires: (v.expires === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expires })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn StorageBucketOptions::from_js(value : JsValue) -> StorageBucketOptions {
+  StorageBucketOptions::from_js_ffi(value)
 }
 
 ///|
@@ -156,7 +172,10 @@ pub extern "js" fn StorageBucket::persisted(
 pub extern "js" fn StorageBucket::estimate(
   self : StorageBucket,
 ) -> Promise[StorageEstimate] =
-  #| (self) => self.estimate()
+  #| (self) => self.estimate().then(v => ({
+  #|   usage: v.usage,
+  #|   quota: v.quota
+  #| }))
 
 ///|
 pub extern "js" fn StorageBucket::set_expires(

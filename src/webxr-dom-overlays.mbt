@@ -7,7 +7,7 @@ pub(all) enum XRDOMOverlayType {
   Screen
   Floating
   HeadLocked
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -55,6 +55,20 @@ pub fn XRDOMOverlayInit::to_js(self : XRDOMOverlayInit) -> JsValue {
 }
 
 ///|
+extern "js" fn XRDOMOverlayInit::from_js_ffi(
+  value : JsValue,
+) -> XRDOMOverlayInit =
+  #| (v) => ({
+  #|   root: v.root
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRDOMOverlayInit::from_js(value : JsValue) -> XRDOMOverlayInit {
+  XRDOMOverlayInit::from_js_ffi(value)
+}
+
+///|
 /// XRDOMOverlayState dictionary
 pub(all) struct XRDOMOverlayState {
   type_ : XRDOMOverlayType?
@@ -78,4 +92,18 @@ extern "js" fn XRDOMOverlayState::to_js_ffi(
 /// Convert to JsValue
 pub fn XRDOMOverlayState::to_js(self : XRDOMOverlayState) -> JsValue {
   XRDOMOverlayState::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRDOMOverlayState::from_js_ffi(
+  value : JsValue,
+) -> XRDOMOverlayState =
+  #| (v) => ({
+  #|   type_: (v.type === undefined ? undefined : ['screen', 'floating', 'head-locked'].indexOf(v.type))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRDOMOverlayState::from_js(value : JsValue) -> XRDOMOverlayState {
+  XRDOMOverlayState::from_js_ffi(value)
 }

@@ -6,7 +6,7 @@
 pub(all) enum RenderBlockingStatusType {
   Blocking
   NonBlocking
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

@@ -6,7 +6,7 @@
 pub(all) enum RTCIceTransportPolicy {
   Relay
   All
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -33,7 +33,7 @@ pub(all) enum RTCBundlePolicy {
   Balanced
   MaxCompat
   MaxBundle
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -60,7 +60,7 @@ pub fn RTCBundlePolicy::from_string(s : String) -> RTCBundlePolicy? {
 /// RTCRtcpMuxPolicy enum
 pub(all) enum RTCRtcpMuxPolicy {
   Require
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -88,7 +88,7 @@ pub(all) enum RTCSignalingState {
   HaveLocalPranswer
   HaveRemotePranswer
   Closed
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -123,7 +123,7 @@ pub(all) enum RTCIceGatheringState {
   New
   Gathering
   Complete
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -155,7 +155,7 @@ pub(all) enum RTCPeerConnectionState {
   New
   Connecting
   Connected
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -198,7 +198,7 @@ pub(all) enum RTCIceConnectionState {
   Checking
   Completed
   Connected
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -236,7 +236,7 @@ pub(all) enum RTCSdpType {
   Pranswer
   Answer
   Rollback
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -266,7 +266,7 @@ pub fn RTCSdpType::from_string(s : String) -> RTCSdpType? {
 pub(all) enum RTCIceProtocol {
   Udp
   Tcp
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -293,7 +293,7 @@ pub(all) enum RTCIceTcpCandidateType {
   Active
   Passive
   So
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -327,7 +327,7 @@ pub(all) enum RTCIceCandidateType {
   Srflx
   Prflx
   Relay
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -358,7 +358,7 @@ pub(all) enum RTCIceServerTransportProtocol {
   Udp
   Tcp
   Tls
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -393,7 +393,7 @@ pub(all) enum RTCRtpTransceiverDirection {
   Recvonly
   Inactive
   Stopped
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -432,7 +432,7 @@ pub(all) enum RTCDtlsTransportState {
   Connected
   Closed
   Failed
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -465,7 +465,7 @@ pub(all) enum RTCIceGathererState {
   New
   Gathering
   Complete
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -498,7 +498,7 @@ pub(all) enum RTCIceTransportState {
   Checking
   Completed
   Connected
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -535,7 +535,7 @@ pub(all) enum RTCIceRole {
   Unknown
   Controlling
   Controlled
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -563,7 +563,7 @@ pub fn RTCIceRole::from_string(s : String) -> RTCIceRole? {
 pub(all) enum RTCIceComponent {
   Rtp
   Rtcp
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -590,7 +590,7 @@ pub(all) enum RTCSctpTransportState {
   Connecting
   Connected
   Closed
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -620,7 +620,7 @@ pub(all) enum RTCDataChannelState {
   Open
   Closing
   Closed
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -655,7 +655,7 @@ pub(all) enum RTCErrorDetailType {
   SdpSyntaxError
   HardwareEncoderNotAvailable
   HardwareEncoderError
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -739,6 +739,20 @@ pub fn RTCIceServer::to_js(self : RTCIceServer) -> JsValue {
 }
 
 ///|
+extern "js" fn RTCIceServer::from_js_ffi(value : JsValue) -> RTCIceServer =
+  #| (v) => ({
+  #|   urls: v.urls,
+  #|   username: v.username,
+  #|   credential: v.credential
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCIceServer::from_js(value : JsValue) -> RTCIceServer {
+  RTCIceServer::from_js_ffi(value)
+}
+
+///|
 /// RTCOfferAnswerOptions dictionary
 pub(all) struct RTCOfferAnswerOptions {}
 
@@ -759,6 +773,19 @@ extern "js" fn RTCOfferAnswerOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn RTCOfferAnswerOptions::to_js(self : RTCOfferAnswerOptions) -> JsValue {
   RTCOfferAnswerOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCOfferAnswerOptions::from_js_ffi(
+  value : JsValue,
+) -> RTCOfferAnswerOptions =
+  #| (v) => ({
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCOfferAnswerOptions::from_js(value : JsValue) -> RTCOfferAnswerOptions {
+  RTCOfferAnswerOptions::from_js_ffi(value)
 }
 
 ///|
@@ -794,6 +821,20 @@ pub fn RTCOfferOptions::to_js(self : RTCOfferOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn RTCOfferOptions::from_js_ffi(value : JsValue) -> RTCOfferOptions =
+  #| (v) => ({
+  #|   iceRestart: (v.iceRestart === undefined ? -1 : v.iceRestart),
+  #|   offerToReceiveAudio: (v.offerToReceiveAudio === undefined ? -1 : v.offerToReceiveAudio),
+  #|   offerToReceiveVideo: (v.offerToReceiveVideo === undefined ? -1 : v.offerToReceiveVideo)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCOfferOptions::from_js(value : JsValue) -> RTCOfferOptions {
+  RTCOfferOptions::from_js_ffi(value)
+}
+
+///|
 /// RTCAnswerOptions dictionary
 pub(all) struct RTCAnswerOptions {}
 
@@ -812,6 +853,19 @@ extern "js" fn RTCAnswerOptions::to_js_ffi(self : RTCAnswerOptions) -> JsValue =
 /// Convert to JsValue
 pub fn RTCAnswerOptions::to_js(self : RTCAnswerOptions) -> JsValue {
   RTCAnswerOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCAnswerOptions::from_js_ffi(
+  value : JsValue,
+) -> RTCAnswerOptions =
+  #| (v) => ({
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCAnswerOptions::from_js(value : JsValue) -> RTCAnswerOptions {
+  RTCAnswerOptions::from_js_ffi(value)
 }
 
 ///|
@@ -847,6 +901,23 @@ pub fn RTCSessionDescriptionInit::to_js(
 }
 
 ///|
+extern "js" fn RTCSessionDescriptionInit::from_js_ffi(
+  value : JsValue,
+) -> RTCSessionDescriptionInit =
+  #| (v) => ({
+  #|   type_: ['offer', 'pranswer', 'answer', 'rollback'].indexOf(v.type),
+  #|   sdp: v.sdp
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCSessionDescriptionInit::from_js(
+  value : JsValue,
+) -> RTCSessionDescriptionInit {
+  RTCSessionDescriptionInit::from_js_ffi(value)
+}
+
+///|
 /// RTCLocalSessionDescriptionInit dictionary
 pub(all) struct RTCLocalSessionDescriptionInit {
   type_ : RTCSdpType?
@@ -877,6 +948,23 @@ pub fn RTCLocalSessionDescriptionInit::to_js(
 }
 
 ///|
+extern "js" fn RTCLocalSessionDescriptionInit::from_js_ffi(
+  value : JsValue,
+) -> RTCLocalSessionDescriptionInit =
+  #| (v) => ({
+  #|   type_: (v.type === undefined ? undefined : ['offer', 'pranswer', 'answer', 'rollback'].indexOf(v.type)),
+  #|   sdp: v.sdp
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCLocalSessionDescriptionInit::from_js(
+  value : JsValue,
+) -> RTCLocalSessionDescriptionInit {
+  RTCLocalSessionDescriptionInit::from_js_ffi(value)
+}
+
+///|
 /// RTCIceCandidateInit dictionary
 pub(all) struct RTCIceCandidateInit {
   candidate : String?
@@ -902,15 +990,32 @@ extern "js" fn RTCIceCandidateInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   candidate: self.candidate,
-  #|   sdpMid: ((() => { const v = self.sdpMid; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   sdpMLineIndex: ((() => { const v = self.sdpMLineIndex; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   usernameFragment: ((() => { const v = self.usernameFragment; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   sdpMid: ((() => { const v = self.sdpMid; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   sdpMLineIndex: ((() => { const v = self.sdpMLineIndex; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   usernameFragment: ((() => { const v = self.usernameFragment; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn RTCIceCandidateInit::to_js(self : RTCIceCandidateInit) -> JsValue {
   RTCIceCandidateInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCIceCandidateInit::from_js_ffi(
+  value : JsValue,
+) -> RTCIceCandidateInit =
+  #| (v) => ({
+  #|   candidate: v.candidate,
+  #|   sdpMid: (v.sdpMid === undefined ? { $tag: 0 } : v.sdpMid === null ? { $tag: 1 } : { $tag: 2, _0: v.sdpMid }),
+  #|   sdpMLineIndex: (v.sdpMLineIndex === undefined ? { $tag: 0 } : v.sdpMLineIndex === null ? { $tag: 1 } : { $tag: 2, _0: v.sdpMLineIndex }),
+  #|   usernameFragment: (v.usernameFragment === undefined ? { $tag: 0 } : v.usernameFragment === null ? { $tag: 1 } : { $tag: 2, _0: v.usernameFragment })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCIceCandidateInit::from_js(value : JsValue) -> RTCIceCandidateInit {
+  RTCIceCandidateInit::from_js_ffi(value)
 }
 
 ///|
@@ -943,11 +1048,11 @@ extern "js" fn RTCLocalIceCandidateInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   candidate: self.candidate,
-  #|   sdpMid: ((() => { const v = self.sdpMid; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   sdpMLineIndex: ((() => { const v = self.sdpMLineIndex; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   usernameFragment: ((() => { const v = self.usernameFragment; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   relayProtocol: ((() => { const v = self.relayProtocol; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return ['udp', 'tcp', 'tls'][v.$0]; })()),
-  #|   url: ((() => { const v = self.url; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   sdpMid: ((() => { const v = self.sdpMid; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   sdpMLineIndex: ((() => { const v = self.sdpMLineIndex; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   usernameFragment: ((() => { const v = self.usernameFragment; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   relayProtocol: ((() => { const v = self.relayProtocol; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return ['udp', 'tcp', 'tls'][v._0]; })()),
+  #|   url: ((() => { const v = self.url; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
@@ -956,6 +1061,27 @@ pub fn RTCLocalIceCandidateInit::to_js(
   self : RTCLocalIceCandidateInit,
 ) -> JsValue {
   RTCLocalIceCandidateInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCLocalIceCandidateInit::from_js_ffi(
+  value : JsValue,
+) -> RTCLocalIceCandidateInit =
+  #| (v) => ({
+  #|   candidate: v.candidate,
+  #|   sdpMid: (v.sdpMid === undefined ? { $tag: 0 } : v.sdpMid === null ? { $tag: 1 } : { $tag: 2, _0: v.sdpMid }),
+  #|   sdpMLineIndex: (v.sdpMLineIndex === undefined ? { $tag: 0 } : v.sdpMLineIndex === null ? { $tag: 1 } : { $tag: 2, _0: v.sdpMLineIndex }),
+  #|   usernameFragment: (v.usernameFragment === undefined ? { $tag: 0 } : v.usernameFragment === null ? { $tag: 1 } : { $tag: 2, _0: v.usernameFragment }),
+  #|   relayProtocol: (v.relayProtocol === undefined ? { $tag: 0 } : v.relayProtocol === null ? { $tag: 1 } : { $tag: 2, _0: ['udp', 'tcp', 'tls'].indexOf(v.relayProtocol) }),
+  #|   url: (v.url === undefined ? { $tag: 0 } : v.url === null ? { $tag: 1 } : { $tag: 2, _0: v.url })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCLocalIceCandidateInit::from_js(
+  value : JsValue,
+) -> RTCLocalIceCandidateInit {
+  RTCLocalIceCandidateInit::from_js_ffi(value)
 }
 
 ///|
@@ -979,8 +1105,8 @@ extern "js" fn RTCPeerConnectionIceEventInit::to_js_ffi(
   self : RTCPeerConnectionIceEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   candidate: ((() => { const v = self.candidate; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   url: ((() => { const v = self.url; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   candidate: ((() => { const v = self.candidate; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   url: ((() => { const v = self.url; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
@@ -989,6 +1115,23 @@ pub fn RTCPeerConnectionIceEventInit::to_js(
   self : RTCPeerConnectionIceEventInit,
 ) -> JsValue {
   RTCPeerConnectionIceEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCPeerConnectionIceEventInit::from_js_ffi(
+  value : JsValue,
+) -> RTCPeerConnectionIceEventInit =
+  #| (v) => ({
+  #|   candidate: (v.candidate === undefined ? { $tag: 0 } : v.candidate === null ? { $tag: 1 } : { $tag: 2, _0: v.candidate }),
+  #|   url: (v.url === undefined ? { $tag: 0 } : v.url === null ? { $tag: 1 } : { $tag: 2, _0: v.url })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCPeerConnectionIceEventInit::from_js(
+  value : JsValue,
+) -> RTCPeerConnectionIceEventInit {
+  RTCPeerConnectionIceEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -1018,8 +1161,8 @@ extern "js" fn RTCPeerConnectionIceErrorEventInit::to_js_ffi(
   self : RTCPeerConnectionIceErrorEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   address: ((() => { const v = self.address; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   port: ((() => { const v = self.port; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   address: ((() => { const v = self.address; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   port: ((() => { const v = self.port; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   url: self.url,
   #|   errorCode: self.errorCode,
   #|   errorText: self.errorText
@@ -1031,6 +1174,26 @@ pub fn RTCPeerConnectionIceErrorEventInit::to_js(
   self : RTCPeerConnectionIceErrorEventInit,
 ) -> JsValue {
   RTCPeerConnectionIceErrorEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCPeerConnectionIceErrorEventInit::from_js_ffi(
+  value : JsValue,
+) -> RTCPeerConnectionIceErrorEventInit =
+  #| (v) => ({
+  #|   address: (v.address === undefined ? { $tag: 0 } : v.address === null ? { $tag: 1 } : { $tag: 2, _0: v.address }),
+  #|   port: (v.port === undefined ? { $tag: 0 } : v.port === null ? { $tag: 1 } : { $tag: 2, _0: v.port }),
+  #|   url: v.url,
+  #|   errorCode: v.errorCode,
+  #|   errorText: v.errorText
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCPeerConnectionIceErrorEventInit::from_js(
+  value : JsValue,
+) -> RTCPeerConnectionIceErrorEventInit {
+  RTCPeerConnectionIceErrorEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -1062,6 +1225,22 @@ pub fn RTCCertificateExpiration::to_js(
 }
 
 ///|
+extern "js" fn RTCCertificateExpiration::from_js_ffi(
+  value : JsValue,
+) -> RTCCertificateExpiration =
+  #| (v) => ({
+  #|   expires: v.expires
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCCertificateExpiration::from_js(
+  value : JsValue,
+) -> RTCCertificateExpiration {
+  RTCCertificateExpiration::from_js_ffi(value)
+}
+
+///|
 /// RTCRtpTransceiverInit dictionary
 pub(all) struct RTCRtpTransceiverInit {
   direction : RTCRtpTransceiverDirection?
@@ -1081,14 +1260,30 @@ extern "js" fn RTCRtpTransceiverInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   direction: ((() => { const v = self.direction; if (v === undefined) return undefined; return ['sendrecv', 'sendonly', 'recvonly', 'inactive', 'stopped'][v]; })()),
-  #|   streams: ((() => { const v = self.streams; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sendEncodings: ((() => { const v = self.sendEncodings; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   streams: ((() => { const v = self.streams; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sendEncodings: ((() => { const v = self.sendEncodings; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn RTCRtpTransceiverInit::to_js(self : RTCRtpTransceiverInit) -> JsValue {
   RTCRtpTransceiverInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCRtpTransceiverInit::from_js_ffi(
+  value : JsValue,
+) -> RTCRtpTransceiverInit =
+  #| (v) => ({
+  #|   direction: (v.direction === undefined ? undefined : ['sendrecv', 'sendonly', 'recvonly', 'inactive', 'stopped'].indexOf(v.direction)),
+  #|   streams: (v.streams === undefined ? { $tag: 0 } : { $tag: 1, _0: v.streams }),
+  #|   sendEncodings: (v.sendEncodings === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sendEncodings })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRtpTransceiverInit::from_js(value : JsValue) -> RTCRtpTransceiverInit {
+  RTCRtpTransceiverInit::from_js_ffi(value)
 }
 
 ///|
@@ -1117,6 +1312,22 @@ extern "js" fn RTCRtpParameters::to_js_ffi(self : RTCRtpParameters) -> JsValue =
 /// Convert to JsValue
 pub fn RTCRtpParameters::to_js(self : RTCRtpParameters) -> JsValue {
   RTCRtpParameters::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCRtpParameters::from_js_ffi(
+  value : JsValue,
+) -> RTCRtpParameters =
+  #| (v) => ({
+  #|   headerExtensions: v.headerExtensions,
+  #|   rtcp: v.rtcp,
+  #|   codecs: v.codecs
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRtpParameters::from_js(value : JsValue) -> RTCRtpParameters {
+  RTCRtpParameters::from_js_ffi(value)
 }
 
 ///|
@@ -1165,6 +1376,25 @@ pub fn RTCRtpSendParameters::to_js(self : RTCRtpSendParameters) -> JsValue {
 }
 
 ///|
+extern "js" fn RTCRtpSendParameters::from_js_ffi(
+  value : JsValue,
+) -> RTCRtpSendParameters =
+  #| (v) => ({
+  #|   headerExtensions: v.headerExtensions,
+  #|   rtcp: v.rtcp,
+  #|   codecs: v.codecs,
+  #|   transactionId: v.transactionId,
+  #|   encodings: v.encodings,
+  #|   degradationPreference: (v.degradationPreference === undefined ? undefined : ['maintain-framerate', 'maintain-resolution', 'balanced', 'maintain-framerate-and-resolution'].indexOf(v.degradationPreference))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRtpSendParameters::from_js(value : JsValue) -> RTCRtpSendParameters {
+  RTCRtpSendParameters::from_js_ffi(value)
+}
+
+///|
 /// RTCRtpReceiveParameters dictionary
 pub(all) struct RTCRtpReceiveParameters {
   headerExtensions : Array[RTCRtpHeaderExtensionParameters]
@@ -1199,6 +1429,24 @@ pub fn RTCRtpReceiveParameters::to_js(
 }
 
 ///|
+extern "js" fn RTCRtpReceiveParameters::from_js_ffi(
+  value : JsValue,
+) -> RTCRtpReceiveParameters =
+  #| (v) => ({
+  #|   headerExtensions: v.headerExtensions,
+  #|   rtcp: v.rtcp,
+  #|   codecs: v.codecs
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRtpReceiveParameters::from_js(
+  value : JsValue,
+) -> RTCRtpReceiveParameters {
+  RTCRtpReceiveParameters::from_js_ffi(value)
+}
+
+///|
 /// RTCRtpCodingParameters dictionary
 pub(all) struct RTCRtpCodingParameters {
   rid : String?
@@ -1222,6 +1470,22 @@ extern "js" fn RTCRtpCodingParameters::to_js_ffi(
 /// Convert to JsValue
 pub fn RTCRtpCodingParameters::to_js(self : RTCRtpCodingParameters) -> JsValue {
   RTCRtpCodingParameters::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCRtpCodingParameters::from_js_ffi(
+  value : JsValue,
+) -> RTCRtpCodingParameters =
+  #| (v) => ({
+  #|   rid: v.rid
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRtpCodingParameters::from_js(
+  value : JsValue,
+) -> RTCRtpCodingParameters {
+  RTCRtpCodingParameters::from_js_ffi(value)
 }
 
 ///|
@@ -1250,6 +1514,21 @@ extern "js" fn RTCRtcpParameters::to_js_ffi(
 /// Convert to JsValue
 pub fn RTCRtcpParameters::to_js(self : RTCRtcpParameters) -> JsValue {
   RTCRtcpParameters::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCRtcpParameters::from_js_ffi(
+  value : JsValue,
+) -> RTCRtcpParameters =
+  #| (v) => ({
+  #|   cname: v.cname,
+  #|   reducedSize: (v.reducedSize === undefined ? -1 : v.reducedSize)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRtcpParameters::from_js(value : JsValue) -> RTCRtcpParameters {
+  RTCRtcpParameters::from_js_ffi(value)
 }
 
 ///|
@@ -1285,6 +1564,24 @@ pub fn RTCRtpHeaderExtensionParameters::to_js(
 }
 
 ///|
+extern "js" fn RTCRtpHeaderExtensionParameters::from_js_ffi(
+  value : JsValue,
+) -> RTCRtpHeaderExtensionParameters =
+  #| (v) => ({
+  #|   uri: v.uri,
+  #|   id: v.id,
+  #|   encrypted: (v.encrypted === undefined ? -1 : v.encrypted)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRtpHeaderExtensionParameters::from_js(
+  value : JsValue,
+) -> RTCRtpHeaderExtensionParameters {
+  RTCRtpHeaderExtensionParameters::from_js_ffi(value)
+}
+
+///|
 /// RTCRtpCodec dictionary
 pub(all) struct RTCRtpCodec {
   mimeType : String
@@ -1312,6 +1609,21 @@ extern "js" fn RTCRtpCodec::to_js_ffi(self : RTCRtpCodec) -> JsValue =
 /// Convert to JsValue
 pub fn RTCRtpCodec::to_js(self : RTCRtpCodec) -> JsValue {
   RTCRtpCodec::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCRtpCodec::from_js_ffi(value : JsValue) -> RTCRtpCodec =
+  #| (v) => ({
+  #|   mimeType: v.mimeType,
+  #|   clockRate: v.clockRate,
+  #|   channels: v.channels,
+  #|   sdpFmtpLine: v.sdpFmtpLine
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRtpCodec::from_js(value : JsValue) -> RTCRtpCodec {
+  RTCRtpCodec::from_js_ffi(value)
 }
 
 ///|
@@ -1355,6 +1667,24 @@ pub fn RTCRtpCodecParameters::to_js(self : RTCRtpCodecParameters) -> JsValue {
 }
 
 ///|
+extern "js" fn RTCRtpCodecParameters::from_js_ffi(
+  value : JsValue,
+) -> RTCRtpCodecParameters =
+  #| (v) => ({
+  #|   mimeType: v.mimeType,
+  #|   clockRate: v.clockRate,
+  #|   channels: v.channels,
+  #|   sdpFmtpLine: v.sdpFmtpLine,
+  #|   payloadType: v.payloadType
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRtpCodecParameters::from_js(value : JsValue) -> RTCRtpCodecParameters {
+  RTCRtpCodecParameters::from_js_ffi(value)
+}
+
+///|
 /// RTCRtpCapabilities dictionary
 pub(all) struct RTCRtpCapabilities {
   codecs : Array[RTCRtpCodec]
@@ -1380,6 +1710,21 @@ extern "js" fn RTCRtpCapabilities::to_js_ffi(
 /// Convert to JsValue
 pub fn RTCRtpCapabilities::to_js(self : RTCRtpCapabilities) -> JsValue {
   RTCRtpCapabilities::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCRtpCapabilities::from_js_ffi(
+  value : JsValue,
+) -> RTCRtpCapabilities =
+  #| (v) => ({
+  #|   codecs: v.codecs,
+  #|   headerExtensions: v.headerExtensions
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRtpCapabilities::from_js(value : JsValue) -> RTCRtpCapabilities {
+  RTCRtpCapabilities::from_js_ffi(value)
 }
 
 ///|
@@ -1411,6 +1756,22 @@ pub fn RTCRtpHeaderExtensionCapability::to_js(
 }
 
 ///|
+extern "js" fn RTCRtpHeaderExtensionCapability::from_js_ffi(
+  value : JsValue,
+) -> RTCRtpHeaderExtensionCapability =
+  #| (v) => ({
+  #|   uri: v.uri
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRtpHeaderExtensionCapability::from_js(
+  value : JsValue,
+) -> RTCRtpHeaderExtensionCapability {
+  RTCRtpHeaderExtensionCapability::from_js_ffi(value)
+}
+
+///|
 /// RTCSetParameterOptions dictionary
 pub(all) struct RTCSetParameterOptions {}
 
@@ -1431,6 +1792,21 @@ extern "js" fn RTCSetParameterOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn RTCSetParameterOptions::to_js(self : RTCSetParameterOptions) -> JsValue {
   RTCSetParameterOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCSetParameterOptions::from_js_ffi(
+  value : JsValue,
+) -> RTCSetParameterOptions =
+  #| (v) => ({
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCSetParameterOptions::from_js(
+  value : JsValue,
+) -> RTCSetParameterOptions {
+  RTCSetParameterOptions::from_js_ffi(value)
 }
 
 ///|
@@ -1475,6 +1851,25 @@ pub fn RTCRtpContributingSource::to_js(
 }
 
 ///|
+extern "js" fn RTCRtpContributingSource::from_js_ffi(
+  value : JsValue,
+) -> RTCRtpContributingSource =
+  #| (v) => ({
+  #|   timestamp: v.timestamp,
+  #|   source: v.source,
+  #|   audioLevel: v.audioLevel,
+  #|   rtpTimestamp: v.rtpTimestamp
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRtpContributingSource::from_js(
+  value : JsValue,
+) -> RTCRtpContributingSource {
+  RTCRtpContributingSource::from_js_ffi(value)
+}
+
+///|
 /// RTCRtpSynchronizationSource dictionary
 pub(all) struct RTCRtpSynchronizationSource {
   timestamp : DOMHighResTimeStamp
@@ -1516,6 +1911,25 @@ pub fn RTCRtpSynchronizationSource::to_js(
 }
 
 ///|
+extern "js" fn RTCRtpSynchronizationSource::from_js_ffi(
+  value : JsValue,
+) -> RTCRtpSynchronizationSource =
+  #| (v) => ({
+  #|   timestamp: v.timestamp,
+  #|   source: v.source,
+  #|   audioLevel: v.audioLevel,
+  #|   rtpTimestamp: v.rtpTimestamp
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRtpSynchronizationSource::from_js(
+  value : JsValue,
+) -> RTCRtpSynchronizationSource {
+  RTCRtpSynchronizationSource::from_js_ffi(value)
+}
+
+///|
 /// RTCDtlsFingerprint dictionary
 pub(all) struct RTCDtlsFingerprint {
   algorithm : String?
@@ -1541,6 +1955,21 @@ extern "js" fn RTCDtlsFingerprint::to_js_ffi(
 /// Convert to JsValue
 pub fn RTCDtlsFingerprint::to_js(self : RTCDtlsFingerprint) -> JsValue {
   RTCDtlsFingerprint::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCDtlsFingerprint::from_js_ffi(
+  value : JsValue,
+) -> RTCDtlsFingerprint =
+  #| (v) => ({
+  #|   algorithm: v.algorithm,
+  #|   value: v.value
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCDtlsFingerprint::from_js(value : JsValue) -> RTCDtlsFingerprint {
+  RTCDtlsFingerprint::from_js_ffi(value)
 }
 
 ///|
@@ -1572,6 +2001,22 @@ pub fn RTCIceParameters::to_js(self : RTCIceParameters) -> JsValue {
 }
 
 ///|
+extern "js" fn RTCIceParameters::from_js_ffi(
+  value : JsValue,
+) -> RTCIceParameters =
+  #| (v) => ({
+  #|   usernameFragment: v.usernameFragment,
+  #|   password: v.password,
+  #|   iceLite: (v.iceLite === undefined ? -1 : v.iceLite)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCIceParameters::from_js(value : JsValue) -> RTCIceParameters {
+  RTCIceParameters::from_js_ffi(value)
+}
+
+///|
 /// RTCTrackEventInit dictionary
 pub(all) struct RTCTrackEventInit {
   receiver : RTCRtpReceiver
@@ -1597,7 +2042,7 @@ extern "js" fn RTCTrackEventInit::to_js_ffi(
   #| (self) => ({
   #|   receiver: self.receiver,
   #|   track: self.track,
-  #|   streams: ((() => { const v = self.streams; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   streams: ((() => { const v = self.streams; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   transceiver: self.transceiver
   #| })
 
@@ -1605,6 +2050,23 @@ extern "js" fn RTCTrackEventInit::to_js_ffi(
 /// Convert to JsValue
 pub fn RTCTrackEventInit::to_js(self : RTCTrackEventInit) -> JsValue {
   RTCTrackEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCTrackEventInit::from_js_ffi(
+  value : JsValue,
+) -> RTCTrackEventInit =
+  #| (v) => ({
+  #|   receiver: v.receiver,
+  #|   track: v.track,
+  #|   streams: (v.streams === undefined ? { $tag: 0 } : { $tag: 1, _0: v.streams }),
+  #|   transceiver: v.transceiver
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCTrackEventInit::from_js(value : JsValue) -> RTCTrackEventInit {
+  RTCTrackEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -1638,6 +2100,22 @@ pub fn RTCDataChannelEventInit::to_js(
 }
 
 ///|
+extern "js" fn RTCDataChannelEventInit::from_js_ffi(
+  value : JsValue,
+) -> RTCDataChannelEventInit =
+  #| (v) => ({
+  #|   channel: v.channel
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCDataChannelEventInit::from_js(
+  value : JsValue,
+) -> RTCDataChannelEventInit {
+  RTCDataChannelEventInit::from_js_ffi(value)
+}
+
+///|
 /// RTCDTMFToneChangeEventInit dictionary
 pub(all) struct RTCDTMFToneChangeEventInit {
   tone : String?
@@ -1663,6 +2141,22 @@ pub fn RTCDTMFToneChangeEventInit::to_js(
   self : RTCDTMFToneChangeEventInit,
 ) -> JsValue {
   RTCDTMFToneChangeEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCDTMFToneChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> RTCDTMFToneChangeEventInit =
+  #| (v) => ({
+  #|   tone: v.tone
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCDTMFToneChangeEventInit::from_js(
+  value : JsValue,
+) -> RTCDTMFToneChangeEventInit {
+  RTCDTMFToneChangeEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -1697,6 +2191,20 @@ pub fn RTCStats::to_js(self : RTCStats) -> JsValue {
 }
 
 ///|
+extern "js" fn RTCStats::from_js_ffi(value : JsValue) -> RTCStats =
+  #| (v) => ({
+  #|   timestamp: v.timestamp,
+  #|   type_: ['codec', 'inbound-rtp', 'outbound-rtp', 'remote-inbound-rtp', 'remote-outbound-rtp', 'media-source', 'media-playout', 'peer-connection', 'data-channel', 'transport', 'candidate-pair', 'local-candidate', 'remote-candidate', 'certificate'].indexOf(v.type),
+  #|   id: v.id
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCStats::from_js(value : JsValue) -> RTCStats {
+  RTCStats::from_js_ffi(value)
+}
+
+///|
 /// RTCErrorEventInit dictionary
 pub(all) struct RTCErrorEventInit {
   error : RTCError
@@ -1720,6 +2228,20 @@ extern "js" fn RTCErrorEventInit::to_js_ffi(
 /// Convert to JsValue
 pub fn RTCErrorEventInit::to_js(self : RTCErrorEventInit) -> JsValue {
   RTCErrorEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCErrorEventInit::from_js_ffi(
+  value : JsValue,
+) -> RTCErrorEventInit =
+  #| (v) => ({
+  #|   error: v.error
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCErrorEventInit::from_js(value : JsValue) -> RTCErrorEventInit {
+  RTCErrorEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -1787,14 +2309,20 @@ pub fn RTCPeerConnection::new_with_configuration(
 pub extern "js" fn RTCPeerConnection::create_offer(
   self : RTCPeerConnection,
 ) -> Promise[RTCSessionDescriptionInit] =
-  #| (self) => self.createOffer()
+  #| (self) => self.createOffer().then(v => ({
+  #|   type_: ['offer', 'pranswer', 'answer', 'rollback'].indexOf(v.type),
+  #|   sdp: v.sdp
+  #| }))
 
 ///|
 extern "js" fn RTCPeerConnection::create_offer_with_options_ffi(
   self : RTCPeerConnection,
   options : JsValue,
 ) -> Promise[RTCSessionDescriptionInit] =
-  #| (self, options) => self.createOffer(options)
+  #| (self, options) => self.createOffer(options).then(v => ({
+  #|   type_: ['offer', 'pranswer', 'answer', 'rollback'].indexOf(v.type),
+  #|   sdp: v.sdp
+  #| }))
 
 ///|
 pub fn RTCPeerConnection::create_offer_with_options(
@@ -1840,14 +2368,20 @@ pub fn RTCPeerConnection::create_offer_with_success_callback_rtc_session_descrip
 pub extern "js" fn RTCPeerConnection::create_answer(
   self : RTCPeerConnection,
 ) -> Promise[RTCSessionDescriptionInit] =
-  #| (self) => self.createAnswer()
+  #| (self) => self.createAnswer().then(v => ({
+  #|   type_: ['offer', 'pranswer', 'answer', 'rollback'].indexOf(v.type),
+  #|   sdp: v.sdp
+  #| }))
 
 ///|
 extern "js" fn RTCPeerConnection::create_answer_with_options_ffi(
   self : RTCPeerConnection,
   options : JsValue,
 ) -> Promise[RTCSessionDescriptionInit] =
-  #| (self, options) => self.createAnswer(options)
+  #| (self, options) => self.createAnswer(options).then(v => ({
+  #|   type_: ['offer', 'pranswer', 'answer', 'rollback'].indexOf(v.type),
+  #|   sdp: v.sdp
+  #| }))
 
 ///|
 pub fn RTCPeerConnection::create_answer_with_options(

@@ -28,6 +28,20 @@ pub fn IsInputPendingOptions::to_js(self : IsInputPendingOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn IsInputPendingOptions::from_js_ffi(
+  value : JsValue,
+) -> IsInputPendingOptions =
+  #| (v) => ({
+  #|   includeContinuous: (v.includeContinuous === undefined ? -1 : v.includeContinuous)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IsInputPendingOptions::from_js(value : JsValue) -> IsInputPendingOptions {
+  IsInputPendingOptions::from_js_ffi(value)
+}
+
+///|
 /// Scheduling interface
 pub type Scheduling
 

@@ -13,7 +13,7 @@ pub(all) enum ReferrerPolicy {
   OriginWhenCrossOrigin
   StrictOriginWhenCrossOrigin
   UnsafeUrl
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

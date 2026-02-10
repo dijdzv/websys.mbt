@@ -30,6 +30,22 @@ pub fn DigitalCredentialRequestOptions::to_js(
 }
 
 ///|
+extern "js" fn DigitalCredentialRequestOptions::from_js_ffi(
+  value : JsValue,
+) -> DigitalCredentialRequestOptions =
+  #| (v) => ({
+  #|   requests: v.requests
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DigitalCredentialRequestOptions::from_js(
+  value : JsValue,
+) -> DigitalCredentialRequestOptions {
+  DigitalCredentialRequestOptions::from_js_ffi(value)
+}
+
+///|
 /// DigitalCredentialGetRequest dictionary
 pub(all) struct DigitalCredentialGetRequest {
   protocol : String
@@ -62,6 +78,23 @@ pub fn DigitalCredentialGetRequest::to_js(
 }
 
 ///|
+extern "js" fn DigitalCredentialGetRequest::from_js_ffi(
+  value : JsValue,
+) -> DigitalCredentialGetRequest =
+  #| (v) => ({
+  #|   protocol: v.protocol,
+  #|   data: v.data
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DigitalCredentialGetRequest::from_js(
+  value : JsValue,
+) -> DigitalCredentialGetRequest {
+  DigitalCredentialGetRequest::from_js_ffi(value)
+}
+
+///|
 /// CredentialCreationOptions dictionary
 pub(all) struct CredentialCreationOptions {
   digital : DigitalCredentialCreationOptions?
@@ -90,12 +123,12 @@ extern "js" fn CredentialCreationOptions::to_js_ffi(
   self : CredentialCreationOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   digital: ((() => { const v = self.digital; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   publicKey: ((() => { const v = self.publicKey; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   digital: ((() => { const v = self.digital; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   publicKey: ((() => { const v = self.publicKey; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   mediation: ((() => { const v = self.mediation; if (v === undefined) return undefined; return ['silent', 'optional', 'conditional', 'required'][v]; })()),
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   password: ((() => { const v = self.password; if (v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   federated: ((() => { const v = self.federated; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   password: ((() => { const v = self.password; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   federated: ((() => { const v = self.federated; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -104,6 +137,27 @@ pub fn CredentialCreationOptions::to_js(
   self : CredentialCreationOptions,
 ) -> JsValue {
   CredentialCreationOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CredentialCreationOptions::from_js_ffi(
+  value : JsValue,
+) -> CredentialCreationOptions =
+  #| (v) => ({
+  #|   digital: (v.digital === undefined ? { $tag: 0 } : { $tag: 1, _0: v.digital }),
+  #|   publicKey: (v.publicKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.publicKey }),
+  #|   mediation: (v.mediation === undefined ? undefined : ['silent', 'optional', 'conditional', 'required'].indexOf(v.mediation)),
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
+  #|   password: (v.password === undefined ? { $tag: 0 } : { $tag: 1, _0: v.password }),
+  #|   federated: (v.federated === undefined ? { $tag: 0 } : { $tag: 1, _0: v.federated })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CredentialCreationOptions::from_js(
+  value : JsValue,
+) -> CredentialCreationOptions {
+  CredentialCreationOptions::from_js_ffi(value)
 }
 
 ///|
@@ -123,7 +177,7 @@ extern "js" fn DigitalCredentialCreationOptions::to_js_ffi(
   self : DigitalCredentialCreationOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   requests: ((() => { const v = self.requests; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   requests: ((() => { const v = self.requests; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -132,6 +186,22 @@ pub fn DigitalCredentialCreationOptions::to_js(
   self : DigitalCredentialCreationOptions,
 ) -> JsValue {
   DigitalCredentialCreationOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DigitalCredentialCreationOptions::from_js_ffi(
+  value : JsValue,
+) -> DigitalCredentialCreationOptions =
+  #| (v) => ({
+  #|   requests: (v.requests === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requests })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DigitalCredentialCreationOptions::from_js(
+  value : JsValue,
+) -> DigitalCredentialCreationOptions {
+  DigitalCredentialCreationOptions::from_js_ffi(value)
 }
 
 ///|
@@ -164,6 +234,23 @@ pub fn DigitalCredentialCreateRequest::to_js(
   self : DigitalCredentialCreateRequest,
 ) -> JsValue {
   DigitalCredentialCreateRequest::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DigitalCredentialCreateRequest::from_js_ffi(
+  value : JsValue,
+) -> DigitalCredentialCreateRequest =
+  #| (v) => ({
+  #|   protocol: v.protocol,
+  #|   data: v.data
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DigitalCredentialCreateRequest::from_js(
+  value : JsValue,
+) -> DigitalCredentialCreateRequest {
+  DigitalCredentialCreateRequest::from_js_ffi(value)
 }
 
 ///|

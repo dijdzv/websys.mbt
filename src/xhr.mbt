@@ -54,6 +54,26 @@ pub extern "js" fn FormDataEntryValue::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
+/// Flatten Option[FormDataEntryValue] to File?
+pub fn FormDataEntryValue::bind_as_file(value : FormDataEntryValue?) -> File? {
+  match value {
+    Some(v) => v.as_file()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[FormDataEntryValue] to String?
+pub fn FormDataEntryValue::bind_as_string(
+  value : FormDataEntryValue?,
+) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
 /// XMLHttpRequestResponseType enum
 pub(all) enum XMLHttpRequestResponseType {
   Empty
@@ -62,7 +82,7 @@ pub(all) enum XMLHttpRequestResponseType {
   Document
   Json
   Text
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -123,6 +143,22 @@ extern "js" fn ProgressEventInit::to_js_ffi(
 /// Convert to JsValue
 pub fn ProgressEventInit::to_js(self : ProgressEventInit) -> JsValue {
   ProgressEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ProgressEventInit::from_js_ffi(
+  value : JsValue,
+) -> ProgressEventInit =
+  #| (v) => ({
+  #|   lengthComputable: (v.lengthComputable === undefined ? -1 : v.lengthComputable),
+  #|   loaded: v.loaded,
+  #|   total: v.total
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ProgressEventInit::from_js(value : JsValue) -> ProgressEventInit {
+  ProgressEventInit::from_js_ffi(value)
 }
 
 ///|

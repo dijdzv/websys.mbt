@@ -266,6 +266,52 @@ async fn main {
     ("opfs", test_opfs),
     // RTC RTP Transceiver Direction (Rust web-sys: rtc_rtp_transceiver_direction.rs)
     ("rtc_rtp_transceiver_direction", test_rtc_rtp_transceiver_direction),
+    // --- Phase 1: codegen pattern tests ---
+    // Static methods
+    ("url_create_object_url", test_url_create_object_url),
+    ("create_element_ns", test_create_element_ns),
+    // Request API (dictionary, union, enum patterns)
+    ("request", test_request),
+    ("request_with_init", test_request_with_init),
+    ("request_enum_properties", test_request_enum_properties),
+    ("response_static", test_response_static),
+    // --- Phase 2: Observer API tests (callback pattern) ---
+    ("mutation_observer", test_mutation_observer),
+    ("mutation_observer_records", test_mutation_observer_records),
+    ("intersection_observer", test_intersection_observer),
+    ("resize_observer", test_resize_observer),
+    // --- Phase 3: Canvas 2D API tests ---
+    ("canvas2d_context", test_canvas2d_context),
+    ("canvas2d_drawing", test_canvas2d_drawing),
+    ("canvas2d_path", test_canvas2d_path),
+    ("canvas2d_state", test_canvas2d_state),
+    ("canvas2d_text", test_canvas2d_text),
+    ("canvas2d_image_data", test_canvas2d_image_data),
+    // --- Phase 5: WebSocket API tests ---
+    ("websocket", test_websocket),
+    ("websocket_constants", test_websocket_constants),
+    ("close_event", test_close_event),
+    // --- Phase 6: CSS API tests ---
+    ("css_style_sheet", test_css_style_sheet),
+    ("css_rule", test_css_rule),
+    ("media_list", test_media_list),
+    // --- Phase 9: Error case & boundary value tests ---
+    ("error_invalid_selector", test_error_invalid_selector),
+    ("error_null_returns", test_error_null_returns),
+    ("boundary_values", test_boundary_values),
+    ("error_invalid_css", test_error_invalid_css),
+    ("error_dom_exception", test_error_dom_exception),
+    // --- Phase 7: Streams API tests ---
+    ("readable_stream", test_readable_stream),
+    ("readable_stream_reader", test_readable_stream_reader),
+    ("writable_stream", test_writable_stream),
+    ("transform_stream", test_transform_stream),
+    ("stream_pipe_through", test_stream_pipe_through),
+    // --- Phase 8: WebRTC extended tests ---
+    ("rtc_data_channel", test_rtc_data_channel),
+    ("rtc_data_channel_with_init", test_rtc_data_channel_with_init),
+    ("rtc_ice_candidate", test_rtc_ice_candidate),
+    ("rtc_senders_receivers", test_rtc_senders_receivers),
   ]
   for i = 0; i < tests.length(); i = i + 1 {
     let (name, f) = tests[i]

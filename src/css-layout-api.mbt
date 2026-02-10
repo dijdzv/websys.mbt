@@ -6,7 +6,7 @@
 pub(all) enum ChildDisplayType {
   Block
   Normal
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -32,7 +32,7 @@ pub fn ChildDisplayType::from_string(s : String) -> ChildDisplayType? {
 pub(all) enum LayoutSizingMode {
   BlockLike
   Manual
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -60,7 +60,7 @@ pub(all) enum BlockFragmentationType {
   Page
   Column
   Region
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -97,7 +97,7 @@ pub(all) enum BreakType {
   Column
   Page
   Region
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -151,6 +151,19 @@ pub fn LayoutOptions::to_js(self : LayoutOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn LayoutOptions::from_js_ffi(value : JsValue) -> LayoutOptions =
+  #| (v) => ({
+  #|   childDisplay: (v.childDisplay === undefined ? undefined : ['block', 'normal'].indexOf(v.childDisplay)),
+  #|   sizing: (v.sizing === undefined ? undefined : ['block-like', 'manual'].indexOf(v.sizing))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn LayoutOptions::from_js(value : JsValue) -> LayoutOptions {
+  LayoutOptions::from_js_ffi(value)
+}
+
+///|
 /// LayoutConstraintsOptions dictionary
 pub(all) struct LayoutConstraintsOptions {
   availableInlineSize : Double?
@@ -193,7 +206,7 @@ extern "js" fn LayoutConstraintsOptions::to_js_ffi(
   #|   percentageBlockSize: self.percentageBlockSize,
   #|   blockFragmentationOffset: self.blockFragmentationOffset,
   #|   blockFragmentationType: ((() => { const v = self.blockFragmentationType; if (v === undefined) return undefined; return ['none', 'page', 'column', 'region'][v]; })()),
-  #|   data: ((() => { const v = self.data; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -202,6 +215,30 @@ pub fn LayoutConstraintsOptions::to_js(
   self : LayoutConstraintsOptions,
 ) -> JsValue {
   LayoutConstraintsOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn LayoutConstraintsOptions::from_js_ffi(
+  value : JsValue,
+) -> LayoutConstraintsOptions =
+  #| (v) => ({
+  #|   availableInlineSize: v.availableInlineSize,
+  #|   availableBlockSize: v.availableBlockSize,
+  #|   fixedInlineSize: v.fixedInlineSize,
+  #|   fixedBlockSize: v.fixedBlockSize,
+  #|   percentageInlineSize: v.percentageInlineSize,
+  #|   percentageBlockSize: v.percentageBlockSize,
+  #|   blockFragmentationOffset: v.blockFragmentationOffset,
+  #|   blockFragmentationType: (v.blockFragmentationType === undefined ? undefined : ['none', 'page', 'column', 'region'].indexOf(v.blockFragmentationType)),
+  #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn LayoutConstraintsOptions::from_js(
+  value : JsValue,
+) -> LayoutConstraintsOptions {
+  LayoutConstraintsOptions::from_js_ffi(value)
 }
 
 ///|
@@ -222,14 +259,29 @@ extern "js" fn BreakTokenOptions::to_js_ffi(
   self : BreakTokenOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   childBreakTokens: ((() => { const v = self.childBreakTokens; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   data: ((() => { const v = self.data; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   childBreakTokens: ((() => { const v = self.childBreakTokens; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn BreakTokenOptions::to_js(self : BreakTokenOptions) -> JsValue {
   BreakTokenOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BreakTokenOptions::from_js_ffi(
+  value : JsValue,
+) -> BreakTokenOptions =
+  #| (v) => ({
+  #|   childBreakTokens: (v.childBreakTokens === undefined ? { $tag: 0 } : { $tag: 1, _0: v.childBreakTokens }),
+  #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BreakTokenOptions::from_js(value : JsValue) -> BreakTokenOptions {
+  BreakTokenOptions::from_js_ffi(value)
 }
 
 ///|
@@ -264,15 +316,34 @@ extern "js" fn FragmentResultOptions::to_js_ffi(
   #|   inlineSize: self.inlineSize,
   #|   blockSize: self.blockSize,
   #|   autoBlockSize: self.autoBlockSize,
-  #|   childFragments: ((() => { const v = self.childFragments; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   data: ((() => { const v = self.data; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   breakToken: ((() => { const v = self.breakToken; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   childFragments: ((() => { const v = self.childFragments; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   breakToken: ((() => { const v = self.breakToken; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn FragmentResultOptions::to_js(self : FragmentResultOptions) -> JsValue {
   FragmentResultOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn FragmentResultOptions::from_js_ffi(
+  value : JsValue,
+) -> FragmentResultOptions =
+  #| (v) => ({
+  #|   inlineSize: v.inlineSize,
+  #|   blockSize: v.blockSize,
+  #|   autoBlockSize: v.autoBlockSize,
+  #|   childFragments: (v.childFragments === undefined ? { $tag: 0 } : { $tag: 1, _0: v.childFragments }),
+  #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data }),
+  #|   breakToken: (v.breakToken === undefined ? { $tag: 0 } : { $tag: 1, _0: v.breakToken })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FragmentResultOptions::from_js(value : JsValue) -> FragmentResultOptions {
+  FragmentResultOptions::from_js_ffi(value)
 }
 
 ///|
@@ -303,6 +374,23 @@ pub fn IntrinsicSizesResultOptions::to_js(
   self : IntrinsicSizesResultOptions,
 ) -> JsValue {
   IntrinsicSizesResultOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IntrinsicSizesResultOptions::from_js_ffi(
+  value : JsValue,
+) -> IntrinsicSizesResultOptions =
+  #| (v) => ({
+  #|   maxContentSize: v.maxContentSize,
+  #|   minContentSize: v.minContentSize
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IntrinsicSizesResultOptions::from_js(
+  value : JsValue,
+) -> IntrinsicSizesResultOptions {
+  IntrinsicSizesResultOptions::from_js_ffi(value)
 }
 
 ///|

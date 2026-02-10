@@ -19,14 +19,31 @@ extern "js" fn PerformanceMarkOptions::to_js_ffi(
   self : PerformanceMarkOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   detail: ((() => { const v = self.detail; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   startTime: ((() => { const v = self.startTime; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   detail: ((() => { const v = self.detail; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   startTime: ((() => { const v = self.startTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn PerformanceMarkOptions::to_js(self : PerformanceMarkOptions) -> JsValue {
   PerformanceMarkOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PerformanceMarkOptions::from_js_ffi(
+  value : JsValue,
+) -> PerformanceMarkOptions =
+  #| (v) => ({
+  #|   detail: (v.detail === undefined ? { $tag: 0 } : { $tag: 1, _0: v.detail }),
+  #|   startTime: (v.startTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.startTime })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PerformanceMarkOptions::from_js(
+  value : JsValue,
+) -> PerformanceMarkOptions {
+  PerformanceMarkOptions::from_js_ffi(value)
 }
 
 ///|
@@ -54,10 +71,10 @@ extern "js" fn PerformanceMeasureOptions::to_js_ffi(
   self : PerformanceMeasureOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   detail: ((() => { const v = self.detail; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   start: ((() => { const v = self.start; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   duration: ((() => { const v = self.duration; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   end: ((() => { const v = self.end; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   detail: ((() => { const v = self.detail; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   start: ((() => { const v = self.start; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   duration: ((() => { const v = self.duration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   end: ((() => { const v = self.end; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -66,6 +83,25 @@ pub fn PerformanceMeasureOptions::to_js(
   self : PerformanceMeasureOptions,
 ) -> JsValue {
   PerformanceMeasureOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PerformanceMeasureOptions::from_js_ffi(
+  value : JsValue,
+) -> PerformanceMeasureOptions =
+  #| (v) => ({
+  #|   detail: (v.detail === undefined ? { $tag: 0 } : { $tag: 1, _0: v.detail }),
+  #|   start: (v.start === undefined ? { $tag: 0 } : { $tag: 1, _0: v.start }),
+  #|   duration: (v.duration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.duration }),
+  #|   end: (v.end === undefined ? { $tag: 0 } : { $tag: 1, _0: v.end })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PerformanceMeasureOptions::from_js(
+  value : JsValue,
+) -> PerformanceMeasureOptions {
+  PerformanceMeasureOptions::from_js_ffi(value)
 }
 
 ///|

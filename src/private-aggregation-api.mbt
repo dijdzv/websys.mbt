@@ -24,7 +24,7 @@ extern "js" fn PAHistogramContribution::to_js_ffi(
   #| (self) => ({
   #|   bucket: self.bucket,
   #|   value: self.value,
-  #|   filteringId: ((() => { const v = self.filteringId; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   filteringId: ((() => { const v = self.filteringId; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -33,6 +33,24 @@ pub fn PAHistogramContribution::to_js(
   self : PAHistogramContribution,
 ) -> JsValue {
   PAHistogramContribution::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PAHistogramContribution::from_js_ffi(
+  value : JsValue,
+) -> PAHistogramContribution =
+  #| (v) => ({
+  #|   bucket: v.bucket,
+  #|   value: v.value,
+  #|   filteringId: (v.filteringId === undefined ? { $tag: 0 } : { $tag: 1, _0: v.filteringId })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PAHistogramContribution::from_js(
+  value : JsValue,
+) -> PAHistogramContribution {
+  PAHistogramContribution::from_js_ffi(value)
 }
 
 ///|
@@ -59,6 +77,20 @@ extern "js" fn PADebugModeOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn PADebugModeOptions::to_js(self : PADebugModeOptions) -> JsValue {
   PADebugModeOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PADebugModeOptions::from_js_ffi(
+  value : JsValue,
+) -> PADebugModeOptions =
+  #| (v) => ({
+  #|   debugKey: v.debugKey
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PADebugModeOptions::from_js(value : JsValue) -> PADebugModeOptions {
+  PADebugModeOptions::from_js_ffi(value)
 }
 
 ///|

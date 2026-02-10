@@ -7,7 +7,7 @@ pub(all) enum IPAddressSpace {
   Public
   Local
   Loopback
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

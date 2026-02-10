@@ -30,6 +30,22 @@ pub fn ContentVisibilityAutoStateChangeEventInit::to_js(
 }
 
 ///|
+extern "js" fn ContentVisibilityAutoStateChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> ContentVisibilityAutoStateChangeEventInit =
+  #| (v) => ({
+  #|   skipped: (v.skipped === undefined ? -1 : v.skipped)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ContentVisibilityAutoStateChangeEventInit::from_js(
+  value : JsValue,
+) -> ContentVisibilityAutoStateChangeEventInit {
+  ContentVisibilityAutoStateChangeEventInit::from_js_ffi(value)
+}
+
+///|
 /// ContentVisibilityAutoStateChangeEvent interface
 pub type ContentVisibilityAutoStateChangeEvent
 

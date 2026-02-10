@@ -25,8 +25,8 @@ fn test_rtc_rtp_transceiver_direction() -> Unit {
   )
   let dir = tr1.get_direction()
   assert_eq(
-    dir.to_string(),
-    "sendonly",
+    dir,
+    @websys.RTCRtpTransceiverDirection::Sendonly,
     label="transceiver direction should be sendonly",
   )
   let cur = tr1.get_current_direction()
@@ -37,29 +37,6 @@ fn test_rtc_rtp_transceiver_direction() -> Unit {
 }
 
 // --- Async test: full SDP exchange ---
-// Equivalent to Rust's rtc_rtp_transceiver_direction test with exchange_sdps.
-//
-// The SDP exchange helper is implemented as an extern "js" function,
-// analogous to Rust's exchange_sdps() test helper.
-// This is necessary because create_offer()/create_answer() return
-// RTCSessionDescriptionInit as a JS object whose property names ("type", "sdp")
-// differ from MoonBit struct field names ("type_", "sdp"), making direct
-// round-tripping through MoonBit structs lossy.
-// In Rust, this is handled by wasm-bindgen's unchecked_into().
-
-///|
-extern "js" fn js_exchange_sdps(
-  pc1 : @websys.RTCPeerConnection,
-  pc2 : @websys.RTCPeerConnection,
-) -> @js_async.Promise[Unit] =
-  #| async (pc1, pc2) => {
-  #|   const offer = await pc1.createOffer();
-  #|   await pc1.setLocalDescription(offer);
-  #|   await pc2.setRemoteDescription(offer);
-  #|   const answer = await pc2.createAnswer();
-  #|   await pc2.setLocalDescription(answer);
-  #|   await pc1.setRemoteDescription(answer);
-  #| }
 
 ///|
 async fn test_rtc_sdp_exchange() -> Unit {
@@ -79,8 +56,8 @@ async fn test_rtc_sdp_exchange() -> Unit {
 
   // Before SDP exchange
   assert_eq(
-    tr1.get_direction().to_string(),
-    "sendonly",
+    tr1.get_direction(),
+    @websys.RTCRtpTransceiverDirection::Sendonly,
     label="tr1 direction before SDP",
   )
   assert_true(
@@ -89,13 +66,28 @@ async fn test_rtc_sdp_exchange() -> Unit {
   )
   let pc2 = @websys.RTCPeerConnection::new()
 
-  // Exchange SDPs — equivalent to Rust's exchange_sdps(pc1, pc2).await
-  js_exchange_sdps(pc1, pc2).wait()
+  // Exchange SDPs — pure MoonBit (no JS helper needed)
+  let offer = pc1.create_offer().wait()
+  pc1.set_local_description_with_description(
+    @websys.RTCLocalSessionDescriptionInit::{
+      type_: Some(offer.type_),
+      sdp: offer.sdp,
+    },
+  ).wait()
+  pc2.set_remote_description(offer).wait()
+  let answer = pc2.create_answer().wait()
+  pc2.set_local_description_with_description(
+    @websys.RTCLocalSessionDescriptionInit::{
+      type_: Some(answer.type_),
+      sdp: answer.sdp,
+    },
+  ).wait()
+  pc1.set_remote_description(answer).wait()
 
   // After SDP exchange: verify pc1's transceiver
   assert_eq(
-    tr1.get_direction().to_string(),
-    "sendonly",
+    tr1.get_direction(),
+    @websys.RTCRtpTransceiverDirection::Sendonly,
     label="tr1 direction after SDP",
   )
   let tr1_cur = match tr1.get_current_direction() {
@@ -104,8 +96,8 @@ async fn test_rtc_sdp_exchange() -> Unit {
       abort("FAIL: tr1 current_direction should not be None after SDP exchange")
   }
   assert_eq(
-    tr1_cur.to_string(),
-    "sendonly",
+    tr1_cur,
+    @websys.RTCRtpTransceiverDirection::Sendonly,
     label="tr1 current_direction after SDP should be sendonly",
   )
 
@@ -114,8 +106,8 @@ async fn test_rtc_sdp_exchange() -> Unit {
   assert_true(transceivers.length() > 0, label="pc2 should have transceivers")
   let tr2 = transceivers[0]
   assert_eq(
-    tr2.get_direction().to_string(),
-    "recvonly",
+    tr2.get_direction(),
+    @websys.RTCRtpTransceiverDirection::Recvonly,
     label="tr2 direction should be recvonly",
   )
   let tr2_cur = match tr2.get_current_direction() {
@@ -124,8 +116,8 @@ async fn test_rtc_sdp_exchange() -> Unit {
       abort("FAIL: tr2 current_direction should not be None after SDP exchange")
   }
   assert_eq(
-    tr2_cur.to_string(),
-    "recvonly",
+    tr2_cur,
+    @websys.RTCRtpTransceiverDirection::Recvonly,
     label="tr2 current_direction should be recvonly",
   )
 }

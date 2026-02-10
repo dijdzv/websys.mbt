@@ -28,3 +28,19 @@ pub fn TopLevelStorageAccessPermissionDescriptor::to_js(
 ) -> JsValue {
   TopLevelStorageAccessPermissionDescriptor::to_js_ffi(self)
 }
+
+///|
+extern "js" fn TopLevelStorageAccessPermissionDescriptor::from_js_ffi(
+  value : JsValue,
+) -> TopLevelStorageAccessPermissionDescriptor =
+  #| (v) => ({
+  #|   requestedOrigin: v.requestedOrigin
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TopLevelStorageAccessPermissionDescriptor::from_js(
+  value : JsValue,
+) -> TopLevelStorageAccessPermissionDescriptor {
+  TopLevelStorageAccessPermissionDescriptor::from_js_ffi(value)
+}

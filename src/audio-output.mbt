@@ -26,3 +26,17 @@ extern "js" fn AudioOutputOptions::to_js_ffi(
 pub fn AudioOutputOptions::to_js(self : AudioOutputOptions) -> JsValue {
   AudioOutputOptions::to_js_ffi(self)
 }
+
+///|
+extern "js" fn AudioOutputOptions::from_js_ffi(
+  value : JsValue,
+) -> AudioOutputOptions =
+  #| (v) => ({
+  #|   deviceId: v.deviceId
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AudioOutputOptions::from_js(value : JsValue) -> AudioOutputOptions {
+  AudioOutputOptions::from_js_ffi(value)
+}

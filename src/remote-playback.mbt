@@ -7,7 +7,7 @@ pub(all) enum RemotePlaybackState {
   Connecting
   Connected
   Disconnected
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

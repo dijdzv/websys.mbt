@@ -6,7 +6,7 @@
 pub(all) enum BinaryType {
   Blob
   Arraybuffer
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -53,6 +53,20 @@ extern "js" fn CloseEventInit::to_js_ffi(self : CloseEventInit) -> JsValue =
 /// Convert to JsValue
 pub fn CloseEventInit::to_js(self : CloseEventInit) -> JsValue {
   CloseEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CloseEventInit::from_js_ffi(value : JsValue) -> CloseEventInit =
+  #| (v) => ({
+  #|   wasClean: (v.wasClean === undefined ? -1 : v.wasClean),
+  #|   code: v.code,
+  #|   reason: v.reason
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CloseEventInit::from_js(value : JsValue) -> CloseEventInit {
+  CloseEventInit::from_js_ffi(value)
 }
 
 ///|

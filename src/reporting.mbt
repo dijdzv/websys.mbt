@@ -38,6 +38,17 @@ pub fn ReportBody::to_js(self : ReportBody) -> JsValue {
 }
 
 ///|
+extern "js" fn ReportBody::from_js_ffi(value : JsValue) -> ReportBody =
+  #| (v) => ({
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ReportBody::from_js(value : JsValue) -> ReportBody {
+  ReportBody::from_js_ffi(value)
+}
+
+///|
 /// Report dictionary
 pub(all) struct Report {
   type_ : String?
@@ -56,13 +67,27 @@ extern "js" fn Report::to_js_ffi(self : Report) -> JsValue =
   #| (self) => ({
   #|   type: self.type_,
   #|   url: self.url,
-  #|   body: ((() => { const v = self.body; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   body: ((() => { const v = self.body; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn Report::to_js(self : Report) -> JsValue {
   Report::to_js_ffi(self)
+}
+
+///|
+extern "js" fn Report::from_js_ffi(value : JsValue) -> Report =
+  #| (v) => ({
+  #|   type_: v.type,
+  #|   url: v.url,
+  #|   body: (v.body === undefined ? { $tag: 0 } : v.body === null ? { $tag: 1 } : { $tag: 2, _0: v.body })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn Report::from_js(value : JsValue) -> Report {
+  Report::from_js_ffi(value)
 }
 
 ///|
@@ -83,7 +108,7 @@ extern "js" fn ReportingObserverOptions::to_js_ffi(
   self : ReportingObserverOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   types: ((() => { const v = self.types; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   types: ((() => { const v = self.types; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   buffered: (self.buffered === -1 ? undefined : self.buffered)
   #| })
 
@@ -93,6 +118,23 @@ pub fn ReportingObserverOptions::to_js(
   self : ReportingObserverOptions,
 ) -> JsValue {
   ReportingObserverOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ReportingObserverOptions::from_js_ffi(
+  value : JsValue,
+) -> ReportingObserverOptions =
+  #| (v) => ({
+  #|   types: (v.types === undefined ? { $tag: 0 } : { $tag: 1, _0: v.types }),
+  #|   buffered: (v.buffered === undefined ? -1 : v.buffered)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ReportingObserverOptions::from_js(
+  value : JsValue,
+) -> ReportingObserverOptions {
+  ReportingObserverOptions::from_js_ffi(value)
 }
 
 ///|
@@ -123,6 +165,23 @@ pub fn GenerateTestReportParameters::to_js(
   self : GenerateTestReportParameters,
 ) -> JsValue {
   GenerateTestReportParameters::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GenerateTestReportParameters::from_js_ffi(
+  value : JsValue,
+) -> GenerateTestReportParameters =
+  #| (v) => ({
+  #|   message: v.message,
+  #|   group: v.group
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GenerateTestReportParameters::from_js(
+  value : JsValue,
+) -> GenerateTestReportParameters {
+  GenerateTestReportParameters::from_js_ffi(value)
 }
 
 ///|

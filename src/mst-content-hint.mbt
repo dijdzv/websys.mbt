@@ -8,7 +8,7 @@ pub(all) enum RTCDegradationPreference {
   MaintainResolution
   Balanced
   MaintainFramerateAndResolution
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

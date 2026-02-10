@@ -54,6 +54,28 @@ pub extern "js" fn MediaStreamTrackOrHandle::as_media_stream_track_handle(
   #| (self) => (self instanceof MediaStreamTrackHandle) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[MediaStreamTrackOrHandle] to MediaStreamTrack?
+pub fn MediaStreamTrackOrHandle::bind_as_media_stream_track(
+  value : MediaStreamTrackOrHandle?,
+) -> MediaStreamTrack? {
+  match value {
+    Some(v) => v.as_media_stream_track()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[MediaStreamTrackOrHandle] to MediaStreamTrackHandle?
+pub fn MediaStreamTrackOrHandle::bind_as_media_stream_track_handle(
+  value : MediaStreamTrackOrHandle?,
+) -> MediaStreamTrackHandle? {
+  match value {
+    Some(v) => v.as_media_stream_track_handle()
+    None => None
+  }
+}
+
+///|
 /// MediaStreamTrackProcessorInit dictionary
 pub(all) struct MediaStreamTrackProcessorInit {
   track : MediaStreamTrackOrHandle
@@ -83,6 +105,23 @@ pub fn MediaStreamTrackProcessorInit::to_js(
   self : MediaStreamTrackProcessorInit,
 ) -> JsValue {
   MediaStreamTrackProcessorInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MediaStreamTrackProcessorInit::from_js_ffi(
+  value : JsValue,
+) -> MediaStreamTrackProcessorInit =
+  #| (v) => ({
+  #|   track: v.track,
+  #|   maxBufferSize: v.maxBufferSize
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaStreamTrackProcessorInit::from_js(
+  value : JsValue,
+) -> MediaStreamTrackProcessorInit {
+  MediaStreamTrackProcessorInit::from_js_ffi(value)
 }
 
 ///|

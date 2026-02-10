@@ -11,7 +11,7 @@ pub(all) enum CookieSameSite {
   Strict
   Lax
   None
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -63,6 +63,21 @@ pub fn CookieStoreGetOptions::to_js(self : CookieStoreGetOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn CookieStoreGetOptions::from_js_ffi(
+  value : JsValue,
+) -> CookieStoreGetOptions =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   url: v.url
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CookieStoreGetOptions::from_js(value : JsValue) -> CookieStoreGetOptions {
+  CookieStoreGetOptions::from_js_ffi(value)
+}
+
+///|
 /// CookieInit dictionary
 pub(all) struct CookieInit {
   name : String
@@ -95,18 +110,37 @@ extern "js" fn CookieInit::to_js_ffi(self : CookieInit) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   value: self.value,
-  #|   expires: ((() => { const v = self.expires; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   domain: ((() => { const v = self.domain; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   expires: ((() => { const v = self.expires; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   domain: ((() => { const v = self.domain; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   path: self.path,
   #|   sameSite: ((() => { const v = self.sameSite; if (v === undefined) return undefined; return ['strict', 'lax', 'none'][v]; })()),
   #|   partitioned: (self.partitioned === -1 ? undefined : self.partitioned),
-  #|   maxAge: ((() => { const v = self.maxAge; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   maxAge: ((() => { const v = self.maxAge; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn CookieInit::to_js(self : CookieInit) -> JsValue {
   CookieInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CookieInit::from_js_ffi(value : JsValue) -> CookieInit =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   value: v.value,
+  #|   expires: (v.expires === undefined ? { $tag: 0 } : v.expires === null ? { $tag: 1 } : { $tag: 2, _0: v.expires }),
+  #|   domain: (v.domain === undefined ? { $tag: 0 } : v.domain === null ? { $tag: 1 } : { $tag: 2, _0: v.domain }),
+  #|   path: v.path,
+  #|   sameSite: (v.sameSite === undefined ? undefined : ['strict', 'lax', 'none'].indexOf(v.sameSite)),
+  #|   partitioned: (v.partitioned === undefined ? -1 : v.partitioned),
+  #|   maxAge: (v.maxAge === undefined ? { $tag: 0 } : v.maxAge === null ? { $tag: 1 } : { $tag: 2, _0: v.maxAge })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CookieInit::from_js(value : JsValue) -> CookieInit {
+  CookieInit::from_js_ffi(value)
 }
 
 ///|
@@ -135,7 +169,7 @@ extern "js" fn CookieStoreDeleteOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   domain: ((() => { const v = self.domain; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   domain: ((() => { const v = self.domain; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   path: self.path,
   #|   partitioned: (self.partitioned === -1 ? undefined : self.partitioned)
   #| })
@@ -146,6 +180,25 @@ pub fn CookieStoreDeleteOptions::to_js(
   self : CookieStoreDeleteOptions,
 ) -> JsValue {
   CookieStoreDeleteOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CookieStoreDeleteOptions::from_js_ffi(
+  value : JsValue,
+) -> CookieStoreDeleteOptions =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   domain: (v.domain === undefined ? { $tag: 0 } : v.domain === null ? { $tag: 1 } : { $tag: 2, _0: v.domain }),
+  #|   path: v.path,
+  #|   partitioned: (v.partitioned === undefined ? -1 : v.partitioned)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CookieStoreDeleteOptions::from_js(
+  value : JsValue,
+) -> CookieStoreDeleteOptions {
+  CookieStoreDeleteOptions::from_js_ffi(value)
 }
 
 ///|
@@ -175,6 +228,19 @@ pub fn CookieListItem::to_js(self : CookieListItem) -> JsValue {
 }
 
 ///|
+extern "js" fn CookieListItem::from_js_ffi(value : JsValue) -> CookieListItem =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   value: v.value
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CookieListItem::from_js(value : JsValue) -> CookieListItem {
+  CookieListItem::from_js_ffi(value)
+}
+
+///|
 /// CookieChangeEventInit dictionary
 pub(all) struct CookieChangeEventInit {
   changed : CookieList?
@@ -192,14 +258,29 @@ extern "js" fn CookieChangeEventInit::to_js_ffi(
   self : CookieChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   changed: ((() => { const v = self.changed; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   deleted: ((() => { const v = self.deleted; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   changed: ((() => { const v = self.changed; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   deleted: ((() => { const v = self.deleted; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn CookieChangeEventInit::to_js(self : CookieChangeEventInit) -> JsValue {
   CookieChangeEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CookieChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> CookieChangeEventInit =
+  #| (v) => ({
+  #|   changed: (v.changed === undefined ? { $tag: 0 } : { $tag: 1, _0: v.changed }),
+  #|   deleted: (v.deleted === undefined ? { $tag: 0 } : { $tag: 1, _0: v.deleted })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CookieChangeEventInit::from_js(value : JsValue) -> CookieChangeEventInit {
+  CookieChangeEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -220,8 +301,8 @@ extern "js" fn ExtendableCookieChangeEventInit::to_js_ffi(
   self : ExtendableCookieChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   changed: ((() => { const v = self.changed; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   deleted: ((() => { const v = self.deleted; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   changed: ((() => { const v = self.changed; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   deleted: ((() => { const v = self.deleted; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -230,6 +311,23 @@ pub fn ExtendableCookieChangeEventInit::to_js(
   self : ExtendableCookieChangeEventInit,
 ) -> JsValue {
   ExtendableCookieChangeEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ExtendableCookieChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> ExtendableCookieChangeEventInit =
+  #| (v) => ({
+  #|   changed: (v.changed === undefined ? { $tag: 0 } : { $tag: 1, _0: v.changed }),
+  #|   deleted: (v.deleted === undefined ? { $tag: 0 } : { $tag: 1, _0: v.deleted })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ExtendableCookieChangeEventInit::from_js(
+  value : JsValue,
+) -> ExtendableCookieChangeEventInit {
+  ExtendableCookieChangeEventInit::from_js_ffi(value)
 }
 
 ///|

@@ -13,7 +13,7 @@ pub(all) enum ImportExportKind {
   Memory
   Global
   Tag
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -45,7 +45,7 @@ pub fn ImportExportKind::from_string(s : String) -> ImportExportKind? {
 pub(all) enum AddressType {
   I32
   I64
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -71,7 +71,7 @@ pub fn AddressType::from_string(s : String) -> AddressType? {
 pub(all) enum TableKind {
   Externref
   Anyfunc
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -102,7 +102,7 @@ pub(all) enum ValueType {
   V128
   Externref
   Anyfunc
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -167,6 +167,23 @@ pub fn WebAssemblyInstantiatedSource::to_js(
 }
 
 ///|
+extern "js" fn WebAssemblyInstantiatedSource::from_js_ffi(
+  value : JsValue,
+) -> WebAssemblyInstantiatedSource =
+  #| (v) => ({
+  #|   module_: v.module,
+  #|   instance: v.instance
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WebAssemblyInstantiatedSource::from_js(
+  value : JsValue,
+) -> WebAssemblyInstantiatedSource {
+  WebAssemblyInstantiatedSource::from_js_ffi(value)
+}
+
+///|
 /// WebAssemblyCompileOptions dictionary
 pub(all) struct WebAssemblyCompileOptions {
   importedStringConstants : Nullable[String]
@@ -187,8 +204,8 @@ extern "js" fn WebAssemblyCompileOptions::to_js_ffi(
   self : WebAssemblyCompileOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   importedStringConstants: ((() => { const v = self.importedStringConstants; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   builtins: ((() => { const v = self.builtins; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   importedStringConstants: ((() => { const v = self.importedStringConstants; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   builtins: ((() => { const v = self.builtins; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -197,6 +214,23 @@ pub fn WebAssemblyCompileOptions::to_js(
   self : WebAssemblyCompileOptions,
 ) -> JsValue {
   WebAssemblyCompileOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WebAssemblyCompileOptions::from_js_ffi(
+  value : JsValue,
+) -> WebAssemblyCompileOptions =
+  #| (v) => ({
+  #|   importedStringConstants: (v.importedStringConstants === undefined ? { $tag: 0 } : v.importedStringConstants === null ? { $tag: 1 } : { $tag: 2, _0: v.importedStringConstants }),
+  #|   builtins: (v.builtins === undefined ? { $tag: 0 } : { $tag: 1, _0: v.builtins })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WebAssemblyCompileOptions::from_js(
+  value : JsValue,
+) -> WebAssemblyCompileOptions {
+  WebAssemblyCompileOptions::from_js_ffi(value)
 }
 
 ///|
@@ -227,6 +261,23 @@ extern "js" fn ModuleExportDescriptor::to_js_ffi(
 /// Convert to JsValue
 pub fn ModuleExportDescriptor::to_js(self : ModuleExportDescriptor) -> JsValue {
   ModuleExportDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ModuleExportDescriptor::from_js_ffi(
+  value : JsValue,
+) -> ModuleExportDescriptor =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   kind: ['function', 'table', 'memory', 'global', 'tag'].indexOf(v.kind)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ModuleExportDescriptor::from_js(
+  value : JsValue,
+) -> ModuleExportDescriptor {
+  ModuleExportDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -262,6 +313,24 @@ pub fn ModuleImportDescriptor::to_js(self : ModuleImportDescriptor) -> JsValue {
 }
 
 ///|
+extern "js" fn ModuleImportDescriptor::from_js_ffi(
+  value : JsValue,
+) -> ModuleImportDescriptor =
+  #| (v) => ({
+  #|   module_: v.module,
+  #|   name: v.name,
+  #|   kind: ['function', 'table', 'memory', 'global', 'tag'].indexOf(v.kind)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ModuleImportDescriptor::from_js(
+  value : JsValue,
+) -> ModuleImportDescriptor {
+  ModuleImportDescriptor::from_js_ffi(value)
+}
+
+///|
 /// MemoryDescriptor dictionary
 pub(all) struct MemoryDescriptor {
   initial : AddressValue
@@ -279,7 +348,7 @@ pub fn MemoryDescriptor::new(initial~ : AddressValue) -> MemoryDescriptor {
 extern "js" fn MemoryDescriptor::to_js_ffi(self : MemoryDescriptor) -> JsValue =
   #| (self) => ({
   #|   initial: self.initial,
-  #|   maximum: ((() => { const v = self.maximum; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   maximum: ((() => { const v = self.maximum; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   address: ((() => { const v = self.address; if (v === undefined) return undefined; return ['i32', 'i64'][v]; })())
   #| })
 
@@ -287,6 +356,22 @@ extern "js" fn MemoryDescriptor::to_js_ffi(self : MemoryDescriptor) -> JsValue =
 /// Convert to JsValue
 pub fn MemoryDescriptor::to_js(self : MemoryDescriptor) -> JsValue {
   MemoryDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MemoryDescriptor::from_js_ffi(
+  value : JsValue,
+) -> MemoryDescriptor =
+  #| (v) => ({
+  #|   initial: v.initial,
+  #|   maximum: (v.maximum === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maximum }),
+  #|   address: (v.address === undefined ? undefined : ['i32', 'i64'].indexOf(v.address))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MemoryDescriptor::from_js(value : JsValue) -> MemoryDescriptor {
+  MemoryDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -312,7 +397,7 @@ extern "js" fn TableDescriptor::to_js_ffi(self : TableDescriptor) -> JsValue =
   #| (self) => ({
   #|   element: ['externref', 'anyfunc'][self.element],
   #|   initial: self.initial,
-  #|   maximum: ((() => { const v = self.maximum; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   maximum: ((() => { const v = self.maximum; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   address: ((() => { const v = self.address; if (v === undefined) return undefined; return ['i32', 'i64'][v]; })())
   #| })
 
@@ -320,6 +405,21 @@ extern "js" fn TableDescriptor::to_js_ffi(self : TableDescriptor) -> JsValue =
 /// Convert to JsValue
 pub fn TableDescriptor::to_js(self : TableDescriptor) -> JsValue {
   TableDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TableDescriptor::from_js_ffi(value : JsValue) -> TableDescriptor =
+  #| (v) => ({
+  #|   element: ['externref', 'anyfunc'].indexOf(v.element),
+  #|   initial: v.initial,
+  #|   maximum: (v.maximum === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maximum }),
+  #|   address: (v.address === undefined ? undefined : ['i32', 'i64'].indexOf(v.address))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TableDescriptor::from_js(value : JsValue) -> TableDescriptor {
+  TableDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -349,6 +449,21 @@ pub fn GlobalDescriptor::to_js(self : GlobalDescriptor) -> JsValue {
 }
 
 ///|
+extern "js" fn GlobalDescriptor::from_js_ffi(
+  value : JsValue,
+) -> GlobalDescriptor =
+  #| (v) => ({
+  #|   value: ['i32', 'i64', 'f32', 'f64', 'v128', 'externref', 'anyfunc'].indexOf(v.value),
+  #|   mutable: (v.mutable === undefined ? -1 : v.mutable)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GlobalDescriptor::from_js(value : JsValue) -> GlobalDescriptor {
+  GlobalDescriptor::from_js_ffi(value)
+}
+
+///|
 /// TagType dictionary
 pub(all) struct TagType {
   parameters : Array[ValueType]
@@ -373,6 +488,18 @@ pub fn TagType::to_js(self : TagType) -> JsValue {
 }
 
 ///|
+extern "js" fn TagType::from_js_ffi(value : JsValue) -> TagType =
+  #| (v) => ({
+  #|   parameters: v.parameters
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TagType::from_js(value : JsValue) -> TagType {
+  TagType::from_js_ffi(value)
+}
+
+///|
 /// ExceptionOptions dictionary
 pub(all) struct ExceptionOptions {
   traceStack : Bool?
@@ -394,6 +521,20 @@ extern "js" fn ExceptionOptions::to_js_ffi(self : ExceptionOptions) -> JsValue =
 /// Convert to JsValue
 pub fn ExceptionOptions::to_js(self : ExceptionOptions) -> JsValue {
   ExceptionOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ExceptionOptions::from_js_ffi(
+  value : JsValue,
+) -> ExceptionOptions =
+  #| (v) => ({
+  #|   traceStack: (v.traceStack === undefined ? -1 : v.traceStack)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ExceptionOptions::from_js(value : JsValue) -> ExceptionOptions {
+  ExceptionOptions::from_js_ffi(value)
 }
 
 ///|

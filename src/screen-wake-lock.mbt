@@ -5,7 +5,7 @@
 /// WakeLockType enum
 pub(all) enum WakeLockType {
   Screen
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

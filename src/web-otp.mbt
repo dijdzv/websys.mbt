@@ -5,7 +5,7 @@
 /// OTPCredentialTransportType enum
 pub(all) enum OTPCredentialTransportType {
   Sms
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -45,7 +45,7 @@ extern "js" fn OTPCredentialRequestOptions::to_js_ffi(
   self : OTPCredentialRequestOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   transport: ((() => { const v = self.transport; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   transport: ((() => { const v = self.transport; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -54,6 +54,22 @@ pub fn OTPCredentialRequestOptions::to_js(
   self : OTPCredentialRequestOptions,
 ) -> JsValue {
   OTPCredentialRequestOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn OTPCredentialRequestOptions::from_js_ffi(
+  value : JsValue,
+) -> OTPCredentialRequestOptions =
+  #| (v) => ({
+  #|   transport: (v.transport === undefined ? { $tag: 0 } : { $tag: 1, _0: v.transport })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn OTPCredentialRequestOptions::from_js(
+  value : JsValue,
+) -> OTPCredentialRequestOptions {
+  OTPCredentialRequestOptions::from_js_ffi(value)
 }
 
 ///|

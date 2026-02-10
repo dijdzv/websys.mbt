@@ -2,12 +2,9 @@
 // Ref: https://developer.mozilla.org/en-US/docs/Web/API/Storage
 
 ///|
-extern "js" fn js_get_local_storage() -> @websys.Storage =
-  #| () => window.localStorage
-
-///|
 fn test_storage() -> Unit {
-  let storage = js_get_local_storage()
+  let win = @websys.window().unwrap()
+  let storage = win.get_local_storage()
   // Initially empty (or clear it first)
   storage.clear()
   assert_eq(storage.get_length(), 0, label="length after clear")

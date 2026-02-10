@@ -30,6 +30,21 @@ pub fn TextDecoderOptions::to_js(self : TextDecoderOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn TextDecoderOptions::from_js_ffi(
+  value : JsValue,
+) -> TextDecoderOptions =
+  #| (v) => ({
+  #|   fatal: (v.fatal === undefined ? -1 : v.fatal),
+  #|   ignoreBOM: (v.ignoreBOM === undefined ? -1 : v.ignoreBOM)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TextDecoderOptions::from_js(value : JsValue) -> TextDecoderOptions {
+  TextDecoderOptions::from_js_ffi(value)
+}
+
+///|
 /// TextDecodeOptions dictionary
 pub(all) struct TextDecodeOptions {
   stream : Bool?
@@ -53,6 +68,20 @@ extern "js" fn TextDecodeOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn TextDecodeOptions::to_js(self : TextDecodeOptions) -> JsValue {
   TextDecodeOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TextDecodeOptions::from_js_ffi(
+  value : JsValue,
+) -> TextDecodeOptions =
+  #| (v) => ({
+  #|   stream: (v.stream === undefined ? -1 : v.stream)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TextDecodeOptions::from_js(value : JsValue) -> TextDecodeOptions {
+  TextDecodeOptions::from_js_ffi(value)
 }
 
 ///|
@@ -83,6 +112,23 @@ pub fn TextEncoderEncodeIntoResult::to_js(
   self : TextEncoderEncodeIntoResult,
 ) -> JsValue {
   TextEncoderEncodeIntoResult::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TextEncoderEncodeIntoResult::from_js_ffi(
+  value : JsValue,
+) -> TextEncoderEncodeIntoResult =
+  #| (v) => ({
+  #|   read: v.read,
+  #|   written: v.written
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TextEncoderEncodeIntoResult::from_js(
+  value : JsValue,
+) -> TextEncoderEncodeIntoResult {
+  TextEncoderEncodeIntoResult::from_js_ffi(value)
 }
 
 ///|

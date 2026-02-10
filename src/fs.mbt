@@ -96,11 +96,55 @@ pub extern "js" fn FileSystemWriteChunkType::as_write_params(
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[FileSystemWriteChunkType] to BufferSource?
+pub fn FileSystemWriteChunkType::bind_as_buffer_source(
+  value : FileSystemWriteChunkType?,
+) -> BufferSource? {
+  match value {
+    Some(v) => v.as_buffer_source()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[FileSystemWriteChunkType] to Blob?
+pub fn FileSystemWriteChunkType::bind_as_blob(
+  value : FileSystemWriteChunkType?,
+) -> Blob? {
+  match value {
+    Some(v) => v.as_blob()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[FileSystemWriteChunkType] to String?
+pub fn FileSystemWriteChunkType::bind_as_string(
+  value : FileSystemWriteChunkType?,
+) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[FileSystemWriteChunkType] to WriteParams?
+pub fn FileSystemWriteChunkType::bind_as_write_params(
+  value : FileSystemWriteChunkType?,
+) -> WriteParams? {
+  match value {
+    Some(v) => v.as_write_params()
+    None => None
+  }
+}
+
+///|
 /// FileSystemHandleKind enum
 pub(all) enum FileSystemHandleKind {
   File
   Directory
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -127,7 +171,7 @@ pub(all) enum WriteCommandType {
   Write
   Seek
   Truncate
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -179,6 +223,22 @@ pub fn FileSystemCreateWritableOptions::to_js(
 }
 
 ///|
+extern "js" fn FileSystemCreateWritableOptions::from_js_ffi(
+  value : JsValue,
+) -> FileSystemCreateWritableOptions =
+  #| (v) => ({
+  #|   keepExistingData: (v.keepExistingData === undefined ? -1 : v.keepExistingData)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FileSystemCreateWritableOptions::from_js(
+  value : JsValue,
+) -> FileSystemCreateWritableOptions {
+  FileSystemCreateWritableOptions::from_js_ffi(value)
+}
+
+///|
 /// FileSystemGetFileOptions dictionary
 pub(all) struct FileSystemGetFileOptions {
   create : Bool?
@@ -204,6 +264,22 @@ pub fn FileSystemGetFileOptions::to_js(
   self : FileSystemGetFileOptions,
 ) -> JsValue {
   FileSystemGetFileOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn FileSystemGetFileOptions::from_js_ffi(
+  value : JsValue,
+) -> FileSystemGetFileOptions =
+  #| (v) => ({
+  #|   create: (v.create === undefined ? -1 : v.create)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FileSystemGetFileOptions::from_js(
+  value : JsValue,
+) -> FileSystemGetFileOptions {
+  FileSystemGetFileOptions::from_js_ffi(value)
 }
 
 ///|
@@ -235,6 +311,22 @@ pub fn FileSystemGetDirectoryOptions::to_js(
 }
 
 ///|
+extern "js" fn FileSystemGetDirectoryOptions::from_js_ffi(
+  value : JsValue,
+) -> FileSystemGetDirectoryOptions =
+  #| (v) => ({
+  #|   create: (v.create === undefined ? -1 : v.create)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FileSystemGetDirectoryOptions::from_js(
+  value : JsValue,
+) -> FileSystemGetDirectoryOptions {
+  FileSystemGetDirectoryOptions::from_js_ffi(value)
+}
+
+///|
 /// FileSystemRemoveOptions dictionary
 pub(all) struct FileSystemRemoveOptions {
   recursive : Bool?
@@ -263,6 +355,22 @@ pub fn FileSystemRemoveOptions::to_js(
 }
 
 ///|
+extern "js" fn FileSystemRemoveOptions::from_js_ffi(
+  value : JsValue,
+) -> FileSystemRemoveOptions =
+  #| (v) => ({
+  #|   recursive: (v.recursive === undefined ? -1 : v.recursive)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FileSystemRemoveOptions::from_js(
+  value : JsValue,
+) -> FileSystemRemoveOptions {
+  FileSystemRemoveOptions::from_js_ffi(value)
+}
+
+///|
 /// WriteParams dictionary
 pub(all) struct WriteParams {
   type_ : WriteCommandType
@@ -286,15 +394,30 @@ pub fn WriteParams::new(type_~ : WriteCommandType) -> WriteParams {
 extern "js" fn WriteParams::to_js_ffi(self : WriteParams) -> JsValue =
   #| (self) => ({
   #|   type: ['write', 'seek', 'truncate'][self.type_],
-  #|   size: ((() => { const v = self.size; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   position: ((() => { const v = self.position; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   data: ((() => { const v = self.data; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   size: ((() => { const v = self.size; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   position: ((() => { const v = self.position; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn WriteParams::to_js(self : WriteParams) -> JsValue {
   WriteParams::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WriteParams::from_js_ffi(value : JsValue) -> WriteParams =
+  #| (v) => ({
+  #|   type_: ['write', 'seek', 'truncate'].indexOf(v.type),
+  #|   size: (v.size === undefined ? { $tag: 0 } : v.size === null ? { $tag: 1 } : { $tag: 2, _0: v.size }),
+  #|   position: (v.position === undefined ? { $tag: 0 } : v.position === null ? { $tag: 1 } : { $tag: 2, _0: v.position }),
+  #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WriteParams::from_js(value : JsValue) -> WriteParams {
+  WriteParams::from_js_ffi(value)
 }
 
 ///|
@@ -323,6 +446,22 @@ pub fn FileSystemReadWriteOptions::to_js(
   self : FileSystemReadWriteOptions,
 ) -> JsValue {
   FileSystemReadWriteOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn FileSystemReadWriteOptions::from_js_ffi(
+  value : JsValue,
+) -> FileSystemReadWriteOptions =
+  #| (v) => ({
+  #|   at: v.at
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FileSystemReadWriteOptions::from_js(
+  value : JsValue,
+) -> FileSystemReadWriteOptions {
+  FileSystemReadWriteOptions::from_js_ffi(value)
 }
 
 ///|

@@ -7,7 +7,7 @@ pub(all) enum GamepadHand {
   Empty
   Left
   Right
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

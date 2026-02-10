@@ -54,6 +54,26 @@ pub extern "js" fn Uint32List::as_array_of_g_luint(
   #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[Uint32List] to Uint32Array?
+pub fn Uint32List::bind_as_uint32_array(value : Uint32List?) -> Uint32Array? {
+  match value {
+    Some(v) => v.as_uint32_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[Uint32List] to Array[GLuint]?
+pub fn Uint32List::bind_as_array_of_g_luint(
+  value : Uint32List?,
+) -> Array[GLuint]? {
+  match value {
+    Some(v) => v.as_array_of_g_luint()
+    None => None
+  }
+}
+
+///|
 /// WebGLQuery interface
 pub type WebGLQuery
 
@@ -2005,7 +2025,7 @@ pub extern "js" fn WebGL2RenderingContext::compile_shader(
   #| (self, shader) => self.compileShader(shader)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::copy_tex_image2_d(
+pub extern "js" fn WebGL2RenderingContext::copy_tex_image_2d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -2019,7 +2039,7 @@ pub extern "js" fn WebGL2RenderingContext::copy_tex_image2_d(
   #| (self, target, level, internalformat, x, y, width, height, border) => self.copyTexImage2D(target, level, internalformat, x, y, width, height, border)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::copy_tex_sub_image2_d(
+pub extern "js" fn WebGL2RenderingContext::copy_tex_sub_image_2d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -2218,7 +2238,7 @@ pub extern "js" fn WebGL2RenderingContext::framebuffer_renderbuffer(
   #| (self, target, attachment, renderbuffertarget, renderbuffer) => self.framebufferRenderbuffer(target, attachment, renderbuffertarget, (renderbuffer.$tag === 1 ? renderbuffer._0 : null))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::framebuffer_texture2_d(
+pub extern "js" fn WebGL2RenderingContext::framebuffer_texture_2d(
   self : WebGL2RenderingContext,
   target : GLenum,
   attachment : GLenum,
@@ -4194,7 +4214,7 @@ pub extern "js" fn WebGL2RenderingContext::renderbuffer_storage_multisample(
   #| (self, target, samples, internalformat, width, height) => self.renderbufferStorageMultisample(target, samples, internalformat, width, height)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_storage2_d(
+pub extern "js" fn WebGL2RenderingContext::tex_storage_2d(
   self : WebGL2RenderingContext,
   target : GLenum,
   levels : GLsizei,
@@ -4205,7 +4225,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_storage2_d(
   #| (self, target, levels, internalformat, width, height) => self.texStorage2D(target, levels, internalformat, width, height)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_storage3_d(
+pub extern "js" fn WebGL2RenderingContext::tex_storage_3d(
   self : WebGL2RenderingContext,
   target : GLenum,
   levels : GLsizei,
@@ -4217,7 +4237,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_storage3_d(
   #| (self, target, levels, internalformat, width, height, depth) => self.texStorage3D(target, levels, internalformat, width, height, depth)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4233,7 +4253,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, pbo_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, pbo_offset)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_source_tex_image_source(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_source_tex_image_source(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4249,7 +4269,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_target_g_lenum_and_
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, source) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_src_data(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_src_data(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4265,7 +4285,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_target_g_lenum_and_
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, (src_data.$tag === 1 ? src_data._0 : null))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_src_data_array_buffer_view_and_src_offset(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_src_data_array_buffer_view_and_src_offset(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4282,7 +4302,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_target_g_lenum_and_
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4299,7 +4319,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d(
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, pbo_offset) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, pbo_offset)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_zoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_source_tex_image_source(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_zoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_source_tex_image_source(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4316,7 +4336,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_target_g_lenum_
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_zoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_src_data(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_zoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_src_data(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4333,7 +4353,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_target_g_lenum_
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, src_data) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, (src_data.$tag === 1 ? src_data._0 : null))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_zoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_src_data_and_src_offset(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_zoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_src_data_and_src_offset(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4351,7 +4371,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_target_g_lenum_
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, src_data, src_offset) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, (src_data.$tag === 1 ? src_data._0 : null), (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::copy_tex_sub_image3_d(
+pub extern "js" fn WebGL2RenderingContext::copy_tex_sub_image_3d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4366,7 +4386,7 @@ pub extern "js" fn WebGL2RenderingContext::copy_tex_sub_image3_d(
   #| (self, target, level, xoffset, yoffset, zoffset, x, y, width, height) => self.copyTexSubImage3D(target, level, xoffset, yoffset, zoffset, x, y, width, height)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4380,7 +4400,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d(
   #| (self, target, level, internalformat, width, height, depth, border, src_data) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_src_length_override(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_src_length_override(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4396,7 +4416,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_src_leng
   #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lenum_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_border_g_lint_and_image_size_g_lsizei_and_offset_g_lintptr(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lenum_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_border_g_lint_and_image_size_g_lsizei_and_offset_g_lintptr(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4411,7 +4431,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_target_g
   #| (self, target, level, internalformat, width, height, depth, border, image_size, offset) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, image_size, offset)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4427,7 +4447,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d(
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_src_length_override(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_src_length_override(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4445,7 +4465,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_src_
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_zoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_format_g_lenum_and_image_size_g_lsizei_and_offset_g_lintptr(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_zoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_format_g_lenum_and_image_size_g_lsizei_and_offset_g_lintptr(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5262,7 +5282,7 @@ pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_target_g_lenum_a
   #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo), length)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5274,7 +5294,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d(
   #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_pixels(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_pixels(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5289,7 +5309,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_target_g_lenum_and_
   #| (self, target, level, internalformat, width, height, border, format, type_, pixels) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, (pixels.$tag === 1 ? pixels._0 : null))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_pbo_offset_g_lintptr(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_pbo_offset_g_lintptr(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5304,7 +5324,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_target_g_lenum_and_
   #| (self, target, level, internalformat, width, height, border, format, type_, pbo_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, pbo_offset)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_source_tex_image_source(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_source_tex_image_source(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5319,7 +5339,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_target_g_lenum_and_
   #| (self, target, level, internalformat, width, height, border, format, type_, source) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_src_data_array_buffer_view_and_src_offset(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_src_data_array_buffer_view_and_src_offset(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5335,7 +5355,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_target_g_lenum_and_
   #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5348,7 +5368,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d(
   #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_pixels(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_pixels(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5363,7 +5383,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_target_g_lenum_
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, pixels) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, (pixels.$tag === 1 ? pixels._0 : null))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_pbo_offset_g_lintptr(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_pbo_offset_g_lintptr(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5378,7 +5398,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_target_g_lenum_
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, pbo_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, pbo_offset)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_source_tex_image_source(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_source_tex_image_source(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5393,7 +5413,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_target_g_lenum_
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_src_data_array_buffer_view_and_src_offset(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_src_data_array_buffer_view_and_src_offset(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5409,7 +5429,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_target_g_lenum_
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5422,7 +5442,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d(
   #| (self, target, level, internalformat, width, height, border, src_data) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_src_length_override(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_src_length_override(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5437,7 +5457,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_src_leng
   #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lenum_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_image_size_g_lsizei_and_offset_g_lintptr(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lenum_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_image_size_g_lsizei_and_offset_g_lintptr(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5451,7 +5471,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_target_g
   #| (self, target, level, internalformat, width, height, border, image_size, offset) => self.compressedTexImage2D(target, level, internalformat, width, height, border, image_size, offset)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5465,7 +5485,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d(
   #| (self, target, level, xoffset, yoffset, width, height, format, src_data) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_src_length_override(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_src_length_override(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5481,7 +5501,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_src_
   #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_image_size_g_lsizei_and_offset_g_lintptr(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_image_size_g_lsizei_and_offset_g_lintptr(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5947,7 +5967,7 @@ pub extern "js" fn WebGL2RenderingContext::get_buffer_sub_data_with_data_view(
   #| (self, target, src_byte_offset, dst_buffer, dst_offset, length) => self.getBufferSubData(target, src_byte_offset, dst_buffer, (dst_offset.hi * 4294967296 + dst_offset.lo), length)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_image_bitmap(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_image_bitmap(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5963,7 +5983,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_image_bitmap(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, source) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_image_data(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_image_data(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5979,7 +5999,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_image_data(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, source) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_h_t_m_l_image_element(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_html_image_element(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5995,7 +6015,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_h_t_m_l_image_eleme
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, source) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_h_t_m_l_canvas_element(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_html_canvas_element(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6011,7 +6031,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_h_t_m_l_canvas_elem
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, source) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_h_t_m_l_video_element(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_html_video_element(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6027,7 +6047,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_h_t_m_l_video_eleme
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, source) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_offscreen_canvas(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_offscreen_canvas(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6043,7 +6063,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_offscreen_canvas(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, source) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_video_frame(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_video_frame(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6059,7 +6079,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_video_frame(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, source) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_int8_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_int8_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6076,7 +6096,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_int8_array(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_int16_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_int16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6093,7 +6113,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_int16_array(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_int32_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_int32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6110,7 +6130,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_int32_array(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_uint8_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_uint8_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6127,7 +6147,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_uint8_array(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_uint16_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_uint16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6144,7 +6164,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_uint16_array(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_uint32_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_uint32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6161,7 +6181,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_uint32_array(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_uint8_clamped_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_uint8_clamped_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6178,7 +6198,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_uint8_clamped_array
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_big_int64_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_big_int64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6195,7 +6215,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_big_int64_array(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_big_uint64_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_big_uint64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6212,7 +6232,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_big_uint64_array(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_float16_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_float16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6229,7 +6249,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_float16_array(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_float32_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_float32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6246,7 +6266,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_float32_array(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_float64_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_float64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6263,7 +6283,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_float64_array(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_data_view(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_data_view(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6280,7 +6300,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_data_view(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_image_bitmap(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_image_bitmap(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6297,7 +6317,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_image_bitmap(
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_image_data(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_image_data(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6314,7 +6334,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_image_data(
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_h_t_m_l_image_element(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_html_image_element(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6331,7 +6351,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_h_t_m_l_image_e
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_h_t_m_l_canvas_element(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_html_canvas_element(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6348,7 +6368,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_h_t_m_l_canvas_
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_h_t_m_l_video_element(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_html_video_element(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6365,7 +6385,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_h_t_m_l_video_e
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_offscreen_canvas(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_offscreen_canvas(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6382,7 +6402,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_offscreen_canva
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_video_frame(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_video_frame(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6399,7 +6419,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_video_frame(
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_int8_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_int8_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6415,7 +6435,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_int8_arr
   #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_int16_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_int16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6431,7 +6451,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_int16_ar
   #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_int32_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_int32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6447,7 +6467,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_int32_ar
   #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_uint8_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_uint8_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6463,7 +6483,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_uint8_ar
   #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_uint16_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_uint16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6479,7 +6499,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_uint16_a
   #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_uint32_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_uint32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6495,7 +6515,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_uint32_a
   #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_uint8_clamped_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_uint8_clamped_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6511,7 +6531,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_uint8_cl
   #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_big_int64_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_big_int64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6527,7 +6547,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_big_int6
   #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_big_uint64_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_big_uint64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6543,7 +6563,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_big_uint
   #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_float16_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_float16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6559,7 +6579,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_float16_
   #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_float32_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_float32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6575,7 +6595,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_float32_
   #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_float64_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_float64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6591,7 +6611,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_float64_
   #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_data_view(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_data_view(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6607,7 +6627,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_data_vie
   #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_int8_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_int8_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6625,7 +6645,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_int8
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_int16_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_int16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6643,7 +6663,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_int1
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_int32_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_int32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6661,7 +6681,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_int3
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_uint8_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_uint8_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6679,7 +6699,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_uint
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_uint16_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_uint16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6697,7 +6717,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_uint
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_uint32_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_uint32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6715,7 +6735,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_uint
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_uint8_clamped_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_uint8_clamped_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6733,7 +6753,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_uint
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_big_int64_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_big_int64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6751,7 +6771,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_big_
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_big_uint64_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_big_uint64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6769,7 +6789,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_big_
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_float16_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_float16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6787,7 +6807,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_floa
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_float32_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_float32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6805,7 +6825,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_floa
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_float64_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_float64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -6823,7 +6843,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_floa
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_data_view(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_data_view(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7458,7 +7478,7 @@ pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_data_view(
   #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo), length)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_image_bitmap(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_image_bitmap(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7470,7 +7490,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_image_bitmap(
   #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_image_data(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_image_data(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7482,7 +7502,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_image_data(
   #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_h_t_m_l_image_element(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_html_image_element(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7494,7 +7514,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_h_t_m_l_image_eleme
   #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_h_t_m_l_canvas_element(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_html_canvas_element(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7506,7 +7526,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_h_t_m_l_canvas_elem
   #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_h_t_m_l_video_element(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_html_video_element(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7518,7 +7538,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_h_t_m_l_video_eleme
   #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_offscreen_canvas(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_offscreen_canvas(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7530,7 +7550,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_offscreen_canvas(
   #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_video_frame(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_video_frame(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7542,7 +7562,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_video_frame(
   #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_image_bitmap(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_image_bitmap(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7555,7 +7575,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_image_bitmap(
   #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_image_data(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_image_data(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7568,7 +7588,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_image_data(
   #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_h_t_m_l_image_element(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_html_image_element(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7581,7 +7601,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_h_t_m_l_image_e
   #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_h_t_m_l_canvas_element(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_html_canvas_element(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7594,7 +7614,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_h_t_m_l_canvas_
   #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_h_t_m_l_video_element(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_html_video_element(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7607,7 +7627,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_h_t_m_l_video_e
   #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_offscreen_canvas(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_offscreen_canvas(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7620,7 +7640,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_offscreen_canva
   #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_video_frame(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_video_frame(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7633,7 +7653,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_video_frame(
   #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_int8_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_int8_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7649,7 +7669,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_int8_array(
   #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_int16_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_int16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7665,7 +7685,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_int16_array(
   #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_int32_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_int32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7681,7 +7701,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_int32_array(
   #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_uint8_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_uint8_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7697,7 +7717,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_uint8_array(
   #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_uint16_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_uint16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7713,7 +7733,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_uint16_array(
   #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_uint32_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_uint32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7729,7 +7749,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_uint32_array(
   #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_uint8_clamped_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_uint8_clamped_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7745,7 +7765,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_uint8_clamped_array
   #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_big_int64_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_big_int64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7761,7 +7781,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_big_int64_array(
   #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_big_uint64_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_big_uint64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7777,7 +7797,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_big_uint64_array(
   #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_float16_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_float16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7793,7 +7813,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_float16_array(
   #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_float32_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_float32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7809,7 +7829,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_float32_array(
   #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_float64_array(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_float64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7825,7 +7845,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_float64_array(
   #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_data_view(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_data_view(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7841,7 +7861,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_data_view(
   #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_int8_array(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_int8_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7857,7 +7877,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_int8_array(
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_int16_array(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_int16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7873,7 +7893,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_int16_array(
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_int32_array(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_int32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7889,7 +7909,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_int32_array(
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_uint8_array(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_uint8_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7905,7 +7925,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_uint8_array(
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_uint16_array(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_uint16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7921,7 +7941,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_uint16_array(
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_uint32_array(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_uint32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7937,7 +7957,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_uint32_array(
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_uint8_clamped_array(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_uint8_clamped_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7953,7 +7973,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_uint8_clamped_a
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_big_int64_array(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_big_int64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7969,7 +7989,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_big_int64_array
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_big_uint64_array(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_big_uint64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -7985,7 +8005,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_big_uint64_arra
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_float16_array(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_float16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8001,7 +8021,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_float16_array(
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_float32_array(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_float32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8017,7 +8037,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_float32_array(
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_float64_array(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_float64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8033,7 +8053,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_float64_array(
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_data_view(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_data_view(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8049,7 +8069,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_data_view(
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_int8_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_int8_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8064,7 +8084,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_int8_arr
   #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_int16_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_int16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8079,7 +8099,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_int16_ar
   #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_int32_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_int32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8094,7 +8114,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_int32_ar
   #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_uint8_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_uint8_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8109,7 +8129,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_uint8_ar
   #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_uint16_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_uint16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8124,7 +8144,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_uint16_a
   #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_uint32_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_uint32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8139,7 +8159,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_uint32_a
   #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_uint8_clamped_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_uint8_clamped_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8154,7 +8174,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_uint8_cl
   #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_big_int64_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_big_int64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8169,7 +8189,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_big_int6
   #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_big_uint64_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_big_uint64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8184,7 +8204,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_big_uint
   #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_float16_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_float16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8199,7 +8219,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_float16_
   #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_float32_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_float32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8214,7 +8234,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_float32_
   #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_float64_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_float64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8229,7 +8249,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_float64_
   #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_data_view(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_data_view(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8244,7 +8264,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_data_vie
   #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_int8_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_int8_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8260,7 +8280,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_int8
   #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_int16_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_int16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8276,7 +8296,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_int1
   #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_int32_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_int32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8292,7 +8312,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_int3
   #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_uint8_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_uint8_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8308,7 +8328,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_uint
   #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_uint16_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_uint16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8324,7 +8344,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_uint
   #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_uint32_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_uint32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8340,7 +8360,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_uint
   #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_uint8_clamped_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_uint8_clamped_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8356,7 +8376,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_uint
   #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_big_int64_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_big_int64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8372,7 +8392,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_big_
   #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_big_uint64_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_big_uint64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8388,7 +8408,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_big_
   #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_float16_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_float16_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8404,7 +8424,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_floa
   #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_float32_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_float32_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8420,7 +8440,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_floa
   #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_float64_array(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_float64_array(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -8436,7 +8456,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_floa
   #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_data_view(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_data_view(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,

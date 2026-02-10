@@ -12,7 +12,7 @@ pub(all) enum OrientationLockType {
   PortraitSecondary
   LandscapePrimary
   LandscapeSecondary
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -52,7 +52,7 @@ pub(all) enum OrientationType {
   PortraitSecondary
   LandscapePrimary
   LandscapeSecondary
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

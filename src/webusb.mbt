@@ -7,7 +7,7 @@ pub(all) enum USBTransferStatus {
   Ok
   Stall
   Babble
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -36,7 +36,7 @@ pub(all) enum USBRequestType {
   Standard
   Class
   Vendor
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -66,7 +66,7 @@ pub(all) enum USBRecipient {
   Interface
   Endpoint
   Other
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -96,7 +96,7 @@ pub fn USBRecipient::from_string(s : String) -> USBRecipient? {
 pub(all) enum USBDirection {
   In
   Out
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -123,7 +123,7 @@ pub(all) enum USBEndpointType {
   Bulk
   Interrupt
   Isochronous
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -188,6 +188,23 @@ pub fn USBDeviceFilter::to_js(self : USBDeviceFilter) -> JsValue {
 }
 
 ///|
+extern "js" fn USBDeviceFilter::from_js_ffi(value : JsValue) -> USBDeviceFilter =
+  #| (v) => ({
+  #|   vendorId: v.vendorId,
+  #|   productId: v.productId,
+  #|   classCode: v.classCode,
+  #|   subclassCode: v.subclassCode,
+  #|   protocolCode: v.protocolCode,
+  #|   serialNumber: v.serialNumber
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn USBDeviceFilter::from_js(value : JsValue) -> USBDeviceFilter {
+  USBDeviceFilter::from_js_ffi(value)
+}
+
+///|
 /// USBDeviceRequestOptions dictionary
 pub(all) struct USBDeviceRequestOptions {
   filters : Array[USBDeviceFilter]
@@ -206,7 +223,7 @@ extern "js" fn USBDeviceRequestOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   filters: self.filters,
-  #|   exclusionFilters: ((() => { const v = self.exclusionFilters; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   exclusionFilters: ((() => { const v = self.exclusionFilters; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -215,6 +232,23 @@ pub fn USBDeviceRequestOptions::to_js(
   self : USBDeviceRequestOptions,
 ) -> JsValue {
   USBDeviceRequestOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn USBDeviceRequestOptions::from_js_ffi(
+  value : JsValue,
+) -> USBDeviceRequestOptions =
+  #| (v) => ({
+  #|   filters: v.filters,
+  #|   exclusionFilters: (v.exclusionFilters === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exclusionFilters })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn USBDeviceRequestOptions::from_js(
+  value : JsValue,
+) -> USBDeviceRequestOptions {
+  USBDeviceRequestOptions::from_js_ffi(value)
 }
 
 ///|
@@ -243,6 +277,22 @@ extern "js" fn USBConnectionEventInit::to_js_ffi(
 /// Convert to JsValue
 pub fn USBConnectionEventInit::to_js(self : USBConnectionEventInit) -> JsValue {
   USBConnectionEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn USBConnectionEventInit::from_js_ffi(
+  value : JsValue,
+) -> USBConnectionEventInit =
+  #| (v) => ({
+  #|   device: v.device
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn USBConnectionEventInit::from_js(
+  value : JsValue,
+) -> USBConnectionEventInit {
+  USBConnectionEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -291,6 +341,26 @@ pub fn USBControlTransferParameters::to_js(
 }
 
 ///|
+extern "js" fn USBControlTransferParameters::from_js_ffi(
+  value : JsValue,
+) -> USBControlTransferParameters =
+  #| (v) => ({
+  #|   requestType: ['standard', 'class', 'vendor'].indexOf(v.requestType),
+  #|   recipient: ['device', 'interface', 'endpoint', 'other'].indexOf(v.recipient),
+  #|   request: v.request,
+  #|   value: v.value,
+  #|   index: v.index
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn USBControlTransferParameters::from_js(
+  value : JsValue,
+) -> USBControlTransferParameters {
+  USBControlTransferParameters::from_js_ffi(value)
+}
+
+///|
 /// USBBlocklistEntry dictionary
 pub(all) struct USBBlocklistEntry {
   idVendor : Int
@@ -321,6 +391,22 @@ pub fn USBBlocklistEntry::to_js(self : USBBlocklistEntry) -> JsValue {
 }
 
 ///|
+extern "js" fn USBBlocklistEntry::from_js_ffi(
+  value : JsValue,
+) -> USBBlocklistEntry =
+  #| (v) => ({
+  #|   idVendor: v.idVendor,
+  #|   idProduct: v.idProduct,
+  #|   bcdDevice: v.bcdDevice
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn USBBlocklistEntry::from_js(value : JsValue) -> USBBlocklistEntry {
+  USBBlocklistEntry::from_js_ffi(value)
+}
+
+///|
 /// USBPermissionDescriptor dictionary
 pub(all) struct USBPermissionDescriptor {
   filters : Array[USBDeviceFilter]?
@@ -338,8 +424,8 @@ extern "js" fn USBPermissionDescriptor::to_js_ffi(
   self : USBPermissionDescriptor,
 ) -> JsValue =
   #| (self) => ({
-  #|   filters: ((() => { const v = self.filters; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   exclusionFilters: ((() => { const v = self.exclusionFilters; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   filters: ((() => { const v = self.filters; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   exclusionFilters: ((() => { const v = self.exclusionFilters; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -348,6 +434,23 @@ pub fn USBPermissionDescriptor::to_js(
   self : USBPermissionDescriptor,
 ) -> JsValue {
   USBPermissionDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn USBPermissionDescriptor::from_js_ffi(
+  value : JsValue,
+) -> USBPermissionDescriptor =
+  #| (v) => ({
+  #|   filters: (v.filters === undefined ? { $tag: 0 } : { $tag: 1, _0: v.filters }),
+  #|   exclusionFilters: (v.exclusionFilters === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exclusionFilters })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn USBPermissionDescriptor::from_js(
+  value : JsValue,
+) -> USBPermissionDescriptor {
+  USBPermissionDescriptor::from_js_ffi(value)
 }
 
 ///|
@@ -379,6 +482,22 @@ pub fn AllowedUSBDevice::to_js(self : AllowedUSBDevice) -> JsValue {
 }
 
 ///|
+extern "js" fn AllowedUSBDevice::from_js_ffi(
+  value : JsValue,
+) -> AllowedUSBDevice =
+  #| (v) => ({
+  #|   vendorId: v.vendorId,
+  #|   productId: v.productId,
+  #|   serialNumber: v.serialNumber
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AllowedUSBDevice::from_js(value : JsValue) -> AllowedUSBDevice {
+  AllowedUSBDevice::from_js_ffi(value)
+}
+
+///|
 /// USBPermissionStorage dictionary
 pub(all) struct USBPermissionStorage {
   allowedDevices : Array[AllowedUSBDevice]?
@@ -395,13 +514,27 @@ extern "js" fn USBPermissionStorage::to_js_ffi(
   self : USBPermissionStorage,
 ) -> JsValue =
   #| (self) => ({
-  #|   allowedDevices: ((() => { const v = self.allowedDevices; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   allowedDevices: ((() => { const v = self.allowedDevices; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn USBPermissionStorage::to_js(self : USBPermissionStorage) -> JsValue {
   USBPermissionStorage::to_js_ffi(self)
+}
+
+///|
+extern "js" fn USBPermissionStorage::from_js_ffi(
+  value : JsValue,
+) -> USBPermissionStorage =
+  #| (v) => ({
+  #|   allowedDevices: (v.allowedDevices === undefined ? { $tag: 0 } : { $tag: 1, _0: v.allowedDevices })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn USBPermissionStorage::from_js(value : JsValue) -> USBPermissionStorage {
+  USBPermissionStorage::from_js_ffi(value)
 }
 
 ///|

@@ -8,7 +8,7 @@ pub(all) enum PresentationConnectionState {
   Connected
   Closed
   Terminated
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -43,7 +43,7 @@ pub(all) enum PresentationConnectionCloseReason {
   Error
   Closed
   Wentaway
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -101,6 +101,22 @@ pub fn PresentationConnectionAvailableEventInit::to_js(
 }
 
 ///|
+extern "js" fn PresentationConnectionAvailableEventInit::from_js_ffi(
+  value : JsValue,
+) -> PresentationConnectionAvailableEventInit =
+  #| (v) => ({
+  #|   connection: v.connection
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PresentationConnectionAvailableEventInit::from_js(
+  value : JsValue,
+) -> PresentationConnectionAvailableEventInit {
+  PresentationConnectionAvailableEventInit::from_js_ffi(value)
+}
+
+///|
 /// PresentationConnectionCloseEventInit dictionary
 pub(all) struct PresentationConnectionCloseEventInit {
   reason : PresentationConnectionCloseReason
@@ -130,6 +146,23 @@ pub fn PresentationConnectionCloseEventInit::to_js(
   self : PresentationConnectionCloseEventInit,
 ) -> JsValue {
   PresentationConnectionCloseEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PresentationConnectionCloseEventInit::from_js_ffi(
+  value : JsValue,
+) -> PresentationConnectionCloseEventInit =
+  #| (v) => ({
+  #|   reason: ['error', 'closed', 'wentaway'].indexOf(v.reason),
+  #|   message: v.message
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PresentationConnectionCloseEventInit::from_js(
+  value : JsValue,
+) -> PresentationConnectionCloseEventInit {
+  PresentationConnectionCloseEventInit::from_js_ffi(value)
 }
 
 ///|

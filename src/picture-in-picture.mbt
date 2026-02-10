@@ -32,6 +32,22 @@ pub fn PictureInPictureEventInit::to_js(
 }
 
 ///|
+extern "js" fn PictureInPictureEventInit::from_js_ffi(
+  value : JsValue,
+) -> PictureInPictureEventInit =
+  #| (v) => ({
+  #|   pictureInPictureWindow: v.pictureInPictureWindow
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PictureInPictureEventInit::from_js(
+  value : JsValue,
+) -> PictureInPictureEventInit {
+  PictureInPictureEventInit::from_js_ffi(value)
+}
+
+///|
 /// PictureInPictureWindow interface
 pub type PictureInPictureWindow
 

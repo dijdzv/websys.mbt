@@ -40,6 +40,24 @@ pub extern "js" fn StringOrBlob::as_blob(self : StringOrBlob) -> Blob? =
   #| (self) => (self instanceof Blob) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[StringOrBlob] to String?
+pub fn StringOrBlob::bind_as_string(value : StringOrBlob?) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[StringOrBlob] to Blob?
+pub fn StringOrBlob::bind_as_blob(value : StringOrBlob?) -> Blob? {
+  match value {
+    Some(v) => v.as_blob()
+    None => None
+  }
+}
+
+///|
 /// ClipboardItemData typedef
 pub type ClipboardItemData = Promise[StringOrBlob]
 
@@ -53,7 +71,7 @@ pub(all) enum PresentationStyle {
   Unspecified
   Inline
   Attachment
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -93,13 +111,27 @@ extern "js" fn ClipboardEventInit::to_js_ffi(
   self : ClipboardEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   clipboardData: ((() => { const v = self.clipboardData; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   clipboardData: ((() => { const v = self.clipboardData; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn ClipboardEventInit::to_js(self : ClipboardEventInit) -> JsValue {
   ClipboardEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ClipboardEventInit::from_js_ffi(
+  value : JsValue,
+) -> ClipboardEventInit =
+  #| (v) => ({
+  #|   clipboardData: (v.clipboardData === undefined ? { $tag: 0 } : v.clipboardData === null ? { $tag: 1 } : { $tag: 2, _0: v.clipboardData })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ClipboardEventInit::from_js(value : JsValue) -> ClipboardEventInit {
+  ClipboardEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -120,8 +152,8 @@ extern "js" fn ClipboardChangeEventInit::to_js_ffi(
   self : ClipboardChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   types: ((() => { const v = self.types; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   changeId: ((() => { const v = self.changeId; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   types: ((() => { const v = self.types; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   changeId: ((() => { const v = self.changeId; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -130,6 +162,23 @@ pub fn ClipboardChangeEventInit::to_js(
   self : ClipboardChangeEventInit,
 ) -> JsValue {
   ClipboardChangeEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ClipboardChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> ClipboardChangeEventInit =
+  #| (v) => ({
+  #|   types: (v.types === undefined ? { $tag: 0 } : { $tag: 1, _0: v.types }),
+  #|   changeId: (v.changeId === undefined ? { $tag: 0 } : { $tag: 1, _0: v.changeId })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ClipboardChangeEventInit::from_js(
+  value : JsValue,
+) -> ClipboardChangeEventInit {
+  ClipboardChangeEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -159,6 +208,20 @@ pub fn ClipboardItemOptions::to_js(self : ClipboardItemOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn ClipboardItemOptions::from_js_ffi(
+  value : JsValue,
+) -> ClipboardItemOptions =
+  #| (v) => ({
+  #|   presentationStyle: (v.presentationStyle === undefined ? undefined : ['unspecified', 'inline', 'attachment'].indexOf(v.presentationStyle))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ClipboardItemOptions::from_js(value : JsValue) -> ClipboardItemOptions {
+  ClipboardItemOptions::from_js_ffi(value)
+}
+
+///|
 /// ClipboardUnsanitizedFormats dictionary
 pub(all) struct ClipboardUnsanitizedFormats {
   unsanitized : Array[String]?
@@ -175,7 +238,7 @@ extern "js" fn ClipboardUnsanitizedFormats::to_js_ffi(
   self : ClipboardUnsanitizedFormats,
 ) -> JsValue =
   #| (self) => ({
-  #|   unsanitized: ((() => { const v = self.unsanitized; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   unsanitized: ((() => { const v = self.unsanitized; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -184,6 +247,22 @@ pub fn ClipboardUnsanitizedFormats::to_js(
   self : ClipboardUnsanitizedFormats,
 ) -> JsValue {
   ClipboardUnsanitizedFormats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ClipboardUnsanitizedFormats::from_js_ffi(
+  value : JsValue,
+) -> ClipboardUnsanitizedFormats =
+  #| (v) => ({
+  #|   unsanitized: (v.unsanitized === undefined ? { $tag: 0 } : { $tag: 1, _0: v.unsanitized })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ClipboardUnsanitizedFormats::from_js(
+  value : JsValue,
+) -> ClipboardUnsanitizedFormats {
+  ClipboardUnsanitizedFormats::from_js_ffi(value)
 }
 
 ///|
@@ -212,6 +291,22 @@ pub fn ClipboardPermissionDescriptor::to_js(
   self : ClipboardPermissionDescriptor,
 ) -> JsValue {
   ClipboardPermissionDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ClipboardPermissionDescriptor::from_js_ffi(
+  value : JsValue,
+) -> ClipboardPermissionDescriptor =
+  #| (v) => ({
+  #|   allowWithoutGesture: (v.allowWithoutGesture === undefined ? -1 : v.allowWithoutGesture)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ClipboardPermissionDescriptor::from_js(
+  value : JsValue,
+) -> ClipboardPermissionDescriptor {
+  ClipboardPermissionDescriptor::from_js_ffi(value)
 }
 
 ///|

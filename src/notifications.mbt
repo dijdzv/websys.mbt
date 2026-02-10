@@ -7,7 +7,7 @@ pub(all) enum NotificationPermission {
   Default
   Denied
   Granted
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -40,7 +40,7 @@ pub(all) enum NotificationDirection {
   Auto
   Ltr
   Rtl
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -129,19 +129,47 @@ extern "js" fn NotificationOptions::to_js_ffi(
   #|   image: self.image,
   #|   icon: self.icon,
   #|   badge: self.badge,
-  #|   vibrate: ((() => { const v = self.vibrate; if (v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   timestamp: ((() => { const v = self.timestamp; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   vibrate: ((() => { const v = self.vibrate; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   timestamp: ((() => { const v = self.timestamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   renotify: (self.renotify === -1 ? undefined : self.renotify),
-  #|   silent: ((() => { const v = self.silent; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   silent: ((() => { const v = self.silent; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   requireInteraction: (self.requireInteraction === -1 ? undefined : self.requireInteraction),
-  #|   data: ((() => { const v = self.data; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   actions: ((() => { const v = self.actions; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   actions: ((() => { const v = self.actions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn NotificationOptions::to_js(self : NotificationOptions) -> JsValue {
   NotificationOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn NotificationOptions::from_js_ffi(
+  value : JsValue,
+) -> NotificationOptions =
+  #| (v) => ({
+  #|   dir: (v.dir === undefined ? undefined : ['auto', 'ltr', 'rtl'].indexOf(v.dir)),
+  #|   lang: v.lang,
+  #|   body: v.body,
+  #|   navigate: v.navigate,
+  #|   tag: v.tag,
+  #|   image: v.image,
+  #|   icon: v.icon,
+  #|   badge: v.badge,
+  #|   vibrate: (v.vibrate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.vibrate }),
+  #|   timestamp: (v.timestamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.timestamp }),
+  #|   renotify: (v.renotify === undefined ? -1 : v.renotify),
+  #|   silent: (v.silent === undefined ? { $tag: 0 } : v.silent === null ? { $tag: 1 } : { $tag: 2, _0: v.silent }),
+  #|   requireInteraction: (v.requireInteraction === undefined ? -1 : v.requireInteraction),
+  #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data }),
+  #|   actions: (v.actions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.actions })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NotificationOptions::from_js(value : JsValue) -> NotificationOptions {
+  NotificationOptions::from_js_ffi(value)
 }
 
 ///|
@@ -177,6 +205,23 @@ pub fn NotificationAction::to_js(self : NotificationAction) -> JsValue {
 }
 
 ///|
+extern "js" fn NotificationAction::from_js_ffi(
+  value : JsValue,
+) -> NotificationAction =
+  #| (v) => ({
+  #|   action: v.action,
+  #|   title: v.title,
+  #|   navigate: v.navigate,
+  #|   icon: v.icon
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NotificationAction::from_js(value : JsValue) -> NotificationAction {
+  NotificationAction::from_js_ffi(value)
+}
+
+///|
 /// GetNotificationOptions dictionary
 pub(all) struct GetNotificationOptions {
   tag : String?
@@ -200,6 +245,22 @@ extern "js" fn GetNotificationOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn GetNotificationOptions::to_js(self : GetNotificationOptions) -> JsValue {
   GetNotificationOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GetNotificationOptions::from_js_ffi(
+  value : JsValue,
+) -> GetNotificationOptions =
+  #| (v) => ({
+  #|   tag: v.tag
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GetNotificationOptions::from_js(
+  value : JsValue,
+) -> GetNotificationOptions {
+  GetNotificationOptions::from_js_ffi(value)
 }
 
 ///|
@@ -230,6 +291,21 @@ extern "js" fn NotificationEventInit::to_js_ffi(
 /// Convert to JsValue
 pub fn NotificationEventInit::to_js(self : NotificationEventInit) -> JsValue {
   NotificationEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn NotificationEventInit::from_js_ffi(
+  value : JsValue,
+) -> NotificationEventInit =
+  #| (v) => ({
+  #|   notification: v.notification,
+  #|   action: v.action
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn NotificationEventInit::from_js(value : JsValue) -> NotificationEventInit {
+  NotificationEventInit::from_js_ffi(value)
 }
 
 ///|

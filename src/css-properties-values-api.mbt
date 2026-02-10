@@ -39,6 +39,23 @@ pub fn PropertyDefinition::to_js(self : PropertyDefinition) -> JsValue {
 }
 
 ///|
+extern "js" fn PropertyDefinition::from_js_ffi(
+  value : JsValue,
+) -> PropertyDefinition =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   syntax: v.syntax,
+  #|   inherits: v.inherits,
+  #|   initialValue: v.initialValue
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PropertyDefinition::from_js(value : JsValue) -> PropertyDefinition {
+  PropertyDefinition::from_js_ffi(value)
+}
+
+///|
 /// CSSPropertyRule interface
 pub type CSSPropertyRule
 
@@ -83,15 +100,13 @@ pub extern "js" fn CSSPropertyRule::to_css_rule(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSPropertyRule::get_name(
-  self : CSSPropertyRule,
-) -> CSSOMString =
+pub extern "js" fn CSSPropertyRule::get_name(self : CSSPropertyRule) -> String =
   #| (self) => self.name
 
 ///|
 pub extern "js" fn CSSPropertyRule::get_syntax(
   self : CSSPropertyRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.syntax
 
 ///|
@@ -103,5 +118,5 @@ pub extern "js" fn CSSPropertyRule::get_inherits(
 ///|
 pub extern "js" fn CSSPropertyRule::get_initial_value(
   self : CSSPropertyRule,
-) -> CSSOMString? =
-  #| (self) => (() => { const v = self.initialValue; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> String? =
+  #| (self) => (self.initialValue) ?? undefined

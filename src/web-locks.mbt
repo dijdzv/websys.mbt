@@ -6,7 +6,7 @@
 pub(all) enum LockMode {
   Shared
   Exclusive
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -59,13 +59,28 @@ extern "js" fn LockOptions::to_js_ffi(self : LockOptions) -> JsValue =
   #|   mode: ((() => { const v = self.mode; if (v === undefined) return undefined; return ['shared', 'exclusive'][v]; })()),
   #|   ifAvailable: (self.ifAvailable === -1 ? undefined : self.ifAvailable),
   #|   steal: (self.steal === -1 ? undefined : self.steal),
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn LockOptions::to_js(self : LockOptions) -> JsValue {
   LockOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn LockOptions::from_js_ffi(value : JsValue) -> LockOptions =
+  #| (v) => ({
+  #|   mode: (v.mode === undefined ? undefined : ['shared', 'exclusive'].indexOf(v.mode)),
+  #|   ifAvailable: (v.ifAvailable === undefined ? -1 : v.ifAvailable),
+  #|   steal: (v.steal === undefined ? -1 : v.steal),
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn LockOptions::from_js(value : JsValue) -> LockOptions {
+  LockOptions::from_js_ffi(value)
 }
 
 ///|
@@ -86,14 +101,29 @@ extern "js" fn LockManagerSnapshot::to_js_ffi(
   self : LockManagerSnapshot,
 ) -> JsValue =
   #| (self) => ({
-  #|   held: ((() => { const v = self.held; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   pending: ((() => { const v = self.pending; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   held: ((() => { const v = self.held; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   pending: ((() => { const v = self.pending; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn LockManagerSnapshot::to_js(self : LockManagerSnapshot) -> JsValue {
   LockManagerSnapshot::to_js_ffi(self)
+}
+
+///|
+extern "js" fn LockManagerSnapshot::from_js_ffi(
+  value : JsValue,
+) -> LockManagerSnapshot =
+  #| (v) => ({
+  #|   held: (v.held === undefined ? { $tag: 0 } : { $tag: 1, _0: v.held }),
+  #|   pending: (v.pending === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pending })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn LockManagerSnapshot::from_js(value : JsValue) -> LockManagerSnapshot {
+  LockManagerSnapshot::from_js_ffi(value)
 }
 
 ///|
@@ -122,6 +152,20 @@ extern "js" fn LockInfo::to_js_ffi(self : LockInfo) -> JsValue =
 /// Convert to JsValue
 pub fn LockInfo::to_js(self : LockInfo) -> JsValue {
   LockInfo::to_js_ffi(self)
+}
+
+///|
+extern "js" fn LockInfo::from_js_ffi(value : JsValue) -> LockInfo =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   mode: (v.mode === undefined ? undefined : ['shared', 'exclusive'].indexOf(v.mode)),
+  #|   clientId: v.clientId
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn LockInfo::from_js(value : JsValue) -> LockInfo {
+  LockInfo::from_js_ffi(value)
 }
 
 ///|
@@ -188,7 +232,10 @@ pub fn LockManager::request_with_name_and_options_lock_options_and_callback_lock
 pub extern "js" fn LockManager::query(
   self : LockManager,
 ) -> Promise[LockManagerSnapshot] =
-  #| (self) => self.query()
+  #| (self) => self.query().then(v => ({
+  #|   held: (v.held === undefined ? { $tag: 0 } : { $tag: 1, _0: v.held }),
+  #|   pending: (v.pending === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pending })
+  #| }))
 
 ///|
 /// Lock interface

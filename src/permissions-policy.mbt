@@ -33,12 +33,12 @@ extern "js" fn PermissionsPolicyViolationReportBody::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   featureId: self.featureId,
-  #|   sourceFile: ((() => { const v = self.sourceFile; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   lineNumber: ((() => { const v = self.lineNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   columnNumber: ((() => { const v = self.columnNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   sourceFile: ((() => { const v = self.sourceFile; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   lineNumber: ((() => { const v = self.lineNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   columnNumber: ((() => { const v = self.columnNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   disposition: self.disposition,
-  #|   allowAttribute: ((() => { const v = self.allowAttribute; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   srcAttribute: ((() => { const v = self.srcAttribute; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   allowAttribute: ((() => { const v = self.allowAttribute; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   srcAttribute: ((() => { const v = self.srcAttribute; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
@@ -47,6 +47,28 @@ pub fn PermissionsPolicyViolationReportBody::to_js(
   self : PermissionsPolicyViolationReportBody,
 ) -> JsValue {
   PermissionsPolicyViolationReportBody::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PermissionsPolicyViolationReportBody::from_js_ffi(
+  value : JsValue,
+) -> PermissionsPolicyViolationReportBody =
+  #| (v) => ({
+  #|   featureId: v.featureId,
+  #|   sourceFile: (v.sourceFile === undefined ? { $tag: 0 } : v.sourceFile === null ? { $tag: 1 } : { $tag: 2, _0: v.sourceFile }),
+  #|   lineNumber: (v.lineNumber === undefined ? { $tag: 0 } : v.lineNumber === null ? { $tag: 1 } : { $tag: 2, _0: v.lineNumber }),
+  #|   columnNumber: (v.columnNumber === undefined ? { $tag: 0 } : v.columnNumber === null ? { $tag: 1 } : { $tag: 2, _0: v.columnNumber }),
+  #|   disposition: v.disposition,
+  #|   allowAttribute: (v.allowAttribute === undefined ? { $tag: 0 } : v.allowAttribute === null ? { $tag: 1 } : { $tag: 2, _0: v.allowAttribute }),
+  #|   srcAttribute: (v.srcAttribute === undefined ? { $tag: 0 } : v.srcAttribute === null ? { $tag: 1 } : { $tag: 2, _0: v.srcAttribute })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PermissionsPolicyViolationReportBody::from_js(
+  value : JsValue,
+) -> PermissionsPolicyViolationReportBody {
+  PermissionsPolicyViolationReportBody::from_js_ffi(value)
 }
 
 ///|

@@ -52,6 +52,28 @@ pub extern "js" fn ObserverUnion::as_subscription_observer(
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[ObserverUnion] to ObservableSubscriptionCallback?
+pub fn ObserverUnion::bind_as_observable_subscription_callback(
+  value : ObserverUnion?,
+) -> ObservableSubscriptionCallback? {
+  match value {
+    Some(v) => v.as_observable_subscription_callback()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ObserverUnion] to SubscriptionObserver?
+pub fn ObserverUnion::bind_as_subscription_observer(
+  value : ObserverUnion?,
+) -> SubscriptionObserver? {
+  match value {
+    Some(v) => v.as_subscription_observer()
+    None => None
+  }
+}
+
+///|
 /// ObservableInspectorUnion typedef
 pub type ObservableInspectorUnion
 
@@ -102,6 +124,28 @@ pub extern "js" fn ObservableInspectorUnion::as_observable_inspector(
   self : ObservableInspectorUnion,
 ) -> ObservableInspector? =
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[ObservableInspectorUnion] to ObservableSubscriptionCallback?
+pub fn ObservableInspectorUnion::bind_as_observable_subscription_callback(
+  value : ObservableInspectorUnion?,
+) -> ObservableSubscriptionCallback? {
+  match value {
+    Some(v) => v.as_observable_subscription_callback()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ObservableInspectorUnion] to ObservableInspector?
+pub fn ObservableInspectorUnion::bind_as_observable_inspector(
+  value : ObservableInspectorUnion?,
+) -> ObservableInspector? {
+  match value {
+    Some(v) => v.as_observable_inspector()
+    None => None
+  }
+}
 
 ///|
 /// SubscribeCallback callback interface
@@ -210,15 +254,31 @@ extern "js" fn SubscriptionObserver::to_js_ffi(
   self : SubscriptionObserver,
 ) -> JsValue =
   #| (self) => ({
-  #|   next: ((() => { const v = self.next; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   error: ((() => { const v = self.error; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   complete: ((() => { const v = self.complete; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   next: ((() => { const v = self.next; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   error: ((() => { const v = self.error; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   complete: ((() => { const v = self.complete; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn SubscriptionObserver::to_js(self : SubscriptionObserver) -> JsValue {
   SubscriptionObserver::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SubscriptionObserver::from_js_ffi(
+  value : JsValue,
+) -> SubscriptionObserver =
+  #| (v) => ({
+  #|   next: (v.next === undefined ? { $tag: 0 } : { $tag: 1, _0: v.next }),
+  #|   error: (v.error === undefined ? { $tag: 0 } : { $tag: 1, _0: v.error }),
+  #|   complete: (v.complete === undefined ? { $tag: 0 } : { $tag: 1, _0: v.complete })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SubscriptionObserver::from_js(value : JsValue) -> SubscriptionObserver {
+  SubscriptionObserver::from_js_ffi(value)
 }
 
 ///|
@@ -248,17 +308,35 @@ extern "js" fn ObservableInspector::to_js_ffi(
   self : ObservableInspector,
 ) -> JsValue =
   #| (self) => ({
-  #|   next: ((() => { const v = self.next; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   error: ((() => { const v = self.error; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   complete: ((() => { const v = self.complete; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   subscribe: ((() => { const v = self.subscribe; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   abort: ((() => { const v = self.abort; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   next: ((() => { const v = self.next; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   error: ((() => { const v = self.error; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   complete: ((() => { const v = self.complete; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   subscribe: ((() => { const v = self.subscribe; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   abort: ((() => { const v = self.abort; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn ObservableInspector::to_js(self : ObservableInspector) -> JsValue {
   ObservableInspector::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ObservableInspector::from_js_ffi(
+  value : JsValue,
+) -> ObservableInspector =
+  #| (v) => ({
+  #|   next: (v.next === undefined ? { $tag: 0 } : { $tag: 1, _0: v.next }),
+  #|   error: (v.error === undefined ? { $tag: 0 } : { $tag: 1, _0: v.error }),
+  #|   complete: (v.complete === undefined ? { $tag: 0 } : { $tag: 1, _0: v.complete }),
+  #|   subscribe: (v.subscribe === undefined ? { $tag: 0 } : { $tag: 1, _0: v.subscribe }),
+  #|   abort: (v.abort === undefined ? { $tag: 0 } : { $tag: 1, _0: v.abort })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ObservableInspector::from_js(value : JsValue) -> ObservableInspector {
+  ObservableInspector::from_js_ffi(value)
 }
 
 ///|
@@ -276,13 +354,27 @@ pub fn SubscribeOptions::default() -> SubscribeOptions {
 ///|
 extern "js" fn SubscribeOptions::to_js_ffi(self : SubscribeOptions) -> JsValue =
   #| (self) => ({
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn SubscribeOptions::to_js(self : SubscribeOptions) -> JsValue {
   SubscribeOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SubscribeOptions::from_js_ffi(
+  value : JsValue,
+) -> SubscribeOptions =
+  #| (v) => ({
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SubscribeOptions::from_js(value : JsValue) -> SubscribeOptions {
+  SubscribeOptions::from_js_ffi(value)
 }
 
 ///|
@@ -313,6 +405,23 @@ pub fn ObservableEventListenerOptions::to_js(
   self : ObservableEventListenerOptions,
 ) -> JsValue {
   ObservableEventListenerOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ObservableEventListenerOptions::from_js_ffi(
+  value : JsValue,
+) -> ObservableEventListenerOptions =
+  #| (v) => ({
+  #|   capture: (v.capture === undefined ? -1 : v.capture),
+  #|   passive: (v.passive === undefined ? -1 : v.passive)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ObservableEventListenerOptions::from_js(
+  value : JsValue,
+) -> ObservableEventListenerOptions {
+  ObservableEventListenerOptions::from_js_ffi(value)
 }
 
 ///|

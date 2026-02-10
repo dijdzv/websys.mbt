@@ -8,7 +8,7 @@ pub(all) enum IdentityCredentialRequestOptionsContext {
   Signup
   Use
   Continue
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -42,7 +42,7 @@ pub fn IdentityCredentialRequestOptionsContext::from_string(
 pub(all) enum IdentityCredentialRequestOptionsMode {
   Active
   Passive
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -104,6 +104,24 @@ pub fn IdentityCredentialDisconnectOptions::to_js(
 }
 
 ///|
+extern "js" fn IdentityCredentialDisconnectOptions::from_js_ffi(
+  value : JsValue,
+) -> IdentityCredentialDisconnectOptions =
+  #| (v) => ({
+  #|   configURL: v.configURL,
+  #|   clientId: v.clientId,
+  #|   accountHint: v.accountHint
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdentityCredentialDisconnectOptions::from_js(
+  value : JsValue,
+) -> IdentityCredentialDisconnectOptions {
+  IdentityCredentialDisconnectOptions::from_js_ffi(value)
+}
+
+///|
 /// DisconnectedAccount dictionary
 pub(all) struct DisconnectedAccount {
   account_id : String
@@ -127,6 +145,20 @@ extern "js" fn DisconnectedAccount::to_js_ffi(
 /// Convert to JsValue
 pub fn DisconnectedAccount::to_js(self : DisconnectedAccount) -> JsValue {
   DisconnectedAccount::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DisconnectedAccount::from_js_ffi(
+  value : JsValue,
+) -> DisconnectedAccount =
+  #| (v) => ({
+  #|   account_id: v.account_id
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DisconnectedAccount::from_js(value : JsValue) -> DisconnectedAccount {
+  DisconnectedAccount::from_js_ffi(value)
 }
 
 ///|
@@ -157,6 +189,23 @@ pub fn IdentityCredentialErrorInit::to_js(
   self : IdentityCredentialErrorInit,
 ) -> JsValue {
   IdentityCredentialErrorInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IdentityCredentialErrorInit::from_js_ffi(
+  value : JsValue,
+) -> IdentityCredentialErrorInit =
+  #| (v) => ({
+  #|   error: v.error,
+  #|   url: v.url
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdentityCredentialErrorInit::from_js(
+  value : JsValue,
+) -> IdentityCredentialErrorInit {
+  IdentityCredentialErrorInit::from_js_ffi(value)
 }
 
 ///|
@@ -192,14 +241,14 @@ extern "js" fn CredentialRequestOptions::to_js_ffi(
   self : CredentialRequestOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   identity: ((() => { const v = self.identity; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   digital: ((() => { const v = self.digital; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   otp: ((() => { const v = self.otp; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   publicKey: ((() => { const v = self.publicKey; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   identity: ((() => { const v = self.identity; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   digital: ((() => { const v = self.digital; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   otp: ((() => { const v = self.otp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   publicKey: ((() => { const v = self.publicKey; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   mediation: ((() => { const v = self.mediation; if (v === undefined) return undefined; return ['silent', 'optional', 'conditional', 'required'][v]; })()),
-  #|   signal: ((() => { const v = self.signal; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   password: (self.password === -1 ? undefined : self.password),
-  #|   federated: ((() => { const v = self.federated; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   federated: ((() => { const v = self.federated; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -208,6 +257,29 @@ pub fn CredentialRequestOptions::to_js(
   self : CredentialRequestOptions,
 ) -> JsValue {
   CredentialRequestOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CredentialRequestOptions::from_js_ffi(
+  value : JsValue,
+) -> CredentialRequestOptions =
+  #| (v) => ({
+  #|   identity: (v.identity === undefined ? { $tag: 0 } : { $tag: 1, _0: v.identity }),
+  #|   digital: (v.digital === undefined ? { $tag: 0 } : { $tag: 1, _0: v.digital }),
+  #|   otp: (v.otp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.otp }),
+  #|   publicKey: (v.publicKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.publicKey }),
+  #|   mediation: (v.mediation === undefined ? undefined : ['silent', 'optional', 'conditional', 'required'].indexOf(v.mediation)),
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
+  #|   password: (v.password === undefined ? -1 : v.password),
+  #|   federated: (v.federated === undefined ? { $tag: 0 } : { $tag: 1, _0: v.federated })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CredentialRequestOptions::from_js(
+  value : JsValue,
+) -> CredentialRequestOptions {
+  CredentialRequestOptions::from_js_ffi(value)
 }
 
 ///|
@@ -243,6 +315,24 @@ pub fn IdentityCredentialRequestOptions::to_js(
 }
 
 ///|
+extern "js" fn IdentityCredentialRequestOptions::from_js_ffi(
+  value : JsValue,
+) -> IdentityCredentialRequestOptions =
+  #| (v) => ({
+  #|   providers: v.providers,
+  #|   context: (v.context === undefined ? undefined : ['signin', 'signup', 'use', 'continue'].indexOf(v.context)),
+  #|   mode: (v.mode === undefined ? undefined : ['active', 'passive'].indexOf(v.mode))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdentityCredentialRequestOptions::from_js(
+  value : JsValue,
+) -> IdentityCredentialRequestOptions {
+  IdentityCredentialRequestOptions::from_js_ffi(value)
+}
+
+///|
 /// IdentityProviderConfig dictionary
 pub(all) struct IdentityProviderConfig {
   configURL : String
@@ -268,6 +358,23 @@ extern "js" fn IdentityProviderConfig::to_js_ffi(
 /// Convert to JsValue
 pub fn IdentityProviderConfig::to_js(self : IdentityProviderConfig) -> JsValue {
   IdentityProviderConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IdentityProviderConfig::from_js_ffi(
+  value : JsValue,
+) -> IdentityProviderConfig =
+  #| (v) => ({
+  #|   configURL: v.configURL,
+  #|   clientId: v.clientId
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdentityProviderConfig::from_js(
+  value : JsValue,
+) -> IdentityProviderConfig {
+  IdentityProviderConfig::from_js_ffi(value)
 }
 
 ///|
@@ -303,8 +410,8 @@ extern "js" fn IdentityProviderRequestOptions::to_js_ffi(
   #|   clientId: self.clientId,
   #|   loginHint: self.loginHint,
   #|   domainHint: self.domainHint,
-  #|   fields: ((() => { const v = self.fields; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   params: ((() => { const v = self.params; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   fields: ((() => { const v = self.fields; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   params: ((() => { const v = self.params; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -313,6 +420,27 @@ pub fn IdentityProviderRequestOptions::to_js(
   self : IdentityProviderRequestOptions,
 ) -> JsValue {
   IdentityProviderRequestOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IdentityProviderRequestOptions::from_js_ffi(
+  value : JsValue,
+) -> IdentityProviderRequestOptions =
+  #| (v) => ({
+  #|   configURL: v.configURL,
+  #|   clientId: v.clientId,
+  #|   loginHint: v.loginHint,
+  #|   domainHint: v.domainHint,
+  #|   fields: (v.fields === undefined ? { $tag: 0 } : { $tag: 1, _0: v.fields }),
+  #|   params: (v.params === undefined ? { $tag: 0 } : { $tag: 1, _0: v.params })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdentityProviderRequestOptions::from_js(
+  value : JsValue,
+) -> IdentityProviderRequestOptions {
+  IdentityProviderRequestOptions::from_js_ffi(value)
 }
 
 ///|
@@ -338,7 +466,7 @@ extern "js" fn IdentityProviderWellKnown::to_js_ffi(
   self : IdentityProviderWellKnown,
 ) -> JsValue =
   #| (self) => ({
-  #|   provider_urls: ((() => { const v = self.provider_urls; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   provider_urls: ((() => { const v = self.provider_urls; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   accounts_endpoint: self.accounts_endpoint,
   #|   login_url: self.login_url
   #| })
@@ -349,6 +477,24 @@ pub fn IdentityProviderWellKnown::to_js(
   self : IdentityProviderWellKnown,
 ) -> JsValue {
   IdentityProviderWellKnown::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IdentityProviderWellKnown::from_js_ffi(
+  value : JsValue,
+) -> IdentityProviderWellKnown =
+  #| (v) => ({
+  #|   provider_urls: (v.provider_urls === undefined ? { $tag: 0 } : { $tag: 1, _0: v.provider_urls }),
+  #|   accounts_endpoint: v.accounts_endpoint,
+  #|   login_url: v.login_url
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdentityProviderWellKnown::from_js(
+  value : JsValue,
+) -> IdentityProviderWellKnown {
+  IdentityProviderWellKnown::from_js_ffi(value)
 }
 
 ///|
@@ -380,6 +526,21 @@ pub fn IdentityProviderIcon::to_js(self : IdentityProviderIcon) -> JsValue {
 }
 
 ///|
+extern "js" fn IdentityProviderIcon::from_js_ffi(
+  value : JsValue,
+) -> IdentityProviderIcon =
+  #| (v) => ({
+  #|   url: v.url,
+  #|   size: v.size
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdentityProviderIcon::from_js(value : JsValue) -> IdentityProviderIcon {
+  IdentityProviderIcon::from_js_ffi(value)
+}
+
+///|
 /// IdentityProviderBranding dictionary
 pub(all) struct IdentityProviderBranding {
   background_color : String?
@@ -406,7 +567,7 @@ extern "js" fn IdentityProviderBranding::to_js_ffi(
   #| (self) => ({
   #|   background_color: self.background_color,
   #|   color: self.color,
-  #|   icons: ((() => { const v = self.icons; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   icons: ((() => { const v = self.icons; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   name: self.name
   #| })
 
@@ -416,6 +577,25 @@ pub fn IdentityProviderBranding::to_js(
   self : IdentityProviderBranding,
 ) -> JsValue {
   IdentityProviderBranding::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IdentityProviderBranding::from_js_ffi(
+  value : JsValue,
+) -> IdentityProviderBranding =
+  #| (v) => ({
+  #|   background_color: v.background_color,
+  #|   color: v.color,
+  #|   icons: (v.icons === undefined ? { $tag: 0 } : { $tag: 1, _0: v.icons }),
+  #|   name: v.name
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdentityProviderBranding::from_js(
+  value : JsValue,
+) -> IdentityProviderBranding {
+  IdentityProviderBranding::from_js_ffi(value)
 }
 
 ///|
@@ -456,7 +636,7 @@ extern "js" fn IdentityProviderAPIConfig::to_js_ffi(
   #|   id_assertion_endpoint: self.id_assertion_endpoint,
   #|   login_url: self.login_url,
   #|   disconnect_endpoint: self.disconnect_endpoint,
-  #|   branding: ((() => { const v = self.branding; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   branding: ((() => { const v = self.branding; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   supports_use_other_account: (self.supports_use_other_account === -1 ? undefined : self.supports_use_other_account),
   #|   account_label: self.account_label
   #| })
@@ -467,6 +647,29 @@ pub fn IdentityProviderAPIConfig::to_js(
   self : IdentityProviderAPIConfig,
 ) -> JsValue {
   IdentityProviderAPIConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IdentityProviderAPIConfig::from_js_ffi(
+  value : JsValue,
+) -> IdentityProviderAPIConfig =
+  #| (v) => ({
+  #|   accounts_endpoint: v.accounts_endpoint,
+  #|   client_metadata_endpoint: v.client_metadata_endpoint,
+  #|   id_assertion_endpoint: v.id_assertion_endpoint,
+  #|   login_url: v.login_url,
+  #|   disconnect_endpoint: v.disconnect_endpoint,
+  #|   branding: (v.branding === undefined ? { $tag: 0 } : { $tag: 1, _0: v.branding }),
+  #|   supports_use_other_account: (v.supports_use_other_account === undefined ? -1 : v.supports_use_other_account),
+  #|   account_label: v.account_label
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdentityProviderAPIConfig::from_js(
+  value : JsValue,
+) -> IdentityProviderAPIConfig {
+  IdentityProviderAPIConfig::from_js_ffi(value)
 }
 
 ///|
@@ -515,10 +718,10 @@ extern "js" fn IdentityProviderAccount::to_js_ffi(
   #|   username: self.username,
   #|   given_name: self.given_name,
   #|   picture: self.picture,
-  #|   approved_clients: ((() => { const v = self.approved_clients; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   login_hints: ((() => { const v = self.login_hints; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   domain_hints: ((() => { const v = self.domain_hints; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   label_hints: ((() => { const v = self.label_hints; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   approved_clients: ((() => { const v = self.approved_clients; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   login_hints: ((() => { const v = self.login_hints; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   domain_hints: ((() => { const v = self.domain_hints; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   label_hints: ((() => { const v = self.label_hints; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -527,6 +730,32 @@ pub fn IdentityProviderAccount::to_js(
   self : IdentityProviderAccount,
 ) -> JsValue {
   IdentityProviderAccount::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IdentityProviderAccount::from_js_ffi(
+  value : JsValue,
+) -> IdentityProviderAccount =
+  #| (v) => ({
+  #|   id: v.id,
+  #|   name: v.name,
+  #|   email: v.email,
+  #|   tel: v.tel,
+  #|   username: v.username,
+  #|   given_name: v.given_name,
+  #|   picture: v.picture,
+  #|   approved_clients: (v.approved_clients === undefined ? { $tag: 0 } : { $tag: 1, _0: v.approved_clients }),
+  #|   login_hints: (v.login_hints === undefined ? { $tag: 0 } : { $tag: 1, _0: v.login_hints }),
+  #|   domain_hints: (v.domain_hints === undefined ? { $tag: 0 } : { $tag: 1, _0: v.domain_hints }),
+  #|   label_hints: (v.label_hints === undefined ? { $tag: 0 } : { $tag: 1, _0: v.label_hints })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdentityProviderAccount::from_js(
+  value : JsValue,
+) -> IdentityProviderAccount {
+  IdentityProviderAccount::from_js_ffi(value)
 }
 
 ///|
@@ -546,7 +775,7 @@ extern "js" fn IdentityProviderAccountList::to_js_ffi(
   self : IdentityProviderAccountList,
 ) -> JsValue =
   #| (self) => ({
-  #|   accounts: ((() => { const v = self.accounts; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   accounts: ((() => { const v = self.accounts; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -555,6 +784,22 @@ pub fn IdentityProviderAccountList::to_js(
   self : IdentityProviderAccountList,
 ) -> JsValue {
   IdentityProviderAccountList::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IdentityProviderAccountList::from_js_ffi(
+  value : JsValue,
+) -> IdentityProviderAccountList =
+  #| (v) => ({
+  #|   accounts: (v.accounts === undefined ? { $tag: 0 } : { $tag: 1, _0: v.accounts })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdentityProviderAccountList::from_js(
+  value : JsValue,
+) -> IdentityProviderAccountList {
+  IdentityProviderAccountList::from_js_ffi(value)
 }
 
 ///|
@@ -576,9 +821,9 @@ extern "js" fn IdentityAssertionResponse::to_js_ffi(
   self : IdentityAssertionResponse,
 ) -> JsValue =
   #| (self) => ({
-  #|   token: ((() => { const v = self.token; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   token: ((() => { const v = self.token; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   continue_on: self.continue_on,
-  #|   error: ((() => { const v = self.error; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   error: ((() => { const v = self.error; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -587,6 +832,24 @@ pub fn IdentityAssertionResponse::to_js(
   self : IdentityAssertionResponse,
 ) -> JsValue {
   IdentityAssertionResponse::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IdentityAssertionResponse::from_js_ffi(
+  value : JsValue,
+) -> IdentityAssertionResponse =
+  #| (v) => ({
+  #|   token: (v.token === undefined ? { $tag: 0 } : { $tag: 1, _0: v.token }),
+  #|   continue_on: v.continue_on,
+  #|   error: (v.error === undefined ? { $tag: 0 } : { $tag: 1, _0: v.error })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdentityAssertionResponse::from_js(
+  value : JsValue,
+) -> IdentityAssertionResponse {
+  IdentityAssertionResponse::from_js_ffi(value)
 }
 
 ///|
@@ -626,6 +889,24 @@ pub fn IdentityProviderClientMetadata::to_js(
 }
 
 ///|
+extern "js" fn IdentityProviderClientMetadata::from_js_ffi(
+  value : JsValue,
+) -> IdentityProviderClientMetadata =
+  #| (v) => ({
+  #|   privacy_policy_url: v.privacy_policy_url,
+  #|   terms_of_service_url: v.terms_of_service_url,
+  #|   client_is_third_party_to_top_frame_origin: (v.client_is_third_party_to_top_frame_origin === undefined ? -1 : v.client_is_third_party_to_top_frame_origin)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdentityProviderClientMetadata::from_js(
+  value : JsValue,
+) -> IdentityProviderClientMetadata {
+  IdentityProviderClientMetadata::from_js_ffi(value)
+}
+
+///|
 /// IdentityUserInfo dictionary
 pub(all) struct IdentityUserInfo {
   email : String?
@@ -656,6 +937,23 @@ pub fn IdentityUserInfo::to_js(self : IdentityUserInfo) -> JsValue {
 }
 
 ///|
+extern "js" fn IdentityUserInfo::from_js_ffi(
+  value : JsValue,
+) -> IdentityUserInfo =
+  #| (v) => ({
+  #|   email: v.email,
+  #|   name: v.name,
+  #|   givenName: v.givenName,
+  #|   picture: v.picture
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdentityUserInfo::from_js(value : JsValue) -> IdentityUserInfo {
+  IdentityUserInfo::from_js_ffi(value)
+}
+
+///|
 /// IdentityResolveOptions dictionary
 pub(all) struct IdentityResolveOptions {
   accountId : String?
@@ -679,6 +977,22 @@ extern "js" fn IdentityResolveOptions::to_js_ffi(
 /// Convert to JsValue
 pub fn IdentityResolveOptions::to_js(self : IdentityResolveOptions) -> JsValue {
   IdentityResolveOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IdentityResolveOptions::from_js_ffi(
+  value : JsValue,
+) -> IdentityResolveOptions =
+  #| (v) => ({
+  #|   accountId: v.accountId
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdentityResolveOptions::from_js(
+  value : JsValue,
+) -> IdentityResolveOptions {
+  IdentityResolveOptions::from_js_ffi(value)
 }
 
 ///|

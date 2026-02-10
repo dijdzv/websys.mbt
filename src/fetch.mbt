@@ -31,6 +31,17 @@ pub extern "js" fn HeadersInit::as_array_of_array_of_string(
   #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[HeadersInit] to Array[Array[String]]?
+pub fn HeadersInit::bind_as_array_of_array_of_string(
+  value : HeadersInit?,
+) -> Array[Array[String]]? {
+  match value {
+    Some(v) => v.as_array_of_array_of_string()
+    None => None
+  }
+}
+
+///|
 /// XMLHttpRequestBodyInit typedef
 pub type XMLHttpRequestBodyInit
 
@@ -63,7 +74,7 @@ pub extern "js" fn XMLHttpRequestBodyInit::from_form_data(
 
 ///|
 /// Create XMLHttpRequestBodyInit from URLSearchParams
-pub extern "js" fn XMLHttpRequestBodyInit::from_u_r_l_search_params(
+pub extern "js" fn XMLHttpRequestBodyInit::from_url_search_params(
   v : URLSearchParams,
 ) -> XMLHttpRequestBodyInit =
   #| (v) => v
@@ -98,7 +109,7 @@ pub extern "js" fn XMLHttpRequestBodyInit::is_form_data(
 
 ///|
 /// Check if this XMLHttpRequestBodyInit is URLSearchParams
-pub extern "js" fn XMLHttpRequestBodyInit::is_u_r_l_search_params(
+pub extern "js" fn XMLHttpRequestBodyInit::is_url_search_params(
   self : XMLHttpRequestBodyInit,
 ) -> Bool =
   #| (self) => self instanceof URLSearchParams
@@ -133,7 +144,7 @@ pub extern "js" fn XMLHttpRequestBodyInit::as_form_data(
 
 ///|
 /// Try to get XMLHttpRequestBodyInit as URLSearchParams
-pub extern "js" fn XMLHttpRequestBodyInit::as_u_r_l_search_params(
+pub extern "js" fn XMLHttpRequestBodyInit::as_url_search_params(
   self : XMLHttpRequestBodyInit,
 ) -> URLSearchParams? =
   #| (self) => (self instanceof URLSearchParams) ? { $tag: 1, _0: self } : { $tag: 0 }
@@ -144,6 +155,61 @@ pub extern "js" fn XMLHttpRequestBodyInit::as_string(
   self : XMLHttpRequestBodyInit,
 ) -> String? =
   #| (self) => (typeof self === 'string') ? self : undefined
+
+///|
+/// Flatten Option[XMLHttpRequestBodyInit] to Blob?
+pub fn XMLHttpRequestBodyInit::bind_as_blob(
+  value : XMLHttpRequestBodyInit?,
+) -> Blob? {
+  match value {
+    Some(v) => v.as_blob()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[XMLHttpRequestBodyInit] to BufferSource?
+pub fn XMLHttpRequestBodyInit::bind_as_buffer_source(
+  value : XMLHttpRequestBodyInit?,
+) -> BufferSource? {
+  match value {
+    Some(v) => v.as_buffer_source()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[XMLHttpRequestBodyInit] to FormData?
+pub fn XMLHttpRequestBodyInit::bind_as_form_data(
+  value : XMLHttpRequestBodyInit?,
+) -> FormData? {
+  match value {
+    Some(v) => v.as_form_data()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[XMLHttpRequestBodyInit] to URLSearchParams?
+pub fn XMLHttpRequestBodyInit::bind_as_url_search_params(
+  value : XMLHttpRequestBodyInit?,
+) -> URLSearchParams? {
+  match value {
+    Some(v) => v.as_url_search_params()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[XMLHttpRequestBodyInit] to String?
+pub fn XMLHttpRequestBodyInit::bind_as_string(
+  value : XMLHttpRequestBodyInit?,
+) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
 
 ///|
 /// BodyInit typedef
@@ -162,7 +228,7 @@ pub extern "js" fn BodyInit::from_readable_stream(
 
 ///|
 /// Create BodyInit from XMLHttpRequestBodyInit
-pub extern "js" fn BodyInit::from_x_m_l_http_request_body_init(
+pub extern "js" fn BodyInit::from_xml_http_request_body_init(
   v : XMLHttpRequestBodyInit,
 ) -> BodyInit =
   #| (v) => v
@@ -174,7 +240,7 @@ pub extern "js" fn BodyInit::is_readable_stream(self : BodyInit) -> Bool =
 
 ///|
 /// Check if this BodyInit is XMLHttpRequestBodyInit
-pub extern "js" fn BodyInit::is_x_m_l_http_request_body_init(
+pub extern "js" fn BodyInit::is_xml_http_request_body_init(
   self : BodyInit,
 ) -> Bool =
   #| (self) => self instanceof Blob || self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer || self instanceof FormData || self instanceof URLSearchParams || typeof self === 'string'
@@ -188,10 +254,30 @@ pub extern "js" fn BodyInit::as_readable_stream(
 
 ///|
 /// Try to get BodyInit as XMLHttpRequestBodyInit
-pub extern "js" fn BodyInit::as_x_m_l_http_request_body_init(
+pub extern "js" fn BodyInit::as_xml_http_request_body_init(
   self : BodyInit,
 ) -> XMLHttpRequestBodyInit? =
   #| (self) => (self instanceof Blob || self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer || self instanceof FormData || self instanceof URLSearchParams || typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[BodyInit] to ReadableStream?
+pub fn BodyInit::bind_as_readable_stream(value : BodyInit?) -> ReadableStream? {
+  match value {
+    Some(v) => v.as_readable_stream()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[BodyInit] to XMLHttpRequestBodyInit?
+pub fn BodyInit::bind_as_xml_http_request_body_init(
+  value : BodyInit?,
+) -> XMLHttpRequestBodyInit? {
+  match value {
+    Some(v) => v.as_xml_http_request_body_init()
+    None => None
+  }
+}
 
 ///|
 /// RequestInfo typedef
@@ -232,6 +318,24 @@ pub extern "js" fn RequestInfo::as_string(self : RequestInfo) -> String? =
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
+/// Flatten Option[RequestInfo] to Request?
+pub fn RequestInfo::bind_as_request(value : RequestInfo?) -> Request? {
+  match value {
+    Some(v) => v.as_request()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[RequestInfo] to String?
+pub fn RequestInfo::bind_as_string(value : RequestInfo?) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
 /// RequestDestination enum
 pub(all) enum RequestDestination {
   Empty
@@ -255,7 +359,7 @@ pub(all) enum RequestDestination {
   Video
   Worker
   Xslt
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -321,7 +425,7 @@ pub(all) enum RequestMode {
   SameOrigin
   NoCors
   Cors
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -352,7 +456,7 @@ pub(all) enum RequestCredentials {
   Omit
   SameOrigin
   Include
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -384,7 +488,7 @@ pub(all) enum RequestCache {
   NoCache
   ForceCache
   OnlyIfCached
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -419,7 +523,7 @@ pub(all) enum RequestRedirect {
   Follow
   Error
   Manual
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -446,7 +550,7 @@ pub fn RequestRedirect::from_string(s : String) -> RequestRedirect? {
 /// RequestDuplex enum
 pub(all) enum RequestDuplex {
   Half
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -471,7 +575,7 @@ pub(all) enum RequestPriority {
   High
   Low
   Auto
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -503,7 +607,7 @@ pub(all) enum ResponseType {
   Error
   Opaque
   Opaqueredirect
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -551,13 +655,27 @@ extern "js" fn ResponseInit::to_js_ffi(self : ResponseInit) -> JsValue =
   #| (self) => ({
   #|   status: self.status,
   #|   statusText: self.statusText,
-  #|   headers: ((() => { const v = self.headers; if (v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   headers: ((() => { const v = self.headers; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn ResponseInit::to_js(self : ResponseInit) -> JsValue {
   ResponseInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ResponseInit::from_js_ffi(value : JsValue) -> ResponseInit =
+  #| (v) => ({
+  #|   status: v.status,
+  #|   statusText: v.statusText,
+  #|   headers: (v.headers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.headers })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ResponseInit::from_js(value : JsValue) -> ResponseInit {
+  ResponseInit::from_js_ffi(value)
 }
 
 ///|
@@ -577,13 +695,27 @@ extern "js" fn DeferredRequestInit::to_js_ffi(
   self : DeferredRequestInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   activateAfter: ((() => { const v = self.activateAfter; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   activateAfter: ((() => { const v = self.activateAfter; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn DeferredRequestInit::to_js(self : DeferredRequestInit) -> JsValue {
   DeferredRequestInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DeferredRequestInit::from_js_ffi(
+  value : JsValue,
+) -> DeferredRequestInit =
+  #| (v) => ({
+  #|   activateAfter: (v.activateAfter === undefined ? { $tag: 0 } : { $tag: 1, _0: v.activateAfter })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DeferredRequestInit::from_js(value : JsValue) -> DeferredRequestInit {
+  DeferredRequestInit::from_js_ffi(value)
 }
 
 ///|

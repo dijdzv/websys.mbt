@@ -5,7 +5,7 @@
 /// PressureSource enum
 pub(all) enum PressureSource {
   Cpu
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -31,7 +31,7 @@ pub(all) enum PressureState {
   Fair
   Serious
   Critical
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -93,6 +93,22 @@ pub fn PressureObserverOptions::to_js(
   self : PressureObserverOptions,
 ) -> JsValue {
   PressureObserverOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PressureObserverOptions::from_js_ffi(
+  value : JsValue,
+) -> PressureObserverOptions =
+  #| (v) => ({
+  #|   sampleInterval: v.sampleInterval
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PressureObserverOptions::from_js(
+  value : JsValue,
+) -> PressureObserverOptions {
+  PressureObserverOptions::from_js_ffi(value)
 }
 
 ///|

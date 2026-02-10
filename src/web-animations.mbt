@@ -8,7 +8,7 @@ pub(all) enum AnimationPlayState {
   Running
   Paused
   Finished
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -39,7 +39,7 @@ pub(all) enum AnimationReplaceState {
   Active
   Removed
   Persisted
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -70,7 +70,7 @@ pub(all) enum FillMode {
   Backwards
   Both
   Auto
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -104,7 +104,7 @@ pub(all) enum PlaybackDirection {
   Reverse
   Alternate
   AlternateReverse
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -135,7 +135,7 @@ pub(all) enum CompositeOperation {
   Replace
   Add
   Accumulate
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -165,7 +165,7 @@ pub(all) enum CompositeOperationOrAuto {
   Add
   Accumulate
   Auto
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -211,7 +211,7 @@ extern "js" fn DocumentTimelineOptions::to_js_ffi(
   self : DocumentTimelineOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   originTime: ((() => { const v = self.originTime; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   originTime: ((() => { const v = self.originTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -220,6 +220,22 @@ pub fn DocumentTimelineOptions::to_js(
   self : DocumentTimelineOptions,
 ) -> JsValue {
   DocumentTimelineOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DocumentTimelineOptions::from_js_ffi(
+  value : JsValue,
+) -> DocumentTimelineOptions =
+  #| (v) => ({
+  #|   originTime: (v.originTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.originTime })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DocumentTimelineOptions::from_js(
+  value : JsValue,
+) -> DocumentTimelineOptions {
+  DocumentTimelineOptions::from_js_ffi(value)
 }
 
 ///|
@@ -247,7 +263,7 @@ extern "js" fn BaseComputedKeyframe::to_js_ffi(
   self : BaseComputedKeyframe,
 ) -> JsValue =
   #| (self) => ({
-  #|   offset: ((() => { const v = self.offset; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   offset: ((() => { const v = self.offset; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   computedOffset: self.computedOffset,
   #|   easing: self.easing,
   #|   composite: ((() => { const v = self.composite; if (v === undefined) return undefined; return ['replace', 'add', 'accumulate', 'auto'][v]; })())
@@ -257,6 +273,23 @@ extern "js" fn BaseComputedKeyframe::to_js_ffi(
 /// Convert to JsValue
 pub fn BaseComputedKeyframe::to_js(self : BaseComputedKeyframe) -> JsValue {
   BaseComputedKeyframe::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BaseComputedKeyframe::from_js_ffi(
+  value : JsValue,
+) -> BaseComputedKeyframe =
+  #| (v) => ({
+  #|   offset: (v.offset === undefined ? { $tag: 0 } : v.offset === null ? { $tag: 1 } : { $tag: 2, _0: v.offset }),
+  #|   computedOffset: v.computedOffset,
+  #|   easing: v.easing,
+  #|   composite: (v.composite === undefined ? undefined : ['replace', 'add', 'accumulate', 'auto'].indexOf(v.composite))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BaseComputedKeyframe::from_js(value : JsValue) -> BaseComputedKeyframe {
+  BaseComputedKeyframe::from_js_ffi(value)
 }
 
 ///|
@@ -278,9 +311,9 @@ extern "js" fn BasePropertyIndexedKeyframe::to_js_ffi(
   self : BasePropertyIndexedKeyframe,
 ) -> JsValue =
   #| (self) => ({
-  #|   offset: ((() => { const v = self.offset; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   easing: ((() => { const v = self.easing; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   composite: ((() => { const v = self.composite; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   offset: ((() => { const v = self.offset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   easing: ((() => { const v = self.easing; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   composite: ((() => { const v = self.composite; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -289,6 +322,24 @@ pub fn BasePropertyIndexedKeyframe::to_js(
   self : BasePropertyIndexedKeyframe,
 ) -> JsValue {
   BasePropertyIndexedKeyframe::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BasePropertyIndexedKeyframe::from_js_ffi(
+  value : JsValue,
+) -> BasePropertyIndexedKeyframe =
+  #| (v) => ({
+  #|   offset: (v.offset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offset }),
+  #|   easing: (v.easing === undefined ? { $tag: 0 } : { $tag: 1, _0: v.easing }),
+  #|   composite: (v.composite === undefined ? { $tag: 0 } : { $tag: 1, _0: v.composite })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BasePropertyIndexedKeyframe::from_js(
+  value : JsValue,
+) -> BasePropertyIndexedKeyframe {
+  BasePropertyIndexedKeyframe::from_js_ffi(value)
 }
 
 ///|
@@ -308,7 +359,7 @@ pub fn BaseKeyframe::default() -> BaseKeyframe {
 ///|
 extern "js" fn BaseKeyframe::to_js_ffi(self : BaseKeyframe) -> JsValue =
   #| (self) => ({
-  #|   offset: ((() => { const v = self.offset; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   offset: ((() => { const v = self.offset; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   easing: self.easing,
   #|   composite: ((() => { const v = self.composite; if (v === undefined) return undefined; return ['replace', 'add', 'accumulate', 'auto'][v]; })())
   #| })
@@ -320,10 +371,24 @@ pub fn BaseKeyframe::to_js(self : BaseKeyframe) -> JsValue {
 }
 
 ///|
+extern "js" fn BaseKeyframe::from_js_ffi(value : JsValue) -> BaseKeyframe =
+  #| (v) => ({
+  #|   offset: (v.offset === undefined ? { $tag: 0 } : v.offset === null ? { $tag: 1 } : { $tag: 2, _0: v.offset }),
+  #|   easing: v.easing,
+  #|   composite: (v.composite === undefined ? undefined : ['replace', 'add', 'accumulate', 'auto'].indexOf(v.composite))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BaseKeyframe::from_js(value : JsValue) -> BaseKeyframe {
+  BaseKeyframe::from_js_ffi(value)
+}
+
+///|
 /// GetAnimationsOptions dictionary
 pub(all) struct GetAnimationsOptions {
   subtree : Bool?
-  pseudoElement : Nullable[CSSOMString]
+  pseudoElement : Nullable[String]
 }
 
 ///|
@@ -338,13 +403,28 @@ extern "js" fn GetAnimationsOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   subtree: (self.subtree === -1 ? undefined : self.subtree),
-  #|   pseudoElement: ((() => { const v = self.pseudoElement; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   pseudoElement: ((() => { const v = self.pseudoElement; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn GetAnimationsOptions::to_js(self : GetAnimationsOptions) -> JsValue {
   GetAnimationsOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GetAnimationsOptions::from_js_ffi(
+  value : JsValue,
+) -> GetAnimationsOptions =
+  #| (v) => ({
+  #|   subtree: (v.subtree === undefined ? -1 : v.subtree),
+  #|   pseudoElement: (v.pseudoElement === undefined ? { $tag: 0 } : v.pseudoElement === null ? { $tag: 1 } : { $tag: 2, _0: v.pseudoElement })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GetAnimationsOptions::from_js(value : JsValue) -> GetAnimationsOptions {
+  GetAnimationsOptions::from_js_ffi(value)
 }
 
 ///|
@@ -939,15 +1019,15 @@ pub extern "js" fn KeyframeEffect::set_target(
 ///|
 pub extern "js" fn KeyframeEffect::get_pseudo_element(
   self : KeyframeEffect,
-) -> CSSOMString? =
-  #| (self) => (() => { const v = self.pseudoElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> String? =
+  #| (self) => (self.pseudoElement) ?? undefined
 
 ///|
 pub extern "js" fn KeyframeEffect::set_pseudo_element(
   self : KeyframeEffect,
-  value : CSSOMString?,
+  value : String?,
 ) -> Unit =
-  #| (self, value) => { self.pseudoElement = (value.$tag === 1 ? value._0 : null) }
+  #| (self, value) => { self.pseudoElement = value }
 
 ///|
 pub extern "js" fn KeyframeEffect::get_composite(

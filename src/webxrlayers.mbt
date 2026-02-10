@@ -9,7 +9,7 @@ pub(all) enum XRLayerLayout {
   Stereo
   StereoLeftRight
   StereoTopBottom
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -42,7 +42,7 @@ pub(all) enum XRLayerQuality {
   Default
   TextOptimized
   GraphicsOptimized
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -70,7 +70,7 @@ pub fn XRLayerQuality::from_string(s : String) -> XRLayerQuality? {
 pub(all) enum XRTextureType {
   Texture
   TextureArray
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -119,8 +119,8 @@ extern "js" fn XRProjectionLayerInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
-  #|   colorFormat: ((() => { const v = self.colorFormat; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag !== 1) return undefined; return v._0; })()),
+  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthFormat: ((() => { const v = self.depthFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   scaleFactor: self.scaleFactor,
   #|   clearOnAccess: (self.clearOnAccess === -1 ? undefined : self.clearOnAccess)
   #| })
@@ -129,6 +129,24 @@ extern "js" fn XRProjectionLayerInit::to_js_ffi(
 /// Convert to JsValue
 pub fn XRProjectionLayerInit::to_js(self : XRProjectionLayerInit) -> JsValue {
   XRProjectionLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRProjectionLayerInit::from_js_ffi(
+  value : JsValue,
+) -> XRProjectionLayerInit =
+  #| (v) => ({
+  #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
+  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthFormat }),
+  #|   scaleFactor: v.scaleFactor,
+  #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRProjectionLayerInit::from_js(value : JsValue) -> XRProjectionLayerInit {
+  XRProjectionLayerInit::from_js_ffi(value)
 }
 
 ///|
@@ -168,8 +186,8 @@ extern "js" fn XRLayerInit::to_js_ffi(self : XRLayerInit) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
   #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
-  #|   colorFormat: ((() => { const v = self.colorFormat; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   mipLevels: self.mipLevels,
   #|   viewPixelWidth: self.viewPixelWidth,
   #|   viewPixelHeight: self.viewPixelHeight,
@@ -182,6 +200,27 @@ extern "js" fn XRLayerInit::to_js_ffi(self : XRLayerInit) -> JsValue =
 /// Convert to JsValue
 pub fn XRLayerInit::to_js(self : XRLayerInit) -> JsValue {
   XRLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRLayerInit::from_js_ffi(value : JsValue) -> XRLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
+  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : v.depthFormat === null ? { $tag: 1 } : { $tag: 2, _0: v.depthFormat }),
+  #|   mipLevels: v.mipLevels,
+  #|   viewPixelWidth: v.viewPixelWidth,
+  #|   viewPixelHeight: v.viewPixelHeight,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   isStatic: (v.isStatic === undefined ? -1 : v.isStatic),
+  #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRLayerInit::from_js(value : JsValue) -> XRLayerInit {
+  XRLayerInit::from_js_ffi(value)
 }
 
 ///|
@@ -227,15 +266,15 @@ extern "js" fn XRQuadLayerInit::to_js_ffi(self : XRQuadLayerInit) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
   #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
-  #|   colorFormat: ((() => { const v = self.colorFormat; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   mipLevels: self.mipLevels,
   #|   viewPixelWidth: self.viewPixelWidth,
   #|   viewPixelHeight: self.viewPixelHeight,
   #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
   #|   isStatic: (self.isStatic === -1 ? undefined : self.isStatic),
   #|   clearOnAccess: (self.clearOnAccess === -1 ? undefined : self.clearOnAccess),
-  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   width: self.width,
   #|   height: self.height
   #| })
@@ -244,6 +283,30 @@ extern "js" fn XRQuadLayerInit::to_js_ffi(self : XRQuadLayerInit) -> JsValue =
 /// Convert to JsValue
 pub fn XRQuadLayerInit::to_js(self : XRQuadLayerInit) -> JsValue {
   XRQuadLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRQuadLayerInit::from_js_ffi(value : JsValue) -> XRQuadLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
+  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : v.depthFormat === null ? { $tag: 1 } : { $tag: 2, _0: v.depthFormat }),
+  #|   mipLevels: v.mipLevels,
+  #|   viewPixelWidth: v.viewPixelWidth,
+  #|   viewPixelHeight: v.viewPixelHeight,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   isStatic: (v.isStatic === undefined ? -1 : v.isStatic),
+  #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess),
+  #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
+  #|   width: v.width,
+  #|   height: v.height
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRQuadLayerInit::from_js(value : JsValue) -> XRQuadLayerInit {
+  XRQuadLayerInit::from_js_ffi(value)
 }
 
 ///|
@@ -293,15 +356,15 @@ extern "js" fn XRCylinderLayerInit::to_js_ffi(
   #| (self) => ({
   #|   space: self.space,
   #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
-  #|   colorFormat: ((() => { const v = self.colorFormat; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   mipLevels: self.mipLevels,
   #|   viewPixelWidth: self.viewPixelWidth,
   #|   viewPixelHeight: self.viewPixelHeight,
   #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
   #|   isStatic: (self.isStatic === -1 ? undefined : self.isStatic),
   #|   clearOnAccess: (self.clearOnAccess === -1 ? undefined : self.clearOnAccess),
-  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   radius: self.radius,
   #|   centralAngle: self.centralAngle,
   #|   aspectRatio: self.aspectRatio
@@ -311,6 +374,33 @@ extern "js" fn XRCylinderLayerInit::to_js_ffi(
 /// Convert to JsValue
 pub fn XRCylinderLayerInit::to_js(self : XRCylinderLayerInit) -> JsValue {
   XRCylinderLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRCylinderLayerInit::from_js_ffi(
+  value : JsValue,
+) -> XRCylinderLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
+  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : v.depthFormat === null ? { $tag: 1 } : { $tag: 2, _0: v.depthFormat }),
+  #|   mipLevels: v.mipLevels,
+  #|   viewPixelWidth: v.viewPixelWidth,
+  #|   viewPixelHeight: v.viewPixelHeight,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   isStatic: (v.isStatic === undefined ? -1 : v.isStatic),
+  #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess),
+  #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
+  #|   radius: v.radius,
+  #|   centralAngle: v.centralAngle,
+  #|   aspectRatio: v.aspectRatio
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRCylinderLayerInit::from_js(value : JsValue) -> XRCylinderLayerInit {
+  XRCylinderLayerInit::from_js_ffi(value)
 }
 
 ///|
@@ -362,15 +452,15 @@ extern "js" fn XREquirectLayerInit::to_js_ffi(
   #| (self) => ({
   #|   space: self.space,
   #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
-  #|   colorFormat: ((() => { const v = self.colorFormat; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   mipLevels: self.mipLevels,
   #|   viewPixelWidth: self.viewPixelWidth,
   #|   viewPixelHeight: self.viewPixelHeight,
   #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
   #|   isStatic: (self.isStatic === -1 ? undefined : self.isStatic),
   #|   clearOnAccess: (self.clearOnAccess === -1 ? undefined : self.clearOnAccess),
-  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   radius: self.radius,
   #|   centralHorizontalAngle: self.centralHorizontalAngle,
   #|   upperVerticalAngle: self.upperVerticalAngle,
@@ -381,6 +471,34 @@ extern "js" fn XREquirectLayerInit::to_js_ffi(
 /// Convert to JsValue
 pub fn XREquirectLayerInit::to_js(self : XREquirectLayerInit) -> JsValue {
   XREquirectLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XREquirectLayerInit::from_js_ffi(
+  value : JsValue,
+) -> XREquirectLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
+  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : v.depthFormat === null ? { $tag: 1 } : { $tag: 2, _0: v.depthFormat }),
+  #|   mipLevels: v.mipLevels,
+  #|   viewPixelWidth: v.viewPixelWidth,
+  #|   viewPixelHeight: v.viewPixelHeight,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   isStatic: (v.isStatic === undefined ? -1 : v.isStatic),
+  #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess),
+  #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
+  #|   radius: v.radius,
+  #|   centralHorizontalAngle: v.centralHorizontalAngle,
+  #|   upperVerticalAngle: v.upperVerticalAngle,
+  #|   lowerVerticalAngle: v.lowerVerticalAngle
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XREquirectLayerInit::from_js(value : JsValue) -> XREquirectLayerInit {
+  XREquirectLayerInit::from_js_ffi(value)
 }
 
 ///|
@@ -422,21 +540,43 @@ extern "js" fn XRCubeLayerInit::to_js_ffi(self : XRCubeLayerInit) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
   #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
-  #|   colorFormat: ((() => { const v = self.colorFormat; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   mipLevels: self.mipLevels,
   #|   viewPixelWidth: self.viewPixelWidth,
   #|   viewPixelHeight: self.viewPixelHeight,
   #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
   #|   isStatic: (self.isStatic === -1 ? undefined : self.isStatic),
   #|   clearOnAccess: (self.clearOnAccess === -1 ? undefined : self.clearOnAccess),
-  #|   orientation: ((() => { const v = self.orientation; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   orientation: ((() => { const v = self.orientation; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn XRCubeLayerInit::to_js(self : XRCubeLayerInit) -> JsValue {
   XRCubeLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRCubeLayerInit::from_js_ffi(value : JsValue) -> XRCubeLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
+  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : v.depthFormat === null ? { $tag: 1 } : { $tag: 2, _0: v.depthFormat }),
+  #|   mipLevels: v.mipLevels,
+  #|   viewPixelWidth: v.viewPixelWidth,
+  #|   viewPixelHeight: v.viewPixelHeight,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   isStatic: (v.isStatic === undefined ? -1 : v.isStatic),
+  #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess),
+  #|   orientation: (v.orientation === undefined ? { $tag: 0 } : v.orientation === null ? { $tag: 1 } : { $tag: 2, _0: v.orientation })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRCubeLayerInit::from_js(value : JsValue) -> XRCubeLayerInit {
+  XRCubeLayerInit::from_js_ffi(value)
 }
 
 ///|
@@ -465,6 +605,22 @@ extern "js" fn XRMediaLayerInit::to_js_ffi(self : XRMediaLayerInit) -> JsValue =
 /// Convert to JsValue
 pub fn XRMediaLayerInit::to_js(self : XRMediaLayerInit) -> JsValue {
   XRMediaLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRMediaLayerInit::from_js_ffi(
+  value : JsValue,
+) -> XRMediaLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   invertStereo: (v.invertStereo === undefined ? -1 : v.invertStereo)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRMediaLayerInit::from_js(value : JsValue) -> XRMediaLayerInit {
+  XRMediaLayerInit::from_js_ffi(value)
 }
 
 ///|
@@ -499,15 +655,34 @@ extern "js" fn XRMediaQuadLayerInit::to_js_ffi(
   #|   space: self.space,
   #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
   #|   invertStereo: (self.invertStereo === -1 ? undefined : self.invertStereo),
-  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   width: ((() => { const v = self.width; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   height: ((() => { const v = self.height; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   width: ((() => { const v = self.width; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   height: ((() => { const v = self.height; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn XRMediaQuadLayerInit::to_js(self : XRMediaQuadLayerInit) -> JsValue {
   XRMediaQuadLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRMediaQuadLayerInit::from_js_ffi(
+  value : JsValue,
+) -> XRMediaQuadLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   invertStereo: (v.invertStereo === undefined ? -1 : v.invertStereo),
+  #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
+  #|   width: (v.width === undefined ? { $tag: 0 } : v.width === null ? { $tag: 1 } : { $tag: 2, _0: v.width }),
+  #|   height: (v.height === undefined ? { $tag: 0 } : v.height === null ? { $tag: 1 } : { $tag: 2, _0: v.height })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRMediaQuadLayerInit::from_js(value : JsValue) -> XRMediaQuadLayerInit {
+  XRMediaQuadLayerInit::from_js_ffi(value)
 }
 
 ///|
@@ -546,10 +721,10 @@ extern "js" fn XRMediaCylinderLayerInit::to_js_ffi(
   #|   space: self.space,
   #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
   #|   invertStereo: (self.invertStereo === -1 ? undefined : self.invertStereo),
-  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   radius: self.radius,
   #|   centralAngle: self.centralAngle,
-  #|   aspectRatio: ((() => { const v = self.aspectRatio; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   aspectRatio: ((() => { const v = self.aspectRatio; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
@@ -558,6 +733,28 @@ pub fn XRMediaCylinderLayerInit::to_js(
   self : XRMediaCylinderLayerInit,
 ) -> JsValue {
   XRMediaCylinderLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRMediaCylinderLayerInit::from_js_ffi(
+  value : JsValue,
+) -> XRMediaCylinderLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   invertStereo: (v.invertStereo === undefined ? -1 : v.invertStereo),
+  #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
+  #|   radius: v.radius,
+  #|   centralAngle: v.centralAngle,
+  #|   aspectRatio: (v.aspectRatio === undefined ? { $tag: 0 } : v.aspectRatio === null ? { $tag: 1 } : { $tag: 2, _0: v.aspectRatio })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRMediaCylinderLayerInit::from_js(
+  value : JsValue,
+) -> XRMediaCylinderLayerInit {
+  XRMediaCylinderLayerInit::from_js_ffi(value)
 }
 
 ///|
@@ -598,7 +795,7 @@ extern "js" fn XRMediaEquirectLayerInit::to_js_ffi(
   #|   space: self.space,
   #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
   #|   invertStereo: (self.invertStereo === -1 ? undefined : self.invertStereo),
-  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   radius: self.radius,
   #|   centralHorizontalAngle: self.centralHorizontalAngle,
   #|   upperVerticalAngle: self.upperVerticalAngle,
@@ -611,6 +808,29 @@ pub fn XRMediaEquirectLayerInit::to_js(
   self : XRMediaEquirectLayerInit,
 ) -> JsValue {
   XRMediaEquirectLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRMediaEquirectLayerInit::from_js_ffi(
+  value : JsValue,
+) -> XRMediaEquirectLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   invertStereo: (v.invertStereo === undefined ? -1 : v.invertStereo),
+  #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
+  #|   radius: v.radius,
+  #|   centralHorizontalAngle: v.centralHorizontalAngle,
+  #|   upperVerticalAngle: v.upperVerticalAngle,
+  #|   lowerVerticalAngle: v.lowerVerticalAngle
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRMediaEquirectLayerInit::from_js(
+  value : JsValue,
+) -> XRMediaEquirectLayerInit {
+  XRMediaEquirectLayerInit::from_js_ffi(value)
 }
 
 ///|
@@ -635,6 +855,20 @@ extern "js" fn XRLayerEventInit::to_js_ffi(self : XRLayerEventInit) -> JsValue =
 /// Convert to JsValue
 pub fn XRLayerEventInit::to_js(self : XRLayerEventInit) -> JsValue {
   XRLayerEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRLayerEventInit::from_js_ffi(
+  value : JsValue,
+) -> XRLayerEventInit =
+  #| (v) => ({
+  #|   layer: v.layer
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRLayerEventInit::from_js(value : JsValue) -> XRLayerEventInit {
+  XRLayerEventInit::from_js_ffi(value)
 }
 
 ///|
@@ -1721,14 +1955,14 @@ pub extern "js" fn XRWebGLBinding::get_camera_image(
   #| (self, camera) => (() => { const v = self.getCameraImage(camera); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn XRWebGLBinding::new_with_web_g_l_rendering_context(
+pub extern "js" fn XRWebGLBinding::new_with_web_gl_rendering_context(
   session : XRSession,
   context : WebGLRenderingContext,
 ) -> XRWebGLBinding =
   #| (session, context) => new XRWebGLBinding(session, context)
 
 ///|
-pub extern "js" fn XRWebGLBinding::new_with_web_g_l2_rendering_context(
+pub extern "js" fn XRWebGLBinding::new_with_web_gl2_rendering_context(
   session : XRSession,
   context : WebGL2RenderingContext,
 ) -> XRWebGLBinding =

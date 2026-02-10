@@ -29,7 +29,7 @@ pub(all) enum XRHandJoint {
   PinkyFingerPhalanxIntermediate
   PinkyFingerPhalanxDistal
   PinkyFingerTip
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

@@ -33,6 +33,17 @@ pub extern "js" fn AlgorithmIdentifier::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
+/// Flatten Option[AlgorithmIdentifier] to String?
+pub fn AlgorithmIdentifier::bind_as_string(
+  value : AlgorithmIdentifier?,
+) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
 /// HashAlgorithmIdentifier typedef
 pub type HashAlgorithmIdentifier = AlgorithmIdentifier
 
@@ -50,7 +61,7 @@ pub(all) enum KeyType {
   Public
   Private
   Secret
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -98,6 +109,18 @@ pub fn Algorithm::to_js(self : Algorithm) -> JsValue {
 }
 
 ///|
+extern "js" fn Algorithm::from_js_ffi(value : JsValue) -> Algorithm =
+  #| (v) => ({
+  #|   name: v.name
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn Algorithm::from_js(value : JsValue) -> Algorithm {
+  Algorithm::from_js_ffi(value)
+}
+
+///|
 /// KeyAlgorithm dictionary
 pub(all) struct KeyAlgorithm {
   name : String
@@ -119,6 +142,18 @@ extern "js" fn KeyAlgorithm::to_js_ffi(self : KeyAlgorithm) -> JsValue =
 /// Convert to JsValue
 pub fn KeyAlgorithm::to_js(self : KeyAlgorithm) -> JsValue {
   KeyAlgorithm::to_js_ffi(self)
+}
+
+///|
+extern "js" fn KeyAlgorithm::from_js_ffi(value : JsValue) -> KeyAlgorithm =
+  #| (v) => ({
+  #|   name: v.name
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn KeyAlgorithm::from_js(value : JsValue) -> KeyAlgorithm {
+  KeyAlgorithm::from_js_ffi(value)
 }
 
 ///|
@@ -152,6 +187,22 @@ pub fn RsaOtherPrimesInfo::to_js(self : RsaOtherPrimesInfo) -> JsValue {
 }
 
 ///|
+extern "js" fn RsaOtherPrimesInfo::from_js_ffi(
+  value : JsValue,
+) -> RsaOtherPrimesInfo =
+  #| (v) => ({
+  #|   r: v.r,
+  #|   d: v.d,
+  #|   t: v.t
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RsaOtherPrimesInfo::from_js(value : JsValue) -> RsaOtherPrimesInfo {
+  RsaOtherPrimesInfo::from_js_ffi(value)
+}
+
+///|
 /// CryptoKeyPair dictionary
 pub(all) struct CryptoKeyPair {
   publicKey : CryptoKey?
@@ -167,14 +218,27 @@ pub fn CryptoKeyPair::default() -> CryptoKeyPair {
 ///|
 extern "js" fn CryptoKeyPair::to_js_ffi(self : CryptoKeyPair) -> JsValue =
   #| (self) => ({
-  #|   publicKey: ((() => { const v = self.publicKey; if (v.$tag !== 1) return undefined; return v._0; })()),
-  #|   privateKey: ((() => { const v = self.privateKey; if (v.$tag !== 1) return undefined; return v._0; })())
+  #|   publicKey: ((() => { const v = self.publicKey; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   privateKey: ((() => { const v = self.privateKey; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn CryptoKeyPair::to_js(self : CryptoKeyPair) -> JsValue {
   CryptoKeyPair::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CryptoKeyPair::from_js_ffi(value : JsValue) -> CryptoKeyPair =
+  #| (v) => ({
+  #|   publicKey: (v.publicKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.publicKey }),
+  #|   privateKey: (v.privateKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.privateKey })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CryptoKeyPair::from_js(value : JsValue) -> CryptoKeyPair {
+  CryptoKeyPair::from_js_ffi(value)
 }
 
 ///|
@@ -203,6 +267,20 @@ extern "js" fn RsaKeyGenParams::to_js_ffi(self : RsaKeyGenParams) -> JsValue =
 /// Convert to JsValue
 pub fn RsaKeyGenParams::to_js(self : RsaKeyGenParams) -> JsValue {
   RsaKeyGenParams::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RsaKeyGenParams::from_js_ffi(value : JsValue) -> RsaKeyGenParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   modulusLength: v.modulusLength,
+  #|   publicExponent: v.publicExponent
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RsaKeyGenParams::from_js(value : JsValue) -> RsaKeyGenParams {
+  RsaKeyGenParams::from_js_ffi(value)
 }
 
 ///|
@@ -241,6 +319,23 @@ pub fn RsaHashedKeyGenParams::to_js(self : RsaHashedKeyGenParams) -> JsValue {
 }
 
 ///|
+extern "js" fn RsaHashedKeyGenParams::from_js_ffi(
+  value : JsValue,
+) -> RsaHashedKeyGenParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   modulusLength: v.modulusLength,
+  #|   publicExponent: v.publicExponent,
+  #|   hash: v.hash
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RsaHashedKeyGenParams::from_js(value : JsValue) -> RsaHashedKeyGenParams {
+  RsaHashedKeyGenParams::from_js_ffi(value)
+}
+
+///|
 /// RsaKeyAlgorithm dictionary
 pub(all) struct RsaKeyAlgorithm {
   name : String
@@ -266,6 +361,20 @@ extern "js" fn RsaKeyAlgorithm::to_js_ffi(self : RsaKeyAlgorithm) -> JsValue =
 /// Convert to JsValue
 pub fn RsaKeyAlgorithm::to_js(self : RsaKeyAlgorithm) -> JsValue {
   RsaKeyAlgorithm::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RsaKeyAlgorithm::from_js_ffi(value : JsValue) -> RsaKeyAlgorithm =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   modulusLength: v.modulusLength,
+  #|   publicExponent: v.publicExponent
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RsaKeyAlgorithm::from_js(value : JsValue) -> RsaKeyAlgorithm {
+  RsaKeyAlgorithm::from_js_ffi(value)
 }
 
 ///|
@@ -304,6 +413,23 @@ pub fn RsaHashedKeyAlgorithm::to_js(self : RsaHashedKeyAlgorithm) -> JsValue {
 }
 
 ///|
+extern "js" fn RsaHashedKeyAlgorithm::from_js_ffi(
+  value : JsValue,
+) -> RsaHashedKeyAlgorithm =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   modulusLength: v.modulusLength,
+  #|   publicExponent: v.publicExponent,
+  #|   hash: v.hash
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RsaHashedKeyAlgorithm::from_js(value : JsValue) -> RsaHashedKeyAlgorithm {
+  RsaHashedKeyAlgorithm::from_js_ffi(value)
+}
+
+///|
 /// RsaHashedImportParams dictionary
 pub(all) struct RsaHashedImportParams {
   name : String
@@ -334,6 +460,21 @@ pub fn RsaHashedImportParams::to_js(self : RsaHashedImportParams) -> JsValue {
 }
 
 ///|
+extern "js" fn RsaHashedImportParams::from_js_ffi(
+  value : JsValue,
+) -> RsaHashedImportParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   hash: v.hash
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RsaHashedImportParams::from_js(value : JsValue) -> RsaHashedImportParams {
+  RsaHashedImportParams::from_js_ffi(value)
+}
+
+///|
 /// RsaPssParams dictionary
 pub(all) struct RsaPssParams {
   name : String
@@ -360,6 +501,19 @@ pub fn RsaPssParams::to_js(self : RsaPssParams) -> JsValue {
 }
 
 ///|
+extern "js" fn RsaPssParams::from_js_ffi(value : JsValue) -> RsaPssParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   saltLength: v.saltLength
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RsaPssParams::from_js(value : JsValue) -> RsaPssParams {
+  RsaPssParams::from_js_ffi(value)
+}
+
+///|
 /// RsaOaepParams dictionary
 pub(all) struct RsaOaepParams {
   name : String
@@ -376,13 +530,26 @@ pub fn RsaOaepParams::default() -> RsaOaepParams {
 extern "js" fn RsaOaepParams::to_js_ffi(self : RsaOaepParams) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   label: ((() => { const v = self.label; if (v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   label: ((() => { const v = self.label; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn RsaOaepParams::to_js(self : RsaOaepParams) -> JsValue {
   RsaOaepParams::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RsaOaepParams::from_js_ffi(value : JsValue) -> RsaOaepParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   label: (v.label === undefined ? { $tag: 0 } : { $tag: 1, _0: v.label })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RsaOaepParams::from_js(value : JsValue) -> RsaOaepParams {
+  RsaOaepParams::from_js_ffi(value)
 }
 
 ///|
@@ -412,6 +579,19 @@ pub fn EcdsaParams::to_js(self : EcdsaParams) -> JsValue {
 }
 
 ///|
+extern "js" fn EcdsaParams::from_js_ffi(value : JsValue) -> EcdsaParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   hash: v.hash
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn EcdsaParams::from_js(value : JsValue) -> EcdsaParams {
+  EcdsaParams::from_js_ffi(value)
+}
+
+///|
 /// EcKeyGenParams dictionary
 pub(all) struct EcKeyGenParams {
   name : String
@@ -438,6 +618,19 @@ pub fn EcKeyGenParams::to_js(self : EcKeyGenParams) -> JsValue {
 }
 
 ///|
+extern "js" fn EcKeyGenParams::from_js_ffi(value : JsValue) -> EcKeyGenParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   namedCurve: v.namedCurve
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn EcKeyGenParams::from_js(value : JsValue) -> EcKeyGenParams {
+  EcKeyGenParams::from_js_ffi(value)
+}
+
+///|
 /// EcKeyAlgorithm dictionary
 pub(all) struct EcKeyAlgorithm {
   name : String
@@ -461,6 +654,19 @@ extern "js" fn EcKeyAlgorithm::to_js_ffi(self : EcKeyAlgorithm) -> JsValue =
 /// Convert to JsValue
 pub fn EcKeyAlgorithm::to_js(self : EcKeyAlgorithm) -> JsValue {
   EcKeyAlgorithm::to_js_ffi(self)
+}
+
+///|
+extern "js" fn EcKeyAlgorithm::from_js_ffi(value : JsValue) -> EcKeyAlgorithm =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   namedCurve: v.namedCurve
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn EcKeyAlgorithm::from_js(value : JsValue) -> EcKeyAlgorithm {
+  EcKeyAlgorithm::from_js_ffi(value)
 }
 
 ///|
@@ -492,6 +698,21 @@ pub fn EcKeyImportParams::to_js(self : EcKeyImportParams) -> JsValue {
 }
 
 ///|
+extern "js" fn EcKeyImportParams::from_js_ffi(
+  value : JsValue,
+) -> EcKeyImportParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   namedCurve: v.namedCurve
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn EcKeyImportParams::from_js(value : JsValue) -> EcKeyImportParams {
+  EcKeyImportParams::from_js_ffi(value)
+}
+
+///|
 /// EcdhKeyDeriveParams dictionary
 pub(all) struct EcdhKeyDeriveParams {
   name : String
@@ -517,6 +738,21 @@ extern "js" fn EcdhKeyDeriveParams::to_js_ffi(
 /// Convert to JsValue
 pub fn EcdhKeyDeriveParams::to_js(self : EcdhKeyDeriveParams) -> JsValue {
   EcdhKeyDeriveParams::to_js_ffi(self)
+}
+
+///|
+extern "js" fn EcdhKeyDeriveParams::from_js_ffi(
+  value : JsValue,
+) -> EcdhKeyDeriveParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   public: v.public
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn EcdhKeyDeriveParams::from_js(value : JsValue) -> EcdhKeyDeriveParams {
+  EcdhKeyDeriveParams::from_js_ffi(value)
 }
 
 ///|
@@ -548,6 +784,20 @@ pub fn AesCtrParams::to_js(self : AesCtrParams) -> JsValue {
 }
 
 ///|
+extern "js" fn AesCtrParams::from_js_ffi(value : JsValue) -> AesCtrParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   counter: v.counter,
+  #|   length: v.length
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AesCtrParams::from_js(value : JsValue) -> AesCtrParams {
+  AesCtrParams::from_js_ffi(value)
+}
+
+///|
 /// AesKeyAlgorithm dictionary
 pub(all) struct AesKeyAlgorithm {
   name : String
@@ -574,6 +824,19 @@ pub fn AesKeyAlgorithm::to_js(self : AesKeyAlgorithm) -> JsValue {
 }
 
 ///|
+extern "js" fn AesKeyAlgorithm::from_js_ffi(value : JsValue) -> AesKeyAlgorithm =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   length: v.length
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AesKeyAlgorithm::from_js(value : JsValue) -> AesKeyAlgorithm {
+  AesKeyAlgorithm::from_js_ffi(value)
+}
+
+///|
 /// AesKeyGenParams dictionary
 pub(all) struct AesKeyGenParams {
   name : String
@@ -597,6 +860,19 @@ extern "js" fn AesKeyGenParams::to_js_ffi(self : AesKeyGenParams) -> JsValue =
 /// Convert to JsValue
 pub fn AesKeyGenParams::to_js(self : AesKeyGenParams) -> JsValue {
   AesKeyGenParams::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AesKeyGenParams::from_js_ffi(value : JsValue) -> AesKeyGenParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   length: v.length
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AesKeyGenParams::from_js(value : JsValue) -> AesKeyGenParams {
+  AesKeyGenParams::from_js_ffi(value)
 }
 
 ///|
@@ -628,6 +904,21 @@ pub fn AesDerivedKeyParams::to_js(self : AesDerivedKeyParams) -> JsValue {
 }
 
 ///|
+extern "js" fn AesDerivedKeyParams::from_js_ffi(
+  value : JsValue,
+) -> AesDerivedKeyParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   length: v.length
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AesDerivedKeyParams::from_js(value : JsValue) -> AesDerivedKeyParams {
+  AesDerivedKeyParams::from_js_ffi(value)
+}
+
+///|
 /// AesCbcParams dictionary
 pub(all) struct AesCbcParams {
   name : String
@@ -654,6 +945,19 @@ pub fn AesCbcParams::to_js(self : AesCbcParams) -> JsValue {
 }
 
 ///|
+extern "js" fn AesCbcParams::from_js_ffi(value : JsValue) -> AesCbcParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   iv: v.iv
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AesCbcParams::from_js(value : JsValue) -> AesCbcParams {
+  AesCbcParams::from_js_ffi(value)
+}
+
+///|
 /// AesGcmParams dictionary
 pub(all) struct AesGcmParams {
   name : String
@@ -673,7 +977,7 @@ extern "js" fn AesGcmParams::to_js_ffi(self : AesGcmParams) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   iv: self.iv.to_js_value(),
-  #|   additionalData: ((() => { const v = self.additionalData; if (v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   additionalData: ((() => { const v = self.additionalData; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
   #|   tagLength: self.tagLength
   #| })
 
@@ -681,6 +985,21 @@ extern "js" fn AesGcmParams::to_js_ffi(self : AesGcmParams) -> JsValue =
 /// Convert to JsValue
 pub fn AesGcmParams::to_js(self : AesGcmParams) -> JsValue {
   AesGcmParams::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AesGcmParams::from_js_ffi(value : JsValue) -> AesGcmParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   iv: v.iv,
+  #|   additionalData: (v.additionalData === undefined ? { $tag: 0 } : { $tag: 1, _0: v.additionalData }),
+  #|   tagLength: v.tagLength
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AesGcmParams::from_js(value : JsValue) -> AesGcmParams {
+  AesGcmParams::from_js_ffi(value)
 }
 
 ///|
@@ -714,6 +1033,22 @@ pub fn HmacImportParams::to_js(self : HmacImportParams) -> JsValue {
 }
 
 ///|
+extern "js" fn HmacImportParams::from_js_ffi(
+  value : JsValue,
+) -> HmacImportParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   hash: v.hash,
+  #|   length: v.length
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn HmacImportParams::from_js(value : JsValue) -> HmacImportParams {
+  HmacImportParams::from_js_ffi(value)
+}
+
+///|
 /// HmacKeyAlgorithm dictionary
 pub(all) struct HmacKeyAlgorithm {
   name : String
@@ -739,6 +1074,22 @@ extern "js" fn HmacKeyAlgorithm::to_js_ffi(self : HmacKeyAlgorithm) -> JsValue =
 /// Convert to JsValue
 pub fn HmacKeyAlgorithm::to_js(self : HmacKeyAlgorithm) -> JsValue {
   HmacKeyAlgorithm::to_js_ffi(self)
+}
+
+///|
+extern "js" fn HmacKeyAlgorithm::from_js_ffi(
+  value : JsValue,
+) -> HmacKeyAlgorithm =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   hash: v.hash,
+  #|   length: v.length
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn HmacKeyAlgorithm::from_js(value : JsValue) -> HmacKeyAlgorithm {
+  HmacKeyAlgorithm::from_js_ffi(value)
 }
 
 ///|
@@ -769,6 +1120,22 @@ extern "js" fn HmacKeyGenParams::to_js_ffi(self : HmacKeyGenParams) -> JsValue =
 /// Convert to JsValue
 pub fn HmacKeyGenParams::to_js(self : HmacKeyGenParams) -> JsValue {
   HmacKeyGenParams::to_js_ffi(self)
+}
+
+///|
+extern "js" fn HmacKeyGenParams::from_js_ffi(
+  value : JsValue,
+) -> HmacKeyGenParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   hash: v.hash,
+  #|   length: v.length
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn HmacKeyGenParams::from_js(value : JsValue) -> HmacKeyGenParams {
+  HmacKeyGenParams::from_js_ffi(value)
 }
 
 ///|
@@ -806,6 +1173,21 @@ pub fn HkdfParams::to_js(self : HkdfParams) -> JsValue {
 }
 
 ///|
+extern "js" fn HkdfParams::from_js_ffi(value : JsValue) -> HkdfParams =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   hash: v.hash,
+  #|   salt: v.salt,
+  #|   info: v.info
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn HkdfParams::from_js(value : JsValue) -> HkdfParams {
+  HkdfParams::from_js_ffi(value)
+}
+
+///|
 /// Pbkdf2Params dictionary
 pub(all) struct Pbkdf2Params {
   name : String
@@ -836,6 +1218,21 @@ extern "js" fn Pbkdf2Params::to_js_ffi(self : Pbkdf2Params) -> JsValue =
 /// Convert to JsValue
 pub fn Pbkdf2Params::to_js(self : Pbkdf2Params) -> JsValue {
   Pbkdf2Params::to_js_ffi(self)
+}
+
+///|
+extern "js" fn Pbkdf2Params::from_js_ffi(value : JsValue) -> Pbkdf2Params =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   salt: v.salt,
+  #|   iterations: v.iterations,
+  #|   hash: v.hash
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn Pbkdf2Params::from_js(value : JsValue) -> Pbkdf2Params {
+  Pbkdf2Params::from_js_ffi(value)
 }
 
 ///|
@@ -1179,7 +1576,10 @@ pub extern "js" fn SubtleCrypto::encapsulate_key(
   extractable : Bool,
   key_usages : Array[KeyUsage],
 ) -> Promise[EncapsulatedKey] =
-  #| (self, encapsulation_algorithm, encapsulation_key, shared_key_algorithm, extractable, key_usages) => self.encapsulateKey(encapsulation_algorithm, encapsulation_key, shared_key_algorithm, extractable, key_usages)
+  #| (self, encapsulation_algorithm, encapsulation_key, shared_key_algorithm, extractable, key_usages) => self.encapsulateKey(encapsulation_algorithm, encapsulation_key, shared_key_algorithm, extractable, key_usages).then(v => ({
+  #|   sharedKey: (v.sharedKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sharedKey }),
+  #|   ciphertext: (v.ciphertext === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ciphertext })
+  #| }))
 
 ///|
 pub extern "js" fn SubtleCrypto::encapsulate_bits(
@@ -1187,7 +1587,10 @@ pub extern "js" fn SubtleCrypto::encapsulate_bits(
   encapsulation_algorithm : AlgorithmIdentifier,
   encapsulation_key : CryptoKey,
 ) -> Promise[EncapsulatedBits] =
-  #| (self, encapsulation_algorithm, encapsulation_key) => self.encapsulateBits(encapsulation_algorithm, encapsulation_key)
+  #| (self, encapsulation_algorithm, encapsulation_key) => self.encapsulateBits(encapsulation_algorithm, encapsulation_key).then(v => ({
+  #|   sharedKey: (v.sharedKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sharedKey }),
+  #|   ciphertext: (v.ciphertext === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ciphertext })
+  #| }))
 
 ///|
 pub extern "js" fn SubtleCrypto::decapsulate_key(

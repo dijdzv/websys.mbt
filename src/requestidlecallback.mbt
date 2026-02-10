@@ -39,6 +39,20 @@ pub fn IdleRequestOptions::to_js(self : IdleRequestOptions) -> JsValue {
 }
 
 ///|
+extern "js" fn IdleRequestOptions::from_js_ffi(
+  value : JsValue,
+) -> IdleRequestOptions =
+  #| (v) => ({
+  #|   timeout: v.timeout
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdleRequestOptions::from_js(value : JsValue) -> IdleRequestOptions {
+  IdleRequestOptions::from_js_ffi(value)
+}
+
+///|
 /// IdleDeadline interface
 pub type IdleDeadline
 

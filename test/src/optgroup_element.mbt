@@ -19,5 +19,4 @@ fn test_optgroup_element() -> Unit {
   // type conversions
   let _html : @websys.HTMLElement = optgroup.to_html_element()
   let _el : @websys.Element = optgroup.to_element()
-
 }

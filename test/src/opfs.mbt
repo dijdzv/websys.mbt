@@ -19,7 +19,6 @@ fn test_opfs() -> Unit {
 
   // StorageManager::get_directory() returns a Promise (not null)
   let _ = storage.get_directory()
-
 }
 
 // --- Async test: access_storage ---
@@ -39,7 +38,6 @@ async fn test_opfs_access_storage() -> Unit {
   let dir = storage.get_directory().wait()
   // Verify we got a valid FileSystemDirectoryHandle
   let _ = dir.to_js_value()
-
 }
 
 ///|
@@ -71,7 +69,9 @@ async fn test_opfs_create_file() -> Unit {
 
   // Create a file
   let opts = @websys.FileSystemGetFileOptions::{ create: Some(true) }
-  let file_handle = root.get_file_handle_with_options("test_file.txt", opts).wait()
+  let file_handle = root
+    .get_file_handle_with_options("test_file.txt", opts)
+    .wait()
   let _ = file_handle.to_js_value()
 
   // Clean up
@@ -91,10 +91,9 @@ async fn test_opfs_write_to_file() -> Unit {
 
   // Create a file
   let opts = @websys.FileSystemGetFileOptions::{ create: Some(true) }
-  let file_handle = root.get_file_handle_with_options(
-    "test_write.txt",
-    opts,
-  ).wait()
+  let file_handle = root
+    .get_file_handle_with_options("test_write.txt", opts)
+    .wait()
 
   // Create a writable stream
   let writable = file_handle.create_writable().wait()

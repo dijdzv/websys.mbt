@@ -18,11 +18,19 @@ pub fn test_css_style_sheet() -> Unit {
   // Insert another rule at index 1
   let idx2 = sheet.insert_rule_with_index("p { margin: 0; }", 1)
   assert_eq(idx2, 1, label="insertRule at index 1")
-  assert_eq(sheet.get_css_rules().get_length(), 2, label="cssRules after 2nd insert")
+  assert_eq(
+    sheet.get_css_rules().get_length(),
+    2,
+    label="cssRules after 2nd insert",
+  )
 
   // deleteRule
   sheet.delete_rule(0)
-  assert_eq(sheet.get_css_rules().get_length(), 1, label="cssRules after delete")
+  assert_eq(
+    sheet.get_css_rules().get_length(),
+    1,
+    label="cssRules after delete",
+  )
 
   // replaceSync — replaces all rules
   sheet.replace_sync(".foo { display: none; }")

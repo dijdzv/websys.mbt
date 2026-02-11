@@ -8,7 +8,6 @@ fn test_html_html_element() -> Unit {
   html.set_version("-//W3C//DTD HTML 4.01//EN")
   assert_eq(html.get_version(), "-//W3C//DTD HTML 4.01//EN", label="version")
   let _el : @websys.Element = html.to_element()
-
 }
 
 ///|

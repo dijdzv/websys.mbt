@@ -15,5 +15,4 @@ fn test_canvas_element() -> Unit {
   // type conversion
   let _html : @websys.HTMLElement = canvas.to_html_element()
   let _el : @websys.Element = canvas.to_element()
-
 }

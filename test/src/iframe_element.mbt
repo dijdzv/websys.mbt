@@ -38,5 +38,4 @@ fn test_iframe_element() -> Unit {
   // type conversions
   let _html : @websys.HTMLElement = iframe.to_html_element()
   let _el : @websys.Element = iframe.to_element()
-
 }

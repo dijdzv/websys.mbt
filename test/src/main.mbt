@@ -393,10 +393,9 @@ async fn main {
 
   // Response async: text() on empty body
   total = total + 1
-  let response_body_result = run_async_test(
-    "response_body",
-    async fn() { test_response_body() },
-  ).wait() catch {
+  let response_body_result = run_async_test("response_body", async fn() {
+    test_response_body()
+  }).wait() catch {
     _ => false
   }
   if response_body_result {

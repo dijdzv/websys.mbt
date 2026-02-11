@@ -9,9 +9,7 @@ pub fn test_error_invalid_selector() -> Unit {
 
   // Invalid CSS selector should throw
   assert_true(
-    @websys.try_catch(fn() {
-      let _ = div.query_selector(">>>invalid")
-    }) != "",
+    @websys.try_catch(fn() { let _ = div.query_selector(">>>invalid") }) != "",
     label="invalid selector throws",
   )
   println("  error_invalid_selector: ok")
@@ -102,7 +100,8 @@ pub fn test_error_dom_exception() -> Unit {
   assert_true(
     @websys.try_catch(fn() {
       let _ = div.to_node().remove_child(span.to_node())
-    }) != "",
+    }) !=
+    "",
     label="removeChild non-child throws",
   )
 
@@ -111,7 +110,8 @@ pub fn test_error_dom_exception() -> Unit {
   assert_true(
     @websys.try_catch(fn() {
       let _ = div.to_node().insert_before(child.to_node(), Some(span.to_node()))
-    }) != "",
+    }) !=
+    "",
     label="insertBefore invalid ref throws",
   )
   println("  error_dom_exception: ok")

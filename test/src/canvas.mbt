@@ -12,8 +12,7 @@ fn get_canvas_2d() -> @websys.CanvasRenderingContext2D {
   canvas.set_height(200)
   @websys.RenderingContext::bind_as_canvas_rendering_context_2d(
     canvas.get_context("2d"),
-  )
-  .unwrap()
+  ).unwrap()
 }
 
 ///|

@@ -1,5 +1,0 @@
-{
-  "is-main": true,
-  "supported-targets": ["js"],
-  "import": ["dijdzv/websys", "moonbitlang/async", "moonbitlang/async/js_async"]
-}

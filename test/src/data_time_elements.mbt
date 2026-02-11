@@ -15,7 +15,6 @@ fn test_data_element() -> Unit {
   assert_eq(data.get_value(), "42", label="value set")
   // type conversions
   let _html : @websys.HTMLElement = data.to_html_element()
-
 }
 
 ///|

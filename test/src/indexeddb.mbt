@@ -13,5 +13,4 @@ fn test_indexeddb_accessor() -> Unit {
   let idb = w.get_indexed_db()
   // Just verify the accessor doesn't throw and returns a valid object
   let _ = idb.to_js_value()
-
 }

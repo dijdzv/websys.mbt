@@ -18,5 +18,4 @@ fn test_br_element() -> Unit {
   let _html : @websys.HTMLElement = br.to_html_element()
   let _el : @websys.Element = br.to_element()
   let _node : @websys.Node = br.to_node()
-
 }

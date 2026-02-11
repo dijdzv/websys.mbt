@@ -10,5 +10,4 @@ fn test_slot_element() -> Unit {
   assert_eq(slot.get_name(), "my-slot", label="name set")
   // type conversion
   let _html : @websys.HTMLElement = slot.to_html_element()
-
 }

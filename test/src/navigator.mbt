@@ -23,5 +23,4 @@ fn test_navigator() -> Unit {
   let _online = nav.get_on_line()
   // platform (deprecated)
   let _platform = nav.get_platform()
-
 }

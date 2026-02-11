@@ -21,5 +21,4 @@ fn test_body_element() -> Unit {
   let _html : @websys.HTMLElement = body.to_html_element()
   let _el : @websys.Element = body.to_element()
   let _node : @websys.Node = body.to_node()
-
 }

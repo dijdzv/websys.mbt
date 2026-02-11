@@ -68,20 +68,20 @@ async fn test_rtc_sdp_exchange() -> Unit {
 
   // Exchange SDPs — pure MoonBit (no JS helper needed)
   let offer = pc1.create_offer().wait()
-  pc1.set_local_description_with_description(
-    @websys.RTCLocalSessionDescriptionInit::{
-      type_: Some(offer.type_),
-      sdp: offer.sdp,
-    },
-  ).wait()
+  pc1
+  .set_local_description_with_description(@websys.RTCLocalSessionDescriptionInit::{
+    type_: Some(offer.type_),
+    sdp: offer.sdp,
+  })
+  .wait()
   pc2.set_remote_description(offer).wait()
   let answer = pc2.create_answer().wait()
-  pc2.set_local_description_with_description(
-    @websys.RTCLocalSessionDescriptionInit::{
-      type_: Some(answer.type_),
-      sdp: answer.sdp,
-    },
-  ).wait()
+  pc2
+  .set_local_description_with_description(@websys.RTCLocalSessionDescriptionInit::{
+    type_: Some(answer.type_),
+    sdp: answer.sdp,
+  })
+  .wait()
   pc1.set_remote_description(answer).wait()
 
   // After SDP exchange: verify pc1's transceiver

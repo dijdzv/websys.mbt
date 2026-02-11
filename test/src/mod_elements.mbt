@@ -18,7 +18,6 @@ fn test_ins_element() -> Unit {
   assert_eq(ins.get_date_time(), "2024-01-15", label="dateTime set")
   // type conversions
   let _html : @websys.HTMLElement = ins.to_html_element()
-
 }
 
 ///|

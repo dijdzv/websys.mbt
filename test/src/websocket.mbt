@@ -68,10 +68,7 @@ pub fn test_close_event() -> Unit {
     reason: Some("normal closure"),
     wasClean: Some(true),
   }
-  let evt2 = @websys.CloseEvent::new_with_event_init_dict(
-    "close",
-    init,
-  )
+  let evt2 = @websys.CloseEvent::new_with_event_init_dict("close", init)
   assert_eq(evt2.get_code(), 1000, label="init code")
   assert_eq(evt2.get_reason(), "normal closure", label="init reason")
   assert_true(evt2.get_was_clean(), label="init wasClean")

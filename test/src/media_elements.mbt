@@ -23,7 +23,6 @@ fn test_video_element() -> Unit {
   // type conversions
   let _media : @websys.HTMLMediaElement = video.to_html_media_element()
   let _html : @websys.HTMLElement = video.to_html_element()
-
 }
 
 ///|
@@ -36,7 +35,6 @@ fn test_audio_element() -> Unit {
   let _media : @websys.HTMLMediaElement = audio.to_html_media_element()
   let _html : @websys.HTMLElement = audio.to_html_element()
   let _node : @websys.Node = audio.to_node()
-
 }
 
 ///|

@@ -68,8 +68,7 @@ pub fn test_response_static() -> Unit {
 
   // Response.redirect with custom status
   let redirect301 = @websys.Response::redirect_with_status(
-    "https://example.com",
-    301,
+    "https://example.com", 301,
   )
   assert_eq(redirect301.get_status(), 301, label="redirect 301")
   println("  response_static: ok")

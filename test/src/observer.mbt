@@ -68,9 +68,12 @@ pub fn test_intersection_observer() -> Unit {
   let div = doc.create_element("div")
 
   // Create callback
-  let cb = @websys.IntersectionObserverCallback::from_fn(
-    fn(_entries, _observer) {  },
-  )
+  let cb = @websys.IntersectionObserverCallback::from_fn(fn(
+    _entries,
+    _observer,
+  ) {
+
+  })
 
   // Construct with options (dictionary pattern)
   let opts = @websys.IntersectionObserverInit::{

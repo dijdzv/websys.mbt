@@ -201,7 +201,7 @@ pub extern "js" fn PressureObserver::take_records(
 ///|
 pub extern "js" fn PressureObserver::get_known_sources(
   self : PressureObserver,
-) -> JsValue =
+) -> Array[PressureSource] =
   #| (self) => self.knownSources
 
 ///|

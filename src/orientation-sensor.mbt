@@ -246,8 +246,8 @@ pub extern "js" fn OrientationSensor::as_relative_orientation_sensor(
 ///|
 pub extern "js" fn OrientationSensor::get_quaternion(
   self : OrientationSensor,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.quaternion; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[Double] =
+  #| (self) => self.quaternion
 
 ///|
 pub extern "js" fn OrientationSensor::populate_matrix(

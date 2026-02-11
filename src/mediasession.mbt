@@ -598,20 +598,22 @@ pub extern "js" fn MediaMetadata::set_album(
   #| (self, value) => { self.album = value }
 
 ///|
-pub extern "js" fn MediaMetadata::get_artwork(self : MediaMetadata) -> JsValue =
+pub extern "js" fn MediaMetadata::get_artwork(
+  self : MediaMetadata,
+) -> Array[JsValue] =
   #| (self) => self.artwork
 
 ///|
 pub extern "js" fn MediaMetadata::set_artwork(
   self : MediaMetadata,
-  value : JsValue,
+  value : Array[JsValue],
 ) -> Unit =
   #| (self, value) => { self.artwork = value }
 
 ///|
 pub extern "js" fn MediaMetadata::get_chapter_info(
   self : MediaMetadata,
-) -> JsValue =
+) -> Array[ChapterInformation] =
   #| (self) => self.chapterInfo
 
 ///|
@@ -667,5 +669,5 @@ pub extern "js" fn ChapterInformation::get_start_time(
 ///|
 pub extern "js" fn ChapterInformation::get_artwork(
   self : ChapterInformation,
-) -> JsValue =
+) -> Array[MediaImage] =
   #| (self) => self.artwork

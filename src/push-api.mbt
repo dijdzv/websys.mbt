@@ -368,7 +368,7 @@ pub extern "js" fn JsValue::to_push_manager(self : JsValue) -> PushManager =
 ///|
 pub extern "js" fn PushManager::get_supported_content_encodings(
   self : PushManager,
-) -> JsValue =
+) -> Array[String] =
   #| (self) => self.supportedContentEncodings
 
 ///|

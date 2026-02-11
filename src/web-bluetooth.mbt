@@ -1054,13 +1054,13 @@ pub extern "js" fn BluetoothPermissionResult::to_event_target(
 ///|
 pub extern "js" fn BluetoothPermissionResult::get_devices(
   self : BluetoothPermissionResult,
-) -> JsValue =
+) -> Array[BluetoothDevice] =
   #| (self) => self.devices
 
 ///|
 pub extern "js" fn BluetoothPermissionResult::set_devices(
   self : BluetoothPermissionResult,
-  value : JsValue,
+  value : Array[BluetoothDevice],
 ) -> Unit =
   #| (self, value) => { self.devices = value }
 
@@ -1460,7 +1460,7 @@ pub extern "js" fn BluetoothAdvertisingEvent::get_device(
 ///|
 pub extern "js" fn BluetoothAdvertisingEvent::get_uuids(
   self : BluetoothAdvertisingEvent,
-) -> JsValue =
+) -> Array[UUID] =
   #| (self) => self.uuids
 
 ///|

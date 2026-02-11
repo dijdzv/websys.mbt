@@ -807,7 +807,7 @@ pub extern "js" fn JsValue::to_break_token(self : JsValue) -> BreakToken =
 ///|
 pub extern "js" fn BreakToken::get_child_break_tokens(
   self : BreakToken,
-) -> JsValue =
+) -> Array[ChildBreakToken] =
   #| (self) => self.childBreakTokens
 
 ///|

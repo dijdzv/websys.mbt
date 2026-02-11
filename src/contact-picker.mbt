@@ -213,7 +213,7 @@ pub extern "js" fn ContactAddress::get_sorting_code(
 ///|
 pub extern "js" fn ContactAddress::get_address_line(
   self : ContactAddress,
-) -> JsValue =
+) -> Array[String] =
   #| (self) => self.addressLine
 
 ///|

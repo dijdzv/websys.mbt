@@ -994,14 +994,14 @@ pub extern "js" fn Summarizer::get_length(
 ///|
 pub extern "js" fn Summarizer::get_expected_input_languages(
   self : Summarizer,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.expectedInputLanguages; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[String] =
+  #| (self) => self.expectedInputLanguages
 
 ///|
 pub extern "js" fn Summarizer::get_expected_context_languages(
   self : Summarizer,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.expectedContextLanguages; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[String] =
+  #| (self) => self.expectedContextLanguages
 
 ///|
 pub extern "js" fn Summarizer::get_output_language(
@@ -1170,14 +1170,14 @@ pub extern "js" fn Writer::get_length(self : Writer) -> WriterLength =
 ///|
 pub extern "js" fn Writer::get_expected_input_languages(
   self : Writer,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.expectedInputLanguages; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[String] =
+  #| (self) => self.expectedInputLanguages
 
 ///|
 pub extern "js" fn Writer::get_expected_context_languages(
   self : Writer,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.expectedContextLanguages; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[String] =
+  #| (self) => self.expectedContextLanguages
 
 ///|
 pub extern "js" fn Writer::get_output_language(self : Writer) -> String? =
@@ -1344,14 +1344,14 @@ pub extern "js" fn Rewriter::get_length(self : Rewriter) -> RewriterLength =
 ///|
 pub extern "js" fn Rewriter::get_expected_input_languages(
   self : Rewriter,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.expectedInputLanguages; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[String] =
+  #| (self) => self.expectedInputLanguages
 
 ///|
 pub extern "js" fn Rewriter::get_expected_context_languages(
   self : Rewriter,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.expectedContextLanguages; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[String] =
+  #| (self) => self.expectedContextLanguages
 
 ///|
 pub extern "js" fn Rewriter::get_output_language(self : Rewriter) -> String? =

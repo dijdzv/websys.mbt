@@ -403,7 +403,7 @@ pub type AudioWorkletProcessCallback
 ///|
 /// Create AudioWorkletProcessCallback from a MoonBit function
 pub extern "js" fn AudioWorkletProcessCallback::from_fn(
-  handler : (JsValue, JsValue, JsValue) -> Bool,
+  handler : (Array[Array[Float32Array]], Array[Array[Float32Array]], JsValue) -> Bool,
 ) -> AudioWorkletProcessCallback =
   #| (handler) => (a0, a1, a2) => handler(a0, a1, a2)
 

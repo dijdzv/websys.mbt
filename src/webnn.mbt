@@ -3924,7 +3924,7 @@ pub extern "js" fn MLOperand::get_data_type(
   #| (self) => ['float32', 'float16', 'int32', 'uint32', 'int64', 'uint64', 'int8', 'uint8'].indexOf(self.dataType)
 
 ///|
-pub extern "js" fn MLOperand::get_shape(self : MLOperand) -> JsValue =
+pub extern "js" fn MLOperand::get_shape(self : MLOperand) -> Array[Int] =
   #| (self) => self.shape
 
 ///|
@@ -3962,7 +3962,7 @@ pub extern "js" fn MLTensor::get_data_type(
   #| (self) => ['float32', 'float16', 'int32', 'uint32', 'int64', 'uint64', 'int8', 'uint8'].indexOf(self.dataType)
 
 ///|
-pub extern "js" fn MLTensor::get_shape(self : MLTensor) -> JsValue =
+pub extern "js" fn MLTensor::get_shape(self : MLTensor) -> Array[Int] =
   #| (self) => self.shape
 
 ///|

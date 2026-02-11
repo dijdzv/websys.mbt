@@ -89,13 +89,15 @@ pub extern "js" fn SVGPathSegment::set_type(
   #| (self, value) => { self.type = value }
 
 ///|
-pub extern "js" fn SVGPathSegment::get_values(self : SVGPathSegment) -> JsValue =
+pub extern "js" fn SVGPathSegment::get_values(
+  self : SVGPathSegment,
+) -> Array[Double] =
   #| (self) => self.values
 
 ///|
 pub extern "js" fn SVGPathSegment::set_values(
   self : SVGPathSegment,
-  value : JsValue,
+  value : Array[Double],
 ) -> Unit =
   #| (self, value) => { self.values = value }
 

@@ -619,7 +619,9 @@ pub extern "js" fn HIDDevice::get_product_name(self : HIDDevice) -> String =
   #| (self) => self.productName
 
 ///|
-pub extern "js" fn HIDDevice::get_collections(self : HIDDevice) -> JsValue =
+pub extern "js" fn HIDDevice::get_collections(
+  self : HIDDevice,
+) -> Array[HIDCollectionInfo] =
   #| (self) => self.collections
 
 ///|

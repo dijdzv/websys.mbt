@@ -34,7 +34,9 @@ pub extern "js" fn FontMetrics::get_width(self : FontMetrics) -> Double =
   #| (self) => self.width
 
 ///|
-pub extern "js" fn FontMetrics::get_advances(self : FontMetrics) -> JsValue =
+pub extern "js" fn FontMetrics::get_advances(
+  self : FontMetrics,
+) -> Array[Double] =
   #| (self) => self.advances
 
 ///|
@@ -96,11 +98,13 @@ pub extern "js" fn FontMetrics::get_dominant_baseline(
   #| (self) => self.dominantBaseline
 
 ///|
-pub extern "js" fn FontMetrics::get_baselines(self : FontMetrics) -> JsValue =
+pub extern "js" fn FontMetrics::get_baselines(
+  self : FontMetrics,
+) -> Array[Baseline] =
   #| (self) => self.baselines
 
 ///|
-pub extern "js" fn FontMetrics::get_fonts(self : FontMetrics) -> JsValue =
+pub extern "js" fn FontMetrics::get_fonts(self : FontMetrics) -> Array[Font] =
   #| (self) => self.fonts
 
 ///|

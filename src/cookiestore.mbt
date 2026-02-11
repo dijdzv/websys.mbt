@@ -608,13 +608,13 @@ pub fn CookieChangeEvent::new_with_event_init_dict(
 ///|
 pub extern "js" fn CookieChangeEvent::get_changed(
   self : CookieChangeEvent,
-) -> JsValue =
+) -> Array[CookieListItem] =
   #| (self) => self.changed
 
 ///|
 pub extern "js" fn CookieChangeEvent::get_deleted(
   self : CookieChangeEvent,
-) -> JsValue =
+) -> Array[CookieListItem] =
   #| (self) => self.deleted
 
 ///|
@@ -694,11 +694,11 @@ pub fn ExtendableCookieChangeEvent::new_with_event_init_dict(
 ///|
 pub extern "js" fn ExtendableCookieChangeEvent::get_changed(
   self : ExtendableCookieChangeEvent,
-) -> JsValue =
+) -> Array[CookieListItem] =
   #| (self) => self.changed
 
 ///|
 pub extern "js" fn ExtendableCookieChangeEvent::get_deleted(
   self : ExtendableCookieChangeEvent,
-) -> JsValue =
+) -> Array[CookieListItem] =
   #| (self) => self.deleted

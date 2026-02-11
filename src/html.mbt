@@ -15552,7 +15552,7 @@ pub extern "js" fn HTMLInputElement::set_webkitdirectory(
 ///|
 pub extern "js" fn HTMLInputElement::get_webkit_entries(
   self : HTMLInputElement,
-) -> JsValue =
+) -> Array[FileSystemEntry] =
   #| (self) => self.webkitEntries
 
 ///|
@@ -21976,13 +21976,13 @@ pub extern "js" fn ElementInternals::set_aria_col_span(
 ///|
 pub extern "js" fn ElementInternals::get_aria_controls_elements(
   self : ElementInternals,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.ariaControlsElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[Element] =
+  #| (self) => self.ariaControlsElements
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_controls_elements(
   self : ElementInternals,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaControlsElements = value }
 
@@ -22002,13 +22002,13 @@ pub extern "js" fn ElementInternals::set_aria_current(
 ///|
 pub extern "js" fn ElementInternals::get_aria_described_by_elements(
   self : ElementInternals,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.ariaDescribedByElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[Element] =
+  #| (self) => self.ariaDescribedByElements
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_described_by_elements(
   self : ElementInternals,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaDescribedByElements = value }
 
@@ -22028,13 +22028,13 @@ pub extern "js" fn ElementInternals::set_aria_description(
 ///|
 pub extern "js" fn ElementInternals::get_aria_details_elements(
   self : ElementInternals,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.ariaDetailsElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[Element] =
+  #| (self) => self.ariaDetailsElements
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_details_elements(
   self : ElementInternals,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaDetailsElements = value }
 
@@ -22054,13 +22054,13 @@ pub extern "js" fn ElementInternals::set_aria_disabled(
 ///|
 pub extern "js" fn ElementInternals::get_aria_error_message_elements(
   self : ElementInternals,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.ariaErrorMessageElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[Element] =
+  #| (self) => self.ariaErrorMessageElements
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_error_message_elements(
   self : ElementInternals,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaErrorMessageElements = value }
 
@@ -22080,13 +22080,13 @@ pub extern "js" fn ElementInternals::set_aria_expanded(
 ///|
 pub extern "js" fn ElementInternals::get_aria_flow_to_elements(
   self : ElementInternals,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.ariaFlowToElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[Element] =
+  #| (self) => self.ariaFlowToElements
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_flow_to_elements(
   self : ElementInternals,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaFlowToElements = value }
 
@@ -22158,13 +22158,13 @@ pub extern "js" fn ElementInternals::set_aria_label(
 ///|
 pub extern "js" fn ElementInternals::get_aria_labelled_by_elements(
   self : ElementInternals,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.ariaLabelledByElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[Element] =
+  #| (self) => self.ariaLabelledByElements
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_labelled_by_elements(
   self : ElementInternals,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaLabelledByElements = value }
 
@@ -22249,13 +22249,13 @@ pub extern "js" fn ElementInternals::set_aria_orientation(
 ///|
 pub extern "js" fn ElementInternals::get_aria_owns_elements(
   self : ElementInternals,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.ariaOwnsElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[Element] =
+  #| (self) => self.ariaOwnsElements
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_owns_elements(
   self : ElementInternals,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaOwnsElements = value }
 
@@ -22957,7 +22957,9 @@ pub extern "js" fn DataTransfer::set_drag_image(
   #| (self, image, x, y) => self.setDragImage(image, x, y)
 
 ///|
-pub extern "js" fn DataTransfer::get_types(self : DataTransfer) -> JsValue =
+pub extern "js" fn DataTransfer::get_types(
+  self : DataTransfer,
+) -> Array[String] =
   #| (self) => self.types
 
 ///|
@@ -27366,14 +27368,14 @@ pub extern "js" fn NotRestoredReasons::get_url(
 ///|
 pub extern "js" fn NotRestoredReasons::get_reasons(
   self : NotRestoredReasons,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.reasons; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[NotRestoredReasonDetails] =
+  #| (self) => self.reasons
 
 ///|
 pub extern "js" fn NotRestoredReasons::get_children(
   self : NotRestoredReasons,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.children; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[NotRestoredReasons] =
+  #| (self) => self.children
 
 ///|
 pub extern "js" fn NotRestoredReasons::to_json(
@@ -28164,7 +28166,7 @@ pub extern "js" fn Navigator::get_language(self : Navigator) -> String =
   #| (self) => self.language
 
 ///|
-pub extern "js" fn Navigator::get_languages(self : Navigator) -> JsValue =
+pub extern "js" fn Navigator::get_languages(self : Navigator) -> Array[String] =
   #| (self) => self.languages
 
 ///|
@@ -28768,7 +28770,9 @@ pub extern "js" fn MessageEvent::get_source(
   #| (self) => (() => { const v = self.source; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn MessageEvent::get_ports(self : MessageEvent) -> JsValue =
+pub extern "js" fn MessageEvent::get_ports(
+  self : MessageEvent,
+) -> Array[MessagePort] =
   #| (self) => self.ports
 
 ///|
@@ -30291,7 +30295,7 @@ pub extern "js" fn WorkerNavigator::get_language(
 ///|
 pub extern "js" fn WorkerNavigator::get_languages(
   self : WorkerNavigator,
-) -> JsValue =
+) -> Array[String] =
   #| (self) => self.languages
 
 ///|

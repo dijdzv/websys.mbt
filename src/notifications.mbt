@@ -476,7 +476,7 @@ pub extern "js" fn Notification::get_badge(self : Notification) -> String =
   #| (self) => self.badge
 
 ///|
-pub extern "js" fn Notification::get_vibrate(self : Notification) -> JsValue =
+pub extern "js" fn Notification::get_vibrate(self : Notification) -> Array[Int] =
   #| (self) => self.vibrate
 
 ///|
@@ -504,7 +504,9 @@ pub extern "js" fn Notification::get_data(self : Notification) -> JsValue =
   #| (self) => self.data
 
 ///|
-pub extern "js" fn Notification::get_actions(self : Notification) -> JsValue =
+pub extern "js" fn Notification::get_actions(
+  self : Notification,
+) -> Array[NotificationAction] =
   #| (self) => self.actions
 
 ///|

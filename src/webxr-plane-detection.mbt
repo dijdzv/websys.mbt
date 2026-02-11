@@ -60,7 +60,9 @@ pub extern "js" fn XRPlane::get_plane_space(self : XRPlane) -> XRSpace =
   #| (self) => self.planeSpace
 
 ///|
-pub extern "js" fn XRPlane::get_polygon(self : XRPlane) -> JsValue =
+pub extern "js" fn XRPlane::get_polygon(
+  self : XRPlane,
+) -> Array[DOMPointReadOnly] =
   #| (self) => self.polygon
 
 ///|

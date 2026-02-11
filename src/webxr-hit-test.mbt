@@ -367,7 +367,7 @@ pub extern "js" fn XRTransientInputHitTestResult::get_input_source(
 ///|
 pub extern "js" fn XRTransientInputHitTestResult::get_results(
   self : XRTransientInputHitTestResult,
-) -> JsValue =
+) -> Array[XRHitTestResult] =
   #| (self) => self.results
 
 ///|

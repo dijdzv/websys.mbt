@@ -291,15 +291,15 @@ pub extern "js" fn Gamepad::get_mapping(self : Gamepad) -> GamepadMappingType =
   #| (self) => ['', 'standard', 'xr-standard'].indexOf(self.mapping)
 
 ///|
-pub extern "js" fn Gamepad::get_axes(self : Gamepad) -> JsValue =
+pub extern "js" fn Gamepad::get_axes(self : Gamepad) -> Array[Double] =
   #| (self) => self.axes
 
 ///|
-pub extern "js" fn Gamepad::get_buttons(self : Gamepad) -> JsValue =
+pub extern "js" fn Gamepad::get_buttons(self : Gamepad) -> Array[GamepadButton] =
   #| (self) => self.buttons
 
 ///|
-pub extern "js" fn Gamepad::get_touches(self : Gamepad) -> JsValue =
+pub extern "js" fn Gamepad::get_touches(self : Gamepad) -> Array[GamepadTouch] =
   #| (self) => self.touches
 
 ///|
@@ -313,7 +313,9 @@ pub extern "js" fn Gamepad::get_hand(self : Gamepad) -> GamepadHand =
   #| (self) => ['', 'left', 'right'].indexOf(self.hand)
 
 ///|
-pub extern "js" fn Gamepad::get_haptic_actuators(self : Gamepad) -> JsValue =
+pub extern "js" fn Gamepad::get_haptic_actuators(
+  self : Gamepad,
+) -> Array[GamepadHapticActuator] =
   #| (self) => self.hapticActuators
 
 ///|
@@ -403,7 +405,7 @@ pub extern "js" fn JsValue::to_gamepad_haptic_actuator(
 ///|
 pub extern "js" fn GamepadHapticActuator::get_effects(
   self : GamepadHapticActuator,
-) -> JsValue =
+) -> Array[GamepadHapticEffectType] =
   #| (self) => self.effects
 
 ///|

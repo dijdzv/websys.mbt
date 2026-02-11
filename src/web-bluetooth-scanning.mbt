@@ -368,7 +368,7 @@ pub extern "js" fn BluetoothLEScanFilter::get_name_prefix(
 ///|
 pub extern "js" fn BluetoothLEScanFilter::get_services(
   self : BluetoothLEScanFilter,
-) -> JsValue =
+) -> Array[UUID] =
   #| (self) => self.services
 
 ///|
@@ -424,7 +424,7 @@ pub extern "js" fn JsValue::to_bluetooth_le_scan(
 ///|
 pub extern "js" fn BluetoothLEScan::get_filters(
   self : BluetoothLEScan,
-) -> JsValue =
+) -> Array[BluetoothLEScanFilter] =
   #| (self) => self.filters
 
 ///|
@@ -500,12 +500,12 @@ pub extern "js" fn BluetoothLEScanPermissionResult::to_event_target(
 ///|
 pub extern "js" fn BluetoothLEScanPermissionResult::get_scans(
   self : BluetoothLEScanPermissionResult,
-) -> JsValue =
+) -> Array[BluetoothLEScan] =
   #| (self) => self.scans
 
 ///|
 pub extern "js" fn BluetoothLEScanPermissionResult::set_scans(
   self : BluetoothLEScanPermissionResult,
-  value : JsValue,
+  value : Array[BluetoothLEScan],
 ) -> Unit =
   #| (self, value) => { self.scans = value }

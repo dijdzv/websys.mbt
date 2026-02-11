@@ -751,7 +751,7 @@ pub fn FontFaceSetLoadEvent::new_with_event_init_dict(
 ///|
 pub extern "js" fn FontFaceSetLoadEvent::get_fontfaces(
   self : FontFaceSetLoadEvent,
-) -> JsValue =
+) -> Array[FontFace] =
   #| (self) => self.fontfaces
 
 ///|

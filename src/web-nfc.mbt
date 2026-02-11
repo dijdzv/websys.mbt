@@ -403,7 +403,9 @@ pub fn NDEFMessage::new(message_init : NDEFMessageInit) -> NDEFMessage {
 }
 
 ///|
-pub extern "js" fn NDEFMessage::get_records(self : NDEFMessage) -> JsValue =
+pub extern "js" fn NDEFMessage::get_records(
+  self : NDEFMessage,
+) -> Array[NDEFRecord] =
   #| (self) => self.records
 
 ///|

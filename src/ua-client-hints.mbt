@@ -211,7 +211,7 @@ pub extern "js" fn JsValue::to_navigator_ua_data(
 ///|
 pub extern "js" fn NavigatorUAData::get_brands(
   self : NavigatorUAData,
-) -> JsValue =
+) -> Array[NavigatorUABrandVersion] =
   #| (self) => self.brands
 
 ///|

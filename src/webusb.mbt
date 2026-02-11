@@ -921,7 +921,7 @@ pub extern "js" fn USBIsochronousInTransferResult::get_data(
 ///|
 pub extern "js" fn USBIsochronousInTransferResult::get_packets(
   self : USBIsochronousInTransferResult,
-) -> JsValue =
+) -> Array[USBIsochronousInTransferPacket] =
   #| (self) => self.packets
 
 ///|
@@ -1034,7 +1034,7 @@ pub extern "js" fn USBIsochronousOutTransferResult::new(
 ///|
 pub extern "js" fn USBIsochronousOutTransferResult::get_packets(
   self : USBIsochronousOutTransferResult,
-) -> JsValue =
+) -> Array[USBIsochronousOutTransferPacket] =
   #| (self) => self.packets
 
 ///|
@@ -1132,7 +1132,9 @@ pub extern "js" fn USBDevice::get_configuration(
   #| (self) => (() => { const v = self.configuration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn USBDevice::get_configurations(self : USBDevice) -> JsValue =
+pub extern "js" fn USBDevice::get_configurations(
+  self : USBDevice,
+) -> Array[USBConfiguration] =
   #| (self) => self.configurations
 
 ///|
@@ -1384,7 +1386,7 @@ pub extern "js" fn USBConfiguration::get_configuration_name(
 ///|
 pub extern "js" fn USBConfiguration::get_interfaces(
   self : USBConfiguration,
-) -> JsValue =
+) -> Array[USBInterface] =
   #| (self) => self.interfaces
 
 ///|
@@ -1437,7 +1439,9 @@ pub extern "js" fn USBInterface::get_alternate(
   #| (self) => self.alternate
 
 ///|
-pub extern "js" fn USBInterface::get_alternates(self : USBInterface) -> JsValue =
+pub extern "js" fn USBInterface::get_alternates(
+  self : USBInterface,
+) -> Array[USBAlternateInterface] =
   #| (self) => self.alternates
 
 ///|
@@ -1522,7 +1526,7 @@ pub extern "js" fn USBAlternateInterface::get_interface_name(
 ///|
 pub extern "js" fn USBAlternateInterface::get_endpoints(
   self : USBAlternateInterface,
-) -> JsValue =
+) -> Array[USBEndpoint] =
   #| (self) => self.endpoints
 
 ///|
@@ -1632,12 +1636,12 @@ pub extern "js" fn USBPermissionResult::to_event_target(
 ///|
 pub extern "js" fn USBPermissionResult::get_devices(
   self : USBPermissionResult,
-) -> JsValue =
+) -> Array[USBDevice] =
   #| (self) => self.devices
 
 ///|
 pub extern "js" fn USBPermissionResult::set_devices(
   self : USBPermissionResult,
-  value : JsValue,
+  value : Array[USBDevice],
 ) -> Unit =
   #| (self, value) => { self.devices = value }

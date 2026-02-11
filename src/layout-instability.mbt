@@ -52,7 +52,9 @@ pub extern "js" fn LayoutShift::get_last_input_time(
   #| (self) => self.lastInputTime
 
 ///|
-pub extern "js" fn LayoutShift::get_sources(self : LayoutShift) -> JsValue =
+pub extern "js" fn LayoutShift::get_sources(
+  self : LayoutShift,
+) -> Array[LayoutShiftAttribution] =
   #| (self) => self.sources
 
 ///|

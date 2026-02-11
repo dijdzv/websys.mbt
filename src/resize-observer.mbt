@@ -217,19 +217,19 @@ pub extern "js" fn ResizeObserverEntry::get_content_rect(
 ///|
 pub extern "js" fn ResizeObserverEntry::get_border_box_size(
   self : ResizeObserverEntry,
-) -> JsValue =
+) -> Array[ResizeObserverSize] =
   #| (self) => self.borderBoxSize
 
 ///|
 pub extern "js" fn ResizeObserverEntry::get_content_box_size(
   self : ResizeObserverEntry,
-) -> JsValue =
+) -> Array[ResizeObserverSize] =
   #| (self) => self.contentBoxSize
 
 ///|
 pub extern "js" fn ResizeObserverEntry::get_device_pixel_content_box_size(
   self : ResizeObserverEntry,
-) -> JsValue =
+) -> Array[ResizeObserverSize] =
   #| (self) => self.devicePixelContentBoxSize
 
 ///|

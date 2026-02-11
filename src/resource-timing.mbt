@@ -258,5 +258,5 @@ pub extern "js" fn PerformanceResourceTiming::to_json(
 ///|
 pub extern "js" fn PerformanceResourceTiming::get_server_timing(
   self : PerformanceResourceTiming,
-) -> JsValue =
+) -> Array[PerformanceServerTiming] =
   #| (self) => self.serverTiming

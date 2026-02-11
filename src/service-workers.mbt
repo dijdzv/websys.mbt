@@ -1211,7 +1211,7 @@ pub extern "js" fn ServiceWorkerContainer::get_registration_with_client_url(
 ///|
 pub extern "js" fn ServiceWorkerContainer::get_registrations(
   self : ServiceWorkerContainer,
-) -> Promise[JsValue] =
+) -> Promise[Array[ServiceWorkerRegistration]] =
   #| (self) => self.getRegistrations()
 
 ///|
@@ -1785,7 +1785,7 @@ pub extern "js" fn WindowClient::get_focused(self : WindowClient) -> Bool =
 ///|
 pub extern "js" fn WindowClient::get_ancestor_origins(
   self : WindowClient,
-) -> JsValue =
+) -> Array[String] =
   #| (self) => self.ancestorOrigins
 
 ///|
@@ -1837,21 +1837,21 @@ pub extern "js" fn Clients::get(
   #| (self, id) => self.get(id)
 
 ///|
-pub extern "js" fn Clients::match_all(self : Clients) -> Promise[JsValue] =
+pub extern "js" fn Clients::match_all(self : Clients) -> Promise[Array[Client]] =
   #| (self) => self.matchAll()
 
 ///|
 extern "js" fn Clients::match_all_with_options_ffi(
   self : Clients,
   options : JsValue,
-) -> Promise[JsValue] =
+) -> Promise[Array[Client]] =
   #| (self, options) => self.matchAll(options)
 
 ///|
 pub fn Clients::match_all_with_options(
   self : Clients,
   options : ClientQueryOptions,
-) -> Promise[JsValue] {
+) -> Promise[Array[Client]] {
   Clients::match_all_with_options_ffi(self, options.to_js())
 }
 
@@ -2275,7 +2275,7 @@ pub extern "js" fn ExtendableMessageEvent::get_source(
 ///|
 pub extern "js" fn ExtendableMessageEvent::get_ports(
   self : ExtendableMessageEvent,
-) -> JsValue =
+) -> Array[MessagePort] =
   #| (self) => self.ports
 
 ///|
@@ -2331,7 +2331,7 @@ pub fn Cache::match__with_options(
 }
 
 ///|
-pub extern "js" fn Cache::match_all(self : Cache) -> Promise[JsValue] =
+pub extern "js" fn Cache::match_all(self : Cache) -> Promise[Array[Response]] =
   #| (self) => self.matchAll()
 
 ///|
@@ -2339,7 +2339,7 @@ extern "js" fn Cache::match_all_with_options_ffi(
   self : Cache,
   request : RequestInfo,
   options : JsValue,
-) -> Promise[JsValue] =
+) -> Promise[Array[Response]] =
   #| (self, request, options) => self.matchAll(request, options)
 
 ///|
@@ -2347,7 +2347,7 @@ pub fn Cache::match_all_with_options(
   self : Cache,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[JsValue] {
+) -> Promise[Array[Response]] {
   Cache::match_all_with_options_ffi(self, request, options.to_js())
 }
 
@@ -2398,7 +2398,7 @@ pub fn Cache::delete_with_options(
 }
 
 ///|
-pub extern "js" fn Cache::keys(self : Cache) -> Promise[JsValue] =
+pub extern "js" fn Cache::keys(self : Cache) -> Promise[Array[Request]] =
   #| (self) => self.keys()
 
 ///|
@@ -2406,7 +2406,7 @@ extern "js" fn Cache::keys_with_options_ffi(
   self : Cache,
   request : RequestInfo,
   options : JsValue,
-) -> Promise[JsValue] =
+) -> Promise[Array[Request]] =
   #| (self, request, options) => self.keys(request, options)
 
 ///|
@@ -2414,7 +2414,7 @@ pub fn Cache::keys_with_options(
   self : Cache,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[JsValue] {
+) -> Promise[Array[Request]] {
   Cache::keys_with_options_ffi(self, request, options.to_js())
 }
 
@@ -2439,7 +2439,7 @@ pub extern "js" fn Cache::match_all_with_request(
   self : Cache,
   request : Request,
   options : CacheQueryOptions,
-) -> Promise[JsValue] =
+) -> Promise[Array[Response]] =
   #| (self, request, options) => self.matchAll(request, options)
 
 ///|
@@ -2447,7 +2447,7 @@ pub extern "js" fn Cache::match_all_with_string(
   self : Cache,
   request : String,
   options : CacheQueryOptions,
-) -> Promise[JsValue] =
+) -> Promise[Array[Response]] =
   #| (self, request, options) => self.matchAll(request, options)
 
 ///|
@@ -2501,7 +2501,7 @@ pub extern "js" fn Cache::keys_with_request(
   self : Cache,
   request : Request,
   options : CacheQueryOptions,
-) -> Promise[JsValue] =
+) -> Promise[Array[Request]] =
   #| (self, request, options) => self.keys(request, options)
 
 ///|
@@ -2509,7 +2509,7 @@ pub extern "js" fn Cache::keys_with_string(
   self : Cache,
   request : String,
   options : CacheQueryOptions,
-) -> Promise[JsValue] =
+) -> Promise[Array[Request]] =
   #| (self, request, options) => self.keys(request, options)
 
 ///|

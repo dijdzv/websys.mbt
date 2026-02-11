@@ -7397,13 +7397,13 @@ pub extern "js" fn Document::get_style_sheets(
 ///|
 pub extern "js" fn Document::get_adopted_style_sheets(
   self : Document,
-) -> JsValue =
+) -> Array[CSSStyleSheet] =
   #| (self) => self.adoptedStyleSheets
 
 ///|
 pub extern "js" fn Document::set_adopted_style_sheets(
   self : Document,
-  value : JsValue,
+  value : Array[CSSStyleSheet],
 ) -> Unit =
   #| (self, value) => { self.adoptedStyleSheets = value }
 
@@ -8136,13 +8136,13 @@ pub extern "js" fn ShadowRoot::get_style_sheets(
 ///|
 pub extern "js" fn ShadowRoot::get_adopted_style_sheets(
   self : ShadowRoot,
-) -> JsValue =
+) -> Array[CSSStyleSheet] =
   #| (self) => self.adoptedStyleSheets
 
 ///|
 pub extern "js" fn ShadowRoot::set_adopted_style_sheets(
   self : ShadowRoot,
-  value : JsValue,
+  value : Array[CSSStyleSheet],
 ) -> Unit =
   #| (self, value) => { self.adoptedStyleSheets = value }
 
@@ -10024,13 +10024,13 @@ pub extern "js" fn Element::set_aria_col_span(
 ///|
 pub extern "js" fn Element::get_aria_controls_elements(
   self : Element,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.ariaControlsElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[Element] =
+  #| (self) => self.ariaControlsElements
 
 ///|
 pub extern "js" fn Element::set_aria_controls_elements(
   self : Element,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaControlsElements = value }
 
@@ -10048,13 +10048,13 @@ pub extern "js" fn Element::set_aria_current(
 ///|
 pub extern "js" fn Element::get_aria_described_by_elements(
   self : Element,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.ariaDescribedByElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[Element] =
+  #| (self) => self.ariaDescribedByElements
 
 ///|
 pub extern "js" fn Element::set_aria_described_by_elements(
   self : Element,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaDescribedByElements = value }
 
@@ -10072,13 +10072,13 @@ pub extern "js" fn Element::set_aria_description(
 ///|
 pub extern "js" fn Element::get_aria_details_elements(
   self : Element,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.ariaDetailsElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[Element] =
+  #| (self) => self.ariaDetailsElements
 
 ///|
 pub extern "js" fn Element::set_aria_details_elements(
   self : Element,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaDetailsElements = value }
 
@@ -10096,13 +10096,13 @@ pub extern "js" fn Element::set_aria_disabled(
 ///|
 pub extern "js" fn Element::get_aria_error_message_elements(
   self : Element,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.ariaErrorMessageElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[Element] =
+  #| (self) => self.ariaErrorMessageElements
 
 ///|
 pub extern "js" fn Element::set_aria_error_message_elements(
   self : Element,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaErrorMessageElements = value }
 
@@ -10120,13 +10120,13 @@ pub extern "js" fn Element::set_aria_expanded(
 ///|
 pub extern "js" fn Element::get_aria_flow_to_elements(
   self : Element,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.ariaFlowToElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[Element] =
+  #| (self) => self.ariaFlowToElements
 
 ///|
 pub extern "js" fn Element::set_aria_flow_to_elements(
   self : Element,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaFlowToElements = value }
 
@@ -10188,13 +10188,13 @@ pub extern "js" fn Element::set_aria_label(
 ///|
 pub extern "js" fn Element::get_aria_labelled_by_elements(
   self : Element,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.ariaLabelledByElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[Element] =
+  #| (self) => self.ariaLabelledByElements
 
 ///|
 pub extern "js" fn Element::set_aria_labelled_by_elements(
   self : Element,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaLabelledByElements = value }
 
@@ -10267,13 +10267,15 @@ pub extern "js" fn Element::set_aria_orientation(
   #| (self, value) => { self.ariaOrientation = value }
 
 ///|
-pub extern "js" fn Element::get_aria_owns_elements(self : Element) -> JsValue? =
-  #| (self) => (() => { const v = self.ariaOwnsElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+pub extern "js" fn Element::get_aria_owns_elements(
+  self : Element,
+) -> Array[Element] =
+  #| (self) => self.ariaOwnsElements
 
 ///|
 pub extern "js" fn Element::set_aria_owns_elements(
   self : Element,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaOwnsElements = value }
 

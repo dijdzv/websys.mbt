@@ -311,14 +311,14 @@ pub extern "js" fn CSSParserAtRule::get_name(self : CSSParserAtRule) -> String =
 ///|
 pub extern "js" fn CSSParserAtRule::get_prelude(
   self : CSSParserAtRule,
-) -> JsValue =
+) -> Array[CSSParserValue] =
   #| (self) => self.prelude
 
 ///|
 pub extern "js" fn CSSParserAtRule::get_body(
   self : CSSParserAtRule,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.body; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[CSSParserRule] =
+  #| (self) => self.body
 
 ///|
 /// CSSParserQualifiedRule interface
@@ -380,13 +380,13 @@ pub extern "js" fn CSSParserQualifiedRule::new_with_body(
 ///|
 pub extern "js" fn CSSParserQualifiedRule::get_prelude(
   self : CSSParserQualifiedRule,
-) -> JsValue =
+) -> Array[CSSParserValue] =
   #| (self) => self.prelude
 
 ///|
 pub extern "js" fn CSSParserQualifiedRule::get_body(
   self : CSSParserQualifiedRule,
-) -> JsValue =
+) -> Array[CSSParserRule] =
   #| (self) => self.body
 
 ///|
@@ -455,7 +455,7 @@ pub extern "js" fn CSSParserDeclaration::get_name(
 ///|
 pub extern "js" fn CSSParserDeclaration::get_body(
   self : CSSParserDeclaration,
-) -> JsValue =
+) -> Array[CSSParserValue] =
   #| (self) => self.body
 
 ///|
@@ -560,7 +560,9 @@ pub extern "js" fn CSSParserBlock::get_name(self : CSSParserBlock) -> String =
   #| (self) => self.name
 
 ///|
-pub extern "js" fn CSSParserBlock::get_body(self : CSSParserBlock) -> JsValue =
+pub extern "js" fn CSSParserBlock::get_body(
+  self : CSSParserBlock,
+) -> Array[CSSParserValue] =
   #| (self) => self.body
 
 ///|
@@ -623,5 +625,5 @@ pub extern "js" fn CSSParserFunction::get_name(
 ///|
 pub extern "js" fn CSSParserFunction::get_args(
   self : CSSParserFunction,
-) -> JsValue =
+) -> Array[Array[CSSParserValue]] =
   #| (self) => self.args

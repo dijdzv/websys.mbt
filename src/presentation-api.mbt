@@ -850,7 +850,7 @@ pub extern "js" fn PresentationConnectionList::to_event_target(
 ///|
 pub extern "js" fn PresentationConnectionList::get_connections(
   self : PresentationConnectionList,
-) -> JsValue =
+) -> Array[PresentationConnection] =
   #| (self) => self.connections
 
 ///|

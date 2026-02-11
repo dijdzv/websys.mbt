@@ -4117,13 +4117,15 @@ pub extern "js" fn CSSColor::set_color_space(
   #| (self, value) => { self.colorSpace = value }
 
 ///|
-pub extern "js" fn CSSColor::get_channels(self : CSSColor) -> JsValue =
+pub extern "js" fn CSSColor::get_channels(
+  self : CSSColor,
+) -> Array[CSSColorPercent] =
   #| (self) => self.channels
 
 ///|
 pub extern "js" fn CSSColor::set_channels(
   self : CSSColor,
-  value : JsValue,
+  value : Array[CSSColorPercent],
 ) -> Unit =
   #| (self, value) => { self.channels = value }
 

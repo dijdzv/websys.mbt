@@ -173,7 +173,7 @@ pub extern "js" fn PerformanceLongAnimationFrameTiming::get_first_ui_event_times
 ///|
 pub extern "js" fn PerformanceLongAnimationFrameTiming::get_scripts(
   self : PerformanceLongAnimationFrameTiming,
-) -> JsValue =
+) -> Array[PerformanceScriptTiming] =
   #| (self) => self.scripts
 
 ///|

@@ -552,13 +552,13 @@ pub extern "js" fn SpeechRecognition::set_process_locally(
 ///|
 pub extern "js" fn SpeechRecognition::get_phrases(
   self : SpeechRecognition,
-) -> JsValue =
+) -> Array[SpeechRecognitionPhrase] =
   #| (self) => self.phrases
 
 ///|
 pub extern "js" fn SpeechRecognition::set_phrases(
   self : SpeechRecognition,
-  value : JsValue,
+  value : Array[SpeechRecognitionPhrase],
 ) -> Unit =
   #| (self, value) => { self.phrases = value }
 

@@ -445,7 +445,7 @@ pub fn ClipboardChangeEvent::new_with_event_init_dict(
 ///|
 pub extern "js" fn ClipboardChangeEvent::get_types(
   self : ClipboardChangeEvent,
-) -> JsValue =
+) -> Array[String] =
   #| (self) => self.types
 
 ///|
@@ -510,7 +510,9 @@ pub extern "js" fn ClipboardItem::get_presentation_style(
   #| (self) => ['unspecified', 'inline', 'attachment'].indexOf(self.presentationStyle)
 
 ///|
-pub extern "js" fn ClipboardItem::get_types(self : ClipboardItem) -> JsValue =
+pub extern "js" fn ClipboardItem::get_types(
+  self : ClipboardItem,
+) -> Array[String] =
   #| (self) => self.types
 
 ///|

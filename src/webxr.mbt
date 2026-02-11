@@ -880,7 +880,9 @@ pub extern "js" fn XRSession::get_tracked_sources(
   #| (self) => self.trackedSources
 
 ///|
-pub extern "js" fn XRSession::get_enabled_features(self : XRSession) -> JsValue =
+pub extern "js" fn XRSession::get_enabled_features(
+  self : XRSession,
+) -> Array[String] =
   #| (self) => self.enabledFeatures
 
 ///|
@@ -1098,7 +1100,7 @@ pub extern "js" fn XRSession::get_preferred_reflection_format(
 ///|
 pub extern "js" fn XRSession::get_persistent_anchors(
   self : XRSession,
-) -> JsValue =
+) -> Array[String] =
   #| (self) => self.persistentAnchors
 
 ///|
@@ -1257,7 +1259,9 @@ pub extern "js" fn XRRenderState::get_base_layer(
   #| (self) => (() => { const v = self.baseLayer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn XRRenderState::get_layers(self : XRRenderState) -> JsValue =
+pub extern "js" fn XRRenderState::get_layers(
+  self : XRRenderState,
+) -> Array[XRLayer] =
   #| (self) => self.layers
 
 ///|
@@ -1577,7 +1581,7 @@ pub extern "js" fn XRBoundedReferenceSpace::to_event_target(
 ///|
 pub extern "js" fn XRBoundedReferenceSpace::get_bounds_geometry(
   self : XRBoundedReferenceSpace,
-) -> JsValue =
+) -> Array[DOMPointReadOnly] =
   #| (self) => self.boundsGeometry
 
 ///|
@@ -1864,7 +1868,9 @@ pub extern "js" fn XRViewerPose::to_xr_pose(self : XRViewerPose) -> XRPose =
   #| (self) => self
 
 ///|
-pub extern "js" fn XRViewerPose::get_views(self : XRViewerPose) -> JsValue =
+pub extern "js" fn XRViewerPose::get_views(
+  self : XRViewerPose,
+) -> Array[XRView] =
   #| (self) => self.views
 
 ///|
@@ -1924,7 +1930,9 @@ pub extern "js" fn XRInputSource::get_grip_space(
   #| (self) => (() => { const v = self.gripSpace; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn XRInputSource::get_profiles(self : XRInputSource) -> JsValue =
+pub extern "js" fn XRInputSource::get_profiles(
+  self : XRInputSource,
+) -> Array[String] =
   #| (self) => self.profiles
 
 ///|
@@ -2420,13 +2428,13 @@ pub extern "js" fn XRInputSourcesChangeEvent::get_session(
 ///|
 pub extern "js" fn XRInputSourcesChangeEvent::get_added(
   self : XRInputSourcesChangeEvent,
-) -> JsValue =
+) -> Array[XRInputSource] =
   #| (self) => self.added
 
 ///|
 pub extern "js" fn XRInputSourcesChangeEvent::get_removed(
   self : XRInputSourcesChangeEvent,
-) -> JsValue =
+) -> Array[XRInputSource] =
   #| (self) => self.removed
 
 ///|
@@ -2642,12 +2650,12 @@ pub extern "js" fn XRPermissionStatus::to_event_target(
 ///|
 pub extern "js" fn XRPermissionStatus::get_granted(
   self : XRPermissionStatus,
-) -> JsValue =
+) -> Array[String] =
   #| (self) => self.granted
 
 ///|
 pub extern "js" fn XRPermissionStatus::set_granted(
   self : XRPermissionStatus,
-  value : JsValue,
+  value : Array[String],
 ) -> Unit =
   #| (self, value) => { self.granted = value }

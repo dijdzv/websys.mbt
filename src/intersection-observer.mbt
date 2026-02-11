@@ -237,7 +237,7 @@ pub extern "js" fn IntersectionObserver::get_scroll_margin(
 ///|
 pub extern "js" fn IntersectionObserver::get_thresholds(
   self : IntersectionObserver,
-) -> JsValue =
+) -> Array[Double] =
   #| (self) => self.thresholds
 
 ///|

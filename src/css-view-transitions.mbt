@@ -256,5 +256,5 @@ pub extern "js" fn CSSViewTransitionRule::get_navigation(
 ///|
 pub extern "js" fn CSSViewTransitionRule::get_types(
   self : CSSViewTransitionRule,
-) -> JsValue =
+) -> Array[String] =
   #| (self) => self.types

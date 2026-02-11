@@ -578,8 +578,8 @@ pub fn LanguageDetector::detect_with_options(
 ///|
 pub extern "js" fn LanguageDetector::get_expected_input_languages(
   self : LanguageDetector,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.expectedInputLanguages; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[String] =
+  #| (self) => self.expectedInputLanguages
 
 ///|
 pub extern "js" fn LanguageDetector::measure_input_usage(

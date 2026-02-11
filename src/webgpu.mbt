@@ -7158,7 +7158,7 @@ pub extern "js" fn JsValue::to_gpu_compilation_info(
 ///|
 pub extern "js" fn GPUCompilationInfo::get_messages(
   self : GPUCompilationInfo,
-) -> JsValue =
+) -> Array[GPUCompilationMessage] =
   #| (self) => self.messages
 
 ///|

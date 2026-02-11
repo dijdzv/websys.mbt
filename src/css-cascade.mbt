@@ -104,5 +104,5 @@ pub extern "js" fn CSSLayerStatementRule::to_css_rule(
 ///|
 pub extern "js" fn CSSLayerStatementRule::get_name_list(
   self : CSSLayerStatementRule,
-) -> JsValue =
+) -> Array[String] =
   #| (self) => self.nameList

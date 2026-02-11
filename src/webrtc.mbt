@@ -4124,7 +4124,9 @@ pub extern "js" fn RTCTrackEvent::get_track(
   #| (self) => self.track
 
 ///|
-pub extern "js" fn RTCTrackEvent::get_streams(self : RTCTrackEvent) -> JsValue =
+pub extern "js" fn RTCTrackEvent::get_streams(
+  self : RTCTrackEvent,
+) -> Array[MediaStream] =
   #| (self) => self.streams
 
 ///|

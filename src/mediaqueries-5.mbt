@@ -250,7 +250,7 @@ pub extern "js" fn PreferenceObject::get_value(
 ///|
 pub extern "js" fn PreferenceObject::get_valid_values(
   self : PreferenceObject,
-) -> JsValue =
+) -> Array[String] =
   #| (self) => self.validValues
 
 ///|

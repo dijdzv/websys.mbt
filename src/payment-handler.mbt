@@ -529,7 +529,7 @@ pub extern "js" fn PaymentRequestEvent::get_payment_request_id(
 ///|
 pub extern "js" fn PaymentRequestEvent::get_method_data(
   self : PaymentRequestEvent,
-) -> JsValue =
+) -> Array[PaymentMethodData] =
   #| (self) => self.methodData
 
 ///|
@@ -541,7 +541,7 @@ pub extern "js" fn PaymentRequestEvent::get_total(
 ///|
 pub extern "js" fn PaymentRequestEvent::get_modifiers(
   self : PaymentRequestEvent,
-) -> JsValue =
+) -> Array[PaymentDetailsModifier] =
   #| (self) => self.modifiers
 
 ///|
@@ -553,8 +553,8 @@ pub extern "js" fn PaymentRequestEvent::get_payment_options(
 ///|
 pub extern "js" fn PaymentRequestEvent::get_shipping_options(
   self : PaymentRequestEvent,
-) -> JsValue? =
-  #| (self) => (() => { const v = self.shippingOptions; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Array[PaymentShippingOption] =
+  #| (self) => self.shippingOptions
 
 ///|
 pub extern "js" fn PaymentRequestEvent::open_window(

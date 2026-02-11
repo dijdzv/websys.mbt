@@ -2895,11 +2895,11 @@ pub fn DeviceChangeEvent::new_with_event_init_dict(
 ///|
 pub extern "js" fn DeviceChangeEvent::get_devices(
   self : DeviceChangeEvent,
-) -> JsValue =
+) -> Array[MediaDeviceInfo] =
   #| (self) => self.devices
 
 ///|
 pub extern "js" fn DeviceChangeEvent::get_user_inserted_devices(
   self : DeviceChangeEvent,
-) -> JsValue =
+) -> Array[MediaDeviceInfo] =
   #| (self) => self.userInsertedDevices

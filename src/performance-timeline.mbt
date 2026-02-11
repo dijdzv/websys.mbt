@@ -364,7 +364,7 @@ pub extern "js" fn PerformanceObserver::take_records(
 ///|
 pub extern "js" fn PerformanceObserver::get_supported_entry_types(
   self : PerformanceObserver,
-) -> JsValue =
+) -> Array[String] =
   #| (self) => self.supportedEntryTypes
 
 ///|

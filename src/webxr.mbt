@@ -2011,6 +2011,7 @@ pub extern "js" fn XRInputSourceArray::get_length(
   #| (self) => self.length
 
 ///|
+#alias("_[_]")
 pub extern "js" fn XRInputSourceArray::get(
   self : XRInputSourceArray,
   index : Int,

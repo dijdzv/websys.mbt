@@ -3246,6 +3246,7 @@ pub extern "js" fn JsValue::to_image_track_list(
   #| (self) => self
 
 ///|
+#alias("_[_]")
 pub extern "js" fn ImageTrackList::get(
   self : ImageTrackList,
   index : Int,

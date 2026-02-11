@@ -297,6 +297,7 @@ pub extern "js" fn TouchList::item(self : TouchList, index : Int) -> Touch? =
   #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+#alias("_[_]")
 pub extern "js" fn TouchList::get(self : TouchList, index : Int) -> Touch? =
   #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 

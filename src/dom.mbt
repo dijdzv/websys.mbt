@@ -3725,6 +3725,7 @@ pub extern "js" fn NodeList::item(self : NodeList, index : Int) -> Node? =
   #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+#alias("_[_]")
 pub extern "js" fn NodeList::get(self : NodeList, index : Int) -> Node? =
   #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
@@ -3811,6 +3812,7 @@ pub extern "js" fn HTMLCollection::item(
   #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+#alias("_[_]")
 pub extern "js" fn HTMLCollection::get(
   self : HTMLCollection,
   index : Int,
@@ -10768,6 +10770,7 @@ pub extern "js" fn NamedNodeMap::item(
   #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+#alias("_[_]")
 pub extern "js" fn NamedNodeMap::get(self : NamedNodeMap, index : Int) -> Attr? =
   #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
@@ -11995,6 +11998,7 @@ pub extern "js" fn DOMTokenList::item(
   #| (self, index) => (self.item(index)) ?? undefined
 
 ///|
+#alias("_[_]")
 pub extern "js" fn DOMTokenList::get(
   self : DOMTokenList,
   index : Int,

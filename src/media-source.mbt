@@ -634,6 +634,7 @@ pub extern "js" fn SourceBufferList::set_onremovesourcebuffer(
   #| (self, value) => { self.onremovesourcebuffer = value }
 
 ///|
+#alias("_[_]")
 pub extern "js" fn SourceBufferList::get(
   self : SourceBufferList,
   index : Int,

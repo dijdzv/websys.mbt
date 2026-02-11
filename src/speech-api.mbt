@@ -923,6 +923,7 @@ pub extern "js" fn SpeechRecognitionResult::item(
   #| (self, index) => self.item(index)
 
 ///|
+#alias("_[_]")
 pub extern "js" fn SpeechRecognitionResult::get(
   self : SpeechRecognitionResult,
   index : Int,
@@ -987,6 +988,7 @@ pub extern "js" fn SpeechRecognitionResultList::item(
   #| (self, index) => self.item(index)
 
 ///|
+#alias("_[_]")
 pub extern "js" fn SpeechRecognitionResultList::get(
   self : SpeechRecognitionResultList,
   index : Int,
@@ -1172,6 +1174,7 @@ pub extern "js" fn SpeechGrammarList::item(
   #| (self, index) => self.item(index)
 
 ///|
+#alias("_[_]")
 pub extern "js" fn SpeechGrammarList::get(
   self : SpeechGrammarList,
   index : Int,

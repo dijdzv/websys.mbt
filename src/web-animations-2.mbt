@@ -810,6 +810,7 @@ pub extern "js" fn AnimationNodeList::item(
   #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+#alias("_[_]")
 pub extern "js" fn AnimationNodeList::get(
   self : AnimationNodeList,
   index : Int,

@@ -4194,6 +4194,7 @@ pub extern "js" fn HTMLAllCollection::get_length(
   #| (self) => self.length
 
 ///|
+#alias("_[_]")
 pub extern "js" fn HTMLAllCollection::get(
   self : HTMLAllCollection,
   index : Int,
@@ -4392,6 +4393,7 @@ pub extern "js" fn HTMLOptionsCollection::set_length(
   #| (self, value) => { self.length = value }
 
 ///|
+#alias("_[_]=_")
 pub extern "js" fn HTMLOptionsCollection::set(
   self : HTMLOptionsCollection,
   index : Int,
@@ -4478,6 +4480,7 @@ pub extern "js" fn DOMStringList::item(
   #| (self, index) => (self.item(index)) ?? undefined
 
 ///|
+#alias("_[_]")
 pub extern "js" fn DOMStringList::get(
   self : DOMStringList,
   index : Int,
@@ -12245,6 +12248,7 @@ pub extern "js" fn AudioTrackList::get_length(self : AudioTrackList) -> Int =
   #| (self) => self.length
 
 ///|
+#alias("_[_]")
 pub extern "js" fn AudioTrackList::get(
   self : AudioTrackList,
   index : Int,
@@ -12405,6 +12409,7 @@ pub extern "js" fn VideoTrackList::get_length(self : VideoTrackList) -> Int =
   #| (self) => self.length
 
 ///|
+#alias("_[_]")
 pub extern "js" fn VideoTrackList::get(
   self : VideoTrackList,
   index : Int,
@@ -12567,6 +12572,7 @@ pub extern "js" fn TextTrackList::get_length(self : TextTrackList) -> Int =
   #| (self) => self.length
 
 ///|
+#alias("_[_]")
 pub extern "js" fn TextTrackList::get(
   self : TextTrackList,
   index : Int,
@@ -12768,6 +12774,7 @@ pub extern "js" fn TextTrackCueList::get_length(self : TextTrackCueList) -> Int 
   #| (self) => self.length
 
 ///|
+#alias("_[_]")
 pub extern "js" fn TextTrackCueList::get(
   self : TextTrackCueList,
   index : Int,
@@ -14682,6 +14689,7 @@ pub extern "js" fn HTMLFormElement::get_length(self : HTMLFormElement) -> Int =
   #| (self) => self.length
 
 ///|
+#alias("_[_]")
 pub extern "js" fn HTMLFormElement::get(
   self : HTMLFormElement,
   index : Int,
@@ -16047,6 +16055,7 @@ pub extern "js" fn HTMLSelectElement::item(
   #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+#alias("_[_]")
 pub extern "js" fn HTMLSelectElement::get(
   self : HTMLSelectElement,
   index : Int,
@@ -16087,6 +16096,7 @@ pub extern "js" fn HTMLSelectElement::remove_with_index(
   #| (self, index) => self.remove(index)
 
 ///|
+#alias("_[_]=_")
 pub extern "js" fn HTMLSelectElement::set(
   self : HTMLSelectElement,
   index : Int,
@@ -23025,6 +23035,7 @@ pub extern "js" fn DataTransferItemList::get_length(
   #| (self) => self.length
 
 ///|
+#alias("_[_]")
 pub extern "js" fn DataTransferItemList::get(
   self : DataTransferItemList,
   index : Int,
@@ -28330,6 +28341,7 @@ pub extern "js" fn PluginArray::item(
   #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+#alias("_[_]")
 pub extern "js" fn PluginArray::get(self : PluginArray, index : Int) -> Plugin? =
   #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
@@ -28391,6 +28403,7 @@ pub extern "js" fn MimeTypeArray::item(
   #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+#alias("_[_]")
 pub extern "js" fn MimeTypeArray::get(
   self : MimeTypeArray,
   index : Int,
@@ -28460,6 +28473,7 @@ pub extern "js" fn Plugin::item(self : Plugin, index : Int) -> MimeType? =
   #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+#alias("_[_]")
 pub extern "js" fn Plugin::get(self : Plugin, index : Int) -> MimeType? =
   #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 

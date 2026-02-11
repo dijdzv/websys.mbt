@@ -2665,6 +2665,7 @@ pub extern "js" fn SVGNumberList::get_item(
   #| (self, index) => self.getItem(index)
 
 ///|
+#alias("_[_]")
 pub extern "js" fn SVGNumberList::get(
   self : SVGNumberList,
   index : Int,
@@ -2702,6 +2703,7 @@ pub extern "js" fn SVGNumberList::append_item(
   #| (self, new_item) => self.appendItem(new_item)
 
 ///|
+#alias("_[_]=_")
 pub extern "js" fn SVGNumberList::set(
   self : SVGNumberList,
   index : Int,
@@ -2770,6 +2772,7 @@ pub extern "js" fn SVGLengthList::get_item(
   #| (self, index) => self.getItem(index)
 
 ///|
+#alias("_[_]")
 pub extern "js" fn SVGLengthList::get(
   self : SVGLengthList,
   index : Int,
@@ -2807,6 +2810,7 @@ pub extern "js" fn SVGLengthList::append_item(
   #| (self, new_item) => self.appendItem(new_item)
 
 ///|
+#alias("_[_]=_")
 pub extern "js" fn SVGLengthList::set(
   self : SVGLengthList,
   index : Int,
@@ -2875,6 +2879,7 @@ pub extern "js" fn SVGStringList::get_item(
   #| (self, index) => self.getItem(index)
 
 ///|
+#alias("_[_]")
 pub extern "js" fn SVGStringList::get(
   self : SVGStringList,
   index : Int,
@@ -2912,6 +2917,7 @@ pub extern "js" fn SVGStringList::append_item(
   #| (self, new_item) => self.appendItem(new_item)
 
 ///|
+#alias("_[_]=_")
 pub extern "js" fn SVGStringList::set(
   self : SVGStringList,
   index : Int,
@@ -5024,6 +5030,7 @@ pub extern "js" fn SVGTransformList::get_item(
   #| (self, index) => self.getItem(index)
 
 ///|
+#alias("_[_]")
 pub extern "js" fn SVGTransformList::get(
   self : SVGTransformList,
   index : Int,
@@ -5061,6 +5068,7 @@ pub extern "js" fn SVGTransformList::append_item(
   #| (self, new_item) => self.appendItem(new_item)
 
 ///|
+#alias("_[_]=_")
 pub extern "js" fn SVGTransformList::set(
   self : SVGTransformList,
   index : Int,
@@ -5773,6 +5781,7 @@ pub extern "js" fn SVGPointList::get_item(
   #| (self, index) => self.getItem(index)
 
 ///|
+#alias("_[_]")
 pub extern "js" fn SVGPointList::get(
   self : SVGPointList,
   index : Int,
@@ -5810,6 +5819,7 @@ pub extern "js" fn SVGPointList::append_item(
   #| (self, new_item) => self.appendItem(new_item)
 
 ///|
+#alias("_[_]=_")
 pub extern "js" fn SVGPointList::set(
   self : SVGPointList,
   index : Int,

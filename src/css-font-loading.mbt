@@ -590,6 +590,7 @@ pub extern "js" fn FontFacePalette::get_length(self : FontFacePalette) -> Int =
   #| (self) => self.length
 
 ///|
+#alias("_[_]")
 pub extern "js" fn FontFacePalette::get(
   self : FontFacePalette,
   index : Int,
@@ -672,6 +673,7 @@ pub extern "js" fn FontFacePalettes::get_length(self : FontFacePalettes) -> Int 
   #| (self) => self.length
 
 ///|
+#alias("_[_]")
 pub extern "js" fn FontFacePalettes::get(
   self : FontFacePalettes,
   index : Int,

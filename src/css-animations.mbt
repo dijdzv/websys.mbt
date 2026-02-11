@@ -262,6 +262,7 @@ pub extern "js" fn CSSKeyframesRule::get_length(self : CSSKeyframesRule) -> Int 
   #| (self) => self.length
 
 ///|
+#alias("_[_]")
 pub extern "js" fn CSSKeyframesRule::get(
   self : CSSKeyframesRule,
   index : Int,

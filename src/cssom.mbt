@@ -95,6 +95,7 @@ pub extern "js" fn MediaList::item(self : MediaList, index : Int) -> String? =
   #| (self, index) => (self.item(index)) ?? undefined
 
 ///|
+#alias("_[_]")
 pub extern "js" fn MediaList::get(self : MediaList, index : Int) -> String? =
   #| (self, index) => (self[index]) ?? undefined
 
@@ -362,6 +363,7 @@ pub extern "js" fn StyleSheetList::item(
   #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+#alias("_[_]")
 pub extern "js" fn StyleSheetList::get(
   self : StyleSheetList,
   index : Int,
@@ -408,6 +410,7 @@ pub extern "js" fn CSSRuleList::item(
   #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+#alias("_[_]")
 pub extern "js" fn CSSRuleList::get(
   self : CSSRuleList,
   index : Int,
@@ -1380,6 +1383,7 @@ pub extern "js" fn CSSStyleDeclaration::item(
   #| (self, index) => self.item(index)
 
 ///|
+#alias("_[_]")
 pub extern "js" fn CSSStyleDeclaration::get(
   self : CSSStyleDeclaration,
   index : Int,

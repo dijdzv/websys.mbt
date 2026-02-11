@@ -1180,6 +1180,7 @@ pub extern "js" fn CSSUnparsedValue::get_length(self : CSSUnparsedValue) -> Int 
   #| (self) => self.length
 
 ///|
+#alias("_[_]")
 pub extern "js" fn CSSUnparsedValue::get(
   self : CSSUnparsedValue,
   index : Int,
@@ -1187,6 +1188,7 @@ pub extern "js" fn CSSUnparsedValue::get(
   #| (self, index) => self[index]
 
 ///|
+#alias("_[_]=_")
 pub extern "js" fn CSSUnparsedValue::set(
   self : CSSUnparsedValue,
   index : Int,
@@ -2310,6 +2312,7 @@ pub extern "js" fn CSSNumericArray::get_length(self : CSSNumericArray) -> Int =
   #| (self) => self.length
 
 ///|
+#alias("_[_]")
 pub extern "js" fn CSSNumericArray::get(
   self : CSSNumericArray,
   index : Int,
@@ -2396,6 +2399,7 @@ pub extern "js" fn CSSTransformValue::get_length(
   #| (self) => self.length
 
 ///|
+#alias("_[_]")
 pub extern "js" fn CSSTransformValue::get(
   self : CSSTransformValue,
   index : Int,
@@ -2403,6 +2407,7 @@ pub extern "js" fn CSSTransformValue::get(
   #| (self, index) => self[index]
 
 ///|
+#alias("_[_]=_")
 pub extern "js" fn CSSTransformValue::set(
   self : CSSTransformValue,
   index : Int,

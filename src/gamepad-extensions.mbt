@@ -7,7 +7,7 @@ pub(all) enum GamepadHand {
   Empty
   Left
   Right
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -70,34 +70,34 @@ pub extern "js" fn GamepadPose::get_has_position(self : GamepadPose) -> Bool =
 pub extern "js" fn GamepadPose::get_position(
   self : GamepadPose,
 ) -> Float32Array? =
-  #| (self) => { const v = self.position; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.position; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn GamepadPose::get_linear_velocity(
   self : GamepadPose,
 ) -> Float32Array? =
-  #| (self) => { const v = self.linearVelocity; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.linearVelocity; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn GamepadPose::get_linear_acceleration(
   self : GamepadPose,
 ) -> Float32Array? =
-  #| (self) => { const v = self.linearAcceleration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.linearAcceleration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn GamepadPose::get_orientation(
   self : GamepadPose,
 ) -> Float32Array? =
-  #| (self) => { const v = self.orientation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.orientation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn GamepadPose::get_angular_velocity(
   self : GamepadPose,
 ) -> Float32Array? =
-  #| (self) => { const v = self.angularVelocity; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.angularVelocity; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn GamepadPose::get_angular_acceleration(
   self : GamepadPose,
 ) -> Float32Array? =
-  #| (self) => { const v = self.angularAcceleration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.angularAcceleration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

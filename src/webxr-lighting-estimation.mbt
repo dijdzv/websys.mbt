@@ -6,7 +6,7 @@
 pub(all) enum XRReflectionFormat {
   Srgba8
   Rgba16f
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -29,7 +29,7 @@ pub fn XRReflectionFormat::from_string(s : String) -> XRReflectionFormat? {
 
 ///|
 /// XRLightProbeInit dictionary
-pub struct XRLightProbeInit {
+pub(all) struct XRLightProbeInit {
   reflectionFormat : XRReflectionFormat?
 }
 
@@ -40,11 +40,30 @@ pub fn XRLightProbeInit::default() -> XRLightProbeInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRLightProbeInit::to_js(self : XRLightProbeInit) -> JsValue =
+extern "js" fn XRLightProbeInit::to_js_ffi(self : XRLightProbeInit) -> JsValue =
   #| (self) => ({
-  #|   reflectionFormat: ['srgba8', 'rgba16f'][self.reflectionFormat]
+  #|   reflectionFormat: ((() => { const v = self.reflectionFormat; if (v === undefined) return undefined; return ['srgba8', 'rgba16f'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn XRLightProbeInit::to_js(self : XRLightProbeInit) -> JsValue {
+  XRLightProbeInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRLightProbeInit::from_js_ffi(
+  value : JsValue,
+) -> XRLightProbeInit =
+  #| (v) => ({
+  #|   reflectionFormat: (v.reflectionFormat === undefined ? undefined : ['srgba8', 'rgba16f'].indexOf(v.reflectionFormat))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRLightProbeInit::from_js(value : JsValue) -> XRLightProbeInit {
+  XRLightProbeInit::from_js_ffi(value)
+}
 
 ///|
 /// XRLightProbe interface

@@ -3,7 +3,7 @@
 
 ///|
 /// RelatedApplication dictionary
-pub struct RelatedApplication {
+pub(all) struct RelatedApplication {
   platform : String
   url : String?
   id : String?
@@ -17,8 +17,7 @@ pub fn RelatedApplication::default() -> RelatedApplication {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn RelatedApplication::to_js(
+extern "js" fn RelatedApplication::to_js_ffi(
   self : RelatedApplication,
 ) -> JsValue =
   #| (self) => ({
@@ -27,3 +26,26 @@ pub extern "js" fn RelatedApplication::to_js(
   #|   id: self.id,
   #|   version: self.version
   #| })
+
+///|
+/// Convert to JsValue
+pub fn RelatedApplication::to_js(self : RelatedApplication) -> JsValue {
+  RelatedApplication::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RelatedApplication::from_js_ffi(
+  value : JsValue,
+) -> RelatedApplication =
+  #| (v) => ({
+  #|   platform: v.platform,
+  #|   url: v.url,
+  #|   id: v.id,
+  #|   version: v.version
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RelatedApplication::from_js(value : JsValue) -> RelatedApplication {
+  RelatedApplication::from_js_ffi(value)
+}

@@ -34,21 +34,18 @@ pub extern "js" fn JsValue::to_named_flow_map(self : JsValue) -> NamedFlowMap =
 ///|
 pub extern "js" fn NamedFlowMap::get(
   self : NamedFlowMap,
-  key : CSSOMString,
+  key : String,
 ) -> NamedFlow? =
-  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, key) => self.get(key)
 
 ///|
-pub extern "js" fn NamedFlowMap::has(
-  self : NamedFlowMap,
-  key : CSSOMString,
-) -> Bool =
+pub extern "js" fn NamedFlowMap::has(self : NamedFlowMap, key : String) -> Bool =
   #| (self, key) => self.has(key)
 
 ///|
 pub extern "js" fn NamedFlowMap::set(
   self : NamedFlowMap,
-  key : CSSOMString,
+  key : String,
   value : NamedFlow,
 ) -> Unit =
   #| (self, key, value) => { self.set(key, value) }
@@ -56,7 +53,7 @@ pub extern "js" fn NamedFlowMap::set(
 ///|
 pub extern "js" fn NamedFlowMap::delete(
   self : NamedFlowMap,
-  key : CSSOMString,
+  key : String,
 ) -> Bool =
   #| (self, key) => self.delete(key)
 
@@ -97,7 +94,7 @@ pub extern "js" fn NamedFlow::to_event_target(self : NamedFlow) -> EventTarget =
   #| (self) => self
 
 ///|
-pub extern "js" fn NamedFlow::get_name(self : NamedFlow) -> CSSOMString =
+pub extern "js" fn NamedFlow::get_name(self : NamedFlow) -> String =
   #| (self) => self.name
 
 ///|

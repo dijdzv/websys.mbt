@@ -7,7 +7,7 @@ pub type ProfilerResource = String
 
 ///|
 /// ProfilerTrace dictionary
-pub struct ProfilerTrace {
+pub(all) struct ProfilerTrace {
   resources : Array[ProfilerResource]
   frames : Array[ProfilerFrame]
   stacks : Array[ProfilerStack]
@@ -21,8 +21,7 @@ pub fn ProfilerTrace::default() -> ProfilerTrace {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ProfilerTrace::to_js(self : ProfilerTrace) -> JsValue =
+extern "js" fn ProfilerTrace::to_js_ffi(self : ProfilerTrace) -> JsValue =
   #| (self) => ({
   #|   resources: self.resources,
   #|   frames: self.frames,
@@ -31,29 +30,68 @@ pub extern "js" fn ProfilerTrace::to_js(self : ProfilerTrace) -> JsValue =
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ProfilerTrace::to_js(self : ProfilerTrace) -> JsValue {
+  ProfilerTrace::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ProfilerTrace::from_js_ffi(value : JsValue) -> ProfilerTrace =
+  #| (v) => ({
+  #|   resources: v.resources,
+  #|   frames: v.frames,
+  #|   stacks: v.stacks,
+  #|   samples: v.samples
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ProfilerTrace::from_js(value : JsValue) -> ProfilerTrace {
+  ProfilerTrace::from_js_ffi(value)
+}
+
+///|
 /// ProfilerSample dictionary
-pub struct ProfilerSample {
+pub(all) struct ProfilerSample {
   timestamp : DOMHighResTimeStamp
   stackId : Int64?
 }
 
 ///|
-/// Create a new ProfilerSample with default values
-pub fn ProfilerSample::default() -> ProfilerSample {
-  ProfilerSample::{ timestamp: panic(), stackId: None }
+/// Create a new ProfilerSample
+pub fn ProfilerSample::new(timestamp~ : DOMHighResTimeStamp) -> ProfilerSample {
+  ProfilerSample::{ timestamp, stackId: None }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ProfilerSample::to_js(self : ProfilerSample) -> JsValue =
+extern "js" fn ProfilerSample::to_js_ffi(self : ProfilerSample) -> JsValue =
   #| (self) => ({
   #|   timestamp: self.timestamp,
   #|   stackId: self.stackId
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ProfilerSample::to_js(self : ProfilerSample) -> JsValue {
+  ProfilerSample::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ProfilerSample::from_js_ffi(value : JsValue) -> ProfilerSample =
+  #| (v) => ({
+  #|   timestamp: v.timestamp,
+  #|   stackId: v.stackId
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ProfilerSample::from_js(value : JsValue) -> ProfilerSample {
+  ProfilerSample::from_js_ffi(value)
+}
+
+///|
 /// ProfilerStack dictionary
-pub struct ProfilerStack {
+pub(all) struct ProfilerStack {
   parentId : Int64?
   frameId : Int64
 }
@@ -65,16 +103,34 @@ pub fn ProfilerStack::default() -> ProfilerStack {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ProfilerStack::to_js(self : ProfilerStack) -> JsValue =
+extern "js" fn ProfilerStack::to_js_ffi(self : ProfilerStack) -> JsValue =
   #| (self) => ({
   #|   parentId: self.parentId,
   #|   frameId: self.frameId
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ProfilerStack::to_js(self : ProfilerStack) -> JsValue {
+  ProfilerStack::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ProfilerStack::from_js_ffi(value : JsValue) -> ProfilerStack =
+  #| (v) => ({
+  #|   parentId: v.parentId,
+  #|   frameId: v.frameId
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ProfilerStack::from_js(value : JsValue) -> ProfilerStack {
+  ProfilerStack::from_js_ffi(value)
+}
+
+///|
 /// ProfilerFrame dictionary
-pub struct ProfilerFrame {
+pub(all) struct ProfilerFrame {
   name : String
   resourceId : Int64?
   line : Int64?
@@ -88,8 +144,7 @@ pub fn ProfilerFrame::default() -> ProfilerFrame {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ProfilerFrame::to_js(self : ProfilerFrame) -> JsValue =
+extern "js" fn ProfilerFrame::to_js_ffi(self : ProfilerFrame) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   resourceId: self.resourceId,
@@ -98,27 +153,70 @@ pub extern "js" fn ProfilerFrame::to_js(self : ProfilerFrame) -> JsValue =
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ProfilerFrame::to_js(self : ProfilerFrame) -> JsValue {
+  ProfilerFrame::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ProfilerFrame::from_js_ffi(value : JsValue) -> ProfilerFrame =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   resourceId: v.resourceId,
+  #|   line: v.line,
+  #|   column: v.column
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ProfilerFrame::from_js(value : JsValue) -> ProfilerFrame {
+  ProfilerFrame::from_js_ffi(value)
+}
+
+///|
 /// ProfilerInitOptions dictionary
-pub struct ProfilerInitOptions {
+pub(all) struct ProfilerInitOptions {
   sampleInterval : DOMHighResTimeStamp
   maxBufferSize : Int
 }
 
 ///|
-/// Create a new ProfilerInitOptions with default values
-pub fn ProfilerInitOptions::default() -> ProfilerInitOptions {
-  ProfilerInitOptions::{ sampleInterval: panic(), maxBufferSize: 0 }
+/// Create a new ProfilerInitOptions
+pub fn ProfilerInitOptions::new(
+  sampleInterval~ : DOMHighResTimeStamp,
+) -> ProfilerInitOptions {
+  ProfilerInitOptions::{ sampleInterval, maxBufferSize: 0 }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ProfilerInitOptions::to_js(
+extern "js" fn ProfilerInitOptions::to_js_ffi(
   self : ProfilerInitOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   sampleInterval: self.sampleInterval,
   #|   maxBufferSize: self.maxBufferSize
   #| })
+
+///|
+/// Convert to JsValue
+pub fn ProfilerInitOptions::to_js(self : ProfilerInitOptions) -> JsValue {
+  ProfilerInitOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ProfilerInitOptions::from_js_ffi(
+  value : JsValue,
+) -> ProfilerInitOptions =
+  #| (v) => ({
+  #|   sampleInterval: v.sampleInterval,
+  #|   maxBufferSize: v.maxBufferSize
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ProfilerInitOptions::from_js(value : JsValue) -> ProfilerInitOptions {
+  ProfilerInitOptions::from_js_ffi(value)
+}
 
 ///|
 /// Profiler interface
@@ -163,9 +261,19 @@ pub extern "js" fn Profiler::get_stopped(self : Profiler) -> Bool =
   #| (self) => self.stopped
 
 ///|
-pub extern "js" fn Profiler::new(options : ProfilerInitOptions) -> Profiler =
+extern "js" fn Profiler::new_ffi(options : JsValue) -> Profiler =
   #| (options) => new Profiler(options)
 
 ///|
+pub fn Profiler::new(options : ProfilerInitOptions) -> Profiler {
+  Profiler::new_ffi(options.to_js())
+}
+
+///|
 pub extern "js" fn Profiler::stop(self : Profiler) -> Promise[ProfilerTrace] =
-  #| (self) => self.stop()
+  #| (self) => self.stop().then(v => ({
+  #|   resources: v.resources,
+  #|   frames: v.frames,
+  #|   stacks: v.stacks,
+  #|   samples: v.samples
+  #| }))

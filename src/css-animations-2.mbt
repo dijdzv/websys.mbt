@@ -44,5 +44,5 @@ pub extern "js" fn CSSAnimation::to_event_target(
 ///|
 pub extern "js" fn CSSAnimation::get_animation_name(
   self : CSSAnimation,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.animationName

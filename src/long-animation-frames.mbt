@@ -10,7 +10,7 @@ pub(all) enum ScriptInvokerType {
   UserCallback
   ResolvePromise
   RejectPromise
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -47,7 +47,7 @@ pub(all) enum ScriptWindowAttribution {
   Ancestor
   SamePage
   Other
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -173,7 +173,7 @@ pub extern "js" fn PerformanceLongAnimationFrameTiming::get_first_ui_event_times
 ///|
 pub extern "js" fn PerformanceLongAnimationFrameTiming::get_scripts(
   self : PerformanceLongAnimationFrameTiming,
-) -> JsValue =
+) -> Array[PerformanceScriptTiming] =
   #| (self) => self.scripts
 
 ///|
@@ -192,7 +192,7 @@ pub extern "js" fn PerformanceLongAnimationFrameTiming::get_paint_time(
 pub extern "js" fn PerformanceLongAnimationFrameTiming::get_presentation_time(
   self : PerformanceLongAnimationFrameTiming,
 ) -> DOMHighResTimeStamp? =
-  #| (self) => { const v = self.presentationTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.presentationTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// PerformanceScriptTiming interface
@@ -266,7 +266,7 @@ pub extern "js" fn PerformanceScriptTiming::get_entry_type(
 pub extern "js" fn PerformanceScriptTiming::get_invoker_type(
   self : PerformanceScriptTiming,
 ) -> ScriptInvokerType =
-  #| (self) => self.invokerType
+  #| (self) => ['classic-script', 'module-script', 'event-listener', 'user-callback', 'resolve-promise', 'reject-promise'].indexOf(self.invokerType)
 
 ///|
 pub extern "js" fn PerformanceScriptTiming::get_invoker(
@@ -296,7 +296,7 @@ pub extern "js" fn PerformanceScriptTiming::get_source_function_name(
 pub extern "js" fn PerformanceScriptTiming::get_source_char_position(
   self : PerformanceScriptTiming,
 ) -> Int64 =
-  #| (self) => self.sourceCharPosition
+  #| (self) => (() => { const n = self.sourceCharPosition; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceScriptTiming::get_pause_duration(
@@ -314,13 +314,13 @@ pub extern "js" fn PerformanceScriptTiming::get_forced_style_and_layout_duration
 pub extern "js" fn PerformanceScriptTiming::get_window(
   self : PerformanceScriptTiming,
 ) -> Window? =
-  #| (self) => { const v = self.window; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.window; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn PerformanceScriptTiming::get_window_attribution(
   self : PerformanceScriptTiming,
 ) -> ScriptWindowAttribution =
-  #| (self) => self.windowAttribution
+  #| (self) => ['self', 'descendant', 'ancestor', 'same-page', 'other'].indexOf(self.windowAttribution)
 
 ///|
 pub extern "js" fn PerformanceScriptTiming::to_json(

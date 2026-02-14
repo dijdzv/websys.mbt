@@ -38,7 +38,9 @@ pub extern "js" fn ScreenDetails::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn ScreenDetails::get_screens(self : ScreenDetails) -> JsValue =
+pub extern "js" fn ScreenDetails::get_screens(
+  self : ScreenDetails,
+) -> Array[ScreenDetailed] =
   #| (self) => self.screens
 
 ///|

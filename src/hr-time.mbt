@@ -65,12 +65,21 @@ pub extern "js" fn Performance::mark(
   #| (self, mark_name) => self.mark(mark_name)
 
 ///|
-pub extern "js" fn Performance::mark_with_mark_options(
+extern "js" fn Performance::mark_with_mark_options_ffi(
+  self : Performance,
+  mark_name : String,
+  mark_options : JsValue,
+) -> PerformanceMark =
+  #| (self, mark_name, mark_options) => self.mark(mark_name, mark_options)
+
+///|
+pub fn Performance::mark_with_mark_options(
   self : Performance,
   mark_name : String,
   mark_options : PerformanceMarkOptions,
-) -> PerformanceMark =
-  #| (self, mark_name, mark_options) => self.mark(mark_name, mark_options)
+) -> PerformanceMark {
+  Performance::mark_with_mark_options_ffi(self, mark_name, mark_options.to_js())
+}
 
 ///|
 pub extern "js" fn Performance::clear_marks(self : Performance) -> Unit =
@@ -154,7 +163,10 @@ pub extern "js" fn Performance::get_entries_by_name_with_type(
 pub extern "js" fn Performance::measure_user_agent_specific_memory(
   self : Performance,
 ) -> Promise[MemoryMeasurement] =
-  #| (self) => self.measureUserAgentSpecificMemory()
+  #| (self) => self.measureUserAgentSpecificMemory().then(v => ({
+  #|   bytes: v.bytes,
+  #|   breakdown: (v.breakdown === undefined ? { $tag: 0 } : { $tag: 1, _0: v.breakdown })
+  #| }))
 
 ///|
 pub extern "js" fn Performance::clear_resource_timings(
@@ -192,4 +204,4 @@ pub extern "js" fn Performance::get_event_counts(
 pub extern "js" fn Performance::get_interaction_count(
   self : Performance,
 ) -> Int64 =
-  #| (self) => self.interactionCount
+  #| (self) => (() => { const n = self.interactionCount; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()

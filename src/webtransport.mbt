@@ -7,7 +7,7 @@ pub(all) enum WebTransportReliabilityMode {
   Pending
   ReliableOnly
   SupportsUnreliable
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -41,7 +41,7 @@ pub(all) enum WebTransportCongestionControl {
   Default
   Throughput
   LowLatency
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -73,7 +73,7 @@ pub fn WebTransportCongestionControl::from_string(
 pub(all) enum WebTransportErrorSource {
   Stream
   Session
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -100,28 +100,48 @@ pub fn WebTransportErrorSource::from_string(
 
 ///|
 /// WebTransportHash dictionary
-pub struct WebTransportHash {
+pub(all) struct WebTransportHash {
   algorithm : String
   value : BufferSource
 }
 
 ///|
-/// Create a new WebTransportHash with default values
-pub fn WebTransportHash::default() -> WebTransportHash {
-  WebTransportHash::{ algorithm: "", value: panic() }
+/// Create a new WebTransportHash
+pub fn WebTransportHash::new(value~ : BufferSource) -> WebTransportHash {
+  WebTransportHash::{ algorithm: "", value }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WebTransportHash::to_js(self : WebTransportHash) -> JsValue =
+extern "js" fn WebTransportHash::to_js_ffi(self : WebTransportHash) -> JsValue =
   #| (self) => ({
   #|   algorithm: self.algorithm,
   #|   value: self.value.to_js_value()
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WebTransportHash::to_js(self : WebTransportHash) -> JsValue {
+  WebTransportHash::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WebTransportHash::from_js_ffi(
+  value : JsValue,
+) -> WebTransportHash =
+  #| (v) => ({
+  #|   algorithm: v.algorithm,
+  #|   value: v.value
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WebTransportHash::from_js(value : JsValue) -> WebTransportHash {
+  WebTransportHash::from_js_ffi(value)
+}
+
+///|
 /// WebTransportOptions dictionary
-pub struct WebTransportOptions {
+pub(all) struct WebTransportOptions {
   allowPooling : Bool?
   requireUnreliable : Bool?
   serverCertificateHashes : Array[WebTransportHash]?
@@ -148,24 +168,50 @@ pub fn WebTransportOptions::default() -> WebTransportOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WebTransportOptions::to_js(
+extern "js" fn WebTransportOptions::to_js_ffi(
   self : WebTransportOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   allowPooling: self.allowPooling,
-  #|   requireUnreliable: self.requireUnreliable,
-  #|   serverCertificateHashes: self.serverCertificateHashes,
-  #|   congestionControl: ['default', 'throughput', 'low-latency'][self.congestionControl],
-  #|   anticipatedConcurrentIncomingUnidirectionalStreams: ((() => { const v = self.anticipatedConcurrentIncomingUnidirectionalStreams; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   anticipatedConcurrentIncomingBidirectionalStreams: ((() => { const v = self.anticipatedConcurrentIncomingBidirectionalStreams; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   protocols: self.protocols,
-  #|   datagramsReadableType: ['bytes'][self.datagramsReadableType]
+  #|   allowPooling: (self.allowPooling === -1 ? undefined : self.allowPooling),
+  #|   requireUnreliable: (self.requireUnreliable === -1 ? undefined : self.requireUnreliable),
+  #|   serverCertificateHashes: ((() => { const v = self.serverCertificateHashes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   congestionControl: ((() => { const v = self.congestionControl; if (v === undefined) return undefined; return ['default', 'throughput', 'low-latency'][v]; })()),
+  #|   anticipatedConcurrentIncomingUnidirectionalStreams: ((() => { const v = self.anticipatedConcurrentIncomingUnidirectionalStreams; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   anticipatedConcurrentIncomingBidirectionalStreams: ((() => { const v = self.anticipatedConcurrentIncomingBidirectionalStreams; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   protocols: ((() => { const v = self.protocols; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   datagramsReadableType: ((() => { const v = self.datagramsReadableType; if (v === undefined) return undefined; return ['bytes'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WebTransportOptions::to_js(self : WebTransportOptions) -> JsValue {
+  WebTransportOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WebTransportOptions::from_js_ffi(
+  value : JsValue,
+) -> WebTransportOptions =
+  #| (v) => ({
+  #|   allowPooling: (v.allowPooling === undefined ? -1 : v.allowPooling),
+  #|   requireUnreliable: (v.requireUnreliable === undefined ? -1 : v.requireUnreliable),
+  #|   serverCertificateHashes: (v.serverCertificateHashes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.serverCertificateHashes }),
+  #|   congestionControl: (v.congestionControl === undefined ? undefined : ['default', 'throughput', 'low-latency'].indexOf(v.congestionControl)),
+  #|   anticipatedConcurrentIncomingUnidirectionalStreams: (v.anticipatedConcurrentIncomingUnidirectionalStreams === undefined ? { $tag: 0 } : v.anticipatedConcurrentIncomingUnidirectionalStreams === null ? { $tag: 1 } : { $tag: 2, _0: v.anticipatedConcurrentIncomingUnidirectionalStreams }),
+  #|   anticipatedConcurrentIncomingBidirectionalStreams: (v.anticipatedConcurrentIncomingBidirectionalStreams === undefined ? { $tag: 0 } : v.anticipatedConcurrentIncomingBidirectionalStreams === null ? { $tag: 1 } : { $tag: 2, _0: v.anticipatedConcurrentIncomingBidirectionalStreams }),
+  #|   protocols: (v.protocols === undefined ? { $tag: 0 } : { $tag: 1, _0: v.protocols }),
+  #|   datagramsReadableType: (v.datagramsReadableType === undefined ? undefined : ['bytes'].indexOf(v.datagramsReadableType))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WebTransportOptions::from_js(value : JsValue) -> WebTransportOptions {
+  WebTransportOptions::from_js_ffi(value)
+}
+
+///|
 /// WebTransportCloseInfo dictionary
-pub struct WebTransportCloseInfo {
+pub(all) struct WebTransportCloseInfo {
   closeCode : Int?
   reason : String?
 }
@@ -177,8 +223,7 @@ pub fn WebTransportCloseInfo::default() -> WebTransportCloseInfo {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WebTransportCloseInfo::to_js(
+extern "js" fn WebTransportCloseInfo::to_js_ffi(
   self : WebTransportCloseInfo,
 ) -> JsValue =
   #| (self) => ({
@@ -187,8 +232,29 @@ pub extern "js" fn WebTransportCloseInfo::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WebTransportCloseInfo::to_js(self : WebTransportCloseInfo) -> JsValue {
+  WebTransportCloseInfo::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WebTransportCloseInfo::from_js_ffi(
+  value : JsValue,
+) -> WebTransportCloseInfo =
+  #| (v) => ({
+  #|   closeCode: v.closeCode,
+  #|   reason: v.reason
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WebTransportCloseInfo::from_js(value : JsValue) -> WebTransportCloseInfo {
+  WebTransportCloseInfo::from_js_ffi(value)
+}
+
+///|
 /// WebTransportSendOptions dictionary
-pub struct WebTransportSendOptions {
+pub(all) struct WebTransportSendOptions {
   sendGroup : Nullable[WebTransportSendGroup]
   sendOrder : Int64?
 }
@@ -200,18 +266,42 @@ pub fn WebTransportSendOptions::default() -> WebTransportSendOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WebTransportSendOptions::to_js(
+extern "js" fn WebTransportSendOptions::to_js_ffi(
   self : WebTransportSendOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   sendGroup: ((() => { const v = self.sendGroup; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   sendGroup: ((() => { const v = self.sendGroup; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   sendOrder: self.sendOrder
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WebTransportSendOptions::to_js(
+  self : WebTransportSendOptions,
+) -> JsValue {
+  WebTransportSendOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WebTransportSendOptions::from_js_ffi(
+  value : JsValue,
+) -> WebTransportSendOptions =
+  #| (v) => ({
+  #|   sendGroup: (v.sendGroup === undefined ? { $tag: 0 } : v.sendGroup === null ? { $tag: 1 } : { $tag: 2, _0: v.sendGroup }),
+  #|   sendOrder: v.sendOrder
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WebTransportSendOptions::from_js(
+  value : JsValue,
+) -> WebTransportSendOptions {
+  WebTransportSendOptions::from_js_ffi(value)
+}
+
+///|
 /// WebTransportSendStreamOptions dictionary
-pub struct WebTransportSendStreamOptions {
+pub(all) struct WebTransportSendStreamOptions {
   sendGroup : Nullable[WebTransportSendGroup]
   sendOrder : Int64?
   waitUntilAvailable : Bool?
@@ -228,19 +318,44 @@ pub fn WebTransportSendStreamOptions::default() -> WebTransportSendStreamOptions
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WebTransportSendStreamOptions::to_js(
+extern "js" fn WebTransportSendStreamOptions::to_js_ffi(
   self : WebTransportSendStreamOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   sendGroup: ((() => { const v = self.sendGroup; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   sendGroup: ((() => { const v = self.sendGroup; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   sendOrder: self.sendOrder,
-  #|   waitUntilAvailable: self.waitUntilAvailable
+  #|   waitUntilAvailable: (self.waitUntilAvailable === -1 ? undefined : self.waitUntilAvailable)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WebTransportSendStreamOptions::to_js(
+  self : WebTransportSendStreamOptions,
+) -> JsValue {
+  WebTransportSendStreamOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WebTransportSendStreamOptions::from_js_ffi(
+  value : JsValue,
+) -> WebTransportSendStreamOptions =
+  #| (v) => ({
+  #|   sendGroup: (v.sendGroup === undefined ? { $tag: 0 } : v.sendGroup === null ? { $tag: 1 } : { $tag: 2, _0: v.sendGroup }),
+  #|   sendOrder: v.sendOrder,
+  #|   waitUntilAvailable: (v.waitUntilAvailable === undefined ? -1 : v.waitUntilAvailable)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WebTransportSendStreamOptions::from_js(
+  value : JsValue,
+) -> WebTransportSendStreamOptions {
+  WebTransportSendStreamOptions::from_js_ffi(value)
+}
+
+///|
 /// WebTransportConnectionStats dictionary
-pub struct WebTransportConnectionStats {
+pub(all) struct WebTransportConnectionStats {
   bytesSent : Int64?
   bytesSentOverhead : Int64?
   bytesAcknowledged : Int64?
@@ -258,8 +373,10 @@ pub struct WebTransportConnectionStats {
 }
 
 ///|
-/// Create a new WebTransportConnectionStats with default values
-pub fn WebTransportConnectionStats::default() -> WebTransportConnectionStats {
+/// Create a new WebTransportConnectionStats
+pub fn WebTransportConnectionStats::new(
+  datagrams~ : WebTransportDatagramStats,
+) -> WebTransportConnectionStats {
   WebTransportConnectionStats::{
     bytesSent: None,
     bytesSentOverhead: None,
@@ -272,15 +389,14 @@ pub fn WebTransportConnectionStats::default() -> WebTransportConnectionStats {
     smoothedRtt: None,
     rttVariation: None,
     minRtt: None,
-    datagrams: panic(),
+    datagrams,
     estimatedSendRate: Nullable::Undefined,
     atSendCapacity: None,
   }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WebTransportConnectionStats::to_js(
+extern "js" fn WebTransportConnectionStats::to_js_ffi(
   self : WebTransportConnectionStats,
 ) -> JsValue =
   #| (self) => ({
@@ -292,17 +408,54 @@ pub extern "js" fn WebTransportConnectionStats::to_js(
   #|   packetsLost: self.packetsLost,
   #|   bytesReceived: self.bytesReceived,
   #|   packetsReceived: self.packetsReceived,
-  #|   smoothedRtt: self.smoothedRtt,
-  #|   rttVariation: self.rttVariation,
-  #|   minRtt: self.minRtt,
+  #|   smoothedRtt: ((() => { const v = self.smoothedRtt; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   rttVariation: ((() => { const v = self.rttVariation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   minRtt: ((() => { const v = self.minRtt; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   datagrams: self.datagrams,
-  #|   estimatedSendRate: ((() => { const v = self.estimatedSendRate; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   atSendCapacity: self.atSendCapacity
+  #|   estimatedSendRate: ((() => { const v = self.estimatedSendRate; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   atSendCapacity: (self.atSendCapacity === -1 ? undefined : self.atSendCapacity)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WebTransportConnectionStats::to_js(
+  self : WebTransportConnectionStats,
+) -> JsValue {
+  WebTransportConnectionStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WebTransportConnectionStats::from_js_ffi(
+  value : JsValue,
+) -> WebTransportConnectionStats =
+  #| (v) => ({
+  #|   bytesSent: v.bytesSent,
+  #|   bytesSentOverhead: v.bytesSentOverhead,
+  #|   bytesAcknowledged: v.bytesAcknowledged,
+  #|   packetsSent: v.packetsSent,
+  #|   bytesLost: v.bytesLost,
+  #|   packetsLost: v.packetsLost,
+  #|   bytesReceived: v.bytesReceived,
+  #|   packetsReceived: v.packetsReceived,
+  #|   smoothedRtt: (v.smoothedRtt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.smoothedRtt }),
+  #|   rttVariation: (v.rttVariation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rttVariation }),
+  #|   minRtt: (v.minRtt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.minRtt }),
+  #|   datagrams: v.datagrams,
+  #|   estimatedSendRate: (v.estimatedSendRate === undefined ? { $tag: 0 } : v.estimatedSendRate === null ? { $tag: 1 } : { $tag: 2, _0: v.estimatedSendRate }),
+  #|   atSendCapacity: (v.atSendCapacity === undefined ? -1 : v.atSendCapacity)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WebTransportConnectionStats::from_js(
+  value : JsValue,
+) -> WebTransportConnectionStats {
+  WebTransportConnectionStats::from_js_ffi(value)
+}
+
+///|
 /// WebTransportDatagramStats dictionary
-pub struct WebTransportDatagramStats {
+pub(all) struct WebTransportDatagramStats {
   droppedIncoming : Int64?
   expiredIncoming : Int64?
   expiredOutgoing : Int64?
@@ -321,8 +474,7 @@ pub fn WebTransportDatagramStats::default() -> WebTransportDatagramStats {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WebTransportDatagramStats::to_js(
+extern "js" fn WebTransportDatagramStats::to_js_ffi(
   self : WebTransportDatagramStats,
 ) -> JsValue =
   #| (self) => ({
@@ -333,8 +485,35 @@ pub extern "js" fn WebTransportDatagramStats::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WebTransportDatagramStats::to_js(
+  self : WebTransportDatagramStats,
+) -> JsValue {
+  WebTransportDatagramStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WebTransportDatagramStats::from_js_ffi(
+  value : JsValue,
+) -> WebTransportDatagramStats =
+  #| (v) => ({
+  #|   droppedIncoming: v.droppedIncoming,
+  #|   expiredIncoming: v.expiredIncoming,
+  #|   expiredOutgoing: v.expiredOutgoing,
+  #|   lostOutgoing: v.lostOutgoing
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WebTransportDatagramStats::from_js(
+  value : JsValue,
+) -> WebTransportDatagramStats {
+  WebTransportDatagramStats::from_js_ffi(value)
+}
+
+///|
 /// WebTransportSendStreamStats dictionary
-pub struct WebTransportSendStreamStats {
+pub(all) struct WebTransportSendStreamStats {
   bytesWritten : Int64?
   bytesSent : Int64?
   bytesAcknowledged : Int64?
@@ -351,8 +530,7 @@ pub fn WebTransportSendStreamStats::default() -> WebTransportSendStreamStats {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WebTransportSendStreamStats::to_js(
+extern "js" fn WebTransportSendStreamStats::to_js_ffi(
   self : WebTransportSendStreamStats,
 ) -> JsValue =
   #| (self) => ({
@@ -362,8 +540,34 @@ pub extern "js" fn WebTransportSendStreamStats::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WebTransportSendStreamStats::to_js(
+  self : WebTransportSendStreamStats,
+) -> JsValue {
+  WebTransportSendStreamStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WebTransportSendStreamStats::from_js_ffi(
+  value : JsValue,
+) -> WebTransportSendStreamStats =
+  #| (v) => ({
+  #|   bytesWritten: v.bytesWritten,
+  #|   bytesSent: v.bytesSent,
+  #|   bytesAcknowledged: v.bytesAcknowledged
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WebTransportSendStreamStats::from_js(
+  value : JsValue,
+) -> WebTransportSendStreamStats {
+  WebTransportSendStreamStats::from_js_ffi(value)
+}
+
+///|
 /// WebTransportReceiveStreamStats dictionary
-pub struct WebTransportReceiveStreamStats {
+pub(all) struct WebTransportReceiveStreamStats {
   bytesReceived : Int64?
   bytesRead : Int64?
 }
@@ -375,8 +579,7 @@ pub fn WebTransportReceiveStreamStats::default() -> WebTransportReceiveStreamSta
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WebTransportReceiveStreamStats::to_js(
+extern "js" fn WebTransportReceiveStreamStats::to_js_ffi(
   self : WebTransportReceiveStreamStats,
 ) -> JsValue =
   #| (self) => ({
@@ -385,8 +588,33 @@ pub extern "js" fn WebTransportReceiveStreamStats::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WebTransportReceiveStreamStats::to_js(
+  self : WebTransportReceiveStreamStats,
+) -> JsValue {
+  WebTransportReceiveStreamStats::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WebTransportReceiveStreamStats::from_js_ffi(
+  value : JsValue,
+) -> WebTransportReceiveStreamStats =
+  #| (v) => ({
+  #|   bytesReceived: v.bytesReceived,
+  #|   bytesRead: v.bytesRead
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WebTransportReceiveStreamStats::from_js(
+  value : JsValue,
+) -> WebTransportReceiveStreamStats {
+  WebTransportReceiveStreamStats::from_js_ffi(value)
+}
+
+///|
 /// WebTransportErrorOptions dictionary
-pub struct WebTransportErrorOptions {
+pub(all) struct WebTransportErrorOptions {
   source : WebTransportErrorSource?
   streamErrorCode : Nullable[Int]
 }
@@ -401,14 +629,38 @@ pub fn WebTransportErrorOptions::default() -> WebTransportErrorOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WebTransportErrorOptions::to_js(
+extern "js" fn WebTransportErrorOptions::to_js_ffi(
   self : WebTransportErrorOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   source: ['stream', 'session'][self.source],
-  #|   streamErrorCode: ((() => { const v = self.streamErrorCode; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   source: ((() => { const v = self.source; if (v === undefined) return undefined; return ['stream', 'session'][v]; })()),
+  #|   streamErrorCode: ((() => { const v = self.streamErrorCode; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn WebTransportErrorOptions::to_js(
+  self : WebTransportErrorOptions,
+) -> JsValue {
+  WebTransportErrorOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WebTransportErrorOptions::from_js_ffi(
+  value : JsValue,
+) -> WebTransportErrorOptions =
+  #| (v) => ({
+  #|   source: (v.source === undefined ? undefined : ['stream', 'session'].indexOf(v.source)),
+  #|   streamErrorCode: (v.streamErrorCode === undefined ? { $tag: 0 } : v.streamErrorCode === null ? { $tag: 1 } : { $tag: 2, _0: v.streamErrorCode })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WebTransportErrorOptions::from_js(
+  value : JsValue,
+) -> WebTransportErrorOptions {
+  WebTransportErrorOptions::from_js_ffi(value)
+}
 
 ///|
 /// WebTransportDatagramsWritable interface
@@ -458,20 +710,20 @@ pub extern "js" fn WebTransportDatagramsWritable::to_writable_stream(
 pub extern "js" fn WebTransportDatagramsWritable::get_send_group(
   self : WebTransportDatagramsWritable,
 ) -> WebTransportSendGroup? =
-  #| (self) => { const v = self.sendGroup; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.sendGroup; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebTransportDatagramsWritable::set_send_group(
   self : WebTransportDatagramsWritable,
   value : WebTransportSendGroup?,
 ) -> Unit =
-  #| (self, value) => { self.sendGroup = value }
+  #| (self, value) => { self.sendGroup = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn WebTransportDatagramsWritable::get_send_order(
   self : WebTransportDatagramsWritable,
 ) -> Int64 =
-  #| (self) => self.sendOrder
+  #| (self) => (() => { const n = self.sendOrder; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn WebTransportDatagramsWritable::set_send_order(
@@ -525,11 +777,22 @@ pub extern "js" fn WebTransportDatagramDuplexStream::create_writable(
   #| (self) => self.createWritable()
 
 ///|
-pub extern "js" fn WebTransportDatagramDuplexStream::create_writable_with_options(
+extern "js" fn WebTransportDatagramDuplexStream::create_writable_with_options_ffi(
   self : WebTransportDatagramDuplexStream,
-  options : WebTransportSendOptions,
+  options : JsValue,
 ) -> WebTransportDatagramsWritable =
   #| (self, options) => self.createWritable(options)
+
+///|
+pub fn WebTransportDatagramDuplexStream::create_writable_with_options(
+  self : WebTransportDatagramDuplexStream,
+  options : WebTransportSendOptions,
+) -> WebTransportDatagramsWritable {
+  WebTransportDatagramDuplexStream::create_writable_with_options_ffi(
+    self,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn WebTransportDatagramDuplexStream::get_readable(
@@ -547,7 +810,7 @@ pub extern "js" fn WebTransportDatagramDuplexStream::get_max_datagram_size(
 pub extern "js" fn WebTransportDatagramDuplexStream::get_incoming_max_age(
   self : WebTransportDatagramDuplexStream,
 ) -> Double? =
-  #| (self) => { const v = self.incomingMaxAge; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.incomingMaxAge) ?? undefined
 
 ///|
 pub extern "js" fn WebTransportDatagramDuplexStream::set_incoming_max_age(
@@ -560,7 +823,7 @@ pub extern "js" fn WebTransportDatagramDuplexStream::set_incoming_max_age(
 pub extern "js" fn WebTransportDatagramDuplexStream::get_outgoing_max_age(
   self : WebTransportDatagramDuplexStream,
 ) -> Double? =
-  #| (self) => { const v = self.outgoingMaxAge; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.outgoingMaxAge) ?? undefined
 
 ///|
 pub extern "js" fn WebTransportDatagramDuplexStream::set_outgoing_max_age(
@@ -626,17 +889,44 @@ pub extern "js" fn JsValue::to_web_transport(self : JsValue) -> WebTransport =
   #| (self) => self
 
 ///|
-pub extern "js" fn WebTransport::new(
+pub extern "js" fn WebTransport::new(url : String) -> WebTransport =
+  #| (url) => new WebTransport(url)
+
+///|
+extern "js" fn WebTransport::new_with_options_ffi(
   url : String,
-  options : WebTransportOptions,
+  options : JsValue,
 ) -> WebTransport =
   #| (url, options) => new WebTransport(url, options)
+
+///|
+pub fn WebTransport::new_with_options(
+  url : String,
+  options : WebTransportOptions,
+) -> WebTransport {
+  WebTransport::new_with_options_ffi(url, options.to_js())
+}
 
 ///|
 pub extern "js" fn WebTransport::get_stats(
   self : WebTransport,
 ) -> Promise[WebTransportConnectionStats] =
-  #| (self) => self.getStats()
+  #| (self) => self.getStats().then(v => ({
+  #|   bytesSent: v.bytesSent,
+  #|   bytesSentOverhead: v.bytesSentOverhead,
+  #|   bytesAcknowledged: v.bytesAcknowledged,
+  #|   packetsSent: v.packetsSent,
+  #|   bytesLost: v.bytesLost,
+  #|   packetsLost: v.packetsLost,
+  #|   bytesReceived: v.bytesReceived,
+  #|   packetsReceived: v.packetsReceived,
+  #|   smoothedRtt: (v.smoothedRtt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.smoothedRtt }),
+  #|   rttVariation: (v.rttVariation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rttVariation }),
+  #|   minRtt: (v.minRtt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.minRtt }),
+  #|   datagrams: v.datagrams,
+  #|   estimatedSendRate: (v.estimatedSendRate === undefined ? { $tag: 0 } : v.estimatedSendRate === null ? { $tag: 1 } : { $tag: 2, _0: v.estimatedSendRate }),
+  #|   atSendCapacity: (v.atSendCapacity === undefined ? -1 : v.atSendCapacity)
+  #| }))
 
 ///|
 pub extern "js" fn WebTransport::export_keying_material(
@@ -663,19 +953,19 @@ pub extern "js" fn WebTransport::get_ready(
 pub extern "js" fn WebTransport::get_reliability(
   self : WebTransport,
 ) -> WebTransportReliabilityMode =
-  #| (self) => self.reliability
+  #| (self) => ['pending', 'reliable-only', 'supports-unreliable'].indexOf(self.reliability)
 
 ///|
 pub extern "js" fn WebTransport::get_congestion_control(
   self : WebTransport,
 ) -> WebTransportCongestionControl =
-  #| (self) => self.congestionControl
+  #| (self) => ['default', 'throughput', 'low-latency'].indexOf(self.congestionControl)
 
 ///|
 pub extern "js" fn WebTransport::get_anticipated_concurrent_incoming_unidirectional_streams(
   self : WebTransport,
 ) -> Int? =
-  #| (self) => { const v = self.anticipatedConcurrentIncomingUnidirectionalStreams; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.anticipatedConcurrentIncomingUnidirectionalStreams) ?? undefined
 
 ///|
 pub extern "js" fn WebTransport::set_anticipated_concurrent_incoming_unidirectional_streams(
@@ -688,7 +978,7 @@ pub extern "js" fn WebTransport::set_anticipated_concurrent_incoming_unidirectio
 pub extern "js" fn WebTransport::get_anticipated_concurrent_incoming_bidirectional_streams(
   self : WebTransport,
 ) -> Int? =
-  #| (self) => { const v = self.anticipatedConcurrentIncomingBidirectionalStreams; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.anticipatedConcurrentIncomingBidirectionalStreams) ?? undefined
 
 ///|
 pub extern "js" fn WebTransport::set_anticipated_concurrent_incoming_bidirectional_streams(
@@ -718,11 +1008,19 @@ pub extern "js" fn WebTransport::close(self : WebTransport) -> Unit =
   #| (self) => self.close()
 
 ///|
-pub extern "js" fn WebTransport::close_with_close_info(
+extern "js" fn WebTransport::close_with_close_info_ffi(
   self : WebTransport,
-  close_info : WebTransportCloseInfo,
+  close_info : JsValue,
 ) -> Unit =
   #| (self, close_info) => self.close(close_info)
+
+///|
+pub fn WebTransport::close_with_close_info(
+  self : WebTransport,
+  close_info : WebTransportCloseInfo,
+) -> Unit {
+  WebTransport::close_with_close_info_ffi(self, close_info.to_js())
+}
 
 ///|
 pub extern "js" fn WebTransport::get_datagrams(
@@ -737,11 +1035,22 @@ pub extern "js" fn WebTransport::create_bidirectional_stream(
   #| (self) => self.createBidirectionalStream()
 
 ///|
-pub extern "js" fn WebTransport::create_bidirectional_stream_with_options(
+extern "js" fn WebTransport::create_bidirectional_stream_with_options_ffi(
   self : WebTransport,
-  options : WebTransportSendStreamOptions,
+  options : JsValue,
 ) -> Promise[WebTransportBidirectionalStream] =
   #| (self, options) => self.createBidirectionalStream(options)
+
+///|
+pub fn WebTransport::create_bidirectional_stream_with_options(
+  self : WebTransport,
+  options : WebTransportSendStreamOptions,
+) -> Promise[WebTransportBidirectionalStream] {
+  WebTransport::create_bidirectional_stream_with_options_ffi(
+    self,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn WebTransport::get_incoming_bidirectional_streams(
@@ -756,11 +1065,22 @@ pub extern "js" fn WebTransport::create_unidirectional_stream(
   #| (self) => self.createUnidirectionalStream()
 
 ///|
-pub extern "js" fn WebTransport::create_unidirectional_stream_with_options(
+extern "js" fn WebTransport::create_unidirectional_stream_with_options_ffi(
   self : WebTransport,
-  options : WebTransportSendStreamOptions,
+  options : JsValue,
 ) -> Promise[WebTransportSendStream] =
   #| (self, options) => self.createUnidirectionalStream(options)
+
+///|
+pub fn WebTransport::create_unidirectional_stream_with_options(
+  self : WebTransport,
+  options : WebTransportSendStreamOptions,
+) -> Promise[WebTransportSendStream] {
+  WebTransport::create_unidirectional_stream_with_options_ffi(
+    self,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn WebTransport::get_incoming_unidirectional_streams(
@@ -779,6 +1099,22 @@ pub extern "js" fn WebTransport::get_supports_reliable_only(
   self : WebTransport,
 ) -> Bool =
   #| (self) => self.supportsReliableOnly
+
+///|
+pub extern "js" fn WebTransport::export_keying_material_with_array_buffer_view(
+  self : WebTransport,
+  label : ArrayBufferView,
+  context : BufferSource,
+) -> Promise[ArrayBuffer] =
+  #| (self, label, context) => self.exportKeyingMaterial(label, context)
+
+///|
+pub extern "js" fn WebTransport::export_keying_material_with_array_buffer(
+  self : WebTransport,
+  label : ArrayBuffer,
+  context : BufferSource,
+) -> Promise[ArrayBuffer] =
+  #| (self, label, context) => self.exportKeyingMaterial(label, context)
 
 ///|
 /// WebTransportSendStream interface
@@ -828,20 +1164,20 @@ pub extern "js" fn WebTransportSendStream::to_writable_stream(
 pub extern "js" fn WebTransportSendStream::get_send_group(
   self : WebTransportSendStream,
 ) -> WebTransportSendGroup? =
-  #| (self) => { const v = self.sendGroup; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.sendGroup; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebTransportSendStream::set_send_group(
   self : WebTransportSendStream,
   value : WebTransportSendGroup?,
 ) -> Unit =
-  #| (self, value) => { self.sendGroup = value }
+  #| (self, value) => { self.sendGroup = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn WebTransportSendStream::get_send_order(
   self : WebTransportSendStream,
 ) -> Int64 =
-  #| (self) => self.sendOrder
+  #| (self) => (() => { const n = self.sendOrder; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn WebTransportSendStream::set_send_order(
@@ -854,7 +1190,11 @@ pub extern "js" fn WebTransportSendStream::set_send_order(
 pub extern "js" fn WebTransportSendStream::get_stats(
   self : WebTransportSendStream,
 ) -> Promise[WebTransportSendStreamStats] =
-  #| (self) => self.getStats()
+  #| (self) => self.getStats().then(v => ({
+  #|   bytesWritten: v.bytesWritten,
+  #|   bytesSent: v.bytesSent,
+  #|   bytesAcknowledged: v.bytesAcknowledged
+  #| }))
 
 ///|
 pub extern "js" fn WebTransportSendStream::get_writer(
@@ -904,7 +1244,11 @@ pub extern "js" fn JsValue::to_web_transport_send_group(
 pub extern "js" fn WebTransportSendGroup::get_stats(
   self : WebTransportSendGroup,
 ) -> Promise[WebTransportSendStreamStats] =
-  #| (self) => self.getStats()
+  #| (self) => self.getStats().then(v => ({
+  #|   bytesWritten: v.bytesWritten,
+  #|   bytesSent: v.bytesSent,
+  #|   bytesAcknowledged: v.bytesAcknowledged
+  #| }))
 
 ///|
 /// WebTransportReceiveStream interface
@@ -954,7 +1298,10 @@ pub extern "js" fn WebTransportReceiveStream::to_readable_stream(
 pub extern "js" fn WebTransportReceiveStream::get_stats(
   self : WebTransportReceiveStream,
 ) -> Promise[WebTransportReceiveStreamStats] =
-  #| (self) => self.getStats()
+  #| (self) => self.getStats().then(v => ({
+  #|   bytesReceived: v.bytesReceived,
+  #|   bytesRead: v.bytesRead
+  #| }))
 
 ///|
 /// WebTransportBidirectionalStream interface
@@ -1114,20 +1461,32 @@ pub extern "js" fn WebTransportError::to_dom_exception(
   #| (self) => self
 
 ///|
-pub extern "js" fn WebTransportError::new(
+pub extern "js" fn WebTransportError::new() -> WebTransportError =
+  #| () => new WebTransportError()
+
+///|
+extern "js" fn WebTransportError::new_with_options_ffi(
   message : String,
-  options : WebTransportErrorOptions,
+  options : JsValue,
 ) -> WebTransportError =
   #| (message, options) => new WebTransportError(message, options)
+
+///|
+pub fn WebTransportError::new_with_options(
+  message : String,
+  options : WebTransportErrorOptions,
+) -> WebTransportError {
+  WebTransportError::new_with_options_ffi(message, options.to_js())
+}
 
 ///|
 pub extern "js" fn WebTransportError::get_source(
   self : WebTransportError,
 ) -> WebTransportErrorSource =
-  #| (self) => self.source
+  #| (self) => ['stream', 'session'].indexOf(self.source)
 
 ///|
 pub extern "js" fn WebTransportError::get_stream_error_code(
   self : WebTransportError,
 ) -> Int? =
-  #| (self) => { const v = self.streamErrorCode; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.streamErrorCode) ?? undefined

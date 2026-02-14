@@ -3,7 +3,7 @@
 
 ///|
 /// ContentVisibilityAutoStateChangeEventInit dictionary
-pub struct ContentVisibilityAutoStateChangeEventInit {
+pub(all) struct ContentVisibilityAutoStateChangeEventInit {
   skipped : Bool?
 }
 
@@ -14,13 +14,36 @@ pub fn ContentVisibilityAutoStateChangeEventInit::default() -> ContentVisibility
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ContentVisibilityAutoStateChangeEventInit::to_js(
+extern "js" fn ContentVisibilityAutoStateChangeEventInit::to_js_ffi(
   self : ContentVisibilityAutoStateChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   skipped: self.skipped
+  #|   skipped: (self.skipped === -1 ? undefined : self.skipped)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn ContentVisibilityAutoStateChangeEventInit::to_js(
+  self : ContentVisibilityAutoStateChangeEventInit,
+) -> JsValue {
+  ContentVisibilityAutoStateChangeEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ContentVisibilityAutoStateChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> ContentVisibilityAutoStateChangeEventInit =
+  #| (v) => ({
+  #|   skipped: (v.skipped === undefined ? -1 : v.skipped)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ContentVisibilityAutoStateChangeEventInit::from_js(
+  value : JsValue,
+) -> ContentVisibilityAutoStateChangeEventInit {
+  ContentVisibilityAutoStateChangeEventInit::from_js_ffi(value)
+}
 
 ///|
 /// ContentVisibilityAutoStateChangeEvent interface
@@ -69,9 +92,26 @@ pub extern "js" fn ContentVisibilityAutoStateChangeEvent::to_event(
 ///|
 pub extern "js" fn ContentVisibilityAutoStateChangeEvent::new(
   type_ : String,
-  event_init_dict : ContentVisibilityAutoStateChangeEventInit,
+) -> ContentVisibilityAutoStateChangeEvent =
+  #| (type_) => new ContentVisibilityAutoStateChangeEvent(type_)
+
+///|
+extern "js" fn ContentVisibilityAutoStateChangeEvent::new_with_event_init_dict_ffi(
+  type_ : String,
+  event_init_dict : JsValue,
 ) -> ContentVisibilityAutoStateChangeEvent =
   #| (type_, event_init_dict) => new ContentVisibilityAutoStateChangeEvent(type_, event_init_dict)
+
+///|
+pub fn ContentVisibilityAutoStateChangeEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : ContentVisibilityAutoStateChangeEventInit,
+) -> ContentVisibilityAutoStateChangeEvent {
+  ContentVisibilityAutoStateChangeEvent::new_with_event_init_dict_ffi(
+    type_,
+    event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn ContentVisibilityAutoStateChangeEvent::get_skipped(

@@ -3,7 +3,7 @@
 
 ///|
 /// SensorOptions dictionary
-pub struct SensorOptions {
+pub(all) struct SensorOptions {
   frequency : Double?
 }
 
@@ -14,32 +14,68 @@ pub fn SensorOptions::default() -> SensorOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SensorOptions::to_js(self : SensorOptions) -> JsValue =
+extern "js" fn SensorOptions::to_js_ffi(self : SensorOptions) -> JsValue =
   #| (self) => ({
   #|   frequency: self.frequency
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SensorOptions::to_js(self : SensorOptions) -> JsValue {
+  SensorOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SensorOptions::from_js_ffi(value : JsValue) -> SensorOptions =
+  #| (v) => ({
+  #|   frequency: v.frequency
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SensorOptions::from_js(value : JsValue) -> SensorOptions {
+  SensorOptions::from_js_ffi(value)
+}
+
+///|
 /// SensorErrorEventInit dictionary
-pub struct SensorErrorEventInit {
+pub(all) struct SensorErrorEventInit {
   error : DOMException
 }
 
 ///|
-/// Create a new SensorErrorEventInit with default values
-pub fn SensorErrorEventInit::default() -> SensorErrorEventInit {
-  SensorErrorEventInit::{ error: panic() }
+/// Create a new SensorErrorEventInit
+pub fn SensorErrorEventInit::new(error~ : DOMException) -> SensorErrorEventInit {
+  SensorErrorEventInit::{ error, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SensorErrorEventInit::to_js(
+extern "js" fn SensorErrorEventInit::to_js_ffi(
   self : SensorErrorEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   error: self.error
   #| })
+
+///|
+/// Convert to JsValue
+pub fn SensorErrorEventInit::to_js(self : SensorErrorEventInit) -> JsValue {
+  SensorErrorEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SensorErrorEventInit::from_js_ffi(
+  value : JsValue,
+) -> SensorErrorEventInit =
+  #| (v) => ({
+  #|   error: v.error
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SensorErrorEventInit::from_js(value : JsValue) -> SensorErrorEventInit {
+  SensorErrorEventInit::from_js_ffi(value)
+}
 
 ///|
 /// Sensor interface
@@ -147,7 +183,7 @@ pub extern "js" fn Sensor::get_has_reading(self : Sensor) -> Bool =
 
 ///|
 pub extern "js" fn Sensor::get_timestamp(self : Sensor) -> DOMHighResTimeStamp? =
-  #| (self) => { const v = self.timestamp; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.timestamp; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Sensor::start(self : Sensor) -> Unit =
@@ -233,11 +269,19 @@ pub extern "js" fn SensorErrorEvent::to_event(self : SensorErrorEvent) -> Event 
   #| (self) => self
 
 ///|
-pub extern "js" fn SensorErrorEvent::new(
+extern "js" fn SensorErrorEvent::new_ffi(
   type_ : String,
-  error_event_init_dict : SensorErrorEventInit,
+  error_event_init_dict : JsValue,
 ) -> SensorErrorEvent =
   #| (type_, error_event_init_dict) => new SensorErrorEvent(type_, error_event_init_dict)
+
+///|
+pub fn SensorErrorEvent::new(
+  type_ : String,
+  error_event_init_dict : SensorErrorEventInit,
+) -> SensorErrorEvent {
+  SensorErrorEvent::new_ffi(type_, error_event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn SensorErrorEvent::get_error(

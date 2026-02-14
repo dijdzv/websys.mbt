@@ -3,7 +3,7 @@
 
 ///|
 /// SVGBoundingBoxOptions dictionary
-pub struct SVGBoundingBoxOptions {
+pub(all) struct SVGBoundingBoxOptions {
   fill : Bool?
   stroke : Bool?
   markers : Bool?
@@ -22,16 +22,38 @@ pub fn SVGBoundingBoxOptions::default() -> SVGBoundingBoxOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SVGBoundingBoxOptions::to_js(
+extern "js" fn SVGBoundingBoxOptions::to_js_ffi(
   self : SVGBoundingBoxOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   fill: self.fill,
-  #|   stroke: self.stroke,
-  #|   markers: self.markers,
-  #|   clipped: self.clipped
+  #|   fill: (self.fill === -1 ? undefined : self.fill),
+  #|   stroke: (self.stroke === -1 ? undefined : self.stroke),
+  #|   markers: (self.markers === -1 ? undefined : self.markers),
+  #|   clipped: (self.clipped === -1 ? undefined : self.clipped)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn SVGBoundingBoxOptions::to_js(self : SVGBoundingBoxOptions) -> JsValue {
+  SVGBoundingBoxOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SVGBoundingBoxOptions::from_js_ffi(
+  value : JsValue,
+) -> SVGBoundingBoxOptions =
+  #| (v) => ({
+  #|   fill: (v.fill === undefined ? -1 : v.fill),
+  #|   stroke: (v.stroke === undefined ? -1 : v.stroke),
+  #|   markers: (v.markers === undefined ? -1 : v.markers),
+  #|   clipped: (v.clipped === undefined ? -1 : v.clipped)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SVGBoundingBoxOptions::from_js(value : JsValue) -> SVGBoundingBoxOptions {
+  SVGBoundingBoxOptions::from_js_ffi(value)
+}
 
 ///|
 /// SVGElement interface
@@ -505,13 +527,13 @@ pub extern "js" fn SVGElement::get_class_name(
 pub extern "js" fn SVGElement::get_owner_svg_element(
   self : SVGElement,
 ) -> SVGSVGElement? =
-  #| (self) => { const v = self.ownerSVGElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.ownerSVGElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn SVGElement::get_viewport_element(
   self : SVGElement,
 ) -> SVGElement? =
-  #| (self) => { const v = self.viewportElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.viewportElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn SVGElement::get_onabort(self : SVGElement) -> EventHandler =
@@ -1806,13 +1828,13 @@ pub extern "js" fn SVGElement::set_onselectionchange(
 pub extern "js" fn SVGElement::get_corresponding_element(
   self : SVGElement,
 ) -> SVGElement? =
-  #| (self) => { const v = self.correspondingElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.correspondingElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn SVGElement::get_corresponding_use_element(
   self : SVGElement,
 ) -> SVGUseElement? =
-  #| (self) => { const v = self.correspondingUseElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.correspondingUseElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn SVGElement::get_dataset(self : SVGElement) -> DOMStringMap =
@@ -1856,11 +1878,19 @@ pub extern "js" fn SVGElement::focus(self : SVGElement) -> Unit =
   #| (self) => self.focus()
 
 ///|
-pub extern "js" fn SVGElement::focus_with_options(
+extern "js" fn SVGElement::focus_with_options_ffi(
   self : SVGElement,
-  options : FocusOptions,
+  options : JsValue,
 ) -> Unit =
   #| (self, options) => self.focus(options)
+
+///|
+pub fn SVGElement::focus_with_options(
+  self : SVGElement,
+  options : FocusOptions,
+) -> Unit {
+  SVGElement::focus_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn SVGElement::blur(self : SVGElement) -> Unit =
@@ -2085,23 +2115,31 @@ pub extern "js" fn SVGGraphicsElement::get_b_box(
   #| (self) => self.getBBox()
 
 ///|
-pub extern "js" fn SVGGraphicsElement::get_b_box_with_options(
+extern "js" fn SVGGraphicsElement::get_b_box_with_options_ffi(
   self : SVGGraphicsElement,
-  options : SVGBoundingBoxOptions,
+  options : JsValue,
 ) -> DOMRect =
   #| (self, options) => self.getBBox(options)
+
+///|
+pub fn SVGGraphicsElement::get_b_box_with_options(
+  self : SVGGraphicsElement,
+  options : SVGBoundingBoxOptions,
+) -> DOMRect {
+  SVGGraphicsElement::get_b_box_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn SVGGraphicsElement::get_ctm(
   self : SVGGraphicsElement,
 ) -> DOMMatrix? =
-  #| (self) => { const v = self.getCTM(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.getCTM(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn SVGGraphicsElement::get_screen_ctm(
   self : SVGGraphicsElement,
 ) -> DOMMatrix? =
-  #| (self) => { const v = self.getScreenCTM(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.getScreenCTM(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn SVGGraphicsElement::get_required_extensions(
@@ -2238,11 +2276,19 @@ pub extern "js" fn SVGGeometryElement::is_point_in_fill(
   #| (self) => self.isPointInFill()
 
 ///|
-pub extern "js" fn SVGGeometryElement::is_point_in_fill_with_point(
+extern "js" fn SVGGeometryElement::is_point_in_fill_with_point_ffi(
   self : SVGGeometryElement,
-  point : DOMPointInit,
+  point : JsValue,
 ) -> Bool =
   #| (self, point) => self.isPointInFill(point)
+
+///|
+pub fn SVGGeometryElement::is_point_in_fill_with_point(
+  self : SVGGeometryElement,
+  point : DOMPointInit,
+) -> Bool {
+  SVGGeometryElement::is_point_in_fill_with_point_ffi(self, point.to_js())
+}
 
 ///|
 pub extern "js" fn SVGGeometryElement::is_point_in_stroke(
@@ -2251,11 +2297,19 @@ pub extern "js" fn SVGGeometryElement::is_point_in_stroke(
   #| (self) => self.isPointInStroke()
 
 ///|
-pub extern "js" fn SVGGeometryElement::is_point_in_stroke_with_point(
+extern "js" fn SVGGeometryElement::is_point_in_stroke_with_point_ffi(
   self : SVGGeometryElement,
-  point : DOMPointInit,
+  point : JsValue,
 ) -> Bool =
   #| (self, point) => self.isPointInStroke(point)
+
+///|
+pub fn SVGGeometryElement::is_point_in_stroke_with_point(
+  self : SVGGeometryElement,
+  point : DOMPointInit,
+) -> Bool {
+  SVGGeometryElement::is_point_in_stroke_with_point_ffi(self, point.to_js())
+}
 
 ///|
 pub extern "js" fn SVGGeometryElement::get_total_length(
@@ -2611,6 +2665,7 @@ pub extern "js" fn SVGNumberList::get_item(
   #| (self, index) => self.getItem(index)
 
 ///|
+#alias("_[_]")
 pub extern "js" fn SVGNumberList::get(
   self : SVGNumberList,
   index : Int,
@@ -2648,6 +2703,7 @@ pub extern "js" fn SVGNumberList::append_item(
   #| (self, new_item) => self.appendItem(new_item)
 
 ///|
+#alias("_[_]=_")
 pub extern "js" fn SVGNumberList::set(
   self : SVGNumberList,
   index : Int,
@@ -2716,6 +2772,7 @@ pub extern "js" fn SVGLengthList::get_item(
   #| (self, index) => self.getItem(index)
 
 ///|
+#alias("_[_]")
 pub extern "js" fn SVGLengthList::get(
   self : SVGLengthList,
   index : Int,
@@ -2753,6 +2810,7 @@ pub extern "js" fn SVGLengthList::append_item(
   #| (self, new_item) => self.appendItem(new_item)
 
 ///|
+#alias("_[_]=_")
 pub extern "js" fn SVGLengthList::set(
   self : SVGLengthList,
   index : Int,
@@ -2821,6 +2879,7 @@ pub extern "js" fn SVGStringList::get_item(
   #| (self, index) => self.getItem(index)
 
 ///|
+#alias("_[_]")
 pub extern "js" fn SVGStringList::get(
   self : SVGStringList,
   index : Int,
@@ -2858,6 +2917,7 @@ pub extern "js" fn SVGStringList::append_item(
   #| (self, new_item) => self.appendItem(new_item)
 
 ///|
+#alias("_[_]=_")
 pub extern "js" fn SVGStringList::set(
   self : SVGStringList,
   index : Int,
@@ -3550,7 +3610,7 @@ pub extern "js" fn SVGSVGElement::get_intersection_list(
   rect : DOMRectReadOnly,
   reference_element : SVGElement?,
 ) -> NodeList =
-  #| (self, rect, reference_element) => self.getIntersectionList(rect, reference_element)
+  #| (self, rect, reference_element) => self.getIntersectionList(rect, (reference_element.$tag === 1 ? reference_element._0 : null))
 
 ///|
 pub extern "js" fn SVGSVGElement::get_enclosure_list(
@@ -3558,7 +3618,7 @@ pub extern "js" fn SVGSVGElement::get_enclosure_list(
   rect : DOMRectReadOnly,
   reference_element : SVGElement?,
 ) -> NodeList =
-  #| (self, rect, reference_element) => self.getEnclosureList(rect, reference_element)
+  #| (self, rect, reference_element) => self.getEnclosureList(rect, (reference_element.$tag === 1 ? reference_element._0 : null))
 
 ///|
 pub extern "js" fn SVGSVGElement::check_intersection(
@@ -3629,18 +3689,29 @@ pub extern "js" fn SVGSVGElement::create_svg_transform_from_matrix(
   #| (self) => self.createSVGTransformFromMatrix()
 
 ///|
-pub extern "js" fn SVGSVGElement::create_svg_transform_from_matrix_with_matrix(
+extern "js" fn SVGSVGElement::create_svg_transform_from_matrix_with_matrix_ffi(
   self : SVGSVGElement,
-  matrix : DOMMatrix2DInit,
+  matrix : JsValue,
 ) -> SVGTransform =
   #| (self, matrix) => self.createSVGTransformFromMatrix(matrix)
+
+///|
+pub fn SVGSVGElement::create_svg_transform_from_matrix_with_matrix(
+  self : SVGSVGElement,
+  matrix : DOMMatrix2DInit,
+) -> SVGTransform {
+  SVGSVGElement::create_svg_transform_from_matrix_with_matrix_ffi(
+    self,
+    matrix.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn SVGSVGElement::get_element_by_id(
   self : SVGSVGElement,
   element_id : String,
 ) -> Element? =
-  #| (self, element_id) => { const v = self.getElementById(element_id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, element_id) => (() => { const v = self.getElementById(element_id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn SVGSVGElement::suspend_redraw(
@@ -4440,13 +4511,13 @@ pub extern "js" fn SVGUseElement::get_height(
 pub extern "js" fn SVGUseElement::get_instance_root(
   self : SVGUseElement,
 ) -> SVGElement? =
-  #| (self) => { const v = self.instanceRoot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.instanceRoot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn SVGUseElement::get_animated_instance_root(
   self : SVGUseElement,
 ) -> SVGElement? =
-  #| (self) => { const v = self.animatedInstanceRoot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.animatedInstanceRoot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn SVGUseElement::get_href(
@@ -4755,7 +4826,7 @@ pub extern "js" fn SVGStyleElement::set_disabled(
 pub extern "js" fn SVGStyleElement::get_sheet(
   self : SVGStyleElement,
 ) -> CSSStyleSheet? =
-  #| (self) => { const v = self.sheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.sheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// SVGTransform interface
@@ -4839,11 +4910,19 @@ pub extern "js" fn SVGTransform::set_matrix(self : SVGTransform) -> Unit =
   #| (self) => self.setMatrix()
 
 ///|
-pub extern "js" fn SVGTransform::set_matrix_with_matrix(
+extern "js" fn SVGTransform::set_matrix_with_matrix_ffi(
   self : SVGTransform,
-  matrix : DOMMatrix2DInit,
+  matrix : JsValue,
 ) -> Unit =
   #| (self, matrix) => self.setMatrix(matrix)
+
+///|
+pub fn SVGTransform::set_matrix_with_matrix(
+  self : SVGTransform,
+  matrix : DOMMatrix2DInit,
+) -> Unit {
+  SVGTransform::set_matrix_with_matrix_ffi(self, matrix.to_js())
+}
 
 ///|
 pub extern "js" fn SVGTransform::set_translate(
@@ -4951,6 +5030,7 @@ pub extern "js" fn SVGTransformList::get_item(
   #| (self, index) => self.getItem(index)
 
 ///|
+#alias("_[_]")
 pub extern "js" fn SVGTransformList::get(
   self : SVGTransformList,
   index : Int,
@@ -4988,6 +5068,7 @@ pub extern "js" fn SVGTransformList::append_item(
   #| (self, new_item) => self.appendItem(new_item)
 
 ///|
+#alias("_[_]=_")
 pub extern "js" fn SVGTransformList::set(
   self : SVGTransformList,
   index : Int,
@@ -5002,17 +5083,28 @@ pub extern "js" fn SVGTransformList::create_svg_transform_from_matrix(
   #| (self) => self.createSVGTransformFromMatrix()
 
 ///|
-pub extern "js" fn SVGTransformList::create_svg_transform_from_matrix_with_matrix(
+extern "js" fn SVGTransformList::create_svg_transform_from_matrix_with_matrix_ffi(
   self : SVGTransformList,
-  matrix : DOMMatrix2DInit,
+  matrix : JsValue,
 ) -> SVGTransform =
   #| (self, matrix) => self.createSVGTransformFromMatrix(matrix)
+
+///|
+pub fn SVGTransformList::create_svg_transform_from_matrix_with_matrix(
+  self : SVGTransformList,
+  matrix : DOMMatrix2DInit,
+) -> SVGTransform {
+  SVGTransformList::create_svg_transform_from_matrix_with_matrix_ffi(
+    self,
+    matrix.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn SVGTransformList::consolidate(
   self : SVGTransformList,
 ) -> SVGTransform? =
-  #| (self) => { const v = self.consolidate(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.consolidate(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// SVGAnimatedTransformList interface
@@ -5689,6 +5781,7 @@ pub extern "js" fn SVGPointList::get_item(
   #| (self, index) => self.getItem(index)
 
 ///|
+#alias("_[_]")
 pub extern "js" fn SVGPointList::get(
   self : SVGPointList,
   index : Int,
@@ -5726,6 +5819,7 @@ pub extern "js" fn SVGPointList::append_item(
   #| (self, new_item) => self.appendItem(new_item)
 
 ///|
+#alias("_[_]=_")
 pub extern "js" fn SVGPointList::set(
   self : SVGPointList,
   index : Int,
@@ -6077,11 +6171,22 @@ pub extern "js" fn SVGTextContentElement::get_char_num_at_position(
   #| (self) => self.getCharNumAtPosition()
 
 ///|
-pub extern "js" fn SVGTextContentElement::get_char_num_at_position_with_point(
+extern "js" fn SVGTextContentElement::get_char_num_at_position_with_point_ffi(
   self : SVGTextContentElement,
-  point : DOMPointInit,
+  point : JsValue,
 ) -> Int =
   #| (self, point) => self.getCharNumAtPosition(point)
+
+///|
+pub fn SVGTextContentElement::get_char_num_at_position_with_point(
+  self : SVGTextContentElement,
+  point : DOMPointInit,
+) -> Int {
+  SVGTextContentElement::get_char_num_at_position_with_point_ffi(
+    self,
+    point.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn SVGTextContentElement::select_sub_string(
@@ -6587,7 +6692,7 @@ pub extern "js" fn SVGImageElement::get_preserve_aspect_ratio(
 pub extern "js" fn SVGImageElement::get_cross_origin(
   self : SVGImageElement,
 ) -> String? =
-  #| (self) => { const v = self.crossOrigin; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.crossOrigin) ?? undefined
 
 ///|
 pub extern "js" fn SVGImageElement::set_cross_origin(
@@ -7442,7 +7547,7 @@ pub extern "js" fn SVGScriptElement::set_type(
 pub extern "js" fn SVGScriptElement::get_cross_origin(
   self : SVGScriptElement,
 ) -> String? =
-  #| (self) => { const v = self.crossOrigin; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.crossOrigin) ?? undefined
 
 ///|
 pub extern "js" fn SVGScriptElement::set_cross_origin(

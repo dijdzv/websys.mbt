@@ -72,7 +72,7 @@ pub extern "js" fn PerformanceLongTaskTiming::get_entry_type(
 ///|
 pub extern "js" fn PerformanceLongTaskTiming::get_attribution(
   self : PerformanceLongTaskTiming,
-) -> JsValue =
+) -> Array[TaskAttributionTiming] =
   #| (self) => self.attribution
 
 ///|

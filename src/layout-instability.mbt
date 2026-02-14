@@ -52,7 +52,9 @@ pub extern "js" fn LayoutShift::get_last_input_time(
   #| (self) => self.lastInputTime
 
 ///|
-pub extern "js" fn LayoutShift::get_sources(self : LayoutShift) -> JsValue =
+pub extern "js" fn LayoutShift::get_sources(
+  self : LayoutShift,
+) -> Array[LayoutShiftAttribution] =
   #| (self) => self.sources
 
 ///|
@@ -101,7 +103,7 @@ pub extern "js" fn JsValue::to_layout_shift_attribution(
 pub extern "js" fn LayoutShiftAttribution::get_node(
   self : LayoutShiftAttribution,
 ) -> Node? =
-  #| (self) => { const v = self.node; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.node; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn LayoutShiftAttribution::get_previous_rect(

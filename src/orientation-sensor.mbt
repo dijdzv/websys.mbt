@@ -27,7 +27,7 @@ pub extern "js" fn RotationMatrixType::from_float64_array(
 
 ///|
 /// Create RotationMatrixType from DOMMatrix
-pub extern "js" fn RotationMatrixType::from_d_o_m_matrix(
+pub extern "js" fn RotationMatrixType::from_dom_matrix(
   v : DOMMatrix,
 ) -> RotationMatrixType =
   #| (v) => v
@@ -48,7 +48,7 @@ pub extern "js" fn RotationMatrixType::is_float64_array(
 
 ///|
 /// Check if this RotationMatrixType is DOMMatrix
-pub extern "js" fn RotationMatrixType::is_d_o_m_matrix(
+pub extern "js" fn RotationMatrixType::is_dom_matrix(
   self : RotationMatrixType,
 ) -> Bool =
   #| (self) => self instanceof DOMMatrix
@@ -69,17 +69,50 @@ pub extern "js" fn RotationMatrixType::as_float64_array(
 
 ///|
 /// Try to get RotationMatrixType as DOMMatrix
-pub extern "js" fn RotationMatrixType::as_d_o_m_matrix(
+pub extern "js" fn RotationMatrixType::as_dom_matrix(
   self : RotationMatrixType,
 ) -> DOMMatrix? =
   #| (self) => (self instanceof DOMMatrix) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[RotationMatrixType] to Float32Array?
+pub fn RotationMatrixType::bind_as_float32_array(
+  value : RotationMatrixType?,
+) -> Float32Array? {
+  match value {
+    Some(v) => v.as_float32_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[RotationMatrixType] to Float64Array?
+pub fn RotationMatrixType::bind_as_float64_array(
+  value : RotationMatrixType?,
+) -> Float64Array? {
+  match value {
+    Some(v) => v.as_float64_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[RotationMatrixType] to DOMMatrix?
+pub fn RotationMatrixType::bind_as_dom_matrix(
+  value : RotationMatrixType?,
+) -> DOMMatrix? {
+  match value {
+    Some(v) => v.as_dom_matrix()
+    None => None
+  }
+}
 
 ///|
 /// OrientationSensorLocalCoordinateSystem enum
 pub(all) enum OrientationSensorLocalCoordinateSystem {
   Device
   Screen
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -106,7 +139,7 @@ pub fn OrientationSensorLocalCoordinateSystem::from_string(
 
 ///|
 /// OrientationSensorOptions dictionary
-pub struct OrientationSensorOptions {
+pub(all) struct OrientationSensorOptions {
   referenceFrame : OrientationSensorLocalCoordinateSystem?
 }
 
@@ -117,13 +150,36 @@ pub fn OrientationSensorOptions::default() -> OrientationSensorOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn OrientationSensorOptions::to_js(
+extern "js" fn OrientationSensorOptions::to_js_ffi(
   self : OrientationSensorOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   referenceFrame: ['device', 'screen'][self.referenceFrame]
+  #|   referenceFrame: ((() => { const v = self.referenceFrame; if (v === undefined) return undefined; return ['device', 'screen'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn OrientationSensorOptions::to_js(
+  self : OrientationSensorOptions,
+) -> JsValue {
+  OrientationSensorOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn OrientationSensorOptions::from_js_ffi(
+  value : JsValue,
+) -> OrientationSensorOptions =
+  #| (v) => ({
+  #|   referenceFrame: (v.referenceFrame === undefined ? undefined : ['device', 'screen'].indexOf(v.referenceFrame))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn OrientationSensorOptions::from_js(
+  value : JsValue,
+) -> OrientationSensorOptions {
+  OrientationSensorOptions::from_js_ffi(value)
+}
 
 ///|
 /// OrientationSensor interface
@@ -190,13 +246,34 @@ pub extern "js" fn OrientationSensor::as_relative_orientation_sensor(
 ///|
 pub extern "js" fn OrientationSensor::get_quaternion(
   self : OrientationSensor,
-) -> JsValue? =
-  #| (self) => { const v = self.quaternion; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+) -> Array[Double] =
+  #| (self) => self.quaternion
 
 ///|
 pub extern "js" fn OrientationSensor::populate_matrix(
   self : OrientationSensor,
   target_matrix : RotationMatrixType,
+) -> Unit =
+  #| (self, target_matrix) => self.populateMatrix(target_matrix)
+
+///|
+pub extern "js" fn OrientationSensor::populate_matrix_with_float32_array(
+  self : OrientationSensor,
+  target_matrix : Float32Array,
+) -> Unit =
+  #| (self, target_matrix) => self.populateMatrix(target_matrix)
+
+///|
+pub extern "js" fn OrientationSensor::populate_matrix_with_float64_array(
+  self : OrientationSensor,
+  target_matrix : Float64Array,
+) -> Unit =
+  #| (self, target_matrix) => self.populateMatrix(target_matrix)
+
+///|
+pub extern "js" fn OrientationSensor::populate_matrix_with_dom_matrix(
+  self : OrientationSensor,
+  target_matrix : DOMMatrix,
 ) -> Unit =
   #| (self, target_matrix) => self.populateMatrix(target_matrix)
 
@@ -257,10 +334,21 @@ pub extern "js" fn AbsoluteOrientationSensor::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn AbsoluteOrientationSensor::new(
-  sensor_options : OrientationSensorOptions,
+pub extern "js" fn AbsoluteOrientationSensor::new() -> AbsoluteOrientationSensor =
+  #| () => new AbsoluteOrientationSensor()
+
+///|
+extern "js" fn AbsoluteOrientationSensor::new_with_sensor_options_ffi(
+  sensor_options : JsValue,
 ) -> AbsoluteOrientationSensor =
   #| (sensor_options) => new AbsoluteOrientationSensor(sensor_options)
+
+///|
+pub fn AbsoluteOrientationSensor::new_with_sensor_options(
+  sensor_options : OrientationSensorOptions,
+) -> AbsoluteOrientationSensor {
+  AbsoluteOrientationSensor::new_with_sensor_options_ffi(sensor_options.to_js())
+}
 
 ///|
 /// RelativeOrientationSensor interface
@@ -319,7 +407,18 @@ pub extern "js" fn RelativeOrientationSensor::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn RelativeOrientationSensor::new(
-  sensor_options : OrientationSensorOptions,
+pub extern "js" fn RelativeOrientationSensor::new() -> RelativeOrientationSensor =
+  #| () => new RelativeOrientationSensor()
+
+///|
+extern "js" fn RelativeOrientationSensor::new_with_sensor_options_ffi(
+  sensor_options : JsValue,
 ) -> RelativeOrientationSensor =
   #| (sensor_options) => new RelativeOrientationSensor(sensor_options)
+
+///|
+pub fn RelativeOrientationSensor::new_with_sensor_options(
+  sensor_options : OrientationSensorOptions,
+) -> RelativeOrientationSensor {
+  RelativeOrientationSensor::new_with_sensor_options_ffi(sensor_options.to_js())
+}

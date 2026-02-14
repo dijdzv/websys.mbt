@@ -6,7 +6,7 @@
 pub(all) enum BinaryType {
   Blob
   Arraybuffer
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -29,7 +29,7 @@ pub fn BinaryType::from_string(s : String) -> BinaryType? {
 
 ///|
 /// CloseEventInit dictionary
-pub struct CloseEventInit {
+pub(all) struct CloseEventInit {
   wasClean : Bool?
   code : Int?
   reason : String?
@@ -42,13 +42,32 @@ pub fn CloseEventInit::default() -> CloseEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CloseEventInit::to_js(self : CloseEventInit) -> JsValue =
+extern "js" fn CloseEventInit::to_js_ffi(self : CloseEventInit) -> JsValue =
   #| (self) => ({
-  #|   wasClean: self.wasClean,
+  #|   wasClean: (self.wasClean === -1 ? undefined : self.wasClean),
   #|   code: self.code,
   #|   reason: self.reason
   #| })
+
+///|
+/// Convert to JsValue
+pub fn CloseEventInit::to_js(self : CloseEventInit) -> JsValue {
+  CloseEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CloseEventInit::from_js_ffi(value : JsValue) -> CloseEventInit =
+  #| (v) => ({
+  #|   wasClean: (v.wasClean === undefined ? -1 : v.wasClean),
+  #|   code: v.code,
+  #|   reason: v.reason
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CloseEventInit::from_js(value : JsValue) -> CloseEventInit {
+  CloseEventInit::from_js_ffi(value)
+}
 
 ///|
 /// WebSocket interface
@@ -83,7 +102,11 @@ pub extern "js" fn WebSocket::to_event_target(self : WebSocket) -> EventTarget =
   #| (self) => self
 
 ///|
-pub extern "js" fn WebSocket::new(
+pub extern "js" fn WebSocket::new(url : String) -> WebSocket =
+  #| (url) => new WebSocket(url)
+
+///|
+pub extern "js" fn WebSocket::new_with_protocols(
   url : String,
   protocols : StringOrArrayOfString,
 ) -> WebSocket =
@@ -119,7 +142,7 @@ pub extern "js" fn WebSocket::get_ready_state(self : WebSocket) -> Int =
 
 ///|
 pub extern "js" fn WebSocket::get_buffered_amount(self : WebSocket) -> Int64 =
-  #| (self) => self.bufferedAmount
+  #| (self) => (() => { const n = self.bufferedAmount; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn WebSocket::get_onopen(self : WebSocket) -> EventHandler =
@@ -187,14 +210,14 @@ pub extern "js" fn WebSocket::set_onmessage(
 
 ///|
 pub extern "js" fn WebSocket::get_binary_type(self : WebSocket) -> BinaryType =
-  #| (self) => self.binaryType
+  #| (self) => ['blob', 'arraybuffer'].indexOf(self.binaryType)
 
 ///|
 pub extern "js" fn WebSocket::set_binary_type(
   self : WebSocket,
   value : BinaryType,
 ) -> Unit =
-  #| (self, value) => { self.binaryType = value }
+  #| (self, value) => { self.binaryType = ['blob', 'arraybuffer'][value] }
 
 ///|
 pub extern "js" fn WebSocket::send(
@@ -236,11 +259,23 @@ pub extern "js" fn CloseEvent::to_event(self : CloseEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn CloseEvent::new(
+pub extern "js" fn CloseEvent::new(type_ : String) -> CloseEvent =
+  #| (type_) => new CloseEvent(type_)
+
+///|
+extern "js" fn CloseEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : CloseEventInit,
+  event_init_dict : JsValue,
 ) -> CloseEvent =
   #| (type_, event_init_dict) => new CloseEvent(type_, event_init_dict)
+
+///|
+pub fn CloseEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : CloseEventInit,
+) -> CloseEvent {
+  CloseEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn CloseEvent::get_was_clean(self : CloseEvent) -> Bool =

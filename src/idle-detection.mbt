@@ -6,7 +6,7 @@
 pub(all) enum UserIdleState {
   Active
   Idle
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -32,7 +32,7 @@ pub fn UserIdleState::from_string(s : String) -> UserIdleState? {
 pub(all) enum ScreenIdleState {
   Locked
   Unlocked
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -55,7 +55,7 @@ pub fn ScreenIdleState::from_string(s : String) -> ScreenIdleState? {
 
 ///|
 /// IdleOptions dictionary
-pub struct IdleOptions {
+pub(all) struct IdleOptions {
   threshold : Int64?
   signal : AbortSignal?
 }
@@ -67,12 +67,30 @@ pub fn IdleOptions::default() -> IdleOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn IdleOptions::to_js(self : IdleOptions) -> JsValue =
+extern "js" fn IdleOptions::to_js_ffi(self : IdleOptions) -> JsValue =
   #| (self) => ({
   #|   threshold: self.threshold,
-  #|   signal: self.signal
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn IdleOptions::to_js(self : IdleOptions) -> JsValue {
+  IdleOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IdleOptions::from_js_ffi(value : JsValue) -> IdleOptions =
+  #| (v) => ({
+  #|   threshold: v.threshold,
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdleOptions::from_js(value : JsValue) -> IdleOptions {
+  IdleOptions::from_js_ffi(value)
+}
 
 ///|
 /// IdleDetector interface
@@ -118,13 +136,13 @@ pub extern "js" fn IdleDetector::new() -> IdleDetector =
 pub extern "js" fn IdleDetector::get_user_state(
   self : IdleDetector,
 ) -> UserIdleState? =
-  #| (self) => { const v = self.userState; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.userState; return v == null ? undefined : ['active', 'idle'].indexOf(v); })()
 
 ///|
 pub extern "js" fn IdleDetector::get_screen_state(
   self : IdleDetector,
 ) -> ScreenIdleState? =
-  #| (self) => { const v = self.screenState; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.screenState; return v == null ? undefined : ['locked', 'unlocked'].indexOf(v); })()
 
 ///|
 pub extern "js" fn IdleDetector::get_onchange(
@@ -150,8 +168,16 @@ pub extern "js" fn IdleDetector::start(self : IdleDetector) -> Promise[Unit] =
   #| (self) => self.start()
 
 ///|
-pub extern "js" fn IdleDetector::start_with_options(
+extern "js" fn IdleDetector::start_with_options_ffi(
   self : IdleDetector,
-  options : IdleOptions,
+  options : JsValue,
 ) -> Promise[Unit] =
   #| (self, options) => self.start(options)
+
+///|
+pub fn IdleDetector::start_with_options(
+  self : IdleDetector,
+  options : IdleOptions,
+) -> Promise[Unit] {
+  IdleDetector::start_with_options_ffi(self, options.to_js())
+}

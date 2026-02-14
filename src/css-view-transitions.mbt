@@ -7,7 +7,7 @@ pub type ViewTransitionUpdateCallback
 
 ///|
 /// StartViewTransitionOptions dictionary
-pub struct StartViewTransitionOptions {
+pub(all) struct StartViewTransitionOptions {
   update : Nullable[ViewTransitionUpdateCallback]
   types : Array[String]?
 }
@@ -19,14 +19,94 @@ pub fn StartViewTransitionOptions::default() -> StartViewTransitionOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn StartViewTransitionOptions::to_js(
+extern "js" fn StartViewTransitionOptions::to_js_ffi(
   self : StartViewTransitionOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   update: ((() => { const v = self.update; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   types: self.types
+  #|   update: ((() => { const v = self.update; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   types: ((() => { const v = self.types; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn StartViewTransitionOptions::to_js(
+  self : StartViewTransitionOptions,
+) -> JsValue {
+  StartViewTransitionOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn StartViewTransitionOptions::from_js_ffi(
+  value : JsValue,
+) -> StartViewTransitionOptions =
+  #| (v) => ({
+  #|   update: (v.update === undefined ? { $tag: 0 } : v.update === null ? { $tag: 1 } : { $tag: 2, _0: v.update }),
+  #|   types: (v.types === undefined ? { $tag: 0 } : { $tag: 1, _0: v.types })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn StartViewTransitionOptions::from_js(
+  value : JsValue,
+) -> StartViewTransitionOptions {
+  StartViewTransitionOptions::from_js_ffi(value)
+}
+
+///|
+/// CSSViewTransitionRule interface
+pub type CSSViewTransitionRule
+
+///|
+pub extern "js" fn CSSViewTransitionRule::to_js_value(
+  self : CSSViewTransitionRule,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CSSViewTransitionRule (unchecked)
+pub extern "js" fn CSSViewTransitionRule::from_js_value(
+  v : JsValue,
+) -> CSSViewTransitionRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSViewTransitionRule (checked with instanceof)
+pub extern "js" fn CSSViewTransitionRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSViewTransitionRule? =
+  #| (v) => (v instanceof CSSViewTransitionRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSViewTransitionRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_view_transition_rule(
+  self : JsValue,
+) -> CSSViewTransitionRule? =
+  #| (self) => (self instanceof CSSViewTransitionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSViewTransitionRule (unchecked)
+pub extern "js" fn JsValue::to_css_view_transition_rule(
+  self : JsValue,
+) -> CSSViewTransitionRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSViewTransitionRule::to_css_rule(
+  self : CSSViewTransitionRule,
+) -> CSSRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSViewTransitionRule::get_navigation(
+  self : CSSViewTransitionRule,
+) -> String =
+  #| (self) => self.navigation
+
+///|
+pub extern "js" fn CSSViewTransitionRule::get_types(
+  self : CSSViewTransitionRule,
+) -> Array[String] =
+  #| (self) => self.types
 
 ///|
 /// ViewTransition interface
@@ -178,59 +258,3 @@ pub extern "js" fn ViewTransitionTypeSet::clear(
   self : ViewTransitionTypeSet,
 ) -> Unit =
   #| (self) => { self.clear() }
-
-///|
-/// CSSViewTransitionRule interface
-pub type CSSViewTransitionRule
-
-///|
-pub extern "js" fn CSSViewTransitionRule::to_js_value(
-  self : CSSViewTransitionRule,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Cast JsValue to CSSViewTransitionRule (unchecked)
-pub extern "js" fn CSSViewTransitionRule::from_js_value(
-  v : JsValue,
-) -> CSSViewTransitionRule =
-  #| (v) => v
-
-///|
-/// Safely cast JsValue to CSSViewTransitionRule (checked with instanceof)
-pub extern "js" fn CSSViewTransitionRule::from_js_value_opt(
-  v : JsValue,
-) -> CSSViewTransitionRule? =
-  #| (v) => (v instanceof CSSViewTransitionRule) ? { $tag: 1, _0: v } : { $tag: 0 }
-
-///|
-/// Safely cast JsValue to CSSViewTransitionRule (checked with instanceof)
-pub extern "js" fn JsValue::as_css_view_transition_rule(
-  self : JsValue,
-) -> CSSViewTransitionRule? =
-  #| (self) => (self instanceof CSSViewTransitionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Cast JsValue to CSSViewTransitionRule (unchecked)
-pub extern "js" fn JsValue::to_css_view_transition_rule(
-  self : JsValue,
-) -> CSSViewTransitionRule =
-  #| (self) => self
-
-///|
-pub extern "js" fn CSSViewTransitionRule::to_css_rule(
-  self : CSSViewTransitionRule,
-) -> CSSRule =
-  #| (self) => self
-
-///|
-pub extern "js" fn CSSViewTransitionRule::get_navigation(
-  self : CSSViewTransitionRule,
-) -> CSSOMString =
-  #| (self) => self.navigation
-
-///|
-pub extern "js" fn CSSViewTransitionRule::get_types(
-  self : CSSViewTransitionRule,
-) -> JsValue =
-  #| (self) => self.types

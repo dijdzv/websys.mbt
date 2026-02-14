@@ -30,15 +30,30 @@ pub extern "js" fn JsValue::to_url(self : JsValue) -> URL =
   #| (self) => self
 
 ///|
-pub extern "js" fn URL::new(url : String, base : String) -> URL =
+pub extern "js" fn URL::new(url : String) -> URL =
+  #| (url) => new URL(url)
+
+///|
+pub extern "js" fn URL::new_with_base(url : String, base : String) -> URL =
   #| (url, base) => new URL(url, base)
 
 ///|
-pub extern "js" fn URL::parse(url : String, base : String) -> URL? =
-  #| (url, base) => { const v = URL.parse(url, base); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+pub extern "js" fn URL::parse(url : String) -> URL? =
+  #| (url) => (() => { const v = URL.parse(url); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn URL::can_parse(url : String, base : String) -> Bool =
+pub extern "js" fn URL::parse_with_base(url : String, base : String) -> URL? =
+  #| (url, base) => (() => { const v = URL.parse(url, base); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn URL::can_parse(url : String) -> Bool =
+  #| (url) => URL.canParse(url)
+
+///|
+pub extern "js" fn URL::can_parse_with_base(
+  url : String,
+  base : String,
+) -> Bool =
   #| (url, base) => URL.canParse(url, base)
 
 ///|
@@ -180,7 +195,11 @@ pub extern "js" fn JsValue::to_url_search_params(
   #| (self) => self
 
 ///|
-pub extern "js" fn URLSearchParams::new(
+pub extern "js" fn URLSearchParams::new() -> URLSearchParams =
+  #| () => new URLSearchParams()
+
+///|
+pub extern "js" fn URLSearchParams::new_with_init(
   init_ : ArrayOfArrayOfStringOrAnyOrString,
 ) -> URLSearchParams =
   #| (init_) => new URLSearchParams(init_)
@@ -217,7 +236,7 @@ pub extern "js" fn URLSearchParams::get(
   self : URLSearchParams,
   name : String,
 ) -> String? =
-  #| (self, name) => { const v = self.get(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, name) => (self.get(name)) ?? undefined
 
 ///|
 pub extern "js" fn URLSearchParams::get_all(
@@ -254,5 +273,20 @@ pub extern "js" fn URLSearchParams::sort(self : URLSearchParams) -> Unit =
   #| (self) => self.sort()
 
 ///|
-pub extern "js" fn URLSearchParams::_unknown_(self : URLSearchParams) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn URLSearchParams::keys(self : URLSearchParams) -> JsValue =
+  #| (self) => self.keys()
+
+///|
+pub extern "js" fn URLSearchParams::values(self : URLSearchParams) -> JsValue =
+  #| (self) => self.values()
+
+///|
+pub extern "js" fn URLSearchParams::entries(self : URLSearchParams) -> JsValue =
+  #| (self) => self.entries()
+
+///|
+pub extern "js" fn URLSearchParams::for_each(
+  self : URLSearchParams,
+  callback : JsValue,
+) -> Unit =
+  #| (self, callback) => { self.forEach(callback) }

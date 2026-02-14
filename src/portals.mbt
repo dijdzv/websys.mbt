@@ -3,7 +3,7 @@
 
 ///|
 /// PortalActivateOptions dictionary
-pub struct PortalActivateOptions {
+pub(all) struct PortalActivateOptions {
   data : JsValue?
 }
 
@@ -14,17 +14,36 @@ pub fn PortalActivateOptions::default() -> PortalActivateOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PortalActivateOptions::to_js(
+extern "js" fn PortalActivateOptions::to_js_ffi(
   self : PortalActivateOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   data: self.data
+  #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PortalActivateOptions::to_js(self : PortalActivateOptions) -> JsValue {
+  PortalActivateOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PortalActivateOptions::from_js_ffi(
+  value : JsValue,
+) -> PortalActivateOptions =
+  #| (v) => ({
+  #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PortalActivateOptions::from_js(value : JsValue) -> PortalActivateOptions {
+  PortalActivateOptions::from_js_ffi(value)
+}
+
+///|
 /// PortalActivateEventInit dictionary
-pub struct PortalActivateEventInit {
+pub(all) struct PortalActivateEventInit {
   data : JsValue?
 }
 
@@ -35,13 +54,36 @@ pub fn PortalActivateEventInit::default() -> PortalActivateEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PortalActivateEventInit::to_js(
+extern "js" fn PortalActivateEventInit::to_js_ffi(
   self : PortalActivateEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   data: self.data
+  #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PortalActivateEventInit::to_js(
+  self : PortalActivateEventInit,
+) -> JsValue {
+  PortalActivateEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PortalActivateEventInit::from_js_ffi(
+  value : JsValue,
+) -> PortalActivateEventInit =
+  #| (v) => ({
+  #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PortalActivateEventInit::from_js(
+  value : JsValue,
+) -> PortalActivateEventInit {
+  PortalActivateEventInit::from_js_ffi(value)
+}
 
 ///|
 /// HTMLPortalElement interface
@@ -140,11 +182,19 @@ pub extern "js" fn HTMLPortalElement::activate(
   #| (self) => self.activate()
 
 ///|
-pub extern "js" fn HTMLPortalElement::activate_with_options(
+extern "js" fn HTMLPortalElement::activate_with_options_ffi(
   self : HTMLPortalElement,
-  options : PortalActivateOptions,
+  options : JsValue,
 ) -> Promise[Unit] =
   #| (self, options) => self.activate(options)
+
+///|
+pub fn HTMLPortalElement::activate_with_options(
+  self : HTMLPortalElement,
+  options : PortalActivateOptions,
+) -> Promise[Unit] {
+  HTMLPortalElement::activate_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn HTMLPortalElement::post_message(
@@ -154,12 +204,25 @@ pub extern "js" fn HTMLPortalElement::post_message(
   #| (self, message) => self.postMessage(message)
 
 ///|
-pub extern "js" fn HTMLPortalElement::post_message_with_options(
+extern "js" fn HTMLPortalElement::post_message_with_options_ffi(
+  self : HTMLPortalElement,
+  message : JsValue,
+  options : JsValue,
+) -> Unit =
+  #| (self, message, options) => self.postMessage(message, options)
+
+///|
+pub fn HTMLPortalElement::post_message_with_options(
   self : HTMLPortalElement,
   message : JsValue,
   options : StructuredSerializeOptions,
-) -> Unit =
-  #| (self, message, options) => self.postMessage(message, options)
+) -> Unit {
+  HTMLPortalElement::post_message_with_options_ffi(
+    self,
+    message,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn HTMLPortalElement::get_onmessage(
@@ -229,12 +292,21 @@ pub extern "js" fn PortalHost::post_message(
   #| (self, message) => self.postMessage(message)
 
 ///|
-pub extern "js" fn PortalHost::post_message_with_options(
+extern "js" fn PortalHost::post_message_with_options_ffi(
+  self : PortalHost,
+  message : JsValue,
+  options : JsValue,
+) -> Unit =
+  #| (self, message, options) => self.postMessage(message, options)
+
+///|
+pub fn PortalHost::post_message_with_options(
   self : PortalHost,
   message : JsValue,
   options : StructuredSerializeOptions,
-) -> Unit =
-  #| (self, message, options) => self.postMessage(message, options)
+) -> Unit {
+  PortalHost::post_message_with_options_ffi(self, message, options.to_js())
+}
 
 ///|
 pub extern "js" fn PortalHost::get_onmessage(self : PortalHost) -> EventHandler =
@@ -307,9 +379,26 @@ pub extern "js" fn PortalActivateEvent::to_event(
 ///|
 pub extern "js" fn PortalActivateEvent::new(
   type_ : String,
-  event_init_dict : PortalActivateEventInit,
+) -> PortalActivateEvent =
+  #| (type_) => new PortalActivateEvent(type_)
+
+///|
+extern "js" fn PortalActivateEvent::new_with_event_init_dict_ffi(
+  type_ : String,
+  event_init_dict : JsValue,
 ) -> PortalActivateEvent =
   #| (type_, event_init_dict) => new PortalActivateEvent(type_, event_init_dict)
+
+///|
+pub fn PortalActivateEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : PortalActivateEventInit,
+) -> PortalActivateEvent {
+  PortalActivateEvent::new_with_event_init_dict_ffi(
+    type_,
+    event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn PortalActivateEvent::get_data(

@@ -3,7 +3,7 @@
 
 ///|
 /// TextDecoderOptions dictionary
-pub struct TextDecoderOptions {
+pub(all) struct TextDecoderOptions {
   fatal : Bool?
   ignoreBOM : Bool?
 }
@@ -15,18 +15,38 @@ pub fn TextDecoderOptions::default() -> TextDecoderOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TextDecoderOptions::to_js(
+extern "js" fn TextDecoderOptions::to_js_ffi(
   self : TextDecoderOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   fatal: self.fatal,
-  #|   ignoreBOM: self.ignoreBOM
+  #|   fatal: (self.fatal === -1 ? undefined : self.fatal),
+  #|   ignoreBOM: (self.ignoreBOM === -1 ? undefined : self.ignoreBOM)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn TextDecoderOptions::to_js(self : TextDecoderOptions) -> JsValue {
+  TextDecoderOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TextDecoderOptions::from_js_ffi(
+  value : JsValue,
+) -> TextDecoderOptions =
+  #| (v) => ({
+  #|   fatal: (v.fatal === undefined ? -1 : v.fatal),
+  #|   ignoreBOM: (v.ignoreBOM === undefined ? -1 : v.ignoreBOM)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TextDecoderOptions::from_js(value : JsValue) -> TextDecoderOptions {
+  TextDecoderOptions::from_js_ffi(value)
+}
+
+///|
 /// TextDecodeOptions dictionary
-pub struct TextDecodeOptions {
+pub(all) struct TextDecodeOptions {
   stream : Bool?
 }
 
@@ -37,17 +57,36 @@ pub fn TextDecodeOptions::default() -> TextDecodeOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TextDecodeOptions::to_js(
+extern "js" fn TextDecodeOptions::to_js_ffi(
   self : TextDecodeOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   stream: self.stream
+  #|   stream: (self.stream === -1 ? undefined : self.stream)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn TextDecodeOptions::to_js(self : TextDecodeOptions) -> JsValue {
+  TextDecodeOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TextDecodeOptions::from_js_ffi(
+  value : JsValue,
+) -> TextDecodeOptions =
+  #| (v) => ({
+  #|   stream: (v.stream === undefined ? -1 : v.stream)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TextDecodeOptions::from_js(value : JsValue) -> TextDecodeOptions {
+  TextDecodeOptions::from_js_ffi(value)
+}
+
+///|
 /// TextEncoderEncodeIntoResult dictionary
-pub struct TextEncoderEncodeIntoResult {
+pub(all) struct TextEncoderEncodeIntoResult {
   read : Int64?
   written : Int64?
 }
@@ -59,14 +98,38 @@ pub fn TextEncoderEncodeIntoResult::default() -> TextEncoderEncodeIntoResult {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TextEncoderEncodeIntoResult::to_js(
+extern "js" fn TextEncoderEncodeIntoResult::to_js_ffi(
   self : TextEncoderEncodeIntoResult,
 ) -> JsValue =
   #| (self) => ({
   #|   read: self.read,
   #|   written: self.written
   #| })
+
+///|
+/// Convert to JsValue
+pub fn TextEncoderEncodeIntoResult::to_js(
+  self : TextEncoderEncodeIntoResult,
+) -> JsValue {
+  TextEncoderEncodeIntoResult::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TextEncoderEncodeIntoResult::from_js_ffi(
+  value : JsValue,
+) -> TextEncoderEncodeIntoResult =
+  #| (v) => ({
+  #|   read: v.read,
+  #|   written: v.written
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TextEncoderEncodeIntoResult::from_js(
+  value : JsValue,
+) -> TextEncoderEncodeIntoResult {
+  TextEncoderEncodeIntoResult::from_js_ffi(value)
+}
 
 ///|
 /// TextDecoder interface
@@ -97,23 +160,44 @@ pub extern "js" fn JsValue::to_text_decoder(self : JsValue) -> TextDecoder =
   #| (self) => self
 
 ///|
-pub extern "js" fn TextDecoder::new(
+pub extern "js" fn TextDecoder::new() -> TextDecoder =
+  #| () => new TextDecoder()
+
+///|
+extern "js" fn TextDecoder::new_with_options_ffi(
   label : String,
-  options : TextDecoderOptions,
+  options : JsValue,
 ) -> TextDecoder =
   #| (label, options) => new TextDecoder(label, options)
+
+///|
+pub fn TextDecoder::new_with_options(
+  label : String,
+  options : TextDecoderOptions,
+) -> TextDecoder {
+  TextDecoder::new_with_options_ffi(label, options.to_js())
+}
 
 ///|
 pub extern "js" fn TextDecoder::decode(self : TextDecoder) -> String =
   #| (self) => self.decode()
 
 ///|
-pub extern "js" fn TextDecoder::decode_with_options(
+extern "js" fn TextDecoder::decode_with_options_ffi(
+  self : TextDecoder,
+  input : AllowSharedBufferSource,
+  options : JsValue,
+) -> String =
+  #| (self, input, options) => self.decode(input, options)
+
+///|
+pub fn TextDecoder::decode_with_options(
   self : TextDecoder,
   input : AllowSharedBufferSource,
   options : TextDecodeOptions,
-) -> String =
-  #| (self, input, options) => self.decode(input, options)
+) -> String {
+  TextDecoder::decode_with_options_ffi(self, input, options.to_js())
+}
 
 ///|
 pub extern "js" fn TextDecoder::get_encoding(self : TextDecoder) -> String =
@@ -126,6 +210,30 @@ pub extern "js" fn TextDecoder::get_fatal(self : TextDecoder) -> Bool =
 ///|
 pub extern "js" fn TextDecoder::get_ignore_bom(self : TextDecoder) -> Bool =
   #| (self) => self.ignoreBOM
+
+///|
+pub extern "js" fn TextDecoder::decode_with_array_buffer(
+  self : TextDecoder,
+  input : ArrayBuffer,
+  options : TextDecodeOptions,
+) -> String =
+  #| (self, input, options) => self.decode(input, options)
+
+///|
+pub extern "js" fn TextDecoder::decode_with_shared_array_buffer(
+  self : TextDecoder,
+  input : SharedArrayBuffer,
+  options : TextDecodeOptions,
+) -> String =
+  #| (self, input, options) => self.decode(input, options)
+
+///|
+pub extern "js" fn TextDecoder::decode_with_array_buffer_view(
+  self : TextDecoder,
+  input : ArrayBufferView,
+  options : TextDecodeOptions,
+) -> String =
+  #| (self, input, options) => self.decode(input, options)
 
 ///|
 /// TextEncoder interface
@@ -221,11 +329,23 @@ pub extern "js" fn JsValue::to_text_decoder_stream(
   #| (self) => self
 
 ///|
-pub extern "js" fn TextDecoderStream::new(
+pub extern "js" fn TextDecoderStream::new() -> TextDecoderStream =
+  #| () => new TextDecoderStream()
+
+///|
+extern "js" fn TextDecoderStream::new_with_options_ffi(
   label : String,
-  options : TextDecoderOptions,
+  options : JsValue,
 ) -> TextDecoderStream =
   #| (label, options) => new TextDecoderStream(label, options)
+
+///|
+pub fn TextDecoderStream::new_with_options(
+  label : String,
+  options : TextDecoderOptions,
+) -> TextDecoderStream {
+  TextDecoderStream::new_with_options_ffi(label, options.to_js())
+}
 
 ///|
 pub extern "js" fn TextDecoderStream::get_encoding(

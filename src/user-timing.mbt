@@ -3,7 +3,7 @@
 
 ///|
 /// PerformanceMarkOptions dictionary
-pub struct PerformanceMarkOptions {
+pub(all) struct PerformanceMarkOptions {
   detail : JsValue?
   startTime : DOMHighResTimeStamp?
 }
@@ -15,18 +15,40 @@ pub fn PerformanceMarkOptions::default() -> PerformanceMarkOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PerformanceMarkOptions::to_js(
+extern "js" fn PerformanceMarkOptions::to_js_ffi(
   self : PerformanceMarkOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   detail: self.detail,
-  #|   startTime: self.startTime
+  #|   detail: ((() => { const v = self.detail; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   startTime: ((() => { const v = self.startTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PerformanceMarkOptions::to_js(self : PerformanceMarkOptions) -> JsValue {
+  PerformanceMarkOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PerformanceMarkOptions::from_js_ffi(
+  value : JsValue,
+) -> PerformanceMarkOptions =
+  #| (v) => ({
+  #|   detail: (v.detail === undefined ? { $tag: 0 } : { $tag: 1, _0: v.detail }),
+  #|   startTime: (v.startTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.startTime })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PerformanceMarkOptions::from_js(
+  value : JsValue,
+) -> PerformanceMarkOptions {
+  PerformanceMarkOptions::from_js_ffi(value)
+}
+
+///|
 /// PerformanceMeasureOptions dictionary
-pub struct PerformanceMeasureOptions {
+pub(all) struct PerformanceMeasureOptions {
   detail : JsValue?
   start : StringOrDOMHighResTimeStamp?
   duration : DOMHighResTimeStamp?
@@ -45,16 +67,42 @@ pub fn PerformanceMeasureOptions::default() -> PerformanceMeasureOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PerformanceMeasureOptions::to_js(
+extern "js" fn PerformanceMeasureOptions::to_js_ffi(
   self : PerformanceMeasureOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   detail: self.detail,
-  #|   start: self.start,
-  #|   duration: self.duration,
-  #|   end: self.end
+  #|   detail: ((() => { const v = self.detail; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   start: ((() => { const v = self.start; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   duration: ((() => { const v = self.duration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   end: ((() => { const v = self.end; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PerformanceMeasureOptions::to_js(
+  self : PerformanceMeasureOptions,
+) -> JsValue {
+  PerformanceMeasureOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PerformanceMeasureOptions::from_js_ffi(
+  value : JsValue,
+) -> PerformanceMeasureOptions =
+  #| (v) => ({
+  #|   detail: (v.detail === undefined ? { $tag: 0 } : { $tag: 1, _0: v.detail }),
+  #|   start: (v.start === undefined ? { $tag: 0 } : { $tag: 1, _0: v.start }),
+  #|   duration: (v.duration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.duration }),
+  #|   end: (v.end === undefined ? { $tag: 0 } : { $tag: 1, _0: v.end })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PerformanceMeasureOptions::from_js(
+  value : JsValue,
+) -> PerformanceMeasureOptions {
+  PerformanceMeasureOptions::from_js_ffi(value)
+}
 
 ///|
 /// PerformanceMark interface
@@ -101,11 +149,23 @@ pub extern "js" fn PerformanceMark::to_performance_entry(
   #| (self) => self
 
 ///|
-pub extern "js" fn PerformanceMark::new(
+pub extern "js" fn PerformanceMark::new(mark_name : String) -> PerformanceMark =
+  #| (mark_name) => new PerformanceMark(mark_name)
+
+///|
+extern "js" fn PerformanceMark::new_with_mark_options_ffi(
   mark_name : String,
-  mark_options : PerformanceMarkOptions,
+  mark_options : JsValue,
 ) -> PerformanceMark =
   #| (mark_name, mark_options) => new PerformanceMark(mark_name, mark_options)
+
+///|
+pub fn PerformanceMark::new_with_mark_options(
+  mark_name : String,
+  mark_options : PerformanceMarkOptions,
+) -> PerformanceMark {
+  PerformanceMark::new_with_mark_options_ffi(mark_name, mark_options.to_js())
+}
 
 ///|
 pub extern "js" fn PerformanceMark::get_detail(

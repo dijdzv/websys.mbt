@@ -3,7 +3,7 @@
 
 ///|
 /// IsInputPendingOptions dictionary
-pub struct IsInputPendingOptions {
+pub(all) struct IsInputPendingOptions {
   includeContinuous : Bool?
 }
 
@@ -14,13 +14,32 @@ pub fn IsInputPendingOptions::default() -> IsInputPendingOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn IsInputPendingOptions::to_js(
+extern "js" fn IsInputPendingOptions::to_js_ffi(
   self : IsInputPendingOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   includeContinuous: self.includeContinuous
+  #|   includeContinuous: (self.includeContinuous === -1 ? undefined : self.includeContinuous)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn IsInputPendingOptions::to_js(self : IsInputPendingOptions) -> JsValue {
+  IsInputPendingOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IsInputPendingOptions::from_js_ffi(
+  value : JsValue,
+) -> IsInputPendingOptions =
+  #| (v) => ({
+  #|   includeContinuous: (v.includeContinuous === undefined ? -1 : v.includeContinuous)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IsInputPendingOptions::from_js(value : JsValue) -> IsInputPendingOptions {
+  IsInputPendingOptions::from_js_ffi(value)
+}
 
 ///|
 /// Scheduling interface
@@ -55,8 +74,19 @@ pub extern "js" fn Scheduling::is_input_pending(self : Scheduling) -> Bool =
   #| (self) => self.isInputPending()
 
 ///|
-pub extern "js" fn Scheduling::is_input_pending_with_is_input_pending_options(
+extern "js" fn Scheduling::is_input_pending_with_is_input_pending_options_ffi(
   self : Scheduling,
-  is_input_pending_options : IsInputPendingOptions,
+  is_input_pending_options : JsValue,
 ) -> Bool =
   #| (self, is_input_pending_options) => self.isInputPending(is_input_pending_options)
+
+///|
+pub fn Scheduling::is_input_pending_with_is_input_pending_options(
+  self : Scheduling,
+  is_input_pending_options : IsInputPendingOptions,
+) -> Bool {
+  Scheduling::is_input_pending_with_is_input_pending_options_ffi(
+    self,
+    is_input_pending_options.to_js(),
+  )
+}

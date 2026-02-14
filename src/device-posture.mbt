@@ -6,7 +6,7 @@
 pub(all) enum DevicePostureType {
   Continuous
   Folded
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -67,7 +67,7 @@ pub extern "js" fn DevicePosture::to_event_target(
 pub extern "js" fn DevicePosture::get_type(
   self : DevicePosture,
 ) -> DevicePostureType =
-  #| (self) => self.type
+  #| (self) => ['continuous', 'folded'].indexOf(self.type)
 
 ///|
 pub extern "js" fn DevicePosture::get_onchange(

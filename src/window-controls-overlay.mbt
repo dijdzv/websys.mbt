@@ -3,29 +3,55 @@
 
 ///|
 /// WindowControlsOverlayGeometryChangeEventInit dictionary
-pub struct WindowControlsOverlayGeometryChangeEventInit {
+pub(all) struct WindowControlsOverlayGeometryChangeEventInit {
   titlebarAreaRect : DOMRect
   visible : Bool?
 }
 
 ///|
-/// Create a new WindowControlsOverlayGeometryChangeEventInit with default values
-pub fn WindowControlsOverlayGeometryChangeEventInit::default() -> WindowControlsOverlayGeometryChangeEventInit {
+/// Create a new WindowControlsOverlayGeometryChangeEventInit
+pub fn WindowControlsOverlayGeometryChangeEventInit::new(
+  titlebarAreaRect~ : DOMRect,
+) -> WindowControlsOverlayGeometryChangeEventInit {
   WindowControlsOverlayGeometryChangeEventInit::{
-    titlebarAreaRect: panic(),
+    titlebarAreaRect,
     visible: None,
   }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WindowControlsOverlayGeometryChangeEventInit::to_js(
+extern "js" fn WindowControlsOverlayGeometryChangeEventInit::to_js_ffi(
   self : WindowControlsOverlayGeometryChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   titlebarAreaRect: self.titlebarAreaRect,
-  #|   visible: self.visible
+  #|   visible: (self.visible === -1 ? undefined : self.visible)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn WindowControlsOverlayGeometryChangeEventInit::to_js(
+  self : WindowControlsOverlayGeometryChangeEventInit,
+) -> JsValue {
+  WindowControlsOverlayGeometryChangeEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WindowControlsOverlayGeometryChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> WindowControlsOverlayGeometryChangeEventInit =
+  #| (v) => ({
+  #|   titlebarAreaRect: v.titlebarAreaRect,
+  #|   visible: (v.visible === undefined ? -1 : v.visible)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WindowControlsOverlayGeometryChangeEventInit::from_js(
+  value : JsValue,
+) -> WindowControlsOverlayGeometryChangeEventInit {
+  WindowControlsOverlayGeometryChangeEventInit::from_js_ffi(value)
+}
 
 ///|
 /// WindowControlsOverlay interface
@@ -141,11 +167,22 @@ pub extern "js" fn WindowControlsOverlayGeometryChangeEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn WindowControlsOverlayGeometryChangeEvent::new(
+extern "js" fn WindowControlsOverlayGeometryChangeEvent::new_ffi(
   type_ : String,
-  event_init_dict : WindowControlsOverlayGeometryChangeEventInit,
+  event_init_dict : JsValue,
 ) -> WindowControlsOverlayGeometryChangeEvent =
   #| (type_, event_init_dict) => new WindowControlsOverlayGeometryChangeEvent(type_, event_init_dict)
+
+///|
+pub fn WindowControlsOverlayGeometryChangeEvent::new(
+  type_ : String,
+  event_init_dict : WindowControlsOverlayGeometryChangeEventInit,
+) -> WindowControlsOverlayGeometryChangeEvent {
+  WindowControlsOverlayGeometryChangeEvent::new_ffi(
+    type_,
+    event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn WindowControlsOverlayGeometryChangeEvent::get_titlebar_area_rect(

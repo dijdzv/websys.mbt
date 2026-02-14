@@ -54,6 +54,26 @@ pub extern "js" fn Uint32List::as_array_of_g_luint(
   #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[Uint32List] to Uint32Array?
+pub fn Uint32List::bind_as_uint32_array(value : Uint32List?) -> Uint32Array? {
+  match value {
+    Some(v) => v.as_uint32_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[Uint32List] to Array[GLuint]?
+pub fn Uint32List::bind_as_array_of_g_luint(
+  value : Uint32List?,
+) -> Array[GLuint]? {
+  match value {
+    Some(v) => v.as_array_of_g_luint()
+    None => None
+  }
+}
+
+///|
 /// WebGLQuery interface
 pub type WebGLQuery
 
@@ -1794,33 +1814,33 @@ pub extern "js" fn WebGL2RenderingContext::get_drawing_buffer_format(
 pub extern "js" fn WebGL2RenderingContext::get_drawing_buffer_color_space(
   self : WebGL2RenderingContext,
 ) -> PredefinedColorSpace =
-  #| (self) => self.drawingBufferColorSpace
+  #| (self) => ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(self.drawingBufferColorSpace)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::set_drawing_buffer_color_space(
   self : WebGL2RenderingContext,
   value : PredefinedColorSpace,
 ) -> Unit =
-  #| (self, value) => { self.drawingBufferColorSpace = value }
+  #| (self, value) => { self.drawingBufferColorSpace = ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][value] }
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_unpack_color_space(
   self : WebGL2RenderingContext,
 ) -> PredefinedColorSpace =
-  #| (self) => self.unpackColorSpace
+  #| (self) => ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(self.unpackColorSpace)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::set_unpack_color_space(
   self : WebGL2RenderingContext,
   value : PredefinedColorSpace,
 ) -> Unit =
-  #| (self, value) => { self.unpackColorSpace = value }
+  #| (self, value) => { self.unpackColorSpace = ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][value] }
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_context_attributes(
   self : WebGL2RenderingContext,
 ) -> WebGLContextAttributes? =
-  #| (self) => { const v = self.getContextAttributes(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.getContextAttributes(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::is_context_lost(
@@ -1839,7 +1859,7 @@ pub extern "js" fn WebGL2RenderingContext::get_extension(
   self : WebGL2RenderingContext,
   name : String,
 ) -> JsValue? =
-  #| (self, name) => { const v = self.getExtension(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, name) => (() => { const v = self.getExtension(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::drawing_buffer_storage(
@@ -1880,7 +1900,7 @@ pub extern "js" fn WebGL2RenderingContext::bind_buffer(
   target : GLenum,
   buffer : WebGLBuffer?,
 ) -> Unit =
-  #| (self, target, buffer) => self.bindBuffer(target, buffer)
+  #| (self, target, buffer) => self.bindBuffer(target, (buffer.$tag === 1 ? buffer._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::bind_framebuffer(
@@ -1888,7 +1908,7 @@ pub extern "js" fn WebGL2RenderingContext::bind_framebuffer(
   target : GLenum,
   framebuffer : WebGLFramebuffer?,
 ) -> Unit =
-  #| (self, target, framebuffer) => self.bindFramebuffer(target, framebuffer)
+  #| (self, target, framebuffer) => self.bindFramebuffer(target, (framebuffer.$tag === 1 ? framebuffer._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::bind_renderbuffer(
@@ -1896,7 +1916,7 @@ pub extern "js" fn WebGL2RenderingContext::bind_renderbuffer(
   target : GLenum,
   renderbuffer : WebGLRenderbuffer?,
 ) -> Unit =
-  #| (self, target, renderbuffer) => self.bindRenderbuffer(target, renderbuffer)
+  #| (self, target, renderbuffer) => self.bindRenderbuffer(target, (renderbuffer.$tag === 1 ? renderbuffer._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::bind_texture(
@@ -1904,7 +1924,7 @@ pub extern "js" fn WebGL2RenderingContext::bind_texture(
   target : GLenum,
   texture : WebGLTexture?,
 ) -> Unit =
-  #| (self, target, texture) => self.bindTexture(target, texture)
+  #| (self, target, texture) => self.bindTexture(target, (texture.$tag === 1 ? texture._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::blend_color(
@@ -2005,7 +2025,7 @@ pub extern "js" fn WebGL2RenderingContext::compile_shader(
   #| (self, shader) => self.compileShader(shader)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::copy_tex_image2_d(
+pub extern "js" fn WebGL2RenderingContext::copy_tex_image_2d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -2019,7 +2039,7 @@ pub extern "js" fn WebGL2RenderingContext::copy_tex_image2_d(
   #| (self, target, level, internalformat, x, y, width, height, border) => self.copyTexImage2D(target, level, internalformat, x, y, width, height, border)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::copy_tex_sub_image2_d(
+pub extern "js" fn WebGL2RenderingContext::copy_tex_sub_image_2d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -2061,7 +2081,7 @@ pub extern "js" fn WebGL2RenderingContext::create_shader(
   self : WebGL2RenderingContext,
   type_ : GLenum,
 ) -> WebGLShader? =
-  #| (self, type_) => { const v = self.createShader(type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, type_) => (() => { const v = self.createShader(type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::create_texture(
@@ -2081,42 +2101,42 @@ pub extern "js" fn WebGL2RenderingContext::delete_buffer(
   self : WebGL2RenderingContext,
   buffer : WebGLBuffer?,
 ) -> Unit =
-  #| (self, buffer) => self.deleteBuffer(buffer)
+  #| (self, buffer) => self.deleteBuffer((buffer.$tag === 1 ? buffer._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::delete_framebuffer(
   self : WebGL2RenderingContext,
   framebuffer : WebGLFramebuffer?,
 ) -> Unit =
-  #| (self, framebuffer) => self.deleteFramebuffer(framebuffer)
+  #| (self, framebuffer) => self.deleteFramebuffer((framebuffer.$tag === 1 ? framebuffer._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::delete_program(
   self : WebGL2RenderingContext,
   program : WebGLProgram?,
 ) -> Unit =
-  #| (self, program) => self.deleteProgram(program)
+  #| (self, program) => self.deleteProgram((program.$tag === 1 ? program._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::delete_renderbuffer(
   self : WebGL2RenderingContext,
   renderbuffer : WebGLRenderbuffer?,
 ) -> Unit =
-  #| (self, renderbuffer) => self.deleteRenderbuffer(renderbuffer)
+  #| (self, renderbuffer) => self.deleteRenderbuffer((renderbuffer.$tag === 1 ? renderbuffer._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::delete_shader(
   self : WebGL2RenderingContext,
   shader : WebGLShader?,
 ) -> Unit =
-  #| (self, shader) => self.deleteShader(shader)
+  #| (self, shader) => self.deleteShader((shader.$tag === 1 ? shader._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::delete_texture(
   self : WebGL2RenderingContext,
   texture : WebGLTexture?,
 ) -> Unit =
-  #| (self, texture) => self.deleteTexture(texture)
+  #| (self, texture) => self.deleteTexture((texture.$tag === 1 ? texture._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::depth_func(
@@ -2215,10 +2235,10 @@ pub extern "js" fn WebGL2RenderingContext::framebuffer_renderbuffer(
   renderbuffertarget : GLenum,
   renderbuffer : WebGLRenderbuffer?,
 ) -> Unit =
-  #| (self, target, attachment, renderbuffertarget, renderbuffer) => self.framebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer)
+  #| (self, target, attachment, renderbuffertarget, renderbuffer) => self.framebufferRenderbuffer(target, attachment, renderbuffertarget, (renderbuffer.$tag === 1 ? renderbuffer._0 : null))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::framebuffer_texture2_d(
+pub extern "js" fn WebGL2RenderingContext::framebuffer_texture_2d(
   self : WebGL2RenderingContext,
   target : GLenum,
   attachment : GLenum,
@@ -2226,7 +2246,7 @@ pub extern "js" fn WebGL2RenderingContext::framebuffer_texture2_d(
   texture : WebGLTexture?,
   level : GLint,
 ) -> Unit =
-  #| (self, target, attachment, textarget, texture, level) => self.framebufferTexture2D(target, attachment, textarget, texture, level)
+  #| (self, target, attachment, textarget, texture, level) => self.framebufferTexture2D(target, attachment, textarget, (texture.$tag === 1 ? texture._0 : null), level)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::front_face(
@@ -2248,7 +2268,7 @@ pub extern "js" fn WebGL2RenderingContext::get_active_attrib(
   program : WebGLProgram,
   index : GLuint,
 ) -> WebGLActiveInfo? =
-  #| (self, program, index) => { const v = self.getActiveAttrib(program, index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, program, index) => (() => { const v = self.getActiveAttrib(program, index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_active_uniform(
@@ -2256,7 +2276,7 @@ pub extern "js" fn WebGL2RenderingContext::get_active_uniform(
   program : WebGLProgram,
   index : GLuint,
 ) -> WebGLActiveInfo? =
-  #| (self, program, index) => { const v = self.getActiveUniform(program, index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, program, index) => (() => { const v = self.getActiveUniform(program, index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_attached_shaders(
@@ -2316,7 +2336,7 @@ pub extern "js" fn WebGL2RenderingContext::get_program_info_log(
   self : WebGL2RenderingContext,
   program : WebGLProgram,
 ) -> String? =
-  #| (self, program) => { const v = self.getProgramInfoLog(program); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, program) => (self.getProgramInfoLog(program)) ?? undefined
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_renderbuffer_parameter(
@@ -2340,21 +2360,21 @@ pub extern "js" fn WebGL2RenderingContext::get_shader_precision_format(
   shadertype : GLenum,
   precisiontype : GLenum,
 ) -> WebGLShaderPrecisionFormat? =
-  #| (self, shadertype, precisiontype) => { const v = self.getShaderPrecisionFormat(shadertype, precisiontype); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, shadertype, precisiontype) => (() => { const v = self.getShaderPrecisionFormat(shadertype, precisiontype); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_shader_info_log(
   self : WebGL2RenderingContext,
   shader : WebGLShader,
 ) -> String? =
-  #| (self, shader) => { const v = self.getShaderInfoLog(shader); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, shader) => (self.getShaderInfoLog(shader)) ?? undefined
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_shader_source(
   self : WebGL2RenderingContext,
   shader : WebGLShader,
 ) -> String? =
-  #| (self, shader) => { const v = self.getShaderSource(shader); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, shader) => (self.getShaderSource(shader)) ?? undefined
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_tex_parameter(
@@ -2378,7 +2398,7 @@ pub extern "js" fn WebGL2RenderingContext::get_uniform_location(
   program : WebGLProgram,
   name : String,
 ) -> WebGLUniformLocation? =
-  #| (self, program, name) => { const v = self.getUniformLocation(program, name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, program, name) => (() => { const v = self.getUniformLocation(program, name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_vertex_attrib(
@@ -2409,7 +2429,7 @@ pub extern "js" fn WebGL2RenderingContext::is_buffer(
   self : WebGL2RenderingContext,
   buffer : WebGLBuffer?,
 ) -> GLboolean =
-  #| (self, buffer) => self.isBuffer(buffer)
+  #| (self, buffer) => self.isBuffer((buffer.$tag === 1 ? buffer._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::is_enabled(
@@ -2423,35 +2443,35 @@ pub extern "js" fn WebGL2RenderingContext::is_framebuffer(
   self : WebGL2RenderingContext,
   framebuffer : WebGLFramebuffer?,
 ) -> GLboolean =
-  #| (self, framebuffer) => self.isFramebuffer(framebuffer)
+  #| (self, framebuffer) => self.isFramebuffer((framebuffer.$tag === 1 ? framebuffer._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::is_program(
   self : WebGL2RenderingContext,
   program : WebGLProgram?,
 ) -> GLboolean =
-  #| (self, program) => self.isProgram(program)
+  #| (self, program) => self.isProgram((program.$tag === 1 ? program._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::is_renderbuffer(
   self : WebGL2RenderingContext,
   renderbuffer : WebGLRenderbuffer?,
 ) -> GLboolean =
-  #| (self, renderbuffer) => self.isRenderbuffer(renderbuffer)
+  #| (self, renderbuffer) => self.isRenderbuffer((renderbuffer.$tag === 1 ? renderbuffer._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::is_shader(
   self : WebGL2RenderingContext,
   shader : WebGLShader?,
 ) -> GLboolean =
-  #| (self, shader) => self.isShader(shader)
+  #| (self, shader) => self.isShader((shader.$tag === 1 ? shader._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::is_texture(
   self : WebGL2RenderingContext,
   texture : WebGLTexture?,
 ) -> GLboolean =
-  #| (self, texture) => self.isTexture(texture)
+  #| (self, texture) => self.isTexture((texture.$tag === 1 ? texture._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::line_width(
@@ -2596,7 +2616,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform1f(
   location : WebGLUniformLocation?,
   x : GLfloat,
 ) -> Unit =
-  #| (self, location, x) => self.uniform1f(location, x)
+  #| (self, location, x) => self.uniform1f((location.$tag === 1 ? location._0 : null), x)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform2f(
@@ -2605,7 +2625,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform2f(
   x : GLfloat,
   y : GLfloat,
 ) -> Unit =
-  #| (self, location, x, y) => self.uniform2f(location, x, y)
+  #| (self, location, x, y) => self.uniform2f((location.$tag === 1 ? location._0 : null), x, y)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform3f(
@@ -2615,7 +2635,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform3f(
   y : GLfloat,
   z : GLfloat,
 ) -> Unit =
-  #| (self, location, x, y, z) => self.uniform3f(location, x, y, z)
+  #| (self, location, x, y, z) => self.uniform3f((location.$tag === 1 ? location._0 : null), x, y, z)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform4f(
@@ -2626,7 +2646,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform4f(
   z : GLfloat,
   w : GLfloat,
 ) -> Unit =
-  #| (self, location, x, y, z, w) => self.uniform4f(location, x, y, z, w)
+  #| (self, location, x, y, z, w) => self.uniform4f((location.$tag === 1 ? location._0 : null), x, y, z, w)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform1i(
@@ -2634,7 +2654,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform1i(
   location : WebGLUniformLocation?,
   x : GLint,
 ) -> Unit =
-  #| (self, location, x) => self.uniform1i(location, x)
+  #| (self, location, x) => self.uniform1i((location.$tag === 1 ? location._0 : null), x)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform2i(
@@ -2643,7 +2663,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform2i(
   x : GLint,
   y : GLint,
 ) -> Unit =
-  #| (self, location, x, y) => self.uniform2i(location, x, y)
+  #| (self, location, x, y) => self.uniform2i((location.$tag === 1 ? location._0 : null), x, y)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform3i(
@@ -2653,7 +2673,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform3i(
   y : GLint,
   z : GLint,
 ) -> Unit =
-  #| (self, location, x, y, z) => self.uniform3i(location, x, y, z)
+  #| (self, location, x, y, z) => self.uniform3i((location.$tag === 1 ? location._0 : null), x, y, z)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform4i(
@@ -2664,14 +2684,14 @@ pub extern "js" fn WebGL2RenderingContext::uniform4i(
   z : GLint,
   w : GLint,
 ) -> Unit =
-  #| (self, location, x, y, z, w) => self.uniform4i(location, x, y, z, w)
+  #| (self, location, x, y, z, w) => self.uniform4i((location.$tag === 1 ? location._0 : null), x, y, z, w)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::use_program(
   self : WebGL2RenderingContext,
   program : WebGLProgram?,
 ) -> Unit =
-  #| (self, program) => self.useProgram(program)
+  #| (self, program) => self.useProgram((program.$tag === 1 ? program._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::validate_program(
@@ -4117,7 +4137,7 @@ pub extern "js" fn WebGL2RenderingContext::get_buffer_sub_data_with_length(
   dst_offset : Int64,
   length : GLuint,
 ) -> Unit =
-  #| (self, target, src_byte_offset, dst_buffer, dst_offset, length) => self.getBufferSubData(target, src_byte_offset, dst_buffer, dst_offset, length)
+  #| (self, target, src_byte_offset, dst_buffer, dst_offset, length) => self.getBufferSubData(target, src_byte_offset, dst_buffer, (dst_offset.hi * 4294967296 + dst_offset.lo), length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::blit_framebuffer(
@@ -4144,7 +4164,7 @@ pub extern "js" fn WebGL2RenderingContext::framebuffer_texture_layer(
   level : GLint,
   layer : GLint,
 ) -> Unit =
-  #| (self, target, attachment, texture, level, layer) => self.framebufferTextureLayer(target, attachment, texture, level, layer)
+  #| (self, target, attachment, texture, level, layer) => self.framebufferTextureLayer(target, attachment, (texture.$tag === 1 ? texture._0 : null), level, layer)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::invalidate_framebuffer(
@@ -4194,7 +4214,7 @@ pub extern "js" fn WebGL2RenderingContext::renderbuffer_storage_multisample(
   #| (self, target, samples, internalformat, width, height) => self.renderbufferStorageMultisample(target, samples, internalformat, width, height)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_storage2_d(
+pub extern "js" fn WebGL2RenderingContext::tex_storage_2d(
   self : WebGL2RenderingContext,
   target : GLenum,
   levels : GLsizei,
@@ -4205,7 +4225,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_storage2_d(
   #| (self, target, levels, internalformat, width, height) => self.texStorage2D(target, levels, internalformat, width, height)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_storage3_d(
+pub extern "js" fn WebGL2RenderingContext::tex_storage_3d(
   self : WebGL2RenderingContext,
   target : GLenum,
   levels : GLsizei,
@@ -4217,7 +4237,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_storage3_d(
   #| (self, target, levels, internalformat, width, height, depth) => self.texStorage3D(target, levels, internalformat, width, height, depth)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4233,7 +4253,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d(
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, pbo_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, pbo_offset)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_source_tex_image_source(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_source_tex_image_source(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4249,7 +4269,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_target_g_lenum_and_
   #| (self, target, level, internalformat, width, height, depth, border, format, type_, source) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_src_data(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_src_data(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4262,10 +4282,10 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_target_g_lenum_and_
   type_ : GLenum,
   src_data : ArrayBufferView?,
 ) -> Unit =
-  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data)
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, (src_data.$tag === 1 ? src_data._0 : null))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_src_data_array_buffer_view_and_src_offset(
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_src_data_array_buffer_view_and_src_offset(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4279,10 +4299,10 @@ pub extern "js" fn WebGL2RenderingContext::tex_image3_d_with_target_g_lenum_and_
   src_data : ArrayBufferView,
   src_offset : Int64,
 ) -> Unit =
-  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset)
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4299,7 +4319,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d(
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, pbo_offset) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, pbo_offset)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_zoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_source_tex_image_source(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_zoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_source_tex_image_source(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4316,7 +4336,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_target_g_lenum_
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_zoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_src_data(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_zoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_src_data(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4330,10 +4350,10 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_target_g_lenum_
   type_ : GLenum,
   src_data : ArrayBufferView?,
 ) -> Unit =
-  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, src_data) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, src_data)
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, src_data) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, (src_data.$tag === 1 ? src_data._0 : null))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_zoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_src_data_and_src_offset(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_zoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_src_data_and_src_offset(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4348,10 +4368,10 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image3_d_with_target_g_lenum_
   src_data : ArrayBufferView?,
   src_offset : Int64,
 ) -> Unit =
-  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, src_data, src_offset) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, src_data, src_offset)
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, src_data, src_offset) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, (src_data.$tag === 1 ? src_data._0 : null), (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::copy_tex_sub_image3_d(
+pub extern "js" fn WebGL2RenderingContext::copy_tex_sub_image_3d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4366,7 +4386,7 @@ pub extern "js" fn WebGL2RenderingContext::copy_tex_sub_image3_d(
   #| (self, target, level, xoffset, yoffset, zoffset, x, y, width, height) => self.copyTexSubImage3D(target, level, xoffset, yoffset, zoffset, x, y, width, height)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4380,7 +4400,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d(
   #| (self, target, level, internalformat, width, height, depth, border, src_data) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_src_length_override(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_src_length_override(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4393,10 +4413,10 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_src_leng
   src_offset : Int64,
   src_length_override : GLuint,
 ) -> Unit =
-  #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override)
+  #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lenum_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_border_g_lint_and_image_size_g_lsizei_and_offset_g_lintptr(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lenum_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_border_g_lint_and_image_size_g_lsizei_and_offset_g_lintptr(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4411,7 +4431,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image3_d_with_target_g
   #| (self, target, level, internalformat, width, height, depth, border, image_size, offset) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, image_size, offset)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4427,7 +4447,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d(
   #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_src_length_override(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_src_length_override(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4442,10 +4462,10 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_src_
   src_offset : Int64,
   src_length_override : GLuint,
 ) -> Unit =
-  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override)
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image3_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_zoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_format_g_lenum_and_image_size_g_lsizei_and_offset_g_lintptr(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_zoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_depth_g_lsizei_and_format_g_lenum_and_image_size_g_lsizei_and_offset_g_lintptr(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -4475,7 +4495,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform1ui(
   location : WebGLUniformLocation?,
   v0 : GLuint,
 ) -> Unit =
-  #| (self, location, v0) => self.uniform1ui(location, v0)
+  #| (self, location, v0) => self.uniform1ui((location.$tag === 1 ? location._0 : null), v0)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform2ui(
@@ -4484,7 +4504,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform2ui(
   v0 : GLuint,
   v1 : GLuint,
 ) -> Unit =
-  #| (self, location, v0, v1) => self.uniform2ui(location, v0, v1)
+  #| (self, location, v0, v1) => self.uniform2ui((location.$tag === 1 ? location._0 : null), v0, v1)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform3ui(
@@ -4494,7 +4514,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform3ui(
   v1 : GLuint,
   v2 : GLuint,
 ) -> Unit =
-  #| (self, location, v0, v1, v2) => self.uniform3ui(location, v0, v1, v2)
+  #| (self, location, v0, v1, v2) => self.uniform3ui((location.$tag === 1 ? location._0 : null), v0, v1, v2)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform4ui(
@@ -4505,7 +4525,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform4ui(
   v2 : GLuint,
   v3 : GLuint,
 ) -> Unit =
-  #| (self, location, v0, v1, v2, v3) => self.uniform4ui(location, v0, v1, v2, v3)
+  #| (self, location, v0, v1, v2, v3) => self.uniform4ui((location.$tag === 1 ? location._0 : null), v0, v1, v2, v3)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform1uiv(
@@ -4513,7 +4533,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform1uiv(
   location : WebGLUniformLocation?,
   data : Uint32List,
 ) -> Unit =
-  #| (self, location, data) => self.uniform1uiv(location, data)
+  #| (self, location, data) => self.uniform1uiv((location.$tag === 1 ? location._0 : null), data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform1uiv_with_src_length(
@@ -4523,7 +4543,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform1uiv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, data, src_offset, src_length) => self.uniform1uiv(location, data, src_offset, src_length)
+  #| (self, location, data, src_offset, src_length) => self.uniform1uiv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform2uiv(
@@ -4531,7 +4551,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform2uiv(
   location : WebGLUniformLocation?,
   data : Uint32List,
 ) -> Unit =
-  #| (self, location, data) => self.uniform2uiv(location, data)
+  #| (self, location, data) => self.uniform2uiv((location.$tag === 1 ? location._0 : null), data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform2uiv_with_src_length(
@@ -4541,7 +4561,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform2uiv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, data, src_offset, src_length) => self.uniform2uiv(location, data, src_offset, src_length)
+  #| (self, location, data, src_offset, src_length) => self.uniform2uiv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform3uiv(
@@ -4549,7 +4569,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform3uiv(
   location : WebGLUniformLocation?,
   data : Uint32List,
 ) -> Unit =
-  #| (self, location, data) => self.uniform3uiv(location, data)
+  #| (self, location, data) => self.uniform3uiv((location.$tag === 1 ? location._0 : null), data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform3uiv_with_src_length(
@@ -4559,7 +4579,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform3uiv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, data, src_offset, src_length) => self.uniform3uiv(location, data, src_offset, src_length)
+  #| (self, location, data, src_offset, src_length) => self.uniform3uiv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform4uiv(
@@ -4567,7 +4587,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform4uiv(
   location : WebGLUniformLocation?,
   data : Uint32List,
 ) -> Unit =
-  #| (self, location, data) => self.uniform4uiv(location, data)
+  #| (self, location, data) => self.uniform4uiv((location.$tag === 1 ? location._0 : null), data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform4uiv_with_src_length(
@@ -4577,7 +4597,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform4uiv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, data, src_offset, src_length) => self.uniform4uiv(location, data, src_offset, src_length)
+  #| (self, location, data, src_offset, src_length) => self.uniform4uiv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix3x2fv(
@@ -4586,7 +4606,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix3x2fv(
   transpose : GLboolean,
   data : Float32List,
 ) -> Unit =
-  #| (self, location, transpose, data) => self.uniformMatrix3x2fv(location, transpose, data)
+  #| (self, location, transpose, data) => self.uniformMatrix3x2fv((location.$tag === 1 ? location._0 : null), transpose, data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix3x2fv_with_src_length(
@@ -4597,7 +4617,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix3x2fv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix3x2fv(location, transpose, data, src_offset, src_length)
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix3x2fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix4x2fv(
@@ -4606,7 +4626,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix4x2fv(
   transpose : GLboolean,
   data : Float32List,
 ) -> Unit =
-  #| (self, location, transpose, data) => self.uniformMatrix4x2fv(location, transpose, data)
+  #| (self, location, transpose, data) => self.uniformMatrix4x2fv((location.$tag === 1 ? location._0 : null), transpose, data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix4x2fv_with_src_length(
@@ -4617,7 +4637,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix4x2fv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix4x2fv(location, transpose, data, src_offset, src_length)
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix4x2fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix2x3fv(
@@ -4626,7 +4646,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix2x3fv(
   transpose : GLboolean,
   data : Float32List,
 ) -> Unit =
-  #| (self, location, transpose, data) => self.uniformMatrix2x3fv(location, transpose, data)
+  #| (self, location, transpose, data) => self.uniformMatrix2x3fv((location.$tag === 1 ? location._0 : null), transpose, data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix2x3fv_with_src_length(
@@ -4637,7 +4657,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix2x3fv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix2x3fv(location, transpose, data, src_offset, src_length)
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix2x3fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix4x3fv(
@@ -4646,7 +4666,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix4x3fv(
   transpose : GLboolean,
   data : Float32List,
 ) -> Unit =
-  #| (self, location, transpose, data) => self.uniformMatrix4x3fv(location, transpose, data)
+  #| (self, location, transpose, data) => self.uniformMatrix4x3fv((location.$tag === 1 ? location._0 : null), transpose, data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix4x3fv_with_src_length(
@@ -4657,7 +4677,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix4x3fv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix4x3fv(location, transpose, data, src_offset, src_length)
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix4x3fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix2x4fv(
@@ -4666,7 +4686,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix2x4fv(
   transpose : GLboolean,
   data : Float32List,
 ) -> Unit =
-  #| (self, location, transpose, data) => self.uniformMatrix2x4fv(location, transpose, data)
+  #| (self, location, transpose, data) => self.uniformMatrix2x4fv((location.$tag === 1 ? location._0 : null), transpose, data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix2x4fv_with_src_length(
@@ -4677,7 +4697,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix2x4fv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix2x4fv(location, transpose, data, src_offset, src_length)
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix2x4fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix3x4fv(
@@ -4686,7 +4706,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix3x4fv(
   transpose : GLboolean,
   data : Float32List,
 ) -> Unit =
-  #| (self, location, transpose, data) => self.uniformMatrix3x4fv(location, transpose, data)
+  #| (self, location, transpose, data) => self.uniformMatrix3x4fv((location.$tag === 1 ? location._0 : null), transpose, data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix3x4fv_with_src_length(
@@ -4697,7 +4717,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix3x4fv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix3x4fv(location, transpose, data, src_offset, src_length)
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix3x4fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::vertex_attrib_i4i(
@@ -4813,7 +4833,7 @@ pub extern "js" fn WebGL2RenderingContext::clear_bufferfv_with_src_offset(
   values : Float32List,
   src_offset : Int64,
 ) -> Unit =
-  #| (self, buffer, drawbuffer, values, src_offset) => self.clearBufferfv(buffer, drawbuffer, values, src_offset)
+  #| (self, buffer, drawbuffer, values, src_offset) => self.clearBufferfv(buffer, drawbuffer, values, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::clear_bufferiv(
@@ -4832,7 +4852,7 @@ pub extern "js" fn WebGL2RenderingContext::clear_bufferiv_with_src_offset(
   values : Int32List,
   src_offset : Int64,
 ) -> Unit =
-  #| (self, buffer, drawbuffer, values, src_offset) => self.clearBufferiv(buffer, drawbuffer, values, src_offset)
+  #| (self, buffer, drawbuffer, values, src_offset) => self.clearBufferiv(buffer, drawbuffer, values, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::clear_bufferuiv(
@@ -4851,7 +4871,7 @@ pub extern "js" fn WebGL2RenderingContext::clear_bufferuiv_with_src_offset(
   values : Uint32List,
   src_offset : Int64,
 ) -> Unit =
-  #| (self, buffer, drawbuffer, values, src_offset) => self.clearBufferuiv(buffer, drawbuffer, values, src_offset)
+  #| (self, buffer, drawbuffer, values, src_offset) => self.clearBufferuiv(buffer, drawbuffer, values, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::clear_bufferfi(
@@ -4874,14 +4894,14 @@ pub extern "js" fn WebGL2RenderingContext::delete_query(
   self : WebGL2RenderingContext,
   query : WebGLQuery?,
 ) -> Unit =
-  #| (self, query) => self.deleteQuery(query)
+  #| (self, query) => self.deleteQuery((query.$tag === 1 ? query._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::is_query(
   self : WebGL2RenderingContext,
   query : WebGLQuery?,
 ) -> GLboolean =
-  #| (self, query) => self.isQuery(query)
+  #| (self, query) => self.isQuery((query.$tag === 1 ? query._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::begin_query(
@@ -4904,7 +4924,7 @@ pub extern "js" fn WebGL2RenderingContext::get_query(
   target : GLenum,
   pname : GLenum,
 ) -> WebGLQuery? =
-  #| (self, target, pname) => { const v = self.getQuery(target, pname); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, target, pname) => (() => { const v = self.getQuery(target, pname); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_query_parameter(
@@ -4925,14 +4945,14 @@ pub extern "js" fn WebGL2RenderingContext::delete_sampler(
   self : WebGL2RenderingContext,
   sampler : WebGLSampler?,
 ) -> Unit =
-  #| (self, sampler) => self.deleteSampler(sampler)
+  #| (self, sampler) => self.deleteSampler((sampler.$tag === 1 ? sampler._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::is_sampler(
   self : WebGL2RenderingContext,
   sampler : WebGLSampler?,
 ) -> GLboolean =
-  #| (self, sampler) => self.isSampler(sampler)
+  #| (self, sampler) => self.isSampler((sampler.$tag === 1 ? sampler._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::bind_sampler(
@@ -4940,7 +4960,7 @@ pub extern "js" fn WebGL2RenderingContext::bind_sampler(
   unit : GLuint,
   sampler : WebGLSampler?,
 ) -> Unit =
-  #| (self, unit, sampler) => self.bindSampler(unit, sampler)
+  #| (self, unit, sampler) => self.bindSampler(unit, (sampler.$tag === 1 ? sampler._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::sampler_parameteri(
@@ -4974,21 +4994,21 @@ pub extern "js" fn WebGL2RenderingContext::fence_sync(
   condition : GLenum,
   flags : GLbitfield,
 ) -> WebGLSync? =
-  #| (self, condition, flags) => { const v = self.fenceSync(condition, flags); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, condition, flags) => (() => { const v = self.fenceSync(condition, flags); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::is_sync(
   self : WebGL2RenderingContext,
   sync : WebGLSync?,
 ) -> GLboolean =
-  #| (self, sync) => self.isSync(sync)
+  #| (self, sync) => self.isSync((sync.$tag === 1 ? sync._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::delete_sync(
   self : WebGL2RenderingContext,
   sync : WebGLSync?,
 ) -> Unit =
-  #| (self, sync) => self.deleteSync(sync)
+  #| (self, sync) => self.deleteSync((sync.$tag === 1 ? sync._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::client_wait_sync(
@@ -5027,14 +5047,14 @@ pub extern "js" fn WebGL2RenderingContext::delete_transform_feedback(
   self : WebGL2RenderingContext,
   tf : WebGLTransformFeedback?,
 ) -> Unit =
-  #| (self, tf) => self.deleteTransformFeedback(tf)
+  #| (self, tf) => self.deleteTransformFeedback((tf.$tag === 1 ? tf._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::is_transform_feedback(
   self : WebGL2RenderingContext,
   tf : WebGLTransformFeedback?,
 ) -> GLboolean =
-  #| (self, tf) => self.isTransformFeedback(tf)
+  #| (self, tf) => self.isTransformFeedback((tf.$tag === 1 ? tf._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::bind_transform_feedback(
@@ -5042,7 +5062,7 @@ pub extern "js" fn WebGL2RenderingContext::bind_transform_feedback(
   target : GLenum,
   tf : WebGLTransformFeedback?,
 ) -> Unit =
-  #| (self, target, tf) => self.bindTransformFeedback(target, tf)
+  #| (self, target, tf) => self.bindTransformFeedback(target, (tf.$tag === 1 ? tf._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::begin_transform_feedback(
@@ -5072,7 +5092,7 @@ pub extern "js" fn WebGL2RenderingContext::get_transform_feedback_varying(
   program : WebGLProgram,
   index : GLuint,
 ) -> WebGLActiveInfo? =
-  #| (self, program, index) => { const v = self.getTransformFeedbackVarying(program, index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, program, index) => (() => { const v = self.getTransformFeedbackVarying(program, index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::pause_transform_feedback(
@@ -5093,7 +5113,7 @@ pub extern "js" fn WebGL2RenderingContext::bind_buffer_base(
   index : GLuint,
   buffer : WebGLBuffer?,
 ) -> Unit =
-  #| (self, target, index, buffer) => self.bindBufferBase(target, index, buffer)
+  #| (self, target, index, buffer) => self.bindBufferBase(target, index, (buffer.$tag === 1 ? buffer._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::bind_buffer_range(
@@ -5104,7 +5124,7 @@ pub extern "js" fn WebGL2RenderingContext::bind_buffer_range(
   offset : GLintptr,
   size : GLsizeiptr,
 ) -> Unit =
-  #| (self, target, index, buffer, offset, size) => self.bindBufferRange(target, index, buffer, offset, size)
+  #| (self, target, index, buffer, offset, size) => self.bindBufferRange(target, index, (buffer.$tag === 1 ? buffer._0 : null), offset, size)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::get_indexed_parameter(
@@ -5154,7 +5174,7 @@ pub extern "js" fn WebGL2RenderingContext::get_active_uniform_block_name(
   program : WebGLProgram,
   uniform_block_index : GLuint,
 ) -> String? =
-  #| (self, program, uniform_block_index) => { const v = self.getActiveUniformBlockName(program, uniform_block_index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, program, uniform_block_index) => (self.getActiveUniformBlockName(program, uniform_block_index)) ?? undefined
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_block_binding(
@@ -5176,21 +5196,21 @@ pub extern "js" fn WebGL2RenderingContext::delete_vertex_array(
   self : WebGL2RenderingContext,
   vertex_array : WebGLVertexArrayObject?,
 ) -> Unit =
-  #| (self, vertex_array) => self.deleteVertexArray(vertex_array)
+  #| (self, vertex_array) => self.deleteVertexArray((vertex_array.$tag === 1 ? vertex_array._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::is_vertex_array(
   self : WebGL2RenderingContext,
   vertex_array : WebGLVertexArrayObject?,
 ) -> GLboolean =
-  #| (self, vertex_array) => self.isVertexArray(vertex_array)
+  #| (self, vertex_array) => self.isVertexArray((vertex_array.$tag === 1 ? vertex_array._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::bind_vertex_array(
   self : WebGL2RenderingContext,
   array : WebGLVertexArrayObject?,
 ) -> Unit =
-  #| (self, array) => self.bindVertexArray(array)
+  #| (self, array) => self.bindVertexArray((array.$tag === 1 ? array._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::buffer_data(
@@ -5208,7 +5228,7 @@ pub extern "js" fn WebGL2RenderingContext::buffer_data_with_target_g_lenum_and_s
   src_data : AllowSharedBufferSource?,
   usage : GLenum,
 ) -> Unit =
-  #| (self, target, src_data, usage) => self.bufferData(target, src_data, usage)
+  #| (self, target, src_data, usage) => self.bufferData(target, (src_data.$tag === 1 ? src_data._0 : null), usage)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::buffer_data_with_target_g_lenum_and_src_data_array_buffer_view_and_usage_g_lenum_and_src_offset(
@@ -5218,7 +5238,7 @@ pub extern "js" fn WebGL2RenderingContext::buffer_data_with_target_g_lenum_and_s
   usage : GLenum,
   src_offset : Int64,
 ) -> Unit =
-  #| (self, target, src_data, usage, src_offset) => self.bufferData(target, src_data, usage, src_offset)
+  #| (self, target, src_data, usage, src_offset) => self.bufferData(target, src_data, usage, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::buffer_data_with_target_g_lenum_and_src_data_array_buffer_view_and_usage_g_lenum_and_src_offset_and_length_g_luint(
@@ -5229,7 +5249,7 @@ pub extern "js" fn WebGL2RenderingContext::buffer_data_with_target_g_lenum_and_s
   src_offset : Int64,
   length : GLuint,
 ) -> Unit =
-  #| (self, target, src_data, usage, src_offset, length) => self.bufferData(target, src_data, usage, src_offset, length)
+  #| (self, target, src_data, usage, src_offset, length) => self.bufferData(target, src_data, usage, (src_offset.hi * 4294967296 + src_offset.lo), length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::buffer_sub_data(
@@ -5248,7 +5268,7 @@ pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_target_g_lenum_a
   src_data : ArrayBufferView,
   src_offset : Int64,
 ) -> Unit =
-  #| (self, target, dst_byte_offset, src_data, src_offset) => self.bufferSubData(target, dst_byte_offset, src_data, src_offset)
+  #| (self, target, dst_byte_offset, src_data, src_offset) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_target_g_lenum_and_dst_byte_offset_g_lintptr_and_src_data_array_buffer_view_and_src_offset_and_length_g_luint(
@@ -5259,10 +5279,10 @@ pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_target_g_lenum_a
   src_offset : Int64,
   length : GLuint,
 ) -> Unit =
-  #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, src_offset, length)
+  #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo), length)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5274,7 +5294,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d(
   #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_pixels(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_pixels(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5286,10 +5306,10 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_target_g_lenum_and_
   type_ : GLenum,
   pixels : ArrayBufferView?,
 ) -> Unit =
-  #| (self, target, level, internalformat, width, height, border, format, type_, pixels) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, pixels)
+  #| (self, target, level, internalformat, width, height, border, format, type_, pixels) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, (pixels.$tag === 1 ? pixels._0 : null))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_pbo_offset_g_lintptr(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_pbo_offset_g_lintptr(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5304,7 +5324,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_target_g_lenum_and_
   #| (self, target, level, internalformat, width, height, border, format, type_, pbo_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, pbo_offset)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_source_tex_image_source(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_source_tex_image_source(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5319,7 +5339,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_target_g_lenum_and_
   #| (self, target, level, internalformat, width, height, border, format, type_, source) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_src_data_array_buffer_view_and_src_offset(
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_format_g_lenum_and_type_g_lenum_and_src_data_array_buffer_view_and_src_offset(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5332,10 +5352,10 @@ pub extern "js" fn WebGL2RenderingContext::tex_image2_d_with_target_g_lenum_and_
   src_data : ArrayBufferView,
   src_offset : Int64,
 ) -> Unit =
-  #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, src_offset)
+  #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5348,7 +5368,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d(
   #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_pixels(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_pixels(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5360,10 +5380,10 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_target_g_lenum_
   type_ : GLenum,
   pixels : ArrayBufferView?,
 ) -> Unit =
-  #| (self, target, level, xoffset, yoffset, width, height, format, type_, pixels) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, pixels)
+  #| (self, target, level, xoffset, yoffset, width, height, format, type_, pixels) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, (pixels.$tag === 1 ? pixels._0 : null))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_pbo_offset_g_lintptr(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_pbo_offset_g_lintptr(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5378,7 +5398,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_target_g_lenum_
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, pbo_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, pbo_offset)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_source_tex_image_source(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_source_tex_image_source(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5393,7 +5413,7 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_target_g_lenum_
   #| (self, target, level, xoffset, yoffset, width, height, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, source)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_src_data_array_buffer_view_and_src_offset(
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_src_data_array_buffer_view_and_src_offset(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5406,10 +5426,10 @@ pub extern "js" fn WebGL2RenderingContext::tex_sub_image2_d_with_target_g_lenum_
   src_data : ArrayBufferView,
   src_offset : Int64,
 ) -> Unit =
-  #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset)
+  #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5422,7 +5442,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d(
   #| (self, target, level, internalformat, width, height, border, src_data) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_src_length_override(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_src_length_override(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5434,10 +5454,10 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_src_leng
   src_offset : Int64,
   src_length_override : GLuint,
 ) -> Unit =
-  #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, src_offset, src_length_override)
+  #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lenum_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_image_size_g_lsizei_and_offset_g_lintptr(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_target_g_lenum_and_level_g_lint_and_internalformat_g_lenum_and_width_g_lsizei_and_height_g_lsizei_and_border_g_lint_and_image_size_g_lsizei_and_offset_g_lintptr(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5451,7 +5471,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_image2_d_with_target_g
   #| (self, target, level, internalformat, width, height, border, image_size, offset) => self.compressedTexImage2D(target, level, internalformat, width, height, border, image_size, offset)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5465,7 +5485,7 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d(
   #| (self, target, level, xoffset, yoffset, width, height, format, src_data) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_src_length_override(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_src_length_override(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5478,10 +5498,10 @@ pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_src_
   src_offset : Int64,
   src_length_override : GLuint,
 ) -> Unit =
-  #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override)
+  #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
 
 ///|
-pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image2_d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_image_size_g_lsizei_and_offset_g_lintptr(
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_target_g_lenum_and_level_g_lint_and_xoffset_g_lint_and_yoffset_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_image_size_g_lsizei_and_offset_g_lintptr(
   self : WebGL2RenderingContext,
   target : GLenum,
   level : GLint,
@@ -5501,7 +5521,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform1fv(
   location : WebGLUniformLocation?,
   data : Float32List,
 ) -> Unit =
-  #| (self, location, data) => self.uniform1fv(location, data)
+  #| (self, location, data) => self.uniform1fv((location.$tag === 1 ? location._0 : null), data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform1fv_with_src_length(
@@ -5511,7 +5531,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform1fv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, data, src_offset, src_length) => self.uniform1fv(location, data, src_offset, src_length)
+  #| (self, location, data, src_offset, src_length) => self.uniform1fv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform2fv(
@@ -5519,7 +5539,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform2fv(
   location : WebGLUniformLocation?,
   data : Float32List,
 ) -> Unit =
-  #| (self, location, data) => self.uniform2fv(location, data)
+  #| (self, location, data) => self.uniform2fv((location.$tag === 1 ? location._0 : null), data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform2fv_with_src_length(
@@ -5529,7 +5549,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform2fv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, data, src_offset, src_length) => self.uniform2fv(location, data, src_offset, src_length)
+  #| (self, location, data, src_offset, src_length) => self.uniform2fv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform3fv(
@@ -5537,7 +5557,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform3fv(
   location : WebGLUniformLocation?,
   data : Float32List,
 ) -> Unit =
-  #| (self, location, data) => self.uniform3fv(location, data)
+  #| (self, location, data) => self.uniform3fv((location.$tag === 1 ? location._0 : null), data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform3fv_with_src_length(
@@ -5547,7 +5567,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform3fv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, data, src_offset, src_length) => self.uniform3fv(location, data, src_offset, src_length)
+  #| (self, location, data, src_offset, src_length) => self.uniform3fv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform4fv(
@@ -5555,7 +5575,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform4fv(
   location : WebGLUniformLocation?,
   data : Float32List,
 ) -> Unit =
-  #| (self, location, data) => self.uniform4fv(location, data)
+  #| (self, location, data) => self.uniform4fv((location.$tag === 1 ? location._0 : null), data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform4fv_with_src_length(
@@ -5565,7 +5585,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform4fv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, data, src_offset, src_length) => self.uniform4fv(location, data, src_offset, src_length)
+  #| (self, location, data, src_offset, src_length) => self.uniform4fv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform1iv(
@@ -5573,7 +5593,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform1iv(
   location : WebGLUniformLocation?,
   data : Int32List,
 ) -> Unit =
-  #| (self, location, data) => self.uniform1iv(location, data)
+  #| (self, location, data) => self.uniform1iv((location.$tag === 1 ? location._0 : null), data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform1iv_with_src_length(
@@ -5583,7 +5603,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform1iv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, data, src_offset, src_length) => self.uniform1iv(location, data, src_offset, src_length)
+  #| (self, location, data, src_offset, src_length) => self.uniform1iv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform2iv(
@@ -5591,7 +5611,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform2iv(
   location : WebGLUniformLocation?,
   data : Int32List,
 ) -> Unit =
-  #| (self, location, data) => self.uniform2iv(location, data)
+  #| (self, location, data) => self.uniform2iv((location.$tag === 1 ? location._0 : null), data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform2iv_with_src_length(
@@ -5601,7 +5621,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform2iv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, data, src_offset, src_length) => self.uniform2iv(location, data, src_offset, src_length)
+  #| (self, location, data, src_offset, src_length) => self.uniform2iv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform3iv(
@@ -5609,7 +5629,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform3iv(
   location : WebGLUniformLocation?,
   data : Int32List,
 ) -> Unit =
-  #| (self, location, data) => self.uniform3iv(location, data)
+  #| (self, location, data) => self.uniform3iv((location.$tag === 1 ? location._0 : null), data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform3iv_with_src_length(
@@ -5619,7 +5639,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform3iv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, data, src_offset, src_length) => self.uniform3iv(location, data, src_offset, src_length)
+  #| (self, location, data, src_offset, src_length) => self.uniform3iv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform4iv(
@@ -5627,7 +5647,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform4iv(
   location : WebGLUniformLocation?,
   data : Int32List,
 ) -> Unit =
-  #| (self, location, data) => self.uniform4iv(location, data)
+  #| (self, location, data) => self.uniform4iv((location.$tag === 1 ? location._0 : null), data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform4iv_with_src_length(
@@ -5637,7 +5657,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform4iv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, data, src_offset, src_length) => self.uniform4iv(location, data, src_offset, src_length)
+  #| (self, location, data, src_offset, src_length) => self.uniform4iv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix2fv(
@@ -5646,7 +5666,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix2fv(
   transpose : GLboolean,
   data : Float32List,
 ) -> Unit =
-  #| (self, location, transpose, data) => self.uniformMatrix2fv(location, transpose, data)
+  #| (self, location, transpose, data) => self.uniformMatrix2fv((location.$tag === 1 ? location._0 : null), transpose, data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix2fv_with_src_length(
@@ -5657,7 +5677,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix2fv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix2fv(location, transpose, data, src_offset, src_length)
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix2fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix3fv(
@@ -5666,7 +5686,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix3fv(
   transpose : GLboolean,
   data : Float32List,
 ) -> Unit =
-  #| (self, location, transpose, data) => self.uniformMatrix3fv(location, transpose, data)
+  #| (self, location, transpose, data) => self.uniformMatrix3fv((location.$tag === 1 ? location._0 : null), transpose, data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix3fv_with_src_length(
@@ -5677,7 +5697,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix3fv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix3fv(location, transpose, data, src_offset, src_length)
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix3fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix4fv(
@@ -5686,7 +5706,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix4fv(
   transpose : GLboolean,
   data : Float32List,
 ) -> Unit =
-  #| (self, location, transpose, data) => self.uniformMatrix4fv(location, transpose, data)
+  #| (self, location, transpose, data) => self.uniformMatrix4fv((location.$tag === 1 ? location._0 : null), transpose, data)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::uniform_matrix4fv_with_src_length(
@@ -5697,7 +5717,7 @@ pub extern "js" fn WebGL2RenderingContext::uniform_matrix4fv_with_src_length(
   src_offset : Int64,
   src_length : GLuint,
 ) -> Unit =
-  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix4fv(location, transpose, data, src_offset, src_length)
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix4fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::read_pixels(
@@ -5710,7 +5730,7 @@ pub extern "js" fn WebGL2RenderingContext::read_pixels(
   type_ : GLenum,
   dst_data : ArrayBufferView?,
 ) -> Unit =
-  #| (self, x, y, width, height, format, type_, dst_data) => self.readPixels(x, y, width, height, format, type_, dst_data)
+  #| (self, x, y, width, height, format, type_, dst_data) => self.readPixels(x, y, width, height, format, type_, (dst_data.$tag === 1 ? dst_data._0 : null))
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::read_pixels_with_x_g_lint_and_y_g_lint_and_width_g_lsizei_and_height_g_lsizei_and_format_g_lenum_and_type_g_lenum_and_offset_g_lintptr(
@@ -5737,4 +5757,3124 @@ pub extern "js" fn WebGL2RenderingContext::read_pixels_with_x_g_lint_and_y_g_lin
   dst_data : ArrayBufferView,
   dst_offset : Int64,
 ) -> Unit =
-  #| (self, x, y, width, height, format, type_, dst_data, dst_offset) => self.readPixels(x, y, width, height, format, type_, dst_data, dst_offset)
+  #| (self, x, y, width, height, format, type_, dst_data, dst_offset) => self.readPixels(x, y, width, height, format, type_, dst_data, (dst_offset.hi * 4294967296 + dst_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::vertex_attrib1fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  index : GLuint,
+  values : Float32Array,
+) -> Unit =
+  #| (self, index, values) => self.vertexAttrib1fv(index, values)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::vertex_attrib1fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  index : GLuint,
+  values : Array[GLfloat],
+) -> Unit =
+  #| (self, index, values) => self.vertexAttrib1fv(index, values)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::vertex_attrib2fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  index : GLuint,
+  values : Float32Array,
+) -> Unit =
+  #| (self, index, values) => self.vertexAttrib2fv(index, values)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::vertex_attrib2fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  index : GLuint,
+  values : Array[GLfloat],
+) -> Unit =
+  #| (self, index, values) => self.vertexAttrib2fv(index, values)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::vertex_attrib3fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  index : GLuint,
+  values : Float32Array,
+) -> Unit =
+  #| (self, index, values) => self.vertexAttrib3fv(index, values)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::vertex_attrib3fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  index : GLuint,
+  values : Array[GLfloat],
+) -> Unit =
+  #| (self, index, values) => self.vertexAttrib3fv(index, values)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::vertex_attrib4fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  index : GLuint,
+  values : Float32Array,
+) -> Unit =
+  #| (self, index, values) => self.vertexAttrib4fv(index, values)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::vertex_attrib4fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  index : GLuint,
+  values : Array[GLfloat],
+) -> Unit =
+  #| (self, index, values) => self.vertexAttrib4fv(index, values)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::get_buffer_sub_data_with_int8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_byte_offset : GLintptr,
+  dst_buffer : Int8Array,
+  dst_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_byte_offset, dst_buffer, dst_offset, length) => self.getBufferSubData(target, src_byte_offset, dst_buffer, (dst_offset.hi * 4294967296 + dst_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::get_buffer_sub_data_with_int16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_byte_offset : GLintptr,
+  dst_buffer : Int16Array,
+  dst_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_byte_offset, dst_buffer, dst_offset, length) => self.getBufferSubData(target, src_byte_offset, dst_buffer, (dst_offset.hi * 4294967296 + dst_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::get_buffer_sub_data_with_int32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_byte_offset : GLintptr,
+  dst_buffer : Int32Array,
+  dst_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_byte_offset, dst_buffer, dst_offset, length) => self.getBufferSubData(target, src_byte_offset, dst_buffer, (dst_offset.hi * 4294967296 + dst_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::get_buffer_sub_data_with_uint8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_byte_offset : GLintptr,
+  dst_buffer : Uint8Array,
+  dst_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_byte_offset, dst_buffer, dst_offset, length) => self.getBufferSubData(target, src_byte_offset, dst_buffer, (dst_offset.hi * 4294967296 + dst_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::get_buffer_sub_data_with_uint16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_byte_offset : GLintptr,
+  dst_buffer : Uint16Array,
+  dst_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_byte_offset, dst_buffer, dst_offset, length) => self.getBufferSubData(target, src_byte_offset, dst_buffer, (dst_offset.hi * 4294967296 + dst_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::get_buffer_sub_data_with_uint32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_byte_offset : GLintptr,
+  dst_buffer : Uint32Array,
+  dst_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_byte_offset, dst_buffer, dst_offset, length) => self.getBufferSubData(target, src_byte_offset, dst_buffer, (dst_offset.hi * 4294967296 + dst_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::get_buffer_sub_data_with_uint8_clamped_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_byte_offset : GLintptr,
+  dst_buffer : Uint8ClampedArray,
+  dst_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_byte_offset, dst_buffer, dst_offset, length) => self.getBufferSubData(target, src_byte_offset, dst_buffer, (dst_offset.hi * 4294967296 + dst_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::get_buffer_sub_data_with_big_int64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_byte_offset : GLintptr,
+  dst_buffer : BigInt64Array,
+  dst_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_byte_offset, dst_buffer, dst_offset, length) => self.getBufferSubData(target, src_byte_offset, dst_buffer, (dst_offset.hi * 4294967296 + dst_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::get_buffer_sub_data_with_big_uint64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_byte_offset : GLintptr,
+  dst_buffer : BigUint64Array,
+  dst_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_byte_offset, dst_buffer, dst_offset, length) => self.getBufferSubData(target, src_byte_offset, dst_buffer, (dst_offset.hi * 4294967296 + dst_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::get_buffer_sub_data_with_float16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_byte_offset : GLintptr,
+  dst_buffer : Float16Array,
+  dst_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_byte_offset, dst_buffer, dst_offset, length) => self.getBufferSubData(target, src_byte_offset, dst_buffer, (dst_offset.hi * 4294967296 + dst_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::get_buffer_sub_data_with_float32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_byte_offset : GLintptr,
+  dst_buffer : Float32Array,
+  dst_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_byte_offset, dst_buffer, dst_offset, length) => self.getBufferSubData(target, src_byte_offset, dst_buffer, (dst_offset.hi * 4294967296 + dst_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::get_buffer_sub_data_with_float64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_byte_offset : GLintptr,
+  dst_buffer : Float64Array,
+  dst_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_byte_offset, dst_buffer, dst_offset, length) => self.getBufferSubData(target, src_byte_offset, dst_buffer, (dst_offset.hi * 4294967296 + dst_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::get_buffer_sub_data_with_data_view(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_byte_offset : GLintptr,
+  dst_buffer : DataView,
+  dst_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_byte_offset, dst_buffer, dst_offset, length) => self.getBufferSubData(target, src_byte_offset, dst_buffer, (dst_offset.hi * 4294967296 + dst_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_image_bitmap(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : ImageBitmap,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, source) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_image_data(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : ImageData,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, source) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_html_image_element(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLImageElement,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, source) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_html_canvas_element(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLCanvasElement,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, source) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_html_video_element(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLVideoElement,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, source) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_offscreen_canvas(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : OffscreenCanvas,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, source) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_video_frame(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : VideoFrame,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, source) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_int8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Int8Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_int16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Int16Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_int32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Int32Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_uint8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Uint8Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_uint16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Uint16Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_uint32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Uint32Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_uint8_clamped_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Uint8ClampedArray,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_big_int64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : BigInt64Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_big_uint64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : BigUint64Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_float16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Float16Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_float32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Float32Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_float64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Float64Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_3d_with_data_view(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : DataView,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, format, type_, src_data, src_offset) => self.texImage3D(target, level, internalformat, width, height, depth, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_image_bitmap(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  source : ImageBitmap,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_image_data(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  source : ImageData,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_html_image_element(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLImageElement,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_html_canvas_element(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLCanvasElement,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_html_video_element(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLVideoElement,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_offscreen_canvas(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  source : OffscreenCanvas,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_3d_with_video_frame(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  source : VideoFrame,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source) => self.texSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_int8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  src_data : Int8Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_int16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  src_data : Int16Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_int32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  src_data : Int32Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_uint8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  src_data : Uint8Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_uint16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  src_data : Uint16Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_uint32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  src_data : Uint32Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_uint8_clamped_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  src_data : Uint8ClampedArray,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_big_int64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  src_data : BigInt64Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_big_uint64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  src_data : BigUint64Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_float16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  src_data : Float16Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_float32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  src_data : Float32Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_float64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  src_data : Float64Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_3d_with_data_view(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  border : GLint,
+  src_data : DataView,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, depth, border, src_data, src_offset, src_length_override) => self.compressedTexImage3D(target, level, internalformat, width, height, depth, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_int8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  src_data : Int8Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_int16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  src_data : Int16Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_int32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  src_data : Int32Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_uint8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  src_data : Uint8Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_uint16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  src_data : Uint16Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_uint32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  src_data : Uint32Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_uint8_clamped_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  src_data : Uint8ClampedArray,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_big_int64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  src_data : BigInt64Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_big_uint64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  src_data : BigUint64Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_float16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  src_data : Float16Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_float32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  src_data : Float32Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_float64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  src_data : Float64Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_3d_with_data_view(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  zoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  depth : GLsizei,
+  format : GLenum,
+  src_data : DataView,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform1uiv_with_uint32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Uint32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform1uiv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform1uiv_with_array_of_g_luint(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Array[GLuint],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform1uiv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform2uiv_with_uint32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Uint32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform2uiv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform2uiv_with_array_of_g_luint(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Array[GLuint],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform2uiv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform3uiv_with_uint32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Uint32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform3uiv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform3uiv_with_array_of_g_luint(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Array[GLuint],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform3uiv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform4uiv_with_uint32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Uint32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform4uiv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform4uiv_with_array_of_g_luint(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Array[GLuint],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform4uiv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix3x2fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Float32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix3x2fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix3x2fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Array[GLfloat],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix3x2fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix4x2fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Float32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix4x2fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix4x2fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Array[GLfloat],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix4x2fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix2x3fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Float32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix2x3fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix2x3fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Array[GLfloat],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix2x3fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix4x3fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Float32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix4x3fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix4x3fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Array[GLfloat],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix4x3fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix2x4fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Float32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix2x4fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix2x4fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Array[GLfloat],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix2x4fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix3x4fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Float32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix3x4fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix3x4fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Array[GLfloat],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix3x4fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::vertex_attrib_i4iv_with_int32_array(
+  self : WebGL2RenderingContext,
+  index : GLuint,
+  values : Int32Array,
+) -> Unit =
+  #| (self, index, values) => self.vertexAttribI4iv(index, values)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::vertex_attrib_i4iv_with_array_of_g_lint(
+  self : WebGL2RenderingContext,
+  index : GLuint,
+  values : Array[GLint],
+) -> Unit =
+  #| (self, index, values) => self.vertexAttribI4iv(index, values)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::vertex_attrib_i4uiv_with_uint32_array(
+  self : WebGL2RenderingContext,
+  index : GLuint,
+  values : Uint32Array,
+) -> Unit =
+  #| (self, index, values) => self.vertexAttribI4uiv(index, values)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::vertex_attrib_i4uiv_with_array_of_g_luint(
+  self : WebGL2RenderingContext,
+  index : GLuint,
+  values : Array[GLuint],
+) -> Unit =
+  #| (self, index, values) => self.vertexAttribI4uiv(index, values)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::clear_bufferfv_with_float32_array(
+  self : WebGL2RenderingContext,
+  buffer : GLenum,
+  drawbuffer : GLint,
+  values : Float32Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, buffer, drawbuffer, values, src_offset) => self.clearBufferfv(buffer, drawbuffer, values, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::clear_bufferfv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  buffer : GLenum,
+  drawbuffer : GLint,
+  values : Array[GLfloat],
+  src_offset : Int64,
+) -> Unit =
+  #| (self, buffer, drawbuffer, values, src_offset) => self.clearBufferfv(buffer, drawbuffer, values, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::clear_bufferiv_with_int32_array(
+  self : WebGL2RenderingContext,
+  buffer : GLenum,
+  drawbuffer : GLint,
+  values : Int32Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, buffer, drawbuffer, values, src_offset) => self.clearBufferiv(buffer, drawbuffer, values, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::clear_bufferiv_with_array_of_g_lint(
+  self : WebGL2RenderingContext,
+  buffer : GLenum,
+  drawbuffer : GLint,
+  values : Array[GLint],
+  src_offset : Int64,
+) -> Unit =
+  #| (self, buffer, drawbuffer, values, src_offset) => self.clearBufferiv(buffer, drawbuffer, values, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::clear_bufferuiv_with_uint32_array(
+  self : WebGL2RenderingContext,
+  buffer : GLenum,
+  drawbuffer : GLint,
+  values : Uint32Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, buffer, drawbuffer, values, src_offset) => self.clearBufferuiv(buffer, drawbuffer, values, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::clear_bufferuiv_with_array_of_g_luint(
+  self : WebGL2RenderingContext,
+  buffer : GLenum,
+  drawbuffer : GLint,
+  values : Array[GLuint],
+  src_offset : Int64,
+) -> Unit =
+  #| (self, buffer, drawbuffer, values, src_offset) => self.clearBufferuiv(buffer, drawbuffer, values, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_array_buffer(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  dst_byte_offset : GLintptr,
+  src_data : ArrayBuffer,
+) -> Unit =
+  #| (self, target, dst_byte_offset, src_data) => self.bufferSubData(target, dst_byte_offset, src_data)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_shared_array_buffer(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  dst_byte_offset : GLintptr,
+  src_data : SharedArrayBuffer,
+) -> Unit =
+  #| (self, target, dst_byte_offset, src_data) => self.bufferSubData(target, dst_byte_offset, src_data)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_array_buffer_view(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  dst_byte_offset : GLintptr,
+  src_data : ArrayBufferView,
+) -> Unit =
+  #| (self, target, dst_byte_offset, src_data) => self.bufferSubData(target, dst_byte_offset, src_data)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_data_with_int8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_data : Int8Array,
+  usage : GLenum,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_data, usage, src_offset, length) => self.bufferData(target, src_data, usage, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_data_with_int16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_data : Int16Array,
+  usage : GLenum,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_data, usage, src_offset, length) => self.bufferData(target, src_data, usage, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_data_with_int32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_data : Int32Array,
+  usage : GLenum,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_data, usage, src_offset, length) => self.bufferData(target, src_data, usage, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_data_with_uint8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_data : Uint8Array,
+  usage : GLenum,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_data, usage, src_offset, length) => self.bufferData(target, src_data, usage, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_data_with_uint16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_data : Uint16Array,
+  usage : GLenum,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_data, usage, src_offset, length) => self.bufferData(target, src_data, usage, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_data_with_uint32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_data : Uint32Array,
+  usage : GLenum,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_data, usage, src_offset, length) => self.bufferData(target, src_data, usage, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_data_with_uint8_clamped_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_data : Uint8ClampedArray,
+  usage : GLenum,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_data, usage, src_offset, length) => self.bufferData(target, src_data, usage, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_data_with_big_int64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_data : BigInt64Array,
+  usage : GLenum,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_data, usage, src_offset, length) => self.bufferData(target, src_data, usage, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_data_with_big_uint64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_data : BigUint64Array,
+  usage : GLenum,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_data, usage, src_offset, length) => self.bufferData(target, src_data, usage, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_data_with_float16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_data : Float16Array,
+  usage : GLenum,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_data, usage, src_offset, length) => self.bufferData(target, src_data, usage, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_data_with_float32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_data : Float32Array,
+  usage : GLenum,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_data, usage, src_offset, length) => self.bufferData(target, src_data, usage, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_data_with_float64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_data : Float64Array,
+  usage : GLenum,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_data, usage, src_offset, length) => self.bufferData(target, src_data, usage, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_data_with_data_view(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  src_data : DataView,
+  usage : GLenum,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, src_data, usage, src_offset, length) => self.bufferData(target, src_data, usage, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_int8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  dst_byte_offset : GLintptr,
+  src_data : Int8Array,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_int16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  dst_byte_offset : GLintptr,
+  src_data : Int16Array,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_int32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  dst_byte_offset : GLintptr,
+  src_data : Int32Array,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_uint8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  dst_byte_offset : GLintptr,
+  src_data : Uint8Array,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_uint16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  dst_byte_offset : GLintptr,
+  src_data : Uint16Array,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_uint32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  dst_byte_offset : GLintptr,
+  src_data : Uint32Array,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_uint8_clamped_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  dst_byte_offset : GLintptr,
+  src_data : Uint8ClampedArray,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_big_int64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  dst_byte_offset : GLintptr,
+  src_data : BigInt64Array,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_big_uint64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  dst_byte_offset : GLintptr,
+  src_data : BigUint64Array,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_float16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  dst_byte_offset : GLintptr,
+  src_data : Float16Array,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_float32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  dst_byte_offset : GLintptr,
+  src_data : Float32Array,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_float64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  dst_byte_offset : GLintptr,
+  src_data : Float64Array,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::buffer_sub_data_with_data_view(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  dst_byte_offset : GLintptr,
+  src_data : DataView,
+  src_offset : Int64,
+  length : GLuint,
+) -> Unit =
+  #| (self, target, dst_byte_offset, src_data, src_offset, length) => self.bufferSubData(target, dst_byte_offset, src_data, (src_offset.hi * 4294967296 + src_offset.lo), length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_image_bitmap(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : ImageBitmap,
+) -> Unit =
+  #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_image_data(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : ImageData,
+) -> Unit =
+  #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_html_image_element(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLImageElement,
+) -> Unit =
+  #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_html_canvas_element(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLCanvasElement,
+) -> Unit =
+  #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_html_video_element(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLVideoElement,
+) -> Unit =
+  #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_offscreen_canvas(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : OffscreenCanvas,
+) -> Unit =
+  #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_video_frame(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : VideoFrame,
+) -> Unit =
+  #| (self, target, level, internalformat, format, type_, source) => self.texImage2D(target, level, internalformat, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_image_bitmap(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : ImageBitmap,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_image_data(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : ImageData,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_html_image_element(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLImageElement,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_html_canvas_element(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLCanvasElement,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_html_video_element(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : HTMLVideoElement,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_offscreen_canvas(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : OffscreenCanvas,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_video_frame(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  source : VideoFrame,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, format, type_, source) => self.texSubImage2D(target, level, xoffset, yoffset, format, type_, source)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_int8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Int8Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_int16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Int16Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_int32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Int32Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_uint8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Uint8Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_uint16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Uint16Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_uint32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Uint32Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_uint8_clamped_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Uint8ClampedArray,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_big_int64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : BigInt64Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_big_uint64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : BigUint64Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_float16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Float16Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_float32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Float32Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_float64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Float64Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_image_2d_with_data_view(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : DataView,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, format, type_, src_data, src_offset) => self.texImage2D(target, level, internalformat, width, height, border, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_int8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Int8Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_int16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Int16Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_int32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Int32Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_uint8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Uint8Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_uint16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Uint16Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_uint32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Uint32Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_uint8_clamped_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Uint8ClampedArray,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_big_int64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : BigInt64Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_big_uint64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : BigUint64Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_float16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Float16Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_float32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Float32Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_float64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : Float64Array,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::tex_sub_image_2d_with_data_view(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  src_data : DataView,
+  src_offset : Int64,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, type_, src_data, src_offset) => self.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type_, src_data, (src_offset.hi * 4294967296 + src_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_int8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  src_data : Int8Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_int16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  src_data : Int16Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_int32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  src_data : Int32Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_uint8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  src_data : Uint8Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_uint16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  src_data : Uint16Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_uint32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  src_data : Uint32Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_uint8_clamped_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  src_data : Uint8ClampedArray,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_big_int64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  src_data : BigInt64Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_big_uint64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  src_data : BigUint64Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_float16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  src_data : Float16Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_float32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  src_data : Float32Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_float64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  src_data : Float64Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_image_2d_with_data_view(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  internalformat : GLenum,
+  width : GLsizei,
+  height : GLsizei,
+  border : GLint,
+  src_data : DataView,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, internalformat, width, height, border, src_data, src_offset, src_length_override) => self.compressedTexImage2D(target, level, internalformat, width, height, border, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_int8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  src_data : Int8Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_int16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  src_data : Int16Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_int32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  src_data : Int32Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_uint8_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  src_data : Uint8Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_uint16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  src_data : Uint16Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_uint32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  src_data : Uint32Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_uint8_clamped_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  src_data : Uint8ClampedArray,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_big_int64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  src_data : BigInt64Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_big_uint64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  src_data : BigUint64Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_float16_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  src_data : Float16Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_float32_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  src_data : Float32Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_float64_array(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  src_data : Float64Array,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::compressed_tex_sub_image_2d_with_data_view(
+  self : WebGL2RenderingContext,
+  target : GLenum,
+  level : GLint,
+  xoffset : GLint,
+  yoffset : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  src_data : DataView,
+  src_offset : Int64,
+  src_length_override : GLuint,
+) -> Unit =
+  #| (self, target, level, xoffset, yoffset, width, height, format, src_data, src_offset, src_length_override) => self.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, src_data, (src_offset.hi * 4294967296 + src_offset.lo), src_length_override)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform1fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Float32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform1fv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform1fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Array[GLfloat],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform1fv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform2fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Float32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform2fv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform2fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Array[GLfloat],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform2fv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform3fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Float32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform3fv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform3fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Array[GLfloat],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform3fv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform4fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Float32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform4fv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform4fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Array[GLfloat],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform4fv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform1iv_with_int32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Int32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform1iv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform1iv_with_array_of_g_lint(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Array[GLint],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform1iv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform2iv_with_int32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Int32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform2iv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform2iv_with_array_of_g_lint(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Array[GLint],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform2iv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform3iv_with_int32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Int32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform3iv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform3iv_with_array_of_g_lint(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Array[GLint],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform3iv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform4iv_with_int32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Int32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform4iv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform4iv_with_array_of_g_lint(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  data : Array[GLint],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, data, src_offset, src_length) => self.uniform4iv((location.$tag === 1 ? location._0 : null), data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix2fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Float32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix2fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix2fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Array[GLfloat],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix2fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix3fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Float32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix3fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix3fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Array[GLfloat],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix3fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix4fv_with_float32_array(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Float32Array,
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix4fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::uniform_matrix4fv_with_array_of_g_lfloat(
+  self : WebGL2RenderingContext,
+  location : WebGLUniformLocation?,
+  transpose : GLboolean,
+  data : Array[GLfloat],
+  src_offset : Int64,
+  src_length : GLuint,
+) -> Unit =
+  #| (self, location, transpose, data, src_offset, src_length) => self.uniformMatrix4fv((location.$tag === 1 ? location._0 : null), transpose, data, (src_offset.hi * 4294967296 + src_offset.lo), src_length)
+
+///|
+pub extern "js" fn WebGL2RenderingContext::read_pixels_with_int8_array(
+  self : WebGL2RenderingContext,
+  x : GLint,
+  y : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  dst_data : Int8Array,
+  dst_offset : Int64,
+) -> Unit =
+  #| (self, x, y, width, height, format, type_, dst_data, dst_offset) => self.readPixels(x, y, width, height, format, type_, dst_data, (dst_offset.hi * 4294967296 + dst_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::read_pixels_with_int16_array(
+  self : WebGL2RenderingContext,
+  x : GLint,
+  y : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  dst_data : Int16Array,
+  dst_offset : Int64,
+) -> Unit =
+  #| (self, x, y, width, height, format, type_, dst_data, dst_offset) => self.readPixels(x, y, width, height, format, type_, dst_data, (dst_offset.hi * 4294967296 + dst_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::read_pixels_with_int32_array(
+  self : WebGL2RenderingContext,
+  x : GLint,
+  y : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  dst_data : Int32Array,
+  dst_offset : Int64,
+) -> Unit =
+  #| (self, x, y, width, height, format, type_, dst_data, dst_offset) => self.readPixels(x, y, width, height, format, type_, dst_data, (dst_offset.hi * 4294967296 + dst_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::read_pixels_with_uint8_array(
+  self : WebGL2RenderingContext,
+  x : GLint,
+  y : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  dst_data : Uint8Array,
+  dst_offset : Int64,
+) -> Unit =
+  #| (self, x, y, width, height, format, type_, dst_data, dst_offset) => self.readPixels(x, y, width, height, format, type_, dst_data, (dst_offset.hi * 4294967296 + dst_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::read_pixels_with_uint16_array(
+  self : WebGL2RenderingContext,
+  x : GLint,
+  y : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  dst_data : Uint16Array,
+  dst_offset : Int64,
+) -> Unit =
+  #| (self, x, y, width, height, format, type_, dst_data, dst_offset) => self.readPixels(x, y, width, height, format, type_, dst_data, (dst_offset.hi * 4294967296 + dst_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::read_pixels_with_uint32_array(
+  self : WebGL2RenderingContext,
+  x : GLint,
+  y : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  dst_data : Uint32Array,
+  dst_offset : Int64,
+) -> Unit =
+  #| (self, x, y, width, height, format, type_, dst_data, dst_offset) => self.readPixels(x, y, width, height, format, type_, dst_data, (dst_offset.hi * 4294967296 + dst_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::read_pixels_with_uint8_clamped_array(
+  self : WebGL2RenderingContext,
+  x : GLint,
+  y : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  dst_data : Uint8ClampedArray,
+  dst_offset : Int64,
+) -> Unit =
+  #| (self, x, y, width, height, format, type_, dst_data, dst_offset) => self.readPixels(x, y, width, height, format, type_, dst_data, (dst_offset.hi * 4294967296 + dst_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::read_pixels_with_big_int64_array(
+  self : WebGL2RenderingContext,
+  x : GLint,
+  y : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  dst_data : BigInt64Array,
+  dst_offset : Int64,
+) -> Unit =
+  #| (self, x, y, width, height, format, type_, dst_data, dst_offset) => self.readPixels(x, y, width, height, format, type_, dst_data, (dst_offset.hi * 4294967296 + dst_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::read_pixels_with_big_uint64_array(
+  self : WebGL2RenderingContext,
+  x : GLint,
+  y : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  dst_data : BigUint64Array,
+  dst_offset : Int64,
+) -> Unit =
+  #| (self, x, y, width, height, format, type_, dst_data, dst_offset) => self.readPixels(x, y, width, height, format, type_, dst_data, (dst_offset.hi * 4294967296 + dst_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::read_pixels_with_float16_array(
+  self : WebGL2RenderingContext,
+  x : GLint,
+  y : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  dst_data : Float16Array,
+  dst_offset : Int64,
+) -> Unit =
+  #| (self, x, y, width, height, format, type_, dst_data, dst_offset) => self.readPixels(x, y, width, height, format, type_, dst_data, (dst_offset.hi * 4294967296 + dst_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::read_pixels_with_float32_array(
+  self : WebGL2RenderingContext,
+  x : GLint,
+  y : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  dst_data : Float32Array,
+  dst_offset : Int64,
+) -> Unit =
+  #| (self, x, y, width, height, format, type_, dst_data, dst_offset) => self.readPixels(x, y, width, height, format, type_, dst_data, (dst_offset.hi * 4294967296 + dst_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::read_pixels_with_float64_array(
+  self : WebGL2RenderingContext,
+  x : GLint,
+  y : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  dst_data : Float64Array,
+  dst_offset : Int64,
+) -> Unit =
+  #| (self, x, y, width, height, format, type_, dst_data, dst_offset) => self.readPixels(x, y, width, height, format, type_, dst_data, (dst_offset.hi * 4294967296 + dst_offset.lo))
+
+///|
+pub extern "js" fn WebGL2RenderingContext::read_pixels_with_data_view(
+  self : WebGL2RenderingContext,
+  x : GLint,
+  y : GLint,
+  width : GLsizei,
+  height : GLsizei,
+  format : GLenum,
+  type_ : GLenum,
+  dst_data : DataView,
+  dst_offset : Int64,
+) -> Unit =
+  #| (self, x, y, width, height, format, type_, dst_data, dst_offset) => self.readPixels(x, y, width, height, format, type_, dst_data, (dst_offset.hi * 4294967296 + dst_offset.lo))

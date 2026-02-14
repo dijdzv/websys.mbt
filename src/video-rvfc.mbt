@@ -10,11 +10,11 @@ pub type VideoFrameRequestCallback
 pub extern "js" fn VideoFrameRequestCallback::from_fn(
   handler : (DOMHighResTimeStamp, VideoFrameCallbackMetadata) -> Unit,
 ) -> VideoFrameRequestCallback =
-  #| (handler) => handler
+  #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
 /// VideoFrameCallbackMetadata dictionary
-pub struct VideoFrameCallbackMetadata {
+pub(all) struct VideoFrameCallbackMetadata {
   presentationTime : DOMHighResTimeStamp
   expectedDisplayTime : DOMHighResTimeStamp
   width : Int
@@ -28,11 +28,14 @@ pub struct VideoFrameCallbackMetadata {
 }
 
 ///|
-/// Create a new VideoFrameCallbackMetadata with default values
-pub fn VideoFrameCallbackMetadata::default() -> VideoFrameCallbackMetadata {
+/// Create a new VideoFrameCallbackMetadata
+pub fn VideoFrameCallbackMetadata::new(
+  presentationTime~ : DOMHighResTimeStamp,
+  expectedDisplayTime~ : DOMHighResTimeStamp,
+) -> VideoFrameCallbackMetadata {
   VideoFrameCallbackMetadata::{
-    presentationTime: panic(),
-    expectedDisplayTime: panic(),
+    presentationTime,
+    expectedDisplayTime,
     width: 0,
     height: 0,
     mediaTime: 0,
@@ -45,8 +48,7 @@ pub fn VideoFrameCallbackMetadata::default() -> VideoFrameCallbackMetadata {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn VideoFrameCallbackMetadata::to_js(
+extern "js" fn VideoFrameCallbackMetadata::to_js_ffi(
   self : VideoFrameCallbackMetadata,
 ) -> JsValue =
   #| (self) => ({
@@ -57,7 +59,40 @@ pub extern "js" fn VideoFrameCallbackMetadata::to_js(
   #|   mediaTime: self.mediaTime,
   #|   presentedFrames: self.presentedFrames,
   #|   processingDuration: self.processingDuration,
-  #|   captureTime: self.captureTime,
-  #|   receiveTime: self.receiveTime,
+  #|   captureTime: ((() => { const v = self.captureTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   receiveTime: ((() => { const v = self.receiveTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rtpTimestamp: self.rtpTimestamp
   #| })
+
+///|
+/// Convert to JsValue
+pub fn VideoFrameCallbackMetadata::to_js(
+  self : VideoFrameCallbackMetadata,
+) -> JsValue {
+  VideoFrameCallbackMetadata::to_js_ffi(self)
+}
+
+///|
+extern "js" fn VideoFrameCallbackMetadata::from_js_ffi(
+  value : JsValue,
+) -> VideoFrameCallbackMetadata =
+  #| (v) => ({
+  #|   presentationTime: v.presentationTime,
+  #|   expectedDisplayTime: v.expectedDisplayTime,
+  #|   width: v.width,
+  #|   height: v.height,
+  #|   mediaTime: v.mediaTime,
+  #|   presentedFrames: v.presentedFrames,
+  #|   processingDuration: v.processingDuration,
+  #|   captureTime: (v.captureTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.captureTime }),
+  #|   receiveTime: (v.receiveTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.receiveTime }),
+  #|   rtpTimestamp: v.rtpTimestamp
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn VideoFrameCallbackMetadata::from_js(
+  value : JsValue,
+) -> VideoFrameCallbackMetadata {
+  VideoFrameCallbackMetadata::from_js_ffi(value)
+}

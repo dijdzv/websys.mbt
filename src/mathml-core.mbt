@@ -1468,11 +1468,19 @@ pub extern "js" fn MathMLElement::focus(self : MathMLElement) -> Unit =
   #| (self) => self.focus()
 
 ///|
-pub extern "js" fn MathMLElement::focus_with_options(
+extern "js" fn MathMLElement::focus_with_options_ffi(
   self : MathMLElement,
-  options : FocusOptions,
+  options : JsValue,
 ) -> Unit =
   #| (self, options) => self.focus(options)
+
+///|
+pub fn MathMLElement::focus_with_options(
+  self : MathMLElement,
+  options : FocusOptions,
+) -> Unit {
+  MathMLElement::focus_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn MathMLElement::blur(self : MathMLElement) -> Unit =

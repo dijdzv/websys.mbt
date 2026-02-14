@@ -91,7 +91,7 @@ pub extern "js" fn PerformanceElementTiming::get_id(
 pub extern "js" fn PerformanceElementTiming::get_element(
   self : PerformanceElementTiming,
 ) -> Element? =
-  #| (self) => { const v = self.element; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.element; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn PerformanceElementTiming::get_url(
@@ -115,4 +115,4 @@ pub extern "js" fn PerformanceElementTiming::get_paint_time(
 pub extern "js" fn PerformanceElementTiming::get_presentation_time(
   self : PerformanceElementTiming,
 ) -> DOMHighResTimeStamp? =
-  #| (self) => { const v = self.presentationTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.presentationTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

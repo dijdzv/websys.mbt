@@ -6,7 +6,7 @@
 pub(all) enum SecurityPolicyViolationEventDisposition {
   Enforce
   Report
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -33,7 +33,7 @@ pub fn SecurityPolicyViolationEventDisposition::from_string(
 
 ///|
 /// CSPViolationReportBody dictionary
-pub struct CSPViolationReportBody {
+pub(all) struct CSPViolationReportBody {
   documentURL : String?
   referrer : Nullable[String]
   blockedURL : Nullable[String]
@@ -66,27 +66,58 @@ pub fn CSPViolationReportBody::default() -> CSPViolationReportBody {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CSPViolationReportBody::to_js(
+extern "js" fn CSPViolationReportBody::to_js_ffi(
   self : CSPViolationReportBody,
 ) -> JsValue =
   #| (self) => ({
   #|   documentURL: self.documentURL,
-  #|   referrer: ((() => { const v = self.referrer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   blockedURL: ((() => { const v = self.blockedURL; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   referrer: ((() => { const v = self.referrer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   blockedURL: ((() => { const v = self.blockedURL; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   effectiveDirective: self.effectiveDirective,
   #|   originalPolicy: self.originalPolicy,
-  #|   sourceFile: ((() => { const v = self.sourceFile; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   sample: ((() => { const v = self.sample; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   disposition: ['enforce', 'report'][self.disposition],
+  #|   sourceFile: ((() => { const v = self.sourceFile; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   sample: ((() => { const v = self.sample; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   disposition: ((() => { const v = self.disposition; if (v === undefined) return undefined; return ['enforce', 'report'][v]; })()),
   #|   statusCode: self.statusCode,
-  #|   lineNumber: ((() => { const v = self.lineNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   columnNumber: ((() => { const v = self.columnNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   lineNumber: ((() => { const v = self.lineNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   columnNumber: ((() => { const v = self.columnNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn CSPViolationReportBody::to_js(self : CSPViolationReportBody) -> JsValue {
+  CSPViolationReportBody::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CSPViolationReportBody::from_js_ffi(
+  value : JsValue,
+) -> CSPViolationReportBody =
+  #| (v) => ({
+  #|   documentURL: v.documentURL,
+  #|   referrer: (v.referrer === undefined ? { $tag: 0 } : v.referrer === null ? { $tag: 1 } : { $tag: 2, _0: v.referrer }),
+  #|   blockedURL: (v.blockedURL === undefined ? { $tag: 0 } : v.blockedURL === null ? { $tag: 1 } : { $tag: 2, _0: v.blockedURL }),
+  #|   effectiveDirective: v.effectiveDirective,
+  #|   originalPolicy: v.originalPolicy,
+  #|   sourceFile: (v.sourceFile === undefined ? { $tag: 0 } : v.sourceFile === null ? { $tag: 1 } : { $tag: 2, _0: v.sourceFile }),
+  #|   sample: (v.sample === undefined ? { $tag: 0 } : v.sample === null ? { $tag: 1 } : { $tag: 2, _0: v.sample }),
+  #|   disposition: (v.disposition === undefined ? undefined : ['enforce', 'report'].indexOf(v.disposition)),
+  #|   statusCode: v.statusCode,
+  #|   lineNumber: (v.lineNumber === undefined ? { $tag: 0 } : v.lineNumber === null ? { $tag: 1 } : { $tag: 2, _0: v.lineNumber }),
+  #|   columnNumber: (v.columnNumber === undefined ? { $tag: 0 } : v.columnNumber === null ? { $tag: 1 } : { $tag: 2, _0: v.columnNumber })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CSPViolationReportBody::from_js(
+  value : JsValue,
+) -> CSPViolationReportBody {
+  CSPViolationReportBody::from_js_ffi(value)
+}
+
+///|
 /// SecurityPolicyViolationEventInit dictionary
-pub struct SecurityPolicyViolationEventInit {
+pub(all) struct SecurityPolicyViolationEventInit {
   documentURI : String?
   referrer : String?
   blockedURI : String?
@@ -121,8 +152,7 @@ pub fn SecurityPolicyViolationEventInit::default() -> SecurityPolicyViolationEve
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SecurityPolicyViolationEventInit::to_js(
+extern "js" fn SecurityPolicyViolationEventInit::to_js_ffi(
   self : SecurityPolicyViolationEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -134,11 +164,46 @@ pub extern "js" fn SecurityPolicyViolationEventInit::to_js(
   #|   originalPolicy: self.originalPolicy,
   #|   sourceFile: self.sourceFile,
   #|   sample: self.sample,
-  #|   disposition: ['enforce', 'report'][self.disposition],
+  #|   disposition: ((() => { const v = self.disposition; if (v === undefined) return undefined; return ['enforce', 'report'][v]; })()),
   #|   statusCode: self.statusCode,
   #|   lineNumber: self.lineNumber,
   #|   columnNumber: self.columnNumber
   #| })
+
+///|
+/// Convert to JsValue
+pub fn SecurityPolicyViolationEventInit::to_js(
+  self : SecurityPolicyViolationEventInit,
+) -> JsValue {
+  SecurityPolicyViolationEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SecurityPolicyViolationEventInit::from_js_ffi(
+  value : JsValue,
+) -> SecurityPolicyViolationEventInit =
+  #| (v) => ({
+  #|   documentURI: v.documentURI,
+  #|   referrer: v.referrer,
+  #|   blockedURI: v.blockedURI,
+  #|   violatedDirective: v.violatedDirective,
+  #|   effectiveDirective: v.effectiveDirective,
+  #|   originalPolicy: v.originalPolicy,
+  #|   sourceFile: v.sourceFile,
+  #|   sample: v.sample,
+  #|   disposition: (v.disposition === undefined ? undefined : ['enforce', 'report'].indexOf(v.disposition)),
+  #|   statusCode: v.statusCode,
+  #|   lineNumber: v.lineNumber,
+  #|   columnNumber: v.columnNumber
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SecurityPolicyViolationEventInit::from_js(
+  value : JsValue,
+) -> SecurityPolicyViolationEventInit {
+  SecurityPolicyViolationEventInit::from_js_ffi(value)
+}
 
 ///|
 /// SecurityPolicyViolationEvent interface
@@ -187,9 +252,26 @@ pub extern "js" fn SecurityPolicyViolationEvent::to_event(
 ///|
 pub extern "js" fn SecurityPolicyViolationEvent::new(
   type_ : String,
-  event_init_dict : SecurityPolicyViolationEventInit,
+) -> SecurityPolicyViolationEvent =
+  #| (type_) => new SecurityPolicyViolationEvent(type_)
+
+///|
+extern "js" fn SecurityPolicyViolationEvent::new_with_event_init_dict_ffi(
+  type_ : String,
+  event_init_dict : JsValue,
 ) -> SecurityPolicyViolationEvent =
   #| (type_, event_init_dict) => new SecurityPolicyViolationEvent(type_, event_init_dict)
+
+///|
+pub fn SecurityPolicyViolationEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : SecurityPolicyViolationEventInit,
+) -> SecurityPolicyViolationEvent {
+  SecurityPolicyViolationEvent::new_with_event_init_dict_ffi(
+    type_,
+    event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn SecurityPolicyViolationEvent::get_document_uri(
@@ -243,7 +325,7 @@ pub extern "js" fn SecurityPolicyViolationEvent::get_sample(
 pub extern "js" fn SecurityPolicyViolationEvent::get_disposition(
   self : SecurityPolicyViolationEvent,
 ) -> SecurityPolicyViolationEventDisposition =
-  #| (self) => self.disposition
+  #| (self) => ['enforce', 'report'].indexOf(self.disposition)
 
 ///|
 pub extern "js" fn SecurityPolicyViolationEvent::get_status_code(

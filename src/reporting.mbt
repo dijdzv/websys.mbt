@@ -14,11 +14,11 @@ pub type ReportingObserverCallback
 pub extern "js" fn ReportingObserverCallback::from_fn(
   handler : (Array[Report], ReportingObserver) -> Unit,
 ) -> ReportingObserverCallback =
-  #| (handler) => handler
+  #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
 /// ReportBody dictionary
-pub struct ReportBody {}
+pub(all) struct ReportBody {}
 
 ///|
 /// Create a new ReportBody with default values
@@ -27,14 +27,30 @@ pub fn ReportBody::default() -> ReportBody {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ReportBody::to_js(self : ReportBody) -> JsValue =
+extern "js" fn ReportBody::to_js_ffi(self : ReportBody) -> JsValue =
   #| (self) => ({
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ReportBody::to_js(self : ReportBody) -> JsValue {
+  ReportBody::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ReportBody::from_js_ffi(value : JsValue) -> ReportBody =
+  #| (v) => ({
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ReportBody::from_js(value : JsValue) -> ReportBody {
+  ReportBody::from_js_ffi(value)
+}
+
+///|
 /// Report dictionary
-pub struct Report {
+pub(all) struct Report {
   type_ : String?
   url : String?
   body : Nullable[ReportBody]
@@ -47,17 +63,36 @@ pub fn Report::default() -> Report {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn Report::to_js(self : Report) -> JsValue =
+extern "js" fn Report::to_js_ffi(self : Report) -> JsValue =
   #| (self) => ({
   #|   type: self.type_,
   #|   url: self.url,
-  #|   body: ((() => { const v = self.body; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   body: ((() => { const v = self.body; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn Report::to_js(self : Report) -> JsValue {
+  Report::to_js_ffi(self)
+}
+
+///|
+extern "js" fn Report::from_js_ffi(value : JsValue) -> Report =
+  #| (v) => ({
+  #|   type_: v.type,
+  #|   url: v.url,
+  #|   body: (v.body === undefined ? { $tag: 0 } : v.body === null ? { $tag: 1 } : { $tag: 2, _0: v.body })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn Report::from_js(value : JsValue) -> Report {
+  Report::from_js_ffi(value)
+}
+
+///|
 /// ReportingObserverOptions dictionary
-pub struct ReportingObserverOptions {
+pub(all) struct ReportingObserverOptions {
   types : Array[String]?
   buffered : Bool?
 }
@@ -69,18 +104,42 @@ pub fn ReportingObserverOptions::default() -> ReportingObserverOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ReportingObserverOptions::to_js(
+extern "js" fn ReportingObserverOptions::to_js_ffi(
   self : ReportingObserverOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   types: self.types,
-  #|   buffered: self.buffered
+  #|   types: ((() => { const v = self.types; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   buffered: (self.buffered === -1 ? undefined : self.buffered)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ReportingObserverOptions::to_js(
+  self : ReportingObserverOptions,
+) -> JsValue {
+  ReportingObserverOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ReportingObserverOptions::from_js_ffi(
+  value : JsValue,
+) -> ReportingObserverOptions =
+  #| (v) => ({
+  #|   types: (v.types === undefined ? { $tag: 0 } : { $tag: 1, _0: v.types }),
+  #|   buffered: (v.buffered === undefined ? -1 : v.buffered)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ReportingObserverOptions::from_js(
+  value : JsValue,
+) -> ReportingObserverOptions {
+  ReportingObserverOptions::from_js_ffi(value)
+}
+
+///|
 /// GenerateTestReportParameters dictionary
-pub struct GenerateTestReportParameters {
+pub(all) struct GenerateTestReportParameters {
   message : String
   group : String?
 }
@@ -92,14 +151,38 @@ pub fn GenerateTestReportParameters::default() -> GenerateTestReportParameters {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn GenerateTestReportParameters::to_js(
+extern "js" fn GenerateTestReportParameters::to_js_ffi(
   self : GenerateTestReportParameters,
 ) -> JsValue =
   #| (self) => ({
   #|   message: self.message,
   #|   group: self.group
   #| })
+
+///|
+/// Convert to JsValue
+pub fn GenerateTestReportParameters::to_js(
+  self : GenerateTestReportParameters,
+) -> JsValue {
+  GenerateTestReportParameters::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GenerateTestReportParameters::from_js_ffi(
+  value : JsValue,
+) -> GenerateTestReportParameters =
+  #| (v) => ({
+  #|   message: v.message,
+  #|   group: v.group
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GenerateTestReportParameters::from_js(
+  value : JsValue,
+) -> GenerateTestReportParameters {
+  GenerateTestReportParameters::from_js_ffi(value)
+}
 
 ///|
 /// ReportingObserver interface
@@ -142,9 +225,23 @@ pub extern "js" fn JsValue::to_reporting_observer(
 ///|
 pub extern "js" fn ReportingObserver::new(
   callback : ReportingObserverCallback,
-  options : ReportingObserverOptions,
+) -> ReportingObserver =
+  #| (callback) => new ReportingObserver(callback)
+
+///|
+extern "js" fn ReportingObserver::new_with_options_ffi(
+  callback : ReportingObserverCallback,
+  options : JsValue,
 ) -> ReportingObserver =
   #| (callback, options) => new ReportingObserver(callback, options)
+
+///|
+pub fn ReportingObserver::new_with_options(
+  callback : ReportingObserverCallback,
+  options : ReportingObserverOptions,
+) -> ReportingObserver {
+  ReportingObserver::new_with_options_ffi(callback, options.to_js())
+}
 
 ///|
 pub extern "js" fn ReportingObserver::observe(self : ReportingObserver) -> Unit =

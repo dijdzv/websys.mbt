@@ -12,7 +12,7 @@ pub(all) enum OrientationLockType {
   PortraitSecondary
   LandscapePrimary
   LandscapeSecondary
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -52,7 +52,7 @@ pub(all) enum OrientationType {
   PortraitSecondary
   LandscapePrimary
   LandscapeSecondary
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -136,7 +136,7 @@ pub extern "js" fn ScreenOrientation::unlock(self : ScreenOrientation) -> Unit =
 pub extern "js" fn ScreenOrientation::get_type(
   self : ScreenOrientation,
 ) -> OrientationType =
-  #| (self) => self.type
+  #| (self) => ['portrait-primary', 'portrait-secondary', 'landscape-primary', 'landscape-secondary'].indexOf(self.type)
 
 ///|
 pub extern "js" fn ScreenOrientation::get_angle(

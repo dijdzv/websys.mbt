@@ -8,7 +8,7 @@ pub(all) enum AnimationPlayState {
   Running
   Paused
   Finished
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -39,7 +39,7 @@ pub(all) enum AnimationReplaceState {
   Active
   Removed
   Persisted
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -70,7 +70,7 @@ pub(all) enum FillMode {
   Backwards
   Both
   Auto
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -104,7 +104,7 @@ pub(all) enum PlaybackDirection {
   Reverse
   Alternate
   AlternateReverse
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -135,7 +135,7 @@ pub(all) enum CompositeOperation {
   Replace
   Add
   Accumulate
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -165,7 +165,7 @@ pub(all) enum CompositeOperationOrAuto {
   Add
   Accumulate
   Auto
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -196,7 +196,7 @@ pub fn CompositeOperationOrAuto::from_string(
 
 ///|
 /// DocumentTimelineOptions dictionary
-pub struct DocumentTimelineOptions {
+pub(all) struct DocumentTimelineOptions {
   originTime : DOMHighResTimeStamp?
 }
 
@@ -207,17 +207,40 @@ pub fn DocumentTimelineOptions::default() -> DocumentTimelineOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DocumentTimelineOptions::to_js(
+extern "js" fn DocumentTimelineOptions::to_js_ffi(
   self : DocumentTimelineOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   originTime: self.originTime
+  #|   originTime: ((() => { const v = self.originTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn DocumentTimelineOptions::to_js(
+  self : DocumentTimelineOptions,
+) -> JsValue {
+  DocumentTimelineOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DocumentTimelineOptions::from_js_ffi(
+  value : JsValue,
+) -> DocumentTimelineOptions =
+  #| (v) => ({
+  #|   originTime: (v.originTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.originTime })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DocumentTimelineOptions::from_js(
+  value : JsValue,
+) -> DocumentTimelineOptions {
+  DocumentTimelineOptions::from_js_ffi(value)
+}
+
+///|
 /// BaseComputedKeyframe dictionary
-pub struct BaseComputedKeyframe {
+pub(all) struct BaseComputedKeyframe {
   offset : Nullable[Double]
   computedOffset : Double?
   easing : String?
@@ -236,20 +259,42 @@ pub fn BaseComputedKeyframe::default() -> BaseComputedKeyframe {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BaseComputedKeyframe::to_js(
+extern "js" fn BaseComputedKeyframe::to_js_ffi(
   self : BaseComputedKeyframe,
 ) -> JsValue =
   #| (self) => ({
-  #|   offset: ((() => { const v = self.offset; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   offset: ((() => { const v = self.offset; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   computedOffset: self.computedOffset,
   #|   easing: self.easing,
-  #|   composite: ['replace', 'add', 'accumulate', 'auto'][self.composite]
+  #|   composite: ((() => { const v = self.composite; if (v === undefined) return undefined; return ['replace', 'add', 'accumulate', 'auto'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn BaseComputedKeyframe::to_js(self : BaseComputedKeyframe) -> JsValue {
+  BaseComputedKeyframe::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BaseComputedKeyframe::from_js_ffi(
+  value : JsValue,
+) -> BaseComputedKeyframe =
+  #| (v) => ({
+  #|   offset: (v.offset === undefined ? { $tag: 0 } : v.offset === null ? { $tag: 1 } : { $tag: 2, _0: v.offset }),
+  #|   computedOffset: v.computedOffset,
+  #|   easing: v.easing,
+  #|   composite: (v.composite === undefined ? undefined : ['replace', 'add', 'accumulate', 'auto'].indexOf(v.composite))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BaseComputedKeyframe::from_js(value : JsValue) -> BaseComputedKeyframe {
+  BaseComputedKeyframe::from_js_ffi(value)
+}
+
+///|
 /// BasePropertyIndexedKeyframe dictionary
-pub struct BasePropertyIndexedKeyframe {
+pub(all) struct BasePropertyIndexedKeyframe {
   offset : NullableDoubleOrArrayOfNullableDouble?
   easing : StringOrArrayOfString?
   composite : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto?
@@ -262,19 +307,44 @@ pub fn BasePropertyIndexedKeyframe::default() -> BasePropertyIndexedKeyframe {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BasePropertyIndexedKeyframe::to_js(
+extern "js" fn BasePropertyIndexedKeyframe::to_js_ffi(
   self : BasePropertyIndexedKeyframe,
 ) -> JsValue =
   #| (self) => ({
-  #|   offset: self.offset,
-  #|   easing: self.easing,
-  #|   composite: self.composite
+  #|   offset: ((() => { const v = self.offset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   easing: ((() => { const v = self.easing; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   composite: ((() => { const v = self.composite; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn BasePropertyIndexedKeyframe::to_js(
+  self : BasePropertyIndexedKeyframe,
+) -> JsValue {
+  BasePropertyIndexedKeyframe::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BasePropertyIndexedKeyframe::from_js_ffi(
+  value : JsValue,
+) -> BasePropertyIndexedKeyframe =
+  #| (v) => ({
+  #|   offset: (v.offset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offset }),
+  #|   easing: (v.easing === undefined ? { $tag: 0 } : { $tag: 1, _0: v.easing }),
+  #|   composite: (v.composite === undefined ? { $tag: 0 } : { $tag: 1, _0: v.composite })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BasePropertyIndexedKeyframe::from_js(
+  value : JsValue,
+) -> BasePropertyIndexedKeyframe {
+  BasePropertyIndexedKeyframe::from_js_ffi(value)
+}
+
+///|
 /// BaseKeyframe dictionary
-pub struct BaseKeyframe {
+pub(all) struct BaseKeyframe {
   offset : Nullable[Double]
   easing : String?
   composite : CompositeOperationOrAuto?
@@ -287,19 +357,38 @@ pub fn BaseKeyframe::default() -> BaseKeyframe {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BaseKeyframe::to_js(self : BaseKeyframe) -> JsValue =
+extern "js" fn BaseKeyframe::to_js_ffi(self : BaseKeyframe) -> JsValue =
   #| (self) => ({
-  #|   offset: ((() => { const v = self.offset; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   offset: ((() => { const v = self.offset; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   easing: self.easing,
-  #|   composite: ['replace', 'add', 'accumulate', 'auto'][self.composite]
+  #|   composite: ((() => { const v = self.composite; if (v === undefined) return undefined; return ['replace', 'add', 'accumulate', 'auto'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn BaseKeyframe::to_js(self : BaseKeyframe) -> JsValue {
+  BaseKeyframe::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BaseKeyframe::from_js_ffi(value : JsValue) -> BaseKeyframe =
+  #| (v) => ({
+  #|   offset: (v.offset === undefined ? { $tag: 0 } : v.offset === null ? { $tag: 1 } : { $tag: 2, _0: v.offset }),
+  #|   easing: v.easing,
+  #|   composite: (v.composite === undefined ? undefined : ['replace', 'add', 'accumulate', 'auto'].indexOf(v.composite))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BaseKeyframe::from_js(value : JsValue) -> BaseKeyframe {
+  BaseKeyframe::from_js_ffi(value)
+}
+
+///|
 /// GetAnimationsOptions dictionary
-pub struct GetAnimationsOptions {
+pub(all) struct GetAnimationsOptions {
   subtree : Bool?
-  pseudoElement : Nullable[CSSOMString]
+  pseudoElement : Nullable[String]
 }
 
 ///|
@@ -309,14 +398,34 @@ pub fn GetAnimationsOptions::default() -> GetAnimationsOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn GetAnimationsOptions::to_js(
+extern "js" fn GetAnimationsOptions::to_js_ffi(
   self : GetAnimationsOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   subtree: self.subtree,
-  #|   pseudoElement: ((() => { const v = self.pseudoElement; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   subtree: (self.subtree === -1 ? undefined : self.subtree),
+  #|   pseudoElement: ((() => { const v = self.pseudoElement; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn GetAnimationsOptions::to_js(self : GetAnimationsOptions) -> JsValue {
+  GetAnimationsOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GetAnimationsOptions::from_js_ffi(
+  value : JsValue,
+) -> GetAnimationsOptions =
+  #| (v) => ({
+  #|   subtree: (v.subtree === undefined ? -1 : v.subtree),
+  #|   pseudoElement: (v.pseudoElement === undefined ? { $tag: 0 } : v.pseudoElement === null ? { $tag: 1 } : { $tag: 2, _0: v.pseudoElement })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GetAnimationsOptions::from_js(value : JsValue) -> GetAnimationsOptions {
+  GetAnimationsOptions::from_js_ffi(value)
+}
 
 ///|
 /// AnimationTimeline interface
@@ -384,13 +493,13 @@ pub extern "js" fn AnimationTimeline::as_document_timeline(
 pub extern "js" fn AnimationTimeline::get_current_time(
   self : AnimationTimeline,
 ) -> CSSNumberish? =
-  #| (self) => { const v = self.currentTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.currentTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn AnimationTimeline::get_duration(
   self : AnimationTimeline,
 ) -> CSSNumberish? =
-  #| (self) => { const v = self.duration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.duration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn AnimationTimeline::play(
@@ -403,7 +512,7 @@ pub extern "js" fn AnimationTimeline::play_with_effect(
   self : AnimationTimeline,
   effect : AnimationEffect?,
 ) -> Animation =
-  #| (self, effect) => self.play(effect)
+  #| (self, effect) => self.play((effect.$tag === 1 ? effect._0 : null))
 
 ///|
 /// DocumentTimeline interface
@@ -450,10 +559,21 @@ pub extern "js" fn DocumentTimeline::to_animation_timeline(
   #| (self) => self
 
 ///|
-pub extern "js" fn DocumentTimeline::new(
-  options : DocumentTimelineOptions,
+pub extern "js" fn DocumentTimeline::new() -> DocumentTimeline =
+  #| () => new DocumentTimeline()
+
+///|
+extern "js" fn DocumentTimeline::new_with_options_ffi(
+  options : JsValue,
 ) -> DocumentTimeline =
   #| (options) => new DocumentTimeline(options)
+
+///|
+pub fn DocumentTimeline::new_with_options(
+  options : DocumentTimelineOptions,
+) -> DocumentTimeline {
+  DocumentTimeline::new_with_options_ffi(options.to_js())
+}
 
 ///|
 /// Animation interface
@@ -512,11 +632,15 @@ pub extern "js" fn Animation::as_css_transition(
   #| (self) => (self instanceof CSSTransition) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Animation::new(
+pub extern "js" fn Animation::new() -> Animation =
+  #| () => new Animation()
+
+///|
+pub extern "js" fn Animation::new_with_timeline(
   effect : AnimationEffect?,
   timeline : AnimationTimeline?,
 ) -> Animation =
-  #| (effect, timeline) => new Animation(effect, timeline)
+  #| (effect, timeline) => new Animation((effect.$tag === 1 ? effect._0 : null), (timeline.$tag === 1 ? timeline._0 : null))
 
 ///|
 pub extern "js" fn Animation::get_id(self : Animation) -> String =
@@ -528,27 +652,27 @@ pub extern "js" fn Animation::set_id(self : Animation, value : String) -> Unit =
 
 ///|
 pub extern "js" fn Animation::get_effect(self : Animation) -> AnimationEffect? =
-  #| (self) => { const v = self.effect; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.effect; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Animation::set_effect(
   self : Animation,
   value : AnimationEffect?,
 ) -> Unit =
-  #| (self, value) => { self.effect = value }
+  #| (self, value) => { self.effect = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn Animation::get_timeline(
   self : Animation,
 ) -> AnimationTimeline? =
-  #| (self) => { const v = self.timeline; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.timeline; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Animation::set_timeline(
   self : Animation,
   value : AnimationTimeline?,
 ) -> Unit =
-  #| (self, value) => { self.timeline = value }
+  #| (self, value) => { self.timeline = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn Animation::get_playback_rate(self : Animation) -> Double =
@@ -565,13 +689,13 @@ pub extern "js" fn Animation::set_playback_rate(
 pub extern "js" fn Animation::get_play_state(
   self : Animation,
 ) -> AnimationPlayState =
-  #| (self) => self.playState
+  #| (self) => ['idle', 'running', 'paused', 'finished'].indexOf(self.playState)
 
 ///|
 pub extern "js" fn Animation::get_replace_state(
   self : Animation,
 ) -> AnimationReplaceState =
-  #| (self) => self.replaceState
+  #| (self) => ['active', 'removed', 'persisted'].indexOf(self.replaceState)
 
 ///|
 pub extern "js" fn Animation::get_pending(self : Animation) -> Bool =
@@ -657,44 +781,44 @@ pub extern "js" fn Animation::commit_styles(self : Animation) -> Unit =
 
 ///|
 pub extern "js" fn Animation::get_start_time(self : Animation) -> CSSNumberish? =
-  #| (self) => { const v = self.startTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.startTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Animation::set_start_time(
   self : Animation,
   value : CSSNumberish?,
 ) -> Unit =
-  #| (self, value) => { self.startTime = value }
+  #| (self, value) => { self.startTime = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn Animation::get_current_time(
   self : Animation,
 ) -> CSSNumberish? =
-  #| (self) => { const v = self.currentTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.currentTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Animation::set_current_time(
   self : Animation,
   value : CSSNumberish?,
 ) -> Unit =
-  #| (self, value) => { self.currentTime = value }
+  #| (self, value) => { self.currentTime = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn Animation::get_trigger(
   self : Animation,
 ) -> AnimationTrigger? =
-  #| (self) => { const v = self.trigger; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.trigger; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Animation::set_trigger(
   self : Animation,
   value : AnimationTrigger?,
 ) -> Unit =
-  #| (self, value) => { self.trigger = value }
+  #| (self, value) => { self.trigger = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn Animation::get_overall_progress(self : Animation) -> Double? =
-  #| (self) => { const v = self.overallProgress; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.overallProgress) ?? undefined
 
 ///|
 /// AnimationEffect interface
@@ -759,29 +883,37 @@ pub extern "js" fn AnimationEffect::update_timing(
   #| (self) => self.updateTiming()
 
 ///|
-pub extern "js" fn AnimationEffect::update_timing_with_timing(
+extern "js" fn AnimationEffect::update_timing_with_timing_ffi(
   self : AnimationEffect,
-  timing : OptionalEffectTiming,
+  timing : JsValue,
 ) -> Unit =
   #| (self, timing) => self.updateTiming(timing)
+
+///|
+pub fn AnimationEffect::update_timing_with_timing(
+  self : AnimationEffect,
+  timing : OptionalEffectTiming,
+) -> Unit {
+  AnimationEffect::update_timing_with_timing_ffi(self, timing.to_js())
+}
 
 ///|
 pub extern "js" fn AnimationEffect::get_parent(
   self : AnimationEffect,
 ) -> GroupEffect? =
-  #| (self) => { const v = self.parent; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.parent; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn AnimationEffect::get_previous_sibling(
   self : AnimationEffect,
 ) -> AnimationEffect? =
-  #| (self) => { const v = self.previousSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.previousSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn AnimationEffect::get_next_sibling(
   self : AnimationEffect,
 ) -> AnimationEffect? =
-  #| (self) => { const v = self.nextSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.nextSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn AnimationEffect::before(
@@ -852,35 +984,48 @@ pub extern "js" fn KeyframeEffect::to_animation_effect(
 
 ///|
 pub extern "js" fn KeyframeEffect::new(
+  source : KeyframeEffect,
+) -> KeyframeEffect =
+  #| (source) => new KeyframeEffect(source)
+
+///|
+pub extern "js" fn KeyframeEffect::new_with_keyframes_and_options(
+  target : Element?,
+  keyframes : JsValue?,
+) -> KeyframeEffect =
+  #| (target, keyframes) => new KeyframeEffect((target.$tag === 1 ? target._0 : null), (keyframes.$tag === 1 ? keyframes._0 : null))
+
+///|
+pub extern "js" fn KeyframeEffect::new_with_keyframes_and_options_with_options(
   target : Element?,
   keyframes : JsValue?,
   options : DoubleOrKeyframeEffectOptions,
 ) -> KeyframeEffect =
-  #| (target, keyframes, options) => new KeyframeEffect(target, keyframes, options)
+  #| (target, keyframes, options) => new KeyframeEffect((target.$tag === 1 ? target._0 : null), (keyframes.$tag === 1 ? keyframes._0 : null), options)
 
 ///|
 pub extern "js" fn KeyframeEffect::get_target(
   self : KeyframeEffect,
 ) -> Element? =
-  #| (self) => { const v = self.target; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.target; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn KeyframeEffect::set_target(
   self : KeyframeEffect,
   value : Element?,
 ) -> Unit =
-  #| (self, value) => { self.target = value }
+  #| (self, value) => { self.target = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn KeyframeEffect::get_pseudo_element(
   self : KeyframeEffect,
-) -> CSSOMString? =
-  #| (self) => { const v = self.pseudoElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+) -> String? =
+  #| (self) => (self.pseudoElement) ?? undefined
 
 ///|
 pub extern "js" fn KeyframeEffect::set_pseudo_element(
   self : KeyframeEffect,
-  value : CSSOMString?,
+  value : String?,
 ) -> Unit =
   #| (self, value) => { self.pseudoElement = value }
 
@@ -888,14 +1033,14 @@ pub extern "js" fn KeyframeEffect::set_pseudo_element(
 pub extern "js" fn KeyframeEffect::get_composite(
   self : KeyframeEffect,
 ) -> CompositeOperation =
-  #| (self) => self.composite
+  #| (self) => ['replace', 'add', 'accumulate'].indexOf(self.composite)
 
 ///|
 pub extern "js" fn KeyframeEffect::set_composite(
   self : KeyframeEffect,
   value : CompositeOperation,
 ) -> Unit =
-  #| (self, value) => { self.composite = value }
+  #| (self, value) => { self.composite = ['replace', 'add', 'accumulate'][value] }
 
 ///|
 pub extern "js" fn KeyframeEffect::get_keyframes(
@@ -908,17 +1053,17 @@ pub extern "js" fn KeyframeEffect::set_keyframes(
   self : KeyframeEffect,
   keyframes : JsValue?,
 ) -> Unit =
-  #| (self, keyframes) => self.setKeyframes(keyframes)
+  #| (self, keyframes) => self.setKeyframes((keyframes.$tag === 1 ? keyframes._0 : null))
 
 ///|
 pub extern "js" fn KeyframeEffect::get_iteration_composite(
   self : KeyframeEffect,
 ) -> IterationCompositeOperation =
-  #| (self) => self.iterationComposite
+  #| (self) => ['replace', 'accumulate'].indexOf(self.iterationComposite)
 
 ///|
 pub extern "js" fn KeyframeEffect::set_iteration_composite(
   self : KeyframeEffect,
   value : IterationCompositeOperation,
 ) -> Unit =
-  #| (self, value) => { self.iterationComposite = value }
+  #| (self, value) => { self.iterationComposite = ['replace', 'accumulate'][value] }

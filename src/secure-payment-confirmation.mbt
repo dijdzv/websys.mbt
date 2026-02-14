@@ -9,7 +9,7 @@ pub(all) enum SecurePaymentConfirmationAvailability {
   UnavailableFeatureNotEnabled
   UnavailableNoPermissionPolicy
   UnavailableNoUserVerifyingPlatformAuthenticator
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -52,7 +52,7 @@ pub fn SecurePaymentConfirmationAvailability::from_string(
 
 ///|
 /// SecurePaymentConfirmationRequest dictionary
-pub struct SecurePaymentConfirmationRequest {
+pub(all) struct SecurePaymentConfirmationRequest {
   challenge : BufferSource
   rpId : String
   credentialIds : Array[BufferSource]
@@ -68,13 +68,16 @@ pub struct SecurePaymentConfirmationRequest {
 }
 
 ///|
-/// Create a new SecurePaymentConfirmationRequest with default values
-pub fn SecurePaymentConfirmationRequest::default() -> SecurePaymentConfirmationRequest {
+/// Create a new SecurePaymentConfirmationRequest
+pub fn SecurePaymentConfirmationRequest::new(
+  challenge~ : BufferSource,
+  instrument~ : PaymentCredentialInstrument,
+) -> SecurePaymentConfirmationRequest {
   SecurePaymentConfirmationRequest::{
-    challenge: panic(),
+    challenge,
     rpId: "",
     credentialIds: [],
-    instrument: panic(),
+    instrument,
     timeout: None,
     payeeName: None,
     payeeOrigin: None,
@@ -87,8 +90,7 @@ pub fn SecurePaymentConfirmationRequest::default() -> SecurePaymentConfirmationR
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SecurePaymentConfirmationRequest::to_js(
+extern "js" fn SecurePaymentConfirmationRequest::to_js_ffi(
   self : SecurePaymentConfirmationRequest,
 ) -> JsValue =
   #| (self) => ({
@@ -99,16 +101,51 @@ pub extern "js" fn SecurePaymentConfirmationRequest::to_js(
   #|   timeout: self.timeout,
   #|   payeeName: self.payeeName,
   #|   payeeOrigin: self.payeeOrigin,
-  #|   paymentEntitiesLogos: self.paymentEntitiesLogos,
-  #|   extensions: self.extensions,
-  #|   browserBoundPubKeyCredParams: self.browserBoundPubKeyCredParams,
-  #|   locale: self.locale,
-  #|   showOptOut: self.showOptOut
+  #|   paymentEntitiesLogos: ((() => { const v = self.paymentEntitiesLogos; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   extensions: ((() => { const v = self.extensions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   browserBoundPubKeyCredParams: ((() => { const v = self.browserBoundPubKeyCredParams; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   locale: ((() => { const v = self.locale; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   showOptOut: (self.showOptOut === -1 ? undefined : self.showOptOut)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SecurePaymentConfirmationRequest::to_js(
+  self : SecurePaymentConfirmationRequest,
+) -> JsValue {
+  SecurePaymentConfirmationRequest::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SecurePaymentConfirmationRequest::from_js_ffi(
+  value : JsValue,
+) -> SecurePaymentConfirmationRequest =
+  #| (v) => ({
+  #|   challenge: v.challenge,
+  #|   rpId: v.rpId,
+  #|   credentialIds: v.credentialIds,
+  #|   instrument: v.instrument,
+  #|   timeout: v.timeout,
+  #|   payeeName: v.payeeName,
+  #|   payeeOrigin: v.payeeOrigin,
+  #|   paymentEntitiesLogos: (v.paymentEntitiesLogos === undefined ? { $tag: 0 } : { $tag: 1, _0: v.paymentEntitiesLogos }),
+  #|   extensions: (v.extensions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.extensions }),
+  #|   browserBoundPubKeyCredParams: (v.browserBoundPubKeyCredParams === undefined ? { $tag: 0 } : { $tag: 1, _0: v.browserBoundPubKeyCredParams }),
+  #|   locale: (v.locale === undefined ? { $tag: 0 } : { $tag: 1, _0: v.locale }),
+  #|   showOptOut: (v.showOptOut === undefined ? -1 : v.showOptOut)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SecurePaymentConfirmationRequest::from_js(
+  value : JsValue,
+) -> SecurePaymentConfirmationRequest {
+  SecurePaymentConfirmationRequest::from_js_ffi(value)
+}
+
+///|
 /// AuthenticationExtensionsPaymentInputs dictionary
-pub struct AuthenticationExtensionsPaymentInputs {
+pub(all) struct AuthenticationExtensionsPaymentInputs {
   isPayment : Bool?
   browserBoundPubKeyCredParams : Array[PublicKeyCredentialParameters]?
   rpId : String?
@@ -137,25 +174,56 @@ pub fn AuthenticationExtensionsPaymentInputs::default() -> AuthenticationExtensi
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AuthenticationExtensionsPaymentInputs::to_js(
+extern "js" fn AuthenticationExtensionsPaymentInputs::to_js_ffi(
   self : AuthenticationExtensionsPaymentInputs,
 ) -> JsValue =
   #| (self) => ({
-  #|   isPayment: self.isPayment,
-  #|   browserBoundPubKeyCredParams: self.browserBoundPubKeyCredParams,
+  #|   isPayment: (self.isPayment === -1 ? undefined : self.isPayment),
+  #|   browserBoundPubKeyCredParams: ((() => { const v = self.browserBoundPubKeyCredParams; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rpId: self.rpId,
   #|   topOrigin: self.topOrigin,
   #|   payeeName: self.payeeName,
   #|   payeeOrigin: self.payeeOrigin,
-  #|   paymentEntitiesLogos: self.paymentEntitiesLogos,
-  #|   total: self.total,
-  #|   instrument: self.instrument
+  #|   paymentEntitiesLogos: ((() => { const v = self.paymentEntitiesLogos; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   total: ((() => { const v = self.total; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   instrument: ((() => { const v = self.instrument; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AuthenticationExtensionsPaymentInputs::to_js(
+  self : AuthenticationExtensionsPaymentInputs,
+) -> JsValue {
+  AuthenticationExtensionsPaymentInputs::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AuthenticationExtensionsPaymentInputs::from_js_ffi(
+  value : JsValue,
+) -> AuthenticationExtensionsPaymentInputs =
+  #| (v) => ({
+  #|   isPayment: (v.isPayment === undefined ? -1 : v.isPayment),
+  #|   browserBoundPubKeyCredParams: (v.browserBoundPubKeyCredParams === undefined ? { $tag: 0 } : { $tag: 1, _0: v.browserBoundPubKeyCredParams }),
+  #|   rpId: v.rpId,
+  #|   topOrigin: v.topOrigin,
+  #|   payeeName: v.payeeName,
+  #|   payeeOrigin: v.payeeOrigin,
+  #|   paymentEntitiesLogos: (v.paymentEntitiesLogos === undefined ? { $tag: 0 } : { $tag: 1, _0: v.paymentEntitiesLogos }),
+  #|   total: (v.total === undefined ? { $tag: 0 } : { $tag: 1, _0: v.total }),
+  #|   instrument: (v.instrument === undefined ? { $tag: 0 } : { $tag: 1, _0: v.instrument })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AuthenticationExtensionsPaymentInputs::from_js(
+  value : JsValue,
+) -> AuthenticationExtensionsPaymentInputs {
+  AuthenticationExtensionsPaymentInputs::from_js_ffi(value)
+}
+
+///|
 /// AuthenticationExtensionsPaymentOutputs dictionary
-pub struct AuthenticationExtensionsPaymentOutputs {
+pub(all) struct AuthenticationExtensionsPaymentOutputs {
   browserBoundSignature : BrowserBoundSignature?
 }
 
@@ -166,29 +234,53 @@ pub fn AuthenticationExtensionsPaymentOutputs::default() -> AuthenticationExtens
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AuthenticationExtensionsPaymentOutputs::to_js(
+extern "js" fn AuthenticationExtensionsPaymentOutputs::to_js_ffi(
   self : AuthenticationExtensionsPaymentOutputs,
 ) -> JsValue =
   #| (self) => ({
-  #|   browserBoundSignature: self.browserBoundSignature
+  #|   browserBoundSignature: ((() => { const v = self.browserBoundSignature; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AuthenticationExtensionsPaymentOutputs::to_js(
+  self : AuthenticationExtensionsPaymentOutputs,
+) -> JsValue {
+  AuthenticationExtensionsPaymentOutputs::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AuthenticationExtensionsPaymentOutputs::from_js_ffi(
+  value : JsValue,
+) -> AuthenticationExtensionsPaymentOutputs =
+  #| (v) => ({
+  #|   browserBoundSignature: (v.browserBoundSignature === undefined ? { $tag: 0 } : { $tag: 1, _0: v.browserBoundSignature })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AuthenticationExtensionsPaymentOutputs::from_js(
+  value : JsValue,
+) -> AuthenticationExtensionsPaymentOutputs {
+  AuthenticationExtensionsPaymentOutputs::from_js_ffi(value)
+}
+
+///|
 /// BrowserBoundSignature dictionary
-pub struct BrowserBoundSignature {
+pub(all) struct BrowserBoundSignature {
   signature : ArrayBuffer
 }
 
 ///|
-/// Create a new BrowserBoundSignature with default values
-pub fn BrowserBoundSignature::default() -> BrowserBoundSignature {
-  BrowserBoundSignature::{ signature: panic() }
+/// Create a new BrowserBoundSignature
+pub fn BrowserBoundSignature::new(
+  signature~ : ArrayBuffer,
+) -> BrowserBoundSignature {
+  BrowserBoundSignature::{ signature, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BrowserBoundSignature::to_js(
+extern "js" fn BrowserBoundSignature::to_js_ffi(
   self : BrowserBoundSignature,
 ) -> JsValue =
   #| (self) => ({
@@ -196,20 +288,41 @@ pub extern "js" fn BrowserBoundSignature::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn BrowserBoundSignature::to_js(self : BrowserBoundSignature) -> JsValue {
+  BrowserBoundSignature::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BrowserBoundSignature::from_js_ffi(
+  value : JsValue,
+) -> BrowserBoundSignature =
+  #| (v) => ({
+  #|   signature: v.signature
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BrowserBoundSignature::from_js(value : JsValue) -> BrowserBoundSignature {
+  BrowserBoundSignature::from_js_ffi(value)
+}
+
+///|
 /// CollectedClientPaymentData dictionary
-pub struct CollectedClientPaymentData {
+pub(all) struct CollectedClientPaymentData {
   payment : CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData
 }
 
 ///|
-/// Create a new CollectedClientPaymentData with default values
-pub fn CollectedClientPaymentData::default() -> CollectedClientPaymentData {
-  CollectedClientPaymentData::{ payment: panic() }
+/// Create a new CollectedClientPaymentData
+pub fn CollectedClientPaymentData::new(
+  payment~ : CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData,
+) -> CollectedClientPaymentData {
+  CollectedClientPaymentData::{ payment, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CollectedClientPaymentData::to_js(
+extern "js" fn CollectedClientPaymentData::to_js_ffi(
   self : CollectedClientPaymentData,
 ) -> JsValue =
   #| (self) => ({
@@ -217,8 +330,32 @@ pub extern "js" fn CollectedClientPaymentData::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn CollectedClientPaymentData::to_js(
+  self : CollectedClientPaymentData,
+) -> JsValue {
+  CollectedClientPaymentData::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CollectedClientPaymentData::from_js_ffi(
+  value : JsValue,
+) -> CollectedClientPaymentData =
+  #| (v) => ({
+  #|   payment: v.payment
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CollectedClientPaymentData::from_js(
+  value : JsValue,
+) -> CollectedClientPaymentData {
+  CollectedClientPaymentData::from_js_ffi(value)
+}
+
+///|
 /// CollectedClientAdditionalPaymentData dictionary
-pub struct CollectedClientAdditionalPaymentData {
+pub(all) struct CollectedClientAdditionalPaymentData {
   rpId : String
   topOrigin : String
   payeeName : String?
@@ -230,23 +367,25 @@ pub struct CollectedClientAdditionalPaymentData {
 }
 
 ///|
-/// Create a new CollectedClientAdditionalPaymentData with default values
-pub fn CollectedClientAdditionalPaymentData::default() -> CollectedClientAdditionalPaymentData {
+/// Create a new CollectedClientAdditionalPaymentData
+pub fn CollectedClientAdditionalPaymentData::new(
+  total~ : PaymentCurrencyAmount,
+  instrument~ : PaymentCredentialInstrument,
+) -> CollectedClientAdditionalPaymentData {
   CollectedClientAdditionalPaymentData::{
     rpId: "",
     topOrigin: "",
     payeeName: None,
     payeeOrigin: None,
     paymentEntitiesLogos: None,
-    total: panic(),
-    instrument: panic(),
+    total,
+    instrument,
     browserBoundPublicKey: None,
   }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CollectedClientAdditionalPaymentData::to_js(
+extern "js" fn CollectedClientAdditionalPaymentData::to_js_ffi(
   self : CollectedClientAdditionalPaymentData,
 ) -> JsValue =
   #| (self) => ({
@@ -254,15 +393,46 @@ pub extern "js" fn CollectedClientAdditionalPaymentData::to_js(
   #|   topOrigin: self.topOrigin,
   #|   payeeName: self.payeeName,
   #|   payeeOrigin: self.payeeOrigin,
-  #|   paymentEntitiesLogos: self.paymentEntitiesLogos,
+  #|   paymentEntitiesLogos: ((() => { const v = self.paymentEntitiesLogos; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   total: self.total,
   #|   instrument: self.instrument,
   #|   browserBoundPublicKey: self.browserBoundPublicKey
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn CollectedClientAdditionalPaymentData::to_js(
+  self : CollectedClientAdditionalPaymentData,
+) -> JsValue {
+  CollectedClientAdditionalPaymentData::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CollectedClientAdditionalPaymentData::from_js_ffi(
+  value : JsValue,
+) -> CollectedClientAdditionalPaymentData =
+  #| (v) => ({
+  #|   rpId: v.rpId,
+  #|   topOrigin: v.topOrigin,
+  #|   payeeName: v.payeeName,
+  #|   payeeOrigin: v.payeeOrigin,
+  #|   paymentEntitiesLogos: (v.paymentEntitiesLogos === undefined ? { $tag: 0 } : { $tag: 1, _0: v.paymentEntitiesLogos }),
+  #|   total: v.total,
+  #|   instrument: v.instrument,
+  #|   browserBoundPublicKey: v.browserBoundPublicKey
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CollectedClientAdditionalPaymentData::from_js(
+  value : JsValue,
+) -> CollectedClientAdditionalPaymentData {
+  CollectedClientAdditionalPaymentData::from_js_ffi(value)
+}
+
+///|
 /// CollectedClientAdditionalPaymentRegistrationData dictionary
-pub struct CollectedClientAdditionalPaymentRegistrationData {
+pub(all) struct CollectedClientAdditionalPaymentRegistrationData {
   browserBoundPublicKey : String?
 }
 
@@ -275,8 +445,7 @@ pub fn CollectedClientAdditionalPaymentRegistrationData::default() -> CollectedC
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CollectedClientAdditionalPaymentRegistrationData::to_js(
+extern "js" fn CollectedClientAdditionalPaymentRegistrationData::to_js_ffi(
   self : CollectedClientAdditionalPaymentRegistrationData,
 ) -> JsValue =
   #| (self) => ({
@@ -284,8 +453,32 @@ pub extern "js" fn CollectedClientAdditionalPaymentRegistrationData::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn CollectedClientAdditionalPaymentRegistrationData::to_js(
+  self : CollectedClientAdditionalPaymentRegistrationData,
+) -> JsValue {
+  CollectedClientAdditionalPaymentRegistrationData::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CollectedClientAdditionalPaymentRegistrationData::from_js_ffi(
+  value : JsValue,
+) -> CollectedClientAdditionalPaymentRegistrationData =
+  #| (v) => ({
+  #|   browserBoundPublicKey: v.browserBoundPublicKey
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CollectedClientAdditionalPaymentRegistrationData::from_js(
+  value : JsValue,
+) -> CollectedClientAdditionalPaymentRegistrationData {
+  CollectedClientAdditionalPaymentRegistrationData::from_js_ffi(value)
+}
+
+///|
 /// PaymentCredentialInstrument dictionary
-pub struct PaymentCredentialInstrument {
+pub(all) struct PaymentCredentialInstrument {
   displayName : String
   icon : String
   iconMustBeShown : Bool?
@@ -304,20 +497,46 @@ pub fn PaymentCredentialInstrument::default() -> PaymentCredentialInstrument {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PaymentCredentialInstrument::to_js(
+extern "js" fn PaymentCredentialInstrument::to_js_ffi(
   self : PaymentCredentialInstrument,
 ) -> JsValue =
   #| (self) => ({
   #|   displayName: self.displayName,
   #|   icon: self.icon,
-  #|   iconMustBeShown: self.iconMustBeShown,
+  #|   iconMustBeShown: (self.iconMustBeShown === -1 ? undefined : self.iconMustBeShown),
   #|   details: self.details
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PaymentCredentialInstrument::to_js(
+  self : PaymentCredentialInstrument,
+) -> JsValue {
+  PaymentCredentialInstrument::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PaymentCredentialInstrument::from_js_ffi(
+  value : JsValue,
+) -> PaymentCredentialInstrument =
+  #| (v) => ({
+  #|   displayName: v.displayName,
+  #|   icon: v.icon,
+  #|   iconMustBeShown: (v.iconMustBeShown === undefined ? -1 : v.iconMustBeShown),
+  #|   details: v.details
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PaymentCredentialInstrument::from_js(
+  value : JsValue,
+) -> PaymentCredentialInstrument {
+  PaymentCredentialInstrument::from_js_ffi(value)
+}
+
+///|
 /// PaymentEntityLogo dictionary
-pub struct PaymentEntityLogo {
+pub(all) struct PaymentEntityLogo {
   url : String
   label : String
 }
@@ -329,11 +548,31 @@ pub fn PaymentEntityLogo::default() -> PaymentEntityLogo {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PaymentEntityLogo::to_js(
+extern "js" fn PaymentEntityLogo::to_js_ffi(
   self : PaymentEntityLogo,
 ) -> JsValue =
   #| (self) => ({
   #|   url: self.url,
   #|   label: self.label
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PaymentEntityLogo::to_js(self : PaymentEntityLogo) -> JsValue {
+  PaymentEntityLogo::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PaymentEntityLogo::from_js_ffi(
+  value : JsValue,
+) -> PaymentEntityLogo =
+  #| (v) => ({
+  #|   url: v.url,
+  #|   label: v.label
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PaymentEntityLogo::from_js(value : JsValue) -> PaymentEntityLogo {
+  PaymentEntityLogo::from_js_ffi(value)
+}

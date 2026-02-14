@@ -51,7 +51,27 @@ pub extern "js" fn FormDataEntryValue::as_file(
 pub extern "js" fn FormDataEntryValue::as_string(
   self : FormDataEntryValue,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
+
+///|
+/// Flatten Option[FormDataEntryValue] to File?
+pub fn FormDataEntryValue::bind_as_file(value : FormDataEntryValue?) -> File? {
+  match value {
+    Some(v) => v.as_file()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[FormDataEntryValue] to String?
+pub fn FormDataEntryValue::bind_as_string(
+  value : FormDataEntryValue?,
+) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
 
 ///|
 /// XMLHttpRequestResponseType enum
@@ -62,7 +82,7 @@ pub(all) enum XMLHttpRequestResponseType {
   Document
   Json
   Text
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -97,7 +117,7 @@ pub fn XMLHttpRequestResponseType::from_string(
 
 ///|
 /// ProgressEventInit dictionary
-pub struct ProgressEventInit {
+pub(all) struct ProgressEventInit {
   lengthComputable : Bool?
   loaded : Double?
   total : Double?
@@ -110,15 +130,36 @@ pub fn ProgressEventInit::default() -> ProgressEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ProgressEventInit::to_js(
+extern "js" fn ProgressEventInit::to_js_ffi(
   self : ProgressEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   lengthComputable: self.lengthComputable,
+  #|   lengthComputable: (self.lengthComputable === -1 ? undefined : self.lengthComputable),
   #|   loaded: self.loaded,
   #|   total: self.total
   #| })
+
+///|
+/// Convert to JsValue
+pub fn ProgressEventInit::to_js(self : ProgressEventInit) -> JsValue {
+  ProgressEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ProgressEventInit::from_js_ffi(
+  value : JsValue,
+) -> ProgressEventInit =
+  #| (v) => ({
+  #|   lengthComputable: (v.lengthComputable === undefined ? -1 : v.lengthComputable),
+  #|   loaded: v.loaded,
+  #|   total: v.total
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ProgressEventInit::from_js(value : JsValue) -> ProgressEventInit {
+  ProgressEventInit::from_js_ffi(value)
+}
 
 ///|
 /// XMLHttpRequestEventTarget interface
@@ -515,7 +556,7 @@ pub extern "js" fn XMLHttpRequest::get_response_header(
   self : XMLHttpRequest,
   name : String,
 ) -> String? =
-  #| (self, name) => { const v = self.getResponseHeader(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, name) => (self.getResponseHeader(name)) ?? undefined
 
 ///|
 pub extern "js" fn XMLHttpRequest::get_all_response_headers(
@@ -534,14 +575,14 @@ pub extern "js" fn XMLHttpRequest::override_mime_type(
 pub extern "js" fn XMLHttpRequest::get_response_type(
   self : XMLHttpRequest,
 ) -> XMLHttpRequestResponseType =
-  #| (self) => self.responseType
+  #| (self) => ['', 'arraybuffer', 'blob', 'document', 'json', 'text'].indexOf(self.responseType)
 
 ///|
 pub extern "js" fn XMLHttpRequest::set_response_type(
   self : XMLHttpRequest,
   value : XMLHttpRequestResponseType,
 ) -> Unit =
-  #| (self, value) => { self.responseType = value }
+  #| (self, value) => { self.responseType = ['', 'arraybuffer', 'blob', 'document', 'json', 'text'][value] }
 
 ///|
 pub extern "js" fn XMLHttpRequest::get_response(
@@ -559,21 +600,37 @@ pub extern "js" fn XMLHttpRequest::get_response_text(
 pub extern "js" fn XMLHttpRequest::get_response_xml(
   self : XMLHttpRequest,
 ) -> Document? =
-  #| (self) => { const v = self.responseXML; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.responseXML; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn XMLHttpRequest::set_attribution_reporting(
+extern "js" fn XMLHttpRequest::set_attribution_reporting_ffi(
   self : XMLHttpRequest,
-  options : AttributionReportingRequestOptions,
+  options : JsValue,
 ) -> Unit =
   #| (self, options) => self.setAttributionReporting(options)
 
 ///|
-pub extern "js" fn XMLHttpRequest::set_private_token(
+pub fn XMLHttpRequest::set_attribution_reporting(
   self : XMLHttpRequest,
-  private_token : PrivateToken,
+  options : AttributionReportingRequestOptions,
+) -> Unit {
+  XMLHttpRequest::set_attribution_reporting_ffi(self, options.to_js())
+}
+
+///|
+extern "js" fn XMLHttpRequest::set_private_token_ffi(
+  self : XMLHttpRequest,
+  private_token : JsValue,
 ) -> Unit =
   #| (self, private_token) => self.setPrivateToken(private_token)
+
+///|
+pub fn XMLHttpRequest::set_private_token(
+  self : XMLHttpRequest,
+  private_token : PrivateToken,
+) -> Unit {
+  XMLHttpRequest::set_private_token_ffi(self, private_token.to_js())
+}
 
 ///|
 /// FormData interface
@@ -604,11 +661,15 @@ pub extern "js" fn JsValue::to_form_data(self : JsValue) -> FormData =
   #| (self) => self
 
 ///|
-pub extern "js" fn FormData::new(
+pub extern "js" fn FormData::new() -> FormData =
+  #| () => new FormData()
+
+///|
+pub extern "js" fn FormData::new_with_submitter(
   form : HTMLFormElement,
   submitter : HTMLElement?,
 ) -> FormData =
-  #| (form, submitter) => new FormData(form, submitter)
+  #| (form, submitter) => new FormData(form, (submitter.$tag === 1 ? submitter._0 : null))
 
 ///|
 pub extern "js" fn FormData::append(
@@ -644,7 +705,7 @@ pub extern "js" fn FormData::get(
   self : FormData,
   name : String,
 ) -> FormDataEntryValue? =
-  #| (self, name) => { const v = self.get(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, name) => (() => { const v = self.get(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn FormData::get_all(
@@ -683,8 +744,23 @@ pub extern "js" fn FormData::set_with_name_and_blob_value_blob_and_filename(
   #| (self, name, blob_value, filename) => self.set(name, blob_value, filename)
 
 ///|
-pub extern "js" fn FormData::_unknown_(self : FormData) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn FormData::keys(self : FormData) -> JsValue =
+  #| (self) => self.keys()
+
+///|
+pub extern "js" fn FormData::values(self : FormData) -> JsValue =
+  #| (self) => self.values()
+
+///|
+pub extern "js" fn FormData::entries(self : FormData) -> JsValue =
+  #| (self) => self.entries()
+
+///|
+pub extern "js" fn FormData::for_each(
+  self : FormData,
+  callback : JsValue,
+) -> Unit =
+  #| (self, callback) => { self.forEach(callback) }
 
 ///|
 /// ProgressEvent interface
@@ -721,11 +797,23 @@ pub extern "js" fn ProgressEvent::to_event(self : ProgressEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn ProgressEvent::new(
+pub extern "js" fn ProgressEvent::new(type_ : String) -> ProgressEvent =
+  #| (type_) => new ProgressEvent(type_)
+
+///|
+extern "js" fn ProgressEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : ProgressEventInit,
+  event_init_dict : JsValue,
 ) -> ProgressEvent =
   #| (type_, event_init_dict) => new ProgressEvent(type_, event_init_dict)
+
+///|
+pub fn ProgressEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : ProgressEventInit,
+) -> ProgressEvent {
+  ProgressEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn ProgressEvent::get_length_computable(

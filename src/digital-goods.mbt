@@ -6,7 +6,7 @@
 pub(all) enum ItemType {
   Product
   Subscription
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -29,7 +29,7 @@ pub fn ItemType::from_string(s : String) -> ItemType? {
 
 ///|
 /// ItemDetails dictionary
-pub struct ItemDetails {
+pub(all) struct ItemDetails {
   itemId : String
   title : String
   price : PaymentCurrencyAmount
@@ -44,12 +44,12 @@ pub struct ItemDetails {
 }
 
 ///|
-/// Create a new ItemDetails with default values
-pub fn ItemDetails::default() -> ItemDetails {
+/// Create a new ItemDetails
+pub fn ItemDetails::new(price~ : PaymentCurrencyAmount) -> ItemDetails {
   ItemDetails::{
     itemId: "",
     title: "",
-    price: panic(),
+    price,
     type_: None,
     description: None,
     iconURLs: None,
@@ -62,25 +62,52 @@ pub fn ItemDetails::default() -> ItemDetails {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ItemDetails::to_js(self : ItemDetails) -> JsValue =
+extern "js" fn ItemDetails::to_js_ffi(self : ItemDetails) -> JsValue =
   #| (self) => ({
   #|   itemId: self.itemId,
   #|   title: self.title,
   #|   price: self.price,
-  #|   type: ['product', 'subscription'][self.type_],
+  #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['product', 'subscription'][v]; })()),
   #|   description: self.description,
-  #|   iconURLs: self.iconURLs,
+  #|   iconURLs: ((() => { const v = self.iconURLs; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   subscriptionPeriod: self.subscriptionPeriod,
   #|   freeTrialPeriod: self.freeTrialPeriod,
-  #|   introductoryPrice: self.introductoryPrice,
+  #|   introductoryPrice: ((() => { const v = self.introductoryPrice; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   introductoryPricePeriod: self.introductoryPricePeriod,
   #|   introductoryPriceCycles: self.introductoryPriceCycles
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ItemDetails::to_js(self : ItemDetails) -> JsValue {
+  ItemDetails::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ItemDetails::from_js_ffi(value : JsValue) -> ItemDetails =
+  #| (v) => ({
+  #|   itemId: v.itemId,
+  #|   title: v.title,
+  #|   price: v.price,
+  #|   type_: (v.type === undefined ? undefined : ['product', 'subscription'].indexOf(v.type)),
+  #|   description: v.description,
+  #|   iconURLs: (v.iconURLs === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iconURLs }),
+  #|   subscriptionPeriod: v.subscriptionPeriod,
+  #|   freeTrialPeriod: v.freeTrialPeriod,
+  #|   introductoryPrice: (v.introductoryPrice === undefined ? { $tag: 0 } : { $tag: 1, _0: v.introductoryPrice }),
+  #|   introductoryPricePeriod: v.introductoryPricePeriod,
+  #|   introductoryPriceCycles: v.introductoryPriceCycles
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ItemDetails::from_js(value : JsValue) -> ItemDetails {
+  ItemDetails::from_js_ffi(value)
+}
+
+///|
 /// PurchaseDetails dictionary
-pub struct PurchaseDetails {
+pub(all) struct PurchaseDetails {
   itemId : String
   purchaseToken : String
 }
@@ -92,12 +119,30 @@ pub fn PurchaseDetails::default() -> PurchaseDetails {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PurchaseDetails::to_js(self : PurchaseDetails) -> JsValue =
+extern "js" fn PurchaseDetails::to_js_ffi(self : PurchaseDetails) -> JsValue =
   #| (self) => ({
   #|   itemId: self.itemId,
   #|   purchaseToken: self.purchaseToken
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PurchaseDetails::to_js(self : PurchaseDetails) -> JsValue {
+  PurchaseDetails::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PurchaseDetails::from_js_ffi(value : JsValue) -> PurchaseDetails =
+  #| (v) => ({
+  #|   itemId: v.itemId,
+  #|   purchaseToken: v.purchaseToken
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PurchaseDetails::from_js(value : JsValue) -> PurchaseDetails {
+  PurchaseDetails::from_js_ffi(value)
+}
 
 ///|
 /// DigitalGoodsService interface

@@ -3,7 +3,7 @@
 
 ///|
 /// PointerEventInit dictionary
-pub struct PointerEventInit {
+pub(all) struct PointerEventInit {
   pointerId : Int?
   width : Double?
   height : Double?
@@ -44,8 +44,7 @@ pub fn PointerEventInit::default() -> PointerEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PointerEventInit::to_js(self : PointerEventInit) -> JsValue =
+extern "js" fn PointerEventInit::to_js_ffi(self : PointerEventInit) -> JsValue =
   #| (self) => ({
   #|   pointerId: self.pointerId,
   #|   width: self.width,
@@ -58,11 +57,45 @@ pub extern "js" fn PointerEventInit::to_js(self : PointerEventInit) -> JsValue =
   #|   altitudeAngle: self.altitudeAngle,
   #|   azimuthAngle: self.azimuthAngle,
   #|   pointerType: self.pointerType,
-  #|   isPrimary: self.isPrimary,
+  #|   isPrimary: (self.isPrimary === -1 ? undefined : self.isPrimary),
   #|   persistentDeviceId: self.persistentDeviceId,
-  #|   coalescedEvents: self.coalescedEvents,
-  #|   predictedEvents: self.predictedEvents
+  #|   coalescedEvents: ((() => { const v = self.coalescedEvents; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   predictedEvents: ((() => { const v = self.predictedEvents; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PointerEventInit::to_js(self : PointerEventInit) -> JsValue {
+  PointerEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PointerEventInit::from_js_ffi(
+  value : JsValue,
+) -> PointerEventInit =
+  #| (v) => ({
+  #|   pointerId: v.pointerId,
+  #|   width: v.width,
+  #|   height: v.height,
+  #|   pressure: v.pressure,
+  #|   tangentialPressure: v.tangentialPressure,
+  #|   tiltX: v.tiltX,
+  #|   tiltY: v.tiltY,
+  #|   twist: v.twist,
+  #|   altitudeAngle: v.altitudeAngle,
+  #|   azimuthAngle: v.azimuthAngle,
+  #|   pointerType: v.pointerType,
+  #|   isPrimary: (v.isPrimary === undefined ? -1 : v.isPrimary),
+  #|   persistentDeviceId: v.persistentDeviceId,
+  #|   coalescedEvents: (v.coalescedEvents === undefined ? { $tag: 0 } : { $tag: 1, _0: v.coalescedEvents }),
+  #|   predictedEvents: (v.predictedEvents === undefined ? { $tag: 0 } : { $tag: 1, _0: v.predictedEvents })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PointerEventInit::from_js(value : JsValue) -> PointerEventInit {
+  PointerEventInit::from_js_ffi(value)
+}
 
 ///|
 /// PointerEvent interface
@@ -109,11 +142,23 @@ pub extern "js" fn PointerEvent::to_event(self : PointerEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn PointerEvent::new(
+pub extern "js" fn PointerEvent::new(type_ : String) -> PointerEvent =
+  #| (type_) => new PointerEvent(type_)
+
+///|
+extern "js" fn PointerEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : PointerEventInit,
+  event_init_dict : JsValue,
 ) -> PointerEvent =
   #| (type_, event_init_dict) => new PointerEvent(type_, event_init_dict)
+
+///|
+pub fn PointerEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : PointerEventInit,
+) -> PointerEvent {
+  PointerEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn PointerEvent::get_pointer_id(self : PointerEvent) -> Int =

@@ -3,49 +3,95 @@
 
 ///|
 /// PAHistogramContribution dictionary
-pub struct PAHistogramContribution {
+pub(all) struct PAHistogramContribution {
   bucket : JsValue
   value : Int
   filteringId : JsValue?
 }
 
 ///|
-/// Create a new PAHistogramContribution with default values
-pub fn PAHistogramContribution::default() -> PAHistogramContribution {
-  PAHistogramContribution::{ bucket: panic(), value: 0, filteringId: None }
+/// Create a new PAHistogramContribution
+pub fn PAHistogramContribution::new(
+  bucket~ : JsValue,
+) -> PAHistogramContribution {
+  PAHistogramContribution::{ bucket, value: 0, filteringId: None }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PAHistogramContribution::to_js(
+extern "js" fn PAHistogramContribution::to_js_ffi(
   self : PAHistogramContribution,
 ) -> JsValue =
   #| (self) => ({
   #|   bucket: self.bucket,
   #|   value: self.value,
-  #|   filteringId: self.filteringId
+  #|   filteringId: ((() => { const v = self.filteringId; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn PAHistogramContribution::to_js(
+  self : PAHistogramContribution,
+) -> JsValue {
+  PAHistogramContribution::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PAHistogramContribution::from_js_ffi(
+  value : JsValue,
+) -> PAHistogramContribution =
+  #| (v) => ({
+  #|   bucket: v.bucket,
+  #|   value: v.value,
+  #|   filteringId: (v.filteringId === undefined ? { $tag: 0 } : { $tag: 1, _0: v.filteringId })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PAHistogramContribution::from_js(
+  value : JsValue,
+) -> PAHistogramContribution {
+  PAHistogramContribution::from_js_ffi(value)
+}
+
+///|
 /// PADebugModeOptions dictionary
-pub struct PADebugModeOptions {
+pub(all) struct PADebugModeOptions {
   debugKey : JsValue
 }
 
 ///|
-/// Create a new PADebugModeOptions with default values
-pub fn PADebugModeOptions::default() -> PADebugModeOptions {
-  PADebugModeOptions::{ debugKey: panic() }
+/// Create a new PADebugModeOptions
+pub fn PADebugModeOptions::new(debugKey~ : JsValue) -> PADebugModeOptions {
+  PADebugModeOptions::{ debugKey, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PADebugModeOptions::to_js(
+extern "js" fn PADebugModeOptions::to_js_ffi(
   self : PADebugModeOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   debugKey: self.debugKey
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PADebugModeOptions::to_js(self : PADebugModeOptions) -> JsValue {
+  PADebugModeOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PADebugModeOptions::from_js_ffi(
+  value : JsValue,
+) -> PADebugModeOptions =
+  #| (v) => ({
+  #|   debugKey: v.debugKey
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PADebugModeOptions::from_js(value : JsValue) -> PADebugModeOptions {
+  PADebugModeOptions::from_js_ffi(value)
+}
 
 ///|
 /// PrivateAggregation interface
@@ -86,11 +132,19 @@ pub extern "js" fn JsValue::to_private_aggregation(
   #| (self) => self
 
 ///|
-pub extern "js" fn PrivateAggregation::contribute_to_histogram(
+extern "js" fn PrivateAggregation::contribute_to_histogram_ffi(
   self : PrivateAggregation,
-  contribution : PAHistogramContribution,
+  contribution : JsValue,
 ) -> Unit =
   #| (self, contribution) => self.contributeToHistogram(contribution)
+
+///|
+pub fn PrivateAggregation::contribute_to_histogram(
+  self : PrivateAggregation,
+  contribution : PAHistogramContribution,
+) -> Unit {
+  PrivateAggregation::contribute_to_histogram_ffi(self, contribution.to_js())
+}
 
 ///|
 pub extern "js" fn PrivateAggregation::contribute_to_histogram_on_event(
@@ -107,8 +161,16 @@ pub extern "js" fn PrivateAggregation::enable_debug_mode(
   #| (self) => self.enableDebugMode()
 
 ///|
-pub extern "js" fn PrivateAggregation::enable_debug_mode_with_options(
+extern "js" fn PrivateAggregation::enable_debug_mode_with_options_ffi(
   self : PrivateAggregation,
-  options : PADebugModeOptions,
+  options : JsValue,
 ) -> Unit =
   #| (self, options) => self.enableDebugMode(options)
+
+///|
+pub fn PrivateAggregation::enable_debug_mode_with_options(
+  self : PrivateAggregation,
+  options : PADebugModeOptions,
+) -> Unit {
+  PrivateAggregation::enable_debug_mode_with_options_ffi(self, options.to_js())
+}

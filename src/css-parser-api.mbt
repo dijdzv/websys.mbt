@@ -40,7 +40,7 @@ pub extern "js" fn CSSStringSource::is_readable_stream(
 pub extern "js" fn CSSStringSource::as_string(
   self : CSSStringSource,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get CSSStringSource as ReadableStream
@@ -48,6 +48,26 @@ pub extern "js" fn CSSStringSource::as_readable_stream(
   self : CSSStringSource,
 ) -> ReadableStream? =
   #| (self) => (self instanceof ReadableStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[CSSStringSource] to String?
+pub fn CSSStringSource::bind_as_string(value : CSSStringSource?) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[CSSStringSource] to ReadableStream?
+pub fn CSSStringSource::bind_as_readable_stream(
+  value : CSSStringSource?,
+) -> ReadableStream? {
+  match value {
+    Some(v) => v.as_readable_stream()
+    None => None
+  }
+}
 
 ///|
 /// CSSToken typedef
@@ -64,14 +84,14 @@ pub extern "js" fn CSSToken::from_string(v : String) -> CSSToken =
 
 ///|
 /// Create CSSToken from CSSStyleValue
-pub extern "js" fn CSSToken::from_c_s_s_style_value(
+pub extern "js" fn CSSToken::from_css_style_value(
   v : CSSStyleValue,
 ) -> CSSToken =
   #| (v) => v
 
 ///|
 /// Create CSSToken from CSSParserValue
-pub extern "js" fn CSSToken::from_c_s_s_parser_value(
+pub extern "js" fn CSSToken::from_css_parser_value(
   v : CSSParserValue,
 ) -> CSSToken =
   #| (v) => v
@@ -83,36 +103,63 @@ pub extern "js" fn CSSToken::is_string(self : CSSToken) -> Bool =
 
 ///|
 /// Check if this CSSToken is CSSStyleValue
-pub extern "js" fn CSSToken::is_c_s_s_style_value(self : CSSToken) -> Bool =
+pub extern "js" fn CSSToken::is_css_style_value(self : CSSToken) -> Bool =
   #| (self) => self instanceof CSSStyleValue
 
 ///|
 /// Check if this CSSToken is CSSParserValue
-pub extern "js" fn CSSToken::is_c_s_s_parser_value(self : CSSToken) -> Bool =
+pub extern "js" fn CSSToken::is_css_parser_value(self : CSSToken) -> Bool =
   #| (self) => self instanceof CSSParserValue
 
 ///|
 /// Try to get CSSToken as String
 pub extern "js" fn CSSToken::as_string(self : CSSToken) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get CSSToken as CSSStyleValue
-pub extern "js" fn CSSToken::as_c_s_s_style_value(
+pub extern "js" fn CSSToken::as_css_style_value(
   self : CSSToken,
 ) -> CSSStyleValue? =
   #| (self) => (self instanceof CSSStyleValue) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get CSSToken as CSSParserValue
-pub extern "js" fn CSSToken::as_c_s_s_parser_value(
+pub extern "js" fn CSSToken::as_css_parser_value(
   self : CSSToken,
 ) -> CSSParserValue? =
   #| (self) => (self instanceof CSSParserValue) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[CSSToken] to String?
+pub fn CSSToken::bind_as_string(value : CSSToken?) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[CSSToken] to CSSStyleValue?
+pub fn CSSToken::bind_as_css_style_value(value : CSSToken?) -> CSSStyleValue? {
+  match value {
+    Some(v) => v.as_css_style_value()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[CSSToken] to CSSParserValue?
+pub fn CSSToken::bind_as_css_parser_value(value : CSSToken?) -> CSSParserValue? {
+  match value {
+    Some(v) => v.as_css_parser_value()
+    None => None
+  }
+}
+
+///|
 /// CSSParserOptions dictionary
-pub struct CSSParserOptions {
+pub(all) struct CSSParserOptions {
   atRules : JsValue?
 }
 
@@ -123,11 +170,30 @@ pub fn CSSParserOptions::default() -> CSSParserOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CSSParserOptions::to_js(self : CSSParserOptions) -> JsValue =
+extern "js" fn CSSParserOptions::to_js_ffi(self : CSSParserOptions) -> JsValue =
   #| (self) => ({
-  #|   atRules: self.atRules
+  #|   atRules: ((() => { const v = self.atRules; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn CSSParserOptions::to_js(self : CSSParserOptions) -> JsValue {
+  CSSParserOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CSSParserOptions::from_js_ffi(
+  value : JsValue,
+) -> CSSParserOptions =
+  #| (v) => ({
+  #|   atRules: (v.atRules === undefined ? { $tag: 0 } : { $tag: 1, _0: v.atRules })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CSSParserOptions::from_js(value : JsValue) -> CSSParserOptions {
+  CSSParserOptions::from_js_ffi(value)
+}
 
 ///|
 /// CSSParserRule interface
@@ -227,6 +293,13 @@ pub extern "js" fn CSSParserAtRule::to_css_parser_rule(
 pub extern "js" fn CSSParserAtRule::new(
   name : String,
   prelude : Array[CSSToken],
+) -> CSSParserAtRule =
+  #| (name, prelude) => new CSSParserAtRule(name, prelude)
+
+///|
+pub extern "js" fn CSSParserAtRule::new_with_body(
+  name : String,
+  prelude : Array[CSSToken],
   body : Array[CSSParserRule],
 ) -> CSSParserAtRule =
   #| (name, prelude, body) => new CSSParserAtRule(name, prelude, body)
@@ -238,14 +311,14 @@ pub extern "js" fn CSSParserAtRule::get_name(self : CSSParserAtRule) -> String =
 ///|
 pub extern "js" fn CSSParserAtRule::get_prelude(
   self : CSSParserAtRule,
-) -> JsValue =
+) -> Array[CSSParserValue] =
   #| (self) => self.prelude
 
 ///|
 pub extern "js" fn CSSParserAtRule::get_body(
   self : CSSParserAtRule,
-) -> JsValue? =
-  #| (self) => { const v = self.body; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+) -> Array[CSSParserRule] =
+  #| (self) => self.body
 
 ///|
 /// CSSParserQualifiedRule interface
@@ -294,6 +367,12 @@ pub extern "js" fn CSSParserQualifiedRule::to_css_parser_rule(
 ///|
 pub extern "js" fn CSSParserQualifiedRule::new(
   prelude : Array[CSSToken],
+) -> CSSParserQualifiedRule =
+  #| (prelude) => new CSSParserQualifiedRule(prelude)
+
+///|
+pub extern "js" fn CSSParserQualifiedRule::new_with_body(
+  prelude : Array[CSSToken],
   body : Array[CSSParserRule],
 ) -> CSSParserQualifiedRule =
   #| (prelude, body) => new CSSParserQualifiedRule(prelude, body)
@@ -301,13 +380,13 @@ pub extern "js" fn CSSParserQualifiedRule::new(
 ///|
 pub extern "js" fn CSSParserQualifiedRule::get_prelude(
   self : CSSParserQualifiedRule,
-) -> JsValue =
+) -> Array[CSSParserValue] =
   #| (self) => self.prelude
 
 ///|
 pub extern "js" fn CSSParserQualifiedRule::get_body(
   self : CSSParserQualifiedRule,
-) -> JsValue =
+) -> Array[CSSParserRule] =
   #| (self) => self.body
 
 ///|
@@ -357,6 +436,12 @@ pub extern "js" fn CSSParserDeclaration::to_css_parser_rule(
 ///|
 pub extern "js" fn CSSParserDeclaration::new(
   name : String,
+) -> CSSParserDeclaration =
+  #| (name) => new CSSParserDeclaration(name)
+
+///|
+pub extern "js" fn CSSParserDeclaration::new_with_body(
+  name : String,
   body : Array[CSSParserRule],
 ) -> CSSParserDeclaration =
   #| (name, body) => new CSSParserDeclaration(name, body)
@@ -370,7 +455,7 @@ pub extern "js" fn CSSParserDeclaration::get_name(
 ///|
 pub extern "js" fn CSSParserDeclaration::get_body(
   self : CSSParserDeclaration,
-) -> JsValue =
+) -> Array[CSSParserValue] =
   #| (self) => self.body
 
 ///|
@@ -475,7 +560,9 @@ pub extern "js" fn CSSParserBlock::get_name(self : CSSParserBlock) -> String =
   #| (self) => self.name
 
 ///|
-pub extern "js" fn CSSParserBlock::get_body(self : CSSParserBlock) -> JsValue =
+pub extern "js" fn CSSParserBlock::get_body(
+  self : CSSParserBlock,
+) -> Array[CSSParserValue] =
   #| (self) => self.body
 
 ///|
@@ -538,5 +625,5 @@ pub extern "js" fn CSSParserFunction::get_name(
 ///|
 pub extern "js" fn CSSParserFunction::get_args(
   self : CSSParserFunction,
-) -> JsValue =
+) -> Array[Array[CSSParserValue]] =
   #| (self) => self.args

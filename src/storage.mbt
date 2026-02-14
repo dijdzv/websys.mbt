@@ -3,7 +3,7 @@
 
 ///|
 /// StorageEstimate dictionary
-pub struct StorageEstimate {
+pub(all) struct StorageEstimate {
   usage : Int64?
   quota : Int64?
 }
@@ -15,12 +15,30 @@ pub fn StorageEstimate::default() -> StorageEstimate {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn StorageEstimate::to_js(self : StorageEstimate) -> JsValue =
+extern "js" fn StorageEstimate::to_js_ffi(self : StorageEstimate) -> JsValue =
   #| (self) => ({
   #|   usage: self.usage,
   #|   quota: self.quota
   #| })
+
+///|
+/// Convert to JsValue
+pub fn StorageEstimate::to_js(self : StorageEstimate) -> JsValue {
+  StorageEstimate::to_js_ffi(self)
+}
+
+///|
+extern "js" fn StorageEstimate::from_js_ffi(value : JsValue) -> StorageEstimate =
+  #| (v) => ({
+  #|   usage: v.usage,
+  #|   quota: v.quota
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn StorageEstimate::from_js(value : JsValue) -> StorageEstimate {
+  StorageEstimate::from_js_ffi(value)
+}
 
 ///|
 /// StorageManager interface
@@ -74,7 +92,10 @@ pub extern "js" fn StorageManager::persist(
 pub extern "js" fn StorageManager::estimate(
   self : StorageManager,
 ) -> Promise[StorageEstimate] =
-  #| (self) => self.estimate()
+  #| (self) => self.estimate().then(v => ({
+  #|   usage: v.usage,
+  #|   quota: v.quota
+  #| }))
 
 ///|
 pub extern "js" fn StorageManager::get_directory(

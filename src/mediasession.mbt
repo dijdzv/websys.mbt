@@ -7,7 +7,7 @@ pub(all) enum MediaSessionPlaybackState {
   None
   Paused
   Playing
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -54,7 +54,7 @@ pub(all) enum MediaSessionAction {
   Nextslide
   Enterpictureinpicture
   Voiceactivity
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -111,7 +111,7 @@ pub(all) enum MediaSessionEnterPictureInPictureReason {
   Other
   Useraction
   Contentoccluded
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -149,11 +149,11 @@ pub type MediaSessionActionHandler
 pub extern "js" fn MediaSessionActionHandler::from_fn(
   handler : (MediaSessionActionDetails) -> Unit,
 ) -> MediaSessionActionHandler =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// MediaMetadataInit dictionary
-pub struct MediaMetadataInit {
+pub(all) struct MediaMetadataInit {
   title : String?
   artist : String?
   album : String?
@@ -174,21 +174,44 @@ pub fn MediaMetadataInit::default() -> MediaMetadataInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MediaMetadataInit::to_js(
+extern "js" fn MediaMetadataInit::to_js_ffi(
   self : MediaMetadataInit,
 ) -> JsValue =
   #| (self) => ({
   #|   title: self.title,
   #|   artist: self.artist,
   #|   album: self.album,
-  #|   artwork: self.artwork,
-  #|   chapterInfo: self.chapterInfo
+  #|   artwork: ((() => { const v = self.artwork; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   chapterInfo: ((() => { const v = self.chapterInfo; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MediaMetadataInit::to_js(self : MediaMetadataInit) -> JsValue {
+  MediaMetadataInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MediaMetadataInit::from_js_ffi(
+  value : JsValue,
+) -> MediaMetadataInit =
+  #| (v) => ({
+  #|   title: v.title,
+  #|   artist: v.artist,
+  #|   album: v.album,
+  #|   artwork: (v.artwork === undefined ? { $tag: 0 } : { $tag: 1, _0: v.artwork }),
+  #|   chapterInfo: (v.chapterInfo === undefined ? { $tag: 0 } : { $tag: 1, _0: v.chapterInfo })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaMetadataInit::from_js(value : JsValue) -> MediaMetadataInit {
+  MediaMetadataInit::from_js_ffi(value)
+}
+
+///|
 /// ChapterInformationInit dictionary
-pub struct ChapterInformationInit {
+pub(all) struct ChapterInformationInit {
   title : String?
   startTime : Double?
   artwork : Array[MediaImage]?
@@ -201,19 +224,42 @@ pub fn ChapterInformationInit::default() -> ChapterInformationInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ChapterInformationInit::to_js(
+extern "js" fn ChapterInformationInit::to_js_ffi(
   self : ChapterInformationInit,
 ) -> JsValue =
   #| (self) => ({
   #|   title: self.title,
   #|   startTime: self.startTime,
-  #|   artwork: self.artwork
+  #|   artwork: ((() => { const v = self.artwork; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ChapterInformationInit::to_js(self : ChapterInformationInit) -> JsValue {
+  ChapterInformationInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ChapterInformationInit::from_js_ffi(
+  value : JsValue,
+) -> ChapterInformationInit =
+  #| (v) => ({
+  #|   title: v.title,
+  #|   startTime: v.startTime,
+  #|   artwork: (v.artwork === undefined ? { $tag: 0 } : { $tag: 1, _0: v.artwork })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ChapterInformationInit::from_js(
+  value : JsValue,
+) -> ChapterInformationInit {
+  ChapterInformationInit::from_js_ffi(value)
+}
+
+///|
 /// MediaImage dictionary
-pub struct MediaImage {
+pub(all) struct MediaImage {
   src : String
   sizes : String?
   type_ : String?
@@ -226,8 +272,7 @@ pub fn MediaImage::default() -> MediaImage {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MediaImage::to_js(self : MediaImage) -> JsValue =
+extern "js" fn MediaImage::to_js_ffi(self : MediaImage) -> JsValue =
   #| (self) => ({
   #|   src: self.src,
   #|   sizes: self.sizes,
@@ -235,8 +280,28 @@ pub extern "js" fn MediaImage::to_js(self : MediaImage) -> JsValue =
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MediaImage::to_js(self : MediaImage) -> JsValue {
+  MediaImage::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MediaImage::from_js_ffi(value : JsValue) -> MediaImage =
+  #| (v) => ({
+  #|   src: v.src,
+  #|   sizes: v.sizes,
+  #|   type_: v.type
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaImage::from_js(value : JsValue) -> MediaImage {
+  MediaImage::from_js_ffi(value)
+}
+
+///|
 /// MediaPositionState dictionary
-pub struct MediaPositionState {
+pub(all) struct MediaPositionState {
   duration : Double?
   playbackRate : Double?
   position : Double?
@@ -249,8 +314,7 @@ pub fn MediaPositionState::default() -> MediaPositionState {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MediaPositionState::to_js(
+extern "js" fn MediaPositionState::to_js_ffi(
   self : MediaPositionState,
 ) -> JsValue =
   #| (self) => ({
@@ -260,8 +324,30 @@ pub extern "js" fn MediaPositionState::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MediaPositionState::to_js(self : MediaPositionState) -> JsValue {
+  MediaPositionState::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MediaPositionState::from_js_ffi(
+  value : JsValue,
+) -> MediaPositionState =
+  #| (v) => ({
+  #|   duration: v.duration,
+  #|   playbackRate: v.playbackRate,
+  #|   position: v.position
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaPositionState::from_js(value : JsValue) -> MediaPositionState {
+  MediaPositionState::from_js_ffi(value)
+}
+
+///|
 /// MediaSessionActionDetails dictionary
-pub struct MediaSessionActionDetails {
+pub(all) struct MediaSessionActionDetails {
   action : MediaSessionAction
   seekOffset : Double?
   seekTime : Double?
@@ -271,10 +357,12 @@ pub struct MediaSessionActionDetails {
 }
 
 ///|
-/// Create a new MediaSessionActionDetails with default values
-pub fn MediaSessionActionDetails::default() -> MediaSessionActionDetails {
+/// Create a new MediaSessionActionDetails
+pub fn MediaSessionActionDetails::new(
+  action~ : MediaSessionAction,
+) -> MediaSessionActionDetails {
   MediaSessionActionDetails::{
-    action: panic(),
+    action,
     seekOffset: None,
     seekTime: None,
     fastSeek: None,
@@ -284,18 +372,46 @@ pub fn MediaSessionActionDetails::default() -> MediaSessionActionDetails {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MediaSessionActionDetails::to_js(
+extern "js" fn MediaSessionActionDetails::to_js_ffi(
   self : MediaSessionActionDetails,
 ) -> JsValue =
   #| (self) => ({
   #|   action: ['play', 'pause', 'seekbackward', 'seekforward', 'previoustrack', 'nexttrack', 'skipad', 'stop', 'seekto', 'togglemicrophone', 'togglecamera', 'togglescreenshare', 'hangup', 'previousslide', 'nextslide', 'enterpictureinpicture', 'voiceactivity'][self.action],
   #|   seekOffset: self.seekOffset,
   #|   seekTime: self.seekTime,
-  #|   fastSeek: self.fastSeek,
-  #|   isActivating: self.isActivating,
-  #|   enterPictureInPictureReason: ['other', 'useraction', 'contentoccluded'][self.enterPictureInPictureReason]
+  #|   fastSeek: (self.fastSeek === -1 ? undefined : self.fastSeek),
+  #|   isActivating: (self.isActivating === -1 ? undefined : self.isActivating),
+  #|   enterPictureInPictureReason: ((() => { const v = self.enterPictureInPictureReason; if (v === undefined) return undefined; return ['other', 'useraction', 'contentoccluded'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn MediaSessionActionDetails::to_js(
+  self : MediaSessionActionDetails,
+) -> JsValue {
+  MediaSessionActionDetails::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MediaSessionActionDetails::from_js_ffi(
+  value : JsValue,
+) -> MediaSessionActionDetails =
+  #| (v) => ({
+  #|   action: ['play', 'pause', 'seekbackward', 'seekforward', 'previoustrack', 'nexttrack', 'skipad', 'stop', 'seekto', 'togglemicrophone', 'togglecamera', 'togglescreenshare', 'hangup', 'previousslide', 'nextslide', 'enterpictureinpicture', 'voiceactivity'].indexOf(v.action),
+  #|   seekOffset: v.seekOffset,
+  #|   seekTime: v.seekTime,
+  #|   fastSeek: (v.fastSeek === undefined ? -1 : v.fastSeek),
+  #|   isActivating: (v.isActivating === undefined ? -1 : v.isActivating),
+  #|   enterPictureInPictureReason: (v.enterPictureInPictureReason === undefined ? undefined : ['other', 'useraction', 'contentoccluded'].indexOf(v.enterPictureInPictureReason))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaSessionActionDetails::from_js(
+  value : JsValue,
+) -> MediaSessionActionDetails {
+  MediaSessionActionDetails::from_js_ffi(value)
+}
 
 ///|
 /// MediaSession interface
@@ -331,27 +447,27 @@ pub extern "js" fn JsValue::to_media_session(self : JsValue) -> MediaSession =
 pub extern "js" fn MediaSession::get_metadata(
   self : MediaSession,
 ) -> MediaMetadata? =
-  #| (self) => { const v = self.metadata; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.metadata; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn MediaSession::set_metadata(
   self : MediaSession,
   value : MediaMetadata?,
 ) -> Unit =
-  #| (self, value) => { self.metadata = value }
+  #| (self, value) => { self.metadata = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn MediaSession::get_playback_state(
   self : MediaSession,
 ) -> MediaSessionPlaybackState =
-  #| (self) => self.playbackState
+  #| (self) => ['none', 'paused', 'playing'].indexOf(self.playbackState)
 
 ///|
 pub extern "js" fn MediaSession::set_playback_state(
   self : MediaSession,
   value : MediaSessionPlaybackState,
 ) -> Unit =
-  #| (self, value) => { self.playbackState = value }
+  #| (self, value) => { self.playbackState = ['none', 'paused', 'playing'][value] }
 
 ///|
 pub extern "js" fn MediaSession::set_action_handler(
@@ -359,7 +475,7 @@ pub extern "js" fn MediaSession::set_action_handler(
   action : MediaSessionAction,
   handler : MediaSessionActionHandler?,
 ) -> Unit =
-  #| (self, action, handler) => self.setActionHandler(['play', 'pause', 'seekbackward', 'seekforward', 'previoustrack', 'nexttrack', 'skipad', 'stop', 'seekto', 'togglemicrophone', 'togglecamera', 'togglescreenshare', 'hangup', 'previousslide', 'nextslide', 'enterpictureinpicture', 'voiceactivity'][action], handler)
+  #| (self, action, handler) => self.setActionHandler(['play', 'pause', 'seekbackward', 'seekforward', 'previoustrack', 'nexttrack', 'skipad', 'stop', 'seekto', 'togglemicrophone', 'togglecamera', 'togglescreenshare', 'hangup', 'previousslide', 'nextslide', 'enterpictureinpicture', 'voiceactivity'][action], (handler.$tag === 1 ? handler._0 : null))
 
 ///|
 pub extern "js" fn MediaSession::set_position_state(
@@ -368,11 +484,19 @@ pub extern "js" fn MediaSession::set_position_state(
   #| (self) => self.setPositionState()
 
 ///|
-pub extern "js" fn MediaSession::set_position_state_with_state(
+extern "js" fn MediaSession::set_position_state_with_state_ffi(
   self : MediaSession,
-  state : MediaPositionState,
+  state : JsValue,
 ) -> Unit =
   #| (self, state) => self.setPositionState(state)
+
+///|
+pub fn MediaSession::set_position_state_with_state(
+  self : MediaSession,
+  state : MediaPositionState,
+) -> Unit {
+  MediaSession::set_position_state_with_state_ffi(self, state.to_js())
+}
 
 ///|
 pub extern "js" fn MediaSession::set_microphone_active(
@@ -426,10 +550,19 @@ pub extern "js" fn JsValue::to_media_metadata(self : JsValue) -> MediaMetadata =
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaMetadata::new(
-  init_ : MediaMetadataInit,
+pub extern "js" fn MediaMetadata::new() -> MediaMetadata =
+  #| () => new MediaMetadata()
+
+///|
+extern "js" fn MediaMetadata::new_with_init_ffi(
+  init_ : JsValue,
 ) -> MediaMetadata =
   #| (init_) => new MediaMetadata(init_)
+
+///|
+pub fn MediaMetadata::new_with_init(init_ : MediaMetadataInit) -> MediaMetadata {
+  MediaMetadata::new_with_init_ffi(init_.to_js())
+}
 
 ///|
 pub extern "js" fn MediaMetadata::get_title(self : MediaMetadata) -> String =
@@ -465,20 +598,22 @@ pub extern "js" fn MediaMetadata::set_album(
   #| (self, value) => { self.album = value }
 
 ///|
-pub extern "js" fn MediaMetadata::get_artwork(self : MediaMetadata) -> JsValue =
+pub extern "js" fn MediaMetadata::get_artwork(
+  self : MediaMetadata,
+) -> Array[JsValue] =
   #| (self) => self.artwork
 
 ///|
 pub extern "js" fn MediaMetadata::set_artwork(
   self : MediaMetadata,
-  value : JsValue,
+  value : Array[JsValue],
 ) -> Unit =
   #| (self, value) => { self.artwork = value }
 
 ///|
 pub extern "js" fn MediaMetadata::get_chapter_info(
   self : MediaMetadata,
-) -> JsValue =
+) -> Array[ChapterInformation] =
   #| (self) => self.chapterInfo
 
 ///|
@@ -534,5 +669,5 @@ pub extern "js" fn ChapterInformation::get_start_time(
 ///|
 pub extern "js" fn ChapterInformation::get_artwork(
   self : ChapterInformation,
-) -> JsValue =
+) -> Array[MediaImage] =
   #| (self) => self.artwork

@@ -6,7 +6,7 @@
 pub(all) enum IDBRequestReadyState {
   Pending
   Done
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -33,7 +33,7 @@ pub(all) enum IDBTransactionDurability {
   Default
   Strict
   Relaxed
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -67,7 +67,7 @@ pub(all) enum IDBCursorDirection {
   Nextunique
   Prev
   Prevunique
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -98,7 +98,7 @@ pub(all) enum IDBTransactionMode {
   Readonly
   Readwrite
   Versionchange
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -123,7 +123,7 @@ pub fn IDBTransactionMode::from_string(s : String) -> IDBTransactionMode? {
 
 ///|
 /// IDBVersionChangeEventInit dictionary
-pub struct IDBVersionChangeEventInit {
+pub(all) struct IDBVersionChangeEventInit {
   oldVersion : Int64?
   newVersion : Nullable[Int64]
 }
@@ -138,18 +138,42 @@ pub fn IDBVersionChangeEventInit::default() -> IDBVersionChangeEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn IDBVersionChangeEventInit::to_js(
+extern "js" fn IDBVersionChangeEventInit::to_js_ffi(
   self : IDBVersionChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   oldVersion: self.oldVersion,
-  #|   newVersion: ((() => { const v = self.newVersion; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   newVersion: ((() => { const v = self.newVersion; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn IDBVersionChangeEventInit::to_js(
+  self : IDBVersionChangeEventInit,
+) -> JsValue {
+  IDBVersionChangeEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IDBVersionChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> IDBVersionChangeEventInit =
+  #| (v) => ({
+  #|   oldVersion: v.oldVersion,
+  #|   newVersion: (v.newVersion === undefined ? { $tag: 0 } : v.newVersion === null ? { $tag: 1 } : { $tag: 2, _0: v.newVersion })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IDBVersionChangeEventInit::from_js(
+  value : JsValue,
+) -> IDBVersionChangeEventInit {
+  IDBVersionChangeEventInit::from_js_ffi(value)
+}
+
+///|
 /// IDBDatabaseInfo dictionary
-pub struct IDBDatabaseInfo {
+pub(all) struct IDBDatabaseInfo {
   name : String?
   version : Int64?
 }
@@ -161,16 +185,34 @@ pub fn IDBDatabaseInfo::default() -> IDBDatabaseInfo {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn IDBDatabaseInfo::to_js(self : IDBDatabaseInfo) -> JsValue =
+extern "js" fn IDBDatabaseInfo::to_js_ffi(self : IDBDatabaseInfo) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   version: self.version
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn IDBDatabaseInfo::to_js(self : IDBDatabaseInfo) -> JsValue {
+  IDBDatabaseInfo::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IDBDatabaseInfo::from_js_ffi(value : JsValue) -> IDBDatabaseInfo =
+  #| (v) => ({
+  #|   name: v.name,
+  #|   version: v.version
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IDBDatabaseInfo::from_js(value : JsValue) -> IDBDatabaseInfo {
+  IDBDatabaseInfo::from_js_ffi(value)
+}
+
+///|
 /// IDBTransactionOptions dictionary
-pub struct IDBTransactionOptions {
+pub(all) struct IDBTransactionOptions {
   durability : IDBTransactionDurability?
 }
 
@@ -181,17 +223,36 @@ pub fn IDBTransactionOptions::default() -> IDBTransactionOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn IDBTransactionOptions::to_js(
+extern "js" fn IDBTransactionOptions::to_js_ffi(
   self : IDBTransactionOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   durability: ['default', 'strict', 'relaxed'][self.durability]
+  #|   durability: ((() => { const v = self.durability; if (v === undefined) return undefined; return ['default', 'strict', 'relaxed'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn IDBTransactionOptions::to_js(self : IDBTransactionOptions) -> JsValue {
+  IDBTransactionOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IDBTransactionOptions::from_js_ffi(
+  value : JsValue,
+) -> IDBTransactionOptions =
+  #| (v) => ({
+  #|   durability: (v.durability === undefined ? undefined : ['default', 'strict', 'relaxed'].indexOf(v.durability))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IDBTransactionOptions::from_js(value : JsValue) -> IDBTransactionOptions {
+  IDBTransactionOptions::from_js_ffi(value)
+}
+
+///|
 /// IDBObjectStoreParameters dictionary
-pub struct IDBObjectStoreParameters {
+pub(all) struct IDBObjectStoreParameters {
   keyPath : StringOrArrayOfString?
   autoIncrement : Bool?
 }
@@ -203,18 +264,42 @@ pub fn IDBObjectStoreParameters::default() -> IDBObjectStoreParameters {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn IDBObjectStoreParameters::to_js(
+extern "js" fn IDBObjectStoreParameters::to_js_ffi(
   self : IDBObjectStoreParameters,
 ) -> JsValue =
   #| (self) => ({
-  #|   keyPath: self.keyPath,
-  #|   autoIncrement: self.autoIncrement
+  #|   keyPath: ((() => { const v = self.keyPath; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   autoIncrement: (self.autoIncrement === -1 ? undefined : self.autoIncrement)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn IDBObjectStoreParameters::to_js(
+  self : IDBObjectStoreParameters,
+) -> JsValue {
+  IDBObjectStoreParameters::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IDBObjectStoreParameters::from_js_ffi(
+  value : JsValue,
+) -> IDBObjectStoreParameters =
+  #| (v) => ({
+  #|   keyPath: (v.keyPath === undefined ? { $tag: 0 } : { $tag: 1, _0: v.keyPath }),
+  #|   autoIncrement: (v.autoIncrement === undefined ? -1 : v.autoIncrement)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IDBObjectStoreParameters::from_js(
+  value : JsValue,
+) -> IDBObjectStoreParameters {
+  IDBObjectStoreParameters::from_js_ffi(value)
+}
+
+///|
 /// IDBIndexParameters dictionary
-pub struct IDBIndexParameters {
+pub(all) struct IDBIndexParameters {
   unique : Bool?
   multiEntry : Bool?
 }
@@ -226,18 +311,38 @@ pub fn IDBIndexParameters::default() -> IDBIndexParameters {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn IDBIndexParameters::to_js(
+extern "js" fn IDBIndexParameters::to_js_ffi(
   self : IDBIndexParameters,
 ) -> JsValue =
   #| (self) => ({
-  #|   unique: self.unique,
-  #|   multiEntry: self.multiEntry
+  #|   unique: (self.unique === -1 ? undefined : self.unique),
+  #|   multiEntry: (self.multiEntry === -1 ? undefined : self.multiEntry)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn IDBIndexParameters::to_js(self : IDBIndexParameters) -> JsValue {
+  IDBIndexParameters::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IDBIndexParameters::from_js_ffi(
+  value : JsValue,
+) -> IDBIndexParameters =
+  #| (v) => ({
+  #|   unique: (v.unique === undefined ? -1 : v.unique),
+  #|   multiEntry: (v.multiEntry === undefined ? -1 : v.multiEntry)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IDBIndexParameters::from_js(value : JsValue) -> IDBIndexParameters {
+  IDBIndexParameters::from_js_ffi(value)
+}
+
+///|
 /// IDBGetAllOptions dictionary
-pub struct IDBGetAllOptions {
+pub(all) struct IDBGetAllOptions {
   query : JsValue?
   count : Int?
   direction : IDBCursorDirection?
@@ -250,13 +355,34 @@ pub fn IDBGetAllOptions::default() -> IDBGetAllOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn IDBGetAllOptions::to_js(self : IDBGetAllOptions) -> JsValue =
+extern "js" fn IDBGetAllOptions::to_js_ffi(self : IDBGetAllOptions) -> JsValue =
   #| (self) => ({
-  #|   query: self.query,
+  #|   query: ((() => { const v = self.query; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   count: self.count,
-  #|   direction: ['next', 'nextunique', 'prev', 'prevunique'][self.direction]
+  #|   direction: ((() => { const v = self.direction; if (v === undefined) return undefined; return ['next', 'nextunique', 'prev', 'prevunique'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn IDBGetAllOptions::to_js(self : IDBGetAllOptions) -> JsValue {
+  IDBGetAllOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IDBGetAllOptions::from_js_ffi(
+  value : JsValue,
+) -> IDBGetAllOptions =
+  #| (v) => ({
+  #|   query: (v.query === undefined ? { $tag: 0 } : { $tag: 1, _0: v.query }),
+  #|   count: v.count,
+  #|   direction: (v.direction === undefined ? undefined : ['next', 'nextunique', 'prev', 'prevunique'].indexOf(v.direction))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IDBGetAllOptions::from_js(value : JsValue) -> IDBGetAllOptions {
+  IDBGetAllOptions::from_js_ffi(value)
+}
 
 ///|
 /// IDBRequest interface
@@ -304,7 +430,7 @@ pub extern "js" fn IDBRequest::get_result(self : IDBRequest) -> JsValue =
 
 ///|
 pub extern "js" fn IDBRequest::get_error(self : IDBRequest) -> DOMException? =
-  #| (self) => { const v = self.error; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.error; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn IDBRequest::get_source(
@@ -316,13 +442,13 @@ pub extern "js" fn IDBRequest::get_source(
 pub extern "js" fn IDBRequest::get_transaction(
   self : IDBRequest,
 ) -> IDBTransaction? =
-  #| (self) => { const v = self.transaction; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.transaction; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn IDBRequest::get_ready_state(
   self : IDBRequest,
 ) -> IDBRequestReadyState =
-  #| (self) => self.readyState
+  #| (self) => ['pending', 'done'].indexOf(self.readyState)
 
 ///|
 pub extern "js" fn IDBRequest::get_onsuccess(self : IDBRequest) -> EventHandler =
@@ -469,21 +595,38 @@ pub extern "js" fn IDBVersionChangeEvent::to_event(
 ///|
 pub extern "js" fn IDBVersionChangeEvent::new(
   type_ : String,
-  event_init_dict : IDBVersionChangeEventInit,
+) -> IDBVersionChangeEvent =
+  #| (type_) => new IDBVersionChangeEvent(type_)
+
+///|
+extern "js" fn IDBVersionChangeEvent::new_with_event_init_dict_ffi(
+  type_ : String,
+  event_init_dict : JsValue,
 ) -> IDBVersionChangeEvent =
   #| (type_, event_init_dict) => new IDBVersionChangeEvent(type_, event_init_dict)
+
+///|
+pub fn IDBVersionChangeEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : IDBVersionChangeEventInit,
+) -> IDBVersionChangeEvent {
+  IDBVersionChangeEvent::new_with_event_init_dict_ffi(
+    type_,
+    event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn IDBVersionChangeEvent::get_old_version(
   self : IDBVersionChangeEvent,
 ) -> Int64 =
-  #| (self) => self.oldVersion
+  #| (self) => (() => { const n = self.oldVersion; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn IDBVersionChangeEvent::get_new_version(
   self : IDBVersionChangeEvent,
 ) -> Int64? =
-  #| (self) => { const v = self.newVersion; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.newVersion; if (v == null) return undefined; const n = v; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 /// IDBFactory interface
@@ -526,7 +669,7 @@ pub extern "js" fn IDBFactory::open_with_version(
   name : String,
   version : Int64,
 ) -> IDBOpenDBRequest =
-  #| (self, name, version) => self.open(name, version)
+  #| (self, name, version) => self.open(name, (version.hi * 4294967296 + version.lo))
 
 ///|
 pub extern "js" fn IDBFactory::delete_database(
@@ -589,7 +732,7 @@ pub extern "js" fn IDBDatabase::get_name(self : IDBDatabase) -> String =
 
 ///|
 pub extern "js" fn IDBDatabase::get_version(self : IDBDatabase) -> Int64 =
-  #| (self) => self.version
+  #| (self) => (() => { const n = self.version; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn IDBDatabase::get_object_store_names(
@@ -605,13 +748,28 @@ pub extern "js" fn IDBDatabase::transaction(
   #| (self, store_names) => self.transaction(store_names)
 
 ///|
-pub extern "js" fn IDBDatabase::transaction_with_options(
+extern "js" fn IDBDatabase::transaction_with_options_ffi(
+  self : IDBDatabase,
+  store_names : StringOrArrayOfString,
+  mode : IDBTransactionMode,
+  options : JsValue,
+) -> IDBTransaction =
+  #| (self, store_names, mode, options) => self.transaction(store_names, ['readonly', 'readwrite', 'versionchange'][mode], options)
+
+///|
+pub fn IDBDatabase::transaction_with_options(
   self : IDBDatabase,
   store_names : StringOrArrayOfString,
   mode : IDBTransactionMode,
   options : IDBTransactionOptions,
-) -> IDBTransaction =
-  #| (self, store_names, mode, options) => self.transaction(store_names, ['readonly', 'readwrite', 'versionchange'][mode], options)
+) -> IDBTransaction {
+  IDBDatabase::transaction_with_options_ffi(
+    self,
+    store_names,
+    mode,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn IDBDatabase::close(self : IDBDatabase) -> Unit =
@@ -625,12 +783,21 @@ pub extern "js" fn IDBDatabase::create_object_store(
   #| (self, name) => self.createObjectStore(name)
 
 ///|
-pub extern "js" fn IDBDatabase::create_object_store_with_options(
+extern "js" fn IDBDatabase::create_object_store_with_options_ffi(
+  self : IDBDatabase,
+  name : String,
+  options : JsValue,
+) -> IDBObjectStore =
+  #| (self, name, options) => self.createObjectStore(name, options)
+
+///|
+pub fn IDBDatabase::create_object_store_with_options(
   self : IDBDatabase,
   name : String,
   options : IDBObjectStoreParameters,
-) -> IDBObjectStore =
-  #| (self, name, options) => self.createObjectStore(name, options)
+) -> IDBObjectStore {
+  IDBDatabase::create_object_store_with_options_ffi(self, name, options.to_js())
+}
 
 ///|
 pub extern "js" fn IDBDatabase::delete_object_store(
@@ -844,11 +1011,19 @@ pub extern "js" fn IDBObjectStore::get_all_records(
   #| (self) => self.getAllRecords()
 
 ///|
-pub extern "js" fn IDBObjectStore::get_all_records_with_options(
+extern "js" fn IDBObjectStore::get_all_records_with_options_ffi(
   self : IDBObjectStore,
-  options : IDBGetAllOptions,
+  options : JsValue,
 ) -> IDBRequest =
   #| (self, options) => self.getAllRecords(options)
+
+///|
+pub fn IDBObjectStore::get_all_records_with_options(
+  self : IDBObjectStore,
+  options : IDBGetAllOptions,
+) -> IDBRequest {
+  IDBObjectStore::get_all_records_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn IDBObjectStore::count(self : IDBObjectStore) -> IDBRequest =
@@ -905,13 +1080,28 @@ pub extern "js" fn IDBObjectStore::create_index(
   #| (self, name, key_path) => self.createIndex(name, key_path)
 
 ///|
-pub extern "js" fn IDBObjectStore::create_index_with_options(
+extern "js" fn IDBObjectStore::create_index_with_options_ffi(
+  self : IDBObjectStore,
+  name : String,
+  key_path : StringOrArrayOfString,
+  options : JsValue,
+) -> IDBIndex =
+  #| (self, name, key_path, options) => self.createIndex(name, key_path, options)
+
+///|
+pub fn IDBObjectStore::create_index_with_options(
   self : IDBObjectStore,
   name : String,
   key_path : StringOrArrayOfString,
   options : IDBIndexParameters,
-) -> IDBIndex =
-  #| (self, name, key_path, options) => self.createIndex(name, key_path, options)
+) -> IDBIndex {
+  IDBObjectStore::create_index_with_options_ffi(
+    self,
+    name,
+    key_path,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn IDBObjectStore::delete_index(
@@ -1017,11 +1207,19 @@ pub extern "js" fn IDBIndex::get_all_records(self : IDBIndex) -> IDBRequest =
   #| (self) => self.getAllRecords()
 
 ///|
-pub extern "js" fn IDBIndex::get_all_records_with_options(
+extern "js" fn IDBIndex::get_all_records_with_options_ffi(
   self : IDBIndex,
-  options : IDBGetAllOptions,
+  options : JsValue,
 ) -> IDBRequest =
   #| (self, options) => self.getAllRecords(options)
+
+///|
+pub fn IDBIndex::get_all_records_with_options(
+  self : IDBIndex,
+  options : IDBGetAllOptions,
+) -> IDBRequest {
+  IDBIndex::get_all_records_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn IDBIndex::count(self : IDBIndex) -> IDBRequest =
@@ -1107,14 +1305,22 @@ pub extern "js" fn IDBKeyRange::only(value : JsValue) -> IDBKeyRange =
   #| (value) => IDBKeyRange.only(value)
 
 ///|
-pub extern "js" fn IDBKeyRange::lower_bound(
+pub extern "js" fn IDBKeyRange::lower_bound(lower : JsValue) -> IDBKeyRange =
+  #| (lower) => IDBKeyRange.lowerBound(lower)
+
+///|
+pub extern "js" fn IDBKeyRange::lower_bound_with_open(
   lower : JsValue,
   open : Bool,
 ) -> IDBKeyRange =
   #| (lower, open) => IDBKeyRange.lowerBound(lower, open)
 
 ///|
-pub extern "js" fn IDBKeyRange::upper_bound(
+pub extern "js" fn IDBKeyRange::upper_bound(upper : JsValue) -> IDBKeyRange =
+  #| (upper) => IDBKeyRange.upperBound(upper)
+
+///|
+pub extern "js" fn IDBKeyRange::upper_bound_with_open(
   upper : JsValue,
   open : Bool,
 ) -> IDBKeyRange =
@@ -1122,6 +1328,13 @@ pub extern "js" fn IDBKeyRange::upper_bound(
 
 ///|
 pub extern "js" fn IDBKeyRange::bound(
+  lower : JsValue,
+  upper : JsValue,
+) -> IDBKeyRange =
+  #| (lower, upper) => IDBKeyRange.bound(lower, upper)
+
+///|
+pub extern "js" fn IDBKeyRange::bound_with_upper_open(
   lower : JsValue,
   upper : JsValue,
   lower_open : Bool,
@@ -1220,7 +1433,7 @@ pub extern "js" fn IDBCursor::get_source(
 pub extern "js" fn IDBCursor::get_direction(
   self : IDBCursor,
 ) -> IDBCursorDirection =
-  #| (self) => self.direction
+  #| (self) => ['next', 'nextunique', 'prev', 'prevunique'].indexOf(self.direction)
 
 ///|
 pub extern "js" fn IDBCursor::get_key(self : IDBCursor) -> JsValue =
@@ -1370,13 +1583,13 @@ pub extern "js" fn IDBTransaction::get_object_store_names(
 pub extern "js" fn IDBTransaction::get_mode(
   self : IDBTransaction,
 ) -> IDBTransactionMode =
-  #| (self) => self.mode
+  #| (self) => ['readonly', 'readwrite', 'versionchange'].indexOf(self.mode)
 
 ///|
 pub extern "js" fn IDBTransaction::get_durability(
   self : IDBTransaction,
 ) -> IDBTransactionDurability =
-  #| (self) => self.durability
+  #| (self) => ['default', 'strict', 'relaxed'].indexOf(self.durability)
 
 ///|
 pub extern "js" fn IDBTransaction::get_db(self : IDBTransaction) -> IDBDatabase =
@@ -1386,7 +1599,7 @@ pub extern "js" fn IDBTransaction::get_db(self : IDBTransaction) -> IDBDatabase 
 pub extern "js" fn IDBTransaction::get_error(
   self : IDBTransaction,
 ) -> DOMException? =
-  #| (self) => { const v = self.error; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.error; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn IDBTransaction::object_store(

@@ -7,7 +7,7 @@ pub(all) enum AutoplayPolicy {
   Allowed
   AllowedMuted
   Disallowed
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -35,7 +35,7 @@ pub fn AutoplayPolicy::from_string(s : String) -> AutoplayPolicy? {
 pub(all) enum AutoplayPolicyMediaType {
   Mediaelement
   Audiocontext
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

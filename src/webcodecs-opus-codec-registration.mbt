@@ -6,7 +6,7 @@
 pub(all) enum OpusBitstreamFormat {
   Opus
   Ogg
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -33,7 +33,7 @@ pub(all) enum OpusSignal {
   Auto
   Music
   Voice
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -62,7 +62,7 @@ pub(all) enum OpusApplication {
   Voip
   Audio
   Lowdelay
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -87,7 +87,7 @@ pub fn OpusApplication::from_string(s : String) -> OpusApplication? {
 
 ///|
 /// OpusEncoderConfig dictionary
-pub struct OpusEncoderConfig {
+pub(all) struct OpusEncoderConfig {
   format : OpusBitstreamFormat?
   signal : OpusSignal?
   application : OpusApplication?
@@ -114,17 +114,43 @@ pub fn OpusEncoderConfig::default() -> OpusEncoderConfig {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn OpusEncoderConfig::to_js(
+extern "js" fn OpusEncoderConfig::to_js_ffi(
   self : OpusEncoderConfig,
 ) -> JsValue =
   #| (self) => ({
-  #|   format: ['opus', 'ogg'][self.format],
-  #|   signal: ['auto', 'music', 'voice'][self.signal],
-  #|   application: ['voip', 'audio', 'lowdelay'][self.application],
+  #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['opus', 'ogg'][v]; })()),
+  #|   signal: ((() => { const v = self.signal; if (v === undefined) return undefined; return ['auto', 'music', 'voice'][v]; })()),
+  #|   application: ((() => { const v = self.application; if (v === undefined) return undefined; return ['voip', 'audio', 'lowdelay'][v]; })()),
   #|   frameDuration: self.frameDuration,
   #|   complexity: self.complexity,
   #|   packetlossperc: self.packetlossperc,
-  #|   useinbandfec: self.useinbandfec,
-  #|   usedtx: self.usedtx
+  #|   useinbandfec: (self.useinbandfec === -1 ? undefined : self.useinbandfec),
+  #|   usedtx: (self.usedtx === -1 ? undefined : self.usedtx)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn OpusEncoderConfig::to_js(self : OpusEncoderConfig) -> JsValue {
+  OpusEncoderConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn OpusEncoderConfig::from_js_ffi(
+  value : JsValue,
+) -> OpusEncoderConfig =
+  #| (v) => ({
+  #|   format: (v.format === undefined ? undefined : ['opus', 'ogg'].indexOf(v.format)),
+  #|   signal: (v.signal === undefined ? undefined : ['auto', 'music', 'voice'].indexOf(v.signal)),
+  #|   application: (v.application === undefined ? undefined : ['voip', 'audio', 'lowdelay'].indexOf(v.application)),
+  #|   frameDuration: v.frameDuration,
+  #|   complexity: v.complexity,
+  #|   packetlossperc: v.packetlossperc,
+  #|   useinbandfec: (v.useinbandfec === undefined ? -1 : v.useinbandfec),
+  #|   usedtx: (v.usedtx === undefined ? -1 : v.usedtx)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn OpusEncoderConfig::from_js(value : JsValue) -> OpusEncoderConfig {
+  OpusEncoderConfig::from_js_ffi(value)
+}

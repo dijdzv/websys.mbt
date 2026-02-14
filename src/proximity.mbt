@@ -50,21 +50,32 @@ pub extern "js" fn ProximitySensor::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn ProximitySensor::new(
-  sensor_options : SensorOptions,
+pub extern "js" fn ProximitySensor::new() -> ProximitySensor =
+  #| () => new ProximitySensor()
+
+///|
+extern "js" fn ProximitySensor::new_with_sensor_options_ffi(
+  sensor_options : JsValue,
 ) -> ProximitySensor =
   #| (sensor_options) => new ProximitySensor(sensor_options)
+
+///|
+pub fn ProximitySensor::new_with_sensor_options(
+  sensor_options : SensorOptions,
+) -> ProximitySensor {
+  ProximitySensor::new_with_sensor_options_ffi(sensor_options.to_js())
+}
 
 ///|
 pub extern "js" fn ProximitySensor::get_distance(
   self : ProximitySensor,
 ) -> Double? =
-  #| (self) => { const v = self.distance; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.distance) ?? undefined
 
 ///|
 pub extern "js" fn ProximitySensor::get_max(self : ProximitySensor) -> Double? =
-  #| (self) => { const v = self.max; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.max) ?? undefined
 
 ///|
 pub extern "js" fn ProximitySensor::get_near(self : ProximitySensor) -> Bool? =
-  #| (self) => { const v = self.near; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.near) ?? undefined

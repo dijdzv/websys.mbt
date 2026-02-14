@@ -29,7 +29,7 @@ pub(all) enum XRHandJoint {
   PinkyFingerPhalanxIntermediate
   PinkyFingerPhalanxDistal
   PinkyFingerTip
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -138,8 +138,20 @@ pub extern "js" fn JsValue::to_xr_hand(self : JsValue) -> XRHand =
   #| (self) => self
 
 ///|
-pub extern "js" fn XRHand::_unknown_(self : XRHand) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn XRHand::keys(self : XRHand) -> JsValue =
+  #| (self) => self.keys()
+
+///|
+pub extern "js" fn XRHand::values(self : XRHand) -> JsValue =
+  #| (self) => self.values()
+
+///|
+pub extern "js" fn XRHand::entries(self : XRHand) -> JsValue =
+  #| (self) => self.entries()
+
+///|
+pub extern "js" fn XRHand::for_each(self : XRHand, callback : JsValue) -> Unit =
+  #| (self, callback) => { self.forEach(callback) }
 
 ///|
 pub extern "js" fn XRHand::get_size(self : XRHand) -> Int =
@@ -196,7 +208,7 @@ pub extern "js" fn XRJointSpace::to_event_target(
 pub extern "js" fn XRJointSpace::get_joint_name(
   self : XRJointSpace,
 ) -> XRHandJoint =
-  #| (self) => self.jointName
+  #| (self) => ['wrist', 'thumb-metacarpal', 'thumb-phalanx-proximal', 'thumb-phalanx-distal', 'thumb-tip', 'index-finger-metacarpal', 'index-finger-phalanx-proximal', 'index-finger-phalanx-intermediate', 'index-finger-phalanx-distal', 'index-finger-tip', 'middle-finger-metacarpal', 'middle-finger-phalanx-proximal', 'middle-finger-phalanx-intermediate', 'middle-finger-phalanx-distal', 'middle-finger-tip', 'ring-finger-metacarpal', 'ring-finger-phalanx-proximal', 'ring-finger-phalanx-intermediate', 'ring-finger-phalanx-distal', 'ring-finger-tip', 'pinky-finger-metacarpal', 'pinky-finger-phalanx-proximal', 'pinky-finger-phalanx-intermediate', 'pinky-finger-phalanx-distal', 'pinky-finger-tip'].indexOf(self.jointName)
 
 ///|
 /// XRJointPose interface

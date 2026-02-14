@@ -48,13 +48,13 @@ pub extern "js" fn CSSFontFeatureValuesRule::to_css_rule(
 ///|
 pub extern "js" fn CSSFontFeatureValuesRule::get_font_family(
   self : CSSFontFeatureValuesRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.fontFamily
 
 ///|
 pub extern "js" fn CSSFontFeatureValuesRule::set_font_family(
   self : CSSFontFeatureValuesRule,
-  value : CSSOMString,
+  value : String,
 ) -> Unit =
   #| (self, value) => { self.fontFamily = value }
 
@@ -141,21 +141,21 @@ pub extern "js" fn JsValue::to_css_font_feature_values_map(
 ///|
 pub extern "js" fn CSSFontFeatureValuesMap::get(
   self : CSSFontFeatureValuesMap,
-  key : CSSOMString,
+  key : String,
 ) -> Array[Int]? =
-  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, key) => self.get(key)
 
 ///|
 pub extern "js" fn CSSFontFeatureValuesMap::has(
   self : CSSFontFeatureValuesMap,
-  key : CSSOMString,
+  key : String,
 ) -> Bool =
   #| (self, key) => self.has(key)
 
 ///|
 pub extern "js" fn CSSFontFeatureValuesMap::set(
   self : CSSFontFeatureValuesMap,
-  key : CSSOMString,
+  key : String,
   value : Array[Int],
 ) -> Unit =
   #| (self, key, value) => { self.set(key, value) }
@@ -163,7 +163,7 @@ pub extern "js" fn CSSFontFeatureValuesMap::set(
 ///|
 pub extern "js" fn CSSFontFeatureValuesMap::delete(
   self : CSSFontFeatureValuesMap,
-  key : CSSOMString,
+  key : String,
 ) -> Bool =
   #| (self, key) => self.delete(key)
 
@@ -220,23 +220,23 @@ pub extern "js" fn CSSFontPaletteValuesRule::to_css_rule(
 ///|
 pub extern "js" fn CSSFontPaletteValuesRule::get_name(
   self : CSSFontPaletteValuesRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.name
 
 ///|
 pub extern "js" fn CSSFontPaletteValuesRule::get_font_family(
   self : CSSFontPaletteValuesRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.fontFamily
 
 ///|
 pub extern "js" fn CSSFontPaletteValuesRule::get_base_palette(
   self : CSSFontPaletteValuesRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.basePalette
 
 ///|
 pub extern "js" fn CSSFontPaletteValuesRule::get_override_colors(
   self : CSSFontPaletteValuesRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.overrideColors

@@ -9,7 +9,7 @@ pub(all) enum ContentCategory {
   Article
   Video
   Audio
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -38,7 +38,7 @@ pub fn ContentCategory::from_string(s : String) -> ContentCategory? {
 
 ///|
 /// ContentDescription dictionary
-pub struct ContentDescription {
+pub(all) struct ContentDescription {
   id : String
   title : String
   description : String
@@ -61,22 +61,46 @@ pub fn ContentDescription::default() -> ContentDescription {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ContentDescription::to_js(
+extern "js" fn ContentDescription::to_js_ffi(
   self : ContentDescription,
 ) -> JsValue =
   #| (self) => ({
   #|   id: self.id,
   #|   title: self.title,
   #|   description: self.description,
-  #|   category: ['', 'homepage', 'article', 'video', 'audio'][self.category],
-  #|   icons: self.icons,
+  #|   category: ((() => { const v = self.category; if (v === undefined) return undefined; return ['', 'homepage', 'article', 'video', 'audio'][v]; })()),
+  #|   icons: ((() => { const v = self.icons; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   url: self.url
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ContentDescription::to_js(self : ContentDescription) -> JsValue {
+  ContentDescription::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ContentDescription::from_js_ffi(
+  value : JsValue,
+) -> ContentDescription =
+  #| (v) => ({
+  #|   id: v.id,
+  #|   title: v.title,
+  #|   description: v.description,
+  #|   category: (v.category === undefined ? undefined : ['', 'homepage', 'article', 'video', 'audio'].indexOf(v.category)),
+  #|   icons: (v.icons === undefined ? { $tag: 0 } : { $tag: 1, _0: v.icons }),
+  #|   url: v.url
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ContentDescription::from_js(value : JsValue) -> ContentDescription {
+  ContentDescription::from_js_ffi(value)
+}
+
+///|
 /// ContentIndexEventInit dictionary
-pub struct ContentIndexEventInit {
+pub(all) struct ContentIndexEventInit {
   id : String
 }
 
@@ -87,13 +111,32 @@ pub fn ContentIndexEventInit::default() -> ContentIndexEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ContentIndexEventInit::to_js(
+extern "js" fn ContentIndexEventInit::to_js_ffi(
   self : ContentIndexEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   id: self.id
   #| })
+
+///|
+/// Convert to JsValue
+pub fn ContentIndexEventInit::to_js(self : ContentIndexEventInit) -> JsValue {
+  ContentIndexEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ContentIndexEventInit::from_js_ffi(
+  value : JsValue,
+) -> ContentIndexEventInit =
+  #| (v) => ({
+  #|   id: v.id
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ContentIndexEventInit::from_js(value : JsValue) -> ContentIndexEventInit {
+  ContentIndexEventInit::from_js_ffi(value)
+}
 
 ///|
 /// ContentIndex interface
@@ -126,11 +169,19 @@ pub extern "js" fn JsValue::to_content_index(self : JsValue) -> ContentIndex =
   #| (self) => self
 
 ///|
-pub extern "js" fn ContentIndex::add(
+extern "js" fn ContentIndex::add_ffi(
   self : ContentIndex,
-  description : ContentDescription,
+  description : JsValue,
 ) -> Promise[Unit] =
   #| (self, description) => self.add(description)
+
+///|
+pub fn ContentIndex::add(
+  self : ContentIndex,
+  description : ContentDescription,
+) -> Promise[Unit] {
+  ContentIndex::add_ffi(self, description.to_js())
+}
 
 ///|
 pub extern "js" fn ContentIndex::delete(
@@ -196,11 +247,19 @@ pub extern "js" fn ContentIndexEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn ContentIndexEvent::new(
+extern "js" fn ContentIndexEvent::new_ffi(
   type_ : String,
-  init_ : ContentIndexEventInit,
+  init_ : JsValue,
 ) -> ContentIndexEvent =
   #| (type_, init_) => new ContentIndexEvent(type_, init_)
+
+///|
+pub fn ContentIndexEvent::new(
+  type_ : String,
+  init_ : ContentIndexEventInit,
+) -> ContentIndexEvent {
+  ContentIndexEvent::new_ffi(type_, init_.to_js())
+}
 
 ///|
 pub extern "js" fn ContentIndexEvent::get_id(

@@ -60,13 +60,13 @@ pub extern "js" fn CSSContainerRule::to_css_rule(
 ///|
 pub extern "js" fn CSSContainerRule::get_container_name(
   self : CSSContainerRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.containerName
 
 ///|
 pub extern "js" fn CSSContainerRule::get_container_query(
   self : CSSContainerRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.containerQuery
 
 ///|
@@ -122,5 +122,5 @@ pub extern "js" fn CSSSupportsConditionRule::to_css_rule(
 ///|
 pub extern "js" fn CSSSupportsConditionRule::get_name(
   self : CSSSupportsConditionRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.name

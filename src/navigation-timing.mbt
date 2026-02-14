@@ -7,7 +7,7 @@ pub(all) enum NavigationTimingType {
   Navigate
   Reload
   BackForward
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -35,7 +35,7 @@ pub fn NavigationTimingType::from_string(s : String) -> NavigationTimingType? {
 pub(all) enum PerformanceTimingConfidenceValue {
   High
   Low
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -162,7 +162,7 @@ pub extern "js" fn PerformanceNavigationTiming::get_load_event_end(
 pub extern "js" fn PerformanceNavigationTiming::get_type(
   self : PerformanceNavigationTiming,
 ) -> NavigationTimingType =
-  #| (self) => self.type
+  #| (self) => ['navigate', 'reload', 'back_forward'].indexOf(self.type)
 
 ///|
 pub extern "js" fn PerformanceNavigationTiming::get_redirect_count(
@@ -180,7 +180,7 @@ pub extern "js" fn PerformanceNavigationTiming::get_critical_ch_restart(
 pub extern "js" fn PerformanceNavigationTiming::get_not_restored_reasons(
   self : PerformanceNavigationTiming,
 ) -> NotRestoredReasons? =
-  #| (self) => { const v = self.notRestoredReasons; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.notRestoredReasons; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn PerformanceNavigationTiming::get_confidence(
@@ -248,7 +248,7 @@ pub extern "js" fn PerformanceTimingConfidence::get_randomized_trigger_rate(
 pub extern "js" fn PerformanceTimingConfidence::get_value(
   self : PerformanceTimingConfidence,
 ) -> PerformanceTimingConfidenceValue =
-  #| (self) => self.value
+  #| (self) => ['high', 'low'].indexOf(self.value)
 
 ///|
 pub extern "js" fn PerformanceTimingConfidence::to_json(
@@ -298,127 +298,127 @@ pub extern "js" fn JsValue::to_performance_timing(
 pub extern "js" fn PerformanceTiming::get_navigation_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.navigationStart
+  #| (self) => (() => { const n = self.navigationStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_unload_event_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.unloadEventStart
+  #| (self) => (() => { const n = self.unloadEventStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_unload_event_end(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.unloadEventEnd
+  #| (self) => (() => { const n = self.unloadEventEnd; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_redirect_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.redirectStart
+  #| (self) => (() => { const n = self.redirectStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_redirect_end(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.redirectEnd
+  #| (self) => (() => { const n = self.redirectEnd; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_fetch_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.fetchStart
+  #| (self) => (() => { const n = self.fetchStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_domain_lookup_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.domainLookupStart
+  #| (self) => (() => { const n = self.domainLookupStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_domain_lookup_end(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.domainLookupEnd
+  #| (self) => (() => { const n = self.domainLookupEnd; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_connect_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.connectStart
+  #| (self) => (() => { const n = self.connectStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_connect_end(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.connectEnd
+  #| (self) => (() => { const n = self.connectEnd; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_secure_connection_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.secureConnectionStart
+  #| (self) => (() => { const n = self.secureConnectionStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_request_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.requestStart
+  #| (self) => (() => { const n = self.requestStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_response_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.responseStart
+  #| (self) => (() => { const n = self.responseStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_response_end(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.responseEnd
+  #| (self) => (() => { const n = self.responseEnd; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_dom_loading(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.domLoading
+  #| (self) => (() => { const n = self.domLoading; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_dom_interactive(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.domInteractive
+  #| (self) => (() => { const n = self.domInteractive; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_dom_content_loaded_event_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.domContentLoadedEventStart
+  #| (self) => (() => { const n = self.domContentLoadedEventStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_dom_content_loaded_event_end(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.domContentLoadedEventEnd
+  #| (self) => (() => { const n = self.domContentLoadedEventEnd; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_dom_complete(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.domComplete
+  #| (self) => (() => { const n = self.domComplete; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_load_event_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.loadEventStart
+  #| (self) => (() => { const n = self.loadEventStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::get_load_event_end(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => self.loadEventEnd
+  #| (self) => (() => { const n = self.loadEventEnd; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn PerformanceTiming::to_json(

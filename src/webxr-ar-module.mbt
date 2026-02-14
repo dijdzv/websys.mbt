@@ -7,7 +7,7 @@ pub(all) enum XREnvironmentBlendMode {
   Opaque
   AlphaBlend
   Additive
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -39,7 +39,7 @@ pub fn XREnvironmentBlendMode::from_string(
 pub(all) enum XRInteractionMode {
   ScreenSpace
   WorldSpace
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

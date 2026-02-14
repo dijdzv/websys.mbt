@@ -3,7 +3,7 @@
 
 ///|
 /// SyncEventInit dictionary
-pub struct SyncEventInit {
+pub(all) struct SyncEventInit {
   tag : String
   lastChance : Bool?
 }
@@ -15,12 +15,30 @@ pub fn SyncEventInit::default() -> SyncEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SyncEventInit::to_js(self : SyncEventInit) -> JsValue =
+extern "js" fn SyncEventInit::to_js_ffi(self : SyncEventInit) -> JsValue =
   #| (self) => ({
   #|   tag: self.tag,
-  #|   lastChance: self.lastChance
+  #|   lastChance: (self.lastChance === -1 ? undefined : self.lastChance)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn SyncEventInit::to_js(self : SyncEventInit) -> JsValue {
+  SyncEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SyncEventInit::from_js_ffi(value : JsValue) -> SyncEventInit =
+  #| (v) => ({
+  #|   tag: v.tag,
+  #|   lastChance: (v.lastChance === undefined ? -1 : v.lastChance)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SyncEventInit::from_js(value : JsValue) -> SyncEventInit {
+  SyncEventInit::from_js_ffi(value)
+}
 
 ///|
 /// SyncManager interface
@@ -102,11 +120,13 @@ pub extern "js" fn SyncEvent::to_event(self : SyncEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn SyncEvent::new(
-  type_ : String,
-  init_ : SyncEventInit,
-) -> SyncEvent =
+extern "js" fn SyncEvent::new_ffi(type_ : String, init_ : JsValue) -> SyncEvent =
   #| (type_, init_) => new SyncEvent(type_, init_)
+
+///|
+pub fn SyncEvent::new(type_ : String, init_ : SyncEventInit) -> SyncEvent {
+  SyncEvent::new_ffi(type_, init_.to_js())
+}
 
 ///|
 pub extern "js" fn SyncEvent::get_tag(self : SyncEvent) -> String =

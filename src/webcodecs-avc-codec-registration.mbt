@@ -6,7 +6,7 @@
 pub(all) enum AvcBitstreamFormat {
   Annexb
   Avc
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -29,7 +29,7 @@ pub fn AvcBitstreamFormat::from_string(s : String) -> AvcBitstreamFormat? {
 
 ///|
 /// VideoEncoderConfig dictionary
-pub struct VideoEncoderConfig {
+pub(all) struct VideoEncoderConfig {
   avc : AvcEncoderConfig?
   hevc : HevcEncoderConfig?
   codec : String
@@ -70,13 +70,12 @@ pub fn VideoEncoderConfig::default() -> VideoEncoderConfig {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn VideoEncoderConfig::to_js(
+extern "js" fn VideoEncoderConfig::to_js_ffi(
   self : VideoEncoderConfig,
 ) -> JsValue =
   #| (self) => ({
-  #|   avc: self.avc,
-  #|   hevc: self.hevc,
+  #|   avc: ((() => { const v = self.avc; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   hevc: ((() => { const v = self.hevc; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   codec: self.codec,
   #|   width: self.width,
   #|   height: self.height,
@@ -84,17 +83,51 @@ pub extern "js" fn VideoEncoderConfig::to_js(
   #|   displayHeight: self.displayHeight,
   #|   bitrate: self.bitrate,
   #|   framerate: self.framerate,
-  #|   hardwareAcceleration: ['no-preference', 'prefer-hardware', 'prefer-software'][self.hardwareAcceleration],
-  #|   alpha: ['keep', 'discard'][self.alpha],
+  #|   hardwareAcceleration: ((() => { const v = self.hardwareAcceleration; if (v === undefined) return undefined; return ['no-preference', 'prefer-hardware', 'prefer-software'][v]; })()),
+  #|   alpha: ((() => { const v = self.alpha; if (v === undefined) return undefined; return ['keep', 'discard'][v]; })()),
   #|   scalabilityMode: self.scalabilityMode,
-  #|   bitrateMode: ['constant', 'variable', 'quantizer'][self.bitrateMode],
-  #|   latencyMode: ['quality', 'realtime'][self.latencyMode],
+  #|   bitrateMode: ((() => { const v = self.bitrateMode; if (v === undefined) return undefined; return ['constant', 'variable', 'quantizer'][v]; })()),
+  #|   latencyMode: ((() => { const v = self.latencyMode; if (v === undefined) return undefined; return ['quality', 'realtime'][v]; })()),
   #|   contentHint: self.contentHint
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn VideoEncoderConfig::to_js(self : VideoEncoderConfig) -> JsValue {
+  VideoEncoderConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn VideoEncoderConfig::from_js_ffi(
+  value : JsValue,
+) -> VideoEncoderConfig =
+  #| (v) => ({
+  #|   avc: (v.avc === undefined ? { $tag: 0 } : { $tag: 1, _0: v.avc }),
+  #|   hevc: (v.hevc === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hevc }),
+  #|   codec: v.codec,
+  #|   width: v.width,
+  #|   height: v.height,
+  #|   displayWidth: v.displayWidth,
+  #|   displayHeight: v.displayHeight,
+  #|   bitrate: v.bitrate,
+  #|   framerate: v.framerate,
+  #|   hardwareAcceleration: (v.hardwareAcceleration === undefined ? undefined : ['no-preference', 'prefer-hardware', 'prefer-software'].indexOf(v.hardwareAcceleration)),
+  #|   alpha: (v.alpha === undefined ? undefined : ['keep', 'discard'].indexOf(v.alpha)),
+  #|   scalabilityMode: v.scalabilityMode,
+  #|   bitrateMode: (v.bitrateMode === undefined ? undefined : ['constant', 'variable', 'quantizer'].indexOf(v.bitrateMode)),
+  #|   latencyMode: (v.latencyMode === undefined ? undefined : ['quality', 'realtime'].indexOf(v.latencyMode)),
+  #|   contentHint: v.contentHint
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn VideoEncoderConfig::from_js(value : JsValue) -> VideoEncoderConfig {
+  VideoEncoderConfig::from_js_ffi(value)
+}
+
+///|
 /// AvcEncoderConfig dictionary
-pub struct AvcEncoderConfig {
+pub(all) struct AvcEncoderConfig {
   format : AvcBitstreamFormat?
 }
 
@@ -105,15 +138,34 @@ pub fn AvcEncoderConfig::default() -> AvcEncoderConfig {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AvcEncoderConfig::to_js(self : AvcEncoderConfig) -> JsValue =
+extern "js" fn AvcEncoderConfig::to_js_ffi(self : AvcEncoderConfig) -> JsValue =
   #| (self) => ({
-  #|   format: ['annexb', 'avc'][self.format]
+  #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['annexb', 'avc'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AvcEncoderConfig::to_js(self : AvcEncoderConfig) -> JsValue {
+  AvcEncoderConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AvcEncoderConfig::from_js_ffi(
+  value : JsValue,
+) -> AvcEncoderConfig =
+  #| (v) => ({
+  #|   format: (v.format === undefined ? undefined : ['annexb', 'avc'].indexOf(v.format))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AvcEncoderConfig::from_js(value : JsValue) -> AvcEncoderConfig {
+  AvcEncoderConfig::from_js_ffi(value)
+}
+
+///|
 /// VideoEncoderEncodeOptionsForAvc dictionary
-pub struct VideoEncoderEncodeOptionsForAvc {
+pub(all) struct VideoEncoderEncodeOptionsForAvc {
   quantizer : Nullable[Int]
 }
 
@@ -124,10 +176,33 @@ pub fn VideoEncoderEncodeOptionsForAvc::default() -> VideoEncoderEncodeOptionsFo
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn VideoEncoderEncodeOptionsForAvc::to_js(
+extern "js" fn VideoEncoderEncodeOptionsForAvc::to_js_ffi(
   self : VideoEncoderEncodeOptionsForAvc,
 ) -> JsValue =
   #| (self) => ({
-  #|   quantizer: ((() => { const v = self.quantizer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   quantizer: ((() => { const v = self.quantizer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn VideoEncoderEncodeOptionsForAvc::to_js(
+  self : VideoEncoderEncodeOptionsForAvc,
+) -> JsValue {
+  VideoEncoderEncodeOptionsForAvc::to_js_ffi(self)
+}
+
+///|
+extern "js" fn VideoEncoderEncodeOptionsForAvc::from_js_ffi(
+  value : JsValue,
+) -> VideoEncoderEncodeOptionsForAvc =
+  #| (v) => ({
+  #|   quantizer: (v.quantizer === undefined ? { $tag: 0 } : v.quantizer === null ? { $tag: 1 } : { $tag: 2, _0: v.quantizer })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn VideoEncoderEncodeOptionsForAvc::from_js(
+  value : JsValue,
+) -> VideoEncoderEncodeOptionsForAvc {
+  VideoEncoderEncodeOptionsForAvc::from_js_ffi(value)
+}

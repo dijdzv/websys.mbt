@@ -7,7 +7,7 @@ pub(all) enum CaptureStartFocusBehavior {
   FocusCapturingApplication
   FocusCapturedSurface
   NoFocusChange
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -42,7 +42,7 @@ pub fn CaptureStartFocusBehavior::from_string(
 pub(all) enum SelfCapturePreferenceEnum {
   Include
   Exclude
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -72,7 +72,7 @@ pub fn SelfCapturePreferenceEnum::from_string(
 pub(all) enum SystemAudioPreferenceEnum {
   Include
   Exclude
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -103,7 +103,7 @@ pub(all) enum WindowAudioPreferenceEnum {
   System
   Window
   Exclude
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -135,7 +135,7 @@ pub fn WindowAudioPreferenceEnum::from_string(
 pub(all) enum SurfaceSwitchingPreferenceEnum {
   Include
   Exclude
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -165,7 +165,7 @@ pub fn SurfaceSwitchingPreferenceEnum::from_string(
 pub(all) enum MonitorTypeSurfacesEnum {
   Include
   Exclude
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -196,7 +196,7 @@ pub(all) enum DisplayCaptureSurfaceType {
   Monitor
   Window
   Browser
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -229,7 +229,7 @@ pub(all) enum CursorCaptureConstraint {
   Never
   Always
   Motion
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -258,7 +258,7 @@ pub fn CursorCaptureConstraint::from_string(
 
 ///|
 /// DisplayMediaStreamOptions dictionary
-pub struct DisplayMediaStreamOptions {
+pub(all) struct DisplayMediaStreamOptions {
   video : BoolOrMediaTrackConstraints?
   audio : BoolOrMediaTrackConstraints?
   controller : CaptureController?
@@ -285,20 +285,50 @@ pub fn DisplayMediaStreamOptions::default() -> DisplayMediaStreamOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DisplayMediaStreamOptions::to_js(
+extern "js" fn DisplayMediaStreamOptions::to_js_ffi(
   self : DisplayMediaStreamOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   video: self.video,
-  #|   audio: self.audio,
-  #|   controller: self.controller,
-  #|   selfBrowserSurface: ['include', 'exclude'][self.selfBrowserSurface],
-  #|   systemAudio: ['include', 'exclude'][self.systemAudio],
-  #|   windowAudio: ['system', 'window', 'exclude'][self.windowAudio],
-  #|   surfaceSwitching: ['include', 'exclude'][self.surfaceSwitching],
-  #|   monitorTypeSurfaces: ['include', 'exclude'][self.monitorTypeSurfaces]
+  #|   video: ((() => { const v = self.video; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   audio: ((() => { const v = self.audio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   controller: ((() => { const v = self.controller; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   selfBrowserSurface: ((() => { const v = self.selfBrowserSurface; if (v === undefined) return undefined; return ['include', 'exclude'][v]; })()),
+  #|   systemAudio: ((() => { const v = self.systemAudio; if (v === undefined) return undefined; return ['include', 'exclude'][v]; })()),
+  #|   windowAudio: ((() => { const v = self.windowAudio; if (v === undefined) return undefined; return ['system', 'window', 'exclude'][v]; })()),
+  #|   surfaceSwitching: ((() => { const v = self.surfaceSwitching; if (v === undefined) return undefined; return ['include', 'exclude'][v]; })()),
+  #|   monitorTypeSurfaces: ((() => { const v = self.monitorTypeSurfaces; if (v === undefined) return undefined; return ['include', 'exclude'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn DisplayMediaStreamOptions::to_js(
+  self : DisplayMediaStreamOptions,
+) -> JsValue {
+  DisplayMediaStreamOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DisplayMediaStreamOptions::from_js_ffi(
+  value : JsValue,
+) -> DisplayMediaStreamOptions =
+  #| (v) => ({
+  #|   video: (v.video === undefined ? { $tag: 0 } : { $tag: 1, _0: v.video }),
+  #|   audio: (v.audio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.audio }),
+  #|   controller: (v.controller === undefined ? { $tag: 0 } : { $tag: 1, _0: v.controller }),
+  #|   selfBrowserSurface: (v.selfBrowserSurface === undefined ? undefined : ['include', 'exclude'].indexOf(v.selfBrowserSurface)),
+  #|   systemAudio: (v.systemAudio === undefined ? undefined : ['include', 'exclude'].indexOf(v.systemAudio)),
+  #|   windowAudio: (v.windowAudio === undefined ? undefined : ['system', 'window', 'exclude'].indexOf(v.windowAudio)),
+  #|   surfaceSwitching: (v.surfaceSwitching === undefined ? undefined : ['include', 'exclude'].indexOf(v.surfaceSwitching)),
+  #|   monitorTypeSurfaces: (v.monitorTypeSurfaces === undefined ? undefined : ['include', 'exclude'].indexOf(v.monitorTypeSurfaces))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DisplayMediaStreamOptions::from_js(
+  value : JsValue,
+) -> DisplayMediaStreamOptions {
+  DisplayMediaStreamOptions::from_js_ffi(value)
+}
 
 ///|
 /// CaptureController interface
@@ -365,7 +395,7 @@ pub extern "js" fn CaptureController::get_supported_zoom_levels(
 pub extern "js" fn CaptureController::get_zoom_level(
   self : CaptureController,
 ) -> Int? =
-  #| (self) => { const v = self.zoomLevel; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.zoomLevel) ?? undefined
 
 ///|
 pub extern "js" fn CaptureController::increase_zoom_level(
@@ -403,7 +433,7 @@ pub extern "js" fn CaptureController::forward_wheel(
   self : CaptureController,
   element : HTMLElement?,
 ) -> Promise[Unit] =
-  #| (self, element) => self.forwardWheel(element)
+  #| (self, element) => self.forwardWheel((element.$tag === 1 ? element._0 : null))
 
 ///|
 pub extern "js" fn CaptureController::get_oncapturedmousechange(

@@ -10,11 +10,11 @@ pub type IdleRequestCallback
 pub extern "js" fn IdleRequestCallback::from_fn(
   handler : (IdleDeadline) -> Unit,
 ) -> IdleRequestCallback =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// IdleRequestOptions dictionary
-pub struct IdleRequestOptions {
+pub(all) struct IdleRequestOptions {
   timeout : Int?
 }
 
@@ -25,13 +25,32 @@ pub fn IdleRequestOptions::default() -> IdleRequestOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn IdleRequestOptions::to_js(
+extern "js" fn IdleRequestOptions::to_js_ffi(
   self : IdleRequestOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   timeout: self.timeout
   #| })
+
+///|
+/// Convert to JsValue
+pub fn IdleRequestOptions::to_js(self : IdleRequestOptions) -> JsValue {
+  IdleRequestOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn IdleRequestOptions::from_js_ffi(
+  value : JsValue,
+) -> IdleRequestOptions =
+  #| (v) => ({
+  #|   timeout: v.timeout
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn IdleRequestOptions::from_js(value : JsValue) -> IdleRequestOptions {
+  IdleRequestOptions::from_js_ffi(value)
+}
 
 ///|
 /// IdleDeadline interface

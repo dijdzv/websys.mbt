@@ -12,7 +12,7 @@ pub(all) enum RTCErrorDetailTypeIdp {
   IdpTlsFailure
   IdpTokenExpired
   IdpTokenInvalid
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -56,7 +56,7 @@ pub extern "js" fn GenerateAssertionCallback::from_fn(
     RTCIdentityAssertionResult,
   ],
 ) -> GenerateAssertionCallback =
-  #| (handler) => handler
+  #| (handler) => (a0, a1, a2) => handler(a0, a1, a2)
 
 ///|
 /// ValidateAssertionCallback callback interface
@@ -67,27 +67,26 @@ pub type ValidateAssertionCallback
 pub extern "js" fn ValidateAssertionCallback::from_fn(
   handler : (String, String) -> Promise[RTCIdentityValidationResult],
 ) -> ValidateAssertionCallback =
-  #| (handler) => handler
+  #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
 /// RTCIdentityProvider dictionary
-pub struct RTCIdentityProvider {
+pub(all) struct RTCIdentityProvider {
   generateAssertion : GenerateAssertionCallback
   validateAssertion : ValidateAssertionCallback
 }
 
 ///|
-/// Create a new RTCIdentityProvider with default values
-pub fn RTCIdentityProvider::default() -> RTCIdentityProvider {
-  RTCIdentityProvider::{
-    generateAssertion: panic(),
-    validateAssertion: panic(),
-  }
+/// Create a new RTCIdentityProvider
+pub fn RTCIdentityProvider::new(
+  generateAssertion~ : GenerateAssertionCallback,
+  validateAssertion~ : ValidateAssertionCallback,
+) -> RTCIdentityProvider {
+  RTCIdentityProvider::{ generateAssertion, validateAssertion }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn RTCIdentityProvider::to_js(
+extern "js" fn RTCIdentityProvider::to_js_ffi(
   self : RTCIdentityProvider,
 ) -> JsValue =
   #| (self) => ({
@@ -96,21 +95,43 @@ pub extern "js" fn RTCIdentityProvider::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn RTCIdentityProvider::to_js(self : RTCIdentityProvider) -> JsValue {
+  RTCIdentityProvider::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCIdentityProvider::from_js_ffi(
+  value : JsValue,
+) -> RTCIdentityProvider =
+  #| (v) => ({
+  #|   generateAssertion: v.generateAssertion,
+  #|   validateAssertion: v.validateAssertion
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCIdentityProvider::from_js(value : JsValue) -> RTCIdentityProvider {
+  RTCIdentityProvider::from_js_ffi(value)
+}
+
+///|
 /// RTCIdentityAssertionResult dictionary
-pub struct RTCIdentityAssertionResult {
+pub(all) struct RTCIdentityAssertionResult {
   idp : RTCIdentityProviderDetails
   assertion : String
 }
 
 ///|
-/// Create a new RTCIdentityAssertionResult with default values
-pub fn RTCIdentityAssertionResult::default() -> RTCIdentityAssertionResult {
-  RTCIdentityAssertionResult::{ idp: panic(), assertion: "" }
+/// Create a new RTCIdentityAssertionResult
+pub fn RTCIdentityAssertionResult::new(
+  idp~ : RTCIdentityProviderDetails,
+) -> RTCIdentityAssertionResult {
+  RTCIdentityAssertionResult::{ idp, assertion: "" }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn RTCIdentityAssertionResult::to_js(
+extern "js" fn RTCIdentityAssertionResult::to_js_ffi(
   self : RTCIdentityAssertionResult,
 ) -> JsValue =
   #| (self) => ({
@@ -119,8 +140,33 @@ pub extern "js" fn RTCIdentityAssertionResult::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn RTCIdentityAssertionResult::to_js(
+  self : RTCIdentityAssertionResult,
+) -> JsValue {
+  RTCIdentityAssertionResult::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCIdentityAssertionResult::from_js_ffi(
+  value : JsValue,
+) -> RTCIdentityAssertionResult =
+  #| (v) => ({
+  #|   idp: v.idp,
+  #|   assertion: v.assertion
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCIdentityAssertionResult::from_js(
+  value : JsValue,
+) -> RTCIdentityAssertionResult {
+  RTCIdentityAssertionResult::from_js_ffi(value)
+}
+
+///|
 /// RTCIdentityProviderDetails dictionary
-pub struct RTCIdentityProviderDetails {
+pub(all) struct RTCIdentityProviderDetails {
   domain : String
   protocol : String?
 }
@@ -132,8 +178,7 @@ pub fn RTCIdentityProviderDetails::default() -> RTCIdentityProviderDetails {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn RTCIdentityProviderDetails::to_js(
+extern "js" fn RTCIdentityProviderDetails::to_js_ffi(
   self : RTCIdentityProviderDetails,
 ) -> JsValue =
   #| (self) => ({
@@ -142,8 +187,33 @@ pub extern "js" fn RTCIdentityProviderDetails::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn RTCIdentityProviderDetails::to_js(
+  self : RTCIdentityProviderDetails,
+) -> JsValue {
+  RTCIdentityProviderDetails::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCIdentityProviderDetails::from_js_ffi(
+  value : JsValue,
+) -> RTCIdentityProviderDetails =
+  #| (v) => ({
+  #|   domain: v.domain,
+  #|   protocol: v.protocol
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCIdentityProviderDetails::from_js(
+  value : JsValue,
+) -> RTCIdentityProviderDetails {
+  RTCIdentityProviderDetails::from_js_ffi(value)
+}
+
+///|
 /// RTCIdentityValidationResult dictionary
-pub struct RTCIdentityValidationResult {
+pub(all) struct RTCIdentityValidationResult {
   identity : String
   contents : String
 }
@@ -155,8 +225,7 @@ pub fn RTCIdentityValidationResult::default() -> RTCIdentityValidationResult {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn RTCIdentityValidationResult::to_js(
+extern "js" fn RTCIdentityValidationResult::to_js_ffi(
   self : RTCIdentityValidationResult,
 ) -> JsValue =
   #| (self) => ({
@@ -165,8 +234,33 @@ pub extern "js" fn RTCIdentityValidationResult::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn RTCIdentityValidationResult::to_js(
+  self : RTCIdentityValidationResult,
+) -> JsValue {
+  RTCIdentityValidationResult::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCIdentityValidationResult::from_js_ffi(
+  value : JsValue,
+) -> RTCIdentityValidationResult =
+  #| (v) => ({
+  #|   identity: v.identity,
+  #|   contents: v.contents
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCIdentityValidationResult::from_js(
+  value : JsValue,
+) -> RTCIdentityValidationResult {
+  RTCIdentityValidationResult::from_js_ffi(value)
+}
+
+///|
 /// RTCConfiguration dictionary
-pub struct RTCConfiguration {
+pub(all) struct RTCConfiguration {
   peerIdentity : String?
   iceServers : Array[RTCIceServer]?
   iceTransportPolicy : RTCIceTransportPolicy?
@@ -191,21 +285,46 @@ pub fn RTCConfiguration::default() -> RTCConfiguration {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn RTCConfiguration::to_js(self : RTCConfiguration) -> JsValue =
+extern "js" fn RTCConfiguration::to_js_ffi(self : RTCConfiguration) -> JsValue =
   #| (self) => ({
   #|   peerIdentity: self.peerIdentity,
-  #|   iceServers: self.iceServers,
-  #|   iceTransportPolicy: ['relay', 'all'][self.iceTransportPolicy],
-  #|   bundlePolicy: ['balanced', 'max-compat', 'max-bundle'][self.bundlePolicy],
-  #|   rtcpMuxPolicy: ['require'][self.rtcpMuxPolicy],
-  #|   certificates: self.certificates,
+  #|   iceServers: ((() => { const v = self.iceServers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   iceTransportPolicy: ((() => { const v = self.iceTransportPolicy; if (v === undefined) return undefined; return ['relay', 'all'][v]; })()),
+  #|   bundlePolicy: ((() => { const v = self.bundlePolicy; if (v === undefined) return undefined; return ['balanced', 'max-compat', 'max-bundle'][v]; })()),
+  #|   rtcpMuxPolicy: ((() => { const v = self.rtcpMuxPolicy; if (v === undefined) return undefined; return ['require'][v]; })()),
+  #|   certificates: ((() => { const v = self.certificates; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   iceCandidatePoolSize: self.iceCandidatePoolSize
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn RTCConfiguration::to_js(self : RTCConfiguration) -> JsValue {
+  RTCConfiguration::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCConfiguration::from_js_ffi(
+  value : JsValue,
+) -> RTCConfiguration =
+  #| (v) => ({
+  #|   peerIdentity: v.peerIdentity,
+  #|   iceServers: (v.iceServers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iceServers }),
+  #|   iceTransportPolicy: (v.iceTransportPolicy === undefined ? undefined : ['relay', 'all'].indexOf(v.iceTransportPolicy)),
+  #|   bundlePolicy: (v.bundlePolicy === undefined ? undefined : ['balanced', 'max-compat', 'max-bundle'].indexOf(v.bundlePolicy)),
+  #|   rtcpMuxPolicy: (v.rtcpMuxPolicy === undefined ? undefined : ['require'].indexOf(v.rtcpMuxPolicy)),
+  #|   certificates: (v.certificates === undefined ? { $tag: 0 } : { $tag: 1, _0: v.certificates }),
+  #|   iceCandidatePoolSize: v.iceCandidatePoolSize
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCConfiguration::from_js(value : JsValue) -> RTCConfiguration {
+  RTCConfiguration::from_js_ffi(value)
+}
+
+///|
 /// RTCIdentityProviderOptions dictionary
-pub struct RTCIdentityProviderOptions {
+pub(all) struct RTCIdentityProviderOptions {
   protocol : String?
   usernameHint : String?
   peerIdentity : String?
@@ -222,8 +341,7 @@ pub fn RTCIdentityProviderOptions::default() -> RTCIdentityProviderOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn RTCIdentityProviderOptions::to_js(
+extern "js" fn RTCIdentityProviderOptions::to_js_ffi(
   self : RTCIdentityProviderOptions,
 ) -> JsValue =
   #| (self) => ({
@@ -233,8 +351,34 @@ pub extern "js" fn RTCIdentityProviderOptions::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn RTCIdentityProviderOptions::to_js(
+  self : RTCIdentityProviderOptions,
+) -> JsValue {
+  RTCIdentityProviderOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCIdentityProviderOptions::from_js_ffi(
+  value : JsValue,
+) -> RTCIdentityProviderOptions =
+  #| (v) => ({
+  #|   protocol: v.protocol,
+  #|   usernameHint: v.usernameHint,
+  #|   peerIdentity: v.peerIdentity
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCIdentityProviderOptions::from_js(
+  value : JsValue,
+) -> RTCIdentityProviderOptions {
+  RTCIdentityProviderOptions::from_js_ffi(value)
+}
+
+///|
 /// RTCErrorInit dictionary
-pub struct RTCErrorInit {
+pub(all) struct RTCErrorInit {
   httpRequestStatusCode : Int?
   errorDetail : RTCErrorDetailType
   sdpLineNumber : Int?
@@ -244,11 +388,11 @@ pub struct RTCErrorInit {
 }
 
 ///|
-/// Create a new RTCErrorInit with default values
-pub fn RTCErrorInit::default() -> RTCErrorInit {
+/// Create a new RTCErrorInit
+pub fn RTCErrorInit::new(errorDetail~ : RTCErrorDetailType) -> RTCErrorInit {
   RTCErrorInit::{
     httpRequestStatusCode: None,
-    errorDetail: panic(),
+    errorDetail,
     sdpLineNumber: None,
     sctpCauseCode: None,
     receivedAlert: None,
@@ -257,8 +401,7 @@ pub fn RTCErrorInit::default() -> RTCErrorInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn RTCErrorInit::to_js(self : RTCErrorInit) -> JsValue =
+extern "js" fn RTCErrorInit::to_js_ffi(self : RTCErrorInit) -> JsValue =
   #| (self) => ({
   #|   httpRequestStatusCode: self.httpRequestStatusCode,
   #|   errorDetail: ['data-channel-failure', 'dtls-failure', 'fingerprint-failure', 'sctp-failure', 'sdp-syntax-error', 'hardware-encoder-not-available', 'hardware-encoder-error'][self.errorDetail],
@@ -267,6 +410,29 @@ pub extern "js" fn RTCErrorInit::to_js(self : RTCErrorInit) -> JsValue =
   #|   receivedAlert: self.receivedAlert,
   #|   sentAlert: self.sentAlert
   #| })
+
+///|
+/// Convert to JsValue
+pub fn RTCErrorInit::to_js(self : RTCErrorInit) -> JsValue {
+  RTCErrorInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCErrorInit::from_js_ffi(value : JsValue) -> RTCErrorInit =
+  #| (v) => ({
+  #|   httpRequestStatusCode: v.httpRequestStatusCode,
+  #|   errorDetail: ['data-channel-failure', 'dtls-failure', 'fingerprint-failure', 'sctp-failure', 'sdp-syntax-error', 'hardware-encoder-not-available', 'hardware-encoder-error'].indexOf(v.errorDetail),
+  #|   sdpLineNumber: v.sdpLineNumber,
+  #|   sctpCauseCode: v.sctpCauseCode,
+  #|   receivedAlert: v.receivedAlert,
+  #|   sentAlert: v.sentAlert
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCErrorInit::from_js(value : JsValue) -> RTCErrorInit {
+  RTCErrorInit::from_js_ffi(value)
+}
 
 ///|
 /// RTCIdentityProviderGlobalScope interface
@@ -363,11 +529,19 @@ pub extern "js" fn JsValue::to_rtc_identity_provider_registrar(
   #| (self) => self
 
 ///|
-pub extern "js" fn RTCIdentityProviderRegistrar::register(
+extern "js" fn RTCIdentityProviderRegistrar::register_ffi(
   self : RTCIdentityProviderRegistrar,
-  idp : RTCIdentityProvider,
+  idp : JsValue,
 ) -> Unit =
   #| (self, idp) => self.register(idp)
+
+///|
+pub fn RTCIdentityProviderRegistrar::register(
+  self : RTCIdentityProviderRegistrar,
+  idp : RTCIdentityProvider,
+) -> Unit {
+  RTCIdentityProviderRegistrar::register_ffi(self, idp.to_js())
+}
 
 ///|
 /// RTCIdentityAssertion interface

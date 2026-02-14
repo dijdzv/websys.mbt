@@ -6,7 +6,7 @@
 pub(all) enum LoginStatus {
   LoggedIn
   LoggedOut
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

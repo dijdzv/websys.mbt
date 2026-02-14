@@ -10,7 +10,7 @@ pub type ErrorCallback
 pub extern "js" fn ErrorCallback::from_fn(
   handler : (DOMException) -> Unit,
 ) -> ErrorCallback =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// FileSystemEntryCallback callback interface
@@ -21,7 +21,7 @@ pub type FileSystemEntryCallback
 pub extern "js" fn FileSystemEntryCallback::from_fn(
   handler : (FileSystemEntry) -> Unit,
 ) -> FileSystemEntryCallback =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// FileSystemEntriesCallback callback interface
@@ -32,7 +32,7 @@ pub type FileSystemEntriesCallback
 pub extern "js" fn FileSystemEntriesCallback::from_fn(
   handler : (Array[FileSystemEntry]) -> Unit,
 ) -> FileSystemEntriesCallback =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// FileCallback callback interface
@@ -43,11 +43,11 @@ pub type FileCallback
 pub extern "js" fn FileCallback::from_fn(
   handler : (File) -> Unit,
 ) -> FileCallback =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// FileSystemFlags dictionary
-pub struct FileSystemFlags {
+pub(all) struct FileSystemFlags {
   create : Bool?
   exclusive : Bool?
 }
@@ -59,12 +59,30 @@ pub fn FileSystemFlags::default() -> FileSystemFlags {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FileSystemFlags::to_js(self : FileSystemFlags) -> JsValue =
+extern "js" fn FileSystemFlags::to_js_ffi(self : FileSystemFlags) -> JsValue =
   #| (self) => ({
-  #|   create: self.create,
-  #|   exclusive: self.exclusive
+  #|   create: (self.create === -1 ? undefined : self.create),
+  #|   exclusive: (self.exclusive === -1 ? undefined : self.exclusive)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn FileSystemFlags::to_js(self : FileSystemFlags) -> JsValue {
+  FileSystemFlags::to_js_ffi(self)
+}
+
+///|
+extern "js" fn FileSystemFlags::from_js_ffi(value : JsValue) -> FileSystemFlags =
+  #| (v) => ({
+  #|   create: (v.create === undefined ? -1 : v.create),
+  #|   exclusive: (v.exclusive === undefined ? -1 : v.exclusive)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FileSystemFlags::from_js(value : JsValue) -> FileSystemFlags {
+  FileSystemFlags::from_js_ffi(value)
+}
 
 ///|
 /// FileSystemEntry interface
@@ -211,14 +229,31 @@ pub extern "js" fn FileSystemDirectoryEntry::get_file(
   #| (self) => self.getFile()
 
 ///|
-pub extern "js" fn FileSystemDirectoryEntry::get_file_with_error_callback(
+extern "js" fn FileSystemDirectoryEntry::get_file_with_error_callback_ffi(
+  self : FileSystemDirectoryEntry,
+  path : String?,
+  options : JsValue,
+  success_callback : FileSystemEntryCallback,
+  error_callback : ErrorCallback,
+) -> Unit =
+  #| (self, path, options, success_callback, error_callback) => self.getFile(path, options, success_callback, error_callback)
+
+///|
+pub fn FileSystemDirectoryEntry::get_file_with_error_callback(
   self : FileSystemDirectoryEntry,
   path : String?,
   options : FileSystemFlags,
   success_callback : FileSystemEntryCallback,
   error_callback : ErrorCallback,
-) -> Unit =
-  #| (self, path, options, success_callback, error_callback) => self.getFile(path, options, success_callback, error_callback)
+) -> Unit {
+  FileSystemDirectoryEntry::get_file_with_error_callback_ffi(
+    self,
+    path,
+    options.to_js(),
+    success_callback,
+    error_callback,
+  )
+}
 
 ///|
 pub extern "js" fn FileSystemDirectoryEntry::get_directory(
@@ -227,14 +262,31 @@ pub extern "js" fn FileSystemDirectoryEntry::get_directory(
   #| (self) => self.getDirectory()
 
 ///|
-pub extern "js" fn FileSystemDirectoryEntry::get_directory_with_error_callback(
+extern "js" fn FileSystemDirectoryEntry::get_directory_with_error_callback_ffi(
+  self : FileSystemDirectoryEntry,
+  path : String?,
+  options : JsValue,
+  success_callback : FileSystemEntryCallback,
+  error_callback : ErrorCallback,
+) -> Unit =
+  #| (self, path, options, success_callback, error_callback) => self.getDirectory(path, options, success_callback, error_callback)
+
+///|
+pub fn FileSystemDirectoryEntry::get_directory_with_error_callback(
   self : FileSystemDirectoryEntry,
   path : String?,
   options : FileSystemFlags,
   success_callback : FileSystemEntryCallback,
   error_callback : ErrorCallback,
-) -> Unit =
-  #| (self, path, options, success_callback, error_callback) => self.getDirectory(path, options, success_callback, error_callback)
+) -> Unit {
+  FileSystemDirectoryEntry::get_directory_with_error_callback_ffi(
+    self,
+    path,
+    options.to_js(),
+    success_callback,
+    error_callback,
+  )
+}
 
 ///|
 /// FileSystemDirectoryReader interface

@@ -44,7 +44,7 @@ pub extern "js" fn SharedStorageResponse::is_fenced_frame_config(
 pub extern "js" fn SharedStorageResponse::as_string(
   self : SharedStorageResponse,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get SharedStorageResponse as FencedFrameConfig
@@ -52,6 +52,28 @@ pub extern "js" fn SharedStorageResponse::as_fenced_frame_config(
   self : SharedStorageResponse,
 ) -> FencedFrameConfig? =
   #| (self) => (self instanceof FencedFrameConfig) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[SharedStorageResponse] to String?
+pub fn SharedStorageResponse::bind_as_string(
+  value : SharedStorageResponse?,
+) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[SharedStorageResponse] to FencedFrameConfig?
+pub fn SharedStorageResponse::bind_as_fenced_frame_config(
+  value : SharedStorageResponse?,
+) -> FencedFrameConfig? {
+  match value {
+    Some(v) => v.as_fenced_frame_config()
+    None => None
+  }
+}
 
 ///|
 /// RunFunctionForSharedStorageSelectURLOperation callback interface
@@ -62,11 +84,11 @@ pub type RunFunctionForSharedStorageSelectURLOperation
 pub extern "js" fn RunFunctionForSharedStorageSelectURLOperation::from_fn(
   handler : (Array[String], JsValue) -> Promise[Int],
 ) -> RunFunctionForSharedStorageSelectURLOperation =
-  #| (handler) => handler
+  #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
 /// SharedStorageUrlWithMetadata dictionary
-pub struct SharedStorageUrlWithMetadata {
+pub(all) struct SharedStorageUrlWithMetadata {
   url : String
   reportingMetadata : JsValue?
 }
@@ -78,18 +100,42 @@ pub fn SharedStorageUrlWithMetadata::default() -> SharedStorageUrlWithMetadata {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SharedStorageUrlWithMetadata::to_js(
+extern "js" fn SharedStorageUrlWithMetadata::to_js_ffi(
   self : SharedStorageUrlWithMetadata,
 ) -> JsValue =
   #| (self) => ({
   #|   url: self.url,
-  #|   reportingMetadata: self.reportingMetadata
+  #|   reportingMetadata: ((() => { const v = self.reportingMetadata; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SharedStorageUrlWithMetadata::to_js(
+  self : SharedStorageUrlWithMetadata,
+) -> JsValue {
+  SharedStorageUrlWithMetadata::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SharedStorageUrlWithMetadata::from_js_ffi(
+  value : JsValue,
+) -> SharedStorageUrlWithMetadata =
+  #| (v) => ({
+  #|   url: v.url,
+  #|   reportingMetadata: (v.reportingMetadata === undefined ? { $tag: 0 } : { $tag: 1, _0: v.reportingMetadata })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SharedStorageUrlWithMetadata::from_js(
+  value : JsValue,
+) -> SharedStorageUrlWithMetadata {
+  SharedStorageUrlWithMetadata::from_js_ffi(value)
+}
+
+///|
 /// SharedStorageModifierMethodOptions dictionary
-pub struct SharedStorageModifierMethodOptions {
+pub(all) struct SharedStorageModifierMethodOptions {
   withLock : String?
 }
 
@@ -100,8 +146,7 @@ pub fn SharedStorageModifierMethodOptions::default() -> SharedStorageModifierMet
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SharedStorageModifierMethodOptions::to_js(
+extern "js" fn SharedStorageModifierMethodOptions::to_js_ffi(
   self : SharedStorageModifierMethodOptions,
 ) -> JsValue =
   #| (self) => ({
@@ -109,8 +154,32 @@ pub extern "js" fn SharedStorageModifierMethodOptions::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SharedStorageModifierMethodOptions::to_js(
+  self : SharedStorageModifierMethodOptions,
+) -> JsValue {
+  SharedStorageModifierMethodOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SharedStorageModifierMethodOptions::from_js_ffi(
+  value : JsValue,
+) -> SharedStorageModifierMethodOptions =
+  #| (v) => ({
+  #|   withLock: v.withLock
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SharedStorageModifierMethodOptions::from_js(
+  value : JsValue,
+) -> SharedStorageModifierMethodOptions {
+  SharedStorageModifierMethodOptions::from_js_ffi(value)
+}
+
+///|
 /// SharedStorageSetMethodOptions dictionary
-pub struct SharedStorageSetMethodOptions {
+pub(all) struct SharedStorageSetMethodOptions {
   withLock : String?
   ignoreIfPresent : Bool?
 }
@@ -122,18 +191,42 @@ pub fn SharedStorageSetMethodOptions::default() -> SharedStorageSetMethodOptions
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SharedStorageSetMethodOptions::to_js(
+extern "js" fn SharedStorageSetMethodOptions::to_js_ffi(
   self : SharedStorageSetMethodOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   withLock: self.withLock,
-  #|   ignoreIfPresent: self.ignoreIfPresent
+  #|   ignoreIfPresent: (self.ignoreIfPresent === -1 ? undefined : self.ignoreIfPresent)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SharedStorageSetMethodOptions::to_js(
+  self : SharedStorageSetMethodOptions,
+) -> JsValue {
+  SharedStorageSetMethodOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SharedStorageSetMethodOptions::from_js_ffi(
+  value : JsValue,
+) -> SharedStorageSetMethodOptions =
+  #| (v) => ({
+  #|   withLock: v.withLock,
+  #|   ignoreIfPresent: (v.ignoreIfPresent === undefined ? -1 : v.ignoreIfPresent)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SharedStorageSetMethodOptions::from_js(
+  value : JsValue,
+) -> SharedStorageSetMethodOptions {
+  SharedStorageSetMethodOptions::from_js_ffi(value)
+}
+
+///|
 /// SharedStoragePrivateAggregationConfig dictionary
-pub struct SharedStoragePrivateAggregationConfig {
+pub(all) struct SharedStoragePrivateAggregationConfig {
   aggregationCoordinatorOrigin : String?
   contextId : String?
   filteringIdMaxBytes : Int64?
@@ -152,8 +245,7 @@ pub fn SharedStoragePrivateAggregationConfig::default() -> SharedStoragePrivateA
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SharedStoragePrivateAggregationConfig::to_js(
+extern "js" fn SharedStoragePrivateAggregationConfig::to_js_ffi(
   self : SharedStoragePrivateAggregationConfig,
 ) -> JsValue =
   #| (self) => ({
@@ -164,8 +256,35 @@ pub extern "js" fn SharedStoragePrivateAggregationConfig::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SharedStoragePrivateAggregationConfig::to_js(
+  self : SharedStoragePrivateAggregationConfig,
+) -> JsValue {
+  SharedStoragePrivateAggregationConfig::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SharedStoragePrivateAggregationConfig::from_js_ffi(
+  value : JsValue,
+) -> SharedStoragePrivateAggregationConfig =
+  #| (v) => ({
+  #|   aggregationCoordinatorOrigin: v.aggregationCoordinatorOrigin,
+  #|   contextId: v.contextId,
+  #|   filteringIdMaxBytes: v.filteringIdMaxBytes,
+  #|   maxContributions: v.maxContributions
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SharedStoragePrivateAggregationConfig::from_js(
+  value : JsValue,
+) -> SharedStoragePrivateAggregationConfig {
+  SharedStoragePrivateAggregationConfig::from_js_ffi(value)
+}
+
+///|
 /// SharedStorageRunOperationMethodOptions dictionary
-pub struct SharedStorageRunOperationMethodOptions {
+pub(all) struct SharedStorageRunOperationMethodOptions {
   data : JsValue?
   resolveToConfig : Bool?
   keepAlive : Bool?
@@ -186,21 +305,48 @@ pub fn SharedStorageRunOperationMethodOptions::default() -> SharedStorageRunOper
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SharedStorageRunOperationMethodOptions::to_js(
+extern "js" fn SharedStorageRunOperationMethodOptions::to_js_ffi(
   self : SharedStorageRunOperationMethodOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   data: self.data,
-  #|   resolveToConfig: self.resolveToConfig,
-  #|   keepAlive: self.keepAlive,
-  #|   privateAggregationConfig: self.privateAggregationConfig,
+  #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   resolveToConfig: (self.resolveToConfig === -1 ? undefined : self.resolveToConfig),
+  #|   keepAlive: (self.keepAlive === -1 ? undefined : self.keepAlive),
+  #|   privateAggregationConfig: ((() => { const v = self.privateAggregationConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   savedQuery: self.savedQuery
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SharedStorageRunOperationMethodOptions::to_js(
+  self : SharedStorageRunOperationMethodOptions,
+) -> JsValue {
+  SharedStorageRunOperationMethodOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SharedStorageRunOperationMethodOptions::from_js_ffi(
+  value : JsValue,
+) -> SharedStorageRunOperationMethodOptions =
+  #| (v) => ({
+  #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data }),
+  #|   resolveToConfig: (v.resolveToConfig === undefined ? -1 : v.resolveToConfig),
+  #|   keepAlive: (v.keepAlive === undefined ? -1 : v.keepAlive),
+  #|   privateAggregationConfig: (v.privateAggregationConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.privateAggregationConfig }),
+  #|   savedQuery: v.savedQuery
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SharedStorageRunOperationMethodOptions::from_js(
+  value : JsValue,
+) -> SharedStorageRunOperationMethodOptions {
+  SharedStorageRunOperationMethodOptions::from_js_ffi(value)
+}
+
+///|
 /// SharedStorageWorkletOptions dictionary
-pub struct SharedStorageWorkletOptions {
+pub(all) struct SharedStorageWorkletOptions {
   dataOrigin : String?
 }
 
@@ -211,13 +357,36 @@ pub fn SharedStorageWorkletOptions::default() -> SharedStorageWorkletOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SharedStorageWorkletOptions::to_js(
+extern "js" fn SharedStorageWorkletOptions::to_js_ffi(
   self : SharedStorageWorkletOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   dataOrigin: self.dataOrigin
   #| })
+
+///|
+/// Convert to JsValue
+pub fn SharedStorageWorkletOptions::to_js(
+  self : SharedStorageWorkletOptions,
+) -> JsValue {
+  SharedStorageWorkletOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SharedStorageWorkletOptions::from_js_ffi(
+  value : JsValue,
+) -> SharedStorageWorkletOptions =
+  #| (v) => ({
+  #|   dataOrigin: v.dataOrigin
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SharedStorageWorkletOptions::from_js(
+  value : JsValue,
+) -> SharedStorageWorkletOptions {
+  SharedStorageWorkletOptions::from_js_ffi(value)
+}
 
 ///|
 /// SharedStorageWorklet interface
@@ -272,13 +441,28 @@ pub extern "js" fn SharedStorageWorklet::select_url(
   #| (self, name, urls) => self.selectURL(name, urls)
 
 ///|
-pub extern "js" fn SharedStorageWorklet::select_url_with_options(
+extern "js" fn SharedStorageWorklet::select_url_with_options_ffi(
+  self : SharedStorageWorklet,
+  name : String,
+  urls : Array[SharedStorageUrlWithMetadata],
+  options : JsValue,
+) -> Promise[SharedStorageResponse] =
+  #| (self, name, urls, options) => self.selectURL(name, urls, options)
+
+///|
+pub fn SharedStorageWorklet::select_url_with_options(
   self : SharedStorageWorklet,
   name : String,
   urls : Array[SharedStorageUrlWithMetadata],
   options : SharedStorageRunOperationMethodOptions,
-) -> Promise[SharedStorageResponse] =
-  #| (self, name, urls, options) => self.selectURL(name, urls, options)
+) -> Promise[SharedStorageResponse] {
+  SharedStorageWorklet::select_url_with_options_ffi(
+    self,
+    name,
+    urls,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn SharedStorageWorklet::run(
@@ -288,12 +472,21 @@ pub extern "js" fn SharedStorageWorklet::run(
   #| (self, name) => self.run(name)
 
 ///|
-pub extern "js" fn SharedStorageWorklet::run_with_options(
+extern "js" fn SharedStorageWorklet::run_with_options_ffi(
+  self : SharedStorageWorklet,
+  name : String,
+  options : JsValue,
+) -> Promise[JsValue] =
+  #| (self, name, options) => self.run(name, options)
+
+///|
+pub fn SharedStorageWorklet::run_with_options(
   self : SharedStorageWorklet,
   name : String,
   options : SharedStorageRunOperationMethodOptions,
-) -> Promise[JsValue] =
-  #| (self, name, options) => self.run(name, options)
+) -> Promise[JsValue] {
+  SharedStorageWorklet::run_with_options_ffi(self, name, options.to_js())
+}
 
 ///|
 /// SharedStorageWorkletGlobalScope interface
@@ -481,9 +674,25 @@ pub extern "js" fn SharedStorageSetMethod::to_shared_storage_modifier_method(
 pub extern "js" fn SharedStorageSetMethod::new(
   key : String,
   value : String,
-  options : SharedStorageSetMethodOptions,
+) -> SharedStorageSetMethod =
+  #| (key, value) => new SharedStorageSetMethod(key, value)
+
+///|
+extern "js" fn SharedStorageSetMethod::new_with_options_ffi(
+  key : String,
+  value : String,
+  options : JsValue,
 ) -> SharedStorageSetMethod =
   #| (key, value, options) => new SharedStorageSetMethod(key, value, options)
+
+///|
+pub fn SharedStorageSetMethod::new_with_options(
+  key : String,
+  value : String,
+  options : SharedStorageSetMethodOptions,
+) -> SharedStorageSetMethod {
+  SharedStorageSetMethod::new_with_options_ffi(key, value, options.to_js())
+}
 
 ///|
 /// SharedStorageAppendMethod interface
@@ -533,9 +742,25 @@ pub extern "js" fn SharedStorageAppendMethod::to_shared_storage_modifier_method(
 pub extern "js" fn SharedStorageAppendMethod::new(
   key : String,
   value : String,
-  options : SharedStorageModifierMethodOptions,
+) -> SharedStorageAppendMethod =
+  #| (key, value) => new SharedStorageAppendMethod(key, value)
+
+///|
+extern "js" fn SharedStorageAppendMethod::new_with_options_ffi(
+  key : String,
+  value : String,
+  options : JsValue,
 ) -> SharedStorageAppendMethod =
   #| (key, value, options) => new SharedStorageAppendMethod(key, value, options)
+
+///|
+pub fn SharedStorageAppendMethod::new_with_options(
+  key : String,
+  value : String,
+  options : SharedStorageModifierMethodOptions,
+) -> SharedStorageAppendMethod {
+  SharedStorageAppendMethod::new_with_options_ffi(key, value, options.to_js())
+}
 
 ///|
 /// SharedStorageDeleteMethod interface
@@ -584,9 +809,23 @@ pub extern "js" fn SharedStorageDeleteMethod::to_shared_storage_modifier_method(
 ///|
 pub extern "js" fn SharedStorageDeleteMethod::new(
   key : String,
-  options : SharedStorageModifierMethodOptions,
+) -> SharedStorageDeleteMethod =
+  #| (key) => new SharedStorageDeleteMethod(key)
+
+///|
+extern "js" fn SharedStorageDeleteMethod::new_with_options_ffi(
+  key : String,
+  options : JsValue,
 ) -> SharedStorageDeleteMethod =
   #| (key, options) => new SharedStorageDeleteMethod(key, options)
+
+///|
+pub fn SharedStorageDeleteMethod::new_with_options(
+  key : String,
+  options : SharedStorageModifierMethodOptions,
+) -> SharedStorageDeleteMethod {
+  SharedStorageDeleteMethod::new_with_options_ffi(key, options.to_js())
+}
 
 ///|
 /// SharedStorageClearMethod interface
@@ -633,10 +872,21 @@ pub extern "js" fn SharedStorageClearMethod::to_shared_storage_modifier_method(
   #| (self) => self
 
 ///|
-pub extern "js" fn SharedStorageClearMethod::new(
-  options : SharedStorageModifierMethodOptions,
+pub extern "js" fn SharedStorageClearMethod::new() -> SharedStorageClearMethod =
+  #| () => new SharedStorageClearMethod()
+
+///|
+extern "js" fn SharedStorageClearMethod::new_with_options_ffi(
+  options : JsValue,
 ) -> SharedStorageClearMethod =
   #| (options) => new SharedStorageClearMethod(options)
+
+///|
+pub fn SharedStorageClearMethod::new_with_options(
+  options : SharedStorageModifierMethodOptions,
+) -> SharedStorageClearMethod {
+  SharedStorageClearMethod::new_with_options_ffi(options.to_js())
+}
 
 ///|
 /// SharedStorage interface
@@ -684,13 +934,23 @@ pub extern "js" fn SharedStorage::set(
   #| (self, key, value) => self.set(key, value)
 
 ///|
-pub extern "js" fn SharedStorage::set_with_options(
+extern "js" fn SharedStorage::set_with_options_ffi(
+  self : SharedStorage,
+  key : String,
+  value : String,
+  options : JsValue,
+) -> Promise[JsValue] =
+  #| (self, key, value, options) => self.set(key, value, options)
+
+///|
+pub fn SharedStorage::set_with_options(
   self : SharedStorage,
   key : String,
   value : String,
   options : SharedStorageSetMethodOptions,
-) -> Promise[JsValue] =
-  #| (self, key, value, options) => self.set(key, value, options)
+) -> Promise[JsValue] {
+  SharedStorage::set_with_options_ffi(self, key, value, options.to_js())
+}
 
 ///|
 pub extern "js" fn SharedStorage::append(
@@ -701,13 +961,23 @@ pub extern "js" fn SharedStorage::append(
   #| (self, key, value) => self.append(key, value)
 
 ///|
-pub extern "js" fn SharedStorage::append_with_options(
+extern "js" fn SharedStorage::append_with_options_ffi(
+  self : SharedStorage,
+  key : String,
+  value : String,
+  options : JsValue,
+) -> Promise[JsValue] =
+  #| (self, key, value, options) => self.append(key, value, options)
+
+///|
+pub fn SharedStorage::append_with_options(
   self : SharedStorage,
   key : String,
   value : String,
   options : SharedStorageModifierMethodOptions,
-) -> Promise[JsValue] =
-  #| (self, key, value, options) => self.append(key, value, options)
+) -> Promise[JsValue] {
+  SharedStorage::append_with_options_ffi(self, key, value, options.to_js())
+}
 
 ///|
 pub extern "js" fn SharedStorage::delete(
@@ -717,12 +987,21 @@ pub extern "js" fn SharedStorage::delete(
   #| (self, key) => self.delete(key)
 
 ///|
-pub extern "js" fn SharedStorage::delete_with_options(
+extern "js" fn SharedStorage::delete_with_options_ffi(
+  self : SharedStorage,
+  key : String,
+  options : JsValue,
+) -> Promise[JsValue] =
+  #| (self, key, options) => self.delete(key, options)
+
+///|
+pub fn SharedStorage::delete_with_options(
   self : SharedStorage,
   key : String,
   options : SharedStorageModifierMethodOptions,
-) -> Promise[JsValue] =
-  #| (self, key, options) => self.delete(key, options)
+) -> Promise[JsValue] {
+  SharedStorage::delete_with_options_ffi(self, key, options.to_js())
+}
 
 ///|
 pub extern "js" fn SharedStorage::clear(
@@ -731,11 +1010,19 @@ pub extern "js" fn SharedStorage::clear(
   #| (self) => self.clear()
 
 ///|
-pub extern "js" fn SharedStorage::clear_with_options(
+extern "js" fn SharedStorage::clear_with_options_ffi(
   self : SharedStorage,
-  options : SharedStorageModifierMethodOptions,
+  options : JsValue,
 ) -> Promise[JsValue] =
   #| (self, options) => self.clear(options)
+
+///|
+pub fn SharedStorage::clear_with_options(
+  self : SharedStorage,
+  options : SharedStorageModifierMethodOptions,
+) -> Promise[JsValue] {
+  SharedStorage::clear_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn SharedStorage::batch_update(
@@ -745,12 +1032,21 @@ pub extern "js" fn SharedStorage::batch_update(
   #| (self, methods) => self.batchUpdate(methods)
 
 ///|
-pub extern "js" fn SharedStorage::batch_update_with_options(
+extern "js" fn SharedStorage::batch_update_with_options_ffi(
+  self : SharedStorage,
+  methods : Array[SharedStorageModifierMethod],
+  options : JsValue,
+) -> Promise[JsValue] =
+  #| (self, methods, options) => self.batchUpdate(methods, options)
+
+///|
+pub fn SharedStorage::batch_update_with_options(
   self : SharedStorage,
   methods : Array[SharedStorageModifierMethod],
   options : SharedStorageModifierMethodOptions,
-) -> Promise[JsValue] =
-  #| (self, methods, options) => self.batchUpdate(methods, options)
+) -> Promise[JsValue] {
+  SharedStorage::batch_update_with_options_ffi(self, methods, options.to_js())
+}
 
 ///|
 pub extern "js" fn SharedStorage::select_url(
@@ -761,13 +1057,23 @@ pub extern "js" fn SharedStorage::select_url(
   #| (self, name, urls) => self.selectURL(name, urls)
 
 ///|
-pub extern "js" fn SharedStorage::select_url_with_options(
+extern "js" fn SharedStorage::select_url_with_options_ffi(
+  self : SharedStorage,
+  name : String,
+  urls : Array[SharedStorageUrlWithMetadata],
+  options : JsValue,
+) -> Promise[SharedStorageResponse] =
+  #| (self, name, urls, options) => self.selectURL(name, urls, options)
+
+///|
+pub fn SharedStorage::select_url_with_options(
   self : SharedStorage,
   name : String,
   urls : Array[SharedStorageUrlWithMetadata],
   options : SharedStorageRunOperationMethodOptions,
-) -> Promise[SharedStorageResponse] =
-  #| (self, name, urls, options) => self.selectURL(name, urls, options)
+) -> Promise[SharedStorageResponse] {
+  SharedStorage::select_url_with_options_ffi(self, name, urls, options.to_js())
+}
 
 ///|
 pub extern "js" fn SharedStorage::run(
@@ -777,12 +1083,21 @@ pub extern "js" fn SharedStorage::run(
   #| (self, name) => self.run(name)
 
 ///|
-pub extern "js" fn SharedStorage::run_with_options(
+extern "js" fn SharedStorage::run_with_options_ffi(
+  self : SharedStorage,
+  name : String,
+  options : JsValue,
+) -> Promise[JsValue] =
+  #| (self, name, options) => self.run(name, options)
+
+///|
+pub fn SharedStorage::run_with_options(
   self : SharedStorage,
   name : String,
   options : SharedStorageRunOperationMethodOptions,
-) -> Promise[JsValue] =
-  #| (self, name, options) => self.run(name, options)
+) -> Promise[JsValue] {
+  SharedStorage::run_with_options_ffi(self, name, options.to_js())
+}
 
 ///|
 pub extern "js" fn SharedStorage::create_worklet(
@@ -792,12 +1107,25 @@ pub extern "js" fn SharedStorage::create_worklet(
   #| (self, module_url) => self.createWorklet(module_url)
 
 ///|
-pub extern "js" fn SharedStorage::create_worklet_with_options(
+extern "js" fn SharedStorage::create_worklet_with_options_ffi(
+  self : SharedStorage,
+  module_url : String,
+  options : JsValue,
+) -> Promise[SharedStorageWorklet] =
+  #| (self, module_url, options) => self.createWorklet(module_url, options)
+
+///|
+pub fn SharedStorage::create_worklet_with_options(
   self : SharedStorage,
   module_url : String,
   options : SharedStorageWorkletOptions,
-) -> Promise[SharedStorageWorklet] =
-  #| (self, module_url, options) => self.createWorklet(module_url, options)
+) -> Promise[SharedStorageWorklet] {
+  SharedStorage::create_worklet_with_options_ffi(
+    self,
+    module_url,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn SharedStorage::get_worklet(
@@ -816,8 +1144,16 @@ pub extern "js" fn SharedStorage::remaining_budget(
   #| (self) => self.remainingBudget()
 
 ///|
-pub extern "js" fn SharedStorage::_unknown_(self : SharedStorage) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn SharedStorage::keys(self : SharedStorage) -> JsValue =
+  #| (self) => self.keys()
+
+///|
+pub extern "js" fn SharedStorage::values(self : SharedStorage) -> JsValue =
+  #| (self) => self.values()
+
+///|
+pub extern "js" fn SharedStorage::entries(self : SharedStorage) -> JsValue =
+  #| (self) => self.entries()
 
 ///|
 /// SharedStorageWorkletNavigator interface

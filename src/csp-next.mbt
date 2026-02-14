@@ -8,7 +8,7 @@ pub(all) enum ScriptingPolicyViolationType {
   InlineScript
   InlineEventHandler
   Eval
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -40,7 +40,7 @@ pub fn ScriptingPolicyViolationType::from_string(
 
 ///|
 /// ScriptingPolicyReportBody dictionary
-pub struct ScriptingPolicyReportBody {
+pub(all) struct ScriptingPolicyReportBody {
   violationType : String?
   violationURL : Nullable[String]
   violationSample : Nullable[String]
@@ -61,14 +61,41 @@ pub fn ScriptingPolicyReportBody::default() -> ScriptingPolicyReportBody {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ScriptingPolicyReportBody::to_js(
+extern "js" fn ScriptingPolicyReportBody::to_js_ffi(
   self : ScriptingPolicyReportBody,
 ) -> JsValue =
   #| (self) => ({
   #|   violationType: self.violationType,
-  #|   violationURL: ((() => { const v = self.violationURL; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   violationSample: ((() => { const v = self.violationSample; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   violationURL: ((() => { const v = self.violationURL; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   violationSample: ((() => { const v = self.violationSample; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   lineno: self.lineno,
   #|   colno: self.colno
   #| })
+
+///|
+/// Convert to JsValue
+pub fn ScriptingPolicyReportBody::to_js(
+  self : ScriptingPolicyReportBody,
+) -> JsValue {
+  ScriptingPolicyReportBody::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ScriptingPolicyReportBody::from_js_ffi(
+  value : JsValue,
+) -> ScriptingPolicyReportBody =
+  #| (v) => ({
+  #|   violationType: v.violationType,
+  #|   violationURL: (v.violationURL === undefined ? { $tag: 0 } : v.violationURL === null ? { $tag: 1 } : { $tag: 2, _0: v.violationURL }),
+  #|   violationSample: (v.violationSample === undefined ? { $tag: 0 } : v.violationSample === null ? { $tag: 1 } : { $tag: 2, _0: v.violationSample }),
+  #|   lineno: v.lineno,
+  #|   colno: v.colno
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ScriptingPolicyReportBody::from_js(
+  value : JsValue,
+) -> ScriptingPolicyReportBody {
+  ScriptingPolicyReportBody::from_js_ffi(value)
+}

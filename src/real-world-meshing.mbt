@@ -34,7 +34,7 @@ pub extern "js" fn XRMesh::get_mesh_space(self : XRMesh) -> XRSpace =
   #| (self) => self.meshSpace
 
 ///|
-pub extern "js" fn XRMesh::get_vertices(self : XRMesh) -> JsValue =
+pub extern "js" fn XRMesh::get_vertices(self : XRMesh) -> Array[Float32Array] =
   #| (self) => self.vertices
 
 ///|
@@ -49,7 +49,7 @@ pub extern "js" fn XRMesh::get_last_changed_time(
 
 ///|
 pub extern "js" fn XRMesh::get_semantic_label(self : XRMesh) -> String? =
-  #| (self) => { const v = self.semanticLabel; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.semanticLabel) ?? undefined
 
 ///|
 /// XRMeshSet interface

@@ -7,7 +7,7 @@ pub(all) enum RunAt {
   DocumentStart
   DocumentEnd
   DocumentIdle
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -35,7 +35,7 @@ pub fn RunAt::from_string(s : String) -> RunAt? {
 pub(all) enum ExecutionWorld {
   ISOLATED
   MAIN
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

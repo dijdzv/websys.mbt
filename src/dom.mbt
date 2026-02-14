@@ -6,7 +6,7 @@
 pub(all) enum ShadowRootMode {
   Open
   Closed
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -32,7 +32,7 @@ pub fn ShadowRootMode::from_string(s : String) -> ShadowRootMode? {
 pub(all) enum SlotAssignmentMode {
   Manual
   Named
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -62,7 +62,7 @@ pub type EventListener
 pub extern "js" fn EventListener::from_fn(
   handler : (Event) -> Unit,
 ) -> EventListener =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// MutationCallback callback interface
@@ -73,7 +73,7 @@ pub type MutationCallback
 pub extern "js" fn MutationCallback::from_fn(
   handler : (Array[MutationRecord], MutationObserver) -> Unit,
 ) -> MutationCallback =
-  #| (handler) => handler
+  #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
 /// NodeFilter callback interface
@@ -82,7 +82,7 @@ pub type NodeFilter
 ///|
 /// Create NodeFilter from a MoonBit function
 pub extern "js" fn NodeFilter::from_fn(handler : (Node) -> Int) -> NodeFilter =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// XPathNSResolver callback interface
@@ -93,11 +93,11 @@ pub type XPathNSResolver
 pub extern "js" fn XPathNSResolver::from_fn(
   handler : (String?) -> String?,
 ) -> XPathNSResolver =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// EventInit dictionary
-pub struct EventInit {
+pub(all) struct EventInit {
   bubbles : Bool?
   cancelable : Bool?
   composed : Bool?
@@ -110,17 +110,36 @@ pub fn EventInit::default() -> EventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn EventInit::to_js(self : EventInit) -> JsValue =
+extern "js" fn EventInit::to_js_ffi(self : EventInit) -> JsValue =
   #| (self) => ({
-  #|   bubbles: self.bubbles,
-  #|   cancelable: self.cancelable,
-  #|   composed: self.composed
+  #|   bubbles: (self.bubbles === -1 ? undefined : self.bubbles),
+  #|   cancelable: (self.cancelable === -1 ? undefined : self.cancelable),
+  #|   composed: (self.composed === -1 ? undefined : self.composed)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn EventInit::to_js(self : EventInit) -> JsValue {
+  EventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn EventInit::from_js_ffi(value : JsValue) -> EventInit =
+  #| (v) => ({
+  #|   bubbles: (v.bubbles === undefined ? -1 : v.bubbles),
+  #|   cancelable: (v.cancelable === undefined ? -1 : v.cancelable),
+  #|   composed: (v.composed === undefined ? -1 : v.composed)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn EventInit::from_js(value : JsValue) -> EventInit {
+  EventInit::from_js_ffi(value)
+}
+
+///|
 /// CustomEventInit dictionary
-pub struct CustomEventInit {
+pub(all) struct CustomEventInit {
   bubbles : Bool?
   cancelable : Bool?
   composed : Bool?
@@ -139,18 +158,38 @@ pub fn CustomEventInit::default() -> CustomEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CustomEventInit::to_js(self : CustomEventInit) -> JsValue =
+extern "js" fn CustomEventInit::to_js_ffi(self : CustomEventInit) -> JsValue =
   #| (self) => ({
-  #|   bubbles: self.bubbles,
-  #|   cancelable: self.cancelable,
-  #|   composed: self.composed,
-  #|   detail: self.detail
+  #|   bubbles: (self.bubbles === -1 ? undefined : self.bubbles),
+  #|   cancelable: (self.cancelable === -1 ? undefined : self.cancelable),
+  #|   composed: (self.composed === -1 ? undefined : self.composed),
+  #|   detail: ((() => { const v = self.detail; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn CustomEventInit::to_js(self : CustomEventInit) -> JsValue {
+  CustomEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CustomEventInit::from_js_ffi(value : JsValue) -> CustomEventInit =
+  #| (v) => ({
+  #|   bubbles: (v.bubbles === undefined ? -1 : v.bubbles),
+  #|   cancelable: (v.cancelable === undefined ? -1 : v.cancelable),
+  #|   composed: (v.composed === undefined ? -1 : v.composed),
+  #|   detail: (v.detail === undefined ? { $tag: 0 } : { $tag: 1, _0: v.detail })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CustomEventInit::from_js(value : JsValue) -> CustomEventInit {
+  CustomEventInit::from_js_ffi(value)
+}
+
+///|
 /// EventListenerOptions dictionary
-pub struct EventListenerOptions {
+pub(all) struct EventListenerOptions {
   capture : Bool?
 }
 
@@ -161,17 +200,36 @@ pub fn EventListenerOptions::default() -> EventListenerOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn EventListenerOptions::to_js(
+extern "js" fn EventListenerOptions::to_js_ffi(
   self : EventListenerOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   capture: self.capture
+  #|   capture: (self.capture === -1 ? undefined : self.capture)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn EventListenerOptions::to_js(self : EventListenerOptions) -> JsValue {
+  EventListenerOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn EventListenerOptions::from_js_ffi(
+  value : JsValue,
+) -> EventListenerOptions =
+  #| (v) => ({
+  #|   capture: (v.capture === undefined ? -1 : v.capture)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn EventListenerOptions::from_js(value : JsValue) -> EventListenerOptions {
+  EventListenerOptions::from_js_ffi(value)
+}
+
+///|
 /// AddEventListenerOptions dictionary
-pub struct AddEventListenerOptions {
+pub(all) struct AddEventListenerOptions {
   capture : Bool?
   passive : Bool?
   once : Bool?
@@ -190,20 +248,46 @@ pub fn AddEventListenerOptions::default() -> AddEventListenerOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AddEventListenerOptions::to_js(
+extern "js" fn AddEventListenerOptions::to_js_ffi(
   self : AddEventListenerOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   capture: self.capture,
-  #|   passive: self.passive,
-  #|   once: self.once,
-  #|   signal: self.signal
+  #|   capture: (self.capture === -1 ? undefined : self.capture),
+  #|   passive: (self.passive === -1 ? undefined : self.passive),
+  #|   once: (self.once === -1 ? undefined : self.once),
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AddEventListenerOptions::to_js(
+  self : AddEventListenerOptions,
+) -> JsValue {
+  AddEventListenerOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AddEventListenerOptions::from_js_ffi(
+  value : JsValue,
+) -> AddEventListenerOptions =
+  #| (v) => ({
+  #|   capture: (v.capture === undefined ? -1 : v.capture),
+  #|   passive: (v.passive === undefined ? -1 : v.passive),
+  #|   once: (v.once === undefined ? -1 : v.once),
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AddEventListenerOptions::from_js(
+  value : JsValue,
+) -> AddEventListenerOptions {
+  AddEventListenerOptions::from_js_ffi(value)
+}
+
+///|
 /// MutationObserverInit dictionary
-pub struct MutationObserverInit {
+pub(all) struct MutationObserverInit {
   childList : Bool?
   attributes : Bool?
   characterData : Bool?
@@ -228,23 +312,48 @@ pub fn MutationObserverInit::default() -> MutationObserverInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MutationObserverInit::to_js(
+extern "js" fn MutationObserverInit::to_js_ffi(
   self : MutationObserverInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   childList: self.childList,
-  #|   attributes: self.attributes,
-  #|   characterData: self.characterData,
-  #|   subtree: self.subtree,
-  #|   attributeOldValue: self.attributeOldValue,
-  #|   characterDataOldValue: self.characterDataOldValue,
-  #|   attributeFilter: self.attributeFilter
+  #|   childList: (self.childList === -1 ? undefined : self.childList),
+  #|   attributes: (self.attributes === -1 ? undefined : self.attributes),
+  #|   characterData: (self.characterData === -1 ? undefined : self.characterData),
+  #|   subtree: (self.subtree === -1 ? undefined : self.subtree),
+  #|   attributeOldValue: (self.attributeOldValue === -1 ? undefined : self.attributeOldValue),
+  #|   characterDataOldValue: (self.characterDataOldValue === -1 ? undefined : self.characterDataOldValue),
+  #|   attributeFilter: ((() => { const v = self.attributeFilter; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MutationObserverInit::to_js(self : MutationObserverInit) -> JsValue {
+  MutationObserverInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MutationObserverInit::from_js_ffi(
+  value : JsValue,
+) -> MutationObserverInit =
+  #| (v) => ({
+  #|   childList: (v.childList === undefined ? -1 : v.childList),
+  #|   attributes: (v.attributes === undefined ? -1 : v.attributes),
+  #|   characterData: (v.characterData === undefined ? -1 : v.characterData),
+  #|   subtree: (v.subtree === undefined ? -1 : v.subtree),
+  #|   attributeOldValue: (v.attributeOldValue === undefined ? -1 : v.attributeOldValue),
+  #|   characterDataOldValue: (v.characterDataOldValue === undefined ? -1 : v.characterDataOldValue),
+  #|   attributeFilter: (v.attributeFilter === undefined ? { $tag: 0 } : { $tag: 1, _0: v.attributeFilter })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MutationObserverInit::from_js(value : JsValue) -> MutationObserverInit {
+  MutationObserverInit::from_js_ffi(value)
+}
+
+///|
 /// GetRootNodeOptions dictionary
-pub struct GetRootNodeOptions {
+pub(all) struct GetRootNodeOptions {
   composed : Bool?
 }
 
@@ -255,17 +364,36 @@ pub fn GetRootNodeOptions::default() -> GetRootNodeOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn GetRootNodeOptions::to_js(
+extern "js" fn GetRootNodeOptions::to_js_ffi(
   self : GetRootNodeOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   composed: self.composed
+  #|   composed: (self.composed === -1 ? undefined : self.composed)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn GetRootNodeOptions::to_js(self : GetRootNodeOptions) -> JsValue {
+  GetRootNodeOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GetRootNodeOptions::from_js_ffi(
+  value : JsValue,
+) -> GetRootNodeOptions =
+  #| (v) => ({
+  #|   composed: (v.composed === undefined ? -1 : v.composed)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GetRootNodeOptions::from_js(value : JsValue) -> GetRootNodeOptions {
+  GetRootNodeOptions::from_js_ffi(value)
+}
+
+///|
 /// ElementCreationOptions dictionary
-pub struct ElementCreationOptions {
+pub(all) struct ElementCreationOptions {
   customElementRegistry : Nullable[CustomElementRegistry]
   is_ : String?
 }
@@ -280,18 +408,40 @@ pub fn ElementCreationOptions::default() -> ElementCreationOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ElementCreationOptions::to_js(
+extern "js" fn ElementCreationOptions::to_js_ffi(
   self : ElementCreationOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   customElementRegistry: ((() => { const v = self.customElementRegistry; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   customElementRegistry: ((() => { const v = self.customElementRegistry; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   is: self.is_
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ElementCreationOptions::to_js(self : ElementCreationOptions) -> JsValue {
+  ElementCreationOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ElementCreationOptions::from_js_ffi(
+  value : JsValue,
+) -> ElementCreationOptions =
+  #| (v) => ({
+  #|   customElementRegistry: (v.customElementRegistry === undefined ? { $tag: 0 } : v.customElementRegistry === null ? { $tag: 1 } : { $tag: 2, _0: v.customElementRegistry }),
+  #|   is_: v.is
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ElementCreationOptions::from_js(
+  value : JsValue,
+) -> ElementCreationOptions {
+  ElementCreationOptions::from_js_ffi(value)
+}
+
+///|
 /// ImportNodeOptions dictionary
-pub struct ImportNodeOptions {
+pub(all) struct ImportNodeOptions {
   customElementRegistry : CustomElementRegistry?
   selfOnly : Bool?
 }
@@ -303,18 +453,38 @@ pub fn ImportNodeOptions::default() -> ImportNodeOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ImportNodeOptions::to_js(
+extern "js" fn ImportNodeOptions::to_js_ffi(
   self : ImportNodeOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   customElementRegistry: self.customElementRegistry,
-  #|   selfOnly: self.selfOnly
+  #|   customElementRegistry: ((() => { const v = self.customElementRegistry; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   selfOnly: (self.selfOnly === -1 ? undefined : self.selfOnly)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ImportNodeOptions::to_js(self : ImportNodeOptions) -> JsValue {
+  ImportNodeOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ImportNodeOptions::from_js_ffi(
+  value : JsValue,
+) -> ImportNodeOptions =
+  #| (v) => ({
+  #|   customElementRegistry: (v.customElementRegistry === undefined ? { $tag: 0 } : { $tag: 1, _0: v.customElementRegistry }),
+  #|   selfOnly: (v.selfOnly === undefined ? -1 : v.selfOnly)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ImportNodeOptions::from_js(value : JsValue) -> ImportNodeOptions {
+  ImportNodeOptions::from_js_ffi(value)
+}
+
+///|
 /// ShadowRootInit dictionary
-pub struct ShadowRootInit {
+pub(all) struct ShadowRootInit {
   mode : ShadowRootMode
   delegatesFocus : Bool?
   slotAssignment : SlotAssignmentMode?
@@ -324,10 +494,10 @@ pub struct ShadowRootInit {
 }
 
 ///|
-/// Create a new ShadowRootInit with default values
-pub fn ShadowRootInit::default() -> ShadowRootInit {
+/// Create a new ShadowRootInit
+pub fn ShadowRootInit::new(mode~ : ShadowRootMode) -> ShadowRootInit {
   ShadowRootInit::{
-    mode: panic(),
+    mode,
     delegatesFocus: None,
     slotAssignment: None,
     clonable: None,
@@ -337,20 +507,42 @@ pub fn ShadowRootInit::default() -> ShadowRootInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ShadowRootInit::to_js(self : ShadowRootInit) -> JsValue =
+extern "js" fn ShadowRootInit::to_js_ffi(self : ShadowRootInit) -> JsValue =
   #| (self) => ({
   #|   mode: ['open', 'closed'][self.mode],
-  #|   delegatesFocus: self.delegatesFocus,
-  #|   slotAssignment: ['manual', 'named'][self.slotAssignment],
-  #|   clonable: self.clonable,
-  #|   serializable: self.serializable,
-  #|   customElementRegistry: ((() => { const v = self.customElementRegistry; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   delegatesFocus: (self.delegatesFocus === -1 ? undefined : self.delegatesFocus),
+  #|   slotAssignment: ((() => { const v = self.slotAssignment; if (v === undefined) return undefined; return ['manual', 'named'][v]; })()),
+  #|   clonable: (self.clonable === -1 ? undefined : self.clonable),
+  #|   serializable: (self.serializable === -1 ? undefined : self.serializable),
+  #|   customElementRegistry: ((() => { const v = self.customElementRegistry; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ShadowRootInit::to_js(self : ShadowRootInit) -> JsValue {
+  ShadowRootInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ShadowRootInit::from_js_ffi(value : JsValue) -> ShadowRootInit =
+  #| (v) => ({
+  #|   mode: ['open', 'closed'].indexOf(v.mode),
+  #|   delegatesFocus: (v.delegatesFocus === undefined ? -1 : v.delegatesFocus),
+  #|   slotAssignment: (v.slotAssignment === undefined ? undefined : ['manual', 'named'].indexOf(v.slotAssignment)),
+  #|   clonable: (v.clonable === undefined ? -1 : v.clonable),
+  #|   serializable: (v.serializable === undefined ? -1 : v.serializable),
+  #|   customElementRegistry: (v.customElementRegistry === undefined ? { $tag: 0 } : v.customElementRegistry === null ? { $tag: 1 } : { $tag: 2, _0: v.customElementRegistry })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ShadowRootInit::from_js(value : JsValue) -> ShadowRootInit {
+  ShadowRootInit::from_js_ffi(value)
+}
+
+///|
 /// StaticRangeInit dictionary
-pub struct StaticRangeInit {
+pub(all) struct StaticRangeInit {
   startContainer : Node
   startOffset : Int
   endContainer : Node
@@ -358,25 +550,48 @@ pub struct StaticRangeInit {
 }
 
 ///|
-/// Create a new StaticRangeInit with default values
-pub fn StaticRangeInit::default() -> StaticRangeInit {
+/// Create a new StaticRangeInit
+pub fn StaticRangeInit::new(
+  startContainer~ : Node,
+  endContainer~ : Node,
+) -> StaticRangeInit {
   StaticRangeInit::{
-    startContainer: panic(),
+    startContainer,
     startOffset: 0,
-    endContainer: panic(),
+    endContainer,
     endOffset: 0,
   }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn StaticRangeInit::to_js(self : StaticRangeInit) -> JsValue =
+extern "js" fn StaticRangeInit::to_js_ffi(self : StaticRangeInit) -> JsValue =
   #| (self) => ({
   #|   startContainer: self.startContainer,
   #|   startOffset: self.startOffset,
   #|   endContainer: self.endContainer,
   #|   endOffset: self.endOffset
   #| })
+
+///|
+/// Convert to JsValue
+pub fn StaticRangeInit::to_js(self : StaticRangeInit) -> JsValue {
+  StaticRangeInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn StaticRangeInit::from_js_ffi(value : JsValue) -> StaticRangeInit =
+  #| (v) => ({
+  #|   startContainer: v.startContainer,
+  #|   startOffset: v.startOffset,
+  #|   endContainer: v.endContainer,
+  #|   endOffset: v.endOffset
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn StaticRangeInit::from_js(value : JsValue) -> StaticRangeInit {
+  StaticRangeInit::from_js_ffi(value)
+}
 
 ///|
 /// Event interface
@@ -1019,11 +1234,23 @@ pub extern "js" fn Event::as_xr_layer_event(self : Event) -> XRLayerEvent? =
   #| (self) => (self instanceof XRLayerEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::new(
+pub extern "js" fn Event::new(type_ : String) -> Event =
+  #| (type_) => new Event(type_)
+
+///|
+extern "js" fn Event::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : EventInit,
+  event_init_dict : JsValue,
 ) -> Event =
   #| (type_, event_init_dict) => new Event(type_, event_init_dict)
+
+///|
+pub fn Event::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : EventInit,
+) -> Event {
+  Event::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn Event::get_type(self : Event) -> String =
@@ -1031,15 +1258,15 @@ pub extern "js" fn Event::get_type(self : Event) -> String =
 
 ///|
 pub extern "js" fn Event::get_target(self : Event) -> EventTarget? =
-  #| (self) => { const v = self.target; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.target; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Event::get_src_element(self : Event) -> EventTarget? =
-  #| (self) => { const v = self.srcElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.srcElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Event::get_current_target(self : Event) -> EventTarget? =
-  #| (self) => { const v = self.currentTarget; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.currentTarget; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Event::composed_path(self : Event) -> Array[EventTarget] =
@@ -1167,11 +1394,23 @@ pub extern "js" fn CustomEvent::to_event(self : CustomEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn CustomEvent::new(
+pub extern "js" fn CustomEvent::new(type_ : String) -> CustomEvent =
+  #| (type_) => new CustomEvent(type_)
+
+///|
+extern "js" fn CustomEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : CustomEventInit,
+  event_init_dict : JsValue,
 ) -> CustomEvent =
   #| (type_, event_init_dict) => new CustomEvent(type_, event_init_dict)
+
+///|
+pub fn CustomEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : CustomEventInit,
+) -> CustomEvent {
+  CustomEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn CustomEvent::get_detail(self : CustomEvent) -> JsValue =
@@ -3177,18 +3416,6 @@ pub extern "js" fn EventTarget::as_document_picture_in_picture(
   #| (self) => (self instanceof DocumentPictureInPicture) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_html_permission_element(
-  self : EventTarget,
-) -> HTMLPermissionElement? =
-  #| (self) => (self instanceof HTMLPermissionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_html_geolocation_element(
-  self : EventTarget,
-) -> HTMLGeolocationElement? =
-  #| (self) => (self instanceof HTMLGeolocationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn EventTarget::as_background_fetch_registration(
   self : EventTarget,
 ) -> BackgroundFetchRegistration? =
@@ -3240,7 +3467,7 @@ pub extern "js" fn EventTarget::add_event_listener(
   type_ : String,
   callback : EventListener?,
 ) -> Unit =
-  #| (self, type_, callback) => self.addEventListener(type_, callback)
+  #| (self, type_, callback) => self.addEventListener(type_, (callback.$tag === 1 ? callback._0 : null))
 
 ///|
 pub extern "js" fn EventTarget::add_event_listener_with_options(
@@ -3249,7 +3476,7 @@ pub extern "js" fn EventTarget::add_event_listener_with_options(
   callback : EventListener?,
   options : AddEventListenerOptionsOrBool,
 ) -> Unit =
-  #| (self, type_, callback, options) => self.addEventListener(type_, callback, options)
+  #| (self, type_, callback, options) => self.addEventListener(type_, (callback.$tag === 1 ? callback._0 : null), options)
 
 ///|
 pub extern "js" fn EventTarget::remove_event_listener(
@@ -3257,7 +3484,7 @@ pub extern "js" fn EventTarget::remove_event_listener(
   type_ : String,
   callback : EventListener?,
 ) -> Unit =
-  #| (self, type_, callback) => self.removeEventListener(type_, callback)
+  #| (self, type_, callback) => self.removeEventListener(type_, (callback.$tag === 1 ? callback._0 : null))
 
 ///|
 pub extern "js" fn EventTarget::remove_event_listener_with_options(
@@ -3266,7 +3493,7 @@ pub extern "js" fn EventTarget::remove_event_listener_with_options(
   callback : EventListener?,
   options : EventListenerOptionsOrBool,
 ) -> Unit =
-  #| (self, type_, callback, options) => self.removeEventListener(type_, callback, options)
+  #| (self, type_, callback, options) => self.removeEventListener(type_, (callback.$tag === 1 ? callback._0 : null), options)
 
 ///|
 pub extern "js" fn EventTarget::dispatch_event(
@@ -3283,12 +3510,21 @@ pub extern "js" fn EventTarget::when(
   #| (self, type_) => self.when(type_)
 
 ///|
-pub extern "js" fn EventTarget::when_with_options(
+extern "js" fn EventTarget::when_with_options_ffi(
+  self : EventTarget,
+  type_ : String,
+  options : JsValue,
+) -> Observable =
+  #| (self, type_, options) => self.when(type_, options)
+
+///|
+pub fn EventTarget::when_with_options(
   self : EventTarget,
   type_ : String,
   options : ObservableEventListenerOptions,
-) -> Observable =
-  #| (self, type_, options) => self.when(type_, options)
+) -> Observable {
+  EventTarget::when_with_options_ffi(self, type_, options.to_js())
+}
 
 ///|
 /// AbortController interface
@@ -3396,12 +3632,18 @@ pub extern "js" fn AbortSignal::as_task_signal(
   #| (self) => (self instanceof TaskSignal) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn AbortSignal::abort(reason : JsValue) -> AbortSignal =
+pub extern "js" fn AbortSignal::abort() -> AbortSignal =
+  #| () => AbortSignal.abort()
+
+///|
+pub extern "js" fn AbortSignal::abort_with_reason(
+  reason : JsValue,
+) -> AbortSignal =
   #| (reason) => AbortSignal.abort(reason)
 
 ///|
 pub extern "js" fn AbortSignal::timeout(milliseconds : Int64) -> AbortSignal =
-  #| (milliseconds) => AbortSignal.timeout(milliseconds)
+  #| (milliseconds) => AbortSignal.timeout((milliseconds.hi * 4294967296 + milliseconds.lo))
 
 ///|
 pub extern "js" fn AbortSignal::any(
@@ -3468,19 +3710,35 @@ pub extern "js" fn NodeList::as_radio_node_list(
 
 ///|
 pub extern "js" fn NodeList::item(self : NodeList, index : Int) -> Node? =
-  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+#alias("_[_]")
 pub extern "js" fn NodeList::get(self : NodeList, index : Int) -> Node? =
-  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn NodeList::get_length(self : NodeList) -> Int =
   #| (self) => self.length
 
 ///|
-pub extern "js" fn NodeList::_unknown_(self : NodeList) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn NodeList::keys(self : NodeList) -> JsValue =
+  #| (self) => self.keys()
+
+///|
+pub extern "js" fn NodeList::values(self : NodeList) -> JsValue =
+  #| (self) => self.values()
+
+///|
+pub extern "js" fn NodeList::entries(self : NodeList) -> JsValue =
+  #| (self) => self.entries()
+
+///|
+pub extern "js" fn NodeList::for_each(
+  self : NodeList,
+  callback : JsValue,
+) -> Unit =
+  #| (self, callback) => { self.forEach(callback) }
 
 ///|
 /// HTMLCollection interface
@@ -3539,28 +3797,29 @@ pub extern "js" fn HTMLCollection::item(
   self : HTMLCollection,
   index : Int,
 ) -> Element? =
-  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+#alias("_[_]")
 pub extern "js" fn HTMLCollection::get(
   self : HTMLCollection,
   index : Int,
 ) -> Element? =
-  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLCollection::named_item(
   self : HTMLCollection,
   name : String,
 ) -> Element? =
-  #| (self, name) => { const v = self.namedItem(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, name) => (() => { const v = self.namedItem(name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLCollection::get_named(
   self : HTMLCollection,
   name : String,
 ) -> Element? =
-  #| (self, name) => { const v = self[name]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, name) => (() => { const v = self[name]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// MutationObserver interface
@@ -3614,12 +3873,21 @@ pub extern "js" fn MutationObserver::observe(
   #| (self, target) => self.observe(target)
 
 ///|
-pub extern "js" fn MutationObserver::observe_with_options(
+extern "js" fn MutationObserver::observe_with_options_ffi(
+  self : MutationObserver,
+  target : Node,
+  options : JsValue,
+) -> Unit =
+  #| (self, target, options) => self.observe(target, options)
+
+///|
+pub fn MutationObserver::observe_with_options(
   self : MutationObserver,
   target : Node,
   options : MutationObserverInit,
-) -> Unit =
-  #| (self, target, options) => self.observe(target, options)
+) -> Unit {
+  MutationObserver::observe_with_options_ffi(self, target, options.to_js())
+}
 
 ///|
 pub extern "js" fn MutationObserver::disconnect(
@@ -3693,31 +3961,31 @@ pub extern "js" fn MutationRecord::get_removed_nodes(
 pub extern "js" fn MutationRecord::get_previous_sibling(
   self : MutationRecord,
 ) -> Node? =
-  #| (self) => { const v = self.previousSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.previousSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn MutationRecord::get_next_sibling(
   self : MutationRecord,
 ) -> Node? =
-  #| (self) => { const v = self.nextSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.nextSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn MutationRecord::get_attribute_name(
   self : MutationRecord,
 ) -> String? =
-  #| (self) => { const v = self.attributeName; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.attributeName) ?? undefined
 
 ///|
 pub extern "js" fn MutationRecord::get_attribute_namespace(
   self : MutationRecord,
 ) -> String? =
-  #| (self) => { const v = self.attributeNamespace; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.attributeNamespace) ?? undefined
 
 ///|
 pub extern "js" fn MutationRecord::get_old_value(
   self : MutationRecord,
 ) -> String? =
-  #| (self) => { const v = self.oldValue; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.oldValue) ?? undefined
 
 ///|
 /// Node interface
@@ -4603,18 +4871,6 @@ pub extern "js" fn Node::as_html_fenced_frame_element(
 ) -> HTMLFencedFrameElement? =
   #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn Node::as_html_permission_element(
-  self : Node,
-) -> HTMLPermissionElement? =
-  #| (self) => (self instanceof HTMLPermissionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_html_geolocation_element(
-  self : Node,
-) -> HTMLGeolocationElement? =
-  #| (self) => (self instanceof HTMLGeolocationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
 // Node.ELEMENT_NODE
 
 ///|
@@ -4693,26 +4949,34 @@ pub extern "js" fn Node::get_is_connected(self : Node) -> Bool =
 
 ///|
 pub extern "js" fn Node::get_owner_document(self : Node) -> Document? =
-  #| (self) => { const v = self.ownerDocument; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.ownerDocument; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Node::get_root_node(self : Node) -> Node =
   #| (self) => self.getRootNode()
 
 ///|
-pub extern "js" fn Node::get_root_node_with_options(
+extern "js" fn Node::get_root_node_with_options_ffi(
   self : Node,
-  options : GetRootNodeOptions,
+  options : JsValue,
 ) -> Node =
   #| (self, options) => self.getRootNode(options)
 
 ///|
+pub fn Node::get_root_node_with_options(
+  self : Node,
+  options : GetRootNodeOptions,
+) -> Node {
+  Node::get_root_node_with_options_ffi(self, options.to_js())
+}
+
+///|
 pub extern "js" fn Node::get_parent_node(self : Node) -> Node? =
-  #| (self) => { const v = self.parentNode; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.parentNode; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Node::get_parent_element(self : Node) -> Element? =
-  #| (self) => { const v = self.parentElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.parentElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Node::has_child_nodes(self : Node) -> Bool =
@@ -4724,23 +4988,23 @@ pub extern "js" fn Node::get_child_nodes(self : Node) -> NodeList =
 
 ///|
 pub extern "js" fn Node::get_first_child(self : Node) -> Node? =
-  #| (self) => { const v = self.firstChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.firstChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Node::get_last_child(self : Node) -> Node? =
-  #| (self) => { const v = self.lastChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.lastChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Node::get_previous_sibling(self : Node) -> Node? =
-  #| (self) => { const v = self.previousSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.previousSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Node::get_next_sibling(self : Node) -> Node? =
-  #| (self) => { const v = self.nextSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.nextSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Node::get_node_value(self : Node) -> String? =
-  #| (self) => { const v = self.nodeValue; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.nodeValue) ?? undefined
 
 ///|
 pub extern "js" fn Node::set_node_value(self : Node, value : String?) -> Unit =
@@ -4748,7 +5012,7 @@ pub extern "js" fn Node::set_node_value(self : Node, value : String?) -> Unit =
 
 ///|
 pub extern "js" fn Node::get_text_content(self : Node) -> String? =
-  #| (self) => { const v = self.textContent; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.textContent) ?? undefined
 
 ///|
 pub extern "js" fn Node::set_text_content(self : Node, value : String?) -> Unit =
@@ -4771,11 +5035,11 @@ pub extern "js" fn Node::clone_node_with_subtree(
 
 ///|
 pub extern "js" fn Node::is_equal_node(self : Node, other_node : Node?) -> Bool =
-  #| (self, other_node) => self.isEqualNode(other_node)
+  #| (self, other_node) => self.isEqualNode((other_node.$tag === 1 ? other_node._0 : null))
 
 ///|
 pub extern "js" fn Node::is_same_node(self : Node, other_node : Node?) -> Bool =
-  #| (self, other_node) => self.isSameNode(other_node)
+  #| (self, other_node) => self.isSameNode((other_node.$tag === 1 ? other_node._0 : null))
 
 // Node.DOCUMENT_POSITION_DISCONNECTED
 
@@ -4816,21 +5080,21 @@ pub extern "js" fn Node::compare_document_position(
 
 ///|
 pub extern "js" fn Node::contains(self : Node, other : Node?) -> Bool =
-  #| (self, other) => self.contains(other)
+  #| (self, other) => self.contains((other.$tag === 1 ? other._0 : null))
 
 ///|
 pub extern "js" fn Node::lookup_prefix(
   self : Node,
   namespace_ : String?,
 ) -> String? =
-  #| (self, namespace_) => { const v = self.lookupPrefix(namespace_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, namespace_) => (self.lookupPrefix(namespace_)) ?? undefined
 
 ///|
 pub extern "js" fn Node::lookup_namespace_uri(
   self : Node,
   prefix : String?,
 ) -> String? =
-  #| (self, prefix) => { const v = self.lookupNamespaceURI(prefix); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, prefix) => (self.lookupNamespaceURI(prefix)) ?? undefined
 
 ///|
 pub extern "js" fn Node::is_default_namespace(
@@ -4845,7 +5109,7 @@ pub extern "js" fn Node::insert_before(
   node : Node,
   child : Node?,
 ) -> Node =
-  #| (self, node, child) => self.insertBefore(node, child)
+  #| (self, node, child) => self.insertBefore(node, (child.$tag === 1 ? child._0 : null))
 
 ///|
 pub extern "js" fn Node::append_child(self : Node, node : Node) -> Node =
@@ -4943,11 +5207,11 @@ pub extern "js" fn Document::get_content_type(self : Document) -> String =
 
 ///|
 pub extern "js" fn Document::get_doctype(self : Document) -> DocumentType? =
-  #| (self) => { const v = self.doctype; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.doctype; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::get_document_element(self : Document) -> Element? =
-  #| (self) => { const v = self.documentElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.documentElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::get_elements_by_tag_name(
@@ -5094,7 +5358,7 @@ pub extern "js" fn Document::create_node_iterator_with_filter(
   what_to_show : Int,
   filter : NodeFilter?,
 ) -> NodeIterator =
-  #| (self, root, what_to_show, filter) => self.createNodeIterator(root, what_to_show, filter)
+  #| (self, root, what_to_show, filter) => self.createNodeIterator(root, what_to_show, (filter.$tag === 1 ? filter._0 : null))
 
 ///|
 pub extern "js" fn Document::create_tree_walker(
@@ -5110,7 +5374,7 @@ pub extern "js" fn Document::create_tree_walker_with_filter(
   what_to_show : Int,
   filter : NodeFilter?,
 ) -> TreeWalker =
-  #| (self, root, what_to_show, filter) => self.createTreeWalker(root, what_to_show, filter)
+  #| (self, root, what_to_show, filter) => self.createTreeWalker(root, what_to_show, (filter.$tag === 1 ? filter._0 : null))
 
 ///|
 pub extern "js" fn Document::get_prerendering(self : Document) -> Bool =
@@ -5145,7 +5409,7 @@ pub extern "js" fn Document::request_storage_access(
 pub extern "js" fn Document::get_root_element(
   self : Document,
 ) -> SVGSVGElement? =
-  #| (self) => { const v = self.rootElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.rootElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::element_from_point(
@@ -5153,7 +5417,7 @@ pub extern "js" fn Document::element_from_point(
   x : Double,
   y : Double,
 ) -> Element? =
-  #| (self, x, y) => { const v = self.elementFromPoint(x, y); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, x, y) => (() => { const v = self.elementFromPoint(x, y); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::elements_from_point(
@@ -5169,20 +5433,35 @@ pub extern "js" fn Document::caret_position_from_point(
   x : Double,
   y : Double,
 ) -> CaretPosition? =
-  #| (self, x, y) => { const v = self.caretPositionFromPoint(x, y); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, x, y) => (() => { const v = self.caretPositionFromPoint(x, y); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn Document::caret_position_from_point_with_options(
+extern "js" fn Document::caret_position_from_point_with_options_ffi(
+  self : Document,
+  x : Double,
+  y : Double,
+  options : JsValue,
+) -> CaretPosition? =
+  #| (self, x, y, options) => (() => { const v = self.caretPositionFromPoint(x, y, options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub fn Document::caret_position_from_point_with_options(
   self : Document,
   x : Double,
   y : Double,
   options : CaretPositionFromPointOptions,
-) -> CaretPosition? =
-  #| (self, x, y, options) => { const v = self.caretPositionFromPoint(x, y, options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+) -> CaretPosition? {
+  Document::caret_position_from_point_with_options_ffi(
+    self,
+    x,
+    y,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Document::get_scrolling_element(self : Document) -> Element? =
-  #| (self) => { const v = self.scrollingElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.scrollingElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::parse_html_unsafe(
@@ -5192,7 +5471,7 @@ pub extern "js" fn Document::parse_html_unsafe(
 
 ///|
 pub extern "js" fn Document::get_location(self : Document) -> Location? =
-  #| (self) => { const v = self.location; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.location; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::get_domain(self : Document) -> String =
@@ -5228,7 +5507,7 @@ pub extern "js" fn Document::get_last_modified(self : Document) -> String =
 pub extern "js" fn Document::get_ready_state(
   self : Document,
 ) -> DocumentReadyState =
-  #| (self) => self.readyState
+  #| (self) => ['loading', 'interactive', 'complete'].indexOf(self.readyState)
 
 ///|
 pub extern "js" fn Document::get_named(
@@ -5255,18 +5534,18 @@ pub extern "js" fn Document::set_dir(self : Document, value : String) -> Unit =
 
 ///|
 pub extern "js" fn Document::get_body(self : Document) -> HTMLElement? =
-  #| (self) => { const v = self.body; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.body; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::set_body(
   self : Document,
   value : HTMLElement?,
 ) -> Unit =
-  #| (self, value) => { self.body = value }
+  #| (self, value) => { self.body = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn Document::get_head(self : Document) -> HTMLHeadElement? =
-  #| (self) => { const v = self.head; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.head; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::get_images(self : Document) -> HTMLCollection =
@@ -5303,7 +5582,7 @@ pub extern "js" fn Document::get_elements_by_name(
 pub extern "js" fn Document::get_current_script(
   self : Document,
 ) -> HTMLOrSVGScriptElement? =
-  #| (self) => { const v = self.currentScript; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.currentScript; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::open(self : Document) -> Document =
@@ -5323,8 +5602,8 @@ pub extern "js" fn Document::open_with_url_and_name_and_features(
   url : String,
   name : String,
   features : String,
-) -> WindowProxy? =
-  #| (self, url, name, features) => { const v = self.open(url, name, features); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+) -> Window? =
+  #| (self, url, name, features) => (() => { const v = self.open(url, name, features); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::close(self : Document) -> Unit =
@@ -5345,8 +5624,8 @@ pub extern "js" fn Document::writeln(
   #| (self, text) => self.writeln(text)
 
 ///|
-pub extern "js" fn Document::get_default_view(self : Document) -> WindowProxy? =
-  #| (self) => { const v = self.defaultView; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+pub extern "js" fn Document::get_default_view(self : Document) -> Window? =
+  #| (self) => (() => { const v = self.defaultView; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::has_focus(self : Document) -> Bool =
@@ -5422,7 +5701,7 @@ pub extern "js" fn Document::get_hidden(self : Document) -> Bool =
 pub extern "js" fn Document::get_visibility_state(
   self : Document,
 ) -> DocumentVisibilityState =
-  #| (self) => self.visibilityState
+  #| (self) => ['visible', 'hidden'].indexOf(self.visibilityState)
 
 ///|
 pub extern "js" fn Document::get_onreadystatechange(
@@ -5648,7 +5927,7 @@ pub extern "js" fn Document::start_view_transition_with_callback_options(
 pub extern "js" fn Document::get_active_view_transition(
   self : Document,
 ) -> ViewTransition? =
-  #| (self) => { const v = self.activeViewTransition; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.activeViewTransition; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::get_picture_in_picture_enabled(
@@ -5718,35 +5997,67 @@ pub extern "js" fn Document::exit_pointer_lock(self : Document) -> Unit =
 
 ///|
 pub extern "js" fn Document::get_selection(self : Document) -> Selection? =
-  #| (self) => { const v = self.getSelection(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.getSelection(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::get_box_quads(self : Document) -> Array[DOMQuad] =
   #| (self) => self.getBoxQuads()
 
 ///|
-pub extern "js" fn Document::get_box_quads_with_options(
+extern "js" fn Document::get_box_quads_with_options_ffi(
   self : Document,
-  options : BoxQuadOptions,
+  options : JsValue,
 ) -> Array[DOMQuad] =
   #| (self, options) => self.getBoxQuads(options)
 
 ///|
-pub extern "js" fn Document::convert_quad_from_node(
+pub fn Document::get_box_quads_with_options(
   self : Document,
-  quad : DOMQuadInit,
+  options : BoxQuadOptions,
+) -> Array[DOMQuad] {
+  Document::get_box_quads_with_options_ffi(self, options.to_js())
+}
+
+///|
+extern "js" fn Document::convert_quad_from_node_ffi(
+  self : Document,
+  quad : JsValue,
   from : GeometryNode,
 ) -> DOMQuad =
   #| (self, quad, from) => self.convertQuadFromNode(quad, from)
 
 ///|
-pub extern "js" fn Document::convert_quad_from_node_with_options(
+pub fn Document::convert_quad_from_node(
+  self : Document,
+  quad : DOMQuadInit,
+  from : GeometryNode,
+) -> DOMQuad {
+  Document::convert_quad_from_node_ffi(self, quad.to_js(), from)
+}
+
+///|
+extern "js" fn Document::convert_quad_from_node_with_options_ffi(
+  self : Document,
+  quad : JsValue,
+  from : GeometryNode,
+  options : JsValue,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub fn Document::convert_quad_from_node_with_options(
   self : Document,
   quad : DOMQuadInit,
   from : GeometryNode,
   options : ConvertCoordinateOptions,
-) -> DOMQuad =
-  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+) -> DOMQuad {
+  Document::convert_quad_from_node_with_options_ffi(
+    self,
+    quad.to_js(),
+    from,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Document::convert_rect_from_node(
@@ -5757,30 +6068,69 @@ pub extern "js" fn Document::convert_rect_from_node(
   #| (self, rect, from) => self.convertRectFromNode(rect, from)
 
 ///|
-pub extern "js" fn Document::convert_rect_from_node_with_options(
+extern "js" fn Document::convert_rect_from_node_with_options_ffi(
   self : Document,
   rect : DOMRectReadOnly,
   from : GeometryNode,
-  options : ConvertCoordinateOptions,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
 ///|
-pub extern "js" fn Document::convert_point_from_node(
+pub fn Document::convert_rect_from_node_with_options(
   self : Document,
-  point : DOMPointInit,
+  rect : DOMRectReadOnly,
+  from : GeometryNode,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Document::convert_rect_from_node_with_options_ffi(
+    self,
+    rect,
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Document::convert_point_from_node_ffi(
+  self : Document,
+  point : JsValue,
   from : GeometryNode,
 ) -> DOMPoint =
   #| (self, point, from) => self.convertPointFromNode(point, from)
 
 ///|
-pub extern "js" fn Document::convert_point_from_node_with_options(
+pub fn Document::convert_point_from_node(
+  self : Document,
+  point : DOMPointInit,
+  from : GeometryNode,
+) -> DOMPoint {
+  Document::convert_point_from_node_ffi(self, point.to_js(), from)
+}
+
+///|
+extern "js" fn Document::convert_point_from_node_with_options_ffi(
+  self : Document,
+  point : JsValue,
+  from : GeometryNode,
+  options : JsValue,
+) -> DOMPoint =
+  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+
+///|
+pub fn Document::convert_point_from_node_with_options(
   self : Document,
   point : DOMPointInit,
   from : GeometryNode,
   options : ConvertCoordinateOptions,
-) -> DOMPoint =
-  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+) -> DOMPoint {
+  Document::convert_point_from_node_with_options_ffi(
+    self,
+    point.to_js(),
+    from,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Document::get_onabort(self : Document) -> EventHandler =
@@ -7002,17 +7352,17 @@ pub extern "js" fn Document::get_element_by_id(
   self : Document,
   element_id : String,
 ) -> Element? =
-  #| (self, element_id) => { const v = self.getElementById(element_id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, element_id) => (() => { const v = self.getElementById(element_id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::get_active_element(self : Document) -> Element? =
-  #| (self) => { const v = self.activeElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.activeElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::get_custom_element_registry(
   self : Document,
 ) -> CustomElementRegistry? =
-  #| (self) => { const v = self.customElementRegistry; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.customElementRegistry; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::get_style_sheets(
@@ -7023,13 +7373,13 @@ pub extern "js" fn Document::get_style_sheets(
 ///|
 pub extern "js" fn Document::get_adopted_style_sheets(
   self : Document,
-) -> JsValue =
+) -> Array[CSSStyleSheet] =
   #| (self) => self.adoptedStyleSheets
 
 ///|
 pub extern "js" fn Document::set_adopted_style_sheets(
   self : Document,
-  value : JsValue,
+  value : Array[CSSStyleSheet],
 ) -> Unit =
   #| (self, value) => { self.adoptedStyleSheets = value }
 
@@ -7037,7 +7387,7 @@ pub extern "js" fn Document::set_adopted_style_sheets(
 pub extern "js" fn Document::get_fullscreen_element(
   self : Document,
 ) -> Element? =
-  #| (self) => { const v = self.fullscreenElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.fullscreenElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::get_animations(
@@ -7049,13 +7399,13 @@ pub extern "js" fn Document::get_animations(
 pub extern "js" fn Document::get_picture_in_picture_element(
   self : Document,
 ) -> Element? =
-  #| (self) => { const v = self.pictureInPictureElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.pictureInPictureElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::get_pointer_lock_element(
   self : Document,
 ) -> Element? =
-  #| (self) => { const v = self.pointerLockElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.pointerLockElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::get_children(self : Document) -> HTMLCollection =
@@ -7065,13 +7415,13 @@ pub extern "js" fn Document::get_children(self : Document) -> HTMLCollection =
 pub extern "js" fn Document::get_first_element_child(
   self : Document,
 ) -> Element? =
-  #| (self) => { const v = self.firstElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.firstElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::get_last_element_child(
   self : Document,
 ) -> Element? =
-  #| (self) => { const v = self.lastElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.lastElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::get_child_element_count(self : Document) -> Int =
@@ -7104,14 +7454,14 @@ pub extern "js" fn Document::move_before(
   node : Node,
   child : Node?,
 ) -> Unit =
-  #| (self, node, child) => self.moveBefore(node, child)
+  #| (self, node, child) => self.moveBefore(node, (child.$tag === 1 ? child._0 : null))
 
 ///|
 pub extern "js" fn Document::query_selector(
   self : Document,
   selectors : String,
 ) -> Element? =
-  #| (self, selectors) => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, selectors) => (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::query_selector_all(
@@ -7133,7 +7483,7 @@ pub extern "js" fn Document::create_expression_with_resolver(
   expression : String,
   resolver : XPathNSResolver?,
 ) -> XPathExpression =
-  #| (self, expression, resolver) => self.createExpression(expression, resolver)
+  #| (self, expression, resolver) => self.createExpression(expression, (resolver.$tag === 1 ? resolver._0 : null))
 
 ///|
 pub extern "js" fn Document::create_ns_resolver(
@@ -7159,11 +7509,119 @@ pub extern "js" fn Document::evaluate_with_result(
   type_ : Int,
   result : XPathResult?,
 ) -> XPathResult =
-  #| (self, expression, context_node, resolver, type_, result) => self.evaluate(expression, context_node, resolver, type_, result)
+  #| (self, expression, context_node, resolver, type_, result) => self.evaluate(expression, context_node, (resolver.$tag === 1 ? resolver._0 : null), type_, (result.$tag === 1 ? result._0 : null))
 
 ///|
 pub extern "js" fn Document::get_fonts(self : Document) -> FontFaceSet =
   #| (self) => self.fonts
+
+///|
+pub extern "js" fn Document::convert_quad_from_node_with_text(
+  self : Document,
+  quad : DOMQuadInit,
+  from : Text,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub extern "js" fn Document::convert_quad_from_node_with_element(
+  self : Document,
+  quad : DOMQuadInit,
+  from : Element,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub extern "js" fn Document::convert_quad_from_node_with_css_pseudo_element(
+  self : Document,
+  quad : DOMQuadInit,
+  from : CSSPseudoElement,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub extern "js" fn Document::convert_quad_from_node_with_document(
+  self : Document,
+  quad : DOMQuadInit,
+  from : Document,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub extern "js" fn Document::convert_rect_from_node_with_text(
+  self : Document,
+  rect : DOMRectReadOnly,
+  from : Text,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+
+///|
+pub extern "js" fn Document::convert_rect_from_node_with_element(
+  self : Document,
+  rect : DOMRectReadOnly,
+  from : Element,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+
+///|
+pub extern "js" fn Document::convert_rect_from_node_with_css_pseudo_element(
+  self : Document,
+  rect : DOMRectReadOnly,
+  from : CSSPseudoElement,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+
+///|
+pub extern "js" fn Document::convert_rect_from_node_with_document(
+  self : Document,
+  rect : DOMRectReadOnly,
+  from : Document,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+
+///|
+pub extern "js" fn Document::convert_point_from_node_with_text(
+  self : Document,
+  point : DOMPointInit,
+  from : Text,
+  options : ConvertCoordinateOptions,
+) -> DOMPoint =
+  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+
+///|
+pub extern "js" fn Document::convert_point_from_node_with_element(
+  self : Document,
+  point : DOMPointInit,
+  from : Element,
+  options : ConvertCoordinateOptions,
+) -> DOMPoint =
+  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+
+///|
+pub extern "js" fn Document::convert_point_from_node_with_css_pseudo_element(
+  self : Document,
+  point : DOMPointInit,
+  from : CSSPseudoElement,
+  options : ConvertCoordinateOptions,
+) -> DOMPoint =
+  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+
+///|
+pub extern "js" fn Document::convert_point_from_node_with_document(
+  self : Document,
+  point : DOMPointInit,
+  from : Document,
+  options : ConvertCoordinateOptions,
+) -> DOMPoint =
+  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
 /// XMLDocument interface
@@ -7269,7 +7727,7 @@ pub extern "js" fn DOMImplementation::create_document_with_doctype(
   qualified_name : String,
   doctype : DocumentType?,
 ) -> XMLDocument =
-  #| (self, namespace_, qualified_name, doctype) => self.createDocument(namespace_, qualified_name, doctype)
+  #| (self, namespace_, qualified_name, doctype) => self.createDocument(namespace_, qualified_name, (doctype.$tag === 1 ? doctype._0 : null))
 
 ///|
 pub extern "js" fn DOMImplementation::create_html_document(
@@ -7436,7 +7894,7 @@ pub extern "js" fn DocumentFragment::get_element_by_id(
   self : DocumentFragment,
   element_id : String,
 ) -> Element? =
-  #| (self, element_id) => { const v = self.getElementById(element_id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, element_id) => (() => { const v = self.getElementById(element_id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn DocumentFragment::get_children(
@@ -7448,13 +7906,13 @@ pub extern "js" fn DocumentFragment::get_children(
 pub extern "js" fn DocumentFragment::get_first_element_child(
   self : DocumentFragment,
 ) -> Element? =
-  #| (self) => { const v = self.firstElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.firstElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn DocumentFragment::get_last_element_child(
   self : DocumentFragment,
 ) -> Element? =
-  #| (self) => { const v = self.lastElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.lastElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn DocumentFragment::get_child_element_count(
@@ -7489,14 +7947,14 @@ pub extern "js" fn DocumentFragment::move_before(
   node : Node,
   child : Node?,
 ) -> Unit =
-  #| (self, node, child) => self.moveBefore(node, child)
+  #| (self, node, child) => self.moveBefore(node, (child.$tag === 1 ? child._0 : null))
 
 ///|
 pub extern "js" fn DocumentFragment::query_selector(
   self : DocumentFragment,
   selectors : String,
 ) -> Element? =
-  #| (self, selectors) => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, selectors) => (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn DocumentFragment::query_selector_all(
@@ -7557,7 +8015,7 @@ pub extern "js" fn ShadowRoot::as_svg_use_element_shadow_root(
 
 ///|
 pub extern "js" fn ShadowRoot::get_mode(self : ShadowRoot) -> ShadowRootMode =
-  #| (self) => self.mode
+  #| (self) => ['open', 'closed'].indexOf(self.mode)
 
 ///|
 pub extern "js" fn ShadowRoot::get_delegates_focus(self : ShadowRoot) -> Bool =
@@ -7567,7 +8025,7 @@ pub extern "js" fn ShadowRoot::get_delegates_focus(self : ShadowRoot) -> Bool =
 pub extern "js" fn ShadowRoot::get_slot_assignment(
   self : ShadowRoot,
 ) -> SlotAssignmentMode =
-  #| (self) => self.slotAssignment
+  #| (self) => ['manual', 'named'].indexOf(self.slotAssignment)
 
 ///|
 pub extern "js" fn ShadowRoot::get_clonable(self : ShadowRoot) -> Bool =
@@ -7606,11 +8064,19 @@ pub extern "js" fn ShadowRoot::get_html(self : ShadowRoot) -> String =
   #| (self) => self.getHTML()
 
 ///|
-pub extern "js" fn ShadowRoot::get_html_with_options(
+extern "js" fn ShadowRoot::get_html_with_options_ffi(
   self : ShadowRoot,
-  options : GetHTMLOptions,
+  options : JsValue,
 ) -> String =
   #| (self, options) => self.getHTML(options)
+
+///|
+pub fn ShadowRoot::get_html_with_options(
+  self : ShadowRoot,
+  options : GetHTMLOptions,
+) -> String {
+  ShadowRoot::get_html_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn ShadowRoot::get_inner_html(
@@ -7629,13 +8095,13 @@ pub extern "js" fn ShadowRoot::set_inner_html(
 pub extern "js" fn ShadowRoot::get_active_element(
   self : ShadowRoot,
 ) -> Element? =
-  #| (self) => { const v = self.activeElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.activeElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ShadowRoot::get_custom_element_registry(
   self : ShadowRoot,
 ) -> CustomElementRegistry? =
-  #| (self) => { const v = self.customElementRegistry; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.customElementRegistry; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ShadowRoot::get_style_sheets(
@@ -7646,13 +8112,13 @@ pub extern "js" fn ShadowRoot::get_style_sheets(
 ///|
 pub extern "js" fn ShadowRoot::get_adopted_style_sheets(
   self : ShadowRoot,
-) -> JsValue =
+) -> Array[CSSStyleSheet] =
   #| (self) => self.adoptedStyleSheets
 
 ///|
 pub extern "js" fn ShadowRoot::set_adopted_style_sheets(
   self : ShadowRoot,
-  value : JsValue,
+  value : Array[CSSStyleSheet],
 ) -> Unit =
   #| (self, value) => { self.adoptedStyleSheets = value }
 
@@ -7660,7 +8126,7 @@ pub extern "js" fn ShadowRoot::set_adopted_style_sheets(
 pub extern "js" fn ShadowRoot::get_fullscreen_element(
   self : ShadowRoot,
 ) -> Element? =
-  #| (self) => { const v = self.fullscreenElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.fullscreenElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ShadowRoot::get_animations(
@@ -7672,13 +8138,13 @@ pub extern "js" fn ShadowRoot::get_animations(
 pub extern "js" fn ShadowRoot::get_picture_in_picture_element(
   self : ShadowRoot,
 ) -> Element? =
-  #| (self) => { const v = self.pictureInPictureElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.pictureInPictureElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ShadowRoot::get_pointer_lock_element(
   self : ShadowRoot,
 ) -> Element? =
-  #| (self) => { const v = self.pointerLockElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.pointerLockElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// Element interface
@@ -8583,24 +9049,12 @@ pub extern "js" fn Element::as_html_fenced_frame_element(
   #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Element::as_html_permission_element(
-  self : Element,
-) -> HTMLPermissionElement? =
-  #| (self) => (self instanceof HTMLPermissionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_html_geolocation_element(
-  self : Element,
-) -> HTMLGeolocationElement? =
-  #| (self) => (self instanceof HTMLGeolocationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn Element::get_namespace_uri(self : Element) -> String? =
-  #| (self) => { const v = self.namespaceURI; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.namespaceURI) ?? undefined
 
 ///|
 pub extern "js" fn Element::get_prefix(self : Element) -> String? =
-  #| (self) => { const v = self.prefix; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.prefix) ?? undefined
 
 ///|
 pub extern "js" fn Element::get_local_name(self : Element) -> String =
@@ -8660,7 +9114,7 @@ pub extern "js" fn Element::get_attribute(
   self : Element,
   qualified_name : String,
 ) -> String? =
-  #| (self, qualified_name) => { const v = self.getAttribute(qualified_name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, qualified_name) => (self.getAttribute(qualified_name)) ?? undefined
 
 ///|
 pub extern "js" fn Element::get_attribute_ns(
@@ -8668,7 +9122,7 @@ pub extern "js" fn Element::get_attribute_ns(
   namespace_ : String?,
   local_name : String,
 ) -> String? =
-  #| (self, namespace_, local_name) => { const v = self.getAttributeNS(namespace_, local_name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, namespace_, local_name) => (self.getAttributeNS(namespace_, local_name)) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_attribute(
@@ -8737,7 +9191,7 @@ pub extern "js" fn Element::get_attribute_node(
   self : Element,
   qualified_name : String,
 ) -> Attr? =
-  #| (self, qualified_name) => { const v = self.getAttributeNode(qualified_name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, qualified_name) => (() => { const v = self.getAttributeNode(qualified_name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::get_attribute_node_ns(
@@ -8745,21 +9199,21 @@ pub extern "js" fn Element::get_attribute_node_ns(
   namespace_ : String?,
   local_name : String,
 ) -> Attr? =
-  #| (self, namespace_, local_name) => { const v = self.getAttributeNodeNS(namespace_, local_name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, namespace_, local_name) => (() => { const v = self.getAttributeNodeNS(namespace_, local_name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::set_attribute_node(
   self : Element,
   attr : Attr,
 ) -> Attr? =
-  #| (self, attr) => { const v = self.setAttributeNode(attr); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, attr) => (() => { const v = self.setAttributeNode(attr); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::set_attribute_node_ns(
   self : Element,
   attr : Attr,
 ) -> Attr? =
-  #| (self, attr) => { const v = self.setAttributeNodeNS(attr); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, attr) => (() => { const v = self.setAttributeNodeNS(attr); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::remove_attribute_node(
@@ -8769,28 +9223,36 @@ pub extern "js" fn Element::remove_attribute_node(
   #| (self, attr) => self.removeAttributeNode(attr)
 
 ///|
-pub extern "js" fn Element::attach_shadow(
+extern "js" fn Element::attach_shadow_ffi(
   self : Element,
-  init_ : ShadowRootInit,
+  init_ : JsValue,
 ) -> ShadowRoot =
   #| (self, init_) => self.attachShadow(init_)
 
 ///|
+pub fn Element::attach_shadow(
+  self : Element,
+  init_ : ShadowRootInit,
+) -> ShadowRoot {
+  Element::attach_shadow_ffi(self, init_.to_js())
+}
+
+///|
 pub extern "js" fn Element::get_shadow_root(self : Element) -> ShadowRoot? =
-  #| (self) => { const v = self.shadowRoot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.shadowRoot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::get_custom_element_registry(
   self : Element,
 ) -> CustomElementRegistry? =
-  #| (self) => { const v = self.customElementRegistry; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.customElementRegistry; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::closest(
   self : Element,
   selectors : String,
 ) -> Element? =
-  #| (self, selectors) => { const v = self.closest(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, selectors) => (() => { const v = self.closest(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::matches(self : Element, selectors : String) -> Bool =
@@ -8831,7 +9293,7 @@ pub extern "js" fn Element::insert_adjacent_element(
   where_ : String,
   element : Element,
 ) -> Element? =
-  #| (self, where_, element) => { const v = self.insertAdjacentElement(where_, element); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, where_, element) => (() => { const v = self.insertAdjacentElement(where_, element); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::insert_adjacent_text(
@@ -8854,11 +9316,19 @@ pub extern "js" fn Element::check_visibility(self : Element) -> Bool =
   #| (self) => self.checkVisibility()
 
 ///|
-pub extern "js" fn Element::check_visibility_with_options(
+extern "js" fn Element::check_visibility_with_options_ffi(
   self : Element,
-  options : CheckVisibilityOptions,
+  options : JsValue,
 ) -> Bool =
   #| (self, options) => self.checkVisibility(options)
+
+///|
+pub fn Element::check_visibility_with_options(
+  self : Element,
+  options : CheckVisibilityOptions,
+) -> Bool {
+  Element::check_visibility_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Element::scroll_into_view(self : Element) -> Promise[Unit] =
@@ -8876,11 +9346,19 @@ pub extern "js" fn Element::scroll(self : Element) -> Promise[Unit] =
   #| (self) => self.scroll()
 
 ///|
-pub extern "js" fn Element::scroll_with_options(
+extern "js" fn Element::scroll_with_options_ffi(
   self : Element,
-  options : ScrollToOptions,
+  options : JsValue,
 ) -> Promise[Unit] =
   #| (self, options) => self.scroll(options)
+
+///|
+pub fn Element::scroll_with_options(
+  self : Element,
+  options : ScrollToOptions,
+) -> Promise[Unit] {
+  Element::scroll_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Element::scroll_with_x_and_y(
@@ -8895,11 +9373,19 @@ pub extern "js" fn Element::scroll_to(self : Element) -> Promise[Unit] =
   #| (self) => self.scrollTo()
 
 ///|
-pub extern "js" fn Element::scroll_to_with_options(
+extern "js" fn Element::scroll_to_with_options_ffi(
   self : Element,
-  options : ScrollToOptions,
+  options : JsValue,
 ) -> Promise[Unit] =
   #| (self, options) => self.scrollTo(options)
+
+///|
+pub fn Element::scroll_to_with_options(
+  self : Element,
+  options : ScrollToOptions,
+) -> Promise[Unit] {
+  Element::scroll_to_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Element::scroll_to_with_x_and_y(
@@ -8914,11 +9400,19 @@ pub extern "js" fn Element::scroll_by(self : Element) -> Promise[Unit] =
   #| (self) => self.scrollBy()
 
 ///|
-pub extern "js" fn Element::scroll_by_with_options(
+extern "js" fn Element::scroll_by_with_options_ffi(
   self : Element,
-  options : ScrollToOptions,
+  options : JsValue,
 ) -> Promise[Unit] =
   #| (self, options) => self.scrollBy(options)
+
+///|
+pub fn Element::scroll_by_with_options(
+  self : Element,
+  options : ScrollToOptions,
+) -> Promise[Unit] {
+  Element::scroll_by_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Element::scroll_by_with_x_and_y(
@@ -8990,11 +9484,19 @@ pub extern "js" fn Element::get_html(self : Element) -> String =
   #| (self) => self.getHTML()
 
 ///|
-pub extern "js" fn Element::get_html_with_options(
+extern "js" fn Element::get_html_with_options_ffi(
   self : Element,
-  options : GetHTMLOptions,
+  options : JsValue,
 ) -> String =
   #| (self, options) => self.getHTML(options)
+
+///|
+pub fn Element::get_html_with_options(
+  self : Element,
+  options : GetHTMLOptions,
+) -> String {
+  Element::get_html_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Element::get_inner_html(
@@ -9037,9 +9539,9 @@ pub extern "js" fn Element::get_part(self : Element) -> DOMTokenList =
 ///|
 pub extern "js" fn Element::pseudo(
   self : Element,
-  type_ : CSSOMString,
+  type_ : String,
 ) -> CSSPseudoElement? =
-  #| (self, type_) => { const v = self.pseudo(type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, type_) => (() => { const v = self.pseudo(type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::get_spatial_navigation_container(
@@ -9052,37 +9554,66 @@ pub extern "js" fn Element::focusable_areas(self : Element) -> Array[Node] =
   #| (self) => self.focusableAreas()
 
 ///|
-pub extern "js" fn Element::focusable_areas_with_option(
+extern "js" fn Element::focusable_areas_with_option_ffi(
   self : Element,
-  option : FocusableAreasOption,
+  option : JsValue,
 ) -> Array[Node] =
   #| (self, option) => self.focusableAreas(option)
+
+///|
+pub fn Element::focusable_areas_with_option(
+  self : Element,
+  option : FocusableAreasOption,
+) -> Array[Node] {
+  Element::focusable_areas_with_option_ffi(self, option.to_js())
+}
 
 ///|
 pub extern "js" fn Element::spatial_navigation_search(
   self : Element,
   dir : SpatialNavigationDirection,
 ) -> Node? =
-  #| (self, dir) => { const v = self.spatialNavigationSearch(['up', 'down', 'left', 'right'][dir]); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, dir) => (() => { const v = self.spatialNavigationSearch(['up', 'down', 'left', 'right'][dir]); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn Element::spatial_navigation_search_with_options(
+extern "js" fn Element::spatial_navigation_search_with_options_ffi(
+  self : Element,
+  dir : SpatialNavigationDirection,
+  options : JsValue,
+) -> Node? =
+  #| (self, dir, options) => (() => { const v = self.spatialNavigationSearch(['up', 'down', 'left', 'right'][dir], options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub fn Element::spatial_navigation_search_with_options(
   self : Element,
   dir : SpatialNavigationDirection,
   options : SpatialNavigationSearchOptions,
-) -> Node? =
-  #| (self, dir, options) => { const v = self.spatialNavigationSearch(['up', 'down', 'left', 'right'][dir], options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+) -> Node? {
+  Element::spatial_navigation_search_with_options_ffi(
+    self,
+    dir,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Element::request_fullscreen(self : Element) -> Promise[Unit] =
   #| (self) => self.requestFullscreen()
 
 ///|
-pub extern "js" fn Element::request_fullscreen_with_options(
+extern "js" fn Element::request_fullscreen_with_options_ffi(
   self : Element,
-  options : FullscreenOptions,
+  options : JsValue,
 ) -> Promise[Unit] =
   #| (self, options) => self.requestFullscreen(options)
+
+///|
+pub fn Element::request_fullscreen_with_options(
+  self : Element,
+  options : FullscreenOptions,
+) -> Promise[Unit] {
+  Element::request_fullscreen_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Element::get_onfullscreenchange(
@@ -9138,7 +9669,7 @@ pub extern "js" fn Element::start_view_transition_with_callback_options(
 pub extern "js" fn Element::get_active_view_transition(
   self : Element,
 ) -> ViewTransition? =
-  #| (self) => { const v = self.activeViewTransition; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.activeViewTransition; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::set_pointer_capture(
@@ -9168,11 +9699,19 @@ pub extern "js" fn Element::request_pointer_lock(
   #| (self) => self.requestPointerLock()
 
 ///|
-pub extern "js" fn Element::request_pointer_lock_with_options(
+extern "js" fn Element::request_pointer_lock_with_options_ffi(
   self : Element,
-  options : PointerLockOptions,
+  options : JsValue,
 ) -> Promise[Unit] =
   #| (self, options) => self.requestPointerLock(options)
+
+///|
+pub fn Element::request_pointer_lock_with_options(
+  self : Element,
+  options : PointerLockOptions,
+) -> Promise[Unit] {
+  Element::request_pointer_lock_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Element::computed_style_map(
@@ -9185,28 +9724,60 @@ pub extern "js" fn Element::get_box_quads(self : Element) -> Array[DOMQuad] =
   #| (self) => self.getBoxQuads()
 
 ///|
-pub extern "js" fn Element::get_box_quads_with_options(
+extern "js" fn Element::get_box_quads_with_options_ffi(
   self : Element,
-  options : BoxQuadOptions,
+  options : JsValue,
 ) -> Array[DOMQuad] =
   #| (self, options) => self.getBoxQuads(options)
 
 ///|
-pub extern "js" fn Element::convert_quad_from_node(
+pub fn Element::get_box_quads_with_options(
   self : Element,
-  quad : DOMQuadInit,
+  options : BoxQuadOptions,
+) -> Array[DOMQuad] {
+  Element::get_box_quads_with_options_ffi(self, options.to_js())
+}
+
+///|
+extern "js" fn Element::convert_quad_from_node_ffi(
+  self : Element,
+  quad : JsValue,
   from : GeometryNode,
 ) -> DOMQuad =
   #| (self, quad, from) => self.convertQuadFromNode(quad, from)
 
 ///|
-pub extern "js" fn Element::convert_quad_from_node_with_options(
+pub fn Element::convert_quad_from_node(
+  self : Element,
+  quad : DOMQuadInit,
+  from : GeometryNode,
+) -> DOMQuad {
+  Element::convert_quad_from_node_ffi(self, quad.to_js(), from)
+}
+
+///|
+extern "js" fn Element::convert_quad_from_node_with_options_ffi(
+  self : Element,
+  quad : JsValue,
+  from : GeometryNode,
+  options : JsValue,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub fn Element::convert_quad_from_node_with_options(
   self : Element,
   quad : DOMQuadInit,
   from : GeometryNode,
   options : ConvertCoordinateOptions,
-) -> DOMQuad =
-  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+) -> DOMQuad {
+  Element::convert_quad_from_node_with_options_ffi(
+    self,
+    quad.to_js(),
+    from,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Element::convert_rect_from_node(
@@ -9217,34 +9788,73 @@ pub extern "js" fn Element::convert_rect_from_node(
   #| (self, rect, from) => self.convertRectFromNode(rect, from)
 
 ///|
-pub extern "js" fn Element::convert_rect_from_node_with_options(
+extern "js" fn Element::convert_rect_from_node_with_options_ffi(
   self : Element,
   rect : DOMRectReadOnly,
   from : GeometryNode,
-  options : ConvertCoordinateOptions,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
 ///|
-pub extern "js" fn Element::convert_point_from_node(
+pub fn Element::convert_rect_from_node_with_options(
   self : Element,
-  point : DOMPointInit,
+  rect : DOMRectReadOnly,
+  from : GeometryNode,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Element::convert_rect_from_node_with_options_ffi(
+    self,
+    rect,
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Element::convert_point_from_node_ffi(
+  self : Element,
+  point : JsValue,
   from : GeometryNode,
 ) -> DOMPoint =
   #| (self, point, from) => self.convertPointFromNode(point, from)
 
 ///|
-pub extern "js" fn Element::convert_point_from_node_with_options(
+pub fn Element::convert_point_from_node(
   self : Element,
   point : DOMPointInit,
   from : GeometryNode,
-  options : ConvertCoordinateOptions,
+) -> DOMPoint {
+  Element::convert_point_from_node_ffi(self, point.to_js(), from)
+}
+
+///|
+extern "js" fn Element::convert_point_from_node_with_options_ffi(
+  self : Element,
+  point : JsValue,
+  from : GeometryNode,
+  options : JsValue,
 ) -> DOMPoint =
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
+pub fn Element::convert_point_from_node_with_options(
+  self : Element,
+  point : DOMPointInit,
+  from : GeometryNode,
+  options : ConvertCoordinateOptions,
+) -> DOMPoint {
+  Element::convert_point_from_node_with_options_ffi(
+    self,
+    point.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
 pub extern "js" fn Element::get_role(self : Element) -> String? =
-  #| (self) => { const v = self.role; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.role) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_role(self : Element, value : String?) -> Unit =
@@ -9254,18 +9864,18 @@ pub extern "js" fn Element::set_role(self : Element, value : String?) -> Unit =
 pub extern "js" fn Element::get_aria_active_descendant_element(
   self : Element,
 ) -> Element? =
-  #| (self) => { const v = self.ariaActiveDescendantElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.ariaActiveDescendantElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::set_aria_active_descendant_element(
   self : Element,
   value : Element?,
 ) -> Unit =
-  #| (self, value) => { self.ariaActiveDescendantElement = value }
+  #| (self, value) => { self.ariaActiveDescendantElement = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 pub extern "js" fn Element::get_aria_atomic(self : Element) -> String? =
-  #| (self) => { const v = self.ariaAtomic; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaAtomic) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_atomic(
@@ -9276,7 +9886,7 @@ pub extern "js" fn Element::set_aria_atomic(
 
 ///|
 pub extern "js" fn Element::get_aria_auto_complete(self : Element) -> String? =
-  #| (self) => { const v = self.ariaAutoComplete; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaAutoComplete) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_auto_complete(
@@ -9287,7 +9897,7 @@ pub extern "js" fn Element::set_aria_auto_complete(
 
 ///|
 pub extern "js" fn Element::get_aria_braille_label(self : Element) -> String? =
-  #| (self) => { const v = self.ariaBrailleLabel; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaBrailleLabel) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_braille_label(
@@ -9300,7 +9910,7 @@ pub extern "js" fn Element::set_aria_braille_label(
 pub extern "js" fn Element::get_aria_braille_role_description(
   self : Element,
 ) -> String? =
-  #| (self) => { const v = self.ariaBrailleRoleDescription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaBrailleRoleDescription) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_braille_role_description(
@@ -9311,7 +9921,7 @@ pub extern "js" fn Element::set_aria_braille_role_description(
 
 ///|
 pub extern "js" fn Element::get_aria_busy(self : Element) -> String? =
-  #| (self) => { const v = self.ariaBusy; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaBusy) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_busy(
@@ -9322,7 +9932,7 @@ pub extern "js" fn Element::set_aria_busy(
 
 ///|
 pub extern "js" fn Element::get_aria_checked(self : Element) -> String? =
-  #| (self) => { const v = self.ariaChecked; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaChecked) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_checked(
@@ -9333,7 +9943,7 @@ pub extern "js" fn Element::set_aria_checked(
 
 ///|
 pub extern "js" fn Element::get_aria_col_count(self : Element) -> String? =
-  #| (self) => { const v = self.ariaColCount; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaColCount) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_col_count(
@@ -9344,7 +9954,7 @@ pub extern "js" fn Element::set_aria_col_count(
 
 ///|
 pub extern "js" fn Element::get_aria_col_index(self : Element) -> String? =
-  #| (self) => { const v = self.ariaColIndex; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaColIndex) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_col_index(
@@ -9355,7 +9965,7 @@ pub extern "js" fn Element::set_aria_col_index(
 
 ///|
 pub extern "js" fn Element::get_aria_col_index_text(self : Element) -> String? =
-  #| (self) => { const v = self.ariaColIndexText; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaColIndexText) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_col_index_text(
@@ -9366,7 +9976,7 @@ pub extern "js" fn Element::set_aria_col_index_text(
 
 ///|
 pub extern "js" fn Element::get_aria_col_span(self : Element) -> String? =
-  #| (self) => { const v = self.ariaColSpan; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaColSpan) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_col_span(
@@ -9378,19 +9988,19 @@ pub extern "js" fn Element::set_aria_col_span(
 ///|
 pub extern "js" fn Element::get_aria_controls_elements(
   self : Element,
-) -> JsValue? =
-  #| (self) => { const v = self.ariaControlsElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+) -> Array[Element] =
+  #| (self) => self.ariaControlsElements
 
 ///|
 pub extern "js" fn Element::set_aria_controls_elements(
   self : Element,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaControlsElements = value }
 
 ///|
 pub extern "js" fn Element::get_aria_current(self : Element) -> String? =
-  #| (self) => { const v = self.ariaCurrent; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaCurrent) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_current(
@@ -9402,19 +10012,19 @@ pub extern "js" fn Element::set_aria_current(
 ///|
 pub extern "js" fn Element::get_aria_described_by_elements(
   self : Element,
-) -> JsValue? =
-  #| (self) => { const v = self.ariaDescribedByElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+) -> Array[Element] =
+  #| (self) => self.ariaDescribedByElements
 
 ///|
 pub extern "js" fn Element::set_aria_described_by_elements(
   self : Element,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaDescribedByElements = value }
 
 ///|
 pub extern "js" fn Element::get_aria_description(self : Element) -> String? =
-  #| (self) => { const v = self.ariaDescription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaDescription) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_description(
@@ -9426,19 +10036,19 @@ pub extern "js" fn Element::set_aria_description(
 ///|
 pub extern "js" fn Element::get_aria_details_elements(
   self : Element,
-) -> JsValue? =
-  #| (self) => { const v = self.ariaDetailsElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+) -> Array[Element] =
+  #| (self) => self.ariaDetailsElements
 
 ///|
 pub extern "js" fn Element::set_aria_details_elements(
   self : Element,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaDetailsElements = value }
 
 ///|
 pub extern "js" fn Element::get_aria_disabled(self : Element) -> String? =
-  #| (self) => { const v = self.ariaDisabled; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaDisabled) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_disabled(
@@ -9450,19 +10060,19 @@ pub extern "js" fn Element::set_aria_disabled(
 ///|
 pub extern "js" fn Element::get_aria_error_message_elements(
   self : Element,
-) -> JsValue? =
-  #| (self) => { const v = self.ariaErrorMessageElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+) -> Array[Element] =
+  #| (self) => self.ariaErrorMessageElements
 
 ///|
 pub extern "js" fn Element::set_aria_error_message_elements(
   self : Element,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaErrorMessageElements = value }
 
 ///|
 pub extern "js" fn Element::get_aria_expanded(self : Element) -> String? =
-  #| (self) => { const v = self.ariaExpanded; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaExpanded) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_expanded(
@@ -9474,19 +10084,19 @@ pub extern "js" fn Element::set_aria_expanded(
 ///|
 pub extern "js" fn Element::get_aria_flow_to_elements(
   self : Element,
-) -> JsValue? =
-  #| (self) => { const v = self.ariaFlowToElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+) -> Array[Element] =
+  #| (self) => self.ariaFlowToElements
 
 ///|
 pub extern "js" fn Element::set_aria_flow_to_elements(
   self : Element,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaFlowToElements = value }
 
 ///|
 pub extern "js" fn Element::get_aria_has_popup(self : Element) -> String? =
-  #| (self) => { const v = self.ariaHasPopup; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaHasPopup) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_has_popup(
@@ -9497,7 +10107,7 @@ pub extern "js" fn Element::set_aria_has_popup(
 
 ///|
 pub extern "js" fn Element::get_aria_hidden(self : Element) -> String? =
-  #| (self) => { const v = self.ariaHidden; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaHidden) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_hidden(
@@ -9508,7 +10118,7 @@ pub extern "js" fn Element::set_aria_hidden(
 
 ///|
 pub extern "js" fn Element::get_aria_invalid(self : Element) -> String? =
-  #| (self) => { const v = self.ariaInvalid; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaInvalid) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_invalid(
@@ -9519,7 +10129,7 @@ pub extern "js" fn Element::set_aria_invalid(
 
 ///|
 pub extern "js" fn Element::get_aria_key_shortcuts(self : Element) -> String? =
-  #| (self) => { const v = self.ariaKeyShortcuts; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaKeyShortcuts) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_key_shortcuts(
@@ -9530,7 +10140,7 @@ pub extern "js" fn Element::set_aria_key_shortcuts(
 
 ///|
 pub extern "js" fn Element::get_aria_label(self : Element) -> String? =
-  #| (self) => { const v = self.ariaLabel; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaLabel) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_label(
@@ -9542,19 +10152,19 @@ pub extern "js" fn Element::set_aria_label(
 ///|
 pub extern "js" fn Element::get_aria_labelled_by_elements(
   self : Element,
-) -> JsValue? =
-  #| (self) => { const v = self.ariaLabelledByElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+) -> Array[Element] =
+  #| (self) => self.ariaLabelledByElements
 
 ///|
 pub extern "js" fn Element::set_aria_labelled_by_elements(
   self : Element,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaLabelledByElements = value }
 
 ///|
 pub extern "js" fn Element::get_aria_level(self : Element) -> String? =
-  #| (self) => { const v = self.ariaLevel; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaLevel) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_level(
@@ -9565,7 +10175,7 @@ pub extern "js" fn Element::set_aria_level(
 
 ///|
 pub extern "js" fn Element::get_aria_live(self : Element) -> String? =
-  #| (self) => { const v = self.ariaLive; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaLive) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_live(
@@ -9576,7 +10186,7 @@ pub extern "js" fn Element::set_aria_live(
 
 ///|
 pub extern "js" fn Element::get_aria_modal(self : Element) -> String? =
-  #| (self) => { const v = self.ariaModal; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaModal) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_modal(
@@ -9587,7 +10197,7 @@ pub extern "js" fn Element::set_aria_modal(
 
 ///|
 pub extern "js" fn Element::get_aria_multi_line(self : Element) -> String? =
-  #| (self) => { const v = self.ariaMultiLine; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaMultiLine) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_multi_line(
@@ -9600,7 +10210,7 @@ pub extern "js" fn Element::set_aria_multi_line(
 pub extern "js" fn Element::get_aria_multi_selectable(
   self : Element,
 ) -> String? =
-  #| (self) => { const v = self.ariaMultiSelectable; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaMultiSelectable) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_multi_selectable(
@@ -9611,7 +10221,7 @@ pub extern "js" fn Element::set_aria_multi_selectable(
 
 ///|
 pub extern "js" fn Element::get_aria_orientation(self : Element) -> String? =
-  #| (self) => { const v = self.ariaOrientation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaOrientation) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_orientation(
@@ -9621,19 +10231,21 @@ pub extern "js" fn Element::set_aria_orientation(
   #| (self, value) => { self.ariaOrientation = value }
 
 ///|
-pub extern "js" fn Element::get_aria_owns_elements(self : Element) -> JsValue? =
-  #| (self) => { const v = self.ariaOwnsElements; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+pub extern "js" fn Element::get_aria_owns_elements(
+  self : Element,
+) -> Array[Element] =
+  #| (self) => self.ariaOwnsElements
 
 ///|
 pub extern "js" fn Element::set_aria_owns_elements(
   self : Element,
-  value : JsValue?,
+  value : Array[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaOwnsElements = value }
 
 ///|
 pub extern "js" fn Element::get_aria_placeholder(self : Element) -> String? =
-  #| (self) => { const v = self.ariaPlaceholder; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaPlaceholder) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_placeholder(
@@ -9644,7 +10256,7 @@ pub extern "js" fn Element::set_aria_placeholder(
 
 ///|
 pub extern "js" fn Element::get_aria_pos_in_set(self : Element) -> String? =
-  #| (self) => { const v = self.ariaPosInSet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaPosInSet) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_pos_in_set(
@@ -9655,7 +10267,7 @@ pub extern "js" fn Element::set_aria_pos_in_set(
 
 ///|
 pub extern "js" fn Element::get_aria_pressed(self : Element) -> String? =
-  #| (self) => { const v = self.ariaPressed; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaPressed) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_pressed(
@@ -9666,7 +10278,7 @@ pub extern "js" fn Element::set_aria_pressed(
 
 ///|
 pub extern "js" fn Element::get_aria_read_only(self : Element) -> String? =
-  #| (self) => { const v = self.ariaReadOnly; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaReadOnly) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_read_only(
@@ -9677,7 +10289,7 @@ pub extern "js" fn Element::set_aria_read_only(
 
 ///|
 pub extern "js" fn Element::get_aria_relevant(self : Element) -> String? =
-  #| (self) => { const v = self.ariaRelevant; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaRelevant) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_relevant(
@@ -9688,7 +10300,7 @@ pub extern "js" fn Element::set_aria_relevant(
 
 ///|
 pub extern "js" fn Element::get_aria_required(self : Element) -> String? =
-  #| (self) => { const v = self.ariaRequired; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaRequired) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_required(
@@ -9701,7 +10313,7 @@ pub extern "js" fn Element::set_aria_required(
 pub extern "js" fn Element::get_aria_role_description(
   self : Element,
 ) -> String? =
-  #| (self) => { const v = self.ariaRoleDescription; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaRoleDescription) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_role_description(
@@ -9712,7 +10324,7 @@ pub extern "js" fn Element::set_aria_role_description(
 
 ///|
 pub extern "js" fn Element::get_aria_row_count(self : Element) -> String? =
-  #| (self) => { const v = self.ariaRowCount; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaRowCount) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_row_count(
@@ -9723,7 +10335,7 @@ pub extern "js" fn Element::set_aria_row_count(
 
 ///|
 pub extern "js" fn Element::get_aria_row_index(self : Element) -> String? =
-  #| (self) => { const v = self.ariaRowIndex; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaRowIndex) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_row_index(
@@ -9734,7 +10346,7 @@ pub extern "js" fn Element::set_aria_row_index(
 
 ///|
 pub extern "js" fn Element::get_aria_row_index_text(self : Element) -> String? =
-  #| (self) => { const v = self.ariaRowIndexText; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaRowIndexText) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_row_index_text(
@@ -9745,7 +10357,7 @@ pub extern "js" fn Element::set_aria_row_index_text(
 
 ///|
 pub extern "js" fn Element::get_aria_row_span(self : Element) -> String? =
-  #| (self) => { const v = self.ariaRowSpan; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaRowSpan) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_row_span(
@@ -9756,7 +10368,7 @@ pub extern "js" fn Element::set_aria_row_span(
 
 ///|
 pub extern "js" fn Element::get_aria_selected(self : Element) -> String? =
-  #| (self) => { const v = self.ariaSelected; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaSelected) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_selected(
@@ -9767,7 +10379,7 @@ pub extern "js" fn Element::set_aria_selected(
 
 ///|
 pub extern "js" fn Element::get_aria_set_size(self : Element) -> String? =
-  #| (self) => { const v = self.ariaSetSize; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaSetSize) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_set_size(
@@ -9778,7 +10390,7 @@ pub extern "js" fn Element::set_aria_set_size(
 
 ///|
 pub extern "js" fn Element::get_aria_sort(self : Element) -> String? =
-  #| (self) => { const v = self.ariaSort; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaSort) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_sort(
@@ -9789,7 +10401,7 @@ pub extern "js" fn Element::set_aria_sort(
 
 ///|
 pub extern "js" fn Element::get_aria_value_max(self : Element) -> String? =
-  #| (self) => { const v = self.ariaValueMax; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaValueMax) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_value_max(
@@ -9800,7 +10412,7 @@ pub extern "js" fn Element::set_aria_value_max(
 
 ///|
 pub extern "js" fn Element::get_aria_value_min(self : Element) -> String? =
-  #| (self) => { const v = self.ariaValueMin; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaValueMin) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_value_min(
@@ -9811,7 +10423,7 @@ pub extern "js" fn Element::set_aria_value_min(
 
 ///|
 pub extern "js" fn Element::get_aria_value_now(self : Element) -> String? =
-  #| (self) => { const v = self.ariaValueNow; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaValueNow) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_value_now(
@@ -9822,7 +10434,7 @@ pub extern "js" fn Element::set_aria_value_now(
 
 ///|
 pub extern "js" fn Element::get_aria_value_text(self : Element) -> String? =
-  #| (self) => { const v = self.ariaValueText; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.ariaValueText) ?? undefined
 
 ///|
 pub extern "js" fn Element::set_aria_value_text(
@@ -9837,11 +10449,11 @@ pub extern "js" fn Element::get_children(self : Element) -> HTMLCollection =
 
 ///|
 pub extern "js" fn Element::get_first_element_child(self : Element) -> Element? =
-  #| (self) => { const v = self.firstElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.firstElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::get_last_element_child(self : Element) -> Element? =
-  #| (self) => { const v = self.lastElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.lastElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::get_child_element_count(self : Element) -> Int =
@@ -9874,14 +10486,14 @@ pub extern "js" fn Element::move_before(
   node : Node,
   child : Node?,
 ) -> Unit =
-  #| (self, node, child) => self.moveBefore(node, child)
+  #| (self, node, child) => self.moveBefore(node, (child.$tag === 1 ? child._0 : null))
 
 ///|
 pub extern "js" fn Element::query_selector(
   self : Element,
   selectors : String,
 ) -> Element? =
-  #| (self, selectors) => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, selectors) => (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::query_selector_all(
@@ -9894,13 +10506,13 @@ pub extern "js" fn Element::query_selector_all(
 pub extern "js" fn Element::get_previous_element_sibling(
   self : Element,
 ) -> Element? =
-  #| (self) => { const v = self.previousElementSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.previousElementSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::get_next_element_sibling(
   self : Element,
 ) -> Element? =
-  #| (self) => { const v = self.nextElementSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.nextElementSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::before(
@@ -9928,14 +10540,14 @@ pub extern "js" fn Element::remove(self : Element) -> Unit =
 pub extern "js" fn Element::get_assigned_slot(
   self : Element,
 ) -> HTMLSlotElement? =
-  #| (self) => { const v = self.assignedSlot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.assignedSlot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::animate(
   self : Element,
   keyframes : JsValue?,
 ) -> Animation =
-  #| (self, keyframes) => self.animate(keyframes)
+  #| (self, keyframes) => self.animate((keyframes.$tag === 1 ? keyframes._0 : null))
 
 ///|
 pub extern "js" fn Element::animate_with_options(
@@ -9943,21 +10555,29 @@ pub extern "js" fn Element::animate_with_options(
   keyframes : JsValue?,
   options : DoubleOrKeyframeAnimationOptions,
 ) -> Animation =
-  #| (self, keyframes, options) => self.animate(keyframes, options)
+  #| (self, keyframes, options) => self.animate((keyframes.$tag === 1 ? keyframes._0 : null), options)
 
 ///|
 pub extern "js" fn Element::get_animations(self : Element) -> Array[Animation] =
   #| (self) => self.getAnimations()
 
 ///|
-pub extern "js" fn Element::get_animations_with_options(
+extern "js" fn Element::get_animations_with_options_ffi(
   self : Element,
-  options : GetAnimationsOptions,
+  options : JsValue,
 ) -> Array[Animation] =
   #| (self, options) => self.getAnimations(options)
 
 ///|
-pub extern "js" fn Element::get_region_overset(self : Element) -> CSSOMString =
+pub fn Element::get_animations_with_options(
+  self : Element,
+  options : GetAnimationsOptions,
+) -> Array[Animation] {
+  Element::get_animations_with_options_ffi(self, options.to_js())
+}
+
+///|
+pub extern "js" fn Element::get_region_overset(self : Element) -> String =
   #| (self) => self.regionOverset
 
 ///|
@@ -9965,6 +10585,114 @@ pub extern "js" fn Element::get_region_flow_ranges(
   self : Element,
 ) -> Array[Range] =
   #| (self) => self.getRegionFlowRanges()
+
+///|
+pub extern "js" fn Element::convert_quad_from_node_with_text(
+  self : Element,
+  quad : DOMQuadInit,
+  from : Text,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub extern "js" fn Element::convert_quad_from_node_with_element(
+  self : Element,
+  quad : DOMQuadInit,
+  from : Element,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub extern "js" fn Element::convert_quad_from_node_with_css_pseudo_element(
+  self : Element,
+  quad : DOMQuadInit,
+  from : CSSPseudoElement,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub extern "js" fn Element::convert_quad_from_node_with_document(
+  self : Element,
+  quad : DOMQuadInit,
+  from : Document,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub extern "js" fn Element::convert_rect_from_node_with_text(
+  self : Element,
+  rect : DOMRectReadOnly,
+  from : Text,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+
+///|
+pub extern "js" fn Element::convert_rect_from_node_with_element(
+  self : Element,
+  rect : DOMRectReadOnly,
+  from : Element,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+
+///|
+pub extern "js" fn Element::convert_rect_from_node_with_css_pseudo_element(
+  self : Element,
+  rect : DOMRectReadOnly,
+  from : CSSPseudoElement,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+
+///|
+pub extern "js" fn Element::convert_rect_from_node_with_document(
+  self : Element,
+  rect : DOMRectReadOnly,
+  from : Document,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+
+///|
+pub extern "js" fn Element::convert_point_from_node_with_text(
+  self : Element,
+  point : DOMPointInit,
+  from : Text,
+  options : ConvertCoordinateOptions,
+) -> DOMPoint =
+  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+
+///|
+pub extern "js" fn Element::convert_point_from_node_with_element(
+  self : Element,
+  point : DOMPointInit,
+  from : Element,
+  options : ConvertCoordinateOptions,
+) -> DOMPoint =
+  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+
+///|
+pub extern "js" fn Element::convert_point_from_node_with_css_pseudo_element(
+  self : Element,
+  point : DOMPointInit,
+  from : CSSPseudoElement,
+  options : ConvertCoordinateOptions,
+) -> DOMPoint =
+  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+
+///|
+pub extern "js" fn Element::convert_point_from_node_with_document(
+  self : Element,
+  point : DOMPointInit,
+  from : Document,
+  options : ConvertCoordinateOptions,
+) -> DOMPoint =
+  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
 /// NamedNodeMap interface
@@ -10005,25 +10733,26 @@ pub extern "js" fn NamedNodeMap::item(
   self : NamedNodeMap,
   index : Int,
 ) -> Attr? =
-  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+#alias("_[_]")
 pub extern "js" fn NamedNodeMap::get(self : NamedNodeMap, index : Int) -> Attr? =
-  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn NamedNodeMap::get_named_item(
   self : NamedNodeMap,
   qualified_name : String,
 ) -> Attr? =
-  #| (self, qualified_name) => { const v = self.getNamedItem(qualified_name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, qualified_name) => (() => { const v = self.getNamedItem(qualified_name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn NamedNodeMap::get_named(
   self : NamedNodeMap,
   qualified_name : String,
 ) -> Attr? =
-  #| (self, qualified_name) => { const v = self[qualified_name]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, qualified_name) => (() => { const v = self[qualified_name]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn NamedNodeMap::get_named_item_ns(
@@ -10031,21 +10760,21 @@ pub extern "js" fn NamedNodeMap::get_named_item_ns(
   namespace_ : String?,
   local_name : String,
 ) -> Attr? =
-  #| (self, namespace_, local_name) => { const v = self.getNamedItemNS(namespace_, local_name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, namespace_, local_name) => (() => { const v = self.getNamedItemNS(namespace_, local_name); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn NamedNodeMap::set_named_item(
   self : NamedNodeMap,
   attr : Attr,
 ) -> Attr? =
-  #| (self, attr) => { const v = self.setNamedItem(attr); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, attr) => (() => { const v = self.setNamedItem(attr); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn NamedNodeMap::set_named_item_ns(
   self : NamedNodeMap,
   attr : Attr,
 ) -> Attr? =
-  #| (self, attr) => { const v = self.setNamedItemNS(attr); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, attr) => (() => { const v = self.setNamedItemNS(attr); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn NamedNodeMap::remove_named_item(
@@ -10100,11 +10829,11 @@ pub extern "js" fn Attr::to_event_target(self : Attr) -> EventTarget =
 
 ///|
 pub extern "js" fn Attr::get_namespace_uri(self : Attr) -> String? =
-  #| (self) => { const v = self.namespaceURI; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.namespaceURI) ?? undefined
 
 ///|
 pub extern "js" fn Attr::get_prefix(self : Attr) -> String? =
-  #| (self) => { const v = self.prefix; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.prefix) ?? undefined
 
 ///|
 pub extern "js" fn Attr::get_local_name(self : Attr) -> String =
@@ -10124,7 +10853,7 @@ pub extern "js" fn Attr::set_value(self : Attr, value : String) -> Unit =
 
 ///|
 pub extern "js" fn Attr::get_owner_element(self : Attr) -> Element? =
-  #| (self) => { const v = self.ownerElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.ownerElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Attr::get_specified(self : Attr) -> Bool =
@@ -10249,13 +10978,13 @@ pub extern "js" fn CharacterData::replace_data(
 pub extern "js" fn CharacterData::get_previous_element_sibling(
   self : CharacterData,
 ) -> Element? =
-  #| (self) => { const v = self.previousElementSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.previousElementSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn CharacterData::get_next_element_sibling(
   self : CharacterData,
 ) -> Element? =
-  #| (self) => { const v = self.nextElementSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.nextElementSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn CharacterData::before(
@@ -10327,7 +11056,11 @@ pub extern "js" fn Text::as_cdata_section(self : Text) -> CDATASection? =
   #| (self) => (self instanceof CDATASection) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Text::new(data : String) -> Text =
+pub extern "js" fn Text::new() -> Text =
+  #| () => new Text()
+
+///|
+pub extern "js" fn Text::new_with_data(data : String) -> Text =
   #| (data) => new Text(data)
 
 ///|
@@ -10343,28 +11076,60 @@ pub extern "js" fn Text::get_box_quads(self : Text) -> Array[DOMQuad] =
   #| (self) => self.getBoxQuads()
 
 ///|
-pub extern "js" fn Text::get_box_quads_with_options(
+extern "js" fn Text::get_box_quads_with_options_ffi(
   self : Text,
-  options : BoxQuadOptions,
+  options : JsValue,
 ) -> Array[DOMQuad] =
   #| (self, options) => self.getBoxQuads(options)
 
 ///|
-pub extern "js" fn Text::convert_quad_from_node(
+pub fn Text::get_box_quads_with_options(
   self : Text,
-  quad : DOMQuadInit,
+  options : BoxQuadOptions,
+) -> Array[DOMQuad] {
+  Text::get_box_quads_with_options_ffi(self, options.to_js())
+}
+
+///|
+extern "js" fn Text::convert_quad_from_node_ffi(
+  self : Text,
+  quad : JsValue,
   from : GeometryNode,
 ) -> DOMQuad =
   #| (self, quad, from) => self.convertQuadFromNode(quad, from)
 
 ///|
-pub extern "js" fn Text::convert_quad_from_node_with_options(
+pub fn Text::convert_quad_from_node(
+  self : Text,
+  quad : DOMQuadInit,
+  from : GeometryNode,
+) -> DOMQuad {
+  Text::convert_quad_from_node_ffi(self, quad.to_js(), from)
+}
+
+///|
+extern "js" fn Text::convert_quad_from_node_with_options_ffi(
+  self : Text,
+  quad : JsValue,
+  from : GeometryNode,
+  options : JsValue,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub fn Text::convert_quad_from_node_with_options(
   self : Text,
   quad : DOMQuadInit,
   from : GeometryNode,
   options : ConvertCoordinateOptions,
-) -> DOMQuad =
-  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+) -> DOMQuad {
+  Text::convert_quad_from_node_with_options_ffi(
+    self,
+    quad.to_js(),
+    from,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Text::convert_rect_from_node(
@@ -10375,34 +11140,181 @@ pub extern "js" fn Text::convert_rect_from_node(
   #| (self, rect, from) => self.convertRectFromNode(rect, from)
 
 ///|
-pub extern "js" fn Text::convert_rect_from_node_with_options(
+extern "js" fn Text::convert_rect_from_node_with_options_ffi(
   self : Text,
   rect : DOMRectReadOnly,
   from : GeometryNode,
-  options : ConvertCoordinateOptions,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
 ///|
-pub extern "js" fn Text::convert_point_from_node(
+pub fn Text::convert_rect_from_node_with_options(
   self : Text,
-  point : DOMPointInit,
+  rect : DOMRectReadOnly,
+  from : GeometryNode,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Text::convert_rect_from_node_with_options_ffi(
+    self,
+    rect,
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Text::convert_point_from_node_ffi(
+  self : Text,
+  point : JsValue,
   from : GeometryNode,
 ) -> DOMPoint =
   #| (self, point, from) => self.convertPointFromNode(point, from)
 
 ///|
-pub extern "js" fn Text::convert_point_from_node_with_options(
+pub fn Text::convert_point_from_node(
   self : Text,
   point : DOMPointInit,
   from : GeometryNode,
+) -> DOMPoint {
+  Text::convert_point_from_node_ffi(self, point.to_js(), from)
+}
+
+///|
+extern "js" fn Text::convert_point_from_node_with_options_ffi(
+  self : Text,
+  point : JsValue,
+  from : GeometryNode,
+  options : JsValue,
+) -> DOMPoint =
+  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+
+///|
+pub fn Text::convert_point_from_node_with_options(
+  self : Text,
+  point : DOMPointInit,
+  from : GeometryNode,
+  options : ConvertCoordinateOptions,
+) -> DOMPoint {
+  Text::convert_point_from_node_with_options_ffi(
+    self,
+    point.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+pub extern "js" fn Text::get_assigned_slot(self : Text) -> HTMLSlotElement? =
+  #| (self) => (() => { const v = self.assignedSlot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Text::convert_quad_from_node_with_text(
+  self : Text,
+  quad : DOMQuadInit,
+  from : Text,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub extern "js" fn Text::convert_quad_from_node_with_element(
+  self : Text,
+  quad : DOMQuadInit,
+  from : Element,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub extern "js" fn Text::convert_quad_from_node_with_css_pseudo_element(
+  self : Text,
+  quad : DOMQuadInit,
+  from : CSSPseudoElement,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub extern "js" fn Text::convert_quad_from_node_with_document(
+  self : Text,
+  quad : DOMQuadInit,
+  from : Document,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub extern "js" fn Text::convert_rect_from_node_with_text(
+  self : Text,
+  rect : DOMRectReadOnly,
+  from : Text,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+
+///|
+pub extern "js" fn Text::convert_rect_from_node_with_element(
+  self : Text,
+  rect : DOMRectReadOnly,
+  from : Element,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+
+///|
+pub extern "js" fn Text::convert_rect_from_node_with_css_pseudo_element(
+  self : Text,
+  rect : DOMRectReadOnly,
+  from : CSSPseudoElement,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+
+///|
+pub extern "js" fn Text::convert_rect_from_node_with_document(
+  self : Text,
+  rect : DOMRectReadOnly,
+  from : Document,
+  options : ConvertCoordinateOptions,
+) -> DOMQuad =
+  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+
+///|
+pub extern "js" fn Text::convert_point_from_node_with_text(
+  self : Text,
+  point : DOMPointInit,
+  from : Text,
   options : ConvertCoordinateOptions,
 ) -> DOMPoint =
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
-pub extern "js" fn Text::get_assigned_slot(self : Text) -> HTMLSlotElement? =
-  #| (self) => { const v = self.assignedSlot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+pub extern "js" fn Text::convert_point_from_node_with_element(
+  self : Text,
+  point : DOMPointInit,
+  from : Element,
+  options : ConvertCoordinateOptions,
+) -> DOMPoint =
+  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+
+///|
+pub extern "js" fn Text::convert_point_from_node_with_css_pseudo_element(
+  self : Text,
+  point : DOMPointInit,
+  from : CSSPseudoElement,
+  options : ConvertCoordinateOptions,
+) -> DOMPoint =
+  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+
+///|
+pub extern "js" fn Text::convert_point_from_node_with_document(
+  self : Text,
+  point : DOMPointInit,
+  from : Document,
+  options : ConvertCoordinateOptions,
+) -> DOMPoint =
+  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
 /// CDATASection interface
@@ -10520,7 +11432,7 @@ pub extern "js" fn ProcessingInstruction::get_target(
 pub extern "js" fn ProcessingInstruction::get_sheet(
   self : ProcessingInstruction,
 ) -> CSSStyleSheet? =
-  #| (self) => { const v = self.sheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.sheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// Comment interface
@@ -10563,7 +11475,11 @@ pub extern "js" fn Comment::to_event_target(self : Comment) -> EventTarget =
   #| (self) => self
 
 ///|
-pub extern "js" fn Comment::new(data : String) -> Comment =
+pub extern "js" fn Comment::new() -> Comment =
+  #| () => new Comment()
+
+///|
+pub extern "js" fn Comment::new_with_data(data : String) -> Comment =
   #| (data) => new Comment(data)
 
 ///|
@@ -10665,8 +11581,13 @@ pub extern "js" fn StaticRange::to_abstract_range(
   #| (self) => self
 
 ///|
-pub extern "js" fn StaticRange::new(init_ : StaticRangeInit) -> StaticRange =
+extern "js" fn StaticRange::new_ffi(init_ : JsValue) -> StaticRange =
   #| (init_) => new StaticRange(init_)
+
+///|
+pub fn StaticRange::new(init_ : StaticRangeInit) -> StaticRange {
+  StaticRange::new_ffi(init_.to_js())
+}
 
 ///|
 /// Range interface
@@ -10908,15 +11829,15 @@ pub extern "js" fn NodeIterator::get_what_to_show(self : NodeIterator) -> Int =
 
 ///|
 pub extern "js" fn NodeIterator::get_filter(self : NodeIterator) -> NodeFilter? =
-  #| (self) => { const v = self.filter; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.filter; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn NodeIterator::next_node(self : NodeIterator) -> Node? =
-  #| (self) => { const v = self.nextNode(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.nextNode(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn NodeIterator::previous_node(self : NodeIterator) -> Node? =
-  #| (self) => { const v = self.previousNode(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.previousNode(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn NodeIterator::detach(self : NodeIterator) -> Unit =
@@ -10960,7 +11881,7 @@ pub extern "js" fn TreeWalker::get_what_to_show(self : TreeWalker) -> Int =
 
 ///|
 pub extern "js" fn TreeWalker::get_filter(self : TreeWalker) -> NodeFilter? =
-  #| (self) => { const v = self.filter; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.filter; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn TreeWalker::get_current_node(self : TreeWalker) -> Node =
@@ -10975,31 +11896,31 @@ pub extern "js" fn TreeWalker::set_current_node(
 
 ///|
 pub extern "js" fn TreeWalker::parent_node(self : TreeWalker) -> Node? =
-  #| (self) => { const v = self.parentNode(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.parentNode(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn TreeWalker::first_child(self : TreeWalker) -> Node? =
-  #| (self) => { const v = self.firstChild(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.firstChild(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn TreeWalker::last_child(self : TreeWalker) -> Node? =
-  #| (self) => { const v = self.lastChild(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.lastChild(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn TreeWalker::previous_sibling(self : TreeWalker) -> Node? =
-  #| (self) => { const v = self.previousSibling(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.previousSibling(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn TreeWalker::next_sibling(self : TreeWalker) -> Node? =
-  #| (self) => { const v = self.nextSibling(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.nextSibling(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn TreeWalker::previous_node(self : TreeWalker) -> Node? =
-  #| (self) => { const v = self.previousNode(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.previousNode(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn TreeWalker::next_node(self : TreeWalker) -> Node? =
-  #| (self) => { const v = self.nextNode(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.nextNode(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// DOMTokenList interface
@@ -11040,14 +11961,15 @@ pub extern "js" fn DOMTokenList::item(
   self : DOMTokenList,
   index : Int,
 ) -> String? =
-  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (self.item(index)) ?? undefined
 
 ///|
+#alias("_[_]")
 pub extern "js" fn DOMTokenList::get(
   self : DOMTokenList,
   index : Int,
 ) -> String? =
-  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (self[index]) ?? undefined
 
 ///|
 pub extern "js" fn DOMTokenList::contains(
@@ -11112,8 +12034,23 @@ pub extern "js" fn DOMTokenList::set_value(
   #| (self, value) => { self.value = value }
 
 ///|
-pub extern "js" fn DOMTokenList::_unknown_(self : DOMTokenList) -> Unit =
-  #| (self) => self._unknown_()
+pub extern "js" fn DOMTokenList::keys(self : DOMTokenList) -> JsValue =
+  #| (self) => self.keys()
+
+///|
+pub extern "js" fn DOMTokenList::values(self : DOMTokenList) -> JsValue =
+  #| (self) => self.values()
+
+///|
+pub extern "js" fn DOMTokenList::entries(self : DOMTokenList) -> JsValue =
+  #| (self) => self.entries()
+
+///|
+pub extern "js" fn DOMTokenList::for_each(
+  self : DOMTokenList,
+  callback : JsValue,
+) -> Unit =
+  #| (self, callback) => { self.forEach(callback) }
 
 ///|
 /// XPathResult interface
@@ -11213,7 +12150,7 @@ pub extern "js" fn XPathResult::get_boolean_value(self : XPathResult) -> Bool =
 pub extern "js" fn XPathResult::get_single_node_value(
   self : XPathResult,
 ) -> Node? =
-  #| (self) => { const v = self.singleNodeValue; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.singleNodeValue; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XPathResult::get_invalid_iterator_state(
@@ -11227,14 +12164,14 @@ pub extern "js" fn XPathResult::get_snapshot_length(self : XPathResult) -> Int =
 
 ///|
 pub extern "js" fn XPathResult::iterate_next(self : XPathResult) -> Node? =
-  #| (self) => { const v = self.iterateNext(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.iterateNext(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XPathResult::snapshot_item(
   self : XPathResult,
   index : Int,
 ) -> Node? =
-  #| (self, index) => { const v = self.snapshotItem(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self.snapshotItem(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// XPathExpression interface
@@ -11288,7 +12225,7 @@ pub extern "js" fn XPathExpression::evaluate_with_result(
   type_ : Int,
   result : XPathResult?,
 ) -> XPathResult =
-  #| (self, context_node, type_, result) => self.evaluate(context_node, type_, result)
+  #| (self, context_node, type_, result) => self.evaluate(context_node, type_, (result.$tag === 1 ? result._0 : null))
 
 ///|
 /// XPathEvaluator interface
@@ -11343,7 +12280,7 @@ pub extern "js" fn XPathEvaluator::create_expression_with_resolver(
   expression : String,
   resolver : XPathNSResolver?,
 ) -> XPathExpression =
-  #| (self, expression, resolver) => self.createExpression(expression, resolver)
+  #| (self, expression, resolver) => self.createExpression(expression, (resolver.$tag === 1 ? resolver._0 : null))
 
 ///|
 pub extern "js" fn XPathEvaluator::create_ns_resolver(
@@ -11369,7 +12306,7 @@ pub extern "js" fn XPathEvaluator::evaluate_with_result(
   type_ : Int,
   result : XPathResult?,
 ) -> XPathResult =
-  #| (self, expression, context_node, resolver, type_, result) => self.evaluate(expression, context_node, resolver, type_, result)
+  #| (self, expression, context_node, resolver, type_, result) => self.evaluate(expression, context_node, (resolver.$tag === 1 ? resolver._0 : null), type_, (result.$tag === 1 ? result._0 : null))
 
 ///|
 /// XSLTProcessor interface

@@ -3,7 +3,7 @@
 
 ///|
 /// DOMPointInit dictionary
-pub struct DOMPointInit {
+pub(all) struct DOMPointInit {
   x : Double?
   y : Double?
   z : Double?
@@ -17,8 +17,7 @@ pub fn DOMPointInit::default() -> DOMPointInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DOMPointInit::to_js(self : DOMPointInit) -> JsValue =
+extern "js" fn DOMPointInit::to_js_ffi(self : DOMPointInit) -> JsValue =
   #| (self) => ({
   #|   x: self.x,
   #|   y: self.y,
@@ -27,8 +26,29 @@ pub extern "js" fn DOMPointInit::to_js(self : DOMPointInit) -> JsValue =
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn DOMPointInit::to_js(self : DOMPointInit) -> JsValue {
+  DOMPointInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DOMPointInit::from_js_ffi(value : JsValue) -> DOMPointInit =
+  #| (v) => ({
+  #|   x: v.x,
+  #|   y: v.y,
+  #|   z: v.z,
+  #|   w: v.w
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DOMPointInit::from_js(value : JsValue) -> DOMPointInit {
+  DOMPointInit::from_js_ffi(value)
+}
+
+///|
 /// DOMRectInit dictionary
-pub struct DOMRectInit {
+pub(all) struct DOMRectInit {
   x : Double?
   y : Double?
   width : Double?
@@ -42,8 +62,7 @@ pub fn DOMRectInit::default() -> DOMRectInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DOMRectInit::to_js(self : DOMRectInit) -> JsValue =
+extern "js" fn DOMRectInit::to_js_ffi(self : DOMRectInit) -> JsValue =
   #| (self) => ({
   #|   x: self.x,
   #|   y: self.y,
@@ -52,8 +71,29 @@ pub extern "js" fn DOMRectInit::to_js(self : DOMRectInit) -> JsValue =
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn DOMRectInit::to_js(self : DOMRectInit) -> JsValue {
+  DOMRectInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DOMRectInit::from_js_ffi(value : JsValue) -> DOMRectInit =
+  #| (v) => ({
+  #|   x: v.x,
+  #|   y: v.y,
+  #|   width: v.width,
+  #|   height: v.height
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DOMRectInit::from_js(value : JsValue) -> DOMRectInit {
+  DOMRectInit::from_js_ffi(value)
+}
+
+///|
 /// DOMQuadInit dictionary
-pub struct DOMQuadInit {
+pub(all) struct DOMQuadInit {
   p1 : DOMPointInit?
   p2 : DOMPointInit?
   p3 : DOMPointInit?
@@ -67,18 +107,38 @@ pub fn DOMQuadInit::default() -> DOMQuadInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DOMQuadInit::to_js(self : DOMQuadInit) -> JsValue =
+extern "js" fn DOMQuadInit::to_js_ffi(self : DOMQuadInit) -> JsValue =
   #| (self) => ({
-  #|   p1: self.p1,
-  #|   p2: self.p2,
-  #|   p3: self.p3,
-  #|   p4: self.p4
+  #|   p1: ((() => { const v = self.p1; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   p2: ((() => { const v = self.p2; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   p3: ((() => { const v = self.p3; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   p4: ((() => { const v = self.p4; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn DOMQuadInit::to_js(self : DOMQuadInit) -> JsValue {
+  DOMQuadInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DOMQuadInit::from_js_ffi(value : JsValue) -> DOMQuadInit =
+  #| (v) => ({
+  #|   p1: (v.p1 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.p1 }),
+  #|   p2: (v.p2 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.p2 }),
+  #|   p3: (v.p3 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.p3 }),
+  #|   p4: (v.p4 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.p4 })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DOMQuadInit::from_js(value : JsValue) -> DOMQuadInit {
+  DOMQuadInit::from_js_ffi(value)
+}
+
+///|
 /// DOMMatrix2DInit dictionary
-pub struct DOMMatrix2DInit {
+pub(all) struct DOMMatrix2DInit {
   a : Double?
   b : Double?
   c : Double?
@@ -113,8 +173,7 @@ pub fn DOMMatrix2DInit::default() -> DOMMatrix2DInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DOMMatrix2DInit::to_js(self : DOMMatrix2DInit) -> JsValue =
+extern "js" fn DOMMatrix2DInit::to_js_ffi(self : DOMMatrix2DInit) -> JsValue =
   #| (self) => ({
   #|   a: self.a,
   #|   b: self.b,
@@ -131,8 +190,37 @@ pub extern "js" fn DOMMatrix2DInit::to_js(self : DOMMatrix2DInit) -> JsValue =
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn DOMMatrix2DInit::to_js(self : DOMMatrix2DInit) -> JsValue {
+  DOMMatrix2DInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DOMMatrix2DInit::from_js_ffi(value : JsValue) -> DOMMatrix2DInit =
+  #| (v) => ({
+  #|   a: v.a,
+  #|   b: v.b,
+  #|   c: v.c,
+  #|   d: v.d,
+  #|   e: v.e,
+  #|   f: v.f,
+  #|   m11: v.m11,
+  #|   m12: v.m12,
+  #|   m21: v.m21,
+  #|   m22: v.m22,
+  #|   m41: v.m41,
+  #|   m42: v.m42
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DOMMatrix2DInit::from_js(value : JsValue) -> DOMMatrix2DInit {
+  DOMMatrix2DInit::from_js_ffi(value)
+}
+
+///|
 /// DOMMatrixInit dictionary
-pub struct DOMMatrixInit {
+pub(all) struct DOMMatrixInit {
   a : Double?
   b : Double?
   c : Double?
@@ -189,8 +277,7 @@ pub fn DOMMatrixInit::default() -> DOMMatrixInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DOMMatrixInit::to_js(self : DOMMatrixInit) -> JsValue =
+extern "js" fn DOMMatrixInit::to_js_ffi(self : DOMMatrixInit) -> JsValue =
   #| (self) => ({
   #|   a: self.a,
   #|   b: self.b,
@@ -214,8 +301,48 @@ pub extern "js" fn DOMMatrixInit::to_js(self : DOMMatrixInit) -> JsValue =
   #|   m34: self.m34,
   #|   m43: self.m43,
   #|   m44: self.m44,
-  #|   is2D: self.is2D
+  #|   is2D: (self.is2D === -1 ? undefined : self.is2D)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn DOMMatrixInit::to_js(self : DOMMatrixInit) -> JsValue {
+  DOMMatrixInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DOMMatrixInit::from_js_ffi(value : JsValue) -> DOMMatrixInit =
+  #| (v) => ({
+  #|   a: v.a,
+  #|   b: v.b,
+  #|   c: v.c,
+  #|   d: v.d,
+  #|   e: v.e,
+  #|   f: v.f,
+  #|   m11: v.m11,
+  #|   m12: v.m12,
+  #|   m21: v.m21,
+  #|   m22: v.m22,
+  #|   m41: v.m41,
+  #|   m42: v.m42,
+  #|   m13: v.m13,
+  #|   m14: v.m14,
+  #|   m23: v.m23,
+  #|   m24: v.m24,
+  #|   m31: v.m31,
+  #|   m32: v.m32,
+  #|   m33: v.m33,
+  #|   m34: v.m34,
+  #|   m43: v.m43,
+  #|   m44: v.m44,
+  #|   is2D: (v.is2D === undefined ? -1 : v.is2D)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DOMMatrixInit::from_js(value : JsValue) -> DOMMatrixInit {
+  DOMMatrixInit::from_js_ffi(value)
+}
 
 ///|
 /// DOMPointReadOnly interface
@@ -262,7 +389,11 @@ pub extern "js" fn DOMPointReadOnly::as_dom_point(
   #| (self) => (self instanceof DOMPoint) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn DOMPointReadOnly::new(
+pub extern "js" fn DOMPointReadOnly::new() -> DOMPointReadOnly =
+  #| () => new DOMPointReadOnly()
+
+///|
+pub extern "js" fn DOMPointReadOnly::new_with_w(
   x : Double,
   y : Double,
   z : Double,
@@ -271,10 +402,21 @@ pub extern "js" fn DOMPointReadOnly::new(
   #| (x, y, z, w) => new DOMPointReadOnly(x, y, z, w)
 
 ///|
-pub extern "js" fn DOMPointReadOnly::from_point(
-  other : DOMPointInit,
+pub extern "js" fn DOMPointReadOnly::from_point() -> DOMPointReadOnly =
+  #| () => DOMPointReadOnly.fromPoint()
+
+///|
+extern "js" fn DOMPointReadOnly::from_point_with_other_ffi(
+  other : JsValue,
 ) -> DOMPointReadOnly =
   #| (other) => DOMPointReadOnly.fromPoint(other)
+
+///|
+pub fn DOMPointReadOnly::from_point_with_other(
+  other : DOMPointInit,
+) -> DOMPointReadOnly {
+  DOMPointReadOnly::from_point_with_other_ffi(other.to_js())
+}
 
 ///|
 pub extern "js" fn DOMPointReadOnly::get_x(self : DOMPointReadOnly) -> Double =
@@ -299,11 +441,19 @@ pub extern "js" fn DOMPointReadOnly::matrix_transform(
   #| (self) => self.matrixTransform()
 
 ///|
-pub extern "js" fn DOMPointReadOnly::matrix_transform_with_matrix(
+extern "js" fn DOMPointReadOnly::matrix_transform_with_matrix_ffi(
   self : DOMPointReadOnly,
-  matrix : DOMMatrixInit,
+  matrix : JsValue,
 ) -> DOMPoint =
   #| (self, matrix) => self.matrixTransform(matrix)
+
+///|
+pub fn DOMPointReadOnly::matrix_transform_with_matrix(
+  self : DOMPointReadOnly,
+  matrix : DOMMatrixInit,
+) -> DOMPoint {
+  DOMPointReadOnly::matrix_transform_with_matrix_ffi(self, matrix.to_js())
+}
 
 ///|
 pub extern "js" fn DOMPointReadOnly::to_json(
@@ -346,7 +496,11 @@ pub extern "js" fn DOMPoint::to_dom_point_read_only(
   #| (self) => self
 
 ///|
-pub extern "js" fn DOMPoint::new(
+pub extern "js" fn DOMPoint::new() -> DOMPoint =
+  #| () => new DOMPoint()
+
+///|
+pub extern "js" fn DOMPoint::new_with_w(
   x : Double,
   y : Double,
   z : Double,
@@ -355,8 +509,17 @@ pub extern "js" fn DOMPoint::new(
   #| (x, y, z, w) => new DOMPoint(x, y, z, w)
 
 ///|
-pub extern "js" fn DOMPoint::from_point(other : DOMPointInit) -> DOMPoint =
+pub extern "js" fn DOMPoint::from_point() -> DOMPoint =
+  #| () => DOMPoint.fromPoint()
+
+///|
+extern "js" fn DOMPoint::from_point_with_other_ffi(other : JsValue) -> DOMPoint =
   #| (other) => DOMPoint.fromPoint(other)
+
+///|
+pub fn DOMPoint::from_point_with_other(other : DOMPointInit) -> DOMPoint {
+  DOMPoint::from_point_with_other_ffi(other.to_js())
+}
 
 ///|
 pub extern "js" fn DOMPoint::get_x(self : DOMPoint) -> Double =
@@ -435,7 +598,11 @@ pub extern "js" fn DOMRectReadOnly::as_dom_rect(
   #| (self) => (self instanceof DOMRect) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn DOMRectReadOnly::new(
+pub extern "js" fn DOMRectReadOnly::new() -> DOMRectReadOnly =
+  #| () => new DOMRectReadOnly()
+
+///|
+pub extern "js" fn DOMRectReadOnly::new_with_height(
   x : Double,
   y : Double,
   width : Double,
@@ -444,10 +611,21 @@ pub extern "js" fn DOMRectReadOnly::new(
   #| (x, y, width, height) => new DOMRectReadOnly(x, y, width, height)
 
 ///|
-pub extern "js" fn DOMRectReadOnly::from_rect(
-  other : DOMRectInit,
+pub extern "js" fn DOMRectReadOnly::from_rect() -> DOMRectReadOnly =
+  #| () => DOMRectReadOnly.fromRect()
+
+///|
+extern "js" fn DOMRectReadOnly::from_rect_with_other_ffi(
+  other : JsValue,
 ) -> DOMRectReadOnly =
   #| (other) => DOMRectReadOnly.fromRect(other)
+
+///|
+pub fn DOMRectReadOnly::from_rect_with_other(
+  other : DOMRectInit,
+) -> DOMRectReadOnly {
+  DOMRectReadOnly::from_rect_with_other_ffi(other.to_js())
+}
 
 ///|
 pub extern "js" fn DOMRectReadOnly::get_x(self : DOMRectReadOnly) -> Double =
@@ -524,7 +702,11 @@ pub extern "js" fn DOMRect::to_dom_rect_read_only(
   #| (self) => self
 
 ///|
-pub extern "js" fn DOMRect::new(
+pub extern "js" fn DOMRect::new() -> DOMRect =
+  #| () => new DOMRect()
+
+///|
+pub extern "js" fn DOMRect::new_with_height(
   x : Double,
   y : Double,
   width : Double,
@@ -533,8 +715,17 @@ pub extern "js" fn DOMRect::new(
   #| (x, y, width, height) => new DOMRect(x, y, width, height)
 
 ///|
-pub extern "js" fn DOMRect::from_rect(other : DOMRectInit) -> DOMRect =
+pub extern "js" fn DOMRect::from_rect() -> DOMRect =
+  #| () => DOMRect.fromRect()
+
+///|
+extern "js" fn DOMRect::from_rect_with_other_ffi(other : JsValue) -> DOMRect =
   #| (other) => DOMRect.fromRect(other)
+
+///|
+pub fn DOMRect::from_rect_with_other(other : DOMRectInit) -> DOMRect {
+  DOMRect::from_rect_with_other_ffi(other.to_js())
+}
 
 ///|
 pub extern "js" fn DOMRect::get_x(self : DOMRect) -> Double =
@@ -605,14 +796,15 @@ pub extern "js" fn DOMRectList::item(
   self : DOMRectList,
   index : Int,
 ) -> DOMRect? =
-  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+#alias("_[_]")
 pub extern "js" fn DOMRectList::get(
   self : DOMRectList,
   index : Int,
 ) -> DOMRect? =
-  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// DOMQuad interface
@@ -643,21 +835,53 @@ pub extern "js" fn JsValue::to_dom_quad(self : JsValue) -> DOMQuad =
   #| (self) => self
 
 ///|
-pub extern "js" fn DOMQuad::new(
-  p1 : DOMPointInit,
-  p2 : DOMPointInit,
-  p3 : DOMPointInit,
-  p4 : DOMPointInit,
+pub extern "js" fn DOMQuad::new() -> DOMQuad =
+  #| () => new DOMQuad()
+
+///|
+extern "js" fn DOMQuad::new_with_p4_ffi(
+  p1 : JsValue,
+  p2 : JsValue,
+  p3 : JsValue,
+  p4 : JsValue,
 ) -> DOMQuad =
   #| (p1, p2, p3, p4) => new DOMQuad(p1, p2, p3, p4)
 
 ///|
-pub extern "js" fn DOMQuad::from_rect(other : DOMRectInit) -> DOMQuad =
+pub fn DOMQuad::new_with_p4(
+  p1 : DOMPointInit,
+  p2 : DOMPointInit,
+  p3 : DOMPointInit,
+  p4 : DOMPointInit,
+) -> DOMQuad {
+  DOMQuad::new_with_p4_ffi(p1.to_js(), p2.to_js(), p3.to_js(), p4.to_js())
+}
+
+///|
+pub extern "js" fn DOMQuad::from_rect() -> DOMQuad =
+  #| () => DOMQuad.fromRect()
+
+///|
+extern "js" fn DOMQuad::from_rect_with_other_ffi(other : JsValue) -> DOMQuad =
   #| (other) => DOMQuad.fromRect(other)
 
 ///|
-pub extern "js" fn DOMQuad::from_quad(other : DOMQuadInit) -> DOMQuad =
+pub fn DOMQuad::from_rect_with_other(other : DOMRectInit) -> DOMQuad {
+  DOMQuad::from_rect_with_other_ffi(other.to_js())
+}
+
+///|
+pub extern "js" fn DOMQuad::from_quad() -> DOMQuad =
+  #| () => DOMQuad.fromQuad()
+
+///|
+extern "js" fn DOMQuad::from_quad_with_other_ffi(other : JsValue) -> DOMQuad =
   #| (other) => DOMQuad.fromQuad(other)
+
+///|
+pub fn DOMQuad::from_quad_with_other(other : DOMQuadInit) -> DOMQuad {
+  DOMQuad::from_quad_with_other_ffi(other.to_js())
+}
 
 ///|
 pub extern "js" fn DOMQuad::get_p1(self : DOMQuad) -> DOMPoint =
@@ -728,16 +952,31 @@ pub extern "js" fn DOMMatrixReadOnly::as_dom_matrix(
   #| (self) => (self instanceof DOMMatrix) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn DOMMatrixReadOnly::new(
+pub extern "js" fn DOMMatrixReadOnly::new() -> DOMMatrixReadOnly =
+  #| () => new DOMMatrixReadOnly()
+
+///|
+pub extern "js" fn DOMMatrixReadOnly::new_with_init(
   init_ : StringOrArrayOfDouble,
 ) -> DOMMatrixReadOnly =
   #| (init_) => new DOMMatrixReadOnly(init_)
 
 ///|
-pub extern "js" fn DOMMatrixReadOnly::from_matrix(
-  other : DOMMatrixInit,
+pub extern "js" fn DOMMatrixReadOnly::from_matrix() -> DOMMatrixReadOnly =
+  #| () => DOMMatrixReadOnly.fromMatrix()
+
+///|
+extern "js" fn DOMMatrixReadOnly::from_matrix_with_other_ffi(
+  other : JsValue,
 ) -> DOMMatrixReadOnly =
   #| (other) => DOMMatrixReadOnly.fromMatrix(other)
+
+///|
+pub fn DOMMatrixReadOnly::from_matrix_with_other(
+  other : DOMMatrixInit,
+) -> DOMMatrixReadOnly {
+  DOMMatrixReadOnly::from_matrix_with_other_ffi(other.to_js())
+}
 
 ///|
 pub extern "js" fn DOMMatrixReadOnly::from_float32_array(
@@ -872,7 +1111,7 @@ pub extern "js" fn DOMMatrixReadOnly::get_m44(
   #| (self) => self.m44
 
 ///|
-pub extern "js" fn DOMMatrixReadOnly::get_is2_d(
+pub extern "js" fn DOMMatrixReadOnly::get_is_2d(
   self : DOMMatrixReadOnly,
 ) -> Bool =
   #| (self) => self.is2D
@@ -1024,11 +1263,19 @@ pub extern "js" fn DOMMatrixReadOnly::multiply(
   #| (self) => self.multiply()
 
 ///|
-pub extern "js" fn DOMMatrixReadOnly::multiply_with_other(
+extern "js" fn DOMMatrixReadOnly::multiply_with_other_ffi(
   self : DOMMatrixReadOnly,
-  other : DOMMatrixInit,
+  other : JsValue,
 ) -> DOMMatrix =
   #| (self, other) => self.multiply(other)
+
+///|
+pub fn DOMMatrixReadOnly::multiply_with_other(
+  self : DOMMatrixReadOnly,
+  other : DOMMatrixInit,
+) -> DOMMatrix {
+  DOMMatrixReadOnly::multiply_with_other_ffi(self, other.to_js())
+}
 
 ///|
 pub extern "js" fn DOMMatrixReadOnly::flip_x(
@@ -1055,11 +1302,19 @@ pub extern "js" fn DOMMatrixReadOnly::transform_point(
   #| (self) => self.transformPoint()
 
 ///|
-pub extern "js" fn DOMMatrixReadOnly::transform_point_with_point(
+extern "js" fn DOMMatrixReadOnly::transform_point_with_point_ffi(
   self : DOMMatrixReadOnly,
-  point : DOMPointInit,
+  point : JsValue,
 ) -> DOMPoint =
   #| (self, point) => self.transformPoint(point)
+
+///|
+pub fn DOMMatrixReadOnly::transform_point_with_point(
+  self : DOMMatrixReadOnly,
+  point : DOMPointInit,
+) -> DOMPoint {
+  DOMMatrixReadOnly::transform_point_with_point_ffi(self, point.to_js())
+}
 
 ///|
 pub extern "js" fn DOMMatrixReadOnly::to_float32_array(
@@ -1114,12 +1369,29 @@ pub extern "js" fn DOMMatrix::to_dom_matrix_read_only(
   #| (self) => self
 
 ///|
-pub extern "js" fn DOMMatrix::new(init_ : StringOrArrayOfDouble) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::new() -> DOMMatrix =
+  #| () => new DOMMatrix()
+
+///|
+pub extern "js" fn DOMMatrix::new_with_init(
+  init_ : StringOrArrayOfDouble,
+) -> DOMMatrix =
   #| (init_) => new DOMMatrix(init_)
 
 ///|
-pub extern "js" fn DOMMatrix::from_matrix(other : DOMMatrixInit) -> DOMMatrix =
+pub extern "js" fn DOMMatrix::from_matrix() -> DOMMatrix =
+  #| () => DOMMatrix.fromMatrix()
+
+///|
+extern "js" fn DOMMatrix::from_matrix_with_other_ffi(
+  other : JsValue,
+) -> DOMMatrix =
   #| (other) => DOMMatrix.fromMatrix(other)
+
+///|
+pub fn DOMMatrix::from_matrix_with_other(other : DOMMatrixInit) -> DOMMatrix {
+  DOMMatrix::from_matrix_with_other_ffi(other.to_js())
+}
 
 ///|
 pub extern "js" fn DOMMatrix::from_float32_array(
@@ -1314,22 +1586,38 @@ pub extern "js" fn DOMMatrix::multiply_self(self : DOMMatrix) -> DOMMatrix =
   #| (self) => self.multiplySelf()
 
 ///|
-pub extern "js" fn DOMMatrix::multiply_self_with_other(
+extern "js" fn DOMMatrix::multiply_self_with_other_ffi(
   self : DOMMatrix,
-  other : DOMMatrixInit,
+  other : JsValue,
 ) -> DOMMatrix =
   #| (self, other) => self.multiplySelf(other)
+
+///|
+pub fn DOMMatrix::multiply_self_with_other(
+  self : DOMMatrix,
+  other : DOMMatrixInit,
+) -> DOMMatrix {
+  DOMMatrix::multiply_self_with_other_ffi(self, other.to_js())
+}
 
 ///|
 pub extern "js" fn DOMMatrix::pre_multiply_self(self : DOMMatrix) -> DOMMatrix =
   #| (self) => self.preMultiplySelf()
 
 ///|
-pub extern "js" fn DOMMatrix::pre_multiply_self_with_other(
+extern "js" fn DOMMatrix::pre_multiply_self_with_other_ffi(
   self : DOMMatrix,
-  other : DOMMatrixInit,
+  other : JsValue,
 ) -> DOMMatrix =
   #| (self, other) => self.preMultiplySelf(other)
+
+///|
+pub fn DOMMatrix::pre_multiply_self_with_other(
+  self : DOMMatrix,
+  other : DOMMatrixInit,
+) -> DOMMatrix {
+  DOMMatrix::pre_multiply_self_with_other_ffi(self, other.to_js())
+}
 
 ///|
 pub extern "js" fn DOMMatrix::translate_self(self : DOMMatrix) -> DOMMatrix =

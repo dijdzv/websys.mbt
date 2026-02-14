@@ -3,7 +3,7 @@
 
 ///|
 /// ColorSelectionResult dictionary
-pub struct ColorSelectionResult {
+pub(all) struct ColorSelectionResult {
   sRGBHex : String?
 }
 
@@ -14,8 +14,7 @@ pub fn ColorSelectionResult::default() -> ColorSelectionResult {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ColorSelectionResult::to_js(
+extern "js" fn ColorSelectionResult::to_js_ffi(
   self : ColorSelectionResult,
 ) -> JsValue =
   #| (self) => ({
@@ -23,8 +22,28 @@ pub extern "js" fn ColorSelectionResult::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ColorSelectionResult::to_js(self : ColorSelectionResult) -> JsValue {
+  ColorSelectionResult::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ColorSelectionResult::from_js_ffi(
+  value : JsValue,
+) -> ColorSelectionResult =
+  #| (v) => ({
+  #|   sRGBHex: v.sRGBHex
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ColorSelectionResult::from_js(value : JsValue) -> ColorSelectionResult {
+  ColorSelectionResult::from_js_ffi(value)
+}
+
+///|
 /// ColorSelectionOptions dictionary
-pub struct ColorSelectionOptions {
+pub(all) struct ColorSelectionOptions {
   signal : AbortSignal?
 }
 
@@ -35,13 +54,32 @@ pub fn ColorSelectionOptions::default() -> ColorSelectionOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ColorSelectionOptions::to_js(
+extern "js" fn ColorSelectionOptions::to_js_ffi(
   self : ColorSelectionOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   signal: self.signal
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn ColorSelectionOptions::to_js(self : ColorSelectionOptions) -> JsValue {
+  ColorSelectionOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ColorSelectionOptions::from_js_ffi(
+  value : JsValue,
+) -> ColorSelectionOptions =
+  #| (v) => ({
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ColorSelectionOptions::from_js(value : JsValue) -> ColorSelectionOptions {
+  ColorSelectionOptions::from_js_ffi(value)
+}
 
 ///|
 /// EyeDropper interface
@@ -79,11 +117,23 @@ pub extern "js" fn EyeDropper::new() -> EyeDropper =
 pub extern "js" fn EyeDropper::open(
   self : EyeDropper,
 ) -> Promise[ColorSelectionResult] =
-  #| (self) => self.open()
+  #| (self) => self.open().then(v => ({
+  #|   sRGBHex: v.sRGBHex
+  #| }))
 
 ///|
-pub extern "js" fn EyeDropper::open_with_options(
+extern "js" fn EyeDropper::open_with_options_ffi(
+  self : EyeDropper,
+  options : JsValue,
+) -> Promise[ColorSelectionResult] =
+  #| (self, options) => self.open(options).then(v => ({
+  #|   sRGBHex: v.sRGBHex
+  #| }))
+
+///|
+pub fn EyeDropper::open_with_options(
   self : EyeDropper,
   options : ColorSelectionOptions,
-) -> Promise[ColorSelectionResult] =
-  #| (self, options) => self.open(options)
+) -> Promise[ColorSelectionResult] {
+  EyeDropper::open_with_options_ffi(self, options.to_js())
+}

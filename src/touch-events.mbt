@@ -6,7 +6,7 @@
 pub(all) enum TouchType {
   Direct
   Stylus
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -29,7 +29,7 @@ pub fn TouchType::from_string(s : String) -> TouchType? {
 
 ///|
 /// TouchInit dictionary
-pub struct TouchInit {
+pub(all) struct TouchInit {
   identifier : Int
   target : EventTarget
   clientX : Double?
@@ -48,11 +48,11 @@ pub struct TouchInit {
 }
 
 ///|
-/// Create a new TouchInit with default values
-pub fn TouchInit::default() -> TouchInit {
+/// Create a new TouchInit
+pub fn TouchInit::new(target~ : EventTarget) -> TouchInit {
   TouchInit::{
     identifier: 0,
-    target: panic(),
+    target,
     clientX: None,
     clientY: None,
     screenX: None,
@@ -70,8 +70,7 @@ pub fn TouchInit::default() -> TouchInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TouchInit::to_js(self : TouchInit) -> JsValue =
+extern "js" fn TouchInit::to_js_ffi(self : TouchInit) -> JsValue =
   #| (self) => ({
   #|   identifier: self.identifier,
   #|   target: self.target,
@@ -87,12 +86,44 @@ pub extern "js" fn TouchInit::to_js(self : TouchInit) -> JsValue =
   #|   force: self.force,
   #|   altitudeAngle: self.altitudeAngle,
   #|   azimuthAngle: self.azimuthAngle,
-  #|   touchType: ['direct', 'stylus'][self.touchType]
+  #|   touchType: ((() => { const v = self.touchType; if (v === undefined) return undefined; return ['direct', 'stylus'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn TouchInit::to_js(self : TouchInit) -> JsValue {
+  TouchInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TouchInit::from_js_ffi(value : JsValue) -> TouchInit =
+  #| (v) => ({
+  #|   identifier: v.identifier,
+  #|   target: v.target,
+  #|   clientX: v.clientX,
+  #|   clientY: v.clientY,
+  #|   screenX: v.screenX,
+  #|   screenY: v.screenY,
+  #|   pageX: v.pageX,
+  #|   pageY: v.pageY,
+  #|   radiusX: v.radiusX,
+  #|   radiusY: v.radiusY,
+  #|   rotationAngle: v.rotationAngle,
+  #|   force: v.force,
+  #|   altitudeAngle: v.altitudeAngle,
+  #|   azimuthAngle: v.azimuthAngle,
+  #|   touchType: (v.touchType === undefined ? undefined : ['direct', 'stylus'].indexOf(v.touchType))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TouchInit::from_js(value : JsValue) -> TouchInit {
+  TouchInit::from_js_ffi(value)
+}
+
+///|
 /// TouchEventInit dictionary
-pub struct TouchEventInit {
+pub(all) struct TouchEventInit {
   touches : Array[Touch]?
   targetTouches : Array[Touch]?
   changedTouches : Array[Touch]?
@@ -105,13 +136,32 @@ pub fn TouchEventInit::default() -> TouchEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn TouchEventInit::to_js(self : TouchEventInit) -> JsValue =
+extern "js" fn TouchEventInit::to_js_ffi(self : TouchEventInit) -> JsValue =
   #| (self) => ({
-  #|   touches: self.touches,
-  #|   targetTouches: self.targetTouches,
-  #|   changedTouches: self.changedTouches
+  #|   touches: ((() => { const v = self.touches; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   targetTouches: ((() => { const v = self.targetTouches; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   changedTouches: ((() => { const v = self.changedTouches; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn TouchEventInit::to_js(self : TouchEventInit) -> JsValue {
+  TouchEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TouchEventInit::from_js_ffi(value : JsValue) -> TouchEventInit =
+  #| (v) => ({
+  #|   touches: (v.touches === undefined ? { $tag: 0 } : { $tag: 1, _0: v.touches }),
+  #|   targetTouches: (v.targetTouches === undefined ? { $tag: 0 } : { $tag: 1, _0: v.targetTouches }),
+  #|   changedTouches: (v.changedTouches === undefined ? { $tag: 0 } : { $tag: 1, _0: v.changedTouches })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TouchEventInit::from_js(value : JsValue) -> TouchEventInit {
+  TouchEventInit::from_js_ffi(value)
+}
 
 ///|
 /// Touch interface
@@ -142,8 +192,13 @@ pub extern "js" fn JsValue::to_touch(self : JsValue) -> Touch =
   #| (self) => self
 
 ///|
-pub extern "js" fn Touch::new(touch_init_dict : TouchInit) -> Touch =
+extern "js" fn Touch::new_ffi(touch_init_dict : JsValue) -> Touch =
   #| (touch_init_dict) => new Touch(touch_init_dict)
+
+///|
+pub fn Touch::new(touch_init_dict : TouchInit) -> Touch {
+  Touch::new_ffi(touch_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn Touch::get_identifier(self : Touch) -> Int =
@@ -203,7 +258,7 @@ pub extern "js" fn Touch::get_azimuth_angle(self : Touch) -> Double =
 
 ///|
 pub extern "js" fn Touch::get_touch_type(self : Touch) -> TouchType =
-  #| (self) => self.touchType
+  #| (self) => ['direct', 'stylus'].indexOf(self.touchType)
 
 ///|
 /// TouchList interface
@@ -239,11 +294,12 @@ pub extern "js" fn TouchList::get_length(self : TouchList) -> Int =
 
 ///|
 pub extern "js" fn TouchList::item(self : TouchList, index : Int) -> Touch? =
-  #| (self, index) => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+#alias("_[_]")
 pub extern "js" fn TouchList::get(self : TouchList, index : Int) -> Touch? =
-  #| (self, index) => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// TouchEvent interface
@@ -282,11 +338,23 @@ pub extern "js" fn TouchEvent::to_event(self : TouchEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn TouchEvent::new(
+pub extern "js" fn TouchEvent::new(type_ : String) -> TouchEvent =
+  #| (type_) => new TouchEvent(type_)
+
+///|
+extern "js" fn TouchEvent::new_with_event_init_dict_ffi(
   type_ : String,
-  event_init_dict : TouchEventInit,
+  event_init_dict : JsValue,
 ) -> TouchEvent =
   #| (type_, event_init_dict) => new TouchEvent(type_, event_init_dict)
+
+///|
+pub fn TouchEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : TouchEventInit,
+) -> TouchEvent {
+  TouchEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn TouchEvent::get_touches(self : TouchEvent) -> TouchList =

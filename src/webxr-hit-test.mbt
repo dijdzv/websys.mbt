@@ -7,7 +7,7 @@ pub(all) enum XRHitTestTrackableType {
   Point
   Plane
   Mesh
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -36,32 +36,53 @@ pub fn XRHitTestTrackableType::from_string(
 
 ///|
 /// XRHitTestOptionsInit dictionary
-pub struct XRHitTestOptionsInit {
+pub(all) struct XRHitTestOptionsInit {
   space : XRSpace
   entityTypes : Array[XRHitTestTrackableType]?
   offsetRay : XRRay?
 }
 
 ///|
-/// Create a new XRHitTestOptionsInit with default values
-pub fn XRHitTestOptionsInit::default() -> XRHitTestOptionsInit {
-  XRHitTestOptionsInit::{ space: panic(), entityTypes: None, offsetRay: None }
+/// Create a new XRHitTestOptionsInit
+pub fn XRHitTestOptionsInit::new(space~ : XRSpace) -> XRHitTestOptionsInit {
+  XRHitTestOptionsInit::{ space, entityTypes: None, offsetRay: None }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRHitTestOptionsInit::to_js(
+extern "js" fn XRHitTestOptionsInit::to_js_ffi(
   self : XRHitTestOptionsInit,
 ) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
-  #|   entityTypes: self.entityTypes,
-  #|   offsetRay: self.offsetRay
+  #|   entityTypes: ((() => { const v = self.entityTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   offsetRay: ((() => { const v = self.offsetRay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRHitTestOptionsInit::to_js(self : XRHitTestOptionsInit) -> JsValue {
+  XRHitTestOptionsInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRHitTestOptionsInit::from_js_ffi(
+  value : JsValue,
+) -> XRHitTestOptionsInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   entityTypes: (v.entityTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.entityTypes }),
+  #|   offsetRay: (v.offsetRay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offsetRay })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRHitTestOptionsInit::from_js(value : JsValue) -> XRHitTestOptionsInit {
+  XRHitTestOptionsInit::from_js_ffi(value)
+}
+
+///|
 /// XRTransientInputHitTestOptionsInit dictionary
-pub struct XRTransientInputHitTestOptionsInit {
+pub(all) struct XRTransientInputHitTestOptionsInit {
   profile : String
   entityTypes : Array[XRHitTestTrackableType]?
   offsetRay : XRRay?
@@ -78,19 +99,44 @@ pub fn XRTransientInputHitTestOptionsInit::default() -> XRTransientInputHitTestO
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRTransientInputHitTestOptionsInit::to_js(
+extern "js" fn XRTransientInputHitTestOptionsInit::to_js_ffi(
   self : XRTransientInputHitTestOptionsInit,
 ) -> JsValue =
   #| (self) => ({
   #|   profile: self.profile,
-  #|   entityTypes: self.entityTypes,
-  #|   offsetRay: self.offsetRay
+  #|   entityTypes: ((() => { const v = self.entityTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   offsetRay: ((() => { const v = self.offsetRay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRTransientInputHitTestOptionsInit::to_js(
+  self : XRTransientInputHitTestOptionsInit,
+) -> JsValue {
+  XRTransientInputHitTestOptionsInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRTransientInputHitTestOptionsInit::from_js_ffi(
+  value : JsValue,
+) -> XRTransientInputHitTestOptionsInit =
+  #| (v) => ({
+  #|   profile: v.profile,
+  #|   entityTypes: (v.entityTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.entityTypes }),
+  #|   offsetRay: (v.offsetRay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offsetRay })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRTransientInputHitTestOptionsInit::from_js(
+  value : JsValue,
+) -> XRTransientInputHitTestOptionsInit {
+  XRTransientInputHitTestOptionsInit::from_js_ffi(value)
+}
+
+///|
 /// XRRayDirectionInit dictionary
-pub struct XRRayDirectionInit {
+pub(all) struct XRRayDirectionInit {
   x : Double?
   y : Double?
   z : Double?
@@ -104,8 +150,7 @@ pub fn XRRayDirectionInit::default() -> XRRayDirectionInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRRayDirectionInit::to_js(
+extern "js" fn XRRayDirectionInit::to_js_ffi(
   self : XRRayDirectionInit,
 ) -> JsValue =
   #| (self) => ({
@@ -114,6 +159,29 @@ pub extern "js" fn XRRayDirectionInit::to_js(
   #|   z: self.z,
   #|   w: self.w
   #| })
+
+///|
+/// Convert to JsValue
+pub fn XRRayDirectionInit::to_js(self : XRRayDirectionInit) -> JsValue {
+  XRRayDirectionInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRRayDirectionInit::from_js_ffi(
+  value : JsValue,
+) -> XRRayDirectionInit =
+  #| (v) => ({
+  #|   x: v.x,
+  #|   y: v.y,
+  #|   z: v.z,
+  #|   w: v.w
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRRayDirectionInit::from_js(value : JsValue) -> XRRayDirectionInit {
+  XRRayDirectionInit::from_js_ffi(value)
+}
 
 ///|
 /// XRHitTestSource interface
@@ -244,7 +312,7 @@ pub extern "js" fn XRHitTestResult::get_pose(
   self : XRHitTestResult,
   base_space : XRSpace,
 ) -> XRPose? =
-  #| (self, base_space) => { const v = self.getPose(base_space); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, base_space) => (() => { const v = self.getPose(base_space); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRHitTestResult::create_anchor(
@@ -299,7 +367,7 @@ pub extern "js" fn XRTransientInputHitTestResult::get_input_source(
 ///|
 pub extern "js" fn XRTransientInputHitTestResult::get_results(
   self : XRTransientInputHitTestResult,
-) -> JsValue =
+) -> Array[XRHitTestResult] =
   #| (self) => self.results
 
 ///|
@@ -331,11 +399,27 @@ pub extern "js" fn JsValue::to_xr_ray(self : JsValue) -> XRRay =
   #| (self) => self
 
 ///|
-pub extern "js" fn XRRay::new(
-  origin : DOMPointInit,
-  direction : XRRayDirectionInit,
+pub extern "js" fn XRRay::new() -> XRRay =
+  #| () => new XRRay()
+
+///|
+extern "js" fn XRRay::new_with_direction_ffi(
+  origin : JsValue,
+  direction : JsValue,
 ) -> XRRay =
   #| (origin, direction) => new XRRay(origin, direction)
+
+///|
+pub fn XRRay::new_with_direction(
+  origin : DOMPointInit,
+  direction : XRRayDirectionInit,
+) -> XRRay {
+  XRRay::new_with_direction_ffi(origin.to_js(), direction.to_js())
+}
+
+///|
+pub extern "js" fn XRRay::new_with(transform : XRRigidTransform) -> XRRay =
+  #| (transform) => new XRRay(transform)
 
 ///|
 pub extern "js" fn XRRay::get_origin(self : XRRay) -> DOMPointReadOnly =

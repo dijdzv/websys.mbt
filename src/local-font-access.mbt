@@ -3,7 +3,7 @@
 
 ///|
 /// QueryOptions dictionary
-pub struct QueryOptions {
+pub(all) struct QueryOptions {
   postscriptNames : Array[String]?
 }
 
@@ -14,11 +14,28 @@ pub fn QueryOptions::default() -> QueryOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn QueryOptions::to_js(self : QueryOptions) -> JsValue =
+extern "js" fn QueryOptions::to_js_ffi(self : QueryOptions) -> JsValue =
   #| (self) => ({
-  #|   postscriptNames: self.postscriptNames
+  #|   postscriptNames: ((() => { const v = self.postscriptNames; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn QueryOptions::to_js(self : QueryOptions) -> JsValue {
+  QueryOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn QueryOptions::from_js_ffi(value : JsValue) -> QueryOptions =
+  #| (v) => ({
+  #|   postscriptNames: (v.postscriptNames === undefined ? { $tag: 0 } : { $tag: 1, _0: v.postscriptNames })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn QueryOptions::from_js(value : JsValue) -> QueryOptions {
+  QueryOptions::from_js_ffi(value)
+}
 
 ///|
 /// FontData interface

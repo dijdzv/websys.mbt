@@ -8,7 +8,7 @@ pub(all) enum PointerAxis {
   Inline
   X
   Y
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -35,7 +35,7 @@ pub fn PointerAxis::from_string(s : String) -> PointerAxis? {
 
 ///|
 /// PointerTimelineOptions dictionary
-pub struct PointerTimelineOptions {
+pub(all) struct PointerTimelineOptions {
   source : Nullable[Element]
   axis : PointerAxis?
 }
@@ -47,14 +47,36 @@ pub fn PointerTimelineOptions::default() -> PointerTimelineOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PointerTimelineOptions::to_js(
+extern "js" fn PointerTimelineOptions::to_js_ffi(
   self : PointerTimelineOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   axis: ['block', 'inline', 'x', 'y'][self.axis]
+  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   axis: ((() => { const v = self.axis; if (v === undefined) return undefined; return ['block', 'inline', 'x', 'y'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PointerTimelineOptions::to_js(self : PointerTimelineOptions) -> JsValue {
+  PointerTimelineOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PointerTimelineOptions::from_js_ffi(
+  value : JsValue,
+) -> PointerTimelineOptions =
+  #| (v) => ({
+  #|   source: (v.source === undefined ? { $tag: 0 } : v.source === null ? { $tag: 1 } : { $tag: 2, _0: v.source }),
+  #|   axis: (v.axis === undefined ? undefined : ['block', 'inline', 'x', 'y'].indexOf(v.axis))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PointerTimelineOptions::from_js(
+  value : JsValue,
+) -> PointerTimelineOptions {
+  PointerTimelineOptions::from_js_ffi(value)
+}
 
 ///|
 /// PointerTimeline interface
@@ -101,19 +123,30 @@ pub extern "js" fn PointerTimeline::to_animation_timeline(
   #| (self) => self
 
 ///|
-pub extern "js" fn PointerTimeline::new(
-  options : PointerTimelineOptions,
+pub extern "js" fn PointerTimeline::new() -> PointerTimeline =
+  #| () => new PointerTimeline()
+
+///|
+extern "js" fn PointerTimeline::new_with_options_ffi(
+  options : JsValue,
 ) -> PointerTimeline =
   #| (options) => new PointerTimeline(options)
+
+///|
+pub fn PointerTimeline::new_with_options(
+  options : PointerTimelineOptions,
+) -> PointerTimeline {
+  PointerTimeline::new_with_options_ffi(options.to_js())
+}
 
 ///|
 pub extern "js" fn PointerTimeline::get_source(
   self : PointerTimeline,
 ) -> Element? =
-  #| (self) => { const v = self.source; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.source; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn PointerTimeline::get_axis(
   self : PointerTimeline,
 ) -> PointerAxis =
-  #| (self) => self.axis
+  #| (self) => ['block', 'inline', 'x', 'y'].indexOf(self.axis)

@@ -7,7 +7,7 @@ pub(all) enum ReadyState {
   Closed
   Open
   Ended
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -35,7 +35,7 @@ pub fn ReadyState::from_string(s : String) -> ReadyState? {
 pub(all) enum EndOfStreamError {
   Network
   Decode
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -61,7 +61,7 @@ pub fn EndOfStreamError::from_string(s : String) -> EndOfStreamError? {
 pub(all) enum AppendMode {
   Segments
   Sequence
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -84,7 +84,7 @@ pub fn AppendMode::from_string(s : String) -> AppendMode? {
 
 ///|
 /// BufferedChangeEventInit dictionary
-pub struct BufferedChangeEventInit {
+pub(all) struct BufferedChangeEventInit {
   addedRanges : TimeRanges?
   removedRanges : TimeRanges?
 }
@@ -96,14 +96,38 @@ pub fn BufferedChangeEventInit::default() -> BufferedChangeEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BufferedChangeEventInit::to_js(
+extern "js" fn BufferedChangeEventInit::to_js_ffi(
   self : BufferedChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   addedRanges: self.addedRanges,
-  #|   removedRanges: self.removedRanges
+  #|   addedRanges: ((() => { const v = self.addedRanges; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   removedRanges: ((() => { const v = self.removedRanges; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn BufferedChangeEventInit::to_js(
+  self : BufferedChangeEventInit,
+) -> JsValue {
+  BufferedChangeEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BufferedChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> BufferedChangeEventInit =
+  #| (v) => ({
+  #|   addedRanges: (v.addedRanges === undefined ? { $tag: 0 } : { $tag: 1, _0: v.addedRanges }),
+  #|   removedRanges: (v.removedRanges === undefined ? { $tag: 0 } : { $tag: 1, _0: v.removedRanges })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BufferedChangeEventInit::from_js(
+  value : JsValue,
+) -> BufferedChangeEventInit {
+  BufferedChangeEventInit::from_js_ffi(value)
+}
 
 ///|
 /// MediaSource interface
@@ -171,7 +195,7 @@ pub extern "js" fn MediaSource::get_active_source_buffers(
 pub extern "js" fn MediaSource::get_ready_state(
   self : MediaSource,
 ) -> ReadyState =
-  #| (self) => self.readyState
+  #| (self) => ['closed', 'open', 'ended'].indexOf(self.readyState)
 
 ///|
 pub extern "js" fn MediaSource::get_duration(self : MediaSource) -> Double =
@@ -354,14 +378,14 @@ pub extern "js" fn SourceBuffer::as_managed_source_buffer(
 
 ///|
 pub extern "js" fn SourceBuffer::get_mode(self : SourceBuffer) -> AppendMode =
-  #| (self) => self.mode
+  #| (self) => ['segments', 'sequence'].indexOf(self.mode)
 
 ///|
 pub extern "js" fn SourceBuffer::set_mode(
   self : SourceBuffer,
   value : AppendMode,
 ) -> Unit =
-  #| (self, value) => { self.mode = value }
+  #| (self, value) => { self.mode = ['segments', 'sequence'][value] }
 
 ///|
 pub extern "js" fn SourceBuffer::get_updating(self : SourceBuffer) -> Bool =
@@ -522,6 +546,20 @@ pub extern "js" fn SourceBuffer::remove(
   #| (self, start, end) => self.remove(start, end)
 
 ///|
+pub extern "js" fn SourceBuffer::append_buffer_with_array_buffer_view(
+  self : SourceBuffer,
+  data : ArrayBufferView,
+) -> Unit =
+  #| (self, data) => self.appendBuffer(data)
+
+///|
+pub extern "js" fn SourceBuffer::append_buffer_with_array_buffer(
+  self : SourceBuffer,
+  data : ArrayBuffer,
+) -> Unit =
+  #| (self, data) => self.appendBuffer(data)
+
+///|
 /// SourceBufferList interface
 pub type SourceBufferList
 
@@ -596,6 +634,7 @@ pub extern "js" fn SourceBufferList::set_onremovesourcebuffer(
   #| (self, value) => { self.onremovesourcebuffer = value }
 
 ///|
+#alias("_[_]")
 pub extern "js" fn SourceBufferList::get(
   self : SourceBufferList,
   index : Int,
@@ -735,9 +774,26 @@ pub extern "js" fn BufferedChangeEvent::to_event(
 ///|
 pub extern "js" fn BufferedChangeEvent::new(
   type_ : String,
-  event_init_dict : BufferedChangeEventInit,
+) -> BufferedChangeEvent =
+  #| (type_) => new BufferedChangeEvent(type_)
+
+///|
+extern "js" fn BufferedChangeEvent::new_with_event_init_dict_ffi(
+  type_ : String,
+  event_init_dict : JsValue,
 ) -> BufferedChangeEvent =
   #| (type_, event_init_dict) => new BufferedChangeEvent(type_, event_init_dict)
+
+///|
+pub fn BufferedChangeEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : BufferedChangeEventInit,
+) -> BufferedChangeEvent {
+  BufferedChangeEvent::new_with_event_init_dict_ffi(
+    type_,
+    event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn BufferedChangeEvent::get_added_ranges(

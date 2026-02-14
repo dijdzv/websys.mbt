@@ -21,7 +21,7 @@ pub extern "js" fn GeometryNode::from_element(v : Element) -> GeometryNode =
 
 ///|
 /// Create GeometryNode from CSSPseudoElement
-pub extern "js" fn GeometryNode::from_c_s_s_pseudo_element(
+pub extern "js" fn GeometryNode::from_css_pseudo_element(
   v : CSSPseudoElement,
 ) -> GeometryNode =
   #| (v) => v
@@ -43,7 +43,7 @@ pub extern "js" fn GeometryNode::is_element(self : GeometryNode) -> Bool =
 
 ///|
 /// Check if this GeometryNode is CSSPseudoElement
-pub extern "js" fn GeometryNode::is_c_s_s_pseudo_element(
+pub extern "js" fn GeometryNode::is_css_pseudo_element(
   self : GeometryNode,
 ) -> Bool =
   #| (self) => self instanceof CSSPseudoElement
@@ -65,7 +65,7 @@ pub extern "js" fn GeometryNode::as_element(self : GeometryNode) -> Element? =
 
 ///|
 /// Try to get GeometryNode as CSSPseudoElement
-pub extern "js" fn GeometryNode::as_c_s_s_pseudo_element(
+pub extern "js" fn GeometryNode::as_css_pseudo_element(
   self : GeometryNode,
 ) -> CSSPseudoElement? =
   #| (self) => (self instanceof CSSPseudoElement) ? { $tag: 1, _0: self } : { $tag: 0 }
@@ -76,12 +76,50 @@ pub extern "js" fn GeometryNode::as_document(self : GeometryNode) -> Document? =
   #| (self) => (self instanceof Document) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[GeometryNode] to Text?
+pub fn GeometryNode::bind_as_text(value : GeometryNode?) -> Text? {
+  match value {
+    Some(v) => v.as_text()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GeometryNode] to Element?
+pub fn GeometryNode::bind_as_element(value : GeometryNode?) -> Element? {
+  match value {
+    Some(v) => v.as_element()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GeometryNode] to CSSPseudoElement?
+pub fn GeometryNode::bind_as_css_pseudo_element(
+  value : GeometryNode?,
+) -> CSSPseudoElement? {
+  match value {
+    Some(v) => v.as_css_pseudo_element()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[GeometryNode] to Document?
+pub fn GeometryNode::bind_as_document(value : GeometryNode?) -> Document? {
+  match value {
+    Some(v) => v.as_document()
+    None => None
+  }
+}
+
+///|
 /// ScrollBehavior enum
 pub(all) enum ScrollBehavior {
   Auto
   Instant
   Smooth
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -111,7 +149,7 @@ pub(all) enum ScrollLogicalPosition {
   Center
   End
   Nearest
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -141,7 +179,7 @@ pub fn ScrollLogicalPosition::from_string(s : String) -> ScrollLogicalPosition? 
 pub(all) enum ScrollIntoViewContainer {
   All
   Nearest
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -173,7 +211,7 @@ pub(all) enum CSSBoxType {
   Border
   Padding
   Content
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -200,7 +238,7 @@ pub fn CSSBoxType::from_string(s : String) -> CSSBoxType? {
 
 ///|
 /// ScrollOptions dictionary
-pub struct ScrollOptions {
+pub(all) struct ScrollOptions {
   behavior : ScrollBehavior?
 }
 
@@ -211,15 +249,32 @@ pub fn ScrollOptions::default() -> ScrollOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ScrollOptions::to_js(self : ScrollOptions) -> JsValue =
+extern "js" fn ScrollOptions::to_js_ffi(self : ScrollOptions) -> JsValue =
   #| (self) => ({
-  #|   behavior: ['auto', 'instant', 'smooth'][self.behavior]
+  #|   behavior: ((() => { const v = self.behavior; if (v === undefined) return undefined; return ['auto', 'instant', 'smooth'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ScrollOptions::to_js(self : ScrollOptions) -> JsValue {
+  ScrollOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ScrollOptions::from_js_ffi(value : JsValue) -> ScrollOptions =
+  #| (v) => ({
+  #|   behavior: (v.behavior === undefined ? undefined : ['auto', 'instant', 'smooth'].indexOf(v.behavior))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ScrollOptions::from_js(value : JsValue) -> ScrollOptions {
+  ScrollOptions::from_js_ffi(value)
+}
+
+///|
 /// ScrollToOptions dictionary
-pub struct ScrollToOptions {
+pub(all) struct ScrollToOptions {
   behavior : ScrollBehavior?
   left : Double?
   top : Double?
@@ -232,18 +287,37 @@ pub fn ScrollToOptions::default() -> ScrollToOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ScrollToOptions::to_js(self : ScrollToOptions) -> JsValue =
+extern "js" fn ScrollToOptions::to_js_ffi(self : ScrollToOptions) -> JsValue =
   #| (self) => ({
-  #|   behavior: ['auto', 'instant', 'smooth'][self.behavior],
+  #|   behavior: ((() => { const v = self.behavior; if (v === undefined) return undefined; return ['auto', 'instant', 'smooth'][v]; })()),
   #|   left: self.left,
   #|   top: self.top
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ScrollToOptions::to_js(self : ScrollToOptions) -> JsValue {
+  ScrollToOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ScrollToOptions::from_js_ffi(value : JsValue) -> ScrollToOptions =
+  #| (v) => ({
+  #|   behavior: (v.behavior === undefined ? undefined : ['auto', 'instant', 'smooth'].indexOf(v.behavior)),
+  #|   left: v.left,
+  #|   top: v.top
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ScrollToOptions::from_js(value : JsValue) -> ScrollToOptions {
+  ScrollToOptions::from_js_ffi(value)
+}
+
+///|
 /// MediaQueryListEventInit dictionary
-pub struct MediaQueryListEventInit {
-  media : CSSOMString?
+pub(all) struct MediaQueryListEventInit {
+  media : String?
   matches : Bool?
 }
 
@@ -254,18 +328,42 @@ pub fn MediaQueryListEventInit::default() -> MediaQueryListEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MediaQueryListEventInit::to_js(
+extern "js" fn MediaQueryListEventInit::to_js_ffi(
   self : MediaQueryListEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   media: self.media,
-  #|   matches: self.matches
+  #|   matches: (self.matches === -1 ? undefined : self.matches)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MediaQueryListEventInit::to_js(
+  self : MediaQueryListEventInit,
+) -> JsValue {
+  MediaQueryListEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MediaQueryListEventInit::from_js_ffi(
+  value : JsValue,
+) -> MediaQueryListEventInit =
+  #| (v) => ({
+  #|   media: v.media,
+  #|   matches: (v.matches === undefined ? -1 : v.matches)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaQueryListEventInit::from_js(
+  value : JsValue,
+) -> MediaQueryListEventInit {
+  MediaQueryListEventInit::from_js_ffi(value)
+}
+
+///|
 /// CaretPositionFromPointOptions dictionary
-pub struct CaretPositionFromPointOptions {
+pub(all) struct CaretPositionFromPointOptions {
   shadowRoots : Array[ShadowRoot]?
 }
 
@@ -276,17 +374,40 @@ pub fn CaretPositionFromPointOptions::default() -> CaretPositionFromPointOptions
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CaretPositionFromPointOptions::to_js(
+extern "js" fn CaretPositionFromPointOptions::to_js_ffi(
   self : CaretPositionFromPointOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   shadowRoots: self.shadowRoots
+  #|   shadowRoots: ((() => { const v = self.shadowRoots; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn CaretPositionFromPointOptions::to_js(
+  self : CaretPositionFromPointOptions,
+) -> JsValue {
+  CaretPositionFromPointOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CaretPositionFromPointOptions::from_js_ffi(
+  value : JsValue,
+) -> CaretPositionFromPointOptions =
+  #| (v) => ({
+  #|   shadowRoots: (v.shadowRoots === undefined ? { $tag: 0 } : { $tag: 1, _0: v.shadowRoots })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CaretPositionFromPointOptions::from_js(
+  value : JsValue,
+) -> CaretPositionFromPointOptions {
+  CaretPositionFromPointOptions::from_js_ffi(value)
+}
+
+///|
 /// ScrollIntoViewOptions dictionary
-pub struct ScrollIntoViewOptions {
+pub(all) struct ScrollIntoViewOptions {
   behavior : ScrollBehavior?
   block : ScrollLogicalPosition?
   inline : ScrollLogicalPosition?
@@ -305,20 +426,42 @@ pub fn ScrollIntoViewOptions::default() -> ScrollIntoViewOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ScrollIntoViewOptions::to_js(
+extern "js" fn ScrollIntoViewOptions::to_js_ffi(
   self : ScrollIntoViewOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   behavior: ['auto', 'instant', 'smooth'][self.behavior],
-  #|   block: ['start', 'center', 'end', 'nearest'][self.block],
-  #|   inline: ['start', 'center', 'end', 'nearest'][self.inline],
-  #|   container: ['all', 'nearest'][self.container]
+  #|   behavior: ((() => { const v = self.behavior; if (v === undefined) return undefined; return ['auto', 'instant', 'smooth'][v]; })()),
+  #|   block: ((() => { const v = self.block; if (v === undefined) return undefined; return ['start', 'center', 'end', 'nearest'][v]; })()),
+  #|   inline: ((() => { const v = self.inline; if (v === undefined) return undefined; return ['start', 'center', 'end', 'nearest'][v]; })()),
+  #|   container: ((() => { const v = self.container; if (v === undefined) return undefined; return ['all', 'nearest'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ScrollIntoViewOptions::to_js(self : ScrollIntoViewOptions) -> JsValue {
+  ScrollIntoViewOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ScrollIntoViewOptions::from_js_ffi(
+  value : JsValue,
+) -> ScrollIntoViewOptions =
+  #| (v) => ({
+  #|   behavior: (v.behavior === undefined ? undefined : ['auto', 'instant', 'smooth'].indexOf(v.behavior)),
+  #|   block: (v.block === undefined ? undefined : ['start', 'center', 'end', 'nearest'].indexOf(v.block)),
+  #|   inline: (v.inline === undefined ? undefined : ['start', 'center', 'end', 'nearest'].indexOf(v.inline)),
+  #|   container: (v.container === undefined ? undefined : ['all', 'nearest'].indexOf(v.container))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ScrollIntoViewOptions::from_js(value : JsValue) -> ScrollIntoViewOptions {
+  ScrollIntoViewOptions::from_js_ffi(value)
+}
+
+///|
 /// CheckVisibilityOptions dictionary
-pub struct CheckVisibilityOptions {
+pub(all) struct CheckVisibilityOptions {
   checkOpacity : Bool?
   checkVisibilityCSS : Bool?
   contentVisibilityAuto : Bool?
@@ -339,21 +482,46 @@ pub fn CheckVisibilityOptions::default() -> CheckVisibilityOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn CheckVisibilityOptions::to_js(
+extern "js" fn CheckVisibilityOptions::to_js_ffi(
   self : CheckVisibilityOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   checkOpacity: self.checkOpacity,
-  #|   checkVisibilityCSS: self.checkVisibilityCSS,
-  #|   contentVisibilityAuto: self.contentVisibilityAuto,
-  #|   opacityProperty: self.opacityProperty,
-  #|   visibilityProperty: self.visibilityProperty
+  #|   checkOpacity: (self.checkOpacity === -1 ? undefined : self.checkOpacity),
+  #|   checkVisibilityCSS: (self.checkVisibilityCSS === -1 ? undefined : self.checkVisibilityCSS),
+  #|   contentVisibilityAuto: (self.contentVisibilityAuto === -1 ? undefined : self.contentVisibilityAuto),
+  #|   opacityProperty: (self.opacityProperty === -1 ? undefined : self.opacityProperty),
+  #|   visibilityProperty: (self.visibilityProperty === -1 ? undefined : self.visibilityProperty)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn CheckVisibilityOptions::to_js(self : CheckVisibilityOptions) -> JsValue {
+  CheckVisibilityOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CheckVisibilityOptions::from_js_ffi(
+  value : JsValue,
+) -> CheckVisibilityOptions =
+  #| (v) => ({
+  #|   checkOpacity: (v.checkOpacity === undefined ? -1 : v.checkOpacity),
+  #|   checkVisibilityCSS: (v.checkVisibilityCSS === undefined ? -1 : v.checkVisibilityCSS),
+  #|   contentVisibilityAuto: (v.contentVisibilityAuto === undefined ? -1 : v.contentVisibilityAuto),
+  #|   opacityProperty: (v.opacityProperty === undefined ? -1 : v.opacityProperty),
+  #|   visibilityProperty: (v.visibilityProperty === undefined ? -1 : v.visibilityProperty)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CheckVisibilityOptions::from_js(
+  value : JsValue,
+) -> CheckVisibilityOptions {
+  CheckVisibilityOptions::from_js_ffi(value)
+}
+
+///|
 /// BoxQuadOptions dictionary
-pub struct BoxQuadOptions {
+pub(all) struct BoxQuadOptions {
   box : CSSBoxType?
   relativeTo : GeometryNode?
 }
@@ -365,16 +533,34 @@ pub fn BoxQuadOptions::default() -> BoxQuadOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BoxQuadOptions::to_js(self : BoxQuadOptions) -> JsValue =
+extern "js" fn BoxQuadOptions::to_js_ffi(self : BoxQuadOptions) -> JsValue =
   #| (self) => ({
-  #|   box: ['margin', 'border', 'padding', 'content'][self.box],
-  #|   relativeTo: self.relativeTo.to_js_value()
+  #|   box: ((() => { const v = self.box; if (v === undefined) return undefined; return ['margin', 'border', 'padding', 'content'][v]; })()),
+  #|   relativeTo: ((() => { const v = self.relativeTo; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn BoxQuadOptions::to_js(self : BoxQuadOptions) -> JsValue {
+  BoxQuadOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BoxQuadOptions::from_js_ffi(value : JsValue) -> BoxQuadOptions =
+  #| (v) => ({
+  #|   box: (v.box === undefined ? undefined : ['margin', 'border', 'padding', 'content'].indexOf(v.box)),
+  #|   relativeTo: (v.relativeTo === undefined ? { $tag: 0 } : { $tag: 1, _0: v.relativeTo })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BoxQuadOptions::from_js(value : JsValue) -> BoxQuadOptions {
+  BoxQuadOptions::from_js_ffi(value)
+}
+
+///|
 /// ConvertCoordinateOptions dictionary
-pub struct ConvertCoordinateOptions {
+pub(all) struct ConvertCoordinateOptions {
   fromBox : CSSBoxType?
   toBox : CSSBoxType?
 }
@@ -386,14 +572,38 @@ pub fn ConvertCoordinateOptions::default() -> ConvertCoordinateOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ConvertCoordinateOptions::to_js(
+extern "js" fn ConvertCoordinateOptions::to_js_ffi(
   self : ConvertCoordinateOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   fromBox: ['margin', 'border', 'padding', 'content'][self.fromBox],
-  #|   toBox: ['margin', 'border', 'padding', 'content'][self.toBox]
+  #|   fromBox: ((() => { const v = self.fromBox; if (v === undefined) return undefined; return ['margin', 'border', 'padding', 'content'][v]; })()),
+  #|   toBox: ((() => { const v = self.toBox; if (v === undefined) return undefined; return ['margin', 'border', 'padding', 'content'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn ConvertCoordinateOptions::to_js(
+  self : ConvertCoordinateOptions,
+) -> JsValue {
+  ConvertCoordinateOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ConvertCoordinateOptions::from_js_ffi(
+  value : JsValue,
+) -> ConvertCoordinateOptions =
+  #| (v) => ({
+  #|   fromBox: (v.fromBox === undefined ? undefined : ['margin', 'border', 'padding', 'content'].indexOf(v.fromBox)),
+  #|   toBox: (v.toBox === undefined ? undefined : ['margin', 'border', 'padding', 'content'].indexOf(v.toBox))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ConvertCoordinateOptions::from_js(
+  value : JsValue,
+) -> ConvertCoordinateOptions {
+  ConvertCoordinateOptions::from_js_ffi(value)
+}
 
 ///|
 /// MediaQueryList interface
@@ -438,9 +648,7 @@ pub extern "js" fn MediaQueryList::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaQueryList::get_media(
-  self : MediaQueryList,
-) -> CSSOMString =
+pub extern "js" fn MediaQueryList::get_media(self : MediaQueryList) -> String =
   #| (self) => self.media
 
 ///|
@@ -452,14 +660,14 @@ pub extern "js" fn MediaQueryList::add_listener(
   self : MediaQueryList,
   callback : EventListener?,
 ) -> Unit =
-  #| (self, callback) => self.addListener(callback)
+  #| (self, callback) => self.addListener((callback.$tag === 1 ? callback._0 : null))
 
 ///|
 pub extern "js" fn MediaQueryList::remove_listener(
   self : MediaQueryList,
   callback : EventListener?,
 ) -> Unit =
-  #| (self, callback) => self.removeListener(callback)
+  #| (self, callback) => self.removeListener((callback.$tag === 1 ? callback._0 : null))
 
 ///|
 pub extern "js" fn MediaQueryList::get_onchange(
@@ -520,15 +728,32 @@ pub extern "js" fn MediaQueryListEvent::to_event(
 
 ///|
 pub extern "js" fn MediaQueryListEvent::new(
-  type_ : CSSOMString,
-  event_init_dict : MediaQueryListEventInit,
+  type_ : String,
+) -> MediaQueryListEvent =
+  #| (type_) => new MediaQueryListEvent(type_)
+
+///|
+extern "js" fn MediaQueryListEvent::new_with_event_init_dict_ffi(
+  type_ : String,
+  event_init_dict : JsValue,
 ) -> MediaQueryListEvent =
   #| (type_, event_init_dict) => new MediaQueryListEvent(type_, event_init_dict)
 
 ///|
+pub fn MediaQueryListEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : MediaQueryListEventInit,
+) -> MediaQueryListEvent {
+  MediaQueryListEvent::new_with_event_init_dict_ffi(
+    type_,
+    event_init_dict.to_js(),
+  )
+}
+
+///|
 pub extern "js" fn MediaQueryListEvent::get_media(
   self : MediaQueryListEvent,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.media
 
 ///|
@@ -654,7 +879,7 @@ pub extern "js" fn CaretPosition::get_offset(self : CaretPosition) -> Int =
 pub extern "js" fn CaretPosition::get_client_rect(
   self : CaretPosition,
 ) -> DOMRect? =
-  #| (self) => { const v = self.getClientRect(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.getClientRect(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// VisualViewport interface

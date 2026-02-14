@@ -6,7 +6,7 @@
 pub(all) enum ClientLifecycleState {
   Active
   Frozen
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value

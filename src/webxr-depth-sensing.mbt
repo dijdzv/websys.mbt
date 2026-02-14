@@ -6,7 +6,7 @@
 pub(all) enum XRDepthType {
   Raw
   Smooth
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -32,7 +32,7 @@ pub fn XRDepthType::from_string(s : String) -> XRDepthType? {
 pub(all) enum XRDepthUsage {
   CpuOptimized
   GpuOptimized
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -59,7 +59,7 @@ pub(all) enum XRDepthDataFormat {
   LuminanceAlpha
   Float32
   UnsignedShort
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -84,7 +84,7 @@ pub fn XRDepthDataFormat::from_string(s : String) -> XRDepthDataFormat? {
 
 ///|
 /// XRDepthStateInit dictionary
-pub struct XRDepthStateInit {
+pub(all) struct XRDepthStateInit {
   usagePreference : Array[XRDepthUsage]
   dataFormatPreference : Array[XRDepthDataFormat]
   depthTypeRequest : Array[XRDepthType]?
@@ -103,18 +103,40 @@ pub fn XRDepthStateInit::default() -> XRDepthStateInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRDepthStateInit::to_js(self : XRDepthStateInit) -> JsValue =
+extern "js" fn XRDepthStateInit::to_js_ffi(self : XRDepthStateInit) -> JsValue =
   #| (self) => ({
   #|   usagePreference: self.usagePreference,
   #|   dataFormatPreference: self.dataFormatPreference,
-  #|   depthTypeRequest: self.depthTypeRequest,
-  #|   matchDepthView: self.matchDepthView
+  #|   depthTypeRequest: ((() => { const v = self.depthTypeRequest; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   matchDepthView: (self.matchDepthView === -1 ? undefined : self.matchDepthView)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRDepthStateInit::to_js(self : XRDepthStateInit) -> JsValue {
+  XRDepthStateInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRDepthStateInit::from_js_ffi(
+  value : JsValue,
+) -> XRDepthStateInit =
+  #| (v) => ({
+  #|   usagePreference: v.usagePreference,
+  #|   dataFormatPreference: v.dataFormatPreference,
+  #|   depthTypeRequest: (v.depthTypeRequest === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthTypeRequest }),
+  #|   matchDepthView: (v.matchDepthView === undefined ? -1 : v.matchDepthView)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRDepthStateInit::from_js(value : JsValue) -> XRDepthStateInit {
+  XRDepthStateInit::from_js_ffi(value)
+}
+
+///|
 /// XRSessionInit dictionary
-pub struct XRSessionInit {
+pub(all) struct XRSessionInit {
   depthSensing : XRDepthStateInit?
   requiredFeatures : Array[String]?
   optionalFeatures : Array[String]?
@@ -133,14 +155,34 @@ pub fn XRSessionInit::default() -> XRSessionInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRSessionInit::to_js(self : XRSessionInit) -> JsValue =
+extern "js" fn XRSessionInit::to_js_ffi(self : XRSessionInit) -> JsValue =
   #| (self) => ({
-  #|   depthSensing: self.depthSensing,
-  #|   requiredFeatures: self.requiredFeatures,
-  #|   optionalFeatures: self.optionalFeatures,
-  #|   domOverlay: ((() => { const v = self.domOverlay; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   depthSensing: ((() => { const v = self.depthSensing; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   requiredFeatures: ((() => { const v = self.requiredFeatures; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   optionalFeatures: ((() => { const v = self.optionalFeatures; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   domOverlay: ((() => { const v = self.domOverlay; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn XRSessionInit::to_js(self : XRSessionInit) -> JsValue {
+  XRSessionInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRSessionInit::from_js_ffi(value : JsValue) -> XRSessionInit =
+  #| (v) => ({
+  #|   depthSensing: (v.depthSensing === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthSensing }),
+  #|   requiredFeatures: (v.requiredFeatures === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requiredFeatures }),
+  #|   optionalFeatures: (v.optionalFeatures === undefined ? { $tag: 0 } : { $tag: 1, _0: v.optionalFeatures }),
+  #|   domOverlay: (v.domOverlay === undefined ? { $tag: 0 } : v.domOverlay === null ? { $tag: 1 } : { $tag: 2, _0: v.domOverlay })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRSessionInit::from_js(value : JsValue) -> XRSessionInit {
+  XRSessionInit::from_js_ffi(value)
+}
 
 ///|
 /// XRDepthInformation interface
@@ -340,10 +382,10 @@ pub extern "js" fn XRWebGLDepthInformation::get_texture(
 pub extern "js" fn XRWebGLDepthInformation::get_texture_type(
   self : XRWebGLDepthInformation,
 ) -> XRTextureType =
-  #| (self) => self.textureType
+  #| (self) => ['texture', 'texture-array'].indexOf(self.textureType)
 
 ///|
 pub extern "js" fn XRWebGLDepthInformation::get_image_index(
   self : XRWebGLDepthInformation,
 ) -> Int? =
-  #| (self) => { const v = self.imageIndex; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.imageIndex) ?? undefined

@@ -6,7 +6,7 @@
 pub(all) enum GyroscopeLocalCoordinateSystem {
   Device
   Screen
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -33,7 +33,7 @@ pub fn GyroscopeLocalCoordinateSystem::from_string(
 
 ///|
 /// GyroscopeSensorOptions dictionary
-pub struct GyroscopeSensorOptions {
+pub(all) struct GyroscopeSensorOptions {
   referenceFrame : GyroscopeLocalCoordinateSystem?
 }
 
@@ -44,13 +44,34 @@ pub fn GyroscopeSensorOptions::default() -> GyroscopeSensorOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn GyroscopeSensorOptions::to_js(
+extern "js" fn GyroscopeSensorOptions::to_js_ffi(
   self : GyroscopeSensorOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   referenceFrame: ['device', 'screen'][self.referenceFrame]
+  #|   referenceFrame: ((() => { const v = self.referenceFrame; if (v === undefined) return undefined; return ['device', 'screen'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn GyroscopeSensorOptions::to_js(self : GyroscopeSensorOptions) -> JsValue {
+  GyroscopeSensorOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn GyroscopeSensorOptions::from_js_ffi(
+  value : JsValue,
+) -> GyroscopeSensorOptions =
+  #| (v) => ({
+  #|   referenceFrame: (v.referenceFrame === undefined ? undefined : ['device', 'screen'].indexOf(v.referenceFrame))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn GyroscopeSensorOptions::from_js(
+  value : JsValue,
+) -> GyroscopeSensorOptions {
+  GyroscopeSensorOptions::from_js_ffi(value)
+}
 
 ///|
 /// Gyroscope interface
@@ -89,19 +110,30 @@ pub extern "js" fn Gyroscope::to_event_target(self : Gyroscope) -> EventTarget =
   #| (self) => self
 
 ///|
-pub extern "js" fn Gyroscope::new(
-  sensor_options : GyroscopeSensorOptions,
+pub extern "js" fn Gyroscope::new() -> Gyroscope =
+  #| () => new Gyroscope()
+
+///|
+extern "js" fn Gyroscope::new_with_sensor_options_ffi(
+  sensor_options : JsValue,
 ) -> Gyroscope =
   #| (sensor_options) => new Gyroscope(sensor_options)
 
 ///|
+pub fn Gyroscope::new_with_sensor_options(
+  sensor_options : GyroscopeSensorOptions,
+) -> Gyroscope {
+  Gyroscope::new_with_sensor_options_ffi(sensor_options.to_js())
+}
+
+///|
 pub extern "js" fn Gyroscope::get_x(self : Gyroscope) -> Double? =
-  #| (self) => { const v = self.x; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.x) ?? undefined
 
 ///|
 pub extern "js" fn Gyroscope::get_y(self : Gyroscope) -> Double? =
-  #| (self) => { const v = self.y; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.y) ?? undefined
 
 ///|
 pub extern "js" fn Gyroscope::get_z(self : Gyroscope) -> Double? =
-  #| (self) => { const v = self.z; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.z) ?? undefined

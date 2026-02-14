@@ -285,6 +285,149 @@ pub extern "js" fn ArrayBufferView::as_data_view(
   #| (self) => (self instanceof DataView) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[ArrayBufferView] to Int8Array?
+pub fn ArrayBufferView::bind_as_int8_array(
+  value : ArrayBufferView?,
+) -> Int8Array? {
+  match value {
+    Some(v) => v.as_int8_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ArrayBufferView] to Int16Array?
+pub fn ArrayBufferView::bind_as_int16_array(
+  value : ArrayBufferView?,
+) -> Int16Array? {
+  match value {
+    Some(v) => v.as_int16_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ArrayBufferView] to Int32Array?
+pub fn ArrayBufferView::bind_as_int32_array(
+  value : ArrayBufferView?,
+) -> Int32Array? {
+  match value {
+    Some(v) => v.as_int32_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ArrayBufferView] to Uint8Array?
+pub fn ArrayBufferView::bind_as_uint8_array(
+  value : ArrayBufferView?,
+) -> Uint8Array? {
+  match value {
+    Some(v) => v.as_uint8_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ArrayBufferView] to Uint16Array?
+pub fn ArrayBufferView::bind_as_uint16_array(
+  value : ArrayBufferView?,
+) -> Uint16Array? {
+  match value {
+    Some(v) => v.as_uint16_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ArrayBufferView] to Uint32Array?
+pub fn ArrayBufferView::bind_as_uint32_array(
+  value : ArrayBufferView?,
+) -> Uint32Array? {
+  match value {
+    Some(v) => v.as_uint32_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ArrayBufferView] to Uint8ClampedArray?
+pub fn ArrayBufferView::bind_as_uint8_clamped_array(
+  value : ArrayBufferView?,
+) -> Uint8ClampedArray? {
+  match value {
+    Some(v) => v.as_uint8_clamped_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ArrayBufferView] to BigInt64Array?
+pub fn ArrayBufferView::bind_as_big_int64_array(
+  value : ArrayBufferView?,
+) -> BigInt64Array? {
+  match value {
+    Some(v) => v.as_big_int64_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ArrayBufferView] to BigUint64Array?
+pub fn ArrayBufferView::bind_as_big_uint64_array(
+  value : ArrayBufferView?,
+) -> BigUint64Array? {
+  match value {
+    Some(v) => v.as_big_uint64_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ArrayBufferView] to Float16Array?
+pub fn ArrayBufferView::bind_as_float16_array(
+  value : ArrayBufferView?,
+) -> Float16Array? {
+  match value {
+    Some(v) => v.as_float16_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ArrayBufferView] to Float32Array?
+pub fn ArrayBufferView::bind_as_float32_array(
+  value : ArrayBufferView?,
+) -> Float32Array? {
+  match value {
+    Some(v) => v.as_float32_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ArrayBufferView] to Float64Array?
+pub fn ArrayBufferView::bind_as_float64_array(
+  value : ArrayBufferView?,
+) -> Float64Array? {
+  match value {
+    Some(v) => v.as_float64_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ArrayBufferView] to DataView?
+pub fn ArrayBufferView::bind_as_data_view(
+  value : ArrayBufferView?,
+) -> DataView? {
+  match value {
+    Some(v) => v.as_data_view()
+    None => None
+  }
+}
+
+///|
 /// BufferSource typedef
 pub type BufferSource
 
@@ -331,6 +474,28 @@ pub extern "js" fn BufferSource::as_array_buffer(
   self : BufferSource,
 ) -> ArrayBuffer? =
   #| (self) => (self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[BufferSource] to ArrayBufferView?
+pub fn BufferSource::bind_as_array_buffer_view(
+  value : BufferSource?,
+) -> ArrayBufferView? {
+  match value {
+    Some(v) => v.as_array_buffer_view()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[BufferSource] to ArrayBuffer?
+pub fn BufferSource::bind_as_array_buffer(
+  value : BufferSource?,
+) -> ArrayBuffer? {
+  match value {
+    Some(v) => v.as_array_buffer()
+    None => None
+  }
+}
 
 ///|
 /// AllowSharedBufferSource typedef
@@ -406,6 +571,39 @@ pub extern "js" fn AllowSharedBufferSource::as_array_buffer_view(
   #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[AllowSharedBufferSource] to ArrayBuffer?
+pub fn AllowSharedBufferSource::bind_as_array_buffer(
+  value : AllowSharedBufferSource?,
+) -> ArrayBuffer? {
+  match value {
+    Some(v) => v.as_array_buffer()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[AllowSharedBufferSource] to SharedArrayBuffer?
+pub fn AllowSharedBufferSource::bind_as_shared_array_buffer(
+  value : AllowSharedBufferSource?,
+) -> SharedArrayBuffer? {
+  match value {
+    Some(v) => v.as_shared_array_buffer()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[AllowSharedBufferSource] to ArrayBufferView?
+pub fn AllowSharedBufferSource::bind_as_array_buffer_view(
+  value : AllowSharedBufferSource?,
+) -> ArrayBufferView? {
+  match value {
+    Some(v) => v.as_array_buffer_view()
+    None => None
+  }
+}
+
+///|
 /// Function callback interface
 pub type Function
 
@@ -414,7 +612,7 @@ pub type Function
 pub extern "js" fn Function::from_fn(
   handler : (JsValue) -> JsValue,
 ) -> Function =
-  #| (handler) => handler
+  #| (handler) => (a0) => handler(a0)
 
 ///|
 /// VoidFunction callback interface
@@ -422,7 +620,7 @@ pub type VoidFunction
 
 ///|
 /// QuotaExceededErrorOptions dictionary
-pub struct QuotaExceededErrorOptions {
+pub(all) struct QuotaExceededErrorOptions {
   quota : Double?
   requested : Double?
 }
@@ -434,14 +632,38 @@ pub fn QuotaExceededErrorOptions::default() -> QuotaExceededErrorOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn QuotaExceededErrorOptions::to_js(
+extern "js" fn QuotaExceededErrorOptions::to_js_ffi(
   self : QuotaExceededErrorOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   quota: self.quota,
   #|   requested: self.requested
   #| })
+
+///|
+/// Convert to JsValue
+pub fn QuotaExceededErrorOptions::to_js(
+  self : QuotaExceededErrorOptions,
+) -> JsValue {
+  QuotaExceededErrorOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn QuotaExceededErrorOptions::from_js_ffi(
+  value : JsValue,
+) -> QuotaExceededErrorOptions =
+  #| (v) => ({
+  #|   quota: v.quota,
+  #|   requested: v.requested
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn QuotaExceededErrorOptions::from_js(
+  value : JsValue,
+) -> QuotaExceededErrorOptions {
+  QuotaExceededErrorOptions::from_js_ffi(value)
+}
 
 ///|
 /// QuotaExceededError interface
@@ -488,23 +710,35 @@ pub extern "js" fn QuotaExceededError::to_dom_exception(
   #| (self) => self
 
 ///|
-pub extern "js" fn QuotaExceededError::new(
+pub extern "js" fn QuotaExceededError::new() -> QuotaExceededError =
+  #| () => new QuotaExceededError()
+
+///|
+extern "js" fn QuotaExceededError::new_with_options_ffi(
   message : String,
-  options : QuotaExceededErrorOptions,
+  options : JsValue,
 ) -> QuotaExceededError =
   #| (message, options) => new QuotaExceededError(message, options)
+
+///|
+pub fn QuotaExceededError::new_with_options(
+  message : String,
+  options : QuotaExceededErrorOptions,
+) -> QuotaExceededError {
+  QuotaExceededError::new_with_options_ffi(message, options.to_js())
+}
 
 ///|
 pub extern "js" fn QuotaExceededError::get_quota(
   self : QuotaExceededError,
 ) -> Double? =
-  #| (self) => { const v = self.quota; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.quota) ?? undefined
 
 ///|
 pub extern "js" fn QuotaExceededError::get_requested(
   self : QuotaExceededError,
 ) -> Double? =
-  #| (self) => { const v = self.requested; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.requested) ?? undefined
 
 ///|
 /// DOMException interface
@@ -571,7 +805,11 @@ pub extern "js" fn DOMException::as_gpu_pipeline_error(
   #| (self) => (self instanceof GPUPipelineError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn DOMException::new(
+pub extern "js" fn DOMException::new() -> DOMException =
+  #| () => new DOMException()
+
+///|
+pub extern "js" fn DOMException::new_with_name(
   message : String,
   name : String,
 ) -> DOMException =

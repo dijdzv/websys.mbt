@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>websys.mbt tests</title></head>
+<body>
+<script type="module">
+// Import the test module. For async fn main, the module returns immediately
+// and the coroutine scheduler runs the async tests in the background.
+// Test completion is signaled by the MoonBit code setting window.__testsDone.
+try {
+  await import("./_build/js/release/build/websys-test.js");
+} catch (e) {
+  // If import itself fails (compilation error etc.), signal failure
+  if (!window.__testsDone) {
+    window.__testsDone = true;
+    window.__testsPassed = false;
+  }
+}
+</script>
+</body>
+</html>

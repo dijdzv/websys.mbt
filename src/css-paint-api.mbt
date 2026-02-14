@@ -3,7 +3,7 @@
 
 ///|
 /// PaintRenderingContext2DSettings dictionary
-pub struct PaintRenderingContext2DSettings {
+pub(all) struct PaintRenderingContext2DSettings {
   alpha : Bool?
 }
 
@@ -14,13 +14,36 @@ pub fn PaintRenderingContext2DSettings::default() -> PaintRenderingContext2DSett
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn PaintRenderingContext2DSettings::to_js(
+extern "js" fn PaintRenderingContext2DSettings::to_js_ffi(
   self : PaintRenderingContext2DSettings,
 ) -> JsValue =
   #| (self) => ({
-  #|   alpha: self.alpha
+  #|   alpha: (self.alpha === -1 ? undefined : self.alpha)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn PaintRenderingContext2DSettings::to_js(
+  self : PaintRenderingContext2DSettings,
+) -> JsValue {
+  PaintRenderingContext2DSettings::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PaintRenderingContext2DSettings::from_js_ffi(
+  value : JsValue,
+) -> PaintRenderingContext2DSettings =
+  #| (v) => ({
+  #|   alpha: (v.alpha === undefined ? -1 : v.alpha)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PaintRenderingContext2DSettings::from_js(
+  value : JsValue,
+) -> PaintRenderingContext2DSettings {
+  PaintRenderingContext2DSettings::from_js_ffi(value)
+}
 
 ///|
 /// PaintWorkletGlobalScope interface
@@ -106,14 +129,14 @@ pub extern "js" fn PaintRenderingContext2D::from_js_value_opt(
 
 ///|
 /// Safely cast JsValue to PaintRenderingContext2D (checked with instanceof)
-pub extern "js" fn JsValue::as_paint_rendering_context2_d(
+pub extern "js" fn JsValue::as_paint_rendering_context_2d(
   self : JsValue,
 ) -> PaintRenderingContext2D? =
   #| (self) => (self instanceof PaintRenderingContext2D) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Cast JsValue to PaintRenderingContext2D (unchecked)
-pub extern "js" fn JsValue::to_paint_rendering_context2_d(
+pub extern "js" fn JsValue::to_paint_rendering_context_2d(
   self : JsValue,
 ) -> PaintRenderingContext2D =
   #| (self) => self
@@ -190,11 +213,22 @@ pub extern "js" fn PaintRenderingContext2D::set_transform(
   #| (self) => self.setTransform()
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::set_transform_with_transform(
+extern "js" fn PaintRenderingContext2D::set_transform_with_transform_ffi(
   self : PaintRenderingContext2D,
-  transform : DOMMatrix2DInit,
+  transform : JsValue,
 ) -> Unit =
   #| (self, transform) => self.setTransform(transform)
+
+///|
+pub fn PaintRenderingContext2D::set_transform_with_transform(
+  self : PaintRenderingContext2D,
+  transform : DOMMatrix2DInit,
+) -> Unit {
+  PaintRenderingContext2D::set_transform_with_transform_ffi(
+    self,
+    transform.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::set_transform_with_a_and_b_and_c_and_d_and_e_and_f(
@@ -257,14 +291,14 @@ pub extern "js" fn PaintRenderingContext2D::set_image_smoothing_enabled(
 pub extern "js" fn PaintRenderingContext2D::get_image_smoothing_quality(
   self : PaintRenderingContext2D,
 ) -> ImageSmoothingQuality =
-  #| (self) => self.imageSmoothingQuality
+  #| (self) => ['low', 'medium', 'high'].indexOf(self.imageSmoothingQuality)
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::set_image_smoothing_quality(
   self : PaintRenderingContext2D,
   value : ImageSmoothingQuality,
 ) -> Unit =
-  #| (self, value) => { self.imageSmoothingQuality = value }
+  #| (self, value) => { self.imageSmoothingQuality = ['low', 'medium', 'high'][value] }
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::get_stroke_style(
@@ -329,7 +363,7 @@ pub extern "js" fn PaintRenderingContext2D::create_pattern(
   image : CanvasImageSource,
   repetition : String,
 ) -> CanvasPattern? =
-  #| (self, image, repetition) => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::get_shadow_offset_x(
@@ -433,14 +467,14 @@ pub extern "js" fn PaintRenderingContext2D::fill_with_fill_rule(
   #| (self, fill_rule) => self.fill(['nonzero', 'evenodd'][fill_rule])
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::fill_with_path_path2_d(
+pub extern "js" fn PaintRenderingContext2D::fill_with_path_path_2d(
   self : PaintRenderingContext2D,
   path : Path2D,
 ) -> Unit =
   #| (self, path) => self.fill(path)
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::fill_with_path_path2_d_and_fill_rule_canvas_fill_rule(
+pub extern "js" fn PaintRenderingContext2D::fill_with_path_path_2d_and_fill_rule_canvas_fill_rule(
   self : PaintRenderingContext2D,
   path : Path2D,
   fill_rule : CanvasFillRule,
@@ -454,7 +488,7 @@ pub extern "js" fn PaintRenderingContext2D::stroke(
   #| (self) => self.stroke()
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::stroke_with_path_path2_d(
+pub extern "js" fn PaintRenderingContext2D::stroke_with_path_path_2d(
   self : PaintRenderingContext2D,
   path : Path2D,
 ) -> Unit =
@@ -474,14 +508,14 @@ pub extern "js" fn PaintRenderingContext2D::clip_with_fill_rule(
   #| (self, fill_rule) => self.clip(['nonzero', 'evenodd'][fill_rule])
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::clip_with_path_path2_d(
+pub extern "js" fn PaintRenderingContext2D::clip_with_path_path_2d(
   self : PaintRenderingContext2D,
   path : Path2D,
 ) -> Unit =
   #| (self, path) => self.clip(path)
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::clip_with_path_path2_d_and_fill_rule_canvas_fill_rule(
+pub extern "js" fn PaintRenderingContext2D::clip_with_path_path_2d_and_fill_rule_canvas_fill_rule(
   self : PaintRenderingContext2D,
   path : Path2D,
   fill_rule : CanvasFillRule,
@@ -506,7 +540,7 @@ pub extern "js" fn PaintRenderingContext2D::is_point_in_path_with_fill_rule(
   #| (self, x, y, fill_rule) => self.isPointInPath(x, y, ['nonzero', 'evenodd'][fill_rule])
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::is_point_in_path_with_path_path2_d_and_x_and_y(
+pub extern "js" fn PaintRenderingContext2D::is_point_in_path_with_path_path_2d_and_x_and_y(
   self : PaintRenderingContext2D,
   path : Path2D,
   x : Double,
@@ -515,7 +549,7 @@ pub extern "js" fn PaintRenderingContext2D::is_point_in_path_with_path_path2_d_a
   #| (self, path, x, y) => self.isPointInPath(path, x, y)
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::is_point_in_path_with_path_path2_d_and_x_and_y_and_fill_rule_canvas_fill_rule(
+pub extern "js" fn PaintRenderingContext2D::is_point_in_path_with_path_path_2d_and_x_and_y_and_fill_rule_canvas_fill_rule(
   self : PaintRenderingContext2D,
   path : Path2D,
   x : Double,
@@ -533,7 +567,7 @@ pub extern "js" fn PaintRenderingContext2D::is_point_in_stroke(
   #| (self, x, y) => self.isPointInStroke(x, y)
 
 ///|
-pub extern "js" fn PaintRenderingContext2D::is_point_in_stroke_with_path_path2_d_and_x_and_y(
+pub extern "js" fn PaintRenderingContext2D::is_point_in_stroke_with_path_path_2d_and_x_and_y(
   self : PaintRenderingContext2D,
   path : Path2D,
   x : Double,
@@ -593,27 +627,27 @@ pub extern "js" fn PaintRenderingContext2D::set_line_width(
 pub extern "js" fn PaintRenderingContext2D::get_line_cap(
   self : PaintRenderingContext2D,
 ) -> CanvasLineCap =
-  #| (self) => self.lineCap
+  #| (self) => ['butt', 'round', 'square'].indexOf(self.lineCap)
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::set_line_cap(
   self : PaintRenderingContext2D,
   value : CanvasLineCap,
 ) -> Unit =
-  #| (self, value) => { self.lineCap = value }
+  #| (self, value) => { self.lineCap = ['butt', 'round', 'square'][value] }
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::get_line_join(
   self : PaintRenderingContext2D,
 ) -> CanvasLineJoin =
-  #| (self) => self.lineJoin
+  #| (self) => ['round', 'bevel', 'miter'].indexOf(self.lineJoin)
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::set_line_join(
   self : PaintRenderingContext2D,
   value : CanvasLineJoin,
 ) -> Unit =
-  #| (self, value) => { self.lineJoin = value }
+  #| (self, value) => { self.lineJoin = ['round', 'bevel', 'miter'][value] }
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::get_miter_limit(
@@ -789,6 +823,108 @@ pub extern "js" fn PaintRenderingContext2D::ellipse_with_counterclockwise(
   counterclockwise : Bool,
 ) -> Unit =
   #| (self, x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise) => self.ellipse(x, y, radius_x, radius_y, rotation, start_angle, end_angle, counterclockwise)
+
+///|
+pub extern "js" fn PaintRenderingContext2D::create_pattern_with_html_or_svg_image_element(
+  self : PaintRenderingContext2D,
+  image : HTMLOrSVGImageElement,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn PaintRenderingContext2D::create_pattern_with_html_video_element(
+  self : PaintRenderingContext2D,
+  image : HTMLVideoElement,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn PaintRenderingContext2D::create_pattern_with_html_canvas_element(
+  self : PaintRenderingContext2D,
+  image : HTMLCanvasElement,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn PaintRenderingContext2D::create_pattern_with_image_bitmap(
+  self : PaintRenderingContext2D,
+  image : ImageBitmap,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn PaintRenderingContext2D::create_pattern_with_offscreen_canvas(
+  self : PaintRenderingContext2D,
+  image : OffscreenCanvas,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn PaintRenderingContext2D::create_pattern_with_video_frame(
+  self : PaintRenderingContext2D,
+  image : VideoFrame,
+  repetition : String,
+) -> CanvasPattern? =
+  #| (self, image, repetition) => (() => { const v = self.createPattern(image, repetition); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn PaintRenderingContext2D::draw_image_with_html_or_svg_image_element(
+  self : PaintRenderingContext2D,
+  image : HTMLOrSVGImageElement,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
+pub extern "js" fn PaintRenderingContext2D::draw_image_with_html_video_element(
+  self : PaintRenderingContext2D,
+  image : HTMLVideoElement,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
+pub extern "js" fn PaintRenderingContext2D::draw_image_with_html_canvas_element(
+  self : PaintRenderingContext2D,
+  image : HTMLCanvasElement,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
+pub extern "js" fn PaintRenderingContext2D::draw_image_with_image_bitmap(
+  self : PaintRenderingContext2D,
+  image : ImageBitmap,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
+pub extern "js" fn PaintRenderingContext2D::draw_image_with_offscreen_canvas(
+  self : PaintRenderingContext2D,
+  image : OffscreenCanvas,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+
+///|
+pub extern "js" fn PaintRenderingContext2D::draw_image_with_video_frame(
+  self : PaintRenderingContext2D,
+  image : VideoFrame,
+  dx : Double,
+  dy : Double,
+) -> Unit =
+  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
 
 ///|
 /// PaintSize interface

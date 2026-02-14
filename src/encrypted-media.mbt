@@ -7,7 +7,7 @@ pub(all) enum MediaKeysRequirement {
   Required
   Optional
   NotAllowed
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -35,7 +35,7 @@ pub fn MediaKeysRequirement::from_string(s : String) -> MediaKeysRequirement? {
 pub(all) enum MediaKeySessionType {
   Temporary
   PersistentLicense
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -64,7 +64,7 @@ pub(all) enum MediaKeySessionClosedReason {
   ReleaseAcknowledged
   HardwareContextReset
   ResourceEvicted
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -110,7 +110,7 @@ pub(all) enum MediaKeyStatus {
   UsableInFuture
   StatusPending
   InternalError
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -150,7 +150,7 @@ pub(all) enum MediaKeyMessageType {
   LicenseRenewal
   LicenseRelease
   IndividualizationRequest
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -178,7 +178,7 @@ pub fn MediaKeyMessageType::from_string(s : String) -> MediaKeyMessageType? {
 
 ///|
 /// MediaKeySystemConfiguration dictionary
-pub struct MediaKeySystemConfiguration {
+pub(all) struct MediaKeySystemConfiguration {
   label : String?
   initDataTypes : Array[String]?
   audioCapabilities : Array[MediaKeySystemMediaCapability]?
@@ -203,23 +203,52 @@ pub fn MediaKeySystemConfiguration::default() -> MediaKeySystemConfiguration {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MediaKeySystemConfiguration::to_js(
+extern "js" fn MediaKeySystemConfiguration::to_js_ffi(
   self : MediaKeySystemConfiguration,
 ) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   initDataTypes: self.initDataTypes,
-  #|   audioCapabilities: self.audioCapabilities,
-  #|   videoCapabilities: self.videoCapabilities,
-  #|   distinctiveIdentifier: ['required', 'optional', 'not-allowed'][self.distinctiveIdentifier],
-  #|   persistentState: ['required', 'optional', 'not-allowed'][self.persistentState],
-  #|   sessionTypes: self.sessionTypes
+  #|   initDataTypes: ((() => { const v = self.initDataTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   audioCapabilities: ((() => { const v = self.audioCapabilities; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   videoCapabilities: ((() => { const v = self.videoCapabilities; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   distinctiveIdentifier: ((() => { const v = self.distinctiveIdentifier; if (v === undefined) return undefined; return ['required', 'optional', 'not-allowed'][v]; })()),
+  #|   persistentState: ((() => { const v = self.persistentState; if (v === undefined) return undefined; return ['required', 'optional', 'not-allowed'][v]; })()),
+  #|   sessionTypes: ((() => { const v = self.sessionTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MediaKeySystemConfiguration::to_js(
+  self : MediaKeySystemConfiguration,
+) -> JsValue {
+  MediaKeySystemConfiguration::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MediaKeySystemConfiguration::from_js_ffi(
+  value : JsValue,
+) -> MediaKeySystemConfiguration =
+  #| (v) => ({
+  #|   label: v.label,
+  #|   initDataTypes: (v.initDataTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.initDataTypes }),
+  #|   audioCapabilities: (v.audioCapabilities === undefined ? { $tag: 0 } : { $tag: 1, _0: v.audioCapabilities }),
+  #|   videoCapabilities: (v.videoCapabilities === undefined ? { $tag: 0 } : { $tag: 1, _0: v.videoCapabilities }),
+  #|   distinctiveIdentifier: (v.distinctiveIdentifier === undefined ? undefined : ['required', 'optional', 'not-allowed'].indexOf(v.distinctiveIdentifier)),
+  #|   persistentState: (v.persistentState === undefined ? undefined : ['required', 'optional', 'not-allowed'].indexOf(v.persistentState)),
+  #|   sessionTypes: (v.sessionTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sessionTypes })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaKeySystemConfiguration::from_js(
+  value : JsValue,
+) -> MediaKeySystemConfiguration {
+  MediaKeySystemConfiguration::from_js_ffi(value)
+}
+
+///|
 /// MediaKeySystemMediaCapability dictionary
-pub struct MediaKeySystemMediaCapability {
+pub(all) struct MediaKeySystemMediaCapability {
   contentType : String?
   encryptionScheme : Nullable[String]
   robustness : String?
@@ -236,19 +265,44 @@ pub fn MediaKeySystemMediaCapability::default() -> MediaKeySystemMediaCapability
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MediaKeySystemMediaCapability::to_js(
+extern "js" fn MediaKeySystemMediaCapability::to_js_ffi(
   self : MediaKeySystemMediaCapability,
 ) -> JsValue =
   #| (self) => ({
   #|   contentType: self.contentType,
-  #|   encryptionScheme: ((() => { const v = self.encryptionScheme; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   encryptionScheme: ((() => { const v = self.encryptionScheme; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   robustness: self.robustness
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MediaKeySystemMediaCapability::to_js(
+  self : MediaKeySystemMediaCapability,
+) -> JsValue {
+  MediaKeySystemMediaCapability::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MediaKeySystemMediaCapability::from_js_ffi(
+  value : JsValue,
+) -> MediaKeySystemMediaCapability =
+  #| (v) => ({
+  #|   contentType: v.contentType,
+  #|   encryptionScheme: (v.encryptionScheme === undefined ? { $tag: 0 } : v.encryptionScheme === null ? { $tag: 1 } : { $tag: 2, _0: v.encryptionScheme }),
+  #|   robustness: v.robustness
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaKeySystemMediaCapability::from_js(
+  value : JsValue,
+) -> MediaKeySystemMediaCapability {
+  MediaKeySystemMediaCapability::from_js_ffi(value)
+}
+
+///|
 /// MediaKeysPolicy dictionary
-pub struct MediaKeysPolicy {
+pub(all) struct MediaKeysPolicy {
   minHdcpVersion : String?
 }
 
@@ -259,28 +313,47 @@ pub fn MediaKeysPolicy::default() -> MediaKeysPolicy {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MediaKeysPolicy::to_js(self : MediaKeysPolicy) -> JsValue =
+extern "js" fn MediaKeysPolicy::to_js_ffi(self : MediaKeysPolicy) -> JsValue =
   #| (self) => ({
   #|   minHdcpVersion: self.minHdcpVersion
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MediaKeysPolicy::to_js(self : MediaKeysPolicy) -> JsValue {
+  MediaKeysPolicy::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MediaKeysPolicy::from_js_ffi(value : JsValue) -> MediaKeysPolicy =
+  #| (v) => ({
+  #|   minHdcpVersion: v.minHdcpVersion
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaKeysPolicy::from_js(value : JsValue) -> MediaKeysPolicy {
+  MediaKeysPolicy::from_js_ffi(value)
+}
+
+///|
 /// MediaKeyMessageEventInit dictionary
-pub struct MediaKeyMessageEventInit {
+pub(all) struct MediaKeyMessageEventInit {
   messageType : MediaKeyMessageType
   message : ArrayBuffer
 }
 
 ///|
-/// Create a new MediaKeyMessageEventInit with default values
-pub fn MediaKeyMessageEventInit::default() -> MediaKeyMessageEventInit {
-  MediaKeyMessageEventInit::{ messageType: panic(), message: panic() }
+/// Create a new MediaKeyMessageEventInit
+pub fn MediaKeyMessageEventInit::new(
+  messageType~ : MediaKeyMessageType,
+  message~ : ArrayBuffer,
+) -> MediaKeyMessageEventInit {
+  MediaKeyMessageEventInit::{ messageType, message }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MediaKeyMessageEventInit::to_js(
+extern "js" fn MediaKeyMessageEventInit::to_js_ffi(
   self : MediaKeyMessageEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -289,8 +362,33 @@ pub extern "js" fn MediaKeyMessageEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn MediaKeyMessageEventInit::to_js(
+  self : MediaKeyMessageEventInit,
+) -> JsValue {
+  MediaKeyMessageEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MediaKeyMessageEventInit::from_js_ffi(
+  value : JsValue,
+) -> MediaKeyMessageEventInit =
+  #| (v) => ({
+  #|   messageType: ['license-request', 'license-renewal', 'license-release', 'individualization-request'].indexOf(v.messageType),
+  #|   message: v.message
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaKeyMessageEventInit::from_js(
+  value : JsValue,
+) -> MediaKeyMessageEventInit {
+  MediaKeyMessageEventInit::from_js_ffi(value)
+}
+
+///|
 /// MediaEncryptedEventInit dictionary
-pub struct MediaEncryptedEventInit {
+pub(all) struct MediaEncryptedEventInit {
   initDataType : String?
   initData : Nullable[ArrayBuffer]
 }
@@ -302,14 +400,38 @@ pub fn MediaEncryptedEventInit::default() -> MediaEncryptedEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn MediaEncryptedEventInit::to_js(
+extern "js" fn MediaEncryptedEventInit::to_js_ffi(
   self : MediaEncryptedEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   initDataType: self.initDataType,
-  #|   initData: ((() => { const v = self.initData; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   initData: ((() => { const v = self.initData; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn MediaEncryptedEventInit::to_js(
+  self : MediaEncryptedEventInit,
+) -> JsValue {
+  MediaEncryptedEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn MediaEncryptedEventInit::from_js_ffi(
+  value : JsValue,
+) -> MediaEncryptedEventInit =
+  #| (v) => ({
+  #|   initDataType: v.initDataType,
+  #|   initData: (v.initData === undefined ? { $tag: 0 } : v.initData === null ? { $tag: 1 } : { $tag: 2, _0: v.initData })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn MediaEncryptedEventInit::from_js(
+  value : JsValue,
+) -> MediaEncryptedEventInit {
+  MediaEncryptedEventInit::from_js_ffi(value)
+}
 
 ///|
 /// MediaKeySystemAccess interface
@@ -415,16 +537,38 @@ pub extern "js" fn MediaKeys::get_status_for_policy(
   #| (self) => self.getStatusForPolicy()
 
 ///|
-pub extern "js" fn MediaKeys::get_status_for_policy_with_policy(
+extern "js" fn MediaKeys::get_status_for_policy_with_policy_ffi(
   self : MediaKeys,
-  policy : MediaKeysPolicy,
+  policy : JsValue,
 ) -> Promise[MediaKeyStatus] =
   #| (self, policy) => self.getStatusForPolicy(policy)
+
+///|
+pub fn MediaKeys::get_status_for_policy_with_policy(
+  self : MediaKeys,
+  policy : MediaKeysPolicy,
+) -> Promise[MediaKeyStatus] {
+  MediaKeys::get_status_for_policy_with_policy_ffi(self, policy.to_js())
+}
 
 ///|
 pub extern "js" fn MediaKeys::set_server_certificate(
   self : MediaKeys,
   server_certificate : BufferSource,
+) -> Promise[Bool] =
+  #| (self, server_certificate) => self.setServerCertificate(server_certificate)
+
+///|
+pub extern "js" fn MediaKeys::set_server_certificate_with_array_buffer_view(
+  self : MediaKeys,
+  server_certificate : ArrayBufferView,
+) -> Promise[Bool] =
+  #| (self, server_certificate) => self.setServerCertificate(server_certificate)
+
+///|
+pub extern "js" fn MediaKeys::set_server_certificate_with_array_buffer(
+  self : MediaKeys,
+  server_certificate : ArrayBuffer,
 ) -> Promise[Bool] =
   #| (self, server_certificate) => self.setServerCertificate(server_certificate)
 
@@ -557,6 +701,36 @@ pub extern "js" fn MediaKeySession::remove(
   #| (self) => self.remove()
 
 ///|
+pub extern "js" fn MediaKeySession::generate_request_with_array_buffer_view(
+  self : MediaKeySession,
+  init_data_type : String,
+  init_data : ArrayBufferView,
+) -> Promise[Unit] =
+  #| (self, init_data_type, init_data) => self.generateRequest(init_data_type, init_data)
+
+///|
+pub extern "js" fn MediaKeySession::generate_request_with_array_buffer(
+  self : MediaKeySession,
+  init_data_type : String,
+  init_data : ArrayBuffer,
+) -> Promise[Unit] =
+  #| (self, init_data_type, init_data) => self.generateRequest(init_data_type, init_data)
+
+///|
+pub extern "js" fn MediaKeySession::update_with_array_buffer_view(
+  self : MediaKeySession,
+  response : ArrayBufferView,
+) -> Promise[Unit] =
+  #| (self, response) => self.update(response)
+
+///|
+pub extern "js" fn MediaKeySession::update_with_array_buffer(
+  self : MediaKeySession,
+  response : ArrayBuffer,
+) -> Promise[Unit] =
+  #| (self, response) => self.update(response)
+
+///|
 /// MediaKeyStatusMap interface
 pub type MediaKeyStatusMap
 
@@ -595,10 +769,27 @@ pub extern "js" fn JsValue::to_media_key_status_map(
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaKeyStatusMap::_unknown_(
+pub extern "js" fn MediaKeyStatusMap::keys(self : MediaKeyStatusMap) -> JsValue =
+  #| (self) => self.keys()
+
+///|
+pub extern "js" fn MediaKeyStatusMap::values(
   self : MediaKeyStatusMap,
+) -> JsValue =
+  #| (self) => self.values()
+
+///|
+pub extern "js" fn MediaKeyStatusMap::entries(
+  self : MediaKeyStatusMap,
+) -> JsValue =
+  #| (self) => self.entries()
+
+///|
+pub extern "js" fn MediaKeyStatusMap::for_each(
+  self : MediaKeyStatusMap,
+  callback : JsValue,
 ) -> Unit =
-  #| (self) => self._unknown_()
+  #| (self, callback) => { self.forEach(callback) }
 
 ///|
 pub extern "js" fn MediaKeyStatusMap::get_size(self : MediaKeyStatusMap) -> Int =
@@ -615,6 +806,34 @@ pub extern "js" fn MediaKeyStatusMap::has(
 pub extern "js" fn MediaKeyStatusMap::get(
   self : MediaKeyStatusMap,
   key_id : BufferSource,
+) -> MediaKeyStatusOrVoid =
+  #| (self, key_id) => self.get(key_id)
+
+///|
+pub extern "js" fn MediaKeyStatusMap::has_with_array_buffer_view(
+  self : MediaKeyStatusMap,
+  key_id : ArrayBufferView,
+) -> Bool =
+  #| (self, key_id) => self.has(key_id)
+
+///|
+pub extern "js" fn MediaKeyStatusMap::has_with_array_buffer(
+  self : MediaKeyStatusMap,
+  key_id : ArrayBuffer,
+) -> Bool =
+  #| (self, key_id) => self.has(key_id)
+
+///|
+pub extern "js" fn MediaKeyStatusMap::get_with_array_buffer_view(
+  self : MediaKeyStatusMap,
+  key_id : ArrayBufferView,
+) -> MediaKeyStatusOrVoid =
+  #| (self, key_id) => self.get(key_id)
+
+///|
+pub extern "js" fn MediaKeyStatusMap::get_with_array_buffer(
+  self : MediaKeyStatusMap,
+  key_id : ArrayBuffer,
 ) -> MediaKeyStatusOrVoid =
   #| (self, key_id) => self.get(key_id)
 
@@ -663,17 +882,25 @@ pub extern "js" fn MediaKeyMessageEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaKeyMessageEvent::new(
+extern "js" fn MediaKeyMessageEvent::new_ffi(
   type_ : String,
-  event_init_dict : MediaKeyMessageEventInit,
+  event_init_dict : JsValue,
 ) -> MediaKeyMessageEvent =
   #| (type_, event_init_dict) => new MediaKeyMessageEvent(type_, event_init_dict)
+
+///|
+pub fn MediaKeyMessageEvent::new(
+  type_ : String,
+  event_init_dict : MediaKeyMessageEventInit,
+) -> MediaKeyMessageEvent {
+  MediaKeyMessageEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn MediaKeyMessageEvent::get_message_type(
   self : MediaKeyMessageEvent,
 ) -> MediaKeyMessageType =
-  #| (self) => self.messageType
+  #| (self) => ['license-request', 'license-renewal', 'license-release', 'individualization-request'].indexOf(self.messageType)
 
 ///|
 pub extern "js" fn MediaKeyMessageEvent::get_message(
@@ -728,9 +955,26 @@ pub extern "js" fn MediaEncryptedEvent::to_event(
 ///|
 pub extern "js" fn MediaEncryptedEvent::new(
   type_ : String,
-  event_init_dict : MediaEncryptedEventInit,
+) -> MediaEncryptedEvent =
+  #| (type_) => new MediaEncryptedEvent(type_)
+
+///|
+extern "js" fn MediaEncryptedEvent::new_with_event_init_dict_ffi(
+  type_ : String,
+  event_init_dict : JsValue,
 ) -> MediaEncryptedEvent =
   #| (type_, event_init_dict) => new MediaEncryptedEvent(type_, event_init_dict)
+
+///|
+pub fn MediaEncryptedEvent::new_with_event_init_dict(
+  type_ : String,
+  event_init_dict : MediaEncryptedEventInit,
+) -> MediaEncryptedEvent {
+  MediaEncryptedEvent::new_with_event_init_dict_ffi(
+    type_,
+    event_init_dict.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn MediaEncryptedEvent::get_init_data_type(
@@ -742,4 +986,4 @@ pub extern "js" fn MediaEncryptedEvent::get_init_data_type(
 pub extern "js" fn MediaEncryptedEvent::get_init_data(
   self : MediaEncryptedEvent,
 ) -> ArrayBuffer? =
-  #| (self) => { const v = self.initData; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.initData; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

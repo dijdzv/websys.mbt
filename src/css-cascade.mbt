@@ -54,7 +54,7 @@ pub extern "js" fn CSSLayerBlockRule::to_css_rule(
 ///|
 pub extern "js" fn CSSLayerBlockRule::get_name(
   self : CSSLayerBlockRule,
-) -> CSSOMString =
+) -> String =
   #| (self) => self.name
 
 ///|
@@ -104,5 +104,5 @@ pub extern "js" fn CSSLayerStatementRule::to_css_rule(
 ///|
 pub extern "js" fn CSSLayerStatementRule::get_name_list(
   self : CSSLayerStatementRule,
-) -> JsValue =
+) -> Array[String] =
   #| (self) => self.nameList

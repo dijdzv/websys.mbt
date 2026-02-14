@@ -3,7 +3,7 @@
 
 ///|
 /// SVGPathDataSettings dictionary
-pub struct SVGPathDataSettings {
+pub(all) struct SVGPathDataSettings {
   normalize : Bool?
 }
 
@@ -14,13 +14,32 @@ pub fn SVGPathDataSettings::default() -> SVGPathDataSettings {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SVGPathDataSettings::to_js(
+extern "js" fn SVGPathDataSettings::to_js_ffi(
   self : SVGPathDataSettings,
 ) -> JsValue =
   #| (self) => ({
-  #|   normalize: self.normalize
+  #|   normalize: (self.normalize === -1 ? undefined : self.normalize)
   #| })
+
+///|
+/// Convert to JsValue
+pub fn SVGPathDataSettings::to_js(self : SVGPathDataSettings) -> JsValue {
+  SVGPathDataSettings::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SVGPathDataSettings::from_js_ffi(
+  value : JsValue,
+) -> SVGPathDataSettings =
+  #| (v) => ({
+  #|   normalize: (v.normalize === undefined ? -1 : v.normalize)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SVGPathDataSettings::from_js(value : JsValue) -> SVGPathDataSettings {
+  SVGPathDataSettings::from_js_ffi(value)
+}
 
 ///|
 /// SVGPathSegment interface
@@ -70,13 +89,15 @@ pub extern "js" fn SVGPathSegment::set_type(
   #| (self, value) => { self.type = value }
 
 ///|
-pub extern "js" fn SVGPathSegment::get_values(self : SVGPathSegment) -> JsValue =
+pub extern "js" fn SVGPathSegment::get_values(
+  self : SVGPathSegment,
+) -> Array[Double] =
   #| (self) => self.values
 
 ///|
 pub extern "js" fn SVGPathSegment::set_values(
   self : SVGPathSegment,
-  value : JsValue,
+  value : Array[Double],
 ) -> Unit =
   #| (self, value) => { self.values = value }
 
@@ -172,7 +193,7 @@ pub extern "js" fn SVGPathElement::get_path_segment_at_length(
   self : SVGPathElement,
   distance : Double,
 ) -> SVGPathSegment? =
-  #| (self, distance) => { const v = self.getPathSegmentAtLength(distance); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, distance) => (() => { const v = self.getPathSegmentAtLength(distance); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn SVGPathElement::get_path_data(
@@ -181,11 +202,19 @@ pub extern "js" fn SVGPathElement::get_path_data(
   #| (self) => self.getPathData()
 
 ///|
-pub extern "js" fn SVGPathElement::get_path_data_with_settings(
+extern "js" fn SVGPathElement::get_path_data_with_settings_ffi(
   self : SVGPathElement,
-  settings : SVGPathDataSettings,
+  settings : JsValue,
 ) -> Array[SVGPathSegment] =
   #| (self, settings) => self.getPathData(settings)
+
+///|
+pub fn SVGPathElement::get_path_data_with_settings(
+  self : SVGPathElement,
+  settings : SVGPathDataSettings,
+) -> Array[SVGPathSegment] {
+  SVGPathElement::get_path_data_with_settings_ffi(self, settings.to_js())
+}
 
 ///|
 pub extern "js" fn SVGPathElement::set_path_data(

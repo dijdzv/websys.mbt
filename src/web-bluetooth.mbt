@@ -48,14 +48,34 @@ pub extern "js" fn BluetoothServiceUUID::is_int(
 pub extern "js" fn BluetoothServiceUUID::as_string(
   self : BluetoothServiceUUID,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get BluetoothServiceUUID as Int
 pub extern "js" fn BluetoothServiceUUID::as_int(
   self : BluetoothServiceUUID,
 ) -> Int? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
+
+///|
+/// Flatten Option[BluetoothServiceUUID] to String?
+pub fn BluetoothServiceUUID::bind_as_string(
+  value : BluetoothServiceUUID?,
+) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[BluetoothServiceUUID] to Int?
+pub fn BluetoothServiceUUID::bind_as_int(value : BluetoothServiceUUID?) -> Int? {
+  match value {
+    Some(v) => v.as_int()
+    None => None
+  }
+}
 
 ///|
 /// BluetoothCharacteristicUUID typedef
@@ -100,14 +120,36 @@ pub extern "js" fn BluetoothCharacteristicUUID::is_int(
 pub extern "js" fn BluetoothCharacteristicUUID::as_string(
   self : BluetoothCharacteristicUUID,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get BluetoothCharacteristicUUID as Int
 pub extern "js" fn BluetoothCharacteristicUUID::as_int(
   self : BluetoothCharacteristicUUID,
 ) -> Int? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
+
+///|
+/// Flatten Option[BluetoothCharacteristicUUID] to String?
+pub fn BluetoothCharacteristicUUID::bind_as_string(
+  value : BluetoothCharacteristicUUID?,
+) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[BluetoothCharacteristicUUID] to Int?
+pub fn BluetoothCharacteristicUUID::bind_as_int(
+  value : BluetoothCharacteristicUUID?,
+) -> Int? {
+  match value {
+    Some(v) => v.as_int()
+    None => None
+  }
+}
 
 ///|
 /// BluetoothDescriptorUUID typedef
@@ -152,18 +194,40 @@ pub extern "js" fn BluetoothDescriptorUUID::is_int(
 pub extern "js" fn BluetoothDescriptorUUID::as_string(
   self : BluetoothDescriptorUUID,
 ) -> String? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
 /// Try to get BluetoothDescriptorUUID as Int
 pub extern "js" fn BluetoothDescriptorUUID::as_int(
   self : BluetoothDescriptorUUID,
 ) -> Int? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
+
+///|
+/// Flatten Option[BluetoothDescriptorUUID] to String?
+pub fn BluetoothDescriptorUUID::bind_as_string(
+  value : BluetoothDescriptorUUID?,
+) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[BluetoothDescriptorUUID] to Int?
+pub fn BluetoothDescriptorUUID::bind_as_int(
+  value : BluetoothDescriptorUUID?,
+) -> Int? {
+  match value {
+    Some(v) => v.as_int()
+    None => None
+  }
+}
 
 ///|
 /// BluetoothDataFilterInit dictionary
-pub struct BluetoothDataFilterInit {
+pub(all) struct BluetoothDataFilterInit {
   dataPrefix : BufferSource?
   mask : BufferSource?
 }
@@ -175,18 +239,42 @@ pub fn BluetoothDataFilterInit::default() -> BluetoothDataFilterInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BluetoothDataFilterInit::to_js(
+extern "js" fn BluetoothDataFilterInit::to_js_ffi(
   self : BluetoothDataFilterInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   dataPrefix: self.dataPrefix.to_js_value(),
-  #|   mask: self.mask.to_js_value()
+  #|   dataPrefix: ((() => { const v = self.dataPrefix; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   mask: ((() => { const v = self.mask; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn BluetoothDataFilterInit::to_js(
+  self : BluetoothDataFilterInit,
+) -> JsValue {
+  BluetoothDataFilterInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BluetoothDataFilterInit::from_js_ffi(
+  value : JsValue,
+) -> BluetoothDataFilterInit =
+  #| (v) => ({
+  #|   dataPrefix: (v.dataPrefix === undefined ? { $tag: 0 } : { $tag: 1, _0: v.dataPrefix }),
+  #|   mask: (v.mask === undefined ? { $tag: 0 } : { $tag: 1, _0: v.mask })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BluetoothDataFilterInit::from_js(
+  value : JsValue,
+) -> BluetoothDataFilterInit {
+  BluetoothDataFilterInit::from_js_ffi(value)
+}
+
+///|
 /// BluetoothManufacturerDataFilterInit dictionary
-pub struct BluetoothManufacturerDataFilterInit {
+pub(all) struct BluetoothManufacturerDataFilterInit {
   dataPrefix : BufferSource?
   mask : BufferSource?
   companyIdentifier : Int
@@ -203,48 +291,96 @@ pub fn BluetoothManufacturerDataFilterInit::default() -> BluetoothManufacturerDa
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BluetoothManufacturerDataFilterInit::to_js(
+extern "js" fn BluetoothManufacturerDataFilterInit::to_js_ffi(
   self : BluetoothManufacturerDataFilterInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   dataPrefix: self.dataPrefix.to_js_value(),
-  #|   mask: self.mask.to_js_value(),
+  #|   dataPrefix: ((() => { const v = self.dataPrefix; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   mask: ((() => { const v = self.mask; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
   #|   companyIdentifier: self.companyIdentifier
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn BluetoothManufacturerDataFilterInit::to_js(
+  self : BluetoothManufacturerDataFilterInit,
+) -> JsValue {
+  BluetoothManufacturerDataFilterInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BluetoothManufacturerDataFilterInit::from_js_ffi(
+  value : JsValue,
+) -> BluetoothManufacturerDataFilterInit =
+  #| (v) => ({
+  #|   dataPrefix: (v.dataPrefix === undefined ? { $tag: 0 } : { $tag: 1, _0: v.dataPrefix }),
+  #|   mask: (v.mask === undefined ? { $tag: 0 } : { $tag: 1, _0: v.mask }),
+  #|   companyIdentifier: v.companyIdentifier
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BluetoothManufacturerDataFilterInit::from_js(
+  value : JsValue,
+) -> BluetoothManufacturerDataFilterInit {
+  BluetoothManufacturerDataFilterInit::from_js_ffi(value)
+}
+
+///|
 /// BluetoothServiceDataFilterInit dictionary
-pub struct BluetoothServiceDataFilterInit {
+pub(all) struct BluetoothServiceDataFilterInit {
   dataPrefix : BufferSource?
   mask : BufferSource?
   service : BluetoothServiceUUID
 }
 
 ///|
-/// Create a new BluetoothServiceDataFilterInit with default values
-pub fn BluetoothServiceDataFilterInit::default() -> BluetoothServiceDataFilterInit {
-  BluetoothServiceDataFilterInit::{
-    dataPrefix: None,
-    mask: None,
-    service: panic(),
-  }
+/// Create a new BluetoothServiceDataFilterInit
+pub fn BluetoothServiceDataFilterInit::new(
+  service~ : BluetoothServiceUUID,
+) -> BluetoothServiceDataFilterInit {
+  BluetoothServiceDataFilterInit::{ dataPrefix: None, mask: None, service }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BluetoothServiceDataFilterInit::to_js(
+extern "js" fn BluetoothServiceDataFilterInit::to_js_ffi(
   self : BluetoothServiceDataFilterInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   dataPrefix: self.dataPrefix.to_js_value(),
-  #|   mask: self.mask.to_js_value(),
+  #|   dataPrefix: ((() => { const v = self.dataPrefix; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   mask: ((() => { const v = self.mask; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
   #|   service: self.service.to_js_value()
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn BluetoothServiceDataFilterInit::to_js(
+  self : BluetoothServiceDataFilterInit,
+) -> JsValue {
+  BluetoothServiceDataFilterInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BluetoothServiceDataFilterInit::from_js_ffi(
+  value : JsValue,
+) -> BluetoothServiceDataFilterInit =
+  #| (v) => ({
+  #|   dataPrefix: (v.dataPrefix === undefined ? { $tag: 0 } : { $tag: 1, _0: v.dataPrefix }),
+  #|   mask: (v.mask === undefined ? { $tag: 0 } : { $tag: 1, _0: v.mask }),
+  #|   service: v.service
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BluetoothServiceDataFilterInit::from_js(
+  value : JsValue,
+) -> BluetoothServiceDataFilterInit {
+  BluetoothServiceDataFilterInit::from_js_ffi(value)
+}
+
+///|
 /// BluetoothLEScanFilterInit dictionary
-pub struct BluetoothLEScanFilterInit {
+pub(all) struct BluetoothLEScanFilterInit {
   services : Array[BluetoothServiceUUID]?
   name : String?
   namePrefix : String?
@@ -265,21 +401,48 @@ pub fn BluetoothLEScanFilterInit::default() -> BluetoothLEScanFilterInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BluetoothLEScanFilterInit::to_js(
+extern "js" fn BluetoothLEScanFilterInit::to_js_ffi(
   self : BluetoothLEScanFilterInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   services: self.services,
+  #|   services: ((() => { const v = self.services; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   name: self.name,
   #|   namePrefix: self.namePrefix,
-  #|   manufacturerData: self.manufacturerData,
-  #|   serviceData: self.serviceData
+  #|   manufacturerData: ((() => { const v = self.manufacturerData; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   serviceData: ((() => { const v = self.serviceData; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn BluetoothLEScanFilterInit::to_js(
+  self : BluetoothLEScanFilterInit,
+) -> JsValue {
+  BluetoothLEScanFilterInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BluetoothLEScanFilterInit::from_js_ffi(
+  value : JsValue,
+) -> BluetoothLEScanFilterInit =
+  #| (v) => ({
+  #|   services: (v.services === undefined ? { $tag: 0 } : { $tag: 1, _0: v.services }),
+  #|   name: v.name,
+  #|   namePrefix: v.namePrefix,
+  #|   manufacturerData: (v.manufacturerData === undefined ? { $tag: 0 } : { $tag: 1, _0: v.manufacturerData }),
+  #|   serviceData: (v.serviceData === undefined ? { $tag: 0 } : { $tag: 1, _0: v.serviceData })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BluetoothLEScanFilterInit::from_js(
+  value : JsValue,
+) -> BluetoothLEScanFilterInit {
+  BluetoothLEScanFilterInit::from_js_ffi(value)
+}
+
+///|
 /// RequestDeviceOptions dictionary
-pub struct RequestDeviceOptions {
+pub(all) struct RequestDeviceOptions {
   filters : Array[BluetoothLEScanFilterInit]?
   exclusionFilters : Array[BluetoothLEScanFilterInit]?
   optionalServices : Array[BluetoothServiceUUID]?
@@ -300,21 +463,44 @@ pub fn RequestDeviceOptions::default() -> RequestDeviceOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn RequestDeviceOptions::to_js(
+extern "js" fn RequestDeviceOptions::to_js_ffi(
   self : RequestDeviceOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   filters: self.filters,
-  #|   exclusionFilters: self.exclusionFilters,
-  #|   optionalServices: self.optionalServices,
-  #|   optionalManufacturerData: self.optionalManufacturerData,
-  #|   acceptAllDevices: self.acceptAllDevices
+  #|   filters: ((() => { const v = self.filters; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   exclusionFilters: ((() => { const v = self.exclusionFilters; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   optionalServices: ((() => { const v = self.optionalServices; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   optionalManufacturerData: ((() => { const v = self.optionalManufacturerData; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   acceptAllDevices: (self.acceptAllDevices === -1 ? undefined : self.acceptAllDevices)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn RequestDeviceOptions::to_js(self : RequestDeviceOptions) -> JsValue {
+  RequestDeviceOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RequestDeviceOptions::from_js_ffi(
+  value : JsValue,
+) -> RequestDeviceOptions =
+  #| (v) => ({
+  #|   filters: (v.filters === undefined ? { $tag: 0 } : { $tag: 1, _0: v.filters }),
+  #|   exclusionFilters: (v.exclusionFilters === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exclusionFilters }),
+  #|   optionalServices: (v.optionalServices === undefined ? { $tag: 0 } : { $tag: 1, _0: v.optionalServices }),
+  #|   optionalManufacturerData: (v.optionalManufacturerData === undefined ? { $tag: 0 } : { $tag: 1, _0: v.optionalManufacturerData }),
+  #|   acceptAllDevices: (v.acceptAllDevices === undefined ? -1 : v.acceptAllDevices)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RequestDeviceOptions::from_js(value : JsValue) -> RequestDeviceOptions {
+  RequestDeviceOptions::from_js_ffi(value)
+}
+
+///|
 /// BluetoothPermissionDescriptor dictionary
-pub struct BluetoothPermissionDescriptor {
+pub(all) struct BluetoothPermissionDescriptor {
   deviceId : String?
   filters : Array[BluetoothLEScanFilterInit]?
   optionalServices : Array[BluetoothServiceUUID]?
@@ -335,21 +521,48 @@ pub fn BluetoothPermissionDescriptor::default() -> BluetoothPermissionDescriptor
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BluetoothPermissionDescriptor::to_js(
+extern "js" fn BluetoothPermissionDescriptor::to_js_ffi(
   self : BluetoothPermissionDescriptor,
 ) -> JsValue =
   #| (self) => ({
   #|   deviceId: self.deviceId,
-  #|   filters: self.filters,
-  #|   optionalServices: self.optionalServices,
-  #|   optionalManufacturerData: self.optionalManufacturerData,
-  #|   acceptAllDevices: self.acceptAllDevices
+  #|   filters: ((() => { const v = self.filters; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   optionalServices: ((() => { const v = self.optionalServices; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   optionalManufacturerData: ((() => { const v = self.optionalManufacturerData; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   acceptAllDevices: (self.acceptAllDevices === -1 ? undefined : self.acceptAllDevices)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn BluetoothPermissionDescriptor::to_js(
+  self : BluetoothPermissionDescriptor,
+) -> JsValue {
+  BluetoothPermissionDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BluetoothPermissionDescriptor::from_js_ffi(
+  value : JsValue,
+) -> BluetoothPermissionDescriptor =
+  #| (v) => ({
+  #|   deviceId: v.deviceId,
+  #|   filters: (v.filters === undefined ? { $tag: 0 } : { $tag: 1, _0: v.filters }),
+  #|   optionalServices: (v.optionalServices === undefined ? { $tag: 0 } : { $tag: 1, _0: v.optionalServices }),
+  #|   optionalManufacturerData: (v.optionalManufacturerData === undefined ? { $tag: 0 } : { $tag: 1, _0: v.optionalManufacturerData }),
+  #|   acceptAllDevices: (v.acceptAllDevices === undefined ? -1 : v.acceptAllDevices)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BluetoothPermissionDescriptor::from_js(
+  value : JsValue,
+) -> BluetoothPermissionDescriptor {
+  BluetoothPermissionDescriptor::from_js_ffi(value)
+}
+
+///|
 /// AllowedBluetoothDevice dictionary
-pub struct AllowedBluetoothDevice {
+pub(all) struct AllowedBluetoothDevice {
   deviceId : String
   mayUseGATT : Bool
   allowedServices : StringOrArrayOfUUID
@@ -357,19 +570,20 @@ pub struct AllowedBluetoothDevice {
 }
 
 ///|
-/// Create a new AllowedBluetoothDevice with default values
-pub fn AllowedBluetoothDevice::default() -> AllowedBluetoothDevice {
+/// Create a new AllowedBluetoothDevice
+pub fn AllowedBluetoothDevice::new(
+  allowedServices~ : StringOrArrayOfUUID,
+) -> AllowedBluetoothDevice {
   AllowedBluetoothDevice::{
     deviceId: "",
     mayUseGATT: false,
-    allowedServices: panic(),
+    allowedServices,
     allowedManufacturerData: [],
   }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn AllowedBluetoothDevice::to_js(
+extern "js" fn AllowedBluetoothDevice::to_js_ffi(
   self : AllowedBluetoothDevice,
 ) -> JsValue =
   #| (self) => ({
@@ -380,8 +594,33 @@ pub extern "js" fn AllowedBluetoothDevice::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn AllowedBluetoothDevice::to_js(self : AllowedBluetoothDevice) -> JsValue {
+  AllowedBluetoothDevice::to_js_ffi(self)
+}
+
+///|
+extern "js" fn AllowedBluetoothDevice::from_js_ffi(
+  value : JsValue,
+) -> AllowedBluetoothDevice =
+  #| (v) => ({
+  #|   deviceId: v.deviceId,
+  #|   mayUseGATT: v.mayUseGATT,
+  #|   allowedServices: v.allowedServices,
+  #|   allowedManufacturerData: v.allowedManufacturerData
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn AllowedBluetoothDevice::from_js(
+  value : JsValue,
+) -> AllowedBluetoothDevice {
+  AllowedBluetoothDevice::from_js_ffi(value)
+}
+
+///|
 /// BluetoothPermissionStorage dictionary
-pub struct BluetoothPermissionStorage {
+pub(all) struct BluetoothPermissionStorage {
   allowedDevices : Array[AllowedBluetoothDevice]
 }
 
@@ -392,8 +631,7 @@ pub fn BluetoothPermissionStorage::default() -> BluetoothPermissionStorage {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BluetoothPermissionStorage::to_js(
+extern "js" fn BluetoothPermissionStorage::to_js_ffi(
   self : BluetoothPermissionStorage,
 ) -> JsValue =
   #| (self) => ({
@@ -401,8 +639,32 @@ pub extern "js" fn BluetoothPermissionStorage::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn BluetoothPermissionStorage::to_js(
+  self : BluetoothPermissionStorage,
+) -> JsValue {
+  BluetoothPermissionStorage::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BluetoothPermissionStorage::from_js_ffi(
+  value : JsValue,
+) -> BluetoothPermissionStorage =
+  #| (v) => ({
+  #|   allowedDevices: v.allowedDevices
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BluetoothPermissionStorage::from_js(
+  value : JsValue,
+) -> BluetoothPermissionStorage {
+  BluetoothPermissionStorage::from_js_ffi(value)
+}
+
+///|
 /// ValueEventInit dictionary
-pub struct ValueEventInit {
+pub(all) struct ValueEventInit {
   value : JsValue?
 }
 
@@ -413,15 +675,32 @@ pub fn ValueEventInit::default() -> ValueEventInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn ValueEventInit::to_js(self : ValueEventInit) -> JsValue =
+extern "js" fn ValueEventInit::to_js_ffi(self : ValueEventInit) -> JsValue =
   #| (self) => ({
-  #|   value: self.value
+  #|   value: ((() => { const v = self.value; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn ValueEventInit::to_js(self : ValueEventInit) -> JsValue {
+  ValueEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn ValueEventInit::from_js_ffi(value : JsValue) -> ValueEventInit =
+  #| (v) => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn ValueEventInit::from_js(value : JsValue) -> ValueEventInit {
+  ValueEventInit::from_js_ffi(value)
+}
+
+///|
 /// WatchAdvertisementsOptions dictionary
-pub struct WatchAdvertisementsOptions {
+pub(all) struct WatchAdvertisementsOptions {
   signal : AbortSignal?
 }
 
@@ -432,17 +711,40 @@ pub fn WatchAdvertisementsOptions::default() -> WatchAdvertisementsOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn WatchAdvertisementsOptions::to_js(
+extern "js" fn WatchAdvertisementsOptions::to_js_ffi(
   self : WatchAdvertisementsOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   signal: self.signal
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn WatchAdvertisementsOptions::to_js(
+  self : WatchAdvertisementsOptions,
+) -> JsValue {
+  WatchAdvertisementsOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn WatchAdvertisementsOptions::from_js_ffi(
+  value : JsValue,
+) -> WatchAdvertisementsOptions =
+  #| (v) => ({
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn WatchAdvertisementsOptions::from_js(
+  value : JsValue,
+) -> WatchAdvertisementsOptions {
+  WatchAdvertisementsOptions::from_js_ffi(value)
+}
+
+///|
 /// BluetoothAdvertisingEventInit dictionary
-pub struct BluetoothAdvertisingEventInit {
+pub(all) struct BluetoothAdvertisingEventInit {
   device : BluetoothDevice
   uuids : Array[StringOrInt]?
   name : String?
@@ -454,10 +756,12 @@ pub struct BluetoothAdvertisingEventInit {
 }
 
 ///|
-/// Create a new BluetoothAdvertisingEventInit with default values
-pub fn BluetoothAdvertisingEventInit::default() -> BluetoothAdvertisingEventInit {
+/// Create a new BluetoothAdvertisingEventInit
+pub fn BluetoothAdvertisingEventInit::new(
+  device~ : BluetoothDevice,
+) -> BluetoothAdvertisingEventInit {
   BluetoothAdvertisingEventInit::{
-    device: panic(),
+    device,
     uuids: None,
     name: None,
     appearance: None,
@@ -469,20 +773,50 @@ pub fn BluetoothAdvertisingEventInit::default() -> BluetoothAdvertisingEventInit
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn BluetoothAdvertisingEventInit::to_js(
+extern "js" fn BluetoothAdvertisingEventInit::to_js_ffi(
   self : BluetoothAdvertisingEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   device: self.device,
-  #|   uuids: self.uuids,
+  #|   uuids: ((() => { const v = self.uuids; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   name: self.name,
   #|   appearance: self.appearance,
   #|   txPower: self.txPower,
   #|   rssi: self.rssi,
-  #|   manufacturerData: self.manufacturerData,
-  #|   serviceData: self.serviceData
+  #|   manufacturerData: ((() => { const v = self.manufacturerData; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   serviceData: ((() => { const v = self.serviceData; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn BluetoothAdvertisingEventInit::to_js(
+  self : BluetoothAdvertisingEventInit,
+) -> JsValue {
+  BluetoothAdvertisingEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn BluetoothAdvertisingEventInit::from_js_ffi(
+  value : JsValue,
+) -> BluetoothAdvertisingEventInit =
+  #| (v) => ({
+  #|   device: v.device,
+  #|   uuids: (v.uuids === undefined ? { $tag: 0 } : { $tag: 1, _0: v.uuids }),
+  #|   name: v.name,
+  #|   appearance: v.appearance,
+  #|   txPower: v.txPower,
+  #|   rssi: v.rssi,
+  #|   manufacturerData: (v.manufacturerData === undefined ? { $tag: 0 } : { $tag: 1, _0: v.manufacturerData }),
+  #|   serviceData: (v.serviceData === undefined ? { $tag: 0 } : { $tag: 1, _0: v.serviceData })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn BluetoothAdvertisingEventInit::from_js(
+  value : JsValue,
+) -> BluetoothAdvertisingEventInit {
+  BluetoothAdvertisingEventInit::from_js_ffi(value)
+}
 
 ///|
 /// Bluetooth interface
@@ -539,7 +873,7 @@ pub extern "js" fn Bluetooth::set_onavailabilitychanged(
 pub extern "js" fn Bluetooth::get_referring_device(
   self : Bluetooth,
 ) -> BluetoothDevice? =
-  #| (self) => { const v = self.referringDevice; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.referringDevice; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Bluetooth::get_devices(
@@ -554,11 +888,19 @@ pub extern "js" fn Bluetooth::request_device(
   #| (self) => self.requestDevice()
 
 ///|
-pub extern "js" fn Bluetooth::request_device_with_options(
+extern "js" fn Bluetooth::request_device_with_options_ffi(
   self : Bluetooth,
-  options : RequestDeviceOptions,
+  options : JsValue,
 ) -> Promise[BluetoothDevice] =
   #| (self, options) => self.requestDevice(options)
+
+///|
+pub fn Bluetooth::request_device_with_options(
+  self : Bluetooth,
+  options : RequestDeviceOptions,
+) -> Promise[BluetoothDevice] {
+  Bluetooth::request_device_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Bluetooth::request_le_scan(
@@ -567,11 +909,19 @@ pub extern "js" fn Bluetooth::request_le_scan(
   #| (self) => self.requestLEScan()
 
 ///|
-pub extern "js" fn Bluetooth::request_le_scan_with_options(
+extern "js" fn Bluetooth::request_le_scan_with_options_ffi(
   self : Bluetooth,
-  options : BluetoothLEScanOptions,
+  options : JsValue,
 ) -> Promise[BluetoothLEScan] =
   #| (self, options) => self.requestLEScan(options)
+
+///|
+pub fn Bluetooth::request_le_scan_with_options(
+  self : Bluetooth,
+  options : BluetoothLEScanOptions,
+) -> Promise[BluetoothLEScan] {
+  Bluetooth::request_le_scan_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Bluetooth::get_onadvertisementreceived(
@@ -704,13 +1054,13 @@ pub extern "js" fn BluetoothPermissionResult::to_event_target(
 ///|
 pub extern "js" fn BluetoothPermissionResult::get_devices(
   self : BluetoothPermissionResult,
-) -> JsValue =
+) -> Array[BluetoothDevice] =
   #| (self) => self.devices
 
 ///|
 pub extern "js" fn BluetoothPermissionResult::set_devices(
   self : BluetoothPermissionResult,
-  value : JsValue,
+  value : Array[BluetoothDevice],
 ) -> Unit =
   #| (self, value) => { self.devices = value }
 
@@ -747,11 +1097,23 @@ pub extern "js" fn ValueEvent::to_event(self : ValueEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn ValueEvent::new(
+pub extern "js" fn ValueEvent::new(type_ : String) -> ValueEvent =
+  #| (type_) => new ValueEvent(type_)
+
+///|
+extern "js" fn ValueEvent::new_with_init_dict_ffi(
   type_ : String,
-  init_dict : ValueEventInit,
+  init_dict : JsValue,
 ) -> ValueEvent =
   #| (type_, init_dict) => new ValueEvent(type_, init_dict)
+
+///|
+pub fn ValueEvent::new_with_init_dict(
+  type_ : String,
+  init_dict : ValueEventInit,
+) -> ValueEvent {
+  ValueEvent::new_with_init_dict_ffi(type_, init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn ValueEvent::get_value(self : ValueEvent) -> JsValue =
@@ -807,13 +1169,13 @@ pub extern "js" fn BluetoothDevice::get_id(self : BluetoothDevice) -> String =
 
 ///|
 pub extern "js" fn BluetoothDevice::get_name(self : BluetoothDevice) -> String? =
-  #| (self) => { const v = self.name; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.name) ?? undefined
 
 ///|
 pub extern "js" fn BluetoothDevice::get_gatt(
   self : BluetoothDevice,
 ) -> BluetoothRemoteGATTServer? =
-  #| (self) => { const v = self.gatt; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.gatt; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn BluetoothDevice::forget(
@@ -828,11 +1190,19 @@ pub extern "js" fn BluetoothDevice::watch_advertisements(
   #| (self) => self.watchAdvertisements()
 
 ///|
-pub extern "js" fn BluetoothDevice::watch_advertisements_with_options(
+extern "js" fn BluetoothDevice::watch_advertisements_with_options_ffi(
   self : BluetoothDevice,
-  options : WatchAdvertisementsOptions,
+  options : JsValue,
 ) -> Promise[Unit] =
   #| (self, options) => self.watchAdvertisements(options)
+
+///|
+pub fn BluetoothDevice::watch_advertisements_with_options(
+  self : BluetoothDevice,
+  options : WatchAdvertisementsOptions,
+) -> Promise[Unit] {
+  BluetoothDevice::watch_advertisements_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn BluetoothDevice::get_watching_advertisements(
@@ -961,7 +1331,7 @@ pub extern "js" fn BluetoothManufacturerDataMap::get(
   self : BluetoothManufacturerDataMap,
   key : Int,
 ) -> DataView? =
-  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, key) => self.get(key)
 
 ///|
 pub extern "js" fn BluetoothManufacturerDataMap::has(
@@ -1013,7 +1383,7 @@ pub extern "js" fn BluetoothServiceDataMap::get(
   self : BluetoothServiceDataMap,
   key : UUID,
 ) -> DataView? =
-  #| (self, key) => { const v = self.get(key); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, key) => self.get(key)
 
 ///|
 pub extern "js" fn BluetoothServiceDataMap::has(
@@ -1067,11 +1437,19 @@ pub extern "js" fn BluetoothAdvertisingEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn BluetoothAdvertisingEvent::new(
+extern "js" fn BluetoothAdvertisingEvent::new_ffi(
   type_ : String,
-  init_ : BluetoothAdvertisingEventInit,
+  init_ : JsValue,
 ) -> BluetoothAdvertisingEvent =
   #| (type_, init_) => new BluetoothAdvertisingEvent(type_, init_)
+
+///|
+pub fn BluetoothAdvertisingEvent::new(
+  type_ : String,
+  init_ : BluetoothAdvertisingEventInit,
+) -> BluetoothAdvertisingEvent {
+  BluetoothAdvertisingEvent::new_ffi(type_, init_.to_js())
+}
 
 ///|
 pub extern "js" fn BluetoothAdvertisingEvent::get_device(
@@ -1082,32 +1460,32 @@ pub extern "js" fn BluetoothAdvertisingEvent::get_device(
 ///|
 pub extern "js" fn BluetoothAdvertisingEvent::get_uuids(
   self : BluetoothAdvertisingEvent,
-) -> JsValue =
+) -> Array[UUID] =
   #| (self) => self.uuids
 
 ///|
 pub extern "js" fn BluetoothAdvertisingEvent::get_name(
   self : BluetoothAdvertisingEvent,
 ) -> String? =
-  #| (self) => { const v = self.name; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.name) ?? undefined
 
 ///|
 pub extern "js" fn BluetoothAdvertisingEvent::get_appearance(
   self : BluetoothAdvertisingEvent,
 ) -> Int? =
-  #| (self) => { const v = self.appearance; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.appearance) ?? undefined
 
 ///|
 pub extern "js" fn BluetoothAdvertisingEvent::get_tx_power(
   self : BluetoothAdvertisingEvent,
 ) -> Int? =
-  #| (self) => { const v = self.txPower; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.txPower) ?? undefined
 
 ///|
 pub extern "js" fn BluetoothAdvertisingEvent::get_rssi(
   self : BluetoothAdvertisingEvent,
 ) -> Int? =
-  #| (self) => { const v = self.rssi; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.rssi) ?? undefined
 
 ///|
 pub extern "js" fn BluetoothAdvertisingEvent::get_manufacturer_data(
@@ -1200,6 +1578,34 @@ pub extern "js" fn BluetoothRemoteGATTServer::get_primary_services(
 pub extern "js" fn BluetoothRemoteGATTServer::get_primary_services_with_service(
   self : BluetoothRemoteGATTServer,
   service : BluetoothServiceUUID,
+) -> Promise[Array[BluetoothRemoteGATTService]] =
+  #| (self, service) => self.getPrimaryServices(service)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTServer::get_primary_service_with_string(
+  self : BluetoothRemoteGATTServer,
+  service : String,
+) -> Promise[BluetoothRemoteGATTService] =
+  #| (self, service) => self.getPrimaryService(service)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTServer::get_primary_service_with_int(
+  self : BluetoothRemoteGATTServer,
+  service : Int,
+) -> Promise[BluetoothRemoteGATTService] =
+  #| (self, service) => self.getPrimaryService(service)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTServer::get_primary_services_with_string(
+  self : BluetoothRemoteGATTServer,
+  service : String,
+) -> Promise[Array[BluetoothRemoteGATTService]] =
+  #| (self, service) => self.getPrimaryServices(service)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTServer::get_primary_services_with_int(
+  self : BluetoothRemoteGATTServer,
+  service : Int,
 ) -> Promise[Array[BluetoothRemoteGATTService]] =
   #| (self, service) => self.getPrimaryServices(service)
 
@@ -1358,6 +1764,62 @@ pub extern "js" fn BluetoothRemoteGATTService::set_onserviceremoved(
   #| (self, value) => { self.onserviceremoved = value }
 
 ///|
+pub extern "js" fn BluetoothRemoteGATTService::get_characteristic_with_string(
+  self : BluetoothRemoteGATTService,
+  characteristic : String,
+) -> Promise[BluetoothRemoteGATTCharacteristic] =
+  #| (self, characteristic) => self.getCharacteristic(characteristic)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTService::get_characteristic_with_int(
+  self : BluetoothRemoteGATTService,
+  characteristic : Int,
+) -> Promise[BluetoothRemoteGATTCharacteristic] =
+  #| (self, characteristic) => self.getCharacteristic(characteristic)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTService::get_characteristics_with_string(
+  self : BluetoothRemoteGATTService,
+  characteristic : String,
+) -> Promise[Array[BluetoothRemoteGATTCharacteristic]] =
+  #| (self, characteristic) => self.getCharacteristics(characteristic)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTService::get_characteristics_with_int(
+  self : BluetoothRemoteGATTService,
+  characteristic : Int,
+) -> Promise[Array[BluetoothRemoteGATTCharacteristic]] =
+  #| (self, characteristic) => self.getCharacteristics(characteristic)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTService::get_included_service_with_string(
+  self : BluetoothRemoteGATTService,
+  service : String,
+) -> Promise[BluetoothRemoteGATTService] =
+  #| (self, service) => self.getIncludedService(service)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTService::get_included_service_with_int(
+  self : BluetoothRemoteGATTService,
+  service : Int,
+) -> Promise[BluetoothRemoteGATTService] =
+  #| (self, service) => self.getIncludedService(service)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTService::get_included_services_with_string(
+  self : BluetoothRemoteGATTService,
+  service : String,
+) -> Promise[Array[BluetoothRemoteGATTService]] =
+  #| (self, service) => self.getIncludedServices(service)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTService::get_included_services_with_int(
+  self : BluetoothRemoteGATTService,
+  service : Int,
+) -> Promise[Array[BluetoothRemoteGATTService]] =
+  #| (self, service) => self.getIncludedServices(service)
+
+///|
 /// BluetoothRemoteGATTCharacteristic interface
 pub type BluetoothRemoteGATTCharacteristic
 
@@ -1423,7 +1885,7 @@ pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_properties(
 pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_value(
   self : BluetoothRemoteGATTCharacteristic,
 ) -> DataView? =
-  #| (self) => { const v = self.value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptor(
@@ -1496,6 +1958,76 @@ pub extern "js" fn BluetoothRemoteGATTCharacteristic::set_oncharacteristicvaluec
   value : EventHandler,
 ) -> Unit =
   #| (self, value) => { self.oncharacteristicvaluechanged = value }
+
+///|
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptor_with_string(
+  self : BluetoothRemoteGATTCharacteristic,
+  descriptor : String,
+) -> Promise[BluetoothRemoteGATTDescriptor] =
+  #| (self, descriptor) => self.getDescriptor(descriptor)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptor_with_int(
+  self : BluetoothRemoteGATTCharacteristic,
+  descriptor : Int,
+) -> Promise[BluetoothRemoteGATTDescriptor] =
+  #| (self, descriptor) => self.getDescriptor(descriptor)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptors_with_string(
+  self : BluetoothRemoteGATTCharacteristic,
+  descriptor : String,
+) -> Promise[Array[BluetoothRemoteGATTDescriptor]] =
+  #| (self, descriptor) => self.getDescriptors(descriptor)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptors_with_int(
+  self : BluetoothRemoteGATTCharacteristic,
+  descriptor : Int,
+) -> Promise[Array[BluetoothRemoteGATTDescriptor]] =
+  #| (self, descriptor) => self.getDescriptors(descriptor)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::write_value_with_array_buffer_view(
+  self : BluetoothRemoteGATTCharacteristic,
+  value : ArrayBufferView,
+) -> Promise[Unit] =
+  #| (self, value) => self.writeValue(value)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::write_value_with_array_buffer(
+  self : BluetoothRemoteGATTCharacteristic,
+  value : ArrayBuffer,
+) -> Promise[Unit] =
+  #| (self, value) => self.writeValue(value)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::write_value_with_response_with_array_buffer_view(
+  self : BluetoothRemoteGATTCharacteristic,
+  value : ArrayBufferView,
+) -> Promise[Unit] =
+  #| (self, value) => self.writeValueWithResponse(value)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::write_value_with_response_with_array_buffer(
+  self : BluetoothRemoteGATTCharacteristic,
+  value : ArrayBuffer,
+) -> Promise[Unit] =
+  #| (self, value) => self.writeValueWithResponse(value)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::write_value_without_response_with_array_buffer_view(
+  self : BluetoothRemoteGATTCharacteristic,
+  value : ArrayBufferView,
+) -> Promise[Unit] =
+  #| (self, value) => self.writeValueWithoutResponse(value)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::write_value_without_response_with_array_buffer(
+  self : BluetoothRemoteGATTCharacteristic,
+  value : ArrayBuffer,
+) -> Promise[Unit] =
+  #| (self, value) => self.writeValueWithoutResponse(value)
 
 ///|
 /// BluetoothCharacteristicProperties interface
@@ -1643,7 +2175,7 @@ pub extern "js" fn BluetoothRemoteGATTDescriptor::get_uuid(
 pub extern "js" fn BluetoothRemoteGATTDescriptor::get_value(
   self : BluetoothRemoteGATTDescriptor,
 ) -> DataView? =
-  #| (self) => { const v = self.value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTDescriptor::read_value(
@@ -1655,6 +2187,20 @@ pub extern "js" fn BluetoothRemoteGATTDescriptor::read_value(
 pub extern "js" fn BluetoothRemoteGATTDescriptor::write_value(
   self : BluetoothRemoteGATTDescriptor,
   value : BufferSource,
+) -> Promise[Unit] =
+  #| (self, value) => self.writeValue(value)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTDescriptor::write_value_with_array_buffer_view(
+  self : BluetoothRemoteGATTDescriptor,
+  value : ArrayBufferView,
+) -> Promise[Unit] =
+  #| (self, value) => self.writeValue(value)
+
+///|
+pub extern "js" fn BluetoothRemoteGATTDescriptor::write_value_with_array_buffer(
+  self : BluetoothRemoteGATTDescriptor,
+  value : ArrayBuffer,
 ) -> Promise[Unit] =
   #| (self, value) => self.writeValue(value)
 

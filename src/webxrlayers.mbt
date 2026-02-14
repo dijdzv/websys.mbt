@@ -9,7 +9,7 @@ pub(all) enum XRLayerLayout {
   Stereo
   StereoLeftRight
   StereoTopBottom
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -42,7 +42,7 @@ pub(all) enum XRLayerQuality {
   Default
   TextOptimized
   GraphicsOptimized
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -70,7 +70,7 @@ pub fn XRLayerQuality::from_string(s : String) -> XRLayerQuality? {
 pub(all) enum XRTextureType {
   Texture
   TextureArray
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -93,7 +93,7 @@ pub fn XRTextureType::from_string(s : String) -> XRTextureType? {
 
 ///|
 /// XRProjectionLayerInit dictionary
-pub struct XRProjectionLayerInit {
+pub(all) struct XRProjectionLayerInit {
   textureType : XRTextureType?
   colorFormat : GLenum?
   depthFormat : GLenum?
@@ -114,21 +114,44 @@ pub fn XRProjectionLayerInit::default() -> XRProjectionLayerInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRProjectionLayerInit::to_js(
+extern "js" fn XRProjectionLayerInit::to_js_ffi(
   self : XRProjectionLayerInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   textureType: ['texture', 'texture-array'][self.textureType],
-  #|   colorFormat: self.colorFormat,
-  #|   depthFormat: self.depthFormat,
+  #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
+  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthFormat: ((() => { const v = self.depthFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   scaleFactor: self.scaleFactor,
-  #|   clearOnAccess: self.clearOnAccess
+  #|   clearOnAccess: (self.clearOnAccess === -1 ? undefined : self.clearOnAccess)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRProjectionLayerInit::to_js(self : XRProjectionLayerInit) -> JsValue {
+  XRProjectionLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRProjectionLayerInit::from_js_ffi(
+  value : JsValue,
+) -> XRProjectionLayerInit =
+  #| (v) => ({
+  #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
+  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthFormat }),
+  #|   scaleFactor: v.scaleFactor,
+  #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRProjectionLayerInit::from_js(value : JsValue) -> XRProjectionLayerInit {
+  XRProjectionLayerInit::from_js_ffi(value)
+}
+
+///|
 /// XRLayerInit dictionary
-pub struct XRLayerInit {
+pub(all) struct XRLayerInit {
   space : XRSpace
   textureType : XRTextureType?
   colorFormat : GLenum?
@@ -142,10 +165,10 @@ pub struct XRLayerInit {
 }
 
 ///|
-/// Create a new XRLayerInit with default values
-pub fn XRLayerInit::default() -> XRLayerInit {
+/// Create a new XRLayerInit
+pub fn XRLayerInit::new(space~ : XRSpace) -> XRLayerInit {
   XRLayerInit::{
-    space: panic(),
+    space,
     textureType: None,
     colorFormat: None,
     depthFormat: Nullable::Undefined,
@@ -159,24 +182,50 @@ pub fn XRLayerInit::default() -> XRLayerInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRLayerInit::to_js(self : XRLayerInit) -> JsValue =
+extern "js" fn XRLayerInit::to_js_ffi(self : XRLayerInit) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
-  #|   textureType: ['texture', 'texture-array'][self.textureType],
-  #|   colorFormat: self.colorFormat,
-  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
+  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   mipLevels: self.mipLevels,
   #|   viewPixelWidth: self.viewPixelWidth,
   #|   viewPixelHeight: self.viewPixelHeight,
-  #|   layout: ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][self.layout],
-  #|   isStatic: self.isStatic,
-  #|   clearOnAccess: self.clearOnAccess
+  #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
+  #|   isStatic: (self.isStatic === -1 ? undefined : self.isStatic),
+  #|   clearOnAccess: (self.clearOnAccess === -1 ? undefined : self.clearOnAccess)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRLayerInit::to_js(self : XRLayerInit) -> JsValue {
+  XRLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRLayerInit::from_js_ffi(value : JsValue) -> XRLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
+  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : v.depthFormat === null ? { $tag: 1 } : { $tag: 2, _0: v.depthFormat }),
+  #|   mipLevels: v.mipLevels,
+  #|   viewPixelWidth: v.viewPixelWidth,
+  #|   viewPixelHeight: v.viewPixelHeight,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   isStatic: (v.isStatic === undefined ? -1 : v.isStatic),
+  #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRLayerInit::from_js(value : JsValue) -> XRLayerInit {
+  XRLayerInit::from_js_ffi(value)
+}
+
+///|
 /// XRQuadLayerInit dictionary
-pub struct XRQuadLayerInit {
+pub(all) struct XRQuadLayerInit {
   space : XRSpace
   textureType : XRTextureType?
   colorFormat : GLenum?
@@ -193,10 +242,10 @@ pub struct XRQuadLayerInit {
 }
 
 ///|
-/// Create a new XRQuadLayerInit with default values
-pub fn XRQuadLayerInit::default() -> XRQuadLayerInit {
+/// Create a new XRQuadLayerInit
+pub fn XRQuadLayerInit::new(space~ : XRSpace) -> XRQuadLayerInit {
   XRQuadLayerInit::{
-    space: panic(),
+    space,
     textureType: None,
     colorFormat: None,
     depthFormat: Nullable::Undefined,
@@ -213,27 +262,56 @@ pub fn XRQuadLayerInit::default() -> XRQuadLayerInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRQuadLayerInit::to_js(self : XRQuadLayerInit) -> JsValue =
+extern "js" fn XRQuadLayerInit::to_js_ffi(self : XRQuadLayerInit) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
-  #|   textureType: ['texture', 'texture-array'][self.textureType],
-  #|   colorFormat: self.colorFormat,
-  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
+  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   mipLevels: self.mipLevels,
   #|   viewPixelWidth: self.viewPixelWidth,
   #|   viewPixelHeight: self.viewPixelHeight,
-  #|   layout: ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][self.layout],
-  #|   isStatic: self.isStatic,
-  #|   clearOnAccess: self.clearOnAccess,
-  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
+  #|   isStatic: (self.isStatic === -1 ? undefined : self.isStatic),
+  #|   clearOnAccess: (self.clearOnAccess === -1 ? undefined : self.clearOnAccess),
+  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   width: self.width,
   #|   height: self.height
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRQuadLayerInit::to_js(self : XRQuadLayerInit) -> JsValue {
+  XRQuadLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRQuadLayerInit::from_js_ffi(value : JsValue) -> XRQuadLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
+  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : v.depthFormat === null ? { $tag: 1 } : { $tag: 2, _0: v.depthFormat }),
+  #|   mipLevels: v.mipLevels,
+  #|   viewPixelWidth: v.viewPixelWidth,
+  #|   viewPixelHeight: v.viewPixelHeight,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   isStatic: (v.isStatic === undefined ? -1 : v.isStatic),
+  #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess),
+  #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
+  #|   width: v.width,
+  #|   height: v.height
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRQuadLayerInit::from_js(value : JsValue) -> XRQuadLayerInit {
+  XRQuadLayerInit::from_js_ffi(value)
+}
+
+///|
 /// XRCylinderLayerInit dictionary
-pub struct XRCylinderLayerInit {
+pub(all) struct XRCylinderLayerInit {
   space : XRSpace
   textureType : XRTextureType?
   colorFormat : GLenum?
@@ -251,10 +329,10 @@ pub struct XRCylinderLayerInit {
 }
 
 ///|
-/// Create a new XRCylinderLayerInit with default values
-pub fn XRCylinderLayerInit::default() -> XRCylinderLayerInit {
+/// Create a new XRCylinderLayerInit
+pub fn XRCylinderLayerInit::new(space~ : XRSpace) -> XRCylinderLayerInit {
   XRCylinderLayerInit::{
-    space: panic(),
+    space,
     textureType: None,
     colorFormat: None,
     depthFormat: Nullable::Undefined,
@@ -272,30 +350,62 @@ pub fn XRCylinderLayerInit::default() -> XRCylinderLayerInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRCylinderLayerInit::to_js(
+extern "js" fn XRCylinderLayerInit::to_js_ffi(
   self : XRCylinderLayerInit,
 ) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
-  #|   textureType: ['texture', 'texture-array'][self.textureType],
-  #|   colorFormat: self.colorFormat,
-  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
+  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   mipLevels: self.mipLevels,
   #|   viewPixelWidth: self.viewPixelWidth,
   #|   viewPixelHeight: self.viewPixelHeight,
-  #|   layout: ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][self.layout],
-  #|   isStatic: self.isStatic,
-  #|   clearOnAccess: self.clearOnAccess,
-  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
+  #|   isStatic: (self.isStatic === -1 ? undefined : self.isStatic),
+  #|   clearOnAccess: (self.clearOnAccess === -1 ? undefined : self.clearOnAccess),
+  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   radius: self.radius,
   #|   centralAngle: self.centralAngle,
   #|   aspectRatio: self.aspectRatio
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRCylinderLayerInit::to_js(self : XRCylinderLayerInit) -> JsValue {
+  XRCylinderLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRCylinderLayerInit::from_js_ffi(
+  value : JsValue,
+) -> XRCylinderLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
+  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : v.depthFormat === null ? { $tag: 1 } : { $tag: 2, _0: v.depthFormat }),
+  #|   mipLevels: v.mipLevels,
+  #|   viewPixelWidth: v.viewPixelWidth,
+  #|   viewPixelHeight: v.viewPixelHeight,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   isStatic: (v.isStatic === undefined ? -1 : v.isStatic),
+  #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess),
+  #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
+  #|   radius: v.radius,
+  #|   centralAngle: v.centralAngle,
+  #|   aspectRatio: v.aspectRatio
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRCylinderLayerInit::from_js(value : JsValue) -> XRCylinderLayerInit {
+  XRCylinderLayerInit::from_js_ffi(value)
+}
+
+///|
 /// XREquirectLayerInit dictionary
-pub struct XREquirectLayerInit {
+pub(all) struct XREquirectLayerInit {
   space : XRSpace
   textureType : XRTextureType?
   colorFormat : GLenum?
@@ -314,10 +424,10 @@ pub struct XREquirectLayerInit {
 }
 
 ///|
-/// Create a new XREquirectLayerInit with default values
-pub fn XREquirectLayerInit::default() -> XREquirectLayerInit {
+/// Create a new XREquirectLayerInit
+pub fn XREquirectLayerInit::new(space~ : XRSpace) -> XREquirectLayerInit {
   XREquirectLayerInit::{
-    space: panic(),
+    space,
     textureType: None,
     colorFormat: None,
     depthFormat: Nullable::Undefined,
@@ -336,22 +446,21 @@ pub fn XREquirectLayerInit::default() -> XREquirectLayerInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XREquirectLayerInit::to_js(
+extern "js" fn XREquirectLayerInit::to_js_ffi(
   self : XREquirectLayerInit,
 ) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
-  #|   textureType: ['texture', 'texture-array'][self.textureType],
-  #|   colorFormat: self.colorFormat,
-  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
+  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   mipLevels: self.mipLevels,
   #|   viewPixelWidth: self.viewPixelWidth,
   #|   viewPixelHeight: self.viewPixelHeight,
-  #|   layout: ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][self.layout],
-  #|   isStatic: self.isStatic,
-  #|   clearOnAccess: self.clearOnAccess,
-  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
+  #|   isStatic: (self.isStatic === -1 ? undefined : self.isStatic),
+  #|   clearOnAccess: (self.clearOnAccess === -1 ? undefined : self.clearOnAccess),
+  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   radius: self.radius,
   #|   centralHorizontalAngle: self.centralHorizontalAngle,
   #|   upperVerticalAngle: self.upperVerticalAngle,
@@ -359,8 +468,42 @@ pub extern "js" fn XREquirectLayerInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XREquirectLayerInit::to_js(self : XREquirectLayerInit) -> JsValue {
+  XREquirectLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XREquirectLayerInit::from_js_ffi(
+  value : JsValue,
+) -> XREquirectLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
+  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : v.depthFormat === null ? { $tag: 1 } : { $tag: 2, _0: v.depthFormat }),
+  #|   mipLevels: v.mipLevels,
+  #|   viewPixelWidth: v.viewPixelWidth,
+  #|   viewPixelHeight: v.viewPixelHeight,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   isStatic: (v.isStatic === undefined ? -1 : v.isStatic),
+  #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess),
+  #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
+  #|   radius: v.radius,
+  #|   centralHorizontalAngle: v.centralHorizontalAngle,
+  #|   upperVerticalAngle: v.upperVerticalAngle,
+  #|   lowerVerticalAngle: v.lowerVerticalAngle
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XREquirectLayerInit::from_js(value : JsValue) -> XREquirectLayerInit {
+  XREquirectLayerInit::from_js_ffi(value)
+}
+
+///|
 /// XRCubeLayerInit dictionary
-pub struct XRCubeLayerInit {
+pub(all) struct XRCubeLayerInit {
   space : XRSpace
   textureType : XRTextureType?
   colorFormat : GLenum?
@@ -375,10 +518,10 @@ pub struct XRCubeLayerInit {
 }
 
 ///|
-/// Create a new XRCubeLayerInit with default values
-pub fn XRCubeLayerInit::default() -> XRCubeLayerInit {
+/// Create a new XRCubeLayerInit
+pub fn XRCubeLayerInit::new(space~ : XRSpace) -> XRCubeLayerInit {
   XRCubeLayerInit::{
-    space: panic(),
+    space,
     textureType: None,
     colorFormat: None,
     depthFormat: Nullable::Undefined,
@@ -393,48 +536,96 @@ pub fn XRCubeLayerInit::default() -> XRCubeLayerInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRCubeLayerInit::to_js(self : XRCubeLayerInit) -> JsValue =
+extern "js" fn XRCubeLayerInit::to_js_ffi(self : XRCubeLayerInit) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
-  #|   textureType: ['texture', 'texture-array'][self.textureType],
-  #|   colorFormat: self.colorFormat,
-  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
+  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   mipLevels: self.mipLevels,
   #|   viewPixelWidth: self.viewPixelWidth,
   #|   viewPixelHeight: self.viewPixelHeight,
-  #|   layout: ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][self.layout],
-  #|   isStatic: self.isStatic,
-  #|   clearOnAccess: self.clearOnAccess,
-  #|   orientation: ((() => { const v = self.orientation; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
+  #|   isStatic: (self.isStatic === -1 ? undefined : self.isStatic),
+  #|   clearOnAccess: (self.clearOnAccess === -1 ? undefined : self.clearOnAccess),
+  #|   orientation: ((() => { const v = self.orientation; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRCubeLayerInit::to_js(self : XRCubeLayerInit) -> JsValue {
+  XRCubeLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRCubeLayerInit::from_js_ffi(value : JsValue) -> XRCubeLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
+  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : v.depthFormat === null ? { $tag: 1 } : { $tag: 2, _0: v.depthFormat }),
+  #|   mipLevels: v.mipLevels,
+  #|   viewPixelWidth: v.viewPixelWidth,
+  #|   viewPixelHeight: v.viewPixelHeight,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   isStatic: (v.isStatic === undefined ? -1 : v.isStatic),
+  #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess),
+  #|   orientation: (v.orientation === undefined ? { $tag: 0 } : v.orientation === null ? { $tag: 1 } : { $tag: 2, _0: v.orientation })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRCubeLayerInit::from_js(value : JsValue) -> XRCubeLayerInit {
+  XRCubeLayerInit::from_js_ffi(value)
+}
+
+///|
 /// XRMediaLayerInit dictionary
-pub struct XRMediaLayerInit {
+pub(all) struct XRMediaLayerInit {
   space : XRSpace
   layout : XRLayerLayout?
   invertStereo : Bool?
 }
 
 ///|
-/// Create a new XRMediaLayerInit with default values
-pub fn XRMediaLayerInit::default() -> XRMediaLayerInit {
-  XRMediaLayerInit::{ space: panic(), layout: None, invertStereo: None }
+/// Create a new XRMediaLayerInit
+pub fn XRMediaLayerInit::new(space~ : XRSpace) -> XRMediaLayerInit {
+  XRMediaLayerInit::{ space, layout: None, invertStereo: None }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRMediaLayerInit::to_js(self : XRMediaLayerInit) -> JsValue =
+extern "js" fn XRMediaLayerInit::to_js_ffi(self : XRMediaLayerInit) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
-  #|   layout: ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][self.layout],
-  #|   invertStereo: self.invertStereo
+  #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
+  #|   invertStereo: (self.invertStereo === -1 ? undefined : self.invertStereo)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRMediaLayerInit::to_js(self : XRMediaLayerInit) -> JsValue {
+  XRMediaLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRMediaLayerInit::from_js_ffi(
+  value : JsValue,
+) -> XRMediaLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   invertStereo: (v.invertStereo === undefined ? -1 : v.invertStereo)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRMediaLayerInit::from_js(value : JsValue) -> XRMediaLayerInit {
+  XRMediaLayerInit::from_js_ffi(value)
+}
+
+///|
 /// XRMediaQuadLayerInit dictionary
-pub struct XRMediaQuadLayerInit {
+pub(all) struct XRMediaQuadLayerInit {
   space : XRSpace
   layout : XRLayerLayout?
   invertStereo : Bool?
@@ -444,10 +635,10 @@ pub struct XRMediaQuadLayerInit {
 }
 
 ///|
-/// Create a new XRMediaQuadLayerInit with default values
-pub fn XRMediaQuadLayerInit::default() -> XRMediaQuadLayerInit {
+/// Create a new XRMediaQuadLayerInit
+pub fn XRMediaQuadLayerInit::new(space~ : XRSpace) -> XRMediaQuadLayerInit {
   XRMediaQuadLayerInit::{
-    space: panic(),
+    space,
     layout: None,
     invertStereo: None,
     transform: Nullable::Undefined,
@@ -457,22 +648,46 @@ pub fn XRMediaQuadLayerInit::default() -> XRMediaQuadLayerInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRMediaQuadLayerInit::to_js(
+extern "js" fn XRMediaQuadLayerInit::to_js_ffi(
   self : XRMediaQuadLayerInit,
 ) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
-  #|   layout: ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][self.layout],
-  #|   invertStereo: self.invertStereo,
-  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   width: ((() => { const v = self.width; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   height: ((() => { const v = self.height; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
+  #|   invertStereo: (self.invertStereo === -1 ? undefined : self.invertStereo),
+  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   width: ((() => { const v = self.width; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   height: ((() => { const v = self.height; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRMediaQuadLayerInit::to_js(self : XRMediaQuadLayerInit) -> JsValue {
+  XRMediaQuadLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRMediaQuadLayerInit::from_js_ffi(
+  value : JsValue,
+) -> XRMediaQuadLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   invertStereo: (v.invertStereo === undefined ? -1 : v.invertStereo),
+  #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
+  #|   width: (v.width === undefined ? { $tag: 0 } : v.width === null ? { $tag: 1 } : { $tag: 2, _0: v.width }),
+  #|   height: (v.height === undefined ? { $tag: 0 } : v.height === null ? { $tag: 1 } : { $tag: 2, _0: v.height })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRMediaQuadLayerInit::from_js(value : JsValue) -> XRMediaQuadLayerInit {
+  XRMediaQuadLayerInit::from_js_ffi(value)
+}
+
+///|
 /// XRMediaCylinderLayerInit dictionary
-pub struct XRMediaCylinderLayerInit {
+pub(all) struct XRMediaCylinderLayerInit {
   space : XRSpace
   layout : XRLayerLayout?
   invertStereo : Bool?
@@ -483,10 +698,12 @@ pub struct XRMediaCylinderLayerInit {
 }
 
 ///|
-/// Create a new XRMediaCylinderLayerInit with default values
-pub fn XRMediaCylinderLayerInit::default() -> XRMediaCylinderLayerInit {
+/// Create a new XRMediaCylinderLayerInit
+pub fn XRMediaCylinderLayerInit::new(
+  space~ : XRSpace,
+) -> XRMediaCylinderLayerInit {
   XRMediaCylinderLayerInit::{
-    space: panic(),
+    space,
     layout: None,
     invertStereo: None,
     transform: Nullable::Undefined,
@@ -497,23 +714,52 @@ pub fn XRMediaCylinderLayerInit::default() -> XRMediaCylinderLayerInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRMediaCylinderLayerInit::to_js(
+extern "js" fn XRMediaCylinderLayerInit::to_js_ffi(
   self : XRMediaCylinderLayerInit,
 ) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
-  #|   layout: ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][self.layout],
-  #|   invertStereo: self.invertStereo,
-  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
+  #|   invertStereo: (self.invertStereo === -1 ? undefined : self.invertStereo),
+  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   radius: self.radius,
   #|   centralAngle: self.centralAngle,
-  #|   aspectRatio: ((() => { const v = self.aspectRatio; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   aspectRatio: ((() => { const v = self.aspectRatio; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRMediaCylinderLayerInit::to_js(
+  self : XRMediaCylinderLayerInit,
+) -> JsValue {
+  XRMediaCylinderLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRMediaCylinderLayerInit::from_js_ffi(
+  value : JsValue,
+) -> XRMediaCylinderLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   invertStereo: (v.invertStereo === undefined ? -1 : v.invertStereo),
+  #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
+  #|   radius: v.radius,
+  #|   centralAngle: v.centralAngle,
+  #|   aspectRatio: (v.aspectRatio === undefined ? { $tag: 0 } : v.aspectRatio === null ? { $tag: 1 } : { $tag: 2, _0: v.aspectRatio })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRMediaCylinderLayerInit::from_js(
+  value : JsValue,
+) -> XRMediaCylinderLayerInit {
+  XRMediaCylinderLayerInit::from_js_ffi(value)
+}
+
+///|
 /// XRMediaEquirectLayerInit dictionary
-pub struct XRMediaEquirectLayerInit {
+pub(all) struct XRMediaEquirectLayerInit {
   space : XRSpace
   layout : XRLayerLayout?
   invertStereo : Bool?
@@ -525,10 +771,12 @@ pub struct XRMediaEquirectLayerInit {
 }
 
 ///|
-/// Create a new XRMediaEquirectLayerInit with default values
-pub fn XRMediaEquirectLayerInit::default() -> XRMediaEquirectLayerInit {
+/// Create a new XRMediaEquirectLayerInit
+pub fn XRMediaEquirectLayerInit::new(
+  space~ : XRSpace,
+) -> XRMediaEquirectLayerInit {
   XRMediaEquirectLayerInit::{
-    space: panic(),
+    space,
     layout: None,
     invertStereo: None,
     transform: Nullable::Undefined,
@@ -540,15 +788,14 @@ pub fn XRMediaEquirectLayerInit::default() -> XRMediaEquirectLayerInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRMediaEquirectLayerInit::to_js(
+extern "js" fn XRMediaEquirectLayerInit::to_js_ffi(
   self : XRMediaEquirectLayerInit,
 ) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
-  #|   layout: ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][self.layout],
-  #|   invertStereo: self.invertStereo,
-  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
+  #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
+  #|   invertStereo: (self.invertStereo === -1 ? undefined : self.invertStereo),
+  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   radius: self.radius,
   #|   centralHorizontalAngle: self.centralHorizontalAngle,
   #|   upperVerticalAngle: self.upperVerticalAngle,
@@ -556,23 +803,73 @@ pub extern "js" fn XRMediaEquirectLayerInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRMediaEquirectLayerInit::to_js(
+  self : XRMediaEquirectLayerInit,
+) -> JsValue {
+  XRMediaEquirectLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRMediaEquirectLayerInit::from_js_ffi(
+  value : JsValue,
+) -> XRMediaEquirectLayerInit =
+  #| (v) => ({
+  #|   space: v.space,
+  #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
+  #|   invertStereo: (v.invertStereo === undefined ? -1 : v.invertStereo),
+  #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
+  #|   radius: v.radius,
+  #|   centralHorizontalAngle: v.centralHorizontalAngle,
+  #|   upperVerticalAngle: v.upperVerticalAngle,
+  #|   lowerVerticalAngle: v.lowerVerticalAngle
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRMediaEquirectLayerInit::from_js(
+  value : JsValue,
+) -> XRMediaEquirectLayerInit {
+  XRMediaEquirectLayerInit::from_js_ffi(value)
+}
+
+///|
 /// XRLayerEventInit dictionary
-pub struct XRLayerEventInit {
+pub(all) struct XRLayerEventInit {
   layer : XRLayer
 }
 
 ///|
-/// Create a new XRLayerEventInit with default values
-pub fn XRLayerEventInit::default() -> XRLayerEventInit {
-  XRLayerEventInit::{ layer: panic() }
+/// Create a new XRLayerEventInit
+pub fn XRLayerEventInit::new(layer~ : XRLayer) -> XRLayerEventInit {
+  XRLayerEventInit::{ layer, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRLayerEventInit::to_js(self : XRLayerEventInit) -> JsValue =
+extern "js" fn XRLayerEventInit::to_js_ffi(self : XRLayerEventInit) -> JsValue =
   #| (self) => ({
   #|   layer: self.layer
   #| })
+
+///|
+/// Convert to JsValue
+pub fn XRLayerEventInit::to_js(self : XRLayerEventInit) -> JsValue {
+  XRLayerEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRLayerEventInit::from_js_ffi(
+  value : JsValue,
+) -> XRLayerEventInit =
+  #| (v) => ({
+  #|   layer: v.layer
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRLayerEventInit::from_js(value : JsValue) -> XRLayerEventInit {
+  XRLayerEventInit::from_js_ffi(value)
+}
 
 ///|
 /// XRCompositionLayer interface
@@ -658,7 +955,7 @@ pub extern "js" fn XRCompositionLayer::as_xr_cube_layer(
 pub extern "js" fn XRCompositionLayer::get_layout(
   self : XRCompositionLayer,
 ) -> XRLayerLayout =
-  #| (self) => self.layout
+  #| (self) => ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(self.layout)
 
 ///|
 pub extern "js" fn XRCompositionLayer::get_blend_texture_source_alpha(
@@ -709,14 +1006,14 @@ pub extern "js" fn XRCompositionLayer::get_mip_levels(
 pub extern "js" fn XRCompositionLayer::get_quality(
   self : XRCompositionLayer,
 ) -> XRLayerQuality =
-  #| (self) => self.quality
+  #| (self) => ['default', 'text-optimized', 'graphics-optimized'].indexOf(self.quality)
 
 ///|
 pub extern "js" fn XRCompositionLayer::set_quality(
   self : XRCompositionLayer,
   value : XRLayerQuality,
 ) -> Unit =
-  #| (self, value) => { self.quality = value }
+  #| (self, value) => { self.quality = ['default', 'text-optimized', 'graphics-optimized'][value] }
 
 ///|
 pub extern "js" fn XRCompositionLayer::get_needs_redraw(
@@ -814,7 +1111,7 @@ pub extern "js" fn XRProjectionLayer::get_ignore_depth_values(
 pub extern "js" fn XRProjectionLayer::get_fixed_foveation(
   self : XRProjectionLayer,
 ) -> Double? =
-  #| (self) => { const v = self.fixedFoveation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.fixedFoveation) ?? undefined
 
 ///|
 pub extern "js" fn XRProjectionLayer::set_fixed_foveation(
@@ -827,14 +1124,14 @@ pub extern "js" fn XRProjectionLayer::set_fixed_foveation(
 pub extern "js" fn XRProjectionLayer::get_delta_pose(
   self : XRProjectionLayer,
 ) -> XRRigidTransform? =
-  #| (self) => { const v = self.deltaPose; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.deltaPose; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRProjectionLayer::set_delta_pose(
   self : XRProjectionLayer,
   value : XRRigidTransform?,
 ) -> Unit =
-  #| (self, value) => { self.deltaPose = value }
+  #| (self, value) => { self.deltaPose = (value.$tag === 1 ? value._0 : null) }
 
 ///|
 /// XRQuadLayer interface
@@ -1393,19 +1690,19 @@ pub extern "js" fn XRWebGLSubImage::get_color_texture(
 pub extern "js" fn XRWebGLSubImage::get_depth_stencil_texture(
   self : XRWebGLSubImage,
 ) -> WebGLTexture? =
-  #| (self) => { const v = self.depthStencilTexture; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.depthStencilTexture; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRWebGLSubImage::get_motion_vector_texture(
   self : XRWebGLSubImage,
 ) -> WebGLTexture? =
-  #| (self) => { const v = self.motionVectorTexture; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.motionVectorTexture; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRWebGLSubImage::get_image_index(
   self : XRWebGLSubImage,
 ) -> Int? =
-  #| (self) => { const v = self.imageIndex; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.imageIndex) ?? undefined
 
 ///|
 pub extern "js" fn XRWebGLSubImage::get_color_texture_width(
@@ -1423,25 +1720,25 @@ pub extern "js" fn XRWebGLSubImage::get_color_texture_height(
 pub extern "js" fn XRWebGLSubImage::get_depth_stencil_texture_width(
   self : XRWebGLSubImage,
 ) -> Int? =
-  #| (self) => { const v = self.depthStencilTextureWidth; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.depthStencilTextureWidth) ?? undefined
 
 ///|
 pub extern "js" fn XRWebGLSubImage::get_depth_stencil_texture_height(
   self : XRWebGLSubImage,
 ) -> Int? =
-  #| (self) => { const v = self.depthStencilTextureHeight; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.depthStencilTextureHeight) ?? undefined
 
 ///|
 pub extern "js" fn XRWebGLSubImage::get_motion_vector_texture_width(
   self : XRWebGLSubImage,
 ) -> Int? =
-  #| (self) => { const v = self.motionVectorTextureWidth; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.motionVectorTextureWidth) ?? undefined
 
 ///|
 pub extern "js" fn XRWebGLSubImage::get_motion_vector_texture_height(
   self : XRWebGLSubImage,
 ) -> Int? =
-  #| (self) => { const v = self.motionVectorTextureHeight; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.motionVectorTextureHeight) ?? undefined
 
 ///|
 /// XRWebGLBinding interface
@@ -1505,11 +1802,19 @@ pub extern "js" fn XRWebGLBinding::create_projection_layer(
   #| (self) => self.createProjectionLayer()
 
 ///|
-pub extern "js" fn XRWebGLBinding::create_projection_layer_with_init(
+extern "js" fn XRWebGLBinding::create_projection_layer_with_init_ffi(
   self : XRWebGLBinding,
-  init_ : XRProjectionLayerInit,
+  init_ : JsValue,
 ) -> XRProjectionLayer =
   #| (self, init_) => self.createProjectionLayer(init_)
+
+///|
+pub fn XRWebGLBinding::create_projection_layer_with_init(
+  self : XRWebGLBinding,
+  init_ : XRProjectionLayerInit,
+) -> XRProjectionLayer {
+  XRWebGLBinding::create_projection_layer_with_init_ffi(self, init_.to_js())
+}
 
 ///|
 pub extern "js" fn XRWebGLBinding::create_quad_layer(
@@ -1518,11 +1823,19 @@ pub extern "js" fn XRWebGLBinding::create_quad_layer(
   #| (self) => self.createQuadLayer()
 
 ///|
-pub extern "js" fn XRWebGLBinding::create_quad_layer_with_init(
+extern "js" fn XRWebGLBinding::create_quad_layer_with_init_ffi(
   self : XRWebGLBinding,
-  init_ : XRQuadLayerInit,
+  init_ : JsValue,
 ) -> XRQuadLayer =
   #| (self, init_) => self.createQuadLayer(init_)
+
+///|
+pub fn XRWebGLBinding::create_quad_layer_with_init(
+  self : XRWebGLBinding,
+  init_ : XRQuadLayerInit,
+) -> XRQuadLayer {
+  XRWebGLBinding::create_quad_layer_with_init_ffi(self, init_.to_js())
+}
 
 ///|
 pub extern "js" fn XRWebGLBinding::create_cylinder_layer(
@@ -1531,11 +1844,19 @@ pub extern "js" fn XRWebGLBinding::create_cylinder_layer(
   #| (self) => self.createCylinderLayer()
 
 ///|
-pub extern "js" fn XRWebGLBinding::create_cylinder_layer_with_init(
+extern "js" fn XRWebGLBinding::create_cylinder_layer_with_init_ffi(
   self : XRWebGLBinding,
-  init_ : XRCylinderLayerInit,
+  init_ : JsValue,
 ) -> XRCylinderLayer =
   #| (self, init_) => self.createCylinderLayer(init_)
+
+///|
+pub fn XRWebGLBinding::create_cylinder_layer_with_init(
+  self : XRWebGLBinding,
+  init_ : XRCylinderLayerInit,
+) -> XRCylinderLayer {
+  XRWebGLBinding::create_cylinder_layer_with_init_ffi(self, init_.to_js())
+}
 
 ///|
 pub extern "js" fn XRWebGLBinding::create_equirect_layer(
@@ -1544,11 +1865,19 @@ pub extern "js" fn XRWebGLBinding::create_equirect_layer(
   #| (self) => self.createEquirectLayer()
 
 ///|
-pub extern "js" fn XRWebGLBinding::create_equirect_layer_with_init(
+extern "js" fn XRWebGLBinding::create_equirect_layer_with_init_ffi(
   self : XRWebGLBinding,
-  init_ : XREquirectLayerInit,
+  init_ : JsValue,
 ) -> XREquirectLayer =
   #| (self, init_) => self.createEquirectLayer(init_)
+
+///|
+pub fn XRWebGLBinding::create_equirect_layer_with_init(
+  self : XRWebGLBinding,
+  init_ : XREquirectLayerInit,
+) -> XREquirectLayer {
+  XRWebGLBinding::create_equirect_layer_with_init_ffi(self, init_.to_js())
+}
 
 ///|
 pub extern "js" fn XRWebGLBinding::create_cube_layer(
@@ -1557,11 +1886,19 @@ pub extern "js" fn XRWebGLBinding::create_cube_layer(
   #| (self) => self.createCubeLayer()
 
 ///|
-pub extern "js" fn XRWebGLBinding::create_cube_layer_with_init(
+extern "js" fn XRWebGLBinding::create_cube_layer_with_init_ffi(
   self : XRWebGLBinding,
-  init_ : XRCubeLayerInit,
+  init_ : JsValue,
 ) -> XRCubeLayer =
   #| (self, init_) => self.createCubeLayer(init_)
+
+///|
+pub fn XRWebGLBinding::create_cube_layer_with_init(
+  self : XRWebGLBinding,
+  init_ : XRCubeLayerInit,
+) -> XRCubeLayer {
+  XRWebGLBinding::create_cube_layer_with_init_ffi(self, init_.to_js())
+}
 
 ///|
 pub extern "js" fn XRWebGLBinding::get_sub_image(
@@ -1601,21 +1938,35 @@ pub extern "js" fn XRWebGLBinding::get_reflection_cube_map(
   self : XRWebGLBinding,
   light_probe : XRLightProbe,
 ) -> WebGLTexture? =
-  #| (self, light_probe) => { const v = self.getReflectionCubeMap(light_probe); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, light_probe) => (() => { const v = self.getReflectionCubeMap(light_probe); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRWebGLBinding::get_depth_information(
   self : XRWebGLBinding,
   view : XRView,
 ) -> XRWebGLDepthInformation? =
-  #| (self, view) => { const v = self.getDepthInformation(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, view) => (() => { const v = self.getDepthInformation(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRWebGLBinding::get_camera_image(
   self : XRWebGLBinding,
   camera : XRCamera,
 ) -> WebGLTexture? =
-  #| (self, camera) => { const v = self.getCameraImage(camera); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, camera) => (() => { const v = self.getCameraImage(camera); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn XRWebGLBinding::new_with_web_gl_rendering_context(
+  session : XRSession,
+  context : WebGLRenderingContext,
+) -> XRWebGLBinding =
+  #| (session, context) => new XRWebGLBinding(session, context)
+
+///|
+pub extern "js" fn XRWebGLBinding::new_with_web_gl2_rendering_context(
+  session : XRSession,
+  context : WebGL2RenderingContext,
+) -> XRWebGLBinding =
+  #| (session, context) => new XRWebGLBinding(session, context)
 
 ///|
 /// XRMediaBinding interface
@@ -1665,12 +2016,21 @@ pub extern "js" fn XRMediaBinding::create_quad_layer(
   #| (self, video) => self.createQuadLayer(video)
 
 ///|
-pub extern "js" fn XRMediaBinding::create_quad_layer_with_init(
+extern "js" fn XRMediaBinding::create_quad_layer_with_init_ffi(
+  self : XRMediaBinding,
+  video : HTMLVideoElement,
+  init_ : JsValue,
+) -> XRQuadLayer =
+  #| (self, video, init_) => self.createQuadLayer(video, init_)
+
+///|
+pub fn XRMediaBinding::create_quad_layer_with_init(
   self : XRMediaBinding,
   video : HTMLVideoElement,
   init_ : XRMediaQuadLayerInit,
-) -> XRQuadLayer =
-  #| (self, video, init_) => self.createQuadLayer(video, init_)
+) -> XRQuadLayer {
+  XRMediaBinding::create_quad_layer_with_init_ffi(self, video, init_.to_js())
+}
 
 ///|
 pub extern "js" fn XRMediaBinding::create_cylinder_layer(
@@ -1680,12 +2040,25 @@ pub extern "js" fn XRMediaBinding::create_cylinder_layer(
   #| (self, video) => self.createCylinderLayer(video)
 
 ///|
-pub extern "js" fn XRMediaBinding::create_cylinder_layer_with_init(
+extern "js" fn XRMediaBinding::create_cylinder_layer_with_init_ffi(
+  self : XRMediaBinding,
+  video : HTMLVideoElement,
+  init_ : JsValue,
+) -> XRCylinderLayer =
+  #| (self, video, init_) => self.createCylinderLayer(video, init_)
+
+///|
+pub fn XRMediaBinding::create_cylinder_layer_with_init(
   self : XRMediaBinding,
   video : HTMLVideoElement,
   init_ : XRMediaCylinderLayerInit,
-) -> XRCylinderLayer =
-  #| (self, video, init_) => self.createCylinderLayer(video, init_)
+) -> XRCylinderLayer {
+  XRMediaBinding::create_cylinder_layer_with_init_ffi(
+    self,
+    video,
+    init_.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn XRMediaBinding::create_equirect_layer(
@@ -1695,12 +2068,25 @@ pub extern "js" fn XRMediaBinding::create_equirect_layer(
   #| (self, video) => self.createEquirectLayer(video)
 
 ///|
-pub extern "js" fn XRMediaBinding::create_equirect_layer_with_init(
+extern "js" fn XRMediaBinding::create_equirect_layer_with_init_ffi(
+  self : XRMediaBinding,
+  video : HTMLVideoElement,
+  init_ : JsValue,
+) -> XREquirectLayer =
+  #| (self, video, init_) => self.createEquirectLayer(video, init_)
+
+///|
+pub fn XRMediaBinding::create_equirect_layer_with_init(
   self : XRMediaBinding,
   video : HTMLVideoElement,
   init_ : XRMediaEquirectLayerInit,
-) -> XREquirectLayer =
-  #| (self, video, init_) => self.createEquirectLayer(video, init_)
+) -> XREquirectLayer {
+  XRMediaBinding::create_equirect_layer_with_init_ffi(
+    self,
+    video,
+    init_.to_js(),
+  )
+}
 
 ///|
 /// XRLayerEvent interface
@@ -1737,11 +2123,19 @@ pub extern "js" fn XRLayerEvent::to_event(self : XRLayerEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn XRLayerEvent::new(
+extern "js" fn XRLayerEvent::new_ffi(
   type_ : String,
-  event_init_dict : XRLayerEventInit,
+  event_init_dict : JsValue,
 ) -> XRLayerEvent =
   #| (type_, event_init_dict) => new XRLayerEvent(type_, event_init_dict)
+
+///|
+pub fn XRLayerEvent::new(
+  type_ : String,
+  event_init_dict : XRLayerEventInit,
+) -> XRLayerEvent {
+  XRLayerEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn XRLayerEvent::get_layer(self : XRLayerEvent) -> XRLayer =

@@ -13,45 +13,67 @@ pub extern "js" fn XRWebGLRenderingContext::to_js_value(
 
 ///|
 /// Create XRWebGLRenderingContext from WebGLRenderingContext
-pub extern "js" fn XRWebGLRenderingContext::from_web_g_l_rendering_context(
+pub extern "js" fn XRWebGLRenderingContext::from_web_gl_rendering_context(
   v : WebGLRenderingContext,
 ) -> XRWebGLRenderingContext =
   #| (v) => v
 
 ///|
 /// Create XRWebGLRenderingContext from WebGL2RenderingContext
-pub extern "js" fn XRWebGLRenderingContext::from_web_g_l2_rendering_context(
+pub extern "js" fn XRWebGLRenderingContext::from_web_gl2_rendering_context(
   v : WebGL2RenderingContext,
 ) -> XRWebGLRenderingContext =
   #| (v) => v
 
 ///|
 /// Check if this XRWebGLRenderingContext is WebGLRenderingContext
-pub extern "js" fn XRWebGLRenderingContext::is_web_g_l_rendering_context(
+pub extern "js" fn XRWebGLRenderingContext::is_web_gl_rendering_context(
   self : XRWebGLRenderingContext,
 ) -> Bool =
   #| (self) => self instanceof WebGLRenderingContext
 
 ///|
 /// Check if this XRWebGLRenderingContext is WebGL2RenderingContext
-pub extern "js" fn XRWebGLRenderingContext::is_web_g_l2_rendering_context(
+pub extern "js" fn XRWebGLRenderingContext::is_web_gl2_rendering_context(
   self : XRWebGLRenderingContext,
 ) -> Bool =
   #| (self) => self instanceof WebGL2RenderingContext
 
 ///|
 /// Try to get XRWebGLRenderingContext as WebGLRenderingContext
-pub extern "js" fn XRWebGLRenderingContext::as_web_g_l_rendering_context(
+pub extern "js" fn XRWebGLRenderingContext::as_web_gl_rendering_context(
   self : XRWebGLRenderingContext,
 ) -> WebGLRenderingContext? =
   #| (self) => (self instanceof WebGLRenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get XRWebGLRenderingContext as WebGL2RenderingContext
-pub extern "js" fn XRWebGLRenderingContext::as_web_g_l2_rendering_context(
+pub extern "js" fn XRWebGLRenderingContext::as_web_gl2_rendering_context(
   self : XRWebGLRenderingContext,
 ) -> WebGL2RenderingContext? =
   #| (self) => (self instanceof WebGL2RenderingContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[XRWebGLRenderingContext] to WebGLRenderingContext?
+pub fn XRWebGLRenderingContext::bind_as_web_gl_rendering_context(
+  value : XRWebGLRenderingContext?,
+) -> WebGLRenderingContext? {
+  match value {
+    Some(v) => v.as_web_gl_rendering_context()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[XRWebGLRenderingContext] to WebGL2RenderingContext?
+pub fn XRWebGLRenderingContext::bind_as_web_gl2_rendering_context(
+  value : XRWebGLRenderingContext?,
+) -> WebGL2RenderingContext? {
+  match value {
+    Some(v) => v.as_web_gl2_rendering_context()
+    None => None
+  }
+}
 
 ///|
 /// XRSessionMode enum
@@ -59,7 +81,7 @@ pub(all) enum XRSessionMode {
   Inline
   ImmersiveVr
   ImmersiveAr
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -88,7 +110,7 @@ pub(all) enum XRVisibilityState {
   Visible
   VisibleBlurred
   Hidden
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -119,7 +141,7 @@ pub(all) enum XRReferenceSpaceType {
   LocalFloor
   BoundedFloor
   Unbounded
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -152,7 +174,7 @@ pub(all) enum XREye {
   None
   Left
   Right
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -181,7 +203,7 @@ pub(all) enum XRHandedness {
   None
   Left
   Right
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -211,7 +233,7 @@ pub(all) enum XRTargetRayMode {
   TrackedPointer
   Screen
   TransientPointer
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -245,11 +267,11 @@ pub type XRFrameRequestCallback
 pub extern "js" fn XRFrameRequestCallback::from_fn(
   handler : (DOMHighResTimeStamp, XRFrame) -> Unit,
 ) -> XRFrameRequestCallback =
-  #| (handler) => handler
+  #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
 /// XRRenderStateInit dictionary
-pub struct XRRenderStateInit {
+pub(all) struct XRRenderStateInit {
   depthNear : Double?
   depthFar : Double?
   passthroughFullyObscured : Bool?
@@ -272,22 +294,46 @@ pub fn XRRenderStateInit::default() -> XRRenderStateInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRRenderStateInit::to_js(
+extern "js" fn XRRenderStateInit::to_js_ffi(
   self : XRRenderStateInit,
 ) -> JsValue =
   #| (self) => ({
   #|   depthNear: self.depthNear,
   #|   depthFar: self.depthFar,
-  #|   passthroughFullyObscured: self.passthroughFullyObscured,
+  #|   passthroughFullyObscured: (self.passthroughFullyObscured === -1 ? undefined : self.passthroughFullyObscured),
   #|   inlineVerticalFieldOfView: self.inlineVerticalFieldOfView,
-  #|   baseLayer: ((() => { const v = self.baseLayer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })()),
-  #|   layers: self.layers
+  #|   baseLayer: ((() => { const v = self.baseLayer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   layers: ((() => { const v = self.layers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRRenderStateInit::to_js(self : XRRenderStateInit) -> JsValue {
+  XRRenderStateInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRRenderStateInit::from_js_ffi(
+  value : JsValue,
+) -> XRRenderStateInit =
+  #| (v) => ({
+  #|   depthNear: v.depthNear,
+  #|   depthFar: v.depthFar,
+  #|   passthroughFullyObscured: (v.passthroughFullyObscured === undefined ? -1 : v.passthroughFullyObscured),
+  #|   inlineVerticalFieldOfView: v.inlineVerticalFieldOfView,
+  #|   baseLayer: (v.baseLayer === undefined ? { $tag: 0 } : v.baseLayer === null ? { $tag: 1 } : { $tag: 2, _0: v.baseLayer }),
+  #|   layers: (v.layers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.layers })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRRenderStateInit::from_js(value : JsValue) -> XRRenderStateInit {
+  XRRenderStateInit::from_js_ffi(value)
+}
+
+///|
 /// XRWebGLLayerInit dictionary
-pub struct XRWebGLLayerInit {
+pub(all) struct XRWebGLLayerInit {
   antialias : Bool?
   depth : Bool?
   stencil : Bool?
@@ -310,32 +356,55 @@ pub fn XRWebGLLayerInit::default() -> XRWebGLLayerInit {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRWebGLLayerInit::to_js(self : XRWebGLLayerInit) -> JsValue =
+extern "js" fn XRWebGLLayerInit::to_js_ffi(self : XRWebGLLayerInit) -> JsValue =
   #| (self) => ({
-  #|   antialias: self.antialias,
-  #|   depth: self.depth,
-  #|   stencil: self.stencil,
-  #|   alpha: self.alpha,
-  #|   ignoreDepthValues: self.ignoreDepthValues,
+  #|   antialias: (self.antialias === -1 ? undefined : self.antialias),
+  #|   depth: (self.depth === -1 ? undefined : self.depth),
+  #|   stencil: (self.stencil === -1 ? undefined : self.stencil),
+  #|   alpha: (self.alpha === -1 ? undefined : self.alpha),
+  #|   ignoreDepthValues: (self.ignoreDepthValues === -1 ? undefined : self.ignoreDepthValues),
   #|   framebufferScaleFactor: self.framebufferScaleFactor
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRWebGLLayerInit::to_js(self : XRWebGLLayerInit) -> JsValue {
+  XRWebGLLayerInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRWebGLLayerInit::from_js_ffi(
+  value : JsValue,
+) -> XRWebGLLayerInit =
+  #| (v) => ({
+  #|   antialias: (v.antialias === undefined ? -1 : v.antialias),
+  #|   depth: (v.depth === undefined ? -1 : v.depth),
+  #|   stencil: (v.stencil === undefined ? -1 : v.stencil),
+  #|   alpha: (v.alpha === undefined ? -1 : v.alpha),
+  #|   ignoreDepthValues: (v.ignoreDepthValues === undefined ? -1 : v.ignoreDepthValues),
+  #|   framebufferScaleFactor: v.framebufferScaleFactor
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRWebGLLayerInit::from_js(value : JsValue) -> XRWebGLLayerInit {
+  XRWebGLLayerInit::from_js_ffi(value)
+}
+
+///|
 /// XRSessionEventInit dictionary
-pub struct XRSessionEventInit {
+pub(all) struct XRSessionEventInit {
   session : XRSession
 }
 
 ///|
-/// Create a new XRSessionEventInit with default values
-pub fn XRSessionEventInit::default() -> XRSessionEventInit {
-  XRSessionEventInit::{ session: panic() }
+/// Create a new XRSessionEventInit
+pub fn XRSessionEventInit::new(session~ : XRSession) -> XRSessionEventInit {
+  XRSessionEventInit::{ session, }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRSessionEventInit::to_js(
+extern "js" fn XRSessionEventInit::to_js_ffi(
   self : XRSessionEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -343,21 +412,43 @@ pub extern "js" fn XRSessionEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRSessionEventInit::to_js(self : XRSessionEventInit) -> JsValue {
+  XRSessionEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRSessionEventInit::from_js_ffi(
+  value : JsValue,
+) -> XRSessionEventInit =
+  #| (v) => ({
+  #|   session: v.session
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRSessionEventInit::from_js(value : JsValue) -> XRSessionEventInit {
+  XRSessionEventInit::from_js_ffi(value)
+}
+
+///|
 /// XRInputSourceEventInit dictionary
-pub struct XRInputSourceEventInit {
+pub(all) struct XRInputSourceEventInit {
   frame : XRFrame
   inputSource : XRInputSource
 }
 
 ///|
-/// Create a new XRInputSourceEventInit with default values
-pub fn XRInputSourceEventInit::default() -> XRInputSourceEventInit {
-  XRInputSourceEventInit::{ frame: panic(), inputSource: panic() }
+/// Create a new XRInputSourceEventInit
+pub fn XRInputSourceEventInit::new(
+  frame~ : XRFrame,
+  inputSource~ : XRInputSource,
+) -> XRInputSourceEventInit {
+  XRInputSourceEventInit::{ frame, inputSource }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRInputSourceEventInit::to_js(
+extern "js" fn XRInputSourceEventInit::to_js_ffi(
   self : XRInputSourceEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -366,22 +457,46 @@ pub extern "js" fn XRInputSourceEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRInputSourceEventInit::to_js(self : XRInputSourceEventInit) -> JsValue {
+  XRInputSourceEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRInputSourceEventInit::from_js_ffi(
+  value : JsValue,
+) -> XRInputSourceEventInit =
+  #| (v) => ({
+  #|   frame: v.frame,
+  #|   inputSource: v.inputSource
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRInputSourceEventInit::from_js(
+  value : JsValue,
+) -> XRInputSourceEventInit {
+  XRInputSourceEventInit::from_js_ffi(value)
+}
+
+///|
 /// XRInputSourcesChangeEventInit dictionary
-pub struct XRInputSourcesChangeEventInit {
+pub(all) struct XRInputSourcesChangeEventInit {
   session : XRSession
   added : Array[XRInputSource]
   removed : Array[XRInputSource]
 }
 
 ///|
-/// Create a new XRInputSourcesChangeEventInit with default values
-pub fn XRInputSourcesChangeEventInit::default() -> XRInputSourcesChangeEventInit {
-  XRInputSourcesChangeEventInit::{ session: panic(), added: [], removed: [] }
+/// Create a new XRInputSourcesChangeEventInit
+pub fn XRInputSourcesChangeEventInit::new(
+  session~ : XRSession,
+) -> XRInputSourcesChangeEventInit {
+  XRInputSourcesChangeEventInit::{ session, added: [], removed: [] }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRInputSourcesChangeEventInit::to_js(
+extern "js" fn XRInputSourcesChangeEventInit::to_js_ffi(
   self : XRInputSourcesChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -391,34 +506,83 @@ pub extern "js" fn XRInputSourcesChangeEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRInputSourcesChangeEventInit::to_js(
+  self : XRInputSourcesChangeEventInit,
+) -> JsValue {
+  XRInputSourcesChangeEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRInputSourcesChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> XRInputSourcesChangeEventInit =
+  #| (v) => ({
+  #|   session: v.session,
+  #|   added: v.added,
+  #|   removed: v.removed
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRInputSourcesChangeEventInit::from_js(
+  value : JsValue,
+) -> XRInputSourcesChangeEventInit {
+  XRInputSourcesChangeEventInit::from_js_ffi(value)
+}
+
+///|
 /// XRReferenceSpaceEventInit dictionary
-pub struct XRReferenceSpaceEventInit {
+pub(all) struct XRReferenceSpaceEventInit {
   referenceSpace : XRReferenceSpace
   transform : Nullable[XRRigidTransform]
 }
 
 ///|
-/// Create a new XRReferenceSpaceEventInit with default values
-pub fn XRReferenceSpaceEventInit::default() -> XRReferenceSpaceEventInit {
-  XRReferenceSpaceEventInit::{
-    referenceSpace: panic(),
-    transform: Nullable::Undefined,
-  }
+/// Create a new XRReferenceSpaceEventInit
+pub fn XRReferenceSpaceEventInit::new(
+  referenceSpace~ : XRReferenceSpace,
+) -> XRReferenceSpaceEventInit {
+  XRReferenceSpaceEventInit::{ referenceSpace, transform: Nullable::Undefined }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRReferenceSpaceEventInit::to_js(
+extern "js" fn XRReferenceSpaceEventInit::to_js_ffi(
   self : XRReferenceSpaceEventInit,
 ) -> JsValue =
   #| (self) => ({
   #|   referenceSpace: self.referenceSpace,
-  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRReferenceSpaceEventInit::to_js(
+  self : XRReferenceSpaceEventInit,
+) -> JsValue {
+  XRReferenceSpaceEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRReferenceSpaceEventInit::from_js_ffi(
+  value : JsValue,
+) -> XRReferenceSpaceEventInit =
+  #| (v) => ({
+  #|   referenceSpace: v.referenceSpace,
+  #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRReferenceSpaceEventInit::from_js(
+  value : JsValue,
+) -> XRReferenceSpaceEventInit {
+  XRReferenceSpaceEventInit::from_js_ffi(value)
+}
+
+///|
 /// XRVisibilityMaskChangeEventInit dictionary
-pub struct XRVisibilityMaskChangeEventInit {
+pub(all) struct XRVisibilityMaskChangeEventInit {
   session : XRSession
   eye : XREye
   index : Int
@@ -427,20 +591,18 @@ pub struct XRVisibilityMaskChangeEventInit {
 }
 
 ///|
-/// Create a new XRVisibilityMaskChangeEventInit with default values
-pub fn XRVisibilityMaskChangeEventInit::default() -> XRVisibilityMaskChangeEventInit {
-  XRVisibilityMaskChangeEventInit::{
-    session: panic(),
-    eye: panic(),
-    index: 0,
-    vertices: panic(),
-    indices: panic(),
-  }
+/// Create a new XRVisibilityMaskChangeEventInit
+pub fn XRVisibilityMaskChangeEventInit::new(
+  session~ : XRSession,
+  eye~ : XREye,
+  vertices~ : Float32Array,
+  indices~ : Uint32Array,
+) -> XRVisibilityMaskChangeEventInit {
+  XRVisibilityMaskChangeEventInit::{ session, eye, index: 0, vertices, indices }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRVisibilityMaskChangeEventInit::to_js(
+extern "js" fn XRVisibilityMaskChangeEventInit::to_js_ffi(
   self : XRVisibilityMaskChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
@@ -452,8 +614,36 @@ pub extern "js" fn XRVisibilityMaskChangeEventInit::to_js(
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRVisibilityMaskChangeEventInit::to_js(
+  self : XRVisibilityMaskChangeEventInit,
+) -> JsValue {
+  XRVisibilityMaskChangeEventInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRVisibilityMaskChangeEventInit::from_js_ffi(
+  value : JsValue,
+) -> XRVisibilityMaskChangeEventInit =
+  #| (v) => ({
+  #|   session: v.session,
+  #|   eye: ['none', 'left', 'right'].indexOf(v.eye),
+  #|   index: v.index,
+  #|   vertices: v.vertices,
+  #|   indices: v.indices
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRVisibilityMaskChangeEventInit::from_js(
+  value : JsValue,
+) -> XRVisibilityMaskChangeEventInit {
+  XRVisibilityMaskChangeEventInit::from_js_ffi(value)
+}
+
+///|
 /// XRSessionSupportedPermissionDescriptor dictionary
-pub struct XRSessionSupportedPermissionDescriptor {
+pub(all) struct XRSessionSupportedPermissionDescriptor {
   mode : XRSessionMode?
 }
 
@@ -464,17 +654,40 @@ pub fn XRSessionSupportedPermissionDescriptor::default() -> XRSessionSupportedPe
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRSessionSupportedPermissionDescriptor::to_js(
+extern "js" fn XRSessionSupportedPermissionDescriptor::to_js_ffi(
   self : XRSessionSupportedPermissionDescriptor,
 ) -> JsValue =
   #| (self) => ({
-  #|   mode: ['inline', 'immersive-vr', 'immersive-ar'][self.mode]
+  #|   mode: ((() => { const v = self.mode; if (v === undefined) return undefined; return ['inline', 'immersive-vr', 'immersive-ar'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn XRSessionSupportedPermissionDescriptor::to_js(
+  self : XRSessionSupportedPermissionDescriptor,
+) -> JsValue {
+  XRSessionSupportedPermissionDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRSessionSupportedPermissionDescriptor::from_js_ffi(
+  value : JsValue,
+) -> XRSessionSupportedPermissionDescriptor =
+  #| (v) => ({
+  #|   mode: (v.mode === undefined ? undefined : ['inline', 'immersive-vr', 'immersive-ar'].indexOf(v.mode))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRSessionSupportedPermissionDescriptor::from_js(
+  value : JsValue,
+) -> XRSessionSupportedPermissionDescriptor {
+  XRSessionSupportedPermissionDescriptor::from_js_ffi(value)
+}
+
+///|
 /// XRPermissionDescriptor dictionary
-pub struct XRPermissionDescriptor {
+pub(all) struct XRPermissionDescriptor {
   mode : XRSessionMode?
   requiredFeatures : Array[String]?
   optionalFeatures : Array[String]?
@@ -491,15 +704,38 @@ pub fn XRPermissionDescriptor::default() -> XRPermissionDescriptor {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn XRPermissionDescriptor::to_js(
+extern "js" fn XRPermissionDescriptor::to_js_ffi(
   self : XRPermissionDescriptor,
 ) -> JsValue =
   #| (self) => ({
-  #|   mode: ['inline', 'immersive-vr', 'immersive-ar'][self.mode],
-  #|   requiredFeatures: self.requiredFeatures,
-  #|   optionalFeatures: self.optionalFeatures
+  #|   mode: ((() => { const v = self.mode; if (v === undefined) return undefined; return ['inline', 'immersive-vr', 'immersive-ar'][v]; })()),
+  #|   requiredFeatures: ((() => { const v = self.requiredFeatures; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   optionalFeatures: ((() => { const v = self.optionalFeatures; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn XRPermissionDescriptor::to_js(self : XRPermissionDescriptor) -> JsValue {
+  XRPermissionDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn XRPermissionDescriptor::from_js_ffi(
+  value : JsValue,
+) -> XRPermissionDescriptor =
+  #| (v) => ({
+  #|   mode: (v.mode === undefined ? undefined : ['inline', 'immersive-vr', 'immersive-ar'].indexOf(v.mode)),
+  #|   requiredFeatures: (v.requiredFeatures === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requiredFeatures }),
+  #|   optionalFeatures: (v.optionalFeatures === undefined ? { $tag: 0 } : { $tag: 1, _0: v.optionalFeatures })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn XRPermissionDescriptor::from_js(
+  value : JsValue,
+) -> XRPermissionDescriptor {
+  XRPermissionDescriptor::from_js_ffi(value)
+}
 
 ///|
 /// XRSystem interface
@@ -548,12 +784,21 @@ pub extern "js" fn XRSystem::request_session(
   #| (self, mode) => self.requestSession(['inline', 'immersive-vr', 'immersive-ar'][mode])
 
 ///|
-pub extern "js" fn XRSystem::request_session_with_options(
+extern "js" fn XRSystem::request_session_with_options_ffi(
+  self : XRSystem,
+  mode : XRSessionMode,
+  options : JsValue,
+) -> Promise[XRSession] =
+  #| (self, mode, options) => self.requestSession(['inline', 'immersive-vr', 'immersive-ar'][mode], options)
+
+///|
+pub fn XRSystem::request_session_with_options(
   self : XRSystem,
   mode : XRSessionMode,
   options : XRSessionInit,
-) -> Promise[XRSession] =
-  #| (self, mode, options) => self.requestSession(['inline', 'immersive-vr', 'immersive-ar'][mode], options)
+) -> Promise[XRSession] {
+  XRSystem::request_session_with_options_ffi(self, mode, options.to_js())
+}
 
 ///|
 pub extern "js" fn XRSystem::get_ondevicechange(
@@ -604,17 +849,17 @@ pub extern "js" fn XRSession::to_event_target(self : XRSession) -> EventTarget =
 pub extern "js" fn XRSession::get_visibility_state(
   self : XRSession,
 ) -> XRVisibilityState =
-  #| (self) => self.visibilityState
+  #| (self) => ['visible', 'visible-blurred', 'hidden'].indexOf(self.visibilityState)
 
 ///|
 pub extern "js" fn XRSession::get_frame_rate(self : XRSession) -> Double? =
-  #| (self) => { const v = self.frameRate; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.frameRate) ?? undefined
 
 ///|
 pub extern "js" fn XRSession::get_supported_frame_rates(
   self : XRSession,
 ) -> Float32Array? =
-  #| (self) => { const v = self.supportedFrameRates; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.supportedFrameRates; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRSession::get_render_state(
@@ -635,7 +880,9 @@ pub extern "js" fn XRSession::get_tracked_sources(
   #| (self) => self.trackedSources
 
 ///|
-pub extern "js" fn XRSession::get_enabled_features(self : XRSession) -> JsValue =
+pub extern "js" fn XRSession::get_enabled_features(
+  self : XRSession,
+) -> Array[String] =
   #| (self) => self.enabledFeatures
 
 ///|
@@ -649,11 +896,19 @@ pub extern "js" fn XRSession::update_render_state(self : XRSession) -> Unit =
   #| (self) => self.updateRenderState()
 
 ///|
-pub extern "js" fn XRSession::update_render_state_with_state(
+extern "js" fn XRSession::update_render_state_with_state_ffi(
   self : XRSession,
-  state : XRRenderStateInit,
+  state : JsValue,
 ) -> Unit =
   #| (self, state) => self.updateRenderState(state)
+
+///|
+pub fn XRSession::update_render_state_with_state(
+  self : XRSession,
+  state : XRRenderStateInit,
+) -> Unit {
+  XRSession::update_render_state_with_state_ffi(self, state.to_js())
+}
 
 ///|
 pub extern "js" fn XRSession::update_target_frame_rate(
@@ -822,22 +1077,30 @@ pub extern "js" fn XRSession::request_light_probe(
   #| (self) => self.requestLightProbe()
 
 ///|
-pub extern "js" fn XRSession::request_light_probe_with_options(
+extern "js" fn XRSession::request_light_probe_with_options_ffi(
   self : XRSession,
-  options : XRLightProbeInit,
+  options : JsValue,
 ) -> Promise[XRLightProbe] =
   #| (self, options) => self.requestLightProbe(options)
+
+///|
+pub fn XRSession::request_light_probe_with_options(
+  self : XRSession,
+  options : XRLightProbeInit,
+) -> Promise[XRLightProbe] {
+  XRSession::request_light_probe_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn XRSession::get_preferred_reflection_format(
   self : XRSession,
 ) -> XRReflectionFormat =
-  #| (self) => self.preferredReflectionFormat
+  #| (self) => ['srgba8', 'rgba16f'].indexOf(self.preferredReflectionFormat)
 
 ///|
 pub extern "js" fn XRSession::get_persistent_anchors(
   self : XRSession,
-) -> JsValue =
+) -> Array[String] =
   #| (self) => self.persistentAnchors
 
 ///|
@@ -856,21 +1119,21 @@ pub extern "js" fn XRSession::delete_persistent_anchor(
 
 ///|
 pub extern "js" fn XRSession::get_depth_usage(self : XRSession) -> XRDepthUsage =
-  #| (self) => self.depthUsage
+  #| (self) => ['cpu-optimized', 'gpu-optimized'].indexOf(self.depthUsage)
 
 ///|
 pub extern "js" fn XRSession::get_depth_data_format(
   self : XRSession,
 ) -> XRDepthDataFormat =
-  #| (self) => self.depthDataFormat
+  #| (self) => ['luminance-alpha', 'float32', 'unsigned-short'].indexOf(self.depthDataFormat)
 
 ///|
 pub extern "js" fn XRSession::get_depth_type(self : XRSession) -> XRDepthType? =
-  #| (self) => { const v = self.depthType; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.depthType; return v == null ? undefined : ['raw', 'smooth'].indexOf(v); })()
 
 ///|
 pub extern "js" fn XRSession::get_depth_active(self : XRSession) -> Bool? =
-  #| (self) => { const v = self.depthActive; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.depthActive) ?? undefined
 
 ///|
 pub extern "js" fn XRSession::pause_depth_sensing(self : XRSession) -> Unit =
@@ -884,37 +1147,52 @@ pub extern "js" fn XRSession::resume_depth_sensing(self : XRSession) -> Unit =
 pub extern "js" fn XRSession::get_environment_blend_mode(
   self : XRSession,
 ) -> XREnvironmentBlendMode =
-  #| (self) => self.environmentBlendMode
+  #| (self) => ['opaque', 'alpha-blend', 'additive'].indexOf(self.environmentBlendMode)
 
 ///|
 pub extern "js" fn XRSession::get_interaction_mode(
   self : XRSession,
 ) -> XRInteractionMode =
-  #| (self) => self.interactionMode
+  #| (self) => ['screen-space', 'world-space'].indexOf(self.interactionMode)
 
 ///|
-pub extern "js" fn XRSession::request_hit_test_source(
+extern "js" fn XRSession::request_hit_test_source_ffi(
   self : XRSession,
-  options : XRHitTestOptionsInit,
+  options : JsValue,
 ) -> Promise[XRHitTestSource] =
   #| (self, options) => self.requestHitTestSource(options)
 
 ///|
-pub extern "js" fn XRSession::request_hit_test_source_for_transient_input(
+pub fn XRSession::request_hit_test_source(
   self : XRSession,
-  options : XRTransientInputHitTestOptionsInit,
+  options : XRHitTestOptionsInit,
+) -> Promise[XRHitTestSource] {
+  XRSession::request_hit_test_source_ffi(self, options.to_js())
+}
+
+///|
+extern "js" fn XRSession::request_hit_test_source_for_transient_input_ffi(
+  self : XRSession,
+  options : JsValue,
 ) -> Promise[XRTransientInputHitTestSource] =
   #| (self, options) => self.requestHitTestSourceForTransientInput(options)
+
+///|
+pub fn XRSession::request_hit_test_source_for_transient_input(
+  self : XRSession,
+  options : XRTransientInputHitTestOptionsInit,
+) -> Promise[XRTransientInputHitTestSource] {
+  XRSession::request_hit_test_source_for_transient_input_ffi(
+    self,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn XRSession::get_dom_overlay_state(
   self : XRSession,
 ) -> XRDOMOverlayState? =
-  #| (self) => { const v = self.domOverlayState; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
-
-///|
-pub extern "js" fn XRSession::get_max_render_layers(self : XRSession) -> Int =
-  #| (self) => self.maxRenderLayers
+  #| (self) => (() => { const v = self.domOverlayState; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// XRRenderState interface
@@ -962,22 +1240,24 @@ pub extern "js" fn XRRenderState::get_depth_far(self : XRRenderState) -> Double 
 pub extern "js" fn XRRenderState::get_passthrough_fully_obscured(
   self : XRRenderState,
 ) -> Bool? =
-  #| (self) => { const v = self.passthroughFullyObscured; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.passthroughFullyObscured) ?? undefined
 
 ///|
 pub extern "js" fn XRRenderState::get_inline_vertical_field_of_view(
   self : XRRenderState,
 ) -> Double? =
-  #| (self) => { const v = self.inlineVerticalFieldOfView; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.inlineVerticalFieldOfView) ?? undefined
 
 ///|
 pub extern "js" fn XRRenderState::get_base_layer(
   self : XRRenderState,
 ) -> XRWebGLLayer? =
-  #| (self) => { const v = self.baseLayer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.baseLayer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn XRRenderState::get_layers(self : XRRenderState) -> JsValue =
+pub extern "js" fn XRRenderState::get_layers(
+  self : XRRenderState,
+) -> Array[XRLayer] =
   #| (self) => self.layers
 
 ///|
@@ -1023,7 +1303,7 @@ pub extern "js" fn XRFrame::get_viewer_pose(
   self : XRFrame,
   reference_space : XRReferenceSpace,
 ) -> XRViewerPose? =
-  #| (self, reference_space) => { const v = self.getViewerPose(reference_space); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, reference_space) => (() => { const v = self.getViewerPose(reference_space); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRFrame::get_pose(
@@ -1031,11 +1311,11 @@ pub extern "js" fn XRFrame::get_pose(
   space : XRSpace,
   base_space : XRSpace,
 ) -> XRPose? =
-  #| (self, space, base_space) => { const v = self.getPose(space, base_space); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, space, base_space) => (() => { const v = self.getPose(space, base_space); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRFrame::get_body(self : XRFrame) -> XRBody? =
-  #| (self) => { const v = self.body; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.body; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRFrame::get_detected_planes(self : XRFrame) -> XRPlaneSet =
@@ -1046,7 +1326,7 @@ pub extern "js" fn XRFrame::get_light_estimate(
   self : XRFrame,
   light_probe : XRLightProbe,
 ) -> XRLightEstimate? =
-  #| (self, light_probe) => { const v = self.getLightEstimate(light_probe); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, light_probe) => (() => { const v = self.getLightEstimate(light_probe); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRFrame::create_anchor(
@@ -1069,7 +1349,7 @@ pub extern "js" fn XRFrame::get_depth_information(
   self : XRFrame,
   view : XRView,
 ) -> XRCPUDepthInformation? =
-  #| (self, view) => { const v = self.getDepthInformation(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, view) => (() => { const v = self.getDepthInformation(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRFrame::get_joint_pose(
@@ -1077,7 +1357,7 @@ pub extern "js" fn XRFrame::get_joint_pose(
   joint : XRJointSpace,
   base_space : XRSpace,
 ) -> XRJointPose? =
-  #| (self, joint, base_space) => { const v = self.getJointPose(joint, base_space); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, joint, base_space) => (() => { const v = self.getJointPose(joint, base_space); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRFrame::fill_joint_radii(
@@ -1297,7 +1577,7 @@ pub extern "js" fn XRBoundedReferenceSpace::to_event_target(
 ///|
 pub extern "js" fn XRBoundedReferenceSpace::get_bounds_geometry(
   self : XRBoundedReferenceSpace,
-) -> JsValue =
+) -> Array[DOMPointReadOnly] =
   #| (self) => self.boundsGeometry
 
 ///|
@@ -1330,7 +1610,7 @@ pub extern "js" fn JsValue::to_xr_view(self : JsValue) -> XRView =
 
 ///|
 pub extern "js" fn XRView::get_eye(self : XRView) -> XREye =
-  #| (self) => self.eye
+  #| (self) => ['none', 'left', 'right'].indexOf(self.eye)
 
 ///|
 pub extern "js" fn XRView::get_index(self : XRView) -> Int =
@@ -1340,7 +1620,7 @@ pub extern "js" fn XRView::get_index(self : XRView) -> Int =
 pub extern "js" fn XRView::get_recommended_viewport_scale(
   self : XRView,
 ) -> Double? =
-  #| (self) => { const v = self.recommendedViewportScale; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.recommendedViewportScale) ?? undefined
 
 ///|
 pub extern "js" fn XRView::request_viewport_scale(
@@ -1355,7 +1635,7 @@ pub extern "js" fn XRView::get_is_first_person_observer(self : XRView) -> Bool =
 
 ///|
 pub extern "js" fn XRView::get_camera(self : XRView) -> XRCamera? =
-  #| (self) => { const v = self.camera; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.camera; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRView::get_projection_matrix(self : XRView) -> Float32Array =
@@ -1448,11 +1728,26 @@ pub extern "js" fn JsValue::to_xr_rigid_transform(
   #| (self) => self
 
 ///|
-pub extern "js" fn XRRigidTransform::new(
-  position : DOMPointInit,
-  orientation : DOMPointInit,
+pub extern "js" fn XRRigidTransform::new() -> XRRigidTransform =
+  #| () => new XRRigidTransform()
+
+///|
+extern "js" fn XRRigidTransform::new_with_orientation_ffi(
+  position : JsValue,
+  orientation : JsValue,
 ) -> XRRigidTransform =
   #| (position, orientation) => new XRRigidTransform(position, orientation)
+
+///|
+pub fn XRRigidTransform::new_with_orientation(
+  position : DOMPointInit,
+  orientation : DOMPointInit,
+) -> XRRigidTransform {
+  XRRigidTransform::new_with_orientation_ffi(
+    position.to_js(),
+    orientation.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn XRRigidTransform::get_position(
@@ -1522,13 +1817,13 @@ pub extern "js" fn XRPose::get_transform(self : XRPose) -> XRRigidTransform =
 pub extern "js" fn XRPose::get_linear_velocity(
   self : XRPose,
 ) -> DOMPointReadOnly? =
-  #| (self) => { const v = self.linearVelocity; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.linearVelocity; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRPose::get_angular_velocity(
   self : XRPose,
 ) -> DOMPointReadOnly? =
-  #| (self) => { const v = self.angularVelocity; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.angularVelocity; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRPose::get_emulated_position(self : XRPose) -> Bool =
@@ -1569,7 +1864,9 @@ pub extern "js" fn XRViewerPose::to_xr_pose(self : XRViewerPose) -> XRPose =
   #| (self) => self
 
 ///|
-pub extern "js" fn XRViewerPose::get_views(self : XRViewerPose) -> JsValue =
+pub extern "js" fn XRViewerPose::get_views(
+  self : XRViewerPose,
+) -> Array[XRView] =
   #| (self) => self.views
 
 ///|
@@ -1608,13 +1905,13 @@ pub extern "js" fn JsValue::to_xr_input_source(self : JsValue) -> XRInputSource 
 pub extern "js" fn XRInputSource::get_handedness(
   self : XRInputSource,
 ) -> XRHandedness =
-  #| (self) => self.handedness
+  #| (self) => ['none', 'left', 'right'].indexOf(self.handedness)
 
 ///|
 pub extern "js" fn XRInputSource::get_target_ray_mode(
   self : XRInputSource,
 ) -> XRTargetRayMode =
-  #| (self) => self.targetRayMode
+  #| (self) => ['gaze', 'tracked-pointer', 'screen', 'transient-pointer'].indexOf(self.targetRayMode)
 
 ///|
 pub extern "js" fn XRInputSource::get_target_ray_space(
@@ -1626,10 +1923,12 @@ pub extern "js" fn XRInputSource::get_target_ray_space(
 pub extern "js" fn XRInputSource::get_grip_space(
   self : XRInputSource,
 ) -> XRSpace? =
-  #| (self) => { const v = self.gripSpace; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.gripSpace; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn XRInputSource::get_profiles(self : XRInputSource) -> JsValue =
+pub extern "js" fn XRInputSource::get_profiles(
+  self : XRInputSource,
+) -> Array[String] =
   #| (self) => self.profiles
 
 ///|
@@ -1640,11 +1939,11 @@ pub extern "js" fn XRInputSource::get_skip_rendering(
 
 ///|
 pub extern "js" fn XRInputSource::get_hand(self : XRInputSource) -> XRHand? =
-  #| (self) => { const v = self.hand; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.hand; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRInputSource::get_gamepad(self : XRInputSource) -> Gamepad? =
-  #| (self) => { const v = self.gamepad; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.gamepad; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// XRInputSourceArray interface
@@ -1685,10 +1984,29 @@ pub extern "js" fn JsValue::to_xr_input_source_array(
   #| (self) => self
 
 ///|
-pub extern "js" fn XRInputSourceArray::_unknown_(
+pub extern "js" fn XRInputSourceArray::keys(
   self : XRInputSourceArray,
+) -> JsValue =
+  #| (self) => self.keys()
+
+///|
+pub extern "js" fn XRInputSourceArray::values(
+  self : XRInputSourceArray,
+) -> JsValue =
+  #| (self) => self.values()
+
+///|
+pub extern "js" fn XRInputSourceArray::entries(
+  self : XRInputSourceArray,
+) -> JsValue =
+  #| (self) => self.entries()
+
+///|
+pub extern "js" fn XRInputSourceArray::for_each(
+  self : XRInputSourceArray,
+  callback : JsValue,
 ) -> Unit =
-  #| (self) => self._unknown_()
+  #| (self, callback) => { self.forEach(callback) }
 
 ///|
 pub extern "js" fn XRInputSourceArray::get_length(
@@ -1697,6 +2015,7 @@ pub extern "js" fn XRInputSourceArray::get_length(
   #| (self) => self.length
 
 ///|
+#alias("_[_]")
 pub extern "js" fn XRInputSourceArray::get(
   self : XRInputSourceArray,
   index : Int,
@@ -1815,9 +2134,25 @@ pub extern "js" fn XRWebGLLayer::to_event_target(
 pub extern "js" fn XRWebGLLayer::new(
   session : XRSession,
   context : XRWebGLRenderingContext,
-  layer_init : XRWebGLLayerInit,
+) -> XRWebGLLayer =
+  #| (session, context) => new XRWebGLLayer(session, context)
+
+///|
+extern "js" fn XRWebGLLayer::new_with_layer_init_ffi(
+  session : XRSession,
+  context : XRWebGLRenderingContext,
+  layer_init : JsValue,
 ) -> XRWebGLLayer =
   #| (session, context, layer_init) => new XRWebGLLayer(session, context, layer_init)
+
+///|
+pub fn XRWebGLLayer::new_with_layer_init(
+  session : XRSession,
+  context : XRWebGLRenderingContext,
+  layer_init : XRWebGLLayerInit,
+) -> XRWebGLLayer {
+  XRWebGLLayer::new_with_layer_init_ffi(session, context, layer_init.to_js())
+}
 
 ///|
 pub extern "js" fn XRWebGLLayer::get_antialias(self : XRWebGLLayer) -> Bool =
@@ -1833,7 +2168,7 @@ pub extern "js" fn XRWebGLLayer::get_ignore_depth_values(
 pub extern "js" fn XRWebGLLayer::get_fixed_foveation(
   self : XRWebGLLayer,
 ) -> Double? =
-  #| (self) => { const v = self.fixedFoveation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (self.fixedFoveation) ?? undefined
 
 ///|
 pub extern "js" fn XRWebGLLayer::set_fixed_foveation(
@@ -1846,7 +2181,7 @@ pub extern "js" fn XRWebGLLayer::set_fixed_foveation(
 pub extern "js" fn XRWebGLLayer::get_framebuffer(
   self : XRWebGLLayer,
 ) -> WebGLFramebuffer? =
-  #| (self) => { const v = self.framebuffer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.framebuffer; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRWebGLLayer::get_framebuffer_width(
@@ -1865,13 +2200,29 @@ pub extern "js" fn XRWebGLLayer::get_viewport(
   self : XRWebGLLayer,
   view : XRView,
 ) -> XRViewport? =
-  #| (self, view) => { const v = self.getViewport(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self, view) => (() => { const v = self.getViewport(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRWebGLLayer::get_native_framebuffer_scale_factor(
   session : XRSession,
 ) -> Double =
   #| (session) => XRWebGLLayer.getNativeFramebufferScaleFactor(session)
+
+///|
+pub extern "js" fn XRWebGLLayer::new_with_web_gl_rendering_context(
+  session : XRSession,
+  context : WebGLRenderingContext,
+  layer_init : XRWebGLLayerInit,
+) -> XRWebGLLayer =
+  #| (session, context, layer_init) => new XRWebGLLayer(session, context, layer_init)
+
+///|
+pub extern "js" fn XRWebGLLayer::new_with_web_gl2_rendering_context(
+  session : XRSession,
+  context : WebGL2RenderingContext,
+  layer_init : XRWebGLLayerInit,
+) -> XRWebGLLayer =
+  #| (session, context, layer_init) => new XRWebGLLayer(session, context, layer_init)
 
 ///|
 /// XRSessionEvent interface
@@ -1914,11 +2265,19 @@ pub extern "js" fn XRSessionEvent::to_event(self : XRSessionEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn XRSessionEvent::new(
+extern "js" fn XRSessionEvent::new_ffi(
   type_ : String,
-  event_init_dict : XRSessionEventInit,
+  event_init_dict : JsValue,
 ) -> XRSessionEvent =
   #| (type_, event_init_dict) => new XRSessionEvent(type_, event_init_dict)
+
+///|
+pub fn XRSessionEvent::new(
+  type_ : String,
+  event_init_dict : XRSessionEventInit,
+) -> XRSessionEvent {
+  XRSessionEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn XRSessionEvent::get_session(
@@ -1971,11 +2330,19 @@ pub extern "js" fn XRInputSourceEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn XRInputSourceEvent::new(
+extern "js" fn XRInputSourceEvent::new_ffi(
   type_ : String,
-  event_init_dict : XRInputSourceEventInit,
+  event_init_dict : JsValue,
 ) -> XRInputSourceEvent =
   #| (type_, event_init_dict) => new XRInputSourceEvent(type_, event_init_dict)
+
+///|
+pub fn XRInputSourceEvent::new(
+  type_ : String,
+  event_init_dict : XRInputSourceEventInit,
+) -> XRInputSourceEvent {
+  XRInputSourceEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn XRInputSourceEvent::get_frame(
@@ -2034,11 +2401,19 @@ pub extern "js" fn XRInputSourcesChangeEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn XRInputSourcesChangeEvent::new(
+extern "js" fn XRInputSourcesChangeEvent::new_ffi(
   type_ : String,
-  event_init_dict : XRInputSourcesChangeEventInit,
+  event_init_dict : JsValue,
 ) -> XRInputSourcesChangeEvent =
   #| (type_, event_init_dict) => new XRInputSourcesChangeEvent(type_, event_init_dict)
+
+///|
+pub fn XRInputSourcesChangeEvent::new(
+  type_ : String,
+  event_init_dict : XRInputSourcesChangeEventInit,
+) -> XRInputSourcesChangeEvent {
+  XRInputSourcesChangeEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn XRInputSourcesChangeEvent::get_session(
@@ -2049,13 +2424,13 @@ pub extern "js" fn XRInputSourcesChangeEvent::get_session(
 ///|
 pub extern "js" fn XRInputSourcesChangeEvent::get_added(
   self : XRInputSourcesChangeEvent,
-) -> JsValue =
+) -> Array[XRInputSource] =
   #| (self) => self.added
 
 ///|
 pub extern "js" fn XRInputSourcesChangeEvent::get_removed(
   self : XRInputSourcesChangeEvent,
-) -> JsValue =
+) -> Array[XRInputSource] =
   #| (self) => self.removed
 
 ///|
@@ -2103,11 +2478,19 @@ pub extern "js" fn XRReferenceSpaceEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn XRReferenceSpaceEvent::new(
+extern "js" fn XRReferenceSpaceEvent::new_ffi(
   type_ : String,
-  event_init_dict : XRReferenceSpaceEventInit,
+  event_init_dict : JsValue,
 ) -> XRReferenceSpaceEvent =
   #| (type_, event_init_dict) => new XRReferenceSpaceEvent(type_, event_init_dict)
+
+///|
+pub fn XRReferenceSpaceEvent::new(
+  type_ : String,
+  event_init_dict : XRReferenceSpaceEventInit,
+) -> XRReferenceSpaceEvent {
+  XRReferenceSpaceEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn XRReferenceSpaceEvent::get_reference_space(
@@ -2119,7 +2502,7 @@ pub extern "js" fn XRReferenceSpaceEvent::get_reference_space(
 pub extern "js" fn XRReferenceSpaceEvent::get_transform(
   self : XRReferenceSpaceEvent,
 ) -> XRRigidTransform? =
-  #| (self) => { const v = self.transform; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.transform; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// XRVisibilityMaskChangeEvent interface
@@ -2166,11 +2549,19 @@ pub extern "js" fn XRVisibilityMaskChangeEvent::to_event(
   #| (self) => self
 
 ///|
-pub extern "js" fn XRVisibilityMaskChangeEvent::new(
+extern "js" fn XRVisibilityMaskChangeEvent::new_ffi(
   type_ : String,
-  event_init_dict : XRVisibilityMaskChangeEventInit,
+  event_init_dict : JsValue,
 ) -> XRVisibilityMaskChangeEvent =
   #| (type_, event_init_dict) => new XRVisibilityMaskChangeEvent(type_, event_init_dict)
+
+///|
+pub fn XRVisibilityMaskChangeEvent::new(
+  type_ : String,
+  event_init_dict : XRVisibilityMaskChangeEventInit,
+) -> XRVisibilityMaskChangeEvent {
+  XRVisibilityMaskChangeEvent::new_ffi(type_, event_init_dict.to_js())
+}
 
 ///|
 pub extern "js" fn XRVisibilityMaskChangeEvent::get_session(
@@ -2182,7 +2573,7 @@ pub extern "js" fn XRVisibilityMaskChangeEvent::get_session(
 pub extern "js" fn XRVisibilityMaskChangeEvent::get_eye(
   self : XRVisibilityMaskChangeEvent,
 ) -> XREye =
-  #| (self) => self.eye
+  #| (self) => ['none', 'left', 'right'].indexOf(self.eye)
 
 ///|
 pub extern "js" fn XRVisibilityMaskChangeEvent::get_index(
@@ -2255,12 +2646,12 @@ pub extern "js" fn XRPermissionStatus::to_event_target(
 ///|
 pub extern "js" fn XRPermissionStatus::get_granted(
   self : XRPermissionStatus,
-) -> JsValue =
+) -> Array[String] =
   #| (self) => self.granted
 
 ///|
 pub extern "js" fn XRPermissionStatus::set_granted(
   self : XRPermissionStatus,
-  value : JsValue,
+  value : Array[String],
 ) -> Unit =
   #| (self, value) => { self.granted = value }

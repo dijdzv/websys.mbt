@@ -5,7 +5,7 @@
 /// WakeLockType enum
 pub(all) enum WakeLockType {
   Screen
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -119,7 +119,7 @@ pub extern "js" fn WakeLockSentinel::get_released(
 pub extern "js" fn WakeLockSentinel::get_type(
   self : WakeLockSentinel,
 ) -> WakeLockType =
-  #| (self) => self.type
+  #| (self) => ['screen'].indexOf(self.type)
 
 ///|
 pub extern "js" fn WakeLockSentinel::release(

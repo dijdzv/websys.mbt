@@ -54,11 +54,33 @@ pub extern "js" fn StartInDirectory::as_file_system_handle(
   #| (self) => (self instanceof FileSystemHandle) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Flatten Option[StartInDirectory] to WellKnownDirectory?
+pub fn StartInDirectory::bind_as_well_known_directory(
+  value : StartInDirectory?,
+) -> WellKnownDirectory? {
+  match value {
+    Some(v) => v.as_well_known_directory()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[StartInDirectory] to FileSystemHandle?
+pub fn StartInDirectory::bind_as_file_system_handle(
+  value : StartInDirectory?,
+) -> FileSystemHandle? {
+  match value {
+    Some(v) => v.as_file_system_handle()
+    None => None
+  }
+}
+
+///|
 /// FileSystemPermissionMode enum
 pub(all) enum FileSystemPermissionMode {
   Read
   Readwrite
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -92,7 +114,7 @@ pub(all) enum WellKnownDirectory {
   Music
   Pictures
   Videos
-}
+} derive(Eq, Show)
 
 ///|
 /// Convert to string value
@@ -123,30 +145,56 @@ pub fn WellKnownDirectory::from_string(s : String) -> WellKnownDirectory? {
 
 ///|
 /// FileSystemPermissionDescriptor dictionary
-pub struct FileSystemPermissionDescriptor {
+pub(all) struct FileSystemPermissionDescriptor {
   handle : FileSystemHandle
   mode : FileSystemPermissionMode?
 }
 
 ///|
-/// Create a new FileSystemPermissionDescriptor with default values
-pub fn FileSystemPermissionDescriptor::default() -> FileSystemPermissionDescriptor {
-  FileSystemPermissionDescriptor::{ handle: panic(), mode: None }
+/// Create a new FileSystemPermissionDescriptor
+pub fn FileSystemPermissionDescriptor::new(
+  handle~ : FileSystemHandle,
+) -> FileSystemPermissionDescriptor {
+  FileSystemPermissionDescriptor::{ handle, mode: None }
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FileSystemPermissionDescriptor::to_js(
+extern "js" fn FileSystemPermissionDescriptor::to_js_ffi(
   self : FileSystemPermissionDescriptor,
 ) -> JsValue =
   #| (self) => ({
   #|   handle: self.handle,
-  #|   mode: ['read', 'readwrite'][self.mode]
+  #|   mode: ((() => { const v = self.mode; if (v === undefined) return undefined; return ['read', 'readwrite'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn FileSystemPermissionDescriptor::to_js(
+  self : FileSystemPermissionDescriptor,
+) -> JsValue {
+  FileSystemPermissionDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn FileSystemPermissionDescriptor::from_js_ffi(
+  value : JsValue,
+) -> FileSystemPermissionDescriptor =
+  #| (v) => ({
+  #|   handle: v.handle,
+  #|   mode: (v.mode === undefined ? undefined : ['read', 'readwrite'].indexOf(v.mode))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FileSystemPermissionDescriptor::from_js(
+  value : JsValue,
+) -> FileSystemPermissionDescriptor {
+  FileSystemPermissionDescriptor::from_js_ffi(value)
+}
+
+///|
 /// FileSystemHandlePermissionDescriptor dictionary
-pub struct FileSystemHandlePermissionDescriptor {
+pub(all) struct FileSystemHandlePermissionDescriptor {
   mode : FileSystemPermissionMode?
 }
 
@@ -157,17 +205,40 @@ pub fn FileSystemHandlePermissionDescriptor::default() -> FileSystemHandlePermis
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FileSystemHandlePermissionDescriptor::to_js(
+extern "js" fn FileSystemHandlePermissionDescriptor::to_js_ffi(
   self : FileSystemHandlePermissionDescriptor,
 ) -> JsValue =
   #| (self) => ({
-  #|   mode: ['read', 'readwrite'][self.mode]
+  #|   mode: ((() => { const v = self.mode; if (v === undefined) return undefined; return ['read', 'readwrite'][v]; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn FileSystemHandlePermissionDescriptor::to_js(
+  self : FileSystemHandlePermissionDescriptor,
+) -> JsValue {
+  FileSystemHandlePermissionDescriptor::to_js_ffi(self)
+}
+
+///|
+extern "js" fn FileSystemHandlePermissionDescriptor::from_js_ffi(
+  value : JsValue,
+) -> FileSystemHandlePermissionDescriptor =
+  #| (v) => ({
+  #|   mode: (v.mode === undefined ? undefined : ['read', 'readwrite'].indexOf(v.mode))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FileSystemHandlePermissionDescriptor::from_js(
+  value : JsValue,
+) -> FileSystemHandlePermissionDescriptor {
+  FileSystemHandlePermissionDescriptor::from_js_ffi(value)
+}
+
+///|
 /// FilePickerAcceptType dictionary
-pub struct FilePickerAcceptType {
+pub(all) struct FilePickerAcceptType {
   description : String?
   accept : JsValue?
 }
@@ -179,18 +250,38 @@ pub fn FilePickerAcceptType::default() -> FilePickerAcceptType {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FilePickerAcceptType::to_js(
+extern "js" fn FilePickerAcceptType::to_js_ffi(
   self : FilePickerAcceptType,
 ) -> JsValue =
   #| (self) => ({
   #|   description: self.description,
-  #|   accept: self.accept
+  #|   accept: ((() => { const v = self.accept; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn FilePickerAcceptType::to_js(self : FilePickerAcceptType) -> JsValue {
+  FilePickerAcceptType::to_js_ffi(self)
+}
+
+///|
+extern "js" fn FilePickerAcceptType::from_js_ffi(
+  value : JsValue,
+) -> FilePickerAcceptType =
+  #| (v) => ({
+  #|   description: v.description,
+  #|   accept: (v.accept === undefined ? { $tag: 0 } : { $tag: 1, _0: v.accept })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FilePickerAcceptType::from_js(value : JsValue) -> FilePickerAcceptType {
+  FilePickerAcceptType::from_js_ffi(value)
+}
+
+///|
 /// FilePickerOptions dictionary
-pub struct FilePickerOptions {
+pub(all) struct FilePickerOptions {
   types : Array[FilePickerAcceptType]?
   excludeAcceptAllOption : Bool?
   id : String?
@@ -209,20 +300,42 @@ pub fn FilePickerOptions::default() -> FilePickerOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn FilePickerOptions::to_js(
+extern "js" fn FilePickerOptions::to_js_ffi(
   self : FilePickerOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   types: self.types,
-  #|   excludeAcceptAllOption: self.excludeAcceptAllOption,
+  #|   types: ((() => { const v = self.types; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   excludeAcceptAllOption: (self.excludeAcceptAllOption === -1 ? undefined : self.excludeAcceptAllOption),
   #|   id: self.id,
-  #|   startIn: self.startIn.to_js_value()
+  #|   startIn: ((() => { const v = self.startIn; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn FilePickerOptions::to_js(self : FilePickerOptions) -> JsValue {
+  FilePickerOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn FilePickerOptions::from_js_ffi(
+  value : JsValue,
+) -> FilePickerOptions =
+  #| (v) => ({
+  #|   types: (v.types === undefined ? { $tag: 0 } : { $tag: 1, _0: v.types }),
+  #|   excludeAcceptAllOption: (v.excludeAcceptAllOption === undefined ? -1 : v.excludeAcceptAllOption),
+  #|   id: v.id,
+  #|   startIn: (v.startIn === undefined ? { $tag: 0 } : { $tag: 1, _0: v.startIn })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn FilePickerOptions::from_js(value : JsValue) -> FilePickerOptions {
+  FilePickerOptions::from_js_ffi(value)
+}
+
+///|
 /// OpenFilePickerOptions dictionary
-pub struct OpenFilePickerOptions {
+pub(all) struct OpenFilePickerOptions {
   types : Array[FilePickerAcceptType]?
   excludeAcceptAllOption : Bool?
   id : String?
@@ -243,21 +356,44 @@ pub fn OpenFilePickerOptions::default() -> OpenFilePickerOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn OpenFilePickerOptions::to_js(
+extern "js" fn OpenFilePickerOptions::to_js_ffi(
   self : OpenFilePickerOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   types: self.types,
-  #|   excludeAcceptAllOption: self.excludeAcceptAllOption,
+  #|   types: ((() => { const v = self.types; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   excludeAcceptAllOption: (self.excludeAcceptAllOption === -1 ? undefined : self.excludeAcceptAllOption),
   #|   id: self.id,
-  #|   startIn: self.startIn.to_js_value(),
-  #|   multiple: self.multiple
+  #|   startIn: ((() => { const v = self.startIn; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   multiple: (self.multiple === -1 ? undefined : self.multiple)
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn OpenFilePickerOptions::to_js(self : OpenFilePickerOptions) -> JsValue {
+  OpenFilePickerOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn OpenFilePickerOptions::from_js_ffi(
+  value : JsValue,
+) -> OpenFilePickerOptions =
+  #| (v) => ({
+  #|   types: (v.types === undefined ? { $tag: 0 } : { $tag: 1, _0: v.types }),
+  #|   excludeAcceptAllOption: (v.excludeAcceptAllOption === undefined ? -1 : v.excludeAcceptAllOption),
+  #|   id: v.id,
+  #|   startIn: (v.startIn === undefined ? { $tag: 0 } : { $tag: 1, _0: v.startIn }),
+  #|   multiple: (v.multiple === undefined ? -1 : v.multiple)
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn OpenFilePickerOptions::from_js(value : JsValue) -> OpenFilePickerOptions {
+  OpenFilePickerOptions::from_js_ffi(value)
+}
+
+///|
 /// SaveFilePickerOptions dictionary
-pub struct SaveFilePickerOptions {
+pub(all) struct SaveFilePickerOptions {
   types : Array[FilePickerAcceptType]?
   excludeAcceptAllOption : Bool?
   id : String?
@@ -278,21 +414,44 @@ pub fn SaveFilePickerOptions::default() -> SaveFilePickerOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn SaveFilePickerOptions::to_js(
+extern "js" fn SaveFilePickerOptions::to_js_ffi(
   self : SaveFilePickerOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   types: self.types,
-  #|   excludeAcceptAllOption: self.excludeAcceptAllOption,
+  #|   types: ((() => { const v = self.types; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   excludeAcceptAllOption: (self.excludeAcceptAllOption === -1 ? undefined : self.excludeAcceptAllOption),
   #|   id: self.id,
-  #|   startIn: self.startIn.to_js_value(),
-  #|   suggestedName: ((() => { const v = self.suggestedName; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v.$0; })())
+  #|   startIn: ((() => { const v = self.startIn; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   suggestedName: ((() => { const v = self.suggestedName; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
+/// Convert to JsValue
+pub fn SaveFilePickerOptions::to_js(self : SaveFilePickerOptions) -> JsValue {
+  SaveFilePickerOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn SaveFilePickerOptions::from_js_ffi(
+  value : JsValue,
+) -> SaveFilePickerOptions =
+  #| (v) => ({
+  #|   types: (v.types === undefined ? { $tag: 0 } : { $tag: 1, _0: v.types }),
+  #|   excludeAcceptAllOption: (v.excludeAcceptAllOption === undefined ? -1 : v.excludeAcceptAllOption),
+  #|   id: v.id,
+  #|   startIn: (v.startIn === undefined ? { $tag: 0 } : { $tag: 1, _0: v.startIn }),
+  #|   suggestedName: (v.suggestedName === undefined ? { $tag: 0 } : v.suggestedName === null ? { $tag: 1 } : { $tag: 2, _0: v.suggestedName })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn SaveFilePickerOptions::from_js(value : JsValue) -> SaveFilePickerOptions {
+  SaveFilePickerOptions::from_js_ffi(value)
+}
+
+///|
 /// DirectoryPickerOptions dictionary
-pub struct DirectoryPickerOptions {
+pub(all) struct DirectoryPickerOptions {
   id : String?
   startIn : StartInDirectory?
   mode : FileSystemPermissionMode?
@@ -305,12 +464,35 @@ pub fn DirectoryPickerOptions::default() -> DirectoryPickerOptions {
 }
 
 ///|
-/// Convert to JsValue
-pub extern "js" fn DirectoryPickerOptions::to_js(
+extern "js" fn DirectoryPickerOptions::to_js_ffi(
   self : DirectoryPickerOptions,
 ) -> JsValue =
   #| (self) => ({
   #|   id: self.id,
-  #|   startIn: self.startIn.to_js_value(),
-  #|   mode: ['read', 'readwrite'][self.mode]
+  #|   startIn: ((() => { const v = self.startIn; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   mode: ((() => { const v = self.mode; if (v === undefined) return undefined; return ['read', 'readwrite'][v]; })())
   #| })
+
+///|
+/// Convert to JsValue
+pub fn DirectoryPickerOptions::to_js(self : DirectoryPickerOptions) -> JsValue {
+  DirectoryPickerOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn DirectoryPickerOptions::from_js_ffi(
+  value : JsValue,
+) -> DirectoryPickerOptions =
+  #| (v) => ({
+  #|   id: v.id,
+  #|   startIn: (v.startIn === undefined ? { $tag: 0 } : { $tag: 1, _0: v.startIn }),
+  #|   mode: (v.mode === undefined ? undefined : ['read', 'readwrite'].indexOf(v.mode))
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn DirectoryPickerOptions::from_js(
+  value : JsValue,
+) -> DirectoryPickerOptions {
+  DirectoryPickerOptions::from_js_ffi(value)
+}

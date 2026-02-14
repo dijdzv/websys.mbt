@@ -1,0 +1,10 @@
+{
+  "name": "dijdzv/websys-test",
+  "version": "0.0.1",
+  "deps": {
+    "dijdzv/websys": { "path": ".." },
+    "moonbitlang/async": "0.16.0"
+  },
+  "source": "src",
+  "preferred-target": "js"
+}

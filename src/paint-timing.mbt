@@ -61,4 +61,4 @@ pub extern "js" fn PerformancePaintTiming::get_paint_time(
 pub extern "js" fn PerformancePaintTiming::get_presentation_time(
   self : PerformancePaintTiming,
 ) -> DOMHighResTimeStamp? =
-  #| (self) => { const v = self.presentationTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; }
+  #| (self) => (() => { const v = self.presentationTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

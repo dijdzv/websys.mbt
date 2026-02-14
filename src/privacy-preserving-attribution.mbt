@@ -1,5 +1,5 @@
 // Generated from WebIDL - DO NOT EDIT
-// Source: @webref/idl/attribution
+// Source: @webref/idl/privacy-preserving-attribution
 
 ///|
 /// AttributionAggregationProtocol enum

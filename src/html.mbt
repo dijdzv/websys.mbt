@@ -4981,18 +4981,6 @@ pub extern "js" fn HTMLElement::as_html_fenced_frame_element(
   #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn HTMLElement::as_html_permission_element(
-  self : HTMLElement,
-) -> HTMLPermissionElement? =
-  #| (self) => (self instanceof HTMLPermissionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn HTMLElement::as_html_geolocation_element(
-  self : HTMLElement,
-) -> HTMLGeolocationElement? =
-  #| (self) => (self instanceof HTMLGeolocationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn HTMLElement::new() -> HTMLElement =
   #| () => new HTMLElement()
 
@@ -27803,6 +27791,10 @@ pub extern "js" fn Navigator::get_installed_related_apps(
   #| (self) => self.getInstalledRelatedApps()
 
 ///|
+pub extern "js" fn Navigator::get_attribution(self : Navigator) -> Attribution =
+  #| (self) => self.attribution
+
+///|
 pub extern "js" fn Navigator::get_battery(
   self : Navigator,
 ) -> Promise[BatteryManager] =
@@ -27991,10 +27983,6 @@ pub extern "js" fn Navigator::ad_auction_components(
 ///|
 pub extern "js" fn Navigator::get_permissions(self : Navigator) -> Permissions =
   #| (self) => self.permissions
-
-///|
-pub extern "js" fn Navigator::get_attribution(self : Navigator) -> Attribution =
-  #| (self) => self.attribution
 
 ///|
 pub extern "js" fn Navigator::send_beacon(

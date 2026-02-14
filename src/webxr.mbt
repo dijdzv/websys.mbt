@@ -1195,10 +1195,6 @@ pub extern "js" fn XRSession::get_dom_overlay_state(
   #| (self) => (() => { const v = self.domOverlayState; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn XRSession::get_max_render_layers(self : XRSession) -> Int =
-  #| (self) => self.maxRenderLayers
-
-///|
 /// XRRenderState interface
 pub type XRRenderState
 

@@ -3416,18 +3416,6 @@ pub extern "js" fn EventTarget::as_document_picture_in_picture(
   #| (self) => (self instanceof DocumentPictureInPicture) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_html_permission_element(
-  self : EventTarget,
-) -> HTMLPermissionElement? =
-  #| (self) => (self instanceof HTMLPermissionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_html_geolocation_element(
-  self : EventTarget,
-) -> HTMLGeolocationElement? =
-  #| (self) => (self instanceof HTMLGeolocationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn EventTarget::as_background_fetch_registration(
   self : EventTarget,
 ) -> BackgroundFetchRegistration? =
@@ -4882,18 +4870,6 @@ pub extern "js" fn Node::as_html_fenced_frame_element(
   self : Node,
 ) -> HTMLFencedFrameElement? =
   #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_html_permission_element(
-  self : Node,
-) -> HTMLPermissionElement? =
-  #| (self) => (self instanceof HTMLPermissionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_html_geolocation_element(
-  self : Node,
-) -> HTMLGeolocationElement? =
-  #| (self) => (self instanceof HTMLGeolocationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 // Node.ELEMENT_NODE
 
@@ -9071,18 +9047,6 @@ pub extern "js" fn Element::as_html_fenced_frame_element(
   self : Element,
 ) -> HTMLFencedFrameElement? =
   #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_html_permission_element(
-  self : Element,
-) -> HTMLPermissionElement? =
-  #| (self) => (self instanceof HTMLPermissionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_html_geolocation_element(
-  self : Element,
-) -> HTMLGeolocationElement? =
-  #| (self) => (self instanceof HTMLGeolocationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Element::get_namespace_uri(self : Element) -> String? =

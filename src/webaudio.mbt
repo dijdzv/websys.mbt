@@ -2467,12 +2467,6 @@ pub extern "js" fn AudioContext::set_onerror(
   #| (self, value) => { self.onerror = value }
 
 ///|
-pub extern "js" fn AudioContext::get_playback_stats(
-  self : AudioContext,
-) -> AudioPlaybackStats =
-  #| (self) => self.playbackStats
-
-///|
 pub extern "js" fn AudioContext::get_output_timestamp(
   self : AudioContext,
 ) -> AudioTimestamp =
@@ -5809,89 +5803,3 @@ pub extern "js" fn AudioWorkletProcessor::get_port(
   self : AudioWorkletProcessor,
 ) -> MessagePort =
   #| (self) => self.port
-
-///|
-/// AudioPlaybackStats interface
-pub type AudioPlaybackStats
-
-///|
-pub extern "js" fn AudioPlaybackStats::to_js_value(
-  self : AudioPlaybackStats,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Cast JsValue to AudioPlaybackStats (unchecked)
-pub extern "js" fn AudioPlaybackStats::from_js_value(
-  v : JsValue,
-) -> AudioPlaybackStats =
-  #| (v) => v
-
-///|
-/// Safely cast JsValue to AudioPlaybackStats (checked with instanceof)
-pub extern "js" fn AudioPlaybackStats::from_js_value_opt(
-  v : JsValue,
-) -> AudioPlaybackStats? =
-  #| (v) => (v instanceof AudioPlaybackStats) ? { $tag: 1, _0: v } : { $tag: 0 }
-
-///|
-/// Safely cast JsValue to AudioPlaybackStats (checked with instanceof)
-pub extern "js" fn JsValue::as_audio_playback_stats(
-  self : JsValue,
-) -> AudioPlaybackStats? =
-  #| (self) => (self instanceof AudioPlaybackStats) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Cast JsValue to AudioPlaybackStats (unchecked)
-pub extern "js" fn JsValue::to_audio_playback_stats(
-  self : JsValue,
-) -> AudioPlaybackStats =
-  #| (self) => self
-
-///|
-pub extern "js" fn AudioPlaybackStats::get_underrun_duration(
-  self : AudioPlaybackStats,
-) -> Double =
-  #| (self) => self.underrunDuration
-
-///|
-pub extern "js" fn AudioPlaybackStats::get_underrun_events(
-  self : AudioPlaybackStats,
-) -> Int =
-  #| (self) => self.underrunEvents
-
-///|
-pub extern "js" fn AudioPlaybackStats::get_total_duration(
-  self : AudioPlaybackStats,
-) -> Double =
-  #| (self) => self.totalDuration
-
-///|
-pub extern "js" fn AudioPlaybackStats::get_average_latency(
-  self : AudioPlaybackStats,
-) -> Double =
-  #| (self) => self.averageLatency
-
-///|
-pub extern "js" fn AudioPlaybackStats::get_minimum_latency(
-  self : AudioPlaybackStats,
-) -> Double =
-  #| (self) => self.minimumLatency
-
-///|
-pub extern "js" fn AudioPlaybackStats::get_maximum_latency(
-  self : AudioPlaybackStats,
-) -> Double =
-  #| (self) => self.maximumLatency
-
-///|
-pub extern "js" fn AudioPlaybackStats::reset_latency(
-  self : AudioPlaybackStats,
-) -> Unit =
-  #| (self) => self.resetLatency()
-
-///|
-pub extern "js" fn AudioPlaybackStats::to_json(
-  self : AudioPlaybackStats,
-) -> JsValue =
-  #| (self) => self.toJSON()

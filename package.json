@@ -7,6 +7,6 @@
         "generate:local": "rm -f ./src/*.mbt && bun ../webidl-bindgen.mbt/_build/js/release/build/webidl-bindgen.js --all --per-spec -o ./src/ && moon fmt"
     },
     "devDependencies": {
-        "webidl-bindgen.mbt": "^0.3.4"
+        "webidl-bindgen.mbt": "0.4.0"
     }
 }

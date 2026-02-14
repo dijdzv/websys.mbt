@@ -1,5 +1,6 @@
 {
   "npm_publish": false,
+  "git_release_enable": false,
   "semver_check": true,
   "bootstrap_sha": "c494082"
 }

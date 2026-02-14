@@ -1,6 +1,6 @@
 {
     "name": "dijdzv/websys",
-    "version": "0.1.6",
+    "version": "0.2.0",
     "deps": {
         "moonbitlang/async": "0.16"
     },

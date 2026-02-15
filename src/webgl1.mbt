@@ -597,6 +597,18 @@ pub extern "js" fn JsValue::to_web_gl_object(self : JsValue) -> WebGLObject =
   #| (self) => self
 
 ///|
+pub extern "js" fn WebGLObject::as_web_gl_timer_query_ext(
+  self : WebGLObject,
+) -> WebGLTimerQueryEXT? =
+  #| (self) => (self instanceof WebGLTimerQueryEXT) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn WebGLObject::as_web_gl_vertex_array_object_oes(
+  self : WebGLObject,
+) -> WebGLVertexArrayObjectOES? =
+  #| (self) => (self instanceof WebGLVertexArrayObjectOES) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn WebGLObject::as_web_gl_buffer(
   self : WebGLObject,
 ) -> WebGLBuffer? =
@@ -633,12 +645,6 @@ pub extern "js" fn WebGLObject::as_web_gl_texture(
   #| (self) => (self instanceof WebGLTexture) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn WebGLObject::as_web_gl_vertex_array_object_oes(
-  self : WebGLObject,
-) -> WebGLVertexArrayObjectOES? =
-  #| (self) => (self instanceof WebGLVertexArrayObjectOES) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn WebGLObject::as_web_gl_query(
   self : WebGLObject,
 ) -> WebGLQuery? =
@@ -667,12 +673,6 @@ pub extern "js" fn WebGLObject::as_web_gl_vertex_array_object(
   self : WebGLObject,
 ) -> WebGLVertexArrayObject? =
   #| (self) => (self instanceof WebGLVertexArrayObject) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn WebGLObject::as_web_gl_timer_query_ext(
-  self : WebGLObject,
-) -> WebGLTimerQueryEXT? =
-  #| (self) => (self instanceof WebGLTimerQueryEXT) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn WebGLObject::get_label(self : WebGLObject) -> String =
@@ -1094,6 +1094,28 @@ pub extern "js" fn JsValue::to_web_gl_rendering_context(
   self : JsValue,
 ) -> WebGLRenderingContext =
   #| (self) => self
+
+///|
+/// Error type for throwing methods
+pub(all) enum WebGLRenderingContextCompileShaderError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum WebGLRenderingContextShaderSourceError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum WebGLRenderingContextMakeXRCompatibleError {
+  AbortError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Show)
 
 // WebGLRenderingContext.DEPTH_BUFFER_BIT
 
@@ -2815,8 +2837,8 @@ pub extern "js" fn WebGLRenderingContext::color_mask(
 pub extern "js" fn WebGLRenderingContext::compile_shader(
   self : WebGLRenderingContext,
   shader : WebGLShader,
-) -> Unit =
-  #| (self, shader) => self.compileShader(shader)
+) -> Result[Unit, WebGLRenderingContextCompileShaderError] =
+  #| (self, shader) => (() => { try { self.compileShader(shader); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebGLRenderingContext::copy_tex_image_2d(
@@ -3330,8 +3352,8 @@ pub extern "js" fn WebGLRenderingContext::shader_source(
   self : WebGLRenderingContext,
   shader : WebGLShader,
   source : String,
-) -> Unit =
-  #| (self, shader, source) => self.shaderSource(shader, source)
+) -> Result[Unit, WebGLRenderingContextShaderSourceError] =
+  #| (self, shader, source) => (() => { try { self.shaderSource(shader, source); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebGLRenderingContext::stencil_func(
@@ -3589,8 +3611,8 @@ pub extern "js" fn WebGLRenderingContext::viewport(
 ///|
 pub extern "js" fn WebGLRenderingContext::make_xr_compatible(
   self : WebGLRenderingContext,
-) -> Promise[Unit] =
-  #| (self) => self.makeXRCompatible()
+) -> Promise[Result[Unit, WebGLRenderingContextMakeXRCompatibleError]] =
+  #| (self) => self.makeXRCompatible().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::buffer_data(

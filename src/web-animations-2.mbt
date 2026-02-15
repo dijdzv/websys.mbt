@@ -111,13 +111,13 @@ pub fn EffectTiming::default() -> EffectTiming {
 ///|
 extern "js" fn EffectTiming::to_js_ffi(self : EffectTiming) -> JsValue =
   #| (self) => ({
-  #|   delay: self.delay,
-  #|   endDelay: self.endDelay,
-  #|   playbackRate: self.playbackRate,
+  #|   delay: ((() => { const v = self.delay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   endDelay: ((() => { const v = self.endDelay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   playbackRate: ((() => { const v = self.playbackRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   duration: ((() => { const v = self.duration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   fill: ((() => { const v = self.fill; if (v === undefined) return undefined; return ['none', 'forwards', 'backwards', 'both', 'auto'][v]; })()),
-  #|   iterationStart: self.iterationStart,
-  #|   iterations: self.iterations,
+  #|   iterationStart: ((() => { const v = self.iterationStart; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   iterations: ((() => { const v = self.iterations; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   direction: ((() => { const v = self.direction; if (v === undefined) return undefined; return ['normal', 'reverse', 'alternate', 'alternate-reverse'][v]; })()),
   #|   easing: self.easing
   #| })
@@ -131,13 +131,13 @@ pub fn EffectTiming::to_js(self : EffectTiming) -> JsValue {
 ///|
 extern "js" fn EffectTiming::from_js_ffi(value : JsValue) -> EffectTiming =
   #| (v) => ({
-  #|   delay: v.delay,
-  #|   endDelay: v.endDelay,
-  #|   playbackRate: v.playbackRate,
+  #|   delay: (v.delay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.delay }),
+  #|   endDelay: (v.endDelay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.endDelay }),
+  #|   playbackRate: (v.playbackRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.playbackRate }),
   #|   duration: (v.duration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.duration }),
   #|   fill: (v.fill === undefined ? undefined : ['none', 'forwards', 'backwards', 'both', 'auto'].indexOf(v.fill)),
-  #|   iterationStart: v.iterationStart,
-  #|   iterations: v.iterations,
+  #|   iterationStart: (v.iterationStart === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iterationStart }),
+  #|   iterations: (v.iterations === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iterations }),
   #|   direction: (v.direction === undefined ? undefined : ['normal', 'reverse', 'alternate', 'alternate-reverse'].indexOf(v.direction)),
   #|   easing: v.easing
   #| })
@@ -183,12 +183,12 @@ extern "js" fn OptionalEffectTiming::to_js_ffi(
   self : OptionalEffectTiming,
 ) -> JsValue =
   #| (self) => ({
-  #|   playbackRate: self.playbackRate,
-  #|   delay: self.delay,
-  #|   endDelay: self.endDelay,
+  #|   playbackRate: ((() => { const v = self.playbackRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   delay: ((() => { const v = self.delay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   endDelay: ((() => { const v = self.endDelay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   fill: ((() => { const v = self.fill; if (v === undefined) return undefined; return ['none', 'forwards', 'backwards', 'both', 'auto'][v]; })()),
-  #|   iterationStart: self.iterationStart,
-  #|   iterations: self.iterations,
+  #|   iterationStart: ((() => { const v = self.iterationStart; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   iterations: ((() => { const v = self.iterations; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   duration: ((() => { const v = self.duration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   direction: ((() => { const v = self.direction; if (v === undefined) return undefined; return ['normal', 'reverse', 'alternate', 'alternate-reverse'][v]; })()),
   #|   easing: self.easing
@@ -205,12 +205,12 @@ extern "js" fn OptionalEffectTiming::from_js_ffi(
   value : JsValue,
 ) -> OptionalEffectTiming =
   #| (v) => ({
-  #|   playbackRate: v.playbackRate,
-  #|   delay: v.delay,
-  #|   endDelay: v.endDelay,
+  #|   playbackRate: (v.playbackRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.playbackRate }),
+  #|   delay: (v.delay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.delay }),
+  #|   endDelay: (v.endDelay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.endDelay }),
   #|   fill: (v.fill === undefined ? undefined : ['none', 'forwards', 'backwards', 'both', 'auto'].indexOf(v.fill)),
-  #|   iterationStart: v.iterationStart,
-  #|   iterations: v.iterations,
+  #|   iterationStart: (v.iterationStart === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iterationStart }),
+  #|   iterations: (v.iterations === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iterations }),
   #|   duration: (v.duration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.duration }),
   #|   direction: (v.direction === undefined ? undefined : ['normal', 'reverse', 'alternate', 'alternate-reverse'].indexOf(v.direction)),
   #|   easing: v.easing
@@ -269,13 +269,13 @@ extern "js" fn ComputedEffectTiming::to_js_ffi(
   self : ComputedEffectTiming,
 ) -> JsValue =
   #| (self) => ({
-  #|   delay: self.delay,
-  #|   endDelay: self.endDelay,
-  #|   playbackRate: self.playbackRate,
+  #|   delay: ((() => { const v = self.delay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   endDelay: ((() => { const v = self.endDelay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   playbackRate: ((() => { const v = self.playbackRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   duration: ((() => { const v = self.duration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   fill: ((() => { const v = self.fill; if (v === undefined) return undefined; return ['none', 'forwards', 'backwards', 'both', 'auto'][v]; })()),
-  #|   iterationStart: self.iterationStart,
-  #|   iterations: self.iterations,
+  #|   iterationStart: ((() => { const v = self.iterationStart; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   iterations: ((() => { const v = self.iterations; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   direction: ((() => { const v = self.direction; if (v === undefined) return undefined; return ['normal', 'reverse', 'alternate', 'alternate-reverse'][v]; })()),
   #|   easing: self.easing,
   #|   startTime: ((() => { const v = self.startTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
@@ -297,13 +297,13 @@ extern "js" fn ComputedEffectTiming::from_js_ffi(
   value : JsValue,
 ) -> ComputedEffectTiming =
   #| (v) => ({
-  #|   delay: v.delay,
-  #|   endDelay: v.endDelay,
-  #|   playbackRate: v.playbackRate,
+  #|   delay: (v.delay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.delay }),
+  #|   endDelay: (v.endDelay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.endDelay }),
+  #|   playbackRate: (v.playbackRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.playbackRate }),
   #|   duration: (v.duration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.duration }),
   #|   fill: (v.fill === undefined ? undefined : ['none', 'forwards', 'backwards', 'both', 'auto'].indexOf(v.fill)),
-  #|   iterationStart: v.iterationStart,
-  #|   iterations: v.iterations,
+  #|   iterationStart: (v.iterationStart === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iterationStart }),
+  #|   iterations: (v.iterations === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iterations }),
   #|   direction: (v.direction === undefined ? undefined : ['normal', 'reverse', 'alternate', 'alternate-reverse'].indexOf(v.direction)),
   #|   easing: v.easing,
   #|   startTime: (v.startTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.startTime }),
@@ -361,13 +361,13 @@ extern "js" fn KeyframeEffectOptions::to_js_ffi(
   self : KeyframeEffectOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   delay: self.delay,
-  #|   endDelay: self.endDelay,
-  #|   playbackRate: self.playbackRate,
+  #|   delay: ((() => { const v = self.delay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   endDelay: ((() => { const v = self.endDelay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   playbackRate: ((() => { const v = self.playbackRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   duration: ((() => { const v = self.duration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   fill: ((() => { const v = self.fill; if (v === undefined) return undefined; return ['none', 'forwards', 'backwards', 'both', 'auto'][v]; })()),
-  #|   iterationStart: self.iterationStart,
-  #|   iterations: self.iterations,
+  #|   iterationStart: ((() => { const v = self.iterationStart; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   iterations: ((() => { const v = self.iterations; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   direction: ((() => { const v = self.direction; if (v === undefined) return undefined; return ['normal', 'reverse', 'alternate', 'alternate-reverse'][v]; })()),
   #|   easing: self.easing,
   #|   iterationComposite: ((() => { const v = self.iterationComposite; if (v === undefined) return undefined; return ['replace', 'accumulate'][v]; })()),
@@ -386,13 +386,13 @@ extern "js" fn KeyframeEffectOptions::from_js_ffi(
   value : JsValue,
 ) -> KeyframeEffectOptions =
   #| (v) => ({
-  #|   delay: v.delay,
-  #|   endDelay: v.endDelay,
-  #|   playbackRate: v.playbackRate,
+  #|   delay: (v.delay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.delay }),
+  #|   endDelay: (v.endDelay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.endDelay }),
+  #|   playbackRate: (v.playbackRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.playbackRate }),
   #|   duration: (v.duration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.duration }),
   #|   fill: (v.fill === undefined ? undefined : ['none', 'forwards', 'backwards', 'both', 'auto'].indexOf(v.fill)),
-  #|   iterationStart: v.iterationStart,
-  #|   iterations: v.iterations,
+  #|   iterationStart: (v.iterationStart === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iterationStart }),
+  #|   iterations: (v.iterations === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iterations }),
   #|   direction: (v.direction === undefined ? undefined : ['normal', 'reverse', 'alternate', 'alternate-reverse'].indexOf(v.direction)),
   #|   easing: v.easing,
   #|   iterationComposite: (v.iterationComposite === undefined ? undefined : ['replace', 'accumulate'].indexOf(v.iterationComposite)),
@@ -500,13 +500,13 @@ extern "js" fn KeyframeAnimationOptions::to_js_ffi(
   self : KeyframeAnimationOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   delay: self.delay,
-  #|   endDelay: self.endDelay,
-  #|   playbackRate: self.playbackRate,
+  #|   delay: ((() => { const v = self.delay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   endDelay: ((() => { const v = self.endDelay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   playbackRate: ((() => { const v = self.playbackRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   duration: ((() => { const v = self.duration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   fill: ((() => { const v = self.fill; if (v === undefined) return undefined; return ['none', 'forwards', 'backwards', 'both', 'auto'][v]; })()),
-  #|   iterationStart: self.iterationStart,
-  #|   iterations: self.iterations,
+  #|   iterationStart: ((() => { const v = self.iterationStart; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   iterations: ((() => { const v = self.iterations; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   direction: ((() => { const v = self.direction; if (v === undefined) return undefined; return ['normal', 'reverse', 'alternate', 'alternate-reverse'][v]; })()),
   #|   easing: self.easing,
   #|   iterationComposite: ((() => { const v = self.iterationComposite; if (v === undefined) return undefined; return ['replace', 'accumulate'][v]; })()),
@@ -532,13 +532,13 @@ extern "js" fn KeyframeAnimationOptions::from_js_ffi(
   value : JsValue,
 ) -> KeyframeAnimationOptions =
   #| (v) => ({
-  #|   delay: v.delay,
-  #|   endDelay: v.endDelay,
-  #|   playbackRate: v.playbackRate,
+  #|   delay: (v.delay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.delay }),
+  #|   endDelay: (v.endDelay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.endDelay }),
+  #|   playbackRate: (v.playbackRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.playbackRate }),
   #|   duration: (v.duration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.duration }),
   #|   fill: (v.fill === undefined ? undefined : ['none', 'forwards', 'backwards', 'both', 'auto'].indexOf(v.fill)),
-  #|   iterationStart: v.iterationStart,
-  #|   iterations: v.iterations,
+  #|   iterationStart: (v.iterationStart === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iterationStart }),
+  #|   iterations: (v.iterations === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iterations }),
   #|   direction: (v.direction === undefined ? undefined : ['normal', 'reverse', 'alternate', 'alternate-reverse'].indexOf(v.direction)),
   #|   easing: v.easing,
   #|   iterationComposite: (v.iterationComposite === undefined ? undefined : ['replace', 'accumulate'].indexOf(v.iterationComposite)),

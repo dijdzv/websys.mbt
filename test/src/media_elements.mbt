@@ -23,6 +23,7 @@ fn test_video_element() -> Unit {
   // type conversions
   let _media : @websys.HTMLMediaElement = video.to_html_media_element()
   let _html : @websys.HTMLElement = video.to_html_element()
+  println("  video_element: ok")
 }
 
 ///|
@@ -35,6 +36,7 @@ fn test_audio_element() -> Unit {
   let _media : @websys.HTMLMediaElement = audio.to_html_media_element()
   let _html : @websys.HTMLElement = audio.to_html_element()
   let _node : @websys.Node = audio.to_node()
+  println("  audio_element: ok")
 }
 
 ///|
@@ -62,4 +64,5 @@ fn test_source_element() -> Unit {
     "(max-width: 600px) 320px, 640px",
     label="sizes",
   )
+  println("  source_element: ok")
 }

@@ -121,7 +121,7 @@ extern "js" fn XRProjectionLayerInit::to_js_ffi(
   #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
   #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   depthFormat: ((() => { const v = self.depthFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   scaleFactor: self.scaleFactor,
+  #|   scaleFactor: ((() => { const v = self.scaleFactor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   clearOnAccess: (self.clearOnAccess === -1 ? undefined : self.clearOnAccess)
   #| })
 
@@ -139,7 +139,7 @@ extern "js" fn XRProjectionLayerInit::from_js_ffi(
   #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
   #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
   #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthFormat }),
-  #|   scaleFactor: v.scaleFactor,
+  #|   scaleFactor: (v.scaleFactor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.scaleFactor }),
   #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess)
   #| })
 
@@ -275,8 +275,8 @@ extern "js" fn XRQuadLayerInit::to_js_ffi(self : XRQuadLayerInit) -> JsValue =
   #|   isStatic: (self.isStatic === -1 ? undefined : self.isStatic),
   #|   clearOnAccess: (self.clearOnAccess === -1 ? undefined : self.clearOnAccess),
   #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   width: self.width,
-  #|   height: self.height
+  #|   width: ((() => { const v = self.width; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   height: ((() => { const v = self.height; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -299,8 +299,8 @@ extern "js" fn XRQuadLayerInit::from_js_ffi(value : JsValue) -> XRQuadLayerInit 
   #|   isStatic: (v.isStatic === undefined ? -1 : v.isStatic),
   #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess),
   #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
-  #|   width: v.width,
-  #|   height: v.height
+  #|   width: (v.width === undefined ? { $tag: 0 } : { $tag: 1, _0: v.width }),
+  #|   height: (v.height === undefined ? { $tag: 0 } : { $tag: 1, _0: v.height })
   #| })
 
 ///|
@@ -365,9 +365,9 @@ extern "js" fn XRCylinderLayerInit::to_js_ffi(
   #|   isStatic: (self.isStatic === -1 ? undefined : self.isStatic),
   #|   clearOnAccess: (self.clearOnAccess === -1 ? undefined : self.clearOnAccess),
   #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   radius: self.radius,
-  #|   centralAngle: self.centralAngle,
-  #|   aspectRatio: self.aspectRatio
+  #|   radius: ((() => { const v = self.radius; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   centralAngle: ((() => { const v = self.centralAngle; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   aspectRatio: ((() => { const v = self.aspectRatio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -392,9 +392,9 @@ extern "js" fn XRCylinderLayerInit::from_js_ffi(
   #|   isStatic: (v.isStatic === undefined ? -1 : v.isStatic),
   #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess),
   #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
-  #|   radius: v.radius,
-  #|   centralAngle: v.centralAngle,
-  #|   aspectRatio: v.aspectRatio
+  #|   radius: (v.radius === undefined ? { $tag: 0 } : { $tag: 1, _0: v.radius }),
+  #|   centralAngle: (v.centralAngle === undefined ? { $tag: 0 } : { $tag: 1, _0: v.centralAngle }),
+  #|   aspectRatio: (v.aspectRatio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.aspectRatio })
   #| })
 
 ///|
@@ -461,10 +461,10 @@ extern "js" fn XREquirectLayerInit::to_js_ffi(
   #|   isStatic: (self.isStatic === -1 ? undefined : self.isStatic),
   #|   clearOnAccess: (self.clearOnAccess === -1 ? undefined : self.clearOnAccess),
   #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   radius: self.radius,
-  #|   centralHorizontalAngle: self.centralHorizontalAngle,
-  #|   upperVerticalAngle: self.upperVerticalAngle,
-  #|   lowerVerticalAngle: self.lowerVerticalAngle
+  #|   radius: ((() => { const v = self.radius; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   centralHorizontalAngle: ((() => { const v = self.centralHorizontalAngle; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   upperVerticalAngle: ((() => { const v = self.upperVerticalAngle; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   lowerVerticalAngle: ((() => { const v = self.lowerVerticalAngle; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -489,10 +489,10 @@ extern "js" fn XREquirectLayerInit::from_js_ffi(
   #|   isStatic: (v.isStatic === undefined ? -1 : v.isStatic),
   #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess),
   #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
-  #|   radius: v.radius,
-  #|   centralHorizontalAngle: v.centralHorizontalAngle,
-  #|   upperVerticalAngle: v.upperVerticalAngle,
-  #|   lowerVerticalAngle: v.lowerVerticalAngle
+  #|   radius: (v.radius === undefined ? { $tag: 0 } : { $tag: 1, _0: v.radius }),
+  #|   centralHorizontalAngle: (v.centralHorizontalAngle === undefined ? { $tag: 0 } : { $tag: 1, _0: v.centralHorizontalAngle }),
+  #|   upperVerticalAngle: (v.upperVerticalAngle === undefined ? { $tag: 0 } : { $tag: 1, _0: v.upperVerticalAngle }),
+  #|   lowerVerticalAngle: (v.lowerVerticalAngle === undefined ? { $tag: 0 } : { $tag: 1, _0: v.lowerVerticalAngle })
   #| })
 
 ///|
@@ -722,8 +722,8 @@ extern "js" fn XRMediaCylinderLayerInit::to_js_ffi(
   #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
   #|   invertStereo: (self.invertStereo === -1 ? undefined : self.invertStereo),
   #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   radius: self.radius,
-  #|   centralAngle: self.centralAngle,
+  #|   radius: ((() => { const v = self.radius; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   centralAngle: ((() => { const v = self.centralAngle; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   aspectRatio: ((() => { const v = self.aspectRatio; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
@@ -744,8 +744,8 @@ extern "js" fn XRMediaCylinderLayerInit::from_js_ffi(
   #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
   #|   invertStereo: (v.invertStereo === undefined ? -1 : v.invertStereo),
   #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
-  #|   radius: v.radius,
-  #|   centralAngle: v.centralAngle,
+  #|   radius: (v.radius === undefined ? { $tag: 0 } : { $tag: 1, _0: v.radius }),
+  #|   centralAngle: (v.centralAngle === undefined ? { $tag: 0 } : { $tag: 1, _0: v.centralAngle }),
   #|   aspectRatio: (v.aspectRatio === undefined ? { $tag: 0 } : v.aspectRatio === null ? { $tag: 1 } : { $tag: 2, _0: v.aspectRatio })
   #| })
 
@@ -796,10 +796,10 @@ extern "js" fn XRMediaEquirectLayerInit::to_js_ffi(
   #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'][v]; })()),
   #|   invertStereo: (self.invertStereo === -1 ? undefined : self.invertStereo),
   #|   transform: ((() => { const v = self.transform; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   radius: self.radius,
-  #|   centralHorizontalAngle: self.centralHorizontalAngle,
-  #|   upperVerticalAngle: self.upperVerticalAngle,
-  #|   lowerVerticalAngle: self.lowerVerticalAngle
+  #|   radius: ((() => { const v = self.radius; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   centralHorizontalAngle: ((() => { const v = self.centralHorizontalAngle; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   upperVerticalAngle: ((() => { const v = self.upperVerticalAngle; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   lowerVerticalAngle: ((() => { const v = self.lowerVerticalAngle; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -819,10 +819,10 @@ extern "js" fn XRMediaEquirectLayerInit::from_js_ffi(
   #|   layout: (v.layout === undefined ? undefined : ['default', 'mono', 'stereo', 'stereo-left-right', 'stereo-top-bottom'].indexOf(v.layout)),
   #|   invertStereo: (v.invertStereo === undefined ? -1 : v.invertStereo),
   #|   transform: (v.transform === undefined ? { $tag: 0 } : v.transform === null ? { $tag: 1 } : { $tag: 2, _0: v.transform }),
-  #|   radius: v.radius,
-  #|   centralHorizontalAngle: v.centralHorizontalAngle,
-  #|   upperVerticalAngle: v.upperVerticalAngle,
-  #|   lowerVerticalAngle: v.lowerVerticalAngle
+  #|   radius: (v.radius === undefined ? { $tag: 0 } : { $tag: 1, _0: v.radius }),
+  #|   centralHorizontalAngle: (v.centralHorizontalAngle === undefined ? { $tag: 0 } : { $tag: 1, _0: v.centralHorizontalAngle }),
+  #|   upperVerticalAngle: (v.upperVerticalAngle === undefined ? { $tag: 0 } : { $tag: 1, _0: v.upperVerticalAngle }),
+  #|   lowerVerticalAngle: (v.lowerVerticalAngle === undefined ? { $tag: 0 } : { $tag: 1, _0: v.lowerVerticalAngle })
   #| })
 
 ///|
@@ -1111,7 +1111,7 @@ pub extern "js" fn XRProjectionLayer::get_ignore_depth_values(
 pub extern "js" fn XRProjectionLayer::get_fixed_foveation(
   self : XRProjectionLayer,
 ) -> Double? =
-  #| (self) => (self.fixedFoveation) ?? undefined
+  #| (self) => (() => { const v = self.fixedFoveation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRProjectionLayer::set_fixed_foveation(
@@ -1224,17 +1224,15 @@ pub extern "js" fn XRQuadLayer::set_height(
   #| (self, value) => { self.height = value }
 
 ///|
-pub extern "js" fn XRQuadLayer::get_onredraw(
-  self : XRQuadLayer,
-) -> EventHandler =
-  #| (self) => self.onredraw
-
-///|
 pub extern "js" fn XRQuadLayer::set_onredraw(
   self : XRQuadLayer,
-  value : EventHandler,
+  handler : (XRLayerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onredraw = value }
+  #| (self, handler) => { self.onredraw = (e) => handler(e) }
+
+///|
+pub extern "js" fn XRQuadLayer::clear_onredraw(self : XRQuadLayer) -> Unit =
+  #| (self) => { self.onredraw = null }
 
 ///|
 /// XRCylinderLayer interface
@@ -1358,17 +1356,17 @@ pub extern "js" fn XRCylinderLayer::set_aspect_ratio(
   #| (self, value) => { self.aspectRatio = value }
 
 ///|
-pub extern "js" fn XRCylinderLayer::get_onredraw(
-  self : XRCylinderLayer,
-) -> EventHandler =
-  #| (self) => self.onredraw
-
-///|
 pub extern "js" fn XRCylinderLayer::set_onredraw(
   self : XRCylinderLayer,
-  value : EventHandler,
+  handler : (XRLayerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onredraw = value }
+  #| (self, handler) => { self.onredraw = (e) => handler(e) }
+
+///|
+pub extern "js" fn XRCylinderLayer::clear_onredraw(
+  self : XRCylinderLayer,
+) -> Unit =
+  #| (self) => { self.onredraw = null }
 
 ///|
 /// XREquirectLayer interface
@@ -1505,17 +1503,17 @@ pub extern "js" fn XREquirectLayer::set_lower_vertical_angle(
   #| (self, value) => { self.lowerVerticalAngle = value }
 
 ///|
-pub extern "js" fn XREquirectLayer::get_onredraw(
-  self : XREquirectLayer,
-) -> EventHandler =
-  #| (self) => self.onredraw
-
-///|
 pub extern "js" fn XREquirectLayer::set_onredraw(
   self : XREquirectLayer,
-  value : EventHandler,
+  handler : (XRLayerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onredraw = value }
+  #| (self, handler) => { self.onredraw = (e) => handler(e) }
+
+///|
+pub extern "js" fn XREquirectLayer::clear_onredraw(
+  self : XREquirectLayer,
+) -> Unit =
+  #| (self) => { self.onredraw = null }
 
 ///|
 /// XRCubeLayer interface
@@ -1586,17 +1584,15 @@ pub extern "js" fn XRCubeLayer::set_orientation(
   #| (self, value) => { self.orientation = value }
 
 ///|
-pub extern "js" fn XRCubeLayer::get_onredraw(
-  self : XRCubeLayer,
-) -> EventHandler =
-  #| (self) => self.onredraw
-
-///|
 pub extern "js" fn XRCubeLayer::set_onredraw(
   self : XRCubeLayer,
-  value : EventHandler,
+  handler : (XRLayerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onredraw = value }
+  #| (self, handler) => { self.onredraw = (e) => handler(e) }
+
+///|
+pub extern "js" fn XRCubeLayer::clear_onredraw(self : XRCubeLayer) -> Unit =
+  #| (self) => { self.onredraw = null }
 
 ///|
 /// XRSubImage interface
@@ -1777,11 +1773,40 @@ pub extern "js" fn JsValue::to_xr_web_gl_binding(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum XRWebGLBindingConstructorError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum XRWebGLBindingGetSubImageError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum XRWebGLBindingGetViewSubImageError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum XRWebGLBindingGetDepthInformationError {
+  InvalidStateError(JsError)
+  NotSupportedError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn XRWebGLBinding::new(
   session : XRSession,
   context : XRWebGLRenderingContext,
-) -> XRWebGLBinding =
-  #| (session, context) => new XRWebGLBinding(session, context)
+) -> Result[XRWebGLBinding, XRWebGLBindingConstructorError] =
+  #| (session, context) => (() => { try { return { $tag: 1, _0: new XRWebGLBinding(session, context) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XRWebGLBinding::get_native_projection_scale_factor(
@@ -1905,8 +1930,8 @@ pub extern "js" fn XRWebGLBinding::get_sub_image(
   self : XRWebGLBinding,
   layer : XRCompositionLayer,
   frame : XRFrame,
-) -> XRWebGLSubImage =
-  #| (self, layer, frame) => self.getSubImage(layer, frame)
+) -> Result[XRWebGLSubImage, XRWebGLBindingGetSubImageError] =
+  #| (self, layer, frame) => (() => { try { return { $tag: 1, _0: self.getSubImage(layer, frame) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XRWebGLBinding::get_sub_image_with_eye(
@@ -1914,16 +1939,16 @@ pub extern "js" fn XRWebGLBinding::get_sub_image_with_eye(
   layer : XRCompositionLayer,
   frame : XRFrame,
   eye : XREye,
-) -> XRWebGLSubImage =
-  #| (self, layer, frame, eye) => self.getSubImage(layer, frame, ['none', 'left', 'right'][eye])
+) -> Result[XRWebGLSubImage, XRWebGLBindingGetSubImageError] =
+  #| (self, layer, frame, eye) => (() => { try { return { $tag: 1, _0: self.getSubImage(layer, frame, ['none', 'left', 'right'][eye]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XRWebGLBinding::get_view_sub_image(
   self : XRWebGLBinding,
   layer : XRProjectionLayer,
   view : XRView,
-) -> XRWebGLSubImage =
-  #| (self, layer, view) => self.getViewSubImage(layer, view)
+) -> Result[XRWebGLSubImage, XRWebGLBindingGetViewSubImageError] =
+  #| (self, layer, view) => (() => { try { return { $tag: 1, _0: self.getViewSubImage(layer, view) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XRWebGLBinding::foveate_bound_texture(
@@ -1934,20 +1959,6 @@ pub extern "js" fn XRWebGLBinding::foveate_bound_texture(
   #| (self, target, fixed_foveation) => self.foveateBoundTexture(target, fixed_foveation)
 
 ///|
-pub extern "js" fn XRWebGLBinding::get_reflection_cube_map(
-  self : XRWebGLBinding,
-  light_probe : XRLightProbe,
-) -> WebGLTexture? =
-  #| (self, light_probe) => (() => { const v = self.getReflectionCubeMap(light_probe); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-pub extern "js" fn XRWebGLBinding::get_depth_information(
-  self : XRWebGLBinding,
-  view : XRView,
-) -> XRWebGLDepthInformation? =
-  #| (self, view) => (() => { const v = self.getDepthInformation(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
 pub extern "js" fn XRWebGLBinding::get_camera_image(
   self : XRWebGLBinding,
   camera : XRCamera,
@@ -1955,18 +1966,32 @@ pub extern "js" fn XRWebGLBinding::get_camera_image(
   #| (self, camera) => (() => { const v = self.getCameraImage(camera); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+pub extern "js" fn XRWebGLBinding::get_depth_information(
+  self : XRWebGLBinding,
+  view : XRView,
+) -> Result[XRWebGLDepthInformation?, XRWebGLBindingGetDepthInformationError] =
+  #| (self, view) => (() => { try { return { $tag: 1, _0: (() => { const v = self.getDepthInformation(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn XRWebGLBinding::get_reflection_cube_map(
+  self : XRWebGLBinding,
+  light_probe : XRLightProbe,
+) -> WebGLTexture? =
+  #| (self, light_probe) => (() => { const v = self.getReflectionCubeMap(light_probe); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
 pub extern "js" fn XRWebGLBinding::new_with_web_gl_rendering_context(
   session : XRSession,
   context : WebGLRenderingContext,
-) -> XRWebGLBinding =
-  #| (session, context) => new XRWebGLBinding(session, context)
+) -> Result[XRWebGLBinding, XRWebGLBindingConstructorError] =
+  #| (session, context) => (() => { try { return { $tag: 1, _0: new XRWebGLBinding(session, context) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XRWebGLBinding::new_with_web_gl2_rendering_context(
   session : XRSession,
   context : WebGL2RenderingContext,
-) -> XRWebGLBinding =
-  #| (session, context) => new XRWebGLBinding(session, context)
+) -> Result[XRWebGLBinding, XRWebGLBindingConstructorError] =
+  #| (session, context) => (() => { try { return { $tag: 1, _0: new XRWebGLBinding(session, context) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// XRMediaBinding interface
@@ -2005,8 +2030,17 @@ pub extern "js" fn JsValue::to_xr_media_binding(
   #| (self) => self
 
 ///|
-pub extern "js" fn XRMediaBinding::new(session : XRSession) -> XRMediaBinding =
-  #| (session) => new XRMediaBinding(session)
+/// Error type for throwing methods
+pub(all) enum XRMediaBindingConstructorError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+pub extern "js" fn XRMediaBinding::new(
+  session : XRSession,
+) -> Result[XRMediaBinding, XRMediaBindingConstructorError] =
+  #| (session) => (() => { try { return { $tag: 1, _0: new XRMediaBinding(session) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XRMediaBinding::create_quad_layer(

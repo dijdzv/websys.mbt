@@ -267,14 +267,14 @@ pub extern "js" fn PreferenceObject::request_override(
   #| (self, value) => self.requestOverride(value)
 
 ///|
-pub extern "js" fn PreferenceObject::get_onchange(
-  self : PreferenceObject,
-) -> EventHandler =
-  #| (self) => self.onchange
-
-///|
 pub extern "js" fn PreferenceObject::set_onchange(
   self : PreferenceObject,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onchange = value }
+  #| (self, handler) => { self.onchange = (e) => handler(e) }
+
+///|
+pub extern "js" fn PreferenceObject::clear_onchange(
+  self : PreferenceObject,
+) -> Unit =
+  #| (self) => { self.onchange = null }

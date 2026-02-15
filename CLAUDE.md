@@ -69,6 +69,13 @@ pub extern "js" fn HTMLElement::get_title(self : HTMLElement) -> String
 - `moon check`による型チェックで生成コードの正しさを検証する
 - `test/`配下に統合テストあり（別モジュール、Playwright + Chromium で実行）
 
+## コミットルール
+
+- バインディング再生成のコミットには `chore` ではなく **`feat`** または **`fix`** を使う
+  - `feat`: 新しいAPI・パターンの追加（typed errors, derive(Show), typed event handlers 等）
+  - `fix`: バグ修正（$tag fix, enum変換修正等）
+  - リリースPRの自動生成は conventional commits に基づくため、`chore` だとリリースフローに乗らない
+
 ## テスト
 
 ```bash

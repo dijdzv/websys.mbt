@@ -138,9 +138,9 @@ pub fn XRDepthStateInit::from_js(value : JsValue) -> XRDepthStateInit {
 /// XRSessionInit dictionary
 pub(all) struct XRSessionInit {
   depthSensing : XRDepthStateInit?
+  domOverlay : Nullable[XRDOMOverlayInit]
   requiredFeatures : Array[String]?
   optionalFeatures : Array[String]?
-  domOverlay : Nullable[XRDOMOverlayInit]
 }
 
 ///|
@@ -148,9 +148,9 @@ pub(all) struct XRSessionInit {
 pub fn XRSessionInit::default() -> XRSessionInit {
   XRSessionInit::{
     depthSensing: None,
+    domOverlay: Nullable::Undefined,
     requiredFeatures: None,
     optionalFeatures: None,
-    domOverlay: Nullable::Undefined,
   }
 }
 
@@ -158,9 +158,9 @@ pub fn XRSessionInit::default() -> XRSessionInit {
 extern "js" fn XRSessionInit::to_js_ffi(self : XRSessionInit) -> JsValue =
   #| (self) => ({
   #|   depthSensing: ((() => { const v = self.depthSensing; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   domOverlay: ((() => { const v = self.domOverlay; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   requiredFeatures: ((() => { const v = self.requiredFeatures; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   optionalFeatures: ((() => { const v = self.optionalFeatures; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   domOverlay: ((() => { const v = self.domOverlay; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
+  #|   optionalFeatures: ((() => { const v = self.optionalFeatures; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -173,9 +173,9 @@ pub fn XRSessionInit::to_js(self : XRSessionInit) -> JsValue {
 extern "js" fn XRSessionInit::from_js_ffi(value : JsValue) -> XRSessionInit =
   #| (v) => ({
   #|   depthSensing: (v.depthSensing === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthSensing }),
+  #|   domOverlay: (v.domOverlay === undefined ? { $tag: 0 } : v.domOverlay === null ? { $tag: 1 } : { $tag: 2, _0: v.domOverlay }),
   #|   requiredFeatures: (v.requiredFeatures === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requiredFeatures }),
-  #|   optionalFeatures: (v.optionalFeatures === undefined ? { $tag: 0 } : { $tag: 1, _0: v.optionalFeatures }),
-  #|   domOverlay: (v.domOverlay === undefined ? { $tag: 0 } : v.domOverlay === null ? { $tag: 1 } : { $tag: 2, _0: v.domOverlay })
+  #|   optionalFeatures: (v.optionalFeatures === undefined ? { $tag: 0 } : { $tag: 1, _0: v.optionalFeatures })
   #| })
 
 ///|
@@ -315,6 +315,13 @@ pub extern "js" fn XRCPUDepthInformation::to_xr_depth_information(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum XRCPUDepthInformationGetDepthInMetersError {
+  RangeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn XRCPUDepthInformation::get_data(
   self : XRCPUDepthInformation,
 ) -> ArrayBuffer =
@@ -325,8 +332,8 @@ pub extern "js" fn XRCPUDepthInformation::get_depth_in_meters(
   self : XRCPUDepthInformation,
   x : Double,
   y : Double,
-) -> Double =
-  #| (self, x, y) => self.getDepthInMeters(x, y)
+) -> Result[Double, XRCPUDepthInformationGetDepthInMetersError] =
+  #| (self, x, y) => (() => { try { return { $tag: 1, _0: self.getDepthInMeters(x, y) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// XRWebGLDepthInformation interface

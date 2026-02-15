@@ -10,4 +10,5 @@ fn test_console() -> Unit {
   @websys.console_time_end_with_label("test label")
   // If we get here without throwing, the test passes
   // (console.time / console.timeEnd are void functions)
+  println("  console: ok")
 }

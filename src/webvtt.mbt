@@ -44,7 +44,7 @@ pub extern "js" fn LineAndPositionSetting::is_auto_keyword(
 pub extern "js" fn LineAndPositionSetting::as_double(
   self : LineAndPositionSetting,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? self : undefined
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get LineAndPositionSetting as AutoKeyword

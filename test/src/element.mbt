@@ -14,12 +14,12 @@ pub fn test_element_matches() -> Unit {
   let doc = get_document()
   let el = doc.create_element("div")
   el.set_class_name("foo bar")
-  assert_true(el.matches(".foo"), label="matches .foo")
-  assert_true(el.matches(".bar"), label="matches .bar")
-  assert_true(el.matches("div"), label="matches div")
-  assert_false(el.matches(".baz"), label="not matches .baz")
-  assert_false(el.matches("span"), label="not matches span")
-  assert_true(el.matches("div.foo"), label="matches div.foo")
+  assert_true(el.matches(".foo").unwrap(), label="matches .foo")
+  assert_true(el.matches(".bar").unwrap(), label="matches .bar")
+  assert_true(el.matches("div").unwrap(), label="matches div")
+  assert_false(el.matches(".baz").unwrap(), label="not matches .baz")
+  assert_false(el.matches("span").unwrap(), label="not matches span")
+  assert_true(el.matches("div.foo").unwrap(), label="matches div.foo")
   assert_true(el.webkit_matches_selector(".foo"), label="webkitMatchesSelector")
   println("  element_matches: ok")
 }
@@ -65,7 +65,7 @@ pub fn test_element_query_selector() -> Unit {
   let _ = parent_node.append_child(child_node)
 
   // querySelector — Web API: parent.querySelector(selector) → Element?
-  match parent.query_selector("#target") {
+  match parent.query_selector("#target").unwrap() {
     Some(found) => {
       assert_eq(found.get_tag_name(), "SPAN", label="querySelector tagName")
       assert_eq(found.get_id(), "target", label="querySelector id")
@@ -74,20 +74,20 @@ pub fn test_element_query_selector() -> Unit {
   }
 
   // querySelector with class
-  match parent.query_selector(".highlight") {
+  match parent.query_selector(".highlight").unwrap() {
     Some(found) =>
       assert_eq(found.get_id(), "target", label="querySelector .highlight")
     None => abort("FAIL: querySelector returned None for .highlight")
   }
 
   // querySelector no match
-  match parent.query_selector(".nonexistent") {
+  match parent.query_selector(".nonexistent").unwrap() {
     None => () // expected
     Some(_) => abort("FAIL: querySelector returned Some for .nonexistent")
   }
 
   // querySelectorAll — Web API: parent.querySelectorAll(selector) → NodeList
-  let all = parent.query_selector_all("span")
+  let all = parent.query_selector_all("span").unwrap()
   assert_eq(all.get_length(), 1, label="querySelectorAll length")
   println("  element_query_selector: ok")
 }
@@ -174,7 +174,7 @@ pub fn test_element_properties() -> Unit {
   // inner_html / set_inner_html — uses TrustedHTMLOrString union type
   el.set_inner_html(
     @websys.TrustedHTMLOrString::from_string("<strong>Test</strong>"),
-  )
+  ).unwrap()
   match el.get_inner_html().as_string() {
     Some(html) => assert_eq(html, "<strong>Test</strong>", label="inner_html")
     None => abort("FAIL: get_inner_html returned non-string")
@@ -191,7 +191,7 @@ pub fn test_element_properties() -> Unit {
   el.insert_adjacent_html(
     "beforeend",
     @websys.TrustedHTMLOrString::from_string("<em>appended</em>"),
-  )
+  ).unwrap()
   match el.get_inner_html().as_string() {
     Some(html) =>
       assert_true(

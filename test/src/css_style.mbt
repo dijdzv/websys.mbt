@@ -10,13 +10,13 @@ fn test_css_style() -> Unit {
   // Initially no styles
   assert_eq(style.get_length(), 0, label="initially empty")
   // setProperty
-  style.set_property("color", "red")
+  style.set_property("color", "red").unwrap()
   assert_eq(style.get_property_value("color"), "red", label="color")
-  style.set_property("font-size", "16px")
+  style.set_property("font-size", "16px").unwrap()
   assert_eq(style.get_property_value("font-size"), "16px", label="font-size")
   assert_eq(style.get_length(), 2, label="length after set")
   // removeProperty
-  let removed = style.remove_property("color")
+  let removed = style.remove_property("color").unwrap()
   assert_eq(removed, "red", label="removed value")
   assert_eq(style.get_length(), 1, label="length after remove")
   // cssText
@@ -25,6 +25,7 @@ fn test_css_style() -> Unit {
     css_text.contains("font-size"),
     label="cssText contains font-size",
   )
+  println("  css_style: ok")
 }
 
 ///|
@@ -34,10 +35,11 @@ fn test_css_style_text() -> Unit {
   let html = @websys.HTMLElement::from_js_value(div.to_js_value())
   let style = html.get_style().to_css_style_declaration()
   // Test that HTMLElement.get_style() returns a usable style object
-  style.set_property("background-color", "blue")
+  style.set_property("background-color", "blue").unwrap()
   assert_eq(
     style.get_property_value("background-color"),
     "blue",
     label="background-color",
   )
+  println("  css_style_text: ok")
 }

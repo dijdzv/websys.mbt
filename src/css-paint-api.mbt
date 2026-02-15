@@ -90,12 +90,20 @@ pub extern "js" fn PaintWorkletGlobalScope::to_worklet_global_scope(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum PaintWorkletGlobalScopeRegisterPaintError {
+  TypeError(JsError)
+  InvalidModificationError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn PaintWorkletGlobalScope::register_paint(
   self : PaintWorkletGlobalScope,
   name : String,
   paint_ctor : VoidFunction,
-) -> Unit =
-  #| (self, name, paint_ctor) => self.registerPaint(name, paint_ctor)
+) -> Result[Unit, PaintWorkletGlobalScopeRegisterPaintError] =
+  #| (self, name, paint_ctor) => (() => { try { self.registerPaint(name, paint_ctor); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidModificationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn PaintWorkletGlobalScope::get_device_pixel_ratio(

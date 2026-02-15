@@ -16,7 +16,7 @@ pub fn SensorOptions::default() -> SensorOptions {
 ///|
 extern "js" fn SensorOptions::to_js_ffi(self : SensorOptions) -> JsValue =
   #| (self) => ({
-  #|   frequency: self.frequency
+  #|   frequency: ((() => { const v = self.frequency; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -28,7 +28,7 @@ pub fn SensorOptions::to_js(self : SensorOptions) -> JsValue {
 ///|
 extern "js" fn SensorOptions::from_js_ffi(value : JsValue) -> SensorOptions =
   #| (v) => ({
-  #|   frequency: v.frequency
+  #|   frequency: (v.frequency === undefined ? { $tag: 0 } : { $tag: 1, _0: v.frequency })
   #| })
 
 ///|
@@ -110,6 +110,36 @@ pub extern "js" fn Sensor::to_event_target(self : Sensor) -> EventTarget =
   #| (self) => self
 
 ///|
+pub extern "js" fn Sensor::as_accelerometer(self : Sensor) -> Accelerometer? =
+  #| (self) => (self instanceof Accelerometer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Sensor::as_linear_acceleration_sensor(
+  self : Sensor,
+) -> LinearAccelerationSensor? =
+  #| (self) => (self instanceof LinearAccelerationSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Sensor::as_gravity_sensor(self : Sensor) -> GravitySensor? =
+  #| (self) => (self instanceof GravitySensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Sensor::as_ambient_light_sensor(
+  self : Sensor,
+) -> AmbientLightSensor? =
+  #| (self) => (self instanceof AmbientLightSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Sensor::as_geolocation_sensor(
+  self : Sensor,
+) -> GeolocationSensor? =
+  #| (self) => (self instanceof GeolocationSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Sensor::as_gyroscope(self : Sensor) -> Gyroscope? =
+  #| (self) => (self instanceof Gyroscope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn Sensor::as_magnetometer(self : Sensor) -> Magnetometer? =
   #| (self) => (self instanceof Magnetometer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
@@ -118,22 +148,6 @@ pub extern "js" fn Sensor::as_uncalibrated_magnetometer(
   self : Sensor,
 ) -> UncalibratedMagnetometer? =
   #| (self) => (self instanceof UncalibratedMagnetometer) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Sensor::as_proximity_sensor(
-  self : Sensor,
-) -> ProximitySensor? =
-  #| (self) => (self instanceof ProximitySensor) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Sensor::as_gyroscope(self : Sensor) -> Gyroscope? =
-  #| (self) => (self instanceof Gyroscope) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Sensor::as_geolocation_sensor(
-  self : Sensor,
-) -> GeolocationSensor? =
-  #| (self) => (self instanceof GeolocationSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Sensor::as_orientation_sensor(
@@ -154,24 +168,10 @@ pub extern "js" fn Sensor::as_relative_orientation_sensor(
   #| (self) => (self instanceof RelativeOrientationSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Sensor::as_ambient_light_sensor(
+pub extern "js" fn Sensor::as_proximity_sensor(
   self : Sensor,
-) -> AmbientLightSensor? =
-  #| (self) => (self instanceof AmbientLightSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Sensor::as_accelerometer(self : Sensor) -> Accelerometer? =
-  #| (self) => (self instanceof Accelerometer) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Sensor::as_linear_acceleration_sensor(
-  self : Sensor,
-) -> LinearAccelerationSensor? =
-  #| (self) => (self instanceof LinearAccelerationSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Sensor::as_gravity_sensor(self : Sensor) -> GravitySensor? =
-  #| (self) => (self instanceof GravitySensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ProximitySensor? =
+  #| (self) => (self instanceof ProximitySensor) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Sensor::get_activated(self : Sensor) -> Bool =
@@ -194,37 +194,37 @@ pub extern "js" fn Sensor::stop(self : Sensor) -> Unit =
   #| (self) => self.stop()
 
 ///|
-pub extern "js" fn Sensor::get_onreading(self : Sensor) -> EventHandler =
-  #| (self) => self.onreading
-
-///|
 pub extern "js" fn Sensor::set_onreading(
   self : Sensor,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onreading = value }
+  #| (self, handler) => { self.onreading = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Sensor::get_onactivate(self : Sensor) -> EventHandler =
-  #| (self) => self.onactivate
+pub extern "js" fn Sensor::clear_onreading(self : Sensor) -> Unit =
+  #| (self) => { self.onreading = null }
 
 ///|
 pub extern "js" fn Sensor::set_onactivate(
   self : Sensor,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onactivate = value }
+  #| (self, handler) => { self.onactivate = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Sensor::get_onerror(self : Sensor) -> EventHandler =
-  #| (self) => self.onerror
+pub extern "js" fn Sensor::clear_onactivate(self : Sensor) -> Unit =
+  #| (self) => { self.onactivate = null }
 
 ///|
 pub extern "js" fn Sensor::set_onerror(
   self : Sensor,
-  value : EventHandler,
+  handler : (SensorErrorEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onerror = value }
+  #| (self, handler) => { self.onerror = (e) => handler(e) }
+
+///|
+pub extern "js" fn Sensor::clear_onerror(self : Sensor) -> Unit =
+  #| (self) => { self.onerror = null }
 
 ///|
 /// SensorErrorEvent interface

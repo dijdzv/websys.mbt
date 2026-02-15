@@ -229,7 +229,7 @@ extern "js" fn ChapterInformationInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   title: self.title,
-  #|   startTime: self.startTime,
+  #|   startTime: ((() => { const v = self.startTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   artwork: ((() => { const v = self.artwork; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -245,7 +245,7 @@ extern "js" fn ChapterInformationInit::from_js_ffi(
 ) -> ChapterInformationInit =
   #| (v) => ({
   #|   title: v.title,
-  #|   startTime: v.startTime,
+  #|   startTime: (v.startTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.startTime }),
   #|   artwork: (v.artwork === undefined ? { $tag: 0 } : { $tag: 1, _0: v.artwork })
   #| })
 
@@ -318,9 +318,9 @@ extern "js" fn MediaPositionState::to_js_ffi(
   self : MediaPositionState,
 ) -> JsValue =
   #| (self) => ({
-  #|   duration: self.duration,
-  #|   playbackRate: self.playbackRate,
-  #|   position: self.position
+  #|   duration: ((() => { const v = self.duration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   playbackRate: ((() => { const v = self.playbackRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   position: ((() => { const v = self.position; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -334,9 +334,9 @@ extern "js" fn MediaPositionState::from_js_ffi(
   value : JsValue,
 ) -> MediaPositionState =
   #| (v) => ({
-  #|   duration: v.duration,
-  #|   playbackRate: v.playbackRate,
-  #|   position: v.position
+  #|   duration: (v.duration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.duration }),
+  #|   playbackRate: (v.playbackRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.playbackRate }),
+  #|   position: (v.position === undefined ? { $tag: 0 } : { $tag: 1, _0: v.position })
   #| })
 
 ///|
@@ -377,8 +377,8 @@ extern "js" fn MediaSessionActionDetails::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   action: ['play', 'pause', 'seekbackward', 'seekforward', 'previoustrack', 'nexttrack', 'skipad', 'stop', 'seekto', 'togglemicrophone', 'togglecamera', 'togglescreenshare', 'hangup', 'previousslide', 'nextslide', 'enterpictureinpicture', 'voiceactivity'][self.action],
-  #|   seekOffset: self.seekOffset,
-  #|   seekTime: self.seekTime,
+  #|   seekOffset: ((() => { const v = self.seekOffset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   seekTime: ((() => { const v = self.seekTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   fastSeek: (self.fastSeek === -1 ? undefined : self.fastSeek),
   #|   isActivating: (self.isActivating === -1 ? undefined : self.isActivating),
   #|   enterPictureInPictureReason: ((() => { const v = self.enterPictureInPictureReason; if (v === undefined) return undefined; return ['other', 'useraction', 'contentoccluded'][v]; })())
@@ -398,8 +398,8 @@ extern "js" fn MediaSessionActionDetails::from_js_ffi(
 ) -> MediaSessionActionDetails =
   #| (v) => ({
   #|   action: ['play', 'pause', 'seekbackward', 'seekforward', 'previoustrack', 'nexttrack', 'skipad', 'stop', 'seekto', 'togglemicrophone', 'togglecamera', 'togglescreenshare', 'hangup', 'previousslide', 'nextslide', 'enterpictureinpicture', 'voiceactivity'].indexOf(v.action),
-  #|   seekOffset: v.seekOffset,
-  #|   seekTime: v.seekTime,
+  #|   seekOffset: (v.seekOffset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.seekOffset }),
+  #|   seekTime: (v.seekTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.seekTime }),
   #|   fastSeek: (v.fastSeek === undefined ? -1 : v.fastSeek),
   #|   isActivating: (v.isActivating === undefined ? -1 : v.isActivating),
   #|   enterPictureInPictureReason: (v.enterPictureInPictureReason === undefined ? undefined : ['other', 'useraction', 'contentoccluded'].indexOf(v.enterPictureInPictureReason))
@@ -444,6 +444,13 @@ pub extern "js" fn JsValue::to_media_session(self : JsValue) -> MediaSession =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum MediaSessionSetPositionStateError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn MediaSession::get_metadata(
   self : MediaSession,
 ) -> MediaMetadata? =
@@ -480,21 +487,21 @@ pub extern "js" fn MediaSession::set_action_handler(
 ///|
 pub extern "js" fn MediaSession::set_position_state(
   self : MediaSession,
-) -> Unit =
-  #| (self) => self.setPositionState()
+) -> Result[Unit, MediaSessionSetPositionStateError] =
+  #| (self) => (() => { try { self.setPositionState(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn MediaSession::set_position_state_with_state_ffi(
   self : MediaSession,
   state : JsValue,
-) -> Unit =
-  #| (self, state) => self.setPositionState(state)
+) -> Result[Unit, MediaSessionSetPositionStateError] =
+  #| (self, state) => (() => { try { self.setPositionState(state); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn MediaSession::set_position_state_with_state(
   self : MediaSession,
   state : MediaPositionState,
-) -> Unit {
+) -> Result[Unit, MediaSessionSetPositionStateError] {
   MediaSession::set_position_state_with_state_ffi(self, state.to_js())
 }
 

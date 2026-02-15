@@ -197,12 +197,30 @@ pub extern "js" fn JsValue::to_lock_manager(self : JsValue) -> LockManager =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum LockManagerRequestError {
+  AbortError(JsError)
+  SecurityError(JsError)
+  InvalidStateError(JsError)
+  NotSupportedError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum LockManagerQueryError {
+  SecurityError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn LockManager::request(
   self : LockManager,
   name : String,
   callback : LockGrantedCallback,
-) -> Promise[JsValue] =
-  #| (self, name, callback) => self.request(name, callback)
+) -> Promise[Result[JsValue, LockManagerRequestError]] =
+  #| (self, name, callback) => self.request(name, callback).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 extern "js" fn LockManager::request_with_name_and_options_lock_options_and_callback_lock_granted_callback_ffi(
@@ -210,8 +228,8 @@ extern "js" fn LockManager::request_with_name_and_options_lock_options_and_callb
   name : String,
   options : JsValue,
   callback : LockGrantedCallback,
-) -> Promise[JsValue] =
-  #| (self, name, options, callback) => self.request(name, options, callback)
+) -> Promise[Result[JsValue, LockManagerRequestError]] =
+  #| (self, name, options, callback) => self.request(name, options, callback).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub fn LockManager::request_with_name_and_options_lock_options_and_callback_lock_granted_callback(
@@ -219,7 +237,7 @@ pub fn LockManager::request_with_name_and_options_lock_options_and_callback_lock
   name : String,
   options : LockOptions,
   callback : LockGrantedCallback,
-) -> Promise[JsValue] {
+) -> Promise[Result[JsValue, LockManagerRequestError]] {
   LockManager::request_with_name_and_options_lock_options_and_callback_lock_granted_callback_ffi(
     self,
     name,
@@ -231,11 +249,11 @@ pub fn LockManager::request_with_name_and_options_lock_options_and_callback_lock
 ///|
 pub extern "js" fn LockManager::query(
   self : LockManager,
-) -> Promise[LockManagerSnapshot] =
+) -> Promise[Result[LockManagerSnapshot, LockManagerQueryError]] =
   #| (self) => self.query().then(v => ({
   #|   held: (v.held === undefined ? { $tag: 0 } : { $tag: 1, _0: v.held }),
   #|   pending: (v.pending === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pending })
-  #| }))
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 /// Lock interface

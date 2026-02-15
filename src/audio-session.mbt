@@ -124,14 +124,14 @@ pub extern "js" fn AudioSession::get_state(
   #| (self) => ['inactive', 'active', 'interrupted'].indexOf(self.state)
 
 ///|
-pub extern "js" fn AudioSession::get_onstatechange(
-  self : AudioSession,
-) -> EventHandler =
-  #| (self) => self.onstatechange
-
-///|
 pub extern "js" fn AudioSession::set_onstatechange(
   self : AudioSession,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onstatechange = value }
+  #| (self, handler) => { self.onstatechange = (e) => handler(e) }
+
+///|
+pub extern "js" fn AudioSession::clear_onstatechange(
+  self : AudioSession,
+) -> Unit =
+  #| (self) => { self.onstatechange = null }

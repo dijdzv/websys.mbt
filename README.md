@@ -36,6 +36,16 @@ just generate
 
 Source specifications: [@webref/idl](https://www.npmjs.com/package/@webref/idl)
 
+## Known Limitations
+
+### Typed Errors
+
+Methods that can throw return `Result[T, XxxError]` with specific error variants (e.g., `TypeError`, `SyntaxError`). Error detection relies on MDN documentation — some methods that throw may not have typed errors if their MDN page is missing or in an unrecognized format. In such cases, the method returns a plain value instead of `Result`. See `src/throws_not_found.md` for details.
+
+### Typed Event Handlers
+
+Event handler setters (e.g., `set_onclick`) accept callbacks with specific event types (e.g., `PointerEvent` instead of `Event`). Event type resolution also relies on MDN — approximately 90 event handlers fall back to the generic `Event` type due to missing MDN pages. See `src/event_type_report.md` for details.
+
 ## License
 
 MIT License

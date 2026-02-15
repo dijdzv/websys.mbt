@@ -25,7 +25,7 @@ extern "js" fn TransitionEventInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   propertyName: self.propertyName,
-  #|   elapsedTime: self.elapsedTime,
+  #|   elapsedTime: ((() => { const v = self.elapsedTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   pseudoElement: self.pseudoElement
   #| })
 
@@ -41,7 +41,7 @@ extern "js" fn TransitionEventInit::from_js_ffi(
 ) -> TransitionEventInit =
   #| (v) => ({
   #|   propertyName: v.propertyName,
-  #|   elapsedTime: v.elapsedTime,
+  #|   elapsedTime: (v.elapsedTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.elapsedTime }),
   #|   pseudoElement: v.pseudoElement
   #| })
 

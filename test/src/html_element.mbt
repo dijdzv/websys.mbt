@@ -87,14 +87,14 @@ pub fn test_html_element_bool_props() -> Unit {
   let el2 = create_html_element("span")
   let class_list = el2.to_element().get_class_list()
   assert_eq(class_list.get_length(), 0, label="classList initially empty")
-  class_list.add("cls1")
+  class_list.add("cls1").unwrap()
   assert_eq(class_list.get_length(), 1, label="classList length after add")
   assert_true(class_list.contains("cls1"), label="classList contains cls1")
   match class_list.get(0) {
     Some(v) => assert_eq(v, "cls1", label="classList get(0)")
     None => abort("FAIL: classList get(0) returned None")
   }
-  class_list.add("cls2")
+  class_list.add("cls2").unwrap()
   assert_eq(class_list.get_length(), 2, label="classList length after add cls2")
   class_list.remove("cls1")
   assert_false(class_list.contains("cls1"), label="classList cls1 removed")
@@ -112,9 +112,9 @@ pub fn test_html_element_bool_props() -> Unit {
   // style — via CSSStyleDeclaration API
   let el4 = create_html_element("div")
   let style = el4.get_style().to_css_style_declaration()
-  style.set_property("color", "red")
+  style.set_property("color", "red").unwrap()
   assert_eq(style.get_property_value("color"), "red", label="style color")
-  style.set_property("font-size", "14px")
+  style.set_property("font-size", "14px").unwrap()
   assert_eq(
     style.get_property_value("font-size"),
     "14px",

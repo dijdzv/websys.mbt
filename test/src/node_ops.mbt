@@ -22,6 +22,7 @@ fn test_node_clone() -> Unit {
   let deep_el = @websys.Element::from_js_value(deep.to_js_value())
   assert_eq(deep_el.get_id(), "original", label="deep clone id")
   assert_true(deep.has_child_nodes(), label="deep clone has children")
+  println("  node_clone: ok")
 }
 
 ///|
@@ -48,6 +49,7 @@ fn test_node_compare() -> Unit {
     child1.to_node().contains(Some(div.to_node())),
     label="child1 not contains div",
   )
+  println("  node_compare: ok")
 }
 
 ///|
@@ -66,4 +68,5 @@ fn test_node_replace() -> Unit {
     Some(el) => assert_eq(el.get_tag_name(), "EM", label="replaced element tag")
     None => abort("FAIL: no first element child after replace")
   }
+  println("  node_replace: ok")
 }

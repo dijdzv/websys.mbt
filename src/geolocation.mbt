@@ -278,25 +278,25 @@ pub extern "js" fn GeolocationCoordinates::get_longitude(
 pub extern "js" fn GeolocationCoordinates::get_altitude(
   self : GeolocationCoordinates,
 ) -> Double? =
-  #| (self) => (self.altitude) ?? undefined
+  #| (self) => (() => { const v = self.altitude; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn GeolocationCoordinates::get_altitude_accuracy(
   self : GeolocationCoordinates,
 ) -> Double? =
-  #| (self) => (self.altitudeAccuracy) ?? undefined
+  #| (self) => (() => { const v = self.altitudeAccuracy; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn GeolocationCoordinates::get_heading(
   self : GeolocationCoordinates,
 ) -> Double? =
-  #| (self) => (self.heading) ?? undefined
+  #| (self) => (() => { const v = self.heading; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn GeolocationCoordinates::get_speed(
   self : GeolocationCoordinates,
 ) -> Double? =
-  #| (self) => (self.speed) ?? undefined
+  #| (self) => (() => { const v = self.speed; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn GeolocationCoordinates::to_json(

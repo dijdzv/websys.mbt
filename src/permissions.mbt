@@ -149,11 +149,26 @@ pub extern "js" fn JsValue::to_permissions(self : JsValue) -> Permissions =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum PermissionsQueryError {
+  TypeError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum PermissionsRevokeError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn Permissions::query(
   self : Permissions,
   permission_desc : JsValue,
-) -> Promise[PermissionStatus] =
-  #| (self, permission_desc) => self.query(permission_desc)
+) -> Promise[Result[PermissionStatus, PermissionsQueryError]] =
+  #| (self, permission_desc) => self.query(permission_desc).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Permissions::request(
@@ -163,11 +178,12 @@ pub extern "js" fn Permissions::request(
   #| (self, permission_desc) => self.request(permission_desc)
 
 ///|
+/// @alert deprecated "revoke is deprecated"
 pub extern "js" fn Permissions::revoke(
   self : Permissions,
   permission_desc : JsValue,
-) -> Promise[PermissionStatus] =
-  #| (self, permission_desc) => self.revoke(permission_desc)
+) -> Promise[Result[PermissionStatus, PermissionsRevokeError]] =
+  #| (self, permission_desc) => self.revoke(permission_desc).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 /// PermissionStatus interface
@@ -214,16 +230,16 @@ pub extern "js" fn PermissionStatus::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn PermissionStatus::as_bluetooth_permission_result(
-  self : PermissionStatus,
-) -> BluetoothPermissionResult? =
-  #| (self) => (self instanceof BluetoothPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn PermissionStatus::as_bluetooth_le_scan_permission_result(
   self : PermissionStatus,
 ) -> BluetoothLEScanPermissionResult? =
   #| (self) => (self instanceof BluetoothLEScanPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn PermissionStatus::as_bluetooth_permission_result(
+  self : PermissionStatus,
+) -> BluetoothPermissionResult? =
+  #| (self) => (self instanceof BluetoothPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn PermissionStatus::as_usb_permission_result(
@@ -250,14 +266,14 @@ pub extern "js" fn PermissionStatus::get_name(
   #| (self) => self.name
 
 ///|
-pub extern "js" fn PermissionStatus::get_onchange(
-  self : PermissionStatus,
-) -> EventHandler =
-  #| (self) => self.onchange
-
-///|
 pub extern "js" fn PermissionStatus::set_onchange(
   self : PermissionStatus,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onchange = value }
+  #| (self, handler) => { self.onchange = (e) => handler(e) }
+
+///|
+pub extern "js" fn PermissionStatus::clear_onchange(
+  self : PermissionStatus,
+) -> Unit =
+  #| (self) => { self.onchange = null }

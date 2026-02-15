@@ -1,5 +1,5 @@
 // Generated from WebIDL - DO NOT EDIT
-// Source: @webref/idl/privacy-preserving-attribution
+// Source: @webref/idl/attribution
 
 ///|
 /// AttributionAggregationProtocol enum
@@ -218,7 +218,7 @@ extern "js" fn AttributionConversionOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   aggregationService: self.aggregationService,
-  #|   epsilon: self.epsilon,
+  #|   epsilon: ((() => { const v = self.epsilon; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   histogramSize: self.histogramSize,
   #|   lookbackDays: self.lookbackDays,
   #|   matchValues: ((() => { const v = self.matchValues; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -243,7 +243,7 @@ extern "js" fn AttributionConversionOptions::from_js_ffi(
 ) -> AttributionConversionOptions =
   #| (v) => ({
   #|   aggregationService: v.aggregationService,
-  #|   epsilon: v.epsilon,
+  #|   epsilon: (v.epsilon === undefined ? { $tag: 0 } : { $tag: 1, _0: v.epsilon }),
   #|   histogramSize: v.histogramSize,
   #|   lookbackDays: v.lookbackDays,
   #|   matchValues: (v.matchValues === undefined ? { $tag: 0 } : { $tag: 1, _0: v.matchValues }),

@@ -109,23 +109,30 @@ pub extern "js" fn JsValue::to_ink(self : JsValue) -> Ink =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum InkRequestPresenterError {
+  Error(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn Ink::request_presenter(
   self : Ink,
-) -> Promise[DelegatedInkTrailPresenter] =
-  #| (self) => self.requestPresenter()
+) -> Promise[Result[DelegatedInkTrailPresenter, InkRequestPresenterError]] =
+  #| (self) => self.requestPresenter().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Error') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn Ink::request_presenter_with_param_ffi(
   self : Ink,
   param : JsValue,
-) -> Promise[DelegatedInkTrailPresenter] =
-  #| (self, param) => self.requestPresenter(param)
+) -> Promise[Result[DelegatedInkTrailPresenter, InkRequestPresenterError]] =
+  #| (self, param) => self.requestPresenter(param).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Error') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn Ink::request_presenter_with_param(
   self : Ink,
   param : InkPresenterParam,
-) -> Promise[DelegatedInkTrailPresenter] {
+) -> Promise[Result[DelegatedInkTrailPresenter, InkRequestPresenterError]] {
   Ink::request_presenter_with_param_ffi(self, param.to_js())
 }
 
@@ -168,6 +175,13 @@ pub extern "js" fn JsValue::to_delegated_ink_trail_presenter(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum DelegatedInkTrailPresenterUpdateInkTrailStartPointError {
+  Error(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn DelegatedInkTrailPresenter::get_presentation_area(
   self : DelegatedInkTrailPresenter,
 ) -> Element? =
@@ -178,15 +192,15 @@ extern "js" fn DelegatedInkTrailPresenter::update_ink_trail_start_point_ffi(
   self : DelegatedInkTrailPresenter,
   event : PointerEvent,
   style : JsValue,
-) -> Unit =
-  #| (self, event, style) => self.updateInkTrailStartPoint(event, style)
+) -> Result[Unit, DelegatedInkTrailPresenterUpdateInkTrailStartPointError] =
+  #| (self, event, style) => (() => { try { self.updateInkTrailStartPoint(event, style); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Error') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn DelegatedInkTrailPresenter::update_ink_trail_start_point(
   self : DelegatedInkTrailPresenter,
   event : PointerEvent,
   style : InkTrailStyle,
-) -> Unit {
+) -> Result[Unit, DelegatedInkTrailPresenterUpdateInkTrailStartPointError] {
   DelegatedInkTrailPresenter::update_ink_trail_start_point_ffi(
     self,
     event,

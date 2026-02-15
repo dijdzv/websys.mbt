@@ -84,24 +84,52 @@ pub extern "js" fn RemotePlayback::to_event_target(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum RemotePlaybackWatchAvailabilityError {
+  InvalidStateError(JsError)
+  NotSupportedError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum RemotePlaybackCancelWatchAvailabilityError {
+  NotFoundError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum RemotePlaybackPromptError {
+  NotFoundError(JsError)
+  OperationError(JsError)
+  NotAllowedError(JsError)
+  InvalidStateError(JsError)
+  NotSupportedError(JsError)
+  InvalidAccessError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn RemotePlayback::watch_availability(
   self : RemotePlayback,
   callback : RemotePlaybackAvailabilityCallback,
-) -> Promise[Int] =
-  #| (self, callback) => self.watchAvailability(callback)
+) -> Promise[Result[Int, RemotePlaybackWatchAvailabilityError]] =
+  #| (self, callback) => self.watchAvailability(callback).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RemotePlayback::cancel_watch_availability(
   self : RemotePlayback,
-) -> Promise[Unit] =
-  #| (self) => self.cancelWatchAvailability()
+) -> Promise[Result[Unit, RemotePlaybackCancelWatchAvailabilityError]] =
+  #| (self) => self.cancelWatchAvailability().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RemotePlayback::cancel_watch_availability_with_id(
   self : RemotePlayback,
   id : Int,
-) -> Promise[Unit] =
-  #| (self, id) => self.cancelWatchAvailability(id)
+) -> Promise[Result[Unit, RemotePlaybackCancelWatchAvailabilityError]] =
+  #| (self, id) => self.cancelWatchAvailability(id).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RemotePlayback::get_state(
@@ -110,46 +138,46 @@ pub extern "js" fn RemotePlayback::get_state(
   #| (self) => ['connecting', 'connected', 'disconnected'].indexOf(self.state)
 
 ///|
-pub extern "js" fn RemotePlayback::get_onconnecting(
-  self : RemotePlayback,
-) -> EventHandler =
-  #| (self) => self.onconnecting
-
-///|
 pub extern "js" fn RemotePlayback::set_onconnecting(
   self : RemotePlayback,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onconnecting = value }
+  #| (self, handler) => { self.onconnecting = (e) => handler(e) }
 
 ///|
-pub extern "js" fn RemotePlayback::get_onconnect(
+pub extern "js" fn RemotePlayback::clear_onconnecting(
   self : RemotePlayback,
-) -> EventHandler =
-  #| (self) => self.onconnect
+) -> Unit =
+  #| (self) => { self.onconnecting = null }
 
 ///|
 pub extern "js" fn RemotePlayback::set_onconnect(
   self : RemotePlayback,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onconnect = value }
+  #| (self, handler) => { self.onconnect = (e) => handler(e) }
 
 ///|
-pub extern "js" fn RemotePlayback::get_ondisconnect(
+pub extern "js" fn RemotePlayback::clear_onconnect(
   self : RemotePlayback,
-) -> EventHandler =
-  #| (self) => self.ondisconnect
+) -> Unit =
+  #| (self) => { self.onconnect = null }
 
 ///|
 pub extern "js" fn RemotePlayback::set_ondisconnect(
   self : RemotePlayback,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ondisconnect = value }
+  #| (self, handler) => { self.ondisconnect = (e) => handler(e) }
+
+///|
+pub extern "js" fn RemotePlayback::clear_ondisconnect(
+  self : RemotePlayback,
+) -> Unit =
+  #| (self) => { self.ondisconnect = null }
 
 ///|
 pub extern "js" fn RemotePlayback::prompt(
   self : RemotePlayback,
-) -> Promise[Unit] =
-  #| (self) => self.prompt()
+) -> Promise[Result[Unit, RemotePlaybackPromptError]] =
+  #| (self) => self.prompt().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; if (n === 'InvalidAccessError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }))

@@ -19,10 +19,10 @@ pub fn DOMPointInit::default() -> DOMPointInit {
 ///|
 extern "js" fn DOMPointInit::to_js_ffi(self : DOMPointInit) -> JsValue =
   #| (self) => ({
-  #|   x: self.x,
-  #|   y: self.y,
-  #|   z: self.z,
-  #|   w: self.w
+  #|   x: ((() => { const v = self.x; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   y: ((() => { const v = self.y; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   z: ((() => { const v = self.z; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   w: ((() => { const v = self.w; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -34,10 +34,10 @@ pub fn DOMPointInit::to_js(self : DOMPointInit) -> JsValue {
 ///|
 extern "js" fn DOMPointInit::from_js_ffi(value : JsValue) -> DOMPointInit =
   #| (v) => ({
-  #|   x: v.x,
-  #|   y: v.y,
-  #|   z: v.z,
-  #|   w: v.w
+  #|   x: (v.x === undefined ? { $tag: 0 } : { $tag: 1, _0: v.x }),
+  #|   y: (v.y === undefined ? { $tag: 0 } : { $tag: 1, _0: v.y }),
+  #|   z: (v.z === undefined ? { $tag: 0 } : { $tag: 1, _0: v.z }),
+  #|   w: (v.w === undefined ? { $tag: 0 } : { $tag: 1, _0: v.w })
   #| })
 
 ///|
@@ -64,10 +64,10 @@ pub fn DOMRectInit::default() -> DOMRectInit {
 ///|
 extern "js" fn DOMRectInit::to_js_ffi(self : DOMRectInit) -> JsValue =
   #| (self) => ({
-  #|   x: self.x,
-  #|   y: self.y,
-  #|   width: self.width,
-  #|   height: self.height
+  #|   x: ((() => { const v = self.x; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   y: ((() => { const v = self.y; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   width: ((() => { const v = self.width; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   height: ((() => { const v = self.height; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -79,10 +79,10 @@ pub fn DOMRectInit::to_js(self : DOMRectInit) -> JsValue {
 ///|
 extern "js" fn DOMRectInit::from_js_ffi(value : JsValue) -> DOMRectInit =
   #| (v) => ({
-  #|   x: v.x,
-  #|   y: v.y,
-  #|   width: v.width,
-  #|   height: v.height
+  #|   x: (v.x === undefined ? { $tag: 0 } : { $tag: 1, _0: v.x }),
+  #|   y: (v.y === undefined ? { $tag: 0 } : { $tag: 1, _0: v.y }),
+  #|   width: (v.width === undefined ? { $tag: 0 } : { $tag: 1, _0: v.width }),
+  #|   height: (v.height === undefined ? { $tag: 0 } : { $tag: 1, _0: v.height })
   #| })
 
 ///|
@@ -175,18 +175,18 @@ pub fn DOMMatrix2DInit::default() -> DOMMatrix2DInit {
 ///|
 extern "js" fn DOMMatrix2DInit::to_js_ffi(self : DOMMatrix2DInit) -> JsValue =
   #| (self) => ({
-  #|   a: self.a,
-  #|   b: self.b,
-  #|   c: self.c,
-  #|   d: self.d,
-  #|   e: self.e,
-  #|   f: self.f,
-  #|   m11: self.m11,
-  #|   m12: self.m12,
-  #|   m21: self.m21,
-  #|   m22: self.m22,
-  #|   m41: self.m41,
-  #|   m42: self.m42
+  #|   a: ((() => { const v = self.a; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   b: ((() => { const v = self.b; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   c: ((() => { const v = self.c; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   d: ((() => { const v = self.d; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   e: ((() => { const v = self.e; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   f: ((() => { const v = self.f; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m11: ((() => { const v = self.m11; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m12: ((() => { const v = self.m12; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m21: ((() => { const v = self.m21; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m22: ((() => { const v = self.m22; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m41: ((() => { const v = self.m41; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m42: ((() => { const v = self.m42; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -198,18 +198,18 @@ pub fn DOMMatrix2DInit::to_js(self : DOMMatrix2DInit) -> JsValue {
 ///|
 extern "js" fn DOMMatrix2DInit::from_js_ffi(value : JsValue) -> DOMMatrix2DInit =
   #| (v) => ({
-  #|   a: v.a,
-  #|   b: v.b,
-  #|   c: v.c,
-  #|   d: v.d,
-  #|   e: v.e,
-  #|   f: v.f,
-  #|   m11: v.m11,
-  #|   m12: v.m12,
-  #|   m21: v.m21,
-  #|   m22: v.m22,
-  #|   m41: v.m41,
-  #|   m42: v.m42
+  #|   a: (v.a === undefined ? { $tag: 0 } : { $tag: 1, _0: v.a }),
+  #|   b: (v.b === undefined ? { $tag: 0 } : { $tag: 1, _0: v.b }),
+  #|   c: (v.c === undefined ? { $tag: 0 } : { $tag: 1, _0: v.c }),
+  #|   d: (v.d === undefined ? { $tag: 0 } : { $tag: 1, _0: v.d }),
+  #|   e: (v.e === undefined ? { $tag: 0 } : { $tag: 1, _0: v.e }),
+  #|   f: (v.f === undefined ? { $tag: 0 } : { $tag: 1, _0: v.f }),
+  #|   m11: (v.m11 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m11 }),
+  #|   m12: (v.m12 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m12 }),
+  #|   m21: (v.m21 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m21 }),
+  #|   m22: (v.m22 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m22 }),
+  #|   m41: (v.m41 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m41 }),
+  #|   m42: (v.m42 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m42 })
   #| })
 
 ///|
@@ -279,28 +279,28 @@ pub fn DOMMatrixInit::default() -> DOMMatrixInit {
 ///|
 extern "js" fn DOMMatrixInit::to_js_ffi(self : DOMMatrixInit) -> JsValue =
   #| (self) => ({
-  #|   a: self.a,
-  #|   b: self.b,
-  #|   c: self.c,
-  #|   d: self.d,
-  #|   e: self.e,
-  #|   f: self.f,
-  #|   m11: self.m11,
-  #|   m12: self.m12,
-  #|   m21: self.m21,
-  #|   m22: self.m22,
-  #|   m41: self.m41,
-  #|   m42: self.m42,
-  #|   m13: self.m13,
-  #|   m14: self.m14,
-  #|   m23: self.m23,
-  #|   m24: self.m24,
-  #|   m31: self.m31,
-  #|   m32: self.m32,
-  #|   m33: self.m33,
-  #|   m34: self.m34,
-  #|   m43: self.m43,
-  #|   m44: self.m44,
+  #|   a: ((() => { const v = self.a; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   b: ((() => { const v = self.b; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   c: ((() => { const v = self.c; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   d: ((() => { const v = self.d; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   e: ((() => { const v = self.e; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   f: ((() => { const v = self.f; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m11: ((() => { const v = self.m11; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m12: ((() => { const v = self.m12; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m21: ((() => { const v = self.m21; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m22: ((() => { const v = self.m22; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m41: ((() => { const v = self.m41; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m42: ((() => { const v = self.m42; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m13: ((() => { const v = self.m13; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m14: ((() => { const v = self.m14; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m23: ((() => { const v = self.m23; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m24: ((() => { const v = self.m24; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m31: ((() => { const v = self.m31; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m32: ((() => { const v = self.m32; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m33: ((() => { const v = self.m33; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m34: ((() => { const v = self.m34; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m43: ((() => { const v = self.m43; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   m44: ((() => { const v = self.m44; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   is2D: (self.is2D === -1 ? undefined : self.is2D)
   #| })
 
@@ -313,28 +313,28 @@ pub fn DOMMatrixInit::to_js(self : DOMMatrixInit) -> JsValue {
 ///|
 extern "js" fn DOMMatrixInit::from_js_ffi(value : JsValue) -> DOMMatrixInit =
   #| (v) => ({
-  #|   a: v.a,
-  #|   b: v.b,
-  #|   c: v.c,
-  #|   d: v.d,
-  #|   e: v.e,
-  #|   f: v.f,
-  #|   m11: v.m11,
-  #|   m12: v.m12,
-  #|   m21: v.m21,
-  #|   m22: v.m22,
-  #|   m41: v.m41,
-  #|   m42: v.m42,
-  #|   m13: v.m13,
-  #|   m14: v.m14,
-  #|   m23: v.m23,
-  #|   m24: v.m24,
-  #|   m31: v.m31,
-  #|   m32: v.m32,
-  #|   m33: v.m33,
-  #|   m34: v.m34,
-  #|   m43: v.m43,
-  #|   m44: v.m44,
+  #|   a: (v.a === undefined ? { $tag: 0 } : { $tag: 1, _0: v.a }),
+  #|   b: (v.b === undefined ? { $tag: 0 } : { $tag: 1, _0: v.b }),
+  #|   c: (v.c === undefined ? { $tag: 0 } : { $tag: 1, _0: v.c }),
+  #|   d: (v.d === undefined ? { $tag: 0 } : { $tag: 1, _0: v.d }),
+  #|   e: (v.e === undefined ? { $tag: 0 } : { $tag: 1, _0: v.e }),
+  #|   f: (v.f === undefined ? { $tag: 0 } : { $tag: 1, _0: v.f }),
+  #|   m11: (v.m11 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m11 }),
+  #|   m12: (v.m12 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m12 }),
+  #|   m21: (v.m21 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m21 }),
+  #|   m22: (v.m22 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m22 }),
+  #|   m41: (v.m41 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m41 }),
+  #|   m42: (v.m42 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m42 }),
+  #|   m13: (v.m13 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m13 }),
+  #|   m14: (v.m14 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m14 }),
+  #|   m23: (v.m23 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m23 }),
+  #|   m24: (v.m24 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m24 }),
+  #|   m31: (v.m31 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m31 }),
+  #|   m32: (v.m32 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m32 }),
+  #|   m33: (v.m33 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m33 }),
+  #|   m34: (v.m34 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m34 }),
+  #|   m43: (v.m43 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m43 }),
+  #|   m44: (v.m44 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.m44 }),
   #|   is2D: (v.is2D === undefined ? -1 : v.is2D)
   #| })
 
@@ -952,43 +952,78 @@ pub extern "js" fn DOMMatrixReadOnly::as_dom_matrix(
   #| (self) => (self instanceof DOMMatrix) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn DOMMatrixReadOnly::new() -> DOMMatrixReadOnly =
-  #| () => new DOMMatrixReadOnly()
+/// Error type for throwing methods
+pub(all) enum DOMMatrixReadOnlyConstructorError {
+  TypeError(JsError)
+  SyntaxError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum DOMMatrixReadOnlyFromMatrixError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum DOMMatrixReadOnlyFromFloat32ArrayError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum DOMMatrixReadOnlyFromFloat64ArrayError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+pub extern "js" fn DOMMatrixReadOnly::new() -> Result[
+  DOMMatrixReadOnly,
+  DOMMatrixReadOnlyConstructorError,
+] =
+  #| () => (() => { try { return { $tag: 1, _0: new DOMMatrixReadOnly() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DOMMatrixReadOnly::new_with_init(
   init_ : StringOrArrayOfDouble,
-) -> DOMMatrixReadOnly =
-  #| (init_) => new DOMMatrixReadOnly(init_)
+) -> Result[DOMMatrixReadOnly, DOMMatrixReadOnlyConstructorError] =
+  #| (init_) => (() => { try { return { $tag: 1, _0: new DOMMatrixReadOnly(init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn DOMMatrixReadOnly::from_matrix() -> DOMMatrixReadOnly =
-  #| () => DOMMatrixReadOnly.fromMatrix()
+pub extern "js" fn DOMMatrixReadOnly::from_matrix() -> Result[
+  DOMMatrixReadOnly,
+  DOMMatrixReadOnlyFromMatrixError,
+] =
+  #| () => (() => { try { return { $tag: 1, _0: DOMMatrixReadOnly.fromMatrix() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn DOMMatrixReadOnly::from_matrix_with_other_ffi(
   other : JsValue,
-) -> DOMMatrixReadOnly =
-  #| (other) => DOMMatrixReadOnly.fromMatrix(other)
+) -> Result[DOMMatrixReadOnly, DOMMatrixReadOnlyFromMatrixError] =
+  #| (other) => (() => { try { return { $tag: 1, _0: DOMMatrixReadOnly.fromMatrix(other) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn DOMMatrixReadOnly::from_matrix_with_other(
   other : DOMMatrixInit,
-) -> DOMMatrixReadOnly {
+) -> Result[DOMMatrixReadOnly, DOMMatrixReadOnlyFromMatrixError] {
   DOMMatrixReadOnly::from_matrix_with_other_ffi(other.to_js())
 }
 
 ///|
 pub extern "js" fn DOMMatrixReadOnly::from_float32_array(
   array32 : Float32Array,
-) -> DOMMatrixReadOnly =
-  #| (array32) => DOMMatrixReadOnly.fromFloat32Array(array32)
+) -> Result[DOMMatrixReadOnly, DOMMatrixReadOnlyFromFloat32ArrayError] =
+  #| (array32) => (() => { try { return { $tag: 1, _0: DOMMatrixReadOnly.fromFloat32Array(array32) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DOMMatrixReadOnly::from_float64_array(
   array64 : Float64Array,
-) -> DOMMatrixReadOnly =
-  #| (array64) => DOMMatrixReadOnly.fromFloat64Array(array64)
+) -> Result[DOMMatrixReadOnly, DOMMatrixReadOnlyFromFloat64ArrayError] =
+  #| (array64) => (() => { try { return { $tag: 1, _0: DOMMatrixReadOnly.fromFloat64Array(array64) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DOMMatrixReadOnly::get_a(self : DOMMatrixReadOnly) -> Double =
@@ -1369,41 +1404,78 @@ pub extern "js" fn DOMMatrix::to_dom_matrix_read_only(
   #| (self) => self
 
 ///|
-pub extern "js" fn DOMMatrix::new() -> DOMMatrix =
-  #| () => new DOMMatrix()
+/// Error type for throwing methods
+pub(all) enum DOMMatrixConstructorError {
+  TypeError(JsError)
+  SyntaxError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum DOMMatrixFromMatrixError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum DOMMatrixFromFloat32ArrayError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum DOMMatrixFromFloat64ArrayError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+pub extern "js" fn DOMMatrix::new() -> Result[
+  DOMMatrix,
+  DOMMatrixConstructorError,
+] =
+  #| () => (() => { try { return { $tag: 1, _0: new DOMMatrix() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DOMMatrix::new_with_init(
   init_ : StringOrArrayOfDouble,
-) -> DOMMatrix =
-  #| (init_) => new DOMMatrix(init_)
+) -> Result[DOMMatrix, DOMMatrixConstructorError] =
+  #| (init_) => (() => { try { return { $tag: 1, _0: new DOMMatrix(init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn DOMMatrix::from_matrix() -> DOMMatrix =
-  #| () => DOMMatrix.fromMatrix()
+pub extern "js" fn DOMMatrix::from_matrix() -> Result[
+  DOMMatrix,
+  DOMMatrixFromMatrixError,
+] =
+  #| () => (() => { try { return { $tag: 1, _0: DOMMatrix.fromMatrix() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn DOMMatrix::from_matrix_with_other_ffi(
   other : JsValue,
-) -> DOMMatrix =
-  #| (other) => DOMMatrix.fromMatrix(other)
+) -> Result[DOMMatrix, DOMMatrixFromMatrixError] =
+  #| (other) => (() => { try { return { $tag: 1, _0: DOMMatrix.fromMatrix(other) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
-pub fn DOMMatrix::from_matrix_with_other(other : DOMMatrixInit) -> DOMMatrix {
+pub fn DOMMatrix::from_matrix_with_other(
+  other : DOMMatrixInit,
+) -> Result[DOMMatrix, DOMMatrixFromMatrixError] {
   DOMMatrix::from_matrix_with_other_ffi(other.to_js())
 }
 
 ///|
 pub extern "js" fn DOMMatrix::from_float32_array(
   array32 : Float32Array,
-) -> DOMMatrix =
-  #| (array32) => DOMMatrix.fromFloat32Array(array32)
+) -> Result[DOMMatrix, DOMMatrixFromFloat32ArrayError] =
+  #| (array32) => (() => { try { return { $tag: 1, _0: DOMMatrix.fromFloat32Array(array32) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DOMMatrix::from_float64_array(
   array64 : Float64Array,
-) -> DOMMatrix =
-  #| (array64) => DOMMatrix.fromFloat64Array(array64)
+) -> Result[DOMMatrix, DOMMatrixFromFloat64ArrayError] =
+  #| (array64) => (() => { try { return { $tag: 1, _0: DOMMatrix.fromFloat64Array(array64) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DOMMatrix::get_a(self : DOMMatrix) -> Double =

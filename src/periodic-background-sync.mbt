@@ -120,26 +120,35 @@ pub extern "js" fn JsValue::to_periodic_sync_manager(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum PeriodicSyncManagerRegisterError {
+  NotAllowedError(JsError)
+  InvalidStateError(JsError)
+  InvalidAccessError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn PeriodicSyncManager::register(
   self : PeriodicSyncManager,
   tag : String,
-) -> Promise[Unit] =
-  #| (self, tag) => self.register(tag)
+) -> Promise[Result[Unit, PeriodicSyncManagerRegisterError]] =
+  #| (self, tag) => self.register(tag).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn PeriodicSyncManager::register_with_options_ffi(
   self : PeriodicSyncManager,
   tag : String,
   options : JsValue,
-) -> Promise[Unit] =
-  #| (self, tag, options) => self.register(tag, options)
+) -> Promise[Result[Unit, PeriodicSyncManagerRegisterError]] =
+  #| (self, tag, options) => self.register(tag, options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn PeriodicSyncManager::register_with_options(
   self : PeriodicSyncManager,
   tag : String,
   options : BackgroundSyncOptions,
-) -> Promise[Unit] {
+) -> Promise[Result[Unit, PeriodicSyncManagerRegisterError]] {
   PeriodicSyncManager::register_with_options_ffi(self, tag, options.to_js())
 }
 

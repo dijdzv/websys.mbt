@@ -198,13 +198,13 @@ extern "js" fn LayoutConstraintsOptions::to_js_ffi(
   self : LayoutConstraintsOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   availableInlineSize: self.availableInlineSize,
-  #|   availableBlockSize: self.availableBlockSize,
-  #|   fixedInlineSize: self.fixedInlineSize,
-  #|   fixedBlockSize: self.fixedBlockSize,
-  #|   percentageInlineSize: self.percentageInlineSize,
-  #|   percentageBlockSize: self.percentageBlockSize,
-  #|   blockFragmentationOffset: self.blockFragmentationOffset,
+  #|   availableInlineSize: ((() => { const v = self.availableInlineSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   availableBlockSize: ((() => { const v = self.availableBlockSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   fixedInlineSize: ((() => { const v = self.fixedInlineSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   fixedBlockSize: ((() => { const v = self.fixedBlockSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   percentageInlineSize: ((() => { const v = self.percentageInlineSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   percentageBlockSize: ((() => { const v = self.percentageBlockSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   blockFragmentationOffset: ((() => { const v = self.blockFragmentationOffset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   blockFragmentationType: ((() => { const v = self.blockFragmentationType; if (v === undefined) return undefined; return ['none', 'page', 'column', 'region'][v]; })()),
   #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
@@ -222,13 +222,13 @@ extern "js" fn LayoutConstraintsOptions::from_js_ffi(
   value : JsValue,
 ) -> LayoutConstraintsOptions =
   #| (v) => ({
-  #|   availableInlineSize: v.availableInlineSize,
-  #|   availableBlockSize: v.availableBlockSize,
-  #|   fixedInlineSize: v.fixedInlineSize,
-  #|   fixedBlockSize: v.fixedBlockSize,
-  #|   percentageInlineSize: v.percentageInlineSize,
-  #|   percentageBlockSize: v.percentageBlockSize,
-  #|   blockFragmentationOffset: v.blockFragmentationOffset,
+  #|   availableInlineSize: (v.availableInlineSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.availableInlineSize }),
+  #|   availableBlockSize: (v.availableBlockSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.availableBlockSize }),
+  #|   fixedInlineSize: (v.fixedInlineSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.fixedInlineSize }),
+  #|   fixedBlockSize: (v.fixedBlockSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.fixedBlockSize }),
+  #|   percentageInlineSize: (v.percentageInlineSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.percentageInlineSize }),
+  #|   percentageBlockSize: (v.percentageBlockSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.percentageBlockSize }),
+  #|   blockFragmentationOffset: (v.blockFragmentationOffset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.blockFragmentationOffset }),
   #|   blockFragmentationType: (v.blockFragmentationType === undefined ? undefined : ['none', 'page', 'column', 'region'].indexOf(v.blockFragmentationType)),
   #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data })
   #| })
@@ -313,9 +313,9 @@ extern "js" fn FragmentResultOptions::to_js_ffi(
   self : FragmentResultOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   inlineSize: self.inlineSize,
-  #|   blockSize: self.blockSize,
-  #|   autoBlockSize: self.autoBlockSize,
+  #|   inlineSize: ((() => { const v = self.inlineSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   blockSize: ((() => { const v = self.blockSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   autoBlockSize: ((() => { const v = self.autoBlockSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   childFragments: ((() => { const v = self.childFragments; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   breakToken: ((() => { const v = self.breakToken; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
@@ -332,9 +332,9 @@ extern "js" fn FragmentResultOptions::from_js_ffi(
   value : JsValue,
 ) -> FragmentResultOptions =
   #| (v) => ({
-  #|   inlineSize: v.inlineSize,
-  #|   blockSize: v.blockSize,
-  #|   autoBlockSize: v.autoBlockSize,
+  #|   inlineSize: (v.inlineSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.inlineSize }),
+  #|   blockSize: (v.blockSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.blockSize }),
+  #|   autoBlockSize: (v.autoBlockSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.autoBlockSize }),
   #|   childFragments: (v.childFragments === undefined ? { $tag: 0 } : { $tag: 1, _0: v.childFragments }),
   #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data }),
   #|   breakToken: (v.breakToken === undefined ? { $tag: 0 } : { $tag: 1, _0: v.breakToken })
@@ -364,8 +364,8 @@ extern "js" fn IntrinsicSizesResultOptions::to_js_ffi(
   self : IntrinsicSizesResultOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   maxContentSize: self.maxContentSize,
-  #|   minContentSize: self.minContentSize
+  #|   maxContentSize: ((() => { const v = self.maxContentSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   minContentSize: ((() => { const v = self.minContentSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -381,8 +381,8 @@ extern "js" fn IntrinsicSizesResultOptions::from_js_ffi(
   value : JsValue,
 ) -> IntrinsicSizesResultOptions =
   #| (v) => ({
-  #|   maxContentSize: v.maxContentSize,
-  #|   minContentSize: v.minContentSize
+  #|   maxContentSize: (v.maxContentSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maxContentSize }),
+  #|   minContentSize: (v.minContentSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.minContentSize })
   #| })
 
 ///|
@@ -688,13 +688,13 @@ pub extern "js" fn LayoutConstraints::get_available_block_size(
 pub extern "js" fn LayoutConstraints::get_fixed_inline_size(
   self : LayoutConstraints,
 ) -> Double? =
-  #| (self) => (self.fixedInlineSize) ?? undefined
+  #| (self) => (() => { const v = self.fixedInlineSize; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn LayoutConstraints::get_fixed_block_size(
   self : LayoutConstraints,
 ) -> Double? =
-  #| (self) => (self.fixedBlockSize) ?? undefined
+  #| (self) => (() => { const v = self.fixedBlockSize; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn LayoutConstraints::get_percentage_inline_size(
@@ -712,7 +712,7 @@ pub extern "js" fn LayoutConstraints::get_percentage_block_size(
 pub extern "js" fn LayoutConstraints::get_block_fragmentation_offset(
   self : LayoutConstraints,
 ) -> Double? =
-  #| (self) => (self.blockFragmentationOffset) ?? undefined
+  #| (self) => (() => { const v = self.blockFragmentationOffset; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn LayoutConstraints::get_block_fragmentation_type(

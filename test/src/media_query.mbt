@@ -9,4 +9,5 @@ fn test_media_query_list() -> Unit {
   let matches = mql.get_matches()
   // Just verify the API works without crashing
   assert_true(matches == true || matches == false, label="matches is bool")
+  println("  media_query_list: ok")
 }

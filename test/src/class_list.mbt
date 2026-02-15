@@ -20,12 +20,12 @@ pub fn test_class_list() -> Unit {
   assert_false(cl.contains("foo"), label="contains before add")
 
   // add
-  cl.add("foo")
+  cl.add("foo").unwrap()
   assert_eq(cl.get_length(), 1, label="classList length after add")
   assert_true(cl.contains("foo"), label="contains after add")
 
   // add second class
-  cl.add("bar")
+  cl.add("bar").unwrap()
   assert_eq(cl.get_length(), 2, label="classList length after add bar")
   assert_true(cl.contains("bar"), label="contains bar")
 
@@ -61,7 +61,7 @@ pub fn test_class_list_toggle() -> Unit {
   assert_false(cl.contains("visible"), label="visible removed")
 
   // replace
-  cl.add("old-class")
+  cl.add("old-class").unwrap()
   let replaced = cl.replace("old-class", "new-class")
   assert_true(replaced, label="replace returns true")
   assert_false(cl.contains("old-class"), label="old-class gone")

@@ -106,7 +106,7 @@ pub extern "js" fn ConstrainDouble::is_constrain_double_range(
 pub extern "js" fn ConstrainDouble::as_double(
   self : ConstrainDouble,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? self : undefined
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get ConstrainDouble as ConstrainDoubleRange
@@ -557,467 +557,15 @@ pub fn MediaDeviceKind::from_string(s : String) -> MediaDeviceKind? {
 }
 
 ///|
-/// MediaTrackSupportedConstraints dictionary
-pub(all) struct MediaTrackSupportedConstraints {
-  width : Bool?
-  height : Bool?
-  aspectRatio : Bool?
-  frameRate : Bool?
-  facingMode : Bool?
-  resizeMode : Bool?
-  sampleRate : Bool?
-  sampleSize : Bool?
-  echoCancellation : Bool?
-  autoGainControl : Bool?
-  noiseSuppression : Bool?
-  latency : Bool?
-  channelCount : Bool?
-  deviceId : Bool?
-  groupId : Bool?
-  backgroundBlur : Bool?
-  displaySurface : Bool?
-  logicalSurface : Bool?
-  cursor : Bool?
-  restrictOwnAudio : Bool?
-  suppressLocalAudioPlayback : Bool?
-  whiteBalanceMode : Bool?
-  exposureMode : Bool?
-  focusMode : Bool?
-  pointsOfInterest : Bool?
-  exposureCompensation : Bool?
-  exposureTime : Bool?
-  colorTemperature : Bool?
-  iso : Bool?
-  brightness : Bool?
-  contrast : Bool?
-  pan : Bool?
-  saturation : Bool?
-  sharpness : Bool?
-  focusDistance : Bool?
-  tilt : Bool?
-  zoom : Bool?
-  torch : Bool?
-}
-
-///|
-/// Create a new MediaTrackSupportedConstraints with default values
-pub fn MediaTrackSupportedConstraints::default() -> MediaTrackSupportedConstraints {
-  MediaTrackSupportedConstraints::{
-    width: None,
-    height: None,
-    aspectRatio: None,
-    frameRate: None,
-    facingMode: None,
-    resizeMode: None,
-    sampleRate: None,
-    sampleSize: None,
-    echoCancellation: None,
-    autoGainControl: None,
-    noiseSuppression: None,
-    latency: None,
-    channelCount: None,
-    deviceId: None,
-    groupId: None,
-    backgroundBlur: None,
-    displaySurface: None,
-    logicalSurface: None,
-    cursor: None,
-    restrictOwnAudio: None,
-    suppressLocalAudioPlayback: None,
-    whiteBalanceMode: None,
-    exposureMode: None,
-    focusMode: None,
-    pointsOfInterest: None,
-    exposureCompensation: None,
-    exposureTime: None,
-    colorTemperature: None,
-    iso: None,
-    brightness: None,
-    contrast: None,
-    pan: None,
-    saturation: None,
-    sharpness: None,
-    focusDistance: None,
-    tilt: None,
-    zoom: None,
-    torch: None,
-  }
-}
-
-///|
-extern "js" fn MediaTrackSupportedConstraints::to_js_ffi(
-  self : MediaTrackSupportedConstraints,
-) -> JsValue =
-  #| (self) => ({
-  #|   width: (self.width === -1 ? undefined : self.width),
-  #|   height: (self.height === -1 ? undefined : self.height),
-  #|   aspectRatio: (self.aspectRatio === -1 ? undefined : self.aspectRatio),
-  #|   frameRate: (self.frameRate === -1 ? undefined : self.frameRate),
-  #|   facingMode: (self.facingMode === -1 ? undefined : self.facingMode),
-  #|   resizeMode: (self.resizeMode === -1 ? undefined : self.resizeMode),
-  #|   sampleRate: (self.sampleRate === -1 ? undefined : self.sampleRate),
-  #|   sampleSize: (self.sampleSize === -1 ? undefined : self.sampleSize),
-  #|   echoCancellation: (self.echoCancellation === -1 ? undefined : self.echoCancellation),
-  #|   autoGainControl: (self.autoGainControl === -1 ? undefined : self.autoGainControl),
-  #|   noiseSuppression: (self.noiseSuppression === -1 ? undefined : self.noiseSuppression),
-  #|   latency: (self.latency === -1 ? undefined : self.latency),
-  #|   channelCount: (self.channelCount === -1 ? undefined : self.channelCount),
-  #|   deviceId: (self.deviceId === -1 ? undefined : self.deviceId),
-  #|   groupId: (self.groupId === -1 ? undefined : self.groupId),
-  #|   backgroundBlur: (self.backgroundBlur === -1 ? undefined : self.backgroundBlur),
-  #|   displaySurface: (self.displaySurface === -1 ? undefined : self.displaySurface),
-  #|   logicalSurface: (self.logicalSurface === -1 ? undefined : self.logicalSurface),
-  #|   cursor: (self.cursor === -1 ? undefined : self.cursor),
-  #|   restrictOwnAudio: (self.restrictOwnAudio === -1 ? undefined : self.restrictOwnAudio),
-  #|   suppressLocalAudioPlayback: (self.suppressLocalAudioPlayback === -1 ? undefined : self.suppressLocalAudioPlayback),
-  #|   whiteBalanceMode: (self.whiteBalanceMode === -1 ? undefined : self.whiteBalanceMode),
-  #|   exposureMode: (self.exposureMode === -1 ? undefined : self.exposureMode),
-  #|   focusMode: (self.focusMode === -1 ? undefined : self.focusMode),
-  #|   pointsOfInterest: (self.pointsOfInterest === -1 ? undefined : self.pointsOfInterest),
-  #|   exposureCompensation: (self.exposureCompensation === -1 ? undefined : self.exposureCompensation),
-  #|   exposureTime: (self.exposureTime === -1 ? undefined : self.exposureTime),
-  #|   colorTemperature: (self.colorTemperature === -1 ? undefined : self.colorTemperature),
-  #|   iso: (self.iso === -1 ? undefined : self.iso),
-  #|   brightness: (self.brightness === -1 ? undefined : self.brightness),
-  #|   contrast: (self.contrast === -1 ? undefined : self.contrast),
-  #|   pan: (self.pan === -1 ? undefined : self.pan),
-  #|   saturation: (self.saturation === -1 ? undefined : self.saturation),
-  #|   sharpness: (self.sharpness === -1 ? undefined : self.sharpness),
-  #|   focusDistance: (self.focusDistance === -1 ? undefined : self.focusDistance),
-  #|   tilt: (self.tilt === -1 ? undefined : self.tilt),
-  #|   zoom: (self.zoom === -1 ? undefined : self.zoom),
-  #|   torch: (self.torch === -1 ? undefined : self.torch)
-  #| })
-
-///|
-/// Convert to JsValue
-pub fn MediaTrackSupportedConstraints::to_js(
-  self : MediaTrackSupportedConstraints,
-) -> JsValue {
-  MediaTrackSupportedConstraints::to_js_ffi(self)
-}
-
-///|
-extern "js" fn MediaTrackSupportedConstraints::from_js_ffi(
-  value : JsValue,
-) -> MediaTrackSupportedConstraints =
-  #| (v) => ({
-  #|   width: (v.width === undefined ? -1 : v.width),
-  #|   height: (v.height === undefined ? -1 : v.height),
-  #|   aspectRatio: (v.aspectRatio === undefined ? -1 : v.aspectRatio),
-  #|   frameRate: (v.frameRate === undefined ? -1 : v.frameRate),
-  #|   facingMode: (v.facingMode === undefined ? -1 : v.facingMode),
-  #|   resizeMode: (v.resizeMode === undefined ? -1 : v.resizeMode),
-  #|   sampleRate: (v.sampleRate === undefined ? -1 : v.sampleRate),
-  #|   sampleSize: (v.sampleSize === undefined ? -1 : v.sampleSize),
-  #|   echoCancellation: (v.echoCancellation === undefined ? -1 : v.echoCancellation),
-  #|   autoGainControl: (v.autoGainControl === undefined ? -1 : v.autoGainControl),
-  #|   noiseSuppression: (v.noiseSuppression === undefined ? -1 : v.noiseSuppression),
-  #|   latency: (v.latency === undefined ? -1 : v.latency),
-  #|   channelCount: (v.channelCount === undefined ? -1 : v.channelCount),
-  #|   deviceId: (v.deviceId === undefined ? -1 : v.deviceId),
-  #|   groupId: (v.groupId === undefined ? -1 : v.groupId),
-  #|   backgroundBlur: (v.backgroundBlur === undefined ? -1 : v.backgroundBlur),
-  #|   displaySurface: (v.displaySurface === undefined ? -1 : v.displaySurface),
-  #|   logicalSurface: (v.logicalSurface === undefined ? -1 : v.logicalSurface),
-  #|   cursor: (v.cursor === undefined ? -1 : v.cursor),
-  #|   restrictOwnAudio: (v.restrictOwnAudio === undefined ? -1 : v.restrictOwnAudio),
-  #|   suppressLocalAudioPlayback: (v.suppressLocalAudioPlayback === undefined ? -1 : v.suppressLocalAudioPlayback),
-  #|   whiteBalanceMode: (v.whiteBalanceMode === undefined ? -1 : v.whiteBalanceMode),
-  #|   exposureMode: (v.exposureMode === undefined ? -1 : v.exposureMode),
-  #|   focusMode: (v.focusMode === undefined ? -1 : v.focusMode),
-  #|   pointsOfInterest: (v.pointsOfInterest === undefined ? -1 : v.pointsOfInterest),
-  #|   exposureCompensation: (v.exposureCompensation === undefined ? -1 : v.exposureCompensation),
-  #|   exposureTime: (v.exposureTime === undefined ? -1 : v.exposureTime),
-  #|   colorTemperature: (v.colorTemperature === undefined ? -1 : v.colorTemperature),
-  #|   iso: (v.iso === undefined ? -1 : v.iso),
-  #|   brightness: (v.brightness === undefined ? -1 : v.brightness),
-  #|   contrast: (v.contrast === undefined ? -1 : v.contrast),
-  #|   pan: (v.pan === undefined ? -1 : v.pan),
-  #|   saturation: (v.saturation === undefined ? -1 : v.saturation),
-  #|   sharpness: (v.sharpness === undefined ? -1 : v.sharpness),
-  #|   focusDistance: (v.focusDistance === undefined ? -1 : v.focusDistance),
-  #|   tilt: (v.tilt === undefined ? -1 : v.tilt),
-  #|   zoom: (v.zoom === undefined ? -1 : v.zoom),
-  #|   torch: (v.torch === undefined ? -1 : v.torch)
-  #| })
-
-///|
-/// Convert from JsValue
-pub fn MediaTrackSupportedConstraints::from_js(
-  value : JsValue,
-) -> MediaTrackSupportedConstraints {
-  MediaTrackSupportedConstraints::from_js_ffi(value)
-}
-
-///|
-/// MediaTrackCapabilities dictionary
-pub(all) struct MediaTrackCapabilities {
-  width : ULongRange?
-  height : ULongRange?
-  aspectRatio : DoubleRange?
-  frameRate : DoubleRange?
-  facingMode : Array[String]?
-  resizeMode : Array[String]?
-  sampleRate : ULongRange?
-  sampleSize : ULongRange?
-  echoCancellation : Array[BoolOrString]?
-  autoGainControl : Array[Bool]?
-  noiseSuppression : Array[Bool]?
-  latency : DoubleRange?
-  channelCount : ULongRange?
-  deviceId : String?
-  groupId : String?
-  backgroundBlur : Array[Bool]?
-  displaySurface : String?
-  logicalSurface : Bool?
-  cursor : Array[String]?
-  whiteBalanceMode : Array[String]?
-  exposureMode : Array[String]?
-  focusMode : Array[String]?
-  exposureCompensation : MediaSettingsRange?
-  exposureTime : MediaSettingsRange?
-  colorTemperature : MediaSettingsRange?
-  iso : MediaSettingsRange?
-  brightness : MediaSettingsRange?
-  contrast : MediaSettingsRange?
-  saturation : MediaSettingsRange?
-  sharpness : MediaSettingsRange?
-  focusDistance : MediaSettingsRange?
-  pan : MediaSettingsRange?
-  tilt : MediaSettingsRange?
-  zoom : MediaSettingsRange?
-  torch : Array[Bool]?
-}
-
-///|
-/// Create a new MediaTrackCapabilities with default values
-pub fn MediaTrackCapabilities::default() -> MediaTrackCapabilities {
-  MediaTrackCapabilities::{
-    width: None,
-    height: None,
-    aspectRatio: None,
-    frameRate: None,
-    facingMode: None,
-    resizeMode: None,
-    sampleRate: None,
-    sampleSize: None,
-    echoCancellation: None,
-    autoGainControl: None,
-    noiseSuppression: None,
-    latency: None,
-    channelCount: None,
-    deviceId: None,
-    groupId: None,
-    backgroundBlur: None,
-    displaySurface: None,
-    logicalSurface: None,
-    cursor: None,
-    whiteBalanceMode: None,
-    exposureMode: None,
-    focusMode: None,
-    exposureCompensation: None,
-    exposureTime: None,
-    colorTemperature: None,
-    iso: None,
-    brightness: None,
-    contrast: None,
-    saturation: None,
-    sharpness: None,
-    focusDistance: None,
-    pan: None,
-    tilt: None,
-    zoom: None,
-    torch: None,
-  }
-}
-
-///|
-extern "js" fn MediaTrackCapabilities::to_js_ffi(
-  self : MediaTrackCapabilities,
-) -> JsValue =
-  #| (self) => ({
-  #|   width: ((() => { const v = self.width; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   height: ((() => { const v = self.height; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   aspectRatio: ((() => { const v = self.aspectRatio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   frameRate: ((() => { const v = self.frameRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   facingMode: ((() => { const v = self.facingMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   resizeMode: ((() => { const v = self.resizeMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sampleRate: ((() => { const v = self.sampleRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sampleSize: ((() => { const v = self.sampleSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   echoCancellation: ((() => { const v = self.echoCancellation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   autoGainControl: ((() => { const v = self.autoGainControl; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   noiseSuppression: ((() => { const v = self.noiseSuppression; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   latency: ((() => { const v = self.latency; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   channelCount: ((() => { const v = self.channelCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   deviceId: self.deviceId,
-  #|   groupId: self.groupId,
-  #|   backgroundBlur: ((() => { const v = self.backgroundBlur; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   displaySurface: self.displaySurface,
-  #|   logicalSurface: (self.logicalSurface === -1 ? undefined : self.logicalSurface),
-  #|   cursor: ((() => { const v = self.cursor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   whiteBalanceMode: ((() => { const v = self.whiteBalanceMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   exposureMode: ((() => { const v = self.exposureMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   focusMode: ((() => { const v = self.focusMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   exposureCompensation: ((() => { const v = self.exposureCompensation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   exposureTime: ((() => { const v = self.exposureTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   colorTemperature: ((() => { const v = self.colorTemperature; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   iso: ((() => { const v = self.iso; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   brightness: ((() => { const v = self.brightness; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   contrast: ((() => { const v = self.contrast; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   saturation: ((() => { const v = self.saturation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sharpness: ((() => { const v = self.sharpness; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   focusDistance: ((() => { const v = self.focusDistance; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   pan: ((() => { const v = self.pan; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   tilt: ((() => { const v = self.tilt; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   zoom: ((() => { const v = self.zoom; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   torch: ((() => { const v = self.torch; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
-  #| })
-
-///|
-/// Convert to JsValue
-pub fn MediaTrackCapabilities::to_js(self : MediaTrackCapabilities) -> JsValue {
-  MediaTrackCapabilities::to_js_ffi(self)
-}
-
-///|
-extern "js" fn MediaTrackCapabilities::from_js_ffi(
-  value : JsValue,
-) -> MediaTrackCapabilities =
-  #| (v) => ({
-  #|   width: (v.width === undefined ? { $tag: 0 } : { $tag: 1, _0: v.width }),
-  #|   height: (v.height === undefined ? { $tag: 0 } : { $tag: 1, _0: v.height }),
-  #|   aspectRatio: (v.aspectRatio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.aspectRatio }),
-  #|   frameRate: (v.frameRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.frameRate }),
-  #|   facingMode: (v.facingMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.facingMode }),
-  #|   resizeMode: (v.resizeMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.resizeMode }),
-  #|   sampleRate: (v.sampleRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleRate }),
-  #|   sampleSize: (v.sampleSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleSize }),
-  #|   echoCancellation: (v.echoCancellation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.echoCancellation }),
-  #|   autoGainControl: (v.autoGainControl === undefined ? { $tag: 0 } : { $tag: 1, _0: v.autoGainControl }),
-  #|   noiseSuppression: (v.noiseSuppression === undefined ? { $tag: 0 } : { $tag: 1, _0: v.noiseSuppression }),
-  #|   latency: (v.latency === undefined ? { $tag: 0 } : { $tag: 1, _0: v.latency }),
-  #|   channelCount: (v.channelCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.channelCount }),
-  #|   deviceId: v.deviceId,
-  #|   groupId: v.groupId,
-  #|   backgroundBlur: (v.backgroundBlur === undefined ? { $tag: 0 } : { $tag: 1, _0: v.backgroundBlur }),
-  #|   displaySurface: v.displaySurface,
-  #|   logicalSurface: (v.logicalSurface === undefined ? -1 : v.logicalSurface),
-  #|   cursor: (v.cursor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.cursor }),
-  #|   whiteBalanceMode: (v.whiteBalanceMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.whiteBalanceMode }),
-  #|   exposureMode: (v.exposureMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureMode }),
-  #|   focusMode: (v.focusMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.focusMode }),
-  #|   exposureCompensation: (v.exposureCompensation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureCompensation }),
-  #|   exposureTime: (v.exposureTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureTime }),
-  #|   colorTemperature: (v.colorTemperature === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorTemperature }),
-  #|   iso: (v.iso === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iso }),
-  #|   brightness: (v.brightness === undefined ? { $tag: 0 } : { $tag: 1, _0: v.brightness }),
-  #|   contrast: (v.contrast === undefined ? { $tag: 0 } : { $tag: 1, _0: v.contrast }),
-  #|   saturation: (v.saturation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.saturation }),
-  #|   sharpness: (v.sharpness === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sharpness }),
-  #|   focusDistance: (v.focusDistance === undefined ? { $tag: 0 } : { $tag: 1, _0: v.focusDistance }),
-  #|   pan: (v.pan === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pan }),
-  #|   tilt: (v.tilt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.tilt }),
-  #|   zoom: (v.zoom === undefined ? { $tag: 0 } : { $tag: 1, _0: v.zoom }),
-  #|   torch: (v.torch === undefined ? { $tag: 0 } : { $tag: 1, _0: v.torch })
-  #| })
-
-///|
-/// Convert from JsValue
-pub fn MediaTrackCapabilities::from_js(
-  value : JsValue,
-) -> MediaTrackCapabilities {
-  MediaTrackCapabilities::from_js_ffi(value)
-}
-
-///|
 /// MediaTrackConstraints dictionary
 pub(all) struct MediaTrackConstraints {
-  width : ConstrainULong?
-  height : ConstrainULong?
-  aspectRatio : ConstrainDouble?
-  frameRate : ConstrainDouble?
-  facingMode : ConstrainDOMString?
-  resizeMode : ConstrainDOMString?
-  sampleRate : ConstrainULong?
-  sampleSize : ConstrainULong?
-  echoCancellation : ConstrainBooleanOrDOMString?
-  autoGainControl : ConstrainBoolean?
-  noiseSuppression : ConstrainBoolean?
-  latency : ConstrainDouble?
-  channelCount : ConstrainULong?
-  deviceId : ConstrainDOMString?
-  groupId : ConstrainDOMString?
-  backgroundBlur : ConstrainBoolean?
-  displaySurface : ConstrainDOMString?
-  logicalSurface : ConstrainBoolean?
-  cursor : ConstrainDOMString?
-  restrictOwnAudio : ConstrainBoolean?
-  suppressLocalAudioPlayback : ConstrainBoolean?
-  whiteBalanceMode : ConstrainDOMString?
-  exposureMode : ConstrainDOMString?
-  focusMode : ConstrainDOMString?
-  pointsOfInterest : ConstrainPoint2D?
-  exposureCompensation : ConstrainDouble?
-  exposureTime : ConstrainDouble?
-  colorTemperature : ConstrainDouble?
-  iso : ConstrainDouble?
-  brightness : ConstrainDouble?
-  contrast : ConstrainDouble?
-  saturation : ConstrainDouble?
-  sharpness : ConstrainDouble?
-  focusDistance : ConstrainDouble?
-  pan : BoolOrConstrainDouble?
-  tilt : BoolOrConstrainDouble?
-  zoom : BoolOrConstrainDouble?
-  torch : ConstrainBoolean?
   advanced : Array[MediaTrackConstraintSet]?
 }
 
 ///|
 /// Create a new MediaTrackConstraints with default values
 pub fn MediaTrackConstraints::default() -> MediaTrackConstraints {
-  MediaTrackConstraints::{
-    width: None,
-    height: None,
-    aspectRatio: None,
-    frameRate: None,
-    facingMode: None,
-    resizeMode: None,
-    sampleRate: None,
-    sampleSize: None,
-    echoCancellation: None,
-    autoGainControl: None,
-    noiseSuppression: None,
-    latency: None,
-    channelCount: None,
-    deviceId: None,
-    groupId: None,
-    backgroundBlur: None,
-    displaySurface: None,
-    logicalSurface: None,
-    cursor: None,
-    restrictOwnAudio: None,
-    suppressLocalAudioPlayback: None,
-    whiteBalanceMode: None,
-    exposureMode: None,
-    focusMode: None,
-    pointsOfInterest: None,
-    exposureCompensation: None,
-    exposureTime: None,
-    colorTemperature: None,
-    iso: None,
-    brightness: None,
-    contrast: None,
-    saturation: None,
-    sharpness: None,
-    focusDistance: None,
-    pan: None,
-    tilt: None,
-    zoom: None,
-    torch: None,
-    advanced: None,
-  }
+  MediaTrackConstraints::{ advanced: None }
 }
 
 ///|
@@ -1025,44 +573,6 @@ extern "js" fn MediaTrackConstraints::to_js_ffi(
   self : MediaTrackConstraints,
 ) -> JsValue =
   #| (self) => ({
-  #|   width: ((() => { const v = self.width; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   height: ((() => { const v = self.height; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   aspectRatio: ((() => { const v = self.aspectRatio; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   frameRate: ((() => { const v = self.frameRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   facingMode: ((() => { const v = self.facingMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   resizeMode: ((() => { const v = self.resizeMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   sampleRate: ((() => { const v = self.sampleRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   sampleSize: ((() => { const v = self.sampleSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   echoCancellation: ((() => { const v = self.echoCancellation; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   autoGainControl: ((() => { const v = self.autoGainControl; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   noiseSuppression: ((() => { const v = self.noiseSuppression; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   latency: ((() => { const v = self.latency; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   channelCount: ((() => { const v = self.channelCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   deviceId: ((() => { const v = self.deviceId; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   groupId: ((() => { const v = self.groupId; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   backgroundBlur: ((() => { const v = self.backgroundBlur; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   displaySurface: ((() => { const v = self.displaySurface; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   logicalSurface: ((() => { const v = self.logicalSurface; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   cursor: ((() => { const v = self.cursor; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   restrictOwnAudio: ((() => { const v = self.restrictOwnAudio; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   suppressLocalAudioPlayback: ((() => { const v = self.suppressLocalAudioPlayback; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   whiteBalanceMode: ((() => { const v = self.whiteBalanceMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   exposureMode: ((() => { const v = self.exposureMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   focusMode: ((() => { const v = self.focusMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   pointsOfInterest: ((() => { const v = self.pointsOfInterest; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   exposureCompensation: ((() => { const v = self.exposureCompensation; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   exposureTime: ((() => { const v = self.exposureTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   colorTemperature: ((() => { const v = self.colorTemperature; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   iso: ((() => { const v = self.iso; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   brightness: ((() => { const v = self.brightness; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   contrast: ((() => { const v = self.contrast; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   saturation: ((() => { const v = self.saturation; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   sharpness: ((() => { const v = self.sharpness; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   focusDistance: ((() => { const v = self.focusDistance; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   pan: ((() => { const v = self.pan; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   tilt: ((() => { const v = self.tilt; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   zoom: ((() => { const v = self.zoom; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   torch: ((() => { const v = self.torch; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
   #|   advanced: ((() => { const v = self.advanced; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -1077,44 +587,6 @@ extern "js" fn MediaTrackConstraints::from_js_ffi(
   value : JsValue,
 ) -> MediaTrackConstraints =
   #| (v) => ({
-  #|   width: (v.width === undefined ? { $tag: 0 } : { $tag: 1, _0: v.width }),
-  #|   height: (v.height === undefined ? { $tag: 0 } : { $tag: 1, _0: v.height }),
-  #|   aspectRatio: (v.aspectRatio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.aspectRatio }),
-  #|   frameRate: (v.frameRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.frameRate }),
-  #|   facingMode: (v.facingMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.facingMode }),
-  #|   resizeMode: (v.resizeMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.resizeMode }),
-  #|   sampleRate: (v.sampleRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleRate }),
-  #|   sampleSize: (v.sampleSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleSize }),
-  #|   echoCancellation: (v.echoCancellation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.echoCancellation }),
-  #|   autoGainControl: (v.autoGainControl === undefined ? { $tag: 0 } : { $tag: 1, _0: v.autoGainControl }),
-  #|   noiseSuppression: (v.noiseSuppression === undefined ? { $tag: 0 } : { $tag: 1, _0: v.noiseSuppression }),
-  #|   latency: (v.latency === undefined ? { $tag: 0 } : { $tag: 1, _0: v.latency }),
-  #|   channelCount: (v.channelCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.channelCount }),
-  #|   deviceId: (v.deviceId === undefined ? { $tag: 0 } : { $tag: 1, _0: v.deviceId }),
-  #|   groupId: (v.groupId === undefined ? { $tag: 0 } : { $tag: 1, _0: v.groupId }),
-  #|   backgroundBlur: (v.backgroundBlur === undefined ? { $tag: 0 } : { $tag: 1, _0: v.backgroundBlur }),
-  #|   displaySurface: (v.displaySurface === undefined ? { $tag: 0 } : { $tag: 1, _0: v.displaySurface }),
-  #|   logicalSurface: (v.logicalSurface === undefined ? { $tag: 0 } : { $tag: 1, _0: v.logicalSurface }),
-  #|   cursor: (v.cursor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.cursor }),
-  #|   restrictOwnAudio: (v.restrictOwnAudio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.restrictOwnAudio }),
-  #|   suppressLocalAudioPlayback: (v.suppressLocalAudioPlayback === undefined ? { $tag: 0 } : { $tag: 1, _0: v.suppressLocalAudioPlayback }),
-  #|   whiteBalanceMode: (v.whiteBalanceMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.whiteBalanceMode }),
-  #|   exposureMode: (v.exposureMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureMode }),
-  #|   focusMode: (v.focusMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.focusMode }),
-  #|   pointsOfInterest: (v.pointsOfInterest === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pointsOfInterest }),
-  #|   exposureCompensation: (v.exposureCompensation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureCompensation }),
-  #|   exposureTime: (v.exposureTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureTime }),
-  #|   colorTemperature: (v.colorTemperature === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorTemperature }),
-  #|   iso: (v.iso === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iso }),
-  #|   brightness: (v.brightness === undefined ? { $tag: 0 } : { $tag: 1, _0: v.brightness }),
-  #|   contrast: (v.contrast === undefined ? { $tag: 0 } : { $tag: 1, _0: v.contrast }),
-  #|   saturation: (v.saturation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.saturation }),
-  #|   sharpness: (v.sharpness === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sharpness }),
-  #|   focusDistance: (v.focusDistance === undefined ? { $tag: 0 } : { $tag: 1, _0: v.focusDistance }),
-  #|   pan: (v.pan === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pan }),
-  #|   tilt: (v.tilt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.tilt }),
-  #|   zoom: (v.zoom === undefined ? { $tag: 0 } : { $tag: 1, _0: v.zoom }),
-  #|   torch: (v.torch === undefined ? { $tag: 0 } : { $tag: 1, _0: v.torch }),
   #|   advanced: (v.advanced === undefined ? { $tag: 0 } : { $tag: 1, _0: v.advanced })
   #| })
 
@@ -1122,394 +594,6 @@ extern "js" fn MediaTrackConstraints::from_js_ffi(
 /// Convert from JsValue
 pub fn MediaTrackConstraints::from_js(value : JsValue) -> MediaTrackConstraints {
   MediaTrackConstraints::from_js_ffi(value)
-}
-
-///|
-/// MediaTrackConstraintSet dictionary
-pub(all) struct MediaTrackConstraintSet {
-  width : ConstrainULong?
-  height : ConstrainULong?
-  aspectRatio : ConstrainDouble?
-  frameRate : ConstrainDouble?
-  facingMode : ConstrainDOMString?
-  resizeMode : ConstrainDOMString?
-  sampleRate : ConstrainULong?
-  sampleSize : ConstrainULong?
-  echoCancellation : ConstrainBooleanOrDOMString?
-  autoGainControl : ConstrainBoolean?
-  noiseSuppression : ConstrainBoolean?
-  latency : ConstrainDouble?
-  channelCount : ConstrainULong?
-  deviceId : ConstrainDOMString?
-  groupId : ConstrainDOMString?
-  backgroundBlur : ConstrainBoolean?
-  displaySurface : ConstrainDOMString?
-  logicalSurface : ConstrainBoolean?
-  cursor : ConstrainDOMString?
-  restrictOwnAudio : ConstrainBoolean?
-  suppressLocalAudioPlayback : ConstrainBoolean?
-  whiteBalanceMode : ConstrainDOMString?
-  exposureMode : ConstrainDOMString?
-  focusMode : ConstrainDOMString?
-  pointsOfInterest : ConstrainPoint2D?
-  exposureCompensation : ConstrainDouble?
-  exposureTime : ConstrainDouble?
-  colorTemperature : ConstrainDouble?
-  iso : ConstrainDouble?
-  brightness : ConstrainDouble?
-  contrast : ConstrainDouble?
-  saturation : ConstrainDouble?
-  sharpness : ConstrainDouble?
-  focusDistance : ConstrainDouble?
-  pan : BoolOrConstrainDouble?
-  tilt : BoolOrConstrainDouble?
-  zoom : BoolOrConstrainDouble?
-  torch : ConstrainBoolean?
-}
-
-///|
-/// Create a new MediaTrackConstraintSet with default values
-pub fn MediaTrackConstraintSet::default() -> MediaTrackConstraintSet {
-  MediaTrackConstraintSet::{
-    width: None,
-    height: None,
-    aspectRatio: None,
-    frameRate: None,
-    facingMode: None,
-    resizeMode: None,
-    sampleRate: None,
-    sampleSize: None,
-    echoCancellation: None,
-    autoGainControl: None,
-    noiseSuppression: None,
-    latency: None,
-    channelCount: None,
-    deviceId: None,
-    groupId: None,
-    backgroundBlur: None,
-    displaySurface: None,
-    logicalSurface: None,
-    cursor: None,
-    restrictOwnAudio: None,
-    suppressLocalAudioPlayback: None,
-    whiteBalanceMode: None,
-    exposureMode: None,
-    focusMode: None,
-    pointsOfInterest: None,
-    exposureCompensation: None,
-    exposureTime: None,
-    colorTemperature: None,
-    iso: None,
-    brightness: None,
-    contrast: None,
-    saturation: None,
-    sharpness: None,
-    focusDistance: None,
-    pan: None,
-    tilt: None,
-    zoom: None,
-    torch: None,
-  }
-}
-
-///|
-extern "js" fn MediaTrackConstraintSet::to_js_ffi(
-  self : MediaTrackConstraintSet,
-) -> JsValue =
-  #| (self) => ({
-  #|   width: ((() => { const v = self.width; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   height: ((() => { const v = self.height; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   aspectRatio: ((() => { const v = self.aspectRatio; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   frameRate: ((() => { const v = self.frameRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   facingMode: ((() => { const v = self.facingMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   resizeMode: ((() => { const v = self.resizeMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   sampleRate: ((() => { const v = self.sampleRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   sampleSize: ((() => { const v = self.sampleSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   echoCancellation: ((() => { const v = self.echoCancellation; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   autoGainControl: ((() => { const v = self.autoGainControl; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   noiseSuppression: ((() => { const v = self.noiseSuppression; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   latency: ((() => { const v = self.latency; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   channelCount: ((() => { const v = self.channelCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   deviceId: ((() => { const v = self.deviceId; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   groupId: ((() => { const v = self.groupId; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   backgroundBlur: ((() => { const v = self.backgroundBlur; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   displaySurface: ((() => { const v = self.displaySurface; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   logicalSurface: ((() => { const v = self.logicalSurface; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   cursor: ((() => { const v = self.cursor; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   restrictOwnAudio: ((() => { const v = self.restrictOwnAudio; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   suppressLocalAudioPlayback: ((() => { const v = self.suppressLocalAudioPlayback; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   whiteBalanceMode: ((() => { const v = self.whiteBalanceMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   exposureMode: ((() => { const v = self.exposureMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   focusMode: ((() => { const v = self.focusMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   pointsOfInterest: ((() => { const v = self.pointsOfInterest; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   exposureCompensation: ((() => { const v = self.exposureCompensation; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   exposureTime: ((() => { const v = self.exposureTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   colorTemperature: ((() => { const v = self.colorTemperature; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   iso: ((() => { const v = self.iso; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   brightness: ((() => { const v = self.brightness; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   contrast: ((() => { const v = self.contrast; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   saturation: ((() => { const v = self.saturation; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   sharpness: ((() => { const v = self.sharpness; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   focusDistance: ((() => { const v = self.focusDistance; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   pan: ((() => { const v = self.pan; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   tilt: ((() => { const v = self.tilt; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   zoom: ((() => { const v = self.zoom; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   torch: ((() => { const v = self.torch; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
-  #| })
-
-///|
-/// Convert to JsValue
-pub fn MediaTrackConstraintSet::to_js(
-  self : MediaTrackConstraintSet,
-) -> JsValue {
-  MediaTrackConstraintSet::to_js_ffi(self)
-}
-
-///|
-extern "js" fn MediaTrackConstraintSet::from_js_ffi(
-  value : JsValue,
-) -> MediaTrackConstraintSet =
-  #| (v) => ({
-  #|   width: (v.width === undefined ? { $tag: 0 } : { $tag: 1, _0: v.width }),
-  #|   height: (v.height === undefined ? { $tag: 0 } : { $tag: 1, _0: v.height }),
-  #|   aspectRatio: (v.aspectRatio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.aspectRatio }),
-  #|   frameRate: (v.frameRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.frameRate }),
-  #|   facingMode: (v.facingMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.facingMode }),
-  #|   resizeMode: (v.resizeMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.resizeMode }),
-  #|   sampleRate: (v.sampleRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleRate }),
-  #|   sampleSize: (v.sampleSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleSize }),
-  #|   echoCancellation: (v.echoCancellation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.echoCancellation }),
-  #|   autoGainControl: (v.autoGainControl === undefined ? { $tag: 0 } : { $tag: 1, _0: v.autoGainControl }),
-  #|   noiseSuppression: (v.noiseSuppression === undefined ? { $tag: 0 } : { $tag: 1, _0: v.noiseSuppression }),
-  #|   latency: (v.latency === undefined ? { $tag: 0 } : { $tag: 1, _0: v.latency }),
-  #|   channelCount: (v.channelCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.channelCount }),
-  #|   deviceId: (v.deviceId === undefined ? { $tag: 0 } : { $tag: 1, _0: v.deviceId }),
-  #|   groupId: (v.groupId === undefined ? { $tag: 0 } : { $tag: 1, _0: v.groupId }),
-  #|   backgroundBlur: (v.backgroundBlur === undefined ? { $tag: 0 } : { $tag: 1, _0: v.backgroundBlur }),
-  #|   displaySurface: (v.displaySurface === undefined ? { $tag: 0 } : { $tag: 1, _0: v.displaySurface }),
-  #|   logicalSurface: (v.logicalSurface === undefined ? { $tag: 0 } : { $tag: 1, _0: v.logicalSurface }),
-  #|   cursor: (v.cursor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.cursor }),
-  #|   restrictOwnAudio: (v.restrictOwnAudio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.restrictOwnAudio }),
-  #|   suppressLocalAudioPlayback: (v.suppressLocalAudioPlayback === undefined ? { $tag: 0 } : { $tag: 1, _0: v.suppressLocalAudioPlayback }),
-  #|   whiteBalanceMode: (v.whiteBalanceMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.whiteBalanceMode }),
-  #|   exposureMode: (v.exposureMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureMode }),
-  #|   focusMode: (v.focusMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.focusMode }),
-  #|   pointsOfInterest: (v.pointsOfInterest === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pointsOfInterest }),
-  #|   exposureCompensation: (v.exposureCompensation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureCompensation }),
-  #|   exposureTime: (v.exposureTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureTime }),
-  #|   colorTemperature: (v.colorTemperature === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorTemperature }),
-  #|   iso: (v.iso === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iso }),
-  #|   brightness: (v.brightness === undefined ? { $tag: 0 } : { $tag: 1, _0: v.brightness }),
-  #|   contrast: (v.contrast === undefined ? { $tag: 0 } : { $tag: 1, _0: v.contrast }),
-  #|   saturation: (v.saturation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.saturation }),
-  #|   sharpness: (v.sharpness === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sharpness }),
-  #|   focusDistance: (v.focusDistance === undefined ? { $tag: 0 } : { $tag: 1, _0: v.focusDistance }),
-  #|   pan: (v.pan === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pan }),
-  #|   tilt: (v.tilt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.tilt }),
-  #|   zoom: (v.zoom === undefined ? { $tag: 0 } : { $tag: 1, _0: v.zoom }),
-  #|   torch: (v.torch === undefined ? { $tag: 0 } : { $tag: 1, _0: v.torch })
-  #| })
-
-///|
-/// Convert from JsValue
-pub fn MediaTrackConstraintSet::from_js(
-  value : JsValue,
-) -> MediaTrackConstraintSet {
-  MediaTrackConstraintSet::from_js_ffi(value)
-}
-
-///|
-/// MediaTrackSettings dictionary
-pub(all) struct MediaTrackSettings {
-  width : Int?
-  height : Int?
-  aspectRatio : Double?
-  frameRate : Double?
-  facingMode : String?
-  resizeMode : String?
-  sampleRate : Int?
-  sampleSize : Int?
-  echoCancellation : BoolOrString?
-  autoGainControl : Bool?
-  noiseSuppression : Bool?
-  latency : Double?
-  channelCount : Int?
-  deviceId : String?
-  groupId : String?
-  backgroundBlur : Bool?
-  displaySurface : String?
-  logicalSurface : Bool?
-  cursor : String?
-  restrictOwnAudio : Bool?
-  suppressLocalAudioPlayback : Bool?
-  screenPixelRatio : Double?
-  whiteBalanceMode : String?
-  exposureMode : String?
-  focusMode : String?
-  pointsOfInterest : Array[Point2D]?
-  exposureCompensation : Double?
-  exposureTime : Double?
-  colorTemperature : Double?
-  iso : Double?
-  brightness : Double?
-  contrast : Double?
-  saturation : Double?
-  sharpness : Double?
-  focusDistance : Double?
-  pan : Double?
-  tilt : Double?
-  zoom : Double?
-  torch : Bool?
-}
-
-///|
-/// Create a new MediaTrackSettings with default values
-pub fn MediaTrackSettings::default() -> MediaTrackSettings {
-  MediaTrackSettings::{
-    width: None,
-    height: None,
-    aspectRatio: None,
-    frameRate: None,
-    facingMode: None,
-    resizeMode: None,
-    sampleRate: None,
-    sampleSize: None,
-    echoCancellation: None,
-    autoGainControl: None,
-    noiseSuppression: None,
-    latency: None,
-    channelCount: None,
-    deviceId: None,
-    groupId: None,
-    backgroundBlur: None,
-    displaySurface: None,
-    logicalSurface: None,
-    cursor: None,
-    restrictOwnAudio: None,
-    suppressLocalAudioPlayback: None,
-    screenPixelRatio: None,
-    whiteBalanceMode: None,
-    exposureMode: None,
-    focusMode: None,
-    pointsOfInterest: None,
-    exposureCompensation: None,
-    exposureTime: None,
-    colorTemperature: None,
-    iso: None,
-    brightness: None,
-    contrast: None,
-    saturation: None,
-    sharpness: None,
-    focusDistance: None,
-    pan: None,
-    tilt: None,
-    zoom: None,
-    torch: None,
-  }
-}
-
-///|
-extern "js" fn MediaTrackSettings::to_js_ffi(
-  self : MediaTrackSettings,
-) -> JsValue =
-  #| (self) => ({
-  #|   width: self.width,
-  #|   height: self.height,
-  #|   aspectRatio: self.aspectRatio,
-  #|   frameRate: self.frameRate,
-  #|   facingMode: self.facingMode,
-  #|   resizeMode: self.resizeMode,
-  #|   sampleRate: self.sampleRate,
-  #|   sampleSize: self.sampleSize,
-  #|   echoCancellation: ((() => { const v = self.echoCancellation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   autoGainControl: (self.autoGainControl === -1 ? undefined : self.autoGainControl),
-  #|   noiseSuppression: (self.noiseSuppression === -1 ? undefined : self.noiseSuppression),
-  #|   latency: self.latency,
-  #|   channelCount: self.channelCount,
-  #|   deviceId: self.deviceId,
-  #|   groupId: self.groupId,
-  #|   backgroundBlur: (self.backgroundBlur === -1 ? undefined : self.backgroundBlur),
-  #|   displaySurface: self.displaySurface,
-  #|   logicalSurface: (self.logicalSurface === -1 ? undefined : self.logicalSurface),
-  #|   cursor: self.cursor,
-  #|   restrictOwnAudio: (self.restrictOwnAudio === -1 ? undefined : self.restrictOwnAudio),
-  #|   suppressLocalAudioPlayback: (self.suppressLocalAudioPlayback === -1 ? undefined : self.suppressLocalAudioPlayback),
-  #|   screenPixelRatio: self.screenPixelRatio,
-  #|   whiteBalanceMode: self.whiteBalanceMode,
-  #|   exposureMode: self.exposureMode,
-  #|   focusMode: self.focusMode,
-  #|   pointsOfInterest: ((() => { const v = self.pointsOfInterest; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   exposureCompensation: self.exposureCompensation,
-  #|   exposureTime: self.exposureTime,
-  #|   colorTemperature: self.colorTemperature,
-  #|   iso: self.iso,
-  #|   brightness: self.brightness,
-  #|   contrast: self.contrast,
-  #|   saturation: self.saturation,
-  #|   sharpness: self.sharpness,
-  #|   focusDistance: self.focusDistance,
-  #|   pan: self.pan,
-  #|   tilt: self.tilt,
-  #|   zoom: self.zoom,
-  #|   torch: (self.torch === -1 ? undefined : self.torch)
-  #| })
-
-///|
-/// Convert to JsValue
-pub fn MediaTrackSettings::to_js(self : MediaTrackSettings) -> JsValue {
-  MediaTrackSettings::to_js_ffi(self)
-}
-
-///|
-extern "js" fn MediaTrackSettings::from_js_ffi(
-  value : JsValue,
-) -> MediaTrackSettings =
-  #| (v) => ({
-  #|   width: v.width,
-  #|   height: v.height,
-  #|   aspectRatio: v.aspectRatio,
-  #|   frameRate: v.frameRate,
-  #|   facingMode: v.facingMode,
-  #|   resizeMode: v.resizeMode,
-  #|   sampleRate: v.sampleRate,
-  #|   sampleSize: v.sampleSize,
-  #|   echoCancellation: (v.echoCancellation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.echoCancellation }),
-  #|   autoGainControl: (v.autoGainControl === undefined ? -1 : v.autoGainControl),
-  #|   noiseSuppression: (v.noiseSuppression === undefined ? -1 : v.noiseSuppression),
-  #|   latency: v.latency,
-  #|   channelCount: v.channelCount,
-  #|   deviceId: v.deviceId,
-  #|   groupId: v.groupId,
-  #|   backgroundBlur: (v.backgroundBlur === undefined ? -1 : v.backgroundBlur),
-  #|   displaySurface: v.displaySurface,
-  #|   logicalSurface: (v.logicalSurface === undefined ? -1 : v.logicalSurface),
-  #|   cursor: v.cursor,
-  #|   restrictOwnAudio: (v.restrictOwnAudio === undefined ? -1 : v.restrictOwnAudio),
-  #|   suppressLocalAudioPlayback: (v.suppressLocalAudioPlayback === undefined ? -1 : v.suppressLocalAudioPlayback),
-  #|   screenPixelRatio: v.screenPixelRatio,
-  #|   whiteBalanceMode: v.whiteBalanceMode,
-  #|   exposureMode: v.exposureMode,
-  #|   focusMode: v.focusMode,
-  #|   pointsOfInterest: (v.pointsOfInterest === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pointsOfInterest }),
-  #|   exposureCompensation: v.exposureCompensation,
-  #|   exposureTime: v.exposureTime,
-  #|   colorTemperature: v.colorTemperature,
-  #|   iso: v.iso,
-  #|   brightness: v.brightness,
-  #|   contrast: v.contrast,
-  #|   saturation: v.saturation,
-  #|   sharpness: v.sharpness,
-  #|   focusDistance: v.focusDistance,
-  #|   pan: v.pan,
-  #|   tilt: v.tilt,
-  #|   zoom: v.zoom,
-  #|   torch: (v.torch === undefined ? -1 : v.torch)
-  #| })
-
-///|
-/// Convert from JsValue
-pub fn MediaTrackSettings::from_js(value : JsValue) -> MediaTrackSettings {
-  MediaTrackSettings::from_js_ffi(value)
 }
 
 ///|
@@ -1603,8 +687,8 @@ pub fn DeviceChangeEventInit::from_js(value : JsValue) -> DeviceChangeEventInit 
 pub(all) struct MediaStreamConstraints {
   video : BoolOrMediaTrackConstraints?
   audio : BoolOrMediaTrackConstraints?
-  peerIdentity : String?
   preferCurrentTab : Bool?
+  peerIdentity : String?
 }
 
 ///|
@@ -1613,8 +697,8 @@ pub fn MediaStreamConstraints::default() -> MediaStreamConstraints {
   MediaStreamConstraints::{
     video: None,
     audio: None,
-    peerIdentity: None,
     preferCurrentTab: None,
+    peerIdentity: None,
   }
 }
 
@@ -1625,8 +709,8 @@ extern "js" fn MediaStreamConstraints::to_js_ffi(
   #| (self) => ({
   #|   video: ((() => { const v = self.video; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   audio: ((() => { const v = self.audio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   peerIdentity: self.peerIdentity,
-  #|   preferCurrentTab: (self.preferCurrentTab === -1 ? undefined : self.preferCurrentTab)
+  #|   preferCurrentTab: (self.preferCurrentTab === -1 ? undefined : self.preferCurrentTab),
+  #|   peerIdentity: self.peerIdentity
   #| })
 
 ///|
@@ -1642,8 +726,8 @@ extern "js" fn MediaStreamConstraints::from_js_ffi(
   #| (v) => ({
   #|   video: (v.video === undefined ? { $tag: 0 } : { $tag: 1, _0: v.video }),
   #|   audio: (v.audio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.audio }),
-  #|   peerIdentity: v.peerIdentity,
-  #|   preferCurrentTab: (v.preferCurrentTab === undefined ? -1 : v.preferCurrentTab)
+  #|   preferCurrentTab: (v.preferCurrentTab === undefined ? -1 : v.preferCurrentTab),
+  #|   peerIdentity: v.peerIdentity
   #| })
 
 ///|
@@ -1670,8 +754,8 @@ pub fn DoubleRange::default() -> DoubleRange {
 ///|
 extern "js" fn DoubleRange::to_js_ffi(self : DoubleRange) -> JsValue =
   #| (self) => ({
-  #|   max: self.max,
-  #|   min: self.min
+  #|   max: ((() => { const v = self.max; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   min: ((() => { const v = self.min; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -1683,8 +767,8 @@ pub fn DoubleRange::to_js(self : DoubleRange) -> JsValue {
 ///|
 extern "js" fn DoubleRange::from_js_ffi(value : JsValue) -> DoubleRange =
   #| (v) => ({
-  #|   max: v.max,
-  #|   min: v.min
+  #|   max: (v.max === undefined ? { $tag: 0 } : { $tag: 1, _0: v.max }),
+  #|   min: (v.min === undefined ? { $tag: 0 } : { $tag: 1, _0: v.min })
   #| })
 
 ///|
@@ -1713,10 +797,10 @@ extern "js" fn ConstrainDoubleRange::to_js_ffi(
   self : ConstrainDoubleRange,
 ) -> JsValue =
   #| (self) => ({
-  #|   max: self.max,
-  #|   min: self.min,
-  #|   exact: self.exact,
-  #|   ideal: self.ideal
+  #|   max: ((() => { const v = self.max; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   min: ((() => { const v = self.min; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   exact: ((() => { const v = self.exact; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   ideal: ((() => { const v = self.ideal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -1730,10 +814,10 @@ extern "js" fn ConstrainDoubleRange::from_js_ffi(
   value : JsValue,
 ) -> ConstrainDoubleRange =
   #| (v) => ({
-  #|   max: v.max,
-  #|   min: v.min,
-  #|   exact: v.exact,
-  #|   ideal: v.ideal
+  #|   max: (v.max === undefined ? { $tag: 0 } : { $tag: 1, _0: v.max }),
+  #|   min: (v.min === undefined ? { $tag: 0 } : { $tag: 1, _0: v.min }),
+  #|   exact: (v.exact === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exact }),
+  #|   ideal: (v.ideal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ideal })
   #| })
 
 ///|
@@ -2117,30 +1201,26 @@ pub extern "js" fn MediaStream::get_active(self : MediaStream) -> Bool =
   #| (self) => self.active
 
 ///|
-pub extern "js" fn MediaStream::get_onaddtrack(
-  self : MediaStream,
-) -> EventHandler =
-  #| (self) => self.onaddtrack
-
-///|
 pub extern "js" fn MediaStream::set_onaddtrack(
   self : MediaStream,
-  value : EventHandler,
+  handler : (MediaStreamTrackEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onaddtrack = value }
+  #| (self, handler) => { self.onaddtrack = (e) => handler(e) }
 
 ///|
-pub extern "js" fn MediaStream::get_onremovetrack(
-  self : MediaStream,
-) -> EventHandler =
-  #| (self) => self.onremovetrack
+pub extern "js" fn MediaStream::clear_onaddtrack(self : MediaStream) -> Unit =
+  #| (self) => { self.onaddtrack = null }
 
 ///|
 pub extern "js" fn MediaStream::set_onremovetrack(
   self : MediaStream,
-  value : EventHandler,
+  handler : (MediaStreamTrackEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onremovetrack = value }
+  #| (self, handler) => { self.onremovetrack = (e) => handler(e) }
+
+///|
+pub extern "js" fn MediaStream::clear_onremovetrack(self : MediaStream) -> Unit =
+  #| (self) => { self.onremovetrack = null }
 
 ///|
 /// MediaStreamTrack interface
@@ -2187,16 +1267,16 @@ pub extern "js" fn MediaStreamTrack::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaStreamTrack::as_browser_capture_media_stream_track(
-  self : MediaStreamTrack,
-) -> BrowserCaptureMediaStreamTrack? =
-  #| (self) => (self instanceof BrowserCaptureMediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn MediaStreamTrack::as_canvas_capture_media_stream_track(
   self : MediaStreamTrack,
 ) -> CanvasCaptureMediaStreamTrack? =
   #| (self) => (self instanceof CanvasCaptureMediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn MediaStreamTrack::as_browser_capture_media_stream_track(
+  self : MediaStreamTrack,
+) -> BrowserCaptureMediaStreamTrack? =
+  #| (self) => (self instanceof BrowserCaptureMediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn MediaStreamTrack::get_kind(
@@ -2232,30 +1312,30 @@ pub extern "js" fn MediaStreamTrack::get_muted(self : MediaStreamTrack) -> Bool 
   #| (self) => self.muted
 
 ///|
-pub extern "js" fn MediaStreamTrack::get_onmute(
-  self : MediaStreamTrack,
-) -> EventHandler =
-  #| (self) => self.onmute
-
-///|
 pub extern "js" fn MediaStreamTrack::set_onmute(
   self : MediaStreamTrack,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onmute = value }
+  #| (self, handler) => { self.onmute = (e) => handler(e) }
 
 ///|
-pub extern "js" fn MediaStreamTrack::get_onunmute(
+pub extern "js" fn MediaStreamTrack::clear_onmute(
   self : MediaStreamTrack,
-) -> EventHandler =
-  #| (self) => self.onunmute
+) -> Unit =
+  #| (self) => { self.onmute = null }
 
 ///|
 pub extern "js" fn MediaStreamTrack::set_onunmute(
   self : MediaStreamTrack,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onunmute = value }
+  #| (self, handler) => { self.onunmute = (e) => handler(e) }
+
+///|
+pub extern "js" fn MediaStreamTrack::clear_onunmute(
+  self : MediaStreamTrack,
+) -> Unit =
+  #| (self) => { self.onunmute = null }
 
 ///|
 pub extern "js" fn MediaStreamTrack::get_ready_state(
@@ -2264,17 +1344,17 @@ pub extern "js" fn MediaStreamTrack::get_ready_state(
   #| (self) => ['live', 'ended'].indexOf(self.readyState)
 
 ///|
-pub extern "js" fn MediaStreamTrack::get_onended(
-  self : MediaStreamTrack,
-) -> EventHandler =
-  #| (self) => self.onended
-
-///|
 pub extern "js" fn MediaStreamTrack::set_onended(
   self : MediaStreamTrack,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onended = value }
+  #| (self, handler) => { self.onended = (e) => handler(e) }
+
+///|
+pub extern "js" fn MediaStreamTrack::clear_onended(
+  self : MediaStreamTrack,
+) -> Unit =
+  #| (self) => { self.onended = null }
 
 ///|
 pub extern "js" fn MediaStreamTrack::clone(
@@ -2329,6 +1409,25 @@ pub fn MediaStreamTrack::apply_constraints_with_constraints(
 }
 
 ///|
+pub extern "js" fn MediaStreamTrack::get_capture_handle(
+  self : MediaStreamTrack,
+) -> CaptureHandle? =
+  #| (self) => (() => { const v = self.getCaptureHandle(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn MediaStreamTrack::set_oncapturehandlechange(
+  self : MediaStreamTrack,
+  handler : (Event) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.oncapturehandlechange = (e) => handler(e) }
+
+///|
+pub extern "js" fn MediaStreamTrack::clear_oncapturehandlechange(
+  self : MediaStreamTrack,
+) -> Unit =
+  #| (self) => { self.oncapturehandlechange = null }
+
+///|
 pub extern "js" fn MediaStreamTrack::get_supported_capture_actions(
   self : MediaStreamTrack,
 ) -> Array[String] =
@@ -2342,44 +1441,6 @@ pub extern "js" fn MediaStreamTrack::send_capture_action(
   #| (self, action) => self.sendCaptureAction(['next', 'previous', 'first', 'last'][action])
 
 ///|
-pub extern "js" fn MediaStreamTrack::get_isolated(
-  self : MediaStreamTrack,
-) -> Bool =
-  #| (self) => self.isolated
-
-///|
-pub extern "js" fn MediaStreamTrack::get_onisolationchange(
-  self : MediaStreamTrack,
-) -> EventHandler =
-  #| (self) => self.onisolationchange
-
-///|
-pub extern "js" fn MediaStreamTrack::set_onisolationchange(
-  self : MediaStreamTrack,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.onisolationchange = value }
-
-///|
-pub extern "js" fn MediaStreamTrack::get_capture_handle(
-  self : MediaStreamTrack,
-) -> CaptureHandle? =
-  #| (self) => (() => { const v = self.getCaptureHandle(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-pub extern "js" fn MediaStreamTrack::get_oncapturehandlechange(
-  self : MediaStreamTrack,
-) -> EventHandler =
-  #| (self) => self.oncapturehandlechange
-
-///|
-pub extern "js" fn MediaStreamTrack::set_oncapturehandlechange(
-  self : MediaStreamTrack,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.oncapturehandlechange = value }
-
-///|
 pub extern "js" fn MediaStreamTrack::get_content_hint(
   self : MediaStreamTrack,
 ) -> String =
@@ -2391,6 +1452,25 @@ pub extern "js" fn MediaStreamTrack::set_content_hint(
   value : String,
 ) -> Unit =
   #| (self, value) => { self.contentHint = value }
+
+///|
+pub extern "js" fn MediaStreamTrack::get_isolated(
+  self : MediaStreamTrack,
+) -> Bool =
+  #| (self) => self.isolated
+
+///|
+pub extern "js" fn MediaStreamTrack::set_onisolationchange(
+  self : MediaStreamTrack,
+  handler : (Event) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onisolationchange = (e) => handler(e) }
+
+///|
+pub extern "js" fn MediaStreamTrack::clear_onisolationchange(
+  self : MediaStreamTrack,
+) -> Unit =
+  #| (self) => { self.onisolationchange = null }
 
 ///|
 /// MediaStreamTrackEvent interface
@@ -2557,23 +1637,148 @@ pub extern "js" fn MediaDevices::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaDevices::get_ondevicechange(
-  self : MediaDevices,
-) -> EventHandler =
-  #| (self) => self.ondevicechange
+/// Error type for throwing methods
+pub(all) enum MediaDevicesSelectAudioOutputError {
+  NotFoundError(JsError)
+  NotAllowedError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum MediaDevicesGetUserMediaError {
+  TypeError(JsError)
+  AbortError(JsError)
+  NotFoundError(JsError)
+  SecurityError(JsError)
+  NotAllowedError(JsError)
+  NotReadableError(JsError)
+  InvalidStateError(JsError)
+  OverconstrainedError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum MediaDevicesGetDisplayMediaError {
+  TypeError(JsError)
+  AbortError(JsError)
+  NotFoundError(JsError)
+  NotAllowedError(JsError)
+  NotReadableError(JsError)
+  InvalidStateError(JsError)
+  OverconstrainedError(JsError)
+  OtherError(JsError)
+} derive(Show)
 
 ///|
 pub extern "js" fn MediaDevices::set_ondevicechange(
   self : MediaDevices,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ondevicechange = value }
+  #| (self, handler) => { self.ondevicechange = (e) => handler(e) }
+
+///|
+pub extern "js" fn MediaDevices::clear_ondevicechange(
+  self : MediaDevices,
+) -> Unit =
+  #| (self) => { self.ondevicechange = null }
 
 ///|
 pub extern "js" fn MediaDevices::enumerate_devices(
   self : MediaDevices,
 ) -> Promise[Array[MediaDeviceInfo]] =
   #| (self) => self.enumerateDevices()
+
+///|
+pub extern "js" fn MediaDevices::select_audio_output(
+  self : MediaDevices,
+) -> Promise[Result[MediaDeviceInfo, MediaDevicesSelectAudioOutputError]] =
+  #| (self) => self.selectAudioOutput().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+
+///|
+extern "js" fn MediaDevices::select_audio_output_with_options_ffi(
+  self : MediaDevices,
+  options : JsValue,
+) -> Promise[Result[MediaDeviceInfo, MediaDevicesSelectAudioOutputError]] =
+  #| (self, options) => self.selectAudioOutput(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+
+///|
+pub fn MediaDevices::select_audio_output_with_options(
+  self : MediaDevices,
+  options : AudioOutputOptions,
+) -> Promise[Result[MediaDeviceInfo, MediaDevicesSelectAudioOutputError]] {
+  MediaDevices::select_audio_output_with_options_ffi(self, options.to_js())
+}
+
+///|
+pub extern "js" fn MediaDevices::set_capture_handle_config(
+  self : MediaDevices,
+) -> Unit =
+  #| (self) => self.setCaptureHandleConfig()
+
+///|
+extern "js" fn MediaDevices::set_capture_handle_config_with_config_ffi(
+  self : MediaDevices,
+  config : JsValue,
+) -> Unit =
+  #| (self, config) => self.setCaptureHandleConfig(config)
+
+///|
+pub fn MediaDevices::set_capture_handle_config_with_config(
+  self : MediaDevices,
+  config : CaptureHandleConfig,
+) -> Unit {
+  MediaDevices::set_capture_handle_config_with_config_ffi(self, config.to_js())
+}
+
+///|
+pub extern "js" fn MediaDevices::set_supported_capture_actions(
+  self : MediaDevices,
+  actions : Array[String],
+) -> Unit =
+  #| (self, actions) => self.setSupportedCaptureActions(actions)
+
+///|
+pub extern "js" fn MediaDevices::set_oncaptureaction(
+  self : MediaDevices,
+  handler : (Event) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.oncaptureaction = (e) => handler(e) }
+
+///|
+pub extern "js" fn MediaDevices::clear_oncaptureaction(
+  self : MediaDevices,
+) -> Unit =
+  #| (self) => { self.oncaptureaction = null }
+
+///|
+pub extern "js" fn MediaDevices::get_supported_constraints(
+  self : MediaDevices,
+) -> MediaTrackSupportedConstraints =
+  #| (self) => self.getSupportedConstraints()
+
+///|
+pub extern "js" fn MediaDevices::get_user_media(
+  self : MediaDevices,
+) -> Promise[Result[MediaStream, MediaDevicesGetUserMediaError]] =
+  #| (self) => self.getUserMedia().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'NotReadableError') return { $tag: 5, _0: e }; if (n === 'InvalidStateError') return { $tag: 6, _0: e }; if (n === 'OverconstrainedError') return { $tag: 7, _0: e }; return { $tag: 8, _0: e }; })() }))
+
+///|
+extern "js" fn MediaDevices::get_user_media_with_constraints_ffi(
+  self : MediaDevices,
+  constraints : JsValue,
+) -> Promise[Result[MediaStream, MediaDevicesGetUserMediaError]] =
+  #| (self, constraints) => self.getUserMedia(constraints).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'NotReadableError') return { $tag: 5, _0: e }; if (n === 'InvalidStateError') return { $tag: 6, _0: e }; if (n === 'OverconstrainedError') return { $tag: 7, _0: e }; return { $tag: 8, _0: e }; })() }))
+
+///|
+pub fn MediaDevices::get_user_media_with_constraints(
+  self : MediaDevices,
+  constraints : MediaStreamConstraints,
+) -> Promise[Result[MediaStream, MediaDevicesGetUserMediaError]] {
+  MediaDevices::get_user_media_with_constraints_ffi(self, constraints.to_js())
+}
 
 ///|
 pub extern "js" fn MediaDevices::get_viewport_media(
@@ -2597,113 +1802,24 @@ pub fn MediaDevices::get_viewport_media_with_options(
 }
 
 ///|
-pub extern "js" fn MediaDevices::select_audio_output(
-  self : MediaDevices,
-) -> Promise[MediaDeviceInfo] =
-  #| (self) => self.selectAudioOutput()
-
-///|
-extern "js" fn MediaDevices::select_audio_output_with_options_ffi(
-  self : MediaDevices,
-  options : JsValue,
-) -> Promise[MediaDeviceInfo] =
-  #| (self, options) => self.selectAudioOutput(options)
-
-///|
-pub fn MediaDevices::select_audio_output_with_options(
-  self : MediaDevices,
-  options : AudioOutputOptions,
-) -> Promise[MediaDeviceInfo] {
-  MediaDevices::select_audio_output_with_options_ffi(self, options.to_js())
-}
-
-///|
-pub extern "js" fn MediaDevices::set_supported_capture_actions(
-  self : MediaDevices,
-  actions : Array[String],
-) -> Unit =
-  #| (self, actions) => self.setSupportedCaptureActions(actions)
-
-///|
-pub extern "js" fn MediaDevices::get_oncaptureaction(
-  self : MediaDevices,
-) -> EventHandler =
-  #| (self) => self.oncaptureaction
-
-///|
-pub extern "js" fn MediaDevices::set_oncaptureaction(
-  self : MediaDevices,
-  value : EventHandler,
-) -> Unit =
-  #| (self, value) => { self.oncaptureaction = value }
-
-///|
-pub extern "js" fn MediaDevices::get_supported_constraints(
-  self : MediaDevices,
-) -> MediaTrackSupportedConstraints =
-  #| (self) => self.getSupportedConstraints()
-
-///|
-pub extern "js" fn MediaDevices::get_user_media(
-  self : MediaDevices,
-) -> Promise[MediaStream] =
-  #| (self) => self.getUserMedia()
-
-///|
-extern "js" fn MediaDevices::get_user_media_with_constraints_ffi(
-  self : MediaDevices,
-  constraints : JsValue,
-) -> Promise[MediaStream] =
-  #| (self, constraints) => self.getUserMedia(constraints)
-
-///|
-pub fn MediaDevices::get_user_media_with_constraints(
-  self : MediaDevices,
-  constraints : MediaStreamConstraints,
-) -> Promise[MediaStream] {
-  MediaDevices::get_user_media_with_constraints_ffi(self, constraints.to_js())
-}
-
-///|
 pub extern "js" fn MediaDevices::get_display_media(
   self : MediaDevices,
-) -> Promise[MediaStream] =
-  #| (self) => self.getDisplayMedia()
+) -> Promise[Result[MediaStream, MediaDevicesGetDisplayMediaError]] =
+  #| (self) => self.getDisplayMedia().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'NotReadableError') return { $tag: 4, _0: e }; if (n === 'InvalidStateError') return { $tag: 5, _0: e }; if (n === 'OverconstrainedError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }))
 
 ///|
 extern "js" fn MediaDevices::get_display_media_with_options_ffi(
   self : MediaDevices,
   options : JsValue,
-) -> Promise[MediaStream] =
-  #| (self, options) => self.getDisplayMedia(options)
+) -> Promise[Result[MediaStream, MediaDevicesGetDisplayMediaError]] =
+  #| (self, options) => self.getDisplayMedia(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'NotReadableError') return { $tag: 4, _0: e }; if (n === 'InvalidStateError') return { $tag: 5, _0: e }; if (n === 'OverconstrainedError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }))
 
 ///|
 pub fn MediaDevices::get_display_media_with_options(
   self : MediaDevices,
   options : DisplayMediaStreamOptions,
-) -> Promise[MediaStream] {
+) -> Promise[Result[MediaStream, MediaDevicesGetDisplayMediaError]] {
   MediaDevices::get_display_media_with_options_ffi(self, options.to_js())
-}
-
-///|
-pub extern "js" fn MediaDevices::set_capture_handle_config(
-  self : MediaDevices,
-) -> Unit =
-  #| (self) => self.setCaptureHandleConfig()
-
-///|
-extern "js" fn MediaDevices::set_capture_handle_config_with_config_ffi(
-  self : MediaDevices,
-  config : JsValue,
-) -> Unit =
-  #| (self, config) => self.setCaptureHandleConfig(config)
-
-///|
-pub fn MediaDevices::set_capture_handle_config_with_config(
-  self : MediaDevices,
-  config : CaptureHandleConfig,
-) -> Unit {
-  MediaDevices::set_capture_handle_config_with_config_ffi(self, config.to_js())
 }
 
 ///|

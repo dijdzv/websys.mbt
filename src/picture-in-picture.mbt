@@ -104,17 +104,17 @@ pub extern "js" fn PictureInPictureWindow::get_height(
   #| (self) => self.height
 
 ///|
-pub extern "js" fn PictureInPictureWindow::get_onresize(
-  self : PictureInPictureWindow,
-) -> EventHandler =
-  #| (self) => self.onresize
-
-///|
 pub extern "js" fn PictureInPictureWindow::set_onresize(
   self : PictureInPictureWindow,
-  value : EventHandler,
+  handler : (PictureInPictureEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onresize = value }
+  #| (self, handler) => { self.onresize = (e) => handler(e) }
+
+///|
+pub extern "js" fn PictureInPictureWindow::clear_onresize(
+  self : PictureInPictureWindow,
+) -> Unit =
+  #| (self) => { self.onresize = null }
 
 ///|
 /// PictureInPictureEvent interface

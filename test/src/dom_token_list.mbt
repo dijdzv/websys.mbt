@@ -16,4 +16,5 @@ fn test_dom_token_list_iteration() -> Unit {
     Some(_) => abort("FAIL: item(4) should be None")
     None => ()
   }
+  println("  dom_token_list_iteration: ok")
 }

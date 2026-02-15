@@ -533,12 +533,20 @@ pub extern "js" fn SharedStorageWorkletGlobalScope::to_worklet_global_scope(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum SharedStorageWorkletGlobalScopeRegisterError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// @alert deprecated "register is deprecated"
 pub extern "js" fn SharedStorageWorkletGlobalScope::register(
   self : SharedStorageWorkletGlobalScope,
   name : String,
   operation_ctor : Function,
-) -> Unit =
-  #| (self, name, operation_ctor) => self.register(name, operation_ctor)
+) -> Result[Unit, SharedStorageWorkletGlobalScopeRegisterError] =
+  #| (self, name, operation_ctor) => (() => { try { self.register(name, operation_ctor); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SharedStorageWorkletGlobalScope::get_shared_storage(
@@ -919,6 +927,34 @@ pub extern "js" fn JsValue::to_shared_storage(self : JsValue) -> SharedStorage =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum SharedStorageSetError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum SharedStorageAppendError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum SharedStorageDeleteError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum SharedStorageClearError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn SharedStorage::get(
   self : SharedStorage,
   key : String,
@@ -926,12 +962,13 @@ pub extern "js" fn SharedStorage::get(
   #| (self, key) => self.get(key)
 
 ///|
+/// @alert deprecated "set is deprecated"
 pub extern "js" fn SharedStorage::set(
   self : SharedStorage,
   key : String,
   value : String,
-) -> Promise[JsValue] =
-  #| (self, key, value) => self.set(key, value)
+) -> Promise[Result[JsValue, SharedStorageSetError]] =
+  #| (self, key, value) => self.set(key, value).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn SharedStorage::set_with_options_ffi(
@@ -939,8 +976,8 @@ extern "js" fn SharedStorage::set_with_options_ffi(
   key : String,
   value : String,
   options : JsValue,
-) -> Promise[JsValue] =
-  #| (self, key, value, options) => self.set(key, value, options)
+) -> Promise[Result[JsValue, SharedStorageSetError]] =
+  #| (self, key, value, options) => self.set(key, value, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn SharedStorage::set_with_options(
@@ -948,17 +985,18 @@ pub fn SharedStorage::set_with_options(
   key : String,
   value : String,
   options : SharedStorageSetMethodOptions,
-) -> Promise[JsValue] {
+) -> Promise[Result[JsValue, SharedStorageSetError]] {
   SharedStorage::set_with_options_ffi(self, key, value, options.to_js())
 }
 
 ///|
+/// @alert deprecated "append is deprecated"
 pub extern "js" fn SharedStorage::append(
   self : SharedStorage,
   key : String,
   value : String,
-) -> Promise[JsValue] =
-  #| (self, key, value) => self.append(key, value)
+) -> Promise[Result[JsValue, SharedStorageAppendError]] =
+  #| (self, key, value) => self.append(key, value).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn SharedStorage::append_with_options_ffi(
@@ -966,8 +1004,8 @@ extern "js" fn SharedStorage::append_with_options_ffi(
   key : String,
   value : String,
   options : JsValue,
-) -> Promise[JsValue] =
-  #| (self, key, value, options) => self.append(key, value, options)
+) -> Promise[Result[JsValue, SharedStorageAppendError]] =
+  #| (self, key, value, options) => self.append(key, value, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn SharedStorage::append_with_options(
@@ -975,52 +1013,54 @@ pub fn SharedStorage::append_with_options(
   key : String,
   value : String,
   options : SharedStorageModifierMethodOptions,
-) -> Promise[JsValue] {
+) -> Promise[Result[JsValue, SharedStorageAppendError]] {
   SharedStorage::append_with_options_ffi(self, key, value, options.to_js())
 }
 
 ///|
+/// @alert deprecated "delete is deprecated"
 pub extern "js" fn SharedStorage::delete(
   self : SharedStorage,
   key : String,
-) -> Promise[JsValue] =
-  #| (self, key) => self.delete(key)
+) -> Promise[Result[JsValue, SharedStorageDeleteError]] =
+  #| (self, key) => self.delete(key).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn SharedStorage::delete_with_options_ffi(
   self : SharedStorage,
   key : String,
   options : JsValue,
-) -> Promise[JsValue] =
-  #| (self, key, options) => self.delete(key, options)
+) -> Promise[Result[JsValue, SharedStorageDeleteError]] =
+  #| (self, key, options) => self.delete(key, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn SharedStorage::delete_with_options(
   self : SharedStorage,
   key : String,
   options : SharedStorageModifierMethodOptions,
-) -> Promise[JsValue] {
+) -> Promise[Result[JsValue, SharedStorageDeleteError]] {
   SharedStorage::delete_with_options_ffi(self, key, options.to_js())
 }
 
 ///|
+/// @alert deprecated "clear is deprecated"
 pub extern "js" fn SharedStorage::clear(
   self : SharedStorage,
-) -> Promise[JsValue] =
-  #| (self) => self.clear()
+) -> Promise[Result[JsValue, SharedStorageClearError]] =
+  #| (self) => self.clear().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn SharedStorage::clear_with_options_ffi(
   self : SharedStorage,
   options : JsValue,
-) -> Promise[JsValue] =
-  #| (self, options) => self.clear(options)
+) -> Promise[Result[JsValue, SharedStorageClearError]] =
+  #| (self, options) => self.clear(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn SharedStorage::clear_with_options(
   self : SharedStorage,
   options : SharedStorageModifierMethodOptions,
-) -> Promise[JsValue] {
+) -> Promise[Result[JsValue, SharedStorageClearError]] {
   SharedStorage::clear_with_options_ffi(self, options.to_js())
 }
 

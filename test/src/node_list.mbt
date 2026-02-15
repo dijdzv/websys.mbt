@@ -10,7 +10,7 @@ fn test_node_list() -> Unit {
   div.to_node().append_child(s3.to_node()) |> ignore
   doc.get_body().unwrap().to_node().append_child(div.to_node()) |> ignore
   // querySelectorAll returns NodeList
-  let list = div.query_selector_all("span")
+  let list = div.query_selector_all("span").unwrap()
   assert_eq(list.get_length(), 3, label="NodeList length")
   // item
   match list.item(0) {
@@ -23,6 +23,7 @@ fn test_node_list() -> Unit {
   }
   // cleanup
   doc.get_body().unwrap().to_node().remove_child(div.to_node()) |> ignore
+  println("  node_list: ok")
 }
 
 ///|
@@ -48,4 +49,5 @@ fn test_html_collection() -> Unit {
     Some(el) => assert_eq(el.get_id(), "test-p2", label="namedItem")
     None => abort("FAIL: namedItem is None")
   }
+  println("  html_collection: ok")
 }

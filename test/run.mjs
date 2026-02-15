@@ -22,27 +22,30 @@ const server = Bun.serve({
   },
 });
 
-const browser = await chromium.launch({
-  executablePath,
-  args: ["--no-sandbox"],
-});
-const page = await browser.newPage();
+let browser;
+try {
+  browser = await chromium.launch({
+    executablePath,
+    args: ["--no-sandbox"],
+  });
+  const page = await browser.newPage();
 
-// Forward console output
-page.on("console", (msg) => {
-  const text = msg.text();
-  if (msg.type() === "error") {
-    process.stderr.write(text + "\n");
-  } else {
-    process.stdout.write(text + "\n");
-  }
-});
+  // Forward console output
+  page.on("console", (msg) => {
+    const text = msg.text();
+    if (msg.type() === "error") {
+      process.stderr.write(text + "\n");
+    } else {
+      process.stdout.write(text + "\n");
+    }
+  });
 
-// Navigate and wait for tests to complete
-await page.goto(`http://localhost:${server.port}/`);
-await page.waitForFunction(() => window.__testsDone === true, null, { timeout: 30000 });
-const passed = await page.evaluate(() => window.__testsPassed);
-
-await browser.close();
-server.stop();
-process.exit(passed ? 0 : 1);
+  // Navigate and wait for tests to complete
+  await page.goto(`http://localhost:${server.port}/`);
+  await page.waitForFunction(() => window.__testsDone === true, null, { timeout: 30000 });
+  const passed = await page.evaluate(() => window.__testsPassed);
+  process.exitCode = passed ? 0 : 1;
+} finally {
+  if (browser) await browser.close().catch(() => {});
+  server.stop();
+}

@@ -437,6 +437,13 @@ pub extern "js" fn JsValue::to_ndef_record(self : JsValue) -> NDEFRecord =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum NDEFRecordToRecordsError {
+  NotSupported(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 extern "js" fn NDEFRecord::new_ffi(record_init : JsValue) -> NDEFRecord =
   #| (record_init) => new NDEFRecord(record_init)
 
@@ -472,8 +479,8 @@ pub extern "js" fn NDEFRecord::get_lang(self : NDEFRecord) -> String? =
 ///|
 pub extern "js" fn NDEFRecord::to_records(
   self : NDEFRecord,
-) -> Array[NDEFRecord] =
-  #| (self) => self.toRecords()
+) -> Result[Array[NDEFRecord], NDEFRecordToRecordsError] =
+  #| (self) => (() => { try { return { $tag: 1, _0: self.toRecords() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupported') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// NDEFReader interface
@@ -510,49 +517,70 @@ pub extern "js" fn NDEFReader::to_event_target(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum NDEFReaderScanError {
+  AbortError(JsError)
+  NotAllowedError(JsError)
+  InvalidStateError(JsError)
+  NotSupportedError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum NDEFReaderWriteError {
+  AbortError(JsError)
+  NetworkError(JsError)
+  NotAllowedError(JsError)
+  NotReadableError(JsError)
+  NotSupportedError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn NDEFReader::new() -> NDEFReader =
   #| () => new NDEFReader()
 
 ///|
-pub extern "js" fn NDEFReader::get_onreading(self : NDEFReader) -> EventHandler =
-  #| (self) => self.onreading
-
-///|
 pub extern "js" fn NDEFReader::set_onreading(
   self : NDEFReader,
-  value : EventHandler,
+  handler : (NDEFReadingEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onreading = value }
+  #| (self, handler) => { self.onreading = (e) => handler(e) }
 
 ///|
-pub extern "js" fn NDEFReader::get_onreadingerror(
-  self : NDEFReader,
-) -> EventHandler =
-  #| (self) => self.onreadingerror
+pub extern "js" fn NDEFReader::clear_onreading(self : NDEFReader) -> Unit =
+  #| (self) => { self.onreading = null }
 
 ///|
 pub extern "js" fn NDEFReader::set_onreadingerror(
   self : NDEFReader,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onreadingerror = value }
+  #| (self, handler) => { self.onreadingerror = (e) => handler(e) }
 
 ///|
-pub extern "js" fn NDEFReader::scan(self : NDEFReader) -> Promise[Unit] =
-  #| (self) => self.scan()
+pub extern "js" fn NDEFReader::clear_onreadingerror(self : NDEFReader) -> Unit =
+  #| (self) => { self.onreadingerror = null }
+
+///|
+pub extern "js" fn NDEFReader::scan(
+  self : NDEFReader,
+) -> Promise[Result[Unit, NDEFReaderScanError]] =
+  #| (self) => self.scan().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 extern "js" fn NDEFReader::scan_with_options_ffi(
   self : NDEFReader,
   options : JsValue,
-) -> Promise[Unit] =
-  #| (self, options) => self.scan(options)
+) -> Promise[Result[Unit, NDEFReaderScanError]] =
+  #| (self, options) => self.scan(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub fn NDEFReader::scan_with_options(
   self : NDEFReader,
   options : NDEFScanOptions,
-) -> Promise[Unit] {
+) -> Promise[Result[Unit, NDEFReaderScanError]] {
   NDEFReader::scan_with_options_ffi(self, options.to_js())
 }
 
@@ -560,23 +588,23 @@ pub fn NDEFReader::scan_with_options(
 pub extern "js" fn NDEFReader::write(
   self : NDEFReader,
   message : NDEFMessageSource,
-) -> Promise[Unit] =
-  #| (self, message) => self.write(message)
+) -> Promise[Result[Unit, NDEFReaderWriteError]] =
+  #| (self, message) => self.write(message).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NetworkError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
 ///|
 extern "js" fn NDEFReader::write_with_options_ffi(
   self : NDEFReader,
   message : NDEFMessageSource,
   options : JsValue,
-) -> Promise[Unit] =
-  #| (self, message, options) => self.write(message, options)
+) -> Promise[Result[Unit, NDEFReaderWriteError]] =
+  #| (self, message, options) => self.write(message, options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NetworkError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
 ///|
 pub fn NDEFReader::write_with_options(
   self : NDEFReader,
   message : NDEFMessageSource,
   options : NDEFWriteOptions,
-) -> Promise[Unit] {
+) -> Promise[Result[Unit, NDEFReaderWriteError]] {
   NDEFReader::write_with_options_ffi(self, message, options.to_js())
 }
 
@@ -606,24 +634,24 @@ pub extern "js" fn NDEFReader::write_with_string(
   self : NDEFReader,
   message : String,
   options : NDEFWriteOptions,
-) -> Promise[Unit] =
-  #| (self, message, options) => self.write(message, options)
+) -> Promise[Result[Unit, NDEFReaderWriteError]] =
+  #| (self, message, options) => self.write(message, options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NetworkError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
 ///|
 pub extern "js" fn NDEFReader::write_with_buffer_source(
   self : NDEFReader,
   message : BufferSource,
   options : NDEFWriteOptions,
-) -> Promise[Unit] =
-  #| (self, message, options) => self.write(message, options)
+) -> Promise[Result[Unit, NDEFReaderWriteError]] =
+  #| (self, message, options) => self.write(message, options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NetworkError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
 ///|
 pub extern "js" fn NDEFReader::write_with_ndef_message_init(
   self : NDEFReader,
   message : NDEFMessageInit,
   options : NDEFWriteOptions,
-) -> Promise[Unit] =
-  #| (self, message, options) => self.write(message, options)
+) -> Promise[Result[Unit, NDEFReaderWriteError]] =
+  #| (self, message, options) => self.write(message, options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NetworkError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
 ///|
 /// NDEFReadingEvent interface

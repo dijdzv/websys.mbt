@@ -14,5 +14,8 @@ bun.lock
 devenv.lock
 result
 
+# Generated reports
+src/*.md
+
 # OS
 .DS_Store

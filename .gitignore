@@ -17,5 +17,8 @@ result
 # Generated reports
 src/*.md
 
+# Generated interface files
+*.mbti
+
 # OS
 .DS_Store

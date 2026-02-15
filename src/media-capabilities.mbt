@@ -771,40 +771,20 @@ pub extern "js" fn JsValue::to_media_capabilities(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum MediaCapabilitiesDecodingInfoError {
-  TypeError(JsError)
-  SecurityError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum MediaCapabilitiesEncodingInfoError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 extern "js" fn MediaCapabilities::decoding_info_ffi(
   self : MediaCapabilities,
   configuration : JsValue,
-) -> Promise[
-  Result[MediaCapabilitiesDecodingInfo, MediaCapabilitiesDecodingInfoError],
-] =
+) -> Promise[MediaCapabilitiesDecodingInfo] =
   #| (self, configuration) => self.decodingInfo(configuration).then(v => ({
   #|   keySystemAccess: v.keySystemAccess,
   #|   configuration: v.configuration
-  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| }))
 
 ///|
 pub fn MediaCapabilities::decoding_info(
   self : MediaCapabilities,
   configuration : MediaDecodingConfiguration,
-) -> Promise[
-  Result[MediaCapabilitiesDecodingInfo, MediaCapabilitiesDecodingInfoError],
-] {
+) -> Promise[MediaCapabilitiesDecodingInfo] {
   MediaCapabilities::decoding_info_ffi(self, configuration.to_js())
 }
 
@@ -812,19 +792,15 @@ pub fn MediaCapabilities::decoding_info(
 extern "js" fn MediaCapabilities::encoding_info_ffi(
   self : MediaCapabilities,
   configuration : JsValue,
-) -> Promise[
-  Result[MediaCapabilitiesEncodingInfo, MediaCapabilitiesEncodingInfoError],
-] =
+) -> Promise[MediaCapabilitiesEncodingInfo] =
   #| (self, configuration) => self.encodingInfo(configuration).then(v => ({
   #|   configuration: v.configuration
-  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| }))
 
 ///|
 pub fn MediaCapabilities::encoding_info(
   self : MediaCapabilities,
   configuration : MediaEncodingConfiguration,
-) -> Promise[
-  Result[MediaCapabilitiesEncodingInfo, MediaCapabilitiesEncodingInfoError],
-] {
+) -> Promise[MediaCapabilitiesEncodingInfo] {
   MediaCapabilities::encoding_info_ffi(self, configuration.to_js())
 }

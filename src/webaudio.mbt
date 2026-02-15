@@ -433,7 +433,7 @@ extern "js" fn AudioContextOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   latencyHint: ((() => { const v = self.latencyHint; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sampleRate: ((() => { const v = self.sampleRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sampleRate: self.sampleRate,
   #|   sinkId: ((() => { const v = self.sinkId; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   renderSizeHint: ((() => { const v = self.renderSizeHint; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
@@ -450,7 +450,7 @@ extern "js" fn AudioContextOptions::from_js_ffi(
 ) -> AudioContextOptions =
   #| (v) => ({
   #|   latencyHint: (v.latencyHint === undefined ? { $tag: 0 } : { $tag: 1, _0: v.latencyHint }),
-  #|   sampleRate: (v.sampleRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleRate }),
+  #|   sampleRate: v.sampleRate,
   #|   sinkId: (v.sinkId === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sinkId }),
   #|   renderSizeHint: (v.renderSizeHint === undefined ? { $tag: 0 } : { $tag: 1, _0: v.renderSizeHint })
   #| })
@@ -515,7 +515,7 @@ pub fn AudioTimestamp::default() -> AudioTimestamp {
 ///|
 extern "js" fn AudioTimestamp::to_js_ffi(self : AudioTimestamp) -> JsValue =
   #| (self) => ({
-  #|   contextTime: ((() => { const v = self.contextTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   contextTime: self.contextTime,
   #|   performanceTime: ((() => { const v = self.performanceTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -528,7 +528,7 @@ pub fn AudioTimestamp::to_js(self : AudioTimestamp) -> JsValue {
 ///|
 extern "js" fn AudioTimestamp::from_js_ffi(value : JsValue) -> AudioTimestamp =
   #| (v) => ({
-  #|   contextTime: (v.contextTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.contextTime }),
+  #|   contextTime: v.contextTime,
   #|   performanceTime: (v.performanceTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.performanceTime })
   #| })
 
@@ -769,9 +769,9 @@ extern "js" fn AnalyserOptions::to_js_ffi(self : AnalyserOptions) -> JsValue =
   #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   fftSize: self.fftSize,
-  #|   maxDecibels: ((() => { const v = self.maxDecibels; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   minDecibels: ((() => { const v = self.minDecibels; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   smoothingTimeConstant: ((() => { const v = self.smoothingTimeConstant; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   maxDecibels: self.maxDecibels,
+  #|   minDecibels: self.minDecibels,
+  #|   smoothingTimeConstant: self.smoothingTimeConstant
   #| })
 
 ///|
@@ -787,9 +787,9 @@ extern "js" fn AnalyserOptions::from_js_ffi(value : JsValue) -> AnalyserOptions 
   #|   channelCountMode: (v.channelCountMode === undefined ? undefined : ['max', 'clamped-max', 'explicit'].indexOf(v.channelCountMode)),
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
   #|   fftSize: v.fftSize,
-  #|   maxDecibels: (v.maxDecibels === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maxDecibels }),
-  #|   minDecibels: (v.minDecibels === undefined ? { $tag: 0 } : { $tag: 1, _0: v.minDecibels }),
-  #|   smoothingTimeConstant: (v.smoothingTimeConstant === undefined ? { $tag: 0 } : { $tag: 1, _0: v.smoothingTimeConstant })
+  #|   maxDecibels: v.maxDecibels,
+  #|   minDecibels: v.minDecibels,
+  #|   smoothingTimeConstant: v.smoothingTimeConstant
   #| })
 
 ///|
@@ -828,11 +828,11 @@ extern "js" fn AudioBufferSourceOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   buffer: ((() => { const v = self.buffer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   detune: ((() => { const v = self.detune; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   detune: self.detune,
   #|   loop: (self.loop_ === -1 ? undefined : self.loop_),
-  #|   loopEnd: ((() => { const v = self.loopEnd; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   loopStart: ((() => { const v = self.loopStart; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   playbackRate: ((() => { const v = self.playbackRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   loopEnd: self.loopEnd,
+  #|   loopStart: self.loopStart,
+  #|   playbackRate: self.playbackRate
   #| })
 
 ///|
@@ -849,11 +849,11 @@ extern "js" fn AudioBufferSourceOptions::from_js_ffi(
 ) -> AudioBufferSourceOptions =
   #| (v) => ({
   #|   buffer: (v.buffer === undefined ? { $tag: 0 } : v.buffer === null ? { $tag: 1 } : { $tag: 2, _0: v.buffer }),
-  #|   detune: (v.detune === undefined ? { $tag: 0 } : { $tag: 1, _0: v.detune }),
+  #|   detune: v.detune,
   #|   loop_: (v.loop === undefined ? -1 : v.loop),
-  #|   loopEnd: (v.loopEnd === undefined ? { $tag: 0 } : { $tag: 1, _0: v.loopEnd }),
-  #|   loopStart: (v.loopStart === undefined ? { $tag: 0 } : { $tag: 1, _0: v.loopStart }),
-  #|   playbackRate: (v.playbackRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.playbackRate })
+  #|   loopEnd: v.loopEnd,
+  #|   loopStart: v.loopStart,
+  #|   playbackRate: v.playbackRate
   #| })
 
 ///|
@@ -954,10 +954,10 @@ extern "js" fn BiquadFilterOptions::to_js_ffi(
   #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch', 'allpass'][v]; })()),
-  #|   Q: ((() => { const v = self.q; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   detune: ((() => { const v = self.detune; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   frequency: ((() => { const v = self.frequency; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   gain: ((() => { const v = self.gain; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   Q: self.q,
+  #|   detune: self.detune,
+  #|   frequency: self.frequency,
+  #|   gain: self.gain
   #| })
 
 ///|
@@ -975,10 +975,10 @@ extern "js" fn BiquadFilterOptions::from_js_ffi(
   #|   channelCountMode: (v.channelCountMode === undefined ? undefined : ['max', 'clamped-max', 'explicit'].indexOf(v.channelCountMode)),
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
   #|   type_: (v.type === undefined ? undefined : ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch', 'allpass'].indexOf(v.type)),
-  #|   q: (v.Q === undefined ? { $tag: 0 } : { $tag: 1, _0: v.Q }),
-  #|   detune: (v.detune === undefined ? { $tag: 0 } : { $tag: 1, _0: v.detune }),
-  #|   frequency: (v.frequency === undefined ? { $tag: 0 } : { $tag: 1, _0: v.frequency }),
-  #|   gain: (v.gain === undefined ? { $tag: 0 } : { $tag: 1, _0: v.gain })
+  #|   q: v.Q,
+  #|   detune: v.detune,
+  #|   frequency: v.frequency,
+  #|   gain: v.gain
   #| })
 
 ///|
@@ -1114,7 +1114,7 @@ extern "js" fn ConstantSourceOptions::to_js_ffi(
   self : ConstantSourceOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   offset: ((() => { const v = self.offset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   offset: self.offset
   #| })
 
 ///|
@@ -1128,7 +1128,7 @@ extern "js" fn ConstantSourceOptions::from_js_ffi(
   value : JsValue,
 ) -> ConstantSourceOptions =
   #| (v) => ({
-  #|   offset: (v.offset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offset })
+  #|   offset: v.offset
   #| })
 
 ///|
@@ -1221,8 +1221,8 @@ extern "js" fn DelayOptions::to_js_ffi(self : DelayOptions) -> JsValue =
   #|   channelCount: self.channelCount,
   #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
-  #|   maxDelayTime: ((() => { const v = self.maxDelayTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   delayTime: ((() => { const v = self.delayTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   maxDelayTime: self.maxDelayTime,
+  #|   delayTime: self.delayTime
   #| })
 
 ///|
@@ -1237,8 +1237,8 @@ extern "js" fn DelayOptions::from_js_ffi(value : JsValue) -> DelayOptions =
   #|   channelCount: v.channelCount,
   #|   channelCountMode: (v.channelCountMode === undefined ? undefined : ['max', 'clamped-max', 'explicit'].indexOf(v.channelCountMode)),
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
-  #|   maxDelayTime: (v.maxDelayTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maxDelayTime }),
-  #|   delayTime: (v.delayTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.delayTime })
+  #|   maxDelayTime: v.maxDelayTime,
+  #|   delayTime: v.delayTime
   #| })
 
 ///|
@@ -1283,11 +1283,11 @@ extern "js" fn DynamicsCompressorOptions::to_js_ffi(
   #|   channelCount: self.channelCount,
   #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
-  #|   attack: ((() => { const v = self.attack; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   knee: ((() => { const v = self.knee; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   ratio: ((() => { const v = self.ratio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   release: ((() => { const v = self.release; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   threshold: ((() => { const v = self.threshold; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   attack: self.attack,
+  #|   knee: self.knee,
+  #|   ratio: self.ratio,
+  #|   release: self.release,
+  #|   threshold: self.threshold
   #| })
 
 ///|
@@ -1306,11 +1306,11 @@ extern "js" fn DynamicsCompressorOptions::from_js_ffi(
   #|   channelCount: v.channelCount,
   #|   channelCountMode: (v.channelCountMode === undefined ? undefined : ['max', 'clamped-max', 'explicit'].indexOf(v.channelCountMode)),
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
-  #|   attack: (v.attack === undefined ? { $tag: 0 } : { $tag: 1, _0: v.attack }),
-  #|   knee: (v.knee === undefined ? { $tag: 0 } : { $tag: 1, _0: v.knee }),
-  #|   ratio: (v.ratio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ratio }),
-  #|   release: (v.release === undefined ? { $tag: 0 } : { $tag: 1, _0: v.release }),
-  #|   threshold: (v.threshold === undefined ? { $tag: 0 } : { $tag: 1, _0: v.threshold })
+  #|   attack: v.attack,
+  #|   knee: v.knee,
+  #|   ratio: v.ratio,
+  #|   release: v.release,
+  #|   threshold: v.threshold
   #| })
 
 ///|
@@ -1347,7 +1347,7 @@ extern "js" fn GainOptions::to_js_ffi(self : GainOptions) -> JsValue =
   #|   channelCount: self.channelCount,
   #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
-  #|   gain: ((() => { const v = self.gain; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   gain: self.gain
   #| })
 
 ///|
@@ -1362,7 +1362,7 @@ extern "js" fn GainOptions::from_js_ffi(value : JsValue) -> GainOptions =
   #|   channelCount: v.channelCount,
   #|   channelCountMode: (v.channelCountMode === undefined ? undefined : ['max', 'clamped-max', 'explicit'].indexOf(v.channelCountMode)),
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
-  #|   gain: (v.gain === undefined ? { $tag: 0 } : { $tag: 1, _0: v.gain })
+  #|   gain: v.gain
   #| })
 
 ///|
@@ -1600,8 +1600,8 @@ extern "js" fn OscillatorOptions::to_js_ffi(
   #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['sine', 'square', 'sawtooth', 'triangle', 'custom'][v]; })()),
-  #|   frequency: ((() => { const v = self.frequency; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   detune: ((() => { const v = self.detune; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   frequency: self.frequency,
+  #|   detune: self.detune,
   #|   periodicWave: ((() => { const v = self.periodicWave; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -1620,8 +1620,8 @@ extern "js" fn OscillatorOptions::from_js_ffi(
   #|   channelCountMode: (v.channelCountMode === undefined ? undefined : ['max', 'clamped-max', 'explicit'].indexOf(v.channelCountMode)),
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
   #|   type_: (v.type === undefined ? undefined : ['sine', 'square', 'sawtooth', 'triangle', 'custom'].indexOf(v.type)),
-  #|   frequency: (v.frequency === undefined ? { $tag: 0 } : { $tag: 1, _0: v.frequency }),
-  #|   detune: (v.detune === undefined ? { $tag: 0 } : { $tag: 1, _0: v.detune }),
+  #|   frequency: v.frequency,
+  #|   detune: v.detune,
   #|   periodicWave: (v.periodicWave === undefined ? { $tag: 0 } : { $tag: 1, _0: v.periodicWave })
   #| })
 
@@ -1685,18 +1685,18 @@ extern "js" fn PannerOptions::to_js_ffi(self : PannerOptions) -> JsValue =
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   panningModel: ((() => { const v = self.panningModel; if (v === undefined) return undefined; return ['equalpower', 'HRTF'][v]; })()),
   #|   distanceModel: ((() => { const v = self.distanceModel; if (v === undefined) return undefined; return ['linear', 'inverse', 'exponential'][v]; })()),
-  #|   positionX: ((() => { const v = self.positionX; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   positionY: ((() => { const v = self.positionY; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   positionZ: ((() => { const v = self.positionZ; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   orientationX: ((() => { const v = self.orientationX; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   orientationY: ((() => { const v = self.orientationY; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   orientationZ: ((() => { const v = self.orientationZ; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   refDistance: ((() => { const v = self.refDistance; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   maxDistance: ((() => { const v = self.maxDistance; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   rolloffFactor: ((() => { const v = self.rolloffFactor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   coneInnerAngle: ((() => { const v = self.coneInnerAngle; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   coneOuterAngle: ((() => { const v = self.coneOuterAngle; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   coneOuterGain: ((() => { const v = self.coneOuterGain; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   positionX: self.positionX,
+  #|   positionY: self.positionY,
+  #|   positionZ: self.positionZ,
+  #|   orientationX: self.orientationX,
+  #|   orientationY: self.orientationY,
+  #|   orientationZ: self.orientationZ,
+  #|   refDistance: self.refDistance,
+  #|   maxDistance: self.maxDistance,
+  #|   rolloffFactor: self.rolloffFactor,
+  #|   coneInnerAngle: self.coneInnerAngle,
+  #|   coneOuterAngle: self.coneOuterAngle,
+  #|   coneOuterGain: self.coneOuterGain
   #| })
 
 ///|
@@ -1713,18 +1713,18 @@ extern "js" fn PannerOptions::from_js_ffi(value : JsValue) -> PannerOptions =
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
   #|   panningModel: (v.panningModel === undefined ? undefined : ['equalpower', 'HRTF'].indexOf(v.panningModel)),
   #|   distanceModel: (v.distanceModel === undefined ? undefined : ['linear', 'inverse', 'exponential'].indexOf(v.distanceModel)),
-  #|   positionX: (v.positionX === undefined ? { $tag: 0 } : { $tag: 1, _0: v.positionX }),
-  #|   positionY: (v.positionY === undefined ? { $tag: 0 } : { $tag: 1, _0: v.positionY }),
-  #|   positionZ: (v.positionZ === undefined ? { $tag: 0 } : { $tag: 1, _0: v.positionZ }),
-  #|   orientationX: (v.orientationX === undefined ? { $tag: 0 } : { $tag: 1, _0: v.orientationX }),
-  #|   orientationY: (v.orientationY === undefined ? { $tag: 0 } : { $tag: 1, _0: v.orientationY }),
-  #|   orientationZ: (v.orientationZ === undefined ? { $tag: 0 } : { $tag: 1, _0: v.orientationZ }),
-  #|   refDistance: (v.refDistance === undefined ? { $tag: 0 } : { $tag: 1, _0: v.refDistance }),
-  #|   maxDistance: (v.maxDistance === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maxDistance }),
-  #|   rolloffFactor: (v.rolloffFactor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rolloffFactor }),
-  #|   coneInnerAngle: (v.coneInnerAngle === undefined ? { $tag: 0 } : { $tag: 1, _0: v.coneInnerAngle }),
-  #|   coneOuterAngle: (v.coneOuterAngle === undefined ? { $tag: 0 } : { $tag: 1, _0: v.coneOuterAngle }),
-  #|   coneOuterGain: (v.coneOuterGain === undefined ? { $tag: 0 } : { $tag: 1, _0: v.coneOuterGain })
+  #|   positionX: v.positionX,
+  #|   positionY: v.positionY,
+  #|   positionZ: v.positionZ,
+  #|   orientationX: v.orientationX,
+  #|   orientationY: v.orientationY,
+  #|   orientationZ: v.orientationZ,
+  #|   refDistance: v.refDistance,
+  #|   maxDistance: v.maxDistance,
+  #|   rolloffFactor: v.rolloffFactor,
+  #|   coneInnerAngle: v.coneInnerAngle,
+  #|   coneOuterAngle: v.coneOuterAngle,
+  #|   coneOuterGain: v.coneOuterGain
   #| })
 
 ///|
@@ -1851,7 +1851,7 @@ extern "js" fn StereoPannerOptions::to_js_ffi(
   #|   channelCount: self.channelCount,
   #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
-  #|   pan: ((() => { const v = self.pan; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   pan: self.pan
   #| })
 
 ///|
@@ -1868,7 +1868,7 @@ extern "js" fn StereoPannerOptions::from_js_ffi(
   #|   channelCount: v.channelCount,
   #|   channelCountMode: (v.channelCountMode === undefined ? undefined : ['max', 'clamped-max', 'explicit'].indexOf(v.channelCountMode)),
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
-  #|   pan: (v.pan === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pan })
+  #|   pan: v.pan
   #| })
 
 ///|
@@ -2037,9 +2037,9 @@ extern "js" fn AudioParamDescriptor::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   defaultValue: ((() => { const v = self.defaultValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   minValue: ((() => { const v = self.minValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   maxValue: ((() => { const v = self.maxValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   defaultValue: self.defaultValue,
+  #|   minValue: self.minValue,
+  #|   maxValue: self.maxValue,
   #|   automationRate: ((() => { const v = self.automationRate; if (v === undefined) return undefined; return ['a-rate', 'k-rate'][v]; })())
   #| })
 
@@ -2055,9 +2055,9 @@ extern "js" fn AudioParamDescriptor::from_js_ffi(
 ) -> AudioParamDescriptor =
   #| (v) => ({
   #|   name: v.name,
-  #|   defaultValue: (v.defaultValue === undefined ? { $tag: 0 } : { $tag: 1, _0: v.defaultValue }),
-  #|   minValue: (v.minValue === undefined ? { $tag: 0 } : { $tag: 1, _0: v.minValue }),
-  #|   maxValue: (v.maxValue === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maxValue }),
+  #|   defaultValue: v.defaultValue,
+  #|   minValue: v.minValue,
+  #|   maxValue: v.maxValue,
   #|   automationRate: (v.automationRate === undefined ? undefined : ['a-rate', 'k-rate'].indexOf(v.automationRate))
   #| })
 
@@ -2124,22 +2124,6 @@ pub extern "js" fn BaseAudioContext::as_offline_audio_context(
   #| (self) => (self instanceof OfflineAudioContext) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum BaseAudioContextCreateBufferError {
-  RangeError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum BaseAudioContextCreateIIRFilterError {
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn BaseAudioContext::get_destination(
   self : BaseAudioContext,
 ) -> AudioDestinationNode =
@@ -2182,17 +2166,17 @@ pub extern "js" fn BaseAudioContext::get_audio_worklet(
   #| (self) => self.audioWorklet
 
 ///|
-pub extern "js" fn BaseAudioContext::set_onstatechange(
+pub extern "js" fn BaseAudioContext::get_onstatechange(
   self : BaseAudioContext,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onstatechange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onstatechange
 
 ///|
-pub extern "js" fn BaseAudioContext::clear_onstatechange(
+pub extern "js" fn BaseAudioContext::set_onstatechange(
   self : BaseAudioContext,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onstatechange = null }
+  #| (self, value) => { self.onstatechange = value }
 
 ///|
 pub extern "js" fn BaseAudioContext::create_analyser(
@@ -2212,8 +2196,8 @@ pub extern "js" fn BaseAudioContext::create_buffer(
   number_of_channels : Int,
   length : Int,
   sample_rate : Double,
-) -> Result[AudioBuffer, BaseAudioContextCreateBufferError] =
-  #| (self, number_of_channels, length, sample_rate) => (() => { try { return { $tag: 1, _0: self.createBuffer(number_of_channels, length, sample_rate) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> AudioBuffer =
+  #| (self, number_of_channels, length, sample_rate) => self.createBuffer(number_of_channels, length, sample_rate)
 
 ///|
 pub extern "js" fn BaseAudioContext::create_buffer_source(
@@ -2289,8 +2273,8 @@ pub extern "js" fn BaseAudioContext::create_iir_filter(
   self : BaseAudioContext,
   feedforward : Array[Double],
   feedback : Array[Double],
-) -> Result[IIRFilterNode, BaseAudioContextCreateIIRFilterError] =
-  #| (self, feedforward, feedback) => (() => { try { return { $tag: 1, _0: self.createIIRFilter(feedforward, feedback) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> IIRFilterNode =
+  #| (self, feedforward, feedback) => self.createIIRFilter(feedforward, feedback)
 
 ///|
 pub extern "js" fn BaseAudioContext::create_oscillator(
@@ -2337,7 +2321,6 @@ pub fn BaseAudioContext::create_periodic_wave_with_constraints(
 }
 
 ///|
-/// @alert deprecated "createScriptProcessor is deprecated"
 pub extern "js" fn BaseAudioContext::create_script_processor(
   self : BaseAudioContext,
 ) -> ScriptProcessorNode =
@@ -2423,38 +2406,19 @@ pub extern "js" fn AudioContext::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum AudioContextConstructorError {
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum AudioContextSetSinkIdError {
-  NotFoundError(JsError)
-  NotAllowedError(JsError)
-  InvalidAccessError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn AudioContext::new() -> Result[
-  AudioContext,
-  AudioContextConstructorError,
-] =
-  #| () => (() => { try { return { $tag: 1, _0: new AudioContext() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn AudioContext::new() -> AudioContext =
+  #| () => new AudioContext()
 
 ///|
 extern "js" fn AudioContext::new_with_context_options_ffi(
   context_options : JsValue,
-) -> Result[AudioContext, AudioContextConstructorError] =
-  #| (context_options) => (() => { try { return { $tag: 1, _0: new AudioContext(context_options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> AudioContext =
+  #| (context_options) => new AudioContext(context_options)
 
 ///|
 pub fn AudioContext::new_with_context_options(
   context_options : AudioContextOptions,
-) -> Result[AudioContext, AudioContextConstructorError] {
+) -> AudioContext {
   AudioContext::new_with_context_options_ffi(context_options.to_js())
 }
 
@@ -2477,34 +2441,30 @@ pub extern "js" fn AudioContext::get_sink_id(
   #| (self) => self.sinkId
 
 ///|
-pub extern "js" fn AudioContext::set_onsinkchange(
+pub extern "js" fn AudioContext::get_onsinkchange(
   self : AudioContext,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onsinkchange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onsinkchange
 
 ///|
-pub extern "js" fn AudioContext::clear_onsinkchange(
+pub extern "js" fn AudioContext::set_onsinkchange(
   self : AudioContext,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onsinkchange = null }
+  #| (self, value) => { self.onsinkchange = value }
+
+///|
+pub extern "js" fn AudioContext::get_onerror(
+  self : AudioContext,
+) -> EventHandler =
+  #| (self) => self.onerror
 
 ///|
 pub extern "js" fn AudioContext::set_onerror(
   self : AudioContext,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onerror = (e) => handler(e) }
-
-///|
-pub extern "js" fn AudioContext::clear_onerror(self : AudioContext) -> Unit =
-  #| (self) => { self.onerror = null }
-
-///|
-pub extern "js" fn AudioContext::get_playback_stats(
-  self : AudioContext,
-) -> AudioPlaybackStats =
-  #| (self) => self.playbackStats
+  #| (self, value) => { self.onerror = value }
 
 ///|
 pub extern "js" fn AudioContext::get_output_timestamp(
@@ -2528,8 +2488,8 @@ pub extern "js" fn AudioContext::close(self : AudioContext) -> Promise[Unit] =
 pub extern "js" fn AudioContext::set_sink_id(
   self : AudioContext,
   sink_id : StringOrAudioSinkOptions,
-) -> Promise[Result[Unit, AudioContextSetSinkIdError]] =
-  #| (self, sink_id) => self.setSinkId(sink_id).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, sink_id) => self.setSinkId(sink_id)
 
 ///|
 pub extern "js" fn AudioContext::create_media_element_source(
@@ -2647,20 +2607,6 @@ pub extern "js" fn OfflineAudioContext::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum OfflineAudioContextResumeError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum OfflineAudioContextSuspendError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 extern "js" fn OfflineAudioContext::new_ffi(
   context_options : JsValue,
 ) -> OfflineAudioContext =
@@ -2690,15 +2636,15 @@ pub extern "js" fn OfflineAudioContext::start_rendering(
 ///|
 pub extern "js" fn OfflineAudioContext::resume_(
   self : OfflineAudioContext,
-) -> Promise[Result[Unit, OfflineAudioContextResumeError]] =
-  #| (self) => self.resume().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.resume()
 
 ///|
 pub extern "js" fn OfflineAudioContext::suspend(
   self : OfflineAudioContext,
   suspend_time : Double,
-) -> Promise[Result[Unit, OfflineAudioContextSuspendError]] =
-  #| (self, suspend_time) => self.suspend(suspend_time).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, suspend_time) => self.suspend(suspend_time)
 
 ///|
 pub extern "js" fn OfflineAudioContext::get_length(
@@ -2707,17 +2653,17 @@ pub extern "js" fn OfflineAudioContext::get_length(
   #| (self) => self.length
 
 ///|
-pub extern "js" fn OfflineAudioContext::set_oncomplete(
+pub extern "js" fn OfflineAudioContext::get_oncomplete(
   self : OfflineAudioContext,
-  handler : (OfflineAudioCompletionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.oncomplete = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.oncomplete
 
 ///|
-pub extern "js" fn OfflineAudioContext::clear_oncomplete(
+pub extern "js" fn OfflineAudioContext::set_oncomplete(
   self : OfflineAudioContext,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.oncomplete = null }
+  #| (self, value) => { self.oncomplete = value }
 
 ///|
 /// OfflineAudioCompletionEvent interface
@@ -2813,30 +2759,11 @@ pub extern "js" fn JsValue::to_audio_buffer(self : JsValue) -> AudioBuffer =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum AudioBufferConstructorError {
-  RangeError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
+extern "js" fn AudioBuffer::new_ffi(options : JsValue) -> AudioBuffer =
+  #| (options) => new AudioBuffer(options)
 
 ///|
-/// Error type for throwing methods
-pub(all) enum AudioBufferCopyFromChannelError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-extern "js" fn AudioBuffer::new_ffi(
-  options : JsValue,
-) -> Result[AudioBuffer, AudioBufferConstructorError] =
-  #| (options) => (() => { try { return { $tag: 1, _0: new AudioBuffer(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
-
-///|
-pub fn AudioBuffer::new(
-  options : AudioBufferOptions,
-) -> Result[AudioBuffer, AudioBufferConstructorError] {
+pub fn AudioBuffer::new(options : AudioBufferOptions) -> AudioBuffer {
   AudioBuffer::new_ffi(options.to_js())
 }
 
@@ -2870,8 +2797,8 @@ pub extern "js" fn AudioBuffer::copy_from_channel(
   self : AudioBuffer,
   destination : Float32Array,
   channel_number : Int,
-) -> Result[Unit, AudioBufferCopyFromChannelError] =
-  #| (self, destination, channel_number) => (() => { try { self.copyFromChannel(destination, channel_number); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'indexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, destination, channel_number) => self.copyFromChannel(destination, channel_number)
 
 ///|
 pub extern "js" fn AudioBuffer::copy_from_channel_with_buffer_offset(
@@ -2879,8 +2806,8 @@ pub extern "js" fn AudioBuffer::copy_from_channel_with_buffer_offset(
   destination : Float32Array,
   channel_number : Int,
   buffer_offset : Int,
-) -> Result[Unit, AudioBufferCopyFromChannelError] =
-  #| (self, destination, channel_number, buffer_offset) => (() => { try { self.copyFromChannel(destination, channel_number, buffer_offset); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'indexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, destination, channel_number, buffer_offset) => self.copyFromChannel(destination, channel_number, buffer_offset)
 
 ///|
 pub extern "js" fn AudioBuffer::copy_to_channel(
@@ -3064,28 +2991,11 @@ pub extern "js" fn AudioNode::as_audio_worklet_node(
   #| (self) => (self instanceof AudioWorkletNode) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum AudioNodeConnectError {
-  IndexSizeError(JsError)
-  NotSupportedError(JsError)
-  InvalidAccessError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum AudioNodeDisconnectError {
-  IndexSizeError(JsError)
-  InvalidAccessError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn AudioNode::connect(
   self : AudioNode,
   destination_node : AudioNode,
-) -> Result[AudioNode, AudioNodeConnectError] =
-  #| (self, destination_node) => (() => { try { return { $tag: 1, _0: self.connect(destination_node) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> AudioNode =
+  #| (self, destination_node) => self.connect(destination_node)
 
 ///|
 pub extern "js" fn AudioNode::connect_with_input(
@@ -3093,66 +3003,64 @@ pub extern "js" fn AudioNode::connect_with_input(
   destination_node : AudioNode,
   output : Int,
   input : Int,
-) -> Result[AudioNode, AudioNodeConnectError] =
-  #| (self, destination_node, output, input) => (() => { try { return { $tag: 1, _0: self.connect(destination_node, output, input) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> AudioNode =
+  #| (self, destination_node, output, input) => self.connect(destination_node, output, input)
 
 ///|
 pub extern "js" fn AudioNode::connect_with_destination_param_audio_param(
   self : AudioNode,
   destination_param : AudioParam,
-) -> Result[Unit, AudioNodeConnectError] =
-  #| (self, destination_param) => (() => { try { self.connect(destination_param); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, destination_param) => self.connect(destination_param)
 
 ///|
 pub extern "js" fn AudioNode::connect_with_destination_param_audio_param_and_output(
   self : AudioNode,
   destination_param : AudioParam,
   output : Int,
-) -> Result[Unit, AudioNodeConnectError] =
-  #| (self, destination_param, output) => (() => { try { self.connect(destination_param, output); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, destination_param, output) => self.connect(destination_param, output)
 
 ///|
-pub extern "js" fn AudioNode::disconnect(
-  self : AudioNode,
-) -> Result[Unit, AudioNodeDisconnectError] =
-  #| (self) => (() => { try { self.disconnect(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+pub extern "js" fn AudioNode::disconnect(self : AudioNode) -> Unit =
+  #| (self) => self.disconnect()
 
 ///|
 pub extern "js" fn AudioNode::disconnect_with_output(
   self : AudioNode,
   output : Int,
-) -> Result[Unit, AudioNodeDisconnectError] =
-  #| (self, output) => (() => { try { self.disconnect(output); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, output) => self.disconnect(output)
 
 ///|
 pub extern "js" fn AudioNode::disconnect_with_destination_node_audio_node(
   self : AudioNode,
   destination_node : AudioNode,
-) -> Result[Unit, AudioNodeDisconnectError] =
-  #| (self, destination_node) => (() => { try { self.disconnect(destination_node); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, destination_node) => self.disconnect(destination_node)
 
 ///|
 pub extern "js" fn AudioNode::disconnect_with_destination_param_audio_param(
   self : AudioNode,
   destination_param : AudioParam,
-) -> Result[Unit, AudioNodeDisconnectError] =
-  #| (self, destination_param) => (() => { try { self.disconnect(destination_param); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, destination_param) => self.disconnect(destination_param)
 
 ///|
 pub extern "js" fn AudioNode::disconnect_with_destination_node_audio_node_and_output(
   self : AudioNode,
   destination_node : AudioNode,
   output : Int,
-) -> Result[Unit, AudioNodeDisconnectError] =
-  #| (self, destination_node, output) => (() => { try { self.disconnect(destination_node, output); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, destination_node, output) => self.disconnect(destination_node, output)
 
 ///|
 pub extern "js" fn AudioNode::disconnect_with_destination_param_audio_param_and_output(
   self : AudioNode,
   destination_param : AudioParam,
   output : Int,
-) -> Result[Unit, AudioNodeDisconnectError] =
-  #| (self, destination_param, output) => (() => { try { self.disconnect(destination_param, output); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, destination_param, output) => self.disconnect(destination_param, output)
 
 ///|
 pub extern "js" fn AudioNode::disconnect_with_destination_node_audio_node_and_output_and_input(
@@ -3160,8 +3068,8 @@ pub extern "js" fn AudioNode::disconnect_with_destination_node_audio_node_and_ou
   destination_node : AudioNode,
   output : Int,
   input : Int,
-) -> Result[Unit, AudioNodeDisconnectError] =
-  #| (self, destination_node, output, input) => (() => { try { self.disconnect(destination_node, output, input); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, destination_node, output, input) => self.disconnect(destination_node, output, input)
 
 ///|
 pub extern "js" fn AudioNode::get_context(self : AudioNode) -> BaseAudioContext =
@@ -3241,15 +3149,6 @@ pub extern "js" fn JsValue::to_audio_param(self : JsValue) -> AudioParam =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum AudioParamSetValueCurveAtTimeError {
-  TypeError(JsError)
-  RangeError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn AudioParam::get_value(self : AudioParam) -> Double =
   #| (self) => self.value
 
@@ -3324,8 +3223,8 @@ pub extern "js" fn AudioParam::set_value_curve_at_time(
   values : Array[Double],
   start_time : Double,
   duration : Double,
-) -> Result[AudioParam, AudioParamSetValueCurveAtTimeError] =
-  #| (self, values, start_time, duration) => (() => { try { return { $tag: 1, _0: self.setValueCurveAtTime(values, start_time, duration) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> AudioParam =
+  #| (self, values, start_time, duration) => self.setValueCurveAtTime(values, start_time, duration)
 
 ///|
 pub extern "js" fn AudioParam::cancel_scheduled_values(
@@ -3410,59 +3309,43 @@ pub extern "js" fn AudioScheduledSourceNode::as_oscillator_node(
   #| (self) => (self instanceof OscillatorNode) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum AudioScheduledSourceNodeStartError {
-  RangeError(JsError)
-  InvalidStateNode(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum AudioScheduledSourceNodeStopError {
-  RangeError(JsError)
-  InvalidStateNode(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn AudioScheduledSourceNode::get_onended(
+  self : AudioScheduledSourceNode,
+) -> EventHandler =
+  #| (self) => self.onended
 
 ///|
 pub extern "js" fn AudioScheduledSourceNode::set_onended(
   self : AudioScheduledSourceNode,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onended = (e) => handler(e) }
-
-///|
-pub extern "js" fn AudioScheduledSourceNode::clear_onended(
-  self : AudioScheduledSourceNode,
-) -> Unit =
-  #| (self) => { self.onended = null }
+  #| (self, value) => { self.onended = value }
 
 ///|
 pub extern "js" fn AudioScheduledSourceNode::start(
   self : AudioScheduledSourceNode,
-) -> Result[Unit, AudioScheduledSourceNodeStartError] =
-  #| (self) => (() => { try { self.start(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateNode') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.start()
 
 ///|
 pub extern "js" fn AudioScheduledSourceNode::start_with_when(
   self : AudioScheduledSourceNode,
   when : Double,
-) -> Result[Unit, AudioScheduledSourceNodeStartError] =
-  #| (self, when) => (() => { try { self.start(when); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateNode') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, when) => self.start(when)
 
 ///|
 pub extern "js" fn AudioScheduledSourceNode::stop(
   self : AudioScheduledSourceNode,
-) -> Result[Unit, AudioScheduledSourceNodeStopError] =
-  #| (self) => (() => { try { self.stop(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateNode') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.stop()
 
 ///|
 pub extern "js" fn AudioScheduledSourceNode::stop_with_when(
   self : AudioScheduledSourceNode,
   when : Double,
-) -> Result[Unit, AudioScheduledSourceNodeStopError] =
-  #| (self, when) => (() => { try { self.stop(when); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateNode') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, when) => self.stop(when)
 
 ///|
 /// AnalyserNode interface
@@ -3505,20 +3388,6 @@ pub extern "js" fn AnalyserNode::to_event_target(
   self : AnalyserNode,
 ) -> EventTarget =
   #| (self) => self
-
-///|
-/// Error type for throwing methods
-pub(all) enum AnalyserNodeSetFftSizeError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum AnalyserNodeSetMaxDecibelsError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
 
 ///|
 pub extern "js" fn AnalyserNode::new(
@@ -3577,8 +3446,8 @@ pub extern "js" fn AnalyserNode::get_fft_size(self : AnalyserNode) -> Int =
 pub extern "js" fn AnalyserNode::set_fft_size(
   self : AnalyserNode,
   value : Int,
-) -> Result[Unit, AnalyserNodeSetFftSizeError] =
-  #| (self, value) => (() => { try { self.fftSize = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.fftSize = value }
 
 ///|
 pub extern "js" fn AnalyserNode::get_frequency_bin_count(
@@ -3609,8 +3478,8 @@ pub extern "js" fn AnalyserNode::get_max_decibels(
 pub extern "js" fn AnalyserNode::set_max_decibels(
   self : AnalyserNode,
   value : Double,
-) -> Result[Unit, AnalyserNodeSetMaxDecibelsError] =
-  #| (self, value) => (() => { try { self.maxDecibels = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.maxDecibels = value }
 
 ///|
 pub extern "js" fn AnalyserNode::get_smoothing_time_constant(
@@ -3680,14 +3549,6 @@ pub extern "js" fn AudioBufferSourceNode::to_event_target(
   self : AudioBufferSourceNode,
 ) -> EventTarget =
   #| (self) => self
-
-///|
-/// Error type for throwing methods
-pub(all) enum AudioBufferSourceNodeStartError {
-  TypeError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
 
 ///|
 pub extern "js" fn AudioBufferSourceNode::new(
@@ -3777,8 +3638,8 @@ pub extern "js" fn AudioBufferSourceNode::set_loop_end(
 ///|
 pub extern "js" fn AudioBufferSourceNode::start(
   self : AudioBufferSourceNode,
-) -> Result[Unit, AudioBufferSourceNodeStartError] =
-  #| (self) => (() => { try { self.start(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.start()
 
 ///|
 pub extern "js" fn AudioBufferSourceNode::start_with_duration(
@@ -3786,8 +3647,8 @@ pub extern "js" fn AudioBufferSourceNode::start_with_duration(
   when : Double,
   offset : Double,
   duration : Double,
-) -> Result[Unit, AudioBufferSourceNodeStartError] =
-  #| (self, when, offset, duration) => (() => { try { self.start(when, offset, duration); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, when, offset, duration) => self.start(when, offset, duration)
 
 ///|
 /// AudioDestinationNode interface
@@ -3924,7 +3785,6 @@ pub extern "js" fn AudioListener::get_up_z(self : AudioListener) -> AudioParam =
   #| (self) => self.upZ
 
 ///|
-/// @alert deprecated "setPosition is deprecated"
 pub extern "js" fn AudioListener::set_position(
   self : AudioListener,
   x : Double,
@@ -3934,7 +3794,6 @@ pub extern "js" fn AudioListener::set_position(
   #| (self, x, y, z) => self.setPosition(x, y, z)
 
 ///|
-/// @alert deprecated "setOrientation is deprecated"
 pub extern "js" fn AudioListener::set_orientation(
   self : AudioListener,
   x : Double,
@@ -3991,7 +3850,6 @@ pub extern "js" fn AudioProcessingEvent::to_event(
   #| (self) => self
 
 ///|
-/// @alert deprecated "constructor is deprecated"
 extern "js" fn AudioProcessingEvent::new_ffi(
   type_ : String,
   event_init_dict : JsValue,
@@ -4075,13 +3933,6 @@ pub extern "js" fn BiquadFilterNode::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum BiquadFilterNodeGetFrequencyResponseError {
-  InvalidAccessError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn BiquadFilterNode::new(
   context : BaseAudioContext,
 ) -> BiquadFilterNode =
@@ -4145,8 +3996,8 @@ pub extern "js" fn BiquadFilterNode::get_frequency_response(
   frequency_hz : Float32Array,
   mag_response : Float32Array,
   phase_response : Float32Array,
-) -> Result[Unit, BiquadFilterNodeGetFrequencyResponseError] =
-  #| (self, frequency_hz, mag_response, phase_response) => (() => { try { self.getFrequencyResponse(frequency_hz, mag_response, phase_response); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidAccessError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, frequency_hz, mag_response, phase_response) => self.getFrequencyResponse(frequency_hz, mag_response, phase_response)
 
 ///|
 /// ChannelMergerNode interface
@@ -4199,30 +4050,23 @@ pub extern "js" fn ChannelMergerNode::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum ChannelMergerNodeConstructorError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn ChannelMergerNode::new(
   context : BaseAudioContext,
-) -> Result[ChannelMergerNode, ChannelMergerNodeConstructorError] =
-  #| (context) => (() => { try { return { $tag: 1, _0: new ChannelMergerNode(context) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ChannelMergerNode =
+  #| (context) => new ChannelMergerNode(context)
 
 ///|
 extern "js" fn ChannelMergerNode::new_with_options_ffi(
   context : BaseAudioContext,
   options : JsValue,
-) -> Result[ChannelMergerNode, ChannelMergerNodeConstructorError] =
-  #| (context, options) => (() => { try { return { $tag: 1, _0: new ChannelMergerNode(context, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ChannelMergerNode =
+  #| (context, options) => new ChannelMergerNode(context, options)
 
 ///|
 pub fn ChannelMergerNode::new_with_options(
   context : BaseAudioContext,
   options : ChannelMergerOptions,
-) -> Result[ChannelMergerNode, ChannelMergerNodeConstructorError] {
+) -> ChannelMergerNode {
   ChannelMergerNode::new_with_options_ffi(context, options.to_js())
 }
 
@@ -4423,30 +4267,23 @@ pub extern "js" fn ConvolverNode::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum ConvolverNodeConstructorError {
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn ConvolverNode::new(
   context : BaseAudioContext,
-) -> Result[ConvolverNode, ConvolverNodeConstructorError] =
-  #| (context) => (() => { try { return { $tag: 1, _0: new ConvolverNode(context) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ConvolverNode =
+  #| (context) => new ConvolverNode(context)
 
 ///|
 extern "js" fn ConvolverNode::new_with_options_ffi(
   context : BaseAudioContext,
   options : JsValue,
-) -> Result[ConvolverNode, ConvolverNodeConstructorError] =
-  #| (context, options) => (() => { try { return { $tag: 1, _0: new ConvolverNode(context, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ConvolverNode =
+  #| (context, options) => new ConvolverNode(context, options)
 
 ///|
 pub fn ConvolverNode::new_with_options(
   context : BaseAudioContext,
   options : ConvolverOptions,
-) -> Result[ConvolverNode, ConvolverNodeConstructorError] {
+) -> ConvolverNode {
   ConvolverNode::new_with_options_ffi(context, options.to_js())
 }
 
@@ -4744,13 +4581,6 @@ pub extern "js" fn IIRFilterNode::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum IIRFilterNodeGetFrequencyResponseError {
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 extern "js" fn IIRFilterNode::new_ffi(
   context : BaseAudioContext,
   options : JsValue,
@@ -4771,8 +4601,8 @@ pub extern "js" fn IIRFilterNode::get_frequency_response(
   frequency_hz : Float32Array,
   mag_response : Float32Array,
   phase_response : Float32Array,
-) -> Result[Unit, IIRFilterNodeGetFrequencyResponseError] =
-  #| (self, frequency_hz, mag_response, phase_response) => (() => { try { self.getFrequencyResponse(frequency_hz, mag_response, phase_response); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, frequency_hz, mag_response, phase_response) => self.getFrequencyResponse(frequency_hz, mag_response, phase_response)
 
 ///|
 /// MediaElementAudioSourceNode interface
@@ -4976,30 +4806,17 @@ pub extern "js" fn MediaStreamAudioSourceNode::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum MediaStreamAudioSourceNodeConstructorError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 extern "js" fn MediaStreamAudioSourceNode::new_ffi(
   context : AudioContext,
   options : JsValue,
-) -> Result[
-  MediaStreamAudioSourceNode,
-  MediaStreamAudioSourceNodeConstructorError,
-] =
-  #| (context, options) => (() => { try { return { $tag: 1, _0: new MediaStreamAudioSourceNode(context, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> MediaStreamAudioSourceNode =
+  #| (context, options) => new MediaStreamAudioSourceNode(context, options)
 
 ///|
 pub fn MediaStreamAudioSourceNode::new(
   context : AudioContext,
   options : MediaStreamAudioSourceOptions,
-) -> Result[
-  MediaStreamAudioSourceNode,
-  MediaStreamAudioSourceNodeConstructorError,
-] {
+) -> MediaStreamAudioSourceNode {
   MediaStreamAudioSourceNode::new_ffi(context, options.to_js())
 }
 
@@ -5060,31 +4877,17 @@ pub extern "js" fn MediaStreamTrackAudioSourceNode::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum MediaStreamTrackAudioSourceNodeConstructorError {
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 extern "js" fn MediaStreamTrackAudioSourceNode::new_ffi(
   context : AudioContext,
   options : JsValue,
-) -> Result[
-  MediaStreamTrackAudioSourceNode,
-  MediaStreamTrackAudioSourceNodeConstructorError,
-] =
-  #| (context, options) => (() => { try { return { $tag: 1, _0: new MediaStreamTrackAudioSourceNode(context, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> MediaStreamTrackAudioSourceNode =
+  #| (context, options) => new MediaStreamTrackAudioSourceNode(context, options)
 
 ///|
 pub fn MediaStreamTrackAudioSourceNode::new(
   context : AudioContext,
   options : MediaStreamTrackAudioSourceOptions,
-) -> Result[
-  MediaStreamTrackAudioSourceNode,
-  MediaStreamTrackAudioSourceNodeConstructorError,
-] {
+) -> MediaStreamTrackAudioSourceNode {
   MediaStreamTrackAudioSourceNode::new_ffi(context, options.to_js())
 }
 
@@ -5143,13 +4946,6 @@ pub extern "js" fn OscillatorNode::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum OscillatorNodeSetTypeError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn OscillatorNode::new(
   context : BaseAudioContext,
 ) -> OscillatorNode =
@@ -5180,8 +4976,8 @@ pub extern "js" fn OscillatorNode::get_type(
 pub extern "js" fn OscillatorNode::set_type(
   self : OscillatorNode,
   value : OscillatorType,
-) -> Result[Unit, OscillatorNodeSetTypeError] =
-  #| (self, value) => (() => { try { self.type = ['sine', 'square', 'sawtooth', 'triangle', 'custom'][value]; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.type = ['sine', 'square', 'sawtooth', 'triangle', 'custom'][value] }
 
 ///|
 pub extern "js" fn OscillatorNode::get_frequency(
@@ -5241,59 +5037,21 @@ pub extern "js" fn PannerNode::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum PannerNodeConstructorError {
-  RangeError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum PannerNodeSetRefDistanceError {
-  RangeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum PannerNodeSetMaxDistanceError {
-  RangeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum PannerNodeSetRolloffFactorError {
-  RangeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum PannerNodeSetConeOuterGainError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn PannerNode::new(
-  context : BaseAudioContext,
-) -> Result[PannerNode, PannerNodeConstructorError] =
-  #| (context) => (() => { try { return { $tag: 1, _0: new PannerNode(context) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+pub extern "js" fn PannerNode::new(context : BaseAudioContext) -> PannerNode =
+  #| (context) => new PannerNode(context)
 
 ///|
 extern "js" fn PannerNode::new_with_options_ffi(
   context : BaseAudioContext,
   options : JsValue,
-) -> Result[PannerNode, PannerNodeConstructorError] =
-  #| (context, options) => (() => { try { return { $tag: 1, _0: new PannerNode(context, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> PannerNode =
+  #| (context, options) => new PannerNode(context, options)
 
 ///|
 pub fn PannerNode::new_with_options(
   context : BaseAudioContext,
   options : PannerOptions,
-) -> Result[PannerNode, PannerNodeConstructorError] {
+) -> PannerNode {
   PannerNode::new_with_options_ffi(context, options.to_js())
 }
 
@@ -5361,8 +5119,8 @@ pub extern "js" fn PannerNode::get_ref_distance(self : PannerNode) -> Double =
 pub extern "js" fn PannerNode::set_ref_distance(
   self : PannerNode,
   value : Double,
-) -> Result[Unit, PannerNodeSetRefDistanceError] =
-  #| (self, value) => (() => { try { self.refDistance = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.refDistance = value }
 
 ///|
 pub extern "js" fn PannerNode::get_max_distance(self : PannerNode) -> Double =
@@ -5372,8 +5130,8 @@ pub extern "js" fn PannerNode::get_max_distance(self : PannerNode) -> Double =
 pub extern "js" fn PannerNode::set_max_distance(
   self : PannerNode,
   value : Double,
-) -> Result[Unit, PannerNodeSetMaxDistanceError] =
-  #| (self, value) => (() => { try { self.maxDistance = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.maxDistance = value }
 
 ///|
 pub extern "js" fn PannerNode::get_rolloff_factor(self : PannerNode) -> Double =
@@ -5383,8 +5141,8 @@ pub extern "js" fn PannerNode::get_rolloff_factor(self : PannerNode) -> Double =
 pub extern "js" fn PannerNode::set_rolloff_factor(
   self : PannerNode,
   value : Double,
-) -> Result[Unit, PannerNodeSetRolloffFactorError] =
-  #| (self, value) => (() => { try { self.rolloffFactor = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.rolloffFactor = value }
 
 ///|
 pub extern "js" fn PannerNode::get_cone_inner_angle(
@@ -5420,11 +5178,10 @@ pub extern "js" fn PannerNode::get_cone_outer_gain(self : PannerNode) -> Double 
 pub extern "js" fn PannerNode::set_cone_outer_gain(
   self : PannerNode,
   value : Double,
-) -> Result[Unit, PannerNodeSetConeOuterGainError] =
-  #| (self, value) => (() => { try { self.coneOuterGain = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.coneOuterGain = value }
 
 ///|
-/// @alert deprecated "setPosition is deprecated"
 pub extern "js" fn PannerNode::set_position(
   self : PannerNode,
   x : Double,
@@ -5434,7 +5191,6 @@ pub extern "js" fn PannerNode::set_position(
   #| (self, x, y, z) => self.setPosition(x, y, z)
 
 ///|
-/// @alert deprecated "setOrientation is deprecated"
 pub extern "js" fn PannerNode::set_orientation(
   self : PannerNode,
   x : Double,
@@ -5545,17 +5301,17 @@ pub extern "js" fn ScriptProcessorNode::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn ScriptProcessorNode::set_onaudioprocess(
+pub extern "js" fn ScriptProcessorNode::get_onaudioprocess(
   self : ScriptProcessorNode,
-  handler : (AudioProcessingEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onaudioprocess = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onaudioprocess
 
 ///|
-pub extern "js" fn ScriptProcessorNode::clear_onaudioprocess(
+pub extern "js" fn ScriptProcessorNode::set_onaudioprocess(
   self : ScriptProcessorNode,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onaudioprocess = null }
+  #| (self, value) => { self.onaudioprocess = value }
 
 ///|
 pub extern "js" fn ScriptProcessorNode::get_buffer_size(
@@ -5818,20 +5574,12 @@ pub extern "js" fn AudioWorkletGlobalScope::to_worklet_global_scope(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum AudioWorkletGlobalScopeRegisterProcessorError {
-  TypeError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn AudioWorkletGlobalScope::register_processor(
   self : AudioWorkletGlobalScope,
   name : String,
   processor_ctor : AudioWorkletProcessorConstructor,
-) -> Result[Unit, AudioWorkletGlobalScopeRegisterProcessorError] =
-  #| (self, name, processor_ctor) => (() => { try { self.registerProcessor(name, processor_ctor); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, name, processor_ctor) => self.registerProcessor(name, processor_ctor)
 
 ///|
 pub extern "js" fn AudioWorkletGlobalScope::get_current_frame(
@@ -5960,34 +5708,26 @@ pub extern "js" fn AudioWorkletNode::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum AudioWorkletNodeConstructorError {
-  IndexSizeError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn AudioWorkletNode::new(
   context : BaseAudioContext,
   name : String,
-) -> Result[AudioWorkletNode, AudioWorkletNodeConstructorError] =
-  #| (context, name) => (() => { try { return { $tag: 1, _0: new AudioWorkletNode(context, name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> AudioWorkletNode =
+  #| (context, name) => new AudioWorkletNode(context, name)
 
 ///|
 extern "js" fn AudioWorkletNode::new_with_options_ffi(
   context : BaseAudioContext,
   name : String,
   options : JsValue,
-) -> Result[AudioWorkletNode, AudioWorkletNodeConstructorError] =
-  #| (context, name, options) => (() => { try { return { $tag: 1, _0: new AudioWorkletNode(context, name, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> AudioWorkletNode =
+  #| (context, name, options) => new AudioWorkletNode(context, name, options)
 
 ///|
 pub fn AudioWorkletNode::new_with_options(
   context : BaseAudioContext,
   name : String,
   options : AudioWorkletNodeOptions,
-) -> Result[AudioWorkletNode, AudioWorkletNodeConstructorError] {
+) -> AudioWorkletNode {
   AudioWorkletNode::new_with_options_ffi(context, name, options.to_js())
 }
 
@@ -6004,17 +5744,17 @@ pub extern "js" fn AudioWorkletNode::get_port(
   #| (self) => self.port
 
 ///|
-pub extern "js" fn AudioWorkletNode::set_onprocessorerror(
+pub extern "js" fn AudioWorkletNode::get_onprocessorerror(
   self : AudioWorkletNode,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onprocessorerror = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onprocessorerror
 
 ///|
-pub extern "js" fn AudioWorkletNode::clear_onprocessorerror(
+pub extern "js" fn AudioWorkletNode::set_onprocessorerror(
   self : AudioWorkletNode,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onprocessorerror = null }
+  #| (self, value) => { self.onprocessorerror = value }
 
 ///|
 /// AudioWorkletProcessor interface
@@ -6063,89 +5803,3 @@ pub extern "js" fn AudioWorkletProcessor::get_port(
   self : AudioWorkletProcessor,
 ) -> MessagePort =
   #| (self) => self.port
-
-///|
-/// AudioPlaybackStats interface
-pub type AudioPlaybackStats
-
-///|
-pub extern "js" fn AudioPlaybackStats::to_js_value(
-  self : AudioPlaybackStats,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Cast JsValue to AudioPlaybackStats (unchecked)
-pub extern "js" fn AudioPlaybackStats::from_js_value(
-  v : JsValue,
-) -> AudioPlaybackStats =
-  #| (v) => v
-
-///|
-/// Safely cast JsValue to AudioPlaybackStats (checked with instanceof)
-pub extern "js" fn AudioPlaybackStats::from_js_value_opt(
-  v : JsValue,
-) -> AudioPlaybackStats? =
-  #| (v) => (v instanceof AudioPlaybackStats) ? { $tag: 1, _0: v } : { $tag: 0 }
-
-///|
-/// Safely cast JsValue to AudioPlaybackStats (checked with instanceof)
-pub extern "js" fn JsValue::as_audio_playback_stats(
-  self : JsValue,
-) -> AudioPlaybackStats? =
-  #| (self) => (self instanceof AudioPlaybackStats) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Cast JsValue to AudioPlaybackStats (unchecked)
-pub extern "js" fn JsValue::to_audio_playback_stats(
-  self : JsValue,
-) -> AudioPlaybackStats =
-  #| (self) => self
-
-///|
-pub extern "js" fn AudioPlaybackStats::get_underrun_duration(
-  self : AudioPlaybackStats,
-) -> Double =
-  #| (self) => self.underrunDuration
-
-///|
-pub extern "js" fn AudioPlaybackStats::get_underrun_events(
-  self : AudioPlaybackStats,
-) -> Int =
-  #| (self) => self.underrunEvents
-
-///|
-pub extern "js" fn AudioPlaybackStats::get_total_duration(
-  self : AudioPlaybackStats,
-) -> Double =
-  #| (self) => self.totalDuration
-
-///|
-pub extern "js" fn AudioPlaybackStats::get_average_latency(
-  self : AudioPlaybackStats,
-) -> Double =
-  #| (self) => self.averageLatency
-
-///|
-pub extern "js" fn AudioPlaybackStats::get_minimum_latency(
-  self : AudioPlaybackStats,
-) -> Double =
-  #| (self) => self.minimumLatency
-
-///|
-pub extern "js" fn AudioPlaybackStats::get_maximum_latency(
-  self : AudioPlaybackStats,
-) -> Double =
-  #| (self) => self.maximumLatency
-
-///|
-pub extern "js" fn AudioPlaybackStats::reset_latency(
-  self : AudioPlaybackStats,
-) -> Unit =
-  #| (self) => self.resetLatency()
-
-///|
-pub extern "js" fn AudioPlaybackStats::to_json(
-  self : AudioPlaybackStats,
-) -> JsValue =
-  #| (self) => self.toJSON()

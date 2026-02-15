@@ -148,146 +148,6 @@ pub fn CredentialData::from_js(value : JsValue) -> CredentialData {
 }
 
 ///|
-/// CredentialRequestOptions dictionary
-pub(all) struct CredentialRequestOptions {
-  mediation : CredentialMediationRequirement?
-  signal : AbortSignal?
-  password : Bool?
-  federated : FederatedCredentialRequestOptions?
-  digital : DigitalCredentialRequestOptions?
-  identity : IdentityCredentialRequestOptions?
-  otp : OTPCredentialRequestOptions?
-  publicKey : PublicKeyCredentialRequestOptions?
-}
-
-///|
-/// Create a new CredentialRequestOptions with default values
-pub fn CredentialRequestOptions::default() -> CredentialRequestOptions {
-  CredentialRequestOptions::{
-    mediation: None,
-    signal: None,
-    password: None,
-    federated: None,
-    digital: None,
-    identity: None,
-    otp: None,
-    publicKey: None,
-  }
-}
-
-///|
-extern "js" fn CredentialRequestOptions::to_js_ffi(
-  self : CredentialRequestOptions,
-) -> JsValue =
-  #| (self) => ({
-  #|   mediation: ((() => { const v = self.mediation; if (v === undefined) return undefined; return ['silent', 'optional', 'conditional', 'required'][v]; })()),
-  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   password: (self.password === -1 ? undefined : self.password),
-  #|   federated: ((() => { const v = self.federated; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   digital: ((() => { const v = self.digital; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   identity: ((() => { const v = self.identity; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   otp: ((() => { const v = self.otp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   publicKey: ((() => { const v = self.publicKey; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
-  #| })
-
-///|
-/// Convert to JsValue
-pub fn CredentialRequestOptions::to_js(
-  self : CredentialRequestOptions,
-) -> JsValue {
-  CredentialRequestOptions::to_js_ffi(self)
-}
-
-///|
-extern "js" fn CredentialRequestOptions::from_js_ffi(
-  value : JsValue,
-) -> CredentialRequestOptions =
-  #| (v) => ({
-  #|   mediation: (v.mediation === undefined ? undefined : ['silent', 'optional', 'conditional', 'required'].indexOf(v.mediation)),
-  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
-  #|   password: (v.password === undefined ? -1 : v.password),
-  #|   federated: (v.federated === undefined ? { $tag: 0 } : { $tag: 1, _0: v.federated }),
-  #|   digital: (v.digital === undefined ? { $tag: 0 } : { $tag: 1, _0: v.digital }),
-  #|   identity: (v.identity === undefined ? { $tag: 0 } : { $tag: 1, _0: v.identity }),
-  #|   otp: (v.otp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.otp }),
-  #|   publicKey: (v.publicKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.publicKey })
-  #| })
-
-///|
-/// Convert from JsValue
-pub fn CredentialRequestOptions::from_js(
-  value : JsValue,
-) -> CredentialRequestOptions {
-  CredentialRequestOptions::from_js_ffi(value)
-}
-
-///|
-/// CredentialCreationOptions dictionary
-pub(all) struct CredentialCreationOptions {
-  mediation : CredentialMediationRequirement?
-  signal : AbortSignal?
-  password : PasswordCredentialInit?
-  federated : FederatedCredentialInit?
-  digital : DigitalCredentialCreationOptions?
-  publicKey : PublicKeyCredentialCreationOptions?
-}
-
-///|
-/// Create a new CredentialCreationOptions with default values
-pub fn CredentialCreationOptions::default() -> CredentialCreationOptions {
-  CredentialCreationOptions::{
-    mediation: None,
-    signal: None,
-    password: None,
-    federated: None,
-    digital: None,
-    publicKey: None,
-  }
-}
-
-///|
-extern "js" fn CredentialCreationOptions::to_js_ffi(
-  self : CredentialCreationOptions,
-) -> JsValue =
-  #| (self) => ({
-  #|   mediation: ((() => { const v = self.mediation; if (v === undefined) return undefined; return ['silent', 'optional', 'conditional', 'required'][v]; })()),
-  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   password: ((() => { const v = self.password; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   federated: ((() => { const v = self.federated; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   digital: ((() => { const v = self.digital; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   publicKey: ((() => { const v = self.publicKey; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
-  #| })
-
-///|
-/// Convert to JsValue
-pub fn CredentialCreationOptions::to_js(
-  self : CredentialCreationOptions,
-) -> JsValue {
-  CredentialCreationOptions::to_js_ffi(self)
-}
-
-///|
-extern "js" fn CredentialCreationOptions::from_js_ffi(
-  value : JsValue,
-) -> CredentialCreationOptions =
-  #| (v) => ({
-  #|   mediation: (v.mediation === undefined ? undefined : ['silent', 'optional', 'conditional', 'required'].indexOf(v.mediation)),
-  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
-  #|   password: (v.password === undefined ? { $tag: 0 } : { $tag: 1, _0: v.password }),
-  #|   federated: (v.federated === undefined ? { $tag: 0 } : { $tag: 1, _0: v.federated }),
-  #|   digital: (v.digital === undefined ? { $tag: 0 } : { $tag: 1, _0: v.digital }),
-  #|   publicKey: (v.publicKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.publicKey })
-  #| })
-
-///|
-/// Convert from JsValue
-pub fn CredentialCreationOptions::from_js(
-  value : JsValue,
-) -> CredentialCreationOptions {
-  CredentialCreationOptions::from_js_ffi(value)
-}
-
-///|
 /// PasswordCredentialData dictionary
 pub(all) struct PasswordCredentialData {
   id : String
@@ -489,28 +349,16 @@ pub extern "js" fn JsValue::to_credential(self : JsValue) -> Credential =
   #| (self) => self
 
 ///|
-pub extern "js" fn Credential::as_password_credential(
+pub extern "js" fn Credential::as_identity_credential(
   self : Credential,
-) -> PasswordCredential? =
-  #| (self) => (self instanceof PasswordCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Credential::as_federated_credential(
-  self : Credential,
-) -> FederatedCredential? =
-  #| (self) => (self instanceof FederatedCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> IdentityCredential? =
+  #| (self) => (self instanceof IdentityCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Credential::as_digital_credential(
   self : Credential,
 ) -> DigitalCredential? =
   #| (self) => (self instanceof DigitalCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Credential::as_identity_credential(
-  self : Credential,
-) -> IdentityCredential? =
-  #| (self) => (self instanceof IdentityCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Credential::as_otp_credential(
@@ -523,6 +371,18 @@ pub extern "js" fn Credential::as_public_key_credential(
   self : Credential,
 ) -> PublicKeyCredential? =
   #| (self) => (self instanceof PublicKeyCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Credential::as_password_credential(
+  self : Credential,
+) -> PasswordCredential? =
+  #| (self) => (self instanceof PasswordCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Credential::as_federated_credential(
+  self : Credential,
+) -> FederatedCredential? =
+  #| (self) => (self instanceof FederatedCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Credential::get_id(self : Credential) -> String =
@@ -583,51 +443,23 @@ pub extern "js" fn JsValue::to_credentials_container(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum CredentialsContainerGetError {
-  AbortError(JsError)
-  NetworkError(JsError)
-  TimeoutError(JsError)
-  SecurityError(JsError)
-  NotAllowedError(JsError)
-  IdentityCredentialError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum CredentialsContainerStoreError {
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum CredentialsContainerCreateError {
-  TypeError(JsError)
-  AbortError(JsError)
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn CredentialsContainer::get(
   self : CredentialsContainer,
-) -> Promise[Result[Credential?, CredentialsContainerGetError]] =
-  #| (self) => self.get().then(r => ({ $tag: 1, _0: (() => { const v = r; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NetworkError') return { $tag: 1, _0: e }; if (n === 'TimeoutError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'IdentityCredentialError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }))
+) -> Promise[Credential?] =
+  #| (self) => self.get()
 
 ///|
 extern "js" fn CredentialsContainer::get_with_options_ffi(
   self : CredentialsContainer,
   options : JsValue,
-) -> Promise[Result[Credential?, CredentialsContainerGetError]] =
-  #| (self, options) => self.get(options).then(r => ({ $tag: 1, _0: (() => { const v = r; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NetworkError') return { $tag: 1, _0: e }; if (n === 'TimeoutError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'IdentityCredentialError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }))
+) -> Promise[Credential?] =
+  #| (self, options) => self.get(options)
 
 ///|
 pub fn CredentialsContainer::get_with_options(
   self : CredentialsContainer,
   options : CredentialRequestOptions,
-) -> Promise[Result[Credential?, CredentialsContainerGetError]] {
+) -> Promise[Credential?] {
   CredentialsContainer::get_with_options_ffi(self, options.to_js())
 }
 
@@ -635,27 +467,27 @@ pub fn CredentialsContainer::get_with_options(
 pub extern "js" fn CredentialsContainer::store(
   self : CredentialsContainer,
   credential : Credential,
-) -> Promise[Result[Unit, CredentialsContainerStoreError]] =
-  #| (self, credential) => self.store(credential).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, credential) => self.store(credential)
 
 ///|
 pub extern "js" fn CredentialsContainer::create(
   self : CredentialsContainer,
-) -> Promise[Result[Credential?, CredentialsContainerCreateError]] =
-  #| (self) => self.create().then(r => ({ $tag: 1, _0: (() => { const v = r; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Credential?] =
+  #| (self) => self.create()
 
 ///|
 extern "js" fn CredentialsContainer::create_with_options_ffi(
   self : CredentialsContainer,
   options : JsValue,
-) -> Promise[Result[Credential?, CredentialsContainerCreateError]] =
-  #| (self, options) => self.create(options).then(r => ({ $tag: 1, _0: (() => { const v = r; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Credential?] =
+  #| (self, options) => self.create(options)
 
 ///|
 pub fn CredentialsContainer::create_with_options(
   self : CredentialsContainer,
   options : CredentialCreationOptions,
-) -> Promise[Result[Credential?, CredentialsContainerCreateError]] {
+) -> Promise[Credential?] {
   CredentialsContainer::create_with_options_ffi(self, options.to_js())
 }
 
@@ -710,28 +542,21 @@ pub extern "js" fn PasswordCredential::to_credential(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum PasswordCredentialConstructorError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn PasswordCredential::new_with_html_form_element(
   form : HTMLFormElement,
-) -> Result[PasswordCredential, PasswordCredentialConstructorError] =
-  #| (form) => (() => { try { return { $tag: 1, _0: new PasswordCredential(form) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> PasswordCredential =
+  #| (form) => new PasswordCredential(form)
 
 ///|
 extern "js" fn PasswordCredential::new_with_password_credential_data_ffi(
   data : JsValue,
-) -> Result[PasswordCredential, PasswordCredentialConstructorError] =
-  #| (data) => (() => { try { return { $tag: 1, _0: new PasswordCredential(data) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> PasswordCredential =
+  #| (data) => new PasswordCredential(data)
 
 ///|
 pub fn PasswordCredential::new_with_password_credential_data(
   data : PasswordCredentialData,
-) -> Result[PasswordCredential, PasswordCredentialConstructorError] {
+) -> PasswordCredential {
   PasswordCredential::new_with_password_credential_data_ffi(data.to_js())
 }
 

@@ -144,69 +144,55 @@ pub extern "js" fn SVGAnimationElement::as_svg_animate_transform_element(
   #| (self) => (self instanceof SVGAnimateTransformElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum SVGAnimationElementGetStartTimeError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGAnimationElementGetSimpleDurationError {
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn SVGAnimationElement::get_target_element(
   self : SVGAnimationElement,
 ) -> SVGElement? =
   #| (self) => (() => { const v = self.targetElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn SVGAnimationElement::set_onbegin(
+pub extern "js" fn SVGAnimationElement::get_onbegin(
   self : SVGAnimationElement,
-  handler : (TimeEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onbegin = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onbegin
 
 ///|
-pub extern "js" fn SVGAnimationElement::clear_onbegin(
+pub extern "js" fn SVGAnimationElement::set_onbegin(
   self : SVGAnimationElement,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onbegin = null }
+  #| (self, value) => { self.onbegin = value }
+
+///|
+pub extern "js" fn SVGAnimationElement::get_onend(
+  self : SVGAnimationElement,
+) -> EventHandler =
+  #| (self) => self.onend
 
 ///|
 pub extern "js" fn SVGAnimationElement::set_onend(
   self : SVGAnimationElement,
-  handler : (TimeEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onend = (e) => handler(e) }
+  #| (self, value) => { self.onend = value }
 
 ///|
-pub extern "js" fn SVGAnimationElement::clear_onend(
+pub extern "js" fn SVGAnimationElement::get_onrepeat(
   self : SVGAnimationElement,
-) -> Unit =
-  #| (self) => { self.onend = null }
+) -> EventHandler =
+  #| (self) => self.onrepeat
 
 ///|
 pub extern "js" fn SVGAnimationElement::set_onrepeat(
   self : SVGAnimationElement,
-  handler : (TimeEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onrepeat = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGAnimationElement::clear_onrepeat(
-  self : SVGAnimationElement,
-) -> Unit =
-  #| (self) => { self.onrepeat = null }
+  #| (self, value) => { self.onrepeat = value }
 
 ///|
 pub extern "js" fn SVGAnimationElement::get_start_time(
   self : SVGAnimationElement,
-) -> Result[Double, SVGAnimationElementGetStartTimeError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.getStartTime() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Double =
+  #| (self) => self.getStartTime()
 
 ///|
 pub extern "js" fn SVGAnimationElement::get_current_time(
@@ -217,8 +203,8 @@ pub extern "js" fn SVGAnimationElement::get_current_time(
 ///|
 pub extern "js" fn SVGAnimationElement::get_simple_duration(
   self : SVGAnimationElement,
-) -> Result[Double, SVGAnimationElementGetSimpleDurationError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.getSimpleDuration() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Double =
+  #| (self) => self.getSimpleDuration()
 
 ///|
 pub extern "js" fn SVGAnimationElement::begin_element(

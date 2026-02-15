@@ -198,67 +198,21 @@ pub extern "js" fn MediaRecorder::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum MediaRecorderConstructorError {
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum MediaRecorderStartError {
-  SecurityError(JsError)
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum MediaRecorderStopError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum MediaRecorderPauseError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum MediaRecorderResumeError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum MediaRecorderRequestDataError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn MediaRecorder::new(
-  stream : MediaStream,
-) -> Result[MediaRecorder, MediaRecorderConstructorError] =
-  #| (stream) => (() => { try { return { $tag: 1, _0: new MediaRecorder(stream) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn MediaRecorder::new(stream : MediaStream) -> MediaRecorder =
+  #| (stream) => new MediaRecorder(stream)
 
 ///|
 extern "js" fn MediaRecorder::new_with_options_ffi(
   stream : MediaStream,
   options : JsValue,
-) -> Result[MediaRecorder, MediaRecorderConstructorError] =
-  #| (stream, options) => (() => { try { return { $tag: 1, _0: new MediaRecorder(stream, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> MediaRecorder =
+  #| (stream, options) => new MediaRecorder(stream, options)
 
 ///|
 pub fn MediaRecorder::new_with_options(
   stream : MediaStream,
   options : MediaRecorderOptions,
-) -> Result[MediaRecorder, MediaRecorderConstructorError] {
+) -> MediaRecorder {
   MediaRecorder::new_with_options_ffi(stream, options.to_js())
 }
 
@@ -279,72 +233,82 @@ pub extern "js" fn MediaRecorder::get_state(
   #| (self) => ['inactive', 'recording', 'paused'].indexOf(self.state)
 
 ///|
-pub extern "js" fn MediaRecorder::set_onstart(
+pub extern "js" fn MediaRecorder::get_onstart(
   self : MediaRecorder,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onstart = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onstart
 
 ///|
-pub extern "js" fn MediaRecorder::clear_onstart(self : MediaRecorder) -> Unit =
-  #| (self) => { self.onstart = null }
+pub extern "js" fn MediaRecorder::set_onstart(
+  self : MediaRecorder,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onstart = value }
+
+///|
+pub extern "js" fn MediaRecorder::get_onstop(
+  self : MediaRecorder,
+) -> EventHandler =
+  #| (self) => self.onstop
 
 ///|
 pub extern "js" fn MediaRecorder::set_onstop(
   self : MediaRecorder,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onstop = (e) => handler(e) }
+  #| (self, value) => { self.onstop = value }
 
 ///|
-pub extern "js" fn MediaRecorder::clear_onstop(self : MediaRecorder) -> Unit =
-  #| (self) => { self.onstop = null }
+pub extern "js" fn MediaRecorder::get_ondataavailable(
+  self : MediaRecorder,
+) -> EventHandler =
+  #| (self) => self.ondataavailable
 
 ///|
 pub extern "js" fn MediaRecorder::set_ondataavailable(
   self : MediaRecorder,
-  handler : (BlobEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondataavailable = (e) => handler(e) }
+  #| (self, value) => { self.ondataavailable = value }
 
 ///|
-pub extern "js" fn MediaRecorder::clear_ondataavailable(
+pub extern "js" fn MediaRecorder::get_onpause(
   self : MediaRecorder,
-) -> Unit =
-  #| (self) => { self.ondataavailable = null }
+) -> EventHandler =
+  #| (self) => self.onpause
 
 ///|
 pub extern "js" fn MediaRecorder::set_onpause(
   self : MediaRecorder,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpause = (e) => handler(e) }
+  #| (self, value) => { self.onpause = value }
 
 ///|
-pub extern "js" fn MediaRecorder::clear_onpause(self : MediaRecorder) -> Unit =
-  #| (self) => { self.onpause = null }
+pub extern "js" fn MediaRecorder::get_onresume(
+  self : MediaRecorder,
+) -> EventHandler =
+  #| (self) => self.onresume
 
 ///|
 pub extern "js" fn MediaRecorder::set_onresume(
   self : MediaRecorder,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onresume = (e) => handler(e) }
+  #| (self, value) => { self.onresume = value }
 
 ///|
-pub extern "js" fn MediaRecorder::clear_onresume(self : MediaRecorder) -> Unit =
-  #| (self) => { self.onresume = null }
+pub extern "js" fn MediaRecorder::get_onerror(
+  self : MediaRecorder,
+) -> EventHandler =
+  #| (self) => self.onerror
 
 ///|
 pub extern "js" fn MediaRecorder::set_onerror(
   self : MediaRecorder,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onerror = (e) => handler(e) }
-
-///|
-pub extern "js" fn MediaRecorder::clear_onerror(self : MediaRecorder) -> Unit =
-  #| (self) => { self.onerror = null }
+  #| (self, value) => { self.onerror = value }
 
 ///|
 pub extern "js" fn MediaRecorder::get_video_bits_per_second(
@@ -365,41 +329,31 @@ pub extern "js" fn MediaRecorder::get_audio_bitrate_mode(
   #| (self) => ['constant', 'variable'].indexOf(self.audioBitrateMode)
 
 ///|
-pub extern "js" fn MediaRecorder::start(
-  self : MediaRecorder,
-) -> Result[Unit, MediaRecorderStartError] =
-  #| (self) => (() => { try { self.start(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+pub extern "js" fn MediaRecorder::start(self : MediaRecorder) -> Unit =
+  #| (self) => self.start()
 
 ///|
 pub extern "js" fn MediaRecorder::start_with_timeslice(
   self : MediaRecorder,
   timeslice : Int,
-) -> Result[Unit, MediaRecorderStartError] =
-  #| (self, timeslice) => (() => { try { self.start(timeslice); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, timeslice) => self.start(timeslice)
 
 ///|
-pub extern "js" fn MediaRecorder::stop(
-  self : MediaRecorder,
-) -> Result[Unit, MediaRecorderStopError] =
-  #| (self) => (() => { try { self.stop(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn MediaRecorder::stop(self : MediaRecorder) -> Unit =
+  #| (self) => self.stop()
 
 ///|
-pub extern "js" fn MediaRecorder::pause(
-  self : MediaRecorder,
-) -> Result[Unit, MediaRecorderPauseError] =
-  #| (self) => (() => { try { self.pause(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn MediaRecorder::pause(self : MediaRecorder) -> Unit =
+  #| (self) => self.pause()
 
 ///|
-pub extern "js" fn MediaRecorder::resume_(
-  self : MediaRecorder,
-) -> Result[Unit, MediaRecorderResumeError] =
-  #| (self) => (() => { try { self.resume(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn MediaRecorder::resume_(self : MediaRecorder) -> Unit =
+  #| (self) => self.resume()
 
 ///|
-pub extern "js" fn MediaRecorder::request_data(
-  self : MediaRecorder,
-) -> Result[Unit, MediaRecorderRequestDataError] =
-  #| (self) => (() => { try { self.requestData(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn MediaRecorder::request_data(self : MediaRecorder) -> Unit =
+  #| (self) => self.requestData()
 
 ///|
 pub extern "js" fn MediaRecorder::is_type_supported(type_ : String) -> Bool =

@@ -2602,7 +2602,7 @@ extern "js" fn ImageEncodeOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   type: self.type_,
-  #|   quality: ((() => { const v = self.quality; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   quality: self.quality
   #| })
 
 ///|
@@ -2617,7 +2617,7 @@ extern "js" fn ImageEncodeOptions::from_js_ffi(
 ) -> ImageEncodeOptions =
   #| (v) => ({
   #|   type_: v.type,
-  #|   quality: (v.quality === undefined ? { $tag: 0 } : { $tag: 1, _0: v.quality })
+  #|   quality: v.quality
   #| })
 
 ///|
@@ -4380,13 +4380,6 @@ pub extern "js" fn HTMLOptionsCollection::to_html_collection(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum HTMLOptionsCollectionAddError {
-  HierarchyRequestError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn HTMLOptionsCollection::get_length(
   self : HTMLOptionsCollection,
 ) -> Int =
@@ -4412,16 +4405,16 @@ pub extern "js" fn HTMLOptionsCollection::set(
 pub extern "js" fn HTMLOptionsCollection::add(
   self : HTMLOptionsCollection,
   element : HTMLOptionElementOrHTMLOptGroupElement,
-) -> Result[Unit, HTMLOptionsCollectionAddError] =
-  #| (self, element) => (() => { try { self.add(element); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, element) => self.add(element)
 
 ///|
 pub extern "js" fn HTMLOptionsCollection::add_with_before(
   self : HTMLOptionsCollection,
   element : HTMLOptionElementOrHTMLOptGroupElement,
   before : HTMLElementOrInt,
-) -> Result[Unit, HTMLOptionsCollectionAddError] =
-  #| (self, element, before) => (() => { try { self.add(element, before); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, element, before) => self.add(element, before)
 
 ///|
 pub extern "js" fn HTMLOptionsCollection::remove(
@@ -4544,10 +4537,10 @@ pub extern "js" fn HTMLElement::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn HTMLElement::as_html_fenced_frame_element(
+pub extern "js" fn HTMLElement::as_html_model_element(
   self : HTMLElement,
-) -> HTMLFencedFrameElement? =
-  #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> HTMLModelElement? =
+  #| (self) => (self instanceof HTMLModelElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn HTMLElement::as_html_unknown_element(
@@ -4976,49 +4969,16 @@ pub extern "js" fn HTMLElement::as_html_param_element(
   #| (self) => (self instanceof HTMLParamElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn HTMLElement::as_html_model_element(
-  self : HTMLElement,
-) -> HTMLModelElement? =
-  #| (self) => (self instanceof HTMLModelElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn HTMLElement::as_html_permission_element(
-  self : HTMLElement,
-) -> HTMLPermissionElement? =
-  #| (self) => (self instanceof HTMLPermissionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn HTMLElement::as_html_geolocation_element(
-  self : HTMLElement,
-) -> HTMLGeolocationElement? =
-  #| (self) => (self instanceof HTMLGeolocationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn HTMLElement::as_html_portal_element(
   self : HTMLElement,
 ) -> HTMLPortalElement? =
   #| (self) => (self instanceof HTMLPortalElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum HTMLElementAttachInternalsError {
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLElementShowPopoverError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLElementHidePopoverError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn HTMLElement::as_html_fenced_frame_element(
+  self : HTMLElement,
+) -> HTMLFencedFrameElement? =
+  #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn HTMLElement::new() -> HTMLElement =
@@ -5197,35 +5157,31 @@ pub extern "js" fn HTMLElement::set_outer_text(
 ///|
 pub extern "js" fn HTMLElement::attach_internals(
   self : HTMLElement,
-) -> Result[ElementInternals, HTMLElementAttachInternalsError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.attachInternals() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ElementInternals =
+  #| (self) => self.attachInternals()
 
 ///|
-pub extern "js" fn HTMLElement::show_popover(
-  self : HTMLElement,
-) -> Result[Unit, HTMLElementShowPopoverError] =
-  #| (self) => (() => { try { self.showPopover(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn HTMLElement::show_popover(self : HTMLElement) -> Unit =
+  #| (self) => self.showPopover()
 
 ///|
 extern "js" fn HTMLElement::show_popover_with_options_ffi(
   self : HTMLElement,
   options : JsValue,
-) -> Result[Unit, HTMLElementShowPopoverError] =
-  #| (self, options) => (() => { try { self.showPopover(options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, options) => self.showPopover(options)
 
 ///|
 pub fn HTMLElement::show_popover_with_options(
   self : HTMLElement,
   options : ShowPopoverOptions,
-) -> Result[Unit, HTMLElementShowPopoverError] {
+) -> Unit {
   HTMLElement::show_popover_with_options_ffi(self, options.to_js())
 }
 
 ///|
-pub extern "js" fn HTMLElement::hide_popover(
-  self : HTMLElement,
-) -> Result[Unit, HTMLElementHidePopoverError] =
-  #| (self) => (() => { try { self.hidePopover(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn HTMLElement::hide_popover(self : HTMLElement) -> Unit =
+  #| (self) => self.hidePopover()
 
 ///|
 pub extern "js" fn HTMLElement::toggle_popover(self : HTMLElement) -> Bool =
@@ -5313,495 +5269,382 @@ pub extern "js" fn HTMLElement::set_edit_context(
   #| (self, value) => { self.editContext = (value.$tag === 1 ? value._0 : null) }
 
 ///|
-pub extern "js" fn HTMLElement::get_attribute_style_map(
-  self : HTMLElement,
-) -> StylePropertyMap =
-  #| (self) => self.attributeStyleMap
-
-///|
-pub extern "js" fn HTMLElement::get_style(
-  self : HTMLElement,
-) -> CSSStyleProperties =
-  #| (self) => self.style
-
-///|
-pub extern "js" fn HTMLElement::set_onanimationstart(
-  self : HTMLElement,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationstart = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onanimationstart(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onanimationstart = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onanimationiteration(
-  self : HTMLElement,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationiteration = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onanimationiteration(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onanimationiteration = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onanimationend(
-  self : HTMLElement,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationend = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onanimationend(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onanimationend = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onanimationcancel(
-  self : HTMLElement,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationcancel = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onanimationcancel(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onanimationcancel = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onsnapchanged(
-  self : HTMLElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onsnapchanged = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onsnapchanged(self : HTMLElement) -> Unit =
-  #| (self) => { self.onsnapchanged = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onsnapchanging(
-  self : HTMLElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onsnapchanging = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onsnapchanging(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onsnapchanging = null }
-
-///|
-pub extern "js" fn HTMLElement::set_ontransitionrun(
-  self : HTMLElement,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitionrun = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_ontransitionrun(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.ontransitionrun = null }
-
-///|
-pub extern "js" fn HTMLElement::set_ontransitionstart(
-  self : HTMLElement,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitionstart = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_ontransitionstart(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.ontransitionstart = null }
-
-///|
-pub extern "js" fn HTMLElement::set_ontransitionend(
-  self : HTMLElement,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitionend = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_ontransitionend(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.ontransitionend = null }
-
-///|
-pub extern "js" fn HTMLElement::set_ontransitioncancel(
-  self : HTMLElement,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitioncancel = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_ontransitioncancel(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.ontransitioncancel = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onfencedtreeclick(
-  self : HTMLElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onfencedtreeclick = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onfencedtreeclick(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onfencedtreeclick = null }
+pub extern "js" fn HTMLElement::get_onabort(self : HTMLElement) -> EventHandler =
+  #| (self) => self.onabort
 
 ///|
 pub extern "js" fn HTMLElement::set_onabort(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onabort = (e) => handler(e) }
+  #| (self, value) => { self.onabort = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onabort(self : HTMLElement) -> Unit =
-  #| (self) => { self.onabort = null }
+pub extern "js" fn HTMLElement::get_onauxclick(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onauxclick
 
 ///|
 pub extern "js" fn HTMLElement::set_onauxclick(
   self : HTMLElement,
-  handler : (PointerEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onauxclick = (e) => handler(e) }
+  #| (self, value) => { self.onauxclick = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onauxclick(self : HTMLElement) -> Unit =
-  #| (self) => { self.onauxclick = null }
+pub extern "js" fn HTMLElement::get_onbeforeinput(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onbeforeinput
 
 ///|
 pub extern "js" fn HTMLElement::set_onbeforeinput(
   self : HTMLElement,
-  handler : (InputEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbeforeinput = (e) => handler(e) }
+  #| (self, value) => { self.onbeforeinput = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onbeforeinput(self : HTMLElement) -> Unit =
-  #| (self) => { self.onbeforeinput = null }
+pub extern "js" fn HTMLElement::get_onbeforematch(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onbeforematch
 
 ///|
 pub extern "js" fn HTMLElement::set_onbeforematch(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbeforematch = (e) => handler(e) }
+  #| (self, value) => { self.onbeforematch = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onbeforematch(self : HTMLElement) -> Unit =
-  #| (self) => { self.onbeforematch = null }
+pub extern "js" fn HTMLElement::get_onbeforetoggle(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onbeforetoggle
 
 ///|
 pub extern "js" fn HTMLElement::set_onbeforetoggle(
   self : HTMLElement,
-  handler : (ToggleEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbeforetoggle = (e) => handler(e) }
+  #| (self, value) => { self.onbeforetoggle = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onbeforetoggle(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onbeforetoggle = null }
+pub extern "js" fn HTMLElement::get_onblur(self : HTMLElement) -> EventHandler =
+  #| (self) => self.onblur
 
 ///|
 pub extern "js" fn HTMLElement::set_onblur(
   self : HTMLElement,
-  handler : (FocusEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onblur = (e) => handler(e) }
+  #| (self, value) => { self.onblur = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onblur(self : HTMLElement) -> Unit =
-  #| (self) => { self.onblur = null }
+pub extern "js" fn HTMLElement::get_oncancel(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.oncancel
 
 ///|
 pub extern "js" fn HTMLElement::set_oncancel(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncancel = (e) => handler(e) }
+  #| (self, value) => { self.oncancel = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_oncancel(self : HTMLElement) -> Unit =
-  #| (self) => { self.oncancel = null }
+pub extern "js" fn HTMLElement::get_oncanplay(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.oncanplay
 
 ///|
 pub extern "js" fn HTMLElement::set_oncanplay(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncanplay = (e) => handler(e) }
+  #| (self, value) => { self.oncanplay = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_oncanplay(self : HTMLElement) -> Unit =
-  #| (self) => { self.oncanplay = null }
+pub extern "js" fn HTMLElement::get_oncanplaythrough(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.oncanplaythrough
 
 ///|
 pub extern "js" fn HTMLElement::set_oncanplaythrough(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncanplaythrough = (e) => handler(e) }
+  #| (self, value) => { self.oncanplaythrough = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_oncanplaythrough(
+pub extern "js" fn HTMLElement::get_onchange(
   self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.oncanplaythrough = null }
+) -> EventHandler =
+  #| (self) => self.onchange
 
 ///|
 pub extern "js" fn HTMLElement::set_onchange(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onchange = (e) => handler(e) }
+  #| (self, value) => { self.onchange = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onchange(self : HTMLElement) -> Unit =
-  #| (self) => { self.onchange = null }
+pub extern "js" fn HTMLElement::get_onclick(self : HTMLElement) -> EventHandler =
+  #| (self) => self.onclick
 
 ///|
 pub extern "js" fn HTMLElement::set_onclick(
   self : HTMLElement,
-  handler : (PointerEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onclick = (e) => handler(e) }
+  #| (self, value) => { self.onclick = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onclick(self : HTMLElement) -> Unit =
-  #| (self) => { self.onclick = null }
+pub extern "js" fn HTMLElement::get_onclose(self : HTMLElement) -> EventHandler =
+  #| (self) => self.onclose
 
 ///|
 pub extern "js" fn HTMLElement::set_onclose(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onclose = (e) => handler(e) }
+  #| (self, value) => { self.onclose = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onclose(self : HTMLElement) -> Unit =
-  #| (self) => { self.onclose = null }
+pub extern "js" fn HTMLElement::get_oncommand(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.oncommand
 
 ///|
 pub extern "js" fn HTMLElement::set_oncommand(
   self : HTMLElement,
-  handler : (CommandEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncommand = (e) => handler(e) }
+  #| (self, value) => { self.oncommand = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_oncommand(self : HTMLElement) -> Unit =
-  #| (self) => { self.oncommand = null }
+pub extern "js" fn HTMLElement::get_oncontextlost(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.oncontextlost
 
 ///|
 pub extern "js" fn HTMLElement::set_oncontextlost(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncontextlost = (e) => handler(e) }
+  #| (self, value) => { self.oncontextlost = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_oncontextlost(self : HTMLElement) -> Unit =
-  #| (self) => { self.oncontextlost = null }
+pub extern "js" fn HTMLElement::get_oncontextmenu(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.oncontextmenu
 
 ///|
 pub extern "js" fn HTMLElement::set_oncontextmenu(
   self : HTMLElement,
-  handler : (PointerEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncontextmenu = (e) => handler(e) }
+  #| (self, value) => { self.oncontextmenu = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_oncontextmenu(self : HTMLElement) -> Unit =
-  #| (self) => { self.oncontextmenu = null }
+pub extern "js" fn HTMLElement::get_oncontextrestored(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.oncontextrestored
 
 ///|
 pub extern "js" fn HTMLElement::set_oncontextrestored(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncontextrestored = (e) => handler(e) }
+  #| (self, value) => { self.oncontextrestored = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_oncontextrestored(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.oncontextrestored = null }
+pub extern "js" fn HTMLElement::get_oncopy(self : HTMLElement) -> EventHandler =
+  #| (self) => self.oncopy
 
 ///|
 pub extern "js" fn HTMLElement::set_oncopy(
   self : HTMLElement,
-  handler : (ClipboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncopy = (e) => handler(e) }
+  #| (self, value) => { self.oncopy = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_oncopy(self : HTMLElement) -> Unit =
-  #| (self) => { self.oncopy = null }
+pub extern "js" fn HTMLElement::get_oncuechange(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.oncuechange
 
 ///|
 pub extern "js" fn HTMLElement::set_oncuechange(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncuechange = (e) => handler(e) }
+  #| (self, value) => { self.oncuechange = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_oncuechange(self : HTMLElement) -> Unit =
-  #| (self) => { self.oncuechange = null }
+pub extern "js" fn HTMLElement::get_oncut(self : HTMLElement) -> EventHandler =
+  #| (self) => self.oncut
 
 ///|
 pub extern "js" fn HTMLElement::set_oncut(
   self : HTMLElement,
-  handler : (ClipboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncut = (e) => handler(e) }
+  #| (self, value) => { self.oncut = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_oncut(self : HTMLElement) -> Unit =
-  #| (self) => { self.oncut = null }
+pub extern "js" fn HTMLElement::get_ondblclick(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ondblclick
 
 ///|
 pub extern "js" fn HTMLElement::set_ondblclick(
   self : HTMLElement,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondblclick = (e) => handler(e) }
+  #| (self, value) => { self.ondblclick = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_ondblclick(self : HTMLElement) -> Unit =
-  #| (self) => { self.ondblclick = null }
+pub extern "js" fn HTMLElement::get_ondrag(self : HTMLElement) -> EventHandler =
+  #| (self) => self.ondrag
 
 ///|
 pub extern "js" fn HTMLElement::set_ondrag(
   self : HTMLElement,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondrag = (e) => handler(e) }
+  #| (self, value) => { self.ondrag = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_ondrag(self : HTMLElement) -> Unit =
-  #| (self) => { self.ondrag = null }
+pub extern "js" fn HTMLElement::get_ondragend(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ondragend
 
 ///|
 pub extern "js" fn HTMLElement::set_ondragend(
   self : HTMLElement,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondragend = (e) => handler(e) }
+  #| (self, value) => { self.ondragend = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_ondragend(self : HTMLElement) -> Unit =
-  #| (self) => { self.ondragend = null }
+pub extern "js" fn HTMLElement::get_ondragenter(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ondragenter
 
 ///|
 pub extern "js" fn HTMLElement::set_ondragenter(
   self : HTMLElement,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondragenter = (e) => handler(e) }
+  #| (self, value) => { self.ondragenter = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_ondragenter(self : HTMLElement) -> Unit =
-  #| (self) => { self.ondragenter = null }
+pub extern "js" fn HTMLElement::get_ondragleave(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ondragleave
 
 ///|
 pub extern "js" fn HTMLElement::set_ondragleave(
   self : HTMLElement,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondragleave = (e) => handler(e) }
+  #| (self, value) => { self.ondragleave = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_ondragleave(self : HTMLElement) -> Unit =
-  #| (self) => { self.ondragleave = null }
+pub extern "js" fn HTMLElement::get_ondragover(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ondragover
 
 ///|
 pub extern "js" fn HTMLElement::set_ondragover(
   self : HTMLElement,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondragover = (e) => handler(e) }
+  #| (self, value) => { self.ondragover = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_ondragover(self : HTMLElement) -> Unit =
-  #| (self) => { self.ondragover = null }
+pub extern "js" fn HTMLElement::get_ondragstart(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ondragstart
 
 ///|
 pub extern "js" fn HTMLElement::set_ondragstart(
   self : HTMLElement,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondragstart = (e) => handler(e) }
+  #| (self, value) => { self.ondragstart = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_ondragstart(self : HTMLElement) -> Unit =
-  #| (self) => { self.ondragstart = null }
+pub extern "js" fn HTMLElement::get_ondrop(self : HTMLElement) -> EventHandler =
+  #| (self) => self.ondrop
 
 ///|
 pub extern "js" fn HTMLElement::set_ondrop(
   self : HTMLElement,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondrop = (e) => handler(e) }
+  #| (self, value) => { self.ondrop = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_ondrop(self : HTMLElement) -> Unit =
-  #| (self) => { self.ondrop = null }
+pub extern "js" fn HTMLElement::get_ondurationchange(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ondurationchange
 
 ///|
 pub extern "js" fn HTMLElement::set_ondurationchange(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondurationchange = (e) => handler(e) }
+  #| (self, value) => { self.ondurationchange = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_ondurationchange(
+pub extern "js" fn HTMLElement::get_onemptied(
   self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.ondurationchange = null }
+) -> EventHandler =
+  #| (self) => self.onemptied
 
 ///|
 pub extern "js" fn HTMLElement::set_onemptied(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onemptied = (e) => handler(e) }
+  #| (self, value) => { self.onemptied = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onemptied(self : HTMLElement) -> Unit =
-  #| (self) => { self.onemptied = null }
+pub extern "js" fn HTMLElement::get_onended(self : HTMLElement) -> EventHandler =
+  #| (self) => self.onended
 
 ///|
 pub extern "js" fn HTMLElement::set_onended(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onended = (e) => handler(e) }
+  #| (self, value) => { self.onended = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onended(self : HTMLElement) -> Unit =
-  #| (self) => { self.onended = null }
+pub extern "js" fn HTMLElement::get_onerror(
+  self : HTMLElement,
+) -> OnErrorEventHandler =
+  #| (self) => self.onerror
 
 ///|
 pub extern "js" fn HTMLElement::set_onerror(
@@ -5811,731 +5654,948 @@ pub extern "js" fn HTMLElement::set_onerror(
   #| (self, value) => { self.onerror = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onerror(self : HTMLElement) -> Unit =
-  #| (self) => { self.onerror = null }
+pub extern "js" fn HTMLElement::get_onfocus(self : HTMLElement) -> EventHandler =
+  #| (self) => self.onfocus
 
 ///|
 pub extern "js" fn HTMLElement::set_onfocus(
   self : HTMLElement,
-  handler : (FocusEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onfocus = (e) => handler(e) }
+  #| (self, value) => { self.onfocus = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onfocus(self : HTMLElement) -> Unit =
-  #| (self) => { self.onfocus = null }
+pub extern "js" fn HTMLElement::get_onformdata(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onformdata
 
 ///|
 pub extern "js" fn HTMLElement::set_onformdata(
   self : HTMLElement,
-  handler : (FormDataEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onformdata = (e) => handler(e) }
+  #| (self, value) => { self.onformdata = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onformdata(self : HTMLElement) -> Unit =
-  #| (self) => { self.onformdata = null }
+pub extern "js" fn HTMLElement::get_oninput(self : HTMLElement) -> EventHandler =
+  #| (self) => self.oninput
 
 ///|
 pub extern "js" fn HTMLElement::set_oninput(
   self : HTMLElement,
-  handler : (InputEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oninput = (e) => handler(e) }
+  #| (self, value) => { self.oninput = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_oninput(self : HTMLElement) -> Unit =
-  #| (self) => { self.oninput = null }
+pub extern "js" fn HTMLElement::get_oninvalid(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.oninvalid
 
 ///|
 pub extern "js" fn HTMLElement::set_oninvalid(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oninvalid = (e) => handler(e) }
+  #| (self, value) => { self.oninvalid = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_oninvalid(self : HTMLElement) -> Unit =
-  #| (self) => { self.oninvalid = null }
+pub extern "js" fn HTMLElement::get_onkeydown(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onkeydown
 
 ///|
 pub extern "js" fn HTMLElement::set_onkeydown(
   self : HTMLElement,
-  handler : (KeyboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onkeydown = (e) => handler(e) }
+  #| (self, value) => { self.onkeydown = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onkeydown(self : HTMLElement) -> Unit =
-  #| (self) => { self.onkeydown = null }
+pub extern "js" fn HTMLElement::get_onkeypress(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onkeypress
 
 ///|
 pub extern "js" fn HTMLElement::set_onkeypress(
   self : HTMLElement,
-  handler : (KeyboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onkeypress = (e) => handler(e) }
+  #| (self, value) => { self.onkeypress = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onkeypress(self : HTMLElement) -> Unit =
-  #| (self) => { self.onkeypress = null }
+pub extern "js" fn HTMLElement::get_onkeyup(self : HTMLElement) -> EventHandler =
+  #| (self) => self.onkeyup
 
 ///|
 pub extern "js" fn HTMLElement::set_onkeyup(
   self : HTMLElement,
-  handler : (KeyboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onkeyup = (e) => handler(e) }
+  #| (self, value) => { self.onkeyup = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onkeyup(self : HTMLElement) -> Unit =
-  #| (self) => { self.onkeyup = null }
+pub extern "js" fn HTMLElement::get_onload(self : HTMLElement) -> EventHandler =
+  #| (self) => self.onload
 
 ///|
 pub extern "js" fn HTMLElement::set_onload(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onload = (e) => handler(e) }
+  #| (self, value) => { self.onload = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onload(self : HTMLElement) -> Unit =
-  #| (self) => { self.onload = null }
+pub extern "js" fn HTMLElement::get_onloadeddata(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onloadeddata
 
 ///|
 pub extern "js" fn HTMLElement::set_onloadeddata(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onloadeddata = (e) => handler(e) }
+  #| (self, value) => { self.onloadeddata = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onloadeddata(self : HTMLElement) -> Unit =
-  #| (self) => { self.onloadeddata = null }
+pub extern "js" fn HTMLElement::get_onloadedmetadata(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onloadedmetadata
 
 ///|
 pub extern "js" fn HTMLElement::set_onloadedmetadata(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onloadedmetadata = (e) => handler(e) }
+  #| (self, value) => { self.onloadedmetadata = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onloadedmetadata(
+pub extern "js" fn HTMLElement::get_onloadstart(
   self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onloadedmetadata = null }
+) -> EventHandler =
+  #| (self) => self.onloadstart
 
 ///|
 pub extern "js" fn HTMLElement::set_onloadstart(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onloadstart = (e) => handler(e) }
+  #| (self, value) => { self.onloadstart = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onloadstart(self : HTMLElement) -> Unit =
-  #| (self) => { self.onloadstart = null }
+pub extern "js" fn HTMLElement::get_onmousedown(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onmousedown
 
 ///|
 pub extern "js" fn HTMLElement::set_onmousedown(
   self : HTMLElement,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmousedown = (e) => handler(e) }
+  #| (self, value) => { self.onmousedown = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onmousedown(self : HTMLElement) -> Unit =
-  #| (self) => { self.onmousedown = null }
+pub extern "js" fn HTMLElement::get_onmouseenter(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onmouseenter
 
 ///|
 pub extern "js" fn HTMLElement::set_onmouseenter(
   self : HTMLElement,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmouseenter = (e) => handler(e) }
+  #| (self, value) => { self.onmouseenter = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onmouseenter(self : HTMLElement) -> Unit =
-  #| (self) => { self.onmouseenter = null }
+pub extern "js" fn HTMLElement::get_onmouseleave(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onmouseleave
 
 ///|
 pub extern "js" fn HTMLElement::set_onmouseleave(
   self : HTMLElement,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmouseleave = (e) => handler(e) }
+  #| (self, value) => { self.onmouseleave = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onmouseleave(self : HTMLElement) -> Unit =
-  #| (self) => { self.onmouseleave = null }
+pub extern "js" fn HTMLElement::get_onmousemove(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onmousemove
 
 ///|
 pub extern "js" fn HTMLElement::set_onmousemove(
   self : HTMLElement,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmousemove = (e) => handler(e) }
+  #| (self, value) => { self.onmousemove = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onmousemove(self : HTMLElement) -> Unit =
-  #| (self) => { self.onmousemove = null }
+pub extern "js" fn HTMLElement::get_onmouseout(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onmouseout
 
 ///|
 pub extern "js" fn HTMLElement::set_onmouseout(
   self : HTMLElement,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmouseout = (e) => handler(e) }
+  #| (self, value) => { self.onmouseout = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onmouseout(self : HTMLElement) -> Unit =
-  #| (self) => { self.onmouseout = null }
+pub extern "js" fn HTMLElement::get_onmouseover(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onmouseover
 
 ///|
 pub extern "js" fn HTMLElement::set_onmouseover(
   self : HTMLElement,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmouseover = (e) => handler(e) }
+  #| (self, value) => { self.onmouseover = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onmouseover(self : HTMLElement) -> Unit =
-  #| (self) => { self.onmouseover = null }
+pub extern "js" fn HTMLElement::get_onmouseup(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onmouseup
 
 ///|
 pub extern "js" fn HTMLElement::set_onmouseup(
   self : HTMLElement,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmouseup = (e) => handler(e) }
+  #| (self, value) => { self.onmouseup = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onmouseup(self : HTMLElement) -> Unit =
-  #| (self) => { self.onmouseup = null }
+pub extern "js" fn HTMLElement::get_onpaste(self : HTMLElement) -> EventHandler =
+  #| (self) => self.onpaste
 
 ///|
 pub extern "js" fn HTMLElement::set_onpaste(
   self : HTMLElement,
-  handler : (ClipboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpaste = (e) => handler(e) }
+  #| (self, value) => { self.onpaste = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onpaste(self : HTMLElement) -> Unit =
-  #| (self) => { self.onpaste = null }
+pub extern "js" fn HTMLElement::get_onpause(self : HTMLElement) -> EventHandler =
+  #| (self) => self.onpause
 
 ///|
 pub extern "js" fn HTMLElement::set_onpause(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpause = (e) => handler(e) }
+  #| (self, value) => { self.onpause = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onpause(self : HTMLElement) -> Unit =
-  #| (self) => { self.onpause = null }
+pub extern "js" fn HTMLElement::get_onplay(self : HTMLElement) -> EventHandler =
+  #| (self) => self.onplay
 
 ///|
 pub extern "js" fn HTMLElement::set_onplay(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onplay = (e) => handler(e) }
+  #| (self, value) => { self.onplay = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onplay(self : HTMLElement) -> Unit =
-  #| (self) => { self.onplay = null }
+pub extern "js" fn HTMLElement::get_onplaying(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onplaying
 
 ///|
 pub extern "js" fn HTMLElement::set_onplaying(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onplaying = (e) => handler(e) }
+  #| (self, value) => { self.onplaying = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onplaying(self : HTMLElement) -> Unit =
-  #| (self) => { self.onplaying = null }
+pub extern "js" fn HTMLElement::get_onprogress(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onprogress
 
 ///|
 pub extern "js" fn HTMLElement::set_onprogress(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onprogress = (e) => handler(e) }
+  #| (self, value) => { self.onprogress = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onprogress(self : HTMLElement) -> Unit =
-  #| (self) => { self.onprogress = null }
+pub extern "js" fn HTMLElement::get_onratechange(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onratechange
 
 ///|
 pub extern "js" fn HTMLElement::set_onratechange(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onratechange = (e) => handler(e) }
+  #| (self, value) => { self.onratechange = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onratechange(self : HTMLElement) -> Unit =
-  #| (self) => { self.onratechange = null }
+pub extern "js" fn HTMLElement::get_onreset(self : HTMLElement) -> EventHandler =
+  #| (self) => self.onreset
 
 ///|
 pub extern "js" fn HTMLElement::set_onreset(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onreset = (e) => handler(e) }
+  #| (self, value) => { self.onreset = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onreset(self : HTMLElement) -> Unit =
-  #| (self) => { self.onreset = null }
+pub extern "js" fn HTMLElement::get_onresize(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onresize
 
 ///|
 pub extern "js" fn HTMLElement::set_onresize(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onresize = (e) => handler(e) }
+  #| (self, value) => { self.onresize = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onresize(self : HTMLElement) -> Unit =
-  #| (self) => { self.onresize = null }
+pub extern "js" fn HTMLElement::get_onscroll(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onscroll
 
 ///|
 pub extern "js" fn HTMLElement::set_onscroll(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onscroll = (e) => handler(e) }
+  #| (self, value) => { self.onscroll = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onscroll(self : HTMLElement) -> Unit =
-  #| (self) => { self.onscroll = null }
+pub extern "js" fn HTMLElement::get_onscrollend(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onscrollend
 
 ///|
 pub extern "js" fn HTMLElement::set_onscrollend(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onscrollend = (e) => handler(e) }
+  #| (self, value) => { self.onscrollend = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onscrollend(self : HTMLElement) -> Unit =
-  #| (self) => { self.onscrollend = null }
+pub extern "js" fn HTMLElement::get_onsecuritypolicyviolation(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onsecuritypolicyviolation
 
 ///|
 pub extern "js" fn HTMLElement::set_onsecuritypolicyviolation(
   self : HTMLElement,
-  handler : (SecurityPolicyViolationEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsecuritypolicyviolation = (e) => handler(e) }
+  #| (self, value) => { self.onsecuritypolicyviolation = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onsecuritypolicyviolation(
+pub extern "js" fn HTMLElement::get_onseeked(
   self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onsecuritypolicyviolation = null }
+) -> EventHandler =
+  #| (self) => self.onseeked
 
 ///|
 pub extern "js" fn HTMLElement::set_onseeked(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onseeked = (e) => handler(e) }
+  #| (self, value) => { self.onseeked = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onseeked(self : HTMLElement) -> Unit =
-  #| (self) => { self.onseeked = null }
+pub extern "js" fn HTMLElement::get_onseeking(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onseeking
 
 ///|
 pub extern "js" fn HTMLElement::set_onseeking(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onseeking = (e) => handler(e) }
+  #| (self, value) => { self.onseeking = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onseeking(self : HTMLElement) -> Unit =
-  #| (self) => { self.onseeking = null }
+pub extern "js" fn HTMLElement::get_onselect(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onselect
 
 ///|
 pub extern "js" fn HTMLElement::set_onselect(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onselect = (e) => handler(e) }
+  #| (self, value) => { self.onselect = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onselect(self : HTMLElement) -> Unit =
-  #| (self) => { self.onselect = null }
+pub extern "js" fn HTMLElement::get_onslotchange(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onslotchange
 
 ///|
 pub extern "js" fn HTMLElement::set_onslotchange(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onslotchange = (e) => handler(e) }
+  #| (self, value) => { self.onslotchange = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onslotchange(self : HTMLElement) -> Unit =
-  #| (self) => { self.onslotchange = null }
+pub extern "js" fn HTMLElement::get_onstalled(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onstalled
 
 ///|
 pub extern "js" fn HTMLElement::set_onstalled(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onstalled = (e) => handler(e) }
+  #| (self, value) => { self.onstalled = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onstalled(self : HTMLElement) -> Unit =
-  #| (self) => { self.onstalled = null }
+pub extern "js" fn HTMLElement::get_onsubmit(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onsubmit
 
 ///|
 pub extern "js" fn HTMLElement::set_onsubmit(
   self : HTMLElement,
-  handler : (SubmitEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsubmit = (e) => handler(e) }
+  #| (self, value) => { self.onsubmit = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onsubmit(self : HTMLElement) -> Unit =
-  #| (self) => { self.onsubmit = null }
+pub extern "js" fn HTMLElement::get_onsuspend(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onsuspend
 
 ///|
 pub extern "js" fn HTMLElement::set_onsuspend(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsuspend = (e) => handler(e) }
+  #| (self, value) => { self.onsuspend = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onsuspend(self : HTMLElement) -> Unit =
-  #| (self) => { self.onsuspend = null }
+pub extern "js" fn HTMLElement::get_ontimeupdate(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ontimeupdate
 
 ///|
 pub extern "js" fn HTMLElement::set_ontimeupdate(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontimeupdate = (e) => handler(e) }
+  #| (self, value) => { self.ontimeupdate = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_ontimeupdate(self : HTMLElement) -> Unit =
-  #| (self) => { self.ontimeupdate = null }
+pub extern "js" fn HTMLElement::get_ontoggle(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ontoggle
 
 ///|
 pub extern "js" fn HTMLElement::set_ontoggle(
   self : HTMLElement,
-  handler : (ToggleEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontoggle = (e) => handler(e) }
+  #| (self, value) => { self.ontoggle = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_ontoggle(self : HTMLElement) -> Unit =
-  #| (self) => { self.ontoggle = null }
+pub extern "js" fn HTMLElement::get_onvolumechange(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onvolumechange
 
 ///|
 pub extern "js" fn HTMLElement::set_onvolumechange(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onvolumechange = (e) => handler(e) }
+  #| (self, value) => { self.onvolumechange = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onvolumechange(
+pub extern "js" fn HTMLElement::get_onwaiting(
   self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onvolumechange = null }
+) -> EventHandler =
+  #| (self) => self.onwaiting
 
 ///|
 pub extern "js" fn HTMLElement::set_onwaiting(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwaiting = (e) => handler(e) }
+  #| (self, value) => { self.onwaiting = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onwaiting(self : HTMLElement) -> Unit =
-  #| (self) => { self.onwaiting = null }
+pub extern "js" fn HTMLElement::get_onwebkitanimationend(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onwebkitanimationend
 
 ///|
 pub extern "js" fn HTMLElement::set_onwebkitanimationend(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwebkitanimationend = (e) => handler(e) }
+  #| (self, value) => { self.onwebkitanimationend = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onwebkitanimationend(
+pub extern "js" fn HTMLElement::get_onwebkitanimationiteration(
   self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onwebkitanimationend = null }
+) -> EventHandler =
+  #| (self) => self.onwebkitanimationiteration
 
 ///|
 pub extern "js" fn HTMLElement::set_onwebkitanimationiteration(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwebkitanimationiteration = (e) => handler(e) }
+  #| (self, value) => { self.onwebkitanimationiteration = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onwebkitanimationiteration(
+pub extern "js" fn HTMLElement::get_onwebkitanimationstart(
   self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onwebkitanimationiteration = null }
+) -> EventHandler =
+  #| (self) => self.onwebkitanimationstart
 
 ///|
 pub extern "js" fn HTMLElement::set_onwebkitanimationstart(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwebkitanimationstart = (e) => handler(e) }
+  #| (self, value) => { self.onwebkitanimationstart = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onwebkitanimationstart(
+pub extern "js" fn HTMLElement::get_onwebkittransitionend(
   self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onwebkitanimationstart = null }
+) -> EventHandler =
+  #| (self) => self.onwebkittransitionend
 
 ///|
 pub extern "js" fn HTMLElement::set_onwebkittransitionend(
   self : HTMLElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwebkittransitionend = (e) => handler(e) }
+  #| (self, value) => { self.onwebkittransitionend = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onwebkittransitionend(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onwebkittransitionend = null }
+pub extern "js" fn HTMLElement::get_onwheel(self : HTMLElement) -> EventHandler =
+  #| (self) => self.onwheel
 
 ///|
 pub extern "js" fn HTMLElement::set_onwheel(
   self : HTMLElement,
-  handler : (WheelEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwheel = (e) => handler(e) }
+  #| (self, value) => { self.onwheel = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onwheel(self : HTMLElement) -> Unit =
-  #| (self) => { self.onwheel = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onpointerover(
+pub extern "js" fn HTMLElement::get_ontouchstart(
   self : HTMLElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerover = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onpointerover(self : HTMLElement) -> Unit =
-  #| (self) => { self.onpointerover = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onpointerenter(
-  self : HTMLElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerenter = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onpointerenter(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onpointerenter = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onpointerdown(
-  self : HTMLElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerdown = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onpointerdown(self : HTMLElement) -> Unit =
-  #| (self) => { self.onpointerdown = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onpointermove(
-  self : HTMLElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointermove = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onpointermove(self : HTMLElement) -> Unit =
-  #| (self) => { self.onpointermove = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onpointerrawupdate(
-  self : HTMLElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerrawupdate = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onpointerrawupdate(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onpointerrawupdate = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onpointerup(
-  self : HTMLElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerup = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onpointerup(self : HTMLElement) -> Unit =
-  #| (self) => { self.onpointerup = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onpointercancel(
-  self : HTMLElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointercancel = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onpointercancel(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onpointercancel = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onpointerout(
-  self : HTMLElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerout = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onpointerout(self : HTMLElement) -> Unit =
-  #| (self) => { self.onpointerout = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onpointerleave(
-  self : HTMLElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerleave = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onpointerleave(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onpointerleave = null }
-
-///|
-pub extern "js" fn HTMLElement::set_ongotpointercapture(
-  self : HTMLElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ongotpointercapture = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_ongotpointercapture(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.ongotpointercapture = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onlostpointercapture(
-  self : HTMLElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onlostpointercapture = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onlostpointercapture(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onlostpointercapture = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onselectstart(
-  self : HTMLElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onselectstart = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onselectstart(self : HTMLElement) -> Unit =
-  #| (self) => { self.onselectstart = null }
-
-///|
-pub extern "js" fn HTMLElement::set_onselectionchange(
-  self : HTMLElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onselectionchange = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLElement::clear_onselectionchange(
-  self : HTMLElement,
-) -> Unit =
-  #| (self) => { self.onselectionchange = null }
+) -> EventHandler =
+  #| (self) => self.ontouchstart
 
 ///|
 pub extern "js" fn HTMLElement::set_ontouchstart(
   self : HTMLElement,
-  handler : (TouchEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontouchstart = (e) => handler(e) }
+  #| (self, value) => { self.ontouchstart = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_ontouchstart(self : HTMLElement) -> Unit =
-  #| (self) => { self.ontouchstart = null }
+pub extern "js" fn HTMLElement::get_ontouchend(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ontouchend
 
 ///|
 pub extern "js" fn HTMLElement::set_ontouchend(
   self : HTMLElement,
-  handler : (TouchEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontouchend = (e) => handler(e) }
+  #| (self, value) => { self.ontouchend = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_ontouchend(self : HTMLElement) -> Unit =
-  #| (self) => { self.ontouchend = null }
+pub extern "js" fn HTMLElement::get_ontouchmove(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ontouchmove
 
 ///|
 pub extern "js" fn HTMLElement::set_ontouchmove(
   self : HTMLElement,
-  handler : (TouchEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontouchmove = (e) => handler(e) }
+  #| (self, value) => { self.ontouchmove = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_ontouchmove(self : HTMLElement) -> Unit =
-  #| (self) => { self.ontouchmove = null }
+pub extern "js" fn HTMLElement::get_ontouchcancel(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ontouchcancel
 
 ///|
 pub extern "js" fn HTMLElement::set_ontouchcancel(
   self : HTMLElement,
-  handler : (TouchEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontouchcancel = (e) => handler(e) }
+  #| (self, value) => { self.ontouchcancel = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_ontouchcancel(self : HTMLElement) -> Unit =
-  #| (self) => { self.ontouchcancel = null }
+pub extern "js" fn HTMLElement::get_ontransitionrun(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ontransitionrun
+
+///|
+pub extern "js" fn HTMLElement::set_ontransitionrun(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontransitionrun = value }
+
+///|
+pub extern "js" fn HTMLElement::get_ontransitionstart(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ontransitionstart
+
+///|
+pub extern "js" fn HTMLElement::set_ontransitionstart(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontransitionstart = value }
+
+///|
+pub extern "js" fn HTMLElement::get_ontransitionend(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ontransitionend
+
+///|
+pub extern "js" fn HTMLElement::set_ontransitionend(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontransitionend = value }
+
+///|
+pub extern "js" fn HTMLElement::get_ontransitioncancel(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ontransitioncancel
+
+///|
+pub extern "js" fn HTMLElement::set_ontransitioncancel(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontransitioncancel = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onsnapchanged(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onsnapchanged
+
+///|
+pub extern "js" fn HTMLElement::set_onsnapchanged(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onsnapchanged = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onsnapchanging(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onsnapchanging
+
+///|
+pub extern "js" fn HTMLElement::set_onsnapchanging(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onsnapchanging = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onanimationstart(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onanimationstart
+
+///|
+pub extern "js" fn HTMLElement::set_onanimationstart(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onanimationstart = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onanimationiteration(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onanimationiteration
+
+///|
+pub extern "js" fn HTMLElement::set_onanimationiteration(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onanimationiteration = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onanimationend(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onanimationend
+
+///|
+pub extern "js" fn HTMLElement::set_onanimationend(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onanimationend = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onanimationcancel(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onanimationcancel
+
+///|
+pub extern "js" fn HTMLElement::set_onanimationcancel(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onanimationcancel = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onfencedtreeclick(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onfencedtreeclick
+
+///|
+pub extern "js" fn HTMLElement::set_onfencedtreeclick(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onfencedtreeclick = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onpointerover(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onpointerover
+
+///|
+pub extern "js" fn HTMLElement::set_onpointerover(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerover = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onpointerenter(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onpointerenter
+
+///|
+pub extern "js" fn HTMLElement::set_onpointerenter(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerenter = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onpointerdown(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onpointerdown
+
+///|
+pub extern "js" fn HTMLElement::set_onpointerdown(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerdown = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onpointermove(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onpointermove
+
+///|
+pub extern "js" fn HTMLElement::set_onpointermove(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointermove = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onpointerrawupdate(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onpointerrawupdate
+
+///|
+pub extern "js" fn HTMLElement::set_onpointerrawupdate(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerrawupdate = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onpointerup(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onpointerup
+
+///|
+pub extern "js" fn HTMLElement::set_onpointerup(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerup = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onpointercancel(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onpointercancel
+
+///|
+pub extern "js" fn HTMLElement::set_onpointercancel(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointercancel = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onpointerout(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onpointerout
+
+///|
+pub extern "js" fn HTMLElement::set_onpointerout(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerout = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onpointerleave(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onpointerleave
+
+///|
+pub extern "js" fn HTMLElement::set_onpointerleave(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerleave = value }
+
+///|
+pub extern "js" fn HTMLElement::get_ongotpointercapture(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.ongotpointercapture
+
+///|
+pub extern "js" fn HTMLElement::set_ongotpointercapture(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ongotpointercapture = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onlostpointercapture(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onlostpointercapture
+
+///|
+pub extern "js" fn HTMLElement::set_onlostpointercapture(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onlostpointercapture = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onbeforexrselect(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onbeforexrselect
 
 ///|
 pub extern "js" fn HTMLElement::set_onbeforexrselect(
   self : HTMLElement,
-  handler : (XRSessionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbeforexrselect = (e) => handler(e) }
+  #| (self, value) => { self.onbeforexrselect = value }
 
 ///|
-pub extern "js" fn HTMLElement::clear_onbeforexrselect(
+pub extern "js" fn HTMLElement::get_onselectstart(
   self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onselectstart
+
+///|
+pub extern "js" fn HTMLElement::set_onselectstart(
+  self : HTMLElement,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onbeforexrselect = null }
+  #| (self, value) => { self.onselectstart = value }
+
+///|
+pub extern "js" fn HTMLElement::get_onselectionchange(
+  self : HTMLElement,
+) -> EventHandler =
+  #| (self) => self.onselectionchange
+
+///|
+pub extern "js" fn HTMLElement::set_onselectionchange(
+  self : HTMLElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onselectionchange = value }
 
 ///|
 pub extern "js" fn HTMLElement::get_content_editable(
@@ -6652,6 +6712,18 @@ pub fn HTMLElement::focus_with_options(
 ///|
 pub extern "js" fn HTMLElement::blur(self : HTMLElement) -> Unit =
   #| (self) => self.blur()
+
+///|
+pub extern "js" fn HTMLElement::get_style(
+  self : HTMLElement,
+) -> CSSStyleProperties =
+  #| (self) => self.style
+
+///|
+pub extern "js" fn HTMLElement::get_attribute_style_map(
+  self : HTMLElement,
+) -> StylePropertyMap =
+  #| (self) => self.attributeStyleMap
 
 ///|
 /// HTMLUnknownElement interface
@@ -6832,14 +6904,12 @@ pub extern "js" fn HTMLHtmlElement::new() -> HTMLHtmlElement =
   #| () => new HTMLHtmlElement()
 
 ///|
-/// @alert deprecated "version is deprecated"
 pub extern "js" fn HTMLHtmlElement::get_version(
   self : HTMLHtmlElement,
 ) -> String =
   #| (self) => self.version
 
 ///|
-/// @alert deprecated "version is deprecated"
 pub extern "js" fn HTMLHtmlElement::set_version(
   self : HTMLHtmlElement,
   value : String,
@@ -7472,14 +7542,12 @@ pub extern "js" fn HTMLMetaElement::set_media(
   #| (self, value) => { self.media = value }
 
 ///|
-/// @alert deprecated "scheme is deprecated"
 pub extern "js" fn HTMLMetaElement::get_scheme(
   self : HTMLMetaElement,
 ) -> String =
   #| (self) => self.scheme
 
 ///|
-/// @alert deprecated "scheme is deprecated"
 pub extern "js" fn HTMLMetaElement::set_scheme(
   self : HTMLMetaElement,
   value : String,
@@ -7583,14 +7651,12 @@ pub extern "js" fn HTMLStyleElement::get_blocking(
   #| (self) => self.blocking
 
 ///|
-/// @alert deprecated "type is deprecated"
 pub extern "js" fn HTMLStyleElement::get_type(
   self : HTMLStyleElement,
 ) -> String =
   #| (self) => self.type
 
 ///|
-/// @alert deprecated "type is deprecated"
 pub extern "js" fn HTMLStyleElement::set_type(
   self : HTMLStyleElement,
   value : String,
@@ -7668,19 +7734,6 @@ pub extern "js" fn HTMLBodyElement::new() -> HTMLBodyElement =
   #| () => new HTMLBodyElement()
 
 ///|
-pub extern "js" fn HTMLBodyElement::set_onorientationchange(
-  self : HTMLBodyElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onorientationchange = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLBodyElement::clear_onorientationchange(
-  self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onorientationchange = null }
-
-///|
 pub extern "js" fn HTMLBodyElement::get_text(self : HTMLBodyElement) -> String =
   #| (self) => self.text
 
@@ -7755,56 +7808,49 @@ pub extern "js" fn HTMLBodyElement::set_background(
   #| (self, value) => { self.background = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::set_ongamepadconnected(
+pub extern "js" fn HTMLBodyElement::get_onorientationchange(
   self : HTMLBodyElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ongamepadconnected = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onorientationchange
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_ongamepadconnected(
+pub extern "js" fn HTMLBodyElement::set_onorientationchange(
   self : HTMLBodyElement,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.ongamepadconnected = null }
+  #| (self, value) => { self.onorientationchange = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::set_ongamepaddisconnected(
+pub extern "js" fn HTMLBodyElement::get_onafterprint(
   self : HTMLBodyElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ongamepaddisconnected = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLBodyElement::clear_ongamepaddisconnected(
-  self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.ongamepaddisconnected = null }
+) -> EventHandler =
+  #| (self) => self.onafterprint
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onafterprint(
   self : HTMLBodyElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onafterprint = (e) => handler(e) }
+  #| (self, value) => { self.onafterprint = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onafterprint(
+pub extern "js" fn HTMLBodyElement::get_onbeforeprint(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onafterprint = null }
+) -> EventHandler =
+  #| (self) => self.onbeforeprint
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onbeforeprint(
   self : HTMLBodyElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbeforeprint = (e) => handler(e) }
+  #| (self, value) => { self.onbeforeprint = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onbeforeprint(
+pub extern "js" fn HTMLBodyElement::get_onbeforeunload(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onbeforeprint = null }
+) -> OnBeforeUnloadEventHandler =
+  #| (self) => self.onbeforeunload
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onbeforeunload(
@@ -7814,218 +7860,238 @@ pub extern "js" fn HTMLBodyElement::set_onbeforeunload(
   #| (self, value) => { self.onbeforeunload = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onbeforeunload(
+pub extern "js" fn HTMLBodyElement::get_onhashchange(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onbeforeunload = null }
+) -> EventHandler =
+  #| (self) => self.onhashchange
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onhashchange(
   self : HTMLBodyElement,
-  handler : (HashChangeEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onhashchange = (e) => handler(e) }
+  #| (self, value) => { self.onhashchange = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onhashchange(
+pub extern "js" fn HTMLBodyElement::get_onlanguagechange(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onhashchange = null }
+) -> EventHandler =
+  #| (self) => self.onlanguagechange
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onlanguagechange(
   self : HTMLBodyElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onlanguagechange = (e) => handler(e) }
+  #| (self, value) => { self.onlanguagechange = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onlanguagechange(
+pub extern "js" fn HTMLBodyElement::get_onmessage(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onlanguagechange = null }
+) -> EventHandler =
+  #| (self) => self.onmessage
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onmessage(
   self : HTMLBodyElement,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessage = (e) => handler(e) }
+  #| (self, value) => { self.onmessage = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onmessage(
+pub extern "js" fn HTMLBodyElement::get_onmessageerror(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onmessage = null }
+) -> EventHandler =
+  #| (self) => self.onmessageerror
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onmessageerror(
   self : HTMLBodyElement,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessageerror = (e) => handler(e) }
+  #| (self, value) => { self.onmessageerror = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onmessageerror(
+pub extern "js" fn HTMLBodyElement::get_onoffline(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onmessageerror = null }
+) -> EventHandler =
+  #| (self) => self.onoffline
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onoffline(
   self : HTMLBodyElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onoffline = (e) => handler(e) }
+  #| (self, value) => { self.onoffline = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onoffline(
+pub extern "js" fn HTMLBodyElement::get_ononline(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onoffline = null }
+) -> EventHandler =
+  #| (self) => self.ononline
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_ononline(
   self : HTMLBodyElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ononline = (e) => handler(e) }
+  #| (self, value) => { self.ononline = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_ononline(
+pub extern "js" fn HTMLBodyElement::get_onpagehide(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.ononline = null }
+) -> EventHandler =
+  #| (self) => self.onpagehide
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onpagehide(
   self : HTMLBodyElement,
-  handler : (PageTransitionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpagehide = (e) => handler(e) }
+  #| (self, value) => { self.onpagehide = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onpagehide(
+pub extern "js" fn HTMLBodyElement::get_onpagereveal(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onpagehide = null }
+) -> EventHandler =
+  #| (self) => self.onpagereveal
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onpagereveal(
   self : HTMLBodyElement,
-  handler : (PageRevealEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpagereveal = (e) => handler(e) }
+  #| (self, value) => { self.onpagereveal = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onpagereveal(
+pub extern "js" fn HTMLBodyElement::get_onpageshow(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onpagereveal = null }
+) -> EventHandler =
+  #| (self) => self.onpageshow
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onpageshow(
   self : HTMLBodyElement,
-  handler : (PageTransitionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpageshow = (e) => handler(e) }
+  #| (self, value) => { self.onpageshow = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onpageshow(
+pub extern "js" fn HTMLBodyElement::get_onpageswap(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onpageshow = null }
+) -> EventHandler =
+  #| (self) => self.onpageswap
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onpageswap(
   self : HTMLBodyElement,
-  handler : (PageSwapEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpageswap = (e) => handler(e) }
+  #| (self, value) => { self.onpageswap = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onpageswap(
+pub extern "js" fn HTMLBodyElement::get_onpopstate(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onpageswap = null }
+) -> EventHandler =
+  #| (self) => self.onpopstate
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onpopstate(
   self : HTMLBodyElement,
-  handler : (PopStateEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpopstate = (e) => handler(e) }
+  #| (self, value) => { self.onpopstate = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onpopstate(
+pub extern "js" fn HTMLBodyElement::get_onrejectionhandled(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onpopstate = null }
+) -> EventHandler =
+  #| (self) => self.onrejectionhandled
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onrejectionhandled(
   self : HTMLBodyElement,
-  handler : (PromiseRejectionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onrejectionhandled = (e) => handler(e) }
+  #| (self, value) => { self.onrejectionhandled = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onrejectionhandled(
+pub extern "js" fn HTMLBodyElement::get_onstorage(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onrejectionhandled = null }
+) -> EventHandler =
+  #| (self) => self.onstorage
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onstorage(
   self : HTMLBodyElement,
-  handler : (StorageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onstorage = (e) => handler(e) }
+  #| (self, value) => { self.onstorage = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onstorage(
+pub extern "js" fn HTMLBodyElement::get_onunhandledrejection(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onstorage = null }
+) -> EventHandler =
+  #| (self) => self.onunhandledrejection
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onunhandledrejection(
   self : HTMLBodyElement,
-  handler : (PromiseRejectionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onunhandledrejection = (e) => handler(e) }
+  #| (self, value) => { self.onunhandledrejection = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onunhandledrejection(
+pub extern "js" fn HTMLBodyElement::get_onunload(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onunhandledrejection = null }
+) -> EventHandler =
+  #| (self) => self.onunload
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onunload(
   self : HTMLBodyElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onunload = (e) => handler(e) }
+  #| (self, value) => { self.onunload = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onunload(
+pub extern "js" fn HTMLBodyElement::get_onportalactivate(
   self : HTMLBodyElement,
-) -> Unit =
-  #| (self) => { self.onunload = null }
+) -> EventHandler =
+  #| (self) => self.onportalactivate
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onportalactivate(
   self : HTMLBodyElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onportalactivate = (e) => handler(e) }
+  #| (self, value) => { self.onportalactivate = value }
 
 ///|
-pub extern "js" fn HTMLBodyElement::clear_onportalactivate(
+pub extern "js" fn HTMLBodyElement::get_ongamepadconnected(
   self : HTMLBodyElement,
+) -> EventHandler =
+  #| (self) => self.ongamepadconnected
+
+///|
+pub extern "js" fn HTMLBodyElement::set_ongamepadconnected(
+  self : HTMLBodyElement,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onportalactivate = null }
+  #| (self, value) => { self.ongamepadconnected = value }
+
+///|
+pub extern "js" fn HTMLBodyElement::get_ongamepaddisconnected(
+  self : HTMLBodyElement,
+) -> EventHandler =
+  #| (self) => self.ongamepaddisconnected
+
+///|
+pub extern "js" fn HTMLBodyElement::set_ongamepaddisconnected(
+  self : HTMLBodyElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ongamepaddisconnected = value }
 
 ///|
 /// HTMLHeadingElement interface
@@ -8544,14 +8610,12 @@ pub extern "js" fn HTMLOListElement::set_type(
   #| (self, value) => { self.type = value }
 
 ///|
-/// @alert deprecated "compact is deprecated"
 pub extern "js" fn HTMLOListElement::get_compact(
   self : HTMLOListElement,
 ) -> Bool =
   #| (self) => self.compact
 
 ///|
-/// @alert deprecated "compact is deprecated"
 pub extern "js" fn HTMLOListElement::set_compact(
   self : HTMLOListElement,
   value : Bool,
@@ -8623,14 +8687,12 @@ pub extern "js" fn HTMLUListElement::new() -> HTMLUListElement =
   #| () => new HTMLUListElement()
 
 ///|
-/// @alert deprecated "compact is deprecated"
 pub extern "js" fn HTMLUListElement::get_compact(
   self : HTMLUListElement,
 ) -> Bool =
   #| (self) => self.compact
 
 ///|
-/// @alert deprecated "compact is deprecated"
 pub extern "js" fn HTMLUListElement::set_compact(
   self : HTMLUListElement,
   value : Bool,
@@ -8715,12 +8777,10 @@ pub extern "js" fn HTMLMenuElement::new() -> HTMLMenuElement =
   #| () => new HTMLMenuElement()
 
 ///|
-/// @alert deprecated "compact is deprecated"
 pub extern "js" fn HTMLMenuElement::get_compact(self : HTMLMenuElement) -> Bool =
   #| (self) => self.compact
 
 ///|
-/// @alert deprecated "compact is deprecated"
 pub extern "js" fn HTMLMenuElement::set_compact(
   self : HTMLMenuElement,
   value : Bool,
@@ -8868,14 +8928,12 @@ pub extern "js" fn HTMLDListElement::new() -> HTMLDListElement =
   #| () => new HTMLDListElement()
 
 ///|
-/// @alert deprecated "compact is deprecated"
 pub extern "js" fn HTMLDListElement::get_compact(
   self : HTMLDListElement,
 ) -> Bool =
   #| (self) => self.compact
 
 ///|
-/// @alert deprecated "compact is deprecated"
 pub extern "js" fn HTMLDListElement::set_compact(
   self : HTMLDListElement,
   value : Bool,
@@ -9206,19 +9264,6 @@ pub extern "js" fn HTMLAnchorElement::set_attribution_source_id(
   #| (self, value) => { self.attributionSourceId = value }
 
 ///|
-pub extern "js" fn HTMLAnchorElement::get_attribution_src(
-  self : HTMLAnchorElement,
-) -> String =
-  #| (self) => self.attributionSrc
-
-///|
-pub extern "js" fn HTMLAnchorElement::set_attribution_src(
-  self : HTMLAnchorElement,
-  value : String,
-) -> Unit =
-  #| (self, value) => { self.attributionSrc = value }
-
-///|
 pub extern "js" fn HTMLAnchorElement::get_href(
   self : HTMLAnchorElement,
 ) -> String =
@@ -9353,6 +9398,19 @@ pub extern "js" fn HTMLAnchorElement::set_hash(
   value : String,
 ) -> Unit =
   #| (self, value) => { self.hash = value }
+
+///|
+pub extern "js" fn HTMLAnchorElement::get_attribution_src(
+  self : HTMLAnchorElement,
+) -> String =
+  #| (self) => self.attributionSrc
+
+///|
+pub extern "js" fn HTMLAnchorElement::set_attribution_src(
+  self : HTMLAnchorElement,
+  value : String,
+) -> Unit =
+  #| (self, value) => { self.attributionSrc = value }
 
 ///|
 /// HTMLDataElement interface
@@ -10001,13 +10059,6 @@ pub extern "js" fn HTMLImageElement::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum HTMLImageElementDecodeError {
-  EncodingError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn HTMLImageElement::new() -> HTMLImageElement =
   #| () => new HTMLImageElement()
 
@@ -10199,8 +10250,8 @@ pub extern "js" fn HTMLImageElement::set_fetch_priority(
 ///|
 pub extern "js" fn HTMLImageElement::decode(
   self : HTMLImageElement,
-) -> Promise[Result[Unit, HTMLImageElementDecodeError]] =
-  #| (self) => self.decode().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.decode()
 
 ///|
 pub extern "js" fn HTMLImageElement::get_x(self : HTMLImageElement) -> Int =
@@ -10211,14 +10262,12 @@ pub extern "js" fn HTMLImageElement::get_y(self : HTMLImageElement) -> Int =
   #| (self) => self.y
 
 ///|
-/// @alert deprecated "name is deprecated"
 pub extern "js" fn HTMLImageElement::get_name(
   self : HTMLImageElement,
 ) -> String =
   #| (self) => self.name
 
 ///|
-/// @alert deprecated "name is deprecated"
 pub extern "js" fn HTMLImageElement::set_name(
   self : HTMLImageElement,
   value : String,
@@ -10239,14 +10288,12 @@ pub extern "js" fn HTMLImageElement::set_lowsrc(
   #| (self, value) => { self.lowsrc = value }
 
 ///|
-/// @alert deprecated "align is deprecated"
 pub extern "js" fn HTMLImageElement::get_align(
   self : HTMLImageElement,
 ) -> String =
   #| (self) => self.align
 
 ///|
-/// @alert deprecated "align is deprecated"
 pub extern "js" fn HTMLImageElement::set_align(
   self : HTMLImageElement,
   value : String,
@@ -10254,12 +10301,10 @@ pub extern "js" fn HTMLImageElement::set_align(
   #| (self, value) => { self.align = value }
 
 ///|
-/// @alert deprecated "hspace is deprecated"
 pub extern "js" fn HTMLImageElement::get_hspace(self : HTMLImageElement) -> Int =
   #| (self) => self.hspace
 
 ///|
-/// @alert deprecated "hspace is deprecated"
 pub extern "js" fn HTMLImageElement::set_hspace(
   self : HTMLImageElement,
   value : Int,
@@ -10267,12 +10312,10 @@ pub extern "js" fn HTMLImageElement::set_hspace(
   #| (self, value) => { self.hspace = value }
 
 ///|
-/// @alert deprecated "vspace is deprecated"
 pub extern "js" fn HTMLImageElement::get_vspace(self : HTMLImageElement) -> Int =
   #| (self) => self.vspace
 
 ///|
-/// @alert deprecated "vspace is deprecated"
 pub extern "js" fn HTMLImageElement::set_vspace(
   self : HTMLImageElement,
   value : Int,
@@ -10280,14 +10323,12 @@ pub extern "js" fn HTMLImageElement::set_vspace(
   #| (self, value) => { self.vspace = value }
 
 ///|
-/// @alert deprecated "longDesc is deprecated"
 pub extern "js" fn HTMLImageElement::get_long_desc(
   self : HTMLImageElement,
 ) -> String =
   #| (self) => self.longDesc
 
 ///|
-/// @alert deprecated "longDesc is deprecated"
 pub extern "js" fn HTMLImageElement::set_long_desc(
   self : HTMLImageElement,
   value : String,
@@ -10295,14 +10336,12 @@ pub extern "js" fn HTMLImageElement::set_long_desc(
   #| (self, value) => { self.longDesc = value }
 
 ///|
-/// @alert deprecated "border is deprecated"
 pub extern "js" fn HTMLImageElement::get_border(
   self : HTMLImageElement,
 ) -> String =
   #| (self) => self.border
 
 ///|
-/// @alert deprecated "border is deprecated"
 pub extern "js" fn HTMLImageElement::set_border(
   self : HTMLImageElement,
   value : String,
@@ -10396,13 +10435,6 @@ pub extern "js" fn HTMLIFrameElement::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum HTMLIFrameElementSetSrcdocError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn HTMLIFrameElement::new() -> HTMLIFrameElement =
   #| () => new HTMLIFrameElement()
 
@@ -10429,8 +10461,8 @@ pub extern "js" fn HTMLIFrameElement::get_srcdoc(
 pub extern "js" fn HTMLIFrameElement::set_srcdoc(
   self : HTMLIFrameElement,
   value : TrustedHTMLOrString,
-) -> Result[Unit, HTMLIFrameElementSetSrcdocError] =
-  #| (self, value) => (() => { try { self.srcdoc = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.srcdoc = value }
 
 ///|
 pub extern "js" fn HTMLIFrameElement::get_name(
@@ -10548,19 +10580,6 @@ pub extern "js" fn HTMLIFrameElement::get_svg_document(
   #| (self) => (() => { const v = self.getSVGDocument(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn HTMLIFrameElement::get_credentialless(
-  self : HTMLIFrameElement,
-) -> Bool =
-  #| (self) => self.credentialless
-
-///|
-pub extern "js" fn HTMLIFrameElement::set_credentialless(
-  self : HTMLIFrameElement,
-  value : Bool,
-) -> Unit =
-  #| (self, value) => { self.credentialless = value }
-
-///|
 pub extern "js" fn HTMLIFrameElement::get_csp(
   self : HTMLIFrameElement,
 ) -> String =
@@ -10652,23 +10671,23 @@ pub extern "js" fn HTMLIFrameElement::set_margin_width(
   #| (self, value) => { self.marginWidth = value }
 
 ///|
+pub extern "js" fn HTMLIFrameElement::get_credentialless(
+  self : HTMLIFrameElement,
+) -> Bool =
+  #| (self) => self.credentialless
+
+///|
+pub extern "js" fn HTMLIFrameElement::set_credentialless(
+  self : HTMLIFrameElement,
+  value : Bool,
+) -> Unit =
+  #| (self, value) => { self.credentialless = value }
+
+///|
 pub extern "js" fn HTMLIFrameElement::get_permissions_policy(
   self : HTMLIFrameElement,
 ) -> PermissionsPolicy =
   #| (self) => self.permissionsPolicy
-
-///|
-pub extern "js" fn HTMLIFrameElement::get_private_token(
-  self : HTMLIFrameElement,
-) -> String =
-  #| (self) => self.privateToken
-
-///|
-pub extern "js" fn HTMLIFrameElement::set_private_token(
-  self : HTMLIFrameElement,
-  value : String,
-) -> Unit =
-  #| (self, value) => { self.privateToken = value }
 
 ///|
 pub extern "js" fn HTMLIFrameElement::get_ad_auction_headers(
@@ -10682,6 +10701,19 @@ pub extern "js" fn HTMLIFrameElement::set_ad_auction_headers(
   value : Bool,
 ) -> Unit =
   #| (self, value) => { self.adAuctionHeaders = value }
+
+///|
+pub extern "js" fn HTMLIFrameElement::get_private_token(
+  self : HTMLIFrameElement,
+) -> String =
+  #| (self) => self.privateToken
+
+///|
+pub extern "js" fn HTMLIFrameElement::set_private_token(
+  self : HTMLIFrameElement,
+  value : String,
+) -> Unit =
+  #| (self, value) => { self.privateToken = value }
 
 ///|
 pub extern "js" fn HTMLIFrameElement::get_shared_storage_writable(
@@ -11150,14 +11182,12 @@ pub extern "js" fn HTMLObjectElement::set_code_type(
   #| (self, value) => { self.codeType = value }
 
 ///|
-/// @alert deprecated "useMap is deprecated"
 pub extern "js" fn HTMLObjectElement::get_use_map(
   self : HTMLObjectElement,
 ) -> String =
   #| (self) => self.useMap
 
 ///|
-/// @alert deprecated "useMap is deprecated"
 pub extern "js" fn HTMLObjectElement::set_use_map(
   self : HTMLObjectElement,
   value : String,
@@ -11244,16 +11274,6 @@ pub extern "js" fn HTMLVideoElement::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum HTMLVideoElementRequestPictureInPictureError {
-  SecurityError(JsError)
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn HTMLVideoElement::new() -> HTMLVideoElement =
   #| () => new HTMLVideoElement()
 
@@ -11324,38 +11344,50 @@ pub extern "js" fn HTMLVideoElement::get_video_playback_quality(
   #| (self) => self.getVideoPlaybackQuality()
 
 ///|
+pub extern "js" fn HTMLVideoElement::request_video_frame_callback(
+  self : HTMLVideoElement,
+  callback : VideoFrameRequestCallback,
+) -> Int =
+  #| (self, callback) => self.requestVideoFrameCallback(callback)
+
+///|
+pub extern "js" fn HTMLVideoElement::cancel_video_frame_callback(
+  self : HTMLVideoElement,
+  handle : Int,
+) -> Unit =
+  #| (self, handle) => self.cancelVideoFrameCallback(handle)
+
+///|
 pub extern "js" fn HTMLVideoElement::request_picture_in_picture(
   self : HTMLVideoElement,
-) -> Promise[
-  Result[PictureInPictureWindow, HTMLVideoElementRequestPictureInPictureError],
-] =
-  #| (self) => self.requestPictureInPicture().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[PictureInPictureWindow] =
+  #| (self) => self.requestPictureInPicture()
+
+///|
+pub extern "js" fn HTMLVideoElement::get_onenterpictureinpicture(
+  self : HTMLVideoElement,
+) -> EventHandler =
+  #| (self) => self.onenterpictureinpicture
 
 ///|
 pub extern "js" fn HTMLVideoElement::set_onenterpictureinpicture(
   self : HTMLVideoElement,
-  handler : (PictureInPictureEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onenterpictureinpicture = (e) => handler(e) }
+  #| (self, value) => { self.onenterpictureinpicture = value }
 
 ///|
-pub extern "js" fn HTMLVideoElement::clear_onenterpictureinpicture(
+pub extern "js" fn HTMLVideoElement::get_onleavepictureinpicture(
   self : HTMLVideoElement,
-) -> Unit =
-  #| (self) => { self.onenterpictureinpicture = null }
+) -> EventHandler =
+  #| (self) => self.onleavepictureinpicture
 
 ///|
 pub extern "js" fn HTMLVideoElement::set_onleavepictureinpicture(
   self : HTMLVideoElement,
-  handler : (PictureInPictureEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onleavepictureinpicture = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLVideoElement::clear_onleavepictureinpicture(
-  self : HTMLVideoElement,
-) -> Unit =
-  #| (self) => { self.onleavepictureinpicture = null }
+  #| (self, value) => { self.onleavepictureinpicture = value }
 
 ///|
 pub extern "js" fn HTMLVideoElement::get_disable_picture_in_picture(
@@ -11369,20 +11401,6 @@ pub extern "js" fn HTMLVideoElement::set_disable_picture_in_picture(
   value : Bool,
 ) -> Unit =
   #| (self, value) => { self.disablePictureInPicture = value }
-
-///|
-pub extern "js" fn HTMLVideoElement::request_video_frame_callback(
-  self : HTMLVideoElement,
-  callback : VideoFrameRequestCallback,
-) -> Int =
-  #| (self, callback) => self.requestVideoFrameCallback(callback)
-
-///|
-pub extern "js" fn HTMLVideoElement::cancel_video_frame_callback(
-  self : HTMLVideoElement,
-  handle : Int,
-) -> Unit =
-  #| (self, handle) => self.cancelVideoFrameCallback(handle)
 
 ///|
 /// HTMLAudioElement interface
@@ -11686,39 +11704,6 @@ pub extern "js" fn HTMLMediaElement::as_html_audio_element(
   #| (self) => (self instanceof HTMLAudioElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum HTMLMediaElementSetDefaultPlaybackRateError {
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLMediaElementPlayError {
-  NotAllowedError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLMediaElementSetSinkIdError {
-  AbortError(JsError)
-  NotFoundError(JsError)
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLMediaElementSetMediaKeysError {
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  QuotaExceededError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn HTMLMediaElement::get_error(
   self : HTMLMediaElement,
 ) -> MediaError? =
@@ -11908,8 +11893,8 @@ pub extern "js" fn HTMLMediaElement::get_default_playback_rate(
 pub extern "js" fn HTMLMediaElement::set_default_playback_rate(
   self : HTMLMediaElement,
   value : Double,
-) -> Result[Unit, HTMLMediaElementSetDefaultPlaybackRateError] =
-  #| (self, value) => (() => { try { self.defaultPlaybackRate = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.defaultPlaybackRate = value }
 
 ///|
 pub extern "js" fn HTMLMediaElement::get_playback_rate(
@@ -11980,8 +11965,8 @@ pub extern "js" fn HTMLMediaElement::set_loop(
 ///|
 pub extern "js" fn HTMLMediaElement::play(
   self : HTMLMediaElement,
-) -> Promise[Result[Unit, HTMLMediaElementPlayError]] =
-  #| (self) => self.play().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.play()
 
 ///|
 pub extern "js" fn HTMLMediaElement::pause(self : HTMLMediaElement) -> Unit =
@@ -12081,8 +12066,8 @@ pub extern "js" fn HTMLMediaElement::get_sink_id(
 pub extern "js" fn HTMLMediaElement::set_sink_id(
   self : HTMLMediaElement,
   sink_id : String,
-) -> Promise[Result[Unit, HTMLMediaElementSetSinkIdError]] =
-  #| (self, sink_id) => self.setSinkId(sink_id).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, sink_id) => self.setSinkId(sink_id)
 
 ///|
 pub extern "js" fn HTMLMediaElement::get_media_keys(
@@ -12091,37 +12076,37 @@ pub extern "js" fn HTMLMediaElement::get_media_keys(
   #| (self) => (() => { const v = self.mediaKeys; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn HTMLMediaElement::set_onencrypted(
+pub extern "js" fn HTMLMediaElement::get_onencrypted(
   self : HTMLMediaElement,
-  handler : (MediaEncryptedEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onencrypted = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onencrypted
 
 ///|
-pub extern "js" fn HTMLMediaElement::clear_onencrypted(
+pub extern "js" fn HTMLMediaElement::set_onencrypted(
   self : HTMLMediaElement,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onencrypted = null }
+  #| (self, value) => { self.onencrypted = value }
+
+///|
+pub extern "js" fn HTMLMediaElement::get_onwaitingforkey(
+  self : HTMLMediaElement,
+) -> EventHandler =
+  #| (self) => self.onwaitingforkey
 
 ///|
 pub extern "js" fn HTMLMediaElement::set_onwaitingforkey(
   self : HTMLMediaElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwaitingforkey = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLMediaElement::clear_onwaitingforkey(
-  self : HTMLMediaElement,
-) -> Unit =
-  #| (self) => { self.onwaitingforkey = null }
+  #| (self, value) => { self.onwaitingforkey = value }
 
 ///|
 pub extern "js" fn HTMLMediaElement::set_media_keys(
   self : HTMLMediaElement,
   media_keys : MediaKeys?,
-) -> Promise[Result[Unit, HTMLMediaElementSetMediaKeysError]] =
-  #| (self, media_keys) => self.setMediaKeys((media_keys.$tag === 1 ? media_keys._0 : null)).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, media_keys) => self.setMediaKeys((media_keys.$tag === 1 ? media_keys._0 : null))
 
 ///|
 pub extern "js" fn HTMLMediaElement::capture_stream(
@@ -12266,43 +12251,43 @@ pub extern "js" fn AudioTrackList::get_track_by_id(
   #| (self, id) => (() => { const v = self.getTrackById(id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn AudioTrackList::set_onchange(
+pub extern "js" fn AudioTrackList::get_onchange(
   self : AudioTrackList,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onchange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onchange
 
 ///|
-pub extern "js" fn AudioTrackList::clear_onchange(
+pub extern "js" fn AudioTrackList::set_onchange(
   self : AudioTrackList,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onchange = null }
+  #| (self, value) => { self.onchange = value }
+
+///|
+pub extern "js" fn AudioTrackList::get_onaddtrack(
+  self : AudioTrackList,
+) -> EventHandler =
+  #| (self) => self.onaddtrack
 
 ///|
 pub extern "js" fn AudioTrackList::set_onaddtrack(
   self : AudioTrackList,
-  handler : (TrackEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onaddtrack = (e) => handler(e) }
+  #| (self, value) => { self.onaddtrack = value }
 
 ///|
-pub extern "js" fn AudioTrackList::clear_onaddtrack(
+pub extern "js" fn AudioTrackList::get_onremovetrack(
   self : AudioTrackList,
-) -> Unit =
-  #| (self) => { self.onaddtrack = null }
+) -> EventHandler =
+  #| (self) => self.onremovetrack
 
 ///|
 pub extern "js" fn AudioTrackList::set_onremovetrack(
   self : AudioTrackList,
-  handler : (TrackEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onremovetrack = (e) => handler(e) }
-
-///|
-pub extern "js" fn AudioTrackList::clear_onremovetrack(
-  self : AudioTrackList,
-) -> Unit =
-  #| (self) => { self.onremovetrack = null }
+  #| (self, value) => { self.onremovetrack = value }
 
 ///|
 /// AudioTrack interface
@@ -12433,43 +12418,43 @@ pub extern "js" fn VideoTrackList::get_selected_index(
   #| (self) => self.selectedIndex
 
 ///|
-pub extern "js" fn VideoTrackList::set_onchange(
+pub extern "js" fn VideoTrackList::get_onchange(
   self : VideoTrackList,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onchange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onchange
 
 ///|
-pub extern "js" fn VideoTrackList::clear_onchange(
+pub extern "js" fn VideoTrackList::set_onchange(
   self : VideoTrackList,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onchange = null }
+  #| (self, value) => { self.onchange = value }
+
+///|
+pub extern "js" fn VideoTrackList::get_onaddtrack(
+  self : VideoTrackList,
+) -> EventHandler =
+  #| (self) => self.onaddtrack
 
 ///|
 pub extern "js" fn VideoTrackList::set_onaddtrack(
   self : VideoTrackList,
-  handler : (TrackEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onaddtrack = (e) => handler(e) }
+  #| (self, value) => { self.onaddtrack = value }
 
 ///|
-pub extern "js" fn VideoTrackList::clear_onaddtrack(
+pub extern "js" fn VideoTrackList::get_onremovetrack(
   self : VideoTrackList,
-) -> Unit =
-  #| (self) => { self.onaddtrack = null }
+) -> EventHandler =
+  #| (self) => self.onremovetrack
 
 ///|
 pub extern "js" fn VideoTrackList::set_onremovetrack(
   self : VideoTrackList,
-  handler : (TrackEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onremovetrack = (e) => handler(e) }
-
-///|
-pub extern "js" fn VideoTrackList::clear_onremovetrack(
-  self : VideoTrackList,
-) -> Unit =
-  #| (self) => { self.onremovetrack = null }
+  #| (self, value) => { self.onremovetrack = value }
 
 ///|
 /// VideoTrack interface
@@ -12590,41 +12575,43 @@ pub extern "js" fn TextTrackList::get_track_by_id(
   #| (self, id) => (() => { const v = self.getTrackById(id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn TextTrackList::set_onchange(
+pub extern "js" fn TextTrackList::get_onchange(
   self : TextTrackList,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onchange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onchange
 
 ///|
-pub extern "js" fn TextTrackList::clear_onchange(self : TextTrackList) -> Unit =
-  #| (self) => { self.onchange = null }
+pub extern "js" fn TextTrackList::set_onchange(
+  self : TextTrackList,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onchange = value }
+
+///|
+pub extern "js" fn TextTrackList::get_onaddtrack(
+  self : TextTrackList,
+) -> EventHandler =
+  #| (self) => self.onaddtrack
 
 ///|
 pub extern "js" fn TextTrackList::set_onaddtrack(
   self : TextTrackList,
-  handler : (TrackEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onaddtrack = (e) => handler(e) }
+  #| (self, value) => { self.onaddtrack = value }
 
 ///|
-pub extern "js" fn TextTrackList::clear_onaddtrack(
+pub extern "js" fn TextTrackList::get_onremovetrack(
   self : TextTrackList,
-) -> Unit =
-  #| (self) => { self.onaddtrack = null }
+) -> EventHandler =
+  #| (self) => self.onremovetrack
 
 ///|
 pub extern "js" fn TextTrackList::set_onremovetrack(
   self : TextTrackList,
-  handler : (TrackEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onremovetrack = (e) => handler(e) }
-
-///|
-pub extern "js" fn TextTrackList::clear_onremovetrack(
-  self : TextTrackList,
-) -> Unit =
-  #| (self) => { self.onremovetrack = null }
+  #| (self, value) => { self.onremovetrack = value }
 
 ///|
 /// TextTrack interface
@@ -12657,20 +12644,6 @@ pub extern "js" fn JsValue::to_text_track(self : JsValue) -> TextTrack =
 ///|
 pub extern "js" fn TextTrack::to_event_target(self : TextTrack) -> EventTarget =
   #| (self) => self
-
-///|
-/// Error type for throwing methods
-pub(all) enum TextTrackAddCueError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum TextTrackRemoveCueError {
-  NotFoundError(JsError)
-  OtherError(JsError)
-} derive(Show)
 
 ///|
 pub extern "js" fn TextTrack::get_kind(self : TextTrack) -> TextTrackKind =
@@ -12719,26 +12692,26 @@ pub extern "js" fn TextTrack::get_active_cues(
 pub extern "js" fn TextTrack::add_cue(
   self : TextTrack,
   cue : TextTrackCue,
-) -> Result[Unit, TextTrackAddCueError] =
-  #| (self, cue) => (() => { try { self.addCue(cue); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, cue) => self.addCue(cue)
 
 ///|
 pub extern "js" fn TextTrack::remove_cue(
   self : TextTrack,
   cue : TextTrackCue,
-) -> Result[Unit, TextTrackRemoveCueError] =
-  #| (self, cue) => (() => { try { self.removeCue(cue); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, cue) => self.removeCue(cue)
+
+///|
+pub extern "js" fn TextTrack::get_oncuechange(self : TextTrack) -> EventHandler =
+  #| (self) => self.oncuechange
 
 ///|
 pub extern "js" fn TextTrack::set_oncuechange(
   self : TextTrack,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncuechange = (e) => handler(e) }
-
-///|
-pub extern "js" fn TextTrack::clear_oncuechange(self : TextTrack) -> Unit =
-  #| (self) => { self.oncuechange = null }
+  #| (self, value) => { self.oncuechange = value }
 
 ///|
 pub extern "js" fn TextTrack::get_source_buffer(
@@ -12840,12 +12813,12 @@ pub extern "js" fn TextTrackCue::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn TextTrackCue::as_data_cue(self : TextTrackCue) -> DataCue? =
-  #| (self) => (self instanceof DataCue) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn TextTrackCue::as_vtt_cue(self : TextTrackCue) -> VTTCue? =
   #| (self) => (self instanceof VTTCue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn TextTrackCue::as_data_cue(self : TextTrackCue) -> DataCue? =
+  #| (self) => (self instanceof DataCue) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn TextTrackCue::get_track(self : TextTrackCue) -> TextTrack? =
@@ -12896,26 +12869,30 @@ pub extern "js" fn TextTrackCue::set_pause_on_exit(
   #| (self, value) => { self.pauseOnExit = value }
 
 ///|
-pub extern "js" fn TextTrackCue::set_onenter(
+pub extern "js" fn TextTrackCue::get_onenter(
   self : TextTrackCue,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onenter = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onenter
 
 ///|
-pub extern "js" fn TextTrackCue::clear_onenter(self : TextTrackCue) -> Unit =
-  #| (self) => { self.onenter = null }
+pub extern "js" fn TextTrackCue::set_onenter(
+  self : TextTrackCue,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onenter = value }
+
+///|
+pub extern "js" fn TextTrackCue::get_onexit(
+  self : TextTrackCue,
+) -> EventHandler =
+  #| (self) => self.onexit
 
 ///|
 pub extern "js" fn TextTrackCue::set_onexit(
   self : TextTrackCue,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onexit = (e) => handler(e) }
-
-///|
-pub extern "js" fn TextTrackCue::clear_onexit(self : TextTrackCue) -> Unit =
-  #| (self) => { self.onexit = null }
+  #| (self, value) => { self.onexit = value }
 
 ///|
 /// TimeRanges interface
@@ -12946,36 +12923,16 @@ pub extern "js" fn JsValue::to_time_ranges(self : JsValue) -> TimeRanges =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum TimeRangesStartError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum TimeRangesEndError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn TimeRanges::get_length(self : TimeRanges) -> Int =
   #| (self) => self.length
 
 ///|
-pub extern "js" fn TimeRanges::start(
-  self : TimeRanges,
-  index : Int,
-) -> Result[Double, TimeRangesStartError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self.start(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn TimeRanges::start(self : TimeRanges, index : Int) -> Double =
+  #| (self, index) => self.start(index)
 
 ///|
-pub extern "js" fn TimeRanges::end(
-  self : TimeRanges,
-  index : Int,
-) -> Result[Double, TimeRangesEndError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self.end(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn TimeRanges::end(self : TimeRanges, index : Int) -> Double =
+  #| (self, index) => self.end(index)
 
 ///|
 /// TrackEvent interface
@@ -13289,19 +13246,6 @@ pub extern "js" fn HTMLAreaElement::set_no_href(
   #| (self, value) => { self.noHref = value }
 
 ///|
-pub extern "js" fn HTMLAreaElement::get_attribution_src(
-  self : HTMLAreaElement,
-) -> String =
-  #| (self) => self.attributionSrc
-
-///|
-pub extern "js" fn HTMLAreaElement::set_attribution_src(
-  self : HTMLAreaElement,
-  value : String,
-) -> Unit =
-  #| (self, value) => { self.attributionSrc = value }
-
-///|
 pub extern "js" fn HTMLAreaElement::get_href(self : HTMLAreaElement) -> String =
   #| (self) => self.href
 
@@ -13430,6 +13374,19 @@ pub extern "js" fn HTMLAreaElement::set_hash(
   #| (self, value) => { self.hash = value }
 
 ///|
+pub extern "js" fn HTMLAreaElement::get_attribution_src(
+  self : HTMLAreaElement,
+) -> String =
+  #| (self) => self.attributionSrc
+
+///|
+pub extern "js" fn HTMLAreaElement::set_attribution_src(
+  self : HTMLAreaElement,
+  value : String,
+) -> Unit =
+  #| (self, value) => { self.attributionSrc = value }
+
+///|
 /// HTMLTableElement interface
 pub type HTMLTableElement
 
@@ -13488,20 +13445,6 @@ pub extern "js" fn HTMLTableElement::to_event_target(
   self : HTMLTableElement,
 ) -> EventTarget =
   #| (self) => self
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLTableElementInsertRowError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLTableElementDeleteRowError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
 
 ///|
 pub extern "js" fn HTMLTableElement::new() -> HTMLTableElement =
@@ -13603,32 +13546,30 @@ pub extern "js" fn HTMLTableElement::get_rows(
 ///|
 pub extern "js" fn HTMLTableElement::insert_row(
   self : HTMLTableElement,
-) -> Result[HTMLTableRowElement, HTMLTableElementInsertRowError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.insertRow() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> HTMLTableRowElement =
+  #| (self) => self.insertRow()
 
 ///|
 pub extern "js" fn HTMLTableElement::insert_row_with_index(
   self : HTMLTableElement,
   index : Int,
-) -> Result[HTMLTableRowElement, HTMLTableElementInsertRowError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self.insertRow(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> HTMLTableRowElement =
+  #| (self, index) => self.insertRow(index)
 
 ///|
 pub extern "js" fn HTMLTableElement::delete_row(
   self : HTMLTableElement,
   index : Int,
-) -> Result[Unit, HTMLTableElementDeleteRowError] =
-  #| (self, index) => (() => { try { self.deleteRow(index); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, index) => self.deleteRow(index)
 
 ///|
-/// @alert deprecated "align is deprecated"
 pub extern "js" fn HTMLTableElement::get_align(
   self : HTMLTableElement,
 ) -> String =
   #| (self) => self.align
 
 ///|
-/// @alert deprecated "align is deprecated"
 pub extern "js" fn HTMLTableElement::set_align(
   self : HTMLTableElement,
   value : String,
@@ -13636,14 +13577,12 @@ pub extern "js" fn HTMLTableElement::set_align(
   #| (self, value) => { self.align = value }
 
 ///|
-/// @alert deprecated "border is deprecated"
 pub extern "js" fn HTMLTableElement::get_border(
   self : HTMLTableElement,
 ) -> String =
   #| (self) => self.border
 
 ///|
-/// @alert deprecated "border is deprecated"
 pub extern "js" fn HTMLTableElement::set_border(
   self : HTMLTableElement,
   value : String,
@@ -13651,14 +13590,12 @@ pub extern "js" fn HTMLTableElement::set_border(
   #| (self, value) => { self.border = value }
 
 ///|
-/// @alert deprecated "frame is deprecated"
 pub extern "js" fn HTMLTableElement::get_frame(
   self : HTMLTableElement,
 ) -> String =
   #| (self) => self.frame
 
 ///|
-/// @alert deprecated "frame is deprecated"
 pub extern "js" fn HTMLTableElement::set_frame(
   self : HTMLTableElement,
   value : String,
@@ -13666,14 +13603,12 @@ pub extern "js" fn HTMLTableElement::set_frame(
   #| (self, value) => { self.frame = value }
 
 ///|
-/// @alert deprecated "rules is deprecated"
 pub extern "js" fn HTMLTableElement::get_rules(
   self : HTMLTableElement,
 ) -> String =
   #| (self) => self.rules
 
 ///|
-/// @alert deprecated "rules is deprecated"
 pub extern "js" fn HTMLTableElement::set_rules(
   self : HTMLTableElement,
   value : String,
@@ -13681,14 +13616,12 @@ pub extern "js" fn HTMLTableElement::set_rules(
   #| (self, value) => { self.rules = value }
 
 ///|
-/// @alert deprecated "summary is deprecated"
 pub extern "js" fn HTMLTableElement::get_summary(
   self : HTMLTableElement,
 ) -> String =
   #| (self) => self.summary
 
 ///|
-/// @alert deprecated "summary is deprecated"
 pub extern "js" fn HTMLTableElement::set_summary(
   self : HTMLTableElement,
   value : String,
@@ -13696,14 +13629,12 @@ pub extern "js" fn HTMLTableElement::set_summary(
   #| (self, value) => { self.summary = value }
 
 ///|
-/// @alert deprecated "width is deprecated"
 pub extern "js" fn HTMLTableElement::get_width(
   self : HTMLTableElement,
 ) -> String =
   #| (self) => self.width
 
 ///|
-/// @alert deprecated "width is deprecated"
 pub extern "js" fn HTMLTableElement::set_width(
   self : HTMLTableElement,
   value : String,
@@ -13711,14 +13642,12 @@ pub extern "js" fn HTMLTableElement::set_width(
   #| (self, value) => { self.width = value }
 
 ///|
-/// @alert deprecated "bgColor is deprecated"
 pub extern "js" fn HTMLTableElement::get_bg_color(
   self : HTMLTableElement,
 ) -> String =
   #| (self) => self.bgColor
 
 ///|
-/// @alert deprecated "bgColor is deprecated"
 pub extern "js" fn HTMLTableElement::set_bg_color(
   self : HTMLTableElement,
   value : String,
@@ -13726,14 +13655,12 @@ pub extern "js" fn HTMLTableElement::set_bg_color(
   #| (self, value) => { self.bgColor = value }
 
 ///|
-/// @alert deprecated "cellPadding is deprecated"
 pub extern "js" fn HTMLTableElement::get_cell_padding(
   self : HTMLTableElement,
 ) -> String =
   #| (self) => self.cellPadding
 
 ///|
-/// @alert deprecated "cellPadding is deprecated"
 pub extern "js" fn HTMLTableElement::set_cell_padding(
   self : HTMLTableElement,
   value : String,
@@ -13741,14 +13668,12 @@ pub extern "js" fn HTMLTableElement::set_cell_padding(
   #| (self, value) => { self.cellPadding = value }
 
 ///|
-/// @alert deprecated "cellSpacing is deprecated"
 pub extern "js" fn HTMLTableElement::get_cell_spacing(
   self : HTMLTableElement,
 ) -> String =
   #| (self) => self.cellSpacing
 
 ///|
-/// @alert deprecated "cellSpacing is deprecated"
 pub extern "js" fn HTMLTableElement::set_cell_spacing(
   self : HTMLTableElement,
   value : String,
@@ -13822,14 +13747,12 @@ pub extern "js" fn HTMLTableCaptionElement::new() -> HTMLTableCaptionElement =
   #| () => new HTMLTableCaptionElement()
 
 ///|
-/// @alert deprecated "align is deprecated"
 pub extern "js" fn HTMLTableCaptionElement::get_align(
   self : HTMLTableCaptionElement,
 ) -> String =
   #| (self) => self.align
 
 ///|
-/// @alert deprecated "align is deprecated"
 pub extern "js" fn HTMLTableCaptionElement::set_align(
   self : HTMLTableCaptionElement,
   value : String,
@@ -13916,14 +13839,12 @@ pub extern "js" fn HTMLTableColElement::set_span(
   #| (self, value) => { self.span = value }
 
 ///|
-/// @alert deprecated "align is deprecated"
 pub extern "js" fn HTMLTableColElement::get_align(
   self : HTMLTableColElement,
 ) -> String =
   #| (self) => self.align
 
 ///|
-/// @alert deprecated "align is deprecated"
 pub extern "js" fn HTMLTableColElement::set_align(
   self : HTMLTableColElement,
   value : String,
@@ -13931,14 +13852,12 @@ pub extern "js" fn HTMLTableColElement::set_align(
   #| (self, value) => { self.align = value }
 
 ///|
-/// @alert deprecated "ch is deprecated"
 pub extern "js" fn HTMLTableColElement::get_ch(
   self : HTMLTableColElement,
 ) -> String =
   #| (self) => self.ch
 
 ///|
-/// @alert deprecated "ch is deprecated"
 pub extern "js" fn HTMLTableColElement::set_ch(
   self : HTMLTableColElement,
   value : String,
@@ -13946,14 +13865,12 @@ pub extern "js" fn HTMLTableColElement::set_ch(
   #| (self, value) => { self.ch = value }
 
 ///|
-/// @alert deprecated "chOff is deprecated"
 pub extern "js" fn HTMLTableColElement::get_ch_off(
   self : HTMLTableColElement,
 ) -> String =
   #| (self) => self.chOff
 
 ///|
-/// @alert deprecated "chOff is deprecated"
 pub extern "js" fn HTMLTableColElement::set_ch_off(
   self : HTMLTableColElement,
   value : String,
@@ -13961,14 +13878,12 @@ pub extern "js" fn HTMLTableColElement::set_ch_off(
   #| (self, value) => { self.chOff = value }
 
 ///|
-/// @alert deprecated "vAlign is deprecated"
 pub extern "js" fn HTMLTableColElement::get_v_align(
   self : HTMLTableColElement,
 ) -> String =
   #| (self) => self.vAlign
 
 ///|
-/// @alert deprecated "vAlign is deprecated"
 pub extern "js" fn HTMLTableColElement::set_v_align(
   self : HTMLTableColElement,
   value : String,
@@ -14051,20 +13966,6 @@ pub extern "js" fn HTMLTableSectionElement::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum HTMLTableSectionElementInsertRowError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLTableSectionElementDeleteRowError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn HTMLTableSectionElement::new() -> HTMLTableSectionElement =
   #| () => new HTMLTableSectionElement()
 
@@ -14077,32 +13978,30 @@ pub extern "js" fn HTMLTableSectionElement::get_rows(
 ///|
 pub extern "js" fn HTMLTableSectionElement::insert_row(
   self : HTMLTableSectionElement,
-) -> Result[HTMLTableRowElement, HTMLTableSectionElementInsertRowError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.insertRow() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> HTMLTableRowElement =
+  #| (self) => self.insertRow()
 
 ///|
 pub extern "js" fn HTMLTableSectionElement::insert_row_with_index(
   self : HTMLTableSectionElement,
   index : Int,
-) -> Result[HTMLTableRowElement, HTMLTableSectionElementInsertRowError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self.insertRow(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> HTMLTableRowElement =
+  #| (self, index) => self.insertRow(index)
 
 ///|
 pub extern "js" fn HTMLTableSectionElement::delete_row(
   self : HTMLTableSectionElement,
   index : Int,
-) -> Result[Unit, HTMLTableSectionElementDeleteRowError] =
-  #| (self, index) => (() => { try { self.deleteRow(index); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, index) => self.deleteRow(index)
 
 ///|
-/// @alert deprecated "align is deprecated"
 pub extern "js" fn HTMLTableSectionElement::get_align(
   self : HTMLTableSectionElement,
 ) -> String =
   #| (self) => self.align
 
 ///|
-/// @alert deprecated "align is deprecated"
 pub extern "js" fn HTMLTableSectionElement::set_align(
   self : HTMLTableSectionElement,
   value : String,
@@ -14110,14 +14009,12 @@ pub extern "js" fn HTMLTableSectionElement::set_align(
   #| (self, value) => { self.align = value }
 
 ///|
-/// @alert deprecated "ch is deprecated"
 pub extern "js" fn HTMLTableSectionElement::get_ch(
   self : HTMLTableSectionElement,
 ) -> String =
   #| (self) => self.ch
 
 ///|
-/// @alert deprecated "ch is deprecated"
 pub extern "js" fn HTMLTableSectionElement::set_ch(
   self : HTMLTableSectionElement,
   value : String,
@@ -14125,14 +14022,12 @@ pub extern "js" fn HTMLTableSectionElement::set_ch(
   #| (self, value) => { self.ch = value }
 
 ///|
-/// @alert deprecated "chOff is deprecated"
 pub extern "js" fn HTMLTableSectionElement::get_ch_off(
   self : HTMLTableSectionElement,
 ) -> String =
   #| (self) => self.chOff
 
 ///|
-/// @alert deprecated "chOff is deprecated"
 pub extern "js" fn HTMLTableSectionElement::set_ch_off(
   self : HTMLTableSectionElement,
   value : String,
@@ -14140,14 +14035,12 @@ pub extern "js" fn HTMLTableSectionElement::set_ch_off(
   #| (self, value) => { self.chOff = value }
 
 ///|
-/// @alert deprecated "vAlign is deprecated"
 pub extern "js" fn HTMLTableSectionElement::get_v_align(
   self : HTMLTableSectionElement,
 ) -> String =
   #| (self) => self.vAlign
 
 ///|
-/// @alert deprecated "vAlign is deprecated"
 pub extern "js" fn HTMLTableSectionElement::set_v_align(
   self : HTMLTableSectionElement,
   value : String,
@@ -14217,20 +14110,6 @@ pub extern "js" fn HTMLTableRowElement::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum HTMLTableRowElementInsertCellError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLTableRowElementDeleteCellError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn HTMLTableRowElement::new() -> HTMLTableRowElement =
   #| () => new HTMLTableRowElement()
 
@@ -14255,32 +14134,30 @@ pub extern "js" fn HTMLTableRowElement::get_cells(
 ///|
 pub extern "js" fn HTMLTableRowElement::insert_cell(
   self : HTMLTableRowElement,
-) -> Result[HTMLTableCellElement, HTMLTableRowElementInsertCellError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.insertCell() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> HTMLTableCellElement =
+  #| (self) => self.insertCell()
 
 ///|
 pub extern "js" fn HTMLTableRowElement::insert_cell_with_index(
   self : HTMLTableRowElement,
   index : Int,
-) -> Result[HTMLTableCellElement, HTMLTableRowElementInsertCellError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self.insertCell(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> HTMLTableCellElement =
+  #| (self, index) => self.insertCell(index)
 
 ///|
 pub extern "js" fn HTMLTableRowElement::delete_cell(
   self : HTMLTableRowElement,
   index : Int,
-) -> Result[Unit, HTMLTableRowElementDeleteCellError] =
-  #| (self, index) => (() => { try { self.deleteCell(index); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, index) => self.deleteCell(index)
 
 ///|
-/// @alert deprecated "align is deprecated"
 pub extern "js" fn HTMLTableRowElement::get_align(
   self : HTMLTableRowElement,
 ) -> String =
   #| (self) => self.align
 
 ///|
-/// @alert deprecated "align is deprecated"
 pub extern "js" fn HTMLTableRowElement::set_align(
   self : HTMLTableRowElement,
   value : String,
@@ -14288,14 +14165,12 @@ pub extern "js" fn HTMLTableRowElement::set_align(
   #| (self, value) => { self.align = value }
 
 ///|
-/// @alert deprecated "ch is deprecated"
 pub extern "js" fn HTMLTableRowElement::get_ch(
   self : HTMLTableRowElement,
 ) -> String =
   #| (self) => self.ch
 
 ///|
-/// @alert deprecated "ch is deprecated"
 pub extern "js" fn HTMLTableRowElement::set_ch(
   self : HTMLTableRowElement,
   value : String,
@@ -14303,14 +14178,12 @@ pub extern "js" fn HTMLTableRowElement::set_ch(
   #| (self, value) => { self.ch = value }
 
 ///|
-/// @alert deprecated "chOff is deprecated"
 pub extern "js" fn HTMLTableRowElement::get_ch_off(
   self : HTMLTableRowElement,
 ) -> String =
   #| (self) => self.chOff
 
 ///|
-/// @alert deprecated "chOff is deprecated"
 pub extern "js" fn HTMLTableRowElement::set_ch_off(
   self : HTMLTableRowElement,
   value : String,
@@ -14318,14 +14191,12 @@ pub extern "js" fn HTMLTableRowElement::set_ch_off(
   #| (self, value) => { self.chOff = value }
 
 ///|
-/// @alert deprecated "vAlign is deprecated"
 pub extern "js" fn HTMLTableRowElement::get_v_align(
   self : HTMLTableRowElement,
 ) -> String =
   #| (self) => self.vAlign
 
 ///|
-/// @alert deprecated "vAlign is deprecated"
 pub extern "js" fn HTMLTableRowElement::set_v_align(
   self : HTMLTableRowElement,
   value : String,
@@ -14333,14 +14204,12 @@ pub extern "js" fn HTMLTableRowElement::set_v_align(
   #| (self, value) => { self.vAlign = value }
 
 ///|
-/// @alert deprecated "bgColor is deprecated"
 pub extern "js" fn HTMLTableRowElement::get_bg_color(
   self : HTMLTableRowElement,
 ) -> String =
   #| (self) => self.bgColor
 
 ///|
-/// @alert deprecated "bgColor is deprecated"
 pub extern "js" fn HTMLTableRowElement::set_bg_color(
   self : HTMLTableRowElement,
   value : String,
@@ -14485,14 +14354,12 @@ pub extern "js" fn HTMLTableCellElement::set_abbr(
   #| (self, value) => { self.abbr = value }
 
 ///|
-/// @alert deprecated "align is deprecated"
 pub extern "js" fn HTMLTableCellElement::get_align(
   self : HTMLTableCellElement,
 ) -> String =
   #| (self) => self.align
 
 ///|
-/// @alert deprecated "align is deprecated"
 pub extern "js" fn HTMLTableCellElement::set_align(
   self : HTMLTableCellElement,
   value : String,
@@ -14539,14 +14406,12 @@ pub extern "js" fn HTMLTableCellElement::set_width(
   #| (self, value) => { self.width = value }
 
 ///|
-/// @alert deprecated "ch is deprecated"
 pub extern "js" fn HTMLTableCellElement::get_ch(
   self : HTMLTableCellElement,
 ) -> String =
   #| (self) => self.ch
 
 ///|
-/// @alert deprecated "ch is deprecated"
 pub extern "js" fn HTMLTableCellElement::set_ch(
   self : HTMLTableCellElement,
   value : String,
@@ -14554,14 +14419,12 @@ pub extern "js" fn HTMLTableCellElement::set_ch(
   #| (self, value) => { self.ch = value }
 
 ///|
-/// @alert deprecated "chOff is deprecated"
 pub extern "js" fn HTMLTableCellElement::get_ch_off(
   self : HTMLTableCellElement,
 ) -> String =
   #| (self) => self.chOff
 
 ///|
-/// @alert deprecated "chOff is deprecated"
 pub extern "js" fn HTMLTableCellElement::set_ch_off(
   self : HTMLTableCellElement,
   value : String,
@@ -14569,14 +14432,12 @@ pub extern "js" fn HTMLTableCellElement::set_ch_off(
   #| (self, value) => { self.chOff = value }
 
 ///|
-/// @alert deprecated "noWrap is deprecated"
 pub extern "js" fn HTMLTableCellElement::get_no_wrap(
   self : HTMLTableCellElement,
 ) -> Bool =
   #| (self) => self.noWrap
 
 ///|
-/// @alert deprecated "noWrap is deprecated"
 pub extern "js" fn HTMLTableCellElement::set_no_wrap(
   self : HTMLTableCellElement,
   value : Bool,
@@ -14584,14 +14445,12 @@ pub extern "js" fn HTMLTableCellElement::set_no_wrap(
   #| (self, value) => { self.noWrap = value }
 
 ///|
-/// @alert deprecated "vAlign is deprecated"
 pub extern "js" fn HTMLTableCellElement::get_v_align(
   self : HTMLTableCellElement,
 ) -> String =
   #| (self) => self.vAlign
 
 ///|
-/// @alert deprecated "vAlign is deprecated"
 pub extern "js" fn HTMLTableCellElement::set_v_align(
   self : HTMLTableCellElement,
   value : String,
@@ -14599,14 +14458,12 @@ pub extern "js" fn HTMLTableCellElement::set_v_align(
   #| (self, value) => { self.vAlign = value }
 
 ///|
-/// @alert deprecated "bgColor is deprecated"
 pub extern "js" fn HTMLTableCellElement::get_bg_color(
   self : HTMLTableCellElement,
 ) -> String =
   #| (self) => self.bgColor
 
 ///|
-/// @alert deprecated "bgColor is deprecated"
 pub extern "js" fn HTMLTableCellElement::set_bg_color(
   self : HTMLTableCellElement,
   value : String,
@@ -14672,14 +14529,6 @@ pub extern "js" fn HTMLFormElement::to_event_target(
   self : HTMLFormElement,
 ) -> EventTarget =
   #| (self) => self
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLFormElementRequestSubmitError {
-  TypeError(JsError)
-  NotFoundError(JsError)
-  OtherError(JsError)
-} derive(Show)
 
 ///|
 pub extern "js" fn HTMLFormElement::new() -> HTMLFormElement =
@@ -14849,15 +14698,15 @@ pub extern "js" fn HTMLFormElement::submit(self : HTMLFormElement) -> Unit =
 ///|
 pub extern "js" fn HTMLFormElement::request_submit(
   self : HTMLFormElement,
-) -> Result[Unit, HTMLFormElementRequestSubmitError] =
-  #| (self) => (() => { try { self.requestSubmit(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.requestSubmit()
 
 ///|
 pub extern "js" fn HTMLFormElement::request_submit_with_submitter(
   self : HTMLFormElement,
   submitter : HTMLElement?,
-) -> Result[Unit, HTMLFormElementRequestSubmitError] =
-  #| (self, submitter) => (() => { try { self.requestSubmit((submitter.$tag === 1 ? submitter._0 : null)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, submitter) => self.requestSubmit((submitter.$tag === 1 ? submitter._0 : null))
 
 ///|
 pub extern "js" fn HTMLFormElement::reset(self : HTMLFormElement) -> Unit =
@@ -15023,29 +14872,6 @@ pub extern "js" fn HTMLInputElement::to_event_target(
   self : HTMLInputElement,
 ) -> EventTarget =
   #| (self) => self
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLInputElementStepDownError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLInputElementSetSelectionRangeError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLInputElementShowPickerError {
-  SecurityError(JsError)
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
 
 ///|
 pub extern "js" fn HTMLInputElement::new() -> HTMLInputElement =
@@ -15527,17 +15353,15 @@ pub extern "js" fn HTMLInputElement::step_up_with_n(
   #| (self, n) => self.stepUp(n)
 
 ///|
-pub extern "js" fn HTMLInputElement::step_down(
-  self : HTMLInputElement,
-) -> Result[Unit, HTMLInputElementStepDownError] =
-  #| (self) => (() => { try { self.stepDown(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn HTMLInputElement::step_down(self : HTMLInputElement) -> Unit =
+  #| (self) => self.stepDown()
 
 ///|
 pub extern "js" fn HTMLInputElement::step_down_with_n(
   self : HTMLInputElement,
   n : Int,
-) -> Result[Unit, HTMLInputElementStepDownError] =
-  #| (self, n) => (() => { try { self.stepDown(n); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, n) => self.stepDown(n)
 
 ///|
 pub extern "js" fn HTMLInputElement::get_will_validate(
@@ -15656,8 +15480,8 @@ pub extern "js" fn HTMLInputElement::set_selection_range(
   self : HTMLInputElement,
   start : Int,
   end : Int,
-) -> Result[Unit, HTMLInputElementSetSelectionRangeError] =
-  #| (self, start, end) => (() => { try { self.setSelectionRange(start, end); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, start, end) => self.setSelectionRange(start, end)
 
 ///|
 pub extern "js" fn HTMLInputElement::set_selection_range_with_direction(
@@ -15665,14 +15489,40 @@ pub extern "js" fn HTMLInputElement::set_selection_range_with_direction(
   start : Int,
   end : Int,
   direction : String,
-) -> Result[Unit, HTMLInputElementSetSelectionRangeError] =
-  #| (self, start, end, direction) => (() => { try { self.setSelectionRange(start, end, direction); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, start, end, direction) => self.setSelectionRange(start, end, direction)
 
 ///|
 pub extern "js" fn HTMLInputElement::show_picker(
   self : HTMLInputElement,
-) -> Result[Unit, HTMLInputElementShowPickerError] =
-  #| (self) => (() => { try { self.showPicker(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.showPicker()
+
+///|
+pub extern "js" fn HTMLInputElement::get_align(
+  self : HTMLInputElement,
+) -> String =
+  #| (self) => self.align
+
+///|
+pub extern "js" fn HTMLInputElement::set_align(
+  self : HTMLInputElement,
+  value : String,
+) -> Unit =
+  #| (self, value) => { self.align = value }
+
+///|
+pub extern "js" fn HTMLInputElement::get_use_map(
+  self : HTMLInputElement,
+) -> String =
+  #| (self) => self.useMap
+
+///|
+pub extern "js" fn HTMLInputElement::set_use_map(
+  self : HTMLInputElement,
+  value : String,
+) -> Unit =
+  #| (self, value) => { self.useMap = value }
 
 ///|
 pub extern "js" fn HTMLInputElement::get_webkitdirectory(
@@ -15705,32 +15555,6 @@ pub extern "js" fn HTMLInputElement::set_capture(
   value : String,
 ) -> Unit =
   #| (self, value) => { self.capture = value }
-
-///|
-pub extern "js" fn HTMLInputElement::get_align(
-  self : HTMLInputElement,
-) -> String =
-  #| (self) => self.align
-
-///|
-pub extern "js" fn HTMLInputElement::set_align(
-  self : HTMLInputElement,
-  value : String,
-) -> Unit =
-  #| (self, value) => { self.align = value }
-
-///|
-pub extern "js" fn HTMLInputElement::get_use_map(
-  self : HTMLInputElement,
-) -> String =
-  #| (self) => self.useMap
-
-///|
-pub extern "js" fn HTMLInputElement::set_use_map(
-  self : HTMLInputElement,
-  value : String,
-) -> Unit =
-  #| (self, value) => { self.useMap = value }
 
 ///|
 pub extern "js" fn HTMLInputElement::get_popover_target_element(
@@ -16101,23 +15925,6 @@ pub extern "js" fn HTMLSelectElement::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum HTMLSelectElementAddError {
-  HierarchyRequestError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLSelectElementShowPickerError {
-  SecurityError(JsError)
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn HTMLSelectElement::new() -> HTMLSelectElement =
   #| () => new HTMLSelectElement()
 
@@ -16254,16 +16061,16 @@ pub extern "js" fn HTMLSelectElement::named_item(
 pub extern "js" fn HTMLSelectElement::add(
   self : HTMLSelectElement,
   element : HTMLOptionElementOrHTMLOptGroupElement,
-) -> Result[Unit, HTMLSelectElementAddError] =
-  #| (self, element) => (() => { try { self.add(element); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, element) => self.add(element)
 
 ///|
 pub extern "js" fn HTMLSelectElement::add_with_before(
   self : HTMLSelectElement,
   element : HTMLOptionElementOrHTMLOptGroupElement,
   before : HTMLElementOrInt,
-) -> Result[Unit, HTMLSelectElementAddError] =
-  #| (self, element, before) => (() => { try { self.add(element, before); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, element, before) => self.add(element, before)
 
 ///|
 pub extern "js" fn HTMLSelectElement::remove(self : HTMLSelectElement) -> Unit =
@@ -16357,8 +16164,8 @@ pub extern "js" fn HTMLSelectElement::set_custom_validity(
 ///|
 pub extern "js" fn HTMLSelectElement::show_picker(
   self : HTMLSelectElement,
-) -> Result[Unit, HTMLSelectElementShowPickerError] =
-  #| (self) => (() => { try { self.showPicker(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.showPicker()
 
 ///|
 pub extern "js" fn HTMLSelectElement::get_labels(
@@ -18142,20 +17949,6 @@ pub extern "js" fn HTMLDialogElement::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum HTMLDialogElementShowError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLDialogElementShowModalError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn HTMLDialogElement::new() -> HTMLDialogElement =
   #| () => new HTMLDialogElement()
 
@@ -18199,16 +17992,14 @@ pub extern "js" fn HTMLDialogElement::set_closed_by(
   #| (self, value) => { self.closedBy = value }
 
 ///|
-pub extern "js" fn HTMLDialogElement::show(
-  self : HTMLDialogElement,
-) -> Result[Unit, HTMLDialogElementShowError] =
-  #| (self) => (() => { try { self.show(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn HTMLDialogElement::show(self : HTMLDialogElement) -> Unit =
+  #| (self) => self.show()
 
 ///|
 pub extern "js" fn HTMLDialogElement::show_modal(
   self : HTMLDialogElement,
-) -> Result[Unit, HTMLDialogElementShowModalError] =
-  #| (self) => (() => { try { self.showModal(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.showModal()
 
 ///|
 pub extern "js" fn HTMLDialogElement::close(self : HTMLDialogElement) -> Unit =
@@ -18295,20 +18086,6 @@ pub extern "js" fn HTMLScriptElement::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum HTMLScriptElementSetSrcError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLScriptElementSetTextError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn HTMLScriptElement::new() -> HTMLScriptElement =
   #| () => new HTMLScriptElement()
 
@@ -18335,8 +18112,8 @@ pub extern "js" fn HTMLScriptElement::get_src(
 pub extern "js" fn HTMLScriptElement::set_src(
   self : HTMLScriptElement,
   value : String,
-) -> Result[Unit, HTMLScriptElementSetSrcError] =
-  #| (self, value) => (() => { try { self.src = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.src = value }
 
 ///|
 pub extern "js" fn HTMLScriptElement::get_no_module(
@@ -18445,8 +18222,8 @@ pub extern "js" fn HTMLScriptElement::get_text(
 pub extern "js" fn HTMLScriptElement::set_text(
   self : HTMLScriptElement,
   value : String,
-) -> Result[Unit, HTMLScriptElementSetTextError] =
-  #| (self, value) => (() => { try { self.text = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.text = value }
 
 ///|
 pub extern "js" fn HTMLScriptElement::supports(type_ : String) -> Bool =
@@ -18702,13 +18479,6 @@ pub extern "js" fn HTMLSlotElement::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum HTMLSlotElementAssignError {
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn HTMLSlotElement::new() -> HTMLSlotElement =
   #| () => new HTMLSlotElement()
 
@@ -18769,8 +18539,8 @@ pub fn HTMLSlotElement::assigned_elements_with_options(
 pub extern "js" fn HTMLSlotElement::assign(
   self : HTMLSlotElement,
   nodes : ElementOrText,
-) -> Result[Unit, HTMLSlotElementAssignError] =
-  #| (self, nodes) => (() => { try { self.assign(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, nodes) => self.assign(nodes)
 
 ///|
 /// HTMLCanvasElement interface
@@ -18833,42 +18603,6 @@ pub extern "js" fn HTMLCanvasElement::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum HTMLCanvasElementGetContextError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLCanvasElementToDataURLError {
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLCanvasElementToBlobError {
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLCanvasElementTransferControlToOffscreenError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HTMLCanvasElementCaptureStreamError {
-  SecurityError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn HTMLCanvasElement::new() -> HTMLCanvasElement =
   #| () => new HTMLCanvasElement()
 
@@ -18902,37 +18636,37 @@ pub extern "js" fn HTMLCanvasElement::set_height(
 pub extern "js" fn HTMLCanvasElement::get_context(
   self : HTMLCanvasElement,
   context_id : String,
-) -> Result[RenderingContext?, HTMLCanvasElementGetContextError] =
-  #| (self, context_id) => (() => { try { return { $tag: 1, _0: (() => { const v = self.getContext(context_id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> RenderingContext? =
+  #| (self, context_id) => (() => { const v = self.getContext(context_id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLCanvasElement::get_context_with_options(
   self : HTMLCanvasElement,
   context_id : String,
   options : JsValue,
-) -> Result[RenderingContext?, HTMLCanvasElementGetContextError] =
-  #| (self, context_id, options) => (() => { try { return { $tag: 1, _0: (() => { const v = self.getContext(context_id, options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> RenderingContext? =
+  #| (self, context_id, options) => (() => { const v = self.getContext(context_id, options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn HTMLCanvasElement::to_data_url(
   self : HTMLCanvasElement,
-) -> Result[String, HTMLCanvasElementToDataURLError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.toDataURL() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> String =
+  #| (self) => self.toDataURL()
 
 ///|
 pub extern "js" fn HTMLCanvasElement::to_data_url_with_quality(
   self : HTMLCanvasElement,
   type_ : String,
   quality : JsValue,
-) -> Result[String, HTMLCanvasElementToDataURLError] =
-  #| (self, type_, quality) => (() => { try { return { $tag: 1, _0: self.toDataURL(type_, quality) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> String =
+  #| (self, type_, quality) => self.toDataURL(type_, quality)
 
 ///|
 pub extern "js" fn HTMLCanvasElement::to_blob(
   self : HTMLCanvasElement,
   callback : BlobCallback,
-) -> Result[Unit, HTMLCanvasElementToBlobError] =
-  #| (self, callback) => (() => { try { self.toBlob(callback); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, callback) => self.toBlob(callback)
 
 ///|
 pub extern "js" fn HTMLCanvasElement::to_blob_with_quality(
@@ -18940,27 +18674,27 @@ pub extern "js" fn HTMLCanvasElement::to_blob_with_quality(
   callback : BlobCallback,
   type_ : String,
   quality : JsValue,
-) -> Result[Unit, HTMLCanvasElementToBlobError] =
-  #| (self, callback, type_, quality) => (() => { try { self.toBlob(callback, type_, quality); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, callback, type_, quality) => self.toBlob(callback, type_, quality)
 
 ///|
 pub extern "js" fn HTMLCanvasElement::transfer_control_to_offscreen(
   self : HTMLCanvasElement,
-) -> Result[OffscreenCanvas, HTMLCanvasElementTransferControlToOffscreenError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.transferControlToOffscreen() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> OffscreenCanvas =
+  #| (self) => self.transferControlToOffscreen()
 
 ///|
 pub extern "js" fn HTMLCanvasElement::capture_stream(
   self : HTMLCanvasElement,
-) -> Result[MediaStream, HTMLCanvasElementCaptureStreamError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.captureStream() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> MediaStream =
+  #| (self) => self.captureStream()
 
 ///|
 pub extern "js" fn HTMLCanvasElement::capture_stream_with_frame_request_rate(
   self : HTMLCanvasElement,
   frame_request_rate : Double,
-) -> Result[MediaStream, HTMLCanvasElementCaptureStreamError] =
-  #| (self, frame_request_rate) => (() => { try { return { $tag: 1, _0: self.captureStream(frame_request_rate) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> MediaStream =
+  #| (self, frame_request_rate) => self.captureStream(frame_request_rate)
 
 ///|
 /// CanvasRenderingContext2D interface
@@ -18999,29 +18733,6 @@ pub extern "js" fn JsValue::to_canvas_rendering_context_2d(
   self : JsValue,
 ) -> CanvasRenderingContext2D =
   #| (self) => self
-
-///|
-/// Error type for throwing methods
-pub(all) enum CanvasRenderingContext2DCreateImageDataError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum CanvasRenderingContext2DGetImageDataError {
-  SecurityError(JsError)
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum CanvasRenderingContext2DPutImageDataError {
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_canvas(
@@ -19581,16 +19292,16 @@ pub extern "js" fn CanvasRenderingContext2D::draw_image_with_image_canvas_image_
 pub extern "js" fn CanvasRenderingContext2D::create_image_data(
   self : CanvasRenderingContext2D,
   image_data : ImageData,
-) -> Result[ImageData, CanvasRenderingContext2DCreateImageDataError] =
-  #| (self, image_data) => (() => { try { return { $tag: 1, _0: self.createImageData(image_data) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ImageData =
+  #| (self, image_data) => self.createImageData(image_data)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::create_image_data_with_sw_and_sh(
   self : CanvasRenderingContext2D,
   sw : Int,
   sh : Int,
-) -> Result[ImageData, CanvasRenderingContext2DCreateImageDataError] =
-  #| (self, sw, sh) => (() => { try { return { $tag: 1, _0: self.createImageData(sw, sh) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ImageData =
+  #| (self, sw, sh) => self.createImageData(sw, sh)
 
 ///|
 extern "js" fn CanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings_ffi(
@@ -19598,8 +19309,8 @@ extern "js" fn CanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_se
   sw : Int,
   sh : Int,
   settings : JsValue,
-) -> Result[ImageData, CanvasRenderingContext2DCreateImageDataError] =
-  #| (self, sw, sh, settings) => (() => { try { return { $tag: 1, _0: self.createImageData(sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ImageData =
+  #| (self, sw, sh, settings) => self.createImageData(sw, sh, settings)
 
 ///|
 pub fn CanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings(
@@ -19607,7 +19318,7 @@ pub fn CanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_i
   sw : Int,
   sh : Int,
   settings : ImageDataSettings,
-) -> Result[ImageData, CanvasRenderingContext2DCreateImageDataError] {
+) -> ImageData {
   CanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings_ffi(
     self,
     sw,
@@ -19623,8 +19334,8 @@ pub extern "js" fn CanvasRenderingContext2D::get_image_data(
   sy : Int,
   sw : Int,
   sh : Int,
-) -> Result[ImageData, CanvasRenderingContext2DGetImageDataError] =
-  #| (self, sx, sy, sw, sh) => (() => { try { return { $tag: 1, _0: self.getImageData(sx, sy, sw, sh) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> ImageData =
+  #| (self, sx, sy, sw, sh) => self.getImageData(sx, sy, sw, sh)
 
 ///|
 extern "js" fn CanvasRenderingContext2D::get_image_data_with_settings_ffi(
@@ -19634,8 +19345,8 @@ extern "js" fn CanvasRenderingContext2D::get_image_data_with_settings_ffi(
   sw : Int,
   sh : Int,
   settings : JsValue,
-) -> Result[ImageData, CanvasRenderingContext2DGetImageDataError] =
-  #| (self, sx, sy, sw, sh, settings) => (() => { try { return { $tag: 1, _0: self.getImageData(sx, sy, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> ImageData =
+  #| (self, sx, sy, sw, sh, settings) => self.getImageData(sx, sy, sw, sh, settings)
 
 ///|
 pub fn CanvasRenderingContext2D::get_image_data_with_settings(
@@ -19645,7 +19356,7 @@ pub fn CanvasRenderingContext2D::get_image_data_with_settings(
   sw : Int,
   sh : Int,
   settings : ImageDataSettings,
-) -> Result[ImageData, CanvasRenderingContext2DGetImageDataError] {
+) -> ImageData {
   CanvasRenderingContext2D::get_image_data_with_settings_ffi(
     self,
     sx,
@@ -19662,8 +19373,8 @@ pub extern "js" fn CanvasRenderingContext2D::put_image_data(
   image_data : ImageData,
   dx : Int,
   dy : Int,
-) -> Result[Unit, CanvasRenderingContext2DPutImageDataError] =
-  #| (self, image_data, dx, dy) => (() => { try { self.putImageData(image_data, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, image_data, dx, dy) => self.putImageData(image_data, dx, dy)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::put_image_data_with_image_data_image_data_and_dx_and_dy_and_dirty_x_and_dirty_y_and_dirty_width_and_dirty_height(
@@ -19675,8 +19386,8 @@ pub extern "js" fn CanvasRenderingContext2D::put_image_data_with_image_data_imag
   dirty_y : Int,
   dirty_width : Int,
   dirty_height : Int,
-) -> Result[Unit, CanvasRenderingContext2DPutImageDataError] =
-  #| (self, image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height) => (() => { try { self.putImageData(image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height) => self.putImageData(image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_line_width(
@@ -20174,20 +19885,12 @@ pub extern "js" fn JsValue::to_canvas_gradient(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum CanvasGradientAddColorStopError {
-  SyntaxError(JsError)
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn CanvasGradient::add_color_stop(
   self : CanvasGradient,
   offset : Double,
   color : String,
-) -> Result[Unit, CanvasGradientAddColorStopError] =
-  #| (self, offset, color) => (() => { try { self.addColorStop(offset, color); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, offset, color) => self.addColorStop(offset, color)
 
 ///|
 /// CanvasPattern interface
@@ -20623,30 +20326,6 @@ pub extern "js" fn OffscreenCanvas::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum OffscreenCanvasGetContextError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum OffscreenCanvasTransferToImageBitmapError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum OffscreenCanvasConvertToBlobError {
-  EncodingError(JsError)
-  SecurityError(JsError)
-  IndexSizeError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn OffscreenCanvas::new(
   width : Int64,
   height : Int64,
@@ -20679,69 +20358,69 @@ pub extern "js" fn OffscreenCanvas::set_height(
 pub extern "js" fn OffscreenCanvas::get_context(
   self : OffscreenCanvas,
   context_id : OffscreenRenderingContextId,
-) -> Result[OffscreenRenderingContext?, OffscreenCanvasGetContextError] =
-  #| (self, context_id) => (() => { try { return { $tag: 1, _0: (() => { const v = self.getContext(['2d', 'bitmaprenderer', 'webgl', 'webgl2', 'webgpu'][context_id]); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> OffscreenRenderingContext? =
+  #| (self, context_id) => (() => { const v = self.getContext(['2d', 'bitmaprenderer', 'webgl', 'webgl2', 'webgpu'][context_id]); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn OffscreenCanvas::get_context_with_options(
   self : OffscreenCanvas,
   context_id : OffscreenRenderingContextId,
   options : JsValue,
-) -> Result[OffscreenRenderingContext?, OffscreenCanvasGetContextError] =
-  #| (self, context_id, options) => (() => { try { return { $tag: 1, _0: (() => { const v = self.getContext(['2d', 'bitmaprenderer', 'webgl', 'webgl2', 'webgpu'][context_id], options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> OffscreenRenderingContext? =
+  #| (self, context_id, options) => (() => { const v = self.getContext(['2d', 'bitmaprenderer', 'webgl', 'webgl2', 'webgpu'][context_id], options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn OffscreenCanvas::transfer_to_image_bitmap(
   self : OffscreenCanvas,
-) -> Result[ImageBitmap, OffscreenCanvasTransferToImageBitmapError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.transferToImageBitmap() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ImageBitmap =
+  #| (self) => self.transferToImageBitmap()
 
 ///|
 pub extern "js" fn OffscreenCanvas::convert_to_blob(
   self : OffscreenCanvas,
-) -> Promise[Result[Blob, OffscreenCanvasConvertToBlobError]] =
-  #| (self) => self.convertToBlob().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'IndexSizeError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[Blob] =
+  #| (self) => self.convertToBlob()
 
 ///|
 extern "js" fn OffscreenCanvas::convert_to_blob_with_options_ffi(
   self : OffscreenCanvas,
   options : JsValue,
-) -> Promise[Result[Blob, OffscreenCanvasConvertToBlobError]] =
-  #| (self, options) => self.convertToBlob(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'IndexSizeError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[Blob] =
+  #| (self, options) => self.convertToBlob(options)
 
 ///|
 pub fn OffscreenCanvas::convert_to_blob_with_options(
   self : OffscreenCanvas,
   options : ImageEncodeOptions,
-) -> Promise[Result[Blob, OffscreenCanvasConvertToBlobError]] {
+) -> Promise[Blob] {
   OffscreenCanvas::convert_to_blob_with_options_ffi(self, options.to_js())
 }
 
 ///|
-pub extern "js" fn OffscreenCanvas::set_oncontextlost(
+pub extern "js" fn OffscreenCanvas::get_oncontextlost(
   self : OffscreenCanvas,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.oncontextlost = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.oncontextlost
 
 ///|
-pub extern "js" fn OffscreenCanvas::clear_oncontextlost(
+pub extern "js" fn OffscreenCanvas::set_oncontextlost(
   self : OffscreenCanvas,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.oncontextlost = null }
+  #| (self, value) => { self.oncontextlost = value }
+
+///|
+pub extern "js" fn OffscreenCanvas::get_oncontextrestored(
+  self : OffscreenCanvas,
+) -> EventHandler =
+  #| (self) => self.oncontextrestored
 
 ///|
 pub extern "js" fn OffscreenCanvas::set_oncontextrestored(
   self : OffscreenCanvas,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncontextrestored = (e) => handler(e) }
-
-///|
-pub extern "js" fn OffscreenCanvas::clear_oncontextrestored(
-  self : OffscreenCanvas,
-) -> Unit =
-  #| (self) => { self.oncontextrestored = null }
+  #| (self, value) => { self.oncontextrestored = value }
 
 ///|
 /// OffscreenCanvasRenderingContext2D interface
@@ -20780,29 +20459,6 @@ pub extern "js" fn JsValue::to_offscreen_canvas_rendering_context_2d(
   self : JsValue,
 ) -> OffscreenCanvasRenderingContext2D =
   #| (self) => self
-
-///|
-/// Error type for throwing methods
-pub(all) enum OffscreenCanvasRenderingContext2DCreateImageDataError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum OffscreenCanvasRenderingContext2DGetImageDataError {
-  SecurityError(JsError)
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum OffscreenCanvasRenderingContext2DPutImageDataError {
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_canvas(
@@ -21347,16 +21003,16 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_image_canv
 pub extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data(
   self : OffscreenCanvasRenderingContext2D,
   image_data : ImageData,
-) -> Result[ImageData, OffscreenCanvasRenderingContext2DCreateImageDataError] =
-  #| (self, image_data) => (() => { try { return { $tag: 1, _0: self.createImageData(image_data) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ImageData =
+  #| (self, image_data) => self.createImageData(image_data)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data_with_sw_and_sh(
   self : OffscreenCanvasRenderingContext2D,
   sw : Int,
   sh : Int,
-) -> Result[ImageData, OffscreenCanvasRenderingContext2DCreateImageDataError] =
-  #| (self, sw, sh) => (() => { try { return { $tag: 1, _0: self.createImageData(sw, sh) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ImageData =
+  #| (self, sw, sh) => self.createImageData(sw, sh)
 
 ///|
 extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings_ffi(
@@ -21364,8 +21020,8 @@ extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data_with_sw_and_
   sw : Int,
   sh : Int,
   settings : JsValue,
-) -> Result[ImageData, OffscreenCanvasRenderingContext2DCreateImageDataError] =
-  #| (self, sw, sh, settings) => (() => { try { return { $tag: 1, _0: self.createImageData(sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ImageData =
+  #| (self, sw, sh, settings) => self.createImageData(sw, sh, settings)
 
 ///|
 pub fn OffscreenCanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings(
@@ -21373,7 +21029,7 @@ pub fn OffscreenCanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_s
   sw : Int,
   sh : Int,
   settings : ImageDataSettings,
-) -> Result[ImageData, OffscreenCanvasRenderingContext2DCreateImageDataError] {
+) -> ImageData {
   OffscreenCanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings_ffi(
     self,
     sw,
@@ -21389,8 +21045,8 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::get_image_data(
   sy : Int,
   sw : Int,
   sh : Int,
-) -> Result[ImageData, OffscreenCanvasRenderingContext2DGetImageDataError] =
-  #| (self, sx, sy, sw, sh) => (() => { try { return { $tag: 1, _0: self.getImageData(sx, sy, sw, sh) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> ImageData =
+  #| (self, sx, sy, sw, sh) => self.getImageData(sx, sy, sw, sh)
 
 ///|
 extern "js" fn OffscreenCanvasRenderingContext2D::get_image_data_with_settings_ffi(
@@ -21400,8 +21056,8 @@ extern "js" fn OffscreenCanvasRenderingContext2D::get_image_data_with_settings_f
   sw : Int,
   sh : Int,
   settings : JsValue,
-) -> Result[ImageData, OffscreenCanvasRenderingContext2DGetImageDataError] =
-  #| (self, sx, sy, sw, sh, settings) => (() => { try { return { $tag: 1, _0: self.getImageData(sx, sy, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> ImageData =
+  #| (self, sx, sy, sw, sh, settings) => self.getImageData(sx, sy, sw, sh, settings)
 
 ///|
 pub fn OffscreenCanvasRenderingContext2D::get_image_data_with_settings(
@@ -21411,7 +21067,7 @@ pub fn OffscreenCanvasRenderingContext2D::get_image_data_with_settings(
   sw : Int,
   sh : Int,
   settings : ImageDataSettings,
-) -> Result[ImageData, OffscreenCanvasRenderingContext2DGetImageDataError] {
+) -> ImageData {
   OffscreenCanvasRenderingContext2D::get_image_data_with_settings_ffi(
     self,
     sx,
@@ -21428,8 +21084,8 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::put_image_data(
   image_data : ImageData,
   dx : Int,
   dy : Int,
-) -> Result[Unit, OffscreenCanvasRenderingContext2DPutImageDataError] =
-  #| (self, image_data, dx, dy) => (() => { try { self.putImageData(image_data, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, image_data, dx, dy) => self.putImageData(image_data, dx, dy)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::put_image_data_with_image_data_image_data_and_dx_and_dy_and_dirty_x_and_dirty_y_and_dirty_width_and_dirty_height(
@@ -21441,8 +21097,8 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::put_image_data_with_image_
   dirty_y : Int,
   dirty_width : Int,
   dirty_height : Int,
-) -> Result[Unit, OffscreenCanvasRenderingContext2DPutImageDataError] =
-  #| (self, image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height) => (() => { try { self.putImageData(image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height) => self.putImageData(image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_line_width(
@@ -21942,15 +21598,6 @@ pub extern "js" fn JsValue::to_custom_element_registry(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum CustomElementRegistryDefineError {
-  TypeError(JsError)
-  SyntaxError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn CustomElementRegistry::new() -> CustomElementRegistry =
   #| () => new CustomElementRegistry()
 
@@ -21959,8 +21606,8 @@ pub extern "js" fn CustomElementRegistry::define_(
   self : CustomElementRegistry,
   name : String,
   constructor_ : CustomElementConstructor,
-) -> Result[Unit, CustomElementRegistryDefineError] =
-  #| (self, name, constructor_) => (() => { try { self.define(name, constructor_); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, name, constructor_) => self.define(name, constructor_)
 
 ///|
 extern "js" fn CustomElementRegistry::define__with_options_ffi(
@@ -21968,8 +21615,8 @@ extern "js" fn CustomElementRegistry::define__with_options_ffi(
   name : String,
   constructor_ : CustomElementConstructor,
   options : JsValue,
-) -> Result[Unit, CustomElementRegistryDefineError] =
-  #| (self, name, constructor_, options) => (() => { try { self.define(name, constructor_, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, name, constructor_, options) => self.define(name, constructor_, options)
 
 ///|
 pub fn CustomElementRegistry::define__with_options(
@@ -21977,7 +21624,7 @@ pub fn CustomElementRegistry::define__with_options(
   name : String,
   constructor_ : CustomElementConstructor,
   options : ElementDefinitionOptions,
-) -> Result[Unit, CustomElementRegistryDefineError] {
+) -> Unit {
   CustomElementRegistry::define__with_options_ffi(
     self,
     name,
@@ -22060,36 +21707,6 @@ pub extern "js" fn JsValue::to_element_internals(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum ElementInternalsSetFormValueError {
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ElementInternalsSetValidityError {
-  TypeError(JsError)
-  NotFoundError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ElementInternalsCheckValidityError {
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ElementInternalsReportValidityError {
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn ElementInternals::get_shadow_root(
   self : ElementInternals,
 ) -> ShadowRoot? =
@@ -22099,16 +21716,16 @@ pub extern "js" fn ElementInternals::get_shadow_root(
 pub extern "js" fn ElementInternals::set_form_value(
   self : ElementInternals,
   value : FileOrStringOrFormData,
-) -> Result[Unit, ElementInternalsSetFormValueError] =
-  #| (self, value) => (() => { try { self.setFormValue(value); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => self.setFormValue(value)
 
 ///|
 pub extern "js" fn ElementInternals::set_form_value_with_state(
   self : ElementInternals,
   value : FileOrStringOrFormData,
   state : FileOrStringOrFormData,
-) -> Result[Unit, ElementInternalsSetFormValueError] =
-  #| (self, value, state) => (() => { try { self.setFormValue(value, state); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value, state) => self.setFormValue(value, state)
 
 ///|
 pub extern "js" fn ElementInternals::get_form(
@@ -22119,8 +21736,8 @@ pub extern "js" fn ElementInternals::get_form(
 ///|
 pub extern "js" fn ElementInternals::set_validity(
   self : ElementInternals,
-) -> Result[Unit, ElementInternalsSetValidityError] =
-  #| (self) => (() => { try { self.setValidity(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.setValidity()
 
 ///|
 extern "js" fn ElementInternals::set_validity_with_anchor_ffi(
@@ -22128,8 +21745,8 @@ extern "js" fn ElementInternals::set_validity_with_anchor_ffi(
   flags : JsValue,
   message : String,
   anchor : HTMLElement,
-) -> Result[Unit, ElementInternalsSetValidityError] =
-  #| (self, flags, message, anchor) => (() => { try { self.setValidity(flags, message, anchor); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, flags, message, anchor) => self.setValidity(flags, message, anchor)
 
 ///|
 pub fn ElementInternals::set_validity_with_anchor(
@@ -22137,7 +21754,7 @@ pub fn ElementInternals::set_validity_with_anchor(
   flags : ValidityStateFlags,
   message : String,
   anchor : HTMLElement,
-) -> Result[Unit, ElementInternalsSetValidityError] {
+) -> Unit {
   ElementInternals::set_validity_with_anchor_ffi(
     self,
     flags.to_js(),
@@ -22167,14 +21784,14 @@ pub extern "js" fn ElementInternals::get_validation_message(
 ///|
 pub extern "js" fn ElementInternals::check_validity(
   self : ElementInternals,
-) -> Result[Bool, ElementInternalsCheckValidityError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.checkValidity() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Bool =
+  #| (self) => self.checkValidity()
 
 ///|
 pub extern "js" fn ElementInternals::report_validity(
   self : ElementInternals,
-) -> Result[Bool, ElementInternalsReportValidityError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.reportValidity() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Bool =
+  #| (self) => self.reportValidity()
 
 ///|
 pub extern "js" fn ElementInternals::get_labels(
@@ -23229,26 +22846,30 @@ pub extern "js" fn CloseWatcher::destroy(self : CloseWatcher) -> Unit =
   #| (self) => self.destroy()
 
 ///|
-pub extern "js" fn CloseWatcher::set_oncancel(
+pub extern "js" fn CloseWatcher::get_oncancel(
   self : CloseWatcher,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.oncancel = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.oncancel
 
 ///|
-pub extern "js" fn CloseWatcher::clear_oncancel(self : CloseWatcher) -> Unit =
-  #| (self) => { self.oncancel = null }
+pub extern "js" fn CloseWatcher::set_oncancel(
+  self : CloseWatcher,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.oncancel = value }
+
+///|
+pub extern "js" fn CloseWatcher::get_onclose(
+  self : CloseWatcher,
+) -> EventHandler =
+  #| (self) => self.onclose
 
 ///|
 pub extern "js" fn CloseWatcher::set_onclose(
   self : CloseWatcher,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onclose = (e) => handler(e) }
-
-///|
-pub extern "js" fn CloseWatcher::clear_onclose(self : CloseWatcher) -> Unit =
-  #| (self) => { self.onclose = null }
+  #| (self, value) => { self.onclose = value }
 
 ///|
 /// DataTransfer interface
@@ -23398,20 +23019,6 @@ pub extern "js" fn JsValue::to_data_transfer_item_list(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum DataTransferItemListAddError {
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum DataTransferItemListRemoveError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn DataTransferItemList::get_length(
   self : DataTransferItemList,
 ) -> Int =
@@ -23429,23 +23036,23 @@ pub extern "js" fn DataTransferItemList::get(
 pub extern "js" fn DataTransferItemList::add(
   self : DataTransferItemList,
   data : File,
-) -> Result[DataTransferItem?, DataTransferItemListAddError] =
-  #| (self, data) => (() => { try { return { $tag: 1, _0: (() => { const v = self.add(data); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> DataTransferItem? =
+  #| (self, data) => (() => { const v = self.add(data); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn DataTransferItemList::add_with_data_and_type(
   self : DataTransferItemList,
   data : String,
   type_ : String,
-) -> Result[DataTransferItem?, DataTransferItemListAddError] =
-  #| (self, data, type_) => (() => { try { return { $tag: 1, _0: (() => { const v = self.add(data, type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> DataTransferItem? =
+  #| (self, data, type_) => (() => { const v = self.add(data, type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn DataTransferItemList::remove(
   self : DataTransferItemList,
   index : Int,
-) -> Result[Unit, DataTransferItemListRemoveError] =
-  #| (self, index) => (() => { try { self.remove(index); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, index) => self.remove(index)
 
 ///|
 pub extern "js" fn DataTransferItemList::clear(
@@ -23517,16 +23124,16 @@ pub extern "js" fn DataTransferItem::get_as_file(
   #| (self) => (() => { const v = self.getAsFile(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn DataTransferItem::webkit_get_as_entry(
-  self : DataTransferItem,
-) -> FileSystemEntry? =
-  #| (self) => (() => { const v = self.webkitGetAsEntry(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
 pub extern "js" fn DataTransferItem::get_as_file_system_handle(
   self : DataTransferItem,
 ) -> Promise[FileSystemHandle?] =
   #| (self) => self.getAsFileSystemHandle()
+
+///|
+pub extern "js" fn DataTransferItem::webkit_get_as_entry(
+  self : DataTransferItem,
+) -> FileSystemEntry? =
+  #| (self) => (() => { const v = self.webkitGetAsEntry(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// DragEvent interface
@@ -23677,109 +23284,6 @@ pub extern "js" fn Window::to_event_target(self : Window) -> EventTarget =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum WindowGetComputedStyleError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WindowFetchLaterError {
-  TypeError(JsError)
-  RangeError(JsError)
-  QuotaExceededError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WindowShowOpenFilePickerError {
-  TypeError(JsError)
-  AbortError(JsError)
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WindowShowSaveFilePickerError {
-  TypeError(JsError)
-  AbortError(JsError)
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WindowShowDirectoryPickerError {
-  AbortError(JsError)
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WindowQueryLocalFontsError {
-  SecurityError(JsError)
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WindowGetScreenDetailsError {
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WindowFetchError {
-  TypeError(JsError)
-  AbortError(JsError)
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WindowBtoaError {
-  InvalidCharacterError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WindowAtobError {
-  InvalidCharacterError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WindowSetTimeoutError {
-  TypeError(JsError)
-  SyntaxError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WindowSetIntervalError {
-  TypeError(JsError)
-  SyntaxError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WindowStructuredCloneError {
-  DataCloneError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn Window::get_window(self : Window) -> Window =
   #| (self) => self.window
 
@@ -23842,12 +23346,10 @@ pub extern "js" fn Window::get_toolbar(self : Window) -> BarProp =
   #| (self) => self.toolbar
 
 ///|
-/// @alert deprecated "status is deprecated"
 pub extern "js" fn Window::get_status(self : Window) -> String =
   #| (self) => self.status
 
 ///|
-/// @alert deprecated "status is deprecated"
 pub extern "js" fn Window::set_status(self : Window, value : String) -> Unit =
   #| (self, value) => { self.status = value }
 
@@ -23868,7 +23370,6 @@ pub extern "js" fn Window::focus(self : Window) -> Unit =
   #| (self) => self.focus()
 
 ///|
-/// @alert deprecated "blur is deprecated"
 pub extern "js" fn Window::blur(self : Window) -> Unit =
   #| (self) => self.blur()
 
@@ -24009,38 +23510,67 @@ pub extern "js" fn Window::post_message_with_message_and_target_origin_and_trans
   #| (self, message, target_origin, transfer) => self.postMessage(message, target_origin, transfer)
 
 ///|
-pub extern "js" fn Window::get_credentialless(self : Window) -> Bool =
-  #| (self) => self.credentialless
-
-///|
-pub extern "js" fn Window::get_orientation(self : Window) -> Int =
-  #| (self) => self.orientation
-
-///|
-pub extern "js" fn Window::set_onorientationchange(
+pub extern "js" fn Window::show_open_file_picker(
   self : Window,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onorientationchange = (e) => handler(e) }
+) -> Promise[Array[FileSystemFileHandle]] =
+  #| (self) => self.showOpenFilePicker()
 
 ///|
-pub extern "js" fn Window::clear_onorientationchange(self : Window) -> Unit =
-  #| (self) => { self.onorientationchange = null }
-
-///|
-pub extern "js" fn Window::get_cookie_store(self : Window) -> CookieStore =
-  #| (self) => self.cookieStore
-
-///|
-pub extern "js" fn Window::navigate(
+extern "js" fn Window::show_open_file_picker_with_options_ffi(
   self : Window,
-  dir : SpatialNavigationDirection,
-) -> Unit =
-  #| (self, dir) => self.navigate(['up', 'down', 'left', 'right'][dir])
+  options : JsValue,
+) -> Promise[Array[FileSystemFileHandle]] =
+  #| (self, options) => self.showOpenFilePicker(options)
 
 ///|
-pub extern "js" fn Window::get_viewport(self : Window) -> Viewport =
-  #| (self) => self.viewport
+pub fn Window::show_open_file_picker_with_options(
+  self : Window,
+  options : OpenFilePickerOptions,
+) -> Promise[Array[FileSystemFileHandle]] {
+  Window::show_open_file_picker_with_options_ffi(self, options.to_js())
+}
+
+///|
+pub extern "js" fn Window::show_save_file_picker(
+  self : Window,
+) -> Promise[FileSystemFileHandle] =
+  #| (self) => self.showSaveFilePicker()
+
+///|
+extern "js" fn Window::show_save_file_picker_with_options_ffi(
+  self : Window,
+  options : JsValue,
+) -> Promise[FileSystemFileHandle] =
+  #| (self, options) => self.showSaveFilePicker(options)
+
+///|
+pub fn Window::show_save_file_picker_with_options(
+  self : Window,
+  options : SaveFilePickerOptions,
+) -> Promise[FileSystemFileHandle] {
+  Window::show_save_file_picker_with_options_ffi(self, options.to_js())
+}
+
+///|
+pub extern "js" fn Window::show_directory_picker(
+  self : Window,
+) -> Promise[FileSystemDirectoryHandle] =
+  #| (self) => self.showDirectoryPicker()
+
+///|
+extern "js" fn Window::show_directory_picker_with_options_ffi(
+  self : Window,
+  options : JsValue,
+) -> Promise[FileSystemDirectoryHandle] =
+  #| (self, options) => self.showDirectoryPicker(options)
+
+///|
+pub fn Window::show_directory_picker_with_options(
+  self : Window,
+  options : DirectoryPickerOptions,
+) -> Promise[FileSystemDirectoryHandle] {
+  Window::show_directory_picker_with_options_ffi(self, options.to_js())
+}
 
 ///|
 pub extern "js" fn Window::match_media(
@@ -24213,19 +23743,105 @@ pub extern "js" fn Window::get_device_pixel_ratio(self : Window) -> Double =
   #| (self) => self.devicePixelRatio
 
 ///|
+pub extern "js" fn Window::capture_events(self : Window) -> Unit =
+  #| (self) => self.captureEvents()
+
+///|
+pub extern "js" fn Window::release_events(self : Window) -> Unit =
+  #| (self) => self.releaseEvents()
+
+///|
+pub extern "js" fn Window::get_external(self : Window) -> External =
+  #| (self) => self.external
+
+///|
+pub extern "js" fn Window::get_portal_host(self : Window) -> PortalHost? =
+  #| (self) => (() => { const v = self.portalHost; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Window::get_viewport(self : Window) -> Viewport =
+  #| (self) => self.viewport
+
+///|
+pub extern "js" fn Window::get_credentialless(self : Window) -> Bool =
+  #| (self) => self.credentialless
+
+///|
+pub extern "js" fn Window::get_onappinstalled(self : Window) -> EventHandler =
+  #| (self) => self.onappinstalled
+
+///|
+pub extern "js" fn Window::set_onappinstalled(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onappinstalled = value }
+
+///|
+pub extern "js" fn Window::get_onbeforeinstallprompt(
+  self : Window,
+) -> EventHandler =
+  #| (self) => self.onbeforeinstallprompt
+
+///|
+pub extern "js" fn Window::set_onbeforeinstallprompt(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onbeforeinstallprompt = value }
+
+///|
+pub extern "js" fn Window::navigate(
+  self : Window,
+  dir : SpatialNavigationDirection,
+) -> Unit =
+  #| (self, dir) => self.navigate(['up', 'down', 'left', 'right'][dir])
+
+///|
+pub extern "js" fn Window::get_event(self : Window) -> EventOrVoid =
+  #| (self) => self.event
+
+///|
 pub extern "js" fn Window::get_computed_style(
   self : Window,
   elt : Element,
-) -> Result[CSSStyleProperties, WindowGetComputedStyleError] =
-  #| (self, elt) => (() => { try { return { $tag: 1, _0: self.getComputedStyle(elt) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> CSSStyleProperties =
+  #| (self, elt) => self.getComputedStyle(elt)
 
 ///|
 pub extern "js" fn Window::get_computed_style_with_pseudo_elt(
   self : Window,
   elt : Element,
   pseudo_elt : String?,
-) -> Result[CSSStyleProperties, WindowGetComputedStyleError] =
-  #| (self, elt, pseudo_elt) => (() => { try { return { $tag: 1, _0: self.getComputedStyle(elt, pseudo_elt) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> CSSStyleProperties =
+  #| (self, elt, pseudo_elt) => self.getComputedStyle(elt, pseudo_elt)
+
+///|
+pub extern "js" fn Window::query_local_fonts(
+  self : Window,
+) -> Promise[Array[FontData]] =
+  #| (self) => self.queryLocalFonts()
+
+///|
+extern "js" fn Window::query_local_fonts_with_options_ffi(
+  self : Window,
+  options : JsValue,
+) -> Promise[Array[FontData]] =
+  #| (self, options) => self.queryLocalFonts(options)
+
+///|
+pub fn Window::query_local_fonts_with_options(
+  self : Window,
+  options : QueryOptions,
+) -> Promise[Array[FontData]] {
+  Window::query_local_fonts_with_options_ffi(self, options.to_js())
+}
+
+///|
+pub extern "js" fn Window::get_speech_synthesis(
+  self : Window,
+) -> SpeechSynthesis =
+  #| (self) => self.speechSynthesis
 
 ///|
 pub extern "js" fn Window::get_digital_goods_service(
@@ -24235,201 +23851,80 @@ pub extern "js" fn Window::get_digital_goods_service(
   #| (self, service_provider) => self.getDigitalGoodsService(service_provider)
 
 ///|
-pub extern "js" fn Window::get_document_picture_in_picture(
-  self : Window,
-) -> DocumentPictureInPicture =
-  #| (self) => self.documentPictureInPicture
+pub extern "js" fn Window::get_shared_storage(self : Window) -> SharedStorage? =
+  #| (self) => (() => { const v = self.sharedStorage; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn Window::get_event(self : Window) -> EventOrVoid =
-  #| (self) => self.event
+pub extern "js" fn Window::get_screen_details(
+  self : Window,
+) -> Promise[ScreenDetails] =
+  #| (self) => self.getScreenDetails()
+
+///|
+pub extern "js" fn Window::get_cookie_store(self : Window) -> CookieStore =
+  #| (self) => self.cookieStore
+
+///|
+pub extern "js" fn Window::get_ondeviceorientation(
+  self : Window,
+) -> EventHandler =
+  #| (self) => self.ondeviceorientation
+
+///|
+pub extern "js" fn Window::set_ondeviceorientation(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ondeviceorientation = value }
+
+///|
+pub extern "js" fn Window::get_ondeviceorientationabsolute(
+  self : Window,
+) -> EventHandler =
+  #| (self) => self.ondeviceorientationabsolute
+
+///|
+pub extern "js" fn Window::set_ondeviceorientationabsolute(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ondeviceorientationabsolute = value }
+
+///|
+pub extern "js" fn Window::get_ondevicemotion(self : Window) -> EventHandler =
+  #| (self) => self.ondevicemotion
+
+///|
+pub extern "js" fn Window::set_ondevicemotion(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ondevicemotion = value }
 
 ///|
 pub extern "js" fn Window::get_fence(self : Window) -> Fence? =
   #| (self) => (() => { const v = self.fence; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn Window::fetch_later(
+pub extern "js" fn Window::get_orientation(self : Window) -> Int =
+  #| (self) => self.orientation
+
+///|
+pub extern "js" fn Window::get_onorientationchange(
   self : Window,
-  input : RequestInfo,
-) -> Result[FetchLaterResult, WindowFetchLaterError] =
-  #| (self, input) => (() => { try { return { $tag: 1, _0: self.fetchLater(input) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> EventHandler =
+  #| (self) => self.onorientationchange
 
 ///|
-extern "js" fn Window::fetch_later_with_init_ffi(
+pub extern "js" fn Window::set_onorientationchange(
   self : Window,
-  input : RequestInfo,
-  init_ : JsValue,
-) -> Result[FetchLaterResult, WindowFetchLaterError] =
-  #| (self, input, init_) => (() => { try { return { $tag: 1, _0: self.fetchLater(input, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
-
-///|
-pub fn Window::fetch_later_with_init(
-  self : Window,
-  input : RequestInfo,
-  init_ : DeferredRequestInit,
-) -> Result[FetchLaterResult, WindowFetchLaterError] {
-  Window::fetch_later_with_init_ffi(self, input, init_.to_js())
-}
-
-///|
-pub extern "js" fn Window::show_open_file_picker(
-  self : Window,
-) -> Promise[Result[Array[FileSystemFileHandle], WindowShowOpenFilePickerError]] =
-  #| (self) => self.showOpenFilePicker().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
-
-///|
-extern "js" fn Window::show_open_file_picker_with_options_ffi(
-  self : Window,
-  options : JsValue,
-) -> Promise[Result[Array[FileSystemFileHandle], WindowShowOpenFilePickerError]] =
-  #| (self, options) => self.showOpenFilePicker(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
-
-///|
-pub fn Window::show_open_file_picker_with_options(
-  self : Window,
-  options : OpenFilePickerOptions,
-) -> Promise[Result[Array[FileSystemFileHandle], WindowShowOpenFilePickerError]] {
-  Window::show_open_file_picker_with_options_ffi(self, options.to_js())
-}
-
-///|
-pub extern "js" fn Window::show_save_file_picker(
-  self : Window,
-) -> Promise[Result[FileSystemFileHandle, WindowShowSaveFilePickerError]] =
-  #| (self) => self.showSaveFilePicker().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
-
-///|
-extern "js" fn Window::show_save_file_picker_with_options_ffi(
-  self : Window,
-  options : JsValue,
-) -> Promise[Result[FileSystemFileHandle, WindowShowSaveFilePickerError]] =
-  #| (self, options) => self.showSaveFilePicker(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
-
-///|
-pub fn Window::show_save_file_picker_with_options(
-  self : Window,
-  options : SaveFilePickerOptions,
-) -> Promise[Result[FileSystemFileHandle, WindowShowSaveFilePickerError]] {
-  Window::show_save_file_picker_with_options_ffi(self, options.to_js())
-}
-
-///|
-pub extern "js" fn Window::show_directory_picker(
-  self : Window,
-) -> Promise[Result[FileSystemDirectoryHandle, WindowShowDirectoryPickerError]] =
-  #| (self) => self.showDirectoryPicker().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
-
-///|
-extern "js" fn Window::show_directory_picker_with_options_ffi(
-  self : Window,
-  options : JsValue,
-) -> Promise[Result[FileSystemDirectoryHandle, WindowShowDirectoryPickerError]] =
-  #| (self, options) => self.showDirectoryPicker(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
-
-///|
-pub fn Window::show_directory_picker_with_options(
-  self : Window,
-  options : DirectoryPickerOptions,
-) -> Promise[Result[FileSystemDirectoryHandle, WindowShowDirectoryPickerError]] {
-  Window::show_directory_picker_with_options_ffi(self, options.to_js())
-}
-
-///|
-/// @alert deprecated "captureEvents is deprecated"
-pub extern "js" fn Window::capture_events(self : Window) -> Unit =
-  #| (self) => self.captureEvents()
-
-///|
-/// @alert deprecated "releaseEvents is deprecated"
-pub extern "js" fn Window::release_events(self : Window) -> Unit =
-  #| (self) => self.releaseEvents()
-
-///|
-pub extern "js" fn Window::get_external(self : Window) -> External =
-  #| (self) => self.external
-
-///|
-pub extern "js" fn Window::query_local_fonts(
-  self : Window,
-) -> Promise[Result[Array[FontData], WindowQueryLocalFontsError]] =
-  #| (self) => self.queryLocalFonts().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
-
-///|
-extern "js" fn Window::query_local_fonts_with_options_ffi(
-  self : Window,
-  options : JsValue,
-) -> Promise[Result[Array[FontData], WindowQueryLocalFontsError]] =
-  #| (self, options) => self.queryLocalFonts(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
-
-///|
-pub fn Window::query_local_fonts_with_options(
-  self : Window,
-  options : QueryOptions,
-) -> Promise[Result[Array[FontData], WindowQueryLocalFontsError]] {
-  Window::query_local_fonts_with_options_ffi(self, options.to_js())
-}
-
-///|
-pub extern "js" fn Window::set_onappinstalled(
-  self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onappinstalled = (e) => handler(e) }
+  #| (self, value) => { self.onorientationchange = value }
 
 ///|
-pub extern "js" fn Window::clear_onappinstalled(self : Window) -> Unit =
-  #| (self) => { self.onappinstalled = null }
-
-///|
-pub extern "js" fn Window::set_onbeforeinstallprompt(
-  self : Window,
-  handler : (BeforeInstallPromptEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onbeforeinstallprompt = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onbeforeinstallprompt(self : Window) -> Unit =
-  #| (self) => { self.onbeforeinstallprompt = null }
-
-///|
-pub extern "js" fn Window::set_ondeviceorientation(
-  self : Window,
-  handler : (DeviceOrientationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ondeviceorientation = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_ondeviceorientation(self : Window) -> Unit =
-  #| (self) => { self.ondeviceorientation = null }
-
-///|
-pub extern "js" fn Window::set_ondeviceorientationabsolute(
-  self : Window,
-  handler : (DeviceOrientationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ondeviceorientationabsolute = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_ondeviceorientationabsolute(
-  self : Window,
-) -> Unit =
-  #| (self) => { self.ondeviceorientationabsolute = null }
-
-///|
-pub extern "js" fn Window::set_ondevicemotion(
-  self : Window,
-  handler : (DeviceMotionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ondevicemotion = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_ondevicemotion(self : Window) -> Unit =
-  #| (self) => { self.ondevicemotion = null }
-
-///|
-pub extern "js" fn Window::get_portal_host(self : Window) -> PortalHost? =
-  #| (self) => (() => { const v = self.portalHost; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+pub extern "js" fn Window::get_launch_queue(self : Window) -> LaunchQueue =
+  #| (self) => self.launchQueue
 
 ///|
 pub extern "js" fn Window::request_idle_callback(
@@ -24471,475 +23966,372 @@ pub extern "js" fn Window::get_selection(self : Window) -> Selection? =
   #| (self) => (() => { const v = self.getSelection(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn Window::get_shared_storage(self : Window) -> SharedStorage? =
-  #| (self) => (() => { const v = self.sharedStorage; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-pub extern "js" fn Window::get_speech_synthesis(
+pub extern "js" fn Window::get_document_picture_in_picture(
   self : Window,
-) -> SpeechSynthesis =
-  #| (self) => self.speechSynthesis
+) -> DocumentPictureInPicture =
+  #| (self) => self.documentPictureInPicture
 
 ///|
-pub extern "js" fn Window::get_launch_queue(self : Window) -> LaunchQueue =
-  #| (self) => self.launchQueue
-
-///|
-pub extern "js" fn Window::get_screen_details(
+pub extern "js" fn Window::fetch_later(
   self : Window,
-) -> Promise[Result[ScreenDetails, WindowGetScreenDetailsError]] =
-  #| (self) => self.getScreenDetails().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  input : RequestInfo,
+) -> FetchLaterResult =
+  #| (self, input) => self.fetchLater(input)
 
 ///|
-pub extern "js" fn Window::set_onanimationstart(
+extern "js" fn Window::fetch_later_with_init_ffi(
   self : Window,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationstart = (e) => handler(e) }
+  input : RequestInfo,
+  init_ : JsValue,
+) -> FetchLaterResult =
+  #| (self, input, init_) => self.fetchLater(input, init_)
 
 ///|
-pub extern "js" fn Window::clear_onanimationstart(self : Window) -> Unit =
-  #| (self) => { self.onanimationstart = null }
-
-///|
-pub extern "js" fn Window::set_onanimationiteration(
+pub fn Window::fetch_later_with_init(
   self : Window,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationiteration = (e) => handler(e) }
+  input : RequestInfo,
+  init_ : DeferredRequestInit,
+) -> FetchLaterResult {
+  Window::fetch_later_with_init_ffi(self, input, init_.to_js())
+}
 
 ///|
-pub extern "js" fn Window::clear_onanimationiteration(self : Window) -> Unit =
-  #| (self) => { self.onanimationiteration = null }
+pub extern "js" fn Window::get_push_manager(self : Window) -> PushManager =
+  #| (self) => self.pushManager
 
 ///|
-pub extern "js" fn Window::set_onanimationend(
-  self : Window,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationend = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onanimationend(self : Window) -> Unit =
-  #| (self) => { self.onanimationend = null }
-
-///|
-pub extern "js" fn Window::set_onanimationcancel(
-  self : Window,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationcancel = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onanimationcancel(self : Window) -> Unit =
-  #| (self) => { self.onanimationcancel = null }
-
-///|
-pub extern "js" fn Window::set_onsnapchanged(
-  self : Window,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onsnapchanged = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onsnapchanged(self : Window) -> Unit =
-  #| (self) => { self.onsnapchanged = null }
-
-///|
-pub extern "js" fn Window::set_onsnapchanging(
-  self : Window,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onsnapchanging = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onsnapchanging(self : Window) -> Unit =
-  #| (self) => { self.onsnapchanging = null }
-
-///|
-pub extern "js" fn Window::set_ontransitionrun(
-  self : Window,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitionrun = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_ontransitionrun(self : Window) -> Unit =
-  #| (self) => { self.ontransitionrun = null }
-
-///|
-pub extern "js" fn Window::set_ontransitionstart(
-  self : Window,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitionstart = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_ontransitionstart(self : Window) -> Unit =
-  #| (self) => { self.ontransitionstart = null }
-
-///|
-pub extern "js" fn Window::set_ontransitionend(
-  self : Window,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitionend = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_ontransitionend(self : Window) -> Unit =
-  #| (self) => { self.ontransitionend = null }
-
-///|
-pub extern "js" fn Window::set_ontransitioncancel(
-  self : Window,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitioncancel = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_ontransitioncancel(self : Window) -> Unit =
-  #| (self) => { self.ontransitioncancel = null }
-
-///|
-pub extern "js" fn Window::set_onfencedtreeclick(
-  self : Window,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onfencedtreeclick = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onfencedtreeclick(self : Window) -> Unit =
-  #| (self) => { self.onfencedtreeclick = null }
+pub extern "js" fn Window::get_onabort(self : Window) -> EventHandler =
+  #| (self) => self.onabort
 
 ///|
 pub extern "js" fn Window::set_onabort(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onabort = (e) => handler(e) }
+  #| (self, value) => { self.onabort = value }
 
 ///|
-pub extern "js" fn Window::clear_onabort(self : Window) -> Unit =
-  #| (self) => { self.onabort = null }
+pub extern "js" fn Window::get_onauxclick(self : Window) -> EventHandler =
+  #| (self) => self.onauxclick
 
 ///|
 pub extern "js" fn Window::set_onauxclick(
   self : Window,
-  handler : (PointerEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onauxclick = (e) => handler(e) }
+  #| (self, value) => { self.onauxclick = value }
 
 ///|
-pub extern "js" fn Window::clear_onauxclick(self : Window) -> Unit =
-  #| (self) => { self.onauxclick = null }
+pub extern "js" fn Window::get_onbeforeinput(self : Window) -> EventHandler =
+  #| (self) => self.onbeforeinput
 
 ///|
 pub extern "js" fn Window::set_onbeforeinput(
   self : Window,
-  handler : (InputEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbeforeinput = (e) => handler(e) }
+  #| (self, value) => { self.onbeforeinput = value }
 
 ///|
-pub extern "js" fn Window::clear_onbeforeinput(self : Window) -> Unit =
-  #| (self) => { self.onbeforeinput = null }
+pub extern "js" fn Window::get_onbeforematch(self : Window) -> EventHandler =
+  #| (self) => self.onbeforematch
 
 ///|
 pub extern "js" fn Window::set_onbeforematch(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbeforematch = (e) => handler(e) }
+  #| (self, value) => { self.onbeforematch = value }
 
 ///|
-pub extern "js" fn Window::clear_onbeforematch(self : Window) -> Unit =
-  #| (self) => { self.onbeforematch = null }
+pub extern "js" fn Window::get_onbeforetoggle(self : Window) -> EventHandler =
+  #| (self) => self.onbeforetoggle
 
 ///|
 pub extern "js" fn Window::set_onbeforetoggle(
   self : Window,
-  handler : (ToggleEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbeforetoggle = (e) => handler(e) }
+  #| (self, value) => { self.onbeforetoggle = value }
 
 ///|
-pub extern "js" fn Window::clear_onbeforetoggle(self : Window) -> Unit =
-  #| (self) => { self.onbeforetoggle = null }
+pub extern "js" fn Window::get_onblur(self : Window) -> EventHandler =
+  #| (self) => self.onblur
 
 ///|
 pub extern "js" fn Window::set_onblur(
   self : Window,
-  handler : (FocusEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onblur = (e) => handler(e) }
+  #| (self, value) => { self.onblur = value }
 
 ///|
-pub extern "js" fn Window::clear_onblur(self : Window) -> Unit =
-  #| (self) => { self.onblur = null }
+pub extern "js" fn Window::get_oncancel(self : Window) -> EventHandler =
+  #| (self) => self.oncancel
 
 ///|
 pub extern "js" fn Window::set_oncancel(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncancel = (e) => handler(e) }
+  #| (self, value) => { self.oncancel = value }
 
 ///|
-pub extern "js" fn Window::clear_oncancel(self : Window) -> Unit =
-  #| (self) => { self.oncancel = null }
+pub extern "js" fn Window::get_oncanplay(self : Window) -> EventHandler =
+  #| (self) => self.oncanplay
 
 ///|
 pub extern "js" fn Window::set_oncanplay(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncanplay = (e) => handler(e) }
+  #| (self, value) => { self.oncanplay = value }
 
 ///|
-pub extern "js" fn Window::clear_oncanplay(self : Window) -> Unit =
-  #| (self) => { self.oncanplay = null }
+pub extern "js" fn Window::get_oncanplaythrough(self : Window) -> EventHandler =
+  #| (self) => self.oncanplaythrough
 
 ///|
 pub extern "js" fn Window::set_oncanplaythrough(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncanplaythrough = (e) => handler(e) }
+  #| (self, value) => { self.oncanplaythrough = value }
 
 ///|
-pub extern "js" fn Window::clear_oncanplaythrough(self : Window) -> Unit =
-  #| (self) => { self.oncanplaythrough = null }
+pub extern "js" fn Window::get_onchange(self : Window) -> EventHandler =
+  #| (self) => self.onchange
 
 ///|
 pub extern "js" fn Window::set_onchange(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onchange = (e) => handler(e) }
+  #| (self, value) => { self.onchange = value }
 
 ///|
-pub extern "js" fn Window::clear_onchange(self : Window) -> Unit =
-  #| (self) => { self.onchange = null }
+pub extern "js" fn Window::get_onclick(self : Window) -> EventHandler =
+  #| (self) => self.onclick
 
 ///|
 pub extern "js" fn Window::set_onclick(
   self : Window,
-  handler : (PointerEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onclick = (e) => handler(e) }
+  #| (self, value) => { self.onclick = value }
 
 ///|
-pub extern "js" fn Window::clear_onclick(self : Window) -> Unit =
-  #| (self) => { self.onclick = null }
+pub extern "js" fn Window::get_onclose(self : Window) -> EventHandler =
+  #| (self) => self.onclose
 
 ///|
 pub extern "js" fn Window::set_onclose(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onclose = (e) => handler(e) }
+  #| (self, value) => { self.onclose = value }
 
 ///|
-pub extern "js" fn Window::clear_onclose(self : Window) -> Unit =
-  #| (self) => { self.onclose = null }
+pub extern "js" fn Window::get_oncommand(self : Window) -> EventHandler =
+  #| (self) => self.oncommand
 
 ///|
 pub extern "js" fn Window::set_oncommand(
   self : Window,
-  handler : (CommandEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncommand = (e) => handler(e) }
+  #| (self, value) => { self.oncommand = value }
 
 ///|
-pub extern "js" fn Window::clear_oncommand(self : Window) -> Unit =
-  #| (self) => { self.oncommand = null }
+pub extern "js" fn Window::get_oncontextlost(self : Window) -> EventHandler =
+  #| (self) => self.oncontextlost
 
 ///|
 pub extern "js" fn Window::set_oncontextlost(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncontextlost = (e) => handler(e) }
+  #| (self, value) => { self.oncontextlost = value }
 
 ///|
-pub extern "js" fn Window::clear_oncontextlost(self : Window) -> Unit =
-  #| (self) => { self.oncontextlost = null }
+pub extern "js" fn Window::get_oncontextmenu(self : Window) -> EventHandler =
+  #| (self) => self.oncontextmenu
 
 ///|
 pub extern "js" fn Window::set_oncontextmenu(
   self : Window,
-  handler : (PointerEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncontextmenu = (e) => handler(e) }
+  #| (self, value) => { self.oncontextmenu = value }
 
 ///|
-pub extern "js" fn Window::clear_oncontextmenu(self : Window) -> Unit =
-  #| (self) => { self.oncontextmenu = null }
+pub extern "js" fn Window::get_oncontextrestored(self : Window) -> EventHandler =
+  #| (self) => self.oncontextrestored
 
 ///|
 pub extern "js" fn Window::set_oncontextrestored(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncontextrestored = (e) => handler(e) }
+  #| (self, value) => { self.oncontextrestored = value }
 
 ///|
-pub extern "js" fn Window::clear_oncontextrestored(self : Window) -> Unit =
-  #| (self) => { self.oncontextrestored = null }
+pub extern "js" fn Window::get_oncopy(self : Window) -> EventHandler =
+  #| (self) => self.oncopy
 
 ///|
 pub extern "js" fn Window::set_oncopy(
   self : Window,
-  handler : (ClipboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncopy = (e) => handler(e) }
+  #| (self, value) => { self.oncopy = value }
 
 ///|
-pub extern "js" fn Window::clear_oncopy(self : Window) -> Unit =
-  #| (self) => { self.oncopy = null }
+pub extern "js" fn Window::get_oncuechange(self : Window) -> EventHandler =
+  #| (self) => self.oncuechange
 
 ///|
 pub extern "js" fn Window::set_oncuechange(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncuechange = (e) => handler(e) }
+  #| (self, value) => { self.oncuechange = value }
 
 ///|
-pub extern "js" fn Window::clear_oncuechange(self : Window) -> Unit =
-  #| (self) => { self.oncuechange = null }
+pub extern "js" fn Window::get_oncut(self : Window) -> EventHandler =
+  #| (self) => self.oncut
 
 ///|
 pub extern "js" fn Window::set_oncut(
   self : Window,
-  handler : (ClipboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncut = (e) => handler(e) }
+  #| (self, value) => { self.oncut = value }
 
 ///|
-pub extern "js" fn Window::clear_oncut(self : Window) -> Unit =
-  #| (self) => { self.oncut = null }
+pub extern "js" fn Window::get_ondblclick(self : Window) -> EventHandler =
+  #| (self) => self.ondblclick
 
 ///|
 pub extern "js" fn Window::set_ondblclick(
   self : Window,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondblclick = (e) => handler(e) }
+  #| (self, value) => { self.ondblclick = value }
 
 ///|
-pub extern "js" fn Window::clear_ondblclick(self : Window) -> Unit =
-  #| (self) => { self.ondblclick = null }
+pub extern "js" fn Window::get_ondrag(self : Window) -> EventHandler =
+  #| (self) => self.ondrag
 
 ///|
 pub extern "js" fn Window::set_ondrag(
   self : Window,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondrag = (e) => handler(e) }
+  #| (self, value) => { self.ondrag = value }
 
 ///|
-pub extern "js" fn Window::clear_ondrag(self : Window) -> Unit =
-  #| (self) => { self.ondrag = null }
+pub extern "js" fn Window::get_ondragend(self : Window) -> EventHandler =
+  #| (self) => self.ondragend
 
 ///|
 pub extern "js" fn Window::set_ondragend(
   self : Window,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondragend = (e) => handler(e) }
+  #| (self, value) => { self.ondragend = value }
 
 ///|
-pub extern "js" fn Window::clear_ondragend(self : Window) -> Unit =
-  #| (self) => { self.ondragend = null }
+pub extern "js" fn Window::get_ondragenter(self : Window) -> EventHandler =
+  #| (self) => self.ondragenter
 
 ///|
 pub extern "js" fn Window::set_ondragenter(
   self : Window,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondragenter = (e) => handler(e) }
+  #| (self, value) => { self.ondragenter = value }
 
 ///|
-pub extern "js" fn Window::clear_ondragenter(self : Window) -> Unit =
-  #| (self) => { self.ondragenter = null }
+pub extern "js" fn Window::get_ondragleave(self : Window) -> EventHandler =
+  #| (self) => self.ondragleave
 
 ///|
 pub extern "js" fn Window::set_ondragleave(
   self : Window,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondragleave = (e) => handler(e) }
+  #| (self, value) => { self.ondragleave = value }
 
 ///|
-pub extern "js" fn Window::clear_ondragleave(self : Window) -> Unit =
-  #| (self) => { self.ondragleave = null }
+pub extern "js" fn Window::get_ondragover(self : Window) -> EventHandler =
+  #| (self) => self.ondragover
 
 ///|
 pub extern "js" fn Window::set_ondragover(
   self : Window,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondragover = (e) => handler(e) }
+  #| (self, value) => { self.ondragover = value }
 
 ///|
-pub extern "js" fn Window::clear_ondragover(self : Window) -> Unit =
-  #| (self) => { self.ondragover = null }
+pub extern "js" fn Window::get_ondragstart(self : Window) -> EventHandler =
+  #| (self) => self.ondragstart
 
 ///|
 pub extern "js" fn Window::set_ondragstart(
   self : Window,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondragstart = (e) => handler(e) }
+  #| (self, value) => { self.ondragstart = value }
 
 ///|
-pub extern "js" fn Window::clear_ondragstart(self : Window) -> Unit =
-  #| (self) => { self.ondragstart = null }
+pub extern "js" fn Window::get_ondrop(self : Window) -> EventHandler =
+  #| (self) => self.ondrop
 
 ///|
 pub extern "js" fn Window::set_ondrop(
   self : Window,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondrop = (e) => handler(e) }
+  #| (self, value) => { self.ondrop = value }
 
 ///|
-pub extern "js" fn Window::clear_ondrop(self : Window) -> Unit =
-  #| (self) => { self.ondrop = null }
+pub extern "js" fn Window::get_ondurationchange(self : Window) -> EventHandler =
+  #| (self) => self.ondurationchange
 
 ///|
 pub extern "js" fn Window::set_ondurationchange(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondurationchange = (e) => handler(e) }
+  #| (self, value) => { self.ondurationchange = value }
 
 ///|
-pub extern "js" fn Window::clear_ondurationchange(self : Window) -> Unit =
-  #| (self) => { self.ondurationchange = null }
+pub extern "js" fn Window::get_onemptied(self : Window) -> EventHandler =
+  #| (self) => self.onemptied
 
 ///|
 pub extern "js" fn Window::set_onemptied(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onemptied = (e) => handler(e) }
+  #| (self, value) => { self.onemptied = value }
 
 ///|
-pub extern "js" fn Window::clear_onemptied(self : Window) -> Unit =
-  #| (self) => { self.onemptied = null }
+pub extern "js" fn Window::get_onended(self : Window) -> EventHandler =
+  #| (self) => self.onended
 
 ///|
 pub extern "js" fn Window::set_onended(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onended = (e) => handler(e) }
+  #| (self, value) => { self.onended = value }
 
 ///|
-pub extern "js" fn Window::clear_onended(self : Window) -> Unit =
-  #| (self) => { self.onended = null }
+pub extern "js" fn Window::get_onerror(self : Window) -> OnErrorEventHandler =
+  #| (self) => self.onerror
 
 ///|
 pub extern "js" fn Window::set_onerror(
@@ -24949,749 +24341,866 @@ pub extern "js" fn Window::set_onerror(
   #| (self, value) => { self.onerror = value }
 
 ///|
-pub extern "js" fn Window::clear_onerror(self : Window) -> Unit =
-  #| (self) => { self.onerror = null }
+pub extern "js" fn Window::get_onfocus(self : Window) -> EventHandler =
+  #| (self) => self.onfocus
 
 ///|
 pub extern "js" fn Window::set_onfocus(
   self : Window,
-  handler : (FocusEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onfocus = (e) => handler(e) }
+  #| (self, value) => { self.onfocus = value }
 
 ///|
-pub extern "js" fn Window::clear_onfocus(self : Window) -> Unit =
-  #| (self) => { self.onfocus = null }
+pub extern "js" fn Window::get_onformdata(self : Window) -> EventHandler =
+  #| (self) => self.onformdata
 
 ///|
 pub extern "js" fn Window::set_onformdata(
   self : Window,
-  handler : (FormDataEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onformdata = (e) => handler(e) }
+  #| (self, value) => { self.onformdata = value }
 
 ///|
-pub extern "js" fn Window::clear_onformdata(self : Window) -> Unit =
-  #| (self) => { self.onformdata = null }
+pub extern "js" fn Window::get_oninput(self : Window) -> EventHandler =
+  #| (self) => self.oninput
 
 ///|
 pub extern "js" fn Window::set_oninput(
   self : Window,
-  handler : (InputEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oninput = (e) => handler(e) }
+  #| (self, value) => { self.oninput = value }
 
 ///|
-pub extern "js" fn Window::clear_oninput(self : Window) -> Unit =
-  #| (self) => { self.oninput = null }
+pub extern "js" fn Window::get_oninvalid(self : Window) -> EventHandler =
+  #| (self) => self.oninvalid
 
 ///|
 pub extern "js" fn Window::set_oninvalid(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oninvalid = (e) => handler(e) }
+  #| (self, value) => { self.oninvalid = value }
 
 ///|
-pub extern "js" fn Window::clear_oninvalid(self : Window) -> Unit =
-  #| (self) => { self.oninvalid = null }
+pub extern "js" fn Window::get_onkeydown(self : Window) -> EventHandler =
+  #| (self) => self.onkeydown
 
 ///|
 pub extern "js" fn Window::set_onkeydown(
   self : Window,
-  handler : (KeyboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onkeydown = (e) => handler(e) }
+  #| (self, value) => { self.onkeydown = value }
 
 ///|
-pub extern "js" fn Window::clear_onkeydown(self : Window) -> Unit =
-  #| (self) => { self.onkeydown = null }
+pub extern "js" fn Window::get_onkeypress(self : Window) -> EventHandler =
+  #| (self) => self.onkeypress
 
 ///|
 pub extern "js" fn Window::set_onkeypress(
   self : Window,
-  handler : (KeyboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onkeypress = (e) => handler(e) }
+  #| (self, value) => { self.onkeypress = value }
 
 ///|
-pub extern "js" fn Window::clear_onkeypress(self : Window) -> Unit =
-  #| (self) => { self.onkeypress = null }
+pub extern "js" fn Window::get_onkeyup(self : Window) -> EventHandler =
+  #| (self) => self.onkeyup
 
 ///|
 pub extern "js" fn Window::set_onkeyup(
   self : Window,
-  handler : (KeyboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onkeyup = (e) => handler(e) }
+  #| (self, value) => { self.onkeyup = value }
 
 ///|
-pub extern "js" fn Window::clear_onkeyup(self : Window) -> Unit =
-  #| (self) => { self.onkeyup = null }
+pub extern "js" fn Window::get_onload(self : Window) -> EventHandler =
+  #| (self) => self.onload
 
 ///|
 pub extern "js" fn Window::set_onload(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onload = (e) => handler(e) }
+  #| (self, value) => { self.onload = value }
 
 ///|
-pub extern "js" fn Window::clear_onload(self : Window) -> Unit =
-  #| (self) => { self.onload = null }
+pub extern "js" fn Window::get_onloadeddata(self : Window) -> EventHandler =
+  #| (self) => self.onloadeddata
 
 ///|
 pub extern "js" fn Window::set_onloadeddata(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onloadeddata = (e) => handler(e) }
+  #| (self, value) => { self.onloadeddata = value }
 
 ///|
-pub extern "js" fn Window::clear_onloadeddata(self : Window) -> Unit =
-  #| (self) => { self.onloadeddata = null }
+pub extern "js" fn Window::get_onloadedmetadata(self : Window) -> EventHandler =
+  #| (self) => self.onloadedmetadata
 
 ///|
 pub extern "js" fn Window::set_onloadedmetadata(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onloadedmetadata = (e) => handler(e) }
+  #| (self, value) => { self.onloadedmetadata = value }
 
 ///|
-pub extern "js" fn Window::clear_onloadedmetadata(self : Window) -> Unit =
-  #| (self) => { self.onloadedmetadata = null }
+pub extern "js" fn Window::get_onloadstart(self : Window) -> EventHandler =
+  #| (self) => self.onloadstart
 
 ///|
 pub extern "js" fn Window::set_onloadstart(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onloadstart = (e) => handler(e) }
+  #| (self, value) => { self.onloadstart = value }
 
 ///|
-pub extern "js" fn Window::clear_onloadstart(self : Window) -> Unit =
-  #| (self) => { self.onloadstart = null }
+pub extern "js" fn Window::get_onmousedown(self : Window) -> EventHandler =
+  #| (self) => self.onmousedown
 
 ///|
 pub extern "js" fn Window::set_onmousedown(
   self : Window,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmousedown = (e) => handler(e) }
+  #| (self, value) => { self.onmousedown = value }
 
 ///|
-pub extern "js" fn Window::clear_onmousedown(self : Window) -> Unit =
-  #| (self) => { self.onmousedown = null }
+pub extern "js" fn Window::get_onmouseenter(self : Window) -> EventHandler =
+  #| (self) => self.onmouseenter
 
 ///|
 pub extern "js" fn Window::set_onmouseenter(
   self : Window,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmouseenter = (e) => handler(e) }
+  #| (self, value) => { self.onmouseenter = value }
 
 ///|
-pub extern "js" fn Window::clear_onmouseenter(self : Window) -> Unit =
-  #| (self) => { self.onmouseenter = null }
+pub extern "js" fn Window::get_onmouseleave(self : Window) -> EventHandler =
+  #| (self) => self.onmouseleave
 
 ///|
 pub extern "js" fn Window::set_onmouseleave(
   self : Window,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmouseleave = (e) => handler(e) }
+  #| (self, value) => { self.onmouseleave = value }
 
 ///|
-pub extern "js" fn Window::clear_onmouseleave(self : Window) -> Unit =
-  #| (self) => { self.onmouseleave = null }
+pub extern "js" fn Window::get_onmousemove(self : Window) -> EventHandler =
+  #| (self) => self.onmousemove
 
 ///|
 pub extern "js" fn Window::set_onmousemove(
   self : Window,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmousemove = (e) => handler(e) }
+  #| (self, value) => { self.onmousemove = value }
 
 ///|
-pub extern "js" fn Window::clear_onmousemove(self : Window) -> Unit =
-  #| (self) => { self.onmousemove = null }
+pub extern "js" fn Window::get_onmouseout(self : Window) -> EventHandler =
+  #| (self) => self.onmouseout
 
 ///|
 pub extern "js" fn Window::set_onmouseout(
   self : Window,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmouseout = (e) => handler(e) }
+  #| (self, value) => { self.onmouseout = value }
 
 ///|
-pub extern "js" fn Window::clear_onmouseout(self : Window) -> Unit =
-  #| (self) => { self.onmouseout = null }
+pub extern "js" fn Window::get_onmouseover(self : Window) -> EventHandler =
+  #| (self) => self.onmouseover
 
 ///|
 pub extern "js" fn Window::set_onmouseover(
   self : Window,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmouseover = (e) => handler(e) }
+  #| (self, value) => { self.onmouseover = value }
 
 ///|
-pub extern "js" fn Window::clear_onmouseover(self : Window) -> Unit =
-  #| (self) => { self.onmouseover = null }
+pub extern "js" fn Window::get_onmouseup(self : Window) -> EventHandler =
+  #| (self) => self.onmouseup
 
 ///|
 pub extern "js" fn Window::set_onmouseup(
   self : Window,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmouseup = (e) => handler(e) }
+  #| (self, value) => { self.onmouseup = value }
 
 ///|
-pub extern "js" fn Window::clear_onmouseup(self : Window) -> Unit =
-  #| (self) => { self.onmouseup = null }
+pub extern "js" fn Window::get_onpaste(self : Window) -> EventHandler =
+  #| (self) => self.onpaste
 
 ///|
 pub extern "js" fn Window::set_onpaste(
   self : Window,
-  handler : (ClipboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpaste = (e) => handler(e) }
+  #| (self, value) => { self.onpaste = value }
 
 ///|
-pub extern "js" fn Window::clear_onpaste(self : Window) -> Unit =
-  #| (self) => { self.onpaste = null }
+pub extern "js" fn Window::get_onpause(self : Window) -> EventHandler =
+  #| (self) => self.onpause
 
 ///|
 pub extern "js" fn Window::set_onpause(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpause = (e) => handler(e) }
+  #| (self, value) => { self.onpause = value }
 
 ///|
-pub extern "js" fn Window::clear_onpause(self : Window) -> Unit =
-  #| (self) => { self.onpause = null }
+pub extern "js" fn Window::get_onplay(self : Window) -> EventHandler =
+  #| (self) => self.onplay
 
 ///|
 pub extern "js" fn Window::set_onplay(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onplay = (e) => handler(e) }
+  #| (self, value) => { self.onplay = value }
 
 ///|
-pub extern "js" fn Window::clear_onplay(self : Window) -> Unit =
-  #| (self) => { self.onplay = null }
+pub extern "js" fn Window::get_onplaying(self : Window) -> EventHandler =
+  #| (self) => self.onplaying
 
 ///|
 pub extern "js" fn Window::set_onplaying(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onplaying = (e) => handler(e) }
+  #| (self, value) => { self.onplaying = value }
 
 ///|
-pub extern "js" fn Window::clear_onplaying(self : Window) -> Unit =
-  #| (self) => { self.onplaying = null }
+pub extern "js" fn Window::get_onprogress(self : Window) -> EventHandler =
+  #| (self) => self.onprogress
 
 ///|
 pub extern "js" fn Window::set_onprogress(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onprogress = (e) => handler(e) }
+  #| (self, value) => { self.onprogress = value }
 
 ///|
-pub extern "js" fn Window::clear_onprogress(self : Window) -> Unit =
-  #| (self) => { self.onprogress = null }
+pub extern "js" fn Window::get_onratechange(self : Window) -> EventHandler =
+  #| (self) => self.onratechange
 
 ///|
 pub extern "js" fn Window::set_onratechange(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onratechange = (e) => handler(e) }
+  #| (self, value) => { self.onratechange = value }
 
 ///|
-pub extern "js" fn Window::clear_onratechange(self : Window) -> Unit =
-  #| (self) => { self.onratechange = null }
+pub extern "js" fn Window::get_onreset(self : Window) -> EventHandler =
+  #| (self) => self.onreset
 
 ///|
 pub extern "js" fn Window::set_onreset(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onreset = (e) => handler(e) }
+  #| (self, value) => { self.onreset = value }
 
 ///|
-pub extern "js" fn Window::clear_onreset(self : Window) -> Unit =
-  #| (self) => { self.onreset = null }
+pub extern "js" fn Window::get_onresize(self : Window) -> EventHandler =
+  #| (self) => self.onresize
 
 ///|
 pub extern "js" fn Window::set_onresize(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onresize = (e) => handler(e) }
+  #| (self, value) => { self.onresize = value }
 
 ///|
-pub extern "js" fn Window::clear_onresize(self : Window) -> Unit =
-  #| (self) => { self.onresize = null }
+pub extern "js" fn Window::get_onscroll(self : Window) -> EventHandler =
+  #| (self) => self.onscroll
 
 ///|
 pub extern "js" fn Window::set_onscroll(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onscroll = (e) => handler(e) }
+  #| (self, value) => { self.onscroll = value }
 
 ///|
-pub extern "js" fn Window::clear_onscroll(self : Window) -> Unit =
-  #| (self) => { self.onscroll = null }
+pub extern "js" fn Window::get_onscrollend(self : Window) -> EventHandler =
+  #| (self) => self.onscrollend
 
 ///|
 pub extern "js" fn Window::set_onscrollend(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onscrollend = (e) => handler(e) }
+  #| (self, value) => { self.onscrollend = value }
 
 ///|
-pub extern "js" fn Window::clear_onscrollend(self : Window) -> Unit =
-  #| (self) => { self.onscrollend = null }
+pub extern "js" fn Window::get_onsecuritypolicyviolation(
+  self : Window,
+) -> EventHandler =
+  #| (self) => self.onsecuritypolicyviolation
 
 ///|
 pub extern "js" fn Window::set_onsecuritypolicyviolation(
   self : Window,
-  handler : (SecurityPolicyViolationEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsecuritypolicyviolation = (e) => handler(e) }
+  #| (self, value) => { self.onsecuritypolicyviolation = value }
 
 ///|
-pub extern "js" fn Window::clear_onsecuritypolicyviolation(
-  self : Window,
-) -> Unit =
-  #| (self) => { self.onsecuritypolicyviolation = null }
+pub extern "js" fn Window::get_onseeked(self : Window) -> EventHandler =
+  #| (self) => self.onseeked
 
 ///|
 pub extern "js" fn Window::set_onseeked(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onseeked = (e) => handler(e) }
+  #| (self, value) => { self.onseeked = value }
 
 ///|
-pub extern "js" fn Window::clear_onseeked(self : Window) -> Unit =
-  #| (self) => { self.onseeked = null }
+pub extern "js" fn Window::get_onseeking(self : Window) -> EventHandler =
+  #| (self) => self.onseeking
 
 ///|
 pub extern "js" fn Window::set_onseeking(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onseeking = (e) => handler(e) }
+  #| (self, value) => { self.onseeking = value }
 
 ///|
-pub extern "js" fn Window::clear_onseeking(self : Window) -> Unit =
-  #| (self) => { self.onseeking = null }
+pub extern "js" fn Window::get_onselect(self : Window) -> EventHandler =
+  #| (self) => self.onselect
 
 ///|
 pub extern "js" fn Window::set_onselect(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onselect = (e) => handler(e) }
+  #| (self, value) => { self.onselect = value }
 
 ///|
-pub extern "js" fn Window::clear_onselect(self : Window) -> Unit =
-  #| (self) => { self.onselect = null }
+pub extern "js" fn Window::get_onslotchange(self : Window) -> EventHandler =
+  #| (self) => self.onslotchange
 
 ///|
 pub extern "js" fn Window::set_onslotchange(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onslotchange = (e) => handler(e) }
+  #| (self, value) => { self.onslotchange = value }
 
 ///|
-pub extern "js" fn Window::clear_onslotchange(self : Window) -> Unit =
-  #| (self) => { self.onslotchange = null }
+pub extern "js" fn Window::get_onstalled(self : Window) -> EventHandler =
+  #| (self) => self.onstalled
 
 ///|
 pub extern "js" fn Window::set_onstalled(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onstalled = (e) => handler(e) }
+  #| (self, value) => { self.onstalled = value }
 
 ///|
-pub extern "js" fn Window::clear_onstalled(self : Window) -> Unit =
-  #| (self) => { self.onstalled = null }
+pub extern "js" fn Window::get_onsubmit(self : Window) -> EventHandler =
+  #| (self) => self.onsubmit
 
 ///|
 pub extern "js" fn Window::set_onsubmit(
   self : Window,
-  handler : (SubmitEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsubmit = (e) => handler(e) }
+  #| (self, value) => { self.onsubmit = value }
 
 ///|
-pub extern "js" fn Window::clear_onsubmit(self : Window) -> Unit =
-  #| (self) => { self.onsubmit = null }
+pub extern "js" fn Window::get_onsuspend(self : Window) -> EventHandler =
+  #| (self) => self.onsuspend
 
 ///|
 pub extern "js" fn Window::set_onsuspend(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsuspend = (e) => handler(e) }
+  #| (self, value) => { self.onsuspend = value }
 
 ///|
-pub extern "js" fn Window::clear_onsuspend(self : Window) -> Unit =
-  #| (self) => { self.onsuspend = null }
+pub extern "js" fn Window::get_ontimeupdate(self : Window) -> EventHandler =
+  #| (self) => self.ontimeupdate
 
 ///|
 pub extern "js" fn Window::set_ontimeupdate(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontimeupdate = (e) => handler(e) }
+  #| (self, value) => { self.ontimeupdate = value }
 
 ///|
-pub extern "js" fn Window::clear_ontimeupdate(self : Window) -> Unit =
-  #| (self) => { self.ontimeupdate = null }
+pub extern "js" fn Window::get_ontoggle(self : Window) -> EventHandler =
+  #| (self) => self.ontoggle
 
 ///|
 pub extern "js" fn Window::set_ontoggle(
   self : Window,
-  handler : (ToggleEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontoggle = (e) => handler(e) }
+  #| (self, value) => { self.ontoggle = value }
 
 ///|
-pub extern "js" fn Window::clear_ontoggle(self : Window) -> Unit =
-  #| (self) => { self.ontoggle = null }
+pub extern "js" fn Window::get_onvolumechange(self : Window) -> EventHandler =
+  #| (self) => self.onvolumechange
 
 ///|
 pub extern "js" fn Window::set_onvolumechange(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onvolumechange = (e) => handler(e) }
+  #| (self, value) => { self.onvolumechange = value }
 
 ///|
-pub extern "js" fn Window::clear_onvolumechange(self : Window) -> Unit =
-  #| (self) => { self.onvolumechange = null }
+pub extern "js" fn Window::get_onwaiting(self : Window) -> EventHandler =
+  #| (self) => self.onwaiting
 
 ///|
 pub extern "js" fn Window::set_onwaiting(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwaiting = (e) => handler(e) }
+  #| (self, value) => { self.onwaiting = value }
 
 ///|
-pub extern "js" fn Window::clear_onwaiting(self : Window) -> Unit =
-  #| (self) => { self.onwaiting = null }
+pub extern "js" fn Window::get_onwebkitanimationend(
+  self : Window,
+) -> EventHandler =
+  #| (self) => self.onwebkitanimationend
 
 ///|
 pub extern "js" fn Window::set_onwebkitanimationend(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwebkitanimationend = (e) => handler(e) }
+  #| (self, value) => { self.onwebkitanimationend = value }
 
 ///|
-pub extern "js" fn Window::clear_onwebkitanimationend(self : Window) -> Unit =
-  #| (self) => { self.onwebkitanimationend = null }
+pub extern "js" fn Window::get_onwebkitanimationiteration(
+  self : Window,
+) -> EventHandler =
+  #| (self) => self.onwebkitanimationiteration
 
 ///|
 pub extern "js" fn Window::set_onwebkitanimationiteration(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwebkitanimationiteration = (e) => handler(e) }
+  #| (self, value) => { self.onwebkitanimationiteration = value }
 
 ///|
-pub extern "js" fn Window::clear_onwebkitanimationiteration(
+pub extern "js" fn Window::get_onwebkitanimationstart(
   self : Window,
-) -> Unit =
-  #| (self) => { self.onwebkitanimationiteration = null }
+) -> EventHandler =
+  #| (self) => self.onwebkitanimationstart
 
 ///|
 pub extern "js" fn Window::set_onwebkitanimationstart(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwebkitanimationstart = (e) => handler(e) }
+  #| (self, value) => { self.onwebkitanimationstart = value }
 
 ///|
-pub extern "js" fn Window::clear_onwebkitanimationstart(self : Window) -> Unit =
-  #| (self) => { self.onwebkitanimationstart = null }
+pub extern "js" fn Window::get_onwebkittransitionend(
+  self : Window,
+) -> EventHandler =
+  #| (self) => self.onwebkittransitionend
 
 ///|
 pub extern "js" fn Window::set_onwebkittransitionend(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwebkittransitionend = (e) => handler(e) }
+  #| (self, value) => { self.onwebkittransitionend = value }
 
 ///|
-pub extern "js" fn Window::clear_onwebkittransitionend(self : Window) -> Unit =
-  #| (self) => { self.onwebkittransitionend = null }
+pub extern "js" fn Window::get_onwheel(self : Window) -> EventHandler =
+  #| (self) => self.onwheel
 
 ///|
 pub extern "js" fn Window::set_onwheel(
   self : Window,
-  handler : (WheelEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwheel = (e) => handler(e) }
+  #| (self, value) => { self.onwheel = value }
 
 ///|
-pub extern "js" fn Window::clear_onwheel(self : Window) -> Unit =
-  #| (self) => { self.onwheel = null }
-
-///|
-pub extern "js" fn Window::set_onpointerover(
-  self : Window,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerover = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onpointerover(self : Window) -> Unit =
-  #| (self) => { self.onpointerover = null }
-
-///|
-pub extern "js" fn Window::set_onpointerenter(
-  self : Window,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerenter = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onpointerenter(self : Window) -> Unit =
-  #| (self) => { self.onpointerenter = null }
-
-///|
-pub extern "js" fn Window::set_onpointerdown(
-  self : Window,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerdown = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onpointerdown(self : Window) -> Unit =
-  #| (self) => { self.onpointerdown = null }
-
-///|
-pub extern "js" fn Window::set_onpointermove(
-  self : Window,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointermove = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onpointermove(self : Window) -> Unit =
-  #| (self) => { self.onpointermove = null }
-
-///|
-pub extern "js" fn Window::set_onpointerrawupdate(
-  self : Window,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerrawupdate = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onpointerrawupdate(self : Window) -> Unit =
-  #| (self) => { self.onpointerrawupdate = null }
-
-///|
-pub extern "js" fn Window::set_onpointerup(
-  self : Window,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerup = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onpointerup(self : Window) -> Unit =
-  #| (self) => { self.onpointerup = null }
-
-///|
-pub extern "js" fn Window::set_onpointercancel(
-  self : Window,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointercancel = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onpointercancel(self : Window) -> Unit =
-  #| (self) => { self.onpointercancel = null }
-
-///|
-pub extern "js" fn Window::set_onpointerout(
-  self : Window,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerout = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onpointerout(self : Window) -> Unit =
-  #| (self) => { self.onpointerout = null }
-
-///|
-pub extern "js" fn Window::set_onpointerleave(
-  self : Window,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerleave = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onpointerleave(self : Window) -> Unit =
-  #| (self) => { self.onpointerleave = null }
-
-///|
-pub extern "js" fn Window::set_ongotpointercapture(
-  self : Window,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ongotpointercapture = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_ongotpointercapture(self : Window) -> Unit =
-  #| (self) => { self.ongotpointercapture = null }
-
-///|
-pub extern "js" fn Window::set_onlostpointercapture(
-  self : Window,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onlostpointercapture = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onlostpointercapture(self : Window) -> Unit =
-  #| (self) => { self.onlostpointercapture = null }
-
-///|
-pub extern "js" fn Window::set_onselectstart(
-  self : Window,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onselectstart = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onselectstart(self : Window) -> Unit =
-  #| (self) => { self.onselectstart = null }
-
-///|
-pub extern "js" fn Window::set_onselectionchange(
-  self : Window,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onselectionchange = (e) => handler(e) }
-
-///|
-pub extern "js" fn Window::clear_onselectionchange(self : Window) -> Unit =
-  #| (self) => { self.onselectionchange = null }
+pub extern "js" fn Window::get_ontouchstart(self : Window) -> EventHandler =
+  #| (self) => self.ontouchstart
 
 ///|
 pub extern "js" fn Window::set_ontouchstart(
   self : Window,
-  handler : (TouchEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontouchstart = (e) => handler(e) }
+  #| (self, value) => { self.ontouchstart = value }
 
 ///|
-pub extern "js" fn Window::clear_ontouchstart(self : Window) -> Unit =
-  #| (self) => { self.ontouchstart = null }
+pub extern "js" fn Window::get_ontouchend(self : Window) -> EventHandler =
+  #| (self) => self.ontouchend
 
 ///|
 pub extern "js" fn Window::set_ontouchend(
   self : Window,
-  handler : (TouchEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontouchend = (e) => handler(e) }
+  #| (self, value) => { self.ontouchend = value }
 
 ///|
-pub extern "js" fn Window::clear_ontouchend(self : Window) -> Unit =
-  #| (self) => { self.ontouchend = null }
+pub extern "js" fn Window::get_ontouchmove(self : Window) -> EventHandler =
+  #| (self) => self.ontouchmove
 
 ///|
 pub extern "js" fn Window::set_ontouchmove(
   self : Window,
-  handler : (TouchEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontouchmove = (e) => handler(e) }
+  #| (self, value) => { self.ontouchmove = value }
 
 ///|
-pub extern "js" fn Window::clear_ontouchmove(self : Window) -> Unit =
-  #| (self) => { self.ontouchmove = null }
+pub extern "js" fn Window::get_ontouchcancel(self : Window) -> EventHandler =
+  #| (self) => self.ontouchcancel
 
 ///|
 pub extern "js" fn Window::set_ontouchcancel(
   self : Window,
-  handler : (TouchEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontouchcancel = (e) => handler(e) }
+  #| (self, value) => { self.ontouchcancel = value }
 
 ///|
-pub extern "js" fn Window::clear_ontouchcancel(self : Window) -> Unit =
-  #| (self) => { self.ontouchcancel = null }
+pub extern "js" fn Window::get_ontransitionrun(self : Window) -> EventHandler =
+  #| (self) => self.ontransitionrun
+
+///|
+pub extern "js" fn Window::set_ontransitionrun(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontransitionrun = value }
+
+///|
+pub extern "js" fn Window::get_ontransitionstart(self : Window) -> EventHandler =
+  #| (self) => self.ontransitionstart
+
+///|
+pub extern "js" fn Window::set_ontransitionstart(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontransitionstart = value }
+
+///|
+pub extern "js" fn Window::get_ontransitionend(self : Window) -> EventHandler =
+  #| (self) => self.ontransitionend
+
+///|
+pub extern "js" fn Window::set_ontransitionend(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontransitionend = value }
+
+///|
+pub extern "js" fn Window::get_ontransitioncancel(
+  self : Window,
+) -> EventHandler =
+  #| (self) => self.ontransitioncancel
+
+///|
+pub extern "js" fn Window::set_ontransitioncancel(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontransitioncancel = value }
+
+///|
+pub extern "js" fn Window::get_onsnapchanged(self : Window) -> EventHandler =
+  #| (self) => self.onsnapchanged
+
+///|
+pub extern "js" fn Window::set_onsnapchanged(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onsnapchanged = value }
+
+///|
+pub extern "js" fn Window::get_onsnapchanging(self : Window) -> EventHandler =
+  #| (self) => self.onsnapchanging
+
+///|
+pub extern "js" fn Window::set_onsnapchanging(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onsnapchanging = value }
+
+///|
+pub extern "js" fn Window::get_onanimationstart(self : Window) -> EventHandler =
+  #| (self) => self.onanimationstart
+
+///|
+pub extern "js" fn Window::set_onanimationstart(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onanimationstart = value }
+
+///|
+pub extern "js" fn Window::get_onanimationiteration(
+  self : Window,
+) -> EventHandler =
+  #| (self) => self.onanimationiteration
+
+///|
+pub extern "js" fn Window::set_onanimationiteration(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onanimationiteration = value }
+
+///|
+pub extern "js" fn Window::get_onanimationend(self : Window) -> EventHandler =
+  #| (self) => self.onanimationend
+
+///|
+pub extern "js" fn Window::set_onanimationend(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onanimationend = value }
+
+///|
+pub extern "js" fn Window::get_onanimationcancel(self : Window) -> EventHandler =
+  #| (self) => self.onanimationcancel
+
+///|
+pub extern "js" fn Window::set_onanimationcancel(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onanimationcancel = value }
+
+///|
+pub extern "js" fn Window::get_onfencedtreeclick(self : Window) -> EventHandler =
+  #| (self) => self.onfencedtreeclick
+
+///|
+pub extern "js" fn Window::set_onfencedtreeclick(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onfencedtreeclick = value }
+
+///|
+pub extern "js" fn Window::get_onpointerover(self : Window) -> EventHandler =
+  #| (self) => self.onpointerover
+
+///|
+pub extern "js" fn Window::set_onpointerover(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerover = value }
+
+///|
+pub extern "js" fn Window::get_onpointerenter(self : Window) -> EventHandler =
+  #| (self) => self.onpointerenter
+
+///|
+pub extern "js" fn Window::set_onpointerenter(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerenter = value }
+
+///|
+pub extern "js" fn Window::get_onpointerdown(self : Window) -> EventHandler =
+  #| (self) => self.onpointerdown
+
+///|
+pub extern "js" fn Window::set_onpointerdown(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerdown = value }
+
+///|
+pub extern "js" fn Window::get_onpointermove(self : Window) -> EventHandler =
+  #| (self) => self.onpointermove
+
+///|
+pub extern "js" fn Window::set_onpointermove(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointermove = value }
+
+///|
+pub extern "js" fn Window::get_onpointerrawupdate(
+  self : Window,
+) -> EventHandler =
+  #| (self) => self.onpointerrawupdate
+
+///|
+pub extern "js" fn Window::set_onpointerrawupdate(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerrawupdate = value }
+
+///|
+pub extern "js" fn Window::get_onpointerup(self : Window) -> EventHandler =
+  #| (self) => self.onpointerup
+
+///|
+pub extern "js" fn Window::set_onpointerup(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerup = value }
+
+///|
+pub extern "js" fn Window::get_onpointercancel(self : Window) -> EventHandler =
+  #| (self) => self.onpointercancel
+
+///|
+pub extern "js" fn Window::set_onpointercancel(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointercancel = value }
+
+///|
+pub extern "js" fn Window::get_onpointerout(self : Window) -> EventHandler =
+  #| (self) => self.onpointerout
+
+///|
+pub extern "js" fn Window::set_onpointerout(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerout = value }
+
+///|
+pub extern "js" fn Window::get_onpointerleave(self : Window) -> EventHandler =
+  #| (self) => self.onpointerleave
+
+///|
+pub extern "js" fn Window::set_onpointerleave(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerleave = value }
+
+///|
+pub extern "js" fn Window::get_ongotpointercapture(
+  self : Window,
+) -> EventHandler =
+  #| (self) => self.ongotpointercapture
+
+///|
+pub extern "js" fn Window::set_ongotpointercapture(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ongotpointercapture = value }
+
+///|
+pub extern "js" fn Window::get_onlostpointercapture(
+  self : Window,
+) -> EventHandler =
+  #| (self) => self.onlostpointercapture
+
+///|
+pub extern "js" fn Window::set_onlostpointercapture(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onlostpointercapture = value }
+
+///|
+pub extern "js" fn Window::get_onbeforexrselect(self : Window) -> EventHandler =
+  #| (self) => self.onbeforexrselect
 
 ///|
 pub extern "js" fn Window::set_onbeforexrselect(
   self : Window,
-  handler : (XRSessionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbeforexrselect = (e) => handler(e) }
+  #| (self, value) => { self.onbeforexrselect = value }
 
 ///|
-pub extern "js" fn Window::clear_onbeforexrselect(self : Window) -> Unit =
-  #| (self) => { self.onbeforexrselect = null }
+pub extern "js" fn Window::get_onselectstart(self : Window) -> EventHandler =
+  #| (self) => self.onselectstart
 
 ///|
-pub extern "js" fn Window::set_ongamepadconnected(
+pub extern "js" fn Window::set_onselectstart(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ongamepadconnected = (e) => handler(e) }
+  #| (self, value) => { self.onselectstart = value }
 
 ///|
-pub extern "js" fn Window::clear_ongamepadconnected(self : Window) -> Unit =
-  #| (self) => { self.ongamepadconnected = null }
+pub extern "js" fn Window::get_onselectionchange(self : Window) -> EventHandler =
+  #| (self) => self.onselectionchange
 
 ///|
-pub extern "js" fn Window::set_ongamepaddisconnected(
+pub extern "js" fn Window::set_onselectionchange(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ongamepaddisconnected = (e) => handler(e) }
+  #| (self, value) => { self.onselectionchange = value }
 
 ///|
-pub extern "js" fn Window::clear_ongamepaddisconnected(self : Window) -> Unit =
-  #| (self) => { self.ongamepaddisconnected = null }
+pub extern "js" fn Window::get_onafterprint(self : Window) -> EventHandler =
+  #| (self) => self.onafterprint
 
 ///|
 pub extern "js" fn Window::set_onafterprint(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onafterprint = (e) => handler(e) }
+  #| (self, value) => { self.onafterprint = value }
 
 ///|
-pub extern "js" fn Window::clear_onafterprint(self : Window) -> Unit =
-  #| (self) => { self.onafterprint = null }
+pub extern "js" fn Window::get_onbeforeprint(self : Window) -> EventHandler =
+  #| (self) => self.onbeforeprint
 
 ///|
 pub extern "js" fn Window::set_onbeforeprint(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbeforeprint = (e) => handler(e) }
+  #| (self, value) => { self.onbeforeprint = value }
 
 ///|
-pub extern "js" fn Window::clear_onbeforeprint(self : Window) -> Unit =
-  #| (self) => { self.onbeforeprint = null }
+pub extern "js" fn Window::get_onbeforeunload(
+  self : Window,
+) -> OnBeforeUnloadEventHandler =
+  #| (self) => self.onbeforeunload
 
 ///|
 pub extern "js" fn Window::set_onbeforeunload(
@@ -25701,216 +25210,214 @@ pub extern "js" fn Window::set_onbeforeunload(
   #| (self, value) => { self.onbeforeunload = value }
 
 ///|
-pub extern "js" fn Window::clear_onbeforeunload(self : Window) -> Unit =
-  #| (self) => { self.onbeforeunload = null }
+pub extern "js" fn Window::get_onhashchange(self : Window) -> EventHandler =
+  #| (self) => self.onhashchange
 
 ///|
 pub extern "js" fn Window::set_onhashchange(
   self : Window,
-  handler : (HashChangeEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onhashchange = (e) => handler(e) }
+  #| (self, value) => { self.onhashchange = value }
 
 ///|
-pub extern "js" fn Window::clear_onhashchange(self : Window) -> Unit =
-  #| (self) => { self.onhashchange = null }
+pub extern "js" fn Window::get_onlanguagechange(self : Window) -> EventHandler =
+  #| (self) => self.onlanguagechange
 
 ///|
 pub extern "js" fn Window::set_onlanguagechange(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onlanguagechange = (e) => handler(e) }
+  #| (self, value) => { self.onlanguagechange = value }
 
 ///|
-pub extern "js" fn Window::clear_onlanguagechange(self : Window) -> Unit =
-  #| (self) => { self.onlanguagechange = null }
+pub extern "js" fn Window::get_onmessage(self : Window) -> EventHandler =
+  #| (self) => self.onmessage
 
 ///|
 pub extern "js" fn Window::set_onmessage(
   self : Window,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessage = (e) => handler(e) }
+  #| (self, value) => { self.onmessage = value }
 
 ///|
-pub extern "js" fn Window::clear_onmessage(self : Window) -> Unit =
-  #| (self) => { self.onmessage = null }
+pub extern "js" fn Window::get_onmessageerror(self : Window) -> EventHandler =
+  #| (self) => self.onmessageerror
 
 ///|
 pub extern "js" fn Window::set_onmessageerror(
   self : Window,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessageerror = (e) => handler(e) }
+  #| (self, value) => { self.onmessageerror = value }
 
 ///|
-pub extern "js" fn Window::clear_onmessageerror(self : Window) -> Unit =
-  #| (self) => { self.onmessageerror = null }
+pub extern "js" fn Window::get_onoffline(self : Window) -> EventHandler =
+  #| (self) => self.onoffline
 
 ///|
 pub extern "js" fn Window::set_onoffline(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onoffline = (e) => handler(e) }
+  #| (self, value) => { self.onoffline = value }
 
 ///|
-pub extern "js" fn Window::clear_onoffline(self : Window) -> Unit =
-  #| (self) => { self.onoffline = null }
+pub extern "js" fn Window::get_ononline(self : Window) -> EventHandler =
+  #| (self) => self.ononline
 
 ///|
 pub extern "js" fn Window::set_ononline(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ononline = (e) => handler(e) }
+  #| (self, value) => { self.ononline = value }
 
 ///|
-pub extern "js" fn Window::clear_ononline(self : Window) -> Unit =
-  #| (self) => { self.ononline = null }
+pub extern "js" fn Window::get_onpagehide(self : Window) -> EventHandler =
+  #| (self) => self.onpagehide
 
 ///|
 pub extern "js" fn Window::set_onpagehide(
   self : Window,
-  handler : (PageTransitionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpagehide = (e) => handler(e) }
+  #| (self, value) => { self.onpagehide = value }
 
 ///|
-pub extern "js" fn Window::clear_onpagehide(self : Window) -> Unit =
-  #| (self) => { self.onpagehide = null }
+pub extern "js" fn Window::get_onpagereveal(self : Window) -> EventHandler =
+  #| (self) => self.onpagereveal
 
 ///|
 pub extern "js" fn Window::set_onpagereveal(
   self : Window,
-  handler : (PageRevealEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpagereveal = (e) => handler(e) }
+  #| (self, value) => { self.onpagereveal = value }
 
 ///|
-pub extern "js" fn Window::clear_onpagereveal(self : Window) -> Unit =
-  #| (self) => { self.onpagereveal = null }
+pub extern "js" fn Window::get_onpageshow(self : Window) -> EventHandler =
+  #| (self) => self.onpageshow
 
 ///|
 pub extern "js" fn Window::set_onpageshow(
   self : Window,
-  handler : (PageTransitionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpageshow = (e) => handler(e) }
+  #| (self, value) => { self.onpageshow = value }
 
 ///|
-pub extern "js" fn Window::clear_onpageshow(self : Window) -> Unit =
-  #| (self) => { self.onpageshow = null }
+pub extern "js" fn Window::get_onpageswap(self : Window) -> EventHandler =
+  #| (self) => self.onpageswap
 
 ///|
 pub extern "js" fn Window::set_onpageswap(
   self : Window,
-  handler : (PageSwapEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpageswap = (e) => handler(e) }
+  #| (self, value) => { self.onpageswap = value }
 
 ///|
-pub extern "js" fn Window::clear_onpageswap(self : Window) -> Unit =
-  #| (self) => { self.onpageswap = null }
+pub extern "js" fn Window::get_onpopstate(self : Window) -> EventHandler =
+  #| (self) => self.onpopstate
 
 ///|
 pub extern "js" fn Window::set_onpopstate(
   self : Window,
-  handler : (PopStateEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpopstate = (e) => handler(e) }
+  #| (self, value) => { self.onpopstate = value }
 
 ///|
-pub extern "js" fn Window::clear_onpopstate(self : Window) -> Unit =
-  #| (self) => { self.onpopstate = null }
+pub extern "js" fn Window::get_onrejectionhandled(
+  self : Window,
+) -> EventHandler =
+  #| (self) => self.onrejectionhandled
 
 ///|
 pub extern "js" fn Window::set_onrejectionhandled(
   self : Window,
-  handler : (PromiseRejectionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onrejectionhandled = (e) => handler(e) }
+  #| (self, value) => { self.onrejectionhandled = value }
 
 ///|
-pub extern "js" fn Window::clear_onrejectionhandled(self : Window) -> Unit =
-  #| (self) => { self.onrejectionhandled = null }
+pub extern "js" fn Window::get_onstorage(self : Window) -> EventHandler =
+  #| (self) => self.onstorage
 
 ///|
 pub extern "js" fn Window::set_onstorage(
   self : Window,
-  handler : (StorageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onstorage = (e) => handler(e) }
+  #| (self, value) => { self.onstorage = value }
 
 ///|
-pub extern "js" fn Window::clear_onstorage(self : Window) -> Unit =
-  #| (self) => { self.onstorage = null }
+pub extern "js" fn Window::get_onunhandledrejection(
+  self : Window,
+) -> EventHandler =
+  #| (self) => self.onunhandledrejection
 
 ///|
 pub extern "js" fn Window::set_onunhandledrejection(
   self : Window,
-  handler : (PromiseRejectionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onunhandledrejection = (e) => handler(e) }
+  #| (self, value) => { self.onunhandledrejection = value }
 
 ///|
-pub extern "js" fn Window::clear_onunhandledrejection(self : Window) -> Unit =
-  #| (self) => { self.onunhandledrejection = null }
+pub extern "js" fn Window::get_onunload(self : Window) -> EventHandler =
+  #| (self) => self.onunload
 
 ///|
 pub extern "js" fn Window::set_onunload(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onunload = (e) => handler(e) }
+  #| (self, value) => { self.onunload = value }
 
 ///|
-pub extern "js" fn Window::clear_onunload(self : Window) -> Unit =
-  #| (self) => { self.onunload = null }
+pub extern "js" fn Window::get_onportalactivate(self : Window) -> EventHandler =
+  #| (self) => self.onportalactivate
 
 ///|
 pub extern "js" fn Window::set_onportalactivate(
   self : Window,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onportalactivate = (e) => handler(e) }
+  #| (self, value) => { self.onportalactivate = value }
 
 ///|
-pub extern "js" fn Window::clear_onportalactivate(self : Window) -> Unit =
-  #| (self) => { self.onportalactivate = null }
-
-///|
-pub extern "js" fn Window::get_indexed_db(self : Window) -> IDBFactory =
-  #| (self) => self.indexedDB
-
-///|
-pub extern "js" fn Window::fetch(
+pub extern "js" fn Window::get_ongamepadconnected(
   self : Window,
-  input : RequestInfo,
-) -> Promise[Result[Response, WindowFetchError]] =
-  #| (self, input) => self.fetch(input).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> EventHandler =
+  #| (self) => self.ongamepadconnected
 
 ///|
-extern "js" fn Window::fetch_with_init_ffi(
+pub extern "js" fn Window::set_ongamepadconnected(
   self : Window,
-  input : RequestInfo,
-  init_ : JsValue,
-) -> Promise[Result[Response, WindowFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ongamepadconnected = value }
 
 ///|
-pub fn Window::fetch_with_init(
+pub extern "js" fn Window::get_ongamepaddisconnected(
   self : Window,
-  input : RequestInfo,
-  init_ : RequestInit,
-) -> Promise[Result[Response, WindowFetchError]] {
-  Window::fetch_with_init_ffi(self, input, init_.to_js())
-}
+) -> EventHandler =
+  #| (self) => self.ongamepaddisconnected
 
 ///|
-pub extern "js" fn Window::get_performance(self : Window) -> Performance =
-  #| (self) => self.performance
+pub extern "js" fn Window::set_ongamepaddisconnected(
+  self : Window,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ongamepaddisconnected = value }
+
+///|
+pub extern "js" fn Window::get_scheduler(self : Window) -> Scheduler =
+  #| (self) => self.scheduler
 
 ///|
 pub extern "js" fn Window::get_origin(self : Window) -> String =
@@ -25929,25 +25436,19 @@ pub extern "js" fn Window::report_error(self : Window, e : JsValue) -> Unit =
   #| (self, e) => self.reportError(e)
 
 ///|
-pub extern "js" fn Window::btoa(
-  self : Window,
-  data : String,
-) -> Result[String, WindowBtoaError] =
-  #| (self, data) => (() => { try { return { $tag: 1, _0: self.btoa(data) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidCharacterError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn Window::btoa(self : Window, data : String) -> String =
+  #| (self, data) => self.btoa(data)
 
 ///|
-pub extern "js" fn Window::atob(
-  self : Window,
-  data : String,
-) -> Result[String, WindowAtobError] =
-  #| (self, data) => (() => { try { return { $tag: 1, _0: self.atob(data) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidCharacterError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn Window::atob(self : Window, data : String) -> String =
+  #| (self, data) => self.atob(data)
 
 ///|
 pub extern "js" fn Window::set_timeout(
   self : Window,
   handler : TimerHandler,
-) -> Result[Int, WindowSetTimeoutError] =
-  #| (self, handler) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler) => self.setTimeout(handler)
 
 ///|
 pub extern "js" fn Window::set_timeout_with_arguments(
@@ -25955,8 +25456,8 @@ pub extern "js" fn Window::set_timeout_with_arguments(
   handler : TimerHandler,
   timeout : Int,
   arguments : JsValue,
-) -> Result[Int, WindowSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
 
 ///|
 pub extern "js" fn Window::clear_timeout(self : Window) -> Unit =
@@ -25973,8 +25474,8 @@ pub extern "js" fn Window::clear_timeout_with_id(
 pub extern "js" fn Window::set_interval(
   self : Window,
   handler : TimerHandler,
-) -> Result[Int, WindowSetIntervalError] =
-  #| (self, handler) => (() => { try { return { $tag: 1, _0: self.setInterval(handler) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler) => self.setInterval(handler)
 
 ///|
 pub extern "js" fn Window::set_interval_with_arguments(
@@ -25982,8 +25483,8 @@ pub extern "js" fn Window::set_interval_with_arguments(
   handler : TimerHandler,
   timeout : Int,
   arguments : JsValue,
-) -> Result[Int, WindowSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
 
 ///|
 pub extern "js" fn Window::clear_interval(self : Window) -> Unit =
@@ -26075,33 +25576,25 @@ pub fn Window::create_image_bitmap_with_image_image_bitmap_source_and_sx_and_sy_
 pub extern "js" fn Window::structured_clone(
   self : Window,
   value : JsValue,
-) -> Result[JsValue, WindowStructuredCloneError] =
-  #| (self, value) => (() => { try { return { $tag: 1, _0: self.structuredClone(value) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> JsValue =
+  #| (self, value) => self.structuredClone(value)
 
 ///|
 extern "js" fn Window::structured_clone_with_options_ffi(
   self : Window,
   value : JsValue,
   options : JsValue,
-) -> Result[JsValue, WindowStructuredCloneError] =
-  #| (self, value, options) => (() => { try { return { $tag: 1, _0: self.structuredClone(value, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> JsValue =
+  #| (self, value, options) => self.structuredClone(value, options)
 
 ///|
 pub fn Window::structured_clone_with_options(
   self : Window,
   value : JsValue,
   options : StructuredSerializeOptions,
-) -> Result[JsValue, WindowStructuredCloneError] {
+) -> JsValue {
   Window::structured_clone_with_options_ffi(self, value, options.to_js())
 }
-
-///|
-pub extern "js" fn Window::get_scheduler(self : Window) -> Scheduler =
-  #| (self) => self.scheduler
-
-///|
-pub extern "js" fn Window::get_caches(self : Window) -> CacheStorage =
-  #| (self) => self.caches
 
 ///|
 pub extern "js" fn Window::get_trusted_types(
@@ -26110,8 +25603,44 @@ pub extern "js" fn Window::get_trusted_types(
   #| (self) => self.trustedTypes
 
 ///|
+pub extern "js" fn Window::get_indexed_db(self : Window) -> IDBFactory =
+  #| (self) => self.indexedDB
+
+///|
 pub extern "js" fn Window::get_crypto(self : Window) -> Crypto =
   #| (self) => self.crypto
+
+///|
+pub extern "js" fn Window::get_performance(self : Window) -> Performance =
+  #| (self) => self.performance
+
+///|
+pub extern "js" fn Window::get_caches(self : Window) -> CacheStorage =
+  #| (self) => self.caches
+
+///|
+pub extern "js" fn Window::fetch(
+  self : Window,
+  input : RequestInfo,
+) -> Promise[Response] =
+  #| (self, input) => self.fetch(input)
+
+///|
+extern "js" fn Window::fetch_with_init_ffi(
+  self : Window,
+  input : RequestInfo,
+  init_ : JsValue,
+) -> Promise[Response] =
+  #| (self, input, init_) => self.fetch(input, init_)
+
+///|
+pub fn Window::fetch_with_init(
+  self : Window,
+  input : RequestInfo,
+  init_ : RequestInit,
+) -> Promise[Response] {
+  Window::fetch_with_init_ffi(self, input, init_.to_js())
+}
 
 ///|
 pub extern "js" fn Window::request_animation_frame(
@@ -26136,40 +25665,20 @@ pub extern "js" fn Window::get_local_storage(self : Window) -> Storage =
   #| (self) => self.localStorage
 
 ///|
-pub extern "js" fn Window::get_push_manager(self : Window) -> PushManager =
-  #| (self) => self.pushManager
-
-///|
 pub extern "js" fn Window::fetch_later_with_request(
   self : Window,
   input : Request,
   init_ : DeferredRequestInit,
-) -> Result[FetchLaterResult, WindowFetchLaterError] =
-  #| (self, input, init_) => (() => { try { return { $tag: 1, _0: self.fetchLater(input, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> FetchLaterResult =
+  #| (self, input, init_) => self.fetchLater(input, init_)
 
 ///|
 pub extern "js" fn Window::fetch_later_with_string(
   self : Window,
   input : String,
   init_ : DeferredRequestInit,
-) -> Result[FetchLaterResult, WindowFetchLaterError] =
-  #| (self, input, init_) => (() => { try { return { $tag: 1, _0: self.fetchLater(input, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Window::fetch_with_request(
-  self : Window,
-  input : Request,
-  init_ : RequestInit,
-) -> Promise[Result[Response, WindowFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
-
-///|
-pub extern "js" fn Window::fetch_with_string(
-  self : Window,
-  input : String,
-  init_ : RequestInit,
-) -> Promise[Result[Response, WindowFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> FetchLaterResult =
+  #| (self, input, init_) => self.fetchLater(input, init_)
 
 ///|
 pub extern "js" fn Window::set_timeout_with_string(
@@ -26177,8 +25686,8 @@ pub extern "js" fn Window::set_timeout_with_string(
   handler : String,
   timeout : Int,
   arguments : JsValue,
-) -> Result[Int, WindowSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
 
 ///|
 pub extern "js" fn Window::set_timeout_with_function(
@@ -26186,8 +25695,8 @@ pub extern "js" fn Window::set_timeout_with_function(
   handler : Function,
   timeout : Int,
   arguments : JsValue,
-) -> Result[Int, WindowSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
 
 ///|
 pub extern "js" fn Window::set_timeout_with_trusted_script(
@@ -26195,8 +25704,8 @@ pub extern "js" fn Window::set_timeout_with_trusted_script(
   handler : TrustedScript,
   timeout : Int,
   arguments : JsValue,
-) -> Result[Int, WindowSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
 
 ///|
 pub extern "js" fn Window::set_interval_with_string(
@@ -26204,8 +25713,8 @@ pub extern "js" fn Window::set_interval_with_string(
   handler : String,
   timeout : Int,
   arguments : JsValue,
-) -> Result[Int, WindowSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
 
 ///|
 pub extern "js" fn Window::set_interval_with_function(
@@ -26213,8 +25722,8 @@ pub extern "js" fn Window::set_interval_with_function(
   handler : Function,
   timeout : Int,
   arguments : JsValue,
-) -> Result[Int, WindowSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
 
 ///|
 pub extern "js" fn Window::set_interval_with_trusted_script(
@@ -26222,8 +25731,8 @@ pub extern "js" fn Window::set_interval_with_trusted_script(
   handler : TrustedScript,
   timeout : Int,
   arguments : JsValue,
-) -> Result[Int, WindowSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
 
 ///|
 pub extern "js" fn Window::create_image_bitmap_with_canvas_image_source(
@@ -26248,6 +25757,22 @@ pub extern "js" fn Window::create_image_bitmap_with_image_data(
   options : ImageBitmapOptions,
 ) -> Promise[ImageBitmap] =
   #| (self, image, options) => self.createImageBitmap(image, options)
+
+///|
+pub extern "js" fn Window::fetch_with_request(
+  self : Window,
+  input : Request,
+  init_ : RequestInit,
+) -> Promise[Response] =
+  #| (self, input, init_) => self.fetch(input, init_)
+
+///|
+pub extern "js" fn Window::fetch_with_string(
+  self : Window,
+  input : String,
+  init_ : RequestInit,
+) -> Promise[Response] =
+  #| (self, input, init_) => self.fetch(input, init_)
 
 ///|
 /// BarProp interface
@@ -26308,29 +25833,6 @@ pub extern "js" fn JsValue::as_location(self : JsValue) -> Location? =
 /// Cast JsValue to Location (unchecked)
 pub extern "js" fn JsValue::to_location(self : JsValue) -> Location =
   #| (self) => self
-
-///|
-/// Error type for throwing methods
-pub(all) enum LocationAssignError {
-  SyntaxError(JsError)
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum LocationReplaceError {
-  SyntaxError(JsError)
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum LocationReloadError {
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
 
 ///|
 pub extern "js" fn Location::get_href(self : Location) -> String =
@@ -26413,24 +25915,16 @@ pub extern "js" fn Location::set_hash(self : Location, value : String) -> Unit =
   #| (self, value) => { self.hash = value }
 
 ///|
-pub extern "js" fn Location::assign(
-  self : Location,
-  url : String,
-) -> Result[Unit, LocationAssignError] =
-  #| (self, url) => (() => { try { self.assign(url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+pub extern "js" fn Location::assign(self : Location, url : String) -> Unit =
+  #| (self, url) => self.assign(url)
 
 ///|
-pub extern "js" fn Location::replace(
-  self : Location,
-  url : String,
-) -> Result[Unit, LocationReplaceError] =
-  #| (self, url) => (() => { try { self.replace(url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+pub extern "js" fn Location::replace(self : Location, url : String) -> Unit =
+  #| (self, url) => self.replace(url)
 
 ///|
-pub extern "js" fn Location::reload(
-  self : Location,
-) -> Result[Unit, LocationReloadError] =
-  #| (self) => (() => { try { self.reload(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn Location::reload(self : Location) -> Unit =
+  #| (self) => self.reload()
 
 ///|
 pub extern "js" fn Location::get_ancestor_origins(
@@ -26467,43 +25961,6 @@ pub extern "js" fn JsValue::to_history(self : JsValue) -> History =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum HistoryGoError {
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HistoryBackError {
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HistoryForwardError {
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HistoryPushStateError {
-  SecurityError(JsError)
-  DataCloneError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum HistoryReplaceStateError {
-  SecurityError(JsError)
-  DataCloneError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn History::get_length(self : History) -> Int =
   #| (self) => self.length
 
@@ -26525,35 +25982,28 @@ pub extern "js" fn History::get_state(self : History) -> JsValue =
   #| (self) => self.state
 
 ///|
-pub extern "js" fn History::go(self : History) -> Result[Unit, HistoryGoError] =
-  #| (self) => (() => { try { self.go(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn History::go(self : History) -> Unit =
+  #| (self) => self.go()
 
 ///|
-pub extern "js" fn History::go_with_delta(
-  self : History,
-  delta : Int,
-) -> Result[Unit, HistoryGoError] =
-  #| (self, delta) => (() => { try { self.go(delta); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn History::go_with_delta(self : History, delta : Int) -> Unit =
+  #| (self, delta) => self.go(delta)
 
 ///|
-pub extern "js" fn History::back(
-  self : History,
-) -> Result[Unit, HistoryBackError] =
-  #| (self) => (() => { try { self.back(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn History::back(self : History) -> Unit =
+  #| (self) => self.back()
 
 ///|
-pub extern "js" fn History::forward(
-  self : History,
-) -> Result[Unit, HistoryForwardError] =
-  #| (self) => (() => { try { self.forward(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn History::forward(self : History) -> Unit =
+  #| (self) => self.forward()
 
 ///|
 pub extern "js" fn History::push_state(
   self : History,
   data : JsValue,
   unused : String,
-) -> Result[Unit, HistoryPushStateError] =
-  #| (self, data, unused) => (() => { try { self.pushState(data, unused); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, data, unused) => self.pushState(data, unused)
 
 ///|
 pub extern "js" fn History::push_state_with_url(
@@ -26561,16 +26011,16 @@ pub extern "js" fn History::push_state_with_url(
   data : JsValue,
   unused : String,
   url : String?,
-) -> Result[Unit, HistoryPushStateError] =
-  #| (self, data, unused, url) => (() => { try { self.pushState(data, unused, url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, data, unused, url) => self.pushState(data, unused, url)
 
 ///|
 pub extern "js" fn History::replace_state(
   self : History,
   data : JsValue,
   unused : String,
-) -> Result[Unit, HistoryReplaceStateError] =
-  #| (self, data, unused) => (() => { try { self.replaceState(data, unused); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, data, unused) => self.replaceState(data, unused)
 
 ///|
 pub extern "js" fn History::replace_state_with_url(
@@ -26578,8 +26028,8 @@ pub extern "js" fn History::replace_state_with_url(
   data : JsValue,
   unused : String,
   url : String?,
-) -> Result[Unit, HistoryReplaceStateError] =
-  #| (self, data, unused, url) => (() => { try { self.replaceState(data, unused, url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, data, unused, url) => self.replaceState(data, unused, url)
 
 ///|
 /// Navigation interface
@@ -26616,52 +26066,6 @@ pub extern "js" fn Navigation::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NavigationUpdateCurrentEntryError {
-  DataCloneError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum NavigationNavigateError {
-  SyntaxError(JsError)
-  DataCloneError(JsError)
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum NavigationReloadError {
-  DataCloneError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum NavigationTraverseToError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum NavigationBackError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum NavigationForwardError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn Navigation::entries(
   self : Navigation,
 ) -> Array[NavigationHistoryEntry] =
@@ -26677,14 +26081,14 @@ pub extern "js" fn Navigation::get_current_entry(
 extern "js" fn Navigation::update_current_entry_ffi(
   self : Navigation,
   options : JsValue,
-) -> Result[Unit, NavigationUpdateCurrentEntryError] =
-  #| (self, options) => (() => { try { self.updateCurrentEntry(options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, options) => self.updateCurrentEntry(options)
 
 ///|
 pub fn Navigation::update_current_entry(
   self : Navigation,
   options : NavigationUpdateCurrentEntryOptions,
-) -> Result[Unit, NavigationUpdateCurrentEntryError] {
+) -> Unit {
   Navigation::update_current_entry_ffi(self, options.to_js())
 }
 
@@ -26712,44 +26116,42 @@ pub extern "js" fn Navigation::get_can_go_forward(self : Navigation) -> Bool =
 pub extern "js" fn Navigation::navigate(
   self : Navigation,
   url : String,
-) -> Result[NavigationResult, NavigationNavigateError] =
-  #| (self, url) => (() => { try { return { $tag: 1, _0: self.navigate(url) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
+) -> NavigationResult =
+  #| (self, url) => self.navigate(url)
 
 ///|
 extern "js" fn Navigation::navigate_with_options_ffi(
   self : Navigation,
   url : String,
   options : JsValue,
-) -> Result[NavigationResult, NavigationNavigateError] =
-  #| (self, url, options) => (() => { try { return { $tag: 1, _0: self.navigate(url, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
+) -> NavigationResult =
+  #| (self, url, options) => self.navigate(url, options)
 
 ///|
 pub fn Navigation::navigate_with_options(
   self : Navigation,
   url : String,
   options : NavigationNavigateOptions,
-) -> Result[NavigationResult, NavigationNavigateError] {
+) -> NavigationResult {
   Navigation::navigate_with_options_ffi(self, url, options.to_js())
 }
 
 ///|
-pub extern "js" fn Navigation::reload(
-  self : Navigation,
-) -> Result[NavigationResult, NavigationReloadError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.reload() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn Navigation::reload(self : Navigation) -> NavigationResult =
+  #| (self) => self.reload()
 
 ///|
 extern "js" fn Navigation::reload_with_options_ffi(
   self : Navigation,
   options : JsValue,
-) -> Result[NavigationResult, NavigationReloadError] =
-  #| (self, options) => (() => { try { return { $tag: 1, _0: self.reload(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> NavigationResult =
+  #| (self, options) => self.reload(options)
 
 ///|
 pub fn Navigation::reload_with_options(
   self : Navigation,
   options : NavigationReloadOptions,
-) -> Result[NavigationResult, NavigationReloadError] {
+) -> NavigationResult {
   Navigation::reload_with_options_ffi(self, options.to_js())
 }
 
@@ -26757,115 +26159,115 @@ pub fn Navigation::reload_with_options(
 pub extern "js" fn Navigation::traverse_to(
   self : Navigation,
   key : String,
-) -> Result[NavigationResult, NavigationTraverseToError] =
-  #| (self, key) => (() => { try { return { $tag: 1, _0: self.traverseTo(key) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> NavigationResult =
+  #| (self, key) => self.traverseTo(key)
 
 ///|
 extern "js" fn Navigation::traverse_to_with_options_ffi(
   self : Navigation,
   key : String,
   options : JsValue,
-) -> Result[NavigationResult, NavigationTraverseToError] =
-  #| (self, key, options) => (() => { try { return { $tag: 1, _0: self.traverseTo(key, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> NavigationResult =
+  #| (self, key, options) => self.traverseTo(key, options)
 
 ///|
 pub fn Navigation::traverse_to_with_options(
   self : Navigation,
   key : String,
   options : NavigationOptions,
-) -> Result[NavigationResult, NavigationTraverseToError] {
+) -> NavigationResult {
   Navigation::traverse_to_with_options_ffi(self, key, options.to_js())
 }
 
 ///|
-pub extern "js" fn Navigation::back(
-  self : Navigation,
-) -> Result[NavigationResult, NavigationBackError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.back() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn Navigation::back(self : Navigation) -> NavigationResult =
+  #| (self) => self.back()
 
 ///|
 extern "js" fn Navigation::back_with_options_ffi(
   self : Navigation,
   options : JsValue,
-) -> Result[NavigationResult, NavigationBackError] =
-  #| (self, options) => (() => { try { return { $tag: 1, _0: self.back(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> NavigationResult =
+  #| (self, options) => self.back(options)
 
 ///|
 pub fn Navigation::back_with_options(
   self : Navigation,
   options : NavigationOptions,
-) -> Result[NavigationResult, NavigationBackError] {
+) -> NavigationResult {
   Navigation::back_with_options_ffi(self, options.to_js())
 }
 
 ///|
-pub extern "js" fn Navigation::forward(
-  self : Navigation,
-) -> Result[NavigationResult, NavigationForwardError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.forward() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn Navigation::forward(self : Navigation) -> NavigationResult =
+  #| (self) => self.forward()
 
 ///|
 extern "js" fn Navigation::forward_with_options_ffi(
   self : Navigation,
   options : JsValue,
-) -> Result[NavigationResult, NavigationForwardError] =
-  #| (self, options) => (() => { try { return { $tag: 1, _0: self.forward(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> NavigationResult =
+  #| (self, options) => self.forward(options)
 
 ///|
 pub fn Navigation::forward_with_options(
   self : Navigation,
   options : NavigationOptions,
-) -> Result[NavigationResult, NavigationForwardError] {
+) -> NavigationResult {
   Navigation::forward_with_options_ffi(self, options.to_js())
 }
 
 ///|
-pub extern "js" fn Navigation::set_onnavigate(
+pub extern "js" fn Navigation::get_onnavigate(
   self : Navigation,
-  handler : (NavigateEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onnavigate = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onnavigate
 
 ///|
-pub extern "js" fn Navigation::clear_onnavigate(self : Navigation) -> Unit =
-  #| (self) => { self.onnavigate = null }
+pub extern "js" fn Navigation::set_onnavigate(
+  self : Navigation,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onnavigate = value }
+
+///|
+pub extern "js" fn Navigation::get_onnavigatesuccess(
+  self : Navigation,
+) -> EventHandler =
+  #| (self) => self.onnavigatesuccess
 
 ///|
 pub extern "js" fn Navigation::set_onnavigatesuccess(
   self : Navigation,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onnavigatesuccess = (e) => handler(e) }
+  #| (self, value) => { self.onnavigatesuccess = value }
 
 ///|
-pub extern "js" fn Navigation::clear_onnavigatesuccess(
+pub extern "js" fn Navigation::get_onnavigateerror(
   self : Navigation,
-) -> Unit =
-  #| (self) => { self.onnavigatesuccess = null }
+) -> EventHandler =
+  #| (self) => self.onnavigateerror
 
 ///|
 pub extern "js" fn Navigation::set_onnavigateerror(
   self : Navigation,
-  handler : (ErrorEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onnavigateerror = (e) => handler(e) }
+  #| (self, value) => { self.onnavigateerror = value }
 
 ///|
-pub extern "js" fn Navigation::clear_onnavigateerror(self : Navigation) -> Unit =
-  #| (self) => { self.onnavigateerror = null }
+pub extern "js" fn Navigation::get_oncurrententrychange(
+  self : Navigation,
+) -> EventHandler =
+  #| (self) => self.oncurrententrychange
 
 ///|
 pub extern "js" fn Navigation::set_oncurrententrychange(
   self : Navigation,
-  handler : (NavigationCurrentEntryChangeEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncurrententrychange = (e) => handler(e) }
-
-///|
-pub extern "js" fn Navigation::clear_oncurrententrychange(
-  self : Navigation,
-) -> Unit =
-  #| (self) => { self.oncurrententrychange = null }
+  #| (self, value) => { self.oncurrententrychange = value }
 
 ///|
 /// NavigationHistoryEntry interface
@@ -26948,17 +26350,17 @@ pub extern "js" fn NavigationHistoryEntry::get_state(
   #| (self) => self.getState()
 
 ///|
-pub extern "js" fn NavigationHistoryEntry::set_ondispose(
+pub extern "js" fn NavigationHistoryEntry::get_ondispose(
   self : NavigationHistoryEntry,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ondispose = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.ondispose
 
 ///|
-pub extern "js" fn NavigationHistoryEntry::clear_ondispose(
+pub extern "js" fn NavigationHistoryEntry::set_ondispose(
   self : NavigationHistoryEntry,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.ondispose = null }
+  #| (self, value) => { self.ondispose = value }
 
 ///|
 /// NavigationTransition interface
@@ -27119,22 +26521,6 @@ pub extern "js" fn NavigateEvent::to_event(self : NavigateEvent) -> Event =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NavigateEventInterceptError {
-  SecurityError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum NavigateEventScrollError {
-  SecurityError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 extern "js" fn NavigateEvent::new_ffi(
   type_ : String,
   event_init_dict : JsValue,
@@ -27212,31 +26598,27 @@ pub extern "js" fn NavigateEvent::get_source_element(
   #| (self) => (() => { const v = self.sourceElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn NavigateEvent::intercept(
-  self : NavigateEvent,
-) -> Result[Unit, NavigateEventInterceptError] =
-  #| (self) => (() => { try { self.intercept(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+pub extern "js" fn NavigateEvent::intercept(self : NavigateEvent) -> Unit =
+  #| (self) => self.intercept()
 
 ///|
 extern "js" fn NavigateEvent::intercept_with_options_ffi(
   self : NavigateEvent,
   options : JsValue,
-) -> Result[Unit, NavigateEventInterceptError] =
-  #| (self, options) => (() => { try { self.intercept(options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, options) => self.intercept(options)
 
 ///|
 pub fn NavigateEvent::intercept_with_options(
   self : NavigateEvent,
   options : NavigationInterceptOptions,
-) -> Result[Unit, NavigateEventInterceptError] {
+) -> Unit {
   NavigateEvent::intercept_with_options_ffi(self, options.to_js())
 }
 
 ///|
-pub extern "js" fn NavigateEvent::scroll(
-  self : NavigateEvent,
-) -> Result[Unit, NavigateEventScrollError] =
-  #| (self) => (() => { try { self.scroll(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+pub extern "js" fn NavigateEvent::scroll(self : NavigateEvent) -> Unit =
+  #| (self) => self.scroll()
 
 ///|
 /// NavigationPrecommitController interface
@@ -27277,43 +26659,26 @@ pub extern "js" fn JsValue::to_navigation_precommit_controller(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NavigationPrecommitControllerRedirectError {
-  SyntaxError(JsError)
-  SecurityError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum NavigationPrecommitControllerAddHandlerError {
-  SecurityError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn NavigationPrecommitController::redirect(
   self : NavigationPrecommitController,
   url : String,
-) -> Result[Unit, NavigationPrecommitControllerRedirectError] =
-  #| (self, url) => (() => { try { self.redirect(url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, url) => self.redirect(url)
 
 ///|
 extern "js" fn NavigationPrecommitController::redirect_with_options_ffi(
   self : NavigationPrecommitController,
   url : String,
   options : JsValue,
-) -> Result[Unit, NavigationPrecommitControllerRedirectError] =
-  #| (self, url, options) => (() => { try { self.redirect(url, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, url, options) => self.redirect(url, options)
 
 ///|
 pub fn NavigationPrecommitController::redirect_with_options(
   self : NavigationPrecommitController,
   url : String,
   options : NavigationNavigateOptions,
-) -> Result[Unit, NavigationPrecommitControllerRedirectError] {
+) -> Unit {
   NavigationPrecommitController::redirect_with_options_ffi(
     self,
     url,
@@ -27325,8 +26690,8 @@ pub fn NavigationPrecommitController::redirect_with_options(
 pub extern "js" fn NavigationPrecommitController::add_handler(
   self : NavigationPrecommitController,
   handler : NavigationInterceptHandler,
-) -> Result[Unit, NavigationPrecommitControllerAddHandlerError] =
-  #| (self, handler) => (() => { try { self.addHandler(handler); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, handler) => self.addHandler(handler)
 
 ///|
 /// NavigationDestination interface
@@ -27864,14 +27229,12 @@ pub extern "js" fn BeforeUnloadEvent::to_event(
   #| (self) => self
 
 ///|
-/// @alert deprecated "returnValue is deprecated"
 pub extern "js" fn BeforeUnloadEvent::get_return_value(
   self : BeforeUnloadEvent,
 ) -> String =
   #| (self) => self.returnValue
 
 ///|
-/// @alert deprecated "returnValue is deprecated"
 pub extern "js" fn BeforeUnloadEvent::set_return_value(
   self : BeforeUnloadEvent,
   value : String,
@@ -28179,13 +27542,6 @@ pub extern "js" fn JsValue::to_dom_parser(self : JsValue) -> DOMParser =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum DOMParserParseFromStringError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn DOMParser::new() -> DOMParser =
   #| () => new DOMParser()
 
@@ -28194,8 +27550,8 @@ pub extern "js" fn DOMParser::parse_from_string(
   self : DOMParser,
   string : TrustedHTMLOrString,
   type_ : DOMParserSupportedType,
-) -> Result[Document, DOMParserParseFromStringError] =
-  #| (self, string, type_) => (() => { try { return { $tag: 1, _0: self.parseFromString(string, ['text/html', 'text/xml', 'application/xml', 'application/xhtml+xml', 'image/svg+xml'][type_]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Document =
+  #| (self, string, type_) => self.parseFromString(string, ['text/html', 'text/xml', 'application/xml', 'application/xhtml+xml', 'image/svg+xml'][type_])
 
 ///|
 /// XMLSerializer interface
@@ -28228,15 +27584,6 @@ pub extern "js" fn JsValue::to_xml_serializer(self : JsValue) -> XMLSerializer =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum XMLSerializerSerializeToStringError {
-  TypeError(JsError)
-  SyntaxError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn XMLSerializer::new() -> XMLSerializer =
   #| () => new XMLSerializer()
 
@@ -28244,8 +27591,8 @@ pub extern "js" fn XMLSerializer::new() -> XMLSerializer =
 pub extern "js" fn XMLSerializer::serialize_to_string(
   self : XMLSerializer,
   root : Node,
-) -> Result[String, XMLSerializerSerializeToStringError] =
-  #| (self, root) => (() => { try { return { $tag: 1, _0: self.serializeToString(root) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> String =
+  #| (self, root) => self.serializeToString(root)
 
 ///|
 /// Navigator interface
@@ -28276,108 +27623,70 @@ pub extern "js" fn JsValue::to_navigator(self : JsValue) -> Navigator =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NavigatorGetAutoplayPolicyError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn Navigator::get_clipboard(self : Navigator) -> Clipboard =
+  #| (self) => self.clipboard
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NavigatorGetBatteryError {
-  SecurityError(JsError)
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn Navigator::get_scheduling(self : Navigator) -> Scheduling =
+  #| (self) => self.scheduling
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NavigatorRequestMediaKeySystemAccessError {
-  TypeError(JsError)
-  SecurityError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn Navigator::get_bluetooth(self : Navigator) -> Bluetooth =
+  #| (self) => self.bluetooth
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NavigatorDeprecatedReplaceInURNError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn Navigator::get_media_session(
+  self : Navigator,
+) -> MediaSession =
+  #| (self) => self.mediaSession
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NavigatorGetGamepadsError {
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn Navigator::get_wake_lock(self : Navigator) -> WakeLock =
+  #| (self) => self.wakeLock
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NavigatorGetInstalledRelatedAppsError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn Navigator::get_serial(self : Navigator) -> Serial =
+  #| (self) => self.serial
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NavigatorShareError {
-  DataError(JsError)
-  TypeError(JsError)
-  AbortError(JsError)
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn Navigator::request_midi_access(
+  self : Navigator,
+) -> Promise[MIDIAccess] =
+  #| (self) => self.requestMIDIAccess()
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NavigatorRequestMIDIAccessError {
-  AbortError(JsError)
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
+extern "js" fn Navigator::request_midi_access_with_options_ffi(
+  self : Navigator,
+  options : JsValue,
+) -> Promise[MIDIAccess] =
+  #| (self, options) => self.requestMIDIAccess(options)
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NavigatorSetAppBadgeError {
-  SecurityError(JsError)
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub fn Navigator::request_midi_access_with_options(
+  self : Navigator,
+  options : MIDIOptions,
+) -> Promise[MIDIAccess] {
+  Navigator::request_midi_access_with_options_ffi(self, options.to_js())
+}
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NavigatorClearAppBadgeError {
-  SecurityError(JsError)
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn Navigator::vibrate(
+  self : Navigator,
+  pattern : VibratePattern,
+) -> Bool =
+  #| (self, pattern) => self.vibrate(pattern)
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NavigatorRegisterProtocolHandlerError {
-  SyntaxError(JsError)
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn Navigator::get_media_devices(
+  self : Navigator,
+) -> MediaDevices =
+  #| (self) => self.mediaDevices
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NavigatorUnregisterProtocolHandlerError {
-  SyntaxError(JsError)
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn Navigator::get_attribution(self : Navigator) -> Attribution =
-  #| (self) => self.attribution
+pub extern "js" fn Navigator::get_user_activation(
+  self : Navigator,
+) -> UserActivation =
+  #| (self) => self.userActivation
 
 ///|
 pub extern "js" fn Navigator::get_audio_session(
@@ -28386,60 +27695,50 @@ pub extern "js" fn Navigator::get_audio_session(
   #| (self) => self.audioSession
 
 ///|
-pub extern "js" fn Navigator::get_autoplay_policy(
+pub extern "js" fn Navigator::request_media_key_system_access(
   self : Navigator,
-  type_ : AutoplayPolicyMediaType,
-) -> Result[AutoplayPolicy, NavigatorGetAutoplayPolicyError] =
-  #| (self, type_) => (() => { try { return { $tag: 1, _0: self.getAutoplayPolicy(['mediaelement', 'audiocontext'][type_]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+  key_system : String,
+  supported_configurations : Array[MediaKeySystemConfiguration],
+) -> Promise[MediaKeySystemAccess] =
+  #| (self, key_system, supported_configurations) => self.requestMediaKeySystemAccess(key_system, supported_configurations)
 
 ///|
-pub extern "js" fn Navigator::get_autoplay_policy_with_element_html_media_element(
-  self : Navigator,
-  element : HTMLMediaElement,
-) -> Result[AutoplayPolicy, NavigatorGetAutoplayPolicyError] =
-  #| (self, element) => (() => { try { return { $tag: 1, _0: self.getAutoplayPolicy(element) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn Navigator::get_login(self : Navigator) -> NavigatorLogin =
+  #| (self) => self.login
 
 ///|
-pub extern "js" fn Navigator::get_autoplay_policy_with_context_audio_context(
+pub extern "js" fn Navigator::get_media_capabilities(
   self : Navigator,
-  context : AudioContext,
-) -> Result[AutoplayPolicy, NavigatorGetAutoplayPolicyError] =
-  #| (self, context) => (() => { try { return { $tag: 1, _0: self.getAutoplayPolicy(context) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> MediaCapabilities =
+  #| (self) => self.mediaCapabilities
 
 ///|
-pub extern "js" fn Navigator::get_battery(
+pub extern "js" fn Navigator::get_window_controls_overlay(
   self : Navigator,
-) -> Promise[Result[BatteryManager, NavigatorGetBatteryError]] =
-  #| (self) => self.getBattery().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> WindowControlsOverlay =
+  #| (self) => self.windowControlsOverlay
 
 ///|
-pub extern "js" fn Navigator::send_beacon(
+pub extern "js" fn Navigator::get_virtual_keyboard(
   self : Navigator,
-  url : String,
-) -> Bool =
-  #| (self, url) => self.sendBeacon(url)
+) -> VirtualKeyboard =
+  #| (self) => self.virtualKeyboard
 
 ///|
-pub extern "js" fn Navigator::send_beacon_with_data(
-  self : Navigator,
-  url : String,
-  data : BodyInit?,
-) -> Bool =
-  #| (self, url, data) => self.sendBeacon(url, (data.$tag === 1 ? data._0 : null))
+pub extern "js" fn Navigator::get_keyboard(self : Navigator) -> Keyboard =
+  #| (self) => self.keyboard
 
 ///|
-pub extern "js" fn Navigator::get_clipboard(self : Navigator) -> Clipboard =
-  #| (self) => self.clipboard
+pub extern "js" fn Navigator::get_ink(self : Navigator) -> Ink =
+  #| (self) => self.ink
 
 ///|
 pub extern "js" fn Navigator::get_contacts(self : Navigator) -> ContactsManager =
   #| (self) => self.contacts
 
 ///|
-pub extern "js" fn Navigator::get_credentials(
-  self : Navigator,
-) -> CredentialsContainer =
-  #| (self) => self.credentials
+pub extern "js" fn Navigator::get_usb(self : Navigator) -> USB =
+  #| (self) => self.usb
 
 ///|
 pub extern "js" fn Navigator::get_device_posture(
@@ -28448,62 +27747,12 @@ pub extern "js" fn Navigator::get_device_posture(
   #| (self) => self.devicePosture
 
 ///|
-pub extern "js" fn Navigator::request_media_key_system_access(
-  self : Navigator,
-  key_system : String,
-  supported_configurations : Array[MediaKeySystemConfiguration],
-) -> Promise[
-  Result[MediaKeySystemAccess, NavigatorRequestMediaKeySystemAccessError],
-] =
-  #| (self, key_system, supported_configurations) => self.requestMediaKeySystemAccess(key_system, supported_configurations).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+pub extern "js" fn Navigator::get_xr(self : Navigator) -> XRSystem =
+  #| (self) => self.xr
 
 ///|
-pub extern "js" fn Navigator::deprecated_replace_in_urn(
-  self : Navigator,
-  urn_or_config : UrnOrConfig,
-  replacements : JsValue,
-) -> Promise[Result[Unit, NavigatorDeprecatedReplaceInURNError]] =
-  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
-
-///|
-pub extern "js" fn Navigator::deprecated_ur_nto_url(
-  self : Navigator,
-  urn_or_config : UrnOrConfig,
-) -> Promise[String] =
-  #| (self, urn_or_config) => self.deprecatedURNtoURL(urn_or_config)
-
-///|
-pub extern "js" fn Navigator::deprecated_ur_nto_url_with_send_reports(
-  self : Navigator,
-  urn_or_config : UrnOrConfig,
-  send_reports : Bool,
-) -> Promise[String] =
-  #| (self, urn_or_config, send_reports) => self.deprecatedURNtoURL(urn_or_config, send_reports)
-
-///|
-pub extern "js" fn Navigator::ad_auction_components(
-  self : Navigator,
-  num_ad_components : Int,
-) -> Array[String] =
-  #| (self, num_ad_components) => self.adAuctionComponents(num_ad_components)
-
-///|
-pub extern "js" fn Navigator::get_gamepads(
-  self : Navigator,
-) -> Result[Array[JsValue], NavigatorGetGamepadsError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.getGamepads() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Navigator::get_geolocation(self : Navigator) -> Geolocation =
-  #| (self) => self.geolocation
-
-///|
-pub extern "js" fn Navigator::get_installed_related_apps(
-  self : Navigator,
-) -> Promise[
-  Result[Array[RelatedApplication], NavigatorGetInstalledRelatedAppsError],
-] =
-  #| (self) => self.getInstalledRelatedApps().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+pub extern "js" fn Navigator::get_hid(self : Navigator) -> HID =
+  #| (self) => self.hid
 
 ///|
 extern "js" fn Navigator::query_handwriting_recognizer_ffi(
@@ -28536,84 +27785,20 @@ pub fn Navigator::create_handwriting_recognizer(
 }
 
 ///|
-pub extern "js" fn Navigator::get_user_activation(
+pub extern "js" fn Navigator::get_installed_related_apps(
   self : Navigator,
-) -> UserActivation =
-  #| (self) => self.userActivation
+) -> Promise[Array[RelatedApplication]] =
+  #| (self) => self.getInstalledRelatedApps()
 
 ///|
-pub extern "js" fn Navigator::get_ink(self : Navigator) -> Ink =
-  #| (self) => self.ink
+pub extern "js" fn Navigator::get_attribution(self : Navigator) -> Attribution =
+  #| (self) => self.attribution
 
 ///|
-pub extern "js" fn Navigator::get_scheduling(self : Navigator) -> Scheduling =
-  #| (self) => self.scheduling
-
-///|
-pub extern "js" fn Navigator::get_keyboard(self : Navigator) -> Keyboard =
-  #| (self) => self.keyboard
-
-///|
-pub extern "js" fn Navigator::get_login(self : Navigator) -> NavigatorLogin =
-  #| (self) => self.login
-
-///|
-pub extern "js" fn Navigator::get_managed(
+pub extern "js" fn Navigator::get_battery(
   self : Navigator,
-) -> NavigatorManagedData =
-  #| (self) => self.managed
-
-///|
-pub extern "js" fn Navigator::get_media_capabilities(
-  self : Navigator,
-) -> MediaCapabilities =
-  #| (self) => self.mediaCapabilities
-
-///|
-pub extern "js" fn Navigator::get_media_devices(
-  self : Navigator,
-) -> MediaDevices =
-  #| (self) => self.mediaDevices
-
-///|
-pub extern "js" fn Navigator::get_preferences(
-  self : Navigator,
-) -> PreferenceManager =
-  #| (self) => self.preferences
-
-///|
-pub extern "js" fn Navigator::get_media_session(
-  self : Navigator,
-) -> MediaSession =
-  #| (self) => self.mediaSession
-
-///|
-pub extern "js" fn Navigator::get_permissions(self : Navigator) -> Permissions =
-  #| (self) => self.permissions
-
-///|
-pub extern "js" fn Navigator::get_max_touch_points(self : Navigator) -> Int =
-  #| (self) => self.maxTouchPoints
-
-///|
-pub extern "js" fn Navigator::get_presentation(
-  self : Navigator,
-) -> Presentation =
-  #| (self) => self.presentation
-
-///|
-pub extern "js" fn Navigator::get_wake_lock(self : Navigator) -> WakeLock =
-  #| (self) => self.wakeLock
-
-///|
-pub extern "js" fn Navigator::get_serial(self : Navigator) -> Serial =
-  #| (self) => self.serial
-
-///|
-pub extern "js" fn Navigator::get_service_worker(
-  self : Navigator,
-) -> ServiceWorkerContainer =
-  #| (self) => self.serviceWorker
+) -> Promise[BatteryManager] =
+  #| (self) => self.getBattery()
 
 ///|
 extern "js" fn Navigator::join_ad_interest_group_ffi(
@@ -28744,40 +27929,96 @@ pub extern "js" fn Navigator::get_protected_audience(
   #| (self) => self.protectedAudience
 
 ///|
-pub extern "js" fn Navigator::vibrate(
+pub extern "js" fn Navigator::get_service_worker(
   self : Navigator,
-  pattern : VibratePattern,
+) -> ServiceWorkerContainer =
+  #| (self) => self.serviceWorker
+
+///|
+pub extern "js" fn Navigator::get_gamepads(self : Navigator) -> Array[JsValue] =
+  #| (self) => self.getGamepads()
+
+///|
+pub extern "js" fn Navigator::get_credentials(
+  self : Navigator,
+) -> CredentialsContainer =
+  #| (self) => self.credentials
+
+///|
+pub extern "js" fn Navigator::get_preferences(
+  self : Navigator,
+) -> PreferenceManager =
+  #| (self) => self.preferences
+
+///|
+pub extern "js" fn Navigator::deprecated_replace_in_urn(
+  self : Navigator,
+  urn_or_config : UrnOrConfig,
+  replacements : JsValue,
+) -> Promise[Unit] =
+  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements)
+
+///|
+pub extern "js" fn Navigator::deprecated_ur_nto_url(
+  self : Navigator,
+  urn_or_config : UrnOrConfig,
+) -> Promise[String] =
+  #| (self, urn_or_config) => self.deprecatedURNtoURL(urn_or_config)
+
+///|
+pub extern "js" fn Navigator::deprecated_ur_nto_url_with_send_reports(
+  self : Navigator,
+  urn_or_config : UrnOrConfig,
+  send_reports : Bool,
+) -> Promise[String] =
+  #| (self, urn_or_config, send_reports) => self.deprecatedURNtoURL(urn_or_config, send_reports)
+
+///|
+pub extern "js" fn Navigator::ad_auction_components(
+  self : Navigator,
+  num_ad_components : Int,
+) -> Array[String] =
+  #| (self, num_ad_components) => self.adAuctionComponents(num_ad_components)
+
+///|
+pub extern "js" fn Navigator::get_permissions(self : Navigator) -> Permissions =
+  #| (self) => self.permissions
+
+///|
+pub extern "js" fn Navigator::send_beacon(
+  self : Navigator,
+  url : String,
 ) -> Bool =
-  #| (self, pattern) => self.vibrate(pattern)
+  #| (self, url) => self.sendBeacon(url)
 
 ///|
-pub extern "js" fn Navigator::get_virtual_keyboard(
+pub extern "js" fn Navigator::send_beacon_with_data(
   self : Navigator,
-) -> VirtualKeyboard =
-  #| (self) => self.virtualKeyboard
+  url : String,
+  data : BodyInit?,
+) -> Bool =
+  #| (self, url, data) => self.sendBeacon(url, (data.$tag === 1 ? data._0 : null))
 
 ///|
-pub extern "js" fn Navigator::get_bluetooth(self : Navigator) -> Bluetooth =
-  #| (self) => self.bluetooth
+pub extern "js" fn Navigator::get_max_touch_points(self : Navigator) -> Int =
+  #| (self) => self.maxTouchPoints
 
 ///|
-pub extern "js" fn Navigator::share(
-  self : Navigator,
-) -> Promise[Result[Unit, NavigatorShareError]] =
-  #| (self) => self.share().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'AbortError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
+pub extern "js" fn Navigator::share(self : Navigator) -> Promise[Unit] =
+  #| (self) => self.share()
 
 ///|
 extern "js" fn Navigator::share_with_data_ffi(
   self : Navigator,
   data : JsValue,
-) -> Promise[Result[Unit, NavigatorShareError]] =
-  #| (self, data) => self.share(data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'AbortError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, data) => self.share(data)
 
 ///|
 pub fn Navigator::share_with_data(
   self : Navigator,
   data : ShareData,
-) -> Promise[Result[Unit, NavigatorShareError]] {
+) -> Promise[Unit] {
   Navigator::share_with_data_ffi(self, data.to_js())
 }
 
@@ -28801,72 +28042,68 @@ pub fn Navigator::can_share_with_data(
 }
 
 ///|
-pub extern "js" fn Navigator::get_hid(self : Navigator) -> HID =
-  #| (self) => self.hid
-
-///|
-pub extern "js" fn Navigator::request_midi_access(
+pub extern "js" fn Navigator::get_managed(
   self : Navigator,
-) -> Promise[Result[MIDIAccess, NavigatorRequestMIDIAccessError]] =
-  #| (self) => self.requestMIDIAccess().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> NavigatorManagedData =
+  #| (self) => self.managed
 
 ///|
-extern "js" fn Navigator::request_midi_access_with_options_ffi(
+pub extern "js" fn Navigator::get_presentation(
   self : Navigator,
-  options : JsValue,
-) -> Promise[Result[MIDIAccess, NavigatorRequestMIDIAccessError]] =
-  #| (self, options) => self.requestMIDIAccess(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Presentation =
+  #| (self) => self.presentation
 
 ///|
-pub fn Navigator::request_midi_access_with_options(
+pub extern "js" fn Navigator::get_autoplay_policy(
   self : Navigator,
-  options : MIDIOptions,
-) -> Promise[Result[MIDIAccess, NavigatorRequestMIDIAccessError]] {
-  Navigator::request_midi_access_with_options_ffi(self, options.to_js())
-}
+  type_ : AutoplayPolicyMediaType,
+) -> AutoplayPolicy =
+  #| (self, type_) => self.getAutoplayPolicy(['mediaelement', 'audiocontext'][type_])
 
 ///|
-pub extern "js" fn Navigator::get_usb(self : Navigator) -> USB =
-  #| (self) => self.usb
-
-///|
-pub extern "js" fn Navigator::get_xr(self : Navigator) -> XRSystem =
-  #| (self) => self.xr
-
-///|
-pub extern "js" fn Navigator::get_window_controls_overlay(
+pub extern "js" fn Navigator::get_autoplay_policy_with_element_html_media_element(
   self : Navigator,
-) -> WindowControlsOverlay =
-  #| (self) => self.windowControlsOverlay
+  element : HTMLMediaElement,
+) -> AutoplayPolicy =
+  #| (self, element) => self.getAutoplayPolicy(element)
 
 ///|
-pub extern "js" fn Navigator::set_app_badge(
+pub extern "js" fn Navigator::get_autoplay_policy_with_context_audio_context(
   self : Navigator,
-) -> Promise[Result[Unit, NavigatorSetAppBadgeError]] =
-  #| (self) => self.setAppBadge().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  context : AudioContext,
+) -> AutoplayPolicy =
+  #| (self, context) => self.getAutoplayPolicy(context)
+
+///|
+pub extern "js" fn Navigator::get_geolocation(self : Navigator) -> Geolocation =
+  #| (self) => self.geolocation
+
+///|
+pub extern "js" fn Navigator::get_locks(self : Navigator) -> LockManager =
+  #| (self) => self.locks
+
+///|
+pub extern "js" fn Navigator::set_app_badge(self : Navigator) -> Promise[Unit] =
+  #| (self) => self.setAppBadge()
 
 ///|
 pub extern "js" fn Navigator::set_app_badge_with_contents(
   self : Navigator,
   contents : Int64,
-) -> Promise[Result[Unit, NavigatorSetAppBadgeError]] =
-  #| (self, contents) => self.setAppBadge((contents.hi * 4294967296 + contents.lo)).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, contents) => self.setAppBadge((contents.hi * 4294967296 + contents.lo))
 
 ///|
 pub extern "js" fn Navigator::clear_app_badge(
   self : Navigator,
-) -> Promise[Result[Unit, NavigatorClearAppBadgeError]] =
-  #| (self) => self.clearAppBadge().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.clearAppBadge()
 
 ///|
-pub extern "js" fn Navigator::get_device_memory(self : Navigator) -> Double =
-  #| (self) => self.deviceMemory
-
-///|
-pub extern "js" fn Navigator::get_global_privacy_control(
+pub extern "js" fn Navigator::get_user_agent_data(
   self : Navigator,
-) -> Bool =
-  #| (self) => self.globalPrivacyControl
+) -> NavigatorUAData =
+  #| (self) => self.userAgentData
 
 ///|
 pub extern "js" fn Navigator::get_app_code_name(self : Navigator) -> String =
@@ -28929,16 +28166,16 @@ pub extern "js" fn Navigator::register_protocol_handler(
   self : Navigator,
   scheme : String,
   url : String,
-) -> Result[Unit, NavigatorRegisterProtocolHandlerError] =
-  #| (self, scheme, url) => (() => { try { self.registerProtocolHandler(scheme, url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, scheme, url) => self.registerProtocolHandler(scheme, url)
 
 ///|
 pub extern "js" fn Navigator::unregister_protocol_handler(
   self : Navigator,
   scheme : String,
   url : String,
-) -> Result[Unit, NavigatorUnregisterProtocolHandlerError] =
-  #| (self, scheme, url) => (() => { try { self.unregisterProtocolHandler(scheme, url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, scheme, url) => self.unregisterProtocolHandler(scheme, url)
 
 ///|
 pub extern "js" fn Navigator::get_cookie_enabled(self : Navigator) -> Bool =
@@ -28967,30 +28204,22 @@ pub extern "js" fn Navigator::get_hardware_concurrency(
   #| (self) => (() => { const n = self.hardwareConcurrency; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
+pub extern "js" fn Navigator::get_ml(self : Navigator) -> ML =
+  #| (self) => self.ml
+
+///|
 pub extern "js" fn Navigator::get_connection(
   self : Navigator,
 ) -> NetworkInformation =
   #| (self) => self.connection
 
 ///|
-pub extern "js" fn Navigator::get_storage_buckets(
-  self : Navigator,
-) -> StorageBucketManager =
-  #| (self) => self.storageBuckets
-
-///|
 pub extern "js" fn Navigator::get_storage(self : Navigator) -> StorageManager =
   #| (self) => self.storage
 
 ///|
-pub extern "js" fn Navigator::get_user_agent_data(
-  self : Navigator,
-) -> NavigatorUAData =
-  #| (self) => self.userAgentData
-
-///|
-pub extern "js" fn Navigator::get_locks(self : Navigator) -> LockManager =
-  #| (self) => self.locks
+pub extern "js" fn Navigator::get_device_memory(self : Navigator) -> Double =
+  #| (self) => self.deviceMemory
 
 ///|
 pub extern "js" fn Navigator::get_webdriver(self : Navigator) -> Bool =
@@ -29001,24 +28230,46 @@ pub extern "js" fn Navigator::get_gpu(self : Navigator) -> GPU =
   #| (self) => self.gpu
 
 ///|
-pub extern "js" fn Navigator::get_ml(self : Navigator) -> ML =
-  #| (self) => self.ml
+pub extern "js" fn Navigator::get_storage_buckets(
+  self : Navigator,
+) -> StorageBucketManager =
+  #| (self) => self.storageBuckets
+
+///|
+pub extern "js" fn Navigator::get_global_privacy_control(
+  self : Navigator,
+) -> Bool =
+  #| (self) => self.globalPrivacyControl
+
+///|
+pub extern "js" fn Navigator::vibrate_with_int(
+  self : Navigator,
+  pattern : Int,
+) -> Bool =
+  #| (self, pattern) => self.vibrate(pattern)
+
+///|
+pub extern "js" fn Navigator::vibrate_with_array_of_int(
+  self : Navigator,
+  pattern : Array[Int],
+) -> Bool =
+  #| (self, pattern) => self.vibrate(pattern)
 
 ///|
 pub extern "js" fn Navigator::deprecated_replace_in_urn_with_string(
   self : Navigator,
   urn_or_config : String,
   replacements : JsValue,
-) -> Promise[Result[Unit, NavigatorDeprecatedReplaceInURNError]] =
-  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements)
 
 ///|
 pub extern "js" fn Navigator::deprecated_replace_in_urn_with_fenced_frame_config(
   self : Navigator,
   urn_or_config : FencedFrameConfig,
   replacements : JsValue,
-) -> Promise[Result[Unit, NavigatorDeprecatedReplaceInURNError]] =
-  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements)
 
 ///|
 pub extern "js" fn Navigator::deprecated_ur_nto_url_with_string(
@@ -29035,20 +28286,6 @@ pub extern "js" fn Navigator::deprecated_ur_nto_url_with_fenced_frame_config(
   send_reports : Bool,
 ) -> Promise[String] =
   #| (self, urn_or_config, send_reports) => self.deprecatedURNtoURL(urn_or_config, send_reports)
-
-///|
-pub extern "js" fn Navigator::vibrate_with_int(
-  self : Navigator,
-  pattern : Int,
-) -> Bool =
-  #| (self, pattern) => self.vibrate(pattern)
-
-///|
-pub extern "js" fn Navigator::vibrate_with_array_of_int(
-  self : Navigator,
-  pattern : Array[Int],
-) -> Bool =
-  #| (self, pattern) => self.vibrate(pattern)
 
 ///|
 /// PluginArray interface
@@ -29314,34 +28551,23 @@ pub extern "js" fn JsValue::to_image_data(self : JsValue) -> ImageData =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum ImageDataConstructorError {
-  IndexSizeError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn ImageData::new(
-  sw : Int,
-  sh : Int,
-) -> Result[ImageData, ImageDataConstructorError] =
-  #| (sw, sh) => (() => { try { return { $tag: 1, _0: new ImageData(sw, sh) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+pub extern "js" fn ImageData::new(sw : Int, sh : Int) -> ImageData =
+  #| (sw, sh) => new ImageData(sw, sh)
 
 ///|
 extern "js" fn ImageData::new_with_settings_ffi(
   sw : Int,
   sh : Int,
   settings : JsValue,
-) -> Result[ImageData, ImageDataConstructorError] =
-  #| (sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> ImageData =
+  #| (sw, sh, settings) => new ImageData(sw, sh, settings)
 
 ///|
 pub fn ImageData::new_with_settings(
   sw : Int,
   sh : Int,
   settings : ImageDataSettings,
-) -> Result[ImageData, ImageDataConstructorError] {
+) -> ImageData {
   ImageData::new_with_settings_ffi(sw, sh, settings.to_js())
 }
 
@@ -29349,8 +28575,8 @@ pub fn ImageData::new_with_settings(
 pub extern "js" fn ImageData::new_with_data_and_sw(
   data : ImageDataArray,
   sw : Int,
-) -> Result[ImageData, ImageDataConstructorError] =
-  #| (data, sw) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> ImageData =
+  #| (data, sw) => new ImageData(data, sw)
 
 ///|
 extern "js" fn ImageData::new_with_data_and_sw_with_settings_ffi(
@@ -29358,8 +28584,8 @@ extern "js" fn ImageData::new_with_data_and_sw_with_settings_ffi(
   sw : Int,
   sh : Int,
   settings : JsValue,
-) -> Result[ImageData, ImageDataConstructorError] =
-  #| (data, sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> ImageData =
+  #| (data, sw, sh, settings) => new ImageData(data, sw, sh, settings)
 
 ///|
 pub fn ImageData::new_with_data_and_sw_with_settings(
@@ -29367,7 +28593,7 @@ pub fn ImageData::new_with_data_and_sw_with_settings(
   sw : Int,
   sh : Int,
   settings : ImageDataSettings,
-) -> Result[ImageData, ImageDataConstructorError] {
+) -> ImageData {
   ImageData::new_with_data_and_sw_with_settings_ffi(
     data,
     sw,
@@ -29406,8 +28632,8 @@ pub extern "js" fn ImageData::new_with_uint8_clamped_array(
   sw : Int,
   sh : Int,
   settings : ImageDataSettings,
-) -> Result[ImageData, ImageDataConstructorError] =
-  #| (data, sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> ImageData =
+  #| (data, sw, sh, settings) => new ImageData(data, sw, sh, settings)
 
 ///|
 pub extern "js" fn ImageData::new_with_float16_array(
@@ -29415,8 +28641,8 @@ pub extern "js" fn ImageData::new_with_float16_array(
   sw : Int,
   sh : Int,
   settings : ImageDataSettings,
-) -> Result[ImageData, ImageDataConstructorError] =
-  #| (data, sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> ImageData =
+  #| (data, sw, sh, settings) => new ImageData(data, sw, sh, settings)
 
 ///|
 /// ImageBitmap interface
@@ -29644,37 +28870,39 @@ pub extern "js" fn EventSource::get_ready_state(self : EventSource) -> Int =
   #| (self) => self.readyState
 
 ///|
-pub extern "js" fn EventSource::set_onopen(
-  self : EventSource,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onopen = (e) => handler(e) }
+pub extern "js" fn EventSource::get_onopen(self : EventSource) -> EventHandler =
+  #| (self) => self.onopen
 
 ///|
-pub extern "js" fn EventSource::clear_onopen(self : EventSource) -> Unit =
-  #| (self) => { self.onopen = null }
+pub extern "js" fn EventSource::set_onopen(
+  self : EventSource,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onopen = value }
+
+///|
+pub extern "js" fn EventSource::get_onmessage(
+  self : EventSource,
+) -> EventHandler =
+  #| (self) => self.onmessage
 
 ///|
 pub extern "js" fn EventSource::set_onmessage(
   self : EventSource,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessage = (e) => handler(e) }
+  #| (self, value) => { self.onmessage = value }
 
 ///|
-pub extern "js" fn EventSource::clear_onmessage(self : EventSource) -> Unit =
-  #| (self) => { self.onmessage = null }
+pub extern "js" fn EventSource::get_onerror(self : EventSource) -> EventHandler =
+  #| (self) => self.onerror
 
 ///|
 pub extern "js" fn EventSource::set_onerror(
   self : EventSource,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onerror = (e) => handler(e) }
-
-///|
-pub extern "js" fn EventSource::clear_onerror(self : EventSource) -> Unit =
-  #| (self) => { self.onerror = null }
+  #| (self, value) => { self.onerror = value }
 
 ///|
 pub extern "js" fn EventSource::close(self : EventSource) -> Unit =
@@ -29807,39 +29035,41 @@ pub extern "js" fn MessagePort::close(self : MessagePort) -> Unit =
   #| (self) => self.close()
 
 ///|
-pub extern "js" fn MessagePort::set_onclose(
-  self : MessagePort,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onclose = (e) => handler(e) }
+pub extern "js" fn MessagePort::get_onclose(self : MessagePort) -> EventHandler =
+  #| (self) => self.onclose
 
 ///|
-pub extern "js" fn MessagePort::clear_onclose(self : MessagePort) -> Unit =
-  #| (self) => { self.onclose = null }
+pub extern "js" fn MessagePort::set_onclose(
+  self : MessagePort,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onclose = value }
+
+///|
+pub extern "js" fn MessagePort::get_onmessage(
+  self : MessagePort,
+) -> EventHandler =
+  #| (self) => self.onmessage
 
 ///|
 pub extern "js" fn MessagePort::set_onmessage(
   self : MessagePort,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessage = (e) => handler(e) }
+  #| (self, value) => { self.onmessage = value }
 
 ///|
-pub extern "js" fn MessagePort::clear_onmessage(self : MessagePort) -> Unit =
-  #| (self) => { self.onmessage = null }
+pub extern "js" fn MessagePort::get_onmessageerror(
+  self : MessagePort,
+) -> EventHandler =
+  #| (self) => self.onmessageerror
 
 ///|
 pub extern "js" fn MessagePort::set_onmessageerror(
   self : MessagePort,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessageerror = (e) => handler(e) }
-
-///|
-pub extern "js" fn MessagePort::clear_onmessageerror(
-  self : MessagePort,
-) -> Unit =
-  #| (self) => { self.onmessageerror = null }
+  #| (self, value) => { self.onmessageerror = value }
 
 ///|
 /// BroadcastChannel interface
@@ -29886,14 +29116,6 @@ pub extern "js" fn BroadcastChannel::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum BroadcastChannelPostMessageError {
-  DataCloneError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn BroadcastChannel::new(name : String) -> BroadcastChannel =
   #| (name) => new BroadcastChannel(name)
 
@@ -29907,38 +29129,38 @@ pub extern "js" fn BroadcastChannel::get_name(
 pub extern "js" fn BroadcastChannel::post_message(
   self : BroadcastChannel,
   message : JsValue,
-) -> Result[Unit, BroadcastChannelPostMessageError] =
-  #| (self, message) => (() => { try { self.postMessage(message); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, message) => self.postMessage(message)
 
 ///|
 pub extern "js" fn BroadcastChannel::close(self : BroadcastChannel) -> Unit =
   #| (self) => self.close()
 
 ///|
-pub extern "js" fn BroadcastChannel::set_onmessage(
+pub extern "js" fn BroadcastChannel::get_onmessage(
   self : BroadcastChannel,
-  handler : (MessageEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onmessage = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onmessage
 
 ///|
-pub extern "js" fn BroadcastChannel::clear_onmessage(
+pub extern "js" fn BroadcastChannel::set_onmessage(
   self : BroadcastChannel,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onmessage = null }
+  #| (self, value) => { self.onmessage = value }
+
+///|
+pub extern "js" fn BroadcastChannel::get_onmessageerror(
+  self : BroadcastChannel,
+) -> EventHandler =
+  #| (self) => self.onmessageerror
 
 ///|
 pub extern "js" fn BroadcastChannel::set_onmessageerror(
   self : BroadcastChannel,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessageerror = (e) => handler(e) }
-
-///|
-pub extern "js" fn BroadcastChannel::clear_onmessageerror(
-  self : BroadcastChannel,
-) -> Unit =
-  #| (self) => { self.onmessageerror = null }
+  #| (self, value) => { self.onmessageerror = value }
 
 ///|
 /// WorkerGlobalScope interface
@@ -29997,71 +29219,16 @@ pub extern "js" fn WorkerGlobalScope::as_shared_worker_global_scope(
   #| (self) => (self instanceof SharedWorkerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn WorkerGlobalScope::as_service_worker_global_scope(
-  self : WorkerGlobalScope,
-) -> ServiceWorkerGlobalScope? =
-  #| (self) => (self instanceof ServiceWorkerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn WorkerGlobalScope::as_rtc_identity_provider_global_scope(
   self : WorkerGlobalScope,
 ) -> RTCIdentityProviderGlobalScope? =
   #| (self) => (self instanceof RTCIdentityProviderGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum WorkerGlobalScopeImportScriptsError {
-  TypeError(JsError)
-  SyntaxError(JsError)
-  NetworkError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WorkerGlobalScopeFetchError {
-  TypeError(JsError)
-  AbortError(JsError)
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WorkerGlobalScopeBtoaError {
-  InvalidCharacterError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WorkerGlobalScopeAtobError {
-  InvalidCharacterError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WorkerGlobalScopeSetTimeoutError {
-  TypeError(JsError)
-  SyntaxError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WorkerGlobalScopeSetIntervalError {
-  TypeError(JsError)
-  SyntaxError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WorkerGlobalScopeStructuredCloneError {
-  DataCloneError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn WorkerGlobalScope::as_service_worker_global_scope(
+  self : WorkerGlobalScope,
+) -> ServiceWorkerGlobalScope? =
+  #| (self) => (self instanceof ServiceWorkerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn WorkerGlobalScope::get_self(
@@ -30085,8 +29252,14 @@ pub extern "js" fn WorkerGlobalScope::get_navigator(
 pub extern "js" fn WorkerGlobalScope::import_scripts(
   self : WorkerGlobalScope,
   urls : TrustedScriptURLOrString,
-) -> Result[Unit, WorkerGlobalScopeImportScriptsError] =
-  #| (self, urls) => (() => { try { self.importScripts(urls); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NetworkError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, urls) => self.importScripts(urls)
+
+///|
+pub extern "js" fn WorkerGlobalScope::get_onerror(
+  self : WorkerGlobalScope,
+) -> OnErrorEventHandler =
+  #| (self) => self.onerror
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_onerror(
@@ -30096,117 +29269,75 @@ pub extern "js" fn WorkerGlobalScope::set_onerror(
   #| (self, value) => { self.onerror = value }
 
 ///|
-pub extern "js" fn WorkerGlobalScope::clear_onerror(
+pub extern "js" fn WorkerGlobalScope::get_onlanguagechange(
   self : WorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onerror = null }
+) -> EventHandler =
+  #| (self) => self.onlanguagechange
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_onlanguagechange(
   self : WorkerGlobalScope,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onlanguagechange = (e) => handler(e) }
+  #| (self, value) => { self.onlanguagechange = value }
 
 ///|
-pub extern "js" fn WorkerGlobalScope::clear_onlanguagechange(
+pub extern "js" fn WorkerGlobalScope::get_onoffline(
   self : WorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onlanguagechange = null }
+) -> EventHandler =
+  #| (self) => self.onoffline
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_onoffline(
   self : WorkerGlobalScope,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onoffline = (e) => handler(e) }
+  #| (self, value) => { self.onoffline = value }
 
 ///|
-pub extern "js" fn WorkerGlobalScope::clear_onoffline(
+pub extern "js" fn WorkerGlobalScope::get_ononline(
   self : WorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onoffline = null }
+) -> EventHandler =
+  #| (self) => self.ononline
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_ononline(
   self : WorkerGlobalScope,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ononline = (e) => handler(e) }
+  #| (self, value) => { self.ononline = value }
 
 ///|
-pub extern "js" fn WorkerGlobalScope::clear_ononline(
+pub extern "js" fn WorkerGlobalScope::get_onrejectionhandled(
   self : WorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.ononline = null }
+) -> EventHandler =
+  #| (self) => self.onrejectionhandled
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_onrejectionhandled(
   self : WorkerGlobalScope,
-  handler : (PromiseRejectionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onrejectionhandled = (e) => handler(e) }
+  #| (self, value) => { self.onrejectionhandled = value }
 
 ///|
-pub extern "js" fn WorkerGlobalScope::clear_onrejectionhandled(
+pub extern "js" fn WorkerGlobalScope::get_onunhandledrejection(
   self : WorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onrejectionhandled = null }
+) -> EventHandler =
+  #| (self) => self.onunhandledrejection
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_onunhandledrejection(
   self : WorkerGlobalScope,
-  handler : (PromiseRejectionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onunhandledrejection = (e) => handler(e) }
+  #| (self, value) => { self.onunhandledrejection = value }
 
 ///|
-pub extern "js" fn WorkerGlobalScope::clear_onunhandledrejection(
+pub extern "js" fn WorkerGlobalScope::get_scheduler(
   self : WorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onunhandledrejection = null }
-
-///|
-pub extern "js" fn WorkerGlobalScope::get_fonts(
-  self : WorkerGlobalScope,
-) -> FontFaceSet =
-  #| (self) => self.fonts
-
-///|
-pub extern "js" fn WorkerGlobalScope::get_indexed_db(
-  self : WorkerGlobalScope,
-) -> IDBFactory =
-  #| (self) => self.indexedDB
-
-///|
-pub extern "js" fn WorkerGlobalScope::fetch(
-  self : WorkerGlobalScope,
-  input : RequestInfo,
-) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] =
-  #| (self, input) => self.fetch(input).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
-
-///|
-extern "js" fn WorkerGlobalScope::fetch_with_init_ffi(
-  self : WorkerGlobalScope,
-  input : RequestInfo,
-  init_ : JsValue,
-) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
-
-///|
-pub fn WorkerGlobalScope::fetch_with_init(
-  self : WorkerGlobalScope,
-  input : RequestInfo,
-  init_ : RequestInit,
-) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] {
-  WorkerGlobalScope::fetch_with_init_ffi(self, input, init_.to_js())
-}
-
-///|
-pub extern "js" fn WorkerGlobalScope::get_performance(
-  self : WorkerGlobalScope,
-) -> Performance =
-  #| (self) => self.performance
+) -> Scheduler =
+  #| (self) => self.scheduler
 
 ///|
 pub extern "js" fn WorkerGlobalScope::get_origin(
@@ -30237,22 +29368,22 @@ pub extern "js" fn WorkerGlobalScope::report_error(
 pub extern "js" fn WorkerGlobalScope::btoa(
   self : WorkerGlobalScope,
   data : String,
-) -> Result[String, WorkerGlobalScopeBtoaError] =
-  #| (self, data) => (() => { try { return { $tag: 1, _0: self.btoa(data) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidCharacterError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> String =
+  #| (self, data) => self.btoa(data)
 
 ///|
 pub extern "js" fn WorkerGlobalScope::atob(
   self : WorkerGlobalScope,
   data : String,
-) -> Result[String, WorkerGlobalScopeAtobError] =
-  #| (self, data) => (() => { try { return { $tag: 1, _0: self.atob(data) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidCharacterError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> String =
+  #| (self, data) => self.atob(data)
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_timeout(
   self : WorkerGlobalScope,
   handler : TimerHandler,
-) -> Result[Int, WorkerGlobalScopeSetTimeoutError] =
-  #| (self, handler) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler) => self.setTimeout(handler)
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_timeout_with_arguments(
@@ -30260,8 +29391,8 @@ pub extern "js" fn WorkerGlobalScope::set_timeout_with_arguments(
   handler : TimerHandler,
   timeout : Int,
   arguments : JsValue,
-) -> Result[Int, WorkerGlobalScopeSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
 
 ///|
 pub extern "js" fn WorkerGlobalScope::clear_timeout(
@@ -30280,8 +29411,8 @@ pub extern "js" fn WorkerGlobalScope::clear_timeout_with_id(
 pub extern "js" fn WorkerGlobalScope::set_interval(
   self : WorkerGlobalScope,
   handler : TimerHandler,
-) -> Result[Int, WorkerGlobalScopeSetIntervalError] =
-  #| (self, handler) => (() => { try { return { $tag: 1, _0: self.setInterval(handler) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler) => self.setInterval(handler)
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_interval_with_arguments(
@@ -30289,8 +29420,8 @@ pub extern "js" fn WorkerGlobalScope::set_interval_with_arguments(
   handler : TimerHandler,
   timeout : Int,
   arguments : JsValue,
-) -> Result[Int, WorkerGlobalScopeSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
 
 ///|
 pub extern "js" fn WorkerGlobalScope::clear_interval(
@@ -30388,23 +29519,23 @@ pub fn WorkerGlobalScope::create_image_bitmap_with_image_image_bitmap_source_and
 pub extern "js" fn WorkerGlobalScope::structured_clone(
   self : WorkerGlobalScope,
   value : JsValue,
-) -> Result[JsValue, WorkerGlobalScopeStructuredCloneError] =
-  #| (self, value) => (() => { try { return { $tag: 1, _0: self.structuredClone(value) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> JsValue =
+  #| (self, value) => self.structuredClone(value)
 
 ///|
 extern "js" fn WorkerGlobalScope::structured_clone_with_options_ffi(
   self : WorkerGlobalScope,
   value : JsValue,
   options : JsValue,
-) -> Result[JsValue, WorkerGlobalScopeStructuredCloneError] =
-  #| (self, value, options) => (() => { try { return { $tag: 1, _0: self.structuredClone(value, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> JsValue =
+  #| (self, value, options) => self.structuredClone(value, options)
 
 ///|
 pub fn WorkerGlobalScope::structured_clone_with_options(
   self : WorkerGlobalScope,
   value : JsValue,
   options : StructuredSerializeOptions,
-) -> Result[JsValue, WorkerGlobalScopeStructuredCloneError] {
+) -> JsValue {
   WorkerGlobalScope::structured_clone_with_options_ffi(
     self,
     value,
@@ -30413,22 +29544,16 @@ pub fn WorkerGlobalScope::structured_clone_with_options(
 }
 
 ///|
-pub extern "js" fn WorkerGlobalScope::get_scheduler(
-  self : WorkerGlobalScope,
-) -> Scheduler =
-  #| (self) => self.scheduler
-
-///|
-pub extern "js" fn WorkerGlobalScope::get_caches(
-  self : WorkerGlobalScope,
-) -> CacheStorage =
-  #| (self) => self.caches
-
-///|
 pub extern "js" fn WorkerGlobalScope::get_trusted_types(
   self : WorkerGlobalScope,
 ) -> TrustedTypePolicyFactory =
   #| (self) => self.trustedTypes
+
+///|
+pub extern "js" fn WorkerGlobalScope::get_indexed_db(
+  self : WorkerGlobalScope,
+) -> IDBFactory =
+  #| (self) => self.indexedDB
 
 ///|
 pub extern "js" fn WorkerGlobalScope::get_crypto(
@@ -30437,20 +29562,46 @@ pub extern "js" fn WorkerGlobalScope::get_crypto(
   #| (self) => self.crypto
 
 ///|
-pub extern "js" fn WorkerGlobalScope::fetch_with_request(
+pub extern "js" fn WorkerGlobalScope::get_performance(
   self : WorkerGlobalScope,
-  input : Request,
-  init_ : RequestInit,
-) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Performance =
+  #| (self) => self.performance
 
 ///|
-pub extern "js" fn WorkerGlobalScope::fetch_with_string(
+pub extern "js" fn WorkerGlobalScope::get_caches(
   self : WorkerGlobalScope,
-  input : String,
+) -> CacheStorage =
+  #| (self) => self.caches
+
+///|
+pub extern "js" fn WorkerGlobalScope::fetch(
+  self : WorkerGlobalScope,
+  input : RequestInfo,
+) -> Promise[Response] =
+  #| (self, input) => self.fetch(input)
+
+///|
+extern "js" fn WorkerGlobalScope::fetch_with_init_ffi(
+  self : WorkerGlobalScope,
+  input : RequestInfo,
+  init_ : JsValue,
+) -> Promise[Response] =
+  #| (self, input, init_) => self.fetch(input, init_)
+
+///|
+pub fn WorkerGlobalScope::fetch_with_init(
+  self : WorkerGlobalScope,
+  input : RequestInfo,
   init_ : RequestInit,
-) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Response] {
+  WorkerGlobalScope::fetch_with_init_ffi(self, input, init_.to_js())
+}
+
+///|
+pub extern "js" fn WorkerGlobalScope::get_fonts(
+  self : WorkerGlobalScope,
+) -> FontFaceSet =
+  #| (self) => self.fonts
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_timeout_with_string(
@@ -30458,8 +29609,8 @@ pub extern "js" fn WorkerGlobalScope::set_timeout_with_string(
   handler : String,
   timeout : Int,
   arguments : JsValue,
-) -> Result[Int, WorkerGlobalScopeSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_timeout_with_function(
@@ -30467,8 +29618,8 @@ pub extern "js" fn WorkerGlobalScope::set_timeout_with_function(
   handler : Function,
   timeout : Int,
   arguments : JsValue,
-) -> Result[Int, WorkerGlobalScopeSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_timeout_with_trusted_script(
@@ -30476,8 +29627,8 @@ pub extern "js" fn WorkerGlobalScope::set_timeout_with_trusted_script(
   handler : TrustedScript,
   timeout : Int,
   arguments : JsValue,
-) -> Result[Int, WorkerGlobalScopeSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setTimeout(handler, timeout, arguments)
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_interval_with_string(
@@ -30485,8 +29636,8 @@ pub extern "js" fn WorkerGlobalScope::set_interval_with_string(
   handler : String,
   timeout : Int,
   arguments : JsValue,
-) -> Result[Int, WorkerGlobalScopeSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_interval_with_function(
@@ -30494,8 +29645,8 @@ pub extern "js" fn WorkerGlobalScope::set_interval_with_function(
   handler : Function,
   timeout : Int,
   arguments : JsValue,
-) -> Result[Int, WorkerGlobalScopeSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_interval_with_trusted_script(
@@ -30503,8 +29654,8 @@ pub extern "js" fn WorkerGlobalScope::set_interval_with_trusted_script(
   handler : TrustedScript,
   timeout : Int,
   arguments : JsValue,
-) -> Result[Int, WorkerGlobalScopeSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, handler, timeout, arguments) => self.setInterval(handler, timeout, arguments)
 
 ///|
 pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_canvas_image_source(
@@ -30529,6 +29680,22 @@ pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_image_data(
   options : ImageBitmapOptions,
 ) -> Promise[ImageBitmap] =
   #| (self, image, options) => self.createImageBitmap(image, options)
+
+///|
+pub extern "js" fn WorkerGlobalScope::fetch_with_request(
+  self : WorkerGlobalScope,
+  input : Request,
+  init_ : RequestInit,
+) -> Promise[Response] =
+  #| (self, input, init_) => self.fetch(input, init_)
+
+///|
+pub extern "js" fn WorkerGlobalScope::fetch_with_string(
+  self : WorkerGlobalScope,
+  input : String,
+  init_ : RequestInit,
+) -> Promise[Response] =
+  #| (self, input, init_) => self.fetch(input, init_)
 
 ///|
 /// DedicatedWorkerGlobalScope interface
@@ -30629,17 +29796,17 @@ pub extern "js" fn DedicatedWorkerGlobalScope::close(
   #| (self) => self.close()
 
 ///|
-pub extern "js" fn DedicatedWorkerGlobalScope::set_onrtctransform(
+pub extern "js" fn DedicatedWorkerGlobalScope::get_onrtctransform(
   self : DedicatedWorkerGlobalScope,
-  handler : (RTCTransformEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onrtctransform = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onrtctransform
 
 ///|
-pub extern "js" fn DedicatedWorkerGlobalScope::clear_onrtctransform(
+pub extern "js" fn DedicatedWorkerGlobalScope::set_onrtctransform(
   self : DedicatedWorkerGlobalScope,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onrtctransform = null }
+  #| (self, value) => { self.onrtctransform = value }
 
 ///|
 pub extern "js" fn DedicatedWorkerGlobalScope::request_animation_frame(
@@ -30656,30 +29823,30 @@ pub extern "js" fn DedicatedWorkerGlobalScope::cancel_animation_frame(
   #| (self, handle) => self.cancelAnimationFrame(handle)
 
 ///|
-pub extern "js" fn DedicatedWorkerGlobalScope::set_onmessage(
+pub extern "js" fn DedicatedWorkerGlobalScope::get_onmessage(
   self : DedicatedWorkerGlobalScope,
-  handler : (MessageEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onmessage = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onmessage
 
 ///|
-pub extern "js" fn DedicatedWorkerGlobalScope::clear_onmessage(
+pub extern "js" fn DedicatedWorkerGlobalScope::set_onmessage(
   self : DedicatedWorkerGlobalScope,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onmessage = null }
+  #| (self, value) => { self.onmessage = value }
+
+///|
+pub extern "js" fn DedicatedWorkerGlobalScope::get_onmessageerror(
+  self : DedicatedWorkerGlobalScope,
+) -> EventHandler =
+  #| (self) => self.onmessageerror
 
 ///|
 pub extern "js" fn DedicatedWorkerGlobalScope::set_onmessageerror(
   self : DedicatedWorkerGlobalScope,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessageerror = (e) => handler(e) }
-
-///|
-pub extern "js" fn DedicatedWorkerGlobalScope::clear_onmessageerror(
-  self : DedicatedWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onmessageerror = null }
+  #| (self, value) => { self.onmessageerror = value }
 
 ///|
 /// SharedWorkerGlobalScope interface
@@ -30744,17 +29911,17 @@ pub extern "js" fn SharedWorkerGlobalScope::close(
   #| (self) => self.close()
 
 ///|
-pub extern "js" fn SharedWorkerGlobalScope::set_onconnect(
+pub extern "js" fn SharedWorkerGlobalScope::get_onconnect(
   self : SharedWorkerGlobalScope,
-  handler : (MessageEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onconnect = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onconnect
 
 ///|
-pub extern "js" fn SharedWorkerGlobalScope::clear_onconnect(
+pub extern "js" fn SharedWorkerGlobalScope::set_onconnect(
   self : SharedWorkerGlobalScope,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onconnect = null }
+  #| (self, value) => { self.onconnect = value }
 
 ///|
 /// Worker interface
@@ -30789,33 +29956,21 @@ pub extern "js" fn Worker::to_event_target(self : Worker) -> EventTarget =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum WorkerConstructorError {
-  TypeError(JsError)
-  SyntaxError(JsError)
-  NetworkError(JsError)
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn Worker::new(
-  script_url : TrustedScriptURLOrString,
-) -> Result[Worker, WorkerConstructorError] =
-  #| (script_url) => (() => { try { return { $tag: 1, _0: new Worker(script_url) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NetworkError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
+pub extern "js" fn Worker::new(script_url : TrustedScriptURLOrString) -> Worker =
+  #| (script_url) => new Worker(script_url)
 
 ///|
 extern "js" fn Worker::new_with_options_ffi(
   script_url : TrustedScriptURLOrString,
   options : JsValue,
-) -> Result[Worker, WorkerConstructorError] =
-  #| (script_url, options) => (() => { try { return { $tag: 1, _0: new Worker(script_url, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NetworkError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
+) -> Worker =
+  #| (script_url, options) => new Worker(script_url, options)
 
 ///|
 pub fn Worker::new_with_options(
   script_url : TrustedScriptURLOrString,
   options : WorkerOptions,
-) -> Result[Worker, WorkerConstructorError] {
+) -> Worker {
   Worker::new_with_options_ffi(script_url, options.to_js())
 }
 
@@ -30856,37 +30011,37 @@ pub extern "js" fn Worker::post_message_with_message_and_transfer(
   #| (self, message, transfer) => self.postMessage(message, transfer)
 
 ///|
-pub extern "js" fn Worker::set_onerror(
-  self : Worker,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onerror = (e) => handler(e) }
+pub extern "js" fn Worker::get_onerror(self : Worker) -> EventHandler =
+  #| (self) => self.onerror
 
 ///|
-pub extern "js" fn Worker::clear_onerror(self : Worker) -> Unit =
-  #| (self) => { self.onerror = null }
+pub extern "js" fn Worker::set_onerror(
+  self : Worker,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onerror = value }
+
+///|
+pub extern "js" fn Worker::get_onmessage(self : Worker) -> EventHandler =
+  #| (self) => self.onmessage
 
 ///|
 pub extern "js" fn Worker::set_onmessage(
   self : Worker,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessage = (e) => handler(e) }
+  #| (self, value) => { self.onmessage = value }
 
 ///|
-pub extern "js" fn Worker::clear_onmessage(self : Worker) -> Unit =
-  #| (self) => { self.onmessage = null }
+pub extern "js" fn Worker::get_onmessageerror(self : Worker) -> EventHandler =
+  #| (self) => self.onmessageerror
 
 ///|
 pub extern "js" fn Worker::set_onmessageerror(
   self : Worker,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessageerror = (e) => handler(e) }
-
-///|
-pub extern "js" fn Worker::clear_onmessageerror(self : Worker) -> Unit =
-  #| (self) => { self.onmessageerror = null }
+  #| (self, value) => { self.onmessageerror = value }
 
 ///|
 /// SharedWorker interface
@@ -30925,42 +30080,34 @@ pub extern "js" fn SharedWorker::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum SharedWorkerConstructorError {
-  TypeError(JsError)
-  SyntaxError(JsError)
-  NetworkError(JsError)
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn SharedWorker::new(
   script_url : TrustedScriptURLOrString,
-) -> Result[SharedWorker, SharedWorkerConstructorError] =
-  #| (script_url) => (() => { try { return { $tag: 1, _0: new SharedWorker(script_url) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NetworkError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
+) -> SharedWorker =
+  #| (script_url) => new SharedWorker(script_url)
 
 ///|
 pub extern "js" fn SharedWorker::new_with_options(
   script_url : TrustedScriptURLOrString,
   options : StringOrWorkerOptions,
-) -> Result[SharedWorker, SharedWorkerConstructorError] =
-  #| (script_url, options) => (() => { try { return { $tag: 1, _0: new SharedWorker(script_url, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NetworkError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
+) -> SharedWorker =
+  #| (script_url, options) => new SharedWorker(script_url, options)
 
 ///|
 pub extern "js" fn SharedWorker::get_port(self : SharedWorker) -> MessagePort =
   #| (self) => self.port
 
 ///|
-pub extern "js" fn SharedWorker::set_onerror(
+pub extern "js" fn SharedWorker::get_onerror(
   self : SharedWorker,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onerror = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onerror
 
 ///|
-pub extern "js" fn SharedWorker::clear_onerror(self : SharedWorker) -> Unit =
-  #| (self) => { self.onerror = null }
+pub extern "js" fn SharedWorker::set_onerror(
+  self : SharedWorker,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onerror = value }
 
 ///|
 /// WorkerNavigator interface
@@ -31001,22 +30148,10 @@ pub extern "js" fn JsValue::to_worker_navigator(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum WorkerNavigatorSetAppBadgeError {
-  SecurityError(JsError)
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WorkerNavigatorClearAppBadgeError {
-  SecurityError(JsError)
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn WorkerNavigator::get_serial(
+  self : WorkerNavigator,
+) -> Serial =
+  #| (self) => self.serial
 
 ///|
 pub extern "js" fn WorkerNavigator::get_media_capabilities(
@@ -31025,16 +30160,12 @@ pub extern "js" fn WorkerNavigator::get_media_capabilities(
   #| (self) => self.mediaCapabilities
 
 ///|
-pub extern "js" fn WorkerNavigator::get_permissions(
-  self : WorkerNavigator,
-) -> Permissions =
-  #| (self) => self.permissions
+pub extern "js" fn WorkerNavigator::get_usb(self : WorkerNavigator) -> USB =
+  #| (self) => self.usb
 
 ///|
-pub extern "js" fn WorkerNavigator::get_serial(
-  self : WorkerNavigator,
-) -> Serial =
-  #| (self) => self.serial
+pub extern "js" fn WorkerNavigator::get_hid(self : WorkerNavigator) -> HID =
+  #| (self) => self.hid
 
 ///|
 pub extern "js" fn WorkerNavigator::get_service_worker(
@@ -31043,43 +30174,41 @@ pub extern "js" fn WorkerNavigator::get_service_worker(
   #| (self) => self.serviceWorker
 
 ///|
-pub extern "js" fn WorkerNavigator::get_hid(self : WorkerNavigator) -> HID =
-  #| (self) => self.hid
+pub extern "js" fn WorkerNavigator::get_permissions(
+  self : WorkerNavigator,
+) -> Permissions =
+  #| (self) => self.permissions
 
 ///|
-pub extern "js" fn WorkerNavigator::get_usb(self : WorkerNavigator) -> USB =
-  #| (self) => self.usb
+pub extern "js" fn WorkerNavigator::get_locks(
+  self : WorkerNavigator,
+) -> LockManager =
+  #| (self) => self.locks
 
 ///|
 pub extern "js" fn WorkerNavigator::set_app_badge(
   self : WorkerNavigator,
-) -> Promise[Result[Unit, WorkerNavigatorSetAppBadgeError]] =
-  #| (self) => self.setAppBadge().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.setAppBadge()
 
 ///|
 pub extern "js" fn WorkerNavigator::set_app_badge_with_contents(
   self : WorkerNavigator,
   contents : Int64,
-) -> Promise[Result[Unit, WorkerNavigatorSetAppBadgeError]] =
-  #| (self, contents) => self.setAppBadge((contents.hi * 4294967296 + contents.lo)).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, contents) => self.setAppBadge((contents.hi * 4294967296 + contents.lo))
 
 ///|
 pub extern "js" fn WorkerNavigator::clear_app_badge(
   self : WorkerNavigator,
-) -> Promise[Result[Unit, WorkerNavigatorClearAppBadgeError]] =
-  #| (self) => self.clearAppBadge().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.clearAppBadge()
 
 ///|
-pub extern "js" fn WorkerNavigator::get_device_memory(
+pub extern "js" fn WorkerNavigator::get_user_agent_data(
   self : WorkerNavigator,
-) -> Double =
-  #| (self) => self.deviceMemory
-
-///|
-pub extern "js" fn WorkerNavigator::get_global_privacy_control(
-  self : WorkerNavigator,
-) -> Bool =
-  #| (self) => self.globalPrivacyControl
+) -> NavigatorUAData =
+  #| (self) => self.userAgentData
 
 ///|
 pub extern "js" fn WorkerNavigator::get_app_code_name(
@@ -31168,16 +30297,14 @@ pub extern "js" fn WorkerNavigator::get_hardware_concurrency(
   #| (self) => (() => { const n = self.hardwareConcurrency; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
+pub extern "js" fn WorkerNavigator::get_ml(self : WorkerNavigator) -> ML =
+  #| (self) => self.ml
+
+///|
 pub extern "js" fn WorkerNavigator::get_connection(
   self : WorkerNavigator,
 ) -> NetworkInformation =
   #| (self) => self.connection
-
-///|
-pub extern "js" fn WorkerNavigator::get_storage_buckets(
-  self : WorkerNavigator,
-) -> StorageBucketManager =
-  #| (self) => self.storageBuckets
 
 ///|
 pub extern "js" fn WorkerNavigator::get_storage(
@@ -31186,24 +30313,26 @@ pub extern "js" fn WorkerNavigator::get_storage(
   #| (self) => self.storage
 
 ///|
-pub extern "js" fn WorkerNavigator::get_user_agent_data(
+pub extern "js" fn WorkerNavigator::get_device_memory(
   self : WorkerNavigator,
-) -> NavigatorUAData =
-  #| (self) => self.userAgentData
-
-///|
-pub extern "js" fn WorkerNavigator::get_locks(
-  self : WorkerNavigator,
-) -> LockManager =
-  #| (self) => self.locks
+) -> Double =
+  #| (self) => self.deviceMemory
 
 ///|
 pub extern "js" fn WorkerNavigator::get_gpu(self : WorkerNavigator) -> GPU =
   #| (self) => self.gpu
 
 ///|
-pub extern "js" fn WorkerNavigator::get_ml(self : WorkerNavigator) -> ML =
-  #| (self) => self.ml
+pub extern "js" fn WorkerNavigator::get_storage_buckets(
+  self : WorkerNavigator,
+) -> StorageBucketManager =
+  #| (self) => self.storageBuckets
+
+///|
+pub extern "js" fn WorkerNavigator::get_global_privacy_control(
+  self : WorkerNavigator,
+) -> Bool =
+  #| (self) => self.globalPrivacyControl
 
 ///|
 /// WorkerLocation interface
@@ -31328,6 +30457,18 @@ pub extern "js" fn WorkletGlobalScope::as_animation_worklet_global_scope(
   #| (self) => (self instanceof AnimationWorkletGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn WorkletGlobalScope::as_audio_worklet_global_scope(
+  self : WorkletGlobalScope,
+) -> AudioWorkletGlobalScope? =
+  #| (self) => (self instanceof AudioWorkletGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn WorkletGlobalScope::as_shared_storage_worklet_global_scope(
+  self : WorkletGlobalScope,
+) -> SharedStorageWorkletGlobalScope? =
+  #| (self) => (self instanceof SharedStorageWorkletGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn WorkletGlobalScope::as_layout_worklet_global_scope(
   self : WorkletGlobalScope,
 ) -> LayoutWorkletGlobalScope? =
@@ -31338,18 +30479,6 @@ pub extern "js" fn WorkletGlobalScope::as_paint_worklet_global_scope(
   self : WorkletGlobalScope,
 ) -> PaintWorkletGlobalScope? =
   #| (self) => (self instanceof PaintWorkletGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn WorkletGlobalScope::as_shared_storage_worklet_global_scope(
-  self : WorkletGlobalScope,
-) -> SharedStorageWorkletGlobalScope? =
-  #| (self) => (self instanceof SharedStorageWorkletGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn WorkletGlobalScope::as_audio_worklet_global_scope(
-  self : WorkletGlobalScope,
-) -> AudioWorkletGlobalScope? =
-  #| (self) => (self instanceof AudioWorkletGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Worklet interface
@@ -31380,44 +30509,36 @@ pub extern "js" fn JsValue::to_worklet(self : JsValue) -> Worklet =
   #| (self) => self
 
 ///|
+pub extern "js" fn Worklet::as_audio_worklet(self : Worklet) -> AudioWorklet? =
+  #| (self) => (self instanceof AudioWorklet) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn Worklet::as_shared_storage_worklet(
   self : Worklet,
 ) -> SharedStorageWorklet? =
   #| (self) => (self instanceof SharedStorageWorklet) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Worklet::as_audio_worklet(self : Worklet) -> AudioWorklet? =
-  #| (self) => (self instanceof AudioWorklet) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Error type for throwing methods
-pub(all) enum WorkletAddModuleError {
-  AbortError(JsError)
-  SyntaxError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn Worklet::add_module(
   self : Worklet,
   module_url : String,
-) -> Promise[Result[Unit, WorkletAddModuleError]] =
-  #| (self, module_url) => self.addModule(module_url).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, module_url) => self.addModule(module_url)
 
 ///|
 extern "js" fn Worklet::add_module_with_options_ffi(
   self : Worklet,
   module_url : String,
   options : JsValue,
-) -> Promise[Result[Unit, WorkletAddModuleError]] =
-  #| (self, module_url, options) => self.addModule(module_url, options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, module_url, options) => self.addModule(module_url, options)
 
 ///|
 pub fn Worklet::add_module_with_options(
   self : Worklet,
   module_url : String,
   options : WorkletOptions,
-) -> Promise[Result[Unit, WorkletAddModuleError]] {
+) -> Promise[Unit] {
   Worklet::add_module_with_options_ffi(self, module_url, options.to_js())
 }
 
@@ -31450,13 +30571,6 @@ pub extern "js" fn JsValue::to_storage(self : JsValue) -> Storage =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum StorageSetItemError {
-  QuotaExceededError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn Storage::get_length(self : Storage) -> Int =
   #| (self) => self.length
 
@@ -31477,16 +30591,16 @@ pub extern "js" fn Storage::set_item(
   self : Storage,
   key : String,
   value : String,
-) -> Result[Unit, StorageSetItemError] =
-  #| (self, key, value) => (() => { try { self.setItem(key, value); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'QuotaExceededError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, key, value) => self.setItem(key, value)
 
 ///|
 pub extern "js" fn Storage::set(
   self : Storage,
   key : String,
   value : String,
-) -> Result[Unit, StorageSetItemError] =
-  #| (self, key, value) => (() => { try { self[key] = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'QuotaExceededError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, key, value) => { self[key] = value }
 
 ///|
 pub extern "js" fn Storage::remove_item(self : Storage, key : String) -> Unit =
@@ -31576,7 +30690,6 @@ pub extern "js" fn StorageEvent::get_storage_area(
   #| (self) => (() => { const v = self.storageArea; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-/// @alert deprecated "initStorageEvent is deprecated"
 pub extern "js" fn StorageEvent::init_storage_event(
   self : StorageEvent,
   type_ : String,
@@ -31907,56 +31020,36 @@ pub extern "js" fn HTMLFrameSetElement::set_rows(
   #| (self, value) => { self.rows = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::set_ongamepadconnected(
+pub extern "js" fn HTMLFrameSetElement::get_onafterprint(
   self : HTMLFrameSetElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ongamepadconnected = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLFrameSetElement::clear_ongamepadconnected(
-  self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.ongamepadconnected = null }
-
-///|
-pub extern "js" fn HTMLFrameSetElement::set_ongamepaddisconnected(
-  self : HTMLFrameSetElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ongamepaddisconnected = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLFrameSetElement::clear_ongamepaddisconnected(
-  self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.ongamepaddisconnected = null }
+) -> EventHandler =
+  #| (self) => self.onafterprint
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onafterprint(
   self : HTMLFrameSetElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onafterprint = (e) => handler(e) }
+  #| (self, value) => { self.onafterprint = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onafterprint(
+pub extern "js" fn HTMLFrameSetElement::get_onbeforeprint(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onafterprint = null }
+) -> EventHandler =
+  #| (self) => self.onbeforeprint
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onbeforeprint(
   self : HTMLFrameSetElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbeforeprint = (e) => handler(e) }
+  #| (self, value) => { self.onbeforeprint = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onbeforeprint(
+pub extern "js" fn HTMLFrameSetElement::get_onbeforeunload(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onbeforeprint = null }
+) -> OnBeforeUnloadEventHandler =
+  #| (self) => self.onbeforeunload
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onbeforeunload(
@@ -31966,218 +31059,238 @@ pub extern "js" fn HTMLFrameSetElement::set_onbeforeunload(
   #| (self, value) => { self.onbeforeunload = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onbeforeunload(
+pub extern "js" fn HTMLFrameSetElement::get_onhashchange(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onbeforeunload = null }
+) -> EventHandler =
+  #| (self) => self.onhashchange
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onhashchange(
   self : HTMLFrameSetElement,
-  handler : (HashChangeEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onhashchange = (e) => handler(e) }
+  #| (self, value) => { self.onhashchange = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onhashchange(
+pub extern "js" fn HTMLFrameSetElement::get_onlanguagechange(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onhashchange = null }
+) -> EventHandler =
+  #| (self) => self.onlanguagechange
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onlanguagechange(
   self : HTMLFrameSetElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onlanguagechange = (e) => handler(e) }
+  #| (self, value) => { self.onlanguagechange = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onlanguagechange(
+pub extern "js" fn HTMLFrameSetElement::get_onmessage(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onlanguagechange = null }
+) -> EventHandler =
+  #| (self) => self.onmessage
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onmessage(
   self : HTMLFrameSetElement,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessage = (e) => handler(e) }
+  #| (self, value) => { self.onmessage = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onmessage(
+pub extern "js" fn HTMLFrameSetElement::get_onmessageerror(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onmessage = null }
+) -> EventHandler =
+  #| (self) => self.onmessageerror
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onmessageerror(
   self : HTMLFrameSetElement,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessageerror = (e) => handler(e) }
+  #| (self, value) => { self.onmessageerror = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onmessageerror(
+pub extern "js" fn HTMLFrameSetElement::get_onoffline(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onmessageerror = null }
+) -> EventHandler =
+  #| (self) => self.onoffline
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onoffline(
   self : HTMLFrameSetElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onoffline = (e) => handler(e) }
+  #| (self, value) => { self.onoffline = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onoffline(
+pub extern "js" fn HTMLFrameSetElement::get_ononline(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onoffline = null }
+) -> EventHandler =
+  #| (self) => self.ononline
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_ononline(
   self : HTMLFrameSetElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ononline = (e) => handler(e) }
+  #| (self, value) => { self.ononline = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_ononline(
+pub extern "js" fn HTMLFrameSetElement::get_onpagehide(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.ononline = null }
+) -> EventHandler =
+  #| (self) => self.onpagehide
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onpagehide(
   self : HTMLFrameSetElement,
-  handler : (PageTransitionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpagehide = (e) => handler(e) }
+  #| (self, value) => { self.onpagehide = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onpagehide(
+pub extern "js" fn HTMLFrameSetElement::get_onpagereveal(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onpagehide = null }
+) -> EventHandler =
+  #| (self) => self.onpagereveal
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onpagereveal(
   self : HTMLFrameSetElement,
-  handler : (PageRevealEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpagereveal = (e) => handler(e) }
+  #| (self, value) => { self.onpagereveal = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onpagereveal(
+pub extern "js" fn HTMLFrameSetElement::get_onpageshow(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onpagereveal = null }
+) -> EventHandler =
+  #| (self) => self.onpageshow
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onpageshow(
   self : HTMLFrameSetElement,
-  handler : (PageTransitionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpageshow = (e) => handler(e) }
+  #| (self, value) => { self.onpageshow = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onpageshow(
+pub extern "js" fn HTMLFrameSetElement::get_onpageswap(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onpageshow = null }
+) -> EventHandler =
+  #| (self) => self.onpageswap
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onpageswap(
   self : HTMLFrameSetElement,
-  handler : (PageSwapEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpageswap = (e) => handler(e) }
+  #| (self, value) => { self.onpageswap = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onpageswap(
+pub extern "js" fn HTMLFrameSetElement::get_onpopstate(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onpageswap = null }
+) -> EventHandler =
+  #| (self) => self.onpopstate
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onpopstate(
   self : HTMLFrameSetElement,
-  handler : (PopStateEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpopstate = (e) => handler(e) }
+  #| (self, value) => { self.onpopstate = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onpopstate(
+pub extern "js" fn HTMLFrameSetElement::get_onrejectionhandled(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onpopstate = null }
+) -> EventHandler =
+  #| (self) => self.onrejectionhandled
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onrejectionhandled(
   self : HTMLFrameSetElement,
-  handler : (PromiseRejectionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onrejectionhandled = (e) => handler(e) }
+  #| (self, value) => { self.onrejectionhandled = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onrejectionhandled(
+pub extern "js" fn HTMLFrameSetElement::get_onstorage(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onrejectionhandled = null }
+) -> EventHandler =
+  #| (self) => self.onstorage
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onstorage(
   self : HTMLFrameSetElement,
-  handler : (StorageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onstorage = (e) => handler(e) }
+  #| (self, value) => { self.onstorage = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onstorage(
+pub extern "js" fn HTMLFrameSetElement::get_onunhandledrejection(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onstorage = null }
+) -> EventHandler =
+  #| (self) => self.onunhandledrejection
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onunhandledrejection(
   self : HTMLFrameSetElement,
-  handler : (PromiseRejectionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onunhandledrejection = (e) => handler(e) }
+  #| (self, value) => { self.onunhandledrejection = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onunhandledrejection(
+pub extern "js" fn HTMLFrameSetElement::get_onunload(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onunhandledrejection = null }
+) -> EventHandler =
+  #| (self) => self.onunload
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onunload(
   self : HTMLFrameSetElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onunload = (e) => handler(e) }
+  #| (self, value) => { self.onunload = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onunload(
+pub extern "js" fn HTMLFrameSetElement::get_onportalactivate(
   self : HTMLFrameSetElement,
-) -> Unit =
-  #| (self) => { self.onunload = null }
+) -> EventHandler =
+  #| (self) => self.onportalactivate
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onportalactivate(
   self : HTMLFrameSetElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onportalactivate = (e) => handler(e) }
+  #| (self, value) => { self.onportalactivate = value }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::clear_onportalactivate(
+pub extern "js" fn HTMLFrameSetElement::get_ongamepadconnected(
   self : HTMLFrameSetElement,
+) -> EventHandler =
+  #| (self) => self.ongamepadconnected
+
+///|
+pub extern "js" fn HTMLFrameSetElement::set_ongamepadconnected(
+  self : HTMLFrameSetElement,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onportalactivate = null }
+  #| (self, value) => { self.ongamepadconnected = value }
+
+///|
+pub extern "js" fn HTMLFrameSetElement::get_ongamepaddisconnected(
+  self : HTMLFrameSetElement,
+) -> EventHandler =
+  #| (self) => self.ongamepaddisconnected
+
+///|
+pub extern "js" fn HTMLFrameSetElement::set_ongamepaddisconnected(
+  self : HTMLFrameSetElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ongamepaddisconnected = value }
 
 ///|
 /// HTMLFrameElement interface
@@ -32501,12 +31614,10 @@ pub extern "js" fn HTMLFontElement::new() -> HTMLFontElement =
   #| () => new HTMLFontElement()
 
 ///|
-/// @alert deprecated "color is deprecated"
 pub extern "js" fn HTMLFontElement::get_color(self : HTMLFontElement) -> String =
   #| (self) => self.color
 
 ///|
-/// @alert deprecated "color is deprecated"
 pub extern "js" fn HTMLFontElement::set_color(
   self : HTMLFontElement,
   value : String,
@@ -32514,12 +31625,10 @@ pub extern "js" fn HTMLFontElement::set_color(
   #| (self, value) => { self.color = value }
 
 ///|
-/// @alert deprecated "face is deprecated"
 pub extern "js" fn HTMLFontElement::get_face(self : HTMLFontElement) -> String =
   #| (self) => self.face
 
 ///|
-/// @alert deprecated "face is deprecated"
 pub extern "js" fn HTMLFontElement::set_face(
   self : HTMLFontElement,
   value : String,
@@ -32527,12 +31636,10 @@ pub extern "js" fn HTMLFontElement::set_face(
   #| (self, value) => { self.face = value }
 
 ///|
-/// @alert deprecated "size is deprecated"
 pub extern "js" fn HTMLFontElement::get_size(self : HTMLFontElement) -> String =
   #| (self) => self.size
 
 ///|
-/// @alert deprecated "size is deprecated"
 pub extern "js" fn HTMLFontElement::set_size(
   self : HTMLFontElement,
   value : String,

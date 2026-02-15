@@ -129,13 +129,6 @@ pub extern "js" fn IdleDetector::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum IdleDetectorStartError {
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn IdleDetector::new() -> IdleDetector =
   #| () => new IdleDetector()
 
@@ -152,15 +145,17 @@ pub extern "js" fn IdleDetector::get_screen_state(
   #| (self) => (() => { const v = self.screenState; return v == null ? undefined : ['locked', 'unlocked'].indexOf(v); })()
 
 ///|
-pub extern "js" fn IdleDetector::set_onchange(
+pub extern "js" fn IdleDetector::get_onchange(
   self : IdleDetector,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onchange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onchange
 
 ///|
-pub extern "js" fn IdleDetector::clear_onchange(self : IdleDetector) -> Unit =
-  #| (self) => { self.onchange = null }
+pub extern "js" fn IdleDetector::set_onchange(
+  self : IdleDetector,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onchange = value }
 
 ///|
 pub extern "js" fn IdleDetector::request_permission() -> Promise[
@@ -169,22 +164,20 @@ pub extern "js" fn IdleDetector::request_permission() -> Promise[
   #| () => IdleDetector.requestPermission()
 
 ///|
-pub extern "js" fn IdleDetector::start(
-  self : IdleDetector,
-) -> Promise[Result[Unit, IdleDetectorStartError]] =
-  #| (self) => self.start().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+pub extern "js" fn IdleDetector::start(self : IdleDetector) -> Promise[Unit] =
+  #| (self) => self.start()
 
 ///|
 extern "js" fn IdleDetector::start_with_options_ffi(
   self : IdleDetector,
   options : JsValue,
-) -> Promise[Result[Unit, IdleDetectorStartError]] =
-  #| (self, options) => self.start(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, options) => self.start(options)
 
 ///|
 pub fn IdleDetector::start_with_options(
   self : IdleDetector,
   options : IdleOptions,
-) -> Promise[Result[Unit, IdleDetectorStartError]] {
+) -> Promise[Unit] {
   IdleDetector::start_with_options_ffi(self, options.to_js())
 }

@@ -5,8 +5,7 @@
 
 ///|
 fn test_image_data() -> Unit {
-  let img = @websys.ImageData::new(100, 50).unwrap()
+  let img = @websys.ImageData::new(100, 50)
   assert_eq(img.get_width(), 100, label="width")
   assert_eq(img.get_height(), 50, label="height")
-  println("  image_data: ok")
 }

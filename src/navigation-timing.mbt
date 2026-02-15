@@ -421,7 +421,6 @@ pub extern "js" fn PerformanceTiming::get_load_event_end(
   #| (self) => (() => { const n = self.loadEventEnd; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
-/// @alert deprecated "toJSON is deprecated"
 pub extern "js" fn PerformanceTiming::to_json(
   self : PerformanceTiming,
 ) -> JsValue =
@@ -498,7 +497,6 @@ pub extern "js" fn PerformanceNavigation::get_redirect_count(
   #| (self) => self.redirectCount
 
 ///|
-/// @alert deprecated "toJSON is deprecated"
 pub extern "js" fn PerformanceNavigation::to_json(
   self : PerformanceNavigation,
 ) -> JsValue =

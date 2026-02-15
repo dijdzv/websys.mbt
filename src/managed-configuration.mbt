@@ -53,17 +53,17 @@ pub extern "js" fn NavigatorManagedData::get_managed_configuration(
   #| (self, keys) => self.getManagedConfiguration(keys)
 
 ///|
-pub extern "js" fn NavigatorManagedData::set_onmanagedconfigurationchange(
+pub extern "js" fn NavigatorManagedData::get_onmanagedconfigurationchange(
   self : NavigatorManagedData,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onmanagedconfigurationchange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onmanagedconfigurationchange
 
 ///|
-pub extern "js" fn NavigatorManagedData::clear_onmanagedconfigurationchange(
+pub extern "js" fn NavigatorManagedData::set_onmanagedconfigurationchange(
   self : NavigatorManagedData,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onmanagedconfigurationchange = null }
+  #| (self, value) => { self.onmanagedconfigurationchange = value }
 
 ///|
 pub extern "js" fn NavigatorManagedData::get_annotated_asset_id(

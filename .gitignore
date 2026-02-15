@@ -5,6 +5,7 @@ target
 
 # Node.js
 node_modules/
+bun.lock
 
 # Nix/devenv
 .devenv/
@@ -12,12 +13,6 @@ node_modules/
 .direnv/
 devenv.lock
 result
-
-# Generated reports
-src/*.md
-
-# Generated interface files
-*.mbti
 
 # OS
 .DS_Store

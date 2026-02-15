@@ -70,12 +70,14 @@ pub extern "js" fn DevicePosture::get_type(
   #| (self) => ['continuous', 'folded'].indexOf(self.type)
 
 ///|
-pub extern "js" fn DevicePosture::set_onchange(
+pub extern "js" fn DevicePosture::get_onchange(
   self : DevicePosture,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onchange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onchange
 
 ///|
-pub extern "js" fn DevicePosture::clear_onchange(self : DevicePosture) -> Unit =
-  #| (self) => { self.onchange = null }
+pub extern "js" fn DevicePosture::set_onchange(
+  self : DevicePosture,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onchange = value }

@@ -11,12 +11,12 @@ pub(all) struct AuthenticationExtensionsClientInputs {
   minPinLength : Bool?
   hmacCreateSecret : Bool?
   hmacGetSecret : HMACGetSecretInput?
-  payment : AuthenticationExtensionsPaymentInputs?
   appid : String?
   appidExclude : String?
   credProps : Bool?
   prf : AuthenticationExtensionsPRFInputs?
   largeBlob : AuthenticationExtensionsLargeBlobInputs?
+  payment : AuthenticationExtensionsPaymentInputs?
 }
 
 ///|
@@ -30,12 +30,12 @@ pub fn AuthenticationExtensionsClientInputs::default() -> AuthenticationExtensio
     minPinLength: None,
     hmacCreateSecret: None,
     hmacGetSecret: None,
-    payment: None,
     appid: None,
     appidExclude: None,
     credProps: None,
     prf: None,
     largeBlob: None,
+    payment: None,
   }
 }
 
@@ -51,12 +51,12 @@ extern "js" fn AuthenticationExtensionsClientInputs::to_js_ffi(
   #|   minPinLength: (self.minPinLength === -1 ? undefined : self.minPinLength),
   #|   hmacCreateSecret: (self.hmacCreateSecret === -1 ? undefined : self.hmacCreateSecret),
   #|   hmacGetSecret: ((() => { const v = self.hmacGetSecret; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   payment: ((() => { const v = self.payment; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   appid: self.appid,
   #|   appidExclude: self.appidExclude,
   #|   credProps: (self.credProps === -1 ? undefined : self.credProps),
   #|   prf: ((() => { const v = self.prf; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   largeBlob: ((() => { const v = self.largeBlob; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   largeBlob: ((() => { const v = self.largeBlob; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   payment: ((() => { const v = self.payment; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -79,12 +79,12 @@ extern "js" fn AuthenticationExtensionsClientInputs::from_js_ffi(
   #|   minPinLength: (v.minPinLength === undefined ? -1 : v.minPinLength),
   #|   hmacCreateSecret: (v.hmacCreateSecret === undefined ? -1 : v.hmacCreateSecret),
   #|   hmacGetSecret: (v.hmacGetSecret === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hmacGetSecret }),
-  #|   payment: (v.payment === undefined ? { $tag: 0 } : { $tag: 1, _0: v.payment }),
   #|   appid: v.appid,
   #|   appidExclude: v.appidExclude,
   #|   credProps: (v.credProps === undefined ? -1 : v.credProps),
   #|   prf: (v.prf === undefined ? { $tag: 0 } : { $tag: 1, _0: v.prf }),
-  #|   largeBlob: (v.largeBlob === undefined ? { $tag: 0 } : { $tag: 1, _0: v.largeBlob })
+  #|   largeBlob: (v.largeBlob === undefined ? { $tag: 0 } : { $tag: 1, _0: v.largeBlob }),
+  #|   payment: (v.payment === undefined ? { $tag: 0 } : { $tag: 1, _0: v.payment })
   #| })
 
 ///|
@@ -143,12 +143,12 @@ pub fn HMACGetSecretInput::from_js(value : JsValue) -> HMACGetSecretInput {
 pub(all) struct AuthenticationExtensionsClientOutputs {
   hmacCreateSecret : Bool?
   hmacGetSecret : HMACGetSecretOutput?
-  payment : AuthenticationExtensionsPaymentOutputs?
   appid : Bool?
   appidExclude : Bool?
   credProps : CredentialPropertiesOutput?
   prf : AuthenticationExtensionsPRFOutputs?
   largeBlob : AuthenticationExtensionsLargeBlobOutputs?
+  payment : AuthenticationExtensionsPaymentOutputs?
 }
 
 ///|
@@ -157,12 +157,12 @@ pub fn AuthenticationExtensionsClientOutputs::default() -> AuthenticationExtensi
   AuthenticationExtensionsClientOutputs::{
     hmacCreateSecret: None,
     hmacGetSecret: None,
-    payment: None,
     appid: None,
     appidExclude: None,
     credProps: None,
     prf: None,
     largeBlob: None,
+    payment: None,
   }
 }
 
@@ -173,12 +173,12 @@ extern "js" fn AuthenticationExtensionsClientOutputs::to_js_ffi(
   #| (self) => ({
   #|   hmacCreateSecret: (self.hmacCreateSecret === -1 ? undefined : self.hmacCreateSecret),
   #|   hmacGetSecret: ((() => { const v = self.hmacGetSecret; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   payment: ((() => { const v = self.payment; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   appid: (self.appid === -1 ? undefined : self.appid),
   #|   appidExclude: (self.appidExclude === -1 ? undefined : self.appidExclude),
   #|   credProps: ((() => { const v = self.credProps; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   prf: ((() => { const v = self.prf; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   largeBlob: ((() => { const v = self.largeBlob; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   largeBlob: ((() => { const v = self.largeBlob; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   payment: ((() => { const v = self.payment; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -196,12 +196,12 @@ extern "js" fn AuthenticationExtensionsClientOutputs::from_js_ffi(
   #| (v) => ({
   #|   hmacCreateSecret: (v.hmacCreateSecret === undefined ? -1 : v.hmacCreateSecret),
   #|   hmacGetSecret: (v.hmacGetSecret === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hmacGetSecret }),
-  #|   payment: (v.payment === undefined ? { $tag: 0 } : { $tag: 1, _0: v.payment }),
   #|   appid: (v.appid === undefined ? -1 : v.appid),
   #|   appidExclude: (v.appidExclude === undefined ? -1 : v.appidExclude),
   #|   credProps: (v.credProps === undefined ? { $tag: 0 } : { $tag: 1, _0: v.credProps }),
   #|   prf: (v.prf === undefined ? { $tag: 0 } : { $tag: 1, _0: v.prf }),
-  #|   largeBlob: (v.largeBlob === undefined ? { $tag: 0 } : { $tag: 1, _0: v.largeBlob })
+  #|   largeBlob: (v.largeBlob === undefined ? { $tag: 0 } : { $tag: 1, _0: v.largeBlob }),
+  #|   payment: (v.payment === undefined ? { $tag: 0 } : { $tag: 1, _0: v.payment })
   #| })
 
 ///|

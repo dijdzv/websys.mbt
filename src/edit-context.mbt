@@ -349,41 +349,6 @@ pub extern "js" fn EditContext::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum EditContextUpdateTextError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum EditContextUpdateSelectionError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum EditContextUpdateControlBoundsError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum EditContextUpdateSelectionBoundsError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum EditContextUpdateCharacterBoundsError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn EditContext::new() -> EditContext =
   #| () => new EditContext()
 
@@ -404,38 +369,38 @@ pub extern "js" fn EditContext::update_text(
   range_start : Int,
   range_end : Int,
   text : String,
-) -> Result[Unit, EditContextUpdateTextError] =
-  #| (self, range_start, range_end, text) => (() => { try { self.updateText(range_start, range_end, text); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, range_start, range_end, text) => self.updateText(range_start, range_end, text)
 
 ///|
 pub extern "js" fn EditContext::update_selection(
   self : EditContext,
   start : Int,
   end : Int,
-) -> Result[Unit, EditContextUpdateSelectionError] =
-  #| (self, start, end) => (() => { try { self.updateSelection(start, end); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, start, end) => self.updateSelection(start, end)
 
 ///|
 pub extern "js" fn EditContext::update_control_bounds(
   self : EditContext,
   control_bounds : DOMRect,
-) -> Result[Unit, EditContextUpdateControlBoundsError] =
-  #| (self, control_bounds) => (() => { try { self.updateControlBounds(control_bounds); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, control_bounds) => self.updateControlBounds(control_bounds)
 
 ///|
 pub extern "js" fn EditContext::update_selection_bounds(
   self : EditContext,
   selection_bounds : DOMRect,
-) -> Result[Unit, EditContextUpdateSelectionBoundsError] =
-  #| (self, selection_bounds) => (() => { try { self.updateSelectionBounds(selection_bounds); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, selection_bounds) => self.updateSelectionBounds(selection_bounds)
 
 ///|
 pub extern "js" fn EditContext::update_character_bounds(
   self : EditContext,
   range_start : Int,
   character_bounds : Array[DOMRect],
-) -> Result[Unit, EditContextUpdateCharacterBoundsError] =
-  #| (self, range_start, character_bounds) => (() => { try { self.updateCharacterBounds(range_start, character_bounds); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, range_start, character_bounds) => self.updateCharacterBounds(range_start, character_bounds)
 
 ///|
 pub extern "js" fn EditContext::attached_elements(
@@ -468,67 +433,69 @@ pub extern "js" fn EditContext::character_bounds(
   #| (self) => self.characterBounds()
 
 ///|
-pub extern "js" fn EditContext::set_ontextupdate(
+pub extern "js" fn EditContext::get_ontextupdate(
   self : EditContext,
-  handler : (TextUpdateEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontextupdate = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.ontextupdate
 
 ///|
-pub extern "js" fn EditContext::clear_ontextupdate(self : EditContext) -> Unit =
-  #| (self) => { self.ontextupdate = null }
+pub extern "js" fn EditContext::set_ontextupdate(
+  self : EditContext,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontextupdate = value }
+
+///|
+pub extern "js" fn EditContext::get_ontextformatupdate(
+  self : EditContext,
+) -> EventHandler =
+  #| (self) => self.ontextformatupdate
 
 ///|
 pub extern "js" fn EditContext::set_ontextformatupdate(
   self : EditContext,
-  handler : (TextFormatUpdateEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontextformatupdate = (e) => handler(e) }
+  #| (self, value) => { self.ontextformatupdate = value }
 
 ///|
-pub extern "js" fn EditContext::clear_ontextformatupdate(
+pub extern "js" fn EditContext::get_oncharacterboundsupdate(
   self : EditContext,
-) -> Unit =
-  #| (self) => { self.ontextformatupdate = null }
+) -> EventHandler =
+  #| (self) => self.oncharacterboundsupdate
 
 ///|
 pub extern "js" fn EditContext::set_oncharacterboundsupdate(
   self : EditContext,
-  handler : (CharacterBoundsUpdateEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncharacterboundsupdate = (e) => handler(e) }
+  #| (self, value) => { self.oncharacterboundsupdate = value }
 
 ///|
-pub extern "js" fn EditContext::clear_oncharacterboundsupdate(
+pub extern "js" fn EditContext::get_oncompositionstart(
   self : EditContext,
-) -> Unit =
-  #| (self) => { self.oncharacterboundsupdate = null }
+) -> EventHandler =
+  #| (self) => self.oncompositionstart
 
 ///|
 pub extern "js" fn EditContext::set_oncompositionstart(
   self : EditContext,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncompositionstart = (e) => handler(e) }
+  #| (self, value) => { self.oncompositionstart = value }
 
 ///|
-pub extern "js" fn EditContext::clear_oncompositionstart(
+pub extern "js" fn EditContext::get_oncompositionend(
   self : EditContext,
-) -> Unit =
-  #| (self) => { self.oncompositionstart = null }
+) -> EventHandler =
+  #| (self) => self.oncompositionend
 
 ///|
 pub extern "js" fn EditContext::set_oncompositionend(
   self : EditContext,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncompositionend = (e) => handler(e) }
-
-///|
-pub extern "js" fn EditContext::clear_oncompositionend(
-  self : EditContext,
-) -> Unit =
-  #| (self) => { self.oncompositionend = null }
+  #| (self, value) => { self.oncompositionend = value }
 
 ///|
 /// TextUpdateEvent interface

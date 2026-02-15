@@ -34,33 +34,15 @@ pub extern "js" fn Keyboard::to_event_target(self : Keyboard) -> EventTarget =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum KeyboardLockError {
-  AbortError(JsError)
-  InvalidStateError(JsError)
-  InvalidAccessError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum KeyboardGetLayoutMapError {
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn Keyboard::lock(
-  self : Keyboard,
-) -> Promise[Result[Unit, KeyboardLockError]] =
-  #| (self) => self.lock().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+pub extern "js" fn Keyboard::lock(self : Keyboard) -> Promise[Unit] =
+  #| (self) => self.lock()
 
 ///|
 pub extern "js" fn Keyboard::lock_with_key_codes(
   self : Keyboard,
   key_codes : Array[String],
-) -> Promise[Result[Unit, KeyboardLockError]] =
-  #| (self, key_codes) => self.lock(key_codes).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, key_codes) => self.lock(key_codes)
 
 ///|
 pub extern "js" fn Keyboard::unlock(self : Keyboard) -> Unit =
@@ -69,16 +51,18 @@ pub extern "js" fn Keyboard::unlock(self : Keyboard) -> Unit =
 ///|
 pub extern "js" fn Keyboard::get_layout_map(
   self : Keyboard,
-) -> Promise[Result[KeyboardLayoutMap, KeyboardGetLayoutMapError]] =
-  #| (self) => self.getLayoutMap().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[KeyboardLayoutMap] =
+  #| (self) => self.getLayoutMap()
+
+///|
+pub extern "js" fn Keyboard::get_onlayoutchange(
+  self : Keyboard,
+) -> EventHandler =
+  #| (self) => self.onlayoutchange
 
 ///|
 pub extern "js" fn Keyboard::set_onlayoutchange(
   self : Keyboard,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onlayoutchange = (e) => handler(e) }
-
-///|
-pub extern "js" fn Keyboard::clear_onlayoutchange(self : Keyboard) -> Unit =
-  #| (self) => { self.onlayoutchange = null }
+  #| (self, value) => { self.onlayoutchange = value }

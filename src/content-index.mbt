@@ -169,24 +169,17 @@ pub extern "js" fn JsValue::to_content_index(self : JsValue) -> ContentIndex =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum ContentIndexAddError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 extern "js" fn ContentIndex::add_ffi(
   self : ContentIndex,
   description : JsValue,
-) -> Promise[Result[Unit, ContentIndexAddError]] =
-  #| (self, description) => self.add(description).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, description) => self.add(description)
 
 ///|
 pub fn ContentIndex::add(
   self : ContentIndex,
   description : ContentDescription,
-) -> Promise[Result[Unit, ContentIndexAddError]] {
+) -> Promise[Unit] {
   ContentIndex::add_ffi(self, description.to_js())
 }
 

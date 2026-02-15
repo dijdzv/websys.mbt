@@ -50,30 +50,30 @@ pub extern "js" fn ScreenDetails::get_current_screen(
   #| (self) => self.currentScreen
 
 ///|
-pub extern "js" fn ScreenDetails::set_onscreenschange(
+pub extern "js" fn ScreenDetails::get_onscreenschange(
   self : ScreenDetails,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onscreenschange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onscreenschange
 
 ///|
-pub extern "js" fn ScreenDetails::clear_onscreenschange(
+pub extern "js" fn ScreenDetails::set_onscreenschange(
   self : ScreenDetails,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onscreenschange = null }
+  #| (self, value) => { self.onscreenschange = value }
+
+///|
+pub extern "js" fn ScreenDetails::get_oncurrentscreenchange(
+  self : ScreenDetails,
+) -> EventHandler =
+  #| (self) => self.oncurrentscreenchange
 
 ///|
 pub extern "js" fn ScreenDetails::set_oncurrentscreenchange(
   self : ScreenDetails,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncurrentscreenchange = (e) => handler(e) }
-
-///|
-pub extern "js" fn ScreenDetails::clear_oncurrentscreenchange(
-  self : ScreenDetails,
-) -> Unit =
-  #| (self) => { self.oncurrentscreenchange = null }
+  #| (self, value) => { self.oncurrentscreenchange = value }
 
 ///|
 /// ScreenDetailed interface

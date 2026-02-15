@@ -8,7 +8,6 @@ fn test_html_html_element() -> Unit {
   html.set_version("-//W3C//DTD HTML 4.01//EN")
   assert_eq(html.get_version(), "-//W3C//DTD HTML 4.01//EN", label="version")
   let _el : @websys.Element = html.to_element()
-  println("  html_html_element: ok")
 }
 
 ///|
@@ -19,7 +18,6 @@ fn test_title_element() -> Unit {
   )
   title.set_text("My Page Title")
   assert_eq(title.get_text(), "My Page Title", label="text")
-  println("  title_element: ok")
 }
 
 ///|
@@ -38,7 +36,6 @@ fn test_meta_element() -> Unit {
   assert_eq(meta.get_scheme(), "PICS-1.1", label="scheme")
   meta.set_media("screen")
   assert_eq(meta.get_media(), "screen", label="media")
-  println("  meta_element: ok")
 }
 
 ///|
@@ -67,7 +64,6 @@ fn test_style_element() -> Unit {
     }
     None => abort("FAIL: document.head is None")
   }
-  println("  style_element: ok")
 }
 
 ///|
@@ -92,7 +88,6 @@ fn test_link_element() -> Unit {
   assert_false(link.get_disabled(), label="disabled default")
   link.set_disabled(true)
   assert_true(link.get_disabled(), label="disabled set")
-  println("  link_element: ok")
 }
 
 ///|
@@ -102,7 +97,7 @@ fn test_script_element() -> Unit {
     doc.create_element("script").to_js_value(),
   )
   // src is a URL-reflected attribute: getter returns absolute URL per HTML spec
-  script.set_src("https://cdn.example.com/app.js").unwrap()
+  script.set_src("https://cdn.example.com/app.js")
   assert_eq(script.get_src(), "https://cdn.example.com/app.js", label="src")
   script.set_type("module")
   assert_eq(script.get_type(), "module", label="type")
@@ -119,7 +114,7 @@ fn test_script_element() -> Unit {
   script.set_no_module(true)
   assert_true(script.get_no_module(), label="noModule set")
   // text
-  script.set_text("console.log('hello')").unwrap()
+  script.set_text("console.log('hello')")
   assert_eq(script.get_text(), "console.log('hello')", label="text")
   // integrity
   script.set_integrity("sha384-xyz")
@@ -148,5 +143,4 @@ fn test_script_element() -> Unit {
   // html_for (deprecated)
   script.set_html_for("hey")
   assert_eq(script.get_html_for(), "hey", label="html_for")
-  println("  script_element: ok")
 }

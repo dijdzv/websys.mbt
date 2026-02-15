@@ -98,6 +98,216 @@ pub extern "js" fn SVGElement::to_event_target(
   #| (self) => self
 
 ///|
+pub extern "js" fn SVGElement::as_svg_animation_element(
+  self : SVGElement,
+) -> SVGAnimationElement? =
+  #| (self) => (self instanceof SVGAnimationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_animate_element(
+  self : SVGElement,
+) -> SVGAnimateElement? =
+  #| (self) => (self instanceof SVGAnimateElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_set_element(
+  self : SVGElement,
+) -> SVGSetElement? =
+  #| (self) => (self instanceof SVGSetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_animate_motion_element(
+  self : SVGElement,
+) -> SVGAnimateMotionElement? =
+  #| (self) => (self instanceof SVGAnimateMotionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgm_path_element(
+  self : SVGElement,
+) -> SVGMPathElement? =
+  #| (self) => (self instanceof SVGMPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_animate_transform_element(
+  self : SVGElement,
+) -> SVGAnimateTransformElement? =
+  #| (self) => (self instanceof SVGAnimateTransformElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_clip_path_element(
+  self : SVGElement,
+) -> SVGClipPathElement? =
+  #| (self) => (self instanceof SVGClipPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_mask_element(
+  self : SVGElement,
+) -> SVGMaskElement? =
+  #| (self) => (self instanceof SVGMaskElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_filter_element(
+  self : SVGElement,
+) -> SVGFilterElement? =
+  #| (self) => (self instanceof SVGFilterElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_blend_element(
+  self : SVGElement,
+) -> SVGFEBlendElement? =
+  #| (self) => (self instanceof SVGFEBlendElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_color_matrix_element(
+  self : SVGElement,
+) -> SVGFEColorMatrixElement? =
+  #| (self) => (self instanceof SVGFEColorMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_component_transfer_element(
+  self : SVGElement,
+) -> SVGFEComponentTransferElement? =
+  #| (self) => (self instanceof SVGFEComponentTransferElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_component_transfer_function_element(
+  self : SVGElement,
+) -> SVGComponentTransferFunctionElement? =
+  #| (self) => (self instanceof SVGComponentTransferFunctionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_func_r_element(
+  self : SVGElement,
+) -> SVGFEFuncRElement? =
+  #| (self) => (self instanceof SVGFEFuncRElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_func_g_element(
+  self : SVGElement,
+) -> SVGFEFuncGElement? =
+  #| (self) => (self instanceof SVGFEFuncGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_func_b_element(
+  self : SVGElement,
+) -> SVGFEFuncBElement? =
+  #| (self) => (self instanceof SVGFEFuncBElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_func_a_element(
+  self : SVGElement,
+) -> SVGFEFuncAElement? =
+  #| (self) => (self instanceof SVGFEFuncAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_composite_element(
+  self : SVGElement,
+) -> SVGFECompositeElement? =
+  #| (self) => (self instanceof SVGFECompositeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_convolve_matrix_element(
+  self : SVGElement,
+) -> SVGFEConvolveMatrixElement? =
+  #| (self) => (self instanceof SVGFEConvolveMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_diffuse_lighting_element(
+  self : SVGElement,
+) -> SVGFEDiffuseLightingElement? =
+  #| (self) => (self instanceof SVGFEDiffuseLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_distant_light_element(
+  self : SVGElement,
+) -> SVGFEDistantLightElement? =
+  #| (self) => (self instanceof SVGFEDistantLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_point_light_element(
+  self : SVGElement,
+) -> SVGFEPointLightElement? =
+  #| (self) => (self instanceof SVGFEPointLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_spot_light_element(
+  self : SVGElement,
+) -> SVGFESpotLightElement? =
+  #| (self) => (self instanceof SVGFESpotLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_displacement_map_element(
+  self : SVGElement,
+) -> SVGFEDisplacementMapElement? =
+  #| (self) => (self instanceof SVGFEDisplacementMapElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_drop_shadow_element(
+  self : SVGElement,
+) -> SVGFEDropShadowElement? =
+  #| (self) => (self instanceof SVGFEDropShadowElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_flood_element(
+  self : SVGElement,
+) -> SVGFEFloodElement? =
+  #| (self) => (self instanceof SVGFEFloodElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_gaussian_blur_element(
+  self : SVGElement,
+) -> SVGFEGaussianBlurElement? =
+  #| (self) => (self instanceof SVGFEGaussianBlurElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_image_element(
+  self : SVGElement,
+) -> SVGFEImageElement? =
+  #| (self) => (self instanceof SVGFEImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_merge_element(
+  self : SVGElement,
+) -> SVGFEMergeElement? =
+  #| (self) => (self instanceof SVGFEMergeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_merge_node_element(
+  self : SVGElement,
+) -> SVGFEMergeNodeElement? =
+  #| (self) => (self instanceof SVGFEMergeNodeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_morphology_element(
+  self : SVGElement,
+) -> SVGFEMorphologyElement? =
+  #| (self) => (self instanceof SVGFEMorphologyElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_offset_element(
+  self : SVGElement,
+) -> SVGFEOffsetElement? =
+  #| (self) => (self instanceof SVGFEOffsetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_specular_lighting_element(
+  self : SVGElement,
+) -> SVGFESpecularLightingElement? =
+  #| (self) => (self instanceof SVGFESpecularLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_tile_element(
+  self : SVGElement,
+) -> SVGFETileElement? =
+  #| (self) => (self instanceof SVGFETileElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_turbulence_element(
+  self : SVGElement,
+) -> SVGFETurbulenceElement? =
+  #| (self) => (self instanceof SVGFETurbulenceElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn SVGElement::as_svg_graphics_element(
   self : SVGElement,
 ) -> SVGGraphicsElement? =
@@ -302,216 +512,6 @@ pub extern "js" fn SVGElement::as_svg_view_element(
   #| (self) => (self instanceof SVGViewElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn SVGElement::as_svg_clip_path_element(
-  self : SVGElement,
-) -> SVGClipPathElement? =
-  #| (self) => (self instanceof SVGClipPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_mask_element(
-  self : SVGElement,
-) -> SVGMaskElement? =
-  #| (self) => (self instanceof SVGMaskElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_filter_element(
-  self : SVGElement,
-) -> SVGFilterElement? =
-  #| (self) => (self instanceof SVGFilterElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_blend_element(
-  self : SVGElement,
-) -> SVGFEBlendElement? =
-  #| (self) => (self instanceof SVGFEBlendElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_color_matrix_element(
-  self : SVGElement,
-) -> SVGFEColorMatrixElement? =
-  #| (self) => (self instanceof SVGFEColorMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_component_transfer_element(
-  self : SVGElement,
-) -> SVGFEComponentTransferElement? =
-  #| (self) => (self instanceof SVGFEComponentTransferElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_component_transfer_function_element(
-  self : SVGElement,
-) -> SVGComponentTransferFunctionElement? =
-  #| (self) => (self instanceof SVGComponentTransferFunctionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_func_r_element(
-  self : SVGElement,
-) -> SVGFEFuncRElement? =
-  #| (self) => (self instanceof SVGFEFuncRElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_func_g_element(
-  self : SVGElement,
-) -> SVGFEFuncGElement? =
-  #| (self) => (self instanceof SVGFEFuncGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_func_b_element(
-  self : SVGElement,
-) -> SVGFEFuncBElement? =
-  #| (self) => (self instanceof SVGFEFuncBElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_func_a_element(
-  self : SVGElement,
-) -> SVGFEFuncAElement? =
-  #| (self) => (self instanceof SVGFEFuncAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_composite_element(
-  self : SVGElement,
-) -> SVGFECompositeElement? =
-  #| (self) => (self instanceof SVGFECompositeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_convolve_matrix_element(
-  self : SVGElement,
-) -> SVGFEConvolveMatrixElement? =
-  #| (self) => (self instanceof SVGFEConvolveMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_diffuse_lighting_element(
-  self : SVGElement,
-) -> SVGFEDiffuseLightingElement? =
-  #| (self) => (self instanceof SVGFEDiffuseLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_distant_light_element(
-  self : SVGElement,
-) -> SVGFEDistantLightElement? =
-  #| (self) => (self instanceof SVGFEDistantLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_point_light_element(
-  self : SVGElement,
-) -> SVGFEPointLightElement? =
-  #| (self) => (self instanceof SVGFEPointLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_spot_light_element(
-  self : SVGElement,
-) -> SVGFESpotLightElement? =
-  #| (self) => (self instanceof SVGFESpotLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_displacement_map_element(
-  self : SVGElement,
-) -> SVGFEDisplacementMapElement? =
-  #| (self) => (self instanceof SVGFEDisplacementMapElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_drop_shadow_element(
-  self : SVGElement,
-) -> SVGFEDropShadowElement? =
-  #| (self) => (self instanceof SVGFEDropShadowElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_flood_element(
-  self : SVGElement,
-) -> SVGFEFloodElement? =
-  #| (self) => (self instanceof SVGFEFloodElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_gaussian_blur_element(
-  self : SVGElement,
-) -> SVGFEGaussianBlurElement? =
-  #| (self) => (self instanceof SVGFEGaussianBlurElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_image_element(
-  self : SVGElement,
-) -> SVGFEImageElement? =
-  #| (self) => (self instanceof SVGFEImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_merge_element(
-  self : SVGElement,
-) -> SVGFEMergeElement? =
-  #| (self) => (self instanceof SVGFEMergeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_merge_node_element(
-  self : SVGElement,
-) -> SVGFEMergeNodeElement? =
-  #| (self) => (self instanceof SVGFEMergeNodeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_morphology_element(
-  self : SVGElement,
-) -> SVGFEMorphologyElement? =
-  #| (self) => (self instanceof SVGFEMorphologyElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_offset_element(
-  self : SVGElement,
-) -> SVGFEOffsetElement? =
-  #| (self) => (self instanceof SVGFEOffsetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_specular_lighting_element(
-  self : SVGElement,
-) -> SVGFESpecularLightingElement? =
-  #| (self) => (self instanceof SVGFESpecularLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_tile_element(
-  self : SVGElement,
-) -> SVGFETileElement? =
-  #| (self) => (self instanceof SVGFETileElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_turbulence_element(
-  self : SVGElement,
-) -> SVGFETurbulenceElement? =
-  #| (self) => (self instanceof SVGFETurbulenceElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_animation_element(
-  self : SVGElement,
-) -> SVGAnimationElement? =
-  #| (self) => (self instanceof SVGAnimationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_animate_element(
-  self : SVGElement,
-) -> SVGAnimateElement? =
-  #| (self) => (self instanceof SVGAnimateElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_set_element(
-  self : SVGElement,
-) -> SVGSetElement? =
-  #| (self) => (self instanceof SVGSetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_animate_motion_element(
-  self : SVGElement,
-) -> SVGAnimateMotionElement? =
-  #| (self) => (self instanceof SVGAnimateMotionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgm_path_element(
-  self : SVGElement,
-) -> SVGMPathElement? =
-  #| (self) => (self instanceof SVGMPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_animate_transform_element(
-  self : SVGElement,
-) -> SVGAnimateTransformElement? =
-  #| (self) => (self instanceof SVGAnimateTransformElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn SVGElement::as_svg_path_element(
   self : SVGElement,
 ) -> SVGPathElement? =
@@ -536,473 +536,370 @@ pub extern "js" fn SVGElement::get_viewport_element(
   #| (self) => (() => { const v = self.viewportElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn SVGElement::set_onanimationstart(
-  self : SVGElement,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationstart = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onanimationstart(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onanimationstart = null }
-
-///|
-pub extern "js" fn SVGElement::set_onanimationiteration(
-  self : SVGElement,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationiteration = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onanimationiteration(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onanimationiteration = null }
-
-///|
-pub extern "js" fn SVGElement::set_onanimationend(
-  self : SVGElement,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationend = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onanimationend(self : SVGElement) -> Unit =
-  #| (self) => { self.onanimationend = null }
-
-///|
-pub extern "js" fn SVGElement::set_onanimationcancel(
-  self : SVGElement,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationcancel = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onanimationcancel(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onanimationcancel = null }
-
-///|
-pub extern "js" fn SVGElement::set_onsnapchanged(
-  self : SVGElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onsnapchanged = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onsnapchanged(self : SVGElement) -> Unit =
-  #| (self) => { self.onsnapchanged = null }
-
-///|
-pub extern "js" fn SVGElement::set_onsnapchanging(
-  self : SVGElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onsnapchanging = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onsnapchanging(self : SVGElement) -> Unit =
-  #| (self) => { self.onsnapchanging = null }
-
-///|
-pub extern "js" fn SVGElement::set_ontransitionrun(
-  self : SVGElement,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitionrun = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_ontransitionrun(self : SVGElement) -> Unit =
-  #| (self) => { self.ontransitionrun = null }
-
-///|
-pub extern "js" fn SVGElement::set_ontransitionstart(
-  self : SVGElement,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitionstart = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_ontransitionstart(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.ontransitionstart = null }
-
-///|
-pub extern "js" fn SVGElement::set_ontransitionend(
-  self : SVGElement,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitionend = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_ontransitionend(self : SVGElement) -> Unit =
-  #| (self) => { self.ontransitionend = null }
-
-///|
-pub extern "js" fn SVGElement::set_ontransitioncancel(
-  self : SVGElement,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitioncancel = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_ontransitioncancel(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.ontransitioncancel = null }
-
-///|
-pub extern "js" fn SVGElement::set_onfencedtreeclick(
-  self : SVGElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onfencedtreeclick = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onfencedtreeclick(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onfencedtreeclick = null }
+pub extern "js" fn SVGElement::get_onabort(self : SVGElement) -> EventHandler =
+  #| (self) => self.onabort
 
 ///|
 pub extern "js" fn SVGElement::set_onabort(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onabort = (e) => handler(e) }
+  #| (self, value) => { self.onabort = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onabort(self : SVGElement) -> Unit =
-  #| (self) => { self.onabort = null }
+pub extern "js" fn SVGElement::get_onauxclick(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onauxclick
 
 ///|
 pub extern "js" fn SVGElement::set_onauxclick(
   self : SVGElement,
-  handler : (PointerEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onauxclick = (e) => handler(e) }
+  #| (self, value) => { self.onauxclick = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onauxclick(self : SVGElement) -> Unit =
-  #| (self) => { self.onauxclick = null }
+pub extern "js" fn SVGElement::get_onbeforeinput(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onbeforeinput
 
 ///|
 pub extern "js" fn SVGElement::set_onbeforeinput(
   self : SVGElement,
-  handler : (InputEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbeforeinput = (e) => handler(e) }
+  #| (self, value) => { self.onbeforeinput = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onbeforeinput(self : SVGElement) -> Unit =
-  #| (self) => { self.onbeforeinput = null }
+pub extern "js" fn SVGElement::get_onbeforematch(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onbeforematch
 
 ///|
 pub extern "js" fn SVGElement::set_onbeforematch(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbeforematch = (e) => handler(e) }
+  #| (self, value) => { self.onbeforematch = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onbeforematch(self : SVGElement) -> Unit =
-  #| (self) => { self.onbeforematch = null }
+pub extern "js" fn SVGElement::get_onbeforetoggle(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onbeforetoggle
 
 ///|
 pub extern "js" fn SVGElement::set_onbeforetoggle(
   self : SVGElement,
-  handler : (ToggleEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbeforetoggle = (e) => handler(e) }
+  #| (self, value) => { self.onbeforetoggle = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onbeforetoggle(self : SVGElement) -> Unit =
-  #| (self) => { self.onbeforetoggle = null }
+pub extern "js" fn SVGElement::get_onblur(self : SVGElement) -> EventHandler =
+  #| (self) => self.onblur
 
 ///|
 pub extern "js" fn SVGElement::set_onblur(
   self : SVGElement,
-  handler : (FocusEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onblur = (e) => handler(e) }
+  #| (self, value) => { self.onblur = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onblur(self : SVGElement) -> Unit =
-  #| (self) => { self.onblur = null }
+pub extern "js" fn SVGElement::get_oncancel(self : SVGElement) -> EventHandler =
+  #| (self) => self.oncancel
 
 ///|
 pub extern "js" fn SVGElement::set_oncancel(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncancel = (e) => handler(e) }
+  #| (self, value) => { self.oncancel = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_oncancel(self : SVGElement) -> Unit =
-  #| (self) => { self.oncancel = null }
+pub extern "js" fn SVGElement::get_oncanplay(self : SVGElement) -> EventHandler =
+  #| (self) => self.oncanplay
 
 ///|
 pub extern "js" fn SVGElement::set_oncanplay(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncanplay = (e) => handler(e) }
+  #| (self, value) => { self.oncanplay = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_oncanplay(self : SVGElement) -> Unit =
-  #| (self) => { self.oncanplay = null }
+pub extern "js" fn SVGElement::get_oncanplaythrough(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.oncanplaythrough
 
 ///|
 pub extern "js" fn SVGElement::set_oncanplaythrough(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncanplaythrough = (e) => handler(e) }
+  #| (self, value) => { self.oncanplaythrough = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_oncanplaythrough(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.oncanplaythrough = null }
+pub extern "js" fn SVGElement::get_onchange(self : SVGElement) -> EventHandler =
+  #| (self) => self.onchange
 
 ///|
 pub extern "js" fn SVGElement::set_onchange(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onchange = (e) => handler(e) }
+  #| (self, value) => { self.onchange = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onchange(self : SVGElement) -> Unit =
-  #| (self) => { self.onchange = null }
+pub extern "js" fn SVGElement::get_onclick(self : SVGElement) -> EventHandler =
+  #| (self) => self.onclick
 
 ///|
 pub extern "js" fn SVGElement::set_onclick(
   self : SVGElement,
-  handler : (PointerEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onclick = (e) => handler(e) }
+  #| (self, value) => { self.onclick = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onclick(self : SVGElement) -> Unit =
-  #| (self) => { self.onclick = null }
+pub extern "js" fn SVGElement::get_onclose(self : SVGElement) -> EventHandler =
+  #| (self) => self.onclose
 
 ///|
 pub extern "js" fn SVGElement::set_onclose(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onclose = (e) => handler(e) }
+  #| (self, value) => { self.onclose = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onclose(self : SVGElement) -> Unit =
-  #| (self) => { self.onclose = null }
+pub extern "js" fn SVGElement::get_oncommand(self : SVGElement) -> EventHandler =
+  #| (self) => self.oncommand
 
 ///|
 pub extern "js" fn SVGElement::set_oncommand(
   self : SVGElement,
-  handler : (CommandEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncommand = (e) => handler(e) }
+  #| (self, value) => { self.oncommand = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_oncommand(self : SVGElement) -> Unit =
-  #| (self) => { self.oncommand = null }
+pub extern "js" fn SVGElement::get_oncontextlost(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.oncontextlost
 
 ///|
 pub extern "js" fn SVGElement::set_oncontextlost(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncontextlost = (e) => handler(e) }
+  #| (self, value) => { self.oncontextlost = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_oncontextlost(self : SVGElement) -> Unit =
-  #| (self) => { self.oncontextlost = null }
+pub extern "js" fn SVGElement::get_oncontextmenu(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.oncontextmenu
 
 ///|
 pub extern "js" fn SVGElement::set_oncontextmenu(
   self : SVGElement,
-  handler : (PointerEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncontextmenu = (e) => handler(e) }
+  #| (self, value) => { self.oncontextmenu = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_oncontextmenu(self : SVGElement) -> Unit =
-  #| (self) => { self.oncontextmenu = null }
+pub extern "js" fn SVGElement::get_oncontextrestored(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.oncontextrestored
 
 ///|
 pub extern "js" fn SVGElement::set_oncontextrestored(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncontextrestored = (e) => handler(e) }
+  #| (self, value) => { self.oncontextrestored = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_oncontextrestored(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.oncontextrestored = null }
+pub extern "js" fn SVGElement::get_oncopy(self : SVGElement) -> EventHandler =
+  #| (self) => self.oncopy
 
 ///|
 pub extern "js" fn SVGElement::set_oncopy(
   self : SVGElement,
-  handler : (ClipboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncopy = (e) => handler(e) }
+  #| (self, value) => { self.oncopy = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_oncopy(self : SVGElement) -> Unit =
-  #| (self) => { self.oncopy = null }
+pub extern "js" fn SVGElement::get_oncuechange(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.oncuechange
 
 ///|
 pub extern "js" fn SVGElement::set_oncuechange(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncuechange = (e) => handler(e) }
+  #| (self, value) => { self.oncuechange = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_oncuechange(self : SVGElement) -> Unit =
-  #| (self) => { self.oncuechange = null }
+pub extern "js" fn SVGElement::get_oncut(self : SVGElement) -> EventHandler =
+  #| (self) => self.oncut
 
 ///|
 pub extern "js" fn SVGElement::set_oncut(
   self : SVGElement,
-  handler : (ClipboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncut = (e) => handler(e) }
+  #| (self, value) => { self.oncut = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_oncut(self : SVGElement) -> Unit =
-  #| (self) => { self.oncut = null }
+pub extern "js" fn SVGElement::get_ondblclick(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.ondblclick
 
 ///|
 pub extern "js" fn SVGElement::set_ondblclick(
   self : SVGElement,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondblclick = (e) => handler(e) }
+  #| (self, value) => { self.ondblclick = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_ondblclick(self : SVGElement) -> Unit =
-  #| (self) => { self.ondblclick = null }
+pub extern "js" fn SVGElement::get_ondrag(self : SVGElement) -> EventHandler =
+  #| (self) => self.ondrag
 
 ///|
 pub extern "js" fn SVGElement::set_ondrag(
   self : SVGElement,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondrag = (e) => handler(e) }
+  #| (self, value) => { self.ondrag = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_ondrag(self : SVGElement) -> Unit =
-  #| (self) => { self.ondrag = null }
+pub extern "js" fn SVGElement::get_ondragend(self : SVGElement) -> EventHandler =
+  #| (self) => self.ondragend
 
 ///|
 pub extern "js" fn SVGElement::set_ondragend(
   self : SVGElement,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondragend = (e) => handler(e) }
+  #| (self, value) => { self.ondragend = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_ondragend(self : SVGElement) -> Unit =
-  #| (self) => { self.ondragend = null }
+pub extern "js" fn SVGElement::get_ondragenter(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.ondragenter
 
 ///|
 pub extern "js" fn SVGElement::set_ondragenter(
   self : SVGElement,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondragenter = (e) => handler(e) }
+  #| (self, value) => { self.ondragenter = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_ondragenter(self : SVGElement) -> Unit =
-  #| (self) => { self.ondragenter = null }
+pub extern "js" fn SVGElement::get_ondragleave(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.ondragleave
 
 ///|
 pub extern "js" fn SVGElement::set_ondragleave(
   self : SVGElement,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondragleave = (e) => handler(e) }
+  #| (self, value) => { self.ondragleave = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_ondragleave(self : SVGElement) -> Unit =
-  #| (self) => { self.ondragleave = null }
+pub extern "js" fn SVGElement::get_ondragover(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.ondragover
 
 ///|
 pub extern "js" fn SVGElement::set_ondragover(
   self : SVGElement,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondragover = (e) => handler(e) }
+  #| (self, value) => { self.ondragover = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_ondragover(self : SVGElement) -> Unit =
-  #| (self) => { self.ondragover = null }
+pub extern "js" fn SVGElement::get_ondragstart(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.ondragstart
 
 ///|
 pub extern "js" fn SVGElement::set_ondragstart(
   self : SVGElement,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondragstart = (e) => handler(e) }
+  #| (self, value) => { self.ondragstart = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_ondragstart(self : SVGElement) -> Unit =
-  #| (self) => { self.ondragstart = null }
+pub extern "js" fn SVGElement::get_ondrop(self : SVGElement) -> EventHandler =
+  #| (self) => self.ondrop
 
 ///|
 pub extern "js" fn SVGElement::set_ondrop(
   self : SVGElement,
-  handler : (DragEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondrop = (e) => handler(e) }
+  #| (self, value) => { self.ondrop = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_ondrop(self : SVGElement) -> Unit =
-  #| (self) => { self.ondrop = null }
+pub extern "js" fn SVGElement::get_ondurationchange(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.ondurationchange
 
 ///|
 pub extern "js" fn SVGElement::set_ondurationchange(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondurationchange = (e) => handler(e) }
+  #| (self, value) => { self.ondurationchange = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_ondurationchange(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.ondurationchange = null }
+pub extern "js" fn SVGElement::get_onemptied(self : SVGElement) -> EventHandler =
+  #| (self) => self.onemptied
 
 ///|
 pub extern "js" fn SVGElement::set_onemptied(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onemptied = (e) => handler(e) }
+  #| (self, value) => { self.onemptied = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onemptied(self : SVGElement) -> Unit =
-  #| (self) => { self.onemptied = null }
+pub extern "js" fn SVGElement::get_onended(self : SVGElement) -> EventHandler =
+  #| (self) => self.onended
 
 ///|
 pub extern "js" fn SVGElement::set_onended(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onended = (e) => handler(e) }
+  #| (self, value) => { self.onended = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onended(self : SVGElement) -> Unit =
-  #| (self) => { self.onended = null }
+pub extern "js" fn SVGElement::get_onerror(
+  self : SVGElement,
+) -> OnErrorEventHandler =
+  #| (self) => self.onerror
 
 ///|
 pub extern "js" fn SVGElement::set_onerror(
@@ -1012,723 +909,920 @@ pub extern "js" fn SVGElement::set_onerror(
   #| (self, value) => { self.onerror = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onerror(self : SVGElement) -> Unit =
-  #| (self) => { self.onerror = null }
+pub extern "js" fn SVGElement::get_onfocus(self : SVGElement) -> EventHandler =
+  #| (self) => self.onfocus
 
 ///|
 pub extern "js" fn SVGElement::set_onfocus(
   self : SVGElement,
-  handler : (FocusEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onfocus = (e) => handler(e) }
+  #| (self, value) => { self.onfocus = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onfocus(self : SVGElement) -> Unit =
-  #| (self) => { self.onfocus = null }
+pub extern "js" fn SVGElement::get_onformdata(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onformdata
 
 ///|
 pub extern "js" fn SVGElement::set_onformdata(
   self : SVGElement,
-  handler : (FormDataEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onformdata = (e) => handler(e) }
+  #| (self, value) => { self.onformdata = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onformdata(self : SVGElement) -> Unit =
-  #| (self) => { self.onformdata = null }
+pub extern "js" fn SVGElement::get_oninput(self : SVGElement) -> EventHandler =
+  #| (self) => self.oninput
 
 ///|
 pub extern "js" fn SVGElement::set_oninput(
   self : SVGElement,
-  handler : (InputEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oninput = (e) => handler(e) }
+  #| (self, value) => { self.oninput = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_oninput(self : SVGElement) -> Unit =
-  #| (self) => { self.oninput = null }
+pub extern "js" fn SVGElement::get_oninvalid(self : SVGElement) -> EventHandler =
+  #| (self) => self.oninvalid
 
 ///|
 pub extern "js" fn SVGElement::set_oninvalid(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oninvalid = (e) => handler(e) }
+  #| (self, value) => { self.oninvalid = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_oninvalid(self : SVGElement) -> Unit =
-  #| (self) => { self.oninvalid = null }
+pub extern "js" fn SVGElement::get_onkeydown(self : SVGElement) -> EventHandler =
+  #| (self) => self.onkeydown
 
 ///|
 pub extern "js" fn SVGElement::set_onkeydown(
   self : SVGElement,
-  handler : (KeyboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onkeydown = (e) => handler(e) }
+  #| (self, value) => { self.onkeydown = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onkeydown(self : SVGElement) -> Unit =
-  #| (self) => { self.onkeydown = null }
+pub extern "js" fn SVGElement::get_onkeypress(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onkeypress
 
 ///|
 pub extern "js" fn SVGElement::set_onkeypress(
   self : SVGElement,
-  handler : (KeyboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onkeypress = (e) => handler(e) }
+  #| (self, value) => { self.onkeypress = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onkeypress(self : SVGElement) -> Unit =
-  #| (self) => { self.onkeypress = null }
+pub extern "js" fn SVGElement::get_onkeyup(self : SVGElement) -> EventHandler =
+  #| (self) => self.onkeyup
 
 ///|
 pub extern "js" fn SVGElement::set_onkeyup(
   self : SVGElement,
-  handler : (KeyboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onkeyup = (e) => handler(e) }
+  #| (self, value) => { self.onkeyup = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onkeyup(self : SVGElement) -> Unit =
-  #| (self) => { self.onkeyup = null }
+pub extern "js" fn SVGElement::get_onload(self : SVGElement) -> EventHandler =
+  #| (self) => self.onload
 
 ///|
 pub extern "js" fn SVGElement::set_onload(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onload = (e) => handler(e) }
+  #| (self, value) => { self.onload = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onload(self : SVGElement) -> Unit =
-  #| (self) => { self.onload = null }
+pub extern "js" fn SVGElement::get_onloadeddata(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onloadeddata
 
 ///|
 pub extern "js" fn SVGElement::set_onloadeddata(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onloadeddata = (e) => handler(e) }
+  #| (self, value) => { self.onloadeddata = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onloadeddata(self : SVGElement) -> Unit =
-  #| (self) => { self.onloadeddata = null }
+pub extern "js" fn SVGElement::get_onloadedmetadata(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onloadedmetadata
 
 ///|
 pub extern "js" fn SVGElement::set_onloadedmetadata(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onloadedmetadata = (e) => handler(e) }
+  #| (self, value) => { self.onloadedmetadata = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onloadedmetadata(
+pub extern "js" fn SVGElement::get_onloadstart(
   self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onloadedmetadata = null }
+) -> EventHandler =
+  #| (self) => self.onloadstart
 
 ///|
 pub extern "js" fn SVGElement::set_onloadstart(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onloadstart = (e) => handler(e) }
+  #| (self, value) => { self.onloadstart = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onloadstart(self : SVGElement) -> Unit =
-  #| (self) => { self.onloadstart = null }
+pub extern "js" fn SVGElement::get_onmousedown(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onmousedown
 
 ///|
 pub extern "js" fn SVGElement::set_onmousedown(
   self : SVGElement,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmousedown = (e) => handler(e) }
+  #| (self, value) => { self.onmousedown = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onmousedown(self : SVGElement) -> Unit =
-  #| (self) => { self.onmousedown = null }
+pub extern "js" fn SVGElement::get_onmouseenter(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onmouseenter
 
 ///|
 pub extern "js" fn SVGElement::set_onmouseenter(
   self : SVGElement,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmouseenter = (e) => handler(e) }
+  #| (self, value) => { self.onmouseenter = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onmouseenter(self : SVGElement) -> Unit =
-  #| (self) => { self.onmouseenter = null }
+pub extern "js" fn SVGElement::get_onmouseleave(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onmouseleave
 
 ///|
 pub extern "js" fn SVGElement::set_onmouseleave(
   self : SVGElement,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmouseleave = (e) => handler(e) }
+  #| (self, value) => { self.onmouseleave = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onmouseleave(self : SVGElement) -> Unit =
-  #| (self) => { self.onmouseleave = null }
+pub extern "js" fn SVGElement::get_onmousemove(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onmousemove
 
 ///|
 pub extern "js" fn SVGElement::set_onmousemove(
   self : SVGElement,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmousemove = (e) => handler(e) }
+  #| (self, value) => { self.onmousemove = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onmousemove(self : SVGElement) -> Unit =
-  #| (self) => { self.onmousemove = null }
+pub extern "js" fn SVGElement::get_onmouseout(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onmouseout
 
 ///|
 pub extern "js" fn SVGElement::set_onmouseout(
   self : SVGElement,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmouseout = (e) => handler(e) }
+  #| (self, value) => { self.onmouseout = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onmouseout(self : SVGElement) -> Unit =
-  #| (self) => { self.onmouseout = null }
+pub extern "js" fn SVGElement::get_onmouseover(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onmouseover
 
 ///|
 pub extern "js" fn SVGElement::set_onmouseover(
   self : SVGElement,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmouseover = (e) => handler(e) }
+  #| (self, value) => { self.onmouseover = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onmouseover(self : SVGElement) -> Unit =
-  #| (self) => { self.onmouseover = null }
+pub extern "js" fn SVGElement::get_onmouseup(self : SVGElement) -> EventHandler =
+  #| (self) => self.onmouseup
 
 ///|
 pub extern "js" fn SVGElement::set_onmouseup(
   self : SVGElement,
-  handler : (MouseEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmouseup = (e) => handler(e) }
+  #| (self, value) => { self.onmouseup = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onmouseup(self : SVGElement) -> Unit =
-  #| (self) => { self.onmouseup = null }
+pub extern "js" fn SVGElement::get_onpaste(self : SVGElement) -> EventHandler =
+  #| (self) => self.onpaste
 
 ///|
 pub extern "js" fn SVGElement::set_onpaste(
   self : SVGElement,
-  handler : (ClipboardEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpaste = (e) => handler(e) }
+  #| (self, value) => { self.onpaste = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onpaste(self : SVGElement) -> Unit =
-  #| (self) => { self.onpaste = null }
+pub extern "js" fn SVGElement::get_onpause(self : SVGElement) -> EventHandler =
+  #| (self) => self.onpause
 
 ///|
 pub extern "js" fn SVGElement::set_onpause(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpause = (e) => handler(e) }
+  #| (self, value) => { self.onpause = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onpause(self : SVGElement) -> Unit =
-  #| (self) => { self.onpause = null }
+pub extern "js" fn SVGElement::get_onplay(self : SVGElement) -> EventHandler =
+  #| (self) => self.onplay
 
 ///|
 pub extern "js" fn SVGElement::set_onplay(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onplay = (e) => handler(e) }
+  #| (self, value) => { self.onplay = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onplay(self : SVGElement) -> Unit =
-  #| (self) => { self.onplay = null }
+pub extern "js" fn SVGElement::get_onplaying(self : SVGElement) -> EventHandler =
+  #| (self) => self.onplaying
 
 ///|
 pub extern "js" fn SVGElement::set_onplaying(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onplaying = (e) => handler(e) }
+  #| (self, value) => { self.onplaying = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onplaying(self : SVGElement) -> Unit =
-  #| (self) => { self.onplaying = null }
+pub extern "js" fn SVGElement::get_onprogress(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onprogress
 
 ///|
 pub extern "js" fn SVGElement::set_onprogress(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onprogress = (e) => handler(e) }
+  #| (self, value) => { self.onprogress = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onprogress(self : SVGElement) -> Unit =
-  #| (self) => { self.onprogress = null }
+pub extern "js" fn SVGElement::get_onratechange(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onratechange
 
 ///|
 pub extern "js" fn SVGElement::set_onratechange(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onratechange = (e) => handler(e) }
+  #| (self, value) => { self.onratechange = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onratechange(self : SVGElement) -> Unit =
-  #| (self) => { self.onratechange = null }
+pub extern "js" fn SVGElement::get_onreset(self : SVGElement) -> EventHandler =
+  #| (self) => self.onreset
 
 ///|
 pub extern "js" fn SVGElement::set_onreset(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onreset = (e) => handler(e) }
+  #| (self, value) => { self.onreset = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onreset(self : SVGElement) -> Unit =
-  #| (self) => { self.onreset = null }
+pub extern "js" fn SVGElement::get_onresize(self : SVGElement) -> EventHandler =
+  #| (self) => self.onresize
 
 ///|
 pub extern "js" fn SVGElement::set_onresize(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onresize = (e) => handler(e) }
+  #| (self, value) => { self.onresize = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onresize(self : SVGElement) -> Unit =
-  #| (self) => { self.onresize = null }
+pub extern "js" fn SVGElement::get_onscroll(self : SVGElement) -> EventHandler =
+  #| (self) => self.onscroll
 
 ///|
 pub extern "js" fn SVGElement::set_onscroll(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onscroll = (e) => handler(e) }
+  #| (self, value) => { self.onscroll = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onscroll(self : SVGElement) -> Unit =
-  #| (self) => { self.onscroll = null }
+pub extern "js" fn SVGElement::get_onscrollend(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onscrollend
 
 ///|
 pub extern "js" fn SVGElement::set_onscrollend(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onscrollend = (e) => handler(e) }
+  #| (self, value) => { self.onscrollend = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onscrollend(self : SVGElement) -> Unit =
-  #| (self) => { self.onscrollend = null }
+pub extern "js" fn SVGElement::get_onsecuritypolicyviolation(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onsecuritypolicyviolation
 
 ///|
 pub extern "js" fn SVGElement::set_onsecuritypolicyviolation(
   self : SVGElement,
-  handler : (SecurityPolicyViolationEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsecuritypolicyviolation = (e) => handler(e) }
+  #| (self, value) => { self.onsecuritypolicyviolation = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onsecuritypolicyviolation(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onsecuritypolicyviolation = null }
+pub extern "js" fn SVGElement::get_onseeked(self : SVGElement) -> EventHandler =
+  #| (self) => self.onseeked
 
 ///|
 pub extern "js" fn SVGElement::set_onseeked(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onseeked = (e) => handler(e) }
+  #| (self, value) => { self.onseeked = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onseeked(self : SVGElement) -> Unit =
-  #| (self) => { self.onseeked = null }
+pub extern "js" fn SVGElement::get_onseeking(self : SVGElement) -> EventHandler =
+  #| (self) => self.onseeking
 
 ///|
 pub extern "js" fn SVGElement::set_onseeking(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onseeking = (e) => handler(e) }
+  #| (self, value) => { self.onseeking = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onseeking(self : SVGElement) -> Unit =
-  #| (self) => { self.onseeking = null }
+pub extern "js" fn SVGElement::get_onselect(self : SVGElement) -> EventHandler =
+  #| (self) => self.onselect
 
 ///|
 pub extern "js" fn SVGElement::set_onselect(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onselect = (e) => handler(e) }
+  #| (self, value) => { self.onselect = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onselect(self : SVGElement) -> Unit =
-  #| (self) => { self.onselect = null }
+pub extern "js" fn SVGElement::get_onslotchange(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onslotchange
 
 ///|
 pub extern "js" fn SVGElement::set_onslotchange(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onslotchange = (e) => handler(e) }
+  #| (self, value) => { self.onslotchange = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onslotchange(self : SVGElement) -> Unit =
-  #| (self) => { self.onslotchange = null }
+pub extern "js" fn SVGElement::get_onstalled(self : SVGElement) -> EventHandler =
+  #| (self) => self.onstalled
 
 ///|
 pub extern "js" fn SVGElement::set_onstalled(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onstalled = (e) => handler(e) }
+  #| (self, value) => { self.onstalled = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onstalled(self : SVGElement) -> Unit =
-  #| (self) => { self.onstalled = null }
+pub extern "js" fn SVGElement::get_onsubmit(self : SVGElement) -> EventHandler =
+  #| (self) => self.onsubmit
 
 ///|
 pub extern "js" fn SVGElement::set_onsubmit(
   self : SVGElement,
-  handler : (SubmitEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsubmit = (e) => handler(e) }
+  #| (self, value) => { self.onsubmit = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onsubmit(self : SVGElement) -> Unit =
-  #| (self) => { self.onsubmit = null }
+pub extern "js" fn SVGElement::get_onsuspend(self : SVGElement) -> EventHandler =
+  #| (self) => self.onsuspend
 
 ///|
 pub extern "js" fn SVGElement::set_onsuspend(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsuspend = (e) => handler(e) }
+  #| (self, value) => { self.onsuspend = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onsuspend(self : SVGElement) -> Unit =
-  #| (self) => { self.onsuspend = null }
+pub extern "js" fn SVGElement::get_ontimeupdate(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.ontimeupdate
 
 ///|
 pub extern "js" fn SVGElement::set_ontimeupdate(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontimeupdate = (e) => handler(e) }
+  #| (self, value) => { self.ontimeupdate = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_ontimeupdate(self : SVGElement) -> Unit =
-  #| (self) => { self.ontimeupdate = null }
+pub extern "js" fn SVGElement::get_ontoggle(self : SVGElement) -> EventHandler =
+  #| (self) => self.ontoggle
 
 ///|
 pub extern "js" fn SVGElement::set_ontoggle(
   self : SVGElement,
-  handler : (ToggleEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontoggle = (e) => handler(e) }
+  #| (self, value) => { self.ontoggle = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_ontoggle(self : SVGElement) -> Unit =
-  #| (self) => { self.ontoggle = null }
+pub extern "js" fn SVGElement::get_onvolumechange(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onvolumechange
 
 ///|
 pub extern "js" fn SVGElement::set_onvolumechange(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onvolumechange = (e) => handler(e) }
+  #| (self, value) => { self.onvolumechange = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onvolumechange(self : SVGElement) -> Unit =
-  #| (self) => { self.onvolumechange = null }
+pub extern "js" fn SVGElement::get_onwaiting(self : SVGElement) -> EventHandler =
+  #| (self) => self.onwaiting
 
 ///|
 pub extern "js" fn SVGElement::set_onwaiting(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwaiting = (e) => handler(e) }
+  #| (self, value) => { self.onwaiting = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onwaiting(self : SVGElement) -> Unit =
-  #| (self) => { self.onwaiting = null }
+pub extern "js" fn SVGElement::get_onwebkitanimationend(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onwebkitanimationend
 
 ///|
 pub extern "js" fn SVGElement::set_onwebkitanimationend(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwebkitanimationend = (e) => handler(e) }
+  #| (self, value) => { self.onwebkitanimationend = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onwebkitanimationend(
+pub extern "js" fn SVGElement::get_onwebkitanimationiteration(
   self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onwebkitanimationend = null }
+) -> EventHandler =
+  #| (self) => self.onwebkitanimationiteration
 
 ///|
 pub extern "js" fn SVGElement::set_onwebkitanimationiteration(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwebkitanimationiteration = (e) => handler(e) }
+  #| (self, value) => { self.onwebkitanimationiteration = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onwebkitanimationiteration(
+pub extern "js" fn SVGElement::get_onwebkitanimationstart(
   self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onwebkitanimationiteration = null }
+) -> EventHandler =
+  #| (self) => self.onwebkitanimationstart
 
 ///|
 pub extern "js" fn SVGElement::set_onwebkitanimationstart(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwebkitanimationstart = (e) => handler(e) }
+  #| (self, value) => { self.onwebkitanimationstart = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onwebkitanimationstart(
+pub extern "js" fn SVGElement::get_onwebkittransitionend(
   self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onwebkitanimationstart = null }
+) -> EventHandler =
+  #| (self) => self.onwebkittransitionend
 
 ///|
 pub extern "js" fn SVGElement::set_onwebkittransitionend(
   self : SVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwebkittransitionend = (e) => handler(e) }
+  #| (self, value) => { self.onwebkittransitionend = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onwebkittransitionend(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onwebkittransitionend = null }
+pub extern "js" fn SVGElement::get_onwheel(self : SVGElement) -> EventHandler =
+  #| (self) => self.onwheel
 
 ///|
 pub extern "js" fn SVGElement::set_onwheel(
   self : SVGElement,
-  handler : (WheelEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onwheel = (e) => handler(e) }
+  #| (self, value) => { self.onwheel = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onwheel(self : SVGElement) -> Unit =
-  #| (self) => { self.onwheel = null }
-
-///|
-pub extern "js" fn SVGElement::set_onpointerover(
+pub extern "js" fn SVGElement::get_ontouchstart(
   self : SVGElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerover = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onpointerover(self : SVGElement) -> Unit =
-  #| (self) => { self.onpointerover = null }
-
-///|
-pub extern "js" fn SVGElement::set_onpointerenter(
-  self : SVGElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerenter = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onpointerenter(self : SVGElement) -> Unit =
-  #| (self) => { self.onpointerenter = null }
-
-///|
-pub extern "js" fn SVGElement::set_onpointerdown(
-  self : SVGElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerdown = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onpointerdown(self : SVGElement) -> Unit =
-  #| (self) => { self.onpointerdown = null }
-
-///|
-pub extern "js" fn SVGElement::set_onpointermove(
-  self : SVGElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointermove = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onpointermove(self : SVGElement) -> Unit =
-  #| (self) => { self.onpointermove = null }
-
-///|
-pub extern "js" fn SVGElement::set_onpointerrawupdate(
-  self : SVGElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerrawupdate = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onpointerrawupdate(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onpointerrawupdate = null }
-
-///|
-pub extern "js" fn SVGElement::set_onpointerup(
-  self : SVGElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerup = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onpointerup(self : SVGElement) -> Unit =
-  #| (self) => { self.onpointerup = null }
-
-///|
-pub extern "js" fn SVGElement::set_onpointercancel(
-  self : SVGElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointercancel = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onpointercancel(self : SVGElement) -> Unit =
-  #| (self) => { self.onpointercancel = null }
-
-///|
-pub extern "js" fn SVGElement::set_onpointerout(
-  self : SVGElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerout = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onpointerout(self : SVGElement) -> Unit =
-  #| (self) => { self.onpointerout = null }
-
-///|
-pub extern "js" fn SVGElement::set_onpointerleave(
-  self : SVGElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpointerleave = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onpointerleave(self : SVGElement) -> Unit =
-  #| (self) => { self.onpointerleave = null }
-
-///|
-pub extern "js" fn SVGElement::set_ongotpointercapture(
-  self : SVGElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ongotpointercapture = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_ongotpointercapture(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.ongotpointercapture = null }
-
-///|
-pub extern "js" fn SVGElement::set_onlostpointercapture(
-  self : SVGElement,
-  handler : (PointerEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onlostpointercapture = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onlostpointercapture(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onlostpointercapture = null }
-
-///|
-pub extern "js" fn SVGElement::set_onselectstart(
-  self : SVGElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onselectstart = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onselectstart(self : SVGElement) -> Unit =
-  #| (self) => { self.onselectstart = null }
-
-///|
-pub extern "js" fn SVGElement::set_onselectionchange(
-  self : SVGElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onselectionchange = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onselectionchange(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onselectionchange = null }
+) -> EventHandler =
+  #| (self) => self.ontouchstart
 
 ///|
 pub extern "js" fn SVGElement::set_ontouchstart(
   self : SVGElement,
-  handler : (TouchEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontouchstart = (e) => handler(e) }
+  #| (self, value) => { self.ontouchstart = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_ontouchstart(self : SVGElement) -> Unit =
-  #| (self) => { self.ontouchstart = null }
+pub extern "js" fn SVGElement::get_ontouchend(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.ontouchend
 
 ///|
 pub extern "js" fn SVGElement::set_ontouchend(
   self : SVGElement,
-  handler : (TouchEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontouchend = (e) => handler(e) }
+  #| (self, value) => { self.ontouchend = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_ontouchend(self : SVGElement) -> Unit =
-  #| (self) => { self.ontouchend = null }
+pub extern "js" fn SVGElement::get_ontouchmove(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.ontouchmove
 
 ///|
 pub extern "js" fn SVGElement::set_ontouchmove(
   self : SVGElement,
-  handler : (TouchEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontouchmove = (e) => handler(e) }
+  #| (self, value) => { self.ontouchmove = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_ontouchmove(self : SVGElement) -> Unit =
-  #| (self) => { self.ontouchmove = null }
+pub extern "js" fn SVGElement::get_ontouchcancel(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.ontouchcancel
 
 ///|
 pub extern "js" fn SVGElement::set_ontouchcancel(
   self : SVGElement,
-  handler : (TouchEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontouchcancel = (e) => handler(e) }
+  #| (self, value) => { self.ontouchcancel = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_ontouchcancel(self : SVGElement) -> Unit =
-  #| (self) => { self.ontouchcancel = null }
+pub extern "js" fn SVGElement::get_ontransitionrun(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.ontransitionrun
+
+///|
+pub extern "js" fn SVGElement::set_ontransitionrun(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontransitionrun = value }
+
+///|
+pub extern "js" fn SVGElement::get_ontransitionstart(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.ontransitionstart
+
+///|
+pub extern "js" fn SVGElement::set_ontransitionstart(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontransitionstart = value }
+
+///|
+pub extern "js" fn SVGElement::get_ontransitionend(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.ontransitionend
+
+///|
+pub extern "js" fn SVGElement::set_ontransitionend(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontransitionend = value }
+
+///|
+pub extern "js" fn SVGElement::get_ontransitioncancel(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.ontransitioncancel
+
+///|
+pub extern "js" fn SVGElement::set_ontransitioncancel(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ontransitioncancel = value }
+
+///|
+pub extern "js" fn SVGElement::get_onsnapchanged(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onsnapchanged
+
+///|
+pub extern "js" fn SVGElement::set_onsnapchanged(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onsnapchanged = value }
+
+///|
+pub extern "js" fn SVGElement::get_onsnapchanging(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onsnapchanging
+
+///|
+pub extern "js" fn SVGElement::set_onsnapchanging(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onsnapchanging = value }
+
+///|
+pub extern "js" fn SVGElement::get_onanimationstart(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onanimationstart
+
+///|
+pub extern "js" fn SVGElement::set_onanimationstart(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onanimationstart = value }
+
+///|
+pub extern "js" fn SVGElement::get_onanimationiteration(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onanimationiteration
+
+///|
+pub extern "js" fn SVGElement::set_onanimationiteration(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onanimationiteration = value }
+
+///|
+pub extern "js" fn SVGElement::get_onanimationend(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onanimationend
+
+///|
+pub extern "js" fn SVGElement::set_onanimationend(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onanimationend = value }
+
+///|
+pub extern "js" fn SVGElement::get_onanimationcancel(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onanimationcancel
+
+///|
+pub extern "js" fn SVGElement::set_onanimationcancel(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onanimationcancel = value }
+
+///|
+pub extern "js" fn SVGElement::get_onfencedtreeclick(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onfencedtreeclick
+
+///|
+pub extern "js" fn SVGElement::set_onfencedtreeclick(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onfencedtreeclick = value }
+
+///|
+pub extern "js" fn SVGElement::get_onpointerover(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onpointerover
+
+///|
+pub extern "js" fn SVGElement::set_onpointerover(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerover = value }
+
+///|
+pub extern "js" fn SVGElement::get_onpointerenter(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onpointerenter
+
+///|
+pub extern "js" fn SVGElement::set_onpointerenter(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerenter = value }
+
+///|
+pub extern "js" fn SVGElement::get_onpointerdown(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onpointerdown
+
+///|
+pub extern "js" fn SVGElement::set_onpointerdown(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerdown = value }
+
+///|
+pub extern "js" fn SVGElement::get_onpointermove(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onpointermove
+
+///|
+pub extern "js" fn SVGElement::set_onpointermove(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointermove = value }
+
+///|
+pub extern "js" fn SVGElement::get_onpointerrawupdate(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onpointerrawupdate
+
+///|
+pub extern "js" fn SVGElement::set_onpointerrawupdate(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerrawupdate = value }
+
+///|
+pub extern "js" fn SVGElement::get_onpointerup(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onpointerup
+
+///|
+pub extern "js" fn SVGElement::set_onpointerup(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerup = value }
+
+///|
+pub extern "js" fn SVGElement::get_onpointercancel(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onpointercancel
+
+///|
+pub extern "js" fn SVGElement::set_onpointercancel(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointercancel = value }
+
+///|
+pub extern "js" fn SVGElement::get_onpointerout(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onpointerout
+
+///|
+pub extern "js" fn SVGElement::set_onpointerout(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerout = value }
+
+///|
+pub extern "js" fn SVGElement::get_onpointerleave(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onpointerleave
+
+///|
+pub extern "js" fn SVGElement::set_onpointerleave(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpointerleave = value }
+
+///|
+pub extern "js" fn SVGElement::get_ongotpointercapture(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.ongotpointercapture
+
+///|
+pub extern "js" fn SVGElement::set_ongotpointercapture(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ongotpointercapture = value }
+
+///|
+pub extern "js" fn SVGElement::get_onlostpointercapture(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onlostpointercapture
+
+///|
+pub extern "js" fn SVGElement::set_onlostpointercapture(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onlostpointercapture = value }
+
+///|
+pub extern "js" fn SVGElement::get_onbeforexrselect(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onbeforexrselect
 
 ///|
 pub extern "js" fn SVGElement::set_onbeforexrselect(
   self : SVGElement,
-  handler : (XRSessionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbeforexrselect = (e) => handler(e) }
+  #| (self, value) => { self.onbeforexrselect = value }
 
 ///|
-pub extern "js" fn SVGElement::clear_onbeforexrselect(
+pub extern "js" fn SVGElement::get_onselectstart(
   self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onselectstart
+
+///|
+pub extern "js" fn SVGElement::set_onselectstart(
+  self : SVGElement,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onbeforexrselect = null }
+  #| (self, value) => { self.onselectstart = value }
+
+///|
+pub extern "js" fn SVGElement::get_onselectionchange(
+  self : SVGElement,
+) -> EventHandler =
+  #| (self) => self.onselectionchange
+
+///|
+pub extern "js" fn SVGElement::set_onselectionchange(
+  self : SVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onselectionchange = value }
 
 ///|
 pub extern "js" fn SVGElement::get_corresponding_element(
@@ -1803,16 +1897,16 @@ pub extern "js" fn SVGElement::blur(self : SVGElement) -> Unit =
   #| (self) => self.blur()
 
 ///|
-pub extern "js" fn SVGElement::get_attribute_style_map(
-  self : SVGElement,
-) -> StylePropertyMap =
-  #| (self) => self.attributeStyleMap
-
-///|
 pub extern "js" fn SVGElement::get_style(
   self : SVGElement,
 ) -> CSSStyleProperties =
   #| (self) => self.style
+
+///|
+pub extern "js" fn SVGElement::get_attribute_style_map(
+  self : SVGElement,
+) -> StylePropertyMap =
+  #| (self) => self.attributeStyleMap
 
 ///|
 /// SVGGraphicsElement interface
@@ -2297,14 +2391,6 @@ pub extern "js" fn JsValue::as_svg_length(self : JsValue) -> SVGLength? =
 pub extern "js" fn JsValue::to_svg_length(self : JsValue) -> SVGLength =
   #| (self) => self
 
-///|
-/// Error type for throwing methods
-pub(all) enum SVGLengthNewValueSpecifiedUnitsError {
-  NotSupportedError(JsError)
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
 // SVGLength.SVG_LENGTHTYPE_UNKNOWN
 
 ///|
@@ -2404,8 +2490,8 @@ pub extern "js" fn SVGLength::new_value_specified_units(
   self : SVGLength,
   unit_type : Int,
   value_in_specified_units : Double,
-) -> Result[Unit, SVGLengthNewValueSpecifiedUnitsError] =
-  #| (self, unit_type, value_in_specified_units) => (() => { try { self.newValueSpecifiedUnits(unit_type, value_in_specified_units); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, unit_type, value_in_specified_units) => self.newValueSpecifiedUnits(unit_type, value_in_specified_units)
 
 ///|
 pub extern "js" fn SVGLength::convert_to_specified_units(
@@ -2441,14 +2527,6 @@ pub extern "js" fn JsValue::as_svg_angle(self : JsValue) -> SVGAngle? =
 /// Cast JsValue to SVGAngle (unchecked)
 pub extern "js" fn JsValue::to_svg_angle(self : JsValue) -> SVGAngle =
   #| (self) => self
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGAngleNewValueSpecifiedUnitsError {
-  NotSupportedError(JsError)
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
 
 // SVGAngle.SVG_ANGLETYPE_UNKNOWN
 
@@ -2516,8 +2594,8 @@ pub extern "js" fn SVGAngle::new_value_specified_units(
   self : SVGAngle,
   unit_type : Int,
   value_in_specified_units : Double,
-) -> Result[Unit, SVGAngleNewValueSpecifiedUnitsError] =
-  #| (self, unit_type, value_in_specified_units) => (() => { try { self.newValueSpecifiedUnits(unit_type, value_in_specified_units); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, unit_type, value_in_specified_units) => self.newValueSpecifiedUnits(unit_type, value_in_specified_units)
 
 ///|
 pub extern "js" fn SVGAngle::convert_to_specified_units(
@@ -2559,57 +2637,6 @@ pub extern "js" fn JsValue::to_svg_number_list(self : JsValue) -> SVGNumberList 
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum SVGNumberListClearError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGNumberListInitializeError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGNumberListGetItemError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGNumberListInsertItemBeforeError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGNumberListReplaceItemError {
-  IndexSizeError(JsError)
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGNumberListRemoveItemError {
-  IndexSizeError(JsError)
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGNumberListAppendItemError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn SVGNumberList::get_length(self : SVGNumberList) -> Int =
   #| (self) => self.length
 
@@ -2620,62 +2647,60 @@ pub extern "js" fn SVGNumberList::get_number_of_items(
   #| (self) => self.numberOfItems
 
 ///|
-pub extern "js" fn SVGNumberList::clear(
-  self : SVGNumberList,
-) -> Result[Unit, SVGNumberListClearError] =
-  #| (self) => (() => { try { self.clear(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn SVGNumberList::clear(self : SVGNumberList) -> Unit =
+  #| (self) => self.clear()
 
 ///|
 pub extern "js" fn SVGNumberList::initialize(
   self : SVGNumberList,
   new_item : SVGNumber,
-) -> Result[SVGNumber, SVGNumberListInitializeError] =
-  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.initialize(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SVGNumber =
+  #| (self, new_item) => self.initialize(new_item)
 
 ///|
 pub extern "js" fn SVGNumberList::get_item(
   self : SVGNumberList,
   index : Int,
-) -> Result[SVGNumber, SVGNumberListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self.getItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SVGNumber =
+  #| (self, index) => self.getItem(index)
 
 ///|
 #alias("_[_]")
 pub extern "js" fn SVGNumberList::get(
   self : SVGNumberList,
   index : Int,
-) -> Result[SVGNumber, SVGNumberListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self[index] }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SVGNumber =
+  #| (self, index) => self[index]
 
 ///|
 pub extern "js" fn SVGNumberList::insert_item_before(
   self : SVGNumberList,
   new_item : SVGNumber,
   index : Int,
-) -> Result[SVGNumber, SVGNumberListInsertItemBeforeError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.insertItemBefore(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SVGNumber =
+  #| (self, new_item, index) => self.insertItemBefore(new_item, index)
 
 ///|
 pub extern "js" fn SVGNumberList::replace_item(
   self : SVGNumberList,
   new_item : SVGNumber,
   index : Int,
-) -> Result[SVGNumber, SVGNumberListReplaceItemError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.replaceItem(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> SVGNumber =
+  #| (self, new_item, index) => self.replaceItem(new_item, index)
 
 ///|
 pub extern "js" fn SVGNumberList::remove_item(
   self : SVGNumberList,
   index : Int,
-) -> Result[SVGNumber, SVGNumberListRemoveItemError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self.removeItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> SVGNumber =
+  #| (self, index) => self.removeItem(index)
 
 ///|
 pub extern "js" fn SVGNumberList::append_item(
   self : SVGNumberList,
   new_item : SVGNumber,
-) -> Result[SVGNumber, SVGNumberListAppendItemError] =
-  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.appendItem(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SVGNumber =
+  #| (self, new_item) => self.appendItem(new_item)
 
 ///|
 #alias("_[_]=_")
@@ -2719,57 +2744,6 @@ pub extern "js" fn JsValue::to_svg_length_list(self : JsValue) -> SVGLengthList 
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum SVGLengthListClearError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGLengthListInitializeError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGLengthListGetItemError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGLengthListInsertItemBeforeError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGLengthListReplaceItemError {
-  IndexSizeError(JsError)
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGLengthListRemoveItemError {
-  IndexSizeError(JsError)
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGLengthListAppendItemError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn SVGLengthList::get_length(self : SVGLengthList) -> Int =
   #| (self) => self.length
 
@@ -2780,62 +2754,60 @@ pub extern "js" fn SVGLengthList::get_number_of_items(
   #| (self) => self.numberOfItems
 
 ///|
-pub extern "js" fn SVGLengthList::clear(
-  self : SVGLengthList,
-) -> Result[Unit, SVGLengthListClearError] =
-  #| (self) => (() => { try { self.clear(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn SVGLengthList::clear(self : SVGLengthList) -> Unit =
+  #| (self) => self.clear()
 
 ///|
 pub extern "js" fn SVGLengthList::initialize(
   self : SVGLengthList,
   new_item : SVGLength,
-) -> Result[SVGLength, SVGLengthListInitializeError] =
-  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.initialize(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SVGLength =
+  #| (self, new_item) => self.initialize(new_item)
 
 ///|
 pub extern "js" fn SVGLengthList::get_item(
   self : SVGLengthList,
   index : Int,
-) -> Result[SVGLength, SVGLengthListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self.getItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SVGLength =
+  #| (self, index) => self.getItem(index)
 
 ///|
 #alias("_[_]")
 pub extern "js" fn SVGLengthList::get(
   self : SVGLengthList,
   index : Int,
-) -> Result[SVGLength, SVGLengthListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self[index] }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SVGLength =
+  #| (self, index) => self[index]
 
 ///|
 pub extern "js" fn SVGLengthList::insert_item_before(
   self : SVGLengthList,
   new_item : SVGLength,
   index : Int,
-) -> Result[SVGLength, SVGLengthListInsertItemBeforeError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.insertItemBefore(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SVGLength =
+  #| (self, new_item, index) => self.insertItemBefore(new_item, index)
 
 ///|
 pub extern "js" fn SVGLengthList::replace_item(
   self : SVGLengthList,
   new_item : SVGLength,
   index : Int,
-) -> Result[SVGLength, SVGLengthListReplaceItemError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.replaceItem(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> SVGLength =
+  #| (self, new_item, index) => self.replaceItem(new_item, index)
 
 ///|
 pub extern "js" fn SVGLengthList::remove_item(
   self : SVGLengthList,
   index : Int,
-) -> Result[SVGLength, SVGLengthListRemoveItemError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self.removeItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> SVGLength =
+  #| (self, index) => self.removeItem(index)
 
 ///|
 pub extern "js" fn SVGLengthList::append_item(
   self : SVGLengthList,
   new_item : SVGLength,
-) -> Result[SVGLength, SVGLengthListAppendItemError] =
-  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.appendItem(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SVGLength =
+  #| (self, new_item) => self.appendItem(new_item)
 
 ///|
 #alias("_[_]=_")
@@ -2879,57 +2851,6 @@ pub extern "js" fn JsValue::to_svg_string_list(self : JsValue) -> SVGStringList 
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum SVGStringListClearError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGStringListInitializeError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGStringListGetItemError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGStringListInsertItemBeforeError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGStringListReplaceItemError {
-  IndexSizeError(JsError)
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGStringListRemoveItemError {
-  IndexSizeError(JsError)
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGStringListAppendItemError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn SVGStringList::get_length(self : SVGStringList) -> Int =
   #| (self) => self.length
 
@@ -2940,62 +2861,60 @@ pub extern "js" fn SVGStringList::get_number_of_items(
   #| (self) => self.numberOfItems
 
 ///|
-pub extern "js" fn SVGStringList::clear(
-  self : SVGStringList,
-) -> Result[Unit, SVGStringListClearError] =
-  #| (self) => (() => { try { self.clear(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn SVGStringList::clear(self : SVGStringList) -> Unit =
+  #| (self) => self.clear()
 
 ///|
 pub extern "js" fn SVGStringList::initialize(
   self : SVGStringList,
   new_item : String,
-) -> Result[String, SVGStringListInitializeError] =
-  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.initialize(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> String =
+  #| (self, new_item) => self.initialize(new_item)
 
 ///|
 pub extern "js" fn SVGStringList::get_item(
   self : SVGStringList,
   index : Int,
-) -> Result[String, SVGStringListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self.getItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> String =
+  #| (self, index) => self.getItem(index)
 
 ///|
 #alias("_[_]")
 pub extern "js" fn SVGStringList::get(
   self : SVGStringList,
   index : Int,
-) -> Result[String, SVGStringListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self[index] }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> String =
+  #| (self, index) => self[index]
 
 ///|
 pub extern "js" fn SVGStringList::insert_item_before(
   self : SVGStringList,
   new_item : String,
   index : Int,
-) -> Result[String, SVGStringListInsertItemBeforeError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.insertItemBefore(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> String =
+  #| (self, new_item, index) => self.insertItemBefore(new_item, index)
 
 ///|
 pub extern "js" fn SVGStringList::replace_item(
   self : SVGStringList,
   new_item : String,
   index : Int,
-) -> Result[String, SVGStringListReplaceItemError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.replaceItem(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> String =
+  #| (self, new_item, index) => self.replaceItem(new_item, index)
 
 ///|
 pub extern "js" fn SVGStringList::remove_item(
   self : SVGStringList,
   index : Int,
-) -> Result[String, SVGStringListRemoveItemError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self.removeItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> String =
+  #| (self, index) => self.removeItem(index)
 
 ///|
 pub extern "js" fn SVGStringList::append_item(
   self : SVGStringList,
   new_item : String,
-) -> Result[String, SVGStringListAppendItemError] =
-  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.appendItem(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> String =
+  #| (self, new_item) => self.appendItem(new_item)
 
 ///|
 #alias("_[_]=_")
@@ -3373,13 +3292,6 @@ pub extern "js" fn JsValue::to_svg_animated_string(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum SVGAnimatedStringSetBaseValError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn SVGAnimatedString::get_base_val(
   self : SVGAnimatedString,
 ) -> StringOrTrustedScriptURL =
@@ -3389,8 +3301,8 @@ pub extern "js" fn SVGAnimatedString::get_base_val(
 pub extern "js" fn SVGAnimatedString::set_base_val(
   self : SVGAnimatedString,
   value : StringOrTrustedScriptURL,
-) -> Result[Unit, SVGAnimatedStringSetBaseValError] =
-  #| (self, value) => (() => { try { self.baseVal = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.baseVal = value }
 
 ///|
 pub extern "js" fn SVGAnimatedString::get_anim_val(
@@ -3869,56 +3781,36 @@ pub extern "js" fn SVGSVGElement::get_preserve_aspect_ratio(
   #| (self) => self.preserveAspectRatio
 
 ///|
-pub extern "js" fn SVGSVGElement::set_ongamepadconnected(
+pub extern "js" fn SVGSVGElement::get_onafterprint(
   self : SVGSVGElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ongamepadconnected = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGSVGElement::clear_ongamepadconnected(
-  self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.ongamepadconnected = null }
-
-///|
-pub extern "js" fn SVGSVGElement::set_ongamepaddisconnected(
-  self : SVGSVGElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ongamepaddisconnected = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGSVGElement::clear_ongamepaddisconnected(
-  self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.ongamepaddisconnected = null }
+) -> EventHandler =
+  #| (self) => self.onafterprint
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onafterprint(
   self : SVGSVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onafterprint = (e) => handler(e) }
+  #| (self, value) => { self.onafterprint = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onafterprint(
+pub extern "js" fn SVGSVGElement::get_onbeforeprint(
   self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.onafterprint = null }
+) -> EventHandler =
+  #| (self) => self.onbeforeprint
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onbeforeprint(
   self : SVGSVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbeforeprint = (e) => handler(e) }
+  #| (self, value) => { self.onbeforeprint = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onbeforeprint(
+pub extern "js" fn SVGSVGElement::get_onbeforeunload(
   self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.onbeforeprint = null }
+) -> OnBeforeUnloadEventHandler =
+  #| (self) => self.onbeforeunload
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onbeforeunload(
@@ -3928,208 +3820,238 @@ pub extern "js" fn SVGSVGElement::set_onbeforeunload(
   #| (self, value) => { self.onbeforeunload = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onbeforeunload(
+pub extern "js" fn SVGSVGElement::get_onhashchange(
   self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.onbeforeunload = null }
+) -> EventHandler =
+  #| (self) => self.onhashchange
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onhashchange(
   self : SVGSVGElement,
-  handler : (HashChangeEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onhashchange = (e) => handler(e) }
+  #| (self, value) => { self.onhashchange = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onhashchange(
+pub extern "js" fn SVGSVGElement::get_onlanguagechange(
   self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.onhashchange = null }
+) -> EventHandler =
+  #| (self) => self.onlanguagechange
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onlanguagechange(
   self : SVGSVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onlanguagechange = (e) => handler(e) }
+  #| (self, value) => { self.onlanguagechange = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onlanguagechange(
+pub extern "js" fn SVGSVGElement::get_onmessage(
   self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.onlanguagechange = null }
+) -> EventHandler =
+  #| (self) => self.onmessage
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onmessage(
   self : SVGSVGElement,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessage = (e) => handler(e) }
+  #| (self, value) => { self.onmessage = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onmessage(self : SVGSVGElement) -> Unit =
-  #| (self) => { self.onmessage = null }
+pub extern "js" fn SVGSVGElement::get_onmessageerror(
+  self : SVGSVGElement,
+) -> EventHandler =
+  #| (self) => self.onmessageerror
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onmessageerror(
   self : SVGSVGElement,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessageerror = (e) => handler(e) }
+  #| (self, value) => { self.onmessageerror = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onmessageerror(
+pub extern "js" fn SVGSVGElement::get_onoffline(
   self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.onmessageerror = null }
+) -> EventHandler =
+  #| (self) => self.onoffline
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onoffline(
   self : SVGSVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onoffline = (e) => handler(e) }
+  #| (self, value) => { self.onoffline = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onoffline(self : SVGSVGElement) -> Unit =
-  #| (self) => { self.onoffline = null }
+pub extern "js" fn SVGSVGElement::get_ononline(
+  self : SVGSVGElement,
+) -> EventHandler =
+  #| (self) => self.ononline
 
 ///|
 pub extern "js" fn SVGSVGElement::set_ononline(
   self : SVGSVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ononline = (e) => handler(e) }
+  #| (self, value) => { self.ononline = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_ononline(self : SVGSVGElement) -> Unit =
-  #| (self) => { self.ononline = null }
+pub extern "js" fn SVGSVGElement::get_onpagehide(
+  self : SVGSVGElement,
+) -> EventHandler =
+  #| (self) => self.onpagehide
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onpagehide(
   self : SVGSVGElement,
-  handler : (PageTransitionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpagehide = (e) => handler(e) }
+  #| (self, value) => { self.onpagehide = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onpagehide(
+pub extern "js" fn SVGSVGElement::get_onpagereveal(
   self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.onpagehide = null }
+) -> EventHandler =
+  #| (self) => self.onpagereveal
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onpagereveal(
   self : SVGSVGElement,
-  handler : (PageRevealEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpagereveal = (e) => handler(e) }
+  #| (self, value) => { self.onpagereveal = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onpagereveal(
+pub extern "js" fn SVGSVGElement::get_onpageshow(
   self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.onpagereveal = null }
+) -> EventHandler =
+  #| (self) => self.onpageshow
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onpageshow(
   self : SVGSVGElement,
-  handler : (PageTransitionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpageshow = (e) => handler(e) }
+  #| (self, value) => { self.onpageshow = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onpageshow(
+pub extern "js" fn SVGSVGElement::get_onpageswap(
   self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.onpageshow = null }
+) -> EventHandler =
+  #| (self) => self.onpageswap
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onpageswap(
   self : SVGSVGElement,
-  handler : (PageSwapEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpageswap = (e) => handler(e) }
+  #| (self, value) => { self.onpageswap = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onpageswap(
+pub extern "js" fn SVGSVGElement::get_onpopstate(
   self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.onpageswap = null }
+) -> EventHandler =
+  #| (self) => self.onpopstate
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onpopstate(
   self : SVGSVGElement,
-  handler : (PopStateEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpopstate = (e) => handler(e) }
+  #| (self, value) => { self.onpopstate = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onpopstate(
+pub extern "js" fn SVGSVGElement::get_onrejectionhandled(
   self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.onpopstate = null }
+) -> EventHandler =
+  #| (self) => self.onrejectionhandled
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onrejectionhandled(
   self : SVGSVGElement,
-  handler : (PromiseRejectionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onrejectionhandled = (e) => handler(e) }
+  #| (self, value) => { self.onrejectionhandled = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onrejectionhandled(
+pub extern "js" fn SVGSVGElement::get_onstorage(
   self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.onrejectionhandled = null }
+) -> EventHandler =
+  #| (self) => self.onstorage
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onstorage(
   self : SVGSVGElement,
-  handler : (StorageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onstorage = (e) => handler(e) }
+  #| (self, value) => { self.onstorage = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onstorage(self : SVGSVGElement) -> Unit =
-  #| (self) => { self.onstorage = null }
+pub extern "js" fn SVGSVGElement::get_onunhandledrejection(
+  self : SVGSVGElement,
+) -> EventHandler =
+  #| (self) => self.onunhandledrejection
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onunhandledrejection(
   self : SVGSVGElement,
-  handler : (PromiseRejectionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onunhandledrejection = (e) => handler(e) }
+  #| (self, value) => { self.onunhandledrejection = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onunhandledrejection(
+pub extern "js" fn SVGSVGElement::get_onunload(
   self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.onunhandledrejection = null }
+) -> EventHandler =
+  #| (self) => self.onunload
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onunload(
   self : SVGSVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onunload = (e) => handler(e) }
+  #| (self, value) => { self.onunload = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onunload(self : SVGSVGElement) -> Unit =
-  #| (self) => { self.onunload = null }
+pub extern "js" fn SVGSVGElement::get_onportalactivate(
+  self : SVGSVGElement,
+) -> EventHandler =
+  #| (self) => self.onportalactivate
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onportalactivate(
   self : SVGSVGElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onportalactivate = (e) => handler(e) }
+  #| (self, value) => { self.onportalactivate = value }
 
 ///|
-pub extern "js" fn SVGSVGElement::clear_onportalactivate(
+pub extern "js" fn SVGSVGElement::get_ongamepadconnected(
   self : SVGSVGElement,
+) -> EventHandler =
+  #| (self) => self.ongamepadconnected
+
+///|
+pub extern "js" fn SVGSVGElement::set_ongamepadconnected(
+  self : SVGSVGElement,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onportalactivate = null }
+  #| (self, value) => { self.ongamepadconnected = value }
+
+///|
+pub extern "js" fn SVGSVGElement::get_ongamepaddisconnected(
+  self : SVGSVGElement,
+) -> EventHandler =
+  #| (self) => self.ongamepaddisconnected
+
+///|
+pub extern "js" fn SVGSVGElement::set_ongamepaddisconnected(
+  self : SVGSVGElement,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ongamepaddisconnected = value }
 
 ///|
 /// SVGGElement interface
@@ -4855,12 +4777,10 @@ pub extern "js" fn SVGStyleElement::to_event_target(
   #| (self) => self
 
 ///|
-/// @alert deprecated "type is deprecated"
 pub extern "js" fn SVGStyleElement::get_type(self : SVGStyleElement) -> String =
   #| (self) => self.type
 
 ///|
-/// @alert deprecated "type is deprecated"
 pub extern "js" fn SVGStyleElement::set_type(
   self : SVGStyleElement,
   value : String,
@@ -4938,48 +4858,6 @@ pub extern "js" fn JsValue::as_svg_transform(self : JsValue) -> SVGTransform? =
 pub extern "js" fn JsValue::to_svg_transform(self : JsValue) -> SVGTransform =
   #| (self) => self
 
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTransformSetMatrixError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTransformSetTranslateError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTransformSetScaleError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTransformSetRotateError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTransformSetSkewXError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTransformSetSkewYError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
 // SVGTransform.SVG_TRANSFORM_UNKNOWN
 
 ///|
@@ -5028,23 +4906,21 @@ pub extern "js" fn SVGTransform::get_angle(self : SVGTransform) -> Double =
   #| (self) => self.angle
 
 ///|
-pub extern "js" fn SVGTransform::set_matrix(
-  self : SVGTransform,
-) -> Result[Unit, SVGTransformSetMatrixError] =
-  #| (self) => (() => { try { self.setMatrix(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn SVGTransform::set_matrix(self : SVGTransform) -> Unit =
+  #| (self) => self.setMatrix()
 
 ///|
 extern "js" fn SVGTransform::set_matrix_with_matrix_ffi(
   self : SVGTransform,
   matrix : JsValue,
-) -> Result[Unit, SVGTransformSetMatrixError] =
-  #| (self, matrix) => (() => { try { self.setMatrix(matrix); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, matrix) => self.setMatrix(matrix)
 
 ///|
 pub fn SVGTransform::set_matrix_with_matrix(
   self : SVGTransform,
   matrix : DOMMatrix2DInit,
-) -> Result[Unit, SVGTransformSetMatrixError] {
+) -> Unit {
   SVGTransform::set_matrix_with_matrix_ffi(self, matrix.to_js())
 }
 
@@ -5053,16 +4929,16 @@ pub extern "js" fn SVGTransform::set_translate(
   self : SVGTransform,
   tx : Double,
   ty : Double,
-) -> Result[Unit, SVGTransformSetTranslateError] =
-  #| (self, tx, ty) => (() => { try { self.setTranslate(tx, ty); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, tx, ty) => self.setTranslate(tx, ty)
 
 ///|
 pub extern "js" fn SVGTransform::set_scale(
   self : SVGTransform,
   sx : Double,
   sy : Double,
-) -> Result[Unit, SVGTransformSetScaleError] =
-  #| (self, sx, sy) => (() => { try { self.setScale(sx, sy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, sx, sy) => self.setScale(sx, sy)
 
 ///|
 pub extern "js" fn SVGTransform::set_rotate(
@@ -5070,22 +4946,22 @@ pub extern "js" fn SVGTransform::set_rotate(
   angle : Double,
   cx : Double,
   cy : Double,
-) -> Result[Unit, SVGTransformSetRotateError] =
-  #| (self, angle, cx, cy) => (() => { try { self.setRotate(angle, cx, cy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, angle, cx, cy) => self.setRotate(angle, cx, cy)
 
 ///|
 pub extern "js" fn SVGTransform::set_skew_x(
   self : SVGTransform,
   angle : Double,
-) -> Result[Unit, SVGTransformSetSkewXError] =
-  #| (self, angle) => (() => { try { self.setSkewX(angle); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, angle) => self.setSkewX(angle)
 
 ///|
 pub extern "js" fn SVGTransform::set_skew_y(
   self : SVGTransform,
   angle : Double,
-) -> Result[Unit, SVGTransformSetSkewYError] =
-  #| (self, angle) => (() => { try { self.setSkewY(angle); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, angle) => self.setSkewY(angle)
 
 ///|
 /// SVGTransformList interface
@@ -5126,64 +5002,6 @@ pub extern "js" fn JsValue::to_svg_transform_list(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum SVGTransformListClearError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTransformListInitializeError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTransformListGetItemError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTransformListInsertItemBeforeError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTransformListReplaceItemError {
-  IndexSizeError(JsError)
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTransformListRemoveItemError {
-  IndexSizeError(JsError)
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTransformListAppendItemError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTransformListConsolidateError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn SVGTransformList::get_length(self : SVGTransformList) -> Int =
   #| (self) => self.length
 
@@ -5194,62 +5012,60 @@ pub extern "js" fn SVGTransformList::get_number_of_items(
   #| (self) => self.numberOfItems
 
 ///|
-pub extern "js" fn SVGTransformList::clear(
-  self : SVGTransformList,
-) -> Result[Unit, SVGTransformListClearError] =
-  #| (self) => (() => { try { self.clear(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn SVGTransformList::clear(self : SVGTransformList) -> Unit =
+  #| (self) => self.clear()
 
 ///|
 pub extern "js" fn SVGTransformList::initialize(
   self : SVGTransformList,
   new_item : SVGTransform,
-) -> Result[SVGTransform, SVGTransformListInitializeError] =
-  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.initialize(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SVGTransform =
+  #| (self, new_item) => self.initialize(new_item)
 
 ///|
 pub extern "js" fn SVGTransformList::get_item(
   self : SVGTransformList,
   index : Int,
-) -> Result[SVGTransform, SVGTransformListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self.getItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SVGTransform =
+  #| (self, index) => self.getItem(index)
 
 ///|
 #alias("_[_]")
 pub extern "js" fn SVGTransformList::get(
   self : SVGTransformList,
   index : Int,
-) -> Result[SVGTransform, SVGTransformListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self[index] }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SVGTransform =
+  #| (self, index) => self[index]
 
 ///|
 pub extern "js" fn SVGTransformList::insert_item_before(
   self : SVGTransformList,
   new_item : SVGTransform,
   index : Int,
-) -> Result[SVGTransform, SVGTransformListInsertItemBeforeError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.insertItemBefore(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SVGTransform =
+  #| (self, new_item, index) => self.insertItemBefore(new_item, index)
 
 ///|
 pub extern "js" fn SVGTransformList::replace_item(
   self : SVGTransformList,
   new_item : SVGTransform,
   index : Int,
-) -> Result[SVGTransform, SVGTransformListReplaceItemError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.replaceItem(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> SVGTransform =
+  #| (self, new_item, index) => self.replaceItem(new_item, index)
 
 ///|
 pub extern "js" fn SVGTransformList::remove_item(
   self : SVGTransformList,
   index : Int,
-) -> Result[SVGTransform, SVGTransformListRemoveItemError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self.removeItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> SVGTransform =
+  #| (self, index) => self.removeItem(index)
 
 ///|
 pub extern "js" fn SVGTransformList::append_item(
   self : SVGTransformList,
   new_item : SVGTransform,
-) -> Result[SVGTransform, SVGTransformListAppendItemError] =
-  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.appendItem(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SVGTransform =
+  #| (self, new_item) => self.appendItem(new_item)
 
 ///|
 #alias("_[_]=_")
@@ -5287,8 +5103,8 @@ pub fn SVGTransformList::create_svg_transform_from_matrix_with_matrix(
 ///|
 pub extern "js" fn SVGTransformList::consolidate(
   self : SVGTransformList,
-) -> Result[SVGTransform?, SVGTransformListConsolidateError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: (() => { const v = self.consolidate(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SVGTransform? =
+  #| (self) => (() => { const v = self.consolidate(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// SVGAnimatedTransformList interface
@@ -5937,57 +5753,6 @@ pub extern "js" fn JsValue::to_svg_point_list(self : JsValue) -> SVGPointList =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum SVGPointListClearError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGPointListInitializeError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGPointListGetItemError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGPointListInsertItemBeforeError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGPointListReplaceItemError {
-  IndexSizeError(JsError)
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGPointListRemoveItemError {
-  IndexSizeError(JsError)
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGPointListAppendItemError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn SVGPointList::get_length(self : SVGPointList) -> Int =
   #| (self) => self.length
 
@@ -5998,62 +5763,60 @@ pub extern "js" fn SVGPointList::get_number_of_items(
   #| (self) => self.numberOfItems
 
 ///|
-pub extern "js" fn SVGPointList::clear(
-  self : SVGPointList,
-) -> Result[Unit, SVGPointListClearError] =
-  #| (self) => (() => { try { self.clear(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn SVGPointList::clear(self : SVGPointList) -> Unit =
+  #| (self) => self.clear()
 
 ///|
 pub extern "js" fn SVGPointList::initialize(
   self : SVGPointList,
   new_item : DOMPoint,
-) -> Result[DOMPoint, SVGPointListInitializeError] =
-  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.initialize(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> DOMPoint =
+  #| (self, new_item) => self.initialize(new_item)
 
 ///|
 pub extern "js" fn SVGPointList::get_item(
   self : SVGPointList,
   index : Int,
-) -> Result[DOMPoint, SVGPointListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self.getItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> DOMPoint =
+  #| (self, index) => self.getItem(index)
 
 ///|
 #alias("_[_]")
 pub extern "js" fn SVGPointList::get(
   self : SVGPointList,
   index : Int,
-) -> Result[DOMPoint, SVGPointListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self[index] }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> DOMPoint =
+  #| (self, index) => self[index]
 
 ///|
 pub extern "js" fn SVGPointList::insert_item_before(
   self : SVGPointList,
   new_item : DOMPoint,
   index : Int,
-) -> Result[DOMPoint, SVGPointListInsertItemBeforeError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.insertItemBefore(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> DOMPoint =
+  #| (self, new_item, index) => self.insertItemBefore(new_item, index)
 
 ///|
 pub extern "js" fn SVGPointList::replace_item(
   self : SVGPointList,
   new_item : DOMPoint,
   index : Int,
-) -> Result[DOMPoint, SVGPointListReplaceItemError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.replaceItem(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> DOMPoint =
+  #| (self, new_item, index) => self.replaceItem(new_item, index)
 
 ///|
 pub extern "js" fn SVGPointList::remove_item(
   self : SVGPointList,
   index : Int,
-) -> Result[DOMPoint, SVGPointListRemoveItemError] =
-  #| (self, index) => (() => { try { return { $tag: 1, _0: self.removeItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> DOMPoint =
+  #| (self, index) => self.removeItem(index)
 
 ///|
 pub extern "js" fn SVGPointList::append_item(
   self : SVGPointList,
   new_item : DOMPoint,
-) -> Result[DOMPoint, SVGPointListAppendItemError] =
-  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.appendItem(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> DOMPoint =
+  #| (self, new_item) => self.appendItem(new_item)
 
 ///|
 #alias("_[_]=_")
@@ -6326,41 +6089,6 @@ pub extern "js" fn SVGTextContentElement::as_svg_text_path_element(
 ) -> SVGTextPathElement? =
   #| (self) => (self instanceof SVGTextPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTextContentElementGetSubStringLengthError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTextContentElementGetStartPositionOfCharError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTextContentElementGetEndPositionOfCharError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTextContentElementGetExtentOfCharError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SVGTextContentElementGetRotationOfCharError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
 // SVGTextContentElement.LENGTHADJUST_UNKNOWN
 
 ///|
@@ -6405,36 +6133,36 @@ pub extern "js" fn SVGTextContentElement::get_sub_string_length(
   self : SVGTextContentElement,
   charnum : Int,
   nchars : Int,
-) -> Result[Double, SVGTextContentElementGetSubStringLengthError] =
-  #| (self, charnum, nchars) => (() => { try { return { $tag: 1, _0: self.getSubStringLength(charnum, nchars) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Double =
+  #| (self, charnum, nchars) => self.getSubStringLength(charnum, nchars)
 
 ///|
 pub extern "js" fn SVGTextContentElement::get_start_position_of_char(
   self : SVGTextContentElement,
   charnum : Int,
-) -> Result[DOMPoint, SVGTextContentElementGetStartPositionOfCharError] =
-  #| (self, charnum) => (() => { try { return { $tag: 1, _0: self.getStartPositionOfChar(charnum) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> DOMPoint =
+  #| (self, charnum) => self.getStartPositionOfChar(charnum)
 
 ///|
 pub extern "js" fn SVGTextContentElement::get_end_position_of_char(
   self : SVGTextContentElement,
   charnum : Int,
-) -> Result[DOMPoint, SVGTextContentElementGetEndPositionOfCharError] =
-  #| (self, charnum) => (() => { try { return { $tag: 1, _0: self.getEndPositionOfChar(charnum) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> DOMPoint =
+  #| (self, charnum) => self.getEndPositionOfChar(charnum)
 
 ///|
 pub extern "js" fn SVGTextContentElement::get_extent_of_char(
   self : SVGTextContentElement,
   charnum : Int,
-) -> Result[DOMRect, SVGTextContentElementGetExtentOfCharError] =
-  #| (self, charnum) => (() => { try { return { $tag: 1, _0: self.getExtentOfChar(charnum) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> DOMRect =
+  #| (self, charnum) => self.getExtentOfChar(charnum)
 
 ///|
 pub extern "js" fn SVGTextContentElement::get_rotation_of_char(
   self : SVGTextContentElement,
   charnum : Int,
-) -> Result[Double, SVGTextContentElementGetRotationOfCharError] =
-  #| (self, charnum) => (() => { try { return { $tag: 1, _0: self.getRotationOfChar(charnum) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Double =
+  #| (self, charnum) => self.getRotationOfChar(charnum)
 
 ///|
 pub extern "js" fn SVGTextContentElement::get_char_num_at_position(

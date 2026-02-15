@@ -518,14 +518,6 @@ pub extern "js" fn JsValue::to_media_keys(self : JsValue) -> MediaKeys =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum MediaKeysGetStatusForPolicyError {
-  TypeError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn MediaKeys::create_session(
   self : MediaKeys,
 ) -> MediaKeySession =
@@ -541,21 +533,21 @@ pub extern "js" fn MediaKeys::create_session_with_session_type(
 ///|
 pub extern "js" fn MediaKeys::get_status_for_policy(
   self : MediaKeys,
-) -> Promise[Result[MediaKeyStatus, MediaKeysGetStatusForPolicyError]] =
-  #| (self) => self.getStatusForPolicy().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[MediaKeyStatus] =
+  #| (self) => self.getStatusForPolicy()
 
 ///|
 extern "js" fn MediaKeys::get_status_for_policy_with_policy_ffi(
   self : MediaKeys,
   policy : JsValue,
-) -> Promise[Result[MediaKeyStatus, MediaKeysGetStatusForPolicyError]] =
-  #| (self, policy) => self.getStatusForPolicy(policy).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[MediaKeyStatus] =
+  #| (self, policy) => self.getStatusForPolicy(policy)
 
 ///|
 pub fn MediaKeys::get_status_for_policy_with_policy(
   self : MediaKeys,
   policy : MediaKeysPolicy,
-) -> Promise[Result[MediaKeyStatus, MediaKeysGetStatusForPolicyError]] {
+) -> Promise[MediaKeyStatus] {
   MediaKeys::get_status_for_policy_with_policy_ffi(self, policy.to_js())
 }
 
@@ -625,16 +617,6 @@ pub extern "js" fn MediaKeySession::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum MediaKeySessionGenerateRequestError {
-  TypeError(JsError)
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  QuotaExceededError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn MediaKeySession::get_session_id(
   self : MediaKeySession,
 ) -> String =
@@ -659,38 +641,38 @@ pub extern "js" fn MediaKeySession::get_key_statuses(
   #| (self) => self.keyStatuses
 
 ///|
-pub extern "js" fn MediaKeySession::set_onkeystatuseschange(
+pub extern "js" fn MediaKeySession::get_onkeystatuseschange(
   self : MediaKeySession,
-  handler : (ExtendableEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onkeystatuseschange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onkeystatuseschange
 
 ///|
-pub extern "js" fn MediaKeySession::clear_onkeystatuseschange(
+pub extern "js" fn MediaKeySession::set_onkeystatuseschange(
   self : MediaKeySession,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onkeystatuseschange = null }
+  #| (self, value) => { self.onkeystatuseschange = value }
+
+///|
+pub extern "js" fn MediaKeySession::get_onmessage(
+  self : MediaKeySession,
+) -> EventHandler =
+  #| (self) => self.onmessage
 
 ///|
 pub extern "js" fn MediaKeySession::set_onmessage(
   self : MediaKeySession,
-  handler : (MediaKeyMessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessage = (e) => handler(e) }
-
-///|
-pub extern "js" fn MediaKeySession::clear_onmessage(
-  self : MediaKeySession,
-) -> Unit =
-  #| (self) => { self.onmessage = null }
+  #| (self, value) => { self.onmessage = value }
 
 ///|
 pub extern "js" fn MediaKeySession::generate_request(
   self : MediaKeySession,
   init_data_type : String,
   init_data : BufferSource,
-) -> Promise[Result[Unit, MediaKeySessionGenerateRequestError]] =
-  #| (self, init_data_type, init_data) => self.generateRequest(init_data_type, init_data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; if (n === 'QuotaExceededError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, init_data_type, init_data) => self.generateRequest(init_data_type, init_data)
 
 ///|
 pub extern "js" fn MediaKeySession::load(
@@ -723,16 +705,16 @@ pub extern "js" fn MediaKeySession::generate_request_with_array_buffer_view(
   self : MediaKeySession,
   init_data_type : String,
   init_data : ArrayBufferView,
-) -> Promise[Result[Unit, MediaKeySessionGenerateRequestError]] =
-  #| (self, init_data_type, init_data) => self.generateRequest(init_data_type, init_data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; if (n === 'QuotaExceededError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, init_data_type, init_data) => self.generateRequest(init_data_type, init_data)
 
 ///|
 pub extern "js" fn MediaKeySession::generate_request_with_array_buffer(
   self : MediaKeySession,
   init_data_type : String,
   init_data : ArrayBuffer,
-) -> Promise[Result[Unit, MediaKeySessionGenerateRequestError]] =
-  #| (self, init_data_type, init_data) => self.generateRequest(init_data_type, init_data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; if (n === 'QuotaExceededError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, init_data_type, init_data) => self.generateRequest(init_data_type, init_data)
 
 ///|
 pub extern "js" fn MediaKeySession::update_with_array_buffer_view(

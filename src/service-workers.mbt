@@ -843,13 +843,6 @@ pub extern "js" fn ServiceWorker::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum ServiceWorkerPostMessageError {
-  SyntaxError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn ServiceWorker::get_script_url(
   self : ServiceWorker,
 ) -> String =
@@ -865,23 +858,23 @@ pub extern "js" fn ServiceWorker::get_state(
 pub extern "js" fn ServiceWorker::post_message(
   self : ServiceWorker,
   message : JsValue,
-) -> Result[Unit, ServiceWorkerPostMessageError] =
-  #| (self, message) => (() => { try { self.postMessage(message); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, message) => self.postMessage(message)
 
 ///|
 extern "js" fn ServiceWorker::post_message_with_options_ffi(
   self : ServiceWorker,
   message : JsValue,
   options : JsValue,
-) -> Result[Unit, ServiceWorkerPostMessageError] =
-  #| (self, message, options) => (() => { try { self.postMessage(message, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, message, options) => self.postMessage(message, options)
 
 ///|
 pub fn ServiceWorker::post_message_with_options(
   self : ServiceWorker,
   message : JsValue,
   options : StructuredSerializeOptions,
-) -> Result[Unit, ServiceWorkerPostMessageError] {
+) -> Unit {
   ServiceWorker::post_message_with_options_ffi(self, message, options.to_js())
 }
 
@@ -890,32 +883,34 @@ pub extern "js" fn ServiceWorker::post_message_with_message_and_transfer(
   self : ServiceWorker,
   message : JsValue,
   transfer : Array[JsValue],
-) -> Result[Unit, ServiceWorkerPostMessageError] =
-  #| (self, message, transfer) => (() => { try { self.postMessage(message, transfer); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, message, transfer) => self.postMessage(message, transfer)
+
+///|
+pub extern "js" fn ServiceWorker::get_onstatechange(
+  self : ServiceWorker,
+) -> EventHandler =
+  #| (self) => self.onstatechange
 
 ///|
 pub extern "js" fn ServiceWorker::set_onstatechange(
   self : ServiceWorker,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onstatechange = (e) => handler(e) }
+  #| (self, value) => { self.onstatechange = value }
 
 ///|
-pub extern "js" fn ServiceWorker::clear_onstatechange(
+pub extern "js" fn ServiceWorker::get_onerror(
   self : ServiceWorker,
-) -> Unit =
-  #| (self) => { self.onstatechange = null }
+) -> EventHandler =
+  #| (self) => self.onerror
 
 ///|
 pub extern "js" fn ServiceWorker::set_onerror(
   self : ServiceWorker,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onerror = (e) => handler(e) }
-
-///|
-pub extern "js" fn ServiceWorker::clear_onerror(self : ServiceWorker) -> Unit =
-  #| (self) => { self.onerror = null }
+  #| (self, value) => { self.onerror = value }
 
 ///|
 /// ServiceWorkerRegistration interface
@@ -960,14 +955,6 @@ pub extern "js" fn ServiceWorkerRegistration::to_event_target(
   self : ServiceWorkerRegistration,
 ) -> EventTarget =
   #| (self) => self
-
-///|
-/// Error type for throwing methods
-pub(all) enum ServiceWorkerRegistrationShowNotificationError {
-  TypeError(JsError)
-  DataCloneError(JsError)
-  OtherError(JsError)
-} derive(Show)
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_installing(
@@ -1018,63 +1005,39 @@ pub extern "js" fn ServiceWorkerRegistration::unregister(
   #| (self) => self.unregister()
 
 ///|
+pub extern "js" fn ServiceWorkerRegistration::get_onupdatefound(
+  self : ServiceWorkerRegistration,
+) -> EventHandler =
+  #| (self) => self.onupdatefound
+
+///|
 pub extern "js" fn ServiceWorkerRegistration::set_onupdatefound(
   self : ServiceWorkerRegistration,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onupdatefound = (e) => handler(e) }
-
-///|
-pub extern "js" fn ServiceWorkerRegistration::clear_onupdatefound(
-  self : ServiceWorkerRegistration,
-) -> Unit =
-  #| (self) => { self.onupdatefound = null }
-
-///|
-pub extern "js" fn ServiceWorkerRegistration::get_background_fetch(
-  self : ServiceWorkerRegistration,
-) -> BackgroundFetchManager =
-  #| (self) => self.backgroundFetch
-
-///|
-pub extern "js" fn ServiceWorkerRegistration::get_sync(
-  self : ServiceWorkerRegistration,
-) -> SyncManager =
-  #| (self) => self.sync
-
-///|
-pub extern "js" fn ServiceWorkerRegistration::get_index(
-  self : ServiceWorkerRegistration,
-) -> ContentIndex =
-  #| (self) => self.index
-
-///|
-pub extern "js" fn ServiceWorkerRegistration::get_cookies(
-  self : ServiceWorkerRegistration,
-) -> CookieStoreManager =
-  #| (self) => self.cookies
+  #| (self, value) => { self.onupdatefound = value }
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::show_notification(
   self : ServiceWorkerRegistration,
   title : String,
-) -> Promise[Result[Unit, ServiceWorkerRegistrationShowNotificationError]] =
-  #| (self, title) => self.showNotification(title).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, title) => self.showNotification(title)
 
 ///|
 extern "js" fn ServiceWorkerRegistration::show_notification_with_options_ffi(
   self : ServiceWorkerRegistration,
   title : String,
   options : JsValue,
-) -> Promise[Result[Unit, ServiceWorkerRegistrationShowNotificationError]] =
-  #| (self, title, options) => self.showNotification(title, options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, title, options) => self.showNotification(title, options)
 
 ///|
 pub fn ServiceWorkerRegistration::show_notification_with_options(
   self : ServiceWorkerRegistration,
   title : String,
   options : NotificationOptions,
-) -> Promise[Result[Unit, ServiceWorkerRegistrationShowNotificationError]] {
+) -> Promise[Unit] {
   ServiceWorkerRegistration::show_notification_with_options_ffi(
     self,
     title,
@@ -1113,10 +1076,34 @@ pub extern "js" fn ServiceWorkerRegistration::get_payment_manager(
   #| (self) => self.paymentManager
 
 ///|
+pub extern "js" fn ServiceWorkerRegistration::get_sync(
+  self : ServiceWorkerRegistration,
+) -> SyncManager =
+  #| (self) => self.sync
+
+///|
+pub extern "js" fn ServiceWorkerRegistration::get_cookies(
+  self : ServiceWorkerRegistration,
+) -> CookieStoreManager =
+  #| (self) => self.cookies
+
+///|
 pub extern "js" fn ServiceWorkerRegistration::get_periodic_sync(
   self : ServiceWorkerRegistration,
 ) -> PeriodicSyncManager =
   #| (self) => self.periodicSync
+
+///|
+pub extern "js" fn ServiceWorkerRegistration::get_index(
+  self : ServiceWorkerRegistration,
+) -> ContentIndex =
+  #| (self) => self.index
+
+///|
+pub extern "js" fn ServiceWorkerRegistration::get_background_fetch(
+  self : ServiceWorkerRegistration,
+) -> BackgroundFetchManager =
+  #| (self) => self.backgroundFetch
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_push_manager(
@@ -1169,14 +1156,6 @@ pub extern "js" fn ServiceWorkerContainer::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum ServiceWorkerContainerRegisterError {
-  TypeError(JsError)
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn ServiceWorkerContainer::get_controller(
   self : ServiceWorkerContainer,
 ) -> ServiceWorker? =
@@ -1192,29 +1171,23 @@ pub extern "js" fn ServiceWorkerContainer::get_ready(
 pub extern "js" fn ServiceWorkerContainer::register(
   self : ServiceWorkerContainer,
   script_url : TrustedScriptURLOrString,
-) -> Promise[
-  Result[ServiceWorkerRegistration, ServiceWorkerContainerRegisterError],
-] =
-  #| (self, script_url) => self.register(script_url).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[ServiceWorkerRegistration] =
+  #| (self, script_url) => self.register(script_url)
 
 ///|
 extern "js" fn ServiceWorkerContainer::register_with_options_ffi(
   self : ServiceWorkerContainer,
   script_url : TrustedScriptURLOrString,
   options : JsValue,
-) -> Promise[
-  Result[ServiceWorkerRegistration, ServiceWorkerContainerRegisterError],
-] =
-  #| (self, script_url, options) => self.register(script_url, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[ServiceWorkerRegistration] =
+  #| (self, script_url, options) => self.register(script_url, options)
 
 ///|
 pub fn ServiceWorkerContainer::register_with_options(
   self : ServiceWorkerContainer,
   script_url : TrustedScriptURLOrString,
   options : RegistrationOptions,
-) -> Promise[
-  Result[ServiceWorkerRegistration, ServiceWorkerContainerRegisterError],
-] {
+) -> Promise[ServiceWorkerRegistration] {
   ServiceWorkerContainer::register_with_options_ffi(
     self,
     script_url,
@@ -1248,43 +1221,43 @@ pub extern "js" fn ServiceWorkerContainer::start_messages(
   #| (self) => self.startMessages()
 
 ///|
-pub extern "js" fn ServiceWorkerContainer::set_oncontrollerchange(
+pub extern "js" fn ServiceWorkerContainer::get_oncontrollerchange(
   self : ServiceWorkerContainer,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.oncontrollerchange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.oncontrollerchange
 
 ///|
-pub extern "js" fn ServiceWorkerContainer::clear_oncontrollerchange(
+pub extern "js" fn ServiceWorkerContainer::set_oncontrollerchange(
   self : ServiceWorkerContainer,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.oncontrollerchange = null }
+  #| (self, value) => { self.oncontrollerchange = value }
+
+///|
+pub extern "js" fn ServiceWorkerContainer::get_onmessage(
+  self : ServiceWorkerContainer,
+) -> EventHandler =
+  #| (self) => self.onmessage
 
 ///|
 pub extern "js" fn ServiceWorkerContainer::set_onmessage(
   self : ServiceWorkerContainer,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessage = (e) => handler(e) }
+  #| (self, value) => { self.onmessage = value }
 
 ///|
-pub extern "js" fn ServiceWorkerContainer::clear_onmessage(
+pub extern "js" fn ServiceWorkerContainer::get_onmessageerror(
   self : ServiceWorkerContainer,
-) -> Unit =
-  #| (self) => { self.onmessage = null }
+) -> EventHandler =
+  #| (self) => self.onmessageerror
 
 ///|
 pub extern "js" fn ServiceWorkerContainer::set_onmessageerror(
   self : ServiceWorkerContainer,
-  handler : (MessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessageerror = (e) => handler(e) }
-
-///|
-pub extern "js" fn ServiceWorkerContainer::clear_onmessageerror(
-  self : ServiceWorkerContainer,
-) -> Unit =
-  #| (self) => { self.onmessageerror = null }
+  #| (self, value) => { self.onmessageerror = value }
 
 ///|
 /// NavigationPreloadManager interface
@@ -1325,62 +1298,32 @@ pub extern "js" fn JsValue::to_navigation_preload_manager(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NavigationPreloadManagerEnableError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum NavigationPreloadManagerDisableError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum NavigationPreloadManagerSetHeaderValueError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum NavigationPreloadManagerGetStateError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn NavigationPreloadManager::enable(
   self : NavigationPreloadManager,
-) -> Promise[Result[Unit, NavigationPreloadManagerEnableError]] =
-  #| (self) => self.enable().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.enable()
 
 ///|
 pub extern "js" fn NavigationPreloadManager::disable(
   self : NavigationPreloadManager,
-) -> Promise[Result[Unit, NavigationPreloadManagerDisableError]] =
-  #| (self) => self.disable().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.disable()
 
 ///|
 pub extern "js" fn NavigationPreloadManager::set_header_value(
   self : NavigationPreloadManager,
   value : String,
-) -> Promise[Result[Unit, NavigationPreloadManagerSetHeaderValueError]] =
-  #| (self, value) => self.setHeaderValue(value).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, value) => self.setHeaderValue(value)
 
 ///|
 pub extern "js" fn NavigationPreloadManager::get_state(
   self : NavigationPreloadManager,
-) -> Promise[
-  Result[NavigationPreloadState, NavigationPreloadManagerGetStateError],
-] =
+) -> Promise[NavigationPreloadState] =
   #| (self) => self.getState().then(v => ({
   #|   enabled: (v.enabled === undefined ? -1 : v.enabled),
   #|   headerValue: v.headerValue
-  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| }))
 
 ///|
 /// ServiceWorkerGlobalScope interface
@@ -1457,147 +1400,160 @@ pub extern "js" fn ServiceWorkerGlobalScope::skip_waiting(
   #| (self) => self.skipWaiting()
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_oninstall(
+pub extern "js" fn ServiceWorkerGlobalScope::get_oninstall(
   self : ServiceWorkerGlobalScope,
-  handler : (ExtendableEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.oninstall = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.oninstall
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_oninstall(
+pub extern "js" fn ServiceWorkerGlobalScope::set_oninstall(
   self : ServiceWorkerGlobalScope,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.oninstall = null }
+  #| (self, value) => { self.oninstall = value }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::get_onactivate(
+  self : ServiceWorkerGlobalScope,
+) -> EventHandler =
+  #| (self) => self.onactivate
 
 ///|
 pub extern "js" fn ServiceWorkerGlobalScope::set_onactivate(
   self : ServiceWorkerGlobalScope,
-  handler : (ExtendableEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onactivate = (e) => handler(e) }
+  #| (self, value) => { self.onactivate = value }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onactivate(
+pub extern "js" fn ServiceWorkerGlobalScope::get_onfetch(
   self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onactivate = null }
+) -> EventHandler =
+  #| (self) => self.onfetch
 
 ///|
 pub extern "js" fn ServiceWorkerGlobalScope::set_onfetch(
   self : ServiceWorkerGlobalScope,
-  handler : (FetchEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onfetch = (e) => handler(e) }
+  #| (self, value) => { self.onfetch = value }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onfetch(
+pub extern "js" fn ServiceWorkerGlobalScope::get_onmessage(
   self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onfetch = null }
+) -> EventHandler =
+  #| (self) => self.onmessage
 
 ///|
 pub extern "js" fn ServiceWorkerGlobalScope::set_onmessage(
   self : ServiceWorkerGlobalScope,
-  handler : (ExtendableMessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessage = (e) => handler(e) }
+  #| (self, value) => { self.onmessage = value }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onmessage(
+pub extern "js" fn ServiceWorkerGlobalScope::get_onmessageerror(
   self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onmessage = null }
+) -> EventHandler =
+  #| (self) => self.onmessageerror
 
 ///|
 pub extern "js" fn ServiceWorkerGlobalScope::set_onmessageerror(
   self : ServiceWorkerGlobalScope,
-  handler : (ExtendableMessageEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessageerror = (e) => handler(e) }
+  #| (self, value) => { self.onmessageerror = value }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onmessageerror(
+pub extern "js" fn ServiceWorkerGlobalScope::get_onpush(
   self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onmessageerror = null }
+) -> EventHandler =
+  #| (self) => self.onpush
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchsuccess(
+pub extern "js" fn ServiceWorkerGlobalScope::set_onpush(
   self : ServiceWorkerGlobalScope,
-  handler : (BackgroundFetchUpdateUIEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbackgroundfetchsuccess = (e) => handler(e) }
+  #| (self, value) => { self.onpush = value }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onbackgroundfetchsuccess(
+pub extern "js" fn ServiceWorkerGlobalScope::get_onpushsubscriptionchange(
   self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onbackgroundfetchsuccess = null }
+) -> EventHandler =
+  #| (self) => self.onpushsubscriptionchange
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchfail(
+pub extern "js" fn ServiceWorkerGlobalScope::set_onpushsubscriptionchange(
   self : ServiceWorkerGlobalScope,
-  handler : (BackgroundFetchUpdateUIEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbackgroundfetchfail = (e) => handler(e) }
+  #| (self, value) => { self.onpushsubscriptionchange = value }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onbackgroundfetchfail(
+pub extern "js" fn ServiceWorkerGlobalScope::get_onnotificationclick(
   self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onbackgroundfetchfail = null }
+) -> EventHandler =
+  #| (self) => self.onnotificationclick
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchabort(
+pub extern "js" fn ServiceWorkerGlobalScope::set_onnotificationclick(
   self : ServiceWorkerGlobalScope,
-  handler : (BackgroundFetchEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbackgroundfetchabort = (e) => handler(e) }
+  #| (self, value) => { self.onnotificationclick = value }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onbackgroundfetchabort(
+pub extern "js" fn ServiceWorkerGlobalScope::get_onnotificationclose(
   self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onbackgroundfetchabort = null }
+) -> EventHandler =
+  #| (self) => self.onnotificationclose
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchclick(
+pub extern "js" fn ServiceWorkerGlobalScope::set_onnotificationclose(
   self : ServiceWorkerGlobalScope,
-  handler : (BackgroundFetchEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onbackgroundfetchclick = (e) => handler(e) }
+  #| (self, value) => { self.onnotificationclose = value }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onbackgroundfetchclick(
+pub extern "js" fn ServiceWorkerGlobalScope::get_oncanmakepayment(
   self : ServiceWorkerGlobalScope,
+) -> EventHandler =
+  #| (self) => self.oncanmakepayment
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_oncanmakepayment(
+  self : ServiceWorkerGlobalScope,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onbackgroundfetchclick = null }
+  #| (self, value) => { self.oncanmakepayment = value }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::get_onpaymentrequest(
+  self : ServiceWorkerGlobalScope,
+) -> EventHandler =
+  #| (self) => self.onpaymentrequest
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_onpaymentrequest(
+  self : ServiceWorkerGlobalScope,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onpaymentrequest = value }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::get_onsync(
+  self : ServiceWorkerGlobalScope,
+) -> EventHandler =
+  #| (self) => self.onsync
 
 ///|
 pub extern "js" fn ServiceWorkerGlobalScope::set_onsync(
   self : ServiceWorkerGlobalScope,
-  handler : (SyncEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsync = (e) => handler(e) }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onsync(
-  self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onsync = null }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_oncontentdelete(
-  self : ServiceWorkerGlobalScope,
-  handler : (ContentIndexEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.oncontentdelete = (e) => handler(e) }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_oncontentdelete(
-  self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.oncontentdelete = null }
+  #| (self, value) => { self.onsync = value }
 
 ///|
 pub extern "js" fn ServiceWorkerGlobalScope::get_cookie_store(
@@ -1606,108 +1562,95 @@ pub extern "js" fn ServiceWorkerGlobalScope::get_cookie_store(
   #| (self) => self.cookieStore
 
 ///|
+pub extern "js" fn ServiceWorkerGlobalScope::get_oncookiechange(
+  self : ServiceWorkerGlobalScope,
+) -> EventHandler =
+  #| (self) => self.oncookiechange
+
+///|
 pub extern "js" fn ServiceWorkerGlobalScope::set_oncookiechange(
   self : ServiceWorkerGlobalScope,
-  handler : (ExtendableCookieChangeEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oncookiechange = (e) => handler(e) }
+  #| (self, value) => { self.oncookiechange = value }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_oncookiechange(
+pub extern "js" fn ServiceWorkerGlobalScope::get_onperiodicsync(
   self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.oncookiechange = null }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onnotificationclick(
-  self : ServiceWorkerGlobalScope,
-  handler : (NotificationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onnotificationclick = (e) => handler(e) }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onnotificationclick(
-  self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onnotificationclick = null }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onnotificationclose(
-  self : ServiceWorkerGlobalScope,
-  handler : (NotificationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onnotificationclose = (e) => handler(e) }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onnotificationclose(
-  self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onnotificationclose = null }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_oncanmakepayment(
-  self : ServiceWorkerGlobalScope,
-  handler : (CanMakePaymentEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.oncanmakepayment = (e) => handler(e) }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_oncanmakepayment(
-  self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.oncanmakepayment = null }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onpaymentrequest(
-  self : ServiceWorkerGlobalScope,
-  handler : (PaymentRequestEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpaymentrequest = (e) => handler(e) }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onpaymentrequest(
-  self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onpaymentrequest = null }
+) -> EventHandler =
+  #| (self) => self.onperiodicsync
 
 ///|
 pub extern "js" fn ServiceWorkerGlobalScope::set_onperiodicsync(
   self : ServiceWorkerGlobalScope,
-  handler : (PeriodicSyncEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onperiodicsync = (e) => handler(e) }
+  #| (self, value) => { self.onperiodicsync = value }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onperiodicsync(
+pub extern "js" fn ServiceWorkerGlobalScope::get_oncontentdelete(
   self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onperiodicsync = null }
+) -> EventHandler =
+  #| (self) => self.oncontentdelete
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onpush(
+pub extern "js" fn ServiceWorkerGlobalScope::set_oncontentdelete(
   self : ServiceWorkerGlobalScope,
-  handler : (PushEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpush = (e) => handler(e) }
+  #| (self, value) => { self.oncontentdelete = value }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onpush(
+pub extern "js" fn ServiceWorkerGlobalScope::get_onbackgroundfetchsuccess(
   self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onpush = null }
+) -> EventHandler =
+  #| (self) => self.onbackgroundfetchsuccess
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onpushsubscriptionchange(
+pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchsuccess(
   self : ServiceWorkerGlobalScope,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpushsubscriptionchange = (e) => handler(e) }
+  #| (self, value) => { self.onbackgroundfetchsuccess = value }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onpushsubscriptionchange(
+pub extern "js" fn ServiceWorkerGlobalScope::get_onbackgroundfetchfail(
   self : ServiceWorkerGlobalScope,
+) -> EventHandler =
+  #| (self) => self.onbackgroundfetchfail
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchfail(
+  self : ServiceWorkerGlobalScope,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onpushsubscriptionchange = null }
+  #| (self, value) => { self.onbackgroundfetchfail = value }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::get_onbackgroundfetchabort(
+  self : ServiceWorkerGlobalScope,
+) -> EventHandler =
+  #| (self) => self.onbackgroundfetchabort
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchabort(
+  self : ServiceWorkerGlobalScope,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onbackgroundfetchabort = value }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::get_onbackgroundfetchclick(
+  self : ServiceWorkerGlobalScope,
+) -> EventHandler =
+  #| (self) => self.onbackgroundfetchclick
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchclick(
+  self : ServiceWorkerGlobalScope,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onbackgroundfetchclick = value }
 
 ///|
 /// Client interface
@@ -1830,13 +1773,6 @@ pub extern "js" fn WindowClient::to_client(self : WindowClient) -> Client =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum WindowClientFocusError {
-  InvalidAccessError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn WindowClient::get_visibility_state(
   self : WindowClient,
 ) -> DocumentVisibilityState =
@@ -1855,8 +1791,8 @@ pub extern "js" fn WindowClient::get_ancestor_origins(
 ///|
 pub extern "js" fn WindowClient::focus(
   self : WindowClient,
-) -> Promise[Result[WindowClient, WindowClientFocusError]] =
-  #| (self) => self.focus().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidAccessError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[WindowClient] =
+  #| (self) => self.focus()
 
 ///|
 pub extern "js" fn WindowClient::navigate(
@@ -1894,13 +1830,6 @@ pub extern "js" fn JsValue::to_clients(self : JsValue) -> Clients =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum ClientsOpenWindowError {
-  InvalidAccessError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn Clients::get(
   self : Clients,
   id : String,
@@ -1930,8 +1859,8 @@ pub fn Clients::match_all_with_options(
 pub extern "js" fn Clients::open_window(
   self : Clients,
   url : String,
-) -> Promise[Result[WindowClient?, ClientsOpenWindowError]] =
-  #| (self, url) => self.openWindow(url).then(r => ({ $tag: 1, _0: (() => { const v = r; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidAccessError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[WindowClient?] =
+  #| (self, url) => self.openWindow(url)
 
 ///|
 pub extern "js" fn Clients::claim(self : Clients) -> Promise[Unit] =
@@ -1980,34 +1909,16 @@ pub extern "js" fn ExtendableEvent::to_event(self : ExtendableEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn ExtendableEvent::as_background_fetch_event(
+pub extern "js" fn ExtendableEvent::as_push_event(
   self : ExtendableEvent,
-) -> BackgroundFetchEvent? =
-  #| (self) => (self instanceof BackgroundFetchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PushEvent? =
+  #| (self) => (self instanceof PushEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn ExtendableEvent::as_background_fetch_update_ui_event(
+pub extern "js" fn ExtendableEvent::as_push_subscription_change_event(
   self : ExtendableEvent,
-) -> BackgroundFetchUpdateUIEvent? =
-  #| (self) => (self instanceof BackgroundFetchUpdateUIEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn ExtendableEvent::as_sync_event(
-  self : ExtendableEvent,
-) -> SyncEvent? =
-  #| (self) => (self instanceof SyncEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn ExtendableEvent::as_content_index_event(
-  self : ExtendableEvent,
-) -> ContentIndexEvent? =
-  #| (self) => (self instanceof ContentIndexEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn ExtendableEvent::as_extendable_cookie_change_event(
-  self : ExtendableEvent,
-) -> ExtendableCookieChangeEvent? =
-  #| (self) => (self instanceof ExtendableCookieChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PushSubscriptionChangeEvent? =
+  #| (self) => (self instanceof PushSubscriptionChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn ExtendableEvent::as_notification_event(
@@ -2028,22 +1939,10 @@ pub extern "js" fn ExtendableEvent::as_payment_request_event(
   #| (self) => (self instanceof PaymentRequestEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn ExtendableEvent::as_periodic_sync_event(
+pub extern "js" fn ExtendableEvent::as_sync_event(
   self : ExtendableEvent,
-) -> PeriodicSyncEvent? =
-  #| (self) => (self instanceof PeriodicSyncEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn ExtendableEvent::as_push_event(
-  self : ExtendableEvent,
-) -> PushEvent? =
-  #| (self) => (self instanceof PushEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn ExtendableEvent::as_push_subscription_change_event(
-  self : ExtendableEvent,
-) -> PushSubscriptionChangeEvent? =
-  #| (self) => (self instanceof PushSubscriptionChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SyncEvent? =
+  #| (self) => (self instanceof SyncEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn ExtendableEvent::as_install_event(
@@ -2062,6 +1961,36 @@ pub extern "js" fn ExtendableEvent::as_extendable_message_event(
   self : ExtendableEvent,
 ) -> ExtendableMessageEvent? =
   #| (self) => (self instanceof ExtendableMessageEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_extendable_cookie_change_event(
+  self : ExtendableEvent,
+) -> ExtendableCookieChangeEvent? =
+  #| (self) => (self instanceof ExtendableCookieChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_periodic_sync_event(
+  self : ExtendableEvent,
+) -> PeriodicSyncEvent? =
+  #| (self) => (self instanceof PeriodicSyncEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_content_index_event(
+  self : ExtendableEvent,
+) -> ContentIndexEvent? =
+  #| (self) => (self instanceof ContentIndexEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_background_fetch_event(
+  self : ExtendableEvent,
+) -> BackgroundFetchEvent? =
+  #| (self) => (self instanceof BackgroundFetchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_background_fetch_update_ui_event(
+  self : ExtendableEvent,
+) -> BackgroundFetchUpdateUIEvent? =
+  #| (self) => (self instanceof BackgroundFetchUpdateUIEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn ExtendableEvent::new(type_ : String) -> ExtendableEvent =
@@ -2130,13 +2059,6 @@ pub extern "js" fn InstallEvent::to_event(self : InstallEvent) -> Event =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum InstallEventAddRoutesError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn InstallEvent::new(type_ : String) -> InstallEvent =
   #| (type_) => new InstallEvent(type_)
 
@@ -2159,8 +2081,8 @@ pub fn InstallEvent::new_with_event_init_dict(
 pub extern "js" fn InstallEvent::add_routes(
   self : InstallEvent,
   rules : RouterRuleOrArrayOfRouterRule,
-) -> Promise[Result[Unit, InstallEventAddRoutesError]] =
-  #| (self, rules) => self.addRoutes(rules).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, rules) => self.addRoutes(rules)
 
 ///|
 /// FetchEvent interface
@@ -2199,14 +2121,6 @@ pub extern "js" fn FetchEvent::to_extendable_event(
 ///|
 pub extern "js" fn FetchEvent::to_event(self : FetchEvent) -> Event =
   #| (self) => self
-
-///|
-/// Error type for throwing methods
-pub(all) enum FetchEventRespondWithError {
-  NetworkError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
 
 ///|
 extern "js" fn FetchEvent::new_ffi(
@@ -2257,8 +2171,8 @@ pub extern "js" fn FetchEvent::get_handled(self : FetchEvent) -> Promise[Unit] =
 pub extern "js" fn FetchEvent::respond_with(
   self : FetchEvent,
   r : Promise[Response],
-) -> Result[Unit, FetchEventRespondWithError] =
-  #| (self, r) => (() => { try { self.respondWith(r); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, r) => self.respondWith(r)
 
 ///|
 /// ExtendableMessageEvent interface
@@ -2393,27 +2307,6 @@ pub extern "js" fn JsValue::to_cache(self : JsValue) -> Cache =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum CacheAddError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum CacheAddAllError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum CachePutError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn Cache::match_(
   self : Cache,
   request : RequestInfo,
@@ -2462,23 +2355,23 @@ pub fn Cache::match_all_with_options(
 pub extern "js" fn Cache::add(
   self : Cache,
   request : RequestInfo,
-) -> Promise[Result[Unit, CacheAddError]] =
-  #| (self, request) => self.add(request).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, request) => self.add(request)
 
 ///|
 pub extern "js" fn Cache::add_all(
   self : Cache,
   requests : Array[RequestInfo],
-) -> Promise[Result[Unit, CacheAddAllError]] =
-  #| (self, requests) => self.addAll(requests).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, requests) => self.addAll(requests)
 
 ///|
 pub extern "js" fn Cache::put(
   self : Cache,
   request : RequestInfo,
   response : Response,
-) -> Promise[Result[Unit, CachePutError]] =
-  #| (self, request, response) => self.put(request, response).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, request, response) => self.put(request, response)
 
 ///|
 pub extern "js" fn Cache::delete(
@@ -2561,31 +2454,31 @@ pub extern "js" fn Cache::match_all_with_string(
 pub extern "js" fn Cache::add_with_request(
   self : Cache,
   request : Request,
-) -> Promise[Result[Unit, CacheAddError]] =
-  #| (self, request) => self.add(request).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, request) => self.add(request)
 
 ///|
 pub extern "js" fn Cache::add_with_string(
   self : Cache,
   request : String,
-) -> Promise[Result[Unit, CacheAddError]] =
-  #| (self, request) => self.add(request).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, request) => self.add(request)
 
 ///|
 pub extern "js" fn Cache::put_with_request(
   self : Cache,
   request : Request,
   response : Response,
-) -> Promise[Result[Unit, CachePutError]] =
-  #| (self, request, response) => self.put(request, response).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, request, response) => self.put(request, response)
 
 ///|
 pub extern "js" fn Cache::put_with_string(
   self : Cache,
   request : String,
   response : Response,
-) -> Promise[Result[Unit, CachePutError]] =
-  #| (self, request, response) => self.put(request, response).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, request, response) => self.put(request, response)
 
 ///|
 pub extern "js" fn Cache::delete_with_request(

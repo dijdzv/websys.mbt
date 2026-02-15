@@ -515,21 +515,6 @@ pub extern "js" fn FileSystemHandle::as_file_system_directory_handle(
   #| (self) => (self instanceof FileSystemDirectoryHandle) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum FileSystemHandleQueryPermissionError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum FileSystemHandleRequestPermissionError {
-  TypeError(JsError)
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn FileSystemHandle::get_kind(
   self : FileSystemHandle,
 ) -> FileSystemHandleKind =
@@ -551,21 +536,21 @@ pub extern "js" fn FileSystemHandle::is_same_entry(
 ///|
 pub extern "js" fn FileSystemHandle::query_permission(
   self : FileSystemHandle,
-) -> Promise[Result[PermissionState, FileSystemHandleQueryPermissionError]] =
-  #| (self) => self.queryPermission().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[PermissionState] =
+  #| (self) => self.queryPermission()
 
 ///|
 extern "js" fn FileSystemHandle::query_permission_with_descriptor_ffi(
   self : FileSystemHandle,
   descriptor : JsValue,
-) -> Promise[Result[PermissionState, FileSystemHandleQueryPermissionError]] =
-  #| (self, descriptor) => self.queryPermission(descriptor).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[PermissionState] =
+  #| (self, descriptor) => self.queryPermission(descriptor)
 
 ///|
 pub fn FileSystemHandle::query_permission_with_descriptor(
   self : FileSystemHandle,
   descriptor : FileSystemHandlePermissionDescriptor,
-) -> Promise[Result[PermissionState, FileSystemHandleQueryPermissionError]] {
+) -> Promise[PermissionState] {
   FileSystemHandle::query_permission_with_descriptor_ffi(
     self,
     descriptor.to_js(),
@@ -575,21 +560,21 @@ pub fn FileSystemHandle::query_permission_with_descriptor(
 ///|
 pub extern "js" fn FileSystemHandle::request_permission(
   self : FileSystemHandle,
-) -> Promise[Result[PermissionState, FileSystemHandleRequestPermissionError]] =
-  #| (self) => self.requestPermission().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[PermissionState] =
+  #| (self) => self.requestPermission()
 
 ///|
 extern "js" fn FileSystemHandle::request_permission_with_descriptor_ffi(
   self : FileSystemHandle,
   descriptor : JsValue,
-) -> Promise[Result[PermissionState, FileSystemHandleRequestPermissionError]] =
-  #| (self, descriptor) => self.requestPermission(descriptor).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[PermissionState] =
+  #| (self, descriptor) => self.requestPermission(descriptor)
 
 ///|
 pub fn FileSystemHandle::request_permission_with_descriptor(
   self : FileSystemHandle,
   descriptor : FileSystemHandlePermissionDescriptor,
-) -> Promise[Result[PermissionState, FileSystemHandleRequestPermissionError]] {
+) -> Promise[PermissionState] {
   FileSystemHandle::request_permission_with_descriptor_ffi(
     self,
     descriptor.to_js(),
@@ -641,76 +626,37 @@ pub extern "js" fn FileSystemFileHandle::to_file_system_handle(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum FileSystemFileHandleGetFileError {
-  NotFoundError(JsError)
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum FileSystemFileHandleCreateWritableError {
-  AbortError(JsError)
-  NotFoundError(JsError)
-  NotAllowedError(JsError)
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum FileSystemFileHandleCreateSyncAccessHandleError {
-  NotFoundError(JsError)
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn FileSystemFileHandle::get_file(
   self : FileSystemFileHandle,
-) -> Promise[Result[File, FileSystemFileHandleGetFileError]] =
-  #| (self) => self.getFile().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[File] =
+  #| (self) => self.getFile()
 
 ///|
 pub extern "js" fn FileSystemFileHandle::create_writable(
   self : FileSystemFileHandle,
-) -> Promise[
-  Result[FileSystemWritableFileStream, FileSystemFileHandleCreateWritableError],
-] =
-  #| (self) => self.createWritable().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[FileSystemWritableFileStream] =
+  #| (self) => self.createWritable()
 
 ///|
 extern "js" fn FileSystemFileHandle::create_writable_with_options_ffi(
   self : FileSystemFileHandle,
   options : JsValue,
-) -> Promise[
-  Result[FileSystemWritableFileStream, FileSystemFileHandleCreateWritableError],
-] =
-  #| (self, options) => self.createWritable(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[FileSystemWritableFileStream] =
+  #| (self, options) => self.createWritable(options)
 
 ///|
 pub fn FileSystemFileHandle::create_writable_with_options(
   self : FileSystemFileHandle,
   options : FileSystemCreateWritableOptions,
-) -> Promise[
-  Result[FileSystemWritableFileStream, FileSystemFileHandleCreateWritableError],
-] {
+) -> Promise[FileSystemWritableFileStream] {
   FileSystemFileHandle::create_writable_with_options_ffi(self, options.to_js())
 }
 
 ///|
 pub extern "js" fn FileSystemFileHandle::create_sync_access_handle(
   self : FileSystemFileHandle,
-) -> Promise[
-  Result[
-    FileSystemSyncAccessHandle,
-    FileSystemFileHandleCreateSyncAccessHandleError,
-  ],
-] =
-  #| (self) => self.createSyncAccessHandle().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[FileSystemSyncAccessHandle] =
+  #| (self) => self.createSyncAccessHandle()
 
 ///|
 /// FileSystemDirectoryHandle interface
@@ -757,36 +703,6 @@ pub extern "js" fn FileSystemDirectoryHandle::to_file_system_handle(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum FileSystemDirectoryHandleGetFileHandleError {
-  TypeError(JsError)
-  NotFoundError(JsError)
-  NotAllowedError(JsError)
-  TypeMismatchError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum FileSystemDirectoryHandleGetDirectoryHandleError {
-  TypeError(JsError)
-  NotFoundError(JsError)
-  NotAllowedError(JsError)
-  TypeMismatchError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum FileSystemDirectoryHandleRemoveEntryError {
-  TypeError(JsError)
-  NotFoundError(JsError)
-  NotAllowedError(JsError)
-  InvalidModificationError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn FileSystemDirectoryHandle::keys(
   self : FileSystemDirectoryHandle,
 ) -> JsValue =
@@ -808,29 +724,23 @@ pub extern "js" fn FileSystemDirectoryHandle::entries(
 pub extern "js" fn FileSystemDirectoryHandle::get_file_handle(
   self : FileSystemDirectoryHandle,
   name : String,
-) -> Promise[
-  Result[FileSystemFileHandle, FileSystemDirectoryHandleGetFileHandleError],
-] =
-  #| (self, name) => self.getFileHandle(name).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'TypeMismatchError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[FileSystemFileHandle] =
+  #| (self, name) => self.getFileHandle(name)
 
 ///|
 extern "js" fn FileSystemDirectoryHandle::get_file_handle_with_options_ffi(
   self : FileSystemDirectoryHandle,
   name : String,
   options : JsValue,
-) -> Promise[
-  Result[FileSystemFileHandle, FileSystemDirectoryHandleGetFileHandleError],
-] =
-  #| (self, name, options) => self.getFileHandle(name, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'TypeMismatchError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[FileSystemFileHandle] =
+  #| (self, name, options) => self.getFileHandle(name, options)
 
 ///|
 pub fn FileSystemDirectoryHandle::get_file_handle_with_options(
   self : FileSystemDirectoryHandle,
   name : String,
   options : FileSystemGetFileOptions,
-) -> Promise[
-  Result[FileSystemFileHandle, FileSystemDirectoryHandleGetFileHandleError],
-] {
+) -> Promise[FileSystemFileHandle] {
   FileSystemDirectoryHandle::get_file_handle_with_options_ffi(
     self,
     name,
@@ -842,38 +752,23 @@ pub fn FileSystemDirectoryHandle::get_file_handle_with_options(
 pub extern "js" fn FileSystemDirectoryHandle::get_directory_handle(
   self : FileSystemDirectoryHandle,
   name : String,
-) -> Promise[
-  Result[
-    FileSystemDirectoryHandle,
-    FileSystemDirectoryHandleGetDirectoryHandleError,
-  ],
-] =
-  #| (self, name) => self.getDirectoryHandle(name).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'TypeMismatchError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[FileSystemDirectoryHandle] =
+  #| (self, name) => self.getDirectoryHandle(name)
 
 ///|
 extern "js" fn FileSystemDirectoryHandle::get_directory_handle_with_options_ffi(
   self : FileSystemDirectoryHandle,
   name : String,
   options : JsValue,
-) -> Promise[
-  Result[
-    FileSystemDirectoryHandle,
-    FileSystemDirectoryHandleGetDirectoryHandleError,
-  ],
-] =
-  #| (self, name, options) => self.getDirectoryHandle(name, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'TypeMismatchError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[FileSystemDirectoryHandle] =
+  #| (self, name, options) => self.getDirectoryHandle(name, options)
 
 ///|
 pub fn FileSystemDirectoryHandle::get_directory_handle_with_options(
   self : FileSystemDirectoryHandle,
   name : String,
   options : FileSystemGetDirectoryOptions,
-) -> Promise[
-  Result[
-    FileSystemDirectoryHandle,
-    FileSystemDirectoryHandleGetDirectoryHandleError,
-  ],
-] {
+) -> Promise[FileSystemDirectoryHandle] {
   FileSystemDirectoryHandle::get_directory_handle_with_options_ffi(
     self,
     name,
@@ -885,23 +780,23 @@ pub fn FileSystemDirectoryHandle::get_directory_handle_with_options(
 pub extern "js" fn FileSystemDirectoryHandle::remove_entry(
   self : FileSystemDirectoryHandle,
   name : String,
-) -> Promise[Result[Unit, FileSystemDirectoryHandleRemoveEntryError]] =
-  #| (self, name) => self.removeEntry(name).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'InvalidModificationError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, name) => self.removeEntry(name)
 
 ///|
 extern "js" fn FileSystemDirectoryHandle::remove_entry_with_options_ffi(
   self : FileSystemDirectoryHandle,
   name : String,
   options : JsValue,
-) -> Promise[Result[Unit, FileSystemDirectoryHandleRemoveEntryError]] =
-  #| (self, name, options) => self.removeEntry(name, options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'InvalidModificationError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, name, options) => self.removeEntry(name, options)
 
 ///|
 pub fn FileSystemDirectoryHandle::remove_entry_with_options(
   self : FileSystemDirectoryHandle,
   name : String,
   options : FileSystemRemoveOptions,
-) -> Promise[Result[Unit, FileSystemDirectoryHandleRemoveEntryError]] {
+) -> Promise[Unit] {
   FileSystemDirectoryHandle::remove_entry_with_options_ffi(
     self,
     name,
@@ -961,79 +856,53 @@ pub extern "js" fn FileSystemWritableFileStream::to_writable_stream(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum FileSystemWritableFileStreamWriteError {
-  TypeError(JsError)
-  NotAllowedError(JsError)
-  QuotaExceededError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum FileSystemWritableFileStreamSeekError {
-  TypeError(JsError)
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum FileSystemWritableFileStreamTruncateError {
-  TypeError(JsError)
-  NotAllowedError(JsError)
-  QuotaExceededError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn FileSystemWritableFileStream::write(
   self : FileSystemWritableFileStream,
   data : FileSystemWriteChunkType,
-) -> Promise[Result[Unit, FileSystemWritableFileStreamWriteError]] =
-  #| (self, data) => self.write(data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, data) => self.write(data)
 
 ///|
 pub extern "js" fn FileSystemWritableFileStream::seek(
   self : FileSystemWritableFileStream,
   position : Int64,
-) -> Promise[Result[Unit, FileSystemWritableFileStreamSeekError]] =
-  #| (self, position) => self.seek((position.hi * 4294967296 + position.lo)).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, position) => self.seek((position.hi * 4294967296 + position.lo))
 
 ///|
 pub extern "js" fn FileSystemWritableFileStream::truncate(
   self : FileSystemWritableFileStream,
   size : Int64,
-) -> Promise[Result[Unit, FileSystemWritableFileStreamTruncateError]] =
-  #| (self, size) => self.truncate((size.hi * 4294967296 + size.lo)).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, size) => self.truncate((size.hi * 4294967296 + size.lo))
 
 ///|
 pub extern "js" fn FileSystemWritableFileStream::write_with_buffer_source(
   self : FileSystemWritableFileStream,
   data : BufferSource,
-) -> Promise[Result[Unit, FileSystemWritableFileStreamWriteError]] =
-  #| (self, data) => self.write(data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, data) => self.write(data)
 
 ///|
 pub extern "js" fn FileSystemWritableFileStream::write_with_blob(
   self : FileSystemWritableFileStream,
   data : Blob,
-) -> Promise[Result[Unit, FileSystemWritableFileStreamWriteError]] =
-  #| (self, data) => self.write(data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, data) => self.write(data)
 
 ///|
 pub extern "js" fn FileSystemWritableFileStream::write_with_string(
   self : FileSystemWritableFileStream,
   data : String,
-) -> Promise[Result[Unit, FileSystemWritableFileStreamWriteError]] =
-  #| (self, data) => self.write(data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, data) => self.write(data)
 
 ///|
 pub extern "js" fn FileSystemWritableFileStream::write_with_write_params(
   self : FileSystemWritableFileStream,
   data : WriteParams,
-) -> Promise[Result[Unit, FileSystemWritableFileStreamWriteError]] =
-  #| (self, data) => self.write(data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, data) => self.write(data)
 
 ///|
 /// FileSystemSyncAccessHandle interface
@@ -1074,66 +943,26 @@ pub extern "js" fn JsValue::to_file_system_sync_access_handle(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum FileSystemSyncAccessHandleReadError {
-  TypeError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum FileSystemSyncAccessHandleWriteError {
-  TypeError(JsError)
-  InvalidStateError(JsError)
-  QuotaExceededError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum FileSystemSyncAccessHandleTruncateError {
-  TypeError(JsError)
-  InvalidStateError(JsError)
-  QuotaExceededError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum FileSystemSyncAccessHandleGetSizeError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum FileSystemSyncAccessHandleFlushError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn FileSystemSyncAccessHandle::read(
   self : FileSystemSyncAccessHandle,
   buffer : AllowSharedBufferSource,
-) -> Result[Int64, FileSystemSyncAccessHandleReadError] =
-  #| (self, buffer) => (() => { try { return { $tag: 1, _0: (() => { const n = self.read(buffer); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int64 =
+  #| (self, buffer) => (() => { const n = self.read(buffer); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 extern "js" fn FileSystemSyncAccessHandle::read_with_options_ffi(
   self : FileSystemSyncAccessHandle,
   buffer : AllowSharedBufferSource,
   options : JsValue,
-) -> Result[Int64, FileSystemSyncAccessHandleReadError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int64 =
+  #| (self, buffer, options) => (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub fn FileSystemSyncAccessHandle::read_with_options(
   self : FileSystemSyncAccessHandle,
   buffer : AllowSharedBufferSource,
   options : FileSystemReadWriteOptions,
-) -> Result[Int64, FileSystemSyncAccessHandleReadError] {
+) -> Int64 {
   FileSystemSyncAccessHandle::read_with_options_ffi(
     self,
     buffer,
@@ -1145,23 +974,23 @@ pub fn FileSystemSyncAccessHandle::read_with_options(
 pub extern "js" fn FileSystemSyncAccessHandle::write(
   self : FileSystemSyncAccessHandle,
   buffer : AllowSharedBufferSource,
-) -> Result[Int64, FileSystemSyncAccessHandleWriteError] =
-  #| (self, buffer) => (() => { try { return { $tag: 1, _0: (() => { const n = self.write(buffer); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Int64 =
+  #| (self, buffer) => (() => { const n = self.write(buffer); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 extern "js" fn FileSystemSyncAccessHandle::write_with_options_ffi(
   self : FileSystemSyncAccessHandle,
   buffer : AllowSharedBufferSource,
   options : JsValue,
-) -> Result[Int64, FileSystemSyncAccessHandleWriteError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Int64 =
+  #| (self, buffer, options) => (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub fn FileSystemSyncAccessHandle::write_with_options(
   self : FileSystemSyncAccessHandle,
   buffer : AllowSharedBufferSource,
   options : FileSystemReadWriteOptions,
-) -> Result[Int64, FileSystemSyncAccessHandleWriteError] {
+) -> Int64 {
   FileSystemSyncAccessHandle::write_with_options_ffi(
     self,
     buffer,
@@ -1173,20 +1002,20 @@ pub fn FileSystemSyncAccessHandle::write_with_options(
 pub extern "js" fn FileSystemSyncAccessHandle::truncate(
   self : FileSystemSyncAccessHandle,
   new_size : Int64,
-) -> Result[Unit, FileSystemSyncAccessHandleTruncateError] =
-  #| (self, new_size) => (() => { try { self.truncate((new_size.hi * 4294967296 + new_size.lo)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, new_size) => self.truncate((new_size.hi * 4294967296 + new_size.lo))
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::get_size(
   self : FileSystemSyncAccessHandle,
-) -> Result[Int64, FileSystemSyncAccessHandleGetSizeError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: (() => { const n = self.getSize(); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Int64 =
+  #| (self) => (() => { const n = self.getSize(); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::flush(
   self : FileSystemSyncAccessHandle,
-) -> Result[Unit, FileSystemSyncAccessHandleFlushError] =
-  #| (self) => (() => { try { self.flush(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.flush()
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::close(
@@ -1199,45 +1028,45 @@ pub extern "js" fn FileSystemSyncAccessHandle::read_with_array_buffer(
   self : FileSystemSyncAccessHandle,
   buffer : ArrayBuffer,
   options : FileSystemReadWriteOptions,
-) -> Result[Int64, FileSystemSyncAccessHandleReadError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int64 =
+  #| (self, buffer, options) => (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::read_with_shared_array_buffer(
   self : FileSystemSyncAccessHandle,
   buffer : SharedArrayBuffer,
   options : FileSystemReadWriteOptions,
-) -> Result[Int64, FileSystemSyncAccessHandleReadError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int64 =
+  #| (self, buffer, options) => (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::read_with_array_buffer_view(
   self : FileSystemSyncAccessHandle,
   buffer : ArrayBufferView,
   options : FileSystemReadWriteOptions,
-) -> Result[Int64, FileSystemSyncAccessHandleReadError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int64 =
+  #| (self, buffer, options) => (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::write_with_array_buffer(
   self : FileSystemSyncAccessHandle,
   buffer : ArrayBuffer,
   options : FileSystemReadWriteOptions,
-) -> Result[Int64, FileSystemSyncAccessHandleWriteError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Int64 =
+  #| (self, buffer, options) => (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::write_with_shared_array_buffer(
   self : FileSystemSyncAccessHandle,
   buffer : SharedArrayBuffer,
   options : FileSystemReadWriteOptions,
-) -> Result[Int64, FileSystemSyncAccessHandleWriteError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Int64 =
+  #| (self, buffer, options) => (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::write_with_array_buffer_view(
   self : FileSystemSyncAccessHandle,
   buffer : ArrayBufferView,
   options : FileSystemReadWriteOptions,
-) -> Result[Int64, FileSystemSyncAccessHandleWriteError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Int64 =
+  #| (self, buffer, options) => (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()

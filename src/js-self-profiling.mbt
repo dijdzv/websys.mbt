@@ -251,14 +251,6 @@ pub extern "js" fn Profiler::to_event_target(self : Profiler) -> EventTarget =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum ProfilerConstructorError {
-  RangeError(JsError)
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn Profiler::get_sample_interval(
   self : Profiler,
 ) -> DOMHighResTimeStamp =
@@ -269,15 +261,11 @@ pub extern "js" fn Profiler::get_stopped(self : Profiler) -> Bool =
   #| (self) => self.stopped
 
 ///|
-extern "js" fn Profiler::new_ffi(
-  options : JsValue,
-) -> Result[Profiler, ProfilerConstructorError] =
-  #| (options) => (() => { try { return { $tag: 1, _0: new Profiler(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+extern "js" fn Profiler::new_ffi(options : JsValue) -> Profiler =
+  #| (options) => new Profiler(options)
 
 ///|
-pub fn Profiler::new(
-  options : ProfilerInitOptions,
-) -> Result[Profiler, ProfilerConstructorError] {
+pub fn Profiler::new(options : ProfilerInitOptions) -> Profiler {
   Profiler::new_ffi(options.to_js())
 }
 

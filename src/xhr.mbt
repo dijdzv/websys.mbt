@@ -135,8 +135,8 @@ extern "js" fn ProgressEventInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   lengthComputable: (self.lengthComputable === -1 ? undefined : self.lengthComputable),
-  #|   loaded: ((() => { const v = self.loaded; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   total: ((() => { const v = self.total; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   loaded: self.loaded,
+  #|   total: self.total
   #| })
 
 ///|
@@ -151,8 +151,8 @@ extern "js" fn ProgressEventInit::from_js_ffi(
 ) -> ProgressEventInit =
   #| (v) => ({
   #|   lengthComputable: (v.lengthComputable === undefined ? -1 : v.lengthComputable),
-  #|   loaded: (v.loaded === undefined ? { $tag: 0 } : { $tag: 1, _0: v.loaded }),
-  #|   total: (v.total === undefined ? { $tag: 0 } : { $tag: 1, _0: v.total })
+  #|   loaded: v.loaded,
+  #|   total: v.total
   #| })
 
 ///|
@@ -218,95 +218,95 @@ pub extern "js" fn XMLHttpRequestEventTarget::as_xml_http_request(
   #| (self) => (self instanceof XMLHttpRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn XMLHttpRequestEventTarget::set_onloadstart(
+pub extern "js" fn XMLHttpRequestEventTarget::get_onloadstart(
   self : XMLHttpRequestEventTarget,
-  handler : (ProgressEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onloadstart = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onloadstart
 
 ///|
-pub extern "js" fn XMLHttpRequestEventTarget::clear_onloadstart(
+pub extern "js" fn XMLHttpRequestEventTarget::set_onloadstart(
   self : XMLHttpRequestEventTarget,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onloadstart = null }
+  #| (self, value) => { self.onloadstart = value }
+
+///|
+pub extern "js" fn XMLHttpRequestEventTarget::get_onprogress(
+  self : XMLHttpRequestEventTarget,
+) -> EventHandler =
+  #| (self) => self.onprogress
 
 ///|
 pub extern "js" fn XMLHttpRequestEventTarget::set_onprogress(
   self : XMLHttpRequestEventTarget,
-  handler : (ProgressEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onprogress = (e) => handler(e) }
+  #| (self, value) => { self.onprogress = value }
 
 ///|
-pub extern "js" fn XMLHttpRequestEventTarget::clear_onprogress(
+pub extern "js" fn XMLHttpRequestEventTarget::get_onabort(
   self : XMLHttpRequestEventTarget,
-) -> Unit =
-  #| (self) => { self.onprogress = null }
+) -> EventHandler =
+  #| (self) => self.onabort
 
 ///|
 pub extern "js" fn XMLHttpRequestEventTarget::set_onabort(
   self : XMLHttpRequestEventTarget,
-  handler : (ProgressEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onabort = (e) => handler(e) }
+  #| (self, value) => { self.onabort = value }
 
 ///|
-pub extern "js" fn XMLHttpRequestEventTarget::clear_onabort(
+pub extern "js" fn XMLHttpRequestEventTarget::get_onerror(
   self : XMLHttpRequestEventTarget,
-) -> Unit =
-  #| (self) => { self.onabort = null }
+) -> EventHandler =
+  #| (self) => self.onerror
 
 ///|
 pub extern "js" fn XMLHttpRequestEventTarget::set_onerror(
   self : XMLHttpRequestEventTarget,
-  handler : (ProgressEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onerror = (e) => handler(e) }
+  #| (self, value) => { self.onerror = value }
 
 ///|
-pub extern "js" fn XMLHttpRequestEventTarget::clear_onerror(
+pub extern "js" fn XMLHttpRequestEventTarget::get_onload(
   self : XMLHttpRequestEventTarget,
-) -> Unit =
-  #| (self) => { self.onerror = null }
+) -> EventHandler =
+  #| (self) => self.onload
 
 ///|
 pub extern "js" fn XMLHttpRequestEventTarget::set_onload(
   self : XMLHttpRequestEventTarget,
-  handler : (ProgressEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onload = (e) => handler(e) }
+  #| (self, value) => { self.onload = value }
 
 ///|
-pub extern "js" fn XMLHttpRequestEventTarget::clear_onload(
+pub extern "js" fn XMLHttpRequestEventTarget::get_ontimeout(
   self : XMLHttpRequestEventTarget,
-) -> Unit =
-  #| (self) => { self.onload = null }
+) -> EventHandler =
+  #| (self) => self.ontimeout
 
 ///|
 pub extern "js" fn XMLHttpRequestEventTarget::set_ontimeout(
   self : XMLHttpRequestEventTarget,
-  handler : (ProgressEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ontimeout = (e) => handler(e) }
+  #| (self, value) => { self.ontimeout = value }
 
 ///|
-pub extern "js" fn XMLHttpRequestEventTarget::clear_ontimeout(
+pub extern "js" fn XMLHttpRequestEventTarget::get_onloadend(
   self : XMLHttpRequestEventTarget,
-) -> Unit =
-  #| (self) => { self.ontimeout = null }
+) -> EventHandler =
+  #| (self) => self.onloadend
 
 ///|
 pub extern "js" fn XMLHttpRequestEventTarget::set_onloadend(
   self : XMLHttpRequestEventTarget,
-  handler : (ProgressEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onloadend = (e) => handler(e) }
-
-///|
-pub extern "js" fn XMLHttpRequestEventTarget::clear_onloadend(
-  self : XMLHttpRequestEventTarget,
-) -> Unit =
-  #| (self) => { self.onloadend = null }
+  #| (self, value) => { self.onloadend = value }
 
 ///|
 /// XMLHttpRequestUpload interface
@@ -407,53 +407,21 @@ pub extern "js" fn XMLHttpRequest::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum XMLHttpRequestSendError {
-  NetworkError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum XMLHttpRequestSetResponseTypeError {
-  InvalidAccessError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum XMLHttpRequestSetAttributionReportingError {
-  TypeError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum XMLHttpRequestSetPrivateTokenError {
-  TypeError(JsError)
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn XMLHttpRequest::new() -> XMLHttpRequest =
   #| () => new XMLHttpRequest()
 
 ///|
-pub extern "js" fn XMLHttpRequest::set_onreadystatechange(
+pub extern "js" fn XMLHttpRequest::get_onreadystatechange(
   self : XMLHttpRequest,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onreadystatechange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onreadystatechange
 
 ///|
-pub extern "js" fn XMLHttpRequest::clear_onreadystatechange(
+pub extern "js" fn XMLHttpRequest::set_onreadystatechange(
   self : XMLHttpRequest,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onreadystatechange = null }
+  #| (self, value) => { self.onreadystatechange = value }
 
 // XMLHttpRequest.UNSENT
 
@@ -553,17 +521,15 @@ pub extern "js" fn XMLHttpRequest::get_upload(
   #| (self) => self.upload
 
 ///|
-pub extern "js" fn XMLHttpRequest::send(
-  self : XMLHttpRequest,
-) -> Result[Unit, XMLHttpRequestSendError] =
-  #| (self) => (() => { try { self.send(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+pub extern "js" fn XMLHttpRequest::send(self : XMLHttpRequest) -> Unit =
+  #| (self) => self.send()
 
 ///|
 pub extern "js" fn XMLHttpRequest::send_with_body(
   self : XMLHttpRequest,
   body : DocumentOrXMLHttpRequestBodyInit,
-) -> Result[Unit, XMLHttpRequestSendError] =
-  #| (self, body) => (() => { try { self.send(body); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, body) => self.send(body)
 
 ///|
 pub extern "js" fn XMLHttpRequest::abort(self : XMLHttpRequest) -> Unit =
@@ -615,8 +581,8 @@ pub extern "js" fn XMLHttpRequest::get_response_type(
 pub extern "js" fn XMLHttpRequest::set_response_type(
   self : XMLHttpRequest,
   value : XMLHttpRequestResponseType,
-) -> Result[Unit, XMLHttpRequestSetResponseTypeError] =
-  #| (self, value) => (() => { try { self.responseType = ['', 'arraybuffer', 'blob', 'document', 'json', 'text'][value]; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidAccessError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.responseType = ['', 'arraybuffer', 'blob', 'document', 'json', 'text'][value] }
 
 ///|
 pub extern "js" fn XMLHttpRequest::get_response(
@@ -637,18 +603,17 @@ pub extern "js" fn XMLHttpRequest::get_response_xml(
   #| (self) => (() => { const v = self.responseXML; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-/// @alert deprecated "setAttributionReporting is deprecated"
 extern "js" fn XMLHttpRequest::set_attribution_reporting_ffi(
   self : XMLHttpRequest,
   options : JsValue,
-) -> Result[Unit, XMLHttpRequestSetAttributionReportingError] =
-  #| (self, options) => (() => { try { self.setAttributionReporting(options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, options) => self.setAttributionReporting(options)
 
 ///|
 pub fn XMLHttpRequest::set_attribution_reporting(
   self : XMLHttpRequest,
   options : AttributionReportingRequestOptions,
-) -> Result[Unit, XMLHttpRequestSetAttributionReportingError] {
+) -> Unit {
   XMLHttpRequest::set_attribution_reporting_ffi(self, options.to_js())
 }
 
@@ -656,14 +621,14 @@ pub fn XMLHttpRequest::set_attribution_reporting(
 extern "js" fn XMLHttpRequest::set_private_token_ffi(
   self : XMLHttpRequest,
   private_token : JsValue,
-) -> Result[Unit, XMLHttpRequestSetPrivateTokenError] =
-  #| (self, private_token) => (() => { try { self.setPrivateToken(private_token); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, private_token) => self.setPrivateToken(private_token)
 
 ///|
 pub fn XMLHttpRequest::set_private_token(
   self : XMLHttpRequest,
   private_token : PrivateToken,
-) -> Result[Unit, XMLHttpRequestSetPrivateTokenError] {
+) -> Unit {
   XMLHttpRequest::set_private_token_ffi(self, private_token.to_js())
 }
 
@@ -696,23 +661,15 @@ pub extern "js" fn JsValue::to_form_data(self : JsValue) -> FormData =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum FormDataConstructorError {
-  TypeError(JsError)
-  NotFoundError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn FormData::new() -> Result[FormData, FormDataConstructorError] =
-  #| () => (() => { try { return { $tag: 1, _0: new FormData() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+pub extern "js" fn FormData::new() -> FormData =
+  #| () => new FormData()
 
 ///|
 pub extern "js" fn FormData::new_with_submitter(
   form : HTMLFormElement,
   submitter : HTMLElement?,
-) -> Result[FormData, FormDataConstructorError] =
-  #| (form, submitter) => (() => { try { return { $tag: 1, _0: new FormData(form, (submitter.$tag === 1 ? submitter._0 : null)) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> FormData =
+  #| (form, submitter) => new FormData(form, (submitter.$tag === 1 ? submitter._0 : null))
 
 ///|
 pub extern "js" fn FormData::append(

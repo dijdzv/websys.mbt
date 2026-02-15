@@ -28,7 +28,7 @@ fn test_xpath_result() -> Unit {
   assert_eq(result.get_snapshot_length(), 2, label="snapshotLength")
 
   // Verify we can access snapshot items
-  let node0 = result.snapshot_item(0).unwrap()
+  let node0 = result.snapshot_item(0)
   assert_true(node0 is Some(_), label="snapshotItem(0) exists")
 
   // NUMBER_TYPE = 1
@@ -67,5 +67,4 @@ fn test_xpath_result() -> Unit {
   // Cleanup
   body.to_node().remove_child(p1.to_node()) |> ignore
   body.to_node().remove_child(p2.to_node()) |> ignore
-  println("  xpath_result: ok")
 }

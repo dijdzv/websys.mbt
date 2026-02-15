@@ -76,13 +76,6 @@ pub extern "js" fn JsValue::to_media_list(self : JsValue) -> MediaList =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum MediaListDeleteMediumError {
-  NotFoundError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn MediaList::get_media_text(self : MediaList) -> String =
   #| (self) => self.mediaText
 
@@ -117,8 +110,8 @@ pub extern "js" fn MediaList::append_medium(
 pub extern "js" fn MediaList::delete_medium(
   self : MediaList,
   medium : String,
-) -> Result[Unit, MediaListDeleteMediumError] =
-  #| (self, medium) => (() => { try { self.deleteMedium(medium); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, medium) => self.deleteMedium(medium)
 
 ///|
 /// StyleSheet interface
@@ -232,37 +225,6 @@ pub extern "js" fn CSSStyleSheet::to_style_sheet(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum CSSStyleSheetInsertRuleError {
-  SyntaxError(JsError)
-  IndexSizeError(JsError)
-  InvalidStateError(JsError)
-  HierarchyRequestError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum CSSStyleSheetDeleteRuleError {
-  IndexSizeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum CSSStyleSheetReplaceError {
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum CSSStyleSheetReplaceSyncError {
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn CSSStyleSheet::new() -> CSSStyleSheet =
   #| () => new CSSStyleSheet()
 
@@ -295,37 +257,37 @@ pub extern "js" fn CSSStyleSheet::get_css_rules(
 pub extern "js" fn CSSStyleSheet::insert_rule(
   self : CSSStyleSheet,
   rule : String,
-) -> Result[Int, CSSStyleSheetInsertRuleError] =
-  #| (self, rule) => (() => { try { return { $tag: 1, _0: self.insertRule(rule) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, rule) => self.insertRule(rule)
 
 ///|
 pub extern "js" fn CSSStyleSheet::insert_rule_with_index(
   self : CSSStyleSheet,
   rule : String,
   index : Int,
-) -> Result[Int, CSSStyleSheetInsertRuleError] =
-  #| (self, rule, index) => (() => { try { return { $tag: 1, _0: self.insertRule(rule, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, rule, index) => self.insertRule(rule, index)
 
 ///|
 pub extern "js" fn CSSStyleSheet::delete_rule(
   self : CSSStyleSheet,
   index : Int,
-) -> Result[Unit, CSSStyleSheetDeleteRuleError] =
-  #| (self, index) => (() => { try { self.deleteRule(index); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, index) => self.deleteRule(index)
 
 ///|
 pub extern "js" fn CSSStyleSheet::replace(
   self : CSSStyleSheet,
   text : String,
-) -> Promise[Result[CSSStyleSheet, CSSStyleSheetReplaceError]] =
-  #| (self, text) => self.replace(text).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[CSSStyleSheet] =
+  #| (self, text) => self.replace(text)
 
 ///|
 pub extern "js" fn CSSStyleSheet::replace_sync(
   self : CSSStyleSheet,
   text : String,
-) -> Result[Unit, CSSStyleSheetReplaceSyncError] =
-  #| (self, text) => (() => { try { self.replaceSync(text); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, text) => self.replaceSync(text)
 
 ///|
 pub extern "js" fn CSSStyleSheet::get_rules(
@@ -334,7 +296,6 @@ pub extern "js" fn CSSStyleSheet::get_rules(
   #| (self) => self.rules
 
 ///|
-/// @alert deprecated "addRule is deprecated"
 pub extern "js" fn CSSStyleSheet::add_rule(self : CSSStyleSheet) -> Int =
   #| (self) => self.addRule()
 
@@ -348,7 +309,6 @@ pub extern "js" fn CSSStyleSheet::add_rule_with_index(
   #| (self, selector, style, index) => self.addRule(selector, style, index)
 
 ///|
-/// @alert deprecated "removeRule is deprecated"
 pub extern "js" fn CSSStyleSheet::remove_rule(self : CSSStyleSheet) -> Unit =
   #| (self) => self.removeRule()
 
@@ -490,56 +450,16 @@ pub extern "js" fn JsValue::to_css_rule(self : JsValue) -> CSSRule =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSRule::as_css_position_try_rule(
+pub extern "js" fn CSSRule::as_css_function_rule(
   self : CSSRule,
-) -> CSSPositionTryRule? =
-  #| (self) => (self instanceof CSSPositionTryRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CSSFunctionRule? =
+  #| (self) => (self instanceof CSSFunctionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSRule::as_css_keyframe_rule(
+pub extern "js" fn CSSRule::as_css_function_declarations(
   self : CSSRule,
-) -> CSSKeyframeRule? =
-  #| (self) => (self instanceof CSSKeyframeRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_keyframes_rule(
-  self : CSSRule,
-) -> CSSKeyframesRule? =
-  #| (self) => (self instanceof CSSKeyframesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_scope_rule(self : CSSRule) -> CSSScopeRule? =
-  #| (self) => (self instanceof CSSScopeRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_layer_block_rule(
-  self : CSSRule,
-) -> CSSLayerBlockRule? =
-  #| (self) => (self instanceof CSSLayerBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_layer_statement_rule(
-  self : CSSRule,
-) -> CSSLayerStatementRule? =
-  #| (self) => (self instanceof CSSLayerStatementRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_color_profile_rule(
-  self : CSSRule,
-) -> CSSColorProfileRule? =
-  #| (self) => (self instanceof CSSColorProfileRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_container_rule(
-  self : CSSRule,
-) -> CSSContainerRule? =
-  #| (self) => (self instanceof CSSContainerRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_supports_condition_rule(
-  self : CSSRule,
-) -> CSSSupportsConditionRule? =
-  #| (self) => (self instanceof CSSSupportsConditionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CSSFunctionDeclarations? =
+  #| (self) => (self instanceof CSSFunctionDeclarations) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSRule::as_css_condition_rule(
@@ -558,64 +478,44 @@ pub extern "js" fn CSSRule::as_css_supports_rule(
   #| (self) => (self instanceof CSSSupportsRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn CSSRule::as_css_layer_block_rule(
+  self : CSSRule,
+) -> CSSLayerBlockRule? =
+  #| (self) => (self instanceof CSSLayerBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_layer_statement_rule(
+  self : CSSRule,
+) -> CSSLayerStatementRule? =
+  #| (self) => (self instanceof CSSLayerStatementRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn CSSRule::as_css_counter_style_rule(
   self : CSSRule,
 ) -> CSSCounterStyleRule? =
   #| (self) => (self instanceof CSSCounterStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSRule::as_css_font_face_rule(
+pub extern "js" fn CSSRule::as_css_container_rule(
   self : CSSRule,
-) -> CSSFontFaceRule? =
-  #| (self) => (self instanceof CSSFontFaceRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CSSContainerRule? =
+  #| (self) => (self instanceof CSSContainerRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSRule::as_css_font_feature_values_rule(
+pub extern "js" fn CSSRule::as_css_supports_condition_rule(
   self : CSSRule,
-) -> CSSFontFeatureValuesRule? =
-  #| (self) => (self instanceof CSSFontFeatureValuesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CSSSupportsConditionRule? =
+  #| (self) => (self instanceof CSSSupportsConditionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSRule::as_css_font_palette_values_rule(
-  self : CSSRule,
-) -> CSSFontPaletteValuesRule? =
-  #| (self) => (self instanceof CSSFontPaletteValuesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_function_rule(
-  self : CSSRule,
-) -> CSSFunctionRule? =
-  #| (self) => (self instanceof CSSFunctionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_function_declarations(
-  self : CSSRule,
-) -> CSSFunctionDeclarations? =
-  #| (self) => (self instanceof CSSFunctionDeclarations) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_nested_declarations(
-  self : CSSRule,
-) -> CSSNestedDeclarations? =
-  #| (self) => (self instanceof CSSNestedDeclarations) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn CSSRule::as_css_scope_rule(self : CSSRule) -> CSSScopeRule? =
+  #| (self) => (self instanceof CSSScopeRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSRule::as_css_property_rule(
   self : CSSRule,
 ) -> CSSPropertyRule? =
   #| (self) => (self instanceof CSSPropertyRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_starting_style_rule(
-  self : CSSRule,
-) -> CSSStartingStyleRule? =
-  #| (self) => (self instanceof CSSStartingStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_view_transition_rule(
-  self : CSSRule,
-) -> CSSViewTransitionRule? =
-  #| (self) => (self instanceof CSSViewTransitionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSRule::as_css_style_rule(self : CSSRule) -> CSSStyleRule? =
@@ -650,10 +550,70 @@ pub extern "js" fn CSSRule::as_css_namespace_rule(
   #| (self) => (self instanceof CSSNamespaceRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn CSSRule::as_css_color_profile_rule(
+  self : CSSRule,
+) -> CSSColorProfileRule? =
+  #| (self) => (self instanceof CSSColorProfileRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_keyframe_rule(
+  self : CSSRule,
+) -> CSSKeyframeRule? =
+  #| (self) => (self instanceof CSSKeyframeRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_keyframes_rule(
+  self : CSSRule,
+) -> CSSKeyframesRule? =
+  #| (self) => (self instanceof CSSKeyframesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_position_try_rule(
+  self : CSSRule,
+) -> CSSPositionTryRule? =
+  #| (self) => (self instanceof CSSPositionTryRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_view_transition_rule(
+  self : CSSRule,
+) -> CSSViewTransitionRule? =
+  #| (self) => (self instanceof CSSViewTransitionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_font_face_rule(
+  self : CSSRule,
+) -> CSSFontFaceRule? =
+  #| (self) => (self instanceof CSSFontFaceRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_starting_style_rule(
+  self : CSSRule,
+) -> CSSStartingStyleRule? =
+  #| (self) => (self instanceof CSSStartingStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn CSSRule::as_css_custom_media_rule(
   self : CSSRule,
 ) -> CSSCustomMediaRule? =
   #| (self) => (self instanceof CSSCustomMediaRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_font_feature_values_rule(
+  self : CSSRule,
+) -> CSSFontFeatureValuesRule? =
+  #| (self) => (self instanceof CSSFontFeatureValuesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_font_palette_values_rule(
+  self : CSSRule,
+) -> CSSFontPaletteValuesRule? =
+  #| (self) => (self instanceof CSSFontPaletteValuesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_nested_declarations(
+  self : CSSRule,
+) -> CSSNestedDeclarations? =
+  #| (self) => (self instanceof CSSNestedDeclarations) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSRule::get_css_text(self : CSSRule) -> String =
@@ -720,16 +680,6 @@ pub let css_rule_margin_rule : Int = 9
 ///|
 pub let css_rule_namespace_rule : Int = 10
 
-// CSSRule.KEYFRAMES_RULE
-
-///|
-pub let css_rule_keyframes_rule : Int = 7
-
-// CSSRule.KEYFRAME_RULE
-
-///|
-pub let css_rule_keyframe_rule : Int = 8
-
 // CSSRule.SUPPORTS_RULE
 
 ///|
@@ -739,6 +689,16 @@ pub let css_rule_supports_rule : Int = 12
 
 ///|
 pub let css_rule_counter_style_rule : Int = 11
+
+// CSSRule.KEYFRAMES_RULE
+
+///|
+pub let css_rule_keyframes_rule : Int = 7
+
+// CSSRule.KEYFRAME_RULE
+
+///|
+pub let css_rule_keyframe_rule : Int = 8
 
 // CSSRule.FONT_FEATURE_VALUES_RULE
 
@@ -917,28 +877,10 @@ pub extern "js" fn CSSGroupingRule::to_css_rule(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSGroupingRule::as_css_scope_rule(
+pub extern "js" fn CSSGroupingRule::as_css_function_rule(
   self : CSSGroupingRule,
-) -> CSSScopeRule? =
-  #| (self) => (self instanceof CSSScopeRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSGroupingRule::as_css_layer_block_rule(
-  self : CSSGroupingRule,
-) -> CSSLayerBlockRule? =
-  #| (self) => (self instanceof CSSLayerBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSGroupingRule::as_css_container_rule(
-  self : CSSGroupingRule,
-) -> CSSContainerRule? =
-  #| (self) => (self instanceof CSSContainerRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSGroupingRule::as_css_supports_condition_rule(
-  self : CSSGroupingRule,
-) -> CSSSupportsConditionRule? =
-  #| (self) => (self instanceof CSSSupportsConditionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CSSFunctionRule? =
+  #| (self) => (self instanceof CSSFunctionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSGroupingRule::as_css_condition_rule(
@@ -959,16 +901,28 @@ pub extern "js" fn CSSGroupingRule::as_css_supports_rule(
   #| (self) => (self instanceof CSSSupportsRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSGroupingRule::as_css_function_rule(
+pub extern "js" fn CSSGroupingRule::as_css_layer_block_rule(
   self : CSSGroupingRule,
-) -> CSSFunctionRule? =
-  #| (self) => (self instanceof CSSFunctionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CSSLayerBlockRule? =
+  #| (self) => (self instanceof CSSLayerBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSGroupingRule::as_css_starting_style_rule(
+pub extern "js" fn CSSGroupingRule::as_css_container_rule(
   self : CSSGroupingRule,
-) -> CSSStartingStyleRule? =
-  #| (self) => (self instanceof CSSStartingStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CSSContainerRule? =
+  #| (self) => (self instanceof CSSContainerRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSGroupingRule::as_css_supports_condition_rule(
+  self : CSSGroupingRule,
+) -> CSSSupportsConditionRule? =
+  #| (self) => (self instanceof CSSSupportsConditionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSGroupingRule::as_css_scope_rule(
+  self : CSSGroupingRule,
+) -> CSSScopeRule? =
+  #| (self) => (self instanceof CSSScopeRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSGroupingRule::as_css_style_rule(
@@ -983,20 +937,10 @@ pub extern "js" fn CSSGroupingRule::as_css_page_rule(
   #| (self) => (self instanceof CSSPageRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum CSSGroupingRuleInsertRuleError {
-  IndexSizeError(JsError)
-  HierarchyRequestError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum CSSGroupingRuleDeleteRuleError {
-  IndexSizeError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn CSSGroupingRule::as_css_starting_style_rule(
+  self : CSSGroupingRule,
+) -> CSSStartingStyleRule? =
+  #| (self) => (self instanceof CSSStartingStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSGroupingRule::get_css_rules(
@@ -1008,23 +952,23 @@ pub extern "js" fn CSSGroupingRule::get_css_rules(
 pub extern "js" fn CSSGroupingRule::insert_rule(
   self : CSSGroupingRule,
   rule : String,
-) -> Result[Int, CSSGroupingRuleInsertRuleError] =
-  #| (self, rule) => (() => { try { return { $tag: 1, _0: self.insertRule(rule) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, rule) => self.insertRule(rule)
 
 ///|
 pub extern "js" fn CSSGroupingRule::insert_rule_with_index(
   self : CSSGroupingRule,
   rule : String,
   index : Int,
-) -> Result[Int, CSSGroupingRuleInsertRuleError] =
-  #| (self, rule, index) => (() => { try { return { $tag: 1, _0: self.insertRule(rule, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Int =
+  #| (self, rule, index) => self.insertRule(rule, index)
 
 ///|
 pub extern "js" fn CSSGroupingRule::delete_rule(
   self : CSSGroupingRule,
   index : Int,
-) -> Result[Unit, CSSGroupingRuleDeleteRuleError] =
-  #| (self, index) => (() => { try { self.deleteRule(index); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, index) => self.deleteRule(index)
 
 ///|
 /// CSSPageDescriptors interface
@@ -1383,18 +1327,6 @@ pub extern "js" fn JsValue::to_css_style_declaration(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSStyleDeclaration::as_css_position_try_descriptors(
-  self : CSSStyleDeclaration,
-) -> CSSPositionTryDescriptors? =
-  #| (self) => (self instanceof CSSPositionTryDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSStyleDeclaration::as_css_font_face_descriptors(
-  self : CSSStyleDeclaration,
-) -> CSSFontFaceDescriptors? =
-  #| (self) => (self instanceof CSSFontFaceDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn CSSStyleDeclaration::as_css_function_descriptors(
   self : CSSStyleDeclaration,
 ) -> CSSFunctionDescriptors? =
@@ -1413,18 +1345,16 @@ pub extern "js" fn CSSStyleDeclaration::as_css_style_properties(
   #| (self) => (self instanceof CSSStyleProperties) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum CSSStyleDeclarationSetPropertyError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn CSSStyleDeclaration::as_css_position_try_descriptors(
+  self : CSSStyleDeclaration,
+) -> CSSPositionTryDescriptors? =
+  #| (self) => (self instanceof CSSPositionTryDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum CSSStyleDeclarationRemovePropertyError {
-  NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn CSSStyleDeclaration::as_css_font_face_descriptors(
+  self : CSSStyleDeclaration,
+) -> CSSFontFaceDescriptors? =
+  #| (self) => (self instanceof CSSFontFaceDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::get_css_text(
@@ -1479,8 +1409,8 @@ pub extern "js" fn CSSStyleDeclaration::set_property(
   self : CSSStyleDeclaration,
   property : String,
   value : String,
-) -> Result[Unit, CSSStyleDeclarationSetPropertyError] =
-  #| (self, property, value) => (() => { try { self.setProperty(property, value); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, property, value) => self.setProperty(property, value)
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::set_property_with_priority(
@@ -1488,15 +1418,15 @@ pub extern "js" fn CSSStyleDeclaration::set_property_with_priority(
   property : String,
   value : String,
   priority : String,
-) -> Result[Unit, CSSStyleDeclarationSetPropertyError] =
-  #| (self, property, value, priority) => (() => { try { self.setProperty(property, value, priority); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, property, value, priority) => self.setProperty(property, value, priority)
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::remove_property(
   self : CSSStyleDeclaration,
   property : String,
-) -> Result[String, CSSStyleDeclarationRemovePropertyError] =
-  #| (self, property) => (() => { try { return { $tag: 1, _0: self.removeProperty(property) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> String =
+  #| (self, property) => self.removeProperty(property)
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::get_parent_rule(

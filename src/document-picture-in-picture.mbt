@@ -150,32 +150,23 @@ pub extern "js" fn DocumentPictureInPicture::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum DocumentPictureInPictureRequestWindowError {
-  RangeError(JsError)
-  NotAllowedError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn DocumentPictureInPicture::request_window(
   self : DocumentPictureInPicture,
-) -> Promise[Result[Window, DocumentPictureInPictureRequestWindowError]] =
-  #| (self) => self.requestWindow().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Window] =
+  #| (self) => self.requestWindow()
 
 ///|
 extern "js" fn DocumentPictureInPicture::request_window_with_options_ffi(
   self : DocumentPictureInPicture,
   options : JsValue,
-) -> Promise[Result[Window, DocumentPictureInPictureRequestWindowError]] =
-  #| (self, options) => self.requestWindow(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Window] =
+  #| (self, options) => self.requestWindow(options)
 
 ///|
 pub fn DocumentPictureInPicture::request_window_with_options(
   self : DocumentPictureInPicture,
   options : DocumentPictureInPictureOptions,
-) -> Promise[Result[Window, DocumentPictureInPictureRequestWindowError]] {
+) -> Promise[Window] {
   DocumentPictureInPicture::request_window_with_options_ffi(
     self,
     options.to_js(),
@@ -189,17 +180,17 @@ pub extern "js" fn DocumentPictureInPicture::get_window(
   #| (self) => self.window
 
 ///|
-pub extern "js" fn DocumentPictureInPicture::set_onenter(
+pub extern "js" fn DocumentPictureInPicture::get_onenter(
   self : DocumentPictureInPicture,
-  handler : (DocumentPictureInPictureEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onenter = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onenter
 
 ///|
-pub extern "js" fn DocumentPictureInPicture::clear_onenter(
+pub extern "js" fn DocumentPictureInPicture::set_onenter(
   self : DocumentPictureInPicture,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onenter = null }
+  #| (self, value) => { self.onenter = value }
 
 ///|
 /// DocumentPictureInPictureEvent interface

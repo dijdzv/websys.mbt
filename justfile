@@ -14,11 +14,11 @@ fmt:
 
 # Regenerate bindings from WebIDL specs (npm version)
 generate:
-    rm -f ./src/*.mbt && webidl-bindgen.mbt -o ./src/ && moon fmt
+    rm -f ./src/*.mbt && webidl-bindgen.mbt --all --per-spec -o ./src/ && moon fmt
 
 # Regenerate bindings from local webidl-bindgen.mbt build
 generate-local:
-    rm -f ./src/*.mbt && bun ../webidl-bindgen.mbt/_build/js/release/build/webidl-bindgen.js -o ./src/ && moon fmt
+    rm -f ./src/*.mbt && bun ../webidl-bindgen.mbt/_build/js/release/build/webidl-bindgen.js --all --per-spec -o ./src/ && moon fmt
 
 # Install test dependencies (first time setup)
 setup-test:
@@ -26,7 +26,7 @@ setup-test:
 
 # Build tests
 build-test:
-    cd test && moon build --target js --release
+    cd test && moon build --target js
 
 # Run tests (build + execute)
 test: build-test

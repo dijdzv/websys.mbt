@@ -254,24 +254,12 @@ pub extern "js" fn JsValue::to_background_fetch_manager(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum BackgroundFetchManagerFetchError {
-  TypeError(JsError)
-  AbortError(JsError)
-  NotAllowedError(JsError)
-  QuotaExceededError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn BackgroundFetchManager::fetch(
   self : BackgroundFetchManager,
   id : String,
   requests : RequestInfoOrArrayOfRequestInfo,
-) -> Promise[
-  Result[BackgroundFetchRegistration, BackgroundFetchManagerFetchError],
-] =
-  #| (self, id, requests) => self.fetch(id, requests).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'QuotaExceededError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[BackgroundFetchRegistration] =
+  #| (self, id, requests) => self.fetch(id, requests)
 
 ///|
 extern "js" fn BackgroundFetchManager::fetch_with_options_ffi(
@@ -279,10 +267,8 @@ extern "js" fn BackgroundFetchManager::fetch_with_options_ffi(
   id : String,
   requests : RequestInfoOrArrayOfRequestInfo,
   options : JsValue,
-) -> Promise[
-  Result[BackgroundFetchRegistration, BackgroundFetchManagerFetchError],
-] =
-  #| (self, id, requests, options) => self.fetch(id, requests, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'QuotaExceededError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[BackgroundFetchRegistration] =
+  #| (self, id, requests, options) => self.fetch(id, requests, options)
 
 ///|
 pub fn BackgroundFetchManager::fetch_with_options(
@@ -290,9 +276,7 @@ pub fn BackgroundFetchManager::fetch_with_options(
   id : String,
   requests : RequestInfoOrArrayOfRequestInfo,
   options : BackgroundFetchOptions,
-) -> Promise[
-  Result[BackgroundFetchRegistration, BackgroundFetchManagerFetchError],
-] {
+) -> Promise[BackgroundFetchRegistration] {
   BackgroundFetchManager::fetch_with_options_ffi(
     self,
     id,
@@ -359,20 +343,6 @@ pub extern "js" fn BackgroundFetchRegistration::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum BackgroundFetchRegistrationMatchError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum BackgroundFetchRegistrationMatchAllError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn BackgroundFetchRegistration::get_id(
   self : BackgroundFetchRegistration,
 ) -> String =
@@ -421,17 +391,17 @@ pub extern "js" fn BackgroundFetchRegistration::get_records_available(
   #| (self) => self.recordsAvailable
 
 ///|
-pub extern "js" fn BackgroundFetchRegistration::set_onprogress(
+pub extern "js" fn BackgroundFetchRegistration::get_onprogress(
   self : BackgroundFetchRegistration,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onprogress = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onprogress
 
 ///|
-pub extern "js" fn BackgroundFetchRegistration::clear_onprogress(
+pub extern "js" fn BackgroundFetchRegistration::set_onprogress(
   self : BackgroundFetchRegistration,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onprogress = null }
+  #| (self, value) => { self.onprogress = value }
 
 ///|
 pub extern "js" fn BackgroundFetchRegistration::abort(
@@ -443,29 +413,23 @@ pub extern "js" fn BackgroundFetchRegistration::abort(
 pub extern "js" fn BackgroundFetchRegistration::match_(
   self : BackgroundFetchRegistration,
   request : RequestInfo,
-) -> Promise[
-  Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError],
-] =
-  #| (self, request) => self.match(request).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[BackgroundFetchRecord] =
+  #| (self, request) => self.match(request)
 
 ///|
 extern "js" fn BackgroundFetchRegistration::match__with_options_ffi(
   self : BackgroundFetchRegistration,
   request : RequestInfo,
   options : JsValue,
-) -> Promise[
-  Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError],
-] =
-  #| (self, request, options) => self.match(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[BackgroundFetchRecord] =
+  #| (self, request, options) => self.match(request, options)
 
 ///|
 pub fn BackgroundFetchRegistration::match__with_options(
   self : BackgroundFetchRegistration,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[
-  Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError],
-] {
+) -> Promise[BackgroundFetchRecord] {
   BackgroundFetchRegistration::match__with_options_ffi(
     self,
     request,
@@ -476,29 +440,23 @@ pub fn BackgroundFetchRegistration::match__with_options(
 ///|
 pub extern "js" fn BackgroundFetchRegistration::match_all(
   self : BackgroundFetchRegistration,
-) -> Promise[
-  Result[Array[BackgroundFetchRecord], BackgroundFetchRegistrationMatchAllError],
-] =
-  #| (self) => self.matchAll().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Array[BackgroundFetchRecord]] =
+  #| (self) => self.matchAll()
 
 ///|
 extern "js" fn BackgroundFetchRegistration::match_all_with_options_ffi(
   self : BackgroundFetchRegistration,
   request : RequestInfo,
   options : JsValue,
-) -> Promise[
-  Result[Array[BackgroundFetchRecord], BackgroundFetchRegistrationMatchAllError],
-] =
-  #| (self, request, options) => self.matchAll(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Array[BackgroundFetchRecord]] =
+  #| (self, request, options) => self.matchAll(request, options)
 
 ///|
 pub fn BackgroundFetchRegistration::match_all_with_options(
   self : BackgroundFetchRegistration,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[
-  Result[Array[BackgroundFetchRecord], BackgroundFetchRegistrationMatchAllError],
-] {
+) -> Promise[Array[BackgroundFetchRecord]] {
   BackgroundFetchRegistration::match_all_with_options_ffi(
     self,
     request,
@@ -511,40 +469,32 @@ pub extern "js" fn BackgroundFetchRegistration::match__with_request(
   self : BackgroundFetchRegistration,
   request : Request,
   options : CacheQueryOptions,
-) -> Promise[
-  Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError],
-] =
-  #| (self, request, options) => self.match(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[BackgroundFetchRecord] =
+  #| (self, request, options) => self.match(request, options)
 
 ///|
 pub extern "js" fn BackgroundFetchRegistration::match__with_string(
   self : BackgroundFetchRegistration,
   request : String,
   options : CacheQueryOptions,
-) -> Promise[
-  Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError],
-] =
-  #| (self, request, options) => self.match(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[BackgroundFetchRecord] =
+  #| (self, request, options) => self.match(request, options)
 
 ///|
 pub extern "js" fn BackgroundFetchRegistration::match_all_with_request(
   self : BackgroundFetchRegistration,
   request : Request,
   options : CacheQueryOptions,
-) -> Promise[
-  Result[Array[BackgroundFetchRecord], BackgroundFetchRegistrationMatchAllError],
-] =
-  #| (self, request, options) => self.matchAll(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Array[BackgroundFetchRecord]] =
+  #| (self, request, options) => self.matchAll(request, options)
 
 ///|
 pub extern "js" fn BackgroundFetchRegistration::match_all_with_string(
   self : BackgroundFetchRegistration,
   request : String,
   options : CacheQueryOptions,
-) -> Promise[
-  Result[Array[BackgroundFetchRecord], BackgroundFetchRegistrationMatchAllError],
-] =
-  #| (self, request, options) => self.matchAll(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Array[BackgroundFetchRecord]] =
+  #| (self, request, options) => self.matchAll(request, options)
 
 ///|
 /// BackgroundFetchRecord interface
@@ -730,13 +680,6 @@ pub extern "js" fn BackgroundFetchUpdateUIEvent::to_event(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum BackgroundFetchUpdateUIEventUpdateUIError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 extern "js" fn BackgroundFetchUpdateUIEvent::new_ffi(
   type_ : String,
   init_ : JsValue,
@@ -754,21 +697,21 @@ pub fn BackgroundFetchUpdateUIEvent::new(
 ///|
 pub extern "js" fn BackgroundFetchUpdateUIEvent::update_ui(
   self : BackgroundFetchUpdateUIEvent,
-) -> Promise[Result[Unit, BackgroundFetchUpdateUIEventUpdateUIError]] =
-  #| (self) => self.updateUI().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.updateUI()
 
 ///|
 extern "js" fn BackgroundFetchUpdateUIEvent::update_ui_with_options_ffi(
   self : BackgroundFetchUpdateUIEvent,
   options : JsValue,
-) -> Promise[Result[Unit, BackgroundFetchUpdateUIEventUpdateUIError]] =
-  #| (self, options) => self.updateUI(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, options) => self.updateUI(options)
 
 ///|
 pub fn BackgroundFetchUpdateUIEvent::update_ui_with_options(
   self : BackgroundFetchUpdateUIEvent,
   options : BackgroundFetchUIOptions,
-) -> Promise[Result[Unit, BackgroundFetchUpdateUIEventUpdateUIError]] {
+) -> Promise[Unit] {
   BackgroundFetchUpdateUIEvent::update_ui_with_options_ffi(
     self,
     options.to_js(),

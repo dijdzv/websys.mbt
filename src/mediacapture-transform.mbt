@@ -2,90 +2,16 @@
 // Source: @webref/idl/mediacapture-transform
 
 ///|
-/// MediaStreamTrackOrHandle typedef
-pub type MediaStreamTrackOrHandle
-
-///|
-pub extern "js" fn MediaStreamTrackOrHandle::to_js_value(
-  self : MediaStreamTrackOrHandle,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create MediaStreamTrackOrHandle from MediaStreamTrack
-pub extern "js" fn MediaStreamTrackOrHandle::from_media_stream_track(
-  v : MediaStreamTrack,
-) -> MediaStreamTrackOrHandle =
-  #| (v) => v
-
-///|
-/// Create MediaStreamTrackOrHandle from MediaStreamTrackHandle
-pub extern "js" fn MediaStreamTrackOrHandle::from_media_stream_track_handle(
-  v : MediaStreamTrackHandle,
-) -> MediaStreamTrackOrHandle =
-  #| (v) => v
-
-///|
-/// Check if this MediaStreamTrackOrHandle is MediaStreamTrack
-pub extern "js" fn MediaStreamTrackOrHandle::is_media_stream_track(
-  self : MediaStreamTrackOrHandle,
-) -> Bool =
-  #| (self) => self instanceof MediaStreamTrack
-
-///|
-/// Check if this MediaStreamTrackOrHandle is MediaStreamTrackHandle
-pub extern "js" fn MediaStreamTrackOrHandle::is_media_stream_track_handle(
-  self : MediaStreamTrackOrHandle,
-) -> Bool =
-  #| (self) => self instanceof MediaStreamTrackHandle
-
-///|
-/// Try to get MediaStreamTrackOrHandle as MediaStreamTrack
-pub extern "js" fn MediaStreamTrackOrHandle::as_media_stream_track(
-  self : MediaStreamTrackOrHandle,
-) -> MediaStreamTrack? =
-  #| (self) => (self instanceof MediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get MediaStreamTrackOrHandle as MediaStreamTrackHandle
-pub extern "js" fn MediaStreamTrackOrHandle::as_media_stream_track_handle(
-  self : MediaStreamTrackOrHandle,
-) -> MediaStreamTrackHandle? =
-  #| (self) => (self instanceof MediaStreamTrackHandle) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Flatten Option[MediaStreamTrackOrHandle] to MediaStreamTrack?
-pub fn MediaStreamTrackOrHandle::bind_as_media_stream_track(
-  value : MediaStreamTrackOrHandle?,
-) -> MediaStreamTrack? {
-  match value {
-    Some(v) => v.as_media_stream_track()
-    None => None
-  }
-}
-
-///|
-/// Flatten Option[MediaStreamTrackOrHandle] to MediaStreamTrackHandle?
-pub fn MediaStreamTrackOrHandle::bind_as_media_stream_track_handle(
-  value : MediaStreamTrackOrHandle?,
-) -> MediaStreamTrackHandle? {
-  match value {
-    Some(v) => v.as_media_stream_track_handle()
-    None => None
-  }
-}
-
-///|
 /// MediaStreamTrackProcessorInit dictionary
 pub(all) struct MediaStreamTrackProcessorInit {
-  track : MediaStreamTrackOrHandle
+  track : MediaStreamTrack
   maxBufferSize : Int?
 }
 
 ///|
 /// Create a new MediaStreamTrackProcessorInit
 pub fn MediaStreamTrackProcessorInit::new(
-  track~ : MediaStreamTrackOrHandle,
+  track~ : MediaStreamTrack,
 ) -> MediaStreamTrackProcessorInit {
   MediaStreamTrackProcessorInit::{ track, maxBufferSize: None }
 }
@@ -95,7 +21,7 @@ extern "js" fn MediaStreamTrackProcessorInit::to_js_ffi(
   self : MediaStreamTrackProcessorInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   track: self.track.to_js_value(),
+  #|   track: self.track,
   #|   maxBufferSize: self.maxBufferSize
   #| })
 
@@ -123,50 +49,6 @@ pub fn MediaStreamTrackProcessorInit::from_js(
 ) -> MediaStreamTrackProcessorInit {
   MediaStreamTrackProcessorInit::from_js_ffi(value)
 }
-
-///|
-/// MediaStreamTrackHandle interface
-pub type MediaStreamTrackHandle
-
-///|
-pub extern "js" fn MediaStreamTrackHandle::to_js_value(
-  self : MediaStreamTrackHandle,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Cast JsValue to MediaStreamTrackHandle (unchecked)
-pub extern "js" fn MediaStreamTrackHandle::from_js_value(
-  v : JsValue,
-) -> MediaStreamTrackHandle =
-  #| (v) => v
-
-///|
-/// Safely cast JsValue to MediaStreamTrackHandle (checked with instanceof)
-pub extern "js" fn MediaStreamTrackHandle::from_js_value_opt(
-  v : JsValue,
-) -> MediaStreamTrackHandle? =
-  #| (v) => (v instanceof MediaStreamTrackHandle) ? { $tag: 1, _0: v } : { $tag: 0 }
-
-///|
-/// Safely cast JsValue to MediaStreamTrackHandle (checked with instanceof)
-pub extern "js" fn JsValue::as_media_stream_track_handle(
-  self : JsValue,
-) -> MediaStreamTrackHandle? =
-  #| (self) => (self instanceof MediaStreamTrackHandle) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Cast JsValue to MediaStreamTrackHandle (unchecked)
-pub extern "js" fn JsValue::to_media_stream_track_handle(
-  self : JsValue,
-) -> MediaStreamTrackHandle =
-  #| (self) => self
-
-///|
-pub extern "js" fn MediaStreamTrackHandle::new(
-  track : MediaStreamTrack,
-) -> MediaStreamTrackHandle =
-  #| (track) => new MediaStreamTrackHandle(track)
 
 ///|
 /// MediaStreamTrackProcessor interface

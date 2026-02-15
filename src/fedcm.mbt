@@ -209,6 +209,80 @@ pub fn IdentityCredentialErrorInit::from_js(
 }
 
 ///|
+/// CredentialRequestOptions dictionary
+pub(all) struct CredentialRequestOptions {
+  identity : IdentityCredentialRequestOptions?
+  digital : DigitalCredentialRequestOptions?
+  otp : OTPCredentialRequestOptions?
+  publicKey : PublicKeyCredentialRequestOptions?
+  mediation : CredentialMediationRequirement?
+  signal : AbortSignal?
+  password : Bool?
+  federated : FederatedCredentialRequestOptions?
+}
+
+///|
+/// Create a new CredentialRequestOptions with default values
+pub fn CredentialRequestOptions::default() -> CredentialRequestOptions {
+  CredentialRequestOptions::{
+    identity: None,
+    digital: None,
+    otp: None,
+    publicKey: None,
+    mediation: None,
+    signal: None,
+    password: None,
+    federated: None,
+  }
+}
+
+///|
+extern "js" fn CredentialRequestOptions::to_js_ffi(
+  self : CredentialRequestOptions,
+) -> JsValue =
+  #| (self) => ({
+  #|   identity: ((() => { const v = self.identity; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   digital: ((() => { const v = self.digital; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   otp: ((() => { const v = self.otp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   publicKey: ((() => { const v = self.publicKey; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   mediation: ((() => { const v = self.mediation; if (v === undefined) return undefined; return ['silent', 'optional', 'conditional', 'required'][v]; })()),
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   password: (self.password === -1 ? undefined : self.password),
+  #|   federated: ((() => { const v = self.federated; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| })
+
+///|
+/// Convert to JsValue
+pub fn CredentialRequestOptions::to_js(
+  self : CredentialRequestOptions,
+) -> JsValue {
+  CredentialRequestOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn CredentialRequestOptions::from_js_ffi(
+  value : JsValue,
+) -> CredentialRequestOptions =
+  #| (v) => ({
+  #|   identity: (v.identity === undefined ? { $tag: 0 } : { $tag: 1, _0: v.identity }),
+  #|   digital: (v.digital === undefined ? { $tag: 0 } : { $tag: 1, _0: v.digital }),
+  #|   otp: (v.otp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.otp }),
+  #|   publicKey: (v.publicKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.publicKey }),
+  #|   mediation: (v.mediation === undefined ? undefined : ['silent', 'optional', 'conditional', 'required'].indexOf(v.mediation)),
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
+  #|   password: (v.password === undefined ? -1 : v.password),
+  #|   federated: (v.federated === undefined ? { $tag: 0 } : { $tag: 1, _0: v.federated })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn CredentialRequestOptions::from_js(
+  value : JsValue,
+) -> CredentialRequestOptions {
+  CredentialRequestOptions::from_js_ffi(value)
+}
+
+///|
 /// IdentityCredentialRequestOptions dictionary
 pub(all) struct IdentityCredentialRequestOptions {
   providers : Array[IdentityProviderRequestOptions]
@@ -966,24 +1040,15 @@ pub extern "js" fn IdentityCredential::to_credential(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum IdentityCredentialDisconnectError {
-  NetworkError(JsError)
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 extern "js" fn IdentityCredential::disconnect_ffi(
   options : JsValue,
-) -> Promise[Result[Unit, IdentityCredentialDisconnectError]] =
-  #| (options) => IdentityCredential.disconnect(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (options) => IdentityCredential.disconnect(options)
 
 ///|
 pub fn IdentityCredential::disconnect(
   options : IdentityCredentialDisconnectOptions,
-) -> Promise[Result[Unit, IdentityCredentialDisconnectError]] {
+) -> Promise[Unit] {
   IdentityCredential::disconnect_ffi(options.to_js())
 }
 
@@ -1119,15 +1184,6 @@ pub extern "js" fn JsValue::to_identity_provider(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum IdentityProviderGetUserInfoError {
-  NetworkError(JsError)
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn IdentityProvider::close() -> Unit =
   #| () => IdentityProvider.close()
 
@@ -1153,12 +1209,12 @@ pub fn IdentityProvider::resolve_with_options(
 ///|
 extern "js" fn IdentityProvider::get_user_info_ffi(
   config : JsValue,
-) -> Promise[Result[Array[IdentityUserInfo], IdentityProviderGetUserInfoError]] =
-  #| (config) => IdentityProvider.getUserInfo(config).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Array[IdentityUserInfo]] =
+  #| (config) => IdentityProvider.getUserInfo(config)
 
 ///|
 pub fn IdentityProvider::get_user_info(
   config : IdentityProviderConfig,
-) -> Promise[Result[Array[IdentityUserInfo], IdentityProviderGetUserInfoError]] {
+) -> Promise[Array[IdentityUserInfo]] {
   IdentityProvider::get_user_info_ffi(config.to_js())
 }

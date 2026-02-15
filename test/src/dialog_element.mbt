@@ -15,7 +15,7 @@ fn test_dialog_element() -> Unit {
   dialog.set_open(false)
   assert_false(dialog.get_open(), label="open after close set")
   // show() opens non-modally
-  dialog.show().unwrap()
+  dialog.show()
   assert_true(dialog.get_open(), label="open after show")
   // close with returnValue
   dialog.close_with_return_value("cancelled")
@@ -25,5 +25,4 @@ fn test_dialog_element() -> Unit {
     "cancelled",
     label="returnValue after close",
   )
-  println("  dialog_element: ok")
 }

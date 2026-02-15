@@ -128,43 +128,33 @@ pub extern "js" fn Accelerometer::as_gravity_sensor(
   #| (self) => (self instanceof GravitySensor) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum AccelerometerConstructorError {
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn Accelerometer::new() -> Result[
-  Accelerometer,
-  AccelerometerConstructorError,
-] =
-  #| () => (() => { try { return { $tag: 1, _0: new Accelerometer() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn Accelerometer::new() -> Accelerometer =
+  #| () => new Accelerometer()
 
 ///|
 extern "js" fn Accelerometer::new_with_options_ffi(
   options : JsValue,
-) -> Result[Accelerometer, AccelerometerConstructorError] =
-  #| (options) => (() => { try { return { $tag: 1, _0: new Accelerometer(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Accelerometer =
+  #| (options) => new Accelerometer(options)
 
 ///|
 pub fn Accelerometer::new_with_options(
   options : AccelerometerSensorOptions,
-) -> Result[Accelerometer, AccelerometerConstructorError] {
+) -> Accelerometer {
   Accelerometer::new_with_options_ffi(options.to_js())
 }
 
 ///|
 pub extern "js" fn Accelerometer::get_x(self : Accelerometer) -> Double? =
-  #| (self) => (() => { const v = self.x; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.x) ?? undefined
 
 ///|
 pub extern "js" fn Accelerometer::get_y(self : Accelerometer) -> Double? =
-  #| (self) => (() => { const v = self.y; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.y) ?? undefined
 
 ///|
 pub extern "js" fn Accelerometer::get_z(self : Accelerometer) -> Double? =
-  #| (self) => (() => { const v = self.z; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.z) ?? undefined
 
 ///|
 /// LinearAccelerationSensor interface
@@ -223,29 +213,19 @@ pub extern "js" fn LinearAccelerationSensor::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum LinearAccelerationSensorConstructorError {
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn LinearAccelerationSensor::new() -> Result[
-  LinearAccelerationSensor,
-  LinearAccelerationSensorConstructorError,
-] =
-  #| () => (() => { try { return { $tag: 1, _0: new LinearAccelerationSensor() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn LinearAccelerationSensor::new() -> LinearAccelerationSensor =
+  #| () => new LinearAccelerationSensor()
 
 ///|
 extern "js" fn LinearAccelerationSensor::new_with_options_ffi(
   options : JsValue,
-) -> Result[LinearAccelerationSensor, LinearAccelerationSensorConstructorError] =
-  #| (options) => (() => { try { return { $tag: 1, _0: new LinearAccelerationSensor(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> LinearAccelerationSensor =
+  #| (options) => new LinearAccelerationSensor(options)
 
 ///|
 pub fn LinearAccelerationSensor::new_with_options(
   options : AccelerometerSensorOptions,
-) -> Result[LinearAccelerationSensor, LinearAccelerationSensorConstructorError] {
+) -> LinearAccelerationSensor {
   LinearAccelerationSensor::new_with_options_ffi(options.to_js())
 }
 
@@ -296,28 +276,18 @@ pub extern "js" fn GravitySensor::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum GravitySensorConstructorError {
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn GravitySensor::new() -> Result[
-  GravitySensor,
-  GravitySensorConstructorError,
-] =
-  #| () => (() => { try { return { $tag: 1, _0: new GravitySensor() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn GravitySensor::new() -> GravitySensor =
+  #| () => new GravitySensor()
 
 ///|
 extern "js" fn GravitySensor::new_with_options_ffi(
   options : JsValue,
-) -> Result[GravitySensor, GravitySensorConstructorError] =
-  #| (options) => (() => { try { return { $tag: 1, _0: new GravitySensor(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> GravitySensor =
+  #| (options) => new GravitySensor(options)
 
 ///|
 pub fn GravitySensor::new_with_options(
   options : AccelerometerSensorOptions,
-) -> Result[GravitySensor, GravitySensorConstructorError] {
+) -> GravitySensor {
   GravitySensor::new_with_options_ffi(options.to_js())
 }

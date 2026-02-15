@@ -225,30 +225,30 @@ pub fn HTMLPortalElement::post_message_with_options(
 }
 
 ///|
-pub extern "js" fn HTMLPortalElement::set_onmessage(
+pub extern "js" fn HTMLPortalElement::get_onmessage(
   self : HTMLPortalElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onmessage = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onmessage
 
 ///|
-pub extern "js" fn HTMLPortalElement::clear_onmessage(
+pub extern "js" fn HTMLPortalElement::set_onmessage(
   self : HTMLPortalElement,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onmessage = null }
+  #| (self, value) => { self.onmessage = value }
+
+///|
+pub extern "js" fn HTMLPortalElement::get_onmessageerror(
+  self : HTMLPortalElement,
+) -> EventHandler =
+  #| (self) => self.onmessageerror
 
 ///|
 pub extern "js" fn HTMLPortalElement::set_onmessageerror(
   self : HTMLPortalElement,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessageerror = (e) => handler(e) }
-
-///|
-pub extern "js" fn HTMLPortalElement::clear_onmessageerror(
-  self : HTMLPortalElement,
-) -> Unit =
-  #| (self) => { self.onmessageerror = null }
+  #| (self, value) => { self.onmessageerror = value }
 
 ///|
 /// PortalHost interface
@@ -309,26 +309,28 @@ pub fn PortalHost::post_message_with_options(
 }
 
 ///|
-pub extern "js" fn PortalHost::set_onmessage(
-  self : PortalHost,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onmessage = (e) => handler(e) }
+pub extern "js" fn PortalHost::get_onmessage(self : PortalHost) -> EventHandler =
+  #| (self) => self.onmessage
 
 ///|
-pub extern "js" fn PortalHost::clear_onmessage(self : PortalHost) -> Unit =
-  #| (self) => { self.onmessage = null }
+pub extern "js" fn PortalHost::set_onmessage(
+  self : PortalHost,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onmessage = value }
+
+///|
+pub extern "js" fn PortalHost::get_onmessageerror(
+  self : PortalHost,
+) -> EventHandler =
+  #| (self) => self.onmessageerror
 
 ///|
 pub extern "js" fn PortalHost::set_onmessageerror(
   self : PortalHost,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmessageerror = (e) => handler(e) }
-
-///|
-pub extern "js" fn PortalHost::clear_onmessageerror(self : PortalHost) -> Unit =
-  #| (self) => { self.onmessageerror = null }
+  #| (self, value) => { self.onmessageerror = value }
 
 ///|
 /// PortalActivateEvent interface

@@ -9,7 +9,7 @@ pub fn test_url() -> Unit {
   // Construct URL — Web API: new URL(url)
   let url = @websys.URL::new(
     "https://user:pass@example.com:8080/path?key=value#hash",
-  ).unwrap()
+  )
 
   // Read-only property
   assert_eq(url.get_origin(), "https://example.com:8080", label="origin")
@@ -83,7 +83,7 @@ pub fn test_url() -> Unit {
 /// Equivalent to: const params = new URLSearchParams("a=1&b=2")
 pub fn test_url_search_params() -> Unit {
   // Access searchParams through URL — Web API: url.searchParams
-  let url = @websys.URL::new("https://example.com?a=1&b=2&a=3").unwrap()
+  let url = @websys.URL::new("https://example.com?a=1&b=2&a=3")
   let params = url.get_search_params()
 
   // get() returns first match — Web API: params.get("a")

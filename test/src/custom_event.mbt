@@ -9,7 +9,6 @@ fn test_custom_event() -> Unit {
   assert_eq(base.get_type(), "myevent", label="type")
   assert_false(base.get_bubbles(), label="bubbles default")
   assert_false(base.get_cancelable(), label="cancelable default")
-  println("  custom_event: ok")
 }
 
 ///|
@@ -26,5 +25,4 @@ fn test_custom_event_with_init() -> Unit {
   assert_eq(base.get_type(), "custom", label="type")
   assert_true(base.get_bubbles(), label="bubbles")
   assert_true(base.get_cancelable(), label="cancelable")
-  println("  custom_event_with_init: ok")
 }

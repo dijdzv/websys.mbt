@@ -5,13 +5,13 @@
 ///|
 /// Test ReadableStream — constructor, locked, tee.
 pub fn test_readable_stream() -> Unit {
-  let rs = @websys.ReadableStream::new().unwrap()
+  let rs = @websys.ReadableStream::new()
 
   // locked — false by default
   assert_false(rs.get_locked(), label="locked default")
 
   // tee — returns array of 2 ReadableStreams
-  let branches = rs.tee().unwrap()
+  let branches = rs.tee()
   assert_eq(branches.length(), 2, label="tee returns 2 branches")
   assert_false(branches[0].get_locked(), label="branch 0 not locked")
   assert_false(branches[1].get_locked(), label="branch 1 not locked")
@@ -21,17 +21,17 @@ pub fn test_readable_stream() -> Unit {
 ///|
 /// Test ReadableStream reader — getReader locks the stream, releaseLock unlocks.
 pub fn test_readable_stream_reader() -> Unit {
-  let rs = @websys.ReadableStream::new().unwrap()
+  let rs = @websys.ReadableStream::new()
 
   // getReader — returns ReadableStreamReader union
-  let reader_union = rs.get_reader().unwrap()
+  let reader_union = rs.get_reader()
   assert_true(rs.get_locked(), label="locked after getReader")
 
   // Downcast to ReadableStreamDefaultReader
   match reader_union.as_readable_stream_default_reader() {
     Some(reader) => {
       // releaseLock — unlocks the stream
-      reader.release_lock().unwrap()
+      reader.release_lock()
       assert_false(rs.get_locked(), label="unlocked after releaseLock")
     }
     None => {
@@ -52,7 +52,7 @@ pub fn test_writable_stream() -> Unit {
   assert_false(ws.get_locked(), label="locked default")
 
   // getWriter — locks the stream
-  let writer = ws.get_writer().unwrap()
+  let writer = ws.get_writer()
   assert_true(ws.get_locked(), label="locked after getWriter")
 
   // desiredSize — may be null for a default empty stream
@@ -82,7 +82,7 @@ pub fn test_transform_stream() -> Unit {
 ///|
 /// Test Streams pipe_through — TransformStream connects readable and writable.
 pub fn test_stream_pipe_through() -> Unit {
-  let source = @websys.ReadableStream::new().unwrap()
+  let source = @websys.ReadableStream::new()
   let transform = @websys.TransformStream::new()
 
   // pipe_through — returns a new ReadableStream
@@ -90,7 +90,7 @@ pub fn test_stream_pipe_through() -> Unit {
     readable: transform.get_readable(),
     writable: transform.get_writable(),
   }
-  let result = source.pipe_through(pair).unwrap()
+  let result = source.pipe_through(pair)
   assert_false(result.get_locked(), label="piped stream not locked")
   println("  stream_pipe_through: ok")
 }

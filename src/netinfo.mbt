@@ -167,17 +167,17 @@ pub extern "js" fn NetworkInformation::get_rtt(
   #| (self) => self.rtt
 
 ///|
-pub extern "js" fn NetworkInformation::set_onchange(
+pub extern "js" fn NetworkInformation::get_onchange(
   self : NetworkInformation,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onchange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onchange
 
 ///|
-pub extern "js" fn NetworkInformation::clear_onchange(
+pub extern "js" fn NetworkInformation::set_onchange(
   self : NetworkInformation,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onchange = null }
+  #| (self, value) => { self.onchange = value }
 
 ///|
 pub extern "js" fn NetworkInformation::get_save_data(

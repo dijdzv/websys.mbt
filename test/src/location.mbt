@@ -21,5 +21,4 @@ fn test_location() -> Unit {
   loc.set_hash("#test")
   assert_eq(loc.get_hash(), "#test", label="hash set")
   loc.set_hash("")
-  println("  location: ok")
 }

@@ -31,5 +31,4 @@ fn test_output_element() -> Unit {
     "",
     label="validationMessage (always empty for output)",
   )
-  println("  output_element: ok")
 }

@@ -322,7 +322,7 @@ extern "js" fn SpeechSynthesisEventInit::to_js_ffi(
   #|   utterance: self.utterance,
   #|   charIndex: self.charIndex,
   #|   charLength: self.charLength,
-  #|   elapsedTime: ((() => { const v = self.elapsedTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   elapsedTime: self.elapsedTime,
   #|   name: self.name
   #| })
 
@@ -342,7 +342,7 @@ extern "js" fn SpeechSynthesisEventInit::from_js_ffi(
   #|   utterance: v.utterance,
   #|   charIndex: v.charIndex,
   #|   charLength: v.charLength,
-  #|   elapsedTime: (v.elapsedTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.elapsedTime }),
+  #|   elapsedTime: v.elapsedTime,
   #|   name: v.name
   #| })
 
@@ -389,7 +389,7 @@ extern "js" fn SpeechSynthesisErrorEventInit::to_js_ffi(
   #|   utterance: self.utterance,
   #|   charIndex: self.charIndex,
   #|   charLength: self.charLength,
-  #|   elapsedTime: ((() => { const v = self.elapsedTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   elapsedTime: self.elapsedTime,
   #|   name: self.name,
   #|   error: ['canceled', 'interrupted', 'audio-busy', 'audio-hardware', 'network', 'synthesis-unavailable', 'synthesis-failed', 'language-unavailable', 'voice-unavailable', 'text-too-long', 'invalid-argument', 'not-allowed'][self.error]
   #| })
@@ -410,7 +410,7 @@ extern "js" fn SpeechSynthesisErrorEventInit::from_js_ffi(
   #|   utterance: v.utterance,
   #|   charIndex: v.charIndex,
   #|   charLength: v.charLength,
-  #|   elapsedTime: (v.elapsedTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.elapsedTime }),
+  #|   elapsedTime: v.elapsedTime,
   #|   name: v.name,
   #|   error: ['canceled', 'interrupted', 'audio-busy', 'audio-hardware', 'network', 'synthesis-unavailable', 'synthesis-failed', 'language-unavailable', 'voice-unavailable', 'text-too-long', 'invalid-argument', 'not-allowed'].indexOf(v.error)
   #| })
@@ -466,29 +466,6 @@ pub extern "js" fn SpeechRecognition::to_event_target(
   self : SpeechRecognition,
 ) -> EventTarget =
   #| (self) => self
-
-///|
-/// Error type for throwing methods
-pub(all) enum SpeechRecognitionStartError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SpeechRecognitionAvailableError {
-  SyntaxError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SpeechRecognitionInstallError {
-  SyntaxError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
 
 ///|
 pub extern "js" fn SpeechRecognition::new() -> SpeechRecognition =
@@ -586,17 +563,15 @@ pub extern "js" fn SpeechRecognition::set_phrases(
   #| (self, value) => { self.phrases = value }
 
 ///|
-pub extern "js" fn SpeechRecognition::start(
-  self : SpeechRecognition,
-) -> Result[Unit, SpeechRecognitionStartError] =
-  #| (self) => (() => { try { self.start(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn SpeechRecognition::start(self : SpeechRecognition) -> Unit =
+  #| (self) => self.start()
 
 ///|
 pub extern "js" fn SpeechRecognition::start_with_audio_track_media_stream_track(
   self : SpeechRecognition,
   audio_track : MediaStreamTrack,
-) -> Result[Unit, SpeechRecognitionStartError] =
-  #| (self, audio_track) => (() => { try { self.start(audio_track); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, audio_track) => self.start(audio_track)
 
 ///|
 pub extern "js" fn SpeechRecognition::stop(self : SpeechRecognition) -> Unit =
@@ -609,171 +584,171 @@ pub extern "js" fn SpeechRecognition::abort(self : SpeechRecognition) -> Unit =
 ///|
 extern "js" fn SpeechRecognition::available_ffi(
   options : JsValue,
-) -> Promise[Result[AvailabilityStatus, SpeechRecognitionAvailableError]] =
-  #| (options) => SpeechRecognition.available(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[AvailabilityStatus] =
+  #| (options) => SpeechRecognition.available(options)
 
 ///|
 pub fn SpeechRecognition::available(
   options : SpeechRecognitionOptions,
-) -> Promise[Result[AvailabilityStatus, SpeechRecognitionAvailableError]] {
+) -> Promise[AvailabilityStatus] {
   SpeechRecognition::available_ffi(options.to_js())
 }
 
 ///|
 extern "js" fn SpeechRecognition::install_ffi(
   options : JsValue,
-) -> Promise[Result[Bool, SpeechRecognitionInstallError]] =
-  #| (options) => SpeechRecognition.install(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[Bool] =
+  #| (options) => SpeechRecognition.install(options)
 
 ///|
 pub fn SpeechRecognition::install(
   options : SpeechRecognitionOptions,
-) -> Promise[Result[Bool, SpeechRecognitionInstallError]] {
+) -> Promise[Bool] {
   SpeechRecognition::install_ffi(options.to_js())
 }
 
 ///|
-pub extern "js" fn SpeechRecognition::set_onaudiostart(
+pub extern "js" fn SpeechRecognition::get_onaudiostart(
   self : SpeechRecognition,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onaudiostart = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onaudiostart
 
 ///|
-pub extern "js" fn SpeechRecognition::clear_onaudiostart(
+pub extern "js" fn SpeechRecognition::set_onaudiostart(
   self : SpeechRecognition,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onaudiostart = null }
+  #| (self, value) => { self.onaudiostart = value }
+
+///|
+pub extern "js" fn SpeechRecognition::get_onsoundstart(
+  self : SpeechRecognition,
+) -> EventHandler =
+  #| (self) => self.onsoundstart
 
 ///|
 pub extern "js" fn SpeechRecognition::set_onsoundstart(
   self : SpeechRecognition,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsoundstart = (e) => handler(e) }
+  #| (self, value) => { self.onsoundstart = value }
 
 ///|
-pub extern "js" fn SpeechRecognition::clear_onsoundstart(
+pub extern "js" fn SpeechRecognition::get_onspeechstart(
   self : SpeechRecognition,
-) -> Unit =
-  #| (self) => { self.onsoundstart = null }
+) -> EventHandler =
+  #| (self) => self.onspeechstart
 
 ///|
 pub extern "js" fn SpeechRecognition::set_onspeechstart(
   self : SpeechRecognition,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onspeechstart = (e) => handler(e) }
+  #| (self, value) => { self.onspeechstart = value }
 
 ///|
-pub extern "js" fn SpeechRecognition::clear_onspeechstart(
+pub extern "js" fn SpeechRecognition::get_onspeechend(
   self : SpeechRecognition,
-) -> Unit =
-  #| (self) => { self.onspeechstart = null }
+) -> EventHandler =
+  #| (self) => self.onspeechend
 
 ///|
 pub extern "js" fn SpeechRecognition::set_onspeechend(
   self : SpeechRecognition,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onspeechend = (e) => handler(e) }
+  #| (self, value) => { self.onspeechend = value }
 
 ///|
-pub extern "js" fn SpeechRecognition::clear_onspeechend(
+pub extern "js" fn SpeechRecognition::get_onsoundend(
   self : SpeechRecognition,
-) -> Unit =
-  #| (self) => { self.onspeechend = null }
+) -> EventHandler =
+  #| (self) => self.onsoundend
 
 ///|
 pub extern "js" fn SpeechRecognition::set_onsoundend(
   self : SpeechRecognition,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsoundend = (e) => handler(e) }
+  #| (self, value) => { self.onsoundend = value }
 
 ///|
-pub extern "js" fn SpeechRecognition::clear_onsoundend(
+pub extern "js" fn SpeechRecognition::get_onaudioend(
   self : SpeechRecognition,
-) -> Unit =
-  #| (self) => { self.onsoundend = null }
+) -> EventHandler =
+  #| (self) => self.onaudioend
 
 ///|
 pub extern "js" fn SpeechRecognition::set_onaudioend(
   self : SpeechRecognition,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onaudioend = (e) => handler(e) }
+  #| (self, value) => { self.onaudioend = value }
 
 ///|
-pub extern "js" fn SpeechRecognition::clear_onaudioend(
+pub extern "js" fn SpeechRecognition::get_onresult(
   self : SpeechRecognition,
-) -> Unit =
-  #| (self) => { self.onaudioend = null }
+) -> EventHandler =
+  #| (self) => self.onresult
 
 ///|
 pub extern "js" fn SpeechRecognition::set_onresult(
   self : SpeechRecognition,
-  handler : (SpeechRecognitionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onresult = (e) => handler(e) }
+  #| (self, value) => { self.onresult = value }
 
 ///|
-pub extern "js" fn SpeechRecognition::clear_onresult(
+pub extern "js" fn SpeechRecognition::get_onnomatch(
   self : SpeechRecognition,
-) -> Unit =
-  #| (self) => { self.onresult = null }
+) -> EventHandler =
+  #| (self) => self.onnomatch
 
 ///|
 pub extern "js" fn SpeechRecognition::set_onnomatch(
   self : SpeechRecognition,
-  handler : (SpeechRecognitionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onnomatch = (e) => handler(e) }
+  #| (self, value) => { self.onnomatch = value }
 
 ///|
-pub extern "js" fn SpeechRecognition::clear_onnomatch(
+pub extern "js" fn SpeechRecognition::get_onerror(
   self : SpeechRecognition,
-) -> Unit =
-  #| (self) => { self.onnomatch = null }
+) -> EventHandler =
+  #| (self) => self.onerror
 
 ///|
 pub extern "js" fn SpeechRecognition::set_onerror(
   self : SpeechRecognition,
-  handler : (SpeechRecognitionErrorEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onerror = (e) => handler(e) }
+  #| (self, value) => { self.onerror = value }
 
 ///|
-pub extern "js" fn SpeechRecognition::clear_onerror(
+pub extern "js" fn SpeechRecognition::get_onstart(
   self : SpeechRecognition,
-) -> Unit =
-  #| (self) => { self.onerror = null }
+) -> EventHandler =
+  #| (self) => self.onstart
 
 ///|
 pub extern "js" fn SpeechRecognition::set_onstart(
   self : SpeechRecognition,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onstart = (e) => handler(e) }
+  #| (self, value) => { self.onstart = value }
 
 ///|
-pub extern "js" fn SpeechRecognition::clear_onstart(
+pub extern "js" fn SpeechRecognition::get_onend(
   self : SpeechRecognition,
-) -> Unit =
-  #| (self) => { self.onstart = null }
+) -> EventHandler =
+  #| (self) => self.onend
 
 ///|
 pub extern "js" fn SpeechRecognition::set_onend(
   self : SpeechRecognition,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onend = (e) => handler(e) }
-
-///|
-pub extern "js" fn SpeechRecognition::clear_onend(
-  self : SpeechRecognition,
-) -> Unit =
-  #| (self) => { self.onend = null }
+  #| (self, value) => { self.onend = value }
 
 ///|
 /// SpeechRecognitionErrorEvent interface
@@ -1122,12 +1097,10 @@ pub extern "js" fn JsValue::to_speech_grammar(self : JsValue) -> SpeechGrammar =
   #| (self) => self
 
 ///|
-/// @alert deprecated "src is deprecated"
 pub extern "js" fn SpeechGrammar::get_src(self : SpeechGrammar) -> String =
   #| (self) => self.src
 
 ///|
-/// @alert deprecated "src is deprecated"
 pub extern "js" fn SpeechGrammar::set_src(
   self : SpeechGrammar,
   value : String,
@@ -1135,12 +1108,10 @@ pub extern "js" fn SpeechGrammar::set_src(
   #| (self, value) => { self.src = value }
 
 ///|
-/// @alert deprecated "weight is deprecated"
 pub extern "js" fn SpeechGrammar::get_weight(self : SpeechGrammar) -> Double =
   #| (self) => self.weight
 
 ///|
-/// @alert deprecated "weight is deprecated"
 pub extern "js" fn SpeechGrammar::set_weight(
   self : SpeechGrammar,
   value : Double,
@@ -1186,7 +1157,6 @@ pub extern "js" fn JsValue::to_speech_grammar_list(
   #| (self) => self
 
 ///|
-/// @alert deprecated "constructor is deprecated"
 pub extern "js" fn SpeechGrammarList::new() -> SpeechGrammarList =
   #| () => new SpeechGrammarList()
 
@@ -1212,7 +1182,6 @@ pub extern "js" fn SpeechGrammarList::get(
   #| (self, index) => self[index]
 
 ///|
-/// @alert deprecated "addFromURI is deprecated"
 pub extern "js" fn SpeechGrammarList::add_from_uri(
   self : SpeechGrammarList,
   src : String,
@@ -1228,7 +1197,6 @@ pub extern "js" fn SpeechGrammarList::add_from_uri_with_weight(
   #| (self, src, weight) => self.addFromURI(src, weight)
 
 ///|
-/// @alert deprecated "addFromString is deprecated"
 pub extern "js" fn SpeechGrammarList::add_from_string(
   self : SpeechGrammarList,
   string : String,
@@ -1282,24 +1250,17 @@ pub extern "js" fn JsValue::to_speech_recognition_phrase(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum SpeechRecognitionPhraseConstructorError {
-  SyntaxError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn SpeechRecognitionPhrase::new(
   phrase : String,
-) -> Result[SpeechRecognitionPhrase, SpeechRecognitionPhraseConstructorError] =
-  #| (phrase) => (() => { try { return { $tag: 1, _0: new SpeechRecognitionPhrase(phrase) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SpeechRecognitionPhrase =
+  #| (phrase) => new SpeechRecognitionPhrase(phrase)
 
 ///|
 pub extern "js" fn SpeechRecognitionPhrase::new_with_boost(
   phrase : String,
   boost : Double,
-) -> Result[SpeechRecognitionPhrase, SpeechRecognitionPhraseConstructorError] =
-  #| (phrase, boost) => (() => { try { return { $tag: 1, _0: new SpeechRecognitionPhrase(phrase, boost) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> SpeechRecognitionPhrase =
+  #| (phrase, boost) => new SpeechRecognitionPhrase(phrase, boost)
 
 ///|
 pub extern "js" fn SpeechRecognitionPhrase::get_phrase(
@@ -1372,17 +1333,17 @@ pub extern "js" fn SpeechSynthesis::get_paused(self : SpeechSynthesis) -> Bool =
   #| (self) => self.paused
 
 ///|
-pub extern "js" fn SpeechSynthesis::set_onvoiceschanged(
+pub extern "js" fn SpeechSynthesis::get_onvoiceschanged(
   self : SpeechSynthesis,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onvoiceschanged = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onvoiceschanged
 
 ///|
-pub extern "js" fn SpeechSynthesis::clear_onvoiceschanged(
+pub extern "js" fn SpeechSynthesis::set_onvoiceschanged(
   self : SpeechSynthesis,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onvoiceschanged = null }
+  #| (self, value) => { self.onvoiceschanged = value }
 
 ///|
 pub extern "js" fn SpeechSynthesis::speak(
@@ -1542,95 +1503,95 @@ pub extern "js" fn SpeechSynthesisUtterance::set_pitch(
   #| (self, value) => { self.pitch = value }
 
 ///|
-pub extern "js" fn SpeechSynthesisUtterance::set_onstart(
+pub extern "js" fn SpeechSynthesisUtterance::get_onstart(
   self : SpeechSynthesisUtterance,
-  handler : (SpeechSynthesisEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onstart = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onstart
 
 ///|
-pub extern "js" fn SpeechSynthesisUtterance::clear_onstart(
+pub extern "js" fn SpeechSynthesisUtterance::set_onstart(
   self : SpeechSynthesisUtterance,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onstart = null }
+  #| (self, value) => { self.onstart = value }
+
+///|
+pub extern "js" fn SpeechSynthesisUtterance::get_onend(
+  self : SpeechSynthesisUtterance,
+) -> EventHandler =
+  #| (self) => self.onend
 
 ///|
 pub extern "js" fn SpeechSynthesisUtterance::set_onend(
   self : SpeechSynthesisUtterance,
-  handler : (SpeechSynthesisEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onend = (e) => handler(e) }
+  #| (self, value) => { self.onend = value }
 
 ///|
-pub extern "js" fn SpeechSynthesisUtterance::clear_onend(
+pub extern "js" fn SpeechSynthesisUtterance::get_onerror(
   self : SpeechSynthesisUtterance,
-) -> Unit =
-  #| (self) => { self.onend = null }
+) -> EventHandler =
+  #| (self) => self.onerror
 
 ///|
 pub extern "js" fn SpeechSynthesisUtterance::set_onerror(
   self : SpeechSynthesisUtterance,
-  handler : (SpeechSynthesisErrorEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onerror = (e) => handler(e) }
+  #| (self, value) => { self.onerror = value }
 
 ///|
-pub extern "js" fn SpeechSynthesisUtterance::clear_onerror(
+pub extern "js" fn SpeechSynthesisUtterance::get_onpause(
   self : SpeechSynthesisUtterance,
-) -> Unit =
-  #| (self) => { self.onerror = null }
+) -> EventHandler =
+  #| (self) => self.onpause
 
 ///|
 pub extern "js" fn SpeechSynthesisUtterance::set_onpause(
   self : SpeechSynthesisUtterance,
-  handler : (SpeechSynthesisEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onpause = (e) => handler(e) }
+  #| (self, value) => { self.onpause = value }
 
 ///|
-pub extern "js" fn SpeechSynthesisUtterance::clear_onpause(
+pub extern "js" fn SpeechSynthesisUtterance::get_onresume(
   self : SpeechSynthesisUtterance,
-) -> Unit =
-  #| (self) => { self.onpause = null }
+) -> EventHandler =
+  #| (self) => self.onresume
 
 ///|
 pub extern "js" fn SpeechSynthesisUtterance::set_onresume(
   self : SpeechSynthesisUtterance,
-  handler : (SpeechSynthesisEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onresume = (e) => handler(e) }
+  #| (self, value) => { self.onresume = value }
 
 ///|
-pub extern "js" fn SpeechSynthesisUtterance::clear_onresume(
+pub extern "js" fn SpeechSynthesisUtterance::get_onmark(
   self : SpeechSynthesisUtterance,
-) -> Unit =
-  #| (self) => { self.onresume = null }
+) -> EventHandler =
+  #| (self) => self.onmark
 
 ///|
 pub extern "js" fn SpeechSynthesisUtterance::set_onmark(
   self : SpeechSynthesisUtterance,
-  handler : (SpeechSynthesisEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onmark = (e) => handler(e) }
+  #| (self, value) => { self.onmark = value }
 
 ///|
-pub extern "js" fn SpeechSynthesisUtterance::clear_onmark(
+pub extern "js" fn SpeechSynthesisUtterance::get_onboundary(
   self : SpeechSynthesisUtterance,
-) -> Unit =
-  #| (self) => { self.onmark = null }
+) -> EventHandler =
+  #| (self) => self.onboundary
 
 ///|
 pub extern "js" fn SpeechSynthesisUtterance::set_onboundary(
   self : SpeechSynthesisUtterance,
-  handler : (SpeechSynthesisEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onboundary = (e) => handler(e) }
-
-///|
-pub extern "js" fn SpeechSynthesisUtterance::clear_onboundary(
-  self : SpeechSynthesisUtterance,
-) -> Unit =
-  #| (self) => { self.onboundary = null }
+  #| (self, value) => { self.onboundary = value }
 
 ///|
 /// SpeechSynthesisEvent interface

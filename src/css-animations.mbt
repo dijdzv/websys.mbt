@@ -25,7 +25,7 @@ extern "js" fn AnimationEventInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   animationName: self.animationName,
-  #|   elapsedTime: ((() => { const v = self.elapsedTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   elapsedTime: self.elapsedTime,
   #|   pseudoElement: self.pseudoElement
   #| })
 
@@ -41,7 +41,7 @@ extern "js" fn AnimationEventInit::from_js_ffi(
 ) -> AnimationEventInit =
   #| (v) => ({
   #|   animationName: v.animationName,
-  #|   elapsedTime: (v.elapsedTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.elapsedTime }),
+  #|   elapsedTime: v.elapsedTime,
   #|   pseudoElement: v.pseudoElement
   #| })
 
@@ -176,13 +176,6 @@ pub extern "js" fn CSSKeyframeRule::to_css_rule(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum CSSKeyframeRuleSetKeyTextError {
-  SyntaxError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn CSSKeyframeRule::get_key_text(
   self : CSSKeyframeRule,
 ) -> String =
@@ -192,8 +185,8 @@ pub extern "js" fn CSSKeyframeRule::get_key_text(
 pub extern "js" fn CSSKeyframeRule::set_key_text(
   self : CSSKeyframeRule,
   value : String,
-) -> Result[Unit, CSSKeyframeRuleSetKeyTextError] =
-  #| (self, value) => (() => { try { self.keyText = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.keyText = value }
 
 ///|
 pub extern "js" fn CSSKeyframeRule::get_style(

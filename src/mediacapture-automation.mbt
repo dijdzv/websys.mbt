@@ -161,7 +161,7 @@ extern "js" fn MockCameraConfiguration::to_js_ffi(
   #|   label: self.label,
   #|   deviceId: self.deviceId,
   #|   groupId: self.groupId,
-  #|   defaultFrameRate: ((() => { const v = self.defaultFrameRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   defaultFrameRate: self.defaultFrameRate,
   #|   facingMode: self.facingMode
   #| })
 
@@ -181,7 +181,7 @@ extern "js" fn MockCameraConfiguration::from_js_ffi(
   #|   label: v.label,
   #|   deviceId: v.deviceId,
   #|   groupId: v.groupId,
-  #|   defaultFrameRate: (v.defaultFrameRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.defaultFrameRate }),
+  #|   defaultFrameRate: v.defaultFrameRate,
   #|   facingMode: v.facingMode
   #| })
 

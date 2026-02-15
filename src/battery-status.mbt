@@ -64,53 +64,53 @@ pub extern "js" fn BatteryManager::get_level(self : BatteryManager) -> Double =
   #| (self) => self.level
 
 ///|
-pub extern "js" fn BatteryManager::set_onchargingchange(
+pub extern "js" fn BatteryManager::get_onchargingchange(
   self : BatteryManager,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onchargingchange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onchargingchange
 
 ///|
-pub extern "js" fn BatteryManager::clear_onchargingchange(
+pub extern "js" fn BatteryManager::set_onchargingchange(
   self : BatteryManager,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onchargingchange = null }
+  #| (self, value) => { self.onchargingchange = value }
+
+///|
+pub extern "js" fn BatteryManager::get_onchargingtimechange(
+  self : BatteryManager,
+) -> EventHandler =
+  #| (self) => self.onchargingtimechange
 
 ///|
 pub extern "js" fn BatteryManager::set_onchargingtimechange(
   self : BatteryManager,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onchargingtimechange = (e) => handler(e) }
+  #| (self, value) => { self.onchargingtimechange = value }
 
 ///|
-pub extern "js" fn BatteryManager::clear_onchargingtimechange(
+pub extern "js" fn BatteryManager::get_ondischargingtimechange(
   self : BatteryManager,
-) -> Unit =
-  #| (self) => { self.onchargingtimechange = null }
+) -> EventHandler =
+  #| (self) => self.ondischargingtimechange
 
 ///|
 pub extern "js" fn BatteryManager::set_ondischargingtimechange(
   self : BatteryManager,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.ondischargingtimechange = (e) => handler(e) }
+  #| (self, value) => { self.ondischargingtimechange = value }
 
 ///|
-pub extern "js" fn BatteryManager::clear_ondischargingtimechange(
+pub extern "js" fn BatteryManager::get_onlevelchange(
   self : BatteryManager,
-) -> Unit =
-  #| (self) => { self.ondischargingtimechange = null }
+) -> EventHandler =
+  #| (self) => self.onlevelchange
 
 ///|
 pub extern "js" fn BatteryManager::set_onlevelchange(
   self : BatteryManager,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onlevelchange = (e) => handler(e) }
-
-///|
-pub extern "js" fn BatteryManager::clear_onlevelchange(
-  self : BatteryManager,
-) -> Unit =
-  #| (self) => { self.onlevelchange = null }
+  #| (self, value) => { self.onlevelchange = value }

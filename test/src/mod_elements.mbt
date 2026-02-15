@@ -18,7 +18,6 @@ fn test_ins_element() -> Unit {
   assert_eq(ins.get_date_time(), "2024-01-15", label="dateTime set")
   // type conversions
   let _html : @websys.HTMLElement = ins.to_html_element()
-  println("  ins_element: ok")
 }
 
 ///|
@@ -33,5 +32,4 @@ fn test_del_element() -> Unit {
   // dateTime
   del.set_date_time("2024-06-01T12:00:00Z")
   assert_eq(del.get_date_time(), "2024-06-01T12:00:00Z", label="dateTime")
-  println("  del_element: ok")
 }

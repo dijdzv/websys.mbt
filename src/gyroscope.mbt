@@ -110,40 +110,30 @@ pub extern "js" fn Gyroscope::to_event_target(self : Gyroscope) -> EventTarget =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum GyroscopeConstructorError {
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn Gyroscope::new() -> Result[
-  Gyroscope,
-  GyroscopeConstructorError,
-] =
-  #| () => (() => { try { return { $tag: 1, _0: new Gyroscope() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn Gyroscope::new() -> Gyroscope =
+  #| () => new Gyroscope()
 
 ///|
 extern "js" fn Gyroscope::new_with_sensor_options_ffi(
   sensor_options : JsValue,
-) -> Result[Gyroscope, GyroscopeConstructorError] =
-  #| (sensor_options) => (() => { try { return { $tag: 1, _0: new Gyroscope(sensor_options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Gyroscope =
+  #| (sensor_options) => new Gyroscope(sensor_options)
 
 ///|
 pub fn Gyroscope::new_with_sensor_options(
   sensor_options : GyroscopeSensorOptions,
-) -> Result[Gyroscope, GyroscopeConstructorError] {
+) -> Gyroscope {
   Gyroscope::new_with_sensor_options_ffi(sensor_options.to_js())
 }
 
 ///|
 pub extern "js" fn Gyroscope::get_x(self : Gyroscope) -> Double? =
-  #| (self) => (() => { const v = self.x; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.x) ?? undefined
 
 ///|
 pub extern "js" fn Gyroscope::get_y(self : Gyroscope) -> Double? =
-  #| (self) => (() => { const v = self.y; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.y) ?? undefined
 
 ///|
 pub extern "js" fn Gyroscope::get_z(self : Gyroscope) -> Double? =
-  #| (self) => (() => { const v = self.z; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.z) ?? undefined

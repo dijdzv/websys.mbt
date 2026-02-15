@@ -154,10 +154,10 @@ extern "js" fn XRRayDirectionInit::to_js_ffi(
   self : XRRayDirectionInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   x: ((() => { const v = self.x; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   y: ((() => { const v = self.y; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   z: ((() => { const v = self.z; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   w: ((() => { const v = self.w; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   x: self.x,
+  #|   y: self.y,
+  #|   z: self.z,
+  #|   w: self.w
   #| })
 
 ///|
@@ -171,10 +171,10 @@ extern "js" fn XRRayDirectionInit::from_js_ffi(
   value : JsValue,
 ) -> XRRayDirectionInit =
   #| (v) => ({
-  #|   x: (v.x === undefined ? { $tag: 0 } : { $tag: 1, _0: v.x }),
-  #|   y: (v.y === undefined ? { $tag: 0 } : { $tag: 1, _0: v.y }),
-  #|   z: (v.z === undefined ? { $tag: 0 } : { $tag: 1, _0: v.z }),
-  #|   w: (v.w === undefined ? { $tag: 0 } : { $tag: 1, _0: v.w })
+  #|   x: v.x,
+  #|   y: v.y,
+  #|   z: v.z,
+  #|   w: v.w
   #| })
 
 ///|
@@ -399,36 +399,27 @@ pub extern "js" fn JsValue::to_xr_ray(self : JsValue) -> XRRay =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum XRRayConstructorError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn XRRay::new() -> Result[XRRay, XRRayConstructorError] =
-  #| () => (() => { try { return { $tag: 1, _0: new XRRay() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn XRRay::new() -> XRRay =
+  #| () => new XRRay()
 
 ///|
 extern "js" fn XRRay::new_with_direction_ffi(
   origin : JsValue,
   direction : JsValue,
-) -> Result[XRRay, XRRayConstructorError] =
-  #| (origin, direction) => (() => { try { return { $tag: 1, _0: new XRRay(origin, direction) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> XRRay =
+  #| (origin, direction) => new XRRay(origin, direction)
 
 ///|
 pub fn XRRay::new_with_direction(
   origin : DOMPointInit,
   direction : XRRayDirectionInit,
-) -> Result[XRRay, XRRayConstructorError] {
+) -> XRRay {
   XRRay::new_with_direction_ffi(origin.to_js(), direction.to_js())
 }
 
 ///|
-pub extern "js" fn XRRay::new_with(
-  transform : XRRigidTransform,
-) -> Result[XRRay, XRRayConstructorError] =
-  #| (transform) => (() => { try { return { $tag: 1, _0: new XRRay(transform) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn XRRay::new_with(transform : XRRigidTransform) -> XRRay =
+  #| (transform) => new XRRay(transform)
 
 ///|
 pub extern "js" fn XRRay::get_origin(self : XRRay) -> DOMPointReadOnly =

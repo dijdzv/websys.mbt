@@ -18,7 +18,6 @@ fn test_olist_element() -> Unit {
   assert_false(ol.get_compact(), label="compact default")
   ol.set_compact(true)
   assert_true(ol.get_compact(), label="compact set")
-  println("  olist_element: ok")
 }
 
 ///|
@@ -31,7 +30,6 @@ fn test_li_element() -> Unit {
   assert_eq(li.get_value(), 3, label="value")
   li.set_type("disc")
   assert_eq(li.get_type(), "disc", label="type")
-  println("  li_element: ok")
 }
 
 ///|
@@ -43,7 +41,6 @@ fn test_quote_element() -> Unit {
   // cite is a URL-reflected attribute: getter returns resolved absolute URL
   q.set_cite("https://example.com/source")
   assert_eq(q.get_cite(), "https://example.com/source", label="cite")
-  println("  quote_element: ok")
 }
 
 ///|
@@ -63,7 +60,6 @@ fn test_hr_element() -> Unit {
   assert_eq(hr.get_size(), "2", label="size")
   hr.set_width("100%")
   assert_eq(hr.get_width(), "100%", label="width")
-  println("  hr_element: ok")
 }
 
 ///|
@@ -75,5 +71,4 @@ fn test_pre_element() -> Unit {
   // width — Rust test: pre.set_width(150); assert_eq!(pre.width(), 150)
   pre.set_width(150)
   assert_eq(pre.get_width(), 150, label="width")
-  println("  pre_element: ok")
 }

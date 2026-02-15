@@ -28,7 +28,6 @@ fn test_named_node_map() -> Unit {
   // getNamedItem for non-existent
   let missing = attrs.get_named_item("data-foo")
   assert_true(missing is None, label="getNamedItem missing")
-  println("  named_node_map: ok")
 }
 
 ///|
@@ -51,5 +50,4 @@ fn test_attr_mutation() -> Unit {
     }
     None => abort("FAIL: id attr not found")
   }
-  println("  attr_mutation: ok")
 }

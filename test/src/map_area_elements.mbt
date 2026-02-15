@@ -19,7 +19,6 @@ fn test_map_element() -> Unit {
   let area = doc.create_element("area")
   map.to_node().append_child(area.to_node()) |> ignore
   assert_eq(map.get_areas().get_length(), 1, label="areas after adding")
-  println("  map_element: ok")
 }
 
 ///|
@@ -57,5 +56,4 @@ fn test_area_element() -> Unit {
   assert_false(area.get_no_href(), label="noHref default")
   area.set_no_href(true)
   assert_true(area.get_no_href(), label="noHref set")
-  println("  area_element: ok")
 }

@@ -73,14 +73,14 @@ pub extern "js" fn VirtualKeyboard::set_overlays_content(
   #| (self, value) => { self.overlaysContent = value }
 
 ///|
-pub extern "js" fn VirtualKeyboard::set_ongeometrychange(
+pub extern "js" fn VirtualKeyboard::get_ongeometrychange(
   self : VirtualKeyboard,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ongeometrychange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.ongeometrychange
 
 ///|
-pub extern "js" fn VirtualKeyboard::clear_ongeometrychange(
+pub extern "js" fn VirtualKeyboard::set_ongeometrychange(
   self : VirtualKeyboard,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.ongeometrychange = null }
+  #| (self, value) => { self.ongeometrychange = value }

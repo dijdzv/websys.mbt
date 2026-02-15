@@ -15,7 +15,6 @@ fn test_data_element() -> Unit {
   assert_eq(data.get_value(), "42", label="value set")
   // type conversions
   let _html : @websys.HTMLElement = data.to_html_element()
-  println("  data_element: ok")
 }
 
 ///|
@@ -30,7 +29,6 @@ fn test_time_element() -> Unit {
   assert_eq(time.get_date_time(), "2024-12-25", label="dateTime set")
   time.set_date_time("2024-12-25T18:00:00Z")
   assert_eq(time.get_date_time(), "2024-12-25T18:00:00Z", label="dateTime ISO")
-  println("  time_element: ok")
 }
 
 ///|
@@ -49,5 +47,4 @@ fn test_details_element() -> Unit {
   assert_eq(details.get_name(), "", label="name default")
   details.set_name("accordion-group")
   assert_eq(details.get_name(), "accordion-group", label="name set")
-  println("  details_element: ok")
 }

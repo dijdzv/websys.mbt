@@ -65,6 +65,64 @@ pub fn PerformanceObserverCallbackOptions::from_js(
 }
 
 ///|
+/// PerformanceObserverInit dictionary
+pub(all) struct PerformanceObserverInit {
+  entryTypes : Array[String]?
+  type_ : String?
+  buffered : Bool?
+  durationThreshold : DOMHighResTimeStamp?
+}
+
+///|
+/// Create a new PerformanceObserverInit with default values
+pub fn PerformanceObserverInit::default() -> PerformanceObserverInit {
+  PerformanceObserverInit::{
+    entryTypes: None,
+    type_: None,
+    buffered: None,
+    durationThreshold: None,
+  }
+}
+
+///|
+extern "js" fn PerformanceObserverInit::to_js_ffi(
+  self : PerformanceObserverInit,
+) -> JsValue =
+  #| (self) => ({
+  #|   entryTypes: ((() => { const v = self.entryTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   type: self.type_,
+  #|   buffered: (self.buffered === -1 ? undefined : self.buffered),
+  #|   durationThreshold: ((() => { const v = self.durationThreshold; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| })
+
+///|
+/// Convert to JsValue
+pub fn PerformanceObserverInit::to_js(
+  self : PerformanceObserverInit,
+) -> JsValue {
+  PerformanceObserverInit::to_js_ffi(self)
+}
+
+///|
+extern "js" fn PerformanceObserverInit::from_js_ffi(
+  value : JsValue,
+) -> PerformanceObserverInit =
+  #| (v) => ({
+  #|   entryTypes: (v.entryTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.entryTypes }),
+  #|   type_: v.type,
+  #|   buffered: (v.buffered === undefined ? -1 : v.buffered),
+  #|   durationThreshold: (v.durationThreshold === undefined ? { $tag: 0 } : { $tag: 1, _0: v.durationThreshold })
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn PerformanceObserverInit::from_js(
+  value : JsValue,
+) -> PerformanceObserverInit {
+  PerformanceObserverInit::from_js_ffi(value)
+}
+
+///|
 /// PerformanceEntry interface
 pub type PerformanceEntry
 
@@ -103,16 +161,22 @@ pub extern "js" fn JsValue::to_performance_entry(
   #| (self) => self
 
 ///|
-pub extern "js" fn PerformanceEntry::as_performance_element_timing(
+pub extern "js" fn PerformanceEntry::as_layout_shift(
   self : PerformanceEntry,
-) -> PerformanceElementTiming? =
-  #| (self) => (self instanceof PerformanceElementTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> LayoutShift? =
+  #| (self) => (self instanceof LayoutShift) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn PerformanceEntry::as_performance_event_timing(
+pub extern "js" fn PerformanceEntry::as_performance_mark(
   self : PerformanceEntry,
-) -> PerformanceEventTiming? =
-  #| (self) => (self instanceof PerformanceEventTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PerformanceMark? =
+  #| (self) => (self instanceof PerformanceMark) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn PerformanceEntry::as_performance_measure(
+  self : PerformanceEntry,
+) -> PerformanceMeasure? =
+  #| (self) => (self instanceof PerformanceMeasure) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn PerformanceEntry::as_visibility_state_entry(
@@ -127,22 +191,22 @@ pub extern "js" fn PerformanceEntry::as_largest_contentful_paint(
   #| (self) => (self instanceof LargestContentfulPaint) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn PerformanceEntry::as_layout_shift(
+pub extern "js" fn PerformanceEntry::as_performance_navigation_timing(
   self : PerformanceEntry,
-) -> LayoutShift? =
-  #| (self) => (self instanceof LayoutShift) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PerformanceNavigationTiming? =
+  #| (self) => (self instanceof PerformanceNavigationTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn PerformanceEntry::as_performance_long_animation_frame_timing(
+pub extern "js" fn PerformanceEntry::as_performance_paint_timing(
   self : PerformanceEntry,
-) -> PerformanceLongAnimationFrameTiming? =
-  #| (self) => (self instanceof PerformanceLongAnimationFrameTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PerformancePaintTiming? =
+  #| (self) => (self instanceof PerformancePaintTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn PerformanceEntry::as_performance_script_timing(
+pub extern "js" fn PerformanceEntry::as_performance_element_timing(
   self : PerformanceEntry,
-) -> PerformanceScriptTiming? =
-  #| (self) => (self instanceof PerformanceScriptTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PerformanceElementTiming? =
+  #| (self) => (self instanceof PerformanceElementTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn PerformanceEntry::as_performance_long_task_timing(
@@ -157,34 +221,28 @@ pub extern "js" fn PerformanceEntry::as_task_attribution_timing(
   #| (self) => (self instanceof TaskAttributionTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn PerformanceEntry::as_performance_navigation_timing(
-  self : PerformanceEntry,
-) -> PerformanceNavigationTiming? =
-  #| (self) => (self instanceof PerformanceNavigationTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn PerformanceEntry::as_performance_paint_timing(
-  self : PerformanceEntry,
-) -> PerformancePaintTiming? =
-  #| (self) => (self instanceof PerformancePaintTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn PerformanceEntry::as_performance_resource_timing(
   self : PerformanceEntry,
 ) -> PerformanceResourceTiming? =
   #| (self) => (self instanceof PerformanceResourceTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn PerformanceEntry::as_performance_mark(
+pub extern "js" fn PerformanceEntry::as_performance_event_timing(
   self : PerformanceEntry,
-) -> PerformanceMark? =
-  #| (self) => (self instanceof PerformanceMark) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PerformanceEventTiming? =
+  #| (self) => (self instanceof PerformanceEventTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn PerformanceEntry::as_performance_measure(
+pub extern "js" fn PerformanceEntry::as_performance_long_animation_frame_timing(
   self : PerformanceEntry,
-) -> PerformanceMeasure? =
-  #| (self) => (self instanceof PerformanceMeasure) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PerformanceLongAnimationFrameTiming? =
+  #| (self) => (self instanceof PerformanceLongAnimationFrameTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn PerformanceEntry::as_performance_script_timing(
+  self : PerformanceEntry,
+) -> PerformanceScriptTiming? =
+  #| (self) => (self instanceof PerformanceScriptTiming) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn PerformanceEntry::get_id(self : PerformanceEntry) -> Int64 =

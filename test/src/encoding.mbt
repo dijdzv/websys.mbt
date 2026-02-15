@@ -23,7 +23,7 @@ pub fn test_encoding() -> Unit {
   let decoder = @websys.TextDecoder::new_with_options(
     "utf-8",
     @websys.TextDecoderOptions::default(),
-  ).unwrap()
+  )
   assert_eq(decoder.get_encoding(), "utf-8", label="decoder.encoding")
   assert_false(decoder.get_fatal(), label="decoder.fatal default")
   assert_false(decoder.get_ignore_bom(), label="decoder.ignoreBOM default")
@@ -32,14 +32,14 @@ pub fn test_encoding() -> Unit {
   let buf = @websys.ArrayBufferView::from_uint8_array(encoded)
   let source = @websys.AllowSharedBufferSource::from_array_buffer_view(buf)
   let decode_opts = @websys.TextDecodeOptions::default()
-  let decoded = decoder.decode_with_options(source, decode_opts).unwrap()
+  let decoded = decoder.decode_with_options(source, decode_opts)
   assert_eq(decoded, "Hello, World!", label="round-trip")
 
   // TextDecoder with fatal option — Web API: new TextDecoder("utf-8", { fatal: true })
   let fatal_decoder = @websys.TextDecoder::new_with_options("utf-8", {
     fatal: Some(true),
     ignoreBOM: None,
-  }).unwrap()
+  })
   assert_true(fatal_decoder.get_fatal(), label="fatal decoder")
   println("  encoding: ok")
 }

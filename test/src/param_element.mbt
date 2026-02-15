@@ -16,5 +16,4 @@ fn test_param_element() -> Unit {
   assert_eq(param.get_value_type(), "ref", label="valueType")
   param.set_type("text/plain")
   assert_eq(param.get_type(), "text/plain", label="type")
-  println("  param_element: ok")
 }

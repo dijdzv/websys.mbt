@@ -196,31 +196,23 @@ pub extern "js" fn JsValue::to_intersection_observer(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum IntersectionObserverConstructorError {
-  RangeError(JsError)
-  SyntaxError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn IntersectionObserver::new(
   callback : IntersectionObserverCallback,
-) -> Result[IntersectionObserver, IntersectionObserverConstructorError] =
-  #| (callback) => (() => { try { return { $tag: 1, _0: new IntersectionObserver(callback) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> IntersectionObserver =
+  #| (callback) => new IntersectionObserver(callback)
 
 ///|
 extern "js" fn IntersectionObserver::new_with_options_ffi(
   callback : IntersectionObserverCallback,
   options : JsValue,
-) -> Result[IntersectionObserver, IntersectionObserverConstructorError] =
-  #| (callback, options) => (() => { try { return { $tag: 1, _0: new IntersectionObserver(callback, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> IntersectionObserver =
+  #| (callback, options) => new IntersectionObserver(callback, options)
 
 ///|
 pub fn IntersectionObserver::new_with_options(
   callback : IntersectionObserverCallback,
   options : IntersectionObserverInit,
-) -> Result[IntersectionObserver, IntersectionObserverConstructorError] {
+) -> IntersectionObserver {
   IntersectionObserver::new_with_options_ffi(callback, options.to_js())
 }
 

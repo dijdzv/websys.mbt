@@ -298,10 +298,10 @@ extern "js" fn XRRenderStateInit::to_js_ffi(
   self : XRRenderStateInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   depthNear: ((() => { const v = self.depthNear; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   depthFar: ((() => { const v = self.depthFar; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthNear: self.depthNear,
+  #|   depthFar: self.depthFar,
   #|   passthroughFullyObscured: (self.passthroughFullyObscured === -1 ? undefined : self.passthroughFullyObscured),
-  #|   inlineVerticalFieldOfView: ((() => { const v = self.inlineVerticalFieldOfView; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   inlineVerticalFieldOfView: self.inlineVerticalFieldOfView,
   #|   baseLayer: ((() => { const v = self.baseLayer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   layers: ((() => { const v = self.layers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
@@ -317,10 +317,10 @@ extern "js" fn XRRenderStateInit::from_js_ffi(
   value : JsValue,
 ) -> XRRenderStateInit =
   #| (v) => ({
-  #|   depthNear: (v.depthNear === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthNear }),
-  #|   depthFar: (v.depthFar === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthFar }),
+  #|   depthNear: v.depthNear,
+  #|   depthFar: v.depthFar,
   #|   passthroughFullyObscured: (v.passthroughFullyObscured === undefined ? -1 : v.passthroughFullyObscured),
-  #|   inlineVerticalFieldOfView: (v.inlineVerticalFieldOfView === undefined ? { $tag: 0 } : { $tag: 1, _0: v.inlineVerticalFieldOfView }),
+  #|   inlineVerticalFieldOfView: v.inlineVerticalFieldOfView,
   #|   baseLayer: (v.baseLayer === undefined ? { $tag: 0 } : v.baseLayer === null ? { $tag: 1 } : { $tag: 2, _0: v.baseLayer }),
   #|   layers: (v.layers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.layers })
   #| })
@@ -363,7 +363,7 @@ extern "js" fn XRWebGLLayerInit::to_js_ffi(self : XRWebGLLayerInit) -> JsValue =
   #|   stencil: (self.stencil === -1 ? undefined : self.stencil),
   #|   alpha: (self.alpha === -1 ? undefined : self.alpha),
   #|   ignoreDepthValues: (self.ignoreDepthValues === -1 ? undefined : self.ignoreDepthValues),
-  #|   framebufferScaleFactor: ((() => { const v = self.framebufferScaleFactor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   framebufferScaleFactor: self.framebufferScaleFactor
   #| })
 
 ///|
@@ -382,7 +382,7 @@ extern "js" fn XRWebGLLayerInit::from_js_ffi(
   #|   stencil: (v.stencil === undefined ? -1 : v.stencil),
   #|   alpha: (v.alpha === undefined ? -1 : v.alpha),
   #|   ignoreDepthValues: (v.ignoreDepthValues === undefined ? -1 : v.ignoreDepthValues),
-  #|   framebufferScaleFactor: (v.framebufferScaleFactor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.framebufferScaleFactor })
+  #|   framebufferScaleFactor: v.framebufferScaleFactor
   #| })
 
 ///|
@@ -770,62 +770,48 @@ pub extern "js" fn XRSystem::to_event_target(self : XRSystem) -> EventTarget =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum XRSystemIsSessionSupportedError {
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum XRSystemRequestSessionError {
-  SecurityError(JsError)
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn XRSystem::is_session_supported(
   self : XRSystem,
   mode : XRSessionMode,
-) -> Promise[Result[Bool, XRSystemIsSessionSupportedError]] =
-  #| (self, mode) => self.isSessionSupported(['inline', 'immersive-vr', 'immersive-ar'][mode]).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Bool] =
+  #| (self, mode) => self.isSessionSupported(['inline', 'immersive-vr', 'immersive-ar'][mode])
 
 ///|
 pub extern "js" fn XRSystem::request_session(
   self : XRSystem,
   mode : XRSessionMode,
-) -> Promise[Result[XRSession, XRSystemRequestSessionError]] =
-  #| (self, mode) => self.requestSession(['inline', 'immersive-vr', 'immersive-ar'][mode]).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[XRSession] =
+  #| (self, mode) => self.requestSession(['inline', 'immersive-vr', 'immersive-ar'][mode])
 
 ///|
 extern "js" fn XRSystem::request_session_with_options_ffi(
   self : XRSystem,
   mode : XRSessionMode,
   options : JsValue,
-) -> Promise[Result[XRSession, XRSystemRequestSessionError]] =
-  #| (self, mode, options) => self.requestSession(['inline', 'immersive-vr', 'immersive-ar'][mode], options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[XRSession] =
+  #| (self, mode, options) => self.requestSession(['inline', 'immersive-vr', 'immersive-ar'][mode], options)
 
 ///|
 pub fn XRSystem::request_session_with_options(
   self : XRSystem,
   mode : XRSessionMode,
   options : XRSessionInit,
-) -> Promise[Result[XRSession, XRSystemRequestSessionError]] {
+) -> Promise[XRSession] {
   XRSystem::request_session_with_options_ffi(self, mode, options.to_js())
 }
 
 ///|
-pub extern "js" fn XRSystem::set_ondevicechange(
+pub extern "js" fn XRSystem::get_ondevicechange(
   self : XRSystem,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ondevicechange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.ondevicechange
 
 ///|
-pub extern "js" fn XRSystem::clear_ondevicechange(self : XRSystem) -> Unit =
-  #| (self) => { self.ondevicechange = null }
+pub extern "js" fn XRSystem::set_ondevicechange(
+  self : XRSystem,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.ondevicechange = value }
 
 ///|
 /// XRSession interface
@@ -860,48 +846,6 @@ pub extern "js" fn XRSession::to_event_target(self : XRSession) -> EventTarget =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum XRSessionUpdateRenderStateError {
-  TypeError(JsError)
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum XRSessionRequestReferenceSpaceError {
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum XRSessionRequestHitTestSourceError {
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum XRSessionRequestHitTestSourceForTransientInputError {
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum XRSessionRequestLightProbeError {
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn XRSession::get_visibility_state(
   self : XRSession,
 ) -> XRVisibilityState =
@@ -909,7 +853,7 @@ pub extern "js" fn XRSession::get_visibility_state(
 
 ///|
 pub extern "js" fn XRSession::get_frame_rate(self : XRSession) -> Double? =
-  #| (self) => (() => { const v = self.frameRate; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.frameRate) ?? undefined
 
 ///|
 pub extern "js" fn XRSession::get_supported_frame_rates(
@@ -948,23 +892,21 @@ pub extern "js" fn XRSession::get_is_system_keyboard_supported(
   #| (self) => self.isSystemKeyboardSupported
 
 ///|
-pub extern "js" fn XRSession::update_render_state(
-  self : XRSession,
-) -> Result[Unit, XRSessionUpdateRenderStateError] =
-  #| (self) => (() => { try { self.updateRenderState(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+pub extern "js" fn XRSession::update_render_state(self : XRSession) -> Unit =
+  #| (self) => self.updateRenderState()
 
 ///|
 extern "js" fn XRSession::update_render_state_with_state_ffi(
   self : XRSession,
   state : JsValue,
-) -> Result[Unit, XRSessionUpdateRenderStateError] =
-  #| (self, state) => (() => { try { self.updateRenderState(state); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, state) => self.updateRenderState(state)
 
 ///|
 pub fn XRSession::update_render_state_with_state(
   self : XRSession,
   state : XRRenderStateInit,
-) -> Result[Unit, XRSessionUpdateRenderStateError] {
+) -> Unit {
   XRSession::update_render_state_with_state_ffi(self, state.to_js())
 }
 
@@ -979,8 +921,8 @@ pub extern "js" fn XRSession::update_target_frame_rate(
 pub extern "js" fn XRSession::request_reference_space(
   self : XRSession,
   type_ : XRReferenceSpaceType,
-) -> Promise[Result[XRReferenceSpace, XRSessionRequestReferenceSpaceError]] =
-  #| (self, type_) => self.requestReferenceSpace(['viewer', 'local', 'local-floor', 'bounded-floor', 'unbounded'][type_]).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[XRReferenceSpace] =
+  #| (self, type_) => self.requestReferenceSpace(['viewer', 'local', 'local-floor', 'bounded-floor', 'unbounded'][type_])
 
 ///|
 pub extern "js" fn XRSession::request_animation_frame(
@@ -1001,118 +943,159 @@ pub extern "js" fn XRSession::end(self : XRSession) -> Promise[Unit] =
   #| (self) => self.end()
 
 ///|
-pub extern "js" fn XRSession::set_onend(
-  self : XRSession,
-  handler : (XRSessionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onend = (e) => handler(e) }
+pub extern "js" fn XRSession::get_onend(self : XRSession) -> EventHandler =
+  #| (self) => self.onend
 
 ///|
-pub extern "js" fn XRSession::clear_onend(self : XRSession) -> Unit =
-  #| (self) => { self.onend = null }
+pub extern "js" fn XRSession::set_onend(
+  self : XRSession,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.onend = value }
+
+///|
+pub extern "js" fn XRSession::get_oninputsourceschange(
+  self : XRSession,
+) -> EventHandler =
+  #| (self) => self.oninputsourceschange
 
 ///|
 pub extern "js" fn XRSession::set_oninputsourceschange(
   self : XRSession,
-  handler : (XRInputSourcesChangeEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.oninputsourceschange = (e) => handler(e) }
+  #| (self, value) => { self.oninputsourceschange = value }
 
 ///|
-pub extern "js" fn XRSession::clear_oninputsourceschange(
-  self : XRSession,
-) -> Unit =
-  #| (self) => { self.oninputsourceschange = null }
+pub extern "js" fn XRSession::get_onselect(self : XRSession) -> EventHandler =
+  #| (self) => self.onselect
 
 ///|
 pub extern "js" fn XRSession::set_onselect(
   self : XRSession,
-  handler : (XRInputSourceEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onselect = (e) => handler(e) }
+  #| (self, value) => { self.onselect = value }
 
 ///|
-pub extern "js" fn XRSession::clear_onselect(self : XRSession) -> Unit =
-  #| (self) => { self.onselect = null }
+pub extern "js" fn XRSession::get_onselectstart(
+  self : XRSession,
+) -> EventHandler =
+  #| (self) => self.onselectstart
 
 ///|
 pub extern "js" fn XRSession::set_onselectstart(
   self : XRSession,
-  handler : (XRInputSourceEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onselectstart = (e) => handler(e) }
+  #| (self, value) => { self.onselectstart = value }
 
 ///|
-pub extern "js" fn XRSession::clear_onselectstart(self : XRSession) -> Unit =
-  #| (self) => { self.onselectstart = null }
+pub extern "js" fn XRSession::get_onselectend(self : XRSession) -> EventHandler =
+  #| (self) => self.onselectend
 
 ///|
 pub extern "js" fn XRSession::set_onselectend(
   self : XRSession,
-  handler : (XRInputSourceEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onselectend = (e) => handler(e) }
+  #| (self, value) => { self.onselectend = value }
 
 ///|
-pub extern "js" fn XRSession::clear_onselectend(self : XRSession) -> Unit =
-  #| (self) => { self.onselectend = null }
+pub extern "js" fn XRSession::get_onsqueeze(self : XRSession) -> EventHandler =
+  #| (self) => self.onsqueeze
 
 ///|
 pub extern "js" fn XRSession::set_onsqueeze(
   self : XRSession,
-  handler : (XRInputSourceEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsqueeze = (e) => handler(e) }
+  #| (self, value) => { self.onsqueeze = value }
 
 ///|
-pub extern "js" fn XRSession::clear_onsqueeze(self : XRSession) -> Unit =
-  #| (self) => { self.onsqueeze = null }
+pub extern "js" fn XRSession::get_onsqueezestart(
+  self : XRSession,
+) -> EventHandler =
+  #| (self) => self.onsqueezestart
 
 ///|
 pub extern "js" fn XRSession::set_onsqueezestart(
   self : XRSession,
-  handler : (XRInputSourceEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsqueezestart = (e) => handler(e) }
+  #| (self, value) => { self.onsqueezestart = value }
 
 ///|
-pub extern "js" fn XRSession::clear_onsqueezestart(self : XRSession) -> Unit =
-  #| (self) => { self.onsqueezestart = null }
+pub extern "js" fn XRSession::get_onsqueezeend(
+  self : XRSession,
+) -> EventHandler =
+  #| (self) => self.onsqueezeend
 
 ///|
 pub extern "js" fn XRSession::set_onsqueezeend(
   self : XRSession,
-  handler : (XRInputSourceEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsqueezeend = (e) => handler(e) }
+  #| (self, value) => { self.onsqueezeend = value }
 
 ///|
-pub extern "js" fn XRSession::clear_onsqueezeend(self : XRSession) -> Unit =
-  #| (self) => { self.onsqueezeend = null }
+pub extern "js" fn XRSession::get_onvisibilitychange(
+  self : XRSession,
+) -> EventHandler =
+  #| (self) => self.onvisibilitychange
 
 ///|
 pub extern "js" fn XRSession::set_onvisibilitychange(
   self : XRSession,
-  handler : (XRSessionEvent) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onvisibilitychange = (e) => handler(e) }
+  #| (self, value) => { self.onvisibilitychange = value }
 
 ///|
-pub extern "js" fn XRSession::clear_onvisibilitychange(
+pub extern "js" fn XRSession::get_onframeratechange(
   self : XRSession,
-) -> Unit =
-  #| (self) => { self.onvisibilitychange = null }
+) -> EventHandler =
+  #| (self) => self.onframeratechange
 
 ///|
 pub extern "js" fn XRSession::set_onframeratechange(
   self : XRSession,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onframeratechange = (e) => handler(e) }
+  #| (self, value) => { self.onframeratechange = value }
 
 ///|
-pub extern "js" fn XRSession::clear_onframeratechange(self : XRSession) -> Unit =
-  #| (self) => { self.onframeratechange = null }
+pub extern "js" fn XRSession::initiate_room_capture(
+  self : XRSession,
+) -> Promise[Unit] =
+  #| (self) => self.initiateRoomCapture()
+
+///|
+pub extern "js" fn XRSession::request_light_probe(
+  self : XRSession,
+) -> Promise[XRLightProbe] =
+  #| (self) => self.requestLightProbe()
+
+///|
+extern "js" fn XRSession::request_light_probe_with_options_ffi(
+  self : XRSession,
+  options : JsValue,
+) -> Promise[XRLightProbe] =
+  #| (self, options) => self.requestLightProbe(options)
+
+///|
+pub fn XRSession::request_light_probe_with_options(
+  self : XRSession,
+  options : XRLightProbeInit,
+) -> Promise[XRLightProbe] {
+  XRSession::request_light_probe_with_options_ffi(self, options.to_js())
+}
+
+///|
+pub extern "js" fn XRSession::get_preferred_reflection_format(
+  self : XRSession,
+) -> XRReflectionFormat =
+  #| (self) => ['srgba8', 'rgba16f'].indexOf(self.preferredReflectionFormat)
 
 ///|
 pub extern "js" fn XRSession::get_persistent_anchors(
@@ -1133,18 +1116,6 @@ pub extern "js" fn XRSession::delete_persistent_anchor(
   uuid : String,
 ) -> Promise[Unit] =
   #| (self, uuid) => self.deletePersistentAnchor(uuid)
-
-///|
-pub extern "js" fn XRSession::get_environment_blend_mode(
-  self : XRSession,
-) -> XREnvironmentBlendMode =
-  #| (self) => ['opaque', 'alpha-blend', 'additive'].indexOf(self.environmentBlendMode)
-
-///|
-pub extern "js" fn XRSession::get_interaction_mode(
-  self : XRSession,
-) -> XRInteractionMode =
-  #| (self) => ['screen-space', 'world-space'].indexOf(self.interactionMode)
 
 ///|
 pub extern "js" fn XRSession::get_depth_usage(self : XRSession) -> XRDepthUsage =
@@ -1173,23 +1144,29 @@ pub extern "js" fn XRSession::resume_depth_sensing(self : XRSession) -> Unit =
   #| (self) => self.resumeDepthSensing()
 
 ///|
-pub extern "js" fn XRSession::get_dom_overlay_state(
+pub extern "js" fn XRSession::get_environment_blend_mode(
   self : XRSession,
-) -> XRDOMOverlayState? =
-  #| (self) => (() => { const v = self.domOverlayState; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> XREnvironmentBlendMode =
+  #| (self) => ['opaque', 'alpha-blend', 'additive'].indexOf(self.environmentBlendMode)
+
+///|
+pub extern "js" fn XRSession::get_interaction_mode(
+  self : XRSession,
+) -> XRInteractionMode =
+  #| (self) => ['screen-space', 'world-space'].indexOf(self.interactionMode)
 
 ///|
 extern "js" fn XRSession::request_hit_test_source_ffi(
   self : XRSession,
   options : JsValue,
-) -> Promise[Result[XRHitTestSource, XRSessionRequestHitTestSourceError]] =
-  #| (self, options) => self.requestHitTestSource(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[XRHitTestSource] =
+  #| (self, options) => self.requestHitTestSource(options)
 
 ///|
 pub fn XRSession::request_hit_test_source(
   self : XRSession,
   options : XRHitTestOptionsInit,
-) -> Promise[Result[XRHitTestSource, XRSessionRequestHitTestSourceError]] {
+) -> Promise[XRHitTestSource] {
   XRSession::request_hit_test_source_ffi(self, options.to_js())
 }
 
@@ -1197,24 +1174,14 @@ pub fn XRSession::request_hit_test_source(
 extern "js" fn XRSession::request_hit_test_source_for_transient_input_ffi(
   self : XRSession,
   options : JsValue,
-) -> Promise[
-  Result[
-    XRTransientInputHitTestSource,
-    XRSessionRequestHitTestSourceForTransientInputError,
-  ],
-] =
-  #| (self, options) => self.requestHitTestSourceForTransientInput(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[XRTransientInputHitTestSource] =
+  #| (self, options) => self.requestHitTestSourceForTransientInput(options)
 
 ///|
 pub fn XRSession::request_hit_test_source_for_transient_input(
   self : XRSession,
   options : XRTransientInputHitTestOptionsInit,
-) -> Promise[
-  Result[
-    XRTransientInputHitTestSource,
-    XRSessionRequestHitTestSourceForTransientInputError,
-  ],
-] {
+) -> Promise[XRTransientInputHitTestSource] {
   XRSession::request_hit_test_source_for_transient_input_ffi(
     self,
     options.to_js(),
@@ -1222,41 +1189,10 @@ pub fn XRSession::request_hit_test_source_for_transient_input(
 }
 
 ///|
-pub extern "js" fn XRSession::request_light_probe(
+pub extern "js" fn XRSession::get_dom_overlay_state(
   self : XRSession,
-) -> Promise[Result[XRLightProbe, XRSessionRequestLightProbeError]] =
-  #| (self) => self.requestLightProbe().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
-
-///|
-extern "js" fn XRSession::request_light_probe_with_options_ffi(
-  self : XRSession,
-  options : JsValue,
-) -> Promise[Result[XRLightProbe, XRSessionRequestLightProbeError]] =
-  #| (self, options) => self.requestLightProbe(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
-
-///|
-pub fn XRSession::request_light_probe_with_options(
-  self : XRSession,
-  options : XRLightProbeInit,
-) -> Promise[Result[XRLightProbe, XRSessionRequestLightProbeError]] {
-  XRSession::request_light_probe_with_options_ffi(self, options.to_js())
-}
-
-///|
-pub extern "js" fn XRSession::get_preferred_reflection_format(
-  self : XRSession,
-) -> XRReflectionFormat =
-  #| (self) => ['srgba8', 'rgba16f'].indexOf(self.preferredReflectionFormat)
-
-///|
-pub extern "js" fn XRSession::initiate_room_capture(
-  self : XRSession,
-) -> Promise[Unit] =
-  #| (self) => self.initiateRoomCapture()
-
-///|
-pub extern "js" fn XRSession::get_max_render_layers(self : XRSession) -> Int =
-  #| (self) => self.maxRenderLayers
+) -> XRDOMOverlayState? =
+  #| (self) => (() => { const v = self.domOverlayState; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// XRRenderState interface
@@ -1310,7 +1246,7 @@ pub extern "js" fn XRRenderState::get_passthrough_fully_obscured(
 pub extern "js" fn XRRenderState::get_inline_vertical_field_of_view(
   self : XRRenderState,
 ) -> Double? =
-  #| (self) => (() => { const v = self.inlineVerticalFieldOfView; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.inlineVerticalFieldOfView) ?? undefined
 
 ///|
 pub extern "js" fn XRRenderState::get_base_layer(
@@ -1353,35 +1289,6 @@ pub extern "js" fn JsValue::to_xr_frame(self : JsValue) -> XRFrame =
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum XRFrameGetViewerPoseError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum XRFrameGetDepthInformationError {
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum XRFrameFillJointRadiiError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum XRFrameFillPosesError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn XRFrame::get_session(self : XRFrame) -> XRSession =
   #| (self) => self.session
 
@@ -1395,8 +1302,8 @@ pub extern "js" fn XRFrame::get_predicted_display_time(
 pub extern "js" fn XRFrame::get_viewer_pose(
   self : XRFrame,
   reference_space : XRReferenceSpace,
-) -> Result[XRViewerPose?, XRFrameGetViewerPoseError] =
-  #| (self, reference_space) => (() => { try { return { $tag: 1, _0: (() => { const v = self.getViewerPose(reference_space); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> XRViewerPose? =
+  #| (self, reference_space) => (() => { const v = self.getViewerPose(reference_space); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRFrame::get_pose(
@@ -1405,6 +1312,21 @@ pub extern "js" fn XRFrame::get_pose(
   base_space : XRSpace,
 ) -> XRPose? =
   #| (self, space, base_space) => (() => { const v = self.getPose(space, base_space); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn XRFrame::get_body(self : XRFrame) -> XRBody? =
+  #| (self) => (() => { const v = self.body; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn XRFrame::get_detected_planes(self : XRFrame) -> XRPlaneSet =
+  #| (self) => self.detectedPlanes
+
+///|
+pub extern "js" fn XRFrame::get_light_estimate(
+  self : XRFrame,
+  light_probe : XRLightProbe,
+) -> XRLightEstimate? =
+  #| (self, light_probe) => (() => { const v = self.getLightEstimate(light_probe); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRFrame::create_anchor(
@@ -1419,10 +1341,6 @@ pub extern "js" fn XRFrame::get_tracked_anchors(self : XRFrame) -> XRAnchorSet =
   #| (self) => self.trackedAnchors
 
 ///|
-pub extern "js" fn XRFrame::get_body(self : XRFrame) -> XRBody? =
-  #| (self) => (() => { const v = self.body; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
 pub extern "js" fn XRFrame::get_detected_meshes(self : XRFrame) -> XRMeshSet =
   #| (self) => self.detectedMeshes
 
@@ -1430,8 +1348,8 @@ pub extern "js" fn XRFrame::get_detected_meshes(self : XRFrame) -> XRMeshSet =
 pub extern "js" fn XRFrame::get_depth_information(
   self : XRFrame,
   view : XRView,
-) -> Result[XRCPUDepthInformation?, XRFrameGetDepthInformationError] =
-  #| (self, view) => (() => { try { return { $tag: 1, _0: (() => { const v = self.getDepthInformation(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> XRCPUDepthInformation? =
+  #| (self, view) => (() => { const v = self.getDepthInformation(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRFrame::get_joint_pose(
@@ -1446,8 +1364,8 @@ pub extern "js" fn XRFrame::fill_joint_radii(
   self : XRFrame,
   joint_spaces : Array[XRJointSpace],
   radii : Float32Array,
-) -> Result[Bool, XRFrameFillJointRadiiError] =
-  #| (self, joint_spaces, radii) => (() => { try { return { $tag: 1, _0: self.fillJointRadii(joint_spaces, radii) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Bool =
+  #| (self, joint_spaces, radii) => self.fillJointRadii(joint_spaces, radii)
 
 ///|
 pub extern "js" fn XRFrame::fill_poses(
@@ -1455,8 +1373,8 @@ pub extern "js" fn XRFrame::fill_poses(
   spaces : Array[XRSpace],
   base_space : XRSpace,
   transforms : Float32Array,
-) -> Result[Bool, XRFrameFillPosesError] =
-  #| (self, spaces, base_space, transforms) => (() => { try { return { $tag: 1, _0: self.fillPoses(spaces, base_space, transforms) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Bool =
+  #| (self, spaces, base_space, transforms) => self.fillPoses(spaces, base_space, transforms)
 
 ///|
 pub extern "js" fn XRFrame::get_hit_test_results(
@@ -1471,17 +1389,6 @@ pub extern "js" fn XRFrame::get_hit_test_results_for_transient_input(
   hit_test_source : XRTransientInputHitTestSource,
 ) -> Array[XRTransientInputHitTestResult] =
   #| (self, hit_test_source) => self.getHitTestResultsForTransientInput(hit_test_source)
-
-///|
-pub extern "js" fn XRFrame::get_light_estimate(
-  self : XRFrame,
-  light_probe : XRLightProbe,
-) -> XRLightEstimate? =
-  #| (self, light_probe) => (() => { const v = self.getLightEstimate(light_probe); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-pub extern "js" fn XRFrame::get_detected_planes(self : XRFrame) -> XRPlaneSet =
-  #| (self) => self.detectedPlanes
 
 ///|
 /// XRSpace interface
@@ -1520,10 +1427,6 @@ pub extern "js" fn XRSpace::as_xr_body_space(self : XRSpace) -> XRBodySpace? =
   #| (self) => (self instanceof XRBodySpace) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn XRSpace::as_xr_joint_space(self : XRSpace) -> XRJointSpace? =
-  #| (self) => (self instanceof XRJointSpace) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn XRSpace::as_xr_reference_space(
   self : XRSpace,
 ) -> XRReferenceSpace? =
@@ -1534,6 +1437,10 @@ pub extern "js" fn XRSpace::as_xr_bounded_reference_space(
   self : XRSpace,
 ) -> XRBoundedReferenceSpace? =
   #| (self) => (self instanceof XRBoundedReferenceSpace) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn XRSpace::as_xr_joint_space(self : XRSpace) -> XRJointSpace? =
+  #| (self) => (self instanceof XRJointSpace) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// XRReferenceSpace interface
@@ -1599,17 +1506,17 @@ pub extern "js" fn XRReferenceSpace::get_offset_reference_space(
   #| (self, origin_offset) => self.getOffsetReferenceSpace(origin_offset)
 
 ///|
-pub extern "js" fn XRReferenceSpace::set_onreset(
+pub extern "js" fn XRReferenceSpace::get_onreset(
   self : XRReferenceSpace,
-  handler : (XRReferenceSpaceEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onreset = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onreset
 
 ///|
-pub extern "js" fn XRReferenceSpace::clear_onreset(
+pub extern "js" fn XRReferenceSpace::set_onreset(
   self : XRReferenceSpace,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onreset = null }
+  #| (self, value) => { self.onreset = value }
 
 ///|
 /// XRBoundedReferenceSpace interface
@@ -1713,7 +1620,7 @@ pub extern "js" fn XRView::get_index(self : XRView) -> Int =
 pub extern "js" fn XRView::get_recommended_viewport_scale(
   self : XRView,
 ) -> Double? =
-  #| (self) => (() => { const v = self.recommendedViewportScale; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.recommendedViewportScale) ?? undefined
 
 ///|
 pub extern "js" fn XRView::request_viewport_scale(
@@ -1723,12 +1630,12 @@ pub extern "js" fn XRView::request_viewport_scale(
   #| (self, scale) => self.requestViewportScale(scale)
 
 ///|
-pub extern "js" fn XRView::get_camera(self : XRView) -> XRCamera? =
-  #| (self) => (() => { const v = self.camera; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
 pub extern "js" fn XRView::get_is_first_person_observer(self : XRView) -> Bool =
   #| (self) => self.isFirstPersonObserver
+
+///|
+pub extern "js" fn XRView::get_camera(self : XRView) -> XRCamera? =
+  #| (self) => (() => { const v = self.camera; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRView::get_projection_matrix(self : XRView) -> Float32Array =
@@ -1821,31 +1728,21 @@ pub extern "js" fn JsValue::to_xr_rigid_transform(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum XRRigidTransformConstructorError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn XRRigidTransform::new() -> Result[
-  XRRigidTransform,
-  XRRigidTransformConstructorError,
-] =
-  #| () => (() => { try { return { $tag: 1, _0: new XRRigidTransform() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn XRRigidTransform::new() -> XRRigidTransform =
+  #| () => new XRRigidTransform()
 
 ///|
 extern "js" fn XRRigidTransform::new_with_orientation_ffi(
   position : JsValue,
   orientation : JsValue,
-) -> Result[XRRigidTransform, XRRigidTransformConstructorError] =
-  #| (position, orientation) => (() => { try { return { $tag: 1, _0: new XRRigidTransform(position, orientation) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> XRRigidTransform =
+  #| (position, orientation) => new XRRigidTransform(position, orientation)
 
 ///|
 pub fn XRRigidTransform::new_with_orientation(
   position : DOMPointInit,
   orientation : DOMPointInit,
-) -> Result[XRRigidTransform, XRRigidTransformConstructorError] {
+) -> XRRigidTransform {
   XRRigidTransform::new_with_orientation_ffi(
     position.to_js(),
     orientation.to_js(),
@@ -1905,12 +1802,12 @@ pub extern "js" fn JsValue::to_xr_pose(self : JsValue) -> XRPose =
   #| (self) => self
 
 ///|
-pub extern "js" fn XRPose::as_xr_joint_pose(self : XRPose) -> XRJointPose? =
-  #| (self) => (self instanceof XRJointPose) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn XRPose::as_xr_viewer_pose(self : XRPose) -> XRViewerPose? =
   #| (self) => (self instanceof XRViewerPose) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn XRPose::as_xr_joint_pose(self : XRPose) -> XRJointPose? =
+  #| (self) => (self instanceof XRJointPose) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn XRPose::get_transform(self : XRPose) -> XRRigidTransform =
@@ -2041,12 +1938,12 @@ pub extern "js" fn XRInputSource::get_skip_rendering(
   #| (self) => self.skipRendering
 
 ///|
-pub extern "js" fn XRInputSource::get_gamepad(self : XRInputSource) -> Gamepad? =
-  #| (self) => (() => { const v = self.gamepad; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
 pub extern "js" fn XRInputSource::get_hand(self : XRInputSource) -> XRHand? =
   #| (self) => (() => { const v = self.hand; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn XRInputSource::get_gamepad(self : XRInputSource) -> Gamepad? =
+  #| (self) => (() => { const v = self.gamepad; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// XRInputSourceArray interface
@@ -2234,41 +2131,26 @@ pub extern "js" fn XRWebGLLayer::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum XRWebGLLayerConstructorError {
-  OperationError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum XRWebGLLayerGetViewportError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn XRWebGLLayer::new(
   session : XRSession,
   context : XRWebGLRenderingContext,
-) -> Result[XRWebGLLayer, XRWebGLLayerConstructorError] =
-  #| (session, context) => (() => { try { return { $tag: 1, _0: new XRWebGLLayer(session, context) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> XRWebGLLayer =
+  #| (session, context) => new XRWebGLLayer(session, context)
 
 ///|
 extern "js" fn XRWebGLLayer::new_with_layer_init_ffi(
   session : XRSession,
   context : XRWebGLRenderingContext,
   layer_init : JsValue,
-) -> Result[XRWebGLLayer, XRWebGLLayerConstructorError] =
-  #| (session, context, layer_init) => (() => { try { return { $tag: 1, _0: new XRWebGLLayer(session, context, layer_init) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> XRWebGLLayer =
+  #| (session, context, layer_init) => new XRWebGLLayer(session, context, layer_init)
 
 ///|
 pub fn XRWebGLLayer::new_with_layer_init(
   session : XRSession,
   context : XRWebGLRenderingContext,
   layer_init : XRWebGLLayerInit,
-) -> Result[XRWebGLLayer, XRWebGLLayerConstructorError] {
+) -> XRWebGLLayer {
   XRWebGLLayer::new_with_layer_init_ffi(session, context, layer_init.to_js())
 }
 
@@ -2286,7 +2168,7 @@ pub extern "js" fn XRWebGLLayer::get_ignore_depth_values(
 pub extern "js" fn XRWebGLLayer::get_fixed_foveation(
   self : XRWebGLLayer,
 ) -> Double? =
-  #| (self) => (() => { const v = self.fixedFoveation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.fixedFoveation) ?? undefined
 
 ///|
 pub extern "js" fn XRWebGLLayer::set_fixed_foveation(
@@ -2317,8 +2199,8 @@ pub extern "js" fn XRWebGLLayer::get_framebuffer_height(
 pub extern "js" fn XRWebGLLayer::get_viewport(
   self : XRWebGLLayer,
   view : XRView,
-) -> Result[XRViewport?, XRWebGLLayerGetViewportError] =
-  #| (self, view) => (() => { try { return { $tag: 1, _0: (() => { const v = self.getViewport(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> XRViewport? =
+  #| (self, view) => (() => { const v = self.getViewport(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRWebGLLayer::get_native_framebuffer_scale_factor(
@@ -2331,16 +2213,16 @@ pub extern "js" fn XRWebGLLayer::new_with_web_gl_rendering_context(
   session : XRSession,
   context : WebGLRenderingContext,
   layer_init : XRWebGLLayerInit,
-) -> Result[XRWebGLLayer, XRWebGLLayerConstructorError] =
-  #| (session, context, layer_init) => (() => { try { return { $tag: 1, _0: new XRWebGLLayer(session, context, layer_init) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> XRWebGLLayer =
+  #| (session, context, layer_init) => new XRWebGLLayer(session, context, layer_init)
 
 ///|
 pub extern "js" fn XRWebGLLayer::new_with_web_gl2_rendering_context(
   session : XRSession,
   context : WebGL2RenderingContext,
   layer_init : XRWebGLLayerInit,
-) -> Result[XRWebGLLayer, XRWebGLLayerConstructorError] =
-  #| (session, context, layer_init) => (() => { try { return { $tag: 1, _0: new XRWebGLLayer(session, context, layer_init) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> XRWebGLLayer =
+  #| (session, context, layer_init) => new XRWebGLLayer(session, context, layer_init)
 
 ///|
 /// XRSessionEvent interface

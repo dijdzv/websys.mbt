@@ -195,7 +195,7 @@ extern "js" fn DeviceMotionEventInit::to_js_ffi(
   #|   acceleration: ((() => { const v = self.acceleration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   accelerationIncludingGravity: ((() => { const v = self.accelerationIncludingGravity; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rotationRate: ((() => { const v = self.rotationRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   interval: ((() => { const v = self.interval; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   interval: self.interval
   #| })
 
 ///|
@@ -212,7 +212,7 @@ extern "js" fn DeviceMotionEventInit::from_js_ffi(
   #|   acceleration: (v.acceleration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.acceleration }),
   #|   accelerationIncludingGravity: (v.accelerationIncludingGravity === undefined ? { $tag: 0 } : { $tag: 1, _0: v.accelerationIncludingGravity }),
   #|   rotationRate: (v.rotationRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rotationRate }),
-  #|   interval: (v.interval === undefined ? { $tag: 0 } : { $tag: 1, _0: v.interval })
+  #|   interval: v.interval
   #| })
 
 ///|
@@ -266,13 +266,6 @@ pub extern "js" fn DeviceOrientationEvent::to_event(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum DeviceOrientationEventRequestPermissionError {
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn DeviceOrientationEvent::new(
   type_ : String,
 ) -> DeviceOrientationEvent =
@@ -300,19 +293,19 @@ pub fn DeviceOrientationEvent::new_with_event_init_dict(
 pub extern "js" fn DeviceOrientationEvent::get_alpha(
   self : DeviceOrientationEvent,
 ) -> Double? =
-  #| (self) => (() => { const v = self.alpha; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.alpha) ?? undefined
 
 ///|
 pub extern "js" fn DeviceOrientationEvent::get_beta(
   self : DeviceOrientationEvent,
 ) -> Double? =
-  #| (self) => (() => { const v = self.beta; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.beta) ?? undefined
 
 ///|
 pub extern "js" fn DeviceOrientationEvent::get_gamma(
   self : DeviceOrientationEvent,
 ) -> Double? =
-  #| (self) => (() => { const v = self.gamma; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.gamma) ?? undefined
 
 ///|
 pub extern "js" fn DeviceOrientationEvent::get_absolute(
@@ -322,17 +315,15 @@ pub extern "js" fn DeviceOrientationEvent::get_absolute(
 
 ///|
 pub extern "js" fn DeviceOrientationEvent::request_permission() -> Promise[
-  Result[PermissionState, DeviceOrientationEventRequestPermissionError],
+  PermissionState,
 ] =
-  #| () => DeviceOrientationEvent.requestPermission().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| () => DeviceOrientationEvent.requestPermission()
 
 ///|
 pub extern "js" fn DeviceOrientationEvent::request_permission_with_absolute(
   absolute : Bool,
-) -> Promise[
-  Result[PermissionState, DeviceOrientationEventRequestPermissionError],
-] =
-  #| (absolute) => DeviceOrientationEvent.requestPermission(absolute).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[PermissionState] =
+  #| (absolute) => DeviceOrientationEvent.requestPermission(absolute)
 
 ///|
 /// DeviceMotionEventAcceleration interface
@@ -376,19 +367,19 @@ pub extern "js" fn JsValue::to_device_motion_event_acceleration(
 pub extern "js" fn DeviceMotionEventAcceleration::get_x(
   self : DeviceMotionEventAcceleration,
 ) -> Double? =
-  #| (self) => (() => { const v = self.x; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.x) ?? undefined
 
 ///|
 pub extern "js" fn DeviceMotionEventAcceleration::get_y(
   self : DeviceMotionEventAcceleration,
 ) -> Double? =
-  #| (self) => (() => { const v = self.y; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.y) ?? undefined
 
 ///|
 pub extern "js" fn DeviceMotionEventAcceleration::get_z(
   self : DeviceMotionEventAcceleration,
 ) -> Double? =
-  #| (self) => (() => { const v = self.z; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.z) ?? undefined
 
 ///|
 /// DeviceMotionEventRotationRate interface
@@ -432,19 +423,19 @@ pub extern "js" fn JsValue::to_device_motion_event_rotation_rate(
 pub extern "js" fn DeviceMotionEventRotationRate::get_alpha(
   self : DeviceMotionEventRotationRate,
 ) -> Double? =
-  #| (self) => (() => { const v = self.alpha; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.alpha) ?? undefined
 
 ///|
 pub extern "js" fn DeviceMotionEventRotationRate::get_beta(
   self : DeviceMotionEventRotationRate,
 ) -> Double? =
-  #| (self) => (() => { const v = self.beta; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.beta) ?? undefined
 
 ///|
 pub extern "js" fn DeviceMotionEventRotationRate::get_gamma(
   self : DeviceMotionEventRotationRate,
 ) -> Double? =
-  #| (self) => (() => { const v = self.gamma; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.gamma) ?? undefined
 
 ///|
 /// DeviceMotionEvent interface
@@ -489,13 +480,6 @@ pub extern "js" fn DeviceMotionEvent::to_event(
   self : DeviceMotionEvent,
 ) -> Event =
   #| (self) => self
-
-///|
-/// Error type for throwing methods
-pub(all) enum DeviceMotionEventRequestPermissionError {
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
 
 ///|
 pub extern "js" fn DeviceMotionEvent::new(type_ : String) -> DeviceMotionEvent =
@@ -545,6 +529,6 @@ pub extern "js" fn DeviceMotionEvent::get_interval(
 
 ///|
 pub extern "js" fn DeviceMotionEvent::request_permission() -> Promise[
-  Result[PermissionState, DeviceMotionEventRequestPermissionError],
+  PermissionState,
 ] =
-  #| () => DeviceMotionEvent.requestPermission().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| () => DeviceMotionEvent.requestPermission()

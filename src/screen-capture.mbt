@@ -375,54 +375,6 @@ pub extern "js" fn CaptureController::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum CaptureControllerSetFocusBehaviorError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum CaptureControllerGetSupportedZoomLevelsError {
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum CaptureControllerIncreaseZoomLevelError {
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum CaptureControllerDecreaseZoomLevelError {
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum CaptureControllerResetZoomLevelError {
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum CaptureControllerForwardWheelError {
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn CaptureController::new() -> CaptureController =
   #| () => new CaptureController()
 
@@ -430,27 +382,14 @@ pub extern "js" fn CaptureController::new() -> CaptureController =
 pub extern "js" fn CaptureController::set_focus_behavior(
   self : CaptureController,
   focus_behavior : CaptureStartFocusBehavior,
-) -> Result[Unit, CaptureControllerSetFocusBehaviorError] =
-  #| (self, focus_behavior) => (() => { try { self.setFocusBehavior(['focus-capturing-application', 'focus-captured-surface', 'no-focus-change'][focus_behavior]); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn CaptureController::set_oncapturedmousechange(
-  self : CaptureController,
-  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, handler) => { self.oncapturedmousechange = (e) => handler(e) }
-
-///|
-pub extern "js" fn CaptureController::clear_oncapturedmousechange(
-  self : CaptureController,
-) -> Unit =
-  #| (self) => { self.oncapturedmousechange = null }
+  #| (self, focus_behavior) => self.setFocusBehavior(['focus-capturing-application', 'focus-captured-surface', 'no-focus-change'][focus_behavior])
 
 ///|
 pub extern "js" fn CaptureController::get_supported_zoom_levels(
   self : CaptureController,
-) -> Result[Array[Int], CaptureControllerGetSupportedZoomLevelsError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.getSupportedZoomLevels() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Array[Int] =
+  #| (self) => self.getSupportedZoomLevels()
 
 ///|
 pub extern "js" fn CaptureController::get_zoom_level(
@@ -461,37 +400,50 @@ pub extern "js" fn CaptureController::get_zoom_level(
 ///|
 pub extern "js" fn CaptureController::increase_zoom_level(
   self : CaptureController,
-) -> Promise[Result[Unit, CaptureControllerIncreaseZoomLevelError]] =
-  #| (self) => self.increaseZoomLevel().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.increaseZoomLevel()
 
 ///|
 pub extern "js" fn CaptureController::decrease_zoom_level(
   self : CaptureController,
-) -> Promise[Result[Unit, CaptureControllerDecreaseZoomLevelError]] =
-  #| (self) => self.decreaseZoomLevel().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.decreaseZoomLevel()
 
 ///|
 pub extern "js" fn CaptureController::reset_zoom_level(
   self : CaptureController,
-) -> Promise[Result[Unit, CaptureControllerResetZoomLevelError]] =
-  #| (self) => self.resetZoomLevel().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.resetZoomLevel()
+
+///|
+pub extern "js" fn CaptureController::get_onzoomlevelchange(
+  self : CaptureController,
+) -> EventHandler =
+  #| (self) => self.onzoomlevelchange
 
 ///|
 pub extern "js" fn CaptureController::set_onzoomlevelchange(
   self : CaptureController,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onzoomlevelchange = (e) => handler(e) }
-
-///|
-pub extern "js" fn CaptureController::clear_onzoomlevelchange(
-  self : CaptureController,
-) -> Unit =
-  #| (self) => { self.onzoomlevelchange = null }
+  #| (self, value) => { self.onzoomlevelchange = value }
 
 ///|
 pub extern "js" fn CaptureController::forward_wheel(
   self : CaptureController,
   element : HTMLElement?,
-) -> Promise[Result[Unit, CaptureControllerForwardWheelError]] =
-  #| (self, element) => self.forwardWheel((element.$tag === 1 ? element._0 : null)).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, element) => self.forwardWheel((element.$tag === 1 ? element._0 : null))
+
+///|
+pub extern "js" fn CaptureController::get_oncapturedmousechange(
+  self : CaptureController,
+) -> EventHandler =
+  #| (self) => self.oncapturedmousechange
+
+///|
+pub extern "js" fn CaptureController::set_oncapturedmousechange(
+  self : CaptureController,
+  value : EventHandler,
+) -> Unit =
+  #| (self, value) => { self.oncapturedmousechange = value }

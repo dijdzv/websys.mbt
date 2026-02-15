@@ -9,7 +9,7 @@ fn test_storage() -> Unit {
   storage.clear()
   assert_eq(storage.get_length(), 0, label="length after clear")
   // setItem / getItem
-  storage.set_item("key1", "value1").unwrap()
+  storage.set_item("key1", "value1")
   assert_eq(storage.get_length(), 1, label="length after set")
   let val = storage.get_item("key1")
   assert_true(val is Some(_), label="getItem returns Some")
@@ -24,7 +24,7 @@ fn test_storage() -> Unit {
   let k = storage.key(0)
   assert_true(k is Some(_), label="key(0) returns Some")
   // setItem another
-  storage.set_item("key2", "value2").unwrap()
+  storage.set_item("key2", "value2")
   assert_eq(storage.get_length(), 2, label="length after second set")
   // removeItem
   storage.remove_item("key1")
@@ -34,5 +34,4 @@ fn test_storage() -> Unit {
   // clear
   storage.clear()
   assert_eq(storage.get_length(), 0, label="length after final clear")
-  println("  storage: ok")
 }

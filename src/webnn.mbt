@@ -30,7 +30,7 @@ pub extern "js" fn MLNumber::is_double(self : MLNumber) -> Bool =
 ///|
 /// Try to get MLNumber as Double
 pub extern "js" fn MLNumber::as_double(self : MLNumber) -> Double? =
-  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
+  #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
 /// Flatten Option[MLNumber] to Double?
@@ -1319,7 +1319,7 @@ extern "js" fn MLBatchNormalizationOptions::to_js_ffi(
   #|   scale: ((() => { const v = self.scale; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   bias: ((() => { const v = self.bias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   axis: self.axis,
-  #|   epsilon: ((() => { const v = self.epsilon; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   epsilon: self.epsilon
   #| })
 
 ///|
@@ -1339,7 +1339,7 @@ extern "js" fn MLBatchNormalizationOptions::from_js_ffi(
   #|   scale: (v.scale === undefined ? { $tag: 0 } : { $tag: 1, _0: v.scale }),
   #|   bias: (v.bias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bias }),
   #|   axis: v.axis,
-  #|   epsilon: (v.epsilon === undefined ? { $tag: 0 } : { $tag: 1, _0: v.epsilon })
+  #|   epsilon: v.epsilon
   #| })
 
 ///|
@@ -1868,7 +1868,7 @@ pub fn MLEluOptions::default() -> MLEluOptions {
 extern "js" fn MLEluOptions::to_js_ffi(self : MLEluOptions) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   alpha: ((() => { const v = self.alpha; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   alpha: self.alpha
   #| })
 
 ///|
@@ -1881,7 +1881,7 @@ pub fn MLEluOptions::to_js(self : MLEluOptions) -> JsValue {
 extern "js" fn MLEluOptions::from_js_ffi(value : JsValue) -> MLEluOptions =
   #| (v) => ({
   #|   label: v.label,
-  #|   alpha: (v.alpha === undefined ? { $tag: 0 } : { $tag: 1, _0: v.alpha })
+  #|   alpha: v.alpha
   #| })
 
 ///|
@@ -2004,8 +2004,8 @@ extern "js" fn MLGemmOptions::to_js_ffi(self : MLGemmOptions) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   c: ((() => { const v = self.c; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   alpha: ((() => { const v = self.alpha; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   beta: ((() => { const v = self.beta; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   alpha: self.alpha,
+  #|   beta: self.beta,
   #|   aTranspose: (self.aTranspose === -1 ? undefined : self.aTranspose),
   #|   bTranspose: (self.bTranspose === -1 ? undefined : self.bTranspose)
   #| })
@@ -2021,8 +2021,8 @@ extern "js" fn MLGemmOptions::from_js_ffi(value : JsValue) -> MLGemmOptions =
   #| (v) => ({
   #|   label: v.label,
   #|   c: (v.c === undefined ? { $tag: 0 } : { $tag: 1, _0: v.c }),
-  #|   alpha: (v.alpha === undefined ? { $tag: 0 } : { $tag: 1, _0: v.alpha }),
-  #|   beta: (v.beta === undefined ? { $tag: 0 } : { $tag: 1, _0: v.beta }),
+  #|   alpha: v.alpha,
+  #|   beta: v.beta,
   #|   aTranspose: (v.aTranspose === undefined ? -1 : v.aTranspose),
   #|   bTranspose: (v.bTranspose === undefined ? -1 : v.bTranspose)
   #| })
@@ -2370,8 +2370,8 @@ extern "js" fn MLHardSigmoidOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   alpha: ((() => { const v = self.alpha; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   beta: ((() => { const v = self.beta; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   alpha: self.alpha,
+  #|   beta: self.beta
   #| })
 
 ///|
@@ -2386,8 +2386,8 @@ extern "js" fn MLHardSigmoidOptions::from_js_ffi(
 ) -> MLHardSigmoidOptions =
   #| (v) => ({
   #|   label: v.label,
-  #|   alpha: (v.alpha === undefined ? { $tag: 0 } : { $tag: 1, _0: v.alpha }),
-  #|   beta: (v.beta === undefined ? { $tag: 0 } : { $tag: 1, _0: v.beta })
+  #|   alpha: v.alpha,
+  #|   beta: v.beta
   #| })
 
 ///|
@@ -2426,7 +2426,7 @@ extern "js" fn MLInstanceNormalizationOptions::to_js_ffi(
   #|   label: self.label,
   #|   scale: ((() => { const v = self.scale; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   bias: ((() => { const v = self.bias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   epsilon: ((() => { const v = self.epsilon; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   epsilon: self.epsilon,
   #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['nchw', 'nhwc'][v]; })())
   #| })
 
@@ -2446,7 +2446,7 @@ extern "js" fn MLInstanceNormalizationOptions::from_js_ffi(
   #|   label: v.label,
   #|   scale: (v.scale === undefined ? { $tag: 0 } : { $tag: 1, _0: v.scale }),
   #|   bias: (v.bias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bias }),
-  #|   epsilon: (v.epsilon === undefined ? { $tag: 0 } : { $tag: 1, _0: v.epsilon }),
+  #|   epsilon: v.epsilon,
   #|   layout: (v.layout === undefined ? undefined : ['nchw', 'nhwc'].indexOf(v.layout))
   #| })
 
@@ -2547,7 +2547,7 @@ extern "js" fn MLLayerNormalizationOptions::to_js_ffi(
   #|   scale: ((() => { const v = self.scale; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   bias: ((() => { const v = self.bias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   axes: ((() => { const v = self.axes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   epsilon: ((() => { const v = self.epsilon; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   epsilon: self.epsilon
   #| })
 
 ///|
@@ -2567,7 +2567,7 @@ extern "js" fn MLLayerNormalizationOptions::from_js_ffi(
   #|   scale: (v.scale === undefined ? { $tag: 0 } : { $tag: 1, _0: v.scale }),
   #|   bias: (v.bias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bias }),
   #|   axes: (v.axes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.axes }),
-  #|   epsilon: (v.epsilon === undefined ? { $tag: 0 } : { $tag: 1, _0: v.epsilon })
+  #|   epsilon: v.epsilon
   #| })
 
 ///|
@@ -2597,7 +2597,7 @@ extern "js" fn MLLeakyReluOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   alpha: ((() => { const v = self.alpha; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   alpha: self.alpha
   #| })
 
 ///|
@@ -2612,7 +2612,7 @@ extern "js" fn MLLeakyReluOptions::from_js_ffi(
 ) -> MLLeakyReluOptions =
   #| (v) => ({
   #|   label: v.label,
-  #|   alpha: (v.alpha === undefined ? { $tag: 0 } : { $tag: 1, _0: v.alpha })
+  #|   alpha: v.alpha
   #| })
 
 ///|
@@ -2639,8 +2639,8 @@ pub fn MLLinearOptions::default() -> MLLinearOptions {
 extern "js" fn MLLinearOptions::to_js_ffi(self : MLLinearOptions) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   alpha: ((() => { const v = self.alpha; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   beta: ((() => { const v = self.beta; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   alpha: self.alpha,
+  #|   beta: self.beta
   #| })
 
 ///|
@@ -2653,8 +2653,8 @@ pub fn MLLinearOptions::to_js(self : MLLinearOptions) -> JsValue {
 extern "js" fn MLLinearOptions::from_js_ffi(value : JsValue) -> MLLinearOptions =
   #| (v) => ({
   #|   label: v.label,
-  #|   alpha: (v.alpha === undefined ? { $tag: 0 } : { $tag: 1, _0: v.alpha }),
-  #|   beta: (v.beta === undefined ? { $tag: 0 } : { $tag: 1, _0: v.beta })
+  #|   alpha: v.alpha,
+  #|   beta: v.beta
   #| })
 
 ///|

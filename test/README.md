@@ -2,20 +2,20 @@
 
 Playwright + Chromium headless で実ブラウザ上でバインディングの動作を検証する統合テスト。
 
+**テスト結果: 175/175 passed**（同期 169 + 非同期 6）
+
 ## セットアップ・実行
 
 ```bash
-# 初回セットアップ（プロジェクトルートから）
-just setup-test
+# 初回セットアップ
+cd test && bun install && bun run install:browser
 
 # ビルド＆テスト実行
-just test
+cd test && bun run test
 
-# テスト実行のみ（ビルド済みの場合）
-just test-run
-
-# テストのビルドのみ
-just build-test
+# ビルドのみ / テスト実行のみ
+cd test && moon build --target js
+cd test && bun run run.mjs
 ```
 
 ## 構成
@@ -26,7 +26,7 @@ test/
 ├── src/
 │   ├── moon.pkg.json   # is-main: true, JS ターゲット
 │   ├── main.mbt        # テストランナー + assert ヘルパー
-│   └── *.mbt           # テストファイル（85 ファイル、203 テスト関数）
+│   └── *.mbt           # テストファイル（80 ファイル、175 テスト関数）
 ├── index.html          # テスト実行用 HTML
 ├── run.mjs             # Playwright テストランナー
 ├── package.json
@@ -134,10 +134,3 @@ Rust web-sys にない追加テスト:
 | エラーケース | error_invalid_selector, error_null_returns, boundary_values, error_invalid_css, error_dom_exception | 例外・境界値 |
 | Streams | readable_stream, readable_stream_reader, writable_stream, transform_stream, stream_pipe_through | ReadableStream / WritableStream / TransformStream |
 | WebRTC 拡張 | rtc_data_channel, rtc_data_channel_with_init, rtc_ice_candidate, rtc_senders_receivers | RTCDataChannel / RTCIceCandidate |
-| Result Err | result_url_type_error, result_create_element_ns_error, result_append_child_hierarchy_error, result_insert_rule_syntax_error, result_insert_adjacent_html_error, result_set_attribute_error, result_error_message | エラーブランチ検証 |
-| Event Handler | event_handler_onclick, event_handler_onkeydown, event_handler_onfocus_onblur, event_handler_typed_event_properties | 型付きイベントハンドラ |
-| 型ナローイング | node_narrowing, element_narrowing, event_narrowing, from_js_value_opt, union_type_narrowing | as_* / from_js_value_opt |
-| Dictionary RT | dict_event_init_roundtrip, dict_mutation_observer_init_roundtrip, dict_keyboard_event_init_roundtrip | to_js→from_js ラウンドトリップ |
-| WebAudio | audio_context, oscillator_node, gain_node_and_connect | AudioContext / OscillatorNode / GainNode |
-| XMLHttpRequest | xhr_basic, xhr_response_type, xhr_event_handlers | XHR / Enum / EventHandler |
-| IndexedDB 拡張 | idb_key_range, idb_factory_cmp, idb_enums | IDBKeyRange / IDBFactory / Enum |

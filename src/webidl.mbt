@@ -636,8 +636,8 @@ extern "js" fn QuotaExceededErrorOptions::to_js_ffi(
   self : QuotaExceededErrorOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   quota: ((() => { const v = self.quota; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   requested: ((() => { const v = self.requested; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   quota: self.quota,
+  #|   requested: self.requested
   #| })
 
 ///|
@@ -653,8 +653,8 @@ extern "js" fn QuotaExceededErrorOptions::from_js_ffi(
   value : JsValue,
 ) -> QuotaExceededErrorOptions =
   #| (v) => ({
-  #|   quota: (v.quota === undefined ? { $tag: 0 } : { $tag: 1, _0: v.quota }),
-  #|   requested: (v.requested === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requested })
+  #|   quota: v.quota,
+  #|   requested: v.requested
   #| })
 
 ///|
@@ -710,31 +710,21 @@ pub extern "js" fn QuotaExceededError::to_dom_exception(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum QuotaExceededErrorConstructorError {
-  RangeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn QuotaExceededError::new() -> Result[
-  QuotaExceededError,
-  QuotaExceededErrorConstructorError,
-] =
-  #| () => (() => { try { return { $tag: 1, _0: new QuotaExceededError() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn QuotaExceededError::new() -> QuotaExceededError =
+  #| () => new QuotaExceededError()
 
 ///|
 extern "js" fn QuotaExceededError::new_with_options_ffi(
   message : String,
   options : JsValue,
-) -> Result[QuotaExceededError, QuotaExceededErrorConstructorError] =
-  #| (message, options) => (() => { try { return { $tag: 1, _0: new QuotaExceededError(message, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> QuotaExceededError =
+  #| (message, options) => new QuotaExceededError(message, options)
 
 ///|
 pub fn QuotaExceededError::new_with_options(
   message : String,
   options : QuotaExceededErrorOptions,
-) -> Result[QuotaExceededError, QuotaExceededErrorConstructorError] {
+) -> QuotaExceededError {
   QuotaExceededError::new_with_options_ffi(message, options.to_js())
 }
 
@@ -742,13 +732,13 @@ pub fn QuotaExceededError::new_with_options(
 pub extern "js" fn QuotaExceededError::get_quota(
   self : QuotaExceededError,
 ) -> Double? =
-  #| (self) => (() => { const v = self.quota; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.quota) ?? undefined
 
 ///|
 pub extern "js" fn QuotaExceededError::get_requested(
   self : QuotaExceededError,
 ) -> Double? =
-  #| (self) => (() => { const v = self.requested; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.requested) ?? undefined
 
 ///|
 /// DOMException interface
@@ -793,26 +783,26 @@ pub extern "js" fn DOMException::as_overconstrained_error(
   #| (self) => (self instanceof OverconstrainedError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn DOMException::as_gpu_pipeline_error(
-  self : DOMException,
-) -> GPUPipelineError? =
-  #| (self) => (self instanceof GPUPipelineError) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn DOMException::as_quota_exceeded_error(
   self : DOMException,
 ) -> QuotaExceededError? =
   #| (self) => (self instanceof QuotaExceededError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn DOMException::as_rtc_error(self : DOMException) -> RTCError? =
-  #| (self) => (self instanceof RTCError) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn DOMException::as_web_transport_error(
   self : DOMException,
 ) -> WebTransportError? =
   #| (self) => (self instanceof WebTransportError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn DOMException::as_rtc_error(self : DOMException) -> RTCError? =
+  #| (self) => (self instanceof RTCError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn DOMException::as_gpu_pipeline_error(
+  self : DOMException,
+) -> GPUPipelineError? =
+  #| (self) => (self instanceof GPUPipelineError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn DOMException::new() -> DOMException =

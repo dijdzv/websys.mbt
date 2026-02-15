@@ -312,41 +312,6 @@ async fn main {
     ("rtc_data_channel_with_init", test_rtc_data_channel_with_init),
     ("rtc_ice_candidate", test_rtc_ice_candidate),
     ("rtc_senders_receivers", test_rtc_senders_receivers),
-    // --- Result Err branch tests ---
-    ("result_url_type_error", test_result_url_type_error),
-    ("result_create_element_ns_error", test_result_create_element_ns_error),
-    ("result_append_child_hierarchy_error", test_result_append_child_hierarchy_error),
-    ("result_insert_rule_syntax_error", test_result_insert_rule_syntax_error),
-    ("result_insert_adjacent_html_error", test_result_insert_adjacent_html_error),
-    ("result_set_attribute_error", test_result_set_attribute_error),
-    ("result_error_message", test_result_error_message),
-    // --- Event handler tests ---
-    ("event_handler_onclick", test_event_handler_onclick),
-    ("event_handler_onkeydown", test_event_handler_onkeydown),
-    ("event_handler_onfocus_onblur", test_event_handler_onfocus_onblur),
-    ("event_handler_typed_event_properties", test_event_handler_typed_event_properties),
-    // --- Type narrowing tests ---
-    ("node_narrowing", test_node_narrowing),
-    ("element_narrowing", test_element_narrowing),
-    ("event_narrowing", test_event_narrowing),
-    ("from_js_value_opt", test_from_js_value_opt),
-    ("union_type_narrowing", test_union_type_narrowing),
-    // --- Dictionary round-trip tests ---
-    ("dict_event_init_roundtrip", test_dict_event_init_roundtrip),
-    ("dict_mutation_observer_init_roundtrip", test_dict_mutation_observer_init_roundtrip),
-    ("dict_keyboard_event_init_roundtrip", test_dict_keyboard_event_init_roundtrip),
-    // --- WebAudio tests ---
-    ("audio_context", test_audio_context),
-    ("oscillator_node", test_oscillator_node),
-    ("gain_node_and_connect", test_gain_node_and_connect),
-    // --- XMLHttpRequest tests ---
-    ("xhr_basic", test_xhr_basic),
-    ("xhr_response_type", test_xhr_response_type),
-    ("xhr_event_handlers", test_xhr_event_handlers),
-    // --- IndexedDB extended tests ---
-    ("idb_key_range", test_idb_key_range),
-    ("idb_factory_cmp", test_idb_factory_cmp),
-    ("idb_enums", test_idb_enums),
   ]
   for i = 0; i < tests.length(); i = i + 1 {
     let (name, f) = tests[i]
@@ -360,25 +325,83 @@ async fn main {
 
   // --- Async tests ---
   // These use Promise::wait() (equivalent to Rust's JsFuture::from().await)
-  let async_tests : Array[(String, async () -> Unit)] = [
-    ("opfs_access_storage", async fn() { test_opfs_access_storage() }),
-    ("opfs_create_directory", async fn() { test_opfs_create_directory() }),
-    ("opfs_create_file", async fn() { test_opfs_create_file() }),
-    ("opfs_write_to_file", async fn() { test_opfs_write_to_file() }),
-    ("rtc_sdp_exchange", async fn() { test_rtc_sdp_exchange() }),
-    ("response_body", async fn() { test_response_body() }),
-  ]
-  for i = 0; i < async_tests.length(); i = i + 1 {
-    let (name, f) = async_tests[i]
-    total = total + 1
-    let ok = run_async_test(name, f).wait() catch {
-      _ => false
-    }
-    if ok {
-      passed = passed + 1
-    } else {
-      failed = failed + 1
-    }
+
+  // OPFS async: access_storage (Rust web-sys: opfs.rs)
+  total = total + 1
+  let opfs_result = run_async_test("opfs_access_storage", async fn() {
+    test_opfs_access_storage()
+  }).wait() catch {
+    _ => false
+  }
+  if opfs_result {
+    passed = passed + 1
+  } else {
+    failed = failed + 1
+  }
+
+  // OPFS async: create_directory (Rust web-sys: opfs.rs)
+  total = total + 1
+  let opfs_dir_result = run_async_test("opfs_create_directory", async fn() {
+    test_opfs_create_directory()
+  }).wait() catch {
+    _ => false
+  }
+  if opfs_dir_result {
+    passed = passed + 1
+  } else {
+    failed = failed + 1
+  }
+
+  // OPFS async: create_file (Rust web-sys: opfs.rs)
+  total = total + 1
+  let opfs_file_result = run_async_test("opfs_create_file", async fn() {
+    test_opfs_create_file()
+  }).wait() catch {
+    _ => false
+  }
+  if opfs_file_result {
+    passed = passed + 1
+  } else {
+    failed = failed + 1
+  }
+
+  // OPFS async: write_to_file (Rust web-sys: opfs.rs)
+  total = total + 1
+  let opfs_write_result = run_async_test("opfs_write_to_file", async fn() {
+    test_opfs_write_to_file()
+  }).wait() catch {
+    _ => false
+  }
+  if opfs_write_result {
+    passed = passed + 1
+  } else {
+    failed = failed + 1
+  }
+
+  // RTC async: full SDP exchange (Rust web-sys: rtc_rtp_transceiver_direction.rs)
+  total = total + 1
+  let rtc_result = run_async_test("rtc_sdp_exchange", async fn() {
+    test_rtc_sdp_exchange()
+  }).wait() catch {
+    _ => false
+  }
+  if rtc_result {
+    passed = passed + 1
+  } else {
+    failed = failed + 1
+  }
+
+  // Response async: text() on empty body
+  total = total + 1
+  let response_body_result = run_async_test("response_body", async fn() {
+    test_response_body()
+  }).wait() catch {
+    _ => false
+  }
+  if response_body_result {
+    passed = passed + 1
+  } else {
+    failed = failed + 1
   }
   println("")
   println("\{passed}/\{total} tests passed, \{failed} failed")

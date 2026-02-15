@@ -2,50 +2,6 @@
 // Source: @webref/idl/webrtc-ice
 
 ///|
-/// RTCIceParameters dictionary
-pub(all) struct RTCIceParameters {
-  iceLite : Bool?
-  usernameFragment : String?
-  password : String?
-}
-
-///|
-/// Create a new RTCIceParameters with default values
-pub fn RTCIceParameters::default() -> RTCIceParameters {
-  RTCIceParameters::{ iceLite: None, usernameFragment: None, password: None }
-}
-
-///|
-extern "js" fn RTCIceParameters::to_js_ffi(self : RTCIceParameters) -> JsValue =
-  #| (self) => ({
-  #|   iceLite: (self.iceLite === -1 ? undefined : self.iceLite),
-  #|   usernameFragment: self.usernameFragment,
-  #|   password: self.password
-  #| })
-
-///|
-/// Convert to JsValue
-pub fn RTCIceParameters::to_js(self : RTCIceParameters) -> JsValue {
-  RTCIceParameters::to_js_ffi(self)
-}
-
-///|
-extern "js" fn RTCIceParameters::from_js_ffi(
-  value : JsValue,
-) -> RTCIceParameters =
-  #| (v) => ({
-  #|   iceLite: (v.iceLite === undefined ? -1 : v.iceLite),
-  #|   usernameFragment: v.usernameFragment,
-  #|   password: v.password
-  #| })
-
-///|
-/// Convert from JsValue
-pub fn RTCIceParameters::from_js(value : JsValue) -> RTCIceParameters {
-  RTCIceParameters::from_js_ffi(value)
-}
-
-///|
 /// RTCIceGatherOptions dictionary
 pub(all) struct RTCIceGatherOptions {
   gatherPolicy : RTCIceTransportPolicy?

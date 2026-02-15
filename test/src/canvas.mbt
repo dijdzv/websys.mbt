@@ -11,7 +11,7 @@ fn get_canvas_2d() -> @websys.CanvasRenderingContext2D {
   canvas.set_width(200)
   canvas.set_height(200)
   @websys.RenderingContext::bind_as_canvas_rendering_context_2d(
-    canvas.get_context("2d").unwrap(),
+    canvas.get_context("2d"),
   ).unwrap()
 }
 
@@ -131,16 +131,16 @@ pub fn test_canvas2d_image_data() -> Unit {
   let ctx = get_canvas_2d()
 
   // createImageData
-  let imgdata = ctx.create_image_data_with_sw_and_sh(10, 10).unwrap()
+  let imgdata = ctx.create_image_data_with_sw_and_sh(10, 10)
   assert_eq(imgdata.get_width(), 10, label="imageData width")
   assert_eq(imgdata.get_height(), 10, label="imageData height")
 
   // getImageData
-  let captured = ctx.get_image_data(0, 0, 5, 5).unwrap()
+  let captured = ctx.get_image_data(0, 0, 5, 5)
   assert_eq(captured.get_width(), 5, label="getImageData width")
   assert_eq(captured.get_height(), 5, label="getImageData height")
 
   // putImageData — should not throw
-  ctx.put_image_data(imgdata, 0, 0).unwrap()
+  ctx.put_image_data(imgdata, 0, 0)
   println("  canvas2d_image_data: ok")
 }

@@ -31,5 +31,4 @@ fn test_template_element() -> Unit {
     template.get_shadow_root_clonable(),
     label="shadowRootClonable set",
   )
-  println("  template_element: ok")
 }

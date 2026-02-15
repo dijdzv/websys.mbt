@@ -290,17 +290,17 @@ pub extern "js" fn PresentationRequest::get_availability(
   #| (self) => self.getAvailability()
 
 ///|
-pub extern "js" fn PresentationRequest::set_onconnectionavailable(
+pub extern "js" fn PresentationRequest::get_onconnectionavailable(
   self : PresentationRequest,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onconnectionavailable = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onconnectionavailable
 
 ///|
-pub extern "js" fn PresentationRequest::clear_onconnectionavailable(
+pub extern "js" fn PresentationRequest::set_onconnectionavailable(
   self : PresentationRequest,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onconnectionavailable = null }
+  #| (self, value) => { self.onconnectionavailable = value }
 
 ///|
 /// PresentationAvailability interface
@@ -353,17 +353,17 @@ pub extern "js" fn PresentationAvailability::get_value(
   #| (self) => self.value
 
 ///|
-pub extern "js" fn PresentationAvailability::set_onchange(
+pub extern "js" fn PresentationAvailability::get_onchange(
   self : PresentationAvailability,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onchange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onchange
 
 ///|
-pub extern "js" fn PresentationAvailability::clear_onchange(
+pub extern "js" fn PresentationAvailability::set_onchange(
   self : PresentationAvailability,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onchange = null }
+  #| (self, value) => { self.onchange = value }
 
 ///|
 /// PresentationConnectionAvailableEvent interface
@@ -505,43 +505,43 @@ pub extern "js" fn PresentationConnection::terminate(
   #| (self) => self.terminate()
 
 ///|
-pub extern "js" fn PresentationConnection::set_onconnect(
+pub extern "js" fn PresentationConnection::get_onconnect(
   self : PresentationConnection,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onconnect = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onconnect
 
 ///|
-pub extern "js" fn PresentationConnection::clear_onconnect(
+pub extern "js" fn PresentationConnection::set_onconnect(
   self : PresentationConnection,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onconnect = null }
+  #| (self, value) => { self.onconnect = value }
+
+///|
+pub extern "js" fn PresentationConnection::get_onclose(
+  self : PresentationConnection,
+) -> EventHandler =
+  #| (self) => self.onclose
 
 ///|
 pub extern "js" fn PresentationConnection::set_onclose(
   self : PresentationConnection,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onclose = (e) => handler(e) }
+  #| (self, value) => { self.onclose = value }
 
 ///|
-pub extern "js" fn PresentationConnection::clear_onclose(
+pub extern "js" fn PresentationConnection::get_onterminate(
   self : PresentationConnection,
-) -> Unit =
-  #| (self) => { self.onclose = null }
+) -> EventHandler =
+  #| (self) => self.onterminate
 
 ///|
 pub extern "js" fn PresentationConnection::set_onterminate(
   self : PresentationConnection,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onterminate = (e) => handler(e) }
-
-///|
-pub extern "js" fn PresentationConnection::clear_onterminate(
-  self : PresentationConnection,
-) -> Unit =
-  #| (self) => { self.onterminate = null }
+  #| (self, value) => { self.onterminate = value }
 
 ///|
 pub extern "js" fn PresentationConnection::get_binary_type(
@@ -557,17 +557,17 @@ pub extern "js" fn PresentationConnection::set_binary_type(
   #| (self, value) => { self.binaryType = ['blob', 'arraybuffer'][value] }
 
 ///|
-pub extern "js" fn PresentationConnection::set_onmessage(
+pub extern "js" fn PresentationConnection::get_onmessage(
   self : PresentationConnection,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onmessage = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onmessage
 
 ///|
-pub extern "js" fn PresentationConnection::clear_onmessage(
+pub extern "js" fn PresentationConnection::set_onmessage(
   self : PresentationConnection,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onmessage = null }
+  #| (self, value) => { self.onmessage = value }
 
 ///|
 pub extern "js" fn PresentationConnection::send(
@@ -854,14 +854,14 @@ pub extern "js" fn PresentationConnectionList::get_connections(
   #| (self) => self.connections
 
 ///|
-pub extern "js" fn PresentationConnectionList::set_onconnectionavailable(
+pub extern "js" fn PresentationConnectionList::get_onconnectionavailable(
   self : PresentationConnectionList,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onconnectionavailable = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onconnectionavailable
 
 ///|
-pub extern "js" fn PresentationConnectionList::clear_onconnectionavailable(
+pub extern "js" fn PresentationConnectionList::set_onconnectionavailable(
   self : PresentationConnectionList,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onconnectionavailable = null }
+  #| (self, value) => { self.onconnectionavailable = value }

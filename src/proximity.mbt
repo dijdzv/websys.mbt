@@ -70,11 +70,11 @@ pub fn ProximitySensor::new_with_sensor_options(
 pub extern "js" fn ProximitySensor::get_distance(
   self : ProximitySensor,
 ) -> Double? =
-  #| (self) => (() => { const v = self.distance; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.distance) ?? undefined
 
 ///|
 pub extern "js" fn ProximitySensor::get_max(self : ProximitySensor) -> Double? =
-  #| (self) => (() => { const v = self.max; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.max) ?? undefined
 
 ///|
 pub extern "js" fn ProximitySensor::get_near(self : ProximitySensor) -> Bool? =

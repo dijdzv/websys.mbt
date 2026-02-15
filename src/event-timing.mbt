@@ -2,64 +2,6 @@
 // Source: @webref/idl/event-timing
 
 ///|
-/// PerformanceObserverInit dictionary
-pub(all) struct PerformanceObserverInit {
-  durationThreshold : DOMHighResTimeStamp?
-  entryTypes : Array[String]?
-  type_ : String?
-  buffered : Bool?
-}
-
-///|
-/// Create a new PerformanceObserverInit with default values
-pub fn PerformanceObserverInit::default() -> PerformanceObserverInit {
-  PerformanceObserverInit::{
-    durationThreshold: None,
-    entryTypes: None,
-    type_: None,
-    buffered: None,
-  }
-}
-
-///|
-extern "js" fn PerformanceObserverInit::to_js_ffi(
-  self : PerformanceObserverInit,
-) -> JsValue =
-  #| (self) => ({
-  #|   durationThreshold: ((() => { const v = self.durationThreshold; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   entryTypes: ((() => { const v = self.entryTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   type: self.type_,
-  #|   buffered: (self.buffered === -1 ? undefined : self.buffered)
-  #| })
-
-///|
-/// Convert to JsValue
-pub fn PerformanceObserverInit::to_js(
-  self : PerformanceObserverInit,
-) -> JsValue {
-  PerformanceObserverInit::to_js_ffi(self)
-}
-
-///|
-extern "js" fn PerformanceObserverInit::from_js_ffi(
-  value : JsValue,
-) -> PerformanceObserverInit =
-  #| (v) => ({
-  #|   durationThreshold: (v.durationThreshold === undefined ? { $tag: 0 } : { $tag: 1, _0: v.durationThreshold }),
-  #|   entryTypes: (v.entryTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.entryTypes }),
-  #|   type_: v.type,
-  #|   buffered: (v.buffered === undefined ? -1 : v.buffered)
-  #| })
-
-///|
-/// Convert from JsValue
-pub fn PerformanceObserverInit::from_js(
-  value : JsValue,
-) -> PerformanceObserverInit {
-  PerformanceObserverInit::from_js_ffi(value)
-}
-
-///|
 /// PerformanceEventTiming interface
 pub type PerformanceEventTiming
 

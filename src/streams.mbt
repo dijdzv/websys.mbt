@@ -787,7 +787,7 @@ pub fn QueuingStrategy::default() -> QueuingStrategy {
 ///|
 extern "js" fn QueuingStrategy::to_js_ffi(self : QueuingStrategy) -> JsValue =
   #| (self) => ({
-  #|   highWaterMark: ((() => { const v = self.highWaterMark; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   highWaterMark: self.highWaterMark,
   #|   size: ((() => { const v = self.size; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -800,7 +800,7 @@ pub fn QueuingStrategy::to_js(self : QueuingStrategy) -> JsValue {
 ///|
 extern "js" fn QueuingStrategy::from_js_ffi(value : JsValue) -> QueuingStrategy =
   #| (v) => ({
-  #|   highWaterMark: (v.highWaterMark === undefined ? { $tag: 0 } : { $tag: 1, _0: v.highWaterMark }),
+  #|   highWaterMark: v.highWaterMark,
   #|   size: (v.size === undefined ? { $tag: 0 } : { $tag: 1, _0: v.size })
   #| })
 
@@ -893,82 +893,29 @@ pub extern "js" fn ReadableStream::as_web_transport_receive_stream(
   #| (self) => (self instanceof WebTransportReceiveStream) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamConstructorError {
-  RangeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamFromError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamCancelError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamGetReaderError {
-  TypeError(JsError)
-  RangeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamPipeThroughError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamPipeToError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamTeeError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn ReadableStream::new() -> Result[
-  ReadableStream,
-  ReadableStreamConstructorError,
-] =
-  #| () => (() => { try { return { $tag: 1, _0: new ReadableStream() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn ReadableStream::new() -> ReadableStream =
+  #| () => new ReadableStream()
 
 ///|
 extern "js" fn ReadableStream::new_with_strategy_ffi(
   underlying_source : JsValue,
   strategy : JsValue,
-) -> Result[ReadableStream, ReadableStreamConstructorError] =
-  #| (underlying_source, strategy) => (() => { try { return { $tag: 1, _0: new ReadableStream(underlying_source, strategy) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ReadableStream =
+  #| (underlying_source, strategy) => new ReadableStream(underlying_source, strategy)
 
 ///|
 pub fn ReadableStream::new_with_strategy(
   underlying_source : JsValue,
   strategy : QueuingStrategy,
-) -> Result[ReadableStream, ReadableStreamConstructorError] {
+) -> ReadableStream {
   ReadableStream::new_with_strategy_ffi(underlying_source, strategy.to_js())
 }
 
 ///|
 pub extern "js" fn ReadableStream::from(
   async_iterable : JsValue,
-) -> Result[ReadableStream, ReadableStreamFromError] =
-  #| (async_iterable) => (() => { try { return { $tag: 1, _0: ReadableStream.from(async_iterable) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ReadableStream =
+  #| (async_iterable) => ReadableStream.from(async_iterable)
 
 ///|
 pub extern "js" fn ReadableStream::get_locked(self : ReadableStream) -> Bool =
@@ -977,34 +924,34 @@ pub extern "js" fn ReadableStream::get_locked(self : ReadableStream) -> Bool =
 ///|
 pub extern "js" fn ReadableStream::cancel(
   self : ReadableStream,
-) -> Promise[Result[Unit, ReadableStreamCancelError]] =
-  #| (self) => self.cancel().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.cancel()
 
 ///|
 pub extern "js" fn ReadableStream::cancel_with_reason(
   self : ReadableStream,
   reason : JsValue,
-) -> Promise[Result[Unit, ReadableStreamCancelError]] =
-  #| (self, reason) => self.cancel(reason).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, reason) => self.cancel(reason)
 
 ///|
 pub extern "js" fn ReadableStream::get_reader(
   self : ReadableStream,
-) -> Result[ReadableStreamReader, ReadableStreamGetReaderError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.getReader() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> ReadableStreamReader =
+  #| (self) => self.getReader()
 
 ///|
 extern "js" fn ReadableStream::get_reader_with_options_ffi(
   self : ReadableStream,
   options : JsValue,
-) -> Result[ReadableStreamReader, ReadableStreamGetReaderError] =
-  #| (self, options) => (() => { try { return { $tag: 1, _0: self.getReader(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> ReadableStreamReader =
+  #| (self, options) => self.getReader(options)
 
 ///|
 pub fn ReadableStream::get_reader_with_options(
   self : ReadableStream,
   options : ReadableStreamGetReaderOptions,
-) -> Result[ReadableStreamReader, ReadableStreamGetReaderError] {
+) -> ReadableStreamReader {
   ReadableStream::get_reader_with_options_ffi(self, options.to_js())
 }
 
@@ -1012,14 +959,14 @@ pub fn ReadableStream::get_reader_with_options(
 extern "js" fn ReadableStream::pipe_through_ffi(
   self : ReadableStream,
   transform : JsValue,
-) -> Result[ReadableStream, ReadableStreamPipeThroughError] =
-  #| (self, transform) => (() => { try { return { $tag: 1, _0: self.pipeThrough(transform) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ReadableStream =
+  #| (self, transform) => self.pipeThrough(transform)
 
 ///|
 pub fn ReadableStream::pipe_through(
   self : ReadableStream,
   transform : ReadableWritablePair,
-) -> Result[ReadableStream, ReadableStreamPipeThroughError] {
+) -> ReadableStream {
   ReadableStream::pipe_through_ffi(self, transform.to_js())
 }
 
@@ -1028,15 +975,15 @@ extern "js" fn ReadableStream::pipe_through_with_options_ffi(
   self : ReadableStream,
   transform : JsValue,
   options : JsValue,
-) -> Result[ReadableStream, ReadableStreamPipeThroughError] =
-  #| (self, transform, options) => (() => { try { return { $tag: 1, _0: self.pipeThrough(transform, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ReadableStream =
+  #| (self, transform, options) => self.pipeThrough(transform, options)
 
 ///|
 pub fn ReadableStream::pipe_through_with_options(
   self : ReadableStream,
   transform : ReadableWritablePair,
   options : StreamPipeOptions,
-) -> Result[ReadableStream, ReadableStreamPipeThroughError] {
+) -> ReadableStream {
   ReadableStream::pipe_through_with_options_ffi(
     self,
     transform.to_js(),
@@ -1048,31 +995,31 @@ pub fn ReadableStream::pipe_through_with_options(
 pub extern "js" fn ReadableStream::pipe_to(
   self : ReadableStream,
   destination : WritableStream,
-) -> Promise[Result[Unit, ReadableStreamPipeToError]] =
-  #| (self, destination) => self.pipeTo(destination).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, destination) => self.pipeTo(destination)
 
 ///|
 extern "js" fn ReadableStream::pipe_to_with_options_ffi(
   self : ReadableStream,
   destination : WritableStream,
   options : JsValue,
-) -> Promise[Result[Unit, ReadableStreamPipeToError]] =
-  #| (self, destination, options) => self.pipeTo(destination, options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, destination, options) => self.pipeTo(destination, options)
 
 ///|
 pub fn ReadableStream::pipe_to_with_options(
   self : ReadableStream,
   destination : WritableStream,
   options : StreamPipeOptions,
-) -> Promise[Result[Unit, ReadableStreamPipeToError]] {
+) -> Promise[Unit] {
   ReadableStream::pipe_to_with_options_ffi(self, destination, options.to_js())
 }
 
 ///|
 pub extern "js" fn ReadableStream::tee(
   self : ReadableStream,
-) -> Result[Array[ReadableStream], ReadableStreamTeeError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.tee() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Array[ReadableStream] =
+  #| (self) => self.tee()
 
 ///|
 pub extern "js" fn ReadableStream::keys(self : ReadableStream) -> JsValue =
@@ -1125,58 +1072,25 @@ pub extern "js" fn JsValue::to_readable_stream_default_reader(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamDefaultReaderConstructorError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamDefaultReaderReadError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamDefaultReaderReleaseLockError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamDefaultReaderCancelError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn ReadableStreamDefaultReader::new(
   stream : ReadableStream,
-) -> Result[
-  ReadableStreamDefaultReader,
-  ReadableStreamDefaultReaderConstructorError,
-] =
-  #| (stream) => (() => { try { return { $tag: 1, _0: new ReadableStreamDefaultReader(stream) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ReadableStreamDefaultReader =
+  #| (stream) => new ReadableStreamDefaultReader(stream)
 
 ///|
 pub extern "js" fn ReadableStreamDefaultReader::read(
   self : ReadableStreamDefaultReader,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamDefaultReaderReadError],
-] =
+) -> Promise[ReadableStreamReadResult] =
   #| (self) => self.read().then(v => ({
   #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
   #|   done: (v.done === undefined ? -1 : v.done)
-  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| }))
 
 ///|
 pub extern "js" fn ReadableStreamDefaultReader::release_lock(
   self : ReadableStreamDefaultReader,
-) -> Result[Unit, ReadableStreamDefaultReaderReleaseLockError] =
-  #| (self) => (() => { try { self.releaseLock(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.releaseLock()
 
 ///|
 pub extern "js" fn ReadableStreamDefaultReader::get_closed(
@@ -1187,15 +1101,15 @@ pub extern "js" fn ReadableStreamDefaultReader::get_closed(
 ///|
 pub extern "js" fn ReadableStreamDefaultReader::cancel(
   self : ReadableStreamDefaultReader,
-) -> Promise[Result[Unit, ReadableStreamDefaultReaderCancelError]] =
-  #| (self) => self.cancel().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.cancel()
 
 ///|
 pub extern "js" fn ReadableStreamDefaultReader::cancel_with_reason(
   self : ReadableStreamDefaultReader,
   reason : JsValue,
-) -> Promise[Result[Unit, ReadableStreamDefaultReaderCancelError]] =
-  #| (self, reason) => self.cancel(reason).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, reason) => self.cancel(reason)
 
 ///|
 /// ReadableStreamBYOBReader interface
@@ -1236,81 +1150,46 @@ pub extern "js" fn JsValue::to_readable_stream_byob_reader(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamBYOBReaderConstructorError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamBYOBReaderReadError {
-  TypeError(JsError)
-  RangeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamBYOBReaderReleaseLockError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamBYOBReaderCancelError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn ReadableStreamBYOBReader::new(
   stream : ReadableStream,
-) -> Result[ReadableStreamBYOBReader, ReadableStreamBYOBReaderConstructorError] =
-  #| (stream) => (() => { try { return { $tag: 1, _0: new ReadableStreamBYOBReader(stream) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> ReadableStreamBYOBReader =
+  #| (stream) => new ReadableStreamBYOBReader(stream)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::read(
   self : ReadableStreamBYOBReader,
   view : ArrayBufferView,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
+) -> Promise[ReadableStreamReadResult] =
   #| (self, view) => self.read(view).then(v => ({
   #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
   #|   done: (v.done === undefined ? -1 : v.done)
-  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| }))
 
 ///|
 extern "js" fn ReadableStreamBYOBReader::read_with_options_ffi(
   self : ReadableStreamBYOBReader,
   view : ArrayBufferView,
   options : JsValue,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
+) -> Promise[ReadableStreamReadResult] =
   #| (self, view, options) => self.read(view, options).then(v => ({
   #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
   #|   done: (v.done === undefined ? -1 : v.done)
-  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| }))
 
 ///|
 pub fn ReadableStreamBYOBReader::read_with_options(
   self : ReadableStreamBYOBReader,
   view : ArrayBufferView,
   options : ReadableStreamBYOBReaderReadOptions,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] {
+) -> Promise[ReadableStreamReadResult] {
   ReadableStreamBYOBReader::read_with_options_ffi(self, view, options.to_js())
 }
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::release_lock(
   self : ReadableStreamBYOBReader,
-) -> Result[Unit, ReadableStreamBYOBReaderReleaseLockError] =
-  #| (self) => (() => { try { self.releaseLock(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.releaseLock()
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::get_closed(
@@ -1321,145 +1200,119 @@ pub extern "js" fn ReadableStreamBYOBReader::get_closed(
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::cancel(
   self : ReadableStreamBYOBReader,
-) -> Promise[Result[Unit, ReadableStreamBYOBReaderCancelError]] =
-  #| (self) => self.cancel().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.cancel()
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::cancel_with_reason(
   self : ReadableStreamBYOBReader,
   reason : JsValue,
-) -> Promise[Result[Unit, ReadableStreamBYOBReaderCancelError]] =
-  #| (self, reason) => self.cancel(reason).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, reason) => self.cancel(reason)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::read_with_int8_array(
   self : ReadableStreamBYOBReader,
   view : Int8Array,
   options : ReadableStreamBYOBReaderReadOptions,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[ReadableStreamReadResult] =
+  #| (self, view, options) => self.read(view, options)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::read_with_int16_array(
   self : ReadableStreamBYOBReader,
   view : Int16Array,
   options : ReadableStreamBYOBReaderReadOptions,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[ReadableStreamReadResult] =
+  #| (self, view, options) => self.read(view, options)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::read_with_int32_array(
   self : ReadableStreamBYOBReader,
   view : Int32Array,
   options : ReadableStreamBYOBReaderReadOptions,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[ReadableStreamReadResult] =
+  #| (self, view, options) => self.read(view, options)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::read_with_uint8_array(
   self : ReadableStreamBYOBReader,
   view : Uint8Array,
   options : ReadableStreamBYOBReaderReadOptions,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[ReadableStreamReadResult] =
+  #| (self, view, options) => self.read(view, options)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::read_with_uint16_array(
   self : ReadableStreamBYOBReader,
   view : Uint16Array,
   options : ReadableStreamBYOBReaderReadOptions,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[ReadableStreamReadResult] =
+  #| (self, view, options) => self.read(view, options)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::read_with_uint32_array(
   self : ReadableStreamBYOBReader,
   view : Uint32Array,
   options : ReadableStreamBYOBReaderReadOptions,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[ReadableStreamReadResult] =
+  #| (self, view, options) => self.read(view, options)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::read_with_uint8_clamped_array(
   self : ReadableStreamBYOBReader,
   view : Uint8ClampedArray,
   options : ReadableStreamBYOBReaderReadOptions,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[ReadableStreamReadResult] =
+  #| (self, view, options) => self.read(view, options)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::read_with_big_int64_array(
   self : ReadableStreamBYOBReader,
   view : BigInt64Array,
   options : ReadableStreamBYOBReaderReadOptions,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[ReadableStreamReadResult] =
+  #| (self, view, options) => self.read(view, options)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::read_with_big_uint64_array(
   self : ReadableStreamBYOBReader,
   view : BigUint64Array,
   options : ReadableStreamBYOBReaderReadOptions,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[ReadableStreamReadResult] =
+  #| (self, view, options) => self.read(view, options)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::read_with_float16_array(
   self : ReadableStreamBYOBReader,
   view : Float16Array,
   options : ReadableStreamBYOBReaderReadOptions,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[ReadableStreamReadResult] =
+  #| (self, view, options) => self.read(view, options)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::read_with_float32_array(
   self : ReadableStreamBYOBReader,
   view : Float32Array,
   options : ReadableStreamBYOBReaderReadOptions,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[ReadableStreamReadResult] =
+  #| (self, view, options) => self.read(view, options)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::read_with_float64_array(
   self : ReadableStreamBYOBReader,
   view : Float64Array,
   options : ReadableStreamBYOBReaderReadOptions,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[ReadableStreamReadResult] =
+  #| (self, view, options) => self.read(view, options)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::read_with_data_view(
   self : ReadableStreamBYOBReader,
   view : DataView,
   options : ReadableStreamBYOBReaderReadOptions,
-) -> Promise[
-  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+) -> Promise[ReadableStreamReadResult] =
+  #| (self, view, options) => self.read(view, options)
 
 ///|
 /// ReadableStreamDefaultController interface
@@ -1500,63 +1353,42 @@ pub extern "js" fn JsValue::to_readable_stream_default_controller(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamDefaultControllerCloseError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamDefaultControllerEnqueueError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamDefaultControllerErrorError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn ReadableStreamDefaultController::get_desired_size(
   self : ReadableStreamDefaultController,
 ) -> Double? =
-  #| (self) => (() => { const v = self.desiredSize; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.desiredSize) ?? undefined
 
 ///|
 pub extern "js" fn ReadableStreamDefaultController::close(
   self : ReadableStreamDefaultController,
-) -> Result[Unit, ReadableStreamDefaultControllerCloseError] =
-  #| (self) => (() => { try { self.close(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.close()
 
 ///|
 pub extern "js" fn ReadableStreamDefaultController::enqueue(
   self : ReadableStreamDefaultController,
-) -> Result[Unit, ReadableStreamDefaultControllerEnqueueError] =
-  #| (self) => (() => { try { self.enqueue(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.enqueue()
 
 ///|
 pub extern "js" fn ReadableStreamDefaultController::enqueue_with_chunk(
   self : ReadableStreamDefaultController,
   chunk : JsValue,
-) -> Result[Unit, ReadableStreamDefaultControllerEnqueueError] =
-  #| (self, chunk) => (() => { try { self.enqueue(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, chunk) => self.enqueue(chunk)
 
 ///|
 pub extern "js" fn ReadableStreamDefaultController::error(
   self : ReadableStreamDefaultController,
-) -> Result[Unit, ReadableStreamDefaultControllerErrorError] =
-  #| (self) => (() => { try { self.error(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.error()
 
 ///|
 pub extern "js" fn ReadableStreamDefaultController::error_with_e(
   self : ReadableStreamDefaultController,
   e : JsValue,
-) -> Result[Unit, ReadableStreamDefaultControllerErrorError] =
-  #| (self, e) => (() => { try { self.error(e); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, e) => self.error(e)
 
 ///|
 /// ReadableByteStreamController interface
@@ -1597,27 +1429,6 @@ pub extern "js" fn JsValue::to_readable_byte_stream_controller(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum ReadableByteStreamControllerCloseError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableByteStreamControllerEnqueueError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableByteStreamControllerErrorError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn ReadableByteStreamController::get_byob_request(
   self : ReadableByteStreamController,
 ) -> ReadableStreamBYOBRequest? =
@@ -1627,124 +1438,124 @@ pub extern "js" fn ReadableByteStreamController::get_byob_request(
 pub extern "js" fn ReadableByteStreamController::get_desired_size(
   self : ReadableByteStreamController,
 ) -> Double? =
-  #| (self) => (() => { const v = self.desiredSize; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.desiredSize) ?? undefined
 
 ///|
 pub extern "js" fn ReadableByteStreamController::close(
   self : ReadableByteStreamController,
-) -> Result[Unit, ReadableByteStreamControllerCloseError] =
-  #| (self) => (() => { try { self.close(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.close()
 
 ///|
 pub extern "js" fn ReadableByteStreamController::enqueue(
   self : ReadableByteStreamController,
   chunk : ArrayBufferView,
-) -> Result[Unit, ReadableByteStreamControllerEnqueueError] =
-  #| (self, chunk) => (() => { try { self.enqueue(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, chunk) => self.enqueue(chunk)
 
 ///|
 pub extern "js" fn ReadableByteStreamController::error(
   self : ReadableByteStreamController,
-) -> Result[Unit, ReadableByteStreamControllerErrorError] =
-  #| (self) => (() => { try { self.error(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.error()
 
 ///|
 pub extern "js" fn ReadableByteStreamController::error_with_e(
   self : ReadableByteStreamController,
   e : JsValue,
-) -> Result[Unit, ReadableByteStreamControllerErrorError] =
-  #| (self, e) => (() => { try { self.error(e); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, e) => self.error(e)
 
 ///|
 pub extern "js" fn ReadableByteStreamController::enqueue_with_int8_array(
   self : ReadableByteStreamController,
   chunk : Int8Array,
-) -> Result[Unit, ReadableByteStreamControllerEnqueueError] =
-  #| (self, chunk) => (() => { try { self.enqueue(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, chunk) => self.enqueue(chunk)
 
 ///|
 pub extern "js" fn ReadableByteStreamController::enqueue_with_int16_array(
   self : ReadableByteStreamController,
   chunk : Int16Array,
-) -> Result[Unit, ReadableByteStreamControllerEnqueueError] =
-  #| (self, chunk) => (() => { try { self.enqueue(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, chunk) => self.enqueue(chunk)
 
 ///|
 pub extern "js" fn ReadableByteStreamController::enqueue_with_int32_array(
   self : ReadableByteStreamController,
   chunk : Int32Array,
-) -> Result[Unit, ReadableByteStreamControllerEnqueueError] =
-  #| (self, chunk) => (() => { try { self.enqueue(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, chunk) => self.enqueue(chunk)
 
 ///|
 pub extern "js" fn ReadableByteStreamController::enqueue_with_uint8_array(
   self : ReadableByteStreamController,
   chunk : Uint8Array,
-) -> Result[Unit, ReadableByteStreamControllerEnqueueError] =
-  #| (self, chunk) => (() => { try { self.enqueue(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, chunk) => self.enqueue(chunk)
 
 ///|
 pub extern "js" fn ReadableByteStreamController::enqueue_with_uint16_array(
   self : ReadableByteStreamController,
   chunk : Uint16Array,
-) -> Result[Unit, ReadableByteStreamControllerEnqueueError] =
-  #| (self, chunk) => (() => { try { self.enqueue(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, chunk) => self.enqueue(chunk)
 
 ///|
 pub extern "js" fn ReadableByteStreamController::enqueue_with_uint32_array(
   self : ReadableByteStreamController,
   chunk : Uint32Array,
-) -> Result[Unit, ReadableByteStreamControllerEnqueueError] =
-  #| (self, chunk) => (() => { try { self.enqueue(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, chunk) => self.enqueue(chunk)
 
 ///|
 pub extern "js" fn ReadableByteStreamController::enqueue_with_uint8_clamped_array(
   self : ReadableByteStreamController,
   chunk : Uint8ClampedArray,
-) -> Result[Unit, ReadableByteStreamControllerEnqueueError] =
-  #| (self, chunk) => (() => { try { self.enqueue(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, chunk) => self.enqueue(chunk)
 
 ///|
 pub extern "js" fn ReadableByteStreamController::enqueue_with_big_int64_array(
   self : ReadableByteStreamController,
   chunk : BigInt64Array,
-) -> Result[Unit, ReadableByteStreamControllerEnqueueError] =
-  #| (self, chunk) => (() => { try { self.enqueue(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, chunk) => self.enqueue(chunk)
 
 ///|
 pub extern "js" fn ReadableByteStreamController::enqueue_with_big_uint64_array(
   self : ReadableByteStreamController,
   chunk : BigUint64Array,
-) -> Result[Unit, ReadableByteStreamControllerEnqueueError] =
-  #| (self, chunk) => (() => { try { self.enqueue(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, chunk) => self.enqueue(chunk)
 
 ///|
 pub extern "js" fn ReadableByteStreamController::enqueue_with_float16_array(
   self : ReadableByteStreamController,
   chunk : Float16Array,
-) -> Result[Unit, ReadableByteStreamControllerEnqueueError] =
-  #| (self, chunk) => (() => { try { self.enqueue(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, chunk) => self.enqueue(chunk)
 
 ///|
 pub extern "js" fn ReadableByteStreamController::enqueue_with_float32_array(
   self : ReadableByteStreamController,
   chunk : Float32Array,
-) -> Result[Unit, ReadableByteStreamControllerEnqueueError] =
-  #| (self, chunk) => (() => { try { self.enqueue(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, chunk) => self.enqueue(chunk)
 
 ///|
 pub extern "js" fn ReadableByteStreamController::enqueue_with_float64_array(
   self : ReadableByteStreamController,
   chunk : Float64Array,
-) -> Result[Unit, ReadableByteStreamControllerEnqueueError] =
-  #| (self, chunk) => (() => { try { self.enqueue(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, chunk) => self.enqueue(chunk)
 
 ///|
 pub extern "js" fn ReadableByteStreamController::enqueue_with_data_view(
   self : ReadableByteStreamController,
   chunk : DataView,
-) -> Result[Unit, ReadableByteStreamControllerEnqueueError] =
-  #| (self, chunk) => (() => { try { self.enqueue(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, chunk) => self.enqueue(chunk)
 
 ///|
 /// ReadableStreamBYOBRequest interface
@@ -1785,21 +1596,6 @@ pub extern "js" fn JsValue::to_readable_stream_byob_request(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamBYOBRequestRespondError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ReadableStreamBYOBRequestRespondWithNewViewError {
-  TypeError(JsError)
-  RangeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn ReadableStreamBYOBRequest::get_view(
   self : ReadableStreamBYOBRequest,
 ) -> ArrayBufferView? =
@@ -1809,106 +1605,106 @@ pub extern "js" fn ReadableStreamBYOBRequest::get_view(
 pub extern "js" fn ReadableStreamBYOBRequest::respond(
   self : ReadableStreamBYOBRequest,
   bytes_written : Int64,
-) -> Result[Unit, ReadableStreamBYOBRequestRespondError] =
-  #| (self, bytes_written) => (() => { try { self.respond((bytes_written.hi * 4294967296 + bytes_written.lo)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, bytes_written) => self.respond((bytes_written.hi * 4294967296 + bytes_written.lo))
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::respond_with_new_view(
   self : ReadableStreamBYOBRequest,
   view : ArrayBufferView,
-) -> Result[Unit, ReadableStreamBYOBRequestRespondWithNewViewError] =
-  #| (self, view) => (() => { try { self.respondWithNewView(view); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, view) => self.respondWithNewView(view)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::respond_with_new_view_with_int8_array(
   self : ReadableStreamBYOBRequest,
   view : Int8Array,
-) -> Result[Unit, ReadableStreamBYOBRequestRespondWithNewViewError] =
-  #| (self, view) => (() => { try { self.respondWithNewView(view); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, view) => self.respondWithNewView(view)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::respond_with_new_view_with_int16_array(
   self : ReadableStreamBYOBRequest,
   view : Int16Array,
-) -> Result[Unit, ReadableStreamBYOBRequestRespondWithNewViewError] =
-  #| (self, view) => (() => { try { self.respondWithNewView(view); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, view) => self.respondWithNewView(view)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::respond_with_new_view_with_int32_array(
   self : ReadableStreamBYOBRequest,
   view : Int32Array,
-) -> Result[Unit, ReadableStreamBYOBRequestRespondWithNewViewError] =
-  #| (self, view) => (() => { try { self.respondWithNewView(view); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, view) => self.respondWithNewView(view)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::respond_with_new_view_with_uint8_array(
   self : ReadableStreamBYOBRequest,
   view : Uint8Array,
-) -> Result[Unit, ReadableStreamBYOBRequestRespondWithNewViewError] =
-  #| (self, view) => (() => { try { self.respondWithNewView(view); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, view) => self.respondWithNewView(view)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::respond_with_new_view_with_uint16_array(
   self : ReadableStreamBYOBRequest,
   view : Uint16Array,
-) -> Result[Unit, ReadableStreamBYOBRequestRespondWithNewViewError] =
-  #| (self, view) => (() => { try { self.respondWithNewView(view); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, view) => self.respondWithNewView(view)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::respond_with_new_view_with_uint32_array(
   self : ReadableStreamBYOBRequest,
   view : Uint32Array,
-) -> Result[Unit, ReadableStreamBYOBRequestRespondWithNewViewError] =
-  #| (self, view) => (() => { try { self.respondWithNewView(view); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, view) => self.respondWithNewView(view)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::respond_with_new_view_with_uint8_clamped_array(
   self : ReadableStreamBYOBRequest,
   view : Uint8ClampedArray,
-) -> Result[Unit, ReadableStreamBYOBRequestRespondWithNewViewError] =
-  #| (self, view) => (() => { try { self.respondWithNewView(view); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, view) => self.respondWithNewView(view)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::respond_with_new_view_with_big_int64_array(
   self : ReadableStreamBYOBRequest,
   view : BigInt64Array,
-) -> Result[Unit, ReadableStreamBYOBRequestRespondWithNewViewError] =
-  #| (self, view) => (() => { try { self.respondWithNewView(view); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, view) => self.respondWithNewView(view)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::respond_with_new_view_with_big_uint64_array(
   self : ReadableStreamBYOBRequest,
   view : BigUint64Array,
-) -> Result[Unit, ReadableStreamBYOBRequestRespondWithNewViewError] =
-  #| (self, view) => (() => { try { self.respondWithNewView(view); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, view) => self.respondWithNewView(view)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::respond_with_new_view_with_float16_array(
   self : ReadableStreamBYOBRequest,
   view : Float16Array,
-) -> Result[Unit, ReadableStreamBYOBRequestRespondWithNewViewError] =
-  #| (self, view) => (() => { try { self.respondWithNewView(view); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, view) => self.respondWithNewView(view)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::respond_with_new_view_with_float32_array(
   self : ReadableStreamBYOBRequest,
   view : Float32Array,
-) -> Result[Unit, ReadableStreamBYOBRequestRespondWithNewViewError] =
-  #| (self, view) => (() => { try { self.respondWithNewView(view); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, view) => self.respondWithNewView(view)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::respond_with_new_view_with_float64_array(
   self : ReadableStreamBYOBRequest,
   view : Float64Array,
-) -> Result[Unit, ReadableStreamBYOBRequestRespondWithNewViewError] =
-  #| (self, view) => (() => { try { self.respondWithNewView(view); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, view) => self.respondWithNewView(view)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::respond_with_new_view_with_data_view(
   self : ReadableStreamBYOBRequest,
   view : DataView,
-) -> Result[Unit, ReadableStreamBYOBRequestRespondWithNewViewError] =
-  #| (self, view) => (() => { try { self.respondWithNewView(view); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, view) => self.respondWithNewView(view)
 
 ///|
 /// WritableStream interface
@@ -1947,12 +1743,6 @@ pub extern "js" fn JsValue::to_writable_stream(
   #| (self) => self
 
 ///|
-pub extern "js" fn WritableStream::as_file_system_writable_file_stream(
-  self : WritableStream,
-) -> FileSystemWritableFileStream? =
-  #| (self) => (self instanceof FileSystemWritableFileStream) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn WritableStream::as_web_transport_datagrams_writable(
   self : WritableStream,
 ) -> WebTransportDatagramsWritable? =
@@ -1965,25 +1755,10 @@ pub extern "js" fn WritableStream::as_web_transport_send_stream(
   #| (self) => (self instanceof WebTransportSendStream) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum WritableStreamAbortError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WritableStreamCloseError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WritableStreamGetWriterError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
+pub extern "js" fn WritableStream::as_file_system_writable_file_stream(
+  self : WritableStream,
+) -> FileSystemWritableFileStream? =
+  #| (self) => (self instanceof FileSystemWritableFileStream) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn WritableStream::new() -> WritableStream =
@@ -2011,27 +1786,27 @@ pub extern "js" fn WritableStream::get_locked(self : WritableStream) -> Bool =
 ///|
 pub extern "js" fn WritableStream::abort(
   self : WritableStream,
-) -> Promise[Result[Unit, WritableStreamAbortError]] =
-  #| (self) => self.abort().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.abort()
 
 ///|
 pub extern "js" fn WritableStream::abort_with_reason(
   self : WritableStream,
   reason : JsValue,
-) -> Promise[Result[Unit, WritableStreamAbortError]] =
-  #| (self, reason) => self.abort(reason).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, reason) => self.abort(reason)
 
 ///|
 pub extern "js" fn WritableStream::close(
   self : WritableStream,
-) -> Promise[Result[Unit, WritableStreamCloseError]] =
-  #| (self) => self.close().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.close()
 
 ///|
 pub extern "js" fn WritableStream::get_writer(
   self : WritableStream,
-) -> Result[WritableStreamDefaultWriter, WritableStreamGetWriterError] =
-  #| (self) => (() => { try { return { $tag: 1, _0: self.getWriter() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> WritableStreamDefaultWriter =
+  #| (self) => self.getWriter()
 
 ///|
 /// WritableStreamDefaultWriter interface
@@ -2078,41 +1853,10 @@ pub extern "js" fn WritableStreamDefaultWriter::as_web_transport_writer(
   #| (self) => (self instanceof WebTransportWriter) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum WritableStreamDefaultWriterConstructorError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WritableStreamDefaultWriterAbortError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WritableStreamDefaultWriterCloseError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum WritableStreamDefaultWriterWriteError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn WritableStreamDefaultWriter::new(
   stream : WritableStream,
-) -> Result[
-  WritableStreamDefaultWriter,
-  WritableStreamDefaultWriterConstructorError,
-] =
-  #| (stream) => (() => { try { return { $tag: 1, _0: new WritableStreamDefaultWriter(stream) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> WritableStreamDefaultWriter =
+  #| (stream) => new WritableStreamDefaultWriter(stream)
 
 ///|
 pub extern "js" fn WritableStreamDefaultWriter::get_closed(
@@ -2124,7 +1868,7 @@ pub extern "js" fn WritableStreamDefaultWriter::get_closed(
 pub extern "js" fn WritableStreamDefaultWriter::get_desired_size(
   self : WritableStreamDefaultWriter,
 ) -> Double? =
-  #| (self) => (() => { const v = self.desiredSize; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.desiredSize) ?? undefined
 
 ///|
 pub extern "js" fn WritableStreamDefaultWriter::get_ready(
@@ -2135,21 +1879,21 @@ pub extern "js" fn WritableStreamDefaultWriter::get_ready(
 ///|
 pub extern "js" fn WritableStreamDefaultWriter::abort(
   self : WritableStreamDefaultWriter,
-) -> Promise[Result[Unit, WritableStreamDefaultWriterAbortError]] =
-  #| (self) => self.abort().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.abort()
 
 ///|
 pub extern "js" fn WritableStreamDefaultWriter::abort_with_reason(
   self : WritableStreamDefaultWriter,
   reason : JsValue,
-) -> Promise[Result[Unit, WritableStreamDefaultWriterAbortError]] =
-  #| (self, reason) => self.abort(reason).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, reason) => self.abort(reason)
 
 ///|
 pub extern "js" fn WritableStreamDefaultWriter::close(
   self : WritableStreamDefaultWriter,
-) -> Promise[Result[Unit, WritableStreamDefaultWriterCloseError]] =
-  #| (self) => self.close().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.close()
 
 ///|
 pub extern "js" fn WritableStreamDefaultWriter::release_lock(
@@ -2160,15 +1904,15 @@ pub extern "js" fn WritableStreamDefaultWriter::release_lock(
 ///|
 pub extern "js" fn WritableStreamDefaultWriter::write(
   self : WritableStreamDefaultWriter,
-) -> Promise[Result[Unit, WritableStreamDefaultWriterWriteError]] =
-  #| (self) => self.write().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self) => self.write()
 
 ///|
 pub extern "js" fn WritableStreamDefaultWriter::write_with_chunk(
   self : WritableStreamDefaultWriter,
   chunk : JsValue,
-) -> Promise[Result[Unit, WritableStreamDefaultWriterWriteError]] =
-  #| (self, chunk) => self.write(chunk).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, chunk) => self.write(chunk)
 
 ///|
 /// WritableStreamDefaultController interface
@@ -2209,13 +1953,6 @@ pub extern "js" fn JsValue::to_writable_stream_default_controller(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum WritableStreamDefaultControllerErrorError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn WritableStreamDefaultController::get_signal(
   self : WritableStreamDefaultController,
 ) -> AbortSignal =
@@ -2224,15 +1961,15 @@ pub extern "js" fn WritableStreamDefaultController::get_signal(
 ///|
 pub extern "js" fn WritableStreamDefaultController::error(
   self : WritableStreamDefaultController,
-) -> Result[Unit, WritableStreamDefaultControllerErrorError] =
-  #| (self) => (() => { try { self.error(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.error()
 
 ///|
 pub extern "js" fn WritableStreamDefaultController::error_with_e(
   self : WritableStreamDefaultController,
   e : JsValue,
-) -> Result[Unit, WritableStreamDefaultControllerErrorError] =
-  #| (self, e) => (() => { try { self.error(e); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, e) => self.error(e)
 
 ///|
 /// TransformStream interface
@@ -2348,30 +2085,23 @@ pub extern "js" fn JsValue::to_transform_stream_default_controller(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum TransformStreamDefaultControllerEnqueueError {
-  TypeError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn TransformStreamDefaultController::get_desired_size(
   self : TransformStreamDefaultController,
 ) -> Double? =
-  #| (self) => (() => { const v = self.desiredSize; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.desiredSize) ?? undefined
 
 ///|
 pub extern "js" fn TransformStreamDefaultController::enqueue(
   self : TransformStreamDefaultController,
-) -> Result[Unit, TransformStreamDefaultControllerEnqueueError] =
-  #| (self) => (() => { try { self.enqueue(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self) => self.enqueue()
 
 ///|
 pub extern "js" fn TransformStreamDefaultController::enqueue_with_chunk(
   self : TransformStreamDefaultController,
   chunk : JsValue,
-) -> Result[Unit, TransformStreamDefaultControllerEnqueueError] =
-  #| (self, chunk) => (() => { try { self.enqueue(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, chunk) => self.enqueue(chunk)
 
 ///|
 pub extern "js" fn TransformStreamDefaultController::error(

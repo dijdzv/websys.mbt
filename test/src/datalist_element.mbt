@@ -17,5 +17,4 @@ fn test_datalist_element() -> Unit {
   datalist.to_node().append_child(opt1.to_node()) |> ignore
   datalist.to_node().append_child(opt2.to_node()) |> ignore
   assert_eq(datalist.get_options().get_length(), 2, label="options after add")
-  println("  datalist_element: ok")
 }

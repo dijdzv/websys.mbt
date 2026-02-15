@@ -122,35 +122,15 @@ pub extern "js" fn ScreenOrientation::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum ScreenOrientationLockError {
-  AbortError(JsError)
-  SecurityError(JsError)
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ScreenOrientationUnlockError {
-  SecurityError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn ScreenOrientation::lock(
   self : ScreenOrientation,
   orientation : OrientationLockType,
-) -> Promise[Result[Unit, ScreenOrientationLockError]] =
-  #| (self, orientation) => self.lock(['any', 'natural', 'landscape', 'portrait', 'portrait-primary', 'portrait-secondary', 'landscape-primary', 'landscape-secondary'][orientation]).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+) -> Promise[Unit] =
+  #| (self, orientation) => self.lock(['any', 'natural', 'landscape', 'portrait', 'portrait-primary', 'portrait-secondary', 'landscape-primary', 'landscape-secondary'][orientation])
 
 ///|
-pub extern "js" fn ScreenOrientation::unlock(
-  self : ScreenOrientation,
-) -> Result[Unit, ScreenOrientationUnlockError] =
-  #| (self) => (() => { try { self.unlock(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+pub extern "js" fn ScreenOrientation::unlock(self : ScreenOrientation) -> Unit =
+  #| (self) => self.unlock()
 
 ///|
 pub extern "js" fn ScreenOrientation::get_type(
@@ -165,14 +145,14 @@ pub extern "js" fn ScreenOrientation::get_angle(
   #| (self) => self.angle
 
 ///|
-pub extern "js" fn ScreenOrientation::set_onchange(
+pub extern "js" fn ScreenOrientation::get_onchange(
   self : ScreenOrientation,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onchange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onchange
 
 ///|
-pub extern "js" fn ScreenOrientation::clear_onchange(
+pub extern "js" fn ScreenOrientation::set_onchange(
   self : ScreenOrientation,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onchange = null }
+  #| (self, value) => { self.onchange = value }

@@ -17,15 +17,14 @@ fn test_document_fragment() -> Unit {
     label="childElementCount after append",
   )
   // querySelector
-  let found = frag.query_selector("#frag-child-1").unwrap()
+  let found = frag.query_selector("#frag-child-1")
   assert_true(found is Some(_), label="querySelector finds child")
   // querySelectorAll
-  let all = frag.query_selector_all("div").unwrap()
+  let all = frag.query_selector_all("div")
   assert_eq(all.get_length(), 2, label="querySelectorAll count")
   // children
   let children = frag.get_children()
   assert_eq(children.get_length(), 2, label="children length")
-  println("  document_fragment: ok")
 }
 
 ///|
@@ -55,5 +54,4 @@ fn test_document_fragment_transfer() -> Unit {
     2,
     label="container has children",
   )
-  println("  document_fragment_transfer: ok")
 }

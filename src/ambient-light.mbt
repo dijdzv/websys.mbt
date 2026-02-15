@@ -52,29 +52,19 @@ pub extern "js" fn AmbientLightSensor::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum AmbientLightSensorConstructorError {
-  SecurityError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-pub extern "js" fn AmbientLightSensor::new() -> Result[
-  AmbientLightSensor,
-  AmbientLightSensorConstructorError,
-] =
-  #| () => (() => { try { return { $tag: 1, _0: new AmbientLightSensor() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn AmbientLightSensor::new() -> AmbientLightSensor =
+  #| () => new AmbientLightSensor()
 
 ///|
 extern "js" fn AmbientLightSensor::new_with_sensor_options_ffi(
   sensor_options : JsValue,
-) -> Result[AmbientLightSensor, AmbientLightSensorConstructorError] =
-  #| (sensor_options) => (() => { try { return { $tag: 1, _0: new AmbientLightSensor(sensor_options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> AmbientLightSensor =
+  #| (sensor_options) => new AmbientLightSensor(sensor_options)
 
 ///|
 pub fn AmbientLightSensor::new_with_sensor_options(
   sensor_options : SensorOptions,
-) -> Result[AmbientLightSensor, AmbientLightSensorConstructorError] {
+) -> AmbientLightSensor {
   AmbientLightSensor::new_with_sensor_options_ffi(sensor_options.to_js())
 }
 
@@ -82,4 +72,4 @@ pub fn AmbientLightSensor::new_with_sensor_options(
 pub extern "js" fn AmbientLightSensor::get_illuminance(
   self : AmbientLightSensor,
 ) -> Double? =
-  #| (self) => (() => { const v = self.illuminance; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self) => (self.illuminance) ?? undefined

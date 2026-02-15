@@ -16,7 +16,6 @@ fn test_progress_element() -> Unit {
   // labels — Rust test: progress.labels().length() == 0
   let labels = progress.get_labels()
   assert_eq(labels.get_length(), 0, label="labels empty")
-  println("  progress_element: ok")
 }
 
 ///|
@@ -40,5 +39,4 @@ fn test_meter_element() -> Unit {
   assert_eq(meter.get_high(), 75.0, label="high")
   meter.set_optimum(50.0)
   assert_eq(meter.get_optimum(), 50.0, label="optimum")
-  println("  meter_element: ok")
 }

@@ -17,10 +17,9 @@ fn test_table_section() -> Unit {
   let rows = section.get_rows()
   assert_eq(rows.get_length(), 0, label="rows initially empty")
   // insertRow
-  let row = section.insert_row().unwrap()
+  let row = section.insert_row()
   assert_eq(section.get_rows().get_length(), 1, label="rows after insert")
   ignore(row)
-  println("  table_section: ok")
 }
 
 ///|
@@ -43,7 +42,6 @@ fn test_table_row() -> Unit {
   let cell = row.insert_cell()
   assert_eq(row.get_cells().get_length(), 1, label="cells after insert")
   ignore(cell)
-  println("  table_row: ok")
 }
 
 ///|
@@ -73,7 +71,6 @@ fn test_table_cell() -> Unit {
   assert_eq(cell.get_width(), "100", label="width")
   cell.set_height("50")
   assert_eq(cell.get_height(), "50", label="height")
-  println("  table_cell: ok")
 }
 
 ///|
@@ -88,22 +85,21 @@ fn test_table_full() -> Unit {
   caption.to_html_element().set_inner_text("Test Table")
   // Create thead
   let thead = table.create_t_head()
-  let header_row = thead.insert_row().unwrap()
-  let th1 = header_row.insert_cell().unwrap()
+  let header_row = thead.insert_row()
+  let th1 = header_row.insert_cell()
   th1.to_html_element().set_inner_text("Name")
-  let th2 = header_row.insert_cell().unwrap()
+  let th2 = header_row.insert_cell()
   th2.to_html_element().set_inner_text("Age")
   // Create tbody
   let tbody = table.create_t_body()
-  let row1 = tbody.insert_row().unwrap()
-  let td1 = row1.insert_cell().unwrap()
+  let row1 = tbody.insert_row()
+  let td1 = row1.insert_cell()
   td1.to_html_element().set_inner_text("Alice")
-  let td2 = row1.insert_cell().unwrap()
+  let td2 = row1.insert_cell()
   td2.to_html_element().set_inner_text("30")
   // Verify structure
   assert_eq(thead.get_rows().get_length(), 1, label="thead rows")
   assert_eq(tbody.get_rows().get_length(), 1, label="tbody rows")
   assert_eq(header_row.get_cells().get_length(), 2, label="header cells")
   assert_eq(row1.get_cells().get_length(), 2, label="data cells")
-  println("  table_full: ok")
 }

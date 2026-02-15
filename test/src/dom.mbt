@@ -61,7 +61,7 @@ pub fn test_dom_attributes() -> Unit {
 
   // setAttribute — Web API: el.setAttribute("data-value", "42")
   let str = @websys.TrustedTypeOrString::from_string
-  el.set_attribute("data-value", str("42")).unwrap()
+  el.set_attribute("data-value", str("42"))
   match el.get_attribute("data-value") {
     Some(v) => assert_eq(v, "42", label="getAttribute after set")
     None => abort("FAIL [getAttribute after set]: expected Some")
@@ -76,8 +76,8 @@ pub fn test_dom_attributes() -> Unit {
   assert_false(el.has_attribute("data-value"), label="after removeAttribute")
 
   // Multiple attributes
-  el.set_attribute("role", str("button")).unwrap()
-  el.set_attribute("aria-label", str("click me")).unwrap()
+  el.set_attribute("role", str("button"))
+  el.set_attribute("aria-label", str("click me"))
   let names = el.get_attribute_names()
   assert_eq(names.length(), 2, label="attribute count")
   println("  dom_attributes: ok")

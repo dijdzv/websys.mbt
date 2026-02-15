@@ -60,34 +60,3 @@ pub extern "js" fn HTMLModelElement::to_event_target(
   self : HTMLModelElement,
 ) -> EventTarget =
   #| (self) => self
-
-///|
-pub extern "js" fn HTMLModelElement::get_ready(
-  self : HTMLModelElement,
-) -> Promise[HTMLModelElement] =
-  #| (self) => self.ready
-
-///|
-pub extern "js" fn HTMLModelElement::get_bounding_box_center(
-  self : HTMLModelElement,
-) -> DOMPointReadOnly =
-  #| (self) => self.boundingBoxCenter
-
-///|
-pub extern "js" fn HTMLModelElement::get_bounding_box_extents(
-  self : HTMLModelElement,
-) -> DOMPointReadOnly =
-  #| (self) => self.boundingBoxExtents
-
-///|
-pub extern "js" fn HTMLModelElement::get_entity_transform(
-  self : HTMLModelElement,
-) -> DOMMatrixReadOnly =
-  #| (self) => self.entityTransform
-
-///|
-pub extern "js" fn HTMLModelElement::set_entity_transform(
-  self : HTMLModelElement,
-  value : DOMMatrixReadOnly,
-) -> Unit =
-  #| (self, value) => { self.entityTransform = value }

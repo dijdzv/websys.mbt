@@ -21,7 +21,7 @@ fn test_options_collection() -> Unit {
       @websys.HTMLOptionElementOrHTMLOptGroupElement::from_html_option_element(
         opt,
       ),
-    ).unwrap()
+    )
   }
 
   // Get the options collection
@@ -41,5 +41,4 @@ fn test_options_collection() -> Unit {
   // Set length
   opts.set_length(1234)
   assert_eq(opts.get_length(), 1234, label="length after set")
-  println("  options_collection: ok")
 }

@@ -170,38 +170,6 @@ pub extern "js" fn MediaSource::as_managed_media_source(
   #| (self) => (self instanceof ManagedMediaSource) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum MediaSourceSetDurationError {
-  InvalidStateError(JsError)
-  InvalidAccessError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum MediaSourceAddSourceBufferError {
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  InvalidAccessError(JsError)
-  QuotaExceededError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum MediaSourceRemoveSourceBufferError {
-  NotFoundError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum MediaSourceEndOfStreamError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn MediaSource::new() -> MediaSource =
   #| () => new MediaSource()
 
@@ -237,41 +205,47 @@ pub extern "js" fn MediaSource::get_duration(self : MediaSource) -> Double =
 pub extern "js" fn MediaSource::set_duration(
   self : MediaSource,
   value : Double,
-) -> Result[Unit, MediaSourceSetDurationError] =
-  #| (self, value) => (() => { try { self.duration = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.duration = value }
+
+///|
+pub extern "js" fn MediaSource::get_onsourceopen(
+  self : MediaSource,
+) -> EventHandler =
+  #| (self) => self.onsourceopen
 
 ///|
 pub extern "js" fn MediaSource::set_onsourceopen(
   self : MediaSource,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsourceopen = (e) => handler(e) }
+  #| (self, value) => { self.onsourceopen = value }
 
 ///|
-pub extern "js" fn MediaSource::clear_onsourceopen(self : MediaSource) -> Unit =
-  #| (self) => { self.onsourceopen = null }
+pub extern "js" fn MediaSource::get_onsourceended(
+  self : MediaSource,
+) -> EventHandler =
+  #| (self) => self.onsourceended
 
 ///|
 pub extern "js" fn MediaSource::set_onsourceended(
   self : MediaSource,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsourceended = (e) => handler(e) }
+  #| (self, value) => { self.onsourceended = value }
 
 ///|
-pub extern "js" fn MediaSource::clear_onsourceended(self : MediaSource) -> Unit =
-  #| (self) => { self.onsourceended = null }
+pub extern "js" fn MediaSource::get_onsourceclose(
+  self : MediaSource,
+) -> EventHandler =
+  #| (self) => self.onsourceclose
 
 ///|
 pub extern "js" fn MediaSource::set_onsourceclose(
   self : MediaSource,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onsourceclose = (e) => handler(e) }
-
-///|
-pub extern "js" fn MediaSource::clear_onsourceclose(self : MediaSource) -> Unit =
-  #| (self) => { self.onsourceclose = null }
+  #| (self, value) => { self.onsourceclose = value }
 
 ///|
 pub extern "js" fn MediaSource::get_can_construct_in_dedicated_worker(
@@ -283,28 +257,26 @@ pub extern "js" fn MediaSource::get_can_construct_in_dedicated_worker(
 pub extern "js" fn MediaSource::add_source_buffer(
   self : MediaSource,
   type_ : String,
-) -> Result[SourceBuffer, MediaSourceAddSourceBufferError] =
-  #| (self, type_) => (() => { try { return { $tag: 1, _0: self.addSourceBuffer(type_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; if (n === 'QuotaExceededError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
+) -> SourceBuffer =
+  #| (self, type_) => self.addSourceBuffer(type_)
 
 ///|
 pub extern "js" fn MediaSource::remove_source_buffer(
   self : MediaSource,
   source_buffer : SourceBuffer,
-) -> Result[Unit, MediaSourceRemoveSourceBufferError] =
-  #| (self, source_buffer) => (() => { try { self.removeSourceBuffer(source_buffer); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, source_buffer) => self.removeSourceBuffer(source_buffer)
 
 ///|
-pub extern "js" fn MediaSource::end_of_stream(
-  self : MediaSource,
-) -> Result[Unit, MediaSourceEndOfStreamError] =
-  #| (self) => (() => { try { self.endOfStream(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn MediaSource::end_of_stream(self : MediaSource) -> Unit =
+  #| (self) => self.endOfStream()
 
 ///|
 pub extern "js" fn MediaSource::end_of_stream_with_error(
   self : MediaSource,
   error : EndOfStreamError,
-) -> Result[Unit, MediaSourceEndOfStreamError] =
-  #| (self, error) => (() => { try { self.endOfStream(['network', 'decode'][error]); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, error) => self.endOfStream(['network', 'decode'][error])
 
 ///|
 pub extern "js" fn MediaSource::set_live_seekable_range(
@@ -405,69 +377,6 @@ pub extern "js" fn SourceBuffer::as_managed_source_buffer(
   #| (self) => (self instanceof ManagedSourceBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum SourceBufferSetModeError {
-  InvalidStateError(JsError)
-  InvalidAccessError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SourceBufferSetTimestampOffsetError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SourceBufferSetAppendWindowStartError {
-  InvalidStateError(JsError)
-  InvalidAccessError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SourceBufferSetAppendWindowEndError {
-  InvalidStateError(JsError)
-  InvalidAccessError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SourceBufferAppendBufferError {
-  InvalidStateError(JsError)
-  QuotaExceededError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SourceBufferAbortError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SourceBufferChangeTypeError {
-  TypeError(JsError)
-  InvalidStateError(JsError)
-  NotSupportedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum SourceBufferRemoveError {
-  InvalidStateError(JsError)
-  InvalidAccessError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn SourceBuffer::get_mode(self : SourceBuffer) -> AppendMode =
   #| (self) => ['segments', 'sequence'].indexOf(self.mode)
 
@@ -475,8 +384,8 @@ pub extern "js" fn SourceBuffer::get_mode(self : SourceBuffer) -> AppendMode =
 pub extern "js" fn SourceBuffer::set_mode(
   self : SourceBuffer,
   value : AppendMode,
-) -> Result[Unit, SourceBufferSetModeError] =
-  #| (self, value) => (() => { try { self.mode = ['segments', 'sequence'][value]; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.mode = ['segments', 'sequence'][value] }
 
 ///|
 pub extern "js" fn SourceBuffer::get_updating(self : SourceBuffer) -> Bool =
@@ -498,8 +407,8 @@ pub extern "js" fn SourceBuffer::get_timestamp_offset(
 pub extern "js" fn SourceBuffer::set_timestamp_offset(
   self : SourceBuffer,
   value : Double,
-) -> Result[Unit, SourceBufferSetTimestampOffsetError] =
-  #| (self, value) => (() => { try { self.timestampOffset = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.timestampOffset = value }
 
 ///|
 pub extern "js" fn SourceBuffer::get_audio_tracks(
@@ -529,8 +438,8 @@ pub extern "js" fn SourceBuffer::get_append_window_start(
 pub extern "js" fn SourceBuffer::set_append_window_start(
   self : SourceBuffer,
   value : Double,
-) -> Result[Unit, SourceBufferSetAppendWindowStartError] =
-  #| (self, value) => (() => { try { self.appendWindowStart = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.appendWindowStart = value }
 
 ///|
 pub extern "js" fn SourceBuffer::get_append_window_end(
@@ -542,107 +451,113 @@ pub extern "js" fn SourceBuffer::get_append_window_end(
 pub extern "js" fn SourceBuffer::set_append_window_end(
   self : SourceBuffer,
   value : Double,
-) -> Result[Unit, SourceBufferSetAppendWindowEndError] =
-  #| (self, value) => (() => { try { self.appendWindowEnd = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, value) => { self.appendWindowEnd = value }
+
+///|
+pub extern "js" fn SourceBuffer::get_onupdatestart(
+  self : SourceBuffer,
+) -> EventHandler =
+  #| (self) => self.onupdatestart
 
 ///|
 pub extern "js" fn SourceBuffer::set_onupdatestart(
   self : SourceBuffer,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onupdatestart = (e) => handler(e) }
+  #| (self, value) => { self.onupdatestart = value }
 
 ///|
-pub extern "js" fn SourceBuffer::clear_onupdatestart(
+pub extern "js" fn SourceBuffer::get_onupdate(
   self : SourceBuffer,
-) -> Unit =
-  #| (self) => { self.onupdatestart = null }
+) -> EventHandler =
+  #| (self) => self.onupdate
 
 ///|
 pub extern "js" fn SourceBuffer::set_onupdate(
   self : SourceBuffer,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onupdate = (e) => handler(e) }
+  #| (self, value) => { self.onupdate = value }
 
 ///|
-pub extern "js" fn SourceBuffer::clear_onupdate(self : SourceBuffer) -> Unit =
-  #| (self) => { self.onupdate = null }
+pub extern "js" fn SourceBuffer::get_onupdateend(
+  self : SourceBuffer,
+) -> EventHandler =
+  #| (self) => self.onupdateend
 
 ///|
 pub extern "js" fn SourceBuffer::set_onupdateend(
   self : SourceBuffer,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onupdateend = (e) => handler(e) }
+  #| (self, value) => { self.onupdateend = value }
 
 ///|
-pub extern "js" fn SourceBuffer::clear_onupdateend(self : SourceBuffer) -> Unit =
-  #| (self) => { self.onupdateend = null }
+pub extern "js" fn SourceBuffer::get_onerror(
+  self : SourceBuffer,
+) -> EventHandler =
+  #| (self) => self.onerror
 
 ///|
 pub extern "js" fn SourceBuffer::set_onerror(
   self : SourceBuffer,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onerror = (e) => handler(e) }
+  #| (self, value) => { self.onerror = value }
 
 ///|
-pub extern "js" fn SourceBuffer::clear_onerror(self : SourceBuffer) -> Unit =
-  #| (self) => { self.onerror = null }
+pub extern "js" fn SourceBuffer::get_onabort(
+  self : SourceBuffer,
+) -> EventHandler =
+  #| (self) => self.onabort
 
 ///|
 pub extern "js" fn SourceBuffer::set_onabort(
   self : SourceBuffer,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onabort = (e) => handler(e) }
-
-///|
-pub extern "js" fn SourceBuffer::clear_onabort(self : SourceBuffer) -> Unit =
-  #| (self) => { self.onabort = null }
+  #| (self, value) => { self.onabort = value }
 
 ///|
 pub extern "js" fn SourceBuffer::append_buffer(
   self : SourceBuffer,
   data : BufferSource,
-) -> Result[Unit, SourceBufferAppendBufferError] =
-  #| (self, data) => (() => { try { self.appendBuffer(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'QuotaExceededError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, data) => self.appendBuffer(data)
 
 ///|
-pub extern "js" fn SourceBuffer::abort(
-  self : SourceBuffer,
-) -> Result[Unit, SourceBufferAbortError] =
-  #| (self) => (() => { try { self.abort(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+pub extern "js" fn SourceBuffer::abort(self : SourceBuffer) -> Unit =
+  #| (self) => self.abort()
 
 ///|
 pub extern "js" fn SourceBuffer::change_type(
   self : SourceBuffer,
   type_ : String,
-) -> Result[Unit, SourceBufferChangeTypeError] =
-  #| (self, type_) => (() => { try { self.changeType(type_); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, type_) => self.changeType(type_)
 
 ///|
 pub extern "js" fn SourceBuffer::remove(
   self : SourceBuffer,
   start : Double,
   end : Double,
-) -> Result[Unit, SourceBufferRemoveError] =
-  #| (self, start, end) => (() => { try { self.remove(start, end); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, start, end) => self.remove(start, end)
 
 ///|
 pub extern "js" fn SourceBuffer::append_buffer_with_array_buffer_view(
   self : SourceBuffer,
   data : ArrayBufferView,
-) -> Result[Unit, SourceBufferAppendBufferError] =
-  #| (self, data) => (() => { try { self.appendBuffer(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'QuotaExceededError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, data) => self.appendBuffer(data)
 
 ///|
 pub extern "js" fn SourceBuffer::append_buffer_with_array_buffer(
   self : SourceBuffer,
   data : ArrayBuffer,
-) -> Result[Unit, SourceBufferAppendBufferError] =
-  #| (self, data) => (() => { try { self.appendBuffer(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'QuotaExceededError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, data) => self.appendBuffer(data)
 
 ///|
 /// SourceBufferList interface
@@ -693,30 +608,30 @@ pub extern "js" fn SourceBufferList::get_length(self : SourceBufferList) -> Int 
   #| (self) => self.length
 
 ///|
-pub extern "js" fn SourceBufferList::set_onaddsourcebuffer(
+pub extern "js" fn SourceBufferList::get_onaddsourcebuffer(
   self : SourceBufferList,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onaddsourcebuffer = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onaddsourcebuffer
 
 ///|
-pub extern "js" fn SourceBufferList::clear_onaddsourcebuffer(
+pub extern "js" fn SourceBufferList::set_onaddsourcebuffer(
   self : SourceBufferList,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onaddsourcebuffer = null }
+  #| (self, value) => { self.onaddsourcebuffer = value }
+
+///|
+pub extern "js" fn SourceBufferList::get_onremovesourcebuffer(
+  self : SourceBufferList,
+) -> EventHandler =
+  #| (self) => self.onremovesourcebuffer
 
 ///|
 pub extern "js" fn SourceBufferList::set_onremovesourcebuffer(
   self : SourceBufferList,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onremovesourcebuffer = (e) => handler(e) }
-
-///|
-pub extern "js" fn SourceBufferList::clear_onremovesourcebuffer(
-  self : SourceBufferList,
-) -> Unit =
-  #| (self) => { self.onremovesourcebuffer = null }
+  #| (self, value) => { self.onremovesourcebuffer = value }
 
 ///|
 #alias("_[_]")
@@ -787,30 +702,30 @@ pub extern "js" fn ManagedMediaSource::get_streaming(
   #| (self) => self.streaming
 
 ///|
-pub extern "js" fn ManagedMediaSource::set_onstartstreaming(
+pub extern "js" fn ManagedMediaSource::get_onstartstreaming(
   self : ManagedMediaSource,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onstartstreaming = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onstartstreaming
 
 ///|
-pub extern "js" fn ManagedMediaSource::clear_onstartstreaming(
+pub extern "js" fn ManagedMediaSource::set_onstartstreaming(
   self : ManagedMediaSource,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onstartstreaming = null }
+  #| (self, value) => { self.onstartstreaming = value }
+
+///|
+pub extern "js" fn ManagedMediaSource::get_onendstreaming(
+  self : ManagedMediaSource,
+) -> EventHandler =
+  #| (self) => self.onendstreaming
 
 ///|
 pub extern "js" fn ManagedMediaSource::set_onendstreaming(
   self : ManagedMediaSource,
-  handler : (Event) -> Unit,
+  value : EventHandler,
 ) -> Unit =
-  #| (self, handler) => { self.onendstreaming = (e) => handler(e) }
-
-///|
-pub extern "js" fn ManagedMediaSource::clear_onendstreaming(
-  self : ManagedMediaSource,
-) -> Unit =
-  #| (self) => { self.onendstreaming = null }
+  #| (self, value) => { self.onendstreaming = value }
 
 ///|
 /// BufferedChangeEvent interface
@@ -943,14 +858,14 @@ pub extern "js" fn ManagedSourceBuffer::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn ManagedSourceBuffer::set_onbufferedchange(
+pub extern "js" fn ManagedSourceBuffer::get_onbufferedchange(
   self : ManagedSourceBuffer,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onbufferedchange = (e) => handler(e) }
+) -> EventHandler =
+  #| (self) => self.onbufferedchange
 
 ///|
-pub extern "js" fn ManagedSourceBuffer::clear_onbufferedchange(
+pub extern "js" fn ManagedSourceBuffer::set_onbufferedchange(
   self : ManagedSourceBuffer,
+  value : EventHandler,
 ) -> Unit =
-  #| (self) => { self.onbufferedchange = null }
+  #| (self, value) => { self.onbufferedchange = value }

@@ -63,28 +63,31 @@ pub fn test_idb_factory_cmp() -> Unit {
   let win = @websys.window().unwrap()
   let idb = win.get_indexed_db()
   // cmp(1, 2) should return -1
-  match idb.cmp(@websys.JsValue::from_int(1), @websys.JsValue::from_int(2)) {
-    Ok(v) => assert_eq(v, -1, label="cmp 1 vs 2")
-    Err(_) => abort("FAIL: cmp(1, 2) returned Err")
-  }
+  assert_eq(
+    idb.cmp(@websys.JsValue::from_int(1), @websys.JsValue::from_int(2)).unwrap(),
+    -1,
+    label="cmp 1 vs 2",
+  )
   // cmp(2, 1) should return 1
-  match idb.cmp(@websys.JsValue::from_int(2), @websys.JsValue::from_int(1)) {
-    Ok(v) => assert_eq(v, 1, label="cmp 2 vs 1")
-    Err(_) => abort("FAIL: cmp(2, 1) returned Err")
-  }
+  assert_eq(
+    idb.cmp(@websys.JsValue::from_int(2), @websys.JsValue::from_int(1)).unwrap(),
+    1,
+    label="cmp 2 vs 1",
+  )
   // cmp(1, 1) should return 0
-  match idb.cmp(@websys.JsValue::from_int(1), @websys.JsValue::from_int(1)) {
-    Ok(v) => assert_eq(v, 0, label="cmp 1 vs 1")
-    Err(_) => abort("FAIL: cmp(1, 1) returned Err")
-  }
+  assert_eq(
+    idb.cmp(@websys.JsValue::from_int(1), @websys.JsValue::from_int(1)).unwrap(),
+    0,
+    label="cmp 1 vs 1",
+  )
   // cmp with strings
-  match idb.cmp(
-    @websys.JsValue::from_string("a"),
-    @websys.JsValue::from_string("b"),
-  ) {
-    Ok(v) => assert_eq(v, -1, label="cmp a vs b")
-    Err(_) => abort("FAIL: cmp(a, b) returned Err")
-  }
+  assert_eq(
+    idb
+    .cmp(@websys.JsValue::from_string("a"), @websys.JsValue::from_string("b"))
+    .unwrap(),
+    -1,
+    label="cmp a vs b",
+  )
   println("  idb_factory_cmp: ok")
 }
 

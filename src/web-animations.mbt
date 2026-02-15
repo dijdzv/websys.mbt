@@ -264,7 +264,7 @@ extern "js" fn BaseComputedKeyframe::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   offset: ((() => { const v = self.offset; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   computedOffset: self.computedOffset,
+  #|   computedOffset: ((() => { const v = self.computedOffset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   easing: self.easing,
   #|   composite: ((() => { const v = self.composite; if (v === undefined) return undefined; return ['replace', 'add', 'accumulate', 'auto'][v]; })())
   #| })
@@ -281,7 +281,7 @@ extern "js" fn BaseComputedKeyframe::from_js_ffi(
 ) -> BaseComputedKeyframe =
   #| (v) => ({
   #|   offset: (v.offset === undefined ? { $tag: 0 } : v.offset === null ? { $tag: 1 } : { $tag: 2, _0: v.offset }),
-  #|   computedOffset: v.computedOffset,
+  #|   computedOffset: (v.computedOffset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.computedOffset }),
   #|   easing: v.easing,
   #|   composite: (v.composite === undefined ? undefined : ['replace', 'add', 'accumulate', 'auto'].indexOf(v.composite))
   #| })
@@ -639,31 +639,11 @@ pub(all) enum AnimationFinishError {
 }
 
 ///|
-extern "js" fn classify_animation_finish_error(
-  e : JsError,
-) -> AnimationFinishError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum AnimationPauseError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_animation_pause_error(
-  e : JsError,
-) -> AnimationPauseError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn Animation::new() -> Animation =
@@ -786,7 +766,7 @@ pub extern "js" fn Animation::cancel(self : Animation) -> Unit =
 pub extern "js" fn Animation::finish(
   self : Animation,
 ) -> Result[Unit, AnimationFinishError] =
-  #| (self) => (() => { try { self.finish(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_animation_finish_error(e) }; } })()
+  #| (self) => (() => { try { self.finish(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Animation::play(self : Animation) -> Unit =
@@ -796,7 +776,7 @@ pub extern "js" fn Animation::play(self : Animation) -> Unit =
 pub extern "js" fn Animation::pause(
   self : Animation,
 ) -> Result[Unit, AnimationPauseError] =
-  #| (self) => (() => { try { self.pause(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_animation_pause_error(e) }; } })()
+  #| (self) => (() => { try { self.pause(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Animation::update_playback_rate(
@@ -856,7 +836,7 @@ pub extern "js" fn Animation::set_trigger(
 
 ///|
 pub extern "js" fn Animation::get_overall_progress(self : Animation) -> Double? =
-  #| (self) => (self.overallProgress) ?? undefined
+  #| (self) => (() => { const v = self.overallProgress; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// AnimationEffect interface
@@ -910,16 +890,6 @@ pub(all) enum AnimationEffectUpdateTimingError {
 }
 
 ///|
-extern "js" fn classify_animation_effect_update_timing_error(
-  e : JsError,
-) -> AnimationEffectUpdateTimingError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn AnimationEffect::get_timing(
   self : AnimationEffect,
 ) -> EffectTiming =
@@ -935,14 +905,14 @@ pub extern "js" fn AnimationEffect::get_computed_timing(
 pub extern "js" fn AnimationEffect::update_timing(
   self : AnimationEffect,
 ) -> Result[Unit, AnimationEffectUpdateTimingError] =
-  #| (self) => (() => { try { self.updateTiming(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_animation_effect_update_timing_error(e) }; } })()
+  #| (self) => (() => { try { self.updateTiming(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn AnimationEffect::update_timing_with_timing_ffi(
   self : AnimationEffect,
   timing : JsValue,
 ) -> Result[Unit, AnimationEffectUpdateTimingError] =
-  #| (self, timing) => (() => { try { self.updateTiming(timing); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_animation_effect_update_timing_error(e) }; } })()
+  #| (self, timing) => (() => { try { self.updateTiming(timing); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn AnimationEffect::update_timing_with_timing(
@@ -1045,31 +1015,11 @@ pub(all) enum KeyframeEffectSetPseudoElementError {
 }
 
 ///|
-extern "js" fn classify_keyframe_effect_set_pseudo_element_error(
-  e : JsError,
-) -> KeyframeEffectSetPseudoElementError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum KeyframeEffectSetKeyframesError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_keyframe_effect_set_keyframes_error(
-  e : JsError,
-) -> KeyframeEffectSetKeyframesError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn KeyframeEffect::new(
@@ -1116,7 +1066,7 @@ pub extern "js" fn KeyframeEffect::set_pseudo_element(
   self : KeyframeEffect,
   value : String?,
 ) -> Result[Unit, KeyframeEffectSetPseudoElementError] =
-  #| (self, value) => (() => { try { self.pseudoElement = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_keyframe_effect_set_pseudo_element_error(e) }; } })()
+  #| (self, value) => (() => { try { self.pseudoElement = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn KeyframeEffect::get_composite(
@@ -1142,7 +1092,7 @@ pub extern "js" fn KeyframeEffect::set_keyframes(
   self : KeyframeEffect,
   keyframes : JsValue?,
 ) -> Result[Unit, KeyframeEffectSetKeyframesError] =
-  #| (self, keyframes) => (() => { try { self.setKeyframes((keyframes.$tag === 1 ? keyframes._0 : null)); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_keyframe_effect_set_keyframes_error(e) }; } })()
+  #| (self, keyframes) => (() => { try { self.setKeyframes((keyframes.$tag === 1 ? keyframes._0 : null)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn KeyframeEffect::get_iteration_composite(

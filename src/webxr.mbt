@@ -298,10 +298,10 @@ extern "js" fn XRRenderStateInit::to_js_ffi(
   self : XRRenderStateInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   depthNear: self.depthNear,
-  #|   depthFar: self.depthFar,
+  #|   depthNear: ((() => { const v = self.depthNear; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthFar: ((() => { const v = self.depthFar; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   passthroughFullyObscured: (self.passthroughFullyObscured === -1 ? undefined : self.passthroughFullyObscured),
-  #|   inlineVerticalFieldOfView: self.inlineVerticalFieldOfView,
+  #|   inlineVerticalFieldOfView: ((() => { const v = self.inlineVerticalFieldOfView; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   baseLayer: ((() => { const v = self.baseLayer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   layers: ((() => { const v = self.layers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
@@ -317,10 +317,10 @@ extern "js" fn XRRenderStateInit::from_js_ffi(
   value : JsValue,
 ) -> XRRenderStateInit =
   #| (v) => ({
-  #|   depthNear: v.depthNear,
-  #|   depthFar: v.depthFar,
+  #|   depthNear: (v.depthNear === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthNear }),
+  #|   depthFar: (v.depthFar === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthFar }),
   #|   passthroughFullyObscured: (v.passthroughFullyObscured === undefined ? -1 : v.passthroughFullyObscured),
-  #|   inlineVerticalFieldOfView: v.inlineVerticalFieldOfView,
+  #|   inlineVerticalFieldOfView: (v.inlineVerticalFieldOfView === undefined ? { $tag: 0 } : { $tag: 1, _0: v.inlineVerticalFieldOfView }),
   #|   baseLayer: (v.baseLayer === undefined ? { $tag: 0 } : v.baseLayer === null ? { $tag: 1 } : { $tag: 2, _0: v.baseLayer }),
   #|   layers: (v.layers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.layers })
   #| })
@@ -363,7 +363,7 @@ extern "js" fn XRWebGLLayerInit::to_js_ffi(self : XRWebGLLayerInit) -> JsValue =
   #|   stencil: (self.stencil === -1 ? undefined : self.stencil),
   #|   alpha: (self.alpha === -1 ? undefined : self.alpha),
   #|   ignoreDepthValues: (self.ignoreDepthValues === -1 ? undefined : self.ignoreDepthValues),
-  #|   framebufferScaleFactor: self.framebufferScaleFactor
+  #|   framebufferScaleFactor: ((() => { const v = self.framebufferScaleFactor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -382,7 +382,7 @@ extern "js" fn XRWebGLLayerInit::from_js_ffi(
   #|   stencil: (v.stencil === undefined ? -1 : v.stencil),
   #|   alpha: (v.alpha === undefined ? -1 : v.alpha),
   #|   ignoreDepthValues: (v.ignoreDepthValues === undefined ? -1 : v.ignoreDepthValues),
-  #|   framebufferScaleFactor: v.framebufferScaleFactor
+  #|   framebufferScaleFactor: (v.framebufferScaleFactor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.framebufferScaleFactor })
   #| })
 
 ///|
@@ -777,16 +777,6 @@ pub(all) enum XRSystemIsSessionSupportedError {
 }
 
 ///|
-extern "js" fn classify_xr_system_is_session_supported_error(
-  e : JsError,
-) -> XRSystemIsSessionSupportedError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum XRSystemRequestSessionError {
   SecurityError(JsError)
@@ -796,30 +786,18 @@ pub(all) enum XRSystemRequestSessionError {
 }
 
 ///|
-extern "js" fn classify_xr_system_request_session_error(
-  e : JsError,
-) -> XRSystemRequestSessionError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 pub extern "js" fn XRSystem::is_session_supported(
   self : XRSystem,
   mode : XRSessionMode,
 ) -> Promise[Result[Bool, XRSystemIsSessionSupportedError]] =
-  #| (self, mode) => self.isSessionSupported(['inline', 'immersive-vr', 'immersive-ar'][mode]).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_xr_system_is_session_supported_error(e) }))
+  #| (self, mode) => self.isSessionSupported(['inline', 'immersive-vr', 'immersive-ar'][mode]).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn XRSystem::request_session(
   self : XRSystem,
   mode : XRSessionMode,
 ) -> Promise[Result[XRSession, XRSystemRequestSessionError]] =
-  #| (self, mode) => self.requestSession(['inline', 'immersive-vr', 'immersive-ar'][mode]).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_xr_system_request_session_error(e) }))
+  #| (self, mode) => self.requestSession(['inline', 'immersive-vr', 'immersive-ar'][mode]).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn XRSystem::request_session_with_options_ffi(
@@ -827,7 +805,7 @@ extern "js" fn XRSystem::request_session_with_options_ffi(
   mode : XRSessionMode,
   options : JsValue,
 ) -> Promise[Result[XRSession, XRSystemRequestSessionError]] =
-  #| (self, mode, options) => self.requestSession(['inline', 'immersive-vr', 'immersive-ar'][mode], options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_xr_system_request_session_error(e) }))
+  #| (self, mode, options) => self.requestSession(['inline', 'immersive-vr', 'immersive-ar'][mode], options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn XRSystem::request_session_with_options(
@@ -891,33 +869,11 @@ pub(all) enum XRSessionUpdateRenderStateError {
 }
 
 ///|
-extern "js" fn classify_xr_session_update_render_state_error(
-  e : JsError,
-) -> XRSessionUpdateRenderStateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum XRSessionRequestReferenceSpaceError {
   NotSupportedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_xr_session_request_reference_space_error(
-  e : JsError,
-) -> XRSessionRequestReferenceSpaceError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -926,17 +882,6 @@ pub(all) enum XRSessionRequestLightProbeError {
   NotSupportedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_xr_session_request_light_probe_error(
-  e : JsError,
-) -> XRSessionRequestLightProbeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -948,18 +893,6 @@ pub(all) enum XRSessionRequestHitTestSourceError {
 }
 
 ///|
-extern "js" fn classify_xr_session_request_hit_test_source_error(
-  e : JsError,
-) -> XRSessionRequestHitTestSourceError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum XRSessionRequestHitTestSourceForTransientInputError {
   NotAllowedError(JsError)
@@ -969,18 +902,6 @@ pub(all) enum XRSessionRequestHitTestSourceForTransientInputError {
 }
 
 ///|
-extern "js" fn classify_xr_session_request_hit_test_source_for_transient_input_error(
-  e : JsError,
-) -> XRSessionRequestHitTestSourceForTransientInputError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 pub extern "js" fn XRSession::get_visibility_state(
   self : XRSession,
 ) -> XRVisibilityState =
@@ -988,7 +909,7 @@ pub extern "js" fn XRSession::get_visibility_state(
 
 ///|
 pub extern "js" fn XRSession::get_frame_rate(self : XRSession) -> Double? =
-  #| (self) => (self.frameRate) ?? undefined
+  #| (self) => (() => { const v = self.frameRate; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRSession::get_supported_frame_rates(
@@ -1030,14 +951,14 @@ pub extern "js" fn XRSession::get_is_system_keyboard_supported(
 pub extern "js" fn XRSession::update_render_state(
   self : XRSession,
 ) -> Result[Unit, XRSessionUpdateRenderStateError] =
-  #| (self) => (() => { try { self.updateRenderState(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_xr_session_update_render_state_error(e) }; } })()
+  #| (self) => (() => { try { self.updateRenderState(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn XRSession::update_render_state_with_state_ffi(
   self : XRSession,
   state : JsValue,
 ) -> Result[Unit, XRSessionUpdateRenderStateError] =
-  #| (self, state) => (() => { try { self.updateRenderState(state); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_xr_session_update_render_state_error(e) }; } })()
+  #| (self, state) => (() => { try { self.updateRenderState(state); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn XRSession::update_render_state_with_state(
@@ -1059,7 +980,7 @@ pub extern "js" fn XRSession::request_reference_space(
   self : XRSession,
   type_ : XRReferenceSpaceType,
 ) -> Promise[Result[XRReferenceSpace, XRSessionRequestReferenceSpaceError]] =
-  #| (self, type_) => self.requestReferenceSpace(['viewer', 'local', 'local-floor', 'bounded-floor', 'unbounded'][type_]).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_xr_session_request_reference_space_error(e) }))
+  #| (self, type_) => self.requestReferenceSpace(['viewer', 'local', 'local-floor', 'bounded-floor', 'unbounded'][type_]).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn XRSession::request_animation_frame(
@@ -1203,14 +1124,14 @@ pub extern "js" fn XRSession::initiate_room_capture(
 pub extern "js" fn XRSession::request_light_probe(
   self : XRSession,
 ) -> Promise[Result[XRLightProbe, XRSessionRequestLightProbeError]] =
-  #| (self) => self.requestLightProbe().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_xr_session_request_light_probe_error(e) }))
+  #| (self) => self.requestLightProbe().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn XRSession::request_light_probe_with_options_ffi(
   self : XRSession,
   options : JsValue,
 ) -> Promise[Result[XRLightProbe, XRSessionRequestLightProbeError]] =
-  #| (self, options) => self.requestLightProbe(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_xr_session_request_light_probe_error(e) }))
+  #| (self, options) => self.requestLightProbe(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn XRSession::request_light_probe_with_options(
@@ -1289,7 +1210,7 @@ extern "js" fn XRSession::request_hit_test_source_ffi(
   self : XRSession,
   options : JsValue,
 ) -> Promise[Result[XRHitTestSource, XRSessionRequestHitTestSourceError]] =
-  #| (self, options) => self.requestHitTestSource(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_xr_session_request_hit_test_source_error(e) }))
+  #| (self, options) => self.requestHitTestSource(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn XRSession::request_hit_test_source(
@@ -1309,7 +1230,7 @@ extern "js" fn XRSession::request_hit_test_source_for_transient_input_ffi(
     XRSessionRequestHitTestSourceForTransientInputError,
   ],
 ] =
-  #| (self, options) => self.requestHitTestSourceForTransientInput(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_xr_session_request_hit_test_source_for_transient_input_error(e) }))
+  #| (self, options) => self.requestHitTestSourceForTransientInput(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn XRSession::request_hit_test_source_for_transient_input(
@@ -1389,7 +1310,7 @@ pub extern "js" fn XRRenderState::get_passthrough_fully_obscured(
 pub extern "js" fn XRRenderState::get_inline_vertical_field_of_view(
   self : XRRenderState,
 ) -> Double? =
-  #| (self) => (self.inlineVerticalFieldOfView) ?? undefined
+  #| (self) => (() => { const v = self.inlineVerticalFieldOfView; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRRenderState::get_base_layer(
@@ -1439,33 +1360,12 @@ pub(all) enum XRFrameGetViewerPoseError {
 }
 
 ///|
-extern "js" fn classify_xr_frame_get_viewer_pose_error(
-  e : JsError,
-) -> XRFrameGetViewerPoseError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum XRFrameGetDepthInformationError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_xr_frame_get_depth_information_error(
-  e : JsError,
-) -> XRFrameGetDepthInformationError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -1475,31 +1375,11 @@ pub(all) enum XRFrameFillJointRadiiError {
 }
 
 ///|
-extern "js" fn classify_xr_frame_fill_joint_radii_error(
-  e : JsError,
-) -> XRFrameFillJointRadiiError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum XRFrameFillPosesError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_xr_frame_fill_poses_error(
-  e : JsError,
-) -> XRFrameFillPosesError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn XRFrame::get_session(self : XRFrame) -> XRSession =
@@ -1516,7 +1396,7 @@ pub extern "js" fn XRFrame::get_viewer_pose(
   self : XRFrame,
   reference_space : XRReferenceSpace,
 ) -> Result[XRViewerPose?, XRFrameGetViewerPoseError] =
-  #| (self, reference_space) => (() => { try { return { $tag: 0, _0: (() => { const v = self.getViewerPose(reference_space); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_xr_frame_get_viewer_pose_error(e) }; } })()
+  #| (self, reference_space) => (() => { try { return { $tag: 1, _0: (() => { const v = self.getViewerPose(reference_space); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XRFrame::get_pose(
@@ -1562,7 +1442,7 @@ pub extern "js" fn XRFrame::get_depth_information(
   self : XRFrame,
   view : XRView,
 ) -> Result[XRCPUDepthInformation?, XRFrameGetDepthInformationError] =
-  #| (self, view) => (() => { try { return { $tag: 0, _0: (() => { const v = self.getDepthInformation(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_xr_frame_get_depth_information_error(e) }; } })()
+  #| (self, view) => (() => { try { return { $tag: 1, _0: (() => { const v = self.getDepthInformation(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XRFrame::get_joint_pose(
@@ -1578,7 +1458,7 @@ pub extern "js" fn XRFrame::fill_joint_radii(
   joint_spaces : Array[XRJointSpace],
   radii : Float32Array,
 ) -> Result[Bool, XRFrameFillJointRadiiError] =
-  #| (self, joint_spaces, radii) => (() => { try { return { $tag: 0, _0: self.fillJointRadii(joint_spaces, radii) }; } catch(e) { return { $tag: 1, _0: classify_xr_frame_fill_joint_radii_error(e) }; } })()
+  #| (self, joint_spaces, radii) => (() => { try { return { $tag: 1, _0: self.fillJointRadii(joint_spaces, radii) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XRFrame::fill_poses(
@@ -1587,7 +1467,7 @@ pub extern "js" fn XRFrame::fill_poses(
   base_space : XRSpace,
   transforms : Float32Array,
 ) -> Result[Bool, XRFrameFillPosesError] =
-  #| (self, spaces, base_space, transforms) => (() => { try { return { $tag: 0, _0: self.fillPoses(spaces, base_space, transforms) }; } catch(e) { return { $tag: 1, _0: classify_xr_frame_fill_poses_error(e) }; } })()
+  #| (self, spaces, base_space, transforms) => (() => { try { return { $tag: 1, _0: self.fillPoses(spaces, base_space, transforms) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XRFrame::get_hit_test_results(
@@ -1833,7 +1713,7 @@ pub extern "js" fn XRView::get_index(self : XRView) -> Int =
 pub extern "js" fn XRView::get_recommended_viewport_scale(
   self : XRView,
 ) -> Double? =
-  #| (self) => (self.recommendedViewportScale) ?? undefined
+  #| (self) => (() => { const v = self.recommendedViewportScale; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRView::request_viewport_scale(
@@ -1948,28 +1828,18 @@ pub(all) enum XRRigidTransformConstructorError {
 }
 
 ///|
-extern "js" fn classify_xr_rigid_transform_constructor_error(
-  e : JsError,
-) -> XRRigidTransformConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn XRRigidTransform::new() -> Result[
   XRRigidTransform,
   XRRigidTransformConstructorError,
 ] =
-  #| () => (() => { try { return { $tag: 0, _0: new XRRigidTransform() }; } catch(e) { return { $tag: 1, _0: classify_xr_rigid_transform_constructor_error(e) }; } })()
+  #| () => (() => { try { return { $tag: 1, _0: new XRRigidTransform() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn XRRigidTransform::new_with_orientation_ffi(
   position : JsValue,
   orientation : JsValue,
 ) -> Result[XRRigidTransform, XRRigidTransformConstructorError] =
-  #| (position, orientation) => (() => { try { return { $tag: 0, _0: new XRRigidTransform(position, orientation) }; } catch(e) { return { $tag: 1, _0: classify_xr_rigid_transform_constructor_error(e) }; } })()
+  #| (position, orientation) => (() => { try { return { $tag: 1, _0: new XRRigidTransform(position, orientation) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn XRRigidTransform::new_with_orientation(
@@ -2372,17 +2242,6 @@ pub(all) enum XRWebGLLayerConstructorError {
 }
 
 ///|
-extern "js" fn classify_xr_web_gl_layer_constructor_error(
-  e : JsError,
-) -> XRWebGLLayerConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'OperationError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum XRWebGLLayerGetViewportError {
   InvalidStateError(JsError)
@@ -2390,21 +2249,11 @@ pub(all) enum XRWebGLLayerGetViewportError {
 }
 
 ///|
-extern "js" fn classify_xr_web_gl_layer_get_viewport_error(
-  e : JsError,
-) -> XRWebGLLayerGetViewportError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn XRWebGLLayer::new(
   session : XRSession,
   context : XRWebGLRenderingContext,
 ) -> Result[XRWebGLLayer, XRWebGLLayerConstructorError] =
-  #| (session, context) => (() => { try { return { $tag: 0, _0: new XRWebGLLayer(session, context) }; } catch(e) { return { $tag: 1, _0: classify_xr_web_gl_layer_constructor_error(e) }; } })()
+  #| (session, context) => (() => { try { return { $tag: 1, _0: new XRWebGLLayer(session, context) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn XRWebGLLayer::new_with_layer_init_ffi(
@@ -2412,7 +2261,7 @@ extern "js" fn XRWebGLLayer::new_with_layer_init_ffi(
   context : XRWebGLRenderingContext,
   layer_init : JsValue,
 ) -> Result[XRWebGLLayer, XRWebGLLayerConstructorError] =
-  #| (session, context, layer_init) => (() => { try { return { $tag: 0, _0: new XRWebGLLayer(session, context, layer_init) }; } catch(e) { return { $tag: 1, _0: classify_xr_web_gl_layer_constructor_error(e) }; } })()
+  #| (session, context, layer_init) => (() => { try { return { $tag: 1, _0: new XRWebGLLayer(session, context, layer_init) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn XRWebGLLayer::new_with_layer_init(
@@ -2437,7 +2286,7 @@ pub extern "js" fn XRWebGLLayer::get_ignore_depth_values(
 pub extern "js" fn XRWebGLLayer::get_fixed_foveation(
   self : XRWebGLLayer,
 ) -> Double? =
-  #| (self) => (self.fixedFoveation) ?? undefined
+  #| (self) => (() => { const v = self.fixedFoveation; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRWebGLLayer::set_fixed_foveation(
@@ -2469,7 +2318,7 @@ pub extern "js" fn XRWebGLLayer::get_viewport(
   self : XRWebGLLayer,
   view : XRView,
 ) -> Result[XRViewport?, XRWebGLLayerGetViewportError] =
-  #| (self, view) => (() => { try { return { $tag: 0, _0: (() => { const v = self.getViewport(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_xr_web_gl_layer_get_viewport_error(e) }; } })()
+  #| (self, view) => (() => { try { return { $tag: 1, _0: (() => { const v = self.getViewport(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XRWebGLLayer::get_native_framebuffer_scale_factor(
@@ -2483,7 +2332,7 @@ pub extern "js" fn XRWebGLLayer::new_with_web_gl_rendering_context(
   context : WebGLRenderingContext,
   layer_init : XRWebGLLayerInit,
 ) -> Result[XRWebGLLayer, XRWebGLLayerConstructorError] =
-  #| (session, context, layer_init) => (() => { try { return { $tag: 0, _0: new XRWebGLLayer(session, context, layer_init) }; } catch(e) { return { $tag: 1, _0: classify_xr_web_gl_layer_constructor_error(e) }; } })()
+  #| (session, context, layer_init) => (() => { try { return { $tag: 1, _0: new XRWebGLLayer(session, context, layer_init) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XRWebGLLayer::new_with_web_gl2_rendering_context(
@@ -2491,7 +2340,7 @@ pub extern "js" fn XRWebGLLayer::new_with_web_gl2_rendering_context(
   context : WebGL2RenderingContext,
   layer_init : XRWebGLLayerInit,
 ) -> Result[XRWebGLLayer, XRWebGLLayerConstructorError] =
-  #| (session, context, layer_init) => (() => { try { return { $tag: 0, _0: new XRWebGLLayer(session, context, layer_init) }; } catch(e) { return { $tag: 1, _0: classify_xr_web_gl_layer_constructor_error(e) }; } })()
+  #| (session, context, layer_init) => (() => { try { return { $tag: 1, _0: new XRWebGLLayer(session, context, layer_init) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// XRSessionEvent interface

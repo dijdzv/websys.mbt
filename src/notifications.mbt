@@ -353,28 +353,17 @@ pub(all) enum NotificationConstructorError {
 }
 
 ///|
-extern "js" fn classify_notification_constructor_error(
-  e : JsError,
-) -> NotificationConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'DataCloneError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn Notification::new(
   title : String,
 ) -> Result[Notification, NotificationConstructorError] =
-  #| (title) => (() => { try { return { $tag: 0, _0: new Notification(title) }; } catch(e) { return { $tag: 1, _0: classify_notification_constructor_error(e) }; } })()
+  #| (title) => (() => { try { return { $tag: 1, _0: new Notification(title) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Notification::new_with_options_ffi(
   title : String,
   options : JsValue,
 ) -> Result[Notification, NotificationConstructorError] =
-  #| (title, options) => (() => { try { return { $tag: 0, _0: new Notification(title, options) }; } catch(e) { return { $tag: 1, _0: classify_notification_constructor_error(e) }; } })()
+  #| (title, options) => (() => { try { return { $tag: 1, _0: new Notification(title, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn Notification::new_with_options(

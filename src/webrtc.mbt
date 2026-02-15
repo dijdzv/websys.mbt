@@ -1838,7 +1838,7 @@ extern "js" fn RTCRtpContributingSource::to_js_ffi(
   #| (self) => ({
   #|   timestamp: self.timestamp,
   #|   source: self.source,
-  #|   audioLevel: self.audioLevel,
+  #|   audioLevel: ((() => { const v = self.audioLevel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rtpTimestamp: self.rtpTimestamp
   #| })
 
@@ -1857,7 +1857,7 @@ extern "js" fn RTCRtpContributingSource::from_js_ffi(
   #| (v) => ({
   #|   timestamp: v.timestamp,
   #|   source: v.source,
-  #|   audioLevel: v.audioLevel,
+  #|   audioLevel: (v.audioLevel === undefined ? { $tag: 0 } : { $tag: 1, _0: v.audioLevel }),
   #|   rtpTimestamp: v.rtpTimestamp
   #| })
 
@@ -1898,7 +1898,7 @@ extern "js" fn RTCRtpSynchronizationSource::to_js_ffi(
   #| (self) => ({
   #|   timestamp: self.timestamp,
   #|   source: self.source,
-  #|   audioLevel: self.audioLevel,
+  #|   audioLevel: ((() => { const v = self.audioLevel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rtpTimestamp: self.rtpTimestamp
   #| })
 
@@ -1917,7 +1917,7 @@ extern "js" fn RTCRtpSynchronizationSource::from_js_ffi(
   #| (v) => ({
   #|   timestamp: v.timestamp,
   #|   source: v.source,
-  #|   audioLevel: v.audioLevel,
+  #|   audioLevel: (v.audioLevel === undefined ? { $tag: 0 } : { $tag: 1, _0: v.audioLevel }),
   #|   rtpTimestamp: v.rtpTimestamp
   #| })
 
@@ -2298,18 +2298,6 @@ pub(all) enum RTCPeerConnectionCreateOfferError {
 }
 
 ///|
-extern "js" fn classify_rtc_peer_connection_create_offer_error(
-  e : JsError,
-) -> RTCPeerConnectionCreateOfferError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'OperationError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotReadableError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum RTCPeerConnectionCreateAnswerError {
   Promise(JsError)
@@ -2317,18 +2305,6 @@ pub(all) enum RTCPeerConnectionCreateAnswerError {
   NotReadableError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_rtc_peer_connection_create_answer_error(
-  e : JsError,
-) -> RTCPeerConnectionCreateAnswerError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'Promise') return { $tag: 0, _0: e };
-  #|   if (n === 'OperationError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotReadableError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2343,21 +2319,6 @@ pub(all) enum RTCPeerConnectionSetRemoteDescriptionError {
 }
 
 ///|
-extern "js" fn classify_rtc_peer_connection_set_remote_description_error(
-  e : JsError,
-) -> RTCPeerConnectionSetRemoteDescriptionError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RTCError') return { $tag: 0, _0: e };
-  #|   if (n === 'TypeError') return { $tag: 1, _0: e };
-  #|   if (n === 'OperationError') return { $tag: 2, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 3, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 4, _0: e };
-  #|   if (n === 'InvalidSessionDescriptionError') return { $tag: 5, _0: e };
-  #|   return { $tag: 6, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum RTCPeerConnectionAddIceCandidateError {
   Promise(JsError)
@@ -2366,19 +2327,6 @@ pub(all) enum RTCPeerConnectionAddIceCandidateError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_rtc_peer_connection_add_ice_candidate_error(
-  e : JsError,
-) -> RTCPeerConnectionAddIceCandidateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'Promise') return { $tag: 0, _0: e };
-  #|   if (n === 'TypeError') return { $tag: 1, _0: e };
-  #|   if (n === 'OperationError') return { $tag: 2, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2392,35 +2340,11 @@ pub(all) enum RTCPeerConnectionSetConfigurationError {
 }
 
 ///|
-extern "js" fn classify_rtc_peer_connection_set_configuration_error(
-  e : JsError,
-) -> RTCPeerConnectionSetConfigurationError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 3, _0: e };
-  #|   if (n === 'InvalidModificationError') return { $tag: 4, _0: e };
-  #|   return { $tag: 5, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum RTCPeerConnectionGenerateCertificateError {
   NotSupportedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_rtc_peer_connection_generate_certificate_error(
-  e : JsError,
-) -> RTCPeerConnectionGenerateCertificateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2431,32 +2355,11 @@ pub(all) enum RTCPeerConnectionAddTrackError {
 }
 
 ///|
-extern "js" fn classify_rtc_peer_connection_add_track_error(
-  e : JsError,
-) -> RTCPeerConnectionAddTrackError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum RTCPeerConnectionRemoveTrackError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_rtc_peer_connection_remove_track_error(
-  e : JsError,
-) -> RTCPeerConnectionRemoveTrackError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2467,19 +2370,6 @@ pub(all) enum RTCPeerConnectionAddTransceiverError {
   InvalidAccessError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_rtc_peer_connection_add_transceiver_error(
-  e : JsError,
-) -> RTCPeerConnectionAddTransceiverError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'RangeError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2493,35 +2383,11 @@ pub(all) enum RTCPeerConnectionCreateDataChannelError {
 }
 
 ///|
-extern "js" fn classify_rtc_peer_connection_create_data_channel_error(
-  e : JsError,
-) -> RTCPeerConnectionCreateDataChannelError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   if (n === 'ResourceInUse') return { $tag: 2, _0: e };
-  #|   if (n === 'OperationError') return { $tag: 3, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 4, _0: e };
-  #|   return { $tag: 5, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum RTCPeerConnectionGetStatsError {
   InvalidAccessError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_rtc_peer_connection_get_stats_error(
-  e : JsError,
-) -> RTCPeerConnectionGetStatsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidAccessError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn RTCPeerConnection::new() -> RTCPeerConnection =
@@ -2549,7 +2415,7 @@ pub extern "js" fn RTCPeerConnection::create_offer(
   #| (self) => self.createOffer().then(v => ({
   #|   type_: ['offer', 'pranswer', 'answer', 'rollback'].indexOf(v.type),
   #|   sdp: v.sdp
-  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_rtc_peer_connection_create_offer_error(e) }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'NotReadableError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn RTCPeerConnection::create_offer_with_options_ffi(
@@ -2561,7 +2427,7 @@ extern "js" fn RTCPeerConnection::create_offer_with_options_ffi(
   #| (self, options) => self.createOffer(options).then(v => ({
   #|   type_: ['offer', 'pranswer', 'answer', 'rollback'].indexOf(v.type),
   #|   sdp: v.sdp
-  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_rtc_peer_connection_create_offer_error(e) }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'NotReadableError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn RTCPeerConnection::create_offer_with_options(
@@ -2579,7 +2445,7 @@ pub extern "js" fn RTCPeerConnection::create_offer_with_success_callback_rtc_ses
   success_callback : RTCSessionDescriptionCallback,
   failure_callback : RTCPeerConnectionErrorCallback,
 ) -> Promise[Result[Unit, RTCPeerConnectionCreateOfferError]] =
-  #| (self, success_callback, failure_callback) => self.createOffer(success_callback, failure_callback).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_peer_connection_create_offer_error(e) }))
+  #| (self, success_callback, failure_callback) => self.createOffer(success_callback, failure_callback).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'NotReadableError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn RTCPeerConnection::create_offer_with_success_callback_rtc_session_description_callback_and_failure_callback_rtc_peer_connection_error_callback_and_options_rtc_offer_options_ffi(
@@ -2588,7 +2454,7 @@ extern "js" fn RTCPeerConnection::create_offer_with_success_callback_rtc_session
   failure_callback : RTCPeerConnectionErrorCallback,
   options : JsValue,
 ) -> Promise[Result[Unit, RTCPeerConnectionCreateOfferError]] =
-  #| (self, success_callback, failure_callback, options) => self.createOffer(success_callback, failure_callback, options).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_peer_connection_create_offer_error(e) }))
+  #| (self, success_callback, failure_callback, options) => self.createOffer(success_callback, failure_callback, options).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'NotReadableError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn RTCPeerConnection::create_offer_with_success_callback_rtc_session_description_callback_and_failure_callback_rtc_peer_connection_error_callback_and_options_rtc_offer_options(
@@ -2614,7 +2480,7 @@ pub extern "js" fn RTCPeerConnection::create_answer(
   #| (self) => self.createAnswer().then(v => ({
   #|   type_: ['offer', 'pranswer', 'answer', 'rollback'].indexOf(v.type),
   #|   sdp: v.sdp
-  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_rtc_peer_connection_create_answer_error(e) }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotReadableError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn RTCPeerConnection::create_answer_with_options_ffi(
@@ -2626,7 +2492,7 @@ extern "js" fn RTCPeerConnection::create_answer_with_options_ffi(
   #| (self, options) => self.createAnswer(options).then(v => ({
   #|   type_: ['offer', 'pranswer', 'answer', 'rollback'].indexOf(v.type),
   #|   sdp: v.sdp
-  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_rtc_peer_connection_create_answer_error(e) }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotReadableError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn RTCPeerConnection::create_answer_with_options(
@@ -2644,7 +2510,7 @@ pub extern "js" fn RTCPeerConnection::create_answer_with_success_callback_rtc_se
   success_callback : RTCSessionDescriptionCallback,
   failure_callback : RTCPeerConnectionErrorCallback,
 ) -> Promise[Result[Unit, RTCPeerConnectionCreateAnswerError]] =
-  #| (self, success_callback, failure_callback) => self.createAnswer(success_callback, failure_callback).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_peer_connection_create_answer_error(e) }))
+  #| (self, success_callback, failure_callback) => self.createAnswer(success_callback, failure_callback).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotReadableError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RTCPeerConnection::set_local_description(
@@ -2717,7 +2583,7 @@ extern "js" fn RTCPeerConnection::set_remote_description_ffi(
   self : RTCPeerConnection,
   description : JsValue,
 ) -> Promise[Result[Unit, RTCPeerConnectionSetRemoteDescriptionError]] =
-  #| (self, description) => self.setRemoteDescription(description).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_peer_connection_set_remote_description_error(e) }))
+  #| (self, description) => self.setRemoteDescription(description).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RTCError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'OperationError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'InvalidAccessError') return { $tag: 4, _0: e }; if (n === 'InvalidSessionDescriptionError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }))
 
 ///|
 pub fn RTCPeerConnection::set_remote_description(
@@ -2734,7 +2600,7 @@ extern "js" fn RTCPeerConnection::set_remote_description_with_description_rtc_se
   success_callback : VoidFunction,
   failure_callback : RTCPeerConnectionErrorCallback,
 ) -> Promise[Result[Unit, RTCPeerConnectionSetRemoteDescriptionError]] =
-  #| (self, description, success_callback, failure_callback) => self.setRemoteDescription(description, success_callback, failure_callback).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_peer_connection_set_remote_description_error(e) }))
+  #| (self, description, success_callback, failure_callback) => self.setRemoteDescription(description, success_callback, failure_callback).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RTCError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'OperationError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'InvalidAccessError') return { $tag: 4, _0: e }; if (n === 'InvalidSessionDescriptionError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }))
 
 ///|
 pub fn RTCPeerConnection::set_remote_description_with_description_rtc_session_description_init_and_success_callback_void_function_and_failure_callback_rtc_peer_connection_error_callback(
@@ -2773,14 +2639,14 @@ pub extern "js" fn RTCPeerConnection::get_pending_remote_description(
 pub extern "js" fn RTCPeerConnection::add_ice_candidate(
   self : RTCPeerConnection,
 ) -> Promise[Result[Unit, RTCPeerConnectionAddIceCandidateError]] =
-  #| (self) => self.addIceCandidate().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_peer_connection_add_ice_candidate_error(e) }))
+  #| (self) => self.addIceCandidate().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'OperationError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 extern "js" fn RTCPeerConnection::add_ice_candidate_with_candidate_ffi(
   self : RTCPeerConnection,
   candidate : JsValue,
 ) -> Promise[Result[Unit, RTCPeerConnectionAddIceCandidateError]] =
-  #| (self, candidate) => self.addIceCandidate(candidate).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_peer_connection_add_ice_candidate_error(e) }))
+  #| (self, candidate) => self.addIceCandidate(candidate).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'OperationError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub fn RTCPeerConnection::add_ice_candidate_with_candidate(
@@ -2800,7 +2666,7 @@ extern "js" fn RTCPeerConnection::add_ice_candidate_with_candidate_rtc_ice_candi
   success_callback : VoidFunction,
   failure_callback : RTCPeerConnectionErrorCallback,
 ) -> Promise[Result[Unit, RTCPeerConnectionAddIceCandidateError]] =
-  #| (self, candidate, success_callback, failure_callback) => self.addIceCandidate(candidate, success_callback, failure_callback).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_peer_connection_add_ice_candidate_error(e) }))
+  #| (self, candidate, success_callback, failure_callback) => self.addIceCandidate(candidate, success_callback, failure_callback).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'OperationError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub fn RTCPeerConnection::add_ice_candidate_with_candidate_rtc_ice_candidate_init_and_success_callback_void_function_and_failure_callback_rtc_peer_connection_error_callback(
@@ -2863,14 +2729,14 @@ pub extern "js" fn RTCPeerConnection::get_configuration(
 pub extern "js" fn RTCPeerConnection::set_configuration(
   self : RTCPeerConnection,
 ) -> Result[Unit, RTCPeerConnectionSetConfigurationError] =
-  #| (self) => (() => { try { self.setConfiguration(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_peer_connection_set_configuration_error(e) }; } })()
+  #| (self) => (() => { try { self.setConfiguration(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; if (n === 'InvalidModificationError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn RTCPeerConnection::set_configuration_with_configuration_ffi(
   self : RTCPeerConnection,
   configuration : JsValue,
 ) -> Result[Unit, RTCPeerConnectionSetConfigurationError] =
-  #| (self, configuration) => (() => { try { self.setConfiguration(configuration); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_peer_connection_set_configuration_error(e) }; } })()
+  #| (self, configuration) => (() => { try { self.setConfiguration(configuration); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; if (n === 'InvalidModificationError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
 ///|
 pub fn RTCPeerConnection::set_configuration_with_configuration(
@@ -3034,7 +2900,7 @@ pub extern "js" fn RTCPeerConnection::get_idp_error_info(
 pub extern "js" fn RTCPeerConnection::generate_certificate(
   keygen_algorithm : AlgorithmIdentifier,
 ) -> Promise[Result[RTCCertificate, RTCPeerConnectionGenerateCertificateError]] =
-  #| (keygen_algorithm) => RTCPeerConnection.generateCertificate(keygen_algorithm).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_rtc_peer_connection_generate_certificate_error(e) }))
+  #| (keygen_algorithm) => RTCPeerConnection.generateCertificate(keygen_algorithm).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RTCPeerConnection::get_senders(
@@ -3060,21 +2926,21 @@ pub extern "js" fn RTCPeerConnection::add_track(
   track : MediaStreamTrack,
   streams : MediaStream,
 ) -> Result[RTCRtpSender, RTCPeerConnectionAddTrackError] =
-  #| (self, track, streams) => (() => { try { return { $tag: 0, _0: self.addTrack(track, streams) }; } catch(e) { return { $tag: 1, _0: classify_rtc_peer_connection_add_track_error(e) }; } })()
+  #| (self, track, streams) => (() => { try { return { $tag: 1, _0: self.addTrack(track, streams) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCPeerConnection::remove_track(
   self : RTCPeerConnection,
   sender : RTCRtpSender,
 ) -> Result[Unit, RTCPeerConnectionRemoveTrackError] =
-  #| (self, sender) => (() => { try { self.removeTrack(sender); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_peer_connection_remove_track_error(e) }; } })()
+  #| (self, sender) => (() => { try { self.removeTrack(sender); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCPeerConnection::add_transceiver(
   self : RTCPeerConnection,
   track_or_kind : MediaStreamTrackOrString,
 ) -> Result[RTCRtpTransceiver, RTCPeerConnectionAddTransceiverError] =
-  #| (self, track_or_kind) => (() => { try { return { $tag: 0, _0: self.addTransceiver(track_or_kind) }; } catch(e) { return { $tag: 1, _0: classify_rtc_peer_connection_add_transceiver_error(e) }; } })()
+  #| (self, track_or_kind) => (() => { try { return { $tag: 1, _0: self.addTransceiver(track_or_kind) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn RTCPeerConnection::add_transceiver_with_init_ffi(
@@ -3082,7 +2948,7 @@ extern "js" fn RTCPeerConnection::add_transceiver_with_init_ffi(
   track_or_kind : MediaStreamTrackOrString,
   init_ : JsValue,
 ) -> Result[RTCRtpTransceiver, RTCPeerConnectionAddTransceiverError] =
-  #| (self, track_or_kind, init_) => (() => { try { return { $tag: 0, _0: self.addTransceiver(track_or_kind, init_) }; } catch(e) { return { $tag: 1, _0: classify_rtc_peer_connection_add_transceiver_error(e) }; } })()
+  #| (self, track_or_kind, init_) => (() => { try { return { $tag: 1, _0: self.addTransceiver(track_or_kind, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub fn RTCPeerConnection::add_transceiver_with_init(
@@ -3121,7 +2987,7 @@ pub extern "js" fn RTCPeerConnection::create_data_channel(
   self : RTCPeerConnection,
   label : String,
 ) -> Result[RTCDataChannel, RTCPeerConnectionCreateDataChannelError] =
-  #| (self, label) => (() => { try { return { $tag: 0, _0: self.createDataChannel(label) }; } catch(e) { return { $tag: 1, _0: classify_rtc_peer_connection_create_data_channel_error(e) }; } })()
+  #| (self, label) => (() => { try { return { $tag: 1, _0: self.createDataChannel(label) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'ResourceInUse') return { $tag: 2, _0: e }; if (n === 'OperationError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn RTCPeerConnection::create_data_channel_with_data_channel_dict_ffi(
@@ -3129,7 +2995,7 @@ extern "js" fn RTCPeerConnection::create_data_channel_with_data_channel_dict_ffi
   label : String,
   data_channel_dict : JsValue,
 ) -> Result[RTCDataChannel, RTCPeerConnectionCreateDataChannelError] =
-  #| (self, label, data_channel_dict) => (() => { try { return { $tag: 0, _0: self.createDataChannel(label, data_channel_dict) }; } catch(e) { return { $tag: 1, _0: classify_rtc_peer_connection_create_data_channel_error(e) }; } })()
+  #| (self, label, data_channel_dict) => (() => { try { return { $tag: 1, _0: self.createDataChannel(label, data_channel_dict) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'ResourceInUse') return { $tag: 2, _0: e }; if (n === 'OperationError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
 ///|
 pub fn RTCPeerConnection::create_data_channel_with_data_channel_dict(
@@ -3161,20 +3027,20 @@ pub extern "js" fn RTCPeerConnection::clear_ondatachannel(
 pub extern "js" fn RTCPeerConnection::get_stats(
   self : RTCPeerConnection,
 ) -> Promise[Result[RTCStatsReport, RTCPeerConnectionGetStatsError]] =
-  #| (self) => self.getStats().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_rtc_peer_connection_get_stats_error(e) }))
+  #| (self) => self.getStats().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidAccessError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RTCPeerConnection::get_stats_with_selector(
   self : RTCPeerConnection,
   selector : MediaStreamTrack?,
 ) -> Promise[Result[RTCStatsReport, RTCPeerConnectionGetStatsError]] =
-  #| (self, selector) => self.getStats((selector.$tag === 1 ? selector._0 : null)).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_rtc_peer_connection_get_stats_error(e) }))
+  #| (self, selector) => self.getStats((selector.$tag === 1 ? selector._0 : null)).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidAccessError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RTCPeerConnection::generate_certificate_with_string(
   keygen_algorithm : String,
 ) -> Promise[Result[RTCCertificate, RTCPeerConnectionGenerateCertificateError]] =
-  #| (keygen_algorithm) => RTCPeerConnection.generateCertificate(keygen_algorithm).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_rtc_peer_connection_generate_certificate_error(e) }))
+  #| (keygen_algorithm) => RTCPeerConnection.generateCertificate(keygen_algorithm).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 /// RTCSessionDescription interface
@@ -3292,27 +3158,17 @@ pub(all) enum RTCIceCandidateConstructorError {
 }
 
 ///|
-extern "js" fn classify_rtc_ice_candidate_constructor_error(
-  e : JsError,
-) -> RTCIceCandidateConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn RTCIceCandidate::new() -> Result[
   RTCIceCandidate,
   RTCIceCandidateConstructorError,
 ] =
-  #| () => (() => { try { return { $tag: 0, _0: new RTCIceCandidate() }; } catch(e) { return { $tag: 1, _0: classify_rtc_ice_candidate_constructor_error(e) }; } })()
+  #| () => (() => { try { return { $tag: 1, _0: new RTCIceCandidate() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn RTCIceCandidate::new_with_candidate_init_dict_ffi(
   candidate_init_dict : JsValue,
 ) -> Result[RTCIceCandidate, RTCIceCandidateConstructorError] =
-  #| (candidate_init_dict) => (() => { try { return { $tag: 0, _0: new RTCIceCandidate(candidate_init_dict) }; } catch(e) { return { $tag: 1, _0: classify_rtc_ice_candidate_constructor_error(e) }; } })()
+  #| (candidate_init_dict) => (() => { try { return { $tag: 1, _0: new RTCIceCandidate(candidate_init_dict) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn RTCIceCandidate::new_with_candidate_init_dict(
@@ -3677,19 +3533,6 @@ pub(all) enum RTCRtpSenderSetParametersError {
 }
 
 ///|
-extern "js" fn classify_rtc_rtp_sender_set_parameters_error(
-  e : JsError,
-) -> RTCRtpSenderSetParametersError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
-  #|   if (n === 'OperationError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'InvalidModificationError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum RTCRtpSenderReplaceTrackError {
   TypeError(JsError)
@@ -3699,33 +3542,11 @@ pub(all) enum RTCRtpSenderReplaceTrackError {
 }
 
 ///|
-extern "js" fn classify_rtc_rtp_sender_replace_track_error(
-  e : JsError,
-) -> RTCRtpSenderReplaceTrackError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidModificationError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum RTCRtpSenderSetStreamsError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_rtc_rtp_sender_set_streams_error(
-  e : JsError,
-) -> RTCRtpSenderSetStreamsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn RTCRtpSender::get_track(
@@ -3750,7 +3571,7 @@ extern "js" fn RTCRtpSender::set_parameters_ffi(
   self : RTCRtpSender,
   parameters : JsValue,
 ) -> Promise[Result[Unit, RTCRtpSenderSetParametersError]] =
-  #| (self, parameters) => self.setParameters(parameters).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_rtp_sender_set_parameters_error(e) }))
+  #| (self, parameters) => self.setParameters(parameters).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'InvalidModificationError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub fn RTCRtpSender::set_parameters(
@@ -3766,7 +3587,7 @@ extern "js" fn RTCRtpSender::set_parameters_with_set_parameter_options_ffi(
   parameters : JsValue,
   set_parameter_options : JsValue,
 ) -> Promise[Result[Unit, RTCRtpSenderSetParametersError]] =
-  #| (self, parameters, set_parameter_options) => self.setParameters(parameters, set_parameter_options).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_rtp_sender_set_parameters_error(e) }))
+  #| (self, parameters, set_parameter_options) => self.setParameters(parameters, set_parameter_options).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'InvalidModificationError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub fn RTCRtpSender::set_parameters_with_set_parameter_options(
@@ -3792,14 +3613,14 @@ pub extern "js" fn RTCRtpSender::replace_track(
   self : RTCRtpSender,
   with_track : MediaStreamTrack?,
 ) -> Promise[Result[Unit, RTCRtpSenderReplaceTrackError]] =
-  #| (self, with_track) => self.replaceTrack((with_track.$tag === 1 ? with_track._0 : null)).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_rtp_sender_replace_track_error(e) }))
+  #| (self, with_track) => self.replaceTrack((with_track.$tag === 1 ? with_track._0 : null)).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'InvalidModificationError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RTCRtpSender::set_streams(
   self : RTCRtpSender,
   streams : MediaStream,
 ) -> Result[Unit, RTCRtpSenderSetStreamsError] =
-  #| (self, streams) => (() => { try { self.setStreams(streams); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_rtp_sender_set_streams_error(e) }; } })()
+  #| (self, streams) => (() => { try { self.setStreams(streams); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCRtpSender::get_stats(
@@ -3870,16 +3691,6 @@ pub(all) enum RTCRtpReceiverSetJitterBufferTargetError {
 }
 
 ///|
-extern "js" fn classify_rtc_rtp_receiver_set_jitter_buffer_target_error(
-  e : JsError,
-) -> RTCRtpReceiverSetJitterBufferTargetError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn RTCRtpReceiver::get_track(
   self : RTCRtpReceiver,
 ) -> MediaStreamTrack =
@@ -3932,7 +3743,7 @@ pub extern "js" fn RTCRtpReceiver::set_jitter_buffer_target(
   self : RTCRtpReceiver,
   value : DOMHighResTimeStamp?,
 ) -> Result[Unit, RTCRtpReceiverSetJitterBufferTargetError] =
-  #| (self, value) => (() => { try { self.jitterBufferTarget = (value.$tag === 1 ? value._0 : null); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_rtp_receiver_set_jitter_buffer_target_error(e) }; } })()
+  #| (self, value) => (() => { try { self.jitterBufferTarget = (value.$tag === 1 ? value._0 : null); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCRtpReceiver::get_transform(
@@ -3994,32 +3805,11 @@ pub(all) enum RTCRtpTransceiverSetDirectionError {
 }
 
 ///|
-extern "js" fn classify_rtc_rtp_transceiver_set_direction_error(
-  e : JsError,
-) -> RTCRtpTransceiverSetDirectionError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum RTCRtpTransceiverStopError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_rtc_rtp_transceiver_stop_error(
-  e : JsError,
-) -> RTCRtpTransceiverStopError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -4028,17 +3818,6 @@ pub(all) enum RTCRtpTransceiverSetCodecPreferencesError {
   InvalidModificationError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_rtc_rtp_transceiver_set_codec_preferences_error(
-  e : JsError,
-) -> RTCRtpTransceiverSetCodecPreferencesError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidAccessError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidModificationError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn RTCRtpTransceiver::get_mid(
@@ -4069,7 +3848,7 @@ pub extern "js" fn RTCRtpTransceiver::set_direction(
   self : RTCRtpTransceiver,
   value : RTCRtpTransceiverDirection,
 ) -> Result[Unit, RTCRtpTransceiverSetDirectionError] =
-  #| (self, value) => (() => { try { self.direction = ['sendrecv', 'sendonly', 'recvonly', 'inactive', 'stopped'][value]; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_rtp_transceiver_set_direction_error(e) }; } })()
+  #| (self, value) => (() => { try { self.direction = ['sendrecv', 'sendonly', 'recvonly', 'inactive', 'stopped'][value]; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCRtpTransceiver::get_current_direction(
@@ -4081,14 +3860,14 @@ pub extern "js" fn RTCRtpTransceiver::get_current_direction(
 pub extern "js" fn RTCRtpTransceiver::stop(
   self : RTCRtpTransceiver,
 ) -> Result[Unit, RTCRtpTransceiverStopError] =
-  #| (self) => (() => { try { self.stop(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_rtp_transceiver_stop_error(e) }; } })()
+  #| (self) => (() => { try { self.stop(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCRtpTransceiver::set_codec_preferences(
   self : RTCRtpTransceiver,
   codecs : Array[RTCRtpCodec],
 ) -> Result[Unit, RTCRtpTransceiverSetCodecPreferencesError] =
-  #| (self, codecs) => (() => { try { self.setCodecPreferences(codecs); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_rtp_transceiver_set_codec_preferences_error(e) }; } })()
+  #| (self, codecs) => (() => { try { self.setCodecPreferences(codecs); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidAccessError') return { $tag: 0, _0: e }; if (n === 'InvalidModificationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// RTCDtlsTransport interface
@@ -4671,18 +4450,6 @@ pub(all) enum RTCDataChannelSendError {
 }
 
 ///|
-extern "js" fn classify_rtc_data_channel_send_error(
-  e : JsError,
-) -> RTCDataChannelSendError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'OperationError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 pub extern "js" fn RTCDataChannel::get_label(self : RTCDataChannel) -> String =
   #| (self) => self.label
 
@@ -4837,28 +4604,28 @@ pub extern "js" fn RTCDataChannel::send(
   self : RTCDataChannel,
   data : String,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDataChannel::send_with_data_blob(
   self : RTCDataChannel,
   data : Blob,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDataChannel::send_with_data_array_buffer(
   self : RTCDataChannel,
   data : ArrayBuffer,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDataChannel::send_with_data_array_buffer_view(
   self : RTCDataChannel,
   data : ArrayBufferView,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDataChannel::get_priority(
@@ -4871,91 +4638,91 @@ pub extern "js" fn RTCDataChannel::send_with_int8_array(
   self : RTCDataChannel,
   data : Int8Array,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDataChannel::send_with_int16_array(
   self : RTCDataChannel,
   data : Int16Array,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDataChannel::send_with_int32_array(
   self : RTCDataChannel,
   data : Int32Array,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDataChannel::send_with_uint8_array(
   self : RTCDataChannel,
   data : Uint8Array,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDataChannel::send_with_uint16_array(
   self : RTCDataChannel,
   data : Uint16Array,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDataChannel::send_with_uint32_array(
   self : RTCDataChannel,
   data : Uint32Array,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDataChannel::send_with_uint8_clamped_array(
   self : RTCDataChannel,
   data : Uint8ClampedArray,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDataChannel::send_with_big_int64_array(
   self : RTCDataChannel,
   data : BigInt64Array,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDataChannel::send_with_big_uint64_array(
   self : RTCDataChannel,
   data : BigUint64Array,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDataChannel::send_with_float16_array(
   self : RTCDataChannel,
   data : Float16Array,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDataChannel::send_with_float32_array(
   self : RTCDataChannel,
   data : Float32Array,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDataChannel::send_with_float64_array(
   self : RTCDataChannel,
   data : Float64Array,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDataChannel::send_with_data_view(
   self : RTCDataChannel,
   data : DataView,
 ) -> Result[Unit, RTCDataChannelSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtc_data_channel_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 /// RTCDataChannelEvent interface
@@ -5067,22 +4834,11 @@ pub(all) enum RTCDTMFSenderInsertDTMFError {
 }
 
 ///|
-extern "js" fn classify_rtcdtmf_sender_insert_dtmf_error(
-  e : JsError,
-) -> RTCDTMFSenderInsertDTMFError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidCharacterError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn RTCDTMFSender::insert_dtmf(
   self : RTCDTMFSender,
   tones : String,
 ) -> Result[Unit, RTCDTMFSenderInsertDTMFError] =
-  #| (self, tones) => (() => { try { self.insertDTMF(tones); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtcdtmf_sender_insert_dtmf_error(e) }; } })()
+  #| (self, tones) => (() => { try { self.insertDTMF(tones); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'InvalidCharacterError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDTMFSender::insert_dtmf_with_inter_tone_gap(
@@ -5091,7 +4847,7 @@ pub extern "js" fn RTCDTMFSender::insert_dtmf_with_inter_tone_gap(
   duration : Int,
   inter_tone_gap : Int,
 ) -> Result[Unit, RTCDTMFSenderInsertDTMFError] =
-  #| (self, tones, duration, inter_tone_gap) => (() => { try { self.insertDTMF(tones, duration, inter_tone_gap); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_rtcdtmf_sender_insert_dtmf_error(e) }; } })()
+  #| (self, tones, duration, inter_tone_gap) => (() => { try { self.insertDTMF(tones, duration, inter_tone_gap); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'InvalidCharacterError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCDTMFSender::set_ontonechange(

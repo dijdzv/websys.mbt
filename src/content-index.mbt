@@ -177,17 +177,6 @@ pub(all) enum ContentIndexAddError {
 }
 
 ///|
-extern "js" fn classify_content_index_add_error(
-  e : JsError,
-) -> ContentIndexAddError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'String') return { $tag: 0, _0: e };
-  #|   if (n === 'TypeError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ContentIndexGetAllError {
   Array(JsError)
@@ -195,21 +184,11 @@ pub(all) enum ContentIndexGetAllError {
 }
 
 ///|
-extern "js" fn classify_content_index_get_all_error(
-  e : JsError,
-) -> ContentIndexGetAllError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'Array') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 extern "js" fn ContentIndex::add_ffi(
   self : ContentIndex,
   description : JsValue,
 ) -> Promise[Result[Unit, ContentIndexAddError]] =
-  #| (self, description) => self.add(description).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_content_index_add_error(e) }))
+  #| (self, description) => self.add(description).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'String') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn ContentIndex::add(
@@ -230,7 +209,7 @@ pub extern "js" fn ContentIndex::delete(
 pub extern "js" fn ContentIndex::get_all(
   self : ContentIndex,
 ) -> Promise[Result[Array[ContentDescription], ContentIndexGetAllError]] =
-  #| (self) => self.getAll().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_content_index_get_all_error(e) }))
+  #| (self) => self.getAll().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Array') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 /// ContentIndexEvent interface

@@ -382,33 +382,12 @@ pub(all) enum CaptureControllerSetFocusBehaviorError {
 }
 
 ///|
-extern "js" fn classify_capture_controller_set_focus_behavior_error(
-  e : JsError,
-) -> CaptureControllerSetFocusBehaviorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum CaptureControllerGetSupportedZoomLevelsError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_capture_controller_get_supported_zoom_levels_error(
-  e : JsError,
-) -> CaptureControllerGetSupportedZoomLevelsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -419,17 +398,6 @@ pub(all) enum CaptureControllerIncreaseZoomLevelError {
 }
 
 ///|
-extern "js" fn classify_capture_controller_increase_zoom_level_error(
-  e : JsError,
-) -> CaptureControllerIncreaseZoomLevelError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum CaptureControllerDecreaseZoomLevelError {
   NotAllowedError(JsError)
@@ -438,34 +406,12 @@ pub(all) enum CaptureControllerDecreaseZoomLevelError {
 }
 
 ///|
-extern "js" fn classify_capture_controller_decrease_zoom_level_error(
-  e : JsError,
-) -> CaptureControllerDecreaseZoomLevelError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum CaptureControllerResetZoomLevelError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_capture_controller_reset_zoom_level_error(
-  e : JsError,
-) -> CaptureControllerResetZoomLevelError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -477,18 +423,6 @@ pub(all) enum CaptureControllerForwardWheelError {
 }
 
 ///|
-extern "js" fn classify_capture_controller_forward_wheel_error(
-  e : JsError,
-) -> CaptureControllerForwardWheelError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 pub extern "js" fn CaptureController::new() -> CaptureController =
   #| () => new CaptureController()
 
@@ -497,13 +431,13 @@ pub extern "js" fn CaptureController::set_focus_behavior(
   self : CaptureController,
   focus_behavior : CaptureStartFocusBehavior,
 ) -> Result[Unit, CaptureControllerSetFocusBehaviorError] =
-  #| (self, focus_behavior) => (() => { try { self.setFocusBehavior(['focus-capturing-application', 'focus-captured-surface', 'no-focus-change'][focus_behavior]); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_capture_controller_set_focus_behavior_error(e) }; } })()
+  #| (self, focus_behavior) => (() => { try { self.setFocusBehavior(['focus-capturing-application', 'focus-captured-surface', 'no-focus-change'][focus_behavior]); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CaptureController::get_supported_zoom_levels(
   self : CaptureController,
 ) -> Result[Array[Int], CaptureControllerGetSupportedZoomLevelsError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.getSupportedZoomLevels() }; } catch(e) { return { $tag: 1, _0: classify_capture_controller_get_supported_zoom_levels_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.getSupportedZoomLevels() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CaptureController::get_zoom_level(
@@ -515,19 +449,19 @@ pub extern "js" fn CaptureController::get_zoom_level(
 pub extern "js" fn CaptureController::increase_zoom_level(
   self : CaptureController,
 ) -> Promise[Result[Unit, CaptureControllerIncreaseZoomLevelError]] =
-  #| (self) => self.increaseZoomLevel().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_capture_controller_increase_zoom_level_error(e) }))
+  #| (self) => self.increaseZoomLevel().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn CaptureController::decrease_zoom_level(
   self : CaptureController,
 ) -> Promise[Result[Unit, CaptureControllerDecreaseZoomLevelError]] =
-  #| (self) => self.decreaseZoomLevel().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_capture_controller_decrease_zoom_level_error(e) }))
+  #| (self) => self.decreaseZoomLevel().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn CaptureController::reset_zoom_level(
   self : CaptureController,
 ) -> Promise[Result[Unit, CaptureControllerResetZoomLevelError]] =
-  #| (self) => self.resetZoomLevel().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_capture_controller_reset_zoom_level_error(e) }))
+  #| (self) => self.resetZoomLevel().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn CaptureController::set_onzoomlevelchange(
@@ -547,7 +481,7 @@ pub extern "js" fn CaptureController::forward_wheel(
   self : CaptureController,
   element : HTMLElement?,
 ) -> Promise[Result[Unit, CaptureControllerForwardWheelError]] =
-  #| (self, element) => self.forwardWheel((element.$tag === 1 ? element._0 : null)).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_capture_controller_forward_wheel_error(e) }))
+  #| (self, element) => self.forwardWheel((element.$tag === 1 ? element._0 : null)).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn CaptureController::set_oncapturedmousechange(

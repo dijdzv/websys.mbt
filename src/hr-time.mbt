@@ -52,17 +52,6 @@ pub(all) enum PerformanceMarkError {
 }
 
 ///|
-extern "js" fn classify_performance_mark_error(
-  e : JsError,
-) -> PerformanceMarkError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum PerformanceMeasureError {
   TypeError(JsError)
@@ -73,34 +62,11 @@ pub(all) enum PerformanceMeasureError {
 }
 
 ///|
-extern "js" fn classify_performance_measure_error(
-  e : JsError,
-) -> PerformanceMeasureError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'RangeError') return { $tag: 1, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 2, _0: e };
-  #|   if (n === 'DataCloneError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum PerformanceMeasureUserAgentSpecificMemoryError {
   SecurityError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_performance_measure_user_agent_specific_memory_error(
-  e : JsError,
-) -> PerformanceMeasureUserAgentSpecificMemoryError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn Performance::now(self : Performance) -> DOMHighResTimeStamp =
@@ -121,7 +87,7 @@ pub extern "js" fn Performance::mark(
   self : Performance,
   mark_name : String,
 ) -> Result[PerformanceMark, PerformanceMarkError] =
-  #| (self, mark_name) => (() => { try { return { $tag: 0, _0: self.mark(mark_name) }; } catch(e) { return { $tag: 1, _0: classify_performance_mark_error(e) }; } })()
+  #| (self, mark_name) => (() => { try { return { $tag: 1, _0: self.mark(mark_name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Performance::mark_with_mark_options_ffi(
@@ -129,7 +95,7 @@ extern "js" fn Performance::mark_with_mark_options_ffi(
   mark_name : String,
   mark_options : JsValue,
 ) -> Result[PerformanceMark, PerformanceMarkError] =
-  #| (self, mark_name, mark_options) => (() => { try { return { $tag: 0, _0: self.mark(mark_name, mark_options) }; } catch(e) { return { $tag: 1, _0: classify_performance_mark_error(e) }; } })()
+  #| (self, mark_name, mark_options) => (() => { try { return { $tag: 1, _0: self.mark(mark_name, mark_options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn Performance::mark_with_mark_options(
@@ -156,7 +122,7 @@ pub extern "js" fn Performance::measure(
   self : Performance,
   measure_name : String,
 ) -> Result[PerformanceMeasure, PerformanceMeasureError] =
-  #| (self, measure_name) => (() => { try { return { $tag: 0, _0: self.measure(measure_name) }; } catch(e) { return { $tag: 1, _0: classify_performance_measure_error(e) }; } })()
+  #| (self, measure_name) => (() => { try { return { $tag: 1, _0: self.measure(measure_name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; if (n === 'SyntaxError') return { $tag: 2, _0: e }; if (n === 'DataCloneError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Performance::measure_with_end_mark(
@@ -165,7 +131,7 @@ pub extern "js" fn Performance::measure_with_end_mark(
   start_or_measure_options : StringOrPerformanceMeasureOptions,
   end_mark : String,
 ) -> Result[PerformanceMeasure, PerformanceMeasureError] =
-  #| (self, measure_name, start_or_measure_options, end_mark) => (() => { try { return { $tag: 0, _0: self.measure(measure_name, start_or_measure_options, end_mark) }; } catch(e) { return { $tag: 1, _0: classify_performance_measure_error(e) }; } })()
+  #| (self, measure_name, start_or_measure_options, end_mark) => (() => { try { return { $tag: 1, _0: self.measure(measure_name, start_or_measure_options, end_mark) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; if (n === 'SyntaxError') return { $tag: 2, _0: e }; if (n === 'DataCloneError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Performance::clear_measures(self : Performance) -> Unit =
@@ -227,7 +193,7 @@ pub extern "js" fn Performance::measure_user_agent_specific_memory(
   #| (self) => self.measureUserAgentSpecificMemory().then(v => ({
   #|   bytes: v.bytes,
   #|   breakdown: (v.breakdown === undefined ? { $tag: 0 } : { $tag: 1, _0: v.breakdown })
-  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_performance_measure_user_agent_specific_memory_error(e) }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Performance::clear_resource_timings(

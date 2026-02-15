@@ -445,14 +445,6 @@ pub(all) enum MIDIPortOpenError {
 }
 
 ///|
-extern "js" fn classify_midi_port_open_error(e : JsError) -> MIDIPortOpenError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn MIDIPort::get_id(self : MIDIPort) -> String =
   #| (self) => self.id
 
@@ -497,7 +489,7 @@ pub extern "js" fn MIDIPort::clear_onstatechange(self : MIDIPort) -> Unit =
 pub extern "js" fn MIDIPort::open(
   self : MIDIPort,
 ) -> Promise[Result[MIDIPort, MIDIPortOpenError]] =
-  #| (self) => self.open().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_midi_port_open_error(e) }))
+  #| (self) => self.open().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn MIDIPort::close(self : MIDIPort) -> Promise[MIDIPort] =
@@ -598,23 +590,11 @@ pub(all) enum MIDIOutputSendError {
 }
 
 ///|
-extern "js" fn classify_midi_output_send_error(
-  e : JsError,
-) -> MIDIOutputSendError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 pub extern "js" fn MIDIOutput::send(
   self : MIDIOutput,
   data : Array[Int],
 ) -> Result[Unit, MIDIOutputSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_midi_output_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn MIDIOutput::send_with_timestamp(
@@ -622,7 +602,7 @@ pub extern "js" fn MIDIOutput::send_with_timestamp(
   data : Array[Int],
   timestamp : DOMHighResTimeStamp,
 ) -> Result[Unit, MIDIOutputSendError] =
-  #| (self, data, timestamp) => (() => { try { self.send(data, timestamp); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_midi_output_send_error(e) }; } })()
+  #| (self, data, timestamp) => (() => { try { self.send(data, timestamp); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn MIDIOutput::clear(self : MIDIOutput) -> Unit =

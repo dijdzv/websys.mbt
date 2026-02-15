@@ -109,33 +109,12 @@ pub(all) enum WebSocketConstructorError {
 }
 
 ///|
-extern "js" fn classify_web_socket_constructor_error(
-  e : JsError,
-) -> WebSocketConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WebSocketCloseError {
   SyntaxError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_web_socket_close_error(
-  e : JsError,
-) -> WebSocketCloseError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -145,27 +124,17 @@ pub(all) enum WebSocketSendError {
 }
 
 ///|
-extern "js" fn classify_web_socket_send_error(
-  e : JsError,
-) -> WebSocketSendError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn WebSocket::new(
   url : String,
 ) -> Result[WebSocket, WebSocketConstructorError] =
-  #| (url) => (() => { try { return { $tag: 0, _0: new WebSocket(url) }; } catch(e) { return { $tag: 1, _0: classify_web_socket_constructor_error(e) }; } })()
+  #| (url) => (() => { try { return { $tag: 1, _0: new WebSocket(url) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebSocket::new_with_protocols(
   url : String,
   protocols : StringOrArrayOfString,
 ) -> Result[WebSocket, WebSocketConstructorError] =
-  #| (url, protocols) => (() => { try { return { $tag: 0, _0: new WebSocket(url, protocols) }; } catch(e) { return { $tag: 1, _0: classify_web_socket_constructor_error(e) }; } })()
+  #| (url, protocols) => (() => { try { return { $tag: 1, _0: new WebSocket(url, protocols) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebSocket::get_url(self : WebSocket) -> String =
@@ -244,7 +213,7 @@ pub extern "js" fn WebSocket::get_protocol(self : WebSocket) -> String =
 pub extern "js" fn WebSocket::close(
   self : WebSocket,
 ) -> Result[Unit, WebSocketCloseError] =
-  #| (self) => (() => { try { self.close(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_web_socket_close_error(e) }; } })()
+  #| (self) => (() => { try { self.close(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebSocket::close_with_reason(
@@ -252,7 +221,7 @@ pub extern "js" fn WebSocket::close_with_reason(
   code : Int,
   reason : String,
 ) -> Result[Unit, WebSocketCloseError] =
-  #| (self, code, reason) => (() => { try { self.close(code, reason); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_web_socket_close_error(e) }; } })()
+  #| (self, code, reason) => (() => { try { self.close(code, reason); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebSocket::set_onmessage(
@@ -281,7 +250,7 @@ pub extern "js" fn WebSocket::send(
   self : WebSocket,
   data : BufferSourceOrBlobOrString,
 ) -> Result[Unit, WebSocketSendError] =
-  #| (self, data) => (() => { try { self.send(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_web_socket_send_error(e) }; } })()
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// CloseEvent interface

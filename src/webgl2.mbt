@@ -309,31 +309,11 @@ pub(all) enum WebGL2RenderingContextBlendEquationError {
 }
 
 ///|
-extern "js" fn classify_web_gl2_rendering_context_blend_equation_error(
-  e : JsError,
-) -> WebGL2RenderingContextBlendEquationError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'undefined') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WebGL2RenderingContextCompileShaderError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_web_gl2_rendering_context_compile_shader_error(
-  e : JsError,
-) -> WebGL2RenderingContextCompileShaderError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -343,33 +323,12 @@ pub(all) enum WebGL2RenderingContextShaderSourceError {
 }
 
 ///|
-extern "js" fn classify_web_gl2_rendering_context_shader_source_error(
-  e : JsError,
-) -> WebGL2RenderingContextShaderSourceError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WebGL2RenderingContextMakeXRCompatibleError {
   AbortError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_web_gl2_rendering_context_make_xr_compatible_error(
-  e : JsError,
-) -> WebGL2RenderingContextMakeXRCompatibleError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'AbortError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 // WebGL2RenderingContext.DEPTH_BUFFER_BIT
 
@@ -2011,7 +1970,7 @@ pub extern "js" fn WebGL2RenderingContext::blend_equation(
   self : WebGL2RenderingContext,
   mode : GLenum,
 ) -> Result[Unit, WebGL2RenderingContextBlendEquationError] =
-  #| (self, mode) => (() => { try { self.blendEquation(mode); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_web_gl2_rendering_context_blend_equation_error(e) }; } })()
+  #| (self, mode) => (() => { try { self.blendEquation(mode); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'undefined') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::blend_equation_separate(
@@ -2092,7 +2051,7 @@ pub extern "js" fn WebGL2RenderingContext::compile_shader(
   self : WebGL2RenderingContext,
   shader : WebGLShader,
 ) -> Result[Unit, WebGL2RenderingContextCompileShaderError] =
-  #| (self, shader) => (() => { try { self.compileShader(shader); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_web_gl2_rendering_context_compile_shader_error(e) }; } })()
+  #| (self, shader) => (() => { try { self.compileShader(shader); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::copy_tex_image_2d(
@@ -2607,7 +2566,7 @@ pub extern "js" fn WebGL2RenderingContext::shader_source(
   shader : WebGLShader,
   source : String,
 ) -> Result[Unit, WebGL2RenderingContextShaderSourceError] =
-  #| (self, shader, source) => (() => { try { self.shaderSource(shader, source); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_web_gl2_rendering_context_shader_source_error(e) }; } })()
+  #| (self, shader, source) => (() => { try { self.shaderSource(shader, source); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::stencil_func(
@@ -2866,7 +2825,7 @@ pub extern "js" fn WebGL2RenderingContext::viewport(
 pub extern "js" fn WebGL2RenderingContext::make_xr_compatible(
   self : WebGL2RenderingContext,
 ) -> Promise[Result[Unit, WebGL2RenderingContextMakeXRCompatibleError]] =
-  #| (self) => self.makeXRCompatible().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_web_gl2_rendering_context_make_xr_compatible_error(e) }))
+  #| (self) => self.makeXRCompatible().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 // WebGL2RenderingContext.READ_BUFFER
 

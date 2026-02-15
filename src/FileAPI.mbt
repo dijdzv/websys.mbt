@@ -228,14 +228,6 @@ pub(all) enum BlobBytesError {
 }
 
 ///|
-extern "js" fn classify_blob_bytes_error(e : JsError) -> BlobBytesError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'Promise') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn Blob::new() -> Blob =
   #| () => new Blob()
 
@@ -291,7 +283,7 @@ pub extern "js" fn Blob::array_buffer(self : Blob) -> Promise[ArrayBuffer] =
 pub extern "js" fn Blob::bytes(
   self : Blob,
 ) -> Promise[Result[Uint8Array, BlobBytesError]] =
-  #| (self) => self.bytes().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_blob_bytes_error(e) }))
+  #| (self) => self.bytes().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 /// File interface
@@ -623,19 +615,6 @@ pub(all) enum FileReaderSyncReadAsArrayBufferError {
 }
 
 ///|
-extern "js" fn classify_file_reader_sync_read_as_array_buffer_error(
-  e : JsError,
-) -> FileReaderSyncReadAsArrayBufferError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'EncodingError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 2, _0: e };
-  #|   if (n === 'NotReadableError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum FileReaderSyncReadAsBinaryStringError {
   EncodingError(JsError)
@@ -644,19 +623,6 @@ pub(all) enum FileReaderSyncReadAsBinaryStringError {
   NotReadableError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_file_reader_sync_read_as_binary_string_error(
-  e : JsError,
-) -> FileReaderSyncReadAsBinaryStringError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'EncodingError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 2, _0: e };
-  #|   if (n === 'NotReadableError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -669,19 +635,6 @@ pub(all) enum FileReaderSyncReadAsTextError {
 }
 
 ///|
-extern "js" fn classify_file_reader_sync_read_as_text_error(
-  e : JsError,
-) -> FileReaderSyncReadAsTextError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'EncodingError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 2, _0: e };
-  #|   if (n === 'NotReadableError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum FileReaderSyncReadAsDataURLError {
   EncodingError(JsError)
@@ -692,19 +645,6 @@ pub(all) enum FileReaderSyncReadAsDataURLError {
 }
 
 ///|
-extern "js" fn classify_file_reader_sync_read_as_data_url_error(
-  e : JsError,
-) -> FileReaderSyncReadAsDataURLError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'EncodingError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 2, _0: e };
-  #|   if (n === 'NotReadableError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 pub extern "js" fn FileReaderSync::new() -> FileReaderSync =
   #| () => new FileReaderSync()
 
@@ -713,7 +653,7 @@ pub extern "js" fn FileReaderSync::read_as_array_buffer(
   self : FileReaderSync,
   blob : Blob,
 ) -> Result[ArrayBuffer, FileReaderSyncReadAsArrayBufferError] =
-  #| (self, blob) => (() => { try { return { $tag: 0, _0: self.readAsArrayBuffer(blob) }; } catch(e) { return { $tag: 1, _0: classify_file_reader_sync_read_as_array_buffer_error(e) }; } })()
+  #| (self, blob) => (() => { try { return { $tag: 1, _0: self.readAsArrayBuffer(blob) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 /// @alert deprecated "readAsBinaryString is deprecated"
@@ -721,14 +661,14 @@ pub extern "js" fn FileReaderSync::read_as_binary_string(
   self : FileReaderSync,
   blob : Blob,
 ) -> Result[String, FileReaderSyncReadAsBinaryStringError] =
-  #| (self, blob) => (() => { try { return { $tag: 0, _0: self.readAsBinaryString(blob) }; } catch(e) { return { $tag: 1, _0: classify_file_reader_sync_read_as_binary_string_error(e) }; } })()
+  #| (self, blob) => (() => { try { return { $tag: 1, _0: self.readAsBinaryString(blob) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn FileReaderSync::read_as_text(
   self : FileReaderSync,
   blob : Blob,
 ) -> Result[String, FileReaderSyncReadAsTextError] =
-  #| (self, blob) => (() => { try { return { $tag: 0, _0: self.readAsText(blob) }; } catch(e) { return { $tag: 1, _0: classify_file_reader_sync_read_as_text_error(e) }; } })()
+  #| (self, blob) => (() => { try { return { $tag: 1, _0: self.readAsText(blob) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn FileReaderSync::read_as_text_with_encoding(
@@ -736,11 +676,11 @@ pub extern "js" fn FileReaderSync::read_as_text_with_encoding(
   blob : Blob,
   encoding : String,
 ) -> Result[String, FileReaderSyncReadAsTextError] =
-  #| (self, blob, encoding) => (() => { try { return { $tag: 0, _0: self.readAsText(blob, encoding) }; } catch(e) { return { $tag: 1, _0: classify_file_reader_sync_read_as_text_error(e) }; } })()
+  #| (self, blob, encoding) => (() => { try { return { $tag: 1, _0: self.readAsText(blob, encoding) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn FileReaderSync::read_as_data_url(
   self : FileReaderSync,
   blob : Blob,
 ) -> Result[String, FileReaderSyncReadAsDataURLError] =
-  #| (self, blob) => (() => { try { return { $tag: 0, _0: self.readAsDataURL(blob) }; } catch(e) { return { $tag: 1, _0: classify_file_reader_sync_read_as_data_url_error(e) }; } })()
+  #| (self, blob) => (() => { try { return { $tag: 1, _0: self.readAsDataURL(blob) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()

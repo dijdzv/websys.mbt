@@ -1162,7 +1162,7 @@ extern "js" fn VideoDecoderConfig::to_js_ffi(
   #|   colorSpace: ((() => { const v = self.colorSpace; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   hardwareAcceleration: ((() => { const v = self.hardwareAcceleration; if (v === undefined) return undefined; return ['no-preference', 'prefer-hardware', 'prefer-software'][v]; })()),
   #|   optimizeForLatency: (self.optimizeForLatency === -1 ? undefined : self.optimizeForLatency),
-  #|   rotation: self.rotation,
+  #|   rotation: ((() => { const v = self.rotation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   flip: (self.flip === -1 ? undefined : self.flip)
   #| })
 
@@ -1186,7 +1186,7 @@ extern "js" fn VideoDecoderConfig::from_js_ffi(
   #|   colorSpace: (v.colorSpace === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorSpace }),
   #|   hardwareAcceleration: (v.hardwareAcceleration === undefined ? undefined : ['no-preference', 'prefer-hardware', 'prefer-software'].indexOf(v.hardwareAcceleration)),
   #|   optimizeForLatency: (v.optimizeForLatency === undefined ? -1 : v.optimizeForLatency),
-  #|   rotation: v.rotation,
+  #|   rotation: (v.rotation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rotation }),
   #|   flip: (v.flip === undefined ? -1 : v.flip)
   #| })
 
@@ -1476,7 +1476,7 @@ extern "js" fn VideoFrameInit::to_js_ffi(self : VideoFrameInit) -> JsValue =
   #|   timestamp: self.timestamp,
   #|   alpha: ((() => { const v = self.alpha; if (v === undefined) return undefined; return ['keep', 'discard'][v]; })()),
   #|   visibleRect: ((() => { const v = self.visibleRect; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   rotation: self.rotation,
+  #|   rotation: ((() => { const v = self.rotation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   flip: (self.flip === -1 ? undefined : self.flip),
   #|   displayWidth: self.displayWidth,
   #|   displayHeight: self.displayHeight,
@@ -1496,7 +1496,7 @@ extern "js" fn VideoFrameInit::from_js_ffi(value : JsValue) -> VideoFrameInit =
   #|   timestamp: v.timestamp,
   #|   alpha: (v.alpha === undefined ? undefined : ['keep', 'discard'].indexOf(v.alpha)),
   #|   visibleRect: (v.visibleRect === undefined ? { $tag: 0 } : { $tag: 1, _0: v.visibleRect }),
-  #|   rotation: v.rotation,
+  #|   rotation: (v.rotation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rotation }),
   #|   flip: (v.flip === undefined ? -1 : v.flip),
   #|   displayWidth: v.displayWidth,
   #|   displayHeight: v.displayHeight,
@@ -1563,7 +1563,7 @@ extern "js" fn VideoFrameBufferInit::to_js_ffi(
   #|   duration: self.duration,
   #|   layout: ((() => { const v = self.layout; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   visibleRect: ((() => { const v = self.visibleRect; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   rotation: self.rotation,
+  #|   rotation: ((() => { const v = self.rotation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   flip: (self.flip === -1 ? undefined : self.flip),
   #|   displayWidth: self.displayWidth,
   #|   displayHeight: self.displayHeight,
@@ -1590,7 +1590,7 @@ extern "js" fn VideoFrameBufferInit::from_js_ffi(
   #|   duration: v.duration,
   #|   layout: (v.layout === undefined ? { $tag: 0 } : { $tag: 1, _0: v.layout }),
   #|   visibleRect: (v.visibleRect === undefined ? { $tag: 0 } : { $tag: 1, _0: v.visibleRect }),
-  #|   rotation: v.rotation,
+  #|   rotation: (v.rotation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rotation }),
   #|   flip: (v.flip === undefined ? -1 : v.flip),
   #|   displayWidth: v.displayWidth,
   #|   displayHeight: v.displayHeight,
@@ -1988,35 +1988,12 @@ pub(all) enum AudioDecoderConfigureError {
 }
 
 ///|
-extern "js" fn classify_audio_decoder_configure_error(
-  e : JsError,
-) -> AudioDecoderConfigureError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum AudioDecoderDecodeError {
   DataError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_audio_decoder_decode_error(
-  e : JsError,
-) -> AudioDecoderDecodeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2026,31 +2003,11 @@ pub(all) enum AudioDecoderFlushError {
 }
 
 ///|
-extern "js" fn classify_audio_decoder_flush_error(
-  e : JsError,
-) -> AudioDecoderFlushError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum AudioDecoderIsConfigSupportedError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_audio_decoder_is_config_supported_error(
-  e : JsError,
-) -> AudioDecoderIsConfigSupportedError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 extern "js" fn AudioDecoder::new_ffi(init_ : JsValue) -> AudioDecoder =
@@ -2087,7 +2044,7 @@ extern "js" fn AudioDecoder::configure_ffi(
   self : AudioDecoder,
   config : JsValue,
 ) -> Result[Unit, AudioDecoderConfigureError] =
-  #| (self, config) => (() => { try { self.configure(config); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_decoder_configure_error(e) }; } })()
+  #| (self, config) => (() => { try { self.configure(config); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn AudioDecoder::configure(
@@ -2102,13 +2059,13 @@ pub extern "js" fn AudioDecoder::decode(
   self : AudioDecoder,
   chunk : EncodedAudioChunk,
 ) -> Result[Unit, AudioDecoderDecodeError] =
-  #| (self, chunk) => (() => { try { self.decode(chunk); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_decoder_decode_error(e) }; } })()
+  #| (self, chunk) => (() => { try { self.decode(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioDecoder::flush(
   self : AudioDecoder,
 ) -> Promise[Result[Unit, AudioDecoderFlushError]] =
-  #| (self) => self.flush().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_audio_decoder_flush_error(e) }))
+  #| (self) => self.flush().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn AudioDecoder::reset(self : AudioDecoder) -> Unit =
@@ -2125,7 +2082,7 @@ extern "js" fn AudioDecoder::is_config_supported_ffi(
   #| (config) => AudioDecoder.isConfigSupported(config).then(v => ({
   #|   supported: (v.supported === undefined ? -1 : v.supported),
   #|   config: (v.config === undefined ? { $tag: 0 } : { $tag: 1, _0: v.config })
-  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_audio_decoder_is_config_supported_error(e) }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn AudioDecoder::is_config_supported(
@@ -2180,35 +2137,12 @@ pub(all) enum VideoDecoderConfigureError {
 }
 
 ///|
-extern "js" fn classify_video_decoder_configure_error(
-  e : JsError,
-) -> VideoDecoderConfigureError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum VideoDecoderDecodeError {
   DataError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_video_decoder_decode_error(
-  e : JsError,
-) -> VideoDecoderDecodeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2218,31 +2152,11 @@ pub(all) enum VideoDecoderFlushError {
 }
 
 ///|
-extern "js" fn classify_video_decoder_flush_error(
-  e : JsError,
-) -> VideoDecoderFlushError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum VideoDecoderIsConfigSupportedError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_video_decoder_is_config_supported_error(
-  e : JsError,
-) -> VideoDecoderIsConfigSupportedError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 extern "js" fn VideoDecoder::new_ffi(init_ : JsValue) -> VideoDecoder =
@@ -2279,7 +2193,7 @@ extern "js" fn VideoDecoder::configure_ffi(
   self : VideoDecoder,
   config : JsValue,
 ) -> Result[Unit, VideoDecoderConfigureError] =
-  #| (self, config) => (() => { try { self.configure(config); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_video_decoder_configure_error(e) }; } })()
+  #| (self, config) => (() => { try { self.configure(config); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn VideoDecoder::configure(
@@ -2294,13 +2208,13 @@ pub extern "js" fn VideoDecoder::decode(
   self : VideoDecoder,
   chunk : EncodedVideoChunk,
 ) -> Result[Unit, VideoDecoderDecodeError] =
-  #| (self, chunk) => (() => { try { self.decode(chunk); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_video_decoder_decode_error(e) }; } })()
+  #| (self, chunk) => (() => { try { self.decode(chunk); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn VideoDecoder::flush(
   self : VideoDecoder,
 ) -> Promise[Result[Unit, VideoDecoderFlushError]] =
-  #| (self) => self.flush().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_video_decoder_flush_error(e) }))
+  #| (self) => self.flush().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn VideoDecoder::reset(self : VideoDecoder) -> Unit =
@@ -2317,7 +2231,7 @@ extern "js" fn VideoDecoder::is_config_supported_ffi(
   #| (config) => VideoDecoder.isConfigSupported(config).then(v => ({
   #|   supported: (v.supported === undefined ? -1 : v.supported),
   #|   config: (v.config === undefined ? { $tag: 0 } : { $tag: 1, _0: v.config })
-  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_video_decoder_is_config_supported_error(e) }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn VideoDecoder::is_config_supported(
@@ -2372,35 +2286,12 @@ pub(all) enum AudioEncoderConfigureError {
 }
 
 ///|
-extern "js" fn classify_audio_encoder_configure_error(
-  e : JsError,
-) -> AudioEncoderConfigureError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum AudioEncoderEncodeError {
   TypeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_audio_encoder_encode_error(
-  e : JsError,
-) -> AudioEncoderEncodeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2410,31 +2301,11 @@ pub(all) enum AudioEncoderFlushError {
 }
 
 ///|
-extern "js" fn classify_audio_encoder_flush_error(
-  e : JsError,
-) -> AudioEncoderFlushError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum AudioEncoderIsConfigSupportedError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_audio_encoder_is_config_supported_error(
-  e : JsError,
-) -> AudioEncoderIsConfigSupportedError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 extern "js" fn AudioEncoder::new_ffi(init_ : JsValue) -> AudioEncoder =
@@ -2471,7 +2342,7 @@ extern "js" fn AudioEncoder::configure_ffi(
   self : AudioEncoder,
   config : JsValue,
 ) -> Result[Unit, AudioEncoderConfigureError] =
-  #| (self, config) => (() => { try { self.configure(config); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_encoder_configure_error(e) }; } })()
+  #| (self, config) => (() => { try { self.configure(config); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn AudioEncoder::configure(
@@ -2486,13 +2357,13 @@ pub extern "js" fn AudioEncoder::encode(
   self : AudioEncoder,
   data : AudioData,
 ) -> Result[Unit, AudioEncoderEncodeError] =
-  #| (self, data) => (() => { try { self.encode(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_encoder_encode_error(e) }; } })()
+  #| (self, data) => (() => { try { self.encode(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioEncoder::flush(
   self : AudioEncoder,
 ) -> Promise[Result[Unit, AudioEncoderFlushError]] =
-  #| (self) => self.flush().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_audio_encoder_flush_error(e) }))
+  #| (self) => self.flush().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn AudioEncoder::reset(self : AudioEncoder) -> Unit =
@@ -2509,7 +2380,7 @@ extern "js" fn AudioEncoder::is_config_supported_ffi(
   #| (config) => AudioEncoder.isConfigSupported(config).then(v => ({
   #|   supported: (v.supported === undefined ? -1 : v.supported),
   #|   config: (v.config === undefined ? { $tag: 0 } : { $tag: 1, _0: v.config })
-  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_audio_encoder_is_config_supported_error(e) }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn AudioEncoder::is_config_supported(
@@ -2564,35 +2435,12 @@ pub(all) enum VideoEncoderConfigureError {
 }
 
 ///|
-extern "js" fn classify_video_encoder_configure_error(
-  e : JsError,
-) -> VideoEncoderConfigureError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum VideoEncoderEncodeError {
   DataError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_video_encoder_encode_error(
-  e : JsError,
-) -> VideoEncoderEncodeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2602,16 +2450,6 @@ pub(all) enum VideoEncoderFlushError {
 }
 
 ///|
-extern "js" fn classify_video_encoder_flush_error(
-  e : JsError,
-) -> VideoEncoderFlushError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum VideoEncoderResetError {
   InvalidStateError(JsError)
@@ -2619,31 +2457,11 @@ pub(all) enum VideoEncoderResetError {
 }
 
 ///|
-extern "js" fn classify_video_encoder_reset_error(
-  e : JsError,
-) -> VideoEncoderResetError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum VideoEncoderIsConfigSupportedError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_video_encoder_is_config_supported_error(
-  e : JsError,
-) -> VideoEncoderIsConfigSupportedError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 extern "js" fn VideoEncoder::new_ffi(init_ : JsValue) -> VideoEncoder =
@@ -2680,7 +2498,7 @@ extern "js" fn VideoEncoder::configure_ffi(
   self : VideoEncoder,
   config : JsValue,
 ) -> Result[Unit, VideoEncoderConfigureError] =
-  #| (self, config) => (() => { try { self.configure(config); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_video_encoder_configure_error(e) }; } })()
+  #| (self, config) => (() => { try { self.configure(config); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn VideoEncoder::configure(
@@ -2695,7 +2513,7 @@ pub extern "js" fn VideoEncoder::encode(
   self : VideoEncoder,
   frame : VideoFrame,
 ) -> Result[Unit, VideoEncoderEncodeError] =
-  #| (self, frame) => (() => { try { self.encode(frame); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_video_encoder_encode_error(e) }; } })()
+  #| (self, frame) => (() => { try { self.encode(frame); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn VideoEncoder::encode_with_options_ffi(
@@ -2703,7 +2521,7 @@ extern "js" fn VideoEncoder::encode_with_options_ffi(
   frame : VideoFrame,
   options : JsValue,
 ) -> Result[Unit, VideoEncoderEncodeError] =
-  #| (self, frame, options) => (() => { try { self.encode(frame, options); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_video_encoder_encode_error(e) }; } })()
+  #| (self, frame, options) => (() => { try { self.encode(frame, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn VideoEncoder::encode_with_options(
@@ -2718,13 +2536,13 @@ pub fn VideoEncoder::encode_with_options(
 pub extern "js" fn VideoEncoder::flush(
   self : VideoEncoder,
 ) -> Promise[Result[Unit, VideoEncoderFlushError]] =
-  #| (self) => self.flush().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_video_encoder_flush_error(e) }))
+  #| (self) => self.flush().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn VideoEncoder::reset(
   self : VideoEncoder,
 ) -> Result[Unit, VideoEncoderResetError] =
-  #| (self) => (() => { try { self.reset(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_video_encoder_reset_error(e) }; } })()
+  #| (self) => (() => { try { self.reset(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn VideoEncoder::close(self : VideoEncoder) -> Unit =
@@ -2737,7 +2555,7 @@ extern "js" fn VideoEncoder::is_config_supported_ffi(
   #| (config) => VideoEncoder.isConfigSupported(config).then(v => ({
   #|   supported: (v.supported === undefined ? -1 : v.supported),
   #|   config: (v.config === undefined ? { $tag: 0 } : { $tag: 1, _0: v.config })
-  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_video_encoder_is_config_supported_error(e) }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn VideoEncoder::is_config_supported(
@@ -2984,33 +2802,12 @@ pub(all) enum AudioDataConstructorError {
 }
 
 ///|
-extern "js" fn classify_audio_data_constructor_error(
-  e : JsError,
-) -> AudioDataConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum AudioDataCopyToError {
   RangeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_audio_data_copy_to_error(
-  e : JsError,
-) -> AudioDataCopyToError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -3020,20 +2817,10 @@ pub(all) enum AudioDataCloneError {
 }
 
 ///|
-extern "js" fn classify_audio_data_clone_error(
-  e : JsError,
-) -> AudioDataCloneError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 extern "js" fn AudioData::new_ffi(
   init_ : JsValue,
 ) -> Result[AudioData, AudioDataConstructorError] =
-  #| (init_) => (() => { try { return { $tag: 0, _0: new AudioData(init_) }; } catch(e) { return { $tag: 1, _0: classify_audio_data_constructor_error(e) }; } })()
+  #| (init_) => (() => { try { return { $tag: 1, _0: new AudioData(init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn AudioData::new(
@@ -3089,7 +2876,7 @@ extern "js" fn AudioData::copy_to_ffi(
   destination : AllowSharedBufferSource,
   options : JsValue,
 ) -> Result[Unit, AudioDataCopyToError] =
-  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_data_copy_to_error(e) }; } })()
+  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn AudioData::copy_to(
@@ -3104,7 +2891,7 @@ pub fn AudioData::copy_to(
 pub extern "js" fn AudioData::clone(
   self : AudioData,
 ) -> Result[AudioData, AudioDataCloneError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.clone() }; } catch(e) { return { $tag: 1, _0: classify_audio_data_clone_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.clone() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioData::close(self : AudioData) -> Unit =
@@ -3116,7 +2903,7 @@ pub extern "js" fn AudioData::copy_to_with_array_buffer(
   destination : ArrayBuffer,
   options : AudioDataCopyToOptions,
 ) -> Result[Unit, AudioDataCopyToError] =
-  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_data_copy_to_error(e) }; } })()
+  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioData::copy_to_with_shared_array_buffer(
@@ -3124,7 +2911,7 @@ pub extern "js" fn AudioData::copy_to_with_shared_array_buffer(
   destination : SharedArrayBuffer,
   options : AudioDataCopyToOptions,
 ) -> Result[Unit, AudioDataCopyToError] =
-  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_data_copy_to_error(e) }; } })()
+  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioData::copy_to_with_array_buffer_view(
@@ -3132,7 +2919,7 @@ pub extern "js" fn AudioData::copy_to_with_array_buffer_view(
   destination : ArrayBufferView,
   options : AudioDataCopyToOptions,
 ) -> Result[Unit, AudioDataCopyToError] =
-  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_data_copy_to_error(e) }; } })()
+  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// VideoFrame interface
@@ -3168,16 +2955,6 @@ pub(all) enum VideoFrameCloneError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_video_frame_clone_error(
-  e : JsError,
-) -> VideoFrameCloneError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn VideoFrame::new_with_canvas_image_source(
@@ -3324,7 +3101,7 @@ pub fn VideoFrame::copy_to_with_options(
 pub extern "js" fn VideoFrame::clone(
   self : VideoFrame,
 ) -> Result[VideoFrame, VideoFrameCloneError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.clone() }; } catch(e) { return { $tag: 1, _0: classify_video_frame_clone_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.clone() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn VideoFrame::close(self : VideoFrame) -> Unit =
@@ -3540,16 +3317,6 @@ pub(all) enum ImageDecoderDecodeError {
 }
 
 ///|
-extern "js" fn classify_image_decoder_decode_error(
-  e : JsError,
-) -> ImageDecoderDecodeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 extern "js" fn ImageDecoder::new_ffi(init_ : JsValue) -> ImageDecoder =
   #| (init_) => new ImageDecoder(init_)
 
@@ -3585,7 +3352,7 @@ pub extern "js" fn ImageDecoder::decode(
   #| (self) => self.decode().then(v => ({
   #|   image: v.image,
   #|   complete: v.complete
-  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_image_decoder_decode_error(e) }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn ImageDecoder::decode_with_options_ffi(
@@ -3595,7 +3362,7 @@ extern "js" fn ImageDecoder::decode_with_options_ffi(
   #| (self, options) => self.decode(options).then(v => ({
   #|   image: v.image,
   #|   complete: v.complete
-  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_image_decoder_decode_error(e) }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn ImageDecoder::decode_with_options(

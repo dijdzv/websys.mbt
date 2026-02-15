@@ -3483,16 +3483,6 @@ pub(all) enum EventTargetDispatchEventError {
 }
 
 ///|
-extern "js" fn classify_event_target_dispatch_event_error(
-  e : JsError,
-) -> EventTargetDispatchEventError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn EventTarget::new() -> EventTarget =
   #| () => new EventTarget()
 
@@ -3535,7 +3525,7 @@ pub extern "js" fn EventTarget::dispatch_event(
   self : EventTarget,
   event : Event,
 ) -> Result[Bool, EventTargetDispatchEventError] =
-  #| (self, event) => (() => { try { return { $tag: 0, _0: self.dispatchEvent(event) }; } catch(e) { return { $tag: 1, _0: classify_event_target_dispatch_event_error(e) }; } })()
+  #| (self, event) => (() => { try { return { $tag: 1, _0: self.dispatchEvent(event) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn EventTarget::when(
@@ -3744,34 +3734,13 @@ pub extern "js" fn NodeList::as_radio_node_list(
   #| (self) => (self instanceof RadioNodeList) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum NodeListItemError {
-  TypeError(JsError)
-  OtherError(JsError)
-}
-
-///|
-extern "js" fn classify_node_list_item_error(e : JsError) -> NodeListItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
-pub extern "js" fn NodeList::item(
-  self : NodeList,
-  index : Int,
-) -> Result[Node?, NodeListItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_node_list_item_error(e) }; } })()
+pub extern "js" fn NodeList::item(self : NodeList, index : Int) -> Node? =
+  #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 #alias("_[_]")
-pub extern "js" fn NodeList::get(
-  self : NodeList,
-  index : Int,
-) -> Result[Node?, NodeListItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_node_list_item_error(e) }; } })()
+pub extern "js" fn NodeList::get(self : NodeList, index : Int) -> Node? =
+  #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn NodeList::get_length(self : NodeList) -> Int =
@@ -3923,16 +3892,6 @@ pub(all) enum MutationObserverObserveError {
 }
 
 ///|
-extern "js" fn classify_mutation_observer_observe_error(
-  e : JsError,
-) -> MutationObserverObserveError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn MutationObserver::new(
   callback : MutationCallback,
 ) -> MutationObserver =
@@ -3943,7 +3902,7 @@ pub extern "js" fn MutationObserver::observe(
   self : MutationObserver,
   target : Node,
 ) -> Result[Unit, MutationObserverObserveError] =
-  #| (self, target) => (() => { try { self.observe(target); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_mutation_observer_observe_error(e) }; } })()
+  #| (self, target) => (() => { try { self.observe(target); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn MutationObserver::observe_with_options_ffi(
@@ -3951,7 +3910,7 @@ extern "js" fn MutationObserver::observe_with_options_ffi(
   target : Node,
   options : JsValue,
 ) -> Result[Unit, MutationObserverObserveError] =
-  #| (self, target, options) => (() => { try { self.observe(target, options); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_mutation_observer_observe_error(e) }; } })()
+  #| (self, target, options) => (() => { try { self.observe(target, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn MutationObserver::observe_with_options(
@@ -4958,20 +4917,18 @@ pub extern "js" fn Node::as_html_geolocation_element(
 
 ///|
 /// Error type for throwing methods
-pub(all) enum NodeAppendChildError {
+pub(all) enum NodeInsertBeforeError {
+  NotFoundError(JsError)
   HierarchyRequestError(JsError)
   OtherError(JsError)
 }
 
 ///|
-extern "js" fn classify_node_append_child_error(
-  e : JsError,
-) -> NodeAppendChildError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
+/// Error type for throwing methods
+pub(all) enum NodeAppendChildError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
 
 ///|
 /// Error type for throwing methods
@@ -4982,34 +4939,12 @@ pub(all) enum NodeReplaceChildError {
 }
 
 ///|
-extern "js" fn classify_node_replace_child_error(
-  e : JsError,
-) -> NodeReplaceChildError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   if (n === 'HierarchyRequestError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum NodeRemoveChildError {
   TypeError(JsError)
   NotFoundError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_node_remove_child_error(
-  e : JsError,
-) -> NodeRemoveChildError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 // Node.ELEMENT_NODE
 
@@ -5248,15 +5183,15 @@ pub extern "js" fn Node::insert_before(
   self : Node,
   node : Node,
   child : Node?,
-) -> Node =
-  #| (self, node, child) => self.insertBefore(node, (child.$tag === 1 ? child._0 : null))
+) -> Result[Node, NodeInsertBeforeError] =
+  #| (self, node, child) => (() => { try { return { $tag: 1, _0: self.insertBefore(node, (child.$tag === 1 ? child._0 : null)) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Node::append_child(
   self : Node,
   node : Node,
 ) -> Result[Node, NodeAppendChildError] =
-  #| (self, node) => (() => { try { return { $tag: 0, _0: self.appendChild(node) }; } catch(e) { return { $tag: 1, _0: classify_node_append_child_error(e) }; } })()
+  #| (self, node) => (() => { try { return { $tag: 1, _0: self.appendChild(node) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Node::replace_child(
@@ -5264,14 +5199,14 @@ pub extern "js" fn Node::replace_child(
   node : Node,
   child : Node,
 ) -> Result[Node, NodeReplaceChildError] =
-  #| (self, node, child) => (() => { try { return { $tag: 0, _0: self.replaceChild(node, child) }; } catch(e) { return { $tag: 1, _0: classify_node_replace_child_error(e) }; } })()
+  #| (self, node, child) => (() => { try { return { $tag: 1, _0: self.replaceChild(node, child) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Node::remove_child(
   self : Node,
   child : Node,
 ) -> Result[Node, NodeRemoveChildError] =
-  #| (self, child) => (() => { try { return { $tag: 0, _0: self.removeChild(child) }; } catch(e) { return { $tag: 1, _0: classify_node_remove_child_error(e) }; } })()
+  #| (self, child) => (() => { try { return { $tag: 1, _0: self.removeChild(child) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// Document interface
@@ -5322,17 +5257,6 @@ pub(all) enum DocumentCreateElementNSError {
 }
 
 ///|
-extern "js" fn classify_document_create_element_ns_error(
-  e : JsError,
-) -> DocumentCreateElementNSError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NamespaceError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidCharacterError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentCreateProcessingInstructionError {
   InvalidCharacterError(JsError)
@@ -5340,31 +5264,11 @@ pub(all) enum DocumentCreateProcessingInstructionError {
 }
 
 ///|
-extern "js" fn classify_document_create_processing_instruction_error(
-  e : JsError,
-) -> DocumentCreateProcessingInstructionError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidCharacterError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentCreateAttributeError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_document_create_attribute_error(
-  e : JsError,
-) -> DocumentCreateAttributeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidCharacterError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -5375,32 +5279,11 @@ pub(all) enum DocumentCreateAttributeNSError {
 }
 
 ///|
-extern "js" fn classify_document_create_attribute_ns_error(
-  e : JsError,
-) -> DocumentCreateAttributeNSError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NamespaceError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidCharacterError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentHasStorageAccessError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_document_has_storage_access_error(
-  e : JsError,
-) -> DocumentHasStorageAccessError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -5411,17 +5294,6 @@ pub(all) enum DocumentRequestStorageAccessError {
 }
 
 ///|
-extern "js" fn classify_document_request_storage_access_error(
-  e : JsError,
-) -> DocumentRequestStorageAccessError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentParseHTMLUnsafeError {
   TypeError(JsError)
@@ -5429,31 +5301,11 @@ pub(all) enum DocumentParseHTMLUnsafeError {
 }
 
 ///|
-extern "js" fn classify_document_parse_html_unsafe_error(
-  e : JsError,
-) -> DocumentParseHTMLUnsafeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentSetDomainError {
   SecurityError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_document_set_domain_error(
-  e : JsError,
-) -> DocumentSetDomainError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -5464,32 +5316,12 @@ pub(all) enum DocumentWriteError {
 }
 
 ///|
-extern "js" fn classify_document_write_error(e : JsError) -> DocumentWriteError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentWritelnError {
   TypeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_document_writeln_error(
-  e : JsError,
-) -> DocumentWritelnError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -5501,18 +5333,6 @@ pub(all) enum DocumentRequestStorageAccessForError {
 }
 
 ///|
-extern "js" fn classify_document_request_storage_access_for_error(
-  e : JsError,
-) -> DocumentRequestStorageAccessForError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentExitPictureInPictureError {
   InvalidStateError(JsError)
@@ -5520,31 +5340,11 @@ pub(all) enum DocumentExitPictureInPictureError {
 }
 
 ///|
-extern "js" fn classify_document_exit_picture_in_picture_error(
-  e : JsError,
-) -> DocumentExitPictureInPictureError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentHasUnpartitionedCookieAccessError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_document_has_unpartitioned_cookie_access_error(
-  e : JsError,
-) -> DocumentHasUnpartitionedCookieAccessError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -5556,18 +5356,6 @@ pub(all) enum DocumentHasPrivateTokenError {
 }
 
 ///|
-extern "js" fn classify_document_has_private_token_error(
-  e : JsError,
-) -> DocumentHasPrivateTokenError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentHasRedemptionRecordError {
   TypeError(JsError)
@@ -5577,33 +5365,11 @@ pub(all) enum DocumentHasRedemptionRecordError {
 }
 
 ///|
-extern "js" fn classify_document_has_redemption_record_error(
-  e : JsError,
-) -> DocumentHasRedemptionRecordError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentSetAdoptedStyleSheetsError {
   NotAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_document_set_adopted_style_sheets_error(
-  e : JsError,
-) -> DocumentSetAdoptedStyleSheetsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -5613,16 +5379,6 @@ pub(all) enum DocumentPrependError {
 }
 
 ///|
-extern "js" fn classify_document_prepend_error(
-  e : JsError,
-) -> DocumentPrependError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentAppendError {
   HierarchyRequestError(JsError)
@@ -5630,31 +5386,11 @@ pub(all) enum DocumentAppendError {
 }
 
 ///|
-extern "js" fn classify_document_append_error(
-  e : JsError,
-) -> DocumentAppendError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentReplaceChildrenError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_document_replace_children_error(
-  e : JsError,
-) -> DocumentReplaceChildrenError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -5666,18 +5402,6 @@ pub(all) enum DocumentMoveBeforeError {
 }
 
 ///|
-extern "js" fn classify_document_move_before_error(
-  e : JsError,
-) -> DocumentMoveBeforeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   if (n === 'HierarchyRequestError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentQuerySelectorError {
   SyntaxError(JsError)
@@ -5685,31 +5409,11 @@ pub(all) enum DocumentQuerySelectorError {
 }
 
 ///|
-extern "js" fn classify_document_query_selector_error(
-  e : JsError,
-) -> DocumentQuerySelectorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentQuerySelectorAllError {
   SyntaxError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_document_query_selector_all_error(
-  e : JsError,
-) -> DocumentQuerySelectorAllError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn Document::new() -> Document =
@@ -5800,7 +5504,7 @@ pub extern "js" fn Document::create_element_ns(
   namespace_ : String?,
   qualified_name : String,
 ) -> Result[Element, DocumentCreateElementNSError] =
-  #| (self, namespace_, qualified_name) => (() => { try { return { $tag: 0, _0: self.createElementNS(namespace_, qualified_name) }; } catch(e) { return { $tag: 1, _0: classify_document_create_element_ns_error(e) }; } })()
+  #| (self, namespace_, qualified_name) => (() => { try { return { $tag: 1, _0: self.createElementNS(namespace_, qualified_name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NamespaceError') return { $tag: 0, _0: e }; if (n === 'InvalidCharacterError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::create_element_ns_with_options(
@@ -5809,7 +5513,7 @@ pub extern "js" fn Document::create_element_ns_with_options(
   qualified_name : String,
   options : StringOrElementCreationOptions,
 ) -> Result[Element, DocumentCreateElementNSError] =
-  #| (self, namespace_, qualified_name, options) => (() => { try { return { $tag: 0, _0: self.createElementNS(namespace_, qualified_name, options) }; } catch(e) { return { $tag: 1, _0: classify_document_create_element_ns_error(e) }; } })()
+  #| (self, namespace_, qualified_name, options) => (() => { try { return { $tag: 1, _0: self.createElementNS(namespace_, qualified_name, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NamespaceError') return { $tag: 0, _0: e }; if (n === 'InvalidCharacterError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::create_document_fragment(
@@ -5844,7 +5548,7 @@ pub extern "js" fn Document::create_processing_instruction(
   target : String,
   data : String,
 ) -> Result[ProcessingInstruction, DocumentCreateProcessingInstructionError] =
-  #| (self, target, data) => (() => { try { return { $tag: 0, _0: self.createProcessingInstruction(target, data) }; } catch(e) { return { $tag: 1, _0: classify_document_create_processing_instruction_error(e) }; } })()
+  #| (self, target, data) => (() => { try { return { $tag: 1, _0: self.createProcessingInstruction(target, data) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidCharacterError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::import_node(self : Document, node : Node) -> Node =
@@ -5867,7 +5571,7 @@ pub extern "js" fn Document::create_attribute(
   self : Document,
   local_name : String,
 ) -> Result[Attr, DocumentCreateAttributeError] =
-  #| (self, local_name) => (() => { try { return { $tag: 0, _0: self.createAttribute(local_name) }; } catch(e) { return { $tag: 1, _0: classify_document_create_attribute_error(e) }; } })()
+  #| (self, local_name) => (() => { try { return { $tag: 1, _0: self.createAttribute(local_name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidCharacterError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::create_attribute_ns(
@@ -5875,7 +5579,7 @@ pub extern "js" fn Document::create_attribute_ns(
   namespace_ : String?,
   qualified_name : String,
 ) -> Result[Attr, DocumentCreateAttributeNSError] =
-  #| (self, namespace_, qualified_name) => (() => { try { return { $tag: 0, _0: self.createAttributeNS(namespace_, qualified_name) }; } catch(e) { return { $tag: 1, _0: classify_document_create_attribute_ns_error(e) }; } })()
+  #| (self, namespace_, qualified_name) => (() => { try { return { $tag: 1, _0: self.createAttributeNS(namespace_, qualified_name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NamespaceError') return { $tag: 0, _0: e }; if (n === 'InvalidCharacterError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// @alert deprecated "createEvent is deprecated"
@@ -5942,13 +5646,13 @@ pub extern "js" fn Document::clear_onprerenderingchange(
 pub extern "js" fn Document::has_storage_access(
   self : Document,
 ) -> Promise[Result[Bool, DocumentHasStorageAccessError]] =
-  #| (self) => self.hasStorageAccess().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_document_has_storage_access_error(e) }))
+  #| (self) => self.hasStorageAccess().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Document::request_storage_access(
   self : Document,
 ) -> Promise[Result[Unit, DocumentRequestStorageAccessError]] =
-  #| (self) => self.requestStorageAccess().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_document_request_storage_access_error(e) }))
+  #| (self) => self.requestStorageAccess().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Document::get_root_element(
@@ -6012,7 +5716,7 @@ pub extern "js" fn Document::get_scrolling_element(self : Document) -> Element? 
 pub extern "js" fn Document::parse_html_unsafe(
   html : TrustedHTMLOrString,
 ) -> Result[Document, DocumentParseHTMLUnsafeError] =
-  #| (html) => (() => { try { return { $tag: 0, _0: Document.parseHTMLUnsafe(html) }; } catch(e) { return { $tag: 1, _0: classify_document_parse_html_unsafe_error(e) }; } })()
+  #| (html) => (() => { try { return { $tag: 1, _0: Document.parseHTMLUnsafe(html) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::get_location(self : Document) -> Location? =
@@ -6029,7 +5733,7 @@ pub extern "js" fn Document::set_domain(
   self : Document,
   value : String,
 ) -> Result[Unit, DocumentSetDomainError] =
-  #| (self, value) => (() => { try { self.domain = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_set_domain_error(e) }; } })()
+  #| (self, value) => (() => { try { self.domain = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::get_referrer(self : Document) -> String =
@@ -6162,7 +5866,7 @@ pub extern "js" fn Document::write(
   self : Document,
   text : TrustedHTMLOrString,
 ) -> Result[Unit, DocumentWriteError] =
-  #| (self, text) => (() => { try { self.write(text); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_write_error(e) }; } })()
+  #| (self, text) => (() => { try { self.write(text); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// @alert deprecated "writeln is deprecated"
@@ -6170,7 +5874,7 @@ pub extern "js" fn Document::writeln(
   self : Document,
   text : TrustedHTMLOrString,
 ) -> Result[Unit, DocumentWritelnError] =
-  #| (self, text) => (() => { try { self.writeln(text); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_writeln_error(e) }; } })()
+  #| (self, text) => (() => { try { self.writeln(text); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::get_default_view(self : Document) -> Window? =
@@ -6379,7 +6083,7 @@ pub extern "js" fn Document::request_storage_access_for(
   self : Document,
   requested_origin : String,
 ) -> Promise[Result[Unit, DocumentRequestStorageAccessForError]] =
-  #| (self, requested_origin) => self.requestStorageAccessFor(requested_origin).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_document_request_storage_access_for_error(e) }))
+  #| (self, requested_origin) => self.requestStorageAccessFor(requested_origin).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Document::set_onfreeze(
@@ -6495,27 +6199,27 @@ pub extern "js" fn Document::get_picture_in_picture_enabled(
 pub extern "js" fn Document::exit_picture_in_picture(
   self : Document,
 ) -> Promise[Result[Unit, DocumentExitPictureInPictureError]] =
-  #| (self) => self.exitPictureInPicture().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_document_exit_picture_in_picture_error(e) }))
+  #| (self) => self.exitPictureInPicture().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Document::has_unpartitioned_cookie_access(
   self : Document,
 ) -> Promise[Result[Bool, DocumentHasUnpartitionedCookieAccessError]] =
-  #| (self) => self.hasUnpartitionedCookieAccess().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_document_has_unpartitioned_cookie_access_error(e) }))
+  #| (self) => self.hasUnpartitionedCookieAccess().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Document::has_private_token(
   self : Document,
   issuer : String,
 ) -> Promise[Result[Bool, DocumentHasPrivateTokenError]] =
-  #| (self, issuer) => self.hasPrivateToken(issuer).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_document_has_private_token_error(e) }))
+  #| (self, issuer) => self.hasPrivateToken(issuer).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Document::has_redemption_record(
   self : Document,
   issuer : String,
 ) -> Promise[Result[Bool, DocumentHasRedemptionRecordError]] =
-  #| (self, issuer) => self.hasRedemptionRecord(issuer).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_document_has_redemption_record_error(e) }))
+  #| (self, issuer) => self.hasRedemptionRecord(issuer).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Document::get_named_flows(self : Document) -> NamedFlowMap =
@@ -7015,17 +6719,15 @@ pub extern "js" fn Document::clear_onended(self : Document) -> Unit =
   #| (self) => { self.onended = null }
 
 ///|
-pub extern "js" fn Document::get_onerror(
-  self : Document,
-) -> OnErrorEventHandler =
-  #| (self) => self.onerror
-
-///|
 pub extern "js" fn Document::set_onerror(
   self : Document,
   value : OnErrorEventHandler,
 ) -> Unit =
   #| (self, value) => { self.onerror = value }
+
+///|
+pub extern "js" fn Document::clear_onerror(self : Document) -> Unit =
+  #| (self) => { self.onerror = null }
 
 ///|
 pub extern "js" fn Document::set_onfocus(
@@ -7889,7 +7591,7 @@ pub extern "js" fn Document::set_adopted_style_sheets(
   self : Document,
   value : Array[CSSStyleSheet],
 ) -> Result[Unit, DocumentSetAdoptedStyleSheetsError] =
-  #| (self, value) => (() => { try { self.adoptedStyleSheets = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_set_adopted_style_sheets_error(e) }; } })()
+  #| (self, value) => (() => { try { self.adoptedStyleSheets = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::get_fullscreen_element(
@@ -7940,21 +7642,21 @@ pub extern "js" fn Document::prepend(
   self : Document,
   nodes : NodeOrString,
 ) -> Result[Unit, DocumentPrependError] =
-  #| (self, nodes) => (() => { try { self.prepend(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_prepend_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.prepend(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::append(
   self : Document,
   nodes : NodeOrString,
 ) -> Result[Unit, DocumentAppendError] =
-  #| (self, nodes) => (() => { try { self.append(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_append_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.append(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::replace_children(
   self : Document,
   nodes : NodeOrString,
 ) -> Result[Unit, DocumentReplaceChildrenError] =
-  #| (self, nodes) => (() => { try { self.replaceChildren(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_replace_children_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.replaceChildren(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::move_before(
@@ -7962,21 +7664,21 @@ pub extern "js" fn Document::move_before(
   node : Node,
   child : Node?,
 ) -> Result[Unit, DocumentMoveBeforeError] =
-  #| (self, node, child) => (() => { try { self.moveBefore(node, (child.$tag === 1 ? child._0 : null)); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_move_before_error(e) }; } })()
+  #| (self, node, child) => (() => { try { self.moveBefore(node, (child.$tag === 1 ? child._0 : null)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::query_selector(
   self : Document,
   selectors : String,
 ) -> Result[Element?, DocumentQuerySelectorError] =
-  #| (self, selectors) => (() => { try { return { $tag: 0, _0: (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_document_query_selector_error(e) }; } })()
+  #| (self, selectors) => (() => { try { return { $tag: 1, _0: (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::query_selector_all(
   self : Document,
   selectors : String,
 ) -> Result[NodeList, DocumentQuerySelectorAllError] =
-  #| (self, selectors) => (() => { try { return { $tag: 0, _0: self.querySelectorAll(selectors) }; } catch(e) { return { $tag: 1, _0: classify_document_query_selector_all_error(e) }; } })()
+  #| (self, selectors) => (() => { try { return { $tag: 1, _0: self.querySelectorAll(selectors) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::create_expression(
@@ -8305,16 +8007,6 @@ pub(all) enum DocumentTypeBeforeError {
 }
 
 ///|
-extern "js" fn classify_document_type_before_error(
-  e : JsError,
-) -> DocumentTypeBeforeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentTypeAfterError {
   HierarchyRequestError(JsError)
@@ -8322,31 +8014,11 @@ pub(all) enum DocumentTypeAfterError {
 }
 
 ///|
-extern "js" fn classify_document_type_after_error(
-  e : JsError,
-) -> DocumentTypeAfterError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentTypeReplaceWithError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_document_type_replace_with_error(
-  e : JsError,
-) -> DocumentTypeReplaceWithError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn DocumentType::get_name(self : DocumentType) -> String =
@@ -8365,21 +8037,21 @@ pub extern "js" fn DocumentType::before(
   self : DocumentType,
   nodes : NodeOrString,
 ) -> Result[Unit, DocumentTypeBeforeError] =
-  #| (self, nodes) => (() => { try { self.before(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_type_before_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.before(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DocumentType::after(
   self : DocumentType,
   nodes : NodeOrString,
 ) -> Result[Unit, DocumentTypeAfterError] =
-  #| (self, nodes) => (() => { try { self.after(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_type_after_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.after(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DocumentType::replace_with(
   self : DocumentType,
   nodes : NodeOrString,
 ) -> Result[Unit, DocumentTypeReplaceWithError] =
-  #| (self, nodes) => (() => { try { self.replaceWith(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_type_replace_with_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.replaceWith(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DocumentType::remove(self : DocumentType) -> Unit =
@@ -8453,16 +8125,6 @@ pub(all) enum DocumentFragmentPrependError {
 }
 
 ///|
-extern "js" fn classify_document_fragment_prepend_error(
-  e : JsError,
-) -> DocumentFragmentPrependError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentFragmentAppendError {
   HierarchyRequestError(JsError)
@@ -8470,31 +8132,11 @@ pub(all) enum DocumentFragmentAppendError {
 }
 
 ///|
-extern "js" fn classify_document_fragment_append_error(
-  e : JsError,
-) -> DocumentFragmentAppendError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentFragmentReplaceChildrenError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_document_fragment_replace_children_error(
-  e : JsError,
-) -> DocumentFragmentReplaceChildrenError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -8506,18 +8148,6 @@ pub(all) enum DocumentFragmentMoveBeforeError {
 }
 
 ///|
-extern "js" fn classify_document_fragment_move_before_error(
-  e : JsError,
-) -> DocumentFragmentMoveBeforeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   if (n === 'HierarchyRequestError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentFragmentQuerySelectorError {
   SyntaxError(JsError)
@@ -8525,31 +8155,11 @@ pub(all) enum DocumentFragmentQuerySelectorError {
 }
 
 ///|
-extern "js" fn classify_document_fragment_query_selector_error(
-  e : JsError,
-) -> DocumentFragmentQuerySelectorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DocumentFragmentQuerySelectorAllError {
   SyntaxError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_document_fragment_query_selector_all_error(
-  e : JsError,
-) -> DocumentFragmentQuerySelectorAllError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn DocumentFragment::new() -> DocumentFragment =
@@ -8591,21 +8201,21 @@ pub extern "js" fn DocumentFragment::prepend(
   self : DocumentFragment,
   nodes : NodeOrString,
 ) -> Result[Unit, DocumentFragmentPrependError] =
-  #| (self, nodes) => (() => { try { self.prepend(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_fragment_prepend_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.prepend(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DocumentFragment::append(
   self : DocumentFragment,
   nodes : NodeOrString,
 ) -> Result[Unit, DocumentFragmentAppendError] =
-  #| (self, nodes) => (() => { try { self.append(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_fragment_append_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.append(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DocumentFragment::replace_children(
   self : DocumentFragment,
   nodes : NodeOrString,
 ) -> Result[Unit, DocumentFragmentReplaceChildrenError] =
-  #| (self, nodes) => (() => { try { self.replaceChildren(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_fragment_replace_children_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.replaceChildren(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DocumentFragment::move_before(
@@ -8613,21 +8223,21 @@ pub extern "js" fn DocumentFragment::move_before(
   node : Node,
   child : Node?,
 ) -> Result[Unit, DocumentFragmentMoveBeforeError] =
-  #| (self, node, child) => (() => { try { self.moveBefore(node, (child.$tag === 1 ? child._0 : null)); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_fragment_move_before_error(e) }; } })()
+  #| (self, node, child) => (() => { try { self.moveBefore(node, (child.$tag === 1 ? child._0 : null)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DocumentFragment::query_selector(
   self : DocumentFragment,
   selectors : String,
 ) -> Result[Element?, DocumentFragmentQuerySelectorError] =
-  #| (self, selectors) => (() => { try { return { $tag: 0, _0: (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_document_fragment_query_selector_error(e) }; } })()
+  #| (self, selectors) => (() => { try { return { $tag: 1, _0: (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DocumentFragment::query_selector_all(
   self : DocumentFragment,
   selectors : String,
 ) -> Result[NodeList, DocumentFragmentQuerySelectorAllError] =
-  #| (self, selectors) => (() => { try { return { $tag: 0, _0: self.querySelectorAll(selectors) }; } catch(e) { return { $tag: 1, _0: classify_document_fragment_query_selector_all_error(e) }; } })()
+  #| (self, selectors) => (() => { try { return { $tag: 1, _0: self.querySelectorAll(selectors) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// ShadowRoot interface
@@ -8687,16 +8297,6 @@ pub(all) enum ShadowRootSetHTMLUnsafeError {
 }
 
 ///|
-extern "js" fn classify_shadow_root_set_html_unsafe_error(
-  e : JsError,
-) -> ShadowRootSetHTMLUnsafeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ShadowRootSetInnerHTMLError {
   TypeError(JsError)
@@ -8705,32 +8305,11 @@ pub(all) enum ShadowRootSetInnerHTMLError {
 }
 
 ///|
-extern "js" fn classify_shadow_root_set_inner_html_error(
-  e : JsError,
-) -> ShadowRootSetInnerHTMLError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ShadowRootSetAdoptedStyleSheetsError {
   NotAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_shadow_root_set_adopted_style_sheets_error(
-  e : JsError,
-) -> ShadowRootSetAdoptedStyleSheetsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn ShadowRoot::get_mode(self : ShadowRoot) -> ShadowRootMode =
@@ -8774,7 +8353,7 @@ pub extern "js" fn ShadowRoot::set_html_unsafe(
   self : ShadowRoot,
   html : TrustedHTMLOrString,
 ) -> Result[Unit, ShadowRootSetHTMLUnsafeError] =
-  #| (self, html) => (() => { try { self.setHTMLUnsafe(html); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_shadow_root_set_html_unsafe_error(e) }; } })()
+  #| (self, html) => (() => { try { self.setHTMLUnsafe(html); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn ShadowRoot::get_html(self : ShadowRoot) -> String =
@@ -8806,7 +8385,7 @@ pub extern "js" fn ShadowRoot::set_inner_html(
   self : ShadowRoot,
   value : TrustedHTMLOrString,
 ) -> Result[Unit, ShadowRootSetInnerHTMLError] =
-  #| (self, value) => (() => { try { self.innerHTML = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_shadow_root_set_inner_html_error(e) }; } })()
+  #| (self, value) => (() => { try { self.innerHTML = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn ShadowRoot::get_active_element(
@@ -8837,7 +8416,7 @@ pub extern "js" fn ShadowRoot::set_adopted_style_sheets(
   self : ShadowRoot,
   value : Array[CSSStyleSheet],
 ) -> Result[Unit, ShadowRootSetAdoptedStyleSheetsError] =
-  #| (self, value) => (() => { try { self.adoptedStyleSheets = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_shadow_root_set_adopted_style_sheets_error(e) }; } })()
+  #| (self, value) => (() => { try { self.adoptedStyleSheets = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn ShadowRoot::get_fullscreen_element(
@@ -9786,32 +9365,11 @@ pub(all) enum ElementSetAttributeError {
 }
 
 ///|
-extern "js" fn classify_element_set_attribute_error(
-  e : JsError,
-) -> ElementSetAttributeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidCharacterError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ElementToggleAttributeError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_element_toggle_attribute_error(
-  e : JsError,
-) -> ElementToggleAttributeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidCharacterError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -9821,31 +9379,11 @@ pub(all) enum ElementRemoveAttributeNodeError {
 }
 
 ///|
-extern "js" fn classify_element_remove_attribute_node_error(
-  e : JsError,
-) -> ElementRemoveAttributeNodeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ElementAttachShadowError {
   NotSupportedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_element_attach_shadow_error(
-  e : JsError,
-) -> ElementAttachShadowError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -9855,31 +9393,11 @@ pub(all) enum ElementClosestError {
 }
 
 ///|
-extern "js" fn classify_element_closest_error(
-  e : JsError,
-) -> ElementClosestError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ElementMatchesError {
   SyntaxError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_element_matches_error(
-  e : JsError,
-) -> ElementMatchesError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -9890,17 +9408,6 @@ pub(all) enum ElementInsertAdjacentElementError {
 }
 
 ///|
-extern "js" fn classify_element_insert_adjacent_element_error(
-  e : JsError,
-) -> ElementInsertAdjacentElementError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ElementInsertAdjacentTextError {
   SyntaxError(JsError)
@@ -9908,31 +9415,11 @@ pub(all) enum ElementInsertAdjacentTextError {
 }
 
 ///|
-extern "js" fn classify_element_insert_adjacent_text_error(
-  e : JsError,
-) -> ElementInsertAdjacentTextError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ElementSetHTMLUnsafeError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_element_set_html_unsafe_error(
-  e : JsError,
-) -> ElementSetHTMLUnsafeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -9944,18 +9431,6 @@ pub(all) enum ElementSetInnerHTMLError {
 }
 
 ///|
-extern "js" fn classify_element_set_inner_html_error(
-  e : JsError,
-) -> ElementSetInnerHTMLError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ElementSetOuterHTMLError {
   TypeError(JsError)
@@ -9963,18 +9438,6 @@ pub(all) enum ElementSetOuterHTMLError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_element_set_outer_html_error(
-  e : JsError,
-) -> ElementSetOuterHTMLError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -9986,33 +9449,11 @@ pub(all) enum ElementInsertAdjacentHTMLError {
 }
 
 ///|
-extern "js" fn classify_element_insert_adjacent_html_error(
-  e : JsError,
-) -> ElementInsertAdjacentHTMLError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ElementRequestFullscreenError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_element_request_fullscreen_error(
-  e : JsError,
-) -> ElementRequestFullscreenError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -10022,31 +9463,11 @@ pub(all) enum ElementSetPointerCaptureError {
 }
 
 ///|
-extern "js" fn classify_element_set_pointer_capture_error(
-  e : JsError,
-) -> ElementSetPointerCaptureError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ElementReleasePointerCaptureError {
   NotFoundError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_element_release_pointer_capture_error(
-  e : JsError,
-) -> ElementReleasePointerCaptureError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -10056,16 +9477,6 @@ pub(all) enum ElementPrependError {
 }
 
 ///|
-extern "js" fn classify_element_prepend_error(
-  e : JsError,
-) -> ElementPrependError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ElementAppendError {
   HierarchyRequestError(JsError)
@@ -10073,29 +9484,11 @@ pub(all) enum ElementAppendError {
 }
 
 ///|
-extern "js" fn classify_element_append_error(e : JsError) -> ElementAppendError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ElementReplaceChildrenError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_element_replace_children_error(
-  e : JsError,
-) -> ElementReplaceChildrenError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -10107,33 +9500,11 @@ pub(all) enum ElementMoveBeforeError {
 }
 
 ///|
-extern "js" fn classify_element_move_before_error(
-  e : JsError,
-) -> ElementMoveBeforeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   if (n === 'HierarchyRequestError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ElementQuerySelectorError {
   SyntaxError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_element_query_selector_error(
-  e : JsError,
-) -> ElementQuerySelectorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -10143,29 +9514,11 @@ pub(all) enum ElementQuerySelectorAllError {
 }
 
 ///|
-extern "js" fn classify_element_query_selector_all_error(
-  e : JsError,
-) -> ElementQuerySelectorAllError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ElementBeforeError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_element_before_error(e : JsError) -> ElementBeforeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -10175,29 +9528,11 @@ pub(all) enum ElementAfterError {
 }
 
 ///|
-extern "js" fn classify_element_after_error(e : JsError) -> ElementAfterError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ElementReplaceWithError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_element_replace_with_error(
-  e : JsError,
-) -> ElementReplaceWithError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn Element::get_namespace_uri(self : Element) -> String? =
@@ -10281,7 +9616,7 @@ pub extern "js" fn Element::set_attribute(
   qualified_name : String,
   value : TrustedTypeOrString,
 ) -> Result[Unit, ElementSetAttributeError] =
-  #| (self, qualified_name, value) => (() => { try { self.setAttribute(qualified_name, value); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_set_attribute_error(e) }; } })()
+  #| (self, qualified_name, value) => (() => { try { self.setAttribute(qualified_name, value); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidCharacterError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::set_attribute_ns(
@@ -10312,7 +9647,7 @@ pub extern "js" fn Element::toggle_attribute(
   self : Element,
   qualified_name : String,
 ) -> Result[Bool, ElementToggleAttributeError] =
-  #| (self, qualified_name) => (() => { try { return { $tag: 0, _0: self.toggleAttribute(qualified_name) }; } catch(e) { return { $tag: 1, _0: classify_element_toggle_attribute_error(e) }; } })()
+  #| (self, qualified_name) => (() => { try { return { $tag: 1, _0: self.toggleAttribute(qualified_name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidCharacterError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::toggle_attribute_with_force(
@@ -10320,7 +9655,7 @@ pub extern "js" fn Element::toggle_attribute_with_force(
   qualified_name : String,
   force : Bool,
 ) -> Result[Bool, ElementToggleAttributeError] =
-  #| (self, qualified_name, force) => (() => { try { return { $tag: 0, _0: self.toggleAttribute(qualified_name, force) }; } catch(e) { return { $tag: 1, _0: classify_element_toggle_attribute_error(e) }; } })()
+  #| (self, qualified_name, force) => (() => { try { return { $tag: 1, _0: self.toggleAttribute(qualified_name, force) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidCharacterError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::has_attribute(
@@ -10371,14 +9706,14 @@ pub extern "js" fn Element::remove_attribute_node(
   self : Element,
   attr : Attr,
 ) -> Result[Attr, ElementRemoveAttributeNodeError] =
-  #| (self, attr) => (() => { try { return { $tag: 0, _0: self.removeAttributeNode(attr) }; } catch(e) { return { $tag: 1, _0: classify_element_remove_attribute_node_error(e) }; } })()
+  #| (self, attr) => (() => { try { return { $tag: 1, _0: self.removeAttributeNode(attr) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Element::attach_shadow_ffi(
   self : Element,
   init_ : JsValue,
 ) -> Result[ShadowRoot, ElementAttachShadowError] =
-  #| (self, init_) => (() => { try { return { $tag: 0, _0: self.attachShadow(init_) }; } catch(e) { return { $tag: 1, _0: classify_element_attach_shadow_error(e) }; } })()
+  #| (self, init_) => (() => { try { return { $tag: 1, _0: self.attachShadow(init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn Element::attach_shadow(
@@ -10403,14 +9738,14 @@ pub extern "js" fn Element::closest(
   self : Element,
   selectors : String,
 ) -> Result[Element?, ElementClosestError] =
-  #| (self, selectors) => (() => { try { return { $tag: 0, _0: (() => { const v = self.closest(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_element_closest_error(e) }; } })()
+  #| (self, selectors) => (() => { try { return { $tag: 1, _0: (() => { const v = self.closest(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::matches(
   self : Element,
   selectors : String,
 ) -> Result[Bool, ElementMatchesError] =
-  #| (self, selectors) => (() => { try { return { $tag: 0, _0: self.matches(selectors) }; } catch(e) { return { $tag: 1, _0: classify_element_matches_error(e) }; } })()
+  #| (self, selectors) => (() => { try { return { $tag: 1, _0: self.matches(selectors) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::webkit_matches_selector(
@@ -10447,7 +9782,7 @@ pub extern "js" fn Element::insert_adjacent_element(
   where_ : String,
   element : Element,
 ) -> Result[Element?, ElementInsertAdjacentElementError] =
-  #| (self, where_, element) => (() => { try { return { $tag: 0, _0: (() => { const v = self.insertAdjacentElement(where_, element); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_element_insert_adjacent_element_error(e) }; } })()
+  #| (self, where_, element) => (() => { try { return { $tag: 1, _0: (() => { const v = self.insertAdjacentElement(where_, element); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::insert_adjacent_text(
@@ -10455,7 +9790,7 @@ pub extern "js" fn Element::insert_adjacent_text(
   where_ : String,
   data : String,
 ) -> Result[Unit, ElementInsertAdjacentTextError] =
-  #| (self, where_, data) => (() => { try { self.insertAdjacentText(where_, data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_insert_adjacent_text_error(e) }; } })()
+  #| (self, where_, data) => (() => { try { self.insertAdjacentText(where_, data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::get_client_rects(self : Element) -> DOMRectList =
@@ -10631,7 +9966,7 @@ pub extern "js" fn Element::set_html_unsafe(
   self : Element,
   html : TrustedHTMLOrString,
 ) -> Result[Unit, ElementSetHTMLUnsafeError] =
-  #| (self, html) => (() => { try { self.setHTMLUnsafe(html); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_set_html_unsafe_error(e) }; } })()
+  #| (self, html) => (() => { try { self.setHTMLUnsafe(html); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::get_html(self : Element) -> String =
@@ -10663,7 +9998,7 @@ pub extern "js" fn Element::set_inner_html(
   self : Element,
   value : TrustedHTMLOrString,
 ) -> Result[Unit, ElementSetInnerHTMLError] =
-  #| (self, value) => (() => { try { self.innerHTML = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_set_inner_html_error(e) }; } })()
+  #| (self, value) => (() => { try { self.innerHTML = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::get_outer_html(
@@ -10676,7 +10011,7 @@ pub extern "js" fn Element::set_outer_html(
   self : Element,
   value : TrustedHTMLOrString,
 ) -> Result[Unit, ElementSetOuterHTMLError] =
-  #| (self, value) => (() => { try { self.outerHTML = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_set_outer_html_error(e) }; } })()
+  #| (self, value) => (() => { try { self.outerHTML = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::insert_adjacent_html(
@@ -10684,7 +10019,7 @@ pub extern "js" fn Element::insert_adjacent_html(
   position : String,
   string : TrustedHTMLOrString,
 ) -> Result[Unit, ElementInsertAdjacentHTMLError] =
-  #| (self, position, string) => (() => { try { self.insertAdjacentHTML(position, string); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_insert_adjacent_html_error(e) }; } })()
+  #| (self, position, string) => (() => { try { self.insertAdjacentHTML(position, string); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::get_part(self : Element) -> DOMTokenList =
@@ -10754,14 +10089,14 @@ pub fn Element::spatial_navigation_search_with_options(
 pub extern "js" fn Element::request_fullscreen(
   self : Element,
 ) -> Promise[Result[Unit, ElementRequestFullscreenError]] =
-  #| (self) => self.requestFullscreen().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_element_request_fullscreen_error(e) }))
+  #| (self) => self.requestFullscreen().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn Element::request_fullscreen_with_options_ffi(
   self : Element,
   options : JsValue,
 ) -> Promise[Result[Unit, ElementRequestFullscreenError]] =
-  #| (self, options) => self.requestFullscreen(options).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_element_request_fullscreen_error(e) }))
+  #| (self, options) => self.requestFullscreen(options).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn Element::request_fullscreen_with_options(
@@ -10828,14 +10163,14 @@ pub extern "js" fn Element::set_pointer_capture(
   self : Element,
   pointer_id : Int,
 ) -> Result[Unit, ElementSetPointerCaptureError] =
-  #| (self, pointer_id) => (() => { try { self.setPointerCapture(pointer_id); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_set_pointer_capture_error(e) }; } })()
+  #| (self, pointer_id) => (() => { try { self.setPointerCapture(pointer_id); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::release_pointer_capture(
   self : Element,
   pointer_id : Int,
 ) -> Result[Unit, ElementReleasePointerCaptureError] =
-  #| (self, pointer_id) => (() => { try { self.releasePointerCapture(pointer_id); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_release_pointer_capture_error(e) }; } })()
+  #| (self, pointer_id) => (() => { try { self.releasePointerCapture(pointer_id); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::has_pointer_capture(
@@ -11616,21 +10951,21 @@ pub extern "js" fn Element::prepend(
   self : Element,
   nodes : NodeOrString,
 ) -> Result[Unit, ElementPrependError] =
-  #| (self, nodes) => (() => { try { self.prepend(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_prepend_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.prepend(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::append(
   self : Element,
   nodes : NodeOrString,
 ) -> Result[Unit, ElementAppendError] =
-  #| (self, nodes) => (() => { try { self.append(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_append_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.append(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::replace_children(
   self : Element,
   nodes : NodeOrString,
 ) -> Result[Unit, ElementReplaceChildrenError] =
-  #| (self, nodes) => (() => { try { self.replaceChildren(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_replace_children_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.replaceChildren(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::move_before(
@@ -11638,21 +10973,21 @@ pub extern "js" fn Element::move_before(
   node : Node,
   child : Node?,
 ) -> Result[Unit, ElementMoveBeforeError] =
-  #| (self, node, child) => (() => { try { self.moveBefore(node, (child.$tag === 1 ? child._0 : null)); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_move_before_error(e) }; } })()
+  #| (self, node, child) => (() => { try { self.moveBefore(node, (child.$tag === 1 ? child._0 : null)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::query_selector(
   self : Element,
   selectors : String,
 ) -> Result[Element?, ElementQuerySelectorError] =
-  #| (self, selectors) => (() => { try { return { $tag: 0, _0: (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_element_query_selector_error(e) }; } })()
+  #| (self, selectors) => (() => { try { return { $tag: 1, _0: (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::query_selector_all(
   self : Element,
   selectors : String,
 ) -> Result[NodeList, ElementQuerySelectorAllError] =
-  #| (self, selectors) => (() => { try { return { $tag: 0, _0: self.querySelectorAll(selectors) }; } catch(e) { return { $tag: 1, _0: classify_element_query_selector_all_error(e) }; } })()
+  #| (self, selectors) => (() => { try { return { $tag: 1, _0: self.querySelectorAll(selectors) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::get_previous_element_sibling(
@@ -11671,21 +11006,21 @@ pub extern "js" fn Element::before(
   self : Element,
   nodes : NodeOrString,
 ) -> Result[Unit, ElementBeforeError] =
-  #| (self, nodes) => (() => { try { self.before(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_before_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.before(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::after(
   self : Element,
   nodes : NodeOrString,
 ) -> Result[Unit, ElementAfterError] =
-  #| (self, nodes) => (() => { try { self.after(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_after_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.after(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::replace_with(
   self : Element,
   nodes : NodeOrString,
 ) -> Result[Unit, ElementReplaceWithError] =
-  #| (self, nodes) => (() => { try { self.replaceWith(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_replace_with_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.replaceWith(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::remove(self : Element) -> Unit =
@@ -11887,31 +11222,11 @@ pub(all) enum NamedNodeMapSetNamedItemError {
 }
 
 ///|
-extern "js" fn classify_named_node_map_set_named_item_error(
-  e : JsError,
-) -> NamedNodeMapSetNamedItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InUseAttributeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum NamedNodeMapSetNamedItemNSError {
   InUseAttributeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_named_node_map_set_named_item_ns_error(
-  e : JsError,
-) -> NamedNodeMapSetNamedItemNSError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InUseAttributeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -11921,31 +11236,11 @@ pub(all) enum NamedNodeMapRemoveNamedItemError {
 }
 
 ///|
-extern "js" fn classify_named_node_map_remove_named_item_error(
-  e : JsError,
-) -> NamedNodeMapRemoveNamedItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum NamedNodeMapRemoveNamedItemNSError {
   NotFoundError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_named_node_map_remove_named_item_ns_error(
-  e : JsError,
-) -> NamedNodeMapRemoveNamedItemNSError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn NamedNodeMap::get_length(self : NamedNodeMap) -> Int =
@@ -11990,21 +11285,21 @@ pub extern "js" fn NamedNodeMap::set_named_item(
   self : NamedNodeMap,
   attr : Attr,
 ) -> Result[Attr?, NamedNodeMapSetNamedItemError] =
-  #| (self, attr) => (() => { try { return { $tag: 0, _0: (() => { const v = self.setNamedItem(attr); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_named_node_map_set_named_item_error(e) }; } })()
+  #| (self, attr) => (() => { try { return { $tag: 1, _0: (() => { const v = self.setNamedItem(attr); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InUseAttributeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn NamedNodeMap::set_named_item_ns(
   self : NamedNodeMap,
   attr : Attr,
 ) -> Result[Attr?, NamedNodeMapSetNamedItemNSError] =
-  #| (self, attr) => (() => { try { return { $tag: 0, _0: (() => { const v = self.setNamedItemNS(attr); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_named_node_map_set_named_item_ns_error(e) }; } })()
+  #| (self, attr) => (() => { try { return { $tag: 1, _0: (() => { const v = self.setNamedItemNS(attr); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InUseAttributeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn NamedNodeMap::remove_named_item(
   self : NamedNodeMap,
   qualified_name : String,
 ) -> Result[Attr, NamedNodeMapRemoveNamedItemError] =
-  #| (self, qualified_name) => (() => { try { return { $tag: 0, _0: self.removeNamedItem(qualified_name) }; } catch(e) { return { $tag: 1, _0: classify_named_node_map_remove_named_item_error(e) }; } })()
+  #| (self, qualified_name) => (() => { try { return { $tag: 1, _0: self.removeNamedItem(qualified_name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn NamedNodeMap::remove_named_item_ns(
@@ -12012,7 +11307,7 @@ pub extern "js" fn NamedNodeMap::remove_named_item_ns(
   namespace_ : String?,
   local_name : String,
 ) -> Result[Attr, NamedNodeMapRemoveNamedItemNSError] =
-  #| (self, namespace_, local_name) => (() => { try { return { $tag: 0, _0: self.removeNamedItemNS(namespace_, local_name) }; } catch(e) { return { $tag: 1, _0: classify_named_node_map_remove_named_item_ns_error(e) }; } })()
+  #| (self, namespace_, local_name) => (() => { try { return { $tag: 1, _0: self.removeNamedItemNS(namespace_, local_name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// Attr interface
@@ -12150,31 +11445,11 @@ pub(all) enum CharacterDataSubstringDataError {
 }
 
 ///|
-extern "js" fn classify_character_data_substring_data_error(
-  e : JsError,
-) -> CharacterDataSubstringDataError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum CharacterDataInsertDataError {
   IndexSizeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_character_data_insert_data_error(
-  e : JsError,
-) -> CharacterDataInsertDataError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -12184,31 +11459,11 @@ pub(all) enum CharacterDataDeleteDataError {
 }
 
 ///|
-extern "js" fn classify_character_data_delete_data_error(
-  e : JsError,
-) -> CharacterDataDeleteDataError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum CharacterDataReplaceDataError {
   IndexSizeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_character_data_replace_data_error(
-  e : JsError,
-) -> CharacterDataReplaceDataError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -12218,16 +11473,6 @@ pub(all) enum CharacterDataBeforeError {
 }
 
 ///|
-extern "js" fn classify_character_data_before_error(
-  e : JsError,
-) -> CharacterDataBeforeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum CharacterDataAfterError {
   HierarchyRequestError(JsError)
@@ -12235,31 +11480,11 @@ pub(all) enum CharacterDataAfterError {
 }
 
 ///|
-extern "js" fn classify_character_data_after_error(
-  e : JsError,
-) -> CharacterDataAfterError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum CharacterDataReplaceWithError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_character_data_replace_with_error(
-  e : JsError,
-) -> CharacterDataReplaceWithError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn CharacterData::get_data(self : CharacterData) -> String =
@@ -12282,7 +11507,7 @@ pub extern "js" fn CharacterData::substring_data(
   offset : Int,
   count : Int,
 ) -> Result[String, CharacterDataSubstringDataError] =
-  #| (self, offset, count) => (() => { try { return { $tag: 0, _0: self.substringData(offset, count) }; } catch(e) { return { $tag: 1, _0: classify_character_data_substring_data_error(e) }; } })()
+  #| (self, offset, count) => (() => { try { return { $tag: 1, _0: self.substringData(offset, count) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CharacterData::append_data(
@@ -12297,7 +11522,7 @@ pub extern "js" fn CharacterData::insert_data(
   offset : Int,
   data : String,
 ) -> Result[Unit, CharacterDataInsertDataError] =
-  #| (self, offset, data) => (() => { try { self.insertData(offset, data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_character_data_insert_data_error(e) }; } })()
+  #| (self, offset, data) => (() => { try { self.insertData(offset, data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CharacterData::delete_data(
@@ -12305,7 +11530,7 @@ pub extern "js" fn CharacterData::delete_data(
   offset : Int,
   count : Int,
 ) -> Result[Unit, CharacterDataDeleteDataError] =
-  #| (self, offset, count) => (() => { try { self.deleteData(offset, count); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_character_data_delete_data_error(e) }; } })()
+  #| (self, offset, count) => (() => { try { self.deleteData(offset, count); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CharacterData::replace_data(
@@ -12314,7 +11539,7 @@ pub extern "js" fn CharacterData::replace_data(
   count : Int,
   data : String,
 ) -> Result[Unit, CharacterDataReplaceDataError] =
-  #| (self, offset, count, data) => (() => { try { self.replaceData(offset, count, data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_character_data_replace_data_error(e) }; } })()
+  #| (self, offset, count, data) => (() => { try { self.replaceData(offset, count, data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CharacterData::get_previous_element_sibling(
@@ -12333,21 +11558,21 @@ pub extern "js" fn CharacterData::before(
   self : CharacterData,
   nodes : NodeOrString,
 ) -> Result[Unit, CharacterDataBeforeError] =
-  #| (self, nodes) => (() => { try { self.before(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_character_data_before_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.before(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CharacterData::after(
   self : CharacterData,
   nodes : NodeOrString,
 ) -> Result[Unit, CharacterDataAfterError] =
-  #| (self, nodes) => (() => { try { self.after(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_character_data_after_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.after(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CharacterData::replace_with(
   self : CharacterData,
   nodes : NodeOrString,
 ) -> Result[Unit, CharacterDataReplaceWithError] =
-  #| (self, nodes) => (() => { try { self.replaceWith(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_character_data_replace_with_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.replaceWith(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CharacterData::remove(self : CharacterData) -> Unit =
@@ -12406,17 +11631,6 @@ pub(all) enum TextSplitTextError {
 }
 
 ///|
-extern "js" fn classify_text_split_text_error(
-  e : JsError,
-) -> TextSplitTextError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn Text::new() -> Text =
   #| () => new Text()
 
@@ -12429,7 +11643,7 @@ pub extern "js" fn Text::split_text(
   self : Text,
   offset : Int,
 ) -> Result[Text, TextSplitTextError] =
-  #| (self, offset) => (() => { try { return { $tag: 0, _0: self.splitText(offset) }; } catch(e) { return { $tag: 1, _0: classify_text_split_text_error(e) }; } })()
+  #| (self, offset) => (() => { try { return { $tag: 1, _0: self.splitText(offset) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Text::get_whole_text(self : Text) -> String =
@@ -12952,20 +12166,10 @@ pub(all) enum StaticRangeConstructorError {
 }
 
 ///|
-extern "js" fn classify_static_range_constructor_error(
-  e : JsError,
-) -> StaticRangeConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidNodeTypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 extern "js" fn StaticRange::new_ffi(
   init_ : JsValue,
 ) -> Result[StaticRange, StaticRangeConstructorError] =
-  #| (init_) => (() => { try { return { $tag: 0, _0: new StaticRange(init_) }; } catch(e) { return { $tag: 1, _0: classify_static_range_constructor_error(e) }; } })()
+  #| (init_) => (() => { try { return { $tag: 1, _0: new StaticRange(init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidNodeTypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn StaticRange::new(
@@ -13015,15 +12219,6 @@ pub(all) enum RangeSetEndError {
 }
 
 ///|
-extern "js" fn classify_range_set_end_error(e : JsError) -> RangeSetEndError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidNodeTypeError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum RangeCompareBoundaryPointsError {
   NotSupportedError(JsError)
@@ -13031,31 +12226,11 @@ pub(all) enum RangeCompareBoundaryPointsError {
 }
 
 ///|
-extern "js" fn classify_range_compare_boundary_points_error(
-  e : JsError,
-) -> RangeCompareBoundaryPointsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum RangeCreateContextualFragmentError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_range_create_contextual_fragment_error(
-  e : JsError,
-) -> RangeCreateContextualFragmentError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn Range::new() -> Range =
@@ -13079,7 +12254,7 @@ pub extern "js" fn Range::set_end(
   node : Node,
   offset : Int,
 ) -> Result[Unit, RangeSetEndError] =
-  #| (self, node, offset) => (() => { try { self.setEnd(node, offset); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_range_set_end_error(e) }; } })()
+  #| (self, node, offset) => (() => { try { self.setEnd(node, offset); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidNodeTypeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Range::set_start_before(self : Range, node : Node) -> Unit =
@@ -13145,7 +12320,7 @@ pub extern "js" fn Range::compare_boundary_points(
   how : Int,
   source_range : Range,
 ) -> Result[Int, RangeCompareBoundaryPointsError] =
-  #| (self, how, source_range) => (() => { try { return { $tag: 0, _0: self.compareBoundaryPoints(how, source_range) }; } catch(e) { return { $tag: 1, _0: classify_range_compare_boundary_points_error(e) }; } })()
+  #| (self, how, source_range) => (() => { try { return { $tag: 1, _0: self.compareBoundaryPoints(how, source_range) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Range::delete_contents(self : Range) -> Unit =
@@ -13212,7 +12387,7 @@ pub extern "js" fn Range::create_contextual_fragment(
   self : Range,
   string : TrustedHTMLOrString,
 ) -> Result[DocumentFragment, RangeCreateContextualFragmentError] =
-  #| (self, string) => (() => { try { return { $tag: 0, _0: self.createContextualFragment(string) }; } catch(e) { return { $tag: 1, _0: classify_range_create_contextual_fragment_error(e) }; } })()
+  #| (self, string) => (() => { try { return { $tag: 1, _0: self.createContextualFragment(string) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// NodeIterator interface
@@ -13392,39 +12567,11 @@ pub extern "js" fn JsValue::to_dom_token_list(self : JsValue) -> DOMTokenList =
 
 ///|
 /// Error type for throwing methods
-pub(all) enum DOMTokenListItemError {
-  TypeError(JsError)
-  OtherError(JsError)
-}
-
-///|
-extern "js" fn classify_dom_token_list_item_error(
-  e : JsError,
-) -> DOMTokenListItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
-/// Error type for throwing methods
 pub(all) enum DOMTokenListAddError {
   SyntaxError(JsError)
   InvalidCharacterError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_dom_token_list_add_error(
-  e : JsError,
-) -> DOMTokenListAddError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidCharacterError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn DOMTokenList::get_length(self : DOMTokenList) -> Int =
@@ -13434,16 +12581,16 @@ pub extern "js" fn DOMTokenList::get_length(self : DOMTokenList) -> Int =
 pub extern "js" fn DOMTokenList::item(
   self : DOMTokenList,
   index : Int,
-) -> Result[String?, DOMTokenListItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: (self.item(index)) ?? undefined }; } catch(e) { return { $tag: 1, _0: classify_dom_token_list_item_error(e) }; } })()
+) -> String? =
+  #| (self, index) => (self.item(index)) ?? undefined
 
 ///|
 #alias("_[_]")
 pub extern "js" fn DOMTokenList::get(
   self : DOMTokenList,
   index : Int,
-) -> Result[String?, DOMTokenListItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: (self[index]) ?? undefined }; } catch(e) { return { $tag: 1, _0: classify_dom_token_list_item_error(e) }; } })()
+) -> String? =
+  #| (self, index) => (self[index]) ?? undefined
 
 ///|
 pub extern "js" fn DOMTokenList::contains(
@@ -13457,7 +12604,7 @@ pub extern "js" fn DOMTokenList::add(
   self : DOMTokenList,
   tokens : String,
 ) -> Result[Unit, DOMTokenListAddError] =
-  #| (self, tokens) => (() => { try { self.add(tokens); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_dom_token_list_add_error(e) }; } })()
+  #| (self, tokens) => (() => { try { self.add(tokens); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'InvalidCharacterError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DOMTokenList::remove(
@@ -13563,32 +12710,11 @@ pub(all) enum XPathResultIterateNextError {
 }
 
 ///|
-extern "js" fn classify_x_path_result_iterate_next_error(
-  e : JsError,
-) -> XPathResultIterateNextError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TYPE_ERR') return { $tag: 0, _0: e };
-  #|   if (n === 'INVALID_STATE_ERR') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum XPathResultSnapshotItemError {
   TYPE_ERR(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_x_path_result_snapshot_item_error(
-  e : JsError,
-) -> XPathResultSnapshotItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TYPE_ERR') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 // XPathResult.ANY_TYPE
 
@@ -13676,14 +12802,14 @@ pub extern "js" fn XPathResult::get_snapshot_length(self : XPathResult) -> Int =
 pub extern "js" fn XPathResult::iterate_next(
   self : XPathResult,
 ) -> Result[Node?, XPathResultIterateNextError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: (() => { const v = self.iterateNext(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_x_path_result_iterate_next_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: (() => { const v = self.iterateNext(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TYPE_ERR') return { $tag: 0, _0: e }; if (n === 'INVALID_STATE_ERR') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XPathResult::snapshot_item(
   self : XPathResult,
   index : Int,
 ) -> Result[Node?, XPathResultSnapshotItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: (() => { const v = self.snapshotItem(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_x_path_result_snapshot_item_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: (() => { const v = self.snapshotItem(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TYPE_ERR') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// XPathExpression interface
@@ -13735,25 +12861,11 @@ pub(all) enum XPathExpressionEvaluateError {
 }
 
 ///|
-extern "js" fn classify_x_path_expression_evaluate_error(
-  e : JsError,
-) -> XPathExpressionEvaluateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TYPE_ERR') return { $tag: 0, _0: e };
-  #|   if (n === 'NAMESPACE_ERROR') return { $tag: 1, _0: e };
-  #|   if (n === 'NOT_SUPPORTED_ERR') return { $tag: 2, _0: e };
-  #|   if (n === 'WRONG_DOCUMENT_ERR') return { $tag: 3, _0: e };
-  #|   if (n === 'INVALID_EXPRESSION_ERR') return { $tag: 4, _0: e };
-  #|   return { $tag: 5, _0: e };
-  #| }
-
-///|
 pub extern "js" fn XPathExpression::evaluate(
   self : XPathExpression,
   context_node : Node,
 ) -> Result[XPathResult, XPathExpressionEvaluateError] =
-  #| (self, context_node) => (() => { try { return { $tag: 0, _0: self.evaluate(context_node) }; } catch(e) { return { $tag: 1, _0: classify_x_path_expression_evaluate_error(e) }; } })()
+  #| (self, context_node) => (() => { try { return { $tag: 1, _0: self.evaluate(context_node) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TYPE_ERR') return { $tag: 0, _0: e }; if (n === 'NAMESPACE_ERROR') return { $tag: 1, _0: e }; if (n === 'NOT_SUPPORTED_ERR') return { $tag: 2, _0: e }; if (n === 'WRONG_DOCUMENT_ERR') return { $tag: 3, _0: e }; if (n === 'INVALID_EXPRESSION_ERR') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XPathExpression::evaluate_with_result(
@@ -13762,7 +12874,7 @@ pub extern "js" fn XPathExpression::evaluate_with_result(
   type_ : Int,
   result : XPathResult?,
 ) -> Result[XPathResult, XPathExpressionEvaluateError] =
-  #| (self, context_node, type_, result) => (() => { try { return { $tag: 0, _0: self.evaluate(context_node, type_, (result.$tag === 1 ? result._0 : null)) }; } catch(e) { return { $tag: 1, _0: classify_x_path_expression_evaluate_error(e) }; } })()
+  #| (self, context_node, type_, result) => (() => { try { return { $tag: 1, _0: self.evaluate(context_node, type_, (result.$tag === 1 ? result._0 : null)) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TYPE_ERR') return { $tag: 0, _0: e }; if (n === 'NAMESPACE_ERROR') return { $tag: 1, _0: e }; if (n === 'NOT_SUPPORTED_ERR') return { $tag: 2, _0: e }; if (n === 'WRONG_DOCUMENT_ERR') return { $tag: 3, _0: e }; if (n === 'INVALID_EXPRESSION_ERR') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
 ///|
 /// XPathEvaluator interface

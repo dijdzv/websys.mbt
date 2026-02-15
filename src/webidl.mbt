@@ -636,8 +636,8 @@ extern "js" fn QuotaExceededErrorOptions::to_js_ffi(
   self : QuotaExceededErrorOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   quota: self.quota,
-  #|   requested: self.requested
+  #|   quota: ((() => { const v = self.quota; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   requested: ((() => { const v = self.requested; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -653,8 +653,8 @@ extern "js" fn QuotaExceededErrorOptions::from_js_ffi(
   value : JsValue,
 ) -> QuotaExceededErrorOptions =
   #| (v) => ({
-  #|   quota: v.quota,
-  #|   requested: v.requested
+  #|   quota: (v.quota === undefined ? { $tag: 0 } : { $tag: 1, _0: v.quota }),
+  #|   requested: (v.requested === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requested })
   #| })
 
 ///|
@@ -717,28 +717,18 @@ pub(all) enum QuotaExceededErrorConstructorError {
 }
 
 ///|
-extern "js" fn classify_quota_exceeded_error_constructor_error(
-  e : JsError,
-) -> QuotaExceededErrorConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn QuotaExceededError::new() -> Result[
   QuotaExceededError,
   QuotaExceededErrorConstructorError,
 ] =
-  #| () => (() => { try { return { $tag: 0, _0: new QuotaExceededError() }; } catch(e) { return { $tag: 1, _0: classify_quota_exceeded_error_constructor_error(e) }; } })()
+  #| () => (() => { try { return { $tag: 1, _0: new QuotaExceededError() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn QuotaExceededError::new_with_options_ffi(
   message : String,
   options : JsValue,
 ) -> Result[QuotaExceededError, QuotaExceededErrorConstructorError] =
-  #| (message, options) => (() => { try { return { $tag: 0, _0: new QuotaExceededError(message, options) }; } catch(e) { return { $tag: 1, _0: classify_quota_exceeded_error_constructor_error(e) }; } })()
+  #| (message, options) => (() => { try { return { $tag: 1, _0: new QuotaExceededError(message, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn QuotaExceededError::new_with_options(
@@ -752,13 +742,13 @@ pub fn QuotaExceededError::new_with_options(
 pub extern "js" fn QuotaExceededError::get_quota(
   self : QuotaExceededError,
 ) -> Double? =
-  #| (self) => (self.quota) ?? undefined
+  #| (self) => (() => { const v = self.quota; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn QuotaExceededError::get_requested(
   self : QuotaExceededError,
 ) -> Double? =
-  #| (self) => (self.requested) ?? undefined
+  #| (self) => (() => { const v = self.requested; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// DOMException interface

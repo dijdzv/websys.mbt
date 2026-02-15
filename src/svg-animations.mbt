@@ -151,31 +151,11 @@ pub(all) enum SVGAnimationElementGetStartTimeError {
 }
 
 ///|
-extern "js" fn classify_svg_animation_element_get_start_time_error(
-  e : JsError,
-) -> SVGAnimationElementGetStartTimeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGAnimationElementGetSimpleDurationError {
   NotSupportedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_animation_element_get_simple_duration_error(
-  e : JsError,
-) -> SVGAnimationElementGetSimpleDurationError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn SVGAnimationElement::get_target_element(
@@ -226,7 +206,7 @@ pub extern "js" fn SVGAnimationElement::clear_onrepeat(
 pub extern "js" fn SVGAnimationElement::get_start_time(
   self : SVGAnimationElement,
 ) -> Result[Double, SVGAnimationElementGetStartTimeError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.getStartTime() }; } catch(e) { return { $tag: 1, _0: classify_svg_animation_element_get_start_time_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.getStartTime() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGAnimationElement::get_current_time(
@@ -238,7 +218,7 @@ pub extern "js" fn SVGAnimationElement::get_current_time(
 pub extern "js" fn SVGAnimationElement::get_simple_duration(
   self : SVGAnimationElement,
 ) -> Result[Double, SVGAnimationElementGetSimpleDurationError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.getSimpleDuration() }; } catch(e) { return { $tag: 1, _0: classify_svg_animation_element_get_simple_duration_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.getSimpleDuration() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGAnimationElement::begin_element(

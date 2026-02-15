@@ -322,7 +322,7 @@ extern "js" fn SpeechSynthesisEventInit::to_js_ffi(
   #|   utterance: self.utterance,
   #|   charIndex: self.charIndex,
   #|   charLength: self.charLength,
-  #|   elapsedTime: self.elapsedTime,
+  #|   elapsedTime: ((() => { const v = self.elapsedTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   name: self.name
   #| })
 
@@ -342,7 +342,7 @@ extern "js" fn SpeechSynthesisEventInit::from_js_ffi(
   #|   utterance: v.utterance,
   #|   charIndex: v.charIndex,
   #|   charLength: v.charLength,
-  #|   elapsedTime: v.elapsedTime,
+  #|   elapsedTime: (v.elapsedTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.elapsedTime }),
   #|   name: v.name
   #| })
 
@@ -389,7 +389,7 @@ extern "js" fn SpeechSynthesisErrorEventInit::to_js_ffi(
   #|   utterance: self.utterance,
   #|   charIndex: self.charIndex,
   #|   charLength: self.charLength,
-  #|   elapsedTime: self.elapsedTime,
+  #|   elapsedTime: ((() => { const v = self.elapsedTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   name: self.name,
   #|   error: ['canceled', 'interrupted', 'audio-busy', 'audio-hardware', 'network', 'synthesis-unavailable', 'synthesis-failed', 'language-unavailable', 'voice-unavailable', 'text-too-long', 'invalid-argument', 'not-allowed'][self.error]
   #| })
@@ -410,7 +410,7 @@ extern "js" fn SpeechSynthesisErrorEventInit::from_js_ffi(
   #|   utterance: v.utterance,
   #|   charIndex: v.charIndex,
   #|   charLength: v.charLength,
-  #|   elapsedTime: v.elapsedTime,
+  #|   elapsedTime: (v.elapsedTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.elapsedTime }),
   #|   name: v.name,
   #|   error: ['canceled', 'interrupted', 'audio-busy', 'audio-hardware', 'network', 'synthesis-unavailable', 'synthesis-failed', 'language-unavailable', 'voice-unavailable', 'text-too-long', 'invalid-argument', 'not-allowed'].indexOf(v.error)
   #| })
@@ -475,16 +475,6 @@ pub(all) enum SpeechRecognitionStartError {
 }
 
 ///|
-extern "js" fn classify_speech_recognition_start_error(
-  e : JsError,
-) -> SpeechRecognitionStartError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SpeechRecognitionAvailableError {
   SyntaxError(JsError)
@@ -493,34 +483,12 @@ pub(all) enum SpeechRecognitionAvailableError {
 }
 
 ///|
-extern "js" fn classify_speech_recognition_available_error(
-  e : JsError,
-) -> SpeechRecognitionAvailableError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SpeechRecognitionInstallError {
   SyntaxError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_speech_recognition_install_error(
-  e : JsError,
-) -> SpeechRecognitionInstallError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn SpeechRecognition::new() -> SpeechRecognition =
@@ -621,14 +589,14 @@ pub extern "js" fn SpeechRecognition::set_phrases(
 pub extern "js" fn SpeechRecognition::start(
   self : SpeechRecognition,
 ) -> Result[Unit, SpeechRecognitionStartError] =
-  #| (self) => (() => { try { self.start(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_speech_recognition_start_error(e) }; } })()
+  #| (self) => (() => { try { self.start(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SpeechRecognition::start_with_audio_track_media_stream_track(
   self : SpeechRecognition,
   audio_track : MediaStreamTrack,
 ) -> Result[Unit, SpeechRecognitionStartError] =
-  #| (self, audio_track) => (() => { try { self.start(audio_track); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_speech_recognition_start_error(e) }; } })()
+  #| (self, audio_track) => (() => { try { self.start(audio_track); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SpeechRecognition::stop(self : SpeechRecognition) -> Unit =
@@ -642,7 +610,7 @@ pub extern "js" fn SpeechRecognition::abort(self : SpeechRecognition) -> Unit =
 extern "js" fn SpeechRecognition::available_ffi(
   options : JsValue,
 ) -> Promise[Result[AvailabilityStatus, SpeechRecognitionAvailableError]] =
-  #| (options) => SpeechRecognition.available(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_speech_recognition_available_error(e) }))
+  #| (options) => SpeechRecognition.available(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn SpeechRecognition::available(
@@ -655,7 +623,7 @@ pub fn SpeechRecognition::available(
 extern "js" fn SpeechRecognition::install_ffi(
   options : JsValue,
 ) -> Promise[Result[Bool, SpeechRecognitionInstallError]] =
-  #| (options) => SpeechRecognition.install(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_speech_recognition_install_error(e) }))
+  #| (options) => SpeechRecognition.install(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn SpeechRecognition::install(
@@ -1321,27 +1289,17 @@ pub(all) enum SpeechRecognitionPhraseConstructorError {
 }
 
 ///|
-extern "js" fn classify_speech_recognition_phrase_constructor_error(
-  e : JsError,
-) -> SpeechRecognitionPhraseConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn SpeechRecognitionPhrase::new(
   phrase : String,
 ) -> Result[SpeechRecognitionPhrase, SpeechRecognitionPhraseConstructorError] =
-  #| (phrase) => (() => { try { return { $tag: 0, _0: new SpeechRecognitionPhrase(phrase) }; } catch(e) { return { $tag: 1, _0: classify_speech_recognition_phrase_constructor_error(e) }; } })()
+  #| (phrase) => (() => { try { return { $tag: 1, _0: new SpeechRecognitionPhrase(phrase) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SpeechRecognitionPhrase::new_with_boost(
   phrase : String,
   boost : Double,
 ) -> Result[SpeechRecognitionPhrase, SpeechRecognitionPhraseConstructorError] =
-  #| (phrase, boost) => (() => { try { return { $tag: 0, _0: new SpeechRecognitionPhrase(phrase, boost) }; } catch(e) { return { $tag: 1, _0: classify_speech_recognition_phrase_constructor_error(e) }; } })()
+  #| (phrase, boost) => (() => { try { return { $tag: 1, _0: new SpeechRecognitionPhrase(phrase, boost) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SpeechRecognitionPhrase::get_phrase(

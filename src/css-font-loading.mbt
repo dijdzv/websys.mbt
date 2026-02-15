@@ -217,16 +217,6 @@ pub(all) enum FontFaceConstructorError {
 }
 
 ///|
-extern "js" fn classify_font_face_constructor_error(
-  e : JsError,
-) -> FontFaceConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum FontFaceLoadError {
   NetworkError(JsError)
@@ -234,19 +224,11 @@ pub(all) enum FontFaceLoadError {
 }
 
 ///|
-extern "js" fn classify_font_face_load_error(e : JsError) -> FontFaceLoadError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NetworkError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn FontFace::new(
   family : String,
   source : StringOrBufferSource,
 ) -> Result[FontFace, FontFaceConstructorError] =
-  #| (family, source) => (() => { try { return { $tag: 0, _0: new FontFace(family, source) }; } catch(e) { return { $tag: 1, _0: classify_font_face_constructor_error(e) }; } })()
+  #| (family, source) => (() => { try { return { $tag: 1, _0: new FontFace(family, source) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn FontFace::new_with_descriptors_ffi(
@@ -254,7 +236,7 @@ extern "js" fn FontFace::new_with_descriptors_ffi(
   source : StringOrBufferSource,
   descriptors : JsValue,
 ) -> Result[FontFace, FontFaceConstructorError] =
-  #| (family, source, descriptors) => (() => { try { return { $tag: 0, _0: new FontFace(family, source, descriptors) }; } catch(e) { return { $tag: 1, _0: classify_font_face_constructor_error(e) }; } })()
+  #| (family, source, descriptors) => (() => { try { return { $tag: 1, _0: new FontFace(family, source, descriptors) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn FontFace::new_with_descriptors(
@@ -391,7 +373,7 @@ pub extern "js" fn FontFace::get_status(self : FontFace) -> FontFaceLoadStatus =
 pub extern "js" fn FontFace::load(
   self : FontFace,
 ) -> Promise[Result[FontFace, FontFaceLoadError]] =
-  #| (self) => self.load().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_font_face_load_error(e) }))
+  #| (self) => self.load().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn FontFace::get_loaded(self : FontFace) -> Promise[FontFace] =
@@ -828,16 +810,6 @@ pub(all) enum FontFaceSetAddError {
   InvalidModificationError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_font_face_set_add_error(
-  e : JsError,
-) -> FontFaceSetAddError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidModificationError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn FontFaceSet::has(

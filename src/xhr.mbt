@@ -135,8 +135,8 @@ extern "js" fn ProgressEventInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   lengthComputable: (self.lengthComputable === -1 ? undefined : self.lengthComputable),
-  #|   loaded: self.loaded,
-  #|   total: self.total
+  #|   loaded: ((() => { const v = self.loaded; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   total: ((() => { const v = self.total; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -151,8 +151,8 @@ extern "js" fn ProgressEventInit::from_js_ffi(
 ) -> ProgressEventInit =
   #| (v) => ({
   #|   lengthComputable: (v.lengthComputable === undefined ? -1 : v.lengthComputable),
-  #|   loaded: v.loaded,
-  #|   total: v.total
+  #|   loaded: (v.loaded === undefined ? { $tag: 0 } : { $tag: 1, _0: v.loaded }),
+  #|   total: (v.total === undefined ? { $tag: 0 } : { $tag: 1, _0: v.total })
   #| })
 
 ///|
@@ -415,32 +415,11 @@ pub(all) enum XMLHttpRequestSendError {
 }
 
 ///|
-extern "js" fn classify_xml_http_request_send_error(
-  e : JsError,
-) -> XMLHttpRequestSendError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NetworkError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum XMLHttpRequestSetResponseTypeError {
   InvalidAccessError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_xml_http_request_set_response_type_error(
-  e : JsError,
-) -> XMLHttpRequestSetResponseTypeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidAccessError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -451,17 +430,6 @@ pub(all) enum XMLHttpRequestSetAttributionReportingError {
 }
 
 ///|
-extern "js" fn classify_xml_http_request_set_attribution_reporting_error(
-  e : JsError,
-) -> XMLHttpRequestSetAttributionReportingError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum XMLHttpRequestSetPrivateTokenError {
   TypeError(JsError)
@@ -469,18 +437,6 @@ pub(all) enum XMLHttpRequestSetPrivateTokenError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_xml_http_request_set_private_token_error(
-  e : JsError,
-) -> XMLHttpRequestSetPrivateTokenError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn XMLHttpRequest::new() -> XMLHttpRequest =
@@ -600,14 +556,14 @@ pub extern "js" fn XMLHttpRequest::get_upload(
 pub extern "js" fn XMLHttpRequest::send(
   self : XMLHttpRequest,
 ) -> Result[Unit, XMLHttpRequestSendError] =
-  #| (self) => (() => { try { self.send(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_xml_http_request_send_error(e) }; } })()
+  #| (self) => (() => { try { self.send(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XMLHttpRequest::send_with_body(
   self : XMLHttpRequest,
   body : DocumentOrXMLHttpRequestBodyInit,
 ) -> Result[Unit, XMLHttpRequestSendError] =
-  #| (self, body) => (() => { try { self.send(body); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_xml_http_request_send_error(e) }; } })()
+  #| (self, body) => (() => { try { self.send(body); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XMLHttpRequest::abort(self : XMLHttpRequest) -> Unit =
@@ -660,7 +616,7 @@ pub extern "js" fn XMLHttpRequest::set_response_type(
   self : XMLHttpRequest,
   value : XMLHttpRequestResponseType,
 ) -> Result[Unit, XMLHttpRequestSetResponseTypeError] =
-  #| (self, value) => (() => { try { self.responseType = ['', 'arraybuffer', 'blob', 'document', 'json', 'text'][value]; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_xml_http_request_set_response_type_error(e) }; } })()
+  #| (self, value) => (() => { try { self.responseType = ['', 'arraybuffer', 'blob', 'document', 'json', 'text'][value]; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidAccessError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn XMLHttpRequest::get_response(
@@ -686,7 +642,7 @@ extern "js" fn XMLHttpRequest::set_attribution_reporting_ffi(
   self : XMLHttpRequest,
   options : JsValue,
 ) -> Result[Unit, XMLHttpRequestSetAttributionReportingError] =
-  #| (self, options) => (() => { try { self.setAttributionReporting(options); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_xml_http_request_set_attribution_reporting_error(e) }; } })()
+  #| (self, options) => (() => { try { self.setAttributionReporting(options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn XMLHttpRequest::set_attribution_reporting(
@@ -701,7 +657,7 @@ extern "js" fn XMLHttpRequest::set_private_token_ffi(
   self : XMLHttpRequest,
   private_token : JsValue,
 ) -> Result[Unit, XMLHttpRequestSetPrivateTokenError] =
-  #| (self, private_token) => (() => { try { self.setPrivateToken(private_token); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_xml_http_request_set_private_token_error(e) }; } })()
+  #| (self, private_token) => (() => { try { self.setPrivateToken(private_token); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn XMLHttpRequest::set_private_token(
@@ -748,26 +704,15 @@ pub(all) enum FormDataConstructorError {
 }
 
 ///|
-extern "js" fn classify_form_data_constructor_error(
-  e : JsError,
-) -> FormDataConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn FormData::new() -> Result[FormData, FormDataConstructorError] =
-  #| () => (() => { try { return { $tag: 0, _0: new FormData() }; } catch(e) { return { $tag: 1, _0: classify_form_data_constructor_error(e) }; } })()
+  #| () => (() => { try { return { $tag: 1, _0: new FormData() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn FormData::new_with_submitter(
   form : HTMLFormElement,
   submitter : HTMLElement?,
 ) -> Result[FormData, FormDataConstructorError] =
-  #| (form, submitter) => (() => { try { return { $tag: 0, _0: new FormData(form, (submitter.$tag === 1 ? submitter._0 : null)) }; } catch(e) { return { $tag: 1, _0: classify_form_data_constructor_error(e) }; } })()
+  #| (form, submitter) => (() => { try { return { $tag: 1, _0: new FormData(form, (submitter.$tag === 1 ? submitter._0 : null)) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn FormData::append(

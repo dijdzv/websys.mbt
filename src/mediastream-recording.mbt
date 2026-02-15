@@ -205,16 +205,6 @@ pub(all) enum MediaRecorderConstructorError {
 }
 
 ///|
-extern "js" fn classify_media_recorder_constructor_error(
-  e : JsError,
-) -> MediaRecorderConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum MediaRecorderStartError {
   SecurityError(JsError)
@@ -224,33 +214,11 @@ pub(all) enum MediaRecorderStartError {
 }
 
 ///|
-extern "js" fn classify_media_recorder_start_error(
-  e : JsError,
-) -> MediaRecorderStartError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum MediaRecorderStopError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_media_recorder_stop_error(
-  e : JsError,
-) -> MediaRecorderStopError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -260,31 +228,11 @@ pub(all) enum MediaRecorderPauseError {
 }
 
 ///|
-extern "js" fn classify_media_recorder_pause_error(
-  e : JsError,
-) -> MediaRecorderPauseError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum MediaRecorderResumeError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_media_recorder_resume_error(
-  e : JsError,
-) -> MediaRecorderResumeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -294,27 +242,17 @@ pub(all) enum MediaRecorderRequestDataError {
 }
 
 ///|
-extern "js" fn classify_media_recorder_request_data_error(
-  e : JsError,
-) -> MediaRecorderRequestDataError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn MediaRecorder::new(
   stream : MediaStream,
 ) -> Result[MediaRecorder, MediaRecorderConstructorError] =
-  #| (stream) => (() => { try { return { $tag: 0, _0: new MediaRecorder(stream) }; } catch(e) { return { $tag: 1, _0: classify_media_recorder_constructor_error(e) }; } })()
+  #| (stream) => (() => { try { return { $tag: 1, _0: new MediaRecorder(stream) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn MediaRecorder::new_with_options_ffi(
   stream : MediaStream,
   options : JsValue,
 ) -> Result[MediaRecorder, MediaRecorderConstructorError] =
-  #| (stream, options) => (() => { try { return { $tag: 0, _0: new MediaRecorder(stream, options) }; } catch(e) { return { $tag: 1, _0: classify_media_recorder_constructor_error(e) }; } })()
+  #| (stream, options) => (() => { try { return { $tag: 1, _0: new MediaRecorder(stream, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn MediaRecorder::new_with_options(
@@ -430,38 +368,38 @@ pub extern "js" fn MediaRecorder::get_audio_bitrate_mode(
 pub extern "js" fn MediaRecorder::start(
   self : MediaRecorder,
 ) -> Result[Unit, MediaRecorderStartError] =
-  #| (self) => (() => { try { self.start(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_media_recorder_start_error(e) }; } })()
+  #| (self) => (() => { try { self.start(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn MediaRecorder::start_with_timeslice(
   self : MediaRecorder,
   timeslice : Int,
 ) -> Result[Unit, MediaRecorderStartError] =
-  #| (self, timeslice) => (() => { try { self.start(timeslice); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_media_recorder_start_error(e) }; } })()
+  #| (self, timeslice) => (() => { try { self.start(timeslice); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn MediaRecorder::stop(
   self : MediaRecorder,
 ) -> Result[Unit, MediaRecorderStopError] =
-  #| (self) => (() => { try { self.stop(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_media_recorder_stop_error(e) }; } })()
+  #| (self) => (() => { try { self.stop(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn MediaRecorder::pause(
   self : MediaRecorder,
 ) -> Result[Unit, MediaRecorderPauseError] =
-  #| (self) => (() => { try { self.pause(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_media_recorder_pause_error(e) }; } })()
+  #| (self) => (() => { try { self.pause(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn MediaRecorder::resume_(
   self : MediaRecorder,
 ) -> Result[Unit, MediaRecorderResumeError] =
-  #| (self) => (() => { try { self.resume(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_media_recorder_resume_error(e) }; } })()
+  #| (self) => (() => { try { self.resume(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn MediaRecorder::request_data(
   self : MediaRecorder,
 ) -> Result[Unit, MediaRecorderRequestDataError] =
-  #| (self) => (() => { try { self.requestData(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_media_recorder_request_data_error(e) }; } })()
+  #| (self) => (() => { try { self.requestData(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn MediaRecorder::is_type_supported(type_ : String) -> Bool =

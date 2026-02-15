@@ -340,21 +340,11 @@ pub(all) enum TrustedTypePolicyFactoryCreatePolicyError {
 }
 
 ///|
-extern "js" fn classify_trusted_type_policy_factory_create_policy_error(
-  e : JsError,
-) -> TrustedTypePolicyFactoryCreatePolicyError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn TrustedTypePolicyFactory::create_policy(
   self : TrustedTypePolicyFactory,
   policy_name : String,
 ) -> Result[TrustedTypePolicy, TrustedTypePolicyFactoryCreatePolicyError] =
-  #| (self, policy_name) => (() => { try { return { $tag: 0, _0: self.createPolicy(policy_name) }; } catch(e) { return { $tag: 1, _0: classify_trusted_type_policy_factory_create_policy_error(e) }; } })()
+  #| (self, policy_name) => (() => { try { return { $tag: 1, _0: self.createPolicy(policy_name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn TrustedTypePolicyFactory::create_policy_with_policy_options_ffi(
@@ -362,7 +352,7 @@ extern "js" fn TrustedTypePolicyFactory::create_policy_with_policy_options_ffi(
   policy_name : String,
   policy_options : JsValue,
 ) -> Result[TrustedTypePolicy, TrustedTypePolicyFactoryCreatePolicyError] =
-  #| (self, policy_name, policy_options) => (() => { try { return { $tag: 0, _0: self.createPolicy(policy_name, policy_options) }; } catch(e) { return { $tag: 1, _0: classify_trusted_type_policy_factory_create_policy_error(e) }; } })()
+  #| (self, policy_name, policy_options) => (() => { try { return { $tag: 1, _0: self.createPolicy(policy_name, policy_options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn TrustedTypePolicyFactory::create_policy_with_policy_options(
@@ -497,16 +487,6 @@ pub(all) enum TrustedTypePolicyCreateHTMLError {
 }
 
 ///|
-extern "js" fn classify_trusted_type_policy_create_html_error(
-  e : JsError,
-) -> TrustedTypePolicyCreateHTMLError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum TrustedTypePolicyCreateScriptError {
   TypeError(JsError)
@@ -514,31 +494,11 @@ pub(all) enum TrustedTypePolicyCreateScriptError {
 }
 
 ///|
-extern "js" fn classify_trusted_type_policy_create_script_error(
-  e : JsError,
-) -> TrustedTypePolicyCreateScriptError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum TrustedTypePolicyCreateScriptURLError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_trusted_type_policy_create_script_url_error(
-  e : JsError,
-) -> TrustedTypePolicyCreateScriptURLError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn TrustedTypePolicy::get_name(
@@ -552,7 +512,7 @@ pub extern "js" fn TrustedTypePolicy::create_html(
   input : String,
   arguments : JsValue,
 ) -> Result[TrustedHTML, TrustedTypePolicyCreateHTMLError] =
-  #| (self, input, arguments) => (() => { try { return { $tag: 0, _0: self.createHTML(input, arguments) }; } catch(e) { return { $tag: 1, _0: classify_trusted_type_policy_create_html_error(e) }; } })()
+  #| (self, input, arguments) => (() => { try { return { $tag: 1, _0: self.createHTML(input, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn TrustedTypePolicy::create_script(
@@ -560,7 +520,7 @@ pub extern "js" fn TrustedTypePolicy::create_script(
   input : String,
   arguments : JsValue,
 ) -> Result[TrustedScript, TrustedTypePolicyCreateScriptError] =
-  #| (self, input, arguments) => (() => { try { return { $tag: 0, _0: self.createScript(input, arguments) }; } catch(e) { return { $tag: 1, _0: classify_trusted_type_policy_create_script_error(e) }; } })()
+  #| (self, input, arguments) => (() => { try { return { $tag: 1, _0: self.createScript(input, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn TrustedTypePolicy::create_script_url(
@@ -568,4 +528,4 @@ pub extern "js" fn TrustedTypePolicy::create_script_url(
   input : String,
   arguments : JsValue,
 ) -> Result[TrustedScriptURL, TrustedTypePolicyCreateScriptURLError] =
-  #| (self, input, arguments) => (() => { try { return { $tag: 0, _0: self.createScriptURL(input, arguments) }; } catch(e) { return { $tag: 1, _0: classify_trusted_type_policy_create_script_url_error(e) }; } })()
+  #| (self, input, arguments) => (() => { try { return { $tag: 1, _0: self.createScriptURL(input, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()

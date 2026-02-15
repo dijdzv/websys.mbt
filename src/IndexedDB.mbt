@@ -664,33 +664,12 @@ pub(all) enum IDBFactoryOpenError {
 }
 
 ///|
-extern "js" fn classify_idb_factory_open_error(
-  e : JsError,
-) -> IDBFactoryOpenError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBFactoryDatabasesError {
   UnknownError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_factory_databases_error(
-  e : JsError,
-) -> IDBFactoryDatabasesError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'UnknownError') return { $tag: 0, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -700,21 +679,11 @@ pub(all) enum IDBFactoryCmpError {
 }
 
 ///|
-extern "js" fn classify_idb_factory_cmp_error(
-  e : JsError,
-) -> IDBFactoryCmpError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn IDBFactory::open(
   self : IDBFactory,
   name : String,
 ) -> Result[IDBOpenDBRequest, IDBFactoryOpenError] =
-  #| (self, name) => (() => { try { return { $tag: 0, _0: self.open(name) }; } catch(e) { return { $tag: 1, _0: classify_idb_factory_open_error(e) }; } })()
+  #| (self, name) => (() => { try { return { $tag: 1, _0: self.open(name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBFactory::open_with_version(
@@ -722,7 +691,7 @@ pub extern "js" fn IDBFactory::open_with_version(
   name : String,
   version : Int64,
 ) -> Result[IDBOpenDBRequest, IDBFactoryOpenError] =
-  #| (self, name, version) => (() => { try { return { $tag: 0, _0: self.open(name, (version.hi * 4294967296 + version.lo)) }; } catch(e) { return { $tag: 1, _0: classify_idb_factory_open_error(e) }; } })()
+  #| (self, name, version) => (() => { try { return { $tag: 1, _0: self.open(name, (version.hi * 4294967296 + version.lo)) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBFactory::delete_database(
@@ -735,7 +704,7 @@ pub extern "js" fn IDBFactory::delete_database(
 pub extern "js" fn IDBFactory::databases(
   self : IDBFactory,
 ) -> Promise[Result[Array[IDBDatabaseInfo], IDBFactoryDatabasesError]] =
-  #| (self) => self.databases().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_idb_factory_databases_error(e) }))
+  #| (self) => self.databases().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn IDBFactory::cmp(
@@ -743,7 +712,7 @@ pub extern "js" fn IDBFactory::cmp(
   first : JsValue,
   second : JsValue,
 ) -> Result[Int, IDBFactoryCmpError] =
-  #| (self, first, second) => (() => { try { return { $tag: 0, _0: self.cmp(first, second) }; } catch(e) { return { $tag: 1, _0: classify_idb_factory_cmp_error(e) }; } })()
+  #| (self, first, second) => (() => { try { return { $tag: 1, _0: self.cmp(first, second) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// IDBDatabase interface
@@ -790,19 +759,6 @@ pub(all) enum IDBDatabaseTransactionError {
 }
 
 ///|
-extern "js" fn classify_idb_database_transaction_error(
-  e : JsError,
-) -> IDBDatabaseTransactionError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBDatabaseCreateObjectStoreError {
   SyntaxError(JsError)
@@ -814,20 +770,6 @@ pub(all) enum IDBDatabaseCreateObjectStoreError {
 }
 
 ///|
-extern "js" fn classify_idb_database_create_object_store_error(
-  e : JsError,
-) -> IDBDatabaseCreateObjectStoreError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   if (n === 'ConstraintError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 3, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 4, _0: e };
-  #|   return { $tag: 5, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBDatabaseDeleteObjectStoreError {
   NotFoundError(JsError)
@@ -835,18 +777,6 @@ pub(all) enum IDBDatabaseDeleteObjectStoreError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_database_delete_object_store_error(
-  e : JsError,
-) -> IDBDatabaseDeleteObjectStoreError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn IDBDatabase::get_name(self : IDBDatabase) -> String =
@@ -867,7 +797,7 @@ pub extern "js" fn IDBDatabase::transaction(
   self : IDBDatabase,
   store_names : StringOrArrayOfString,
 ) -> Result[IDBTransaction, IDBDatabaseTransactionError] =
-  #| (self, store_names) => (() => { try { return { $tag: 0, _0: self.transaction(store_names) }; } catch(e) { return { $tag: 1, _0: classify_idb_database_transaction_error(e) }; } })()
+  #| (self, store_names) => (() => { try { return { $tag: 1, _0: self.transaction(store_names) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn IDBDatabase::transaction_with_options_ffi(
@@ -876,7 +806,7 @@ extern "js" fn IDBDatabase::transaction_with_options_ffi(
   mode : IDBTransactionMode,
   options : JsValue,
 ) -> Result[IDBTransaction, IDBDatabaseTransactionError] =
-  #| (self, store_names, mode, options) => (() => { try { return { $tag: 0, _0: self.transaction(store_names, ['readonly', 'readwrite', 'versionchange'][mode], options) }; } catch(e) { return { $tag: 1, _0: classify_idb_database_transaction_error(e) }; } })()
+  #| (self, store_names, mode, options) => (() => { try { return { $tag: 1, _0: self.transaction(store_names, ['readonly', 'readwrite', 'versionchange'][mode], options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub fn IDBDatabase::transaction_with_options(
@@ -902,7 +832,7 @@ pub extern "js" fn IDBDatabase::create_object_store(
   self : IDBDatabase,
   name : String,
 ) -> Result[IDBObjectStore, IDBDatabaseCreateObjectStoreError] =
-  #| (self, name) => (() => { try { return { $tag: 0, _0: self.createObjectStore(name) }; } catch(e) { return { $tag: 1, _0: classify_idb_database_create_object_store_error(e) }; } })()
+  #| (self, name) => (() => { try { return { $tag: 1, _0: self.createObjectStore(name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'ConstraintError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn IDBDatabase::create_object_store_with_options_ffi(
@@ -910,7 +840,7 @@ extern "js" fn IDBDatabase::create_object_store_with_options_ffi(
   name : String,
   options : JsValue,
 ) -> Result[IDBObjectStore, IDBDatabaseCreateObjectStoreError] =
-  #| (self, name, options) => (() => { try { return { $tag: 0, _0: self.createObjectStore(name, options) }; } catch(e) { return { $tag: 1, _0: classify_idb_database_create_object_store_error(e) }; } })()
+  #| (self, name, options) => (() => { try { return { $tag: 1, _0: self.createObjectStore(name, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'ConstraintError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
 ///|
 pub fn IDBDatabase::create_object_store_with_options(
@@ -926,7 +856,7 @@ pub extern "js" fn IDBDatabase::delete_object_store(
   self : IDBDatabase,
   name : String,
 ) -> Result[Unit, IDBDatabaseDeleteObjectStoreError] =
-  #| (self, name) => (() => { try { self.deleteObjectStore(name); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_idb_database_delete_object_store_error(e) }; } })()
+  #| (self, name) => (() => { try { self.deleteObjectStore(name); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBDatabase::set_onabort(
@@ -1020,18 +950,6 @@ pub(all) enum IDBObjectStoreSetNameError {
 }
 
 ///|
-extern "js" fn classify_idb_object_store_set_name_error(
-  e : JsError,
-) -> IDBObjectStoreSetNameError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'ConstraintError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStorePutError {
   DataError(JsError)
@@ -1041,20 +959,6 @@ pub(all) enum IDBObjectStorePutError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_object_store_put_error(
-  e : JsError,
-) -> IDBObjectStorePutError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'ReadOnlyError') return { $tag: 1, _0: e };
-  #|   if (n === 'DataCloneError') return { $tag: 2, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 3, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 4, _0: e };
-  #|   return { $tag: 5, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -1069,21 +973,6 @@ pub(all) enum IDBObjectStoreAddError {
 }
 
 ///|
-extern "js" fn classify_idb_object_store_add_error(
-  e : JsError,
-) -> IDBObjectStoreAddError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'ReadOnlyError') return { $tag: 1, _0: e };
-  #|   if (n === 'DataCloneError') return { $tag: 2, _0: e };
-  #|   if (n === 'ConstraintError') return { $tag: 3, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 4, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 5, _0: e };
-  #|   return { $tag: 6, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStoreDeleteError {
   DataError(JsError)
@@ -1092,19 +981,6 @@ pub(all) enum IDBObjectStoreDeleteError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_object_store_delete_error(
-  e : JsError,
-) -> IDBObjectStoreDeleteError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'ReadOnlyError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -1116,18 +992,6 @@ pub(all) enum IDBObjectStoreClearError {
 }
 
 ///|
-extern "js" fn classify_idb_object_store_clear_error(
-  e : JsError,
-) -> IDBObjectStoreClearError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'ReadOnlyError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStoreGetError {
   DataError(JsError)
@@ -1137,18 +1001,6 @@ pub(all) enum IDBObjectStoreGetError {
 }
 
 ///|
-extern "js" fn classify_idb_object_store_get_error(
-  e : JsError,
-) -> IDBObjectStoreGetError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStoreGetKeyError {
   DataError(JsError)
@@ -1156,18 +1008,6 @@ pub(all) enum IDBObjectStoreGetKeyError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_object_store_get_key_error(
-  e : JsError,
-) -> IDBObjectStoreGetKeyError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -1180,19 +1020,6 @@ pub(all) enum IDBObjectStoreGetAllError {
 }
 
 ///|
-extern "js" fn classify_idb_object_store_get_all_error(
-  e : JsError,
-) -> IDBObjectStoreGetAllError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'TypeError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStoreGetAllKeysError {
   DataError(JsError)
@@ -1201,19 +1028,6 @@ pub(all) enum IDBObjectStoreGetAllKeysError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_object_store_get_all_keys_error(
-  e : JsError,
-) -> IDBObjectStoreGetAllKeysError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'TypeError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -1225,18 +1039,6 @@ pub(all) enum IDBObjectStoreGetAllRecordsError {
 }
 
 ///|
-extern "js" fn classify_idb_object_store_get_all_records_error(
-  e : JsError,
-) -> IDBObjectStoreGetAllRecordsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStoreCountError {
   DataError(JsError)
@@ -1244,18 +1046,6 @@ pub(all) enum IDBObjectStoreCountError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_object_store_count_error(
-  e : JsError,
-) -> IDBObjectStoreCountError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -1267,18 +1057,6 @@ pub(all) enum IDBObjectStoreOpenCursorError {
 }
 
 ///|
-extern "js" fn classify_idb_object_store_open_cursor_error(
-  e : JsError,
-) -> IDBObjectStoreOpenCursorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStoreOpenKeyCursorError {
   DataError(JsError)
@@ -1288,35 +1066,12 @@ pub(all) enum IDBObjectStoreOpenKeyCursorError {
 }
 
 ///|
-extern "js" fn classify_idb_object_store_open_key_cursor_error(
-  e : JsError,
-) -> IDBObjectStoreOpenKeyCursorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStoreIndexError {
   NotFoundError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_object_store_index_error(
-  e : JsError,
-) -> IDBObjectStoreIndexError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -1330,20 +1085,6 @@ pub(all) enum IDBObjectStoreCreateIndexError {
 }
 
 ///|
-extern "js" fn classify_idb_object_store_create_index_error(
-  e : JsError,
-) -> IDBObjectStoreCreateIndexError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   if (n === 'ConstraintError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 3, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 4, _0: e };
-  #|   return { $tag: 5, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStoreDeleteIndexError {
   NotFoundError(JsError)
@@ -1351,18 +1092,6 @@ pub(all) enum IDBObjectStoreDeleteIndexError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_object_store_delete_index_error(
-  e : JsError,
-) -> IDBObjectStoreDeleteIndexError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn IDBObjectStore::get_name(self : IDBObjectStore) -> String =
@@ -1373,7 +1102,7 @@ pub extern "js" fn IDBObjectStore::set_name(
   self : IDBObjectStore,
   value : String,
 ) -> Result[Unit, IDBObjectStoreSetNameError] =
-  #| (self, value) => (() => { try { self.name = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_set_name_error(e) }; } })()
+  #| (self, value) => (() => { try { self.name = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'ConstraintError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::get_key_path(
@@ -1404,7 +1133,7 @@ pub extern "js" fn IDBObjectStore::put(
   self : IDBObjectStore,
   value : JsValue,
 ) -> Result[IDBRequest, IDBObjectStorePutError] =
-  #| (self, value) => (() => { try { return { $tag: 0, _0: self.put(value) }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_put_error(e) }; } })()
+  #| (self, value) => (() => { try { return { $tag: 1, _0: self.put(value) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'ReadOnlyError') return { $tag: 1, _0: e }; if (n === 'DataCloneError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::put_with_key(
@@ -1412,14 +1141,14 @@ pub extern "js" fn IDBObjectStore::put_with_key(
   value : JsValue,
   key : JsValue,
 ) -> Result[IDBRequest, IDBObjectStorePutError] =
-  #| (self, value, key) => (() => { try { return { $tag: 0, _0: self.put(value, key) }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_put_error(e) }; } })()
+  #| (self, value, key) => (() => { try { return { $tag: 1, _0: self.put(value, key) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'ReadOnlyError') return { $tag: 1, _0: e }; if (n === 'DataCloneError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::add(
   self : IDBObjectStore,
   value : JsValue,
 ) -> Result[IDBRequest, IDBObjectStoreAddError] =
-  #| (self, value) => (() => { try { return { $tag: 0, _0: self.add(value) }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_add_error(e) }; } })()
+  #| (self, value) => (() => { try { return { $tag: 1, _0: self.add(value) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'ReadOnlyError') return { $tag: 1, _0: e }; if (n === 'DataCloneError') return { $tag: 2, _0: e }; if (n === 'ConstraintError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::add_with_key(
@@ -1427,40 +1156,40 @@ pub extern "js" fn IDBObjectStore::add_with_key(
   value : JsValue,
   key : JsValue,
 ) -> Result[IDBRequest, IDBObjectStoreAddError] =
-  #| (self, value, key) => (() => { try { return { $tag: 0, _0: self.add(value, key) }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_add_error(e) }; } })()
+  #| (self, value, key) => (() => { try { return { $tag: 1, _0: self.add(value, key) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'ReadOnlyError') return { $tag: 1, _0: e }; if (n === 'DataCloneError') return { $tag: 2, _0: e }; if (n === 'ConstraintError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::delete(
   self : IDBObjectStore,
   query : JsValue,
 ) -> Result[IDBRequest, IDBObjectStoreDeleteError] =
-  #| (self, query) => (() => { try { return { $tag: 0, _0: self.delete(query) }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_delete_error(e) }; } })()
+  #| (self, query) => (() => { try { return { $tag: 1, _0: self.delete(query) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'ReadOnlyError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::clear(
   self : IDBObjectStore,
 ) -> Result[IDBRequest, IDBObjectStoreClearError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.clear() }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_clear_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.clear() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'ReadOnlyError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::get(
   self : IDBObjectStore,
   query : JsValue,
 ) -> Result[IDBRequest, IDBObjectStoreGetError] =
-  #| (self, query) => (() => { try { return { $tag: 0, _0: self.get(query) }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_get_error(e) }; } })()
+  #| (self, query) => (() => { try { return { $tag: 1, _0: self.get(query) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::get_key(
   self : IDBObjectStore,
   query : JsValue,
 ) -> Result[IDBRequest, IDBObjectStoreGetKeyError] =
-  #| (self, query) => (() => { try { return { $tag: 0, _0: self.getKey(query) }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_get_key_error(e) }; } })()
+  #| (self, query) => (() => { try { return { $tag: 1, _0: self.getKey(query) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::get_all(
   self : IDBObjectStore,
 ) -> Result[IDBRequest, IDBObjectStoreGetAllError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.getAll() }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_get_all_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.getAll() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::get_all_with_count(
@@ -1468,13 +1197,13 @@ pub extern "js" fn IDBObjectStore::get_all_with_count(
   query_or_options : JsValue,
   count : Int,
 ) -> Result[IDBRequest, IDBObjectStoreGetAllError] =
-  #| (self, query_or_options, count) => (() => { try { return { $tag: 0, _0: self.getAll(query_or_options, count) }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_get_all_error(e) }; } })()
+  #| (self, query_or_options, count) => (() => { try { return { $tag: 1, _0: self.getAll(query_or_options, count) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::get_all_keys(
   self : IDBObjectStore,
 ) -> Result[IDBRequest, IDBObjectStoreGetAllKeysError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.getAllKeys() }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_get_all_keys_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.getAllKeys() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::get_all_keys_with_count(
@@ -1482,20 +1211,20 @@ pub extern "js" fn IDBObjectStore::get_all_keys_with_count(
   query_or_options : JsValue,
   count : Int,
 ) -> Result[IDBRequest, IDBObjectStoreGetAllKeysError] =
-  #| (self, query_or_options, count) => (() => { try { return { $tag: 0, _0: self.getAllKeys(query_or_options, count) }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_get_all_keys_error(e) }; } })()
+  #| (self, query_or_options, count) => (() => { try { return { $tag: 1, _0: self.getAllKeys(query_or_options, count) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::get_all_records(
   self : IDBObjectStore,
 ) -> Result[IDBRequest, IDBObjectStoreGetAllRecordsError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.getAllRecords() }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_get_all_records_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.getAllRecords() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn IDBObjectStore::get_all_records_with_options_ffi(
   self : IDBObjectStore,
   options : JsValue,
 ) -> Result[IDBRequest, IDBObjectStoreGetAllRecordsError] =
-  #| (self, options) => (() => { try { return { $tag: 0, _0: self.getAllRecords(options) }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_get_all_records_error(e) }; } })()
+  #| (self, options) => (() => { try { return { $tag: 1, _0: self.getAllRecords(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn IDBObjectStore::get_all_records_with_options(
@@ -1509,20 +1238,20 @@ pub fn IDBObjectStore::get_all_records_with_options(
 pub extern "js" fn IDBObjectStore::count(
   self : IDBObjectStore,
 ) -> Result[IDBRequest, IDBObjectStoreCountError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.count() }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_count_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.count() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::count_with_query(
   self : IDBObjectStore,
   query : JsValue,
 ) -> Result[IDBRequest, IDBObjectStoreCountError] =
-  #| (self, query) => (() => { try { return { $tag: 0, _0: self.count(query) }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_count_error(e) }; } })()
+  #| (self, query) => (() => { try { return { $tag: 1, _0: self.count(query) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::open_cursor(
   self : IDBObjectStore,
 ) -> Result[IDBRequest, IDBObjectStoreOpenCursorError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.openCursor() }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_open_cursor_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.openCursor() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::open_cursor_with_direction(
@@ -1530,13 +1259,13 @@ pub extern "js" fn IDBObjectStore::open_cursor_with_direction(
   query : JsValue,
   direction : IDBCursorDirection,
 ) -> Result[IDBRequest, IDBObjectStoreOpenCursorError] =
-  #| (self, query, direction) => (() => { try { return { $tag: 0, _0: self.openCursor(query, ['next', 'nextunique', 'prev', 'prevunique'][direction]) }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_open_cursor_error(e) }; } })()
+  #| (self, query, direction) => (() => { try { return { $tag: 1, _0: self.openCursor(query, ['next', 'nextunique', 'prev', 'prevunique'][direction]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::open_key_cursor(
   self : IDBObjectStore,
 ) -> Result[IDBRequest, IDBObjectStoreOpenKeyCursorError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.openKeyCursor() }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_open_key_cursor_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.openKeyCursor() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::open_key_cursor_with_direction(
@@ -1544,14 +1273,14 @@ pub extern "js" fn IDBObjectStore::open_key_cursor_with_direction(
   query : JsValue,
   direction : IDBCursorDirection,
 ) -> Result[IDBRequest, IDBObjectStoreOpenKeyCursorError] =
-  #| (self, query, direction) => (() => { try { return { $tag: 0, _0: self.openKeyCursor(query, ['next', 'nextunique', 'prev', 'prevunique'][direction]) }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_open_key_cursor_error(e) }; } })()
+  #| (self, query, direction) => (() => { try { return { $tag: 1, _0: self.openKeyCursor(query, ['next', 'nextunique', 'prev', 'prevunique'][direction]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::index(
   self : IDBObjectStore,
   name : String,
 ) -> Result[IDBIndex, IDBObjectStoreIndexError] =
-  #| (self, name) => (() => { try { return { $tag: 0, _0: self.index(name) }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_index_error(e) }; } })()
+  #| (self, name) => (() => { try { return { $tag: 1, _0: self.index(name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBObjectStore::create_index(
@@ -1559,7 +1288,7 @@ pub extern "js" fn IDBObjectStore::create_index(
   name : String,
   key_path : StringOrArrayOfString,
 ) -> Result[IDBIndex, IDBObjectStoreCreateIndexError] =
-  #| (self, name, key_path) => (() => { try { return { $tag: 0, _0: self.createIndex(name, key_path) }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_create_index_error(e) }; } })()
+  #| (self, name, key_path) => (() => { try { return { $tag: 1, _0: self.createIndex(name, key_path) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'ConstraintError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn IDBObjectStore::create_index_with_options_ffi(
@@ -1568,7 +1297,7 @@ extern "js" fn IDBObjectStore::create_index_with_options_ffi(
   key_path : StringOrArrayOfString,
   options : JsValue,
 ) -> Result[IDBIndex, IDBObjectStoreCreateIndexError] =
-  #| (self, name, key_path, options) => (() => { try { return { $tag: 0, _0: self.createIndex(name, key_path, options) }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_create_index_error(e) }; } })()
+  #| (self, name, key_path, options) => (() => { try { return { $tag: 1, _0: self.createIndex(name, key_path, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'ConstraintError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
 ///|
 pub fn IDBObjectStore::create_index_with_options(
@@ -1590,7 +1319,7 @@ pub extern "js" fn IDBObjectStore::delete_index(
   self : IDBObjectStore,
   name : String,
 ) -> Result[Unit, IDBObjectStoreDeleteIndexError] =
-  #| (self, name) => (() => { try { self.deleteIndex(name); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_idb_object_store_delete_index_error(e) }; } })()
+  #| (self, name) => (() => { try { self.deleteIndex(name); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 /// IDBIndex interface
@@ -1630,18 +1359,6 @@ pub(all) enum IDBIndexSetNameError {
 }
 
 ///|
-extern "js" fn classify_idb_index_set_name_error(
-  e : JsError,
-) -> IDBIndexSetNameError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'ConstraintError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBIndexGetError {
   DataError(JsError)
@@ -1649,16 +1366,6 @@ pub(all) enum IDBIndexGetError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_index_get_error(e : JsError) -> IDBIndexGetError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -1670,18 +1377,6 @@ pub(all) enum IDBIndexGetKeyError {
 }
 
 ///|
-extern "js" fn classify_idb_index_get_key_error(
-  e : JsError,
-) -> IDBIndexGetKeyError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBIndexGetAllError {
   TypeError(JsError)
@@ -1689,18 +1384,6 @@ pub(all) enum IDBIndexGetAllError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_index_get_all_error(
-  e : JsError,
-) -> IDBIndexGetAllError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -1712,18 +1395,6 @@ pub(all) enum IDBIndexGetAllKeysError {
 }
 
 ///|
-extern "js" fn classify_idb_index_get_all_keys_error(
-  e : JsError,
-) -> IDBIndexGetAllKeysError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBIndexGetAllRecordsError {
   TypeError(JsError)
@@ -1733,18 +1404,6 @@ pub(all) enum IDBIndexGetAllRecordsError {
 }
 
 ///|
-extern "js" fn classify_idb_index_get_all_records_error(
-  e : JsError,
-) -> IDBIndexGetAllRecordsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBIndexCountError {
   DataError(JsError)
@@ -1752,18 +1411,6 @@ pub(all) enum IDBIndexCountError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_index_count_error(
-  e : JsError,
-) -> IDBIndexCountError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -1776,19 +1423,6 @@ pub(all) enum IDBIndexOpenCursorError {
 }
 
 ///|
-extern "js" fn classify_idb_index_open_cursor_error(
-  e : JsError,
-) -> IDBIndexOpenCursorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'TypeError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBIndexOpenKeyCursorError {
   DataError(JsError)
@@ -1799,19 +1433,6 @@ pub(all) enum IDBIndexOpenKeyCursorError {
 }
 
 ///|
-extern "js" fn classify_idb_index_open_key_cursor_error(
-  e : JsError,
-) -> IDBIndexOpenKeyCursorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'TypeError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 pub extern "js" fn IDBIndex::get_name(self : IDBIndex) -> String =
   #| (self) => self.name
 
@@ -1820,7 +1441,7 @@ pub extern "js" fn IDBIndex::set_name(
   self : IDBIndex,
   value : String,
 ) -> Result[Unit, IDBIndexSetNameError] =
-  #| (self, value) => (() => { try { self.name = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_idb_index_set_name_error(e) }; } })()
+  #| (self, value) => (() => { try { self.name = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'ConstraintError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBIndex::get_object_store(
@@ -1845,20 +1466,20 @@ pub extern "js" fn IDBIndex::get(
   self : IDBIndex,
   query : JsValue,
 ) -> Result[IDBRequest, IDBIndexGetError] =
-  #| (self, query) => (() => { try { return { $tag: 0, _0: self.get(query) }; } catch(e) { return { $tag: 1, _0: classify_idb_index_get_error(e) }; } })()
+  #| (self, query) => (() => { try { return { $tag: 1, _0: self.get(query) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBIndex::get_key(
   self : IDBIndex,
   query : JsValue,
 ) -> Result[IDBRequest, IDBIndexGetKeyError] =
-  #| (self, query) => (() => { try { return { $tag: 0, _0: self.getKey(query) }; } catch(e) { return { $tag: 1, _0: classify_idb_index_get_key_error(e) }; } })()
+  #| (self, query) => (() => { try { return { $tag: 1, _0: self.getKey(query) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBIndex::get_all(
   self : IDBIndex,
 ) -> Result[IDBRequest, IDBIndexGetAllError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.getAll() }; } catch(e) { return { $tag: 1, _0: classify_idb_index_get_all_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.getAll() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBIndex::get_all_with_count(
@@ -1866,13 +1487,13 @@ pub extern "js" fn IDBIndex::get_all_with_count(
   query_or_options : JsValue,
   count : Int,
 ) -> Result[IDBRequest, IDBIndexGetAllError] =
-  #| (self, query_or_options, count) => (() => { try { return { $tag: 0, _0: self.getAll(query_or_options, count) }; } catch(e) { return { $tag: 1, _0: classify_idb_index_get_all_error(e) }; } })()
+  #| (self, query_or_options, count) => (() => { try { return { $tag: 1, _0: self.getAll(query_or_options, count) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBIndex::get_all_keys(
   self : IDBIndex,
 ) -> Result[IDBRequest, IDBIndexGetAllKeysError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.getAllKeys() }; } catch(e) { return { $tag: 1, _0: classify_idb_index_get_all_keys_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.getAllKeys() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBIndex::get_all_keys_with_count(
@@ -1880,20 +1501,20 @@ pub extern "js" fn IDBIndex::get_all_keys_with_count(
   query_or_options : JsValue,
   count : Int,
 ) -> Result[IDBRequest, IDBIndexGetAllKeysError] =
-  #| (self, query_or_options, count) => (() => { try { return { $tag: 0, _0: self.getAllKeys(query_or_options, count) }; } catch(e) { return { $tag: 1, _0: classify_idb_index_get_all_keys_error(e) }; } })()
+  #| (self, query_or_options, count) => (() => { try { return { $tag: 1, _0: self.getAllKeys(query_or_options, count) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBIndex::get_all_records(
   self : IDBIndex,
 ) -> Result[IDBRequest, IDBIndexGetAllRecordsError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.getAllRecords() }; } catch(e) { return { $tag: 1, _0: classify_idb_index_get_all_records_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.getAllRecords() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn IDBIndex::get_all_records_with_options_ffi(
   self : IDBIndex,
   options : JsValue,
 ) -> Result[IDBRequest, IDBIndexGetAllRecordsError] =
-  #| (self, options) => (() => { try { return { $tag: 0, _0: self.getAllRecords(options) }; } catch(e) { return { $tag: 1, _0: classify_idb_index_get_all_records_error(e) }; } })()
+  #| (self, options) => (() => { try { return { $tag: 1, _0: self.getAllRecords(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn IDBIndex::get_all_records_with_options(
@@ -1907,20 +1528,20 @@ pub fn IDBIndex::get_all_records_with_options(
 pub extern "js" fn IDBIndex::count(
   self : IDBIndex,
 ) -> Result[IDBRequest, IDBIndexCountError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.count() }; } catch(e) { return { $tag: 1, _0: classify_idb_index_count_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.count() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBIndex::count_with_query(
   self : IDBIndex,
   query : JsValue,
 ) -> Result[IDBRequest, IDBIndexCountError] =
-  #| (self, query) => (() => { try { return { $tag: 0, _0: self.count(query) }; } catch(e) { return { $tag: 1, _0: classify_idb_index_count_error(e) }; } })()
+  #| (self, query) => (() => { try { return { $tag: 1, _0: self.count(query) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBIndex::open_cursor(
   self : IDBIndex,
 ) -> Result[IDBRequest, IDBIndexOpenCursorError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.openCursor() }; } catch(e) { return { $tag: 1, _0: classify_idb_index_open_cursor_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.openCursor() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBIndex::open_cursor_with_direction(
@@ -1928,13 +1549,13 @@ pub extern "js" fn IDBIndex::open_cursor_with_direction(
   query : JsValue,
   direction : IDBCursorDirection,
 ) -> Result[IDBRequest, IDBIndexOpenCursorError] =
-  #| (self, query, direction) => (() => { try { return { $tag: 0, _0: self.openCursor(query, ['next', 'nextunique', 'prev', 'prevunique'][direction]) }; } catch(e) { return { $tag: 1, _0: classify_idb_index_open_cursor_error(e) }; } })()
+  #| (self, query, direction) => (() => { try { return { $tag: 1, _0: self.openCursor(query, ['next', 'nextunique', 'prev', 'prevunique'][direction]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBIndex::open_key_cursor(
   self : IDBIndex,
 ) -> Result[IDBRequest, IDBIndexOpenKeyCursorError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.openKeyCursor() }; } catch(e) { return { $tag: 1, _0: classify_idb_index_open_key_cursor_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.openKeyCursor() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBIndex::open_key_cursor_with_direction(
@@ -1942,7 +1563,7 @@ pub extern "js" fn IDBIndex::open_key_cursor_with_direction(
   query : JsValue,
   direction : IDBCursorDirection,
 ) -> Result[IDBRequest, IDBIndexOpenKeyCursorError] =
-  #| (self, query, direction) => (() => { try { return { $tag: 0, _0: self.openKeyCursor(query, ['next', 'nextunique', 'prev', 'prevunique'][direction]) }; } catch(e) { return { $tag: 1, _0: classify_idb_index_open_key_cursor_error(e) }; } })()
+  #| (self, query, direction) => (() => { try { return { $tag: 1, _0: self.openKeyCursor(query, ['next', 'nextunique', 'prev', 'prevunique'][direction]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 /// IDBKeyRange interface
@@ -1980,31 +1601,11 @@ pub(all) enum IDBKeyRangeOnlyError {
 }
 
 ///|
-extern "js" fn classify_idb_key_range_only_error(
-  e : JsError,
-) -> IDBKeyRangeOnlyError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBKeyRangeLowerBoundError {
   DataError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_key_range_lower_bound_error(
-  e : JsError,
-) -> IDBKeyRangeLowerBoundError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2014,16 +1615,6 @@ pub(all) enum IDBKeyRangeUpperBoundError {
 }
 
 ///|
-extern "js" fn classify_idb_key_range_upper_bound_error(
-  e : JsError,
-) -> IDBKeyRangeUpperBoundError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBKeyRangeBoundError {
   DataError(JsError)
@@ -2031,31 +1622,11 @@ pub(all) enum IDBKeyRangeBoundError {
 }
 
 ///|
-extern "js" fn classify_idb_key_range_bound_error(
-  e : JsError,
-) -> IDBKeyRangeBoundError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBKeyRangeIncludesError {
   DataError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_key_range_includes_error(
-  e : JsError,
-) -> IDBKeyRangeIncludesError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn IDBKeyRange::get_lower(self : IDBKeyRange) -> JsValue =
@@ -2077,40 +1648,40 @@ pub extern "js" fn IDBKeyRange::get_upper_open(self : IDBKeyRange) -> Bool =
 pub extern "js" fn IDBKeyRange::only(
   value : JsValue,
 ) -> Result[IDBKeyRange, IDBKeyRangeOnlyError] =
-  #| (value) => (() => { try { return { $tag: 0, _0: IDBKeyRange.only(value) }; } catch(e) { return { $tag: 1, _0: classify_idb_key_range_only_error(e) }; } })()
+  #| (value) => (() => { try { return { $tag: 1, _0: IDBKeyRange.only(value) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBKeyRange::lower_bound(
   lower : JsValue,
 ) -> Result[IDBKeyRange, IDBKeyRangeLowerBoundError] =
-  #| (lower) => (() => { try { return { $tag: 0, _0: IDBKeyRange.lowerBound(lower) }; } catch(e) { return { $tag: 1, _0: classify_idb_key_range_lower_bound_error(e) }; } })()
+  #| (lower) => (() => { try { return { $tag: 1, _0: IDBKeyRange.lowerBound(lower) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBKeyRange::lower_bound_with_open(
   lower : JsValue,
   open : Bool,
 ) -> Result[IDBKeyRange, IDBKeyRangeLowerBoundError] =
-  #| (lower, open) => (() => { try { return { $tag: 0, _0: IDBKeyRange.lowerBound(lower, open) }; } catch(e) { return { $tag: 1, _0: classify_idb_key_range_lower_bound_error(e) }; } })()
+  #| (lower, open) => (() => { try { return { $tag: 1, _0: IDBKeyRange.lowerBound(lower, open) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBKeyRange::upper_bound(
   upper : JsValue,
 ) -> Result[IDBKeyRange, IDBKeyRangeUpperBoundError] =
-  #| (upper) => (() => { try { return { $tag: 0, _0: IDBKeyRange.upperBound(upper) }; } catch(e) { return { $tag: 1, _0: classify_idb_key_range_upper_bound_error(e) }; } })()
+  #| (upper) => (() => { try { return { $tag: 1, _0: IDBKeyRange.upperBound(upper) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBKeyRange::upper_bound_with_open(
   upper : JsValue,
   open : Bool,
 ) -> Result[IDBKeyRange, IDBKeyRangeUpperBoundError] =
-  #| (upper, open) => (() => { try { return { $tag: 0, _0: IDBKeyRange.upperBound(upper, open) }; } catch(e) { return { $tag: 1, _0: classify_idb_key_range_upper_bound_error(e) }; } })()
+  #| (upper, open) => (() => { try { return { $tag: 1, _0: IDBKeyRange.upperBound(upper, open) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBKeyRange::bound(
   lower : JsValue,
   upper : JsValue,
 ) -> Result[IDBKeyRange, IDBKeyRangeBoundError] =
-  #| (lower, upper) => (() => { try { return { $tag: 0, _0: IDBKeyRange.bound(lower, upper) }; } catch(e) { return { $tag: 1, _0: classify_idb_key_range_bound_error(e) }; } })()
+  #| (lower, upper) => (() => { try { return { $tag: 1, _0: IDBKeyRange.bound(lower, upper) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBKeyRange::bound_with_upper_open(
@@ -2119,14 +1690,14 @@ pub extern "js" fn IDBKeyRange::bound_with_upper_open(
   lower_open : Bool,
   upper_open : Bool,
 ) -> Result[IDBKeyRange, IDBKeyRangeBoundError] =
-  #| (lower, upper, lower_open, upper_open) => (() => { try { return { $tag: 0, _0: IDBKeyRange.bound(lower, upper, lower_open, upper_open) }; } catch(e) { return { $tag: 1, _0: classify_idb_key_range_bound_error(e) }; } })()
+  #| (lower, upper, lower_open, upper_open) => (() => { try { return { $tag: 1, _0: IDBKeyRange.bound(lower, upper, lower_open, upper_open) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBKeyRange::includes(
   self : IDBKeyRange,
   key : JsValue,
 ) -> Result[Bool, IDBKeyRangeIncludesError] =
-  #| (self, key) => (() => { try { return { $tag: 0, _0: self.includes(key) }; } catch(e) { return { $tag: 1, _0: classify_idb_key_range_includes_error(e) }; } })()
+  #| (self, key) => (() => { try { return { $tag: 1, _0: self.includes(key) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// IDBRecord interface
@@ -2212,18 +1783,6 @@ pub(all) enum IDBCursorAdvanceError {
 }
 
 ///|
-extern "js" fn classify_idb_cursor_advance_error(
-  e : JsError,
-) -> IDBCursorAdvanceError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBCursorContinueError {
   DataError(JsError)
@@ -2231,18 +1790,6 @@ pub(all) enum IDBCursorContinueError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_cursor_continue_error(
-  e : JsError,
-) -> IDBCursorContinueError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2253,19 +1800,6 @@ pub(all) enum IDBCursorContinuePrimaryKeyError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_cursor_continue_primary_key_error(
-  e : JsError,
-) -> IDBCursorContinuePrimaryKeyError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 2, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2279,20 +1813,6 @@ pub(all) enum IDBCursorUpdateError {
 }
 
 ///|
-extern "js" fn classify_idb_cursor_update_error(
-  e : JsError,
-) -> IDBCursorUpdateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataError') return { $tag: 0, _0: e };
-  #|   if (n === 'ReadOnlyError') return { $tag: 1, _0: e };
-  #|   if (n === 'DataCloneError') return { $tag: 2, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 3, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 4, _0: e };
-  #|   return { $tag: 5, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBCursorDeleteError {
   ReadOnlyError(JsError)
@@ -2300,18 +1820,6 @@ pub(all) enum IDBCursorDeleteError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_cursor_delete_error(
-  e : JsError,
-) -> IDBCursorDeleteError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'ReadOnlyError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'TransactionInactiveError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn IDBCursor::get_source(
@@ -2342,20 +1850,20 @@ pub extern "js" fn IDBCursor::advance(
   self : IDBCursor,
   count : Int,
 ) -> Result[Unit, IDBCursorAdvanceError] =
-  #| (self, count) => (() => { try { self.advance(count); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_idb_cursor_advance_error(e) }; } })()
+  #| (self, count) => (() => { try { self.advance(count); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBCursor::continue_(
   self : IDBCursor,
 ) -> Result[Unit, IDBCursorContinueError] =
-  #| (self) => (() => { try { self.continue(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_idb_cursor_continue_error(e) }; } })()
+  #| (self) => (() => { try { self.continue(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBCursor::continue__with_key(
   self : IDBCursor,
   key : JsValue,
 ) -> Result[Unit, IDBCursorContinueError] =
-  #| (self, key) => (() => { try { self.continue(key); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_idb_cursor_continue_error(e) }; } })()
+  #| (self, key) => (() => { try { self.continue(key); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBCursor::continue_primary_key(
@@ -2363,20 +1871,20 @@ pub extern "js" fn IDBCursor::continue_primary_key(
   key : JsValue,
   primary_key : JsValue,
 ) -> Result[Unit, IDBCursorContinuePrimaryKeyError] =
-  #| (self, key, primary_key) => (() => { try { self.continuePrimaryKey(key, primary_key); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_idb_cursor_continue_primary_key_error(e) }; } })()
+  #| (self, key, primary_key) => (() => { try { self.continuePrimaryKey(key, primary_key); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBCursor::update(
   self : IDBCursor,
   value : JsValue,
 ) -> Result[IDBRequest, IDBCursorUpdateError] =
-  #| (self, value) => (() => { try { return { $tag: 0, _0: self.update(value) }; } catch(e) { return { $tag: 1, _0: classify_idb_cursor_update_error(e) }; } })()
+  #| (self, value) => (() => { try { return { $tag: 1, _0: self.update(value) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'ReadOnlyError') return { $tag: 1, _0: e }; if (n === 'DataCloneError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBCursor::delete(
   self : IDBCursor,
 ) -> Result[IDBRequest, IDBCursorDeleteError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.delete() }; } catch(e) { return { $tag: 1, _0: classify_idb_cursor_delete_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.delete() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'ReadOnlyError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 /// IDBCursorWithValue interface
@@ -2479,17 +1987,6 @@ pub(all) enum IDBTransactionObjectStoreError {
 }
 
 ///|
-extern "js" fn classify_idb_transaction_object_store_error(
-  e : JsError,
-) -> IDBTransactionObjectStoreError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBTransactionCommitError {
   InvalidStateError(JsError)
@@ -2497,31 +1994,11 @@ pub(all) enum IDBTransactionCommitError {
 }
 
 ///|
-extern "js" fn classify_idb_transaction_commit_error(
-  e : JsError,
-) -> IDBTransactionCommitError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum IDBTransactionAbortError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_idb_transaction_abort_error(
-  e : JsError,
-) -> IDBTransactionAbortError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn IDBTransaction::get_object_store_names(
@@ -2556,19 +2033,19 @@ pub extern "js" fn IDBTransaction::object_store(
   self : IDBTransaction,
   name : String,
 ) -> Result[IDBObjectStore, IDBTransactionObjectStoreError] =
-  #| (self, name) => (() => { try { return { $tag: 0, _0: self.objectStore(name) }; } catch(e) { return { $tag: 1, _0: classify_idb_transaction_object_store_error(e) }; } })()
+  #| (self, name) => (() => { try { return { $tag: 1, _0: self.objectStore(name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBTransaction::commit(
   self : IDBTransaction,
 ) -> Result[Unit, IDBTransactionCommitError] =
-  #| (self) => (() => { try { self.commit(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_idb_transaction_commit_error(e) }; } })()
+  #| (self) => (() => { try { self.commit(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBTransaction::abort(
   self : IDBTransaction,
 ) -> Result[Unit, IDBTransactionAbortError] =
-  #| (self) => (() => { try { self.abort(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_idb_transaction_abort_error(e) }; } })()
+  #| (self) => (() => { try { self.abort(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn IDBTransaction::set_onabort(

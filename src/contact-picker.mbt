@@ -264,18 +264,6 @@ pub(all) enum ContactsManagerSelectError {
 }
 
 ///|
-extern "js" fn classify_contacts_manager_select_error(
-  e : JsError,
-) -> ContactsManagerSelectError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 pub extern "js" fn ContactsManager::get_properties(
   self : ContactsManager,
 ) -> Promise[Array[ContactProperty]] =
@@ -286,7 +274,7 @@ pub extern "js" fn ContactsManager::select(
   self : ContactsManager,
   properties : Array[ContactProperty],
 ) -> Promise[Result[Array[ContactInfo], ContactsManagerSelectError]] =
-  #| (self, properties) => self.select(properties).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_contacts_manager_select_error(e) }))
+  #| (self, properties) => self.select(properties).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn ContactsManager::select_with_options_ffi(
@@ -294,7 +282,7 @@ extern "js" fn ContactsManager::select_with_options_ffi(
   properties : Array[ContactProperty],
   options : JsValue,
 ) -> Promise[Result[Array[ContactInfo], ContactsManagerSelectError]] =
-  #| (self, properties, options) => self.select(properties, options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_contacts_manager_select_error(e) }))
+  #| (self, properties, options) => self.select(properties, options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn ContactsManager::select_with_options(

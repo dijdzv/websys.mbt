@@ -540,23 +540,13 @@ pub(all) enum SharedStorageWorkletGlobalScopeRegisterError {
 }
 
 ///|
-extern "js" fn classify_shared_storage_worklet_global_scope_register_error(
-  e : JsError,
-) -> SharedStorageWorkletGlobalScopeRegisterError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// @alert deprecated "register is deprecated"
 pub extern "js" fn SharedStorageWorkletGlobalScope::register(
   self : SharedStorageWorkletGlobalScope,
   name : String,
   operation_ctor : Function,
 ) -> Result[Unit, SharedStorageWorkletGlobalScopeRegisterError] =
-  #| (self, name, operation_ctor) => (() => { try { self.register(name, operation_ctor); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_shared_storage_worklet_global_scope_register_error(e) }; } })()
+  #| (self, name, operation_ctor) => (() => { try { self.register(name, operation_ctor); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SharedStorageWorkletGlobalScope::get_shared_storage(
@@ -944,31 +934,11 @@ pub(all) enum SharedStorageSetError {
 }
 
 ///|
-extern "js" fn classify_shared_storage_set_error(
-  e : JsError,
-) -> SharedStorageSetError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SharedStorageAppendError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_shared_storage_append_error(
-  e : JsError,
-) -> SharedStorageAppendError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -978,31 +948,11 @@ pub(all) enum SharedStorageDeleteError {
 }
 
 ///|
-extern "js" fn classify_shared_storage_delete_error(
-  e : JsError,
-) -> SharedStorageDeleteError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SharedStorageClearError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_shared_storage_clear_error(
-  e : JsError,
-) -> SharedStorageClearError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn SharedStorage::get(
@@ -1018,7 +968,7 @@ pub extern "js" fn SharedStorage::set(
   key : String,
   value : String,
 ) -> Promise[Result[JsValue, SharedStorageSetError]] =
-  #| (self, key, value) => self.set(key, value).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_shared_storage_set_error(e) }))
+  #| (self, key, value) => self.set(key, value).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn SharedStorage::set_with_options_ffi(
@@ -1027,7 +977,7 @@ extern "js" fn SharedStorage::set_with_options_ffi(
   value : String,
   options : JsValue,
 ) -> Promise[Result[JsValue, SharedStorageSetError]] =
-  #| (self, key, value, options) => self.set(key, value, options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_shared_storage_set_error(e) }))
+  #| (self, key, value, options) => self.set(key, value, options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn SharedStorage::set_with_options(
@@ -1046,7 +996,7 @@ pub extern "js" fn SharedStorage::append(
   key : String,
   value : String,
 ) -> Promise[Result[JsValue, SharedStorageAppendError]] =
-  #| (self, key, value) => self.append(key, value).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_shared_storage_append_error(e) }))
+  #| (self, key, value) => self.append(key, value).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn SharedStorage::append_with_options_ffi(
@@ -1055,7 +1005,7 @@ extern "js" fn SharedStorage::append_with_options_ffi(
   value : String,
   options : JsValue,
 ) -> Promise[Result[JsValue, SharedStorageAppendError]] =
-  #| (self, key, value, options) => self.append(key, value, options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_shared_storage_append_error(e) }))
+  #| (self, key, value, options) => self.append(key, value, options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn SharedStorage::append_with_options(
@@ -1073,7 +1023,7 @@ pub extern "js" fn SharedStorage::delete(
   self : SharedStorage,
   key : String,
 ) -> Promise[Result[JsValue, SharedStorageDeleteError]] =
-  #| (self, key) => self.delete(key).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_shared_storage_delete_error(e) }))
+  #| (self, key) => self.delete(key).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn SharedStorage::delete_with_options_ffi(
@@ -1081,7 +1031,7 @@ extern "js" fn SharedStorage::delete_with_options_ffi(
   key : String,
   options : JsValue,
 ) -> Promise[Result[JsValue, SharedStorageDeleteError]] =
-  #| (self, key, options) => self.delete(key, options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_shared_storage_delete_error(e) }))
+  #| (self, key, options) => self.delete(key, options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn SharedStorage::delete_with_options(
@@ -1097,14 +1047,14 @@ pub fn SharedStorage::delete_with_options(
 pub extern "js" fn SharedStorage::clear(
   self : SharedStorage,
 ) -> Promise[Result[JsValue, SharedStorageClearError]] =
-  #| (self) => self.clear().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_shared_storage_clear_error(e) }))
+  #| (self) => self.clear().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn SharedStorage::clear_with_options_ffi(
   self : SharedStorage,
   options : JsValue,
 ) -> Promise[Result[JsValue, SharedStorageClearError]] =
-  #| (self, options) => self.clear(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_shared_storage_clear_error(e) }))
+  #| (self, options) => self.clear(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn SharedStorage::clear_with_options(

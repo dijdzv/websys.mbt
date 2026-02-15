@@ -810,7 +810,7 @@ pub extern "js" fn WebTransportDatagramDuplexStream::get_max_datagram_size(
 pub extern "js" fn WebTransportDatagramDuplexStream::get_incoming_max_age(
   self : WebTransportDatagramDuplexStream,
 ) -> Double? =
-  #| (self) => (self.incomingMaxAge) ?? undefined
+  #| (self) => (() => { const v = self.incomingMaxAge; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebTransportDatagramDuplexStream::set_incoming_max_age(
@@ -823,7 +823,7 @@ pub extern "js" fn WebTransportDatagramDuplexStream::set_incoming_max_age(
 pub extern "js" fn WebTransportDatagramDuplexStream::get_outgoing_max_age(
   self : WebTransportDatagramDuplexStream,
 ) -> Double? =
-  #| (self) => (self.outgoingMaxAge) ?? undefined
+  #| (self) => (() => { const v = self.outgoingMaxAge; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebTransportDatagramDuplexStream::set_outgoing_max_age(
@@ -898,33 +898,11 @@ pub(all) enum WebTransportConstructorError {
 }
 
 ///|
-extern "js" fn classify_web_transport_constructor_error(
-  e : JsError,
-) -> WebTransportConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WebTransportCloseError {
   WebTransportError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_web_transport_close_error(
-  e : JsError,
-) -> WebTransportCloseError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'WebTransportError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -934,16 +912,6 @@ pub(all) enum WebTransportCreateBidirectionalStreamError {
 }
 
 ///|
-extern "js" fn classify_web_transport_create_bidirectional_stream_error(
-  e : JsError,
-) -> WebTransportCreateBidirectionalStreamError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WebTransportCreateUnidirectionalStreamError {
   InvalidStateError(JsError)
@@ -951,27 +919,17 @@ pub(all) enum WebTransportCreateUnidirectionalStreamError {
 }
 
 ///|
-extern "js" fn classify_web_transport_create_unidirectional_stream_error(
-  e : JsError,
-) -> WebTransportCreateUnidirectionalStreamError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn WebTransport::new(
   url : String,
 ) -> Result[WebTransport, WebTransportConstructorError] =
-  #| (url) => (() => { try { return { $tag: 0, _0: new WebTransport(url) }; } catch(e) { return { $tag: 1, _0: classify_web_transport_constructor_error(e) }; } })()
+  #| (url) => (() => { try { return { $tag: 1, _0: new WebTransport(url) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn WebTransport::new_with_options_ffi(
   url : String,
   options : JsValue,
 ) -> Result[WebTransport, WebTransportConstructorError] =
-  #| (url, options) => (() => { try { return { $tag: 0, _0: new WebTransport(url, options) }; } catch(e) { return { $tag: 1, _0: classify_web_transport_constructor_error(e) }; } })()
+  #| (url, options) => (() => { try { return { $tag: 1, _0: new WebTransport(url, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn WebTransport::new_with_options(
@@ -1081,14 +1039,14 @@ pub extern "js" fn WebTransport::get_draining(
 pub extern "js" fn WebTransport::close(
   self : WebTransport,
 ) -> Result[Unit, WebTransportCloseError] =
-  #| (self) => (() => { try { self.close(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_web_transport_close_error(e) }; } })()
+  #| (self) => (() => { try { self.close(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'WebTransportError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn WebTransport::close_with_close_info_ffi(
   self : WebTransport,
   close_info : JsValue,
 ) -> Result[Unit, WebTransportCloseError] =
-  #| (self, close_info) => (() => { try { self.close(close_info); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_web_transport_close_error(e) }; } })()
+  #| (self, close_info) => (() => { try { self.close(close_info); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'WebTransportError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn WebTransport::close_with_close_info(
@@ -1113,7 +1071,7 @@ pub extern "js" fn WebTransport::create_bidirectional_stream(
     WebTransportCreateBidirectionalStreamError,
   ],
 ] =
-  #| (self) => self.createBidirectionalStream().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_web_transport_create_bidirectional_stream_error(e) }))
+  #| (self) => self.createBidirectionalStream().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn WebTransport::create_bidirectional_stream_with_options_ffi(
@@ -1125,7 +1083,7 @@ extern "js" fn WebTransport::create_bidirectional_stream_with_options_ffi(
     WebTransportCreateBidirectionalStreamError,
   ],
 ] =
-  #| (self, options) => self.createBidirectionalStream(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_web_transport_create_bidirectional_stream_error(e) }))
+  #| (self, options) => self.createBidirectionalStream(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn WebTransport::create_bidirectional_stream_with_options(
@@ -1155,7 +1113,7 @@ pub extern "js" fn WebTransport::create_unidirectional_stream(
 ) -> Promise[
   Result[WebTransportSendStream, WebTransportCreateUnidirectionalStreamError],
 ] =
-  #| (self) => self.createUnidirectionalStream().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_web_transport_create_unidirectional_stream_error(e) }))
+  #| (self) => self.createUnidirectionalStream().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn WebTransport::create_unidirectional_stream_with_options_ffi(
@@ -1164,7 +1122,7 @@ extern "js" fn WebTransport::create_unidirectional_stream_with_options_ffi(
 ) -> Promise[
   Result[WebTransportSendStream, WebTransportCreateUnidirectionalStreamError],
 ] =
-  #| (self, options) => self.createUnidirectionalStream(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_web_transport_create_unidirectional_stream_error(e) }))
+  #| (self, options) => self.createUnidirectionalStream(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn WebTransport::create_unidirectional_stream_with_options(

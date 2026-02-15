@@ -16,7 +16,7 @@ pub fn SensorOptions::default() -> SensorOptions {
 ///|
 extern "js" fn SensorOptions::to_js_ffi(self : SensorOptions) -> JsValue =
   #| (self) => ({
-  #|   frequency: self.frequency
+  #|   frequency: ((() => { const v = self.frequency; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -28,7 +28,7 @@ pub fn SensorOptions::to_js(self : SensorOptions) -> JsValue {
 ///|
 extern "js" fn SensorOptions::from_js_ffi(value : JsValue) -> SensorOptions =
   #| (v) => ({
-  #|   frequency: v.frequency
+  #|   frequency: (v.frequency === undefined ? { $tag: 0 } : { $tag: 1, _0: v.frequency })
   #| })
 
 ///|

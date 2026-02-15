@@ -106,7 +106,7 @@ pub extern "js" fn ConstrainDouble::is_constrain_double_range(
 pub extern "js" fn ConstrainDouble::as_double(
   self : ConstrainDouble,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? self : undefined
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get ConstrainDouble as ConstrainDoubleRange
@@ -1415,8 +1415,8 @@ extern "js" fn MediaTrackSettings::to_js_ffi(
   #| (self) => ({
   #|   width: self.width,
   #|   height: self.height,
-  #|   aspectRatio: self.aspectRatio,
-  #|   frameRate: self.frameRate,
+  #|   aspectRatio: ((() => { const v = self.aspectRatio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   frameRate: ((() => { const v = self.frameRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   facingMode: self.facingMode,
   #|   resizeMode: self.resizeMode,
   #|   sampleRate: self.sampleRate,
@@ -1424,7 +1424,7 @@ extern "js" fn MediaTrackSettings::to_js_ffi(
   #|   echoCancellation: ((() => { const v = self.echoCancellation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   autoGainControl: (self.autoGainControl === -1 ? undefined : self.autoGainControl),
   #|   noiseSuppression: (self.noiseSuppression === -1 ? undefined : self.noiseSuppression),
-  #|   latency: self.latency,
+  #|   latency: ((() => { const v = self.latency; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   channelCount: self.channelCount,
   #|   deviceId: self.deviceId,
   #|   groupId: self.groupId,
@@ -1434,23 +1434,23 @@ extern "js" fn MediaTrackSettings::to_js_ffi(
   #|   cursor: self.cursor,
   #|   restrictOwnAudio: (self.restrictOwnAudio === -1 ? undefined : self.restrictOwnAudio),
   #|   suppressLocalAudioPlayback: (self.suppressLocalAudioPlayback === -1 ? undefined : self.suppressLocalAudioPlayback),
-  #|   screenPixelRatio: self.screenPixelRatio,
+  #|   screenPixelRatio: ((() => { const v = self.screenPixelRatio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   whiteBalanceMode: self.whiteBalanceMode,
   #|   exposureMode: self.exposureMode,
   #|   focusMode: self.focusMode,
   #|   pointsOfInterest: ((() => { const v = self.pointsOfInterest; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   exposureCompensation: self.exposureCompensation,
-  #|   exposureTime: self.exposureTime,
-  #|   colorTemperature: self.colorTemperature,
-  #|   iso: self.iso,
-  #|   brightness: self.brightness,
-  #|   contrast: self.contrast,
-  #|   saturation: self.saturation,
-  #|   sharpness: self.sharpness,
-  #|   focusDistance: self.focusDistance,
-  #|   pan: self.pan,
-  #|   tilt: self.tilt,
-  #|   zoom: self.zoom,
+  #|   exposureCompensation: ((() => { const v = self.exposureCompensation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   exposureTime: ((() => { const v = self.exposureTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   colorTemperature: ((() => { const v = self.colorTemperature; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   iso: ((() => { const v = self.iso; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   brightness: ((() => { const v = self.brightness; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   contrast: ((() => { const v = self.contrast; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   saturation: ((() => { const v = self.saturation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sharpness: ((() => { const v = self.sharpness; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   focusDistance: ((() => { const v = self.focusDistance; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   pan: ((() => { const v = self.pan; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   tilt: ((() => { const v = self.tilt; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   zoom: ((() => { const v = self.zoom; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   torch: (self.torch === -1 ? undefined : self.torch)
   #| })
 
@@ -1467,8 +1467,8 @@ extern "js" fn MediaTrackSettings::from_js_ffi(
   #| (v) => ({
   #|   width: v.width,
   #|   height: v.height,
-  #|   aspectRatio: v.aspectRatio,
-  #|   frameRate: v.frameRate,
+  #|   aspectRatio: (v.aspectRatio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.aspectRatio }),
+  #|   frameRate: (v.frameRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.frameRate }),
   #|   facingMode: v.facingMode,
   #|   resizeMode: v.resizeMode,
   #|   sampleRate: v.sampleRate,
@@ -1476,7 +1476,7 @@ extern "js" fn MediaTrackSettings::from_js_ffi(
   #|   echoCancellation: (v.echoCancellation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.echoCancellation }),
   #|   autoGainControl: (v.autoGainControl === undefined ? -1 : v.autoGainControl),
   #|   noiseSuppression: (v.noiseSuppression === undefined ? -1 : v.noiseSuppression),
-  #|   latency: v.latency,
+  #|   latency: (v.latency === undefined ? { $tag: 0 } : { $tag: 1, _0: v.latency }),
   #|   channelCount: v.channelCount,
   #|   deviceId: v.deviceId,
   #|   groupId: v.groupId,
@@ -1486,23 +1486,23 @@ extern "js" fn MediaTrackSettings::from_js_ffi(
   #|   cursor: v.cursor,
   #|   restrictOwnAudio: (v.restrictOwnAudio === undefined ? -1 : v.restrictOwnAudio),
   #|   suppressLocalAudioPlayback: (v.suppressLocalAudioPlayback === undefined ? -1 : v.suppressLocalAudioPlayback),
-  #|   screenPixelRatio: v.screenPixelRatio,
+  #|   screenPixelRatio: (v.screenPixelRatio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.screenPixelRatio }),
   #|   whiteBalanceMode: v.whiteBalanceMode,
   #|   exposureMode: v.exposureMode,
   #|   focusMode: v.focusMode,
   #|   pointsOfInterest: (v.pointsOfInterest === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pointsOfInterest }),
-  #|   exposureCompensation: v.exposureCompensation,
-  #|   exposureTime: v.exposureTime,
-  #|   colorTemperature: v.colorTemperature,
-  #|   iso: v.iso,
-  #|   brightness: v.brightness,
-  #|   contrast: v.contrast,
-  #|   saturation: v.saturation,
-  #|   sharpness: v.sharpness,
-  #|   focusDistance: v.focusDistance,
-  #|   pan: v.pan,
-  #|   tilt: v.tilt,
-  #|   zoom: v.zoom,
+  #|   exposureCompensation: (v.exposureCompensation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureCompensation }),
+  #|   exposureTime: (v.exposureTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureTime }),
+  #|   colorTemperature: (v.colorTemperature === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorTemperature }),
+  #|   iso: (v.iso === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iso }),
+  #|   brightness: (v.brightness === undefined ? { $tag: 0 } : { $tag: 1, _0: v.brightness }),
+  #|   contrast: (v.contrast === undefined ? { $tag: 0 } : { $tag: 1, _0: v.contrast }),
+  #|   saturation: (v.saturation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.saturation }),
+  #|   sharpness: (v.sharpness === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sharpness }),
+  #|   focusDistance: (v.focusDistance === undefined ? { $tag: 0 } : { $tag: 1, _0: v.focusDistance }),
+  #|   pan: (v.pan === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pan }),
+  #|   tilt: (v.tilt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.tilt }),
+  #|   zoom: (v.zoom === undefined ? { $tag: 0 } : { $tag: 1, _0: v.zoom }),
   #|   torch: (v.torch === undefined ? -1 : v.torch)
   #| })
 
@@ -1670,8 +1670,8 @@ pub fn DoubleRange::default() -> DoubleRange {
 ///|
 extern "js" fn DoubleRange::to_js_ffi(self : DoubleRange) -> JsValue =
   #| (self) => ({
-  #|   max: self.max,
-  #|   min: self.min
+  #|   max: ((() => { const v = self.max; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   min: ((() => { const v = self.min; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -1683,8 +1683,8 @@ pub fn DoubleRange::to_js(self : DoubleRange) -> JsValue {
 ///|
 extern "js" fn DoubleRange::from_js_ffi(value : JsValue) -> DoubleRange =
   #| (v) => ({
-  #|   max: v.max,
-  #|   min: v.min
+  #|   max: (v.max === undefined ? { $tag: 0 } : { $tag: 1, _0: v.max }),
+  #|   min: (v.min === undefined ? { $tag: 0 } : { $tag: 1, _0: v.min })
   #| })
 
 ///|
@@ -1713,10 +1713,10 @@ extern "js" fn ConstrainDoubleRange::to_js_ffi(
   self : ConstrainDoubleRange,
 ) -> JsValue =
   #| (self) => ({
-  #|   max: self.max,
-  #|   min: self.min,
-  #|   exact: self.exact,
-  #|   ideal: self.ideal
+  #|   max: ((() => { const v = self.max; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   min: ((() => { const v = self.min; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   exact: ((() => { const v = self.exact; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   ideal: ((() => { const v = self.ideal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -1730,10 +1730,10 @@ extern "js" fn ConstrainDoubleRange::from_js_ffi(
   value : JsValue,
 ) -> ConstrainDoubleRange =
   #| (v) => ({
-  #|   max: v.max,
-  #|   min: v.min,
-  #|   exact: v.exact,
-  #|   ideal: v.ideal
+  #|   max: (v.max === undefined ? { $tag: 0 } : { $tag: 1, _0: v.max }),
+  #|   min: (v.min === undefined ? { $tag: 0 } : { $tag: 1, _0: v.min }),
+  #|   exact: (v.exact === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exact }),
+  #|   ideal: (v.ideal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ideal })
   #| })
 
 ///|
@@ -2562,18 +2562,6 @@ pub(all) enum MediaDevicesSelectAudioOutputError {
 }
 
 ///|
-extern "js" fn classify_media_devices_select_audio_output_error(
-  e : JsError,
-) -> MediaDevicesSelectAudioOutputError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum MediaDevicesGetUserMediaError {
   TypeError(JsError)
@@ -2588,23 +2576,6 @@ pub(all) enum MediaDevicesGetUserMediaError {
 }
 
 ///|
-extern "js" fn classify_media_devices_get_user_media_error(
-  e : JsError,
-) -> MediaDevicesGetUserMediaError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'AbortError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 2, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 3, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 4, _0: e };
-  #|   if (n === 'NotReadableError') return { $tag: 5, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 6, _0: e };
-  #|   if (n === 'OverconstrainedError') return { $tag: 7, _0: e };
-  #|   return { $tag: 8, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum MediaDevicesGetDisplayMediaError {
   TypeError(JsError)
@@ -2616,22 +2587,6 @@ pub(all) enum MediaDevicesGetDisplayMediaError {
   OverconstrainedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_media_devices_get_display_media_error(
-  e : JsError,
-) -> MediaDevicesGetDisplayMediaError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'AbortError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 2, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 3, _0: e };
-  #|   if (n === 'NotReadableError') return { $tag: 4, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 5, _0: e };
-  #|   if (n === 'OverconstrainedError') return { $tag: 6, _0: e };
-  #|   return { $tag: 7, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn MediaDevices::set_ondevicechange(
@@ -2677,14 +2632,14 @@ pub fn MediaDevices::get_viewport_media_with_options(
 pub extern "js" fn MediaDevices::select_audio_output(
   self : MediaDevices,
 ) -> Promise[Result[MediaDeviceInfo, MediaDevicesSelectAudioOutputError]] =
-  #| (self) => self.selectAudioOutput().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_media_devices_select_audio_output_error(e) }))
+  #| (self) => self.selectAudioOutput().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn MediaDevices::select_audio_output_with_options_ffi(
   self : MediaDevices,
   options : JsValue,
 ) -> Promise[Result[MediaDeviceInfo, MediaDevicesSelectAudioOutputError]] =
-  #| (self, options) => self.selectAudioOutput(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_media_devices_select_audio_output_error(e) }))
+  #| (self, options) => self.selectAudioOutput(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn MediaDevices::select_audio_output_with_options(
@@ -2724,14 +2679,14 @@ pub extern "js" fn MediaDevices::get_supported_constraints(
 pub extern "js" fn MediaDevices::get_user_media(
   self : MediaDevices,
 ) -> Promise[Result[MediaStream, MediaDevicesGetUserMediaError]] =
-  #| (self) => self.getUserMedia().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_media_devices_get_user_media_error(e) }))
+  #| (self) => self.getUserMedia().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'NotReadableError') return { $tag: 5, _0: e }; if (n === 'InvalidStateError') return { $tag: 6, _0: e }; if (n === 'OverconstrainedError') return { $tag: 7, _0: e }; return { $tag: 8, _0: e }; })() }))
 
 ///|
 extern "js" fn MediaDevices::get_user_media_with_constraints_ffi(
   self : MediaDevices,
   constraints : JsValue,
 ) -> Promise[Result[MediaStream, MediaDevicesGetUserMediaError]] =
-  #| (self, constraints) => self.getUserMedia(constraints).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_media_devices_get_user_media_error(e) }))
+  #| (self, constraints) => self.getUserMedia(constraints).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'NotReadableError') return { $tag: 5, _0: e }; if (n === 'InvalidStateError') return { $tag: 6, _0: e }; if (n === 'OverconstrainedError') return { $tag: 7, _0: e }; return { $tag: 8, _0: e }; })() }))
 
 ///|
 pub fn MediaDevices::get_user_media_with_constraints(
@@ -2745,14 +2700,14 @@ pub fn MediaDevices::get_user_media_with_constraints(
 pub extern "js" fn MediaDevices::get_display_media(
   self : MediaDevices,
 ) -> Promise[Result[MediaStream, MediaDevicesGetDisplayMediaError]] =
-  #| (self) => self.getDisplayMedia().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_media_devices_get_display_media_error(e) }))
+  #| (self) => self.getDisplayMedia().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'NotReadableError') return { $tag: 4, _0: e }; if (n === 'InvalidStateError') return { $tag: 5, _0: e }; if (n === 'OverconstrainedError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }))
 
 ///|
 extern "js" fn MediaDevices::get_display_media_with_options_ffi(
   self : MediaDevices,
   options : JsValue,
 ) -> Promise[Result[MediaStream, MediaDevicesGetDisplayMediaError]] =
-  #| (self, options) => self.getDisplayMedia(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_media_devices_get_display_media_error(e) }))
+  #| (self, options) => self.getDisplayMedia(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'NotReadableError') return { $tag: 4, _0: e }; if (n === 'InvalidStateError') return { $tag: 5, _0: e }; if (n === 'OverconstrainedError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }))
 
 ///|
 pub fn MediaDevices::get_display_media_with_options(

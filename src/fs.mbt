@@ -522,33 +522,12 @@ pub(all) enum FileSystemHandleQueryPermissionError {
 }
 
 ///|
-extern "js" fn classify_file_system_handle_query_permission_error(
-  e : JsError,
-) -> FileSystemHandleQueryPermissionError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum FileSystemHandleRequestPermissionError {
   TypeError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_file_system_handle_request_permission_error(
-  e : JsError,
-) -> FileSystemHandleRequestPermissionError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn FileSystemHandle::get_kind(
@@ -573,14 +552,14 @@ pub extern "js" fn FileSystemHandle::is_same_entry(
 pub extern "js" fn FileSystemHandle::query_permission(
   self : FileSystemHandle,
 ) -> Promise[Result[PermissionState, FileSystemHandleQueryPermissionError]] =
-  #| (self) => self.queryPermission().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_file_system_handle_query_permission_error(e) }))
+  #| (self) => self.queryPermission().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn FileSystemHandle::query_permission_with_descriptor_ffi(
   self : FileSystemHandle,
   descriptor : JsValue,
 ) -> Promise[Result[PermissionState, FileSystemHandleQueryPermissionError]] =
-  #| (self, descriptor) => self.queryPermission(descriptor).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_file_system_handle_query_permission_error(e) }))
+  #| (self, descriptor) => self.queryPermission(descriptor).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn FileSystemHandle::query_permission_with_descriptor(
@@ -597,14 +576,14 @@ pub fn FileSystemHandle::query_permission_with_descriptor(
 pub extern "js" fn FileSystemHandle::request_permission(
   self : FileSystemHandle,
 ) -> Promise[Result[PermissionState, FileSystemHandleRequestPermissionError]] =
-  #| (self) => self.requestPermission().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_file_system_handle_request_permission_error(e) }))
+  #| (self) => self.requestPermission().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn FileSystemHandle::request_permission_with_descriptor_ffi(
   self : FileSystemHandle,
   descriptor : JsValue,
 ) -> Promise[Result[PermissionState, FileSystemHandleRequestPermissionError]] =
-  #| (self, descriptor) => self.requestPermission(descriptor).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_file_system_handle_request_permission_error(e) }))
+  #| (self, descriptor) => self.requestPermission(descriptor).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn FileSystemHandle::request_permission_with_descriptor(
@@ -670,17 +649,6 @@ pub(all) enum FileSystemFileHandleGetFileError {
 }
 
 ///|
-extern "js" fn classify_file_system_file_handle_get_file_error(
-  e : JsError,
-) -> FileSystemFileHandleGetFileError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum FileSystemFileHandleCreateWritableError {
   AbortError(JsError)
@@ -689,19 +657,6 @@ pub(all) enum FileSystemFileHandleCreateWritableError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_file_system_file_handle_create_writable_error(
-  e : JsError,
-) -> FileSystemFileHandleCreateWritableError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'AbortError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 2, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -714,23 +669,10 @@ pub(all) enum FileSystemFileHandleCreateSyncAccessHandleError {
 }
 
 ///|
-extern "js" fn classify_file_system_file_handle_create_sync_access_handle_error(
-  e : JsError,
-) -> FileSystemFileHandleCreateSyncAccessHandleError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 pub extern "js" fn FileSystemFileHandle::get_file(
   self : FileSystemFileHandle,
 ) -> Promise[Result[File, FileSystemFileHandleGetFileError]] =
-  #| (self) => self.getFile().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_file_system_file_handle_get_file_error(e) }))
+  #| (self) => self.getFile().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn FileSystemFileHandle::create_writable(
@@ -738,7 +680,7 @@ pub extern "js" fn FileSystemFileHandle::create_writable(
 ) -> Promise[
   Result[FileSystemWritableFileStream, FileSystemFileHandleCreateWritableError],
 ] =
-  #| (self) => self.createWritable().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_file_system_file_handle_create_writable_error(e) }))
+  #| (self) => self.createWritable().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 extern "js" fn FileSystemFileHandle::create_writable_with_options_ffi(
@@ -747,7 +689,7 @@ extern "js" fn FileSystemFileHandle::create_writable_with_options_ffi(
 ) -> Promise[
   Result[FileSystemWritableFileStream, FileSystemFileHandleCreateWritableError],
 ] =
-  #| (self, options) => self.createWritable(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_file_system_file_handle_create_writable_error(e) }))
+  #| (self, options) => self.createWritable(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub fn FileSystemFileHandle::create_writable_with_options(
@@ -768,7 +710,7 @@ pub extern "js" fn FileSystemFileHandle::create_sync_access_handle(
     FileSystemFileHandleCreateSyncAccessHandleError,
   ],
 ] =
-  #| (self) => self.createSyncAccessHandle().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_file_system_file_handle_create_sync_access_handle_error(e) }))
+  #| (self) => self.createSyncAccessHandle().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 /// FileSystemDirectoryHandle interface
@@ -825,19 +767,6 @@ pub(all) enum FileSystemDirectoryHandleGetFileHandleError {
 }
 
 ///|
-extern "js" fn classify_file_system_directory_handle_get_file_handle_error(
-  e : JsError,
-) -> FileSystemDirectoryHandleGetFileHandleError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 2, _0: e };
-  #|   if (n === 'TypeMismatchError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum FileSystemDirectoryHandleGetDirectoryHandleError {
   TypeError(JsError)
@@ -848,19 +777,6 @@ pub(all) enum FileSystemDirectoryHandleGetDirectoryHandleError {
 }
 
 ///|
-extern "js" fn classify_file_system_directory_handle_get_directory_handle_error(
-  e : JsError,
-) -> FileSystemDirectoryHandleGetDirectoryHandleError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 2, _0: e };
-  #|   if (n === 'TypeMismatchError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum FileSystemDirectoryHandleRemoveEntryError {
   TypeError(JsError)
@@ -869,19 +785,6 @@ pub(all) enum FileSystemDirectoryHandleRemoveEntryError {
   InvalidModificationError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_file_system_directory_handle_remove_entry_error(
-  e : JsError,
-) -> FileSystemDirectoryHandleRemoveEntryError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 2, _0: e };
-  #|   if (n === 'InvalidModificationError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn FileSystemDirectoryHandle::keys(
@@ -908,7 +811,7 @@ pub extern "js" fn FileSystemDirectoryHandle::get_file_handle(
 ) -> Promise[
   Result[FileSystemFileHandle, FileSystemDirectoryHandleGetFileHandleError],
 ] =
-  #| (self, name) => self.getFileHandle(name).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_file_system_directory_handle_get_file_handle_error(e) }))
+  #| (self, name) => self.getFileHandle(name).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'TypeMismatchError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 extern "js" fn FileSystemDirectoryHandle::get_file_handle_with_options_ffi(
@@ -918,7 +821,7 @@ extern "js" fn FileSystemDirectoryHandle::get_file_handle_with_options_ffi(
 ) -> Promise[
   Result[FileSystemFileHandle, FileSystemDirectoryHandleGetFileHandleError],
 ] =
-  #| (self, name, options) => self.getFileHandle(name, options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_file_system_directory_handle_get_file_handle_error(e) }))
+  #| (self, name, options) => self.getFileHandle(name, options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'TypeMismatchError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub fn FileSystemDirectoryHandle::get_file_handle_with_options(
@@ -945,7 +848,7 @@ pub extern "js" fn FileSystemDirectoryHandle::get_directory_handle(
     FileSystemDirectoryHandleGetDirectoryHandleError,
   ],
 ] =
-  #| (self, name) => self.getDirectoryHandle(name).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_file_system_directory_handle_get_directory_handle_error(e) }))
+  #| (self, name) => self.getDirectoryHandle(name).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'TypeMismatchError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 extern "js" fn FileSystemDirectoryHandle::get_directory_handle_with_options_ffi(
@@ -958,7 +861,7 @@ extern "js" fn FileSystemDirectoryHandle::get_directory_handle_with_options_ffi(
     FileSystemDirectoryHandleGetDirectoryHandleError,
   ],
 ] =
-  #| (self, name, options) => self.getDirectoryHandle(name, options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_file_system_directory_handle_get_directory_handle_error(e) }))
+  #| (self, name, options) => self.getDirectoryHandle(name, options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'TypeMismatchError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub fn FileSystemDirectoryHandle::get_directory_handle_with_options(
@@ -983,7 +886,7 @@ pub extern "js" fn FileSystemDirectoryHandle::remove_entry(
   self : FileSystemDirectoryHandle,
   name : String,
 ) -> Promise[Result[Unit, FileSystemDirectoryHandleRemoveEntryError]] =
-  #| (self, name) => self.removeEntry(name).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_file_system_directory_handle_remove_entry_error(e) }))
+  #| (self, name) => self.removeEntry(name).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'InvalidModificationError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 extern "js" fn FileSystemDirectoryHandle::remove_entry_with_options_ffi(
@@ -991,7 +894,7 @@ extern "js" fn FileSystemDirectoryHandle::remove_entry_with_options_ffi(
   name : String,
   options : JsValue,
 ) -> Promise[Result[Unit, FileSystemDirectoryHandleRemoveEntryError]] =
-  #| (self, name, options) => self.removeEntry(name, options).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_file_system_directory_handle_remove_entry_error(e) }))
+  #| (self, name, options) => self.removeEntry(name, options).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'InvalidModificationError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub fn FileSystemDirectoryHandle::remove_entry_with_options(
@@ -1067,35 +970,12 @@ pub(all) enum FileSystemWritableFileStreamWriteError {
 }
 
 ///|
-extern "js" fn classify_file_system_writable_file_stream_write_error(
-  e : JsError,
-) -> FileSystemWritableFileStreamWriteError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'QuotaExceededError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum FileSystemWritableFileStreamSeekError {
   TypeError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_file_system_writable_file_stream_seek_error(
-  e : JsError,
-) -> FileSystemWritableFileStreamSeekError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -1107,65 +987,53 @@ pub(all) enum FileSystemWritableFileStreamTruncateError {
 }
 
 ///|
-extern "js" fn classify_file_system_writable_file_stream_truncate_error(
-  e : JsError,
-) -> FileSystemWritableFileStreamTruncateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'QuotaExceededError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 pub extern "js" fn FileSystemWritableFileStream::write(
   self : FileSystemWritableFileStream,
   data : FileSystemWriteChunkType,
 ) -> Promise[Result[Unit, FileSystemWritableFileStreamWriteError]] =
-  #| (self, data) => self.write(data).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_file_system_writable_file_stream_write_error(e) }))
+  #| (self, data) => self.write(data).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn FileSystemWritableFileStream::seek(
   self : FileSystemWritableFileStream,
   position : Int64,
 ) -> Promise[Result[Unit, FileSystemWritableFileStreamSeekError]] =
-  #| (self, position) => self.seek((position.hi * 4294967296 + position.lo)).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_file_system_writable_file_stream_seek_error(e) }))
+  #| (self, position) => self.seek((position.hi * 4294967296 + position.lo)).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn FileSystemWritableFileStream::truncate(
   self : FileSystemWritableFileStream,
   size : Int64,
 ) -> Promise[Result[Unit, FileSystemWritableFileStreamTruncateError]] =
-  #| (self, size) => self.truncate((size.hi * 4294967296 + size.lo)).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_file_system_writable_file_stream_truncate_error(e) }))
+  #| (self, size) => self.truncate((size.hi * 4294967296 + size.lo)).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn FileSystemWritableFileStream::write_with_buffer_source(
   self : FileSystemWritableFileStream,
   data : BufferSource,
 ) -> Promise[Result[Unit, FileSystemWritableFileStreamWriteError]] =
-  #| (self, data) => self.write(data).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_file_system_writable_file_stream_write_error(e) }))
+  #| (self, data) => self.write(data).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn FileSystemWritableFileStream::write_with_blob(
   self : FileSystemWritableFileStream,
   data : Blob,
 ) -> Promise[Result[Unit, FileSystemWritableFileStreamWriteError]] =
-  #| (self, data) => self.write(data).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_file_system_writable_file_stream_write_error(e) }))
+  #| (self, data) => self.write(data).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn FileSystemWritableFileStream::write_with_string(
   self : FileSystemWritableFileStream,
   data : String,
 ) -> Promise[Result[Unit, FileSystemWritableFileStreamWriteError]] =
-  #| (self, data) => self.write(data).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_file_system_writable_file_stream_write_error(e) }))
+  #| (self, data) => self.write(data).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn FileSystemWritableFileStream::write_with_write_params(
   self : FileSystemWritableFileStream,
   data : WriteParams,
 ) -> Promise[Result[Unit, FileSystemWritableFileStreamWriteError]] =
-  #| (self, data) => self.write(data).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_file_system_writable_file_stream_write_error(e) }))
+  #| (self, data) => self.write(data).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 /// FileSystemSyncAccessHandle interface
@@ -1214,17 +1082,6 @@ pub(all) enum FileSystemSyncAccessHandleReadError {
 }
 
 ///|
-extern "js" fn classify_file_system_sync_access_handle_read_error(
-  e : JsError,
-) -> FileSystemSyncAccessHandleReadError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum FileSystemSyncAccessHandleWriteError {
   TypeError(JsError)
@@ -1232,18 +1089,6 @@ pub(all) enum FileSystemSyncAccessHandleWriteError {
   QuotaExceededError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_file_system_sync_access_handle_write_error(
-  e : JsError,
-) -> FileSystemSyncAccessHandleWriteError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'QuotaExceededError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -1255,33 +1100,11 @@ pub(all) enum FileSystemSyncAccessHandleTruncateError {
 }
 
 ///|
-extern "js" fn classify_file_system_sync_access_handle_truncate_error(
-  e : JsError,
-) -> FileSystemSyncAccessHandleTruncateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'QuotaExceededError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum FileSystemSyncAccessHandleGetSizeError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_file_system_sync_access_handle_get_size_error(
-  e : JsError,
-) -> FileSystemSyncAccessHandleGetSizeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -1291,21 +1114,11 @@ pub(all) enum FileSystemSyncAccessHandleFlushError {
 }
 
 ///|
-extern "js" fn classify_file_system_sync_access_handle_flush_error(
-  e : JsError,
-) -> FileSystemSyncAccessHandleFlushError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn FileSystemSyncAccessHandle::read(
   self : FileSystemSyncAccessHandle,
   buffer : AllowSharedBufferSource,
 ) -> Result[Int64, FileSystemSyncAccessHandleReadError] =
-  #| (self, buffer) => (() => { try { return { $tag: 0, _0: (() => { const n = self.read(buffer); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 1, _0: classify_file_system_sync_access_handle_read_error(e) }; } })()
+  #| (self, buffer) => (() => { try { return { $tag: 1, _0: (() => { const n = self.read(buffer); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn FileSystemSyncAccessHandle::read_with_options_ffi(
@@ -1313,7 +1126,7 @@ extern "js" fn FileSystemSyncAccessHandle::read_with_options_ffi(
   buffer : AllowSharedBufferSource,
   options : JsValue,
 ) -> Result[Int64, FileSystemSyncAccessHandleReadError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 0, _0: (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 1, _0: classify_file_system_sync_access_handle_read_error(e) }; } })()
+  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn FileSystemSyncAccessHandle::read_with_options(
@@ -1333,7 +1146,7 @@ pub extern "js" fn FileSystemSyncAccessHandle::write(
   self : FileSystemSyncAccessHandle,
   buffer : AllowSharedBufferSource,
 ) -> Result[Int64, FileSystemSyncAccessHandleWriteError] =
-  #| (self, buffer) => (() => { try { return { $tag: 0, _0: (() => { const n = self.write(buffer); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 1, _0: classify_file_system_sync_access_handle_write_error(e) }; } })()
+  #| (self, buffer) => (() => { try { return { $tag: 1, _0: (() => { const n = self.write(buffer); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn FileSystemSyncAccessHandle::write_with_options_ffi(
@@ -1341,7 +1154,7 @@ extern "js" fn FileSystemSyncAccessHandle::write_with_options_ffi(
   buffer : AllowSharedBufferSource,
   options : JsValue,
 ) -> Result[Int64, FileSystemSyncAccessHandleWriteError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 0, _0: (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 1, _0: classify_file_system_sync_access_handle_write_error(e) }; } })()
+  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn FileSystemSyncAccessHandle::write_with_options(
@@ -1361,19 +1174,19 @@ pub extern "js" fn FileSystemSyncAccessHandle::truncate(
   self : FileSystemSyncAccessHandle,
   new_size : Int64,
 ) -> Result[Unit, FileSystemSyncAccessHandleTruncateError] =
-  #| (self, new_size) => (() => { try { self.truncate((new_size.hi * 4294967296 + new_size.lo)); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_file_system_sync_access_handle_truncate_error(e) }; } })()
+  #| (self, new_size) => (() => { try { self.truncate((new_size.hi * 4294967296 + new_size.lo)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::get_size(
   self : FileSystemSyncAccessHandle,
 ) -> Result[Int64, FileSystemSyncAccessHandleGetSizeError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: (() => { const n = self.getSize(); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 1, _0: classify_file_system_sync_access_handle_get_size_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: (() => { const n = self.getSize(); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::flush(
   self : FileSystemSyncAccessHandle,
 ) -> Result[Unit, FileSystemSyncAccessHandleFlushError] =
-  #| (self) => (() => { try { self.flush(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_file_system_sync_access_handle_flush_error(e) }; } })()
+  #| (self) => (() => { try { self.flush(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::close(
@@ -1387,7 +1200,7 @@ pub extern "js" fn FileSystemSyncAccessHandle::read_with_array_buffer(
   buffer : ArrayBuffer,
   options : FileSystemReadWriteOptions,
 ) -> Result[Int64, FileSystemSyncAccessHandleReadError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 0, _0: (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 1, _0: classify_file_system_sync_access_handle_read_error(e) }; } })()
+  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::read_with_shared_array_buffer(
@@ -1395,7 +1208,7 @@ pub extern "js" fn FileSystemSyncAccessHandle::read_with_shared_array_buffer(
   buffer : SharedArrayBuffer,
   options : FileSystemReadWriteOptions,
 ) -> Result[Int64, FileSystemSyncAccessHandleReadError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 0, _0: (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 1, _0: classify_file_system_sync_access_handle_read_error(e) }; } })()
+  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::read_with_array_buffer_view(
@@ -1403,7 +1216,7 @@ pub extern "js" fn FileSystemSyncAccessHandle::read_with_array_buffer_view(
   buffer : ArrayBufferView,
   options : FileSystemReadWriteOptions,
 ) -> Result[Int64, FileSystemSyncAccessHandleReadError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 0, _0: (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 1, _0: classify_file_system_sync_access_handle_read_error(e) }; } })()
+  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: (() => { const n = self.read(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::write_with_array_buffer(
@@ -1411,7 +1224,7 @@ pub extern "js" fn FileSystemSyncAccessHandle::write_with_array_buffer(
   buffer : ArrayBuffer,
   options : FileSystemReadWriteOptions,
 ) -> Result[Int64, FileSystemSyncAccessHandleWriteError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 0, _0: (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 1, _0: classify_file_system_sync_access_handle_write_error(e) }; } })()
+  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::write_with_shared_array_buffer(
@@ -1419,7 +1232,7 @@ pub extern "js" fn FileSystemSyncAccessHandle::write_with_shared_array_buffer(
   buffer : SharedArrayBuffer,
   options : FileSystemReadWriteOptions,
 ) -> Result[Int64, FileSystemSyncAccessHandleWriteError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 0, _0: (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 1, _0: classify_file_system_sync_access_handle_write_error(e) }; } })()
+  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn FileSystemSyncAccessHandle::write_with_array_buffer_view(
@@ -1427,4 +1240,4 @@ pub extern "js" fn FileSystemSyncAccessHandle::write_with_array_buffer_view(
   buffer : ArrayBufferView,
   options : FileSystemReadWriteOptions,
 ) -> Result[Int64, FileSystemSyncAccessHandleWriteError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 0, _0: (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 1, _0: classify_file_system_sync_access_handle_write_error(e) }; } })()
+  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: (() => { const n = self.write(buffer, options); return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()

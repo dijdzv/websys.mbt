@@ -591,17 +591,6 @@ pub(all) enum PushMessageDataBytesError {
 }
 
 ///|
-extern "js" fn classify_push_message_data_bytes_error(
-  e : JsError,
-) -> PushMessageDataBytesError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'Uint8Array') return { $tag: 0, _0: e };
-  #|   if (n === 'ArrayBuffer') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn PushMessageData::array_buffer(
   self : PushMessageData,
 ) -> ArrayBuffer =
@@ -615,7 +604,7 @@ pub extern "js" fn PushMessageData::blob(self : PushMessageData) -> Blob =
 pub extern "js" fn PushMessageData::bytes(
   self : PushMessageData,
 ) -> Result[Uint8Array, PushMessageDataBytesError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.bytes() }; } catch(e) { return { $tag: 1, _0: classify_push_message_data_bytes_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.bytes() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Uint8Array') return { $tag: 0, _0: e }; if (n === 'ArrayBuffer') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn PushMessageData::json(self : PushMessageData) -> JsValue =

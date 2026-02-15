@@ -886,16 +886,6 @@ pub(all) enum PaymentRequestConstructorError {
 }
 
 ///|
-extern "js" fn classify_payment_request_constructor_error(
-  e : JsError,
-) -> PaymentRequestConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum PaymentRequestShowError {
   Promise(JsError)
@@ -907,25 +897,11 @@ pub(all) enum PaymentRequestShowError {
 }
 
 ///|
-extern "js" fn classify_payment_request_show_error(
-  e : JsError,
-) -> PaymentRequestShowError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'Promise') return { $tag: 0, _0: e };
-  #|   if (n === 'AbortError') return { $tag: 1, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 2, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 3, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 4, _0: e };
-  #|   return { $tag: 5, _0: e };
-  #| }
-
-///|
 extern "js" fn PaymentRequest::new_ffi(
   method_data : Array[PaymentMethodData],
   details : JsValue,
 ) -> Result[PaymentRequest, PaymentRequestConstructorError] =
-  #| (method_data, details) => (() => { try { return { $tag: 0, _0: new PaymentRequest(method_data, details) }; } catch(e) { return { $tag: 1, _0: classify_payment_request_constructor_error(e) }; } })()
+  #| (method_data, details) => (() => { try { return { $tag: 1, _0: new PaymentRequest(method_data, details) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn PaymentRequest::new(
@@ -941,7 +917,7 @@ extern "js" fn PaymentRequest::new_with_options_ffi(
   details : JsValue,
   options : JsValue,
 ) -> Result[PaymentRequest, PaymentRequestConstructorError] =
-  #| (method_data, details, options) => (() => { try { return { $tag: 0, _0: new PaymentRequest(method_data, details, options) }; } catch(e) { return { $tag: 1, _0: classify_payment_request_constructor_error(e) }; } })()
+  #| (method_data, details, options) => (() => { try { return { $tag: 1, _0: new PaymentRequest(method_data, details, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn PaymentRequest::new_with_options(
@@ -960,14 +936,14 @@ pub fn PaymentRequest::new_with_options(
 pub extern "js" fn PaymentRequest::show(
   self : PaymentRequest,
 ) -> Promise[Result[PaymentResponse, PaymentRequestShowError]] =
-  #| (self) => self.show().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_payment_request_show_error(e) }))
+  #| (self) => self.show().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
 ///|
 pub extern "js" fn PaymentRequest::show_with_details_promise(
   self : PaymentRequest,
   details_promise : Promise[PaymentDetailsUpdate],
 ) -> Promise[Result[PaymentResponse, PaymentRequestShowError]] =
-  #| (self, details_promise) => self.show(details_promise).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_payment_request_show_error(e) }))
+  #| (self, details_promise) => self.show(details_promise).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
 ///|
 pub extern "js" fn PaymentRequest::abort(
@@ -1101,17 +1077,6 @@ pub(all) enum PaymentResponseCompleteError {
 }
 
 ///|
-extern "js" fn classify_payment_response_complete_error(
-  e : JsError,
-) -> PaymentResponseCompleteError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'AbortError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn PaymentResponse::to_json(self : PaymentResponse) -> JsValue =
   #| (self) => self.toJSON()
 
@@ -1167,7 +1132,7 @@ pub extern "js" fn PaymentResponse::get_payer_phone(
 pub extern "js" fn PaymentResponse::complete(
   self : PaymentResponse,
 ) -> Promise[Result[Unit, PaymentResponseCompleteError]] =
-  #| (self) => self.complete().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_payment_response_complete_error(e) }))
+  #| (self) => self.complete().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn PaymentResponse::complete_with_details_ffi(
@@ -1175,7 +1140,7 @@ extern "js" fn PaymentResponse::complete_with_details_ffi(
   result : PaymentComplete,
   details : JsValue,
 ) -> Promise[Result[Unit, PaymentResponseCompleteError]] =
-  #| (self, result, details) => self.complete(['fail', 'success', 'unknown'][result], details).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_payment_response_complete_error(e) }))
+  #| (self, result, details) => self.complete(['fail', 'success', 'unknown'][result], details).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn PaymentResponse::complete_with_details(

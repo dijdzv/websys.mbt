@@ -121,20 +121,6 @@ pub(all) enum EyeDropperOpenError {
 }
 
 ///|
-extern "js" fn classify_eye_dropper_open_error(
-  e : JsError,
-) -> EyeDropperOpenError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'Promise') return { $tag: 0, _0: e };
-  #|   if (n === 'AbortError') return { $tag: 1, _0: e };
-  #|   if (n === 'OperationError') return { $tag: 2, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 3, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 4, _0: e };
-  #|   return { $tag: 5, _0: e };
-  #| }
-
-///|
 pub extern "js" fn EyeDropper::new() -> EyeDropper =
   #| () => new EyeDropper()
 
@@ -144,7 +130,7 @@ pub extern "js" fn EyeDropper::open(
 ) -> Promise[Result[ColorSelectionResult, EyeDropperOpenError]] =
   #| (self) => self.open().then(v => ({
   #|   sRGBHex: v.sRGBHex
-  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_eye_dropper_open_error(e) }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'OperationError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
 ///|
 extern "js" fn EyeDropper::open_with_options_ffi(
@@ -153,7 +139,7 @@ extern "js" fn EyeDropper::open_with_options_ffi(
 ) -> Promise[Result[ColorSelectionResult, EyeDropperOpenError]] =
   #| (self, options) => self.open(options).then(v => ({
   #|   sRGBHex: v.sRGBHex
-  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_eye_dropper_open_error(e) }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'OperationError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
 ///|
 pub fn EyeDropper::open_with_options(

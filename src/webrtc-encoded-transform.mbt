@@ -631,7 +631,7 @@ extern "js" fn RTCEncodedAudioFrameMetadata::to_js_ffi(
   #|   senderCaptureTimeOffset: ((() => { const v = self.senderCaptureTimeOffset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   mimeType: self.mimeType,
   #|   sequenceNumber: self.sequenceNumber,
-  #|   audioLevel: self.audioLevel
+  #|   audioLevel: ((() => { const v = self.audioLevel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -656,7 +656,7 @@ extern "js" fn RTCEncodedAudioFrameMetadata::from_js_ffi(
   #|   senderCaptureTimeOffset: (v.senderCaptureTimeOffset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.senderCaptureTimeOffset }),
   #|   mimeType: v.mimeType,
   #|   sequenceNumber: v.sequenceNumber,
-  #|   audioLevel: v.audioLevel
+  #|   audioLevel: (v.audioLevel === undefined ? { $tag: 0 } : { $tag: 1, _0: v.audioLevel })
   #| })
 
 ///|
@@ -1241,28 +1241,17 @@ pub(all) enum RTCEncodedVideoFrameConstructorError {
 }
 
 ///|
-extern "js" fn classify_rtc_encoded_video_frame_constructor_error(
-  e : JsError,
-) -> RTCEncodedVideoFrameConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'RangeError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn RTCEncodedVideoFrame::new(
   original_frame : RTCEncodedVideoFrame,
 ) -> Result[RTCEncodedVideoFrame, RTCEncodedVideoFrameConstructorError] =
-  #| (original_frame) => (() => { try { return { $tag: 0, _0: new RTCEncodedVideoFrame(original_frame) }; } catch(e) { return { $tag: 1, _0: classify_rtc_encoded_video_frame_constructor_error(e) }; } })()
+  #| (original_frame) => (() => { try { return { $tag: 1, _0: new RTCEncodedVideoFrame(original_frame) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn RTCEncodedVideoFrame::new_with_options_ffi(
   original_frame : RTCEncodedVideoFrame,
   options : JsValue,
 ) -> Result[RTCEncodedVideoFrame, RTCEncodedVideoFrameConstructorError] =
-  #| (original_frame, options) => (() => { try { return { $tag: 0, _0: new RTCEncodedVideoFrame(original_frame, options) }; } catch(e) { return { $tag: 1, _0: classify_rtc_encoded_video_frame_constructor_error(e) }; } })()
+  #| (original_frame, options) => (() => { try { return { $tag: 1, _0: new RTCEncodedVideoFrame(original_frame, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn RTCEncodedVideoFrame::new_with_options(
@@ -1344,28 +1333,17 @@ pub(all) enum RTCEncodedAudioFrameConstructorError {
 }
 
 ///|
-extern "js" fn classify_rtc_encoded_audio_frame_constructor_error(
-  e : JsError,
-) -> RTCEncodedAudioFrameConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'RangeError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn RTCEncodedAudioFrame::new(
   original_frame : RTCEncodedAudioFrame,
 ) -> Result[RTCEncodedAudioFrame, RTCEncodedAudioFrameConstructorError] =
-  #| (original_frame) => (() => { try { return { $tag: 0, _0: new RTCEncodedAudioFrame(original_frame) }; } catch(e) { return { $tag: 1, _0: classify_rtc_encoded_audio_frame_constructor_error(e) }; } })()
+  #| (original_frame) => (() => { try { return { $tag: 1, _0: new RTCEncodedAudioFrame(original_frame) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn RTCEncodedAudioFrame::new_with_options_ffi(
   original_frame : RTCEncodedAudioFrame,
   options : JsValue,
 ) -> Result[RTCEncodedAudioFrame, RTCEncodedAudioFrameConstructorError] =
-  #| (original_frame, options) => (() => { try { return { $tag: 0, _0: new RTCEncodedAudioFrame(original_frame, options) }; } catch(e) { return { $tag: 1, _0: classify_rtc_encoded_audio_frame_constructor_error(e) }; } })()
+  #| (original_frame, options) => (() => { try { return { $tag: 1, _0: new RTCEncodedAudioFrame(original_frame, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn RTCEncodedAudioFrame::new_with_options(
@@ -1440,20 +1418,10 @@ pub(all) enum RTCRtpScriptTransformConstructorError {
 }
 
 ///|
-extern "js" fn classify_rtc_rtp_script_transform_constructor_error(
-  e : JsError,
-) -> RTCRtpScriptTransformConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataCloneError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn RTCRtpScriptTransform::new(
   worker : Worker,
 ) -> Result[RTCRtpScriptTransform, RTCRtpScriptTransformConstructorError] =
-  #| (worker) => (() => { try { return { $tag: 0, _0: new RTCRtpScriptTransform(worker) }; } catch(e) { return { $tag: 1, _0: classify_rtc_rtp_script_transform_constructor_error(e) }; } })()
+  #| (worker) => (() => { try { return { $tag: 1, _0: new RTCRtpScriptTransform(worker) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn RTCRtpScriptTransform::new_with_transfer(
@@ -1461,7 +1429,7 @@ pub extern "js" fn RTCRtpScriptTransform::new_with_transfer(
   options : JsValue,
   transfer : Array[JsValue],
 ) -> Result[RTCRtpScriptTransform, RTCRtpScriptTransformConstructorError] =
-  #| (worker, options, transfer) => (() => { try { return { $tag: 0, _0: new RTCRtpScriptTransform(worker, options, transfer) }; } catch(e) { return { $tag: 1, _0: classify_rtc_rtp_script_transform_constructor_error(e) }; } })()
+  #| (worker, options, transfer) => (() => { try { return { $tag: 1, _0: new RTCRtpScriptTransform(worker, options, transfer) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// RTCRtpScriptTransformer interface
@@ -1517,33 +1485,11 @@ pub(all) enum RTCRtpScriptTransformerGenerateKeyFrameError {
 }
 
 ///|
-extern "js" fn classify_rtc_rtp_script_transformer_generate_key_frame_error(
-  e : JsError,
-) -> RTCRtpScriptTransformerGenerateKeyFrameError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum RTCRtpScriptTransformerSendKeyFrameRequestError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_rtc_rtp_script_transformer_send_key_frame_request_error(
-  e : JsError,
-) -> RTCRtpScriptTransformerSendKeyFrameRequestError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn RTCRtpScriptTransformer::get_readable(
@@ -1555,20 +1501,20 @@ pub extern "js" fn RTCRtpScriptTransformer::get_readable(
 pub extern "js" fn RTCRtpScriptTransformer::generate_key_frame(
   self : RTCRtpScriptTransformer,
 ) -> Promise[Result[Unit, RTCRtpScriptTransformerGenerateKeyFrameError]] =
-  #| (self) => self.generateKeyFrame().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_rtp_script_transformer_generate_key_frame_error(e) }))
+  #| (self) => self.generateKeyFrame().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RTCRtpScriptTransformer::generate_key_frame_with_rid(
   self : RTCRtpScriptTransformer,
   rid : String,
 ) -> Promise[Result[Unit, RTCRtpScriptTransformerGenerateKeyFrameError]] =
-  #| (self, rid) => self.generateKeyFrame(rid).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_rtp_script_transformer_generate_key_frame_error(e) }))
+  #| (self, rid) => self.generateKeyFrame(rid).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RTCRtpScriptTransformer::send_key_frame_request(
   self : RTCRtpScriptTransformer,
 ) -> Promise[Result[Unit, RTCRtpScriptTransformerSendKeyFrameRequestError]] =
-  #| (self) => self.sendKeyFrameRequest().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_rtp_script_transformer_send_key_frame_request_error(e) }))
+  #| (self) => self.sendKeyFrameRequest().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RTCRtpScriptTransformer::get_writable(

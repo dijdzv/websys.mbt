@@ -157,28 +157,17 @@ pub(all) enum PerformanceMarkConstructorError {
 }
 
 ///|
-extern "js" fn classify_performance_mark_constructor_error(
-  e : JsError,
-) -> PerformanceMarkConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn PerformanceMark::new(
   mark_name : String,
 ) -> Result[PerformanceMark, PerformanceMarkConstructorError] =
-  #| (mark_name) => (() => { try { return { $tag: 0, _0: new PerformanceMark(mark_name) }; } catch(e) { return { $tag: 1, _0: classify_performance_mark_constructor_error(e) }; } })()
+  #| (mark_name) => (() => { try { return { $tag: 1, _0: new PerformanceMark(mark_name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn PerformanceMark::new_with_mark_options_ffi(
   mark_name : String,
   mark_options : JsValue,
 ) -> Result[PerformanceMark, PerformanceMarkConstructorError] =
-  #| (mark_name, mark_options) => (() => { try { return { $tag: 0, _0: new PerformanceMark(mark_name, mark_options) }; } catch(e) { return { $tag: 1, _0: classify_performance_mark_constructor_error(e) }; } })()
+  #| (mark_name, mark_options) => (() => { try { return { $tag: 1, _0: new PerformanceMark(mark_name, mark_options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn PerformanceMark::new_with_mark_options(

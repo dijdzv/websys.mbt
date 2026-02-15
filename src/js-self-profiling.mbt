@@ -259,17 +259,6 @@ pub(all) enum ProfilerConstructorError {
 }
 
 ///|
-extern "js" fn classify_profiler_constructor_error(
-  e : JsError,
-) -> ProfilerConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn Profiler::get_sample_interval(
   self : Profiler,
 ) -> DOMHighResTimeStamp =
@@ -283,7 +272,7 @@ pub extern "js" fn Profiler::get_stopped(self : Profiler) -> Bool =
 extern "js" fn Profiler::new_ffi(
   options : JsValue,
 ) -> Result[Profiler, ProfilerConstructorError] =
-  #| (options) => (() => { try { return { $tag: 0, _0: new Profiler(options) }; } catch(e) { return { $tag: 1, _0: classify_profiler_constructor_error(e) }; } })()
+  #| (options) => (() => { try { return { $tag: 1, _0: new Profiler(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn Profiler::new(

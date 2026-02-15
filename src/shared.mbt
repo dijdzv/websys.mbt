@@ -62,7 +62,7 @@ pub type JsError
 
 ///|
 pub extern "js" fn JsError::message(self : JsError) -> String =
-  #| (self) => String(self)
+  #| (self) => self.message
 
 ///|
 pub extern "js" fn JsError::name(self : JsError) -> String =
@@ -2267,7 +2267,7 @@ pub extern "js" fn BoolOrDoubleOrString::as_bool(
 pub extern "js" fn BoolOrDoubleOrString::as_double(
   self : BoolOrDoubleOrString,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? self : undefined
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get BoolOrDoubleOrString as String
@@ -2708,7 +2708,7 @@ pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::is_array(
 pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::as_double(
   self : DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? self : undefined
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit as DOMPointInit
@@ -2800,7 +2800,7 @@ pub extern "js" fn DoubleOrDOMPointInit::is_dom_point_init(
 pub extern "js" fn DoubleOrDOMPointInit::as_double(
   self : DoubleOrDOMPointInit,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? self : undefined
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get DoubleOrDOMPointInit as DOMPointInit
@@ -3372,7 +3372,7 @@ pub extern "js" fn DoubleOrCSSNumericValueOrString::is_string(
 pub extern "js" fn DoubleOrCSSNumericValueOrString::as_double(
   self : DoubleOrCSSNumericValueOrString,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? self : undefined
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get DoubleOrCSSNumericValueOrString as CSSNumericValue
@@ -3464,7 +3464,7 @@ pub extern "js" fn DoubleOrEffectTiming::is_effect_timing(
 pub extern "js" fn DoubleOrEffectTiming::as_double(
   self : DoubleOrEffectTiming,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? self : undefined
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get DoubleOrEffectTiming as EffectTiming
@@ -3824,7 +3824,7 @@ pub extern "js" fn DoubleOrArrayOfDouble::is_array_of_double(
 pub extern "js" fn DoubleOrArrayOfDouble::as_double(
   self : DoubleOrArrayOfDouble,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? self : undefined
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get DoubleOrArrayOfDouble as Array[Double]
@@ -5421,7 +5421,7 @@ pub extern "js" fn AudioContextLatencyCategoryOrDouble::as_audio_context_latency
 pub extern "js" fn AudioContextLatencyCategoryOrDouble::as_double(
   self : AudioContextLatencyCategoryOrDouble,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? self : undefined
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Flatten Option[AudioContextLatencyCategoryOrDouble] to AudioContextLatencyCategory?
@@ -5626,7 +5626,7 @@ pub extern "js" fn DoubleOrString::is_string(self : DoubleOrString) -> Bool =
 ///|
 /// Try to get DoubleOrString as Double
 pub extern "js" fn DoubleOrString::as_double(self : DoubleOrString) -> Double? =
-  #| (self) => (typeof self === 'number') ? self : undefined
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get DoubleOrString as String
@@ -5694,7 +5694,7 @@ pub extern "js" fn DoubleOrKeyframeEffectOptions::is_keyframe_effect_options(
 pub extern "js" fn DoubleOrKeyframeEffectOptions::as_double(
   self : DoubleOrKeyframeEffectOptions,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? self : undefined
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get DoubleOrKeyframeEffectOptions as KeyframeEffectOptions
@@ -5916,7 +5916,7 @@ pub extern "js" fn DoubleOrKeyframeAnimationOptions::is_keyframe_animation_optio
 pub extern "js" fn DoubleOrKeyframeAnimationOptions::as_double(
   self : DoubleOrKeyframeAnimationOptions,
 ) -> Double? =
-  #| (self) => (typeof self === 'number') ? self : undefined
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get DoubleOrKeyframeAnimationOptions as KeyframeAnimationOptions

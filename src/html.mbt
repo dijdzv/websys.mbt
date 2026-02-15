@@ -2602,7 +2602,7 @@ extern "js" fn ImageEncodeOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   type: self.type_,
-  #|   quality: self.quality
+  #|   quality: ((() => { const v = self.quality; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -2617,7 +2617,7 @@ extern "js" fn ImageEncodeOptions::from_js_ffi(
 ) -> ImageEncodeOptions =
   #| (v) => ({
   #|   type_: v.type,
-  #|   quality: v.quality
+  #|   quality: (v.quality === undefined ? { $tag: 0 } : { $tag: 1, _0: v.quality })
   #| })
 
 ///|
@@ -4387,16 +4387,6 @@ pub(all) enum HTMLOptionsCollectionAddError {
 }
 
 ///|
-extern "js" fn classify_html_options_collection_add_error(
-  e : JsError,
-) -> HTMLOptionsCollectionAddError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn HTMLOptionsCollection::get_length(
   self : HTMLOptionsCollection,
 ) -> Int =
@@ -4423,7 +4413,7 @@ pub extern "js" fn HTMLOptionsCollection::add(
   self : HTMLOptionsCollection,
   element : HTMLOptionElementOrHTMLOptGroupElement,
 ) -> Result[Unit, HTMLOptionsCollectionAddError] =
-  #| (self, element) => (() => { try { self.add(element); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_options_collection_add_error(e) }; } })()
+  #| (self, element) => (() => { try { self.add(element); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLOptionsCollection::add_with_before(
@@ -4431,7 +4421,7 @@ pub extern "js" fn HTMLOptionsCollection::add_with_before(
   element : HTMLOptionElementOrHTMLOptGroupElement,
   before : HTMLElementOrInt,
 ) -> Result[Unit, HTMLOptionsCollectionAddError] =
-  #| (self, element, before) => (() => { try { self.add(element, before); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_options_collection_add_error(e) }; } })()
+  #| (self, element, before) => (() => { try { self.add(element, before); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLOptionsCollection::remove(
@@ -4486,40 +4476,6 @@ pub extern "js" fn JsValue::to_dom_string_list(self : JsValue) -> DOMStringList 
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum DOMStringListItemError {
-  TypeError(JsError)
-  OtherError(JsError)
-}
-
-///|
-extern "js" fn classify_dom_string_list_item_error(
-  e : JsError,
-) -> DOMStringListItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
-/// Error type for throwing methods
-pub(all) enum DOMStringListContainsError {
-  TypeError(JsError)
-  OtherError(JsError)
-}
-
-///|
-extern "js" fn classify_dom_string_list_contains_error(
-  e : JsError,
-) -> DOMStringListContainsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn DOMStringList::get_length(self : DOMStringList) -> Int =
   #| (self) => self.length
 
@@ -4527,23 +4483,23 @@ pub extern "js" fn DOMStringList::get_length(self : DOMStringList) -> Int =
 pub extern "js" fn DOMStringList::item(
   self : DOMStringList,
   index : Int,
-) -> Result[String?, DOMStringListItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: (self.item(index)) ?? undefined }; } catch(e) { return { $tag: 1, _0: classify_dom_string_list_item_error(e) }; } })()
+) -> String? =
+  #| (self, index) => (self.item(index)) ?? undefined
 
 ///|
 #alias("_[_]")
 pub extern "js" fn DOMStringList::get(
   self : DOMStringList,
   index : Int,
-) -> Result[String?, DOMStringListItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: (self[index]) ?? undefined }; } catch(e) { return { $tag: 1, _0: classify_dom_string_list_item_error(e) }; } })()
+) -> String? =
+  #| (self, index) => (self[index]) ?? undefined
 
 ///|
 pub extern "js" fn DOMStringList::contains(
   self : DOMStringList,
   string : String,
-) -> Result[Bool, DOMStringListContainsError] =
-  #| (self, string) => (() => { try { return { $tag: 0, _0: self.contains(string) }; } catch(e) { return { $tag: 1, _0: classify_dom_string_list_contains_error(e) }; } })()
+) -> Bool =
+  #| (self, string) => self.contains(string)
 
 ///|
 /// HTMLElement interface
@@ -5051,16 +5007,6 @@ pub(all) enum HTMLElementAttachInternalsError {
 }
 
 ///|
-extern "js" fn classify_html_element_attach_internals_error(
-  e : JsError,
-) -> HTMLElementAttachInternalsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum HTMLElementShowPopoverError {
   InvalidStateError(JsError)
@@ -5068,31 +5014,11 @@ pub(all) enum HTMLElementShowPopoverError {
 }
 
 ///|
-extern "js" fn classify_html_element_show_popover_error(
-  e : JsError,
-) -> HTMLElementShowPopoverError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum HTMLElementHidePopoverError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_html_element_hide_popover_error(
-  e : JsError,
-) -> HTMLElementHidePopoverError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn HTMLElement::new() -> HTMLElement =
@@ -5272,20 +5198,20 @@ pub extern "js" fn HTMLElement::set_outer_text(
 pub extern "js" fn HTMLElement::attach_internals(
   self : HTMLElement,
 ) -> Result[ElementInternals, HTMLElementAttachInternalsError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.attachInternals() }; } catch(e) { return { $tag: 1, _0: classify_html_element_attach_internals_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.attachInternals() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLElement::show_popover(
   self : HTMLElement,
 ) -> Result[Unit, HTMLElementShowPopoverError] =
-  #| (self) => (() => { try { self.showPopover(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_element_show_popover_error(e) }; } })()
+  #| (self) => (() => { try { self.showPopover(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn HTMLElement::show_popover_with_options_ffi(
   self : HTMLElement,
   options : JsValue,
 ) -> Result[Unit, HTMLElementShowPopoverError] =
-  #| (self, options) => (() => { try { self.showPopover(options); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_element_show_popover_error(e) }; } })()
+  #| (self, options) => (() => { try { self.showPopover(options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn HTMLElement::show_popover_with_options(
@@ -5299,7 +5225,7 @@ pub fn HTMLElement::show_popover_with_options(
 pub extern "js" fn HTMLElement::hide_popover(
   self : HTMLElement,
 ) -> Result[Unit, HTMLElementHidePopoverError] =
-  #| (self) => (() => { try { self.hidePopover(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_element_hide_popover_error(e) }; } })()
+  #| (self) => (() => { try { self.hidePopover(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLElement::toggle_popover(self : HTMLElement) -> Bool =
@@ -5725,17 +5651,15 @@ pub extern "js" fn HTMLElement::clear_onended(self : HTMLElement) -> Unit =
   #| (self) => { self.onended = null }
 
 ///|
-pub extern "js" fn HTMLElement::get_onerror(
-  self : HTMLElement,
-) -> OnErrorEventHandler =
-  #| (self) => self.onerror
-
-///|
 pub extern "js" fn HTMLElement::set_onerror(
   self : HTMLElement,
   value : OnErrorEventHandler,
 ) -> Unit =
   #| (self, value) => { self.onerror = value }
+
+///|
+pub extern "js" fn HTMLElement::clear_onerror(self : HTMLElement) -> Unit =
+  #| (self) => { self.onerror = null }
 
 ///|
 pub extern "js" fn HTMLElement::set_onfocus(
@@ -7857,17 +7781,17 @@ pub extern "js" fn HTMLBodyElement::clear_onbeforeprint(
   #| (self) => { self.onbeforeprint = null }
 
 ///|
-pub extern "js" fn HTMLBodyElement::get_onbeforeunload(
-  self : HTMLBodyElement,
-) -> OnBeforeUnloadEventHandler =
-  #| (self) => self.onbeforeunload
-
-///|
 pub extern "js" fn HTMLBodyElement::set_onbeforeunload(
   self : HTMLBodyElement,
   value : OnBeforeUnloadEventHandler,
 ) -> Unit =
   #| (self, value) => { self.onbeforeunload = value }
+
+///|
+pub extern "js" fn HTMLBodyElement::clear_onbeforeunload(
+  self : HTMLBodyElement,
+) -> Unit =
+  #| (self) => { self.onbeforeunload = null }
 
 ///|
 pub extern "js" fn HTMLBodyElement::set_onhashchange(
@@ -10084,16 +10008,6 @@ pub(all) enum HTMLImageElementDecodeError {
 }
 
 ///|
-extern "js" fn classify_html_image_element_decode_error(
-  e : JsError,
-) -> HTMLImageElementDecodeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'EncodingError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn HTMLImageElement::new() -> HTMLImageElement =
   #| () => new HTMLImageElement()
 
@@ -10286,7 +10200,7 @@ pub extern "js" fn HTMLImageElement::set_fetch_priority(
 pub extern "js" fn HTMLImageElement::decode(
   self : HTMLImageElement,
 ) -> Promise[Result[Unit, HTMLImageElementDecodeError]] =
-  #| (self) => self.decode().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_html_image_element_decode_error(e) }))
+  #| (self) => self.decode().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HTMLImageElement::get_x(self : HTMLImageElement) -> Int =
@@ -10489,16 +10403,6 @@ pub(all) enum HTMLIFrameElementSetSrcdocError {
 }
 
 ///|
-extern "js" fn classify_htmli_frame_element_set_srcdoc_error(
-  e : JsError,
-) -> HTMLIFrameElementSetSrcdocError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn HTMLIFrameElement::new() -> HTMLIFrameElement =
   #| () => new HTMLIFrameElement()
 
@@ -10526,7 +10430,7 @@ pub extern "js" fn HTMLIFrameElement::set_srcdoc(
   self : HTMLIFrameElement,
   value : TrustedHTMLOrString,
 ) -> Result[Unit, HTMLIFrameElementSetSrcdocError] =
-  #| (self, value) => (() => { try { self.srcdoc = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_htmli_frame_element_set_srcdoc_error(e) }; } })()
+  #| (self, value) => (() => { try { self.srcdoc = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLIFrameElement::get_name(
@@ -11350,19 +11254,6 @@ pub(all) enum HTMLVideoElementRequestPictureInPictureError {
 }
 
 ///|
-extern "js" fn classify_html_video_element_request_picture_in_picture_error(
-  e : JsError,
-) -> HTMLVideoElementRequestPictureInPictureError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 pub extern "js" fn HTMLVideoElement::new() -> HTMLVideoElement =
   #| () => new HTMLVideoElement()
 
@@ -11452,7 +11343,7 @@ pub extern "js" fn HTMLVideoElement::request_picture_in_picture(
 ) -> Promise[
   Result[PictureInPictureWindow, HTMLVideoElementRequestPictureInPictureError],
 ] =
-  #| (self) => self.requestPictureInPicture().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_html_video_element_request_picture_in_picture_error(e) }))
+  #| (self) => self.requestPictureInPicture().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HTMLVideoElement::set_onenterpictureinpicture(
@@ -11802,33 +11693,12 @@ pub(all) enum HTMLMediaElementSetDefaultPlaybackRateError {
 }
 
 ///|
-extern "js" fn classify_html_media_element_set_default_playback_rate_error(
-  e : JsError,
-) -> HTMLMediaElementSetDefaultPlaybackRateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum HTMLMediaElementPlayError {
   NotAllowedError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_html_media_element_play_error(
-  e : JsError,
-) -> HTMLMediaElementPlayError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -11840,18 +11710,6 @@ pub(all) enum HTMLMediaElementSetSinkIdError {
 }
 
 ///|
-extern "js" fn classify_html_media_element_set_sink_id_error(
-  e : JsError,
-) -> HTMLMediaElementSetSinkIdError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'AbortError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum HTMLMediaElementSetMediaKeysError {
   InvalidStateError(JsError)
@@ -11859,18 +11717,6 @@ pub(all) enum HTMLMediaElementSetMediaKeysError {
   QuotaExceededError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_html_media_element_set_media_keys_error(
-  e : JsError,
-) -> HTMLMediaElementSetMediaKeysError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   if (n === 'QuotaExceededError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn HTMLMediaElement::get_error(
@@ -12063,7 +11909,7 @@ pub extern "js" fn HTMLMediaElement::set_default_playback_rate(
   self : HTMLMediaElement,
   value : Double,
 ) -> Result[Unit, HTMLMediaElementSetDefaultPlaybackRateError] =
-  #| (self, value) => (() => { try { self.defaultPlaybackRate = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_media_element_set_default_playback_rate_error(e) }; } })()
+  #| (self, value) => (() => { try { self.defaultPlaybackRate = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLMediaElement::get_playback_rate(
@@ -12135,7 +11981,7 @@ pub extern "js" fn HTMLMediaElement::set_loop(
 pub extern "js" fn HTMLMediaElement::play(
   self : HTMLMediaElement,
 ) -> Promise[Result[Unit, HTMLMediaElementPlayError]] =
-  #| (self) => self.play().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_html_media_element_play_error(e) }))
+  #| (self) => self.play().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HTMLMediaElement::pause(self : HTMLMediaElement) -> Unit =
@@ -12236,7 +12082,7 @@ pub extern "js" fn HTMLMediaElement::set_sink_id(
   self : HTMLMediaElement,
   sink_id : String,
 ) -> Promise[Result[Unit, HTMLMediaElementSetSinkIdError]] =
-  #| (self, sink_id) => self.setSinkId(sink_id).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_html_media_element_set_sink_id_error(e) }))
+  #| (self, sink_id) => self.setSinkId(sink_id).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HTMLMediaElement::get_media_keys(
@@ -12275,7 +12121,7 @@ pub extern "js" fn HTMLMediaElement::set_media_keys(
   self : HTMLMediaElement,
   media_keys : MediaKeys?,
 ) -> Promise[Result[Unit, HTMLMediaElementSetMediaKeysError]] =
-  #| (self, media_keys) => self.setMediaKeys((media_keys.$tag === 1 ? media_keys._0 : null)).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_html_media_element_set_media_keys_error(e) }))
+  #| (self, media_keys) => self.setMediaKeys((media_keys.$tag === 1 ? media_keys._0 : null)).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HTMLMediaElement::capture_stream(
@@ -12820,31 +12666,11 @@ pub(all) enum TextTrackAddCueError {
 }
 
 ///|
-extern "js" fn classify_text_track_add_cue_error(
-  e : JsError,
-) -> TextTrackAddCueError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum TextTrackRemoveCueError {
   NotFoundError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_text_track_remove_cue_error(
-  e : JsError,
-) -> TextTrackRemoveCueError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn TextTrack::get_kind(self : TextTrack) -> TextTrackKind =
@@ -12894,14 +12720,14 @@ pub extern "js" fn TextTrack::add_cue(
   self : TextTrack,
   cue : TextTrackCue,
 ) -> Result[Unit, TextTrackAddCueError] =
-  #| (self, cue) => (() => { try { self.addCue(cue); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_text_track_add_cue_error(e) }; } })()
+  #| (self, cue) => (() => { try { self.addCue(cue); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn TextTrack::remove_cue(
   self : TextTrack,
   cue : TextTrackCue,
 ) -> Result[Unit, TextTrackRemoveCueError] =
-  #| (self, cue) => (() => { try { self.removeCue(cue); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_text_track_remove_cue_error(e) }; } })()
+  #| (self, cue) => (() => { try { self.removeCue(cue); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn TextTrack::set_oncuechange(
@@ -13127,31 +12953,11 @@ pub(all) enum TimeRangesStartError {
 }
 
 ///|
-extern "js" fn classify_time_ranges_start_error(
-  e : JsError,
-) -> TimeRangesStartError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum TimeRangesEndError {
   IndexSizeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_time_ranges_end_error(
-  e : JsError,
-) -> TimeRangesEndError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn TimeRanges::get_length(self : TimeRanges) -> Int =
@@ -13162,14 +12968,14 @@ pub extern "js" fn TimeRanges::start(
   self : TimeRanges,
   index : Int,
 ) -> Result[Double, TimeRangesStartError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self.start(index) }; } catch(e) { return { $tag: 1, _0: classify_time_ranges_start_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self.start(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn TimeRanges::end(
   self : TimeRanges,
   index : Int,
 ) -> Result[Double, TimeRangesEndError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self.end(index) }; } catch(e) { return { $tag: 1, _0: classify_time_ranges_end_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self.end(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// TrackEvent interface
@@ -13691,31 +13497,11 @@ pub(all) enum HTMLTableElementInsertRowError {
 }
 
 ///|
-extern "js" fn classify_html_table_element_insert_row_error(
-  e : JsError,
-) -> HTMLTableElementInsertRowError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum HTMLTableElementDeleteRowError {
   IndexSizeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_html_table_element_delete_row_error(
-  e : JsError,
-) -> HTMLTableElementDeleteRowError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn HTMLTableElement::new() -> HTMLTableElement =
@@ -13818,21 +13604,21 @@ pub extern "js" fn HTMLTableElement::get_rows(
 pub extern "js" fn HTMLTableElement::insert_row(
   self : HTMLTableElement,
 ) -> Result[HTMLTableRowElement, HTMLTableElementInsertRowError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.insertRow() }; } catch(e) { return { $tag: 1, _0: classify_html_table_element_insert_row_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.insertRow() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLTableElement::insert_row_with_index(
   self : HTMLTableElement,
   index : Int,
 ) -> Result[HTMLTableRowElement, HTMLTableElementInsertRowError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self.insertRow(index) }; } catch(e) { return { $tag: 1, _0: classify_html_table_element_insert_row_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self.insertRow(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLTableElement::delete_row(
   self : HTMLTableElement,
   index : Int,
 ) -> Result[Unit, HTMLTableElementDeleteRowError] =
-  #| (self, index) => (() => { try { self.deleteRow(index); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_table_element_delete_row_error(e) }; } })()
+  #| (self, index) => (() => { try { self.deleteRow(index); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// @alert deprecated "align is deprecated"
@@ -14272,31 +14058,11 @@ pub(all) enum HTMLTableSectionElementInsertRowError {
 }
 
 ///|
-extern "js" fn classify_html_table_section_element_insert_row_error(
-  e : JsError,
-) -> HTMLTableSectionElementInsertRowError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum HTMLTableSectionElementDeleteRowError {
   IndexSizeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_html_table_section_element_delete_row_error(
-  e : JsError,
-) -> HTMLTableSectionElementDeleteRowError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn HTMLTableSectionElement::new() -> HTMLTableSectionElement =
@@ -14312,21 +14078,21 @@ pub extern "js" fn HTMLTableSectionElement::get_rows(
 pub extern "js" fn HTMLTableSectionElement::insert_row(
   self : HTMLTableSectionElement,
 ) -> Result[HTMLTableRowElement, HTMLTableSectionElementInsertRowError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.insertRow() }; } catch(e) { return { $tag: 1, _0: classify_html_table_section_element_insert_row_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.insertRow() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLTableSectionElement::insert_row_with_index(
   self : HTMLTableSectionElement,
   index : Int,
 ) -> Result[HTMLTableRowElement, HTMLTableSectionElementInsertRowError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self.insertRow(index) }; } catch(e) { return { $tag: 1, _0: classify_html_table_section_element_insert_row_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self.insertRow(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLTableSectionElement::delete_row(
   self : HTMLTableSectionElement,
   index : Int,
 ) -> Result[Unit, HTMLTableSectionElementDeleteRowError] =
-  #| (self, index) => (() => { try { self.deleteRow(index); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_table_section_element_delete_row_error(e) }; } })()
+  #| (self, index) => (() => { try { self.deleteRow(index); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// @alert deprecated "align is deprecated"
@@ -14458,31 +14224,11 @@ pub(all) enum HTMLTableRowElementInsertCellError {
 }
 
 ///|
-extern "js" fn classify_html_table_row_element_insert_cell_error(
-  e : JsError,
-) -> HTMLTableRowElementInsertCellError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum HTMLTableRowElementDeleteCellError {
   IndexSizeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_html_table_row_element_delete_cell_error(
-  e : JsError,
-) -> HTMLTableRowElementDeleteCellError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn HTMLTableRowElement::new() -> HTMLTableRowElement =
@@ -14510,21 +14256,21 @@ pub extern "js" fn HTMLTableRowElement::get_cells(
 pub extern "js" fn HTMLTableRowElement::insert_cell(
   self : HTMLTableRowElement,
 ) -> Result[HTMLTableCellElement, HTMLTableRowElementInsertCellError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.insertCell() }; } catch(e) { return { $tag: 1, _0: classify_html_table_row_element_insert_cell_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.insertCell() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLTableRowElement::insert_cell_with_index(
   self : HTMLTableRowElement,
   index : Int,
 ) -> Result[HTMLTableCellElement, HTMLTableRowElementInsertCellError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self.insertCell(index) }; } catch(e) { return { $tag: 1, _0: classify_html_table_row_element_insert_cell_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self.insertCell(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLTableRowElement::delete_cell(
   self : HTMLTableRowElement,
   index : Int,
 ) -> Result[Unit, HTMLTableRowElementDeleteCellError] =
-  #| (self, index) => (() => { try { self.deleteCell(index); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_table_row_element_delete_cell_error(e) }; } })()
+  #| (self, index) => (() => { try { self.deleteCell(index); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// @alert deprecated "align is deprecated"
@@ -14936,17 +14682,6 @@ pub(all) enum HTMLFormElementRequestSubmitError {
 }
 
 ///|
-extern "js" fn classify_html_form_element_request_submit_error(
-  e : JsError,
-) -> HTMLFormElementRequestSubmitError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn HTMLFormElement::new() -> HTMLFormElement =
   #| () => new HTMLFormElement()
 
@@ -15115,14 +14850,14 @@ pub extern "js" fn HTMLFormElement::submit(self : HTMLFormElement) -> Unit =
 pub extern "js" fn HTMLFormElement::request_submit(
   self : HTMLFormElement,
 ) -> Result[Unit, HTMLFormElementRequestSubmitError] =
-  #| (self) => (() => { try { self.requestSubmit(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_form_element_request_submit_error(e) }; } })()
+  #| (self) => (() => { try { self.requestSubmit(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLFormElement::request_submit_with_submitter(
   self : HTMLFormElement,
   submitter : HTMLElement?,
 ) -> Result[Unit, HTMLFormElementRequestSubmitError] =
-  #| (self, submitter) => (() => { try { self.requestSubmit((submitter.$tag === 1 ? submitter._0 : null)); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_form_element_request_submit_error(e) }; } })()
+  #| (self, submitter) => (() => { try { self.requestSubmit((submitter.$tag === 1 ? submitter._0 : null)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLFormElement::reset(self : HTMLFormElement) -> Unit =
@@ -15297,31 +15032,11 @@ pub(all) enum HTMLInputElementStepDownError {
 }
 
 ///|
-extern "js" fn classify_html_input_element_step_down_error(
-  e : JsError,
-) -> HTMLInputElementStepDownError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum HTMLInputElementSetSelectionRangeError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_html_input_element_set_selection_range_error(
-  e : JsError,
-) -> HTMLInputElementSetSelectionRangeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -15331,18 +15046,6 @@ pub(all) enum HTMLInputElementShowPickerError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_html_input_element_show_picker_error(
-  e : JsError,
-) -> HTMLInputElementShowPickerError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn HTMLInputElement::new() -> HTMLInputElement =
@@ -15827,14 +15530,14 @@ pub extern "js" fn HTMLInputElement::step_up_with_n(
 pub extern "js" fn HTMLInputElement::step_down(
   self : HTMLInputElement,
 ) -> Result[Unit, HTMLInputElementStepDownError] =
-  #| (self) => (() => { try { self.stepDown(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_input_element_step_down_error(e) }; } })()
+  #| (self) => (() => { try { self.stepDown(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLInputElement::step_down_with_n(
   self : HTMLInputElement,
   n : Int,
 ) -> Result[Unit, HTMLInputElementStepDownError] =
-  #| (self, n) => (() => { try { self.stepDown(n); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_input_element_step_down_error(e) }; } })()
+  #| (self, n) => (() => { try { self.stepDown(n); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLInputElement::get_will_validate(
@@ -15954,7 +15657,7 @@ pub extern "js" fn HTMLInputElement::set_selection_range(
   start : Int,
   end : Int,
 ) -> Result[Unit, HTMLInputElementSetSelectionRangeError] =
-  #| (self, start, end) => (() => { try { self.setSelectionRange(start, end); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_input_element_set_selection_range_error(e) }; } })()
+  #| (self, start, end) => (() => { try { self.setSelectionRange(start, end); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLInputElement::set_selection_range_with_direction(
@@ -15963,13 +15666,13 @@ pub extern "js" fn HTMLInputElement::set_selection_range_with_direction(
   end : Int,
   direction : String,
 ) -> Result[Unit, HTMLInputElementSetSelectionRangeError] =
-  #| (self, start, end, direction) => (() => { try { self.setSelectionRange(start, end, direction); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_input_element_set_selection_range_error(e) }; } })()
+  #| (self, start, end, direction) => (() => { try { self.setSelectionRange(start, end, direction); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLInputElement::show_picker(
   self : HTMLInputElement,
 ) -> Result[Unit, HTMLInputElementShowPickerError] =
-  #| (self) => (() => { try { self.showPicker(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_input_element_show_picker_error(e) }; } })()
+  #| (self) => (() => { try { self.showPicker(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLInputElement::get_align(
@@ -16405,16 +16108,6 @@ pub(all) enum HTMLSelectElementAddError {
 }
 
 ///|
-extern "js" fn classify_html_select_element_add_error(
-  e : JsError,
-) -> HTMLSelectElementAddError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum HTMLSelectElementShowPickerError {
   SecurityError(JsError)
@@ -16423,19 +16116,6 @@ pub(all) enum HTMLSelectElementShowPickerError {
   NotSupportedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_html_select_element_show_picker_error(
-  e : JsError,
-) -> HTMLSelectElementShowPickerError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn HTMLSelectElement::new() -> HTMLSelectElement =
@@ -16575,7 +16255,7 @@ pub extern "js" fn HTMLSelectElement::add(
   self : HTMLSelectElement,
   element : HTMLOptionElementOrHTMLOptGroupElement,
 ) -> Result[Unit, HTMLSelectElementAddError] =
-  #| (self, element) => (() => { try { self.add(element); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_select_element_add_error(e) }; } })()
+  #| (self, element) => (() => { try { self.add(element); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLSelectElement::add_with_before(
@@ -16583,7 +16263,7 @@ pub extern "js" fn HTMLSelectElement::add_with_before(
   element : HTMLOptionElementOrHTMLOptGroupElement,
   before : HTMLElementOrInt,
 ) -> Result[Unit, HTMLSelectElementAddError] =
-  #| (self, element, before) => (() => { try { self.add(element, before); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_select_element_add_error(e) }; } })()
+  #| (self, element, before) => (() => { try { self.add(element, before); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLSelectElement::remove(self : HTMLSelectElement) -> Unit =
@@ -16678,7 +16358,7 @@ pub extern "js" fn HTMLSelectElement::set_custom_validity(
 pub extern "js" fn HTMLSelectElement::show_picker(
   self : HTMLSelectElement,
 ) -> Result[Unit, HTMLSelectElementShowPickerError] =
-  #| (self) => (() => { try { self.showPicker(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_select_element_show_picker_error(e) }; } })()
+  #| (self) => (() => { try { self.showPicker(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLSelectElement::get_labels(
@@ -18469,31 +18149,11 @@ pub(all) enum HTMLDialogElementShowError {
 }
 
 ///|
-extern "js" fn classify_html_dialog_element_show_error(
-  e : JsError,
-) -> HTMLDialogElementShowError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum HTMLDialogElementShowModalError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_html_dialog_element_show_modal_error(
-  e : JsError,
-) -> HTMLDialogElementShowModalError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn HTMLDialogElement::new() -> HTMLDialogElement =
@@ -18542,13 +18202,13 @@ pub extern "js" fn HTMLDialogElement::set_closed_by(
 pub extern "js" fn HTMLDialogElement::show(
   self : HTMLDialogElement,
 ) -> Result[Unit, HTMLDialogElementShowError] =
-  #| (self) => (() => { try { self.show(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_dialog_element_show_error(e) }; } })()
+  #| (self) => (() => { try { self.show(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLDialogElement::show_modal(
   self : HTMLDialogElement,
 ) -> Result[Unit, HTMLDialogElementShowModalError] =
-  #| (self) => (() => { try { self.showModal(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_dialog_element_show_modal_error(e) }; } })()
+  #| (self) => (() => { try { self.showModal(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLDialogElement::close(self : HTMLDialogElement) -> Unit =
@@ -18642,31 +18302,11 @@ pub(all) enum HTMLScriptElementSetSrcError {
 }
 
 ///|
-extern "js" fn classify_html_script_element_set_src_error(
-  e : JsError,
-) -> HTMLScriptElementSetSrcError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum HTMLScriptElementSetTextError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_html_script_element_set_text_error(
-  e : JsError,
-) -> HTMLScriptElementSetTextError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn HTMLScriptElement::new() -> HTMLScriptElement =
@@ -18696,7 +18336,7 @@ pub extern "js" fn HTMLScriptElement::set_src(
   self : HTMLScriptElement,
   value : String,
 ) -> Result[Unit, HTMLScriptElementSetSrcError] =
-  #| (self, value) => (() => { try { self.src = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_script_element_set_src_error(e) }; } })()
+  #| (self, value) => (() => { try { self.src = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLScriptElement::get_no_module(
@@ -18806,7 +18446,7 @@ pub extern "js" fn HTMLScriptElement::set_text(
   self : HTMLScriptElement,
   value : String,
 ) -> Result[Unit, HTMLScriptElementSetTextError] =
-  #| (self, value) => (() => { try { self.text = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_script_element_set_text_error(e) }; } })()
+  #| (self, value) => (() => { try { self.text = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLScriptElement::supports(type_ : String) -> Bool =
@@ -19069,16 +18709,6 @@ pub(all) enum HTMLSlotElementAssignError {
 }
 
 ///|
-extern "js" fn classify_html_slot_element_assign_error(
-  e : JsError,
-) -> HTMLSlotElementAssignError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn HTMLSlotElement::new() -> HTMLSlotElement =
   #| () => new HTMLSlotElement()
 
@@ -19140,7 +18770,7 @@ pub extern "js" fn HTMLSlotElement::assign(
   self : HTMLSlotElement,
   nodes : ElementOrText,
 ) -> Result[Unit, HTMLSlotElementAssignError] =
-  #| (self, nodes) => (() => { try { self.assign(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_slot_element_assign_error(e) }; } })()
+  #| (self, nodes) => (() => { try { self.assign(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// HTMLCanvasElement interface
@@ -19210,31 +18840,11 @@ pub(all) enum HTMLCanvasElementGetContextError {
 }
 
 ///|
-extern "js" fn classify_html_canvas_element_get_context_error(
-  e : JsError,
-) -> HTMLCanvasElementGetContextError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum HTMLCanvasElementToDataURLError {
   SecurityError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_html_canvas_element_to_data_url_error(
-  e : JsError,
-) -> HTMLCanvasElementToDataURLError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -19244,31 +18854,11 @@ pub(all) enum HTMLCanvasElementToBlobError {
 }
 
 ///|
-extern "js" fn classify_html_canvas_element_to_blob_error(
-  e : JsError,
-) -> HTMLCanvasElementToBlobError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum HTMLCanvasElementTransferControlToOffscreenError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_html_canvas_element_transfer_control_to_offscreen_error(
-  e : JsError,
-) -> HTMLCanvasElementTransferControlToOffscreenError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -19277,17 +18867,6 @@ pub(all) enum HTMLCanvasElementCaptureStreamError {
   NotSupportedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_html_canvas_element_capture_stream_error(
-  e : JsError,
-) -> HTMLCanvasElementCaptureStreamError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn HTMLCanvasElement::new() -> HTMLCanvasElement =
@@ -19324,7 +18903,7 @@ pub extern "js" fn HTMLCanvasElement::get_context(
   self : HTMLCanvasElement,
   context_id : String,
 ) -> Result[RenderingContext?, HTMLCanvasElementGetContextError] =
-  #| (self, context_id) => (() => { try { return { $tag: 0, _0: (() => { const v = self.getContext(context_id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_html_canvas_element_get_context_error(e) }; } })()
+  #| (self, context_id) => (() => { try { return { $tag: 1, _0: (() => { const v = self.getContext(context_id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLCanvasElement::get_context_with_options(
@@ -19332,13 +18911,13 @@ pub extern "js" fn HTMLCanvasElement::get_context_with_options(
   context_id : String,
   options : JsValue,
 ) -> Result[RenderingContext?, HTMLCanvasElementGetContextError] =
-  #| (self, context_id, options) => (() => { try { return { $tag: 0, _0: (() => { const v = self.getContext(context_id, options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_html_canvas_element_get_context_error(e) }; } })()
+  #| (self, context_id, options) => (() => { try { return { $tag: 1, _0: (() => { const v = self.getContext(context_id, options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLCanvasElement::to_data_url(
   self : HTMLCanvasElement,
 ) -> Result[String, HTMLCanvasElementToDataURLError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.toDataURL() }; } catch(e) { return { $tag: 1, _0: classify_html_canvas_element_to_data_url_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.toDataURL() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLCanvasElement::to_data_url_with_quality(
@@ -19346,14 +18925,14 @@ pub extern "js" fn HTMLCanvasElement::to_data_url_with_quality(
   type_ : String,
   quality : JsValue,
 ) -> Result[String, HTMLCanvasElementToDataURLError] =
-  #| (self, type_, quality) => (() => { try { return { $tag: 0, _0: self.toDataURL(type_, quality) }; } catch(e) { return { $tag: 1, _0: classify_html_canvas_element_to_data_url_error(e) }; } })()
+  #| (self, type_, quality) => (() => { try { return { $tag: 1, _0: self.toDataURL(type_, quality) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLCanvasElement::to_blob(
   self : HTMLCanvasElement,
   callback : BlobCallback,
 ) -> Result[Unit, HTMLCanvasElementToBlobError] =
-  #| (self, callback) => (() => { try { self.toBlob(callback); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_canvas_element_to_blob_error(e) }; } })()
+  #| (self, callback) => (() => { try { self.toBlob(callback); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLCanvasElement::to_blob_with_quality(
@@ -19362,26 +18941,26 @@ pub extern "js" fn HTMLCanvasElement::to_blob_with_quality(
   type_ : String,
   quality : JsValue,
 ) -> Result[Unit, HTMLCanvasElementToBlobError] =
-  #| (self, callback, type_, quality) => (() => { try { self.toBlob(callback, type_, quality); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_html_canvas_element_to_blob_error(e) }; } })()
+  #| (self, callback, type_, quality) => (() => { try { self.toBlob(callback, type_, quality); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLCanvasElement::transfer_control_to_offscreen(
   self : HTMLCanvasElement,
 ) -> Result[OffscreenCanvas, HTMLCanvasElementTransferControlToOffscreenError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.transferControlToOffscreen() }; } catch(e) { return { $tag: 1, _0: classify_html_canvas_element_transfer_control_to_offscreen_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.transferControlToOffscreen() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLCanvasElement::capture_stream(
   self : HTMLCanvasElement,
 ) -> Result[MediaStream, HTMLCanvasElementCaptureStreamError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.captureStream() }; } catch(e) { return { $tag: 1, _0: classify_html_canvas_element_capture_stream_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.captureStream() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLCanvasElement::capture_stream_with_frame_request_rate(
   self : HTMLCanvasElement,
   frame_request_rate : Double,
 ) -> Result[MediaStream, HTMLCanvasElementCaptureStreamError] =
-  #| (self, frame_request_rate) => (() => { try { return { $tag: 0, _0: self.captureStream(frame_request_rate) }; } catch(e) { return { $tag: 1, _0: classify_html_canvas_element_capture_stream_error(e) }; } })()
+  #| (self, frame_request_rate) => (() => { try { return { $tag: 1, _0: self.captureStream(frame_request_rate) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// CanvasRenderingContext2D interface
@@ -19429,33 +19008,12 @@ pub(all) enum CanvasRenderingContext2DCreateLinearGradientError {
 }
 
 ///|
-extern "js" fn classify_canvas_rendering_context_2d_create_linear_gradient_error(
-  e : JsError,
-) -> CanvasRenderingContext2DCreateLinearGradientError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum CanvasRenderingContext2DCreateRadialGradientError {
   IndexSizeError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_canvas_rendering_context_2d_create_radial_gradient_error(
-  e : JsError,
-) -> CanvasRenderingContext2DCreateRadialGradientError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -19466,32 +19024,11 @@ pub(all) enum CanvasRenderingContext2DDrawImageError {
 }
 
 ///|
-extern "js" fn classify_canvas_rendering_context_2d_draw_image_error(
-  e : JsError,
-) -> CanvasRenderingContext2DDrawImageError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'TypeMismatchError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum CanvasRenderingContext2DCreateImageDataError {
   IndexSizeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_canvas_rendering_context_2d_create_image_data_error(
-  e : JsError,
-) -> CanvasRenderingContext2DCreateImageDataError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -19502,34 +19039,12 @@ pub(all) enum CanvasRenderingContext2DGetImageDataError {
 }
 
 ///|
-extern "js" fn classify_canvas_rendering_context_2d_get_image_data_error(
-  e : JsError,
-) -> CanvasRenderingContext2DGetImageDataError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'IndexSizeError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum CanvasRenderingContext2DPutImageDataError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_canvas_rendering_context_2d_put_image_data_error(
-  e : JsError,
-) -> CanvasRenderingContext2DPutImageDataError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -19539,31 +19054,11 @@ pub(all) enum CanvasRenderingContext2DArcToError {
 }
 
 ///|
-extern "js" fn classify_canvas_rendering_context_2d_arc_to_error(
-  e : JsError,
-) -> CanvasRenderingContext2DArcToError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum CanvasRenderingContext2DRoundRectError {
   RangeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_canvas_rendering_context_2d_round_rect_error(
-  e : JsError,
-) -> CanvasRenderingContext2DRoundRectError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_canvas(
@@ -19770,7 +19265,7 @@ pub extern "js" fn CanvasRenderingContext2D::create_linear_gradient(
   x1 : Double,
   y1 : Double,
 ) -> Result[CanvasGradient, CanvasRenderingContext2DCreateLinearGradientError] =
-  #| (self, x0, y0, x1, y1) => (() => { try { return { $tag: 0, _0: self.createLinearGradient(x0, y0, x1, y1) }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_create_linear_gradient_error(e) }; } })()
+  #| (self, x0, y0, x1, y1) => (() => { try { return { $tag: 1, _0: self.createLinearGradient(x0, y0, x1, y1) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::create_radial_gradient(
@@ -19782,7 +19277,7 @@ pub extern "js" fn CanvasRenderingContext2D::create_radial_gradient(
   y1 : Double,
   r1 : Double,
 ) -> Result[CanvasGradient, CanvasRenderingContext2DCreateRadialGradientError] =
-  #| (self, x0, y0, r0, x1, y1, r1) => (() => { try { return { $tag: 0, _0: self.createRadialGradient(x0, y0, r0, x1, y1, r1) }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_create_radial_gradient_error(e) }; } })()
+  #| (self, x0, y0, r0, x1, y1, r1) => (() => { try { return { $tag: 1, _0: self.createRadialGradient(x0, y0, r0, x1, y1, r1) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::create_conic_gradient(
@@ -20091,7 +19586,7 @@ pub extern "js" fn CanvasRenderingContext2D::draw_image(
   dx : Double,
   dy : Double,
 ) -> Result[Unit, CanvasRenderingContext2DDrawImageError] =
-  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::draw_image_with_image_canvas_image_source_and_dx_and_dy_and_dw_and_dh(
@@ -20102,7 +19597,7 @@ pub extern "js" fn CanvasRenderingContext2D::draw_image_with_image_canvas_image_
   dw : Double,
   dh : Double,
 ) -> Result[Unit, CanvasRenderingContext2DDrawImageError] =
-  #| (self, image, dx, dy, dw, dh) => (() => { try { self.drawImage(image, dx, dy, dw, dh); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, dx, dy, dw, dh) => (() => { try { self.drawImage(image, dx, dy, dw, dh); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::draw_image_with_image_canvas_image_source_and_sx_and_sy_and_sw_and_sh_and_dx_and_dy_and_dw_and_dh(
@@ -20117,14 +19612,14 @@ pub extern "js" fn CanvasRenderingContext2D::draw_image_with_image_canvas_image_
   dw : Double,
   dh : Double,
 ) -> Result[Unit, CanvasRenderingContext2DDrawImageError] =
-  #| (self, image, sx, sy, sw, sh, dx, dy, dw, dh) => (() => { try { self.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, sx, sy, sw, sh, dx, dy, dw, dh) => (() => { try { self.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::create_image_data(
   self : CanvasRenderingContext2D,
   image_data : ImageData,
 ) -> Result[ImageData, CanvasRenderingContext2DCreateImageDataError] =
-  #| (self, image_data) => (() => { try { return { $tag: 0, _0: self.createImageData(image_data) }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_create_image_data_error(e) }; } })()
+  #| (self, image_data) => (() => { try { return { $tag: 1, _0: self.createImageData(image_data) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::create_image_data_with_sw_and_sh(
@@ -20132,7 +19627,7 @@ pub extern "js" fn CanvasRenderingContext2D::create_image_data_with_sw_and_sh(
   sw : Int,
   sh : Int,
 ) -> Result[ImageData, CanvasRenderingContext2DCreateImageDataError] =
-  #| (self, sw, sh) => (() => { try { return { $tag: 0, _0: self.createImageData(sw, sh) }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_create_image_data_error(e) }; } })()
+  #| (self, sw, sh) => (() => { try { return { $tag: 1, _0: self.createImageData(sw, sh) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn CanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings_ffi(
@@ -20141,7 +19636,7 @@ extern "js" fn CanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_se
   sh : Int,
   settings : JsValue,
 ) -> Result[ImageData, CanvasRenderingContext2DCreateImageDataError] =
-  #| (self, sw, sh, settings) => (() => { try { return { $tag: 0, _0: self.createImageData(sw, sh, settings) }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_create_image_data_error(e) }; } })()
+  #| (self, sw, sh, settings) => (() => { try { return { $tag: 1, _0: self.createImageData(sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn CanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings(
@@ -20166,7 +19661,7 @@ pub extern "js" fn CanvasRenderingContext2D::get_image_data(
   sw : Int,
   sh : Int,
 ) -> Result[ImageData, CanvasRenderingContext2DGetImageDataError] =
-  #| (self, sx, sy, sw, sh) => (() => { try { return { $tag: 0, _0: self.getImageData(sx, sy, sw, sh) }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_get_image_data_error(e) }; } })()
+  #| (self, sx, sy, sw, sh) => (() => { try { return { $tag: 1, _0: self.getImageData(sx, sy, sw, sh) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn CanvasRenderingContext2D::get_image_data_with_settings_ffi(
@@ -20177,7 +19672,7 @@ extern "js" fn CanvasRenderingContext2D::get_image_data_with_settings_ffi(
   sh : Int,
   settings : JsValue,
 ) -> Result[ImageData, CanvasRenderingContext2DGetImageDataError] =
-  #| (self, sx, sy, sw, sh, settings) => (() => { try { return { $tag: 0, _0: self.getImageData(sx, sy, sw, sh, settings) }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_get_image_data_error(e) }; } })()
+  #| (self, sx, sy, sw, sh, settings) => (() => { try { return { $tag: 1, _0: self.getImageData(sx, sy, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn CanvasRenderingContext2D::get_image_data_with_settings(
@@ -20205,7 +19700,7 @@ pub extern "js" fn CanvasRenderingContext2D::put_image_data(
   dx : Int,
   dy : Int,
 ) -> Result[Unit, CanvasRenderingContext2DPutImageDataError] =
-  #| (self, image_data, dx, dy) => (() => { try { self.putImageData(image_data, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_put_image_data_error(e) }; } })()
+  #| (self, image_data, dx, dy) => (() => { try { self.putImageData(image_data, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::put_image_data_with_image_data_image_data_and_dx_and_dy_and_dirty_x_and_dirty_y_and_dirty_width_and_dirty_height(
@@ -20218,7 +19713,7 @@ pub extern "js" fn CanvasRenderingContext2D::put_image_data_with_image_data_imag
   dirty_width : Int,
   dirty_height : Int,
 ) -> Result[Unit, CanvasRenderingContext2DPutImageDataError] =
-  #| (self, image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height) => (() => { try { self.putImageData(image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_put_image_data_error(e) }; } })()
+  #| (self, image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height) => (() => { try { self.putImageData(image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_line_width(
@@ -20494,7 +19989,7 @@ pub extern "js" fn CanvasRenderingContext2D::arc_to(
   y2 : Double,
   radius : Double,
 ) -> Result[Unit, CanvasRenderingContext2DArcToError] =
-  #| (self, x1, y1, x2, y2, radius) => (() => { try { self.arcTo(x1, y1, x2, y2, radius); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_arc_to_error(e) }; } })()
+  #| (self, x1, y1, x2, y2, radius) => (() => { try { self.arcTo(x1, y1, x2, y2, radius); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::rect(
@@ -20514,7 +20009,7 @@ pub extern "js" fn CanvasRenderingContext2D::round_rect(
   w : Double,
   h : Double,
 ) -> Result[Unit, CanvasRenderingContext2DRoundRectError] =
-  #| (self, x, y, w, h) => (() => { try { self.roundRect(x, y, w, h); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_round_rect_error(e) }; } })()
+  #| (self, x, y, w, h) => (() => { try { self.roundRect(x, y, w, h); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::round_rect_with_radii(
@@ -20525,7 +20020,7 @@ pub extern "js" fn CanvasRenderingContext2D::round_rect_with_radii(
   h : Double,
   radii : DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit,
 ) -> Result[Unit, CanvasRenderingContext2DRoundRectError] =
-  #| (self, x, y, w, h, radii) => (() => { try { self.roundRect(x, y, w, h, radii); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_round_rect_error(e) }; } })()
+  #| (self, x, y, w, h, radii) => (() => { try { self.roundRect(x, y, w, h, radii); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::arc(
@@ -20632,7 +20127,7 @@ pub extern "js" fn CanvasRenderingContext2D::draw_image_with_html_or_svg_image_e
   dx : Double,
   dy : Double,
 ) -> Result[Unit, CanvasRenderingContext2DDrawImageError] =
-  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::draw_image_with_html_video_element(
@@ -20641,7 +20136,7 @@ pub extern "js" fn CanvasRenderingContext2D::draw_image_with_html_video_element(
   dx : Double,
   dy : Double,
 ) -> Result[Unit, CanvasRenderingContext2DDrawImageError] =
-  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::draw_image_with_html_canvas_element(
@@ -20650,7 +20145,7 @@ pub extern "js" fn CanvasRenderingContext2D::draw_image_with_html_canvas_element
   dx : Double,
   dy : Double,
 ) -> Result[Unit, CanvasRenderingContext2DDrawImageError] =
-  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::draw_image_with_image_bitmap(
@@ -20659,7 +20154,7 @@ pub extern "js" fn CanvasRenderingContext2D::draw_image_with_image_bitmap(
   dx : Double,
   dy : Double,
 ) -> Result[Unit, CanvasRenderingContext2DDrawImageError] =
-  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::draw_image_with_offscreen_canvas(
@@ -20668,7 +20163,7 @@ pub extern "js" fn CanvasRenderingContext2D::draw_image_with_offscreen_canvas(
   dx : Double,
   dy : Double,
 ) -> Result[Unit, CanvasRenderingContext2DDrawImageError] =
-  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::draw_image_with_video_frame(
@@ -20677,7 +20172,7 @@ pub extern "js" fn CanvasRenderingContext2D::draw_image_with_video_frame(
   dx : Double,
   dy : Double,
 ) -> Result[Unit, CanvasRenderingContext2DDrawImageError] =
-  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// CanvasGradient interface
@@ -20724,23 +20219,12 @@ pub(all) enum CanvasGradientAddColorStopError {
 }
 
 ///|
-extern "js" fn classify_canvas_gradient_add_color_stop_error(
-  e : JsError,
-) -> CanvasGradientAddColorStopError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   if (n === 'IndexSizeError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn CanvasGradient::add_color_stop(
   self : CanvasGradient,
   offset : Double,
   color : String,
 ) -> Result[Unit, CanvasGradientAddColorStopError] =
-  #| (self, offset, color) => (() => { try { self.addColorStop(offset, color); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_canvas_gradient_add_color_stop_error(e) }; } })()
+  #| (self, offset, color) => (() => { try { self.addColorStop(offset, color); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// CanvasPattern interface
@@ -20925,29 +20409,11 @@ pub(all) enum Path2DArcToError {
 }
 
 ///|
-extern "js" fn classify_path_2d_arc_to_error(e : JsError) -> Path2DArcToError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum Path2DRoundRectError {
   RangeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_path_2d_round_rect_error(
-  e : JsError,
-) -> Path2DRoundRectError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn Path2D::new() -> Path2D =
@@ -21029,7 +20495,7 @@ pub extern "js" fn Path2D::arc_to(
   y2 : Double,
   radius : Double,
 ) -> Result[Unit, Path2DArcToError] =
-  #| (self, x1, y1, x2, y2, radius) => (() => { try { self.arcTo(x1, y1, x2, y2, radius); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_path_2d_arc_to_error(e) }; } })()
+  #| (self, x1, y1, x2, y2, radius) => (() => { try { self.arcTo(x1, y1, x2, y2, radius); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Path2D::rect(
@@ -21049,7 +20515,7 @@ pub extern "js" fn Path2D::round_rect(
   w : Double,
   h : Double,
 ) -> Result[Unit, Path2DRoundRectError] =
-  #| (self, x, y, w, h) => (() => { try { self.roundRect(x, y, w, h); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_path_2d_round_rect_error(e) }; } })()
+  #| (self, x, y, w, h) => (() => { try { self.roundRect(x, y, w, h); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Path2D::round_rect_with_radii(
@@ -21060,7 +20526,7 @@ pub extern "js" fn Path2D::round_rect_with_radii(
   h : Double,
   radii : DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit,
 ) -> Result[Unit, Path2DRoundRectError] =
-  #| (self, x, y, w, h, radii) => (() => { try { self.roundRect(x, y, w, h, radii); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_path_2d_round_rect_error(e) }; } })()
+  #| (self, x, y, w, h, radii) => (() => { try { self.roundRect(x, y, w, h, radii); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Path2D::arc(
@@ -21215,31 +20681,11 @@ pub(all) enum OffscreenCanvasGetContextError {
 }
 
 ///|
-extern "js" fn classify_offscreen_canvas_get_context_error(
-  e : JsError,
-) -> OffscreenCanvasGetContextError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum OffscreenCanvasTransferToImageBitmapError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_offscreen_canvas_transfer_to_image_bitmap_error(
-  e : JsError,
-) -> OffscreenCanvasTransferToImageBitmapError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -21250,19 +20696,6 @@ pub(all) enum OffscreenCanvasConvertToBlobError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_offscreen_canvas_convert_to_blob_error(
-  e : JsError,
-) -> OffscreenCanvasConvertToBlobError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'EncodingError') return { $tag: 0, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 1, _0: e };
-  #|   if (n === 'IndexSizeError') return { $tag: 2, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn OffscreenCanvas::new(
@@ -21298,7 +20731,7 @@ pub extern "js" fn OffscreenCanvas::get_context(
   self : OffscreenCanvas,
   context_id : OffscreenRenderingContextId,
 ) -> Result[OffscreenRenderingContext?, OffscreenCanvasGetContextError] =
-  #| (self, context_id) => (() => { try { return { $tag: 0, _0: (() => { const v = self.getContext(['2d', 'bitmaprenderer', 'webgl', 'webgl2', 'webgpu'][context_id]); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_get_context_error(e) }; } })()
+  #| (self, context_id) => (() => { try { return { $tag: 1, _0: (() => { const v = self.getContext(['2d', 'bitmaprenderer', 'webgl', 'webgl2', 'webgpu'][context_id]); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvas::get_context_with_options(
@@ -21306,26 +20739,26 @@ pub extern "js" fn OffscreenCanvas::get_context_with_options(
   context_id : OffscreenRenderingContextId,
   options : JsValue,
 ) -> Result[OffscreenRenderingContext?, OffscreenCanvasGetContextError] =
-  #| (self, context_id, options) => (() => { try { return { $tag: 0, _0: (() => { const v = self.getContext(['2d', 'bitmaprenderer', 'webgl', 'webgl2', 'webgpu'][context_id], options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_get_context_error(e) }; } })()
+  #| (self, context_id, options) => (() => { try { return { $tag: 1, _0: (() => { const v = self.getContext(['2d', 'bitmaprenderer', 'webgl', 'webgl2', 'webgpu'][context_id], options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvas::transfer_to_image_bitmap(
   self : OffscreenCanvas,
 ) -> Result[ImageBitmap, OffscreenCanvasTransferToImageBitmapError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.transferToImageBitmap() }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_transfer_to_image_bitmap_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.transferToImageBitmap() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvas::convert_to_blob(
   self : OffscreenCanvas,
 ) -> Promise[Result[Blob, OffscreenCanvasConvertToBlobError]] =
-  #| (self) => self.convertToBlob().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_offscreen_canvas_convert_to_blob_error(e) }))
+  #| (self) => self.convertToBlob().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'IndexSizeError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 extern "js" fn OffscreenCanvas::convert_to_blob_with_options_ffi(
   self : OffscreenCanvas,
   options : JsValue,
 ) -> Promise[Result[Blob, OffscreenCanvasConvertToBlobError]] =
-  #| (self, options) => self.convertToBlob(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_offscreen_canvas_convert_to_blob_error(e) }))
+  #| (self, options) => self.convertToBlob(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'IndexSizeError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub fn OffscreenCanvas::convert_to_blob_with_options(
@@ -21407,33 +20840,12 @@ pub(all) enum OffscreenCanvasRenderingContext2DCreateLinearGradientError {
 }
 
 ///|
-extern "js" fn classify_offscreen_canvas_rendering_context_2d_create_linear_gradient_error(
-  e : JsError,
-) -> OffscreenCanvasRenderingContext2DCreateLinearGradientError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum OffscreenCanvasRenderingContext2DCreateRadialGradientError {
   IndexSizeError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_offscreen_canvas_rendering_context_2d_create_radial_gradient_error(
-  e : JsError,
-) -> OffscreenCanvasRenderingContext2DCreateRadialGradientError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -21444,32 +20856,11 @@ pub(all) enum OffscreenCanvasRenderingContext2DDrawImageError {
 }
 
 ///|
-extern "js" fn classify_offscreen_canvas_rendering_context_2d_draw_image_error(
-  e : JsError,
-) -> OffscreenCanvasRenderingContext2DDrawImageError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'TypeMismatchError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum OffscreenCanvasRenderingContext2DCreateImageDataError {
   IndexSizeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_offscreen_canvas_rendering_context_2d_create_image_data_error(
-  e : JsError,
-) -> OffscreenCanvasRenderingContext2DCreateImageDataError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -21480,34 +20871,12 @@ pub(all) enum OffscreenCanvasRenderingContext2DGetImageDataError {
 }
 
 ///|
-extern "js" fn classify_offscreen_canvas_rendering_context_2d_get_image_data_error(
-  e : JsError,
-) -> OffscreenCanvasRenderingContext2DGetImageDataError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'IndexSizeError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum OffscreenCanvasRenderingContext2DPutImageDataError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_offscreen_canvas_rendering_context_2d_put_image_data_error(
-  e : JsError,
-) -> OffscreenCanvasRenderingContext2DPutImageDataError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -21517,31 +20886,11 @@ pub(all) enum OffscreenCanvasRenderingContext2DArcToError {
 }
 
 ///|
-extern "js" fn classify_offscreen_canvas_rendering_context_2d_arc_to_error(
-  e : JsError,
-) -> OffscreenCanvasRenderingContext2DArcToError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum OffscreenCanvasRenderingContext2DRoundRectError {
   RangeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_offscreen_canvas_rendering_context_2d_round_rect_error(
-  e : JsError,
-) -> OffscreenCanvasRenderingContext2DRoundRectError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_canvas(
@@ -21751,7 +21100,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::create_linear_gradient(
   CanvasGradient,
   OffscreenCanvasRenderingContext2DCreateLinearGradientError,
 ] =
-  #| (self, x0, y0, x1, y1) => (() => { try { return { $tag: 0, _0: self.createLinearGradient(x0, y0, x1, y1) }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_create_linear_gradient_error(e) }; } })()
+  #| (self, x0, y0, x1, y1) => (() => { try { return { $tag: 1, _0: self.createLinearGradient(x0, y0, x1, y1) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::create_radial_gradient(
@@ -21766,7 +21115,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::create_radial_gradient(
   CanvasGradient,
   OffscreenCanvasRenderingContext2DCreateRadialGradientError,
 ] =
-  #| (self, x0, y0, r0, x1, y1, r1) => (() => { try { return { $tag: 0, _0: self.createRadialGradient(x0, y0, r0, x1, y1, r1) }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_create_radial_gradient_error(e) }; } })()
+  #| (self, x0, y0, r0, x1, y1, r1) => (() => { try { return { $tag: 1, _0: self.createRadialGradient(x0, y0, r0, x1, y1, r1) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::create_conic_gradient(
@@ -22060,7 +21409,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image(
   dx : Double,
   dy : Double,
 ) -> Result[Unit, OffscreenCanvasRenderingContext2DDrawImageError] =
-  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_image_canvas_image_source_and_dx_and_dy_and_dw_and_dh(
@@ -22071,7 +21420,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_image_canv
   dw : Double,
   dh : Double,
 ) -> Result[Unit, OffscreenCanvasRenderingContext2DDrawImageError] =
-  #| (self, image, dx, dy, dw, dh) => (() => { try { self.drawImage(image, dx, dy, dw, dh); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, dx, dy, dw, dh) => (() => { try { self.drawImage(image, dx, dy, dw, dh); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_image_canvas_image_source_and_sx_and_sy_and_sw_and_sh_and_dx_and_dy_and_dw_and_dh(
@@ -22086,14 +21435,14 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_image_canv
   dw : Double,
   dh : Double,
 ) -> Result[Unit, OffscreenCanvasRenderingContext2DDrawImageError] =
-  #| (self, image, sx, sy, sw, sh, dx, dy, dw, dh) => (() => { try { self.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, sx, sy, sw, sh, dx, dy, dw, dh) => (() => { try { self.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data(
   self : OffscreenCanvasRenderingContext2D,
   image_data : ImageData,
 ) -> Result[ImageData, OffscreenCanvasRenderingContext2DCreateImageDataError] =
-  #| (self, image_data) => (() => { try { return { $tag: 0, _0: self.createImageData(image_data) }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_create_image_data_error(e) }; } })()
+  #| (self, image_data) => (() => { try { return { $tag: 1, _0: self.createImageData(image_data) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data_with_sw_and_sh(
@@ -22101,7 +21450,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data_with_sw_
   sw : Int,
   sh : Int,
 ) -> Result[ImageData, OffscreenCanvasRenderingContext2DCreateImageDataError] =
-  #| (self, sw, sh) => (() => { try { return { $tag: 0, _0: self.createImageData(sw, sh) }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_create_image_data_error(e) }; } })()
+  #| (self, sw, sh) => (() => { try { return { $tag: 1, _0: self.createImageData(sw, sh) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings_ffi(
@@ -22110,7 +21459,7 @@ extern "js" fn OffscreenCanvasRenderingContext2D::create_image_data_with_sw_and_
   sh : Int,
   settings : JsValue,
 ) -> Result[ImageData, OffscreenCanvasRenderingContext2DCreateImageDataError] =
-  #| (self, sw, sh, settings) => (() => { try { return { $tag: 0, _0: self.createImageData(sw, sh, settings) }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_create_image_data_error(e) }; } })()
+  #| (self, sw, sh, settings) => (() => { try { return { $tag: 1, _0: self.createImageData(sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn OffscreenCanvasRenderingContext2D::create_image_data_with_sw_and_sh_and_settings_image_data_settings(
@@ -22135,7 +21484,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::get_image_data(
   sw : Int,
   sh : Int,
 ) -> Result[ImageData, OffscreenCanvasRenderingContext2DGetImageDataError] =
-  #| (self, sx, sy, sw, sh) => (() => { try { return { $tag: 0, _0: self.getImageData(sx, sy, sw, sh) }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_get_image_data_error(e) }; } })()
+  #| (self, sx, sy, sw, sh) => (() => { try { return { $tag: 1, _0: self.getImageData(sx, sy, sw, sh) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn OffscreenCanvasRenderingContext2D::get_image_data_with_settings_ffi(
@@ -22146,7 +21495,7 @@ extern "js" fn OffscreenCanvasRenderingContext2D::get_image_data_with_settings_f
   sh : Int,
   settings : JsValue,
 ) -> Result[ImageData, OffscreenCanvasRenderingContext2DGetImageDataError] =
-  #| (self, sx, sy, sw, sh, settings) => (() => { try { return { $tag: 0, _0: self.getImageData(sx, sy, sw, sh, settings) }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_get_image_data_error(e) }; } })()
+  #| (self, sx, sy, sw, sh, settings) => (() => { try { return { $tag: 1, _0: self.getImageData(sx, sy, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn OffscreenCanvasRenderingContext2D::get_image_data_with_settings(
@@ -22174,7 +21523,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::put_image_data(
   dx : Int,
   dy : Int,
 ) -> Result[Unit, OffscreenCanvasRenderingContext2DPutImageDataError] =
-  #| (self, image_data, dx, dy) => (() => { try { self.putImageData(image_data, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_put_image_data_error(e) }; } })()
+  #| (self, image_data, dx, dy) => (() => { try { self.putImageData(image_data, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::put_image_data_with_image_data_image_data_and_dx_and_dy_and_dirty_x_and_dirty_y_and_dirty_width_and_dirty_height(
@@ -22187,7 +21536,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::put_image_data_with_image_
   dirty_width : Int,
   dirty_height : Int,
 ) -> Result[Unit, OffscreenCanvasRenderingContext2DPutImageDataError] =
-  #| (self, image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height) => (() => { try { self.putImageData(image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_put_image_data_error(e) }; } })()
+  #| (self, image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height) => (() => { try { self.putImageData(image_data, dx, dy, dirty_x, dirty_y, dirty_width, dirty_height); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_line_width(
@@ -22463,7 +21812,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::arc_to(
   y2 : Double,
   radius : Double,
 ) -> Result[Unit, OffscreenCanvasRenderingContext2DArcToError] =
-  #| (self, x1, y1, x2, y2, radius) => (() => { try { self.arcTo(x1, y1, x2, y2, radius); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_arc_to_error(e) }; } })()
+  #| (self, x1, y1, x2, y2, radius) => (() => { try { self.arcTo(x1, y1, x2, y2, radius); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::rect(
@@ -22483,7 +21832,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::round_rect(
   w : Double,
   h : Double,
 ) -> Result[Unit, OffscreenCanvasRenderingContext2DRoundRectError] =
-  #| (self, x, y, w, h) => (() => { try { self.roundRect(x, y, w, h); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_round_rect_error(e) }; } })()
+  #| (self, x, y, w, h) => (() => { try { self.roundRect(x, y, w, h); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::round_rect_with_radii(
@@ -22494,7 +21843,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::round_rect_with_radii(
   h : Double,
   radii : DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit,
 ) -> Result[Unit, OffscreenCanvasRenderingContext2DRoundRectError] =
-  #| (self, x, y, w, h, radii) => (() => { try { self.roundRect(x, y, w, h, radii); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_round_rect_error(e) }; } })()
+  #| (self, x, y, w, h, radii) => (() => { try { self.roundRect(x, y, w, h, radii); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::arc(
@@ -22601,7 +21950,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_html_or_sv
   dx : Double,
   dy : Double,
 ) -> Result[Unit, OffscreenCanvasRenderingContext2DDrawImageError] =
-  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_html_video_element(
@@ -22610,7 +21959,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_html_video
   dx : Double,
   dy : Double,
 ) -> Result[Unit, OffscreenCanvasRenderingContext2DDrawImageError] =
-  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_html_canvas_element(
@@ -22619,7 +21968,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_html_canva
   dx : Double,
   dy : Double,
 ) -> Result[Unit, OffscreenCanvasRenderingContext2DDrawImageError] =
-  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_image_bitmap(
@@ -22628,7 +21977,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_image_bitm
   dx : Double,
   dy : Double,
 ) -> Result[Unit, OffscreenCanvasRenderingContext2DDrawImageError] =
-  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_offscreen_canvas(
@@ -22637,7 +21986,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_offscreen_
   dx : Double,
   dy : Double,
 ) -> Result[Unit, OffscreenCanvasRenderingContext2DDrawImageError] =
-  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_video_frame(
@@ -22646,7 +21995,7 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::draw_image_with_video_fram
   dx : Double,
   dy : Double,
 ) -> Result[Unit, OffscreenCanvasRenderingContext2DDrawImageError] =
-  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_offscreen_canvas_rendering_context_2d_draw_image_error(e) }; } })()
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'TypeMismatchError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// CustomElementRegistry interface
@@ -22696,18 +22045,6 @@ pub(all) enum CustomElementRegistryDefineError {
 }
 
 ///|
-extern "js" fn classify_custom_element_registry_define_error(
-  e : JsError,
-) -> CustomElementRegistryDefineError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 pub extern "js" fn CustomElementRegistry::new() -> CustomElementRegistry =
   #| () => new CustomElementRegistry()
 
@@ -22717,7 +22054,7 @@ pub extern "js" fn CustomElementRegistry::define_(
   name : String,
   constructor_ : CustomElementConstructor,
 ) -> Result[Unit, CustomElementRegistryDefineError] =
-  #| (self, name, constructor_) => (() => { try { self.define(name, constructor_); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_custom_element_registry_define_error(e) }; } })()
+  #| (self, name, constructor_) => (() => { try { self.define(name, constructor_); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn CustomElementRegistry::define__with_options_ffi(
@@ -22726,7 +22063,7 @@ extern "js" fn CustomElementRegistry::define__with_options_ffi(
   constructor_ : CustomElementConstructor,
   options : JsValue,
 ) -> Result[Unit, CustomElementRegistryDefineError] =
-  #| (self, name, constructor_, options) => (() => { try { self.define(name, constructor_, options); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_custom_element_registry_define_error(e) }; } })()
+  #| (self, name, constructor_, options) => (() => { try { self.define(name, constructor_, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn CustomElementRegistry::define__with_options(
@@ -22824,16 +22161,6 @@ pub(all) enum ElementInternalsSetFormValueError {
 }
 
 ///|
-extern "js" fn classify_element_internals_set_form_value_error(
-  e : JsError,
-) -> ElementInternalsSetFormValueError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ElementInternalsSetValidityError {
   TypeError(JsError)
@@ -22843,18 +22170,6 @@ pub(all) enum ElementInternalsSetValidityError {
 }
 
 ///|
-extern "js" fn classify_element_internals_set_validity_error(
-  e : JsError,
-) -> ElementInternalsSetValidityError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ElementInternalsCheckValidityError {
   NotSupportedError(JsError)
@@ -22862,31 +22177,11 @@ pub(all) enum ElementInternalsCheckValidityError {
 }
 
 ///|
-extern "js" fn classify_element_internals_check_validity_error(
-  e : JsError,
-) -> ElementInternalsCheckValidityError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ElementInternalsReportValidityError {
   NotSupportedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_element_internals_report_validity_error(
-  e : JsError,
-) -> ElementInternalsReportValidityError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn ElementInternals::get_shadow_root(
@@ -22899,7 +22194,7 @@ pub extern "js" fn ElementInternals::set_form_value(
   self : ElementInternals,
   value : FileOrStringOrFormData,
 ) -> Result[Unit, ElementInternalsSetFormValueError] =
-  #| (self, value) => (() => { try { self.setFormValue(value); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_internals_set_form_value_error(e) }; } })()
+  #| (self, value) => (() => { try { self.setFormValue(value); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn ElementInternals::set_form_value_with_state(
@@ -22907,7 +22202,7 @@ pub extern "js" fn ElementInternals::set_form_value_with_state(
   value : FileOrStringOrFormData,
   state : FileOrStringOrFormData,
 ) -> Result[Unit, ElementInternalsSetFormValueError] =
-  #| (self, value, state) => (() => { try { self.setFormValue(value, state); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_internals_set_form_value_error(e) }; } })()
+  #| (self, value, state) => (() => { try { self.setFormValue(value, state); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn ElementInternals::get_form(
@@ -22919,7 +22214,7 @@ pub extern "js" fn ElementInternals::get_form(
 pub extern "js" fn ElementInternals::set_validity(
   self : ElementInternals,
 ) -> Result[Unit, ElementInternalsSetValidityError] =
-  #| (self) => (() => { try { self.setValidity(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_internals_set_validity_error(e) }; } })()
+  #| (self) => (() => { try { self.setValidity(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn ElementInternals::set_validity_with_anchor_ffi(
@@ -22928,7 +22223,7 @@ extern "js" fn ElementInternals::set_validity_with_anchor_ffi(
   message : String,
   anchor : HTMLElement,
 ) -> Result[Unit, ElementInternalsSetValidityError] =
-  #| (self, flags, message, anchor) => (() => { try { self.setValidity(flags, message, anchor); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_internals_set_validity_error(e) }; } })()
+  #| (self, flags, message, anchor) => (() => { try { self.setValidity(flags, message, anchor); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn ElementInternals::set_validity_with_anchor(
@@ -22967,13 +22262,13 @@ pub extern "js" fn ElementInternals::get_validation_message(
 pub extern "js" fn ElementInternals::check_validity(
   self : ElementInternals,
 ) -> Result[Bool, ElementInternalsCheckValidityError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.checkValidity() }; } catch(e) { return { $tag: 1, _0: classify_element_internals_check_validity_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.checkValidity() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn ElementInternals::report_validity(
   self : ElementInternals,
 ) -> Result[Bool, ElementInternalsReportValidityError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.reportValidity() }; } catch(e) { return { $tag: 1, _0: classify_element_internals_report_validity_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.reportValidity() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn ElementInternals::get_labels(
@@ -24204,31 +23499,11 @@ pub(all) enum DataTransferItemListAddError {
 }
 
 ///|
-extern "js" fn classify_data_transfer_item_list_add_error(
-  e : JsError,
-) -> DataTransferItemListAddError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum DataTransferItemListRemoveError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_data_transfer_item_list_remove_error(
-  e : JsError,
-) -> DataTransferItemListRemoveError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn DataTransferItemList::get_length(
@@ -24249,7 +23524,7 @@ pub extern "js" fn DataTransferItemList::add(
   self : DataTransferItemList,
   data : File,
 ) -> Result[DataTransferItem?, DataTransferItemListAddError] =
-  #| (self, data) => (() => { try { return { $tag: 0, _0: (() => { const v = self.add(data); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_data_transfer_item_list_add_error(e) }; } })()
+  #| (self, data) => (() => { try { return { $tag: 1, _0: (() => { const v = self.add(data); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DataTransferItemList::add_with_data_and_type(
@@ -24257,14 +23532,14 @@ pub extern "js" fn DataTransferItemList::add_with_data_and_type(
   data : String,
   type_ : String,
 ) -> Result[DataTransferItem?, DataTransferItemListAddError] =
-  #| (self, data, type_) => (() => { try { return { $tag: 0, _0: (() => { const v = self.add(data, type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_data_transfer_item_list_add_error(e) }; } })()
+  #| (self, data, type_) => (() => { try { return { $tag: 1, _0: (() => { const v = self.add(data, type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DataTransferItemList::remove(
   self : DataTransferItemList,
   index : Int,
 ) -> Result[Unit, DataTransferItemListRemoveError] =
-  #| (self, index) => (() => { try { self.remove(index); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_data_transfer_item_list_remove_error(e) }; } })()
+  #| (self, index) => (() => { try { self.remove(index); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DataTransferItemList::clear(
@@ -24505,18 +23780,6 @@ pub(all) enum WindowShowOpenFilePickerError {
 }
 
 ///|
-extern "js" fn classify_window_show_open_file_picker_error(
-  e : JsError,
-) -> WindowShowOpenFilePickerError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'AbortError') return { $tag: 1, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WindowShowSaveFilePickerError {
   TypeError(JsError)
@@ -24524,18 +23787,6 @@ pub(all) enum WindowShowSaveFilePickerError {
   SecurityError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_window_show_save_file_picker_error(
-  e : JsError,
-) -> WindowShowSaveFilePickerError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'AbortError') return { $tag: 1, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -24546,32 +23797,11 @@ pub(all) enum WindowShowDirectoryPickerError {
 }
 
 ///|
-extern "js" fn classify_window_show_directory_picker_error(
-  e : JsError,
-) -> WindowShowDirectoryPickerError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'AbortError') return { $tag: 0, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WindowGetComputedStyleError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_window_get_computed_style_error(
-  e : JsError,
-) -> WindowGetComputedStyleError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -24582,32 +23812,11 @@ pub(all) enum WindowQueryLocalFontsError {
 }
 
 ///|
-extern "js" fn classify_window_query_local_fonts_error(
-  e : JsError,
-) -> WindowQueryLocalFontsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WindowGetScreenDetailsError {
   NotAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_window_get_screen_details_error(
-  e : JsError,
-) -> WindowGetScreenDetailsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -24619,35 +23828,6 @@ pub(all) enum WindowFetchLaterError {
 }
 
 ///|
-extern "js" fn classify_window_fetch_later_error(
-  e : JsError,
-) -> WindowFetchLaterError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'RangeError') return { $tag: 1, _0: e };
-  #|   if (n === 'QuotaExceededError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
-/// Error type for throwing methods
-pub(all) enum WindowReportErrorError {
-  TypeError(JsError)
-  OtherError(JsError)
-}
-
-///|
-extern "js" fn classify_window_report_error_error(
-  e : JsError,
-) -> WindowReportErrorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WindowBtoaError {
   InvalidCharacterError(JsError)
@@ -24655,27 +23835,11 @@ pub(all) enum WindowBtoaError {
 }
 
 ///|
-extern "js" fn classify_window_btoa_error(e : JsError) -> WindowBtoaError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidCharacterError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WindowAtobError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_window_atob_error(e : JsError) -> WindowAtobError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidCharacterError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -24686,34 +23850,12 @@ pub(all) enum WindowSetTimeoutError {
 }
 
 ///|
-extern "js" fn classify_window_set_timeout_error(
-  e : JsError,
-) -> WindowSetTimeoutError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WindowSetIntervalError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_window_set_interval_error(
-  e : JsError,
-) -> WindowSetIntervalError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -24723,16 +23865,6 @@ pub(all) enum WindowStructuredCloneError {
 }
 
 ///|
-extern "js" fn classify_window_structured_clone_error(
-  e : JsError,
-) -> WindowStructuredCloneError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataCloneError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WindowFetchError {
   TypeError(JsError)
@@ -24740,16 +23872,6 @@ pub(all) enum WindowFetchError {
   NotAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_window_fetch_error(e : JsError) -> WindowFetchError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'AbortError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn Window::get_window(self : Window) -> Window =
@@ -24984,14 +24106,14 @@ pub extern "js" fn Window::post_message_with_message_and_target_origin_and_trans
 pub extern "js" fn Window::show_open_file_picker(
   self : Window,
 ) -> Promise[Result[Array[FileSystemFileHandle], WindowShowOpenFilePickerError]] =
-  #| (self) => self.showOpenFilePicker().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_window_show_open_file_picker_error(e) }))
+  #| (self) => self.showOpenFilePicker().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn Window::show_open_file_picker_with_options_ffi(
   self : Window,
   options : JsValue,
 ) -> Promise[Result[Array[FileSystemFileHandle], WindowShowOpenFilePickerError]] =
-  #| (self, options) => self.showOpenFilePicker(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_window_show_open_file_picker_error(e) }))
+  #| (self, options) => self.showOpenFilePicker(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn Window::show_open_file_picker_with_options(
@@ -25005,14 +24127,14 @@ pub fn Window::show_open_file_picker_with_options(
 pub extern "js" fn Window::show_save_file_picker(
   self : Window,
 ) -> Promise[Result[FileSystemFileHandle, WindowShowSaveFilePickerError]] =
-  #| (self) => self.showSaveFilePicker().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_window_show_save_file_picker_error(e) }))
+  #| (self) => self.showSaveFilePicker().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn Window::show_save_file_picker_with_options_ffi(
   self : Window,
   options : JsValue,
 ) -> Promise[Result[FileSystemFileHandle, WindowShowSaveFilePickerError]] =
-  #| (self, options) => self.showSaveFilePicker(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_window_show_save_file_picker_error(e) }))
+  #| (self, options) => self.showSaveFilePicker(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn Window::show_save_file_picker_with_options(
@@ -25026,14 +24148,14 @@ pub fn Window::show_save_file_picker_with_options(
 pub extern "js" fn Window::show_directory_picker(
   self : Window,
 ) -> Promise[Result[FileSystemDirectoryHandle, WindowShowDirectoryPickerError]] =
-  #| (self) => self.showDirectoryPicker().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_window_show_directory_picker_error(e) }))
+  #| (self) => self.showDirectoryPicker().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn Window::show_directory_picker_with_options_ffi(
   self : Window,
   options : JsValue,
 ) -> Promise[Result[FileSystemDirectoryHandle, WindowShowDirectoryPickerError]] =
-  #| (self, options) => self.showDirectoryPicker(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_window_show_directory_picker_error(e) }))
+  #| (self, options) => self.showDirectoryPicker(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn Window::show_directory_picker_with_options(
@@ -25277,7 +24399,7 @@ pub extern "js" fn Window::get_computed_style(
   self : Window,
   elt : Element,
 ) -> Result[CSSStyleProperties, WindowGetComputedStyleError] =
-  #| (self, elt) => (() => { try { return { $tag: 0, _0: self.getComputedStyle(elt) }; } catch(e) { return { $tag: 1, _0: classify_window_get_computed_style_error(e) }; } })()
+  #| (self, elt) => (() => { try { return { $tag: 1, _0: self.getComputedStyle(elt) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::get_computed_style_with_pseudo_elt(
@@ -25285,20 +24407,20 @@ pub extern "js" fn Window::get_computed_style_with_pseudo_elt(
   elt : Element,
   pseudo_elt : String?,
 ) -> Result[CSSStyleProperties, WindowGetComputedStyleError] =
-  #| (self, elt, pseudo_elt) => (() => { try { return { $tag: 0, _0: self.getComputedStyle(elt, pseudo_elt) }; } catch(e) { return { $tag: 1, _0: classify_window_get_computed_style_error(e) }; } })()
+  #| (self, elt, pseudo_elt) => (() => { try { return { $tag: 1, _0: self.getComputedStyle(elt, pseudo_elt) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::query_local_fonts(
   self : Window,
 ) -> Promise[Result[Array[FontData], WindowQueryLocalFontsError]] =
-  #| (self) => self.queryLocalFonts().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_window_query_local_fonts_error(e) }))
+  #| (self) => self.queryLocalFonts().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn Window::query_local_fonts_with_options_ffi(
   self : Window,
   options : JsValue,
 ) -> Promise[Result[Array[FontData], WindowQueryLocalFontsError]] =
-  #| (self, options) => self.queryLocalFonts(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_window_query_local_fonts_error(e) }))
+  #| (self, options) => self.queryLocalFonts(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn Window::query_local_fonts_with_options(
@@ -25329,7 +24451,7 @@ pub extern "js" fn Window::get_shared_storage(self : Window) -> SharedStorage? =
 pub extern "js" fn Window::get_screen_details(
   self : Window,
 ) -> Promise[Result[ScreenDetails, WindowGetScreenDetailsError]] =
-  #| (self) => self.getScreenDetails().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_window_get_screen_details_error(e) }))
+  #| (self) => self.getScreenDetails().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Window::get_cookie_store(self : Window) -> CookieStore =
@@ -25443,7 +24565,7 @@ pub extern "js" fn Window::fetch_later(
   self : Window,
   input : RequestInfo,
 ) -> Result[FetchLaterResult, WindowFetchLaterError] =
-  #| (self, input) => (() => { try { return { $tag: 0, _0: self.fetchLater(input) }; } catch(e) { return { $tag: 1, _0: classify_window_fetch_later_error(e) }; } })()
+  #| (self, input) => (() => { try { return { $tag: 1, _0: self.fetchLater(input) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Window::fetch_later_with_init_ffi(
@@ -25451,7 +24573,7 @@ extern "js" fn Window::fetch_later_with_init_ffi(
   input : RequestInfo,
   init_ : JsValue,
 ) -> Result[FetchLaterResult, WindowFetchLaterError] =
-  #| (self, input, init_) => (() => { try { return { $tag: 0, _0: self.fetchLater(input, init_) }; } catch(e) { return { $tag: 1, _0: classify_window_fetch_later_error(e) }; } })()
+  #| (self, input, init_) => (() => { try { return { $tag: 1, _0: self.fetchLater(input, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn Window::fetch_later_with_init(
@@ -25797,15 +24919,15 @@ pub extern "js" fn Window::clear_onended(self : Window) -> Unit =
   #| (self) => { self.onended = null }
 
 ///|
-pub extern "js" fn Window::get_onerror(self : Window) -> OnErrorEventHandler =
-  #| (self) => self.onerror
-
-///|
 pub extern "js" fn Window::set_onerror(
   self : Window,
   value : OnErrorEventHandler,
 ) -> Unit =
   #| (self, value) => { self.onerror = value }
+
+///|
+pub extern "js" fn Window::clear_onerror(self : Window) -> Unit =
+  #| (self) => { self.onerror = null }
 
 ///|
 pub extern "js" fn Window::set_onfocus(
@@ -26648,17 +25770,15 @@ pub extern "js" fn Window::clear_onbeforeprint(self : Window) -> Unit =
   #| (self) => { self.onbeforeprint = null }
 
 ///|
-pub extern "js" fn Window::get_onbeforeunload(
-  self : Window,
-) -> OnBeforeUnloadEventHandler =
-  #| (self) => self.onbeforeunload
-
-///|
 pub extern "js" fn Window::set_onbeforeunload(
   self : Window,
   value : OnBeforeUnloadEventHandler,
 ) -> Unit =
   #| (self, value) => { self.onbeforeunload = value }
+
+///|
+pub extern "js" fn Window::clear_onbeforeunload(self : Window) -> Unit =
+  #| (self) => { self.onbeforeunload = null }
 
 ///|
 pub extern "js" fn Window::set_onhashchange(
@@ -26875,32 +25995,29 @@ pub extern "js" fn Window::get_cross_origin_isolated(self : Window) -> Bool =
   #| (self) => self.crossOriginIsolated
 
 ///|
-pub extern "js" fn Window::report_error(
-  self : Window,
-  e : JsValue,
-) -> Result[Unit, WindowReportErrorError] =
-  #| (self, e) => (() => { try { self.reportError(e); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_window_report_error_error(e) }; } })()
+pub extern "js" fn Window::report_error(self : Window, e : JsValue) -> Unit =
+  #| (self, e) => self.reportError(e)
 
 ///|
 pub extern "js" fn Window::btoa(
   self : Window,
   data : String,
 ) -> Result[String, WindowBtoaError] =
-  #| (self, data) => (() => { try { return { $tag: 0, _0: self.btoa(data) }; } catch(e) { return { $tag: 1, _0: classify_window_btoa_error(e) }; } })()
+  #| (self, data) => (() => { try { return { $tag: 1, _0: self.btoa(data) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidCharacterError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::atob(
   self : Window,
   data : String,
 ) -> Result[String, WindowAtobError] =
-  #| (self, data) => (() => { try { return { $tag: 0, _0: self.atob(data) }; } catch(e) { return { $tag: 1, _0: classify_window_atob_error(e) }; } })()
+  #| (self, data) => (() => { try { return { $tag: 1, _0: self.atob(data) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidCharacterError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::set_timeout(
   self : Window,
   handler : TimerHandler,
 ) -> Result[Int, WindowSetTimeoutError] =
-  #| (self, handler) => (() => { try { return { $tag: 0, _0: self.setTimeout(handler) }; } catch(e) { return { $tag: 1, _0: classify_window_set_timeout_error(e) }; } })()
+  #| (self, handler) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::set_timeout_with_arguments(
@@ -26909,7 +26026,7 @@ pub extern "js" fn Window::set_timeout_with_arguments(
   timeout : Int,
   arguments : JsValue,
 ) -> Result[Int, WindowSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 0, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 1, _0: classify_window_set_timeout_error(e) }; } })()
+  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::clear_timeout(self : Window) -> Unit =
@@ -26927,7 +26044,7 @@ pub extern "js" fn Window::set_interval(
   self : Window,
   handler : TimerHandler,
 ) -> Result[Int, WindowSetIntervalError] =
-  #| (self, handler) => (() => { try { return { $tag: 0, _0: self.setInterval(handler) }; } catch(e) { return { $tag: 1, _0: classify_window_set_interval_error(e) }; } })()
+  #| (self, handler) => (() => { try { return { $tag: 1, _0: self.setInterval(handler) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::set_interval_with_arguments(
@@ -26936,7 +26053,7 @@ pub extern "js" fn Window::set_interval_with_arguments(
   timeout : Int,
   arguments : JsValue,
 ) -> Result[Int, WindowSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 0, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 1, _0: classify_window_set_interval_error(e) }; } })()
+  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::clear_interval(self : Window) -> Unit =
@@ -27029,7 +26146,7 @@ pub extern "js" fn Window::structured_clone(
   self : Window,
   value : JsValue,
 ) -> Result[JsValue, WindowStructuredCloneError] =
-  #| (self, value) => (() => { try { return { $tag: 0, _0: self.structuredClone(value) }; } catch(e) { return { $tag: 1, _0: classify_window_structured_clone_error(e) }; } })()
+  #| (self, value) => (() => { try { return { $tag: 1, _0: self.structuredClone(value) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Window::structured_clone_with_options_ffi(
@@ -27037,7 +26154,7 @@ extern "js" fn Window::structured_clone_with_options_ffi(
   value : JsValue,
   options : JsValue,
 ) -> Result[JsValue, WindowStructuredCloneError] =
-  #| (self, value, options) => (() => { try { return { $tag: 0, _0: self.structuredClone(value, options) }; } catch(e) { return { $tag: 1, _0: classify_window_structured_clone_error(e) }; } })()
+  #| (self, value, options) => (() => { try { return { $tag: 1, _0: self.structuredClone(value, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn Window::structured_clone_with_options(
@@ -27075,7 +26192,7 @@ pub extern "js" fn Window::fetch(
   self : Window,
   input : RequestInfo,
 ) -> Promise[Result[Response, WindowFetchError]] =
-  #| (self, input) => self.fetch(input).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_window_fetch_error(e) }))
+  #| (self, input) => self.fetch(input).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn Window::fetch_with_init_ffi(
@@ -27083,7 +26200,7 @@ extern "js" fn Window::fetch_with_init_ffi(
   input : RequestInfo,
   init_ : JsValue,
 ) -> Promise[Result[Response, WindowFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_window_fetch_error(e) }))
+  #| (self, input, init_) => self.fetch(input, init_).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn Window::fetch_with_init(
@@ -27122,7 +26239,7 @@ pub extern "js" fn Window::fetch_later_with_request(
   input : Request,
   init_ : DeferredRequestInit,
 ) -> Result[FetchLaterResult, WindowFetchLaterError] =
-  #| (self, input, init_) => (() => { try { return { $tag: 0, _0: self.fetchLater(input, init_) }; } catch(e) { return { $tag: 1, _0: classify_window_fetch_later_error(e) }; } })()
+  #| (self, input, init_) => (() => { try { return { $tag: 1, _0: self.fetchLater(input, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::fetch_later_with_string(
@@ -27130,7 +26247,7 @@ pub extern "js" fn Window::fetch_later_with_string(
   input : String,
   init_ : DeferredRequestInit,
 ) -> Result[FetchLaterResult, WindowFetchLaterError] =
-  #| (self, input, init_) => (() => { try { return { $tag: 0, _0: self.fetchLater(input, init_) }; } catch(e) { return { $tag: 1, _0: classify_window_fetch_later_error(e) }; } })()
+  #| (self, input, init_) => (() => { try { return { $tag: 1, _0: self.fetchLater(input, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::set_timeout_with_string(
@@ -27139,7 +26256,7 @@ pub extern "js" fn Window::set_timeout_with_string(
   timeout : Int,
   arguments : JsValue,
 ) -> Result[Int, WindowSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 0, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 1, _0: classify_window_set_timeout_error(e) }; } })()
+  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::set_timeout_with_function(
@@ -27148,7 +26265,7 @@ pub extern "js" fn Window::set_timeout_with_function(
   timeout : Int,
   arguments : JsValue,
 ) -> Result[Int, WindowSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 0, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 1, _0: classify_window_set_timeout_error(e) }; } })()
+  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::set_timeout_with_trusted_script(
@@ -27157,7 +26274,7 @@ pub extern "js" fn Window::set_timeout_with_trusted_script(
   timeout : Int,
   arguments : JsValue,
 ) -> Result[Int, WindowSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 0, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 1, _0: classify_window_set_timeout_error(e) }; } })()
+  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::set_interval_with_string(
@@ -27166,7 +26283,7 @@ pub extern "js" fn Window::set_interval_with_string(
   timeout : Int,
   arguments : JsValue,
 ) -> Result[Int, WindowSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 0, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 1, _0: classify_window_set_interval_error(e) }; } })()
+  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::set_interval_with_function(
@@ -27175,7 +26292,7 @@ pub extern "js" fn Window::set_interval_with_function(
   timeout : Int,
   arguments : JsValue,
 ) -> Result[Int, WindowSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 0, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 1, _0: classify_window_set_interval_error(e) }; } })()
+  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::set_interval_with_trusted_script(
@@ -27184,7 +26301,7 @@ pub extern "js" fn Window::set_interval_with_trusted_script(
   timeout : Int,
   arguments : JsValue,
 ) -> Result[Int, WindowSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 0, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 1, _0: classify_window_set_interval_error(e) }; } })()
+  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::create_image_bitmap_with_canvas_image_source(
@@ -27216,7 +26333,7 @@ pub extern "js" fn Window::fetch_with_request(
   input : Request,
   init_ : RequestInit,
 ) -> Promise[Result[Response, WindowFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_window_fetch_error(e) }))
+  #| (self, input, init_) => self.fetch(input, init_).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Window::fetch_with_string(
@@ -27224,7 +26341,7 @@ pub extern "js" fn Window::fetch_with_string(
   input : String,
   init_ : RequestInit,
 ) -> Promise[Result[Response, WindowFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_window_fetch_error(e) }))
+  #| (self, input, init_) => self.fetch(input, init_).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 /// BarProp interface
@@ -27296,18 +26413,6 @@ pub(all) enum LocationAssignError {
 }
 
 ///|
-extern "js" fn classify_location_assign_error(
-  e : JsError,
-) -> LocationAssignError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'undefined') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum LocationReplaceError {
   Undefined(JsError)
@@ -27317,33 +26422,11 @@ pub(all) enum LocationReplaceError {
 }
 
 ///|
-extern "js" fn classify_location_replace_error(
-  e : JsError,
-) -> LocationReplaceError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'undefined') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum LocationReloadError {
   SecurityError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_location_reload_error(
-  e : JsError,
-) -> LocationReloadError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn Location::get_href(self : Location) -> String =
@@ -27430,20 +26513,20 @@ pub extern "js" fn Location::assign(
   self : Location,
   url : String,
 ) -> Result[Unit, LocationAssignError] =
-  #| (self, url) => (() => { try { self.assign(url); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_location_assign_error(e) }; } })()
+  #| (self, url) => (() => { try { self.assign(url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'undefined') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Location::replace(
   self : Location,
   url : String,
 ) -> Result[Unit, LocationReplaceError] =
-  #| (self, url) => (() => { try { self.replace(url); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_location_replace_error(e) }; } })()
+  #| (self, url) => (() => { try { self.replace(url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'undefined') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Location::reload(
   self : Location,
 ) -> Result[Unit, LocationReloadError] =
-  #| (self) => (() => { try { self.reload(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_location_reload_error(e) }; } })()
+  #| (self) => (() => { try { self.reload(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Location::get_ancestor_origins(
@@ -27487,14 +26570,6 @@ pub(all) enum HistoryGoError {
 }
 
 ///|
-extern "js" fn classify_history_go_error(e : JsError) -> HistoryGoError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum HistoryBackError {
   SecurityError(JsError)
@@ -27502,29 +26577,11 @@ pub(all) enum HistoryBackError {
 }
 
 ///|
-extern "js" fn classify_history_back_error(e : JsError) -> HistoryBackError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum HistoryForwardError {
   SecurityError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_history_forward_error(
-  e : JsError,
-) -> HistoryForwardError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -27535,34 +26592,12 @@ pub(all) enum HistoryPushStateError {
 }
 
 ///|
-extern "js" fn classify_history_push_state_error(
-  e : JsError,
-) -> HistoryPushStateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'DataCloneError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum HistoryReplaceStateError {
   SecurityError(JsError)
   DataCloneError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_history_replace_state_error(
-  e : JsError,
-) -> HistoryReplaceStateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'DataCloneError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn History::get_length(self : History) -> Int =
@@ -27587,26 +26622,26 @@ pub extern "js" fn History::get_state(self : History) -> JsValue =
 
 ///|
 pub extern "js" fn History::go(self : History) -> Result[Unit, HistoryGoError] =
-  #| (self) => (() => { try { self.go(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_history_go_error(e) }; } })()
+  #| (self) => (() => { try { self.go(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn History::go_with_delta(
   self : History,
   delta : Int,
 ) -> Result[Unit, HistoryGoError] =
-  #| (self, delta) => (() => { try { self.go(delta); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_history_go_error(e) }; } })()
+  #| (self, delta) => (() => { try { self.go(delta); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn History::back(
   self : History,
 ) -> Result[Unit, HistoryBackError] =
-  #| (self) => (() => { try { self.back(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_history_back_error(e) }; } })()
+  #| (self) => (() => { try { self.back(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn History::forward(
   self : History,
 ) -> Result[Unit, HistoryForwardError] =
-  #| (self) => (() => { try { self.forward(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_history_forward_error(e) }; } })()
+  #| (self) => (() => { try { self.forward(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn History::push_state(
@@ -27614,7 +26649,7 @@ pub extern "js" fn History::push_state(
   data : JsValue,
   unused : String,
 ) -> Result[Unit, HistoryPushStateError] =
-  #| (self, data, unused) => (() => { try { self.pushState(data, unused); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_history_push_state_error(e) }; } })()
+  #| (self, data, unused) => (() => { try { self.pushState(data, unused); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn History::push_state_with_url(
@@ -27623,7 +26658,7 @@ pub extern "js" fn History::push_state_with_url(
   unused : String,
   url : String?,
 ) -> Result[Unit, HistoryPushStateError] =
-  #| (self, data, unused, url) => (() => { try { self.pushState(data, unused, url); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_history_push_state_error(e) }; } })()
+  #| (self, data, unused, url) => (() => { try { self.pushState(data, unused, url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn History::replace_state(
@@ -27631,7 +26666,7 @@ pub extern "js" fn History::replace_state(
   data : JsValue,
   unused : String,
 ) -> Result[Unit, HistoryReplaceStateError] =
-  #| (self, data, unused) => (() => { try { self.replaceState(data, unused); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_history_replace_state_error(e) }; } })()
+  #| (self, data, unused) => (() => { try { self.replaceState(data, unused); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn History::replace_state_with_url(
@@ -27640,7 +26675,7 @@ pub extern "js" fn History::replace_state_with_url(
   unused : String,
   url : String?,
 ) -> Result[Unit, HistoryReplaceStateError] =
-  #| (self, data, unused, url) => (() => { try { self.replaceState(data, unused, url); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_history_replace_state_error(e) }; } })()
+  #| (self, data, unused, url) => (() => { try { self.replaceState(data, unused, url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// Navigation interface
@@ -27685,17 +26720,6 @@ pub(all) enum NavigationUpdateCurrentEntryError {
 }
 
 ///|
-extern "js" fn classify_navigation_update_current_entry_error(
-  e : JsError,
-) -> NavigationUpdateCurrentEntryError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataCloneError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum NavigationNavigateError {
   SyntaxError(JsError)
@@ -27706,34 +26730,11 @@ pub(all) enum NavigationNavigateError {
 }
 
 ///|
-extern "js" fn classify_navigation_navigate_error(
-  e : JsError,
-) -> NavigationNavigateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   if (n === 'DataCloneError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum NavigationReloadError {
   DataCloneError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_navigation_reload_error(
-  e : JsError,
-) -> NavigationReloadError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataCloneError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -27743,16 +26744,6 @@ pub(all) enum NavigationTraverseToError {
 }
 
 ///|
-extern "js" fn classify_navigation_traverse_to_error(
-  e : JsError,
-) -> NavigationTraverseToError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum NavigationBackError {
   InvalidStateError(JsError)
@@ -27760,31 +26751,11 @@ pub(all) enum NavigationBackError {
 }
 
 ///|
-extern "js" fn classify_navigation_back_error(
-  e : JsError,
-) -> NavigationBackError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum NavigationForwardError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_navigation_forward_error(
-  e : JsError,
-) -> NavigationForwardError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn Navigation::entries(
@@ -27803,7 +26774,7 @@ extern "js" fn Navigation::update_current_entry_ffi(
   self : Navigation,
   options : JsValue,
 ) -> Result[Unit, NavigationUpdateCurrentEntryError] =
-  #| (self, options) => (() => { try { self.updateCurrentEntry(options); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_navigation_update_current_entry_error(e) }; } })()
+  #| (self, options) => (() => { try { self.updateCurrentEntry(options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn Navigation::update_current_entry(
@@ -27838,7 +26809,7 @@ pub extern "js" fn Navigation::navigate(
   self : Navigation,
   url : String,
 ) -> Result[NavigationResult, NavigationNavigateError] =
-  #| (self, url) => (() => { try { return { $tag: 0, _0: self.navigate(url) }; } catch(e) { return { $tag: 1, _0: classify_navigation_navigate_error(e) }; } })()
+  #| (self, url) => (() => { try { return { $tag: 1, _0: self.navigate(url) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Navigation::navigate_with_options_ffi(
@@ -27846,7 +26817,7 @@ extern "js" fn Navigation::navigate_with_options_ffi(
   url : String,
   options : JsValue,
 ) -> Result[NavigationResult, NavigationNavigateError] =
-  #| (self, url, options) => (() => { try { return { $tag: 0, _0: self.navigate(url, options) }; } catch(e) { return { $tag: 1, _0: classify_navigation_navigate_error(e) }; } })()
+  #| (self, url, options) => (() => { try { return { $tag: 1, _0: self.navigate(url, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub fn Navigation::navigate_with_options(
@@ -27861,14 +26832,14 @@ pub fn Navigation::navigate_with_options(
 pub extern "js" fn Navigation::reload(
   self : Navigation,
 ) -> Result[NavigationResult, NavigationReloadError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.reload() }; } catch(e) { return { $tag: 1, _0: classify_navigation_reload_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.reload() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Navigation::reload_with_options_ffi(
   self : Navigation,
   options : JsValue,
 ) -> Result[NavigationResult, NavigationReloadError] =
-  #| (self, options) => (() => { try { return { $tag: 0, _0: self.reload(options) }; } catch(e) { return { $tag: 1, _0: classify_navigation_reload_error(e) }; } })()
+  #| (self, options) => (() => { try { return { $tag: 1, _0: self.reload(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn Navigation::reload_with_options(
@@ -27883,7 +26854,7 @@ pub extern "js" fn Navigation::traverse_to(
   self : Navigation,
   key : String,
 ) -> Result[NavigationResult, NavigationTraverseToError] =
-  #| (self, key) => (() => { try { return { $tag: 0, _0: self.traverseTo(key) }; } catch(e) { return { $tag: 1, _0: classify_navigation_traverse_to_error(e) }; } })()
+  #| (self, key) => (() => { try { return { $tag: 1, _0: self.traverseTo(key) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Navigation::traverse_to_with_options_ffi(
@@ -27891,7 +26862,7 @@ extern "js" fn Navigation::traverse_to_with_options_ffi(
   key : String,
   options : JsValue,
 ) -> Result[NavigationResult, NavigationTraverseToError] =
-  #| (self, key, options) => (() => { try { return { $tag: 0, _0: self.traverseTo(key, options) }; } catch(e) { return { $tag: 1, _0: classify_navigation_traverse_to_error(e) }; } })()
+  #| (self, key, options) => (() => { try { return { $tag: 1, _0: self.traverseTo(key, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn Navigation::traverse_to_with_options(
@@ -27906,14 +26877,14 @@ pub fn Navigation::traverse_to_with_options(
 pub extern "js" fn Navigation::back(
   self : Navigation,
 ) -> Result[NavigationResult, NavigationBackError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.back() }; } catch(e) { return { $tag: 1, _0: classify_navigation_back_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.back() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Navigation::back_with_options_ffi(
   self : Navigation,
   options : JsValue,
 ) -> Result[NavigationResult, NavigationBackError] =
-  #| (self, options) => (() => { try { return { $tag: 0, _0: self.back(options) }; } catch(e) { return { $tag: 1, _0: classify_navigation_back_error(e) }; } })()
+  #| (self, options) => (() => { try { return { $tag: 1, _0: self.back(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn Navigation::back_with_options(
@@ -27927,14 +26898,14 @@ pub fn Navigation::back_with_options(
 pub extern "js" fn Navigation::forward(
   self : Navigation,
 ) -> Result[NavigationResult, NavigationForwardError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.forward() }; } catch(e) { return { $tag: 1, _0: classify_navigation_forward_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.forward() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Navigation::forward_with_options_ffi(
   self : Navigation,
   options : JsValue,
 ) -> Result[NavigationResult, NavigationForwardError] =
-  #| (self, options) => (() => { try { return { $tag: 0, _0: self.forward(options) }; } catch(e) { return { $tag: 1, _0: classify_navigation_forward_error(e) }; } })()
+  #| (self, options) => (() => { try { return { $tag: 1, _0: self.forward(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn Navigation::forward_with_options(
@@ -28252,34 +27223,12 @@ pub(all) enum NavigateEventInterceptError {
 }
 
 ///|
-extern "js" fn classify_navigate_event_intercept_error(
-  e : JsError,
-) -> NavigateEventInterceptError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum NavigateEventScrollError {
   SecurityError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_navigate_event_scroll_error(
-  e : JsError,
-) -> NavigateEventScrollError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 extern "js" fn NavigateEvent::new_ffi(
@@ -28362,14 +27311,14 @@ pub extern "js" fn NavigateEvent::get_source_element(
 pub extern "js" fn NavigateEvent::intercept(
   self : NavigateEvent,
 ) -> Result[Unit, NavigateEventInterceptError] =
-  #| (self) => (() => { try { self.intercept(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_navigate_event_intercept_error(e) }; } })()
+  #| (self) => (() => { try { self.intercept(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn NavigateEvent::intercept_with_options_ffi(
   self : NavigateEvent,
   options : JsValue,
 ) -> Result[Unit, NavigateEventInterceptError] =
-  #| (self, options) => (() => { try { self.intercept(options); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_navigate_event_intercept_error(e) }; } })()
+  #| (self, options) => (() => { try { self.intercept(options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn NavigateEvent::intercept_with_options(
@@ -28383,7 +27332,7 @@ pub fn NavigateEvent::intercept_with_options(
 pub extern "js" fn NavigateEvent::scroll(
   self : NavigateEvent,
 ) -> Result[Unit, NavigateEventScrollError] =
-  #| (self) => (() => { try { self.scroll(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_navigate_event_scroll_error(e) }; } })()
+  #| (self) => (() => { try { self.scroll(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// NavigationPrecommitController interface
@@ -28433,18 +27382,6 @@ pub(all) enum NavigationPrecommitControllerRedirectError {
 }
 
 ///|
-extern "js" fn classify_navigation_precommit_controller_redirect_error(
-  e : JsError,
-) -> NavigationPrecommitControllerRedirectError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum NavigationPrecommitControllerAddHandlerError {
   SecurityError(JsError)
@@ -28453,22 +27390,11 @@ pub(all) enum NavigationPrecommitControllerAddHandlerError {
 }
 
 ///|
-extern "js" fn classify_navigation_precommit_controller_add_handler_error(
-  e : JsError,
-) -> NavigationPrecommitControllerAddHandlerError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn NavigationPrecommitController::redirect(
   self : NavigationPrecommitController,
   url : String,
 ) -> Result[Unit, NavigationPrecommitControllerRedirectError] =
-  #| (self, url) => (() => { try { self.redirect(url); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_navigation_precommit_controller_redirect_error(e) }; } })()
+  #| (self, url) => (() => { try { self.redirect(url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn NavigationPrecommitController::redirect_with_options_ffi(
@@ -28476,7 +27402,7 @@ extern "js" fn NavigationPrecommitController::redirect_with_options_ffi(
   url : String,
   options : JsValue,
 ) -> Result[Unit, NavigationPrecommitControllerRedirectError] =
-  #| (self, url, options) => (() => { try { self.redirect(url, options); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_navigation_precommit_controller_redirect_error(e) }; } })()
+  #| (self, url, options) => (() => { try { self.redirect(url, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn NavigationPrecommitController::redirect_with_options(
@@ -28496,7 +27422,7 @@ pub extern "js" fn NavigationPrecommitController::add_handler(
   self : NavigationPrecommitController,
   handler : NavigationInterceptHandler,
 ) -> Result[Unit, NavigationPrecommitControllerAddHandlerError] =
-  #| (self, handler) => (() => { try { self.addHandler(handler); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_navigation_precommit_controller_add_handler_error(e) }; } })()
+  #| (self, handler) => (() => { try { self.addHandler(handler); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// NavigationDestination interface
@@ -29356,16 +28282,6 @@ pub(all) enum DOMParserParseFromStringError {
 }
 
 ///|
-extern "js" fn classify_dom_parser_parse_from_string_error(
-  e : JsError,
-) -> DOMParserParseFromStringError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn DOMParser::new() -> DOMParser =
   #| () => new DOMParser()
 
@@ -29375,7 +28291,7 @@ pub extern "js" fn DOMParser::parse_from_string(
   string : TrustedHTMLOrString,
   type_ : DOMParserSupportedType,
 ) -> Result[Document, DOMParserParseFromStringError] =
-  #| (self, string, type_) => (() => { try { return { $tag: 0, _0: self.parseFromString(string, ['text/html', 'text/xml', 'application/xml', 'application/xhtml+xml', 'image/svg+xml'][type_]) }; } catch(e) { return { $tag: 1, _0: classify_dom_parser_parse_from_string_error(e) }; } })()
+  #| (self, string, type_) => (() => { try { return { $tag: 1, _0: self.parseFromString(string, ['text/html', 'text/xml', 'application/xml', 'application/xhtml+xml', 'image/svg+xml'][type_]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// XMLSerializer interface
@@ -29417,18 +28333,6 @@ pub(all) enum XMLSerializerSerializeToStringError {
 }
 
 ///|
-extern "js" fn classify_xml_serializer_serialize_to_string_error(
-  e : JsError,
-) -> XMLSerializerSerializeToStringError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 pub extern "js" fn XMLSerializer::new() -> XMLSerializer =
   #| () => new XMLSerializer()
 
@@ -29437,7 +28341,7 @@ pub extern "js" fn XMLSerializer::serialize_to_string(
   self : XMLSerializer,
   root : Node,
 ) -> Result[String, XMLSerializerSerializeToStringError] =
-  #| (self, root) => (() => { try { return { $tag: 0, _0: self.serializeToString(root) }; } catch(e) { return { $tag: 1, _0: classify_xml_serializer_serialize_to_string_error(e) }; } })()
+  #| (self, root) => (() => { try { return { $tag: 1, _0: self.serializeToString(root) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 /// Navigator interface
@@ -29478,19 +28382,6 @@ pub(all) enum NavigatorRequestMIDIAccessError {
 }
 
 ///|
-extern "js" fn classify_navigator_request_midi_access_error(
-  e : JsError,
-) -> NavigatorRequestMIDIAccessError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'AbortError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum NavigatorRequestMediaKeySystemAccessError {
   Promise(JsError)
@@ -29501,34 +28392,11 @@ pub(all) enum NavigatorRequestMediaKeySystemAccessError {
 }
 
 ///|
-extern "js" fn classify_navigator_request_media_key_system_access_error(
-  e : JsError,
-) -> NavigatorRequestMediaKeySystemAccessError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'Promise') return { $tag: 0, _0: e };
-  #|   if (n === 'TypeError') return { $tag: 1, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 2, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum NavigatorGetInstalledRelatedAppsError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_navigator_get_installed_related_apps_error(
-  e : JsError,
-) -> NavigatorGetInstalledRelatedAppsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -29539,17 +28407,6 @@ pub(all) enum NavigatorGetBatteryError {
 }
 
 ///|
-extern "js" fn classify_navigator_get_battery_error(
-  e : JsError,
-) -> NavigatorGetBatteryError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum NavigatorGetGamepadsError {
   SecurityError(JsError)
@@ -29557,31 +28414,11 @@ pub(all) enum NavigatorGetGamepadsError {
 }
 
 ///|
-extern "js" fn classify_navigator_get_gamepads_error(
-  e : JsError,
-) -> NavigatorGetGamepadsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum NavigatorDeprecatedReplaceInURNError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_navigator_deprecated_replace_in_urn_error(
-  e : JsError,
-) -> NavigatorDeprecatedReplaceInURNError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -29596,36 +28433,11 @@ pub(all) enum NavigatorShareError {
 }
 
 ///|
-extern "js" fn classify_navigator_share_error(
-  e : JsError,
-) -> NavigatorShareError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'Promise') return { $tag: 0, _0: e };
-  #|   if (n === 'DataError') return { $tag: 1, _0: e };
-  #|   if (n === 'TypeError') return { $tag: 2, _0: e };
-  #|   if (n === 'AbortError') return { $tag: 3, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 4, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 5, _0: e };
-  #|   return { $tag: 6, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum NavigatorGetAutoplayPolicyError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_navigator_get_autoplay_policy_error(
-  e : JsError,
-) -> NavigatorGetAutoplayPolicyError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -29637,18 +28449,6 @@ pub(all) enum NavigatorSetAppBadgeError {
 }
 
 ///|
-extern "js" fn classify_navigator_set_app_badge_error(
-  e : JsError,
-) -> NavigatorSetAppBadgeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum NavigatorClearAppBadgeError {
   SecurityError(JsError)
@@ -29656,18 +28456,6 @@ pub(all) enum NavigatorClearAppBadgeError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_navigator_clear_app_badge_error(
-  e : JsError,
-) -> NavigatorClearAppBadgeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -29678,34 +28466,12 @@ pub(all) enum NavigatorRegisterProtocolHandlerError {
 }
 
 ///|
-extern "js" fn classify_navigator_register_protocol_handler_error(
-  e : JsError,
-) -> NavigatorRegisterProtocolHandlerError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum NavigatorUnregisterProtocolHandlerError {
   SyntaxError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_navigator_unregister_protocol_handler_error(
-  e : JsError,
-) -> NavigatorUnregisterProtocolHandlerError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn Navigator::get_clipboard(self : Navigator) -> Clipboard =
@@ -29737,14 +28503,14 @@ pub extern "js" fn Navigator::get_serial(self : Navigator) -> Serial =
 pub extern "js" fn Navigator::request_midi_access(
   self : Navigator,
 ) -> Promise[Result[MIDIAccess, NavigatorRequestMIDIAccessError]] =
-  #| (self) => self.requestMIDIAccess().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_navigator_request_midi_access_error(e) }))
+  #| (self) => self.requestMIDIAccess().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 extern "js" fn Navigator::request_midi_access_with_options_ffi(
   self : Navigator,
   options : JsValue,
 ) -> Promise[Result[MIDIAccess, NavigatorRequestMIDIAccessError]] =
-  #| (self, options) => self.requestMIDIAccess(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_navigator_request_midi_access_error(e) }))
+  #| (self, options) => self.requestMIDIAccess(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub fn Navigator::request_midi_access_with_options(
@@ -29787,7 +28553,7 @@ pub extern "js" fn Navigator::request_media_key_system_access(
 ) -> Promise[
   Result[MediaKeySystemAccess, NavigatorRequestMediaKeySystemAccessError],
 ] =
-  #| (self, key_system, supported_configurations) => self.requestMediaKeySystemAccess(key_system, supported_configurations).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_navigator_request_media_key_system_access_error(e) }))
+  #| (self, key_system, supported_configurations) => self.requestMediaKeySystemAccess(key_system, supported_configurations).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::get_login(self : Navigator) -> NavigatorLogin =
@@ -29877,13 +28643,13 @@ pub extern "js" fn Navigator::get_installed_related_apps(
 ) -> Promise[
   Result[Array[RelatedApplication], NavigatorGetInstalledRelatedAppsError],
 ] =
-  #| (self) => self.getInstalledRelatedApps().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_navigator_get_installed_related_apps_error(e) }))
+  #| (self) => self.getInstalledRelatedApps().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::get_battery(
   self : Navigator,
 ) -> Promise[Result[BatteryManager, NavigatorGetBatteryError]] =
-  #| (self) => self.getBattery().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_navigator_get_battery_error(e) }))
+  #| (self) => self.getBattery().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn Navigator::join_ad_interest_group_ffi(
@@ -30023,7 +28789,7 @@ pub extern "js" fn Navigator::get_service_worker(
 pub extern "js" fn Navigator::get_gamepads(
   self : Navigator,
 ) -> Result[Array[JsValue], NavigatorGetGamepadsError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: self.getGamepads() }; } catch(e) { return { $tag: 1, _0: classify_navigator_get_gamepads_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: self.getGamepads() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Navigator::get_credentials(
@@ -30043,7 +28809,7 @@ pub extern "js" fn Navigator::deprecated_replace_in_urn(
   urn_or_config : UrnOrConfig,
   replacements : JsValue,
 ) -> Promise[Result[Unit, NavigatorDeprecatedReplaceInURNError]] =
-  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_navigator_deprecated_replace_in_urn_error(e) }))
+  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::deprecated_ur_nto_url(
@@ -30098,14 +28864,14 @@ pub extern "js" fn Navigator::get_max_touch_points(self : Navigator) -> Int =
 pub extern "js" fn Navigator::share(
   self : Navigator,
 ) -> Promise[Result[Unit, NavigatorShareError]] =
-  #| (self) => self.share().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_navigator_share_error(e) }))
+  #| (self) => self.share().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'DataError') return { $tag: 1, _0: e }; if (n === 'TypeError') return { $tag: 2, _0: e }; if (n === 'AbortError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'InvalidStateError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }))
 
 ///|
 extern "js" fn Navigator::share_with_data_ffi(
   self : Navigator,
   data : JsValue,
 ) -> Promise[Result[Unit, NavigatorShareError]] =
-  #| (self, data) => self.share(data).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_navigator_share_error(e) }))
+  #| (self, data) => self.share(data).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'DataError') return { $tag: 1, _0: e }; if (n === 'TypeError') return { $tag: 2, _0: e }; if (n === 'AbortError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'InvalidStateError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }))
 
 ///|
 pub fn Navigator::share_with_data(
@@ -30151,21 +28917,21 @@ pub extern "js" fn Navigator::get_autoplay_policy(
   self : Navigator,
   type_ : AutoplayPolicyMediaType,
 ) -> Result[AutoplayPolicy, NavigatorGetAutoplayPolicyError] =
-  #| (self, type_) => (() => { try { return { $tag: 0, _0: self.getAutoplayPolicy(['mediaelement', 'audiocontext'][type_]) }; } catch(e) { return { $tag: 1, _0: classify_navigator_get_autoplay_policy_error(e) }; } })()
+  #| (self, type_) => (() => { try { return { $tag: 1, _0: self.getAutoplayPolicy(['mediaelement', 'audiocontext'][type_]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Navigator::get_autoplay_policy_with_element_html_media_element(
   self : Navigator,
   element : HTMLMediaElement,
 ) -> Result[AutoplayPolicy, NavigatorGetAutoplayPolicyError] =
-  #| (self, element) => (() => { try { return { $tag: 0, _0: self.getAutoplayPolicy(element) }; } catch(e) { return { $tag: 1, _0: classify_navigator_get_autoplay_policy_error(e) }; } })()
+  #| (self, element) => (() => { try { return { $tag: 1, _0: self.getAutoplayPolicy(element) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Navigator::get_autoplay_policy_with_context_audio_context(
   self : Navigator,
   context : AudioContext,
 ) -> Result[AutoplayPolicy, NavigatorGetAutoplayPolicyError] =
-  #| (self, context) => (() => { try { return { $tag: 0, _0: self.getAutoplayPolicy(context) }; } catch(e) { return { $tag: 1, _0: classify_navigator_get_autoplay_policy_error(e) }; } })()
+  #| (self, context) => (() => { try { return { $tag: 1, _0: self.getAutoplayPolicy(context) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Navigator::get_geolocation(self : Navigator) -> Geolocation =
@@ -30179,20 +28945,20 @@ pub extern "js" fn Navigator::get_locks(self : Navigator) -> LockManager =
 pub extern "js" fn Navigator::set_app_badge(
   self : Navigator,
 ) -> Promise[Result[Unit, NavigatorSetAppBadgeError]] =
-  #| (self) => self.setAppBadge().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_navigator_set_app_badge_error(e) }))
+  #| (self) => self.setAppBadge().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::set_app_badge_with_contents(
   self : Navigator,
   contents : Int64,
 ) -> Promise[Result[Unit, NavigatorSetAppBadgeError]] =
-  #| (self, contents) => self.setAppBadge((contents.hi * 4294967296 + contents.lo)).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_navigator_set_app_badge_error(e) }))
+  #| (self, contents) => self.setAppBadge((contents.hi * 4294967296 + contents.lo)).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::clear_app_badge(
   self : Navigator,
 ) -> Promise[Result[Unit, NavigatorClearAppBadgeError]] =
-  #| (self) => self.clearAppBadge().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_navigator_clear_app_badge_error(e) }))
+  #| (self) => self.clearAppBadge().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::get_user_agent_data(
@@ -30262,7 +29028,7 @@ pub extern "js" fn Navigator::register_protocol_handler(
   scheme : String,
   url : String,
 ) -> Result[Unit, NavigatorRegisterProtocolHandlerError] =
-  #| (self, scheme, url) => (() => { try { self.registerProtocolHandler(scheme, url); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_navigator_register_protocol_handler_error(e) }; } })()
+  #| (self, scheme, url) => (() => { try { self.registerProtocolHandler(scheme, url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Navigator::unregister_protocol_handler(
@@ -30270,7 +29036,7 @@ pub extern "js" fn Navigator::unregister_protocol_handler(
   scheme : String,
   url : String,
 ) -> Result[Unit, NavigatorUnregisterProtocolHandlerError] =
-  #| (self, scheme, url) => (() => { try { self.unregisterProtocolHandler(scheme, url); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_navigator_unregister_protocol_handler_error(e) }; } })()
+  #| (self, scheme, url) => (() => { try { self.unregisterProtocolHandler(scheme, url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Navigator::get_cookie_enabled(self : Navigator) -> Bool =
@@ -30356,7 +29122,7 @@ pub extern "js" fn Navigator::deprecated_replace_in_urn_with_string(
   urn_or_config : String,
   replacements : JsValue,
 ) -> Promise[Result[Unit, NavigatorDeprecatedReplaceInURNError]] =
-  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_navigator_deprecated_replace_in_urn_error(e) }))
+  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::deprecated_replace_in_urn_with_fenced_frame_config(
@@ -30364,7 +29130,7 @@ pub extern "js" fn Navigator::deprecated_replace_in_urn_with_fenced_frame_config
   urn_or_config : FencedFrameConfig,
   replacements : JsValue,
 ) -> Promise[Result[Unit, NavigatorDeprecatedReplaceInURNError]] =
-  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_navigator_deprecated_replace_in_urn_error(e) }))
+  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::deprecated_ur_nto_url_with_string(
@@ -30656,24 +29422,11 @@ pub(all) enum ImageDataConstructorError {
 }
 
 ///|
-extern "js" fn classify_image_data_constructor_error(
-  e : JsError,
-) -> ImageDataConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'Float16Array') return { $tag: 0, _0: e };
-  #|   if (n === 'IndexSizeError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'Uint8ClampedArray') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 pub extern "js" fn ImageData::new(
   sw : Int,
   sh : Int,
 ) -> Result[ImageData, ImageDataConstructorError] =
-  #| (sw, sh) => (() => { try { return { $tag: 0, _0: new ImageData(sw, sh) }; } catch(e) { return { $tag: 1, _0: classify_image_data_constructor_error(e) }; } })()
+  #| (sw, sh) => (() => { try { return { $tag: 1, _0: new ImageData(sw, sh) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Float16Array') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'Uint8ClampedArray') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn ImageData::new_with_settings_ffi(
@@ -30681,7 +29434,7 @@ extern "js" fn ImageData::new_with_settings_ffi(
   sh : Int,
   settings : JsValue,
 ) -> Result[ImageData, ImageDataConstructorError] =
-  #| (sw, sh, settings) => (() => { try { return { $tag: 0, _0: new ImageData(sw, sh, settings) }; } catch(e) { return { $tag: 1, _0: classify_image_data_constructor_error(e) }; } })()
+  #| (sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Float16Array') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'Uint8ClampedArray') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub fn ImageData::new_with_settings(
@@ -30697,7 +29450,7 @@ pub extern "js" fn ImageData::new_with_data_and_sw(
   data : ImageDataArray,
   sw : Int,
 ) -> Result[ImageData, ImageDataConstructorError] =
-  #| (data, sw) => (() => { try { return { $tag: 0, _0: new ImageData(data, sw) }; } catch(e) { return { $tag: 1, _0: classify_image_data_constructor_error(e) }; } })()
+  #| (data, sw) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Float16Array') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'Uint8ClampedArray') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn ImageData::new_with_data_and_sw_with_settings_ffi(
@@ -30706,7 +29459,7 @@ extern "js" fn ImageData::new_with_data_and_sw_with_settings_ffi(
   sh : Int,
   settings : JsValue,
 ) -> Result[ImageData, ImageDataConstructorError] =
-  #| (data, sw, sh, settings) => (() => { try { return { $tag: 0, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 1, _0: classify_image_data_constructor_error(e) }; } })()
+  #| (data, sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Float16Array') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'Uint8ClampedArray') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub fn ImageData::new_with_data_and_sw_with_settings(
@@ -30754,7 +29507,7 @@ pub extern "js" fn ImageData::new_with_uint8_clamped_array(
   sh : Int,
   settings : ImageDataSettings,
 ) -> Result[ImageData, ImageDataConstructorError] =
-  #| (data, sw, sh, settings) => (() => { try { return { $tag: 0, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 1, _0: classify_image_data_constructor_error(e) }; } })()
+  #| (data, sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Float16Array') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'Uint8ClampedArray') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn ImageData::new_with_float16_array(
@@ -30763,7 +29516,7 @@ pub extern "js" fn ImageData::new_with_float16_array(
   sh : Int,
   settings : ImageDataSettings,
 ) -> Result[ImageData, ImageDataConstructorError] =
-  #| (data, sw, sh, settings) => (() => { try { return { $tag: 0, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 1, _0: classify_image_data_constructor_error(e) }; } })()
+  #| (data, sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Float16Array') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'Uint8ClampedArray') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 /// ImageBitmap interface
@@ -31241,17 +29994,6 @@ pub(all) enum BroadcastChannelPostMessageError {
 }
 
 ///|
-extern "js" fn classify_broadcast_channel_post_message_error(
-  e : JsError,
-) -> BroadcastChannelPostMessageError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataCloneError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn BroadcastChannel::new(name : String) -> BroadcastChannel =
   #| (name) => new BroadcastChannel(name)
 
@@ -31266,7 +30008,7 @@ pub extern "js" fn BroadcastChannel::post_message(
   self : BroadcastChannel,
   message : JsValue,
 ) -> Result[Unit, BroadcastChannelPostMessageError] =
-  #| (self, message) => (() => { try { self.postMessage(message); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_broadcast_channel_post_message_error(e) }; } })()
+  #| (self, message) => (() => { try { self.postMessage(message); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn BroadcastChannel::close(self : BroadcastChannel) -> Unit =
@@ -31376,35 +30118,6 @@ pub(all) enum WorkerGlobalScopeImportScriptsError {
 }
 
 ///|
-extern "js" fn classify_worker_global_scope_import_scripts_error(
-  e : JsError,
-) -> WorkerGlobalScopeImportScriptsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   if (n === 'NetworkError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
-/// Error type for throwing methods
-pub(all) enum WorkerGlobalScopeReportErrorError {
-  TypeError(JsError)
-  OtherError(JsError)
-}
-
-///|
-extern "js" fn classify_worker_global_scope_report_error_error(
-  e : JsError,
-) -> WorkerGlobalScopeReportErrorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WorkerGlobalScopeBtoaError {
   InvalidCharacterError(JsError)
@@ -31412,31 +30125,11 @@ pub(all) enum WorkerGlobalScopeBtoaError {
 }
 
 ///|
-extern "js" fn classify_worker_global_scope_btoa_error(
-  e : JsError,
-) -> WorkerGlobalScopeBtoaError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidCharacterError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WorkerGlobalScopeAtobError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_worker_global_scope_atob_error(
-  e : JsError,
-) -> WorkerGlobalScopeAtobError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidCharacterError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -31447,34 +30140,12 @@ pub(all) enum WorkerGlobalScopeSetTimeoutError {
 }
 
 ///|
-extern "js" fn classify_worker_global_scope_set_timeout_error(
-  e : JsError,
-) -> WorkerGlobalScopeSetTimeoutError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WorkerGlobalScopeSetIntervalError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_worker_global_scope_set_interval_error(
-  e : JsError,
-) -> WorkerGlobalScopeSetIntervalError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -31484,16 +30155,6 @@ pub(all) enum WorkerGlobalScopeStructuredCloneError {
 }
 
 ///|
-extern "js" fn classify_worker_global_scope_structured_clone_error(
-  e : JsError,
-) -> WorkerGlobalScopeStructuredCloneError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'DataCloneError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WorkerGlobalScopeFetchError {
   TypeError(JsError)
@@ -31501,18 +30162,6 @@ pub(all) enum WorkerGlobalScopeFetchError {
   NotAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_worker_global_scope_fetch_error(
-  e : JsError,
-) -> WorkerGlobalScopeFetchError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'AbortError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn WorkerGlobalScope::get_self(
@@ -31537,13 +30186,7 @@ pub extern "js" fn WorkerGlobalScope::import_scripts(
   self : WorkerGlobalScope,
   urls : TrustedScriptURLOrString,
 ) -> Result[Unit, WorkerGlobalScopeImportScriptsError] =
-  #| (self, urls) => (() => { try { self.importScripts(urls); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_worker_global_scope_import_scripts_error(e) }; } })()
-
-///|
-pub extern "js" fn WorkerGlobalScope::get_onerror(
-  self : WorkerGlobalScope,
-) -> OnErrorEventHandler =
-  #| (self) => self.onerror
+  #| (self, urls) => (() => { try { self.importScripts(urls); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NetworkError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_onerror(
@@ -31551,6 +30194,12 @@ pub extern "js" fn WorkerGlobalScope::set_onerror(
   value : OnErrorEventHandler,
 ) -> Unit =
   #| (self, value) => { self.onerror = value }
+
+///|
+pub extern "js" fn WorkerGlobalScope::clear_onerror(
+  self : WorkerGlobalScope,
+) -> Unit =
+  #| (self) => { self.onerror = null }
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_onlanguagechange(
@@ -31645,29 +30294,29 @@ pub extern "js" fn WorkerGlobalScope::get_cross_origin_isolated(
 pub extern "js" fn WorkerGlobalScope::report_error(
   self : WorkerGlobalScope,
   e : JsValue,
-) -> Result[Unit, WorkerGlobalScopeReportErrorError] =
-  #| (self, e) => (() => { try { self.reportError(e); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_worker_global_scope_report_error_error(e) }; } })()
+) -> Unit =
+  #| (self, e) => self.reportError(e)
 
 ///|
 pub extern "js" fn WorkerGlobalScope::btoa(
   self : WorkerGlobalScope,
   data : String,
 ) -> Result[String, WorkerGlobalScopeBtoaError] =
-  #| (self, data) => (() => { try { return { $tag: 0, _0: self.btoa(data) }; } catch(e) { return { $tag: 1, _0: classify_worker_global_scope_btoa_error(e) }; } })()
+  #| (self, data) => (() => { try { return { $tag: 1, _0: self.btoa(data) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidCharacterError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::atob(
   self : WorkerGlobalScope,
   data : String,
 ) -> Result[String, WorkerGlobalScopeAtobError] =
-  #| (self, data) => (() => { try { return { $tag: 0, _0: self.atob(data) }; } catch(e) { return { $tag: 1, _0: classify_worker_global_scope_atob_error(e) }; } })()
+  #| (self, data) => (() => { try { return { $tag: 1, _0: self.atob(data) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidCharacterError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_timeout(
   self : WorkerGlobalScope,
   handler : TimerHandler,
 ) -> Result[Int, WorkerGlobalScopeSetTimeoutError] =
-  #| (self, handler) => (() => { try { return { $tag: 0, _0: self.setTimeout(handler) }; } catch(e) { return { $tag: 1, _0: classify_worker_global_scope_set_timeout_error(e) }; } })()
+  #| (self, handler) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_timeout_with_arguments(
@@ -31676,7 +30325,7 @@ pub extern "js" fn WorkerGlobalScope::set_timeout_with_arguments(
   timeout : Int,
   arguments : JsValue,
 ) -> Result[Int, WorkerGlobalScopeSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 0, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 1, _0: classify_worker_global_scope_set_timeout_error(e) }; } })()
+  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::clear_timeout(
@@ -31696,7 +30345,7 @@ pub extern "js" fn WorkerGlobalScope::set_interval(
   self : WorkerGlobalScope,
   handler : TimerHandler,
 ) -> Result[Int, WorkerGlobalScopeSetIntervalError] =
-  #| (self, handler) => (() => { try { return { $tag: 0, _0: self.setInterval(handler) }; } catch(e) { return { $tag: 1, _0: classify_worker_global_scope_set_interval_error(e) }; } })()
+  #| (self, handler) => (() => { try { return { $tag: 1, _0: self.setInterval(handler) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_interval_with_arguments(
@@ -31705,7 +30354,7 @@ pub extern "js" fn WorkerGlobalScope::set_interval_with_arguments(
   timeout : Int,
   arguments : JsValue,
 ) -> Result[Int, WorkerGlobalScopeSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 0, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 1, _0: classify_worker_global_scope_set_interval_error(e) }; } })()
+  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::clear_interval(
@@ -31804,7 +30453,7 @@ pub extern "js" fn WorkerGlobalScope::structured_clone(
   self : WorkerGlobalScope,
   value : JsValue,
 ) -> Result[JsValue, WorkerGlobalScopeStructuredCloneError] =
-  #| (self, value) => (() => { try { return { $tag: 0, _0: self.structuredClone(value) }; } catch(e) { return { $tag: 1, _0: classify_worker_global_scope_structured_clone_error(e) }; } })()
+  #| (self, value) => (() => { try { return { $tag: 1, _0: self.structuredClone(value) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn WorkerGlobalScope::structured_clone_with_options_ffi(
@@ -31812,7 +30461,7 @@ extern "js" fn WorkerGlobalScope::structured_clone_with_options_ffi(
   value : JsValue,
   options : JsValue,
 ) -> Result[JsValue, WorkerGlobalScopeStructuredCloneError] =
-  #| (self, value, options) => (() => { try { return { $tag: 0, _0: self.structuredClone(value, options) }; } catch(e) { return { $tag: 1, _0: classify_worker_global_scope_structured_clone_error(e) }; } })()
+  #| (self, value, options) => (() => { try { return { $tag: 1, _0: self.structuredClone(value, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataCloneError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn WorkerGlobalScope::structured_clone_with_options(
@@ -31862,7 +30511,7 @@ pub extern "js" fn WorkerGlobalScope::fetch(
   self : WorkerGlobalScope,
   input : RequestInfo,
 ) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] =
-  #| (self, input) => self.fetch(input).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_worker_global_scope_fetch_error(e) }))
+  #| (self, input) => self.fetch(input).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn WorkerGlobalScope::fetch_with_init_ffi(
@@ -31870,7 +30519,7 @@ extern "js" fn WorkerGlobalScope::fetch_with_init_ffi(
   input : RequestInfo,
   init_ : JsValue,
 ) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_worker_global_scope_fetch_error(e) }))
+  #| (self, input, init_) => self.fetch(input, init_).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn WorkerGlobalScope::fetch_with_init(
@@ -31894,7 +30543,7 @@ pub extern "js" fn WorkerGlobalScope::set_timeout_with_string(
   timeout : Int,
   arguments : JsValue,
 ) -> Result[Int, WorkerGlobalScopeSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 0, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 1, _0: classify_worker_global_scope_set_timeout_error(e) }; } })()
+  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_timeout_with_function(
@@ -31903,7 +30552,7 @@ pub extern "js" fn WorkerGlobalScope::set_timeout_with_function(
   timeout : Int,
   arguments : JsValue,
 ) -> Result[Int, WorkerGlobalScopeSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 0, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 1, _0: classify_worker_global_scope_set_timeout_error(e) }; } })()
+  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_timeout_with_trusted_script(
@@ -31912,7 +30561,7 @@ pub extern "js" fn WorkerGlobalScope::set_timeout_with_trusted_script(
   timeout : Int,
   arguments : JsValue,
 ) -> Result[Int, WorkerGlobalScopeSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 0, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 1, _0: classify_worker_global_scope_set_timeout_error(e) }; } })()
+  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_interval_with_string(
@@ -31921,7 +30570,7 @@ pub extern "js" fn WorkerGlobalScope::set_interval_with_string(
   timeout : Int,
   arguments : JsValue,
 ) -> Result[Int, WorkerGlobalScopeSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 0, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 1, _0: classify_worker_global_scope_set_interval_error(e) }; } })()
+  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_interval_with_function(
@@ -31930,7 +30579,7 @@ pub extern "js" fn WorkerGlobalScope::set_interval_with_function(
   timeout : Int,
   arguments : JsValue,
 ) -> Result[Int, WorkerGlobalScopeSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 0, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 1, _0: classify_worker_global_scope_set_interval_error(e) }; } })()
+  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_interval_with_trusted_script(
@@ -31939,7 +30588,7 @@ pub extern "js" fn WorkerGlobalScope::set_interval_with_trusted_script(
   timeout : Int,
   arguments : JsValue,
 ) -> Result[Int, WorkerGlobalScopeSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 0, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 1, _0: classify_worker_global_scope_set_interval_error(e) }; } })()
+  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_canvas_image_source(
@@ -31971,7 +30620,7 @@ pub extern "js" fn WorkerGlobalScope::fetch_with_request(
   input : Request,
   init_ : RequestInit,
 ) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_worker_global_scope_fetch_error(e) }))
+  #| (self, input, init_) => self.fetch(input, init_).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WorkerGlobalScope::fetch_with_string(
@@ -31979,7 +30628,7 @@ pub extern "js" fn WorkerGlobalScope::fetch_with_string(
   input : String,
   init_ : RequestInit,
 ) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_worker_global_scope_fetch_error(e) }))
+  #| (self, input, init_) => self.fetch(input, init_).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 /// DedicatedWorkerGlobalScope interface
@@ -32250,30 +30899,17 @@ pub(all) enum WorkerConstructorError {
 }
 
 ///|
-extern "js" fn classify_worker_constructor_error(
-  e : JsError,
-) -> WorkerConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   if (n === 'NetworkError') return { $tag: 2, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 pub extern "js" fn Worker::new(
   script_url : TrustedScriptURLOrString,
 ) -> Result[Worker, WorkerConstructorError] =
-  #| (script_url) => (() => { try { return { $tag: 0, _0: new Worker(script_url) }; } catch(e) { return { $tag: 1, _0: classify_worker_constructor_error(e) }; } })()
+  #| (script_url) => (() => { try { return { $tag: 1, _0: new Worker(script_url) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NetworkError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Worker::new_with_options_ffi(
   script_url : TrustedScriptURLOrString,
   options : JsValue,
 ) -> Result[Worker, WorkerConstructorError] =
-  #| (script_url, options) => (() => { try { return { $tag: 0, _0: new Worker(script_url, options) }; } catch(e) { return { $tag: 1, _0: classify_worker_constructor_error(e) }; } })()
+  #| (script_url, options) => (() => { try { return { $tag: 1, _0: new Worker(script_url, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NetworkError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub fn Worker::new_with_options(
@@ -32399,30 +31035,17 @@ pub(all) enum SharedWorkerConstructorError {
 }
 
 ///|
-extern "js" fn classify_shared_worker_constructor_error(
-  e : JsError,
-) -> SharedWorkerConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   if (n === 'NetworkError') return { $tag: 2, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 pub extern "js" fn SharedWorker::new(
   script_url : TrustedScriptURLOrString,
 ) -> Result[SharedWorker, SharedWorkerConstructorError] =
-  #| (script_url) => (() => { try { return { $tag: 0, _0: new SharedWorker(script_url) }; } catch(e) { return { $tag: 1, _0: classify_shared_worker_constructor_error(e) }; } })()
+  #| (script_url) => (() => { try { return { $tag: 1, _0: new SharedWorker(script_url) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NetworkError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SharedWorker::new_with_options(
   script_url : TrustedScriptURLOrString,
   options : StringOrWorkerOptions,
 ) -> Result[SharedWorker, SharedWorkerConstructorError] =
-  #| (script_url, options) => (() => { try { return { $tag: 0, _0: new SharedWorker(script_url, options) }; } catch(e) { return { $tag: 1, _0: classify_shared_worker_constructor_error(e) }; } })()
+  #| (script_url, options) => (() => { try { return { $tag: 1, _0: new SharedWorker(script_url, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NetworkError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SharedWorker::get_port(self : SharedWorker) -> MessagePort =
@@ -32487,18 +31110,6 @@ pub(all) enum WorkerNavigatorSetAppBadgeError {
 }
 
 ///|
-extern "js" fn classify_worker_navigator_set_app_badge_error(
-  e : JsError,
-) -> WorkerNavigatorSetAppBadgeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WorkerNavigatorClearAppBadgeError {
   SecurityError(JsError)
@@ -32506,18 +31117,6 @@ pub(all) enum WorkerNavigatorClearAppBadgeError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_worker_navigator_clear_app_badge_error(
-  e : JsError,
-) -> WorkerNavigatorClearAppBadgeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn WorkerNavigator::get_serial(
@@ -32561,20 +31160,20 @@ pub extern "js" fn WorkerNavigator::get_locks(
 pub extern "js" fn WorkerNavigator::set_app_badge(
   self : WorkerNavigator,
 ) -> Promise[Result[Unit, WorkerNavigatorSetAppBadgeError]] =
-  #| (self) => self.setAppBadge().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_worker_navigator_set_app_badge_error(e) }))
+  #| (self) => self.setAppBadge().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WorkerNavigator::set_app_badge_with_contents(
   self : WorkerNavigator,
   contents : Int64,
 ) -> Promise[Result[Unit, WorkerNavigatorSetAppBadgeError]] =
-  #| (self, contents) => self.setAppBadge((contents.hi * 4294967296 + contents.lo)).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_worker_navigator_set_app_badge_error(e) }))
+  #| (self, contents) => self.setAppBadge((contents.hi * 4294967296 + contents.lo)).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WorkerNavigator::clear_app_badge(
   self : WorkerNavigator,
 ) -> Promise[Result[Unit, WorkerNavigatorClearAppBadgeError]] =
-  #| (self) => self.clearAppBadge().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_worker_navigator_clear_app_badge_error(e) }))
+  #| (self) => self.clearAppBadge().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WorkerNavigator::get_user_agent_data(
@@ -32899,22 +31498,11 @@ pub(all) enum WorkletAddModuleError {
 }
 
 ///|
-extern "js" fn classify_worklet_add_module_error(
-  e : JsError,
-) -> WorkletAddModuleError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'AbortError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn Worklet::add_module(
   self : Worklet,
   module_url : String,
 ) -> Promise[Result[Unit, WorkletAddModuleError]] =
-  #| (self, module_url) => self.addModule(module_url).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_worklet_add_module_error(e) }))
+  #| (self, module_url) => self.addModule(module_url).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn Worklet::add_module_with_options_ffi(
@@ -32922,7 +31510,7 @@ extern "js" fn Worklet::add_module_with_options_ffi(
   module_url : String,
   options : JsValue,
 ) -> Promise[Result[Unit, WorkletAddModuleError]] =
-  #| (self, module_url, options) => self.addModule(module_url, options).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_worklet_add_module_error(e) }))
+  #| (self, module_url, options) => self.addModule(module_url, options).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn Worklet::add_module_with_options(
@@ -32969,16 +31557,6 @@ pub(all) enum StorageSetItemError {
 }
 
 ///|
-extern "js" fn classify_storage_set_item_error(
-  e : JsError,
-) -> StorageSetItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'QuotaExceededError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn Storage::get_length(self : Storage) -> Int =
   #| (self) => self.length
 
@@ -33000,7 +31578,7 @@ pub extern "js" fn Storage::set_item(
   key : String,
   value : String,
 ) -> Result[Unit, StorageSetItemError] =
-  #| (self, key, value) => (() => { try { self.setItem(key, value); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_storage_set_item_error(e) }; } })()
+  #| (self, key, value) => (() => { try { self.setItem(key, value); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'QuotaExceededError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Storage::set(
@@ -33008,7 +31586,7 @@ pub extern "js" fn Storage::set(
   key : String,
   value : String,
 ) -> Result[Unit, StorageSetItemError] =
-  #| (self, key, value) => (() => { try { self[key] = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_storage_set_item_error(e) }; } })()
+  #| (self, key, value) => (() => { try { self[key] = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'QuotaExceededError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Storage::remove_item(self : Storage, key : String) -> Unit =
@@ -33455,17 +32033,17 @@ pub extern "js" fn HTMLFrameSetElement::clear_onbeforeprint(
   #| (self) => { self.onbeforeprint = null }
 
 ///|
-pub extern "js" fn HTMLFrameSetElement::get_onbeforeunload(
-  self : HTMLFrameSetElement,
-) -> OnBeforeUnloadEventHandler =
-  #| (self) => self.onbeforeunload
-
-///|
 pub extern "js" fn HTMLFrameSetElement::set_onbeforeunload(
   self : HTMLFrameSetElement,
   value : OnBeforeUnloadEventHandler,
 ) -> Unit =
   #| (self, value) => { self.onbeforeunload = value }
+
+///|
+pub extern "js" fn HTMLFrameSetElement::clear_onbeforeunload(
+  self : HTMLFrameSetElement,
+) -> Unit =
+  #| (self) => { self.onbeforeunload = null }
 
 ///|
 pub extern "js" fn HTMLFrameSetElement::set_onhashchange(

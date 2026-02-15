@@ -118,7 +118,7 @@ pub extern "js" fn WorkletAnimationEffect::get_computed_timing(
 pub extern "js" fn WorkletAnimationEffect::get_local_time(
   self : WorkletAnimationEffect,
 ) -> Double? =
-  #| (self) => (self.localTime) ?? undefined
+  #| (self) => (() => { const v = self.localTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WorkletAnimationEffect::set_local_time(

@@ -178,17 +178,6 @@ pub(all) enum MediaSourceSetDurationError {
 }
 
 ///|
-extern "js" fn classify_media_source_set_duration_error(
-  e : JsError,
-) -> MediaSourceSetDurationError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum MediaSourceAddSourceBufferError {
   InvalidStateError(JsError)
@@ -199,19 +188,6 @@ pub(all) enum MediaSourceAddSourceBufferError {
 }
 
 ///|
-extern "js" fn classify_media_source_add_source_buffer_error(
-  e : JsError,
-) -> MediaSourceAddSourceBufferError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 2, _0: e };
-  #|   if (n === 'QuotaExceededError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum MediaSourceRemoveSourceBufferError {
   NotFoundError(JsError)
@@ -219,31 +195,11 @@ pub(all) enum MediaSourceRemoveSourceBufferError {
 }
 
 ///|
-extern "js" fn classify_media_source_remove_source_buffer_error(
-  e : JsError,
-) -> MediaSourceRemoveSourceBufferError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum MediaSourceEndOfStreamError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_media_source_end_of_stream_error(
-  e : JsError,
-) -> MediaSourceEndOfStreamError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn MediaSource::new() -> MediaSource =
@@ -282,7 +238,7 @@ pub extern "js" fn MediaSource::set_duration(
   self : MediaSource,
   value : Double,
 ) -> Result[Unit, MediaSourceSetDurationError] =
-  #| (self, value) => (() => { try { self.duration = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_media_source_set_duration_error(e) }; } })()
+  #| (self, value) => (() => { try { self.duration = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn MediaSource::set_onsourceopen(
@@ -328,27 +284,27 @@ pub extern "js" fn MediaSource::add_source_buffer(
   self : MediaSource,
   type_ : String,
 ) -> Result[SourceBuffer, MediaSourceAddSourceBufferError] =
-  #| (self, type_) => (() => { try { return { $tag: 0, _0: self.addSourceBuffer(type_) }; } catch(e) { return { $tag: 1, _0: classify_media_source_add_source_buffer_error(e) }; } })()
+  #| (self, type_) => (() => { try { return { $tag: 1, _0: self.addSourceBuffer(type_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; if (n === 'QuotaExceededError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn MediaSource::remove_source_buffer(
   self : MediaSource,
   source_buffer : SourceBuffer,
 ) -> Result[Unit, MediaSourceRemoveSourceBufferError] =
-  #| (self, source_buffer) => (() => { try { self.removeSourceBuffer(source_buffer); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_media_source_remove_source_buffer_error(e) }; } })()
+  #| (self, source_buffer) => (() => { try { self.removeSourceBuffer(source_buffer); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn MediaSource::end_of_stream(
   self : MediaSource,
 ) -> Result[Unit, MediaSourceEndOfStreamError] =
-  #| (self) => (() => { try { self.endOfStream(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_media_source_end_of_stream_error(e) }; } })()
+  #| (self) => (() => { try { self.endOfStream(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn MediaSource::end_of_stream_with_error(
   self : MediaSource,
   error : EndOfStreamError,
 ) -> Result[Unit, MediaSourceEndOfStreamError] =
-  #| (self, error) => (() => { try { self.endOfStream(['network', 'decode'][error]); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_media_source_end_of_stream_error(e) }; } })()
+  #| (self, error) => (() => { try { self.endOfStream(['network', 'decode'][error]); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn MediaSource::set_live_seekable_range(
@@ -457,32 +413,11 @@ pub(all) enum SourceBufferSetModeError {
 }
 
 ///|
-extern "js" fn classify_source_buffer_set_mode_error(
-  e : JsError,
-) -> SourceBufferSetModeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SourceBufferSetTimestampOffsetError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_source_buffer_set_timestamp_offset_error(
-  e : JsError,
-) -> SourceBufferSetTimestampOffsetError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -493,34 +428,12 @@ pub(all) enum SourceBufferSetAppendWindowStartError {
 }
 
 ///|
-extern "js" fn classify_source_buffer_set_append_window_start_error(
-  e : JsError,
-) -> SourceBufferSetAppendWindowStartError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SourceBufferSetAppendWindowEndError {
   InvalidStateError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_source_buffer_set_append_window_end_error(
-  e : JsError,
-) -> SourceBufferSetAppendWindowEndError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -531,32 +444,11 @@ pub(all) enum SourceBufferAppendBufferError {
 }
 
 ///|
-extern "js" fn classify_source_buffer_append_buffer_error(
-  e : JsError,
-) -> SourceBufferAppendBufferError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'QuotaExceededError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SourceBufferAbortError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_source_buffer_abort_error(
-  e : JsError,
-) -> SourceBufferAbortError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -568,35 +460,12 @@ pub(all) enum SourceBufferChangeTypeError {
 }
 
 ///|
-extern "js" fn classify_source_buffer_change_type_error(
-  e : JsError,
-) -> SourceBufferChangeTypeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SourceBufferRemoveError {
   InvalidStateError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_source_buffer_remove_error(
-  e : JsError,
-) -> SourceBufferRemoveError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn SourceBuffer::get_mode(self : SourceBuffer) -> AppendMode =
@@ -607,7 +476,7 @@ pub extern "js" fn SourceBuffer::set_mode(
   self : SourceBuffer,
   value : AppendMode,
 ) -> Result[Unit, SourceBufferSetModeError] =
-  #| (self, value) => (() => { try { self.mode = ['segments', 'sequence'][value]; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_source_buffer_set_mode_error(e) }; } })()
+  #| (self, value) => (() => { try { self.mode = ['segments', 'sequence'][value]; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SourceBuffer::get_updating(self : SourceBuffer) -> Bool =
@@ -630,7 +499,7 @@ pub extern "js" fn SourceBuffer::set_timestamp_offset(
   self : SourceBuffer,
   value : Double,
 ) -> Result[Unit, SourceBufferSetTimestampOffsetError] =
-  #| (self, value) => (() => { try { self.timestampOffset = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_source_buffer_set_timestamp_offset_error(e) }; } })()
+  #| (self, value) => (() => { try { self.timestampOffset = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SourceBuffer::get_audio_tracks(
@@ -661,7 +530,7 @@ pub extern "js" fn SourceBuffer::set_append_window_start(
   self : SourceBuffer,
   value : Double,
 ) -> Result[Unit, SourceBufferSetAppendWindowStartError] =
-  #| (self, value) => (() => { try { self.appendWindowStart = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_source_buffer_set_append_window_start_error(e) }; } })()
+  #| (self, value) => (() => { try { self.appendWindowStart = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SourceBuffer::get_append_window_end(
@@ -674,7 +543,7 @@ pub extern "js" fn SourceBuffer::set_append_window_end(
   self : SourceBuffer,
   value : Double,
 ) -> Result[Unit, SourceBufferSetAppendWindowEndError] =
-  #| (self, value) => (() => { try { self.appendWindowEnd = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_source_buffer_set_append_window_end_error(e) }; } })()
+  #| (self, value) => (() => { try { self.appendWindowEnd = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SourceBuffer::set_onupdatestart(
@@ -738,20 +607,20 @@ pub extern "js" fn SourceBuffer::append_buffer(
   self : SourceBuffer,
   data : BufferSource,
 ) -> Result[Unit, SourceBufferAppendBufferError] =
-  #| (self, data) => (() => { try { self.appendBuffer(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_source_buffer_append_buffer_error(e) }; } })()
+  #| (self, data) => (() => { try { self.appendBuffer(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'QuotaExceededError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SourceBuffer::abort(
   self : SourceBuffer,
 ) -> Result[Unit, SourceBufferAbortError] =
-  #| (self) => (() => { try { self.abort(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_source_buffer_abort_error(e) }; } })()
+  #| (self) => (() => { try { self.abort(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SourceBuffer::change_type(
   self : SourceBuffer,
   type_ : String,
 ) -> Result[Unit, SourceBufferChangeTypeError] =
-  #| (self, type_) => (() => { try { self.changeType(type_); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_source_buffer_change_type_error(e) }; } })()
+  #| (self, type_) => (() => { try { self.changeType(type_); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SourceBuffer::remove(
@@ -759,21 +628,21 @@ pub extern "js" fn SourceBuffer::remove(
   start : Double,
   end : Double,
 ) -> Result[Unit, SourceBufferRemoveError] =
-  #| (self, start, end) => (() => { try { self.remove(start, end); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_source_buffer_remove_error(e) }; } })()
+  #| (self, start, end) => (() => { try { self.remove(start, end); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SourceBuffer::append_buffer_with_array_buffer_view(
   self : SourceBuffer,
   data : ArrayBufferView,
 ) -> Result[Unit, SourceBufferAppendBufferError] =
-  #| (self, data) => (() => { try { self.appendBuffer(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_source_buffer_append_buffer_error(e) }; } })()
+  #| (self, data) => (() => { try { self.appendBuffer(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'QuotaExceededError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SourceBuffer::append_buffer_with_array_buffer(
   self : SourceBuffer,
   data : ArrayBuffer,
 ) -> Result[Unit, SourceBufferAppendBufferError] =
-  #| (self, data) => (() => { try { self.appendBuffer(data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_source_buffer_append_buffer_error(e) }; } })()
+  #| (self, data) => (() => { try { self.appendBuffer(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'QuotaExceededError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// SourceBufferList interface

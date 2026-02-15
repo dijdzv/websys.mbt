@@ -119,8 +119,8 @@ extern "js" fn MouseEventInit::to_js_ffi(self : MouseEventInit) -> JsValue =
   #|   button: self.button,
   #|   buttons: self.buttons,
   #|   relatedTarget: ((() => { const v = self.relatedTarget; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   movementX: self.movementX,
-  #|   movementY: self.movementY
+  #|   movementX: ((() => { const v = self.movementX; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   movementY: ((() => { const v = self.movementY; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -153,8 +153,8 @@ extern "js" fn MouseEventInit::from_js_ffi(value : JsValue) -> MouseEventInit =
   #|   button: v.button,
   #|   buttons: v.buttons,
   #|   relatedTarget: (v.relatedTarget === undefined ? { $tag: 0 } : v.relatedTarget === null ? { $tag: 1 } : { $tag: 2, _0: v.relatedTarget }),
-  #|   movementX: v.movementX,
-  #|   movementY: v.movementY
+  #|   movementX: (v.movementX === undefined ? { $tag: 0 } : { $tag: 1, _0: v.movementX }),
+  #|   movementY: (v.movementY === undefined ? { $tag: 0 } : { $tag: 1, _0: v.movementY })
   #| })
 
 ///|
@@ -347,11 +347,11 @@ extern "js" fn WheelEventInit::to_js_ffi(self : WheelEventInit) -> JsValue =
   #|   button: self.button,
   #|   buttons: self.buttons,
   #|   relatedTarget: ((() => { const v = self.relatedTarget; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   movementX: self.movementX,
-  #|   movementY: self.movementY,
-  #|   deltaX: self.deltaX,
-  #|   deltaY: self.deltaY,
-  #|   deltaZ: self.deltaZ,
+  #|   movementX: ((() => { const v = self.movementX; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   movementY: ((() => { const v = self.movementY; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   deltaX: ((() => { const v = self.deltaX; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   deltaY: ((() => { const v = self.deltaY; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   deltaZ: ((() => { const v = self.deltaZ; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   deltaMode: self.deltaMode
   #| })
 
@@ -385,11 +385,11 @@ extern "js" fn WheelEventInit::from_js_ffi(value : JsValue) -> WheelEventInit =
   #|   button: v.button,
   #|   buttons: v.buttons,
   #|   relatedTarget: (v.relatedTarget === undefined ? { $tag: 0 } : v.relatedTarget === null ? { $tag: 1 } : { $tag: 2, _0: v.relatedTarget }),
-  #|   movementX: v.movementX,
-  #|   movementY: v.movementY,
-  #|   deltaX: v.deltaX,
-  #|   deltaY: v.deltaY,
-  #|   deltaZ: v.deltaZ,
+  #|   movementX: (v.movementX === undefined ? { $tag: 0 } : { $tag: 1, _0: v.movementX }),
+  #|   movementY: (v.movementY === undefined ? { $tag: 0 } : { $tag: 1, _0: v.movementY }),
+  #|   deltaX: (v.deltaX === undefined ? { $tag: 0 } : { $tag: 1, _0: v.deltaX }),
+  #|   deltaY: (v.deltaY === undefined ? { $tag: 0 } : { $tag: 1, _0: v.deltaY }),
+  #|   deltaZ: (v.deltaZ === undefined ? { $tag: 0 } : { $tag: 1, _0: v.deltaZ }),
   #|   deltaMode: v.deltaMode
   #| })
 

@@ -76,20 +76,10 @@ pub(all) enum CompressionStreamConstructorError {
 }
 
 ///|
-extern "js" fn classify_compression_stream_constructor_error(
-  e : JsError,
-) -> CompressionStreamConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn CompressionStream::new(
   format : CompressionFormat,
 ) -> Result[CompressionStream, CompressionStreamConstructorError] =
-  #| (format) => (() => { try { return { $tag: 0, _0: new CompressionStream(['deflate', 'deflate-raw', 'gzip'][format]) }; } catch(e) { return { $tag: 1, _0: classify_compression_stream_constructor_error(e) }; } })()
+  #| (format) => (() => { try { return { $tag: 1, _0: new CompressionStream(['deflate', 'deflate-raw', 'gzip'][format]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CompressionStream::get_readable(
@@ -149,20 +139,10 @@ pub(all) enum DecompressionStreamConstructorError {
 }
 
 ///|
-extern "js" fn classify_decompression_stream_constructor_error(
-  e : JsError,
-) -> DecompressionStreamConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn DecompressionStream::new(
   format : CompressionFormat,
 ) -> Result[DecompressionStream, DecompressionStreamConstructorError] =
-  #| (format) => (() => { try { return { $tag: 0, _0: new DecompressionStream(['deflate', 'deflate-raw', 'gzip'][format]) }; } catch(e) { return { $tag: 1, _0: classify_decompression_stream_constructor_error(e) }; } })()
+  #| (format) => (() => { try { return { $tag: 1, _0: new DecompressionStream(['deflate', 'deflate-raw', 'gzip'][format]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DecompressionStream::get_readable(

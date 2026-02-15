@@ -123,27 +123,17 @@ pub(all) enum MagnetometerConstructorError {
 }
 
 ///|
-extern "js" fn classify_magnetometer_constructor_error(
-  e : JsError,
-) -> MagnetometerConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn Magnetometer::new() -> Result[
   Magnetometer,
   MagnetometerConstructorError,
 ] =
-  #| () => (() => { try { return { $tag: 0, _0: new Magnetometer() }; } catch(e) { return { $tag: 1, _0: classify_magnetometer_constructor_error(e) }; } })()
+  #| () => (() => { try { return { $tag: 1, _0: new Magnetometer() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Magnetometer::new_with_sensor_options_ffi(
   sensor_options : JsValue,
 ) -> Result[Magnetometer, MagnetometerConstructorError] =
-  #| (sensor_options) => (() => { try { return { $tag: 0, _0: new Magnetometer(sensor_options) }; } catch(e) { return { $tag: 1, _0: classify_magnetometer_constructor_error(e) }; } })()
+  #| (sensor_options) => (() => { try { return { $tag: 1, _0: new Magnetometer(sensor_options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn Magnetometer::new_with_sensor_options(
@@ -154,15 +144,15 @@ pub fn Magnetometer::new_with_sensor_options(
 
 ///|
 pub extern "js" fn Magnetometer::get_x(self : Magnetometer) -> Double? =
-  #| (self) => (self.x) ?? undefined
+  #| (self) => (() => { const v = self.x; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Magnetometer::get_y(self : Magnetometer) -> Double? =
-  #| (self) => (self.y) ?? undefined
+  #| (self) => (() => { const v = self.y; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Magnetometer::get_z(self : Magnetometer) -> Double? =
-  #| (self) => (self.z) ?? undefined
+  #| (self) => (() => { const v = self.z; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// UncalibratedMagnetometer interface
@@ -235,34 +225,34 @@ pub fn UncalibratedMagnetometer::new_with_sensor_options(
 pub extern "js" fn UncalibratedMagnetometer::get_x(
   self : UncalibratedMagnetometer,
 ) -> Double? =
-  #| (self) => (self.x) ?? undefined
+  #| (self) => (() => { const v = self.x; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn UncalibratedMagnetometer::get_y(
   self : UncalibratedMagnetometer,
 ) -> Double? =
-  #| (self) => (self.y) ?? undefined
+  #| (self) => (() => { const v = self.y; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn UncalibratedMagnetometer::get_z(
   self : UncalibratedMagnetometer,
 ) -> Double? =
-  #| (self) => (self.z) ?? undefined
+  #| (self) => (() => { const v = self.z; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn UncalibratedMagnetometer::get_x_bias(
   self : UncalibratedMagnetometer,
 ) -> Double? =
-  #| (self) => (self.xBias) ?? undefined
+  #| (self) => (() => { const v = self.xBias; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn UncalibratedMagnetometer::get_y_bias(
   self : UncalibratedMagnetometer,
 ) -> Double? =
-  #| (self) => (self.yBias) ?? undefined
+  #| (self) => (() => { const v = self.yBias; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn UncalibratedMagnetometer::get_z_bias(
   self : UncalibratedMagnetometer,
 ) -> Double? =
-  #| (self) => (self.zBias) ?? undefined
+  #| (self) => (() => { const v = self.zBias; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

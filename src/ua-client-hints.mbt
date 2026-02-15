@@ -216,16 +216,6 @@ pub(all) enum NavigatorUADataGetHighEntropyValuesError {
 }
 
 ///|
-extern "js" fn classify_navigator_ua_data_get_high_entropy_values_error(
-  e : JsError,
-) -> NavigatorUADataGetHighEntropyValuesError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn NavigatorUAData::get_brands(
   self : NavigatorUAData,
 ) -> Array[NavigatorUABrandVersion] =
@@ -258,7 +248,7 @@ pub extern "js" fn NavigatorUAData::get_high_entropy_values(
   #|   platformVersion: v.platformVersion,
   #|   uaFullVersion: v.uaFullVersion,
   #|   wow64: (v.wow64 === undefined ? -1 : v.wow64)
-  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_navigator_ua_data_get_high_entropy_values_error(e) }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn NavigatorUAData::to_json(

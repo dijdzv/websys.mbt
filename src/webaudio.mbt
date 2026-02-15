@@ -433,7 +433,7 @@ extern "js" fn AudioContextOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   latencyHint: ((() => { const v = self.latencyHint; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sampleRate: self.sampleRate,
+  #|   sampleRate: ((() => { const v = self.sampleRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   sinkId: ((() => { const v = self.sinkId; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   renderSizeHint: ((() => { const v = self.renderSizeHint; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
@@ -450,7 +450,7 @@ extern "js" fn AudioContextOptions::from_js_ffi(
 ) -> AudioContextOptions =
   #| (v) => ({
   #|   latencyHint: (v.latencyHint === undefined ? { $tag: 0 } : { $tag: 1, _0: v.latencyHint }),
-  #|   sampleRate: v.sampleRate,
+  #|   sampleRate: (v.sampleRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleRate }),
   #|   sinkId: (v.sinkId === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sinkId }),
   #|   renderSizeHint: (v.renderSizeHint === undefined ? { $tag: 0 } : { $tag: 1, _0: v.renderSizeHint })
   #| })
@@ -515,7 +515,7 @@ pub fn AudioTimestamp::default() -> AudioTimestamp {
 ///|
 extern "js" fn AudioTimestamp::to_js_ffi(self : AudioTimestamp) -> JsValue =
   #| (self) => ({
-  #|   contextTime: self.contextTime,
+  #|   contextTime: ((() => { const v = self.contextTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   performanceTime: ((() => { const v = self.performanceTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -528,7 +528,7 @@ pub fn AudioTimestamp::to_js(self : AudioTimestamp) -> JsValue {
 ///|
 extern "js" fn AudioTimestamp::from_js_ffi(value : JsValue) -> AudioTimestamp =
   #| (v) => ({
-  #|   contextTime: v.contextTime,
+  #|   contextTime: (v.contextTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.contextTime }),
   #|   performanceTime: (v.performanceTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.performanceTime })
   #| })
 
@@ -769,9 +769,9 @@ extern "js" fn AnalyserOptions::to_js_ffi(self : AnalyserOptions) -> JsValue =
   #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   fftSize: self.fftSize,
-  #|   maxDecibels: self.maxDecibels,
-  #|   minDecibels: self.minDecibels,
-  #|   smoothingTimeConstant: self.smoothingTimeConstant
+  #|   maxDecibels: ((() => { const v = self.maxDecibels; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   minDecibels: ((() => { const v = self.minDecibels; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   smoothingTimeConstant: ((() => { const v = self.smoothingTimeConstant; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -787,9 +787,9 @@ extern "js" fn AnalyserOptions::from_js_ffi(value : JsValue) -> AnalyserOptions 
   #|   channelCountMode: (v.channelCountMode === undefined ? undefined : ['max', 'clamped-max', 'explicit'].indexOf(v.channelCountMode)),
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
   #|   fftSize: v.fftSize,
-  #|   maxDecibels: v.maxDecibels,
-  #|   minDecibels: v.minDecibels,
-  #|   smoothingTimeConstant: v.smoothingTimeConstant
+  #|   maxDecibels: (v.maxDecibels === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maxDecibels }),
+  #|   minDecibels: (v.minDecibels === undefined ? { $tag: 0 } : { $tag: 1, _0: v.minDecibels }),
+  #|   smoothingTimeConstant: (v.smoothingTimeConstant === undefined ? { $tag: 0 } : { $tag: 1, _0: v.smoothingTimeConstant })
   #| })
 
 ///|
@@ -828,11 +828,11 @@ extern "js" fn AudioBufferSourceOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   buffer: ((() => { const v = self.buffer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   detune: self.detune,
+  #|   detune: ((() => { const v = self.detune; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   loop: (self.loop_ === -1 ? undefined : self.loop_),
-  #|   loopEnd: self.loopEnd,
-  #|   loopStart: self.loopStart,
-  #|   playbackRate: self.playbackRate
+  #|   loopEnd: ((() => { const v = self.loopEnd; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   loopStart: ((() => { const v = self.loopStart; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   playbackRate: ((() => { const v = self.playbackRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -849,11 +849,11 @@ extern "js" fn AudioBufferSourceOptions::from_js_ffi(
 ) -> AudioBufferSourceOptions =
   #| (v) => ({
   #|   buffer: (v.buffer === undefined ? { $tag: 0 } : v.buffer === null ? { $tag: 1 } : { $tag: 2, _0: v.buffer }),
-  #|   detune: v.detune,
+  #|   detune: (v.detune === undefined ? { $tag: 0 } : { $tag: 1, _0: v.detune }),
   #|   loop_: (v.loop === undefined ? -1 : v.loop),
-  #|   loopEnd: v.loopEnd,
-  #|   loopStart: v.loopStart,
-  #|   playbackRate: v.playbackRate
+  #|   loopEnd: (v.loopEnd === undefined ? { $tag: 0 } : { $tag: 1, _0: v.loopEnd }),
+  #|   loopStart: (v.loopStart === undefined ? { $tag: 0 } : { $tag: 1, _0: v.loopStart }),
+  #|   playbackRate: (v.playbackRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.playbackRate })
   #| })
 
 ///|
@@ -954,10 +954,10 @@ extern "js" fn BiquadFilterOptions::to_js_ffi(
   #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch', 'allpass'][v]; })()),
-  #|   Q: self.q,
-  #|   detune: self.detune,
-  #|   frequency: self.frequency,
-  #|   gain: self.gain
+  #|   Q: ((() => { const v = self.q; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   detune: ((() => { const v = self.detune; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   frequency: ((() => { const v = self.frequency; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   gain: ((() => { const v = self.gain; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -975,10 +975,10 @@ extern "js" fn BiquadFilterOptions::from_js_ffi(
   #|   channelCountMode: (v.channelCountMode === undefined ? undefined : ['max', 'clamped-max', 'explicit'].indexOf(v.channelCountMode)),
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
   #|   type_: (v.type === undefined ? undefined : ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch', 'allpass'].indexOf(v.type)),
-  #|   q: v.Q,
-  #|   detune: v.detune,
-  #|   frequency: v.frequency,
-  #|   gain: v.gain
+  #|   q: (v.Q === undefined ? { $tag: 0 } : { $tag: 1, _0: v.Q }),
+  #|   detune: (v.detune === undefined ? { $tag: 0 } : { $tag: 1, _0: v.detune }),
+  #|   frequency: (v.frequency === undefined ? { $tag: 0 } : { $tag: 1, _0: v.frequency }),
+  #|   gain: (v.gain === undefined ? { $tag: 0 } : { $tag: 1, _0: v.gain })
   #| })
 
 ///|
@@ -1114,7 +1114,7 @@ extern "js" fn ConstantSourceOptions::to_js_ffi(
   self : ConstantSourceOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   offset: self.offset
+  #|   offset: ((() => { const v = self.offset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -1128,7 +1128,7 @@ extern "js" fn ConstantSourceOptions::from_js_ffi(
   value : JsValue,
 ) -> ConstantSourceOptions =
   #| (v) => ({
-  #|   offset: v.offset
+  #|   offset: (v.offset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offset })
   #| })
 
 ///|
@@ -1221,8 +1221,8 @@ extern "js" fn DelayOptions::to_js_ffi(self : DelayOptions) -> JsValue =
   #|   channelCount: self.channelCount,
   #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
-  #|   maxDelayTime: self.maxDelayTime,
-  #|   delayTime: self.delayTime
+  #|   maxDelayTime: ((() => { const v = self.maxDelayTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   delayTime: ((() => { const v = self.delayTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -1237,8 +1237,8 @@ extern "js" fn DelayOptions::from_js_ffi(value : JsValue) -> DelayOptions =
   #|   channelCount: v.channelCount,
   #|   channelCountMode: (v.channelCountMode === undefined ? undefined : ['max', 'clamped-max', 'explicit'].indexOf(v.channelCountMode)),
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
-  #|   maxDelayTime: v.maxDelayTime,
-  #|   delayTime: v.delayTime
+  #|   maxDelayTime: (v.maxDelayTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maxDelayTime }),
+  #|   delayTime: (v.delayTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.delayTime })
   #| })
 
 ///|
@@ -1283,11 +1283,11 @@ extern "js" fn DynamicsCompressorOptions::to_js_ffi(
   #|   channelCount: self.channelCount,
   #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
-  #|   attack: self.attack,
-  #|   knee: self.knee,
-  #|   ratio: self.ratio,
-  #|   release: self.release,
-  #|   threshold: self.threshold
+  #|   attack: ((() => { const v = self.attack; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   knee: ((() => { const v = self.knee; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   ratio: ((() => { const v = self.ratio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   release: ((() => { const v = self.release; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   threshold: ((() => { const v = self.threshold; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -1306,11 +1306,11 @@ extern "js" fn DynamicsCompressorOptions::from_js_ffi(
   #|   channelCount: v.channelCount,
   #|   channelCountMode: (v.channelCountMode === undefined ? undefined : ['max', 'clamped-max', 'explicit'].indexOf(v.channelCountMode)),
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
-  #|   attack: v.attack,
-  #|   knee: v.knee,
-  #|   ratio: v.ratio,
-  #|   release: v.release,
-  #|   threshold: v.threshold
+  #|   attack: (v.attack === undefined ? { $tag: 0 } : { $tag: 1, _0: v.attack }),
+  #|   knee: (v.knee === undefined ? { $tag: 0 } : { $tag: 1, _0: v.knee }),
+  #|   ratio: (v.ratio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ratio }),
+  #|   release: (v.release === undefined ? { $tag: 0 } : { $tag: 1, _0: v.release }),
+  #|   threshold: (v.threshold === undefined ? { $tag: 0 } : { $tag: 1, _0: v.threshold })
   #| })
 
 ///|
@@ -1347,7 +1347,7 @@ extern "js" fn GainOptions::to_js_ffi(self : GainOptions) -> JsValue =
   #|   channelCount: self.channelCount,
   #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
-  #|   gain: self.gain
+  #|   gain: ((() => { const v = self.gain; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -1362,7 +1362,7 @@ extern "js" fn GainOptions::from_js_ffi(value : JsValue) -> GainOptions =
   #|   channelCount: v.channelCount,
   #|   channelCountMode: (v.channelCountMode === undefined ? undefined : ['max', 'clamped-max', 'explicit'].indexOf(v.channelCountMode)),
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
-  #|   gain: v.gain
+  #|   gain: (v.gain === undefined ? { $tag: 0 } : { $tag: 1, _0: v.gain })
   #| })
 
 ///|
@@ -1600,8 +1600,8 @@ extern "js" fn OscillatorOptions::to_js_ffi(
   #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['sine', 'square', 'sawtooth', 'triangle', 'custom'][v]; })()),
-  #|   frequency: self.frequency,
-  #|   detune: self.detune,
+  #|   frequency: ((() => { const v = self.frequency; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   detune: ((() => { const v = self.detune; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   periodicWave: ((() => { const v = self.periodicWave; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -1620,8 +1620,8 @@ extern "js" fn OscillatorOptions::from_js_ffi(
   #|   channelCountMode: (v.channelCountMode === undefined ? undefined : ['max', 'clamped-max', 'explicit'].indexOf(v.channelCountMode)),
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
   #|   type_: (v.type === undefined ? undefined : ['sine', 'square', 'sawtooth', 'triangle', 'custom'].indexOf(v.type)),
-  #|   frequency: v.frequency,
-  #|   detune: v.detune,
+  #|   frequency: (v.frequency === undefined ? { $tag: 0 } : { $tag: 1, _0: v.frequency }),
+  #|   detune: (v.detune === undefined ? { $tag: 0 } : { $tag: 1, _0: v.detune }),
   #|   periodicWave: (v.periodicWave === undefined ? { $tag: 0 } : { $tag: 1, _0: v.periodicWave })
   #| })
 
@@ -1685,18 +1685,18 @@ extern "js" fn PannerOptions::to_js_ffi(self : PannerOptions) -> JsValue =
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   panningModel: ((() => { const v = self.panningModel; if (v === undefined) return undefined; return ['equalpower', 'HRTF'][v]; })()),
   #|   distanceModel: ((() => { const v = self.distanceModel; if (v === undefined) return undefined; return ['linear', 'inverse', 'exponential'][v]; })()),
-  #|   positionX: self.positionX,
-  #|   positionY: self.positionY,
-  #|   positionZ: self.positionZ,
-  #|   orientationX: self.orientationX,
-  #|   orientationY: self.orientationY,
-  #|   orientationZ: self.orientationZ,
-  #|   refDistance: self.refDistance,
-  #|   maxDistance: self.maxDistance,
-  #|   rolloffFactor: self.rolloffFactor,
-  #|   coneInnerAngle: self.coneInnerAngle,
-  #|   coneOuterAngle: self.coneOuterAngle,
-  #|   coneOuterGain: self.coneOuterGain
+  #|   positionX: ((() => { const v = self.positionX; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   positionY: ((() => { const v = self.positionY; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   positionZ: ((() => { const v = self.positionZ; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   orientationX: ((() => { const v = self.orientationX; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   orientationY: ((() => { const v = self.orientationY; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   orientationZ: ((() => { const v = self.orientationZ; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   refDistance: ((() => { const v = self.refDistance; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   maxDistance: ((() => { const v = self.maxDistance; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   rolloffFactor: ((() => { const v = self.rolloffFactor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   coneInnerAngle: ((() => { const v = self.coneInnerAngle; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   coneOuterAngle: ((() => { const v = self.coneOuterAngle; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   coneOuterGain: ((() => { const v = self.coneOuterGain; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -1713,18 +1713,18 @@ extern "js" fn PannerOptions::from_js_ffi(value : JsValue) -> PannerOptions =
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
   #|   panningModel: (v.panningModel === undefined ? undefined : ['equalpower', 'HRTF'].indexOf(v.panningModel)),
   #|   distanceModel: (v.distanceModel === undefined ? undefined : ['linear', 'inverse', 'exponential'].indexOf(v.distanceModel)),
-  #|   positionX: v.positionX,
-  #|   positionY: v.positionY,
-  #|   positionZ: v.positionZ,
-  #|   orientationX: v.orientationX,
-  #|   orientationY: v.orientationY,
-  #|   orientationZ: v.orientationZ,
-  #|   refDistance: v.refDistance,
-  #|   maxDistance: v.maxDistance,
-  #|   rolloffFactor: v.rolloffFactor,
-  #|   coneInnerAngle: v.coneInnerAngle,
-  #|   coneOuterAngle: v.coneOuterAngle,
-  #|   coneOuterGain: v.coneOuterGain
+  #|   positionX: (v.positionX === undefined ? { $tag: 0 } : { $tag: 1, _0: v.positionX }),
+  #|   positionY: (v.positionY === undefined ? { $tag: 0 } : { $tag: 1, _0: v.positionY }),
+  #|   positionZ: (v.positionZ === undefined ? { $tag: 0 } : { $tag: 1, _0: v.positionZ }),
+  #|   orientationX: (v.orientationX === undefined ? { $tag: 0 } : { $tag: 1, _0: v.orientationX }),
+  #|   orientationY: (v.orientationY === undefined ? { $tag: 0 } : { $tag: 1, _0: v.orientationY }),
+  #|   orientationZ: (v.orientationZ === undefined ? { $tag: 0 } : { $tag: 1, _0: v.orientationZ }),
+  #|   refDistance: (v.refDistance === undefined ? { $tag: 0 } : { $tag: 1, _0: v.refDistance }),
+  #|   maxDistance: (v.maxDistance === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maxDistance }),
+  #|   rolloffFactor: (v.rolloffFactor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rolloffFactor }),
+  #|   coneInnerAngle: (v.coneInnerAngle === undefined ? { $tag: 0 } : { $tag: 1, _0: v.coneInnerAngle }),
+  #|   coneOuterAngle: (v.coneOuterAngle === undefined ? { $tag: 0 } : { $tag: 1, _0: v.coneOuterAngle }),
+  #|   coneOuterGain: (v.coneOuterGain === undefined ? { $tag: 0 } : { $tag: 1, _0: v.coneOuterGain })
   #| })
 
 ///|
@@ -1851,7 +1851,7 @@ extern "js" fn StereoPannerOptions::to_js_ffi(
   #|   channelCount: self.channelCount,
   #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
-  #|   pan: self.pan
+  #|   pan: ((() => { const v = self.pan; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -1868,7 +1868,7 @@ extern "js" fn StereoPannerOptions::from_js_ffi(
   #|   channelCount: v.channelCount,
   #|   channelCountMode: (v.channelCountMode === undefined ? undefined : ['max', 'clamped-max', 'explicit'].indexOf(v.channelCountMode)),
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
-  #|   pan: v.pan
+  #|   pan: (v.pan === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pan })
   #| })
 
 ///|
@@ -2037,9 +2037,9 @@ extern "js" fn AudioParamDescriptor::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   defaultValue: self.defaultValue,
-  #|   minValue: self.minValue,
-  #|   maxValue: self.maxValue,
+  #|   defaultValue: ((() => { const v = self.defaultValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   minValue: ((() => { const v = self.minValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   maxValue: ((() => { const v = self.maxValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   automationRate: ((() => { const v = self.automationRate; if (v === undefined) return undefined; return ['a-rate', 'k-rate'][v]; })())
   #| })
 
@@ -2055,9 +2055,9 @@ extern "js" fn AudioParamDescriptor::from_js_ffi(
 ) -> AudioParamDescriptor =
   #| (v) => ({
   #|   name: v.name,
-  #|   defaultValue: v.defaultValue,
-  #|   minValue: v.minValue,
-  #|   maxValue: v.maxValue,
+  #|   defaultValue: (v.defaultValue === undefined ? { $tag: 0 } : { $tag: 1, _0: v.defaultValue }),
+  #|   minValue: (v.minValue === undefined ? { $tag: 0 } : { $tag: 1, _0: v.minValue }),
+  #|   maxValue: (v.maxValue === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maxValue }),
   #|   automationRate: (v.automationRate === undefined ? undefined : ['a-rate', 'k-rate'].indexOf(v.automationRate))
   #| })
 
@@ -2132,34 +2132,12 @@ pub(all) enum BaseAudioContextCreateBufferError {
 }
 
 ///|
-extern "js" fn classify_base_audio_context_create_buffer_error(
-  e : JsError,
-) -> BaseAudioContextCreateBufferError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum BaseAudioContextCreateIIRFilterError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_base_audio_context_create_iir_filter_error(
-  e : JsError,
-) -> BaseAudioContextCreateIIRFilterError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn BaseAudioContext::get_destination(
@@ -2235,7 +2213,7 @@ pub extern "js" fn BaseAudioContext::create_buffer(
   length : Int,
   sample_rate : Double,
 ) -> Result[AudioBuffer, BaseAudioContextCreateBufferError] =
-  #| (self, number_of_channels, length, sample_rate) => (() => { try { return { $tag: 0, _0: self.createBuffer(number_of_channels, length, sample_rate) }; } catch(e) { return { $tag: 1, _0: classify_base_audio_context_create_buffer_error(e) }; } })()
+  #| (self, number_of_channels, length, sample_rate) => (() => { try { return { $tag: 1, _0: self.createBuffer(number_of_channels, length, sample_rate) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn BaseAudioContext::create_buffer_source(
@@ -2312,7 +2290,7 @@ pub extern "js" fn BaseAudioContext::create_iir_filter(
   feedforward : Array[Double],
   feedback : Array[Double],
 ) -> Result[IIRFilterNode, BaseAudioContextCreateIIRFilterError] =
-  #| (self, feedforward, feedback) => (() => { try { return { $tag: 0, _0: self.createIIRFilter(feedforward, feedback) }; } catch(e) { return { $tag: 1, _0: classify_base_audio_context_create_iir_filter_error(e) }; } })()
+  #| (self, feedforward, feedback) => (() => { try { return { $tag: 1, _0: self.createIIRFilter(feedforward, feedback) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn BaseAudioContext::create_oscillator(
@@ -2452,16 +2430,6 @@ pub(all) enum AudioContextConstructorError {
 }
 
 ///|
-extern "js" fn classify_audio_context_constructor_error(
-  e : JsError,
-) -> AudioContextConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum AudioContextSetSinkIdError {
   NotFoundError(JsError)
@@ -2471,29 +2439,17 @@ pub(all) enum AudioContextSetSinkIdError {
 }
 
 ///|
-extern "js" fn classify_audio_context_set_sink_id_error(
-  e : JsError,
-) -> AudioContextSetSinkIdError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 pub extern "js" fn AudioContext::new() -> Result[
   AudioContext,
   AudioContextConstructorError,
 ] =
-  #| () => (() => { try { return { $tag: 0, _0: new AudioContext() }; } catch(e) { return { $tag: 1, _0: classify_audio_context_constructor_error(e) }; } })()
+  #| () => (() => { try { return { $tag: 1, _0: new AudioContext() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn AudioContext::new_with_context_options_ffi(
   context_options : JsValue,
 ) -> Result[AudioContext, AudioContextConstructorError] =
-  #| (context_options) => (() => { try { return { $tag: 0, _0: new AudioContext(context_options) }; } catch(e) { return { $tag: 1, _0: classify_audio_context_constructor_error(e) }; } })()
+  #| (context_options) => (() => { try { return { $tag: 1, _0: new AudioContext(context_options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn AudioContext::new_with_context_options(
@@ -2573,7 +2529,7 @@ pub extern "js" fn AudioContext::set_sink_id(
   self : AudioContext,
   sink_id : StringOrAudioSinkOptions,
 ) -> Promise[Result[Unit, AudioContextSetSinkIdError]] =
-  #| (self, sink_id) => self.setSinkId(sink_id).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_audio_context_set_sink_id_error(e) }))
+  #| (self, sink_id) => self.setSinkId(sink_id).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn AudioContext::create_media_element_source(
@@ -2698,31 +2654,11 @@ pub(all) enum OfflineAudioContextResumeError {
 }
 
 ///|
-extern "js" fn classify_offline_audio_context_resume_error(
-  e : JsError,
-) -> OfflineAudioContextResumeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum OfflineAudioContextSuspendError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_offline_audio_context_suspend_error(
-  e : JsError,
-) -> OfflineAudioContextSuspendError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 extern "js" fn OfflineAudioContext::new_ffi(
@@ -2755,14 +2691,14 @@ pub extern "js" fn OfflineAudioContext::start_rendering(
 pub extern "js" fn OfflineAudioContext::resume_(
   self : OfflineAudioContext,
 ) -> Promise[Result[Unit, OfflineAudioContextResumeError]] =
-  #| (self) => self.resume().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_offline_audio_context_resume_error(e) }))
+  #| (self) => self.resume().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn OfflineAudioContext::suspend(
   self : OfflineAudioContext,
   suspend_time : Double,
 ) -> Promise[Result[Unit, OfflineAudioContextSuspendError]] =
-  #| (self, suspend_time) => self.suspend(suspend_time).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_offline_audio_context_suspend_error(e) }))
+  #| (self, suspend_time) => self.suspend(suspend_time).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn OfflineAudioContext::get_length(
@@ -2885,17 +2821,6 @@ pub(all) enum AudioBufferConstructorError {
 }
 
 ///|
-extern "js" fn classify_audio_buffer_constructor_error(
-  e : JsError,
-) -> AudioBufferConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum AudioBufferCopyFromChannelError {
   IndexSizeError(JsError)
@@ -2903,20 +2828,10 @@ pub(all) enum AudioBufferCopyFromChannelError {
 }
 
 ///|
-extern "js" fn classify_audio_buffer_copy_from_channel_error(
-  e : JsError,
-) -> AudioBufferCopyFromChannelError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'indexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 extern "js" fn AudioBuffer::new_ffi(
   options : JsValue,
 ) -> Result[AudioBuffer, AudioBufferConstructorError] =
-  #| (options) => (() => { try { return { $tag: 0, _0: new AudioBuffer(options) }; } catch(e) { return { $tag: 1, _0: classify_audio_buffer_constructor_error(e) }; } })()
+  #| (options) => (() => { try { return { $tag: 1, _0: new AudioBuffer(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn AudioBuffer::new(
@@ -2956,7 +2871,7 @@ pub extern "js" fn AudioBuffer::copy_from_channel(
   destination : Float32Array,
   channel_number : Int,
 ) -> Result[Unit, AudioBufferCopyFromChannelError] =
-  #| (self, destination, channel_number) => (() => { try { self.copyFromChannel(destination, channel_number); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_buffer_copy_from_channel_error(e) }; } })()
+  #| (self, destination, channel_number) => (() => { try { self.copyFromChannel(destination, channel_number); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'indexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioBuffer::copy_from_channel_with_buffer_offset(
@@ -2965,7 +2880,7 @@ pub extern "js" fn AudioBuffer::copy_from_channel_with_buffer_offset(
   channel_number : Int,
   buffer_offset : Int,
 ) -> Result[Unit, AudioBufferCopyFromChannelError] =
-  #| (self, destination, channel_number, buffer_offset) => (() => { try { self.copyFromChannel(destination, channel_number, buffer_offset); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_buffer_copy_from_channel_error(e) }; } })()
+  #| (self, destination, channel_number, buffer_offset) => (() => { try { self.copyFromChannel(destination, channel_number, buffer_offset); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'indexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioBuffer::copy_to_channel(
@@ -3158,18 +3073,6 @@ pub(all) enum AudioNodeConnectError {
 }
 
 ///|
-extern "js" fn classify_audio_node_connect_error(
-  e : JsError,
-) -> AudioNodeConnectError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum AudioNodeDisconnectError {
   IndexSizeError(JsError)
@@ -3178,22 +3081,11 @@ pub(all) enum AudioNodeDisconnectError {
 }
 
 ///|
-extern "js" fn classify_audio_node_disconnect_error(
-  e : JsError,
-) -> AudioNodeDisconnectError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn AudioNode::connect(
   self : AudioNode,
   destination_node : AudioNode,
 ) -> Result[AudioNode, AudioNodeConnectError] =
-  #| (self, destination_node) => (() => { try { return { $tag: 0, _0: self.connect(destination_node) }; } catch(e) { return { $tag: 1, _0: classify_audio_node_connect_error(e) }; } })()
+  #| (self, destination_node) => (() => { try { return { $tag: 1, _0: self.connect(destination_node) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioNode::connect_with_input(
@@ -3202,14 +3094,14 @@ pub extern "js" fn AudioNode::connect_with_input(
   output : Int,
   input : Int,
 ) -> Result[AudioNode, AudioNodeConnectError] =
-  #| (self, destination_node, output, input) => (() => { try { return { $tag: 0, _0: self.connect(destination_node, output, input) }; } catch(e) { return { $tag: 1, _0: classify_audio_node_connect_error(e) }; } })()
+  #| (self, destination_node, output, input) => (() => { try { return { $tag: 1, _0: self.connect(destination_node, output, input) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioNode::connect_with_destination_param_audio_param(
   self : AudioNode,
   destination_param : AudioParam,
 ) -> Result[Unit, AudioNodeConnectError] =
-  #| (self, destination_param) => (() => { try { self.connect(destination_param); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_node_connect_error(e) }; } })()
+  #| (self, destination_param) => (() => { try { self.connect(destination_param); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioNode::connect_with_destination_param_audio_param_and_output(
@@ -3217,34 +3109,34 @@ pub extern "js" fn AudioNode::connect_with_destination_param_audio_param_and_out
   destination_param : AudioParam,
   output : Int,
 ) -> Result[Unit, AudioNodeConnectError] =
-  #| (self, destination_param, output) => (() => { try { self.connect(destination_param, output); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_node_connect_error(e) }; } })()
+  #| (self, destination_param, output) => (() => { try { self.connect(destination_param, output); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioNode::disconnect(
   self : AudioNode,
 ) -> Result[Unit, AudioNodeDisconnectError] =
-  #| (self) => (() => { try { self.disconnect(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_node_disconnect_error(e) }; } })()
+  #| (self) => (() => { try { self.disconnect(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioNode::disconnect_with_output(
   self : AudioNode,
   output : Int,
 ) -> Result[Unit, AudioNodeDisconnectError] =
-  #| (self, output) => (() => { try { self.disconnect(output); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_node_disconnect_error(e) }; } })()
+  #| (self, output) => (() => { try { self.disconnect(output); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioNode::disconnect_with_destination_node_audio_node(
   self : AudioNode,
   destination_node : AudioNode,
 ) -> Result[Unit, AudioNodeDisconnectError] =
-  #| (self, destination_node) => (() => { try { self.disconnect(destination_node); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_node_disconnect_error(e) }; } })()
+  #| (self, destination_node) => (() => { try { self.disconnect(destination_node); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioNode::disconnect_with_destination_param_audio_param(
   self : AudioNode,
   destination_param : AudioParam,
 ) -> Result[Unit, AudioNodeDisconnectError] =
-  #| (self, destination_param) => (() => { try { self.disconnect(destination_param); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_node_disconnect_error(e) }; } })()
+  #| (self, destination_param) => (() => { try { self.disconnect(destination_param); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioNode::disconnect_with_destination_node_audio_node_and_output(
@@ -3252,7 +3144,7 @@ pub extern "js" fn AudioNode::disconnect_with_destination_node_audio_node_and_ou
   destination_node : AudioNode,
   output : Int,
 ) -> Result[Unit, AudioNodeDisconnectError] =
-  #| (self, destination_node, output) => (() => { try { self.disconnect(destination_node, output); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_node_disconnect_error(e) }; } })()
+  #| (self, destination_node, output) => (() => { try { self.disconnect(destination_node, output); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioNode::disconnect_with_destination_param_audio_param_and_output(
@@ -3260,7 +3152,7 @@ pub extern "js" fn AudioNode::disconnect_with_destination_param_audio_param_and_
   destination_param : AudioParam,
   output : Int,
 ) -> Result[Unit, AudioNodeDisconnectError] =
-  #| (self, destination_param, output) => (() => { try { self.disconnect(destination_param, output); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_node_disconnect_error(e) }; } })()
+  #| (self, destination_param, output) => (() => { try { self.disconnect(destination_param, output); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioNode::disconnect_with_destination_node_audio_node_and_output_and_input(
@@ -3269,7 +3161,7 @@ pub extern "js" fn AudioNode::disconnect_with_destination_node_audio_node_and_ou
   output : Int,
   input : Int,
 ) -> Result[Unit, AudioNodeDisconnectError] =
-  #| (self, destination_node, output, input) => (() => { try { self.disconnect(destination_node, output, input); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_node_disconnect_error(e) }; } })()
+  #| (self, destination_node, output, input) => (() => { try { self.disconnect(destination_node, output, input); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioNode::get_context(self : AudioNode) -> BaseAudioContext =
@@ -3358,18 +3250,6 @@ pub(all) enum AudioParamSetValueCurveAtTimeError {
 }
 
 ///|
-extern "js" fn classify_audio_param_set_value_curve_at_time_error(
-  e : JsError,
-) -> AudioParamSetValueCurveAtTimeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'RangeError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 pub extern "js" fn AudioParam::get_value(self : AudioParam) -> Double =
   #| (self) => self.value
 
@@ -3445,7 +3325,7 @@ pub extern "js" fn AudioParam::set_value_curve_at_time(
   start_time : Double,
   duration : Double,
 ) -> Result[AudioParam, AudioParamSetValueCurveAtTimeError] =
-  #| (self, values, start_time, duration) => (() => { try { return { $tag: 0, _0: self.setValueCurveAtTime(values, start_time, duration) }; } catch(e) { return { $tag: 1, _0: classify_audio_param_set_value_curve_at_time_error(e) }; } })()
+  #| (self, values, start_time, duration) => (() => { try { return { $tag: 1, _0: self.setValueCurveAtTime(values, start_time, duration) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioParam::cancel_scheduled_values(
@@ -3538,34 +3418,12 @@ pub(all) enum AudioScheduledSourceNodeStartError {
 }
 
 ///|
-extern "js" fn classify_audio_scheduled_source_node_start_error(
-  e : JsError,
-) -> AudioScheduledSourceNodeStartError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateNode') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum AudioScheduledSourceNodeStopError {
   RangeError(JsError)
   InvalidStateNode(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_audio_scheduled_source_node_stop_error(
-  e : JsError,
-) -> AudioScheduledSourceNodeStopError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateNode') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn AudioScheduledSourceNode::set_onended(
@@ -3584,27 +3442,27 @@ pub extern "js" fn AudioScheduledSourceNode::clear_onended(
 pub extern "js" fn AudioScheduledSourceNode::start(
   self : AudioScheduledSourceNode,
 ) -> Result[Unit, AudioScheduledSourceNodeStartError] =
-  #| (self) => (() => { try { self.start(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_scheduled_source_node_start_error(e) }; } })()
+  #| (self) => (() => { try { self.start(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateNode') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioScheduledSourceNode::start_with_when(
   self : AudioScheduledSourceNode,
   when : Double,
 ) -> Result[Unit, AudioScheduledSourceNodeStartError] =
-  #| (self, when) => (() => { try { self.start(when); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_scheduled_source_node_start_error(e) }; } })()
+  #| (self, when) => (() => { try { self.start(when); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateNode') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioScheduledSourceNode::stop(
   self : AudioScheduledSourceNode,
 ) -> Result[Unit, AudioScheduledSourceNodeStopError] =
-  #| (self) => (() => { try { self.stop(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_scheduled_source_node_stop_error(e) }; } })()
+  #| (self) => (() => { try { self.stop(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateNode') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioScheduledSourceNode::stop_with_when(
   self : AudioScheduledSourceNode,
   when : Double,
 ) -> Result[Unit, AudioScheduledSourceNodeStopError] =
-  #| (self, when) => (() => { try { self.stop(when); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_scheduled_source_node_stop_error(e) }; } })()
+  #| (self, when) => (() => { try { self.stop(when); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateNode') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// AnalyserNode interface
@@ -3656,31 +3514,11 @@ pub(all) enum AnalyserNodeSetFftSizeError {
 }
 
 ///|
-extern "js" fn classify_analyser_node_set_fft_size_error(
-  e : JsError,
-) -> AnalyserNodeSetFftSizeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum AnalyserNodeSetMaxDecibelsError {
   IndexSizeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_analyser_node_set_max_decibels_error(
-  e : JsError,
-) -> AnalyserNodeSetMaxDecibelsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn AnalyserNode::new(
@@ -3740,7 +3578,7 @@ pub extern "js" fn AnalyserNode::set_fft_size(
   self : AnalyserNode,
   value : Int,
 ) -> Result[Unit, AnalyserNodeSetFftSizeError] =
-  #| (self, value) => (() => { try { self.fftSize = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_analyser_node_set_fft_size_error(e) }; } })()
+  #| (self, value) => (() => { try { self.fftSize = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AnalyserNode::get_frequency_bin_count(
@@ -3772,7 +3610,7 @@ pub extern "js" fn AnalyserNode::set_max_decibels(
   self : AnalyserNode,
   value : Double,
 ) -> Result[Unit, AnalyserNodeSetMaxDecibelsError] =
-  #| (self, value) => (() => { try { self.maxDecibels = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_analyser_node_set_max_decibels_error(e) }; } })()
+  #| (self, value) => (() => { try { self.maxDecibels = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AnalyserNode::get_smoothing_time_constant(
@@ -3850,17 +3688,6 @@ pub(all) enum AudioBufferSourceNodeStartError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_audio_buffer_source_node_start_error(
-  e : JsError,
-) -> AudioBufferSourceNodeStartError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn AudioBufferSourceNode::new(
@@ -3951,7 +3778,7 @@ pub extern "js" fn AudioBufferSourceNode::set_loop_end(
 pub extern "js" fn AudioBufferSourceNode::start(
   self : AudioBufferSourceNode,
 ) -> Result[Unit, AudioBufferSourceNodeStartError] =
-  #| (self) => (() => { try { self.start(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_buffer_source_node_start_error(e) }; } })()
+  #| (self) => (() => { try { self.start(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioBufferSourceNode::start_with_duration(
@@ -3960,7 +3787,7 @@ pub extern "js" fn AudioBufferSourceNode::start_with_duration(
   offset : Double,
   duration : Double,
 ) -> Result[Unit, AudioBufferSourceNodeStartError] =
-  #| (self, when, offset, duration) => (() => { try { self.start(when, offset, duration); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_buffer_source_node_start_error(e) }; } })()
+  #| (self, when, offset, duration) => (() => { try { self.start(when, offset, duration); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// AudioDestinationNode interface
@@ -4255,16 +4082,6 @@ pub(all) enum BiquadFilterNodeGetFrequencyResponseError {
 }
 
 ///|
-extern "js" fn classify_biquad_filter_node_get_frequency_response_error(
-  e : JsError,
-) -> BiquadFilterNodeGetFrequencyResponseError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidAccessError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn BiquadFilterNode::new(
   context : BaseAudioContext,
 ) -> BiquadFilterNode =
@@ -4329,7 +4146,7 @@ pub extern "js" fn BiquadFilterNode::get_frequency_response(
   mag_response : Float32Array,
   phase_response : Float32Array,
 ) -> Result[Unit, BiquadFilterNodeGetFrequencyResponseError] =
-  #| (self, frequency_hz, mag_response, phase_response) => (() => { try { self.getFrequencyResponse(frequency_hz, mag_response, phase_response); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_biquad_filter_node_get_frequency_response_error(e) }; } })()
+  #| (self, frequency_hz, mag_response, phase_response) => (() => { try { self.getFrequencyResponse(frequency_hz, mag_response, phase_response); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidAccessError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// ChannelMergerNode interface
@@ -4389,27 +4206,17 @@ pub(all) enum ChannelMergerNodeConstructorError {
 }
 
 ///|
-extern "js" fn classify_channel_merger_node_constructor_error(
-  e : JsError,
-) -> ChannelMergerNodeConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn ChannelMergerNode::new(
   context : BaseAudioContext,
 ) -> Result[ChannelMergerNode, ChannelMergerNodeConstructorError] =
-  #| (context) => (() => { try { return { $tag: 0, _0: new ChannelMergerNode(context) }; } catch(e) { return { $tag: 1, _0: classify_channel_merger_node_constructor_error(e) }; } })()
+  #| (context) => (() => { try { return { $tag: 1, _0: new ChannelMergerNode(context) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn ChannelMergerNode::new_with_options_ffi(
   context : BaseAudioContext,
   options : JsValue,
 ) -> Result[ChannelMergerNode, ChannelMergerNodeConstructorError] =
-  #| (context, options) => (() => { try { return { $tag: 0, _0: new ChannelMergerNode(context, options) }; } catch(e) { return { $tag: 1, _0: classify_channel_merger_node_constructor_error(e) }; } })()
+  #| (context, options) => (() => { try { return { $tag: 1, _0: new ChannelMergerNode(context, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn ChannelMergerNode::new_with_options(
@@ -4623,27 +4430,17 @@ pub(all) enum ConvolverNodeConstructorError {
 }
 
 ///|
-extern "js" fn classify_convolver_node_constructor_error(
-  e : JsError,
-) -> ConvolverNodeConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn ConvolverNode::new(
   context : BaseAudioContext,
 ) -> Result[ConvolverNode, ConvolverNodeConstructorError] =
-  #| (context) => (() => { try { return { $tag: 0, _0: new ConvolverNode(context) }; } catch(e) { return { $tag: 1, _0: classify_convolver_node_constructor_error(e) }; } })()
+  #| (context) => (() => { try { return { $tag: 1, _0: new ConvolverNode(context) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn ConvolverNode::new_with_options_ffi(
   context : BaseAudioContext,
   options : JsValue,
 ) -> Result[ConvolverNode, ConvolverNodeConstructorError] =
-  #| (context, options) => (() => { try { return { $tag: 0, _0: new ConvolverNode(context, options) }; } catch(e) { return { $tag: 1, _0: classify_convolver_node_constructor_error(e) }; } })()
+  #| (context, options) => (() => { try { return { $tag: 1, _0: new ConvolverNode(context, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn ConvolverNode::new_with_options(
@@ -4954,16 +4751,6 @@ pub(all) enum IIRFilterNodeGetFrequencyResponseError {
 }
 
 ///|
-extern "js" fn classify_iir_filter_node_get_frequency_response_error(
-  e : JsError,
-) -> IIRFilterNodeGetFrequencyResponseError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 extern "js" fn IIRFilterNode::new_ffi(
   context : BaseAudioContext,
   options : JsValue,
@@ -4985,7 +4772,7 @@ pub extern "js" fn IIRFilterNode::get_frequency_response(
   mag_response : Float32Array,
   phase_response : Float32Array,
 ) -> Result[Unit, IIRFilterNodeGetFrequencyResponseError] =
-  #| (self, frequency_hz, mag_response, phase_response) => (() => { try { self.getFrequencyResponse(frequency_hz, mag_response, phase_response); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_iir_filter_node_get_frequency_response_error(e) }; } })()
+  #| (self, frequency_hz, mag_response, phase_response) => (() => { try { self.getFrequencyResponse(frequency_hz, mag_response, phase_response); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// MediaElementAudioSourceNode interface
@@ -5196,16 +4983,6 @@ pub(all) enum MediaStreamAudioSourceNodeConstructorError {
 }
 
 ///|
-extern "js" fn classify_media_stream_audio_source_node_constructor_error(
-  e : JsError,
-) -> MediaStreamAudioSourceNodeConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 extern "js" fn MediaStreamAudioSourceNode::new_ffi(
   context : AudioContext,
   options : JsValue,
@@ -5213,7 +4990,7 @@ extern "js" fn MediaStreamAudioSourceNode::new_ffi(
   MediaStreamAudioSourceNode,
   MediaStreamAudioSourceNodeConstructorError,
 ] =
-  #| (context, options) => (() => { try { return { $tag: 0, _0: new MediaStreamAudioSourceNode(context, options) }; } catch(e) { return { $tag: 1, _0: classify_media_stream_audio_source_node_constructor_error(e) }; } })()
+  #| (context, options) => (() => { try { return { $tag: 1, _0: new MediaStreamAudioSourceNode(context, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn MediaStreamAudioSourceNode::new(
@@ -5291,17 +5068,6 @@ pub(all) enum MediaStreamTrackAudioSourceNodeConstructorError {
 }
 
 ///|
-extern "js" fn classify_media_stream_track_audio_source_node_constructor_error(
-  e : JsError,
-) -> MediaStreamTrackAudioSourceNodeConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 extern "js" fn MediaStreamTrackAudioSourceNode::new_ffi(
   context : AudioContext,
   options : JsValue,
@@ -5309,7 +5075,7 @@ extern "js" fn MediaStreamTrackAudioSourceNode::new_ffi(
   MediaStreamTrackAudioSourceNode,
   MediaStreamTrackAudioSourceNodeConstructorError,
 ] =
-  #| (context, options) => (() => { try { return { $tag: 0, _0: new MediaStreamTrackAudioSourceNode(context, options) }; } catch(e) { return { $tag: 1, _0: classify_media_stream_track_audio_source_node_constructor_error(e) }; } })()
+  #| (context, options) => (() => { try { return { $tag: 1, _0: new MediaStreamTrackAudioSourceNode(context, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn MediaStreamTrackAudioSourceNode::new(
@@ -5384,16 +5150,6 @@ pub(all) enum OscillatorNodeSetTypeError {
 }
 
 ///|
-extern "js" fn classify_oscillator_node_set_type_error(
-  e : JsError,
-) -> OscillatorNodeSetTypeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn OscillatorNode::new(
   context : BaseAudioContext,
 ) -> OscillatorNode =
@@ -5425,7 +5181,7 @@ pub extern "js" fn OscillatorNode::set_type(
   self : OscillatorNode,
   value : OscillatorType,
 ) -> Result[Unit, OscillatorNodeSetTypeError] =
-  #| (self, value) => (() => { try { self.type = ['sine', 'square', 'sawtooth', 'triangle', 'custom'][value]; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_oscillator_node_set_type_error(e) }; } })()
+  #| (self, value) => (() => { try { self.type = ['sine', 'square', 'sawtooth', 'triangle', 'custom'][value]; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn OscillatorNode::get_frequency(
@@ -5493,32 +5249,11 @@ pub(all) enum PannerNodeConstructorError {
 }
 
 ///|
-extern "js" fn classify_panner_node_constructor_error(
-  e : JsError,
-) -> PannerNodeConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum PannerNodeSetRefDistanceError {
   RangeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_panner_node_set_ref_distance_error(
-  e : JsError,
-) -> PannerNodeSetRefDistanceError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -5528,31 +5263,11 @@ pub(all) enum PannerNodeSetMaxDistanceError {
 }
 
 ///|
-extern "js" fn classify_panner_node_set_max_distance_error(
-  e : JsError,
-) -> PannerNodeSetMaxDistanceError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum PannerNodeSetRolloffFactorError {
   RangeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_panner_node_set_rolloff_factor_error(
-  e : JsError,
-) -> PannerNodeSetRolloffFactorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -5562,27 +5277,17 @@ pub(all) enum PannerNodeSetConeOuterGainError {
 }
 
 ///|
-extern "js" fn classify_panner_node_set_cone_outer_gain_error(
-  e : JsError,
-) -> PannerNodeSetConeOuterGainError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn PannerNode::new(
   context : BaseAudioContext,
 ) -> Result[PannerNode, PannerNodeConstructorError] =
-  #| (context) => (() => { try { return { $tag: 0, _0: new PannerNode(context) }; } catch(e) { return { $tag: 1, _0: classify_panner_node_constructor_error(e) }; } })()
+  #| (context) => (() => { try { return { $tag: 1, _0: new PannerNode(context) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn PannerNode::new_with_options_ffi(
   context : BaseAudioContext,
   options : JsValue,
 ) -> Result[PannerNode, PannerNodeConstructorError] =
-  #| (context, options) => (() => { try { return { $tag: 0, _0: new PannerNode(context, options) }; } catch(e) { return { $tag: 1, _0: classify_panner_node_constructor_error(e) }; } })()
+  #| (context, options) => (() => { try { return { $tag: 1, _0: new PannerNode(context, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn PannerNode::new_with_options(
@@ -5657,7 +5362,7 @@ pub extern "js" fn PannerNode::set_ref_distance(
   self : PannerNode,
   value : Double,
 ) -> Result[Unit, PannerNodeSetRefDistanceError] =
-  #| (self, value) => (() => { try { self.refDistance = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_panner_node_set_ref_distance_error(e) }; } })()
+  #| (self, value) => (() => { try { self.refDistance = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn PannerNode::get_max_distance(self : PannerNode) -> Double =
@@ -5668,7 +5373,7 @@ pub extern "js" fn PannerNode::set_max_distance(
   self : PannerNode,
   value : Double,
 ) -> Result[Unit, PannerNodeSetMaxDistanceError] =
-  #| (self, value) => (() => { try { self.maxDistance = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_panner_node_set_max_distance_error(e) }; } })()
+  #| (self, value) => (() => { try { self.maxDistance = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn PannerNode::get_rolloff_factor(self : PannerNode) -> Double =
@@ -5679,7 +5384,7 @@ pub extern "js" fn PannerNode::set_rolloff_factor(
   self : PannerNode,
   value : Double,
 ) -> Result[Unit, PannerNodeSetRolloffFactorError] =
-  #| (self, value) => (() => { try { self.rolloffFactor = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_panner_node_set_rolloff_factor_error(e) }; } })()
+  #| (self, value) => (() => { try { self.rolloffFactor = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn PannerNode::get_cone_inner_angle(
@@ -5716,7 +5421,7 @@ pub extern "js" fn PannerNode::set_cone_outer_gain(
   self : PannerNode,
   value : Double,
 ) -> Result[Unit, PannerNodeSetConeOuterGainError] =
-  #| (self, value) => (() => { try { self.coneOuterGain = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_panner_node_set_cone_outer_gain_error(e) }; } })()
+  #| (self, value) => (() => { try { self.coneOuterGain = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// @alert deprecated "setPosition is deprecated"
@@ -6121,23 +5826,12 @@ pub(all) enum AudioWorkletGlobalScopeRegisterProcessorError {
 }
 
 ///|
-extern "js" fn classify_audio_worklet_global_scope_register_processor_error(
-  e : JsError,
-) -> AudioWorkletGlobalScopeRegisterProcessorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn AudioWorkletGlobalScope::register_processor(
   self : AudioWorkletGlobalScope,
   name : String,
   processor_ctor : AudioWorkletProcessorConstructor,
 ) -> Result[Unit, AudioWorkletGlobalScopeRegisterProcessorError] =
-  #| (self, name, processor_ctor) => (() => { try { self.registerProcessor(name, processor_ctor); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_audio_worklet_global_scope_register_processor_error(e) }; } })()
+  #| (self, name, processor_ctor) => (() => { try { self.registerProcessor(name, processor_ctor); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioWorkletGlobalScope::get_current_frame(
@@ -6274,22 +5968,11 @@ pub(all) enum AudioWorkletNodeConstructorError {
 }
 
 ///|
-extern "js" fn classify_audio_worklet_node_constructor_error(
-  e : JsError,
-) -> AudioWorkletNodeConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn AudioWorkletNode::new(
   context : BaseAudioContext,
   name : String,
 ) -> Result[AudioWorkletNode, AudioWorkletNodeConstructorError] =
-  #| (context, name) => (() => { try { return { $tag: 0, _0: new AudioWorkletNode(context, name) }; } catch(e) { return { $tag: 1, _0: classify_audio_worklet_node_constructor_error(e) }; } })()
+  #| (context, name) => (() => { try { return { $tag: 1, _0: new AudioWorkletNode(context, name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn AudioWorkletNode::new_with_options_ffi(
@@ -6297,7 +5980,7 @@ extern "js" fn AudioWorkletNode::new_with_options_ffi(
   name : String,
   options : JsValue,
 ) -> Result[AudioWorkletNode, AudioWorkletNodeConstructorError] =
-  #| (context, name, options) => (() => { try { return { $tag: 0, _0: new AudioWorkletNode(context, name, options) }; } catch(e) { return { $tag: 1, _0: classify_audio_worklet_node_constructor_error(e) }; } })()
+  #| (context, name, options) => (() => { try { return { $tag: 1, _0: new AudioWorkletNode(context, name, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn AudioWorkletNode::new_with_options(

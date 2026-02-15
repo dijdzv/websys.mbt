@@ -1103,31 +1103,11 @@ pub(all) enum WebGLRenderingContextBlendEquationError {
 }
 
 ///|
-extern "js" fn classify_web_gl_rendering_context_blend_equation_error(
-  e : JsError,
-) -> WebGLRenderingContextBlendEquationError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'undefined') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WebGLRenderingContextCompileShaderError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_web_gl_rendering_context_compile_shader_error(
-  e : JsError,
-) -> WebGLRenderingContextCompileShaderError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -1137,33 +1117,12 @@ pub(all) enum WebGLRenderingContextShaderSourceError {
 }
 
 ///|
-extern "js" fn classify_web_gl_rendering_context_shader_source_error(
-  e : JsError,
-) -> WebGLRenderingContextShaderSourceError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum WebGLRenderingContextMakeXRCompatibleError {
   AbortError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_web_gl_rendering_context_make_xr_compatible_error(
-  e : JsError,
-) -> WebGLRenderingContextMakeXRCompatibleError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'AbortError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 // WebGLRenderingContext.DEPTH_BUFFER_BIT
 
@@ -2805,7 +2764,7 @@ pub extern "js" fn WebGLRenderingContext::blend_equation(
   self : WebGLRenderingContext,
   mode : GLenum,
 ) -> Result[Unit, WebGLRenderingContextBlendEquationError] =
-  #| (self, mode) => (() => { try { self.blendEquation(mode); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_web_gl_rendering_context_blend_equation_error(e) }; } })()
+  #| (self, mode) => (() => { try { self.blendEquation(mode); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'undefined') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebGLRenderingContext::blend_equation_separate(
@@ -2886,7 +2845,7 @@ pub extern "js" fn WebGLRenderingContext::compile_shader(
   self : WebGLRenderingContext,
   shader : WebGLShader,
 ) -> Result[Unit, WebGLRenderingContextCompileShaderError] =
-  #| (self, shader) => (() => { try { self.compileShader(shader); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_web_gl_rendering_context_compile_shader_error(e) }; } })()
+  #| (self, shader) => (() => { try { self.compileShader(shader); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebGLRenderingContext::copy_tex_image_2d(
@@ -3401,7 +3360,7 @@ pub extern "js" fn WebGLRenderingContext::shader_source(
   shader : WebGLShader,
   source : String,
 ) -> Result[Unit, WebGLRenderingContextShaderSourceError] =
-  #| (self, shader, source) => (() => { try { self.shaderSource(shader, source); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_web_gl_rendering_context_shader_source_error(e) }; } })()
+  #| (self, shader, source) => (() => { try { self.shaderSource(shader, source); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebGLRenderingContext::stencil_func(
@@ -3660,7 +3619,7 @@ pub extern "js" fn WebGLRenderingContext::viewport(
 pub extern "js" fn WebGLRenderingContext::make_xr_compatible(
   self : WebGLRenderingContext,
 ) -> Promise[Result[Unit, WebGLRenderingContextMakeXRCompatibleError]] =
-  #| (self) => self.makeXRCompatible().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_web_gl_rendering_context_make_xr_compatible_error(e) }))
+  #| (self) => self.makeXRCompatible().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::buffer_data(

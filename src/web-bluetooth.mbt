@@ -858,16 +858,6 @@ pub(all) enum BluetoothGetDevicesError {
 }
 
 ///|
-extern "js" fn classify_bluetooth_get_devices_error(
-  e : JsError,
-) -> BluetoothGetDevicesError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum BluetoothRequestDeviceError {
   TypeError(JsError)
@@ -875,18 +865,6 @@ pub(all) enum BluetoothRequestDeviceError {
   SecurityError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_bluetooth_request_device_error(
-  e : JsError,
-) -> BluetoothRequestDeviceError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn Bluetooth::get_availability(
@@ -917,20 +895,20 @@ pub extern "js" fn Bluetooth::get_referring_device(
 pub extern "js" fn Bluetooth::get_devices(
   self : Bluetooth,
 ) -> Promise[Result[Array[BluetoothDevice], BluetoothGetDevicesError]] =
-  #| (self) => self.getDevices().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_bluetooth_get_devices_error(e) }))
+  #| (self) => self.getDevices().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Bluetooth::request_device(
   self : Bluetooth,
 ) -> Promise[Result[BluetoothDevice, BluetoothRequestDeviceError]] =
-  #| (self) => self.requestDevice().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_bluetooth_request_device_error(e) }))
+  #| (self) => self.requestDevice().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn Bluetooth::request_device_with_options_ffi(
   self : Bluetooth,
   options : JsValue,
 ) -> Promise[Result[BluetoothDevice, BluetoothRequestDeviceError]] =
-  #| (self, options) => self.requestDevice(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_bluetooth_request_device_error(e) }))
+  #| (self, options) => self.requestDevice(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn Bluetooth::request_device_with_options(
@@ -2275,31 +2253,11 @@ pub(all) enum BluetoothUUIDGetServiceError {
 }
 
 ///|
-extern "js" fn classify_bluetooth_uuid_get_service_error(
-  e : JsError,
-) -> BluetoothUUIDGetServiceError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum BluetoothUUIDGetCharacteristicError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_bluetooth_uuid_get_characteristic_error(
-  e : JsError,
-) -> BluetoothUUIDGetCharacteristicError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2309,32 +2267,22 @@ pub(all) enum BluetoothUUIDGetDescriptorError {
 }
 
 ///|
-extern "js" fn classify_bluetooth_uuid_get_descriptor_error(
-  e : JsError,
-) -> BluetoothUUIDGetDescriptorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn BluetoothUUID::get_service(
   name : StringOrInt,
 ) -> Result[UUID, BluetoothUUIDGetServiceError] =
-  #| (name) => (() => { try { return { $tag: 0, _0: BluetoothUUID.getService(name) }; } catch(e) { return { $tag: 1, _0: classify_bluetooth_uuid_get_service_error(e) }; } })()
+  #| (name) => (() => { try { return { $tag: 1, _0: BluetoothUUID.getService(name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn BluetoothUUID::get_characteristic(
   name : StringOrInt,
 ) -> Result[UUID, BluetoothUUIDGetCharacteristicError] =
-  #| (name) => (() => { try { return { $tag: 0, _0: BluetoothUUID.getCharacteristic(name) }; } catch(e) { return { $tag: 1, _0: classify_bluetooth_uuid_get_characteristic_error(e) }; } })()
+  #| (name) => (() => { try { return { $tag: 1, _0: BluetoothUUID.getCharacteristic(name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn BluetoothUUID::get_descriptor(
   name : StringOrInt,
 ) -> Result[UUID, BluetoothUUIDGetDescriptorError] =
-  #| (name) => (() => { try { return { $tag: 0, _0: BluetoothUUID.getDescriptor(name) }; } catch(e) { return { $tag: 1, _0: classify_bluetooth_uuid_get_descriptor_error(e) }; } })()
+  #| (name) => (() => { try { return { $tag: 1, _0: BluetoothUUID.getDescriptor(name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn BluetoothUUID::canonical_uuid(alias_ : Int) -> UUID =

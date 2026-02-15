@@ -402,33 +402,12 @@ pub(all) enum SerialGetPortsError {
 }
 
 ///|
-extern "js" fn classify_serial_get_ports_error(
-  e : JsError,
-) -> SerialGetPortsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SerialRequestPortError {
   NotFoundError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_serial_request_port_error(
-  e : JsError,
-) -> SerialRequestPortError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn Serial::set_onconnect(
@@ -456,20 +435,20 @@ pub extern "js" fn Serial::clear_ondisconnect(self : Serial) -> Unit =
 pub extern "js" fn Serial::get_ports(
   self : Serial,
 ) -> Promise[Result[Array[SerialPort], SerialGetPortsError]] =
-  #| (self) => self.getPorts().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_serial_get_ports_error(e) }))
+  #| (self) => self.getPorts().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Serial::request_port(
   self : Serial,
 ) -> Promise[Result[SerialPort, SerialRequestPortError]] =
-  #| (self) => self.requestPort().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_serial_request_port_error(e) }))
+  #| (self) => self.requestPort().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn Serial::request_port_with_options_ffi(
   self : Serial,
   options : JsValue,
 ) -> Promise[Result[SerialPort, SerialRequestPortError]] =
-  #| (self, options) => self.requestPort(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_serial_request_port_error(e) }))
+  #| (self, options) => self.requestPort(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn Serial::request_port_with_options(
@@ -522,17 +501,6 @@ pub(all) enum SerialPortOpenError {
 }
 
 ///|
-extern "js" fn classify_serial_port_open_error(
-  e : JsError,
-) -> SerialPortOpenError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NetworkError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SerialPortSetSignalsError {
   NetworkError(JsError)
@@ -541,34 +509,12 @@ pub(all) enum SerialPortSetSignalsError {
 }
 
 ///|
-extern "js" fn classify_serial_port_set_signals_error(
-  e : JsError,
-) -> SerialPortSetSignalsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NetworkError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SerialPortGetSignalsError {
   NetworkError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_serial_port_get_signals_error(
-  e : JsError,
-) -> SerialPortGetSignalsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NetworkError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn SerialPort::set_onconnect(
@@ -617,7 +563,7 @@ extern "js" fn SerialPort::open_ffi(
   self : SerialPort,
   options : JsValue,
 ) -> Promise[Result[Unit, SerialPortOpenError]] =
-  #| (self, options) => self.open(options).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_serial_port_open_error(e) }))
+  #| (self, options) => self.open(options).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn SerialPort::open(
@@ -631,14 +577,14 @@ pub fn SerialPort::open(
 pub extern "js" fn SerialPort::set_signals(
   self : SerialPort,
 ) -> Promise[Result[Unit, SerialPortSetSignalsError]] =
-  #| (self) => self.setSignals().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_serial_port_set_signals_error(e) }))
+  #| (self) => self.setSignals().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn SerialPort::set_signals_with_signals_ffi(
   self : SerialPort,
   signals : JsValue,
 ) -> Promise[Result[Unit, SerialPortSetSignalsError]] =
-  #| (self, signals) => self.setSignals(signals).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_serial_port_set_signals_error(e) }))
+  #| (self, signals) => self.setSignals(signals).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn SerialPort::set_signals_with_signals(
@@ -657,7 +603,7 @@ pub extern "js" fn SerialPort::get_signals(
   #|   clearToSend: v.clearToSend,
   #|   ringIndicator: v.ringIndicator,
   #|   dataSetReady: v.dataSetReady
-  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_serial_port_get_signals_error(e) }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn SerialPort::close(self : SerialPort) -> Promise[Unit] =

@@ -384,16 +384,6 @@ pub(all) enum TaskControllerSetPriorityError {
 }
 
 ///|
-extern "js" fn classify_task_controller_set_priority_error(
-  e : JsError,
-) -> TaskControllerSetPriorityError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn TaskController::new() -> TaskController =
   #| () => new TaskController()
 
@@ -415,7 +405,7 @@ pub extern "js" fn TaskController::set_priority(
   self : TaskController,
   priority : TaskPriority,
 ) -> Result[Unit, TaskControllerSetPriorityError] =
-  #| (self, priority) => (() => { try { self.setPriority(['user-blocking', 'user-visible', 'background'][priority]); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_task_controller_set_priority_error(e) }; } })()
+  #| (self, priority) => (() => { try { self.setPriority(['user-blocking', 'user-visible', 'background'][priority]); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// TaskSignal interface

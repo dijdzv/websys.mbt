@@ -420,17 +420,15 @@ pub extern "js" fn MathMLElement::clear_onended(self : MathMLElement) -> Unit =
   #| (self) => { self.onended = null }
 
 ///|
-pub extern "js" fn MathMLElement::get_onerror(
-  self : MathMLElement,
-) -> OnErrorEventHandler =
-  #| (self) => self.onerror
-
-///|
 pub extern "js" fn MathMLElement::set_onerror(
   self : MathMLElement,
   value : OnErrorEventHandler,
 ) -> Unit =
   #| (self, value) => { self.onerror = value }
+
+///|
+pub extern "js" fn MathMLElement::clear_onerror(self : MathMLElement) -> Unit =
+  #| (self) => { self.onerror = null }
 
 ///|
 pub extern "js" fn MathMLElement::set_onfocus(

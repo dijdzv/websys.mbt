@@ -71,18 +71,8 @@ pub(all) enum NavigatorLoginSetStatusError {
 }
 
 ///|
-extern "js" fn classify_navigator_login_set_status_error(
-  e : JsError,
-) -> NavigatorLoginSetStatusError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn NavigatorLogin::set_status(
   self : NavigatorLogin,
   status : LoginStatus,
 ) -> Promise[Result[Unit, NavigatorLoginSetStatusError]] =
-  #| (self, status) => self.setStatus(['logged-in', 'logged-out'][status]).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_navigator_login_set_status_error(e) }))
+  #| (self, status) => self.setStatus(['logged-in', 'logged-out'][status]).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))

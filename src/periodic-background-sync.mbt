@@ -129,23 +129,11 @@ pub(all) enum PeriodicSyncManagerRegisterError {
 }
 
 ///|
-extern "js" fn classify_periodic_sync_manager_register_error(
-  e : JsError,
-) -> PeriodicSyncManagerRegisterError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidAccessError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 pub extern "js" fn PeriodicSyncManager::register(
   self : PeriodicSyncManager,
   tag : String,
 ) -> Promise[Result[Unit, PeriodicSyncManagerRegisterError]] =
-  #| (self, tag) => self.register(tag).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_periodic_sync_manager_register_error(e) }))
+  #| (self, tag) => self.register(tag).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn PeriodicSyncManager::register_with_options_ffi(
@@ -153,7 +141,7 @@ extern "js" fn PeriodicSyncManager::register_with_options_ffi(
   tag : String,
   options : JsValue,
 ) -> Promise[Result[Unit, PeriodicSyncManagerRegisterError]] =
-  #| (self, tag, options) => self.register(tag, options).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_periodic_sync_manager_register_error(e) }))
+  #| (self, tag, options) => self.register(tag, options).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn PeriodicSyncManager::register_with_options(

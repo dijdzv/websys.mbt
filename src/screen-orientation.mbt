@@ -132,19 +132,6 @@ pub(all) enum ScreenOrientationLockError {
 }
 
 ///|
-extern "js" fn classify_screen_orientation_lock_error(
-  e : JsError,
-) -> ScreenOrientationLockError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'AbortError') return { $tag: 0, _0: e };
-  #|   if (n === 'SecurityError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 3, _0: e };
-  #|   return { $tag: 4, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ScreenOrientationUnlockError {
   SecurityError(JsError)
@@ -153,28 +140,17 @@ pub(all) enum ScreenOrientationUnlockError {
 }
 
 ///|
-extern "js" fn classify_screen_orientation_unlock_error(
-  e : JsError,
-) -> ScreenOrientationUnlockError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn ScreenOrientation::lock(
   self : ScreenOrientation,
   orientation : OrientationLockType,
 ) -> Promise[Result[Unit, ScreenOrientationLockError]] =
-  #| (self, orientation) => self.lock(['any', 'natural', 'landscape', 'portrait', 'portrait-primary', 'portrait-secondary', 'landscape-primary', 'landscape-secondary'][orientation]).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_screen_orientation_lock_error(e) }))
+  #| (self, orientation) => self.lock(['any', 'natural', 'landscape', 'portrait', 'portrait-primary', 'portrait-secondary', 'landscape-primary', 'landscape-secondary'][orientation]).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub extern "js" fn ScreenOrientation::unlock(
   self : ScreenOrientation,
 ) -> Result[Unit, ScreenOrientationUnlockError] =
-  #| (self) => (() => { try { self.unlock(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_screen_orientation_unlock_error(e) }; } })()
+  #| (self) => (() => { try { self.unlock(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn ScreenOrientation::get_type(

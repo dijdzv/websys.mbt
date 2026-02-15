@@ -356,31 +356,11 @@ pub(all) enum EditContextUpdateTextError {
 }
 
 ///|
-extern "js" fn classify_edit_context_update_text_error(
-  e : JsError,
-) -> EditContextUpdateTextError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum EditContextUpdateSelectionError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_edit_context_update_selection_error(
-  e : JsError,
-) -> EditContextUpdateSelectionError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -390,16 +370,6 @@ pub(all) enum EditContextUpdateControlBoundsError {
 }
 
 ///|
-extern "js" fn classify_edit_context_update_control_bounds_error(
-  e : JsError,
-) -> EditContextUpdateControlBoundsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum EditContextUpdateSelectionBoundsError {
   TypeError(JsError)
@@ -407,31 +377,11 @@ pub(all) enum EditContextUpdateSelectionBoundsError {
 }
 
 ///|
-extern "js" fn classify_edit_context_update_selection_bounds_error(
-  e : JsError,
-) -> EditContextUpdateSelectionBoundsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum EditContextUpdateCharacterBoundsError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_edit_context_update_character_bounds_error(
-  e : JsError,
-) -> EditContextUpdateCharacterBoundsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn EditContext::new() -> EditContext =
@@ -455,7 +405,7 @@ pub extern "js" fn EditContext::update_text(
   range_end : Int,
   text : String,
 ) -> Result[Unit, EditContextUpdateTextError] =
-  #| (self, range_start, range_end, text) => (() => { try { self.updateText(range_start, range_end, text); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_edit_context_update_text_error(e) }; } })()
+  #| (self, range_start, range_end, text) => (() => { try { self.updateText(range_start, range_end, text); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn EditContext::update_selection(
@@ -463,21 +413,21 @@ pub extern "js" fn EditContext::update_selection(
   start : Int,
   end : Int,
 ) -> Result[Unit, EditContextUpdateSelectionError] =
-  #| (self, start, end) => (() => { try { self.updateSelection(start, end); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_edit_context_update_selection_error(e) }; } })()
+  #| (self, start, end) => (() => { try { self.updateSelection(start, end); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn EditContext::update_control_bounds(
   self : EditContext,
   control_bounds : DOMRect,
 ) -> Result[Unit, EditContextUpdateControlBoundsError] =
-  #| (self, control_bounds) => (() => { try { self.updateControlBounds(control_bounds); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_edit_context_update_control_bounds_error(e) }; } })()
+  #| (self, control_bounds) => (() => { try { self.updateControlBounds(control_bounds); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn EditContext::update_selection_bounds(
   self : EditContext,
   selection_bounds : DOMRect,
 ) -> Result[Unit, EditContextUpdateSelectionBoundsError] =
-  #| (self, selection_bounds) => (() => { try { self.updateSelectionBounds(selection_bounds); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_edit_context_update_selection_bounds_error(e) }; } })()
+  #| (self, selection_bounds) => (() => { try { self.updateSelectionBounds(selection_bounds); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn EditContext::update_character_bounds(
@@ -485,7 +435,7 @@ pub extern "js" fn EditContext::update_character_bounds(
   range_start : Int,
   character_bounds : Array[DOMRect],
 ) -> Result[Unit, EditContextUpdateCharacterBoundsError] =
-  #| (self, range_start, character_bounds) => (() => { try { self.updateCharacterBounds(range_start, character_bounds); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_edit_context_update_character_bounds_error(e) }; } })()
+  #| (self, range_start, character_bounds) => (() => { try { self.updateCharacterBounds(range_start, character_bounds); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn EditContext::attached_elements(

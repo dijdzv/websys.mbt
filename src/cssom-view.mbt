@@ -290,8 +290,8 @@ pub fn ScrollToOptions::default() -> ScrollToOptions {
 extern "js" fn ScrollToOptions::to_js_ffi(self : ScrollToOptions) -> JsValue =
   #| (self) => ({
   #|   behavior: ((() => { const v = self.behavior; if (v === undefined) return undefined; return ['auto', 'instant', 'smooth'][v]; })()),
-  #|   left: self.left,
-  #|   top: self.top
+  #|   left: ((() => { const v = self.left; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   top: ((() => { const v = self.top; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -304,8 +304,8 @@ pub fn ScrollToOptions::to_js(self : ScrollToOptions) -> JsValue {
 extern "js" fn ScrollToOptions::from_js_ffi(value : JsValue) -> ScrollToOptions =
   #| (v) => ({
   #|   behavior: (v.behavior === undefined ? undefined : ['auto', 'instant', 'smooth'].indexOf(v.behavior)),
-  #|   left: v.left,
-  #|   top: v.top
+  #|   left: (v.left === undefined ? { $tag: 0 } : { $tag: 1, _0: v.left }),
+  #|   top: (v.top === undefined ? { $tag: 0 } : { $tag: 1, _0: v.top })
   #| })
 
 ///|

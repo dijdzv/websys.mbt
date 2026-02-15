@@ -157,16 +157,6 @@ pub(all) enum PressureObserverConstructorError {
 }
 
 ///|
-extern "js" fn classify_pressure_observer_constructor_error(
-  e : JsError,
-) -> PressureObserverConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum PressureObserverObserveError {
   NotAllowedError(JsError)
@@ -175,28 +165,17 @@ pub(all) enum PressureObserverObserveError {
 }
 
 ///|
-extern "js" fn classify_pressure_observer_observe_error(
-  e : JsError,
-) -> PressureObserverObserveError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn PressureObserver::new(
   callback : PressureUpdateCallback,
 ) -> Result[PressureObserver, PressureObserverConstructorError] =
-  #| (callback) => (() => { try { return { $tag: 0, _0: new PressureObserver(callback) }; } catch(e) { return { $tag: 1, _0: classify_pressure_observer_constructor_error(e) }; } })()
+  #| (callback) => (() => { try { return { $tag: 1, _0: new PressureObserver(callback) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn PressureObserver::observe(
   self : PressureObserver,
   source : PressureSource,
 ) -> Promise[Result[Unit, PressureObserverObserveError]] =
-  #| (self, source) => self.observe(['cpu'][source]).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_pressure_observer_observe_error(e) }))
+  #| (self, source) => self.observe(['cpu'][source]).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn PressureObserver::observe_with_options_ffi(
@@ -204,7 +183,7 @@ extern "js" fn PressureObserver::observe_with_options_ffi(
   source : PressureSource,
   options : JsValue,
 ) -> Promise[Result[Unit, PressureObserverObserveError]] =
-  #| (self, source, options) => self.observe(['cpu'][source], options).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_pressure_observer_observe_error(e) }))
+  #| (self, source, options) => self.observe(['cpu'][source], options).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn PressureObserver::observe_with_options(

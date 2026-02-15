@@ -872,17 +872,15 @@ pub extern "js" fn SVGElement::clear_onended(self : SVGElement) -> Unit =
   #| (self) => { self.onended = null }
 
 ///|
-pub extern "js" fn SVGElement::get_onerror(
-  self : SVGElement,
-) -> OnErrorEventHandler =
-  #| (self) => self.onerror
-
-///|
 pub extern "js" fn SVGElement::set_onerror(
   self : SVGElement,
   value : OnErrorEventHandler,
 ) -> Unit =
   #| (self, value) => { self.onerror = value }
+
+///|
+pub extern "js" fn SVGElement::clear_onerror(self : SVGElement) -> Unit =
+  #| (self) => { self.onerror = null }
 
 ///|
 pub extern "js" fn SVGElement::set_onfocus(
@@ -2307,17 +2305,6 @@ pub(all) enum SVGLengthNewValueSpecifiedUnitsError {
   OtherError(JsError)
 }
 
-///|
-extern "js" fn classify_svg_length_new_value_specified_units_error(
-  e : JsError,
-) -> SVGLengthNewValueSpecifiedUnitsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
 // SVGLength.SVG_LENGTHTYPE_UNKNOWN
 
 ///|
@@ -2418,7 +2405,7 @@ pub extern "js" fn SVGLength::new_value_specified_units(
   unit_type : Int,
   value_in_specified_units : Double,
 ) -> Result[Unit, SVGLengthNewValueSpecifiedUnitsError] =
-  #| (self, unit_type, value_in_specified_units) => (() => { try { self.newValueSpecifiedUnits(unit_type, value_in_specified_units); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_svg_length_new_value_specified_units_error(e) }; } })()
+  #| (self, unit_type, value_in_specified_units) => (() => { try { self.newValueSpecifiedUnits(unit_type, value_in_specified_units); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGLength::convert_to_specified_units(
@@ -2462,17 +2449,6 @@ pub(all) enum SVGAngleNewValueSpecifiedUnitsError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_angle_new_value_specified_units_error(
-  e : JsError,
-) -> SVGAngleNewValueSpecifiedUnitsError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 // SVGAngle.SVG_ANGLETYPE_UNKNOWN
 
@@ -2541,7 +2517,7 @@ pub extern "js" fn SVGAngle::new_value_specified_units(
   unit_type : Int,
   value_in_specified_units : Double,
 ) -> Result[Unit, SVGAngleNewValueSpecifiedUnitsError] =
-  #| (self, unit_type, value_in_specified_units) => (() => { try { self.newValueSpecifiedUnits(unit_type, value_in_specified_units); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_svg_angle_new_value_specified_units_error(e) }; } })()
+  #| (self, unit_type, value_in_specified_units) => (() => { try { self.newValueSpecifiedUnits(unit_type, value_in_specified_units); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGAngle::convert_to_specified_units(
@@ -2590,31 +2566,11 @@ pub(all) enum SVGNumberListClearError {
 }
 
 ///|
-extern "js" fn classify_svg_number_list_clear_error(
-  e : JsError,
-) -> SVGNumberListClearError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGNumberListInitializeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_number_list_initialize_error(
-  e : JsError,
-) -> SVGNumberListInitializeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2624,31 +2580,11 @@ pub(all) enum SVGNumberListGetItemError {
 }
 
 ///|
-extern "js" fn classify_svg_number_list_get_item_error(
-  e : JsError,
-) -> SVGNumberListGetItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGNumberListInsertItemBeforeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_number_list_insert_item_before_error(
-  e : JsError,
-) -> SVGNumberListInsertItemBeforeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2659,17 +2595,6 @@ pub(all) enum SVGNumberListReplaceItemError {
 }
 
 ///|
-extern "js" fn classify_svg_number_list_replace_item_error(
-  e : JsError,
-) -> SVGNumberListReplaceItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGNumberListRemoveItemError {
   IndexSizeError(JsError)
@@ -2678,32 +2603,11 @@ pub(all) enum SVGNumberListRemoveItemError {
 }
 
 ///|
-extern "js" fn classify_svg_number_list_remove_item_error(
-  e : JsError,
-) -> SVGNumberListRemoveItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGNumberListAppendItemError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_number_list_append_item_error(
-  e : JsError,
-) -> SVGNumberListAppendItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn SVGNumberList::get_length(self : SVGNumberList) -> Int =
@@ -2719,21 +2623,21 @@ pub extern "js" fn SVGNumberList::get_number_of_items(
 pub extern "js" fn SVGNumberList::clear(
   self : SVGNumberList,
 ) -> Result[Unit, SVGNumberListClearError] =
-  #| (self) => (() => { try { self.clear(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_svg_number_list_clear_error(e) }; } })()
+  #| (self) => (() => { try { self.clear(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGNumberList::initialize(
   self : SVGNumberList,
   new_item : SVGNumber,
 ) -> Result[SVGNumber, SVGNumberListInitializeError] =
-  #| (self, new_item) => (() => { try { return { $tag: 0, _0: self.initialize(new_item) }; } catch(e) { return { $tag: 1, _0: classify_svg_number_list_initialize_error(e) }; } })()
+  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.initialize(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGNumberList::get_item(
   self : SVGNumberList,
   index : Int,
 ) -> Result[SVGNumber, SVGNumberListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self.getItem(index) }; } catch(e) { return { $tag: 1, _0: classify_svg_number_list_get_item_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self.getItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 #alias("_[_]")
@@ -2741,7 +2645,7 @@ pub extern "js" fn SVGNumberList::get(
   self : SVGNumberList,
   index : Int,
 ) -> Result[SVGNumber, SVGNumberListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self[index] }; } catch(e) { return { $tag: 1, _0: classify_svg_number_list_get_item_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self[index] }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGNumberList::insert_item_before(
@@ -2749,7 +2653,7 @@ pub extern "js" fn SVGNumberList::insert_item_before(
   new_item : SVGNumber,
   index : Int,
 ) -> Result[SVGNumber, SVGNumberListInsertItemBeforeError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 0, _0: self.insertItemBefore(new_item, index) }; } catch(e) { return { $tag: 1, _0: classify_svg_number_list_insert_item_before_error(e) }; } })()
+  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.insertItemBefore(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGNumberList::replace_item(
@@ -2757,21 +2661,21 @@ pub extern "js" fn SVGNumberList::replace_item(
   new_item : SVGNumber,
   index : Int,
 ) -> Result[SVGNumber, SVGNumberListReplaceItemError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 0, _0: self.replaceItem(new_item, index) }; } catch(e) { return { $tag: 1, _0: classify_svg_number_list_replace_item_error(e) }; } })()
+  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.replaceItem(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGNumberList::remove_item(
   self : SVGNumberList,
   index : Int,
 ) -> Result[SVGNumber, SVGNumberListRemoveItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self.removeItem(index) }; } catch(e) { return { $tag: 1, _0: classify_svg_number_list_remove_item_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self.removeItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGNumberList::append_item(
   self : SVGNumberList,
   new_item : SVGNumber,
 ) -> Result[SVGNumber, SVGNumberListAppendItemError] =
-  #| (self, new_item) => (() => { try { return { $tag: 0, _0: self.appendItem(new_item) }; } catch(e) { return { $tag: 1, _0: classify_svg_number_list_append_item_error(e) }; } })()
+  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.appendItem(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 #alias("_[_]=_")
@@ -2822,31 +2726,11 @@ pub(all) enum SVGLengthListClearError {
 }
 
 ///|
-extern "js" fn classify_svg_length_list_clear_error(
-  e : JsError,
-) -> SVGLengthListClearError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGLengthListInitializeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_length_list_initialize_error(
-  e : JsError,
-) -> SVGLengthListInitializeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2856,31 +2740,11 @@ pub(all) enum SVGLengthListGetItemError {
 }
 
 ///|
-extern "js" fn classify_svg_length_list_get_item_error(
-  e : JsError,
-) -> SVGLengthListGetItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGLengthListInsertItemBeforeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_length_list_insert_item_before_error(
-  e : JsError,
-) -> SVGLengthListInsertItemBeforeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -2891,17 +2755,6 @@ pub(all) enum SVGLengthListReplaceItemError {
 }
 
 ///|
-extern "js" fn classify_svg_length_list_replace_item_error(
-  e : JsError,
-) -> SVGLengthListReplaceItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGLengthListRemoveItemError {
   IndexSizeError(JsError)
@@ -2910,32 +2763,11 @@ pub(all) enum SVGLengthListRemoveItemError {
 }
 
 ///|
-extern "js" fn classify_svg_length_list_remove_item_error(
-  e : JsError,
-) -> SVGLengthListRemoveItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGLengthListAppendItemError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_length_list_append_item_error(
-  e : JsError,
-) -> SVGLengthListAppendItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn SVGLengthList::get_length(self : SVGLengthList) -> Int =
@@ -2951,21 +2783,21 @@ pub extern "js" fn SVGLengthList::get_number_of_items(
 pub extern "js" fn SVGLengthList::clear(
   self : SVGLengthList,
 ) -> Result[Unit, SVGLengthListClearError] =
-  #| (self) => (() => { try { self.clear(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_svg_length_list_clear_error(e) }; } })()
+  #| (self) => (() => { try { self.clear(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGLengthList::initialize(
   self : SVGLengthList,
   new_item : SVGLength,
 ) -> Result[SVGLength, SVGLengthListInitializeError] =
-  #| (self, new_item) => (() => { try { return { $tag: 0, _0: self.initialize(new_item) }; } catch(e) { return { $tag: 1, _0: classify_svg_length_list_initialize_error(e) }; } })()
+  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.initialize(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGLengthList::get_item(
   self : SVGLengthList,
   index : Int,
 ) -> Result[SVGLength, SVGLengthListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self.getItem(index) }; } catch(e) { return { $tag: 1, _0: classify_svg_length_list_get_item_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self.getItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 #alias("_[_]")
@@ -2973,7 +2805,7 @@ pub extern "js" fn SVGLengthList::get(
   self : SVGLengthList,
   index : Int,
 ) -> Result[SVGLength, SVGLengthListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self[index] }; } catch(e) { return { $tag: 1, _0: classify_svg_length_list_get_item_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self[index] }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGLengthList::insert_item_before(
@@ -2981,7 +2813,7 @@ pub extern "js" fn SVGLengthList::insert_item_before(
   new_item : SVGLength,
   index : Int,
 ) -> Result[SVGLength, SVGLengthListInsertItemBeforeError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 0, _0: self.insertItemBefore(new_item, index) }; } catch(e) { return { $tag: 1, _0: classify_svg_length_list_insert_item_before_error(e) }; } })()
+  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.insertItemBefore(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGLengthList::replace_item(
@@ -2989,21 +2821,21 @@ pub extern "js" fn SVGLengthList::replace_item(
   new_item : SVGLength,
   index : Int,
 ) -> Result[SVGLength, SVGLengthListReplaceItemError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 0, _0: self.replaceItem(new_item, index) }; } catch(e) { return { $tag: 1, _0: classify_svg_length_list_replace_item_error(e) }; } })()
+  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.replaceItem(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGLengthList::remove_item(
   self : SVGLengthList,
   index : Int,
 ) -> Result[SVGLength, SVGLengthListRemoveItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self.removeItem(index) }; } catch(e) { return { $tag: 1, _0: classify_svg_length_list_remove_item_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self.removeItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGLengthList::append_item(
   self : SVGLengthList,
   new_item : SVGLength,
 ) -> Result[SVGLength, SVGLengthListAppendItemError] =
-  #| (self, new_item) => (() => { try { return { $tag: 0, _0: self.appendItem(new_item) }; } catch(e) { return { $tag: 1, _0: classify_svg_length_list_append_item_error(e) }; } })()
+  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.appendItem(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 #alias("_[_]=_")
@@ -3054,31 +2886,11 @@ pub(all) enum SVGStringListClearError {
 }
 
 ///|
-extern "js" fn classify_svg_string_list_clear_error(
-  e : JsError,
-) -> SVGStringListClearError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGStringListInitializeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_string_list_initialize_error(
-  e : JsError,
-) -> SVGStringListInitializeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -3088,31 +2900,11 @@ pub(all) enum SVGStringListGetItemError {
 }
 
 ///|
-extern "js" fn classify_svg_string_list_get_item_error(
-  e : JsError,
-) -> SVGStringListGetItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGStringListInsertItemBeforeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_string_list_insert_item_before_error(
-  e : JsError,
-) -> SVGStringListInsertItemBeforeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -3123,17 +2915,6 @@ pub(all) enum SVGStringListReplaceItemError {
 }
 
 ///|
-extern "js" fn classify_svg_string_list_replace_item_error(
-  e : JsError,
-) -> SVGStringListReplaceItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGStringListRemoveItemError {
   IndexSizeError(JsError)
@@ -3142,32 +2923,11 @@ pub(all) enum SVGStringListRemoveItemError {
 }
 
 ///|
-extern "js" fn classify_svg_string_list_remove_item_error(
-  e : JsError,
-) -> SVGStringListRemoveItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGStringListAppendItemError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_string_list_append_item_error(
-  e : JsError,
-) -> SVGStringListAppendItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn SVGStringList::get_length(self : SVGStringList) -> Int =
@@ -3183,21 +2943,21 @@ pub extern "js" fn SVGStringList::get_number_of_items(
 pub extern "js" fn SVGStringList::clear(
   self : SVGStringList,
 ) -> Result[Unit, SVGStringListClearError] =
-  #| (self) => (() => { try { self.clear(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_svg_string_list_clear_error(e) }; } })()
+  #| (self) => (() => { try { self.clear(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGStringList::initialize(
   self : SVGStringList,
   new_item : String,
 ) -> Result[String, SVGStringListInitializeError] =
-  #| (self, new_item) => (() => { try { return { $tag: 0, _0: self.initialize(new_item) }; } catch(e) { return { $tag: 1, _0: classify_svg_string_list_initialize_error(e) }; } })()
+  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.initialize(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGStringList::get_item(
   self : SVGStringList,
   index : Int,
 ) -> Result[String, SVGStringListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self.getItem(index) }; } catch(e) { return { $tag: 1, _0: classify_svg_string_list_get_item_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self.getItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 #alias("_[_]")
@@ -3205,7 +2965,7 @@ pub extern "js" fn SVGStringList::get(
   self : SVGStringList,
   index : Int,
 ) -> Result[String, SVGStringListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self[index] }; } catch(e) { return { $tag: 1, _0: classify_svg_string_list_get_item_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self[index] }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGStringList::insert_item_before(
@@ -3213,7 +2973,7 @@ pub extern "js" fn SVGStringList::insert_item_before(
   new_item : String,
   index : Int,
 ) -> Result[String, SVGStringListInsertItemBeforeError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 0, _0: self.insertItemBefore(new_item, index) }; } catch(e) { return { $tag: 1, _0: classify_svg_string_list_insert_item_before_error(e) }; } })()
+  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.insertItemBefore(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGStringList::replace_item(
@@ -3221,21 +2981,21 @@ pub extern "js" fn SVGStringList::replace_item(
   new_item : String,
   index : Int,
 ) -> Result[String, SVGStringListReplaceItemError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 0, _0: self.replaceItem(new_item, index) }; } catch(e) { return { $tag: 1, _0: classify_svg_string_list_replace_item_error(e) }; } })()
+  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.replaceItem(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGStringList::remove_item(
   self : SVGStringList,
   index : Int,
 ) -> Result[String, SVGStringListRemoveItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self.removeItem(index) }; } catch(e) { return { $tag: 1, _0: classify_svg_string_list_remove_item_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self.removeItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGStringList::append_item(
   self : SVGStringList,
   new_item : String,
 ) -> Result[String, SVGStringListAppendItemError] =
-  #| (self, new_item) => (() => { try { return { $tag: 0, _0: self.appendItem(new_item) }; } catch(e) { return { $tag: 1, _0: classify_svg_string_list_append_item_error(e) }; } })()
+  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.appendItem(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 #alias("_[_]=_")
@@ -3620,16 +3380,6 @@ pub(all) enum SVGAnimatedStringSetBaseValError {
 }
 
 ///|
-extern "js" fn classify_svg_animated_string_set_base_val_error(
-  e : JsError,
-) -> SVGAnimatedStringSetBaseValError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn SVGAnimatedString::get_base_val(
   self : SVGAnimatedString,
 ) -> StringOrTrustedScriptURL =
@@ -3640,7 +3390,7 @@ pub extern "js" fn SVGAnimatedString::set_base_val(
   self : SVGAnimatedString,
   value : StringOrTrustedScriptURL,
 ) -> Result[Unit, SVGAnimatedStringSetBaseValError] =
-  #| (self, value) => (() => { try { self.baseVal = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_svg_animated_string_set_base_val_error(e) }; } })()
+  #| (self, value) => (() => { try { self.baseVal = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGAnimatedString::get_anim_val(
@@ -4145,17 +3895,17 @@ pub extern "js" fn SVGSVGElement::clear_onbeforeprint(
   #| (self) => { self.onbeforeprint = null }
 
 ///|
-pub extern "js" fn SVGSVGElement::get_onbeforeunload(
-  self : SVGSVGElement,
-) -> OnBeforeUnloadEventHandler =
-  #| (self) => self.onbeforeunload
-
-///|
 pub extern "js" fn SVGSVGElement::set_onbeforeunload(
   self : SVGSVGElement,
   value : OnBeforeUnloadEventHandler,
 ) -> Unit =
   #| (self, value) => { self.onbeforeunload = value }
+
+///|
+pub extern "js" fn SVGSVGElement::clear_onbeforeunload(
+  self : SVGSVGElement,
+) -> Unit =
+  #| (self) => { self.onbeforeunload = null }
 
 ///|
 pub extern "js" fn SVGSVGElement::set_onhashchange(
@@ -5196,31 +4946,11 @@ pub(all) enum SVGTransformSetMatrixError {
 }
 
 ///|
-extern "js" fn classify_svg_transform_set_matrix_error(
-  e : JsError,
-) -> SVGTransformSetMatrixError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformSetTranslateError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_transform_set_translate_error(
-  e : JsError,
-) -> SVGTransformSetTranslateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -5230,31 +4960,11 @@ pub(all) enum SVGTransformSetScaleError {
 }
 
 ///|
-extern "js" fn classify_svg_transform_set_scale_error(
-  e : JsError,
-) -> SVGTransformSetScaleError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformSetRotateError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_transform_set_rotate_error(
-  e : JsError,
-) -> SVGTransformSetRotateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -5264,31 +4974,11 @@ pub(all) enum SVGTransformSetSkewXError {
 }
 
 ///|
-extern "js" fn classify_svg_transform_set_skew_x_error(
-  e : JsError,
-) -> SVGTransformSetSkewXError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformSetSkewYError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_transform_set_skew_y_error(
-  e : JsError,
-) -> SVGTransformSetSkewYError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 // SVGTransform.SVG_TRANSFORM_UNKNOWN
 
@@ -5341,14 +5031,14 @@ pub extern "js" fn SVGTransform::get_angle(self : SVGTransform) -> Double =
 pub extern "js" fn SVGTransform::set_matrix(
   self : SVGTransform,
 ) -> Result[Unit, SVGTransformSetMatrixError] =
-  #| (self) => (() => { try { self.setMatrix(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_svg_transform_set_matrix_error(e) }; } })()
+  #| (self) => (() => { try { self.setMatrix(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn SVGTransform::set_matrix_with_matrix_ffi(
   self : SVGTransform,
   matrix : JsValue,
 ) -> Result[Unit, SVGTransformSetMatrixError] =
-  #| (self, matrix) => (() => { try { self.setMatrix(matrix); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_svg_transform_set_matrix_error(e) }; } })()
+  #| (self, matrix) => (() => { try { self.setMatrix(matrix); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn SVGTransform::set_matrix_with_matrix(
@@ -5364,7 +5054,7 @@ pub extern "js" fn SVGTransform::set_translate(
   tx : Double,
   ty : Double,
 ) -> Result[Unit, SVGTransformSetTranslateError] =
-  #| (self, tx, ty) => (() => { try { self.setTranslate(tx, ty); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_svg_transform_set_translate_error(e) }; } })()
+  #| (self, tx, ty) => (() => { try { self.setTranslate(tx, ty); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGTransform::set_scale(
@@ -5372,7 +5062,7 @@ pub extern "js" fn SVGTransform::set_scale(
   sx : Double,
   sy : Double,
 ) -> Result[Unit, SVGTransformSetScaleError] =
-  #| (self, sx, sy) => (() => { try { self.setScale(sx, sy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_svg_transform_set_scale_error(e) }; } })()
+  #| (self, sx, sy) => (() => { try { self.setScale(sx, sy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGTransform::set_rotate(
@@ -5381,21 +5071,21 @@ pub extern "js" fn SVGTransform::set_rotate(
   cx : Double,
   cy : Double,
 ) -> Result[Unit, SVGTransformSetRotateError] =
-  #| (self, angle, cx, cy) => (() => { try { self.setRotate(angle, cx, cy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_svg_transform_set_rotate_error(e) }; } })()
+  #| (self, angle, cx, cy) => (() => { try { self.setRotate(angle, cx, cy); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGTransform::set_skew_x(
   self : SVGTransform,
   angle : Double,
 ) -> Result[Unit, SVGTransformSetSkewXError] =
-  #| (self, angle) => (() => { try { self.setSkewX(angle); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_svg_transform_set_skew_x_error(e) }; } })()
+  #| (self, angle) => (() => { try { self.setSkewX(angle); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGTransform::set_skew_y(
   self : SVGTransform,
   angle : Double,
 ) -> Result[Unit, SVGTransformSetSkewYError] =
-  #| (self, angle) => (() => { try { self.setSkewY(angle); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_svg_transform_set_skew_y_error(e) }; } })()
+  #| (self, angle) => (() => { try { self.setSkewY(angle); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// SVGTransformList interface
@@ -5443,31 +5133,11 @@ pub(all) enum SVGTransformListClearError {
 }
 
 ///|
-extern "js" fn classify_svg_transform_list_clear_error(
-  e : JsError,
-) -> SVGTransformListClearError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformListInitializeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_transform_list_initialize_error(
-  e : JsError,
-) -> SVGTransformListInitializeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -5477,31 +5147,11 @@ pub(all) enum SVGTransformListGetItemError {
 }
 
 ///|
-extern "js" fn classify_svg_transform_list_get_item_error(
-  e : JsError,
-) -> SVGTransformListGetItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformListInsertItemBeforeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_transform_list_insert_item_before_error(
-  e : JsError,
-) -> SVGTransformListInsertItemBeforeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -5512,34 +5162,12 @@ pub(all) enum SVGTransformListReplaceItemError {
 }
 
 ///|
-extern "js" fn classify_svg_transform_list_replace_item_error(
-  e : JsError,
-) -> SVGTransformListReplaceItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformListRemoveItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_transform_list_remove_item_error(
-  e : JsError,
-) -> SVGTransformListRemoveItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -5549,31 +5177,11 @@ pub(all) enum SVGTransformListAppendItemError {
 }
 
 ///|
-extern "js" fn classify_svg_transform_list_append_item_error(
-  e : JsError,
-) -> SVGTransformListAppendItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformListConsolidateError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_transform_list_consolidate_error(
-  e : JsError,
-) -> SVGTransformListConsolidateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn SVGTransformList::get_length(self : SVGTransformList) -> Int =
@@ -5589,21 +5197,21 @@ pub extern "js" fn SVGTransformList::get_number_of_items(
 pub extern "js" fn SVGTransformList::clear(
   self : SVGTransformList,
 ) -> Result[Unit, SVGTransformListClearError] =
-  #| (self) => (() => { try { self.clear(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_svg_transform_list_clear_error(e) }; } })()
+  #| (self) => (() => { try { self.clear(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGTransformList::initialize(
   self : SVGTransformList,
   new_item : SVGTransform,
 ) -> Result[SVGTransform, SVGTransformListInitializeError] =
-  #| (self, new_item) => (() => { try { return { $tag: 0, _0: self.initialize(new_item) }; } catch(e) { return { $tag: 1, _0: classify_svg_transform_list_initialize_error(e) }; } })()
+  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.initialize(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGTransformList::get_item(
   self : SVGTransformList,
   index : Int,
 ) -> Result[SVGTransform, SVGTransformListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self.getItem(index) }; } catch(e) { return { $tag: 1, _0: classify_svg_transform_list_get_item_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self.getItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 #alias("_[_]")
@@ -5611,7 +5219,7 @@ pub extern "js" fn SVGTransformList::get(
   self : SVGTransformList,
   index : Int,
 ) -> Result[SVGTransform, SVGTransformListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self[index] }; } catch(e) { return { $tag: 1, _0: classify_svg_transform_list_get_item_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self[index] }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGTransformList::insert_item_before(
@@ -5619,7 +5227,7 @@ pub extern "js" fn SVGTransformList::insert_item_before(
   new_item : SVGTransform,
   index : Int,
 ) -> Result[SVGTransform, SVGTransformListInsertItemBeforeError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 0, _0: self.insertItemBefore(new_item, index) }; } catch(e) { return { $tag: 1, _0: classify_svg_transform_list_insert_item_before_error(e) }; } })()
+  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.insertItemBefore(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGTransformList::replace_item(
@@ -5627,21 +5235,21 @@ pub extern "js" fn SVGTransformList::replace_item(
   new_item : SVGTransform,
   index : Int,
 ) -> Result[SVGTransform, SVGTransformListReplaceItemError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 0, _0: self.replaceItem(new_item, index) }; } catch(e) { return { $tag: 1, _0: classify_svg_transform_list_replace_item_error(e) }; } })()
+  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.replaceItem(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGTransformList::remove_item(
   self : SVGTransformList,
   index : Int,
 ) -> Result[SVGTransform, SVGTransformListRemoveItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self.removeItem(index) }; } catch(e) { return { $tag: 1, _0: classify_svg_transform_list_remove_item_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self.removeItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGTransformList::append_item(
   self : SVGTransformList,
   new_item : SVGTransform,
 ) -> Result[SVGTransform, SVGTransformListAppendItemError] =
-  #| (self, new_item) => (() => { try { return { $tag: 0, _0: self.appendItem(new_item) }; } catch(e) { return { $tag: 1, _0: classify_svg_transform_list_append_item_error(e) }; } })()
+  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.appendItem(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 #alias("_[_]=_")
@@ -5680,7 +5288,7 @@ pub fn SVGTransformList::create_svg_transform_from_matrix_with_matrix(
 pub extern "js" fn SVGTransformList::consolidate(
   self : SVGTransformList,
 ) -> Result[SVGTransform?, SVGTransformListConsolidateError] =
-  #| (self) => (() => { try { return { $tag: 0, _0: (() => { const v = self.consolidate(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_svg_transform_list_consolidate_error(e) }; } })()
+  #| (self) => (() => { try { return { $tag: 1, _0: (() => { const v = self.consolidate(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// SVGAnimatedTransformList interface
@@ -6336,31 +5944,11 @@ pub(all) enum SVGPointListClearError {
 }
 
 ///|
-extern "js" fn classify_svg_point_list_clear_error(
-  e : JsError,
-) -> SVGPointListClearError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGPointListInitializeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_point_list_initialize_error(
-  e : JsError,
-) -> SVGPointListInitializeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -6370,31 +5958,11 @@ pub(all) enum SVGPointListGetItemError {
 }
 
 ///|
-extern "js" fn classify_svg_point_list_get_item_error(
-  e : JsError,
-) -> SVGPointListGetItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGPointListInsertItemBeforeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_point_list_insert_item_before_error(
-  e : JsError,
-) -> SVGPointListInsertItemBeforeError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -6405,17 +5973,6 @@ pub(all) enum SVGPointListReplaceItemError {
 }
 
 ///|
-extern "js" fn classify_svg_point_list_replace_item_error(
-  e : JsError,
-) -> SVGPointListReplaceItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGPointListRemoveItemError {
   IndexSizeError(JsError)
@@ -6424,32 +5981,11 @@ pub(all) enum SVGPointListRemoveItemError {
 }
 
 ///|
-extern "js" fn classify_svg_point_list_remove_item_error(
-  e : JsError,
-) -> SVGPointListRemoveItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGPointListAppendItemError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_point_list_append_item_error(
-  e : JsError,
-) -> SVGPointListAppendItemError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn SVGPointList::get_length(self : SVGPointList) -> Int =
@@ -6465,21 +6001,21 @@ pub extern "js" fn SVGPointList::get_number_of_items(
 pub extern "js" fn SVGPointList::clear(
   self : SVGPointList,
 ) -> Result[Unit, SVGPointListClearError] =
-  #| (self) => (() => { try { self.clear(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_svg_point_list_clear_error(e) }; } })()
+  #| (self) => (() => { try { self.clear(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGPointList::initialize(
   self : SVGPointList,
   new_item : DOMPoint,
 ) -> Result[DOMPoint, SVGPointListInitializeError] =
-  #| (self, new_item) => (() => { try { return { $tag: 0, _0: self.initialize(new_item) }; } catch(e) { return { $tag: 1, _0: classify_svg_point_list_initialize_error(e) }; } })()
+  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.initialize(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGPointList::get_item(
   self : SVGPointList,
   index : Int,
 ) -> Result[DOMPoint, SVGPointListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self.getItem(index) }; } catch(e) { return { $tag: 1, _0: classify_svg_point_list_get_item_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self.getItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 #alias("_[_]")
@@ -6487,7 +6023,7 @@ pub extern "js" fn SVGPointList::get(
   self : SVGPointList,
   index : Int,
 ) -> Result[DOMPoint, SVGPointListGetItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self[index] }; } catch(e) { return { $tag: 1, _0: classify_svg_point_list_get_item_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self[index] }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGPointList::insert_item_before(
@@ -6495,7 +6031,7 @@ pub extern "js" fn SVGPointList::insert_item_before(
   new_item : DOMPoint,
   index : Int,
 ) -> Result[DOMPoint, SVGPointListInsertItemBeforeError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 0, _0: self.insertItemBefore(new_item, index) }; } catch(e) { return { $tag: 1, _0: classify_svg_point_list_insert_item_before_error(e) }; } })()
+  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.insertItemBefore(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGPointList::replace_item(
@@ -6503,21 +6039,21 @@ pub extern "js" fn SVGPointList::replace_item(
   new_item : DOMPoint,
   index : Int,
 ) -> Result[DOMPoint, SVGPointListReplaceItemError] =
-  #| (self, new_item, index) => (() => { try { return { $tag: 0, _0: self.replaceItem(new_item, index) }; } catch(e) { return { $tag: 1, _0: classify_svg_point_list_replace_item_error(e) }; } })()
+  #| (self, new_item, index) => (() => { try { return { $tag: 1, _0: self.replaceItem(new_item, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGPointList::remove_item(
   self : SVGPointList,
   index : Int,
 ) -> Result[DOMPoint, SVGPointListRemoveItemError] =
-  #| (self, index) => (() => { try { return { $tag: 0, _0: self.removeItem(index) }; } catch(e) { return { $tag: 1, _0: classify_svg_point_list_remove_item_error(e) }; } })()
+  #| (self, index) => (() => { try { return { $tag: 1, _0: self.removeItem(index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGPointList::append_item(
   self : SVGPointList,
   new_item : DOMPoint,
 ) -> Result[DOMPoint, SVGPointListAppendItemError] =
-  #| (self, new_item) => (() => { try { return { $tag: 0, _0: self.appendItem(new_item) }; } catch(e) { return { $tag: 1, _0: classify_svg_point_list_append_item_error(e) }; } })()
+  #| (self, new_item) => (() => { try { return { $tag: 1, _0: self.appendItem(new_item) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 #alias("_[_]=_")
@@ -6798,31 +6334,11 @@ pub(all) enum SVGTextContentElementGetSubStringLengthError {
 }
 
 ///|
-extern "js" fn classify_svg_text_content_element_get_sub_string_length_error(
-  e : JsError,
-) -> SVGTextContentElementGetSubStringLengthError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGTextContentElementGetStartPositionOfCharError {
   IndexSizeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_text_content_element_get_start_position_of_char_error(
-  e : JsError,
-) -> SVGTextContentElementGetStartPositionOfCharError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -6832,16 +6348,6 @@ pub(all) enum SVGTextContentElementGetEndPositionOfCharError {
 }
 
 ///|
-extern "js" fn classify_svg_text_content_element_get_end_position_of_char_error(
-  e : JsError,
-) -> SVGTextContentElementGetEndPositionOfCharError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGTextContentElementGetExtentOfCharError {
   IndexSizeError(JsError)
@@ -6849,31 +6355,11 @@ pub(all) enum SVGTextContentElementGetExtentOfCharError {
 }
 
 ///|
-extern "js" fn classify_svg_text_content_element_get_extent_of_char_error(
-  e : JsError,
-) -> SVGTextContentElementGetExtentOfCharError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum SVGTextContentElementGetRotationOfCharError {
   IndexSizeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_svg_text_content_element_get_rotation_of_char_error(
-  e : JsError,
-) -> SVGTextContentElementGetRotationOfCharError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 // SVGTextContentElement.LENGTHADJUST_UNKNOWN
 
@@ -6920,35 +6406,35 @@ pub extern "js" fn SVGTextContentElement::get_sub_string_length(
   charnum : Int,
   nchars : Int,
 ) -> Result[Double, SVGTextContentElementGetSubStringLengthError] =
-  #| (self, charnum, nchars) => (() => { try { return { $tag: 0, _0: self.getSubStringLength(charnum, nchars) }; } catch(e) { return { $tag: 1, _0: classify_svg_text_content_element_get_sub_string_length_error(e) }; } })()
+  #| (self, charnum, nchars) => (() => { try { return { $tag: 1, _0: self.getSubStringLength(charnum, nchars) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGTextContentElement::get_start_position_of_char(
   self : SVGTextContentElement,
   charnum : Int,
 ) -> Result[DOMPoint, SVGTextContentElementGetStartPositionOfCharError] =
-  #| (self, charnum) => (() => { try { return { $tag: 0, _0: self.getStartPositionOfChar(charnum) }; } catch(e) { return { $tag: 1, _0: classify_svg_text_content_element_get_start_position_of_char_error(e) }; } })()
+  #| (self, charnum) => (() => { try { return { $tag: 1, _0: self.getStartPositionOfChar(charnum) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGTextContentElement::get_end_position_of_char(
   self : SVGTextContentElement,
   charnum : Int,
 ) -> Result[DOMPoint, SVGTextContentElementGetEndPositionOfCharError] =
-  #| (self, charnum) => (() => { try { return { $tag: 0, _0: self.getEndPositionOfChar(charnum) }; } catch(e) { return { $tag: 1, _0: classify_svg_text_content_element_get_end_position_of_char_error(e) }; } })()
+  #| (self, charnum) => (() => { try { return { $tag: 1, _0: self.getEndPositionOfChar(charnum) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGTextContentElement::get_extent_of_char(
   self : SVGTextContentElement,
   charnum : Int,
 ) -> Result[DOMRect, SVGTextContentElementGetExtentOfCharError] =
-  #| (self, charnum) => (() => { try { return { $tag: 0, _0: self.getExtentOfChar(charnum) }; } catch(e) { return { $tag: 1, _0: classify_svg_text_content_element_get_extent_of_char_error(e) }; } })()
+  #| (self, charnum) => (() => { try { return { $tag: 1, _0: self.getExtentOfChar(charnum) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGTextContentElement::get_rotation_of_char(
   self : SVGTextContentElement,
   charnum : Int,
 ) -> Result[Double, SVGTextContentElementGetRotationOfCharError] =
-  #| (self, charnum) => (() => { try { return { $tag: 0, _0: self.getRotationOfChar(charnum) }; } catch(e) { return { $tag: 1, _0: classify_svg_text_content_element_get_rotation_of_char_error(e) }; } })()
+  #| (self, charnum) => (() => { try { return { $tag: 1, _0: self.getRotationOfChar(charnum) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGTextContentElement::get_char_num_at_position(

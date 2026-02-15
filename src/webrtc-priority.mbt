@@ -71,8 +71,8 @@ extern "js" fn RTCRtpEncodingParameters::to_js_ffi(
   #|   active: (self.active === -1 ? undefined : self.active),
   #|   codec: ((() => { const v = self.codec; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   maxBitrate: self.maxBitrate,
-  #|   maxFramerate: self.maxFramerate,
-  #|   scaleResolutionDownBy: self.scaleResolutionDownBy,
+  #|   maxFramerate: ((() => { const v = self.maxFramerate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   scaleResolutionDownBy: ((() => { const v = self.scaleResolutionDownBy; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   scalabilityMode: self.scalabilityMode
   #| })
 
@@ -94,8 +94,8 @@ extern "js" fn RTCRtpEncodingParameters::from_js_ffi(
   #|   active: (v.active === undefined ? -1 : v.active),
   #|   codec: (v.codec === undefined ? { $tag: 0 } : { $tag: 1, _0: v.codec }),
   #|   maxBitrate: v.maxBitrate,
-  #|   maxFramerate: v.maxFramerate,
-  #|   scaleResolutionDownBy: v.scaleResolutionDownBy,
+  #|   maxFramerate: (v.maxFramerate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maxFramerate }),
+  #|   scaleResolutionDownBy: (v.scaleResolutionDownBy === undefined ? { $tag: 0 } : { $tag: 1, _0: v.scaleResolutionDownBy }),
   #|   scalabilityMode: v.scalabilityMode
   #| })
 

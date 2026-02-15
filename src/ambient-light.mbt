@@ -59,27 +59,17 @@ pub(all) enum AmbientLightSensorConstructorError {
 }
 
 ///|
-extern "js" fn classify_ambient_light_sensor_constructor_error(
-  e : JsError,
-) -> AmbientLightSensorConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn AmbientLightSensor::new() -> Result[
   AmbientLightSensor,
   AmbientLightSensorConstructorError,
 ] =
-  #| () => (() => { try { return { $tag: 0, _0: new AmbientLightSensor() }; } catch(e) { return { $tag: 1, _0: classify_ambient_light_sensor_constructor_error(e) }; } })()
+  #| () => (() => { try { return { $tag: 1, _0: new AmbientLightSensor() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn AmbientLightSensor::new_with_sensor_options_ffi(
   sensor_options : JsValue,
 ) -> Result[AmbientLightSensor, AmbientLightSensorConstructorError] =
-  #| (sensor_options) => (() => { try { return { $tag: 0, _0: new AmbientLightSensor(sensor_options) }; } catch(e) { return { $tag: 1, _0: classify_ambient_light_sensor_constructor_error(e) }; } })()
+  #| (sensor_options) => (() => { try { return { $tag: 1, _0: new AmbientLightSensor(sensor_options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn AmbientLightSensor::new_with_sensor_options(
@@ -92,4 +82,4 @@ pub fn AmbientLightSensor::new_with_sensor_options(
 pub extern "js" fn AmbientLightSensor::get_illuminance(
   self : AmbientLightSensor,
 ) -> Double? =
-  #| (self) => (self.illuminance) ?? undefined
+  #| (self) => (() => { const v = self.illuminance; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

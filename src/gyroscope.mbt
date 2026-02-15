@@ -117,27 +117,17 @@ pub(all) enum GyroscopeConstructorError {
 }
 
 ///|
-extern "js" fn classify_gyroscope_constructor_error(
-  e : JsError,
-) -> GyroscopeConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn Gyroscope::new() -> Result[
   Gyroscope,
   GyroscopeConstructorError,
 ] =
-  #| () => (() => { try { return { $tag: 0, _0: new Gyroscope() }; } catch(e) { return { $tag: 1, _0: classify_gyroscope_constructor_error(e) }; } })()
+  #| () => (() => { try { return { $tag: 1, _0: new Gyroscope() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Gyroscope::new_with_sensor_options_ffi(
   sensor_options : JsValue,
 ) -> Result[Gyroscope, GyroscopeConstructorError] =
-  #| (sensor_options) => (() => { try { return { $tag: 0, _0: new Gyroscope(sensor_options) }; } catch(e) { return { $tag: 1, _0: classify_gyroscope_constructor_error(e) }; } })()
+  #| (sensor_options) => (() => { try { return { $tag: 1, _0: new Gyroscope(sensor_options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn Gyroscope::new_with_sensor_options(
@@ -148,12 +138,12 @@ pub fn Gyroscope::new_with_sensor_options(
 
 ///|
 pub extern "js" fn Gyroscope::get_x(self : Gyroscope) -> Double? =
-  #| (self) => (self.x) ?? undefined
+  #| (self) => (() => { const v = self.x; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Gyroscope::get_y(self : Gyroscope) -> Double? =
-  #| (self) => (self.y) ?? undefined
+  #| (self) => (() => { const v = self.y; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Gyroscope::get_z(self : Gyroscope) -> Double? =
-  #| (self) => (self.z) ?? undefined
+  #| (self) => (() => { const v = self.z; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

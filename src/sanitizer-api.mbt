@@ -568,27 +568,17 @@ pub(all) enum SanitizerConstructorError {
 }
 
 ///|
-extern "js" fn classify_sanitizer_constructor_error(
-  e : JsError,
-) -> SanitizerConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn Sanitizer::new() -> Result[
   Sanitizer,
   SanitizerConstructorError,
 ] =
-  #| () => (() => { try { return { $tag: 0, _0: new Sanitizer() }; } catch(e) { return { $tag: 1, _0: classify_sanitizer_constructor_error(e) }; } })()
+  #| () => (() => { try { return { $tag: 1, _0: new Sanitizer() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Sanitizer::new_with_configuration(
   configuration : SanitizerConfigOrSanitizerPresets,
 ) -> Result[Sanitizer, SanitizerConstructorError] =
-  #| (configuration) => (() => { try { return { $tag: 0, _0: new Sanitizer(configuration) }; } catch(e) { return { $tag: 1, _0: classify_sanitizer_constructor_error(e) }; } })()
+  #| (configuration) => (() => { try { return { $tag: 1, _0: new Sanitizer(configuration) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Sanitizer::get(self : Sanitizer) -> SanitizerConfig =

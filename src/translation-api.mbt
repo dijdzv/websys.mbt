@@ -311,7 +311,7 @@ extern "js" fn LanguageDetectionResult::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   detectedLanguage: self.detectedLanguage,
-  #|   confidence: self.confidence
+  #|   confidence: ((() => { const v = self.confidence; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -328,7 +328,7 @@ extern "js" fn LanguageDetectionResult::from_js_ffi(
 ) -> LanguageDetectionResult =
   #| (v) => ({
   #|   detectedLanguage: v.detectedLanguage,
-  #|   confidence: v.confidence
+  #|   confidence: (v.confidence === undefined ? { $tag: 0 } : { $tag: 1, _0: v.confidence })
   #| })
 
 ///|
@@ -379,20 +379,6 @@ pub(all) enum TranslatorCreateError {
 }
 
 ///|
-extern "js" fn classify_translator_create_error(
-  e : JsError,
-) -> TranslatorCreateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NetworkError') return { $tag: 0, _0: e };
-  #|   if (n === 'OperationError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 2, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 3, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 4, _0: e };
-  #|   return { $tag: 5, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum TranslatorAvailabilityError {
   UnknownError(JsError)
@@ -400,18 +386,6 @@ pub(all) enum TranslatorAvailabilityError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_translator_availability_error(
-  e : JsError,
-) -> TranslatorAvailabilityError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'UnknownError') return { $tag: 0, _0: e };
-  #|   if (n === 'OperationError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -423,18 +397,6 @@ pub(all) enum TranslatorTranslateError {
 }
 
 ///|
-extern "js" fn classify_translator_translate_error(
-  e : JsError,
-) -> TranslatorTranslateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'AbortError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'QuotaExceededError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum TranslatorTranslateStreamingError {
   AbortError(JsError)
@@ -442,18 +404,6 @@ pub(all) enum TranslatorTranslateStreamingError {
   QuotaExceededError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_translator_translate_streaming_error(
-  e : JsError,
-) -> TranslatorTranslateStreamingError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'AbortError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'QuotaExceededError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -465,22 +415,10 @@ pub(all) enum TranslatorMeasureInputUsageError {
 }
 
 ///|
-extern "js" fn classify_translator_measure_input_usage_error(
-  e : JsError,
-) -> TranslatorMeasureInputUsageError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'UnknownError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotReadableError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 extern "js" fn Translator::create_ffi(
   options : JsValue,
 ) -> Promise[Result[Translator, TranslatorCreateError]] =
-  #| (options) => Translator.create(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_translator_create_error(e) }))
+  #| (options) => Translator.create(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
 ///|
 pub fn Translator::create(
@@ -493,7 +431,7 @@ pub fn Translator::create(
 extern "js" fn Translator::availability_ffi(
   options : JsValue,
 ) -> Promise[Result[Availability, TranslatorAvailabilityError]] =
-  #| (options) => Translator.availability(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_translator_availability_error(e) }))
+  #| (options) => Translator.availability(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn Translator::availability(
@@ -507,7 +445,7 @@ pub extern "js" fn Translator::translate(
   self : Translator,
   input : String,
 ) -> Promise[Result[String, TranslatorTranslateError]] =
-  #| (self, input) => self.translate(input).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_translator_translate_error(e) }))
+  #| (self, input) => self.translate(input).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn Translator::translate_with_options_ffi(
@@ -515,7 +453,7 @@ extern "js" fn Translator::translate_with_options_ffi(
   input : String,
   options : JsValue,
 ) -> Promise[Result[String, TranslatorTranslateError]] =
-  #| (self, input, options) => self.translate(input, options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_translator_translate_error(e) }))
+  #| (self, input, options) => self.translate(input, options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn Translator::translate_with_options(
@@ -531,7 +469,7 @@ pub extern "js" fn Translator::translate_streaming(
   self : Translator,
   input : String,
 ) -> Result[ReadableStream, TranslatorTranslateStreamingError] =
-  #| (self, input) => (() => { try { return { $tag: 0, _0: self.translateStreaming(input) }; } catch(e) { return { $tag: 1, _0: classify_translator_translate_streaming_error(e) }; } })()
+  #| (self, input) => (() => { try { return { $tag: 1, _0: self.translateStreaming(input) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Translator::translate_streaming_with_options_ffi(
@@ -539,7 +477,7 @@ extern "js" fn Translator::translate_streaming_with_options_ffi(
   input : String,
   options : JsValue,
 ) -> Result[ReadableStream, TranslatorTranslateStreamingError] =
-  #| (self, input, options) => (() => { try { return { $tag: 0, _0: self.translateStreaming(input, options) }; } catch(e) { return { $tag: 1, _0: classify_translator_translate_streaming_error(e) }; } })()
+  #| (self, input, options) => (() => { try { return { $tag: 1, _0: self.translateStreaming(input, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn Translator::translate_streaming_with_options(
@@ -563,7 +501,7 @@ pub extern "js" fn Translator::measure_input_usage(
   self : Translator,
   input : String,
 ) -> Promise[Result[Double, TranslatorMeasureInputUsageError]] =
-  #| (self, input) => self.measureInputUsage(input).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_translator_measure_input_usage_error(e) }))
+  #| (self, input) => self.measureInputUsage(input).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotReadableError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn Translator::measure_input_usage_with_options_ffi(
@@ -571,7 +509,7 @@ extern "js" fn Translator::measure_input_usage_with_options_ffi(
   input : String,
   options : JsValue,
 ) -> Promise[Result[Double, TranslatorMeasureInputUsageError]] =
-  #| (self, input, options) => self.measureInputUsage(input, options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_translator_measure_input_usage_error(e) }))
+  #| (self, input, options) => self.measureInputUsage(input, options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotReadableError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn Translator::measure_input_usage_with_options(
@@ -640,20 +578,6 @@ pub(all) enum LanguageDetectorCreateError {
 }
 
 ///|
-extern "js" fn classify_language_detector_create_error(
-  e : JsError,
-) -> LanguageDetectorCreateError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'NetworkError') return { $tag: 0, _0: e };
-  #|   if (n === 'OperationError') return { $tag: 1, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 2, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 3, _0: e };
-  #|   if (n === 'NotSupportedError') return { $tag: 4, _0: e };
-  #|   return { $tag: 5, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum LanguageDetectorAvailabilityError {
   UnknownError(JsError)
@@ -661,18 +585,6 @@ pub(all) enum LanguageDetectorAvailabilityError {
   InvalidStateError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_language_detector_availability_error(
-  e : JsError,
-) -> LanguageDetectorAvailabilityError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'UnknownError') return { $tag: 0, _0: e };
-  #|   if (n === 'OperationError') return { $tag: 1, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -684,18 +596,6 @@ pub(all) enum LanguageDetectorDetectError {
 }
 
 ///|
-extern "js" fn classify_language_detector_detect_error(
-  e : JsError,
-) -> LanguageDetectorDetectError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'AbortError') return { $tag: 0, _0: e };
-  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
-  #|   if (n === 'QuotaExceededError') return { $tag: 2, _0: e };
-  #|   return { $tag: 3, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum LanguageDetectorMeasureInputUsageError {
   UnknownError(JsError)
@@ -704,27 +604,16 @@ pub(all) enum LanguageDetectorMeasureInputUsageError {
 }
 
 ///|
-extern "js" fn classify_language_detector_measure_input_usage_error(
-  e : JsError,
-) -> LanguageDetectorMeasureInputUsageError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'UnknownError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 pub extern "js" fn LanguageDetector::create() -> Promise[
   Result[LanguageDetector, LanguageDetectorCreateError],
 ] =
-  #| () => LanguageDetector.create().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_language_detector_create_error(e) }))
+  #| () => LanguageDetector.create().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
 ///|
 extern "js" fn LanguageDetector::create_with_options_ffi(
   options : JsValue,
 ) -> Promise[Result[LanguageDetector, LanguageDetectorCreateError]] =
-  #| (options) => LanguageDetector.create(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_language_detector_create_error(e) }))
+  #| (options) => LanguageDetector.create(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
 ///|
 pub fn LanguageDetector::create_with_options(
@@ -737,13 +626,13 @@ pub fn LanguageDetector::create_with_options(
 pub extern "js" fn LanguageDetector::availability() -> Promise[
   Result[Availability, LanguageDetectorAvailabilityError],
 ] =
-  #| () => LanguageDetector.availability().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_language_detector_availability_error(e) }))
+  #| () => LanguageDetector.availability().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn LanguageDetector::availability_with_options_ffi(
   options : JsValue,
 ) -> Promise[Result[Availability, LanguageDetectorAvailabilityError]] =
-  #| (options) => LanguageDetector.availability(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_language_detector_availability_error(e) }))
+  #| (options) => LanguageDetector.availability(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn LanguageDetector::availability_with_options(
@@ -759,7 +648,7 @@ pub extern "js" fn LanguageDetector::detect(
 ) -> Promise[
   Result[Array[LanguageDetectionResult], LanguageDetectorDetectError],
 ] =
-  #| (self, input) => self.detect(input).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_language_detector_detect_error(e) }))
+  #| (self, input) => self.detect(input).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn LanguageDetector::detect_with_options_ffi(
@@ -769,7 +658,7 @@ extern "js" fn LanguageDetector::detect_with_options_ffi(
 ) -> Promise[
   Result[Array[LanguageDetectionResult], LanguageDetectorDetectError],
 ] =
-  #| (self, input, options) => self.detect(input, options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_language_detector_detect_error(e) }))
+  #| (self, input, options) => self.detect(input, options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn LanguageDetector::detect_with_options(
@@ -793,7 +682,7 @@ pub extern "js" fn LanguageDetector::measure_input_usage(
   self : LanguageDetector,
   input : String,
 ) -> Promise[Result[Double, LanguageDetectorMeasureInputUsageError]] =
-  #| (self, input) => self.measureInputUsage(input).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_language_detector_measure_input_usage_error(e) }))
+  #| (self, input) => self.measureInputUsage(input).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn LanguageDetector::measure_input_usage_with_options_ffi(
@@ -801,7 +690,7 @@ extern "js" fn LanguageDetector::measure_input_usage_with_options_ffi(
   input : String,
   options : JsValue,
 ) -> Promise[Result[Double, LanguageDetectorMeasureInputUsageError]] =
-  #| (self, input, options) => self.measureInputUsage(input, options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_language_detector_measure_input_usage_error(e) }))
+  #| (self, input, options) => self.measureInputUsage(input, options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn LanguageDetector::measure_input_usage_with_options(

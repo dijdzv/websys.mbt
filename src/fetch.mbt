@@ -848,17 +848,6 @@ pub(all) enum RequestConstructorError {
 }
 
 ///|
-extern "js" fn classify_request_constructor_error(
-  e : JsError,
-) -> RequestConstructorError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum RequestArrayBufferError {
   TypeError(JsError)
@@ -867,30 +856,11 @@ pub(all) enum RequestArrayBufferError {
 }
 
 ///|
-extern "js" fn classify_request_array_buffer_error(
-  e : JsError,
-) -> RequestArrayBufferError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'RangeError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum RequestBlobError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_request_blob_error(e : JsError) -> RequestBlobError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -901,30 +871,11 @@ pub(all) enum RequestBytesError {
 }
 
 ///|
-extern "js" fn classify_request_bytes_error(e : JsError) -> RequestBytesError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'RangeError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum RequestFormDataError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_request_form_data_error(
-  e : JsError,
-) -> RequestFormDataError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -935,15 +886,6 @@ pub(all) enum RequestJsonError {
 }
 
 ///|
-extern "js" fn classify_request_json_error(e : JsError) -> RequestJsonError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum RequestTextError {
   TypeError(JsError)
@@ -951,25 +893,17 @@ pub(all) enum RequestTextError {
 }
 
 ///|
-extern "js" fn classify_request_text_error(e : JsError) -> RequestTextError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 pub extern "js" fn Request::new(
   input : RequestInfo,
 ) -> Result[Request, RequestConstructorError] =
-  #| (input) => (() => { try { return { $tag: 0, _0: new Request(input) }; } catch(e) { return { $tag: 1, _0: classify_request_constructor_error(e) }; } })()
+  #| (input) => (() => { try { return { $tag: 1, _0: new Request(input) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Request::new_with_init_ffi(
   input : RequestInfo,
   init_ : JsValue,
 ) -> Result[Request, RequestConstructorError] =
-  #| (input, init_) => (() => { try { return { $tag: 0, _0: new Request(input, init_) }; } catch(e) { return { $tag: 1, _0: classify_request_constructor_error(e) }; } })()
+  #| (input, init_) => (() => { try { return { $tag: 1, _0: new Request(input, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn Request::new_with_init(
@@ -1071,51 +1005,51 @@ pub extern "js" fn Request::get_body_used(self : Request) -> Bool =
 pub extern "js" fn Request::array_buffer(
   self : Request,
 ) -> Promise[Result[ArrayBuffer, RequestArrayBufferError]] =
-  #| (self) => self.arrayBuffer().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_request_array_buffer_error(e) }))
+  #| (self) => self.arrayBuffer().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Request::blob(
   self : Request,
 ) -> Promise[Result[Blob, RequestBlobError]] =
-  #| (self) => self.blob().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_request_blob_error(e) }))
+  #| (self) => self.blob().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Request::bytes(
   self : Request,
 ) -> Promise[Result[Uint8Array, RequestBytesError]] =
-  #| (self) => self.bytes().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_request_bytes_error(e) }))
+  #| (self) => self.bytes().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Request::form_data(
   self : Request,
 ) -> Promise[Result[FormData, RequestFormDataError]] =
-  #| (self) => self.formData().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_request_form_data_error(e) }))
+  #| (self) => self.formData().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Request::json(
   self : Request,
 ) -> Promise[Result[JsValue, RequestJsonError]] =
-  #| (self) => self.json().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_request_json_error(e) }))
+  #| (self) => self.json().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Request::text(
   self : Request,
 ) -> Promise[Result[String, RequestTextError]] =
-  #| (self) => self.text().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_request_text_error(e) }))
+  #| (self) => self.text().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Request::new_with_request(
   input : Request,
   init_ : RequestInit,
 ) -> Result[Request, RequestConstructorError] =
-  #| (input, init_) => (() => { try { return { $tag: 0, _0: new Request(input, init_) }; } catch(e) { return { $tag: 1, _0: classify_request_constructor_error(e) }; } })()
+  #| (input, init_) => (() => { try { return { $tag: 1, _0: new Request(input, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Request::new_with_string(
   input : String,
   init_ : RequestInit,
 ) -> Result[Request, RequestConstructorError] =
-  #| (input, init_) => (() => { try { return { $tag: 0, _0: new Request(input, init_) }; } catch(e) { return { $tag: 1, _0: classify_request_constructor_error(e) }; } })()
+  #| (input, init_) => (() => { try { return { $tag: 1, _0: new Request(input, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// Response interface
@@ -1154,30 +1088,11 @@ pub(all) enum ResponseRedirectError {
 }
 
 ///|
-extern "js" fn classify_response_redirect_error(
-  e : JsError,
-) -> ResponseRedirectError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'RangeError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ResponseJsonError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_response_json_error(e : JsError) -> ResponseJsonError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -1188,30 +1103,11 @@ pub(all) enum ResponseArrayBufferError {
 }
 
 ///|
-extern "js" fn classify_response_array_buffer_error(
-  e : JsError,
-) -> ResponseArrayBufferError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'RangeError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ResponseBlobError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_response_blob_error(e : JsError) -> ResponseBlobError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 /// Error type for throwing methods
@@ -1222,15 +1118,6 @@ pub(all) enum ResponseBytesError {
 }
 
 ///|
-extern "js" fn classify_response_bytes_error(e : JsError) -> ResponseBytesError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   if (n === 'RangeError') return { $tag: 1, _0: e };
-  #|   return { $tag: 2, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ResponseFormDataError {
   TypeError(JsError)
@@ -1238,29 +1125,11 @@ pub(all) enum ResponseFormDataError {
 }
 
 ///|
-extern "js" fn classify_response_form_data_error(
-  e : JsError,
-) -> ResponseFormDataError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
-
-///|
 /// Error type for throwing methods
 pub(all) enum ResponseTextError {
   TypeError(JsError)
   OtherError(JsError)
 }
-
-///|
-extern "js" fn classify_response_text_error(e : JsError) -> ResponseTextError =
-  #| (e) => {
-  #|   const n = (e && e.name) || '';
-  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
-  #|   return { $tag: 1, _0: e };
-  #| }
 
 ///|
 pub extern "js" fn Response::new() -> Response =
@@ -1289,27 +1158,27 @@ pub extern "js" fn Response::error() -> Response =
 pub extern "js" fn Response::redirect(
   url : String,
 ) -> Result[Response, ResponseRedirectError] =
-  #| (url) => (() => { try { return { $tag: 0, _0: Response.redirect(url) }; } catch(e) { return { $tag: 1, _0: classify_response_redirect_error(e) }; } })()
+  #| (url) => (() => { try { return { $tag: 1, _0: Response.redirect(url) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Response::redirect_with_status(
   url : String,
   status : Int,
 ) -> Result[Response, ResponseRedirectError] =
-  #| (url, status) => (() => { try { return { $tag: 0, _0: Response.redirect(url, status) }; } catch(e) { return { $tag: 1, _0: classify_response_redirect_error(e) }; } })()
+  #| (url, status) => (() => { try { return { $tag: 1, _0: Response.redirect(url, status) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Response::json(
   data : JsValue,
 ) -> Result[Response, ResponseJsonError] =
-  #| (data) => (() => { try { return { $tag: 0, _0: Response.json(data) }; } catch(e) { return { $tag: 1, _0: classify_response_json_error(e) }; } })()
+  #| (data) => (() => { try { return { $tag: 1, _0: Response.json(data) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Response::json_with_init_ffi(
   data : JsValue,
   init_ : JsValue,
 ) -> Result[Response, ResponseJsonError] =
-  #| (data, init_) => (() => { try { return { $tag: 0, _0: Response.json(data, init_) }; } catch(e) { return { $tag: 1, _0: classify_response_json_error(e) }; } })()
+  #| (data, init_) => (() => { try { return { $tag: 1, _0: Response.json(data, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn Response::json_with_init(
@@ -1363,31 +1232,31 @@ pub extern "js" fn Response::get_body_used(self : Response) -> Bool =
 pub extern "js" fn Response::array_buffer(
   self : Response,
 ) -> Promise[Result[ArrayBuffer, ResponseArrayBufferError]] =
-  #| (self) => self.arrayBuffer().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_response_array_buffer_error(e) }))
+  #| (self) => self.arrayBuffer().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Response::blob(
   self : Response,
 ) -> Promise[Result[Blob, ResponseBlobError]] =
-  #| (self) => self.blob().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_response_blob_error(e) }))
+  #| (self) => self.blob().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Response::bytes(
   self : Response,
 ) -> Promise[Result[Uint8Array, ResponseBytesError]] =
-  #| (self) => self.bytes().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_response_bytes_error(e) }))
+  #| (self) => self.bytes().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Response::form_data(
   self : Response,
 ) -> Promise[Result[FormData, ResponseFormDataError]] =
-  #| (self) => self.formData().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_response_form_data_error(e) }))
+  #| (self) => self.formData().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Response::text(
   self : Response,
 ) -> Promise[Result[String, ResponseTextError]] =
-  #| (self) => self.text().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_response_text_error(e) }))
+  #| (self) => self.text().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 /// FetchLaterResult interface

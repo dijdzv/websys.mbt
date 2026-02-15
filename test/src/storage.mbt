@@ -34,4 +34,5 @@ fn test_storage() -> Unit {
   // clear
   storage.clear()
   assert_eq(storage.get_length(), 0, label="length after final clear")
+  println("  storage: ok")
 }

@@ -8,6 +8,7 @@ fn test_html_html_element() -> Unit {
   html.set_version("-//W3C//DTD HTML 4.01//EN")
   assert_eq(html.get_version(), "-//W3C//DTD HTML 4.01//EN", label="version")
   let _el : @websys.Element = html.to_element()
+  println("  html_html_element: ok")
 }
 
 ///|
@@ -18,6 +19,7 @@ fn test_title_element() -> Unit {
   )
   title.set_text("My Page Title")
   assert_eq(title.get_text(), "My Page Title", label="text")
+  println("  title_element: ok")
 }
 
 ///|
@@ -36,6 +38,7 @@ fn test_meta_element() -> Unit {
   assert_eq(meta.get_scheme(), "PICS-1.1", label="scheme")
   meta.set_media("screen")
   assert_eq(meta.get_media(), "screen", label="media")
+  println("  meta_element: ok")
 }
 
 ///|
@@ -64,6 +67,7 @@ fn test_style_element() -> Unit {
     }
     None => abort("FAIL: document.head is None")
   }
+  println("  style_element: ok")
 }
 
 ///|
@@ -88,6 +92,7 @@ fn test_link_element() -> Unit {
   assert_false(link.get_disabled(), label="disabled default")
   link.set_disabled(true)
   assert_true(link.get_disabled(), label="disabled set")
+  println("  link_element: ok")
 }
 
 ///|
@@ -143,4 +148,5 @@ fn test_script_element() -> Unit {
   // html_for (deprecated)
   script.set_html_for("hey")
   assert_eq(script.get_html_for(), "hey", label="html_for")
+  println("  script_element: ok")
 }

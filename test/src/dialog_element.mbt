@@ -25,4 +25,5 @@ fn test_dialog_element() -> Unit {
     "cancelled",
     label="returnValue after close",
   )
+  println("  dialog_element: ok")
 }

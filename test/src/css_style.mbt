@@ -25,6 +25,7 @@ fn test_css_style() -> Unit {
     css_text.contains("font-size"),
     label="cssText contains font-size",
   )
+  println("  css_style: ok")
 }
 
 ///|
@@ -40,4 +41,5 @@ fn test_css_style_text() -> Unit {
     "blue",
     label="background-color",
   )
+  println("  css_style_text: ok")
 }

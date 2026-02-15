@@ -67,4 +67,5 @@ fn test_xpath_result() -> Unit {
   // Cleanup
   body.to_node().remove_child(p1.to_node()) |> ignore
   body.to_node().remove_child(p2.to_node()) |> ignore
+  println("  xpath_result: ok")
 }

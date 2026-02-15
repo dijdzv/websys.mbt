@@ -33,4 +33,5 @@ fn test_range() -> Unit {
   )
   // cleanup
   doc.get_body().unwrap().to_node().remove_child(div.to_node()) |> ignore
+  println("  range: ok")
 }

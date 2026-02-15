@@ -24,6 +24,7 @@ fn test_dom_parser_html() -> Unit {
     }
     None => abort("FAIL: p not found")
   }
+  println("  dom_parser_html: ok")
 }
 
 ///|
@@ -47,4 +48,5 @@ fn test_dom_parser_xml() -> Unit {
     }
     None => abort("FAIL: documentElement not found")
   }
+  println("  dom_parser_xml: ok")
 }

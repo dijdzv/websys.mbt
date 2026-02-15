@@ -60,4 +60,5 @@ fn test_tree_walker() -> Unit {
   assert_eq(walker.get_current_node().get_node_name(), "P", label="back to p")
   // cleanup
   doc.get_body().unwrap().to_node().remove_child(div.to_node()) |> ignore
+  println("  tree_walker: ok")
 }

@@ -34,6 +34,7 @@ fn test_rtc_rtp_transceiver_direction() -> Unit {
     cur is None,
     label="current_direction should be None before negotiation",
   )
+  println("  rtc_rtp_transceiver_direction: ok")
 }
 
 // --- Async test: full SDP exchange ---

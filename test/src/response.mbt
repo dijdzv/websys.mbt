@@ -27,6 +27,7 @@ fn test_response() -> Unit {
   let resp2 = @websys.Response::new_with_init(None, init)
   assert_eq(resp2.get_status(), 201, label="ResponseInit status")
   assert_eq(resp2.get_status_text(), "Created", label="ResponseInit statusText")
+  println("  response: ok")
 }
 
 ///|
@@ -43,4 +44,5 @@ fn test_response_error() -> Unit {
   let resp = @websys.Response::error()
   assert_eq(resp.get_status(), 0, label="error status")
   assert_false(resp.get_ok(), label="error not ok")
+  println("  response_error: ok")
 }

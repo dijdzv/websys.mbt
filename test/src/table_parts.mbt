@@ -20,6 +20,7 @@ fn test_table_section() -> Unit {
   let row = section.insert_row().unwrap()
   assert_eq(section.get_rows().get_length(), 1, label="rows after insert")
   ignore(row)
+  println("  table_section: ok")
 }
 
 ///|
@@ -42,6 +43,7 @@ fn test_table_row() -> Unit {
   let cell = row.insert_cell()
   assert_eq(row.get_cells().get_length(), 1, label="cells after insert")
   ignore(cell)
+  println("  table_row: ok")
 }
 
 ///|
@@ -71,6 +73,7 @@ fn test_table_cell() -> Unit {
   assert_eq(cell.get_width(), "100", label="width")
   cell.set_height("50")
   assert_eq(cell.get_height(), "50", label="height")
+  println("  table_cell: ok")
 }
 
 ///|
@@ -102,4 +105,5 @@ fn test_table_full() -> Unit {
   assert_eq(tbody.get_rows().get_length(), 1, label="tbody rows")
   assert_eq(header_row.get_cells().get_length(), 2, label="header cells")
   assert_eq(row1.get_cells().get_length(), 2, label="data cells")
+  println("  table_full: ok")
 }

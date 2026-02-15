@@ -325,6 +325,28 @@ async fn main {
     ("event_handler_onkeydown", test_event_handler_onkeydown),
     ("event_handler_onfocus_onblur", test_event_handler_onfocus_onblur),
     ("event_handler_typed_event_properties", test_event_handler_typed_event_properties),
+    // --- Type narrowing tests ---
+    ("node_narrowing", test_node_narrowing),
+    ("element_narrowing", test_element_narrowing),
+    ("event_narrowing", test_event_narrowing),
+    ("from_js_value_opt", test_from_js_value_opt),
+    ("union_type_narrowing", test_union_type_narrowing),
+    // --- Dictionary round-trip tests ---
+    ("dict_event_init_roundtrip", test_dict_event_init_roundtrip),
+    ("dict_mutation_observer_init_roundtrip", test_dict_mutation_observer_init_roundtrip),
+    ("dict_keyboard_event_init_roundtrip", test_dict_keyboard_event_init_roundtrip),
+    // --- WebAudio tests ---
+    ("audio_context", test_audio_context),
+    ("oscillator_node", test_oscillator_node),
+    ("gain_node_and_connect", test_gain_node_and_connect),
+    // --- XMLHttpRequest tests ---
+    ("xhr_basic", test_xhr_basic),
+    ("xhr_response_type", test_xhr_response_type),
+    ("xhr_event_handlers", test_xhr_event_handlers),
+    // --- IndexedDB extended tests ---
+    ("idb_key_range", test_idb_key_range),
+    ("idb_factory_cmp", test_idb_factory_cmp),
+    ("idb_enums", test_idb_enums),
   ]
   for i = 0; i < tests.length(); i = i + 1 {
     let (name, f) = tests[i]

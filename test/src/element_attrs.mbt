@@ -16,6 +16,7 @@ fn test_element_dataset() -> Unit {
   assert_true(div.has_attribute("data-name"), label="hasAttribute data-name")
   div.remove_attribute("data-name")
   assert_false(div.has_attribute("data-name"), label="after removeAttribute")
+  println("  element_dataset: ok")
 }
 
 ///|
@@ -31,6 +32,7 @@ fn test_element_scroll() -> Unit {
   assert_eq(div.get_client_width(), 0, label="clientWidth")
   assert_eq(div.get_client_height(), 0, label="clientHeight")
   ignore(html)
+  println("  element_scroll: ok")
 }
 
 ///|
@@ -58,4 +60,5 @@ fn test_element_closest() -> Unit {
   }
   // cleanup
   doc.get_body().unwrap().to_node().remove_child(outer.to_node()) |> ignore
+  println("  element_closest: ok")
 }

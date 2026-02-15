@@ -19,6 +19,7 @@ fn test_opfs() -> Unit {
 
   // StorageManager::get_directory() returns a Promise (not null)
   let _ = storage.get_directory()
+  println("  opfs: ok")
 }
 
 // --- Async test: access_storage ---

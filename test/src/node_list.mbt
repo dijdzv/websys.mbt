@@ -23,6 +23,7 @@ fn test_node_list() -> Unit {
   }
   // cleanup
   doc.get_body().unwrap().to_node().remove_child(div.to_node()) |> ignore
+  println("  node_list: ok")
 }
 
 ///|
@@ -48,4 +49,5 @@ fn test_html_collection() -> Unit {
     Some(el) => assert_eq(el.get_id(), "test-p2", label="namedItem")
     None => abort("FAIL: namedItem is None")
   }
+  println("  html_collection: ok")
 }

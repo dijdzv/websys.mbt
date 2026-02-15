@@ -25,6 +25,7 @@ fn test_document_fragment() -> Unit {
   // children
   let children = frag.get_children()
   assert_eq(children.get_length(), 2, label="children length")
+  println("  document_fragment: ok")
 }
 
 ///|
@@ -54,4 +55,5 @@ fn test_document_fragment_transfer() -> Unit {
     2,
     label="container has children",
   )
+  println("  document_fragment_transfer: ok")
 }

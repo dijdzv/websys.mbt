@@ -41,4 +41,5 @@ fn test_options_collection() -> Unit {
   // Set length
   opts.set_length(1234)
   assert_eq(opts.get_length(), 1234, label="length after set")
+  println("  options_collection: ok")
 }

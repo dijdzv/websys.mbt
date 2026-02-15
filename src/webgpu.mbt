@@ -6130,6 +6130,25 @@ pub extern "js" fn JsValue::to_gpu_adapter(self : JsValue) -> GPUAdapter =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum GPUAdapterRequestDeviceError {
+  TypeError(JsError)
+  OperationError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_gpu_adapter_request_device_error(
+  e : JsError,
+) -> GPUAdapterRequestDeviceError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'OperationError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
 pub extern "js" fn GPUAdapter::get_features(
   self : GPUAdapter,
 ) -> GPUSupportedFeatures =
@@ -6148,21 +6167,21 @@ pub extern "js" fn GPUAdapter::get_info(self : GPUAdapter) -> GPUAdapterInfo =
 ///|
 pub extern "js" fn GPUAdapter::request_device(
   self : GPUAdapter,
-) -> Promise[GPUDevice] =
-  #| (self) => self.requestDevice()
+) -> Promise[Result[GPUDevice, GPUAdapterRequestDeviceError]] =
+  #| (self) => self.requestDevice().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_gpu_adapter_request_device_error(e) }))
 
 ///|
 extern "js" fn GPUAdapter::request_device_with_descriptor_ffi(
   self : GPUAdapter,
   descriptor : JsValue,
-) -> Promise[GPUDevice] =
-  #| (self, descriptor) => self.requestDevice(descriptor)
+) -> Promise[Result[GPUDevice, GPUAdapterRequestDeviceError]] =
+  #| (self, descriptor) => self.requestDevice(descriptor).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_gpu_adapter_request_device_error(e) }))
 
 ///|
 pub fn GPUAdapter::request_device_with_descriptor(
   self : GPUAdapter,
   descriptor : GPUDeviceDescriptor,
-) -> Promise[GPUDevice] {
+) -> Promise[Result[GPUDevice, GPUAdapterRequestDeviceError]] {
   GPUAdapter::request_device_with_descriptor_ffi(self, descriptor.to_js())
 }
 
@@ -6199,6 +6218,40 @@ pub extern "js" fn GPUDevice::to_event_target(self : GPUDevice) -> EventTarget =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum GPUDeviceCreateBufferError {
+  RangeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_gpu_device_create_buffer_error(
+  e : JsError,
+) -> GPUDeviceCreateBufferError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum GPUDeviceImportExternalTextureError {
+  SecurityError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_gpu_device_import_external_texture_error(
+  e : JsError,
+) -> GPUDeviceImportExternalTextureError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn GPUDevice::get_features(
   self : GPUDevice,
 ) -> GPUSupportedFeatures =
@@ -6228,14 +6281,14 @@ pub extern "js" fn GPUDevice::destroy(self : GPUDevice) -> Unit =
 extern "js" fn GPUDevice::create_buffer_ffi(
   self : GPUDevice,
   descriptor : JsValue,
-) -> GPUBuffer =
-  #| (self, descriptor) => self.createBuffer(descriptor)
+) -> Result[GPUBuffer, GPUDeviceCreateBufferError] =
+  #| (self, descriptor) => (() => { try { return { $tag: 0, _0: self.createBuffer(descriptor) }; } catch(e) { return { $tag: 1, _0: classify_gpu_device_create_buffer_error(e) }; } })()
 
 ///|
 pub fn GPUDevice::create_buffer(
   self : GPUDevice,
   descriptor : GPUBufferDescriptor,
-) -> GPUBuffer {
+) -> Result[GPUBuffer, GPUDeviceCreateBufferError] {
   GPUDevice::create_buffer_ffi(self, descriptor.to_js())
 }
 
@@ -6277,14 +6330,14 @@ pub fn GPUDevice::create_sampler_with_descriptor(
 extern "js" fn GPUDevice::import_external_texture_ffi(
   self : GPUDevice,
   descriptor : JsValue,
-) -> GPUExternalTexture =
-  #| (self, descriptor) => self.importExternalTexture(descriptor)
+) -> Result[GPUExternalTexture, GPUDeviceImportExternalTextureError] =
+  #| (self, descriptor) => (() => { try { return { $tag: 0, _0: self.importExternalTexture(descriptor) }; } catch(e) { return { $tag: 1, _0: classify_gpu_device_import_external_texture_error(e) }; } })()
 
 ///|
 pub fn GPUDevice::import_external_texture(
   self : GPUDevice,
   descriptor : GPUExternalTextureDescriptor,
-) -> GPUExternalTexture {
+) -> Result[GPUExternalTexture, GPUDeviceImportExternalTextureError] {
   GPUDevice::import_external_texture_ffi(self, descriptor.to_js())
 }
 
@@ -6482,17 +6535,15 @@ pub extern "js" fn GPUDevice::pop_error_scope(
   #| (self) => self.popErrorScope()
 
 ///|
-pub extern "js" fn GPUDevice::get_onuncapturederror(
-  self : GPUDevice,
-) -> EventHandler =
-  #| (self) => self.onuncapturederror
-
-///|
 pub extern "js" fn GPUDevice::set_onuncapturederror(
   self : GPUDevice,
-  value : EventHandler,
+  handler : (GPUUncapturedErrorEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onuncapturederror = value }
+  #| (self, handler) => { self.onuncapturederror = (e) => handler(e) }
+
+///|
+pub extern "js" fn GPUDevice::clear_onuncapturederror(self : GPUDevice) -> Unit =
+  #| (self) => { self.onuncapturederror = null }
 
 ///|
 pub extern "js" fn GPUDevice::get_label(self : GPUDevice) -> String =
@@ -7758,6 +7809,23 @@ pub extern "js" fn JsValue::to_gpu_compute_pass_encoder(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum GPUComputePassEncoderSetBindGroupError {
+  Uint32Array(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_gpu_compute_pass_encoder_set_bind_group_error(
+  e : JsError,
+) -> GPUComputePassEncoderSetBindGroupError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'Uint32Array') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn GPUComputePassEncoder::set_pipeline(
   self : GPUComputePassEncoder,
   pipeline : GPUComputePipeline,
@@ -7832,8 +7900,8 @@ pub extern "js" fn GPUComputePassEncoder::set_bind_group(
   self : GPUComputePassEncoder,
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
-) -> Unit =
-  #| (self, index, bind_group) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null))
+) -> Result[Unit, GPUComputePassEncoderSetBindGroupError] =
+  #| (self, index, bind_group) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null)); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_compute_pass_encoder_set_bind_group_error(e) }; } })()
 
 ///|
 pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_dynamic_offsets(
@@ -7841,8 +7909,8 @@ pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_dynamic_offsets(
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
   dynamic_offsets : Array[GPUBufferDynamicOffset],
-) -> Unit =
-  #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets)
+) -> Result[Unit, GPUComputePassEncoderSetBindGroupError] =
+  #| (self, index, bind_group, dynamic_offsets) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_compute_pass_encoder_set_bind_group_error(e) }; } })()
 
 ///|
 pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_index_gpu_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_gpu_size64_and_dynamic_offsets_data_length_gpu_size32(
@@ -7852,8 +7920,8 @@ pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_index_gpu_index32_
   dynamic_offsets_data : Uint32Array,
   dynamic_offsets_data_start : GPUSize64,
   dynamic_offsets_data_length : GPUSize32,
-) -> Unit =
-  #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length)
+) -> Result[Unit, GPUComputePassEncoderSetBindGroupError] =
+  #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_compute_pass_encoder_set_bind_group_error(e) }; } })()
 
 ///|
 /// GPURenderPassEncoder interface
@@ -7892,6 +7960,23 @@ pub extern "js" fn JsValue::to_gpu_render_pass_encoder(
   self : JsValue,
 ) -> GPURenderPassEncoder =
   #| (self) => self
+
+///|
+/// Error type for throwing methods
+pub(all) enum GPURenderPassEncoderSetBindGroupError {
+  Uint32Array(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_gpu_render_pass_encoder_set_bind_group_error(
+  e : JsError,
+) -> GPURenderPassEncoderSetBindGroupError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'Uint32Array') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
 
 ///|
 pub extern "js" fn GPURenderPassEncoder::set_viewport(
@@ -7993,8 +8078,8 @@ pub extern "js" fn GPURenderPassEncoder::set_bind_group(
   self : GPURenderPassEncoder,
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
-) -> Unit =
-  #| (self, index, bind_group) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null))
+) -> Result[Unit, GPURenderPassEncoderSetBindGroupError] =
+  #| (self, index, bind_group) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null)); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_render_pass_encoder_set_bind_group_error(e) }; } })()
 
 ///|
 pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_dynamic_offsets(
@@ -8002,8 +8087,8 @@ pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_dynamic_offsets(
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
   dynamic_offsets : Array[GPUBufferDynamicOffset],
-) -> Unit =
-  #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets)
+) -> Result[Unit, GPURenderPassEncoderSetBindGroupError] =
+  #| (self, index, bind_group, dynamic_offsets) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_render_pass_encoder_set_bind_group_error(e) }; } })()
 
 ///|
 pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_index_gpu_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_gpu_size64_and_dynamic_offsets_data_length_gpu_size32(
@@ -8013,8 +8098,8 @@ pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_index_gpu_index32_a
   dynamic_offsets_data : Uint32Array,
   dynamic_offsets_data_start : GPUSize64,
   dynamic_offsets_data_length : GPUSize32,
-) -> Unit =
-  #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length)
+) -> Result[Unit, GPURenderPassEncoderSetBindGroupError] =
+  #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_render_pass_encoder_set_bind_group_error(e) }; } })()
 
 ///|
 pub extern "js" fn GPURenderPassEncoder::set_pipeline(
@@ -8212,6 +8297,23 @@ pub extern "js" fn JsValue::to_gpu_render_bundle_encoder(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum GPURenderBundleEncoderSetBindGroupError {
+  Uint32Array(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_gpu_render_bundle_encoder_set_bind_group_error(
+  e : JsError,
+) -> GPURenderBundleEncoderSetBindGroupError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'Uint32Array') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn GPURenderBundleEncoder::finish(
   self : GPURenderBundleEncoder,
 ) -> GPURenderBundle =
@@ -8270,8 +8372,8 @@ pub extern "js" fn GPURenderBundleEncoder::set_bind_group(
   self : GPURenderBundleEncoder,
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
-) -> Unit =
-  #| (self, index, bind_group) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null))
+) -> Result[Unit, GPURenderBundleEncoderSetBindGroupError] =
+  #| (self, index, bind_group) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null)); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_render_bundle_encoder_set_bind_group_error(e) }; } })()
 
 ///|
 pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_dynamic_offsets(
@@ -8279,8 +8381,8 @@ pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_dynamic_offsets(
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
   dynamic_offsets : Array[GPUBufferDynamicOffset],
-) -> Unit =
-  #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets)
+) -> Result[Unit, GPURenderBundleEncoderSetBindGroupError] =
+  #| (self, index, bind_group, dynamic_offsets) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_render_bundle_encoder_set_bind_group_error(e) }; } })()
 
 ///|
 pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_index_gpu_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_gpu_size64_and_dynamic_offsets_data_length_gpu_size32(
@@ -8290,8 +8392,8 @@ pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_index_gpu_index32
   dynamic_offsets_data : Uint32Array,
   dynamic_offsets_data_start : GPUSize64,
   dynamic_offsets_data_length : GPUSize32,
-) -> Unit =
-  #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length)
+) -> Result[Unit, GPURenderBundleEncoderSetBindGroupError] =
+  #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_render_bundle_encoder_set_bind_group_error(e) }; } })()
 
 ///|
 pub extern "js" fn GPURenderBundleEncoder::set_pipeline(
@@ -8416,6 +8518,42 @@ pub extern "js" fn JsValue::to_gpu_queue(self : JsValue) -> GPUQueue =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum GPUQueueWriteBufferError {
+  OperationError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_gpu_queue_write_buffer_error(
+  e : JsError,
+) -> GPUQueueWriteBufferError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'OperationError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum GPUQueueCopyExternalImageToTextureError {
+  SecurityError(JsError)
+  OperationError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_gpu_queue_copy_external_image_to_texture_error(
+  e : JsError,
+) -> GPUQueueCopyExternalImageToTextureError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
+  #|   if (n === 'OperationError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
 pub extern "js" fn GPUQueue::submit(
   self : GPUQueue,
   command_buffers : Array[GPUCommandBuffer],
@@ -8434,8 +8572,8 @@ pub extern "js" fn GPUQueue::write_buffer(
   buffer : GPUBuffer,
   buffer_offset : GPUSize64,
   data : AllowSharedBufferSource,
-) -> Unit =
-  #| (self, buffer, buffer_offset, data) => self.writeBuffer(buffer, buffer_offset, data)
+) -> Result[Unit, GPUQueueWriteBufferError] =
+  #| (self, buffer, buffer_offset, data) => (() => { try { self.writeBuffer(buffer, buffer_offset, data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_queue_write_buffer_error(e) }; } })()
 
 ///|
 pub extern "js" fn GPUQueue::write_buffer_with_size(
@@ -8445,8 +8583,8 @@ pub extern "js" fn GPUQueue::write_buffer_with_size(
   data : AllowSharedBufferSource,
   data_offset : GPUSize64,
   size : GPUSize64,
-) -> Unit =
-  #| (self, buffer, buffer_offset, data, data_offset, size) => self.writeBuffer(buffer, buffer_offset, data, data_offset, size)
+) -> Result[Unit, GPUQueueWriteBufferError] =
+  #| (self, buffer, buffer_offset, data, data_offset, size) => (() => { try { self.writeBuffer(buffer, buffer_offset, data, data_offset, size); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_queue_write_buffer_error(e) }; } })()
 
 ///|
 extern "js" fn GPUQueue::write_texture_ffi(
@@ -8481,8 +8619,8 @@ extern "js" fn GPUQueue::copy_external_image_to_texture_ffi(
   source : JsValue,
   destination : JsValue,
   copy_size : GPUExtent3D,
-) -> Unit =
-  #| (self, source, destination, copy_size) => self.copyExternalImageToTexture(source, destination, copy_size)
+) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] =
+  #| (self, source, destination, copy_size) => (() => { try { self.copyExternalImageToTexture(source, destination, copy_size); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_queue_copy_external_image_to_texture_error(e) }; } })()
 
 ///|
 pub fn GPUQueue::copy_external_image_to_texture(
@@ -8490,7 +8628,7 @@ pub fn GPUQueue::copy_external_image_to_texture(
   source : GPUCopyExternalImageSourceInfo,
   destination : GPUCopyExternalImageDestInfo,
   copy_size : GPUExtent3D,
-) -> Unit {
+) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] {
   GPUQueue::copy_external_image_to_texture_ffi(
     self,
     source.to_js(),
@@ -8515,8 +8653,8 @@ pub extern "js" fn GPUQueue::write_buffer_with_array_buffer(
   data : ArrayBuffer,
   data_offset : GPUSize64,
   size : GPUSize64,
-) -> Unit =
-  #| (self, buffer, buffer_offset, data, data_offset, size) => self.writeBuffer(buffer, buffer_offset, data, data_offset, size)
+) -> Result[Unit, GPUQueueWriteBufferError] =
+  #| (self, buffer, buffer_offset, data, data_offset, size) => (() => { try { self.writeBuffer(buffer, buffer_offset, data, data_offset, size); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_queue_write_buffer_error(e) }; } })()
 
 ///|
 pub extern "js" fn GPUQueue::write_buffer_with_shared_array_buffer(
@@ -8526,8 +8664,8 @@ pub extern "js" fn GPUQueue::write_buffer_with_shared_array_buffer(
   data : SharedArrayBuffer,
   data_offset : GPUSize64,
   size : GPUSize64,
-) -> Unit =
-  #| (self, buffer, buffer_offset, data, data_offset, size) => self.writeBuffer(buffer, buffer_offset, data, data_offset, size)
+) -> Result[Unit, GPUQueueWriteBufferError] =
+  #| (self, buffer, buffer_offset, data, data_offset, size) => (() => { try { self.writeBuffer(buffer, buffer_offset, data, data_offset, size); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_queue_write_buffer_error(e) }; } })()
 
 ///|
 pub extern "js" fn GPUQueue::write_buffer_with_array_buffer_view(
@@ -8537,8 +8675,8 @@ pub extern "js" fn GPUQueue::write_buffer_with_array_buffer_view(
   data : ArrayBufferView,
   data_offset : GPUSize64,
   size : GPUSize64,
-) -> Unit =
-  #| (self, buffer, buffer_offset, data, data_offset, size) => self.writeBuffer(buffer, buffer_offset, data, data_offset, size)
+) -> Result[Unit, GPUQueueWriteBufferError] =
+  #| (self, buffer, buffer_offset, data, data_offset, size) => (() => { try { self.writeBuffer(buffer, buffer_offset, data, data_offset, size); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_queue_write_buffer_error(e) }; } })()
 
 ///|
 pub extern "js" fn GPUQueue::write_texture_with_array_buffer(
@@ -8576,8 +8714,8 @@ pub extern "js" fn GPUQueue::copy_external_image_to_texture_with_array_of_gpu_in
   source : GPUCopyExternalImageSourceInfo,
   destination : GPUCopyExternalImageDestInfo,
   copy_size : Array[GPUIntegerCoordinate],
-) -> Unit =
-  #| (self, source, destination, copy_size) => self.copyExternalImageToTexture(source, destination, copy_size)
+) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] =
+  #| (self, source, destination, copy_size) => (() => { try { self.copyExternalImageToTexture(source, destination, copy_size); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_queue_copy_external_image_to_texture_error(e) }; } })()
 
 ///|
 pub extern "js" fn GPUQueue::copy_external_image_to_texture_with_gpu_extent_3d_dict(
@@ -8585,8 +8723,8 @@ pub extern "js" fn GPUQueue::copy_external_image_to_texture_with_gpu_extent_3d_d
   source : GPUCopyExternalImageSourceInfo,
   destination : GPUCopyExternalImageDestInfo,
   copy_size : GPUExtent3DDict,
-) -> Unit =
-  #| (self, source, destination, copy_size) => self.copyExternalImageToTexture(source, destination, copy_size)
+) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] =
+  #| (self, source, destination, copy_size) => (() => { try { self.copyExternalImageToTexture(source, destination, copy_size); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_gpu_queue_copy_external_image_to_texture_error(e) }; } })()
 
 ///|
 /// GPUQuerySet interface
@@ -8678,6 +8816,23 @@ pub extern "js" fn JsValue::to_gpu_canvas_context(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum GPUCanvasContextGetCurrentTextureError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_gpu_canvas_context_get_current_texture_error(
+  e : JsError,
+) -> GPUCanvasContextGetCurrentTextureError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn GPUCanvasContext::get_canvas(
   self : GPUCanvasContext,
 ) -> HTMLCanvasElementOrOffscreenCanvas =
@@ -8713,8 +8868,8 @@ pub extern "js" fn GPUCanvasContext::get_configuration(
 ///|
 pub extern "js" fn GPUCanvasContext::get_current_texture(
   self : GPUCanvasContext,
-) -> GPUTexture =
-  #| (self) => self.getCurrentTexture()
+) -> Result[GPUTexture, GPUCanvasContextGetCurrentTextureError] =
+  #| (self) => (() => { try { return { $tag: 0, _0: self.getCurrentTexture() }; } catch(e) { return { $tag: 1, _0: classify_gpu_canvas_context_get_current_texture_error(e) }; } })()
 
 ///|
 /// GPUDeviceLostInfo interface

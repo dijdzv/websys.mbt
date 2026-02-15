@@ -194,37 +194,37 @@ pub extern "js" fn Sensor::stop(self : Sensor) -> Unit =
   #| (self) => self.stop()
 
 ///|
-pub extern "js" fn Sensor::get_onreading(self : Sensor) -> EventHandler =
-  #| (self) => self.onreading
-
-///|
 pub extern "js" fn Sensor::set_onreading(
   self : Sensor,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onreading = value }
+  #| (self, handler) => { self.onreading = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Sensor::get_onactivate(self : Sensor) -> EventHandler =
-  #| (self) => self.onactivate
+pub extern "js" fn Sensor::clear_onreading(self : Sensor) -> Unit =
+  #| (self) => { self.onreading = null }
 
 ///|
 pub extern "js" fn Sensor::set_onactivate(
   self : Sensor,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onactivate = value }
+  #| (self, handler) => { self.onactivate = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Sensor::get_onerror(self : Sensor) -> EventHandler =
-  #| (self) => self.onerror
+pub extern "js" fn Sensor::clear_onactivate(self : Sensor) -> Unit =
+  #| (self) => { self.onactivate = null }
 
 ///|
 pub extern "js" fn Sensor::set_onerror(
   self : Sensor,
-  value : EventHandler,
+  handler : (SensorErrorEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onerror = value }
+  #| (self, handler) => { self.onerror = (e) => handler(e) }
+
+///|
+pub extern "js" fn Sensor::clear_onerror(self : Sensor) -> Unit =
+  #| (self) => { self.onerror = null }
 
 ///|
 /// SensorErrorEvent interface

@@ -20,7 +20,7 @@ pub fn test_mutation_observer() -> Unit {
     attributes: Some(true),
     subtree: Some(false),
   }
-  observer.observe_with_options(div.to_node(), opts)
+  observer.observe_with_options(div.to_node(), opts).unwrap()
 
   // takeRecords — should return empty array (no mutations yet)
   let records = observer.take_records()
@@ -44,7 +44,7 @@ pub fn test_mutation_observer_records() -> Unit {
     ..@websys.MutationObserverInit::default(),
     childList: Some(true),
   }
-  observer.observe_with_options(container.to_node(), opts)
+  observer.observe_with_options(container.to_node(), opts).unwrap()
 
   // Mutate: add a child
   let child = doc.create_element("span")
@@ -80,7 +80,7 @@ pub fn test_intersection_observer() -> Unit {
     ..@websys.IntersectionObserverInit::default(),
     rootMargin: Some("0px"),
   }
-  let observer = @websys.IntersectionObserver::new_with_options(cb, opts)
+  let observer = @websys.IntersectionObserver::new_with_options(cb, opts).unwrap()
 
   // Properties
   // get_root returns ElementOrDocument (non-nullable), just verify no throw

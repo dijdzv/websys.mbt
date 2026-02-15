@@ -266,6 +266,23 @@ pub extern "js" fn DeviceOrientationEvent::to_event(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum DeviceOrientationEventRequestPermissionError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_device_orientation_event_request_permission_error(
+  e : JsError,
+) -> DeviceOrientationEventRequestPermissionError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn DeviceOrientationEvent::new(
   type_ : String,
 ) -> DeviceOrientationEvent =
@@ -315,15 +332,17 @@ pub extern "js" fn DeviceOrientationEvent::get_absolute(
 
 ///|
 pub extern "js" fn DeviceOrientationEvent::request_permission() -> Promise[
-  PermissionState,
+  Result[PermissionState, DeviceOrientationEventRequestPermissionError],
 ] =
-  #| () => DeviceOrientationEvent.requestPermission()
+  #| () => DeviceOrientationEvent.requestPermission().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_device_orientation_event_request_permission_error(e) }))
 
 ///|
 pub extern "js" fn DeviceOrientationEvent::request_permission_with_absolute(
   absolute : Bool,
-) -> Promise[PermissionState] =
-  #| (absolute) => DeviceOrientationEvent.requestPermission(absolute)
+) -> Promise[
+  Result[PermissionState, DeviceOrientationEventRequestPermissionError],
+] =
+  #| (absolute) => DeviceOrientationEvent.requestPermission(absolute).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_device_orientation_event_request_permission_error(e) }))
 
 ///|
 /// DeviceMotionEventAcceleration interface
@@ -482,6 +501,23 @@ pub extern "js" fn DeviceMotionEvent::to_event(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum DeviceMotionEventRequestPermissionError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_device_motion_event_request_permission_error(
+  e : JsError,
+) -> DeviceMotionEventRequestPermissionError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn DeviceMotionEvent::new(type_ : String) -> DeviceMotionEvent =
   #| (type_) => new DeviceMotionEvent(type_)
 
@@ -529,6 +565,6 @@ pub extern "js" fn DeviceMotionEvent::get_interval(
 
 ///|
 pub extern "js" fn DeviceMotionEvent::request_permission() -> Promise[
-  PermissionState,
+  Result[PermissionState, DeviceMotionEventRequestPermissionError],
 ] =
-  #| () => DeviceMotionEvent.requestPermission()
+  #| () => DeviceMotionEvent.requestPermission().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_device_motion_event_request_permission_error(e) }))

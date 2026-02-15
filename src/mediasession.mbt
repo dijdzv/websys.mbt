@@ -444,6 +444,23 @@ pub extern "js" fn JsValue::to_media_session(self : JsValue) -> MediaSession =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum MediaSessionSetPositionStateError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_media_session_set_position_state_error(
+  e : JsError,
+) -> MediaSessionSetPositionStateError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn MediaSession::get_metadata(
   self : MediaSession,
 ) -> MediaMetadata? =
@@ -480,21 +497,21 @@ pub extern "js" fn MediaSession::set_action_handler(
 ///|
 pub extern "js" fn MediaSession::set_position_state(
   self : MediaSession,
-) -> Unit =
-  #| (self) => self.setPositionState()
+) -> Result[Unit, MediaSessionSetPositionStateError] =
+  #| (self) => (() => { try { self.setPositionState(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_media_session_set_position_state_error(e) }; } })()
 
 ///|
 extern "js" fn MediaSession::set_position_state_with_state_ffi(
   self : MediaSession,
   state : JsValue,
-) -> Unit =
-  #| (self, state) => self.setPositionState(state)
+) -> Result[Unit, MediaSessionSetPositionStateError] =
+  #| (self, state) => (() => { try { self.setPositionState(state); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_media_session_set_position_state_error(e) }; } })()
 
 ///|
 pub fn MediaSession::set_position_state_with_state(
   self : MediaSession,
   state : MediaPositionState,
-) -> Unit {
+) -> Result[Unit, MediaSessionSetPositionStateError] {
   MediaSession::set_position_state_with_state_ffi(self, state.to_js())
 }
 

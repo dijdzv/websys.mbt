@@ -13,7 +13,7 @@ fn test_text_node() -> Unit {
   // wholeText
   assert_eq(text.get_whole_text(), "Hello, World!", label="wholeText")
   // splitText
-  let second = text.split_text(5)
+  let second = text.split_text(5).unwrap()
   assert_eq(text.get_whole_text(), "Hello", label="first part after split")
   assert_eq(
     second.get_whole_text(),

@@ -255,6 +255,27 @@ pub extern "js" fn JsValue::to_contacts_manager(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum ContactsManagerSelectError {
+  TypeError(JsError)
+  SecurityError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_contacts_manager_select_error(
+  e : JsError,
+) -> ContactsManagerSelectError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'SecurityError') return { $tag: 1, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
 pub extern "js" fn ContactsManager::get_properties(
   self : ContactsManager,
 ) -> Promise[Array[ContactProperty]] =
@@ -264,22 +285,22 @@ pub extern "js" fn ContactsManager::get_properties(
 pub extern "js" fn ContactsManager::select(
   self : ContactsManager,
   properties : Array[ContactProperty],
-) -> Promise[Array[ContactInfo]] =
-  #| (self, properties) => self.select(properties)
+) -> Promise[Result[Array[ContactInfo], ContactsManagerSelectError]] =
+  #| (self, properties) => self.select(properties).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_contacts_manager_select_error(e) }))
 
 ///|
 extern "js" fn ContactsManager::select_with_options_ffi(
   self : ContactsManager,
   properties : Array[ContactProperty],
   options : JsValue,
-) -> Promise[Array[ContactInfo]] =
-  #| (self, properties, options) => self.select(properties, options)
+) -> Promise[Result[Array[ContactInfo], ContactsManagerSelectError]] =
+  #| (self, properties, options) => self.select(properties, options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_contacts_manager_select_error(e) }))
 
 ///|
 pub fn ContactsManager::select_with_options(
   self : ContactsManager,
   properties : Array[ContactProperty],
   options : ContactsSelectOptions,
-) -> Promise[Array[ContactInfo]] {
+) -> Promise[Result[Array[ContactInfo], ContactsManagerSelectError]] {
   ContactsManager::select_with_options_ffi(self, properties, options.to_js())
 }

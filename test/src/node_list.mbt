@@ -10,14 +10,14 @@ fn test_node_list() -> Unit {
   div.to_node().append_child(s3.to_node()) |> ignore
   doc.get_body().unwrap().to_node().append_child(div.to_node()) |> ignore
   // querySelectorAll returns NodeList
-  let list = div.query_selector_all("span")
+  let list = div.query_selector_all("span").unwrap()
   assert_eq(list.get_length(), 3, label="NodeList length")
   // item
-  match list.item(0) {
+  match list.item(0).unwrap() {
     Some(node) => assert_eq(node.get_node_name(), "SPAN", label="item(0)")
     None => abort("FAIL: item(0) is None")
   }
-  match list.item(2) {
+  match list.item(2).unwrap() {
     Some(node) => assert_eq(node.get_node_name(), "SPAN", label="item(2)")
     None => abort("FAIL: item(2) is None")
   }

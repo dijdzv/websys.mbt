@@ -6,12 +6,12 @@ fn test_element_dataset() -> Unit {
   div.set_attribute(
     "data-name",
     @websys.TrustedTypeOrString::from_string("test"),
-  )
+  ).unwrap()
   assert_eq(div.get_attribute("data-name").unwrap(), "test", label="data-name")
   div.set_attribute(
     "data-value",
     @websys.TrustedTypeOrString::from_string("42"),
-  )
+  ).unwrap()
   assert_eq(div.get_attribute("data-value").unwrap(), "42", label="data-value")
   assert_true(div.has_attribute("data-name"), label="hasAttribute data-name")
   div.remove_attribute("data-name")
@@ -45,13 +45,13 @@ fn test_element_closest() -> Unit {
   inner.to_node().append_child(span.to_node()) |> ignore
   doc.get_body().unwrap().to_node().append_child(outer.to_node()) |> ignore
   // closest
-  let found = span.closest(".outer")
+  let found = span.closest(".outer").unwrap()
   match found {
     Some(el) =>
       assert_eq(el.get_class_name(), "outer", label="closest finds outer")
     None => abort("FAIL: closest did not find .outer")
   }
-  let not_found = span.closest(".nonexistent")
+  let not_found = span.closest(".nonexistent").unwrap()
   match not_found {
     Some(_) => abort("FAIL: closest found nonexistent")
     None => ()

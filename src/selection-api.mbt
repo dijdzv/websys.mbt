@@ -74,6 +74,23 @@ pub extern "js" fn JsValue::to_selection(self : JsValue) -> Selection =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum SelectionSetBaseAndExtentError {
+  IndexSizeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_selection_set_base_and_extent_error(
+  e : JsError,
+) -> SelectionSetBaseAndExtentError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn Selection::get_anchor_node(self : Selection) -> Node? =
   #| (self) => (() => { const v = self.anchorNode; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
@@ -209,8 +226,8 @@ pub extern "js" fn Selection::set_base_and_extent(
   anchor_offset : Int,
   focus_node : Node,
   focus_offset : Int,
-) -> Unit =
-  #| (self, anchor_node, anchor_offset, focus_node, focus_offset) => self.setBaseAndExtent(anchor_node, anchor_offset, focus_node, focus_offset)
+) -> Result[Unit, SelectionSetBaseAndExtentError] =
+  #| (self, anchor_node, anchor_offset, focus_node, focus_offset) => (() => { try { self.setBaseAndExtent(anchor_node, anchor_offset, focus_node, focus_offset); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_selection_set_base_and_extent_error(e) }; } })()
 
 ///|
 pub extern "js" fn Selection::select_all_children(

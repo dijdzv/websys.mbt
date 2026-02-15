@@ -377,6 +377,23 @@ pub extern "js" fn TaskController::to_abort_controller(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum TaskControllerSetPriorityError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_task_controller_set_priority_error(
+  e : JsError,
+) -> TaskControllerSetPriorityError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn TaskController::new() -> TaskController =
   #| () => new TaskController()
 
@@ -397,8 +414,8 @@ pub fn TaskController::new_with_init(
 pub extern "js" fn TaskController::set_priority(
   self : TaskController,
   priority : TaskPriority,
-) -> Unit =
-  #| (self, priority) => self.setPriority(['user-blocking', 'user-visible', 'background'][priority])
+) -> Result[Unit, TaskControllerSetPriorityError] =
+  #| (self, priority) => (() => { try { self.setPriority(['user-blocking', 'user-visible', 'background'][priority]); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_task_controller_set_priority_error(e) }; } })()
 
 ///|
 /// TaskSignal interface
@@ -464,14 +481,14 @@ pub extern "js" fn TaskSignal::get_priority(self : TaskSignal) -> TaskPriority =
   #| (self) => ['user-blocking', 'user-visible', 'background'].indexOf(self.priority)
 
 ///|
-pub extern "js" fn TaskSignal::get_onprioritychange(
-  self : TaskSignal,
-) -> EventHandler =
-  #| (self) => self.onprioritychange
-
-///|
 pub extern "js" fn TaskSignal::set_onprioritychange(
   self : TaskSignal,
-  value : EventHandler,
+  handler : (TaskPriorityChangeEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onprioritychange = value }
+  #| (self, handler) => { self.onprioritychange = (e) => handler(e) }
+
+///|
+pub extern "js" fn TaskSignal::clear_onprioritychange(
+  self : TaskSignal,
+) -> Unit =
+  #| (self) => { self.onprioritychange = null }

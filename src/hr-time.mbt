@@ -44,6 +44,65 @@ pub extern "js" fn Performance::to_event_target(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum PerformanceMarkError {
+  TypeError(JsError)
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_performance_mark_error(
+  e : JsError,
+) -> PerformanceMarkError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum PerformanceMeasureError {
+  TypeError(JsError)
+  RangeError(JsError)
+  SyntaxError(JsError)
+  DataCloneError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_performance_measure_error(
+  e : JsError,
+) -> PerformanceMeasureError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'RangeError') return { $tag: 1, _0: e };
+  #|   if (n === 'SyntaxError') return { $tag: 2, _0: e };
+  #|   if (n === 'DataCloneError') return { $tag: 3, _0: e };
+  #|   return { $tag: 4, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum PerformanceMeasureUserAgentSpecificMemoryError {
+  SecurityError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_performance_measure_user_agent_specific_memory_error(
+  e : JsError,
+) -> PerformanceMeasureUserAgentSpecificMemoryError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn Performance::now(self : Performance) -> DOMHighResTimeStamp =
   #| (self) => self.now()
 
@@ -61,23 +120,23 @@ pub extern "js" fn Performance::to_json(self : Performance) -> JsValue =
 pub extern "js" fn Performance::mark(
   self : Performance,
   mark_name : String,
-) -> PerformanceMark =
-  #| (self, mark_name) => self.mark(mark_name)
+) -> Result[PerformanceMark, PerformanceMarkError] =
+  #| (self, mark_name) => (() => { try { return { $tag: 0, _0: self.mark(mark_name) }; } catch(e) { return { $tag: 1, _0: classify_performance_mark_error(e) }; } })()
 
 ///|
 extern "js" fn Performance::mark_with_mark_options_ffi(
   self : Performance,
   mark_name : String,
   mark_options : JsValue,
-) -> PerformanceMark =
-  #| (self, mark_name, mark_options) => self.mark(mark_name, mark_options)
+) -> Result[PerformanceMark, PerformanceMarkError] =
+  #| (self, mark_name, mark_options) => (() => { try { return { $tag: 0, _0: self.mark(mark_name, mark_options) }; } catch(e) { return { $tag: 1, _0: classify_performance_mark_error(e) }; } })()
 
 ///|
 pub fn Performance::mark_with_mark_options(
   self : Performance,
   mark_name : String,
   mark_options : PerformanceMarkOptions,
-) -> PerformanceMark {
+) -> Result[PerformanceMark, PerformanceMarkError] {
   Performance::mark_with_mark_options_ffi(self, mark_name, mark_options.to_js())
 }
 
@@ -96,8 +155,8 @@ pub extern "js" fn Performance::clear_marks_with_mark_name(
 pub extern "js" fn Performance::measure(
   self : Performance,
   measure_name : String,
-) -> PerformanceMeasure =
-  #| (self, measure_name) => self.measure(measure_name)
+) -> Result[PerformanceMeasure, PerformanceMeasureError] =
+  #| (self, measure_name) => (() => { try { return { $tag: 0, _0: self.measure(measure_name) }; } catch(e) { return { $tag: 1, _0: classify_performance_measure_error(e) }; } })()
 
 ///|
 pub extern "js" fn Performance::measure_with_end_mark(
@@ -105,8 +164,8 @@ pub extern "js" fn Performance::measure_with_end_mark(
   measure_name : String,
   start_or_measure_options : StringOrPerformanceMeasureOptions,
   end_mark : String,
-) -> PerformanceMeasure =
-  #| (self, measure_name, start_or_measure_options, end_mark) => self.measure(measure_name, start_or_measure_options, end_mark)
+) -> Result[PerformanceMeasure, PerformanceMeasureError] =
+  #| (self, measure_name, start_or_measure_options, end_mark) => (() => { try { return { $tag: 0, _0: self.measure(measure_name, start_or_measure_options, end_mark) }; } catch(e) { return { $tag: 1, _0: classify_performance_measure_error(e) }; } })()
 
 ///|
 pub extern "js" fn Performance::clear_measures(self : Performance) -> Unit =
@@ -162,11 +221,13 @@ pub extern "js" fn Performance::get_entries_by_name_with_type(
 ///|
 pub extern "js" fn Performance::measure_user_agent_specific_memory(
   self : Performance,
-) -> Promise[MemoryMeasurement] =
+) -> Promise[
+  Result[MemoryMeasurement, PerformanceMeasureUserAgentSpecificMemoryError],
+] =
   #| (self) => self.measureUserAgentSpecificMemory().then(v => ({
   #|   bytes: v.bytes,
   #|   breakdown: (v.breakdown === undefined ? { $tag: 0 } : { $tag: 1, _0: v.breakdown })
-  #| }))
+  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_performance_measure_user_agent_specific_memory_error(e) }))
 
 ///|
 pub extern "js" fn Performance::clear_resource_timings(
@@ -182,17 +243,17 @@ pub extern "js" fn Performance::set_resource_timing_buffer_size(
   #| (self, max_size) => self.setResourceTimingBufferSize(max_size)
 
 ///|
-pub extern "js" fn Performance::get_onresourcetimingbufferfull(
-  self : Performance,
-) -> EventHandler =
-  #| (self) => self.onresourcetimingbufferfull
-
-///|
 pub extern "js" fn Performance::set_onresourcetimingbufferfull(
   self : Performance,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onresourcetimingbufferfull = value }
+  #| (self, handler) => { self.onresourcetimingbufferfull = (e) => handler(e) }
+
+///|
+pub extern "js" fn Performance::clear_onresourcetimingbufferfull(
+  self : Performance,
+) -> Unit =
+  #| (self) => { self.onresourcetimingbufferfull = null }
 
 ///|
 pub extern "js" fn Performance::get_event_counts(

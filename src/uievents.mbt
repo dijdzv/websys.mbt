@@ -675,6 +675,7 @@ pub extern "js" fn UIEvent::get_source_capabilities(
   #| (self) => (() => { const v = self.sourceCapabilities; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+/// @alert deprecated "initUIEvent is deprecated"
 pub extern "js" fn UIEvent::init_ui_event(
   self : UIEvent,
   type_arg : String,
@@ -912,6 +913,7 @@ pub extern "js" fn MouseEvent::get_offset_y(self : MouseEvent) -> Double =
   #| (self) => self.offsetY
 
 ///|
+/// @alert deprecated "initMouseEvent is deprecated"
 pub extern "js" fn MouseEvent::init_mouse_event(
   self : MouseEvent,
   type_arg : String,
@@ -1239,6 +1241,7 @@ pub extern "js" fn KeyboardEvent::get_modifier_state(
   #| (self, key_arg) => self.getModifierState(key_arg)
 
 ///|
+/// @alert deprecated "initKeyboardEvent is deprecated"
 pub extern "js" fn KeyboardEvent::init_keyboard_event(
   self : KeyboardEvent,
   type_arg : String,
@@ -1343,6 +1346,7 @@ pub extern "js" fn CompositionEvent::get_data(
   #| (self) => self.data
 
 ///|
+/// @alert deprecated "initCompositionEvent is deprecated"
 pub extern "js" fn CompositionEvent::init_composition_event(
   self : CompositionEvent,
   type_arg : String,
@@ -1401,6 +1405,7 @@ pub extern "js" fn TextEvent::get_data(self : TextEvent) -> String =
   #| (self) => self.data
 
 ///|
+/// @alert deprecated "initTextEvent is deprecated"
 pub extern "js" fn TextEvent::init_text_event(
   self : TextEvent,
   type_ : String,

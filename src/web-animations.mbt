@@ -632,6 +632,40 @@ pub extern "js" fn Animation::as_css_transition(
   #| (self) => (self instanceof CSSTransition) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Error type for throwing methods
+pub(all) enum AnimationFinishError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_animation_finish_error(
+  e : JsError,
+) -> AnimationFinishError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum AnimationPauseError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_animation_pause_error(
+  e : JsError,
+) -> AnimationPauseError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn Animation::new() -> Animation =
   #| () => new Animation()
 
@@ -712,53 +746,57 @@ pub extern "js" fn Animation::get_finished(
   #| (self) => self.finished
 
 ///|
-pub extern "js" fn Animation::get_onfinish(self : Animation) -> EventHandler =
-  #| (self) => self.onfinish
-
-///|
 pub extern "js" fn Animation::set_onfinish(
   self : Animation,
-  value : EventHandler,
+  handler : (AnimationPlaybackEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onfinish = value }
+  #| (self, handler) => { self.onfinish = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Animation::get_oncancel(self : Animation) -> EventHandler =
-  #| (self) => self.oncancel
+pub extern "js" fn Animation::clear_onfinish(self : Animation) -> Unit =
+  #| (self) => { self.onfinish = null }
 
 ///|
 pub extern "js" fn Animation::set_oncancel(
   self : Animation,
-  value : EventHandler,
+  handler : (AnimationPlaybackEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncancel = value }
+  #| (self, handler) => { self.oncancel = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Animation::get_onremove(self : Animation) -> EventHandler =
-  #| (self) => self.onremove
+pub extern "js" fn Animation::clear_oncancel(self : Animation) -> Unit =
+  #| (self) => { self.oncancel = null }
 
 ///|
 pub extern "js" fn Animation::set_onremove(
   self : Animation,
-  value : EventHandler,
+  handler : (AnimationPlaybackEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onremove = value }
+  #| (self, handler) => { self.onremove = (e) => handler(e) }
+
+///|
+pub extern "js" fn Animation::clear_onremove(self : Animation) -> Unit =
+  #| (self) => { self.onremove = null }
 
 ///|
 pub extern "js" fn Animation::cancel(self : Animation) -> Unit =
   #| (self) => self.cancel()
 
 ///|
-pub extern "js" fn Animation::finish(self : Animation) -> Unit =
-  #| (self) => self.finish()
+pub extern "js" fn Animation::finish(
+  self : Animation,
+) -> Result[Unit, AnimationFinishError] =
+  #| (self) => (() => { try { self.finish(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_animation_finish_error(e) }; } })()
 
 ///|
 pub extern "js" fn Animation::play(self : Animation) -> Unit =
   #| (self) => self.play()
 
 ///|
-pub extern "js" fn Animation::pause(self : Animation) -> Unit =
-  #| (self) => self.pause()
+pub extern "js" fn Animation::pause(
+  self : Animation,
+) -> Result[Unit, AnimationPauseError] =
+  #| (self) => (() => { try { self.pause(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_animation_pause_error(e) }; } })()
 
 ///|
 pub extern "js" fn Animation::update_playback_rate(
@@ -865,6 +903,23 @@ pub extern "js" fn AnimationEffect::as_keyframe_effect(
   #| (self) => (self instanceof KeyframeEffect) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Error type for throwing methods
+pub(all) enum AnimationEffectUpdateTimingError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_animation_effect_update_timing_error(
+  e : JsError,
+) -> AnimationEffectUpdateTimingError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn AnimationEffect::get_timing(
   self : AnimationEffect,
 ) -> EffectTiming =
@@ -879,21 +934,21 @@ pub extern "js" fn AnimationEffect::get_computed_timing(
 ///|
 pub extern "js" fn AnimationEffect::update_timing(
   self : AnimationEffect,
-) -> Unit =
-  #| (self) => self.updateTiming()
+) -> Result[Unit, AnimationEffectUpdateTimingError] =
+  #| (self) => (() => { try { self.updateTiming(); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_animation_effect_update_timing_error(e) }; } })()
 
 ///|
 extern "js" fn AnimationEffect::update_timing_with_timing_ffi(
   self : AnimationEffect,
   timing : JsValue,
-) -> Unit =
-  #| (self, timing) => self.updateTiming(timing)
+) -> Result[Unit, AnimationEffectUpdateTimingError] =
+  #| (self, timing) => (() => { try { self.updateTiming(timing); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_animation_effect_update_timing_error(e) }; } })()
 
 ///|
 pub fn AnimationEffect::update_timing_with_timing(
   self : AnimationEffect,
   timing : OptionalEffectTiming,
-) -> Unit {
+) -> Result[Unit, AnimationEffectUpdateTimingError] {
   AnimationEffect::update_timing_with_timing_ffi(self, timing.to_js())
 }
 
@@ -983,6 +1038,40 @@ pub extern "js" fn KeyframeEffect::to_animation_effect(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum KeyframeEffectSetPseudoElementError {
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_keyframe_effect_set_pseudo_element_error(
+  e : JsError,
+) -> KeyframeEffectSetPseudoElementError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum KeyframeEffectSetKeyframesError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_keyframe_effect_set_keyframes_error(
+  e : JsError,
+) -> KeyframeEffectSetKeyframesError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn KeyframeEffect::new(
   source : KeyframeEffect,
 ) -> KeyframeEffect =
@@ -1026,8 +1115,8 @@ pub extern "js" fn KeyframeEffect::get_pseudo_element(
 pub extern "js" fn KeyframeEffect::set_pseudo_element(
   self : KeyframeEffect,
   value : String?,
-) -> Unit =
-  #| (self, value) => { self.pseudoElement = value }
+) -> Result[Unit, KeyframeEffectSetPseudoElementError] =
+  #| (self, value) => (() => { try { self.pseudoElement = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_keyframe_effect_set_pseudo_element_error(e) }; } })()
 
 ///|
 pub extern "js" fn KeyframeEffect::get_composite(
@@ -1052,8 +1141,8 @@ pub extern "js" fn KeyframeEffect::get_keyframes(
 pub extern "js" fn KeyframeEffect::set_keyframes(
   self : KeyframeEffect,
   keyframes : JsValue?,
-) -> Unit =
-  #| (self, keyframes) => self.setKeyframes((keyframes.$tag === 1 ? keyframes._0 : null))
+) -> Result[Unit, KeyframeEffectSetKeyframesError] =
+  #| (self, keyframes) => (() => { try { self.setKeyframes((keyframes.$tag === 1 ? keyframes._0 : null)); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_keyframe_effect_set_keyframes_error(e) }; } })()
 
 ///|
 pub extern "js" fn KeyframeEffect::get_iteration_composite(

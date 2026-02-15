@@ -110,19 +110,39 @@ pub extern "js" fn Gyroscope::to_event_target(self : Gyroscope) -> EventTarget =
   #| (self) => self
 
 ///|
-pub extern "js" fn Gyroscope::new() -> Gyroscope =
-  #| () => new Gyroscope()
+/// Error type for throwing methods
+pub(all) enum GyroscopeConstructorError {
+  SecurityError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_gyroscope_constructor_error(
+  e : JsError,
+) -> GyroscopeConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+pub extern "js" fn Gyroscope::new() -> Result[
+  Gyroscope,
+  GyroscopeConstructorError,
+] =
+  #| () => (() => { try { return { $tag: 0, _0: new Gyroscope() }; } catch(e) { return { $tag: 1, _0: classify_gyroscope_constructor_error(e) }; } })()
 
 ///|
 extern "js" fn Gyroscope::new_with_sensor_options_ffi(
   sensor_options : JsValue,
-) -> Gyroscope =
-  #| (sensor_options) => new Gyroscope(sensor_options)
+) -> Result[Gyroscope, GyroscopeConstructorError] =
+  #| (sensor_options) => (() => { try { return { $tag: 0, _0: new Gyroscope(sensor_options) }; } catch(e) { return { $tag: 1, _0: classify_gyroscope_constructor_error(e) }; } })()
 
 ///|
 pub fn Gyroscope::new_with_sensor_options(
   sensor_options : GyroscopeSensorOptions,
-) -> Gyroscope {
+) -> Result[Gyroscope, GyroscopeConstructorError] {
   Gyroscope::new_with_sensor_options_ffi(sensor_options.to_js())
 }
 

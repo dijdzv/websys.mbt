@@ -10,7 +10,7 @@
 ///   fd.get("name") // "value"
 ///   fd.has("name") // true
 pub fn test_form_data() -> Unit {
-  let fd = @websys.FormData::new()
+  let fd = @websys.FormData::new().unwrap()
 
   // Initially empty
   assert_false(fd.has("name"), label="has before append")

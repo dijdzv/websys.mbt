@@ -17,10 +17,10 @@ fn test_document_fragment() -> Unit {
     label="childElementCount after append",
   )
   // querySelector
-  let found = frag.query_selector("#frag-child-1")
+  let found = frag.query_selector("#frag-child-1").unwrap()
   assert_true(found is Some(_), label="querySelector finds child")
   // querySelectorAll
-  let all = frag.query_selector_all("div")
+  let all = frag.query_selector_all("div").unwrap()
   assert_eq(all.get_length(), 2, label="querySelectorAll count")
   // children
   let children = frag.get_children()

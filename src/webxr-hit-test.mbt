@@ -399,27 +399,46 @@ pub extern "js" fn JsValue::to_xr_ray(self : JsValue) -> XRRay =
   #| (self) => self
 
 ///|
-pub extern "js" fn XRRay::new() -> XRRay =
-  #| () => new XRRay()
+/// Error type for throwing methods
+pub(all) enum XRRayConstructorError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_xr_ray_constructor_error(
+  e : JsError,
+) -> XRRayConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+pub extern "js" fn XRRay::new() -> Result[XRRay, XRRayConstructorError] =
+  #| () => (() => { try { return { $tag: 0, _0: new XRRay() }; } catch(e) { return { $tag: 1, _0: classify_xr_ray_constructor_error(e) }; } })()
 
 ///|
 extern "js" fn XRRay::new_with_direction_ffi(
   origin : JsValue,
   direction : JsValue,
-) -> XRRay =
-  #| (origin, direction) => new XRRay(origin, direction)
+) -> Result[XRRay, XRRayConstructorError] =
+  #| (origin, direction) => (() => { try { return { $tag: 0, _0: new XRRay(origin, direction) }; } catch(e) { return { $tag: 1, _0: classify_xr_ray_constructor_error(e) }; } })()
 
 ///|
 pub fn XRRay::new_with_direction(
   origin : DOMPointInit,
   direction : XRRayDirectionInit,
-) -> XRRay {
+) -> Result[XRRay, XRRayConstructorError] {
   XRRay::new_with_direction_ffi(origin.to_js(), direction.to_js())
 }
 
 ///|
-pub extern "js" fn XRRay::new_with(transform : XRRigidTransform) -> XRRay =
-  #| (transform) => new XRRay(transform)
+pub extern "js" fn XRRay::new_with(
+  transform : XRRigidTransform,
+) -> Result[XRRay, XRRayConstructorError] =
+  #| (transform) => (() => { try { return { $tag: 0, _0: new XRRay(transform) }; } catch(e) { return { $tag: 1, _0: classify_xr_ray_constructor_error(e) }; } })()
 
 ///|
 pub extern "js" fn XRRay::get_origin(self : XRRay) -> DOMPointReadOnly =

@@ -432,59 +432,152 @@ pub extern "js" fn JsValue::to_image_capture(self : JsValue) -> ImageCapture =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum ImageCaptureConstructorError {
+  NotSupportedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_image_capture_constructor_error(
+  e : JsError,
+) -> ImageCaptureConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ImageCaptureTakePhotoError {
+  UnknownError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_image_capture_take_photo_error(
+  e : JsError,
+) -> ImageCaptureTakePhotoError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'UnknownError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ImageCaptureGetPhotoCapabilitiesError {
+  OperationError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_image_capture_get_photo_capabilities_error(
+  e : JsError,
+) -> ImageCaptureGetPhotoCapabilitiesError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'OperationError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ImageCaptureGetPhotoSettingsError {
+  OperationError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_image_capture_get_photo_settings_error(
+  e : JsError,
+) -> ImageCaptureGetPhotoSettingsError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'OperationError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ImageCaptureGrabFrameError {
+  UnknownError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_image_capture_grab_frame_error(
+  e : JsError,
+) -> ImageCaptureGrabFrameError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'UnknownError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
 pub extern "js" fn ImageCapture::new(
   video_track : MediaStreamTrack,
-) -> ImageCapture =
-  #| (video_track) => new ImageCapture(video_track)
+) -> Result[ImageCapture, ImageCaptureConstructorError] =
+  #| (video_track) => (() => { try { return { $tag: 0, _0: new ImageCapture(video_track) }; } catch(e) { return { $tag: 1, _0: classify_image_capture_constructor_error(e) }; } })()
 
 ///|
 pub extern "js" fn ImageCapture::take_photo(
   self : ImageCapture,
-) -> Promise[Blob] =
-  #| (self) => self.takePhoto()
+) -> Promise[Result[Blob, ImageCaptureTakePhotoError]] =
+  #| (self) => self.takePhoto().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_image_capture_take_photo_error(e) }))
 
 ///|
 extern "js" fn ImageCapture::take_photo_with_photo_settings_ffi(
   self : ImageCapture,
   photo_settings : JsValue,
-) -> Promise[Blob] =
-  #| (self, photo_settings) => self.takePhoto(photo_settings)
+) -> Promise[Result[Blob, ImageCaptureTakePhotoError]] =
+  #| (self, photo_settings) => self.takePhoto(photo_settings).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_image_capture_take_photo_error(e) }))
 
 ///|
 pub fn ImageCapture::take_photo_with_photo_settings(
   self : ImageCapture,
   photo_settings : PhotoSettings,
-) -> Promise[Blob] {
+) -> Promise[Result[Blob, ImageCaptureTakePhotoError]] {
   ImageCapture::take_photo_with_photo_settings_ffi(self, photo_settings.to_js())
 }
 
 ///|
 pub extern "js" fn ImageCapture::get_photo_capabilities(
   self : ImageCapture,
-) -> Promise[PhotoCapabilities] =
+) -> Promise[Result[PhotoCapabilities, ImageCaptureGetPhotoCapabilitiesError]] =
   #| (self) => self.getPhotoCapabilities().then(v => ({
   #|   redEyeReduction: (v.redEyeReduction === undefined ? undefined : ['never', 'always', 'controllable'].indexOf(v.redEyeReduction)),
   #|   imageHeight: (v.imageHeight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.imageHeight }),
   #|   imageWidth: (v.imageWidth === undefined ? { $tag: 0 } : { $tag: 1, _0: v.imageWidth }),
   #|   fillLightMode: (v.fillLightMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.fillLightMode })
-  #| }))
+  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_image_capture_get_photo_capabilities_error(e) }))
 
 ///|
 pub extern "js" fn ImageCapture::get_photo_settings(
   self : ImageCapture,
-) -> Promise[PhotoSettings] =
+) -> Promise[Result[PhotoSettings, ImageCaptureGetPhotoSettingsError]] =
   #| (self) => self.getPhotoSettings().then(v => ({
   #|   fillLightMode: (v.fillLightMode === undefined ? undefined : ['auto', 'off', 'flash'].indexOf(v.fillLightMode)),
   #|   imageHeight: v.imageHeight,
   #|   imageWidth: v.imageWidth,
   #|   redEyeReduction: (v.redEyeReduction === undefined ? -1 : v.redEyeReduction)
-  #| }))
+  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_image_capture_get_photo_settings_error(e) }))
 
 ///|
 pub extern "js" fn ImageCapture::grab_frame(
   self : ImageCapture,
-) -> Promise[ImageBitmap] =
-  #| (self) => self.grabFrame()
+) -> Promise[Result[ImageBitmap, ImageCaptureGrabFrameError]] =
+  #| (self) => self.grabFrame().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_image_capture_grab_frame_error(e) }))
 
 ///|
 pub extern "js" fn ImageCapture::get_track(

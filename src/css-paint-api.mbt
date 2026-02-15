@@ -90,12 +90,31 @@ pub extern "js" fn PaintWorkletGlobalScope::to_worklet_global_scope(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum PaintWorkletGlobalScopeRegisterPaintError {
+  TypeError(JsError)
+  InvalidModificationError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_paint_worklet_global_scope_register_paint_error(
+  e : JsError,
+) -> PaintWorkletGlobalScopeRegisterPaintError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidModificationError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
 pub extern "js" fn PaintWorkletGlobalScope::register_paint(
   self : PaintWorkletGlobalScope,
   name : String,
   paint_ctor : VoidFunction,
-) -> Unit =
-  #| (self, name, paint_ctor) => self.registerPaint(name, paint_ctor)
+) -> Result[Unit, PaintWorkletGlobalScopeRegisterPaintError] =
+  #| (self, name, paint_ctor) => (() => { try { self.registerPaint(name, paint_ctor); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_paint_worklet_global_scope_register_paint_error(e) }; } })()
 
 ///|
 pub extern "js" fn PaintWorkletGlobalScope::get_device_pixel_ratio(
@@ -140,6 +159,95 @@ pub extern "js" fn JsValue::to_paint_rendering_context_2d(
   self : JsValue,
 ) -> PaintRenderingContext2D =
   #| (self) => self
+
+///|
+/// Error type for throwing methods
+pub(all) enum PaintRenderingContext2DCreateLinearGradientError {
+  NotSupportedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_paint_rendering_context_2d_create_linear_gradient_error(
+  e : JsError,
+) -> PaintRenderingContext2DCreateLinearGradientError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum PaintRenderingContext2DCreateRadialGradientError {
+  IndexSizeError(JsError)
+  NotSupportedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_paint_rendering_context_2d_create_radial_gradient_error(
+  e : JsError,
+) -> PaintRenderingContext2DCreateRadialGradientError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum PaintRenderingContext2DDrawImageError {
+  InvalidStateError(JsError)
+  TypeMismatchError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_paint_rendering_context_2d_draw_image_error(
+  e : JsError,
+) -> PaintRenderingContext2DDrawImageError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
+  #|   if (n === 'TypeMismatchError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum PaintRenderingContext2DArcToError {
+  IndexSizeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_paint_rendering_context_2d_arc_to_error(
+  e : JsError,
+) -> PaintRenderingContext2DArcToError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum PaintRenderingContext2DRoundRectError {
+  RangeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_paint_rendering_context_2d_round_rect_error(
+  e : JsError,
+) -> PaintRenderingContext2DRoundRectError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::save(
@@ -333,8 +441,8 @@ pub extern "js" fn PaintRenderingContext2D::create_linear_gradient(
   y0 : Double,
   x1 : Double,
   y1 : Double,
-) -> CanvasGradient =
-  #| (self, x0, y0, x1, y1) => self.createLinearGradient(x0, y0, x1, y1)
+) -> Result[CanvasGradient, PaintRenderingContext2DCreateLinearGradientError] =
+  #| (self, x0, y0, x1, y1) => (() => { try { return { $tag: 0, _0: self.createLinearGradient(x0, y0, x1, y1) }; } catch(e) { return { $tag: 1, _0: classify_paint_rendering_context_2d_create_linear_gradient_error(e) }; } })()
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::create_radial_gradient(
@@ -345,8 +453,8 @@ pub extern "js" fn PaintRenderingContext2D::create_radial_gradient(
   x1 : Double,
   y1 : Double,
   r1 : Double,
-) -> CanvasGradient =
-  #| (self, x0, y0, r0, x1, y1, r1) => self.createRadialGradient(x0, y0, r0, x1, y1, r1)
+) -> Result[CanvasGradient, PaintRenderingContext2DCreateRadialGradientError] =
+  #| (self, x0, y0, r0, x1, y1, r1) => (() => { try { return { $tag: 0, _0: self.createRadialGradient(x0, y0, r0, x1, y1, r1) }; } catch(e) { return { $tag: 1, _0: classify_paint_rendering_context_2d_create_radial_gradient_error(e) }; } })()
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::create_conic_gradient(
@@ -581,8 +689,8 @@ pub extern "js" fn PaintRenderingContext2D::draw_image(
   image : CanvasImageSource,
   dx : Double,
   dy : Double,
-) -> Unit =
-  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+) -> Result[Unit, PaintRenderingContext2DDrawImageError] =
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_paint_rendering_context_2d_draw_image_error(e) }; } })()
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::draw_image_with_image_canvas_image_source_and_dx_and_dy_and_dw_and_dh(
@@ -592,8 +700,8 @@ pub extern "js" fn PaintRenderingContext2D::draw_image_with_image_canvas_image_s
   dy : Double,
   dw : Double,
   dh : Double,
-) -> Unit =
-  #| (self, image, dx, dy, dw, dh) => self.drawImage(image, dx, dy, dw, dh)
+) -> Result[Unit, PaintRenderingContext2DDrawImageError] =
+  #| (self, image, dx, dy, dw, dh) => (() => { try { self.drawImage(image, dx, dy, dw, dh); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_paint_rendering_context_2d_draw_image_error(e) }; } })()
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::draw_image_with_image_canvas_image_source_and_sx_and_sy_and_sw_and_sh_and_dx_and_dy_and_dw_and_dh(
@@ -607,8 +715,8 @@ pub extern "js" fn PaintRenderingContext2D::draw_image_with_image_canvas_image_s
   dy : Double,
   dw : Double,
   dh : Double,
-) -> Unit =
-  #| (self, image, sx, sy, sw, sh, dx, dy, dw, dh) => self.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)
+) -> Result[Unit, PaintRenderingContext2DDrawImageError] =
+  #| (self, image, sx, sy, sw, sh, dx, dy, dw, dh) => (() => { try { self.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_paint_rendering_context_2d_draw_image_error(e) }; } })()
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::get_line_width(
@@ -740,8 +848,8 @@ pub extern "js" fn PaintRenderingContext2D::arc_to(
   x2 : Double,
   y2 : Double,
   radius : Double,
-) -> Unit =
-  #| (self, x1, y1, x2, y2, radius) => self.arcTo(x1, y1, x2, y2, radius)
+) -> Result[Unit, PaintRenderingContext2DArcToError] =
+  #| (self, x1, y1, x2, y2, radius) => (() => { try { self.arcTo(x1, y1, x2, y2, radius); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_paint_rendering_context_2d_arc_to_error(e) }; } })()
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::rect(
@@ -760,8 +868,8 @@ pub extern "js" fn PaintRenderingContext2D::round_rect(
   y : Double,
   w : Double,
   h : Double,
-) -> Unit =
-  #| (self, x, y, w, h) => self.roundRect(x, y, w, h)
+) -> Result[Unit, PaintRenderingContext2DRoundRectError] =
+  #| (self, x, y, w, h) => (() => { try { self.roundRect(x, y, w, h); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_paint_rendering_context_2d_round_rect_error(e) }; } })()
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::round_rect_with_radii(
@@ -771,8 +879,8 @@ pub extern "js" fn PaintRenderingContext2D::round_rect_with_radii(
   w : Double,
   h : Double,
   radii : DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit,
-) -> Unit =
-  #| (self, x, y, w, h, radii) => self.roundRect(x, y, w, h, radii)
+) -> Result[Unit, PaintRenderingContext2DRoundRectError] =
+  #| (self, x, y, w, h, radii) => (() => { try { self.roundRect(x, y, w, h, radii); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_paint_rendering_context_2d_round_rect_error(e) }; } })()
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::arc(
@@ -878,8 +986,8 @@ pub extern "js" fn PaintRenderingContext2D::draw_image_with_html_or_svg_image_el
   image : HTMLOrSVGImageElement,
   dx : Double,
   dy : Double,
-) -> Unit =
-  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+) -> Result[Unit, PaintRenderingContext2DDrawImageError] =
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_paint_rendering_context_2d_draw_image_error(e) }; } })()
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::draw_image_with_html_video_element(
@@ -887,8 +995,8 @@ pub extern "js" fn PaintRenderingContext2D::draw_image_with_html_video_element(
   image : HTMLVideoElement,
   dx : Double,
   dy : Double,
-) -> Unit =
-  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+) -> Result[Unit, PaintRenderingContext2DDrawImageError] =
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_paint_rendering_context_2d_draw_image_error(e) }; } })()
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::draw_image_with_html_canvas_element(
@@ -896,8 +1004,8 @@ pub extern "js" fn PaintRenderingContext2D::draw_image_with_html_canvas_element(
   image : HTMLCanvasElement,
   dx : Double,
   dy : Double,
-) -> Unit =
-  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+) -> Result[Unit, PaintRenderingContext2DDrawImageError] =
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_paint_rendering_context_2d_draw_image_error(e) }; } })()
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::draw_image_with_image_bitmap(
@@ -905,8 +1013,8 @@ pub extern "js" fn PaintRenderingContext2D::draw_image_with_image_bitmap(
   image : ImageBitmap,
   dx : Double,
   dy : Double,
-) -> Unit =
-  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+) -> Result[Unit, PaintRenderingContext2DDrawImageError] =
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_paint_rendering_context_2d_draw_image_error(e) }; } })()
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::draw_image_with_offscreen_canvas(
@@ -914,8 +1022,8 @@ pub extern "js" fn PaintRenderingContext2D::draw_image_with_offscreen_canvas(
   image : OffscreenCanvas,
   dx : Double,
   dy : Double,
-) -> Unit =
-  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+) -> Result[Unit, PaintRenderingContext2DDrawImageError] =
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_paint_rendering_context_2d_draw_image_error(e) }; } })()
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::draw_image_with_video_frame(
@@ -923,8 +1031,8 @@ pub extern "js" fn PaintRenderingContext2D::draw_image_with_video_frame(
   image : VideoFrame,
   dx : Double,
   dy : Double,
-) -> Unit =
-  #| (self, image, dx, dy) => self.drawImage(image, dx, dy)
+) -> Result[Unit, PaintRenderingContext2DDrawImageError] =
+  #| (self, image, dx, dy) => (() => { try { self.drawImage(image, dx, dy); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_paint_rendering_context_2d_draw_image_error(e) }; } })()
 
 ///|
 /// PaintSize interface

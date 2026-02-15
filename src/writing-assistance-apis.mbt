@@ -890,36 +890,163 @@ pub extern "js" fn JsValue::to_summarizer(self : JsValue) -> Summarizer =
   #| (self) => self
 
 ///|
-pub extern "js" fn Summarizer::create() -> Promise[Summarizer] =
-  #| () => Summarizer.create()
+/// Error type for throwing methods
+pub(all) enum SummarizerCreateError {
+  OperationError(JsError)
+  NotAllowedError(JsError)
+  NotSupportedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_summarizer_create_error(
+  e : JsError,
+) -> SummarizerCreateError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'OperationError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
+  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum SummarizerAvailabilityError {
+  UnknownError(JsError)
+  NotAllowedError(JsError)
+  NotSupportedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_summarizer_availability_error(
+  e : JsError,
+) -> SummarizerAvailabilityError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'UnknownError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
+  #|   if (n === 'NotSupportedError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum SummarizerSummarizeError {
+  AbortError(JsError)
+  UnknownError(JsError)
+  NotAllowedError(JsError)
+  NotReadableError(JsError)
+  InvalidStateError(JsError)
+  NotSupportedError(JsError)
+  QuotaExceededError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_summarizer_summarize_error(
+  e : JsError,
+) -> SummarizerSummarizeError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'AbortError') return { $tag: 0, _0: e };
+  #|   if (n === 'UnknownError') return { $tag: 1, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 2, _0: e };
+  #|   if (n === 'NotReadableError') return { $tag: 3, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 4, _0: e };
+  #|   if (n === 'NotSupportedError') return { $tag: 5, _0: e };
+  #|   if (n === 'QuotaExceededError') return { $tag: 6, _0: e };
+  #|   return { $tag: 7, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum SummarizerSummarizeStreamingError {
+  AbortError(JsError)
+  UnknownError(JsError)
+  NotAllowedError(JsError)
+  NotReadableError(JsError)
+  InvalidStateError(JsError)
+  NotSupportedError(JsError)
+  QuotaExceededError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_summarizer_summarize_streaming_error(
+  e : JsError,
+) -> SummarizerSummarizeStreamingError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'AbortError') return { $tag: 0, _0: e };
+  #|   if (n === 'UnknownError') return { $tag: 1, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 2, _0: e };
+  #|   if (n === 'NotReadableError') return { $tag: 3, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 4, _0: e };
+  #|   if (n === 'NotSupportedError') return { $tag: 5, _0: e };
+  #|   if (n === 'QuotaExceededError') return { $tag: 6, _0: e };
+  #|   return { $tag: 7, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum SummarizerMeasureInputUsageError {
+  UnknownError(JsError)
+  NotAllowedError(JsError)
+  NotReadableError(JsError)
+  NotSupportedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_summarizer_measure_input_usage_error(
+  e : JsError,
+) -> SummarizerMeasureInputUsageError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'UnknownError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
+  #|   if (n === 'NotReadableError') return { $tag: 2, _0: e };
+  #|   if (n === 'NotSupportedError') return { $tag: 3, _0: e };
+  #|   return { $tag: 4, _0: e };
+  #| }
+
+///|
+pub extern "js" fn Summarizer::create() -> Promise[
+  Result[Summarizer, SummarizerCreateError],
+] =
+  #| () => Summarizer.create().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_summarizer_create_error(e) }))
 
 ///|
 extern "js" fn Summarizer::create_with_options_ffi(
   options : JsValue,
-) -> Promise[Summarizer] =
-  #| (options) => Summarizer.create(options)
+) -> Promise[Result[Summarizer, SummarizerCreateError]] =
+  #| (options) => Summarizer.create(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_summarizer_create_error(e) }))
 
 ///|
 pub fn Summarizer::create_with_options(
   options : SummarizerCreateOptions,
-) -> Promise[Summarizer] {
+) -> Promise[Result[Summarizer, SummarizerCreateError]] {
   Summarizer::create_with_options_ffi(options.to_js())
 }
 
 ///|
-pub extern "js" fn Summarizer::availability() -> Promise[Availability] =
-  #| () => Summarizer.availability()
+pub extern "js" fn Summarizer::availability() -> Promise[
+  Result[Availability, SummarizerAvailabilityError],
+] =
+  #| () => Summarizer.availability().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_summarizer_availability_error(e) }))
 
 ///|
 extern "js" fn Summarizer::availability_with_options_ffi(
   options : JsValue,
-) -> Promise[Availability] =
-  #| (options) => Summarizer.availability(options)
+) -> Promise[Result[Availability, SummarizerAvailabilityError]] =
+  #| (options) => Summarizer.availability(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_summarizer_availability_error(e) }))
 
 ///|
 pub fn Summarizer::availability_with_options(
   options : SummarizerCreateCoreOptions,
-) -> Promise[Availability] {
+) -> Promise[Result[Availability, SummarizerAvailabilityError]] {
   Summarizer::availability_with_options_ffi(options.to_js())
 }
 
@@ -927,23 +1054,23 @@ pub fn Summarizer::availability_with_options(
 pub extern "js" fn Summarizer::summarize(
   self : Summarizer,
   input : String,
-) -> Promise[String] =
-  #| (self, input) => self.summarize(input)
+) -> Promise[Result[String, SummarizerSummarizeError]] =
+  #| (self, input) => self.summarize(input).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_summarizer_summarize_error(e) }))
 
 ///|
 extern "js" fn Summarizer::summarize_with_options_ffi(
   self : Summarizer,
   input : String,
   options : JsValue,
-) -> Promise[String] =
-  #| (self, input, options) => self.summarize(input, options)
+) -> Promise[Result[String, SummarizerSummarizeError]] =
+  #| (self, input, options) => self.summarize(input, options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_summarizer_summarize_error(e) }))
 
 ///|
 pub fn Summarizer::summarize_with_options(
   self : Summarizer,
   input : String,
   options : SummarizerSummarizeOptions,
-) -> Promise[String] {
+) -> Promise[Result[String, SummarizerSummarizeError]] {
   Summarizer::summarize_with_options_ffi(self, input, options.to_js())
 }
 
@@ -951,23 +1078,23 @@ pub fn Summarizer::summarize_with_options(
 pub extern "js" fn Summarizer::summarize_streaming(
   self : Summarizer,
   input : String,
-) -> ReadableStream =
-  #| (self, input) => self.summarizeStreaming(input)
+) -> Result[ReadableStream, SummarizerSummarizeStreamingError] =
+  #| (self, input) => (() => { try { return { $tag: 0, _0: self.summarizeStreaming(input) }; } catch(e) { return { $tag: 1, _0: classify_summarizer_summarize_streaming_error(e) }; } })()
 
 ///|
 extern "js" fn Summarizer::summarize_streaming_with_options_ffi(
   self : Summarizer,
   input : String,
   options : JsValue,
-) -> ReadableStream =
-  #| (self, input, options) => self.summarizeStreaming(input, options)
+) -> Result[ReadableStream, SummarizerSummarizeStreamingError] =
+  #| (self, input, options) => (() => { try { return { $tag: 0, _0: self.summarizeStreaming(input, options) }; } catch(e) { return { $tag: 1, _0: classify_summarizer_summarize_streaming_error(e) }; } })()
 
 ///|
 pub fn Summarizer::summarize_streaming_with_options(
   self : Summarizer,
   input : String,
   options : SummarizerSummarizeOptions,
-) -> ReadableStream {
+) -> Result[ReadableStream, SummarizerSummarizeStreamingError] {
   Summarizer::summarize_streaming_with_options_ffi(self, input, options.to_js())
 }
 
@@ -1013,23 +1140,23 @@ pub extern "js" fn Summarizer::get_output_language(
 pub extern "js" fn Summarizer::measure_input_usage(
   self : Summarizer,
   input : String,
-) -> Promise[Double] =
-  #| (self, input) => self.measureInputUsage(input)
+) -> Promise[Result[Double, SummarizerMeasureInputUsageError]] =
+  #| (self, input) => self.measureInputUsage(input).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_summarizer_measure_input_usage_error(e) }))
 
 ///|
 extern "js" fn Summarizer::measure_input_usage_with_options_ffi(
   self : Summarizer,
   input : String,
   options : JsValue,
-) -> Promise[Double] =
-  #| (self, input, options) => self.measureInputUsage(input, options)
+) -> Promise[Result[Double, SummarizerMeasureInputUsageError]] =
+  #| (self, input, options) => self.measureInputUsage(input, options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_summarizer_measure_input_usage_error(e) }))
 
 ///|
 pub fn Summarizer::measure_input_usage_with_options(
   self : Summarizer,
   input : String,
   options : SummarizerSummarizeOptions,
-) -> Promise[Double] {
+) -> Promise[Result[Double, SummarizerMeasureInputUsageError]] {
   Summarizer::measure_input_usage_with_options_ffi(self, input, options.to_js())
 }
 
@@ -1426,14 +1553,14 @@ pub extern "js" fn CreateMonitor::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn CreateMonitor::get_ondownloadprogress(
-  self : CreateMonitor,
-) -> EventHandler =
-  #| (self) => self.ondownloadprogress
-
-///|
 pub extern "js" fn CreateMonitor::set_ondownloadprogress(
   self : CreateMonitor,
-  value : EventHandler,
+  handler : (ProgressEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ondownloadprogress = value }
+  #| (self, handler) => { self.ondownloadprogress = (e) => handler(e) }
+
+///|
+pub extern "js" fn CreateMonitor::clear_ondownloadprogress(
+  self : CreateMonitor,
+) -> Unit =
+  #| (self) => { self.ondownloadprogress = null }

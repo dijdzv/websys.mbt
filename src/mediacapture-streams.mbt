@@ -2117,30 +2117,26 @@ pub extern "js" fn MediaStream::get_active(self : MediaStream) -> Bool =
   #| (self) => self.active
 
 ///|
-pub extern "js" fn MediaStream::get_onaddtrack(
-  self : MediaStream,
-) -> EventHandler =
-  #| (self) => self.onaddtrack
-
-///|
 pub extern "js" fn MediaStream::set_onaddtrack(
   self : MediaStream,
-  value : EventHandler,
+  handler : (MediaStreamTrackEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onaddtrack = value }
+  #| (self, handler) => { self.onaddtrack = (e) => handler(e) }
 
 ///|
-pub extern "js" fn MediaStream::get_onremovetrack(
-  self : MediaStream,
-) -> EventHandler =
-  #| (self) => self.onremovetrack
+pub extern "js" fn MediaStream::clear_onaddtrack(self : MediaStream) -> Unit =
+  #| (self) => { self.onaddtrack = null }
 
 ///|
 pub extern "js" fn MediaStream::set_onremovetrack(
   self : MediaStream,
-  value : EventHandler,
+  handler : (MediaStreamTrackEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onremovetrack = value }
+  #| (self, handler) => { self.onremovetrack = (e) => handler(e) }
+
+///|
+pub extern "js" fn MediaStream::clear_onremovetrack(self : MediaStream) -> Unit =
+  #| (self) => { self.onremovetrack = null }
 
 ///|
 /// MediaStreamTrack interface
@@ -2232,30 +2228,30 @@ pub extern "js" fn MediaStreamTrack::get_muted(self : MediaStreamTrack) -> Bool 
   #| (self) => self.muted
 
 ///|
-pub extern "js" fn MediaStreamTrack::get_onmute(
-  self : MediaStreamTrack,
-) -> EventHandler =
-  #| (self) => self.onmute
-
-///|
 pub extern "js" fn MediaStreamTrack::set_onmute(
   self : MediaStreamTrack,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onmute = value }
+  #| (self, handler) => { self.onmute = (e) => handler(e) }
 
 ///|
-pub extern "js" fn MediaStreamTrack::get_onunmute(
+pub extern "js" fn MediaStreamTrack::clear_onmute(
   self : MediaStreamTrack,
-) -> EventHandler =
-  #| (self) => self.onunmute
+) -> Unit =
+  #| (self) => { self.onmute = null }
 
 ///|
 pub extern "js" fn MediaStreamTrack::set_onunmute(
   self : MediaStreamTrack,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onunmute = value }
+  #| (self, handler) => { self.onunmute = (e) => handler(e) }
+
+///|
+pub extern "js" fn MediaStreamTrack::clear_onunmute(
+  self : MediaStreamTrack,
+) -> Unit =
+  #| (self) => { self.onunmute = null }
 
 ///|
 pub extern "js" fn MediaStreamTrack::get_ready_state(
@@ -2264,17 +2260,17 @@ pub extern "js" fn MediaStreamTrack::get_ready_state(
   #| (self) => ['live', 'ended'].indexOf(self.readyState)
 
 ///|
-pub extern "js" fn MediaStreamTrack::get_onended(
-  self : MediaStreamTrack,
-) -> EventHandler =
-  #| (self) => self.onended
-
-///|
 pub extern "js" fn MediaStreamTrack::set_onended(
   self : MediaStreamTrack,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onended = value }
+  #| (self, handler) => { self.onended = (e) => handler(e) }
+
+///|
+pub extern "js" fn MediaStreamTrack::clear_onended(
+  self : MediaStreamTrack,
+) -> Unit =
+  #| (self) => { self.onended = null }
 
 ///|
 pub extern "js" fn MediaStreamTrack::clone(
@@ -2348,17 +2344,17 @@ pub extern "js" fn MediaStreamTrack::get_isolated(
   #| (self) => self.isolated
 
 ///|
-pub extern "js" fn MediaStreamTrack::get_onisolationchange(
-  self : MediaStreamTrack,
-) -> EventHandler =
-  #| (self) => self.onisolationchange
-
-///|
 pub extern "js" fn MediaStreamTrack::set_onisolationchange(
   self : MediaStreamTrack,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onisolationchange = value }
+  #| (self, handler) => { self.onisolationchange = (e) => handler(e) }
+
+///|
+pub extern "js" fn MediaStreamTrack::clear_onisolationchange(
+  self : MediaStreamTrack,
+) -> Unit =
+  #| (self) => { self.onisolationchange = null }
 
 ///|
 pub extern "js" fn MediaStreamTrack::get_capture_handle(
@@ -2367,17 +2363,17 @@ pub extern "js" fn MediaStreamTrack::get_capture_handle(
   #| (self) => (() => { const v = self.getCaptureHandle(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn MediaStreamTrack::get_oncapturehandlechange(
-  self : MediaStreamTrack,
-) -> EventHandler =
-  #| (self) => self.oncapturehandlechange
-
-///|
 pub extern "js" fn MediaStreamTrack::set_oncapturehandlechange(
   self : MediaStreamTrack,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncapturehandlechange = value }
+  #| (self, handler) => { self.oncapturehandlechange = (e) => handler(e) }
+
+///|
+pub extern "js" fn MediaStreamTrack::clear_oncapturehandlechange(
+  self : MediaStreamTrack,
+) -> Unit =
+  #| (self) => { self.oncapturehandlechange = null }
 
 ///|
 pub extern "js" fn MediaStreamTrack::get_content_hint(
@@ -2557,17 +2553,98 @@ pub extern "js" fn MediaDevices::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn MediaDevices::get_ondevicechange(
-  self : MediaDevices,
-) -> EventHandler =
-  #| (self) => self.ondevicechange
+/// Error type for throwing methods
+pub(all) enum MediaDevicesSelectAudioOutputError {
+  NotFoundError(JsError)
+  NotAllowedError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_media_devices_select_audio_output_error(
+  e : JsError,
+) -> MediaDevicesSelectAudioOutputError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum MediaDevicesGetUserMediaError {
+  TypeError(JsError)
+  AbortError(JsError)
+  NotFoundError(JsError)
+  SecurityError(JsError)
+  NotAllowedError(JsError)
+  NotReadableError(JsError)
+  InvalidStateError(JsError)
+  OverconstrainedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_media_devices_get_user_media_error(
+  e : JsError,
+) -> MediaDevicesGetUserMediaError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'AbortError') return { $tag: 1, _0: e };
+  #|   if (n === 'NotFoundError') return { $tag: 2, _0: e };
+  #|   if (n === 'SecurityError') return { $tag: 3, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 4, _0: e };
+  #|   if (n === 'NotReadableError') return { $tag: 5, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 6, _0: e };
+  #|   if (n === 'OverconstrainedError') return { $tag: 7, _0: e };
+  #|   return { $tag: 8, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum MediaDevicesGetDisplayMediaError {
+  TypeError(JsError)
+  AbortError(JsError)
+  NotFoundError(JsError)
+  NotAllowedError(JsError)
+  NotReadableError(JsError)
+  InvalidStateError(JsError)
+  OverconstrainedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_media_devices_get_display_media_error(
+  e : JsError,
+) -> MediaDevicesGetDisplayMediaError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'AbortError') return { $tag: 1, _0: e };
+  #|   if (n === 'NotFoundError') return { $tag: 2, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 3, _0: e };
+  #|   if (n === 'NotReadableError') return { $tag: 4, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 5, _0: e };
+  #|   if (n === 'OverconstrainedError') return { $tag: 6, _0: e };
+  #|   return { $tag: 7, _0: e };
+  #| }
 
 ///|
 pub extern "js" fn MediaDevices::set_ondevicechange(
   self : MediaDevices,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ondevicechange = value }
+  #| (self, handler) => { self.ondevicechange = (e) => handler(e) }
+
+///|
+pub extern "js" fn MediaDevices::clear_ondevicechange(
+  self : MediaDevices,
+) -> Unit =
+  #| (self) => { self.ondevicechange = null }
 
 ///|
 pub extern "js" fn MediaDevices::enumerate_devices(
@@ -2599,21 +2676,21 @@ pub fn MediaDevices::get_viewport_media_with_options(
 ///|
 pub extern "js" fn MediaDevices::select_audio_output(
   self : MediaDevices,
-) -> Promise[MediaDeviceInfo] =
-  #| (self) => self.selectAudioOutput()
+) -> Promise[Result[MediaDeviceInfo, MediaDevicesSelectAudioOutputError]] =
+  #| (self) => self.selectAudioOutput().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_media_devices_select_audio_output_error(e) }))
 
 ///|
 extern "js" fn MediaDevices::select_audio_output_with_options_ffi(
   self : MediaDevices,
   options : JsValue,
-) -> Promise[MediaDeviceInfo] =
-  #| (self, options) => self.selectAudioOutput(options)
+) -> Promise[Result[MediaDeviceInfo, MediaDevicesSelectAudioOutputError]] =
+  #| (self, options) => self.selectAudioOutput(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_media_devices_select_audio_output_error(e) }))
 
 ///|
 pub fn MediaDevices::select_audio_output_with_options(
   self : MediaDevices,
   options : AudioOutputOptions,
-) -> Promise[MediaDeviceInfo] {
+) -> Promise[Result[MediaDeviceInfo, MediaDevicesSelectAudioOutputError]] {
   MediaDevices::select_audio_output_with_options_ffi(self, options.to_js())
 }
 
@@ -2625,17 +2702,17 @@ pub extern "js" fn MediaDevices::set_supported_capture_actions(
   #| (self, actions) => self.setSupportedCaptureActions(actions)
 
 ///|
-pub extern "js" fn MediaDevices::get_oncaptureaction(
-  self : MediaDevices,
-) -> EventHandler =
-  #| (self) => self.oncaptureaction
-
-///|
 pub extern "js" fn MediaDevices::set_oncaptureaction(
   self : MediaDevices,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncaptureaction = value }
+  #| (self, handler) => { self.oncaptureaction = (e) => handler(e) }
+
+///|
+pub extern "js" fn MediaDevices::clear_oncaptureaction(
+  self : MediaDevices,
+) -> Unit =
+  #| (self) => { self.oncaptureaction = null }
 
 ///|
 pub extern "js" fn MediaDevices::get_supported_constraints(
@@ -2646,42 +2723,42 @@ pub extern "js" fn MediaDevices::get_supported_constraints(
 ///|
 pub extern "js" fn MediaDevices::get_user_media(
   self : MediaDevices,
-) -> Promise[MediaStream] =
-  #| (self) => self.getUserMedia()
+) -> Promise[Result[MediaStream, MediaDevicesGetUserMediaError]] =
+  #| (self) => self.getUserMedia().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_media_devices_get_user_media_error(e) }))
 
 ///|
 extern "js" fn MediaDevices::get_user_media_with_constraints_ffi(
   self : MediaDevices,
   constraints : JsValue,
-) -> Promise[MediaStream] =
-  #| (self, constraints) => self.getUserMedia(constraints)
+) -> Promise[Result[MediaStream, MediaDevicesGetUserMediaError]] =
+  #| (self, constraints) => self.getUserMedia(constraints).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_media_devices_get_user_media_error(e) }))
 
 ///|
 pub fn MediaDevices::get_user_media_with_constraints(
   self : MediaDevices,
   constraints : MediaStreamConstraints,
-) -> Promise[MediaStream] {
+) -> Promise[Result[MediaStream, MediaDevicesGetUserMediaError]] {
   MediaDevices::get_user_media_with_constraints_ffi(self, constraints.to_js())
 }
 
 ///|
 pub extern "js" fn MediaDevices::get_display_media(
   self : MediaDevices,
-) -> Promise[MediaStream] =
-  #| (self) => self.getDisplayMedia()
+) -> Promise[Result[MediaStream, MediaDevicesGetDisplayMediaError]] =
+  #| (self) => self.getDisplayMedia().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_media_devices_get_display_media_error(e) }))
 
 ///|
 extern "js" fn MediaDevices::get_display_media_with_options_ffi(
   self : MediaDevices,
   options : JsValue,
-) -> Promise[MediaStream] =
-  #| (self, options) => self.getDisplayMedia(options)
+) -> Promise[Result[MediaStream, MediaDevicesGetDisplayMediaError]] =
+  #| (self, options) => self.getDisplayMedia(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_media_devices_get_display_media_error(e) }))
 
 ///|
 pub fn MediaDevices::get_display_media_with_options(
   self : MediaDevices,
   options : DisplayMediaStreamOptions,
-) -> Promise[MediaStream] {
+) -> Promise[Result[MediaStream, MediaDevicesGetDisplayMediaError]] {
   MediaDevices::get_display_media_with_options_ffi(self, options.to_js())
 }
 

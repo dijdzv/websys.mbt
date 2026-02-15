@@ -30,12 +30,32 @@ pub extern "js" fn JsValue::to_url(self : JsValue) -> URL =
   #| (self) => self
 
 ///|
-pub extern "js" fn URL::new(url : String) -> URL =
-  #| (url) => new URL(url)
+/// Error type for throwing methods
+pub(all) enum URLConstructorError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
 
 ///|
-pub extern "js" fn URL::new_with_base(url : String, base : String) -> URL =
-  #| (url, base) => new URL(url, base)
+extern "js" fn classify_url_constructor_error(
+  e : JsError,
+) -> URLConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+pub extern "js" fn URL::new(url : String) -> Result[URL, URLConstructorError] =
+  #| (url) => (() => { try { return { $tag: 0, _0: new URL(url) }; } catch(e) { return { $tag: 1, _0: classify_url_constructor_error(e) }; } })()
+
+///|
+pub extern "js" fn URL::new_with_base(
+  url : String,
+  base : String,
+) -> Result[URL, URLConstructorError] =
+  #| (url, base) => (() => { try { return { $tag: 0, _0: new URL(url, base) }; } catch(e) { return { $tag: 1, _0: classify_url_constructor_error(e) }; } })()
 
 ///|
 pub extern "js" fn URL::parse(url : String) -> URL? =

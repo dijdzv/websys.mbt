@@ -1301,10 +1301,12 @@ pub extern "js" fn Event::stop_propagation(self : Event) -> Unit =
   #| (self) => self.stopPropagation()
 
 ///|
+/// @alert deprecated "cancelBubble is deprecated"
 pub extern "js" fn Event::get_cancel_bubble(self : Event) -> Bool =
   #| (self) => self.cancelBubble
 
 ///|
+/// @alert deprecated "cancelBubble is deprecated"
 pub extern "js" fn Event::set_cancel_bubble(self : Event, value : Bool) -> Unit =
   #| (self, value) => { self.cancelBubble = value }
 
@@ -1321,10 +1323,12 @@ pub extern "js" fn Event::get_cancelable(self : Event) -> Bool =
   #| (self) => self.cancelable
 
 ///|
+/// @alert deprecated "returnValue is deprecated"
 pub extern "js" fn Event::get_return_value(self : Event) -> Bool =
   #| (self) => self.returnValue
 
 ///|
+/// @alert deprecated "returnValue is deprecated"
 pub extern "js" fn Event::set_return_value(self : Event, value : Bool) -> Unit =
   #| (self, value) => { self.returnValue = value }
 
@@ -1349,6 +1353,7 @@ pub extern "js" fn Event::get_time_stamp(self : Event) -> DOMHighResTimeStamp =
   #| (self) => self.timeStamp
 
 ///|
+/// @alert deprecated "initEvent is deprecated"
 pub extern "js" fn Event::init_event(self : Event, type_ : String) -> Unit =
   #| (self, type_) => self.initEvent(type_)
 
@@ -1417,6 +1422,7 @@ pub extern "js" fn CustomEvent::get_detail(self : CustomEvent) -> JsValue =
   #| (self) => self.detail
 
 ///|
+/// @alert deprecated "initCustomEvent is deprecated"
 pub extern "js" fn CustomEvent::init_custom_event(
   self : CustomEvent,
   type_ : String,
@@ -3416,6 +3422,18 @@ pub extern "js" fn EventTarget::as_document_picture_in_picture(
   #| (self) => (self instanceof DocumentPictureInPicture) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn EventTarget::as_html_permission_element(
+  self : EventTarget,
+) -> HTMLPermissionElement? =
+  #| (self) => (self instanceof HTMLPermissionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_html_geolocation_element(
+  self : EventTarget,
+) -> HTMLGeolocationElement? =
+  #| (self) => (self instanceof HTMLGeolocationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn EventTarget::as_background_fetch_registration(
   self : EventTarget,
 ) -> BackgroundFetchRegistration? =
@@ -3456,6 +3474,23 @@ pub extern "js" fn EventTarget::as_xr_cube_layer(
   self : EventTarget,
 ) -> XRCubeLayer? =
   #| (self) => (self instanceof XRCubeLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Error type for throwing methods
+pub(all) enum EventTargetDispatchEventError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_event_target_dispatch_event_error(
+  e : JsError,
+) -> EventTargetDispatchEventError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
 
 ///|
 pub extern "js" fn EventTarget::new() -> EventTarget =
@@ -3499,8 +3534,8 @@ pub extern "js" fn EventTarget::remove_event_listener_with_options(
 pub extern "js" fn EventTarget::dispatch_event(
   self : EventTarget,
   event : Event,
-) -> Bool =
-  #| (self, event) => self.dispatchEvent(event)
+) -> Result[Bool, EventTargetDispatchEventError] =
+  #| (self, event) => (() => { try { return { $tag: 0, _0: self.dispatchEvent(event) }; } catch(e) { return { $tag: 1, _0: classify_event_target_dispatch_event_error(e) }; } })()
 
 ///|
 pub extern "js" fn EventTarget::when(
@@ -3664,15 +3699,15 @@ pub extern "js" fn AbortSignal::throw_if_aborted(self : AbortSignal) -> Unit =
   #| (self) => self.throwIfAborted()
 
 ///|
-pub extern "js" fn AbortSignal::get_onabort(self : AbortSignal) -> EventHandler =
-  #| (self) => self.onabort
-
-///|
 pub extern "js" fn AbortSignal::set_onabort(
   self : AbortSignal,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onabort = value }
+  #| (self, handler) => { self.onabort = (e) => handler(e) }
+
+///|
+pub extern "js" fn AbortSignal::clear_onabort(self : AbortSignal) -> Unit =
+  #| (self) => { self.onabort = null }
 
 ///|
 /// NodeList interface
@@ -3709,13 +3744,34 @@ pub extern "js" fn NodeList::as_radio_node_list(
   #| (self) => (self instanceof RadioNodeList) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn NodeList::item(self : NodeList, index : Int) -> Node? =
-  #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+/// Error type for throwing methods
+pub(all) enum NodeListItemError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_node_list_item_error(e : JsError) -> NodeListItemError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+pub extern "js" fn NodeList::item(
+  self : NodeList,
+  index : Int,
+) -> Result[Node?, NodeListItemError] =
+  #| (self, index) => (() => { try { return { $tag: 0, _0: (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_node_list_item_error(e) }; } })()
 
 ///|
 #alias("_[_]")
-pub extern "js" fn NodeList::get(self : NodeList, index : Int) -> Node? =
-  #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+pub extern "js" fn NodeList::get(
+  self : NodeList,
+  index : Int,
+) -> Result[Node?, NodeListItemError] =
+  #| (self, index) => (() => { try { return { $tag: 0, _0: (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_node_list_item_error(e) }; } })()
 
 ///|
 pub extern "js" fn NodeList::get_length(self : NodeList) -> Int =
@@ -3860,6 +3916,23 @@ pub extern "js" fn JsValue::to_mutation_observer(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum MutationObserverObserveError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_mutation_observer_observe_error(
+  e : JsError,
+) -> MutationObserverObserveError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn MutationObserver::new(
   callback : MutationCallback,
 ) -> MutationObserver =
@@ -3869,23 +3942,23 @@ pub extern "js" fn MutationObserver::new(
 pub extern "js" fn MutationObserver::observe(
   self : MutationObserver,
   target : Node,
-) -> Unit =
-  #| (self, target) => self.observe(target)
+) -> Result[Unit, MutationObserverObserveError] =
+  #| (self, target) => (() => { try { self.observe(target); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_mutation_observer_observe_error(e) }; } })()
 
 ///|
 extern "js" fn MutationObserver::observe_with_options_ffi(
   self : MutationObserver,
   target : Node,
   options : JsValue,
-) -> Unit =
-  #| (self, target, options) => self.observe(target, options)
+) -> Result[Unit, MutationObserverObserveError] =
+  #| (self, target, options) => (() => { try { self.observe(target, options); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_mutation_observer_observe_error(e) }; } })()
 
 ///|
 pub fn MutationObserver::observe_with_options(
   self : MutationObserver,
   target : Node,
   options : MutationObserverInit,
-) -> Unit {
+) -> Result[Unit, MutationObserverObserveError] {
   MutationObserver::observe_with_options_ffi(self, target, options.to_js())
 }
 
@@ -4871,6 +4944,73 @@ pub extern "js" fn Node::as_html_fenced_frame_element(
 ) -> HTMLFencedFrameElement? =
   #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
+pub extern "js" fn Node::as_html_permission_element(
+  self : Node,
+) -> HTMLPermissionElement? =
+  #| (self) => (self instanceof HTMLPermissionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_html_geolocation_element(
+  self : Node,
+) -> HTMLGeolocationElement? =
+  #| (self) => (self instanceof HTMLGeolocationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Error type for throwing methods
+pub(all) enum NodeAppendChildError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_node_append_child_error(
+  e : JsError,
+) -> NodeAppendChildError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum NodeReplaceChildError {
+  NotFoundError(JsError)
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_node_replace_child_error(
+  e : JsError,
+) -> NodeReplaceChildError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
+  #|   if (n === 'HierarchyRequestError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum NodeRemoveChildError {
+  TypeError(JsError)
+  NotFoundError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_node_remove_child_error(
+  e : JsError,
+) -> NodeRemoveChildError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
 // Node.ELEMENT_NODE
 
 ///|
@@ -5112,20 +5252,26 @@ pub extern "js" fn Node::insert_before(
   #| (self, node, child) => self.insertBefore(node, (child.$tag === 1 ? child._0 : null))
 
 ///|
-pub extern "js" fn Node::append_child(self : Node, node : Node) -> Node =
-  #| (self, node) => self.appendChild(node)
+pub extern "js" fn Node::append_child(
+  self : Node,
+  node : Node,
+) -> Result[Node, NodeAppendChildError] =
+  #| (self, node) => (() => { try { return { $tag: 0, _0: self.appendChild(node) }; } catch(e) { return { $tag: 1, _0: classify_node_append_child_error(e) }; } })()
 
 ///|
 pub extern "js" fn Node::replace_child(
   self : Node,
   node : Node,
   child : Node,
-) -> Node =
-  #| (self, node, child) => self.replaceChild(node, child)
+) -> Result[Node, NodeReplaceChildError] =
+  #| (self, node, child) => (() => { try { return { $tag: 0, _0: self.replaceChild(node, child) }; } catch(e) { return { $tag: 1, _0: classify_node_replace_child_error(e) }; } })()
 
 ///|
-pub extern "js" fn Node::remove_child(self : Node, child : Node) -> Node =
-  #| (self, child) => self.removeChild(child)
+pub extern "js" fn Node::remove_child(
+  self : Node,
+  child : Node,
+) -> Result[Node, NodeRemoveChildError] =
+  #| (self, child) => (() => { try { return { $tag: 0, _0: self.removeChild(child) }; } catch(e) { return { $tag: 1, _0: classify_node_remove_child_error(e) }; } })()
 
 ///|
 /// Document interface
@@ -5166,6 +5312,404 @@ pub extern "js" fn Document::to_event_target(self : Document) -> EventTarget =
 ///|
 pub extern "js" fn Document::as_xml_document(self : Document) -> XMLDocument? =
   #| (self) => (self instanceof XMLDocument) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentCreateElementNSError {
+  NamespaceError(JsError)
+  InvalidCharacterError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_create_element_ns_error(
+  e : JsError,
+) -> DocumentCreateElementNSError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NamespaceError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidCharacterError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentCreateProcessingInstructionError {
+  InvalidCharacterError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_create_processing_instruction_error(
+  e : JsError,
+) -> DocumentCreateProcessingInstructionError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidCharacterError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentCreateAttributeError {
+  InvalidCharacterError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_create_attribute_error(
+  e : JsError,
+) -> DocumentCreateAttributeError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidCharacterError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentCreateAttributeNSError {
+  NamespaceError(JsError)
+  InvalidCharacterError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_create_attribute_ns_error(
+  e : JsError,
+) -> DocumentCreateAttributeNSError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NamespaceError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidCharacterError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentHasStorageAccessError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_has_storage_access_error(
+  e : JsError,
+) -> DocumentHasStorageAccessError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentRequestStorageAccessError {
+  NotAllowedError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_request_storage_access_error(
+  e : JsError,
+) -> DocumentRequestStorageAccessError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentParseHTMLUnsafeError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_parse_html_unsafe_error(
+  e : JsError,
+) -> DocumentParseHTMLUnsafeError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentSetDomainError {
+  SecurityError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_set_domain_error(
+  e : JsError,
+) -> DocumentSetDomainError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentWriteError {
+  TypeError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_write_error(e : JsError) -> DocumentWriteError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentWritelnError {
+  TypeError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_writeln_error(
+  e : JsError,
+) -> DocumentWritelnError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentRequestStorageAccessForError {
+  TypeError(JsError)
+  NotAllowedError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_request_storage_access_for_error(
+  e : JsError,
+) -> DocumentRequestStorageAccessForError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentExitPictureInPictureError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_exit_picture_in_picture_error(
+  e : JsError,
+) -> DocumentExitPictureInPictureError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentHasUnpartitionedCookieAccessError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_has_unpartitioned_cookie_access_error(
+  e : JsError,
+) -> DocumentHasUnpartitionedCookieAccessError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentHasPrivateTokenError {
+  TypeError(JsError)
+  NotAllowedError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_has_private_token_error(
+  e : JsError,
+) -> DocumentHasPrivateTokenError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentHasRedemptionRecordError {
+  TypeError(JsError)
+  NotAllowedError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_has_redemption_record_error(
+  e : JsError,
+) -> DocumentHasRedemptionRecordError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentSetAdoptedStyleSheetsError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_set_adopted_style_sheets_error(
+  e : JsError,
+) -> DocumentSetAdoptedStyleSheetsError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentPrependError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_prepend_error(
+  e : JsError,
+) -> DocumentPrependError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentAppendError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_append_error(
+  e : JsError,
+) -> DocumentAppendError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentReplaceChildrenError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_replace_children_error(
+  e : JsError,
+) -> DocumentReplaceChildrenError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentMoveBeforeError {
+  TypeError(JsError)
+  NotFoundError(JsError)
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_move_before_error(
+  e : JsError,
+) -> DocumentMoveBeforeError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
+  #|   if (n === 'HierarchyRequestError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentQuerySelectorError {
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_query_selector_error(
+  e : JsError,
+) -> DocumentQuerySelectorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentQuerySelectorAllError {
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_query_selector_all_error(
+  e : JsError,
+) -> DocumentQuerySelectorAllError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
 
 ///|
 pub extern "js" fn Document::new() -> Document =
@@ -5255,8 +5799,8 @@ pub extern "js" fn Document::create_element_ns(
   self : Document,
   namespace_ : String?,
   qualified_name : String,
-) -> Element =
-  #| (self, namespace_, qualified_name) => self.createElementNS(namespace_, qualified_name)
+) -> Result[Element, DocumentCreateElementNSError] =
+  #| (self, namespace_, qualified_name) => (() => { try { return { $tag: 0, _0: self.createElementNS(namespace_, qualified_name) }; } catch(e) { return { $tag: 1, _0: classify_document_create_element_ns_error(e) }; } })()
 
 ///|
 pub extern "js" fn Document::create_element_ns_with_options(
@@ -5264,8 +5808,8 @@ pub extern "js" fn Document::create_element_ns_with_options(
   namespace_ : String?,
   qualified_name : String,
   options : StringOrElementCreationOptions,
-) -> Element =
-  #| (self, namespace_, qualified_name, options) => self.createElementNS(namespace_, qualified_name, options)
+) -> Result[Element, DocumentCreateElementNSError] =
+  #| (self, namespace_, qualified_name, options) => (() => { try { return { $tag: 0, _0: self.createElementNS(namespace_, qualified_name, options) }; } catch(e) { return { $tag: 1, _0: classify_document_create_element_ns_error(e) }; } })()
 
 ///|
 pub extern "js" fn Document::create_document_fragment(
@@ -5299,8 +5843,8 @@ pub extern "js" fn Document::create_processing_instruction(
   self : Document,
   target : String,
   data : String,
-) -> ProcessingInstruction =
-  #| (self, target, data) => self.createProcessingInstruction(target, data)
+) -> Result[ProcessingInstruction, DocumentCreateProcessingInstructionError] =
+  #| (self, target, data) => (() => { try { return { $tag: 0, _0: self.createProcessingInstruction(target, data) }; } catch(e) { return { $tag: 1, _0: classify_document_create_processing_instruction_error(e) }; } })()
 
 ///|
 pub extern "js" fn Document::import_node(self : Document, node : Node) -> Node =
@@ -5322,18 +5866,19 @@ pub extern "js" fn Document::adopt_node(self : Document, node : Node) -> Node =
 pub extern "js" fn Document::create_attribute(
   self : Document,
   local_name : String,
-) -> Attr =
-  #| (self, local_name) => self.createAttribute(local_name)
+) -> Result[Attr, DocumentCreateAttributeError] =
+  #| (self, local_name) => (() => { try { return { $tag: 0, _0: self.createAttribute(local_name) }; } catch(e) { return { $tag: 1, _0: classify_document_create_attribute_error(e) }; } })()
 
 ///|
 pub extern "js" fn Document::create_attribute_ns(
   self : Document,
   namespace_ : String?,
   qualified_name : String,
-) -> Attr =
-  #| (self, namespace_, qualified_name) => self.createAttributeNS(namespace_, qualified_name)
+) -> Result[Attr, DocumentCreateAttributeNSError] =
+  #| (self, namespace_, qualified_name) => (() => { try { return { $tag: 0, _0: self.createAttributeNS(namespace_, qualified_name) }; } catch(e) { return { $tag: 1, _0: classify_document_create_attribute_ns_error(e) }; } })()
 
 ///|
+/// @alert deprecated "createEvent is deprecated"
 pub extern "js" fn Document::create_event(
   self : Document,
   interface : String,
@@ -5381,29 +5926,29 @@ pub extern "js" fn Document::get_prerendering(self : Document) -> Bool =
   #| (self) => self.prerendering
 
 ///|
-pub extern "js" fn Document::get_onprerenderingchange(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onprerenderingchange
-
-///|
 pub extern "js" fn Document::set_onprerenderingchange(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onprerenderingchange = value }
+  #| (self, handler) => { self.onprerenderingchange = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_onprerenderingchange(
+  self : Document,
+) -> Unit =
+  #| (self) => { self.onprerenderingchange = null }
 
 ///|
 pub extern "js" fn Document::has_storage_access(
   self : Document,
-) -> Promise[Bool] =
-  #| (self) => self.hasStorageAccess()
+) -> Promise[Result[Bool, DocumentHasStorageAccessError]] =
+  #| (self) => self.hasStorageAccess().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_document_has_storage_access_error(e) }))
 
 ///|
 pub extern "js" fn Document::request_storage_access(
   self : Document,
-) -> Promise[Unit] =
-  #| (self) => self.requestStorageAccess()
+) -> Promise[Result[Unit, DocumentRequestStorageAccessError]] =
+  #| (self) => self.requestStorageAccess().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_document_request_storage_access_error(e) }))
 
 ///|
 pub extern "js" fn Document::get_root_element(
@@ -5466,23 +6011,25 @@ pub extern "js" fn Document::get_scrolling_element(self : Document) -> Element? 
 ///|
 pub extern "js" fn Document::parse_html_unsafe(
   html : TrustedHTMLOrString,
-) -> Document =
-  #| (html) => Document.parseHTMLUnsafe(html)
+) -> Result[Document, DocumentParseHTMLUnsafeError] =
+  #| (html) => (() => { try { return { $tag: 0, _0: Document.parseHTMLUnsafe(html) }; } catch(e) { return { $tag: 1, _0: classify_document_parse_html_unsafe_error(e) }; } })()
 
 ///|
 pub extern "js" fn Document::get_location(self : Document) -> Location? =
   #| (self) => (() => { const v = self.location; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+/// @alert deprecated "domain is deprecated"
 pub extern "js" fn Document::get_domain(self : Document) -> String =
   #| (self) => self.domain
 
 ///|
+/// @alert deprecated "domain is deprecated"
 pub extern "js" fn Document::set_domain(
   self : Document,
   value : String,
-) -> Unit =
-  #| (self, value) => { self.domain = value }
+) -> Result[Unit, DocumentSetDomainError] =
+  #| (self, value) => (() => { try { self.domain = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_set_domain_error(e) }; } })()
 
 ///|
 pub extern "js" fn Document::get_referrer(self : Document) -> String =
@@ -5610,18 +6157,20 @@ pub extern "js" fn Document::close(self : Document) -> Unit =
   #| (self) => self.close()
 
 ///|
+/// @alert deprecated "write is deprecated"
 pub extern "js" fn Document::write(
   self : Document,
   text : TrustedHTMLOrString,
-) -> Unit =
-  #| (self, text) => self.write(text)
+) -> Result[Unit, DocumentWriteError] =
+  #| (self, text) => (() => { try { self.write(text); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_write_error(e) }; } })()
 
 ///|
+/// @alert deprecated "writeln is deprecated"
 pub extern "js" fn Document::writeln(
   self : Document,
   text : TrustedHTMLOrString,
-) -> Unit =
-  #| (self, text) => self.writeln(text)
+) -> Result[Unit, DocumentWritelnError] =
+  #| (self, text) => (() => { try { self.writeln(text); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_writeln_error(e) }; } })()
 
 ///|
 pub extern "js" fn Document::get_default_view(self : Document) -> Window? =
@@ -5643,6 +6192,7 @@ pub extern "js" fn Document::set_design_mode(
   #| (self, value) => { self.designMode = value }
 
 ///|
+/// @alert deprecated "execCommand is deprecated"
 pub extern "js" fn Document::exec_command(
   self : Document,
   command_id : String,
@@ -5659,6 +6209,7 @@ pub extern "js" fn Document::exec_command_with_value(
   #| (self, command_id, show_ui, value) => self.execCommand(command_id, show_ui, value)
 
 ///|
+/// @alert deprecated "queryCommandEnabled is deprecated"
 pub extern "js" fn Document::query_command_enabled(
   self : Document,
   command_id : String,
@@ -5673,6 +6224,7 @@ pub extern "js" fn Document::query_command_indeterm(
   #| (self, command_id) => self.queryCommandIndeterm(command_id)
 
 ///|
+/// @alert deprecated "queryCommandState is deprecated"
 pub extern "js" fn Document::query_command_state(
   self : Document,
   command_id : String,
@@ -5680,6 +6232,7 @@ pub extern "js" fn Document::query_command_state(
   #| (self, command_id) => self.queryCommandState(command_id)
 
 ///|
+/// @alert deprecated "queryCommandSupported is deprecated"
 pub extern "js" fn Document::query_command_supported(
   self : Document,
   command_id : String,
@@ -5704,36 +6257,34 @@ pub extern "js" fn Document::get_visibility_state(
   #| (self) => ['visible', 'hidden'].indexOf(self.visibilityState)
 
 ///|
-pub extern "js" fn Document::get_onreadystatechange(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onreadystatechange
-
-///|
 pub extern "js" fn Document::set_onreadystatechange(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onreadystatechange = value }
+  #| (self, handler) => { self.onreadystatechange = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onvisibilitychange(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onvisibilitychange
+pub extern "js" fn Document::clear_onreadystatechange(self : Document) -> Unit =
+  #| (self) => { self.onreadystatechange = null }
 
 ///|
 pub extern "js" fn Document::set_onvisibilitychange(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onvisibilitychange = value }
+  #| (self, handler) => { self.onvisibilitychange = (e) => handler(e) }
 
 ///|
+pub extern "js" fn Document::clear_onvisibilitychange(self : Document) -> Unit =
+  #| (self) => { self.onvisibilitychange = null }
+
+///|
+/// @alert deprecated "fgColor is deprecated"
 pub extern "js" fn Document::get_fg_color(self : Document) -> String =
   #| (self) => self.fgColor
 
 ///|
+/// @alert deprecated "fgColor is deprecated"
 pub extern "js" fn Document::set_fg_color(
   self : Document,
   value : String,
@@ -5741,10 +6292,12 @@ pub extern "js" fn Document::set_fg_color(
   #| (self, value) => { self.fgColor = value }
 
 ///|
+/// @alert deprecated "linkColor is deprecated"
 pub extern "js" fn Document::get_link_color(self : Document) -> String =
   #| (self) => self.linkColor
 
 ///|
+/// @alert deprecated "linkColor is deprecated"
 pub extern "js" fn Document::set_link_color(
   self : Document,
   value : String,
@@ -5752,10 +6305,12 @@ pub extern "js" fn Document::set_link_color(
   #| (self, value) => { self.linkColor = value }
 
 ///|
+/// @alert deprecated "vlinkColor is deprecated"
 pub extern "js" fn Document::get_vlink_color(self : Document) -> String =
   #| (self) => self.vlinkColor
 
 ///|
+/// @alert deprecated "vlinkColor is deprecated"
 pub extern "js" fn Document::set_vlink_color(
   self : Document,
   value : String,
@@ -5763,10 +6318,12 @@ pub extern "js" fn Document::set_vlink_color(
   #| (self, value) => { self.vlinkColor = value }
 
 ///|
+/// @alert deprecated "alinkColor is deprecated"
 pub extern "js" fn Document::get_alink_color(self : Document) -> String =
   #| (self) => self.alinkColor
 
 ///|
+/// @alert deprecated "alinkColor is deprecated"
 pub extern "js" fn Document::set_alink_color(
   self : Document,
   value : String,
@@ -5774,10 +6331,12 @@ pub extern "js" fn Document::set_alink_color(
   #| (self, value) => { self.alinkColor = value }
 
 ///|
+/// @alert deprecated "bgColor is deprecated"
 pub extern "js" fn Document::get_bg_color(self : Document) -> String =
   #| (self) => self.bgColor
 
 ///|
+/// @alert deprecated "bgColor is deprecated"
 pub extern "js" fn Document::set_bg_color(
   self : Document,
   value : String,
@@ -5793,6 +6352,7 @@ pub extern "js" fn Document::get_applets(self : Document) -> HTMLCollection =
   #| (self) => self.applets
 
 ///|
+/// @alert deprecated "clear is deprecated"
 pub extern "js" fn Document::clear(self : Document) -> Unit =
   #| (self) => self.clear()
 
@@ -5818,30 +6378,30 @@ pub extern "js" fn Document::get_fragment_directive(
 pub extern "js" fn Document::request_storage_access_for(
   self : Document,
   requested_origin : String,
-) -> Promise[Unit] =
-  #| (self, requested_origin) => self.requestStorageAccessFor(requested_origin)
-
-///|
-pub extern "js" fn Document::get_onfreeze(self : Document) -> EventHandler =
-  #| (self) => self.onfreeze
+) -> Promise[Result[Unit, DocumentRequestStorageAccessForError]] =
+  #| (self, requested_origin) => self.requestStorageAccessFor(requested_origin).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_document_request_storage_access_for_error(e) }))
 
 ///|
 pub extern "js" fn Document::set_onfreeze(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onfreeze = value }
+  #| (self, handler) => { self.onfreeze = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onresume(self : Document) -> EventHandler =
-  #| (self) => self.onresume
+pub extern "js" fn Document::clear_onfreeze(self : Document) -> Unit =
+  #| (self) => { self.onfreeze = null }
 
 ///|
 pub extern "js" fn Document::set_onresume(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onresume = value }
+  #| (self, handler) => { self.onresume = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_onresume(self : Document) -> Unit =
+  #| (self) => { self.onresume = null }
 
 ///|
 pub extern "js" fn Document::get_was_discarded(self : Document) -> Bool =
@@ -5881,30 +6441,26 @@ pub extern "js" fn Document::exit_fullscreen(self : Document) -> Promise[Unit] =
   #| (self) => self.exitFullscreen()
 
 ///|
-pub extern "js" fn Document::get_onfullscreenchange(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onfullscreenchange
-
-///|
 pub extern "js" fn Document::set_onfullscreenchange(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onfullscreenchange = value }
+  #| (self, handler) => { self.onfullscreenchange = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onfullscreenerror(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onfullscreenerror
+pub extern "js" fn Document::clear_onfullscreenchange(self : Document) -> Unit =
+  #| (self) => { self.onfullscreenchange = null }
 
 ///|
 pub extern "js" fn Document::set_onfullscreenerror(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onfullscreenerror = value }
+  #| (self, handler) => { self.onfullscreenerror = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_onfullscreenerror(self : Document) -> Unit =
+  #| (self) => { self.onfullscreenerror = null }
 
 ///|
 pub extern "js" fn Document::get_timeline(self : Document) -> DocumentTimeline =
@@ -5938,58 +6494,54 @@ pub extern "js" fn Document::get_picture_in_picture_enabled(
 ///|
 pub extern "js" fn Document::exit_picture_in_picture(
   self : Document,
-) -> Promise[Unit] =
-  #| (self) => self.exitPictureInPicture()
+) -> Promise[Result[Unit, DocumentExitPictureInPictureError]] =
+  #| (self) => self.exitPictureInPicture().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_document_exit_picture_in_picture_error(e) }))
 
 ///|
 pub extern "js" fn Document::has_unpartitioned_cookie_access(
   self : Document,
-) -> Promise[Bool] =
-  #| (self) => self.hasUnpartitionedCookieAccess()
+) -> Promise[Result[Bool, DocumentHasUnpartitionedCookieAccessError]] =
+  #| (self) => self.hasUnpartitionedCookieAccess().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_document_has_unpartitioned_cookie_access_error(e) }))
 
 ///|
 pub extern "js" fn Document::has_private_token(
   self : Document,
   issuer : String,
-) -> Promise[Bool] =
-  #| (self, issuer) => self.hasPrivateToken(issuer)
+) -> Promise[Result[Bool, DocumentHasPrivateTokenError]] =
+  #| (self, issuer) => self.hasPrivateToken(issuer).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_document_has_private_token_error(e) }))
 
 ///|
 pub extern "js" fn Document::has_redemption_record(
   self : Document,
   issuer : String,
-) -> Promise[Bool] =
-  #| (self, issuer) => self.hasRedemptionRecord(issuer)
+) -> Promise[Result[Bool, DocumentHasRedemptionRecordError]] =
+  #| (self, issuer) => self.hasRedemptionRecord(issuer).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_document_has_redemption_record_error(e) }))
 
 ///|
 pub extern "js" fn Document::get_named_flows(self : Document) -> NamedFlowMap =
   #| (self) => self.namedFlows
 
 ///|
-pub extern "js" fn Document::get_onpointerlockchange(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onpointerlockchange
-
-///|
 pub extern "js" fn Document::set_onpointerlockchange(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onpointerlockchange = value }
+  #| (self, handler) => { self.onpointerlockchange = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onpointerlockerror(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onpointerlockerror
+pub extern "js" fn Document::clear_onpointerlockchange(self : Document) -> Unit =
+  #| (self) => { self.onpointerlockchange = null }
 
 ///|
 pub extern "js" fn Document::set_onpointerlockerror(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onpointerlockerror = value }
+  #| (self, handler) => { self.onpointerlockerror = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_onpointerlockerror(self : Document) -> Unit =
+  #| (self) => { self.onpointerlockerror = null }
 
 ///|
 pub extern "js" fn Document::exit_pointer_lock(self : Document) -> Unit =
@@ -6133,342 +6685,334 @@ pub fn Document::convert_point_from_node_with_options(
 }
 
 ///|
-pub extern "js" fn Document::get_onabort(self : Document) -> EventHandler =
-  #| (self) => self.onabort
-
-///|
 pub extern "js" fn Document::set_onabort(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onabort = value }
+  #| (self, handler) => { self.onabort = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onauxclick(self : Document) -> EventHandler =
-  #| (self) => self.onauxclick
+pub extern "js" fn Document::clear_onabort(self : Document) -> Unit =
+  #| (self) => { self.onabort = null }
 
 ///|
 pub extern "js" fn Document::set_onauxclick(
   self : Document,
-  value : EventHandler,
+  handler : (PointerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onauxclick = value }
+  #| (self, handler) => { self.onauxclick = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onbeforeinput(self : Document) -> EventHandler =
-  #| (self) => self.onbeforeinput
+pub extern "js" fn Document::clear_onauxclick(self : Document) -> Unit =
+  #| (self) => { self.onauxclick = null }
 
 ///|
 pub extern "js" fn Document::set_onbeforeinput(
   self : Document,
-  value : EventHandler,
+  handler : (InputEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onbeforeinput = value }
+  #| (self, handler) => { self.onbeforeinput = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onbeforematch(self : Document) -> EventHandler =
-  #| (self) => self.onbeforematch
+pub extern "js" fn Document::clear_onbeforeinput(self : Document) -> Unit =
+  #| (self) => { self.onbeforeinput = null }
 
 ///|
 pub extern "js" fn Document::set_onbeforematch(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onbeforematch = value }
+  #| (self, handler) => { self.onbeforematch = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onbeforetoggle(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onbeforetoggle
+pub extern "js" fn Document::clear_onbeforematch(self : Document) -> Unit =
+  #| (self) => { self.onbeforematch = null }
 
 ///|
 pub extern "js" fn Document::set_onbeforetoggle(
   self : Document,
-  value : EventHandler,
+  handler : (ToggleEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onbeforetoggle = value }
+  #| (self, handler) => { self.onbeforetoggle = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onblur(self : Document) -> EventHandler =
-  #| (self) => self.onblur
+pub extern "js" fn Document::clear_onbeforetoggle(self : Document) -> Unit =
+  #| (self) => { self.onbeforetoggle = null }
 
 ///|
 pub extern "js" fn Document::set_onblur(
   self : Document,
-  value : EventHandler,
+  handler : (FocusEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onblur = value }
+  #| (self, handler) => { self.onblur = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_oncancel(self : Document) -> EventHandler =
-  #| (self) => self.oncancel
+pub extern "js" fn Document::clear_onblur(self : Document) -> Unit =
+  #| (self) => { self.onblur = null }
 
 ///|
 pub extern "js" fn Document::set_oncancel(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncancel = value }
+  #| (self, handler) => { self.oncancel = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_oncanplay(self : Document) -> EventHandler =
-  #| (self) => self.oncanplay
+pub extern "js" fn Document::clear_oncancel(self : Document) -> Unit =
+  #| (self) => { self.oncancel = null }
 
 ///|
 pub extern "js" fn Document::set_oncanplay(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncanplay = value }
+  #| (self, handler) => { self.oncanplay = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_oncanplaythrough(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.oncanplaythrough
+pub extern "js" fn Document::clear_oncanplay(self : Document) -> Unit =
+  #| (self) => { self.oncanplay = null }
 
 ///|
 pub extern "js" fn Document::set_oncanplaythrough(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncanplaythrough = value }
+  #| (self, handler) => { self.oncanplaythrough = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onchange(self : Document) -> EventHandler =
-  #| (self) => self.onchange
+pub extern "js" fn Document::clear_oncanplaythrough(self : Document) -> Unit =
+  #| (self) => { self.oncanplaythrough = null }
 
 ///|
 pub extern "js" fn Document::set_onchange(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onchange = value }
+  #| (self, handler) => { self.onchange = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onclick(self : Document) -> EventHandler =
-  #| (self) => self.onclick
+pub extern "js" fn Document::clear_onchange(self : Document) -> Unit =
+  #| (self) => { self.onchange = null }
 
 ///|
 pub extern "js" fn Document::set_onclick(
   self : Document,
-  value : EventHandler,
+  handler : (PointerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onclick = value }
+  #| (self, handler) => { self.onclick = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onclose(self : Document) -> EventHandler =
-  #| (self) => self.onclose
+pub extern "js" fn Document::clear_onclick(self : Document) -> Unit =
+  #| (self) => { self.onclick = null }
 
 ///|
 pub extern "js" fn Document::set_onclose(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onclose = value }
+  #| (self, handler) => { self.onclose = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_oncommand(self : Document) -> EventHandler =
-  #| (self) => self.oncommand
+pub extern "js" fn Document::clear_onclose(self : Document) -> Unit =
+  #| (self) => { self.onclose = null }
 
 ///|
 pub extern "js" fn Document::set_oncommand(
   self : Document,
-  value : EventHandler,
+  handler : (CommandEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncommand = value }
+  #| (self, handler) => { self.oncommand = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_oncontextlost(self : Document) -> EventHandler =
-  #| (self) => self.oncontextlost
+pub extern "js" fn Document::clear_oncommand(self : Document) -> Unit =
+  #| (self) => { self.oncommand = null }
 
 ///|
 pub extern "js" fn Document::set_oncontextlost(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncontextlost = value }
+  #| (self, handler) => { self.oncontextlost = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_oncontextmenu(self : Document) -> EventHandler =
-  #| (self) => self.oncontextmenu
+pub extern "js" fn Document::clear_oncontextlost(self : Document) -> Unit =
+  #| (self) => { self.oncontextlost = null }
 
 ///|
 pub extern "js" fn Document::set_oncontextmenu(
   self : Document,
-  value : EventHandler,
+  handler : (PointerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncontextmenu = value }
+  #| (self, handler) => { self.oncontextmenu = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_oncontextrestored(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.oncontextrestored
+pub extern "js" fn Document::clear_oncontextmenu(self : Document) -> Unit =
+  #| (self) => { self.oncontextmenu = null }
 
 ///|
 pub extern "js" fn Document::set_oncontextrestored(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncontextrestored = value }
+  #| (self, handler) => { self.oncontextrestored = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_oncopy(self : Document) -> EventHandler =
-  #| (self) => self.oncopy
+pub extern "js" fn Document::clear_oncontextrestored(self : Document) -> Unit =
+  #| (self) => { self.oncontextrestored = null }
 
 ///|
 pub extern "js" fn Document::set_oncopy(
   self : Document,
-  value : EventHandler,
+  handler : (ClipboardEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncopy = value }
+  #| (self, handler) => { self.oncopy = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_oncuechange(self : Document) -> EventHandler =
-  #| (self) => self.oncuechange
+pub extern "js" fn Document::clear_oncopy(self : Document) -> Unit =
+  #| (self) => { self.oncopy = null }
 
 ///|
 pub extern "js" fn Document::set_oncuechange(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncuechange = value }
+  #| (self, handler) => { self.oncuechange = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_oncut(self : Document) -> EventHandler =
-  #| (self) => self.oncut
+pub extern "js" fn Document::clear_oncuechange(self : Document) -> Unit =
+  #| (self) => { self.oncuechange = null }
 
 ///|
 pub extern "js" fn Document::set_oncut(
   self : Document,
-  value : EventHandler,
+  handler : (ClipboardEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncut = value }
+  #| (self, handler) => { self.oncut = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ondblclick(self : Document) -> EventHandler =
-  #| (self) => self.ondblclick
+pub extern "js" fn Document::clear_oncut(self : Document) -> Unit =
+  #| (self) => { self.oncut = null }
 
 ///|
 pub extern "js" fn Document::set_ondblclick(
   self : Document,
-  value : EventHandler,
+  handler : (MouseEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ondblclick = value }
+  #| (self, handler) => { self.ondblclick = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ondrag(self : Document) -> EventHandler =
-  #| (self) => self.ondrag
+pub extern "js" fn Document::clear_ondblclick(self : Document) -> Unit =
+  #| (self) => { self.ondblclick = null }
 
 ///|
 pub extern "js" fn Document::set_ondrag(
   self : Document,
-  value : EventHandler,
+  handler : (DragEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ondrag = value }
+  #| (self, handler) => { self.ondrag = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ondragend(self : Document) -> EventHandler =
-  #| (self) => self.ondragend
+pub extern "js" fn Document::clear_ondrag(self : Document) -> Unit =
+  #| (self) => { self.ondrag = null }
 
 ///|
 pub extern "js" fn Document::set_ondragend(
   self : Document,
-  value : EventHandler,
+  handler : (DragEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ondragend = value }
+  #| (self, handler) => { self.ondragend = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ondragenter(self : Document) -> EventHandler =
-  #| (self) => self.ondragenter
+pub extern "js" fn Document::clear_ondragend(self : Document) -> Unit =
+  #| (self) => { self.ondragend = null }
 
 ///|
 pub extern "js" fn Document::set_ondragenter(
   self : Document,
-  value : EventHandler,
+  handler : (DragEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ondragenter = value }
+  #| (self, handler) => { self.ondragenter = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ondragleave(self : Document) -> EventHandler =
-  #| (self) => self.ondragleave
+pub extern "js" fn Document::clear_ondragenter(self : Document) -> Unit =
+  #| (self) => { self.ondragenter = null }
 
 ///|
 pub extern "js" fn Document::set_ondragleave(
   self : Document,
-  value : EventHandler,
+  handler : (DragEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ondragleave = value }
+  #| (self, handler) => { self.ondragleave = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ondragover(self : Document) -> EventHandler =
-  #| (self) => self.ondragover
+pub extern "js" fn Document::clear_ondragleave(self : Document) -> Unit =
+  #| (self) => { self.ondragleave = null }
 
 ///|
 pub extern "js" fn Document::set_ondragover(
   self : Document,
-  value : EventHandler,
+  handler : (DragEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ondragover = value }
+  #| (self, handler) => { self.ondragover = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ondragstart(self : Document) -> EventHandler =
-  #| (self) => self.ondragstart
+pub extern "js" fn Document::clear_ondragover(self : Document) -> Unit =
+  #| (self) => { self.ondragover = null }
 
 ///|
 pub extern "js" fn Document::set_ondragstart(
   self : Document,
-  value : EventHandler,
+  handler : (DragEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ondragstart = value }
+  #| (self, handler) => { self.ondragstart = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ondrop(self : Document) -> EventHandler =
-  #| (self) => self.ondrop
+pub extern "js" fn Document::clear_ondragstart(self : Document) -> Unit =
+  #| (self) => { self.ondragstart = null }
 
 ///|
 pub extern "js" fn Document::set_ondrop(
   self : Document,
-  value : EventHandler,
+  handler : (DragEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ondrop = value }
+  #| (self, handler) => { self.ondrop = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ondurationchange(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.ondurationchange
+pub extern "js" fn Document::clear_ondrop(self : Document) -> Unit =
+  #| (self) => { self.ondrop = null }
 
 ///|
 pub extern "js" fn Document::set_ondurationchange(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ondurationchange = value }
+  #| (self, handler) => { self.ondurationchange = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onemptied(self : Document) -> EventHandler =
-  #| (self) => self.onemptied
+pub extern "js" fn Document::clear_ondurationchange(self : Document) -> Unit =
+  #| (self) => { self.ondurationchange = null }
 
 ///|
 pub extern "js" fn Document::set_onemptied(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onemptied = value }
+  #| (self, handler) => { self.onemptied = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onended(self : Document) -> EventHandler =
-  #| (self) => self.onended
+pub extern "js" fn Document::clear_onemptied(self : Document) -> Unit =
+  #| (self) => { self.onemptied = null }
 
 ///|
 pub extern "js" fn Document::set_onended(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onended = value }
+  #| (self, handler) => { self.onended = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_onended(self : Document) -> Unit =
+  #| (self) => { self.onended = null }
 
 ///|
 pub extern "js" fn Document::get_onerror(
@@ -6484,868 +7028,832 @@ pub extern "js" fn Document::set_onerror(
   #| (self, value) => { self.onerror = value }
 
 ///|
-pub extern "js" fn Document::get_onfocus(self : Document) -> EventHandler =
-  #| (self) => self.onfocus
-
-///|
 pub extern "js" fn Document::set_onfocus(
   self : Document,
-  value : EventHandler,
+  handler : (FocusEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onfocus = value }
+  #| (self, handler) => { self.onfocus = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onformdata(self : Document) -> EventHandler =
-  #| (self) => self.onformdata
+pub extern "js" fn Document::clear_onfocus(self : Document) -> Unit =
+  #| (self) => { self.onfocus = null }
 
 ///|
 pub extern "js" fn Document::set_onformdata(
   self : Document,
-  value : EventHandler,
+  handler : (FormDataEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onformdata = value }
+  #| (self, handler) => { self.onformdata = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_oninput(self : Document) -> EventHandler =
-  #| (self) => self.oninput
+pub extern "js" fn Document::clear_onformdata(self : Document) -> Unit =
+  #| (self) => { self.onformdata = null }
 
 ///|
 pub extern "js" fn Document::set_oninput(
   self : Document,
-  value : EventHandler,
+  handler : (InputEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oninput = value }
+  #| (self, handler) => { self.oninput = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_oninvalid(self : Document) -> EventHandler =
-  #| (self) => self.oninvalid
+pub extern "js" fn Document::clear_oninput(self : Document) -> Unit =
+  #| (self) => { self.oninput = null }
 
 ///|
 pub extern "js" fn Document::set_oninvalid(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oninvalid = value }
+  #| (self, handler) => { self.oninvalid = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onkeydown(self : Document) -> EventHandler =
-  #| (self) => self.onkeydown
+pub extern "js" fn Document::clear_oninvalid(self : Document) -> Unit =
+  #| (self) => { self.oninvalid = null }
 
 ///|
 pub extern "js" fn Document::set_onkeydown(
   self : Document,
-  value : EventHandler,
+  handler : (KeyboardEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onkeydown = value }
+  #| (self, handler) => { self.onkeydown = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onkeypress(self : Document) -> EventHandler =
-  #| (self) => self.onkeypress
+pub extern "js" fn Document::clear_onkeydown(self : Document) -> Unit =
+  #| (self) => { self.onkeydown = null }
 
 ///|
 pub extern "js" fn Document::set_onkeypress(
   self : Document,
-  value : EventHandler,
+  handler : (KeyboardEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onkeypress = value }
+  #| (self, handler) => { self.onkeypress = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onkeyup(self : Document) -> EventHandler =
-  #| (self) => self.onkeyup
+pub extern "js" fn Document::clear_onkeypress(self : Document) -> Unit =
+  #| (self) => { self.onkeypress = null }
 
 ///|
 pub extern "js" fn Document::set_onkeyup(
   self : Document,
-  value : EventHandler,
+  handler : (KeyboardEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onkeyup = value }
+  #| (self, handler) => { self.onkeyup = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onload(self : Document) -> EventHandler =
-  #| (self) => self.onload
+pub extern "js" fn Document::clear_onkeyup(self : Document) -> Unit =
+  #| (self) => { self.onkeyup = null }
 
 ///|
 pub extern "js" fn Document::set_onload(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onload = value }
+  #| (self, handler) => { self.onload = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onloadeddata(self : Document) -> EventHandler =
-  #| (self) => self.onloadeddata
+pub extern "js" fn Document::clear_onload(self : Document) -> Unit =
+  #| (self) => { self.onload = null }
 
 ///|
 pub extern "js" fn Document::set_onloadeddata(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onloadeddata = value }
+  #| (self, handler) => { self.onloadeddata = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onloadedmetadata(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onloadedmetadata
+pub extern "js" fn Document::clear_onloadeddata(self : Document) -> Unit =
+  #| (self) => { self.onloadeddata = null }
 
 ///|
 pub extern "js" fn Document::set_onloadedmetadata(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onloadedmetadata = value }
+  #| (self, handler) => { self.onloadedmetadata = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onloadstart(self : Document) -> EventHandler =
-  #| (self) => self.onloadstart
+pub extern "js" fn Document::clear_onloadedmetadata(self : Document) -> Unit =
+  #| (self) => { self.onloadedmetadata = null }
 
 ///|
 pub extern "js" fn Document::set_onloadstart(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onloadstart = value }
+  #| (self, handler) => { self.onloadstart = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onmousedown(self : Document) -> EventHandler =
-  #| (self) => self.onmousedown
+pub extern "js" fn Document::clear_onloadstart(self : Document) -> Unit =
+  #| (self) => { self.onloadstart = null }
 
 ///|
 pub extern "js" fn Document::set_onmousedown(
   self : Document,
-  value : EventHandler,
+  handler : (MouseEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onmousedown = value }
+  #| (self, handler) => { self.onmousedown = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onmouseenter(self : Document) -> EventHandler =
-  #| (self) => self.onmouseenter
+pub extern "js" fn Document::clear_onmousedown(self : Document) -> Unit =
+  #| (self) => { self.onmousedown = null }
 
 ///|
 pub extern "js" fn Document::set_onmouseenter(
   self : Document,
-  value : EventHandler,
+  handler : (MouseEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onmouseenter = value }
+  #| (self, handler) => { self.onmouseenter = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onmouseleave(self : Document) -> EventHandler =
-  #| (self) => self.onmouseleave
+pub extern "js" fn Document::clear_onmouseenter(self : Document) -> Unit =
+  #| (self) => { self.onmouseenter = null }
 
 ///|
 pub extern "js" fn Document::set_onmouseleave(
   self : Document,
-  value : EventHandler,
+  handler : (MouseEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onmouseleave = value }
+  #| (self, handler) => { self.onmouseleave = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onmousemove(self : Document) -> EventHandler =
-  #| (self) => self.onmousemove
+pub extern "js" fn Document::clear_onmouseleave(self : Document) -> Unit =
+  #| (self) => { self.onmouseleave = null }
 
 ///|
 pub extern "js" fn Document::set_onmousemove(
   self : Document,
-  value : EventHandler,
+  handler : (MouseEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onmousemove = value }
+  #| (self, handler) => { self.onmousemove = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onmouseout(self : Document) -> EventHandler =
-  #| (self) => self.onmouseout
+pub extern "js" fn Document::clear_onmousemove(self : Document) -> Unit =
+  #| (self) => { self.onmousemove = null }
 
 ///|
 pub extern "js" fn Document::set_onmouseout(
   self : Document,
-  value : EventHandler,
+  handler : (MouseEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onmouseout = value }
+  #| (self, handler) => { self.onmouseout = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onmouseover(self : Document) -> EventHandler =
-  #| (self) => self.onmouseover
+pub extern "js" fn Document::clear_onmouseout(self : Document) -> Unit =
+  #| (self) => { self.onmouseout = null }
 
 ///|
 pub extern "js" fn Document::set_onmouseover(
   self : Document,
-  value : EventHandler,
+  handler : (MouseEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onmouseover = value }
+  #| (self, handler) => { self.onmouseover = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onmouseup(self : Document) -> EventHandler =
-  #| (self) => self.onmouseup
+pub extern "js" fn Document::clear_onmouseover(self : Document) -> Unit =
+  #| (self) => { self.onmouseover = null }
 
 ///|
 pub extern "js" fn Document::set_onmouseup(
   self : Document,
-  value : EventHandler,
+  handler : (MouseEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onmouseup = value }
+  #| (self, handler) => { self.onmouseup = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onpaste(self : Document) -> EventHandler =
-  #| (self) => self.onpaste
+pub extern "js" fn Document::clear_onmouseup(self : Document) -> Unit =
+  #| (self) => { self.onmouseup = null }
 
 ///|
 pub extern "js" fn Document::set_onpaste(
   self : Document,
-  value : EventHandler,
+  handler : (ClipboardEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onpaste = value }
+  #| (self, handler) => { self.onpaste = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onpause(self : Document) -> EventHandler =
-  #| (self) => self.onpause
+pub extern "js" fn Document::clear_onpaste(self : Document) -> Unit =
+  #| (self) => { self.onpaste = null }
 
 ///|
 pub extern "js" fn Document::set_onpause(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onpause = value }
+  #| (self, handler) => { self.onpause = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onplay(self : Document) -> EventHandler =
-  #| (self) => self.onplay
+pub extern "js" fn Document::clear_onpause(self : Document) -> Unit =
+  #| (self) => { self.onpause = null }
 
 ///|
 pub extern "js" fn Document::set_onplay(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onplay = value }
+  #| (self, handler) => { self.onplay = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onplaying(self : Document) -> EventHandler =
-  #| (self) => self.onplaying
+pub extern "js" fn Document::clear_onplay(self : Document) -> Unit =
+  #| (self) => { self.onplay = null }
 
 ///|
 pub extern "js" fn Document::set_onplaying(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onplaying = value }
+  #| (self, handler) => { self.onplaying = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onprogress(self : Document) -> EventHandler =
-  #| (self) => self.onprogress
+pub extern "js" fn Document::clear_onplaying(self : Document) -> Unit =
+  #| (self) => { self.onplaying = null }
 
 ///|
 pub extern "js" fn Document::set_onprogress(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onprogress = value }
+  #| (self, handler) => { self.onprogress = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onratechange(self : Document) -> EventHandler =
-  #| (self) => self.onratechange
+pub extern "js" fn Document::clear_onprogress(self : Document) -> Unit =
+  #| (self) => { self.onprogress = null }
 
 ///|
 pub extern "js" fn Document::set_onratechange(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onratechange = value }
+  #| (self, handler) => { self.onratechange = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onreset(self : Document) -> EventHandler =
-  #| (self) => self.onreset
+pub extern "js" fn Document::clear_onratechange(self : Document) -> Unit =
+  #| (self) => { self.onratechange = null }
 
 ///|
 pub extern "js" fn Document::set_onreset(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onreset = value }
+  #| (self, handler) => { self.onreset = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onresize(self : Document) -> EventHandler =
-  #| (self) => self.onresize
+pub extern "js" fn Document::clear_onreset(self : Document) -> Unit =
+  #| (self) => { self.onreset = null }
 
 ///|
 pub extern "js" fn Document::set_onresize(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onresize = value }
+  #| (self, handler) => { self.onresize = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onscroll(self : Document) -> EventHandler =
-  #| (self) => self.onscroll
+pub extern "js" fn Document::clear_onresize(self : Document) -> Unit =
+  #| (self) => { self.onresize = null }
 
 ///|
 pub extern "js" fn Document::set_onscroll(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onscroll = value }
+  #| (self, handler) => { self.onscroll = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onscrollend(self : Document) -> EventHandler =
-  #| (self) => self.onscrollend
+pub extern "js" fn Document::clear_onscroll(self : Document) -> Unit =
+  #| (self) => { self.onscroll = null }
 
 ///|
 pub extern "js" fn Document::set_onscrollend(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onscrollend = value }
+  #| (self, handler) => { self.onscrollend = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onsecuritypolicyviolation(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onsecuritypolicyviolation
+pub extern "js" fn Document::clear_onscrollend(self : Document) -> Unit =
+  #| (self) => { self.onscrollend = null }
 
 ///|
 pub extern "js" fn Document::set_onsecuritypolicyviolation(
   self : Document,
-  value : EventHandler,
+  handler : (SecurityPolicyViolationEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onsecuritypolicyviolation = value }
+  #| (self, handler) => { self.onsecuritypolicyviolation = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onseeked(self : Document) -> EventHandler =
-  #| (self) => self.onseeked
+pub extern "js" fn Document::clear_onsecuritypolicyviolation(
+  self : Document,
+) -> Unit =
+  #| (self) => { self.onsecuritypolicyviolation = null }
 
 ///|
 pub extern "js" fn Document::set_onseeked(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onseeked = value }
+  #| (self, handler) => { self.onseeked = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onseeking(self : Document) -> EventHandler =
-  #| (self) => self.onseeking
+pub extern "js" fn Document::clear_onseeked(self : Document) -> Unit =
+  #| (self) => { self.onseeked = null }
 
 ///|
 pub extern "js" fn Document::set_onseeking(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onseeking = value }
+  #| (self, handler) => { self.onseeking = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onselect(self : Document) -> EventHandler =
-  #| (self) => self.onselect
+pub extern "js" fn Document::clear_onseeking(self : Document) -> Unit =
+  #| (self) => { self.onseeking = null }
 
 ///|
 pub extern "js" fn Document::set_onselect(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onselect = value }
+  #| (self, handler) => { self.onselect = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onslotchange(self : Document) -> EventHandler =
-  #| (self) => self.onslotchange
+pub extern "js" fn Document::clear_onselect(self : Document) -> Unit =
+  #| (self) => { self.onselect = null }
 
 ///|
 pub extern "js" fn Document::set_onslotchange(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onslotchange = value }
+  #| (self, handler) => { self.onslotchange = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onstalled(self : Document) -> EventHandler =
-  #| (self) => self.onstalled
+pub extern "js" fn Document::clear_onslotchange(self : Document) -> Unit =
+  #| (self) => { self.onslotchange = null }
 
 ///|
 pub extern "js" fn Document::set_onstalled(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onstalled = value }
+  #| (self, handler) => { self.onstalled = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onsubmit(self : Document) -> EventHandler =
-  #| (self) => self.onsubmit
+pub extern "js" fn Document::clear_onstalled(self : Document) -> Unit =
+  #| (self) => { self.onstalled = null }
 
 ///|
 pub extern "js" fn Document::set_onsubmit(
   self : Document,
-  value : EventHandler,
+  handler : (SubmitEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onsubmit = value }
+  #| (self, handler) => { self.onsubmit = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onsuspend(self : Document) -> EventHandler =
-  #| (self) => self.onsuspend
+pub extern "js" fn Document::clear_onsubmit(self : Document) -> Unit =
+  #| (self) => { self.onsubmit = null }
 
 ///|
 pub extern "js" fn Document::set_onsuspend(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onsuspend = value }
+  #| (self, handler) => { self.onsuspend = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ontimeupdate(self : Document) -> EventHandler =
-  #| (self) => self.ontimeupdate
+pub extern "js" fn Document::clear_onsuspend(self : Document) -> Unit =
+  #| (self) => { self.onsuspend = null }
 
 ///|
 pub extern "js" fn Document::set_ontimeupdate(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ontimeupdate = value }
+  #| (self, handler) => { self.ontimeupdate = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ontoggle(self : Document) -> EventHandler =
-  #| (self) => self.ontoggle
+pub extern "js" fn Document::clear_ontimeupdate(self : Document) -> Unit =
+  #| (self) => { self.ontimeupdate = null }
 
 ///|
 pub extern "js" fn Document::set_ontoggle(
   self : Document,
-  value : EventHandler,
+  handler : (ToggleEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ontoggle = value }
+  #| (self, handler) => { self.ontoggle = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onvolumechange(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onvolumechange
+pub extern "js" fn Document::clear_ontoggle(self : Document) -> Unit =
+  #| (self) => { self.ontoggle = null }
 
 ///|
 pub extern "js" fn Document::set_onvolumechange(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onvolumechange = value }
+  #| (self, handler) => { self.onvolumechange = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onwaiting(self : Document) -> EventHandler =
-  #| (self) => self.onwaiting
+pub extern "js" fn Document::clear_onvolumechange(self : Document) -> Unit =
+  #| (self) => { self.onvolumechange = null }
 
 ///|
 pub extern "js" fn Document::set_onwaiting(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onwaiting = value }
+  #| (self, handler) => { self.onwaiting = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onwebkitanimationend(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onwebkitanimationend
+pub extern "js" fn Document::clear_onwaiting(self : Document) -> Unit =
+  #| (self) => { self.onwaiting = null }
 
 ///|
 pub extern "js" fn Document::set_onwebkitanimationend(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onwebkitanimationend = value }
+  #| (self, handler) => { self.onwebkitanimationend = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onwebkitanimationiteration(
+pub extern "js" fn Document::clear_onwebkitanimationend(
   self : Document,
-) -> EventHandler =
-  #| (self) => self.onwebkitanimationiteration
+) -> Unit =
+  #| (self) => { self.onwebkitanimationend = null }
 
 ///|
 pub extern "js" fn Document::set_onwebkitanimationiteration(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onwebkitanimationiteration = value }
+  #| (self, handler) => { self.onwebkitanimationiteration = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onwebkitanimationstart(
+pub extern "js" fn Document::clear_onwebkitanimationiteration(
   self : Document,
-) -> EventHandler =
-  #| (self) => self.onwebkitanimationstart
+) -> Unit =
+  #| (self) => { self.onwebkitanimationiteration = null }
 
 ///|
 pub extern "js" fn Document::set_onwebkitanimationstart(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onwebkitanimationstart = value }
+  #| (self, handler) => { self.onwebkitanimationstart = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onwebkittransitionend(
+pub extern "js" fn Document::clear_onwebkitanimationstart(
   self : Document,
-) -> EventHandler =
-  #| (self) => self.onwebkittransitionend
+) -> Unit =
+  #| (self) => { self.onwebkitanimationstart = null }
 
 ///|
 pub extern "js" fn Document::set_onwebkittransitionend(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onwebkittransitionend = value }
+  #| (self, handler) => { self.onwebkittransitionend = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onwheel(self : Document) -> EventHandler =
-  #| (self) => self.onwheel
+pub extern "js" fn Document::clear_onwebkittransitionend(
+  self : Document,
+) -> Unit =
+  #| (self) => { self.onwebkittransitionend = null }
 
 ///|
 pub extern "js" fn Document::set_onwheel(
   self : Document,
-  value : EventHandler,
+  handler : (WheelEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onwheel = value }
+  #| (self, handler) => { self.onwheel = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ontouchstart(self : Document) -> EventHandler =
-  #| (self) => self.ontouchstart
+pub extern "js" fn Document::clear_onwheel(self : Document) -> Unit =
+  #| (self) => { self.onwheel = null }
 
 ///|
 pub extern "js" fn Document::set_ontouchstart(
   self : Document,
-  value : EventHandler,
+  handler : (TouchEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ontouchstart = value }
+  #| (self, handler) => { self.ontouchstart = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ontouchend(self : Document) -> EventHandler =
-  #| (self) => self.ontouchend
+pub extern "js" fn Document::clear_ontouchstart(self : Document) -> Unit =
+  #| (self) => { self.ontouchstart = null }
 
 ///|
 pub extern "js" fn Document::set_ontouchend(
   self : Document,
-  value : EventHandler,
+  handler : (TouchEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ontouchend = value }
+  #| (self, handler) => { self.ontouchend = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ontouchmove(self : Document) -> EventHandler =
-  #| (self) => self.ontouchmove
+pub extern "js" fn Document::clear_ontouchend(self : Document) -> Unit =
+  #| (self) => { self.ontouchend = null }
 
 ///|
 pub extern "js" fn Document::set_ontouchmove(
   self : Document,
-  value : EventHandler,
+  handler : (TouchEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ontouchmove = value }
+  #| (self, handler) => { self.ontouchmove = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ontouchcancel(self : Document) -> EventHandler =
-  #| (self) => self.ontouchcancel
+pub extern "js" fn Document::clear_ontouchmove(self : Document) -> Unit =
+  #| (self) => { self.ontouchmove = null }
 
 ///|
 pub extern "js" fn Document::set_ontouchcancel(
   self : Document,
-  value : EventHandler,
+  handler : (TouchEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ontouchcancel = value }
+  #| (self, handler) => { self.ontouchcancel = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ontransitionrun(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.ontransitionrun
+pub extern "js" fn Document::clear_ontouchcancel(self : Document) -> Unit =
+  #| (self) => { self.ontouchcancel = null }
 
 ///|
 pub extern "js" fn Document::set_ontransitionrun(
   self : Document,
-  value : EventHandler,
+  handler : (TransitionEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ontransitionrun = value }
+  #| (self, handler) => { self.ontransitionrun = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ontransitionstart(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.ontransitionstart
+pub extern "js" fn Document::clear_ontransitionrun(self : Document) -> Unit =
+  #| (self) => { self.ontransitionrun = null }
 
 ///|
 pub extern "js" fn Document::set_ontransitionstart(
   self : Document,
-  value : EventHandler,
+  handler : (TransitionEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ontransitionstart = value }
+  #| (self, handler) => { self.ontransitionstart = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ontransitionend(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.ontransitionend
+pub extern "js" fn Document::clear_ontransitionstart(self : Document) -> Unit =
+  #| (self) => { self.ontransitionstart = null }
 
 ///|
 pub extern "js" fn Document::set_ontransitionend(
   self : Document,
-  value : EventHandler,
+  handler : (TransitionEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ontransitionend = value }
+  #| (self, handler) => { self.ontransitionend = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ontransitioncancel(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.ontransitioncancel
+pub extern "js" fn Document::clear_ontransitionend(self : Document) -> Unit =
+  #| (self) => { self.ontransitionend = null }
 
 ///|
 pub extern "js" fn Document::set_ontransitioncancel(
   self : Document,
-  value : EventHandler,
+  handler : (TransitionEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ontransitioncancel = value }
+  #| (self, handler) => { self.ontransitioncancel = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onsnapchanged(self : Document) -> EventHandler =
-  #| (self) => self.onsnapchanged
+pub extern "js" fn Document::clear_ontransitioncancel(self : Document) -> Unit =
+  #| (self) => { self.ontransitioncancel = null }
 
 ///|
 pub extern "js" fn Document::set_onsnapchanged(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onsnapchanged = value }
+  #| (self, handler) => { self.onsnapchanged = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onsnapchanging(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onsnapchanging
+pub extern "js" fn Document::clear_onsnapchanged(self : Document) -> Unit =
+  #| (self) => { self.onsnapchanged = null }
 
 ///|
 pub extern "js" fn Document::set_onsnapchanging(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onsnapchanging = value }
+  #| (self, handler) => { self.onsnapchanging = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onanimationstart(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onanimationstart
+pub extern "js" fn Document::clear_onsnapchanging(self : Document) -> Unit =
+  #| (self) => { self.onsnapchanging = null }
 
 ///|
 pub extern "js" fn Document::set_onanimationstart(
   self : Document,
-  value : EventHandler,
+  handler : (AnimationEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onanimationstart = value }
+  #| (self, handler) => { self.onanimationstart = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onanimationiteration(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onanimationiteration
+pub extern "js" fn Document::clear_onanimationstart(self : Document) -> Unit =
+  #| (self) => { self.onanimationstart = null }
 
 ///|
 pub extern "js" fn Document::set_onanimationiteration(
   self : Document,
-  value : EventHandler,
+  handler : (AnimationEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onanimationiteration = value }
+  #| (self, handler) => { self.onanimationiteration = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onanimationend(
+pub extern "js" fn Document::clear_onanimationiteration(
   self : Document,
-) -> EventHandler =
-  #| (self) => self.onanimationend
+) -> Unit =
+  #| (self) => { self.onanimationiteration = null }
 
 ///|
 pub extern "js" fn Document::set_onanimationend(
   self : Document,
-  value : EventHandler,
+  handler : (AnimationEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onanimationend = value }
+  #| (self, handler) => { self.onanimationend = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onanimationcancel(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onanimationcancel
+pub extern "js" fn Document::clear_onanimationend(self : Document) -> Unit =
+  #| (self) => { self.onanimationend = null }
 
 ///|
 pub extern "js" fn Document::set_onanimationcancel(
   self : Document,
-  value : EventHandler,
+  handler : (AnimationEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onanimationcancel = value }
+  #| (self, handler) => { self.onanimationcancel = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onfencedtreeclick(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onfencedtreeclick
+pub extern "js" fn Document::clear_onanimationcancel(self : Document) -> Unit =
+  #| (self) => { self.onanimationcancel = null }
 
 ///|
 pub extern "js" fn Document::set_onfencedtreeclick(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onfencedtreeclick = value }
+  #| (self, handler) => { self.onfencedtreeclick = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onpointerover(self : Document) -> EventHandler =
-  #| (self) => self.onpointerover
+pub extern "js" fn Document::clear_onfencedtreeclick(self : Document) -> Unit =
+  #| (self) => { self.onfencedtreeclick = null }
 
 ///|
 pub extern "js" fn Document::set_onpointerover(
   self : Document,
-  value : EventHandler,
+  handler : (PointerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onpointerover = value }
+  #| (self, handler) => { self.onpointerover = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onpointerenter(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onpointerenter
+pub extern "js" fn Document::clear_onpointerover(self : Document) -> Unit =
+  #| (self) => { self.onpointerover = null }
 
 ///|
 pub extern "js" fn Document::set_onpointerenter(
   self : Document,
-  value : EventHandler,
+  handler : (PointerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onpointerenter = value }
+  #| (self, handler) => { self.onpointerenter = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onpointerdown(self : Document) -> EventHandler =
-  #| (self) => self.onpointerdown
+pub extern "js" fn Document::clear_onpointerenter(self : Document) -> Unit =
+  #| (self) => { self.onpointerenter = null }
 
 ///|
 pub extern "js" fn Document::set_onpointerdown(
   self : Document,
-  value : EventHandler,
+  handler : (PointerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onpointerdown = value }
+  #| (self, handler) => { self.onpointerdown = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onpointermove(self : Document) -> EventHandler =
-  #| (self) => self.onpointermove
+pub extern "js" fn Document::clear_onpointerdown(self : Document) -> Unit =
+  #| (self) => { self.onpointerdown = null }
 
 ///|
 pub extern "js" fn Document::set_onpointermove(
   self : Document,
-  value : EventHandler,
+  handler : (PointerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onpointermove = value }
+  #| (self, handler) => { self.onpointermove = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onpointerrawupdate(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onpointerrawupdate
+pub extern "js" fn Document::clear_onpointermove(self : Document) -> Unit =
+  #| (self) => { self.onpointermove = null }
 
 ///|
 pub extern "js" fn Document::set_onpointerrawupdate(
   self : Document,
-  value : EventHandler,
+  handler : (PointerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onpointerrawupdate = value }
+  #| (self, handler) => { self.onpointerrawupdate = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onpointerup(self : Document) -> EventHandler =
-  #| (self) => self.onpointerup
+pub extern "js" fn Document::clear_onpointerrawupdate(self : Document) -> Unit =
+  #| (self) => { self.onpointerrawupdate = null }
 
 ///|
 pub extern "js" fn Document::set_onpointerup(
   self : Document,
-  value : EventHandler,
+  handler : (PointerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onpointerup = value }
+  #| (self, handler) => { self.onpointerup = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onpointercancel(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onpointercancel
+pub extern "js" fn Document::clear_onpointerup(self : Document) -> Unit =
+  #| (self) => { self.onpointerup = null }
 
 ///|
 pub extern "js" fn Document::set_onpointercancel(
   self : Document,
-  value : EventHandler,
+  handler : (PointerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onpointercancel = value }
+  #| (self, handler) => { self.onpointercancel = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onpointerout(self : Document) -> EventHandler =
-  #| (self) => self.onpointerout
+pub extern "js" fn Document::clear_onpointercancel(self : Document) -> Unit =
+  #| (self) => { self.onpointercancel = null }
 
 ///|
 pub extern "js" fn Document::set_onpointerout(
   self : Document,
-  value : EventHandler,
+  handler : (PointerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onpointerout = value }
+  #| (self, handler) => { self.onpointerout = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onpointerleave(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onpointerleave
+pub extern "js" fn Document::clear_onpointerout(self : Document) -> Unit =
+  #| (self) => { self.onpointerout = null }
 
 ///|
 pub extern "js" fn Document::set_onpointerleave(
   self : Document,
-  value : EventHandler,
+  handler : (PointerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onpointerleave = value }
+  #| (self, handler) => { self.onpointerleave = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_ongotpointercapture(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.ongotpointercapture
+pub extern "js" fn Document::clear_onpointerleave(self : Document) -> Unit =
+  #| (self) => { self.onpointerleave = null }
 
 ///|
 pub extern "js" fn Document::set_ongotpointercapture(
   self : Document,
-  value : EventHandler,
+  handler : (PointerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ongotpointercapture = value }
+  #| (self, handler) => { self.ongotpointercapture = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onlostpointercapture(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onlostpointercapture
+pub extern "js" fn Document::clear_ongotpointercapture(self : Document) -> Unit =
+  #| (self) => { self.ongotpointercapture = null }
 
 ///|
 pub extern "js" fn Document::set_onlostpointercapture(
   self : Document,
-  value : EventHandler,
+  handler : (PointerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onlostpointercapture = value }
+  #| (self, handler) => { self.onlostpointercapture = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onbeforexrselect(
+pub extern "js" fn Document::clear_onlostpointercapture(
   self : Document,
-) -> EventHandler =
-  #| (self) => self.onbeforexrselect
+) -> Unit =
+  #| (self) => { self.onlostpointercapture = null }
 
 ///|
 pub extern "js" fn Document::set_onbeforexrselect(
   self : Document,
-  value : EventHandler,
+  handler : (XRSessionEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onbeforexrselect = value }
+  #| (self, handler) => { self.onbeforexrselect = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onselectstart(self : Document) -> EventHandler =
-  #| (self) => self.onselectstart
+pub extern "js" fn Document::clear_onbeforexrselect(self : Document) -> Unit =
+  #| (self) => { self.onbeforexrselect = null }
 
 ///|
 pub extern "js" fn Document::set_onselectstart(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onselectstart = value }
+  #| (self, handler) => { self.onselectstart = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_onselectionchange(
-  self : Document,
-) -> EventHandler =
-  #| (self) => self.onselectionchange
+pub extern "js" fn Document::clear_onselectstart(self : Document) -> Unit =
+  #| (self) => { self.onselectstart = null }
 
 ///|
 pub extern "js" fn Document::set_onselectionchange(
   self : Document,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onselectionchange = value }
+  #| (self, handler) => { self.onselectionchange = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_onselectionchange(self : Document) -> Unit =
+  #| (self) => { self.onselectionchange = null }
 
 ///|
 pub extern "js" fn Document::get_element_by_id(
@@ -7380,8 +7888,8 @@ pub extern "js" fn Document::get_adopted_style_sheets(
 pub extern "js" fn Document::set_adopted_style_sheets(
   self : Document,
   value : Array[CSSStyleSheet],
-) -> Unit =
-  #| (self, value) => { self.adoptedStyleSheets = value }
+) -> Result[Unit, DocumentSetAdoptedStyleSheetsError] =
+  #| (self, value) => (() => { try { self.adoptedStyleSheets = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_set_adopted_style_sheets_error(e) }; } })()
 
 ///|
 pub extern "js" fn Document::get_fullscreen_element(
@@ -7431,44 +7939,44 @@ pub extern "js" fn Document::get_child_element_count(self : Document) -> Int =
 pub extern "js" fn Document::prepend(
   self : Document,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.prepend(nodes)
+) -> Result[Unit, DocumentPrependError] =
+  #| (self, nodes) => (() => { try { self.prepend(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_prepend_error(e) }; } })()
 
 ///|
 pub extern "js" fn Document::append(
   self : Document,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.append(nodes)
+) -> Result[Unit, DocumentAppendError] =
+  #| (self, nodes) => (() => { try { self.append(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_append_error(e) }; } })()
 
 ///|
 pub extern "js" fn Document::replace_children(
   self : Document,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.replaceChildren(nodes)
+) -> Result[Unit, DocumentReplaceChildrenError] =
+  #| (self, nodes) => (() => { try { self.replaceChildren(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_replace_children_error(e) }; } })()
 
 ///|
 pub extern "js" fn Document::move_before(
   self : Document,
   node : Node,
   child : Node?,
-) -> Unit =
-  #| (self, node, child) => self.moveBefore(node, (child.$tag === 1 ? child._0 : null))
+) -> Result[Unit, DocumentMoveBeforeError] =
+  #| (self, node, child) => (() => { try { self.moveBefore(node, (child.$tag === 1 ? child._0 : null)); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_move_before_error(e) }; } })()
 
 ///|
 pub extern "js" fn Document::query_selector(
   self : Document,
   selectors : String,
-) -> Element? =
-  #| (self, selectors) => (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Result[Element?, DocumentQuerySelectorError] =
+  #| (self, selectors) => (() => { try { return { $tag: 0, _0: (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_document_query_selector_error(e) }; } })()
 
 ///|
 pub extern "js" fn Document::query_selector_all(
   self : Document,
   selectors : String,
-) -> NodeList =
-  #| (self, selectors) => self.querySelectorAll(selectors)
+) -> Result[NodeList, DocumentQuerySelectorAllError] =
+  #| (self, selectors) => (() => { try { return { $tag: 0, _0: self.querySelectorAll(selectors) }; } catch(e) { return { $tag: 1, _0: classify_document_query_selector_all_error(e) }; } })()
 
 ///|
 pub extern "js" fn Document::create_expression(
@@ -7743,6 +8251,7 @@ pub extern "js" fn DOMImplementation::create_html_document_with_title(
   #| (self, title) => self.createHTMLDocument(title)
 
 ///|
+/// @alert deprecated "hasFeature is deprecated"
 pub extern "js" fn DOMImplementation::has_feature(
   self : DOMImplementation,
 ) -> Bool =
@@ -7789,6 +8298,57 @@ pub extern "js" fn DocumentType::to_event_target(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum DocumentTypeBeforeError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_type_before_error(
+  e : JsError,
+) -> DocumentTypeBeforeError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentTypeAfterError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_type_after_error(
+  e : JsError,
+) -> DocumentTypeAfterError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentTypeReplaceWithError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_type_replace_with_error(
+  e : JsError,
+) -> DocumentTypeReplaceWithError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn DocumentType::get_name(self : DocumentType) -> String =
   #| (self) => self.name
 
@@ -7804,22 +8364,22 @@ pub extern "js" fn DocumentType::get_system_id(self : DocumentType) -> String =
 pub extern "js" fn DocumentType::before(
   self : DocumentType,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.before(nodes)
+) -> Result[Unit, DocumentTypeBeforeError] =
+  #| (self, nodes) => (() => { try { self.before(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_type_before_error(e) }; } })()
 
 ///|
 pub extern "js" fn DocumentType::after(
   self : DocumentType,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.after(nodes)
+) -> Result[Unit, DocumentTypeAfterError] =
+  #| (self, nodes) => (() => { try { self.after(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_type_after_error(e) }; } })()
 
 ///|
 pub extern "js" fn DocumentType::replace_with(
   self : DocumentType,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.replaceWith(nodes)
+) -> Result[Unit, DocumentTypeReplaceWithError] =
+  #| (self, nodes) => (() => { try { self.replaceWith(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_type_replace_with_error(e) }; } })()
 
 ///|
 pub extern "js" fn DocumentType::remove(self : DocumentType) -> Unit =
@@ -7886,6 +8446,112 @@ pub extern "js" fn DocumentFragment::as_shadow_root(
   #| (self) => (self instanceof ShadowRoot) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Error type for throwing methods
+pub(all) enum DocumentFragmentPrependError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_fragment_prepend_error(
+  e : JsError,
+) -> DocumentFragmentPrependError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentFragmentAppendError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_fragment_append_error(
+  e : JsError,
+) -> DocumentFragmentAppendError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentFragmentReplaceChildrenError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_fragment_replace_children_error(
+  e : JsError,
+) -> DocumentFragmentReplaceChildrenError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentFragmentMoveBeforeError {
+  TypeError(JsError)
+  NotFoundError(JsError)
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_fragment_move_before_error(
+  e : JsError,
+) -> DocumentFragmentMoveBeforeError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
+  #|   if (n === 'HierarchyRequestError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentFragmentQuerySelectorError {
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_fragment_query_selector_error(
+  e : JsError,
+) -> DocumentFragmentQuerySelectorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentFragmentQuerySelectorAllError {
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_document_fragment_query_selector_all_error(
+  e : JsError,
+) -> DocumentFragmentQuerySelectorAllError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn DocumentFragment::new() -> DocumentFragment =
   #| () => new DocumentFragment()
 
@@ -7924,44 +8590,44 @@ pub extern "js" fn DocumentFragment::get_child_element_count(
 pub extern "js" fn DocumentFragment::prepend(
   self : DocumentFragment,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.prepend(nodes)
+) -> Result[Unit, DocumentFragmentPrependError] =
+  #| (self, nodes) => (() => { try { self.prepend(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_fragment_prepend_error(e) }; } })()
 
 ///|
 pub extern "js" fn DocumentFragment::append(
   self : DocumentFragment,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.append(nodes)
+) -> Result[Unit, DocumentFragmentAppendError] =
+  #| (self, nodes) => (() => { try { self.append(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_fragment_append_error(e) }; } })()
 
 ///|
 pub extern "js" fn DocumentFragment::replace_children(
   self : DocumentFragment,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.replaceChildren(nodes)
+) -> Result[Unit, DocumentFragmentReplaceChildrenError] =
+  #| (self, nodes) => (() => { try { self.replaceChildren(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_fragment_replace_children_error(e) }; } })()
 
 ///|
 pub extern "js" fn DocumentFragment::move_before(
   self : DocumentFragment,
   node : Node,
   child : Node?,
-) -> Unit =
-  #| (self, node, child) => self.moveBefore(node, (child.$tag === 1 ? child._0 : null))
+) -> Result[Unit, DocumentFragmentMoveBeforeError] =
+  #| (self, node, child) => (() => { try { self.moveBefore(node, (child.$tag === 1 ? child._0 : null)); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_document_fragment_move_before_error(e) }; } })()
 
 ///|
 pub extern "js" fn DocumentFragment::query_selector(
   self : DocumentFragment,
   selectors : String,
-) -> Element? =
-  #| (self, selectors) => (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Result[Element?, DocumentFragmentQuerySelectorError] =
+  #| (self, selectors) => (() => { try { return { $tag: 0, _0: (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_document_fragment_query_selector_error(e) }; } })()
 
 ///|
 pub extern "js" fn DocumentFragment::query_selector_all(
   self : DocumentFragment,
   selectors : String,
-) -> NodeList =
-  #| (self, selectors) => self.querySelectorAll(selectors)
+) -> Result[NodeList, DocumentFragmentQuerySelectorAllError] =
+  #| (self, selectors) => (() => { try { return { $tag: 0, _0: self.querySelectorAll(selectors) }; } catch(e) { return { $tag: 1, _0: classify_document_fragment_query_selector_all_error(e) }; } })()
 
 ///|
 /// ShadowRoot interface
@@ -8014,6 +8680,59 @@ pub extern "js" fn ShadowRoot::as_svg_use_element_shadow_root(
   #| (self) => (self instanceof SVGUseElementShadowRoot) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Error type for throwing methods
+pub(all) enum ShadowRootSetHTMLUnsafeError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_shadow_root_set_html_unsafe_error(
+  e : JsError,
+) -> ShadowRootSetHTMLUnsafeError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ShadowRootSetInnerHTMLError {
+  TypeError(JsError)
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_shadow_root_set_inner_html_error(
+  e : JsError,
+) -> ShadowRootSetInnerHTMLError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ShadowRootSetAdoptedStyleSheetsError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_shadow_root_set_adopted_style_sheets_error(
+  e : JsError,
+) -> ShadowRootSetAdoptedStyleSheetsError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn ShadowRoot::get_mode(self : ShadowRoot) -> ShadowRootMode =
   #| (self) => ['open', 'closed'].indexOf(self.mode)
 
@@ -8040,24 +8759,22 @@ pub extern "js" fn ShadowRoot::get_host(self : ShadowRoot) -> Element =
   #| (self) => self.host
 
 ///|
-pub extern "js" fn ShadowRoot::get_onslotchange(
-  self : ShadowRoot,
-) -> EventHandler =
-  #| (self) => self.onslotchange
-
-///|
 pub extern "js" fn ShadowRoot::set_onslotchange(
   self : ShadowRoot,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onslotchange = value }
+  #| (self, handler) => { self.onslotchange = (e) => handler(e) }
+
+///|
+pub extern "js" fn ShadowRoot::clear_onslotchange(self : ShadowRoot) -> Unit =
+  #| (self) => { self.onslotchange = null }
 
 ///|
 pub extern "js" fn ShadowRoot::set_html_unsafe(
   self : ShadowRoot,
   html : TrustedHTMLOrString,
-) -> Unit =
-  #| (self, html) => self.setHTMLUnsafe(html)
+) -> Result[Unit, ShadowRootSetHTMLUnsafeError] =
+  #| (self, html) => (() => { try { self.setHTMLUnsafe(html); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_shadow_root_set_html_unsafe_error(e) }; } })()
 
 ///|
 pub extern "js" fn ShadowRoot::get_html(self : ShadowRoot) -> String =
@@ -8088,8 +8805,8 @@ pub extern "js" fn ShadowRoot::get_inner_html(
 pub extern "js" fn ShadowRoot::set_inner_html(
   self : ShadowRoot,
   value : TrustedHTMLOrString,
-) -> Unit =
-  #| (self, value) => { self.innerHTML = value }
+) -> Result[Unit, ShadowRootSetInnerHTMLError] =
+  #| (self, value) => (() => { try { self.innerHTML = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_shadow_root_set_inner_html_error(e) }; } })()
 
 ///|
 pub extern "js" fn ShadowRoot::get_active_element(
@@ -8119,8 +8836,8 @@ pub extern "js" fn ShadowRoot::get_adopted_style_sheets(
 pub extern "js" fn ShadowRoot::set_adopted_style_sheets(
   self : ShadowRoot,
   value : Array[CSSStyleSheet],
-) -> Unit =
-  #| (self, value) => { self.adoptedStyleSheets = value }
+) -> Result[Unit, ShadowRootSetAdoptedStyleSheetsError] =
+  #| (self, value) => (() => { try { self.adoptedStyleSheets = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_shadow_root_set_adopted_style_sheets_error(e) }; } })()
 
 ///|
 pub extern "js" fn ShadowRoot::get_fullscreen_element(
@@ -9049,6 +9766,440 @@ pub extern "js" fn Element::as_html_fenced_frame_element(
   #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn Element::as_html_permission_element(
+  self : Element,
+) -> HTMLPermissionElement? =
+  #| (self) => (self instanceof HTMLPermissionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_html_geolocation_element(
+  self : Element,
+) -> HTMLGeolocationElement? =
+  #| (self) => (self instanceof HTMLGeolocationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementSetAttributeError {
+  TypeError(JsError)
+  InvalidCharacterError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_set_attribute_error(
+  e : JsError,
+) -> ElementSetAttributeError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidCharacterError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementToggleAttributeError {
+  InvalidCharacterError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_toggle_attribute_error(
+  e : JsError,
+) -> ElementToggleAttributeError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidCharacterError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementRemoveAttributeNodeError {
+  NotFoundError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_remove_attribute_node_error(
+  e : JsError,
+) -> ElementRemoveAttributeNodeError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementAttachShadowError {
+  NotSupportedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_attach_shadow_error(
+  e : JsError,
+) -> ElementAttachShadowError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementClosestError {
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_closest_error(
+  e : JsError,
+) -> ElementClosestError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementMatchesError {
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_matches_error(
+  e : JsError,
+) -> ElementMatchesError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementInsertAdjacentElementError {
+  TypeError(JsError)
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_insert_adjacent_element_error(
+  e : JsError,
+) -> ElementInsertAdjacentElementError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementInsertAdjacentTextError {
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_insert_adjacent_text_error(
+  e : JsError,
+) -> ElementInsertAdjacentTextError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementSetHTMLUnsafeError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_set_html_unsafe_error(
+  e : JsError,
+) -> ElementSetHTMLUnsafeError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementSetInnerHTMLError {
+  TypeError(JsError)
+  SyntaxError(JsError)
+  NoModificationAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_set_inner_html_error(
+  e : JsError,
+) -> ElementSetInnerHTMLError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
+  #|   if (n === 'NoModificationAllowedError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementSetOuterHTMLError {
+  TypeError(JsError)
+  SyntaxError(JsError)
+  NoModificationAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_set_outer_html_error(
+  e : JsError,
+) -> ElementSetOuterHTMLError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
+  #|   if (n === 'NoModificationAllowedError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementInsertAdjacentHTMLError {
+  TypeError(JsError)
+  SyntaxError(JsError)
+  NoModificationAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_insert_adjacent_html_error(
+  e : JsError,
+) -> ElementInsertAdjacentHTMLError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
+  #|   if (n === 'NoModificationAllowedError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementRequestFullscreenError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_request_fullscreen_error(
+  e : JsError,
+) -> ElementRequestFullscreenError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementSetPointerCaptureError {
+  NotFoundError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_set_pointer_capture_error(
+  e : JsError,
+) -> ElementSetPointerCaptureError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementReleasePointerCaptureError {
+  NotFoundError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_release_pointer_capture_error(
+  e : JsError,
+) -> ElementReleasePointerCaptureError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementPrependError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_prepend_error(
+  e : JsError,
+) -> ElementPrependError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementAppendError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_append_error(e : JsError) -> ElementAppendError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementReplaceChildrenError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_replace_children_error(
+  e : JsError,
+) -> ElementReplaceChildrenError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementMoveBeforeError {
+  TypeError(JsError)
+  NotFoundError(JsError)
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_move_before_error(
+  e : JsError,
+) -> ElementMoveBeforeError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
+  #|   if (n === 'HierarchyRequestError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementQuerySelectorError {
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_query_selector_error(
+  e : JsError,
+) -> ElementQuerySelectorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementQuerySelectorAllError {
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_query_selector_all_error(
+  e : JsError,
+) -> ElementQuerySelectorAllError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementBeforeError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_before_error(e : JsError) -> ElementBeforeError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementAfterError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_after_error(e : JsError) -> ElementAfterError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementReplaceWithError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_element_replace_with_error(
+  e : JsError,
+) -> ElementReplaceWithError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn Element::get_namespace_uri(self : Element) -> String? =
   #| (self) => (self.namespaceURI) ?? undefined
 
@@ -9129,8 +10280,8 @@ pub extern "js" fn Element::set_attribute(
   self : Element,
   qualified_name : String,
   value : TrustedTypeOrString,
-) -> Unit =
-  #| (self, qualified_name, value) => self.setAttribute(qualified_name, value)
+) -> Result[Unit, ElementSetAttributeError] =
+  #| (self, qualified_name, value) => (() => { try { self.setAttribute(qualified_name, value); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_set_attribute_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::set_attribute_ns(
@@ -9160,16 +10311,16 @@ pub extern "js" fn Element::remove_attribute_ns(
 pub extern "js" fn Element::toggle_attribute(
   self : Element,
   qualified_name : String,
-) -> Bool =
-  #| (self, qualified_name) => self.toggleAttribute(qualified_name)
+) -> Result[Bool, ElementToggleAttributeError] =
+  #| (self, qualified_name) => (() => { try { return { $tag: 0, _0: self.toggleAttribute(qualified_name) }; } catch(e) { return { $tag: 1, _0: classify_element_toggle_attribute_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::toggle_attribute_with_force(
   self : Element,
   qualified_name : String,
   force : Bool,
-) -> Bool =
-  #| (self, qualified_name, force) => self.toggleAttribute(qualified_name, force)
+) -> Result[Bool, ElementToggleAttributeError] =
+  #| (self, qualified_name, force) => (() => { try { return { $tag: 0, _0: self.toggleAttribute(qualified_name, force) }; } catch(e) { return { $tag: 1, _0: classify_element_toggle_attribute_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::has_attribute(
@@ -9219,21 +10370,21 @@ pub extern "js" fn Element::set_attribute_node_ns(
 pub extern "js" fn Element::remove_attribute_node(
   self : Element,
   attr : Attr,
-) -> Attr =
-  #| (self, attr) => self.removeAttributeNode(attr)
+) -> Result[Attr, ElementRemoveAttributeNodeError] =
+  #| (self, attr) => (() => { try { return { $tag: 0, _0: self.removeAttributeNode(attr) }; } catch(e) { return { $tag: 1, _0: classify_element_remove_attribute_node_error(e) }; } })()
 
 ///|
 extern "js" fn Element::attach_shadow_ffi(
   self : Element,
   init_ : JsValue,
-) -> ShadowRoot =
-  #| (self, init_) => self.attachShadow(init_)
+) -> Result[ShadowRoot, ElementAttachShadowError] =
+  #| (self, init_) => (() => { try { return { $tag: 0, _0: self.attachShadow(init_) }; } catch(e) { return { $tag: 1, _0: classify_element_attach_shadow_error(e) }; } })()
 
 ///|
 pub fn Element::attach_shadow(
   self : Element,
   init_ : ShadowRootInit,
-) -> ShadowRoot {
+) -> Result[ShadowRoot, ElementAttachShadowError] {
   Element::attach_shadow_ffi(self, init_.to_js())
 }
 
@@ -9251,12 +10402,15 @@ pub extern "js" fn Element::get_custom_element_registry(
 pub extern "js" fn Element::closest(
   self : Element,
   selectors : String,
-) -> Element? =
-  #| (self, selectors) => (() => { const v = self.closest(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Result[Element?, ElementClosestError] =
+  #| (self, selectors) => (() => { try { return { $tag: 0, _0: (() => { const v = self.closest(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_element_closest_error(e) }; } })()
 
 ///|
-pub extern "js" fn Element::matches(self : Element, selectors : String) -> Bool =
-  #| (self, selectors) => self.matches(selectors)
+pub extern "js" fn Element::matches(
+  self : Element,
+  selectors : String,
+) -> Result[Bool, ElementMatchesError] =
+  #| (self, selectors) => (() => { try { return { $tag: 0, _0: self.matches(selectors) }; } catch(e) { return { $tag: 1, _0: classify_element_matches_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::webkit_matches_selector(
@@ -9292,16 +10446,16 @@ pub extern "js" fn Element::insert_adjacent_element(
   self : Element,
   where_ : String,
   element : Element,
-) -> Element? =
-  #| (self, where_, element) => (() => { const v = self.insertAdjacentElement(where_, element); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Result[Element?, ElementInsertAdjacentElementError] =
+  #| (self, where_, element) => (() => { try { return { $tag: 0, _0: (() => { const v = self.insertAdjacentElement(where_, element); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_element_insert_adjacent_element_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::insert_adjacent_text(
   self : Element,
   where_ : String,
   data : String,
-) -> Unit =
-  #| (self, where_, data) => self.insertAdjacentText(where_, data)
+) -> Result[Unit, ElementInsertAdjacentTextError] =
+  #| (self, where_, data) => (() => { try { self.insertAdjacentText(where_, data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_insert_adjacent_text_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::get_client_rects(self : Element) -> DOMRectList =
@@ -9476,8 +10630,8 @@ pub extern "js" fn Element::get_current_css_zoom(self : Element) -> Double =
 pub extern "js" fn Element::set_html_unsafe(
   self : Element,
   html : TrustedHTMLOrString,
-) -> Unit =
-  #| (self, html) => self.setHTMLUnsafe(html)
+) -> Result[Unit, ElementSetHTMLUnsafeError] =
+  #| (self, html) => (() => { try { self.setHTMLUnsafe(html); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_set_html_unsafe_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::get_html(self : Element) -> String =
@@ -9508,8 +10662,8 @@ pub extern "js" fn Element::get_inner_html(
 pub extern "js" fn Element::set_inner_html(
   self : Element,
   value : TrustedHTMLOrString,
-) -> Unit =
-  #| (self, value) => { self.innerHTML = value }
+) -> Result[Unit, ElementSetInnerHTMLError] =
+  #| (self, value) => (() => { try { self.innerHTML = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_set_inner_html_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::get_outer_html(
@@ -9521,16 +10675,16 @@ pub extern "js" fn Element::get_outer_html(
 pub extern "js" fn Element::set_outer_html(
   self : Element,
   value : TrustedHTMLOrString,
-) -> Unit =
-  #| (self, value) => { self.outerHTML = value }
+) -> Result[Unit, ElementSetOuterHTMLError] =
+  #| (self, value) => (() => { try { self.outerHTML = value; return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_set_outer_html_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::insert_adjacent_html(
   self : Element,
   position : String,
   string : TrustedHTMLOrString,
-) -> Unit =
-  #| (self, position, string) => self.insertAdjacentHTML(position, string)
+) -> Result[Unit, ElementInsertAdjacentHTMLError] =
+  #| (self, position, string) => (() => { try { self.insertAdjacentHTML(position, string); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_insert_adjacent_html_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::get_part(self : Element) -> DOMTokenList =
@@ -9597,49 +10751,47 @@ pub fn Element::spatial_navigation_search_with_options(
 }
 
 ///|
-pub extern "js" fn Element::request_fullscreen(self : Element) -> Promise[Unit] =
-  #| (self) => self.requestFullscreen()
+pub extern "js" fn Element::request_fullscreen(
+  self : Element,
+) -> Promise[Result[Unit, ElementRequestFullscreenError]] =
+  #| (self) => self.requestFullscreen().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_element_request_fullscreen_error(e) }))
 
 ///|
 extern "js" fn Element::request_fullscreen_with_options_ffi(
   self : Element,
   options : JsValue,
-) -> Promise[Unit] =
-  #| (self, options) => self.requestFullscreen(options)
+) -> Promise[Result[Unit, ElementRequestFullscreenError]] =
+  #| (self, options) => self.requestFullscreen(options).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_element_request_fullscreen_error(e) }))
 
 ///|
 pub fn Element::request_fullscreen_with_options(
   self : Element,
   options : FullscreenOptions,
-) -> Promise[Unit] {
+) -> Promise[Result[Unit, ElementRequestFullscreenError]] {
   Element::request_fullscreen_with_options_ffi(self, options.to_js())
 }
 
 ///|
-pub extern "js" fn Element::get_onfullscreenchange(
-  self : Element,
-) -> EventHandler =
-  #| (self) => self.onfullscreenchange
-
-///|
 pub extern "js" fn Element::set_onfullscreenchange(
   self : Element,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onfullscreenchange = value }
+  #| (self, handler) => { self.onfullscreenchange = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Element::get_onfullscreenerror(
-  self : Element,
-) -> EventHandler =
-  #| (self) => self.onfullscreenerror
+pub extern "js" fn Element::clear_onfullscreenchange(self : Element) -> Unit =
+  #| (self) => { self.onfullscreenchange = null }
 
 ///|
 pub extern "js" fn Element::set_onfullscreenerror(
   self : Element,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onfullscreenerror = value }
+  #| (self, handler) => { self.onfullscreenerror = (e) => handler(e) }
+
+///|
+pub extern "js" fn Element::clear_onfullscreenerror(self : Element) -> Unit =
+  #| (self) => { self.onfullscreenerror = null }
 
 ///|
 pub extern "js" fn Element::get_element_timing(self : Element) -> String =
@@ -9675,15 +10827,15 @@ pub extern "js" fn Element::get_active_view_transition(
 pub extern "js" fn Element::set_pointer_capture(
   self : Element,
   pointer_id : Int,
-) -> Unit =
-  #| (self, pointer_id) => self.setPointerCapture(pointer_id)
+) -> Result[Unit, ElementSetPointerCaptureError] =
+  #| (self, pointer_id) => (() => { try { self.setPointerCapture(pointer_id); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_set_pointer_capture_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::release_pointer_capture(
   self : Element,
   pointer_id : Int,
-) -> Unit =
-  #| (self, pointer_id) => self.releasePointerCapture(pointer_id)
+) -> Result[Unit, ElementReleasePointerCaptureError] =
+  #| (self, pointer_id) => (() => { try { self.releasePointerCapture(pointer_id); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_release_pointer_capture_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::has_pointer_capture(
@@ -10463,44 +11615,44 @@ pub extern "js" fn Element::get_child_element_count(self : Element) -> Int =
 pub extern "js" fn Element::prepend(
   self : Element,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.prepend(nodes)
+) -> Result[Unit, ElementPrependError] =
+  #| (self, nodes) => (() => { try { self.prepend(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_prepend_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::append(
   self : Element,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.append(nodes)
+) -> Result[Unit, ElementAppendError] =
+  #| (self, nodes) => (() => { try { self.append(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_append_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::replace_children(
   self : Element,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.replaceChildren(nodes)
+) -> Result[Unit, ElementReplaceChildrenError] =
+  #| (self, nodes) => (() => { try { self.replaceChildren(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_replace_children_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::move_before(
   self : Element,
   node : Node,
   child : Node?,
-) -> Unit =
-  #| (self, node, child) => self.moveBefore(node, (child.$tag === 1 ? child._0 : null))
+) -> Result[Unit, ElementMoveBeforeError] =
+  #| (self, node, child) => (() => { try { self.moveBefore(node, (child.$tag === 1 ? child._0 : null)); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_move_before_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::query_selector(
   self : Element,
   selectors : String,
-) -> Element? =
-  #| (self, selectors) => (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Result[Element?, ElementQuerySelectorError] =
+  #| (self, selectors) => (() => { try { return { $tag: 0, _0: (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_element_query_selector_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::query_selector_all(
   self : Element,
   selectors : String,
-) -> NodeList =
-  #| (self, selectors) => self.querySelectorAll(selectors)
+) -> Result[NodeList, ElementQuerySelectorAllError] =
+  #| (self, selectors) => (() => { try { return { $tag: 0, _0: self.querySelectorAll(selectors) }; } catch(e) { return { $tag: 1, _0: classify_element_query_selector_all_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::get_previous_element_sibling(
@@ -10518,19 +11670,22 @@ pub extern "js" fn Element::get_next_element_sibling(
 pub extern "js" fn Element::before(
   self : Element,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.before(nodes)
+) -> Result[Unit, ElementBeforeError] =
+  #| (self, nodes) => (() => { try { self.before(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_before_error(e) }; } })()
 
 ///|
-pub extern "js" fn Element::after(self : Element, nodes : NodeOrString) -> Unit =
-  #| (self, nodes) => self.after(nodes)
+pub extern "js" fn Element::after(
+  self : Element,
+  nodes : NodeOrString,
+) -> Result[Unit, ElementAfterError] =
+  #| (self, nodes) => (() => { try { self.after(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_after_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::replace_with(
   self : Element,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.replaceWith(nodes)
+) -> Result[Unit, ElementReplaceWithError] =
+  #| (self, nodes) => (() => { try { self.replaceWith(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_element_replace_with_error(e) }; } })()
 
 ///|
 pub extern "js" fn Element::remove(self : Element) -> Unit =
@@ -10725,6 +11880,74 @@ pub extern "js" fn JsValue::to_named_node_map(self : JsValue) -> NamedNodeMap =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum NamedNodeMapSetNamedItemError {
+  InUseAttributeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_named_node_map_set_named_item_error(
+  e : JsError,
+) -> NamedNodeMapSetNamedItemError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InUseAttributeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum NamedNodeMapSetNamedItemNSError {
+  InUseAttributeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_named_node_map_set_named_item_ns_error(
+  e : JsError,
+) -> NamedNodeMapSetNamedItemNSError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InUseAttributeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum NamedNodeMapRemoveNamedItemError {
+  NotFoundError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_named_node_map_remove_named_item_error(
+  e : JsError,
+) -> NamedNodeMapRemoveNamedItemError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum NamedNodeMapRemoveNamedItemNSError {
+  NotFoundError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_named_node_map_remove_named_item_ns_error(
+  e : JsError,
+) -> NamedNodeMapRemoveNamedItemNSError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn NamedNodeMap::get_length(self : NamedNodeMap) -> Int =
   #| (self) => self.length
 
@@ -10766,30 +11989,30 @@ pub extern "js" fn NamedNodeMap::get_named_item_ns(
 pub extern "js" fn NamedNodeMap::set_named_item(
   self : NamedNodeMap,
   attr : Attr,
-) -> Attr? =
-  #| (self, attr) => (() => { const v = self.setNamedItem(attr); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Result[Attr?, NamedNodeMapSetNamedItemError] =
+  #| (self, attr) => (() => { try { return { $tag: 0, _0: (() => { const v = self.setNamedItem(attr); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_named_node_map_set_named_item_error(e) }; } })()
 
 ///|
 pub extern "js" fn NamedNodeMap::set_named_item_ns(
   self : NamedNodeMap,
   attr : Attr,
-) -> Attr? =
-  #| (self, attr) => (() => { const v = self.setNamedItemNS(attr); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Result[Attr?, NamedNodeMapSetNamedItemNSError] =
+  #| (self, attr) => (() => { try { return { $tag: 0, _0: (() => { const v = self.setNamedItemNS(attr); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_named_node_map_set_named_item_ns_error(e) }; } })()
 
 ///|
 pub extern "js" fn NamedNodeMap::remove_named_item(
   self : NamedNodeMap,
   qualified_name : String,
-) -> Attr =
-  #| (self, qualified_name) => self.removeNamedItem(qualified_name)
+) -> Result[Attr, NamedNodeMapRemoveNamedItemError] =
+  #| (self, qualified_name) => (() => { try { return { $tag: 0, _0: self.removeNamedItem(qualified_name) }; } catch(e) { return { $tag: 1, _0: classify_named_node_map_remove_named_item_error(e) }; } })()
 
 ///|
 pub extern "js" fn NamedNodeMap::remove_named_item_ns(
   self : NamedNodeMap,
   namespace_ : String?,
   local_name : String,
-) -> Attr =
-  #| (self, namespace_, local_name) => self.removeNamedItemNS(namespace_, local_name)
+) -> Result[Attr, NamedNodeMapRemoveNamedItemNSError] =
+  #| (self, namespace_, local_name) => (() => { try { return { $tag: 0, _0: self.removeNamedItemNS(namespace_, local_name) }; } catch(e) { return { $tag: 1, _0: classify_named_node_map_remove_named_item_ns_error(e) }; } })()
 
 ///|
 /// Attr interface
@@ -10920,6 +12143,125 @@ pub extern "js" fn CharacterData::as_comment(self : CharacterData) -> Comment? =
   #| (self) => (self instanceof Comment) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Error type for throwing methods
+pub(all) enum CharacterDataSubstringDataError {
+  IndexSizeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_character_data_substring_data_error(
+  e : JsError,
+) -> CharacterDataSubstringDataError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum CharacterDataInsertDataError {
+  IndexSizeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_character_data_insert_data_error(
+  e : JsError,
+) -> CharacterDataInsertDataError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum CharacterDataDeleteDataError {
+  IndexSizeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_character_data_delete_data_error(
+  e : JsError,
+) -> CharacterDataDeleteDataError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum CharacterDataReplaceDataError {
+  IndexSizeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_character_data_replace_data_error(
+  e : JsError,
+) -> CharacterDataReplaceDataError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum CharacterDataBeforeError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_character_data_before_error(
+  e : JsError,
+) -> CharacterDataBeforeError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum CharacterDataAfterError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_character_data_after_error(
+  e : JsError,
+) -> CharacterDataAfterError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum CharacterDataReplaceWithError {
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_character_data_replace_with_error(
+  e : JsError,
+) -> CharacterDataReplaceWithError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'HierarchyRequestError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn CharacterData::get_data(self : CharacterData) -> String =
   #| (self) => self.data
 
@@ -10939,8 +12281,8 @@ pub extern "js" fn CharacterData::substring_data(
   self : CharacterData,
   offset : Int,
   count : Int,
-) -> String =
-  #| (self, offset, count) => self.substringData(offset, count)
+) -> Result[String, CharacterDataSubstringDataError] =
+  #| (self, offset, count) => (() => { try { return { $tag: 0, _0: self.substringData(offset, count) }; } catch(e) { return { $tag: 1, _0: classify_character_data_substring_data_error(e) }; } })()
 
 ///|
 pub extern "js" fn CharacterData::append_data(
@@ -10954,16 +12296,16 @@ pub extern "js" fn CharacterData::insert_data(
   self : CharacterData,
   offset : Int,
   data : String,
-) -> Unit =
-  #| (self, offset, data) => self.insertData(offset, data)
+) -> Result[Unit, CharacterDataInsertDataError] =
+  #| (self, offset, data) => (() => { try { self.insertData(offset, data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_character_data_insert_data_error(e) }; } })()
 
 ///|
 pub extern "js" fn CharacterData::delete_data(
   self : CharacterData,
   offset : Int,
   count : Int,
-) -> Unit =
-  #| (self, offset, count) => self.deleteData(offset, count)
+) -> Result[Unit, CharacterDataDeleteDataError] =
+  #| (self, offset, count) => (() => { try { self.deleteData(offset, count); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_character_data_delete_data_error(e) }; } })()
 
 ///|
 pub extern "js" fn CharacterData::replace_data(
@@ -10971,8 +12313,8 @@ pub extern "js" fn CharacterData::replace_data(
   offset : Int,
   count : Int,
   data : String,
-) -> Unit =
-  #| (self, offset, count, data) => self.replaceData(offset, count, data)
+) -> Result[Unit, CharacterDataReplaceDataError] =
+  #| (self, offset, count, data) => (() => { try { self.replaceData(offset, count, data); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_character_data_replace_data_error(e) }; } })()
 
 ///|
 pub extern "js" fn CharacterData::get_previous_element_sibling(
@@ -10990,22 +12332,22 @@ pub extern "js" fn CharacterData::get_next_element_sibling(
 pub extern "js" fn CharacterData::before(
   self : CharacterData,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.before(nodes)
+) -> Result[Unit, CharacterDataBeforeError] =
+  #| (self, nodes) => (() => { try { self.before(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_character_data_before_error(e) }; } })()
 
 ///|
 pub extern "js" fn CharacterData::after(
   self : CharacterData,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.after(nodes)
+) -> Result[Unit, CharacterDataAfterError] =
+  #| (self, nodes) => (() => { try { self.after(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_character_data_after_error(e) }; } })()
 
 ///|
 pub extern "js" fn CharacterData::replace_with(
   self : CharacterData,
   nodes : NodeOrString,
-) -> Unit =
-  #| (self, nodes) => self.replaceWith(nodes)
+) -> Result[Unit, CharacterDataReplaceWithError] =
+  #| (self, nodes) => (() => { try { self.replaceWith(nodes); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_character_data_replace_with_error(e) }; } })()
 
 ///|
 pub extern "js" fn CharacterData::remove(self : CharacterData) -> Unit =
@@ -11056,6 +12398,25 @@ pub extern "js" fn Text::as_cdata_section(self : Text) -> CDATASection? =
   #| (self) => (self instanceof CDATASection) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Error type for throwing methods
+pub(all) enum TextSplitTextError {
+  IndexSizeError(JsError)
+  NoModificationAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_text_split_text_error(
+  e : JsError,
+) -> TextSplitTextError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
+  #|   if (n === 'NoModificationAllowedError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
 pub extern "js" fn Text::new() -> Text =
   #| () => new Text()
 
@@ -11064,8 +12425,11 @@ pub extern "js" fn Text::new_with_data(data : String) -> Text =
   #| (data) => new Text(data)
 
 ///|
-pub extern "js" fn Text::split_text(self : Text, offset : Int) -> Text =
-  #| (self, offset) => self.splitText(offset)
+pub extern "js" fn Text::split_text(
+  self : Text,
+  offset : Int,
+) -> Result[Text, TextSplitTextError] =
+  #| (self, offset) => (() => { try { return { $tag: 0, _0: self.splitText(offset) }; } catch(e) { return { $tag: 1, _0: classify_text_split_text_error(e) }; } })()
 
 ///|
 pub extern "js" fn Text::get_whole_text(self : Text) -> String =
@@ -11581,11 +12945,32 @@ pub extern "js" fn StaticRange::to_abstract_range(
   #| (self) => self
 
 ///|
-extern "js" fn StaticRange::new_ffi(init_ : JsValue) -> StaticRange =
-  #| (init_) => new StaticRange(init_)
+/// Error type for throwing methods
+pub(all) enum StaticRangeConstructorError {
+  InvalidNodeTypeError(JsError)
+  OtherError(JsError)
+}
 
 ///|
-pub fn StaticRange::new(init_ : StaticRangeInit) -> StaticRange {
+extern "js" fn classify_static_range_constructor_error(
+  e : JsError,
+) -> StaticRangeConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidNodeTypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+extern "js" fn StaticRange::new_ffi(
+  init_ : JsValue,
+) -> Result[StaticRange, StaticRangeConstructorError] =
+  #| (init_) => (() => { try { return { $tag: 0, _0: new StaticRange(init_) }; } catch(e) { return { $tag: 1, _0: classify_static_range_constructor_error(e) }; } })()
+
+///|
+pub fn StaticRange::new(
+  init_ : StaticRangeInit,
+) -> Result[StaticRange, StaticRangeConstructorError] {
   StaticRange::new_ffi(init_.to_js())
 }
 
@@ -11622,6 +13007,57 @@ pub extern "js" fn Range::to_abstract_range(self : Range) -> AbstractRange =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum RangeSetEndError {
+  IndexSizeError(JsError)
+  InvalidNodeTypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_range_set_end_error(e : JsError) -> RangeSetEndError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidNodeTypeError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum RangeCompareBoundaryPointsError {
+  NotSupportedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_range_compare_boundary_points_error(
+  e : JsError,
+) -> RangeCompareBoundaryPointsError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotSupportedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum RangeCreateContextualFragmentError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_range_create_contextual_fragment_error(
+  e : JsError,
+) -> RangeCreateContextualFragmentError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn Range::new() -> Range =
   #| () => new Range()
 
@@ -11642,8 +13078,8 @@ pub extern "js" fn Range::set_end(
   self : Range,
   node : Node,
   offset : Int,
-) -> Unit =
-  #| (self, node, offset) => self.setEnd(node, offset)
+) -> Result[Unit, RangeSetEndError] =
+  #| (self, node, offset) => (() => { try { self.setEnd(node, offset); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_range_set_end_error(e) }; } })()
 
 ///|
 pub extern "js" fn Range::set_start_before(self : Range, node : Node) -> Unit =
@@ -11708,8 +13144,8 @@ pub extern "js" fn Range::compare_boundary_points(
   self : Range,
   how : Int,
   source_range : Range,
-) -> Int =
-  #| (self, how, source_range) => self.compareBoundaryPoints(how, source_range)
+) -> Result[Int, RangeCompareBoundaryPointsError] =
+  #| (self, how, source_range) => (() => { try { return { $tag: 0, _0: self.compareBoundaryPoints(how, source_range) }; } catch(e) { return { $tag: 1, _0: classify_range_compare_boundary_points_error(e) }; } })()
 
 ///|
 pub extern "js" fn Range::delete_contents(self : Range) -> Unit =
@@ -11739,6 +13175,7 @@ pub extern "js" fn Range::clone_range(self : Range) -> Range =
   #| (self) => self.cloneRange()
 
 ///|
+/// @alert deprecated "detach is deprecated"
 pub extern "js" fn Range::detach(self : Range) -> Unit =
   #| (self) => self.detach()
 
@@ -11774,8 +13211,8 @@ pub extern "js" fn Range::get_bounding_client_rect(self : Range) -> DOMRect =
 pub extern "js" fn Range::create_contextual_fragment(
   self : Range,
   string : TrustedHTMLOrString,
-) -> DocumentFragment =
-  #| (self, string) => self.createContextualFragment(string)
+) -> Result[DocumentFragment, RangeCreateContextualFragmentError] =
+  #| (self, string) => (() => { try { return { $tag: 0, _0: self.createContextualFragment(string) }; } catch(e) { return { $tag: 1, _0: classify_range_create_contextual_fragment_error(e) }; } })()
 
 ///|
 /// NodeIterator interface
@@ -11840,6 +13277,7 @@ pub extern "js" fn NodeIterator::previous_node(self : NodeIterator) -> Node? =
   #| (self) => (() => { const v = self.previousNode(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+/// @alert deprecated "detach is deprecated"
 pub extern "js" fn NodeIterator::detach(self : NodeIterator) -> Unit =
   #| (self) => self.detach()
 
@@ -11953,6 +13391,42 @@ pub extern "js" fn JsValue::to_dom_token_list(self : JsValue) -> DOMTokenList =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum DOMTokenListItemError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_dom_token_list_item_error(
+  e : JsError,
+) -> DOMTokenListItemError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DOMTokenListAddError {
+  SyntaxError(JsError)
+  InvalidCharacterError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_dom_token_list_add_error(
+  e : JsError,
+) -> DOMTokenListAddError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidCharacterError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
 pub extern "js" fn DOMTokenList::get_length(self : DOMTokenList) -> Int =
   #| (self) => self.length
 
@@ -11960,16 +13434,16 @@ pub extern "js" fn DOMTokenList::get_length(self : DOMTokenList) -> Int =
 pub extern "js" fn DOMTokenList::item(
   self : DOMTokenList,
   index : Int,
-) -> String? =
-  #| (self, index) => (self.item(index)) ?? undefined
+) -> Result[String?, DOMTokenListItemError] =
+  #| (self, index) => (() => { try { return { $tag: 0, _0: (self.item(index)) ?? undefined }; } catch(e) { return { $tag: 1, _0: classify_dom_token_list_item_error(e) }; } })()
 
 ///|
 #alias("_[_]")
 pub extern "js" fn DOMTokenList::get(
   self : DOMTokenList,
   index : Int,
-) -> String? =
-  #| (self, index) => (self[index]) ?? undefined
+) -> Result[String?, DOMTokenListItemError] =
+  #| (self, index) => (() => { try { return { $tag: 0, _0: (self[index]) ?? undefined }; } catch(e) { return { $tag: 1, _0: classify_dom_token_list_item_error(e) }; } })()
 
 ///|
 pub extern "js" fn DOMTokenList::contains(
@@ -11982,8 +13456,8 @@ pub extern "js" fn DOMTokenList::contains(
 pub extern "js" fn DOMTokenList::add(
   self : DOMTokenList,
   tokens : String,
-) -> Unit =
-  #| (self, tokens) => self.add(tokens)
+) -> Result[Unit, DOMTokenListAddError] =
+  #| (self, tokens) => (() => { try { self.add(tokens); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_dom_token_list_add_error(e) }; } })()
 
 ///|
 pub extern "js" fn DOMTokenList::remove(
@@ -12080,6 +13554,42 @@ pub extern "js" fn JsValue::as_x_path_result(self : JsValue) -> XPathResult? =
 pub extern "js" fn JsValue::to_x_path_result(self : JsValue) -> XPathResult =
   #| (self) => self
 
+///|
+/// Error type for throwing methods
+pub(all) enum XPathResultIterateNextError {
+  TYPE_ERR(JsError)
+  INVALID_STATE_ERR(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_x_path_result_iterate_next_error(
+  e : JsError,
+) -> XPathResultIterateNextError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TYPE_ERR') return { $tag: 0, _0: e };
+  #|   if (n === 'INVALID_STATE_ERR') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum XPathResultSnapshotItemError {
+  TYPE_ERR(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_x_path_result_snapshot_item_error(
+  e : JsError,
+) -> XPathResultSnapshotItemError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TYPE_ERR') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
 // XPathResult.ANY_TYPE
 
 ///|
@@ -12163,15 +13673,17 @@ pub extern "js" fn XPathResult::get_snapshot_length(self : XPathResult) -> Int =
   #| (self) => self.snapshotLength
 
 ///|
-pub extern "js" fn XPathResult::iterate_next(self : XPathResult) -> Node? =
-  #| (self) => (() => { const v = self.iterateNext(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+pub extern "js" fn XPathResult::iterate_next(
+  self : XPathResult,
+) -> Result[Node?, XPathResultIterateNextError] =
+  #| (self) => (() => { try { return { $tag: 0, _0: (() => { const v = self.iterateNext(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_x_path_result_iterate_next_error(e) }; } })()
 
 ///|
 pub extern "js" fn XPathResult::snapshot_item(
   self : XPathResult,
   index : Int,
-) -> Node? =
-  #| (self, index) => (() => { const v = self.snapshotItem(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Result[Node?, XPathResultSnapshotItemError] =
+  #| (self, index) => (() => { try { return { $tag: 0, _0: (() => { const v = self.snapshotItem(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_x_path_result_snapshot_item_error(e) }; } })()
 
 ///|
 /// XPathExpression interface
@@ -12212,11 +13724,36 @@ pub extern "js" fn JsValue::to_x_path_expression(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum XPathExpressionEvaluateError {
+  TYPE_ERR(JsError)
+  NAMESPACE_ERROR(JsError)
+  NOT_SUPPORTED_ERR(JsError)
+  WRONG_DOCUMENT_ERR(JsError)
+  INVALID_EXPRESSION_ERR(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_x_path_expression_evaluate_error(
+  e : JsError,
+) -> XPathExpressionEvaluateError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TYPE_ERR') return { $tag: 0, _0: e };
+  #|   if (n === 'NAMESPACE_ERROR') return { $tag: 1, _0: e };
+  #|   if (n === 'NOT_SUPPORTED_ERR') return { $tag: 2, _0: e };
+  #|   if (n === 'WRONG_DOCUMENT_ERR') return { $tag: 3, _0: e };
+  #|   if (n === 'INVALID_EXPRESSION_ERR') return { $tag: 4, _0: e };
+  #|   return { $tag: 5, _0: e };
+  #| }
+
+///|
 pub extern "js" fn XPathExpression::evaluate(
   self : XPathExpression,
   context_node : Node,
-) -> XPathResult =
-  #| (self, context_node) => self.evaluate(context_node)
+) -> Result[XPathResult, XPathExpressionEvaluateError] =
+  #| (self, context_node) => (() => { try { return { $tag: 0, _0: self.evaluate(context_node) }; } catch(e) { return { $tag: 1, _0: classify_x_path_expression_evaluate_error(e) }; } })()
 
 ///|
 pub extern "js" fn XPathExpression::evaluate_with_result(
@@ -12224,8 +13761,8 @@ pub extern "js" fn XPathExpression::evaluate_with_result(
   context_node : Node,
   type_ : Int,
   result : XPathResult?,
-) -> XPathResult =
-  #| (self, context_node, type_, result) => self.evaluate(context_node, type_, (result.$tag === 1 ? result._0 : null))
+) -> Result[XPathResult, XPathExpressionEvaluateError] =
+  #| (self, context_node, type_, result) => (() => { try { return { $tag: 0, _0: self.evaluate(context_node, type_, (result.$tag === 1 ? result._0 : null)) }; } catch(e) { return { $tag: 1, _0: classify_x_path_expression_evaluate_error(e) }; } })()
 
 ///|
 /// XPathEvaluator interface

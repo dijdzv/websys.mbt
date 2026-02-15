@@ -952,43 +952,119 @@ pub extern "js" fn DOMMatrixReadOnly::as_dom_matrix(
   #| (self) => (self instanceof DOMMatrix) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn DOMMatrixReadOnly::new() -> DOMMatrixReadOnly =
-  #| () => new DOMMatrixReadOnly()
+/// Error type for throwing methods
+pub(all) enum DOMMatrixReadOnlyConstructorError {
+  TypeError(JsError)
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_dom_matrix_read_only_constructor_error(
+  e : JsError,
+) -> DOMMatrixReadOnlyConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DOMMatrixReadOnlyFromMatrixError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_dom_matrix_read_only_from_matrix_error(
+  e : JsError,
+) -> DOMMatrixReadOnlyFromMatrixError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DOMMatrixReadOnlyFromFloat32ArrayError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_dom_matrix_read_only_from_float32_array_error(
+  e : JsError,
+) -> DOMMatrixReadOnlyFromFloat32ArrayError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DOMMatrixReadOnlyFromFloat64ArrayError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_dom_matrix_read_only_from_float64_array_error(
+  e : JsError,
+) -> DOMMatrixReadOnlyFromFloat64ArrayError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+pub extern "js" fn DOMMatrixReadOnly::new() -> Result[
+  DOMMatrixReadOnly,
+  DOMMatrixReadOnlyConstructorError,
+] =
+  #| () => (() => { try { return { $tag: 0, _0: new DOMMatrixReadOnly() }; } catch(e) { return { $tag: 1, _0: classify_dom_matrix_read_only_constructor_error(e) }; } })()
 
 ///|
 pub extern "js" fn DOMMatrixReadOnly::new_with_init(
   init_ : StringOrArrayOfDouble,
-) -> DOMMatrixReadOnly =
-  #| (init_) => new DOMMatrixReadOnly(init_)
+) -> Result[DOMMatrixReadOnly, DOMMatrixReadOnlyConstructorError] =
+  #| (init_) => (() => { try { return { $tag: 0, _0: new DOMMatrixReadOnly(init_) }; } catch(e) { return { $tag: 1, _0: classify_dom_matrix_read_only_constructor_error(e) }; } })()
 
 ///|
-pub extern "js" fn DOMMatrixReadOnly::from_matrix() -> DOMMatrixReadOnly =
-  #| () => DOMMatrixReadOnly.fromMatrix()
+pub extern "js" fn DOMMatrixReadOnly::from_matrix() -> Result[
+  DOMMatrixReadOnly,
+  DOMMatrixReadOnlyFromMatrixError,
+] =
+  #| () => (() => { try { return { $tag: 0, _0: DOMMatrixReadOnly.fromMatrix() }; } catch(e) { return { $tag: 1, _0: classify_dom_matrix_read_only_from_matrix_error(e) }; } })()
 
 ///|
 extern "js" fn DOMMatrixReadOnly::from_matrix_with_other_ffi(
   other : JsValue,
-) -> DOMMatrixReadOnly =
-  #| (other) => DOMMatrixReadOnly.fromMatrix(other)
+) -> Result[DOMMatrixReadOnly, DOMMatrixReadOnlyFromMatrixError] =
+  #| (other) => (() => { try { return { $tag: 0, _0: DOMMatrixReadOnly.fromMatrix(other) }; } catch(e) { return { $tag: 1, _0: classify_dom_matrix_read_only_from_matrix_error(e) }; } })()
 
 ///|
 pub fn DOMMatrixReadOnly::from_matrix_with_other(
   other : DOMMatrixInit,
-) -> DOMMatrixReadOnly {
+) -> Result[DOMMatrixReadOnly, DOMMatrixReadOnlyFromMatrixError] {
   DOMMatrixReadOnly::from_matrix_with_other_ffi(other.to_js())
 }
 
 ///|
 pub extern "js" fn DOMMatrixReadOnly::from_float32_array(
   array32 : Float32Array,
-) -> DOMMatrixReadOnly =
-  #| (array32) => DOMMatrixReadOnly.fromFloat32Array(array32)
+) -> Result[DOMMatrixReadOnly, DOMMatrixReadOnlyFromFloat32ArrayError] =
+  #| (array32) => (() => { try { return { $tag: 0, _0: DOMMatrixReadOnly.fromFloat32Array(array32) }; } catch(e) { return { $tag: 1, _0: classify_dom_matrix_read_only_from_float32_array_error(e) }; } })()
 
 ///|
 pub extern "js" fn DOMMatrixReadOnly::from_float64_array(
   array64 : Float64Array,
-) -> DOMMatrixReadOnly =
-  #| (array64) => DOMMatrixReadOnly.fromFloat64Array(array64)
+) -> Result[DOMMatrixReadOnly, DOMMatrixReadOnlyFromFloat64ArrayError] =
+  #| (array64) => (() => { try { return { $tag: 0, _0: DOMMatrixReadOnly.fromFloat64Array(array64) }; } catch(e) { return { $tag: 1, _0: classify_dom_matrix_read_only_from_float64_array_error(e) }; } })()
 
 ///|
 pub extern "js" fn DOMMatrixReadOnly::get_a(self : DOMMatrixReadOnly) -> Double =
@@ -1369,41 +1445,119 @@ pub extern "js" fn DOMMatrix::to_dom_matrix_read_only(
   #| (self) => self
 
 ///|
-pub extern "js" fn DOMMatrix::new() -> DOMMatrix =
-  #| () => new DOMMatrix()
+/// Error type for throwing methods
+pub(all) enum DOMMatrixConstructorError {
+  TypeError(JsError)
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_dom_matrix_constructor_error(
+  e : JsError,
+) -> DOMMatrixConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DOMMatrixFromMatrixError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_dom_matrix_from_matrix_error(
+  e : JsError,
+) -> DOMMatrixFromMatrixError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DOMMatrixFromFloat32ArrayError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_dom_matrix_from_float32_array_error(
+  e : JsError,
+) -> DOMMatrixFromFloat32ArrayError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum DOMMatrixFromFloat64ArrayError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_dom_matrix_from_float64_array_error(
+  e : JsError,
+) -> DOMMatrixFromFloat64ArrayError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+pub extern "js" fn DOMMatrix::new() -> Result[
+  DOMMatrix,
+  DOMMatrixConstructorError,
+] =
+  #| () => (() => { try { return { $tag: 0, _0: new DOMMatrix() }; } catch(e) { return { $tag: 1, _0: classify_dom_matrix_constructor_error(e) }; } })()
 
 ///|
 pub extern "js" fn DOMMatrix::new_with_init(
   init_ : StringOrArrayOfDouble,
-) -> DOMMatrix =
-  #| (init_) => new DOMMatrix(init_)
+) -> Result[DOMMatrix, DOMMatrixConstructorError] =
+  #| (init_) => (() => { try { return { $tag: 0, _0: new DOMMatrix(init_) }; } catch(e) { return { $tag: 1, _0: classify_dom_matrix_constructor_error(e) }; } })()
 
 ///|
-pub extern "js" fn DOMMatrix::from_matrix() -> DOMMatrix =
-  #| () => DOMMatrix.fromMatrix()
+pub extern "js" fn DOMMatrix::from_matrix() -> Result[
+  DOMMatrix,
+  DOMMatrixFromMatrixError,
+] =
+  #| () => (() => { try { return { $tag: 0, _0: DOMMatrix.fromMatrix() }; } catch(e) { return { $tag: 1, _0: classify_dom_matrix_from_matrix_error(e) }; } })()
 
 ///|
 extern "js" fn DOMMatrix::from_matrix_with_other_ffi(
   other : JsValue,
-) -> DOMMatrix =
-  #| (other) => DOMMatrix.fromMatrix(other)
+) -> Result[DOMMatrix, DOMMatrixFromMatrixError] =
+  #| (other) => (() => { try { return { $tag: 0, _0: DOMMatrix.fromMatrix(other) }; } catch(e) { return { $tag: 1, _0: classify_dom_matrix_from_matrix_error(e) }; } })()
 
 ///|
-pub fn DOMMatrix::from_matrix_with_other(other : DOMMatrixInit) -> DOMMatrix {
+pub fn DOMMatrix::from_matrix_with_other(
+  other : DOMMatrixInit,
+) -> Result[DOMMatrix, DOMMatrixFromMatrixError] {
   DOMMatrix::from_matrix_with_other_ffi(other.to_js())
 }
 
 ///|
 pub extern "js" fn DOMMatrix::from_float32_array(
   array32 : Float32Array,
-) -> DOMMatrix =
-  #| (array32) => DOMMatrix.fromFloat32Array(array32)
+) -> Result[DOMMatrix, DOMMatrixFromFloat32ArrayError] =
+  #| (array32) => (() => { try { return { $tag: 0, _0: DOMMatrix.fromFloat32Array(array32) }; } catch(e) { return { $tag: 1, _0: classify_dom_matrix_from_float32_array_error(e) }; } })()
 
 ///|
 pub extern "js" fn DOMMatrix::from_float64_array(
   array64 : Float64Array,
-) -> DOMMatrix =
-  #| (array64) => DOMMatrix.fromFloat64Array(array64)
+) -> Result[DOMMatrix, DOMMatrixFromFloat64ArrayError] =
+  #| (array64) => (() => { try { return { $tag: 0, _0: DOMMatrix.fromFloat64Array(array64) }; } catch(e) { return { $tag: 1, _0: classify_dom_matrix_from_float64_array_error(e) }; } })()
 
 ///|
 pub extern "js" fn DOMMatrix::get_a(self : DOMMatrix) -> Double =

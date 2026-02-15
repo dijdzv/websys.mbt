@@ -1264,6 +1264,23 @@ pub extern "js" fn JsValue::to_crypto(self : JsValue) -> Crypto =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum CryptoGetRandomValuesError {
+  QuotaExceededError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_crypto_get_random_values_error(
+  e : JsError,
+) -> CryptoGetRandomValuesError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'QuotaExceededError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn Crypto::get_subtle(self : Crypto) -> SubtleCrypto =
   #| (self) => self.subtle
 
@@ -1271,8 +1288,8 @@ pub extern "js" fn Crypto::get_subtle(self : Crypto) -> SubtleCrypto =
 pub extern "js" fn Crypto::get_random_values(
   self : Crypto,
   array : ArrayBufferView,
-) -> ArrayBufferView =
-  #| (self, array) => self.getRandomValues(array)
+) -> Result[ArrayBufferView, CryptoGetRandomValuesError] =
+  #| (self, array) => (() => { try { return { $tag: 0, _0: self.getRandomValues(array) }; } catch(e) { return { $tag: 1, _0: classify_crypto_get_random_values_error(e) }; } })()
 
 ///|
 pub extern "js" fn Crypto::random_uuid(self : Crypto) -> String =
@@ -1282,92 +1299,92 @@ pub extern "js" fn Crypto::random_uuid(self : Crypto) -> String =
 pub extern "js" fn Crypto::get_random_values_with_int8_array(
   self : Crypto,
   array : Int8Array,
-) -> ArrayBufferView =
-  #| (self, array) => self.getRandomValues(array)
+) -> Result[ArrayBufferView, CryptoGetRandomValuesError] =
+  #| (self, array) => (() => { try { return { $tag: 0, _0: self.getRandomValues(array) }; } catch(e) { return { $tag: 1, _0: classify_crypto_get_random_values_error(e) }; } })()
 
 ///|
 pub extern "js" fn Crypto::get_random_values_with_int16_array(
   self : Crypto,
   array : Int16Array,
-) -> ArrayBufferView =
-  #| (self, array) => self.getRandomValues(array)
+) -> Result[ArrayBufferView, CryptoGetRandomValuesError] =
+  #| (self, array) => (() => { try { return { $tag: 0, _0: self.getRandomValues(array) }; } catch(e) { return { $tag: 1, _0: classify_crypto_get_random_values_error(e) }; } })()
 
 ///|
 pub extern "js" fn Crypto::get_random_values_with_int32_array(
   self : Crypto,
   array : Int32Array,
-) -> ArrayBufferView =
-  #| (self, array) => self.getRandomValues(array)
+) -> Result[ArrayBufferView, CryptoGetRandomValuesError] =
+  #| (self, array) => (() => { try { return { $tag: 0, _0: self.getRandomValues(array) }; } catch(e) { return { $tag: 1, _0: classify_crypto_get_random_values_error(e) }; } })()
 
 ///|
 pub extern "js" fn Crypto::get_random_values_with_uint8_array(
   self : Crypto,
   array : Uint8Array,
-) -> ArrayBufferView =
-  #| (self, array) => self.getRandomValues(array)
+) -> Result[ArrayBufferView, CryptoGetRandomValuesError] =
+  #| (self, array) => (() => { try { return { $tag: 0, _0: self.getRandomValues(array) }; } catch(e) { return { $tag: 1, _0: classify_crypto_get_random_values_error(e) }; } })()
 
 ///|
 pub extern "js" fn Crypto::get_random_values_with_uint16_array(
   self : Crypto,
   array : Uint16Array,
-) -> ArrayBufferView =
-  #| (self, array) => self.getRandomValues(array)
+) -> Result[ArrayBufferView, CryptoGetRandomValuesError] =
+  #| (self, array) => (() => { try { return { $tag: 0, _0: self.getRandomValues(array) }; } catch(e) { return { $tag: 1, _0: classify_crypto_get_random_values_error(e) }; } })()
 
 ///|
 pub extern "js" fn Crypto::get_random_values_with_uint32_array(
   self : Crypto,
   array : Uint32Array,
-) -> ArrayBufferView =
-  #| (self, array) => self.getRandomValues(array)
+) -> Result[ArrayBufferView, CryptoGetRandomValuesError] =
+  #| (self, array) => (() => { try { return { $tag: 0, _0: self.getRandomValues(array) }; } catch(e) { return { $tag: 1, _0: classify_crypto_get_random_values_error(e) }; } })()
 
 ///|
 pub extern "js" fn Crypto::get_random_values_with_uint8_clamped_array(
   self : Crypto,
   array : Uint8ClampedArray,
-) -> ArrayBufferView =
-  #| (self, array) => self.getRandomValues(array)
+) -> Result[ArrayBufferView, CryptoGetRandomValuesError] =
+  #| (self, array) => (() => { try { return { $tag: 0, _0: self.getRandomValues(array) }; } catch(e) { return { $tag: 1, _0: classify_crypto_get_random_values_error(e) }; } })()
 
 ///|
 pub extern "js" fn Crypto::get_random_values_with_big_int64_array(
   self : Crypto,
   array : BigInt64Array,
-) -> ArrayBufferView =
-  #| (self, array) => self.getRandomValues(array)
+) -> Result[ArrayBufferView, CryptoGetRandomValuesError] =
+  #| (self, array) => (() => { try { return { $tag: 0, _0: self.getRandomValues(array) }; } catch(e) { return { $tag: 1, _0: classify_crypto_get_random_values_error(e) }; } })()
 
 ///|
 pub extern "js" fn Crypto::get_random_values_with_big_uint64_array(
   self : Crypto,
   array : BigUint64Array,
-) -> ArrayBufferView =
-  #| (self, array) => self.getRandomValues(array)
+) -> Result[ArrayBufferView, CryptoGetRandomValuesError] =
+  #| (self, array) => (() => { try { return { $tag: 0, _0: self.getRandomValues(array) }; } catch(e) { return { $tag: 1, _0: classify_crypto_get_random_values_error(e) }; } })()
 
 ///|
 pub extern "js" fn Crypto::get_random_values_with_float16_array(
   self : Crypto,
   array : Float16Array,
-) -> ArrayBufferView =
-  #| (self, array) => self.getRandomValues(array)
+) -> Result[ArrayBufferView, CryptoGetRandomValuesError] =
+  #| (self, array) => (() => { try { return { $tag: 0, _0: self.getRandomValues(array) }; } catch(e) { return { $tag: 1, _0: classify_crypto_get_random_values_error(e) }; } })()
 
 ///|
 pub extern "js" fn Crypto::get_random_values_with_float32_array(
   self : Crypto,
   array : Float32Array,
-) -> ArrayBufferView =
-  #| (self, array) => self.getRandomValues(array)
+) -> Result[ArrayBufferView, CryptoGetRandomValuesError] =
+  #| (self, array) => (() => { try { return { $tag: 0, _0: self.getRandomValues(array) }; } catch(e) { return { $tag: 1, _0: classify_crypto_get_random_values_error(e) }; } })()
 
 ///|
 pub extern "js" fn Crypto::get_random_values_with_float64_array(
   self : Crypto,
   array : Float64Array,
-) -> ArrayBufferView =
-  #| (self, array) => self.getRandomValues(array)
+) -> Result[ArrayBufferView, CryptoGetRandomValuesError] =
+  #| (self, array) => (() => { try { return { $tag: 0, _0: self.getRandomValues(array) }; } catch(e) { return { $tag: 1, _0: classify_crypto_get_random_values_error(e) }; } })()
 
 ///|
 pub extern "js" fn Crypto::get_random_values_with_data_view(
   self : Crypto,
   array : DataView,
-) -> ArrayBufferView =
-  #| (self, array) => self.getRandomValues(array)
+) -> Result[ArrayBufferView, CryptoGetRandomValuesError] =
+  #| (self, array) => (() => { try { return { $tag: 0, _0: self.getRandomValues(array) }; } catch(e) { return { $tag: 1, _0: classify_crypto_get_random_values_error(e) }; } })()
 
 ///|
 /// CryptoKey interface
@@ -1444,13 +1461,228 @@ pub extern "js" fn JsValue::to_subtle_crypto(self : JsValue) -> SubtleCrypto =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum SubtleCryptoEncryptError {
+  OperationError(JsError)
+  InvalidAccessError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_subtle_crypto_encrypt_error(
+  e : JsError,
+) -> SubtleCryptoEncryptError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'OperationError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidAccessError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum SubtleCryptoDecryptError {
+  OperationError(JsError)
+  InvalidAccessError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_subtle_crypto_decrypt_error(
+  e : JsError,
+) -> SubtleCryptoDecryptError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'OperationError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidAccessError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum SubtleCryptoSignError {
+  InvalidAccessError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_subtle_crypto_sign_error(
+  e : JsError,
+) -> SubtleCryptoSignError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidAccessError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum SubtleCryptoVerifyError {
+  InvalidAccessError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_subtle_crypto_verify_error(
+  e : JsError,
+) -> SubtleCryptoVerifyError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidAccessError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum SubtleCryptoGenerateKeyError {
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_subtle_crypto_generate_key_error(
+  e : JsError,
+) -> SubtleCryptoGenerateKeyError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum SubtleCryptoDeriveKeyError {
+  SyntaxError(JsError)
+  NotSupported(JsError)
+  InvalidAccessError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_subtle_crypto_derive_key_error(
+  e : JsError,
+) -> SubtleCryptoDeriveKeyError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotSupported') return { $tag: 1, _0: e };
+  #|   if (n === 'InvalidAccessError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum SubtleCryptoDeriveBitsError {
+  NotSupported(JsError)
+  OperationError(JsError)
+  InvalidAccessError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_subtle_crypto_derive_bits_error(
+  e : JsError,
+) -> SubtleCryptoDeriveBitsError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotSupported') return { $tag: 0, _0: e };
+  #|   if (n === 'OperationError') return { $tag: 1, _0: e };
+  #|   if (n === 'InvalidAccessError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum SubtleCryptoImportKeyError {
+  TypeError(JsError)
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_subtle_crypto_import_key_error(
+  e : JsError,
+) -> SubtleCryptoImportKeyError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum SubtleCryptoExportKeyError {
+  TypeError(JsError)
+  NotSupported(JsError)
+  InvalidAccessError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_subtle_crypto_export_key_error(
+  e : JsError,
+) -> SubtleCryptoExportKeyError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotSupported') return { $tag: 1, _0: e };
+  #|   if (n === 'InvalidAccessError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum SubtleCryptoWrapKeyError {
+  TypeError(JsError)
+  NotSupported(JsError)
+  InvalidAccessError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_subtle_crypto_wrap_key_error(
+  e : JsError,
+) -> SubtleCryptoWrapKeyError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotSupported') return { $tag: 1, _0: e };
+  #|   if (n === 'InvalidAccessError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum SubtleCryptoUnwrapKeyError {
+  TypeError(JsError)
+  SyntaxError(JsError)
+  NotSupported(JsError)
+  InvalidAccessError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_subtle_crypto_unwrap_key_error(
+  e : JsError,
+) -> SubtleCryptoUnwrapKeyError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
+  #|   if (n === 'NotSupported') return { $tag: 2, _0: e };
+  #|   if (n === 'InvalidAccessError') return { $tag: 3, _0: e };
+  #|   return { $tag: 4, _0: e };
+  #| }
+
+///|
 pub extern "js" fn SubtleCrypto::encrypt(
   self : SubtleCrypto,
   algorithm : AlgorithmIdentifier,
   key : CryptoKey,
   data : BufferSource,
-) -> Promise[ArrayBuffer] =
-  #| (self, algorithm, key, data) => self.encrypt(algorithm, key, data)
+) -> Promise[Result[ArrayBuffer, SubtleCryptoEncryptError]] =
+  #| (self, algorithm, key, data) => self.encrypt(algorithm, key, data).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_encrypt_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::decrypt(
@@ -1458,8 +1690,8 @@ pub extern "js" fn SubtleCrypto::decrypt(
   algorithm : AlgorithmIdentifier,
   key : CryptoKey,
   data : BufferSource,
-) -> Promise[ArrayBuffer] =
-  #| (self, algorithm, key, data) => self.decrypt(algorithm, key, data)
+) -> Promise[Result[ArrayBuffer, SubtleCryptoDecryptError]] =
+  #| (self, algorithm, key, data) => self.decrypt(algorithm, key, data).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_decrypt_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::sign(
@@ -1467,8 +1699,8 @@ pub extern "js" fn SubtleCrypto::sign(
   algorithm : AlgorithmIdentifier,
   key : CryptoKey,
   data : BufferSource,
-) -> Promise[ArrayBuffer] =
-  #| (self, algorithm, key, data) => self.sign(algorithm, key, data)
+) -> Promise[Result[ArrayBuffer, SubtleCryptoSignError]] =
+  #| (self, algorithm, key, data) => self.sign(algorithm, key, data).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_sign_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::verify(
@@ -1477,8 +1709,8 @@ pub extern "js" fn SubtleCrypto::verify(
   key : CryptoKey,
   signature : BufferSource,
   data : BufferSource,
-) -> Promise[Bool] =
-  #| (self, algorithm, key, signature, data) => self.verify(algorithm, key, signature, data)
+) -> Promise[Result[Bool, SubtleCryptoVerifyError]] =
+  #| (self, algorithm, key, signature, data) => self.verify(algorithm, key, signature, data).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_verify_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::digest(
@@ -1494,8 +1726,8 @@ pub extern "js" fn SubtleCrypto::generate_key(
   algorithm : AlgorithmIdentifier,
   extractable : Bool,
   key_usages : Array[KeyUsage],
-) -> Promise[CryptoKeyOrCryptoKeyPair] =
-  #| (self, algorithm, extractable, key_usages) => self.generateKey(algorithm, extractable, key_usages)
+) -> Promise[Result[CryptoKeyOrCryptoKeyPair, SubtleCryptoGenerateKeyError]] =
+  #| (self, algorithm, extractable, key_usages) => self.generateKey(algorithm, extractable, key_usages).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_generate_key_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::derive_key(
@@ -1505,16 +1737,16 @@ pub extern "js" fn SubtleCrypto::derive_key(
   derived_key_type : AlgorithmIdentifier,
   extractable : Bool,
   key_usages : Array[KeyUsage],
-) -> Promise[CryptoKey] =
-  #| (self, algorithm, base_key, derived_key_type, extractable, key_usages) => self.deriveKey(algorithm, base_key, derived_key_type, extractable, key_usages)
+) -> Promise[Result[CryptoKey, SubtleCryptoDeriveKeyError]] =
+  #| (self, algorithm, base_key, derived_key_type, extractable, key_usages) => self.deriveKey(algorithm, base_key, derived_key_type, extractable, key_usages).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_derive_key_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::derive_bits(
   self : SubtleCrypto,
   algorithm : AlgorithmIdentifier,
   base_key : CryptoKey,
-) -> Promise[ArrayBuffer] =
-  #| (self, algorithm, base_key) => self.deriveBits(algorithm, base_key)
+) -> Promise[Result[ArrayBuffer, SubtleCryptoDeriveBitsError]] =
+  #| (self, algorithm, base_key) => self.deriveBits(algorithm, base_key).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_derive_bits_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::derive_bits_with_length(
@@ -1522,8 +1754,8 @@ pub extern "js" fn SubtleCrypto::derive_bits_with_length(
   algorithm : AlgorithmIdentifier,
   base_key : CryptoKey,
   length : Int?,
-) -> Promise[ArrayBuffer] =
-  #| (self, algorithm, base_key, length) => self.deriveBits(algorithm, base_key, length)
+) -> Promise[Result[ArrayBuffer, SubtleCryptoDeriveBitsError]] =
+  #| (self, algorithm, base_key, length) => self.deriveBits(algorithm, base_key, length).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_derive_bits_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::import_key(
@@ -1533,16 +1765,16 @@ pub extern "js" fn SubtleCrypto::import_key(
   algorithm : AlgorithmIdentifier,
   extractable : Bool,
   key_usages : Array[KeyUsage],
-) -> Promise[CryptoKey] =
-  #| (self, format, key_data, algorithm, extractable, key_usages) => self.importKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key_data, algorithm, extractable, key_usages)
+) -> Promise[Result[CryptoKey, SubtleCryptoImportKeyError]] =
+  #| (self, format, key_data, algorithm, extractable, key_usages) => self.importKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key_data, algorithm, extractable, key_usages).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_import_key_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::export_key(
   self : SubtleCrypto,
   format : KeyFormat,
   key : CryptoKey,
-) -> Promise[ArrayBufferOrJsonWebKey] =
-  #| (self, format, key) => self.exportKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key)
+) -> Promise[Result[ArrayBufferOrJsonWebKey, SubtleCryptoExportKeyError]] =
+  #| (self, format, key) => self.exportKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_export_key_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::wrap_key(
@@ -1551,8 +1783,8 @@ pub extern "js" fn SubtleCrypto::wrap_key(
   key : CryptoKey,
   wrapping_key : CryptoKey,
   wrap_algorithm : AlgorithmIdentifier,
-) -> Promise[ArrayBuffer] =
-  #| (self, format, key, wrapping_key, wrap_algorithm) => self.wrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key, wrapping_key, wrap_algorithm)
+) -> Promise[Result[ArrayBuffer, SubtleCryptoWrapKeyError]] =
+  #| (self, format, key, wrapping_key, wrap_algorithm) => self.wrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key, wrapping_key, wrap_algorithm).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_wrap_key_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::unwrap_key(
@@ -1564,8 +1796,8 @@ pub extern "js" fn SubtleCrypto::unwrap_key(
   unwrapped_key_algorithm : AlgorithmIdentifier,
   extractable : Bool,
   key_usages : Array[KeyUsage],
-) -> Promise[CryptoKey] =
-  #| (self, format, wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages) => self.unwrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages)
+) -> Promise[Result[CryptoKey, SubtleCryptoUnwrapKeyError]] =
+  #| (self, format, wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages) => self.unwrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_unwrap_key_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::encapsulate_key(
@@ -1650,8 +1882,8 @@ pub extern "js" fn SubtleCrypto::encrypt_with_string(
   algorithm : String,
   key : CryptoKey,
   data : BufferSource,
-) -> Promise[ArrayBuffer] =
-  #| (self, algorithm, key, data) => self.encrypt(algorithm, key, data)
+) -> Promise[Result[ArrayBuffer, SubtleCryptoEncryptError]] =
+  #| (self, algorithm, key, data) => self.encrypt(algorithm, key, data).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_encrypt_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::decrypt_with_string(
@@ -1659,8 +1891,8 @@ pub extern "js" fn SubtleCrypto::decrypt_with_string(
   algorithm : String,
   key : CryptoKey,
   data : BufferSource,
-) -> Promise[ArrayBuffer] =
-  #| (self, algorithm, key, data) => self.decrypt(algorithm, key, data)
+) -> Promise[Result[ArrayBuffer, SubtleCryptoDecryptError]] =
+  #| (self, algorithm, key, data) => self.decrypt(algorithm, key, data).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_decrypt_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::sign_with_string(
@@ -1668,8 +1900,8 @@ pub extern "js" fn SubtleCrypto::sign_with_string(
   algorithm : String,
   key : CryptoKey,
   data : BufferSource,
-) -> Promise[ArrayBuffer] =
-  #| (self, algorithm, key, data) => self.sign(algorithm, key, data)
+) -> Promise[Result[ArrayBuffer, SubtleCryptoSignError]] =
+  #| (self, algorithm, key, data) => self.sign(algorithm, key, data).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_sign_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::verify_with_string(
@@ -1678,8 +1910,8 @@ pub extern "js" fn SubtleCrypto::verify_with_string(
   key : CryptoKey,
   signature : BufferSource,
   data : BufferSource,
-) -> Promise[Bool] =
-  #| (self, algorithm, key, signature, data) => self.verify(algorithm, key, signature, data)
+) -> Promise[Result[Bool, SubtleCryptoVerifyError]] =
+  #| (self, algorithm, key, signature, data) => self.verify(algorithm, key, signature, data).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_verify_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::digest_with_string(
@@ -1695,8 +1927,8 @@ pub extern "js" fn SubtleCrypto::generate_key_with_string(
   algorithm : String,
   extractable : Bool,
   key_usages : Array[KeyUsage],
-) -> Promise[CryptoKeyOrCryptoKeyPair] =
-  #| (self, algorithm, extractable, key_usages) => self.generateKey(algorithm, extractable, key_usages)
+) -> Promise[Result[CryptoKeyOrCryptoKeyPair, SubtleCryptoGenerateKeyError]] =
+  #| (self, algorithm, extractable, key_usages) => self.generateKey(algorithm, extractable, key_usages).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_generate_key_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::derive_key_with_string(
@@ -1706,8 +1938,8 @@ pub extern "js" fn SubtleCrypto::derive_key_with_string(
   derived_key_type : AlgorithmIdentifier,
   extractable : Bool,
   key_usages : Array[KeyUsage],
-) -> Promise[CryptoKey] =
-  #| (self, algorithm, base_key, derived_key_type, extractable, key_usages) => self.deriveKey(algorithm, base_key, derived_key_type, extractable, key_usages)
+) -> Promise[Result[CryptoKey, SubtleCryptoDeriveKeyError]] =
+  #| (self, algorithm, base_key, derived_key_type, extractable, key_usages) => self.deriveKey(algorithm, base_key, derived_key_type, extractable, key_usages).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_derive_key_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::derive_bits_with_string(
@@ -1715,8 +1947,8 @@ pub extern "js" fn SubtleCrypto::derive_bits_with_string(
   algorithm : String,
   base_key : CryptoKey,
   length : Int?,
-) -> Promise[ArrayBuffer] =
-  #| (self, algorithm, base_key, length) => self.deriveBits(algorithm, base_key, length)
+) -> Promise[Result[ArrayBuffer, SubtleCryptoDeriveBitsError]] =
+  #| (self, algorithm, base_key, length) => self.deriveBits(algorithm, base_key, length).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_derive_bits_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::import_key_with_string(
@@ -1726,8 +1958,8 @@ pub extern "js" fn SubtleCrypto::import_key_with_string(
   algorithm : String,
   extractable : Bool,
   key_usages : Array[KeyUsage],
-) -> Promise[CryptoKey] =
-  #| (self, format, key_data, algorithm, extractable, key_usages) => self.importKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key_data, algorithm, extractable, key_usages)
+) -> Promise[Result[CryptoKey, SubtleCryptoImportKeyError]] =
+  #| (self, format, key_data, algorithm, extractable, key_usages) => self.importKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key_data, algorithm, extractable, key_usages).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_import_key_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::wrap_key_with_string(
@@ -1736,8 +1968,8 @@ pub extern "js" fn SubtleCrypto::wrap_key_with_string(
   key : CryptoKey,
   wrapping_key : CryptoKey,
   wrap_algorithm : String,
-) -> Promise[ArrayBuffer] =
-  #| (self, format, key, wrapping_key, wrap_algorithm) => self.wrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key, wrapping_key, wrap_algorithm)
+) -> Promise[Result[ArrayBuffer, SubtleCryptoWrapKeyError]] =
+  #| (self, format, key, wrapping_key, wrap_algorithm) => self.wrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key, wrapping_key, wrap_algorithm).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_wrap_key_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::unwrap_key_with_array_buffer_view(
@@ -1749,8 +1981,8 @@ pub extern "js" fn SubtleCrypto::unwrap_key_with_array_buffer_view(
   unwrapped_key_algorithm : AlgorithmIdentifier,
   extractable : Bool,
   key_usages : Array[KeyUsage],
-) -> Promise[CryptoKey] =
-  #| (self, format, wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages) => self.unwrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages)
+) -> Promise[Result[CryptoKey, SubtleCryptoUnwrapKeyError]] =
+  #| (self, format, wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages) => self.unwrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_unwrap_key_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::unwrap_key_with_array_buffer(
@@ -1762,8 +1994,8 @@ pub extern "js" fn SubtleCrypto::unwrap_key_with_array_buffer(
   unwrapped_key_algorithm : AlgorithmIdentifier,
   extractable : Bool,
   key_usages : Array[KeyUsage],
-) -> Promise[CryptoKey] =
-  #| (self, format, wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages) => self.unwrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages)
+) -> Promise[Result[CryptoKey, SubtleCryptoUnwrapKeyError]] =
+  #| (self, format, wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages) => self.unwrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_subtle_crypto_unwrap_key_error(e) }))
 
 ///|
 pub extern "js" fn SubtleCrypto::encapsulate_key_with_string(

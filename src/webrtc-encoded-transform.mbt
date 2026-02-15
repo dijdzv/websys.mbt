@@ -775,17 +775,17 @@ pub extern "js" fn SFrameSenderTransform::set_encryption_key(
   #| (self, key, key_id) => self.setEncryptionKey(key, key_id)
 
 ///|
-pub extern "js" fn SFrameSenderTransform::get_onerror(
-  self : SFrameSenderTransform,
-) -> EventHandler =
-  #| (self) => self.onerror
-
-///|
 pub extern "js" fn SFrameSenderTransform::set_onerror(
   self : SFrameSenderTransform,
-  value : EventHandler,
+  handler : (ErrorEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onerror = value }
+  #| (self, handler) => { self.onerror = (e) => handler(e) }
+
+///|
+pub extern "js" fn SFrameSenderTransform::clear_onerror(
+  self : SFrameSenderTransform,
+) -> Unit =
+  #| (self) => { self.onerror = null }
 
 ///|
 pub extern "js" fn SFrameSenderTransform::set_encryption_key_with_small_crypto_key_id(
@@ -872,17 +872,17 @@ pub extern "js" fn SFrameReceiverTransform::remove_decryption_key(
   #| (self, key_id) => self.removeDecryptionKey(key_id)
 
 ///|
-pub extern "js" fn SFrameReceiverTransform::get_onerror(
-  self : SFrameReceiverTransform,
-) -> EventHandler =
-  #| (self) => self.onerror
-
-///|
 pub extern "js" fn SFrameReceiverTransform::set_onerror(
   self : SFrameReceiverTransform,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onerror = value }
+  #| (self, handler) => { self.onerror = (e) => handler(e) }
+
+///|
+pub extern "js" fn SFrameReceiverTransform::clear_onerror(
+  self : SFrameReceiverTransform,
+) -> Unit =
+  #| (self) => { self.onerror = null }
 
 ///|
 pub extern "js" fn SFrameReceiverTransform::add_decryption_key_with_small_crypto_key_id(
@@ -981,17 +981,17 @@ pub extern "js" fn SFrameEncrypterStream::set_encryption_key(
   #| (self, key, key_id) => self.setEncryptionKey(key, key_id)
 
 ///|
-pub extern "js" fn SFrameEncrypterStream::get_onerror(
-  self : SFrameEncrypterStream,
-) -> EventHandler =
-  #| (self) => self.onerror
-
-///|
 pub extern "js" fn SFrameEncrypterStream::set_onerror(
   self : SFrameEncrypterStream,
-  value : EventHandler,
+  handler : (ErrorEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onerror = value }
+  #| (self, handler) => { self.onerror = (e) => handler(e) }
+
+///|
+pub extern "js" fn SFrameEncrypterStream::clear_onerror(
+  self : SFrameEncrypterStream,
+) -> Unit =
+  #| (self) => { self.onerror = null }
 
 ///|
 pub extern "js" fn SFrameEncrypterStream::set_encryption_key_with_small_crypto_key_id(
@@ -1090,17 +1090,17 @@ pub extern "js" fn SFrameDecrypterStream::remove_decryption_key(
   #| (self, key_id) => self.removeDecryptionKey(key_id)
 
 ///|
-pub extern "js" fn SFrameDecrypterStream::get_onerror(
-  self : SFrameDecrypterStream,
-) -> EventHandler =
-  #| (self) => self.onerror
-
-///|
 pub extern "js" fn SFrameDecrypterStream::set_onerror(
   self : SFrameDecrypterStream,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onerror = value }
+  #| (self, handler) => { self.onerror = (e) => handler(e) }
+
+///|
+pub extern "js" fn SFrameDecrypterStream::clear_onerror(
+  self : SFrameDecrypterStream,
+) -> Unit =
+  #| (self) => { self.onerror = null }
 
 ///|
 pub extern "js" fn SFrameDecrypterStream::add_decryption_key_with_small_crypto_key_id(
@@ -1233,23 +1233,42 @@ pub extern "js" fn JsValue::to_rtc_encoded_video_frame(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum RTCEncodedVideoFrameConstructorError {
+  TypeError(JsError)
+  RangeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_rtc_encoded_video_frame_constructor_error(
+  e : JsError,
+) -> RTCEncodedVideoFrameConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'RangeError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
 pub extern "js" fn RTCEncodedVideoFrame::new(
   original_frame : RTCEncodedVideoFrame,
-) -> RTCEncodedVideoFrame =
-  #| (original_frame) => new RTCEncodedVideoFrame(original_frame)
+) -> Result[RTCEncodedVideoFrame, RTCEncodedVideoFrameConstructorError] =
+  #| (original_frame) => (() => { try { return { $tag: 0, _0: new RTCEncodedVideoFrame(original_frame) }; } catch(e) { return { $tag: 1, _0: classify_rtc_encoded_video_frame_constructor_error(e) }; } })()
 
 ///|
 extern "js" fn RTCEncodedVideoFrame::new_with_options_ffi(
   original_frame : RTCEncodedVideoFrame,
   options : JsValue,
-) -> RTCEncodedVideoFrame =
-  #| (original_frame, options) => new RTCEncodedVideoFrame(original_frame, options)
+) -> Result[RTCEncodedVideoFrame, RTCEncodedVideoFrameConstructorError] =
+  #| (original_frame, options) => (() => { try { return { $tag: 0, _0: new RTCEncodedVideoFrame(original_frame, options) }; } catch(e) { return { $tag: 1, _0: classify_rtc_encoded_video_frame_constructor_error(e) }; } })()
 
 ///|
 pub fn RTCEncodedVideoFrame::new_with_options(
   original_frame : RTCEncodedVideoFrame,
   options : RTCEncodedVideoFrameOptions,
-) -> RTCEncodedVideoFrame {
+) -> Result[RTCEncodedVideoFrame, RTCEncodedVideoFrameConstructorError] {
   RTCEncodedVideoFrame::new_with_options_ffi(original_frame, options.to_js())
 }
 
@@ -1317,23 +1336,42 @@ pub extern "js" fn JsValue::to_rtc_encoded_audio_frame(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum RTCEncodedAudioFrameConstructorError {
+  TypeError(JsError)
+  RangeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_rtc_encoded_audio_frame_constructor_error(
+  e : JsError,
+) -> RTCEncodedAudioFrameConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'RangeError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
 pub extern "js" fn RTCEncodedAudioFrame::new(
   original_frame : RTCEncodedAudioFrame,
-) -> RTCEncodedAudioFrame =
-  #| (original_frame) => new RTCEncodedAudioFrame(original_frame)
+) -> Result[RTCEncodedAudioFrame, RTCEncodedAudioFrameConstructorError] =
+  #| (original_frame) => (() => { try { return { $tag: 0, _0: new RTCEncodedAudioFrame(original_frame) }; } catch(e) { return { $tag: 1, _0: classify_rtc_encoded_audio_frame_constructor_error(e) }; } })()
 
 ///|
 extern "js" fn RTCEncodedAudioFrame::new_with_options_ffi(
   original_frame : RTCEncodedAudioFrame,
   options : JsValue,
-) -> RTCEncodedAudioFrame =
-  #| (original_frame, options) => new RTCEncodedAudioFrame(original_frame, options)
+) -> Result[RTCEncodedAudioFrame, RTCEncodedAudioFrameConstructorError] =
+  #| (original_frame, options) => (() => { try { return { $tag: 0, _0: new RTCEncodedAudioFrame(original_frame, options) }; } catch(e) { return { $tag: 1, _0: classify_rtc_encoded_audio_frame_constructor_error(e) }; } })()
 
 ///|
 pub fn RTCEncodedAudioFrame::new_with_options(
   original_frame : RTCEncodedAudioFrame,
   options : RTCEncodedAudioFrameOptions,
-) -> RTCEncodedAudioFrame {
+) -> Result[RTCEncodedAudioFrame, RTCEncodedAudioFrameConstructorError] {
   RTCEncodedAudioFrame::new_with_options_ffi(original_frame, options.to_js())
 }
 
@@ -1395,18 +1433,35 @@ pub extern "js" fn JsValue::to_rtc_rtp_script_transform(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum RTCRtpScriptTransformConstructorError {
+  DataCloneError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_rtc_rtp_script_transform_constructor_error(
+  e : JsError,
+) -> RTCRtpScriptTransformConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'DataCloneError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn RTCRtpScriptTransform::new(
   worker : Worker,
-) -> RTCRtpScriptTransform =
-  #| (worker) => new RTCRtpScriptTransform(worker)
+) -> Result[RTCRtpScriptTransform, RTCRtpScriptTransformConstructorError] =
+  #| (worker) => (() => { try { return { $tag: 0, _0: new RTCRtpScriptTransform(worker) }; } catch(e) { return { $tag: 1, _0: classify_rtc_rtp_script_transform_constructor_error(e) }; } })()
 
 ///|
 pub extern "js" fn RTCRtpScriptTransform::new_with_transfer(
   worker : Worker,
   options : JsValue,
   transfer : Array[JsValue],
-) -> RTCRtpScriptTransform =
-  #| (worker, options, transfer) => new RTCRtpScriptTransform(worker, options, transfer)
+) -> Result[RTCRtpScriptTransform, RTCRtpScriptTransformConstructorError] =
+  #| (worker, options, transfer) => (() => { try { return { $tag: 0, _0: new RTCRtpScriptTransform(worker, options, transfer) }; } catch(e) { return { $tag: 1, _0: classify_rtc_rtp_script_transform_constructor_error(e) }; } })()
 
 ///|
 /// RTCRtpScriptTransformer interface
@@ -1453,6 +1508,44 @@ pub extern "js" fn RTCRtpScriptTransformer::to_event_target(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum RTCRtpScriptTransformerGenerateKeyFrameError {
+  TypeError(JsError)
+  NotFoundError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_rtc_rtp_script_transformer_generate_key_frame_error(
+  e : JsError,
+) -> RTCRtpScriptTransformerGenerateKeyFrameError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum RTCRtpScriptTransformerSendKeyFrameRequestError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_rtc_rtp_script_transformer_send_key_frame_request_error(
+  e : JsError,
+) -> RTCRtpScriptTransformerSendKeyFrameRequestError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn RTCRtpScriptTransformer::get_readable(
   self : RTCRtpScriptTransformer,
 ) -> ReadableStream =
@@ -1461,21 +1554,21 @@ pub extern "js" fn RTCRtpScriptTransformer::get_readable(
 ///|
 pub extern "js" fn RTCRtpScriptTransformer::generate_key_frame(
   self : RTCRtpScriptTransformer,
-) -> Promise[Unit] =
-  #| (self) => self.generateKeyFrame()
+) -> Promise[Result[Unit, RTCRtpScriptTransformerGenerateKeyFrameError]] =
+  #| (self) => self.generateKeyFrame().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_rtp_script_transformer_generate_key_frame_error(e) }))
 
 ///|
 pub extern "js" fn RTCRtpScriptTransformer::generate_key_frame_with_rid(
   self : RTCRtpScriptTransformer,
   rid : String,
-) -> Promise[Unit] =
-  #| (self, rid) => self.generateKeyFrame(rid)
+) -> Promise[Result[Unit, RTCRtpScriptTransformerGenerateKeyFrameError]] =
+  #| (self, rid) => self.generateKeyFrame(rid).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_rtp_script_transformer_generate_key_frame_error(e) }))
 
 ///|
 pub extern "js" fn RTCRtpScriptTransformer::send_key_frame_request(
   self : RTCRtpScriptTransformer,
-) -> Promise[Unit] =
-  #| (self) => self.sendKeyFrameRequest()
+) -> Promise[Result[Unit, RTCRtpScriptTransformerSendKeyFrameRequestError]] =
+  #| (self) => self.sendKeyFrameRequest().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_rtc_rtp_script_transformer_send_key_frame_request_error(e) }))
 
 ///|
 pub extern "js" fn RTCRtpScriptTransformer::get_writable(
@@ -1484,17 +1577,17 @@ pub extern "js" fn RTCRtpScriptTransformer::get_writable(
   #| (self) => self.writable
 
 ///|
-pub extern "js" fn RTCRtpScriptTransformer::get_onkeyframerequest(
-  self : RTCRtpScriptTransformer,
-) -> EventHandler =
-  #| (self) => self.onkeyframerequest
-
-///|
 pub extern "js" fn RTCRtpScriptTransformer::set_onkeyframerequest(
   self : RTCRtpScriptTransformer,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onkeyframerequest = value }
+  #| (self, handler) => { self.onkeyframerequest = (e) => handler(e) }
+
+///|
+pub extern "js" fn RTCRtpScriptTransformer::clear_onkeyframerequest(
+  self : RTCRtpScriptTransformer,
+) -> Unit =
+  #| (self) => { self.onkeyframerequest = null }
 
 ///|
 pub extern "js" fn RTCRtpScriptTransformer::get_options(

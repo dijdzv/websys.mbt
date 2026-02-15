@@ -407,18 +407,44 @@ pub extern "js" fn RelativeOrientationSensor::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn RelativeOrientationSensor::new() -> RelativeOrientationSensor =
-  #| () => new RelativeOrientationSensor()
+/// Error type for throwing methods
+pub(all) enum RelativeOrientationSensorConstructorError {
+  SecurityError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_relative_orientation_sensor_constructor_error(
+  e : JsError,
+) -> RelativeOrientationSensorConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+pub extern "js" fn RelativeOrientationSensor::new() -> Result[
+  RelativeOrientationSensor,
+  RelativeOrientationSensorConstructorError,
+] =
+  #| () => (() => { try { return { $tag: 0, _0: new RelativeOrientationSensor() }; } catch(e) { return { $tag: 1, _0: classify_relative_orientation_sensor_constructor_error(e) }; } })()
 
 ///|
 extern "js" fn RelativeOrientationSensor::new_with_sensor_options_ffi(
   sensor_options : JsValue,
-) -> RelativeOrientationSensor =
-  #| (sensor_options) => new RelativeOrientationSensor(sensor_options)
+) -> Result[
+  RelativeOrientationSensor,
+  RelativeOrientationSensorConstructorError,
+] =
+  #| (sensor_options) => (() => { try { return { $tag: 0, _0: new RelativeOrientationSensor(sensor_options) }; } catch(e) { return { $tag: 1, _0: classify_relative_orientation_sensor_constructor_error(e) }; } })()
 
 ///|
 pub fn RelativeOrientationSensor::new_with_sensor_options(
   sensor_options : OrientationSensorOptions,
-) -> RelativeOrientationSensor {
+) -> Result[
+  RelativeOrientationSensor,
+  RelativeOrientationSensorConstructorError,
+] {
   RelativeOrientationSensor::new_with_sensor_options_ffi(sensor_options.to_js())
 }

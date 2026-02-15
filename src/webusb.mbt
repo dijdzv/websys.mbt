@@ -570,23 +570,26 @@ pub extern "js" fn USB::to_event_target(self : USB) -> EventTarget =
   #| (self) => self
 
 ///|
-pub extern "js" fn USB::get_onconnect(self : USB) -> EventHandler =
-  #| (self) => self.onconnect
+pub extern "js" fn USB::set_onconnect(
+  self : USB,
+  handler : (USBConnectionEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onconnect = (e) => handler(e) }
 
 ///|
-pub extern "js" fn USB::set_onconnect(self : USB, value : EventHandler) -> Unit =
-  #| (self, value) => { self.onconnect = value }
-
-///|
-pub extern "js" fn USB::get_ondisconnect(self : USB) -> EventHandler =
-  #| (self) => self.ondisconnect
+pub extern "js" fn USB::clear_onconnect(self : USB) -> Unit =
+  #| (self) => { self.onconnect = null }
 
 ///|
 pub extern "js" fn USB::set_ondisconnect(
   self : USB,
-  value : EventHandler,
+  handler : (USBConnectionEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ondisconnect = value }
+  #| (self, handler) => { self.ondisconnect = (e) => handler(e) }
+
+///|
+pub extern "js" fn USB::clear_ondisconnect(self : USB) -> Unit =
+  #| (self) => { self.ondisconnect = null }
 
 ///|
 pub extern "js" fn USB::get_devices(self : USB) -> Promise[Array[USBDevice]] =

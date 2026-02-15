@@ -561,14 +561,34 @@ pub extern "js" fn JsValue::to_sanitizer(self : JsValue) -> Sanitizer =
   #| (self) => self
 
 ///|
-pub extern "js" fn Sanitizer::new() -> Sanitizer =
-  #| () => new Sanitizer()
+/// Error type for throwing methods
+pub(all) enum SanitizerConstructorError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_sanitizer_constructor_error(
+  e : JsError,
+) -> SanitizerConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+pub extern "js" fn Sanitizer::new() -> Result[
+  Sanitizer,
+  SanitizerConstructorError,
+] =
+  #| () => (() => { try { return { $tag: 0, _0: new Sanitizer() }; } catch(e) { return { $tag: 1, _0: classify_sanitizer_constructor_error(e) }; } })()
 
 ///|
 pub extern "js" fn Sanitizer::new_with_configuration(
   configuration : SanitizerConfigOrSanitizerPresets,
-) -> Sanitizer =
-  #| (configuration) => new Sanitizer(configuration)
+) -> Result[Sanitizer, SanitizerConstructorError] =
+  #| (configuration) => (() => { try { return { $tag: 0, _0: new Sanitizer(configuration) }; } catch(e) { return { $tag: 1, _0: classify_sanitizer_constructor_error(e) }; } })()
 
 ///|
 pub extern "js" fn Sanitizer::get(self : Sanitizer) -> SanitizerConfig =

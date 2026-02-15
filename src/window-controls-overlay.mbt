@@ -110,17 +110,17 @@ pub extern "js" fn WindowControlsOverlay::get_titlebar_area_rect(
   #| (self) => self.getTitlebarAreaRect()
 
 ///|
-pub extern "js" fn WindowControlsOverlay::get_ongeometrychange(
-  self : WindowControlsOverlay,
-) -> EventHandler =
-  #| (self) => self.ongeometrychange
-
-///|
 pub extern "js" fn WindowControlsOverlay::set_ongeometrychange(
   self : WindowControlsOverlay,
-  value : EventHandler,
+  handler : (WindowControlsOverlayGeometryChangeEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ongeometrychange = value }
+  #| (self, handler) => { self.ongeometrychange = (e) => handler(e) }
+
+///|
+pub extern "js" fn WindowControlsOverlay::clear_ongeometrychange(
+  self : WindowControlsOverlay,
+) -> Unit =
+  #| (self) => { self.ongeometrychange = null }
 
 ///|
 /// WindowControlsOverlayGeometryChangeEvent interface

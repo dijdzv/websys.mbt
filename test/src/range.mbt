@@ -8,7 +8,7 @@ fn test_range() -> Unit {
   // Create a range
   let range = @websys.Range::new()
   range.set_start(text.to_node(), 0)
-  range.set_end(text.to_node(), 5)
+  range.set_end(text.to_node(), 5).unwrap()
   // commonAncestorContainer
   let ancestor = range.get_common_ancestor_container()
   assert_eq(ancestor.get_node_name(), "#text", label="commonAncestorContainer")

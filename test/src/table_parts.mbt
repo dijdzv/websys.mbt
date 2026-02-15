@@ -17,7 +17,7 @@ fn test_table_section() -> Unit {
   let rows = section.get_rows()
   assert_eq(rows.get_length(), 0, label="rows initially empty")
   // insertRow
-  let row = section.insert_row()
+  let row = section.insert_row().unwrap()
   assert_eq(section.get_rows().get_length(), 1, label="rows after insert")
   ignore(row)
 }
@@ -85,17 +85,17 @@ fn test_table_full() -> Unit {
   caption.to_html_element().set_inner_text("Test Table")
   // Create thead
   let thead = table.create_t_head()
-  let header_row = thead.insert_row()
-  let th1 = header_row.insert_cell()
+  let header_row = thead.insert_row().unwrap()
+  let th1 = header_row.insert_cell().unwrap()
   th1.to_html_element().set_inner_text("Name")
-  let th2 = header_row.insert_cell()
+  let th2 = header_row.insert_cell().unwrap()
   th2.to_html_element().set_inner_text("Age")
   // Create tbody
   let tbody = table.create_t_body()
-  let row1 = tbody.insert_row()
-  let td1 = row1.insert_cell()
+  let row1 = tbody.insert_row().unwrap()
+  let td1 = row1.insert_cell().unwrap()
   td1.to_html_element().set_inner_text("Alice")
-  let td2 = row1.insert_cell()
+  let td2 = row1.insert_cell().unwrap()
   td2.to_html_element().set_inner_text("30")
   // Verify structure
   assert_eq(thead.get_rows().get_length(), 1, label="thead rows")

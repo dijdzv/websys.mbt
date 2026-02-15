@@ -97,7 +97,7 @@ fn test_script_element() -> Unit {
     doc.create_element("script").to_js_value(),
   )
   // src is a URL-reflected attribute: getter returns absolute URL per HTML spec
-  script.set_src("https://cdn.example.com/app.js")
+  script.set_src("https://cdn.example.com/app.js").unwrap()
   assert_eq(script.get_src(), "https://cdn.example.com/app.js", label="src")
   script.set_type("module")
   assert_eq(script.get_type(), "module", label="type")
@@ -114,7 +114,7 @@ fn test_script_element() -> Unit {
   script.set_no_module(true)
   assert_true(script.get_no_module(), label="noModule set")
   // text
-  script.set_text("console.log('hello')")
+  script.set_text("console.log('hello')").unwrap()
   assert_eq(script.get_text(), "console.log('hello')", label="text")
   // integrity
   script.set_integrity("sha384-xyz")

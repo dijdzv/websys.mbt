@@ -8,7 +8,7 @@ pub fn test_css_style_sheet() -> Unit {
   let sheet = @websys.CSSStyleSheet::new()
 
   // insertRule — returns index
-  let idx = sheet.insert_rule("body { color: red; }")
+  let idx = sheet.insert_rule("body { color: red; }").unwrap()
   assert_eq(idx, 0, label="insertRule returns 0")
 
   // cssRules — length should be 1
@@ -16,7 +16,7 @@ pub fn test_css_style_sheet() -> Unit {
   assert_eq(rules.get_length(), 1, label="cssRules length")
 
   // Insert another rule at index 1
-  let idx2 = sheet.insert_rule_with_index("p { margin: 0; }", 1)
+  let idx2 = sheet.insert_rule_with_index("p { margin: 0; }", 1).unwrap()
   assert_eq(idx2, 1, label="insertRule at index 1")
   assert_eq(
     sheet.get_css_rules().get_length(),
@@ -33,7 +33,7 @@ pub fn test_css_style_sheet() -> Unit {
   )
 
   // replaceSync — replaces all rules
-  sheet.replace_sync(".foo { display: none; }")
+  sheet.replace_sync(".foo { display: none; }").unwrap()
   assert_eq(
     sheet.get_css_rules().get_length(),
     1,
@@ -46,7 +46,7 @@ pub fn test_css_style_sheet() -> Unit {
 /// Test CSSRule properties.
 pub fn test_css_rule() -> Unit {
   let sheet = @websys.CSSStyleSheet::new()
-  let _ = sheet.insert_rule("div { color: blue; }")
+  let _ = sheet.insert_rule("div { color: blue; }").unwrap()
   let rules = sheet.get_css_rules()
 
   // Get first rule
@@ -108,7 +108,7 @@ pub fn test_media_list() -> Unit {
   assert_eq(media.get_length(), 2, label="media length after append")
 
   // deleteMedium
-  media.delete_medium("screen")
+  media.delete_medium("screen").unwrap()
   assert_eq(media.get_length(), 1, label="media length after delete")
 
   // mediaText

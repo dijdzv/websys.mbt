@@ -76,6 +76,23 @@ pub extern "js" fn JsValue::to_media_list(self : JsValue) -> MediaList =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum MediaListDeleteMediumError {
+  NotFoundError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_media_list_delete_medium_error(
+  e : JsError,
+) -> MediaListDeleteMediumError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn MediaList::get_media_text(self : MediaList) -> String =
   #| (self) => self.mediaText
 
@@ -110,8 +127,8 @@ pub extern "js" fn MediaList::append_medium(
 pub extern "js" fn MediaList::delete_medium(
   self : MediaList,
   medium : String,
-) -> Unit =
-  #| (self, medium) => self.deleteMedium(medium)
+) -> Result[Unit, MediaListDeleteMediumError] =
+  #| (self, medium) => (() => { try { self.deleteMedium(medium); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_media_list_delete_medium_error(e) }; } })()
 
 ///|
 /// StyleSheet interface
@@ -225,6 +242,63 @@ pub extern "js" fn CSSStyleSheet::to_style_sheet(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum CSSStyleSheetInsertRuleError {
+  SyntaxError(JsError)
+  IndexSizeError(JsError)
+  InvalidStateError(JsError)
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_css_style_sheet_insert_rule_error(
+  e : JsError,
+) -> CSSStyleSheetInsertRuleError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
+  #|   if (n === 'IndexSizeError') return { $tag: 1, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
+  #|   if (n === 'HierarchyRequestError') return { $tag: 3, _0: e };
+  #|   return { $tag: 4, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum CSSStyleSheetReplaceError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_css_style_sheet_replace_error(
+  e : JsError,
+) -> CSSStyleSheetReplaceError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum CSSStyleSheetReplaceSyncError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_css_style_sheet_replace_sync_error(
+  e : JsError,
+) -> CSSStyleSheetReplaceSyncError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn CSSStyleSheet::new() -> CSSStyleSheet =
   #| () => new CSSStyleSheet()
 
@@ -257,16 +331,16 @@ pub extern "js" fn CSSStyleSheet::get_css_rules(
 pub extern "js" fn CSSStyleSheet::insert_rule(
   self : CSSStyleSheet,
   rule : String,
-) -> Int =
-  #| (self, rule) => self.insertRule(rule)
+) -> Result[Int, CSSStyleSheetInsertRuleError] =
+  #| (self, rule) => (() => { try { return { $tag: 0, _0: self.insertRule(rule) }; } catch(e) { return { $tag: 1, _0: classify_css_style_sheet_insert_rule_error(e) }; } })()
 
 ///|
 pub extern "js" fn CSSStyleSheet::insert_rule_with_index(
   self : CSSStyleSheet,
   rule : String,
   index : Int,
-) -> Int =
-  #| (self, rule, index) => self.insertRule(rule, index)
+) -> Result[Int, CSSStyleSheetInsertRuleError] =
+  #| (self, rule, index) => (() => { try { return { $tag: 0, _0: self.insertRule(rule, index) }; } catch(e) { return { $tag: 1, _0: classify_css_style_sheet_insert_rule_error(e) }; } })()
 
 ///|
 pub extern "js" fn CSSStyleSheet::delete_rule(
@@ -279,15 +353,15 @@ pub extern "js" fn CSSStyleSheet::delete_rule(
 pub extern "js" fn CSSStyleSheet::replace(
   self : CSSStyleSheet,
   text : String,
-) -> Promise[CSSStyleSheet] =
-  #| (self, text) => self.replace(text)
+) -> Promise[Result[CSSStyleSheet, CSSStyleSheetReplaceError]] =
+  #| (self, text) => self.replace(text).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_css_style_sheet_replace_error(e) }))
 
 ///|
 pub extern "js" fn CSSStyleSheet::replace_sync(
   self : CSSStyleSheet,
   text : String,
-) -> Unit =
-  #| (self, text) => self.replaceSync(text)
+) -> Result[Unit, CSSStyleSheetReplaceSyncError] =
+  #| (self, text) => (() => { try { self.replaceSync(text); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_css_style_sheet_replace_sync_error(e) }; } })()
 
 ///|
 pub extern "js" fn CSSStyleSheet::get_rules(
@@ -296,6 +370,7 @@ pub extern "js" fn CSSStyleSheet::get_rules(
   #| (self) => self.rules
 
 ///|
+/// @alert deprecated "addRule is deprecated"
 pub extern "js" fn CSSStyleSheet::add_rule(self : CSSStyleSheet) -> Int =
   #| (self) => self.addRule()
 
@@ -309,6 +384,7 @@ pub extern "js" fn CSSStyleSheet::add_rule_with_index(
   #| (self, selector, style, index) => self.addRule(selector, style, index)
 
 ///|
+/// @alert deprecated "removeRule is deprecated"
 pub extern "js" fn CSSStyleSheet::remove_rule(self : CSSStyleSheet) -> Unit =
   #| (self) => self.removeRule()
 
@@ -943,6 +1019,44 @@ pub extern "js" fn CSSGroupingRule::as_css_starting_style_rule(
   #| (self) => (self instanceof CSSStartingStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Error type for throwing methods
+pub(all) enum CSSGroupingRuleInsertRuleError {
+  IndexSizeError(JsError)
+  HierarchyRequestError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_css_grouping_rule_insert_rule_error(
+  e : JsError,
+) -> CSSGroupingRuleInsertRuleError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
+  #|   if (n === 'HierarchyRequestError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum CSSGroupingRuleDeleteRuleError {
+  IndexSizeError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_css_grouping_rule_delete_rule_error(
+  e : JsError,
+) -> CSSGroupingRuleDeleteRuleError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'IndexSizeError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
 pub extern "js" fn CSSGroupingRule::get_css_rules(
   self : CSSGroupingRule,
 ) -> CSSRuleList =
@@ -952,23 +1066,23 @@ pub extern "js" fn CSSGroupingRule::get_css_rules(
 pub extern "js" fn CSSGroupingRule::insert_rule(
   self : CSSGroupingRule,
   rule : String,
-) -> Int =
-  #| (self, rule) => self.insertRule(rule)
+) -> Result[Int, CSSGroupingRuleInsertRuleError] =
+  #| (self, rule) => (() => { try { return { $tag: 0, _0: self.insertRule(rule) }; } catch(e) { return { $tag: 1, _0: classify_css_grouping_rule_insert_rule_error(e) }; } })()
 
 ///|
 pub extern "js" fn CSSGroupingRule::insert_rule_with_index(
   self : CSSGroupingRule,
   rule : String,
   index : Int,
-) -> Int =
-  #| (self, rule, index) => self.insertRule(rule, index)
+) -> Result[Int, CSSGroupingRuleInsertRuleError] =
+  #| (self, rule, index) => (() => { try { return { $tag: 0, _0: self.insertRule(rule, index) }; } catch(e) { return { $tag: 1, _0: classify_css_grouping_rule_insert_rule_error(e) }; } })()
 
 ///|
 pub extern "js" fn CSSGroupingRule::delete_rule(
   self : CSSGroupingRule,
   index : Int,
-) -> Unit =
-  #| (self, index) => self.deleteRule(index)
+) -> Result[Unit, CSSGroupingRuleDeleteRuleError] =
+  #| (self, index) => (() => { try { self.deleteRule(index); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_css_grouping_rule_delete_rule_error(e) }; } })()
 
 ///|
 /// CSSPageDescriptors interface
@@ -1357,6 +1471,57 @@ pub extern "js" fn CSSStyleDeclaration::as_css_font_face_descriptors(
   #| (self) => (self instanceof CSSFontFaceDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Error type for throwing methods
+pub(all) enum CSSStyleDeclarationItemError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_css_style_declaration_item_error(
+  e : JsError,
+) -> CSSStyleDeclarationItemError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum CSSStyleDeclarationSetPropertyError {
+  NoModificationAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_css_style_declaration_set_property_error(
+  e : JsError,
+) -> CSSStyleDeclarationSetPropertyError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum CSSStyleDeclarationRemovePropertyError {
+  NoModificationAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_css_style_declaration_remove_property_error(
+  e : JsError,
+) -> CSSStyleDeclarationRemovePropertyError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn CSSStyleDeclaration::get_css_text(
   self : CSSStyleDeclaration,
 ) -> String =
@@ -1379,16 +1544,16 @@ pub extern "js" fn CSSStyleDeclaration::get_length(
 pub extern "js" fn CSSStyleDeclaration::item(
   self : CSSStyleDeclaration,
   index : Int,
-) -> String =
-  #| (self, index) => self.item(index)
+) -> Result[String, CSSStyleDeclarationItemError] =
+  #| (self, index) => (() => { try { return { $tag: 0, _0: self.item(index) }; } catch(e) { return { $tag: 1, _0: classify_css_style_declaration_item_error(e) }; } })()
 
 ///|
 #alias("_[_]")
 pub extern "js" fn CSSStyleDeclaration::get(
   self : CSSStyleDeclaration,
   index : Int,
-) -> String =
-  #| (self, index) => self[index]
+) -> Result[String, CSSStyleDeclarationItemError] =
+  #| (self, index) => (() => { try { return { $tag: 0, _0: self[index] }; } catch(e) { return { $tag: 1, _0: classify_css_style_declaration_item_error(e) }; } })()
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::get_property_value(
@@ -1409,8 +1574,8 @@ pub extern "js" fn CSSStyleDeclaration::set_property(
   self : CSSStyleDeclaration,
   property : String,
   value : String,
-) -> Unit =
-  #| (self, property, value) => self.setProperty(property, value)
+) -> Result[Unit, CSSStyleDeclarationSetPropertyError] =
+  #| (self, property, value) => (() => { try { self.setProperty(property, value); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_css_style_declaration_set_property_error(e) }; } })()
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::set_property_with_priority(
@@ -1418,15 +1583,15 @@ pub extern "js" fn CSSStyleDeclaration::set_property_with_priority(
   property : String,
   value : String,
   priority : String,
-) -> Unit =
-  #| (self, property, value, priority) => self.setProperty(property, value, priority)
+) -> Result[Unit, CSSStyleDeclarationSetPropertyError] =
+  #| (self, property, value, priority) => (() => { try { self.setProperty(property, value, priority); return { $tag: 0, _0: undefined }; } catch(e) { return { $tag: 1, _0: classify_css_style_declaration_set_property_error(e) }; } })()
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::remove_property(
   self : CSSStyleDeclaration,
   property : String,
-) -> String =
-  #| (self, property) => self.removeProperty(property)
+) -> Result[String, CSSStyleDeclarationRemovePropertyError] =
+  #| (self, property) => (() => { try { return { $tag: 0, _0: self.removeProperty(property) }; } catch(e) { return { $tag: 1, _0: classify_css_style_declaration_remove_property_error(e) }; } })()
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::get_parent_rule(

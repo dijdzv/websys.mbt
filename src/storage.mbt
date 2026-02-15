@@ -77,28 +77,98 @@ pub extern "js" fn JsValue::to_storage_manager(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum StorageManagerPersistedError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_storage_manager_persisted_error(
+  e : JsError,
+) -> StorageManagerPersistedError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum StorageManagerPersistError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_storage_manager_persist_error(
+  e : JsError,
+) -> StorageManagerPersistError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum StorageManagerEstimateError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_storage_manager_estimate_error(
+  e : JsError,
+) -> StorageManagerEstimateError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum StorageManagerGetDirectoryError {
+  UnknownError(JsError)
+  SecurityError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_storage_manager_get_directory_error(
+  e : JsError,
+) -> StorageManagerGetDirectoryError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'UnknownError') return { $tag: 0, _0: e };
+  #|   if (n === 'SecurityError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
 pub extern "js" fn StorageManager::persisted(
   self : StorageManager,
-) -> Promise[Bool] =
-  #| (self) => self.persisted()
+) -> Promise[Result[Bool, StorageManagerPersistedError]] =
+  #| (self) => self.persisted().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_storage_manager_persisted_error(e) }))
 
 ///|
 pub extern "js" fn StorageManager::persist(
   self : StorageManager,
-) -> Promise[Bool] =
-  #| (self) => self.persist()
+) -> Promise[Result[Bool, StorageManagerPersistError]] =
+  #| (self) => self.persist().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_storage_manager_persist_error(e) }))
 
 ///|
 pub extern "js" fn StorageManager::estimate(
   self : StorageManager,
-) -> Promise[StorageEstimate] =
+) -> Promise[Result[StorageEstimate, StorageManagerEstimateError]] =
   #| (self) => self.estimate().then(v => ({
   #|   usage: v.usage,
   #|   quota: v.quota
-  #| }))
+  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_storage_manager_estimate_error(e) }))
 
 ///|
 pub extern "js" fn StorageManager::get_directory(
   self : StorageManager,
-) -> Promise[FileSystemDirectoryHandle] =
-  #| (self) => self.getDirectory()
+) -> Promise[Result[FileSystemDirectoryHandle, StorageManagerGetDirectoryError]] =
+  #| (self) => self.getDirectory().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_storage_manager_get_directory_error(e) }))

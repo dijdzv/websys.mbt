@@ -851,23 +851,61 @@ pub extern "js" fn Bluetooth::to_event_target(self : Bluetooth) -> EventTarget =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum BluetoothGetDevicesError {
+  SecurityError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_bluetooth_get_devices_error(
+  e : JsError,
+) -> BluetoothGetDevicesError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum BluetoothRequestDeviceError {
+  TypeError(JsError)
+  NotFoundError(JsError)
+  SecurityError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_bluetooth_request_device_error(
+  e : JsError,
+) -> BluetoothRequestDeviceError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
+  #|   if (n === 'SecurityError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
 pub extern "js" fn Bluetooth::get_availability(
   self : Bluetooth,
 ) -> Promise[Bool] =
   #| (self) => self.getAvailability()
 
 ///|
-pub extern "js" fn Bluetooth::get_onavailabilitychanged(
-  self : Bluetooth,
-) -> EventHandler =
-  #| (self) => self.onavailabilitychanged
-
-///|
 pub extern "js" fn Bluetooth::set_onavailabilitychanged(
   self : Bluetooth,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onavailabilitychanged = value }
+  #| (self, handler) => { self.onavailabilitychanged = (e) => handler(e) }
+
+///|
+pub extern "js" fn Bluetooth::clear_onavailabilitychanged(
+  self : Bluetooth,
+) -> Unit =
+  #| (self) => { self.onavailabilitychanged = null }
 
 ///|
 pub extern "js" fn Bluetooth::get_referring_device(
@@ -878,27 +916,27 @@ pub extern "js" fn Bluetooth::get_referring_device(
 ///|
 pub extern "js" fn Bluetooth::get_devices(
   self : Bluetooth,
-) -> Promise[Array[BluetoothDevice]] =
-  #| (self) => self.getDevices()
+) -> Promise[Result[Array[BluetoothDevice], BluetoothGetDevicesError]] =
+  #| (self) => self.getDevices().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_bluetooth_get_devices_error(e) }))
 
 ///|
 pub extern "js" fn Bluetooth::request_device(
   self : Bluetooth,
-) -> Promise[BluetoothDevice] =
-  #| (self) => self.requestDevice()
+) -> Promise[Result[BluetoothDevice, BluetoothRequestDeviceError]] =
+  #| (self) => self.requestDevice().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_bluetooth_request_device_error(e) }))
 
 ///|
 extern "js" fn Bluetooth::request_device_with_options_ffi(
   self : Bluetooth,
   options : JsValue,
-) -> Promise[BluetoothDevice] =
-  #| (self, options) => self.requestDevice(options)
+) -> Promise[Result[BluetoothDevice, BluetoothRequestDeviceError]] =
+  #| (self, options) => self.requestDevice(options).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_bluetooth_request_device_error(e) }))
 
 ///|
 pub fn Bluetooth::request_device_with_options(
   self : Bluetooth,
   options : RequestDeviceOptions,
-) -> Promise[BluetoothDevice] {
+) -> Promise[Result[BluetoothDevice, BluetoothRequestDeviceError]] {
   Bluetooth::request_device_with_options_ffi(self, options.to_js())
 }
 
@@ -924,82 +962,76 @@ pub fn Bluetooth::request_le_scan_with_options(
 }
 
 ///|
-pub extern "js" fn Bluetooth::get_onadvertisementreceived(
-  self : Bluetooth,
-) -> EventHandler =
-  #| (self) => self.onadvertisementreceived
-
-///|
 pub extern "js" fn Bluetooth::set_onadvertisementreceived(
   self : Bluetooth,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onadvertisementreceived = value }
+  #| (self, handler) => { self.onadvertisementreceived = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Bluetooth::get_ongattserverdisconnected(
+pub extern "js" fn Bluetooth::clear_onadvertisementreceived(
   self : Bluetooth,
-) -> EventHandler =
-  #| (self) => self.ongattserverdisconnected
+) -> Unit =
+  #| (self) => { self.onadvertisementreceived = null }
 
 ///|
 pub extern "js" fn Bluetooth::set_ongattserverdisconnected(
   self : Bluetooth,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ongattserverdisconnected = value }
+  #| (self, handler) => { self.ongattserverdisconnected = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Bluetooth::get_oncharacteristicvaluechanged(
+pub extern "js" fn Bluetooth::clear_ongattserverdisconnected(
   self : Bluetooth,
-) -> EventHandler =
-  #| (self) => self.oncharacteristicvaluechanged
+) -> Unit =
+  #| (self) => { self.ongattserverdisconnected = null }
 
 ///|
 pub extern "js" fn Bluetooth::set_oncharacteristicvaluechanged(
   self : Bluetooth,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncharacteristicvaluechanged = value }
+  #| (self, handler) => { self.oncharacteristicvaluechanged = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Bluetooth::get_onserviceadded(
+pub extern "js" fn Bluetooth::clear_oncharacteristicvaluechanged(
   self : Bluetooth,
-) -> EventHandler =
-  #| (self) => self.onserviceadded
+) -> Unit =
+  #| (self) => { self.oncharacteristicvaluechanged = null }
 
 ///|
 pub extern "js" fn Bluetooth::set_onserviceadded(
   self : Bluetooth,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onserviceadded = value }
+  #| (self, handler) => { self.onserviceadded = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Bluetooth::get_onservicechanged(
-  self : Bluetooth,
-) -> EventHandler =
-  #| (self) => self.onservicechanged
+pub extern "js" fn Bluetooth::clear_onserviceadded(self : Bluetooth) -> Unit =
+  #| (self) => { self.onserviceadded = null }
 
 ///|
 pub extern "js" fn Bluetooth::set_onservicechanged(
   self : Bluetooth,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onservicechanged = value }
+  #| (self, handler) => { self.onservicechanged = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Bluetooth::get_onserviceremoved(
-  self : Bluetooth,
-) -> EventHandler =
-  #| (self) => self.onserviceremoved
+pub extern "js" fn Bluetooth::clear_onservicechanged(self : Bluetooth) -> Unit =
+  #| (self) => { self.onservicechanged = null }
 
 ///|
 pub extern "js" fn Bluetooth::set_onserviceremoved(
   self : Bluetooth,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onserviceremoved = value }
+  #| (self, handler) => { self.onserviceremoved = (e) => handler(e) }
+
+///|
+pub extern "js" fn Bluetooth::clear_onserviceremoved(self : Bluetooth) -> Unit =
+  #| (self) => { self.onserviceremoved = null }
 
 ///|
 /// BluetoothPermissionResult interface
@@ -1211,82 +1243,82 @@ pub extern "js" fn BluetoothDevice::get_watching_advertisements(
   #| (self) => self.watchingAdvertisements
 
 ///|
-pub extern "js" fn BluetoothDevice::get_onadvertisementreceived(
-  self : BluetoothDevice,
-) -> EventHandler =
-  #| (self) => self.onadvertisementreceived
-
-///|
 pub extern "js" fn BluetoothDevice::set_onadvertisementreceived(
   self : BluetoothDevice,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onadvertisementreceived = value }
+  #| (self, handler) => { self.onadvertisementreceived = (e) => handler(e) }
 
 ///|
-pub extern "js" fn BluetoothDevice::get_ongattserverdisconnected(
+pub extern "js" fn BluetoothDevice::clear_onadvertisementreceived(
   self : BluetoothDevice,
-) -> EventHandler =
-  #| (self) => self.ongattserverdisconnected
+) -> Unit =
+  #| (self) => { self.onadvertisementreceived = null }
 
 ///|
 pub extern "js" fn BluetoothDevice::set_ongattserverdisconnected(
   self : BluetoothDevice,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.ongattserverdisconnected = value }
+  #| (self, handler) => { self.ongattserverdisconnected = (e) => handler(e) }
 
 ///|
-pub extern "js" fn BluetoothDevice::get_oncharacteristicvaluechanged(
+pub extern "js" fn BluetoothDevice::clear_ongattserverdisconnected(
   self : BluetoothDevice,
-) -> EventHandler =
-  #| (self) => self.oncharacteristicvaluechanged
+) -> Unit =
+  #| (self) => { self.ongattserverdisconnected = null }
 
 ///|
 pub extern "js" fn BluetoothDevice::set_oncharacteristicvaluechanged(
   self : BluetoothDevice,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncharacteristicvaluechanged = value }
+  #| (self, handler) => { self.oncharacteristicvaluechanged = (e) => handler(e) }
 
 ///|
-pub extern "js" fn BluetoothDevice::get_onserviceadded(
+pub extern "js" fn BluetoothDevice::clear_oncharacteristicvaluechanged(
   self : BluetoothDevice,
-) -> EventHandler =
-  #| (self) => self.onserviceadded
+) -> Unit =
+  #| (self) => { self.oncharacteristicvaluechanged = null }
 
 ///|
 pub extern "js" fn BluetoothDevice::set_onserviceadded(
   self : BluetoothDevice,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onserviceadded = value }
+  #| (self, handler) => { self.onserviceadded = (e) => handler(e) }
 
 ///|
-pub extern "js" fn BluetoothDevice::get_onservicechanged(
+pub extern "js" fn BluetoothDevice::clear_onserviceadded(
   self : BluetoothDevice,
-) -> EventHandler =
-  #| (self) => self.onservicechanged
+) -> Unit =
+  #| (self) => { self.onserviceadded = null }
 
 ///|
 pub extern "js" fn BluetoothDevice::set_onservicechanged(
   self : BluetoothDevice,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onservicechanged = value }
+  #| (self, handler) => { self.onservicechanged = (e) => handler(e) }
 
 ///|
-pub extern "js" fn BluetoothDevice::get_onserviceremoved(
+pub extern "js" fn BluetoothDevice::clear_onservicechanged(
   self : BluetoothDevice,
-) -> EventHandler =
-  #| (self) => self.onserviceremoved
+) -> Unit =
+  #| (self) => { self.onservicechanged = null }
 
 ///|
 pub extern "js" fn BluetoothDevice::set_onserviceremoved(
   self : BluetoothDevice,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onserviceremoved = value }
+  #| (self, handler) => { self.onserviceremoved = (e) => handler(e) }
+
+///|
+pub extern "js" fn BluetoothDevice::clear_onserviceremoved(
+  self : BluetoothDevice,
+) -> Unit =
+  #| (self) => { self.onserviceremoved = null }
 
 ///|
 /// BluetoothManufacturerDataMap interface
@@ -1712,56 +1744,56 @@ pub extern "js" fn BluetoothRemoteGATTService::get_included_services_with_servic
   #| (self, service) => self.getIncludedServices(service)
 
 ///|
-pub extern "js" fn BluetoothRemoteGATTService::get_oncharacteristicvaluechanged(
-  self : BluetoothRemoteGATTService,
-) -> EventHandler =
-  #| (self) => self.oncharacteristicvaluechanged
-
-///|
 pub extern "js" fn BluetoothRemoteGATTService::set_oncharacteristicvaluechanged(
   self : BluetoothRemoteGATTService,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncharacteristicvaluechanged = value }
+  #| (self, handler) => { self.oncharacteristicvaluechanged = (e) => handler(e) }
 
 ///|
-pub extern "js" fn BluetoothRemoteGATTService::get_onserviceadded(
+pub extern "js" fn BluetoothRemoteGATTService::clear_oncharacteristicvaluechanged(
   self : BluetoothRemoteGATTService,
-) -> EventHandler =
-  #| (self) => self.onserviceadded
+) -> Unit =
+  #| (self) => { self.oncharacteristicvaluechanged = null }
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTService::set_onserviceadded(
   self : BluetoothRemoteGATTService,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onserviceadded = value }
+  #| (self, handler) => { self.onserviceadded = (e) => handler(e) }
 
 ///|
-pub extern "js" fn BluetoothRemoteGATTService::get_onservicechanged(
+pub extern "js" fn BluetoothRemoteGATTService::clear_onserviceadded(
   self : BluetoothRemoteGATTService,
-) -> EventHandler =
-  #| (self) => self.onservicechanged
+) -> Unit =
+  #| (self) => { self.onserviceadded = null }
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTService::set_onservicechanged(
   self : BluetoothRemoteGATTService,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onservicechanged = value }
+  #| (self, handler) => { self.onservicechanged = (e) => handler(e) }
 
 ///|
-pub extern "js" fn BluetoothRemoteGATTService::get_onserviceremoved(
+pub extern "js" fn BluetoothRemoteGATTService::clear_onservicechanged(
   self : BluetoothRemoteGATTService,
-) -> EventHandler =
-  #| (self) => self.onserviceremoved
+) -> Unit =
+  #| (self) => { self.onservicechanged = null }
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTService::set_onserviceremoved(
   self : BluetoothRemoteGATTService,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onserviceremoved = value }
+  #| (self, handler) => { self.onserviceremoved = (e) => handler(e) }
+
+///|
+pub extern "js" fn BluetoothRemoteGATTService::clear_onserviceremoved(
+  self : BluetoothRemoteGATTService,
+) -> Unit =
+  #| (self) => { self.onserviceremoved = null }
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTService::get_characteristic_with_string(
@@ -1914,6 +1946,7 @@ pub extern "js" fn BluetoothRemoteGATTCharacteristic::read_value(
   #| (self) => self.readValue()
 
 ///|
+/// @alert deprecated "writeValue is deprecated"
 pub extern "js" fn BluetoothRemoteGATTCharacteristic::write_value(
   self : BluetoothRemoteGATTCharacteristic,
   value : BufferSource,
@@ -1947,17 +1980,17 @@ pub extern "js" fn BluetoothRemoteGATTCharacteristic::stop_notifications(
   #| (self) => self.stopNotifications()
 
 ///|
-pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_oncharacteristicvaluechanged(
-  self : BluetoothRemoteGATTCharacteristic,
-) -> EventHandler =
-  #| (self) => self.oncharacteristicvaluechanged
-
-///|
 pub extern "js" fn BluetoothRemoteGATTCharacteristic::set_oncharacteristicvaluechanged(
   self : BluetoothRemoteGATTCharacteristic,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.oncharacteristicvaluechanged = value }
+  #| (self, handler) => { self.oncharacteristicvaluechanged = (e) => handler(e) }
+
+///|
+pub extern "js" fn BluetoothRemoteGATTCharacteristic::clear_oncharacteristicvaluechanged(
+  self : BluetoothRemoteGATTCharacteristic,
+) -> Unit =
+  #| (self) => { self.oncharacteristicvaluechanged = null }
 
 ///|
 pub extern "js" fn BluetoothRemoteGATTCharacteristic::get_descriptor_with_string(
@@ -2235,18 +2268,73 @@ pub extern "js" fn JsValue::to_bluetooth_uuid(self : JsValue) -> BluetoothUUID =
   #| (self) => self
 
 ///|
-pub extern "js" fn BluetoothUUID::get_service(name : StringOrInt) -> UUID =
-  #| (name) => BluetoothUUID.getService(name)
+/// Error type for throwing methods
+pub(all) enum BluetoothUUIDGetServiceError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_bluetooth_uuid_get_service_error(
+  e : JsError,
+) -> BluetoothUUIDGetServiceError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum BluetoothUUIDGetCharacteristicError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_bluetooth_uuid_get_characteristic_error(
+  e : JsError,
+) -> BluetoothUUIDGetCharacteristicError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum BluetoothUUIDGetDescriptorError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_bluetooth_uuid_get_descriptor_error(
+  e : JsError,
+) -> BluetoothUUIDGetDescriptorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+pub extern "js" fn BluetoothUUID::get_service(
+  name : StringOrInt,
+) -> Result[UUID, BluetoothUUIDGetServiceError] =
+  #| (name) => (() => { try { return { $tag: 0, _0: BluetoothUUID.getService(name) }; } catch(e) { return { $tag: 1, _0: classify_bluetooth_uuid_get_service_error(e) }; } })()
 
 ///|
 pub extern "js" fn BluetoothUUID::get_characteristic(
   name : StringOrInt,
-) -> UUID =
-  #| (name) => BluetoothUUID.getCharacteristic(name)
+) -> Result[UUID, BluetoothUUIDGetCharacteristicError] =
+  #| (name) => (() => { try { return { $tag: 0, _0: BluetoothUUID.getCharacteristic(name) }; } catch(e) { return { $tag: 1, _0: classify_bluetooth_uuid_get_characteristic_error(e) }; } })()
 
 ///|
-pub extern "js" fn BluetoothUUID::get_descriptor(name : StringOrInt) -> UUID =
-  #| (name) => BluetoothUUID.getDescriptor(name)
+pub extern "js" fn BluetoothUUID::get_descriptor(
+  name : StringOrInt,
+) -> Result[UUID, BluetoothUUIDGetDescriptorError] =
+  #| (name) => (() => { try { return { $tag: 0, _0: BluetoothUUID.getDescriptor(name) }; } catch(e) { return { $tag: 1, _0: classify_bluetooth_uuid_get_descriptor_error(e) }; } })()
 
 ///|
 pub extern "js" fn BluetoothUUID::canonical_uuid(alias_ : Int) -> UUID =

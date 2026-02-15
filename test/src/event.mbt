@@ -28,7 +28,7 @@ pub fn test_event_target() -> Unit {
 
   // dispatchEvent — Web API: target.dispatchEvent(new Event("test"))
   let event = @websys.Event::new("test")
-  let dispatched = target.dispatch_event(event)
+  let dispatched = target.dispatch_event(event).unwrap()
   assert_true(dispatched, label="dispatchEvent returns true")
   assert_eq(call_count.val, 1, label="listener called once")
 

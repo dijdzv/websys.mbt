@@ -210,26 +210,58 @@ pub extern "js" fn JsValue::to_font_face(self : JsValue) -> FontFace =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum FontFaceConstructorError {
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_font_face_constructor_error(
+  e : JsError,
+) -> FontFaceConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SyntaxError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum FontFaceLoadError {
+  NetworkError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_font_face_load_error(e : JsError) -> FontFaceLoadError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NetworkError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn FontFace::new(
   family : String,
   source : StringOrBufferSource,
-) -> FontFace =
-  #| (family, source) => new FontFace(family, source)
+) -> Result[FontFace, FontFaceConstructorError] =
+  #| (family, source) => (() => { try { return { $tag: 0, _0: new FontFace(family, source) }; } catch(e) { return { $tag: 1, _0: classify_font_face_constructor_error(e) }; } })()
 
 ///|
 extern "js" fn FontFace::new_with_descriptors_ffi(
   family : String,
   source : StringOrBufferSource,
   descriptors : JsValue,
-) -> FontFace =
-  #| (family, source, descriptors) => new FontFace(family, source, descriptors)
+) -> Result[FontFace, FontFaceConstructorError] =
+  #| (family, source, descriptors) => (() => { try { return { $tag: 0, _0: new FontFace(family, source, descriptors) }; } catch(e) { return { $tag: 1, _0: classify_font_face_constructor_error(e) }; } })()
 
 ///|
 pub fn FontFace::new_with_descriptors(
   family : String,
   source : StringOrBufferSource,
   descriptors : FontFaceDescriptors,
-) -> FontFace {
+) -> Result[FontFace, FontFaceConstructorError] {
   FontFace::new_with_descriptors_ffi(family, source, descriptors.to_js())
 }
 
@@ -356,8 +388,10 @@ pub extern "js" fn FontFace::get_status(self : FontFace) -> FontFaceLoadStatus =
   #| (self) => ['unloaded', 'loading', 'loaded', 'error'].indexOf(self.status)
 
 ///|
-pub extern "js" fn FontFace::load(self : FontFace) -> Promise[FontFace] =
-  #| (self) => self.load()
+pub extern "js" fn FontFace::load(
+  self : FontFace,
+) -> Promise[Result[FontFace, FontFaceLoadError]] =
+  #| (self) => self.load().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_font_face_load_error(e) }))
 
 ///|
 pub extern "js" fn FontFace::get_loaded(self : FontFace) -> Promise[FontFace] =
@@ -789,6 +823,23 @@ pub extern "js" fn FontFaceSet::to_event_target(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum FontFaceSetAddError {
+  InvalidModificationError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_font_face_set_add_error(
+  e : JsError,
+) -> FontFaceSetAddError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidModificationError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn FontFaceSet::has(
   self : FontFaceSet,
   value : FontFace,
@@ -814,43 +865,39 @@ pub extern "js" fn FontFaceSet::clear(self : FontFaceSet) -> Unit =
   #| (self) => { self.clear() }
 
 ///|
-pub extern "js" fn FontFaceSet::get_onloading(
-  self : FontFaceSet,
-) -> EventHandler =
-  #| (self) => self.onloading
-
-///|
 pub extern "js" fn FontFaceSet::set_onloading(
   self : FontFaceSet,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onloading = value }
+  #| (self, handler) => { self.onloading = (e) => handler(e) }
 
 ///|
-pub extern "js" fn FontFaceSet::get_onloadingdone(
-  self : FontFaceSet,
-) -> EventHandler =
-  #| (self) => self.onloadingdone
+pub extern "js" fn FontFaceSet::clear_onloading(self : FontFaceSet) -> Unit =
+  #| (self) => { self.onloading = null }
 
 ///|
 pub extern "js" fn FontFaceSet::set_onloadingdone(
   self : FontFaceSet,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onloadingdone = value }
+  #| (self, handler) => { self.onloadingdone = (e) => handler(e) }
 
 ///|
-pub extern "js" fn FontFaceSet::get_onloadingerror(
-  self : FontFaceSet,
-) -> EventHandler =
-  #| (self) => self.onloadingerror
+pub extern "js" fn FontFaceSet::clear_onloadingdone(self : FontFaceSet) -> Unit =
+  #| (self) => { self.onloadingdone = null }
 
 ///|
 pub extern "js" fn FontFaceSet::set_onloadingerror(
   self : FontFaceSet,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onloadingerror = value }
+  #| (self, handler) => { self.onloadingerror = (e) => handler(e) }
+
+///|
+pub extern "js" fn FontFaceSet::clear_onloadingerror(
+  self : FontFaceSet,
+) -> Unit =
+  #| (self) => { self.onloadingerror = null }
 
 ///|
 pub extern "js" fn FontFaceSet::load(

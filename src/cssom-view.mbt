@@ -656,6 +656,7 @@ pub extern "js" fn MediaQueryList::get_matches(self : MediaQueryList) -> Bool =
   #| (self) => self.matches
 
 ///|
+/// @alert deprecated "addListener is deprecated"
 pub extern "js" fn MediaQueryList::add_listener(
   self : MediaQueryList,
   callback : EventListener?,
@@ -663,6 +664,7 @@ pub extern "js" fn MediaQueryList::add_listener(
   #| (self, callback) => self.addListener((callback.$tag === 1 ? callback._0 : null))
 
 ///|
+/// @alert deprecated "removeListener is deprecated"
 pub extern "js" fn MediaQueryList::remove_listener(
   self : MediaQueryList,
   callback : EventListener?,
@@ -670,17 +672,17 @@ pub extern "js" fn MediaQueryList::remove_listener(
   #| (self, callback) => self.removeListener((callback.$tag === 1 ? callback._0 : null))
 
 ///|
-pub extern "js" fn MediaQueryList::get_onchange(
-  self : MediaQueryList,
-) -> EventHandler =
-  #| (self) => self.onchange
-
-///|
 pub extern "js" fn MediaQueryList::set_onchange(
   self : MediaQueryList,
-  value : EventHandler,
+  handler : (MediaQueryListEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onchange = value }
+  #| (self, handler) => { self.onchange = (e) => handler(e) }
+
+///|
+pub extern "js" fn MediaQueryList::clear_onchange(
+  self : MediaQueryList,
+) -> Unit =
+  #| (self) => { self.onchange = null }
 
 ///|
 /// MediaQueryListEvent interface
@@ -827,15 +829,15 @@ pub extern "js" fn Screen::get_is_extended(self : Screen) -> Bool =
   #| (self) => self.isExtended
 
 ///|
-pub extern "js" fn Screen::get_onchange(self : Screen) -> EventHandler =
-  #| (self) => self.onchange
-
-///|
 pub extern "js" fn Screen::set_onchange(
   self : Screen,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onchange = value }
+  #| (self, handler) => { self.onchange = (e) => handler(e) }
+
+///|
+pub extern "js" fn Screen::clear_onchange(self : Screen) -> Unit =
+  #| (self) => { self.onchange = null }
 
 ///|
 /// CaretPosition interface
@@ -960,40 +962,40 @@ pub extern "js" fn VisualViewport::get_scale(self : VisualViewport) -> Double =
   #| (self) => self.scale
 
 ///|
-pub extern "js" fn VisualViewport::get_onresize(
-  self : VisualViewport,
-) -> EventHandler =
-  #| (self) => self.onresize
-
-///|
 pub extern "js" fn VisualViewport::set_onresize(
   self : VisualViewport,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onresize = value }
+  #| (self, handler) => { self.onresize = (e) => handler(e) }
 
 ///|
-pub extern "js" fn VisualViewport::get_onscroll(
+pub extern "js" fn VisualViewport::clear_onresize(
   self : VisualViewport,
-) -> EventHandler =
-  #| (self) => self.onscroll
+) -> Unit =
+  #| (self) => { self.onresize = null }
 
 ///|
 pub extern "js" fn VisualViewport::set_onscroll(
   self : VisualViewport,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onscroll = value }
+  #| (self, handler) => { self.onscroll = (e) => handler(e) }
 
 ///|
-pub extern "js" fn VisualViewport::get_onscrollend(
+pub extern "js" fn VisualViewport::clear_onscroll(
   self : VisualViewport,
-) -> EventHandler =
-  #| (self) => self.onscrollend
+) -> Unit =
+  #| (self) => { self.onscroll = null }
 
 ///|
 pub extern "js" fn VisualViewport::set_onscrollend(
   self : VisualViewport,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onscrollend = value }
+  #| (self, handler) => { self.onscrollend = (e) => handler(e) }
+
+///|
+pub extern "js" fn VisualViewport::clear_onscrollend(
+  self : VisualViewport,
+) -> Unit =
+  #| (self) => { self.onscrollend = null }

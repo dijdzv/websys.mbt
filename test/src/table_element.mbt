@@ -55,7 +55,7 @@ pub fn test_table_element() -> Unit {
   let _row_at = table.insert_row_with_index(0)
 
   // delete_row — Web API: table.deleteRow(index)
-  table.delete_row(0)
+  table.delete_row(0).unwrap()
 
   // deprecated attributes
   table.set_align("left")

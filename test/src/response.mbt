@@ -34,7 +34,7 @@ fn test_response() -> Unit {
 async fn test_response_body() -> Unit {
   let resp = @websys.Response::new()
   // text() returns Promise[String]; empty Response body → ""
-  let text = resp.text().wait()
+  let text = resp.text().wait().unwrap()
   assert_eq(text, "", label="response text empty")
 }
 

@@ -110,30 +110,55 @@ pub extern "js" fn JsValue::to_eye_dropper(self : JsValue) -> EyeDropper =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum EyeDropperOpenError {
+  Promise(JsError)
+  AbortError(JsError)
+  OperationError(JsError)
+  NotAllowedError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_eye_dropper_open_error(
+  e : JsError,
+) -> EyeDropperOpenError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'Promise') return { $tag: 0, _0: e };
+  #|   if (n === 'AbortError') return { $tag: 1, _0: e };
+  #|   if (n === 'OperationError') return { $tag: 2, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 3, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 4, _0: e };
+  #|   return { $tag: 5, _0: e };
+  #| }
+
+///|
 pub extern "js" fn EyeDropper::new() -> EyeDropper =
   #| () => new EyeDropper()
 
 ///|
 pub extern "js" fn EyeDropper::open(
   self : EyeDropper,
-) -> Promise[ColorSelectionResult] =
+) -> Promise[Result[ColorSelectionResult, EyeDropperOpenError]] =
   #| (self) => self.open().then(v => ({
   #|   sRGBHex: v.sRGBHex
-  #| }))
+  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_eye_dropper_open_error(e) }))
 
 ///|
 extern "js" fn EyeDropper::open_with_options_ffi(
   self : EyeDropper,
   options : JsValue,
-) -> Promise[ColorSelectionResult] =
+) -> Promise[Result[ColorSelectionResult, EyeDropperOpenError]] =
   #| (self, options) => self.open(options).then(v => ({
   #|   sRGBHex: v.sRGBHex
-  #| }))
+  #| })).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_eye_dropper_open_error(e) }))
 
 ///|
 pub fn EyeDropper::open_with_options(
   self : EyeDropper,
   options : ColorSelectionOptions,
-) -> Promise[ColorSelectionResult] {
+) -> Promise[Result[ColorSelectionResult, EyeDropperOpenError]] {
   EyeDropper::open_with_options_ffi(self, options.to_js())
 }

@@ -29,7 +29,7 @@ pub fn test_error_null_returns() -> Unit {
   // querySelector for non-matching selector
   let div = doc.create_element("div")
   assert_true(
-    div.query_selector(".no-such-class") is None,
+    div.query_selector(".no-such-class").unwrap() is None,
     label="querySelector returns None",
   )
 
@@ -59,16 +59,16 @@ pub fn test_boundary_values() -> Unit {
   assert_eq(div.get_id(), "", label="empty id")
 
   // Zero-length NodeList
-  let list = div.query_selector_all("span")
+  let list = div.query_selector_all("span").unwrap()
   assert_eq(list.get_length(), 0, label="empty NodeList length")
-  assert_true(list.item(0) is None, label="NodeList item(0) on empty")
+  assert_true(list.item(0).unwrap() is None, label="NodeList item(0) on empty")
 
   // Empty className
   div.set_class_name("")
   assert_eq(div.get_class_name(), "", label="empty className")
 
   // URL with empty components
-  let url = @websys.URL::new("https://example.com")
+  let url = @websys.URL::new("https://example.com").unwrap()
   assert_eq(url.get_pathname(), "/", label="URL default pathname")
   assert_eq(url.get_hash(), "", label="URL empty hash")
   assert_eq(url.get_search(), "", label="URL empty search")

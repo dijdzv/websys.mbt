@@ -443,23 +443,88 @@ pub extern "js" fn JsValue::to_credentials_container(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum CredentialsContainerGetError {
+  AbortError(JsError)
+  NetworkError(JsError)
+  TimeoutError(JsError)
+  SecurityError(JsError)
+  NotAllowedError(JsError)
+  IdentityCredentialError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_credentials_container_get_error(
+  e : JsError,
+) -> CredentialsContainerGetError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'AbortError') return { $tag: 0, _0: e };
+  #|   if (n === 'NetworkError') return { $tag: 1, _0: e };
+  #|   if (n === 'TimeoutError') return { $tag: 2, _0: e };
+  #|   if (n === 'SecurityError') return { $tag: 3, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 4, _0: e };
+  #|   if (n === 'IdentityCredentialError') return { $tag: 5, _0: e };
+  #|   return { $tag: 6, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum CredentialsContainerStoreError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_credentials_container_store_error(
+  e : JsError,
+) -> CredentialsContainerStoreError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum CredentialsContainerCreateError {
+  TypeError(JsError)
+  AbortError(JsError)
+  NotAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_credentials_container_create_error(
+  e : JsError,
+) -> CredentialsContainerCreateError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'AbortError') return { $tag: 1, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
 pub extern "js" fn CredentialsContainer::get(
   self : CredentialsContainer,
-) -> Promise[Credential?] =
-  #| (self) => self.get()
+) -> Promise[Result[Credential?, CredentialsContainerGetError]] =
+  #| (self) => self.get().then(v => { $tag: 0, _0: (() => { const v = v; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }).catch(e => ({ $tag: 1, _0: classify_credentials_container_get_error(e) }))
 
 ///|
 extern "js" fn CredentialsContainer::get_with_options_ffi(
   self : CredentialsContainer,
   options : JsValue,
-) -> Promise[Credential?] =
-  #| (self, options) => self.get(options)
+) -> Promise[Result[Credential?, CredentialsContainerGetError]] =
+  #| (self, options) => self.get(options).then(v => { $tag: 0, _0: (() => { const v = v; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }).catch(e => ({ $tag: 1, _0: classify_credentials_container_get_error(e) }))
 
 ///|
 pub fn CredentialsContainer::get_with_options(
   self : CredentialsContainer,
   options : CredentialRequestOptions,
-) -> Promise[Credential?] {
+) -> Promise[Result[Credential?, CredentialsContainerGetError]] {
   CredentialsContainer::get_with_options_ffi(self, options.to_js())
 }
 
@@ -467,27 +532,27 @@ pub fn CredentialsContainer::get_with_options(
 pub extern "js" fn CredentialsContainer::store(
   self : CredentialsContainer,
   credential : Credential,
-) -> Promise[Unit] =
-  #| (self, credential) => self.store(credential)
+) -> Promise[Result[Unit, CredentialsContainerStoreError]] =
+  #| (self, credential) => self.store(credential).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_credentials_container_store_error(e) }))
 
 ///|
 pub extern "js" fn CredentialsContainer::create(
   self : CredentialsContainer,
-) -> Promise[Credential?] =
-  #| (self) => self.create()
+) -> Promise[Result[Credential?, CredentialsContainerCreateError]] =
+  #| (self) => self.create().then(v => { $tag: 0, _0: (() => { const v = v; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }).catch(e => ({ $tag: 1, _0: classify_credentials_container_create_error(e) }))
 
 ///|
 extern "js" fn CredentialsContainer::create_with_options_ffi(
   self : CredentialsContainer,
   options : JsValue,
-) -> Promise[Credential?] =
-  #| (self, options) => self.create(options)
+) -> Promise[Result[Credential?, CredentialsContainerCreateError]] =
+  #| (self, options) => self.create(options).then(v => { $tag: 0, _0: (() => { const v = v; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }).catch(e => ({ $tag: 1, _0: classify_credentials_container_create_error(e) }))
 
 ///|
 pub fn CredentialsContainer::create_with_options(
   self : CredentialsContainer,
   options : CredentialCreationOptions,
-) -> Promise[Credential?] {
+) -> Promise[Result[Credential?, CredentialsContainerCreateError]] {
   CredentialsContainer::create_with_options_ffi(self, options.to_js())
 }
 
@@ -542,21 +607,38 @@ pub extern "js" fn PasswordCredential::to_credential(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum PasswordCredentialConstructorError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_password_credential_constructor_error(
+  e : JsError,
+) -> PasswordCredentialConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn PasswordCredential::new_with_html_form_element(
   form : HTMLFormElement,
-) -> PasswordCredential =
-  #| (form) => new PasswordCredential(form)
+) -> Result[PasswordCredential, PasswordCredentialConstructorError] =
+  #| (form) => (() => { try { return { $tag: 0, _0: new PasswordCredential(form) }; } catch(e) { return { $tag: 1, _0: classify_password_credential_constructor_error(e) }; } })()
 
 ///|
 extern "js" fn PasswordCredential::new_with_password_credential_data_ffi(
   data : JsValue,
-) -> PasswordCredential =
-  #| (data) => new PasswordCredential(data)
+) -> Result[PasswordCredential, PasswordCredentialConstructorError] =
+  #| (data) => (() => { try { return { $tag: 0, _0: new PasswordCredential(data) }; } catch(e) { return { $tag: 1, _0: classify_password_credential_constructor_error(e) }; } })()
 
 ///|
 pub fn PasswordCredential::new_with_password_credential_data(
   data : PasswordCredentialData,
-) -> PasswordCredential {
+) -> Result[PasswordCredential, PasswordCredentialConstructorError] {
   PasswordCredential::new_with_password_credential_data_ffi(data.to_js())
 }
 

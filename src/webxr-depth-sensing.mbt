@@ -315,6 +315,23 @@ pub extern "js" fn XRCPUDepthInformation::to_xr_depth_information(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum XRCPUDepthInformationGetDepthInMetersError {
+  RangeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_xrcpu_depth_information_get_depth_in_meters_error(
+  e : JsError,
+) -> XRCPUDepthInformationGetDepthInMetersError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn XRCPUDepthInformation::get_data(
   self : XRCPUDepthInformation,
 ) -> ArrayBuffer =
@@ -325,8 +342,8 @@ pub extern "js" fn XRCPUDepthInformation::get_depth_in_meters(
   self : XRCPUDepthInformation,
   x : Double,
   y : Double,
-) -> Double =
-  #| (self, x, y) => self.getDepthInMeters(x, y)
+) -> Result[Double, XRCPUDepthInformationGetDepthInMetersError] =
+  #| (self, x, y) => (() => { try { return { $tag: 0, _0: self.getDepthInMeters(x, y) }; } catch(e) { return { $tag: 1, _0: classify_xrcpu_depth_information_get_depth_in_meters_error(e) }; } })()
 
 ///|
 /// XRWebGLDepthInformation interface

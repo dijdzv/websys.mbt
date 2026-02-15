@@ -710,21 +710,41 @@ pub extern "js" fn QuotaExceededError::to_dom_exception(
   #| (self) => self
 
 ///|
-pub extern "js" fn QuotaExceededError::new() -> QuotaExceededError =
-  #| () => new QuotaExceededError()
+/// Error type for throwing methods
+pub(all) enum QuotaExceededErrorConstructorError {
+  RangeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_quota_exceeded_error_constructor_error(
+  e : JsError,
+) -> QuotaExceededErrorConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'RangeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+pub extern "js" fn QuotaExceededError::new() -> Result[
+  QuotaExceededError,
+  QuotaExceededErrorConstructorError,
+] =
+  #| () => (() => { try { return { $tag: 0, _0: new QuotaExceededError() }; } catch(e) { return { $tag: 1, _0: classify_quota_exceeded_error_constructor_error(e) }; } })()
 
 ///|
 extern "js" fn QuotaExceededError::new_with_options_ffi(
   message : String,
   options : JsValue,
-) -> QuotaExceededError =
-  #| (message, options) => new QuotaExceededError(message, options)
+) -> Result[QuotaExceededError, QuotaExceededErrorConstructorError] =
+  #| (message, options) => (() => { try { return { $tag: 0, _0: new QuotaExceededError(message, options) }; } catch(e) { return { $tag: 1, _0: classify_quota_exceeded_error_constructor_error(e) }; } })()
 
 ///|
 pub fn QuotaExceededError::new_with_options(
   message : String,
   options : QuotaExceededErrorOptions,
-) -> QuotaExceededError {
+) -> Result[QuotaExceededError, QuotaExceededErrorConstructorError] {
   QuotaExceededError::new_with_options_ffi(message, options.to_js())
 }
 

@@ -1040,15 +1040,36 @@ pub extern "js" fn IdentityCredential::to_credential(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum IdentityCredentialDisconnectError {
+  NetworkError(JsError)
+  NotAllowedError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_identity_credential_disconnect_error(
+  e : JsError,
+) -> IdentityCredentialDisconnectError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NetworkError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
 extern "js" fn IdentityCredential::disconnect_ffi(
   options : JsValue,
-) -> Promise[Unit] =
-  #| (options) => IdentityCredential.disconnect(options)
+) -> Promise[Result[Unit, IdentityCredentialDisconnectError]] =
+  #| (options) => IdentityCredential.disconnect(options).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_identity_credential_disconnect_error(e) }))
 
 ///|
 pub fn IdentityCredential::disconnect(
   options : IdentityCredentialDisconnectOptions,
-) -> Promise[Unit] {
+) -> Promise[Result[Unit, IdentityCredentialDisconnectError]] {
   IdentityCredential::disconnect_ffi(options.to_js())
 }
 
@@ -1184,6 +1205,27 @@ pub extern "js" fn JsValue::to_identity_provider(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum IdentityProviderGetUserInfoError {
+  NetworkError(JsError)
+  NotAllowedError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_identity_provider_get_user_info_error(
+  e : JsError,
+) -> IdentityProviderGetUserInfoError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NetworkError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
 pub extern "js" fn IdentityProvider::close() -> Unit =
   #| () => IdentityProvider.close()
 
@@ -1209,12 +1251,12 @@ pub fn IdentityProvider::resolve_with_options(
 ///|
 extern "js" fn IdentityProvider::get_user_info_ffi(
   config : JsValue,
-) -> Promise[Array[IdentityUserInfo]] =
-  #| (config) => IdentityProvider.getUserInfo(config)
+) -> Promise[Result[Array[IdentityUserInfo], IdentityProviderGetUserInfoError]] =
+  #| (config) => IdentityProvider.getUserInfo(config).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_identity_provider_get_user_info_error(e) }))
 
 ///|
 pub fn IdentityProvider::get_user_info(
   config : IdentityProviderConfig,
-) -> Promise[Array[IdentityUserInfo]] {
+) -> Promise[Result[Array[IdentityUserInfo], IdentityProviderGetUserInfoError]] {
   IdentityProvider::get_user_info_ffi(config.to_js())
 }

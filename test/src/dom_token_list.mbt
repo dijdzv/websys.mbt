@@ -7,12 +7,12 @@ fn test_dom_token_list_iteration() -> Unit {
   // length
   assert_eq(classes.get_length(), 4, label="length")
   // item access
-  assert_eq(classes.item(0).unwrap(), "a", label="item(0)")
-  assert_eq(classes.item(1).unwrap(), "b", label="item(1)")
-  assert_eq(classes.item(2).unwrap(), "c", label="item(2)")
-  assert_eq(classes.item(3).unwrap(), "d", label="item(3)")
+  assert_eq(classes.item(0).unwrap().unwrap(), "a", label="item(0)")
+  assert_eq(classes.item(1).unwrap().unwrap(), "b", label="item(1)")
+  assert_eq(classes.item(2).unwrap().unwrap(), "c", label="item(2)")
+  assert_eq(classes.item(3).unwrap().unwrap(), "d", label="item(3)")
   // out of bounds
-  match classes.item(4) {
+  match classes.item(4).unwrap() {
     Some(_) => abort("FAIL: item(4) should be None")
     None => ()
   }

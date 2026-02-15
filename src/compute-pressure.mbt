@@ -150,32 +150,68 @@ pub extern "js" fn JsValue::to_pressure_observer(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum PressureObserverConstructorError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_pressure_observer_constructor_error(
+  e : JsError,
+) -> PressureObserverConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum PressureObserverObserveError {
+  NotAllowedError(JsError)
+  NotSupportedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_pressure_observer_observe_error(
+  e : JsError,
+) -> PressureObserverObserveError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
 pub extern "js" fn PressureObserver::new(
   callback : PressureUpdateCallback,
-) -> PressureObserver =
-  #| (callback) => new PressureObserver(callback)
+) -> Result[PressureObserver, PressureObserverConstructorError] =
+  #| (callback) => (() => { try { return { $tag: 0, _0: new PressureObserver(callback) }; } catch(e) { return { $tag: 1, _0: classify_pressure_observer_constructor_error(e) }; } })()
 
 ///|
 pub extern "js" fn PressureObserver::observe(
   self : PressureObserver,
   source : PressureSource,
-) -> Promise[Unit] =
-  #| (self, source) => self.observe(['cpu'][source])
+) -> Promise[Result[Unit, PressureObserverObserveError]] =
+  #| (self, source) => self.observe(['cpu'][source]).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_pressure_observer_observe_error(e) }))
 
 ///|
 extern "js" fn PressureObserver::observe_with_options_ffi(
   self : PressureObserver,
   source : PressureSource,
   options : JsValue,
-) -> Promise[Unit] =
-  #| (self, source, options) => self.observe(['cpu'][source], options)
+) -> Promise[Result[Unit, PressureObserverObserveError]] =
+  #| (self, source, options) => self.observe(['cpu'][source], options).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_pressure_observer_observe_error(e) }))
 
 ///|
 pub fn PressureObserver::observe_with_options(
   self : PressureObserver,
   source : PressureSource,
   options : PressureObserverOptions,
-) -> Promise[Unit] {
+) -> Promise[Result[Unit, PressureObserverObserveError]] {
   PressureObserver::observe_with_options_ffi(self, source, options.to_js())
 }
 

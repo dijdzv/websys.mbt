@@ -9,12 +9,12 @@ fn test_dom_parser_html() -> Unit {
       "<html><head><title>Test</title></head><body><p id=\"hello\">Hello</p></body></html>",
     ),
     @websys.DOMParserSupportedType::TextHtml,
-  )
+  ).unwrap()
   // Verify the parsed document
   let title = doc.get_title()
   assert_eq(title, "Test", label="parsed title")
   // querySelector
-  let p = doc.query_selector("p#hello")
+  let p = doc.query_selector("p#hello").unwrap()
   assert_true(p is Some(_), label="querySelector p#hello")
   match p {
     Some(el) => {
@@ -34,7 +34,7 @@ fn test_dom_parser_xml() -> Unit {
       "<root><item id=\"1\">First</item><item id=\"2\">Second</item></root>",
     ),
     @websys.DOMParserSupportedType::ApplicationXml,
-  )
+  ).unwrap()
   // XML document doesn't have a title
   let root_el = doc.get_document_element()
   assert_true(root_el is Some(_), label="documentElement exists")

@@ -56,6 +56,18 @@ pub(all) enum Nullable[T] {
 pub extern "js" fn try_catch(f : () -> Unit) -> String =
   #| (f) => { try { f(); return ""; } catch(e) { return String(e); } }
 
+///|
+/// JavaScript error object for typed exception handling
+pub type JsError
+
+///|
+pub extern "js" fn JsError::message(self : JsError) -> String =
+  #| (self) => String(self)
+
+///|
+pub extern "js" fn JsError::name(self : JsError) -> String =
+  #| (self) => (self && self.name) || ''
+
 // External types (referenced but not defined in WebIDL specs)
 
 ///|

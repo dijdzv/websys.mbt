@@ -419,19 +419,60 @@ pub extern "js" fn JsValue::to_barcode_detector(
   #| (self) => self
 
 ///|
-pub extern "js" fn BarcodeDetector::new() -> BarcodeDetector =
-  #| () => new BarcodeDetector()
+/// Error type for throwing methods
+pub(all) enum BarcodeDetectorConstructorError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_barcode_detector_constructor_error(
+  e : JsError,
+) -> BarcodeDetectorConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum BarcodeDetectorDetectError {
+  TypeError(JsError)
+  SecurityError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_barcode_detector_detect_error(
+  e : JsError,
+) -> BarcodeDetectorDetectError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'SecurityError') return { $tag: 1, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 2, _0: e };
+  #|   return { $tag: 3, _0: e };
+  #| }
+
+///|
+pub extern "js" fn BarcodeDetector::new() -> Result[
+  BarcodeDetector,
+  BarcodeDetectorConstructorError,
+] =
+  #| () => (() => { try { return { $tag: 0, _0: new BarcodeDetector() }; } catch(e) { return { $tag: 1, _0: classify_barcode_detector_constructor_error(e) }; } })()
 
 ///|
 extern "js" fn BarcodeDetector::new_with_barcode_detector_options_ffi(
   barcode_detector_options : JsValue,
-) -> BarcodeDetector =
-  #| (barcode_detector_options) => new BarcodeDetector(barcode_detector_options)
+) -> Result[BarcodeDetector, BarcodeDetectorConstructorError] =
+  #| (barcode_detector_options) => (() => { try { return { $tag: 0, _0: new BarcodeDetector(barcode_detector_options) }; } catch(e) { return { $tag: 1, _0: classify_barcode_detector_constructor_error(e) }; } })()
 
 ///|
 pub fn BarcodeDetector::new_with_barcode_detector_options(
   barcode_detector_options : BarcodeDetectorOptions,
-) -> BarcodeDetector {
+) -> Result[BarcodeDetector, BarcodeDetectorConstructorError] {
   BarcodeDetector::new_with_barcode_detector_options_ffi(
     barcode_detector_options.to_js(),
   )
@@ -447,26 +488,26 @@ pub extern "js" fn BarcodeDetector::get_supported_formats() -> Promise[
 pub extern "js" fn BarcodeDetector::detect(
   self : BarcodeDetector,
   image : ImageBitmapSource,
-) -> Promise[Array[DetectedBarcode]] =
-  #| (self, image) => self.detect(image)
+) -> Promise[Result[Array[DetectedBarcode], BarcodeDetectorDetectError]] =
+  #| (self, image) => self.detect(image).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_barcode_detector_detect_error(e) }))
 
 ///|
 pub extern "js" fn BarcodeDetector::detect_with_canvas_image_source(
   self : BarcodeDetector,
   image : CanvasImageSource,
-) -> Promise[Array[DetectedBarcode]] =
-  #| (self, image) => self.detect(image)
+) -> Promise[Result[Array[DetectedBarcode], BarcodeDetectorDetectError]] =
+  #| (self, image) => self.detect(image).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_barcode_detector_detect_error(e) }))
 
 ///|
 pub extern "js" fn BarcodeDetector::detect_with_blob(
   self : BarcodeDetector,
   image : Blob,
-) -> Promise[Array[DetectedBarcode]] =
-  #| (self, image) => self.detect(image)
+) -> Promise[Result[Array[DetectedBarcode], BarcodeDetectorDetectError]] =
+  #| (self, image) => self.detect(image).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_barcode_detector_detect_error(e) }))
 
 ///|
 pub extern "js" fn BarcodeDetector::detect_with_image_data(
   self : BarcodeDetector,
   image : ImageData,
-) -> Promise[Array[DetectedBarcode]] =
-  #| (self, image) => self.detect(image)
+) -> Promise[Result[Array[DetectedBarcode], BarcodeDetectorDetectError]] =
+  #| (self, image) => self.detect(image).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_barcode_detector_detect_error(e) }))

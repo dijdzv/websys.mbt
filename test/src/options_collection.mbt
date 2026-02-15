@@ -21,7 +21,7 @@ fn test_options_collection() -> Unit {
       @websys.HTMLOptionElementOrHTMLOptGroupElement::from_html_option_element(
         opt,
       ),
-    )
+    ).unwrap()
   }
 
   // Get the options collection

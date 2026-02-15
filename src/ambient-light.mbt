@@ -52,19 +52,39 @@ pub extern "js" fn AmbientLightSensor::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn AmbientLightSensor::new() -> AmbientLightSensor =
-  #| () => new AmbientLightSensor()
+/// Error type for throwing methods
+pub(all) enum AmbientLightSensorConstructorError {
+  SecurityError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_ambient_light_sensor_constructor_error(
+  e : JsError,
+) -> AmbientLightSensorConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+pub extern "js" fn AmbientLightSensor::new() -> Result[
+  AmbientLightSensor,
+  AmbientLightSensorConstructorError,
+] =
+  #| () => (() => { try { return { $tag: 0, _0: new AmbientLightSensor() }; } catch(e) { return { $tag: 1, _0: classify_ambient_light_sensor_constructor_error(e) }; } })()
 
 ///|
 extern "js" fn AmbientLightSensor::new_with_sensor_options_ffi(
   sensor_options : JsValue,
-) -> AmbientLightSensor =
-  #| (sensor_options) => new AmbientLightSensor(sensor_options)
+) -> Result[AmbientLightSensor, AmbientLightSensorConstructorError] =
+  #| (sensor_options) => (() => { try { return { $tag: 0, _0: new AmbientLightSensor(sensor_options) }; } catch(e) { return { $tag: 1, _0: classify_ambient_light_sensor_constructor_error(e) }; } })()
 
 ///|
 pub fn AmbientLightSensor::new_with_sensor_options(
   sensor_options : SensorOptions,
-) -> AmbientLightSensor {
+) -> Result[AmbientLightSensor, AmbientLightSensorConstructorError] {
   AmbientLightSensor::new_with_sensor_options_ffi(sensor_options.to_js())
 }
 

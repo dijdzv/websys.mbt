@@ -149,21 +149,42 @@ pub extern "js" fn PerformanceMark::to_performance_entry(
   #| (self) => self
 
 ///|
-pub extern "js" fn PerformanceMark::new(mark_name : String) -> PerformanceMark =
-  #| (mark_name) => new PerformanceMark(mark_name)
+/// Error type for throwing methods
+pub(all) enum PerformanceMarkConstructorError {
+  TypeError(JsError)
+  SyntaxError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_performance_mark_constructor_error(
+  e : JsError,
+) -> PerformanceMarkConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'SyntaxError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+pub extern "js" fn PerformanceMark::new(
+  mark_name : String,
+) -> Result[PerformanceMark, PerformanceMarkConstructorError] =
+  #| (mark_name) => (() => { try { return { $tag: 0, _0: new PerformanceMark(mark_name) }; } catch(e) { return { $tag: 1, _0: classify_performance_mark_constructor_error(e) }; } })()
 
 ///|
 extern "js" fn PerformanceMark::new_with_mark_options_ffi(
   mark_name : String,
   mark_options : JsValue,
-) -> PerformanceMark =
-  #| (mark_name, mark_options) => new PerformanceMark(mark_name, mark_options)
+) -> Result[PerformanceMark, PerformanceMarkConstructorError] =
+  #| (mark_name, mark_options) => (() => { try { return { $tag: 0, _0: new PerformanceMark(mark_name, mark_options) }; } catch(e) { return { $tag: 1, _0: classify_performance_mark_constructor_error(e) }; } })()
 
 ///|
 pub fn PerformanceMark::new_with_mark_options(
   mark_name : String,
   mark_options : PerformanceMarkOptions,
-) -> PerformanceMark {
+) -> Result[PerformanceMark, PerformanceMarkConstructorError] {
   PerformanceMark::new_with_mark_options_ffi(mark_name, mark_options.to_js())
 }
 

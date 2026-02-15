@@ -485,6 +485,25 @@ pub extern "js" fn JsValue::to_clipboard_item(self : JsValue) -> ClipboardItem =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum ClipboardItemGetTypeError {
+  TypeError(JsError)
+  NotFoundError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_clipboard_item_get_type_error(
+  e : JsError,
+) -> ClipboardItemGetTypeError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotFoundError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
 pub extern "js" fn ClipboardItem::new(items : JsValue) -> ClipboardItem =
   #| (items) => new ClipboardItem(items)
 
@@ -519,8 +538,8 @@ pub extern "js" fn ClipboardItem::get_types(
 pub extern "js" fn ClipboardItem::get_type(
   self : ClipboardItem,
   type_ : String,
-) -> Promise[Blob] =
-  #| (self, type_) => self.getType(type_)
+) -> Promise[Result[Blob, ClipboardItemGetTypeError]] =
+  #| (self, type_) => self.getType(type_).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_clipboard_item_get_type_error(e) }))
 
 ///|
 pub extern "js" fn ClipboardItem::supports(type_ : String) -> Bool =
@@ -559,38 +578,110 @@ pub extern "js" fn Clipboard::to_event_target(self : Clipboard) -> EventTarget =
   #| (self) => self
 
 ///|
-pub extern "js" fn Clipboard::read(self : Clipboard) -> Promise[ClipboardItems] =
-  #| (self) => self.read()
+/// Error type for throwing methods
+pub(all) enum ClipboardReadError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_clipboard_read_error(e : JsError) -> ClipboardReadError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ClipboardReadTextError {
+  NotFoundError(JsError)
+  NotAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_clipboard_read_text_error(
+  e : JsError,
+) -> ClipboardReadTextError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotFoundError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotAllowedError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ClipboardWriteError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_clipboard_write_error(
+  e : JsError,
+) -> ClipboardWriteError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum ClipboardWriteTextError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_clipboard_write_text_error(
+  e : JsError,
+) -> ClipboardWriteTextError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'NotAllowedError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+pub extern "js" fn Clipboard::read(
+  self : Clipboard,
+) -> Promise[Result[ClipboardItems, ClipboardReadError]] =
+  #| (self) => self.read().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_clipboard_read_error(e) }))
 
 ///|
 extern "js" fn Clipboard::read_with_formats_ffi(
   self : Clipboard,
   formats : JsValue,
-) -> Promise[ClipboardItems] =
-  #| (self, formats) => self.read(formats)
+) -> Promise[Result[ClipboardItems, ClipboardReadError]] =
+  #| (self, formats) => self.read(formats).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_clipboard_read_error(e) }))
 
 ///|
 pub fn Clipboard::read_with_formats(
   self : Clipboard,
   formats : ClipboardUnsanitizedFormats,
-) -> Promise[ClipboardItems] {
+) -> Promise[Result[ClipboardItems, ClipboardReadError]] {
   Clipboard::read_with_formats_ffi(self, formats.to_js())
 }
 
 ///|
-pub extern "js" fn Clipboard::read_text(self : Clipboard) -> Promise[String] =
-  #| (self) => self.readText()
+pub extern "js" fn Clipboard::read_text(
+  self : Clipboard,
+) -> Promise[Result[String, ClipboardReadTextError]] =
+  #| (self) => self.readText().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_clipboard_read_text_error(e) }))
 
 ///|
 pub extern "js" fn Clipboard::write(
   self : Clipboard,
   data : ClipboardItems,
-) -> Promise[Unit] =
-  #| (self, data) => self.write(data)
+) -> Promise[Result[Unit, ClipboardWriteError]] =
+  #| (self, data) => self.write(data).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_clipboard_write_error(e) }))
 
 ///|
 pub extern "js" fn Clipboard::write_text(
   self : Clipboard,
   data : String,
-) -> Promise[Unit] =
-  #| (self, data) => self.writeText(data)
+) -> Promise[Result[Unit, ClipboardWriteTextError]] =
+  #| (self, data) => self.writeText(data).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_clipboard_write_text_error(e) }))

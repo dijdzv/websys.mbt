@@ -116,19 +116,39 @@ pub extern "js" fn Magnetometer::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn Magnetometer::new() -> Magnetometer =
-  #| () => new Magnetometer()
+/// Error type for throwing methods
+pub(all) enum MagnetometerConstructorError {
+  SecurityError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_magnetometer_constructor_error(
+  e : JsError,
+) -> MagnetometerConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+pub extern "js" fn Magnetometer::new() -> Result[
+  Magnetometer,
+  MagnetometerConstructorError,
+] =
+  #| () => (() => { try { return { $tag: 0, _0: new Magnetometer() }; } catch(e) { return { $tag: 1, _0: classify_magnetometer_constructor_error(e) }; } })()
 
 ///|
 extern "js" fn Magnetometer::new_with_sensor_options_ffi(
   sensor_options : JsValue,
-) -> Magnetometer =
-  #| (sensor_options) => new Magnetometer(sensor_options)
+) -> Result[Magnetometer, MagnetometerConstructorError] =
+  #| (sensor_options) => (() => { try { return { $tag: 0, _0: new Magnetometer(sensor_options) }; } catch(e) { return { $tag: 1, _0: classify_magnetometer_constructor_error(e) }; } })()
 
 ///|
 pub fn Magnetometer::new_with_sensor_options(
   sensor_options : MagnetometerSensorOptions,
-) -> Magnetometer {
+) -> Result[Magnetometer, MagnetometerConstructorError] {
   Magnetometer::new_with_sensor_options_ffi(sensor_options.to_js())
 }
 

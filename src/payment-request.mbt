@@ -879,17 +879,59 @@ pub extern "js" fn PaymentRequest::to_event_target(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum PaymentRequestConstructorError {
+  SecurityError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_payment_request_constructor_error(
+  e : JsError,
+) -> PaymentRequestConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'SecurityError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum PaymentRequestShowError {
+  Promise(JsError)
+  AbortError(JsError)
+  SecurityError(JsError)
+  InvalidStateError(JsError)
+  NotSupportedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_payment_request_show_error(
+  e : JsError,
+) -> PaymentRequestShowError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'Promise') return { $tag: 0, _0: e };
+  #|   if (n === 'AbortError') return { $tag: 1, _0: e };
+  #|   if (n === 'SecurityError') return { $tag: 2, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 3, _0: e };
+  #|   if (n === 'NotSupportedError') return { $tag: 4, _0: e };
+  #|   return { $tag: 5, _0: e };
+  #| }
+
+///|
 extern "js" fn PaymentRequest::new_ffi(
   method_data : Array[PaymentMethodData],
   details : JsValue,
-) -> PaymentRequest =
-  #| (method_data, details) => new PaymentRequest(method_data, details)
+) -> Result[PaymentRequest, PaymentRequestConstructorError] =
+  #| (method_data, details) => (() => { try { return { $tag: 0, _0: new PaymentRequest(method_data, details) }; } catch(e) { return { $tag: 1, _0: classify_payment_request_constructor_error(e) }; } })()
 
 ///|
 pub fn PaymentRequest::new(
   method_data : Array[PaymentMethodData],
   details : PaymentDetailsInit,
-) -> PaymentRequest {
+) -> Result[PaymentRequest, PaymentRequestConstructorError] {
   PaymentRequest::new_ffi(method_data, details.to_js())
 }
 
@@ -898,15 +940,15 @@ extern "js" fn PaymentRequest::new_with_options_ffi(
   method_data : Array[PaymentMethodData],
   details : JsValue,
   options : JsValue,
-) -> PaymentRequest =
-  #| (method_data, details, options) => new PaymentRequest(method_data, details, options)
+) -> Result[PaymentRequest, PaymentRequestConstructorError] =
+  #| (method_data, details, options) => (() => { try { return { $tag: 0, _0: new PaymentRequest(method_data, details, options) }; } catch(e) { return { $tag: 1, _0: classify_payment_request_constructor_error(e) }; } })()
 
 ///|
 pub fn PaymentRequest::new_with_options(
   method_data : Array[PaymentMethodData],
   details : PaymentDetailsInit,
   options : PaymentOptions,
-) -> PaymentRequest {
+) -> Result[PaymentRequest, PaymentRequestConstructorError] {
   PaymentRequest::new_with_options_ffi(
     method_data,
     details.to_js(),
@@ -917,15 +959,15 @@ pub fn PaymentRequest::new_with_options(
 ///|
 pub extern "js" fn PaymentRequest::show(
   self : PaymentRequest,
-) -> Promise[PaymentResponse] =
-  #| (self) => self.show()
+) -> Promise[Result[PaymentResponse, PaymentRequestShowError]] =
+  #| (self) => self.show().then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_payment_request_show_error(e) }))
 
 ///|
 pub extern "js" fn PaymentRequest::show_with_details_promise(
   self : PaymentRequest,
   details_promise : Promise[PaymentDetailsUpdate],
-) -> Promise[PaymentResponse] =
-  #| (self, details_promise) => self.show(details_promise)
+) -> Promise[Result[PaymentResponse, PaymentRequestShowError]] =
+  #| (self, details_promise) => self.show(details_promise).then(v => { $tag: 0, _0: v }).catch(e => ({ $tag: 1, _0: classify_payment_request_show_error(e) }))
 
 ///|
 pub extern "js" fn PaymentRequest::abort(
@@ -962,43 +1004,43 @@ pub extern "js" fn PaymentRequest::get_shipping_type(
   #| (self) => (() => { const v = self.shippingType; return v == null ? undefined : ['shipping', 'delivery', 'pickup'].indexOf(v); })()
 
 ///|
-pub extern "js" fn PaymentRequest::get_onshippingaddresschange(
-  self : PaymentRequest,
-) -> EventHandler =
-  #| (self) => self.onshippingaddresschange
-
-///|
 pub extern "js" fn PaymentRequest::set_onshippingaddresschange(
   self : PaymentRequest,
-  value : EventHandler,
+  handler : (PaymentRequestUpdateEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onshippingaddresschange = value }
+  #| (self, handler) => { self.onshippingaddresschange = (e) => handler(e) }
 
 ///|
-pub extern "js" fn PaymentRequest::get_onshippingoptionchange(
+pub extern "js" fn PaymentRequest::clear_onshippingaddresschange(
   self : PaymentRequest,
-) -> EventHandler =
-  #| (self) => self.onshippingoptionchange
+) -> Unit =
+  #| (self) => { self.onshippingaddresschange = null }
 
 ///|
 pub extern "js" fn PaymentRequest::set_onshippingoptionchange(
   self : PaymentRequest,
-  value : EventHandler,
+  handler : (PaymentRequestUpdateEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onshippingoptionchange = value }
+  #| (self, handler) => { self.onshippingoptionchange = (e) => handler(e) }
 
 ///|
-pub extern "js" fn PaymentRequest::get_onpaymentmethodchange(
+pub extern "js" fn PaymentRequest::clear_onshippingoptionchange(
   self : PaymentRequest,
-) -> EventHandler =
-  #| (self) => self.onpaymentmethodchange
+) -> Unit =
+  #| (self) => { self.onshippingoptionchange = null }
 
 ///|
 pub extern "js" fn PaymentRequest::set_onpaymentmethodchange(
   self : PaymentRequest,
-  value : EventHandler,
+  handler : (PaymentMethodChangeEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onpaymentmethodchange = value }
+  #| (self, handler) => { self.onpaymentmethodchange = (e) => handler(e) }
+
+///|
+pub extern "js" fn PaymentRequest::clear_onpaymentmethodchange(
+  self : PaymentRequest,
+) -> Unit =
+  #| (self) => { self.onpaymentmethodchange = null }
 
 ///|
 pub extern "js" fn PaymentRequest::secure_payment_confirmation_availability() -> Promise[
@@ -1049,6 +1091,25 @@ pub extern "js" fn PaymentResponse::to_event_target(
   self : PaymentResponse,
 ) -> EventTarget =
   #| (self) => self
+
+///|
+/// Error type for throwing methods
+pub(all) enum PaymentResponseCompleteError {
+  AbortError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_payment_response_complete_error(
+  e : JsError,
+) -> PaymentResponseCompleteError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'AbortError') return { $tag: 0, _0: e };
+  #|   if (n === 'InvalidStateError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
 
 ///|
 pub extern "js" fn PaymentResponse::to_json(self : PaymentResponse) -> JsValue =
@@ -1105,23 +1166,23 @@ pub extern "js" fn PaymentResponse::get_payer_phone(
 ///|
 pub extern "js" fn PaymentResponse::complete(
   self : PaymentResponse,
-) -> Promise[Unit] =
-  #| (self) => self.complete()
+) -> Promise[Result[Unit, PaymentResponseCompleteError]] =
+  #| (self) => self.complete().then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_payment_response_complete_error(e) }))
 
 ///|
 extern "js" fn PaymentResponse::complete_with_details_ffi(
   self : PaymentResponse,
   result : PaymentComplete,
   details : JsValue,
-) -> Promise[Unit] =
-  #| (self, result, details) => self.complete(['fail', 'success', 'unknown'][result], details)
+) -> Promise[Result[Unit, PaymentResponseCompleteError]] =
+  #| (self, result, details) => self.complete(['fail', 'success', 'unknown'][result], details).then(v => { $tag: 0, _0: undefined }).catch(e => ({ $tag: 1, _0: classify_payment_response_complete_error(e) }))
 
 ///|
 pub fn PaymentResponse::complete_with_details(
   self : PaymentResponse,
   result : PaymentComplete,
   details : PaymentCompleteDetails,
-) -> Promise[Unit] {
+) -> Promise[Result[Unit, PaymentResponseCompleteError]] {
   PaymentResponse::complete_with_details_ffi(self, result, details.to_js())
 }
 
@@ -1147,17 +1208,17 @@ pub fn PaymentResponse::retry_with_error_fields(
 }
 
 ///|
-pub extern "js" fn PaymentResponse::get_onpayerdetailchange(
-  self : PaymentResponse,
-) -> EventHandler =
-  #| (self) => self.onpayerdetailchange
-
-///|
 pub extern "js" fn PaymentResponse::set_onpayerdetailchange(
   self : PaymentResponse,
-  value : EventHandler,
+  handler : (PaymentRequestUpdateEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onpayerdetailchange = value }
+  #| (self, handler) => { self.onpayerdetailchange = (e) => handler(e) }
+
+///|
+pub extern "js" fn PaymentResponse::clear_onpayerdetailchange(
+  self : PaymentResponse,
+) -> Unit =
+  #| (self) => { self.onpayerdetailchange = null }
 
 ///|
 /// PaymentMethodChangeEvent interface

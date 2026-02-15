@@ -333,26 +333,43 @@ pub extern "js" fn JsValue::to_trusted_type_policy_factory(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum TrustedTypePolicyFactoryCreatePolicyError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_trusted_type_policy_factory_create_policy_error(
+  e : JsError,
+) -> TrustedTypePolicyFactoryCreatePolicyError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn TrustedTypePolicyFactory::create_policy(
   self : TrustedTypePolicyFactory,
   policy_name : String,
-) -> TrustedTypePolicy =
-  #| (self, policy_name) => self.createPolicy(policy_name)
+) -> Result[TrustedTypePolicy, TrustedTypePolicyFactoryCreatePolicyError] =
+  #| (self, policy_name) => (() => { try { return { $tag: 0, _0: self.createPolicy(policy_name) }; } catch(e) { return { $tag: 1, _0: classify_trusted_type_policy_factory_create_policy_error(e) }; } })()
 
 ///|
 extern "js" fn TrustedTypePolicyFactory::create_policy_with_policy_options_ffi(
   self : TrustedTypePolicyFactory,
   policy_name : String,
   policy_options : JsValue,
-) -> TrustedTypePolicy =
-  #| (self, policy_name, policy_options) => self.createPolicy(policy_name, policy_options)
+) -> Result[TrustedTypePolicy, TrustedTypePolicyFactoryCreatePolicyError] =
+  #| (self, policy_name, policy_options) => (() => { try { return { $tag: 0, _0: self.createPolicy(policy_name, policy_options) }; } catch(e) { return { $tag: 1, _0: classify_trusted_type_policy_factory_create_policy_error(e) }; } })()
 
 ///|
 pub fn TrustedTypePolicyFactory::create_policy_with_policy_options(
   self : TrustedTypePolicyFactory,
   policy_name : String,
   policy_options : TrustedTypePolicyOptions,
-) -> TrustedTypePolicy {
+) -> Result[TrustedTypePolicy, TrustedTypePolicyFactoryCreatePolicyError] {
   TrustedTypePolicyFactory::create_policy_with_policy_options_ffi(
     self,
     policy_name,
@@ -473,6 +490,57 @@ pub extern "js" fn JsValue::to_trusted_type_policy(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum TrustedTypePolicyCreateHTMLError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_trusted_type_policy_create_html_error(
+  e : JsError,
+) -> TrustedTypePolicyCreateHTMLError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum TrustedTypePolicyCreateScriptError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_trusted_type_policy_create_script_error(
+  e : JsError,
+) -> TrustedTypePolicyCreateScriptError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum TrustedTypePolicyCreateScriptURLError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_trusted_type_policy_create_script_url_error(
+  e : JsError,
+) -> TrustedTypePolicyCreateScriptURLError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
 pub extern "js" fn TrustedTypePolicy::get_name(
   self : TrustedTypePolicy,
 ) -> String =
@@ -483,21 +551,21 @@ pub extern "js" fn TrustedTypePolicy::create_html(
   self : TrustedTypePolicy,
   input : String,
   arguments : JsValue,
-) -> TrustedHTML =
-  #| (self, input, arguments) => self.createHTML(input, arguments)
+) -> Result[TrustedHTML, TrustedTypePolicyCreateHTMLError] =
+  #| (self, input, arguments) => (() => { try { return { $tag: 0, _0: self.createHTML(input, arguments) }; } catch(e) { return { $tag: 1, _0: classify_trusted_type_policy_create_html_error(e) }; } })()
 
 ///|
 pub extern "js" fn TrustedTypePolicy::create_script(
   self : TrustedTypePolicy,
   input : String,
   arguments : JsValue,
-) -> TrustedScript =
-  #| (self, input, arguments) => self.createScript(input, arguments)
+) -> Result[TrustedScript, TrustedTypePolicyCreateScriptError] =
+  #| (self, input, arguments) => (() => { try { return { $tag: 0, _0: self.createScript(input, arguments) }; } catch(e) { return { $tag: 1, _0: classify_trusted_type_policy_create_script_error(e) }; } })()
 
 ///|
 pub extern "js" fn TrustedTypePolicy::create_script_url(
   self : TrustedTypePolicy,
   input : String,
   arguments : JsValue,
-) -> TrustedScriptURL =
-  #| (self, input, arguments) => self.createScriptURL(input, arguments)
+) -> Result[TrustedScriptURL, TrustedTypePolicyCreateScriptURLError] =
+  #| (self, input, arguments) => (() => { try { return { $tag: 0, _0: self.createScriptURL(input, arguments) }; } catch(e) { return { $tag: 1, _0: classify_trusted_type_policy_create_script_url_error(e) }; } })()

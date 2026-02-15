@@ -1224,17 +1224,15 @@ pub extern "js" fn XRQuadLayer::set_height(
   #| (self, value) => { self.height = value }
 
 ///|
-pub extern "js" fn XRQuadLayer::get_onredraw(
-  self : XRQuadLayer,
-) -> EventHandler =
-  #| (self) => self.onredraw
-
-///|
 pub extern "js" fn XRQuadLayer::set_onredraw(
   self : XRQuadLayer,
-  value : EventHandler,
+  handler : (XRLayerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onredraw = value }
+  #| (self, handler) => { self.onredraw = (e) => handler(e) }
+
+///|
+pub extern "js" fn XRQuadLayer::clear_onredraw(self : XRQuadLayer) -> Unit =
+  #| (self) => { self.onredraw = null }
 
 ///|
 /// XRCylinderLayer interface
@@ -1358,17 +1356,17 @@ pub extern "js" fn XRCylinderLayer::set_aspect_ratio(
   #| (self, value) => { self.aspectRatio = value }
 
 ///|
-pub extern "js" fn XRCylinderLayer::get_onredraw(
-  self : XRCylinderLayer,
-) -> EventHandler =
-  #| (self) => self.onredraw
-
-///|
 pub extern "js" fn XRCylinderLayer::set_onredraw(
   self : XRCylinderLayer,
-  value : EventHandler,
+  handler : (XRLayerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onredraw = value }
+  #| (self, handler) => { self.onredraw = (e) => handler(e) }
+
+///|
+pub extern "js" fn XRCylinderLayer::clear_onredraw(
+  self : XRCylinderLayer,
+) -> Unit =
+  #| (self) => { self.onredraw = null }
 
 ///|
 /// XREquirectLayer interface
@@ -1505,17 +1503,17 @@ pub extern "js" fn XREquirectLayer::set_lower_vertical_angle(
   #| (self, value) => { self.lowerVerticalAngle = value }
 
 ///|
-pub extern "js" fn XREquirectLayer::get_onredraw(
-  self : XREquirectLayer,
-) -> EventHandler =
-  #| (self) => self.onredraw
-
-///|
 pub extern "js" fn XREquirectLayer::set_onredraw(
   self : XREquirectLayer,
-  value : EventHandler,
+  handler : (XRLayerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onredraw = value }
+  #| (self, handler) => { self.onredraw = (e) => handler(e) }
+
+///|
+pub extern "js" fn XREquirectLayer::clear_onredraw(
+  self : XREquirectLayer,
+) -> Unit =
+  #| (self) => { self.onredraw = null }
 
 ///|
 /// XRCubeLayer interface
@@ -1586,17 +1584,15 @@ pub extern "js" fn XRCubeLayer::set_orientation(
   #| (self, value) => { self.orientation = value }
 
 ///|
-pub extern "js" fn XRCubeLayer::get_onredraw(
-  self : XRCubeLayer,
-) -> EventHandler =
-  #| (self) => self.onredraw
-
-///|
 pub extern "js" fn XRCubeLayer::set_onredraw(
   self : XRCubeLayer,
-  value : EventHandler,
+  handler : (XRLayerEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onredraw = value }
+  #| (self, handler) => { self.onredraw = (e) => handler(e) }
+
+///|
+pub extern "js" fn XRCubeLayer::clear_onredraw(self : XRCubeLayer) -> Unit =
+  #| (self) => { self.onredraw = null }
 
 ///|
 /// XRSubImage interface
@@ -1777,11 +1773,81 @@ pub extern "js" fn JsValue::to_xr_web_gl_binding(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum XRWebGLBindingConstructorError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_xr_web_gl_binding_constructor_error(
+  e : JsError,
+) -> XRWebGLBindingConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum XRWebGLBindingGetSubImageError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_xr_web_gl_binding_get_sub_image_error(
+  e : JsError,
+) -> XRWebGLBindingGetSubImageError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum XRWebGLBindingGetViewSubImageError {
+  TypeError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_xr_web_gl_binding_get_view_sub_image_error(
+  e : JsError,
+) -> XRWebGLBindingGetViewSubImageError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'TypeError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+/// Error type for throwing methods
+pub(all) enum XRWebGLBindingGetDepthInformationError {
+  InvalidStateError(JsError)
+  NotSupportedError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_xr_web_gl_binding_get_depth_information_error(
+  e : JsError,
+) -> XRWebGLBindingGetDepthInformationError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
+  #|   if (n === 'NotSupportedError') return { $tag: 1, _0: e };
+  #|   return { $tag: 2, _0: e };
+  #| }
+
+///|
 pub extern "js" fn XRWebGLBinding::new(
   session : XRSession,
   context : XRWebGLRenderingContext,
-) -> XRWebGLBinding =
-  #| (session, context) => new XRWebGLBinding(session, context)
+) -> Result[XRWebGLBinding, XRWebGLBindingConstructorError] =
+  #| (session, context) => (() => { try { return { $tag: 0, _0: new XRWebGLBinding(session, context) }; } catch(e) { return { $tag: 1, _0: classify_xr_web_gl_binding_constructor_error(e) }; } })()
 
 ///|
 pub extern "js" fn XRWebGLBinding::get_native_projection_scale_factor(
@@ -1905,8 +1971,8 @@ pub extern "js" fn XRWebGLBinding::get_sub_image(
   self : XRWebGLBinding,
   layer : XRCompositionLayer,
   frame : XRFrame,
-) -> XRWebGLSubImage =
-  #| (self, layer, frame) => self.getSubImage(layer, frame)
+) -> Result[XRWebGLSubImage, XRWebGLBindingGetSubImageError] =
+  #| (self, layer, frame) => (() => { try { return { $tag: 0, _0: self.getSubImage(layer, frame) }; } catch(e) { return { $tag: 1, _0: classify_xr_web_gl_binding_get_sub_image_error(e) }; } })()
 
 ///|
 pub extern "js" fn XRWebGLBinding::get_sub_image_with_eye(
@@ -1914,16 +1980,16 @@ pub extern "js" fn XRWebGLBinding::get_sub_image_with_eye(
   layer : XRCompositionLayer,
   frame : XRFrame,
   eye : XREye,
-) -> XRWebGLSubImage =
-  #| (self, layer, frame, eye) => self.getSubImage(layer, frame, ['none', 'left', 'right'][eye])
+) -> Result[XRWebGLSubImage, XRWebGLBindingGetSubImageError] =
+  #| (self, layer, frame, eye) => (() => { try { return { $tag: 0, _0: self.getSubImage(layer, frame, ['none', 'left', 'right'][eye]) }; } catch(e) { return { $tag: 1, _0: classify_xr_web_gl_binding_get_sub_image_error(e) }; } })()
 
 ///|
 pub extern "js" fn XRWebGLBinding::get_view_sub_image(
   self : XRWebGLBinding,
   layer : XRProjectionLayer,
   view : XRView,
-) -> XRWebGLSubImage =
-  #| (self, layer, view) => self.getViewSubImage(layer, view)
+) -> Result[XRWebGLSubImage, XRWebGLBindingGetViewSubImageError] =
+  #| (self, layer, view) => (() => { try { return { $tag: 0, _0: self.getViewSubImage(layer, view) }; } catch(e) { return { $tag: 1, _0: classify_xr_web_gl_binding_get_view_sub_image_error(e) }; } })()
 
 ///|
 pub extern "js" fn XRWebGLBinding::foveate_bound_texture(
@@ -1944,8 +2010,8 @@ pub extern "js" fn XRWebGLBinding::get_reflection_cube_map(
 pub extern "js" fn XRWebGLBinding::get_depth_information(
   self : XRWebGLBinding,
   view : XRView,
-) -> XRWebGLDepthInformation? =
-  #| (self, view) => (() => { const v = self.getDepthInformation(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+) -> Result[XRWebGLDepthInformation?, XRWebGLBindingGetDepthInformationError] =
+  #| (self, view) => (() => { try { return { $tag: 0, _0: (() => { const v = self.getDepthInformation(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 1, _0: classify_xr_web_gl_binding_get_depth_information_error(e) }; } })()
 
 ///|
 pub extern "js" fn XRWebGLBinding::get_camera_image(
@@ -1958,15 +2024,15 @@ pub extern "js" fn XRWebGLBinding::get_camera_image(
 pub extern "js" fn XRWebGLBinding::new_with_web_gl_rendering_context(
   session : XRSession,
   context : WebGLRenderingContext,
-) -> XRWebGLBinding =
-  #| (session, context) => new XRWebGLBinding(session, context)
+) -> Result[XRWebGLBinding, XRWebGLBindingConstructorError] =
+  #| (session, context) => (() => { try { return { $tag: 0, _0: new XRWebGLBinding(session, context) }; } catch(e) { return { $tag: 1, _0: classify_xr_web_gl_binding_constructor_error(e) }; } })()
 
 ///|
 pub extern "js" fn XRWebGLBinding::new_with_web_gl2_rendering_context(
   session : XRSession,
   context : WebGL2RenderingContext,
-) -> XRWebGLBinding =
-  #| (session, context) => new XRWebGLBinding(session, context)
+) -> Result[XRWebGLBinding, XRWebGLBindingConstructorError] =
+  #| (session, context) => (() => { try { return { $tag: 0, _0: new XRWebGLBinding(session, context) }; } catch(e) { return { $tag: 1, _0: classify_xr_web_gl_binding_constructor_error(e) }; } })()
 
 ///|
 /// XRMediaBinding interface
@@ -2005,8 +2071,27 @@ pub extern "js" fn JsValue::to_xr_media_binding(
   #| (self) => self
 
 ///|
-pub extern "js" fn XRMediaBinding::new(session : XRSession) -> XRMediaBinding =
-  #| (session) => new XRMediaBinding(session)
+/// Error type for throwing methods
+pub(all) enum XRMediaBindingConstructorError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+}
+
+///|
+extern "js" fn classify_xr_media_binding_constructor_error(
+  e : JsError,
+) -> XRMediaBindingConstructorError =
+  #| (e) => {
+  #|   const n = (e && e.name) || '';
+  #|   if (n === 'InvalidStateError') return { $tag: 0, _0: e };
+  #|   return { $tag: 1, _0: e };
+  #| }
+
+///|
+pub extern "js" fn XRMediaBinding::new(
+  session : XRSession,
+) -> Result[XRMediaBinding, XRMediaBindingConstructorError] =
+  #| (session) => (() => { try { return { $tag: 0, _0: new XRMediaBinding(session) }; } catch(e) { return { $tag: 1, _0: classify_xr_media_binding_constructor_error(e) }; } })()
 
 ///|
 pub extern "js" fn XRMediaBinding::create_quad_layer(

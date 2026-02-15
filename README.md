@@ -40,7 +40,18 @@ Source specifications: [@webref/idl](https://www.npmjs.com/package/@webref/idl)
 
 ### Typed Errors
 
-Methods that can throw return `Result[T, XxxError]` with specific error variants (e.g., `TypeError`, `SyntaxError`). Error detection relies on MDN documentation — some methods that throw may not have typed errors if their MDN page is missing or in an unrecognized format. In such cases, the method returns a plain value instead of `Result`. See `src/throws_not_found.md` for details.
+Methods that can throw return `Result[T, XxxError]` with specific error variants (e.g., `TypeError`, `SyntaxError`). Error detection relies on MDN documentation — some methods that throw may not have typed errors if their MDN page is missing or in an unrecognized format. In such cases, the method returns a plain value instead of `Result`, and exceptions will propagate as MoonBit panics. If you need to catch these, use `try_catch`:
+
+```moonbit
+let err = @websys.try_catch(fn() {
+  // call that might throw
+})
+if err != "" {
+  println("Error: \{err}")
+}
+```
+
+See `src/throws_not_found.md` for the full list of undetected throwing methods.
 
 ### Typed Event Handlers
 

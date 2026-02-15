@@ -25,7 +25,7 @@ pub fn test_css_style_sheet() -> Unit {
   )
 
   // deleteRule
-  sheet.delete_rule(0)
+  sheet.delete_rule(0).unwrap()
   assert_eq(
     sheet.get_css_rules().get_length(),
     1,

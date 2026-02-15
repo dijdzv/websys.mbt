@@ -90,7 +90,7 @@ pub fn test_html_element_bool_props() -> Unit {
   class_list.add("cls1").unwrap()
   assert_eq(class_list.get_length(), 1, label="classList length after add")
   assert_true(class_list.contains("cls1"), label="classList contains cls1")
-  match class_list.get(0).unwrap() {
+  match class_list.get(0) {
     Some(v) => assert_eq(v, "cls1", label="classList get(0)")
     None => abort("FAIL: classList get(0) returned None")
   }

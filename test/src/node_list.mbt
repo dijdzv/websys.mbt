@@ -13,11 +13,11 @@ fn test_node_list() -> Unit {
   let list = div.query_selector_all("span").unwrap()
   assert_eq(list.get_length(), 3, label="NodeList length")
   // item
-  match list.item(0).unwrap() {
+  match list.item(0) {
     Some(node) => assert_eq(node.get_node_name(), "SPAN", label="item(0)")
     None => abort("FAIL: item(0) is None")
   }
-  match list.item(2).unwrap() {
+  match list.item(2) {
     Some(node) => assert_eq(node.get_node_name(), "SPAN", label="item(2)")
     None => abort("FAIL: item(2) is None")
   }

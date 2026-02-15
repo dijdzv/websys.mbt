@@ -312,6 +312,19 @@ async fn main {
     ("rtc_data_channel_with_init", test_rtc_data_channel_with_init),
     ("rtc_ice_candidate", test_rtc_ice_candidate),
     ("rtc_senders_receivers", test_rtc_senders_receivers),
+    // --- Result Err branch tests ---
+    ("result_url_type_error", test_result_url_type_error),
+    ("result_create_element_ns_error", test_result_create_element_ns_error),
+    ("result_append_child_hierarchy_error", test_result_append_child_hierarchy_error),
+    ("result_insert_rule_syntax_error", test_result_insert_rule_syntax_error),
+    ("result_insert_adjacent_html_error", test_result_insert_adjacent_html_error),
+    ("result_set_attribute_error", test_result_set_attribute_error),
+    ("result_error_message", test_result_error_message),
+    // --- Event handler tests ---
+    ("event_handler_onclick", test_event_handler_onclick),
+    ("event_handler_onkeydown", test_event_handler_onkeydown),
+    ("event_handler_onfocus_onblur", test_event_handler_onfocus_onblur),
+    ("event_handler_typed_event_properties", test_event_handler_typed_event_properties),
   ]
   for i = 0; i < tests.length(); i = i + 1 {
     let (name, f) = tests[i]

@@ -26,7 +26,7 @@ setup-test:
 
 # Build tests
 build-test:
-    cd test && moon build --target js
+    cd test && moon build --target js --release
 
 # Run tests (build + execute)
 test: build-test

@@ -338,83 +338,25 @@ async fn main {
 
   // --- Async tests ---
   // These use Promise::wait() (equivalent to Rust's JsFuture::from().await)
-
-  // OPFS async: access_storage (Rust web-sys: opfs.rs)
-  total = total + 1
-  let opfs_result = run_async_test("opfs_access_storage", async fn() {
-    test_opfs_access_storage()
-  }).wait() catch {
-    _ => false
-  }
-  if opfs_result {
-    passed = passed + 1
-  } else {
-    failed = failed + 1
-  }
-
-  // OPFS async: create_directory (Rust web-sys: opfs.rs)
-  total = total + 1
-  let opfs_dir_result = run_async_test("opfs_create_directory", async fn() {
-    test_opfs_create_directory()
-  }).wait() catch {
-    _ => false
-  }
-  if opfs_dir_result {
-    passed = passed + 1
-  } else {
-    failed = failed + 1
-  }
-
-  // OPFS async: create_file (Rust web-sys: opfs.rs)
-  total = total + 1
-  let opfs_file_result = run_async_test("opfs_create_file", async fn() {
-    test_opfs_create_file()
-  }).wait() catch {
-    _ => false
-  }
-  if opfs_file_result {
-    passed = passed + 1
-  } else {
-    failed = failed + 1
-  }
-
-  // OPFS async: write_to_file (Rust web-sys: opfs.rs)
-  total = total + 1
-  let opfs_write_result = run_async_test("opfs_write_to_file", async fn() {
-    test_opfs_write_to_file()
-  }).wait() catch {
-    _ => false
-  }
-  if opfs_write_result {
-    passed = passed + 1
-  } else {
-    failed = failed + 1
-  }
-
-  // RTC async: full SDP exchange (Rust web-sys: rtc_rtp_transceiver_direction.rs)
-  total = total + 1
-  let rtc_result = run_async_test("rtc_sdp_exchange", async fn() {
-    test_rtc_sdp_exchange()
-  }).wait() catch {
-    _ => false
-  }
-  if rtc_result {
-    passed = passed + 1
-  } else {
-    failed = failed + 1
-  }
-
-  // Response async: text() on empty body
-  total = total + 1
-  let response_body_result = run_async_test("response_body", async fn() {
-    test_response_body()
-  }).wait() catch {
-    _ => false
-  }
-  if response_body_result {
-    passed = passed + 1
-  } else {
-    failed = failed + 1
+  let async_tests : Array[(String, async () -> Unit)] = [
+    ("opfs_access_storage", async fn() { test_opfs_access_storage() }),
+    ("opfs_create_directory", async fn() { test_opfs_create_directory() }),
+    ("opfs_create_file", async fn() { test_opfs_create_file() }),
+    ("opfs_write_to_file", async fn() { test_opfs_write_to_file() }),
+    ("rtc_sdp_exchange", async fn() { test_rtc_sdp_exchange() }),
+    ("response_body", async fn() { test_response_body() }),
+  ]
+  for i = 0; i < async_tests.length(); i = i + 1 {
+    let (name, f) = async_tests[i]
+    total = total + 1
+    let ok = run_async_test(name, f).wait() catch {
+      _ => false
+    }
+    if ok {
+      passed = passed + 1
+    } else {
+      failed = failed + 1
+    }
   }
   println("")
   println("\{passed}/\{total} tests passed, \{failed} failed")

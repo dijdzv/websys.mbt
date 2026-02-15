@@ -883,7 +883,7 @@ pub extern "js" fn IDBDatabase::clear_onclose(self : IDBDatabase) -> Unit =
 ///|
 pub extern "js" fn IDBDatabase::set_onerror(
   self : IDBDatabase,
-  handler : (Event) -> Unit,
+  handler : (ErrorEvent) -> Unit,
 ) -> Unit =
   #| (self, handler) => { self.onerror = (e) => handler(e) }
 

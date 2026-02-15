@@ -1031,6 +1031,30 @@ pub extern "js" fn ServiceWorkerRegistration::clear_onupdatefound(
   #| (self) => { self.onupdatefound = null }
 
 ///|
+pub extern "js" fn ServiceWorkerRegistration::get_background_fetch(
+  self : ServiceWorkerRegistration,
+) -> BackgroundFetchManager =
+  #| (self) => self.backgroundFetch
+
+///|
+pub extern "js" fn ServiceWorkerRegistration::get_sync(
+  self : ServiceWorkerRegistration,
+) -> SyncManager =
+  #| (self) => self.sync
+
+///|
+pub extern "js" fn ServiceWorkerRegistration::get_index(
+  self : ServiceWorkerRegistration,
+) -> ContentIndex =
+  #| (self) => self.index
+
+///|
+pub extern "js" fn ServiceWorkerRegistration::get_cookies(
+  self : ServiceWorkerRegistration,
+) -> CookieStoreManager =
+  #| (self) => self.cookies
+
+///|
 pub extern "js" fn ServiceWorkerRegistration::show_notification(
   self : ServiceWorkerRegistration,
   title : String,
@@ -1089,34 +1113,10 @@ pub extern "js" fn ServiceWorkerRegistration::get_payment_manager(
   #| (self) => self.paymentManager
 
 ///|
-pub extern "js" fn ServiceWorkerRegistration::get_sync(
-  self : ServiceWorkerRegistration,
-) -> SyncManager =
-  #| (self) => self.sync
-
-///|
-pub extern "js" fn ServiceWorkerRegistration::get_cookies(
-  self : ServiceWorkerRegistration,
-) -> CookieStoreManager =
-  #| (self) => self.cookies
-
-///|
 pub extern "js" fn ServiceWorkerRegistration::get_periodic_sync(
   self : ServiceWorkerRegistration,
 ) -> PeriodicSyncManager =
   #| (self) => self.periodicSync
-
-///|
-pub extern "js" fn ServiceWorkerRegistration::get_index(
-  self : ServiceWorkerRegistration,
-) -> ContentIndex =
-  #| (self) => self.index
-
-///|
-pub extern "js" fn ServiceWorkerRegistration::get_background_fetch(
-  self : ServiceWorkerRegistration,
-) -> BackgroundFetchManager =
-  #| (self) => self.backgroundFetch
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_push_manager(
@@ -1522,30 +1522,101 @@ pub extern "js" fn ServiceWorkerGlobalScope::clear_onmessageerror(
   #| (self) => { self.onmessageerror = null }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onpush(
+pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchsuccess(
   self : ServiceWorkerGlobalScope,
-  handler : (PushEvent) -> Unit,
+  handler : (BackgroundFetchUpdateUIEvent) -> Unit,
 ) -> Unit =
-  #| (self, handler) => { self.onpush = (e) => handler(e) }
+  #| (self, handler) => { self.onbackgroundfetchsuccess = (e) => handler(e) }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onpush(
+pub extern "js" fn ServiceWorkerGlobalScope::clear_onbackgroundfetchsuccess(
   self : ServiceWorkerGlobalScope,
 ) -> Unit =
-  #| (self) => { self.onpush = null }
+  #| (self) => { self.onbackgroundfetchsuccess = null }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onpushsubscriptionchange(
+pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchfail(
   self : ServiceWorkerGlobalScope,
-  handler : (Event) -> Unit,
+  handler : (BackgroundFetchUpdateUIEvent) -> Unit,
 ) -> Unit =
-  #| (self, handler) => { self.onpushsubscriptionchange = (e) => handler(e) }
+  #| (self, handler) => { self.onbackgroundfetchfail = (e) => handler(e) }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onpushsubscriptionchange(
+pub extern "js" fn ServiceWorkerGlobalScope::clear_onbackgroundfetchfail(
   self : ServiceWorkerGlobalScope,
 ) -> Unit =
-  #| (self) => { self.onpushsubscriptionchange = null }
+  #| (self) => { self.onbackgroundfetchfail = null }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchabort(
+  self : ServiceWorkerGlobalScope,
+  handler : (BackgroundFetchEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onbackgroundfetchabort = (e) => handler(e) }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::clear_onbackgroundfetchabort(
+  self : ServiceWorkerGlobalScope,
+) -> Unit =
+  #| (self) => { self.onbackgroundfetchabort = null }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchclick(
+  self : ServiceWorkerGlobalScope,
+  handler : (BackgroundFetchEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onbackgroundfetchclick = (e) => handler(e) }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::clear_onbackgroundfetchclick(
+  self : ServiceWorkerGlobalScope,
+) -> Unit =
+  #| (self) => { self.onbackgroundfetchclick = null }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_onsync(
+  self : ServiceWorkerGlobalScope,
+  handler : (SyncEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onsync = (e) => handler(e) }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::clear_onsync(
+  self : ServiceWorkerGlobalScope,
+) -> Unit =
+  #| (self) => { self.onsync = null }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_oncontentdelete(
+  self : ServiceWorkerGlobalScope,
+  handler : (ContentIndexEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.oncontentdelete = (e) => handler(e) }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::clear_oncontentdelete(
+  self : ServiceWorkerGlobalScope,
+) -> Unit =
+  #| (self) => { self.oncontentdelete = null }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::get_cookie_store(
+  self : ServiceWorkerGlobalScope,
+) -> CookieStore =
+  #| (self) => self.cookieStore
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_oncookiechange(
+  self : ServiceWorkerGlobalScope,
+  handler : (ExtendableCookieChangeEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.oncookiechange = (e) => handler(e) }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::clear_oncookiechange(
+  self : ServiceWorkerGlobalScope,
+) -> Unit =
+  #| (self) => { self.oncookiechange = null }
 
 ///|
 pub extern "js" fn ServiceWorkerGlobalScope::set_onnotificationclick(
@@ -1600,38 +1671,6 @@ pub extern "js" fn ServiceWorkerGlobalScope::clear_onpaymentrequest(
   #| (self) => { self.onpaymentrequest = null }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onsync(
-  self : ServiceWorkerGlobalScope,
-  handler : (SyncEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onsync = (e) => handler(e) }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onsync(
-  self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onsync = null }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::get_cookie_store(
-  self : ServiceWorkerGlobalScope,
-) -> CookieStore =
-  #| (self) => self.cookieStore
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_oncookiechange(
-  self : ServiceWorkerGlobalScope,
-  handler : (ExtendableCookieChangeEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.oncookiechange = (e) => handler(e) }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_oncookiechange(
-  self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.oncookiechange = null }
-
-///|
 pub extern "js" fn ServiceWorkerGlobalScope::set_onperiodicsync(
   self : ServiceWorkerGlobalScope,
   handler : (PeriodicSyncEvent) -> Unit,
@@ -1645,69 +1684,30 @@ pub extern "js" fn ServiceWorkerGlobalScope::clear_onperiodicsync(
   #| (self) => { self.onperiodicsync = null }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_oncontentdelete(
+pub extern "js" fn ServiceWorkerGlobalScope::set_onpush(
   self : ServiceWorkerGlobalScope,
-  handler : (ContentIndexEvent) -> Unit,
+  handler : (PushEvent) -> Unit,
 ) -> Unit =
-  #| (self, handler) => { self.oncontentdelete = (e) => handler(e) }
+  #| (self, handler) => { self.onpush = (e) => handler(e) }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_oncontentdelete(
+pub extern "js" fn ServiceWorkerGlobalScope::clear_onpush(
   self : ServiceWorkerGlobalScope,
 ) -> Unit =
-  #| (self) => { self.oncontentdelete = null }
+  #| (self) => { self.onpush = null }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchsuccess(
+pub extern "js" fn ServiceWorkerGlobalScope::set_onpushsubscriptionchange(
   self : ServiceWorkerGlobalScope,
-  handler : (BackgroundFetchUpdateUIEvent) -> Unit,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, handler) => { self.onbackgroundfetchsuccess = (e) => handler(e) }
+  #| (self, handler) => { self.onpushsubscriptionchange = (e) => handler(e) }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onbackgroundfetchsuccess(
+pub extern "js" fn ServiceWorkerGlobalScope::clear_onpushsubscriptionchange(
   self : ServiceWorkerGlobalScope,
 ) -> Unit =
-  #| (self) => { self.onbackgroundfetchsuccess = null }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchfail(
-  self : ServiceWorkerGlobalScope,
-  handler : (BackgroundFetchUpdateUIEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onbackgroundfetchfail = (e) => handler(e) }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onbackgroundfetchfail(
-  self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onbackgroundfetchfail = null }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchabort(
-  self : ServiceWorkerGlobalScope,
-  handler : (BackgroundFetchEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onbackgroundfetchabort = (e) => handler(e) }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onbackgroundfetchabort(
-  self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onbackgroundfetchabort = null }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onbackgroundfetchclick(
-  self : ServiceWorkerGlobalScope,
-  handler : (BackgroundFetchEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onbackgroundfetchclick = (e) => handler(e) }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onbackgroundfetchclick(
-  self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onbackgroundfetchclick = null }
+  #| (self) => { self.onpushsubscriptionchange = null }
 
 ///|
 /// Client interface
@@ -1980,16 +1980,34 @@ pub extern "js" fn ExtendableEvent::to_event(self : ExtendableEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn ExtendableEvent::as_push_event(
+pub extern "js" fn ExtendableEvent::as_background_fetch_event(
   self : ExtendableEvent,
-) -> PushEvent? =
-  #| (self) => (self instanceof PushEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> BackgroundFetchEvent? =
+  #| (self) => (self instanceof BackgroundFetchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn ExtendableEvent::as_push_subscription_change_event(
+pub extern "js" fn ExtendableEvent::as_background_fetch_update_ui_event(
   self : ExtendableEvent,
-) -> PushSubscriptionChangeEvent? =
-  #| (self) => (self instanceof PushSubscriptionChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> BackgroundFetchUpdateUIEvent? =
+  #| (self) => (self instanceof BackgroundFetchUpdateUIEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_sync_event(
+  self : ExtendableEvent,
+) -> SyncEvent? =
+  #| (self) => (self instanceof SyncEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_content_index_event(
+  self : ExtendableEvent,
+) -> ContentIndexEvent? =
+  #| (self) => (self instanceof ContentIndexEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_extendable_cookie_change_event(
+  self : ExtendableEvent,
+) -> ExtendableCookieChangeEvent? =
+  #| (self) => (self instanceof ExtendableCookieChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn ExtendableEvent::as_notification_event(
@@ -2010,10 +2028,22 @@ pub extern "js" fn ExtendableEvent::as_payment_request_event(
   #| (self) => (self instanceof PaymentRequestEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn ExtendableEvent::as_sync_event(
+pub extern "js" fn ExtendableEvent::as_periodic_sync_event(
   self : ExtendableEvent,
-) -> SyncEvent? =
-  #| (self) => (self instanceof SyncEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PeriodicSyncEvent? =
+  #| (self) => (self instanceof PeriodicSyncEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_push_event(
+  self : ExtendableEvent,
+) -> PushEvent? =
+  #| (self) => (self instanceof PushEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_push_subscription_change_event(
+  self : ExtendableEvent,
+) -> PushSubscriptionChangeEvent? =
+  #| (self) => (self instanceof PushSubscriptionChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn ExtendableEvent::as_install_event(
@@ -2032,36 +2062,6 @@ pub extern "js" fn ExtendableEvent::as_extendable_message_event(
   self : ExtendableEvent,
 ) -> ExtendableMessageEvent? =
   #| (self) => (self instanceof ExtendableMessageEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn ExtendableEvent::as_extendable_cookie_change_event(
-  self : ExtendableEvent,
-) -> ExtendableCookieChangeEvent? =
-  #| (self) => (self instanceof ExtendableCookieChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn ExtendableEvent::as_periodic_sync_event(
-  self : ExtendableEvent,
-) -> PeriodicSyncEvent? =
-  #| (self) => (self instanceof PeriodicSyncEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn ExtendableEvent::as_content_index_event(
-  self : ExtendableEvent,
-) -> ContentIndexEvent? =
-  #| (self) => (self instanceof ContentIndexEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn ExtendableEvent::as_background_fetch_event(
-  self : ExtendableEvent,
-) -> BackgroundFetchEvent? =
-  #| (self) => (self instanceof BackgroundFetchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn ExtendableEvent::as_background_fetch_update_ui_event(
-  self : ExtendableEvent,
-) -> BackgroundFetchUpdateUIEvent? =
-  #| (self) => (self instanceof BackgroundFetchUpdateUIEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn ExtendableEvent::new(type_ : String) -> ExtendableEvent =

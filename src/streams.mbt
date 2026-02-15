@@ -1947,6 +1947,12 @@ pub extern "js" fn JsValue::to_writable_stream(
   #| (self) => self
 
 ///|
+pub extern "js" fn WritableStream::as_file_system_writable_file_stream(
+  self : WritableStream,
+) -> FileSystemWritableFileStream? =
+  #| (self) => (self instanceof FileSystemWritableFileStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn WritableStream::as_web_transport_datagrams_writable(
   self : WritableStream,
 ) -> WebTransportDatagramsWritable? =
@@ -1957,12 +1963,6 @@ pub extern "js" fn WritableStream::as_web_transport_send_stream(
   self : WritableStream,
 ) -> WebTransportSendStream? =
   #| (self) => (self instanceof WebTransportSendStream) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn WritableStream::as_file_system_writable_file_stream(
-  self : WritableStream,
-) -> FileSystemWritableFileStream? =
-  #| (self) => (self instanceof FileSystemWritableFileStream) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Error type for throwing methods

@@ -490,16 +490,56 @@ pub extern "js" fn JsValue::to_css_rule(self : JsValue) -> CSSRule =
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSRule::as_css_function_rule(
+pub extern "js" fn CSSRule::as_css_position_try_rule(
   self : CSSRule,
-) -> CSSFunctionRule? =
-  #| (self) => (self instanceof CSSFunctionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CSSPositionTryRule? =
+  #| (self) => (self instanceof CSSPositionTryRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSRule::as_css_function_declarations(
+pub extern "js" fn CSSRule::as_css_keyframe_rule(
   self : CSSRule,
-) -> CSSFunctionDeclarations? =
-  #| (self) => (self instanceof CSSFunctionDeclarations) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CSSKeyframeRule? =
+  #| (self) => (self instanceof CSSKeyframeRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_keyframes_rule(
+  self : CSSRule,
+) -> CSSKeyframesRule? =
+  #| (self) => (self instanceof CSSKeyframesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_scope_rule(self : CSSRule) -> CSSScopeRule? =
+  #| (self) => (self instanceof CSSScopeRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_layer_block_rule(
+  self : CSSRule,
+) -> CSSLayerBlockRule? =
+  #| (self) => (self instanceof CSSLayerBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_layer_statement_rule(
+  self : CSSRule,
+) -> CSSLayerStatementRule? =
+  #| (self) => (self instanceof CSSLayerStatementRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_color_profile_rule(
+  self : CSSRule,
+) -> CSSColorProfileRule? =
+  #| (self) => (self instanceof CSSColorProfileRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_container_rule(
+  self : CSSRule,
+) -> CSSContainerRule? =
+  #| (self) => (self instanceof CSSContainerRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_supports_condition_rule(
+  self : CSSRule,
+) -> CSSSupportsConditionRule? =
+  #| (self) => (self instanceof CSSSupportsConditionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSRule::as_css_condition_rule(
@@ -518,44 +558,64 @@ pub extern "js" fn CSSRule::as_css_supports_rule(
   #| (self) => (self instanceof CSSSupportsRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSRule::as_css_layer_block_rule(
-  self : CSSRule,
-) -> CSSLayerBlockRule? =
-  #| (self) => (self instanceof CSSLayerBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_layer_statement_rule(
-  self : CSSRule,
-) -> CSSLayerStatementRule? =
-  #| (self) => (self instanceof CSSLayerStatementRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn CSSRule::as_css_counter_style_rule(
   self : CSSRule,
 ) -> CSSCounterStyleRule? =
   #| (self) => (self instanceof CSSCounterStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSRule::as_css_container_rule(
+pub extern "js" fn CSSRule::as_css_font_face_rule(
   self : CSSRule,
-) -> CSSContainerRule? =
-  #| (self) => (self instanceof CSSContainerRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CSSFontFaceRule? =
+  #| (self) => (self instanceof CSSFontFaceRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSRule::as_css_supports_condition_rule(
+pub extern "js" fn CSSRule::as_css_font_feature_values_rule(
   self : CSSRule,
-) -> CSSSupportsConditionRule? =
-  #| (self) => (self instanceof CSSSupportsConditionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CSSFontFeatureValuesRule? =
+  #| (self) => (self instanceof CSSFontFeatureValuesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSRule::as_css_scope_rule(self : CSSRule) -> CSSScopeRule? =
-  #| (self) => (self instanceof CSSScopeRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn CSSRule::as_css_font_palette_values_rule(
+  self : CSSRule,
+) -> CSSFontPaletteValuesRule? =
+  #| (self) => (self instanceof CSSFontPaletteValuesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_function_rule(
+  self : CSSRule,
+) -> CSSFunctionRule? =
+  #| (self) => (self instanceof CSSFunctionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_function_declarations(
+  self : CSSRule,
+) -> CSSFunctionDeclarations? =
+  #| (self) => (self instanceof CSSFunctionDeclarations) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_nested_declarations(
+  self : CSSRule,
+) -> CSSNestedDeclarations? =
+  #| (self) => (self instanceof CSSNestedDeclarations) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSRule::as_css_property_rule(
   self : CSSRule,
 ) -> CSSPropertyRule? =
   #| (self) => (self instanceof CSSPropertyRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_starting_style_rule(
+  self : CSSRule,
+) -> CSSStartingStyleRule? =
+  #| (self) => (self instanceof CSSStartingStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_view_transition_rule(
+  self : CSSRule,
+) -> CSSViewTransitionRule? =
+  #| (self) => (self instanceof CSSViewTransitionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSRule::as_css_style_rule(self : CSSRule) -> CSSStyleRule? =
@@ -590,70 +650,10 @@ pub extern "js" fn CSSRule::as_css_namespace_rule(
   #| (self) => (self instanceof CSSNamespaceRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSRule::as_css_color_profile_rule(
-  self : CSSRule,
-) -> CSSColorProfileRule? =
-  #| (self) => (self instanceof CSSColorProfileRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_keyframe_rule(
-  self : CSSRule,
-) -> CSSKeyframeRule? =
-  #| (self) => (self instanceof CSSKeyframeRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_keyframes_rule(
-  self : CSSRule,
-) -> CSSKeyframesRule? =
-  #| (self) => (self instanceof CSSKeyframesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_position_try_rule(
-  self : CSSRule,
-) -> CSSPositionTryRule? =
-  #| (self) => (self instanceof CSSPositionTryRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_view_transition_rule(
-  self : CSSRule,
-) -> CSSViewTransitionRule? =
-  #| (self) => (self instanceof CSSViewTransitionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_font_face_rule(
-  self : CSSRule,
-) -> CSSFontFaceRule? =
-  #| (self) => (self instanceof CSSFontFaceRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_starting_style_rule(
-  self : CSSRule,
-) -> CSSStartingStyleRule? =
-  #| (self) => (self instanceof CSSStartingStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn CSSRule::as_css_custom_media_rule(
   self : CSSRule,
 ) -> CSSCustomMediaRule? =
   #| (self) => (self instanceof CSSCustomMediaRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_font_feature_values_rule(
-  self : CSSRule,
-) -> CSSFontFeatureValuesRule? =
-  #| (self) => (self instanceof CSSFontFeatureValuesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_font_palette_values_rule(
-  self : CSSRule,
-) -> CSSFontPaletteValuesRule? =
-  #| (self) => (self instanceof CSSFontPaletteValuesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSRule::as_css_nested_declarations(
-  self : CSSRule,
-) -> CSSNestedDeclarations? =
-  #| (self) => (self instanceof CSSNestedDeclarations) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSRule::get_css_text(self : CSSRule) -> String =
@@ -720,16 +720,6 @@ pub let css_rule_margin_rule : Int = 9
 ///|
 pub let css_rule_namespace_rule : Int = 10
 
-// CSSRule.SUPPORTS_RULE
-
-///|
-pub let css_rule_supports_rule : Int = 12
-
-// CSSRule.COUNTER_STYLE_RULE
-
-///|
-pub let css_rule_counter_style_rule : Int = 11
-
 // CSSRule.KEYFRAMES_RULE
 
 ///|
@@ -739,6 +729,16 @@ pub let css_rule_keyframes_rule : Int = 7
 
 ///|
 pub let css_rule_keyframe_rule : Int = 8
+
+// CSSRule.SUPPORTS_RULE
+
+///|
+pub let css_rule_supports_rule : Int = 12
+
+// CSSRule.COUNTER_STYLE_RULE
+
+///|
+pub let css_rule_counter_style_rule : Int = 11
 
 // CSSRule.FONT_FEATURE_VALUES_RULE
 
@@ -917,28 +917,10 @@ pub extern "js" fn CSSGroupingRule::to_css_rule(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSGroupingRule::as_css_function_rule(
+pub extern "js" fn CSSGroupingRule::as_css_scope_rule(
   self : CSSGroupingRule,
-) -> CSSFunctionRule? =
-  #| (self) => (self instanceof CSSFunctionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSGroupingRule::as_css_condition_rule(
-  self : CSSGroupingRule,
-) -> CSSConditionRule? =
-  #| (self) => (self instanceof CSSConditionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSGroupingRule::as_css_media_rule(
-  self : CSSGroupingRule,
-) -> CSSMediaRule? =
-  #| (self) => (self instanceof CSSMediaRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSGroupingRule::as_css_supports_rule(
-  self : CSSGroupingRule,
-) -> CSSSupportsRule? =
-  #| (self) => (self instanceof CSSSupportsRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CSSScopeRule? =
+  #| (self) => (self instanceof CSSScopeRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSGroupingRule::as_css_layer_block_rule(
@@ -959,10 +941,34 @@ pub extern "js" fn CSSGroupingRule::as_css_supports_condition_rule(
   #| (self) => (self instanceof CSSSupportsConditionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn CSSGroupingRule::as_css_scope_rule(
+pub extern "js" fn CSSGroupingRule::as_css_condition_rule(
   self : CSSGroupingRule,
-) -> CSSScopeRule? =
-  #| (self) => (self instanceof CSSScopeRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CSSConditionRule? =
+  #| (self) => (self instanceof CSSConditionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSGroupingRule::as_css_media_rule(
+  self : CSSGroupingRule,
+) -> CSSMediaRule? =
+  #| (self) => (self instanceof CSSMediaRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSGroupingRule::as_css_supports_rule(
+  self : CSSGroupingRule,
+) -> CSSSupportsRule? =
+  #| (self) => (self instanceof CSSSupportsRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSGroupingRule::as_css_function_rule(
+  self : CSSGroupingRule,
+) -> CSSFunctionRule? =
+  #| (self) => (self instanceof CSSFunctionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSGroupingRule::as_css_starting_style_rule(
+  self : CSSGroupingRule,
+) -> CSSStartingStyleRule? =
+  #| (self) => (self instanceof CSSStartingStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSGroupingRule::as_css_style_rule(
@@ -975,12 +981,6 @@ pub extern "js" fn CSSGroupingRule::as_css_page_rule(
   self : CSSGroupingRule,
 ) -> CSSPageRule? =
   #| (self) => (self instanceof CSSPageRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSGroupingRule::as_css_starting_style_rule(
-  self : CSSGroupingRule,
-) -> CSSStartingStyleRule? =
-  #| (self) => (self instanceof CSSStartingStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Error type for throwing methods
@@ -1383,6 +1383,18 @@ pub extern "js" fn JsValue::to_css_style_declaration(
   #| (self) => self
 
 ///|
+pub extern "js" fn CSSStyleDeclaration::as_css_position_try_descriptors(
+  self : CSSStyleDeclaration,
+) -> CSSPositionTryDescriptors? =
+  #| (self) => (self instanceof CSSPositionTryDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSStyleDeclaration::as_css_font_face_descriptors(
+  self : CSSStyleDeclaration,
+) -> CSSFontFaceDescriptors? =
+  #| (self) => (self instanceof CSSFontFaceDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn CSSStyleDeclaration::as_css_function_descriptors(
   self : CSSStyleDeclaration,
 ) -> CSSFunctionDescriptors? =
@@ -1399,18 +1411,6 @@ pub extern "js" fn CSSStyleDeclaration::as_css_style_properties(
   self : CSSStyleDeclaration,
 ) -> CSSStyleProperties? =
   #| (self) => (self instanceof CSSStyleProperties) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSStyleDeclaration::as_css_position_try_descriptors(
-  self : CSSStyleDeclaration,
-) -> CSSPositionTryDescriptors? =
-  #| (self) => (self instanceof CSSPositionTryDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSStyleDeclaration::as_css_font_face_descriptors(
-  self : CSSStyleDeclaration,
-) -> CSSFontFaceDescriptors? =
-  #| (self) => (self instanceof CSSFontFaceDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Error type for throwing methods

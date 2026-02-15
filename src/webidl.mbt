@@ -793,26 +793,26 @@ pub extern "js" fn DOMException::as_overconstrained_error(
   #| (self) => (self instanceof OverconstrainedError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn DOMException::as_gpu_pipeline_error(
+  self : DOMException,
+) -> GPUPipelineError? =
+  #| (self) => (self instanceof GPUPipelineError) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn DOMException::as_quota_exceeded_error(
   self : DOMException,
 ) -> QuotaExceededError? =
   #| (self) => (self instanceof QuotaExceededError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn DOMException::as_web_transport_error(
-  self : DOMException,
-) -> WebTransportError? =
-  #| (self) => (self instanceof WebTransportError) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn DOMException::as_rtc_error(self : DOMException) -> RTCError? =
   #| (self) => (self instanceof RTCError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn DOMException::as_gpu_pipeline_error(
+pub extern "js" fn DOMException::as_web_transport_error(
   self : DOMException,
-) -> GPUPipelineError? =
-  #| (self) => (self instanceof GPUPipelineError) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> WebTransportError? =
+  #| (self) => (self instanceof WebTransportError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn DOMException::new() -> DOMException =

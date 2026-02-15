@@ -1331,70 +1331,6 @@ pub fn RTCRtpParameters::from_js(value : JsValue) -> RTCRtpParameters {
 }
 
 ///|
-/// RTCRtpSendParameters dictionary
-pub(all) struct RTCRtpSendParameters {
-  headerExtensions : Array[RTCRtpHeaderExtensionParameters]
-  rtcp : RTCRtcpParameters
-  codecs : Array[RTCRtpCodecParameters]
-  transactionId : String
-  encodings : Array[RTCRtpEncodingParameters]
-  degradationPreference : RTCDegradationPreference?
-}
-
-///|
-/// Create a new RTCRtpSendParameters
-pub fn RTCRtpSendParameters::new(
-  rtcp~ : RTCRtcpParameters,
-) -> RTCRtpSendParameters {
-  RTCRtpSendParameters::{
-    headerExtensions: [],
-    rtcp,
-    codecs: [],
-    transactionId: "",
-    encodings: [],
-    degradationPreference: None,
-  }
-}
-
-///|
-extern "js" fn RTCRtpSendParameters::to_js_ffi(
-  self : RTCRtpSendParameters,
-) -> JsValue =
-  #| (self) => ({
-  #|   headerExtensions: self.headerExtensions,
-  #|   rtcp: self.rtcp,
-  #|   codecs: self.codecs,
-  #|   transactionId: self.transactionId,
-  #|   encodings: self.encodings,
-  #|   degradationPreference: ((() => { const v = self.degradationPreference; if (v === undefined) return undefined; return ['maintain-framerate', 'maintain-resolution', 'balanced', 'maintain-framerate-and-resolution'][v]; })())
-  #| })
-
-///|
-/// Convert to JsValue
-pub fn RTCRtpSendParameters::to_js(self : RTCRtpSendParameters) -> JsValue {
-  RTCRtpSendParameters::to_js_ffi(self)
-}
-
-///|
-extern "js" fn RTCRtpSendParameters::from_js_ffi(
-  value : JsValue,
-) -> RTCRtpSendParameters =
-  #| (v) => ({
-  #|   headerExtensions: v.headerExtensions,
-  #|   rtcp: v.rtcp,
-  #|   codecs: v.codecs,
-  #|   transactionId: v.transactionId,
-  #|   encodings: v.encodings,
-  #|   degradationPreference: (v.degradationPreference === undefined ? undefined : ['maintain-framerate', 'maintain-resolution', 'balanced', 'maintain-framerate-and-resolution'].indexOf(v.degradationPreference))
-  #| })
-
-///|
-/// Convert from JsValue
-pub fn RTCRtpSendParameters::from_js(value : JsValue) -> RTCRtpSendParameters {
-  RTCRtpSendParameters::from_js_ffi(value)
-}
-
-///|
 /// RTCRtpReceiveParameters dictionary
 pub(all) struct RTCRtpReceiveParameters {
   headerExtensions : Array[RTCRtpHeaderExtensionParameters]
@@ -1970,50 +1906,6 @@ extern "js" fn RTCDtlsFingerprint::from_js_ffi(
 /// Convert from JsValue
 pub fn RTCDtlsFingerprint::from_js(value : JsValue) -> RTCDtlsFingerprint {
   RTCDtlsFingerprint::from_js_ffi(value)
-}
-
-///|
-/// RTCIceParameters dictionary
-pub(all) struct RTCIceParameters {
-  usernameFragment : String?
-  password : String?
-  iceLite : Bool?
-}
-
-///|
-/// Create a new RTCIceParameters with default values
-pub fn RTCIceParameters::default() -> RTCIceParameters {
-  RTCIceParameters::{ usernameFragment: None, password: None, iceLite: None }
-}
-
-///|
-extern "js" fn RTCIceParameters::to_js_ffi(self : RTCIceParameters) -> JsValue =
-  #| (self) => ({
-  #|   usernameFragment: self.usernameFragment,
-  #|   password: self.password,
-  #|   iceLite: (self.iceLite === -1 ? undefined : self.iceLite)
-  #| })
-
-///|
-/// Convert to JsValue
-pub fn RTCIceParameters::to_js(self : RTCIceParameters) -> JsValue {
-  RTCIceParameters::to_js_ffi(self)
-}
-
-///|
-extern "js" fn RTCIceParameters::from_js_ffi(
-  value : JsValue,
-) -> RTCIceParameters =
-  #| (v) => ({
-  #|   usernameFragment: v.usernameFragment,
-  #|   password: v.password,
-  #|   iceLite: (v.iceLite === undefined ? -1 : v.iceLite)
-  #| })
-
-///|
-/// Convert from JsValue
-pub fn RTCIceParameters::from_js(value : JsValue) -> RTCIceParameters {
-  RTCIceParameters::from_js_ffi(value)
 }
 
 ///|

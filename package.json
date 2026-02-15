@@ -4,6 +4,6 @@
     "description": "MoonBit bindings for Web APIs",
     "scripts": {},
     "devDependencies": {
-        "webidl-bindgen.mbt": "0.4.0"
+        "webidl-bindgen.mbt": "0.5.0"
     }
 }

@@ -622,8 +622,38 @@ pub extern "js" fn JsValue::to_event(self : JsValue) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn Event::as_time_event(self : Event) -> TimeEvent? =
-  #| (self) => (self instanceof TimeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn Event::as_security_policy_violation_event(
+  self : Event,
+) -> SecurityPolicyViolationEvent? =
+  #| (self) => (self instanceof SecurityPolicyViolationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_idb_version_change_event(
+  self : Event,
+) -> IDBVersionChangeEvent? =
+  #| (self) => (self instanceof IDBVersionChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_background_fetch_event(
+  self : Event,
+) -> BackgroundFetchEvent? =
+  #| (self) => (self instanceof BackgroundFetchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_background_fetch_update_ui_event(
+  self : Event,
+) -> BackgroundFetchUpdateUIEvent? =
+  #| (self) => (self instanceof BackgroundFetchUpdateUIEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_sync_event(self : Event) -> SyncEvent? =
+  #| (self) => (self instanceof SyncEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_captured_mouse_event(
+  self : Event,
+) -> CapturedMouseEvent? =
+  #| (self) => (self instanceof CapturedMouseEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Event::as_clipboard_event(self : Event) -> ClipboardEvent? =
@@ -636,44 +666,26 @@ pub extern "js" fn Event::as_clipboard_change_event(
   #| (self) => (self instanceof ClipboardChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_sensor_error_event(
+pub extern "js" fn Event::as_content_index_event(
   self : Event,
-) -> SensorErrorEvent? =
-  #| (self) => (self instanceof SensorErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ContentIndexEvent? =
+  #| (self) => (self instanceof ContentIndexEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_value_event(self : Event) -> ValueEvent? =
-  #| (self) => (self instanceof ValueEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn Event::as_cookie_change_event(
+  self : Event,
+) -> CookieChangeEvent? =
+  #| (self) => (self instanceof CookieChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_bluetooth_advertising_event(
+pub extern "js" fn Event::as_extendable_cookie_change_event(
   self : Event,
-) -> BluetoothAdvertisingEvent? =
-  #| (self) => (self instanceof BluetoothAdvertisingEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ExtendableCookieChangeEvent? =
+  #| (self) => (self instanceof ExtendableCookieChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_task_priority_change_event(
-  self : Event,
-) -> TaskPriorityChangeEvent? =
-  #| (self) => (self instanceof TaskPriorityChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_s_frame_transform_error_event(
-  self : Event,
-) -> SFrameTransformErrorEvent? =
-  #| (self) => (self instanceof SFrameTransformErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_rtc_transform_event(
-  self : Event,
-) -> RTCTransformEvent? =
-  #| (self) => (self instanceof RTCTransformEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_key_frame_request_event(
-  self : Event,
-) -> KeyFrameRequestEvent? =
-  #| (self) => (self instanceof KeyFrameRequestEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn Event::as_animation_event(self : Event) -> AnimationEvent? =
+  #| (self) => (self instanceof AnimationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Event::as_content_visibility_auto_state_change_event(
@@ -682,8 +694,22 @@ pub extern "js" fn Event::as_content_visibility_auto_state_change_event(
   #| (self) => (self instanceof ContentVisibilityAutoStateChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_close_event(self : Event) -> CloseEvent? =
-  #| (self) => (self instanceof CloseEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn Event::as_font_face_set_load_event(
+  self : Event,
+) -> FontFaceSetLoadEvent? =
+  #| (self) => (self instanceof FontFaceSetLoadEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_navigation_event(self : Event) -> NavigationEvent? =
+  #| (self) => (self instanceof NavigationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_snap_event(self : Event) -> SnapEvent? =
+  #| (self) => (self instanceof SnapEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_transition_event(self : Event) -> TransitionEvent? =
+  #| (self) => (self instanceof TransitionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Event::as_media_query_list_event(
@@ -692,44 +718,54 @@ pub extern "js" fn Event::as_media_query_list_event(
   #| (self) => (self instanceof MediaQueryListEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_push_event(self : Event) -> PushEvent? =
-  #| (self) => (self instanceof PushEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn Event::as_document_picture_in_picture_event(
+  self : Event,
+) -> DocumentPictureInPictureEvent? =
+  #| (self) => (self instanceof DocumentPictureInPictureEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_push_subscription_change_event(
-  self : Event,
-) -> PushSubscriptionChangeEvent? =
-  #| (self) => (self instanceof PushSubscriptionChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn Event::as_custom_event(self : Event) -> CustomEvent? =
+  #| (self) => (self instanceof CustomEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_midi_message_event(
+pub extern "js" fn Event::as_text_update_event(
   self : Event,
-) -> MIDIMessageEvent? =
-  #| (self) => (self instanceof MIDIMessageEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> TextUpdateEvent? =
+  #| (self) => (self instanceof TextUpdateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_midi_connection_event(
+pub extern "js" fn Event::as_text_format_update_event(
   self : Event,
-) -> MIDIConnectionEvent? =
-  #| (self) => (self instanceof MIDIConnectionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> TextFormatUpdateEvent? =
+  #| (self) => (self instanceof TextFormatUpdateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_capture_action_event(
+pub extern "js" fn Event::as_character_bounds_update_event(
   self : Event,
-) -> CaptureActionEvent? =
-  #| (self) => (self instanceof CaptureActionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CharacterBoundsUpdateEvent? =
+  #| (self) => (self instanceof CharacterBoundsUpdateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_media_stream_track_event(
+pub extern "js" fn Event::as_media_key_message_event(
   self : Event,
-) -> MediaStreamTrackEvent? =
-  #| (self) => (self instanceof MediaStreamTrackEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> MediaKeyMessageEvent? =
+  #| (self) => (self instanceof MediaKeyMessageEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_device_change_event(
+pub extern "js" fn Event::as_media_encrypted_event(
   self : Event,
-) -> DeviceChangeEvent? =
-  #| (self) => (self instanceof DeviceChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> MediaEncryptedEvent? =
+  #| (self) => (self instanceof MediaEncryptedEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_gamepad_event(self : Event) -> GamepadEvent? =
+  #| (self) => (self instanceof GamepadEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_sensor_error_event(
+  self : Event,
+) -> SensorErrorEvent? =
+  #| (self) => (self instanceof SensorErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Event::as_track_event(self : Event) -> TrackEvent? =
@@ -816,32 +852,38 @@ pub extern "js" fn Event::as_storage_event(self : Event) -> StorageEvent? =
   #| (self) => (self instanceof StorageEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_portal_activate_event(
+pub extern "js" fn Event::as_before_install_prompt_event(
   self : Event,
-) -> PortalActivateEvent? =
-  #| (self) => (self instanceof PortalActivateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> BeforeInstallPromptEvent? =
+  #| (self) => (self instanceof BeforeInstallPromptEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_touch_event(self : Event) -> TouchEvent? =
-  #| (self) => (self instanceof TouchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn Event::as_buffered_change_event(
+  self : Event,
+) -> BufferedChangeEvent? =
+  #| (self) => (self instanceof BufferedChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_animation_playback_event(
+pub extern "js" fn Event::as_capture_action_event(
   self : Event,
-) -> AnimationPlaybackEvent? =
-  #| (self) => (self instanceof AnimationPlaybackEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CaptureActionEvent? =
+  #| (self) => (self instanceof CaptureActionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_media_key_message_event(
+pub extern "js" fn Event::as_media_stream_track_event(
   self : Event,
-) -> MediaKeyMessageEvent? =
-  #| (self) => (self instanceof MediaKeyMessageEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> MediaStreamTrackEvent? =
+  #| (self) => (self instanceof MediaStreamTrackEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_media_encrypted_event(
+pub extern "js" fn Event::as_device_change_event(
   self : Event,
-) -> MediaEncryptedEvent? =
-  #| (self) => (self instanceof MediaEncryptedEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> DeviceChangeEvent? =
+  #| (self) => (self instanceof DeviceChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_blob_event(self : Event) -> BlobEvent? =
+  #| (self) => (self instanceof BlobEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Event::as_notification_event(
@@ -850,42 +892,16 @@ pub extern "js" fn Event::as_notification_event(
   #| (self) => (self instanceof NotificationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_transition_event(self : Event) -> TransitionEvent? =
-  #| (self) => (self instanceof TransitionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_web_gl_context_event(
+pub extern "js" fn Event::as_device_orientation_event(
   self : Event,
-) -> WebGLContextEvent? =
-  #| (self) => (self instanceof WebGLContextEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> DeviceOrientationEvent? =
+  #| (self) => (self instanceof DeviceOrientationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_snap_event(self : Event) -> SnapEvent? =
-  #| (self) => (self instanceof SnapEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_before_install_prompt_event(
+pub extern "js" fn Event::as_device_motion_event(
   self : Event,
-) -> BeforeInstallPromptEvent? =
-  #| (self) => (self instanceof BeforeInstallPromptEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_window_controls_overlay_geometry_change_event(
-  self : Event,
-) -> WindowControlsOverlayGeometryChangeEvent? =
-  #| (self) => (self instanceof WindowControlsOverlayGeometryChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_navigation_event(self : Event) -> NavigationEvent? =
-  #| (self) => (self instanceof NavigationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_progress_event(self : Event) -> ProgressEvent? =
-  #| (self) => (self instanceof ProgressEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_custom_event(self : Event) -> CustomEvent? =
-  #| (self) => (self instanceof CustomEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> DeviceMotionEvent? =
+  #| (self) => (self instanceof DeviceMotionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Event::as_can_make_payment_event(
@@ -900,50 +916,84 @@ pub extern "js" fn Event::as_payment_request_event(
   #| (self) => (self instanceof PaymentRequestEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_idb_version_change_event(
+pub extern "js" fn Event::as_payment_method_change_event(
   self : Event,
-) -> IDBVersionChangeEvent? =
-  #| (self) => (self instanceof IDBVersionChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PaymentMethodChangeEvent? =
+  #| (self) => (self instanceof PaymentMethodChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_usb_connection_event(
+pub extern "js" fn Event::as_payment_request_update_event(
   self : Event,
-) -> USBConnectionEvent? =
-  #| (self) => (self instanceof USBConnectionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PaymentRequestUpdateEvent? =
+  #| (self) => (self instanceof PaymentRequestUpdateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_font_face_set_load_event(
+pub extern "js" fn Event::as_periodic_sync_event(
   self : Event,
-) -> FontFaceSetLoadEvent? =
-  #| (self) => (self instanceof FontFaceSetLoadEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PeriodicSyncEvent? =
+  #| (self) => (self instanceof PeriodicSyncEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_xr_session_event(self : Event) -> XRSessionEvent? =
-  #| (self) => (self instanceof XRSessionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn Event::as_picture_in_picture_event(
+  self : Event,
+) -> PictureInPictureEvent? =
+  #| (self) => (self instanceof PictureInPictureEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_xr_input_source_event(
-  self : Event,
-) -> XRInputSourceEvent? =
-  #| (self) => (self instanceof XRInputSourceEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn Event::as_pointer_event(self : Event) -> PointerEvent? =
+  #| (self) => (self instanceof PointerEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_xr_input_sources_change_event(
+pub extern "js" fn Event::as_portal_activate_event(
   self : Event,
-) -> XRInputSourcesChangeEvent? =
-  #| (self) => (self instanceof XRInputSourcesChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PortalActivateEvent? =
+  #| (self) => (self instanceof PortalActivateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_xr_reference_space_event(
+pub extern "js" fn Event::as_presentation_connection_available_event(
   self : Event,
-) -> XRReferenceSpaceEvent? =
-  #| (self) => (self instanceof XRReferenceSpaceEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PresentationConnectionAvailableEvent? =
+  #| (self) => (self instanceof PresentationConnectionAvailableEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_xr_visibility_mask_change_event(
+pub extern "js" fn Event::as_presentation_connection_close_event(
   self : Event,
-) -> XRVisibilityMaskChangeEvent? =
-  #| (self) => (self instanceof XRVisibilityMaskChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PresentationConnectionCloseEvent? =
+  #| (self) => (self instanceof PresentationConnectionCloseEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_push_event(self : Event) -> PushEvent? =
+  #| (self) => (self instanceof PushEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_push_subscription_change_event(
+  self : Event,
+) -> PushSubscriptionChangeEvent? =
+  #| (self) => (self instanceof PushSubscriptionChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_task_priority_change_event(
+  self : Event,
+) -> TaskPriorityChangeEvent? =
+  #| (self) => (self instanceof TaskPriorityChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_extendable_event(self : Event) -> ExtendableEvent? =
+  #| (self) => (self instanceof ExtendableEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_install_event(self : Event) -> InstallEvent? =
+  #| (self) => (self instanceof InstallEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_fetch_event(self : Event) -> FetchEvent? =
+  #| (self) => (self instanceof FetchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_extendable_message_event(
+  self : Event,
+) -> ExtendableMessageEvent? =
+  #| (self) => (self instanceof ExtendableMessageEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Event::as_speech_recognition_error_event(
@@ -970,138 +1020,12 @@ pub extern "js" fn Event::as_speech_synthesis_error_event(
   #| (self) => (self instanceof SpeechSynthesisErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_offline_audio_completion_event(
-  self : Event,
-) -> OfflineAudioCompletionEvent? =
-  #| (self) => (self instanceof OfflineAudioCompletionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn Event::as_time_event(self : Event) -> TimeEvent? =
+  #| (self) => (self instanceof TimeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_audio_processing_event(
-  self : Event,
-) -> AudioProcessingEvent? =
-  #| (self) => (self instanceof AudioProcessingEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_animation_event(self : Event) -> AnimationEvent? =
-  #| (self) => (self instanceof AnimationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_hid_connection_event(
-  self : Event,
-) -> HIDConnectionEvent? =
-  #| (self) => (self instanceof HIDConnectionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_hid_input_report_event(
-  self : Event,
-) -> HIDInputReportEvent? =
-  #| (self) => (self instanceof HIDInputReportEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_text_update_event(
-  self : Event,
-) -> TextUpdateEvent? =
-  #| (self) => (self instanceof TextUpdateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_text_format_update_event(
-  self : Event,
-) -> TextFormatUpdateEvent? =
-  #| (self) => (self instanceof TextFormatUpdateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_character_bounds_update_event(
-  self : Event,
-) -> CharacterBoundsUpdateEvent? =
-  #| (self) => (self instanceof CharacterBoundsUpdateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_rtc_peer_connection_ice_event(
-  self : Event,
-) -> RTCPeerConnectionIceEvent? =
-  #| (self) => (self instanceof RTCPeerConnectionIceEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_rtc_peer_connection_ice_error_event(
-  self : Event,
-) -> RTCPeerConnectionIceErrorEvent? =
-  #| (self) => (self instanceof RTCPeerConnectionIceErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_rtc_track_event(self : Event) -> RTCTrackEvent? =
-  #| (self) => (self instanceof RTCTrackEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_rtc_data_channel_event(
-  self : Event,
-) -> RTCDataChannelEvent? =
-  #| (self) => (self instanceof RTCDataChannelEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_rtcdtmf_tone_change_event(
-  self : Event,
-) -> RTCDTMFToneChangeEvent? =
-  #| (self) => (self instanceof RTCDTMFToneChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_rtc_error_event(self : Event) -> RTCErrorEvent? =
-  #| (self) => (self instanceof RTCErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_sync_event(self : Event) -> SyncEvent? =
-  #| (self) => (self instanceof SyncEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_captured_mouse_event(
-  self : Event,
-) -> CapturedMouseEvent? =
-  #| (self) => (self instanceof CapturedMouseEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_extendable_event(self : Event) -> ExtendableEvent? =
-  #| (self) => (self instanceof ExtendableEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_install_event(self : Event) -> InstallEvent? =
-  #| (self) => (self instanceof InstallEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_fetch_event(self : Event) -> FetchEvent? =
-  #| (self) => (self instanceof FetchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_extendable_message_event(
-  self : Event,
-) -> ExtendableMessageEvent? =
-  #| (self) => (self instanceof ExtendableMessageEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_picture_in_picture_event(
-  self : Event,
-) -> PictureInPictureEvent? =
-  #| (self) => (self instanceof PictureInPictureEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_security_policy_violation_event(
-  self : Event,
-) -> SecurityPolicyViolationEvent? =
-  #| (self) => (self instanceof SecurityPolicyViolationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_cookie_change_event(
-  self : Event,
-) -> CookieChangeEvent? =
-  #| (self) => (self instanceof CookieChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_extendable_cookie_change_event(
-  self : Event,
-) -> ExtendableCookieChangeEvent? =
-  #| (self) => (self instanceof ExtendableCookieChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_gamepad_event(self : Event) -> GamepadEvent? =
-  #| (self) => (self instanceof GamepadEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn Event::as_touch_event(self : Event) -> TouchEvent? =
+  #| (self) => (self instanceof TouchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Event::as_ui_event(self : Event) -> UIEvent? =
@@ -1138,16 +1062,20 @@ pub extern "js" fn Event::as_text_event(self : Event) -> TextEvent? =
   #| (self) => (self instanceof TextEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_device_orientation_event(
+pub extern "js" fn Event::as_animation_playback_event(
   self : Event,
-) -> DeviceOrientationEvent? =
-  #| (self) => (self instanceof DeviceOrientationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> AnimationPlaybackEvent? =
+  #| (self) => (self instanceof AnimationPlaybackEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_device_motion_event(
+pub extern "js" fn Event::as_value_event(self : Event) -> ValueEvent? =
+  #| (self) => (self instanceof ValueEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_bluetooth_advertising_event(
   self : Event,
-) -> DeviceMotionEvent? =
-  #| (self) => (self instanceof DeviceMotionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> BluetoothAdvertisingEvent? =
+  #| (self) => (self instanceof BluetoothAdvertisingEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Event::as_ndef_reading_event(
@@ -1156,82 +1084,154 @@ pub extern "js" fn Event::as_ndef_reading_event(
   #| (self) => (self instanceof NDEFReadingEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn Event::as_offline_audio_completion_event(
+  self : Event,
+) -> OfflineAudioCompletionEvent? =
+  #| (self) => (self instanceof OfflineAudioCompletionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_audio_processing_event(
+  self : Event,
+) -> AudioProcessingEvent? =
+  #| (self) => (self instanceof AudioProcessingEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_web_gl_context_event(
+  self : Event,
+) -> WebGLContextEvent? =
+  #| (self) => (self instanceof WebGLContextEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn Event::as_gpu_uncaptured_error_event(
   self : Event,
 ) -> GPUUncapturedErrorEvent? =
   #| (self) => (self instanceof GPUUncapturedErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_blob_event(self : Event) -> BlobEvent? =
-  #| (self) => (self instanceof BlobEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_buffered_change_event(
+pub extern "js" fn Event::as_hid_connection_event(
   self : Event,
-) -> BufferedChangeEvent? =
-  #| (self) => (self instanceof BufferedChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> HIDConnectionEvent? =
+  #| (self) => (self instanceof HIDConnectionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_pointer_event(self : Event) -> PointerEvent? =
-  #| (self) => (self instanceof PointerEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_periodic_sync_event(
+pub extern "js" fn Event::as_hid_input_report_event(
   self : Event,
-) -> PeriodicSyncEvent? =
-  #| (self) => (self instanceof PeriodicSyncEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> HIDInputReportEvent? =
+  #| (self) => (self instanceof HIDInputReportEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_presentation_connection_available_event(
+pub extern "js" fn Event::as_midi_message_event(
   self : Event,
-) -> PresentationConnectionAvailableEvent? =
-  #| (self) => (self instanceof PresentationConnectionAvailableEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> MIDIMessageEvent? =
+  #| (self) => (self instanceof MIDIMessageEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_presentation_connection_close_event(
+pub extern "js" fn Event::as_midi_connection_event(
   self : Event,
-) -> PresentationConnectionCloseEvent? =
-  #| (self) => (self instanceof PresentationConnectionCloseEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> MIDIConnectionEvent? =
+  #| (self) => (self instanceof MIDIConnectionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_payment_method_change_event(
+pub extern "js" fn Event::as_s_frame_transform_error_event(
   self : Event,
-) -> PaymentMethodChangeEvent? =
-  #| (self) => (self instanceof PaymentMethodChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SFrameTransformErrorEvent? =
+  #| (self) => (self instanceof SFrameTransformErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_payment_request_update_event(
+pub extern "js" fn Event::as_rtc_transform_event(
   self : Event,
-) -> PaymentRequestUpdateEvent? =
-  #| (self) => (self instanceof PaymentRequestUpdateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> RTCTransformEvent? =
+  #| (self) => (self instanceof RTCTransformEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_document_picture_in_picture_event(
+pub extern "js" fn Event::as_key_frame_request_event(
   self : Event,
-) -> DocumentPictureInPictureEvent? =
-  #| (self) => (self instanceof DocumentPictureInPictureEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> KeyFrameRequestEvent? =
+  #| (self) => (self instanceof KeyFrameRequestEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_content_index_event(
+pub extern "js" fn Event::as_rtc_peer_connection_ice_event(
   self : Event,
-) -> ContentIndexEvent? =
-  #| (self) => (self instanceof ContentIndexEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> RTCPeerConnectionIceEvent? =
+  #| (self) => (self instanceof RTCPeerConnectionIceEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_background_fetch_event(
+pub extern "js" fn Event::as_rtc_peer_connection_ice_error_event(
   self : Event,
-) -> BackgroundFetchEvent? =
-  #| (self) => (self instanceof BackgroundFetchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> RTCPeerConnectionIceErrorEvent? =
+  #| (self) => (self instanceof RTCPeerConnectionIceErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_background_fetch_update_ui_event(
+pub extern "js" fn Event::as_rtc_track_event(self : Event) -> RTCTrackEvent? =
+  #| (self) => (self instanceof RTCTrackEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_rtc_data_channel_event(
   self : Event,
-) -> BackgroundFetchUpdateUIEvent? =
-  #| (self) => (self instanceof BackgroundFetchUpdateUIEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> RTCDataChannelEvent? =
+  #| (self) => (self instanceof RTCDataChannelEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_rtcdtmf_tone_change_event(
+  self : Event,
+) -> RTCDTMFToneChangeEvent? =
+  #| (self) => (self instanceof RTCDTMFToneChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_rtc_error_event(self : Event) -> RTCErrorEvent? =
+  #| (self) => (self instanceof RTCErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_close_event(self : Event) -> CloseEvent? =
+  #| (self) => (self instanceof CloseEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_usb_connection_event(
+  self : Event,
+) -> USBConnectionEvent? =
+  #| (self) => (self instanceof USBConnectionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_xr_session_event(self : Event) -> XRSessionEvent? =
+  #| (self) => (self instanceof XRSessionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_xr_input_source_event(
+  self : Event,
+) -> XRInputSourceEvent? =
+  #| (self) => (self instanceof XRInputSourceEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_xr_input_sources_change_event(
+  self : Event,
+) -> XRInputSourcesChangeEvent? =
+  #| (self) => (self instanceof XRInputSourcesChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_xr_reference_space_event(
+  self : Event,
+) -> XRReferenceSpaceEvent? =
+  #| (self) => (self instanceof XRReferenceSpaceEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_xr_visibility_mask_change_event(
+  self : Event,
+) -> XRVisibilityMaskChangeEvent? =
+  #| (self) => (self instanceof XRVisibilityMaskChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Event::as_xr_layer_event(self : Event) -> XRLayerEvent? =
   #| (self) => (self instanceof XRLayerEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_window_controls_overlay_geometry_change_event(
+  self : Event,
+) -> WindowControlsOverlayGeometryChangeEvent? =
+  #| (self) => (self instanceof WindowControlsOverlayGeometryChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_progress_event(self : Event) -> ProgressEvent? =
+  #| (self) => (self instanceof ProgressEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Event::new(type_ : String) -> Event =
@@ -1468,352 +1468,34 @@ pub extern "js" fn JsValue::to_event_target(self : JsValue) -> EventTarget =
   #| (self) => self
 
 ///|
-pub extern "js" fn EventTarget::as_svg_animation_element(
+pub extern "js" fn EventTarget::as_file_reader(
   self : EventTarget,
-) -> SVGAnimationElement? =
-  #| (self) => (self instanceof SVGAnimationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FileReader? =
+  #| (self) => (self instanceof FileReader) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_svg_animate_element(
+pub extern "js" fn EventTarget::as_idb_request(
   self : EventTarget,
-) -> SVGAnimateElement? =
-  #| (self) => (self instanceof SVGAnimateElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> IDBRequest? =
+  #| (self) => (self instanceof IDBRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_svg_set_element(
+pub extern "js" fn EventTarget::as_idb_open_db_request(
   self : EventTarget,
-) -> SVGSetElement? =
-  #| (self) => (self instanceof SVGSetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> IDBOpenDBRequest? =
+  #| (self) => (self instanceof IDBOpenDBRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_svg_animate_motion_element(
+pub extern "js" fn EventTarget::as_idb_database(
   self : EventTarget,
-) -> SVGAnimateMotionElement? =
-  #| (self) => (self instanceof SVGAnimateMotionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> IDBDatabase? =
+  #| (self) => (self instanceof IDBDatabase) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_svgm_path_element(
+pub extern "js" fn EventTarget::as_idb_transaction(
   self : EventTarget,
-) -> SVGMPathElement? =
-  #| (self) => (self instanceof SVGMPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_animate_transform_element(
-  self : EventTarget,
-) -> SVGAnimateTransformElement? =
-  #| (self) => (self instanceof SVGAnimateTransformElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_worklet_animation(
-  self : EventTarget,
-) -> WorkletAnimation? =
-  #| (self) => (self instanceof WorkletAnimation) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_clip_path_element(
-  self : EventTarget,
-) -> SVGClipPathElement? =
-  #| (self) => (self instanceof SVGClipPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_mask_element(
-  self : EventTarget,
-) -> SVGMaskElement? =
-  #| (self) => (self instanceof SVGMaskElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_screen_orientation(
-  self : EventTarget,
-) -> ScreenOrientation? =
-  #| (self) => (self instanceof ScreenOrientation) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_clipboard(self : EventTarget) -> Clipboard? =
-  #| (self) => (self instanceof Clipboard) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_xr_body_space(
-  self : EventTarget,
-) -> XRBodySpace? =
-  #| (self) => (self instanceof XRBodySpace) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_profiler(self : EventTarget) -> Profiler? =
-  #| (self) => (self instanceof Profiler) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_sensor(self : EventTarget) -> Sensor? =
-  #| (self) => (self instanceof Sensor) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_filter_element(
-  self : EventTarget,
-) -> SVGFilterElement? =
-  #| (self) => (self instanceof SVGFilterElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_blend_element(
-  self : EventTarget,
-) -> SVGFEBlendElement? =
-  #| (self) => (self instanceof SVGFEBlendElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_color_matrix_element(
-  self : EventTarget,
-) -> SVGFEColorMatrixElement? =
-  #| (self) => (self instanceof SVGFEColorMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_component_transfer_element(
-  self : EventTarget,
-) -> SVGFEComponentTransferElement? =
-  #| (self) => (self instanceof SVGFEComponentTransferElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_component_transfer_function_element(
-  self : EventTarget,
-) -> SVGComponentTransferFunctionElement? =
-  #| (self) => (self instanceof SVGComponentTransferFunctionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_func_r_element(
-  self : EventTarget,
-) -> SVGFEFuncRElement? =
-  #| (self) => (self instanceof SVGFEFuncRElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_func_g_element(
-  self : EventTarget,
-) -> SVGFEFuncGElement? =
-  #| (self) => (self instanceof SVGFEFuncGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_func_b_element(
-  self : EventTarget,
-) -> SVGFEFuncBElement? =
-  #| (self) => (self instanceof SVGFEFuncBElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_func_a_element(
-  self : EventTarget,
-) -> SVGFEFuncAElement? =
-  #| (self) => (self instanceof SVGFEFuncAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_composite_element(
-  self : EventTarget,
-) -> SVGFECompositeElement? =
-  #| (self) => (self instanceof SVGFECompositeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_convolve_matrix_element(
-  self : EventTarget,
-) -> SVGFEConvolveMatrixElement? =
-  #| (self) => (self instanceof SVGFEConvolveMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_diffuse_lighting_element(
-  self : EventTarget,
-) -> SVGFEDiffuseLightingElement? =
-  #| (self) => (self instanceof SVGFEDiffuseLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_distant_light_element(
-  self : EventTarget,
-) -> SVGFEDistantLightElement? =
-  #| (self) => (self instanceof SVGFEDistantLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_point_light_element(
-  self : EventTarget,
-) -> SVGFEPointLightElement? =
-  #| (self) => (self instanceof SVGFEPointLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_spot_light_element(
-  self : EventTarget,
-) -> SVGFESpotLightElement? =
-  #| (self) => (self instanceof SVGFESpotLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_displacement_map_element(
-  self : EventTarget,
-) -> SVGFEDisplacementMapElement? =
-  #| (self) => (self instanceof SVGFEDisplacementMapElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_drop_shadow_element(
-  self : EventTarget,
-) -> SVGFEDropShadowElement? =
-  #| (self) => (self instanceof SVGFEDropShadowElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_flood_element(
-  self : EventTarget,
-) -> SVGFEFloodElement? =
-  #| (self) => (self instanceof SVGFEFloodElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_gaussian_blur_element(
-  self : EventTarget,
-) -> SVGFEGaussianBlurElement? =
-  #| (self) => (self instanceof SVGFEGaussianBlurElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_image_element(
-  self : EventTarget,
-) -> SVGFEImageElement? =
-  #| (self) => (self instanceof SVGFEImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_merge_element(
-  self : EventTarget,
-) -> SVGFEMergeElement? =
-  #| (self) => (self instanceof SVGFEMergeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_merge_node_element(
-  self : EventTarget,
-) -> SVGFEMergeNodeElement? =
-  #| (self) => (self instanceof SVGFEMergeNodeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_morphology_element(
-  self : EventTarget,
-) -> SVGFEMorphologyElement? =
-  #| (self) => (self instanceof SVGFEMorphologyElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_offset_element(
-  self : EventTarget,
-) -> SVGFEOffsetElement? =
-  #| (self) => (self instanceof SVGFEOffsetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_specular_lighting_element(
-  self : EventTarget,
-) -> SVGFESpecularLightingElement? =
-  #| (self) => (self instanceof SVGFESpecularLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_tile_element(
-  self : EventTarget,
-) -> SVGFETileElement? =
-  #| (self) => (self instanceof SVGFETileElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgfe_turbulence_element(
-  self : EventTarget,
-) -> SVGFETurbulenceElement? =
-  #| (self) => (self instanceof SVGFETurbulenceElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_bluetooth(self : EventTarget) -> Bluetooth? =
-  #| (self) => (self instanceof Bluetooth) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_bluetooth_permission_result(
-  self : EventTarget,
-) -> BluetoothPermissionResult? =
-  #| (self) => (self instanceof BluetoothPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_bluetooth_device(
-  self : EventTarget,
-) -> BluetoothDevice? =
-  #| (self) => (self instanceof BluetoothDevice) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_bluetooth_remote_gatt_service(
-  self : EventTarget,
-) -> BluetoothRemoteGATTService? =
-  #| (self) => (self instanceof BluetoothRemoteGATTService) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_bluetooth_remote_gatt_characteristic(
-  self : EventTarget,
-) -> BluetoothRemoteGATTCharacteristic? =
-  #| (self) => (self instanceof BluetoothRemoteGATTCharacteristic) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_task_signal(
-  self : EventTarget,
-) -> TaskSignal? =
-  #| (self) => (self instanceof TaskSignal) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_magnetometer(
-  self : EventTarget,
-) -> Magnetometer? =
-  #| (self) => (self instanceof Magnetometer) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_uncalibrated_magnetometer(
-  self : EventTarget,
-) -> UncalibratedMagnetometer? =
-  #| (self) => (self instanceof UncalibratedMagnetometer) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_vtt_cue(self : EventTarget) -> VTTCue? =
-  #| (self) => (self instanceof VTTCue) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_create_monitor(
-  self : EventTarget,
-) -> CreateMonitor? =
-  #| (self) => (self instanceof CreateMonitor) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_bluetooth_le_scan_permission_result(
-  self : EventTarget,
-) -> BluetoothLEScanPermissionResult? =
-  #| (self) => (self instanceof BluetoothLEScanPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_s_frame_receiver_transform(
-  self : EventTarget,
-) -> SFrameReceiverTransform? =
-  #| (self) => (self instanceof SFrameReceiverTransform) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_s_frame_encrypter_stream(
-  self : EventTarget,
-) -> SFrameEncrypterStream? =
-  #| (self) => (self instanceof SFrameEncrypterStream) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_s_frame_decrypter_stream(
-  self : EventTarget,
-) -> SFrameDecrypterStream? =
-  #| (self) => (self instanceof SFrameDecrypterStream) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_rtc_rtp_script_transformer(
-  self : EventTarget,
-) -> RTCRtpScriptTransformer? =
-  #| (self) => (self instanceof RTCRtpScriptTransformer) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_wake_lock_sentinel(
-  self : EventTarget,
-) -> WakeLockSentinel? =
-  #| (self) => (self instanceof WakeLockSentinel) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_xr_light_probe(
-  self : EventTarget,
-) -> XRLightProbe? =
-  #| (self) => (self instanceof XRLightProbe) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_serial(self : EventTarget) -> Serial? =
-  #| (self) => (self instanceof Serial) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_serial_port(
-  self : EventTarget,
-) -> SerialPort? =
-  #| (self) => (self instanceof SerialPort) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> IDBTransaction? =
+  #| (self) => (self instanceof IDBTransaction) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn EventTarget::as_svg_element(
@@ -2038,8 +1720,108 @@ pub extern "js" fn EventTarget::as_svg_view_element(
   #| (self) => (self instanceof SVGViewElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_web_socket(self : EventTarget) -> WebSocket? =
-  #| (self) => (self instanceof WebSocket) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn EventTarget::as_accelerometer(
+  self : EventTarget,
+) -> Accelerometer? =
+  #| (self) => (self instanceof Accelerometer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_linear_acceleration_sensor(
+  self : EventTarget,
+) -> LinearAccelerationSensor? =
+  #| (self) => (self instanceof LinearAccelerationSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_gravity_sensor(
+  self : EventTarget,
+) -> GravitySensor? =
+  #| (self) => (self instanceof GravitySensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_ambient_light_sensor(
+  self : EventTarget,
+) -> AmbientLightSensor? =
+  #| (self) => (self instanceof AmbientLightSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_audio_session(
+  self : EventTarget,
+) -> AudioSession? =
+  #| (self) => (self instanceof AudioSession) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_background_fetch_registration(
+  self : EventTarget,
+) -> BackgroundFetchRegistration? =
+  #| (self) => (self instanceof BackgroundFetchRegistration) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_battery_manager(
+  self : EventTarget,
+) -> BatteryManager? =
+  #| (self) => (self instanceof BatteryManager) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_xr_body_space(
+  self : EventTarget,
+) -> XRBodySpace? =
+  #| (self) => (self instanceof XRBodySpace) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_clipboard(self : EventTarget) -> Clipboard? =
+  #| (self) => (self instanceof Clipboard) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_cookie_store(
+  self : EventTarget,
+) -> CookieStore? =
+  #| (self) => (self instanceof CookieStore) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_worklet_animation(
+  self : EventTarget,
+) -> WorkletAnimation? =
+  #| (self) => (self instanceof WorkletAnimation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_css_animation(
+  self : EventTarget,
+) -> CSSAnimation? =
+  #| (self) => (self instanceof CSSAnimation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_font_face_set(
+  self : EventTarget,
+) -> FontFaceSet? =
+  #| (self) => (self instanceof FontFaceSet) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_clip_path_element(
+  self : EventTarget,
+) -> SVGClipPathElement? =
+  #| (self) => (self instanceof SVGClipPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_mask_element(
+  self : EventTarget,
+) -> SVGMaskElement? =
+  #| (self) => (self instanceof SVGMaskElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_css_pseudo_element(
+  self : EventTarget,
+) -> CSSPseudoElement? =
+  #| (self) => (self instanceof CSSPseudoElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_named_flow(self : EventTarget) -> NamedFlow? =
+  #| (self) => (self instanceof NamedFlow) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_css_transition(
+  self : EventTarget,
+) -> CSSTransition? =
+  #| (self) => (self instanceof CSSTransition) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn EventTarget::as_media_query_list(
@@ -2054,54 +1836,292 @@ pub extern "js" fn EventTarget::as_visual_viewport(
   #| (self) => (self instanceof VisualViewport) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_html_model_element(
+pub extern "js" fn EventTarget::as_data_cue(self : EventTarget) -> DataCue? =
+  #| (self) => (self instanceof DataCue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_device_posture(
   self : EventTarget,
-) -> HTMLModelElement? =
-  #| (self) => (self instanceof HTMLModelElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> DevicePosture? =
+  #| (self) => (self instanceof DevicePosture) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_midi_access(
+pub extern "js" fn EventTarget::as_document_picture_in_picture(
   self : EventTarget,
-) -> MIDIAccess? =
-  #| (self) => (self instanceof MIDIAccess) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> DocumentPictureInPicture? =
+  #| (self) => (self instanceof DocumentPictureInPicture) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_midi_port(self : EventTarget) -> MIDIPort? =
-  #| (self) => (self instanceof MIDIPort) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_midi_input(self : EventTarget) -> MIDIInput? =
-  #| (self) => (self instanceof MIDIInput) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_midi_output(
+pub extern "js" fn EventTarget::as_abort_signal(
   self : EventTarget,
-) -> MIDIOutput? =
-  #| (self) => (self instanceof MIDIOutput) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> AbortSignal? =
+  #| (self) => (self instanceof AbortSignal) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_file_reader(
-  self : EventTarget,
-) -> FileReader? =
-  #| (self) => (self instanceof FileReader) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn EventTarget::as_node(self : EventTarget) -> Node? =
+  #| (self) => (self instanceof Node) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_media_stream(
-  self : EventTarget,
-) -> MediaStream? =
-  #| (self) => (self instanceof MediaStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn EventTarget::as_document(self : EventTarget) -> Document? =
+  #| (self) => (self instanceof Document) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_media_stream_track(
+pub extern "js" fn EventTarget::as_xml_document(
   self : EventTarget,
-) -> MediaStreamTrack? =
-  #| (self) => (self instanceof MediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> XMLDocument? =
+  #| (self) => (self instanceof XMLDocument) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_media_devices(
+pub extern "js" fn EventTarget::as_document_type(
   self : EventTarget,
-) -> MediaDevices? =
-  #| (self) => (self instanceof MediaDevices) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> DocumentType? =
+  #| (self) => (self instanceof DocumentType) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_document_fragment(
+  self : EventTarget,
+) -> DocumentFragment? =
+  #| (self) => (self instanceof DocumentFragment) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_shadow_root(
+  self : EventTarget,
+) -> ShadowRoot? =
+  #| (self) => (self instanceof ShadowRoot) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_element(self : EventTarget) -> Element? =
+  #| (self) => (self instanceof Element) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_attr(self : EventTarget) -> Attr? =
+  #| (self) => (self instanceof Attr) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_character_data(
+  self : EventTarget,
+) -> CharacterData? =
+  #| (self) => (self instanceof CharacterData) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_text(self : EventTarget) -> Text? =
+  #| (self) => (self instanceof Text) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_cdata_section(
+  self : EventTarget,
+) -> CDATASection? =
+  #| (self) => (self instanceof CDATASection) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_processing_instruction(
+  self : EventTarget,
+) -> ProcessingInstruction? =
+  #| (self) => (self instanceof ProcessingInstruction) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_comment(self : EventTarget) -> Comment? =
+  #| (self) => (self instanceof Comment) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_edit_context(
+  self : EventTarget,
+) -> EditContext? =
+  #| (self) => (self instanceof EditContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_media_key_session(
+  self : EventTarget,
+) -> MediaKeySession? =
+  #| (self) => (self instanceof MediaKeySession) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_html_fenced_frame_element(
+  self : EventTarget,
+) -> HTMLFencedFrameElement? =
+  #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_filter_element(
+  self : EventTarget,
+) -> SVGFilterElement? =
+  #| (self) => (self instanceof SVGFilterElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_blend_element(
+  self : EventTarget,
+) -> SVGFEBlendElement? =
+  #| (self) => (self instanceof SVGFEBlendElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_color_matrix_element(
+  self : EventTarget,
+) -> SVGFEColorMatrixElement? =
+  #| (self) => (self instanceof SVGFEColorMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_component_transfer_element(
+  self : EventTarget,
+) -> SVGFEComponentTransferElement? =
+  #| (self) => (self instanceof SVGFEComponentTransferElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_component_transfer_function_element(
+  self : EventTarget,
+) -> SVGComponentTransferFunctionElement? =
+  #| (self) => (self instanceof SVGComponentTransferFunctionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_func_r_element(
+  self : EventTarget,
+) -> SVGFEFuncRElement? =
+  #| (self) => (self instanceof SVGFEFuncRElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_func_g_element(
+  self : EventTarget,
+) -> SVGFEFuncGElement? =
+  #| (self) => (self instanceof SVGFEFuncGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_func_b_element(
+  self : EventTarget,
+) -> SVGFEFuncBElement? =
+  #| (self) => (self instanceof SVGFEFuncBElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_func_a_element(
+  self : EventTarget,
+) -> SVGFEFuncAElement? =
+  #| (self) => (self instanceof SVGFEFuncAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_composite_element(
+  self : EventTarget,
+) -> SVGFECompositeElement? =
+  #| (self) => (self instanceof SVGFECompositeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_convolve_matrix_element(
+  self : EventTarget,
+) -> SVGFEConvolveMatrixElement? =
+  #| (self) => (self instanceof SVGFEConvolveMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_diffuse_lighting_element(
+  self : EventTarget,
+) -> SVGFEDiffuseLightingElement? =
+  #| (self) => (self instanceof SVGFEDiffuseLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_distant_light_element(
+  self : EventTarget,
+) -> SVGFEDistantLightElement? =
+  #| (self) => (self instanceof SVGFEDistantLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_point_light_element(
+  self : EventTarget,
+) -> SVGFEPointLightElement? =
+  #| (self) => (self instanceof SVGFEPointLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_spot_light_element(
+  self : EventTarget,
+) -> SVGFESpotLightElement? =
+  #| (self) => (self instanceof SVGFESpotLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_displacement_map_element(
+  self : EventTarget,
+) -> SVGFEDisplacementMapElement? =
+  #| (self) => (self instanceof SVGFEDisplacementMapElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_drop_shadow_element(
+  self : EventTarget,
+) -> SVGFEDropShadowElement? =
+  #| (self) => (self instanceof SVGFEDropShadowElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_flood_element(
+  self : EventTarget,
+) -> SVGFEFloodElement? =
+  #| (self) => (self instanceof SVGFEFloodElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_gaussian_blur_element(
+  self : EventTarget,
+) -> SVGFEGaussianBlurElement? =
+  #| (self) => (self instanceof SVGFEGaussianBlurElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_image_element(
+  self : EventTarget,
+) -> SVGFEImageElement? =
+  #| (self) => (self instanceof SVGFEImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_merge_element(
+  self : EventTarget,
+) -> SVGFEMergeElement? =
+  #| (self) => (self instanceof SVGFEMergeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_merge_node_element(
+  self : EventTarget,
+) -> SVGFEMergeNodeElement? =
+  #| (self) => (self instanceof SVGFEMergeNodeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_morphology_element(
+  self : EventTarget,
+) -> SVGFEMorphologyElement? =
+  #| (self) => (self instanceof SVGFEMorphologyElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_offset_element(
+  self : EventTarget,
+) -> SVGFEOffsetElement? =
+  #| (self) => (self instanceof SVGFEOffsetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_specular_lighting_element(
+  self : EventTarget,
+) -> SVGFESpecularLightingElement? =
+  #| (self) => (self instanceof SVGFESpecularLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_tile_element(
+  self : EventTarget,
+) -> SVGFETileElement? =
+  #| (self) => (self instanceof SVGFETileElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgfe_turbulence_element(
+  self : EventTarget,
+) -> SVGFETurbulenceElement? =
+  #| (self) => (self instanceof SVGFETurbulenceElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_sensor(self : EventTarget) -> Sensor? =
+  #| (self) => (self instanceof Sensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_geolocation_sensor(
+  self : EventTarget,
+) -> GeolocationSensor? =
+  #| (self) => (self instanceof GeolocationSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_gyroscope(self : EventTarget) -> Gyroscope? =
+  #| (self) => (self instanceof Gyroscope) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_performance(
+  self : EventTarget,
+) -> Performance? =
+  #| (self) => (self instanceof Performance) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn EventTarget::as_html_element(
@@ -2638,202 +2658,132 @@ pub extern "js" fn EventTarget::as_html_param_element(
   #| (self) => (self instanceof HTMLParamElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_proximity_sensor(
+pub extern "js" fn EventTarget::as_idle_detector(
   self : EventTarget,
-) -> ProximitySensor? =
-  #| (self) => (self instanceof ProximitySensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> IdleDetector? =
+  #| (self) => (self instanceof IdleDetector) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_html_portal_element(
-  self : EventTarget,
-) -> HTMLPortalElement? =
-  #| (self) => (self instanceof HTMLPortalElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_portal_host(
-  self : EventTarget,
-) -> PortalHost? =
-  #| (self) => (self instanceof PortalHost) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_gyroscope(self : EventTarget) -> Gyroscope? =
-  #| (self) => (self instanceof Gyroscope) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_audio_session(
-  self : EventTarget,
-) -> AudioSession? =
-  #| (self) => (self instanceof AudioSession) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_media_key_session(
-  self : EventTarget,
-) -> MediaKeySession? =
-  #| (self) => (self instanceof MediaKeySession) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_notification(
-  self : EventTarget,
-) -> Notification? =
-  #| (self) => (self instanceof Notification) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_geolocation_sensor(
-  self : EventTarget,
-) -> GeolocationSensor? =
-  #| (self) => (self instanceof GeolocationSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_css_pseudo_element(
-  self : EventTarget,
-) -> CSSPseudoElement? =
-  #| (self) => (self instanceof CSSPseudoElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_window_controls_overlay(
-  self : EventTarget,
-) -> WindowControlsOverlay? =
-  #| (self) => (self instanceof WindowControlsOverlay) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_virtual_keyboard(
-  self : EventTarget,
-) -> VirtualKeyboard? =
-  #| (self) => (self instanceof VirtualKeyboard) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_xml_http_request_event_target(
-  self : EventTarget,
-) -> XMLHttpRequestEventTarget? =
-  #| (self) => (self instanceof XMLHttpRequestEventTarget) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_xml_http_request_upload(
-  self : EventTarget,
-) -> XMLHttpRequestUpload? =
-  #| (self) => (self instanceof XMLHttpRequestUpload) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_xml_http_request(
-  self : EventTarget,
-) -> XMLHttpRequest? =
-  #| (self) => (self instanceof XMLHttpRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_abort_signal(
-  self : EventTarget,
-) -> AbortSignal? =
-  #| (self) => (self instanceof AbortSignal) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_node(self : EventTarget) -> Node? =
-  #| (self) => (self instanceof Node) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_document(self : EventTarget) -> Document? =
-  #| (self) => (self instanceof Document) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_xml_document(
-  self : EventTarget,
-) -> XMLDocument? =
-  #| (self) => (self instanceof XMLDocument) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_document_type(
-  self : EventTarget,
-) -> DocumentType? =
-  #| (self) => (self instanceof DocumentType) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_document_fragment(
-  self : EventTarget,
-) -> DocumentFragment? =
-  #| (self) => (self instanceof DocumentFragment) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_shadow_root(
-  self : EventTarget,
-) -> ShadowRoot? =
-  #| (self) => (self instanceof ShadowRoot) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_element(self : EventTarget) -> Element? =
-  #| (self) => (self instanceof Element) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_attr(self : EventTarget) -> Attr? =
-  #| (self) => (self instanceof Attr) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_character_data(
-  self : EventTarget,
-) -> CharacterData? =
-  #| (self) => (self instanceof CharacterData) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_text(self : EventTarget) -> Text? =
-  #| (self) => (self instanceof Text) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_cdata_section(
-  self : EventTarget,
-) -> CDATASection? =
-  #| (self) => (self instanceof CDATASection) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_processing_instruction(
-  self : EventTarget,
-) -> ProcessingInstruction? =
-  #| (self) => (self instanceof ProcessingInstruction) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_comment(self : EventTarget) -> Comment? =
-  #| (self) => (self instanceof Comment) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn EventTarget::as_profiler(self : EventTarget) -> Profiler? =
+  #| (self) => (self instanceof Profiler) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn EventTarget::as_keyboard(self : EventTarget) -> Keyboard? =
   #| (self) => (self instanceof Keyboard) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_idb_request(
+pub extern "js" fn EventTarget::as_magnetometer(
   self : EventTarget,
-) -> IDBRequest? =
-  #| (self) => (self instanceof IDBRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> Magnetometer? =
+  #| (self) => (self instanceof Magnetometer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_idb_open_db_request(
+pub extern "js" fn EventTarget::as_uncalibrated_magnetometer(
   self : EventTarget,
-) -> IDBOpenDBRequest? =
-  #| (self) => (self instanceof IDBOpenDBRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> UncalibratedMagnetometer? =
+  #| (self) => (self instanceof UncalibratedMagnetometer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_idb_database(
+pub extern "js" fn EventTarget::as_navigator_managed_data(
   self : EventTarget,
-) -> IDBDatabase? =
-  #| (self) => (self instanceof IDBDatabase) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> NavigatorManagedData? =
+  #| (self) => (self instanceof NavigatorManagedData) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_idb_transaction(
+pub extern "js" fn EventTarget::as_math_ml_element(
   self : EventTarget,
-) -> IDBTransaction? =
-  #| (self) => (self instanceof IDBTransaction) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> MathMLElement? =
+  #| (self) => (self instanceof MathMLElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_usb(self : EventTarget) -> USB? =
-  #| (self) => (self instanceof USB) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn EventTarget::as_media_source(
+  self : EventTarget,
+) -> MediaSource? =
+  #| (self) => (self instanceof MediaSource) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_usb_permission_result(
+pub extern "js" fn EventTarget::as_source_buffer(
   self : EventTarget,
-) -> USBPermissionResult? =
-  #| (self) => (self instanceof USBPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SourceBuffer? =
+  #| (self) => (self instanceof SourceBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_device_posture(
+pub extern "js" fn EventTarget::as_source_buffer_list(
   self : EventTarget,
-) -> DevicePosture? =
-  #| (self) => (self instanceof DevicePosture) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SourceBufferList? =
+  #| (self) => (self instanceof SourceBufferList) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_managed_media_source(
+  self : EventTarget,
+) -> ManagedMediaSource? =
+  #| (self) => (self instanceof ManagedMediaSource) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_managed_source_buffer(
+  self : EventTarget,
+) -> ManagedSourceBuffer? =
+  #| (self) => (self instanceof ManagedSourceBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_canvas_capture_media_stream_track(
+  self : EventTarget,
+) -> CanvasCaptureMediaStreamTrack? =
+  #| (self) => (self instanceof CanvasCaptureMediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_browser_capture_media_stream_track(
+  self : EventTarget,
+) -> BrowserCaptureMediaStreamTrack? =
+  #| (self) => (self instanceof BrowserCaptureMediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_media_stream(
+  self : EventTarget,
+) -> MediaStream? =
+  #| (self) => (self instanceof MediaStream) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_media_stream_track(
+  self : EventTarget,
+) -> MediaStreamTrack? =
+  #| (self) => (self instanceof MediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_media_devices(
+  self : EventTarget,
+) -> MediaDevices? =
+  #| (self) => (self instanceof MediaDevices) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_preference_object(
+  self : EventTarget,
+) -> PreferenceObject? =
+  #| (self) => (self instanceof PreferenceObject) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_media_recorder(
+  self : EventTarget,
+) -> MediaRecorder? =
+  #| (self) => (self instanceof MediaRecorder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_html_model_element(
+  self : EventTarget,
+) -> HTMLModelElement? =
+  #| (self) => (self instanceof HTMLModelElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_network_information(
+  self : EventTarget,
+) -> NetworkInformation? =
+  #| (self) => (self instanceof NetworkInformation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_notification(
+  self : EventTarget,
+) -> Notification? =
+  #| (self) => (self instanceof Notification) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn EventTarget::as_orientation_sensor(
@@ -2854,16 +2804,94 @@ pub extern "js" fn EventTarget::as_relative_orientation_sensor(
   #| (self) => (self instanceof RelativeOrientationSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_network_information(
+pub extern "js" fn EventTarget::as_payment_request(
   self : EventTarget,
-) -> NetworkInformation? =
-  #| (self) => (self instanceof NetworkInformation) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PaymentRequest? =
+  #| (self) => (self instanceof PaymentRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_font_face_set(
+pub extern "js" fn EventTarget::as_payment_response(
   self : EventTarget,
-) -> FontFaceSet? =
-  #| (self) => (self instanceof FontFaceSet) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PaymentResponse? =
+  #| (self) => (self instanceof PaymentResponse) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_html_permission_element(
+  self : EventTarget,
+) -> HTMLPermissionElement? =
+  #| (self) => (self instanceof HTMLPermissionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_html_geolocation_element(
+  self : EventTarget,
+) -> HTMLGeolocationElement? =
+  #| (self) => (self instanceof HTMLGeolocationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_permission_status(
+  self : EventTarget,
+) -> PermissionStatus? =
+  #| (self) => (self instanceof PermissionStatus) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_picture_in_picture_window(
+  self : EventTarget,
+) -> PictureInPictureWindow? =
+  #| (self) => (self instanceof PictureInPictureWindow) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_html_portal_element(
+  self : EventTarget,
+) -> HTMLPortalElement? =
+  #| (self) => (self instanceof HTMLPortalElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_portal_host(
+  self : EventTarget,
+) -> PortalHost? =
+  #| (self) => (self instanceof PortalHost) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_presentation_request(
+  self : EventTarget,
+) -> PresentationRequest? =
+  #| (self) => (self instanceof PresentationRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_presentation_availability(
+  self : EventTarget,
+) -> PresentationAvailability? =
+  #| (self) => (self instanceof PresentationAvailability) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_presentation_connection(
+  self : EventTarget,
+) -> PresentationConnection? =
+  #| (self) => (self instanceof PresentationConnection) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_presentation_connection_list(
+  self : EventTarget,
+) -> PresentationConnectionList? =
+  #| (self) => (self instanceof PresentationConnectionList) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_proximity_sensor(
+  self : EventTarget,
+) -> ProximitySensor? =
+  #| (self) => (self instanceof ProximitySensor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_remote_playback(
+  self : EventTarget,
+) -> RemotePlayback? =
+  #| (self) => (self instanceof RemotePlayback) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_task_signal(
+  self : EventTarget,
+) -> TaskSignal? =
+  #| (self) => (self instanceof TaskSignal) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn EventTarget::as_capture_controller(
@@ -2872,56 +2900,50 @@ pub extern "js" fn EventTarget::as_capture_controller(
   #| (self) => (self instanceof CaptureController) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_xr_system(self : EventTarget) -> XRSystem? =
-  #| (self) => (self instanceof XRSystem) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_xr_session(self : EventTarget) -> XRSession? =
-  #| (self) => (self instanceof XRSession) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_xr_space(self : EventTarget) -> XRSpace? =
-  #| (self) => (self instanceof XRSpace) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_xr_reference_space(
+pub extern "js" fn EventTarget::as_screen_orientation(
   self : EventTarget,
-) -> XRReferenceSpace? =
-  #| (self) => (self instanceof XRReferenceSpace) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ScreenOrientation? =
+  #| (self) => (self instanceof ScreenOrientation) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_xr_bounded_reference_space(
+pub extern "js" fn EventTarget::as_wake_lock_sentinel(
   self : EventTarget,
-) -> XRBoundedReferenceSpace? =
-  #| (self) => (self instanceof XRBoundedReferenceSpace) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> WakeLockSentinel? =
+  #| (self) => (self instanceof WakeLockSentinel) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_xr_layer(self : EventTarget) -> XRLayer? =
-  #| (self) => (self instanceof XRLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn EventTarget::as_serial(self : EventTarget) -> Serial? =
+  #| (self) => (self instanceof Serial) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_xr_web_gl_layer(
+pub extern "js" fn EventTarget::as_serial_port(
   self : EventTarget,
-) -> XRWebGLLayer? =
-  #| (self) => (self instanceof XRWebGLLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SerialPort? =
+  #| (self) => (self instanceof SerialPort) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_xr_permission_status(
+pub extern "js" fn EventTarget::as_service_worker(
   self : EventTarget,
-) -> XRPermissionStatus? =
-  #| (self) => (self instanceof XRPermissionStatus) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ServiceWorker? =
+  #| (self) => (self instanceof ServiceWorker) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_xr_joint_space(
+pub extern "js" fn EventTarget::as_service_worker_registration(
   self : EventTarget,
-) -> XRJointSpace? =
-  #| (self) => (self instanceof XRJointSpace) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ServiceWorkerRegistration? =
+  #| (self) => (self instanceof ServiceWorkerRegistration) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_rtc_identity_provider_global_scope(
+pub extern "js" fn EventTarget::as_service_worker_container(
   self : EventTarget,
-) -> RTCIdentityProviderGlobalScope? =
-  #| (self) => (self instanceof RTCIdentityProviderGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ServiceWorkerContainer? =
+  #| (self) => (self instanceof ServiceWorkerContainer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_service_worker_global_scope(
+  self : EventTarget,
+) -> ServiceWorkerGlobalScope? =
+  #| (self) => (self instanceof ServiceWorkerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn EventTarget::as_speech_recognition(
@@ -2940,6 +2962,98 @@ pub extern "js" fn EventTarget::as_speech_synthesis_utterance(
   self : EventTarget,
 ) -> SpeechSynthesisUtterance? =
   #| (self) => (self instanceof SpeechSynthesisUtterance) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_animation_element(
+  self : EventTarget,
+) -> SVGAnimationElement? =
+  #| (self) => (self instanceof SVGAnimationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_animate_element(
+  self : EventTarget,
+) -> SVGAnimateElement? =
+  #| (self) => (self instanceof SVGAnimateElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_set_element(
+  self : EventTarget,
+) -> SVGSetElement? =
+  #| (self) => (self instanceof SVGSetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_animate_motion_element(
+  self : EventTarget,
+) -> SVGAnimateMotionElement? =
+  #| (self) => (self instanceof SVGAnimateMotionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgm_path_element(
+  self : EventTarget,
+) -> SVGMPathElement? =
+  #| (self) => (self instanceof SVGMPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_animate_transform_element(
+  self : EventTarget,
+) -> SVGAnimateTransformElement? =
+  #| (self) => (self instanceof SVGAnimateTransformElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_path_element(
+  self : EventTarget,
+) -> SVGPathElement? =
+  #| (self) => (self instanceof SVGPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_virtual_keyboard(
+  self : EventTarget,
+) -> VirtualKeyboard? =
+  #| (self) => (self instanceof VirtualKeyboard) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_animation(self : EventTarget) -> Animation? =
+  #| (self) => (self instanceof Animation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_bluetooth_le_scan_permission_result(
+  self : EventTarget,
+) -> BluetoothLEScanPermissionResult? =
+  #| (self) => (self instanceof BluetoothLEScanPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_bluetooth(self : EventTarget) -> Bluetooth? =
+  #| (self) => (self instanceof Bluetooth) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_bluetooth_permission_result(
+  self : EventTarget,
+) -> BluetoothPermissionResult? =
+  #| (self) => (self instanceof BluetoothPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_bluetooth_device(
+  self : EventTarget,
+) -> BluetoothDevice? =
+  #| (self) => (self instanceof BluetoothDevice) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_bluetooth_remote_gatt_service(
+  self : EventTarget,
+) -> BluetoothRemoteGATTService? =
+  #| (self) => (self instanceof BluetoothRemoteGATTService) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_bluetooth_remote_gatt_characteristic(
+  self : EventTarget,
+) -> BluetoothRemoteGATTCharacteristic? =
+  #| (self) => (self instanceof BluetoothRemoteGATTCharacteristic) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_ndef_reader(
+  self : EventTarget,
+) -> NDEFReader? =
+  #| (self) => (self instanceof NDEFReader) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn EventTarget::as_base_audio_context(
@@ -3098,8 +3212,32 @@ pub extern "js" fn EventTarget::as_audio_worklet_node(
   #| (self) => (self instanceof AudioWorkletNode) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_data_cue(self : EventTarget) -> DataCue? =
-  #| (self) => (self instanceof DataCue) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn EventTarget::as_audio_decoder(
+  self : EventTarget,
+) -> AudioDecoder? =
+  #| (self) => (self instanceof AudioDecoder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_video_decoder(
+  self : EventTarget,
+) -> VideoDecoder? =
+  #| (self) => (self instanceof VideoDecoder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_audio_encoder(
+  self : EventTarget,
+) -> AudioEncoder? =
+  #| (self) => (self instanceof AudioEncoder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_video_encoder(
+  self : EventTarget,
+) -> VideoEncoder? =
+  #| (self) => (self instanceof VideoEncoder) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_gpu_device(self : EventTarget) -> GPUDevice? =
+  #| (self) => (self instanceof GPUDevice) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn EventTarget::as_hid(self : EventTarget) -> HID? =
@@ -3110,50 +3248,54 @@ pub extern "js" fn EventTarget::as_hid_device(self : EventTarget) -> HIDDevice? 
   #| (self) => (self instanceof HIDDevice) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_edit_context(
+pub extern "js" fn EventTarget::as_midi_access(
   self : EventTarget,
-) -> EditContext? =
-  #| (self) => (self instanceof EditContext) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> MIDIAccess? =
+  #| (self) => (self instanceof MIDIAccess) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_css_animation(
-  self : EventTarget,
-) -> CSSAnimation? =
-  #| (self) => (self instanceof CSSAnimation) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn EventTarget::as_midi_port(self : EventTarget) -> MIDIPort? =
+  #| (self) => (self instanceof MIDIPort) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_performance(
-  self : EventTarget,
-) -> Performance? =
-  #| (self) => (self instanceof Performance) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn EventTarget::as_midi_input(self : EventTarget) -> MIDIInput? =
+  #| (self) => (self instanceof MIDIInput) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_browser_capture_media_stream_track(
+pub extern "js" fn EventTarget::as_midi_output(
   self : EventTarget,
-) -> BrowserCaptureMediaStreamTrack? =
-  #| (self) => (self instanceof BrowserCaptureMediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> MIDIOutput? =
+  #| (self) => (self instanceof MIDIOutput) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_battery_manager(
+pub extern "js" fn EventTarget::as_s_frame_receiver_transform(
   self : EventTarget,
-) -> BatteryManager? =
-  #| (self) => (self instanceof BatteryManager) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SFrameReceiverTransform? =
+  #| (self) => (self instanceof SFrameReceiverTransform) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_canvas_capture_media_stream_track(
+pub extern "js" fn EventTarget::as_s_frame_encrypter_stream(
   self : EventTarget,
-) -> CanvasCaptureMediaStreamTrack? =
-  #| (self) => (self instanceof CanvasCaptureMediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SFrameEncrypterStream? =
+  #| (self) => (self instanceof SFrameEncrypterStream) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_math_ml_element(
+pub extern "js" fn EventTarget::as_s_frame_decrypter_stream(
   self : EventTarget,
-) -> MathMLElement? =
-  #| (self) => (self instanceof MathMLElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SFrameDecrypterStream? =
+  #| (self) => (self instanceof SFrameDecrypterStream) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_animation(self : EventTarget) -> Animation? =
-  #| (self) => (self instanceof Animation) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn EventTarget::as_rtc_rtp_script_transformer(
+  self : EventTarget,
+) -> RTCRtpScriptTransformer? =
+  #| (self) => (self instanceof RTCRtpScriptTransformer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_rtc_identity_provider_global_scope(
+  self : EventTarget,
+) -> RTCIdentityProviderGlobalScope? =
+  #| (self) => (self instanceof RTCIdentityProviderGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn EventTarget::as_rtc_peer_connection(
@@ -3192,252 +3334,74 @@ pub extern "js" fn EventTarget::as_rtcdtmf_sender(
   #| (self) => (self instanceof RTCDTMFSender) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_svg_path_element(
+pub extern "js" fn EventTarget::as_web_socket(self : EventTarget) -> WebSocket? =
+  #| (self) => (self instanceof WebSocket) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_usb(self : EventTarget) -> USB? =
+  #| (self) => (self instanceof USB) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_usb_permission_result(
   self : EventTarget,
-) -> SVGPathElement? =
-  #| (self) => (self instanceof SVGPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> USBPermissionResult? =
+  #| (self) => (self instanceof USBPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_service_worker(
+pub extern "js" fn EventTarget::as_vtt_cue(self : EventTarget) -> VTTCue? =
+  #| (self) => (self instanceof VTTCue) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_xr_joint_space(
   self : EventTarget,
-) -> ServiceWorker? =
-  #| (self) => (self instanceof ServiceWorker) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> XRJointSpace? =
+  #| (self) => (self instanceof XRJointSpace) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_service_worker_registration(
+pub extern "js" fn EventTarget::as_xr_light_probe(
   self : EventTarget,
-) -> ServiceWorkerRegistration? =
-  #| (self) => (self instanceof ServiceWorkerRegistration) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> XRLightProbe? =
+  #| (self) => (self instanceof XRLightProbe) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_service_worker_container(
+pub extern "js" fn EventTarget::as_xr_system(self : EventTarget) -> XRSystem? =
+  #| (self) => (self instanceof XRSystem) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_xr_session(self : EventTarget) -> XRSession? =
+  #| (self) => (self instanceof XRSession) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_xr_space(self : EventTarget) -> XRSpace? =
+  #| (self) => (self instanceof XRSpace) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_xr_reference_space(
   self : EventTarget,
-) -> ServiceWorkerContainer? =
-  #| (self) => (self instanceof ServiceWorkerContainer) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> XRReferenceSpace? =
+  #| (self) => (self instanceof XRReferenceSpace) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_service_worker_global_scope(
+pub extern "js" fn EventTarget::as_xr_bounded_reference_space(
   self : EventTarget,
-) -> ServiceWorkerGlobalScope? =
-  #| (self) => (self instanceof ServiceWorkerGlobalScope) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> XRBoundedReferenceSpace? =
+  #| (self) => (self instanceof XRBoundedReferenceSpace) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_screen_details(
+pub extern "js" fn EventTarget::as_xr_layer(self : EventTarget) -> XRLayer? =
+  #| (self) => (self instanceof XRLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_xr_web_gl_layer(
   self : EventTarget,
-) -> ScreenDetails? =
-  #| (self) => (self instanceof ScreenDetails) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> XRWebGLLayer? =
+  #| (self) => (self instanceof XRWebGLLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn EventTarget::as_picture_in_picture_window(
+pub extern "js" fn EventTarget::as_xr_permission_status(
   self : EventTarget,
-) -> PictureInPictureWindow? =
-  #| (self) => (self instanceof PictureInPictureWindow) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_cookie_store(
-  self : EventTarget,
-) -> CookieStore? =
-  #| (self) => (self instanceof CookieStore) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_css_transition(
-  self : EventTarget,
-) -> CSSTransition? =
-  #| (self) => (self instanceof CSSTransition) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_ambient_light_sensor(
-  self : EventTarget,
-) -> AmbientLightSensor? =
-  #| (self) => (self instanceof AmbientLightSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_remote_playback(
-  self : EventTarget,
-) -> RemotePlayback? =
-  #| (self) => (self instanceof RemotePlayback) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_idle_detector(
-  self : EventTarget,
-) -> IdleDetector? =
-  #| (self) => (self instanceof IdleDetector) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_preference_object(
-  self : EventTarget,
-) -> PreferenceObject? =
-  #| (self) => (self instanceof PreferenceObject) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_html_fenced_frame_element(
-  self : EventTarget,
-) -> HTMLFencedFrameElement? =
-  #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_permission_status(
-  self : EventTarget,
-) -> PermissionStatus? =
-  #| (self) => (self instanceof PermissionStatus) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_ndef_reader(
-  self : EventTarget,
-) -> NDEFReader? =
-  #| (self) => (self instanceof NDEFReader) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_audio_decoder(
-  self : EventTarget,
-) -> AudioDecoder? =
-  #| (self) => (self instanceof AudioDecoder) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_video_decoder(
-  self : EventTarget,
-) -> VideoDecoder? =
-  #| (self) => (self instanceof VideoDecoder) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_audio_encoder(
-  self : EventTarget,
-) -> AudioEncoder? =
-  #| (self) => (self instanceof AudioEncoder) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_video_encoder(
-  self : EventTarget,
-) -> VideoEncoder? =
-  #| (self) => (self instanceof VideoEncoder) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_accelerometer(
-  self : EventTarget,
-) -> Accelerometer? =
-  #| (self) => (self instanceof Accelerometer) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_linear_acceleration_sensor(
-  self : EventTarget,
-) -> LinearAccelerationSensor? =
-  #| (self) => (self instanceof LinearAccelerationSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_gravity_sensor(
-  self : EventTarget,
-) -> GravitySensor? =
-  #| (self) => (self instanceof GravitySensor) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_gpu_device(self : EventTarget) -> GPUDevice? =
-  #| (self) => (self instanceof GPUDevice) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_media_recorder(
-  self : EventTarget,
-) -> MediaRecorder? =
-  #| (self) => (self instanceof MediaRecorder) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_media_source(
-  self : EventTarget,
-) -> MediaSource? =
-  #| (self) => (self instanceof MediaSource) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_source_buffer(
-  self : EventTarget,
-) -> SourceBuffer? =
-  #| (self) => (self instanceof SourceBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_source_buffer_list(
-  self : EventTarget,
-) -> SourceBufferList? =
-  #| (self) => (self instanceof SourceBufferList) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_managed_media_source(
-  self : EventTarget,
-) -> ManagedMediaSource? =
-  #| (self) => (self instanceof ManagedMediaSource) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_managed_source_buffer(
-  self : EventTarget,
-) -> ManagedSourceBuffer? =
-  #| (self) => (self instanceof ManagedSourceBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_named_flow(self : EventTarget) -> NamedFlow? =
-  #| (self) => (self instanceof NamedFlow) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_navigator_managed_data(
-  self : EventTarget,
-) -> NavigatorManagedData? =
-  #| (self) => (self instanceof NavigatorManagedData) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_presentation_request(
-  self : EventTarget,
-) -> PresentationRequest? =
-  #| (self) => (self instanceof PresentationRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_presentation_availability(
-  self : EventTarget,
-) -> PresentationAvailability? =
-  #| (self) => (self instanceof PresentationAvailability) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_presentation_connection(
-  self : EventTarget,
-) -> PresentationConnection? =
-  #| (self) => (self instanceof PresentationConnection) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_presentation_connection_list(
-  self : EventTarget,
-) -> PresentationConnectionList? =
-  #| (self) => (self instanceof PresentationConnectionList) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_payment_request(
-  self : EventTarget,
-) -> PaymentRequest? =
-  #| (self) => (self instanceof PaymentRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_payment_response(
-  self : EventTarget,
-) -> PaymentResponse? =
-  #| (self) => (self instanceof PaymentResponse) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_document_picture_in_picture(
-  self : EventTarget,
-) -> DocumentPictureInPicture? =
-  #| (self) => (self instanceof DocumentPictureInPicture) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_html_permission_element(
-  self : EventTarget,
-) -> HTMLPermissionElement? =
-  #| (self) => (self instanceof HTMLPermissionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_html_geolocation_element(
-  self : EventTarget,
-) -> HTMLGeolocationElement? =
-  #| (self) => (self instanceof HTMLGeolocationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_background_fetch_registration(
-  self : EventTarget,
-) -> BackgroundFetchRegistration? =
-  #| (self) => (self instanceof BackgroundFetchRegistration) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> XRPermissionStatus? =
+  #| (self) => (self instanceof XRPermissionStatus) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn EventTarget::as_xr_composition_layer(
@@ -3474,6 +3438,42 @@ pub extern "js" fn EventTarget::as_xr_cube_layer(
   self : EventTarget,
 ) -> XRCubeLayer? =
   #| (self) => (self instanceof XRCubeLayer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_window_controls_overlay(
+  self : EventTarget,
+) -> WindowControlsOverlay? =
+  #| (self) => (self instanceof WindowControlsOverlay) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_screen_details(
+  self : EventTarget,
+) -> ScreenDetails? =
+  #| (self) => (self instanceof ScreenDetails) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_create_monitor(
+  self : EventTarget,
+) -> CreateMonitor? =
+  #| (self) => (self instanceof CreateMonitor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_xml_http_request_event_target(
+  self : EventTarget,
+) -> XMLHttpRequestEventTarget? =
+  #| (self) => (self instanceof XMLHttpRequestEventTarget) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_xml_http_request_upload(
+  self : EventTarget,
+) -> XMLHttpRequestUpload? =
+  #| (self) => (self instanceof XMLHttpRequestUpload) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_xml_http_request(
+  self : EventTarget,
+) -> XMLHttpRequest? =
+  #| (self) => (self instanceof XMLHttpRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Error type for throwing methods
@@ -4052,210 +4052,6 @@ pub extern "js" fn Node::to_event_target(self : Node) -> EventTarget =
   #| (self) => self
 
 ///|
-pub extern "js" fn Node::as_svg_animation_element(
-  self : Node,
-) -> SVGAnimationElement? =
-  #| (self) => (self instanceof SVGAnimationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_animate_element(
-  self : Node,
-) -> SVGAnimateElement? =
-  #| (self) => (self instanceof SVGAnimateElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_set_element(self : Node) -> SVGSetElement? =
-  #| (self) => (self instanceof SVGSetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_animate_motion_element(
-  self : Node,
-) -> SVGAnimateMotionElement? =
-  #| (self) => (self instanceof SVGAnimateMotionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgm_path_element(self : Node) -> SVGMPathElement? =
-  #| (self) => (self instanceof SVGMPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_animate_transform_element(
-  self : Node,
-) -> SVGAnimateTransformElement? =
-  #| (self) => (self instanceof SVGAnimateTransformElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_clip_path_element(
-  self : Node,
-) -> SVGClipPathElement? =
-  #| (self) => (self instanceof SVGClipPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_mask_element(self : Node) -> SVGMaskElement? =
-  #| (self) => (self instanceof SVGMaskElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_filter_element(
-  self : Node,
-) -> SVGFilterElement? =
-  #| (self) => (self instanceof SVGFilterElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_blend_element(
-  self : Node,
-) -> SVGFEBlendElement? =
-  #| (self) => (self instanceof SVGFEBlendElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_color_matrix_element(
-  self : Node,
-) -> SVGFEColorMatrixElement? =
-  #| (self) => (self instanceof SVGFEColorMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_component_transfer_element(
-  self : Node,
-) -> SVGFEComponentTransferElement? =
-  #| (self) => (self instanceof SVGFEComponentTransferElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_component_transfer_function_element(
-  self : Node,
-) -> SVGComponentTransferFunctionElement? =
-  #| (self) => (self instanceof SVGComponentTransferFunctionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_func_r_element(
-  self : Node,
-) -> SVGFEFuncRElement? =
-  #| (self) => (self instanceof SVGFEFuncRElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_func_g_element(
-  self : Node,
-) -> SVGFEFuncGElement? =
-  #| (self) => (self instanceof SVGFEFuncGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_func_b_element(
-  self : Node,
-) -> SVGFEFuncBElement? =
-  #| (self) => (self instanceof SVGFEFuncBElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_func_a_element(
-  self : Node,
-) -> SVGFEFuncAElement? =
-  #| (self) => (self instanceof SVGFEFuncAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_composite_element(
-  self : Node,
-) -> SVGFECompositeElement? =
-  #| (self) => (self instanceof SVGFECompositeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_convolve_matrix_element(
-  self : Node,
-) -> SVGFEConvolveMatrixElement? =
-  #| (self) => (self instanceof SVGFEConvolveMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_diffuse_lighting_element(
-  self : Node,
-) -> SVGFEDiffuseLightingElement? =
-  #| (self) => (self instanceof SVGFEDiffuseLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_distant_light_element(
-  self : Node,
-) -> SVGFEDistantLightElement? =
-  #| (self) => (self instanceof SVGFEDistantLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_point_light_element(
-  self : Node,
-) -> SVGFEPointLightElement? =
-  #| (self) => (self instanceof SVGFEPointLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_spot_light_element(
-  self : Node,
-) -> SVGFESpotLightElement? =
-  #| (self) => (self instanceof SVGFESpotLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_displacement_map_element(
-  self : Node,
-) -> SVGFEDisplacementMapElement? =
-  #| (self) => (self instanceof SVGFEDisplacementMapElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_drop_shadow_element(
-  self : Node,
-) -> SVGFEDropShadowElement? =
-  #| (self) => (self instanceof SVGFEDropShadowElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_flood_element(
-  self : Node,
-) -> SVGFEFloodElement? =
-  #| (self) => (self instanceof SVGFEFloodElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_gaussian_blur_element(
-  self : Node,
-) -> SVGFEGaussianBlurElement? =
-  #| (self) => (self instanceof SVGFEGaussianBlurElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_image_element(
-  self : Node,
-) -> SVGFEImageElement? =
-  #| (self) => (self instanceof SVGFEImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_merge_element(
-  self : Node,
-) -> SVGFEMergeElement? =
-  #| (self) => (self instanceof SVGFEMergeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_merge_node_element(
-  self : Node,
-) -> SVGFEMergeNodeElement? =
-  #| (self) => (self instanceof SVGFEMergeNodeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_morphology_element(
-  self : Node,
-) -> SVGFEMorphologyElement? =
-  #| (self) => (self instanceof SVGFEMorphologyElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_offset_element(
-  self : Node,
-) -> SVGFEOffsetElement? =
-  #| (self) => (self instanceof SVGFEOffsetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_specular_lighting_element(
-  self : Node,
-) -> SVGFESpecularLightingElement? =
-  #| (self) => (self instanceof SVGFESpecularLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_tile_element(
-  self : Node,
-) -> SVGFETileElement? =
-  #| (self) => (self instanceof SVGFETileElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgfe_turbulence_element(
-  self : Node,
-) -> SVGFETurbulenceElement? =
-  #| (self) => (self instanceof SVGFETurbulenceElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn Node::as_svg_element(self : Node) -> SVGElement? =
   #| (self) => (self instanceof SVGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
@@ -4440,10 +4236,232 @@ pub extern "js" fn Node::as_svg_view_element(self : Node) -> SVGViewElement? =
   #| (self) => (self instanceof SVGViewElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Node::as_html_model_element(
+pub extern "js" fn Node::as_svg_clip_path_element(
   self : Node,
-) -> HTMLModelElement? =
-  #| (self) => (self instanceof HTMLModelElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SVGClipPathElement? =
+  #| (self) => (self instanceof SVGClipPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_mask_element(self : Node) -> SVGMaskElement? =
+  #| (self) => (self instanceof SVGMaskElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_document(self : Node) -> Document? =
+  #| (self) => (self instanceof Document) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_xml_document(self : Node) -> XMLDocument? =
+  #| (self) => (self instanceof XMLDocument) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_document_type(self : Node) -> DocumentType? =
+  #| (self) => (self instanceof DocumentType) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_document_fragment(self : Node) -> DocumentFragment? =
+  #| (self) => (self instanceof DocumentFragment) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_shadow_root(self : Node) -> ShadowRoot? =
+  #| (self) => (self instanceof ShadowRoot) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_element(self : Node) -> Element? =
+  #| (self) => (self instanceof Element) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_attr(self : Node) -> Attr? =
+  #| (self) => (self instanceof Attr) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_character_data(self : Node) -> CharacterData? =
+  #| (self) => (self instanceof CharacterData) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_text(self : Node) -> Text? =
+  #| (self) => (self instanceof Text) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_cdata_section(self : Node) -> CDATASection? =
+  #| (self) => (self instanceof CDATASection) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_processing_instruction(
+  self : Node,
+) -> ProcessingInstruction? =
+  #| (self) => (self instanceof ProcessingInstruction) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_comment(self : Node) -> Comment? =
+  #| (self) => (self instanceof Comment) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_html_fenced_frame_element(
+  self : Node,
+) -> HTMLFencedFrameElement? =
+  #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_filter_element(
+  self : Node,
+) -> SVGFilterElement? =
+  #| (self) => (self instanceof SVGFilterElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_blend_element(
+  self : Node,
+) -> SVGFEBlendElement? =
+  #| (self) => (self instanceof SVGFEBlendElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_color_matrix_element(
+  self : Node,
+) -> SVGFEColorMatrixElement? =
+  #| (self) => (self instanceof SVGFEColorMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_component_transfer_element(
+  self : Node,
+) -> SVGFEComponentTransferElement? =
+  #| (self) => (self instanceof SVGFEComponentTransferElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_component_transfer_function_element(
+  self : Node,
+) -> SVGComponentTransferFunctionElement? =
+  #| (self) => (self instanceof SVGComponentTransferFunctionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_func_r_element(
+  self : Node,
+) -> SVGFEFuncRElement? =
+  #| (self) => (self instanceof SVGFEFuncRElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_func_g_element(
+  self : Node,
+) -> SVGFEFuncGElement? =
+  #| (self) => (self instanceof SVGFEFuncGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_func_b_element(
+  self : Node,
+) -> SVGFEFuncBElement? =
+  #| (self) => (self instanceof SVGFEFuncBElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_func_a_element(
+  self : Node,
+) -> SVGFEFuncAElement? =
+  #| (self) => (self instanceof SVGFEFuncAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_composite_element(
+  self : Node,
+) -> SVGFECompositeElement? =
+  #| (self) => (self instanceof SVGFECompositeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_convolve_matrix_element(
+  self : Node,
+) -> SVGFEConvolveMatrixElement? =
+  #| (self) => (self instanceof SVGFEConvolveMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_diffuse_lighting_element(
+  self : Node,
+) -> SVGFEDiffuseLightingElement? =
+  #| (self) => (self instanceof SVGFEDiffuseLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_distant_light_element(
+  self : Node,
+) -> SVGFEDistantLightElement? =
+  #| (self) => (self instanceof SVGFEDistantLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_point_light_element(
+  self : Node,
+) -> SVGFEPointLightElement? =
+  #| (self) => (self instanceof SVGFEPointLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_spot_light_element(
+  self : Node,
+) -> SVGFESpotLightElement? =
+  #| (self) => (self instanceof SVGFESpotLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_displacement_map_element(
+  self : Node,
+) -> SVGFEDisplacementMapElement? =
+  #| (self) => (self instanceof SVGFEDisplacementMapElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_drop_shadow_element(
+  self : Node,
+) -> SVGFEDropShadowElement? =
+  #| (self) => (self instanceof SVGFEDropShadowElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_flood_element(
+  self : Node,
+) -> SVGFEFloodElement? =
+  #| (self) => (self instanceof SVGFEFloodElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_gaussian_blur_element(
+  self : Node,
+) -> SVGFEGaussianBlurElement? =
+  #| (self) => (self instanceof SVGFEGaussianBlurElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_image_element(
+  self : Node,
+) -> SVGFEImageElement? =
+  #| (self) => (self instanceof SVGFEImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_merge_element(
+  self : Node,
+) -> SVGFEMergeElement? =
+  #| (self) => (self instanceof SVGFEMergeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_merge_node_element(
+  self : Node,
+) -> SVGFEMergeNodeElement? =
+  #| (self) => (self instanceof SVGFEMergeNodeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_morphology_element(
+  self : Node,
+) -> SVGFEMorphologyElement? =
+  #| (self) => (self instanceof SVGFEMorphologyElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_offset_element(
+  self : Node,
+) -> SVGFEOffsetElement? =
+  #| (self) => (self instanceof SVGFEOffsetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_specular_lighting_element(
+  self : Node,
+) -> SVGFESpecularLightingElement? =
+  #| (self) => (self instanceof SVGFESpecularLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_tile_element(
+  self : Node,
+) -> SVGFETileElement? =
+  #| (self) => (self instanceof SVGFETileElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgfe_turbulence_element(
+  self : Node,
+) -> SVGFETurbulenceElement? =
+  #| (self) => (self instanceof SVGFETurbulenceElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Node::as_html_element(self : Node) -> HTMLElement? =
@@ -4834,74 +4852,14 @@ pub extern "js" fn Node::as_html_param_element(
   #| (self) => (self instanceof HTMLParamElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Node::as_html_portal_element(
-  self : Node,
-) -> HTMLPortalElement? =
-  #| (self) => (self instanceof HTMLPortalElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_document(self : Node) -> Document? =
-  #| (self) => (self instanceof Document) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_xml_document(self : Node) -> XMLDocument? =
-  #| (self) => (self instanceof XMLDocument) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_document_type(self : Node) -> DocumentType? =
-  #| (self) => (self instanceof DocumentType) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_document_fragment(self : Node) -> DocumentFragment? =
-  #| (self) => (self instanceof DocumentFragment) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_shadow_root(self : Node) -> ShadowRoot? =
-  #| (self) => (self instanceof ShadowRoot) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_element(self : Node) -> Element? =
-  #| (self) => (self instanceof Element) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_attr(self : Node) -> Attr? =
-  #| (self) => (self instanceof Attr) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_character_data(self : Node) -> CharacterData? =
-  #| (self) => (self instanceof CharacterData) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_text(self : Node) -> Text? =
-  #| (self) => (self instanceof Text) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_cdata_section(self : Node) -> CDATASection? =
-  #| (self) => (self instanceof CDATASection) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_processing_instruction(
-  self : Node,
-) -> ProcessingInstruction? =
-  #| (self) => (self instanceof ProcessingInstruction) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_comment(self : Node) -> Comment? =
-  #| (self) => (self instanceof Comment) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn Node::as_math_ml_element(self : Node) -> MathMLElement? =
   #| (self) => (self instanceof MathMLElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Node::as_svg_path_element(self : Node) -> SVGPathElement? =
-  #| (self) => (self instanceof SVGPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_html_fenced_frame_element(
+pub extern "js" fn Node::as_html_model_element(
   self : Node,
-) -> HTMLFencedFrameElement? =
-  #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> HTMLModelElement? =
+  #| (self) => (self instanceof HTMLModelElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Node::as_html_permission_element(
@@ -4914,6 +4872,48 @@ pub extern "js" fn Node::as_html_geolocation_element(
   self : Node,
 ) -> HTMLGeolocationElement? =
   #| (self) => (self instanceof HTMLGeolocationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_html_portal_element(
+  self : Node,
+) -> HTMLPortalElement? =
+  #| (self) => (self instanceof HTMLPortalElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_animation_element(
+  self : Node,
+) -> SVGAnimationElement? =
+  #| (self) => (self instanceof SVGAnimationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_animate_element(
+  self : Node,
+) -> SVGAnimateElement? =
+  #| (self) => (self instanceof SVGAnimateElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_set_element(self : Node) -> SVGSetElement? =
+  #| (self) => (self instanceof SVGSetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_animate_motion_element(
+  self : Node,
+) -> SVGAnimateMotionElement? =
+  #| (self) => (self instanceof SVGAnimateMotionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgm_path_element(self : Node) -> SVGMPathElement? =
+  #| (self) => (self instanceof SVGMPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_animate_transform_element(
+  self : Node,
+) -> SVGAnimateTransformElement? =
+  #| (self) => (self instanceof SVGAnimateTransformElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_path_element(self : Node) -> SVGPathElement? =
+  #| (self) => (self instanceof SVGPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Error type for throwing methods
@@ -5280,21 +5280,6 @@ pub(all) enum DocumentCreateAttributeNSError {
 
 ///|
 /// Error type for throwing methods
-pub(all) enum DocumentHasStorageAccessError {
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum DocumentRequestStorageAccessError {
-  NotAllowedError(JsError)
-  InvalidStateError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
 pub(all) enum DocumentParseHTMLUnsafeError {
   TypeError(JsError)
   OtherError(JsError)
@@ -5325,6 +5310,13 @@ pub(all) enum DocumentWritelnError {
 
 ///|
 /// Error type for throwing methods
+pub(all) enum DocumentExitPictureInPictureError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
 pub(all) enum DocumentRequestStorageAccessForError {
   TypeError(JsError)
   NotAllowedError(JsError)
@@ -5334,14 +5326,22 @@ pub(all) enum DocumentRequestStorageAccessForError {
 
 ///|
 /// Error type for throwing methods
-pub(all) enum DocumentExitPictureInPictureError {
+pub(all) enum DocumentHasUnpartitionedCookieAccessError {
   InvalidStateError(JsError)
   OtherError(JsError)
 } derive(Show)
 
 ///|
 /// Error type for throwing methods
-pub(all) enum DocumentHasUnpartitionedCookieAccessError {
+pub(all) enum DocumentHasStorageAccessError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentRequestStorageAccessError {
+  NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
 } derive(Show)
@@ -5626,39 +5626,33 @@ pub extern "js" fn Document::create_tree_walker_with_filter(
   #| (self, root, what_to_show, filter) => self.createTreeWalker(root, what_to_show, (filter.$tag === 1 ? filter._0 : null))
 
 ///|
-pub extern "js" fn Document::get_prerendering(self : Document) -> Bool =
-  #| (self) => self.prerendering
-
-///|
-pub extern "js" fn Document::set_onprerenderingchange(
-  self : Document,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onprerenderingchange = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_onprerenderingchange(
-  self : Document,
-) -> Unit =
-  #| (self) => { self.onprerenderingchange = null }
-
-///|
-pub extern "js" fn Document::has_storage_access(
-  self : Document,
-) -> Promise[Result[Bool, DocumentHasStorageAccessError]] =
-  #| (self) => self.hasStorageAccess().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
-
-///|
-pub extern "js" fn Document::request_storage_access(
-  self : Document,
-) -> Promise[Result[Unit, DocumentRequestStorageAccessError]] =
-  #| (self) => self.requestStorageAccess().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
-
-///|
 pub extern "js" fn Document::get_root_element(
   self : Document,
 ) -> SVGSVGElement? =
   #| (self) => (() => { const v = self.rootElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Document::get_named_flows(self : Document) -> NamedFlowMap =
+  #| (self) => self.namedFlows
+
+///|
+pub extern "js" fn Document::start_view_transition(
+  self : Document,
+) -> ViewTransition =
+  #| (self) => self.startViewTransition()
+
+///|
+pub extern "js" fn Document::start_view_transition_with_callback_options(
+  self : Document,
+  callback_options : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
+) -> ViewTransition =
+  #| (self, callback_options) => self.startViewTransition(callback_options)
+
+///|
+pub extern "js" fn Document::get_active_view_transition(
+  self : Document,
+) -> ViewTransition? =
+  #| (self) => (() => { const v = self.activeViewTransition; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Document::element_from_point(
@@ -5711,6 +5705,55 @@ pub fn Document::caret_position_from_point_with_options(
 ///|
 pub extern "js" fn Document::get_scrolling_element(self : Document) -> Element? =
   #| (self) => (() => { const v = self.scrollingElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Document::measure_element(
+  self : Document,
+  element : Element,
+) -> FontMetrics =
+  #| (self, element) => self.measureElement(element)
+
+///|
+pub extern "js" fn Document::measure_text(
+  self : Document,
+  text : String,
+  style_map : StylePropertyMapReadOnly,
+) -> FontMetrics =
+  #| (self, text, style_map) => self.measureText(text, style_map)
+
+///|
+pub extern "js" fn Document::get_fullscreen_enabled(self : Document) -> Bool =
+  #| (self) => self.fullscreenEnabled
+
+///|
+pub extern "js" fn Document::get_fullscreen(self : Document) -> Bool =
+  #| (self) => self.fullscreen
+
+///|
+pub extern "js" fn Document::exit_fullscreen(self : Document) -> Promise[Unit] =
+  #| (self) => self.exitFullscreen()
+
+///|
+pub extern "js" fn Document::set_onfullscreenchange(
+  self : Document,
+  handler : (Event) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onfullscreenchange = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_onfullscreenchange(self : Document) -> Unit =
+  #| (self) => { self.onfullscreenchange = null }
+
+///|
+pub extern "js" fn Document::set_onfullscreenerror(
+  self : Document,
+  handler : (Event) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onfullscreenerror = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_onfullscreenerror(self : Document) -> Unit =
+  #| (self) => { self.onfullscreenerror = null }
 
 ///|
 pub extern "js" fn Document::parse_html_unsafe(
@@ -6073,19 +6116,6 @@ pub extern "js" fn Document::get_all(self : Document) -> HTMLAllCollection =
   #| (self) => self.all
 
 ///|
-pub extern "js" fn Document::get_fragment_directive(
-  self : Document,
-) -> FragmentDirective =
-  #| (self) => self.fragmentDirective
-
-///|
-pub extern "js" fn Document::request_storage_access_for(
-  self : Document,
-  requested_origin : String,
-) -> Promise[Result[Unit, DocumentRequestStorageAccessForError]] =
-  #| (self, requested_origin) => self.requestStorageAccessFor(requested_origin).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
-
-///|
 pub extern "js" fn Document::set_onfreeze(
   self : Document,
   handler : (Event) -> Unit,
@@ -6118,78 +6148,6 @@ pub extern "js" fn Document::get_permissions_policy(
   #| (self) => self.permissionsPolicy
 
 ///|
-pub extern "js" fn Document::measure_element(
-  self : Document,
-  element : Element,
-) -> FontMetrics =
-  #| (self, element) => self.measureElement(element)
-
-///|
-pub extern "js" fn Document::measure_text(
-  self : Document,
-  text : String,
-  style_map : StylePropertyMapReadOnly,
-) -> FontMetrics =
-  #| (self, text, style_map) => self.measureText(text, style_map)
-
-///|
-pub extern "js" fn Document::get_fullscreen_enabled(self : Document) -> Bool =
-  #| (self) => self.fullscreenEnabled
-
-///|
-pub extern "js" fn Document::get_fullscreen(self : Document) -> Bool =
-  #| (self) => self.fullscreen
-
-///|
-pub extern "js" fn Document::exit_fullscreen(self : Document) -> Promise[Unit] =
-  #| (self) => self.exitFullscreen()
-
-///|
-pub extern "js" fn Document::set_onfullscreenchange(
-  self : Document,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onfullscreenchange = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_onfullscreenchange(self : Document) -> Unit =
-  #| (self) => { self.onfullscreenchange = null }
-
-///|
-pub extern "js" fn Document::set_onfullscreenerror(
-  self : Document,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onfullscreenerror = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_onfullscreenerror(self : Document) -> Unit =
-  #| (self) => { self.onfullscreenerror = null }
-
-///|
-pub extern "js" fn Document::get_timeline(self : Document) -> DocumentTimeline =
-  #| (self) => self.timeline
-
-///|
-pub extern "js" fn Document::start_view_transition(
-  self : Document,
-) -> ViewTransition =
-  #| (self) => self.startViewTransition()
-
-///|
-pub extern "js" fn Document::start_view_transition_with_callback_options(
-  self : Document,
-  callback_options : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
-) -> ViewTransition =
-  #| (self, callback_options) => self.startViewTransition(callback_options)
-
-///|
-pub extern "js" fn Document::get_active_view_transition(
-  self : Document,
-) -> ViewTransition? =
-  #| (self) => (() => { const v = self.activeViewTransition; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
 pub extern "js" fn Document::get_picture_in_picture_enabled(
   self : Document,
 ) -> Bool =
@@ -6200,30 +6158,6 @@ pub extern "js" fn Document::exit_picture_in_picture(
   self : Document,
 ) -> Promise[Result[Unit, DocumentExitPictureInPictureError]] =
   #| (self) => self.exitPictureInPicture().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
-
-///|
-pub extern "js" fn Document::has_unpartitioned_cookie_access(
-  self : Document,
-) -> Promise[Result[Bool, DocumentHasUnpartitionedCookieAccessError]] =
-  #| (self) => self.hasUnpartitionedCookieAccess().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
-
-///|
-pub extern "js" fn Document::has_private_token(
-  self : Document,
-  issuer : String,
-) -> Promise[Result[Bool, DocumentHasPrivateTokenError]] =
-  #| (self, issuer) => self.hasPrivateToken(issuer).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
-
-///|
-pub extern "js" fn Document::has_redemption_record(
-  self : Document,
-  issuer : String,
-) -> Promise[Result[Bool, DocumentHasRedemptionRecordError]] =
-  #| (self, issuer) => self.hasRedemptionRecord(issuer).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
-
-///|
-pub extern "js" fn Document::get_named_flows(self : Document) -> NamedFlowMap =
-  #| (self) => self.namedFlows
 
 ///|
 pub extern "js" fn Document::set_onpointerlockchange(
@@ -6252,8 +6186,78 @@ pub extern "js" fn Document::exit_pointer_lock(self : Document) -> Unit =
   #| (self) => self.exitPointerLock()
 
 ///|
+pub extern "js" fn Document::get_prerendering(self : Document) -> Bool =
+  #| (self) => self.prerendering
+
+///|
+pub extern "js" fn Document::set_onprerenderingchange(
+  self : Document,
+  handler : (Event) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onprerenderingchange = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_onprerenderingchange(
+  self : Document,
+) -> Unit =
+  #| (self) => { self.onprerenderingchange = null }
+
+///|
+pub extern "js" fn Document::request_storage_access_for(
+  self : Document,
+  requested_origin : String,
+) -> Promise[Result[Unit, DocumentRequestStorageAccessForError]] =
+  #| (self, requested_origin) => self.requestStorageAccessFor(requested_origin).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+
+///|
+pub extern "js" fn Document::has_unpartitioned_cookie_access(
+  self : Document,
+) -> Promise[Result[Bool, DocumentHasUnpartitionedCookieAccessError]] =
+  #| (self) => self.hasUnpartitionedCookieAccess().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+
+///|
+pub extern "js" fn Document::get_fragment_directive(
+  self : Document,
+) -> FragmentDirective =
+  #| (self) => self.fragmentDirective
+
+///|
 pub extern "js" fn Document::get_selection(self : Document) -> Selection? =
   #| (self) => (() => { const v = self.getSelection(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Document::has_storage_access(
+  self : Document,
+) -> Promise[Result[Bool, DocumentHasStorageAccessError]] =
+  #| (self) => self.hasStorageAccess().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+
+///|
+pub extern "js" fn Document::request_storage_access(
+  self : Document,
+) -> Promise[Result[Unit, DocumentRequestStorageAccessError]] =
+  #| (self) => self.requestStorageAccess().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+
+///|
+pub extern "js" fn Document::has_private_token(
+  self : Document,
+  issuer : String,
+) -> Promise[Result[Bool, DocumentHasPrivateTokenError]] =
+  #| (self, issuer) => self.hasPrivateToken(issuer).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+
+///|
+pub extern "js" fn Document::has_redemption_record(
+  self : Document,
+  issuer : String,
+) -> Promise[Result[Bool, DocumentHasRedemptionRecordError]] =
+  #| (self, issuer) => self.hasRedemptionRecord(issuer).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+
+///|
+pub extern "js" fn Document::get_timeline(self : Document) -> DocumentTimeline =
+  #| (self) => self.timeline
+
+///|
+pub extern "js" fn Document::get_fonts(self : Document) -> FontFaceSet =
+  #| (self) => self.fonts
 
 ///|
 pub extern "js" fn Document::get_box_quads(self : Document) -> Array[DOMQuad] =
@@ -6387,6 +6391,293 @@ pub fn Document::convert_point_from_node_with_options(
     options.to_js(),
   )
 }
+
+///|
+pub extern "js" fn Document::get_element_by_id(
+  self : Document,
+  element_id : String,
+) -> Element? =
+  #| (self, element_id) => (() => { const v = self.getElementById(element_id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Document::get_style_sheets(
+  self : Document,
+) -> StyleSheetList =
+  #| (self) => self.styleSheets
+
+///|
+pub extern "js" fn Document::get_adopted_style_sheets(
+  self : Document,
+) -> Array[CSSStyleSheet] =
+  #| (self) => self.adoptedStyleSheets
+
+///|
+pub extern "js" fn Document::set_adopted_style_sheets(
+  self : Document,
+  value : Array[CSSStyleSheet],
+) -> Result[Unit, DocumentSetAdoptedStyleSheetsError] =
+  #| (self, value) => (() => { try { self.adoptedStyleSheets = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn Document::get_custom_element_registry(
+  self : Document,
+) -> CustomElementRegistry? =
+  #| (self) => (() => { const v = self.customElementRegistry; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Document::get_fullscreen_element(
+  self : Document,
+) -> Element? =
+  #| (self) => (() => { const v = self.fullscreenElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Document::get_active_element(self : Document) -> Element? =
+  #| (self) => (() => { const v = self.activeElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Document::get_picture_in_picture_element(
+  self : Document,
+) -> Element? =
+  #| (self) => (() => { const v = self.pictureInPictureElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Document::get_pointer_lock_element(
+  self : Document,
+) -> Element? =
+  #| (self) => (() => { const v = self.pointerLockElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Document::get_animations(
+  self : Document,
+) -> Array[Animation] =
+  #| (self) => self.getAnimations()
+
+///|
+pub extern "js" fn Document::get_children(self : Document) -> HTMLCollection =
+  #| (self) => self.children
+
+///|
+pub extern "js" fn Document::get_first_element_child(
+  self : Document,
+) -> Element? =
+  #| (self) => (() => { const v = self.firstElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Document::get_last_element_child(
+  self : Document,
+) -> Element? =
+  #| (self) => (() => { const v = self.lastElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Document::get_child_element_count(self : Document) -> Int =
+  #| (self) => self.childElementCount
+
+///|
+pub extern "js" fn Document::prepend(
+  self : Document,
+  nodes : NodeOrString,
+) -> Result[Unit, DocumentPrependError] =
+  #| (self, nodes) => (() => { try { self.prepend(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn Document::append(
+  self : Document,
+  nodes : NodeOrString,
+) -> Result[Unit, DocumentAppendError] =
+  #| (self, nodes) => (() => { try { self.append(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn Document::replace_children(
+  self : Document,
+  nodes : NodeOrString,
+) -> Result[Unit, DocumentReplaceChildrenError] =
+  #| (self, nodes) => (() => { try { self.replaceChildren(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn Document::move_before(
+  self : Document,
+  node : Node,
+  child : Node?,
+) -> Result[Unit, DocumentMoveBeforeError] =
+  #| (self, node, child) => (() => { try { self.moveBefore(node, (child.$tag === 1 ? child._0 : null)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn Document::query_selector(
+  self : Document,
+  selectors : String,
+) -> Result[Element?, DocumentQuerySelectorError] =
+  #| (self, selectors) => (() => { try { return { $tag: 1, _0: (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn Document::query_selector_all(
+  self : Document,
+  selectors : String,
+) -> Result[NodeList, DocumentQuerySelectorAllError] =
+  #| (self, selectors) => (() => { try { return { $tag: 1, _0: self.querySelectorAll(selectors) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn Document::create_expression(
+  self : Document,
+  expression : String,
+) -> XPathExpression =
+  #| (self, expression) => self.createExpression(expression)
+
+///|
+pub extern "js" fn Document::create_expression_with_resolver(
+  self : Document,
+  expression : String,
+  resolver : XPathNSResolver?,
+) -> XPathExpression =
+  #| (self, expression, resolver) => self.createExpression(expression, (resolver.$tag === 1 ? resolver._0 : null))
+
+///|
+pub extern "js" fn Document::create_ns_resolver(
+  self : Document,
+  node_resolver : Node,
+) -> Node =
+  #| (self, node_resolver) => self.createNSResolver(node_resolver)
+
+///|
+pub extern "js" fn Document::evaluate(
+  self : Document,
+  expression : String,
+  context_node : Node,
+) -> XPathResult =
+  #| (self, expression, context_node) => self.evaluate(expression, context_node)
+
+///|
+pub extern "js" fn Document::evaluate_with_result(
+  self : Document,
+  expression : String,
+  context_node : Node,
+  resolver : XPathNSResolver?,
+  type_ : Int,
+  result : XPathResult?,
+) -> XPathResult =
+  #| (self, expression, context_node, resolver, type_, result) => self.evaluate(expression, context_node, (resolver.$tag === 1 ? resolver._0 : null), type_, (result.$tag === 1 ? result._0 : null))
+
+///|
+pub extern "js" fn Document::set_onanimationstart(
+  self : Document,
+  handler : (AnimationEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onanimationstart = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_onanimationstart(self : Document) -> Unit =
+  #| (self) => { self.onanimationstart = null }
+
+///|
+pub extern "js" fn Document::set_onanimationiteration(
+  self : Document,
+  handler : (AnimationEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onanimationiteration = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_onanimationiteration(
+  self : Document,
+) -> Unit =
+  #| (self) => { self.onanimationiteration = null }
+
+///|
+pub extern "js" fn Document::set_onanimationend(
+  self : Document,
+  handler : (AnimationEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onanimationend = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_onanimationend(self : Document) -> Unit =
+  #| (self) => { self.onanimationend = null }
+
+///|
+pub extern "js" fn Document::set_onanimationcancel(
+  self : Document,
+  handler : (AnimationEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onanimationcancel = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_onanimationcancel(self : Document) -> Unit =
+  #| (self) => { self.onanimationcancel = null }
+
+///|
+pub extern "js" fn Document::set_onsnapchanged(
+  self : Document,
+  handler : (Event) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onsnapchanged = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_onsnapchanged(self : Document) -> Unit =
+  #| (self) => { self.onsnapchanged = null }
+
+///|
+pub extern "js" fn Document::set_onsnapchanging(
+  self : Document,
+  handler : (Event) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onsnapchanging = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_onsnapchanging(self : Document) -> Unit =
+  #| (self) => { self.onsnapchanging = null }
+
+///|
+pub extern "js" fn Document::set_ontransitionrun(
+  self : Document,
+  handler : (TransitionEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ontransitionrun = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_ontransitionrun(self : Document) -> Unit =
+  #| (self) => { self.ontransitionrun = null }
+
+///|
+pub extern "js" fn Document::set_ontransitionstart(
+  self : Document,
+  handler : (TransitionEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ontransitionstart = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_ontransitionstart(self : Document) -> Unit =
+  #| (self) => { self.ontransitionstart = null }
+
+///|
+pub extern "js" fn Document::set_ontransitionend(
+  self : Document,
+  handler : (TransitionEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ontransitionend = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_ontransitionend(self : Document) -> Unit =
+  #| (self) => { self.ontransitionend = null }
+
+///|
+pub extern "js" fn Document::set_ontransitioncancel(
+  self : Document,
+  handler : (TransitionEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ontransitioncancel = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_ontransitioncancel(self : Document) -> Unit =
+  #| (self) => { self.ontransitioncancel = null }
+
+///|
+pub extern "js" fn Document::set_onfencedtreeclick(
+  self : Document,
+  handler : (Event) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onfencedtreeclick = (e) => handler(e) }
+
+///|
+pub extern "js" fn Document::clear_onfencedtreeclick(self : Document) -> Unit =
+  #| (self) => { self.onfencedtreeclick = null }
 
 ///|
 pub extern "js" fn Document::set_onabort(
@@ -7235,173 +7526,6 @@ pub extern "js" fn Document::clear_onwheel(self : Document) -> Unit =
   #| (self) => { self.onwheel = null }
 
 ///|
-pub extern "js" fn Document::set_ontouchstart(
-  self : Document,
-  handler : (TouchEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontouchstart = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_ontouchstart(self : Document) -> Unit =
-  #| (self) => { self.ontouchstart = null }
-
-///|
-pub extern "js" fn Document::set_ontouchend(
-  self : Document,
-  handler : (TouchEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontouchend = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_ontouchend(self : Document) -> Unit =
-  #| (self) => { self.ontouchend = null }
-
-///|
-pub extern "js" fn Document::set_ontouchmove(
-  self : Document,
-  handler : (TouchEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontouchmove = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_ontouchmove(self : Document) -> Unit =
-  #| (self) => { self.ontouchmove = null }
-
-///|
-pub extern "js" fn Document::set_ontouchcancel(
-  self : Document,
-  handler : (TouchEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontouchcancel = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_ontouchcancel(self : Document) -> Unit =
-  #| (self) => { self.ontouchcancel = null }
-
-///|
-pub extern "js" fn Document::set_ontransitionrun(
-  self : Document,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitionrun = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_ontransitionrun(self : Document) -> Unit =
-  #| (self) => { self.ontransitionrun = null }
-
-///|
-pub extern "js" fn Document::set_ontransitionstart(
-  self : Document,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitionstart = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_ontransitionstart(self : Document) -> Unit =
-  #| (self) => { self.ontransitionstart = null }
-
-///|
-pub extern "js" fn Document::set_ontransitionend(
-  self : Document,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitionend = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_ontransitionend(self : Document) -> Unit =
-  #| (self) => { self.ontransitionend = null }
-
-///|
-pub extern "js" fn Document::set_ontransitioncancel(
-  self : Document,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitioncancel = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_ontransitioncancel(self : Document) -> Unit =
-  #| (self) => { self.ontransitioncancel = null }
-
-///|
-pub extern "js" fn Document::set_onsnapchanged(
-  self : Document,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onsnapchanged = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_onsnapchanged(self : Document) -> Unit =
-  #| (self) => { self.onsnapchanged = null }
-
-///|
-pub extern "js" fn Document::set_onsnapchanging(
-  self : Document,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onsnapchanging = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_onsnapchanging(self : Document) -> Unit =
-  #| (self) => { self.onsnapchanging = null }
-
-///|
-pub extern "js" fn Document::set_onanimationstart(
-  self : Document,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationstart = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_onanimationstart(self : Document) -> Unit =
-  #| (self) => { self.onanimationstart = null }
-
-///|
-pub extern "js" fn Document::set_onanimationiteration(
-  self : Document,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationiteration = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_onanimationiteration(
-  self : Document,
-) -> Unit =
-  #| (self) => { self.onanimationiteration = null }
-
-///|
-pub extern "js" fn Document::set_onanimationend(
-  self : Document,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationend = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_onanimationend(self : Document) -> Unit =
-  #| (self) => { self.onanimationend = null }
-
-///|
-pub extern "js" fn Document::set_onanimationcancel(
-  self : Document,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationcancel = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_onanimationcancel(self : Document) -> Unit =
-  #| (self) => { self.onanimationcancel = null }
-
-///|
-pub extern "js" fn Document::set_onfencedtreeclick(
-  self : Document,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onfencedtreeclick = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_onfencedtreeclick(self : Document) -> Unit =
-  #| (self) => { self.onfencedtreeclick = null }
-
-///|
 pub extern "js" fn Document::set_onpointerover(
   self : Document,
   handler : (PointerEvent) -> Unit,
@@ -7525,17 +7649,6 @@ pub extern "js" fn Document::clear_onlostpointercapture(
   #| (self) => { self.onlostpointercapture = null }
 
 ///|
-pub extern "js" fn Document::set_onbeforexrselect(
-  self : Document,
-  handler : (XRSessionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onbeforexrselect = (e) => handler(e) }
-
-///|
-pub extern "js" fn Document::clear_onbeforexrselect(self : Document) -> Unit =
-  #| (self) => { self.onbeforexrselect = null }
-
-///|
 pub extern "js" fn Document::set_onselectstart(
   self : Document,
   handler : (Event) -> Unit,
@@ -7558,172 +7671,59 @@ pub extern "js" fn Document::clear_onselectionchange(self : Document) -> Unit =
   #| (self) => { self.onselectionchange = null }
 
 ///|
-pub extern "js" fn Document::get_element_by_id(
+pub extern "js" fn Document::set_ontouchstart(
   self : Document,
-  element_id : String,
-) -> Element? =
-  #| (self, element_id) => (() => { const v = self.getElementById(element_id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  handler : (TouchEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ontouchstart = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_active_element(self : Document) -> Element? =
-  #| (self) => (() => { const v = self.activeElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+pub extern "js" fn Document::clear_ontouchstart(self : Document) -> Unit =
+  #| (self) => { self.ontouchstart = null }
 
 ///|
-pub extern "js" fn Document::get_custom_element_registry(
+pub extern "js" fn Document::set_ontouchend(
   self : Document,
-) -> CustomElementRegistry? =
-  #| (self) => (() => { const v = self.customElementRegistry; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  handler : (TouchEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ontouchend = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_style_sheets(
+pub extern "js" fn Document::clear_ontouchend(self : Document) -> Unit =
+  #| (self) => { self.ontouchend = null }
+
+///|
+pub extern "js" fn Document::set_ontouchmove(
   self : Document,
-) -> StyleSheetList =
-  #| (self) => self.styleSheets
+  handler : (TouchEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ontouchmove = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_adopted_style_sheets(
+pub extern "js" fn Document::clear_ontouchmove(self : Document) -> Unit =
+  #| (self) => { self.ontouchmove = null }
+
+///|
+pub extern "js" fn Document::set_ontouchcancel(
   self : Document,
-) -> Array[CSSStyleSheet] =
-  #| (self) => self.adoptedStyleSheets
+  handler : (TouchEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ontouchcancel = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::set_adopted_style_sheets(
+pub extern "js" fn Document::clear_ontouchcancel(self : Document) -> Unit =
+  #| (self) => { self.ontouchcancel = null }
+
+///|
+pub extern "js" fn Document::set_onbeforexrselect(
   self : Document,
-  value : Array[CSSStyleSheet],
-) -> Result[Unit, DocumentSetAdoptedStyleSheetsError] =
-  #| (self, value) => (() => { try { self.adoptedStyleSheets = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+  handler : (XRSessionEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onbeforexrselect = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Document::get_fullscreen_element(
-  self : Document,
-) -> Element? =
-  #| (self) => (() => { const v = self.fullscreenElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-pub extern "js" fn Document::get_animations(
-  self : Document,
-) -> Array[Animation] =
-  #| (self) => self.getAnimations()
-
-///|
-pub extern "js" fn Document::get_picture_in_picture_element(
-  self : Document,
-) -> Element? =
-  #| (self) => (() => { const v = self.pictureInPictureElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-pub extern "js" fn Document::get_pointer_lock_element(
-  self : Document,
-) -> Element? =
-  #| (self) => (() => { const v = self.pointerLockElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-pub extern "js" fn Document::get_children(self : Document) -> HTMLCollection =
-  #| (self) => self.children
-
-///|
-pub extern "js" fn Document::get_first_element_child(
-  self : Document,
-) -> Element? =
-  #| (self) => (() => { const v = self.firstElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-pub extern "js" fn Document::get_last_element_child(
-  self : Document,
-) -> Element? =
-  #| (self) => (() => { const v = self.lastElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-pub extern "js" fn Document::get_child_element_count(self : Document) -> Int =
-  #| (self) => self.childElementCount
-
-///|
-pub extern "js" fn Document::prepend(
-  self : Document,
-  nodes : NodeOrString,
-) -> Result[Unit, DocumentPrependError] =
-  #| (self, nodes) => (() => { try { self.prepend(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Document::append(
-  self : Document,
-  nodes : NodeOrString,
-) -> Result[Unit, DocumentAppendError] =
-  #| (self, nodes) => (() => { try { self.append(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Document::replace_children(
-  self : Document,
-  nodes : NodeOrString,
-) -> Result[Unit, DocumentReplaceChildrenError] =
-  #| (self, nodes) => (() => { try { self.replaceChildren(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Document::move_before(
-  self : Document,
-  node : Node,
-  child : Node?,
-) -> Result[Unit, DocumentMoveBeforeError] =
-  #| (self, node, child) => (() => { try { self.moveBefore(node, (child.$tag === 1 ? child._0 : null)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Document::query_selector(
-  self : Document,
-  selectors : String,
-) -> Result[Element?, DocumentQuerySelectorError] =
-  #| (self, selectors) => (() => { try { return { $tag: 1, _0: (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Document::query_selector_all(
-  self : Document,
-  selectors : String,
-) -> Result[NodeList, DocumentQuerySelectorAllError] =
-  #| (self, selectors) => (() => { try { return { $tag: 1, _0: self.querySelectorAll(selectors) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Document::create_expression(
-  self : Document,
-  expression : String,
-) -> XPathExpression =
-  #| (self, expression) => self.createExpression(expression)
-
-///|
-pub extern "js" fn Document::create_expression_with_resolver(
-  self : Document,
-  expression : String,
-  resolver : XPathNSResolver?,
-) -> XPathExpression =
-  #| (self, expression, resolver) => self.createExpression(expression, (resolver.$tag === 1 ? resolver._0 : null))
-
-///|
-pub extern "js" fn Document::create_ns_resolver(
-  self : Document,
-  node_resolver : Node,
-) -> Node =
-  #| (self, node_resolver) => self.createNSResolver(node_resolver)
-
-///|
-pub extern "js" fn Document::evaluate(
-  self : Document,
-  expression : String,
-  context_node : Node,
-) -> XPathResult =
-  #| (self, expression, context_node) => self.evaluate(expression, context_node)
-
-///|
-pub extern "js" fn Document::evaluate_with_result(
-  self : Document,
-  expression : String,
-  context_node : Node,
-  resolver : XPathNSResolver?,
-  type_ : Int,
-  result : XPathResult?,
-) -> XPathResult =
-  #| (self, expression, context_node, resolver, type_, result) => self.evaluate(expression, context_node, (resolver.$tag === 1 ? resolver._0 : null), type_, (result.$tag === 1 ? result._0 : null))
-
-///|
-pub extern "js" fn Document::get_fonts(self : Document) -> FontFaceSet =
-  #| (self) => self.fonts
+pub extern "js" fn Document::clear_onbeforexrselect(self : Document) -> Unit =
+  #| (self) => { self.onbeforexrselect = null }
 
 ///|
 pub extern "js" fn Document::convert_quad_from_node_with_text(
@@ -8388,18 +8388,6 @@ pub extern "js" fn ShadowRoot::set_inner_html(
   #| (self, value) => (() => { try { self.innerHTML = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn ShadowRoot::get_active_element(
-  self : ShadowRoot,
-) -> Element? =
-  #| (self) => (() => { const v = self.activeElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-pub extern "js" fn ShadowRoot::get_custom_element_registry(
-  self : ShadowRoot,
-) -> CustomElementRegistry? =
-  #| (self) => (() => { const v = self.customElementRegistry; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
 pub extern "js" fn ShadowRoot::get_style_sheets(
   self : ShadowRoot,
 ) -> StyleSheetList =
@@ -8419,16 +8407,22 @@ pub extern "js" fn ShadowRoot::set_adopted_style_sheets(
   #| (self, value) => (() => { try { self.adoptedStyleSheets = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
+pub extern "js" fn ShadowRoot::get_custom_element_registry(
+  self : ShadowRoot,
+) -> CustomElementRegistry? =
+  #| (self) => (() => { const v = self.customElementRegistry; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
 pub extern "js" fn ShadowRoot::get_fullscreen_element(
   self : ShadowRoot,
 ) -> Element? =
   #| (self) => (() => { const v = self.fullscreenElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn ShadowRoot::get_animations(
+pub extern "js" fn ShadowRoot::get_active_element(
   self : ShadowRoot,
-) -> Array[Animation] =
-  #| (self) => self.getAnimations()
+) -> Element? =
+  #| (self) => (() => { const v = self.activeElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn ShadowRoot::get_picture_in_picture_element(
@@ -8441,6 +8435,12 @@ pub extern "js" fn ShadowRoot::get_pointer_lock_element(
   self : ShadowRoot,
 ) -> Element? =
   #| (self) => (() => { const v = self.pointerLockElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn ShadowRoot::get_animations(
+  self : ShadowRoot,
+) -> Array[Animation] =
+  #| (self) => self.getAnimations()
 
 ///|
 /// Element interface
@@ -8477,216 +8477,6 @@ pub extern "js" fn Element::to_node(self : Element) -> Node =
 ///|
 pub extern "js" fn Element::to_event_target(self : Element) -> EventTarget =
   #| (self) => self
-
-///|
-pub extern "js" fn Element::as_svg_animation_element(
-  self : Element,
-) -> SVGAnimationElement? =
-  #| (self) => (self instanceof SVGAnimationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_animate_element(
-  self : Element,
-) -> SVGAnimateElement? =
-  #| (self) => (self instanceof SVGAnimateElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_set_element(
-  self : Element,
-) -> SVGSetElement? =
-  #| (self) => (self instanceof SVGSetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_animate_motion_element(
-  self : Element,
-) -> SVGAnimateMotionElement? =
-  #| (self) => (self instanceof SVGAnimateMotionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgm_path_element(
-  self : Element,
-) -> SVGMPathElement? =
-  #| (self) => (self instanceof SVGMPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_animate_transform_element(
-  self : Element,
-) -> SVGAnimateTransformElement? =
-  #| (self) => (self instanceof SVGAnimateTransformElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_clip_path_element(
-  self : Element,
-) -> SVGClipPathElement? =
-  #| (self) => (self instanceof SVGClipPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_mask_element(
-  self : Element,
-) -> SVGMaskElement? =
-  #| (self) => (self instanceof SVGMaskElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_filter_element(
-  self : Element,
-) -> SVGFilterElement? =
-  #| (self) => (self instanceof SVGFilterElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_blend_element(
-  self : Element,
-) -> SVGFEBlendElement? =
-  #| (self) => (self instanceof SVGFEBlendElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_color_matrix_element(
-  self : Element,
-) -> SVGFEColorMatrixElement? =
-  #| (self) => (self instanceof SVGFEColorMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_component_transfer_element(
-  self : Element,
-) -> SVGFEComponentTransferElement? =
-  #| (self) => (self instanceof SVGFEComponentTransferElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_component_transfer_function_element(
-  self : Element,
-) -> SVGComponentTransferFunctionElement? =
-  #| (self) => (self instanceof SVGComponentTransferFunctionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_func_r_element(
-  self : Element,
-) -> SVGFEFuncRElement? =
-  #| (self) => (self instanceof SVGFEFuncRElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_func_g_element(
-  self : Element,
-) -> SVGFEFuncGElement? =
-  #| (self) => (self instanceof SVGFEFuncGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_func_b_element(
-  self : Element,
-) -> SVGFEFuncBElement? =
-  #| (self) => (self instanceof SVGFEFuncBElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_func_a_element(
-  self : Element,
-) -> SVGFEFuncAElement? =
-  #| (self) => (self instanceof SVGFEFuncAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_composite_element(
-  self : Element,
-) -> SVGFECompositeElement? =
-  #| (self) => (self instanceof SVGFECompositeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_convolve_matrix_element(
-  self : Element,
-) -> SVGFEConvolveMatrixElement? =
-  #| (self) => (self instanceof SVGFEConvolveMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_diffuse_lighting_element(
-  self : Element,
-) -> SVGFEDiffuseLightingElement? =
-  #| (self) => (self instanceof SVGFEDiffuseLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_distant_light_element(
-  self : Element,
-) -> SVGFEDistantLightElement? =
-  #| (self) => (self instanceof SVGFEDistantLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_point_light_element(
-  self : Element,
-) -> SVGFEPointLightElement? =
-  #| (self) => (self instanceof SVGFEPointLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_spot_light_element(
-  self : Element,
-) -> SVGFESpotLightElement? =
-  #| (self) => (self instanceof SVGFESpotLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_displacement_map_element(
-  self : Element,
-) -> SVGFEDisplacementMapElement? =
-  #| (self) => (self instanceof SVGFEDisplacementMapElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_drop_shadow_element(
-  self : Element,
-) -> SVGFEDropShadowElement? =
-  #| (self) => (self instanceof SVGFEDropShadowElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_flood_element(
-  self : Element,
-) -> SVGFEFloodElement? =
-  #| (self) => (self instanceof SVGFEFloodElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_gaussian_blur_element(
-  self : Element,
-) -> SVGFEGaussianBlurElement? =
-  #| (self) => (self instanceof SVGFEGaussianBlurElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_image_element(
-  self : Element,
-) -> SVGFEImageElement? =
-  #| (self) => (self instanceof SVGFEImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_merge_element(
-  self : Element,
-) -> SVGFEMergeElement? =
-  #| (self) => (self instanceof SVGFEMergeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_merge_node_element(
-  self : Element,
-) -> SVGFEMergeNodeElement? =
-  #| (self) => (self instanceof SVGFEMergeNodeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_morphology_element(
-  self : Element,
-) -> SVGFEMorphologyElement? =
-  #| (self) => (self instanceof SVGFEMorphologyElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_offset_element(
-  self : Element,
-) -> SVGFEOffsetElement? =
-  #| (self) => (self instanceof SVGFEOffsetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_specular_lighting_element(
-  self : Element,
-) -> SVGFESpecularLightingElement? =
-  #| (self) => (self instanceof SVGFESpecularLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_tile_element(
-  self : Element,
-) -> SVGFETileElement? =
-  #| (self) => (self instanceof SVGFETileElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgfe_turbulence_element(
-  self : Element,
-) -> SVGFETurbulenceElement? =
-  #| (self) => (self instanceof SVGFETurbulenceElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Element::as_svg_element(self : Element) -> SVGElement? =
@@ -8891,10 +8681,184 @@ pub extern "js" fn Element::as_svg_view_element(
   #| (self) => (self instanceof SVGViewElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Element::as_html_model_element(
+pub extern "js" fn Element::as_svg_clip_path_element(
   self : Element,
-) -> HTMLModelElement? =
-  #| (self) => (self instanceof HTMLModelElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SVGClipPathElement? =
+  #| (self) => (self instanceof SVGClipPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_mask_element(
+  self : Element,
+) -> SVGMaskElement? =
+  #| (self) => (self instanceof SVGMaskElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_html_fenced_frame_element(
+  self : Element,
+) -> HTMLFencedFrameElement? =
+  #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_filter_element(
+  self : Element,
+) -> SVGFilterElement? =
+  #| (self) => (self instanceof SVGFilterElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_blend_element(
+  self : Element,
+) -> SVGFEBlendElement? =
+  #| (self) => (self instanceof SVGFEBlendElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_color_matrix_element(
+  self : Element,
+) -> SVGFEColorMatrixElement? =
+  #| (self) => (self instanceof SVGFEColorMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_component_transfer_element(
+  self : Element,
+) -> SVGFEComponentTransferElement? =
+  #| (self) => (self instanceof SVGFEComponentTransferElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_component_transfer_function_element(
+  self : Element,
+) -> SVGComponentTransferFunctionElement? =
+  #| (self) => (self instanceof SVGComponentTransferFunctionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_func_r_element(
+  self : Element,
+) -> SVGFEFuncRElement? =
+  #| (self) => (self instanceof SVGFEFuncRElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_func_g_element(
+  self : Element,
+) -> SVGFEFuncGElement? =
+  #| (self) => (self instanceof SVGFEFuncGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_func_b_element(
+  self : Element,
+) -> SVGFEFuncBElement? =
+  #| (self) => (self instanceof SVGFEFuncBElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_func_a_element(
+  self : Element,
+) -> SVGFEFuncAElement? =
+  #| (self) => (self instanceof SVGFEFuncAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_composite_element(
+  self : Element,
+) -> SVGFECompositeElement? =
+  #| (self) => (self instanceof SVGFECompositeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_convolve_matrix_element(
+  self : Element,
+) -> SVGFEConvolveMatrixElement? =
+  #| (self) => (self instanceof SVGFEConvolveMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_diffuse_lighting_element(
+  self : Element,
+) -> SVGFEDiffuseLightingElement? =
+  #| (self) => (self instanceof SVGFEDiffuseLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_distant_light_element(
+  self : Element,
+) -> SVGFEDistantLightElement? =
+  #| (self) => (self instanceof SVGFEDistantLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_point_light_element(
+  self : Element,
+) -> SVGFEPointLightElement? =
+  #| (self) => (self instanceof SVGFEPointLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_spot_light_element(
+  self : Element,
+) -> SVGFESpotLightElement? =
+  #| (self) => (self instanceof SVGFESpotLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_displacement_map_element(
+  self : Element,
+) -> SVGFEDisplacementMapElement? =
+  #| (self) => (self instanceof SVGFEDisplacementMapElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_drop_shadow_element(
+  self : Element,
+) -> SVGFEDropShadowElement? =
+  #| (self) => (self instanceof SVGFEDropShadowElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_flood_element(
+  self : Element,
+) -> SVGFEFloodElement? =
+  #| (self) => (self instanceof SVGFEFloodElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_gaussian_blur_element(
+  self : Element,
+) -> SVGFEGaussianBlurElement? =
+  #| (self) => (self instanceof SVGFEGaussianBlurElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_image_element(
+  self : Element,
+) -> SVGFEImageElement? =
+  #| (self) => (self instanceof SVGFEImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_merge_element(
+  self : Element,
+) -> SVGFEMergeElement? =
+  #| (self) => (self instanceof SVGFEMergeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_merge_node_element(
+  self : Element,
+) -> SVGFEMergeNodeElement? =
+  #| (self) => (self instanceof SVGFEMergeNodeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_morphology_element(
+  self : Element,
+) -> SVGFEMorphologyElement? =
+  #| (self) => (self instanceof SVGFEMorphologyElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_offset_element(
+  self : Element,
+) -> SVGFEOffsetElement? =
+  #| (self) => (self instanceof SVGFEOffsetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_specular_lighting_element(
+  self : Element,
+) -> SVGFESpecularLightingElement? =
+  #| (self) => (self instanceof SVGFESpecularLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_tile_element(
+  self : Element,
+) -> SVGFETileElement? =
+  #| (self) => (self instanceof SVGFETileElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgfe_turbulence_element(
+  self : Element,
+) -> SVGFETurbulenceElement? =
+  #| (self) => (self instanceof SVGFETurbulenceElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Element::as_html_element(self : Element) -> HTMLElement? =
@@ -9321,28 +9285,16 @@ pub extern "js" fn Element::as_html_param_element(
   #| (self) => (self instanceof HTMLParamElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Element::as_html_portal_element(
-  self : Element,
-) -> HTMLPortalElement? =
-  #| (self) => (self instanceof HTMLPortalElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn Element::as_math_ml_element(
   self : Element,
 ) -> MathMLElement? =
   #| (self) => (self instanceof MathMLElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Element::as_svg_path_element(
+pub extern "js" fn Element::as_html_model_element(
   self : Element,
-) -> SVGPathElement? =
-  #| (self) => (self instanceof SVGPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_html_fenced_frame_element(
-  self : Element,
-) -> HTMLFencedFrameElement? =
-  #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> HTMLModelElement? =
+  #| (self) => (self instanceof HTMLModelElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Element::as_html_permission_element(
@@ -9355,6 +9307,54 @@ pub extern "js" fn Element::as_html_geolocation_element(
   self : Element,
 ) -> HTMLGeolocationElement? =
   #| (self) => (self instanceof HTMLGeolocationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_html_portal_element(
+  self : Element,
+) -> HTMLPortalElement? =
+  #| (self) => (self instanceof HTMLPortalElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_animation_element(
+  self : Element,
+) -> SVGAnimationElement? =
+  #| (self) => (self instanceof SVGAnimationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_animate_element(
+  self : Element,
+) -> SVGAnimateElement? =
+  #| (self) => (self instanceof SVGAnimateElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_set_element(
+  self : Element,
+) -> SVGSetElement? =
+  #| (self) => (self instanceof SVGSetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_animate_motion_element(
+  self : Element,
+) -> SVGAnimateMotionElement? =
+  #| (self) => (self instanceof SVGAnimateMotionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgm_path_element(
+  self : Element,
+) -> SVGMPathElement? =
+  #| (self) => (self instanceof SVGMPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_animate_transform_element(
+  self : Element,
+) -> SVGAnimateTransformElement? =
+  #| (self) => (self instanceof SVGAnimateTransformElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_path_element(
+  self : Element,
+) -> SVGPathElement? =
+  #| (self) => (self instanceof SVGPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Error type for throwing methods
@@ -9416,6 +9416,13 @@ pub(all) enum ElementInsertAdjacentTextError {
 
 ///|
 /// Error type for throwing methods
+pub(all) enum ElementRequestFullscreenError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
 pub(all) enum ElementSetHTMLUnsafeError {
   TypeError(JsError)
   OtherError(JsError)
@@ -9445,13 +9452,6 @@ pub(all) enum ElementInsertAdjacentHTMLError {
   TypeError(JsError)
   SyntaxError(JsError)
   NoModificationAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
-/// Error type for throwing methods
-pub(all) enum ElementRequestFullscreenError {
-  TypeError(JsError)
   OtherError(JsError)
 } derive(Show)
 
@@ -9793,6 +9793,95 @@ pub extern "js" fn Element::insert_adjacent_text(
   #| (self, where_, data) => (() => { try { self.insertAdjacentText(where_, data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
+pub extern "js" fn Element::get_spatial_navigation_container(
+  self : Element,
+) -> Node =
+  #| (self) => self.getSpatialNavigationContainer()
+
+///|
+pub extern "js" fn Element::focusable_areas(self : Element) -> Array[Node] =
+  #| (self) => self.focusableAreas()
+
+///|
+extern "js" fn Element::focusable_areas_with_option_ffi(
+  self : Element,
+  option : JsValue,
+) -> Array[Node] =
+  #| (self, option) => self.focusableAreas(option)
+
+///|
+pub fn Element::focusable_areas_with_option(
+  self : Element,
+  option : FocusableAreasOption,
+) -> Array[Node] {
+  Element::focusable_areas_with_option_ffi(self, option.to_js())
+}
+
+///|
+pub extern "js" fn Element::spatial_navigation_search(
+  self : Element,
+  dir : SpatialNavigationDirection,
+) -> Node? =
+  #| (self, dir) => (() => { const v = self.spatialNavigationSearch(['up', 'down', 'left', 'right'][dir]); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+extern "js" fn Element::spatial_navigation_search_with_options_ffi(
+  self : Element,
+  dir : SpatialNavigationDirection,
+  options : JsValue,
+) -> Node? =
+  #| (self, dir, options) => (() => { const v = self.spatialNavigationSearch(['up', 'down', 'left', 'right'][dir], options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub fn Element::spatial_navigation_search_with_options(
+  self : Element,
+  dir : SpatialNavigationDirection,
+  options : SpatialNavigationSearchOptions,
+) -> Node? {
+  Element::spatial_navigation_search_with_options_ffi(
+    self,
+    dir,
+    options.to_js(),
+  )
+}
+
+///|
+pub extern "js" fn Element::pseudo(
+  self : Element,
+  type_ : String,
+) -> CSSPseudoElement? =
+  #| (self, type_) => (() => { const v = self.pseudo(type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Element::get_part(self : Element) -> DOMTokenList =
+  #| (self) => self.part
+
+///|
+pub extern "js" fn Element::computed_style_map(
+  self : Element,
+) -> StylePropertyMapReadOnly =
+  #| (self) => self.computedStyleMap()
+
+///|
+pub extern "js" fn Element::start_view_transition(
+  self : Element,
+) -> ViewTransition =
+  #| (self) => self.startViewTransition()
+
+///|
+pub extern "js" fn Element::start_view_transition_with_callback_options(
+  self : Element,
+  callback_options : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
+) -> ViewTransition =
+  #| (self, callback_options) => self.startViewTransition(callback_options)
+
+///|
+pub extern "js" fn Element::get_active_view_transition(
+  self : Element,
+) -> ViewTransition? =
+  #| (self) => (() => { const v = self.activeViewTransition; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
 pub extern "js" fn Element::get_client_rects(self : Element) -> DOMRectList =
   #| (self) => self.getClientRects()
 
@@ -9962,6 +10051,60 @@ pub extern "js" fn Element::get_current_css_zoom(self : Element) -> Double =
   #| (self) => self.currentCSSZoom
 
 ///|
+pub extern "js" fn Element::get_element_timing(self : Element) -> String =
+  #| (self) => self.elementTiming
+
+///|
+pub extern "js" fn Element::set_element_timing(
+  self : Element,
+  value : String,
+) -> Unit =
+  #| (self, value) => { self.elementTiming = value }
+
+///|
+pub extern "js" fn Element::request_fullscreen(
+  self : Element,
+) -> Promise[Result[Unit, ElementRequestFullscreenError]] =
+  #| (self) => self.requestFullscreen().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+
+///|
+extern "js" fn Element::request_fullscreen_with_options_ffi(
+  self : Element,
+  options : JsValue,
+) -> Promise[Result[Unit, ElementRequestFullscreenError]] =
+  #| (self, options) => self.requestFullscreen(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+
+///|
+pub fn Element::request_fullscreen_with_options(
+  self : Element,
+  options : FullscreenOptions,
+) -> Promise[Result[Unit, ElementRequestFullscreenError]] {
+  Element::request_fullscreen_with_options_ffi(self, options.to_js())
+}
+
+///|
+pub extern "js" fn Element::set_onfullscreenchange(
+  self : Element,
+  handler : (Event) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onfullscreenchange = (e) => handler(e) }
+
+///|
+pub extern "js" fn Element::clear_onfullscreenchange(self : Element) -> Unit =
+  #| (self) => { self.onfullscreenchange = null }
+
+///|
+pub extern "js" fn Element::set_onfullscreenerror(
+  self : Element,
+  handler : (Event) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onfullscreenerror = (e) => handler(e) }
+
+///|
+pub extern "js" fn Element::clear_onfullscreenerror(self : Element) -> Unit =
+  #| (self) => { self.onfullscreenerror = null }
+
+///|
 pub extern "js" fn Element::set_html_unsafe(
   self : Element,
   html : TrustedHTMLOrString,
@@ -10022,143 +10165,6 @@ pub extern "js" fn Element::insert_adjacent_html(
   #| (self, position, string) => (() => { try { self.insertAdjacentHTML(position, string); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NoModificationAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn Element::get_part(self : Element) -> DOMTokenList =
-  #| (self) => self.part
-
-///|
-pub extern "js" fn Element::pseudo(
-  self : Element,
-  type_ : String,
-) -> CSSPseudoElement? =
-  #| (self, type_) => (() => { const v = self.pseudo(type_); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-pub extern "js" fn Element::get_spatial_navigation_container(
-  self : Element,
-) -> Node =
-  #| (self) => self.getSpatialNavigationContainer()
-
-///|
-pub extern "js" fn Element::focusable_areas(self : Element) -> Array[Node] =
-  #| (self) => self.focusableAreas()
-
-///|
-extern "js" fn Element::focusable_areas_with_option_ffi(
-  self : Element,
-  option : JsValue,
-) -> Array[Node] =
-  #| (self, option) => self.focusableAreas(option)
-
-///|
-pub fn Element::focusable_areas_with_option(
-  self : Element,
-  option : FocusableAreasOption,
-) -> Array[Node] {
-  Element::focusable_areas_with_option_ffi(self, option.to_js())
-}
-
-///|
-pub extern "js" fn Element::spatial_navigation_search(
-  self : Element,
-  dir : SpatialNavigationDirection,
-) -> Node? =
-  #| (self, dir) => (() => { const v = self.spatialNavigationSearch(['up', 'down', 'left', 'right'][dir]); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-extern "js" fn Element::spatial_navigation_search_with_options_ffi(
-  self : Element,
-  dir : SpatialNavigationDirection,
-  options : JsValue,
-) -> Node? =
-  #| (self, dir, options) => (() => { const v = self.spatialNavigationSearch(['up', 'down', 'left', 'right'][dir], options); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-pub fn Element::spatial_navigation_search_with_options(
-  self : Element,
-  dir : SpatialNavigationDirection,
-  options : SpatialNavigationSearchOptions,
-) -> Node? {
-  Element::spatial_navigation_search_with_options_ffi(
-    self,
-    dir,
-    options.to_js(),
-  )
-}
-
-///|
-pub extern "js" fn Element::request_fullscreen(
-  self : Element,
-) -> Promise[Result[Unit, ElementRequestFullscreenError]] =
-  #| (self) => self.requestFullscreen().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
-
-///|
-extern "js" fn Element::request_fullscreen_with_options_ffi(
-  self : Element,
-  options : JsValue,
-) -> Promise[Result[Unit, ElementRequestFullscreenError]] =
-  #| (self, options) => self.requestFullscreen(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
-
-///|
-pub fn Element::request_fullscreen_with_options(
-  self : Element,
-  options : FullscreenOptions,
-) -> Promise[Result[Unit, ElementRequestFullscreenError]] {
-  Element::request_fullscreen_with_options_ffi(self, options.to_js())
-}
-
-///|
-pub extern "js" fn Element::set_onfullscreenchange(
-  self : Element,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onfullscreenchange = (e) => handler(e) }
-
-///|
-pub extern "js" fn Element::clear_onfullscreenchange(self : Element) -> Unit =
-  #| (self) => { self.onfullscreenchange = null }
-
-///|
-pub extern "js" fn Element::set_onfullscreenerror(
-  self : Element,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onfullscreenerror = (e) => handler(e) }
-
-///|
-pub extern "js" fn Element::clear_onfullscreenerror(self : Element) -> Unit =
-  #| (self) => { self.onfullscreenerror = null }
-
-///|
-pub extern "js" fn Element::get_element_timing(self : Element) -> String =
-  #| (self) => self.elementTiming
-
-///|
-pub extern "js" fn Element::set_element_timing(
-  self : Element,
-  value : String,
-) -> Unit =
-  #| (self, value) => { self.elementTiming = value }
-
-///|
-pub extern "js" fn Element::start_view_transition(
-  self : Element,
-) -> ViewTransition =
-  #| (self) => self.startViewTransition()
-
-///|
-pub extern "js" fn Element::start_view_transition_with_callback_options(
-  self : Element,
-  callback_options : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
-) -> ViewTransition =
-  #| (self, callback_options) => self.startViewTransition(callback_options)
-
-///|
-pub extern "js" fn Element::get_active_view_transition(
-  self : Element,
-) -> ViewTransition? =
-  #| (self) => (() => { const v = self.activeViewTransition; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
 pub extern "js" fn Element::set_pointer_capture(
   self : Element,
   pointer_id : Int,
@@ -10201,10 +10207,14 @@ pub fn Element::request_pointer_lock_with_options(
 }
 
 ///|
-pub extern "js" fn Element::computed_style_map(
+pub extern "js" fn Element::get_region_overset(self : Element) -> String =
+  #| (self) => self.regionOverset
+
+///|
+pub extern "js" fn Element::get_region_flow_ranges(
   self : Element,
-) -> StylePropertyMapReadOnly =
-  #| (self) => self.computedStyleMap()
+) -> Array[Range] =
+  #| (self) => self.getRegionFlowRanges()
 
 ///|
 pub extern "js" fn Element::get_box_quads(self : Element) -> Array[DOMQuad] =
@@ -10338,6 +10348,108 @@ pub fn Element::convert_point_from_node_with_options(
     options.to_js(),
   )
 }
+
+///|
+pub extern "js" fn Element::get_children(self : Element) -> HTMLCollection =
+  #| (self) => self.children
+
+///|
+pub extern "js" fn Element::get_first_element_child(self : Element) -> Element? =
+  #| (self) => (() => { const v = self.firstElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Element::get_last_element_child(self : Element) -> Element? =
+  #| (self) => (() => { const v = self.lastElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Element::get_child_element_count(self : Element) -> Int =
+  #| (self) => self.childElementCount
+
+///|
+pub extern "js" fn Element::prepend(
+  self : Element,
+  nodes : NodeOrString,
+) -> Result[Unit, ElementPrependError] =
+  #| (self, nodes) => (() => { try { self.prepend(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn Element::append(
+  self : Element,
+  nodes : NodeOrString,
+) -> Result[Unit, ElementAppendError] =
+  #| (self, nodes) => (() => { try { self.append(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn Element::replace_children(
+  self : Element,
+  nodes : NodeOrString,
+) -> Result[Unit, ElementReplaceChildrenError] =
+  #| (self, nodes) => (() => { try { self.replaceChildren(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn Element::move_before(
+  self : Element,
+  node : Node,
+  child : Node?,
+) -> Result[Unit, ElementMoveBeforeError] =
+  #| (self, node, child) => (() => { try { self.moveBefore(node, (child.$tag === 1 ? child._0 : null)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn Element::query_selector(
+  self : Element,
+  selectors : String,
+) -> Result[Element?, ElementQuerySelectorError] =
+  #| (self, selectors) => (() => { try { return { $tag: 1, _0: (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn Element::query_selector_all(
+  self : Element,
+  selectors : String,
+) -> Result[NodeList, ElementQuerySelectorAllError] =
+  #| (self, selectors) => (() => { try { return { $tag: 1, _0: self.querySelectorAll(selectors) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn Element::get_previous_element_sibling(
+  self : Element,
+) -> Element? =
+  #| (self) => (() => { const v = self.previousElementSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Element::get_next_element_sibling(
+  self : Element,
+) -> Element? =
+  #| (self) => (() => { const v = self.nextElementSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn Element::before(
+  self : Element,
+  nodes : NodeOrString,
+) -> Result[Unit, ElementBeforeError] =
+  #| (self, nodes) => (() => { try { self.before(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn Element::after(
+  self : Element,
+  nodes : NodeOrString,
+) -> Result[Unit, ElementAfterError] =
+  #| (self, nodes) => (() => { try { self.after(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn Element::replace_with(
+  self : Element,
+  nodes : NodeOrString,
+) -> Result[Unit, ElementReplaceWithError] =
+  #| (self, nodes) => (() => { try { self.replaceWith(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub extern "js" fn Element::remove(self : Element) -> Unit =
+  #| (self) => self.remove()
+
+///|
+pub extern "js" fn Element::get_assigned_slot(
+  self : Element,
+) -> HTMLSlotElement? =
+  #| (self) => (() => { const v = self.assignedSlot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn Element::get_role(self : Element) -> String? =
@@ -10931,108 +11043,6 @@ pub extern "js" fn Element::set_aria_value_text(
   #| (self, value) => { self.ariaValueText = value }
 
 ///|
-pub extern "js" fn Element::get_children(self : Element) -> HTMLCollection =
-  #| (self) => self.children
-
-///|
-pub extern "js" fn Element::get_first_element_child(self : Element) -> Element? =
-  #| (self) => (() => { const v = self.firstElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-pub extern "js" fn Element::get_last_element_child(self : Element) -> Element? =
-  #| (self) => (() => { const v = self.lastElementChild; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-pub extern "js" fn Element::get_child_element_count(self : Element) -> Int =
-  #| (self) => self.childElementCount
-
-///|
-pub extern "js" fn Element::prepend(
-  self : Element,
-  nodes : NodeOrString,
-) -> Result[Unit, ElementPrependError] =
-  #| (self, nodes) => (() => { try { self.prepend(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Element::append(
-  self : Element,
-  nodes : NodeOrString,
-) -> Result[Unit, ElementAppendError] =
-  #| (self, nodes) => (() => { try { self.append(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Element::replace_children(
-  self : Element,
-  nodes : NodeOrString,
-) -> Result[Unit, ElementReplaceChildrenError] =
-  #| (self, nodes) => (() => { try { self.replaceChildren(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Element::move_before(
-  self : Element,
-  node : Node,
-  child : Node?,
-) -> Result[Unit, ElementMoveBeforeError] =
-  #| (self, node, child) => (() => { try { self.moveBefore(node, (child.$tag === 1 ? child._0 : null)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Element::query_selector(
-  self : Element,
-  selectors : String,
-) -> Result[Element?, ElementQuerySelectorError] =
-  #| (self, selectors) => (() => { try { return { $tag: 1, _0: (() => { const v = self.querySelector(selectors); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Element::query_selector_all(
-  self : Element,
-  selectors : String,
-) -> Result[NodeList, ElementQuerySelectorAllError] =
-  #| (self, selectors) => (() => { try { return { $tag: 1, _0: self.querySelectorAll(selectors) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Element::get_previous_element_sibling(
-  self : Element,
-) -> Element? =
-  #| (self) => (() => { const v = self.previousElementSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-pub extern "js" fn Element::get_next_element_sibling(
-  self : Element,
-) -> Element? =
-  #| (self) => (() => { const v = self.nextElementSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
-pub extern "js" fn Element::before(
-  self : Element,
-  nodes : NodeOrString,
-) -> Result[Unit, ElementBeforeError] =
-  #| (self, nodes) => (() => { try { self.before(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Element::after(
-  self : Element,
-  nodes : NodeOrString,
-) -> Result[Unit, ElementAfterError] =
-  #| (self, nodes) => (() => { try { self.after(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Element::replace_with(
-  self : Element,
-  nodes : NodeOrString,
-) -> Result[Unit, ElementReplaceWithError] =
-  #| (self, nodes) => (() => { try { self.replaceWith(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'HierarchyRequestError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
-
-///|
-pub extern "js" fn Element::remove(self : Element) -> Unit =
-  #| (self) => self.remove()
-
-///|
-pub extern "js" fn Element::get_assigned_slot(
-  self : Element,
-) -> HTMLSlotElement? =
-  #| (self) => (() => { const v = self.assignedSlot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
 pub extern "js" fn Element::animate(
   self : Element,
   keyframes : JsValue?,
@@ -11065,16 +11075,6 @@ pub fn Element::get_animations_with_options(
 ) -> Array[Animation] {
   Element::get_animations_with_options_ffi(self, options.to_js())
 }
-
-///|
-pub extern "js" fn Element::get_region_overset(self : Element) -> String =
-  #| (self) => self.regionOverset
-
-///|
-pub extern "js" fn Element::get_region_flow_ranges(
-  self : Element,
-) -> Array[Range] =
-  #| (self) => self.getRegionFlowRanges()
 
 ///|
 pub extern "js" fn Element::convert_quad_from_node_with_text(

@@ -597,6 +597,18 @@ pub extern "js" fn JsValue::to_web_gl_object(self : JsValue) -> WebGLObject =
   #| (self) => self
 
 ///|
+pub extern "js" fn WebGLObject::as_web_gl_timer_query_ext(
+  self : WebGLObject,
+) -> WebGLTimerQueryEXT? =
+  #| (self) => (self instanceof WebGLTimerQueryEXT) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn WebGLObject::as_web_gl_vertex_array_object_oes(
+  self : WebGLObject,
+) -> WebGLVertexArrayObjectOES? =
+  #| (self) => (self instanceof WebGLVertexArrayObjectOES) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn WebGLObject::as_web_gl_buffer(
   self : WebGLObject,
 ) -> WebGLBuffer? =
@@ -633,12 +645,6 @@ pub extern "js" fn WebGLObject::as_web_gl_texture(
   #| (self) => (self instanceof WebGLTexture) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn WebGLObject::as_web_gl_vertex_array_object_oes(
-  self : WebGLObject,
-) -> WebGLVertexArrayObjectOES? =
-  #| (self) => (self instanceof WebGLVertexArrayObjectOES) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn WebGLObject::as_web_gl_query(
   self : WebGLObject,
 ) -> WebGLQuery? =
@@ -667,12 +673,6 @@ pub extern "js" fn WebGLObject::as_web_gl_vertex_array_object(
   self : WebGLObject,
 ) -> WebGLVertexArrayObject? =
   #| (self) => (self instanceof WebGLVertexArrayObject) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn WebGLObject::as_web_gl_timer_query_ext(
-  self : WebGLObject,
-) -> WebGLTimerQueryEXT? =
-  #| (self) => (self instanceof WebGLTimerQueryEXT) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn WebGLObject::get_label(self : WebGLObject) -> String =

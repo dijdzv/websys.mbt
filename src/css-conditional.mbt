@@ -52,6 +52,12 @@ pub extern "js" fn CSSConditionRule::to_css_rule(
   #| (self) => self
 
 ///|
+pub extern "js" fn CSSConditionRule::as_css_container_rule(
+  self : CSSConditionRule,
+) -> CSSContainerRule? =
+  #| (self) => (self instanceof CSSContainerRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn CSSConditionRule::as_css_media_rule(
   self : CSSConditionRule,
 ) -> CSSMediaRule? =
@@ -62,12 +68,6 @@ pub extern "js" fn CSSConditionRule::as_css_supports_rule(
   self : CSSConditionRule,
 ) -> CSSSupportsRule? =
   #| (self) => (self instanceof CSSSupportsRule) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn CSSConditionRule::as_css_container_rule(
-  self : CSSConditionRule,
-) -> CSSContainerRule? =
-  #| (self) => (self instanceof CSSContainerRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSConditionRule::get_condition_text(

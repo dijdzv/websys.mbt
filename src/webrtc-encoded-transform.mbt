@@ -777,7 +777,7 @@ pub extern "js" fn SFrameSenderTransform::set_encryption_key(
 ///|
 pub extern "js" fn SFrameSenderTransform::set_onerror(
   self : SFrameSenderTransform,
-  handler : (ErrorEvent) -> Unit,
+  handler : (Event) -> Unit,
 ) -> Unit =
   #| (self, handler) => { self.onerror = (e) => handler(e) }
 
@@ -983,7 +983,7 @@ pub extern "js" fn SFrameEncrypterStream::set_encryption_key(
 ///|
 pub extern "js" fn SFrameEncrypterStream::set_onerror(
   self : SFrameEncrypterStream,
-  handler : (ErrorEvent) -> Unit,
+  handler : (Event) -> Unit,
 ) -> Unit =
   #| (self, handler) => { self.onerror = (e) => handler(e) }
 

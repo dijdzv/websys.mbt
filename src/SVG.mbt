@@ -98,216 +98,6 @@ pub extern "js" fn SVGElement::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn SVGElement::as_svg_animation_element(
-  self : SVGElement,
-) -> SVGAnimationElement? =
-  #| (self) => (self instanceof SVGAnimationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_animate_element(
-  self : SVGElement,
-) -> SVGAnimateElement? =
-  #| (self) => (self instanceof SVGAnimateElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_set_element(
-  self : SVGElement,
-) -> SVGSetElement? =
-  #| (self) => (self instanceof SVGSetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_animate_motion_element(
-  self : SVGElement,
-) -> SVGAnimateMotionElement? =
-  #| (self) => (self instanceof SVGAnimateMotionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgm_path_element(
-  self : SVGElement,
-) -> SVGMPathElement? =
-  #| (self) => (self instanceof SVGMPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_animate_transform_element(
-  self : SVGElement,
-) -> SVGAnimateTransformElement? =
-  #| (self) => (self instanceof SVGAnimateTransformElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_clip_path_element(
-  self : SVGElement,
-) -> SVGClipPathElement? =
-  #| (self) => (self instanceof SVGClipPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_mask_element(
-  self : SVGElement,
-) -> SVGMaskElement? =
-  #| (self) => (self instanceof SVGMaskElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_filter_element(
-  self : SVGElement,
-) -> SVGFilterElement? =
-  #| (self) => (self instanceof SVGFilterElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_blend_element(
-  self : SVGElement,
-) -> SVGFEBlendElement? =
-  #| (self) => (self instanceof SVGFEBlendElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_color_matrix_element(
-  self : SVGElement,
-) -> SVGFEColorMatrixElement? =
-  #| (self) => (self instanceof SVGFEColorMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_component_transfer_element(
-  self : SVGElement,
-) -> SVGFEComponentTransferElement? =
-  #| (self) => (self instanceof SVGFEComponentTransferElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_component_transfer_function_element(
-  self : SVGElement,
-) -> SVGComponentTransferFunctionElement? =
-  #| (self) => (self instanceof SVGComponentTransferFunctionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_func_r_element(
-  self : SVGElement,
-) -> SVGFEFuncRElement? =
-  #| (self) => (self instanceof SVGFEFuncRElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_func_g_element(
-  self : SVGElement,
-) -> SVGFEFuncGElement? =
-  #| (self) => (self instanceof SVGFEFuncGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_func_b_element(
-  self : SVGElement,
-) -> SVGFEFuncBElement? =
-  #| (self) => (self instanceof SVGFEFuncBElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_func_a_element(
-  self : SVGElement,
-) -> SVGFEFuncAElement? =
-  #| (self) => (self instanceof SVGFEFuncAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_composite_element(
-  self : SVGElement,
-) -> SVGFECompositeElement? =
-  #| (self) => (self instanceof SVGFECompositeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_convolve_matrix_element(
-  self : SVGElement,
-) -> SVGFEConvolveMatrixElement? =
-  #| (self) => (self instanceof SVGFEConvolveMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_diffuse_lighting_element(
-  self : SVGElement,
-) -> SVGFEDiffuseLightingElement? =
-  #| (self) => (self instanceof SVGFEDiffuseLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_distant_light_element(
-  self : SVGElement,
-) -> SVGFEDistantLightElement? =
-  #| (self) => (self instanceof SVGFEDistantLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_point_light_element(
-  self : SVGElement,
-) -> SVGFEPointLightElement? =
-  #| (self) => (self instanceof SVGFEPointLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_spot_light_element(
-  self : SVGElement,
-) -> SVGFESpotLightElement? =
-  #| (self) => (self instanceof SVGFESpotLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_displacement_map_element(
-  self : SVGElement,
-) -> SVGFEDisplacementMapElement? =
-  #| (self) => (self instanceof SVGFEDisplacementMapElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_drop_shadow_element(
-  self : SVGElement,
-) -> SVGFEDropShadowElement? =
-  #| (self) => (self instanceof SVGFEDropShadowElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_flood_element(
-  self : SVGElement,
-) -> SVGFEFloodElement? =
-  #| (self) => (self instanceof SVGFEFloodElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_gaussian_blur_element(
-  self : SVGElement,
-) -> SVGFEGaussianBlurElement? =
-  #| (self) => (self instanceof SVGFEGaussianBlurElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_image_element(
-  self : SVGElement,
-) -> SVGFEImageElement? =
-  #| (self) => (self instanceof SVGFEImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_merge_element(
-  self : SVGElement,
-) -> SVGFEMergeElement? =
-  #| (self) => (self instanceof SVGFEMergeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_merge_node_element(
-  self : SVGElement,
-) -> SVGFEMergeNodeElement? =
-  #| (self) => (self instanceof SVGFEMergeNodeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_morphology_element(
-  self : SVGElement,
-) -> SVGFEMorphologyElement? =
-  #| (self) => (self instanceof SVGFEMorphologyElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_offset_element(
-  self : SVGElement,
-) -> SVGFEOffsetElement? =
-  #| (self) => (self instanceof SVGFEOffsetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_specular_lighting_element(
-  self : SVGElement,
-) -> SVGFESpecularLightingElement? =
-  #| (self) => (self instanceof SVGFESpecularLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_tile_element(
-  self : SVGElement,
-) -> SVGFETileElement? =
-  #| (self) => (self instanceof SVGFETileElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgfe_turbulence_element(
-  self : SVGElement,
-) -> SVGFETurbulenceElement? =
-  #| (self) => (self instanceof SVGFETurbulenceElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn SVGElement::as_svg_graphics_element(
   self : SVGElement,
 ) -> SVGGraphicsElement? =
@@ -512,6 +302,216 @@ pub extern "js" fn SVGElement::as_svg_view_element(
   #| (self) => (self instanceof SVGViewElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn SVGElement::as_svg_clip_path_element(
+  self : SVGElement,
+) -> SVGClipPathElement? =
+  #| (self) => (self instanceof SVGClipPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_mask_element(
+  self : SVGElement,
+) -> SVGMaskElement? =
+  #| (self) => (self instanceof SVGMaskElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_filter_element(
+  self : SVGElement,
+) -> SVGFilterElement? =
+  #| (self) => (self instanceof SVGFilterElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_blend_element(
+  self : SVGElement,
+) -> SVGFEBlendElement? =
+  #| (self) => (self instanceof SVGFEBlendElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_color_matrix_element(
+  self : SVGElement,
+) -> SVGFEColorMatrixElement? =
+  #| (self) => (self instanceof SVGFEColorMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_component_transfer_element(
+  self : SVGElement,
+) -> SVGFEComponentTransferElement? =
+  #| (self) => (self instanceof SVGFEComponentTransferElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_component_transfer_function_element(
+  self : SVGElement,
+) -> SVGComponentTransferFunctionElement? =
+  #| (self) => (self instanceof SVGComponentTransferFunctionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_func_r_element(
+  self : SVGElement,
+) -> SVGFEFuncRElement? =
+  #| (self) => (self instanceof SVGFEFuncRElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_func_g_element(
+  self : SVGElement,
+) -> SVGFEFuncGElement? =
+  #| (self) => (self instanceof SVGFEFuncGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_func_b_element(
+  self : SVGElement,
+) -> SVGFEFuncBElement? =
+  #| (self) => (self instanceof SVGFEFuncBElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_func_a_element(
+  self : SVGElement,
+) -> SVGFEFuncAElement? =
+  #| (self) => (self instanceof SVGFEFuncAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_composite_element(
+  self : SVGElement,
+) -> SVGFECompositeElement? =
+  #| (self) => (self instanceof SVGFECompositeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_convolve_matrix_element(
+  self : SVGElement,
+) -> SVGFEConvolveMatrixElement? =
+  #| (self) => (self instanceof SVGFEConvolveMatrixElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_diffuse_lighting_element(
+  self : SVGElement,
+) -> SVGFEDiffuseLightingElement? =
+  #| (self) => (self instanceof SVGFEDiffuseLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_distant_light_element(
+  self : SVGElement,
+) -> SVGFEDistantLightElement? =
+  #| (self) => (self instanceof SVGFEDistantLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_point_light_element(
+  self : SVGElement,
+) -> SVGFEPointLightElement? =
+  #| (self) => (self instanceof SVGFEPointLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_spot_light_element(
+  self : SVGElement,
+) -> SVGFESpotLightElement? =
+  #| (self) => (self instanceof SVGFESpotLightElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_displacement_map_element(
+  self : SVGElement,
+) -> SVGFEDisplacementMapElement? =
+  #| (self) => (self instanceof SVGFEDisplacementMapElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_drop_shadow_element(
+  self : SVGElement,
+) -> SVGFEDropShadowElement? =
+  #| (self) => (self instanceof SVGFEDropShadowElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_flood_element(
+  self : SVGElement,
+) -> SVGFEFloodElement? =
+  #| (self) => (self instanceof SVGFEFloodElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_gaussian_blur_element(
+  self : SVGElement,
+) -> SVGFEGaussianBlurElement? =
+  #| (self) => (self instanceof SVGFEGaussianBlurElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_image_element(
+  self : SVGElement,
+) -> SVGFEImageElement? =
+  #| (self) => (self instanceof SVGFEImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_merge_element(
+  self : SVGElement,
+) -> SVGFEMergeElement? =
+  #| (self) => (self instanceof SVGFEMergeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_merge_node_element(
+  self : SVGElement,
+) -> SVGFEMergeNodeElement? =
+  #| (self) => (self instanceof SVGFEMergeNodeElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_morphology_element(
+  self : SVGElement,
+) -> SVGFEMorphologyElement? =
+  #| (self) => (self instanceof SVGFEMorphologyElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_offset_element(
+  self : SVGElement,
+) -> SVGFEOffsetElement? =
+  #| (self) => (self instanceof SVGFEOffsetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_specular_lighting_element(
+  self : SVGElement,
+) -> SVGFESpecularLightingElement? =
+  #| (self) => (self instanceof SVGFESpecularLightingElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_tile_element(
+  self : SVGElement,
+) -> SVGFETileElement? =
+  #| (self) => (self instanceof SVGFETileElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgfe_turbulence_element(
+  self : SVGElement,
+) -> SVGFETurbulenceElement? =
+  #| (self) => (self instanceof SVGFETurbulenceElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_animation_element(
+  self : SVGElement,
+) -> SVGAnimationElement? =
+  #| (self) => (self instanceof SVGAnimationElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_animate_element(
+  self : SVGElement,
+) -> SVGAnimateElement? =
+  #| (self) => (self instanceof SVGAnimateElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_set_element(
+  self : SVGElement,
+) -> SVGSetElement? =
+  #| (self) => (self instanceof SVGSetElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_animate_motion_element(
+  self : SVGElement,
+) -> SVGAnimateMotionElement? =
+  #| (self) => (self instanceof SVGAnimateMotionElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgm_path_element(
+  self : SVGElement,
+) -> SVGMPathElement? =
+  #| (self) => (self instanceof SVGMPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_animate_transform_element(
+  self : SVGElement,
+) -> SVGAnimateTransformElement? =
+  #| (self) => (self instanceof SVGAnimateTransformElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn SVGElement::as_svg_path_element(
   self : SVGElement,
 ) -> SVGPathElement? =
@@ -534,6 +534,139 @@ pub extern "js" fn SVGElement::get_viewport_element(
   self : SVGElement,
 ) -> SVGElement? =
   #| (self) => (() => { const v = self.viewportElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn SVGElement::set_onanimationstart(
+  self : SVGElement,
+  handler : (AnimationEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onanimationstart = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGElement::clear_onanimationstart(
+  self : SVGElement,
+) -> Unit =
+  #| (self) => { self.onanimationstart = null }
+
+///|
+pub extern "js" fn SVGElement::set_onanimationiteration(
+  self : SVGElement,
+  handler : (AnimationEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onanimationiteration = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGElement::clear_onanimationiteration(
+  self : SVGElement,
+) -> Unit =
+  #| (self) => { self.onanimationiteration = null }
+
+///|
+pub extern "js" fn SVGElement::set_onanimationend(
+  self : SVGElement,
+  handler : (AnimationEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onanimationend = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGElement::clear_onanimationend(self : SVGElement) -> Unit =
+  #| (self) => { self.onanimationend = null }
+
+///|
+pub extern "js" fn SVGElement::set_onanimationcancel(
+  self : SVGElement,
+  handler : (AnimationEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onanimationcancel = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGElement::clear_onanimationcancel(
+  self : SVGElement,
+) -> Unit =
+  #| (self) => { self.onanimationcancel = null }
+
+///|
+pub extern "js" fn SVGElement::set_onsnapchanged(
+  self : SVGElement,
+  handler : (Event) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onsnapchanged = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGElement::clear_onsnapchanged(self : SVGElement) -> Unit =
+  #| (self) => { self.onsnapchanged = null }
+
+///|
+pub extern "js" fn SVGElement::set_onsnapchanging(
+  self : SVGElement,
+  handler : (Event) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onsnapchanging = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGElement::clear_onsnapchanging(self : SVGElement) -> Unit =
+  #| (self) => { self.onsnapchanging = null }
+
+///|
+pub extern "js" fn SVGElement::set_ontransitionrun(
+  self : SVGElement,
+  handler : (TransitionEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ontransitionrun = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGElement::clear_ontransitionrun(self : SVGElement) -> Unit =
+  #| (self) => { self.ontransitionrun = null }
+
+///|
+pub extern "js" fn SVGElement::set_ontransitionstart(
+  self : SVGElement,
+  handler : (TransitionEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ontransitionstart = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGElement::clear_ontransitionstart(
+  self : SVGElement,
+) -> Unit =
+  #| (self) => { self.ontransitionstart = null }
+
+///|
+pub extern "js" fn SVGElement::set_ontransitionend(
+  self : SVGElement,
+  handler : (TransitionEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ontransitionend = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGElement::clear_ontransitionend(self : SVGElement) -> Unit =
+  #| (self) => { self.ontransitionend = null }
+
+///|
+pub extern "js" fn SVGElement::set_ontransitioncancel(
+  self : SVGElement,
+  handler : (TransitionEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ontransitioncancel = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGElement::clear_ontransitioncancel(
+  self : SVGElement,
+) -> Unit =
+  #| (self) => { self.ontransitioncancel = null }
+
+///|
+pub extern "js" fn SVGElement::set_onfencedtreeclick(
+  self : SVGElement,
+  handler : (Event) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onfencedtreeclick = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGElement::clear_onfencedtreeclick(
+  self : SVGElement,
+) -> Unit =
+  #| (self) => { self.onfencedtreeclick = null }
 
 ///|
 pub extern "js" fn SVGElement::set_onabort(
@@ -1390,183 +1523,6 @@ pub extern "js" fn SVGElement::clear_onwheel(self : SVGElement) -> Unit =
   #| (self) => { self.onwheel = null }
 
 ///|
-pub extern "js" fn SVGElement::set_ontouchstart(
-  self : SVGElement,
-  handler : (TouchEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontouchstart = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_ontouchstart(self : SVGElement) -> Unit =
-  #| (self) => { self.ontouchstart = null }
-
-///|
-pub extern "js" fn SVGElement::set_ontouchend(
-  self : SVGElement,
-  handler : (TouchEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontouchend = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_ontouchend(self : SVGElement) -> Unit =
-  #| (self) => { self.ontouchend = null }
-
-///|
-pub extern "js" fn SVGElement::set_ontouchmove(
-  self : SVGElement,
-  handler : (TouchEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontouchmove = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_ontouchmove(self : SVGElement) -> Unit =
-  #| (self) => { self.ontouchmove = null }
-
-///|
-pub extern "js" fn SVGElement::set_ontouchcancel(
-  self : SVGElement,
-  handler : (TouchEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontouchcancel = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_ontouchcancel(self : SVGElement) -> Unit =
-  #| (self) => { self.ontouchcancel = null }
-
-///|
-pub extern "js" fn SVGElement::set_ontransitionrun(
-  self : SVGElement,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitionrun = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_ontransitionrun(self : SVGElement) -> Unit =
-  #| (self) => { self.ontransitionrun = null }
-
-///|
-pub extern "js" fn SVGElement::set_ontransitionstart(
-  self : SVGElement,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitionstart = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_ontransitionstart(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.ontransitionstart = null }
-
-///|
-pub extern "js" fn SVGElement::set_ontransitionend(
-  self : SVGElement,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitionend = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_ontransitionend(self : SVGElement) -> Unit =
-  #| (self) => { self.ontransitionend = null }
-
-///|
-pub extern "js" fn SVGElement::set_ontransitioncancel(
-  self : SVGElement,
-  handler : (TransitionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ontransitioncancel = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_ontransitioncancel(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.ontransitioncancel = null }
-
-///|
-pub extern "js" fn SVGElement::set_onsnapchanged(
-  self : SVGElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onsnapchanged = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onsnapchanged(self : SVGElement) -> Unit =
-  #| (self) => { self.onsnapchanged = null }
-
-///|
-pub extern "js" fn SVGElement::set_onsnapchanging(
-  self : SVGElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onsnapchanging = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onsnapchanging(self : SVGElement) -> Unit =
-  #| (self) => { self.onsnapchanging = null }
-
-///|
-pub extern "js" fn SVGElement::set_onanimationstart(
-  self : SVGElement,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationstart = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onanimationstart(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onanimationstart = null }
-
-///|
-pub extern "js" fn SVGElement::set_onanimationiteration(
-  self : SVGElement,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationiteration = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onanimationiteration(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onanimationiteration = null }
-
-///|
-pub extern "js" fn SVGElement::set_onanimationend(
-  self : SVGElement,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationend = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onanimationend(self : SVGElement) -> Unit =
-  #| (self) => { self.onanimationend = null }
-
-///|
-pub extern "js" fn SVGElement::set_onanimationcancel(
-  self : SVGElement,
-  handler : (AnimationEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onanimationcancel = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onanimationcancel(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onanimationcancel = null }
-
-///|
-pub extern "js" fn SVGElement::set_onfencedtreeclick(
-  self : SVGElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onfencedtreeclick = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onfencedtreeclick(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onfencedtreeclick = null }
-
-///|
 pub extern "js" fn SVGElement::set_onpointerover(
   self : SVGElement,
   handler : (PointerEvent) -> Unit,
@@ -1694,19 +1650,6 @@ pub extern "js" fn SVGElement::clear_onlostpointercapture(
   #| (self) => { self.onlostpointercapture = null }
 
 ///|
-pub extern "js" fn SVGElement::set_onbeforexrselect(
-  self : SVGElement,
-  handler : (XRSessionEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onbeforexrselect = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGElement::clear_onbeforexrselect(
-  self : SVGElement,
-) -> Unit =
-  #| (self) => { self.onbeforexrselect = null }
-
-///|
 pub extern "js" fn SVGElement::set_onselectstart(
   self : SVGElement,
   handler : (Event) -> Unit,
@@ -1729,6 +1672,63 @@ pub extern "js" fn SVGElement::clear_onselectionchange(
   self : SVGElement,
 ) -> Unit =
   #| (self) => { self.onselectionchange = null }
+
+///|
+pub extern "js" fn SVGElement::set_ontouchstart(
+  self : SVGElement,
+  handler : (TouchEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ontouchstart = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGElement::clear_ontouchstart(self : SVGElement) -> Unit =
+  #| (self) => { self.ontouchstart = null }
+
+///|
+pub extern "js" fn SVGElement::set_ontouchend(
+  self : SVGElement,
+  handler : (TouchEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ontouchend = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGElement::clear_ontouchend(self : SVGElement) -> Unit =
+  #| (self) => { self.ontouchend = null }
+
+///|
+pub extern "js" fn SVGElement::set_ontouchmove(
+  self : SVGElement,
+  handler : (TouchEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ontouchmove = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGElement::clear_ontouchmove(self : SVGElement) -> Unit =
+  #| (self) => { self.ontouchmove = null }
+
+///|
+pub extern "js" fn SVGElement::set_ontouchcancel(
+  self : SVGElement,
+  handler : (TouchEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ontouchcancel = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGElement::clear_ontouchcancel(self : SVGElement) -> Unit =
+  #| (self) => { self.ontouchcancel = null }
+
+///|
+pub extern "js" fn SVGElement::set_onbeforexrselect(
+  self : SVGElement,
+  handler : (XRSessionEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onbeforexrselect = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGElement::clear_onbeforexrselect(
+  self : SVGElement,
+) -> Unit =
+  #| (self) => { self.onbeforexrselect = null }
 
 ///|
 pub extern "js" fn SVGElement::get_corresponding_element(
@@ -1803,16 +1803,16 @@ pub extern "js" fn SVGElement::blur(self : SVGElement) -> Unit =
   #| (self) => self.blur()
 
 ///|
-pub extern "js" fn SVGElement::get_style(
-  self : SVGElement,
-) -> CSSStyleProperties =
-  #| (self) => self.style
-
-///|
 pub extern "js" fn SVGElement::get_attribute_style_map(
   self : SVGElement,
 ) -> StylePropertyMap =
   #| (self) => self.attributeStyleMap
+
+///|
+pub extern "js" fn SVGElement::get_style(
+  self : SVGElement,
+) -> CSSStyleProperties =
+  #| (self) => self.style
 
 ///|
 /// SVGGraphicsElement interface
@@ -3869,6 +3869,32 @@ pub extern "js" fn SVGSVGElement::get_preserve_aspect_ratio(
   #| (self) => self.preserveAspectRatio
 
 ///|
+pub extern "js" fn SVGSVGElement::set_ongamepadconnected(
+  self : SVGSVGElement,
+  handler : (Event) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ongamepadconnected = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGSVGElement::clear_ongamepadconnected(
+  self : SVGSVGElement,
+) -> Unit =
+  #| (self) => { self.ongamepadconnected = null }
+
+///|
+pub extern "js" fn SVGSVGElement::set_ongamepaddisconnected(
+  self : SVGSVGElement,
+  handler : (Event) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.ongamepaddisconnected = (e) => handler(e) }
+
+///|
+pub extern "js" fn SVGSVGElement::clear_ongamepaddisconnected(
+  self : SVGSVGElement,
+) -> Unit =
+  #| (self) => { self.ongamepaddisconnected = null }
+
+///|
 pub extern "js" fn SVGSVGElement::set_onafterprint(
   self : SVGSVGElement,
   handler : (Event) -> Unit,
@@ -4104,32 +4130,6 @@ pub extern "js" fn SVGSVGElement::clear_onportalactivate(
   self : SVGSVGElement,
 ) -> Unit =
   #| (self) => { self.onportalactivate = null }
-
-///|
-pub extern "js" fn SVGSVGElement::set_ongamepadconnected(
-  self : SVGSVGElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ongamepadconnected = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGSVGElement::clear_ongamepadconnected(
-  self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.ongamepadconnected = null }
-
-///|
-pub extern "js" fn SVGSVGElement::set_ongamepaddisconnected(
-  self : SVGSVGElement,
-  handler : (Event) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.ongamepaddisconnected = (e) => handler(e) }
-
-///|
-pub extern "js" fn SVGSVGElement::clear_ongamepaddisconnected(
-  self : SVGSVGElement,
-) -> Unit =
-  #| (self) => { self.ongamepaddisconnected = null }
 
 ///|
 /// SVGGElement interface

@@ -608,16 +608,16 @@ pub extern "js" fn Animation::to_event_target(self : Animation) -> EventTarget =
   #| (self) => self
 
 ///|
-pub extern "js" fn Animation::as_worklet_animation(
-  self : Animation,
-) -> WorkletAnimation? =
-  #| (self) => (self instanceof WorkletAnimation) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn Animation::as_shadow_animation(
   self : Animation,
 ) -> ShadowAnimation? =
   #| (self) => (self instanceof ShadowAnimation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Animation::as_worklet_animation(
+  self : Animation,
+) -> WorkletAnimation? =
+  #| (self) => (self instanceof WorkletAnimation) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Animation::as_css_animation(

@@ -38,132 +38,6 @@ pub fn FocusEventInit::from_js(value : JsValue) -> FocusEventInit {
 }
 
 ///|
-/// MouseEventInit dictionary
-pub(all) struct MouseEventInit {
-  ctrlKey : Bool?
-  shiftKey : Bool?
-  altKey : Bool?
-  metaKey : Bool?
-  modifierAltGraph : Bool?
-  modifierCapsLock : Bool?
-  modifierFn : Bool?
-  modifierFnLock : Bool?
-  modifierHyper : Bool?
-  modifierNumLock : Bool?
-  modifierScrollLock : Bool?
-  modifierSuper : Bool?
-  modifierSymbol : Bool?
-  modifierSymbolLock : Bool?
-  screenX : Int?
-  screenY : Int?
-  clientX : Int?
-  clientY : Int?
-  button : Int?
-  buttons : Int?
-  relatedTarget : Nullable[EventTarget]
-  movementX : Double?
-  movementY : Double?
-}
-
-///|
-/// Create a new MouseEventInit with default values
-pub fn MouseEventInit::default() -> MouseEventInit {
-  MouseEventInit::{
-    ctrlKey: None,
-    shiftKey: None,
-    altKey: None,
-    metaKey: None,
-    modifierAltGraph: None,
-    modifierCapsLock: None,
-    modifierFn: None,
-    modifierFnLock: None,
-    modifierHyper: None,
-    modifierNumLock: None,
-    modifierScrollLock: None,
-    modifierSuper: None,
-    modifierSymbol: None,
-    modifierSymbolLock: None,
-    screenX: None,
-    screenY: None,
-    clientX: None,
-    clientY: None,
-    button: None,
-    buttons: None,
-    relatedTarget: Nullable::Undefined,
-    movementX: None,
-    movementY: None,
-  }
-}
-
-///|
-extern "js" fn MouseEventInit::to_js_ffi(self : MouseEventInit) -> JsValue =
-  #| (self) => ({
-  #|   ctrlKey: (self.ctrlKey === -1 ? undefined : self.ctrlKey),
-  #|   shiftKey: (self.shiftKey === -1 ? undefined : self.shiftKey),
-  #|   altKey: (self.altKey === -1 ? undefined : self.altKey),
-  #|   metaKey: (self.metaKey === -1 ? undefined : self.metaKey),
-  #|   modifierAltGraph: (self.modifierAltGraph === -1 ? undefined : self.modifierAltGraph),
-  #|   modifierCapsLock: (self.modifierCapsLock === -1 ? undefined : self.modifierCapsLock),
-  #|   modifierFn: (self.modifierFn === -1 ? undefined : self.modifierFn),
-  #|   modifierFnLock: (self.modifierFnLock === -1 ? undefined : self.modifierFnLock),
-  #|   modifierHyper: (self.modifierHyper === -1 ? undefined : self.modifierHyper),
-  #|   modifierNumLock: (self.modifierNumLock === -1 ? undefined : self.modifierNumLock),
-  #|   modifierScrollLock: (self.modifierScrollLock === -1 ? undefined : self.modifierScrollLock),
-  #|   modifierSuper: (self.modifierSuper === -1 ? undefined : self.modifierSuper),
-  #|   modifierSymbol: (self.modifierSymbol === -1 ? undefined : self.modifierSymbol),
-  #|   modifierSymbolLock: (self.modifierSymbolLock === -1 ? undefined : self.modifierSymbolLock),
-  #|   screenX: self.screenX,
-  #|   screenY: self.screenY,
-  #|   clientX: self.clientX,
-  #|   clientY: self.clientY,
-  #|   button: self.button,
-  #|   buttons: self.buttons,
-  #|   relatedTarget: ((() => { const v = self.relatedTarget; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   movementX: ((() => { const v = self.movementX; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   movementY: ((() => { const v = self.movementY; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
-  #| })
-
-///|
-/// Convert to JsValue
-pub fn MouseEventInit::to_js(self : MouseEventInit) -> JsValue {
-  MouseEventInit::to_js_ffi(self)
-}
-
-///|
-extern "js" fn MouseEventInit::from_js_ffi(value : JsValue) -> MouseEventInit =
-  #| (v) => ({
-  #|   ctrlKey: (v.ctrlKey === undefined ? -1 : v.ctrlKey),
-  #|   shiftKey: (v.shiftKey === undefined ? -1 : v.shiftKey),
-  #|   altKey: (v.altKey === undefined ? -1 : v.altKey),
-  #|   metaKey: (v.metaKey === undefined ? -1 : v.metaKey),
-  #|   modifierAltGraph: (v.modifierAltGraph === undefined ? -1 : v.modifierAltGraph),
-  #|   modifierCapsLock: (v.modifierCapsLock === undefined ? -1 : v.modifierCapsLock),
-  #|   modifierFn: (v.modifierFn === undefined ? -1 : v.modifierFn),
-  #|   modifierFnLock: (v.modifierFnLock === undefined ? -1 : v.modifierFnLock),
-  #|   modifierHyper: (v.modifierHyper === undefined ? -1 : v.modifierHyper),
-  #|   modifierNumLock: (v.modifierNumLock === undefined ? -1 : v.modifierNumLock),
-  #|   modifierScrollLock: (v.modifierScrollLock === undefined ? -1 : v.modifierScrollLock),
-  #|   modifierSuper: (v.modifierSuper === undefined ? -1 : v.modifierSuper),
-  #|   modifierSymbol: (v.modifierSymbol === undefined ? -1 : v.modifierSymbol),
-  #|   modifierSymbolLock: (v.modifierSymbolLock === undefined ? -1 : v.modifierSymbolLock),
-  #|   screenX: v.screenX,
-  #|   screenY: v.screenY,
-  #|   clientX: v.clientX,
-  #|   clientY: v.clientY,
-  #|   button: v.button,
-  #|   buttons: v.buttons,
-  #|   relatedTarget: (v.relatedTarget === undefined ? { $tag: 0 } : v.relatedTarget === null ? { $tag: 1 } : { $tag: 2, _0: v.relatedTarget }),
-  #|   movementX: (v.movementX === undefined ? { $tag: 0 } : { $tag: 1, _0: v.movementX }),
-  #|   movementY: (v.movementY === undefined ? { $tag: 0 } : { $tag: 1, _0: v.movementY })
-  #| })
-
-///|
-/// Convert from JsValue
-pub fn MouseEventInit::from_js(value : JsValue) -> MouseEventInit {
-  MouseEventInit::from_js_ffi(value)
-}
-
-///|
 /// EventModifierInit dictionary
 pub(all) struct EventModifierInit {
   ctrlKey : Bool?
@@ -260,29 +134,6 @@ pub fn EventModifierInit::from_js(value : JsValue) -> EventModifierInit {
 ///|
 /// WheelEventInit dictionary
 pub(all) struct WheelEventInit {
-  ctrlKey : Bool?
-  shiftKey : Bool?
-  altKey : Bool?
-  metaKey : Bool?
-  modifierAltGraph : Bool?
-  modifierCapsLock : Bool?
-  modifierFn : Bool?
-  modifierFnLock : Bool?
-  modifierHyper : Bool?
-  modifierNumLock : Bool?
-  modifierScrollLock : Bool?
-  modifierSuper : Bool?
-  modifierSymbol : Bool?
-  modifierSymbolLock : Bool?
-  screenX : Int?
-  screenY : Int?
-  clientX : Int?
-  clientY : Int?
-  button : Int?
-  buttons : Int?
-  relatedTarget : Nullable[EventTarget]
-  movementX : Double?
-  movementY : Double?
   deltaX : Double?
   deltaY : Double?
   deltaZ : Double?
@@ -292,63 +143,12 @@ pub(all) struct WheelEventInit {
 ///|
 /// Create a new WheelEventInit with default values
 pub fn WheelEventInit::default() -> WheelEventInit {
-  WheelEventInit::{
-    ctrlKey: None,
-    shiftKey: None,
-    altKey: None,
-    metaKey: None,
-    modifierAltGraph: None,
-    modifierCapsLock: None,
-    modifierFn: None,
-    modifierFnLock: None,
-    modifierHyper: None,
-    modifierNumLock: None,
-    modifierScrollLock: None,
-    modifierSuper: None,
-    modifierSymbol: None,
-    modifierSymbolLock: None,
-    screenX: None,
-    screenY: None,
-    clientX: None,
-    clientY: None,
-    button: None,
-    buttons: None,
-    relatedTarget: Nullable::Undefined,
-    movementX: None,
-    movementY: None,
-    deltaX: None,
-    deltaY: None,
-    deltaZ: None,
-    deltaMode: None,
-  }
+  WheelEventInit::{ deltaX: None, deltaY: None, deltaZ: None, deltaMode: None }
 }
 
 ///|
 extern "js" fn WheelEventInit::to_js_ffi(self : WheelEventInit) -> JsValue =
   #| (self) => ({
-  #|   ctrlKey: (self.ctrlKey === -1 ? undefined : self.ctrlKey),
-  #|   shiftKey: (self.shiftKey === -1 ? undefined : self.shiftKey),
-  #|   altKey: (self.altKey === -1 ? undefined : self.altKey),
-  #|   metaKey: (self.metaKey === -1 ? undefined : self.metaKey),
-  #|   modifierAltGraph: (self.modifierAltGraph === -1 ? undefined : self.modifierAltGraph),
-  #|   modifierCapsLock: (self.modifierCapsLock === -1 ? undefined : self.modifierCapsLock),
-  #|   modifierFn: (self.modifierFn === -1 ? undefined : self.modifierFn),
-  #|   modifierFnLock: (self.modifierFnLock === -1 ? undefined : self.modifierFnLock),
-  #|   modifierHyper: (self.modifierHyper === -1 ? undefined : self.modifierHyper),
-  #|   modifierNumLock: (self.modifierNumLock === -1 ? undefined : self.modifierNumLock),
-  #|   modifierScrollLock: (self.modifierScrollLock === -1 ? undefined : self.modifierScrollLock),
-  #|   modifierSuper: (self.modifierSuper === -1 ? undefined : self.modifierSuper),
-  #|   modifierSymbol: (self.modifierSymbol === -1 ? undefined : self.modifierSymbol),
-  #|   modifierSymbolLock: (self.modifierSymbolLock === -1 ? undefined : self.modifierSymbolLock),
-  #|   screenX: self.screenX,
-  #|   screenY: self.screenY,
-  #|   clientX: self.clientX,
-  #|   clientY: self.clientY,
-  #|   button: self.button,
-  #|   buttons: self.buttons,
-  #|   relatedTarget: ((() => { const v = self.relatedTarget; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   movementX: ((() => { const v = self.movementX; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   movementY: ((() => { const v = self.movementY; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   deltaX: ((() => { const v = self.deltaX; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   deltaY: ((() => { const v = self.deltaY; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   deltaZ: ((() => { const v = self.deltaZ; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -364,29 +164,6 @@ pub fn WheelEventInit::to_js(self : WheelEventInit) -> JsValue {
 ///|
 extern "js" fn WheelEventInit::from_js_ffi(value : JsValue) -> WheelEventInit =
   #| (v) => ({
-  #|   ctrlKey: (v.ctrlKey === undefined ? -1 : v.ctrlKey),
-  #|   shiftKey: (v.shiftKey === undefined ? -1 : v.shiftKey),
-  #|   altKey: (v.altKey === undefined ? -1 : v.altKey),
-  #|   metaKey: (v.metaKey === undefined ? -1 : v.metaKey),
-  #|   modifierAltGraph: (v.modifierAltGraph === undefined ? -1 : v.modifierAltGraph),
-  #|   modifierCapsLock: (v.modifierCapsLock === undefined ? -1 : v.modifierCapsLock),
-  #|   modifierFn: (v.modifierFn === undefined ? -1 : v.modifierFn),
-  #|   modifierFnLock: (v.modifierFnLock === undefined ? -1 : v.modifierFnLock),
-  #|   modifierHyper: (v.modifierHyper === undefined ? -1 : v.modifierHyper),
-  #|   modifierNumLock: (v.modifierNumLock === undefined ? -1 : v.modifierNumLock),
-  #|   modifierScrollLock: (v.modifierScrollLock === undefined ? -1 : v.modifierScrollLock),
-  #|   modifierSuper: (v.modifierSuper === undefined ? -1 : v.modifierSuper),
-  #|   modifierSymbol: (v.modifierSymbol === undefined ? -1 : v.modifierSymbol),
-  #|   modifierSymbolLock: (v.modifierSymbolLock === undefined ? -1 : v.modifierSymbolLock),
-  #|   screenX: v.screenX,
-  #|   screenY: v.screenY,
-  #|   clientX: v.clientX,
-  #|   clientY: v.clientY,
-  #|   button: v.button,
-  #|   buttons: v.buttons,
-  #|   relatedTarget: (v.relatedTarget === undefined ? { $tag: 0 } : v.relatedTarget === null ? { $tag: 1 } : { $tag: 2, _0: v.relatedTarget }),
-  #|   movementX: (v.movementX === undefined ? { $tag: 0 } : { $tag: 1, _0: v.movementX }),
-  #|   movementY: (v.movementY === undefined ? { $tag: 0 } : { $tag: 1, _0: v.movementY }),
   #|   deltaX: (v.deltaX === undefined ? { $tag: 0 } : { $tag: 1, _0: v.deltaX }),
   #|   deltaY: (v.deltaY === undefined ? { $tag: 0 } : { $tag: 1, _0: v.deltaY }),
   #|   deltaZ: (v.deltaZ === undefined ? { $tag: 0 } : { $tag: 1, _0: v.deltaZ }),
@@ -594,18 +371,22 @@ pub extern "js" fn UIEvent::to_event(self : UIEvent) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn UIEvent::as_drag_event(self : UIEvent) -> DragEvent? =
-  #| (self) => (self instanceof DragEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn UIEvent::as_touch_event(self : UIEvent) -> TouchEvent? =
-  #| (self) => (self instanceof TouchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn UIEvent::as_navigation_event(
   self : UIEvent,
 ) -> NavigationEvent? =
   #| (self) => (self instanceof NavigationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn UIEvent::as_drag_event(self : UIEvent) -> DragEvent? =
+  #| (self) => (self instanceof DragEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn UIEvent::as_pointer_event(self : UIEvent) -> PointerEvent? =
+  #| (self) => (self instanceof PointerEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn UIEvent::as_touch_event(self : UIEvent) -> TouchEvent? =
+  #| (self) => (self instanceof TouchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn UIEvent::as_focus_event(self : UIEvent) -> FocusEvent? =
@@ -636,10 +417,6 @@ pub extern "js" fn UIEvent::as_composition_event(
 ///|
 pub extern "js" fn UIEvent::as_text_event(self : UIEvent) -> TextEvent? =
   #| (self) => (self instanceof TextEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn UIEvent::as_pointer_event(self : UIEvent) -> PointerEvent? =
-  #| (self) => (self instanceof PointerEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn UIEvent::new(type_ : String) -> UIEvent =
@@ -799,14 +576,14 @@ pub extern "js" fn MouseEvent::as_drag_event(self : MouseEvent) -> DragEvent? =
   #| (self) => (self instanceof DragEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn MouseEvent::as_wheel_event(self : MouseEvent) -> WheelEvent? =
-  #| (self) => (self instanceof WheelEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn MouseEvent::as_pointer_event(
   self : MouseEvent,
 ) -> PointerEvent? =
   #| (self) => (self instanceof PointerEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn MouseEvent::as_wheel_event(self : MouseEvent) -> WheelEvent? =
+  #| (self) => (self instanceof WheelEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn MouseEvent::new(type_ : String) -> MouseEvent =
@@ -913,6 +690,14 @@ pub extern "js" fn MouseEvent::get_offset_y(self : MouseEvent) -> Double =
   #| (self) => self.offsetY
 
 ///|
+pub extern "js" fn MouseEvent::get_movement_x(self : MouseEvent) -> Double =
+  #| (self) => self.movementX
+
+///|
+pub extern "js" fn MouseEvent::get_movement_y(self : MouseEvent) -> Double =
+  #| (self) => self.movementY
+
+///|
 /// @alert deprecated "initMouseEvent is deprecated"
 pub extern "js" fn MouseEvent::init_mouse_event(
   self : MouseEvent,
@@ -940,14 +725,6 @@ pub extern "js" fn MouseEvent::init_mouse_event_with_related_target_arg(
   related_target_arg : EventTarget?,
 ) -> Unit =
   #| (self, type_arg, bubbles_arg, cancelable_arg, view_arg, detail_arg, screen_x_arg, screen_y_arg, client_x_arg, client_y_arg, ctrl_key_arg, alt_key_arg, shift_key_arg, meta_key_arg, button_arg, related_target_arg) => self.initMouseEvent(type_arg, bubbles_arg, cancelable_arg, (view_arg.$tag === 1 ? view_arg._0 : null), detail_arg, screen_x_arg, screen_y_arg, client_x_arg, client_y_arg, ctrl_key_arg, alt_key_arg, shift_key_arg, meta_key_arg, button_arg, (related_target_arg.$tag === 1 ? related_target_arg._0 : null))
-
-///|
-pub extern "js" fn MouseEvent::get_movement_x(self : MouseEvent) -> Double =
-  #| (self) => self.movementX
-
-///|
-pub extern "js" fn MouseEvent::get_movement_y(self : MouseEvent) -> Double =
-  #| (self) => self.movementY
 
 ///|
 /// WheelEvent interface

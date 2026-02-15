@@ -254,21 +254,6 @@ pub extern "js" fn css_supports(property : String, value : String) -> Bool =
 
 ///|
 /// CSS namespace
-extern "js" fn css_register_property_ffi(definition : JsValue) -> Unit =
-  #| (definition) => CSS.registerProperty(definition)
-
-///|
-pub fn css_register_property(definition : PropertyDefinition) -> Unit {
-  css_register_property_ffi(definition.to_js())
-}
-
-///|
-/// CSS namespace
-pub extern "js" fn css_escape(ident : String) -> String =
-  #| (ident) => CSS.escape(ident)
-
-///|
-/// CSS namespace
 pub extern "js" fn css_get_highlights() -> HighlightRegistry =
   #| () => CSS.highlights
 
@@ -276,6 +261,16 @@ pub extern "js" fn css_get_highlights() -> HighlightRegistry =
 /// CSS namespace
 pub extern "js" fn css_get_element_sources() -> JsValue =
   #| () => CSS.elementSources
+
+///|
+/// CSS namespace
+pub extern "js" fn css_get_layout_worklet() -> Worklet =
+  #| () => CSS.layoutWorklet
+
+///|
+/// CSS namespace
+pub extern "js" fn css_get_paint_worklet() -> Worklet =
+  #| () => CSS.paintWorklet
 
 ///|
 /// CSS namespace
@@ -397,8 +392,13 @@ pub extern "js" fn css_parse_comma_value_list(
 
 ///|
 /// CSS namespace
-pub extern "js" fn css_get_layout_worklet() -> Worklet =
-  #| () => CSS.layoutWorklet
+extern "js" fn css_register_property_ffi(definition : JsValue) -> Unit =
+  #| (definition) => CSS.registerProperty(definition)
+
+///|
+pub fn css_register_property(definition : PropertyDefinition) -> Unit {
+  css_register_property_ffi(definition.to_js())
+}
 
 ///|
 /// CSS namespace
@@ -655,5 +655,5 @@ pub extern "js" fn css_fr(value : Double) -> CSSUnitValue =
 
 ///|
 /// CSS namespace
-pub extern "js" fn css_get_paint_worklet() -> Worklet =
-  #| () => CSS.paintWorklet
+pub extern "js" fn css_escape(ident : String) -> String =
+  #| (ident) => CSS.escape(ident)

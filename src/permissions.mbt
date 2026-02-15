@@ -230,16 +230,16 @@ pub extern "js" fn PermissionStatus::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn PermissionStatus::as_bluetooth_permission_result(
-  self : PermissionStatus,
-) -> BluetoothPermissionResult? =
-  #| (self) => (self instanceof BluetoothPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn PermissionStatus::as_bluetooth_le_scan_permission_result(
   self : PermissionStatus,
 ) -> BluetoothLEScanPermissionResult? =
   #| (self) => (self instanceof BluetoothLEScanPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn PermissionStatus::as_bluetooth_permission_result(
+  self : PermissionStatus,
+) -> BluetoothPermissionResult? =
+  #| (self) => (self instanceof BluetoothPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn PermissionStatus::as_usb_permission_result(

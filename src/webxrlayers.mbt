@@ -1959,11 +1959,11 @@ pub extern "js" fn XRWebGLBinding::foveate_bound_texture(
   #| (self, target, fixed_foveation) => self.foveateBoundTexture(target, fixed_foveation)
 
 ///|
-pub extern "js" fn XRWebGLBinding::get_reflection_cube_map(
+pub extern "js" fn XRWebGLBinding::get_camera_image(
   self : XRWebGLBinding,
-  light_probe : XRLightProbe,
+  camera : XRCamera,
 ) -> WebGLTexture? =
-  #| (self, light_probe) => (() => { const v = self.getReflectionCubeMap(light_probe); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self, camera) => (() => { const v = self.getCameraImage(camera); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRWebGLBinding::get_depth_information(
@@ -1973,11 +1973,11 @@ pub extern "js" fn XRWebGLBinding::get_depth_information(
   #| (self, view) => (() => { try { return { $tag: 1, _0: (() => { const v = self.getDepthInformation(view); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn XRWebGLBinding::get_camera_image(
+pub extern "js" fn XRWebGLBinding::get_reflection_cube_map(
   self : XRWebGLBinding,
-  camera : XRCamera,
+  light_probe : XRLightProbe,
 ) -> WebGLTexture? =
-  #| (self, camera) => (() => { const v = self.getCameraImage(camera); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+  #| (self, light_probe) => (() => { const v = self.getReflectionCubeMap(light_probe); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn XRWebGLBinding::new_with_web_gl_rendering_context(

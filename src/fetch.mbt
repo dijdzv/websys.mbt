@@ -845,7 +845,7 @@ pub(all) enum RequestConstructorError {
   TypeError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -853,14 +853,14 @@ pub(all) enum RequestArrayBufferError {
   TypeError(JsError)
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum RequestBlobError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -868,14 +868,14 @@ pub(all) enum RequestBytesError {
   TypeError(JsError)
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum RequestFormDataError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -883,14 +883,14 @@ pub(all) enum RequestJsonError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum RequestTextError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Request::new(
@@ -1005,37 +1005,37 @@ pub extern "js" fn Request::get_body_used(self : Request) -> Bool =
 pub extern "js" fn Request::array_buffer(
   self : Request,
 ) -> Promise[Result[ArrayBuffer, RequestArrayBufferError]] =
-  #| (self) => self.arrayBuffer().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.arrayBuffer().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Request::blob(
   self : Request,
 ) -> Promise[Result[Blob, RequestBlobError]] =
-  #| (self) => self.blob().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.blob().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Request::bytes(
   self : Request,
 ) -> Promise[Result[Uint8Array, RequestBytesError]] =
-  #| (self) => self.bytes().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.bytes().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Request::form_data(
   self : Request,
 ) -> Promise[Result[FormData, RequestFormDataError]] =
-  #| (self) => self.formData().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.formData().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Request::json(
   self : Request,
 ) -> Promise[Result[JsValue, RequestJsonError]] =
-  #| (self) => self.json().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.json().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Request::text(
   self : Request,
 ) -> Promise[Result[String, RequestTextError]] =
-  #| (self) => self.text().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.text().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Request::new_with_request(
@@ -1085,14 +1085,14 @@ pub(all) enum ResponseRedirectError {
   TypeError(JsError)
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ResponseJsonError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1100,14 +1100,14 @@ pub(all) enum ResponseArrayBufferError {
   TypeError(JsError)
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ResponseBlobError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1115,21 +1115,21 @@ pub(all) enum ResponseBytesError {
   TypeError(JsError)
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ResponseFormDataError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ResponseTextError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Response::new() -> Response =
@@ -1232,31 +1232,31 @@ pub extern "js" fn Response::get_body_used(self : Response) -> Bool =
 pub extern "js" fn Response::array_buffer(
   self : Response,
 ) -> Promise[Result[ArrayBuffer, ResponseArrayBufferError]] =
-  #| (self) => self.arrayBuffer().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.arrayBuffer().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Response::blob(
   self : Response,
 ) -> Promise[Result[Blob, ResponseBlobError]] =
-  #| (self) => self.blob().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.blob().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Response::bytes(
   self : Response,
 ) -> Promise[Result[Uint8Array, ResponseBytesError]] =
-  #| (self) => self.bytes().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.bytes().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Response::form_data(
   self : Response,
 ) -> Promise[Result[FormData, ResponseFormDataError]] =
-  #| (self) => self.formData().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.formData().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Response::text(
   self : Response,
 ) -> Promise[Result[String, ResponseTextError]] =
-  #| (self) => self.text().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.text().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 /// FetchLaterResult interface

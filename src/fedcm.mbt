@@ -1046,13 +1046,13 @@ pub(all) enum IdentityCredentialDisconnectError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 extern "js" fn IdentityCredential::disconnect_ffi(
   options : JsValue,
 ) -> Promise[Result[Unit, IdentityCredentialDisconnectError]] =
-  #| (options) => IdentityCredential.disconnect(options).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (options) => IdentityCredential.disconnect(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn IdentityCredential::disconnect(
@@ -1199,7 +1199,7 @@ pub(all) enum IdentityProviderGetUserInfoError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn IdentityProvider::close() -> Unit =
@@ -1228,7 +1228,7 @@ pub fn IdentityProvider::resolve_with_options(
 extern "js" fn IdentityProvider::get_user_info_ffi(
   config : JsValue,
 ) -> Promise[Result[Array[IdentityUserInfo], IdentityProviderGetUserInfoError]] =
-  #| (config) => IdentityProvider.getUserInfo(config).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (config) => IdentityProvider.getUserInfo(config).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn IdentityProvider::get_user_info(

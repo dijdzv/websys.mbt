@@ -56,7 +56,7 @@ pub extern "js" fn AmbientLightSensor::to_event_target(
 pub(all) enum AmbientLightSensorConstructorError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn AmbientLightSensor::new() -> Result[

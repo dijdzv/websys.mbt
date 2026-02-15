@@ -603,7 +603,7 @@ pub(all) enum FileReaderSyncReadAsArrayBufferError {
   SecurityError(JsError)
   NotReadableError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -613,7 +613,7 @@ pub(all) enum FileReaderSyncReadAsBinaryStringError {
   SecurityError(JsError)
   NotReadableError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -623,7 +623,7 @@ pub(all) enum FileReaderSyncReadAsTextError {
   SecurityError(JsError)
   NotReadableError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -633,7 +633,7 @@ pub(all) enum FileReaderSyncReadAsDataURLError {
   SecurityError(JsError)
   NotReadableError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn FileReaderSync::new() -> FileReaderSync =

@@ -855,7 +855,7 @@ pub extern "js" fn Bluetooth::to_event_target(self : Bluetooth) -> EventTarget =
 pub(all) enum BluetoothGetDevicesError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -864,7 +864,7 @@ pub(all) enum BluetoothRequestDeviceError {
   NotFoundError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Bluetooth::get_availability(
@@ -895,20 +895,20 @@ pub extern "js" fn Bluetooth::get_referring_device(
 pub extern "js" fn Bluetooth::get_devices(
   self : Bluetooth,
 ) -> Promise[Result[Array[BluetoothDevice], BluetoothGetDevicesError]] =
-  #| (self) => self.getDevices().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.getDevices().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Bluetooth::request_device(
   self : Bluetooth,
 ) -> Promise[Result[BluetoothDevice, BluetoothRequestDeviceError]] =
-  #| (self) => self.requestDevice().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self) => self.requestDevice().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn Bluetooth::request_device_with_options_ffi(
   self : Bluetooth,
   options : JsValue,
 ) -> Promise[Result[BluetoothDevice, BluetoothRequestDeviceError]] =
-  #| (self, options) => self.requestDevice(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, options) => self.requestDevice(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn Bluetooth::request_device_with_options(
@@ -2250,21 +2250,21 @@ pub extern "js" fn JsValue::to_bluetooth_uuid(self : JsValue) -> BluetoothUUID =
 pub(all) enum BluetoothUUIDGetServiceError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum BluetoothUUIDGetCharacteristicError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum BluetoothUUIDGetDescriptorError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn BluetoothUUID::get_service(

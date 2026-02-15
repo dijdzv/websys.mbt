@@ -1315,14 +1315,14 @@ pub extern "js" fn CSSKeywordValue::to_css_style_value(
 pub(all) enum CSSKeywordValueConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSKeywordValueSetValueError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CSSKeywordValue::new(
@@ -1444,42 +1444,42 @@ pub extern "js" fn CSSNumericValue::as_css_math_clamp(
 pub(all) enum CSSNumericValueAddError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSNumericValueSubError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSNumericValueMulError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSNumericValueDivError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSNumericValueMinError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSNumericValueMaxError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1487,21 +1487,21 @@ pub(all) enum CSSNumericValueToError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSNumericValueToSumError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSNumericValueParseError {
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CSSNumericValue::add(
@@ -2097,7 +2097,7 @@ pub extern "js" fn CSSMathInvert::to_css_style_value(
 pub(all) enum CSSMathInvertConstructorError {
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CSSMathInvert::new(
@@ -2174,7 +2174,7 @@ pub extern "js" fn CSSMathMin::to_css_style_value(
 pub(all) enum CSSMathMinConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CSSMathMin::new(
@@ -2249,7 +2249,7 @@ pub extern "js" fn CSSMathMax::to_css_style_value(
 pub(all) enum CSSMathMaxConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CSSMathMax::new(
@@ -2481,14 +2481,14 @@ pub extern "js" fn CSSTransformValue::to_css_style_value(
 pub(all) enum CSSTransformValueConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSTransformValueToMatrixError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CSSTransformValue::new(
@@ -2645,7 +2645,7 @@ pub extern "js" fn CSSTransformComponent::as_css_matrix_component(
 pub(all) enum CSSTransformComponentToMatrixError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CSSTransformComponent::get_is_2d(
@@ -2707,7 +2707,7 @@ pub extern "js" fn CSSTranslate::to_css_transform_component(
 pub(all) enum CSSTranslateConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CSSTranslate::new(
@@ -2796,7 +2796,7 @@ pub extern "js" fn CSSRotate::to_css_transform_component(
 pub(all) enum CSSRotateConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CSSRotate::new(
@@ -3181,7 +3181,7 @@ pub extern "js" fn CSSPerspective::to_css_transform_component(
 pub(all) enum CSSPerspectiveConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CSSPerspective::new(

@@ -2559,7 +2559,7 @@ pub(all) enum MediaDevicesSelectAudioOutputError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -2573,7 +2573,7 @@ pub(all) enum MediaDevicesGetUserMediaError {
   InvalidStateError(JsError)
   OverconstrainedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -2586,7 +2586,7 @@ pub(all) enum MediaDevicesGetDisplayMediaError {
   InvalidStateError(JsError)
   OverconstrainedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn MediaDevices::set_ondevicechange(
@@ -2632,14 +2632,14 @@ pub fn MediaDevices::get_viewport_media_with_options(
 pub extern "js" fn MediaDevices::select_audio_output(
   self : MediaDevices,
 ) -> Promise[Result[MediaDeviceInfo, MediaDevicesSelectAudioOutputError]] =
-  #| (self) => self.selectAudioOutput().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self) => self.selectAudioOutput().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn MediaDevices::select_audio_output_with_options_ffi(
   self : MediaDevices,
   options : JsValue,
 ) -> Promise[Result[MediaDeviceInfo, MediaDevicesSelectAudioOutputError]] =
-  #| (self, options) => self.selectAudioOutput(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, options) => self.selectAudioOutput(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn MediaDevices::select_audio_output_with_options(
@@ -2679,14 +2679,14 @@ pub extern "js" fn MediaDevices::get_supported_constraints(
 pub extern "js" fn MediaDevices::get_user_media(
   self : MediaDevices,
 ) -> Promise[Result[MediaStream, MediaDevicesGetUserMediaError]] =
-  #| (self) => self.getUserMedia().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'NotReadableError') return { $tag: 5, _0: e }; if (n === 'InvalidStateError') return { $tag: 6, _0: e }; if (n === 'OverconstrainedError') return { $tag: 7, _0: e }; return { $tag: 8, _0: e }; })() }))
+  #| (self) => self.getUserMedia().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'NotReadableError') return { $tag: 5, _0: e }; if (n === 'InvalidStateError') return { $tag: 6, _0: e }; if (n === 'OverconstrainedError') return { $tag: 7, _0: e }; return { $tag: 8, _0: e }; })() }))
 
 ///|
 extern "js" fn MediaDevices::get_user_media_with_constraints_ffi(
   self : MediaDevices,
   constraints : JsValue,
 ) -> Promise[Result[MediaStream, MediaDevicesGetUserMediaError]] =
-  #| (self, constraints) => self.getUserMedia(constraints).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'NotReadableError') return { $tag: 5, _0: e }; if (n === 'InvalidStateError') return { $tag: 6, _0: e }; if (n === 'OverconstrainedError') return { $tag: 7, _0: e }; return { $tag: 8, _0: e }; })() }))
+  #| (self, constraints) => self.getUserMedia(constraints).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'NotReadableError') return { $tag: 5, _0: e }; if (n === 'InvalidStateError') return { $tag: 6, _0: e }; if (n === 'OverconstrainedError') return { $tag: 7, _0: e }; return { $tag: 8, _0: e }; })() }))
 
 ///|
 pub fn MediaDevices::get_user_media_with_constraints(
@@ -2700,14 +2700,14 @@ pub fn MediaDevices::get_user_media_with_constraints(
 pub extern "js" fn MediaDevices::get_display_media(
   self : MediaDevices,
 ) -> Promise[Result[MediaStream, MediaDevicesGetDisplayMediaError]] =
-  #| (self) => self.getDisplayMedia().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'NotReadableError') return { $tag: 4, _0: e }; if (n === 'InvalidStateError') return { $tag: 5, _0: e }; if (n === 'OverconstrainedError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }))
+  #| (self) => self.getDisplayMedia().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'NotReadableError') return { $tag: 4, _0: e }; if (n === 'InvalidStateError') return { $tag: 5, _0: e }; if (n === 'OverconstrainedError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }))
 
 ///|
 extern "js" fn MediaDevices::get_display_media_with_options_ffi(
   self : MediaDevices,
   options : JsValue,
 ) -> Promise[Result[MediaStream, MediaDevicesGetDisplayMediaError]] =
-  #| (self, options) => self.getDisplayMedia(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'NotReadableError') return { $tag: 4, _0: e }; if (n === 'InvalidStateError') return { $tag: 5, _0: e }; if (n === 'OverconstrainedError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }))
+  #| (self, options) => self.getDisplayMedia(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'NotReadableError') return { $tag: 4, _0: e }; if (n === 'InvalidStateError') return { $tag: 5, _0: e }; if (n === 'OverconstrainedError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }))
 
 ///|
 pub fn MediaDevices::get_display_media_with_options(

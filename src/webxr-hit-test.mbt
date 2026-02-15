@@ -403,7 +403,7 @@ pub extern "js" fn JsValue::to_xr_ray(self : JsValue) -> XRRay =
 pub(all) enum XRRayConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn XRRay::new() -> Result[XRRay, XRRayConstructorError] =

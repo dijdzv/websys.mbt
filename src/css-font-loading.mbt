@@ -214,14 +214,14 @@ pub extern "js" fn JsValue::to_font_face(self : JsValue) -> FontFace =
 pub(all) enum FontFaceConstructorError {
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum FontFaceLoadError {
   NetworkError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn FontFace::new(
@@ -373,7 +373,7 @@ pub extern "js" fn FontFace::get_status(self : FontFace) -> FontFaceLoadStatus =
 pub extern "js" fn FontFace::load(
   self : FontFace,
 ) -> Promise[Result[FontFace, FontFaceLoadError]] =
-  #| (self) => self.load().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.load().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn FontFace::get_loaded(self : FontFace) -> Promise[FontFace] =
@@ -809,7 +809,7 @@ pub extern "js" fn FontFaceSet::to_event_target(
 pub(all) enum FontFaceSetAddError {
   InvalidModificationError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn FontFaceSet::has(

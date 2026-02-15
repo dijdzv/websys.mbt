@@ -2336,35 +2336,35 @@ pub extern "js" fn PublicKeyCredential::to_credential(
 pub(all) enum PublicKeyCredentialGetClientExtensionResultsError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PublicKeyCredentialIsConditionalMediationAvailableError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PublicKeyCredentialToJSONError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PublicKeyCredentialIsUserVerifyingPlatformAuthenticatorAvailableError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PublicKeyCredentialGetClientCapabilitiesError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -2372,7 +2372,7 @@ pub(all) enum PublicKeyCredentialParseCreationOptionsFromJSONError {
   EncodingError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -2380,7 +2380,7 @@ pub(all) enum PublicKeyCredentialParseRequestOptionsFromJSONError {
   EncodingError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -2388,7 +2388,7 @@ pub(all) enum PublicKeyCredentialSignalUnknownCredentialError {
   TypeError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -2396,7 +2396,7 @@ pub(all) enum PublicKeyCredentialSignalAllAcceptedCredentialsError {
   TypeError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -2404,7 +2404,7 @@ pub(all) enum PublicKeyCredentialSignalCurrentUserDetailsError {
   TypeError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn PublicKeyCredential::get_raw_id(
@@ -2437,7 +2437,7 @@ pub extern "js" fn PublicKeyCredential::get_client_extension_results(
 pub extern "js" fn PublicKeyCredential::is_conditional_mediation_available() -> Promise[
   Result[Bool, PublicKeyCredentialIsConditionalMediationAvailableError],
 ] =
-  #| () => PublicKeyCredential.isConditionalMediationAvailable().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| () => PublicKeyCredential.isConditionalMediationAvailable().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn PublicKeyCredential::to_json(
@@ -2452,7 +2452,7 @@ pub extern "js" fn PublicKeyCredential::is_user_verifying_platform_authenticator
     PublicKeyCredentialIsUserVerifyingPlatformAuthenticatorAvailableError,
   ],
 ] =
-  #| () => PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| () => PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn PublicKeyCredential::get_client_capabilities() -> Promise[
@@ -2461,7 +2461,7 @@ pub extern "js" fn PublicKeyCredential::get_client_capabilities() -> Promise[
     PublicKeyCredentialGetClientCapabilitiesError,
   ],
 ] =
-  #| () => PublicKeyCredential.getClientCapabilities().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| () => PublicKeyCredential.getClientCapabilities().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn PublicKeyCredential::parse_creation_options_from_json_ffi(
@@ -2505,7 +2505,7 @@ pub fn PublicKeyCredential::parse_request_options_from_json(
 extern "js" fn PublicKeyCredential::signal_unknown_credential_ffi(
   options : JsValue,
 ) -> Promise[Result[Unit, PublicKeyCredentialSignalUnknownCredentialError]] =
-  #| (options) => PublicKeyCredential.signalUnknownCredential(options).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (options) => PublicKeyCredential.signalUnknownCredential(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn PublicKeyCredential::signal_unknown_credential(
@@ -2518,7 +2518,7 @@ pub fn PublicKeyCredential::signal_unknown_credential(
 extern "js" fn PublicKeyCredential::signal_all_accepted_credentials_ffi(
   options : JsValue,
 ) -> Promise[Result[Unit, PublicKeyCredentialSignalAllAcceptedCredentialsError]] =
-  #| (options) => PublicKeyCredential.signalAllAcceptedCredentials(options).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (options) => PublicKeyCredential.signalAllAcceptedCredentials(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn PublicKeyCredential::signal_all_accepted_credentials(
@@ -2531,7 +2531,7 @@ pub fn PublicKeyCredential::signal_all_accepted_credentials(
 extern "js" fn PublicKeyCredential::signal_current_user_details_ffi(
   options : JsValue,
 ) -> Promise[Result[Unit, PublicKeyCredentialSignalCurrentUserDetailsError]] =
-  #| (options) => PublicKeyCredential.signalCurrentUserDetails(options).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (options) => PublicKeyCredential.signalCurrentUserDetails(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn PublicKeyCredential::signal_current_user_details(

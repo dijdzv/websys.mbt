@@ -636,14 +636,14 @@ pub extern "js" fn Animation::as_css_transition(
 pub(all) enum AnimationFinishError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum AnimationPauseError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Animation::new() -> Animation =
@@ -887,7 +887,7 @@ pub extern "js" fn AnimationEffect::as_keyframe_effect(
 pub(all) enum AnimationEffectUpdateTimingError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn AnimationEffect::get_timing(
@@ -1012,14 +1012,14 @@ pub extern "js" fn KeyframeEffect::to_animation_effect(
 pub(all) enum KeyframeEffectSetPseudoElementError {
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum KeyframeEffectSetKeyframesError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn KeyframeEffect::new(

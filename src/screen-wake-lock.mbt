@@ -57,20 +57,20 @@ pub extern "js" fn JsValue::to_wake_lock(self : JsValue) -> WakeLock =
 pub(all) enum WakeLockRequestError {
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn WakeLock::request(
   self : WakeLock,
 ) -> Promise[Result[WakeLockSentinel, WakeLockRequestError]] =
-  #| (self) => self.request().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.request().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WakeLock::request_with_type(
   self : WakeLock,
   type_ : WakeLockType,
 ) -> Promise[Result[WakeLockSentinel, WakeLockRequestError]] =
-  #| (self, type_) => self.request(['screen'][type_]).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, type_) => self.request(['screen'][type_]).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 /// WakeLockSentinel interface

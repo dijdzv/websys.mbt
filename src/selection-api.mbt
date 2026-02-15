@@ -78,7 +78,7 @@ pub extern "js" fn JsValue::to_selection(self : JsValue) -> Selection =
 pub(all) enum SelectionSetBaseAndExtentError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Selection::get_anchor_node(self : Selection) -> Node? =

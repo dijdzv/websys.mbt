@@ -202,7 +202,7 @@ pub extern "js" fn MediaRecorder::to_event_target(
 pub(all) enum MediaRecorderConstructorError {
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -211,35 +211,35 @@ pub(all) enum MediaRecorderStartError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum MediaRecorderStopError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum MediaRecorderPauseError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum MediaRecorderResumeError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum MediaRecorderRequestDataError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn MediaRecorder::new(

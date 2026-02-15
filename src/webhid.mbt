@@ -524,7 +524,7 @@ pub extern "js" fn HID::to_event_target(self : HID) -> EventTarget =
 pub(all) enum HIDRequestDeviceError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HID::set_onconnect(
@@ -557,7 +557,7 @@ extern "js" fn HID::request_device_ffi(
   self : HID,
   options : JsValue,
 ) -> Promise[Result[Array[HIDDevice], HIDRequestDeviceError]] =
-  #| (self, options) => self.requestDevice(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, options) => self.requestDevice(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn HID::request_device(
@@ -605,28 +605,28 @@ pub(all) enum HIDDeviceOpenError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HIDDeviceSendReportError {
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HIDDeviceSendFeatureReportError {
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HIDDeviceReceiveFeatureReportError {
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HIDDevice::set_oninputreport(
@@ -665,7 +665,7 @@ pub extern "js" fn HIDDevice::get_collections(
 pub extern "js" fn HIDDevice::open(
   self : HIDDevice,
 ) -> Promise[Result[Unit, HIDDeviceOpenError]] =
-  #| (self) => self.open().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.open().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HIDDevice::close(self : HIDDevice) -> Promise[Unit] =
@@ -681,7 +681,7 @@ pub extern "js" fn HIDDevice::send_report(
   report_id : Int,
   data : BufferSource,
 ) -> Promise[Result[Unit, HIDDeviceSendReportError]] =
-  #| (self, report_id, data) => self.sendReport(report_id, data).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, report_id, data) => self.sendReport(report_id, data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HIDDevice::send_feature_report(
@@ -689,14 +689,14 @@ pub extern "js" fn HIDDevice::send_feature_report(
   report_id : Int,
   data : BufferSource,
 ) -> Promise[Result[Unit, HIDDeviceSendFeatureReportError]] =
-  #| (self, report_id, data) => self.sendFeatureReport(report_id, data).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, report_id, data) => self.sendFeatureReport(report_id, data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HIDDevice::receive_feature_report(
   self : HIDDevice,
   report_id : Int,
 ) -> Promise[Result[DataView, HIDDeviceReceiveFeatureReportError]] =
-  #| (self, report_id) => self.receiveFeatureReport(report_id).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, report_id) => self.receiveFeatureReport(report_id).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HIDDevice::send_report_with_array_buffer_view(
@@ -704,7 +704,7 @@ pub extern "js" fn HIDDevice::send_report_with_array_buffer_view(
   report_id : Int,
   data : ArrayBufferView,
 ) -> Promise[Result[Unit, HIDDeviceSendReportError]] =
-  #| (self, report_id, data) => self.sendReport(report_id, data).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, report_id, data) => self.sendReport(report_id, data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HIDDevice::send_report_with_array_buffer(
@@ -712,7 +712,7 @@ pub extern "js" fn HIDDevice::send_report_with_array_buffer(
   report_id : Int,
   data : ArrayBuffer,
 ) -> Promise[Result[Unit, HIDDeviceSendReportError]] =
-  #| (self, report_id, data) => self.sendReport(report_id, data).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, report_id, data) => self.sendReport(report_id, data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HIDDevice::send_feature_report_with_array_buffer_view(
@@ -720,7 +720,7 @@ pub extern "js" fn HIDDevice::send_feature_report_with_array_buffer_view(
   report_id : Int,
   data : ArrayBufferView,
 ) -> Promise[Result[Unit, HIDDeviceSendFeatureReportError]] =
-  #| (self, report_id, data) => self.sendFeatureReport(report_id, data).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, report_id, data) => self.sendFeatureReport(report_id, data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HIDDevice::send_feature_report_with_array_buffer(
@@ -728,7 +728,7 @@ pub extern "js" fn HIDDevice::send_feature_report_with_array_buffer(
   report_id : Int,
   data : ArrayBuffer,
 ) -> Promise[Result[Unit, HIDDeviceSendFeatureReportError]] =
-  #| (self, report_id, data) => self.sendFeatureReport(report_id, data).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, report_id, data) => self.sendFeatureReport(report_id, data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 /// HIDConnectionEvent interface

@@ -847,7 +847,7 @@ pub extern "js" fn ServiceWorker::to_event_target(
 pub(all) enum ServiceWorkerPostMessageError {
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn ServiceWorker::get_script_url(
@@ -967,7 +967,7 @@ pub(all) enum ServiceWorkerRegistrationShowNotificationError {
   TypeError(JsError)
   DataCloneError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_installing(
@@ -1035,7 +1035,7 @@ pub extern "js" fn ServiceWorkerRegistration::show_notification(
   self : ServiceWorkerRegistration,
   title : String,
 ) -> Promise[Result[Unit, ServiceWorkerRegistrationShowNotificationError]] =
-  #| (self, title) => self.showNotification(title).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self, title) => self.showNotification(title).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn ServiceWorkerRegistration::show_notification_with_options_ffi(
@@ -1043,7 +1043,7 @@ extern "js" fn ServiceWorkerRegistration::show_notification_with_options_ffi(
   title : String,
   options : JsValue,
 ) -> Promise[Result[Unit, ServiceWorkerRegistrationShowNotificationError]] =
-  #| (self, title, options) => self.showNotification(title, options).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self, title, options) => self.showNotification(title, options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn ServiceWorkerRegistration::show_notification_with_options(
@@ -1174,7 +1174,7 @@ pub(all) enum ServiceWorkerContainerRegisterError {
   TypeError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn ServiceWorkerContainer::get_controller(
@@ -1195,7 +1195,7 @@ pub extern "js" fn ServiceWorkerContainer::register(
 ) -> Promise[
   Result[ServiceWorkerRegistration, ServiceWorkerContainerRegisterError],
 ] =
-  #| (self, script_url) => self.register(script_url).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self, script_url) => self.register(script_url).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn ServiceWorkerContainer::register_with_options_ffi(
@@ -1205,7 +1205,7 @@ extern "js" fn ServiceWorkerContainer::register_with_options_ffi(
 ) -> Promise[
   Result[ServiceWorkerRegistration, ServiceWorkerContainerRegisterError],
 ] =
-  #| (self, script_url, options) => self.register(script_url, options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self, script_url, options) => self.register(script_url, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn ServiceWorkerContainer::register_with_options(
@@ -1329,47 +1329,47 @@ pub extern "js" fn JsValue::to_navigation_preload_manager(
 pub(all) enum NavigationPreloadManagerEnableError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigationPreloadManagerDisableError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigationPreloadManagerSetHeaderValueError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigationPreloadManagerGetStateError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn NavigationPreloadManager::enable(
   self : NavigationPreloadManager,
 ) -> Promise[Result[Unit, NavigationPreloadManagerEnableError]] =
-  #| (self) => self.enable().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.enable().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn NavigationPreloadManager::disable(
   self : NavigationPreloadManager,
 ) -> Promise[Result[Unit, NavigationPreloadManagerDisableError]] =
-  #| (self) => self.disable().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.disable().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn NavigationPreloadManager::set_header_value(
   self : NavigationPreloadManager,
   value : String,
 ) -> Promise[Result[Unit, NavigationPreloadManagerSetHeaderValueError]] =
-  #| (self, value) => self.setHeaderValue(value).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, value) => self.setHeaderValue(value).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn NavigationPreloadManager::get_state(
@@ -1380,7 +1380,7 @@ pub extern "js" fn NavigationPreloadManager::get_state(
   #| (self) => self.getState().then(v => ({
   #|   enabled: (v.enabled === undefined ? -1 : v.enabled),
   #|   headerValue: v.headerValue
-  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 /// ServiceWorkerGlobalScope interface
@@ -1834,7 +1834,7 @@ pub extern "js" fn WindowClient::to_client(self : WindowClient) -> Client =
 pub(all) enum WindowClientFocusError {
   InvalidAccessError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn WindowClient::get_visibility_state(
@@ -1856,7 +1856,7 @@ pub extern "js" fn WindowClient::get_ancestor_origins(
 pub extern "js" fn WindowClient::focus(
   self : WindowClient,
 ) -> Promise[Result[WindowClient, WindowClientFocusError]] =
-  #| (self) => self.focus().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidAccessError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.focus().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidAccessError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WindowClient::navigate(
@@ -1898,7 +1898,7 @@ pub extern "js" fn JsValue::to_clients(self : JsValue) -> Clients =
 pub(all) enum ClientsOpenWindowError {
   InvalidAccessError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Clients::get(
@@ -1931,7 +1931,7 @@ pub extern "js" fn Clients::open_window(
   self : Clients,
   url : String,
 ) -> Promise[Result[WindowClient?, ClientsOpenWindowError]] =
-  #| (self, url) => self.openWindow(url).then(v => ({ $tag: 1, _0: (() => { const v = v; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidAccessError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, url) => self.openWindow(url).then(r => ({ $tag: 1, _0: (() => { const v = r; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidAccessError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Clients::claim(self : Clients) -> Promise[Unit] =
@@ -2134,7 +2134,7 @@ pub extern "js" fn InstallEvent::to_event(self : InstallEvent) -> Event =
 pub(all) enum InstallEventAddRoutesError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn InstallEvent::new(type_ : String) -> InstallEvent =
@@ -2160,7 +2160,7 @@ pub extern "js" fn InstallEvent::add_routes(
   self : InstallEvent,
   rules : RouterRuleOrArrayOfRouterRule,
 ) -> Promise[Result[Unit, InstallEventAddRoutesError]] =
-  #| (self, rules) => self.addRoutes(rules).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, rules) => self.addRoutes(rules).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 /// FetchEvent interface
@@ -2206,7 +2206,7 @@ pub(all) enum FetchEventRespondWithError {
   NetworkError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 extern "js" fn FetchEvent::new_ffi(
@@ -2397,21 +2397,21 @@ pub extern "js" fn JsValue::to_cache(self : JsValue) -> Cache =
 pub(all) enum CacheAddError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CacheAddAllError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CachePutError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Cache::match_(
@@ -2463,14 +2463,14 @@ pub extern "js" fn Cache::add(
   self : Cache,
   request : RequestInfo,
 ) -> Promise[Result[Unit, CacheAddError]] =
-  #| (self, request) => self.add(request).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, request) => self.add(request).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Cache::add_all(
   self : Cache,
   requests : Array[RequestInfo],
 ) -> Promise[Result[Unit, CacheAddAllError]] =
-  #| (self, requests) => self.addAll(requests).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, requests) => self.addAll(requests).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Cache::put(
@@ -2478,7 +2478,7 @@ pub extern "js" fn Cache::put(
   request : RequestInfo,
   response : Response,
 ) -> Promise[Result[Unit, CachePutError]] =
-  #| (self, request, response) => self.put(request, response).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, request, response) => self.put(request, response).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Cache::delete(
@@ -2562,14 +2562,14 @@ pub extern "js" fn Cache::add_with_request(
   self : Cache,
   request : Request,
 ) -> Promise[Result[Unit, CacheAddError]] =
-  #| (self, request) => self.add(request).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, request) => self.add(request).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Cache::add_with_string(
   self : Cache,
   request : String,
 ) -> Promise[Result[Unit, CacheAddError]] =
-  #| (self, request) => self.add(request).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, request) => self.add(request).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Cache::put_with_request(
@@ -2577,7 +2577,7 @@ pub extern "js" fn Cache::put_with_request(
   request : Request,
   response : Response,
 ) -> Promise[Result[Unit, CachePutError]] =
-  #| (self, request, response) => self.put(request, response).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, request, response) => self.put(request, response).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Cache::put_with_string(
@@ -2585,7 +2585,7 @@ pub extern "js" fn Cache::put_with_string(
   request : String,
   response : Response,
 ) -> Promise[Result[Unit, CachePutError]] =
-  #| (self, request, response) => self.put(request, response).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, request, response) => self.put(request, response).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Cache::delete_with_request(

@@ -350,7 +350,7 @@ pub(all) enum NotificationConstructorError {
   TypeError(JsError)
   DataCloneError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Notification::new(

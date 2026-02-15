@@ -114,7 +114,7 @@ pub extern "js" fn Gyroscope::to_event_target(self : Gyroscope) -> EventTarget =
 pub(all) enum GyroscopeConstructorError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Gyroscope::new() -> Result[

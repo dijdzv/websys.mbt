@@ -164,14 +164,14 @@ pub extern "js" fn JsValue::to_text_decoder(self : JsValue) -> TextDecoder =
 pub(all) enum TextDecoderConstructorError {
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum TextDecoderDecodeError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn TextDecoder::new() -> Result[
@@ -352,7 +352,7 @@ pub extern "js" fn JsValue::to_text_decoder_stream(
 pub(all) enum TextDecoderStreamConstructorError {
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn TextDecoderStream::new() -> Result[

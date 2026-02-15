@@ -154,7 +154,7 @@ pub(all) enum PerformanceMarkConstructorError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn PerformanceMark::new(

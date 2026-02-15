@@ -95,7 +95,7 @@ pub(all) enum PaintWorkletGlobalScopeRegisterPaintError {
   TypeError(JsError)
   InvalidModificationError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn PaintWorkletGlobalScope::register_paint(
@@ -154,7 +154,7 @@ pub extern "js" fn JsValue::to_paint_rendering_context_2d(
 pub(all) enum PaintRenderingContext2DCreateLinearGradientError {
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -162,7 +162,7 @@ pub(all) enum PaintRenderingContext2DCreateRadialGradientError {
   IndexSizeError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -170,21 +170,21 @@ pub(all) enum PaintRenderingContext2DDrawImageError {
   InvalidStateError(JsError)
   TypeMismatchError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PaintRenderingContext2DArcToError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PaintRenderingContext2DRoundRectError {
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::save(

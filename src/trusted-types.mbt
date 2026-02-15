@@ -337,7 +337,7 @@ pub extern "js" fn JsValue::to_trusted_type_policy_factory(
 pub(all) enum TrustedTypePolicyFactoryCreatePolicyError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn TrustedTypePolicyFactory::create_policy(
@@ -484,21 +484,21 @@ pub extern "js" fn JsValue::to_trusted_type_policy(
 pub(all) enum TrustedTypePolicyCreateHTMLError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum TrustedTypePolicyCreateScriptError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum TrustedTypePolicyCreateScriptURLError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn TrustedTypePolicy::get_name(

@@ -133,7 +133,7 @@ pub extern "js" fn IdleDetector::to_event_target(
 pub(all) enum IdleDetectorStartError {
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn IdleDetector::new() -> IdleDetector =
@@ -172,14 +172,14 @@ pub extern "js" fn IdleDetector::request_permission() -> Promise[
 pub extern "js" fn IdleDetector::start(
   self : IdleDetector,
 ) -> Promise[Result[Unit, IdleDetectorStartError]] =
-  #| (self) => self.start().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.start().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn IdleDetector::start_with_options_ffi(
   self : IdleDetector,
   options : JsValue,
 ) -> Promise[Result[Unit, IdleDetectorStartError]] =
-  #| (self, options) => self.start(options).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, options) => self.start(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn IdleDetector::start_with_options(

@@ -957,28 +957,28 @@ pub(all) enum DOMMatrixReadOnlyConstructorError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DOMMatrixReadOnlyFromMatrixError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DOMMatrixReadOnlyFromFloat32ArrayError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DOMMatrixReadOnlyFromFloat64ArrayError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn DOMMatrixReadOnly::new() -> Result[
@@ -1409,28 +1409,28 @@ pub(all) enum DOMMatrixConstructorError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DOMMatrixFromMatrixError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DOMMatrixFromFloat32ArrayError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DOMMatrixFromFloat64ArrayError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn DOMMatrix::new() -> Result[

@@ -1100,14 +1100,14 @@ pub extern "js" fn JsValue::to_web_gl_rendering_context(
 pub(all) enum WebGLRenderingContextCompileShaderError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WebGLRenderingContextShaderSourceError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1115,7 +1115,7 @@ pub(all) enum WebGLRenderingContextMakeXRCompatibleError {
   AbortError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 // WebGLRenderingContext.DEPTH_BUFFER_BIT
 
@@ -3612,7 +3612,7 @@ pub extern "js" fn WebGLRenderingContext::viewport(
 pub extern "js" fn WebGLRenderingContext::make_xr_compatible(
   self : WebGLRenderingContext,
 ) -> Promise[Result[Unit, WebGLRenderingContextMakeXRCompatibleError]] =
-  #| (self) => self.makeXRCompatible().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.makeXRCompatible().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::buffer_data(

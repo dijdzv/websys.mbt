@@ -120,7 +120,7 @@ pub extern "js" fn Magnetometer::to_event_target(
 pub(all) enum MagnetometerConstructorError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Magnetometer::new() -> Result[

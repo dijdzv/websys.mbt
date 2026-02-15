@@ -2129,7 +2129,7 @@ pub(all) enum BaseAudioContextCreateBufferError {
   RangeError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -2137,7 +2137,7 @@ pub(all) enum BaseAudioContextCreateIIRFilterError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn BaseAudioContext::get_destination(
@@ -2427,7 +2427,7 @@ pub extern "js" fn AudioContext::to_event_target(
 pub(all) enum AudioContextConstructorError {
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -2436,7 +2436,7 @@ pub(all) enum AudioContextSetSinkIdError {
   NotAllowedError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn AudioContext::new() -> Result[
@@ -2529,7 +2529,7 @@ pub extern "js" fn AudioContext::set_sink_id(
   self : AudioContext,
   sink_id : StringOrAudioSinkOptions,
 ) -> Promise[Result[Unit, AudioContextSetSinkIdError]] =
-  #| (self, sink_id) => self.setSinkId(sink_id).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, sink_id) => self.setSinkId(sink_id).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn AudioContext::create_media_element_source(
@@ -2651,14 +2651,14 @@ pub extern "js" fn OfflineAudioContext::to_event_target(
 pub(all) enum OfflineAudioContextResumeError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum OfflineAudioContextSuspendError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 extern "js" fn OfflineAudioContext::new_ffi(
@@ -2691,14 +2691,14 @@ pub extern "js" fn OfflineAudioContext::start_rendering(
 pub extern "js" fn OfflineAudioContext::resume_(
   self : OfflineAudioContext,
 ) -> Promise[Result[Unit, OfflineAudioContextResumeError]] =
-  #| (self) => self.resume().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.resume().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn OfflineAudioContext::suspend(
   self : OfflineAudioContext,
   suspend_time : Double,
 ) -> Promise[Result[Unit, OfflineAudioContextSuspendError]] =
-  #| (self, suspend_time) => self.suspend(suspend_time).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, suspend_time) => self.suspend(suspend_time).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn OfflineAudioContext::get_length(
@@ -2818,14 +2818,14 @@ pub(all) enum AudioBufferConstructorError {
   RangeError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum AudioBufferCopyFromChannelError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 extern "js" fn AudioBuffer::new_ffi(
@@ -3070,7 +3070,7 @@ pub(all) enum AudioNodeConnectError {
   NotSupportedError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -3078,7 +3078,7 @@ pub(all) enum AudioNodeDisconnectError {
   IndexSizeError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn AudioNode::connect(
@@ -3247,7 +3247,7 @@ pub(all) enum AudioParamSetValueCurveAtTimeError {
   RangeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn AudioParam::get_value(self : AudioParam) -> Double =
@@ -3415,7 +3415,7 @@ pub(all) enum AudioScheduledSourceNodeStartError {
   RangeError(JsError)
   InvalidStateNode(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -3423,7 +3423,7 @@ pub(all) enum AudioScheduledSourceNodeStopError {
   RangeError(JsError)
   InvalidStateNode(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn AudioScheduledSourceNode::set_onended(
@@ -3511,14 +3511,14 @@ pub extern "js" fn AnalyserNode::to_event_target(
 pub(all) enum AnalyserNodeSetFftSizeError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum AnalyserNodeSetMaxDecibelsError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn AnalyserNode::new(
@@ -3687,7 +3687,7 @@ pub(all) enum AudioBufferSourceNodeStartError {
   TypeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn AudioBufferSourceNode::new(
@@ -4079,7 +4079,7 @@ pub extern "js" fn BiquadFilterNode::to_event_target(
 pub(all) enum BiquadFilterNodeGetFrequencyResponseError {
   InvalidAccessError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn BiquadFilterNode::new(
@@ -4203,7 +4203,7 @@ pub extern "js" fn ChannelMergerNode::to_event_target(
 pub(all) enum ChannelMergerNodeConstructorError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn ChannelMergerNode::new(
@@ -4427,7 +4427,7 @@ pub extern "js" fn ConvolverNode::to_event_target(
 pub(all) enum ConvolverNodeConstructorError {
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn ConvolverNode::new(
@@ -4748,7 +4748,7 @@ pub extern "js" fn IIRFilterNode::to_event_target(
 pub(all) enum IIRFilterNodeGetFrequencyResponseError {
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 extern "js" fn IIRFilterNode::new_ffi(
@@ -4980,7 +4980,7 @@ pub extern "js" fn MediaStreamAudioSourceNode::to_event_target(
 pub(all) enum MediaStreamAudioSourceNodeConstructorError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 extern "js" fn MediaStreamAudioSourceNode::new_ffi(
@@ -5065,7 +5065,7 @@ pub(all) enum MediaStreamTrackAudioSourceNodeConstructorError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 extern "js" fn MediaStreamTrackAudioSourceNode::new_ffi(
@@ -5147,7 +5147,7 @@ pub extern "js" fn OscillatorNode::to_event_target(
 pub(all) enum OscillatorNodeSetTypeError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn OscillatorNode::new(
@@ -5246,35 +5246,35 @@ pub(all) enum PannerNodeConstructorError {
   RangeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PannerNodeSetRefDistanceError {
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PannerNodeSetMaxDistanceError {
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PannerNodeSetRolloffFactorError {
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PannerNodeSetConeOuterGainError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn PannerNode::new(
@@ -5823,7 +5823,7 @@ pub(all) enum AudioWorkletGlobalScopeRegisterProcessorError {
   TypeError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn AudioWorkletGlobalScope::register_processor(
@@ -5965,7 +5965,7 @@ pub(all) enum AudioWorkletNodeConstructorError {
   IndexSizeError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn AudioWorkletNode::new(

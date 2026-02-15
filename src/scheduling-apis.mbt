@@ -381,7 +381,7 @@ pub extern "js" fn TaskController::to_abort_controller(
 pub(all) enum TaskControllerSetPriorityError {
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn TaskController::new() -> TaskController =

@@ -201,7 +201,7 @@ pub(all) enum IntersectionObserverConstructorError {
   RangeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn IntersectionObserver::new(

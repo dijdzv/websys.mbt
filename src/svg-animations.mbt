@@ -148,14 +148,14 @@ pub extern "js" fn SVGAnimationElement::as_svg_animate_transform_element(
 pub(all) enum SVGAnimationElementGetStartTimeError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGAnimationElementGetSimpleDurationError {
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn SVGAnimationElement::get_target_element(

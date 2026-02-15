@@ -714,7 +714,7 @@ pub extern "js" fn QuotaExceededError::to_dom_exception(
 pub(all) enum QuotaExceededErrorConstructorError {
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn QuotaExceededError::new() -> Result[

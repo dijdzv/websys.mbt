@@ -132,7 +132,7 @@ pub extern "js" fn Accelerometer::as_gravity_sensor(
 pub(all) enum AccelerometerConstructorError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Accelerometer::new() -> Result[
@@ -227,7 +227,7 @@ pub extern "js" fn LinearAccelerationSensor::to_event_target(
 pub(all) enum LinearAccelerationSensorConstructorError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn LinearAccelerationSensor::new() -> Result[
@@ -300,7 +300,7 @@ pub extern "js" fn GravitySensor::to_event_target(
 pub(all) enum GravitySensorConstructorError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn GravitySensor::new() -> Result[

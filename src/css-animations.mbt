@@ -180,7 +180,7 @@ pub extern "js" fn CSSKeyframeRule::to_css_rule(
 pub(all) enum CSSKeyframeRuleSetKeyTextError {
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CSSKeyframeRule::get_key_text(

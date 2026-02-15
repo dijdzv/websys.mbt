@@ -256,7 +256,7 @@ pub(all) enum ProfilerConstructorError {
   RangeError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Profiler::get_sample_interval(

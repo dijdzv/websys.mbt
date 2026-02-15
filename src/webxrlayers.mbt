@@ -1777,21 +1777,21 @@ pub extern "js" fn JsValue::to_xr_web_gl_binding(
 pub(all) enum XRWebGLBindingConstructorError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum XRWebGLBindingGetSubImageError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum XRWebGLBindingGetViewSubImageError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1799,7 +1799,7 @@ pub(all) enum XRWebGLBindingGetDepthInformationError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn XRWebGLBinding::new(
@@ -2034,7 +2034,7 @@ pub extern "js" fn JsValue::to_xr_media_binding(
 pub(all) enum XRMediaBindingConstructorError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn XRMediaBinding::new(

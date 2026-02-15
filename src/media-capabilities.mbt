@@ -777,14 +777,14 @@ pub(all) enum MediaCapabilitiesDecodingInfoError {
   SecurityError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum MediaCapabilitiesEncodingInfoError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 extern "js" fn MediaCapabilities::decoding_info_ffi(
@@ -796,7 +796,7 @@ extern "js" fn MediaCapabilities::decoding_info_ffi(
   #| (self, configuration) => self.decodingInfo(configuration).then(v => ({
   #|   keySystemAccess: v.keySystemAccess,
   #|   configuration: v.configuration
-  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn MediaCapabilities::decoding_info(
@@ -817,7 +817,7 @@ extern "js" fn MediaCapabilities::encoding_info_ffi(
 ] =
   #| (self, configuration) => self.encodingInfo(configuration).then(v => ({
   #|   configuration: v.configuration
-  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn MediaCapabilities::encoding_info(

@@ -2303,7 +2303,7 @@ pub(all) enum SVGLengthNewValueSpecifiedUnitsError {
   NotSupportedError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 // SVGLength.SVG_LENGTHTYPE_UNKNOWN
 
@@ -2448,7 +2448,7 @@ pub(all) enum SVGAngleNewValueSpecifiedUnitsError {
   NotSupportedError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 // SVGAngle.SVG_ANGLETYPE_UNKNOWN
 
@@ -2563,28 +2563,28 @@ pub extern "js" fn JsValue::to_svg_number_list(self : JsValue) -> SVGNumberList 
 pub(all) enum SVGNumberListClearError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGNumberListInitializeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGNumberListGetItemError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGNumberListInsertItemBeforeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -2592,7 +2592,7 @@ pub(all) enum SVGNumberListReplaceItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -2600,14 +2600,14 @@ pub(all) enum SVGNumberListRemoveItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGNumberListAppendItemError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn SVGNumberList::get_length(self : SVGNumberList) -> Int =
@@ -2723,28 +2723,28 @@ pub extern "js" fn JsValue::to_svg_length_list(self : JsValue) -> SVGLengthList 
 pub(all) enum SVGLengthListClearError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGLengthListInitializeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGLengthListGetItemError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGLengthListInsertItemBeforeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -2752,7 +2752,7 @@ pub(all) enum SVGLengthListReplaceItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -2760,14 +2760,14 @@ pub(all) enum SVGLengthListRemoveItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGLengthListAppendItemError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn SVGLengthList::get_length(self : SVGLengthList) -> Int =
@@ -2883,28 +2883,28 @@ pub extern "js" fn JsValue::to_svg_string_list(self : JsValue) -> SVGStringList 
 pub(all) enum SVGStringListClearError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGStringListInitializeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGStringListGetItemError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGStringListInsertItemBeforeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -2912,7 +2912,7 @@ pub(all) enum SVGStringListReplaceItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -2920,14 +2920,14 @@ pub(all) enum SVGStringListRemoveItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGStringListAppendItemError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn SVGStringList::get_length(self : SVGStringList) -> Int =
@@ -3377,7 +3377,7 @@ pub extern "js" fn JsValue::to_svg_animated_string(
 pub(all) enum SVGAnimatedStringSetBaseValError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn SVGAnimatedString::get_base_val(
@@ -4943,42 +4943,42 @@ pub extern "js" fn JsValue::to_svg_transform(self : JsValue) -> SVGTransform =
 pub(all) enum SVGTransformSetMatrixError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformSetTranslateError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformSetScaleError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformSetRotateError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformSetSkewXError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformSetSkewYError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 // SVGTransform.SVG_TRANSFORM_UNKNOWN
 
@@ -5130,28 +5130,28 @@ pub extern "js" fn JsValue::to_svg_transform_list(
 pub(all) enum SVGTransformListClearError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformListInitializeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformListGetItemError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformListInsertItemBeforeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -5159,7 +5159,7 @@ pub(all) enum SVGTransformListReplaceItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -5167,21 +5167,21 @@ pub(all) enum SVGTransformListRemoveItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformListAppendItemError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformListConsolidateError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn SVGTransformList::get_length(self : SVGTransformList) -> Int =
@@ -5941,28 +5941,28 @@ pub extern "js" fn JsValue::to_svg_point_list(self : JsValue) -> SVGPointList =
 pub(all) enum SVGPointListClearError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGPointListInitializeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGPointListGetItemError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGPointListInsertItemBeforeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -5970,7 +5970,7 @@ pub(all) enum SVGPointListReplaceItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -5978,14 +5978,14 @@ pub(all) enum SVGPointListRemoveItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGPointListAppendItemError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn SVGPointList::get_length(self : SVGPointList) -> Int =
@@ -6331,35 +6331,35 @@ pub extern "js" fn SVGTextContentElement::as_svg_text_path_element(
 pub(all) enum SVGTextContentElementGetSubStringLengthError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTextContentElementGetStartPositionOfCharError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTextContentElementGetEndPositionOfCharError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTextContentElementGetExtentOfCharError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTextContentElementGetRotationOfCharError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 // SVGTextContentElement.LENGTHADJUST_UNKNOWN
 

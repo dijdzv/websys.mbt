@@ -319,7 +319,7 @@ pub extern "js" fn XRCPUDepthInformation::to_xr_depth_information(
 pub(all) enum XRCPUDepthInformationGetDepthInMetersError {
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn XRCPUDepthInformation::get_data(

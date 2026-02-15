@@ -452,14 +452,14 @@ pub(all) enum CredentialsContainerGetError {
   NotAllowedError(JsError)
   IdentityCredentialError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CredentialsContainerStoreError {
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -468,20 +468,20 @@ pub(all) enum CredentialsContainerCreateError {
   AbortError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CredentialsContainer::get(
   self : CredentialsContainer,
 ) -> Promise[Result[Credential?, CredentialsContainerGetError]] =
-  #| (self) => self.get().then(v => ({ $tag: 1, _0: (() => { const v = v; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NetworkError') return { $tag: 1, _0: e }; if (n === 'TimeoutError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'IdentityCredentialError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }))
+  #| (self) => self.get().then(r => ({ $tag: 1, _0: (() => { const v = r; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NetworkError') return { $tag: 1, _0: e }; if (n === 'TimeoutError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'IdentityCredentialError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }))
 
 ///|
 extern "js" fn CredentialsContainer::get_with_options_ffi(
   self : CredentialsContainer,
   options : JsValue,
 ) -> Promise[Result[Credential?, CredentialsContainerGetError]] =
-  #| (self, options) => self.get(options).then(v => ({ $tag: 1, _0: (() => { const v = v; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NetworkError') return { $tag: 1, _0: e }; if (n === 'TimeoutError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'IdentityCredentialError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }))
+  #| (self, options) => self.get(options).then(r => ({ $tag: 1, _0: (() => { const v = r; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NetworkError') return { $tag: 1, _0: e }; if (n === 'TimeoutError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'IdentityCredentialError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }))
 
 ///|
 pub fn CredentialsContainer::get_with_options(
@@ -496,20 +496,20 @@ pub extern "js" fn CredentialsContainer::store(
   self : CredentialsContainer,
   credential : Credential,
 ) -> Promise[Result[Unit, CredentialsContainerStoreError]] =
-  #| (self, credential) => self.store(credential).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, credential) => self.store(credential).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn CredentialsContainer::create(
   self : CredentialsContainer,
 ) -> Promise[Result[Credential?, CredentialsContainerCreateError]] =
-  #| (self) => self.create().then(v => ({ $tag: 1, _0: (() => { const v = v; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self) => self.create().then(r => ({ $tag: 1, _0: (() => { const v = r; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn CredentialsContainer::create_with_options_ffi(
   self : CredentialsContainer,
   options : JsValue,
 ) -> Promise[Result[Credential?, CredentialsContainerCreateError]] =
-  #| (self, options) => self.create(options).then(v => ({ $tag: 1, _0: (() => { const v = v; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, options) => self.create(options).then(r => ({ $tag: 1, _0: (() => { const v = r; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn CredentialsContainer::create_with_options(
@@ -574,7 +574,7 @@ pub extern "js" fn PasswordCredential::to_credential(
 pub(all) enum PasswordCredentialConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn PasswordCredential::new_with_html_form_element(

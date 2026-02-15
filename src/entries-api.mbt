@@ -223,7 +223,7 @@ pub(all) enum FileSystemDirectoryEntryGetFileError {
   SecurityError(JsError)
   TypeMismatchError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -232,7 +232,7 @@ pub(all) enum FileSystemDirectoryEntryGetDirectoryError {
   SecurityError(JsError)
   TypeMismatchError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn FileSystemDirectoryEntry::create_reader(

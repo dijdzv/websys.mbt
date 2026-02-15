@@ -448,7 +448,7 @@ pub extern "js" fn JsValue::to_media_session(self : JsValue) -> MediaSession =
 pub(all) enum MediaSessionSetPositionStateError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn MediaSession::get_metadata(

@@ -154,21 +154,21 @@ pub(all) enum PermissionsQueryError {
   TypeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PermissionsRevokeError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Permissions::query(
   self : Permissions,
   permission_desc : JsValue,
 ) -> Promise[Result[PermissionStatus, PermissionsQueryError]] =
-  #| (self, permission_desc) => self.query(permission_desc).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self, permission_desc) => self.query(permission_desc).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Permissions::request(
@@ -183,7 +183,7 @@ pub extern "js" fn Permissions::revoke(
   self : Permissions,
   permission_desc : JsValue,
 ) -> Promise[Result[PermissionStatus, PermissionsRevokeError]] =
-  #| (self, permission_desc) => self.revoke(permission_desc).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, permission_desc) => self.revoke(permission_desc).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 /// PermissionStatus interface

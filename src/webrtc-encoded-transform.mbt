@@ -1238,7 +1238,7 @@ pub(all) enum RTCEncodedVideoFrameConstructorError {
   TypeError(JsError)
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn RTCEncodedVideoFrame::new(
@@ -1330,7 +1330,7 @@ pub(all) enum RTCEncodedAudioFrameConstructorError {
   TypeError(JsError)
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn RTCEncodedAudioFrame::new(
@@ -1415,7 +1415,7 @@ pub extern "js" fn JsValue::to_rtc_rtp_script_transform(
 pub(all) enum RTCRtpScriptTransformConstructorError {
   DataCloneError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn RTCRtpScriptTransform::new(
@@ -1482,14 +1482,14 @@ pub(all) enum RTCRtpScriptTransformerGenerateKeyFrameError {
   NotFoundError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum RTCRtpScriptTransformerSendKeyFrameRequestError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn RTCRtpScriptTransformer::get_readable(
@@ -1501,20 +1501,20 @@ pub extern "js" fn RTCRtpScriptTransformer::get_readable(
 pub extern "js" fn RTCRtpScriptTransformer::generate_key_frame(
   self : RTCRtpScriptTransformer,
 ) -> Promise[Result[Unit, RTCRtpScriptTransformerGenerateKeyFrameError]] =
-  #| (self) => self.generateKeyFrame().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self) => self.generateKeyFrame().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RTCRtpScriptTransformer::generate_key_frame_with_rid(
   self : RTCRtpScriptTransformer,
   rid : String,
 ) -> Promise[Result[Unit, RTCRtpScriptTransformerGenerateKeyFrameError]] =
-  #| (self, rid) => self.generateKeyFrame(rid).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, rid) => self.generateKeyFrame(rid).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RTCRtpScriptTransformer::send_key_frame_request(
   self : RTCRtpScriptTransformer,
 ) -> Promise[Result[Unit, RTCRtpScriptTransformerSendKeyFrameRequestError]] =
-  #| (self) => self.sendKeyFrameRequest().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.sendKeyFrameRequest().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RTCRtpScriptTransformer::get_writable(

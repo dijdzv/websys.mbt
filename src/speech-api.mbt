@@ -472,7 +472,7 @@ pub extern "js" fn SpeechRecognition::to_event_target(
 pub(all) enum SpeechRecognitionStartError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -480,7 +480,7 @@ pub(all) enum SpeechRecognitionAvailableError {
   SyntaxError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -488,7 +488,7 @@ pub(all) enum SpeechRecognitionInstallError {
   SyntaxError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn SpeechRecognition::new() -> SpeechRecognition =
@@ -610,7 +610,7 @@ pub extern "js" fn SpeechRecognition::abort(self : SpeechRecognition) -> Unit =
 extern "js" fn SpeechRecognition::available_ffi(
   options : JsValue,
 ) -> Promise[Result[AvailabilityStatus, SpeechRecognitionAvailableError]] =
-  #| (options) => SpeechRecognition.available(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (options) => SpeechRecognition.available(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn SpeechRecognition::available(
@@ -623,7 +623,7 @@ pub fn SpeechRecognition::available(
 extern "js" fn SpeechRecognition::install_ffi(
   options : JsValue,
 ) -> Promise[Result[Bool, SpeechRecognitionInstallError]] =
-  #| (options) => SpeechRecognition.install(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (options) => SpeechRecognition.install(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn SpeechRecognition::install(
@@ -1286,7 +1286,7 @@ pub extern "js" fn JsValue::to_speech_recognition_phrase(
 pub(all) enum SpeechRecognitionPhraseConstructorError {
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn SpeechRecognitionPhrase::new(

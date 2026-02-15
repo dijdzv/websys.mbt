@@ -175,7 +175,7 @@ pub(all) enum MediaSourceSetDurationError {
   InvalidStateError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -185,21 +185,21 @@ pub(all) enum MediaSourceAddSourceBufferError {
   InvalidAccessError(JsError)
   QuotaExceededError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum MediaSourceRemoveSourceBufferError {
   NotFoundError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum MediaSourceEndOfStreamError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn MediaSource::new() -> MediaSource =
@@ -410,14 +410,14 @@ pub(all) enum SourceBufferSetModeError {
   InvalidStateError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SourceBufferSetTimestampOffsetError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -425,7 +425,7 @@ pub(all) enum SourceBufferSetAppendWindowStartError {
   InvalidStateError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -433,7 +433,7 @@ pub(all) enum SourceBufferSetAppendWindowEndError {
   InvalidStateError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -441,14 +441,14 @@ pub(all) enum SourceBufferAppendBufferError {
   InvalidStateError(JsError)
   QuotaExceededError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SourceBufferAbortError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -457,7 +457,7 @@ pub(all) enum SourceBufferChangeTypeError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -465,7 +465,7 @@ pub(all) enum SourceBufferRemoveError {
   InvalidStateError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn SourceBuffer::get_mode(self : SourceBuffer) -> AppendMode =

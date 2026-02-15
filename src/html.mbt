@@ -4384,7 +4384,7 @@ pub extern "js" fn HTMLOptionsCollection::to_html_collection(
 pub(all) enum HTMLOptionsCollectionAddError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HTMLOptionsCollection::get_length(
@@ -5004,21 +5004,21 @@ pub extern "js" fn HTMLElement::as_html_geolocation_element(
 pub(all) enum HTMLElementAttachInternalsError {
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLElementShowPopoverError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLElementHidePopoverError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HTMLElement::new() -> HTMLElement =
@@ -10005,7 +10005,7 @@ pub extern "js" fn HTMLImageElement::to_event_target(
 pub(all) enum HTMLImageElementDecodeError {
   EncodingError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HTMLImageElement::new() -> HTMLImageElement =
@@ -10200,7 +10200,7 @@ pub extern "js" fn HTMLImageElement::set_fetch_priority(
 pub extern "js" fn HTMLImageElement::decode(
   self : HTMLImageElement,
 ) -> Promise[Result[Unit, HTMLImageElementDecodeError]] =
-  #| (self) => self.decode().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.decode().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HTMLImageElement::get_x(self : HTMLImageElement) -> Int =
@@ -10400,7 +10400,7 @@ pub extern "js" fn HTMLIFrameElement::to_event_target(
 pub(all) enum HTMLIFrameElementSetSrcdocError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HTMLIFrameElement::new() -> HTMLIFrameElement =
@@ -11251,7 +11251,7 @@ pub(all) enum HTMLVideoElementRequestPictureInPictureError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HTMLVideoElement::new() -> HTMLVideoElement =
@@ -11343,7 +11343,7 @@ pub extern "js" fn HTMLVideoElement::request_picture_in_picture(
 ) -> Promise[
   Result[PictureInPictureWindow, HTMLVideoElementRequestPictureInPictureError],
 ] =
-  #| (self) => self.requestPictureInPicture().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+  #| (self) => self.requestPictureInPicture().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HTMLVideoElement::set_onenterpictureinpicture(
@@ -11690,7 +11690,7 @@ pub extern "js" fn HTMLMediaElement::as_html_audio_element(
 pub(all) enum HTMLMediaElementSetDefaultPlaybackRateError {
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -11698,7 +11698,7 @@ pub(all) enum HTMLMediaElementPlayError {
   NotAllowedError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -11707,7 +11707,7 @@ pub(all) enum HTMLMediaElementSetSinkIdError {
   NotFoundError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -11716,7 +11716,7 @@ pub(all) enum HTMLMediaElementSetMediaKeysError {
   NotSupportedError(JsError)
   QuotaExceededError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HTMLMediaElement::get_error(
@@ -11981,7 +11981,7 @@ pub extern "js" fn HTMLMediaElement::set_loop(
 pub extern "js" fn HTMLMediaElement::play(
   self : HTMLMediaElement,
 ) -> Promise[Result[Unit, HTMLMediaElementPlayError]] =
-  #| (self) => self.play().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.play().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HTMLMediaElement::pause(self : HTMLMediaElement) -> Unit =
@@ -12082,7 +12082,7 @@ pub extern "js" fn HTMLMediaElement::set_sink_id(
   self : HTMLMediaElement,
   sink_id : String,
 ) -> Promise[Result[Unit, HTMLMediaElementSetSinkIdError]] =
-  #| (self, sink_id) => self.setSinkId(sink_id).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, sink_id) => self.setSinkId(sink_id).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HTMLMediaElement::get_media_keys(
@@ -12121,7 +12121,7 @@ pub extern "js" fn HTMLMediaElement::set_media_keys(
   self : HTMLMediaElement,
   media_keys : MediaKeys?,
 ) -> Promise[Result[Unit, HTMLMediaElementSetMediaKeysError]] =
-  #| (self, media_keys) => self.setMediaKeys((media_keys.$tag === 1 ? media_keys._0 : null)).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, media_keys) => self.setMediaKeys((media_keys.$tag === 1 ? media_keys._0 : null)).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn HTMLMediaElement::capture_stream(
@@ -12663,14 +12663,14 @@ pub extern "js" fn TextTrack::to_event_target(self : TextTrack) -> EventTarget =
 pub(all) enum TextTrackAddCueError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum TextTrackRemoveCueError {
   NotFoundError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn TextTrack::get_kind(self : TextTrack) -> TextTrackKind =
@@ -12950,14 +12950,14 @@ pub extern "js" fn JsValue::to_time_ranges(self : JsValue) -> TimeRanges =
 pub(all) enum TimeRangesStartError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum TimeRangesEndError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn TimeRanges::get_length(self : TimeRanges) -> Int =
@@ -13494,14 +13494,14 @@ pub extern "js" fn HTMLTableElement::to_event_target(
 pub(all) enum HTMLTableElementInsertRowError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLTableElementDeleteRowError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HTMLTableElement::new() -> HTMLTableElement =
@@ -14055,14 +14055,14 @@ pub extern "js" fn HTMLTableSectionElement::to_event_target(
 pub(all) enum HTMLTableSectionElementInsertRowError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLTableSectionElementDeleteRowError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HTMLTableSectionElement::new() -> HTMLTableSectionElement =
@@ -14221,14 +14221,14 @@ pub extern "js" fn HTMLTableRowElement::to_event_target(
 pub(all) enum HTMLTableRowElementInsertCellError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLTableRowElementDeleteCellError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HTMLTableRowElement::new() -> HTMLTableRowElement =
@@ -14679,7 +14679,7 @@ pub(all) enum HTMLFormElementRequestSubmitError {
   TypeError(JsError)
   NotFoundError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HTMLFormElement::new() -> HTMLFormElement =
@@ -15029,14 +15029,14 @@ pub extern "js" fn HTMLInputElement::to_event_target(
 pub(all) enum HTMLInputElementStepDownError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLInputElementSetSelectionRangeError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -15045,7 +15045,7 @@ pub(all) enum HTMLInputElementShowPickerError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HTMLInputElement::new() -> HTMLInputElement =
@@ -16105,7 +16105,7 @@ pub extern "js" fn HTMLSelectElement::to_event_target(
 pub(all) enum HTMLSelectElementAddError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -16115,7 +16115,7 @@ pub(all) enum HTMLSelectElementShowPickerError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HTMLSelectElement::new() -> HTMLSelectElement =
@@ -18146,14 +18146,14 @@ pub extern "js" fn HTMLDialogElement::to_event_target(
 pub(all) enum HTMLDialogElementShowError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLDialogElementShowModalError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HTMLDialogElement::new() -> HTMLDialogElement =
@@ -18299,14 +18299,14 @@ pub extern "js" fn HTMLScriptElement::to_event_target(
 pub(all) enum HTMLScriptElementSetSrcError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLScriptElementSetTextError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HTMLScriptElement::new() -> HTMLScriptElement =
@@ -18706,7 +18706,7 @@ pub extern "js" fn HTMLSlotElement::to_event_target(
 pub(all) enum HTMLSlotElementAssignError {
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HTMLSlotElement::new() -> HTMLSlotElement =
@@ -18837,28 +18837,28 @@ pub extern "js" fn HTMLCanvasElement::to_event_target(
 pub(all) enum HTMLCanvasElementGetContextError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLCanvasElementToDataURLError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLCanvasElementToBlobError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLCanvasElementTransferControlToOffscreenError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -18866,7 +18866,7 @@ pub(all) enum HTMLCanvasElementCaptureStreamError {
   SecurityError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn HTMLCanvasElement::new() -> HTMLCanvasElement =
@@ -19005,7 +19005,7 @@ pub extern "js" fn JsValue::to_canvas_rendering_context_2d(
 pub(all) enum CanvasRenderingContext2DCreateLinearGradientError {
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -19013,7 +19013,7 @@ pub(all) enum CanvasRenderingContext2DCreateRadialGradientError {
   IndexSizeError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -19021,14 +19021,14 @@ pub(all) enum CanvasRenderingContext2DDrawImageError {
   InvalidStateError(JsError)
   TypeMismatchError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CanvasRenderingContext2DCreateImageDataError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -19036,7 +19036,7 @@ pub(all) enum CanvasRenderingContext2DGetImageDataError {
   SecurityError(JsError)
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -19044,21 +19044,21 @@ pub(all) enum CanvasRenderingContext2DPutImageDataError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CanvasRenderingContext2DArcToError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CanvasRenderingContext2DRoundRectError {
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_canvas(
@@ -20216,7 +20216,7 @@ pub(all) enum CanvasGradientAddColorStopError {
   SyntaxError(JsError)
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CanvasGradient::add_color_stop(
@@ -20406,14 +20406,14 @@ pub extern "js" fn JsValue::to_path_2d(self : JsValue) -> Path2D =
 pub(all) enum Path2DArcToError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum Path2DRoundRectError {
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Path2D::new() -> Path2D =
@@ -20678,14 +20678,14 @@ pub extern "js" fn OffscreenCanvas::to_event_target(
 pub(all) enum OffscreenCanvasGetContextError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum OffscreenCanvasTransferToImageBitmapError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -20695,7 +20695,7 @@ pub(all) enum OffscreenCanvasConvertToBlobError {
   IndexSizeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn OffscreenCanvas::new(
@@ -20751,14 +20751,14 @@ pub extern "js" fn OffscreenCanvas::transfer_to_image_bitmap(
 pub extern "js" fn OffscreenCanvas::convert_to_blob(
   self : OffscreenCanvas,
 ) -> Promise[Result[Blob, OffscreenCanvasConvertToBlobError]] =
-  #| (self) => self.convertToBlob().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'IndexSizeError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+  #| (self) => self.convertToBlob().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'IndexSizeError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 extern "js" fn OffscreenCanvas::convert_to_blob_with_options_ffi(
   self : OffscreenCanvas,
   options : JsValue,
 ) -> Promise[Result[Blob, OffscreenCanvasConvertToBlobError]] =
-  #| (self, options) => self.convertToBlob(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'IndexSizeError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+  #| (self, options) => self.convertToBlob(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'IndexSizeError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub fn OffscreenCanvas::convert_to_blob_with_options(
@@ -20837,7 +20837,7 @@ pub extern "js" fn JsValue::to_offscreen_canvas_rendering_context_2d(
 pub(all) enum OffscreenCanvasRenderingContext2DCreateLinearGradientError {
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -20845,7 +20845,7 @@ pub(all) enum OffscreenCanvasRenderingContext2DCreateRadialGradientError {
   IndexSizeError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -20853,14 +20853,14 @@ pub(all) enum OffscreenCanvasRenderingContext2DDrawImageError {
   InvalidStateError(JsError)
   TypeMismatchError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum OffscreenCanvasRenderingContext2DCreateImageDataError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -20868,7 +20868,7 @@ pub(all) enum OffscreenCanvasRenderingContext2DGetImageDataError {
   SecurityError(JsError)
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -20876,21 +20876,21 @@ pub(all) enum OffscreenCanvasRenderingContext2DPutImageDataError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum OffscreenCanvasRenderingContext2DArcToError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum OffscreenCanvasRenderingContext2DRoundRectError {
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_canvas(
@@ -22042,7 +22042,7 @@ pub(all) enum CustomElementRegistryDefineError {
   SyntaxError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CustomElementRegistry::new() -> CustomElementRegistry =
@@ -22158,7 +22158,7 @@ pub extern "js" fn JsValue::to_element_internals(
 pub(all) enum ElementInternalsSetFormValueError {
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -22167,21 +22167,21 @@ pub(all) enum ElementInternalsSetValidityError {
   NotFoundError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementInternalsCheckValidityError {
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementInternalsReportValidityError {
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn ElementInternals::get_shadow_root(
@@ -23496,14 +23496,14 @@ pub extern "js" fn JsValue::to_data_transfer_item_list(
 pub(all) enum DataTransferItemListAddError {
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DataTransferItemListRemoveError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn DataTransferItemList::get_length(
@@ -23777,7 +23777,7 @@ pub(all) enum WindowShowOpenFilePickerError {
   AbortError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -23786,7 +23786,7 @@ pub(all) enum WindowShowSaveFilePickerError {
   AbortError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -23794,14 +23794,14 @@ pub(all) enum WindowShowDirectoryPickerError {
   AbortError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WindowGetComputedStyleError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -23809,14 +23809,14 @@ pub(all) enum WindowQueryLocalFontsError {
   SecurityError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WindowGetScreenDetailsError {
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -23825,21 +23825,21 @@ pub(all) enum WindowFetchLaterError {
   RangeError(JsError)
   QuotaExceededError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WindowBtoaError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WindowAtobError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -23847,7 +23847,7 @@ pub(all) enum WindowSetTimeoutError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -23855,14 +23855,14 @@ pub(all) enum WindowSetIntervalError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WindowStructuredCloneError {
   DataCloneError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -23871,7 +23871,7 @@ pub(all) enum WindowFetchError {
   AbortError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Window::get_window(self : Window) -> Window =
@@ -24106,14 +24106,14 @@ pub extern "js" fn Window::post_message_with_message_and_target_origin_and_trans
 pub extern "js" fn Window::show_open_file_picker(
   self : Window,
 ) -> Promise[Result[Array[FileSystemFileHandle], WindowShowOpenFilePickerError]] =
-  #| (self) => self.showOpenFilePicker().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self) => self.showOpenFilePicker().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn Window::show_open_file_picker_with_options_ffi(
   self : Window,
   options : JsValue,
 ) -> Promise[Result[Array[FileSystemFileHandle], WindowShowOpenFilePickerError]] =
-  #| (self, options) => self.showOpenFilePicker(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, options) => self.showOpenFilePicker(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn Window::show_open_file_picker_with_options(
@@ -24127,14 +24127,14 @@ pub fn Window::show_open_file_picker_with_options(
 pub extern "js" fn Window::show_save_file_picker(
   self : Window,
 ) -> Promise[Result[FileSystemFileHandle, WindowShowSaveFilePickerError]] =
-  #| (self) => self.showSaveFilePicker().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self) => self.showSaveFilePicker().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn Window::show_save_file_picker_with_options_ffi(
   self : Window,
   options : JsValue,
 ) -> Promise[Result[FileSystemFileHandle, WindowShowSaveFilePickerError]] =
-  #| (self, options) => self.showSaveFilePicker(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, options) => self.showSaveFilePicker(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn Window::show_save_file_picker_with_options(
@@ -24148,14 +24148,14 @@ pub fn Window::show_save_file_picker_with_options(
 pub extern "js" fn Window::show_directory_picker(
   self : Window,
 ) -> Promise[Result[FileSystemDirectoryHandle, WindowShowDirectoryPickerError]] =
-  #| (self) => self.showDirectoryPicker().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.showDirectoryPicker().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn Window::show_directory_picker_with_options_ffi(
   self : Window,
   options : JsValue,
 ) -> Promise[Result[FileSystemDirectoryHandle, WindowShowDirectoryPickerError]] =
-  #| (self, options) => self.showDirectoryPicker(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self, options) => self.showDirectoryPicker(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn Window::show_directory_picker_with_options(
@@ -24413,14 +24413,14 @@ pub extern "js" fn Window::get_computed_style_with_pseudo_elt(
 pub extern "js" fn Window::query_local_fonts(
   self : Window,
 ) -> Promise[Result[Array[FontData], WindowQueryLocalFontsError]] =
-  #| (self) => self.queryLocalFonts().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.queryLocalFonts().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn Window::query_local_fonts_with_options_ffi(
   self : Window,
   options : JsValue,
 ) -> Promise[Result[Array[FontData], WindowQueryLocalFontsError]] =
-  #| (self, options) => self.queryLocalFonts(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self, options) => self.queryLocalFonts(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn Window::query_local_fonts_with_options(
@@ -24451,7 +24451,7 @@ pub extern "js" fn Window::get_shared_storage(self : Window) -> SharedStorage? =
 pub extern "js" fn Window::get_screen_details(
   self : Window,
 ) -> Promise[Result[ScreenDetails, WindowGetScreenDetailsError]] =
-  #| (self) => self.getScreenDetails().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.getScreenDetails().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Window::get_cookie_store(self : Window) -> CookieStore =
@@ -26192,7 +26192,7 @@ pub extern "js" fn Window::fetch(
   self : Window,
   input : RequestInfo,
 ) -> Promise[Result[Response, WindowFetchError]] =
-  #| (self, input) => self.fetch(input).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, input) => self.fetch(input).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn Window::fetch_with_init_ffi(
@@ -26200,7 +26200,7 @@ extern "js" fn Window::fetch_with_init_ffi(
   input : RequestInfo,
   init_ : JsValue,
 ) -> Promise[Result[Response, WindowFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn Window::fetch_with_init(
@@ -26333,7 +26333,7 @@ pub extern "js" fn Window::fetch_with_request(
   input : Request,
   init_ : RequestInit,
 ) -> Promise[Result[Response, WindowFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Window::fetch_with_string(
@@ -26341,7 +26341,7 @@ pub extern "js" fn Window::fetch_with_string(
   input : String,
   init_ : RequestInit,
 ) -> Promise[Result[Response, WindowFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 /// BarProp interface
@@ -26409,7 +26409,7 @@ pub(all) enum LocationAssignError {
   SyntaxError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -26417,14 +26417,14 @@ pub(all) enum LocationReplaceError {
   SyntaxError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum LocationReloadError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Location::get_href(self : Location) -> String =
@@ -26565,21 +26565,21 @@ pub extern "js" fn JsValue::to_history(self : JsValue) -> History =
 pub(all) enum HistoryGoError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HistoryBackError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HistoryForwardError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -26587,7 +26587,7 @@ pub(all) enum HistoryPushStateError {
   SecurityError(JsError)
   DataCloneError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -26595,7 +26595,7 @@ pub(all) enum HistoryReplaceStateError {
   SecurityError(JsError)
   DataCloneError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn History::get_length(self : History) -> Int =
@@ -26715,7 +26715,7 @@ pub(all) enum NavigationUpdateCurrentEntryError {
   DataCloneError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -26725,35 +26725,35 @@ pub(all) enum NavigationNavigateError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigationReloadError {
   DataCloneError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigationTraverseToError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigationBackError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigationForwardError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Navigation::entries(
@@ -27218,7 +27218,7 @@ pub(all) enum NavigateEventInterceptError {
   SecurityError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -27226,7 +27226,7 @@ pub(all) enum NavigateEventScrollError {
   SecurityError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 extern "js" fn NavigateEvent::new_ffi(
@@ -27377,7 +27377,7 @@ pub(all) enum NavigationPrecommitControllerRedirectError {
   SecurityError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -27385,7 +27385,7 @@ pub(all) enum NavigationPrecommitControllerAddHandlerError {
   SecurityError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn NavigationPrecommitController::redirect(
@@ -28277,7 +28277,7 @@ pub extern "js" fn JsValue::to_dom_parser(self : JsValue) -> DOMParser =
 pub(all) enum DOMParserParseFromStringError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn DOMParser::new() -> DOMParser =
@@ -28328,7 +28328,7 @@ pub(all) enum XMLSerializerSerializeToStringError {
   SyntaxError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn XMLSerializer::new() -> XMLSerializer =
@@ -28377,7 +28377,7 @@ pub(all) enum NavigatorRequestMIDIAccessError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -28386,14 +28386,14 @@ pub(all) enum NavigatorRequestMediaKeySystemAccessError {
   SecurityError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigatorGetInstalledRelatedAppsError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -28401,21 +28401,21 @@ pub(all) enum NavigatorGetBatteryError {
   SecurityError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigatorGetGamepadsError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigatorDeprecatedReplaceInURNError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -28426,14 +28426,14 @@ pub(all) enum NavigatorShareError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigatorGetAutoplayPolicyError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -28442,7 +28442,7 @@ pub(all) enum NavigatorSetAppBadgeError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -28451,7 +28451,7 @@ pub(all) enum NavigatorClearAppBadgeError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -28459,7 +28459,7 @@ pub(all) enum NavigatorRegisterProtocolHandlerError {
   SyntaxError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -28467,7 +28467,7 @@ pub(all) enum NavigatorUnregisterProtocolHandlerError {
   SyntaxError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Navigator::get_clipboard(self : Navigator) -> Clipboard =
@@ -28499,14 +28499,14 @@ pub extern "js" fn Navigator::get_serial(self : Navigator) -> Serial =
 pub extern "js" fn Navigator::request_midi_access(
   self : Navigator,
 ) -> Promise[Result[MIDIAccess, NavigatorRequestMIDIAccessError]] =
-  #| (self) => self.requestMIDIAccess().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+  #| (self) => self.requestMIDIAccess().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 extern "js" fn Navigator::request_midi_access_with_options_ffi(
   self : Navigator,
   options : JsValue,
 ) -> Promise[Result[MIDIAccess, NavigatorRequestMIDIAccessError]] =
-  #| (self, options) => self.requestMIDIAccess(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+  #| (self, options) => self.requestMIDIAccess(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub fn Navigator::request_midi_access_with_options(
@@ -28549,7 +28549,7 @@ pub extern "js" fn Navigator::request_media_key_system_access(
 ) -> Promise[
   Result[MediaKeySystemAccess, NavigatorRequestMediaKeySystemAccessError],
 ] =
-  #| (self, key_system, supported_configurations) => self.requestMediaKeySystemAccess(key_system, supported_configurations).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, key_system, supported_configurations) => self.requestMediaKeySystemAccess(key_system, supported_configurations).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::get_login(self : Navigator) -> NavigatorLogin =
@@ -28639,13 +28639,13 @@ pub extern "js" fn Navigator::get_installed_related_apps(
 ) -> Promise[
   Result[Array[RelatedApplication], NavigatorGetInstalledRelatedAppsError],
 ] =
-  #| (self) => self.getInstalledRelatedApps().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.getInstalledRelatedApps().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::get_battery(
   self : Navigator,
 ) -> Promise[Result[BatteryManager, NavigatorGetBatteryError]] =
-  #| (self) => self.getBattery().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.getBattery().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn Navigator::join_ad_interest_group_ffi(
@@ -28805,7 +28805,7 @@ pub extern "js" fn Navigator::deprecated_replace_in_urn(
   urn_or_config : UrnOrConfig,
   replacements : JsValue,
 ) -> Promise[Result[Unit, NavigatorDeprecatedReplaceInURNError]] =
-  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::deprecated_ur_nto_url(
@@ -28860,14 +28860,14 @@ pub extern "js" fn Navigator::get_max_touch_points(self : Navigator) -> Int =
 pub extern "js" fn Navigator::share(
   self : Navigator,
 ) -> Promise[Result[Unit, NavigatorShareError]] =
-  #| (self) => self.share().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'AbortError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
+  #| (self) => self.share().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'AbortError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
 ///|
 extern "js" fn Navigator::share_with_data_ffi(
   self : Navigator,
   data : JsValue,
 ) -> Promise[Result[Unit, NavigatorShareError]] =
-  #| (self, data) => self.share(data).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'AbortError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
+  #| (self, data) => self.share(data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'AbortError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
 ///|
 pub fn Navigator::share_with_data(
@@ -28941,20 +28941,20 @@ pub extern "js" fn Navigator::get_locks(self : Navigator) -> LockManager =
 pub extern "js" fn Navigator::set_app_badge(
   self : Navigator,
 ) -> Promise[Result[Unit, NavigatorSetAppBadgeError]] =
-  #| (self) => self.setAppBadge().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self) => self.setAppBadge().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::set_app_badge_with_contents(
   self : Navigator,
   contents : Int64,
 ) -> Promise[Result[Unit, NavigatorSetAppBadgeError]] =
-  #| (self, contents) => self.setAppBadge((contents.hi * 4294967296 + contents.lo)).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, contents) => self.setAppBadge((contents.hi * 4294967296 + contents.lo)).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::clear_app_badge(
   self : Navigator,
 ) -> Promise[Result[Unit, NavigatorClearAppBadgeError]] =
-  #| (self) => self.clearAppBadge().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self) => self.clearAppBadge().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::get_user_agent_data(
@@ -29118,7 +29118,7 @@ pub extern "js" fn Navigator::deprecated_replace_in_urn_with_string(
   urn_or_config : String,
   replacements : JsValue,
 ) -> Promise[Result[Unit, NavigatorDeprecatedReplaceInURNError]] =
-  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::deprecated_replace_in_urn_with_fenced_frame_config(
@@ -29126,7 +29126,7 @@ pub extern "js" fn Navigator::deprecated_replace_in_urn_with_fenced_frame_config
   urn_or_config : FencedFrameConfig,
   replacements : JsValue,
 ) -> Promise[Result[Unit, NavigatorDeprecatedReplaceInURNError]] =
-  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, urn_or_config, replacements) => self.deprecatedReplaceInURN(urn_or_config, replacements).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::deprecated_ur_nto_url_with_string(
@@ -29413,7 +29413,7 @@ pub(all) enum ImageDataConstructorError {
   IndexSizeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn ImageData::new(
@@ -29985,7 +29985,7 @@ pub(all) enum BroadcastChannelPostMessageError {
   DataCloneError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn BroadcastChannel::new(name : String) -> BroadcastChannel =
@@ -30109,21 +30109,21 @@ pub(all) enum WorkerGlobalScopeImportScriptsError {
   SyntaxError(JsError)
   NetworkError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WorkerGlobalScopeBtoaError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WorkerGlobalScopeAtobError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -30131,7 +30131,7 @@ pub(all) enum WorkerGlobalScopeSetTimeoutError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -30139,14 +30139,14 @@ pub(all) enum WorkerGlobalScopeSetIntervalError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WorkerGlobalScopeStructuredCloneError {
   DataCloneError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -30155,7 +30155,7 @@ pub(all) enum WorkerGlobalScopeFetchError {
   AbortError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn WorkerGlobalScope::get_self(
@@ -30505,7 +30505,7 @@ pub extern "js" fn WorkerGlobalScope::fetch(
   self : WorkerGlobalScope,
   input : RequestInfo,
 ) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] =
-  #| (self, input) => self.fetch(input).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, input) => self.fetch(input).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn WorkerGlobalScope::fetch_with_init_ffi(
@@ -30513,7 +30513,7 @@ extern "js" fn WorkerGlobalScope::fetch_with_init_ffi(
   input : RequestInfo,
   init_ : JsValue,
 ) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn WorkerGlobalScope::fetch_with_init(
@@ -30614,7 +30614,7 @@ pub extern "js" fn WorkerGlobalScope::fetch_with_request(
   input : Request,
   init_ : RequestInit,
 ) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WorkerGlobalScope::fetch_with_string(
@@ -30622,7 +30622,7 @@ pub extern "js" fn WorkerGlobalScope::fetch_with_string(
   input : String,
   init_ : RequestInit,
 ) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 /// DedicatedWorkerGlobalScope interface
@@ -30890,7 +30890,7 @@ pub(all) enum WorkerConstructorError {
   NetworkError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Worker::new(
@@ -31026,7 +31026,7 @@ pub(all) enum SharedWorkerConstructorError {
   NetworkError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn SharedWorker::new(
@@ -31101,7 +31101,7 @@ pub(all) enum WorkerNavigatorSetAppBadgeError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -31110,7 +31110,7 @@ pub(all) enum WorkerNavigatorClearAppBadgeError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn WorkerNavigator::get_serial(
@@ -31154,20 +31154,20 @@ pub extern "js" fn WorkerNavigator::get_locks(
 pub extern "js" fn WorkerNavigator::set_app_badge(
   self : WorkerNavigator,
 ) -> Promise[Result[Unit, WorkerNavigatorSetAppBadgeError]] =
-  #| (self) => self.setAppBadge().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self) => self.setAppBadge().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WorkerNavigator::set_app_badge_with_contents(
   self : WorkerNavigator,
   contents : Int64,
 ) -> Promise[Result[Unit, WorkerNavigatorSetAppBadgeError]] =
-  #| (self, contents) => self.setAppBadge((contents.hi * 4294967296 + contents.lo)).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, contents) => self.setAppBadge((contents.hi * 4294967296 + contents.lo)).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WorkerNavigator::clear_app_badge(
   self : WorkerNavigator,
 ) -> Promise[Result[Unit, WorkerNavigatorClearAppBadgeError]] =
-  #| (self) => self.clearAppBadge().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self) => self.clearAppBadge().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WorkerNavigator::get_user_agent_data(
@@ -31489,14 +31489,14 @@ pub(all) enum WorkletAddModuleError {
   AbortError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Worklet::add_module(
   self : Worklet,
   module_url : String,
 ) -> Promise[Result[Unit, WorkletAddModuleError]] =
-  #| (self, module_url) => self.addModule(module_url).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self, module_url) => self.addModule(module_url).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn Worklet::add_module_with_options_ffi(
@@ -31504,7 +31504,7 @@ extern "js" fn Worklet::add_module_with_options_ffi(
   module_url : String,
   options : JsValue,
 ) -> Promise[Result[Unit, WorkletAddModuleError]] =
-  #| (self, module_url, options) => self.addModule(module_url, options).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self, module_url, options) => self.addModule(module_url, options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn Worklet::add_module_with_options(
@@ -31548,7 +31548,7 @@ pub extern "js" fn JsValue::to_storage(self : JsValue) -> Storage =
 pub(all) enum StorageSetItemError {
   QuotaExceededError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Storage::get_length(self : Storage) -> Int =

@@ -6135,7 +6135,7 @@ pub(all) enum GPUAdapterRequestDeviceError {
   TypeError(JsError)
   OperationError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn GPUAdapter::get_features(
@@ -6157,14 +6157,14 @@ pub extern "js" fn GPUAdapter::get_info(self : GPUAdapter) -> GPUAdapterInfo =
 pub extern "js" fn GPUAdapter::request_device(
   self : GPUAdapter,
 ) -> Promise[Result[GPUDevice, GPUAdapterRequestDeviceError]] =
-  #| (self) => self.requestDevice().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.requestDevice().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn GPUAdapter::request_device_with_descriptor_ffi(
   self : GPUAdapter,
   descriptor : JsValue,
 ) -> Promise[Result[GPUDevice, GPUAdapterRequestDeviceError]] =
-  #| (self, descriptor) => self.requestDevice(descriptor).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self, descriptor) => self.requestDevice(descriptor).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn GPUAdapter::request_device_with_descriptor(
@@ -6211,14 +6211,14 @@ pub extern "js" fn GPUDevice::to_event_target(self : GPUDevice) -> EventTarget =
 pub(all) enum GPUDeviceCreateBufferError {
   RangeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum GPUDeviceImportExternalTextureError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn GPUDevice::get_features(
@@ -8440,7 +8440,7 @@ pub extern "js" fn JsValue::to_gpu_queue(self : JsValue) -> GPUQueue =
 pub(all) enum GPUQueueWriteBufferError {
   OperationError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -8448,7 +8448,7 @@ pub(all) enum GPUQueueCopyExternalImageToTextureError {
   SecurityError(JsError)
   OperationError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn GPUQueue::submit(
@@ -8717,7 +8717,7 @@ pub extern "js" fn JsValue::to_gpu_canvas_context(
 pub(all) enum GPUCanvasContextGetCurrentTextureError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn GPUCanvasContext::get_canvas(

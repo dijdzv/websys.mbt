@@ -442,7 +442,7 @@ pub extern "js" fn MIDIPort::as_midi_output(self : MIDIPort) -> MIDIOutput? =
 pub(all) enum MIDIPortOpenError {
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn MIDIPort::get_id(self : MIDIPort) -> String =
@@ -489,7 +489,7 @@ pub extern "js" fn MIDIPort::clear_onstatechange(self : MIDIPort) -> Unit =
 pub extern "js" fn MIDIPort::open(
   self : MIDIPort,
 ) -> Promise[Result[MIDIPort, MIDIPortOpenError]] =
-  #| (self) => self.open().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.open().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn MIDIPort::close(self : MIDIPort) -> Promise[MIDIPort] =
@@ -587,7 +587,7 @@ pub(all) enum MIDIOutputSendError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn MIDIOutput::send(

@@ -3480,7 +3480,7 @@ pub extern "js" fn EventTarget::as_xr_cube_layer(
 pub(all) enum EventTargetDispatchEventError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn EventTarget::new() -> EventTarget =
@@ -3889,7 +3889,7 @@ pub extern "js" fn JsValue::to_mutation_observer(
 pub(all) enum MutationObserverObserveError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn MutationObserver::new(
@@ -4921,14 +4921,14 @@ pub(all) enum NodeInsertBeforeError {
   NotFoundError(JsError)
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NodeAppendChildError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -4936,7 +4936,7 @@ pub(all) enum NodeReplaceChildError {
   NotFoundError(JsError)
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -4944,7 +4944,7 @@ pub(all) enum NodeRemoveChildError {
   TypeError(JsError)
   NotFoundError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 // Node.ELEMENT_NODE
 
@@ -5254,21 +5254,21 @@ pub(all) enum DocumentCreateElementNSError {
   NamespaceError(JsError)
   InvalidCharacterError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentCreateProcessingInstructionError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentCreateAttributeError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -5276,14 +5276,14 @@ pub(all) enum DocumentCreateAttributeNSError {
   NamespaceError(JsError)
   InvalidCharacterError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentHasStorageAccessError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -5291,21 +5291,21 @@ pub(all) enum DocumentRequestStorageAccessError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentParseHTMLUnsafeError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentSetDomainError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -5313,7 +5313,7 @@ pub(all) enum DocumentWriteError {
   TypeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -5321,7 +5321,7 @@ pub(all) enum DocumentWritelnError {
   TypeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -5330,21 +5330,21 @@ pub(all) enum DocumentRequestStorageAccessForError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentExitPictureInPictureError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentHasUnpartitionedCookieAccessError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -5353,7 +5353,7 @@ pub(all) enum DocumentHasPrivateTokenError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -5362,35 +5362,35 @@ pub(all) enum DocumentHasRedemptionRecordError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentSetAdoptedStyleSheetsError {
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentPrependError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentAppendError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentReplaceChildrenError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -5399,21 +5399,21 @@ pub(all) enum DocumentMoveBeforeError {
   NotFoundError(JsError)
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentQuerySelectorError {
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentQuerySelectorAllError {
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Document::new() -> Document =
@@ -5646,13 +5646,13 @@ pub extern "js" fn Document::clear_onprerenderingchange(
 pub extern "js" fn Document::has_storage_access(
   self : Document,
 ) -> Promise[Result[Bool, DocumentHasStorageAccessError]] =
-  #| (self) => self.hasStorageAccess().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.hasStorageAccess().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Document::request_storage_access(
   self : Document,
 ) -> Promise[Result[Unit, DocumentRequestStorageAccessError]] =
-  #| (self) => self.requestStorageAccess().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.requestStorageAccess().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Document::get_root_element(
@@ -6083,7 +6083,7 @@ pub extern "js" fn Document::request_storage_access_for(
   self : Document,
   requested_origin : String,
 ) -> Promise[Result[Unit, DocumentRequestStorageAccessForError]] =
-  #| (self, requested_origin) => self.requestStorageAccessFor(requested_origin).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, requested_origin) => self.requestStorageAccessFor(requested_origin).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Document::set_onfreeze(
@@ -6199,27 +6199,27 @@ pub extern "js" fn Document::get_picture_in_picture_enabled(
 pub extern "js" fn Document::exit_picture_in_picture(
   self : Document,
 ) -> Promise[Result[Unit, DocumentExitPictureInPictureError]] =
-  #| (self) => self.exitPictureInPicture().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.exitPictureInPicture().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Document::has_unpartitioned_cookie_access(
   self : Document,
 ) -> Promise[Result[Bool, DocumentHasUnpartitionedCookieAccessError]] =
-  #| (self) => self.hasUnpartitionedCookieAccess().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.hasUnpartitionedCookieAccess().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Document::has_private_token(
   self : Document,
   issuer : String,
 ) -> Promise[Result[Bool, DocumentHasPrivateTokenError]] =
-  #| (self, issuer) => self.hasPrivateToken(issuer).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, issuer) => self.hasPrivateToken(issuer).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Document::has_redemption_record(
   self : Document,
   issuer : String,
 ) -> Promise[Result[Bool, DocumentHasRedemptionRecordError]] =
-  #| (self, issuer) => self.hasRedemptionRecord(issuer).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, issuer) => self.hasRedemptionRecord(issuer).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Document::get_named_flows(self : Document) -> NamedFlowMap =
@@ -8004,21 +8004,21 @@ pub extern "js" fn DocumentType::to_event_target(
 pub(all) enum DocumentTypeBeforeError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentTypeAfterError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentTypeReplaceWithError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn DocumentType::get_name(self : DocumentType) -> String =
@@ -8122,21 +8122,21 @@ pub extern "js" fn DocumentFragment::as_shadow_root(
 pub(all) enum DocumentFragmentPrependError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentFragmentAppendError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentFragmentReplaceChildrenError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -8145,21 +8145,21 @@ pub(all) enum DocumentFragmentMoveBeforeError {
   NotFoundError(JsError)
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentFragmentQuerySelectorError {
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentFragmentQuerySelectorAllError {
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn DocumentFragment::new() -> DocumentFragment =
@@ -8294,7 +8294,7 @@ pub extern "js" fn ShadowRoot::as_svg_use_element_shadow_root(
 pub(all) enum ShadowRootSetHTMLUnsafeError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -8302,14 +8302,14 @@ pub(all) enum ShadowRootSetInnerHTMLError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ShadowRootSetAdoptedStyleSheetsError {
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn ShadowRoot::get_mode(self : ShadowRoot) -> ShadowRootMode =
@@ -9362,42 +9362,42 @@ pub(all) enum ElementSetAttributeError {
   TypeError(JsError)
   InvalidCharacterError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementToggleAttributeError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementRemoveAttributeNodeError {
   NotFoundError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementAttachShadowError {
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementClosestError {
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementMatchesError {
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -9405,21 +9405,21 @@ pub(all) enum ElementInsertAdjacentElementError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementInsertAdjacentTextError {
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementSetHTMLUnsafeError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -9428,7 +9428,7 @@ pub(all) enum ElementSetInnerHTMLError {
   SyntaxError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -9437,7 +9437,7 @@ pub(all) enum ElementSetOuterHTMLError {
   SyntaxError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -9446,49 +9446,49 @@ pub(all) enum ElementInsertAdjacentHTMLError {
   SyntaxError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementRequestFullscreenError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementSetPointerCaptureError {
   NotFoundError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementReleasePointerCaptureError {
   NotFoundError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementPrependError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementAppendError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementReplaceChildrenError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -9497,42 +9497,42 @@ pub(all) enum ElementMoveBeforeError {
   NotFoundError(JsError)
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementQuerySelectorError {
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementQuerySelectorAllError {
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementBeforeError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementAfterError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementReplaceWithError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Element::get_namespace_uri(self : Element) -> String? =
@@ -10089,14 +10089,14 @@ pub fn Element::spatial_navigation_search_with_options(
 pub extern "js" fn Element::request_fullscreen(
   self : Element,
 ) -> Promise[Result[Unit, ElementRequestFullscreenError]] =
-  #| (self) => self.requestFullscreen().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.requestFullscreen().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn Element::request_fullscreen_with_options_ffi(
   self : Element,
   options : JsValue,
 ) -> Promise[Result[Unit, ElementRequestFullscreenError]] =
-  #| (self, options) => self.requestFullscreen(options).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, options) => self.requestFullscreen(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn Element::request_fullscreen_with_options(
@@ -11219,28 +11219,28 @@ pub extern "js" fn JsValue::to_named_node_map(self : JsValue) -> NamedNodeMap =
 pub(all) enum NamedNodeMapSetNamedItemError {
   InUseAttributeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NamedNodeMapSetNamedItemNSError {
   InUseAttributeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NamedNodeMapRemoveNamedItemError {
   NotFoundError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NamedNodeMapRemoveNamedItemNSError {
   NotFoundError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn NamedNodeMap::get_length(self : NamedNodeMap) -> Int =
@@ -11442,49 +11442,49 @@ pub extern "js" fn CharacterData::as_comment(self : CharacterData) -> Comment? =
 pub(all) enum CharacterDataSubstringDataError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CharacterDataInsertDataError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CharacterDataDeleteDataError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CharacterDataReplaceDataError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CharacterDataBeforeError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CharacterDataAfterError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CharacterDataReplaceWithError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CharacterData::get_data(self : CharacterData) -> String =
@@ -11628,7 +11628,7 @@ pub(all) enum TextSplitTextError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Text::new() -> Text =
@@ -12163,7 +12163,7 @@ pub extern "js" fn StaticRange::to_abstract_range(
 pub(all) enum StaticRangeConstructorError {
   InvalidNodeTypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 extern "js" fn StaticRange::new_ffi(
@@ -12216,21 +12216,21 @@ pub(all) enum RangeSetEndError {
   IndexSizeError(JsError)
   InvalidNodeTypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum RangeCompareBoundaryPointsError {
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum RangeCreateContextualFragmentError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Range::new() -> Range =
@@ -12571,7 +12571,7 @@ pub(all) enum DOMTokenListAddError {
   SyntaxError(JsError)
   InvalidCharacterError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn DOMTokenList::get_length(self : DOMTokenList) -> Int =
@@ -12707,14 +12707,14 @@ pub(all) enum XPathResultIterateNextError {
   TYPE_ERR(JsError)
   INVALID_STATE_ERR(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum XPathResultSnapshotItemError {
   TYPE_ERR(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 // XPathResult.ANY_TYPE
 
@@ -12858,7 +12858,7 @@ pub(all) enum XPathExpressionEvaluateError {
   WRONG_DOCUMENT_ERR(JsError)
   INVALID_EXPRESSION_ERR(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn XPathExpression::evaluate(

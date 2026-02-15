@@ -80,7 +80,7 @@ pub extern "js" fn JsValue::to_media_list(self : JsValue) -> MediaList =
 pub(all) enum MediaListDeleteMediumError {
   NotFoundError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn MediaList::get_media_text(self : MediaList) -> String =
@@ -239,28 +239,28 @@ pub(all) enum CSSStyleSheetInsertRuleError {
   InvalidStateError(JsError)
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSStyleSheetDeleteRuleError {
   IndexSizeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSStyleSheetReplaceError {
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSStyleSheetReplaceSyncError {
   NotAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CSSStyleSheet::new() -> CSSStyleSheet =
@@ -318,7 +318,7 @@ pub extern "js" fn CSSStyleSheet::replace(
   self : CSSStyleSheet,
   text : String,
 ) -> Promise[Result[CSSStyleSheet, CSSStyleSheetReplaceError]] =
-  #| (self, text) => self.replace(text).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, text) => self.replace(text).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn CSSStyleSheet::replace_sync(
@@ -988,7 +988,7 @@ pub(all) enum CSSGroupingRuleInsertRuleError {
   IndexSizeError(JsError)
   HierarchyRequestError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -996,7 +996,7 @@ pub(all) enum CSSGroupingRuleDeleteRuleError {
   IndexSizeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CSSGroupingRule::get_css_rules(
@@ -1417,14 +1417,14 @@ pub extern "js" fn CSSStyleDeclaration::as_css_font_face_descriptors(
 pub(all) enum CSSStyleDeclarationSetPropertyError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSStyleDeclarationRemovePropertyError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::get_css_text(

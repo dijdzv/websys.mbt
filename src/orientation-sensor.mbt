@@ -411,7 +411,7 @@ pub extern "js" fn RelativeOrientationSensor::to_event_target(
 pub(all) enum RelativeOrientationSensorConstructorError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn RelativeOrientationSensor::new() -> Result[

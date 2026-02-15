@@ -68,11 +68,11 @@ pub extern "js" fn JsValue::to_navigator_login(
 pub(all) enum NavigatorLoginSetStatusError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn NavigatorLogin::set_status(
   self : NavigatorLogin,
   status : LoginStatus,
 ) -> Promise[Result[Unit, NavigatorLoginSetStatusError]] =
-  #| (self, status) => self.setStatus(['logged-in', 'logged-out'][status]).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, status) => self.setStatus(['logged-in', 'logged-out'][status]).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))

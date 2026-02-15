@@ -106,7 +106,7 @@ pub extern "js" fn WebSocket::to_event_target(self : WebSocket) -> EventTarget =
 pub(all) enum WebSocketConstructorError {
   SyntaxError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -114,14 +114,14 @@ pub(all) enum WebSocketCloseError {
   SyntaxError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WebSocketSendError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn WebSocket::new(

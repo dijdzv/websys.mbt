@@ -437,21 +437,21 @@ pub extern "js" fn JsValue::to_url_pattern(self : JsValue) -> URLPattern =
 pub(all) enum URLPatternConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum URLPatternTestError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum URLPatternExecError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn URLPattern::new() -> Result[

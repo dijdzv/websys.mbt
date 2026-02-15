@@ -896,7 +896,7 @@ pub(all) enum SummarizerCreateError {
   NotAllowedError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -905,7 +905,7 @@ pub(all) enum SummarizerAvailabilityError {
   NotAllowedError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -918,7 +918,7 @@ pub(all) enum SummarizerSummarizeError {
   NotSupportedError(JsError)
   QuotaExceededError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -931,7 +931,7 @@ pub(all) enum SummarizerSummarizeStreamingError {
   NotSupportedError(JsError)
   QuotaExceededError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -941,19 +941,19 @@ pub(all) enum SummarizerMeasureInputUsageError {
   NotReadableError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Summarizer::create() -> Promise[
   Result[Summarizer, SummarizerCreateError],
 ] =
-  #| () => Summarizer.create().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| () => Summarizer.create().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn Summarizer::create_with_options_ffi(
   options : JsValue,
 ) -> Promise[Result[Summarizer, SummarizerCreateError]] =
-  #| (options) => Summarizer.create(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (options) => Summarizer.create(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn Summarizer::create_with_options(
@@ -966,13 +966,13 @@ pub fn Summarizer::create_with_options(
 pub extern "js" fn Summarizer::availability() -> Promise[
   Result[Availability, SummarizerAvailabilityError],
 ] =
-  #| () => Summarizer.availability().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| () => Summarizer.availability().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn Summarizer::availability_with_options_ffi(
   options : JsValue,
 ) -> Promise[Result[Availability, SummarizerAvailabilityError]] =
-  #| (options) => Summarizer.availability(options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (options) => Summarizer.availability(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn Summarizer::availability_with_options(
@@ -986,7 +986,7 @@ pub extern "js" fn Summarizer::summarize(
   self : Summarizer,
   input : String,
 ) -> Promise[Result[String, SummarizerSummarizeError]] =
-  #| (self, input) => self.summarize(input).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'UnknownError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; if (n === 'NotSupportedError') return { $tag: 5, _0: e }; if (n === 'QuotaExceededError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }))
+  #| (self, input) => self.summarize(input).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'UnknownError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; if (n === 'NotSupportedError') return { $tag: 5, _0: e }; if (n === 'QuotaExceededError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }))
 
 ///|
 extern "js" fn Summarizer::summarize_with_options_ffi(
@@ -994,7 +994,7 @@ extern "js" fn Summarizer::summarize_with_options_ffi(
   input : String,
   options : JsValue,
 ) -> Promise[Result[String, SummarizerSummarizeError]] =
-  #| (self, input, options) => self.summarize(input, options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'UnknownError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; if (n === 'NotSupportedError') return { $tag: 5, _0: e }; if (n === 'QuotaExceededError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }))
+  #| (self, input, options) => self.summarize(input, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'UnknownError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; if (n === 'NotSupportedError') return { $tag: 5, _0: e }; if (n === 'QuotaExceededError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }))
 
 ///|
 pub fn Summarizer::summarize_with_options(
@@ -1072,7 +1072,7 @@ pub extern "js" fn Summarizer::measure_input_usage(
   self : Summarizer,
   input : String,
 ) -> Promise[Result[Double, SummarizerMeasureInputUsageError]] =
-  #| (self, input) => self.measureInputUsage(input).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotReadableError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+  #| (self, input) => self.measureInputUsage(input).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotReadableError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 extern "js" fn Summarizer::measure_input_usage_with_options_ffi(
@@ -1080,7 +1080,7 @@ extern "js" fn Summarizer::measure_input_usage_with_options_ffi(
   input : String,
   options : JsValue,
 ) -> Promise[Result[Double, SummarizerMeasureInputUsageError]] =
-  #| (self, input, options) => self.measureInputUsage(input, options).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotReadableError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+  #| (self, input, options) => self.measureInputUsage(input, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotReadableError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub fn Summarizer::measure_input_usage_with_options(

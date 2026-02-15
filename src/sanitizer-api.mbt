@@ -565,7 +565,7 @@ pub extern "js" fn JsValue::to_sanitizer(self : JsValue) -> Sanitizer =
 pub(all) enum SanitizerConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn Sanitizer::new() -> Result[

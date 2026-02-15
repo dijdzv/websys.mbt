@@ -89,7 +89,7 @@ pub(all) enum RemotePlaybackWatchAvailabilityError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -97,7 +97,7 @@ pub(all) enum RemotePlaybackCancelWatchAvailabilityError {
   NotFoundError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -109,27 +109,27 @@ pub(all) enum RemotePlaybackPromptError {
   NotSupportedError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn RemotePlayback::watch_availability(
   self : RemotePlayback,
   callback : RemotePlaybackAvailabilityCallback,
 ) -> Promise[Result[Int, RemotePlaybackWatchAvailabilityError]] =
-  #| (self, callback) => self.watchAvailability(callback).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self, callback) => self.watchAvailability(callback).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RemotePlayback::cancel_watch_availability(
   self : RemotePlayback,
 ) -> Promise[Result[Unit, RemotePlaybackCancelWatchAvailabilityError]] =
-  #| (self) => self.cancelWatchAvailability().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.cancelWatchAvailability().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RemotePlayback::cancel_watch_availability_with_id(
   self : RemotePlayback,
   id : Int,
 ) -> Promise[Result[Unit, RemotePlaybackCancelWatchAvailabilityError]] =
-  #| (self, id) => self.cancelWatchAvailability(id).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self, id) => self.cancelWatchAvailability(id).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RemotePlayback::get_state(
@@ -180,4 +180,4 @@ pub extern "js" fn RemotePlayback::clear_ondisconnect(
 pub extern "js" fn RemotePlayback::prompt(
   self : RemotePlayback,
 ) -> Promise[Result[Unit, RemotePlaybackPromptError]] =
-  #| (self) => self.prompt().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; if (n === 'InvalidAccessError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }))
+  #| (self) => self.prompt().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; if (n === 'InvalidAccessError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }))

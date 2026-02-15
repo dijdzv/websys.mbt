@@ -34,7 +34,7 @@ pub extern "js" fn JsValue::to_url(self : JsValue) -> URL =
 pub(all) enum URLConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn URL::new(url : String) -> Result[URL, URLConstructorError] =

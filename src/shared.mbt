@@ -68,6 +68,11 @@ pub extern "js" fn JsError::message(self : JsError) -> String =
 pub extern "js" fn JsError::name(self : JsError) -> String =
   #| (self) => (self && self.name) || ''
 
+///|
+impl Show for JsError with output(self, logger) {
+  logger.write_string(self.message())
+}
+
 // External types (referenced but not defined in WebIDL specs)
 
 ///|

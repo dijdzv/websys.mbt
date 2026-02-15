@@ -379,7 +379,7 @@ pub extern "js" fn CaptureController::to_event_target(
 pub(all) enum CaptureControllerSetFocusBehaviorError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -387,7 +387,7 @@ pub(all) enum CaptureControllerGetSupportedZoomLevelsError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -395,7 +395,7 @@ pub(all) enum CaptureControllerIncreaseZoomLevelError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -403,7 +403,7 @@ pub(all) enum CaptureControllerDecreaseZoomLevelError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -411,7 +411,7 @@ pub(all) enum CaptureControllerResetZoomLevelError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -420,7 +420,7 @@ pub(all) enum CaptureControllerForwardWheelError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn CaptureController::new() -> CaptureController =
@@ -449,19 +449,19 @@ pub extern "js" fn CaptureController::get_zoom_level(
 pub extern "js" fn CaptureController::increase_zoom_level(
   self : CaptureController,
 ) -> Promise[Result[Unit, CaptureControllerIncreaseZoomLevelError]] =
-  #| (self) => self.increaseZoomLevel().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.increaseZoomLevel().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn CaptureController::decrease_zoom_level(
   self : CaptureController,
 ) -> Promise[Result[Unit, CaptureControllerDecreaseZoomLevelError]] =
-  #| (self) => self.decreaseZoomLevel().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.decreaseZoomLevel().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn CaptureController::reset_zoom_level(
   self : CaptureController,
 ) -> Promise[Result[Unit, CaptureControllerResetZoomLevelError]] =
-  #| (self) => self.resetZoomLevel().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.resetZoomLevel().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn CaptureController::set_onzoomlevelchange(
@@ -481,7 +481,7 @@ pub extern "js" fn CaptureController::forward_wheel(
   self : CaptureController,
   element : HTMLElement?,
 ) -> Promise[Result[Unit, CaptureControllerForwardWheelError]] =
-  #| (self, element) => self.forwardWheel((element.$tag === 1 ? element._0 : null)).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, element) => self.forwardWheel((element.$tag === 1 ? element._0 : null)).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn CaptureController::set_oncapturedmousechange(

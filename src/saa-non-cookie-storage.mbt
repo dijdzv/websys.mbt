@@ -200,42 +200,42 @@ pub extern "js" fn JsValue::to_storage_access_handle(
 pub(all) enum StorageAccessHandleGetDirectoryError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum StorageAccessHandleEstimateError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum StorageAccessHandleCreateObjectURLError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum StorageAccessHandleRevokeObjectURLError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum StorageAccessHandleBroadcastChannelError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum StorageAccessHandleSharedWorkerError {
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn StorageAccessHandle::get_session_storage(
@@ -273,7 +273,7 @@ pub extern "js" fn StorageAccessHandle::get_directory(
 ) -> Promise[
   Result[FileSystemDirectoryHandle, StorageAccessHandleGetDirectoryError],
 ] =
-  #| (self) => self.getDirectory().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.getDirectory().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn StorageAccessHandle::estimate(
@@ -282,7 +282,7 @@ pub extern "js" fn StorageAccessHandle::estimate(
   #| (self) => self.estimate().then(v => ({
   #|   usage: v.usage,
   #|   quota: v.quota
-  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn StorageAccessHandle::create_object_url(

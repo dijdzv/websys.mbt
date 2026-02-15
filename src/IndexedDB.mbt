@@ -661,7 +661,7 @@ pub extern "js" fn JsValue::to_idb_factory(self : JsValue) -> IDBFactory =
 pub(all) enum IDBFactoryOpenError {
   TypeError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -669,14 +669,14 @@ pub(all) enum IDBFactoryDatabasesError {
   UnknownError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBFactoryCmpError {
   DataError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn IDBFactory::open(
@@ -704,7 +704,7 @@ pub extern "js" fn IDBFactory::delete_database(
 pub extern "js" fn IDBFactory::databases(
   self : IDBFactory,
 ) -> Promise[Result[Array[IDBDatabaseInfo], IDBFactoryDatabasesError]] =
-  #| (self) => self.databases().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+  #| (self) => self.databases().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn IDBFactory::cmp(
@@ -756,7 +756,7 @@ pub(all) enum IDBDatabaseTransactionError {
   InvalidStateError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -767,7 +767,7 @@ pub(all) enum IDBDatabaseCreateObjectStoreError {
   InvalidAccessError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -776,7 +776,7 @@ pub(all) enum IDBDatabaseDeleteObjectStoreError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn IDBDatabase::get_name(self : IDBDatabase) -> String =
@@ -947,7 +947,7 @@ pub(all) enum IDBObjectStoreSetNameError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -958,7 +958,7 @@ pub(all) enum IDBObjectStorePutError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -970,7 +970,7 @@ pub(all) enum IDBObjectStoreAddError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -980,7 +980,7 @@ pub(all) enum IDBObjectStoreDeleteError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -989,7 +989,7 @@ pub(all) enum IDBObjectStoreClearError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -998,7 +998,7 @@ pub(all) enum IDBObjectStoreGetError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1007,7 +1007,7 @@ pub(all) enum IDBObjectStoreGetKeyError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1017,7 +1017,7 @@ pub(all) enum IDBObjectStoreGetAllError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1027,7 +1027,7 @@ pub(all) enum IDBObjectStoreGetAllKeysError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1036,7 +1036,7 @@ pub(all) enum IDBObjectStoreGetAllRecordsError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1045,7 +1045,7 @@ pub(all) enum IDBObjectStoreCountError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1054,7 +1054,7 @@ pub(all) enum IDBObjectStoreOpenCursorError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1063,7 +1063,7 @@ pub(all) enum IDBObjectStoreOpenKeyCursorError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1071,7 +1071,7 @@ pub(all) enum IDBObjectStoreIndexError {
   NotFoundError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1082,7 +1082,7 @@ pub(all) enum IDBObjectStoreCreateIndexError {
   InvalidAccessError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1091,7 +1091,7 @@ pub(all) enum IDBObjectStoreDeleteIndexError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn IDBObjectStore::get_name(self : IDBObjectStore) -> String =
@@ -1356,7 +1356,7 @@ pub(all) enum IDBIndexSetNameError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1365,7 +1365,7 @@ pub(all) enum IDBIndexGetError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1374,7 +1374,7 @@ pub(all) enum IDBIndexGetKeyError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1383,7 +1383,7 @@ pub(all) enum IDBIndexGetAllError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1392,7 +1392,7 @@ pub(all) enum IDBIndexGetAllKeysError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1401,7 +1401,7 @@ pub(all) enum IDBIndexGetAllRecordsError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1410,7 +1410,7 @@ pub(all) enum IDBIndexCountError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1420,7 +1420,7 @@ pub(all) enum IDBIndexOpenCursorError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1430,7 +1430,7 @@ pub(all) enum IDBIndexOpenKeyCursorError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn IDBIndex::get_name(self : IDBIndex) -> String =
@@ -1598,35 +1598,35 @@ pub extern "js" fn JsValue::to_idb_key_range(self : JsValue) -> IDBKeyRange =
 pub(all) enum IDBKeyRangeOnlyError {
   DataError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBKeyRangeLowerBoundError {
   DataError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBKeyRangeUpperBoundError {
   DataError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBKeyRangeBoundError {
   DataError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBKeyRangeIncludesError {
   DataError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn IDBKeyRange::get_lower(self : IDBKeyRange) -> JsValue =
@@ -1780,7 +1780,7 @@ pub(all) enum IDBCursorAdvanceError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1789,7 +1789,7 @@ pub(all) enum IDBCursorContinueError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1799,7 +1799,7 @@ pub(all) enum IDBCursorContinuePrimaryKeyError {
   InvalidAccessError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1810,7 +1810,7 @@ pub(all) enum IDBCursorUpdateError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -1819,7 +1819,7 @@ pub(all) enum IDBCursorDeleteError {
   InvalidStateError(JsError)
   TransactionInactiveError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn IDBCursor::get_source(
@@ -1984,21 +1984,21 @@ pub(all) enum IDBTransactionObjectStoreError {
   NotFoundError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBTransactionCommitError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBTransactionAbortError {
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn IDBTransaction::get_object_store_names(

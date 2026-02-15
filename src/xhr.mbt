@@ -412,14 +412,14 @@ pub(all) enum XMLHttpRequestSendError {
   NetworkError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum XMLHttpRequestSetResponseTypeError {
   InvalidAccessError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -427,7 +427,7 @@ pub(all) enum XMLHttpRequestSetAttributionReportingError {
   TypeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 /// Error type for throwing methods
@@ -436,7 +436,7 @@ pub(all) enum XMLHttpRequestSetPrivateTokenError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn XMLHttpRequest::new() -> XMLHttpRequest =
@@ -701,7 +701,7 @@ pub(all) enum FormDataConstructorError {
   TypeError(JsError)
   NotFoundError(JsError)
   OtherError(JsError)
-}
+} derive(Show)
 
 ///|
 pub extern "js" fn FormData::new() -> Result[FormData, FormDataConstructorError] =

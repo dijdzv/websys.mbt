@@ -7778,13 +7778,6 @@ pub extern "js" fn JsValue::to_gpu_compute_pass_encoder(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum GPUComputePassEncoderSetBindGroupError {
-  Uint32Array(JsError)
-  OtherError(JsError)
-}
-
-///|
 pub extern "js" fn GPUComputePassEncoder::set_pipeline(
   self : GPUComputePassEncoder,
   pipeline : GPUComputePipeline,
@@ -7859,8 +7852,8 @@ pub extern "js" fn GPUComputePassEncoder::set_bind_group(
   self : GPUComputePassEncoder,
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
-) -> Result[Unit, GPUComputePassEncoderSetBindGroupError] =
-  #| (self, index, bind_group) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Uint32Array') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, index, bind_group) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null))
 
 ///|
 pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_dynamic_offsets(
@@ -7868,8 +7861,8 @@ pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_dynamic_offsets(
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
   dynamic_offsets : Array[GPUBufferDynamicOffset],
-) -> Result[Unit, GPUComputePassEncoderSetBindGroupError] =
-  #| (self, index, bind_group, dynamic_offsets) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Uint32Array') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets)
 
 ///|
 pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_index_gpu_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_gpu_size64_and_dynamic_offsets_data_length_gpu_size32(
@@ -7879,8 +7872,8 @@ pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_index_gpu_index32_
   dynamic_offsets_data : Uint32Array,
   dynamic_offsets_data_start : GPUSize64,
   dynamic_offsets_data_length : GPUSize32,
-) -> Result[Unit, GPUComputePassEncoderSetBindGroupError] =
-  #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Uint32Array') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length)
 
 ///|
 /// GPURenderPassEncoder interface
@@ -7919,13 +7912,6 @@ pub extern "js" fn JsValue::to_gpu_render_pass_encoder(
   self : JsValue,
 ) -> GPURenderPassEncoder =
   #| (self) => self
-
-///|
-/// Error type for throwing methods
-pub(all) enum GPURenderPassEncoderSetBindGroupError {
-  Uint32Array(JsError)
-  OtherError(JsError)
-}
 
 ///|
 pub extern "js" fn GPURenderPassEncoder::set_viewport(
@@ -8027,8 +8013,8 @@ pub extern "js" fn GPURenderPassEncoder::set_bind_group(
   self : GPURenderPassEncoder,
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
-) -> Result[Unit, GPURenderPassEncoderSetBindGroupError] =
-  #| (self, index, bind_group) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Uint32Array') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, index, bind_group) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null))
 
 ///|
 pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_dynamic_offsets(
@@ -8036,8 +8022,8 @@ pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_dynamic_offsets(
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
   dynamic_offsets : Array[GPUBufferDynamicOffset],
-) -> Result[Unit, GPURenderPassEncoderSetBindGroupError] =
-  #| (self, index, bind_group, dynamic_offsets) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Uint32Array') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets)
 
 ///|
 pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_index_gpu_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_gpu_size64_and_dynamic_offsets_data_length_gpu_size32(
@@ -8047,8 +8033,8 @@ pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_index_gpu_index32_a
   dynamic_offsets_data : Uint32Array,
   dynamic_offsets_data_start : GPUSize64,
   dynamic_offsets_data_length : GPUSize32,
-) -> Result[Unit, GPURenderPassEncoderSetBindGroupError] =
-  #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Uint32Array') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length)
 
 ///|
 pub extern "js" fn GPURenderPassEncoder::set_pipeline(
@@ -8246,13 +8232,6 @@ pub extern "js" fn JsValue::to_gpu_render_bundle_encoder(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum GPURenderBundleEncoderSetBindGroupError {
-  Uint32Array(JsError)
-  OtherError(JsError)
-}
-
-///|
 pub extern "js" fn GPURenderBundleEncoder::finish(
   self : GPURenderBundleEncoder,
 ) -> GPURenderBundle =
@@ -8311,8 +8290,8 @@ pub extern "js" fn GPURenderBundleEncoder::set_bind_group(
   self : GPURenderBundleEncoder,
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
-) -> Result[Unit, GPURenderBundleEncoderSetBindGroupError] =
-  #| (self, index, bind_group) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Uint32Array') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, index, bind_group) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null))
 
 ///|
 pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_dynamic_offsets(
@@ -8320,8 +8299,8 @@ pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_dynamic_offsets(
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
   dynamic_offsets : Array[GPUBufferDynamicOffset],
-) -> Result[Unit, GPURenderBundleEncoderSetBindGroupError] =
-  #| (self, index, bind_group, dynamic_offsets) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Uint32Array') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets)
 
 ///|
 pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_index_gpu_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_gpu_size64_and_dynamic_offsets_data_length_gpu_size32(
@@ -8331,8 +8310,8 @@ pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_index_gpu_index32
   dynamic_offsets_data : Uint32Array,
   dynamic_offsets_data_start : GPUSize64,
   dynamic_offsets_data_length : GPUSize32,
-) -> Result[Unit, GPURenderBundleEncoderSetBindGroupError] =
-  #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => (() => { try { self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Uint32Array') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length)
 
 ///|
 pub extern "js" fn GPURenderBundleEncoder::set_pipeline(

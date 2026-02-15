@@ -888,7 +888,6 @@ pub(all) enum PaymentRequestConstructorError {
 ///|
 /// Error type for throwing methods
 pub(all) enum PaymentRequestShowError {
-  Promise(JsError)
   AbortError(JsError)
   SecurityError(JsError)
   InvalidStateError(JsError)
@@ -936,14 +935,14 @@ pub fn PaymentRequest::new_with_options(
 pub extern "js" fn PaymentRequest::show(
   self : PaymentRequest,
 ) -> Promise[Result[PaymentResponse, PaymentRequestShowError]] =
-  #| (self) => self.show().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
+  #| (self) => self.show().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub extern "js" fn PaymentRequest::show_with_details_promise(
   self : PaymentRequest,
   details_promise : Promise[PaymentDetailsUpdate],
 ) -> Promise[Result[PaymentResponse, PaymentRequestShowError]] =
-  #| (self, details_promise) => self.show(details_promise).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
+  #| (self, details_promise) => self.show(details_promise).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub extern "js" fn PaymentRequest::abort(

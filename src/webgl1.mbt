@@ -1097,13 +1097,6 @@ pub extern "js" fn JsValue::to_web_gl_rendering_context(
 
 ///|
 /// Error type for throwing methods
-pub(all) enum WebGLRenderingContextBlendEquationError {
-  Undefined(JsError)
-  OtherError(JsError)
-}
-
-///|
-/// Error type for throwing methods
 pub(all) enum WebGLRenderingContextCompileShaderError {
   TypeError(JsError)
   OtherError(JsError)
@@ -2763,8 +2756,8 @@ pub extern "js" fn WebGLRenderingContext::blend_color(
 pub extern "js" fn WebGLRenderingContext::blend_equation(
   self : WebGLRenderingContext,
   mode : GLenum,
-) -> Result[Unit, WebGLRenderingContextBlendEquationError] =
-  #| (self, mode) => (() => { try { self.blendEquation(mode); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'undefined') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, mode) => self.blendEquation(mode)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::blend_equation_separate(

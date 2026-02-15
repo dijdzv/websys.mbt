@@ -1313,7 +1313,6 @@ pub extern "js" fn CSSKeywordValue::to_css_style_value(
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSKeywordValueConstructorError {
-  String(JsError)
   TypeError(JsError)
   OtherError(JsError)
 }
@@ -1321,7 +1320,6 @@ pub(all) enum CSSKeywordValueConstructorError {
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSKeywordValueSetValueError {
-  String(JsError)
   TypeError(JsError)
   OtherError(JsError)
 }
@@ -1330,7 +1328,7 @@ pub(all) enum CSSKeywordValueSetValueError {
 pub extern "js" fn CSSKeywordValue::new(
   value : String,
 ) -> Result[CSSKeywordValue, CSSKeywordValueConstructorError] =
-  #| (value) => (() => { try { return { $tag: 1, _0: new CSSKeywordValue(value) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'String') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (value) => (() => { try { return { $tag: 1, _0: new CSSKeywordValue(value) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSKeywordValue::get_value(self : CSSKeywordValue) -> String =
@@ -1341,7 +1339,7 @@ pub extern "js" fn CSSKeywordValue::set_value(
   self : CSSKeywordValue,
   value : String,
 ) -> Result[Unit, CSSKeywordValueSetValueError] =
-  #| (self, value) => (() => { try { self.value = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'String') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, value) => (() => { try { self.value = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// CSSNumericValue interface

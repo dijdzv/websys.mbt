@@ -2300,7 +2300,6 @@ pub(all) enum RTCPeerConnectionCreateOfferError {
 ///|
 /// Error type for throwing methods
 pub(all) enum RTCPeerConnectionCreateAnswerError {
-  Promise(JsError)
   OperationError(JsError)
   NotReadableError(JsError)
   OtherError(JsError)
@@ -2321,7 +2320,6 @@ pub(all) enum RTCPeerConnectionSetRemoteDescriptionError {
 ///|
 /// Error type for throwing methods
 pub(all) enum RTCPeerConnectionAddIceCandidateError {
-  Promise(JsError)
   TypeError(JsError)
   OperationError(JsError)
   InvalidStateError(JsError)
@@ -2480,7 +2478,7 @@ pub extern "js" fn RTCPeerConnection::create_answer(
   #| (self) => self.createAnswer().then(v => ({
   #|   type_: ['offer', 'pranswer', 'answer', 'rollback'].indexOf(v.type),
   #|   sdp: v.sdp
-  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotReadableError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'NotReadableError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn RTCPeerConnection::create_answer_with_options_ffi(
@@ -2492,7 +2490,7 @@ extern "js" fn RTCPeerConnection::create_answer_with_options_ffi(
   #| (self, options) => self.createAnswer(options).then(v => ({
   #|   type_: ['offer', 'pranswer', 'answer', 'rollback'].indexOf(v.type),
   #|   sdp: v.sdp
-  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotReadableError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| })).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'NotReadableError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn RTCPeerConnection::create_answer_with_options(
@@ -2510,7 +2508,7 @@ pub extern "js" fn RTCPeerConnection::create_answer_with_success_callback_rtc_se
   success_callback : RTCSessionDescriptionCallback,
   failure_callback : RTCPeerConnectionErrorCallback,
 ) -> Promise[Result[Unit, RTCPeerConnectionCreateAnswerError]] =
-  #| (self, success_callback, failure_callback) => self.createAnswer(success_callback, failure_callback).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotReadableError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, success_callback, failure_callback) => self.createAnswer(success_callback, failure_callback).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'NotReadableError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn RTCPeerConnection::set_local_description(
@@ -2639,14 +2637,14 @@ pub extern "js" fn RTCPeerConnection::get_pending_remote_description(
 pub extern "js" fn RTCPeerConnection::add_ice_candidate(
   self : RTCPeerConnection,
 ) -> Promise[Result[Unit, RTCPeerConnectionAddIceCandidateError]] =
-  #| (self) => self.addIceCandidate().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'OperationError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+  #| (self) => self.addIceCandidate().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn RTCPeerConnection::add_ice_candidate_with_candidate_ffi(
   self : RTCPeerConnection,
   candidate : JsValue,
 ) -> Promise[Result[Unit, RTCPeerConnectionAddIceCandidateError]] =
-  #| (self, candidate) => self.addIceCandidate(candidate).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'OperationError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+  #| (self, candidate) => self.addIceCandidate(candidate).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn RTCPeerConnection::add_ice_candidate_with_candidate(
@@ -2666,7 +2664,7 @@ extern "js" fn RTCPeerConnection::add_ice_candidate_with_candidate_rtc_ice_candi
   success_callback : VoidFunction,
   failure_callback : RTCPeerConnectionErrorCallback,
 ) -> Promise[Result[Unit, RTCPeerConnectionAddIceCandidateError]] =
-  #| (self, candidate, success_callback, failure_callback) => self.addIceCandidate(candidate, success_callback, failure_callback).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'OperationError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+  #| (self, candidate, success_callback, failure_callback) => self.addIceCandidate(candidate, success_callback, failure_callback).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn RTCPeerConnection::add_ice_candidate_with_candidate_rtc_ice_candidate_init_and_success_callback_void_function_and_failure_callback_rtc_peer_connection_error_callback(

@@ -303,13 +303,6 @@ pub extern "js" fn JsValue::to_web_gl2_rendering_context(
 
 ///|
 /// Error type for throwing methods
-pub(all) enum WebGL2RenderingContextBlendEquationError {
-  Undefined(JsError)
-  OtherError(JsError)
-}
-
-///|
-/// Error type for throwing methods
 pub(all) enum WebGL2RenderingContextCompileShaderError {
   TypeError(JsError)
   OtherError(JsError)
@@ -1969,8 +1962,8 @@ pub extern "js" fn WebGL2RenderingContext::blend_color(
 pub extern "js" fn WebGL2RenderingContext::blend_equation(
   self : WebGL2RenderingContext,
   mode : GLenum,
-) -> Result[Unit, WebGL2RenderingContextBlendEquationError] =
-  #| (self, mode) => (() => { try { self.blendEquation(mode); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'undefined') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, mode) => self.blendEquation(mode)
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::blend_equation_separate(

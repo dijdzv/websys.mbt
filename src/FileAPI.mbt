@@ -221,13 +221,6 @@ pub extern "js" fn Blob::as_file(self : Blob) -> File? =
   #| (self) => (self instanceof File) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Error type for throwing methods
-pub(all) enum BlobBytesError {
-  Promise(JsError)
-  OtherError(JsError)
-}
-
-///|
 pub extern "js" fn Blob::new() -> Blob =
   #| () => new Blob()
 
@@ -280,10 +273,8 @@ pub extern "js" fn Blob::array_buffer(self : Blob) -> Promise[ArrayBuffer] =
   #| (self) => self.arrayBuffer()
 
 ///|
-pub extern "js" fn Blob::bytes(
-  self : Blob,
-) -> Promise[Result[Uint8Array, BlobBytesError]] =
-  #| (self) => self.bytes().then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+pub extern "js" fn Blob::bytes(self : Blob) -> Promise[Uint8Array] =
+  #| (self) => self.bytes()
 
 ///|
 /// File interface

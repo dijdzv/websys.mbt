@@ -26406,7 +26406,6 @@ pub extern "js" fn JsValue::to_location(self : JsValue) -> Location =
 ///|
 /// Error type for throwing methods
 pub(all) enum LocationAssignError {
-  Undefined(JsError)
   SyntaxError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
@@ -26415,7 +26414,6 @@ pub(all) enum LocationAssignError {
 ///|
 /// Error type for throwing methods
 pub(all) enum LocationReplaceError {
-  Undefined(JsError)
   SyntaxError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
@@ -26513,14 +26511,14 @@ pub extern "js" fn Location::assign(
   self : Location,
   url : String,
 ) -> Result[Unit, LocationAssignError] =
-  #| (self, url) => (() => { try { self.assign(url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'undefined') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+  #| (self, url) => (() => { try { self.assign(url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Location::replace(
   self : Location,
   url : String,
 ) -> Result[Unit, LocationReplaceError] =
-  #| (self, url) => (() => { try { self.replace(url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'undefined') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+  #| (self, url) => (() => { try { self.replace(url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Location::reload(
@@ -28384,7 +28382,6 @@ pub(all) enum NavigatorRequestMIDIAccessError {
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigatorRequestMediaKeySystemAccessError {
-  Promise(JsError)
   TypeError(JsError)
   SecurityError(JsError)
   NotSupportedError(JsError)
@@ -28423,7 +28420,6 @@ pub(all) enum NavigatorDeprecatedReplaceInURNError {
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigatorShareError {
-  Promise(JsError)
   DataError(JsError)
   TypeError(JsError)
   AbortError(JsError)
@@ -28553,7 +28549,7 @@ pub extern "js" fn Navigator::request_media_key_system_access(
 ) -> Promise[
   Result[MediaKeySystemAccess, NavigatorRequestMediaKeySystemAccessError],
 ] =
-  #| (self, key_system, supported_configurations) => self.requestMediaKeySystemAccess(key_system, supported_configurations).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
+  #| (self, key_system, supported_configurations) => self.requestMediaKeySystemAccess(key_system, supported_configurations).then(v => ({ $tag: 1, _0: v })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::get_login(self : Navigator) -> NavigatorLogin =
@@ -28864,14 +28860,14 @@ pub extern "js" fn Navigator::get_max_touch_points(self : Navigator) -> Int =
 pub extern "js" fn Navigator::share(
   self : Navigator,
 ) -> Promise[Result[Unit, NavigatorShareError]] =
-  #| (self) => self.share().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'DataError') return { $tag: 1, _0: e }; if (n === 'TypeError') return { $tag: 2, _0: e }; if (n === 'AbortError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'InvalidStateError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }))
+  #| (self) => self.share().then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'AbortError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
 ///|
 extern "js" fn Navigator::share_with_data_ffi(
   self : Navigator,
   data : JsValue,
 ) -> Promise[Result[Unit, NavigatorShareError]] =
-  #| (self, data) => self.share(data).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Promise') return { $tag: 0, _0: e }; if (n === 'DataError') return { $tag: 1, _0: e }; if (n === 'TypeError') return { $tag: 2, _0: e }; if (n === 'AbortError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'InvalidStateError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }))
+  #| (self, data) => self.share(data).then(v => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'AbortError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
 ///|
 pub fn Navigator::share_with_data(
@@ -29414,10 +29410,8 @@ pub extern "js" fn JsValue::to_image_data(self : JsValue) -> ImageData =
 ///|
 /// Error type for throwing methods
 pub(all) enum ImageDataConstructorError {
-  Float16Array(JsError)
   IndexSizeError(JsError)
   InvalidStateError(JsError)
-  Uint8ClampedArray(JsError)
   OtherError(JsError)
 }
 
@@ -29426,7 +29420,7 @@ pub extern "js" fn ImageData::new(
   sw : Int,
   sh : Int,
 ) -> Result[ImageData, ImageDataConstructorError] =
-  #| (sw, sh) => (() => { try { return { $tag: 1, _0: new ImageData(sw, sh) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Float16Array') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'Uint8ClampedArray') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
+  #| (sw, sh) => (() => { try { return { $tag: 1, _0: new ImageData(sw, sh) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn ImageData::new_with_settings_ffi(
@@ -29434,7 +29428,7 @@ extern "js" fn ImageData::new_with_settings_ffi(
   sh : Int,
   settings : JsValue,
 ) -> Result[ImageData, ImageDataConstructorError] =
-  #| (sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Float16Array') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'Uint8ClampedArray') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
+  #| (sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn ImageData::new_with_settings(
@@ -29450,7 +29444,7 @@ pub extern "js" fn ImageData::new_with_data_and_sw(
   data : ImageDataArray,
   sw : Int,
 ) -> Result[ImageData, ImageDataConstructorError] =
-  #| (data, sw) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Float16Array') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'Uint8ClampedArray') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
+  #| (data, sw) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn ImageData::new_with_data_and_sw_with_settings_ffi(
@@ -29459,7 +29453,7 @@ extern "js" fn ImageData::new_with_data_and_sw_with_settings_ffi(
   sh : Int,
   settings : JsValue,
 ) -> Result[ImageData, ImageDataConstructorError] =
-  #| (data, sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Float16Array') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'Uint8ClampedArray') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
+  #| (data, sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn ImageData::new_with_data_and_sw_with_settings(
@@ -29507,7 +29501,7 @@ pub extern "js" fn ImageData::new_with_uint8_clamped_array(
   sh : Int,
   settings : ImageDataSettings,
 ) -> Result[ImageData, ImageDataConstructorError] =
-  #| (data, sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Float16Array') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'Uint8ClampedArray') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
+  #| (data, sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn ImageData::new_with_float16_array(
@@ -29516,7 +29510,7 @@ pub extern "js" fn ImageData::new_with_float16_array(
   sh : Int,
   settings : ImageDataSettings,
 ) -> Result[ImageData, ImageDataConstructorError] =
-  #| (data, sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'Float16Array') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'Uint8ClampedArray') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
+  #| (data, sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// ImageBitmap interface
